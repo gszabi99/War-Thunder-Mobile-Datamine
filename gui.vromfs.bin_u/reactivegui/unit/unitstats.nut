@@ -112,10 +112,6 @@ let statsShip = {
   maxSpeed = {
     valueToText = @(v, _) "".concat(round(v * 3.6), loc("measureUnits/kmh"))
   }
-  maxSpeedSubmarine = {
-    valueToText = @(v, _) "".concat(round(v * 3.6 * (get_game_params()?.submarineMaxSpeedMult ?? 1.)),
-      loc("measureUnits/kmh"))
-  }
   turningTime = {
     getProgress = mkGetProgressInv(SHIP, "turningTime")
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
@@ -156,6 +152,12 @@ let statsShip = {
     getHeader = @(s) " ".concat(aircraftMark, loc(getUnitLocId(s.supportPlane)))
     valueToText = @(_, s) $"x{s?.supportPlaneCount ?? 1}"
   }
+}.map(@(cfg, id) mkStat(id, cfg, SHIP))
+
+let statsSubmarine = {
+  maxSpeed = {
+    valueToText = @(v, _) "".concat(round(v * 3.6 * (get_game_params()?.submarineMaxSpeedMult ?? 1.)),
+      loc("measureUnits/kmh"))  }
 }.map(@(cfg, id) mkStat(id, cfg, SHIP))
 
 let statsTank = {
@@ -209,6 +211,23 @@ let statsCfgShip = {
   ]
 }
 
+let statsCfgSubmarine = {
+  full = [
+    statsShip.shipCrewMax
+    statsShip.shipCrewMin
+    statsSubmarine.maxSpeed
+    statsShip.turningTime
+    statsShip.supportPlane
+  ]
+  short = [
+    statsShip.shipCrewAll
+    statsSubmarine.maxSpeed
+    statsShip.turningTime
+    statsShip.allCannons
+    statsShip.special
+  ]
+}
+
 let statsCfgTank = {
   full = [
     statsTank.mainWeaponCaliber
@@ -226,7 +245,7 @@ let statsCfgTank = {
 
 let statsCfg = {
   [SHIP] = statsCfgShip,
-  [SUBMARINE] = statsCfgShip,
+  [SUBMARINE] = statsCfgSubmarine,
   [TANK] = statsCfgTank,
 }
 
@@ -361,13 +380,13 @@ let function getUnitStats(unit, shopCfg, statsList, weapStatsList) {
 }
 
 let function mkUnitStatsCompFull(unit, attrLevels, attrPreset) {
-  let unitType = unit.unitType
+  let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset)
   return getUnitStats(unit, stats, statsCfg?[unitType].full ?? [], weaponsCfg?[unitType].full ?? [])
 }
 
 let function mkUnitStatsCompShort(unit, attrLevels, attrPreset) {
-  let unitType = unit.unitType
+  let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset)
   return getUnitStats(unit, stats, statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])
 }
