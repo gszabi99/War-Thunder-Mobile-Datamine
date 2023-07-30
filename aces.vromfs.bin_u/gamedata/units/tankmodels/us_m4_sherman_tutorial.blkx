@@ -45,6 +45,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.4,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.8,
@@ -2438,8 +2439,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      3.5,
-      -13.0
+      2.0,
+      -17.0
     ],
     "headPosOnShooting": [
       -0.8,

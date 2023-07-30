@@ -49,23 +49,36 @@
       },
       "conditions": {},
       "actions": {
-        "unitPutToSleep": {
+        "__unitPutToSleep": {
           "target": "ai"
         },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": [
-            "look_at_01",
-            "look_at_02"
-          ],
-          "targetableByAi": false,
-          "isImmortal": true,
-          "stealthRadius": 0.0,
-          "calmDetection": true
-        },
+        "unitSetProperties": [
+          {
+            "object": [
+              "look_at_01",
+              "look_at_02"
+            ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "targetableByAi": false,
+            "isImmortal": true,
+            "stealthRadius": 0.0,
+            "calmDetection": true
+          },
+          {
+            "object": "ai",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "stealthRadius": 0.0,
+            "calmDetection": true,
+            "forceVisibleOnMap": false,
+            "attack_type": "dont_aim"
+          }
+        ],
         "playerControls": {
           "setStatus": "disable",
           "control": [
@@ -470,7 +483,7 @@
       },
       "conditions": {
         "playerWhenOrientation": {
-          "value": 90.01,
+          "value": 130.0,
           "orientation": "yaw",
           "comparasion_func": "more"
         }
@@ -657,7 +670,7 @@
           "object_var_value": 0
         },
         "playerAxisValueReached": {
-          "value": 0.5,
+          "value": 0.1,
           "func": "less",
           "axis": "AXIS_SHIP_MAIN_ENGINE"
         }
@@ -685,6 +698,16 @@
         },
         "hudElementSelectionShade": {
           "element": ""
+        },
+        "wait": {
+          "time": 0.05
+        },
+        "playerControls": {
+          "setStatus": "disable",
+          "control": [
+            "AXIS_SHIP_MAIN_ENGINE",
+            "AXIS_SHIP_STEERING"
+          ]
         }
       },
       "else_actions": {}
@@ -704,18 +727,10 @@
       },
       "conditions": {},
       "actions": {
-        "unitWakeUp": {
+        "__unitWakeUp": {
           "target": "ai"
         },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "ai",
-          "attack_type": "dont_aim"
-        },
-        "unitSetRoute": {
+        "__unitSetRoute": {
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "route": "way_points_01",
@@ -742,28 +757,6 @@
           "target": "ai",
           "partName": "compartment_01_dm"
         },
-        "wait": {
-          "time": 4.0
-        },
-        "playerSetMouseAim": {
-          "lookat": "look_at_02"
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/wtm_tutorial_ship/lock_target",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        },
-        "triggerEnable": {
-          "target": "lock_target_done"
-        },
         "unitPlayEffect": {
           "effect_type": "specify",
           "effect": "waypoint_ground_arrow",
@@ -785,6 +778,38 @@
             0.0,
             0.0
           ]
+        },
+        "wait": {
+          "time": 4.0
+        },
+        "unitSetProperties": {
+          "object": "ai",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "stealthRadius": 9999.0,
+          "calmDetection": false,
+          "attack_type": "dont_aim"
+        },
+        "playerSetMouseAim": {
+          "lookat": "look_at_02"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/wtm_tutorial_ship/lock_target",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "triggerEnable": {
+          "target": "lock_target_done"
         }
       },
       "else_actions": {}
@@ -1040,11 +1065,11 @@
           "element": ""
         },
         "unitSetProperties": {
+          "object": "ai",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "ai",
           "attack_type": "fire_at_will",
           "accuracy": 10.0,
           "maxDeviationAngle": 5.0,
@@ -1067,7 +1092,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -1076,6 +1101,17 @@
         }
       },
       "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isShooting",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "ai"
+        },
         "unitWhenPartHp": {
           "func": "less",
           "check_objects": "any",
@@ -1087,6 +1123,29 @@
         }
       },
       "actions": {
+        "wait": [
+          {
+            "time": 0.8
+          },
+          {
+            "time": 4.0
+          },
+          {
+            "time": 4.0
+          },
+          {
+            "time": 7.0
+          },
+          {
+            "time": 4.0
+          },
+          {
+            "time": 4.0
+          },
+          {
+            "time": 2.0
+          }
+        ],
         "unitRestore": {
           "target_marking": 0,
           "ressurectIfDead": false,
@@ -1115,19 +1174,27 @@
         },
         "unitSetProperties": [
           {
+            "object": "ai",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "attack_type": "dont_aim"
+          },
+          {
             "object": "player",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "isImmortal": true
           },
           {
+            "object": "ai",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "ai",
             "attack_type": "fire_at_will"
           }
         ],
@@ -1161,14 +1228,6 @@
               "ID_SHIP_WEAPON_ROCKETS",
               "ID_SHIP_WEAPON_MINE"
             ]
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "ai_shooting_pause"
-          },
-          {
-            "target": "repair_done"
           }
         ],
         "playHint": [
@@ -1265,36 +1324,19 @@
             "element": "btn_repair"
           }
         ],
-        "wait": [
-          {
-            "time": 4.0
-          },
-          {
-            "time": 4.0
-          },
-          {
-            "time": 7.0
-          },
-          {
-            "time": 4.0
-          },
-          {
-            "time": 4.0
-          },
-          {
-            "time": 2.0
-          }
-        ],
         "__hudElementSelectionShade": {
           "element": ""
         },
         "__unitSetProperties": {
+          "object": "ai",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "ai",
           "accuracy": 0.0
+        },
+        "triggerEnable": {
+          "target": "repair_done"
         }
       },
       "else_actions": {}
@@ -1328,14 +1370,24 @@
         }
       },
       "actions": {
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player",
-          "isImmortal": false
-        },
+        "unitSetProperties": [
+          {
+            "object": "ai",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "attack_type": "fire_at_will"
+          },
+          {
+            "object": "player",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "isImmortal": false
+          }
+        ],
         "bigQueryAddRecord": {
           "params": "",
           "event": "task 9/10: ship repaired"
@@ -1401,45 +1453,6 @@
         "missionCompleted": {
           "timer": false,
           "debriefingTimer": 2
-        }
-      },
-      "else_actions": {}
-    },
-    "ai_shooting_pause": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "unitSetProperties": [
-          {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "ai",
-            "attack_type": "hold_fire"
-          },
-          {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "ai",
-            "attack_type": "fire_at_will"
-          }
-        ],
-        "wait": {
-          "time": 25.0
         }
       },
       "else_actions": {}
@@ -1629,7 +1642,7 @@
             ]
           },
           "triggerEnable": {
-            "target": "bridge_explanation"
+            "target": "all_explanation"
           }
         },
         "else_actions": {}
@@ -1662,19 +1675,34 @@
               "ID_SHIP_WEAPON_MINE"
             ]
           },
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/wtm_tutorial_ship/ship_explanation_bridge",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "hints/wtm_tutorial_ship/ship_explanation_bridge",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "hints/wtm_tutorial/tap_on_the_screen",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
           "unitShowXray": {
             "show": true,
             "blink": true,
@@ -1693,14 +1721,27 @@
               "var": "is_xray_blink"
             }
           ],
-          "triggerEnable": {
-            "target": [
-              "bridge_xray_blink",
-              "bridge_done"
-            ]
-          },
-          "wait": {
-            "time": 3.0
+          "triggerEnable": [
+            {
+              "target": "bridge_xray_blink"
+            },
+            {
+              "target": "bridge_done"
+            }
+          ],
+          "wait": [
+            {
+              "time": 2.0
+            },
+            {
+              "time": 5.0
+            }
+          ],
+          "triggerActivate": {
+            "target": "bridge_done",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
           }
         },
         "else_actions": {}
@@ -1772,6 +1813,26 @@
             "partRestore": true,
             "tankPart": "bridge_dm"
           },
+          "unitDamage": {
+            "power": 0.2,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "ai",
+            "partName": "bridge_dm"
+          },
           "triggerDisable": {
             "target": "bridge_xray_blink"
           }
@@ -1790,7 +1851,14 @@
             "time": 0.01
           }
         },
-        "conditions": {},
+        "conditions": {
+          "playerScreenTouched": {
+            "time": 1.0,
+            "compTime": "less",
+            "ignoreTime": true,
+            "continuousCheck": false
+          }
+        },
         "actions": {
           "wait": {
             "time": 5.0
@@ -1808,19 +1876,34 @@
               "ID_SHIP_WEAPON_MINE"
             ]
           },
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
           "__unitShowXray": {
             "show": false,
             "blink": true,
@@ -1863,19 +1946,34 @@
               "ID_SHIP_WEAPON_MINE"
             ]
           },
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/wtm_tutorial_ship/ship_explanation_engine",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "hints/wtm_tutorial_ship/ship_explanation_engine",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "hints/wtm_tutorial/tap_on_the_screen",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
           "unitShowXray": {
             "show": true,
             "blink": true,
@@ -1894,14 +1992,27 @@
               "var": "is_xray_blink"
             }
           ],
-          "triggerEnable": {
-            "target": [
-              "engine_xray_blink",
-              "engine_done"
-            ]
-          },
-          "wait": {
-            "time": 3.0
+          "triggerEnable": [
+            {
+              "target": "engine_xray_blink"
+            },
+            {
+              "target": "engine_done"
+            }
+          ],
+          "wait": [
+            {
+              "time": 2.0
+            },
+            {
+              "time": 5.0
+            }
+          ],
+          "triggerActivate": {
+            "target": "engine_done",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
           }
         },
         "else_actions": {}
@@ -1973,6 +2084,26 @@
             "partRestore": true,
             "tankPart": "engine_room_01_dm"
           },
+          "unitDamage": {
+            "power": 0.2,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "ai",
+            "partName": "engine_room_01_dm"
+          },
           "triggerDisable": {
             "target": "engine_xray_blink"
           }
@@ -1991,7 +2122,14 @@
             "time": 0.01
           }
         },
-        "conditions": {},
+        "conditions": {
+          "playerScreenTouched": {
+            "time": 1.0,
+            "compTime": "less",
+            "ignoreTime": true,
+            "continuousCheck": false
+          }
+        },
         "actions": {
           "wait": {
             "time": 5.0
@@ -2009,19 +2147,34 @@
               "ID_SHIP_WEAPON_MINE"
             ]
           },
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
           "__unitShowXray": {
             "show": false,
             "blink": true,
@@ -2064,19 +2217,34 @@
               "ID_SHIP_WEAPON_MINE"
             ]
           },
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/wtm_tutorial_ship/ship_explanation_turrets",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "hints/wtm_tutorial_ship/ship_explanation_turrets",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "hints/wtm_tutorial/tap_on_the_screen",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
           "unitShowXray": {
             "show": true,
             "blink": true,
@@ -2099,14 +2267,27 @@
               "var": "is_xray_blink"
             }
           ],
-          "triggerEnable": {
-            "target": [
-              "turrets_xray_blink",
-              "turrets_done"
-            ]
-          },
-          "wait": {
-            "time": 3.0
+          "triggerEnable": [
+            {
+              "target": "turrets_xray_blink"
+            },
+            {
+              "target": "turrets_done"
+            }
+          ],
+          "wait": [
+            {
+              "time": 2.0
+            },
+            {
+              "time": 5.0
+            }
+          ],
+          "triggerActivate": {
+            "target": "turrets_done",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
           }
         },
         "else_actions": {}
@@ -2228,6 +2409,68 @@
               "main_caliber_turret_03_dm"
             ]
           },
+          "unitDamage": [
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "main_caliber_turret_01_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "main_caliber_turret_02_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "main_caliber_turret_03_dm"
+            }
+          ],
           "triggerDisable": {
             "target": "turrets_xray_blink"
           }
@@ -2246,7 +2489,14 @@
             "time": 0.01
           }
         },
-        "conditions": {},
+        "conditions": {
+          "playerScreenTouched": {
+            "time": 1.0,
+            "compTime": "less",
+            "ignoreTime": true,
+            "continuousCheck": false
+          }
+        },
         "actions": {
           "wait": {
             "time": 5.0
@@ -2264,19 +2514,34 @@
               "ID_SHIP_WEAPON_MINE"
             ]
           },
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
           "__unitShowXray": {
             "show": false,
             "blink": true,
@@ -2323,19 +2588,34 @@
               "ID_SHIP_WEAPON_MINE"
             ]
           },
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/wtm_tutorial_ship/ship_explanation_ammunition",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "hints/wtm_tutorial_ship/ship_explanation_ammunition",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "hints/wtm_tutorial/tap_on_the_screen",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
           "unitShowXray": {
             "show": true,
             "blink": true,
@@ -2357,14 +2637,27 @@
               "var": "is_xray_blink"
             }
           ],
-          "triggerEnable": {
-            "target": [
-              "ammunition_xray_blink",
-              "ammunition_done"
-            ]
-          },
-          "wait": {
-            "time": 3.0
+          "triggerEnable": [
+            {
+              "target": "ammunition_xray_blink"
+            },
+            {
+              "target": "ammunition_done"
+            }
+          ],
+          "wait": [
+            {
+              "time": 2.0
+            },
+            {
+              "time": 5.0
+            }
+          ],
+          "triggerActivate": {
+            "target": "ammunition_done",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
           }
         },
         "else_actions": {}
@@ -2464,6 +2757,48 @@
               "ammunition_storage_02_dm"
             ]
           },
+          "unitDamage": [
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "ammunition_storage_01_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "ammunition_storage_02_dm"
+            }
+          ],
           "triggerDisable": {
             "target": "ammunition_xray_blink"
           }
@@ -2482,7 +2817,14 @@
             "time": 0.01
           }
         },
-        "conditions": {},
+        "conditions": {
+          "playerScreenTouched": {
+            "time": 1.0,
+            "compTime": "less",
+            "ignoreTime": true,
+            "continuousCheck": false
+          }
+        },
         "actions": {
           "wait": {
             "time": 5.0
@@ -2500,19 +2842,34 @@
               "ID_SHIP_WEAPON_MINE"
             ]
           },
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
           "__unitShowXray": {
             "show": false,
             "blink": true,
@@ -2524,6 +2881,524 @@
               "ammunition_storage_02_dm"
             ]
           },
+          "triggerEnable": [
+            {
+              "target": "shoot_hint"
+            },
+            {
+              "target": "xray_update"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "all_explanation": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "__playerControls": {
+            "setStatus": "disable",
+            "control": [
+              "ID_SHIP_WEAPON_ALL",
+              "ID_SHIP_WEAPON_PRIMARY",
+              "ID_SHIP_WEAPON_SECONDARY",
+              "ID_SHIP_WEAPON_MACHINEGUN",
+              "ID_SHIP_WEAPON_TORPEDOES",
+              "ID_SHIP_WEAPON_DEPTH_CHARGE",
+              "ID_SHIP_WEAPON_ROCKETS",
+              "ID_SHIP_WEAPON_MINE"
+            ]
+          },
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "hints/wtm_tutorial_ship/ship_explanation_all",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "hints/wtm_tutorial/tap_on_the_screen",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
+          "unitShowXray": {
+            "show": true,
+            "blink": true,
+            "color": "/wAA/w==",
+            "target": "",
+            "object": "ai",
+            "part": [
+              "bridge_dm",
+              "engine_room_01_dm",
+              "main_caliber_turret_01_dm",
+              "main_caliber_turret_02_dm",
+              "main_caliber_turret_03_dm",
+              "ammunition_storage_01_dm",
+              "ammunition_storage_02_dm"
+            ]
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "is_xray_blink"
+          },
+          "triggerEnable": [
+            {
+              "target": "all_xray_blink"
+            },
+            {
+              "target": "all_done"
+            }
+          ],
+          "wait": [
+            {
+              "time": 2.0
+            },
+            {
+              "time": 5.0
+            }
+          ],
+          "__varSetBool": {
+            "value": false,
+            "var": "is_xray_blink"
+          },
+          "triggerActivate": {
+            "target": "all_done",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        },
+        "else_actions": {}
+      },
+      "all_xray_blink": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "is_xray_blink",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "unitDamage": [
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "bridge_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "engine_room_01_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "main_caliber_turret_01_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "main_caliber_turret_02_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "main_caliber_turret_03_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "ammunition_storage_01_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "ammunition_storage_02_dm"
+            }
+          ],
+          "wait": [
+            {
+              "time": 0.5
+            },
+            {
+              "time": 0.5
+            }
+          ],
+          "unitRestore": {
+            "target_marking": 0,
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target": "ai",
+            "partRestore": true,
+            "tankPart": [
+              "bridge_dm",
+              "engine_room_01_dm",
+              "main_caliber_turret_01_dm",
+              "main_caliber_turret_02_dm",
+              "main_caliber_turret_03_dm",
+              "ammunition_storage_01_dm",
+              "ammunition_storage_02_dm"
+            ]
+          }
+        },
+        "else_actions": {
+          "unitRestore": {
+            "target_marking": 0,
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target": "ai",
+            "ammoRestore": false,
+            "partRestore": true,
+            "tankPart": [
+              "bridge_dm",
+              "engine_room_01_dm",
+              "main_caliber_turret_01_dm",
+              "main_caliber_turret_02_dm",
+              "main_caliber_turret_03_dm",
+              "ammunition_storage_01_dm",
+              "ammunition_storage_02_dm"
+            ]
+          },
+          "__unitDamage": [
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "ammunition_storage_01_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "ammunition_storage_02_dm"
+            }
+          ],
+          "triggerDisable": {
+            "target": "all_xray_blink"
+          }
+        }
+      },
+      "all_done": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "playerScreenTouched": {
+            "time": 1.0,
+            "compTime": "less",
+            "ignoreTime": true,
+            "continuousCheck": false
+          }
+        },
+        "actions": {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": [
+              "ID_SHIP_WEAPON_ALL",
+              "ID_SHIP_WEAPON_PRIMARY",
+              "ID_SHIP_WEAPON_SECONDARY",
+              "ID_SHIP_WEAPON_MACHINEGUN",
+              "ID_SHIP_WEAPON_TORPEDOES",
+              "ID_SHIP_WEAPON_DEPTH_CHARGE",
+              "ID_SHIP_WEAPON_ROCKETS",
+              "ID_SHIP_WEAPON_MINE"
+            ]
+          },
+          "varSetBool": {
+            "value": false,
+            "var": "is_xray_blink"
+          },
+          "unitShowXray": [
+            {
+              "show": false,
+              "blink": true,
+              "color": "/wAA/w==",
+              "target": "",
+              "object": "ai",
+              "part": [
+                "bridge_dm",
+                "engine_room_01_dm",
+                "main_caliber_turret_01_dm",
+                "main_caliber_turret_02_dm",
+                "main_caliber_turret_03_dm",
+                "ammunition_storage_01_dm",
+                "ammunition_storage_02_dm"
+              ]
+            },
+            {
+              "show": false,
+              "blink": true,
+              "color": "/wAA/w==",
+              "target": "",
+              "object": "ai",
+              "part": [
+                "ammunition_storage_01_dm",
+                "ammunition_storage_02_dm"
+              ]
+            }
+          ],
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "bottom",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
+          "__unitShowXray": {
+            "show": false,
+            "blink": true,
+            "color": "/wAA/w==",
+            "target": "",
+            "object": "ai",
+            "part": [
+              "ammunition_storage_01_dm",
+              "ammunition_storage_02_dm"
+            ]
+          },
+          "unitDamage": [
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "ammunition_storage_01_dm"
+            },
+            {
+              "power": 0.2,
+              "useEffect": false,
+              "countEffects": 1,
+              "delay": [
+                1.0,
+                1.0
+              ],
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "radiusOffset": [
+                10.0,
+                15.0
+              ],
+              "target": "ai",
+              "partName": "ammunition_storage_02_dm"
+            }
+          ],
           "triggerEnable": [
             {
               "target": "shoot_hint"
@@ -2562,6 +3437,12 @@
             "object": "ai"
           },
           "triggerEnable": {
+            "target": [
+              "xray_check_ammunition_01",
+              "xray_check_ammunition_02"
+            ]
+          },
+          "__triggerEnable": {
             "target": [
               "xray_check_bridge",
               "xray_check_engine",
@@ -2952,9 +3833,9 @@
         "name": "player",
         "tm": [
           [
-            1.49012E-08,
+            -0.628675,
             0.0,
-            1.0
+            0.777668
           ],
           [
             0.0,
@@ -2962,14 +3843,14 @@
             0.0
           ],
           [
-            -1.0,
+            -0.777668,
             0.0,
-            1.49012E-08
+            -0.628675
           ],
           [
-            786.35,
+            846.693,
             0.0,
-            354.056
+            366.518
           ]
         ],
         "unit_class": "uk_destroyer_hunt_4series_tutorial",
@@ -3010,9 +3891,9 @@
         "name": "ai",
         "tm": [
           [
+            -0.00336716,
             0.0,
-            0.0,
-            1.0
+            0.999994
           ],
           [
             0.0,
@@ -3020,14 +3901,14 @@
             0.0
           ],
           [
-            -1.0,
+            -0.999994,
             0.0,
-            0.0
+            -0.00336716
           ],
           [
-            -603.625,
+            -292.01,
             0.0,
-            -12.9845
+            529.412
           ]
         ],
         "unit_class": "uk_destroyer_hunt_4series_tutorial",
@@ -3085,9 +3966,9 @@
             1.0
           ],
           [
-            -564.638,
+            -534.029,
             0.0,
-            356.071
+            637.011
           ]
         ],
         "unit_class": "dummy",
@@ -3143,9 +4024,9 @@
             1.0
           ],
           [
-            396.4,
+            576.054,
             0.0,
-            672.911
+            523.874
           ]
         ],
         "unit_class": "dummy",
@@ -3189,9 +4070,9 @@
       "type": "Box",
       "tm": [
         [
-          3.77489E-05,
+          -314.379,
           0.0,
-          -500.0
+          388.801
         ],
         [
           0.0,
@@ -3199,14 +4080,14 @@
           0.0
         ],
         [
-          500.0,
+          -674.424,
           0.0,
-          3.7749E-05
+          -545.329
         ],
         [
-          793.729,
-          -322.65,
-          703.227
+          833.147,
+          -322.651,
+          871.14
         ]
       ],
       "objLayer": 0,
@@ -3216,9 +4097,9 @@
       "type": "Box",
       "tm": [
         [
-          0.000113247,
+          -1733.68,
           0.0,
-          -1500.0
+          2140.91
         ],
         [
           0.0,
@@ -3226,14 +4107,14 @@
           0.0
         ],
         [
-          500.0,
+          -388.573,
           0.0,
-          3.7749E-05
+          -314.66
         ],
         [
-          375.238,
+          191.228,
           -322.65,
-          894.881
+          627.628
         ]
       ],
       "objLayer": 0,
@@ -3312,9 +4193,9 @@
           1.0
         ],
         [
-          395.45,
+          575.104,
           0.0,
-          673.561
+          524.524
         ]
       ],
       "objLayer": 0,

@@ -1054,9 +1054,7 @@
         "overheatCockpit": "engine_overheat_cockpit",
         "dive": "engine_dive",
         "timeFallingDown": 2.0,
-        "engineVolumeOnOverheat": 0.8,
-        "eventStart": "engine_ai_start",
-        "eventStop": "engine_ai_stop"
+        "engineVolumeOnOverheat": 0.8
       },
       "outside": {
         "path": "aircraft/engines",

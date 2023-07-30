@@ -1654,7 +1654,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/77mm_QQF_Mk_II_L50_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/77mm_QQF_Mk_II_L50_comet_user_cannon.blk",
         "shotFreq": 0.135,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
@@ -2560,7 +2560,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/77mm_QQF_Mk_II_L50_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/77mm_QQF_Mk_II_L50_comet_user_cannon.blk",
               "shotFreq": 0.135,
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",

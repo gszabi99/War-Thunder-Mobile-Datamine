@@ -5009,6 +5009,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 3,
           "isHE": true
+        },
+        "75mm_usa_APCR": {
+          "icon": "hud_ammo_apcr",
+          "reqLevel": 6
         }
       }
     },
@@ -5263,11 +5267,12 @@
         },
         "76mm_usa_M42A1_HE": {
           "icon": "hud_ammo_he",
-          "isHE": true
+          "isHE": true,
+          "reqLevel": 3
         },
         "76mm_usa_APCBC": {
           "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 3
+          "reqLevel": 6
         }
       }
     },
@@ -5326,22 +5331,18 @@
       "type_medium_tank": true
     },
     "bullets": {
-      "75mm_m3_user_cannon": {
+      "75mm_m3_sherman_user_cannon": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
-        },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 9
-        },
-        "75mm_usa_HE": {
-          "icon": "hud_ammo_he",
-          "reqLevel": 12,
-          "isHE": true
+          "icon": "hud_ammo_ap1_he1"
         },
         "75mm_usa_APCR": {
           "icon": "hud_ammo_apcr",
-          "reqLevel": 15
+          "reqLevel": 3
+        },
+        "75mm_usa_HE": {
+          "icon": "hud_ammo_he",
+          "reqLevel": 6,
+          "isHE": true
         }
       }
     },
@@ -5363,10 +5364,10 @@
       "maxSpeedBackward": 6.20051,
       "powerToWeightRatio": 12.5574,
       "weapons": {
-        "75mm_m3_user_cannon": {
+        "75mm_m3_sherman_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
-          "armorPower": 90.9827,
+          "armorPower": 103.959,
           "reloadTime": 5.0,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
@@ -5400,22 +5401,18 @@
       "type_heavy_tank": true
     },
     "bullets": {
-      "75mm_m3_user_cannon": {
+      "75mm_m3_sherman_user_cannon": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
-        },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 11
-        },
-        "75mm_usa_HE": {
-          "icon": "hud_ammo_he",
-          "reqLevel": 14,
-          "isHE": true
+          "icon": "hud_ammo_ap1_he1"
         },
         "75mm_usa_APCR": {
           "icon": "hud_ammo_apcr",
-          "reqLevel": 17
+          "reqLevel": 8
+        },
+        "75mm_usa_HE": {
+          "icon": "hud_ammo_he",
+          "reqLevel": 11,
+          "isHE": true
         }
       }
     },
@@ -5437,10 +5434,10 @@
       "maxSpeedBackward": 4.94005,
       "powerToWeightRatio": 11.7357,
       "weapons": {
-        "75mm_m3_user_cannon": {
+        "75mm_m3_sherman_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
-          "armorPower": 90.9827,
+          "armorPower": 103.959,
           "reloadTime": 5.0,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
@@ -5800,17 +5797,17 @@
       "type_medium_tank": true
     },
     "bullets": {
-      "75mm_m3_user_cannon": {
+      "75mm_m3_sherman_user_cannon": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
+          "icon": "hud_ammo_ap1_he1"
         },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 9
+        "75mm_usa_APCR": {
+          "icon": "hud_ammo_apcr",
+          "reqLevel": 3
         },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 12,
+          "reqLevel": 6,
           "isHE": true
         }
       }
@@ -5833,10 +5830,10 @@
       "maxSpeedBackward": 4.94011,
       "powerToWeightRatio": 13.8889,
       "weapons": {
-        "75mm_m3_user_cannon": {
+        "75mm_m3_sherman_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
-          "armorPower": 90.9827,
+          "armorPower": 103.959,
           "reloadTime": 5.0,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
@@ -5862,17 +5859,17 @@
       "type_medium_tank": true
     },
     "bullets": {
-      "75mm_m3_user_cannon": {
+      "75mm_m3_sherman_user_cannon": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
+          "icon": "hud_ammo_ap1_he1"
         },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 13
+        "75mm_usa_APCR": {
+          "icon": "hud_ammo_apcr",
+          "reqLevel": 3
         },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 16,
+          "reqLevel": 6,
           "isHE": true
         }
       }
@@ -5895,10 +5892,10 @@
       "maxSpeedBackward": 4.94011,
       "powerToWeightRatio": 13.8889,
       "weapons": {
-        "75mm_m3_user_cannon": {
+        "75mm_m3_sherman_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
-          "armorPower": 90.9827,
+          "armorPower": 103.959,
           "reloadTime": 5.0,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
@@ -5924,17 +5921,17 @@
       "type_medium_tank": true
     },
     "bullets": {
-      "75mm_m3_user_cannon": {
+      "75mm_m3_sherman_user_cannon": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
+          "icon": "hud_ammo_ap1_he1"
         },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 9
+        "75mm_usa_APCR": {
+          "icon": "hud_ammo_apcr",
+          "reqLevel": 3
         },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 12,
+          "reqLevel": 6,
           "isHE": true
         }
       }
@@ -5957,10 +5954,10 @@
       "maxSpeedBackward": 4.94011,
       "powerToWeightRatio": 13.8889,
       "weapons": {
-        "75mm_m3_user_cannon": {
+        "75mm_m3_sherman_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
-          "armorPower": 90.9827,
+          "armorPower": 103.959,
           "reloadTime": 5.0,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
@@ -6134,21 +6131,17 @@
     },
     "bullets": {
       "75mm_KwK37_user_cannon": {
-        "75mm_ger_kwk37_HEAT": {
+        "75mm_ger_kwk37_Hl_C_HEAT": {
           "icon": "hud_ammo_heat"
         },
         "default": {
           "icon": "hud_ammo_ap1_he1",
-          "reqLevel": 11
+          "reqLevel": 8
         },
         "75mm_ger_kwk40_37_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 14,
+          "reqLevel": 11,
           "isHE": true
-        },
-        "75mm_ger_kwk37_Hl_C_HEAT": {
-          "icon": "hud_ammo_heat",
-          "reqLevel": 17
         }
       }
     },
@@ -6555,16 +6548,21 @@
     },
     "bullets": {
       "88mm_Kwk36_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap2_he1"
-        },
-        "88mm_ger_kwk36_default_HE": {
-          "icon": "hud_ammo_he",
-          "isHE": true
+        "88mm_ger_kwk36_HEAT": {
+          "icon": "hud_ammo_heat"
         },
         "88mm_ger_kwk36_Pzgr_APCBC": {
           "icon": "hud_ammo_ap1_he2",
           "reqLevel": 3
+        },
+        "88mm_ger_kwk36_default_HE": {
+          "icon": "hud_ammo_he",
+          "isHE": true,
+          "reqLevel": 6
+        },
+        "default": {
+          "icon": "hud_ammo_ap2_he1",
+          "reqLevel": 9
         }
       }
     },
@@ -7668,15 +7666,11 @@
     "bullets": {
       "75mm_SA_49_user_cannon": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
-        },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 11
+          "icon": "hud_ammo_ap1_he1"
         },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 14,
+          "reqLevel": 8,
           "isHE": true
         }
       }
@@ -7702,7 +7696,7 @@
         "75mm_SA_49_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
-          "armorPower": 90.9827,
+          "armorPower": 103.959,
           "reloadTime": 5.9988,
           "gunnerTurretRotationSpeed": 26.0,
           "isBeltAmmo": false
@@ -7732,15 +7726,11 @@
     "bullets": {
       "75mm_SA_49_user_cannon": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
-        },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 11
+          "icon": "hud_ammo_ap1_he1"
         },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 14,
+          "reqLevel": 8,
           "isHE": true
         }
       }
@@ -7766,7 +7756,7 @@
         "75mm_SA_49_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
-          "armorPower": 90.9827,
+          "armorPower": 103.959,
           "reloadTime": 5.9988,
           "gunnerTurretRotationSpeed": 26.0,
           "isBeltAmmo": false
@@ -7926,13 +7916,13 @@
         "40mm_uk_2pdr_APHE": {
           "icon": "hud_ammo_ap1_he1"
         },
+        "40mm_uk_2pdr_APHV": {
+          "icon": "hud_ammo_ap3_he0",
+          "reqLevel": 8
+        },
         "40mm_uk_2pdr_APCBC": {
           "icon": "hud_ammo_ap4_he0",
           "reqLevel": 11
-        },
-        "40mm_uk_2pdr_APHV": {
-          "icon": "hud_ammo_ap3_he0",
-          "reqLevel": 14
         }
       },
       "76mm_3inch_howitzer_MkI_user_cannon": {
@@ -8001,9 +7991,13 @@
         "default": {
           "icon": "hud_ammo_ap1_he1"
         },
+        "75mm_usa_APCR": {
+          "icon": "hud_ammo_apcr",
+          "reqLevel": 3
+        },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 9,
+          "reqLevel": 6,
           "isHE": true
         }
       }
@@ -8750,20 +8744,13 @@
       "type_medium_tank": true
     },
     "bullets": {
-      "77mm_QQF_Mk_II_L50_user_cannon": {
+      "77mm_QQF_Mk_II_L50_comet_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
         "76mm_britain_17pdr_HE": {
           "icon": "hud_ammo_he",
-          "isHE": true
-        },
-        "76mm_britain_17pdr_APC": {
-          "icon": "hud_ammo_ap2_he0",
-          "reqLevel": 3
-        },
-        "76mm_britain_17pdr_APCBC": {
-          "icon": "hud_ammo_ap3_he0",
+          "isHE": true,
           "reqLevel": 6
         },
         "76mm_britain_17pdr_APDS": {
@@ -8790,10 +8777,10 @@
       "maxSpeedBackward": 3.02219,
       "powerToWeightRatio": 17.9104,
       "weapons": {
-        "77mm_QQF_Mk_II_L50_user_cannon": {
+        "77mm_QQF_Mk_II_L50_comet_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 76.2,
-          "armorPower": 136.893,
+          "armorPower": 152.104,
           "reloadTime": 5.88235,
           "gunnerTurretRotationSpeed": 15.0,
           "isBeltAmmo": false
@@ -8944,14 +8931,11 @@
     "bullets": {
       "75mm_SA_49_user_cannon": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
+          "icon": "hud_ammo_ap1_he1"
         },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
-          "isHE": true
-        },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1",
+          "isHE": true,
           "reqLevel": 3
         }
       }
@@ -8977,7 +8961,7 @@
         "75mm_SA_49_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
-          "armorPower": 90.9827,
+          "armorPower": 103.959,
           "reloadTime": 5.9988,
           "gunnerTurretRotationSpeed": 26.0,
           "isBeltAmmo": false
@@ -10808,6 +10792,60 @@
         "30mm_mk_103_38_APCR": {
           "icon": "hud_ammo_bullet_ap_he",
           "reqLevel": 21
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 30.0,
+      "armorThicknessFront": [
+        0.65,
+        0.25,
+        0.1
+      ],
+      "armorThicknessSide": [
+        0.05,
+        0.05,
+        0.9
+      ],
+      "crew": 5,
+      "mass": 25000.0,
+      "maxSpeedForward": 38.6897,
+      "maxSpeedBackward": 7.23171,
+      "powerToWeightRatio": 12.0,
+      "weapons": {
+        "30mm_MK103_38_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 30.0,
+          "armorPower": 29.9576,
+          "reloadTime": 0.133333,
+          "gunnerTurretRotationSpeed": 60.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "germ_flakpanzer_IV_Kugelblitz_reskin": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_germany_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "bullets": {
+      "30mm_MK103_38_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "30mm_mk_103_38_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "30mm_mk_103_38_HE": {
+          "icon": "hud_ammo_bullet_he"
+        },
+        "30mm_mk_103_38_APCR": {
+          "icon": "hud_ammo_bullet_ap_he"
         }
       }
     },

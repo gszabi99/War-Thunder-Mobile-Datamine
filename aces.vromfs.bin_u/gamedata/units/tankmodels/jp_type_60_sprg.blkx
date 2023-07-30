@@ -2236,7 +2236,13 @@
     "tracks": {
       "animationMultiplier": 0.38,
       "height": 0.035,
-      "width": 0.26
+      "width": 0.26,
+      "fricSideRot": [
+        5.0,
+        0.0,
+        0.25,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",

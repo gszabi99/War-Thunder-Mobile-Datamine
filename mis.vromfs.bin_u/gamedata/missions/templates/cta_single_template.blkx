@@ -1,0 +1,1481 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "triggerEnable": {
+          "target": "start"
+        }
+      },
+      "else_actions": {}
+    },
+    "start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "isAllPlayersInGame": {}
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": [
+            "check_is_tank_battle",
+            "check_is_ship_battle"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "check_is_tank_battle": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "missionNamePostfix": [
+          {
+            "postfix": "_Conq1",
+            "equal": true
+          },
+          {
+            "postfix": "_Conq2",
+            "equal": true
+          },
+          {
+            "postfix": "_Conq3",
+            "equal": true
+          }
+        ]
+      },
+      "actions": {
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "@t1_player_name",
+          "target": "@t1_spawn_tank_name",
+          "randomSpawn": true
+        },
+        "triggerEnable": {
+          "target": "bots_properties"
+        }
+      },
+      "else_actions": {}
+    },
+    "bots_properties": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": [
+              "@t1_player_name",
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name"
+            ],
+            "army": 1
+          },
+          {
+            "object": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "army": 2
+          }
+        ],
+        "triggerEnable": {
+          "target": "bots_change_units_tanks"
+        }
+      },
+      "else_actions": {}
+    },
+    "bots_change_units_tanks": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "changeUnit": [
+          {
+            "unit_class": "us_m4a1_1942_sherman",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot02_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot03_name"
+          },
+          {
+            "unit_class": "germ_pzkpfw_IV_ausf_F2",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot04_name"
+          },
+          {
+            "unit_class": "ussr_t_28E",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot05_name"
+          },
+          {
+            "unit_class": "us_m24_chaffee",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot01_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941_l_11",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot02_name"
+          },
+          {
+            "unit_class": "germ_pzkpfw_IV_ausf_F",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot03_name"
+          },
+          {
+            "unit_class": "germ_pzkpfw_III_ausf_L",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot04_name"
+          },
+          {
+            "unit_class": "us_m10",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot05_name"
+          }
+        ],
+        "__changeUnit": [
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot06_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot07_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot08_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot09_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot10_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot06_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot07_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot08_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot09_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot10_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "bots_set_respawn"
+        }
+      },
+      "else_actions": {}
+    },
+    "bots_set_respawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitRespawnAfterTime": [
+          {
+            "time_to_respawn": 10.0,
+            "object_name": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name"
+            ],
+            "place_to_respawn": "@t1_spawn_tank_name"
+          },
+          {
+            "time_to_respawn": 10.0,
+            "object_name": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "place_to_respawn": "@t2_spawn_tank_name"
+          }
+        ],
+        "__unitRespawnAfterTime": [
+          {
+            "time_to_respawn": 10.0,
+            "object_name": [
+              "@t1_bot06_name",
+              "@t1_bot07_name",
+              "@t1_bot08_name",
+              "@t1_bot09_name",
+              "@t1_bot10_name"
+            ],
+            "place_to_respawn": "@t1_spawn_tank_name"
+          },
+          {
+            "time_to_respawn": 10.0,
+            "object_name": [
+              "@t2_bot06_name",
+              "@t2_bot07_name",
+              "@t2_bot08_name",
+              "@t2_bot09_name",
+              "@t2_bot10_name"
+            ],
+            "place_to_respawn": "@t2_spawn_tank_name"
+          }
+        ],
+        "unitRespawn": [
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": [
+              "@t1_player_name",
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name"
+            ],
+            "target": "@t1_spawn_tank_name",
+            "needStopOnRespawn": true
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "target": "@t2_spawn_tank_name",
+            "needStopOnRespawn": true
+          }
+        ],
+        "triggerEnable": {
+          "target": "bots_load_behtree"
+        }
+      },
+      "else_actions": {}
+    },
+    "bots_load_behtree": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 0.01
+        },
+        "unitLoadBehTree": [
+          {
+            "name": "tankBot",
+            "objects": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name"
+            ]
+          },
+          {
+            "name": "tankBot",
+            "objects": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ]
+          }
+        ],
+        "__unitLoadBehTree": [
+          {
+            "name": "tankBot",
+            "objects": [
+              "@t1_bot06_name",
+              "@t1_bot07_name",
+              "@t1_bot08_name",
+              "@t1_bot09_name",
+              "@t1_bot10_name"
+            ]
+          },
+          {
+            "name": "tankBot",
+            "objects": [
+              "@t2_bot06_name",
+              "@t2_bot07_name",
+              "@t2_bot08_name",
+              "@t2_bot09_name",
+              "@t2_bot10_name"
+            ]
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "check_is_ship_battle": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "missionNamePostfix": {
+          "postfix": "_NTdm",
+          "equal": true
+        }
+      },
+      "actions": {
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "@t1_player_name",
+          "target": "@t1_spawn_ship_name",
+          "randomSpawn": true
+        },
+        "varSetString": [
+          {
+            "value": "t1_bot_ship_02",
+            "var": "t1_bot02_name"
+          },
+          {
+            "value": "t1_bot_ship_03",
+            "var": "t1_bot03_name"
+          },
+          {
+            "value": "t1_bot_ship_04",
+            "var": "t1_bot04_name"
+          },
+          {
+            "value": "t1_bot_ship_05",
+            "var": "t1_bot05_name"
+          },
+          {
+            "value": "t2_bot_ship_02",
+            "var": "t2_bot01_name"
+          },
+          {
+            "value": "t2_bot_ship_02",
+            "var": "t2_bot02_name"
+          },
+          {
+            "value": "t2_bot_ship_03",
+            "var": "t2_bot03_name"
+          },
+          {
+            "value": "t2_bot_ship_04",
+            "var": "t2_bot04_name"
+          },
+          {
+            "value": "t2_bot_ship_05",
+            "var": "t2_bot05_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "ships_bots_properties"
+        }
+      },
+      "else_actions": {}
+    },
+    "ships_bots_properties": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": [
+              "@t1_player_name",
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name"
+            ],
+            "army": 1
+          },
+          {
+            "object": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "army": 2
+          }
+        ],
+        "triggerEnable": {
+          "target": "ships_bots_change_units"
+        }
+      },
+      "else_actions": {}
+    },
+    "ships_bots_change_units": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "__changeUnit": [
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot02_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot03_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot04_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot05_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot06_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot07_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot08_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot09_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t1_bot10_name"
+          },
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot01_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot02_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot03_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot04_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "us_destroyer_fletcher",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot05_name",
+            "type": "ship"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot06_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot07_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot08_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot09_name"
+          },
+          {
+            "unit_class": "ussr_t_34_1941",
+            "weaponPreset": "",
+            "isIndividual": false,
+            "hangarMission": false,
+            "object": "@t2_bot10_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "ships_bots_set_respawn"
+        }
+      },
+      "else_actions": {}
+    },
+    "ships_bots_set_respawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitRespawnAfterTime": [
+          {
+            "time_to_respawn": 10.0,
+            "object_name": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name"
+            ],
+            "place_to_respawn": "@t1_spawn_ship_name"
+          },
+          {
+            "time_to_respawn": 10.0,
+            "object_name": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "place_to_respawn": "@t2_spawn_ship_name"
+          }
+        ],
+        "__unitRespawnAfterTime": [
+          {
+            "time_to_respawn": 10.0,
+            "object_name": [
+              "@t1_bot06_name",
+              "@t1_bot07_name",
+              "@t1_bot08_name",
+              "@t1_bot09_name",
+              "@t1_bot10_name"
+            ],
+            "place_to_respawn": "@t1_spawn_tank_name"
+          },
+          {
+            "time_to_respawn": 10.0,
+            "object_name": [
+              "@t2_bot06_name",
+              "@t2_bot07_name",
+              "@t2_bot08_name",
+              "@t2_bot09_name",
+              "@t2_bot10_name"
+            ],
+            "place_to_respawn": "@t2_spawn_tank_name"
+          }
+        ],
+        "unitRespawn": [
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": [
+              "@t1_player_name",
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name"
+            ],
+            "target": "@t1_spawn_ship_name",
+            "needStopOnRespawn": true
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "target": "@t2_spawn_ship_name",
+            "needStopOnRespawn": true
+          }
+        ],
+        "triggerEnable": {
+          "target": "ships_bots_load_behtree"
+        }
+      },
+      "else_actions": {}
+    },
+    "ships_bots_load_behtree": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 0.01
+        },
+        "unitLoadBehTree": [
+          {
+            "name": "shipBot",
+            "objects": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name"
+            ]
+          },
+          {
+            "name": "shipBot",
+            "objects": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ]
+          }
+        ],
+        "__unitLoadBehTree": [
+          {
+            "name": "tankBot",
+            "objects": [
+              "@t1_bot06_name",
+              "@t1_bot07_name",
+              "@t1_bot08_name",
+              "@t1_bot09_name",
+              "@t1_bot10_name"
+            ]
+          },
+          {
+            "name": "tankBot",
+            "objects": [
+              "@t2_bot06_name",
+              "@t2_bot07_name",
+              "@t2_bot08_name",
+              "@t2_bot09_name",
+              "@t2_bot10_name"
+            ]
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "t1_player_name": "t1_player01",
+    "t1_bot02_name": "t1_player02",
+    "t1_bot03_name": "t1_player03",
+    "t1_bot04_name": "t1_player04",
+    "t1_bot05_name": "t1_player05",
+    "t1_bot06_name": "t1_player06",
+    "t1_bot07_name": "t1_player07",
+    "t1_bot08_name": "t1_player08",
+    "t1_bot09_name": "t1_player09",
+    "t1_bot10_name": "t1_player10",
+    "t2_bot01_name": "t2_player01",
+    "t2_bot02_name": "t2_player02",
+    "t2_bot03_name": "t2_player03",
+    "t2_bot04_name": "t2_player04",
+    "t2_bot05_name": "t2_player05",
+    "t2_bot06_name": "t2_player06",
+    "t2_bot07_name": "t2_player07",
+    "t2_bot08_name": "t2_player08",
+    "t2_bot09_name": "t2_player09",
+    "t2_bot10_name": "t2_player10",
+    "t1_spawn_tank_name": "conq_t1_tank_spawn_01_arcade",
+    "t2_spawn_tank_name": "conq_t2_tank_spawn_01_arcade",
+    "t1_spawn_ship_name": "ntdm_t1_common_spawns",
+    "t2_spawn_ship_name": "ntdm_t2_common_spawns"
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
+        "name": "t1_bot_ship_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            961.598,
+            0.0,
+            -390.217
+          ]
+        ],
+        "unit_class": "uk_destroyer_hunt_4series",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_ship_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            885.042,
+            0.0,
+            -390.217
+          ]
+        ],
+        "unit_class": "us_destroyer_fletcher",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_ship_04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            808.486,
+            0.0,
+            -390.217
+          ]
+        ],
+        "unit_class": "us_destroyer_fletcher",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_ship_05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            731.93,
+            0.0,
+            -390.217
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1934a_1940",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_ship_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1018.77,
+            0.0,
+            -572.862
+          ]
+        ],
+        "unit_class": "uk_destroyer_hunt_4series",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_ship_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            948.651,
+            0.0,
+            -572.862
+          ]
+        ],
+        "unit_class": "uk_destroyer_hunt_4series",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_ship_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            878.528,
+            0.0,
+            -572.862
+          ]
+        ],
+        "unit_class": "us_destroyer_fletcher",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_ship_04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            808.404,
+            0.0,
+            -572.862
+          ]
+        ],
+        "unit_class": "us_destroyer_fletcher",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_ship_05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            738.281,
+            0.0,
+            -572.862
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1934a_1940",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

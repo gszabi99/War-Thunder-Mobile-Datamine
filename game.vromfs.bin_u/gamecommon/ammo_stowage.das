@@ -702,7 +702,7 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
                                 ammo_slots__numAmmo : IPoint2List
                               >)
   let unit = get_unit(uid)
-  if !active || unit == null || unit.isDelayed || !unit.isAlive
+  if !active || unit == null || unit.isDelayed || !unit.isAlive || (unit.isTank && !is_equal_float(unit.dmgScaleFromBot, 1.))
     return
 
   let remap = get_remap(v.ammo_stowage__partIdRemap, evt.partId)

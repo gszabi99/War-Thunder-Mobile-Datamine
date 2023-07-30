@@ -1,5 +1,5 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
-let { get_game_version_str } = require("app")
+let { get_base_game_version_str } = require("app")
 let { send } = require("eventbus")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
@@ -17,13 +17,13 @@ subscribeFMsgBtns({
 
 let needExitToUpdate = Computed(function() {
   let { reqVersion = "" } = campConfigs.value?.circuit
-  let version = get_game_version_str()
+  let version = get_base_game_version_str()
   return reqVersion == "" || version == "" ? false : !check_version(reqVersion, version)
 })
 
 let needSuggestToUpdate = Computed(function() {
   let { actualVersion = "" } = campConfigs.value?.circuit
-  let version = get_game_version_str()
+  let version = get_base_game_version_str()
   return actualVersion == "" || version == "" ? false : !check_version(actualVersion, version)
 })
 
