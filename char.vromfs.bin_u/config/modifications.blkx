@@ -1,0 +1,94 @@
+{
+  "modifications": {
+    "ship_tool_kit": {
+      "image": "#ui/gameuiskin#ship_tool_kit",
+      "tier": 1,
+      "modClass": "unsinkability",
+      "invertEnableLogic": false,
+      "isReserve": true,
+      "effects": {
+        "toolkitActivationCount": 30,
+        "repairAvailable": true
+      }
+    },
+    "ship_smoke_screen_system_mod": {
+      "image": "#ui/gameuiskin#engine_smoke_screen_system",
+      "tier": 2,
+      "modClass": "unsinkability",
+      "isReserve": true,
+      "effects": {
+        "smokeScreenCount": 5,
+        "smokeScreenTime": 30.0,
+        "smokeScreenCooldown": 60.0
+      }
+    },
+    "tank_tool_kit_expendable": {
+      "image": "#ui/gameuiskin#tank_tool_kit",
+      "effects": {
+        "toolkitActivationCount": 30,
+        "repairAvailable": true
+      }
+    },
+    "203mm_ger_skc34_sprgr_kz_navy_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "203mm_HE",
+      "effects": {
+        "additiveBulletMod": "203mm_ger_skc34_sprgr_kz_navy_he"
+      }
+    },
+    "105mm_germany_skc32_navy_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "105mm_HE",
+      "effects": {
+        "additiveBulletMod": "105mm_germany_skc32_navy_he"
+      }
+    },
+    "tank_engine_smoke_screen_system": {
+      "image": "#ui/gameuiskin#engine_smoke_screen_system.png",
+      "tier": 4,
+      "modClass": "protection",
+      "effects": {
+        "smokeScreenCount": 3,
+        "smokeScreenTime": 25.0,
+        "smokeScreenCooldown": 100.0
+      }
+    },
+    "tank_smoke_screen_system_mod": {
+      "modClass": "firepower",
+      "requiresModelReload": true,
+      "image": "#ui/gameuiskin#smoke_screen.png",
+      "group": "smoke_mod"
+    },
+    "art_support": {
+      "image": "#ui/gameuiskin#art_support.png",
+      "tier": 4,
+      "modClass": "firepower",
+      "effects": {
+        "rcostAddParam": 0.9595,
+        "supportUnitClass": "structures/ussr_152mm_d1",
+        "supportUnitTag": "artillery"
+      }
+    },
+    "tank_extinguisher": {
+      "effects": {
+        "extinguisherAutomatic": false,
+        "extinguisherMinTime": 2.0,
+        "extinguisherMaxTime": 4.0,
+        "rcostAddParam": 0.99,
+        "extinguisherCrewBusyTime": 5.0,
+        "extinguisherCooldown": 15.0
+      }
+    },
+    "upgraded": {
+      "effects": {
+        "upgradedVisual": true
+      }
+    },
+    "tank_additional_armor": {
+      "turn_it_off": true,
+      "invertEnableLogic": true
+    }
+  }
+}

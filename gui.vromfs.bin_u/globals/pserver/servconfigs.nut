@@ -1,0 +1,20 @@
+//checked for explicitness
+#no-root-fallback
+#explicit-this
+let { ndbRead, ndbExists } = require("nestdb")
+let { Watched } = require("frp")
+
+ //we only read here, but write only from dagui VM, to avoid write twice
+let serverConfigs = Watched(ndbExists("pserver.config") ? ndbRead("pserver.config") : {})
+
+let function updateAllConfigs(newValue) {
+  let configs = newValue?.configs
+  if (configs != null)
+    serverConfigs(configs)
+}
+serverConfigs.whiteListMutatorClosure(updateAllConfigs)
+
+return {
+  serverConfigs
+  updateAllConfigs
+}

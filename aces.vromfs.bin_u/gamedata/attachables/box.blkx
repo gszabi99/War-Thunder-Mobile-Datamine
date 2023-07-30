@@ -1,0 +1,4 @@
+{
+  "model": "box",
+  "collision": "box_collision"
+}

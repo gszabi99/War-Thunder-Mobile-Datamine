@@ -1,0 +1,1416 @@
+{
+  "PhysMats": {
+    "__DefaultParams": {
+      "iak": 1.0,
+      "damage_k": 1.0
+    },
+    "default": {
+      "bf_class": "default",
+      "color": "/6IAZA==",
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionWreckage": "rocks_expl",
+      "damage_k": 0.3,
+      "deformable_width": 0.05,
+      "tankTracksTexId": 0,
+      "arcadeBoostMult": 1.0,
+      "resistanceK": 0.00035,
+      "hitFxScale": [
+        0.05,
+        0.2
+      ],
+      "explMat": "default",
+      "shakePeriod": [
+        0.35,
+        0.7
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.5,
+        0.2
+      ],
+      "dustFactor": 0.14,
+      "mudFactor": 0.1,
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "horLandMesh": {
+      "bf_class": "horLandMesh",
+      "color": "/6IAZA==",
+      "isWater": false,
+      "shakeMultiplier": 6.0,
+      "frictionMultiplier": 4.0,
+      "explosionPatchShader": "explosion_patch_color",
+      "explosionPatchTexture": "explosion_patch_ground_n",
+      "explosionPatchColorTex": "explosion_patch_ground_c",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionPatchHeightScale": 0.01,
+      "explosionWreckage": "ground_expl",
+      "iak": 0.2,
+      "damage_k": 0.3,
+      "deformable_width": 0.15,
+      "tankTracksTexId": 0,
+      "arcadeBoostMult": 0.5,
+      "resistanceK": 0.0006,
+      "explMat": "horLandMesh",
+      "shakePeriod": [
+        0.35,
+        0.7
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.5,
+        0.3
+      ],
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.3
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.5
+      }
+    },
+    "verLandMesh": {
+      "color": "/6IAZA==",
+      "isWater": false,
+      "shakeMultiplier": 6.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch_ground",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionWreckage": "rocks_expl",
+      "damage_k": 0.3,
+      "explMat": "default"
+    },
+    "water3d": {
+      "color": "/6IAZA==",
+      "isWater": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "dustFactor": -60.0,
+      "mudFactor": -20.0
+    },
+    "water": {
+      "color": "AAD/yA==",
+      "isWater": true,
+      "shakeFactor": 0.0,
+      "frictionMultiplier": 2.0,
+      "dustFactor": -30.0,
+      "mudFactor": -10.0
+    },
+    "concrete": {
+      "bf_class": "concrete",
+      "color": "//8AyA==",
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionWreckage": "wall_expl",
+      "arcadeBoostMult": 1.0,
+      "hitFxScale": [
+        1.3,
+        2.0
+      ],
+      "damage_k": 0.3,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "explMat": "default",
+      "dustFactor": 0.1,
+      "mudFactor": 0.05,
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "bricks_red": {
+      "bf_class": "bricks_red",
+      "color": "XFxdAA==",
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "dustFactor": 0.0,
+      "mudFactor": 0.3,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "bricks_red",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "stone",
+      "hitFxScale": [
+        0.3,
+        0.5
+      ],
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "buildings": {
+      "color": "//8AyA==",
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionWreckage": "bricks_expl",
+      "hitFxScale": [
+        1.3,
+        2.5
+      ],
+      "damage_k": 0.3,
+      "tankTracksTexId": 3,
+      "explMat": "stone"
+    },
+    "fabric": {
+      "bf_class": "fabric",
+      "color": "XFxdAA==",
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0,
+      "iak": 1.0,
+      "damage_k": 0.0,
+      "explMat": "default",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "fabric",
+      "hitFxScale": [
+        0.1,
+        0.3
+      ],
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "glass": {
+      "bf_class": "glass",
+      "color": "SVJTAA==",
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0,
+      "iak": 1.0,
+      "damage_k": 0.0,
+      "explMat": "glass",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "glass",
+      "hitFxScale": [
+        0.15,
+        0.3
+      ],
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "glass_small": {
+      "bf_class": "glass",
+      "color": "SVJTAA==",
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0,
+      "iak": 1.0,
+      "damage_k": 0.0,
+      "explMat": "glass_small",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "glass",
+      "hitFxScale": [
+        0.15,
+        0.3
+      ],
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "metal": {
+      "bf_class": "metal",
+      "color": "SmeLAA==",
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "steel",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "metal",
+      "hitFxScale": [
+        1.3,
+        1.7
+      ],
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "stone_snow": {
+      "bf_class": "stone_snow",
+      "color": "XFxdAA==",
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 3,
+      "dustFactor": 0.0,
+      "mudFactor": 0.3,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "stone",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "stone",
+      "hitFxScale": [
+        0.1,
+        0.3
+      ],
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "ships": {
+      "color": "/6IAZA==",
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch_color",
+      "explosionPatchTexture": "explosion_patch_ship_n",
+      "explosionPatchColorTex": "explosion_patch_ship_c",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionPatchHeightScale": 0.008,
+      "explosionWreckage": "ships_expl",
+      "dustFxAlpha": 0.2,
+      "explMat": "ships"
+    },
+    "airfield": {
+      "color": "/6IAZA==",
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "tankTracksTexId": 3,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionWreckage": "rocks_expl",
+      "explMat": "default"
+    },
+    "wood": {
+      "bf_class": "wood",
+      "color": "VkcxAA==",
+      "isWater": false,
+      "isUnit": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "resistanceK": 0.00035,
+      "fk": 0.65,
+      "rollingFrictionK": 0.09,
+      "trackDirtSpawnRateMult": 0.0,
+      "tankTracksTexId": 1,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0,
+      "iak": 1.0,
+      "damage_k": 0.3,
+      "explMat": "wood",
+      "explosionWreckage": "rocks_expl",
+      "breachMat": "wood",
+      "hitFxScale": [
+        0.5,
+        1.0
+      ],
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "steel": {
+      "color": "AAD/yA==",
+      "isUnit": true,
+      "isWater": false,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explMat": "steel",
+      "breachMat": "steel"
+    },
+    "armorPierceLowCal": {
+      "color": "AAD/yA==",
+      "isWater": false,
+      "isUnit": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch_color",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.61,
+        0.39,
+        1.0
+      ],
+      "sizeInCalibers": 2.0
+    },
+    "armorPierceMedCal": {
+      "color": "AAD/yA==",
+      "isWater": false,
+      "isUnit": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch_color",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
+      "explosionPatchTexcoord": [
+        0.39,
+        0.61,
+        0.61,
+        0.825
+      ],
+      "sizeInCalibers": 3.0
+    },
+    "armorPierceHiCal": {
+      "color": "AAD/yA==",
+      "isWater": false,
+      "isUnit": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch_color",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        0.61,
+        0.61
+      ],
+      "sizeInCalibers": 2.5
+    },
+    "armorNPLowCal": {
+      "color": "AAD/yA==",
+      "isWater": false,
+      "isUnit": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch_color",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
+      "explosionPatchTexcoord": [
+        0.61,
+        0.43,
+        0.735,
+        0.555
+      ],
+      "sizeInCalibers": 1.5
+    },
+    "armorNPMedCal": {
+      "color": "AAD/yA==",
+      "isWater": false,
+      "isUnit": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch_color",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
+      "explosionPatchTexcoord": [
+        0.735,
+        0.43,
+        1.0,
+        0.69
+      ],
+      "sizeInCalibers": 1.5
+    },
+    "armorNPHiCal": {
+      "color": "AAD/yA==",
+      "isWater": false,
+      "isUnit": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch_color",
+      "explosionPatchTexture": "explosion_patch_ps_n",
+      "explosionPatchColorTex": "explosion_patch_ps_c",
+      "explosionPatchTexcoord": [
+        0.61,
+        0.0,
+        1.0,
+        0.43
+      ],
+      "sizeInCalibers": 1.5
+    },
+    "soil": {
+      "bf_class": "soil",
+      "deformable_width": 0.2,
+      "trackEffectsPreset": "soil",
+      "trackDirtSpawnRateMult": 1.0,
+      "resistanceK": 0.0008,
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.5,
+      "shakePeriod": [
+        0.8,
+        1.4
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.7,
+        0.4
+      ],
+      "tankTracksTexId": 0,
+      "dustFactor": 0.8,
+      "mudFactor": 0.5,
+      "hitFxScale": [
+        0.3,
+        0.5
+      ],
+      "shakeProps": {
+        "period": [
+          0.8,
+          1.4
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.7,
+          0.4
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.5
+      }
+    },
+    "tankTrack": {
+      "bf_class": "tankTrack"
+    },
+    "wheel": {
+      "bf_class": "wheel"
+    },
+    "road": {
+      "bf_class": "road",
+      "trackDirtSpawnRateMult": 0.0,
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "tankTracksTexId": 3,
+      "dustFactor": 0.4,
+      "mudFactor": 0.0
+    },
+    "dirt": {
+      "bf_class": "dirt",
+      "deformable_width": 0.3,
+      "trackDirtSpawnRateMult": 1.0,
+      "resistanceK": 0.001,
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.0,
+      "shakePeriod": [
+        0.6,
+        1.2
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        1.2,
+        0.6
+      ],
+      "tankTracksTexId": 0,
+      "dustFactor": 0.0,
+      "mudFactor": 5.0,
+      "shakeProps": {
+        "period": [
+          0.6,
+          1.2
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          1.2,
+          0.6
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.0
+      }
+    },
+    "visibilityRay": {
+      "bf_class": "visibilityRay"
+    },
+    "roadSoil": {
+      "bf_class": "roadSoil",
+      "deformable_width": 0.05,
+      "resistanceK": 0.00015,
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.8,
+      "tankTracksTexId": 0,
+      "dustFactor": 1.5,
+      "mudFactor": 0.0,
+      "arcadeProps": {
+        "boost": 0.8
+      }
+    },
+    "sand": {
+      "bf_class": "sand",
+      "color": "XFxdAA==",
+      "deformable_width": 0.2,
+      "trackEffectsPreset": "sand",
+      "explMat": "default",
+      "hitFxScale": [
+        0.3,
+        0.5
+      ],
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.8,
+      "shakePeriod": [
+        0.3,
+        0.7
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.7,
+        0.4
+      ],
+      "tankTracksTexId": 1,
+      "dustFactor": 1.5,
+      "mudFactor": 0.01,
+      "apexGroundCollisionFx": "",
+      "shakeProps": {
+        "period": [
+          0.3,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.7,
+          0.4
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.8
+      }
+    },
+    "duneSand": {
+      "bf_class": "duneSand",
+      "deformable_width": 0.2,
+      "trackEffectsPreset": "sand",
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.8,
+      "shakePeriod": [
+        0.3,
+        0.7
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.7,
+        0.4
+      ],
+      "tankTracksTexId": 1,
+      "dustFactor": 1.5,
+      "mudFactor": 0.01,
+      "apexGroundCollisionFx": "",
+      "shakeProps": {
+        "period": [
+          0.3,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.7,
+          0.4
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.8
+      }
+    },
+    "roadSand": {
+      "bf_class": "roadSand",
+      "deformable_width": 0.1,
+      "resistanceK": 0.00015,
+      "trackEffectsPreset": "sand",
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.8,
+      "shakePeriod": [
+        0.3,
+        0.7
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.7,
+        0.4
+      ],
+      "tankTracksTexId": 1,
+      "dustFactor": 1.0,
+      "mudFactor": 0.01,
+      "apexGroundCollisionFx": "",
+      "shakeProps": {
+        "period": [
+          0.3,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.7,
+          0.4
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.8
+      }
+    },
+    "quickSand": {
+      "bf_class": "sand",
+      "deformable_width": 0.6,
+      "trackEffectsPreset": "sand",
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.2,
+      "shakePeriod": [
+        0.3,
+        0.7
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.7,
+        0.4
+      ],
+      "tankTracksTexId": 1,
+      "dustFactor": 3.0,
+      "mudFactor": 0.01,
+      "apexGroundCollisionFx": "",
+      "shakeProps": {
+        "period": [
+          0.3,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.7,
+          0.4
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.2
+      }
+    },
+    "snow": {
+      "bf_class": "snow",
+      "deformable_width": 0.3,
+      "trackEffectsPreset": "snow",
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.8,
+      "shakePeriod": [
+        0.5,
+        1.2
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.4,
+        0.2
+      ],
+      "tankTracksTexId": 2,
+      "apexGroundCollisionFx": "",
+      "hitFxScale": [
+        0.3,
+        0.5
+      ],
+      "shakeProps": {
+        "period": [
+          0.5,
+          1.2
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.4,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.8
+      }
+    },
+    "ice": {
+      "bf_class": "ice",
+      "trackEffectsPreset": "snow",
+      "trackDirtSpawnRateMult": 0.0,
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "tankTracksTexId": 2,
+      "dustFactor": 0.0,
+      "mudFactor": 0.0
+    },
+    "snowLower": {
+      "bf_class": "snow",
+      "deformable_width": 0.2,
+      "trackEffectsPreset": "snow",
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 1.0,
+      "shakePeriod": [
+        0.35,
+        0.7
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.5,
+        0.2
+      ],
+      "tankTracksTexId": 2,
+      "apexGroundCollisionFx": "",
+      "shakeProps": {
+        "period": [
+          0.35,
+          0.7
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.5,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 1.0
+      }
+    },
+    "roadSnow": {
+      "bf_class": "roadSnow",
+      "deformable_width": 0.05,
+      "trackEffectsPreset": "snow",
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.8,
+      "shakePeriod": [
+        0.5,
+        1.2
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.4,
+        0.2
+      ],
+      "tankTracksTexId": 2,
+      "apexGroundCollisionFx": "",
+      "shakeProps": {
+        "period": [
+          0.5,
+          1.2
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.4,
+          0.2
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.8
+      }
+    },
+    "rocks": {
+      "bf_class": "rocks",
+      "trackDirtSpawnRateMult": 0.0,
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "dustFactor": 0.05,
+      "mudFactor": 0.0,
+      "tankTracksTexId": 3
+    },
+    "rocksSlippery": {
+      "bf_class": "rocksSlippery",
+      "trackEffectsPreset": "rocks",
+      "trackDirtSpawnRateMult": 0.0,
+      "explMat": "default",
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "dustFactor": 0.05,
+      "mudFactor": 0.0,
+      "tankTracksTexId": 3
+    },
+    "transparentBeton": {
+      "bf_class": "transparentBeton",
+      "color": "//8AyA==",
+      "isWater": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "tankTracksTexId": 3,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionWreckage": "wall_expl",
+      "damage_k": 0.3,
+      "explMat": "default"
+    },
+    "visibilityCamera": {
+      "bf_class": "visibilityCamera"
+    },
+    "transparentCamera": {
+      "bf_class": "transparentCamera",
+      "color": "//8Alg==",
+      "isWater": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionWreckage": "wall_expl",
+      "damage_k": 0.3,
+      "explMat": "default"
+    }
+  },
+  "InteractPropsList": {
+    "visibilityCamera": {
+      "transparentCamera": {
+        "en": false
+      }
+    },
+    "visibilityRay": {
+      "transparentBeton": {
+        "en": false
+      },
+      "transparentCamera": {
+        "en": false
+      }
+    },
+    "tankTrack": {
+      "default": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.045
+      },
+      "horLandMesh": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.1
+      },
+      "soil": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.12
+      },
+      "dirt": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.2
+      },
+      "road": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.047
+      },
+      "roadSoil": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.06
+      },
+      "bricks_red": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.047
+      },
+      "concrete": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.047
+      },
+      "sand": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.08
+      },
+      "duneSand": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.1
+      },
+      "roadSand": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.047
+      },
+      "snow": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.09
+      },
+      "ice": {
+        "fk": 0.3,
+        "rollingFrictionK": 0.2
+      },
+      "roadSnow": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.1
+      },
+      "rocks": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.047
+      },
+      "rocksSlippery": {
+        "fk": 0.7,
+        "rollingFrictionK": 0.07
+      },
+      "fabric": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.09
+      },
+      "glass": {
+        "fk": 0.6,
+        "rollingFrictionK": 0.02
+      },
+      "stone_snow": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.047
+      },
+      "metal": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.02
+      },
+      "wood": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.0166
+      }
+    },
+    "wheel": {
+      "default": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.03
+      },
+      "horLandMesh": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.2
+      },
+      "soil": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.15
+      },
+      "dirt": {
+        "fk": 0.9,
+        "rollingFrictionK": 0.5
+      },
+      "road": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.0166
+      },
+      "roadSoil": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.0166
+      },
+      "concrete": {
+        "fk": 0.9,
+        "rollingFrictionK": 0.0166
+      },
+      "bricks_red": {
+        "fk": 0.9,
+        "rollingFrictionK": 0.0166
+      },
+      "sand": {
+        "fk": 0.9,
+        "rollingFrictionK": 0.12
+      },
+      "duneSand": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.047
+      },
+      "roadSand": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.0166
+      },
+      "snow": {
+        "fk": 0.9,
+        "rollingFrictionK": 0.15
+      },
+      "ice": {
+        "fk": 0.35,
+        "rollingFrictionK": 0.25
+      },
+      "roadSnow": {
+        "fk": 0.7,
+        "rollingFrictionK": 0.0166
+      },
+      "rocks": {
+        "fk": 0.7,
+        "rollingFrictionK": 0.07
+      },
+      "rocksSlippery": {
+        "fk": 0.65,
+        "rollingFrictionK": 0.09
+      },
+      "fabric": {
+        "fk": 0.9,
+        "rollingFrictionK": 0.15
+      },
+      "glass": {
+        "fk": 0.6,
+        "rollingFrictionK": 0.02
+      },
+      "stone_snow": {
+        "fk": 0.7,
+        "rollingFrictionK": 0.07
+      },
+      "metal": {
+        "fk": 0.6,
+        "rollingFrictionK": 0.02
+      },
+      "wood": {
+        "fk": 0.9,
+        "rollingFrictionK": 0.01
+      }
+    }
+  }
+}

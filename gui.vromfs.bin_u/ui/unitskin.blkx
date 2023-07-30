@@ -1,0 +1,20 @@
+{
+  "tex": {
+    "dynAtlas": true,
+    "name": "units",
+    "size": [
+      1024,
+      1024
+    ],
+    "lazyAlloc": true,
+    "maxAllowedPicSz": [
+      256,
+      128
+    ],
+    "premultiplyAlpha": false,
+    "margin": 4,
+    "picSrcFolder": "units/",
+    "picReserve": 128,
+    "refHRes": 1080
+  }
+}

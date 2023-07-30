@@ -1,0 +1,48 @@
+{
+  "hideNodes": {
+    "node": [
+      "wb151_r",
+      "wb151_l",
+      "wb81b_r",
+      "wb81b_l",
+      "flare6",
+      "flare7",
+      "flare8",
+      "flare9",
+      "flare10",
+      "flare11",
+      "flare12",
+      "flare13",
+      "flare14",
+      "flare15",
+      "flare16",
+      "flare17",
+      "flare18",
+      "flare19",
+      "flare20",
+      "flare21",
+      "bomb_launcher1",
+      "bomb_launcher2"
+    ]
+  },
+  "Weapon": [
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+      "emitter": "bomb2",
+      "dm": "bomb2_dm",
+      "bullets": 1,
+      "external": true,
+      "separate": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+      "emitter": "bomb3",
+      "dm": "bomb3_dm",
+      "bullets": 1,
+      "external": true,
+      "separate": true
+    }
+  ]
+}

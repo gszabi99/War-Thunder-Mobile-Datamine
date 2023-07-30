@@ -1,0 +1,18 @@
+{
+  "experience": 0,
+  "warpointsPos": 0,
+  "warpointsNeg": 0,
+  "onlineSaveVersion": 1,
+  "hangar": {
+    "germ_cruiser_admiral_hipper": {}
+  },
+  "crews": {
+    "c0": {
+      "country": "country_germany",
+      "aircrafts": {
+        "trained": "germ_cruiser_admiral_hipper",
+        "current": "germ_cruiser_admiral_hipper"
+      }
+    }
+  }
+}

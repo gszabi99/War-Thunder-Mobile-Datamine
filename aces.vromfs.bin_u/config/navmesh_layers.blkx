@@ -1,0 +1,22 @@
+{
+  "filter": {
+    "^.*af_conveyor.*$": {},
+    "^.*water_pipes_heating_top.*$": {},
+    "^.*factory_crane_b.*$": {},
+    "^.*af_side_building_a_awning_b.*$": [
+      {},
+      {}
+    ],
+    "^.*af_concrete_wall_big_d.*$": {},
+    "^.*af_concrete_wall_flat_roof_a.*$": {},
+    "^.*af_concrete_wall_corridor_a.*$": {},
+    "^.*water_pipes_heating_lower.*$": {},
+    "^.*water_pipes_heating_angle_lower.*$": {},
+    "^.*wood_fence.*$": {},
+    "^.*railroad_crane_.*$": {}
+  },
+  "filter_exclude": {
+    "^.*af_conveyor_front.*$": {},
+    "^.*railroad_crane_column.*$": {}
+  }
+}

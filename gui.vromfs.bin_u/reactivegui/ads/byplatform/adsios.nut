@@ -1,0 +1,146 @@
+from "%globalsDarg/darg_library.nut" import *
+let { send, subscribe } = require("eventbus")
+let { setTimeout, resetTimeout } = require("dagor.workcycle")
+let { getCountryCode } = require("auth_wt")
+let ads = require("ios.ads")
+let json = require("json")
+let logA = log_with_prefix("[ADS] ")
+let { is_ios } = require("%sqstd/platform.nut")
+let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, debugAdsWndParams
+} = require("%rGui/ads/adsInternalState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+
+let isDebug = !is_ios
+let { DBGLEVEL } = require("dagor.system")
+let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK
+} = ads
+let debugAdsInited = persist("debugAdsInited", @() {})
+local isDebugAdsLoaded = false
+let { setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
+  isAdsLoaded, loadAds, showAds
+} = !isDebug ? ads
+: {
+      isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
+      getProvidersStatus = @() json.to_string(
+        debugAdsInited.map(@(provider, isInited) { provider, isInited })
+          .values())
+      setPriorityForProvider = @(_, __) null
+      function addProviderInitWithPriority(provider, _, __) {
+        debugAdsInited[provider] <- true
+        setTimeout(0.1, @() send("ios.ads.onInit", { status = ADS_STATUS_OK, provider }))
+      }
+      isAdsLoaded = @() isDebugAdsLoaded
+      function loadAds() {
+        isDebugAdsLoaded = false
+        setTimeout(5.0, function() {
+          isDebugAdsLoaded = debugAdsInited.findvalue(@(v) v) ?? false
+          send("ios.ads.onLoad",
+            { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED })
+        })
+      }
+      function showAds() {
+        send("ios.ads.onShow", { status = ADS_STATUS_SHOWN })
+        debugAdsWndParams({
+          rewardEvent = "ios.ads.onReward"
+          rewardData = { amount = 1, type = "debug" }
+          finishEvent = "ios.ads.onShow"
+          finishData = { status = ADS_STATUS_DISMISS }
+        })
+      }
+    }
+
+let isInited = Watched(isAdsInited())
+let isLoaded = Watched(isAdsLoaded())
+let needAdsLoadExt = Computed(@() isInited.value && needAdsLoad.value && !isLoaded.value)
+let allProviders = keepref(Computed(@() serverConfigs.value?.adsCfg.iOS ?? {}))
+
+let function initProviders(providers) {
+  if (providers.len() == 0) {
+    logA("Empty ad provider list received")
+    return
+  }
+  setTestingMode(DBGLEVEL > 0)
+  let countryCode = getCountryCode()
+  logA($"Init providers for {countryCode}")
+  let pStatus = json.parse(getProvidersStatus())
+  let initedProviders = {}
+  foreach(info in pStatus)
+    if (info.isInited)
+      initedProviders[info.provider] <- true
+
+  foreach(id, _ in initedProviders)
+    if (id not in providers)
+      setPriorityForProvider(id, -1) //switch of provider missing in config
+
+  foreach(id, p in providers) {
+    let priority = p?.priorityByRegion[countryCode] ?? p.priority
+    if (id in initedProviders)
+      setPriorityForProvider(id, priority)
+    else if (priority >= 0)
+      addProviderInitWithPriority(id, p.key, priority)
+  }
+}
+initProviders(allProviders.value)
+allProviders.subscribe(initProviders)
+
+subscribe("ios.ads.onInit", function(msg) {
+  let { status, provider } = msg
+  if (status != ADS_STATUS_OK)
+    return
+  logA($"Provider {provider} inited")
+  isInited(true)
+})
+
+let function startLoading() {
+  logA($"Start loading")
+  loadAds()
+}
+if (needAdsLoadExt.value)
+  startLoading()
+needAdsLoadExt.subscribe(function(v) {
+  if (v)
+    startLoading()
+})
+
+let function retryLoad() {
+  if (!needAdsLoadExt.value)
+    return
+  logA($"Retry loading")
+  loadAds()
+}
+
+subscribe("ios.ads.onLoad",function (params) {
+  let { status } = params
+  logA($"onLoad {status}")
+  isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())
+  if (!isLoaded.value && needAdsLoadExt.value)
+    resetTimeout(RETRY_LOAD_TIMEOUT, retryLoad)
+})
+
+subscribe("ios.ads.onShow",function (params) { //we got this event on start ads show, and on finish
+  let { status } = params
+  logA($"onShow {status}")
+  if (status != ADS_STATUS_SHOWN) {
+    isLoaded(false)
+    onFinishShowAds()
+  }
+})
+
+subscribe("ios.ads.onReward", function (params) {
+  logA($"onReward {params.amount} {params.type}")
+  giveReward()
+})
+
+
+let function showAdsForReward(rInfo) {
+  if (!isLoaded.value)
+    return
+  rewardInfo(rInfo)
+  showAds()
+}
+
+return {
+  isAdsAvailable = isInited
+  canShowAds = isLoaded
+  showAdsForReward
+}

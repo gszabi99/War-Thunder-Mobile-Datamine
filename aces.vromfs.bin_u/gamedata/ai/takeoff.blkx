@@ -1,0 +1,25 @@
+{
+  "selector": {
+    "selectStrategy": "ordered",
+    "name": "taxi_and_takeoff",
+    "reaction": [
+      {
+        "event": "groundAhead"
+      },
+      {
+        "event": "collisionAhead"
+      },
+      {
+        "event": "outsideBattleField"
+      }
+    ],
+    "sequencer": {
+      "isOnAirfield": {},
+      "findClosestAirfield": {},
+      "waitForAirfieldClearance": {},
+      "taxiOnAirfield": {},
+      "takeoff": {}
+    },
+    "waitOnLand": {}
+  }
+}
