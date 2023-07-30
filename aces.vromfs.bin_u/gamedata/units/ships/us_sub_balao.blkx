@@ -1079,8 +1079,8 @@
     }
   },
   "torpedoSeries": {
-    "delay": 1.0,
-    "count": 4
+    "delay": 0.5,
+    "count": 5
   },
   "modifications": {
     "ship_tool_kit": {},

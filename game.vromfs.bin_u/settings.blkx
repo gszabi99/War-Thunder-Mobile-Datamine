@@ -342,6 +342,8 @@
     "backgroundAptiveSharpenQuality": 12.0,
     "fadeInDelayFrames": 3,
     "fadeInSeconds": 2.0,
+    "fadeInPreloadTimelimitSeconds": 1.0,
+    "beforeFadeInD3dPipelineCompileTimeBudgetSeconds": 0.25,
     "sharpen": 0.2,
     "enableSuspensionAnimation": false,
     "cloudsQuality": 2,
@@ -399,7 +401,8 @@
     "renderImpostorsToDraftDepth": false,
     "enableClipmapDecals": false,
     "underwaterFogUseShadows": 2,
-    "allowHmap": false
+    "allowHmap": false,
+    "useCellSBuffer": true
   },
   "ps4": {
     "garlic_size_mb": 2560,

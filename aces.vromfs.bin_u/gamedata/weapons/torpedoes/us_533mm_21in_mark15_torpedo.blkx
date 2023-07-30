@@ -58,7 +58,7 @@
     "splash": {
       "innerRadius": 9.0,
       "penetration": 120.0,
-      "damage": 4500.0,
+      "damage": 6000.0,
       "damageType": "explosionTorpedo"
     },
     "arcadeProp": {

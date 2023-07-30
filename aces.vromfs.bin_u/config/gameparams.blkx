@@ -5320,10 +5320,10 @@
         "autoLevelingViscosity": -1.0,
         "autoTargettingViscosity": -1.0,
         "torpedoSpeedMultFromDist": [
-          3.0,
-          1.0,
-          4000.0,
-          8000.0
+          4.5,
+          4.5,
+          0.0,
+          50000.0
         ],
         "missileSeekerTrackerIndication": true,
         "hydraAutoaimAngle": 0.2,
@@ -5394,10 +5394,10 @@
         "autoLevelingViscosity": -1.0,
         "autoTargettingViscosity": -1.0,
         "torpedoSpeedMultFromDist": [
-          3.0,
-          1.0,
-          4000.0,
-          8000.0
+          4.5,
+          4.5,
+          0.0,
+          50000.0
         ],
         "missileSeekerTrackerIndication": true,
         "hydraAutoaimAngle": 0.0,

@@ -26,7 +26,7 @@
     ],
     "bulletType": "torpedo",
     "distToLive": 3500.0,
-    "maxSpeedInWater": 50.0,
+    "maxSpeedInWater": 26.23,
     "diveDepth": 5.0,
     "detonationRadius": 0.1,
     "detonationDepth": 6.0,
@@ -59,7 +59,7 @@
     "splash": {
       "innerRadius": 9.0,
       "penetration": 83.0,
-      "damage": 5500.0,
+      "damage": 4500.0,
       "damageType": "explosionTorpedo"
     },
     "arcadeProp": {
