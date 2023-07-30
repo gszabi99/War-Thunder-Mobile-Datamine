@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
 let regexp2 = require("regexp2")
-let { setTimeout } = require("dagor.workcycle")
+let { resetTimeout } = require("dagor.workcycle")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
@@ -40,10 +40,10 @@ let function fetchClusterHosts() {
       }
 
       if (++failedFetches <= MAX_FETCH_RETRIES)
-        setTimeout(0.1, again)
+        resetTimeout(0.1, again)
       else {
         failedFetches = 0
-        setTimeout(OUT_OF_RETRIES_DELAY_SEC, again)
+        resetTimeout(OUT_OF_RETRIES_DELAY_SEC, again)
       }
     })
 }

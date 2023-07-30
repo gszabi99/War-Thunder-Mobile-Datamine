@@ -590,7 +590,10 @@
     "dissovleOutTime": 0.25,
     "partKillOutlineTime": -0.5,
     "bulletSpeed": 16.0,
-    "shardSpeed": 16.0,
+    "shardSpeed": [
+      16.0,
+      5.0
+    ],
     "bulletEndDistance": 3.0,
     "bulletEndDistanceHidden": 0.1,
     "minCaliber": 0.036,
@@ -622,6 +625,12 @@
     "hideDelayShort": 0.0,
     "hideDelayFail": -0.5,
     "deltaTimeK": 1.3,
+    "hitSwitchTime": 1.0,
+    "hitSwitchPause": 0.2,
+    "hitSwitchThreshold": 0.01,
+    "hitSwitchZoom": 0.85,
+    "hitSwitchZoomOutPause": 1.5,
+    "hitSwitchEnableZoomOutForShot": true,
     "partNormalColor": [
       0.8,
       0.9,

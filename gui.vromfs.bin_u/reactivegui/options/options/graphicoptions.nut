@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { get_default_graphics_preset, get_default_fps_limit, get_maximum_frames_per_second
+let { get_default_graphics_preset, get_default_fps_limit, get_maximum_frames_per_second,
+  is_broken_grass_flag_set = @() false
 } = require("graphicsOptions")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
@@ -10,12 +11,18 @@ let { inline_raytracing_available } = require("sysinfo")
 
 let qualitiesList = ["low", "medium", "high", "max"]
 let validateQuality = @(q) qualitiesList.contains(q) ? q : qualitiesList[0]
+let qualityValue = mkOptionValue(OPT_GRAPHICS_QUALITY, get_default_graphics_preset(), validateQuality)
 let optQuality = {
   locId = "options/graphicQuality"
   ctrlType = OCT_LIST
-  value = mkOptionValue(OPT_GRAPHICS_QUALITY, get_default_graphics_preset(), validateQuality)
+  value = qualityValue
   list = qualitiesList
   valToString = @(v) loc($"options/quality_{v}")
+  function setValue(v) {
+    qualityValue(v)
+    if (is_broken_grass_flag_set() && (v == "high" || v == "max"))
+      openMsgBox({ text = loc("msg/qualityNotFullySupported") })
+  }
 }
 
 let fpsValue = mkOptionValue(OPT_FPS, get_default_fps_limit())

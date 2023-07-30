@@ -402,7 +402,6 @@
     "enableClipmapDecals": false,
     "underwaterFogUseShadows": 1,
     "allowHmap": false,
-    "useCellSBuffer": true,
     "sky_panorama_patch": false
   },
   "ps4": {
@@ -634,6 +633,7 @@
     "stubServerOnlineId": 1,
     "psnAuthRequestTimeout": 30,
     "publicConfigsUrl": "http://public-configs.warthunder.com/",
+    "httpClientPollInThread": true,
     "publicConfigsUrls": {
       "url": [
         "http://public-configs.warthunder.com/",
