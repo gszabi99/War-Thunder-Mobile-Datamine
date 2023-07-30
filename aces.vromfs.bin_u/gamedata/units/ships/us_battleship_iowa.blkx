@@ -434,10 +434,7 @@
         }
       },
       {
-        "name": [
-          "elevator_03_dm",
-          "elevator_04_dm"
-        ],
+        "name": "elevator_03_dm",
         "onHit": {
           "damageType": "generic",
           "damage": 500.0,
@@ -445,10 +442,7 @@
             "name": "shotFreqMult2",
             "prob": 0.33,
             "parts": {
-              "part": [
-                "main_caliber_turret_03_dm",
-                "main_caliber_turret_04_dm"
-              ]
+              "part": "main_caliber_turret_03_dm"
             }
           }
         }

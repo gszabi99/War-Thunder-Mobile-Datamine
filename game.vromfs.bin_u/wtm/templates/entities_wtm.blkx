@@ -1984,8 +1984,8 @@
     "enableTorpedoCourseCorrection:tag": {}
   },
   "base_ship_hp_regen": {
-    "meta_parts_hp_regen__speed": 0.005,
-    "meta_parts_hp_regen__limit": 0.2,
+    "meta_parts_hp_regen__speed": 0.0,
+    "meta_parts_hp_regen__limit": 0.0,
     "meta_parts_hp_regen__interval": 10.0,
     "meta_parts_hp_regen__nextAtTime": 0.0,
     "meta_parts_hp_regen__delayAfterDamage": 10.0,

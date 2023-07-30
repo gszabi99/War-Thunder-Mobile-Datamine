@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { abs } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout } = require("dagor.workcycle")
 let { round_by_value } = require("%sqstd/math.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS, TIME_MINUTE_IN_SECONDS } = require("%sqstd/time.nut")
@@ -18,19 +16,14 @@ let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
 let premIconW = hdpxi(90)
 let premIconH = hdpxi(70)
 let highlightTrigger = {}
-let showTextTimeSec = 10
 
-let visibleEndsAt = mkHardWatched("premium.visibleEndsAt", -1)
+let visibleEndsAt = mkHardWatched("premium.visibleEndsAt", premiumEndsAt.value ?? -1)
 let changeOrders = mkHardWatched("premium.changeOrders", [])
-let hideTime = mkWatched(persist, "hideTime", 0)
-let shouldShowText = Watched(false)
 let nextChange = Computed(@() changeOrders.value?[0])
 
-let refreshHideTime = @() hideTime(get_time_msec() + (1000 * showTextTimeSec).tointeger())
 isProfileReceived.subscribe(function(_) {
   visibleEndsAt(premiumEndsAt.value)
   changeOrders([])
-  hideTime(0)
 })
 premiumEndsAt.subscribe(function(endsAt) {
   if (endsAt == visibleEndsAt.value && changeOrders.value.len() == 0)
@@ -40,17 +33,8 @@ premiumEndsAt.subscribe(function(endsAt) {
   if (abs(diff % TIME_HOUR_IN_SECONDS) < TIME_MINUTE_IN_SECONDS)
     diff = round_by_value(diff, TIME_MINUTE_IN_SECONDS).tointeger()
   changeOrders.mutate(@(v) v.append({ cur = endsAt, diff }))
-  refreshHideTime()
 })
 
-let function updateLastChangeTimer() {
-  let timeToHide = hideTime.value - get_time_msec()
-  shouldShowText(timeToHide > 0)
-  if (timeToHide > 0)
-    resetTimeout(0.001 * timeToHide, updateLastChangeTimer)
-}
-updateLastChangeTimer()
-hideTime.subscribe(@(_) updateLastChangeTimer())
 
 let premImage = {
   key = {}
@@ -78,6 +62,12 @@ let function premiumTime() {
   local timeLeft = max(0, visibleEndsAt.value - serverTime.value)
   if (timeLeft >= 3 * TIME_DAY_IN_SECONDS)  //we do not show hours in such case
     timeLeft = round_by_value(timeLeft, TIME_HOUR_IN_SECONDS).tointeger()
+
+  if (timeLeft == 0)
+    return {
+      watch = [visibleEndsAt, serverTime]
+    }
+
   return {
     watch = [visibleEndsAt, serverTime]
     key = visibleEndsAt
@@ -86,9 +76,12 @@ let function premiumTime() {
     color = premiumTextColor
     transform = {}
     animations = [
-      { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.15, easing = OutQuad, play = true }
-      { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = OutQuad, playFadeOut = true }
-      { prop = AnimProp.translate, to = [0, hdpx(50)], duration = 0.3, easing = OutQuad, playFadeOut = true }
+      { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.15, easing = OutQuad,
+        play = true, trigger = "premiumAnimSkip" }
+      { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = OutQuad,
+        playFadeOut = true, trigger = "premiumAnimSkip" }
+      { prop = AnimProp.translate, to = [0, hdpx(50)], duration = 0.3, easing = OutQuad,
+        playFadeOut = true, trigger = "premiumAnimSkip" }
     ]
   }.__update(fontSmall, fontGlowBlack)
 }
@@ -98,7 +91,6 @@ let function onChangeAnimFinish(change) {
     return
   visibleEndsAt(change.cur)
   changeOrders.mutate(@(v) v.remove(0))
-  refreshHideTime()
   anim_start(highlightTrigger)
 }
 
@@ -149,9 +141,10 @@ let withHoveredBg = @(content, stateFlags) {
 let function premIconWithTimeOnChange() {
   let stateFlags = Watched(0)
   return {
+    onAttach = @() anim_skip("premiumAnimSkip")
+    onDetach = @() anim_skip("premiumAnimSkip")
     children = [
       withHoveredBg(@() {
-        watch = shouldShowText
         valign = ALIGN_CENTER
         behavior = Behaviors.Button
         onClick = @() openShopWnd(SC_PREMIUM)
@@ -160,7 +153,7 @@ let function premIconWithTimeOnChange() {
         gap = hdpx(10)
         children = [
           premImageMain
-          shouldShowText.value ? premiumTime : null
+          premiumTime
         ]
         transform = {}
         animations = mkBalanceHiglightAnims(highlightTrigger)

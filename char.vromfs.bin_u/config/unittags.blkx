@@ -4977,7 +4977,7 @@
           "caliber": 76.2,
           "armorPower": 86.7449,
           "reloadTime": 6.89655,
-          "gunnerTurretRotationSpeed": 65.0,
+          "gunnerTurretRotationSpeed": 25.0,
           "isBeltAmmo": false
         },
         "7_62mm_DT_user_machinegun": {
@@ -15707,7 +15707,7 @@
       }
     },
     "Shop": {
-      "mainWeaponCaliber": 120.0,
+      "mainWeaponCaliber": 170.0,
       "armorThicknessFront": [
         0.0,
         0.0,
@@ -15726,8 +15726,8 @@
       "weapons": {
         "170mm_BAe_Swingfire_launcher_user_cannon": {
           "wtype": "mainCannon",
-          "caliber": 120.0,
-          "armorPower": 152.0,
+          "caliber": 170.0,
+          "armorPower": 1.0,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 18.0,
           "isBeltAmmo": false
