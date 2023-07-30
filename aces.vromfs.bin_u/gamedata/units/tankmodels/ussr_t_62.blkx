@@ -2731,5 +2731,8 @@
       "emtr_exhaust_01",
       "emtr_exhaust_04"
     ]
+  },
+  "battleHideNodes": {
+    "n": "details"
   }
 }

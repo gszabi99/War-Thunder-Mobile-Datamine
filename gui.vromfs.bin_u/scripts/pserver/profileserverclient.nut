@@ -91,12 +91,15 @@ let function checkAndLogError(id, action, cb, data) {
     return
   }
 
-  if (type(err) == "table" && "message" in err)
-    err = "code" in err ? $"{err.message} (code: {err.code})" : err.message
-  if (type(err) != "string")
-    err = $"(full answer dump) {json.to_string(data)}"
-  logerr($"[profileServerClient] request {id}: {action} returned error: {err}")
-  cb?({ error = err })
+  local locErr = err
+  if (type(err) == "table" && "message" in err) {
+    let msg = loc($"error/{err.message}", err.message)
+    locErr = "code" in err ? $"{msg}\n(code: {err.code})" : msg
+  }
+  else if (type(err) != "string")
+    locErr = $"(full answer dump)\n{json.to_string(data)}"
+  logerr($"[profileServerClient] request {id}: {action} returned error: {locErr}")
+  cb?({ error = locErr, errData = err })
 }
 
 let function doRequestOnline(action, params, id, cb) {

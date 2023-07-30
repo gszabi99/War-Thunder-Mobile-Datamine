@@ -2493,5 +2493,8 @@
         "to": "ussr_camo_winter_lines*"
       }
     }
-  ]
+  ],
+  "battleHideNodes": {
+    "n": "details"
+  }
 }

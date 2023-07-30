@@ -13,7 +13,7 @@ let { onlyActiveStageCb, export, finalizeStage, interruptStage
 let start = @() get_all_configs(onlyActiveStageCb(function(res) {
   if (res?.error != null) {
     interruptStage(res)
-    openFMsgBox({ text = loc($"error/{res.error}", res.error) })
+    openFMsgBox({ text = res.error })
   }
   else
     finalizeStage()

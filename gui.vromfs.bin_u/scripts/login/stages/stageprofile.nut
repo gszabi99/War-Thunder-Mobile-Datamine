@@ -15,7 +15,7 @@ let start = @() get_profile(getSysInfo(),
   onlyActiveStageCb(function(res) {
     if (res?.error != null) {
       interruptStage(res)
-      openFMsgBox({ text = loc($"error/{res.error}", res.error) })
+      openFMsgBox({ text = res.error })
     }
     else
       finalizeStage()
