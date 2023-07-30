@@ -2449,8 +2449,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_m4a4_sherman_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_m4a4_sherman_default.blk"
+      "name": "fr_m4a4_sherman_reskin_default",
+      "blk": "gameData/units/tankModels/weaponPresets/fr_m4a4_sherman_reskin_default.blk"
     }
   },
   "modifications": {

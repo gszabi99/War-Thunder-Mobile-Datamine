@@ -15,7 +15,7 @@ let state = Watched({
   latencyA = -1
   latencyR = -1
 })
-subscribe("updateStatusString", @(s) state(s))
+subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
 
 let comps = {}
 foreach (key in ["ping", "pl", "sessionId", "latency", "latencyA", "latencyR"]) {

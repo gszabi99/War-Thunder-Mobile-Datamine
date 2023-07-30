@@ -435,8 +435,7 @@
       {
         "name": [
           "elevator_04_dm",
-          "elevator_05_dm",
-          "elevator_06_dm"
+          "elevator_05_dm"
         ],
         "onHit": {
           "damageType": "generic",
@@ -447,8 +446,7 @@
             "parts": {
               "part": [
                 "main_caliber_turret_04_dm",
-                "main_caliber_turret_05_dm",
-                "main_caliber_turret_06_dm"
+                "main_caliber_turret_05_dm"
               ]
             }
           }

@@ -1,4 +1,5 @@
 {
+  "enableRiExplosionDamage": true,
   "simpleSinking": true,
   "useJWTProfile": true,
   "jwtAuthentication": true,
