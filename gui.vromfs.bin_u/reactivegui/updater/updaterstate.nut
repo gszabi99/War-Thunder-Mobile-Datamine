@@ -12,8 +12,8 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { localizeAddons } = require("%appGlobals/updater/addons.nut")
-let { hasPackage } = require("%appGlobals/updater/hasPackage.nut")
+let { localizeAddonsLimited } = require("%appGlobals/updater/addons.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -172,14 +172,7 @@ let downloadAddonsStr = Computed(function() {
   list.sort(@(a, b) getAddonPriority(b) <=> getAddonPriority(a)
     || b <=> a)
 
-  let localized = localizeAddons(list)
-  let total = localized.len()
-  if (total <= 3)
-    return comma.join(localized)
-  return loc("andMoreAddons", {
-    addonsList = comma.join(localized.slice(0, 2))
-    number = total - 2
-  })
+  return localizeAddonsLimited(list, 3)
 })
 
 let maxCurCampaignMRank = Computed(function() {
@@ -197,7 +190,7 @@ let function startDownloadAddons(addons) {
     return
   let fullAddons = clone addonsToDownload.value
   foreach (a in addons)
-    if (!hasPackage(a))
+    if (!hasAddons.value?[a])
       fullAddons[a] <- true
   if (fullAddons.len() != addonsToDownload.value.len())
     addonsToDownload(fullAddons)
@@ -212,7 +205,7 @@ allowLimitedDownload.subscribe(function(allow) {
 })
 
 let function openDownloadAddonsWnd(addons = [], successEventId = null, context = {}) {
-  let rqAddons = addons.filter(@(a) !hasPackage(a))
+  let rqAddons = addons.filter(@(a) !hasAddons.value?[a])
   if (addons.len() != 0 && rqAddons.len() == 0) {  //already all downloaded
     if (successEventId != null)
       send(successEventId, context)

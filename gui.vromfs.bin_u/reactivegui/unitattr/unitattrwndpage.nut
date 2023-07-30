@@ -11,6 +11,9 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { setInterval, clearTimer } = require("dagor.workcycle")
+let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+
 
 let progressBtnSize = evenPx(72)
 let progressBtnGap = hdpx(30)
@@ -29,6 +32,12 @@ let cellColorEmpty  = 0x00000000
 
 let newValueColor = 0xFF90FAFA
 
+let glareWidth = hdpx(32)
+let incBtnAnimDuration = 0.3
+let incBtnAnimRepeat = 2
+
+let startIncBtnGlare = @() anim_start("incBtnGlareAnim")
+
 let progressBtnBase = {
   size = [ progressBtnSize, progressBtnSize ]
   behavior = Behaviors.Button
@@ -36,30 +45,56 @@ let progressBtnBase = {
   halign = ALIGN_CENTER
   transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
 }
-let progressBtnBg = {
-  size  = [ progressBtnSize, progressBtnSize ]
-  children = [
-    {
-      size = flex()
-      rendObj = ROBJ_MASK
-      image = Picture($"ui/gameuiskin#rhombus.svg:{progressBtnSize}:{progressBtnSize}")
-      children = bgShaded.__merge({ size = flex() })
-    }
-    btnBg.__merge({ size  = flex() })
-  ]
+let incBtnGlare = @() {
+  rendObj = ROBJ_IMAGE
+  size = [glareWidth, progressBtnSize]
+  image = gradTranspDoubleSideX
+  color = 0x00A0A0A0
+  transform = { translate = [-progressBtnSize / 2, -progressBtnSize / 2], rotate = 45 }
+  animations = [{
+    prop = AnimProp.translate
+    duration = incBtnAnimDuration
+    to = [progressBtnSize / 2, progressBtnSize / 2]
+    trigger = "incBtnGlareAnim"
+  }]
 }
-let progressBtnContentDec = [ progressBtnBg, btnTextDec ]
-let progressBtnContentInc = [ progressBtnBg, btnTextInc ]
+let progressBtnContentBase = {
+  size = [progressBtnSize, progressBtnSize]
+  rendObj = ROBJ_MASK
+  image = Picture($"ui/gameuiskin#rhombus.svg:{progressBtnSize}:{progressBtnSize}:P")
+  halign = ALIGN_CENTER
+}
+let mkProgressBtnContentDec = @(isAvailable)
+  @() progressBtnContentBase.__merge({
+    watch = isAvailable
+    opacity = isAvailable.value ? 1 : 0.33
+    children = [
+      bgShaded.__merge({ size = flex() })
+      btnBg.__merge({ size  = flex() })
+      btnTextDec
+    ]
+  })
+let mkProgressBtnContentInc = @(isAvailable)
+  @() progressBtnContentBase.__merge({
+    watch = isAvailable
+    clipChildren = true
+    opacity = isAvailable.value ? 1 : 0.33
+    children = [
+      bgShaded.__merge({ size = flex() })
+      btnBg.__merge({ size  = flex() })
+      btnTextInc
+      isAvailable.value ? incBtnGlare : null
+    ]
+  })
 
-let function mkProgressBtn(children, onClick, isAvailable) {
+let function mkProgressBtn(children, onClick) {
   let stateFlags = Watched(0)
   return @() progressBtnBase.__merge({
-    watch = [ stateFlags, isAvailable ]
+    watch = stateFlags
     onClick
     onElemState = @(v) stateFlags(v)
     children
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    opacity = isAvailable.value ? 1 : 0.33
   })
 }
 
@@ -218,7 +253,7 @@ let function mkAttrRow(attr) {
     gap = progressBtnGap
     valign = ALIGN_CENTER
     children = [
-      mkProgressBtn(progressBtnContentDec, mkBtnOnClick(-1), canDec)
+      mkProgressBtn(mkProgressBtnContentDec(canDec), mkBtnOnClick(-1))
       {
         size = flex()
         valign = ALIGN_CENTER
@@ -228,15 +263,18 @@ let function mkAttrRow(attr) {
           mkRowProgressBar(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick)
         ]
       }
-      mkProgressBtn(progressBtnContentInc, mkBtnOnClick(1), canInc)
+      mkProgressBtn(mkProgressBtnContentInc(canInc), mkBtnOnClick(1))
       mkNextIncCost(nextIncCost, canInc, totalUnitSp)
     ]
   }
 }
 
 let unitAttrPage = @() {
+  key = startIncBtnGlare
   watch = curCategory
   size = [ flex(), SIZE_TO_CONTENT ]
+  onAttach = @() setInterval(incBtnAnimRepeat, startIncBtnGlare)
+  onDetach = @() clearTimer(startIncBtnGlare)
   children = {
     key = curCategory.value
     size = [ flex(), SIZE_TO_CONTENT ]

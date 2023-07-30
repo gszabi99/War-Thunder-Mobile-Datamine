@@ -4,7 +4,7 @@ let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { OT_ONLY_LOGIN, OT_ENTER_MAINMENU, OT_NEW_OFFER, offerOpenType
 } = require("offerTests.nut")
 let { openGoodsPreview, previewGoods } = require("%rGui/shop/goodsPreviewState.nut")
-let { visibleOffer } = require("offerState.nut")
+let { visibleOffer, reqAddonsToShowOffer } = require("offerState.nut")
 let { isInMenuNoModals, isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -13,6 +13,7 @@ let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let showedTime = mkHardWatched("offerAutoPreview.showedTime", {})
 let enteredMenuTime = mkHardWatched("offerAutoPreview.enteredMenuTime", {})
 let canShow = Computed(@() visibleOffer.value != null
+  && reqAddonsToShowOffer.value.len() == 0
   && isInMenuNoModals.value
   && (visibleOffer.value?.endTime ?? 0) > (showedTime.value?[visibleOffer.value?.campaign] ?? 0))
 

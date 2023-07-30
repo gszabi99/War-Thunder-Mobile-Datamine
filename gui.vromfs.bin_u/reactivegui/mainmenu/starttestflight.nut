@@ -6,7 +6,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasPackage } = require("%appGlobals/updater/hasPackage.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 
@@ -50,7 +50,7 @@ let function startTestFlight(unitName, missionName = null) {
     bullets = getBulletsForTestFlight(unitName)
   }
   let pkgs = getUnitPkgs(unitName, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
-    .filter(@(v) !hasPackage(v))
+    .filter(@(v) !hasAddons.value?[v])
   if (pkgs.len() == 0)
     send("startTestFlight", params)
   else

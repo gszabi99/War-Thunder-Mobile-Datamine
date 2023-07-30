@@ -17,7 +17,7 @@ let { isInQueue, joinQueue } = require("queuesClient.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { gameModeAddonToAddonSetMap, localizeAddons, getAddonsSizeStr
 } = require("%appGlobals/updater/addons.nut")
-let { hasPackage } = require("%appGlobals/updater/hasPackage.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
@@ -47,7 +47,7 @@ let function getModeAddonsInfo(mode, unitName) {
     : getCampaignPkgsForOnlineBattle(curCampaign.value, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
   foreach (addon in campAddons)
     if (addon not in addons) {
-      let has = hasPackage(addon)
+      let has = hasAddons.value?[addon] ?? false
       addons[addon] <- !has
       updateDiff += has ? 0 : -1
     }
@@ -58,7 +58,7 @@ let function getModeAddonsInfo(mode, unitName) {
     if (list == null)
       continue
     foreach (a in list)
-      if (a not in addons && !hasPackage(a))
+      if (a not in addons && !hasAddons.value?[a])
         toDownload[a] <- true
   }
   return { addonsToDownload = toDownload.keys(), updateDiff }

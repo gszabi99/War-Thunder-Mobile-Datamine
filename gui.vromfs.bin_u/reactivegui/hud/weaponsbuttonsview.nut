@@ -422,6 +422,8 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let canShoot = Computed(@() (canShootWithoutTarget || hasTarget.value) && hasReachableTarget.value)
 
   let isAvailable = isActionAvailable(actionItem)
+  let isBlocked = Computed(@() unitType.value == "submarine" && isNotOnTheSurface.value
+    && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_SECONDARY))
   let isAltImage = (altImage ?? "") != "" && actionItem.count < (actionItem?.countEx ?? 0)
   let isWaitForAim = hasAim && !(actionItem?.aimReady ?? true)
   let isInDeadZone = hasAim && (actionItem?.inDeadzone ?? false)
@@ -459,7 +461,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
         addCommonHint(loc("hints/wait_for_aiming"))
       return
     }
-    if (!isAvailable || (actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
+    if (!isAvailable || isBlocked.value || (actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
       return
     anim_start(fireAnimKey)
     if (selShortcut != null)
@@ -515,13 +517,13 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
       mkBtnBorder(stateFlags, isAvailable)
       mkBtnZone(key)
       @() {
-        watch = [canShoot, unitType]
+        watch = [canShoot, unitType, isBlocked]
         rendObj = ROBJ_IMAGE
         size = [imgSize, imgSize]
         pos = [0, -hdpx(5)] //gap over amount text
         image = svgNullable(isAltImage ? altImage : getImage(unitType.value), imgSize)
         keepAspect = KEEP_ASPECT_FIT
-        color = !isAvailable || (hasAim && !(actionItem?.aimReady ?? true)) || !canShoot.value
+        color = !isAvailable || (hasAim && !(actionItem?.aimReady ?? true)) || !canShoot.value || isBlocked.value
           ? imageDisabledColor
           : imageColor
       }
@@ -542,6 +544,8 @@ let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
   let stateFlags = Watched(0)
   let isAvailable = isActionAvailable(actionItem)
+  let isBlocked = Computed(@() unitType.value == "submarine" && isNotOnTheSurface.value
+    && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_SECONDARY))
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
 
   let res = mkContinuousButtonParams(
@@ -563,13 +567,13 @@ let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
         @() playSound(key == TRIGGER_GROUP_PRIMARY ? "weapon_primary_ready" : "weapon_secondary_ready"))
       mkBtnBorder(stateFlags, isAvailable)
       @() {
-        watch = unitType
+        watch = [ unitType, isBlocked ]
         rendObj = ROBJ_IMAGE
         size = [imgSize, imgSize]
         pos = [0, -hdpx(5)] //gap over amount text
         image = svgNullable(getImage(unitType.value), imgSize)
         keepAspect = KEEP_ASPECT_FIT
-        color = !isAvailable || (hasAim && !(actionItem?.aimReady ?? true))
+        color = !isAvailable || (hasAim && !(actionItem?.aimReady ?? true)) || isBlocked.value
           ? imageDisabledColor
           : imageColor
       }
@@ -627,7 +631,7 @@ let weaponChangeMark = mkWeaponRightBlock({
   keepAspect = true
 })
 
-let function weaponRightBlock(number, curBulletIdxW) {
+let function weaponRightBlockPrimary(number, curBulletIdxW) {
   if (curBulletIdxW == null)
     return weaponNumber(number)
   let isNeedChange = Computed(@() curBulletIdxW.value != nextBulletIdx.value)
@@ -678,6 +682,7 @@ let function mkWeaponryItemByTrigger(buttonConfig, actionItem, ovr = {}) {
     addChild = mkWeaponBlockReasonIcon(Computed(@() unitType.value == "submarine" && isNotOnTheSurface.value), surfacingIcon)
   }
   let key = $"btn_weapon_{trigger}"
+  let isMainCaliber = sizeOrder == 0
   return number < 0 && (trigger not in curBulletIdxByTrigger)
     ? mkWeaponryItem(btnCfg, actionItem, ovr.__merge({ key }))
     : {
@@ -685,7 +690,9 @@ let function mkWeaponryItemByTrigger(buttonConfig, actionItem, ovr = {}) {
         size = [touchButtonSize, touchButtonSize]
         children = [
           mkWeaponryItem(btnCfg, actionItem)
-          weaponRightBlock(number, curBulletIdxByTrigger?[trigger])
+          isMainCaliber
+            ? weaponRightBlockPrimary(number, curBulletIdxByTrigger?[trigger])
+            : weaponNumber(number)
         ]
       }.__update(ovr)
 }

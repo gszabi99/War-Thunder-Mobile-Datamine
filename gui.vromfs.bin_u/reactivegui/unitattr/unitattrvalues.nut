@@ -170,7 +170,7 @@ let shipAttrs = {
   }
 }.map(@(c) mkValCfg(c))
 
-let function mkAttrFrom100prcUp(attrId) {
+let function mkAttrFrom100prcUp(attrId, roundBy = 0.1) {
   let { begin, end } = attrRangesTank[attrId]
   let rMin = begin < end ? begin : end
   let rMax = begin < end ? end : begin
@@ -178,11 +178,11 @@ let function mkAttrFrom100prcUp(attrId) {
   return {
     getBaseVal = @(_shopCfg) 1.0
     getMulMax = @(_attrId) mulMax
-    valueToText = @(v) "".concat(round_by_value(v * 100, 0.1), "%")
+    valueToText = @(v) "".concat(round_by_value(v * 100, roundBy), "%")
   }
 }
 
-let function mkAttrUpTo100prc(attrId) {
+let function mkAttrUpTo100prc(attrId, roundBy = 0.1) {
   let { begin, end } = attrRangesTank[attrId]
   let rMin = begin < end ? begin : end
   let rMax = begin < end ? end : begin
@@ -191,7 +191,7 @@ let function mkAttrUpTo100prc(attrId) {
     getBaseVal = @(_shopCfg) baseVal
     getMulMin = @(_attrId) rMin
     getMulMax = @(_attrId) rMax
-    valueToText = @(v) "".concat(round_by_value(v * 100, 0.1), "%")
+    valueToText = @(v) "".concat(round_by_value(v * 100, roundBy), "%")
   }
 }
 
@@ -227,7 +227,7 @@ let tankAttrs = {
     }
   }
   driving = mkAttrUpTo100prc("driving")
-  field_repair = mkAttrFrom100prcUp("field_repair")
+  field_repair = mkAttrUpTo100prc("field_repair", 1.0)
 }.map(@(c) mkValCfg(c))
 
 let attrValCfg = {

@@ -14,7 +14,7 @@ let levelUpRewards = require("levelUpRewards.ui.nut")
 let levelUpChooseUpgrade = require("levelUpChooseUpgrade.ui.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let backButton = require("%rGui/components/backButton.nut")
-let { hasPackage, mkHasAllPackages } = require("%appGlobals/updater/hasPackage.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
@@ -38,8 +38,8 @@ let lvlUpUnitsPkgs = Computed(@() buyUnitsData.value.canBuyOnLvlUp
       return res
     }, {})
   .keys()
-  .filter(@(v) !hasPackage(v)))
-let hasLvlUpPkgs = mkHasAllPackages(lvlUpUnitsPkgs, true)
+  .filter(@(v) !hasAddons.value?[v]))
+let hasLvlUpPkgs = Computed(@() lvlUpUnitsPkgs.value.len() == 0)
 
 let lineGradient = mkLinearGradientImg({
   points = [{ offset = 0, color = colorArr(0) }, { offset = 100, color = colorArr(headerLineColor) }]

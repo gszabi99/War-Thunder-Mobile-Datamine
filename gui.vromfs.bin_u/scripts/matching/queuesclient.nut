@@ -142,7 +142,7 @@ let leaveQueue = @() isInQueue.value ? setQueueState(QS_LEAVING) : null
 
 subscribe("leaveQueue", @(_) leaveQueue())
 
-isMatchingConnected.subscribe(@(_) curQueue(null))
+isMatchingConnected.subscribe(@(_) destroyQueue())
 
 return queueState.__merge({
   joinQueue

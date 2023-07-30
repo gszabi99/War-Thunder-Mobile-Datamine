@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasPackage, mkHasAllPackages } = require("%appGlobals/updater/hasPackage.nut")
-let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { localizeAddonsLimited, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { openDownloadAddonsWnd, addonsToDownload } = require("%rGui/updater/updaterState.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { textButtonFaded } = require("%rGui/components/textButton.nut")
@@ -23,18 +23,18 @@ let textArea = @(text, ovr = {}) {
 }.__update(fontTiny, ovr)
 
 let function mkUnitPkgDownloadInfo(unitW, needProgress = true) {
-  let reqPkgList = Computed(@() unitW.value == null ? [] : getUnitPkgs(unitW.value.name, unitW.value.mRank))
-  let hasReqPkg = mkHasAllPackages(reqPkgList, true)
+  let reqPkgList = Computed(@() unitW.value == null ? []
+    : getUnitPkgs(unitW.value.name, unitW.value.mRank).filter(@(a) !hasAddons.value?[a]))
   let isCurrentUnit = Computed(@() curUnit.value?.name == unitW.value?.name)
   return @() {
-    watch = [reqPkgList, hasReqPkg, addonsToDownload]
+    watch = [reqPkgList, addonsToDownload]
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_CENTER
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(10)
-    children = hasReqPkg.value ? null
-      : reqPkgList.value.findvalue(@(a) !hasPackage(a) && (a not in addonsToDownload.value)) == null
+    children = reqPkgList.value.len() == 0 ? null
+      : reqPkgList.value.findvalue(@(a) a not in addonsToDownload.value) == null
         ? [
             @() !isCurrentUnit.value ? { watch = isCurrentUnit }
               : textArea(loc("msg/downloadPackToUseUnitOnline"), { watch = isCurrentUnit })
@@ -42,8 +42,8 @@ let function mkUnitPkgDownloadInfo(unitW, needProgress = true) {
           ]
       : [
           textArea(loc("msg/needDownloadPackToUseUnit", {
-            pkg = comma.join(localizeAddons(reqPkgList.value))
-            size = getAddonsSizeStr(reqPkgList.value.filter(@(v) !hasPackage(v)))
+            pkg = localizeAddonsLimited(reqPkgList.value, 3)
+            size = getAddonsSizeStr(reqPkgList.value)
           }))
           textButtonFaded(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(reqPkgList.value))
         ]

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { subscribe } = require("eventbus")
 let { activeOffer } = require("offerState.nut")
 let { shopGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -41,6 +42,8 @@ let isPreviewGoodsPurchasing = Computed(@() previewGoods.value?.id != null
     || previewGoods.value.id == platformPurchaseInProgress.value))
 
 isPreviewGoodsPurchasing.subscribe(@(v) v ? null : closeGoodsPreview())
+
+subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
 
 return {
   GPT_UNIT

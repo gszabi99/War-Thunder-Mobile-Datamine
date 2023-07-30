@@ -6,6 +6,9 @@ let { check_new_offer, shopPurchaseInProgress } = require("%appGlobals/pServer/p
 let { activeOffers, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { PURCHASING, DELAYED } = require("goodsStates.nut")
 let { getGoodsType } = require("shopCommon.nut")
+let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let attachedOfferScenes = Watched({})
 let isOfferAttached = Computed(@() attachedOfferScenes.value.len() > 0)
@@ -61,10 +64,18 @@ let offerPurchasingState = Computed(function() {
   return res
 })
 
+let reqAddonsToShowOffer = Computed(function() {
+  let unit = serverConfigs.value?.allUnits[visibleOffer.value?.unitUpgrades[0] ?? visibleOffer.value?.units[0]]
+  if (unit == null)
+    return []
+  return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.value?[a])
+})
+
 return {
   activeOffer //otdated offer can be here. Need to not leave preview on time left
   visibleOffer //only active by timer offer here. banner hides for outdated offer
   offerPurchasingState
+  reqAddonsToShowOffer
 
   onOfferSceneAttach = @(key) attachedOfferScenes.mutate(@(v) v.__update({ [key]  = true }))
   onOfferSceneDetach = @(key) key not in attachedOfferScenes.value ? null

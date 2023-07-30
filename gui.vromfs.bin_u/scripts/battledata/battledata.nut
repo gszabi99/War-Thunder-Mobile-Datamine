@@ -178,7 +178,7 @@ let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !::is_m
   : state.value?.data))
 mpBattleDataForClientEcs.subscribe(@(v) setBattleDataToClientEcs(v))
 
-realBattleData.subscribe(@(v) battleCampaign(v?.campaign))
+realBattleData.subscribe(@(v) battleCampaign(v?.campaign ?? ""))
 
 register_command(function() {
   if (state.value == null)

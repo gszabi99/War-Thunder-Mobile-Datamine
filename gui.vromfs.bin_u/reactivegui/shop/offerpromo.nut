@@ -1,23 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
-let { visibleOffer, onOfferSceneAttach, onOfferSceneDetach, offerPurchasingState
+let { visibleOffer, onOfferSceneAttach, onOfferSceneDetach, offerPurchasingState, reqAddonsToShowOffer
 } = require("offerState.nut")
 let { mkOffer } = require("%rGui/shop/goodsView/offers.nut")
 let { openGoodsPreview, previewType } = require("%rGui/shop/goodsPreviewState.nut")
 let { showPriceOnBanner } = require("offerTests.nut")
 let { buyPlatformGoods } = require("platformGoods.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 
 let function previewOffer() {
   if (visibleOffer.value == null)
     return
 
-  openGoodsPreview(visibleOffer.value.id)
-  if (previewType.value == null) { //no preview for such goods yet
-    buyPlatformGoods(visibleOffer.value)
-    sendOfferBqEvent("gotoPurchaseFromBanner", visibleOffer.value.campaign)
+  if (reqAddonsToShowOffer.value.len() == 0) {
+    openGoodsPreview(visibleOffer.value.id)
+    if (previewType.value == null) { //no preview for such goods yet
+      buyPlatformGoods(visibleOffer.value)
+      sendOfferBqEvent("gotoPurchaseFromBanner", visibleOffer.value.campaign)
+    }
+    else
+      sendOfferBqEvent("openInfoFromBanner", visibleOffer.value.campaign)
+    return
   }
-  else
-    sendOfferBqEvent("openInfoFromBanner", visibleOffer.value.campaign)
+
+  openDownloadAddonsWnd(reqAddonsToShowOffer.value, "openGoodsPreview", { id = visibleOffer.value.id })
+  sendOfferBqEvent("openInfoFromBanner", visibleOffer.value.campaign)
 }
 
 let promoKey = {}

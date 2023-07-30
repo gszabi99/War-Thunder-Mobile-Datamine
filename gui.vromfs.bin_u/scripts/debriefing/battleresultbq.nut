@@ -15,6 +15,7 @@ let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let { get_gui_option, addUserOption } = require("guiOptions")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { battleResult } = require("battleResult.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 let OPT_GRAPHICS_QUALITY = addUserOption("OPT_GRAPHICS_QUALITY")
 let OPT_FPS = addUserOption("OPT_FPS")
@@ -27,7 +28,8 @@ let function onFrameTimes(evt, _eid, _comp) {
     delete data.time
   data.__update({
     platform = get_platform_string_id()
-    campaign = battleCampaign.value ?? battleResult.value?.campaign ?? ""
+    campaign = battleCampaign.value != "" ? battleCampaign.value
+      : (battleResult.value?.campaign ?? curCampaign.value ?? "")
     mission = get_current_mission_name()
     fpsLimit = get_gui_option(OPT_FPS) ?? get_default_fps_limit()
     videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY) ?? get_default_graphics_preset()

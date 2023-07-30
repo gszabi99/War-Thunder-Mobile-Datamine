@@ -70,7 +70,7 @@ let statsByCamp = {
   ships = [
     { locId = "debriefing/damageDealt", getVal = @(reward, _) reward?.damage.tointeger() ?? 0 }
     { locId = "debriefing/NavalKills", getVal = @(_, player) player?.navalKills ?? 0 }
-    { locId = "debriefing/PlayerPlace", getVal = @(_,player) player.place , valueCtor = playerPlaceCtor}
+    { locId = "debriefing/PlayerPlace", getVal = @(_,player) player?.place , valueCtor = playerPlaceCtor}
   ],
 
   tanks = [
@@ -78,7 +78,7 @@ let statsByCamp = {
     { locId = "debriefing/GroundKills", getVal = @(_, player) player?.groundKills ?? 0 }
     { locId = "debriefing/AirKills", getVal = @(_, player) (player?.kills ?? 0) <= 0 ? null : player.kills }
     { locId = "debriefing/Captures", getVal = @(_, player) player?.captures ?? 0 }
-    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player.place,  valueCtor = playerPlaceCtor}
+    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place,  valueCtor = playerPlaceCtor}
   ],
 }
 

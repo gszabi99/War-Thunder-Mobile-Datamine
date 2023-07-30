@@ -17,6 +17,8 @@ let PKG_COMMON_HQ = "pkg_common_hq"
 let PKG_DEV = "pkg_dev"
 
 let MB = 1 << 20
+let nbsp = "\u00A0" // Non-breaking space char
+let comma = loc("ui/comma")
 
 let naval     = [ PKG_COMMON, PKG_NAVAL, PKG_COMMON_HQ, PKG_NAVAL_HQ ]
 let ground    = [ PKG_COMMON, PKG_GROUND, PKG_COMMON_HQ, PKG_GROUND_HQ ]
@@ -52,8 +54,8 @@ let function getAddonNameImpl(addon) {
   let postfix = list[postfixIdx]
   let tier = toIntegerSafe(list[postfixIdx - 1])
   if (tier <= 0)
-    return loc($"addon/{postfix}")
-  return loc($"addon/{postfix}_tier", { tier = getRomanNumeral(tier) })
+    return loc($"addon/{postfix}").replace(" ", nbsp)
+  return loc($"addon/{postfix}_tier", { tier = getRomanNumeral(tier) }).replace(" ", nbsp)
 }
 
 let addonNames = {}
@@ -76,6 +78,18 @@ let function localizeAddons(addons) {
   return res
 }
 
+let function localizeAddonsLimited(list, maxNumber) {
+  let localized = localizeAddons(list)
+  let total = localized.len()
+  if (total <= maxNumber)
+    return comma.join(localized)
+  let showNumber = maxNumber - 1
+  return loc("andMoreAddons", {
+    addonsList = comma.join(localized.slice(0, showNumber))
+    number = total - showNumber
+  })
+}
+
 let function getAddonsSizeStr(addons) {
   let bytes = unique(addons).reduce(@(res, addon) res + get_addon_size(addon), 0)
   let mb = (bytes + (MB / 2)) / MB
@@ -90,5 +104,6 @@ return freeze({
   gameModeAddonToAddonSetMap
 
   localizeAddons
+  localizeAddonsLimited
   getAddonsSizeStr
 })

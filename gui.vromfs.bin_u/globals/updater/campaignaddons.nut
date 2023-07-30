@@ -46,7 +46,10 @@ let function getUnitPkgs(unitName, mRank) {
   if (unitName in customUnitPkg)
     return customUnitPkg[unitName] ?? []
   let postfix = getAddonPostfix(unitName)
-  return appendRankAddon(clone (commonAddons?[postfix] ?? []), postfix, mRank)
+  let res = clone (commonAddons?[postfix] ?? [])
+  for (local i = mRank; i >= 1; i--)
+    appendRankAddon(res, postfix, i)
+  return res
 }
 
 let getCampaignAddonPostfix = @(campaign) campaignPostfix?[campaign] ?? "naval"
@@ -54,7 +57,7 @@ let getCampaignAddonPostfix = @(campaign) campaignPostfix?[campaign] ?? "naval"
 let function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   let postfix = getCampaignAddonPostfix(campaign)
   let res = clone (commonAddons?[postfix] ?? [])
-  for (local i = 1; i <= mRank + 1; i++)
+  for (local i = mRank + 1; i >= 1 ; i--)
     appendRankAddon(res, postfix, i)
   return res
 }

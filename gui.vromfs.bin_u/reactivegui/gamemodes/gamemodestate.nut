@@ -5,11 +5,13 @@ let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { newbieGameModesConfig, prepareStatsForNewbieConfig, isNewbieMode, isNewbieModeSingle
 } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { mkHasAllPackages } = require("%appGlobals/updater/hasPackage.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
 let forceNewbieModeIdx = mkWatched(persist, "forceNewbieModeIdx", -1)
-let curCampaignNewbiePkgList = Computed(@() getCampaignPkgsForOnlineBattle(curCampaign.value, 1))
-let hasCurCampaignNewbiePkg = mkHasAllPackages(curCampaignNewbiePkgList, true)
+let hasCurCampaignNewbiePkg = Computed(function() {
+  let addons = getCampaignPkgsForOnlineBattle(curCampaign.value, 1)
+  return addons.len() == 0 || null == addons.findvalue(@(a) !hasAddons.value?[a])
+})
 
 let curNewbieMode = Computed(function() {
   let list = newbieGameModesConfig?[curCampaign.value]

@@ -63,7 +63,7 @@ let pricePlate = @() {
   padding = [ hdpx(24), 0 ]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = textButtonPurchase(utf8ToUpper(previewGoods.value?.priceExt.priceText),
+  children = textButtonPurchase(utf8ToUpper(previewGoods.value?.priceExt.priceText ?? ""),
     @() buyPlatformGoods(previewGoods.value.id), fontMedium)
 }
 
