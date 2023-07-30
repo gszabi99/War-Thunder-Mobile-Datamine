@@ -46,6 +46,13 @@ let function getLocName(name) {
   return nameLocCache[name]
 }
 
+let idLowercaseCache = {}
+let function getIdLowercase(name) {
+  if (name not in idLowercaseCache)
+    idLowercaseCache[name] <- name.tolower()
+  return idLowercaseCache[name]
+}
+
 let nameId = "name"
 let nameValue = mkValue(nameId, "")
 let optName = {
@@ -58,7 +65,12 @@ let optName = {
     if (value == "")
       return true
     let lower = utf8ToLower(value)
-    return unit.name.contains(lower) || getLocName(unit.name).contains(lower)
+    if (getLocName(unit.name).contains(lower) || getIdLowercase(unit.name) == lower)
+      return true
+    foreach (pu in unit.platoonUnits)
+      if (getLocName(pu.name).contains(lower) || getIdLowercase(pu.name) == lower)
+        return true
+    return false
   }
 }
 

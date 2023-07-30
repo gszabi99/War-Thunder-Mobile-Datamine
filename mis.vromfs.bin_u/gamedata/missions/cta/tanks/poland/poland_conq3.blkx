@@ -99,6 +99,7 @@
       "country_axis": "germany",
       "country_allies": "ussr",
       "showTacticalMapCellSize": true,
+      "checkFriendlyFireAlsoFromAircrafts": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,

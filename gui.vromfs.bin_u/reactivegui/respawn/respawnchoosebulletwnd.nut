@@ -60,6 +60,10 @@ let function mkBulletButton(name, bSet, fromUnitTags) {
       rendObj = ROBJ_TEXT
       color = color.value
       text = getAmmoNameShortText(bSet)
+      maxWidth = pw(100)
+      behavior = Behaviors.Marquee
+      delay = 0.5
+      speed = hdpx(20)
     }.__update(fontTiny)
   ]
   let onClick = @() curSlotName(name)

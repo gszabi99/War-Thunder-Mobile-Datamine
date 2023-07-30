@@ -101,6 +101,7 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
+      "checkFriendlyFireAlsoFromAircrafts": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -537,7 +538,7 @@
         ],
         [
           0.0,
-          25.0,
+          50.0,
           0.0
         ],
         [
@@ -547,7 +548,7 @@
         ],
         [
           3479.3,
-          17.2456,
+          0.0,
           1821.21
         ]
       ],
@@ -564,7 +565,7 @@
         ],
         [
           0.0,
-          25.0,
+          50.0,
           0.0
         ],
         [
@@ -574,7 +575,7 @@
         ],
         [
           3314.52,
-          17.2454,
+          0.0,
           2014.15
         ]
       ],
@@ -591,7 +592,7 @@
         ],
         [
           0.0,
-          25.0,
+          50.0,
           0.0
         ],
         [
@@ -601,7 +602,7 @@
         ],
         [
           3138.95,
-          17.2454,
+          0.0,
           2205.4
         ]
       ],

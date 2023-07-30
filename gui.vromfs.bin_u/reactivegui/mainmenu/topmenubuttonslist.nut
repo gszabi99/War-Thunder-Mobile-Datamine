@@ -77,37 +77,39 @@ let TUTORIAL = {
   cb = @() startTutor(firstBattleTutor.value)
 }
 
-let function getTopMenuButtons() {
+let function getPublicButtons() {
   let res = [OPTIONS, STORE]
   if (firstBattleTutor.value)
     res.append(TUTORIAL)
-
   if (isGamepad.value)
     res.append(GAMEPAD_HELP)
-
   if (isVersionsReceived.value)
     res.append(CHANGELOG)
-
   if (canShowLoginAwards.value)
     res.append(LOGIN_AWARD)
+  return res
+}
 
+let function getDevButtons() {
+  let res = []
   if (!can_debug_configs.value && !can_debug_missions.value)
     return res
 
-  res.append({})  //separator
   if (can_debug_missions.value)
     res.append(TEST_FLIGHT, TF_SHIP_TUNE, BENCHMARK, DEBUG_EVENTS)
   else if (isOfflineMenu)
     res.append(TEST_FLIGHT, BENCHMARK)
-
   if (can_debug_configs.value)
     res.append(DEBUG_CONFIGS, DEBUG_PROFILE, DEBUG_SHOP)
-
   if (can_use_debug_console.value)
     res.append(DEBUG_COMMANDS)
-
   return res
 }
+
+let getTopMenuButtons = @() [
+  getDevButtons()
+  getPublicButtons()
+]
 
 let topMenuButtonsGenId = Computed(function(prev) {
   let vals = [can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad, isVersionsReceived, firstBattleTutor] //warning disable: -declared-never-used

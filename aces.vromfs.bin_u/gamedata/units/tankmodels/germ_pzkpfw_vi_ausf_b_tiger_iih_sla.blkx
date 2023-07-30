@@ -2561,6 +2561,7 @@
   },
   "modifications": {
     "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
     "tank_smoke_screen_system_mod": {
@@ -2807,8 +2808,55 @@
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
-      "camo_scale": -20.0,
-      "camo_rotation": -59.0
+      "camo_scale": -10.0,
+      "camo_rotation": -55.0,
+      "decal0Line0": [
+        1.86812,
+        -1.07163E-07,
+        0.855603,
+        -0.149376
+      ],
+      "decal0Line1": [
+        0.251831,
+        -1.96371,
+        -0.549845,
+        4.75083
+      ],
+      "decal0Line2": [
+        -1.86812,
+        -7.65447E-08,
+        0.855603,
+        1.14253
+      ],
+      "decal0Line3": [
+        0.251831,
+        -1.96371,
+        0.549845,
+        4.74643
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.397961,
+        0.294331,
+        -0.868905,
+        -1.90802
+      ],
+      "decal0CPNormDepth1": [
+        0.397961,
+        0.294331,
+        0.868905,
+        -1.91497
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.486682
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.278664,
+      "decal0Tex": "back_16"
     }
   }
 }

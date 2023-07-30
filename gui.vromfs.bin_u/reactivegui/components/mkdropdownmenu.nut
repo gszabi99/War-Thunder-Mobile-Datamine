@@ -4,6 +4,7 @@ let { btnB } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 let menuButtonSize = hdpx(60)
+let separatorWidth = hdpx(2)
 
 let function makeMenuBtn(onClick) {
   let stateFlags = Watched(0)
@@ -56,35 +57,47 @@ let function textButton(text, onClick) {
   }
 }
 
+let separatorH = {
+  rendObj = ROBJ_SOLID
+  size = [flex(), separatorWidth]
+  color = Color(50, 50, 50)
+}
+
+let separatorV = separatorH.__merge({
+  size = [separatorWidth, flex()]
+})
+
 let mkButton = @(btn) (btn?.len() ?? 0) > 0
   ? textButton(btn.name, @() closeWithCb(btn.cb))
-  : {
-      rendObj = ROBJ_SOLID
-      size = [flex(), hdpx(1)]
-      color = Color(50, 50, 50)
-    }
+  : separatorH
 
-let mkDropMenu = @(buttonsList) {
-  rendObj = ROBJ_SOLID
-  color = Color(32, 34, 38, 216)
+let mkColumn = @(buttonsList) {
   flow = FLOW_VERTICAL
   children = buttonsList.map(mkButton)
+}
+
+let mkDropMenu = @(columnsList) {
+  rendObj = ROBJ_SOLID
+  color = Color(32, 34, 38, 216)
+  gap = separatorV
+  flow = FLOW_HORIZONTAL
+  children = columnsList.map(mkColumn)
 }
 
 let mkDropMenuBtn = @(getButtons, buttonsGeneration) function() {
   let res = {
     watch = buttonsGeneration
   }
-  let buttonsList = getButtons()
-  if (buttonsList.len() == 0)
+  let columnsList = getButtons().filter(@(col) col.len() > 0)
+  if (columnsList.len() == 0)
     return res
 
-  if (buttonsList.len() == 1) {
-    res.children <- makeMenuBtn(buttonsList[0].cb)
+  if (columnsList.len() == 1 && columnsList[0].len() == 1) {
+    res.children <- makeMenuBtn(columnsList[0][0].cb)
     return res
   }
 
-  let menuUi = mkDropMenu(buttonsList)
+  let menuUi = mkDropMenu(columnsList)
   let function openMenu(event) {
     let { targetRect } = event
     modalPopupWnd.add([targetRect.r, targetRect.b], {

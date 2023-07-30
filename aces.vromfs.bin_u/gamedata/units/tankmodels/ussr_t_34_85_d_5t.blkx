@@ -249,11 +249,6 @@
   },
   "class_tags": {},
   "VehiclePhys": {
-    "collisionProps": {
-      "cls_turret_01": "convex_hull",
-      "cls_turret_02": "convex_hull",
-      "cls_body_01": "convex_hull"
-    },
     "engine": {
       "horsePowers": 500.0,
       "maxRPM": 1800.0,
@@ -317,6 +312,11 @@
       ],
       "AdvancedMass": true,
       "trackMass": 1150.0
+    },
+    "collisionProps": {
+      "cls_turret_01": "convex_hull",
+      "cls_gun": "convex_hull",
+      "cls_body": "convex_hull"
     },
     "tracks": {
       "animationMultiplier": -0.75,

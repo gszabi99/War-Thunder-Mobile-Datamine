@@ -2441,7 +2441,8 @@
   "modifications": {
     "tank_tool_kit_expendable": {},
     "art_support": {},
-    "tank_extinguisher": {}
+    "tank_extinguisher": {},
+    "upgraded": {}
   },
   "cockpit": {
     "zoomOutFov": 18.49,
@@ -2537,8 +2538,149 @@
   "upgradedDecals": {
     "default": {
       "skin_condition": 100.0,
-      "camo_scale": -20.0,
-      "camo_rotation": -59.0
+      "camo_scale": -10.0,
+      "camo_rotation": -83.0,
+      "decal0Line0": [
+        2.62623,
+        -1.19569E-07,
+        -0.944791,
+        -0.378138
+      ],
+      "decal0Line1": [
+        -0.0553043,
+        -2.78622,
+        -0.153729,
+        6.32082
+      ],
+      "decal0Line2": [
+        -2.62623,
+        -1.24768E-07,
+        -0.944791,
+        1.37814
+      ],
+      "decal0Line3": [
+        -0.0553041,
+        -2.78622,
+        0.153729,
+        6.32082
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.337932,
+        0.0585359,
+        -0.939349,
+        -0.939457
+      ],
+      "decal0CPNormDepth1": [
+        -0.337932,
+        0.0585359,
+        0.939349,
+        -0.939457
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358293
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.250195,
+      "decal0Tex": "usa_tank_emblem_08",
+      "decal1Line0": [
+        4.84526E-08,
+        -4.84526E-08,
+        1.6258,
+        0.420446
+      ],
+      "decal1Line1": [
+        1.14961,
+        -1.14961,
+        -7.10659E-08,
+        -0.918576
+      ],
+      "decal1Line2": [
+        4.84526E-08,
+        -4.84526E-08,
+        -1.6258,
+        0.579554
+      ],
+      "decal1Line3": [
+        1.14961,
+        -1.14961,
+        7.10659E-08,
+        -0.918576
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.707107,
+        0.707107,
+        0.0,
+        -2.54126
+      ],
+      "decal1CPNormDepth1": [
+        -0.707107,
+        -0.707107,
+        -0.0,
+        2.52725
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.615083
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.318148,
+      "decal1Tex": "usa_tank_emblem_08",
+      "decal2Line0": [
+        -2.68843,
+        -1.19575E-07,
+        -0.750254,
+        -0.959617
+      ],
+      "decal2Line1": [
+        -0.08868,
+        -2.77158,
+        0.317772,
+        6.13871
+      ],
+      "decal2Line2": [
+        2.68843,
+        -1.19575E-07,
+        -0.750254,
+        1.95962
+      ],
+      "decal2Line3": [
+        -0.0886802,
+        -2.77158,
+        -0.317772,
+        6.13871
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        -0.266913,
+        0.1182,
+        0.956445,
+        -1.0763
+      ],
+      "decal2CPNormDepth1": [
+        -0.266913,
+        0.1182,
+        -0.956445,
+        -1.0763
+      ],
+      "decal2RotScale": [
+        1.5708,
+        0.358275
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": false,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.230609,
+      "decal2Tex": "usa_tank_emblem_08"
     }
   },
   "battleHideNodes": {

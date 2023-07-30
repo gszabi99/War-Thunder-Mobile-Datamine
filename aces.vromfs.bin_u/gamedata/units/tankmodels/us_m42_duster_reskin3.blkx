@@ -2733,13 +2733,18 @@
     "replace_tex": {
       "from": "us_camo_olive*",
       "to": "us_camo_desert_pink_lines*"
-    }
-  },
-  "upgradedDecals": {
-    "default": {
-      "skin_condition": 100.0,
-      "camo_scale": -20.0,
-      "camo_rotation": -59.0
-    }
+    },
+    "set_tex": [
+      {
+        "from": "m42_duster_body_c*",
+        "to": "m42_duster_skin_laikhe_body_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "m42_duster_turret_c*",
+        "to": "m42_duster_skin_laikhe_turret_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
   }
 }

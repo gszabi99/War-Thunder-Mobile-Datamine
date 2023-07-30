@@ -23,26 +23,36 @@ let bgHiglight =  {
   color = 0x0134130A
 }
 
-let mkPremiumDaysTitle = @(amount, oldAmount) amount <= 0 ? null : {
-  size = [ hdpx(170), flex() ]
-  hplace = ALIGN_RIGHT
-  halign = ALIGN_CENTER
-  children = [
-    mkGradText(numberToTextForWtFont(amount), hdpx(150), numFontGrad).__update({
-      pos = [ 0, hdpx(38) ]
-      children = oldAmount <= 0 ? null
-        : mkGradText(numberToTextForWtFont(oldAmount), hdpx(58), numFontGrad)
-            .__update({
-              pos = [pw(-90), ph(-15)]
-              hplace = ALIGN_RIGHT
-              children = oldAmountStrikeThrough
-            })
-    })
-    mkGradText(utf8ToUpper(trim(loc("measureUnits/full/days", { n = amount })
-        .replace(amount.tostring(), ""))), hdpx(58), daysFontGrad).__update({
-      pos = [ 0, hdpx(173) ]
-    })
-  ]
+let mkPremiumDaysTitle = function(amount, oldAmount) {
+  if (amount <= 0)
+    return null
+
+  let titleWidth = hdpx(170)
+  let fontSize = hdpx(58)
+  let daysText = utf8ToUpper(trim(loc("measureUnits/full/days", { n = amount }).replace(amount.tostring(), "")))
+  let daysWidth = calc_str_box(daysText, { fontSize })[0]
+  let daysOffset = min(0, titleWidth - daysWidth + hdpx(30))
+
+  return {
+    size = [ titleWidth, flex() ]
+    hplace = ALIGN_RIGHT
+    halign = ALIGN_CENTER
+    children = [
+      mkGradText(numberToTextForWtFont(amount), hdpx(150), numFontGrad).__update({
+        pos = [ 0, hdpx(38) ]
+        children = oldAmount <= 0 ? null
+          : mkGradText(numberToTextForWtFont(oldAmount), fontSize, numFontGrad)
+              .__update({
+                pos = [pw(-90), ph(-15)]
+                hplace = ALIGN_RIGHT
+                children = oldAmountStrikeThrough
+              })
+      })
+      mkGradText(daysText, fontSize, daysFontGrad).__update({
+        pos = [ daysOffset, hdpx(173) ]
+      })
+    ]
+  }
 }
 
 let getLocNamePremium = @(goods) loc("shop/item/premium/amount", { amount = goods.premiumDays })

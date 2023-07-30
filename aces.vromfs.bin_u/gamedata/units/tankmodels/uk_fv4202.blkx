@@ -2378,6 +2378,7 @@
   },
   "modifications": {
     "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
     "tank_smoke_screen_system_mod": {
@@ -2801,6 +2802,160 @@
     "replace_tex": {
       "from": "uk_camo_middle_deep_bronze_greens*",
       "to": "uk_camo_very_dark_drab*"
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "uk_camo_very_dark_drab*",
+      "to": "uk_camo_middle_deep_bronze_greens*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": -21.0,
+      "decal0Line0": [
+        2.78982,
+        -1.21947E-07,
+        -1.18937E-13,
+        -0.376441
+      ],
+      "decal0Line1": [
+        -1.21947E-07,
+        -2.78982,
+        -5.82002E-07,
+        3.38614
+      ],
+      "decal0Line2": [
+        -2.78982,
+        -1.21947E-07,
+        -3.96458E-14,
+        1.37644
+      ],
+      "decal0Line3": [
+        1.21947E-07,
+        -2.78982,
+        5.82002E-07,
+        3.38614
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -2.84217E-14,
+        2.08616E-07,
+        -1.0,
+        -1.70854
+      ],
+      "decal0CPNormDepth1": [
+        -2.84217E-14,
+        2.08616E-07,
+        1.0,
+        -1.70854
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358446
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.200001,
+      "decal0Tex": "uk_vechicle_recognition_marking",
+      "decal1Line0": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1HaveCP": false,
+      "decal1CPNormDepth": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1CPNormDepth1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1RotScale": [
+        1.5708,
+        1.0
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.0,
+      "decal1Tex": "",
+      "decal2Line0": [
+        2.79147,
+        -1.22019E-07,
+        2.91172E-07,
+        -0.389089
+      ],
+      "decal2Line1": [
+        -1.22019E-07,
+        -2.79147,
+        -9.30061E-07,
+        5.7493
+      ],
+      "decal2Line2": [
+        -2.79147,
+        -1.22019E-07,
+        2.91173E-07,
+        1.38909
+      ],
+      "decal2Line3": [
+        1.22019E-07,
+        -2.79147,
+        9.30061E-07,
+        5.7493
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        1.04308E-07,
+        3.33179E-07,
+        -1.0,
+        -1.70822
+      ],
+      "decal2CPNormDepth1": [
+        1.04308E-07,
+        3.33179E-07,
+        1.0,
+        -1.70822
+      ],
+      "decal2RotScale": [
+        1.5708,
+        0.358234
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": true,
+      "decal2OppositeMirrored": true,
+      "decal2WidthBox": 0.200002,
+      "decal2Tex": "uk_red_squadron_hq"
     }
   },
   "skin": [

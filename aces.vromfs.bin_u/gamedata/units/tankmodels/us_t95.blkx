@@ -2200,7 +2200,8 @@
   "modifications": {
     "tank_tool_kit_expendable": {},
     "art_support": {},
-    "tank_extinguisher": {}
+    "tank_extinguisher": {},
+    "upgraded": {}
   },
   "user_skin": {
     "name": "t95",
@@ -2217,8 +2218,102 @@
   "upgradedDecals": {
     "default": {
       "skin_condition": 100.0,
-      "camo_scale": -20.0,
-      "camo_rotation": -59.0
+      "camo_scale": -10.0,
+      "camo_rotation": 78.0,
+      "decal0Line0": [
+        2.05525,
+        -8.9838E-08,
+        -5.84138E-14,
+        0.000443877
+      ],
+      "decal0Line1": [
+        -8.9838E-08,
+        -2.05525,
+        -6.40796E-07,
+        2.53019
+      ],
+      "decal0Line2": [
+        -2.05525,
+        -8.9838E-08,
+        5.84138E-14,
+        0.999556
+      ],
+      "decal0Line3": [
+        8.9838E-08,
+        -2.05525,
+        6.40796E-07,
+        2.53019
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -6.75583E-15,
+        3.11784E-07,
+        -1.0,
+        -2.27031
+      ],
+      "decal0CPNormDepth1": [
+        -6.75583E-15,
+        3.11784E-07,
+        1.0,
+        -2.27031
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.486558
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.202836,
+      "decal0Tex": "usa_tank_emblem_08",
+      "decal1Line0": [
+        -0.65026,
+        0.0,
+        0.945187,
+        -0.590254
+      ],
+      "decal1Line1": [
+        0.945187,
+        0.0,
+        0.65026,
+        2.14438
+      ],
+      "decal1Line2": [
+        -0.65026,
+        0.0,
+        -0.945187,
+        -0.645956
+      ],
+      "decal1Line3": [
+        0.945187,
+        0.0,
+        -0.65026,
+        2.10606
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.0,
+        1.0,
+        0.0,
+        -2.03573
+      ],
+      "decal1CPNormDepth1": [
+        -0.0,
+        -1.0,
+        -0.0,
+        1.91257
+      ],
+      "decal1RotScale": [
+        0.96819,
+        0.871638
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.263651,
+      "decal1Tex": "usa_tank_emblem_09"
     }
   },
   "skin": [

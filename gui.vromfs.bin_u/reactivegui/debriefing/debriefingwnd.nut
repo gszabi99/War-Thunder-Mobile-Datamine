@@ -620,7 +620,6 @@ let function mkContentBlock(data, rewardsInfo) {
   return {
     size = [contentWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
-    gap = rowGap
     halign = ALIGN_CENTER
     children = [
       {
@@ -635,6 +634,7 @@ let function mkContentBlock(data, rewardsInfo) {
       {
         size = [flex(), SIZE_TO_CONTENT]
         flow = FLOW_HORIZONTAL
+        padding = [hdpx(22), 0, 0, 0]
         gap = columnGap
         children = [
           mkPlayerLevelLine(data, statsAnimEndTime)

@@ -99,6 +99,7 @@
       "country_axis": "germany",
       "country_allies": "ussr",
       "showTacticalMapCellSize": true,
+      "checkFriendlyFireAlsoFromAircrafts": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -856,23 +857,23 @@
       "type": "Cylinder",
       "tm": [
         [
-          -4.29153E-06,
+          -4.00389E-06,
           0.0,
-          -42.8736
+          -40.0
         ],
         [
           0.0,
-          35.85,
+          50.0,
           0.0
         ],
         [
-          42.8736,
+          40.0,
           0.0,
-          -4.29153E-06
+          -4.00389E-06
         ],
         [
           2159.8,
-          8.05,
+          0.0,
           2093.3
         ]
       ],
@@ -1126,23 +1127,23 @@
       "type": "Cylinder",
       "tm": [
         [
-          -4.29153E-06,
+          -4.00389E-06,
           0.0,
-          -42.8736
+          -40.0
         ],
         [
           0.0,
-          35.85,
+          50.0,
           0.0
         ],
         [
-          42.8736,
+          40.0,
           0.0,
-          -4.29153E-06
+          -4.00389E-06
         ],
         [
           2159.8,
-          8.05,
+          0.0,
           2093.3
         ]
       ],

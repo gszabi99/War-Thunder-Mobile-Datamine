@@ -4,6 +4,8 @@
 
 from "%scripts/dagui_library.nut" import *
 let logC = log_with_prefix("[CLUSTERS] ")
+let { getCountryCode } = require("auth_wt")
+let { getClustersByCountry } = require("%appGlobals/defaultClusters.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingOnline } = require("matchingOnline.nut")
@@ -84,8 +86,14 @@ if (isMatchingOnline.value && clusters.value.len() == 0)
 isMatchingOnline.subscribe(@(v) !v ? null : restartFetchClusters())
 isLoggedIn.subscribe(@(v) v ? null : clusters([]))
 
+let selClusters = Computed(function() {
+  let defaults = getClustersByCountry(getCountryCode())
+  let res = clusters.value.filter(@(c) defaults.contains(c))
+  return res.len() ? res : clusters.value
+})
+
 return {
   clusters
-  selClusters = clusters //we do not have choice atm.
+  selClusters
   getClusterLocName
 }
