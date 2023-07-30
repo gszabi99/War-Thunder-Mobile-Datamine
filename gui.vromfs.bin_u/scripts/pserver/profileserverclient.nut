@@ -92,13 +92,19 @@ let function checkAndLogError(id, action, cb, data) {
   }
 
   local locErr = err
+  local logErr = err
   if (type(err) == "table" && "message" in err) {
     let msg = loc($"error/{err.message}", err.message)
-    locErr = "code" in err ? $"{msg}\n(code: {err.code})" : msg
+    let code = "code" in err ? $"(code: {err.code})" : ""
+    locErr = "\n".join([msg, code], true)
+    logErr = " ".concat(err.message, code)
   }
-  else if (type(err) != "string")
-    locErr = $"(full answer dump)\n{json.to_string(data)}"
-  logerr($"[profileServerClient] request {id}: {action} returned error: {locErr}")
+  else if (type(err) != "string") {
+    let dumpStr = json.to_string(data)
+    locErr = "\n".concat("Error:", dumpStr)
+    logErr = " ".concat("(full answer dump)", dumpStr)
+  }
+  logerr($"[profileServerClient] request {id}: {action} returned error: {logErr}")
   cb?({ error = locErr, errData = err })
 }
 

@@ -5,6 +5,8 @@ let { isPlatformSony, isPlatformXboxOne, is_android
 } = require("%appGlobals/clientState/platform.nut")
 
 let state = Watched({
+  gpu = ""
+  preset = ""
   fps = -1
   ping = -1
   pl = -1
@@ -35,6 +37,16 @@ let latencyText = Computed(@() latency.value < 0 ? ""
       latency.value, latencyA.value, latencyR.value)
   : format("%s:%5.1fms", loc("latency", "Latency"), latency.value)
 )
+
+let gpuText = Computed(function() {
+  let gpu = state.value.gpu
+  return (gpu.len() > 0) ? $"GPU: {gpu}" : ""
+})
+
+let presetText = Computed(function() {
+  let preset = state.value.preset
+    return (preset.len() > 0) ? $"Preset: {preset}" : ""
+})
 
 let gap = hdpx(10)
 
@@ -109,11 +121,30 @@ let latencyComp = @() textStyle.__merge({
   text = latencyText.value
 })
 
+let sysInfoComp = @() textStyle.__merge({
+  flow = FLOW_HORIZONTAL
+  gap
+  children =
+  [
+    @() textStyle.__merge({
+      watch = gpuText
+      text = gpuText.value
+      color = fpsColor
+    })
+    @() textStyle.__merge({
+      watch = presetText
+      text = presetText.value
+      color = fpsColor
+    })
+  ]
+})
+
 let fpsLineComp = {
   flow = FLOW_HORIZONTAL
   vplace = ALIGN_BOTTOM
   gap
   children = [
+    sysInfoComp
     fpsComp
     sessionComp
     latencyComp

@@ -13,7 +13,7 @@ require %game.events
 
 
 // TODO: dag::Index16 support
-let INVALID_GEOM_NODE_ID = int(0xFFFF)
+let INVALID_GEOM_NODE_ID = -1
 
 
 struct StartSingleBurnDesc
@@ -123,7 +123,7 @@ def fire_system_calc_burn_radius(fire_params : FireParams; coll_node_sph : BSphe
 
 
 def fire_system_calc_burn_offset(fire_params : FireParams; coll_node_sph : BSphere3; tree : GeomNodeTree; node_id : int; pos : float3)
-  if fire_params.allowMultipleFx && node_id != int(0xFFFF)
+  if fire_params.allowMultipleFx && node_id != INVALID_GEOM_NODE_ID
     var tm : float3x4
     geomtree_getNodeWtmScalar(tree, node_id, tm)
     return inverse(tm) * pos
