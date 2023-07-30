@@ -98,9 +98,7 @@ let optFreeCameraInertia = {
 }
 
 let moveDirestionList = [false, true]
-let currentShowMoveDirection = mkOptionValue(OPT_SHOW_MOVE_DIRECTION, false, @(v) validate(v, moveDirestionList))
-set_should_target_tracking(currentShowMoveDirection.value)
-currentShowMoveDirection.subscribe(@(v) set_should_target_tracking(v))
+let currentShowMoveDirection = mkOptionValue(OPT_SHOW_MOVE_DIRECTION, true, @(v) validate(v, moveDirestionList))
 let showMoveDirection = {
   locId = "options/show_move_direction"
   ctrlType = OCT_LIST

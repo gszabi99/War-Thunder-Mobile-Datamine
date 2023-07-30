@@ -13,8 +13,6 @@ let mkSparkStarMoveOut = require("%rGui/effects/mkSparkStarMoveOut.nut")
 let { playSound } = require("sound_wt")
 
 
-local onQuitCb = null
-
 let unitToShow = mkWatched(persist, "unit", null)
 let isOpened = Computed(@() isOutOfBattleAndResults.value && !hasModalWindows.value && unitToShow.value != null)
 let close = @() unitToShow(null)
@@ -206,7 +204,6 @@ let mkUnitEffectScene = @(color) {
   function onDetach() {
     show_unit()
     enable_scene_camera()
-    onQuitCb?()
   }
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -229,8 +226,5 @@ register_command(@() unitToShow(hangarUnit.value), "ui.debug.unitPurchaseEffect"
 
 return {
   isPurchEffectVisible = isOpened
-  requestOpenUnitPurchEffect = function(unit, cb = null) {
-    onQuitCb = cb
-    unitToShow(unit)
-  }
+  requestOpenUnitPurchEffect = @(unit) unitToShow(unit)
 }

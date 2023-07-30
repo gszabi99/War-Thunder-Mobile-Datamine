@@ -3105,5 +3105,8 @@
         "to": "fr_camo_winter_green_white*"
       }
     }
-  ]
+  ],
+  "battleHideNodes": {
+    "n": "details"
+  }
 }

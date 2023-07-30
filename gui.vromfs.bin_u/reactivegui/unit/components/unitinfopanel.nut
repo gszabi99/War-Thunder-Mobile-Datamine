@@ -379,7 +379,7 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
     children = [
       unitHeaderBlock(unit.value, mkUnitTitle)
       unitStatsBlock(unitStats, prevStats)
-      unitArmorBlock(unit.value, true)
+      unitArmorBlock(unit.value, false)
       unitConsumablesBlock(unit.value, itemsCfgOrdered.value)
     ]
   }, override)

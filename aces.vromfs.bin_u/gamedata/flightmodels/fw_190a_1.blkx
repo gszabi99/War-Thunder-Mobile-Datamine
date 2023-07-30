@@ -1538,6 +1538,10 @@
         "cannon_mg_ff_l",
         "flare11",
         "cannon_mg_ff_r"
+      ],
+      "node": [
+        "pylon_bomb2",
+        "pylon_bomb2"
       ]
     },
     "Weapon": [

@@ -4,7 +4,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curTipInfo, enableTipsUpdate, disableTipsUpdate, GLOBAL_LOADING_TIP_BIT
 } = require("%globalsDarg/loading/loadingTips.nut")
 let { unitTypeFontIcons, unitTypeColors } = require("%appGlobals/unitPresentation.nut")
-let { gradTranspDobuleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 
 let unitTypeWeightsByCampaign = {
   ships = { [BIT_SHIP] = 0.7, [BIT_AIR] = 0.2, [GLOBAL_LOADING_TIP_BIT] = 0.1 }
@@ -41,7 +41,7 @@ let gradientLoadingTip = {
   pos = [0, sh(-10)]
   padding = [hdpx(20), hdpx(100)]
   rendObj = ROBJ_9RECT
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
   texOffs = [0, gradDoubleTexOffset]
   screenOffs = [0, hdpx(300)]
   color = 0xA0000000

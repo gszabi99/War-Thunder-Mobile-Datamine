@@ -16,7 +16,7 @@ let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 
 const REPAY_TIME = 0.3
 
-let shipWeponsList = [
+let shipWeaponsList = [
   "ID_ZOOM"
   "EII_ROCKET"
   "EII_TORPEDO"
@@ -38,7 +38,7 @@ let shipGunTriggers = [
   TRIGGER_GROUP_EXTRA_GUN_4
 ]
 
-let aircraftWeponsList = [
+let aircraftWeaponsList = [
   "ID_ZOOM"
   "ID_BOMBS"
   "ID_TORPEDOES"
@@ -61,9 +61,9 @@ let shipSelectShortcuts = {
   [TRIGGER_GROUP_EXTRA_GUN_4] = "ID_SHIP_WEAPON_EXTRA_GUN_4",
 }
 
-let weaponsList = Computed(@() unitType.value == AIR ? aircraftWeponsList
+let weaponsList = Computed(@() unitType.value == AIR ? aircraftWeaponsList
   : unitType.value == TANK ? []
-  : shipWeponsList)
+  : shipWeaponsList)
 
 let gunsList = Computed(function() {
   if (unitType.value == AIR || unitType.value == TANK)

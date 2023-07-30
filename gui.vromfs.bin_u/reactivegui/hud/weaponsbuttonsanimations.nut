@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { gradTranspDobuleSideX } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { spendItemsQueue, removeSpendItem } = require("%rGui/hud/spendItems.nut")
 
 let btnGlareSize = (1.62 * touchButtonSize).tointeger()
 let actionGlareSize = (1.15 * touchButtonSize).tointeger()
 
-let consumableIconSize = hdpx(70)
-let consumableAnimationBottom = consumableIconSize + hdpx(15)
+let consumableIconSize = hdpx(50)
+let consumableAnimationBottom = hdpx(80)
 let consumableAnimationTop = hdpx(130)
 let FADE = 0.2
 let SHOW = 0.8
@@ -26,7 +26,7 @@ let mkBtnGlare = @(trigger) {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
-    image = gradTranspDobuleSideX
+    image = gradTranspDoubleSideX
     color = 0x00A0A0A0
     transform = { rotate = 25, translate = [-btnGlareSize, -btnGlareSize] }
     animations = [{
@@ -53,7 +53,7 @@ let function mkActionGlare(actionItem) {
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
-      image = gradTranspDobuleSideX
+      image = gradTranspDoubleSideX
       color = 0x00A0A0A0
       transform = { rotate = 25, translate = [-actionGlareSize, -actionGlareSize] }
       animations = [{
@@ -74,17 +74,15 @@ let function mkConsumableAnimation(nextAnimation) {
     size = [flex(), SIZE_TO_CONTENT]
     opacity = 0
     transform = {}
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
     children = [
       {
         rendObj = ROBJ_TEXT
         halign = ALIGN_LEFT
         text = - nextAnimation.count
       }.__update(fontTiny)
-      mkCurrencyImage(nextAnimation.itemId, consumableIconSize,
-        {
-          halign = ALIGN_LEFT
-          margin = [0, 0, 0, consumableIconSize / 2 + hdpx(5)]
-        })
+      mkCurrencyImage(nextAnimation.itemId, consumableIconSize, { halign = ALIGN_LEFT })
     ]
     animations = [
       { prop = AnimProp.opacity, from = 0.1, to = 1, duration = FADE,

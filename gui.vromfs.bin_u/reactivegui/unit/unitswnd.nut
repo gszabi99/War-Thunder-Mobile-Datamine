@@ -17,7 +17,7 @@ let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, rankToReqPlayerLvl, getUnitL
 } = require("%appGlobals/unitsState.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { textButtonCommon, textButtonPricePurchase, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPurchase, textButtonPricePurchase, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnderlineFullHeight,
@@ -244,8 +244,7 @@ let function unitActionButtons() {
       let goods = findGoodsPrem(shopGoods.value)
       children.append(
         !havePremium.value
-          ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/speed_explore")), null,
-            @() openGoodsPreview(goods.id))
+          ? textButtonPurchase(utf8ToUpper(loc("msgbox/speed_explore")), @() openGoodsPreview(goods.id))
           : bgTextMessage.__merge({
             children = @(){
               size = SIZE_TO_CONTENT

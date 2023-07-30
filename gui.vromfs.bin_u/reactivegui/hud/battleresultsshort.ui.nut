@@ -2,8 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let eventbus = require("eventbus")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { playSound } = require("sound_wt")
-let { gradTranspDobuleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { playersDamageStats, requestPlayersDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
@@ -41,12 +42,14 @@ let localTeamList = Computed(function() {
 let missionResult = Watched(null)
 let needShowResultScreen = Computed(@() missionResult.value == GO_WIN || missionResult.value == GO_FAIL)
 let localUserPlace = Computed(function() {
+  if (!isInMpSession.value)
+    return null
   let localUserIndex = localTeamList.value.findindex(@(player) player.isLocal)
   return localUserIndex != null ? localUserIndex + 1 : null
 })
 let localUserScores = Computed(function() {
   let player = localTeamList.value.findvalue(@(p) p.isLocal)
-  return player == null ? null
+  let res = player == null ? null
     : battleCampaign.value == "tanks" ? {
       text = loc("debriefing/earnedScores")
       value = (player?.score ?? 0) * 100
@@ -55,6 +58,7 @@ let localUserScores = Computed(function() {
       text = $"{loc("debriefing/damageDealt")}{colon}"
       value = (player?.damage ?? 0).tointeger()
     }
+  return (res?.value ?? 0) > 0 ? res : null
 })
 
 let iconForUserPosition = Computed(@() localUserPlace.value == 1 ? "ui/gameuiskin#player_rank_badge_gold.avif"
@@ -76,7 +80,7 @@ let animatedTextBlock = @() {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   color = textBgColor.value
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
   texOffs = [0 , gradDoubleTexOffset]
   screenOffs = [0, hdpx(250)]
   transform = {}
@@ -108,7 +112,7 @@ let animatedTextBlock = @() {
         rendObj = ROBJ_9RECT
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        image = gradTranspDobuleSideX
+        image = gradTranspDoubleSideX
         texOffs = [0 , gradDoubleTexOffset]
         screenOffs = [0, hdpx(250)]
         transform = { scale = [0.2, 1] }
@@ -132,7 +136,7 @@ let resultTextBlock = @() {
 
 eventbus.subscribe("MpStatistics_TeamsList", @(teams) localTeamListBase(teams?.data[0]))
 
-let placeInTeam = @() {
+let placeInTeam = @() localUserPlace.value == null ? { watch = localUserPlace } : {
   watch = [iconForUserPosition, localUserPlace]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL

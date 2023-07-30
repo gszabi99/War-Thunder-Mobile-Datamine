@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let backButton = require("%rGui/components/backButton.nut")
-let { gradTranspDobuleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { textButtonPurchase } = require("%rGui/components/textButton.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -36,7 +36,7 @@ let infoText = Computed(function() {
 
 let decorativeLine = {
   rendObj = ROBJ_IMAGE
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
   color = premiumDescriptionDecorativeLineBg
   size = [ premiumDescriptionWidth, hdpx(6) ]
 }
@@ -44,7 +44,7 @@ let decorativeLine = {
 let premiumDescriptionHeader = @(){
     watch = previewGoods
     rendObj = ROBJ_IMAGE
-    image = gradTranspDobuleSideX
+    image = gradTranspDoubleSideX
     color = premiumDescriptionHeaderBg
     size = [ premiumDescriptionWidth, premiumDescriptionHeaderHeight ]
     valign = ALIGN_CENTER
@@ -78,7 +78,7 @@ let premiumDescription = {
       premiumDescriptionHeader
       {
         rendObj = ROBJ_9RECT
-        image = gradTranspDobuleSideX
+        image = gradTranspDoubleSideX
         padding = [ insideIndent, 0 ]
         size = [ flex(), SIZE_TO_CONTENT ]
         texOffs = [0 , gradDoubleTexOffset]

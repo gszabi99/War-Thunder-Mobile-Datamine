@@ -48,7 +48,7 @@
   "aircraftShowMachAboveValue": 0.75,
   "useSmoothScaleForUHD": true,
   "isCompassVisible": false,
-  "speedViewMultiplier": 0.625,
+  "isShipSpeedUnboosted": true,
   "distanceViewMultiplier": 2.0,
   "changeDmPanelColorDependingOnHp": false,
   "drawHpBar": false,
@@ -1780,16 +1780,16 @@
   },
   "progress": {
     "position": [
-      30.0,
-      -16.0
+      -50.0,
+      16.0
     ],
     "iconOffset": [
       106.0,
       0.0
     ],
-    "screenAllignHorz": "left",
-    "screenAllignVert": "bottom",
-    "allignHorz": "left",
+    "screenAllignHorz": "right",
+    "screenAllignVert": "top",
+    "allignHorz": "right",
     "allignVert": "bottom",
     "alignAnchor": "lb",
     "font": "tiny_text",
@@ -3291,7 +3291,7 @@
     "minSteeringRadius": 2.5,
     "segmentsNum": 15,
     "segmentsInterval": 1.0,
-    "colorFwd": "ifAwUA==",
-    "colorBack": "//8AUA=="
+    "colorFwd": "L+kAyA==",
+    "colorBack": "//8AyA=="
   }
 }

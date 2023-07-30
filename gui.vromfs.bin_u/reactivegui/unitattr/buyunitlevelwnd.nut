@@ -201,7 +201,7 @@ let function mkLevelBlock(levels, costMul, unitV, levelsSp) {
     sp += levelsSp?[l] ?? 0
     fullCostGold += unitV.levels?[l].costGold ?? 0
     if (l == level && exp > 0)
-      fullCostGold = max(1, min(1.0, expLeft.tofloat() / expTotal).tointeger() * fullCostGold)
+      fullCostGold = max(1, (min(1.0, expLeft.tofloat() / expTotal) * fullCostGold).tointeger())
   }
   let costGold = (costMul * fullCostGold + 0.5).tointeger()
   let stateFlags = Watched(0)

@@ -4,6 +4,7 @@ let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { applyAttrLevels } = require("%rGui/unitAttr/unitAttrValues.nut")
 let { TANK, SHIP, SUBMARINE } = require("%appGlobals/unitConst.nut")
+let { get_game_params } = require("gameparams")
 
 let aircraftMark = "▭"
 let cannonMark = "⋖"
@@ -110,6 +111,10 @@ let statsShip = {
 
   maxSpeed = {
     valueToText = @(v, _) "".concat(round(v * 3.6), loc("measureUnits/kmh"))
+  }
+  maxSpeedSubmarine = {
+    valueToText = @(v, _) "".concat(round(v * 3.6 * (get_game_params()?.submarineMaxSpeedMult ?? 1.)),
+      loc("measureUnits/kmh"))
   }
   turningTime = {
     getProgress = mkGetProgressInv(SHIP, "turningTime")

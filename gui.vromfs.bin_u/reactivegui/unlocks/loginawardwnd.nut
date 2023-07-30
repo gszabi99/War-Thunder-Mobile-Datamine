@@ -15,7 +15,7 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { mkRewardImage, getRewardName } = require("rewardsView/rewardsPresentation.nut")
-let { gradRadialSq, gradTranspDobuleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { textButtonPrimary, textButtonCommon, textButtonFaded, buttonsHGap
 } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -67,7 +67,7 @@ let header = {
   size = [SIZE_TO_CONTENT, hdpx(100)]
   padding = [0, hdpx(100), 0, 0]
   rendObj = ROBJ_9RECT
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
   texOffs = [0, gradDoubleTexOffset]
   screenOffs = [0, hdpx(300)]
   color = 0xA0000000

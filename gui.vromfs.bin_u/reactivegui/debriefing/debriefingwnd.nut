@@ -24,7 +24,7 @@ let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor, unitExpCol
 let { WP } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp, mkExp, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { gradTranspDobuleSideX } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { openUnitAttrWnd } = require("%rGui/unitAttr/unitAttrState.nut")
 let { debriefingData } = require("debriefingState.nut")
@@ -187,7 +187,7 @@ let mkMissionResultLine = @(missionResult) {
   size = [resultLineWidth, resultLineHeight]
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
   color = missionResult.color
   children = {
     size = [lineGlowWidth, lineGlowHeight]
@@ -489,7 +489,7 @@ let rewardsRowBg = {
   halign = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   gap = hdpx(50)
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
 }
 
 let rewardWatches = []
@@ -718,13 +718,13 @@ let function openMpStatistics() {
 
 let function getNewPlatoonUnit(debrData) {
   let { unit = null, reward = null } = debrData
-  let { level = 0, exp = 0, levelsExp = [], platoonUnits = [] } = unit
+  let { level = 0, exp = 0, levelsExp = [], lockedUnits = [] } = unit
   let { totalExp = 0 } = reward?.unitExp
-  if (totalExp == 0 || platoonUnits.len() == 0)
+  if (totalExp == 0 || lockedUnits.len() == 0)
     return null
   local pReqLevel = -1
   local pUnitName = null
-  foreach(pUnit in platoonUnits) {
+  foreach(pUnit in lockedUnits) {
     let { reqLevel = 0, name } = pUnit
     if (reqLevel > level && (pUnitName == null || reqLevel < pReqLevel)) {
       pReqLevel = reqLevel

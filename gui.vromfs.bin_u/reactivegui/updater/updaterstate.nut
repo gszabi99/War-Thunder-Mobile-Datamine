@@ -19,7 +19,7 @@ let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbie
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isConnectionLimited } = require("connectionStatus/connectionStatus.nut")
-let { isRandomBattleNewbie } = require("%rGui/gameModes/gameModeState.nut")
+let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
 let ALLOW_LIMITED_DOWNLOAD_SAVE_ID = "allowLimitedConnectionDownload"
@@ -54,7 +54,7 @@ let needStartDownloadAddons = keepref(Computed(function() {
 
   let campaign = curCampaign.value
   if (curUnit.value != null) {
-    let curUnitAddons = isRandomBattleNewbie.value ? getCampaignPkgsForNewbieBattle(campaign)
+    let curUnitAddons = isRandomBattleNewbie.value ? getCampaignPkgsForNewbieBattle(campaign, isRandomBattleNewbieSingle.value)
       : getCampaignPkgsForOnlineBattle(campaign, curUnit.value.mRank)
     res = addonsToDownload.value.filter(@(_, a) curUnitAddons.contains(a))
     if (res.len() != 0)

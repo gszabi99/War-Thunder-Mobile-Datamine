@@ -2734,5 +2734,8 @@
         "to": "us_camo_winter_grid*"
       }
     }
-  ]
+  ],
+  "battleHideNodes": {
+    "n": "details"
+  }
 }

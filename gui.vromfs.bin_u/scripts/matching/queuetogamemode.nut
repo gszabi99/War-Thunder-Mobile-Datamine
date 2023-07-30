@@ -10,7 +10,7 @@ let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.
 let { isMatchingOnline, showMatchingConnectProgress } = require("matchingOnline.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { isNewbieMode } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
+let { isNewbieMode, isNewbieModeSingle } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
@@ -43,7 +43,7 @@ let function getModeAddonsInfo(mode, unitName) {
     updateDiff += version == "" ? -1 : 1
   }
 
-  let campAddons = isNewbieMode(mode.name) ? getCampaignPkgsForNewbieBattle(curCampaign.value)
+  let campAddons = isNewbieMode(mode.name) ? getCampaignPkgsForNewbieBattle(curCampaign.value, isNewbieModeSingle(mode.name))
     : getCampaignPkgsForOnlineBattle(curCampaign.value, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
   foreach (addon in campAddons)
     if (addon not in addons) {

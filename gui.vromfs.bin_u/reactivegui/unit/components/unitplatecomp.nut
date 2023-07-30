@@ -4,7 +4,7 @@ let { mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
 let { getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { mkLinearGradientImg, mkRadialGradientImg } = require("%darg/helpers/mkGradientImg.nut")
 let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let { gradTranspDobuleSideX } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 
 let unitPlateWidth = hdpx(414)
 let unitPlateHeight = hdpx(174)
@@ -83,7 +83,7 @@ let mkIcon = @(icon, iconSize, override = {}) {
 let premiumUnitHiglight = {
   size = flex()
   rendObj = ROBJ_IMAGE
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
   color = premiumHighlightColor
 }
 
@@ -273,7 +273,7 @@ let mkUnitSlotLockedLine = @(slot) {
     size = flex()
     rendObj = ROBJ_IMAGE
     color = 0x80808080
-    image = gradTranspDobuleSideX
+    image = gradTranspDoubleSideX
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = "reqLevel" in slot

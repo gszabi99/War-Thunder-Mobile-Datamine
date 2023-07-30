@@ -671,9 +671,6 @@
     "delayedDownloadContent": {
       "condition": ""
     },
-    "enableFollowBulletCamera": {
-      "condition": ""
-    },
     "reactivGuiForAircraft": {
       "condition": ""
     },

@@ -27,7 +27,7 @@ let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let respawnMap = require("respawnMap.ui.nut")
 let respawnBullets = require("respawnBullets.nut")
-let { bg, headerText, header, gap } = require("respawnComps.nut")
+let { bg, headerText, header, gap, headerMarquee } = require("respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullHeight
@@ -108,7 +108,11 @@ let levelBg = mkLevelBg({
 let function platoonTitle(unit) {
   let { name, level = 0, isUpgraded = false, isPremium = false } = unit
   let isElite = isUpgraded || isPremium
-  let textComp = headerText("  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit)))
+  let text = "  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit))
+  let textLength = calc_str_box(text, fontTinyAccented)[0]
+  let textWidth = slotPlateWidth - levelHolderSize
+  let textComp = headerText(text)
+    .__update(textLength > textWidth ? headerMarquee(textWidth - hdpx(20)) : {}, { margin = [0, hdpx(20), 0, 0] })
   return header({
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -127,12 +131,6 @@ let function platoonTitle(unit) {
           }.__update(fontSmall)
         ]
       }
-      !isElite ? null
-        : {
-            size = [hdpx(50), hdpx(50)]
-            rendObj = ROBJ_IMAGE
-            image = Picture("ui/gameuiskin#icon_premium.avif")
-          }
       !isElite ? textComp : textComp.__update({ color = premiumTextColor })
     ]
   })

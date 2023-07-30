@@ -316,6 +316,7 @@
   "needCreateWreckedPartShip": false,
   "dayTimeSpeed": 0.0,
   "syncWeatherPeriod": 1000000.0,
+  "useMedicalKitWithToolkit": true,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -5175,15 +5176,8 @@
         "shipRudderAreaMult": 1.5,
         "shipRudderDeflectionMult": 1.2,
         "shipThrustMultShip": 1.6,
-        "shipThrustMultTorpedoBoat": 1.6,
-        "shipThrustMultGunBoat": 1.6,
-        "shipThrustMultTorpedoGunBoat": 1.6,
-        "shipThrustMultSubmarineChaser": 1.6,
-        "shipThrustMultDestroyer": 1.6,
-        "shipThrustMultFerryBarge": 1.6,
         "shipThrustSpeedMult": 0.2,
-        "submarineMaxSpeedMult": 1.5,
-        "submarineSurfaceSlowMult": 1.5,
+        "submarineSurfaceSlowMult": 1.25,
         "shipTurretHorzSpeedMult": 1.25,
         "shipTurretVertSpeedMult": 1.25
       },
@@ -5205,15 +5199,9 @@
         "shipRudderAreaMult": 1.5,
         "shipRudderDeflectionMult": 1.2,
         "shipThrustMultShip": 1.6,
-        "shipThrustMultTorpedoBoat": 1.6,
-        "shipThrustMultGunBoat": 1.6,
-        "shipThrustMultTorpedoGunBoat": 1.6,
-        "shipThrustMultSubmarineChaser": 1.6,
-        "shipThrustMultDestroyer": 1.6,
-        "shipThrustMultFerryBarge": 1.6,
         "shipThrustSpeedMult": 0.2,
-        "submarineMaxSpeedMult": 1.5,
-        "submarineSurfaceSlowMult": 1.5,
+        "submarineMaxSpeedMult": 1.2,
+        "submarineSurfaceSlowMult": 1.25,
         "shipTurretHorzSpeedMult": 1.25,
         "shipTurretVertSpeedMult": 1.25
       },
@@ -5235,14 +5223,8 @@
         "shipRudderAreaMult": 1.5,
         "shipRudderDeflectionMult": 1.2,
         "shipThrustMultShip": 1.6,
-        "shipThrustMultTorpedoBoat": 1.6,
-        "shipThrustMultGunBoat": 1.6,
-        "shipThrustMultTorpedoGunBoat": 1.6,
-        "shipThrustMultSubmarineChaser": 1.6,
-        "shipThrustMultDestroyer": 1.6,
-        "shipThrustMultFerryBarge": 1.6,
-        "submarineMaxSpeedMult": 1.5,
-        "submarineSurfaceSlowMult": 1.5
+        "submarineMaxSpeedMult": 1.2,
+        "submarineSurfaceSlowMult": 1.25
       }
     },
     "manualTrimming": {

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gradTranspDobuleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let teamColors = require("%rGui/style/teamColors.nut")
 
 let defBgColor = 0x66125B5C
@@ -8,7 +8,7 @@ let failBgColor = 0x66550101
 let warningBgColor = 0x66664102 //0xFFffa406
 let hintWidth = hdpx(800)
 let hintSideGradWidth = hdpx(150)
-let warningHintWidth = min(saSize[0] - hdpx(1100), hintWidth)
+let maxHintWidth = min(saSize[0] - hdpx(1100), hintWidth)
 let textGap = hdpx(10)
 
 let appearTime = 0.4
@@ -30,7 +30,7 @@ let mkGradientBlock = @(color, children, width = hintWidth, padding = hdpx(20)) 
     {
       size = flex()
       rendObj = ROBJ_9RECT
-      image = gradTranspDobuleSideX
+      image = gradTranspDoubleSideX
       texOffs = [0,  gradDoubleTexOffset]
       screenOffs = [0, hintSideGradWidth]
       color
@@ -120,13 +120,14 @@ let hintCtors = {
   fail = @(hint) mkGradientBlock(failBgColor, mkTextByWidth(hint?.text ?? ""))
 
   warningWithIcon = @(hint) mkGradientBlock(warningBgColor,
-    mkTextWithIcon(hint?.text ?? "", hint?.icon, hint?.iconSize, warningHintWidth),
-    warningHintWidth,
+    mkTextWithIcon(hint?.text ?? "", hint?.icon, hint?.iconSize, maxHintWidth),
+    maxHintWidth,
     hdpx(10))
 
   errorText = @(hint) errorText(hint.text)
   simpleText = @(hint) simpleText(hint.text)
-  simpleTextTiny = @(hint) simpleText(hint.text, { halign = ALIGN_CENTER }.__update(fontTiny))
+  simpleTextTiny = @(hint) simpleText(hint.text,
+    { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
 }
 
 let function registerHintCreator(id, ctor) {

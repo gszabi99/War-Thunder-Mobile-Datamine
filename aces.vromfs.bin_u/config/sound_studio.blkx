@@ -9897,147 +9897,186 @@
         "moveSlow": {
           "event": "02_surface_ship_submarine_movement/voice_message_commander_move_slow",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveStop": {
           "event": "02_surface_ship_submarine_movement/voice_message_commander_move_stop",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveFullSpeed": {
           "event": "02_surface_ship_submarine_movement/voice_message_commander_move_full_speed",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveForward": {
           "event": "02_surface_ship_submarine_movement/voice_message_commander_move_forward",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveFast": {
           "event": "02_surface_ship_submarine_movement/voice_message_commander_move_fast",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveBackward": {
           "event": "02_surface_ship_submarine_movement/voice_message_commander_move_backward",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveLeft": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_left",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveLeftReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_left_report",
           "playerRole": "sailor",
           "player": -1,
-          "delayTime": 2.0
+          "delayTime": 2.0,
+          "minSpeechInterval": 30.0
         },
         "moveLeftFull": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_left_full",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveLeftFullReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_left_full_report",
           "playerRole": "sailor",
           "player": -1,
-          "delayTime": 2.0
+          "delayTime": 2.0,
+          "minSpeechInterval": 30.0
         },
         "moveRight": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_right",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveRightReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_right_report",
           "playerRole": "sailor",
           "player": -1,
-          "delayTime": 2.0
+          "delayTime": 2.0,
+          "minSpeechInterval": 30.0
         },
         "moveRightFull": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_right_full",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "moveRightFullReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_right_full_report",
           "playerRole": "sailor",
           "player": -1,
-          "delayTime": 2.0
+          "delayTime": 2.0,
+          "minSpeechInterval": 30.0
         },
         "rudderStraight": {
           "event": "03_surface_ship_submarine_rudder/voice_message_commander_rudder_straight",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "rudderStraightReport": {
           "event": "03_surface_ship_submarine_rudder/voice_message_sailor_rudder_straight_report",
           "playerRole": "sailor",
           "player": -1,
-          "delayTime": 2.0
+          "delayTime": 2.0,
+          "minSpeechInterval": 30.0
         },
         "depthChargePrepare": {
           "event": "06_ship_activities/voice_message_commander_ship_bombs_prepare",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 20.0
         },
         "minesPrepare": {
           "event": "06_ship_activities/voice_message_commander_ship_mines_prepare",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 20.0
         },
         "startSmoke": {
           "event": "06_ship_activities/voice_message_commander_ship_smokes",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 20.0
         },
         "torpedoesPrepare": {
           "event": "06_ship_activities/voice_message_commander_ship_torpedoes_prepare",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 30.0
         },
         "torpedoAway": {
           "event": "06_ship_activities/voice_message_sailor_ship_torpedo_away",
           "playerRole": "sailor",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 10.0
         },
         "attackAircraftInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_attack_aircraft",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "fighterInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_fighter",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "bomberInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_bomber",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "torpedoBomberInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_torpedo_bomber",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "aircraftInSailorView": {
           "event": "07_environment/target/sailor/voice_message_sailor_aircraft",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "aircraftInView": {
           "event": "07_environment/voice_message_officer_air",
           "playerRole": "commander",
-          "minSpeechInterval": 30.0,
+          "minSpeechInterval": [
+            30.0,
+            20.0
+          ],
           "player": -1
         },
         "boatInView": {
@@ -10049,7 +10088,10 @@
         "carrierInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_carrier",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "dreadnoughtInView": {
@@ -10061,13 +10103,19 @@
         "submarineInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_submarine",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            20.0
+          ],
           "player": -1
         },
         "periscopeInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_periscope",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "shipInView": {
@@ -10085,25 +10133,37 @@
         "battleCruiserInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_battlecruiser",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "heavyCruiserInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_heavy_cruiser",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "lightCruiserInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_light_cruiser",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "destroyerInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_destroyer",
           "playerRole": "sailor",
-          "minSpeechInterval": 0.0,
+          "minSpeechInterval": [
+            0.0,
+            30.0
+          ],
           "player": -1
         },
         "attackAircraftInViewCom": {
@@ -10436,7 +10496,8 @@
         "submarineTorpedoAway": {
           "event": "05_submarine_activities/voice_message_sailor_submarine_torpedo_away",
           "playerRole": "sailor",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 10.0
         },
         "periscopeDown": {
           "event": "05_submarine_activities/voice_message_commander_periscope_down",
@@ -10447,7 +10508,8 @@
         "periscopeUp": {
           "event": "05_submarine_activities/voice_message_commander_periscope_up",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 20.0
         },
         "submarineSilence": {
           "event": "05_submarine_activities/voice_message_commander_silence",
@@ -10483,86 +10545,86 @@
           "event": "04_submarine_change_depth/voice_message_commander_diving_start_depth",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineDepthChange": {
           "event": "04_submarine_change_depth/voice_message_officer_depth_change",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineDivingStop": {
           "event": "04_submarine_change_depth/voice_message_commander_diving_stop",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineAscent": {
           "event": "04_submarine_change_depth/voice_message_commander_ascent",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineAscentDepth": {
           "event": "04_submarine_change_depth/voice_message_commander_ascent_depth",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineAscentDone": {
           "event": "04_submarine_change_depth/voice_message_commander_ascent_done",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineAscentReport": {
           "event": "04_submarine_change_depth/voice_message_officer_ascent_report",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineDepthPeriscope": {
           "event": "04_submarine_change_depth/voice_message_commander_depth_periscope",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 1.0
+          "minSpeechInterval": 10.0
         },
         "submarineDepthPeriscopeReport": {
           "event": "04_submarine_change_depth/voice_message_officer_depth_periscope_report",
           "playerRole": "commander",
           "player": -1,
           "delayTime": 2.0,
-          "minSpeechInterval": 1.0
+          "minSpeechInterval": 10.0
         },
         "submarineDepthMax1": {
           "event": "04_submarine_change_depth/voice_message_officer_depth_max_v1",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineDepthMax2": {
           "event": "04_submarine_change_depth/voice_message_officer_depth_max_v2",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineDepthCritical": {
           "event": "04_submarine_change_depth/voice_message_officer_depth_max_v3",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineDepthDestroy": {
           "event": "04_submarine_change_depth/voice_message_officer_depth_max_v4",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "submarineSetDepthEnding": {
           "event": "04_submarine_change_depth/voice_message_commander_diving_set_depth_jp_ending",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         }
       },
       "distanceMetric": {
@@ -10803,7 +10865,7 @@
         "num": 30,
         "player": -1,
         "playerRole": "commander",
-        "minSpeechInterval": 0.0
+        "minSpeechInterval": 10.0
       }
     }
   },

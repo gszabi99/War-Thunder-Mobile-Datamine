@@ -9,7 +9,7 @@ let { subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let queueState = require("%appGlobals/queueState.nut")
 let { curQueue, isInQueue, curQueueState, queueStates,
-  QS_ACTUALIZE, QS_JOINING, QS_IN_QUEUE, QS_LEAVING
+  QS_ACTUALIZE, QS_JOINING, QS_IN_QUEUE, QS_LEAVING, QS_NOT_IN_QUEUE
 } = queueState
 let { TEAM_ANY } = require("%appGlobals/teams.nut")
 let { selClusters } = require("clustersList.nut")
@@ -17,6 +17,7 @@ let { queueData, isQueueDataActual, actualizeQueueData } = require("%scripts/bat
 let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let showMatchingError = require("showMatchingError.nut")
+let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 
 
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
@@ -140,6 +141,8 @@ let leaveQueue = @() isInQueue.value ? setQueueState(QS_LEAVING) : null
 })
 
 subscribe("leaveQueue", @(_) leaveQueue())
+
+isMatchingConnected.subscribe(@(_) setQueueState(QS_NOT_IN_QUEUE))
 
 return queueState.__merge({
   joinQueue

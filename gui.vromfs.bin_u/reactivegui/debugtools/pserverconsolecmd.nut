@@ -32,6 +32,8 @@ register_command(@(id, count) userstat_add_item(id, count, printRes), "meta.user
 register_command(@(seconds) seconds < 0 ? remove_premium(-seconds, printRes) : add_premium(seconds, printRes), "meta.add_premium")
 register_command(@(unitName) add_unit(unitName, printRes), "meta.add_unit")
 register_command(@(unitName) remove_unit(unitName, printRes), "meta.remove_unit")
+register_command(@() add_unit(hangarUnitName.value, printRes), "meta.add_hangar_unit")
+register_command(@() remove_unit(hangarUnitName.value, printRes), "meta.remove_hangar_unit")
 
 register_command(function(count) {
   add_wp(count * 100)

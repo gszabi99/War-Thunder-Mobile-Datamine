@@ -398,7 +398,8 @@
     "renderImmDecals": false,
     "renderImpostorsToDraftDepth": false,
     "enableClipmapDecals": false,
-    "underwaterFogUseShadows": 2
+    "underwaterFogUseShadows": 2,
+    "allowHmap": false
   },
   "ps4": {
     "garlic_size_mb": 2560,
@@ -645,6 +646,7 @@
     "forceMemQuotaKB": 2000000,
     "alwaysRelease": true,
     "texLoadOnDemand": true,
+    "lqIsSplitBQforDiffTex": false,
     "hqTexPrio": 1,
     "lqTexMaxSizeKB": 2048,
     "defStubTexColor": "UFBQAA==",

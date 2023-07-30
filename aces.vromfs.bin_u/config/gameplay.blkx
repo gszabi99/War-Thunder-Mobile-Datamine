@@ -48,6 +48,7 @@
   "showUpObjToTeamIconBlinkTime": 5.0,
   "showUpObjToTeamCooldownTime": 10.0,
   "maxSubmarineControlDepth": 100.0,
+  "submarineMaxSpeedMult": 1.2,
   "saclosMissileLineOfSight": true,
   "saclosMissileTreesDeadZone": 0.0,
   "saclosMissileTreesTransparencyTreshold": 0.5,
@@ -1586,22 +1587,210 @@
     ]
   },
   "killStreaksUnits": {
-    "bomber": {
-      "name": "il_2m_1943",
-      "weap": "il_2_1941_4xfab100_8x_rbs132",
-      "rankRange": [
-        0,
-        50
-      ]
-    },
-    "fighter": {
-      "name": "fw_190a_1",
-      "weap": "fw_190a_5_default",
-      "rankRange": [
-        0,
-        50
-      ]
-    }
+    "bomber": [
+      {
+        "name": "il_2m_1943",
+        "weap": "il_2_1941_4xfab100_8x_rbs132",
+        "rankRange": [
+          0,
+          1
+        ]
+      },
+      {
+        "name": "sb2c_1c",
+        "weap": "sb2c_1c_2x500lbs",
+        "rankRange": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "il_2m_1943",
+        "weap": "il_2_1941_4xfab100_8x_rbs132",
+        "rankRange": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "ju_87d_5",
+        "weap": "ju_87d_5_default",
+        "rankRange": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "he_111h_6",
+        "weap": "he111h_6_4xSC250",
+        "rankRange": [
+          3,
+          3
+        ]
+      },
+      {
+        "name": "il_4",
+        "weap": "il_4_2x_fab500_1xfab1000",
+        "rankRange": [
+          3,
+          3
+        ]
+      },
+      {
+        "name": "firefly_mk5",
+        "weap": "firefly_mk5_1000lbs_bombs",
+        "rankRange": [
+          3,
+          3
+        ]
+      },
+      {
+        "name": "he_111h_6",
+        "weap": "he111h_6_4xSC250",
+        "rankRange": [
+          4,
+          4
+        ]
+      },
+      {
+        "name": "il_4",
+        "weap": "il_4_2x_fab500_1xfab1000",
+        "rankRange": [
+          4,
+          4
+        ]
+      },
+      {
+        "name": "firefly_mk5",
+        "weap": "firefly_mk5_1000lbs_bombs",
+        "rankRange": [
+          4,
+          4
+        ]
+      },
+      {
+        "name": "p_47n_15",
+        "weap": "P_47D_default",
+        "rankRange": [
+          5,
+          50
+        ]
+      },
+      {
+        "name": "wyvern_s4",
+        "weap": "wyvern_s4_3x1000lb",
+        "rankRange": [
+          5,
+          50
+        ]
+      }
+    ],
+    "fighter": [
+      {
+        "name": "fw_190a_1",
+        "weap": "fw_190a_5_default",
+        "rankRange": [
+          0,
+          1
+        ]
+      },
+      {
+        "name": "p_40e",
+        "weap": "p_40e_default",
+        "rankRange": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "yak_9",
+        "weap": "yak_9_default",
+        "rankRange": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "fw_190a_1",
+        "weap": "fw_190a_5_default",
+        "rankRange": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "f4u_4",
+        "weap": "f4u_4_default",
+        "rankRange": [
+          3,
+          3
+        ]
+      },
+      {
+        "name": "seafire_mk3",
+        "weap": "seafire_mk3_default",
+        "rankRange": [
+          3,
+          3
+        ]
+      },
+      {
+        "name": "a6m5_zero",
+        "weap": "a6m5_default",
+        "rankRange": [
+          3,
+          3
+        ]
+      },
+      {
+        "name": "f4u_4",
+        "weap": "f4u_4_default",
+        "rankRange": [
+          4,
+          4
+        ]
+      },
+      {
+        "name": "seafire_mk3",
+        "weap": "seafire_mk3_default",
+        "rankRange": [
+          4,
+          4
+        ]
+      },
+      {
+        "name": "a6m5_zero",
+        "weap": "a6m5_default",
+        "rankRange": [
+          4,
+          4
+        ]
+      },
+      {
+        "name": "f8f1",
+        "weap": "f8f1_default",
+        "rankRange": [
+          5,
+          50
+        ]
+      },
+      {
+        "name": "bf_109k_4",
+        "weap": "Bf_109K4_default",
+        "rankRange": [
+          5,
+          50
+        ]
+      },
+      {
+        "name": "la_9",
+        "weap": "la_9_default",
+        "rankRange": [
+          5,
+          50
+        ]
+      }
+    ]
   },
   "farAwayParams": {
     "indicatorScaleScreenHeight": 1080.0,

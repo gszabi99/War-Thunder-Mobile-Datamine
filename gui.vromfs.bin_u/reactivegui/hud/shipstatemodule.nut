@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hasDebuffFire, curRelativeHealth, maxHealth, hasDebuffFlooding, hasDebuffGuns, hasDebuffEngines, hasDebuffMoveControl,
-hasDebuffTorpedoes, buoyancy, maxHpToRepair, nominalHpToRepair } = require("%rGui/hud/shipState.nut")
+hasDebuffTorpedoes, buoyancy, maxHpToRepair } = require("%rGui/hud/shipState.nut")
 let { teamBlueLightColor } = require("%rGui/style/teamColors.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
@@ -56,8 +56,7 @@ remainingHpPercent.subscribe(function(value) {
 
 let hpToRepairColor = 0xFFFF5D5D
 let isVisibleHpToRepair = Computed(@() maxHpToRepair.value > curRelativeHealth.value)
-let hpToRepairPercent = Computed(@()
-  ((min(maxHpToRepair.value - curRelativeHealth.value, nominalHpToRepair.value) + 0.005) * 100).tointeger())
+let hpToRepairPercent = Computed(@() ((maxHpToRepair.value - curRelativeHealth.value + 0.005) * 100).tointeger())
 
 let function mkDebuff(watch, imageId) {
   let icon = mkDebuffIcon($"ui/gameuiskin#{imageId}:{iconSize}:{iconSize}", iconSize)

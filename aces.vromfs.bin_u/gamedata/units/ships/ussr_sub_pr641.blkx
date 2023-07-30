@@ -418,15 +418,15 @@
     "surfacingAreaMult": 0.8,
     "maxVerticalSpeed": 5.0,
     "mass": {
-      "Empty": 1000000.0,
+      "Empty": 750000.0,
       "momentOfInertia": [
-        50.0,
-        200.0,
-        100.0
+        28.0,
+        230.0,
+        120.0
       ],
       "CenterOfGravity": [
-        -2.22,
-        -3.5,
+        -1.8,
+        -3.1,
         0.0
       ]
     },
@@ -436,50 +436,49 @@
       "surfaceSlowMult": 1.07,
       "speedToTime": {
         "row": [
-          [
-            5.0,
-            5.0
-          ],
-          [
-            7.72,
-            10.0
-          ]
+          7.72,
+          22.0
         ]
       },
       "reverseSpeedToTime": {
         "row": [
-          [
-            1.0,
-            3.0
-          ],
-          [
-            3.0,
-            9.0
-          ]
+          4.0,
+          6.0
         ]
       },
       "engine": [
         {
           "pos": [
-            -44.0,
-            -3.369,
-            1.554
-          ],
-          "outputParam": "propeller_rotate_01:CRS",
-          "engineDmPart": "engine_room_01_dm",
-          "transmissionDmPart": "engine_room_01_dm",
-          "propeller": "propeller_01"
-        },
-        {
-          "pos": [
-            -44.0,
-            -3.369,
-            -1.554
+            -47.0,
+            -3.1,
+            0.0
           ],
           "outputParam": "propeller_rotate_02:CRS",
           "engineDmPart": "engine_room_01_dm",
           "transmissionDmPart": "engine_room_01_dm",
           "propeller": "propeller_02"
+        },
+        {
+          "pos": [
+            -45.0,
+            -3.1,
+            2.2
+          ],
+          "outputParam": "propeller_rotate_02:CRS",
+          "engineDmPart": "engine_room_01_dm",
+          "transmissionDmPart": "engine_room_01_dm",
+          "propeller": "propeller_02"
+        },
+        {
+          "pos": [
+            -45.0,
+            -3.1,
+            -2.2
+          ],
+          "outputParam": "propeller_rotate_03:CRS",
+          "engineDmPart": "engine_room_01_dm",
+          "transmissionDmPart": "engine_room_01_dm",
+          "propeller": "propeller_03"
         }
       ]
     },
@@ -490,26 +489,15 @@
     "hydrodynamics": {
       "bodyArea": 0.0,
       "mulReaction": 1.25,
-      "rudder": [
-        {
-          "pos": [
-            -46.0,
-            -3.289,
-            0.0
-          ],
-          "area": 24.0,
-          "deflection": 25.0
-        },
-        {
-          "pos": [
-            -46.0,
-            -3.289,
-            0.0
-          ],
-          "area": 24.0,
-          "deflection": 25.0
-        }
-      ]
+      "rudder": {
+        "pos": [
+          -48.0,
+          -2.2,
+          0.0
+        ],
+        "area": 20.0,
+        "deflection": 33.0
+      }
     }
   },
   "oxygenSystem": {
@@ -563,18 +551,18 @@
   "cockpit": {
     "headPos": [
       0.0,
-      10.0,
-      -45.0
+      15.0,
+      -50.0
     ],
     "headPosOnShooting": [
-      18.0,
-      12.0,
+      0.0,
+      10.0,
       0.0
     ],
     "headPosOnSides": [
       0.0,
       15.0,
-      -70.0
+      -60.0
     ],
     "detectionHeight": 7.5,
     "cameraAhead": true
@@ -587,6 +575,12 @@
         "external": true,
         "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_65_torpedo.blk",
         "emitter": "bone_torpedo_01",
+        "useEmitter": true,
+        "emitterGenRange": [
+          6,
+          7
+        ],
+        "emitterGenFmt": "bone_torpedo_%02d",
         "bullets": 58,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [
@@ -600,7 +594,7 @@
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.44,
+        "shotFreq": 0.1,
         "turret": {
           "head": "bone_torpedo_01",
           "gun": "bone_torpedo_01"

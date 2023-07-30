@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { newbieGameModesConfig, prepareStatsForNewbieConfig, isNewbieMode
+let { newbieGameModesConfig, prepareStatsForNewbieConfig, isNewbieMode, isNewbieModeSingle
 } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkHasAllPackages } = require("%appGlobals/updater/hasPackage.nut")
@@ -67,6 +67,7 @@ return {
   allGameModes
   randomBattleMode
   isRandomBattleNewbie = Computed(@() isNewbieMode(randomBattleMode.value?.name))
+  isRandomBattleNewbieSingle = Computed(@() isNewbieModeSingle(randomBattleMode.value?.name))
   debugModes
   benchmarkGameModes
   forceNewbieModeIdx

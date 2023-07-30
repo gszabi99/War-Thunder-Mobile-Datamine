@@ -10,7 +10,7 @@ let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { weaponTouchIcons } = require("%appGlobals/weaponPresentation.nut")
-let { gradTranspDobuleSideX } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 
 let bigButtonSize = hdpxi(150)
 let bigButtonImgSize = (0.65 * bigButtonSize + 0.5).tointeger()
@@ -104,7 +104,7 @@ let function mkCircleGlare(baseSize, actionItem) {
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
-      image = gradTranspDobuleSideX
+      image = gradTranspDoubleSideX
       color = 0x00A0A0A0
       transform = { rotate = 25, translate = [-size, -size] }
       animations = [{

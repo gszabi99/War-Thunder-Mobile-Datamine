@@ -23,10 +23,18 @@ let header = @(children, ovr = {}) bg.__merge({
   children
 }, ovr)
 
+let headerMarquee = @(width) {
+  size = [width, SIZE_TO_CONTENT]
+  behavior = Behaviors.Marquee
+  delay = 1
+  speed = hdpx(50)
+}
+
 return {
   bg
   gap
   headerText
   header
   headerHeight
+  headerMarquee
 }

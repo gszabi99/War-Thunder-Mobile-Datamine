@@ -3,7 +3,7 @@ from "%rGui/shop/shopCommon.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkColoredGradientY, gradTranspDobuleSideX } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
@@ -318,7 +318,7 @@ let function mkPricePlate(goods, priceBgTex, state, animParams = null, needDisco
         ? {
           rendObj = ROBJ_IMAGE
           size = [glareWidth, ph(140)]
-          image = gradTranspDobuleSideX
+          image = gradTranspDoubleSideX
           color = 0x00A0A0A0
           transform = { translate = [-glareWidth * 1.5, 0], rotate = 25 }
           vplace = ALIGN_CENTER
@@ -395,7 +395,7 @@ let function mkOfferWrap(onClick, mkContent, pricePlate = null) {
           key = "glare"
           rendObj = ROBJ_IMAGE
           size = [glareWidth, ph(140)]
-          image = gradTranspDobuleSideX
+          image = gradTranspDoubleSideX
           color = 0x00A0A0A0
           transform = { translate = [-glareWidth * 2, 0], rotate = 25 }
           vplace = ALIGN_CENTER

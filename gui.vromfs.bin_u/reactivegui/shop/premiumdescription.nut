@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { gradTranspDobuleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 
 
@@ -32,14 +32,14 @@ let closePremiumDescriptionWnd = @() isPremiumDescriptionWndVisible(false)
 
 let decorativeLine = {
   rendObj = ROBJ_IMAGE
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
   color = premiumDescriptionDecorativeLineBg
   size = [ premiumDescriptionWidth, hdpx(6) ]
 }
 
 let premiumDescriptionHeader = {
   rendObj = ROBJ_IMAGE
-  image = gradTranspDobuleSideX
+  image = gradTranspDoubleSideX
   color = premiumDescriptionHeaderBg
   size = [ premiumDescriptionWidth, premiumDescriptionHeaderHeight ]
   valign = ALIGN_CENTER
@@ -58,7 +58,7 @@ let premiumDescription = {
     premiumDescriptionHeader
     {
       rendObj = ROBJ_9RECT
-      image = gradTranspDobuleSideX
+      image = gradTranspDoubleSideX
       padding = [ hdpx(24), 0 ]
       size = [ flex(), SIZE_TO_CONTENT ]
       texOffs = [0 , gradDoubleTexOffset]

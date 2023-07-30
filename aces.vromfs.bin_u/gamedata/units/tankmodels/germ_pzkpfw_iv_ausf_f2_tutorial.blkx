@@ -1134,58 +1134,58 @@
     "hp": 10000.0,
     "hull": {
       "body_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "superstructure_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "body_top_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 20.0
       },
       "body_side_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "superstructure_top_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "superstructure_bottom_dm": {
         "armorThickness": 8.0
       },
       "body_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_01_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "body_back_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_01_side_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_01_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_01_back_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_back_dm": {
         "armorThickness": 8.0
       },
       "superstructure_side_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_02_back_dm": {
-        "armorThickness": 10.0,
-        "armorEffectiveThicknessMax": 10.0
+        "armorThickness": 30.0,
+        "armorEffectiveThicknessMax": 30.0
       },
       "turret_02_bottom_dm": {
-        "armorThickness": 10.0,
-        "armorEffectiveThicknessMax": 10.0
+        "armorThickness": 30.0,
+        "armorEffectiveThicknessMax": 30.0
       },
       "turret_02_front_dm": {
-        "armorThickness": 10.0,
-        "armorEffectiveThicknessMax": 10.0
+        "armorThickness": 30.0,
+        "armorEffectiveThicknessMax": 30.0
       },
       "turret_02_top_dm": {
         "armorThickness": 5.0
@@ -1193,37 +1193,37 @@
     },
     "turret": {
       "turret_top_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_side_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "gun_mask_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "gun_mask_01_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       }
     },
     "mask": {
       "armorClass": "CHA_tank",
       "gun_barrel_armor_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_commander_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "gun_mask_02_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_02_side_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       }
     },
     "crew": {

@@ -8,6 +8,7 @@ let { setHangarUnit } = require("hangarUnit.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { requestOpenUnitPurchEffect } = require("unitPurchaseEffectScene.nut")
+let { defer } = require("dagor.workcycle")
 
 
 let function onUnitPurchaseResult(res, unitId, cb) {
@@ -19,7 +20,8 @@ let function onUnitPurchaseResult(res, unitId, cb) {
     return
   }
   setHangarUnit(unitId)
-  requestOpenUnitPurchEffect(myUnits.value?[unitId], cb)
+  cb?()
+  defer(@() requestOpenUnitPurchEffect(myUnits.value?[unitId]))
 }
 
 let function tryPurchaseUnit(unitId, isUpgraded = false, cb = null) {

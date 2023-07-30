@@ -54,7 +54,7 @@
     "underwater_ship_collision_ground",
     "underwater_ship_collision_ground"
   ],
-  "periscopeDepth": 5.0,
+  "periscopeDepth": 2.0,
   "safeUnderwaterTime": -1.0,
   "isDeeperThanPeriscopeVarName": "periscope_drive",
   "addTorpedoesCountPack": 8,
@@ -444,15 +444,15 @@
     "surfacingAreaMult": 0.8,
     "maxVerticalSpeed": 5.0,
     "mass": {
-      "Empty": 1000000.0,
+      "Empty": 700000.0,
       "momentOfInertia": [
-        50.0,
-        200.0,
-        100.0
+        28.0,
+        230.0,
+        120.0
       ],
       "CenterOfGravity": [
-        -2.22,
-        -3.5,
+        -1.2,
+        -2.2,
         0.0
       ]
     },
@@ -462,34 +462,22 @@
       "surfaceSlowMult": 0.91,
       "speedToTime": {
         "row": [
-          [
-            5.0,
-            5.0
-          ],
-          [
-            8.85,
-            10.0
-          ]
+          7.0,
+          19.0
         ]
       },
       "reverseSpeedToTime": {
         "row": [
-          [
-            1.0,
-            3.0
-          ],
-          [
-            3.0,
-            9.0
-          ]
+          4.0,
+          9.0
         ]
       },
       "engine": [
         {
           "pos": [
-            -44.0,
-            -3.369,
-            1.554
+            -36.0,
+            -3.1,
+            1.7
           ],
           "outputParam": "propeller_rotate_01:CRS",
           "engineDmPart": "engine_room_01_dm",
@@ -498,9 +486,9 @@
         },
         {
           "pos": [
-            -44.0,
-            -3.369,
-            -1.554
+            -36.0,
+            -3.1,
+            -1.7
           ],
           "outputParam": "propeller_rotate_02:CRS",
           "engineDmPart": "engine_room_01_dm",
@@ -515,26 +503,15 @@
     "hydrodynamics": {
       "bodyArea": 0.0,
       "mulReaction": 1.25,
-      "rudder": [
-        {
-          "pos": [
-            -46.0,
-            -3.289,
-            0.0
-          ],
-          "area": 24.0,
-          "deflection": 25.0
-        },
-        {
-          "pos": [
-            -46.0,
-            -3.289,
-            0.0
-          ],
-          "area": 24.0,
-          "deflection": 25.0
-        }
-      ]
+      "rudder": {
+        "pos": [
+          -38.0,
+          -2.0,
+          0.0
+        ],
+        "area": 18.0,
+        "deflection": 33.0
+      }
     }
   },
   "oxygenSystem": {
@@ -589,17 +566,17 @@
     "headPos": [
       0.0,
       10.0,
-      -45.0
+      -35.0
     ],
     "headPosOnShooting": [
-      18.0,
-      12.0,
+      0.0,
+      10.0,
       0.0
     ],
     "headPosOnSides": [
       0.0,
       15.0,
-      -70.0
+      -60.0
     ],
     "detectionHeight": 7.5,
     "cameraAhead": true

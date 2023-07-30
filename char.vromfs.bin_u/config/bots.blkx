@@ -49,32 +49,7 @@
             "country": "germany"
           },
           {
-            "name": "ussr_t_34_1941_l_11",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_34_1941",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_28E",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_34E",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_34_1941_cast_turret",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_kv_2_1940",
+            "name": "germ_pzkpfw_III_ausf_L",
             "weight": 1.0,
             "country": "germany"
           },
@@ -89,52 +64,17 @@
             "country": "germany"
           },
           {
-            "name": "germ_pzkpfw_III_ausf_L",
+            "name": "ussr_t_34_1941_l_11",
             "weight": 1.0,
             "country": "germany"
           },
           {
-            "name": "uk_sherman_II",
+            "name": "ussr_t_34_1941",
             "weight": 1.0,
             "country": "germany"
           },
           {
-            "name": "uk_a_22_mk_1_churchill_1941",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "uk_a27m_cromwell_5",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "fr_m4a4_sherman",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "fr_amx_13_fl_11",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "fr_arl_44_acl1",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_pzsfl_IVa_dickermax",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_pzkpfw_III_ausf_M",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_pzkpfw_IV_ausf_J",
+            "name": "ussr_t_28E",
             "weight": 1.0,
             "country": "germany"
           }
@@ -220,21 +160,6 @@
             "name": "uk_a_22b_mk_3_churchill_1942",
             "weight": 1.0,
             "country": "germany"
-          },
-          {
-            "name": "uk_sherman_ic_firefly",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "uk_a_33_excelsior",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "uk_ram_90mm_aa",
-            "weight": 1.0,
-            "country": "germany"
           }
         ]
       },
@@ -271,21 +196,6 @@
           },
           {
             "name": "fr_m4a1_sherman_fl_10",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_t20",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_m18_hellcat_black_cat",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_m4a3e2_sherman_jumbo_cobra_king",
             "weight": 1.0,
             "country": "germany"
           },
@@ -331,21 +241,6 @@
           },
           {
             "name": "uk_a_22f_mk_7_churchill_1944",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_kv_220",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_m4a2_76w_sherman",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_su_85m",
             "weight": 1.0,
             "country": "germany"
           }
@@ -431,21 +326,6 @@
             "name": "uk_ratel_90",
             "weight": 1.0,
             "country": "germany"
-          },
-          {
-            "name": "jp_st_a3",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "jp_type_60_sprg",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "jp_type_5_ho_ri_prototype",
-            "weight": 1.0,
-            "country": "germany"
           }
         ]
       },
@@ -482,21 +362,6 @@
           },
           {
             "name": "fr_amx_13_75",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_is_2_1944_revenge",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_44_122",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_34_100",
             "weight": 1.0,
             "country": "germany"
           },
@@ -544,21 +409,6 @@
             "name": "uk_a39_tortoise",
             "weight": 1.0,
             "country": "germany"
-          },
-          {
-            "name": "germ_pzkpfw_VI_ausf_b_tiger_IIh_sla",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_pzkpfw_V_ausf_g_panther",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_panzerjager_tiger_P_ferdinand",
-            "weight": 1.0,
-            "country": "germany"
           }
         ]
       },
@@ -580,21 +430,6 @@
           },
           {
             "name": "ussr_object_906",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_t54e1",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_m50_ontos",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_m163_vulcan_reskin",
             "weight": 1.0,
             "country": "germany"
           },
@@ -627,21 +462,6 @@
             "name": "germ_mkpz_m47",
             "weight": 1.0,
             "country": "germany"
-          },
-          {
-            "name": "germ_erprobungstrager_3_achs_turm",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_leopard_I_reskin",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_wiesel_1_mk20",
-            "weight": 1.0,
-            "country": "germany"
           }
         ]
       },
@@ -663,21 +483,6 @@
           },
           {
             "name": "us_m3_bradley",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "uk_chieftain_mk_3",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "uk_conqueror_mk_2",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "uk_fv102_striker",
             "weight": 1.0,
             "country": "germany"
           },
@@ -741,12 +546,6 @@
         ],
         "ship": [
           {
-            "name": "germ_cruiser_admiral_hipper",
-            "weight": 100.0,
-            "count": 1,
-            "country": "germany"
-          },
-          {
             "name": "uk_destroyer_hunt_4series",
             "weight": 1.0,
             "country": "germany"
@@ -759,51 +558,6 @@
           {
             "name": "germ_destroyer_class1934a_1940",
             "weight": 0.5,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_destroyer_pr56_spokoinyy",
-            "weight": 0.25,
-            "country": "germany"
-          },
-          {
-            "name": "jp_destroyer_akizuki",
-            "weight": 0.25,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_destroyer_pr30_ognevoy",
-            "weight": 0.25,
-            "country": "germany"
-          },
-          {
-            "name": "us_destroyer_porter",
-            "weight": 0.25,
-            "country": "germany"
-          },
-          {
-            "name": "germ_destroyer_class1936a_mob_z32",
-            "weight": 0.25,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_destroyer_7y",
-            "weight": 0.25,
-            "country": "germany"
-          },
-          {
-            "name": "jp_destroyer_fubuki",
-            "weight": 0.25,
-            "country": "germany"
-          },
-          {
-            "name": "uk_destroyer_tribal",
-            "weight": 0.25,
-            "country": "germany"
-          },
-          {
-            "name": "us_destroyer_mitscher",
-            "weight": 0.25,
             "country": "germany"
           }
         ]
@@ -840,11 +594,6 @@
             "country": "germany"
           },
           {
-            "name": "uk_cruiser_belfast",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
             "name": "us_cruiser_cleveland_class_cleveland",
             "weight": 1.0,
             "country": "germany"
@@ -866,11 +615,6 @@
           },
           {
             "name": "jp_cruiser_tone",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_cruiser_admiral_graf_spee",
             "weight": 1.0,
             "country": "germany"
           }
@@ -909,11 +653,6 @@
           },
           {
             "name": "germ_battleship_kaiser",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_battleship_arizona_1931",
             "weight": 1.0,
             "country": "germany"
           },
@@ -966,11 +705,6 @@
             "country": "germany"
           },
           {
-            "name": "ussr_battlecruiser_kronshtadt",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
             "name": "germ_battleship_tirpitz_1944",
             "weight": 1.0,
             "country": "germany"
@@ -982,11 +716,6 @@
           },
           {
             "name": "ussr_battleship_pr23_sovetskij_soyuz",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_battleship_bismarck",
             "weight": 1.0,
             "country": "germany"
           },

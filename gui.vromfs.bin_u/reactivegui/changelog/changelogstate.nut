@@ -52,13 +52,21 @@ let unseenPatchnoteId = Computed(function() {
     return null
   //here we want to find first unseen Major version or last unseed hotfix version.
   let lastId = lastSeenId.value
-  foreach (version in versions.value)
-    if (lastId < version.id && version.versionType == "major")
-      return version.id
+  foreach (version in versions.value) {
+    let { id = null } = version
+    if (type(id) != "integer") {
+      logerr($"Bad changelog version id type: {type(id)}  (id = {id})")
+      continue
+    }
+    if (lastId < id && version.versionType == "major")
+      return id
+  }
 
   local res = null
   foreach (version in versions.value)
-    if (version.id > lastId)
+    if (type(version?.id) != "integer")
+      continue
+    else if (version.id > lastId)
       res = version.id
     else
       break

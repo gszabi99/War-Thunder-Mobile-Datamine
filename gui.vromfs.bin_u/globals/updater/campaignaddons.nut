@@ -17,9 +17,9 @@ let customUnitPkg = {
   uk_destroyer_hunt_4series = null
   us_destroyer_fletcher = null
   //tanks
-  us_m4a1_76w_sherman = null
-  germ_pzkpfw_VI_ausf_h1_tiger = null
-  germ_pzkpfw_V_ausf_d_panther = null
+  us_m4a1_1942_sherman = null
+  ussr_t_34_1941_l_11 = null
+  germ_pzkpfw_IV_ausf_F2 = null
 }
 
 let knownAddons = {}
@@ -59,10 +59,11 @@ let function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   return res
 }
 
-let function getCampaignPkgsForNewbieBattle(campaign) {
+let function getCampaignPkgsForNewbieBattle(campaign, isSingle) {
   let postfix = getCampaignAddonPostfix(campaign)
   let res = clone (commonAddons?[postfix] ?? [])
-  appendRankAddon(res, postfix, 1)
+  if (!isSingle)
+    appendRankAddon(res, postfix, 1)
   return res
 }
 

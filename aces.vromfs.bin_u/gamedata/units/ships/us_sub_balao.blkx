@@ -444,9 +444,9 @@
     "surfacingAreaMult": 0.8,
     "maxVerticalSpeed": 5.0,
     "mass": {
-      "Empty": 2155000.0,
+      "Empty": 1200000.0,
       "momentOfInertia": [
-        25.0,
+        30.0,
         250.0,
         130.0
       ],
@@ -459,7 +459,7 @@
     "engines": {
       "maxSpeed": 10.42,
       "maxReverseSpeed": 3.0,
-      "surfaceSlowMult": 0.432,
+      "surfaceSlowMult": 0.5,
       "speedToTime": {
         "row": [
           10.42,
@@ -469,7 +469,7 @@
       "reverseSpeedToTime": {
         "row": [
           3.0,
-          9.0
+          5.0
         ]
       },
       "engine": [
@@ -504,26 +504,15 @@
     "hydrodynamics": {
       "bodyArea": 0.0,
       "mulReaction": 1.25,
-      "rudder": [
-        {
-          "pos": [
-            -46.0,
-            -3.2,
-            0.0
-          ],
-          "area": 24.0,
-          "deflection": 33.0
-        },
-        {
-          "pos": [
-            -46.0,
-            -3.2,
-            0.0
-          ],
-          "area": 24.0,
-          "deflection": 33.0
-        }
-      ]
+      "rudder": {
+        "pos": [
+          -46.0,
+          -1.2,
+          0.0
+        ],
+        "area": 30.0,
+        "deflection": 33.0
+      }
     }
   },
   "oxygenSystem": {

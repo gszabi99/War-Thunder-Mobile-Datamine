@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { shopGoods } = require("shopState.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
 let { itemsCfgOrdered } = require("%appGlobals/itemsState.nut")
 let { items } = require("%appGlobals/pServer/campaign.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -76,6 +75,21 @@ let mkMsgButtons = @(missItems, toBattle) [
     })
 ]
 
+let function getCheapestGoods(allGoods, isFit) {
+  let byCurrency = {}
+  foreach(goods in allGoods) {
+    if (!isFit(goods))
+      continue
+    let { currencyId = "", price = 0 } = goods?.price
+    if (price <= 0)
+      continue
+    let foundPrice = byCurrency?[currencyId].price.price
+    if (foundPrice == null || foundPrice > price)
+      byCurrency[currencyId] <- goods
+  }
+  return byCurrency?.wp ?? byCurrency.findvalue(@(_) true)
+}
+
 let mkMissingItemsComp = @(unit) Computed(function() {
   let res = []
   let unitItemsPerUse = unit?.itemsPerUse ?? 0
@@ -88,9 +102,9 @@ let mkMissingItemsComp = @(unit) Computed(function() {
     let hasItems = items.value?[name].count ?? 0
     if (reqItems <= hasItems)
       continue
-    let goods = shopGoods.value.findvalue(@(goods) (name in goods?.items) && (goods?.price.price ?? 0) > 0)
-    let { currencyId = "", price = 0 } = goods?.price
-    if (price > 0 && (balance.value?[currencyId] ?? 0) >= price)
+    let goods = getCheapestGoods(shopGoods.value, @(goods) (goods?.items[name] ?? 0) > 0)
+    let { price = 0 } = goods?.price
+    if (price > 0)
       res.append({ itemId = name, reqItems, hasItems, goods })
   }
   return res

@@ -34,7 +34,7 @@ let mkGradientCtorDoubleSideX = @(color1, color2, middle = 0.4) function(params,
   }
 }
 
-let gradTranspDobuleSideX = mkBitmapPicture(gradTexSize, 4, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF))
+let gradTranspDoubleSideX = mkBitmapPicture(gradTexSize, 4, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF))
 
 let gradCircCornerSize = 20
 let gradCircFullSize = 2 * gradCircCornerSize + 4
@@ -142,7 +142,7 @@ return {
   gradCircCornerOffset = gradCircCornerSize + 1
 
   //std gradietns
-  gradTranspDobuleSideX
+  gradTranspDoubleSideX
   gradCircularSqCorners
   gradCircularSmallHorCorners
   gradRadial
