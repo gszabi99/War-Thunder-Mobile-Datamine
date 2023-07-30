@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 
 let shadePw = 33.3
 let defAnimTime = 15.0
-let animDelay = 2.0
 let animBgSizePx = [2700, 1080]
 
 let isNumeric = @(v) type(v) == "integer" || type(v) == "float"
@@ -22,16 +21,13 @@ let function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
   let { moveX = 0, children = null } = layerCfg
   if (moveX == 0 || children == null || animTime <= 0)
     return children
-  let startDuration = 0.25 * animTime
   return {
     size = flex()
     children
     transform = {}
     animations = [
-      { prop = AnimProp.translate, from = [0, 0], to = [-moveX, 0],
-        delay = animDelay, duration = startDuration, easing = InOutQuad, play = true }
       { prop = AnimProp.translate, from = [-moveX, 0], to = [moveX, 0],
-        delay = animDelay + startDuration, duration = animTime, easing = CosineFull, play = true, loop = true }
+        duration = animTime, easing = CosineFull, play = true, loop = true, globalTimer = true }
     ]
   }
 }

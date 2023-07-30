@@ -5,7 +5,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { sin, cos, asin, PI, ceil } = require("math")
 let { registerScene } = require("%rGui/navState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
+let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { hangarUnit, setCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { gradRadial, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let mkBehindSceneEmitter = require("%rGui/effects/mkBehindSceneEmitter.nut")
@@ -14,7 +14,7 @@ let { playSound } = require("sound_wt")
 
 
 let unitToShow = mkWatched(persist, "unit", null)
-let isOpened = Computed(@() isOutOfBattleAndResults.value && !hasModalWindows.value && unitToShow.value != null)
+let isOpened = Computed(@() isInMenu.value && !hasModalWindows.value && unitToShow.value != null)
 let close = @() unitToShow(null)
 
 let BASE_DELAY = 0.2

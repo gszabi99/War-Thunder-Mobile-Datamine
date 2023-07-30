@@ -43,13 +43,14 @@ let function mkCapZone(idx) {
     local res = { watch = [zone, localMPlayerTeam] }
     if (zone.value == null)
       return res
+    let { iconIdx, watchedHeroInZone } = zone.value
     res.__update(
       capZoneCtr(zone.value).__update({
         size = [zoneSize, zoneSize]
-        image = getZoneIcon(zone.value.iconIdx, zoneSize * bigZoneMul)
+        image = getZoneIcon(iconIdx, zoneSize * bigZoneMul)
         transform = {
           pivot = [0.5, 0],
-          scale = zone ?.watchedHeroInZone ? [bigZoneMul, bigZoneMul] : [1.0, 1.0]
+          scale = watchedHeroInZone ? [bigZoneMul, bigZoneMul] : [1.0, 1.0]
         }
       }))
     return res

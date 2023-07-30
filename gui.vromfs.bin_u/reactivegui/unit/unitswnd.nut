@@ -452,16 +452,17 @@ let function unitsBlock() {
       filtered = filtered.filter(@(u) f.isFit(u, value))
   }
   let platoonSize = (filtered?[0].platoonUnits ?? []).len()
+  let gap = platoonSize > 0 ? (platoonSize + 0.5) * platoonSelPlatesGap : 0
   return {
     watch = listWatches
     size = [filtered.len() == 0 ? flex() : SIZE_TO_CONTENT, unitsPlateCombinedHeight]
     flow = FLOW_HORIZONTAL
-    gap = platoonSize > 0 ? (platoonSize + 0.5) * platoonSelPlatesGap : 0
+    gap
     onAttach = function() {
       if (curSelectedUnit.value == null)
         curSelectedUnit(curUnitName.value)
       let selUnitIdx = filtered.findindex(@(u) u.name == curSelectedUnit.value) ?? 0
-      let scrollPosX = unitPlateWidth * selUnitIdx - (0.5 * (saSize[0] - unitPlateWidth))
+      let scrollPosX = (unitPlateWidth + gap) * selUnitIdx - (0.5 * (saSize[0] - unitPlateWidth))
       scrollHandler.scrollToX(scrollPosX)
     }
     children = filtered.len() == 0 ? noUnitsMsg

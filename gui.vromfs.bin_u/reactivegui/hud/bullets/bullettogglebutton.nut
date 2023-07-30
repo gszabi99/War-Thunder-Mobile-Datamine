@@ -127,7 +127,9 @@ let mkText = @(ovr) {
 
 let function bulletName() {
   let name = nextBulletInfo.value?.bulletNames[0]
-  let locId = $"{name}/short"
+  local locId = $"{name}/short"
+  if (!doesLocTextExist(locId))
+    locId = $"{name}/name/short"
   let text = name == null ? ""
     : loc(doesLocTextExist(locId) ? locId : name)
   let prefix = chargeState.value == ALL_CURRENT ? ""

@@ -9,6 +9,7 @@ let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { playersDamageStats, requestPlayersDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { setTimeout } = require("dagor.workcycle")
+let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 
 let changeTextBgColorDuration = 0.1
 let textBlockBounceDuration = 0.3
@@ -47,18 +48,33 @@ let localUserPlace = Computed(function() {
   let localUserIndex = localTeamList.value.findindex(@(player) player.isLocal)
   return localUserIndex != null ? localUserIndex + 1 : null
 })
+
+let scoreInfoByCampaign = {
+  ships = {
+    label = "".concat(loc("debriefing/damageDealt"), colon)
+    getVal = @(p) p.damage.tointeger()
+    toText = @(v) decimalFormat(v)
+  }
+  tanks = {
+    label = loc("debriefing/earnedScores")
+    getVal = @(p) (100 * p.score).tointeger()
+    toText = @(v) decimalFormat(v)
+  }
+}
+
 let localUserScores = Computed(function() {
   let player = localTeamList.value.findvalue(@(p) p.isLocal)
-  let res = player == null ? null
-    : battleCampaign.value == "tanks" ? {
-      text = loc("debriefing/earnedScores")
-      value = (player?.score ?? 0) * 100
-      }
-    : {
-      text = $"{loc("debriefing/damageDealt")}{colon}"
-      value = (player?.damage ?? 0).tointeger()
-    }
-  return (res?.value ?? 0) > 0 ? res : null
+  let scoreInfo = scoreInfoByCampaign?[battleCampaign.value]
+  if (player == null || scoreInfo == null)
+    return null
+  let v = scoreInfo.getVal(player)
+  if (v <= 0)
+    return null
+  let { label, toText } = scoreInfo
+  return {
+    label
+    val = toText(v)
+  }
 })
 
 let iconForUserPosition = Computed(@() localUserPlace.value == 1 ? "ui/gameuiskin#player_rank_badge_gold.avif"
@@ -202,7 +218,7 @@ let function battleResultsShort() {
           flow = FLOW_VERTICAL
           children = [
             placeInTeam
-            localUserScores.value ? earnedScores(localUserScores.value.text, localUserScores.value.value) : null
+            localUserScores.value ? earnedScores(localUserScores.value.label, localUserScores.value.val) : null
           ]
         }
       ]

@@ -142,11 +142,9 @@ let upgradeUnitButton = @(campaign) textButtonCommon(
 
 let mkNewPlatoonUnitButton = @(newPlatoonUnit) textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")),
   function() {
+    closeDebriefing()
+    unitDetailsWnd({ name = debriefingData.value?.unit.name, selUnitName = newPlatoonUnit.name })
     requestOpenUnitPurchEffect(newPlatoonUnit)
-    setTimeout(0.5, function() { //timer need to not show details before effect full appear
-      unitDetailsWnd((debriefingData.value?.unit ?? {}).__merge({ selUnitName = newPlatoonUnit.name }))
-      closeDebriefing()
-    })
   },
   { hotkeys = ["^J:X | Enter"] })
 

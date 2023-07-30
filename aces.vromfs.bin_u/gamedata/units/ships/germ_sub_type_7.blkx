@@ -54,7 +54,7 @@
     "underwater_ship_collision_ground",
     "underwater_ship_collision_ground"
   ],
-  "periscopeDepth": 2.0,
+  "periscopeDepth": 3.0,
   "safeUnderwaterTime": -1.0,
   "isDeeperThanPeriscopeVarName": "periscope_drive",
   "addTorpedoesCountPack": 8,
@@ -437,7 +437,7 @@
   },
   "ShipPhys": {
     "floodControl": 0.005,
-    "minBuoyancyMult": 0.12,
+    "minBuoyancyMult": 0.08,
     "helmLimit": 1.0,
     "helmVerticalLimit": 0.0,
     "maxPitch": 0.0,
@@ -446,7 +446,7 @@
     "surfacingAreaMult": 0.8,
     "maxVerticalSpeed": 5.0,
     "mass": {
-      "Empty": 500000.0,
+      "Empty": 450000.0,
       "momentOfInertia": [
         25.0,
         180.0,
@@ -454,7 +454,7 @@
       ],
       "CenterOfGravity": [
         -1.7,
-        -1.2,
+        -2.2,
         0.0
       ]
     },
@@ -510,7 +510,7 @@
           "pos": [
             -29.0,
             -2.2,
-            0.0
+            1.0
           ],
           "area": 8.0,
           "deflection": 30.0

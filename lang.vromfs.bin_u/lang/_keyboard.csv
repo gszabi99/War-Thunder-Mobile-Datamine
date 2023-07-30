@@ -51,13 +51,13 @@
 "key/Break";"Break";"Attn";"Interr";"Untbr";"Inter";"Break";"Break";"Break";"Break";"Break";"Break";"Break";"Break";;
 "key/Home";"Home";"Début";"HOME";"Pos1";"Inicio";"Home";"Home";"Home";"Home";"Home";"Home";"Home";"Home\t鍵";;
 "key/Up";"Up";"Haut";"Su";"Pf.auf";"Arriba";"Up";"Góra";"Up";"Yukarı";"위";"上\t方\t向\t键";"上矢印";"上\t方\t向\t鍵";;
-"key/Page_Up";"Page Up";"Page précédente";"Pagina su";"B.auf";"Re pág";"Page Up";"Page Up";"Página acima";"Page Up";"Page Up";"Page Up";"Page Up";"Page Up";;
+"key/Page_Up";"Page Up";"Page précédente";"Pagina su";"B.auf";"Re pág";"Page Up";"Page Up";"Página acima";"Page Up";"Page Up";"Page Up";"Page Up";"Page Up";;
 "key/Page_Up/short";"PgUp";"PG. préc";"PgSu";"Bild rauf";"RePág";"PgUp";"PgUp";"PgUp";"PgUp";"PgUp";"PgUp";"PgUp";"Page Up";;
 "key/Left";"Left";"Gche";"Sinistra";"Pf.L.";"Izq";"Left";"Lewo";"Left";"Sol";"왼쪽";"左\t方\t向\t键";"Left";"左\t方\t向\t鍵";;
 "key/Right";"Right";"Droit";"Destra";"Pfeil Rechts";"Der";"Right";"Prawo";"Right";"Sağ";"오른쪽";"右\t方\t向\t键";"Right";"右\t方\t向\t鍵";;
 "key/End";"End";"Fin";"Fine";"Ende";"Fin";"End";"End";"End";"End";"End";"End";"End";"End";;
 "key/Down";"Down";"Bas";"Giù";"Pf.ab";"Abajo";"Down";"Dół";"Down";"Aşağı";"아래";"下\t方\t向\t键";"Down";"下\t方\t向\t鍵";;
-"key/Page_Down";"Page Down";"page suivante";"Pagina giù";"B.ab";"Av Pág";"Page Down";"Page Down";"Página abaixo";"Page Down";"Page Down";"PageDown";"Page Down";"Page Down";;
+"key/Page_Down";"Page Down";"page suivante";"Pagina giù";"B.ab";"Av Pág";"Page Down";"Page Down";"Página abaixo";"Page Down";"Page Down";"PageDown";"Page Down";"Page Down";;
 "key/Page_Down/short";"PgDn";"PgSuiv";"PgGiù";"B.ab";"AvPág";"PgDn";"PgDn";"PgDn";"PgDn";"PgDn";"PgDn";"PgDn";"Page Down";;
 "key/Insert";"Insert";"Insert";"Ins";"Einfügen";"Insert";"Insert";"Insert";"Insert";"Insert";"Insert";"Insert";"Insert";"Insert";;
 "key/Insert/short";"Ins";"Ins";"INS";"Einfg";"Ins";"Ins";"Ins";"Ins";"Ins";"Ins";"Ins";"Ins";"Insert";;
@@ -65,7 +65,7 @@
 "key/Delete/short";"Del";"Supp.";"CANC";"Entf";"Supr";"Del";"Del";"Del";"Sil";"Del";"Del";"Del";"Delete";;
 "key/Left_Windows";"Left Windows";"Windows gauche";"Windows sinistro";"Windows Links";"Windows Izquierda";"Left Windows";"Lewy klawisz Windows";"Janela Esquerda";"Sol Windows";"좌 Windows";"左 Win 键";"左\tWindows\tキー";"左 Win 鍵";;
 "key/Right_Windows";"Right Windows";"Windows droite";"Windows destro";"Windows Rechts";"Windows Derecha";"Right Windows";"Prawy klawisz Windows";"Janela Direita";"Sağ Windows";"우 Windows";"右 Win 键";"右\tWindows\tキー";"右 Win 鍵";;
-"key/Application";"Application";"Application";"Applicazione";"Anwendung";"Aplicación";"Application";"Aplikacja";"Aplicação";"Application";"메뉴 키";"菜\t单\t键\t（位\t于\t右 Win 键\t右\t侧）";"アプリケーション";"選\t單\t鍵\t（位\t於\t右 Win 鍵\t右\t側）";;
+"key/Application";"Application";"Application";"Applicazione";"Anwendung";"Aplicación";"Application";"Aplikacja";"Aplicação";"Uygulama";"메뉴 키";"菜\t单\t键\t（位\t于\t右 Win 键\t右\t侧）";"アプリケーション";"選\t單\t鍵\t（位\t於\t右 Win 鍵\t右\t側）";;
 "key/Button";"Button";"touche";"tasto";"Taste";"botón";"Кнопка";"Klawisz";"Botão";"Düğme";"버튼";"键";"ボタン";"按\t鍵";;
 "key/UMLAUT";"Umlaut";"Tréma";"Umlaut";"Umlaut";"Diéresis";"Умляут";"Umlaut";"Umlaut";"Umlaut";"움라우트";"德\t语\t变\t音\t符";"ウムラウト";"德\t語\t變\t音\t符";;
 "key/Wheel";"Mouse Wheel";"Molette";"Rotellina del mouse";"Mausrad";"Rueda Ratón";"Колесо мыши";"Kółko myszy";"Mouse Wheel";"Fare Tekerleği";"휠";"鼠\t标\t滚\t轮";"マウス ホイール";"滑\t鼠\t滾\t輪";;

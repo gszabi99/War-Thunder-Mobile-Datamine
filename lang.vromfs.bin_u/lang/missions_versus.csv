@@ -524,13 +524,13 @@ Defenders' objectives:
 Attackers' objectives:
 - Destroy the enemy vehicle convoy";"
 
-In [Column] mode, one of the teams defends a vehicle convoy from another team's attacks.
+[Kolon] modunda takımlardan biri, bir araç konvoyunu başka bir takımın saldırılarına karşı savunur.
 
-Defenders' objectives:
-- Defend the vehicle convoy
+Savunmacıların hedefleri:
+- Araç konvoyunu savun
 
-Attackers' objectives:
-- Destroy the enemy vehicle convoy";"
+Saldıranların hedefleri:
+- Düşman araç konvoyunu yok et";"
 
 [호송] 모드에서는 한 팀이 다른 팀의 공격으로부터 차량 호송대를 방어해야 한다.
 
@@ -583,10 +583,10 @@ Cel misji:
 – Chroń konwój i sojusznicze pojazdy, dopóki nie opuszczą strefy walk";"O nosso comboio militar está a ser atacado pela aviação inimiga.
 
 Objetivo da missão:
-- Proteje o comboio de veículos aliados antes que estes saiam da zona de combate";"Our column is being attacked by enemy aircraft.
+- Proteje o comboio de veículos aliados antes que estes saiam da zona de combate";"Kolonumuz, bir düşman uçağının saldırısına uğruyor.
 
-Mission objective:
-- Cover the column of allied vehicles before it leaves the combat area";"아군 지역이 적 항공기의 공격을 받고 있다.
+Görev hedefi:
+- Müttefik araç kolonunu çatışma alanından ayrılana kadar koru";"아군 지역이 적 항공기의 공격을 받고 있다.
 
 임무 목표:
 - 적 항공기가 전투 지역을 벗어나기 전까지 지역 내에 위치한 아군 장비를 보호하라
@@ -624,10 +624,10 @@ Cel misji:
 – zniszcz wrogi konwój, zanim opuści strefę walk";"We have attacked an enemy column from the air.
 
 Mission objective:
-- Destroy the enemy column before it leaves the combat area";"We have attacked an enemy column from the air.
+- Destroy the enemy column before it leaves the combat area";"Bir düşman kolonuna havadan saldırdık.
 
-Mission objective:
-- Destroy the enemy column before it leaves the combat area";"아군이 적의 지역을 공격 중이다.
+Görev hedefi:
+- Düşman kolonunu çatışma alanından ayrılmadan yok et";"아군이 적의 지역을 공격 중이다.
 
 임무 목표:
 - 적이 전투 지역을 벗어나기 전까지 지역 내에 위치한 모든 적을 섬멸하라
@@ -709,13 +709,13 @@ Defenders' objectives:
 Attackers' objectives:
 - Destroy the enemy vehicle convoy";"
 
-In [Column] mode, one of the teams defends a vehicle convoy from another team's attacks.
+[Kolon] modunda takımlardan biri, bir araç konvoyunu başka bir takımın saldırılarına karşı savunur.
 
-Defenders' objectives:
-- Defend the vehicle convoy
+Savunmacıların hedefleri:
+- Araç konvoyunu savun
 
-Attackers' objectives:
-- Destroy the enemy vehicle convoy";"
+Saldıranların hedefleri:
+- Düşman araç konvoyunu yok et";"
 
 [호송] 모드에서는 한 팀이 다른 팀의 공격으로부터 차량 호송대를 방어해야 한다.
 
@@ -770,10 +770,10 @@ Cel misji:
 – Chroń konwój i sojusznicze pojazdy, dopóki nie opuszczą strefy walk";"A nossa coluna está a ser atacada por veículos blindados inimigos.
 
 Objetivo da missão:
-- Cobrir a coluna de veículos aliados antes que esta saía da zona de combate";"Our column is being attacked by enemy armored vehicles.
+- Cobrir a coluna de veículos aliados antes que esta saía da zona de combate";"Kolonumuz, düşman zırhlı araçlarının saldırısına uğruyor.
 
-Mission objective:
-- Cover the column of allied vehicles before it leaves the combat area";"아군 지역이 적 기갑 장비의 공격을 받고 있다.
+Görev hedefi:
+- Müttefik araç kolonunu çatışma alanından ayrılana kadar koru";"아군 지역이 적 기갑 장비의 공격을 받고 있다.
 
 임무 목표:
 - 적 항공기가 전투 지역을 벗어나기 전까지 지역 내에 위치한 아군 장비를 보호하라
@@ -811,10 +811,10 @@ Cel misji:
 – zniszcz wrogi konwój, zanim opuści strefę walk";"We have attacked an enemy convoy.
 
 Mission objective:
-- Destroy the enemy convoy before it leaves the affected area";"We have attacked an enemy convoy.
+- Destroy the enemy convoy before it leaves the affected area";"Bir düşman konvoyuna saldırdık.
 
-Mission objective:
-- Destroy the enemy convoy before it leaves the affected area";"아군이 적의 수송대를 공격 중이다.
+Görev hedefi:
+- Düşman konvoyu etkilenen alandan ayrılmadan önce konvoyu yok et";"아군이 적의 수송대를 공격 중이다.
 
 임무 목표:
 - 적의 수송대가 전투 지역을 벗어나기 전까지 적의 수송대를 섬멸하라";"我\t方\t陆\t军\t正\t在\t攻\t击\t敌\t方\t载\t具\t部\t队。
@@ -966,10 +966,10 @@ Cel misji:
 – Powstrzymaj wrogie natarcie i zdobądź kluczową pozycję <color=@teamBlueColor>╸</color>";"Enemy armored forces are preparing to storm our fortifications.
 
 Mission objective:
-- Stop the enemy break through and capture the key position <color=@teamBlueColor>╸</color>";"Enemy armored forces are preparing to storm our fortifications.
+- Stop the enemy break through and capture the key position <color=@teamBlueColor>╸</color>";"Düşman zırhlı kuvvetleri, tahkimatımıza hücum etmeye hazırlanıyor.
 
-Mission objective:
-- Stop the enemy break through and capture the key position <color=@teamBlueColor>╸</color>";"적 기갑부대가 아군 진지 공격을 준비하고 있다.
+Görev hedefi:
+- Düşmanın saldırısını durdurup <color=@teamBlueColor>╸</color> kilit konumunu ele geçir";"적 기갑부대가 아군 진지 공격을 준비하고 있다.
 
 임무 목표:
 -적 돌파를 저지하고 주요 진지를 점령하라
@@ -1007,10 +1007,10 @@ Cel misji
 – Zajmij kluczową pozycję wroga w strefie <color=@teamRedColor>╸</color>, zanim skończy się czas";"We have begun an assault on enemy fortifications.
 
 Mission objective:
-- Capture the enemy's key position in the zone <color=@teamRedColor>╸</color> within the allotted time";"We have begun an assault on enemy fortifications.
+- Capture the enemy's key position in the zone <color=@teamRedColor>╸</color> within the allotted time";"Düşman tahkimatına taarruz başlattık.
 
-Mission objective:
-- Capture the enemy's key position in the zone <color=@teamRedColor>╸</color> within the allotted time";"아군이 적 진지를 공격하기 시작했다.
+Görev hedefi:
+- Belirlenen süre içinde <color=@teamRedColor>╸</color> bölgesindeki düşman kilit konumunu ele geçir";"아군이 적 진지를 공격하기 시작했다.
 
 임무 목표:
 - 시간 안에 적의 지역 내 주요 거점을 점령하라 <color=@teamRedColor>╸</color>";"我\t方\t陆\t军\t正\t在\t计\t划\t攻\t击\t敌\t方\t防\t御\t阵\t线。
@@ -1158,10 +1158,10 @@ Cel misji:
 – broń sojuszniczych pojazdów przed wrogim lotnictwem";"Our fortified area is being attacked from the air.
 
 Mission objective:
-- Defend the allied vehicles from enemy aircraft";"Our fortified area is being attacked from the air.
+- Defend the allied vehicles from enemy aircraft";"Tahkimli bölgemiz havadan saldırı alıyor.
 
-Mission objective:
-- Defend the allied vehicles from enemy aircraft";"아군 지역이 적에게 공습을 당하고 있다!
+Görev hedefi:
+- Müttefik araçlarını düşman uçağına karşı savun";"아군 지역이 적에게 공습을 당하고 있다!
 
 임무 목표:
 - 적 항공기의 공격으로부터 아군 차량들을 보호하라
@@ -1199,10 +1199,10 @@ Cel misji:
 – Zniszcz pojazdy wroga w wyznaczonym czasie";"We have attacked the enemy fortified area from the air.
 
 Mission objective:
-- Destroy enemy vehicles within the allotted time";"We have attacked the enemy fortified area from the air.
+- Destroy enemy vehicles within the allotted time";"Düşmanın tahkimli bölgesine havadan saldırdık.
 
-Mission objective:
-- Destroy enemy vehicles within the allotted time";"우리는 적 요새화 지역을 공중에서 공격하고 있다.
+Görev hedefi:
+- Belirlenen süre içinde düşman araçlarını yok et";"우리는 적 요새화 지역을 공중에서 공격하고 있다.
 
 임무 목표:
 - 시간 안에 적 장비를 격파하라 
@@ -1325,8 +1325,8 @@ Es kann nur einen geben!";"Battle Royale es una variación del modo de juego ""t
 ¡Solo puede quedar uno!";"Царь горы - вариация режима игры ""все против всех"". Основными особенностями режима являются со временем уменьшающаяся боевая зона и отсутствие возрождений.
 В конце должен остаться только один!";"Battle Royale jest odmianą trybu „Każdy na każdego”. Nie ma dostępnych odrodzeń, a obszar bitwy zmniejsza się wraz z upływem czasu.
 Zwycięzca może być tylko jeden!";"Battle Royale é uma variação do modo de jogo ""Free for All"". Em Battle Royale não há respaws disponíveis e a área de combate diminui durante o tempo de batalha. 
-Podendo haver apenas um vencedor!";"Battle Royale is a variation of the ""free for all"" game mode. There are no respawns available in ""Battle Royale"", and the battle area shrinks over time.
-There can be only one!";"배틀 로얄은 ""자유 전투"" 모드의 변형입니다. 배틀 로얄 모드에선 리스폰이 불가능하며 시간이 지날수록 전투지역이 줄어듭니다.
+Podendo haver apenas um vencedor!";"Battle Royale, ""herkes tek"" oyun modunun bir çeşididir. ""Battle Royale"" modunda yeniden doğma kullanılamaz ve savaş alanı gittikçe daralır.
+Sadece bir kişi ayakta kalacak!";"배틀 로얄은 ""자유 전투"" 모드의 변형입니다. 배틀 로얄 모드에선 리스폰이 불가능하며 시간이 지날수록 전투지역이 줄어듭니다.
 오직 한 사람만이 남습니다! ";"【大\t逃\t杀\t】\t是\t一\t种\t特\t别\t的\t死\t亡\t竞\t赛\t模\t式。\t在\t【大\t逃\t杀\t】\t模\t式\t中，\t玩\t家\t无\t法\t重\t生，\t且\t战\t斗\t区\t域\t会\t随\t时\t间\t推\t移\t逐\t渐\t缩\t小。
 
 在\t这\t里，\t只\t有\t唯\t一\t一\t人\t能\t成\t为\t最\t终\t赢\t家！";"バトル ・ ロワイアルは「飛び\t入り\t自由の」\tな\tゲーム モードです。\t「バトル ・ ロワイアル」\tでは\tリスポーンできませんし、\t戦闘\tエリアは、\t時間をかけて\t縮小します。\tただ\t一人しか\t存在できません!";"【大\t逃\t殺\t】\t是\t一\t種\t特\t別\t的\t死\t亡\t競\t賽\t模\t式。\t在\t【大\t逃\t殺\t】\t模\t式\t中，\t玩\t家\t無\t法\t重\t生，\t且\t戰\t鬥\t區\t域\t會\t隨\t時\t間\t推\t移\t逐\t漸\t縮\t小。
@@ -2014,10 +2014,10 @@ Cel misji:
 – Chroń odlatujące bombowce";"Aeronaves inimigas estão a interceptar o nosso esquadrão de bombardeiros.
 
 Objetivo da missão:
-- Proteger a descolagem dos bombardeiros";"Enemy aircraft are intercepting our bomber squadron.
+- Proteger a descolagem dos bombardeiros";"Düşman uçağı, bombardıman uçağı filomuzun yolunu kesiyor.
 
-Mission objective:
-- Cover the departure of the bombers";"적 항공기들이 아군 폭격기 편대를 요격하고 있다.
+Görev hedefi:
+- Bombardıman uçaklarını kalkarken koru";"적 항공기들이 아군 폭격기 편대를 요격하고 있다.
 
 임무 목표:
 - 폭격기들을 엄호하라";"我\t方\t轰\t炸\t机\t编\t队\t正\t遭\t受\t敌\t方\t空\t军\t的\t攻\t击。
@@ -2054,10 +2054,10 @@ Cel misji:
  – zestrzel wszystkie wrogie bombowce zanim odlecą";"We have intercepted an enemy bomber squadron.
 
 Mission objective:
- - Shoot down all enemy bombers before they depart";"We have intercepted an enemy bomber squadron.
+ - Shoot down all enemy bombers before they depart";"Bir düşman bombardıman uçağı filosunun yolunu kestik.
 
-Mission objective:
- - Shoot down all enemy bombers before they depart";"아군이 적 폭격기 편대를 요격하고 있다.
+Görev hedefi:
+- Tüm düşman bombardıman uçaklarını kalkmadan düşür";"아군이 적 폭격기 편대를 요격하고 있다.
 
 임무 목표:
 -모든 적 폭격기를 격추하라";"我\t方\t空\t军\t正\t在\t攻\t击\t敌\t方\t轰\t炸\t机\t编\t队。
@@ -3478,15 +3478,15 @@ The zone captured by the enemy can be recaptured.";"No modo [Banner], os jogador
 A bandeira pode ser interceptada destruindo o seu portador.
 Você pode queimar até 1/3 pontos inimigos por vez.
 Somente o portador pode capturar a zona inimiga.
-A zona capturada pelo inimigo pode ser recapturada.";"In [Banner] mode, players have to capture the flag and assault enemy positions while holding it.
+A zona capturada pelo inimigo pode ser recapturada.";"[Sancak] modunda oyuncuların, bayrağı ele geçirip kaybetmeden düşman konumlarına saldırması gerekir.
 
-- Grab the Banner!
-- Assault the enemy position while holding it.
+- Sancağı Kap!
+- Bayrak elindeyken düşman konumuna saldır.
 
-The flag can be intercepted by destroying the standard bearer.
-You can burn up to 1/3 enemy points at a time.
-Only the standard bearer can capture the enemy zone.
-The zone captured by the enemy can be recaptured.";"In [Banner] mode, players have to capture the flag and assault enemy positions while holding it.
+Bayraktar yok edilerek bayrak ele geçirilebilir.
+Aynı anda en fazla 1/3 düşman noktası yakabilirsin.
+Sadece bayraktar, düşman bölgesini ele geçirebilir.
+Düşmanın ele geçirdiği bölge, tekrar ele geçirilebilir.";"In [Banner] mode, players have to capture the flag and assault enemy positions while holding it.
 
 - Grab the Banner!
 - Assault the enemy position while holding it.
@@ -3528,8 +3528,8 @@ Wird der Träger der gegnerischen Flagge zerstört, fällt die Flagge zuboden un
 Si destruyes a un jugador que porte la bandera enemiga, esta cae al piso. Si la bandera es recogida por un compañero de equipo, él pasa a ser el portaestandarte. Si la bandera es recogida por un jugador del equipo del cual la bandera fue robada, esta regresa a su posición original.";"В режиме [Захват Флага] игрокам предстоит захватить Флаг противника и принести его к своему Флагу.
 Если убить игрока, который несёт Флаг противника, Флаг падает на землю. Если флаг подбирает товарищ по команде, он продолжает его нести. Если Флаг поднимает игрок команды, чей Флаг был похищен, Флаг возвращается в начальное положение.";"In [Capture the Flag] mode, players have to capture the enemy's Flag and bring it to their Flag.
 If you destroy a player who carries the enemy flag, the Flag falls to the ground. If the flag is picked up by a teammate, they will continue to carry it. If the Flag is picked up by a player of the team whose Flag was stolen, the Flag returns to its original position.";"No modo [Capture the Flag], os jogadores devem capturar a bandeira do inimigo e trazê-la sua área.
-Se você abater um jogador que carrega a bandeira inimiga, a Bandeira cai no chão. Se a bandeira for apanhada por um colega de equipe, ele continuará a levá-la. Se a bandeira for apanhada por um jogador da equipe cuja bandeira foi roubada, a bandeira retorna à sua posição original.";"In [Capture the Flag] mode, players have to capture the enemy's Flag and bring it to their Flag.
-If you destroy a player who carries the enemy flag, the Flag falls to the ground. If the flag is picked up by a teammate, they will continue to carry it. If the Flag is picked up by a player of the team whose Flag was stolen, the Flag returns to its original position.";"In [Capture the Flag] mode, players have to capture the enemy's Flag and bring it to their Flag.
+Se você abater um jogador que carrega a bandeira inimiga, a Bandeira cai no chão. Se a bandeira for apanhada por um colega de equipe, ele continuará a levá-la. Se a bandeira for apanhada por um jogador da equipe cuja bandeira foi roubada, a bandeira retorna à sua posição original.";"[Bayrağı Ele Geçir] modunda oyuncuların, düşmanın Bayrağını ele geçirmesi ve kendi Bayrağına getirmesi gerekir.
+Düşman bayrağını taşıyan bir oyuncuyu yok edersen Bayrak yere düşer. Bayrağı bir takım arkadaşı alırsa taşımaya devam eder. Takımdan Bayrağı çalınmış başka bir oyuncu Bayrağı alırsa Bayrak başlangıçtaki konumuna geri döner.";"In [Capture the Flag] mode, players have to capture the enemy's Flag and bring it to their Flag.
 If you destroy a player who carries the enemy flag, the Flag falls to the ground. If the flag is picked up by a teammate, they will continue to carry it. If the Flag is picked up by a player of the team whose Flag was stolen, the Flag returns to its original position.";"在\t【夺\t旗\t】\t模\t式\t中，\t玩\t家\t需\t要\t夺\t取\t敌\t方\t旗\t帜\t并\t带\t回\t己\t方\t旗\t帜\t位\t置。
 旗\t手\t的\t载\t具\t被\t击\t毁\t后，\t旗\t帜\t将\t会\t掉\t在\t原\t地。
 若\t拾\t起\t旗\t帜\t的\t玩\t家\t为\t旗\t手\t的\t队\t友，\t则\t该\t玩\t家\t应\t继\t续\t运\t送\t旗\t帜。
@@ -3539,9 +3539,9 @@ If you destroy a player who carries the enemy flag, the Flag falls to the ground
 若\t拾\t起\t旗\t幟\t的\t玩\t家\t為\t旗\t手\t的\t隊\t友，\t則\t該\t玩\t家\t應\t繼\t續\t運\t送\t旗\t幟。
 若\t拾\t起\t旗\t幟\t的\t玩\t家\t屬\t於\t被\t奪\t走\t旗\t幟\t的\t陣\t營，\t則\t旗\t幟\t將\t返\t回\t原\t位。";;
 "berlin_dblDom";"[Total Domination] Berlin";"[Domination totale] Berlin";"[Predominio Totale] Berlino";"[Totale Vorherrschaft] Berlin";"[Dominación Total] Berlín";"[Полное Превосходство] Берлин";"[Totalna Dominacja] Berlin";"[Total Domination] Berlim";"[Toplam Hakimiyet] Berlin";"[총력전] 베를린";"【绝\t对\t控\t制\t】\t柏\t林 • 国\t会\t大\t厦";"[トータルドミネーション] ベルリン";"【絕\t對\t控\t制\t】\t柏\t林 • 國\t會\t大\t廈";;
-"berlin_dblDom/desc";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"Dans le mode [Domination totale], deux équipes se disputent la domination en deux points stratégiques. Aucune des équipes n'a le droit de perdre une bataille liée à l'un d'eux. Ils ont besoin d'une victoire totale!";"In modalità [Predominio Totale], le due squadre si contendono due punti strategici. Entrambe le squadre non hanno il diritto di perdere la battaglia su ciascuno di essi. Devono ottenere una vittoria completa!";"In 'Absolute Vorherrschaft' kämpfen die Teams um die Kontrolle über zwei Zielgebiete. Keine Seite kann sich eine Niederlage leisten - nur der absolute Sieg ist gerade ausreichend!";"En modo [Dominación Total], dos equipos luchan por la dominación de dos puntos estratégicos. Ninguno de los equipos tiene el derecho a perder el combate en alguno de esos puntos. ¡Se necesita una victoria total!";"В режиме [Полное Превосходство] войска двух команд сражаются за превосходство на двух точках. Ни у одной из команд нет права проиграть сражение ни на одной из них. Им нужна полная победа!";"W trybie [Totalna Dominacja] dwie drużyny walczą o dwie strefy strategiczne. Celem obu drużyn jest opanowanie wszystkich stref. ";"No modo [Total Domination], duas equipes lutam pela dominação em dois pontos estratégicos. Nenhuma das equipes tem o direito de perder uma batalha em qualquer um deles. Eles precisam de uma vitória completa!";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"在\t【绝\t对\t控\t制\t】\t模\t式\t中，\t交\t战\t双\t方\t需\t要\t围\t绕\t两\t个\t战\t区\t展\t开\t争\t夺：\t必\t须\t同\t时\t占\t领\t两\t个\t战\t区\t才\t可\t获\t胜。";"[トータルドミネーション]モードでは、\t2\tつの\tチームが\t2\tつの\t戦略地点の\t制圧権をめぐって\t戦います。\tどちらも、\tどの\t地点をめぐる\t戦いにも\t負けることはできません。\t完全な\t勝利あるのみです！";"在\t【絕\t對\t控\t制\t】\t模\t式\t中，\t交\t戰\t雙\t方\t需\t要\t圍\t繞\t兩\t個\t戰\t區\t展\t開\t爭\t奪：\t必\t須\t同\t時\t佔\t領\t兩\t個\t戰\t區\t才\t可\t獲\t勝。";;
+"berlin_dblDom/desc";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"Dans le mode [Domination totale], deux équipes se disputent la domination en deux points stratégiques. Aucune des équipes n'a le droit de perdre une bataille liée à l'un d'eux. Ils ont besoin d'une victoire totale!";"In modalità [Predominio Totale], le due squadre si contendono due punti strategici. Entrambe le squadre non hanno il diritto di perdere la battaglia su ciascuno di essi. Devono ottenere una vittoria completa!";"In 'Absolute Vorherrschaft' kämpfen die Teams um die Kontrolle über zwei Zielgebiete. Keine Seite kann sich eine Niederlage leisten - nur der absolute Sieg ist gerade ausreichend!";"En modo [Dominación Total], dos equipos luchan por la dominación de dos puntos estratégicos. Ninguno de los equipos tiene el derecho a perder el combate en alguno de esos puntos. ¡Se necesita una victoria total!";"В режиме [Полное Превосходство] войска двух команд сражаются за превосходство на двух точках. Ни у одной из команд нет права проиграть сражение ни на одной из них. Им нужна полная победа!";"W trybie [Totalna Dominacja] dwie drużyny walczą o dwie strefy strategiczne. Celem obu drużyn jest opanowanie wszystkich stref. ";"No modo [Total Domination], duas equipes lutam pela dominação em dois pontos estratégicos. Nenhuma das equipes tem o direito de perder uma batalha em qualquer um deles. Eles precisam de uma vitória completa!";"[Mutlak Hakimiyet] modunda iki takım, iki stratejik noktanın hakimiyetini ele geçirmek için savaşır. Takımların iki stratejik noktada da savaş kaybetmemesi gerekir. Mutlak zafere ulaşmaları gerekir!";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"在\t【绝\t对\t控\t制\t】\t模\t式\t中，\t交\t战\t双\t方\t需\t要\t围\t绕\t两\t个\t战\t区\t展\t开\t争\t夺：\t必\t须\t同\t时\t占\t领\t两\t个\t战\t区\t才\t可\t获\t胜。";"[トータルドミネーション]モードでは、\t2\tつの\tチームが\t2\tつの\t戦略地点の\t制圧権をめぐって\t戦います。\tどちらも、\tどの\t地点をめぐる\t戦いにも\t負けることはできません。\t完全な\t勝利あるのみです！";"在\t【絕\t對\t控\t制\t】\t模\t式\t中，\t交\t戰\t雙\t方\t需\t要\t圍\t繞\t兩\t個\t戰\t區\t展\t開\t爭\t奪：\t必\t須\t同\t時\t佔\t領\t兩\t個\t戰\t區\t才\t可\t獲\t勝。";;
 "rheinland_dblDom";"[Total Domination] Advance to the Rhine";"[Domination totale] Traversée du Rhin";"[Predominio Totale] Avanzata verso il Reno";"[Totale Vorherrschaft] Überquerung des Rheins";"[Dominación Total] Avance hacia el Rin";"[Полное Превосходство] Переправа через Рейн";"[Totalna dominacja] Ofensywa Renu";"[Total Domination] Avanço para o Reno";"[Toplam Hakimiyet] Ren Bölgesine İlerleme";"[총력전] 라인 강 진격";"【绝\t对\t控\t制\t】\t莱\t茵\t河\t畔";"[トータルドミネーション]ライン\t地方への\t進撃";"【絕\t對\t控\t制\t】\t萊\t茵\t河\t畔";;
-"rheinland_dblDom/desc";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"Dans le mode [Domination totale], deux équipes se disputent la domination en deux points stratégiques. Aucune des équipes n'a le droit de perdre une bataille à l'un d'eux. Ils ont besoin d'une victoire totale!";"In modalità [Predominio Totale], le due squadre si contendono due punti strategici. Entrambe le squadre non hanno il diritto di perdere la battaglia su ciascuno di essi. Devono ottenere una vittoria completa!";"In 'Absolute Vorherrschaft' kämpfen die Teams um die Kontrolle über zwei Zielgebiete. Keine Seite kann sich eine Niederlage leisten - nur der absolute Sieg ist gerade ausreichend!";"En modo [Dominación Total], dos equipos luchan por la dominación de dos puntos estratégicos. Ninguno de los equipos tiene el derecho a perder el combate en alguno de esos puntos. ¡Se necesita una victoria total!";"В режиме [Полное Превосходство] войска двух команд сражаются за превосходство на двух точках. Ни у одной из команд нет права проиграть сражение ни на одной из них. Им нужна полная победа!";"W trybie [Totalna Dominacja] dwie drużyny walczą o dwie strefy strategiczne. Celem obu drużyn jest opanowanie wszystkich stref. ";"No modo [Total Domination], duas equipes lutam pela dominação em dois pontos estratégicos. Nenhuma das equipes tem o direito de perder uma batalha em qualquer um deles. Eles precisam de uma vitória completa!";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"在\t【绝\t对\t控\t制\t】\t模\t式\t中，\t交\t战\t双\t方\t需\t要\t围\t绕\t两\t个\t战\t区\t展\t开\t争\t夺：\t必\t须\t同\t时\t占\t领\t两\t个\t战\t区\t才\t可\t获\t胜。";"[トータルドミネーション]モードでは、\t2\tつの\tチームが\t2\tつの\t戦略地点の\t制圧権をめぐって\t戦います。\tどちらも、\tどの\t地点をめぐる\t戦いにも\t負けることはできません。\t完全な\t勝利あるのみです！";"在\t【絕\t對\t控\t制\t】\t模\t式\t中，\t交\t戰\t雙\t方\t需\t要\t圍\t繞\t兩\t個\t戰\t區\t展\t開\t爭\t奪：\t必\t須\t同\t時\t佔\t領\t兩\t個\t戰\t區\t才\t可\t獲\t勝。";;
+"rheinland_dblDom/desc";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"Dans le mode [Domination totale], deux équipes se disputent la domination en deux points stratégiques. Aucune des équipes n'a le droit de perdre une bataille à l'un d'eux. Ils ont besoin d'une victoire totale!";"In modalità [Predominio Totale], le due squadre si contendono due punti strategici. Entrambe le squadre non hanno il diritto di perdere la battaglia su ciascuno di essi. Devono ottenere una vittoria completa!";"In 'Absolute Vorherrschaft' kämpfen die Teams um die Kontrolle über zwei Zielgebiete. Keine Seite kann sich eine Niederlage leisten - nur der absolute Sieg ist gerade ausreichend!";"En modo [Dominación Total], dos equipos luchan por la dominación de dos puntos estratégicos. Ninguno de los equipos tiene el derecho a perder el combate en alguno de esos puntos. ¡Se necesita una victoria total!";"В режиме [Полное Превосходство] войска двух команд сражаются за превосходство на двух точках. Ни у одной из команд нет права проиграть сражение ни на одной из них. Им нужна полная победа!";"W trybie [Totalna Dominacja] dwie drużyny walczą o dwie strefy strategiczne. Celem obu drużyn jest opanowanie wszystkich stref. ";"No modo [Total Domination], duas equipes lutam pela dominação em dois pontos estratégicos. Nenhuma das equipes tem o direito de perder uma batalha em qualquer um deles. Eles precisam de uma vitória completa!";"[Mutlak Hakimiyet] modunda iki takım, iki stratejik noktanın hakimiyetini ele geçirmek için savaşır. Takımların iki stratejik noktada da savaş kaybetmemesi gerekir. Mutlak zafere ulaşmaları gerekir!";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"在\t【绝\t对\t控\t制\t】\t模\t式\t中，\t交\t战\t双\t方\t需\t要\t围\t绕\t两\t个\t战\t区\t展\t开\t争\t夺：\t必\t须\t同\t时\t占\t领\t两\t个\t战\t区\t才\t可\t获\t胜。";"[トータルドミネーション]モードでは、\t2\tつの\tチームが\t2\tつの\t戦略地点の\t制圧権をめぐって\t戦います。\tどちらも、\tどの\t地点をめぐる\t戦いにも\t負けることはできません。\t完全な\t勝利あるのみです！";"在\t【絕\t對\t控\t制\t】\t模\t式\t中，\t交\t戰\t雙\t方\t需\t要\t圍\t繞\t兩\t個\t戰\t區\t展\t開\t爭\t奪：\t必\t須\t同\t時\t佔\t領\t兩\t個\t戰\t區\t才\t可\t獲\t勝。";;
 "abandoned_factory_dblDom";"[Total Domination] Abandoned factory";"[Domination totale] Usine abandonnée";"[Predominio Totale] Fabbrica Abbandonata";"[Totale Vorherrschaft] Verlassene Fabrik";"[Dominación Total] Fábrica Abandonada";"[Полное Превосходство] Заброшенный завод";"[Totalna Dominacja] Opuszczona Fabryka";"[Total Domination] Fábrica abandonada";"[Toplam Hakimiyet] Terk Edilmiş Fabrika";"[총력전] 버려진 공장";"【绝\t对\t控\t制\t】\t废\t弃\t工\t厂";"[トータルドミネーション]廃墟となった\t工場";"【絕\t對\t控\t制\t】\t廢\t棄\t工\t廠";;
 "abandoned_factory_dblDom/desc";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"Dans le mode [Domination totale], deux équipes se disputent la domination en deux points stratégiques. Aucune des équipes n'a le droit de perdre une bataille à l'un d'eux. Ils ont besoin d'une victoire totale!";"In modalità [Predominio Totale], le due squadre si contendono due punti strategici. Entrambe le squadre non hanno il diritto di perdere la battaglia su ciascuno di essi. Devono ottenere una vittoria completa!";"In 'Absolute Vorherrschaft' kämpfen die Teams um die Kontrolle über zwei Zielgebiete. Keine Seite kann sich eine Niederlage leisten - nur der absolute Sieg ist gerade ausreichend!";"En modo [Dominación Total], dos equipos luchan por la dominación de dos puntos estratégicos. Ninguno de los equipos tiene el derecho a perder el combate en alguno de esos puntos. ¡Se necesita una victoria total!";"В режиме [Полное Превосходство] войска двух команд сражаются за превосходство на двух точках. Ни у одной из команд нет права проиграть сражение ни на одной из них. Им нужна полная победа!";"W trybie [Totalna Dominacja] dwie drużyny walczą o dwie strefy strategiczne. Celem obu drużyn jest opanowanie wszystkich stref. ";"No modo [Total Domination], duas equipes lutam pela dominação em dois pontos estratégicos. Nenhuma das equipes tem o direito de perder uma batalha em qualquer um deles. Eles precisam de uma vitória completa!";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"In [Total Domination] mode, two teams fight for domination at two strategic points. None of the teams can afford to lose a battle at any of them. They need a complete victory!";"在\t【绝\t对\t控\t制\t】\t模\t式\t中，\t交\t战\t双\t方\t需\t要\t围\t绕\t两\t个\t战\t区\t展\t开\t争\t夺：\t必\t须\t同\t时\t占\t领\t两\t个\t战\t区\t才\t可\t获\t胜。";"[トータルドミネーション]モードでは、\t2\tつの\tチームが\t2\tつの\t戦略地点の\t制圧権をめぐって\t戦います。\tどちらも、\tどの\t地点をめぐる\t戦いにも\t負けることはできません。\t完全な\t勝利あるのみです！";"在\t【絕\t對\t控\t制\t】\t模\t式\t中，\t交\t戰\t雙\t方\t需\t要\t圍\t繞\t兩\t個\t戰\t區\t展\t開\t爭\t奪：\t必\t須\t同\t時\t佔\t領\t兩\t個\t戰\t區\t才\t可\t獲\t勝。";;
 "missions/_ctf";"[Capture the Flag]";"[Capturez le drapeau]";"[Cattura la Bandiera]";"[Erobere die Flagge]";"[Capturar la Bandera]";"[Захват Флага]";"[Przejęcie flagi]";"[Capture the Flag]";"[Bayrak Ele Geçirme]";"[깃발뺏기]";"【夺\t旗\t】";"[CTF]";"【奪\t旗\t】";;
@@ -3561,9 +3561,9 @@ Si destruyes a un jugador que porte la bandera enemiga, esta cae al piso. Si la 
 
 If you destroy a player who carries the enemy Flag - the Flag falls to the ground. If the Flag is picked up by a teammate - they continue to carry it. If the Flag is picked up by a player of the team whose Flag was stolen - the Flag returns to its original position. If a player of any team delivers the Flag to their allied point - both Flags return to their initial places.";"No modo [Capture the Flag], os jogadores devem capturar a bandeira do inimigo no ponto inimigo e trazê-la para o ponto aliado. A localização dos dois pontos está marcada no minimapa 
 
-. Se você abater um jogador que carrega a bandeira inimiga - a Bandeira cai no chão. Se a bandeira for apanhada por um colega de equipe - ele continua a levá-la. Se a Bandeira for apanhada por um jogador da equipe cuja bandeira foi roubada - a Bandeira retorna à sua posição original. Se um jogador de qualquer equipe entregar a Bandeira ao seu ponto aliado - ambas as Bandeiras retornam aos seus lugares iniciais.";"In [Capture the Flag] mode, players have to capture the enemy's Flag at the enemy point and bring it to the allied point. The location of both points is marked on the minimap.
+. Se você abater um jogador que carrega a bandeira inimiga - a Bandeira cai no chão. Se a bandeira for apanhada por um colega de equipe - ele continua a levá-la. Se a Bandeira for apanhada por um jogador da equipe cuja bandeira foi roubada - a Bandeira retorna à sua posição original. Se um jogador de qualquer equipe entregar a Bandeira ao seu ponto aliado - ambas as Bandeiras retornam aos seus lugares iniciais.";"[Bayrağı Ele Geçir] modunda oyuncuların, düşmanın düşman noktasındaki Bayrağını ele geçirmesi ve müttefik noktasına getirmesi gerekir. Her iki noktanın da konumu, mini haritada işaretlenir.
 
-If you destroy a player who carries the enemy Flag - the Flag falls to the ground. If the Flag is picked up by a teammate - they continue to carry it. If the Flag is picked up by a player of the team whose Flag was stolen - the Flag returns to its original position. If a player of any team delivers the Flag to their allied point - both Flags return to their initial places.";"In [Capture the Flag] mode, players have to capture the enemy's Flag at the enemy point and bring it to the allied point. The location of both points is marked on the minimap.
+Düşman Bayrağını taşıyan bir oyuncuyu yok edersen Bayrak yere düşer. Bayrağı bir takım arkadaşı alırsa taşımaya devam eder. Takımdan Bayrağı çalınmış başka bir oyuncu Bayrağı alırsa Bayrak başlangıçtaki konumuna geri döner. Herhangi bir takımdan bir oyuncu, Bayrağı müttefik noktasına getirirse iki Bayrak da başlangıçtaki noktalarına geri döner.";"In [Capture the Flag] mode, players have to capture the enemy's Flag at the enemy point and bring it to the allied point. The location of both points is marked on the minimap.
 
 If you destroy a player who carries the enemy Flag - the Flag falls to the ground. If the Flag is picked up by a teammate - they continue to carry it. If the Flag is picked up by a player of the team whose Flag was stolen - the Flag returns to its original position. If a player of any team delivers the Flag to their allied point - both Flags return to their initial places.";"在\t【夺\t旗\t】\t模\t式\t中，\t玩\t家\t需\t要\t从\t敌\t方\t位\t置\t夺\t取\t旗\t帜\t并\t带\t回\t己\t方\t位\t置。\t双\t方\t的\t位\t置\t标\t记\t在\t战\t术\t地\t图\t上。
 
@@ -3595,10 +3595,10 @@ Fleet objectives:
 - Capture and hold the point ╸";"In [Conquest] mode two teams fight for control over one strategic point.
 
 Fleet objectives:
-- Capture and hold the point ╸";"In [Conquest] mode two teams fight for control over one strategic point.
+- Capture and hold the point ╸";"[Fetih] modunda iki takım bir stratejik noktanın kontrolünü ele geçirmek için savaşır.
 
-Fleet objectives:
-- Capture and hold the point ╸";"In [Conquest] mode two teams fight for control over one strategic point.
+Filo hedefleri:
+- ╸ noktasını ele geçirip koru";"In [Conquest] mode two teams fight for control over one strategic point.
 
 Fleet objectives:
 - Capture and hold the point ╸";"In [Conquest] mode two teams fight for control over one strategic point.
@@ -3636,10 +3636,10 @@ Zadania floty:
 – Zniszcz wrogą flotę oraz jej osłonę.";"In [┚ Encounter] teams must destroy the enemy fleet with a cover located in the rear.
 
 Fleet objectives:
-- Destroy the enemy fleet with a cover.";"In [┚ Encounter] teams must destroy the enemy fleet with a cover located in the rear.
+- Destroy the enemy fleet with a cover.";"[┚ Karşılaşması] modunda takımların, arkada yer alan bir siperle düşman filosunu yok etmesi gerekir.
 
-Fleet objectives:
-- Destroy the enemy fleet with a cover.";"In [┚ Encounter] teams must destroy the enemy fleet with a cover located in the rear.
+Filo hedefleri:
+- Bir siperle düşman filosunu yok et.";"In [┚ Encounter] teams must destroy the enemy fleet with a cover located in the rear.
 
 Fleet objectives:
 - Destroy the enemy fleet with a cover.";"在\t【┚ 海\t上\t交\t锋\t】\t模\t式\t中，\t玩\t家\t必\t须\t摧\t毁\t敌\t军\t所\t保\t护\t的\t后\t方\t舰\t队。
@@ -3738,12 +3738,12 @@ A captura de um ponto inimigo reinicia o progresso de captura de todos os pontos
 
 Objetivos da armada:
 - Capturar o ponto ╸ ou ╹ para ativar o ponto adversário
-- Capturar todos os pontos ativos no mapa para vitória instantânea";"In [┚ Battle] mode, teams will initially have one strategic point that is not available for capture by the enemy team. In order to activate an enemy’s strategic point for capture, you must control both of the regular capture points (╸ and ╹).
-Capturing an enemy strategic point will result in an instant victory.
+- Capturar todos os pontos ativos no mapa para vitória instantânea";"[┚ Savaşı] modunda takımların ilk olarak düşman takımının ele geçiremeyeceği bir stratejik noktası olur. Düşmanın stratejik noktasını ele geçirilebilecek hâle getirmek için normal ele geçirilecek noktaların ikisinin de (╸ ve ╹) kontrolünü eline alman gerekir.
+Düşmanın stratejik noktasını ele geçirdiğinde anında zafer kazanırsın.
 
-Fleet objectives:
-- Capture point ╸ and ╹ to activate the enemy strategic point
-- Capture all active points on the map for an instant victory";"In [┚ Battle] mode, teams will initially have one strategic point that is not available for capture by the enemy team. In order to activate an enemy’s strategic point for capture, you must control both of the regular capture points (╸ and ╹).
+Filo hedefleri:
+- Düşmanın stratejik noktasını etkinleştirmek için ╸ ve ╹ noktalarını ele geçir
+- Anında zafer kazanmak için haritadaki tüm etkin noktaları ele geçir";"In [┚ Battle] mode, teams will initially have one strategic point that is not available for capture by the enemy team. In order to activate an enemy’s strategic point for capture, you must control both of the regular capture points (╸ and ╹).
 Capturing an enemy strategic point will result in an instant victory.
 
 Fleet objectives:
@@ -3974,7 +3974,7 @@ Donanma görevleri:
 • 攻\t占\t並\t防\t守\t海\t區 ╸";;
 "missions/sicily_hasky_BfD_norespawn";"[Operation] Husky";"[Operation] Husky";"[Operazione] Husky";"[Operation] Husky";"[Operation] Husky";"[Операция] Хаски";"[Operation] Husky";"[Operation] Husky";"[Operation] Husky";"[Operation] 허스키 작전";"【军\t事\t行\t动\t】\t哈\t士\t奇\t行\t动";"[Operation] ハスキー";"【軍\t事\t行\t動\t】\t哈\t士\t奇\t行\t動";;
 "missions/arcade_phiphi_crater_rocks_wingball_AD";"Wingball";"Wingball";"Wingball";"Flügelball";"Wingball";"Авиафутбол";"Wingball";"Wingball";"Kanat topu";"윙볼";"【飞\t球\t大\t战\t】";"ウィングボール";"【飛\t球\t大\t戰\t】";;
-"missions/arcade_phiphi_crater_rocks_wingball_AD/desc";"In Wingball, players need to pick up the ball in the center of the map and fly with it through one of the two enemy waypoints. The 'goal' at the distant waypoint will bring in 2 times more points!";"Au Wingball, les joueurs doivent ramasser la balle au centre de la carte et voler avec jusqu'à l'une des deux zones adverses. Marquer dans la zone la plus éloignée rapportera 2 fois plus de point!";"A Wingball, i giocatori devono raccogliere la palla al centro della mappa e volare attraverso uno dei due punti di rotta nemici. Il punto di rotta più distante darà il doppio dei punti!";"In 'Flügelball' müssen die Spieler mit ihrem Flugzeug einen Ball in der Kartenmitte aufnehmen und damit durch zwei Tore des Gegners fliegen. Das hintere Tor bringt dabei die doppelte Punktzahl!";"En Wingball, los jugadores deben recoger el balón en el centro del mapa y volar con él a través de uno de los dos puntos de ruta enemigos. ¡Un gol en el punto de ruta más alejado otorga el doble de puntos!";"В миссии ""Авиафутбол"" игрокам необходимо подобрать мяч в центре карты и пролететь с ним через одни из двух вражеских ворот. Гол в дальние ворота принесёт в 2 раза больше очков!";"In Wingball, players need to pick up the ball in the center of the map and fly with it through one of the two enemy waypoints. The 'goal' at the distant waypoint will bring in 2 times more points!";"No Wingball, os jogadores precisam pegar a bola no centro do mapa e voar com ela através de um dos dois waypoints inimigos. Ir ao waypoint distante trará 2 vezes mais pontos!";"In Wingball, players need to pick up the ball in the center of the map and fly with it through one of the two enemy waypoints. The 'goal' at the distant waypoint will bring in 2 times more points!";"플레이어들은 윙볼에서 맵 중앙의 공을 획득한 뒤 둘 중 하나의 적 경유지들을 뚫고 날아가야 한다. 더 먼 경유지를 통과할 경우 두배의 포인트를 획득한다!";"在\t【飞\t球\t大\t战\t】\t中，\t玩\t家\t需\t要\t在\t地\t图\t中\t心\t拾\t取\t飞\t球，\t并\t带\t到\t敌\t方\t的\t其\t中\t一\t个\t目\t标\t位\t置。\t带\t往\t较\t远\t距\t离\t的\t目\t标\t位\t置\t将\t会\t额\t外\t获\t得\t双\t倍\t分\t数！";"ウィングボールでは、\tプレイヤーは\tマップの\t中央で\tボールを\t拾い、\t敵の\t2\tつの\t中継地点の\t1\tつを\t通って\t飛ばなければなりません。\t遠い\t中継地点を「ゴール」\tすると\t2倍の\tポイントが\t入ります！";"在\t【飛\t球\t大\t戰\t】\t中，\t玩\t家\t需\t要\t在\t地\t圖\t中\t心\t拾\t取\t飛\t球，\t並\t帶\t到\t敵\t方\t的\t其\t中\t一\t個\t目\t標\t位\t置。\t帶\t往\t較\t遠\t距\t離\t的\t目\t標\t位\t置\t將\t會\t額\t外\t獲\t得\t雙\t倍\t分\t數！";;
+"missions/arcade_phiphi_crater_rocks_wingball_AD/desc";"In Wingball, players need to pick up the ball in the center of the map and fly with it through one of the two enemy waypoints. The 'goal' at the distant waypoint will bring in 2 times more points!";"Au Wingball, les joueurs doivent ramasser la balle au centre de la carte et voler avec jusqu'à l'une des deux zones adverses. Marquer dans la zone la plus éloignée rapportera 2 fois plus de point!";"A Wingball, i giocatori devono raccogliere la palla al centro della mappa e volare attraverso uno dei due punti di rotta nemici. Il punto di rotta più distante darà il doppio dei punti!";"In 'Flügelball' müssen die Spieler mit ihrem Flugzeug einen Ball in der Kartenmitte aufnehmen und damit durch zwei Tore des Gegners fliegen. Das hintere Tor bringt dabei die doppelte Punktzahl!";"En Wingball, los jugadores deben recoger el balón en el centro del mapa y volar con él a través de uno de los dos puntos de ruta enemigos. ¡Un gol en el punto de ruta más alejado otorga el doble de puntos!";"В миссии ""Авиафутбол"" игрокам необходимо подобрать мяч в центре карты и пролететь с ним через одни из двух вражеских ворот. Гол в дальние ворота принесёт в 2 раза больше очков!";"In Wingball, players need to pick up the ball in the center of the map and fly with it through one of the two enemy waypoints. The 'goal' at the distant waypoint will bring in 2 times more points!";"No Wingball, os jogadores precisam pegar a bola no centro do mapa e voar com ela através de um dos dois waypoints inimigos. Ir ao waypoint distante trará 2 vezes mais pontos!";"Kanat Topu modunda oyuncuların haritanın merkezindeki topu alıp iki düşman ara noktasının birinden topla birlikte uçarak geçmesi gerekir. Uzaktaki ara noktaya ""gol"" attığında 2 kat daha fazla puan kazanırsın!";"플레이어들은 윙볼에서 맵 중앙의 공을 획득한 뒤 둘 중 하나의 적 경유지들을 뚫고 날아가야 한다. 더 먼 경유지를 통과할 경우 두배의 포인트를 획득한다!";"在\t【飞\t球\t大\t战\t】\t中，\t玩\t家\t需\t要\t在\t地\t图\t中\t心\t拾\t取\t飞\t球，\t并\t带\t到\t敌\t方\t的\t其\t中\t一\t个\t目\t标\t位\t置。\t带\t往\t较\t远\t距\t离\t的\t目\t标\t位\t置\t将\t会\t额\t外\t获\t得\t双\t倍\t分\t数！";"ウィングボールでは、\tプレイヤーは\tマップの\t中央で\tボールを\t拾い、\t敵の\t2\tつの\t中継地点の\t1\tつを\t通って\t飛ばなければなりません。\t遠い\t中継地点を「ゴール」\tすると\t2倍の\tポイントが\t入ります！";"在\t【飛\t球\t大\t戰\t】\t中，\t玩\t家\t需\t要\t在\t地\t圖\t中\t心\t拾\t取\t飛\t球，\t並\t帶\t到\t敵\t方\t的\t其\t中\t一\t個\t目\t標\t位\t置。\t帶\t往\t較\t遠\t距\t離\t的\t目\t標\t位\t置\t將\t會\t額\t外\t獲\t得\t雙\t倍\t分\t數！";;
 "missions/hurtgen_BfD_norespawn";"[Operation] Hürtgen";"[Operation] Hürtgen";"[Operazione] Hürtgen";"[Operation] Hürtgen";"[Operation] Hürtgen";"[Операция] Хюртген";"[Operation] Hürtgen";"[Operation] Hürtgen";"[Operation] Hürtgen";"[작전] 휘르트겐";"【军\t事\t行\t动\t】\t许\t特\t根\t森\t林";"[Operation] ヒュルトゲンの\t森";"【軍\t事\t行\t動\t】\t許\t特\t根\t森\t林";;
 "missions/hurtgen_BfD_norespawn/desc";"A series of huge battles in the Hürtgen Forest to the east of the German-Belgian border.";"Une série de très grandes batailles dans la Forêt de Hürtgen, à l'Est de la frontière germano-belge.";"Una serie di grandi battaglie nella Foresta di Hürtgen ad est del confine Tedesco-Belga.";"Eine Serie an Schlachten im Hürtgenwald, östlich der deutsch-belgischen Grenze.";"Una serie de enormes batallas en el Bosque de Hürtgen al Este de la frontera entre Alemania y Bélgica.";"Серия крупных сражений в Хюртгенском лесу к востоку от германо-бельгийской границы.";"Seria bitew w lesie Hürtgen, położonym w Niemczech przy granicy z Belgią";"Uma série de grandes batalhas na floresta de Hürtgen, ao leste da fronteira germano-belga.";"Alman-Belçika sınırının doğusunda yer alan Hürtgen Ormanı içinde olan bir seri büyük savaş.";"독일-벨기에 국경 동쪽 휘트르겐 숲에서의 연속적인 대규모 전투.";"在\t德\t国\t与\t比\t利\t时\t交\t界\t线\t东\t侧\t的\t许\t特\t根\t森\t林\t中，\t交\t战\t双\t方\t进\t行\t了\t一\t系\t列\t的\t大\t型\t战\t役。";"ドイツと\tベルギーの\t国境の\t東にある\tヒュルトゲンの\t森における\t一連の\t大規模\tバトル。";"在\t德\t國\t與\t比\t利\t時\t交\t界\t線\t東\t側\t的\t許\t特\t根\t森\t林\t中，\t交\t戰\t雙\t方\t進\t行\t了\t一\t系\t列\t的\t大\t型\t戰\t役。";;
 "missions/hurtgen_2_BfD_norespawn";"[Air Battle] Hürtgen. Second Battle";"[Bataille aérienne] Hürtgen. Seconde bataille";"[Battaglia Aerea] Hürtgen. Seconda Battaglia";"[Luftschlacht] Hürtgen. Zweite Schlacht";"[Batalla Aérea] Hürtgen. Segunda Batalla";"[Воздушный бой] Хюртген. Второе сражение";"[Bitwa powietrzna] Bitwa o las Hürtgen, faza druga";"[Air Battle] Hürtgen. Segunda Batalha";"[Hava Savaşı] Hürtgen. İkinci Savaş";"[공중전] 휘트르겐. 두 번째 전투";"【军\t事\t行\t动\t】\t许\t特\t根\t森\t林\t战\t役 • 第\t二\t次\t攻\t势";"[空中戦] ヒュルトゲンの\t森";"【軍\t事\t行\t動\t】\t許\t特\t根\t森\t林\t戰\t役 • 第\t二\t次\t攻\t勢";;
@@ -4369,10 +4369,10 @@ Cel misji:
 – ochraniaj okręty w konwoju do czasu opuszczenia przez nie strefy walk";"O nosso comboio naval está a ser atacado por embarcações inimigas.
 
 Objetivo da missão:
-- Dar cobertura às embarcações no nosso comboio antes que saíam da zona de combate";"Our naval convoy is being attacked by enemy vessels.
+- Dar cobertura às embarcações no nosso comboio antes que saíam da zona de combate";"Deniz konvoyumuz, düşman gemilerinin saldırısına uğruyor.
 
-Mission objective:
-- Cover the vessels in our convoy before they leave the combat area";"Our naval convoy is being attacked by enemy vessels.
+Görev hedefi:
+- Konvoyumuzdaki gemileri çatışma alanından ayrılana kadar koru";"Our naval convoy is being attacked by enemy vessels.
 
 Mission objective:
 - Cover the vessels in our convoy before they leave the combat area";"我\t方\t水\t面\t部\t队\t正\t遭\t受\t敌\t方\t海\t军\t的\t攻\t击。
@@ -4409,10 +4409,10 @@ Cel misji:
 – zniszcz konwój morski wroga zanim opuści strefę walk";"Estamos a atacar um comboio naval inimigo.
 
 Objetivo da missão:
-- Destruir o comboio inimigo antes que este saía da zona de combate";"We have attacked an enemy naval convoy.
+- Destruir o comboio inimigo antes que este saía da zona de combate";"Bir düşman deniz konvoyuna saldırdık.
 
-Mission objective:
-- Destroy the enemy convoy before it leaves the combat area";"We have attacked an enemy naval convoy.
+Görev hedefi:
+- Düşman konvoyu çatışma alanından ayrılmadan önce konvoyu yok et";"We have attacked an enemy naval convoy.
 
 Mission objective:
 - Destroy the enemy convoy before it leaves the combat area";"我\t方\t海\t军\t正\t在\t攻\t击\t敌\t方\t水\t面\t部\t队。
@@ -4538,79 +4538,79 @@ Objetivos de la misión:
 "new_zeland_cape/desc";;;;;;;;;;;;;;;
 "sweden/name";"Sweden";"Suède";"Svezia";"Schweden";"Suecia";"Швеция";"Szwecja";"Suécia";"İsveç";"스웨덴";"瑞\t典";"スウェーデン";"瑞\t典";;
 "sweden/desc";;;;;;;;;;;;;;;
-"missions/denmark_pt_port_01";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Port 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
-"missions/denmark_pt_port_02";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Port 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
-"missions/denmark_pt_port_03";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Port 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
-"missions/denmark_pt_port_04";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Port 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
-"missions/denmark_pt_port_05";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Port 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
-"missions/denmark_pt_port_06";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Port 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
-"missions/denmark_pt_port_07";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Port 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
-"missions/denmark_pt_port_08";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Port 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
-"missions/denmark_pt_port_01_air";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Port 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
-"missions/denmark_pt_port_02_air";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Port 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
-"missions/denmark_pt_port_03_air";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Port 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
-"missions/denmark_pt_port_04_air";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Port 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
-"missions/denmark_pt_port_05_air";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Port 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
-"missions/denmark_pt_port_06_air";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Port 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
-"missions/denmark_pt_port_07_air";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Port 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
-"missions/denmark_pt_port_08_air";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Port 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
-"missions/denmark_pt_port_01_destroyers";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Port 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
-"missions/denmark_pt_port_02_destroyers";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Port 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
-"missions/denmark_pt_port_03_destroyers";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Port 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
-"missions/denmark_pt_port_04_destroyers";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Port 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
-"missions/denmark_pt_port_05_destroyers";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Port 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
-"missions/denmark_pt_port_06_destroyers";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Port 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
-"missions/denmark_pt_port_07_destroyers";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Port 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
-"missions/denmark_pt_port_08_destroyers";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Port 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
-"missions/denmark_pt_port_01_cruisers";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Port 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
-"missions/denmark_pt_port_02_cruisers";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Port 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
-"missions/denmark_pt_port_03_cruisers";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Port 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
-"missions/denmark_pt_port_04_cruisers";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Port 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
-"missions/denmark_pt_port_05_cruisers";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Port 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
-"missions/denmark_pt_port_06_cruisers";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Port 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
-"missions/denmark_pt_port_07_cruisers";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Port 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
-"missions/denmark_pt_port_08_cruisers";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Port 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
-"aleutian_islands/name";"Aleutian Islands";"Îles Aléoutiennes";"Isole Aleutine";"Aleuten";"Islas Aleutianas";"Алеутские острова";"Aleuty";"Ilhas Aleutas";"Aleutian Islands";"알류샨 열도";"阿\t留\t申\t群\t岛";"アリューシャン\t列島";"阿\t留\t申\t群\t島";;
+"missions/denmark_pt_port_01";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Liman 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
+"missions/denmark_pt_port_02";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Liman 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
+"missions/denmark_pt_port_03";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Liman 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
+"missions/denmark_pt_port_04";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Liman 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
+"missions/denmark_pt_port_05";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Liman 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
+"missions/denmark_pt_port_06";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Liman 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
+"missions/denmark_pt_port_07";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Liman 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
+"missions/denmark_pt_port_08";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Liman 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
+"missions/denmark_pt_port_01_air";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Liman 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
+"missions/denmark_pt_port_02_air";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Liman 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
+"missions/denmark_pt_port_03_air";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Liman 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
+"missions/denmark_pt_port_04_air";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Liman 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
+"missions/denmark_pt_port_05_air";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Liman 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
+"missions/denmark_pt_port_06_air";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Liman 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
+"missions/denmark_pt_port_07_air";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Liman 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
+"missions/denmark_pt_port_08_air";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Liman 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
+"missions/denmark_pt_port_01_destroyers";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Liman 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
+"missions/denmark_pt_port_02_destroyers";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Liman 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
+"missions/denmark_pt_port_03_destroyers";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Liman 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
+"missions/denmark_pt_port_04_destroyers";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Liman 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
+"missions/denmark_pt_port_05_destroyers";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Liman 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
+"missions/denmark_pt_port_06_destroyers";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Liman 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
+"missions/denmark_pt_port_07_destroyers";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Liman 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
+"missions/denmark_pt_port_08_destroyers";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Liman 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
+"missions/denmark_pt_port_01_cruisers";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Liman 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
+"missions/denmark_pt_port_02_cruisers";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Liman 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
+"missions/denmark_pt_port_03_cruisers";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Liman 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
+"missions/denmark_pt_port_04_cruisers";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Liman 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
+"missions/denmark_pt_port_05_cruisers";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Liman 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
+"missions/denmark_pt_port_06_cruisers";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Liman 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
+"missions/denmark_pt_port_07_cruisers";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Liman 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
+"missions/denmark_pt_port_08_cruisers";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Liman 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
+"aleutian_islands/name";"Aleutian Islands";"Îles Aléoutiennes";"Isole Aleutine";"Aleuten";"Islas Aleutianas";"Алеутские острова";"Aleuty";"Ilhas Aleutas";"Aleut Adaları";"알류샨 열도";"阿\t留\t申\t群\t岛";"アリューシャン\t列島";"阿\t留\t申\t群\t島";;
 "aleutian_islands/desc";;;;;;;;;;;;;;;
-"missions/air_ladoga_BfD_norespawn";"[Operation] Lake Ladoga";"[Operation] Lac Ladoga";"[Operazione] Lago Ladoga";"[Operation] See Ladoga";"[Operation] Lago Ládoga";"[Операция] Ладожское озеро";"[Operacja] Jezioro Ładoga";"[Operation] Lago Ladoga";"[Operation] Lake Ladoga";"[Operation] 라도가 호수";"【军\t事\t行\t动\t】\t拉\t多\t加\t湖";"[作戦] ラドガ\t湖";"【軍\t事\t行\t動\t】\t拉\t多\t加\t湖";;
-"missions/moscow_42kilometer_BfD_norespawn";"[Operation] Moscow. 42nd kilometer";"[Operation] Moscou. 42e kilomètre";"[Operation] Mosca. 42° kilometro";"[Operation] Moskau, 42. Kilometer";"[Operation] Moscú. Kilómetro 42";"[Операция] Москва. 42 километр";"[Operacja] Moskwa. 42 kilometr";"[Operation] Moscovo. 42º quilómetro ";"[Operation] Moscow. 42nd kilometer";"[Operation] 모스크바. 42킬로미터";"【军\t事\t行\t动\t】\t莫\t斯\t科 • 42 公\t里\t外";"[作戦] モスクワ（42km）";"【軍\t事\t行\t動\t】\t莫\t斯\t科 • 42 公\t里\t外";;
-"missions/moscow_naro_fominsk_BfD_norespawn";"[Operation] Moscow. Naro-Fominsk";"[Operation] Moscou. Naro-Fominsk";"[Operation] Mosca. Naro-Fominsk";"[Operation]Moskau Naro-Fominsk";"[Operation] Moscú. Naro-Fominsk";"[Операция] Москва. Наро-Фоминск";"[Operacja] Moskwa. Naro-Fominsk";"[Operation] Moscovo. Naro-Fominsk";"[Operation] Moscow. Naro-Fominsk";"[Operation] 모스크바. 나로-포민스크";"【军\t事\t行\t动\t】\t莫\t斯\t科 • 纳\t罗\t福\t明\t斯\t克";"[作戦] モスクワ（ナロ＝フォミンスク）";"【軍\t事\t行\t動\t】\t莫\t斯\t科 • 納\t羅\t福\t明\t斯\t克";;
-"missions/moscow_serpuhov_BfD_norespawn";"[Operation] Moscow. Serpukhov";"[Operation] Moscou. Serpukhov";"[Operation] Mosca. Serpukhov";"[Operation] Moskau Serpuchow";"[Operation] Moscú. Serpukhov";"[Операция] Москва. Серпухов";"[Operacja] Moskwa. Sierpuchow";"[Operation] Moscovo. Serpukhov";"[Operation] Moscow. Serpukhov";"[Operation] 모스크바. 세르푸코프";"【军\t事\t行\t动\t】\t莫\t斯\t科 • 谢\t尔\t普\t霍\t夫";"[作戦] モスクワ（セルプホフ）";"【軍\t事\t行\t動\t】\t莫\t斯\t科 • 謝\t爾\t普\t霍\t夫";;
-"missions/mozdok_winter_BfD_norespawn";"[Operation] Mozdok. Winter 1943";"[Operation] Mozdok. Hiver 1943";"[Operation] Mozdok. Inverno 1943";"[Operation] Mosdok, Winter 1943";"[Operation] Mozdok. Invierno de 1943";"[Операция] Моздок. Зима 1943";"[Operacja] Mozdok. Zima 1943";"[Operation] Mozdok. Inverno de 1943";"[Operation] Mozdok. Winter 1943";"[Operation] 1943년 겨울의 모즈도크";"【军\t事\t行\t动\t】\t莫\t兹\t多\t克 • 冬\t季\t（1943 年）";"[作戦] モズドク（1943年冬）";"【軍\t事\t行\t動\t】\t莫\t兹\t多\t克 • 冬\t季\t（1943 年）";;
+"missions/air_ladoga_BfD_norespawn";"[Operation] Lake Ladoga";"[Operation] Lac Ladoga";"[Operazione] Lago Ladoga";"[Operation] See Ladoga";"[Operation] Lago Ládoga";"[Операция] Ладожское озеро";"[Operacja] Jezioro Ładoga";"[Operation] Lago Ladoga";"[Operation] Ladoga Gölü";"[Operation] 라도가 호수";"【军\t事\t行\t动\t】\t拉\t多\t加\t湖";"[作戦] ラドガ\t湖";"【軍\t事\t行\t動\t】\t拉\t多\t加\t湖";;
+"missions/moscow_42kilometer_BfD_norespawn";"[Operation] Moscow. 42nd kilometer";"[Operation] Moscou. 42e kilomètre";"[Operation] Mosca. 42° kilometro";"[Operation] Moskau, 42. Kilometer";"[Operation] Moscú. Kilómetro 42";"[Операция] Москва. 42 километр";"[Operacja] Moskwa. 42 kilometr";"[Operation] Moscovo. 42º quilómetro ";"[Operasyon] Moskova. 42. kilometre";"[Operation] 모스크바. 42킬로미터";"【军\t事\t行\t动\t】\t莫\t斯\t科 • 42 公\t里\t外";"[作戦] モスクワ（42km）";"【軍\t事\t行\t動\t】\t莫\t斯\t科 • 42 公\t里\t外";;
+"missions/moscow_naro_fominsk_BfD_norespawn";"[Operation] Moscow. Naro-Fominsk";"[Operation] Moscou. Naro-Fominsk";"[Operation] Mosca. Naro-Fominsk";"[Operation]Moskau Naro-Fominsk";"[Operation] Moscú. Naro-Fominsk";"[Операция] Москва. Наро-Фоминск";"[Operacja] Moskwa. Naro-Fominsk";"[Operation] Moscovo. Naro-Fominsk";"[Operasyon] Moskova. Naro-Fominsk";"[Operation] 모스크바. 나로-포민스크";"【军\t事\t行\t动\t】\t莫\t斯\t科 • 纳\t罗\t福\t明\t斯\t克";"[作戦] モスクワ（ナロ＝フォミンスク）";"【軍\t事\t行\t動\t】\t莫\t斯\t科 • 納\t羅\t福\t明\t斯\t克";;
+"missions/moscow_serpuhov_BfD_norespawn";"[Operation] Moscow. Serpukhov";"[Operation] Moscou. Serpukhov";"[Operation] Mosca. Serpukhov";"[Operation] Moskau Serpuchow";"[Operation] Moscú. Serpukhov";"[Операция] Москва. Серпухов";"[Operacja] Moskwa. Sierpuchow";"[Operation] Moscovo. Serpukhov";"[Operasyon] Moskova. Serpuhov";"[Operation] 모스크바. 세르푸코프";"【军\t事\t行\t动\t】\t莫\t斯\t科 • 谢\t尔\t普\t霍\t夫";"[作戦] モスクワ（セルプホフ）";"【軍\t事\t行\t動\t】\t莫\t斯\t科 • 謝\t爾\t普\t霍\t夫";;
+"missions/mozdok_winter_BfD_norespawn";"[Operation] Mozdok. Winter 1943";"[Operation] Mozdok. Hiver 1943";"[Operation] Mozdok. Inverno 1943";"[Operation] Mosdok, Winter 1943";"[Operation] Mozdok. Invierno de 1943";"[Операция] Моздок. Зима 1943";"[Operacja] Mozdok. Zima 1943";"[Operation] Mozdok. Inverno de 1943";"[Operasyon] Mozdok. 1943 Kışı";"[Operation] 1943년 겨울의 모즈도크";"【军\t事\t行\t动\t】\t莫\t兹\t多\t克 • 冬\t季\t（1943 年）";"[作戦] モズドク（1943年冬）";"【軍\t事\t行\t動\t】\t莫\t兹\t多\t克 • 冬\t季\t（1943 年）";;
 "missions/norway_BfD_norespawn";"[Operation] Norway";"[Operation] Norvège";"[Operazione] Norvegia";"[Operation] Norwegen";"[Operación] Noruega";"[Операция] Норвегия";"[Operacja] Norwegia";"[Operation] Noruega";"[Operation] Norveç";"[작전] 노르웨이";"【军\t事\t行\t动\t】\t挪\t威";"[作戦] ノルウェー";"【軍\t事\t行\t動\t】\t挪\t威";;
-"missions/april_spitzbergen_NConq";"Underwater hunting";"Chasse sous-marine";"Caccia sottomarina";"Unterwasserjagd";"Caza submarina";"Подводная охота";"Podwodne łowy";"Caça submarina";"Underwater hunting";"수중 사냥";"水\t中\t猎\t杀\t战";"水中\tハンティング";"水\t下\t狩\t獵";;
-"missions/april_spitzbergen_NConq/desc";"You need to go to the area indicated on the map and carry out a missile strike.";"Vous devez vous rendre à la zone indiquée sur la carte et effectuer une frappe de missile.";"Devi andare nell'area indicata sulla mappa per poter lanciare un attacco missilistico.";"Du musst zu dem auf der Karte angegebenen Bereich gehen und einen Raketenangriff durchführen.";"Debes ir al área indicada en el mapa y llevar a cabo un ataque balístico.";"Ваша задача — выход в указанный на карте район и нанесение ракетного удара.";"Musisz osiągnąć cel wskazany na mapie i przeprowadzić atak rakietowy";"É necessário entrar na área indicada do mapa e lançar os mísseis";"You need to go to the area indicated on the map and carry out a missile strike.";"맵에 표시된 지역으로 이동한 후 미사일 공격을 가하시면 됩니다.";"前\t往\t地\t图\t上\t标\t记\t的\t区\t域，\t进\t行\t导\t弹\t打\t击";"マップ\t上で\t示された\tエリアに\t行き、\tミサイル\t攻撃を\t行う\t必要があります。";"前\t往\t地\t圖\t上\t標\t記\t的\t區\t域，\t進\t行\t導\t彈\t打\t擊";;
-"missions/april_spitzbergen_deathmatch_NTdm";"Underwater hunting";"Chasse sous-marine";"Caccia sottomarina";"Unterwasserjagd";"Caza submarina";"Подводная охота";"Podwodne łowy";"Caça submarina";"Underwater hunting";"수중 사냥";"水\t中\t猎\t杀\t战";"水中\tハンティング";"水\t下\t狩\t獵";;
-"missions/april_spitzbergen_deathmatch_NTdm/desc";"Your task is to find and destroy strategic submarines ready for a nuclear strike.";"Votre tâche est de trouver et de détruire les sous-marins stratégiques prêts à effectuer une frappe nucléaire.";"Il tuo compito è di trovare e distruggere i sottomarini strategici pronti ad un attacco nucleare.";"Deine Aufgabe ist es, die strategischen U-Boote ausfindig zu machen und zu zerstören, welche bereit für einen nuklearen Atomschlag sind.";"Tu tarea es encontrar y destruir los submarinos estratégicos preparados para un ataque nuclear.";"Ваша задача — поиск и уничтожение стратегических подводных лодок, готовых к ядерному удару.";"Twoim zadaniem jest odszukać i zniszczyć strategoczne okręty podwodne gotowe do przeprowadzenia ataku nuklearnego";"A tarefa é identificar e afundar submarinos estratégicos prontos para efetuar um ataque nuclear.";"Your task is to find and destroy strategic submarines ready for a nuclear strike.";"당신은 핵 공격을 가할 준비가 완료된 전략 잠수함을 찾아내고 격파하셔야 합니다.";"搜\t索\t并\t猎\t杀\t正\t在\t准\t备\t核\t打\t击\t的\t敌\t方\t战\t略\t核\t潜\t艇";"あなたの\t任務は、\t核攻撃を\t企む\t戦略潜水艦を\t発見して\t破壊すること。";"搜\t索\t並\t獵\t殺\t正\t在\t準\t備\t核\t打\t擊\t的\t敵\t方\t核\t潛\t艇";;
-"missions/arcade_floating_islands_AfD";"TailSpin";"TailSpin";"TailSpin";"TailSpin";"TailSpin";"Чудесные виражи";"TailSpin";"TailSpin";"TailSpin";"빙글뱅글";"《航\t空\t大\t英\t雄\t》";"きりもみ\t降下";"航\t空\t小\t英\t雄";;
-"missions/arcade_floating_islands_AfD/desc";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"L'air au-dessus de la baie de Cape-Sommerset est instable - les clans rivaux de la République des Pirates de l'AIR ont décidé de déterminer une fois pour toutes le maître de la région de Soaring Rocks.";"L'area sulla baia di Capo-Sommerset è istabile - le bande rivali della Repubblica Aerea Pirata hanno deciso di determinare chi sia il capo della regione delle Rocce Flottanti una volta per tutte.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"El ambiente sobre la bahía del Cabo Sommerset está tenso - los clanes rivales de los Piratas del Cielo están decididos a determinar al amo de la región de Soaring Rocks de una vez por todas.";"Над бухтой Кейп-Сомерсет снова неспокойно - противоборствующие кланы Республики Воздушных Пиратов решили раз и навсегда выяснить, кому быть хозяином региона волшебных Парящих Скал.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"开\t普\t-\t萨\t默\t塞\t特\t的\t海\t湾\t上\t空，\t此\t刻\t已\t是\t山\t雨\t欲\t来。\t面\t对\t凌\t霄\t岩\t海\t的\t领\t土\t问\t题，\t空\t中\t海\t盗\t共\t和\t国\t的\t两\t大\t派\t系\t终\t于\t擦\t枪\t走\t火，\t决\t心\t通\t过\t彻\t底\t的\t毁\t灭\t来\t永\t久\t解\t决\t这\t一\t争\t端。";"ケープ・サマーセット\t港の\t上を\t流れる\t空気が\t不安定だ。\t空賊国からやって\t来た\tライバルの\tクランは、\tこれを\t最後に\tソーキング・ロックス\t地帯の\t支配者を\t定めることに\t決めた。";"開\t普\t-\t薩\t默\t塞\t特\t的\t海\t灣\t上\t空，\t此\t刻\t已\t是\t山\t雨\t欲\t來。\t面\t對\t凌\t霄\t岩\t海\t的\t領\t土\t問\t題，\t空\t中\t海\t盜\t共\t和\t國\t的\t兩\t大\t派\t系\t終\t於\t擦\t槍\t走\t火，\t決\t心\t通\t過\t徹\t底\t的\t毀\t滅\t來\t永\t久\t解\t決\t這\t一\t爭\t端。";;
-"missions/air_skyscraper_city_BfD_norespawn";"[Operation] City";"[Operation] Ville";"[Operazione] Città";"[Operation] Stadt";"[Operation] Ciudad";"[Операция] Мегаполис";"[Operacja] Miasto";"[Operation] Cidade";"[Operation] City";"[작전] 도시";"【军\t事\t行\t动\t】\t大\t都\t会";"[作戦] 都市";"【軍\t事\t行\t動\t】\t城\t市";;
-"nuclear_incident/name";"Ground zero";"Ground zero";"Ground zero";"Ground Zero";"Zona cero";"Эпицентр";"Strefa zero";"Ground zero";"Ground zero";"그라운드 제로";"阿\t拉\t斯\t加 • 核\t爆\t原\t点";"グラウンド・ゼロ";"原\t爆\t點";;
+"missions/april_spitzbergen_NConq";"Underwater hunting";"Chasse sous-marine";"Caccia sottomarina";"Unterwasserjagd";"Caza submarina";"Подводная охота";"Podwodne łowy";"Caça submarina";"Su altında avlanma";"수중 사냥";"水\t中\t猎\t杀\t战";"水中\tハンティング";"水\t下\t狩\t獵";;
+"missions/april_spitzbergen_NConq/desc";"You need to go to the area indicated on the map and carry out a missile strike.";"Vous devez vous rendre à la zone indiquée sur la carte et effectuer une frappe de missile.";"Devi andare nell'area indicata sulla mappa per poter lanciare un attacco missilistico.";"Du musst zu dem auf der Karte angegebenen Bereich gehen und einen Raketenangriff durchführen.";"Debes ir al área indicada en el mapa y llevar a cabo un ataque balístico.";"Ваша задача — выход в указанный на карте район и нанесение ракетного удара.";"Musisz osiągnąć cel wskazany na mapie i przeprowadzić atak rakietowy";"É necessário entrar na área indicada do mapa e lançar os mísseis";"Haritada belirtilen alana gidip bir füze saldırısı yapman gerekiyor.";"맵에 표시된 지역으로 이동한 후 미사일 공격을 가하시면 됩니다.";"前\t往\t地\t图\t上\t标\t记\t的\t区\t域，\t进\t行\t导\t弹\t打\t击";"マップ\t上で\t示された\tエリアに\t行き、\tミサイル\t攻撃を\t行う\t必要があります。";"前\t往\t地\t圖\t上\t標\t記\t的\t區\t域，\t進\t行\t導\t彈\t打\t擊";;
+"missions/april_spitzbergen_deathmatch_NTdm";"Underwater hunting";"Chasse sous-marine";"Caccia sottomarina";"Unterwasserjagd";"Caza submarina";"Подводная охота";"Podwodne łowy";"Caça submarina";"Su altında avlanma";"수중 사냥";"水\t中\t猎\t杀\t战";"水中\tハンティング";"水\t下\t狩\t獵";;
+"missions/april_spitzbergen_deathmatch_NTdm/desc";"Your task is to find and destroy strategic submarines ready for a nuclear strike.";"Votre tâche est de trouver et de détruire les sous-marins stratégiques prêts à effectuer une frappe nucléaire.";"Il tuo compito è di trovare e distruggere i sottomarini strategici pronti ad un attacco nucleare.";"Deine Aufgabe ist es, die strategischen U-Boote ausfindig zu machen und zu zerstören, welche bereit für einen nuklearen Atomschlag sind.";"Tu tarea es encontrar y destruir los submarinos estratégicos preparados para un ataque nuclear.";"Ваша задача — поиск и уничтожение стратегических подводных лодок, готовых к ядерному удару.";"Twoim zadaniem jest odszukać i zniszczyć strategoczne okręty podwodne gotowe do przeprowadzenia ataku nuklearnego";"A tarefa é identificar e afundar submarinos estratégicos prontos para efetuar um ataque nuclear.";"Görevin, nükleer saldırıya hazır stratejik denizaltıları bulup yok etmektir.";"당신은 핵 공격을 가할 준비가 완료된 전략 잠수함을 찾아내고 격파하셔야 합니다.";"搜\t索\t并\t猎\t杀\t正\t在\t准\t备\t核\t打\t击\t的\t敌\t方\t战\t略\t核\t潜\t艇";"あなたの\t任務は、\t核攻撃を\t企む\t戦略潜水艦を\t発見して\t破壊すること。";"搜\t索\t並\t獵\t殺\t正\t在\t準\t備\t核\t打\t擊\t的\t敵\t方\t核\t潛\t艇";;
+"missions/arcade_floating_islands_AfD";"TailSpin";"TailSpin";"TailSpin";"TailSpin";"TailSpin";"Чудесные виражи";"TailSpin";"TailSpin";"Viril";"빙글뱅글";"《航\t空\t大\t英\t雄\t》";"きりもみ\t降下";"航\t空\t小\t英\t雄";;
+"missions/arcade_floating_islands_AfD/desc";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"L'air au-dessus de la baie de Cape-Sommerset est instable - les clans rivaux de la République des Pirates de l'AIR ont décidé de déterminer une fois pour toutes le maître de la région de Soaring Rocks.";"L'area sulla baia di Capo-Sommerset è istabile - le bande rivali della Repubblica Aerea Pirata hanno deciso di determinare chi sia il capo della regione delle Rocce Flottanti una volta per tutte.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"El ambiente sobre la bahía del Cabo Sommerset está tenso - los clanes rivales de los Piratas del Cielo están decididos a determinar al amo de la región de Soaring Rocks de una vez por todas.";"Над бухтой Кейп-Сомерсет снова неспокойно - противоборствующие кланы Республики Воздушных Пиратов решили раз и навсегда выяснить, кому быть хозяином региона волшебных Парящих Скал.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"Cape-Sommerset körfezindeki hava bulanık. Hava Korsanları Cumhuriyeti'nden rakip klanlar, Yükselen Kayalar bölgesinin efendisini belirlemeye kararlı.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"开\t普\t-\t萨\t默\t塞\t特\t的\t海\t湾\t上\t空，\t此\t刻\t已\t是\t山\t雨\t欲\t来。\t面\t对\t凌\t霄\t岩\t海\t的\t领\t土\t问\t题，\t空\t中\t海\t盗\t共\t和\t国\t的\t两\t大\t派\t系\t终\t于\t擦\t枪\t走\t火，\t决\t心\t通\t过\t彻\t底\t的\t毁\t灭\t来\t永\t久\t解\t决\t这\t一\t争\t端。";"ケープ・サマーセット\t港の\t上を\t流れる\t空気が\t不安定だ。\t空賊国からやって\t来た\tライバルの\tクランは、\tこれを\t最後に\tソーキング・ロックス\t地帯の\t支配者を\t定めることに\t決めた。";"開\t普\t-\t薩\t默\t塞\t特\t的\t海\t灣\t上\t空，\t此\t刻\t已\t是\t山\t雨\t欲\t來。\t面\t對\t凌\t霄\t岩\t海\t的\t領\t土\t問\t題，\t空\t中\t海\t盜\t共\t和\t國\t的\t兩\t大\t派\t系\t終\t於\t擦\t槍\t走\t火，\t決\t心\t通\t過\t徹\t底\t的\t毀\t滅\t來\t永\t久\t解\t決\t這\t一\t爭\t端。";;
+"missions/air_skyscraper_city_BfD_norespawn";"[Operation] City";"[Operation] Ville";"[Operazione] Città";"[Operation] Stadt";"[Operation] Ciudad";"[Операция] Мегаполис";"[Operacja] Miasto";"[Operation] Cidade";"[Operasyon] Şehir";"[작전] 도시";"【军\t事\t行\t动\t】\t大\t都\t会";"[作戦] 都市";"【軍\t事\t行\t動\t】\t城\t市";;
+"nuclear_incident/name";"Ground zero";"Ground zero";"Ground zero";"Ground Zero";"Zona cero";"Эпицентр";"Strefa zero";"Ground zero";"Sıfır noktası";"그라운드 제로";"阿\t拉\t斯\t加 • 核\t爆\t原\t点";"グラウンド・ゼロ";"原\t爆\t點";;
 "nuclear_incident/desc";;;;;;;;;;;;;;;
-"missions/peleliu_pt_port_01_destroyers";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Port 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
-"missions/peleliu_pt_port_02_destroyers";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Port 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
-"missions/peleliu_pt_port_03_destroyers";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Port 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
-"missions/peleliu_pt_port_04_destroyers";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Port 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
-"missions/peleliu_pt_port_05_destroyers";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Port 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
-"missions/peleliu_pt_port_06_destroyers";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Port 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
-"missions/peleliu_pt_port_07_destroyers";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Port 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
-"missions/peleliu_pt_port_08_destroyers";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Port 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
-"missions/peleliu_pt_port_01_cruisers";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Port 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
-"missions/peleliu_pt_port_02_cruisers";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Port 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
-"missions/peleliu_pt_port_03_cruisers";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Port 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
-"missions/peleliu_pt_port_04_cruisers";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Port 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
-"missions/peleliu_pt_port_05_cruisers";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Port 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
-"missions/peleliu_pt_port_06_cruisers";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Port 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
-"missions/peleliu_pt_port_07_cruisers";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Port 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
-"missions/peleliu_pt_port_08_cruisers";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Port 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
-"missions/eastern_front_1941";"[Assault] Poland (1941)";"[Assault] Pologne (1941)";"[Assalto] Polonia (1941)";"[Assault] Polen (1941)";"[Assault] Polonia (1941)";"[Штурм] Польша (1941)";"[Szturm] Poland (1941)";"[Assault] Polónia (1941)";"[Assault] Poland (1941)";"[Assault] 폴란드 (1941)";"【拉\t锯\t战\t】\t波\t兰\t（1941 年）";"[襲撃] ポーランド (1941)";"【突\t擊\t】\t波\t蘭\t（1941 年）";;
+"missions/peleliu_pt_port_01_destroyers";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Liman 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
+"missions/peleliu_pt_port_02_destroyers";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Liman 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
+"missions/peleliu_pt_port_03_destroyers";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Liman 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
+"missions/peleliu_pt_port_04_destroyers";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Liman 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
+"missions/peleliu_pt_port_05_destroyers";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Liman 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
+"missions/peleliu_pt_port_06_destroyers";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Liman 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
+"missions/peleliu_pt_port_07_destroyers";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Liman 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
+"missions/peleliu_pt_port_08_destroyers";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Liman 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
+"missions/peleliu_pt_port_01_cruisers";"Port 01";"Port 01";"Porto 01";"Hafen 01";"Puerto 01";"Port 01";"Port 01";"Porto 01";"Liman 01";"1번 항구";"一\t号\t港\t口";"港 01";"一\t號\t港\t口";;
+"missions/peleliu_pt_port_02_cruisers";"Port 02";"Port 02";"Porto 02";"Hafen 02";"Puerto 02";"Port 02";"Port 02";"Porto 02";"Liman 02";"2번 항구";"二\t号\t港\t口";"港 02";"二\t號\t港\t口";;
+"missions/peleliu_pt_port_03_cruisers";"Port 03";"Port 03";"Porto 03";"Hafen 03";"Puerto 03";"Port 03";"Port 03";"Porto 03";"Liman 03";"3번 항구";"三\t号\t港\t口";"港 03";"三\t號\t港\t口";;
+"missions/peleliu_pt_port_04_cruisers";"Port 04";"Port 04";"Porto 04";"Hafen 04";"Puerto 04";"Port 04";"Port 04";"Porto 04";"Liman 04";"4번 항구";"四\t号\t港\t口";"港 04";"四\t號\t港\t口";;
+"missions/peleliu_pt_port_05_cruisers";"Port 05";"Port 05";"Porto 05";"Hafen 05";"Puerto 05";"Port 05";"Port 05";"Porto 05";"Liman 05";"5번 항구";"五\t号\t港\t口";"港 05";"五\t號\t港\t口";;
+"missions/peleliu_pt_port_06_cruisers";"Port 06";"Port 06";"Porto 06";"Hafen 06";"Puerto 06";"Port 06";"Port 06";"Porto 06";"Liman 06";"6번 항구";"六\t号\t港\t口";"港 06";"六\t號\t港\t口";;
+"missions/peleliu_pt_port_07_cruisers";"Port 07";"Port 07";"Porto 07";"Hafen 07";"Puerto 07";"Port 07";"Port 07";"Porto 07";"Liman 07";"7번 항구";"七\t号\t港\t口";"港 07";"七\t號\t港\t口";;
+"missions/peleliu_pt_port_08_cruisers";"Port 08";"Port 08";"Porto 08";"Hafen 08";"Puerto 08";"Port 08";"Port 08";"Porto 08";"Liman 08";"8번 항구";"八\t号\t港\t口";"港 08";"八\t號\t港\t口";;
+"missions/eastern_front_1941";"[Assault] Poland (1941)";"[Assault] Pologne (1941)";"[Assalto] Polonia (1941)";"[Assault] Polen (1941)";"[Assault] Polonia (1941)";"[Штурм] Польша (1941)";"[Szturm] Poland (1941)";"[Assault] Polónia (1941)";"[Assault] Polonya (1941)";"[Assault] 폴란드 (1941)";"【拉\t锯\t战\t】\t波\t兰\t（1941 年）";"[襲撃] ポーランド (1941)";"【突\t擊\t】\t波\t蘭\t（1941 年）";;
 "missions/eastern_front_1943";"[Assault] Kursk (1943)";"[Assault] Kursk (1943)";"[Assalto] Kursk (1943)";"[Assault] Kursk (1943)";"[Assault] Kursk (1943)";"[Штурм] Курск (1943)";"[Szturm] Kursk (1943)";"[Assault] Kursk (1943)";"[Assault] Kursk (1943)";"[Assault] 쿠르스크 (1943)";"【拉\t锯\t战\t】\t库\t尔\t斯\t克\t（1943 年）";"[襲撃] クルスク (1943)";"【突\t擊\t】\t庫\t爾\t斯\t克\t（1943 年）";;
-"missions/middle_east_1973";"[Assault] Sinai (1973)";"[Assault] Sinai (1973)";"[Assalto] Sinai (1973)";"[Assault] Sinai (1973)";"[Assault] Sinaí (1973)";"[Штурм] Синай (1973)";"[Szturm] Synaj (1973)";"[Assault] Sinai (1973)";"[Assault] Sinai (1973)";"[Assault] 시나이 (1973)";"【拉\t锯\t战\t】\t西\t奈\t半\t岛\t（1973 年）";"[襲撃] シナイ (1973)";"【突\t擊\t】\t西\t奈\t半\t島\t（1973 年）";;
-"missions/africa_desert_convoy_pvet";"[Convoy] Second battle of El Alamein (1942)";"[Convoy] Seconde bataille d'El Alamein (1942)";"[Convoglio] Seconda battaglia di El Alamein (1942)";"[Convoy] Zweite Schlacht von El Alamein (1942)";"[Convoy] Segunda batalla de El Alamein (1942)";"[Конвой] Второе сражение за Эль-Аламейн (1942)";"[Konwój] Druga bitwa pod El Alamein (1942)";"[Convoy] Segunda Batalha de El Alamein  (1942)";"[Convoy] Second battle of El Alamein (1942)";"[Convoy] 2차 엘 알라메인 전투 (1942)";"【护\t送\t行\t动\t】\t第\t二\t次\t阿\t拉\t曼\t战\t役\t（1942 年）";"[輸送団] 第二次\tエル・アラメインの\t戦い (1942)";"【護\t送\t行\t動\t】\t第\t二\t次\t阿\t拉\t曼\t戰\t役\t（1942 年）";;
-"missions/volokolamsk_convoy_pvet";"[Convoy] Volokolamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Convoglio] Volokolamsk (1942)";"[Convoy] Wolokolamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Конвой] Волоколамск (1942)";"[Konwój] Wołokołamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Convoy] 볼로콜람스크 (1942)";"【护\t送\t行\t动\t】\t沃\t洛\t科\t拉\t姆\t斯\t克\t（1942 年）";"[輸送団] ヴォロコラムスク (1942)";"【護\t送\t行\t動\t】\t沃\t洛\t科\t拉\t姆\t斯\t克\t（1942 年）";;
-"country_sky_pirates";"The Republic of Sky Pirates";"La République des pirates du ciel";"Repubblica dei Pirati del Cielo";"Die Republik der Himmelspiraten";"La República de Piratas del Cielo";"Республика Воздушных Пиратов";"Republika Podniebnych Piratów";"The Republic of Sky Pirates";"The Republic of Sky Pirates";"The Republic of Sky Pirates";"空\t中\t海\t盗\t共\t和\t国";"空賊共和国";"空\t中\t海\t盜\t共\t和\t國";;
-"event/war2077";"Warfare 2077";"Warfare 2077";"Teatro 2077";"Warfare 2077";"Warfare 2077";"Война 2077";"Warfare 2077";"Warfare 2077";"Warfare 2077";"워페어 2077";"赛\t博\t雷\t霆 2077";"戦争 2077";"賽\t博\t雷\t霆 2077";;
-"missions/western_europe_Dom";"Warfare 2077";"Warfare 2077";"Teatro 2077";"Warfare 2077";"Warfare 2077";"Война 2077";"Warfare 2077";"Warfare 2077";"Warfare 2077";"워페어 2077";"雷\t霆\t战\t争 2077";"戦争 2077";"賽\t博\t雷\t霆 2077";;
+"missions/middle_east_1973";"[Assault] Sinai (1973)";"[Assault] Sinai (1973)";"[Assalto] Sinai (1973)";"[Assault] Sinai (1973)";"[Assault] Sinaí (1973)";"[Штурм] Синай (1973)";"[Szturm] Synaj (1973)";"[Assault] Sinai (1973)";"[Taarruz] Sinai (1973)";"[Assault] 시나이 (1973)";"【拉\t锯\t战\t】\t西\t奈\t半\t岛\t（1973 年）";"[襲撃] シナイ (1973)";"【突\t擊\t】\t西\t奈\t半\t島\t（1973 年）";;
+"missions/africa_desert_convoy_pvet";"[Convoy] Second battle of El Alamein (1942)";"[Convoy] Seconde bataille d'El Alamein (1942)";"[Convoglio] Seconda battaglia di El Alamein (1942)";"[Convoy] Zweite Schlacht von El Alamein (1942)";"[Convoy] Segunda batalla de El Alamein (1942)";"[Конвой] Второе сражение за Эль-Аламейн (1942)";"[Konwój] Druga bitwa pod El Alamein (1942)";"[Convoy] Segunda Batalha de El Alamein  (1942)";"[Konvoy] II. El-Alameyn Muharebesi (1942)";"[Convoy] 2차 엘 알라메인 전투 (1942)";"【护\t送\t行\t动\t】\t第\t二\t次\t阿\t拉\t曼\t战\t役\t（1942 年）";"[輸送団] 第二次\tエル・アラメインの\t戦い (1942)";"【護\t送\t行\t動\t】\t第\t二\t次\t阿\t拉\t曼\t戰\t役\t（1942 年）";;
+"missions/volokolamsk_convoy_pvet";"[Convoy] Volokolamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Convoglio] Volokolamsk (1942)";"[Convoy] Wolokolamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Конвой] Волоколамск (1942)";"[Konwój] Wołokołamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Konvoy] Volokolamsk (1942)";"[Convoy] 볼로콜람스크 (1942)";"【护\t送\t行\t动\t】\t沃\t洛\t科\t拉\t姆\t斯\t克\t（1942 年）";"[輸送団] ヴォロコラムスク (1942)";"【護\t送\t行\t動\t】\t沃\t洛\t科\t拉\t姆\t斯\t克\t（1942 年）";;
+"country_sky_pirates";"The Republic of Sky Pirates";"La République des pirates du ciel";"Repubblica dei Pirati del Cielo";"Die Republik der Himmelspiraten";"La República de Piratas del Cielo";"Республика Воздушных Пиратов";"Republika Podniebnych Piratów";"The Republic of Sky Pirates";"Hava Korsanları Cumhuriyeti";"The Republic of Sky Pirates";"空\t中\t海\t盗\t共\t和\t国";"空賊共和国";"空\t中\t海\t盜\t共\t和\t國";;
+"event/war2077";"Warfare 2077";"Warfare 2077";"Teatro 2077";"Warfare 2077";"Warfare 2077";"Война 2077";"Warfare 2077";"Warfare 2077";"Harp 2077";"워페어 2077";"赛\t博\t雷\t霆 2077";"戦争 2077";"賽\t博\t雷\t霆 2077";;
+"missions/western_europe_Dom";"Warfare 2077";"Warfare 2077";"Teatro 2077";"Warfare 2077";"Warfare 2077";"Война 2077";"Warfare 2077";"Warfare 2077";"Harp 2077";"워페어 2077";"雷\t霆\t战\t争 2077";"戦争 2077";"賽\t博\t雷\t霆 2077";;
 "missions/_defdom";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Превосходство]";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Domination]";"[우세 점령(방어)]";"【DEF 最\t终\t防\t卫\t圈\t】";"[DEF-ドミネーション]";"【DEF 最\t終\t防\t衛\t圈\t】";;
 "missions/_defdom/desc";"
 
@@ -4644,9 +4644,9 @@ In [DEF-Domination] mode, the area of hostilities is guarded by a defense system
 The emitters are located underground and are ineffective for attacking targets along the applicate axis. Thus, the areas above the emitters are safe and are marked on the map as DEF-zones.
 DEF-zones are not capable of preventing aircraft from being irradiated, so they are advised to keep their distance from the battlefield during an electromagnetic strike.";"
 
-In [DEF-Domination] mode, the area of hostilities is guarded by a defense system that accumulates charge and periodically inflicts an electromagnetic blow on all invaders.
-The emitters are located underground and are ineffective for attacking targets along the applicate axis. Thus, the areas above the emitters are safe and are marked on the map as DEF-zones.
-DEF-zones are not capable of preventing aircraft from being irradiated, so they are advised to keep their distance from the battlefield during an electromagnetic strike.";"
+[Savunma-Hakimiyet] modunda düşman bölgesi, yük biriktiren ve düzenli aralıklarla tüm işgalcilere elektromanyetik patlama uygulayan bir savunma sistemiyle korunur.
+Yayıcılar yerin altındadır ve yatay eksendeki hedeflere saldırmada etkili değildir. Bu nedenle yayıcıların altındaki alanlar güvenlidir ve haritada Savunma bölgeleri olarak işaretlenir.
+Savunma bölgeleri, uçakların radyasyona maruz kalmasını önlemez, bu nedenle uçakların elektromanyetik saldırı sırasında savaş bölgesinden uzak durmaları tavsiye edilir.";"
 
 In [DEF-Domination] mode, the area of hostilities is guarded by a defense system that accumulates charge and periodically inflicts an electromagnetic blow on all invaders.
 The emitters are located underground and are ineffective for attacking targets along the applicate axis. Thus, the areas above the emitters are safe and are marked on the map as DEF-zones.
@@ -4693,9 +4693,9 @@ Unlock new aircraft by shooting down enemies and supporting your teammates!
 You can monitor your progress at the bottom of the screen - which aircraft are already open and what needs to be done to open the rest!
 All open aircraft are available in battle!";"
 
-Unlock new aircraft by shooting down enemies and supporting your teammates!
-You can monitor your progress at the bottom of the screen - which aircraft are already open and what needs to be done to open the rest!
-All open aircraft are available in battle!";"
+Düşmanları vurarak ve takım arkadaşlarını destekleyerek yeni uçakların kilidini aç!
+İlerlemeni ekranın altından görebilirsin. Burada hangi uçağın açıldığı ve kalan uçakların açılması için yapılması gerekenler görünür!
+Açık uçakların hepsi savaşta kullanılabilir!";"
 
 Unlock new aircraft by shooting down enemies and supporting your teammates!
 You can monitor your progress at the bottom of the screen - which aircraft are already open and what needs to be done to open the rest!
@@ -4708,13 +4708,13 @@ All open aircraft are available in battle!";"协\t助\t友\t军\t并\t击\t落\t
 オープンした\t航空機はすべて、\tバトルで\t使用できます！";"協\t助\t友\t軍\t並\t擊\t落\t敵\t方\t單\t位\t以\t解\t鎖\t新\t機\t型！
 界\t面\t下\t方\t顯\t示\t了\t當\t前\t已\t解\t鎖\t和\t尚\t未\t解\t鎖\t的\t機\t型，\t可\t用\t於\t確\t認\t解\t鎖\t進\t度。
 已\t解\t鎖\t的\t機\t型\t均\t可\t在\t戰\t鬥\t中\t使\t用！";;
-"chapters/deathmatch";"Encounter";"Encounter";"Incontro";"Zusammenstoß";"Encuentro";"Столкновение";"Encounter";"Encontro";"Encounter";"조우전";"遭\t遇\t战";"エンカウンター";"遭\t遇\t戰";;
-"chapters/capture_the_flag";"Capture the Flag";"Capture de drapeau";"Cattura la Bandiera";"Erobere die Flagge";"Capturar la Bandera";"Захват флага";"Capture the Flag";"Capture a Bandeira";"Capture the Flag";"깃발 뺏기";"夺\t旗";"旗の\t確保";"奪\t旗";;
+"chapters/deathmatch";"Encounter";"Encounter";"Incontro";"Zusammenstoß";"Encuentro";"Столкновение";"Encounter";"Encontro";"Karşılaşma";"조우전";"遭\t遇\t战";"エンカウンター";"遭\t遇\t戰";;
+"chapters/capture_the_flag";"Capture the Flag";"Capture de drapeau";"Cattura la Bandiera";"Erobere die Flagge";"Capturar la Bandera";"Захват флага";"Capture the Flag";"Capture a Bandeira";"Bayrağı Ele Geçir";"깃발 뺏기";"夺\t旗";"旗の\t確保";"奪\t旗";;
 "chapters/battle_royale";"Battle Royale";"Battle Royale";"Battle Royale";"Battle Royale";"Battle Royale";"Царь горы";"Battle Royale";"Battle Royale";"Battle Royale";"배틀 로얄";"大\t逃\t杀";"バトルロイヤル";"大\t逃\t殺";;
-"chapters/confrontation";"Confrontation";"Confrontation";"Confronto";"Konfrontation";"Confrontación";"Противостояние";"Konfrontacja";"Confrontation";"Confrontation";"대립 작전";"对\t峙\t战";"直接対決";"對\t峙\t戰";;
-"chapters/other";"Other";"Autre";"Altro";"Anderes";"Otros";"Прочее";"Inne";"Outro";"Other";"기타";"其\t他";"その\t他";"其\t他";;
-"chapters/all";"All Categories";"Toutes les catégories";"Tutte le categorie";"Alle Kategorien";"Todas las categorías";"Все категории";"Wszystkie kategorie";"Todas as categorias";"All Categories";"모든 카테고리";"所\t有\t分\t类";"全\tカテゴリ";"所\t有\t類\t別";;
-"chapters/dom";"Domination";"Domination";"Predominio";"Vorherrschaft";"Dominación";"Превосходство";"Dominacja";"Domínio";"Domination";"우세점령";"战\t场\t控\t制";"ドミネーション";"戰\t區\t控\t制";;
+"chapters/confrontation";"Confrontation";"Confrontation";"Confronto";"Konfrontation";"Confrontación";"Противостояние";"Konfrontacja";"Confrontation";"Yüzleşme";"대립 작전";"对\t峙\t战";"直接対決";"對\t峙\t戰";;
+"chapters/other";"Other";"Autre";"Altro";"Anderes";"Otros";"Прочее";"Inne";"Outro";"Diğer";"기타";"其\t他";"その\t他";"其\t他";;
+"chapters/all";"All Categories";"Toutes les catégories";"Tutte le categorie";"Alle Kategorien";"Todas las categorías";"Все категории";"Wszystkie kategorie";"Todas as categorias";"Tüm kategoriler";"모든 카테고리";"所\t有\t分\t类";"全\tカテゴリ";"所\t有\t類\t別";;
+"chapters/dom";"Domination";"Domination";"Predominio";"Vorherrschaft";"Dominación";"Превосходство";"Dominacja";"Domínio";"Hakimiyet";"우세점령";"战\t场\t控\t制";"ドミネーション";"戰\t區\t控\t制";;
 "missions/honolulu_alt_BfD_norespawn";"[Operation] Military Exercise on Oahu";"[Operation] Exercice Militaire sur Oahu";"[Operation] Esercitazione Militare su Oahu";"[Operation] Truppenübung auf Oahu";"[Operation] Ejercicio Militar en Oahu";"[Операция] Учения на Оаху";"[Operation] Ćwiczenia wojskowe na Oahu";"[Operation] Exercício Militar em Oahu";"Oahu'da [Operation] Askeri Egzersizi";"[작전] 오아후 군사 훈련";"【军\t事\t行\t动\t】\t瓦\t胡\t岛\t演\t习";"[作戦]オアフ\t島の\t軍事演習";"【軍\t事\t行\t動\t】\t歐\t胡\t島\t演\t習";;
 "missions/ship_event_arcade";"Naval Battles";"Batailles Navales";"Battaglie Navali";"Seeschlachten";"Batallas Navales";"Морские Бои";"Bitwy morskie";"Batalhas Navais";"Deniz Savaşları";"해전";"海\t战";"海戦";"海\t戰";;
 "missions/ship_event_arcade/desc";;;;;;;;;;;;;;;

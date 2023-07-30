@@ -79,19 +79,18 @@ let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) 
 }
 
 let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "") {
-  let urlConfig = getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated)
-  if (urlConfig == null)
-    return
-
-  let url = urlConfig.url
-  let urlType = urlConfig.urlType
-
-  log("Open url with urlType = " + urlType.typeName + ": " + url)
-  log("Base Url = " + baseUrl)
-
   //shell_launch can be long sync function so call it delayed to avoid broke current call.
   ::get_gui_scene().performDelayed(getroottable(), function() {
-    // External browser
+    let urlConfig = getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated)
+    if (urlConfig == null)
+      return
+
+    let url = urlConfig.url
+    let urlType = urlConfig.urlType
+
+    log("Open url with urlType = " + urlType.typeName + ": " + url)
+    log("Base Url = " + baseUrl)
+
     local success = false
     if (is_android)
       success = require("android.webview").show(url, true, onCloseUrl)

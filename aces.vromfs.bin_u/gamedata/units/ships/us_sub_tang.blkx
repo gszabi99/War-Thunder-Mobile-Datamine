@@ -54,7 +54,7 @@
     "underwater_ship_collision_ground",
     "underwater_ship_collision_ground"
   ],
-  "periscopeDepth": 3.0,
+  "periscopeDepth": 5.0,
   "safeUnderwaterTime": -1.0,
   "isDeeperThanPeriscopeVarName": "periscope_drive",
   "addTorpedoesCountPack": 12,
@@ -435,7 +435,7 @@
   },
   "ShipPhys": {
     "floodControl": 0.005,
-    "minBuoyancyMult": 0.12,
+    "minBuoyancyMult": 0.1,
     "helmLimit": 1.0,
     "helmVerticalLimit": 0.0,
     "maxPitch": 0.0,

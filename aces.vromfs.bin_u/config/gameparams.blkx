@@ -5200,7 +5200,6 @@
         "shipRudderDeflectionMult": 1.2,
         "shipThrustMultShip": 1.6,
         "shipThrustSpeedMult": 0.2,
-        "submarineMaxSpeedMult": 1.2,
         "submarineSurfaceSlowMult": 1.25,
         "shipTurretHorzSpeedMult": 1.25,
         "shipTurretVertSpeedMult": 1.25
@@ -5223,7 +5222,7 @@
         "shipRudderAreaMult": 1.5,
         "shipRudderDeflectionMult": 1.2,
         "shipThrustMultShip": 1.6,
-        "submarineMaxSpeedMult": 1.2,
+        "shipThrustSpeedMult": 0.2,
         "submarineSurfaceSlowMult": 1.25
       }
     },

@@ -690,9 +690,9 @@ let function mkWeaponryItemByTrigger(buttonConfig, actionItem, ovr = {}) {
         size = [touchButtonSize, touchButtonSize]
         children = [
           mkWeaponryItem(btnCfg, actionItem)
-          isMainCaliber
-            ? weaponRightBlockPrimary(number, curBulletIdxByTrigger?[trigger])
-            : weaponNumber(number)
+          isMainCaliber ? weaponRightBlockPrimary(number, curBulletIdxByTrigger?[trigger])
+            : number >= 0 ? weaponNumber(number)
+            : null
         ]
       }.__update(ovr)
 }

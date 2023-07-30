@@ -55,8 +55,8 @@
     0.1,
     3.0
   ],
-  "weather": "clear",
-  "hqWeather": "clear",
+  "weather": "hangar_weather",
+  "hqWeather": "hangar_weather",
   "level": "levels/avg_abandoned_factory.bin",
   "defCameraTime": [
     5.0,
