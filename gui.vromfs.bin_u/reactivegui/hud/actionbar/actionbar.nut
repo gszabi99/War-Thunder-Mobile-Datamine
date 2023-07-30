@@ -22,7 +22,7 @@ let actionBarButtons = {
   [AIR] = [],
 }
 
-let alwaysShow = [EII_TOOLKIT, EII_MEDICALKIT]
+let alwaysShow = [EII_TOOLKIT, EII_MEDICALKIT, EII_EXTINGUISHER]
   .reduce(function(res, v) {
     res[v] <- true
     return res

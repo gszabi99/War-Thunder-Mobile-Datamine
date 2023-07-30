@@ -174,7 +174,7 @@ let function mkAttrFrom100prcUp(attrId, roundBy = 0.1) {
   let { begin, end } = attrRangesTank[attrId]
   let rMin = begin < end ? begin : end
   let rMax = begin < end ? end : begin
-  let mulMax = 1.0 / (rMin / rMax)
+  let mulMax = rMin != 0 ? (rMax / rMin) : 1.0
   return {
     getBaseVal = @(_shopCfg) 1.0
     getMulMax = @(_attrId) mulMax
@@ -186,7 +186,7 @@ let function mkAttrUpTo100prc(attrId, roundBy = 0.1) {
   let { begin, end } = attrRangesTank[attrId]
   let rMin = begin < end ? begin : end
   let rMax = begin < end ? end : begin
-  let baseVal = 1.0 / rMax
+  let baseVal = rMax != 0 ? (1.0 / rMax) : 0.0
   return {
     getBaseVal = @(_shopCfg) baseVal
     getMulMin = @(_attrId) rMin
@@ -195,8 +195,20 @@ let function mkAttrUpTo100prc(attrId, roundBy = 0.1) {
   }
 }
 
+let function mkAttrFromPlus0prcUp(attrId, roundBy = 0.1) {
+  let { begin, end } = attrRangesTank[attrId]
+  let rMin = begin < end ? begin : end
+  let rMax = begin < end ? end : begin
+  let mulMax = rMin != 0 ? (rMax / rMin) : 1.0
+  return {
+    getBaseVal = @(_shopCfg) 1.0
+    getMulMax = @(_attrId) mulMax
+    valueToText = @(v) "".concat("+", round_by_value((v - 1.0) * 100, roundBy), "%")
+  }
+}
+
 let tankAttrs = {
-  loading_time_mult = mkAttrFrom100prcUp("loading_time_mult")
+  loading_time_mult = mkAttrFromPlus0prcUp("loading_time_mult")
   tracking = mkAttrUpTo100prc("tracking")
   accuracy = mkAttrUpTo100prc("accuracy")
   eyesight = mkAttrFrom100prcUp("eyesight")

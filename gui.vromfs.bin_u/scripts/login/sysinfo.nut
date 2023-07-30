@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { get_user_system_info, get_battery, is_charging, get_thermal_state } = require("sysinfo")
 let { get_game_version_str } = require("app")
+let { getCountryCode } = require("auth_wt")
 let { get_gui_option, addUserOption } = require("guiOptions")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { getAppsFlyerUID } = require("appsFlyer")
@@ -23,6 +24,7 @@ let function getSysInfo() {
   tbl.isCharging <- is_charging()
   tbl.thermalState <- get_thermal_state()
   tbl.authorization <- authState.value.loginType
+  tbl.location <- getCountryCode() // Overrides location from get_user_system_info()
 
   foreach (key in fieldsToClear)
     if (key in tbl)

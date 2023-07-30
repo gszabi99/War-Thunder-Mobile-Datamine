@@ -25,6 +25,7 @@ let tabPadding = hdpx(5)
 let btnGap = hdpx(20)
 
 let scrollPatchnoteWatch = Watched(0)
+let moreInfoUrl = $"https://wtmobile.live/{loc("current_lang")}"
 
 let function patchnoteTab(ver) {
   let { id, shortTitle, title, tVersion } = ver
@@ -70,7 +71,7 @@ let missedPatchnoteText = formatText([loc("NoUpdateInfo")])
 
 let seeMoreUrl = {
   t = "url"
-  url = loc("url/news")
+  url = moreInfoUrl
   v = loc("visitGameSite", "See game website for more details")
   margin = [hdpx(50), 0, 0, 0]
 }

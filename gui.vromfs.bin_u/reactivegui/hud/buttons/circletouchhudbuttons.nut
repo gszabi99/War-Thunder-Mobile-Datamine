@@ -218,6 +218,8 @@ let function mkCircleTankMachineGun(actionItem) {
   return res.__update({
     key = "btn_machinegun"
     size = [buttonSize, buttonSize]
+    behavior = Behaviors.TouchAreaOutButton
+    eventPassThrough = true
     children = [
       mkCircleProgressBg(buttonSize, actionItem)
       mkBtnBorder(buttonSize, isAvailable, stateFlags)

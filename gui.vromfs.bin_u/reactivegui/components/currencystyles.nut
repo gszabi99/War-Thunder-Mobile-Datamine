@@ -18,9 +18,9 @@ let CS_INCREASED_ICON = CS_COMMON.__merge({
   discountFontStyle = fontSmall
 })
 
-let gamercardGap = sw(100) >= hdpx(2200) ? hdpx(69)
-  : sw(100) >= hdpx(2000) ? hdpx(40)
-  : hdpx(30)
+let gamercardGap = sw(100) >= hdpx(2200) ? hdpx(45)
+  : sw(100) >= hdpx(2000) ? hdpx(30)
+  : hdpx(25)
 
 let CS_GAMERCARD = sw(100) >= hdpx(2100)
   ? CS_INCREASED_ICON

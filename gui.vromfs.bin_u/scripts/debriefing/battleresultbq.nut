@@ -10,12 +10,14 @@ let { get_mp_session_id_int } = require("multiplayer")
 let { get_current_mission_name } = require("mission")
 let { get_battery, is_charging, get_thermal_state } = require("sysinfo")
 let { get_platform_string_id } = require("platform")
+let { getCountryCode } = require("auth_wt")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let { get_gui_option, addUserOption } = require("guiOptions")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { battleResult } = require("battleResult.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { selClusters } = require("%scripts/matching/clustersList.nut")
 
 let OPT_GRAPHICS_QUALITY = addUserOption("OPT_GRAPHICS_QUALITY")
 let OPT_FPS = addUserOption("OPT_FPS")
@@ -28,6 +30,8 @@ let function onFrameTimes(evt, _eid, _comp) {
     delete data.time
   data.__update({
     platform = get_platform_string_id()
+    country = getCountryCode()
+    cluster = ",".join(selClusters.value)
     campaign = battleCampaign.value != "" ? battleCampaign.value
       : (battleResult.value?.campaign ?? curCampaign.value ?? "")
     mission = get_current_mission_name()

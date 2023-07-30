@@ -4,7 +4,7 @@ let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelec
 } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { myUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { apply_client_mission_reward } = require("%appGlobals/pServer/pServerApi.nut")
 let { register_command } = require("console")
 let { send } = require("eventbus")
@@ -45,6 +45,15 @@ let function needFirstBattleTutorForCampaign(campaign) {
   return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign?[campaign])
 }
 
+let function mkRewardBattleData(rewards) {
+  let { level, exp, nextLevelExp } = playerLevelInfo.value
+  let { playerExp = 0 } = rewards
+  return {
+    player = { exp, level, nextLevelExp }
+    reward = { playerExp = { totalExp = playerExp }}
+  }
+}
+
 let needForceStartTutorial = keepref(Computed(@()
   needFirstBattleTutor.value
   && isAnyCampaignSelected.value
@@ -57,7 +66,10 @@ let function startTutor(id) {
     return
   if (id in missionsWithRewards.value) {
     apply_client_mission_reward(curCampaign.value, id)
-    send("lastSingleMissionReward", { reward = missionsWithRewards.value[id] })
+    send("lastSingleMissionRewardData", {
+      battleData = mkRewardBattleData(missionsWithRewards.value[id])
+      needAddUnit = true
+    })
   }
   send("startSingleMission", { id = tutorialMissions[id] })
   setTimeout(0.1, @() isDebugMode(false))

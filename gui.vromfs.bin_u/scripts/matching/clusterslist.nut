@@ -11,6 +11,7 @@ let showMatchingError = require("showMatchingError.nut")
 let { isMatchingOnline } = require("matchingOnline.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { optimalClusters } = require("%scripts/matching/optimalClusters.nut")
 
 const MAX_FETCH_RETRIES = 5
 let clusters = mkHardWatched("matching.clusters", [])
@@ -87,8 +88,11 @@ isMatchingOnline.subscribe(@(v) !v ? null : restartFetchClusters())
 isLoggedIn.subscribe(@(v) v ? null : clusters([]))
 
 let selClusters = Computed(function() {
+  let fastest = optimalClusters.value.filter(@(c) clusters.value.contains(c))
+  if (fastest.len())
+    return fastest
   let defaults = getClustersByCountry(getCountryCode())
-  let res = clusters.value.filter(@(c) defaults.contains(c))
+  let res = defaults.filter(@(c) clusters.value.contains(c))
   return res.len() ? res : clusters.value
 })
 

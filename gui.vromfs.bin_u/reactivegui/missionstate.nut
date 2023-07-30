@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+let { get_game_type } = require("mission")
 let interopGet = require("interopGen.nut")
 
 let missionState = {
-  gameType = Watched(0)
+  gameType = Watched(get_game_type())
   gameOverReason = Watched(0)
   timeLeft = Watched(900)
   roundTimeLeft = Watched(900)
@@ -16,7 +17,6 @@ let missionState = {
   ctaDeathTicketPenalty = Watched(1)
   useDeathmatchHUD = Watched(false)
 }
-
 
 interopGet({
   stateTable = missionState

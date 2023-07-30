@@ -17,10 +17,11 @@ let sliderW = hdpx(750)
 let sliderBlockH = hdpx(160)
 let btnSize = evenPx(100)
 let gap = btnSize / 2
+let firstTick = 0.3
 let btnRepeatTick = 0.025
-let btnRepeatTime = [0.5, 0.25, 0.2, 0.15, 0.1, 0.075, 0.05, btnRepeatTick]
+let btnRepeatTime = [firstTick, 0.25, 0.2, 0.15, 0.1, 0.075, 0.05, btnRepeatTick]
 let hoverColor = 0x8052C4E4
-
+let maxValueWidth = calc_str_box("288% ", fontSmall)[0]
 
 let transTime = 0.05
 let transEasing = InOutQuad
@@ -111,9 +112,12 @@ let function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
 let sliderHeader = @(text, valueTextWatch, override = {}) {
   size = [flex(), SIZE_TO_CONTENT]
   valign = ALIGN_BOTTOM
+  flow = FLOW_HORIZONTAL
   children = [
     {
-      rendObj = ROBJ_TEXT
+      size = [flex(), SIZE_TO_CONTENT]
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
       color = textColor
       text
     }.__update(fontSmall)
@@ -122,6 +126,7 @@ let sliderHeader = @(text, valueTextWatch, override = {}) {
       hplace = ALIGN_RIGHT
       rendObj = ROBJ_TEXT
       color = textColor
+      minWidth = maxValueWidth
       text = valueTextWatch.value
     }.__update(fontSmall)
   ]
@@ -165,7 +170,6 @@ let function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
         return
 
       if (isActive) {
-        onChangeValue()
         lastTime = get_time_msec()
         holdCount = 0
         setInterval(btnRepeatTick, onHoldTimer)
@@ -173,6 +177,7 @@ let function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
       else
         resetTimer()
     }
+    onClick = @() get_time_msec() - lastTime < firstTick * 1000 ? onChangeValue() : null
     onDetach = resetTimer
     children = childrenCtor(stateFlags.value)
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
@@ -197,18 +202,18 @@ let function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToStr
   }
 
   return {
-    size = [SIZE_TO_CONTENT, sliderBlockH]
+    minHeight = sliderBlockH
     flow = FLOW_HORIZONTAL
     gap
-    valign = ALIGN_CENTER
+    valign = ALIGN_BOTTOM
     children = [
       sliderBtn(@(sf) sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec,
         mkOnClick(-unit))
       {
-        size = [SIZE_TO_CONTENT, flex()]
-        valign = ALIGN_CENTER
+        flow = FLOW_VERTICAL
+        padding = [0, 0, (btnSize - knobSize - sliderVisibleH) / 2, 0]
         children = [
-          sliderHeader(header, valueTextWatch, { vplace = ALIGN_TOP })
+          sliderHeader(header, valueTextWatch)
           slider(valueWatch, sliderOverride)
         ]
       }

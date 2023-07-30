@@ -119,10 +119,10 @@ let function timeLeftText(endTime) {
 let function progressCircle(timer) {
   let { startTime = 0, endTime = 0, isForward = true } = timer
   let timeLeft = endTime - get_time_msec()
-  local fValue = startTime >= endTime ? 1.0
+  local startValue = startTime >= endTime ? 1.0
     : lerpClamped(startTime, endTime, 0.0, 1.0, get_time_msec())
   if (!isForward)
-    fValue = 1.0 - fValue
+    startValue = 1.0 - startValue
 
   return {
     size = [timerSize, timerSize]
@@ -130,9 +130,9 @@ let function progressCircle(timer) {
     image = Picture($"ui/gameuiskin#circular_progress_1.svg:{timerSize}:{timerSize}")
     fgColor = 0xFFFFFFFF
     bgColor = 0x33555555
-    fValue
+    fValue = isForward ? 1.0 : 0.0
     animations = timeLeft <= 0 ? null
-      : [{ prop = AnimProp.fValue, from = fValue, to = isForward ? 1.0 : 0.0, duration = 0.001 * timeLeft, play = true }]
+      : [{ prop = AnimProp.fValue, from = startValue, duration = 0.001 * timeLeft, play = true }]
   }
 }
 

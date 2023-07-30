@@ -400,9 +400,10 @@
     "renderImmDecals": false,
     "renderImpostorsToDraftDepth": false,
     "enableClipmapDecals": false,
-    "underwaterFogUseShadows": 2,
+    "underwaterFogUseShadows": 1,
     "allowHmap": false,
-    "useCellSBuffer": true
+    "useCellSBuffer": true,
+    "sky_panorama_patch": false
   },
   "ps4": {
     "garlic_size_mb": 2560,
@@ -802,6 +803,7 @@
     "enableStaticInTps": true,
     "low": {
       "cascadeWidth": 512,
+      "underwaterCascadeWidth": 512,
       "splitsW": 2,
       "splitsH": 1,
       "cascadeDepth24bit": false,
@@ -855,6 +857,7 @@
     },
     "medium": {
       "cascadeWidth": 1024,
+      "underwaterCascadeWidth": 512,
       "splitsW": 2,
       "splitsH": 1,
       "cascadeDepth24bit": false,
@@ -908,6 +911,7 @@
     },
     "high": {
       "cascadeWidth": 1536,
+      "underwaterCascadeWidth": 1024,
       "splitsW": 2,
       "splitsH": 1,
       "cascadeDepth24bit": false,
@@ -961,6 +965,7 @@
     },
     "gfn": {
       "cascadeWidth": 4096,
+      "underwaterCascadeWidth": 1024,
       "splitsW": 2,
       "splitsH": 1,
       "cascadeDepth24bit": false,
@@ -1208,7 +1213,7 @@
         "treeAlphaToCoverage": true,
         "shaderlod": "high",
         "riExtraMinSizeForDraftDepth": 0.0,
-        "underwaterFogUseShadows": 2,
+        "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
         "texquality": "high"
       },
