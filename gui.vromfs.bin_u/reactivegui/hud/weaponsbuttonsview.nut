@@ -502,7 +502,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   return res.__update({
     size = [touchButtonSize, touchButtonSize]
     behavior = Behaviors.TouchAreaOutButton
-    eventPassThrough = true
+    eventPassThrough = mainShortcut != "ID_BOMBS"
     zoneRadiusX
     zoneRadiusY
     onTouchInsideChange = @(isInside) userHoldWeapInside.mutate(@(v) v[key] <- isInside)

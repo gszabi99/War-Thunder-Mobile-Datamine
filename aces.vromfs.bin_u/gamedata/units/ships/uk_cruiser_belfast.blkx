@@ -765,7 +765,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -839,7 +839,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -902,7 +902,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -965,7 +965,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1028,7 +1028,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1091,7 +1091,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1154,7 +1154,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1217,7 +1217,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1280,7 +1280,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1343,7 +1343,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1417,7 +1417,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,
@@ -1480,7 +1480,7 @@
           1.0,
           1.0
         ],
-        "shotFreq": 0.2,
+        "shotFreq": 0.204,
         "speedYaw": 70.0,
         "speedPitch": 80.0,
         "bullets": 200,

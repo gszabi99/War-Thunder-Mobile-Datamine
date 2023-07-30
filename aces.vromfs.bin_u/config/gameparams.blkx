@@ -222,6 +222,7 @@
   "airfieldRepairDamageLimit": 0.5,
   "enableHeicopterTargetLock3dPerson": true,
   "aimCorrectionAngleMax": 5.0,
+  "artilleryFriendlyFireDamage": false,
   "rocketShakeCamera": 1.0,
   "gunShakeCamera": 0.02,
   "cannonShakeCamera": 0.4,
@@ -6905,8 +6906,8 @@
   "joystickSettings": {
     "relativeAxisTimeThreshold": 0.25,
     "relativeAxisStepViscosity": 0.2,
-    "mouseAimJoystickSensitivity": 1.0,
-    "mouseAimGmJoystickSensitivity": 1.0,
+    "mouseAimJoystickSensitivity": 8.0,
+    "mouseAimGmJoystickSensitivity": 8.0,
     "tankCameraYLimits": [
       -12.0,
       14.0

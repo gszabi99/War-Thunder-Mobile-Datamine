@@ -3289,8 +3289,10 @@
     "scale": 1.0,
     "height": 0.5,
     "minSteeringRadius": 2.5,
+    "maxSteeringRadius": 1000.0,
     "segmentsNum": 15,
     "segmentsInterval": 1.0,
+    "trackSpeedThreshold": 0.5,
     "colorFwd": "L+kAyA==",
     "colorBack": "//8AyA=="
   }
