@@ -1908,14 +1908,14 @@
     "hit_bg_simple": "hit_bg_no_pen_red",
     "minAngle": 3.0,
     "relativeRadius": 0.33,
-    "scale": 0.45,
-    "scaleCoefIcon": 1.0,
+    "scale": 0.8,
+    "scaleCoefIcon": 0.6,
     "iconOffset": [
       0.0,
       4.0
     ],
-    "alphaMin": 150.0,
-    "alphaMax": 190.0,
+    "alphaMin": 230.0,
+    "alphaMax": 255.0,
     "hitsForColorMax": 3,
     "maxHits": 5
   },
