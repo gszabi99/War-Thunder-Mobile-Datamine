@@ -1086,8 +1086,7 @@
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": false,
         "enableWakeDisplacement": false,
-        "enableWaterProjFx": false,
-        "sharpen": 0.0
+        "enableWaterProjFx": false
       },
       "render": {
         "grassInCompatibility": false
@@ -1145,8 +1144,7 @@
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
-        "enableWaterProjFx": true,
-        "sharpen": 0.2
+        "enableWaterProjFx": true
       },
       "render": {
         "grassInCompatibility": false
@@ -1204,8 +1202,7 @@
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
-        "enableWaterProjFx": true,
-        "sharpen": 0.2
+        "enableWaterProjFx": true
       },
       "render": {
         "grassInCompatibility": true
@@ -1263,8 +1260,7 @@
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
-        "enableWaterProjFx": true,
-        "sharpen": 0.2
+        "enableWaterProjFx": true
       },
       "render": {
         "grassInCompatibility": true

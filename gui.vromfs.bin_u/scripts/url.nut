@@ -44,7 +44,7 @@ let function openUrlImpl(url, onCloseUrl) {
 }
 
 subscribe("onAuthenticatedUrlResult", function(msg) {
-  let { status, contextStr, url } = msg
+  let { status, contextStr = "", url = null } = msg
   let { onCloseUrl = "", useExternalBrowser = false, notAuthUrl = "", shouldEncode = false
   } = contextStr != "" ? parse(contextStr) : null
   local urlToOpen = url

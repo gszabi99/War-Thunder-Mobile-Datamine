@@ -9,10 +9,11 @@ let { setInterval, clearTimer } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { split_by_chars } = require("string")
 let { arrayByRows } = require("%sqstd/underscore.nut")
-let { isAuthAndUpdated } = require("%appGlobals/loginState.nut")
+let { isProfileReceived } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let charClientEvent = require("charClientEvent.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { mnSubscribe } = require("%appGlobals/matchingNotifications.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
@@ -38,7 +39,7 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, defVal
 
   let prepareToRequest = @() lastTime.mutate(@(v) v.request = get_time_msec())
   let function refresh(context = null) {
-    if (!isAuthAndUpdated.value) {
+    if (!isProfileReceived.value) {
       onRefresh({ error = "not logged in" }, context)
       return
     }
@@ -54,9 +55,9 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, defVal
     refresh(context)
   }
 
-  isAuthAndUpdated.subscribe(@(v) v ? forceRefresh() : data(defValue))
+  isProfileReceived.subscribe(@(v) v ? forceRefresh() : data(defValue))
 
-  if (isAuthAndUpdated.value && lastTime.value.update <= 0 && lastTime.value.request <= 0)
+  if (isProfileReceived.value && lastTime.value.update <= 0 && lastTime.value.request <= 0)
     refresh()
 
   register_command(@() forceRefresh({ needPrint = true }), $"userstat.get.{persistName}")
@@ -94,7 +95,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
   || userstatStats.value.len() == 0)
 let needValidateMissingData = keepref(Computed(@()
-  isUserstatMissingData.value && isAuthAndUpdated.value && !isInBattle.value))
+  isUserstatMissingData.value && isProfileReceived.value && !isInBattle.value))
 
 let function updateValidationTimer(needValidate) {
   if (!needValidate) {
@@ -149,6 +150,11 @@ let addStat = @(stat, mode, amount)
   changeStat(stat, mode, amount, false)
 let setStat = @(stat, mode, amount)
   changeStat(stat, mode, amount, true)
+
+mnSubscribe("userStat", function(ev) {
+  if (ev?.func == "changed")
+    unlocksUpdatable.forceRefresh()
+})
 
 let registered = {}
 let function registerOnce(func, id) {

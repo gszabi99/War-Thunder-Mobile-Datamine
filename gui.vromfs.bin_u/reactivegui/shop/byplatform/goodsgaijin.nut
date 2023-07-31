@@ -146,7 +146,7 @@ let function buyPlatformGoods(goodsOrId) {
   if (baseUrl == null)
     return
   baseUrl = " ".concat("auto_local", "auto_login", baseUrl)
-  send("openUrl", { baseUrl, onCloseUrl = successPaymentUrl })
+  send("openUrl", { baseUrl, onCloseUrl = successPaymentUrl, useExternalBrowser = true })
   severalCheckPurchasesOnActivate()
 }
 

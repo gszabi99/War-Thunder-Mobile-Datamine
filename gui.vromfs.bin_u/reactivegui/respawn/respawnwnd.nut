@@ -7,7 +7,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlot, playerSelectedSlotIdx
 } = require("respawnState.nut")
-let { bulletsToSpawn, hasLowBullets, hasZeroBullets } = require("bulletsChoiceState.nut")
+let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets } = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
 let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn
 } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -178,7 +178,9 @@ let function cancelBtn() {
 let waitSpinner = mkSpinner()
 let toBattleLoc = utf8ToUpper(loc("mainmenu/toBattle/short"))
 let function toBattle() {
-  if (hasZeroBullets.value)
+  if (chosenBullets.value.len() == 0) //no need to validate bullets count when no bullets choice at all
+    respawn(selSlot.value, bulletsToSpawn.value)
+  else if (hasZeroBullets.value)
     openMsgBox({ text = loc("respawn/zero_ammo") })
   else if (hasLowBullets.value && showLowBulletsWarning.value) {
     openMsgBox({

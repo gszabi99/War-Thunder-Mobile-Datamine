@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { subscribe, unsubscribe } = require("eventbus")
 let { register_command } = require("console")
 let { get_battery, is_charging } = require("sysinfo")
+let { DBGLEVEL } = require("dagor.system")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { is_pc } = require("%appGlobals/clientState/platform.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -67,7 +68,7 @@ let fpsComp = @() fps.value < 0 ? { watch = fps } : {
   size = [ fpsTextW, SIZE_TO_CONTENT ]
   rendObj = ROBJ_TEXT
   text = $"{textFps}{fps.value}"
-  color = fps.value >= FPS_LEVEL_ACCEPTABLE ? defaultColor : badQualityColor
+  color = (DBGLEVEL <= 0 || fps.value >= FPS_LEVEL_ACCEPTABLE) ? defaultColor : badQualityColor
 }.__update(textsFont)
 
 let pingComp = @() ping.value < 0 ? { watch = ping } : {
