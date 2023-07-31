@@ -23,6 +23,7 @@
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchShooting": true,
+  "ecsTemplate": "tank_wtm",
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",

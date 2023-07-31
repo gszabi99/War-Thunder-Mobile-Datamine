@@ -9,7 +9,8 @@ let { shopPurchaseInProgress, schRewardInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("goodsStates.nut")
 let purchaseGoods = require("purchaseGoods.nut")
-let { buyPlatformGoods, platformPurchaseInProgress } = require("platformGoods.nut")
+let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
+} = require("platformGoods.nut")
 let { mkGoods } = require("%rGui/shop/goodsView/goods.nut")
 let { goodsW, goodsH, goodsGap, goodsGlareAnimDuration  } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { canShowAds } = require("%rGui/ads/adsState.nut")
@@ -47,7 +48,7 @@ let purchaseFunc = @(goods) goods.price.price > 0 && goods.price.currencyId != "
 
 let mkGoodsState = @(goods) Computed(function() {
   local res = 0
-  let idInProgress = (goods?.purchaseGuid ?? "") == "" ? shopPurchaseInProgress.value
+  let idInProgress = isGoodsOnlyInternalPurchase(goods) ? shopPurchaseInProgress.value
     : platformPurchaseInProgress.value
   if (idInProgress != null) {
     res = res | DELAYED

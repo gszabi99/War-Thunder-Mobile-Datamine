@@ -2634,12 +2634,6 @@
     "art_support": {},
     "tank_extinguisher": {}
   },
-  "user_skin": {
-    "name": "t26e5",
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",

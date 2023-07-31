@@ -3,7 +3,7 @@
 #explicit-this
 
 from "%globalScripts/logs.nut" import *
-let json = require("json")
+let { json_to_string } = require("json")
 let io = require("io")
 let { decode } = require("jwt")
 let profilePublicKey = require("%appGlobals/profilePublicKey.nut")
@@ -25,7 +25,7 @@ let function decodeJwtAndHandleErrors(data) {
 
 local function saveJwtResultToJson(jwt, payload, fileName) {
   local file = io.file($"{fileName}.json", "wt+")
-  file.writestring(json.to_string(payload, true))
+  file.writestring(json_to_string(payload, true))
   file.close()
   log($"Saved json payload to {fileName}")
   fileName = $"{fileName}.jwt"

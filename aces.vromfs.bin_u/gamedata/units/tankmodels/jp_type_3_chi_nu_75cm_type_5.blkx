@@ -2128,11 +2128,6 @@
     ],
     "detectionHeight": 2.5
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "jp_camo_olive_kusairo*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "jp_camo_olive_kusairo*",

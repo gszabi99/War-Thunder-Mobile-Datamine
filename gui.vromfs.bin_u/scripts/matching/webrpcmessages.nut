@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { openUrl } = require("%scripts/url.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 let function showMessageBox(params) {
@@ -36,7 +35,7 @@ let function showUrl(params) {
     return { error = { message = "url is empty" } }
 
   if (params?.logout_on_close ?? false)
-    callbackWhenAppWillActive(exitGame)
+    callbackWhenAppWillActive("exitGame")
 
   openUrl(url)
 

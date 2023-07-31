@@ -122,6 +122,23 @@
   "breachMinSize": 0.05,
   "schemeDeathMovieShipBulletSpeed": 4.0,
   "schemeDeathMovieShipShardSpeed": 16.0,
+  "waterLineEnabled": true,
+  "waterLineWidth": 1,
+  "waterLineColor": "oMjclg==",
+  "waterGradientStartColor": "ZK/IZA==",
+  "waterGradientEndColor": "ZK/IAA==",
+  "waterGradientMinWidth": 60,
+  "waterGradientBottomPadding": 6,
+  "maxAngleDifferentShip": 7.0,
+  "maxAngleRollShip": 7.0,
+  "maxOffsetScaleShip": [
+    0.5,
+    0.5
+  ],
+  "maxAngleScaleShip": [
+    30.0,
+    30.0
+  ],
   "schemeDeathMovie": {
     "partNormalColor": [
       0.68,

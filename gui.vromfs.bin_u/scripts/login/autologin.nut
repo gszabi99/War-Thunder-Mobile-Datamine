@@ -4,7 +4,7 @@
 
 from "%scripts/dagui_library.nut" import *
 let { is_ios, is_android } = require("%sqstd/platform.nut")
-let { LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, availableLoginTypes
+let { LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, availableLoginTypes
 } = require("%appGlobals/loginState.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
@@ -15,9 +15,10 @@ const AUTOLOGIN_TYPE_SAVE_ID = "autologinType"
 let isAutologinUsed = mkHardWatched("login.isAutologinUsed", false)
 
 let availableBase = { [LT_GAIJIN] = false } //loginType = isAutoLoginDefault
-if (is_ios)
+if (is_ios) {
   availableBase[LT_APPLE] <- true
-else if (is_android)
+  availableBase[LT_GUEST] <- true
+} else if (is_android)
   availableBase.__update({
     [LT_GOOGLE] = true,
     [LT_FIREBASE] = true,

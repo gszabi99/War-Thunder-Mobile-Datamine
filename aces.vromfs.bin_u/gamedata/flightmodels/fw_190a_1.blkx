@@ -1657,16 +1657,10 @@
     "turnTime": 25.2138
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "fw_190a_1_a*",
-        "to": "fw_190a_1_a*"
-      },
-      {
-        "from": "fw_190a_1_a_dmg*",
-        "to": "fw_190a_1_a_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "fw_190a_1_a*",
+      "to": "fw_190a_1_a*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

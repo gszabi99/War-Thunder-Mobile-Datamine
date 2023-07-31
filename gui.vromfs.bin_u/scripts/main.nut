@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { set_rnd_seed } = require("dagor.random")
 clear_vm_entity_systems()
 start_es_loading()
@@ -23,7 +24,6 @@ if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
 
 ::TEXT_EULA <- 0
-::TEXT_NDA <- 1
 
 let { is_pc } = require("%sqstd/platform.nut")
 
@@ -36,7 +36,7 @@ let { is_pc } = require("%sqstd/platform.nut")
 
 ::cross_call_api <- {}
 
-::g_script_reloader.registerPersistentData("MainGlobals", getroottable(),
+g_script_reloader.registerPersistentData("MainGlobals", getroottable(),
   [ "is_debug_mode_enabled", "is_dev_version" ])
 
 //------- vvv enums vvv ----------
@@ -44,8 +44,6 @@ let { is_pc } = require("%sqstd/platform.nut")
 set_rnd_seed(get_local_unixtime())
 
 //------- vvv files before login vvv ----------
-
-::u <- require("%sqStdLibs/helpers/u.nut") //put u to roottable
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- {
@@ -58,9 +56,6 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
   MEMOIZE_VALIDATION = 4
 }
 subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
-::broadcastEvent <- subscriptions.broadcast
-::add_event_listener <- subscriptions.addEventListener
-::subscribe_handler <- subscriptions.subscribeHandler
 
 let guiOptions = require("guiOptions")
 foreach (name in [
@@ -111,7 +106,7 @@ foreach (fn in [
 
   "%scripts/debugTools/dbgUtils.nut"
 ]) {
-  ::g_script_reloader.loadOnce(fn)
+  g_script_reloader.loadOnce(fn)
 }
 
   // Independent Modules (before login)
@@ -125,7 +120,7 @@ require("bqQueue.nut")
 
 end_es_loading()
 
-if (!::g_script_reloader.isInReloading)
+if (!g_script_reloader.isInReloading)
   ::run_reactive_gui()
 
 //------- ^^^ files before login ^^^ ----------

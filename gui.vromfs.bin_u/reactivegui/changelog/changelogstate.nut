@@ -3,7 +3,7 @@ let { subscribe, send } = require("eventbus")
 let http = require("dagor.http")
 let { get_time_msec } = require("dagor.time")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
-let json = require("json")
+let { parse_json } = require("json")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { get_cur_circuit_name } = require("app")
@@ -164,7 +164,7 @@ subscribe(PATCHNOTE_IDS, function processPatchnotesList(response) {
   if (context != shortLang)
     return //wrong lang changelog list, ignore
 
-  if (status != http.SUCCESS || http_code < 200 || 300 <= http_code) {
+  if (status != http.HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
     clLog("changelog_versions_receive_errors", {
       reason = "Error in version response"
       stage = "get_versions"
@@ -175,7 +175,7 @@ subscribe(PATCHNOTE_IDS, function processPatchnotesList(response) {
 
   local result = []
   try {
-    result = response?.body ? json.parse(response.body.as_string())?.result ?? [] : []
+    result = response?.body ? parse_json(response.body.as_string())?.result ?? [] : []
   }
   catch(e) {}
 
@@ -220,7 +220,7 @@ subscribe(PATCHNOTE_RECEIVED, function onPatchnoteReceived(response) {
   if (lang != shortLang)
     return //ingnore requests result for wrong lang
 
-  if (status != http.SUCCESS || http_code < 200 || 300 <= http_code || id == null) {
+  if (status != http.HTTP_SUCCESS || http_code < 200 || 300 <= http_code || id == null) {
     clLog("changelog_receive_errors", {
       reason = "Error in patchnotes response"
       stage = "get_patchnote"
@@ -230,7 +230,7 @@ subscribe(PATCHNOTE_RECEIVED, function onPatchnoteReceived(response) {
     })
     return
   }
-  let result = json.parse((response?.body ?? "").as_string())?.result
+  let result = parse_json((response?.body ?? "").as_string())?.result
   if (result == null)
     clLog("changelog_parse_errors",
       { reason = $"Incorrect json in patchnotes response (id = {id})", stage = "get_patchnote" })

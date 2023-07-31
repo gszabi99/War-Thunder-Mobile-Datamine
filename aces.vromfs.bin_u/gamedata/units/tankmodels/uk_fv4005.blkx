@@ -2236,12 +2236,6 @@
       }
     }
   },
-  "user_skin": {
-    "name": "fv4005",
-    "replace_tex": {
-      "from": "uk_camo_very_dark_drab*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "uk_camo_very_dark_drab*",

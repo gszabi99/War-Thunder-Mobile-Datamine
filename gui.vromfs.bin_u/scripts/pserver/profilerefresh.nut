@@ -5,7 +5,7 @@
 from "%scripts/dagui_library.nut" import *
 let { frnd } = require("dagor.random")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { to_string } = require("json")
+let { json_to_string } = require("json")
 let { isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { battleResult } = require("%scripts/debriefing/battleResult.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -91,9 +91,14 @@ isInDebriefing.subscribe(function(v) {
 let function sendBqNotReceivedProfile() {
   if (!isWaitProfile.value)
     return
+  if (isInDebriefing.value) {
+    //restart timer because long stay in the debriefing
+    resetTimeout(SEND_BQ_NOT_RECEIVED_TIME, sendBqNotReceivedProfile)
+    return
+  }
   sendUiBqEvent("profileUpdateError", {
     id = $"not updated for {SEND_BQ_NOT_RECEIVED_TIME}sec after the battle",
-    status = to_string(lastProfileError.value?.error)
+    status = json_to_string(lastProfileError.value?.error)
   })
 }
 

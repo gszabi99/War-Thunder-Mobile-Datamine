@@ -58,7 +58,7 @@ let mkTargetSelectionData = function(endTime, cooldown, textSize) {
   return {
     pos = targetOffset
     size = [textSize[0] + hdpx(30), textSize[1] + hdpx(10)]
-    key = $"reload_sector_{endTime}_{cooldown}_{color}"
+    key = $"reload_sector_{endTime}_{cooldown}_{color}_{textSize[0]}"
     transform = {}
     animations = [
       {

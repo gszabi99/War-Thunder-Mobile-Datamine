@@ -5,12 +5,12 @@ require Unit
 require DagorDataBlock
 require WTHangar
 require HeroManager
-require %game.utils_common
-require %game.events
 require Music
 require app
 require %dasGameLibs.math.base
 require MPlayer
+require %game.utils.utils_common
+require %game.events
 
 
 enum GameState
@@ -66,6 +66,7 @@ def music_init_es(evt : Event;
   music__forced = false
   music__lockedHangar = false
   music__curBattleState = int(BattleState CALM)
+  init_delayed_forced_track();
   using() <| $(var blk : DataBlock)
     if datablock_load(blk, "config/sound_studio.blk")
       let musicBlk = blk |> datablock_get_block_by_name("music")
@@ -307,14 +308,14 @@ def music_es(info : ParallelUpdateFrameDelayed;
       music__lockedHangar = false
 
 
-[es]
+[es(tag=sound)]
 def music_set_forced(evt : CmdForceMusic;
                      var music__forced : bool&;
                      var music__forcedEvtName : das_string&)
   music__forced = true
   music__forcedEvtName := evt.name
 
-[es(on_event = CmdLockHangarMusic)]
+[es(tag=sound, on_event = CmdLockHangarMusic)]
 def music_lock_hangar_es(evt : Event;
                          var music__lockedHangar : bool&)
   music__lockedHangar = true

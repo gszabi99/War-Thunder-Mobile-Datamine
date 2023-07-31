@@ -2384,7 +2384,10 @@
     "hideNodes": {
       "node": [
         "track_l_01",
-        "track_r_01"
+        "track_r_01",
+        "ex_armor_body_06",
+        "ex_armor_body_l_02",
+        "ex_armor_body_l_03"
       ]
     }
   },
@@ -2692,7 +2695,10 @@
           "hideNodes": {
             "node": [
               "track_l_01",
-              "track_r_01"
+              "track_r_01",
+              "ex_armor_body_06",
+              "ex_armor_body_l_02",
+              "ex_armor_body_l_03"
             ]
           }
         }
@@ -2705,8 +2711,6 @@
         "changeMass": -350.0,
         "hideNodes": {
           "node": [
-            "ex_armor_body_04",
-            "ex_armor_body_05",
             "ex_armor_body_r_01",
             "ex_armor_body_r_02",
             "ex_armor_body_l_01"
@@ -2717,11 +2721,6 @@
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
-  },
-  "user_skin": {
-    "replace_tex": {
-      "from": "ger_camo_grey*"
-    }
   },
   "upgraded_skin": {
     "replace_tex": {

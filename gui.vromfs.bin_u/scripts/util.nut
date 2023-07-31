@@ -5,29 +5,23 @@ from "%scripts/dagui_library.nut" import *
 
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 110
-let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
-let { startLogout } = require("%scripts/login/logout.nut")
+let { is_mplayer_host, is_mplayer_peer } = require("multiplayer")
+let { hangar_enable_controls } = require("hangar")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
+let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 ::on_cannot_create_session <- @() openFMsgBox({ text = loc("NET_CANNOT_CREATE_SESSION") })
 
-subscribeFMsgBtns({
-  function onLostPsnOk(_) {
-    destroy_session("after 'on lost psn' message")
-    startLogout()
-  }
-})
-
-::is_hangar_controls_enabled <- false
+local is_hangar_controls_enabled = false
 ::enableHangarControls <- function enableHangarControls(value, save = true) {
-  ::hangar_enable_controls(value)
+  hangar_enable_controls(value)
   if (save)
-    ::is_hangar_controls_enabled = value
+    is_hangar_controls_enabled = value
 }
 ::restoreHangarControls <- function restoreHangarControls() {
-  ::hangar_enable_controls(::is_hangar_controls_enabled)
+  hangar_enable_controls(is_hangar_controls_enabled)
 }
 
 ::buildTableFromBlk <- function buildTableFromBlk(blk) {
@@ -88,7 +82,17 @@ subscribeFMsgBtns({
 }
 
 ::inherit_table <- function inherit_table(parent_table, child_table) {
-  return ::u.extend(::u.copy(parent_table), child_table)
+  return u.extend(u.copy(parent_table), child_table)
 }
 
-::is_multiplayer <- @() is_mplayer_host() || is_mplayer_peer()
+let is_multiplayer = @() is_mplayer_host() || is_mplayer_peer()
+
+let function is_user_mission(missionBlk) {
+  return missionBlk?.userMission == true //can be null
+}
+
+
+return {
+  is_multiplayer
+  is_user_mission
+}

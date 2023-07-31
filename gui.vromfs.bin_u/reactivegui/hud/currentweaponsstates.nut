@@ -25,6 +25,8 @@ let shipWeaponsList = [
   "EII_MORTAR"
   "EII_SUPPORT_PLANE"
   "EII_SUPPORT_PLANE_2"
+  "EII_SUPPORT_PLANE_3"
+  "EII_SUPPORT_PLANE_4"
   "EII_DIVING_LOCK"
 ]
 
@@ -45,6 +47,9 @@ let aircraftWeaponsList = [
   "ID_ROCKETS"
   "ID_FIRE_MGUNS"
   "ID_WTM_RETURN_TO_SHIP"
+  "ID_WTM_RETURN_TO_SHIP_2"
+  "ID_WTM_RETURN_TO_SHIP_3"
+  "ID_WTM_RETURN_TO_SHIP_4"
   "ID_WTM_AIRCRAFT_CHANGE"
   "ID_WTM_AIRCRAFT_GROUP_ATTACK"
   "ID_LOCK_TARGET"
@@ -204,7 +209,8 @@ let currentHoldWeaponName = Computed(function() {
   if (weaponName == "")
     weaponName = actionItem?.bulletName ?? ""
 
-  if (id == "EII_SUPPORT_PLANE" || id == "EII_SUPPORT_PLANE_2")
+  if (id == "EII_SUPPORT_PLANE" || id == "EII_SUPPORT_PLANE_2" ||
+      id == "EII_SUPPORT_PLANE_3" || id == "EII_SUPPORT_PLANE_4")
     return loc(getUnitLocId(weaponName))
   return loc($"weapons/{weaponName}/short")
 })

@@ -5,9 +5,10 @@
 from "%scripts/dagui_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let logBD = log_with_prefix("[BATTLE_DATA] ")
+let { is_multiplayer } = require("%scripts/util.nut")
 let { get_arg_value_by_name } = require("dagor.system")
 let io = require("io")
-let json = require("json")
+let { json_to_string } = require("json")
 let { defer } = require("dagor.workcycle")
 let { get_mp_session_id_str } = require("multiplayer")
 let { splitStringBySize } = require("%sqstd/string.nut")
@@ -72,7 +73,7 @@ let actions = {
 
 let function onChangeSlots(eid, comp) {
   let userId = comp.server_player__userId
-  if (userId != myUserId.value || !::is_multiplayer())
+  if (userId != myUserId.value || !is_multiplayer())
     return
   if (get_mp_session_id_str() == state.value?.sessionId
       && (state.value?.slots.len() ?? 0) > 0) {
@@ -106,7 +107,7 @@ let function onSetMyBattleData(evt, _eid, comp) {
   if (isDebugMyBattleData) {
     isDebugMyBattleData = false
     let file = io.file($"wtmBattleDataDedic.json", "wt+")
-    file.writestring(json.to_string(evt.data, true))
+    file.writestring(json_to_string(evt.data, true))
     file.close()
     console_print($"Result saved to wtmBattleDataDedic.json")
   }
@@ -163,7 +164,7 @@ let function setBattleDataToClientEcs(bd) {
 
   if (isFound)
     return
-  if (::is_multiplayer()) {
+  if (is_multiplayer()) {
     logBD("Not found client entity for my battle data")
     return
   }
@@ -182,11 +183,11 @@ let function setBattleDataToClientEcs(bd) {
 }
 
 eventbus.subscribe("CreateBattleDataForClient",
-  @(_) ::is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
+  @(_) is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
     : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)
     : logBD("Ignore set battle data to client because of not actual"))
 
-let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !::is_multiplayer() ? null
+let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !is_multiplayer() ? null
   : state.value?.data))
 mpBattleDataForClientEcs.subscribe(@(v) setBattleDataToClientEcs(v))
 

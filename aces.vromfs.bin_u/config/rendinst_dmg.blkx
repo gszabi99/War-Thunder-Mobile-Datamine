@@ -2472,6 +2472,146 @@
       "material": "bricks_red"
     },
     {
+      "name": "af_chimney_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "silo_tower_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_central_building",
+      "immortal": true,
+      "material": "bricks_red"
+    },
+    {
+      "name": "af_side_building_a",
+      "immortal": true,
+      "material": "bricks_red"
+    },
+    {
+      "name": "af_side_building_b",
+      "immortal": true,
+      "material": "bricks_red"
+    },
+    {
+      "name": "af_concrete_wall_big_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_big_b",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_big_c",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_big_d",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_big_e",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_big_roof_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_big_roof_b",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_column_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_column_b",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_corridor_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_door_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_flat_roof_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_flat_roof_b",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_small_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_small_b",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_small_c",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_concrete_wall_small_d",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_factory_small_building_a",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_factory_small_building_b",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_factory_small_building_c",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_factory_small_building_d",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_factory_small_building_h",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
+      "name": "af_factory_small_building_i",
+      "immortal": true,
+      "material": "concrete"
+    },
+    {
       "name": "af_chimney_metal_a",
       "immortal": true,
       "material": "metal"
@@ -5187,6 +5327,18 @@
     },
     {
       "name": "karelia_stone_small_j",
+      "immortal": true
+    },
+    {
+      "name": "karelia_fort_plates_10x5",
+      "immortal": true
+    },
+    {
+      "name": "karelia_fort_plates_4x2",
+      "immortal": true
+    },
+    {
+      "name": "karelia_fort_plates_6x3",
       "immortal": true
     },
     {

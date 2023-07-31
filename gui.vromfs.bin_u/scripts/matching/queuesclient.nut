@@ -5,7 +5,7 @@
 from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let logQ = log_with_prefix("[QUEUE] ")
-let { subscribe } = require("eventbus")
+let { send, subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let queueState = require("%appGlobals/queueState.nut")
 let { curQueue, isInQueue, curQueueState, queueStates,
@@ -75,7 +75,7 @@ let queueSteps = {
         return
       let errorId = response?.error
       if (errorId == SERVER_ERROR_REQUEST_REJECTED)
-        ::SessionLobby.setWaitForQueueRoom(true)
+        send("setWaitForQueueRoom", true)
       else if (errorId != SERVER_ERROR_NOT_IN_QUEUE)
         showMatchingError(response)
       destroyQueue()

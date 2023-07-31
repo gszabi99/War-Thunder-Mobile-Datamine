@@ -2464,11 +2464,6 @@
       }
     }
   ],
-  "user_skin": {
-    "replace_tex": {
-      "from": "ussr_camo_green*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "ussr_camo_green*",

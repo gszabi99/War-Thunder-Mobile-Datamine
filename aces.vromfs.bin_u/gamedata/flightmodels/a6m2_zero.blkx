@@ -1624,16 +1624,10 @@
     "nonExtinguishFireTime": 5.0
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "a6m2_a*",
-        "to": "a6m2_a*"
-      },
-      {
-        "from": "a6m2_a_dmg*",
-        "to": "a6m2_a_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "a6m2_a*",
+      "to": "a6m2_a*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

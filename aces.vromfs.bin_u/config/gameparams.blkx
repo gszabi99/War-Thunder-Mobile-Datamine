@@ -2,7 +2,6 @@
   "enableRiExplosionDamage": true,
   "simpleSinking": true,
   "useJWTProfile": true,
-  "jwtAuthentication": true,
   "infantry_render_distance": 750.0,
   "gather_sparse_freq": 0,
   "treeAOdefault": 0.8,
@@ -20,6 +19,7 @@
   "tankAimOffsetMoveSpeedZoom": 1.5,
   "tankTargetSelectionDelay": 1.0,
   "shipTargetSelectionDelay": 0.3,
+  "aircraftTargetSelectionDelay": 0.1,
   "hmap_detail_tex_ofs": [
     0.0,
     0.0
@@ -315,6 +315,7 @@
   "calcDamageByCrewCountInShip": false,
   "shipTorpedoAutoDepthTraceDist": 100.0,
   "additionalAllowableDeltaForServer": 0.5,
+  "useYawDeadzone": true,
   "needCreateWreckedPartShip": false,
   "dayTimeSpeed": 0.0,
   "syncWeatherPeriod": 1000000.0,
@@ -6298,8 +6299,8 @@
   "GrassSettingsTanks": {
     "distance_mul": 0.3,
     "distance_add": 0.0,
-    "density_mul": 0.35,
-    "density_add": 0.07
+    "density_mul": 0.42,
+    "density_add": 0.0
   },
   "lenseFlare": {
     "lenseRadialColor": "lense_color",
@@ -12687,6 +12688,30 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "wma_301"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "bosvark_spaag"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "bosvark_spaag"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "bosvark_spaag"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "bosvark_spaag"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "bosvark_spaag"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "bosvark_spaag"
         }
       ]
     },
@@ -15048,5 +15073,16 @@
     "lod_2": 6000.0,
     "lod_3": 10000.0,
     "lod_4": 20000.0
+  },
+  "ambientWindParams": {
+    "maxWindNoiseSpeed": 30.0,
+    "minWindNoiseSpeed": 1.0,
+    "maxWindNoiseScale": 100.0,
+    "minWindNoiseScale": 12.0,
+    "minWindNoiseStrength": 8.0,
+    "maxWindNoiseStrength": 40.0,
+    "maxWindNoisePerpendicularStrength": 0.5,
+    "minWindNoisePerpendicularStrength": 0.2,
+    "windNoiseTextureName": "perlin_noise_wind_ati1n"
   }
 }

@@ -2443,7 +2443,18 @@
     "hideNodes": {
       "node": [
         "bone_mg_aa_v_01",
-        "bone_mg_aa_h_01"
+        "bone_mg_aa_h_01",
+        "ex_armor_body_02",
+        "ex_armor_body_03",
+        "ex_armor_body_04",
+        "ex_armor_body_05",
+        "ex_armor_body_06",
+        "ex_armor_body_07",
+        "ex_armor_body_08",
+        "ex_armor_body_09",
+        "ex_armor_body_10",
+        "ex_armor_turret_01",
+        "ex_armor_turret_02"
       ]
     }
   },
@@ -2458,11 +2469,6 @@
     "art_support": {},
     "tank_extinguisher": {},
     "upgraded": {}
-  },
-  "user_skin": {
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
   },
   "upgraded_skin": {
     "replace_tex": {

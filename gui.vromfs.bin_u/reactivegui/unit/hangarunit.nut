@@ -8,6 +8,7 @@ let { hangar_load_model, hangar_load_upgraded_model,
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { isInMenu, isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
+let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
 
 let loadedInfo = Watched({
   name = hangar_get_current_unit_name()
@@ -125,7 +126,10 @@ subscribe("downloadAddonsFinished", function(_) {
   reloadBGModels()
 })
 
+subscribe("onHangarModelStartLoad", @(_) isHangarUnitLoaded(false))
+
 subscribe("onHangarModelLoaded", function(_) {
+  isHangarUnitLoaded(true)
   if (hangar_get_loaded_unit_name() != hangar_get_current_unit_name())
     return
   let lInfo = {
@@ -144,4 +148,5 @@ return {
 
   setHangarUnit  //unit will be used from own units or from allUnitsCfg
   setCustomHangarUnit  //will be forced cutsom unit params
+  isHangarUnitLoaded
 }

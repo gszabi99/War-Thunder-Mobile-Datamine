@@ -2826,11 +2826,6 @@
       }
     }
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",

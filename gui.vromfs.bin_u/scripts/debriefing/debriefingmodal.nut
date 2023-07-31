@@ -5,7 +5,7 @@
 from "%scripts/dagui_library.nut" import *
 let { subscribe, send } = require("eventbus")
 let { destroy_session } = require("multiplayer")
-let json = require("%sqstd/json.nut")
+let { loadJson, saveJson } = require("%sqstd/json.nut")
 let { register_command } = require("console")
 let { setTimeout } = require("dagor.workcycle")
 let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
@@ -45,10 +45,10 @@ let function closeDebriefing() {
   loadRootScreen()
 }
 
-let saveDebriefing = @(fileName) json.save(fileName, battleResult.value)
+let saveDebriefing = @(fileName) saveJson(fileName, battleResult.value)
 
 let function loadDebriefing(fileName) {
-  let data = json.load(fileName)
+  let data = loadJson(fileName)
   if (data == null)
     return console_print($"Can not load file {fileName}")
 

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let { subscribe } = require("eventbus")
 let io = require("io")
-let json = require("json")
+let { json_to_string } = require("json")
 let { register_command } = require("console")
 let logBD = log_with_prefix("[HANGAR_BATTLE_DATA] ")
 let { hangarUnit } = require("hangarUnit.nut")
@@ -46,12 +46,12 @@ let function mkHangarBattleData() {
     isUpgraded = false, isPremium = false
   } = hangarUnit.value
 
+  let cfgMods = serverConfigs.value?.unitModPresets[modPreset] ?? {}
   let items = mods != null
-      ? mods.filter(@(has) has)
+      ? mods.filter(@(has, id) has && id in cfgMods)
           .map(@(_) 1)
     : isPremium || isUpgraded
-      ? (serverConfigs.value?.unitModPresets[modPreset] ?? {})
-          .map(@(_) 1) //just all modifications, but later maybe filter them by groups
+      ? cfgMods.map(@(_) 1) //just all modifications, but later maybe filter them by groups
     : {}
 
   return {
@@ -76,7 +76,7 @@ register_command(
   function() {
     const fileName = "wtmHangarBattleData.json"
     let file = io.file(fileName, "wt+")
-    file.writestring(json.to_string(mkHangarBattleData(), true))
+    file.writestring(json_to_string(mkHangarBattleData(), true))
     file.close()
     log($"Saved json hangar battle data to {fileName}")
   }

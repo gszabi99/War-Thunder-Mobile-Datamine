@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+let { is_android } = require("%sqstd/platform.nut")
 
-return {
+return !is_android ? null : {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   padding = [ 0, saBorders[0], hdpxi(8), 0 ]

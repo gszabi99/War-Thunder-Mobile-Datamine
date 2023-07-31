@@ -3,7 +3,7 @@ let { send, subscribe } = require("eventbus")
 let { setTimeout, resetTimeout } = require("dagor.workcycle")
 let { getCountryCode } = require("auth_wt")
 let ads = require("ios.ads")
-let json = require("json")
+let { json_to_string, parse_json } = require("json")
 let logA = log_with_prefix("[ADS] ")
 let { is_ios } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, debugAdsWndParams
@@ -22,7 +22,7 @@ let { setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriori
 } = !isDebug ? ads
 : {
       isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
-      getProvidersStatus = @() json.to_string(
+      getProvidersStatus = @() json_to_string(
         debugAdsInited.map(@(provider, isInited) { provider, isInited })
           .values())
       setPriorityForProvider = @(_, __) null
@@ -64,7 +64,7 @@ let function initProviders(providers) {
   setTestingMode(DBGLEVEL > 0)
   let countryCode = getCountryCode()
   logA($"Init providers for {countryCode}")
-  let pStatus = json.parse(getProvidersStatus())
+  let pStatus = parse_json(getProvidersStatus())
   let initedProviders = {}
   foreach(info in pStatus)
     if (info.isInited)

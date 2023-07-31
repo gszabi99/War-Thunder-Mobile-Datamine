@@ -81,4 +81,4 @@ def aircarft_carrier_plane_group_attack(evt : EventOnKeyUp;
     return
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit.id, uid)
-  sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneGroupAttack idx=supportPlaneIdx, targetId=get_group_attack_target_id(), attack=get_group_attack()]])
+  sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneGroupAttack idx=supportPlaneIdx, targetId=get_group_attack_target_id(supportPlaneIdx), attack=get_group_attack(supportPlaneIdx)]])

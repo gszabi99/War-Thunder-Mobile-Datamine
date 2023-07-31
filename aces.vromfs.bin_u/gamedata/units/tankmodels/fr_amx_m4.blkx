@@ -2603,12 +2603,6 @@
     "art_support": {},
     "tank_extinguisher": {}
   },
-  "user_skin": {
-    "name": "amx_m4",
-    "replace_tex": {
-      "from": "fr_camo_vert_olive_arme*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "fr_camo_vert_olive_arme*",

@@ -2538,7 +2538,15 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_body_01",
+        "ex_armor_body_02",
+        "ex_armor_turret_r_01",
+        "ex_armor_turret_l_01"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {

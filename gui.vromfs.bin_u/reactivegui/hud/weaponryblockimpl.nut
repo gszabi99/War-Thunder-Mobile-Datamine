@@ -24,8 +24,9 @@ let weaponryPlacePosition = [
   { hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM }                                           //3
   { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER, pos = [ -touchButtonSize, 0] }              //4
   { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP }                                               //5
-  { hplace = ALIGN_LEFT, vplace = ALIGN_BOTTOM }                                             //6
+  { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER, pos = [ touchButtonSize,  0] }              //6
   { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP, pos = [ -touchButtonSize, -touchButtonSize] }  //7
+  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [ 0, 0] }                             //8
 ]
 
 let weaponryLeftAlignPlacePosition = [
@@ -35,8 +36,9 @@ let weaponryLeftAlignPlacePosition = [
   { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [ -touchButtonSize, 0] }              //3
   { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER }                                            //4
   { hplace = ALIGN_LEFT, vplace = ALIGN_BOTTOM, pos = [ touchButtonSize, 0] }                //5
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM }                                            //6
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP, pos = [ -touchButtonSize, 0]}                  //7
+  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [ touchButtonSize, 0] }               //6
+  { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP, pos = [ -touchButtonSize, 0] }                 //7
+  { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP, pos = [ -touchButtonSize, 2 * touchButtonSize]}//8
 ]
 
 let mkChainIcon = function(weaponsList, weaponryPositions) {

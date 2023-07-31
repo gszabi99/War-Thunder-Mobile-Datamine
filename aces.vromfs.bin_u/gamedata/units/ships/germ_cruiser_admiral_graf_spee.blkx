@@ -348,10 +348,12 @@
     },
     "citadel_armor": {
       "armorClass": "ship_RHA",
-      "armorThickness": 50.0,
+      "armorThickness": 100.0,
       "hp": 48550.0,
       "fireDamageMult": 0.001,
-      "armor_cit_01_dm": {}
+      "armor_cit_01_dm": {},
+      "armor_cit_02_dm": {},
+      "armor_cit_03_dm": {}
     }
   },
   "tank_crew": {
@@ -1007,7 +1009,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/283mm_52_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_37",
         "flash": "emtr_gun_flame_37",
@@ -1078,7 +1080,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/283mm_52_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_38",
         "flash": "emtr_gun_flame_38",
@@ -1138,7 +1140,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/283mm_52_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_39",
         "flash": "emtr_gun_flame_39",
@@ -1198,7 +1200,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/150mm_55_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_11",
         "flash": "emtr_gun_flame_11",
@@ -1256,7 +1258,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/150mm_55_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_14",
         "flash": "emtr_gun_flame_14",
@@ -1314,7 +1316,7 @@
       },
       {
         "trigger": "gunner4",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/150mm_55_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_15",
         "flash": "emtr_gun_flame_15",
@@ -1372,7 +1374,7 @@
       },
       {
         "trigger": "gunner5",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/150mm_55_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_16",
         "flash": "emtr_gun_flame_16",
@@ -1430,7 +1432,7 @@
       },
       {
         "trigger": "gunner6",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/150mm_55_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_25",
         "flash": "emtr_gun_flame_25",
@@ -1488,7 +1490,7 @@
       },
       {
         "trigger": "gunner7",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/150mm_55_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_26",
         "flash": "emtr_gun_flame_26",
@@ -1546,7 +1548,7 @@
       },
       {
         "trigger": "gunner8",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/150mm_55_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_27",
         "flash": "emtr_gun_flame_27",
@@ -1604,7 +1606,7 @@
       },
       {
         "trigger": "gunner9",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/150mm_55_skc_28_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_28",
         "flash": "emtr_gun_flame_28",

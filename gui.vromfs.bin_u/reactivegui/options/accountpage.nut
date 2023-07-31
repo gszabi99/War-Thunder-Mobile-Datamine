@@ -12,6 +12,8 @@ let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { authTags } = require("%appGlobals/loginState.nut")
+let { is_ios } = require("%sqstd/platform.nut")
 
 let DELETE_PROFILE_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
 let ACTIVATE_PROMO_CODE_URL = "auto_local auto_login https://store.gaijin.net/activate.php"
@@ -67,9 +69,11 @@ let changeNameMsgBox = @() openMsgBox({
 })
 
 let pnStateFlags = Watched(0)
-let myUserNameBtn = {
+let isGoogleLogin = Computed(@() authTags.value.contains("gplogin"))
+let myUserNameBtn = @() {
   behavior = Behaviors.Button
-  onClick = changeNameMsgBox
+  watch = isGoogleLogin
+  onClick = isGoogleLogin.value ? null : changeNameMsgBox
   onElemState = @(s) pnStateFlags(s)
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -80,14 +84,15 @@ let myUserNameBtn = {
       rendObj = ROBJ_TEXT
       text = myUserName.value
     }.__update(fontMedium)
-    @() {
-      watch = pnStateFlags
-      size = array(2, imgBtnSize)
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#menu_edit.svg:{imgBtnSize}:{imgBtnSize}")
-      transform = { scale = pnStateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-      transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
-    }
+    isGoogleLogin.value ? null
+      : @() {
+        watch = pnStateFlags
+        size = array(2, imgBtnSize)
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#menu_edit.svg:{imgBtnSize}:{imgBtnSize}")
+        transform = { scale = pnStateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+        transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
+      }
   ]
 }
 
@@ -155,7 +160,9 @@ let bottomButtons = {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   children = [
-    textButtonPrimary(loc("mainmenu/support"), @() send("openUrl", { baseUrl = loc("url/support") }), buttonsWidthStyle)
+    textButtonPrimary(loc("mainmenu/support"),
+      @() send("openUrl", { baseUrl = loc("url/support"), useExternalBrowser = true }),
+      buttonsWidthStyle)
     { size = flex() }
     textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
   ]
@@ -170,8 +177,8 @@ return {
     { size = flex() }
     topButtons
     { size = flex() }
-    textButtonPrimary(loc("mainmenu/btnActivateCode"), @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
-      { ovr = { hplace = ALIGN_CENTER }.__update(buttonsWidthStyle.ovr) })
+    is_ios ? null
+      : textButtonPrimary(loc("mainmenu/btnActivateCode"), @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),{ ovr = { hplace = ALIGN_CENTER }.__update(buttonsWidthStyle.ovr) })
     { size = flex() }
     bottomButtons
   ]

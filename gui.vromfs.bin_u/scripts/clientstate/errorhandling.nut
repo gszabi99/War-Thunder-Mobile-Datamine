@@ -9,8 +9,7 @@ let callback = require("%sqStdLibs/helpers/callback.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let n_errors = require("%sqStdLibs/helpers/net_errors.nut")
-::script_net_assert_once <- n_errors.script_net_assert_once
-let {netAsserts} = n_errors
+let {script_net_assert_once, netAsserts} = n_errors
 
 ::assertf_once <- function assertf_once(id, msg) {
   if (id in netAsserts)
@@ -23,7 +22,7 @@ let {netAsserts} = n_errors
   let info = ::getstackinfos(2) // get calling function
   let id = "".concat((info?.src ?? "?"), ":", (info?.line ?? "?"), " (", (info?.func ?? "?"), ")")
   let msg = $"Entered unreachable code: {id}"
-  ::script_net_assert_once(id, msg)
+  script_net_assert_once(id, msg)
 }
 
 callback.setContextDbgNameFunction(function(context) {
@@ -45,11 +44,11 @@ callback.setAssertFunction(function(cb, assertText) {
   if (hudEventName)
     eventText = "".concat(eventText, format("hudEvent = %s, ", hudEventName))
 
-  ::script_net_assert_once($"cb error {eventText}",
+  script_net_assert_once($"cb error {eventText}",
     format("Callback error ( %scontext = %s):\n%s",
       eventText, cb.getContextDbgName(), assertText
     )
   )
 })
 
-enums.setAssertFunction(::script_net_assert_once)
+enums.setAssertFunction(script_net_assert_once)

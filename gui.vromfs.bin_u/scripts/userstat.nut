@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { getCurrentSteamLanguage } = require("%scripts/language.nut")
 let userstat = require("userstat")
 let { subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
@@ -74,7 +75,7 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, defVal
 }
 
 let descListUpdatable = makeUpdatable("descList", "GetUserStatDescList",
-  @() { language = ::g_language.getCurrentSteamLanguage() })
+  @() { language = getCurrentSteamLanguage() })
 let statsUpdatable = makeUpdatable("stats", "GetStats")
 let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks")
 

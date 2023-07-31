@@ -2595,12 +2595,6 @@
     "art_support": {},
     "tank_extinguisher": {}
   },
-  "user_skin": {
-    "name": "us_m41_walker_bulldog",
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",

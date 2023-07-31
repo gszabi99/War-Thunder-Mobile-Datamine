@@ -1656,11 +1656,6 @@
       }
     }
   ],
-  "user_skin": {
-    "replace_tex": {
-      "from": "ussr_camo_green*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "ussr_camo_green*",
@@ -2576,7 +2571,13 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_turret_r_05",
+        "ex_armor_turret_l_05"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {

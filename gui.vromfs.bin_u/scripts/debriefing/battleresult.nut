@@ -6,7 +6,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let logBD = log_with_prefix("[BATTLE_RESULT] ")
-let json = require("json")
+let { json_to_string } = require("json")
 let io = require("io")
 let { send, subscribe } = require("eventbus")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
@@ -140,7 +140,7 @@ register_command(function() {
     return console_print("Current battle result is empty")
 
   let file = io.file(SAVE_FILE, "wt+")
-  file.writestring(json.to_string(battleResult.value, true))
+  file.writestring(json_to_string(battleResult.value, true))
   file.close()
   return console_print($"Saved to {SAVE_FILE}")
 }, "debriefing.save_current_battle_result")

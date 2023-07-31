@@ -1760,16 +1760,10 @@
   },
   "modifications": {},
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "p_47n_20_aluminum_1948_c*",
-        "to": "p_47n_20_aluminum_1948_c*"
-      },
-      {
-        "from": "p_47n_20_aluminum_1948_c_dmg*",
-        "to": "p_47n_20_aluminum_1948_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "p_47n_20_aluminum_1948_c*",
+      "to": "p_47n_20_aluminum_1948_c*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

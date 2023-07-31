@@ -13,8 +13,8 @@ let addEventTime = @(data) serverTime.value > 0 ? data.__merge({ eventTime = ser
 let sendUiBqEvent = @(event, data = {}) send("sendBqEvent",
   { tableId = "gui_events", data = addEventTime(data.__merge({ event })) })
 
-let sendErrorBqEvent = @(errorStr) send("sendBqEvent",
-  { tableId = "gui_events", data = addEventTime({ event = "error", id = errorStr }) })
+let sendErrorBqEvent = @(errorStr, data = {}) send("sendBqEvent",
+  { tableId = "gui_events", data = addEventTime(data.__merge({ event = "error", id = errorStr })) })
 
 let sendErrorLocIdBqEvent = @(errorLocId)
   sendErrorBqEvent(getLocTextForLang(errorLocId, "English") ?? errorLocId)

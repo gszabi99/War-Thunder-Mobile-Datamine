@@ -312,10 +312,12 @@
     },
     "citadel_armor": {
       "armorClass": "ship_RHA",
-      "armorThickness": 50.0,
+      "armorThickness": 19.0,
       "hp": 33990.0,
       "fireDamageMult": 0.001,
-      "armor_cit_01_dm": {}
+      "armor_cit_01_dm": {},
+      "armor_cit_02_dm": {},
+      "armor_cit_03_dm": {}
     }
   },
   "tank_crew": {

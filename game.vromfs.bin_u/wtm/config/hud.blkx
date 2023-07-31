@@ -59,6 +59,7 @@
   "shouldDrawWeaponAllowableAngles": false,
   "allowableAnglesColor": "AP//yA==",
   "allowableAnglesSectorRadius": 2000.0,
+  "drawNativeTankSpeedInSpectator": false,
   "skins": {
     "defSkin": "ui/gameuiskin"
   },
@@ -618,6 +619,8 @@
     "rocketSight": "rocket_sight.svg:60:90:K",
     "ccipRocketSight": "ccip_rocket_sight.svg:42:42:K",
     "ccipGunIndication": "ccip_gun_indication.svg:24:24:K",
+    "ccrpGunIndication": "ccip_gun_indication.svg:24:24:K",
+    "gyroGunIndication": "",
     "groundTarget": "ground_target.svg:30:30:K",
     "bombSightRadius": 100.0,
     "bombSightLineWidth": 2.5,
@@ -740,7 +743,8 @@
     "shipResetTargetByAngle": false,
     "targetSelectionRelativeSize": 0.1,
     "changeTargetSelectionRelativeSize": 0.3,
-    "airTargetSelectionRadiusMul": 4.0,
+    "airTargetSelectionRadiusMulTank": 4.0,
+    "airTargetSelectionRadiusMulShip": 2.0,
     "tankTraceDistForAirTarget": 3200.0,
     "sight_distance_change_speed": 7.0,
     "sight_distance_max": 350.0,
@@ -2601,20 +2605,26 @@
       "support_plane_2": {
         "shortcutIdx": 27
       },
-      "support_plane_change": {
+      "support_plane_3": {
         "shortcutIdx": 28
       },
-      "support_plane_group_attack": {
+      "support_plane_4": {
         "shortcutIdx": 29
       },
-      "stealth_activate": {
+      "support_plane_change": {
         "shortcutIdx": 30
       },
-      "weapon_lock": {
+      "support_plane_group_attack": {
         "shortcutIdx": 31
       },
-      "diving_lock": {
+      "stealth_activate": {
         "shortcutIdx": 32
+      },
+      "weapon_lock": {
+        "shortcutIdx": 33
+      },
+      "diving_lock": {
+        "shortcutIdx": 34
       }
     },
     "wheelActions": {

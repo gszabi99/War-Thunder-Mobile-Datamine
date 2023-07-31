@@ -3,18 +3,21 @@
 #no-root-fallback
 #explicit-this
 from "%scripts/dagui_library.nut" import *
+
+let u = require("%sqStdLibs/helpers/u.nut")
+let { getShortName } = require("%scripts/language.nut")
 let { subscribe } = require("eventbus")
 let { split_by_chars } = require("string")
 let { shell_launch } = require("url")
 let { get_authenticated_url_sso } = require("auth_wt")
-let { to_string, parse } = require("json")
+let { json_to_string, parse_json } = require("json")
 let { defer } = require("dagor.workcycle")
 let logUrl = log_with_prefix("[URL] ")
 let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { is_android } = require("%sqstd/platform.nut")
+let { is_android, is_ios } = require("%sqstd/platform.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -28,7 +31,7 @@ let qrRedirectSupportedLangs = ["ru", "en", "fr", "de", "es", "pl", "cs", "pt", 
 const QR_REDIRECT_URL = "https://login.gaijin.net/{0}/qr/{1}"
 
 let function getUrlWithQrRedirect(url) {
-  local lang = ::g_language.getShortName()
+  local lang = getShortName()
   if (!isInArray(lang, qrRedirectSupportedLangs))
     lang = "en"
   return QR_REDIRECT_URL.subst(lang, base64.encodeString(url))
@@ -39,6 +42,8 @@ let function openUrlImpl(url, onCloseUrl) {
   local success = false
   if (is_android)
     success = require("android.webview").show(url, true, onCloseUrl)
+  if (is_ios)
+    success = require("ios.webview").show(url)
   if (!success)
     openUrlExternalImpl(url)
 }
@@ -46,7 +51,7 @@ let function openUrlImpl(url, onCloseUrl) {
 subscribe("onAuthenticatedUrlResult", function(msg) {
   let { status, contextStr = "", url = null } = msg
   let { onCloseUrl = "", useExternalBrowser = false, notAuthUrl = "", shouldEncode = false
-  } = contextStr != "" ? parse(contextStr) : null
+  } = contextStr != "" ? parse_json(contextStr) : null
   local urlToOpen = url
   local logPrefix = "request open authenticated"
   if (status == YU2_OK) {
@@ -83,7 +88,7 @@ let function openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser) 
   let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
   let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
   get_authenticated_url_sso(autoLoginUrl, "", ssoService, "onAuthenticatedUrlResult",
-    to_string({ onCloseUrl, useExternalBrowser, notAuthUrl = url, shouldEncode }))
+    json_to_string({ onCloseUrl, useExternalBrowser, notAuthUrl = url, shouldEncode }))
 }
 
 let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExternalBrowser=false) {
@@ -124,7 +129,7 @@ local function validateLink(link) {
   if (link == null)
     return null
 
-  if (!::u.isString(link)) {
+  if (!u.isString(link)) {
     log("CHECK LINK result: " + toString(link))
     assert(false, "CHECK LINK: Link recieved not as text")
     return null
@@ -151,7 +156,7 @@ local function validateLink(link) {
 
 let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCloseUrl = "", useExternalBrowser = false) {
   let bigQueryInfoObject = { url = baseUrl }
-  if (! ::u.isEmpty(biqQueryKey))
+  if (! u.isEmpty(biqQueryKey))
     bigQueryInfoObject["from"] <- biqQueryKey
 
   sendUiBqEvent("player_opens_external_browser", bigQueryInfoObject)

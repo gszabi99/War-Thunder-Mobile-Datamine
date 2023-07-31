@@ -2369,11 +2369,6 @@
     "tank_extinguisher": {},
     "upgraded": {}
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "uk_camo_very_dark_drab*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "uk_camo_very_dark_drab*",

@@ -21,6 +21,33 @@
       "rollRate": 102.0
     }
   },
+  "q_5a": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_zhengzhou_Jet",
+    "tags": {
+      "ally": true,
+      "country_china": true,
+      "type_assault": true,
+      "type_strike_aircraft": true,
+      "far_eastern_front": true,
+      "air": true,
+      "airfield_take_off_air_rb": true
+    },
+    "Shop": {
+      "maxAltitude": 16500.0,
+      "maxSpeed": 401.0,
+      "turnTime": 25.0,
+      "airfieldLen": 850.0,
+      "climbTime": 86.0,
+      "maxSpeedAlt": 7000.0,
+      "climbAlt": 10000.0,
+      "climbSpeed": 162.0,
+      "wingLoading": 338.0,
+      "thrustToWeightRatio": 0.79,
+      "rollRate": 100.0
+    }
+  },
   "p_40e": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -1047,7 +1074,7 @@
         "203mm_60_skc_34_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1000.0,
-          "shotFreq": 0.12,
+          "shotFreq": 0.137,
           "gunsCount": 8,
           "caliber": 203.0,
           "ammoCount": 1120,
@@ -1056,7 +1083,7 @@
         "105mm_60_sk_c33_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 250.0,
-          "shotFreq": 0.26,
+          "shotFreq": 0.34,
           "gunsCount": 12,
           "caliber": 105.0,
           "ammoCount": 5040,
@@ -1108,8 +1135,8 @@
     },
     "Shop": {
       "shipCrewMax": 220,
-      "shipCrewMin": 80,
-      "shipCrewRating": 0.935152,
+      "shipCrewMin": 60,
+      "shipCrewRating": 1.17697,
       "maxSpeed": 19.04,
       "turningTime": 14,
       "addTorpedoesCountPack": 6,
@@ -1118,7 +1145,7 @@
         "127mm_38_mk12_turret_mk22_twin_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.333,
+          "shotFreq": 0.227,
           "gunsCount": 8,
           "caliber": 127.0,
           "ammoCount": 2880,
@@ -1180,7 +1207,7 @@
         "152mm_6inch_47_mk_16_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.19,
+          "shotFreq": 0.192,
           "gunsCount": 12,
           "caliber": 152.0,
           "ammoCount": 2400,
@@ -1189,7 +1216,7 @@
         "127mm_38_mk12_turret_mk28_twin_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 600.0,
-          "shotFreq": 0.22,
+          "shotFreq": 0.33,
           "gunsCount": 12,
           "caliber": 127.0,
           "ammoCount": 5400,
@@ -1373,7 +1400,7 @@
         "180mm_57_b1p_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 900.0,
-          "shotFreq": 0.15,
+          "shotFreq": 0.187,
           "gunsCount": 9,
           "caliber": 180.0,
           "ammoCount": 900,
@@ -1428,6 +1455,7 @@
       "shipCrewMin": 0,
       "shipCrewRating": 0,
       "maxSpeed": 10.42,
+      "underwaterSpeed": 5.21,
       "turningTime": 30,
       "addTorpedoesCountPack": 12,
       "weapons": {
@@ -1456,7 +1484,7 @@
           "damage": 6000.0,
           "shotFreq": 0.1,
           "distToLive": 3500.0,
-          "gunsCount": 1,
+          "gunsCount": 10,
           "caliber": 533.0,
           "ammoCount": 60,
           "isBeltAmmo": false
@@ -1490,6 +1518,7 @@
       "shipCrewMin": 0,
       "shipCrewRating": 0,
       "maxSpeed": 4.12,
+      "underwaterSpeed": 9.6408,
       "turningTime": 30,
       "addTorpedoesCountPack": 8,
       "weapons": {
@@ -1523,6 +1552,16 @@
           "ammoCount": 44,
           "isBeltAmmo": false
         },
+        "us_533mm_21in_mark15_torpedo": {
+          "wtype": "torpedo",
+          "damage": 6000.0,
+          "shotFreq": 0.1,
+          "distToLive": 3500.0,
+          "gunsCount": 4,
+          "caliber": 533.0,
+          "ammoCount": 0,
+          "isBeltAmmo": false
+        },
         "germ_mine_emc": {
           "wtype": "mine",
           "damage": 12000.0,
@@ -1552,6 +1591,7 @@
       "shipCrewMin": 0,
       "shipCrewRating": 0,
       "maxSpeed": 5.25,
+      "underwaterSpeed": 11.6025,
       "turningTime": 30,
       "addTorpedoesCountPack": 14,
       "mainWeaponCaliber": 100.0,
@@ -1579,7 +1619,7 @@
           "damage": 6300.0,
           "shotFreq": 0.1,
           "distToLive": 3500.0,
-          "gunsCount": 1,
+          "gunsCount": 10,
           "caliber": 533.0,
           "ammoCount": 72,
           "isBeltAmmo": false
@@ -1613,15 +1653,16 @@
       "shipCrewMin": 0,
       "shipCrewRating": 0,
       "maxSpeed": 9.41,
+      "underwaterSpeed": 7.9985,
       "turningTime": 30,
       "addTorpedoesCountPack": 12,
       "weapons": {
         "us_533mm_21in_mark15_torpedo": {
           "wtype": "torpedo",
           "damage": 6000.0,
-          "shotFreq": 0.82,
+          "shotFreq": 0.1,
           "distToLive": 3500.0,
-          "gunsCount": 1,
+          "gunsCount": 8,
           "caliber": 533.0,
           "ammoCount": 52,
           "isBeltAmmo": false
@@ -1655,6 +1696,7 @@
       "shipCrewMin": 0,
       "shipCrewRating": 0,
       "maxSpeed": 8.85,
+      "underwaterSpeed": 8.0535,
       "turningTime": 30,
       "addTorpedoesCountPack": 8,
       "weapons": {
@@ -1671,9 +1713,9 @@
         "de_533mm_g7a_torpedo": {
           "wtype": "torpedo",
           "damage": 6300.0,
-          "shotFreq": 0.67,
+          "shotFreq": 0.1,
           "distToLive": 3500.0,
-          "gunsCount": 1,
+          "gunsCount": 6,
           "caliber": 533.0,
           "ammoCount": 46,
           "isBeltAmmo": false
@@ -1698,6 +1740,7 @@
       "shipCrewMin": 0,
       "shipCrewRating": 0,
       "maxSpeed": 7.0,
+      "underwaterSpeed": 9.38,
       "turningTime": 30,
       "addTorpedoesCountPack": 8,
       "mainWeaponCaliber": 57.0,
@@ -1714,9 +1757,9 @@
         "ussr_533mm_53_38_torpedo": {
           "wtype": "torpedo",
           "damage": 6300.0,
-          "shotFreq": 1.0,
+          "shotFreq": 0.1,
           "distToLive": 3500.0,
-          "gunsCount": 1,
+          "gunsCount": 6,
           "caliber": 533.0,
           "ammoCount": 72,
           "isBeltAmmo": false
@@ -1746,8 +1789,8 @@
     },
     "Shop": {
       "shipCrewMax": 320,
-      "shipCrewMin": 80,
-      "shipCrewRating": 1.22,
+      "shipCrewMin": 70,
+      "shipCrewRating": 1.3,
       "maxSpeed": 19.54,
       "turningTime": 13,
       "addTorpedoesCountPack": 3,
@@ -1756,7 +1799,7 @@
         "127mm_45_skc_34_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.27,
+          "shotFreq": 0.244,
           "gunsCount": 5,
           "caliber": 128.0,
           "ammoCount": 600,
@@ -1798,8 +1841,8 @@
     },
     "Shop": {
       "shipCrewMax": 270,
-      "shipCrewMin": 80,
-      "shipCrewRating": 1.1,
+      "shipCrewMin": 70,
+      "shipCrewRating": 1.25394,
       "maxSpeed": 18.52,
       "turningTime": 14,
       "addTorpedoesCountPack": 2,
@@ -1808,7 +1851,7 @@
         "130mm_50_b13_1936_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 650.0,
-          "shotFreq": 0.29,
+          "shotFreq": 0.222,
           "gunsCount": 4,
           "caliber": 130.0,
           "ammoCount": 600,
@@ -1860,7 +1903,7 @@
     "Shop": {
       "shipCrewMax": 290,
       "shipCrewMin": 80,
-      "shipCrewRating": 1.03,
+      "shipCrewRating": 1.05,
       "maxSpeed": 19.81,
       "turningTime": 14,
       "addTorpedoesCountPack": 4,
@@ -1869,7 +1912,7 @@
         "130mm_58_sm_2_1_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 650.0,
-          "shotFreq": 0.33,
+          "shotFreq": 0.333,
           "gunsCount": 4,
           "caliber": 130.0,
           "ammoCount": 1000,
@@ -1911,8 +1954,8 @@
     },
     "Shop": {
       "shipCrewMax": 170,
-      "shipCrewMin": 50,
-      "shipCrewRating": 1.0,
+      "shipCrewMin": 40,
+      "shipCrewRating": 1.28,
       "maxSpeed": 13.37,
       "turningTime": 14,
       "addTorpedoesCountPack": 2,
@@ -1921,7 +1964,7 @@
         "102mm_45_4in_qf_mark16_21_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 400.0,
-          "shotFreq": 0.5,
+          "shotFreq": 0.333,
           "gunsCount": 6,
           "caliber": 102.0,
           "ammoCount": 1200,
@@ -1953,8 +1996,8 @@
     },
     "Shop": {
       "shipCrewMax": 340,
-      "shipCrewMin": 90,
-      "shipCrewRating": 1.26515,
+      "shipCrewMin": 70,
+      "shipCrewRating": 1.51788,
       "maxSpeed": 19.0,
       "turningTime": 14,
       "addTorpedoesCountPack": 3,
@@ -1963,7 +2006,7 @@
         "150mm_l_48_c_36_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 650.0,
-          "shotFreq": 0.29,
+          "shotFreq": 0.22,
           "gunsCount": 5,
           "caliber": 150.0,
           "ammoCount": 600,
@@ -2179,8 +2222,8 @@
     },
     "Shop": {
       "shipCrewMax": 260,
-      "shipCrewMin": 90,
-      "shipCrewRating": 0.99,
+      "shipCrewMin": 80,
+      "shipCrewRating": 1.14394,
       "maxSpeed": 18.5,
       "turningTime": 14,
       "addTorpedoesCountPack": 1,
@@ -2189,7 +2232,7 @@
         "120mm_45_4_7in_mark12_cp19_mount_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.3333,
+          "shotFreq": 0.274,
           "gunsCount": 6,
           "caliber": 120.0,
           "ammoCount": 1200,
@@ -2198,7 +2241,7 @@
         "102mm_45_4in_qf_mark16_21_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 400.0,
-          "shotFreq": 0.5,
+          "shotFreq": 0.215,
           "gunsCount": 2,
           "caliber": 102.0,
           "ammoCount": 400,
@@ -2389,8 +2432,8 @@
     },
     "Shop": {
       "shipCrewMax": 280,
-      "shipCrewMin": 90,
-      "shipCrewRating": 0.96,
+      "shipCrewMin": 80,
+      "shipCrewRating": 1.03,
       "maxSpeed": 18.0,
       "turningTime": 13,
       "addTorpedoesCountPack": 4,
@@ -2399,7 +2442,7 @@
         "127mm_38_mk12_turret_mk30_single_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.4,
+          "shotFreq": 0.333,
           "gunsCount": 5,
           "caliber": 127.0,
           "ammoCount": 1800,
@@ -2453,7 +2496,7 @@
         "203mm_50_8inch_mk8_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1000.0,
-          "shotFreq": 0.18,
+          "shotFreq": 0.182,
           "gunsCount": 8,
           "caliber": 203.0,
           "ammoCount": 1200,
@@ -2462,7 +2505,7 @@
         "102mm_45_4in_qf_mark5_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 250.0,
-          "shotFreq": 0.25,
+          "shotFreq": 0.3,
           "gunsCount": 6,
           "caliber": 102.0,
           "ammoCount": 1200,
@@ -2514,7 +2557,7 @@
         "150mm_60_skc_25_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 650.0,
-          "shotFreq": 0.17,
+          "shotFreq": 0.182,
           "gunsCount": 9,
           "caliber": 150.0,
           "ammoCount": 1080,
@@ -2575,7 +2618,7 @@
         "152mm_57_b38_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.15,
+          "shotFreq": 0.161,
           "gunsCount": 12,
           "caliber": 152.0,
           "ammoCount": 2160,
@@ -2638,7 +2681,7 @@
         "203mm_50_3rd_year_type_no2_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1000.0,
-          "shotFreq": 0.1,
+          "shotFreq": 0.13,
           "gunsCount": 6,
           "caliber": 203.0,
           "ammoCount": 720,
@@ -2647,7 +2690,7 @@
         "120mm_45_10th_year_type_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 300.0,
-          "shotFreq": 0.2,
+          "shotFreq": 0.3333,
           "gunsCount": 4,
           "caliber": 120.0,
           "ammoCount": 1000,
@@ -2699,7 +2742,7 @@
         "152mm_6inch_50_bl_mk23_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.19,
+          "shotFreq": 0.192,
           "gunsCount": 12,
           "caliber": 152.0,
           "ammoCount": 2400,
@@ -2708,7 +2751,7 @@
         "102mm_45_4in_qf_mark16_21_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 400.0,
-          "shotFreq": 0.25,
+          "shotFreq": 0.29,
           "gunsCount": 8,
           "caliber": 102.0,
           "ammoCount": 1600,
@@ -2854,7 +2897,7 @@
         "203mm_50_3rd_year_type_no2_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1000.0,
-          "shotFreq": 0.07,
+          "shotFreq": 0.1,
           "gunsCount": 8,
           "caliber": 203.0,
           "ammoCount": 960,
@@ -2863,7 +2906,7 @@
         "127mm_5_40_type_89_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 300.0,
-          "shotFreq": 0.15,
+          "shotFreq": 0.19,
           "gunsCount": 8,
           "caliber": 127.0,
           "ammoCount": 1600,
@@ -3048,8 +3091,8 @@
     },
     "Shop": {
       "shipCrewMax": 260,
-      "shipCrewMin": 70,
-      "shipCrewRating": 1.09,
+      "shipCrewMin": 60,
+      "shipCrewRating": 1.21,
       "maxSpeed": 16.97,
       "turningTime": 15,
       "addTorpedoesCountPack": 1,
@@ -3058,7 +3101,7 @@
         "100mm_65_type_98_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 350.0,
-          "shotFreq": 0.27,
+          "shotFreq": 0.25,
           "gunsCount": 8,
           "caliber": 100.0,
           "ammoCount": 1600,
@@ -3077,7 +3120,7 @@
         "jp_610mm_type93_model_3_torpedo": {
           "wtype": "torpedo",
           "damage": 9500.0,
-          "shotFreq": 0.27,
+          "shotFreq": 0.25,
           "distToLive": 3500.0,
           "gunsCount": 1,
           "caliber": 610.0,
@@ -3100,8 +3143,8 @@
     },
     "Shop": {
       "shipCrewMax": 220,
-      "shipCrewMin": 60,
-      "shipCrewRating": 1.19909,
+      "shipCrewMin": 50,
+      "shipCrewRating": 1.38606,
       "maxSpeed": 17.49,
       "turningTime": 13,
       "addTorpedoesCountPack": 4,
@@ -3110,7 +3153,7 @@
         "127mm_5_50_type_3_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 500.0,
-          "shotFreq": 0.21,
+          "shotFreq": 0.213,
           "gunsCount": 6,
           "caliber": 127.0,
           "ammoCount": 900,
@@ -3690,8 +3733,8 @@
     },
     "Shop": {
       "shipCrewMax": 2770,
-      "shipCrewMin": 590,
-      "shipCrewRating": 3.0303,
+      "shipCrewMin": 830,
+      "shipCrewRating": 2.14848,
       "maxSpeed": 16.98,
       "turningTime": 33,
       "mainWeaponCaliber": 127.0,
@@ -3832,7 +3875,7 @@
         "130mm_50_b13_1936_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 650.0,
-          "shotFreq": 0.29,
+          "shotFreq": 0.256,
           "gunsCount": 4,
           "caliber": 130.0,
           "ammoCount": 600,
@@ -3841,7 +3884,7 @@
         "76mm_55_39k_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 300.0,
-          "shotFreq": 0.5,
+          "shotFreq": 0.256,
           "gunsCount": 2,
           "caliber": 76.2,
           "ammoCount": 600,
@@ -3883,8 +3926,8 @@
     },
     "Shop": {
       "shipCrewMax": 350,
-      "shipCrewMin": 100,
-      "shipCrewRating": 1.18788,
+      "shipCrewMin": 90,
+      "shipCrewRating": 1.27606,
       "maxSpeed": 18.78,
       "turningTime": 14,
       "addTorpedoesCountPack": 4,
@@ -3893,7 +3936,7 @@
         "127mm_54_mk18_turret_mk42_single_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.4,
+          "shotFreq": 0.238,
           "gunsCount": 2,
           "caliber": 127.0,
           "ammoCount": 700,
@@ -3902,7 +3945,7 @@
         "76mm_50cal_mk34_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 350.0,
-          "shotFreq": 0.4,
+          "shotFreq": 0.238,
           "gunsCount": 4,
           "caliber": 76.2,
           "ammoCount": 6000,
@@ -3923,7 +3966,7 @@
           "damage": 4612.0,
           "shotFreq": 0.17,
           "distToLive": 3500.0,
-          "gunsCount": 1,
+          "gunsCount": 4,
           "caliber": 533.0,
           "ammoCount": 10,
           "isBeltAmmo": false
@@ -3944,8 +3987,8 @@
     },
     "Shop": {
       "shipCrewMax": 960,
-      "shipCrewMin": 320,
-      "shipCrewRating": 1.13758,
+      "shipCrewMin": 310,
+      "shipCrewRating": 1.17515,
       "maxSpeed": 16.71,
       "turningTime": 22,
       "mainWeaponCaliber": 152.0,
@@ -3953,7 +3996,7 @@
         "152mm_6inch_50_bl_mk23_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.2,
+          "shotFreq": 0.204,
           "gunsCount": 12,
           "caliber": 152.0,
           "ammoCount": 2400,
@@ -4009,7 +4052,7 @@
         "283mm_52_skc_28_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1200.0,
-          "shotFreq": 0.067,
+          "shotFreq": 0.069,
           "gunsCount": 6,
           "caliber": 283.0,
           "ammoCount": 720,
@@ -4216,6 +4259,7 @@
       "shipCrewMin": 0,
       "shipCrewRating": 0,
       "maxSpeed": 7.72,
+      "underwaterSpeed": 8.2604,
       "turningTime": 30,
       "addTorpedoesCountPack": 10,
       "weapons": {
@@ -4224,7 +4268,7 @@
           "damage": 6045.0,
           "shotFreq": 0.1,
           "distToLive": 3500.0,
-          "gunsCount": 1,
+          "gunsCount": 10,
           "caliber": 533.0,
           "ammoCount": 58,
           "isBeltAmmo": false
@@ -4306,8 +4350,8 @@
     },
     "Shop": {
       "shipCrewMax": 280,
-      "shipCrewMin": 90,
-      "shipCrewRating": 0.96,
+      "shipCrewMin": 80,
+      "shipCrewRating": 1.03,
       "maxSpeed": 18.0,
       "turningTime": 13,
       "addTorpedoesCountPack": 4,
@@ -4316,7 +4360,7 @@
         "127mm_38_mk12_turret_mk30_single_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 600.0,
-          "shotFreq": 0.4,
+          "shotFreq": 0.333,
           "gunsCount": 5,
           "caliber": 127.0,
           "ammoCount": 1800,
@@ -4368,7 +4412,7 @@
         "102mm_45_4in_qf_mark16_21_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 400.0,
-          "shotFreq": 0.5,
+          "shotFreq": 0.333,
           "gunsCount": 6,
           "caliber": 102.0,
           "ammoCount": 1200,
@@ -6014,20 +6058,20 @@
     },
     "bullets": {
       "88mm_Kwk36_user_cannon": {
-        "88mm_ger_kwk36_HEAT": {
-          "icon": "hud_ammo_heat"
-        },
-        "88mm_ger_kwk36_Pzgr_APCBC": {
-          "icon": "hud_ammo_ap1_he2",
-          "reqLevel": 3
+        "default": {
+          "icon": "hud_ammo_ap2_he1"
         },
         "88mm_ger_kwk36_default_HE": {
           "icon": "hud_ammo_he",
           "isHE": true,
+          "reqLevel": 3
+        },
+        "88mm_ger_kwk36_HEAT": {
+          "icon": "hud_ammo_heat",
           "reqLevel": 6
         },
-        "default": {
-          "icon": "hud_ammo_ap2_he1",
+        "88mm_ger_kwk36_Pzgr_APCBC": {
+          "icon": "hud_ammo_ap1_he2",
           "reqLevel": 9
         }
       }
@@ -11178,15 +11222,15 @@
     },
     "bullets": {
       "105mm_K18_user_cannon": {
+        "105mm_germany_APCBC": {
+          "icon": "hud_ammo_ap2_he2"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he1"
         },
         "105mm_germany_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "105mm_germany_APCBC": {
-          "icon": "hud_ammo_ap2_he2"
         }
       }
     },
@@ -11407,18 +11451,18 @@
     },
     "bullets": {
       "76mm_F34_user_cannon": {
+        "76mm_ussr_AP_1941": {
+          "icon": "hud_ammo_ap2_he1"
+        },
+        "76mm_ussr_AP_1942": {
+          "icon": "hud_ammo_ap3_he0"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he2"
         },
         "76mm_ussr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "76mm_ussr_AP_1942": {
-          "icon": "hud_ammo_ap3_he0"
-        },
-        "76mm_ussr_AP_1941": {
-          "icon": "hud_ammo_ap2_he1"
         },
         "76mm_ussr_APCR_1943": {
           "icon": "hud_ammo_apcr"
@@ -11473,18 +11517,18 @@
     },
     "bullets": {
       "76mm_F34_user_cannon": {
+        "76mm_ussr_AP_1941": {
+          "icon": "hud_ammo_ap2_he1"
+        },
+        "76mm_ussr_AP_1942": {
+          "icon": "hud_ammo_ap3_he0"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he2"
         },
         "76mm_ussr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "76mm_ussr_AP_1942": {
-          "icon": "hud_ammo_ap3_he0"
-        },
-        "76mm_ussr_AP_1941": {
-          "icon": "hud_ammo_ap2_he1"
         }
       }
     },
@@ -11647,15 +11691,15 @@
     },
     "bullets": {
       "76mm_M1_no_MB_user_cannon": {
+        "76mm_usa_APCBC": {
+          "icon": "hud_ammo_ap2_he1"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
         "76mm_usa_M42A1_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "76mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1"
         }
       }
     },
@@ -11717,15 +11761,15 @@
     },
     "bullets": {
       "76mm_M1_no_MB_user_cannon": {
-        "76mm_usa_M42A1_HE": {
-          "icon": "hud_ammo_he",
-          "isHE": true
-        },
         "76mm_usa_APCBC": {
           "icon": "hud_ammo_ap2_he1"
         },
         "default": {
           "icon": "hud_ammo_ap1_he0"
+        },
+        "76mm_usa_M42A1_HE": {
+          "icon": "hud_ammo_he",
+          "isHE": true
         }
       }
     },
@@ -11777,15 +11821,15 @@
     },
     "bullets": {
       "75mm_m3_user_cannon": {
+        "75mm_usa_APCBC": {
+          "icon": "hud_ammo_ap2_he1"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "75mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1"
         },
         "75mm_usa_APCR": {
           "icon": "hud_ammo_apcr"
@@ -11905,15 +11949,15 @@
     },
     "bullets": {
       "76mm_M1_user_cannon": {
+        "76mm_usa_APCBC": {
+          "icon": "hud_ammo_ap2_he1"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
         "76mm_usa_M42A1_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "76mm_usa_APCBC": {
-          "icon": "hud_ammo_ap2_he1"
         }
       }
     },
@@ -11976,12 +12020,12 @@
         "default": {
           "icon": "hud_ammo_ap2_he1"
         },
+        "85mm_ussr_APHE": {
+          "icon": "hud_ammo_ap1_he2"
+        },
         "85mm_ussr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "85mm_ussr_APHE": {
-          "icon": "hud_ammo_ap1_he2"
         },
         "85mm_ussr_APCR": {
           "icon": "hud_ammo_apcr"
@@ -12315,15 +12359,15 @@
     },
     "bullets": {
       "122mm_D25T_user_cannon": {
+        "122mm_ussr_APHE": {
+          "icon": "hud_ammo_ap2_he1"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he1"
         },
         "122mm_ussr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "122mm_ussr_APHE": {
-          "icon": "hud_ammo_ap2_he1"
         }
       }
     },
@@ -12383,18 +12427,18 @@
     },
     "bullets": {
       "122mm_D25_44T_user_cannon": {
+        "122mm_ussr_APCBC": {
+          "icon": "hud_ammo_ap3_he1"
+        },
+        "122mm_ussr_APHE": {
+          "icon": "hud_ammo_ap2_he2"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he2"
         },
         "122mm_ussr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "122mm_ussr_APHE": {
-          "icon": "hud_ammo_ap2_he2"
-        },
-        "122mm_ussr_APCBC": {
-          "icon": "hud_ammo_ap3_he1"
         }
       }
     },
@@ -12446,9 +12490,8 @@
     },
     "bullets": {
       "100mm_LB1_user_cannon": {
-        "100mm_ussr_HE": {
-          "icon": "hud_ammo_he",
-          "isHE": true
+        "100mm_ussr_APCBC": {
+          "icon": "hud_ammo_ap3_he1"
         },
         "100mm_ussr_APHE": {
           "icon": "hud_ammo_ap2_he2"
@@ -12456,8 +12499,9 @@
         "default": {
           "icon": "hud_ammo_ap1_he2"
         },
-        "100mm_ussr_APCBC": {
-          "icon": "hud_ammo_ap3_he1"
+        "100mm_ussr_HE": {
+          "icon": "hud_ammo_he",
+          "isHE": true
         }
       }
     },
@@ -14466,15 +14510,15 @@
     },
     "bullets": {
       "75mm_QQF_MkV_user_cannon": {
+        "75mm_britain_APCBC": {
+          "icon": "hud_ammo_ap2_he0"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
         "75mm_britain_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "75mm_britain_APCBC": {
-          "icon": "hud_ammo_ap2_he0"
         }
       }
     },
@@ -14629,18 +14673,18 @@
     },
     "bullets": {
       "76mm_17pdr_QF_user_cannon": {
+        "76mm_britain_17pdr_APCBC": {
+          "icon": "hud_ammo_ap3_he0"
+        },
+        "76mm_britain_17pdr_APC": {
+          "icon": "hud_ammo_ap2_he0"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
         "76mm_britain_17pdr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
-        },
-        "76mm_britain_17pdr_APC": {
-          "icon": "hud_ammo_ap2_he0"
-        },
-        "76mm_britain_17pdr_APCBC": {
-          "icon": "hud_ammo_ap3_he0"
         }
       }
     },
@@ -14773,7 +14817,17 @@
       "scout": true,
       "canRepairAnyAlly": true
     },
-    "bullets": {},
+    "bullets": {
+      "106mm_Type_60B_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "106mm_M361A1_HESH": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        }
+      }
+    },
     "Shop": {
       "armorThicknessFront": [
         0.0,
@@ -15108,7 +15162,13 @@
       "type_tank_destroyer": true,
       "type_missile_tank": true
     },
-    "bullets": {},
+    "bullets": {
+      "136mm_k3s_hot_rocket_launcher": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        }
+      }
+    },
     "Shop": {
       "armorThicknessFront": [
         0.05,
@@ -15155,7 +15215,13 @@
       "type_tank_destroyer": true,
       "type_missile_tank": true
     },
-    "bullets": {},
+    "bullets": {
+      "180mm_2k4_rocket_launcher": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        }
+      }
+    },
     "Shop": {
       "armorThicknessFront": [
         0.6,

@@ -2311,11 +2311,6 @@
     "tank_extinguisher": {},
     "upgraded": {}
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "ger_camo_dunkelgelb*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "ger_camo_dunkelgelb*",

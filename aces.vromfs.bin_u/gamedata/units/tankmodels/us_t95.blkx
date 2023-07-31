@@ -1059,7 +1059,7 @@
           -0.756,
           0.0,
           2.0,
-          1.0,
+          0.85,
           0.428,
           0.244
         ]
@@ -2202,12 +2202,6 @@
     "art_support": {},
     "tank_extinguisher": {},
     "upgraded": {}
-  },
-  "user_skin": {
-    "name": "t95",
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
   },
   "upgraded_skin": {
     "replace_tex": {

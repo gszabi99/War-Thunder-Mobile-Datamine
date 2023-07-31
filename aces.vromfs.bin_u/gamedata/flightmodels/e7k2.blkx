@@ -1958,16 +1958,10 @@
   },
   "modifications": {},
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "e7k2_c*",
-        "to": "e7k2_c*"
-      },
-      {
-        "from": "e7k2_c_dmg*",
-        "to": "e7k2_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "e7k2_c*",
+      "to": "e7k2_c*"
+    }
   },
   "cutting": {
     "emtr_break_wing0_l_from": [

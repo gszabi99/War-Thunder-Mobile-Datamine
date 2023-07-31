@@ -3368,16 +3368,10 @@
   },
   "modifications": {},
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "ar_196a_3_c*",
-        "to": "ar_196a_3_c*"
-      },
-      {
-        "from": "ar_196a_3_c_dmg*",
-        "to": "ar_196a_3_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "ar_196a_3_c*",
+      "to": "ar_196a_3_c*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

@@ -2931,11 +2931,6 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "fr_camo_vert_olive_arme*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "fr_camo_vert_olive_arme*",

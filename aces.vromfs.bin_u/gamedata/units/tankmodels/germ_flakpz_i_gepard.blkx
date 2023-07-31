@@ -2975,5 +2975,8 @@
       20.0,
       30.0
     ]
+  },
+  "battleHideNodes": {
+    "n": "details"
   }
 }

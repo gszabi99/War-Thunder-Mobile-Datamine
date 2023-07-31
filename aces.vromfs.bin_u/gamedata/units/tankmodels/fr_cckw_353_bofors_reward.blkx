@@ -2605,8 +2605,7 @@
   "modifications": {
     "tank_tool_kit_expendable": {},
     "art_support": {},
-    "tank_extinguisher": {},
-    "upgraded": {}
+    "tank_extinguisher": {}
   },
   "default_skin": {
     "replace_tex": {

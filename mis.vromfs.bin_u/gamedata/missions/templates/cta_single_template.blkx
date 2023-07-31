@@ -32,6 +32,28 @@
       },
       "conditions": {},
       "actions": {
+        "varSetRandomInt": {
+          "var": "random_mission_id",
+          "from": 0,
+          "to_not_including": 2147483647
+        },
+        "varSetString": {
+          "value": "R",
+          "var": "string_mission_id"
+        },
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "string_mission_id",
+            "input_var": "random_mission_id"
+          },
+          {
+            "value": " ",
+            "digits": 0,
+            "var": "string_mission_id"
+          }
+        ],
         "triggerEnable": {
           "target": "start"
         }
@@ -90,9 +112,33 @@
         ]
       },
       "actions": {
+        "varSetString": [
+          {
+            "value": "single tanks ",
+            "var": "battle_type_name"
+          },
+          {
+            "value": "",
+            "var": "bq_record",
+            "input_var": "string_mission_id"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bq_record",
+            "input_var": "battle_type_name"
+          },
+          {
+            "value": "battle start",
+            "digits": 0,
+            "var": "bq_record"
+          }
+        ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "single tanks battle start"
+          "event": "@bq_record"
         },
         "varSetInt": [
           {
@@ -884,10 +930,22 @@
       },
       "actions": {
         "varSetString": {
-          "value": "single tanks victory total k/d: ",
-          "var": "bq_record"
+          "value": "",
+          "var": "bq_record",
+          "input_var": "string_mission_id"
         },
         "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bq_record",
+            "input_var": "battle_type_name"
+          },
+          {
+            "value": "victory total k/d: ",
+            "digits": 0,
+            "var": "bq_record"
+          },
           {
             "value": "",
             "digits": 0,
@@ -906,16 +964,17 @@
             "input_var": "player_death_count"
           }
         ],
-        "bigQueryAddRecord": [
-          {
-            "params": "",
-            "event": "@bq_record"
-          },
-          {
-            "params": "",
-            "event": "single tanks victory"
-          }
-        ]
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "@bq_record"
+        },
+        "triggerDisable": {
+          "target": [
+            "tanks_player_victory",
+            "tanks_player_defeat",
+            "tanks_timeout"
+          ]
+        }
       },
       "else_actions": {
         "varSetInt": [
@@ -967,10 +1026,22 @@
       },
       "actions": {
         "varSetString": {
-          "value": "single tanks defeat total k/d: ",
-          "var": "bq_record"
+          "value": "",
+          "var": "bq_record",
+          "input_var": "string_mission_id"
         },
         "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bq_record",
+            "input_var": "battle_type_name"
+          },
+          {
+            "value": "defeat total k/d: ",
+            "digits": 0,
+            "var": "bq_record"
+          },
           {
             "value": "",
             "digits": 0,
@@ -989,16 +1060,17 @@
             "input_var": "player_death_count"
           }
         ],
-        "bigQueryAddRecord": [
-          {
-            "params": "",
-            "event": "@bq_record"
-          },
-          {
-            "params": "",
-            "event": "single tanks defeat"
-          }
-        ]
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "@bq_record"
+        },
+        "triggerDisable": {
+          "target": [
+            "tanks_player_victory",
+            "tanks_player_defeat",
+            "tanks_timeout"
+          ]
+        }
       },
       "else_actions": {
         "varSetInt": [
@@ -1049,10 +1121,22 @@
       },
       "actions": {
         "varSetString": {
-          "value": "single tanks timeout total k/d: ",
-          "var": "bq_record"
+          "value": "",
+          "var": "bq_record",
+          "input_var": "string_mission_id"
         },
         "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bq_record",
+            "input_var": "battle_type_name"
+          },
+          {
+            "value": "timeout total k/d: ",
+            "digits": 0,
+            "var": "bq_record"
+          },
           {
             "value": "",
             "digits": 0,
@@ -1070,18 +1154,16 @@
             "var": "bq_record"
           }
         ],
-        "bigQueryAddRecord": [
-          {
-            "params": "",
-            "event": "@bq_record"
-          },
-          {
-            "params": "",
-            "event": "single tanks timeout"
-          }
-        ],
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "@bq_record"
+        },
         "triggerDisable": {
-          "target": "tanks_timeout"
+          "target": [
+            "tanks_player_victory",
+            "tanks_player_defeat",
+            "tanks_timeout"
+          ]
         }
       },
       "else_actions": {
@@ -1110,11 +1192,16 @@
         }
       },
       "actions": {
-        "bigQueryAddRecord": {
-          "params": "",
-          "event": "single ships battle start"
-        },
         "varSetString": [
+          {
+            "value": "single ships ",
+            "var": "battle_type_name"
+          },
+          {
+            "value": "",
+            "var": "bq_record",
+            "input_var": "string_mission_id"
+          },
           {
             "value": "t1_bot_ship_02",
             "var": "t1_bot02_name"
@@ -1152,6 +1239,23 @@
             "var": "t2_bot05_name"
           }
         ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bq_record",
+            "input_var": "battle_type_name"
+          },
+          {
+            "value": "battle start",
+            "digits": 0,
+            "var": "bq_record"
+          }
+        ],
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "@bq_record"
+        },
         "varSetInt": {
           "value": 1,
           "var": "spawn_side",
@@ -1843,10 +1947,22 @@
       },
       "actions": {
         "varSetString": {
-          "value": "single ships victory total k/d: ",
-          "var": "bq_record"
+          "value": "",
+          "var": "bq_record",
+          "input_var": "string_mission_id"
         },
         "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bq_record",
+            "input_var": "battle_type_name"
+          },
+          {
+            "value": "victory total k/d: ",
+            "digits": 0,
+            "var": "bq_record"
+          },
           {
             "value": "",
             "digits": 0,
@@ -1864,20 +1980,21 @@
             "var": "bq_record"
           }
         ],
-        "bigQueryAddRecord": [
-          {
-            "params": "",
-            "event": "@bq_record"
-          },
-          {
-            "params": "",
-            "event": "single ships player victory"
-          }
-        ],
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "@bq_record"
+        },
         "missionCompleted": {
           "team": "A",
           "timer": false,
           "debriefingTimer": 2
+        },
+        "triggerDisable": {
+          "target": [
+            "ships_player_victory",
+            "ships_player_defeat",
+            "ships_timeout"
+          ]
         }
       },
       "else_actions": {}
@@ -1910,10 +2027,22 @@
       },
       "actions": {
         "varSetString": {
-          "value": "single ships defeat total k/d: ",
-          "var": "bq_record"
+          "value": "",
+          "var": "bq_record",
+          "input_var": "string_mission_id"
         },
         "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bq_record",
+            "input_var": "battle_type_name"
+          },
+          {
+            "value": "defeat total k/d: ",
+            "digits": 0,
+            "var": "bq_record"
+          },
           {
             "value": "",
             "digits": 0,
@@ -1931,20 +2060,21 @@
             "var": "bq_record"
           }
         ],
-        "bigQueryAddRecord": [
-          {
-            "params": "",
-            "event": "@bq_record"
-          },
-          {
-            "params": "",
-            "event": "single ships player defeat"
-          }
-        ],
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "@bq_record"
+        },
         "missionFailed": {
           "team": "A",
           "debriefingTimer": 2,
           "timer": false
+        },
+        "triggerDisable": {
+          "target": [
+            "ships_player_victory",
+            "ships_player_defeat",
+            "ships_timeout"
+          ]
         }
       },
       "else_actions": {}
@@ -1971,10 +2101,22 @@
       },
       "actions": {
         "varSetString": {
-          "value": "single ships timeout total k/d: ",
-          "var": "bq_record"
+          "value": "",
+          "var": "bq_record",
+          "input_var": "string_mission_id"
         },
         "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bq_record",
+            "input_var": "battle_type_name"
+          },
+          {
+            "value": "timeout total k/d: ",
+            "digits": 0,
+            "var": "bq_record"
+          },
           {
             "value": "",
             "digits": 0,
@@ -1992,18 +2134,16 @@
             "var": "bq_record"
           }
         ],
-        "bigQueryAddRecord": [
-          {
-            "params": "",
-            "event": "@bq_record"
-          },
-          {
-            "params": "",
-            "event": "single ships timeout"
-          }
-        ],
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "@bq_record"
+        },
         "triggerDisable": {
-          "target": "ships_timeout"
+          "target": [
+            "ships_player_victory",
+            "ships_player_defeat",
+            "ships_timeout"
+          ]
         }
       },
       "else_actions": {
@@ -2453,15 +2593,29 @@
             "var": "player_kill_count"
           },
           "varSetString": {
-            "value": "single player kills: ",
-            "var": "bq_kills_record"
-          },
-          "varAddString": {
             "value": "",
-            "digits": 0,
             "var": "bq_kills_record",
-            "input_var": "player_kill_count"
+            "input_var": "string_mission_id"
           },
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_kills_record",
+              "input_var": "battle_type_name"
+            },
+            {
+              "value": "player kills: ",
+              "digits": 0,
+              "var": "bq_kills_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_kills_record",
+              "input_var": "player_kill_count"
+            }
+          ],
           "bigQueryAddRecord": {
             "params": "",
             "event": "@bq_kills_record"
@@ -2490,15 +2644,29 @@
             "var": "player_death_count"
           },
           "varSetString": {
-            "value": "single player deaths: ",
-            "var": "bq_deaths_record"
-          },
-          "varAddString": {
             "value": "",
-            "digits": 0,
             "var": "bq_deaths_record",
-            "input_var": "player_death_count"
+            "input_var": "string_mission_id"
           },
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_deaths_record",
+              "input_var": "battle_type_name"
+            },
+            {
+              "value": "player deaths: ",
+              "digits": 0,
+              "var": "bq_deaths_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_deaths_record",
+              "input_var": "player_death_count"
+            }
+          ],
           "bigQueryAddRecord": {
             "params": "",
             "event": "@bq_deaths_record"
@@ -2571,7 +2739,10 @@
     "t2_mp_tickets_past": 0,
     "t1_mp_tickets_delta": 0,
     "t2_mp_tickets_delta": 0,
-    "mission_time_left": 900
+    "mission_time_left": 900,
+    "random_mission_id": 0,
+    "string_mission_id": "",
+    "battle_type_name": ""
   },
   "dialogs": {},
   "airfields": {},

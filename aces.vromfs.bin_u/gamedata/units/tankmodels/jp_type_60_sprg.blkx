@@ -42,6 +42,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "isSequentialPrimaryShot": true,
   "type": "typeTankDestroyer",
   "minRelativeTankCameraThreshold": 1.9,
   "dm_for_shop": {
@@ -2063,7 +2064,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/groundModels_weapons/106mm_Type_60B_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
@@ -2223,14 +2224,14 @@
       ],
       "CenterOfGravity": [
         -0.3,
-        0.5,
+        0.75,
         0.0
       ],
       "CenterOfGravityClampY": [
         0.0,
         0.6
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 300.0
     },
     "tracks": {

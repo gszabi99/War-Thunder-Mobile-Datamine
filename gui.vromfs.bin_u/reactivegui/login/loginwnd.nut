@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let eventbus = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
-let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_FACEBOOK, availableLoginTypes, isLoginByGajin
+let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -246,6 +246,26 @@ let firebaseLoginButtonContent = {
   ]
 }
 
+let guestLoginButtonContent = {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = hdpx(15)
+  children = [
+    {
+      size = [ googleLogoWidth, googleLogoHeight ]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#guest_login.svg:{googleLogoWidth}:{googleLogoHeight}")
+      keepAspect = KEEP_ASPECT_FIT
+      color = Color(0, 0, 0)
+    }
+    {
+      rendObj = ROBJ_TEXT
+      text = loc("authorization_method/guest")
+      color = Color(0, 0, 0)
+    }.__update(fontSmallAccented)
+  ]
+}
+
 let loginButtons = {
   [LT_GAIJIN] = mkCustomButton(gaijinLogo, @() isLoginByGajin.update(true), BRIGHT),
   [LT_GOOGLE] = mkCustomButton(googleLoginButtonContent,
@@ -257,13 +277,16 @@ let loginButtons = {
   [LT_FIREBASE] = mkCustomButton(firebaseLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_FIREBASE }),
     BRIGHT),
+  [LT_GUEST] = mkCustomButton(guestLoginButtonContent,
+    @() eventbus.send("doLogin", { loginType = LT_GUEST }),
+    BRIGHT),
   [LT_FACEBOOK] = !fbButtonVisible ? null
     : mkCustomButton(fbLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_FACEBOOK }),
      BRIGHT),
 }.filter(@(button) button != null)
 
-let mainAuthorizationButtons = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_FACEBOOK, LT_GAIJIN]
+let mainAuthorizationButtons = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN]
   .filter(@(lt) availableLoginTypes?[lt] ?? false)
   .map(@(lt) loginButtons?[lt])
 

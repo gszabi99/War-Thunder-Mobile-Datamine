@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { platformOffer, platformPurchaseInProgress } = require("platformGoods.nut")
+let { platformOffer, platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("platformGoods.nut")
 let { check_new_offer, shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { activeOffers, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { PURCHASING, DELAYED } = require("goodsStates.nut")
@@ -33,7 +33,7 @@ activeOffers.subscribe(updateOutdatedTimer)
 
 let addGType = @(offer) offer == null ? null : offer.__merge({ gtype = getGoodsType(offer) })
 let activeOffer = Computed(@() activeOffers.value == null ? null
-  : (activeOffers.value?.purchaseGuid ?? "") == "" ? addGType(activeOffers.value)
+  : isGoodsOnlyInternalPurchase(activeOffers.value) ? addGType(activeOffers.value)
   : addGType(platformOffer.value))
 let visibleOffer = Computed(@() isOfferOutdated.value ? null : activeOffer.value)
 
@@ -54,7 +54,7 @@ let offerPurchasingState = Computed(function() {
   let goods = activeOffers.value
   if (goods == null)
     return 0
-  let idInProgress = (goods?.purchaseGuid ?? "") == "" ? shopPurchaseInProgress.value
+  let idInProgress = isGoodsOnlyInternalPurchase(goods) ? shopPurchaseInProgress.value
     : platformPurchaseInProgress.value
   if (idInProgress != null) {
     res = res | DELAYED

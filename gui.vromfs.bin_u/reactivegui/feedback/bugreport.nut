@@ -11,5 +11,5 @@ local bugReportUrl = "{url}?f.platform={platform}&f.version={version}&f.circuit=
 })
 
 return {
-  openBugReport = @() send("openUrl", { baseUrl = bugReportUrl })
+  openBugReport = @() send("openUrl", { baseUrl = bugReportUrl, useExternalBrowser = true })
 }

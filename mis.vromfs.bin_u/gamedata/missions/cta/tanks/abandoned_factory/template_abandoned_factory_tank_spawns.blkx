@@ -30,7 +30,7 @@
   "effects": {},
   "units": {},
   "areas": {
-    "t1_tankSpawn01_zone_01": {
+    "t1_tankSpawn03_zone_01": {
       "type": "Sphere",
       "tm": [
         [
@@ -136,61 +136,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "area_01": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          500.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          50.6205,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          500.0
-        ],
-        [
-          2166.9,
-          8.1261,
-          1960.54
-        ]
-      ],
-      "objLayer": 1,
-      "props": {}
-    },
-    "area_02": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          350.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          50.6205,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          350.0
-        ],
-        [
-          2169.05,
-          8.15,
-          2039.2
-        ]
-      ],
-      "objLayer": 1,
-      "props": {}
-    },
-    "t1_tankSpawn01_zone_02": {
+    "t1_tankSpawn03_zone_02": {
       "type": "Sphere",
       "tm": [
         [
@@ -216,7 +162,7 @@
       ],
       "props": {}
     },
-    "t1_tankSpawn01_zone_03": {
+    "t1_tankSpawn03_zone_03": {
       "type": "Sphere",
       "tm": [
         [
@@ -242,7 +188,7 @@
       ],
       "props": {}
     },
-    "t1_tankSpawn01_zone_04": {
+    "t1_tankSpawn03_zone_04": {
       "type": "Sphere",
       "tm": [
         [
@@ -268,7 +214,7 @@
       ],
       "props": {}
     },
-    "t1_tankSpawn01_zone_05": {
+    "t1_tankSpawn03_zone_05": {
       "type": "Sphere",
       "tm": [
         [
@@ -294,7 +240,7 @@
       ],
       "props": {}
     },
-    "t1_tankSpawn01_zone_06": {
+    "t1_tankSpawn03_zone_06": {
       "type": "Sphere",
       "tm": [
         [
@@ -932,7 +878,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn01_zone_07": {
+    "t1_tankSpawn03_zone_07": {
       "type": "Sphere",
       "tm": [
         [
@@ -958,7 +904,7 @@
       ],
       "props": {}
     },
-    "t1_tankSpawn01_zone_08": {
+    "t1_tankSpawn03_zone_08": {
       "type": "Sphere",
       "tm": [
         [
@@ -984,7 +930,7 @@
       ],
       "props": {}
     },
-    "t1_tankSpawn01_zone_09": {
+    "t1_tankSpawn03_zone_09": {
       "type": "Sphere",
       "tm": [
         [
@@ -1010,7 +956,7 @@
       ],
       "props": {}
     },
-    "t1_tankSpawn01_zone_10": {
+    "t1_tankSpawn03_zone_10": {
       "type": "Sphere",
       "tm": [
         [
@@ -1139,87 +1085,6 @@
           2366.23,
           10.0498,
           2118.08
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "area_03": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          300.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          50.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          300.0
-        ],
-        [
-          2159.71,
-          12.9193,
-          2442.66
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "area_04": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          300.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          50.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          300.0
-        ],
-        [
-          2165.26,
-          12.9193,
-          2101.94
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "area_05": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          300.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          50.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          300.0
-        ],
-        [
-          2151.71,
-          12.9189,
-          1689.96
         ]
       ],
       "objLayer": 0,
@@ -1495,7 +1360,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_01": {
+    "t1_tankSpawn01_zone_01": {
       "type": "Sphere",
       "tm": [
         [
@@ -1522,7 +1387,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_02": {
+    "t1_tankSpawn01_zone_02": {
       "type": "Sphere",
       "tm": [
         [
@@ -1549,7 +1414,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_03": {
+    "t1_tankSpawn01_zone_03": {
       "type": "Sphere",
       "tm": [
         [
@@ -1576,7 +1441,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_04": {
+    "t1_tankSpawn01_zone_04": {
       "type": "Sphere",
       "tm": [
         [
@@ -1603,7 +1468,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_05": {
+    "t1_tankSpawn01_zone_05": {
       "type": "Sphere",
       "tm": [
         [
@@ -1630,7 +1495,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_06": {
+    "t1_tankSpawn01_zone_06": {
       "type": "Sphere",
       "tm": [
         [
@@ -1657,7 +1522,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_07": {
+    "t1_tankSpawn01_zone_07": {
       "type": "Sphere",
       "tm": [
         [
@@ -1684,7 +1549,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_08": {
+    "t1_tankSpawn01_zone_08": {
       "type": "Sphere",
       "tm": [
         [
@@ -1711,7 +1576,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_09": {
+    "t1_tankSpawn01_zone_09": {
       "type": "Sphere",
       "tm": [
         [
@@ -1738,7 +1603,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_tankSpawn03_zone_10": {
+    "t1_tankSpawn01_zone_10": {
       "type": "Sphere",
       "tm": [
         [

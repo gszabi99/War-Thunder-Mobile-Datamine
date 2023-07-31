@@ -3,12 +3,13 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 let { get_player_tags } = require("auth_wt")
-let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, authTags } = require("%appGlobals/loginState.nut")
+let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, authTags } = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let googlePlayAccount = require("android.account.googleplay")
 let appleAccount = require("ios.account.apple")
+let { getUUID } = require("ios.platform")
 let fbAccount = require("android.account.fb")
 let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -167,6 +168,11 @@ let loginByType = {
   [LT_FIREBASE] = function(_as) {
     googlePlayAccount.signOut(false)
     googlePlayAccount.prepareGuestFID() //will be event android.account.onGuestFIDReciveCallback
+  },
+
+  [LT_GUEST] = function(_as) {
+    let result = ::check_login_pass(getUUID(), "", "guest", "guest", false, false)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
   },
 
   [LT_APPLE] = function(_as) {

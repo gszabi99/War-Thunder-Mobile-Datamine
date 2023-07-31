@@ -5,9 +5,11 @@
 from "%scripts/dagui_library.nut" import *
 let logerrL = @(text) logerr($"[LOGIN] {text}")
 let { subscribe } = require("eventbus")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { loginState, isLoginStarted, LOGIN_STATE, getLoginStateDebugStr, isLoggedIn, isAuthAndUpdated, isAuthorized
 } = require("%appGlobals/loginState.nut")
+let updateClientStates = require("%scripts/clientState/updateClientStates.nut")
 
 local curStages = []
 
@@ -121,12 +123,12 @@ let function initStages(stages) {
 
 isAuthAndUpdated.subscribe(function(v) {
   if (!v)
-    ::broadcastEvent("SignOut") //todo: subscribe on direct watch instead of this event
+    broadcastEvent("SignOut") //todo: subscribe on direct watch instead of this event
 })
 
 isLoggedIn.subscribe(function(v) {
   if (v)
-    ::broadcastEvent("LoginComplete")  //todo: subscribe on direct watch instead of this event
+    broadcastEvent("LoginComplete")  //todo: subscribe on direct watch instead of this event
 })
 
 //called from the native code
@@ -134,6 +136,7 @@ isLoggedIn.subscribe(function(v) {
 
 ::gui_start_startscreen <- function gui_start_startscreen() {
   ::pause_game(false) //Is it need?
+  deferOnce(updateClientStates)
 }
 
 return {

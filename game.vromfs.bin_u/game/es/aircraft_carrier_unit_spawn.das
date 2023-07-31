@@ -1,6 +1,6 @@
 require ecs
 require Unit
-require %game.utils_common
+require %game.utils.utils_common
 require %appGame.wtm_events
 
 [es(tag=server)]

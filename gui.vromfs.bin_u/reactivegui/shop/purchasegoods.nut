@@ -56,8 +56,6 @@ let function purchaseGoods(goodsId) {
     return logShop($"ERROR: Goods not found: {goodsId}")
   let { price, currencyId } = goods.price
   let isPriceValid = price > 0 && currencyId != ""
-  if (!isPriceValid && goods.purchaseGuid != "")
-    openMsgBox({ text = loc("notAvailable/currentVersion") })
   if (!isPriceValid)
     return logShop("ERROR: Invalid price")
 

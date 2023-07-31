@@ -2523,12 +2523,6 @@
       "collisionNode": "cls_turret_01"
     }
   },
-  "user_skin": {
-    "name": "m26e1",
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",

@@ -33,6 +33,8 @@ const CRUISE_CONTROL_1 = 1
 const CRUISE_CONTROL_2 = 2
 const CRUISE_CONTROL_MAX = 3
 
+local holdingForStopShowCount = 2
+
 local prevCruiseControl = CRUISE_CONTROL_UNDEF
 
 let isTurnTypesCtrlShowed = Watched(false)
@@ -70,6 +72,10 @@ cruiseControl.subscribe(updateStickDelta)
 steerWatch.subscribe(updateStickDelta)
 
 let function toNeutral() {
+  if (holdingForStopShowCount > 0) {
+    send("hint:holding_for_stop:show", {})
+    --holdingForStopShowCount
+  }
   prevCruiseControl = CRUISE_CONTROL_UNDEF
   changeCruiseControl(-cruiseControl.value)
 }

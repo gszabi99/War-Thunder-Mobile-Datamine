@@ -2851,12 +2851,6 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "user_skin": {
-    "name": "uk_a43",
-    "replace_tex": {
-      "from": "uk_camo_very_dark_drab*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "uk_camo_very_dark_drab*",

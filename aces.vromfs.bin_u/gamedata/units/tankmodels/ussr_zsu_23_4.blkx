@@ -2676,5 +2676,8 @@
         "to": "ussr_modern_green*"
       }
     }
-  ]
+  ],
+  "battleHideNodes": {
+    "n": "details"
+  }
 }

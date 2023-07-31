@@ -1516,11 +1516,6 @@
     ],
     "detectionHeight": 2.5
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "ger_camo_grey*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "ger_camo_grey*",
@@ -2615,7 +2610,14 @@
     "hideNodes": {
       "node": [
         "track_l_01",
-        "track_r_01"
+        "track_r_01",
+        "ex_armor_turret_01",
+        "ex_armor_turret_02",
+        "ex_armor_turret_03",
+        "ex_armor_turret_04",
+        "ex_armor_turret_05",
+        "ex_armor_turret_06",
+        "ex_armor_turret_07"
       ]
     }
   },
@@ -3034,7 +3036,14 @@
           "hideNodes": {
             "node": [
               "track_l_01",
-              "track_r_01"
+              "track_r_01",
+              "ex_armor_turret_01",
+              "ex_armor_turret_02",
+              "ex_armor_turret_03",
+              "ex_armor_turret_04",
+              "ex_armor_turret_05",
+              "ex_armor_turret_06",
+              "ex_armor_turret_07"
             ]
           }
         }

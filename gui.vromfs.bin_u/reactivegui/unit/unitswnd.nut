@@ -69,9 +69,9 @@ loadedHangarUnitName.subscribe(@(_) isAttached.value ? set_camera_shift_upper() 
 let holdInfo = {} //unitName = { press = int, release = int }
 
 let availableUnitsList = Computed(@() allUnitsCfg.value
+  .filter(@(u) !u?.isHidden || u.name in myUnits.value)
   .map(@(u, id) myUnits.value?[id] ?? u)
   .values()
-  .filter(@(u) !u?.isHidden)
   .sort(sortUnits))
 
 let curSelectedUnit = Watched(null)

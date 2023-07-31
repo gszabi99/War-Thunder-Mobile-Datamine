@@ -256,7 +256,7 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
     let beforeAnimProps = { opacity = prevOpacity, transform = { translate = prevTranslate } }
     animData = {
       transform = {}
-      behavior = Behaviors.RtPropUpdate
+      behavior = [Behaviors.RtPropUpdate, Behaviors.Button]
       function update() {
         let time = get_time_msec()
         if (time <= startTime)

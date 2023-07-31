@@ -4,6 +4,8 @@
 
 from "%scripts/dagui_library.nut" import *
 let { subscribe, send } = require("eventbus")
+let g_mislist_type = require("%scripts/missions/misListType.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addOptionMode, setGuiOptionsMode, addUserOption, set_gui_option } = require("guiOptions")
 let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -56,13 +58,13 @@ let function startOfflineMission(unitName, missionId, bullets, gameMode = GM_TES
     set_gui_option(opts.bulletCountOption, bullets?[idx].count ?? 0)
   }
 
-  ::broadcastEvent("BeforeStartCustomMission")
+  broadcastEvent("BeforeStartCustomMission")
   select_training_mission(misBlk)
 }
 
 let function openBenchmarkWnd(id) {
   set_game_mode(GM_BENCHMARK)
-  ::g_mislist_type.BASE.requestMissionsList(function(list) {
+  g_mislist_type.BASE.requestMissionsList(function(list) {
     let mission = list.findvalue(@(m) m.id == id)
     if (mission == null)
       return
@@ -75,7 +77,7 @@ let function openBenchmarkWnd(id) {
 
 let function sendBenchmarksList(_) {
   set_game_mode(GM_BENCHMARK)
-  ::g_mislist_type.BASE.requestMissionsList(@(list) send("benchmarksList", {
+  g_mislist_type.BASE.requestMissionsList(@(list) send("benchmarksList", {
         benchmarks = list.filter(@(m) !m.isHeader)
           .map(@(m) { name = m.getNameText(), id = m.id })
       }))

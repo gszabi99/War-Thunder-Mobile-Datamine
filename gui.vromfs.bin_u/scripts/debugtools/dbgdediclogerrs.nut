@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 import "%globalScripts/ecs.nut" as ecs
 let { send } = require("eventbus")
+let { is_multiplayer } = require("%scripts/util.nut")
 let { can_receive_dedic_logerr } = require("%appGlobals/permissions.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { enableDedicLogerr, subscribeDedicLogerr
@@ -19,7 +20,7 @@ subscribeDedicLogerr(function(text) {
 ecs.register_es("debug_dedic_logerrs_es",
   {
     [["onInit", "onChange"]] = function(_eid, comp) {
-      if (can_receive_dedic_logerr.value && ::is_multiplayer() //this global function is only one reason to this module be in dagui VM
+      if (can_receive_dedic_logerr.value && is_multiplayer() //this global function is only one reason to this module be in dagui VM
           && myUserId.value == comp.server_player__userId)
         setTimeout(1.0, @() enableDedicLogerr(true)) //without timeout this event can reach dedicated before it create m_player entity
     },

@@ -145,6 +145,12 @@ subscribe("hint:gun_overheat_warning", function(_) {
   addCommonHint(loc("hints/gun_overheat_warning"))
 })
 
+subscribe("hint:holding_for_stop:show", function(_) {
+  if (!incHintCounter("holding_for_stop", 5))
+    return
+  addCommonHint(loc("hints/holding_for_stop"))
+})
+
 const REPAIR_MODULE_ID = "repair_module"
 subscribe("hint:repair_module:show", function(_) {
   if (!incHintCounter(REPAIR_MODULE_ID, 15))

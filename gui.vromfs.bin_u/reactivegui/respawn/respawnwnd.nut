@@ -27,11 +27,11 @@ let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let respawnMap = require("respawnMap.ui.nut")
 let respawnBullets = require("respawnBullets.nut")
-let { bg, headerText, header, gap, headerMarquee } = require("respawnComps.nut")
+let { bg, headerText, headerHeight, header, gap, headerMarquee } = require("respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullHeight
-let mapSize = hdpx(650)
+let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 
@@ -149,13 +149,15 @@ let slotsBlock = @() {
 }
 
 let map = {
-  size = [mapSize, SIZE_TO_CONTENT]
+  size = [flex(), SIZE_TO_CONTENT]
+  maxHeight = mapMaxSize + headerHeight + gap
+  maxWidth = mapMaxSize
   flow = FLOW_VERTICAL
   gap
   children = [
     header(headerText(loc("respawn/choose_respawn_point")))
     bg.__merge({
-      size = [mapSize, mapSize]
+      size = [flex(), pw(100)]
       padding = gap
       children = respawnMap
     })
@@ -200,7 +202,6 @@ let function toBattle() {
 let buttons = @() {
   watch = [needCancel, isRespawnStarted, selSlot]
   vplace = ALIGN_BOTTOM
-  hplace = ALIGN_RIGHT
   children = !(selSlot.value?.canSpawn ?? false) ? null
     : !isRespawnStarted.value ? textButtonBattle(toBattleLoc, toBattle,
       { hotkeys = ["^J:X | Enter"] })
@@ -209,7 +210,9 @@ let buttons = @() {
 }
 
 let rightBlock = {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = flex()
+  halign = ALIGN_RIGHT
+  margin = [0, 0, 0, hdpx(50)]
   children = [
     map
     buttons
@@ -249,7 +252,6 @@ let content = @() {
     : [
         slotsBlock
         respawnBulletsPlace
-        { size = flex() }
         rightBlock
       ]
 }

@@ -2199,5 +2199,499 @@
         }
       ]
     }
-  }
+  },
+  "procCamera": [
+    {
+      "fov": 70.0,
+      "zNear": 0.05,
+      "time": 7.0,
+      "from": {
+        "start": {
+          "nodeName": "main_caliber_turret_01_dm",
+          "offset": [
+            3.0,
+            5.0,
+            1.0
+          ]
+        },
+        "end": {
+          "nodeName": "main_caliber_turret_01_dm",
+          "offset": [
+            3.0,
+            5.0,
+            -5.0
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "main_caliber_turret_01_dm",
+          "offset": [
+            -2.0,
+            -3.0,
+            1.0
+          ]
+        },
+        "end": {
+          "nodeName": "main_caliber_turret_01_dm",
+          "offset": [
+            2.0,
+            3.0,
+            -1.0
+          ]
+        }
+      }
+    },
+    {
+      "fov": 100.0,
+      "zNear": 0.05,
+      "time": 7.0,
+      "from": {
+        "start": {
+          "nodeName": "main_caliber_turret_02_dm",
+          "offset": [
+            6.0,
+            1.0,
+            -3.0
+          ]
+        },
+        "end": {
+          "nodeName": "main_caliber_turret_02_dm",
+          "offset": [
+            3.0,
+            1.0,
+            -3.0
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "main_caliber_turret_02_dm",
+          "offset": [
+            -2.0,
+            -3.0,
+            1.0
+          ]
+        },
+        "end": {
+          "nodeName": "main_caliber_turret_02_dm",
+          "offset": [
+            2.0,
+            3.0,
+            -1.0
+          ]
+        }
+      }
+    },
+    {
+      "fov": 100.0,
+      "zNear": 0.05,
+      "time": 7.0,
+      "from": {
+        "start": {
+          "nodeName": "main_caliber_turret_03_dm",
+          "offset": [
+            3.0,
+            1.0,
+            -3.0
+          ]
+        },
+        "end": {
+          "nodeName": "main_caliber_turret_03_dm",
+          "offset": [
+            6.0,
+            1.0,
+            -3.0
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "main_caliber_turret_03_dm",
+          "offset": [
+            -2.0,
+            -3.0,
+            1.0
+          ]
+        },
+        "end": {
+          "nodeName": "main_caliber_turret_03_dm",
+          "offset": [
+            2.0,
+            3.0,
+            -1.0
+          ]
+        }
+      }
+    },
+    {
+      "fov": 80.0,
+      "zNear": 0.05,
+      "time": 7.0,
+      "from": {
+        "start": {
+          "nodeName": "main_caliber_turret_04_dm",
+          "offset": [
+            3.0,
+            1.0,
+            -3.0
+          ]
+        },
+        "end": {
+          "nodeName": "main_caliber_turret_04_dm",
+          "offset": [
+            6.0,
+            1.0,
+            -3.0
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "main_caliber_turret_04_dm",
+          "offset": [
+            -2.0,
+            -3.0,
+            1.0
+          ]
+        },
+        "end": {
+          "nodeName": "main_caliber_turret_04_dm",
+          "offset": [
+            2.0,
+            3.0,
+            -1.0
+          ]
+        }
+      }
+    },
+    {
+      "fov": 80.0,
+      "zNear": 0.05,
+      "time": 7.0,
+      "from": {
+        "start": {
+          "nodeName": "bone_flag_01",
+          "offset": [
+            6.0,
+            1.0,
+            -3.0
+          ]
+        },
+        "end": {
+          "nodeName": "bone_flag_01",
+          "offset": [
+            3.0,
+            1.0,
+            -3.0
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "bone_flag_01",
+          "offset": [
+            -2.0,
+            -3.0,
+            1.0
+          ]
+        },
+        "end": {
+          "nodeName": "bone_flag_01",
+          "offset": [
+            2.0,
+            3.0,
+            -1.0
+          ]
+        }
+      }
+    },
+    {
+      "fov": 110.0,
+      "zNear": 0.05,
+      "time": 7.0,
+      "from": {
+        "start": {
+          "nodeName": "pilot_dm",
+          "offset": [
+            3.0,
+            1.0,
+            5.0
+          ]
+        },
+        "end": {
+          "nodeName": "pilot_dm",
+          "offset": [
+            6.0,
+            2.0,
+            -2.0
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "pilot_dm",
+          "offset": [
+            -1.0,
+            -1.0,
+            -2.0
+          ]
+        },
+        "end": {
+          "nodeName": "pilot_dm",
+          "offset": [
+            1.0,
+            2.0,
+            2.0
+          ]
+        }
+      }
+    },
+    {
+      "fov": 60.0,
+      "zNear": 0.05,
+      "time": 7.0,
+      "from": {
+        "start": {
+          "nodeName": "wing_r_dm",
+          "offset": [
+            3.0,
+            1.0,
+            5.0
+          ]
+        },
+        "end": {
+          "nodeName": "wing_r_dm",
+          "offset": [
+            6.0,
+            2.0,
+            -2.0
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "wing_r_dm",
+          "offset": [
+            -1.0,
+            -1.0,
+            -2.0
+          ]
+        },
+        "end": {
+          "nodeName": "wing_r_dm",
+          "offset": [
+            1.0,
+            2.0,
+            2.0
+          ]
+        }
+      }
+    },
+    {
+      "fov": 60.0,
+      "zNear": 0.05,
+      "time": 7.0,
+      "from": {
+        "start": {
+          "nodeName": "wing_l_dm",
+          "offset": [
+            3.0,
+            1.0,
+            5.0
+          ]
+        },
+        "end": {
+          "nodeName": "wing_l_dm",
+          "offset": [
+            6.0,
+            2.0,
+            -2.0
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "wing_l_dm",
+          "offset": [
+            -1.0,
+            -1.0,
+            -2.0
+          ]
+        },
+        "end": {
+          "nodeName": "wing_l_dm",
+          "offset": [
+            1.0,
+            2.0,
+            2.0
+          ]
+        }
+      }
+    },
+    {
+      "fov": 70.0,
+      "zNear": 0.05,
+      "time": 8.0,
+      "from": {
+        "start": {
+          "nodeName": "track_l_dm",
+          "offset": [
+            0.1,
+            1.0,
+            0.1
+          ]
+        },
+        "end": {
+          "nodeName": "track_l_dm",
+          "offset": [
+            3.0,
+            1.0,
+            1.1
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "track_l_dm",
+          "offset": [
+            0.1,
+            1.0,
+            -0.6
+          ]
+        },
+        "end": {
+          "nodeName": "track_l_dm",
+          "offset": [
+            0.1,
+            2.0,
+            0.6
+          ]
+        }
+      }
+    },
+    {
+      "fov": 70.0,
+      "zNear": 0.05,
+      "time": 8.0,
+      "from": {
+        "start": {
+          "nodeName": "track_r_dm",
+          "offset": [
+            0.1,
+            1.0,
+            0.1
+          ]
+        },
+        "end": {
+          "nodeName": "track_r_dm",
+          "offset": [
+            3.0,
+            1.0,
+            1.1
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "track_r_dm",
+          "offset": [
+            0.1,
+            1.0,
+            -0.6
+          ]
+        },
+        "end": {
+          "nodeName": "track_r_dm",
+          "offset": [
+            0.1,
+            2.0,
+            0.6
+          ]
+        }
+      }
+    },
+    {
+      "fov": 70.0,
+      "zNear": 0.05,
+      "time": 8.0,
+      "from": {
+        "start": {
+          "nodeName": "wheel_l_01_dm",
+          "offset": [
+            0.1,
+            1.0,
+            0.1
+          ]
+        },
+        "end": {
+          "nodeName": "wheel_l_01_dm",
+          "offset": [
+            3.0,
+            1.0,
+            1.1
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "wheel_l_01_dm",
+          "offset": [
+            0.1,
+            1.0,
+            -0.6
+          ]
+        },
+        "end": {
+          "nodeName": "wheel_l_01_dm",
+          "offset": [
+            0.1,
+            2.0,
+            0.6
+          ]
+        }
+      }
+    },
+    {
+      "fov": 70.0,
+      "zNear": 0.05,
+      "time": 8.0,
+      "from": {
+        "start": {
+          "nodeName": "wheel_r_01_dm",
+          "offset": [
+            0.1,
+            1.0,
+            0.1
+          ]
+        },
+        "end": {
+          "nodeName": "wheel_r_01_dm",
+          "offset": [
+            3.0,
+            1.0,
+            1.1
+          ]
+        }
+      },
+      "to": {
+        "start": {
+          "nodeName": "wheel_r_01_dm",
+          "offset": [
+            0.1,
+            1.0,
+            -0.6
+          ]
+        },
+        "end": {
+          "nodeName": "wheel_r_01_dm",
+          "offset": [
+            0.1,
+            2.0,
+            0.6
+          ]
+        }
+      }
+    }
+  ]
 }

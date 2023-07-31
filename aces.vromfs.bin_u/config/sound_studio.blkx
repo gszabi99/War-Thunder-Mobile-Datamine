@@ -252,7 +252,9 @@
       "Polish": {
         "heavyVehicle": true
       },
-      "Turkish": {},
+      "Turkish": {
+        "heavyVehicle": true
+      },
       "Serbian": {
         "heavyVehicle": true
       },
@@ -338,6 +340,9 @@
     "tinnitus": {}
   },
   "misc_effects": {
+    "art_sound_start_height": 1000.0,
+    "art_sound_start_min_height": 200.0,
+    "art_sound_start_radius": 600.0,
     "pathGui": "naval/gui",
     "pathGuiEvents": "naval/gui",
     "voiceMessagePath": "/voice%i/%s_%i",
@@ -535,7 +540,7 @@
     "eventShotThunder": "main_caliber_distant",
     "eventShotThunderDist": 10000.0,
     "eventUnderwaterExpl": "underwater_explosion",
-    "eventAirBrake": "airbrake",
+    "eventAirBrake": "",
     "eventBombHatch": "bomb_hatch",
     "eventBombWhistle": "bomb_whistle",
     "eventBullethitUnit": "bullethit_unit",
@@ -8416,7 +8421,7 @@
     "use_hangar_music_for_type": true,
     "eventWin": "win_battle_music",
     "eventLoose": "loose_battle_music",
-    "eventTanksSuspense": "ships_suspense_01",
+    "eventTanksSuspense": "tanks_suspense_01",
     "menu": {
       "path": "naval/music",
       "event": "menu"
@@ -9256,7 +9261,7 @@
       "distanceMetric": {
         "event": "05_targeting/voice_message_commander_target_<dist>_m",
         "player": -1,
-        "playerRole": "sailor",
+        "playerRole": "commander",
         "minSpeechInterval": 0.0,
         "distances": {
           "val": [

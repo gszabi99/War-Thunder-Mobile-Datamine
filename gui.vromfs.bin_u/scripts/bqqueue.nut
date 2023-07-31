@@ -3,8 +3,8 @@ let { APP_ID } = require("app")
 let { subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer } = require("dagor.workcycle")
-let { request, SUCCESS } = require("dagor.http")
-let { to_string } = require("json")
+let { request, HTTP_SUCCESS } = require("dagor.http")
+let { json_to_string } = require("json")
 let { getPlayerToken } = require("auth_wt")
 let { get_cur_circuit_block } = require("blkGetters")
 let logBQ = log_with_prefix("[BQ] ")
@@ -66,7 +66,7 @@ let function sendAll() {
     url
     headers
     waitable = true
-    data = to_string(list)
+    data = json_to_string(list)
     respEventId = RESPONSE_EVENT
     context
   })
@@ -74,7 +74,7 @@ let function sendAll() {
 
 subscribe(RESPONSE_EVENT, function(res) {
   let { status = -1, http_code = -1, context = null } = res
-  if (status == SUCCESS && http_code >= 200 && http_code < 300) {
+  if (status == HTTP_SUCCESS && http_code >= 200 && http_code < 300) {
     logBQ($"Success send {context?.list.len()} events")
     errorsInARow(0)
     return

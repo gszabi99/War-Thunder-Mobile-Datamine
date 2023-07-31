@@ -2696,11 +2696,6 @@
       }
     }
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "ger_camo_grey*"
-    }
-  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "ger_camo_dunkelgelb*",

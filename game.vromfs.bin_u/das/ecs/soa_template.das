@@ -289,7 +289,7 @@ struct MakeFuncArg
 class SoaTemplateStructMacro : AstStructureAnnotation
 
   [unused_argument(group, args)] def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
-    if st.fields.length == 0
+    if length(st.fields) == 0
       errors := "soa macro expects at least one field"
       return false
     if show_completion && is_in_completion()

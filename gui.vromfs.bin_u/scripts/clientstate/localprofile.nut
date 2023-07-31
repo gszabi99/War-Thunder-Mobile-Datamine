@@ -4,15 +4,17 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let DataBlock  = require("DataBlock")
+let u = require("%sqStdLibs/helpers/u.nut")
 let { set_blk_value_by_path, get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { isOnlineSettingsAvailable, getLoginStateDebugStr } = require("%appGlobals/loginState.nut")
 let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 //save/load settings by account. work only after local profile received from host.
 ::save_local_account_settings <- function save_local_account_settings(path, value) {
   if (!shouldDisableMenu && !isOnlineSettingsAvailable.value) {
-    ::script_net_assert_once("unsafe profile settings write",
+    script_net_assert_once("unsafe profile settings write",
       $"save_local_account_settings at login state {getLoginStateDebugStr()}")
     return
   }
@@ -24,7 +26,7 @@ let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
 
 ::load_local_account_settings <- function load_local_account_settings(path, defValue = null) {
   if (!shouldDisableMenu && !isOnlineSettingsAvailable.value) {
-    ::script_net_assert_once("unsafe profile settings read",
+    script_net_assert_once("unsafe profile settings read",
       $"load_local_account_settings at login state {getLoginStateDebugStr()}")
     return defValue
   }
@@ -89,7 +91,7 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
       continue
 
     hasChanges = true
-    if (::u.isDataBlock(blk?[name]))
+    if (u.isDataBlock(blk?[name]))
       blk.removeBlock(name)
     else
       blk.removeParam(name)

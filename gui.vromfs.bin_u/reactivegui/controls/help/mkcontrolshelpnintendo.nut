@@ -136,7 +136,7 @@ return @(texts) {
         let text = getHintText(hint, texts)
         if ((text ?? "") == "")
           return null
-        return hint.__merge({ content = mkTextarea(text, hdpx(500)) })
+        return hint.__merge({ content = mkTextarea(text, hdpx(450)) })
       })
       .filter(@(h) h != null))
   }

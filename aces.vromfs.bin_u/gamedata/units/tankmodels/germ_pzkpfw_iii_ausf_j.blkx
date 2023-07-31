@@ -1140,7 +1140,9 @@
     "hideNodes": {
       "node": [
         "track_l_01",
-        "track_r_01"
+        "track_r_01",
+        "ex_armor_body_r_01",
+        "ex_armor_body_r_02"
       ]
     }
   },
@@ -1608,11 +1610,6 @@
     ],
     "tank_extinguisher": {},
     "upgraded": {}
-  },
-  "user_skin": {
-    "replace_tex": {
-      "from": "ger_camo_grey*"
-    }
   },
   "upgraded_skin": {
     "replace_tex": {

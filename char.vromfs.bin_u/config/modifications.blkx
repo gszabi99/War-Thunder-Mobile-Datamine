@@ -67,7 +67,7 @@
       "modClass": "firepower",
       "effects": {
         "rcostAddParam": 0.9595,
-        "supportUnitClass": "structures/ussr_152mm_d1",
+        "supportUnitClass": "structures/ussr_122mm_m30",
         "supportUnitTag": "artillery"
       }
     },

@@ -1972,16 +1972,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "he_111h_6_a*",
-        "to": "he_111h_6_a*"
-      },
-      {
-        "from": "he_111h_6_a_dmg*",
-        "to": "he_111h_6_a_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "he_111h_6_a*",
+      "to": "he_111h_6_a*"
+    }
   },
   "turbulence": {
     "segmentlength": 100.0,

@@ -4,6 +4,7 @@ let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { doesLocTextExist } = require("dagor.localize")
 let logG = log_with_prefix("[GOODS] ")
+let { is_pc } = require("%sqstd/platform.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
@@ -16,17 +17,16 @@ let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
 
 let {
   YU2_OK = 0,
-  registerApplePurchase = @(_, eventId) setTimeout(0.1,
+  registerApplePurchase = @(_, __, eventId) setTimeout(0.1,
     @() send(eventId, { status = 0, transaction_id = "id" }))
 } = require("auth_wt")
 
+let billingModule = require("ios.billing.appstore")
+let { AS_OK = 0, AS_CANCELED = -1, AS_NOT_INITED = -12 } = billingModule
 let { //defaults only to allow test this module on PC
-  AS_OK = 0,
-  AS_CANCELED = -1,
-  AS_NOT_INITED = -12,
   initAndRequestData = function(list) {
     let result = {
-      status = 0 //AS_OK
+      status = AS_OK
       value = list.map(@(id) {
         productId = id,
         title = $"{id} title",
@@ -38,9 +38,9 @@ let { //defaults only to allow test this module on PC
     setTimeout(0.1, @() send("ios.billing.onInitAndDataRequested", result))
   },
   startPurchaseAsync = @(_) setTimeout(1.0,
-    @() send("ios.billing.onPurchaseCallback", { status = 0, data = "receipt_or_error" })),
+    @() send("ios.billing.onPurchaseCallback", { status = AS_OK, data = "receipt_or_error" })),
   confirmPurchase = @(_) setTimeout(1.0, @() send("ios.billing.onConfirmPurchaseCallback",{status = true}))
-} = require("ios.billing.appstore")
+} = !is_pc ? require("ios.billing.appstore") : {}
 
 const REPEAT_ON_ERROR_MSEC = 60000
 let lastInitStatus = mkHardWatched("goodsIos.lastInitStatus", AS_NOT_INITED)
@@ -83,11 +83,11 @@ subscribe("ios.billing.onConfirmPurchaseCallback", function(result) {
 })
 
 subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
-  let {status, transaction_id = null } = result
+  let {status, purchase_transaction_id = null } = result
 
-  if (status == YU2_OK && transaction_id) {
+  if (status == YU2_OK && purchase_transaction_id) {
     logG($"register_apple_purchase success")
-    confirmPurchase(transaction_id)
+    confirmPurchase(purchase_transaction_id)
     return
   }
   purchaseInProgress(null)
@@ -96,10 +96,10 @@ subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
 })
 
 subscribe("ios.billing.onPurchaseCallback", function(result) {
-  let { status, data = null } = result
+  let { status, data = null, transaction_id = null } = result
   logG("onPurchaseCallback status = ", status)
-  if (status == AS_OK && data) {
-    registerApplePurchase(data,"ios.billing.onAuthPurchaseCallback")
+  if (status == AS_OK && data && transaction_id) {
+    registerApplePurchase(transaction_id, data, "ios.billing.onAuthPurchaseCallback")
   } else {
     purchaseInProgress(null)
     if (status != AS_CANCELED) {
@@ -125,18 +125,21 @@ subscribe("ios.billing.onInitAndDataRequested", function(result) {
   }))
 })
 
+let getProductId = @(goods) goods?.purchaseGuids.iOS.extId
+  ?? goods?.purchaseIds.android //compatibility with pserver 0.0.8.x  2023.05.16  (there was only android id, because it the same with iOS)
+
 let goodsIdByProductId = Computed(function() {
   let res = {}
   foreach (id, goods in campConfigs.value?.allGoods ?? {})
     if (can_debug_shop.value || !goods.isShowDebugOnly) {
-      let productId = goods?.purchaseIds.android
+      let productId = getProductId(goods)
       if (productId != null)
         res[productId] <- id
     }
   return res
 })
 
-let offerProductId = Computed(@() activeOffers.value?.purchaseIds.android)
+let offerProductId = Computed(@() getProductId(activeOffers.value))
 
 let productsForRequest = keepref(Computed(function(prev) {
   if (!isAuthorized.value)
@@ -191,13 +194,13 @@ let platformGoods = Computed(function() {
 })
 
 let platformOffer = Computed(function() {
-  let priceExt = availablePrices.value?[activeOffers.value?.purchaseIds.android]
+  let priceExt = availablePrices.value?[getProductId(activeOffers.value)]
   return priceExt == null || activeOffers.value == null ? null
     : activeOffers.value.__merge({ priceExt })
 })
 
 let function buyPlatformGoods(goodsOrId) {
-  let productId = (platformGoods.value?[goodsOrId] ?? goodsOrId).purchaseIds.android
+  let productId = getProductId(platformGoods.value?[goodsOrId] ?? goodsOrId)
   if (productId == null)
     return
   startPurchaseAsync(productId)

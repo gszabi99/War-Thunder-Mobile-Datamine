@@ -32,14 +32,17 @@ isGoodsRequested.subscribe(@(_) resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequest
 if (isGoodsRequested.value)
   resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag)
 
+let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid
+  ?? goods?.purchaseGuid ?? "" //compatibility with pserver 0.0.8.x  2023.05.16
+
 let goodsIdByGuid = Computed(function() {
   let res = {}
   foreach (id, goods in campConfigs.value?.allGoods ?? {})
     if ((can_debug_shop.value || !goods.isShowDebugOnly)
         && !goods?.isHiddenInGaijinStore) {
-      let { purchaseGuid = "" } = goods
-      if (purchaseGuid != "")
-        res[purchaseGuid] <- id
+      let guid = getGaijinGuid(goods)
+      if (guid != "")
+        res[guid] <- id
     }
   return res
 })
@@ -49,7 +52,7 @@ let guidsForRequest = keepref(Computed(function(prev) {
     return []
   let res = goodsIdByGuid.value.filter(@(_, guid) needForceUpdate.value || (guid not in goodsInfo.value))
     .keys()
-  let offerGuid = activeOffers.value?.purchaseGuid ?? ""
+  let offerGuid = getGaijinGuid(activeOffers.value)
   if (offerGuid != "" && (offerGuid not in goodsInfo.value))
     res.append(offerGuid)
   return isEqual(prev, res) ? prev : res
@@ -139,7 +142,7 @@ let platformGoods = Computed(function() {
 })
 
 let platformOffer = Computed(@()
-  mkGoods(activeOffers.value, goodsInfo.value?[activeOffers.value?.purchaseGuid]))
+  mkGoods(activeOffers.value, goodsInfo.value?[getGaijinGuid(activeOffers.value)]))
 
 let function buyPlatformGoods(goodsOrId) {
   local baseUrl = goodsOrId?.purchaseUrl ?? platformGoods.value?[goodsOrId].purchaseUrl

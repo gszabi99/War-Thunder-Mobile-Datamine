@@ -3,8 +3,10 @@
 #explicit-this
 
 from "%scripts/dagui_library.nut" import *
+let { subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
+let { is_multiplayer } = require("%scripts/util.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { destroy_session } = require("multiplayer")
-let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
 let { isOnlineSettingsAvailable, loginState, LOGIN_STATE, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
 let { openUrl } = require("%scripts/url.nut")
@@ -13,6 +15,8 @@ let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
 let { isAutologinUsed, setAutologinEnabled } = require("autoLogin.nut")
 let { resetLoginPass } = require("auth_wt")
 let { forceSendBqQueue } = require("%scripts/bqQueue.nut")
+
+let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
 
 let canLogout = @() !::disable_network()
 
@@ -23,7 +27,7 @@ let function startLogout() {
   if (!canLogout())
     return ::exit_game()
 
-  if (::is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
+  if (is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
     if (::is_in_flight()) {
       needLogoutAfterSession(true)
       send("quitMission", null)
@@ -34,7 +38,7 @@ let function startLogout() {
   }
 
   if (shouldDisableMenu || isOnlineSettingsAvailable.value)
-    ::broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
+    broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
 
   log("Start Logout")
   needLogoutAfterSession(false)
@@ -62,7 +66,14 @@ subscribe("relogin", function(_) {
 
 subscribe("changeName", function(_) {
   openUrl(loc("url/changeName"))
-  callbackWhenAppWillActive(startLogout)
+  callbackWhenAppWillActive("logOut")
+})
+
+subscribeFMsgBtns({
+  function onLostPsnOk(_) {
+    destroy_session("after 'on lost psn' message")
+    startLogout()
+  }
 })
 
 return {

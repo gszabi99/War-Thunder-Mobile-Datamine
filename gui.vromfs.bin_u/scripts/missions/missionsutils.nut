@@ -35,10 +35,6 @@ let isAvailableByMissionSettings = @(misBlk, unitType) (misBlk?[missionAvailabil
   return progress >= 0 && progress < 3
 }
 
-::is_user_mission <- function is_user_mission(missionBlk) {
-  return missionBlk?.userMission == true //can be null
-}
-
 let function getLocIdsArray(config, key = "locId") {
   let keyValue = config?[key] ?? ""
   let parsedString = split_by_chars(keyValue, "; ")

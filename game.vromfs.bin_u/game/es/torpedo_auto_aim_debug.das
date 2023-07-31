@@ -1,8 +1,9 @@
 options no_aot
 require ecs
-require %game.utils_common
+require Unit
 require DagorMath
 require DagorDebug3D
+require %game.utils.utils_common
 
 [es(tag=gameClient, REQUIRE=enableTorpedoAutoAim)]
 def torpedo_guns_to_target_debug(info : UpdateStageInfoRenderDebug; uid : int)

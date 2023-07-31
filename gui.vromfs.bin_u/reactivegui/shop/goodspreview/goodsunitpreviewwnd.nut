@@ -15,8 +15,8 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem,
   aTimeInfoItemOffset, aTimeInfoLight, aTimePriceFull, horGap, mkActiveItemHint, mkInfoText
 } = require("goodsPreviewPkg.nut")
-let { start_prem_cutscene, stop_prem_cutscene } = require("hangar")
-let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit
+let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, SHIP_PRESET_TYPE, TANK_PRESET_TYPE } = require("hangar")
+let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit, isHangarUnitLoaded
 } = require("%rGui/unit/hangarUnit.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
@@ -25,6 +25,8 @@ let { gradCircularSqCorners, gradCircCornerOffset } = require("%rGui/style/gradi
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { rnd_int } = require("dagor.random")
+let { SHIP } = require("%appGlobals/unitConst.nut")
 
 
 
@@ -78,12 +80,17 @@ unitForShow.subscribe(function(unit) {
 
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
   && loadedHangarUnitName.value == unitForShow.value?.name
-  && isLoadedHangarUnitUpgraded.value == (unitForShow.value?.isUpgraded ?? false)))
+  && isLoadedHangarUnitUpgraded.value == (unitForShow.value?.isUpgraded ?? false)
+  && isHangarUnitLoaded.value ))
 let function showCutscene(v) {
   if (!v)
     stop_prem_cutscene()
-  else if (!needShowUi.value && !skipAnimsOnce.value)
-    start_prem_cutscene()
+  else if (!needShowUi.value && !skipAnimsOnce.value) {
+    let unitType = unitForShow.value?.unitType ?? ""
+    let presetIds = get_prem_cutscene_preset_ids(unitType == SHIP ? SHIP_PRESET_TYPE : TANK_PRESET_TYPE)
+    if(presetIds.len() > 0)
+      start_prem_cutscene(presetIds[rnd_int(0, presetIds.len()-1)])
+  }
 }
 showCutscene(needShowCutscene.value)
 needShowCutscene.subscribe(showCutscene)

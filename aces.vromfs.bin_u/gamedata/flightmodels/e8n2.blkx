@@ -3494,16 +3494,10 @@
   },
   "modifications": {},
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "e8n2_c*",
-        "to": "e8n2_c*"
-      },
-      {
-        "from": "e8n2_c_dmg*",
-        "to": "e8n2_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "e8n2_c*",
+      "to": "e8n2_c*"
+    }
   },
   "cutting": {
     "emtr_break_wing0_l_from": [

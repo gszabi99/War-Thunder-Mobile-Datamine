@@ -6,7 +6,7 @@
 from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 local MRoomsHandlers = class {
   [PERSISTENT_DATA_PARAMS] = [
@@ -27,7 +27,7 @@ local MRoomsHandlers = class {
     this.roomMembers = []
     this.roomOps = {}
 
-    ::g_script_reloader.registerPersistentData("MRoomsHandlers", this, this[PERSISTENT_DATA_PARAMS])
+    g_script_reloader.registerPersistentData("MRoomsHandlers", this, this[PERSISTENT_DATA_PARAMS])
 
     foreach (notificationName, callback in
               {
@@ -340,7 +340,7 @@ local MRoomsHandlers = class {
   }
 }
 
-::g_mrooms_handlers <- MRoomsHandlers()
+let g_mrooms_handlers = MRoomsHandlers()
 
 ::is_my_userid <- function is_my_userid(user_id) {
   if (type(user_id) == "string")
@@ -355,7 +355,7 @@ local MRoomsHandlers = class {
     params,
     function(resp) {
       if (resp.error == OPERATION_COMPLETE)
-        ::g_mrooms_handlers.onRoomJoinCb(resp)
+        g_mrooms_handlers.onRoomJoinCb(resp)
       cb(resp)
     })
 }
@@ -365,7 +365,7 @@ local MRoomsHandlers = class {
     params,
     function(resp) {
       if (resp.error == OPERATION_COMPLETE)
-        ::g_mrooms_handlers.onRoomJoinCb(resp)
+        g_mrooms_handlers.onRoomJoinCb(resp)
       else {
         resp.roomId <- params?.roomId
         resp.password <- params?.password
@@ -375,14 +375,14 @@ local MRoomsHandlers = class {
 }
 
 ::leave_room <- function leave_room(params, cb) {
-  let oldRoomId = ::g_mrooms_handlers.getRoomId()
-  ::g_mrooms_handlers.isLeaving = true
+  let oldRoomId = g_mrooms_handlers.getRoomId()
+  g_mrooms_handlers.isLeaving = true
 
   ::matching.rpc_call("mrooms.leave_room",
     params,
     function(resp) {
-      if (::g_mrooms_handlers.getRoomId() == oldRoomId)
-        ::g_mrooms_handlers.onRoomLeaveCb()
+      if (g_mrooms_handlers.getRoomId() == oldRoomId)
+        g_mrooms_handlers.onRoomLeaveCb()
       cb(resp)
     })
 }

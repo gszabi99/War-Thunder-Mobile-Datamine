@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { get_default_graphics_preset, get_default_fps_limit, get_maximum_frames_per_second,
-  is_broken_grass_flag_set = @() false
+let { get_default_graphics_preset, get_default_fps_limit, get_maximum_frames_per_second, is_broken_grass_flag_set
 } = require("graphicsOptions")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")

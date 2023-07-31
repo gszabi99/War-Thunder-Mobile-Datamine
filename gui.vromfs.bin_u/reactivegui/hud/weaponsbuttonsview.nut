@@ -145,6 +145,7 @@ let function mkActionItem(buttonConfig, actionItem, ovr = {}) {
   return {
     key = key ?? shortcutId
     behavior = Behaviors.Button
+    eventPassThrough = true
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     size = [touchButtonSize, touchButtonSize]
@@ -208,6 +209,7 @@ let function mkRepairActionItem(buttonConfig, actionItem, ovr = {}) {
   return {
     key = actionKey
     behavior = Behaviors.Button
+    eventPassThrough = true
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     size = [touchButtonSize, touchButtonSize]
@@ -566,6 +568,7 @@ let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
     size = [touchButtonSize, touchButtonSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
+    eventPassThrough = true
     children = [
       mkBtnBg(isAvailable, actionItem,
         @() playSound(key == TRIGGER_GROUP_PRIMARY ? "weapon_primary_ready" : "weapon_secondary_ready"))
@@ -708,6 +711,7 @@ let function mkSimpleButton(buttonConfig, actionItem, ovr = {}) {
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   return {
     behavior = Behaviors.Button
+    eventPassThrough = true
     size = [touchButtonSize, touchButtonSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -747,6 +751,7 @@ let function mkFlagButton(getShortcut, iconComp, ovr) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
+    eventPassThrough = true
     onElemState = @(v) stateFlags(v)
     onClick = @() toggleShortcut(shortcutId)
     hotkeys = mkGamepadHotkey(shortcutId)
@@ -791,6 +796,7 @@ let function mkLockButtonImpl(getShortcut, ovr) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
+    eventPassThrough = true
     onElemState = @(v) stateFlags(v)
     onClick = @() toggleShortcut(shortcutId)
     hotkeys = mkGamepadHotkey(shortcutId)
@@ -833,6 +839,7 @@ let function mkDivingLockButton(buttonConfig, actionItem, ovr = {}) {
   return {
     key = shortcutId
     behavior = Behaviors.Button
+    eventPassThrough = true
     size = [touchButtonSize, touchButtonSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -863,6 +870,7 @@ let function mkZoomButton(buttonConfig, actionItem, ovr = {}) {
     watch = [ canZoom, hasAimingModeForWeapon, isInZoom, unitType ]
     key = "btn_zoom"
     behavior = Behaviors.Button
+    eventPassThrough = true
     size = [touchButtonSize, touchButtonSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER

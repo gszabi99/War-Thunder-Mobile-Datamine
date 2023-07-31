@@ -1751,7 +1751,12 @@
     "hideNodes": {
       "node": [
         "track_l_01",
-        "track_r_01"
+        "track_r_01",
+        "ex_armor_body_r_03",
+        "ex_armor_body_r_04",
+        "ex_armor_turret_01",
+        "ex_armor_turret_02",
+        "ex_armor_turret_03"
       ]
     }
   },
@@ -2425,11 +2430,6 @@
     "art_support": {},
     "tank_extinguisher": {},
     "upgraded": {}
-  },
-  "user_skin": {
-    "replace_tex": {
-      "from": "ger_camo_grey*"
-    }
   },
   "upgraded_skin": {
     "replace_tex": {

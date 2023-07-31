@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let json = require("json")
+let { parse_json } = require("json")
 let http = require("dagor.http")
 let { getPlayerToken } = require("auth_wt")
 
@@ -14,10 +14,10 @@ let function logByUrlOnce(url, text) {
 let function requestData(url, params, onSuccess, onFailure = null) {
   http.request({
     method = "POST"
-    url = url
+    url
     data = params
     callback = function(response) {
-      if (response.status != http.SUCCESS || !response?.body) {
+      if (response.status != http.HTTP_SUCCESS || !response?.body) {
         onFailure?({ errCode = response.status })
         return
       }
@@ -29,7 +29,7 @@ let function requestData(url, params, onSuccess, onFailure = null) {
           onFailure?({ errText = "Request result is html page instead of data" })
           return
         }
-        let data = json.parse(str)
+        let data = parse_json(str)
         if (data?.status == "OK")
           onSuccess(data)
         else

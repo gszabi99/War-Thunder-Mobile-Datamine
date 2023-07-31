@@ -2790,12 +2790,6 @@
     "art_support": {},
     "tank_extinguisher": {}
   },
-  "user_skin": {
-    "name": "amx_13_dca_40",
-    "replace_tex": {
-      "from": "fr_camo_vert_olive_arme*"
-    }
-  },
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,

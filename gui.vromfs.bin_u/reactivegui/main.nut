@@ -20,6 +20,8 @@ require("%rGui/options/guiOptions.nut") //need to register options before load p
 require("debugTools/pServerConsoleCmd.nut")
 require("%appGlobals/clientState/initWindowState.nut")
 require("account/legalAcceptWnd.nut")
+require("%globalScripts/windowStateEs.nut")
+require("%globalScripts/windowState.nut").allowDebug(true)
 
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { modalWindowsComponent, hideAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -35,8 +37,8 @@ let { needCursorForActiveInputDevice, isGamepad } = require("activeControls.nut"
 let hotkeysPanel = require("controlsMenu/hotkeysPanel.nut")
 let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
 let { getenv = @(...) null} = require_optional("system")
-let watermark = require("%rGui/mainMenu/watermark.nut")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")
+let watermark = require("%rGui/mainMenu/watermark.nut")
 
 local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)

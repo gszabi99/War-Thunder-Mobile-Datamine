@@ -25,7 +25,7 @@ def regen_meta_parts_hp_es(info : UpdateStageInfoAct;
                            meta_parts_hp_regen__interval : float;
                            meta_parts_hp_regen__speed : float;
                            meta_parts_hp_regen__limitFixed : uint16)
-  let unit = get_unit(uid)
+  var unit = get_unit(uid)
   if unit == null || unit.isDelayed || unit.visual == null || meta_parts_hp_regen__speed <= 0.
     return
 

@@ -1423,7 +1423,15 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_turret_l_01",
+        "ex_armor_turret_l_02",
+        "ex_armor_turret_r_01",
+        "ex_armor_turret_r_02"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -1458,11 +1466,6 @@
     "art_support": {},
     "tank_extinguisher": {},
     "upgraded": {}
-  },
-  "user_skin": {
-    "replace_tex": {
-      "from": "ussr_camo_green*"
-    }
   },
   "upgraded_skin": {
     "replace_tex": {

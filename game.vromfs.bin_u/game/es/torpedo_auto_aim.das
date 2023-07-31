@@ -6,9 +6,9 @@ require WarShipModel
 require Ballistics
 require DagorMathUtils
 require WTNetUnit
-require %game.events
-require %game.utils_common
 require %dasGameLibs.math.base
+require %game.utils.utils_common
+require %game.events
 
 def torpedo_auto_aim_impl(var weapon; target; uid : int; is_unit_submarine : bool; unit_vel : float3)
   get_unit_for_edit(uid) <| $(var unit)

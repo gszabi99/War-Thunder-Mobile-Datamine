@@ -144,15 +144,15 @@ let function respawnBullets() {
     return res
   let { caliber = 0.0, isBulletBelt = false } = bulletsInfo.value.bulletSets.findvalue(@(_) true)
   return res.__update({
-    size = [bulletsBlockWidth, SIZE_TO_CONTENT]
+    flow = FLOW_HORIZONTAL
     children = [
       {
-          size = [bulletsBlockWidth, SIZE_TO_CONTENT]
-          margin = [0, 0, 0, bulletsBlockMargin]
-          flow = FLOW_VERTICAL
-          gap
-          children = [header(headerText(loc(isBulletBelt ? "machinegun/caliber" : "gun/caliber", { caliber })))]
-            .extend(array(choiceCount.value).map(@(_, idx) mkBulletSlot(idx)))
+        size = [bulletsBlockWidth, SIZE_TO_CONTENT]
+        margin = [0, hdpx(20), 0, bulletsBlockMargin]
+        flow = FLOW_VERTICAL
+        gap
+        children = [header(headerText(loc(isBulletBelt ? "machinegun/caliber" : "gun/caliber", { caliber })))]
+          .extend(array(choiceCount.value).map(@(_, idx) mkBulletSlot(idx)))
       },
       bulletsLegend
     ]

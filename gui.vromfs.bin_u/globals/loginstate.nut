@@ -53,14 +53,16 @@ let loginTypes = {
   LT_GOOGLE = "google"
   LT_APPLE = "apple"
   LT_FIREBASE = "firebase"
+  LT_GUEST = "guest"
   LT_FACEBOOK = "facebook"
 }
 
 let isOnlyGuestLogin = get_settings_blk()?.onlyGuestLogin ?? false
 local availableLoginTypes = { [loginTypes.LT_GAIJIN] = true }
-if (is_ios)
+if (is_ios) {
   availableLoginTypes[loginTypes.LT_APPLE] <- true
-else if (is_android) {
+  availableLoginTypes[loginTypes.LT_GUEST] <- true
+} else if (is_android) {
   if (isOnlyGuestLogin)
     availableLoginTypes = { [loginTypes.LT_FIREBASE] = true }
   else

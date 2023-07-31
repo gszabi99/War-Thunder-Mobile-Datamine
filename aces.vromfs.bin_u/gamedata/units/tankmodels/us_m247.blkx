@@ -3194,5 +3194,8 @@
         "to": "usa_modern_summer_verdant*"
       }
     }
-  ]
+  ],
+  "battleHideNodes": {
+    "n": "details"
+  }
 }

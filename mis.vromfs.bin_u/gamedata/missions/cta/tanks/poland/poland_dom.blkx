@@ -82,6 +82,7 @@
       "type": "domination",
       "environment": "Day",
       "weather": "clear",
+      "checkFriendlyFireAlsoFromAircrafts": true,
       "locName": "missions/_Dom;poland/name",
       "locDesc": "poland/desc;missions/_Dom/desc",
       "scoreLimit": 10000,
@@ -101,7 +102,6 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "checkFriendlyFireAlsoFromAircrafts": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,

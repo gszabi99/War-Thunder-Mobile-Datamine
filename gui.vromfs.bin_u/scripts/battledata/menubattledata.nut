@@ -5,7 +5,7 @@
 from "%scripts/dagui_library.nut" import *
 let { get_arg_value_by_name } = require("dagor.system")
 let { resetTimeout } = require("dagor.workcycle")
-let json = require("json")
+let { json_to_string } = require("json")
 let io = require("io")
 let { get_time_msec } = require("dagor.time")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
@@ -149,7 +149,7 @@ register_command(function() {
     return "empty cache"
   let fileName = "wtmBattleData.json"
   local file = io.file(fileName, "wt+")
-  file.writestring(json.to_string(lastResult.value.payload, true))
+  file.writestring(json_to_string(lastResult.value.payload, true))
   file.close()
   return console_print($"Saved to {fileName}. Is actual ? {isBattleDataActual.value}")
 }, "meta.debugCurBattleDataCache")

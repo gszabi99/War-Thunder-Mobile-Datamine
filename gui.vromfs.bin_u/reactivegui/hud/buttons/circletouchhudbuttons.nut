@@ -11,7 +11,7 @@ let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { weaponTouchIcons } = require("%appGlobals/weaponPresentation.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
-let { allowShoot } = require("%rGui/hud/tankState.nut")
+let { allowShoot, primaryRocketGun } = require("%rGui/hud/tankState.nut")
 
 let bigButtonSize = hdpxi(150)
 let bigButtonImgSize = (0.65 * bigButtonSize + 0.5).tointeger()
@@ -172,12 +172,12 @@ let mkCircleTankPrimaryGun = @(actionItem, key = "btn_weapon_primary", countCtor
   let isAvailable = isActionAvailable(actionItem)
   let { count, countEx, isBulletBelt = false } = actionItem
   let isWaitForAim = !(actionItem?.aimReady ?? true)
-  let isWaitToShoot = !allowShoot.value
-  let color = !isAvailable || isWaitToShoot ? disabledColor : 0xFFFFFFFF
+  let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
+  let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
   let isContinuous = actionItem.isBulletBelt
   let image = weaponTouchIcons?[actionItem.weaponName] ?? "ui/gameuiskin#hud_main_weapon_fire.svg"
   let function onTouchBegin() {
-    if (isWaitForAim && isWaitToShoot)
+    if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
       addCommonHint(loc("hints/wait_for_aiming"))
     else if (isActionAvailable(actionItem)) {
       if (isContinuous)
@@ -189,10 +189,7 @@ let mkCircleTankPrimaryGun = @(actionItem, key = "btn_weapon_primary", countCtor
 
   let res = isContinuous
     ? mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_GM"), "ID_FIRE_GM", primStateFlags)
-        .__update({
-          behavior = Behaviors.TouchAreaOutButton
-          eventPassThrough = true
-        })
+        .__update({ behavior = Behaviors.TouchAreaOutButton })
     : {
         behavior = Behaviors.Button
         onElemState = @(v) primStateFlags(v)
@@ -201,10 +198,11 @@ let mkCircleTankPrimaryGun = @(actionItem, key = "btn_weapon_primary", countCtor
       }
 
   return res.__update({ //warning disable: -unwanted-modification
-    watch = allowShoot
+    watch = [allowShoot, primaryRocketGun]
     key
     size = [bigButtonSize, bigButtonSize]
     group = primGroup
+    eventPassThrough = true
     children = [
       mkCircleProgressBg(bigButtonSize, actionItem)
       mkBtnBorder(bigButtonSize, isAvailable, primStateFlags)
@@ -220,12 +218,12 @@ let mkCircleTankPrimaryGun = @(actionItem, key = "btn_weapon_primary", countCtor
 let mkCircleTankMachineGun = @(actionItem) function() {
   let isAvailable = isActionAvailable(actionItem)
   let isWaitForAim = !(actionItem?.aimReady ?? true)
-  let isWaitToShoot = !allowShoot.value
-  let color = !isAvailable || isWaitToShoot ? disabledColor : 0xFFFFFFFF
+  let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
+  let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
   let stateFlags = Watched(0)
   let res = mkContinuousButtonParams(
     function onTouchBegin() {
-      if (isWaitForAim && isWaitToShoot)
+      if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
         addCommonHint(loc("hints/wait_for_aiming"))
       else if (isActionAvailable(actionItem))
         useShortcutOn("ID_FIRE_GM_MACHINE_GUN")
@@ -236,7 +234,7 @@ let mkCircleTankMachineGun = @(actionItem) function() {
   )
 
   return res.__update({
-    watch = allowShoot
+    watch = [allowShoot, primaryRocketGun]
     key = "btn_machinegun"
     size = [buttonSize, buttonSize]
     behavior = Behaviors.TouchAreaOutButton
@@ -255,13 +253,13 @@ let mkCircleTankMachineGun = @(actionItem) function() {
 let mkCircleTankSecondaryGun = @(shortcutId, img = null) @(actionItem) function() {
   let isAvailable = isActionAvailable(actionItem)
   let isWaitForAim = !(actionItem?.aimReady ?? true)
-  let isWaitToShoot = !allowShoot.value
-  let color = !isAvailable || isWaitToShoot ? disabledColor : 0xFFFFFFFF
+  let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
+  let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
   let stateFlags = Watched(0)
   let image = weaponTouchIcons?[actionItem.weaponName] ?? img
   let res = mkContinuousButtonParams(
     function onTouchBegin() {
-      if (isWaitForAim && isWaitToShoot)
+      if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
         addCommonHint(loc("hints/wait_for_aiming"))
       else if (isActionAvailable(actionItem))
         useShortcutOn(shortcutId)
@@ -272,9 +270,10 @@ let mkCircleTankSecondaryGun = @(shortcutId, img = null) @(actionItem) function(
   )
 
   return res.__update({
-    watch = allowShoot
+    watch = [allowShoot, primaryRocketGun]
     key = "btn_weapon_secondary"
     size = [buttonSize, buttonSize]
+    eventPassThrough = true
     children = [
       mkCircleProgressBg(buttonSize, actionItem)
       mkBtnBorder(buttonSize, isAvailable, stateFlags)
@@ -294,6 +293,7 @@ let function mkCircleZoom() {
     key = "btn_zoom_circle"
     size = [buttonSize, buttonSize]
     behavior = Behaviors.Button
+    eventPassThrough = true
     hotkeys = mkGamepadHotkey("ID_ZOOM_TOGGLE")
     function onClick() {
       if (canZoom.value)
@@ -320,6 +320,7 @@ let function mkSimpleCircleTouchBtn(image, shortcutId, ovr = {}) {
     key = "btn_zoom_circle"
     size = [buttonSize, buttonSize]
     behavior = Behaviors.TouchScreenButton
+    eventPassThrough = true
     hotkeys = mkGamepadHotkey(shortcutId)
     onTouchBegin = @() useShortcutOn(shortcutId)
     onTouchEnd = @() setShortcutOff(shortcutId)

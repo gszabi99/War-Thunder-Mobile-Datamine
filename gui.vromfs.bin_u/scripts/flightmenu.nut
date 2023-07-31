@@ -10,6 +10,7 @@ let { is_mplayer_host } = require("multiplayer")
 let { requestEarlyExitRewards } = require("%scripts/debriefing/battleResult.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { command } = require("console")
+let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
@@ -17,7 +18,7 @@ let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
 } = require("guiMission")
 
 let function canRestart() {
-  return !::is_multiplayer()
+  return !is_multiplayer()
     && !is_benchmark_game_mode()
     && (get_game_type() & GT_COOPERATIVE) == 0
     && ::get_mission_status() != MISSION_STATUS_SUCCESS
@@ -51,7 +52,7 @@ let function quitToDebriefing() {
 
 let function sendDisconnectMessage() {
   requestEarlyExitRewards() //todo: Wait data received before interrupt  multiplayer or quit to debriefing
-  if (::is_multiplayer()) {
+  if (is_multiplayer()) {
     leave_mp_session()
     closeFlightMenu()
   }
@@ -206,7 +207,7 @@ eventbus.subscribe("gui_start_flight_menu", @(_) ::gui_start_flight_menu())
   ::pause_game(false)
   requestEarlyExitRewards()
 
-  if (::is_multiplayer())
+  if (is_multiplayer())
     return leave_mp_session()
 
   quit_to_debriefing()

@@ -11,7 +11,7 @@ let { tankCrosshairColor, tankZoomAutoAimMode, isUnitDelayed, tankCrosshairDmTes
 } = require("%rGui/hudState.nut")
 let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { crosshairScreenPosition, crosshairDestinationScreenPosition } = require("%rGui/hud/commonState.nut")
-let { shootReadyness } = require("%rGui/hud/tankState.nut")
+let { shootReadyness, primaryRocketGun } = require("%rGui/hud/tankState.nut")
 let { getSvgImage, touchMenuButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let actionBar = require("actionBar/actionBar.nut")
 let hudTimers = require("%rGui/hudHints/hudTimers.ui.nut")
@@ -25,7 +25,6 @@ let hitCamera = require("hitCamera/hitCamera.nut")
 let zoomSlider = require("%rGui/hud/zoomSlider.nut")
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 let { currentArmorPiercingFixed } = require("%rGui/options/options/controlsOptions.nut")
-
 
 let crosshairReadyColor = Color(232, 75, 60)
 let crosshairSize = evenPx(38)
@@ -188,10 +187,10 @@ let mkCircleGunPosition = {
 }
 
 let arcadeCrosshair = @() {
-  watch = currentArmorPiercingFixed
+  watch = [currentArmorPiercingFixed, primaryRocketGun]
   children = [
-    arcadeCrosshairSight
-    currentArmorPiercingFixed.value ? mkCircleGunPosition : null
+    primaryRocketGun.value ? null : arcadeCrosshairSight
+    currentArmorPiercingFixed.value && !primaryRocketGun.value ? mkCircleGunPosition : null
   ]
 }
 

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let logZ = log_with_prefix("[ZENDESK] ")
-let { parse, json_to_string_using_jsoncpp = @(t) t } = require("json")
-let { request, SUCCESS, FAILED, ABORTED } = require("dagor.http")
+let { parse_json } = require("json")
+let { httpRequest, HTTP_SUCCESS, HTTP_FAILED, HTTP_ABORTED } = require("dagor.http")
 let { getLogFileData } = require("logFileAttachment.nut")
 
 /*
@@ -22,9 +22,9 @@ let requestState = Watched(clone defaultRequestState)
 
 let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
   let { status = -1, http_code = -1, body = null } = response
-  if (status != SUCCESS || body == null) {
-    let reason = status == FAILED ? "FAILED"
-      : status == ABORTED ? "ABORTED"
+  if (status != HTTP_SUCCESS || body == null) {
+    let reason = status == HTTP_FAILED ? "FAILED"
+      : status == HTTP_ABORTED ? "ABORTED"
       : "UNKNOWN"
     logZ($"Request failed: {reason}", response)
     onFailure({
@@ -35,7 +35,7 @@ let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
   }
   local answer = null
   try {
-    answer = parse(body.as_string())
+    answer = parse_json(body.as_string())
   }
   catch(e) {
     logZ($"Response parsing failed: {e}", response)
@@ -82,13 +82,13 @@ let function uploadAttachment(fileData, cb) {
     return cb()
   let { filename, mimeType, content } = fileData
   logZ($"Uploading attachment: {filename} ({content.len()} bytes)")
-  request({
+  httpRequest({
     url = $"https://gaijin.zendesk.com/api/v2/uploads.json?filename={filename}"
     method = "POST"
     headers = {
       ["Content-Type"] = mimeType,
     }
-    data = content.as_string()
+    data = content
     callback = mkZendeskHttpRequestCb(
       @(answer) onAttachmentUploadSuccess(answer, cb),
       @(errInfo) onAttachmentUploadFailure(errInfo, cb)
@@ -132,13 +132,10 @@ let function sendFormData() {
   }
   if (attachments.len())
     data.request.comment.__update({ uploads = attachments.map(@(v) v.token) })
-  request({
+  httpRequest({
     url = "https://gaijin.zendesk.com/api/v2/requests"
     method = "POST"
-    headers = {
-      ["Content-Type"] = "application/json",
-    }
-    data = json_to_string_using_jsoncpp(data)
+    json = data
     callback = mkZendeskHttpRequestCb(
       onSendFormSuccess,
       onSendFormFailure

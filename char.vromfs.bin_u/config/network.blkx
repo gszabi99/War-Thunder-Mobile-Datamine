@@ -32,7 +32,7 @@
     "skinsDecalsCacheSzPS4": 157286400,
     "skinsDecalsCacheUGC": "contentUGC",
     "eventLog": {
-      "host": "client-logs.warthunder.com"
+      "host": "client-logs.gaijin.net"
     },
     "additionalDNS": {
       "dns": [
@@ -49,11 +49,11 @@
         "url": [
           {
             "weight": 5.0,
-            "url": "http://webfs1.cdn.gaijin.net/content/warthunder/webfs/"
+            "url": "https://webfs1.cdn.gaijin.net/content/warthunder/webfs/"
           },
           {
             "weight": 1.0,
-            "url": "http://webfs2.cdn.gaijin.net/content/warthunder/webfs/"
+            "url": "https://webfs2.cdn.gaijin.net/content/warthunder/webfs/"
           }
         ]
       },
@@ -67,16 +67,16 @@
     },
     "skinsDecalsCDN": {
       "maxSizePS4": 157286400,
-      "hashesReqUrl": "http://public-configs.warthunder.com/staging/dldata.info",
+      "hashesReqUrl": "https://public-configs.warthunder.com/staging/dldata.info",
       "baseUrls": {
         "url": [
           {
             "weight": 5.0,
-            "url": "http://dldata-aws.warthunder.com/staging/"
+            "url": "https://dldata-aws.warthunder.com/staging/"
           },
           {
             "weight": 1.0,
-            "url": "http://dldata-warthunder.cdn.gaijin.net/staging/"
+            "url": "https://dldata-warthunder.cdn.gaijin.net/staging/"
           }
         ]
       }
@@ -84,12 +84,12 @@
   },
   "_common_skinsDecalsCDN": {
     "url": [
-      "http://dldata-aws.warthunder.com/staging/",
-      "http://dldata-aws.warthunder.com/staging/",
-      "http://dldata-warthunder.cdn.gaijin.net/staging/",
-      "http://dldata-aws.warthunder.com/staging/"
+      "https://dldata-aws.warthunder.com/staging/",
+      "https://dldata-aws.warthunder.com/staging/",
+      "https://dldata-warthunder.cdn.gaijin.net/staging/",
+      "https://dldata-aws.warthunder.com/staging/"
     ],
-    "hashesReqUrl": "http://public-configs.warthunder.com/staging/dldata.info"
+    "hashesReqUrl": "https://public-configs.warthunder.com/staging/dldata.info"
   },
   "_common_ugcSkinsDecalsCDN": {
     "ugcServerUrl": [
@@ -125,6 +125,7 @@
       "enabled": true,
       "strictVersionCheck": false,
       "flag": [
+        "--force_check",
         "--http_peers http://seeder.gaijin.lan/content/",
         "--p2p_peers seeder.gaijin.lan:27032"
       ]
@@ -159,7 +160,7 @@
     },
     "cloud_server": {
       "servers": {
-        "url": "http://inventory-test-gj-msk-01.gaijin.ops:18443/char"
+        "url": "https://common-char-nightly-im-ru-27.gaijin.net:18443/char"
       }
     }
   },
@@ -182,7 +183,12 @@
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
-      "enabled": true
+      "enabled": true,
+      "flag": [
+        "--force_check",
+        "--http_peers http://seeder.gaijin.lan/content/",
+        "--p2p_peers seeder.gaijin.lan:27032"
+      ]
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -223,10 +229,18 @@
           "https://profile-staging-sv-lx-137.gaijin.net:10443/json-rpc"
         ]
       }
+    },
+    "cloud_server": {
+      "servers": {
+        "url": [
+          "https://cloud-staging-01.gaijin.net:12443/char",
+          "https://cloud-staging-02.gaijin.net:12443/char"
+        ]
+      }
     }
   },
   "wtm-stable": {
-    "appPerm": 73,
+    "appPerm": 50074,
     "matchServer": "match-dev-wtm-mn-ru-01.warthunder.com:7854",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
@@ -240,7 +254,8 @@
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
-      "enabled": true
+      "enabled": true,
+      "flag": "--force_check"
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -269,13 +284,19 @@
       "servers": {
         "url": "https://profile-stable-01.gaijin.net:10443/json-rpc"
       }
+    },
+    "cloud_server": {
+      "servers": {
+        "url": "https://cloud-stable-01.gaijin.net:13443/char"
+      }
     }
   },
   "wtm-production": {
     "appPerm": 74,
     "matchServer": [
       "mgate-wtm-01.warthunder.com:7853",
-      "mgate-wtm-02.warthunder.com:7853"
+      "mgate-wtm-02.warthunder.com:7853",
+      "mgate-wtm-03.warthunder.com:7853"
     ],
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
@@ -290,7 +311,8 @@
     "skinsDecalsCacheSz": 1073741824,
     "disableAsserts": true,
     "contentUpdater": {
-      "enabled": true
+      "enabled": true,
+      "flag": "--force_check"
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -308,7 +330,7 @@
         ]
       }
     },
-    "userstats": {
+    "userstat": {
       "servers": {
         "url": [
           "https://userstat-proxy-01.gaijin.net/char",
@@ -326,6 +348,14 @@
         "url": [
           "https://profile-production-01.gaijin.net/json-rpc",
           "https://profile-production-02.gaijin.net/json-rpc"
+        ]
+      }
+    },
+    "cloud_server": {
+      "servers": {
+        "url": [
+          "https://cloud-production-01.gaijin.net/char",
+          "https://cloud-production-02.gaijin.net/char"
         ]
       }
     }

@@ -2968,5 +2968,8 @@
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
+  },
+  "battleHideNodes": {
+    "n": "details"
   }
 }

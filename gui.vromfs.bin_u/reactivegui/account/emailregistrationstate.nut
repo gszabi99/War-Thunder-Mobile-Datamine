@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { send, subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { register_command } = require("console")
-let { getPlayerSsoShortTokenAsync = null, YU2_OK, getPlayerSsoShortToken, renewToken, get_player_tags, get_authenticated_url_sso
+let { getPlayerSsoShortTokenAsync, YU2_OK, renewToken, get_player_tags, get_authenticated_url_sso
 } = require("auth_wt")
-let { to_string } = require("json")
+let { json_to_string } = require("json")
 let logGuest = log_with_prefix("[GUEST] ")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { authTags, isLoginByGajin } = require("%appGlobals/loginState.nut")
@@ -39,21 +39,14 @@ subscribe("onGetStokenForGuestEmail", function(msg) {
 })
 
 let function openGuestEmailRegistration() {
-  if (getPlayerSsoShortTokenAsync != null) {
-    logGuest("getPlayerSsoShortTokenAsync")
-    getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
-  }
-  else
-    defer(function() {
-      logGuest("getPlayerSsoShortTokenSync")
-      openGuestEmailRegistrationImpl(getPlayerSsoShortToken())
-    })
+  logGuest("getPlayerSsoShortTokenAsync")
+  getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
 }
 
 let function openVerifyEmail() {
   logGuest("Open verify message")
   let url = $"/user.php?skin_lang={loc("current_lang")}"
-  get_authenticated_url_sso(url, "", "", "onAuthenticatedUrlResult", to_string({ notAuthUrl = url }))
+  get_authenticated_url_sso(url, "", "", "onAuthenticatedUrlResult", json_to_string({ notAuthUrl = url }))
 }
 
 subscribeFMsgBtns({

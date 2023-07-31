@@ -1496,6 +1496,9 @@
       0.103
     ]
   },
+  "battleHideNodes": {
+    "n": "details"
+  },
   "dm_for_shop": {
     "armorThicknessFront": [
       0.6,

@@ -2,45 +2,25 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { send } = require("eventbus")
+let { deferOnce } = require("dagor.workcycle")
+let { windowActive } = require("%globalScripts/windowState.nut")
+let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 
-const FREQUENCY_APP_STATE_UPDATE_SEC = 1
-local refreshActiveAppTask = -1
-let callbacksArray = []
-local isAppActive = true
+let cbs = mkHardWatched("callbackWhenAppWillActive", [])
 
-let function callIsAppActiveOrRegisterTask(_dt = 0) {
-  let self = callee()
-  if (refreshActiveAppTask >= 0) {
-    ::periodic_task_unregister(refreshActiveAppTask)
-    refreshActiveAppTask = -1
-  }
-
-  local needUpdateTimer = false
-  let isActive = ::is_app_active() && !::steam_is_overlay_active()
-  if (isAppActive == isActive)
-    needUpdateTimer = true
-
-  if (!isActive)
-    needUpdateTimer = true
-
-  isAppActive = isActive
-  if (needUpdateTimer) {
-    refreshActiveAppTask = ::periodic_task_register(this,
-      self, FREQUENCY_APP_STATE_UPDATE_SEC)
-
-    return
-  }
-
-  let list = clone callbacksArray
-  callbacksArray.clear()
-  foreach (cb in list)
-    cb()
+let function popCbs() {
+  let list = cbs.value
+  cbs([])
+  foreach(eventId in list)
+    send(eventId, {})
 }
 
-let function callbackWhenAppWillActive(cb) {
-  callbacksArray.append(cb)
-  callIsAppActiveOrRegisterTask()
-}
+windowActive.subscribe(function(v) {
+  if (v && cbs.value.len() != 0)
+    deferOnce(popCbs)
+})
 
+let callbackWhenAppWillActive = @(eventId) cbs.mutate(@(v) v.append(eventId))
 
 return callbackWhenAppWillActive

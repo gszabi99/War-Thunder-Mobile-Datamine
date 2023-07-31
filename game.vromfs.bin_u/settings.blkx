@@ -12,6 +12,7 @@
   "enableEmbeddedBrowser": false,
   "entitiesBlk": "%wtmGameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
+  "game_das_loading_threads": 1,
   "clientBitType": "auto",
   "releaseChannel": "",
   "renderer3": "auto",
@@ -375,7 +376,6 @@
     "riGpuObjects": false,
     "heightmapDimBits": 4,
     "mirrorQuality": 5,
-    "fxTarget": "high",
     "forceUnitsLodForWater": 2,
     "impostorMaxTexSize": 128,
     "waterPerlin": true,
@@ -401,9 +401,12 @@
     "renderImpostorsToDraftDepth": false,
     "enableClipmapDecals": false,
     "underwaterFogUseShadows": 1,
+    "sky_panorama_patch": false,
     "allowHmap": false,
     "useCellSBuffer": true,
-    "sky_panorama_patch": false
+    "cellsVBcfg": {
+      "min_allocation_size": 8388608
+    }
   },
   "ps4": {
     "garlic_size_mb": 2560,
@@ -465,6 +468,12 @@
     "test_fight": false,
     "difficulty": "realistic",
     "enableVR": false
+  },
+  "input": {
+    "gyroscopeEnabled": false
+  },
+  "mouse": {
+    "touchScreen": true
   },
   "calc_deaths_matrix": {
     "enabled": false,
@@ -559,9 +568,6 @@
     "enableHdr": false,
     "maxaa": 0
   },
-  "openGL": {
-    "nvGLShaderAVWorkaround": true
-  },
   "render": {
     "heightmap": true,
     "environment": true,
@@ -591,6 +597,7 @@
     "rendinstGlobalShadows": true,
     "grassInCompatibility": true,
     "grassInCompatibilityHangar": true,
+    "forcePreloadGrassMask": true,
     "softFx": true,
     "shadows": true,
     "selfReflection": false,
@@ -1026,16 +1033,10 @@
     ]
   },
   "shadersWarmup": {
-    "android": false,
-    "pc": false,
+    "android": true,
+    "pc": true,
     "graphics": {
-      "rendinst_impostor": true,
-      "dynamic_masked_ship": true,
-      "dafx_modfx_bboard_render_atest": true,
-      "dafx_modfx_ribbon_render": true,
-      "demon_postfx_combine": true,
       "dafx_modfx_bboard_render": true,
-      "tracer_head2": true,
       "sparks_ps": true
     }
   },
@@ -1049,6 +1050,9 @@
   },
   "android_presets": {
     "low": {
+      "video": {
+        "resolution": "x0.633"
+      },
       "graphics": {
         "backgroundScale": 0.75,
         "limitPlayerUnitsLod": 2,
@@ -1077,11 +1081,13 @@
         "grassQuality": "low",
         "grassAlphaToCoverage": false,
         "treeAlphaToCoverage": false,
+        "impostorAlphaToCoverage": false,
         "shaderlod": "low",
         "riExtraMinSizeForDraftDepth": 15.0,
         "underwaterFogUseShadows": 0,
         "underwaterFogUseSimple": true,
         "texquality": "low",
+        "fxTarget": "high",
         "fftWaterRenderResolution": 7,
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": false,
@@ -1107,6 +1113,9 @@
       }
     },
     "medium": {
+      "video": {
+        "resolution": "x0.633"
+      },
       "graphics": {
         "backgroundScale": 0.75,
         "limitPlayerUnitsLod": 1,
@@ -1116,8 +1125,8 @@
         "hangarTankLod": 1,
         "hangarShipLod": 0,
         "compatibilityShadowQuality": "low",
-        "grassRadiusMul": 0.5,
-        "grassDensityMul": 0.5,
+        "grassRadiusMul": 0.25,
+        "grassDensityMul": 0.25,
         "fxDensityMul": 0.5,
         "rendinstDistMul": 0.5,
         "compatibilityRendinstDistMul": 0.5,
@@ -1132,14 +1141,16 @@
         "renderImmDecals": false,
         "renderImpostorsToDraftDepth": true,
         "includeAtesUnitstInDepthPrepass": false,
-        "grassQuality": "low",
-        "grassAlphaToCoverage": false,
+        "grassQuality": "high",
+        "grassAlphaToCoverage": true,
         "treeAlphaToCoverage": false,
+        "impostorAlphaToCoverage": false,
         "shaderlod": "high",
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
         "texquality": "high",
+        "fxTarget": "high",
         "fftWaterRenderResolution": 7,
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
@@ -1147,7 +1158,7 @@
         "enableWaterProjFx": true
       },
       "render": {
-        "grassInCompatibility": false
+        "grassInCompatibility": true
       },
       "clipmap": {
         "texSize": [
@@ -1165,6 +1176,9 @@
       }
     },
     "high": {
+      "video": {
+        "resolution": "x0.633"
+      },
       "graphics": {
         "backgroundScale": 1.0,
         "limitPlayerUnitsLod": -1,
@@ -1175,7 +1189,7 @@
         "hangarShipLod": 0,
         "compatibilityShadowQuality": "medium",
         "grassRadiusMul": 0.8,
-        "grassDensityMul": 0.8,
+        "grassDensityMul": 0.87,
         "fxDensityMul": 0.8,
         "rendinstDistMul": 0.8,
         "compatibilityRendinstDistMul": 0.8,
@@ -1193,11 +1207,13 @@
         "grassQuality": "low",
         "grassAlphaToCoverage": false,
         "treeAlphaToCoverage": false,
+        "impostorAlphaToCoverage": false,
         "shaderlod": "high",
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
         "texquality": "high",
+        "fxTarget": "high",
         "fftWaterRenderResolution": 8,
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
@@ -1223,6 +1239,9 @@
       }
     },
     "max": {
+      "video": {
+        "resolution": "x0.633"
+      },
       "graphics": {
         "backgroundScale": 1.0,
         "limitPlayerUnitsLod": -1,
@@ -1251,11 +1270,13 @@
         "grassQuality": "high",
         "grassAlphaToCoverage": true,
         "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
         "shaderlod": "high",
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
         "texquality": "high",
+        "fxTarget": "ultrahigh",
         "fftWaterRenderResolution": 8,
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
@@ -1311,7 +1332,7 @@
           "limitedDXCSupport": {
             "entry": {
               "driverMaxVer0": 512,
-              "driverMaxVer1": 415,
+              "driverMaxVer1": 420,
               "data": {
                 "affected": true
               }
@@ -1337,6 +1358,21 @@
           "brokenImpostorShadows": {
             "entry": {
               "gpu": "G51",
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "ignoreDeviceLost": {
+            "entry": {
+              "gpu": "G51",
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "pollFences": {
+            "entry": {
               "data": {
                 "affected": true
               }

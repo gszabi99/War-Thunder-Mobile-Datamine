@@ -1673,7 +1673,7 @@
         "weap": "P_47D_default",
         "rankRange": [
           5,
-          50
+          5
         ]
       },
       {
@@ -1681,6 +1681,54 @@
         "weap": "wyvern_s4_3x1000lb",
         "rankRange": [
           5,
+          5
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          6,
+          6
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          6,
+          6
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          6,
+          6
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          7,
+          50
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          7,
+          50
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          7,
           50
         ]
       }
@@ -1771,7 +1819,7 @@
         "weap": "f8f1_default",
         "rankRange": [
           5,
-          50
+          5
         ]
       },
       {
@@ -1779,7 +1827,7 @@
         "weap": "Bf_109K4_default",
         "rankRange": [
           5,
-          50
+          5
         ]
       },
       {
@@ -1787,6 +1835,54 @@
         "weap": "la_9_default",
         "rankRange": [
           5,
+          5
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          6,
+          6
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          6,
+          6
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          6,
+          6
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          7,
+          50
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          7,
+          50
+        ]
+      },
+      {
+        "name": "q_5a",
+        "weap": "q_5a_4x250kg_bombs",
+        "rankRange": [
+          7,
           50
         ]
       }

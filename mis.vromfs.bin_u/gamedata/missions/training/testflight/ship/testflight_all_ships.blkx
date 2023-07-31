@@ -1,0 +1,2758 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "t1_player01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/pacific_islands.bin",
+      "type": "domination",
+      "environment": "6.73",
+      "weather": "thin_clouds",
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "locName": "missions/testSailAllShips",
+      "deathPenaltyMul": 0.0,
+      "allowEmptyTeams": true,
+      "useDeathmatchHUD": true
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "radius": -1.0,
+          "target": "mp_spawn_pt",
+          "team": "A",
+          "tags": {
+            "ship": true
+          }
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 3.0,
+          "object_name": "t1_player01",
+          "place_to_respawn": "mp_spawn_pt",
+          "cycle_respawn": true
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
+        "name": "t1_player01",
+        "tm": [
+          [
+            -0.0373478,
+            0.0,
+            -0.999303
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999303,
+            0.0,
+            -0.0373478
+          ],
+          [
+            4186.84,
+            -0.000732422,
+            1587.66
+          ]
+        ],
+        "unit_class": "germ_cruiser_admiral_hipper",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship45",
+        "tm": [
+          [
+            -0.988973,
+            0.0,
+            -0.148097
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.148097,
+            0.0,
+            -0.988973
+          ],
+          [
+            5910.86,
+            -0.000488281,
+            582.101
+          ]
+        ],
+        "unit_class": "us_destroyer_fletcher",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship01",
+        "tm": [
+          [
+            -0.205816,
+            0.0,
+            0.978591
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.978591,
+            0.0,
+            -0.205816
+          ],
+          [
+            6179.6,
+            -0.000488281,
+            1575.03
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1934a_1940",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship02",
+        "tm": [
+          [
+            -0.122229,
+            0.0,
+            0.992502
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.992502,
+            0.0,
+            -0.122229
+          ],
+          [
+            6152.76,
+            -0.000976562,
+            1835.8
+          ]
+        ],
+        "unit_class": "ussr_destroyer_pr56_spokoinyy",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship03",
+        "tm": [
+          [
+            -0.445425,
+            0.0,
+            0.89532
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.89532,
+            0.0,
+            -0.445425
+          ],
+          [
+            6123.24,
+            -0.000488281,
+            2100.6
+          ]
+        ],
+        "unit_class": "jp_destroyer_akizuki",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship04",
+        "tm": [
+          [
+            -0.480339,
+            0.0,
+            0.877083
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.877083,
+            0.0,
+            -0.480339
+          ],
+          [
+            6012.72,
+            -0.000488281,
+            2351.44
+          ]
+        ],
+        "unit_class": "uk_destroyer_hunt_4series",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship05",
+        "tm": [
+          [
+            -0.650293,
+            0.0,
+            0.759684
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.759684,
+            0.0,
+            -0.650293
+          ],
+          [
+            5928.56,
+            -0.000488281,
+            2581.13
+          ]
+        ],
+        "unit_class": "ussr_destroyer_pr30_ognevoy",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship06",
+        "tm": [
+          [
+            -0.696236,
+            0.0,
+            0.717813
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.717813,
+            0.0,
+            -0.696236
+          ],
+          [
+            5780.78,
+            -0.000244141,
+            2777.72
+          ]
+        ],
+        "unit_class": "us_destroyer_porter",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship07",
+        "tm": [
+          [
+            -0.795265,
+            0.0,
+            0.606262
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.606262,
+            0.0,
+            -0.795265
+          ],
+          [
+            5612.87,
+            0.0,
+            2977.99
+          ]
+        ],
+        "unit_class": "germ_destroyer_class1936a_mob_z32",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship08",
+        "tm": [
+          [
+            -0.86941,
+            0.0,
+            0.494092
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.494092,
+            0.0,
+            -0.86941
+          ],
+          [
+            5402.06,
+            -0.0012207,
+            3154.84
+          ]
+        ],
+        "unit_class": "ussr_destroyer_7y",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship09",
+        "tm": [
+          [
+            -0.93332,
+            0.0,
+            0.359047
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.359047,
+            0.0,
+            -0.93332
+          ],
+          [
+            5200.44,
+            0.000488281,
+            3290.04
+          ]
+        ],
+        "unit_class": "jp_destroyer_fubuki",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship10",
+        "tm": [
+          [
+            -0.949011,
+            0.0,
+            0.315244
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.315244,
+            0.0,
+            -0.949011
+          ],
+          [
+            4944.03,
+            -0.000488281,
+            3410.64
+          ]
+        ],
+        "unit_class": "uk_destroyer_tribal",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship11",
+        "tm": [
+          [
+            -0.989304,
+            0.0,
+            0.145868
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.145868,
+            0.0,
+            -0.989304
+          ],
+          [
+            4696.37,
+            -0.000488281,
+            3513.11
+          ]
+        ],
+        "unit_class": "us_destroyer_mitscher",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship12",
+        "tm": [
+          [
+            -0.999486,
+            0.0,
+            0.0320598
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0320598,
+            0.0,
+            -0.999486
+          ],
+          [
+            4421.53,
+            -0.000488281,
+            3546.86
+          ]
+        ],
+        "unit_class": "us_cruiser_new_orleans_class",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship13",
+        "tm": [
+          [
+            -0.988973,
+            0.0,
+            -0.148097
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.148097,
+            0.0,
+            -0.988973
+          ],
+          [
+            4164.44,
+            -0.000488281,
+            3579.42
+          ]
+        ],
+        "unit_class": "germ_cruiser_nurnberg",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship14",
+        "tm": [
+          [
+            -0.980323,
+            0.0,
+            -0.197401
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.197401,
+            0.0,
+            -0.980323
+          ],
+          [
+            3903.49,
+            -0.000488281,
+            3548.54
+          ]
+        ],
+        "unit_class": "ussr_cruiser_sverdlov",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship15",
+        "tm": [
+          [
+            -0.915176,
+            0.0,
+            -0.403054
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.403054,
+            0.0,
+            -0.915176
+          ],
+          [
+            3641.27,
+            -0.000488281,
+            3503.98
+          ]
+        ],
+        "unit_class": "jp_cruiser_furutaka",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship16",
+        "tm": [
+          [
+            -0.888504,
+            0.0,
+            -0.45887
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.45887,
+            0.0,
+            -0.888504
+          ],
+          [
+            3404.11,
+            -0.000488281,
+            3414.83
+          ]
+        ],
+        "unit_class": "uk_cruiser_kent",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship17",
+        "tm": [
+          [
+            -0.736593,
+            0.0,
+            -0.676336
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.676336,
+            0.0,
+            -0.736593
+          ],
+          [
+            3166.64,
+            -0.000488281,
+            3316.65
+          ]
+        ],
+        "unit_class": "us_cruiser_cleveland_class_cleveland",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship18",
+        "tm": [
+          [
+            -0.756716,
+            0.0,
+            -0.653744
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.653744,
+            0.0,
+            -0.756716
+          ],
+          [
+            2959.04,
+            -0.000488281,
+            3158.77
+          ]
+        ],
+        "unit_class": "germ_cruiser_admiral_hipper",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship19",
+        "tm": [
+          [
+            -0.538109,
+            0.0,
+            -0.842876
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.842876,
+            0.0,
+            -0.538109
+          ],
+          [
+            2742.09,
+            -0.000488281,
+            2993.51
+          ]
+        ],
+        "unit_class": "ussr_cruiser_kirov",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship20",
+        "tm": [
+          [
+            -0.547557,
+            0.0,
+            -0.836769
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.836769,
+            0.0,
+            -0.547557
+          ],
+          [
+            2587.95,
+            -0.00170898,
+            2781.04
+          ]
+        ],
+        "unit_class": "jp_cruiser_tone",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship21",
+        "tm": [
+          [
+            -0.289779,
+            0.0,
+            -0.957094
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.957094,
+            0.0,
+            -0.289779
+          ],
+          [
+            2437.43,
+            -0.00219727,
+            2584.99
+          ]
+        ],
+        "unit_class": "uk_cruiser_southampton",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship22",
+        "tm": [
+          [
+            -0.25875,
+            0.0,
+            -0.965944
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.965944,
+            0.0,
+            -0.25875
+          ],
+          [
+            2334.25,
+            -0.0012207,
+            2342.03
+          ]
+        ],
+        "unit_class": "us_battleship_north_dakota",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship23",
+        "tm": [
+          [
+            -0.124763,
+            0.0,
+            -0.992187
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.992187,
+            0.0,
+            -0.124763
+          ],
+          [
+            2252.14,
+            -0.0012207,
+            2105.94
+          ]
+        ],
+        "unit_class": "germ_battleship_helgoland",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship24",
+        "tm": [
+          [
+            -0.0214253,
+            0.0,
+            -0.999771
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999771,
+            0.0,
+            -0.0214253
+          ],
+          [
+            2210.14,
+            -0.0012207,
+            1840.37
+          ]
+        ],
+        "unit_class": "ussr_battleship_imperatritsa_mariya",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship25",
+        "tm": [
+          [
+            0.166947,
+            0.0,
+            -0.985966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.985966,
+            0.0,
+            0.166947
+          ],
+          [
+            2183.34,
+            -0.0012207,
+            1586.95
+          ]
+        ],
+        "unit_class": "jp_battleship_settsu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship26",
+        "tm": [
+          [
+            0.186361,
+            0.0,
+            -0.982481
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.982481,
+            0.0,
+            0.186361
+          ],
+          [
+            2216.43,
+            -0.0012207,
+            1320.26
+          ]
+        ],
+        "unit_class": "uk_battleship_dreadnought",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship27",
+        "tm": [
+          [
+            0.338281,
+            0.0,
+            -0.941045
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.941045,
+            0.0,
+            0.338281
+          ],
+          [
+            2255.29,
+            -0.0012207,
+            1069.1
+          ]
+        ],
+        "unit_class": "us_battleship_arizona_1931",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship28",
+        "tm": [
+          [
+            0.445928,
+            0.0,
+            -0.895069
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.895069,
+            0.0,
+            0.445928
+          ],
+          [
+            2357.43,
+            -0.0012207,
+            823.786
+          ]
+        ],
+        "unit_class": "us_battleship_wyoming_class",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship29",
+        "tm": [
+          [
+            0.620545,
+            0.0,
+            -0.784171
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.784171,
+            0.0,
+            0.620545
+          ],
+          [
+            2451.36,
+            -0.0012207,
+            584.822
+          ]
+        ],
+        "unit_class": "germ_battleship_kaiser",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship30",
+        "tm": [
+          [
+            0.631685,
+            0.0,
+            -0.775225
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.775225,
+            0.0,
+            0.631685
+          ],
+          [
+            2614.13,
+            -0.000976562,
+            372.61
+          ]
+        ],
+        "unit_class": "ussr_battleship_parizhskaya_kommuna",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship31",
+        "tm": [
+          [
+            0.844698,
+            0.0,
+            -0.535243
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.535243,
+            0.0,
+            0.844698
+          ],
+          [
+            2764.06,
+            -0.000976562,
+            170.368
+          ]
+        ],
+        "unit_class": "jp_battleship_hyuga",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship32",
+        "tm": [
+          [
+            0.832765,
+            0.0,
+            -0.553627
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.553627,
+            0.0,
+            0.832765
+          ],
+          [
+            2978.76,
+            -0.000976562,
+            4.60181
+          ]
+        ],
+        "unit_class": "uk_battleship_warspite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship33",
+        "tm": [
+          [
+            0.928474,
+            0.0,
+            -0.371398
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.371398,
+            0.0,
+            0.928474
+          ],
+          [
+            3193.03,
+            -0.000976562,
+            -143.833
+          ]
+        ],
+        "unit_class": "us_battlecruiser_alaska_class",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship34",
+        "tm": [
+          [
+            0.957864,
+            0.0,
+            -0.287224
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.287224,
+            0.0,
+            0.957864
+          ],
+          [
+            3431.41,
+            -0.000976562,
+            -256.402
+          ]
+        ],
+        "unit_class": "germ_battleship_scharnhorst",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship35",
+        "tm": [
+          [
+            0.996147,
+            0.0,
+            -0.0876992
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0876992,
+            0.0,
+            0.996147
+          ],
+          [
+            3651.32,
+            -0.000976562,
+            -346.536
+          ]
+        ],
+        "unit_class": "ussr_battlecruiser_stalingrad",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship36",
+        "tm": [
+          [
+            0.999749,
+            0.0,
+            -0.0224184
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0224184,
+            0.0,
+            0.999749
+          ],
+          [
+            3904.88,
+            -0.000976562,
+            -383.392
+          ]
+        ],
+        "unit_class": "jp_battleship_fuso",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship37",
+        "tm": [
+          [
+            0.980892,
+            0.0,
+            0.194556
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.194556,
+            0.0,
+            0.980892
+          ],
+          [
+            4171.25,
+            -0.000976562,
+            -415.648
+          ]
+        ],
+        "unit_class": "uk_battleship_king_george_1945",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship38",
+        "tm": [
+          [
+            0.980802,
+            0.0,
+            0.195008
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.195008,
+            0.0,
+            0.980802
+          ],
+          [
+            4428.99,
+            -0.000976562,
+            -385.834
+          ]
+        ],
+        "unit_class": "ussr_battlecruiser_kronshtadt",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship39",
+        "tm": [
+          [
+            0.89418,
+            0.0,
+            0.447708
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.447708,
+            0.0,
+            0.89418
+          ],
+          [
+            4679.33,
+            -0.000976562,
+            -346.959
+          ]
+        ],
+        "unit_class": "us_battleship_iowa",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship40",
+        "tm": [
+          [
+            0.88291,
+            0.0,
+            0.469542
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.469542,
+            0.0,
+            0.88291
+          ],
+          [
+            4930.89,
+            -0.000488281,
+            -247.515
+          ]
+        ],
+        "unit_class": "germ_battleship_tirpitz_1944",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship41",
+        "tm": [
+          [
+            0.73598,
+            0.0,
+            0.677003
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.677003,
+            0.0,
+            0.73598
+          ],
+          [
+            5174.55,
+            -0.000488281,
+            -146.202
+          ]
+        ],
+        "unit_class": "ussr_battleship_pr23_sovetskij_soyuz",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship42",
+        "tm": [
+          [
+            0.71961,
+            0.0,
+            0.694379
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.694379,
+            0.0,
+            0.71961
+          ],
+          [
+            5403.94,
+            -0.000976562,
+            22.9196
+          ]
+        ],
+        "unit_class": "uk_battleship_vanguard",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship43",
+        "tm": [
+          [
+            0.505987,
+            0.0,
+            0.862541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.862541,
+            0.0,
+            0.505987
+          ],
+          [
+            5602.76,
+            -0.0012207,
+            175.479
+          ]
+        ],
+        "unit_class": "jp_battleship_yamato",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      },
+      {
+        "name": "ai_ship44",
+        "tm": [
+          [
+            0.556298,
+            0.0,
+            0.830983
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.830983,
+            0.0,
+            0.556298
+          ],
+          [
+            5771.59,
+            -0.000976562,
+            393.063
+          ]
+        ],
+        "unit_class": "germ_battleship_bismarck",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {
+    "mp_spawn_pt": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.333191,
+          0.0,
+          -99.9994
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          99.9994,
+          0.0,
+          -0.333191
+        ],
+        [
+          4172.57,
+          0.00012207,
+          1580.71
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

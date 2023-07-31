@@ -2073,7 +2073,10 @@
     "hideNodes": {
       "node": [
         "track_l_01",
-        "track_r_01"
+        "track_r_01",
+        "ex_armor_body_06",
+        "ex_armor_body_l_02",
+        "ex_armor_body_l_03"
       ]
     }
   },
@@ -2234,7 +2237,10 @@
           "hideNodes": {
             "node": [
               "track_l_01",
-              "track_r_01"
+              "track_r_01",
+              "ex_armor_body_06",
+              "ex_armor_body_l_02",
+              "ex_armor_body_l_03"
             ]
           }
         }

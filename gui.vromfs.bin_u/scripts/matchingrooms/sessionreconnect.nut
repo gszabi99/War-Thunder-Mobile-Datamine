@@ -7,6 +7,7 @@ let logR = log_with_prefix("[SESSION_RECONNECT] ")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState.nut")
+let { joinRoom } = require("sessionLobby.nut")
 let { subscribeFMsgBtns, openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { getModeAddonsInfo } = require("%scripts/matching/gameModeAddons.nut")
@@ -23,8 +24,7 @@ let isNeedReconnectMsg = Computed(@()
     && isInMenu.value
     && sessionLobbyStatus.value == lobbyStates.NOT_IN_ROOM)
 
-let reconnectImpl = @(roomId) ::SessionLobby.joinRoom(roomId)
-subscribe("reconnectAfterAddons", @(c) reconnectImpl(c.roomId))
+subscribe("reconnectAfterAddons", @(c) joinRoom(c.roomId))
 
 let getAttribUnitName = @(attribs)
   attribs?[$"pinfo_{myUserId.value}"].crafts_info[0].name
@@ -48,7 +48,7 @@ let function reconnect(iData) {
   let unitName = getAttribUnitName(attribs) ?? getMaxRankUnitName()
   let { addonsToDownload } = getModeAddonsInfo(mode, unitName)
   if (addonsToDownload.len() == 0) {
-    reconnectImpl(roomId)
+    joinRoom(roomId)
     return
   }
 

@@ -2755,7 +2755,15 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_body_01",
+        "ex_armor_body_02",
+        "ex_armor_turret_r_01",
+        "ex_armor_turret_l_01"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2823,11 +2831,6 @@
       "deviation": 0.4,
       "rotation": 2.5,
       "collisionNode": "cls_turret_01"
-    }
-  },
-  "user_skin": {
-    "replace_tex": {
-      "from": "ussr_camo_green*"
     }
   },
   "upgraded_skin": {

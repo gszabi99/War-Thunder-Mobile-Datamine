@@ -1615,16 +1615,10 @@
   },
   "modifications": {},
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "a6m5_a*",
-        "to": "a6m5_a*"
-      },
-      {
-        "from": "a6m5_a_dmg*",
-        "to": "a6m5_a_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "a6m5_a*",
+      "to": "a6m5_a*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

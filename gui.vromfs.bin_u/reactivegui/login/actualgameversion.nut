@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
-let { request, SUCCESS } = require("dagor.http")
-let { parse } = require("json")
+let { request, HTTP_SUCCESS } = require("dagor.http")
+let { parse_json } = require("json")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { get_cur_circuit_name } = require("app")
@@ -46,12 +46,12 @@ let function updateGameVersion() {
 
 subscribe(ACTUAL_VERSION_ID, function(response) {
   let { status = -1, http_code = -1, body = null } = response
-  let hasError = status != SUCCESS || http_code < 200 || 300 <= http_code
+  let hasError = status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code
   if (hasError)
     return
   local result = null
   try {
-    result = body != null ? parse(body.as_string()) : null
+    result = body != null ? parse_json(body.as_string()) : null
   }
   catch(e) {}
   if (result?.status == "OK")

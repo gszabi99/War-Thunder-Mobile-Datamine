@@ -5,7 +5,7 @@ let { send, subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { doesLocTextExist } = require("dagor.localize")
-let json = require("json")
+let { parse_json, json_to_string } = require("json")
 let { registerGoogleplayPurchase, YU2_WRONG_PAYMENT, YU2_OK } = require("auth_wt")
 let logG = log_with_prefix("[GOODS] ")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
@@ -27,10 +27,10 @@ let dbgStatuses = [GP_OK, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UNAV
 local dbgStatusIdx = 0
 let { //defaults only to allow test this module on PC
   initAndRequestData = function(listStr) {
-    let list = json.parse(listStr)
+    let list = parse_json(listStr)
     let result = {
       status = GP_OK
-      value = json.to_string(
+      value = json_to_string(
         list.values().map(@(v) {
           productId = v.google_id,
           type = "inapp",
@@ -101,7 +101,7 @@ subscribe("android.billing.googleplay.onInitAndDataRequested", function(result) 
   lastInitStatus(status)
   if (status != GP_OK)
     return
-  let info = json.parse(value)
+  let info = parse_json(value)
   if (type(info) != "array") {
     logerr($"Bad format of android.billing.googleplay.onInitAndDataRequested: type of parsed value is {type(info)}")
     return
@@ -114,18 +114,21 @@ subscribe("android.billing.googleplay.onInitAndDataRequested", function(result) 
   checkPurchases()
 })
 
+let getSku = @(goods) goods?.purchaseGuids.android.extId
+  ?? goods?.purchaseIds.android //compatibility with pserver 0.0.8.x  2023.05.16
+
 let goodsIdBySku = Computed(function() {
   let res = {}
   foreach (id, goods in campConfigs.value?.allGoods ?? {})
     if (can_debug_shop.value || !goods.isShowDebugOnly) {
-      let sku = goods?.purchaseIds.android
+      let sku = getSku(goods)
       if (sku != null)
         res[sku] <- id
     }
   return res
 })
 
-let offerSku = Computed(@() activeOffers.value?.purchaseIds.android)
+let offerSku = Computed(@() getSku(activeOffers.value))
 
 let skusForRequest = keepref(Computed(function() {
   if (!isAuthorized.value)
@@ -139,7 +142,7 @@ let skusForRequest = keepref(Computed(function() {
   let list = {}
   foreach (k, v in ids)
     list[v] <- { google_id = k }
-  return json.to_string(list)
+  return json_to_string(list)
 }))
 let function refreshAvailableSkus() {
   if (skusForRequest.value.len() == 0)
@@ -183,13 +186,13 @@ let platformGoods = Computed(function() {
 })
 
 let platformOffer = Computed(function() {
-  let priceExt = availableSkusPrices.value?[activeOffers.value?.purchaseIds.android]
+  let priceExt = availableSkusPrices.value?[getSku(activeOffers.value)]
   return priceExt == null || activeOffers.value == null ? null
     : activeOffers.value.__merge({ priceExt })
 })
 
 let function buyPlatformGoods(goodsOrId) {
-  let sku = (platformGoods.value?[goodsOrId] ?? goodsOrId).purchaseIds.android
+  let sku = getSku(platformGoods.value?[goodsOrId] ?? goodsOrId)
   if (sku == null)
     return
 
@@ -237,7 +240,7 @@ subscribe("auth.onRegisterGooglePurchase", function(result) {
       productId = item_id
       purchaseToken = purch_token
     }
-    local purch = json.to_string(purchase, true)
+    local purch = json_to_string(purchase, true)
     confirmPurchase(purch)
     return
   }

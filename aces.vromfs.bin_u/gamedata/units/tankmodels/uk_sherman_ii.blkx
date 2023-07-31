@@ -2503,7 +2503,16 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_body_02",
+        "ex_armor_body_03",
+        "ex_armor_body_04",
+        "ex_armor_body_05",
+        "ex_armor_body_06"
+      ]
+    }
   },
   "modifications": {
     "tank_tool_kit_expendable": {},

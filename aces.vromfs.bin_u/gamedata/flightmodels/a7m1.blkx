@@ -1723,16 +1723,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "a7m1_a*",
-        "to": "a7m1_a*"
-      },
-      {
-        "from": "a7m1_a_dmg*",
-        "to": "a7m1_a_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "a7m1_a*",
+      "to": "a7m1_a*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

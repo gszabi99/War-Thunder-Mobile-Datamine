@@ -5,12 +5,13 @@ let { DBGLEVEL } = require("dagor.system")
 let { OPT_TANK_MOVEMENT_CONTROL,  /* OPT_TANK_TARGETING_CONTROL,  */ OPT_CAMERA_SENSE_IN_ZOOM,
   OPT_CAMERA_SENSE, OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
   OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED,
-  mkOptionValue } = require("%rGui/options/guiOptions.nut")
+  OPT_AUTO_ZOOM, mkOptionValue } = require("%rGui/options/guiOptions.nut")
 let { CAM_TYPE_NORMAL, CAM_TYPE_BINOCULAR, set_camera_sens, set_should_target_tracking,
-  set_armor_piercing_fixed } = require("controlsOptions")
+  set_armor_piercing_fixed, set_auto_zoom } = require("controlsOptions")
 let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION } = require("hapticVibration")
 let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 
@@ -64,14 +65,30 @@ let targetTrackingType = {
 }
 
 let armorPiercingFixedList = [false, true]
-let currentArmorPiercingFixed = mkOptionValue(OPT_ARMOR_PIERCING_FIXED, false, @(v) validate(v, armorPiercingFixedList))
+let piercingIndicatorDefault = Computed(@() abTests.value?.fixedPiercingIndicator == "true")
+let currentArmorPiercingFixedRaw = mkOptionValue(OPT_ARMOR_PIERCING_FIXED)
+let currentArmorPiercingFixed = Computed(@()
+  validate(currentArmorPiercingFixedRaw.value ?? piercingIndicatorDefault.value, armorPiercingFixedList))
 set_armor_piercing_fixed(currentArmorPiercingFixed.value)
 currentArmorPiercingFixed.subscribe(@(v) set_armor_piercing_fixed(v))
 let currentArmorPiercingType = {
   locId = "options/armor_piercing_fixed"
   ctrlType = OCT_LIST
   value = currentArmorPiercingFixed
+  setValue = @(v) currentArmorPiercingFixedRaw(v)
   list = armorPiercingFixedList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+}
+
+let autoZoomList = [false, true]
+let currentAutoZoom = mkOptionValue(OPT_AUTO_ZOOM, true, @(v) validate(v, autoZoomList))
+set_auto_zoom(currentAutoZoom.value)
+currentAutoZoom.subscribe(@(v) set_auto_zoom(v))
+let currentAutoZoomType = {
+  locId = "options/auto_zoom"
+  ctrlType = OCT_LIST
+  value = currentAutoZoom
+  list = autoZoomList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
 
@@ -138,5 +155,6 @@ return {
     DBGLEVEL > 0 ? optFreeCameraInertia : null
     showMoveDirection
     currentArmorPiercingType
+    currentAutoZoomType
   ]
 }

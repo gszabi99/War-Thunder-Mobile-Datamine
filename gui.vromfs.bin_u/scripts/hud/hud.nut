@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { safeArea } = require("%appGlobals/safeArea.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let initOptions = require("%scripts/options/initOptions.nut")
 let { isInRespawn } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { isInBattle, isHudVisible } = require("%appGlobals/clientState/clientState.nut")
@@ -65,5 +66,5 @@ let function startHud() {
 ::on_show_hud <- function on_show_hud(show = true) {
   isHudVisible(show)
   updateHudType()
-  ::broadcastEvent("ShowHud", { show = show })
+  broadcastEvent("ShowHud", { show = show })
 }

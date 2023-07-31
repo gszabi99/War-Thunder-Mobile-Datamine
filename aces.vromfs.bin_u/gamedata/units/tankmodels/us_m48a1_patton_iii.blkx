@@ -2736,5 +2736,8 @@
         "to": "usa_modern_snow_temperate*"
       }
     }
-  ]
+  ],
+  "battleHideNodes": {
+    "n": "details"
+  }
 }

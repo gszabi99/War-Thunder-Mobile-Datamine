@@ -51,6 +51,64 @@
     ],
     "land_micro_details_uv_scale": 1.11
   },
+  "overrideRiLodRange": {
+    "scotland_a_cup_a": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_a_cup_b": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_a_cup_c": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_a_cup_d": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_a_cup_e": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_a_cup_f": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_a_cup_g": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_a_cup_h": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_a_cup_i": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_cliff_a_a": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_cliff_a_b": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_cliff_a_circular": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_cliff_a_half": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    },
+    "scotland_cliff_a_quarter": {
+      "lod0": 300.0,
+      "lod1": 12000.0
+    }
+  },
   "shader_vars": {
     "max_river_width": 1500.0,
     "ocean_density": 0.4,
