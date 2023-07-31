@@ -109,9 +109,9 @@ let animatedTextBlock = @() {
       easing = CosineFull, play = true, delay = (textBlockBounceDuration / 3) * 2,
       onFinish = @() textBgColor(missionResult.value == GO_FAIL ? failBgColor : winBgColor) }
   ]
-  children = [
+  children =
     showText.value
-        ? {
+      ? @() {
         watch = missionResult
         rendObj = ROBJ_TEXT
         text = $"{loc(resultLocId?[missionResult.value] ?? "")}!"
@@ -136,7 +136,6 @@ let animatedTextBlock = @() {
             easing = InQuad, delay = textAppearanceDelay, play = true, onFinish = @() showText(true) }
         ]
       }
-  ]
 }
 
 let resultTextBlock = @() {

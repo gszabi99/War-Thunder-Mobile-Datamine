@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { register_command } = require("console")
 let { unseenPurchases } = require("%appGlobals/pServer/campaign.nut")
 let { clear_unseen_purchases } = require("%appGlobals/pServer/pServerApi.nut")
 let unseenPurchasesDebug = require("unseenPurchasesDebug.nut")
@@ -61,6 +62,8 @@ let function delayShow(time) {
   isShowDelayed(true)
   resetTimeout(time, undelayShow)
 }
+
+register_command(@() console_print("unseenPurchasesExt = ", unseenPurchasesExt.value) , "debug.currentUnseenPurchases") //warning disable: -forbidden-function
 
 return {
   unseenPurchasesExt

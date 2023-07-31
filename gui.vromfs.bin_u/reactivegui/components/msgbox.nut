@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
 let { textButton, buttonsHGap, mergeStyles } = require("%rGui/components/textButton.nut")
@@ -120,6 +121,14 @@ let function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg
   }))
   return uid
 }
+
+register_command(@() openMsgBox("Some test message box\nwith two buttons", null, "msgbox title",
+    [
+      { id = "cancel", isCancel = true, cb = @() dlog("Cancel!") }   //warning disable: -forbidden-function
+      { id = "ok", styleId = "PRIMARY", isDefault = true, cb = @() dlog("Ok!") }   //warning disable: -forbidden-function
+    ]
+  ),
+  "debug.showMessageBox")
 
 return {
   openMsgBox = kwarg(openMsgBox)

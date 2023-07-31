@@ -13,7 +13,7 @@ let hotkeySize = evenPx(50)
 let hotkeyGap = evenPx(10)
 let paddingXWithHotkey = paddingX - (hotkeySize + hotkeyGap) / 2
 
-let { defButtonHeight } = buttonStyles
+let { defButtonHeight, defButtonMinWidth } = buttonStyles
 
 let patternImage = {
   size = [ph(100), ph(100)]
@@ -39,10 +39,15 @@ let mkGradient = @(override) {
 let mkButtonText = @(text, override = {}) {
   rendObj = ROBJ_TEXT
   text
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(64)
-  fontFxColor = 0xFF000000
-}.__update(fontSmallAccented, override)
+}.__update(fontSmallAccentedShaded, override)
+
+let mkButtonTextMultiline = @(text, override = {}) {
+  size = [defButtonMinWidth - 2 * paddingX, SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  text
+  halign = ALIGN_CENTER
+}.__update(fontTinyAccentedShaded, override)
 
 let mkPriceTextsComp = @(text, priceComp) {
   flow = FLOW_VERTICAL
@@ -147,9 +152,13 @@ let function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
 let textButton = @(text, onClick, style = buttonStyles.PRIMARY)
   mkCustomButton(mkButtonText(text), onClick, style)
 
+let textButtonMultiline = @(text, onClick, style = buttonStyles.COMMON)
+  mkCustomButton(mkButtonTextMultiline(text), onClick, style)
+
 return {
   mkCustomButton
   textButton
+  textButtonMultiline
   mergeStyles
   buttonsHGap
   buttonStyles

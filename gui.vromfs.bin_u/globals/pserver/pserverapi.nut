@@ -15,6 +15,7 @@ const PROGRESS_DECORATORS = "DecoratorInProgress"
 const PROGRESS_SCH_REWARD = "SchRewardInProgress"
 const PROGRESS_LOOTBOX = "LootboxInProgress"
 const PROGRESS_LEVEL = "LevelInProgress"
+const PROGRESS_MODS = "ModsInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -177,6 +178,7 @@ return {
   schRewardInProgress = mkProgress(PROGRESS_SCH_REWARD)
   lootboxInProgress = mkProgress(PROGRESS_LOOTBOX)
   levelInProgress = mkProgress(PROGRESS_LEVEL)
+  modsInProgress = mkProgress(PROGRESS_MODS)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -338,11 +340,15 @@ return {
   buy_unit_mod = @(unitName, modName, currencyId, price, cb = null) request({
     method = "buy_unit_mod"
     params = { unitName, modName, currencyId, price }
+    progressId = PROGRESS_MODS
+    progressValue = modName
   }, cb)
 
   enable_unit_mod = @(unitName, modName, enable, cb = null) request({
     method = "enable_unit_mod"
     params = { unitName, modName, enable }
+    progressId = PROGRESS_MODS
+    progressValue = modName
   }, cb)
 
   buy_unit_weapon = @(unitName, weaponName, price, cb = null) request({

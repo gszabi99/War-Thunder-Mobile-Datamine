@@ -24,6 +24,7 @@ let LOGIN_STATE = { //bit mask
   HANGAR_LOADED               = 0x1000
   LOGIN_STARTED               = 0x2000
   PURCHASES_RECEIVED          = 0x4000
+  CONTACTS_LOGGED_IN          = 0x8000
 
   //masks
   NOT_LOGGED_IN               = 0x0000
@@ -90,6 +91,7 @@ return loginTypes.__merge({
   isSettingsAvailable = Computed(@() isAppLoaded.value && (isOnlineSettingsAvailable.value || !isLoginRequired.value))
   isMatchingConnected = Computed(@() (loginState.value & LOGIN_STATE.MATCHING_CONNECTED) != 0)
   isProfileReceived = Computed(@() (loginState.value & LOGIN_STATE.PROFILE_RECEIVED) != 0)
+  isContactsLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)
 
   isLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
   isAuthAndUpdated = Computed(@() (loginState.value & LOGIN_STATE.AUTH_AND_UPDATED) == LOGIN_STATE.AUTH_AND_UPDATED)

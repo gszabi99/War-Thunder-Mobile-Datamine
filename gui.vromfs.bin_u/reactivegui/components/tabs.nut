@@ -102,4 +102,5 @@ let function mkTabs(tabsData, curTabId, ovr = {}, onClick = null) {
 return {
   tabExtraWidth
   mkTabs
+  tabsGap
 }

@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-
 let { setChardToken } = require("chard")
 let { getPlayerToken } = require("auth_wt")
 let contacts = require("contacts")
@@ -12,13 +11,12 @@ let { applyRights } = require("%scripts/login/applyRights.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { rightsError } = require("%appGlobals/permissions/userRights.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isAuthAndUpdated } = require("%appGlobals/loginState.nut")
+let { isAuthAndUpdated, isContactsLoggedIn, loginState, LOGIN_STATE
+} = require("%appGlobals/loginState.nut")
 let charClientEvent = require("%scripts/charClientEvent.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 const RETRY_LOGIN_MSEC = 5000 //120000
-
-let isLoggedIntoContacts = hardPersistWatched("isLoggedIntoContacts", false)
 let lastLoginErrorTime = hardPersistWatched("lastLoginErrorTime", -1)
 
 let { request, registerHandler } = charClientEvent("contacts", contacts)
@@ -34,7 +32,8 @@ registerHandler("cln_cs_login", function(result) {
     result = result.result
 
   let isSuccess = !result?.error
-  isLoggedIntoContacts(isSuccess)
+  if (isSuccess)
+    loginState(loginState.value | LOGIN_STATE.CONTACTS_LOGGED_IN)
   lastLoginErrorTime(isSuccess ? -1 : get_time_msec())
   if (!isSuccess) {
     logC("Login cb error: ", result?.error)
@@ -52,7 +51,7 @@ registerHandler("cln_cs_login", function(result) {
 })
 
 let function loginContacts() {
-  if (isLoggedIntoContacts.value || !isAuthAndUpdated.value)
+  if (isContactsLoggedIn.value || !isAuthAndUpdated.value)
     return
 
   logC("Login request")
@@ -66,9 +65,9 @@ let function loginContacts() {
     })
 }
 
-isAuthAndUpdated.subscribe(@(v) v ? loginContacts() : isLoggedIntoContacts(false))
+isAuthAndUpdated.subscribe(@(v) v ? loginContacts() : null)
 
-if (!isLoggedIntoContacts.value) {
+if (!isContactsLoggedIn.value) {
   let timeLeft = lastLoginErrorTime.value <= 0 ? 0
     : lastLoginErrorTime.value + RETRY_LOGIN_MSEC - get_time_msec()
   if (timeLeft <= 0)
@@ -80,7 +79,3 @@ lastLoginErrorTime.subscribe(function(t) {
   if (t > 0)
     resetTimeout(0.001 * RETRY_LOGIN_MSEC, loginContacts)
 })
-
-return {
-  isLoggedIntoContacts
-}

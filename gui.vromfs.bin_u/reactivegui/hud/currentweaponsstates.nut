@@ -201,6 +201,7 @@ let function unmarkWeapKeyHold(key) {
   }
   if (key in userHoldWeapKeys.value)
     userHoldWeapKeys.mutate(@(v) delete v[key])
+  selectActionBarAction("")
 }
 
 let defWeaponKey = Computed(@() unitType.value == AIR ? "ID_BOMBS" : TRIGGER_GROUP_PRIMARY)

@@ -1,6 +1,6 @@
 
 from "%scripts/dagui_library.nut" import *
-let { isLoggedIntoContacts } = require("loginContacts.nut")
+let { isContactsLoggedIn } = require("%appGlobals/loginState.nut")
 let { rights, rightsError } = require("%appGlobals/permissions/userRights.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let client = require("contacts")
@@ -11,7 +11,7 @@ let { applyRights } = require("%scripts/login/applyRights.nut")
 const UPDATE_TIMEOUT = 300 //5min
 
 let function updateRightsImpl() {
-  if (!isLoggedIntoContacts.value)
+  if (!isContactsLoggedIn.value)
     return
 
   let rqData = {
@@ -20,7 +20,7 @@ let function updateRightsImpl() {
   }
 
   client.request(rqData, function(result) {
-    if (!isLoggedIntoContacts.value)
+    if (!isContactsLoggedIn.value)
       return
     let errorStr = result?.error ?? result?.result?.error
     if (errorStr != null) {
@@ -35,7 +35,7 @@ let function updateRightsImpl() {
 }
 setInterval(UPDATE_TIMEOUT, updateRightsImpl)
 
-isLoggedIntoContacts.subscribe(function(val) {
+isContactsLoggedIn.subscribe(function(val) {
   if (val) {
     clearTimer(updateRightsImpl)
     setInterval(UPDATE_TIMEOUT, updateRightsImpl)

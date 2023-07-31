@@ -22,5 +22,6 @@ return {
   myUserName = Computed(@() myInfo.value.name)
   myUserRealName = Computed(@() myInfo.value.realName)
   myUserId = Computed(@() myInfo.value.userId)
+  myUserIdStr = Computed(@() myInfo.value.userId.tostring())
   myAvatar
 }

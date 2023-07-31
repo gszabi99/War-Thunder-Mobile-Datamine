@@ -15,7 +15,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkFireParticles, mkAshes, mkSparks } = require("%rGui/effects/mkFireParticles.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
 let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
-let mkUnseenGoodsMark = require("%rGui/components/mkUnseenGoodsMark.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 let goodsW = hdpx(555)
 let goodsH = hdpx(378)
@@ -187,27 +187,32 @@ let mkDiscountCorner = @(discountPrc) discountPrc <= 0 || discountPrc >= 100 ? n
 let popularMarkH = hdpxi(50)
 let popularMarkTexOffs = [ 0, popularMarkH / 2, 0, popularMarkH / 10 ]
 
+let popularMark = {
+  size  = [ SIZE_TO_CONTENT, popularMarkH ]
+  rendObj = ROBJ_9RECT
+  image = Picture($"ui/gameuiskin#tag_popular.svg:{popularMarkH}:{popularMarkH}")
+  keepAspect = KEEP_ASPECT_NONE
+  screenOffs = popularMarkTexOffs
+  texOffs = popularMarkTexOffs
+  color = tagRedColor
+  padding = [ 0, hdpx(30), 0, hdpx(20) ]
+  children = txt({
+    text = utf8ToUpper(loc("shop/item/popular/short"))
+    vplace = ALIGN_CENTER
+  })
+}
+
 let function mkGoodsNewPopularMark(goods) {
   let isPopular = goods?.isPopular
   let isNew = Computed(@() goods.id in shopUnseenGoods.value)
 
-  return @() !isNew.value && !isPopular ? { watch = isNew }
-    : isNew.value ? mkUnseenGoodsMark({ watch = isNew })
-    : {
-        watch = isNew
-        size  = [ SIZE_TO_CONTENT, popularMarkH ]
-        rendObj = ROBJ_9RECT
-        image = Picture($"ui/gameuiskin#tag_popular.svg:{popularMarkH}:{popularMarkH}")
-        keepAspect = KEEP_ASPECT_NONE
-        screenOffs = popularMarkTexOffs
-        texOffs = popularMarkTexOffs
-        color = tagRedColor
-        padding = [ 0, hdpx(30), 0, hdpx(20) ]
-        children = txt({
-          text = utf8ToUpper(loc("shop/item/popular/short"))
-          vplace = ALIGN_CENTER
-        })
-      }
+  return @() {
+    watch = isNew
+    margin = isNew.value ? hdpx(30) : null
+    children = isNew.value ? priorityUnseenMark
+      : isPopular ? popularMark
+      : null
+  }
 }
 
 let firstPurchMarkH = hdpxi(60)

@@ -1,6 +1,6 @@
 let communityOptions = require("options/communityOptions.nut")
 let accountPage = require("accountPage.nut")
-let mkOptionsScene = require("mkOptionsScene.nut")
+let { mkOptionsScene } = require("mkOptionsScene.nut")
 
 let tabs = [
   {

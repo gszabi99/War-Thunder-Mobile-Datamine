@@ -52,6 +52,7 @@ let fontVeryTinyShaded = fontVeryTiny.__merge(shade)
 let fontTinyShaded = fontTiny.__merge(shade)
 let fontTinyAccentedShaded = fontTinyAccented.__merge(shade)
 let fontSmallShaded = fontSmall.__merge(shade)
+let fontSmallAccentedShaded = fontSmallAccented.__merge(shade)
 let fontMediumShaded = fontMedium.__merge(shade)
 let fontBigShaded = fontBig.__merge(shade)
 let fontVeryLargeShaded = fontVeryLarge.__merge(shade)
@@ -74,6 +75,7 @@ let fontsSets = {
     fontTinyShaded
     fontTinyAccentedShaded
     fontSmallShaded
+    fontSmallAccentedShaded
     fontMediumShaded
     fontBigShaded
     fontVeryLargeShaded

@@ -6,7 +6,7 @@ let { hangar_load_model, hangar_load_upgraded_model,
   change_background_models_list, change_one_background_model
 } = require("hangar")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { isInMenu, isInMpSession } = require("%appGlobals/clientState/clientState.nut")
+let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
 
@@ -121,6 +121,8 @@ let setCustomHangarUnit = @(customUnit, isFullChange = true)
   hangarUnitData({ name = customUnit.name, custom = customUnit, isFullChange })
 
 subscribe("downloadAddonsFinished", function(_) {
+  if (isInBattle.value || isInLoadingScreen.value)
+    return
   hangarPlatoonUnits = []
   loadCurrentHangarUnitModel()
   reloadBGModels()

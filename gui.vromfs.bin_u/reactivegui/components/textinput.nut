@@ -13,6 +13,16 @@ let defOptions = {
   showPlaceHolderOnFocus = true
 }
 
+let floatingTextInputHeight = hdpx(100)
+let floatingOptions = {
+  ovr = {
+    size = [flex(), floatingTextInputHeight]
+    padding = [hdpx(10), hdpx(35)]
+    fillColor = 0x990C1113
+  }
+  textStyle = fontSmall
+}
+
 let function mergeInputOptions(o1, o2) {
   let res = o1.__merge(o2)
   foreach(key in ["ovr", "textStyle"])
@@ -24,4 +34,8 @@ let function mergeInputOptions(o1, o2) {
 return {
   textInput = @(text_state, optionsOvr = {})
     textInput(text_state, mergeInputOptions(defOptions, optionsOvr))
+
+  floatingTextInputHeight
+  floatingTextInput = @(text_state, optionsOvr = {})
+    textInput(text_state, mergeInputOptions(floatingOptions, optionsOvr))
 }

@@ -478,7 +478,6 @@ let function doubleClickListener(onDoubleClick) {
 
 let mkInfoText = @(text, appearDelay) {
   rendObj = ROBJ_TEXT
-  color = 0xFFA0A0A0
   text
   animations = opacityAnims(1.0, appearDelay)
 }.__update(fontTiny)

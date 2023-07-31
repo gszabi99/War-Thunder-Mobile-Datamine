@@ -3,7 +3,7 @@ let graphicOptions = require("options/graphicOptions.nut")
 let { langOptions } = require("options/langOptions.nut")
 let { controlsOptions } = require("options/controlsOptions.nut")
 let { tankControlsOptions } = require("options/tankControlsOptions.nut")
-let mkOptionsScene = require("mkOptionsScene.nut")
+let { mkOptionsScene } = require("mkOptionsScene.nut")
 
 let tabs = [ // id, locId, image, options, content
   {

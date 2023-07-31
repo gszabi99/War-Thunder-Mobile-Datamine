@@ -88,6 +88,7 @@ let function textInput(text_state, options = {}) {
     title = null, hotkeys = null,
     xmbNode = null, imeOpenJoyBtn = null, charMask = null,
     ovr = {}, textStyle = {},
+    mkEditContent = null,
 
     //handlers
     onBlur = null, onReturn = null,
@@ -198,7 +199,7 @@ let function textInput(text_state, options = {}) {
     animations = [failAnim(text_state)]
     valign = ALIGN_CENTER
 
-    children = inputObj
+    children = mkEditContent?(stateFlags.value, inputObj) ?? inputObj
   }.__update(ovr)
 }
 

@@ -4,6 +4,7 @@ require("%rGui/levelUp/debugLevelUp.nut")
 require("%rGui/debriefing/debriefingWnd.nut")
 require("%rGui/levelUp/levelUpWnd.nut")
 require("%rGui/unitAttr/unitAttrWnd.nut")
+require("%rGui/unitMods/unitModsWnd.nut")
 require("%rGui/shop/shopWnd.nut")
 require("%rGui/queue/queueWnd.nut")
 require("%rGui/unit/debugUnits.nut")
@@ -43,6 +44,7 @@ require("unit/hangarUnitBattleData.nut")
 require("%rGui/mainMenu/expirienceWnd.nut")
 require("%rGui/decorators/decoratorsScene.nut")
 require("options/chooseMovementControls/chooseMovementControlsWnd.nut")
+require("contacts/contactsWnd.nut")
 
 let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")
 let { scenesOrder, getTopScene } = require("navState.nut")
@@ -58,14 +60,10 @@ let hudSpectator = require("%rGui/hud/hudSpectator.nut")
 let hudArtilleryMap = require("%rGui/hud/hudArtilleryMap.nut")
 let flightMenu = require("%rGui/flightMenu/flightMenu.nut")
 let mpStatisticsWnd = require("%rGui/mpStatistics/mpStatisticsWnd.nut")
-let { needChooseMoveControlsTypeInBattle
-} = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
-let chooseMoveControlsScene = require("%rGui/options/chooseMovementControls/chooseMovementControlsScene.nut")
 let hudBase = require("%rGui/hud/hudBase.nut")
 
 let battleScene = @() {
-  watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu,
-    isMpStatisticsActive, needChooseMoveControlsTypeInBattle]
+  watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu, isMpStatisticsActive]
   key = {}
   size = flex()
   children = isInFlightMenu.value ? flightMenu
@@ -73,7 +71,6 @@ let battleScene = @() {
     : isInSpectatorMode.value ? hudSpectator
     : isInRespawn.value ? respawnWnd
     : isInArtilleryMap.value ? hudArtilleryMap
-    : needChooseMoveControlsTypeInBattle.value ? chooseMoveControlsScene
     : hudBase
 }
 

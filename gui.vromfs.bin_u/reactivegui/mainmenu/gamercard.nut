@@ -6,6 +6,7 @@ let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { SC_GOLD, SC_WP } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/shop/shopState.nut")
+//let { openContacts } = require("%rGui/contacts/contactsState.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
@@ -22,7 +23,7 @@ let premIconWithTimeOnChange = require("premIconWithTimeOnChange.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame } = require("%rGui/decorators/decoratorState.nut")
-let mkUnseenGoodsMark = require("%rGui/components/mkUnseenGoodsMark.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 let avatarSize       = hdpx(96)
 let profileGap       = hdpx(45)
@@ -32,7 +33,6 @@ let levelHolderPlace         = avatarSize - levelHolderSize / 2
 
 let gamercardHeight  = avatarSize + levelHolderSize / 2
 
-let stateFlagShopBtn = Watched(0)
 let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@(category) category == true))
 
 let textParams = {
@@ -190,26 +190,31 @@ let mkLeftBlock = @(backCb, canOpenLevelUp) {
 
 let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
 
-let shopBtn = @() {
-  watch = [stateFlagShopBtn, needShopUnseenMark]
-  size = [hdpxi(65), hdpxi(60)]
-  onElemState = @(sf) stateFlagShopBtn(sf)
-  behavior = Behaviors.Button
-  rendObj = ROBJ_IMAGE
-  onClick = @() openShopWnd(SC_GOLD)
-  color = stateFlagShopBtn.value & S_HOVER ? hoverColor : 0xFFFFFFFF
-  image = Picture($"ui/gameuiskin#icon_shop.svg:{hdpxi(65)}:{hdpxi(60)}:P")
-  transform = {
-    scale = stateFlagShopBtn.value & S_ACTIVE ? [0.9, 0.9] : [1, 1]
+let function mkImageBtn(image, onClick, children = null) {
+  let stateFlags = Watched(0)
+  return @() {
+    watch = stateFlags
+    size = [hdpxi(65), hdpxi(60)]
+    onElemState = @(sf) stateFlags(sf)
+    behavior = Behaviors.Button
+    rendObj = ROBJ_IMAGE
+    onClick
+    color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+    image = Picture($"{image}:{hdpxi(65)}:{hdpxi(60)}:P")
+    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    children
   }
-  children = needShopUnseenMark.value
-    ? mkUnseenGoodsMark({
-      pos = [hdpx(30), -hdpx(25)]
-      hplace = ALIGN_RIGHT
-      vplace = ALIGN_BOTTOM
-    })
-    : null
 }
+
+let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", @() openShopWnd(SC_GOLD),
+  @() {
+    watch = needShopUnseenMark
+    pos = [hdpx(5), -hdpx(5)]
+    hplace = ALIGN_RIGHT
+    children = needShopUnseenMark.value ? priorityUnseenMark : null
+  })
+
+let contactsBtn = null //mkImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts)
 
 let rightBlock = @(){
   watch = isShopOpened
@@ -222,6 +227,7 @@ let rightBlock = @(){
     .append(
       mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
       mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
+      contactsBtn
       !isShopOpened.value ? shopBtn : null
       dropMenuBtn
     )

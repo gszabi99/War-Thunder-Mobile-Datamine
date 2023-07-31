@@ -137,7 +137,7 @@ let hasUnseenGoodsByCategory = Computed(function() {
   })
 })
 
-let saveSeenGoodsCurrent = @() !hasUnseenGoodsByCategory.value[curCategoryId.value] ? null
+let saveSeenGoodsCurrent = @() !hasUnseenGoodsByCategory.value?[curCategoryId.value] ? null
   : saveSeenGoods(goodsIdsByCategory.value[curCategoryId.value])
 
 let function onTabChange(id) {

@@ -12,6 +12,7 @@ let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut"
 let unitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
+//let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
@@ -122,6 +123,7 @@ let leftBottomButtons = @() {
   children = [
     campaignsBtn
     btnOpenUnitAttr
+    //btnOpenUnitMods
     translucentButton(unitsBtnCfg?[curCampaign.value].img ?? "", unitsBtnCfg?[curCampaign.value].txt ?? "",
       function() {
         unitsWnd()

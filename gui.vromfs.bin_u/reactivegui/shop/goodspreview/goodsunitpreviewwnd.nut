@@ -6,7 +6,6 @@ let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { GPT_UNIT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -18,7 +17,6 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, SHIP_PRESET_TYPE, TANK_PRESET_TYPE } = require("hangar")
 let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit, isHangarUnitLoaded
 } = require("%rGui/unit/hangarUnit.nut")
-let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { gradCircularSqCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
@@ -27,7 +25,7 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP } = require("%appGlobals/unitConst.nut")
-
+let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI eve with bug with cutscene
@@ -97,7 +95,7 @@ needShowCutscene.subscribe(showCutscene)
 
 
 let rightBottomBlock = mkPriceWithTimeBlock(aTimePriceStart)
-let headerLeft = mkPreviewHeader(Computed(@() loc($"offer/unit/{curCampaign.value}")), closeGoodsPreview, 0)
+let headerLeft = mkPreviewHeader(Computed(@() unitForShow.value ? getPlatoonOrUnitName(unitForShow.value, loc) : ""), closeGoodsPreview, 0)
 
 let function mkUnitShortInfo(unit) {
   let { isUpgraded = false, isPremium = false, unitClass = "", unitType = "", mRank = 1 } = unit
@@ -117,10 +115,6 @@ let function mkUnitShortInfo(unit) {
 let unitInfoChildren = @(unit) unit == null ? []
   : [
       mkInfoText(loc("shop/youWillGet"), aTimePriceStart + aTimePriceFull)
-      mkPlatoonOrUnitTitle(unit,
-        { animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart) },
-        fontBig,
-        { size = [hdpx(65), hdpx(65)] })
       mkUnitShortInfo(unit)
       mkUnitBonuses(unit, { animations = opacityAnims(aTimePackUnitInfo, aTimePackUnitInfoStart) })
     ]

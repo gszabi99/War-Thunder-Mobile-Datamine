@@ -30,6 +30,7 @@ let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnde
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInfoPanel, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
 let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
+//let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { curFilters, optName, optCountry, optUnitClass, optMRank, optStatus
 } = require("%rGui/unit/unitsFilterState.nut")
 let mkUnitsFilter = require("%rGui/unit/mkUnitsFilter.nut")
@@ -186,7 +187,12 @@ let unitTweakingButtons = @() isShowedUnitOwned.value
       watch = isShowedUnitOwned
       size = SIZE_TO_CONTENT
       vplace = ALIGN_BOTTOM
-      children = btnOpenUnitAttr
+      flow = FLOW_VERTICAL
+      gap = translucentButtonsVGap
+      children = [
+        btnOpenUnitAttr
+        //btnOpenUnitMods
+      ]
     }
   : { watch = isShowedUnitOwned }
 

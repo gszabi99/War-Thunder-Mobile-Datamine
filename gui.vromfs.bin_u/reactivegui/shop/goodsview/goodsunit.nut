@@ -239,7 +239,7 @@ let function mkOfferUnit(goods, onClick, state, needPrice) {
       mkBgImg(bgImg)
       sf & S_HOVER ? bgHiglight : null
       mkFitCenterImg(p.image)
-      mkOfferTexts(loc($"offer/unit/{unit.unitType}s"), endTime)
+      mkOfferTexts(getPlatoonOrUnitName(unit, loc), endTime)
       discountTagBig(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)),
     needPrice ? mkPricePlate(goods, priceBgGrad, state, null, false) : null)

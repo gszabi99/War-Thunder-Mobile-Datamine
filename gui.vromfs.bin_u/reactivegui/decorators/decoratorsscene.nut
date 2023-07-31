@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let nickFramesScene  = require("nickFramesScene.nut")
-let mkOptionsScene = require("%rGui/options/mkOptionsScene.nut")
+let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let titlesScene = require("titlesScene.nut")
 let changeNameScene = require("changeNameScene.nut")
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")

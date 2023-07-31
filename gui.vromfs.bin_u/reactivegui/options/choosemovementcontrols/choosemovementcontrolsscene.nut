@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { needRealValueByDefault, onControlsApply } = require("chooseMovementControlsState.nut")
+let { onControlsApply } = require("chooseMovementControlsState.nut")
 let { textButtonPrimary, buttonStyles } = require("%rGui/components/textButton.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("tankMoveControlType.nut")
@@ -8,8 +8,8 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let controlsTypesButton = require("controlsTypesButton.nut")
 let controlsTypesAnims = require("controlsTypesAnims.nut")
-let { defaultValue, needRecommend } = require("movementControlsTests.nut")
 
+let defaultValue = "stick_static"
 let btnW = evenPx(380)
 let btnH = hdpx(510)
 let btnGap = hdpxi(30)
@@ -20,7 +20,7 @@ let selectedValue = Watched("")
 
 let function apply() {
   currentTankMoveCtrlType(selectedValue.value)
-  onControlsApply(selectedValue.value)
+  onControlsApply()
 }
 
 let orderByFirstVal = {
@@ -90,13 +90,12 @@ let mkBtnContent = @(id, isRecommended) {
   ]
 }
 
-let optButtonsRow = @() {
-  watch = [defaultValue, needRecommend]
+let optButtonsRow = {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   gap = btnGap
-  children = reorderList(tankMoveCtrlTypesList, defaultValue.value).map(@(id) controlsTypesButton(
-    mkBtnContent(id, needRecommend.value && defaultValue.value == id),
+  children = reorderList(tankMoveCtrlTypesList, defaultValue).map(@(id) controlsTypesButton(
+    mkBtnContent(id, defaultValue == id),
     Computed(@() id == selectedValue.value),
     @() selectedValue(id)))
 }
@@ -112,11 +111,7 @@ let getDescText = @(id, isRecommended) id == "" ? "" : "".concat(
   loc("option_can_be_changed_later")
 )
 
-let function onAttach() {
-  selectedValue(needRealValueByDefault.value ? currentTankMoveCtrlType.value
-    : needRecommend.value ? defaultValue.value
-    : "")
-}
+let onAttach = @() selectedValue(currentTankMoveCtrlType.value)
 
 let chooseMoveControlsScene = bgShaded.__merge({
   key = {}
@@ -141,9 +136,9 @@ let chooseMoveControlsScene = bgShaded.__merge({
           txt({ text = loc("options/choose_movement_controls")}.__update(fontMedium))
           optButtonsRow
           @() txtArea({
-            watch = [selectedValue, defaultValue, needRecommend]
+            watch = [selectedValue]
             minHeight = hdpx(132)
-            text = getDescText(selectedValue.value, needRecommend.value && defaultValue.value == selectedValue.value)
+            text = getDescText(selectedValue.value, defaultValue == selectedValue.value)
           })
           @() {
             watch = selectedValue

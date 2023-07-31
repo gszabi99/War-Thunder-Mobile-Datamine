@@ -3,77 +3,23 @@ let { contentOffset, minContentOffset, contentWidth, contentWidthFull, tabW } = 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let backButton = require("%rGui/components/backButton.nut")
+let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 
 let { registerScene } = require("%rGui/navState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let mkOption = require("mkOption.nut")
 let mkOptionsTabs = require("mkOptionsTabs.nut")
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { isGamepad, isKeyboard } = require("%rGui/activeControls.nut")
+
 
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
 let topAreaSize = saBorders[1] + backButtonHeight + gapBackButton
 let gradientHeightBottom = hdpxi(256)
 let gradientHeightTop = min(topAreaSize, gradientHeightBottom)
-let isMoveByKeys = Computed(@() isGamepad.value || isKeyboard.value)
 
-let pageHeight = sh(100)
-let pageMask = mkBitmapPicture(2, (pageHeight / 10).tointeger(),
-  function(params, bmp) {
-    let { w, h } = params
-    let gradStart1 = gradientHeightBottom * h / pageHeight
-    let gradStart2 = h - (gradientHeightTop / 10).tointeger()
-    for (local y = 0; y < h; y++) {
-      let v = y < gradStart1 ? lerpClamped(0, gradStart1, 0.0, 1.0, y)
-      : y > gradStart2 ? lerpClamped(gradStart2, h - 1, 1.0, 0.0, y)
-      : 1.0
-      let part = (v * v * 0xFF + 0.5).tointeger()
-      let color = Color(part, part, part, part)
-      for (local x = 0; x < w; x++)
-        bmp.setPixel(x, y, color)
-    }
-  })
-
-let function mkVerticalPannableArea(content, override) {
-  let root = {
-    watch = isMoveByKeys
-    rendObj = ROBJ_MASK
-    image = pageMask
-  }.__update(override)
-
-  let pannable = {
-    size = flex()
-    behavior = Behaviors.Pannable
-    skipDirPadNav = true
-    xmbNode = {
-      canFocus = @() false
-      scrollSpeed = 5.0
-      isViewport = true
-      scrollToEdge = true
-      screenSpaceNav = true
-    }
-  }
-
-  return @() isMoveByKeys.value
-    ? root.__merge({
-        padding = [topAreaSize, 0, gradientHeightBottom, 0]
-        children = pannable.__merge({
-          children = content
-        })
-      })
-    : root.__merge({
-        children = pannable.__merge({
-          flow = FLOW_VERTICAL
-          children = [
-            { size = [flex(), topAreaSize] }
-            content
-            { size = [flex(), gradientHeightBottom] }
-          ]
-        })
-      })
-}
+let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100),
+  [gradientHeightTop, gradientHeightBottom],
+  [topAreaSize, gradientHeightBottom])
 
 let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null) {
   isOpened = isOpened ?? mkWatched(persist, $"{sceneId}_isOpened", false)
@@ -123,10 +69,7 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null
               children = tab?.options.filter(@(v) v != null).map(mkOption)
               animations = wndSwitchAnim
             },
-            {
-              size = [sw(100) - tabW - saBorders[1], sh(100)]
-              pos = [0, -topAreaSize]
-            })
+            { size = [sw(100) - tabW - saBorders[1], sh(100)] })
         }
   }
 
@@ -168,4 +111,9 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null
     isOpened(true)
   }
 }
-return mkOptionsScene
+return {
+  mkOptionsScene
+  mkVerticalPannableArea
+  topAreaSize
+  gradientHeightBottom
+}

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkTabs } = require("%rGui/components/tabs.nut")
-let mkUnseenGoodsMark = require("%rGui/components/mkUnseenGoodsMark.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { hasUnseenGoodsByCategory, curCategoryId, onTabChange } = require("shopState.nut")
 
 let tabW = hdpx(450)
@@ -45,13 +45,14 @@ let function tabData(tab, campaign) {
             }.__update(fontSmall)
           ]
         }
-        @() id == curCategoryId.value || !hasUnseenGoodsByCategory.value[id]
-          ? { watch = [hasUnseenGoodsByCategory, curCategoryId] }
-          : mkUnseenGoodsMark({
-              watch = [hasUnseenGoodsByCategory, curCategoryId]
-              hplace = ALIGN_RIGHT
-              vplace = ALIGN_BOTTOM
-            })
+        @() {
+          watch = [hasUnseenGoodsByCategory, curCategoryId]
+          margin = hdpx(30)
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_BOTTOM
+          children = id == curCategoryId.value || !hasUnseenGoodsByCategory.value?[id] ? null
+            : priorityUnseenMark
+        }
       ]
     }
   }

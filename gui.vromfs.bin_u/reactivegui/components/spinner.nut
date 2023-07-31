@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let defHeight = hdpx(50)
+let spinnerOpacityAnim = { prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, easing = InQuad, play = true }
 let animations = freeze([
-  { prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, easing = InQuad, play = true }
+  spinnerOpacityAnim
   { prop = AnimProp.rotate, from = 0, to = 360, duration = 3.0, play = true, loop = true }
 ])
 
@@ -32,4 +33,5 @@ let function mkSpinnerHideBlock(watch, content, blockOvr = {}, spinner = null) {
 return {
   mkSpinner
   mkSpinnerHideBlock
+  spinnerOpacityAnim
 }
