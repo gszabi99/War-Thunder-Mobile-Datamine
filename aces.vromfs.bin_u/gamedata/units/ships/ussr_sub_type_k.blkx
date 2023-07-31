@@ -1898,7 +1898,16 @@
   },
   "breaches": {
     "additionalWaterDeathThreshold": 440000.0,
-    "additionalWaterCoverPartsThreshold": 180000.0
+    "additionalWaterCoverPartsThreshold": 180000.0,
+    "repairSpeed": 80.0,
+    "waterMassVel": -37000.0,
+    "waterMassMult": 50.0,
+    "sizeToRepair": [
+      0.01,
+      10.0,
+      1.0,
+      10.0
+    ]
   },
   "shipCover": {
     "cover": {

@@ -1,6 +1,8 @@
 {
   "model": "seafire_mk3",
   "fmFile": "fm/seafire_mk3.blk",
+  "useTouchShooting": true,
+  "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.14,

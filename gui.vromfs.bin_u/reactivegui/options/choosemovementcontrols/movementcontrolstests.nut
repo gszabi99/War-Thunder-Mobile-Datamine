@@ -4,24 +4,26 @@ let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
 
 let CTRL_TYPE_STICK = "stick"
+let CTRL_TYPE_STICK_STATIC = "stick_static"
 let CTRL_TYPE_ARROWS = "arrows"
 
-let ctrlTypeInv = {
-  [CTRL_TYPE_STICK] = CTRL_TYPE_ARROWS,
-  [CTRL_TYPE_ARROWS] = CTRL_TYPE_STICK,
-}
+let ctrlTypesList = [ CTRL_TYPE_STICK, CTRL_TYPE_STICK_STATIC, CTRL_TYPE_ARROWS ]
+let typesTotal = ctrlTypesList.len()
 
 let cfgDefaultValue = Computed(@() abTests.value?.controlsTypeDefault ?? CTRL_TYPE_STICK)
 let cfgNeedRecommend = Computed(@() (abTests.value?.controlsTypeRecommend ?? "true") == "true")
 
-let dbgDefaultValueInvert = mkHardWatched("dbgDefaultValueInvert", false)
+let dbgDefaultValueShift = mkHardWatched("dbgDefaultValueShift", 0)
 let dbgNeedRecommendInvert = mkHardWatched("dbgNeedRecommendInvert", false)
 
-let defaultValue = Computed(@() dbgDefaultValueInvert.value ? ctrlTypeInv[cfgDefaultValue.value] : cfgDefaultValue.value)
+let defaultValue = Computed(@() dbgDefaultValueShift.value == 0
+  ? cfgDefaultValue.value
+  : ctrlTypesList[((ctrlTypesList.indexof(cfgDefaultValue.value) ?? 0) + dbgDefaultValueShift.value) % typesTotal]
+)
 let needRecommend = Computed(@() cfgNeedRecommend.value != dbgNeedRecommendInvert.value)
 
 register_command(function() {
-  dbgDefaultValueInvert(!dbgDefaultValueInvert.value)
+  dbgDefaultValueShift((dbgDefaultValueShift.value + 1) % typesTotal)
   dlog("controlsTypeDefault:", defaultValue.value) // warning disable: -forbidden-function
 }, "debug.abTests.controlsTypeDefault")
 

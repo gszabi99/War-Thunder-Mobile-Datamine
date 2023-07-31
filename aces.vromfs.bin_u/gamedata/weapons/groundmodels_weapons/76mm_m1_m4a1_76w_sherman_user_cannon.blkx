@@ -20,7 +20,11 @@
   "bullets": -1,
   "bulletsCluster": 1,
   "fxType": "muzzle_ground_80mm_brake",
-  "fxWaterShockWave": "dust_waterwave_medium",
+  "fxGroundDust": "",
+  "fxSandDust": "",
+  "fxSnowDust": "",
+  "fxConcreteDust": "",
+  "fxWaterShockWave": "dust_waterwave_small",
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -29,36 +33,38 @@
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "bullet": {
-    "bulletCount": 40,
-    "mass": 1.73,
+    "bulletCount": 25,
+    "mass": 7.0,
+    "explosiveType": "exp_d",
+    "explosiveMass": 0.065,
     "caliber": 0.0762,
-    "damageCaliber": 0.038,
-    "ballisticCaliber": 0.038,
-    "speed": 1035.32,
+    "speed": 792.0,
+    "Cx": 0.4,
     "maxDistance": 10000.0,
-    "normalizationPreset": "apcr",
-    "ricochetPreset": "apds",
-    "secondaryShattersPreset": "apds",
+    "normalizationPreset": "apbc",
+    "ricochetPreset": "apbc",
+    "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.0,
     "stucking": 0.7,
     "stuckingAngle": 45.0,
-    "bulletType": "apds_tank",
-    "slopeEffectPreset": "apds",
+    "bulletType": "apcbc_tank",
+    "slopeEffectPreset": "apc",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/apds.ivf",
-    "bulletName": "76mm_shot_sv_mk1_apds",
-    "Cx": 0.0001,
+    "shellAnimation": "video/shells_animations/aphe.ivf",
+    "bulletName": "76mm_m62",
     "relativeVelHitShift": [
       300.0,
       1000.0
     ],
+    "fuseDelayDist": 1.2,
+    "explodeTreshold": 14.0,
     "relativeVelArmorShift": [
       200.0,
       1000.0
@@ -75,13 +81,18 @@
       ],
       "mod2": [
         20.0,
-        0.45
+        0.4
+      ],
+      "mod3": [
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
       ]
-    },
-    "tracePattern": {
-      "caliber": 10.0,
-      "circleCount": 2,
-      "pointCount": 6
     },
     "hitpower": {
       "HitPower0m": [
@@ -96,6 +107,15 @@
         0.8,
         10000.0
       ]
+    },
+    "damage": {
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 1.0,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      }
     },
     "visual": {
       "range_percent_of_ammo": [
@@ -185,54 +205,16 @@
       "stone_snow": {
         "fx": "hit_59_80mm_snow_ap"
       }
-    },
-    "armorpower": {
-      "ArmorPower0m": [
-        220.0,
-        10.0
-      ],
-      "ArmorPower100m": [
-        216.0,
-        100.0
-      ],
-      "ArmorPower500m": [
-        199.0,
-        500.0
-      ],
-      "ArmorPower1000m": [
-        179.0,
-        1000.0
-      ],
-      "ArmorPower1500m": [
-        159.0,
-        1500.0
-      ],
-      "ArmorPower2000m": [
-        139.0,
-        2000.0
-      ],
-      "ArmorPower3000m": [
-        98.0,
-        3000.0
-      ],
-      "ArmorPower7000m": [
-        5.0,
-        7000.0
-      ],
-      "ArmorPower10000m": [
-        0.0,
-        10000.0
-      ]
     }
   },
-  "76mm_britain_17pdr_HE": {
+  "76mm_usa_M42A1_HE": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 6.98,
+      "mass": 5.84,
       "explosiveType": "tnt",
-      "explosiveMass": 0.58,
+      "explosiveMass": 0.39,
       "caliber": 0.0762,
-      "speed": 754.0,
+      "speed": 823.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
@@ -251,7 +233,7 @@
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
-      "bulletName": "76mm_shell_mk1_he",
+      "bulletName": "76mm_m42a1",
       "hitPowerMult": 2.0,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
@@ -472,34 +454,35 @@
       }
     }
   },
-  "76mm_britain_17pdr_APDS": {
+  "76mm_usa_M93_APCR": {
     "bullet": {
-      "bulletCount": 40,
-      "mass": 1.73,
+      "bulletCount": 25,
+      "mass": 4.22,
       "caliber": 0.0762,
-      "damageCaliber": 0.038,
-      "ballisticCaliber": 0.038,
-      "speed": 1035.32,
+      "damageMass": 1.79,
+      "ballisticCaliber": 0.0762,
+      "damageCaliber": 0.0381,
+      "speed": 1036.0,
+      "Cx": 0.28,
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
-      "ricochetPreset": "apds",
-      "secondaryShattersPreset": "apds",
+      "ricochetPreset": "apcr",
+      "secondaryShattersPreset": "apcr",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apds_tank",
-      "slopeEffectPreset": "apds",
+      "bulletType": "apcr_tank",
+      "slopeEffectPreset": "apcr",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/apds.ivf",
-      "bulletName": "76mm_shot_sv_mk1_apds",
-      "Cx": 0.0001,
+      "shellAnimation": "video/shells_animations/apcr.ivf",
+      "bulletName": "76mm_m93",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -523,11 +506,6 @@
           0.45
         ]
       },
-      "tracePattern": {
-        "caliber": 10.0,
-        "circleCount": 2,
-        "pointCount": 6
-      },
       "hitpower": {
         "HitPower0m": [
           1.0,
@@ -542,13 +520,22 @@
           10000.0
         ]
       },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.65,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
+      },
       "visual": {
         "range_percent_of_ammo": [
           100.0,
           0.0
         ],
         "traceFreq": 1,
-        "tracer": "76mmRed",
+        "tracer": "30mmWhite",
         "trail": "black"
       },
       "collisions": {
@@ -630,44 +617,126 @@
         "stone_snow": {
           "fx": "hit_59_80mm_snow_ap"
         }
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          220.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          216.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          199.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          179.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          159.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          139.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          98.0,
-          3000.0
-        ],
-        "ArmorPower7000m": [
-          5.0,
-          7000.0
-        ],
-        "ArmorPower10000m": [
+      }
+    }
+  },
+  "76mm_us_M88_Smoke": {
+    "bullet": {
+      "bulletCount": 40,
+      "mass": 3.44,
+      "damageMass": 0.172,
+      "explosiveType": "smoke_composition",
+      "explosiveMass": 0.05,
+      "caliber": 0.076,
+      "speed": 274.0,
+      "maxDistance": 10000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.5,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "smoke_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
+      "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/smoke.ivf",
+      "bulletName": "75mm_m88",
+      "hitPowerMult": 2.0,
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "nearArmorPower": [
+        3.0,
+        150.0
+      ],
+      "midArmorPower": [
+        3.0,
+        600.0
+      ],
+      "farArmorPower": [
+        3.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
+      "explodeTreshold": 0.5,
+      "explodeHitPower": 90.0,
+      "explodeArmorPower": 8.0,
+      "explodeRadius": [
+        0.4,
+        0.8
+      ],
+      "fuseDelayDist": 0.4,
+      "shutterDamage": true,
+      "shutterDamageRadius": 18.5,
+      "shutterAmount": 130,
+      "shutterArmorPower": 7.5,
+      "shutterHit": 11.0,
+      "smokeShell": true,
+      "smokeFx": "smokescreen_medium",
+      "smokeShellRad": 13.0,
+      "smokeActivateTime": 5.0,
+      "smokeTime": 20.0,
+      "groundCollisionEffect": "smoke_shell_explosion",
+      "ricochetEffect": "hit_59_80mm_metal_ap",
+      "waterCollisionEffect": "120-203_smoke_water_splash",
+      "waterFxScale": [
+        0.6,
+        0.7
+      ],
+      "explosionPatchRadius": 1.1,
+      "stabilityRicochetModifier": {
+        "mod1": [
           0.0,
-          10000.0
+          0.5
+        ],
+        "mod2": [
+          15.0,
+          0.7
+        ],
+        "mod3": [
+          30.0,
+          0.99
         ]
+      },
+      "collisions": {
+        "steel": {
+          "fx": "smoke_shell_explosion"
+        }
+      },
+      "visual": {
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
+        "traceFreq": 1,
+        "tracer": "noColor"
       }
     }
   }

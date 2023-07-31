@@ -9,6 +9,7 @@ let hudBottomCenter = require("hudBottomCenter.nut")
 let aircraftSight = require("%rGui/hud/aircraftSight.nut")
 let hitCamera = require("hitCamera/hitCamera.nut")
 let bombMissedHint = require("%rGui/hud/bombMissedHint.nut")
+let zoomSlider = require("%rGui/hud/zoomSlider.nut")
 
 let topLeft = {
   flow = FLOW_HORIZONTAL
@@ -38,6 +39,7 @@ return {
   children = [
     bombMissedHint
     topLeft
+    zoomSlider
     hudTopCenter
     hitCamera
     hudBottomCenter

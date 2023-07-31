@@ -46,9 +46,15 @@ let needChooseMoveControlsType = Computed(@() !haveApplied.value && (
     || needShowForDebug.value
 ))
 
+let orderByFirstVal = {
+  stick         = [ "stick", "stick_static", "arrows" ]
+  stick_static  = [ "stick_static", "stick", "arrows" ]
+  arrows        = [ "arrows", "stick", "stick_static" ]
+}
+
 let function reorderList(list, valToPlaceFirst) {
-  let idx = list.indexof(valToPlaceFirst) ?? 0
-  return [].extend(list.slice(idx, list.len()), list.slice(0, idx))
+  return (orderByFirstVal?[valToPlaceFirst] ?? orderByFirstVal.stick)
+    .filter(@(v) list.contains(v))
 }
 
 let txtBase = {

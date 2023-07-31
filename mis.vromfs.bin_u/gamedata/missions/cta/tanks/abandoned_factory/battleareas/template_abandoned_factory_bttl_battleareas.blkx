@@ -17,7 +17,7 @@
   },
   "imports": {
     "import_record": {
-      "file": "gameData/missions/cta/tanks/stalingrad_factory/template_stalingrad_factory_tank_spawns.blk",
+      "file": "gameData/missions/cta/tanks/abandoned_factory/template_abandoned_factory_tank_spawns.blk",
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,
@@ -64,16 +64,13 @@
             1.0
           ],
           [
-            3949.65,
+            2264.2,
             20.95,
-            1394.9
+            521.4
           ]
         ],
         "props": {
-          "squad_members": [
-            "t1_killarea_block01",
-            "t1_killarea_block02"
-          ]
+          "squad_members": "t1_killarea_block01"
         }
       },
       {
@@ -95,28 +92,25 @@
             1.0
           ],
           [
-            3485.75,
+            1800.3,
             12.1,
-            1384.27
+            510.766
           ]
         ],
         "props": {
-          "squad_members": [
-            "t2_killarea_block01",
-            "t2_killarea_block02"
-          ]
+          "squad_members": "t2_killarea_block01"
         }
       }
     ]
   },
   "areas": {
-    "conq_battle_area_arcade": {
+    "bttl_battle_area_arcade": {
       "type": "Box",
       "tm": [
         [
-          0.000101725,
+          8.138E-05,
           0.0,
-          1000.0
+          800.0
         ],
         [
           0.0,
@@ -124,14 +118,14 @@
           0.0
         ],
         [
-          -1000.0,
+          -800.0,
           0.0,
-          0.000101725
+          8.138E-05
         ],
         [
-          3360.55,
-          7.8,
-          1929.92
+          2104.1,
+          7.79997,
+          2105.6
         ]
       ],
       "objLayer": 4,
@@ -156,9 +150,9 @@
           150.0
         ],
         [
-          3207.25,
-          8.05,
-          1530.6
+          1768.72,
+          8.04761,
+          1902.9
         ]
       ],
       "objLayer": 0,
@@ -183,63 +177,9 @@
           150.0
         ],
         [
-          3677.9,
-          8.05,
-          2118.7
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_killarea_block02": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          150.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          100.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          150.0
-        ],
-        [
-          3523.1,
-          8.05,
-          2317.6
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_killarea_block02": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          150.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          100.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          150.0
-        ],
-        [
-          3070.75,
-          8.05,
-          1724.55
+          2455.55,
+          8.04761,
+          2228.7
         ]
       ],
       "objLayer": 0,

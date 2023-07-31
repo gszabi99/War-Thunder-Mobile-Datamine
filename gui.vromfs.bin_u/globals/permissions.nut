@@ -15,7 +15,7 @@ let defaults = {
   can_use_debug_console = DBGLEVEL > 0
   can_receive_dedic_logerr = DBGLEVEL > 0
   allow_players_online_info = false
-  can_use_internal_support_form = DBGLEVEL > 0
+  can_use_internal_support_form = false
 }
 
 let allPermissions = Computed(function() {

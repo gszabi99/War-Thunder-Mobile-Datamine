@@ -457,9 +457,9 @@
       ]
     },
     "engines": {
-      "maxSpeed": 10.42,
+      "maxSpeed": 4.5,
       "maxReverseSpeed": 3.0,
-      "surfaceSlowMult": 0.5,
+      "surfaceSlowMult": 2.315,
       "speedToTime": {
         "row": [
           10.42,
@@ -1751,7 +1751,16 @@
   },
   "breaches": {
     "additionalWaterDeathThreshold": 440000.0,
-    "additionalWaterCoverPartsThreshold": 180000.0
+    "additionalWaterCoverPartsThreshold": 180000.0,
+    "repairSpeed": 80.0,
+    "waterMassVel": -37000.0,
+    "waterMassMult": 50.0,
+    "sizeToRepair": [
+      0.01,
+      10.0,
+      1.0,
+      10.0
+    ]
   },
   "shipCover": {
     "cover": {

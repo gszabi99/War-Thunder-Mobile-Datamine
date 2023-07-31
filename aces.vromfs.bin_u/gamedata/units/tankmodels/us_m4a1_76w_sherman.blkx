@@ -1648,7 +1648,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_M1_no_MB_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/76mm_M1_m4a1_76w_sherman_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,

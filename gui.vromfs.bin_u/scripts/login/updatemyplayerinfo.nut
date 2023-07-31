@@ -7,7 +7,7 @@ let { isAuthorized, isAuthAndUpdated } = require("%appGlobals/loginState.nut")
 let { myInfo } = require("%appGlobals/profileStates.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
-let { getNickOrig } = require("auth_wt")
+let { getNickOrig, getNickSfx } = require("auth_wt")
 
 isAuthorized.subscribe(@(v) myInfo.mutate(@(p) p.__update({
   userId = v ? ::get_player_user_id() : ::INVALID_USER_ID
@@ -17,8 +17,9 @@ isAuthAndUpdated.subscribe(function(v) {
   let info = v ? ::get_cur_rank_info() : null //why so hard way to get userId?
   let realName = info?.name ?? ""
   let nickOrig = getNickOrig()
+  let nickSfx = getNickSfx()
   myInfo.mutate(@(p) p.__update({
-    name = nickOrig != "" ? nickOrig : getPlayerName(realName)
+    name = nickOrig != "" ? "".join([nickOrig, nickSfx]) : getPlayerName(realName)
     realName
   }))
 })

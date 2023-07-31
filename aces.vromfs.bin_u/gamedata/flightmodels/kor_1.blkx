@@ -1,5 +1,7 @@
 {
   "model": "kor_1",
+  "useTouchShooting": true,
+  "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/biplane_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "type": "typeFighter",

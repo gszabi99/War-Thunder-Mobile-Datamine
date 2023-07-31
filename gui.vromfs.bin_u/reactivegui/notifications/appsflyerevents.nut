@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { logEvent } = require("appsFlyer")
+let { logEvent, setAppsFlyerCUID = @(_) null } = require("appsFlyer")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { firstBattleTutor, tutorialMissions } = require("%rGui/tutorial/tutorialMissions.nut")
 let { lastBattles, sharedStats, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { myUserId } = require("%appGlobals/profileStates.nut")
+let { INVALID_USER_ID } = require("matching.errors")
 
 let function sendEvent(id) {
   log($"[appsFlyer] send event {id}")
@@ -44,6 +46,11 @@ sendEventByValue("af_level_10", level, 10, 1)
 isLoggedIn.subscribe(function(v) {
   if (v)
     sendEvent("af_login");
+})
+
+myUserId.subscribe(function(v) {
+  if (v != INVALID_USER_ID)
+    setAppsFlyerCUID(v.tostring())
 })
 
 let loginCount = keepref(Computed(@() sharedStats.value?.loginDaysCount ?? 0))
