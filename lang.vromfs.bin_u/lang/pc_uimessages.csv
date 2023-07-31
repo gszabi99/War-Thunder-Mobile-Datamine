@@ -148,6 +148,20 @@ Sertifika denetlemeyi devre dışı bırakmak ister misiniz? Bu yöntem güvenli
 証明書の\tチェックを\t無効にしますか？
 チェックを\t無効にすると\t安全性を\t確保できなくなります。";"安\t全\t證\t書\t驗\t證\t錯\t誤，\t無\t法\t建\t立\t安\t全\t連\t接。
 要\t禁\t用\t安\t全\t證\t書\t驗\t證\t嗎？\t這\t會\t降\t低\t連\t接\t的\t安\t全\t性。";;
+"yn1/error/8111000E";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Ваш аккаунт заморожен.
+Для того, чтобы разморозить аккаунт, пожалуйста, обратитесь в техподдержку:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";"Your account has been frozen.
+To unfreeze your account, please contact technical support:";;
 "yn1/error/8111000F";"Too many failed login attempts detected. You account has been temporary frozen. We've sent you an email describing how to unlock your account. If you haven't received the email, please visit support.gaijin.net";"Tentatives de connexions anormales détectées. Votre compte a été bloqué temporairement. Nous vous avons envoyé un email expliquant comment débloquer votre compte. Si vous n'avez pas reçu d'email, veuillez visiter support.gaijinent.com";"Troppi tentativi di accesso non riusciti rilevati. Il tuo account è stato temporaneamente bloccato. Ti abbiamo inviato un'e-mail descrivendo come sbloccare il tuo account. Se non hai ricevuto l'e-mail, visita support.gaijinent.com";"Zu viele fehlgeschlagene Anmeldeversuche erkannt. Dein Konto wurde vorübergehend gesperrt. Wir haben dir eine E-Mail mit Anweisungen zur Entsperrung deines Kontos zugeschickt. Wenn du die E-Mail nicht erhalten haben solltest, besuche bitte support.gaijin.net";"Detectados demasiados intentos fallidos de inicio de sesión. Su cuenta ha sido temporalmente suspendida. Le hemos enviado un correo  describiendo como desbloquear su cuenta. Si no ha recibido el correo, por favor visite support.gaijin.net";"Превышено количество неудачных попыток логина. Ваш аккаунт временно заморожен. Вам отправлено письмо с инструкцией по разблокировке. Если вы не получили письмо, пожалуйста, обратитесь в support.gaijin.net";"Wykryto zbyt wiele nieudanych prób logowania. Twoje konto zostało tymczasowo zamrożone. Wysłaliśmy e-mail opisujący jak odblokować konto. Jeśli nie otrzymałeś e-maila, prosimy odwiedzić support.gaijinent.com";"Muitas tentativas falhadas de login detectadas. Sua conta foi temporária congelada. Enviámos um e-mail descrevendo como desbloquear sua conta. Se não recebeu o e-mail, por favor visite support.gaijinent.com";"Çok fazla başarısız oturum açma girişimleri tespit. Hesabınız geçici olarak donduruldu. Hesabınızın erişimini nasıl açacağınızı açıklayan bir e-posta gönderdik. E-postayı almadıysanız, lütfen support.gaijin.net adresini ziyaret ediniz";"여러 번 로그인에 실패하였습니다. 귀하의 계정은 임시로 이용중지되었습니다. 귀하의 이메일 주소로 잠금해제 방법을 발송했습니다. 메일을 받지 못했다면 support.gaijinent.com을 방문하시기 바랍니다.";"由\t于\t登\t录\t尝\t试\t次\t数\t过\t多，\t该\t账\t号\t已\t被\t临\t时\t锁\t定。\t请\t检\t查\t登\t录\t邮\t箱\t中\t的\t解\t锁\t邮\t件，\t并\t按\t相\t关\t提\t示\t进\t行\t操\t作。\t若\t一\t直\t没\t收\t到\t邮\t件，\t请\t访\t问 support.gaijinent.com";"多すぎる\tログイン\t失敗回数が\t検出されました。\t
 あなたの\tアカウントは\t一時的に\t凍結されました。\t
 アカウントの\tアンロックの\t方法を\t記述した\t電子\tメールをお\t送りしました。\t

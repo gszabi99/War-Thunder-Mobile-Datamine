@@ -6384,17 +6384,17 @@
     },
     "bullets": {
       "76mm_L11_user_cannon": {
-        "76mm_ussr_AP_1942": {
-          "icon": "hud_ammo_ap2_he0"
-        },
         "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "reqLevel": 3
+          "icon": "hud_ammo_ap1_he1"
         },
         "76mm_ussr_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 6,
+          "reqLevel": 3,
           "isHE": true
+        },
+        "76mm_ussr_AP_1942": {
+          "icon": "hud_ammo_ap2_he0",
+          "reqLevel": 6
         }
       }
     },

@@ -10,6 +10,7 @@ let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, 
 } = require("%rGui/ads/adsInternalState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let sendAdsBqEvent = require("%rGui/ads/sendAdsBqEvent.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let isDebug = !is_android
 let DBG_PROVIDER = "pc_debug"
@@ -53,7 +54,8 @@ let { isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityF
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
 let needAdsLoadExt = Computed(@() isInited.value && needAdsLoad.value && !isLoaded.value)
-let allProviders = keepref(Computed(@() (serverConfigs.value?.adsCfg.android ?? {})))
+let allProviders = keepref(Computed(@() !isLoggedIn.value ? {}
+  : (serverConfigs.value?.adsCfg.android ?? {})))
 
 let function initProviders(providers) {
   if (providers.len() == 0)

@@ -14,6 +14,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 
 let DELETE_PROFILE_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
+let ACTIVATE_PROMO_CODE_URL = "auto_local auto_login https://store.gaijin.net/activate.php"
 
 let avatarSize = hdpx(200)
 let levelBlockSize = hdpx(60)
@@ -131,16 +132,6 @@ let buttonsWidthStyle = {
   }
 }
 
-let bottomButtons = {
-  size = [flex(), SIZE_TO_CONTENT]
-  flow = FLOW_HORIZONTAL
-  children = [
-    textButtonPrimary(loc("mainmenu/support"), @() send("openUrl", { baseUrl = loc("url/support") }), buttonsWidthStyle)
-    { size = flex() }
-    textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }))
-  ]
-}
-
 let logoutMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionChangePlayer")
   buttons = [
@@ -149,16 +140,38 @@ let logoutMsgBox = @() openMsgBox({
   ]
 })
 
-return @() {
+let topButtons = @() {
   watch = isInMenu
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  children = [
+    !isInMenu.value ? null : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
+    { size = flex() }
+    textButtonCommon(loc("options/delete_profile"), @() send("openUrl", { baseUrl = DELETE_PROFILE_URL }), buttonsWidthStyle)
+  ]
+}
+
+let bottomButtons = {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  children = [
+    textButtonPrimary(loc("mainmenu/support"), @() send("openUrl", { baseUrl = loc("url/support") }), buttonsWidthStyle)
+    { size = flex() }
+    textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
+  ]
+}
+
+return {
   size = [contentWidth, flex()]
+  padding = [0, 0, hdpx(40), 0]
   flow = FLOW_VERTICAL
   children = [
     userInfoBlock
     { size = flex() }
-    !isInMenu.value ? null : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
+    topButtons
     { size = flex() }
-    textButtonCommon(loc("options/delete_profile"), @() send("openUrl", { baseUrl = DELETE_PROFILE_URL }), buttonsWidthStyle)
+    textButtonPrimary(loc("mainmenu/btnActivateCode"), @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
+      { ovr = { hplace = ALIGN_CENTER }.__update(buttonsWidthStyle.ovr) })
     { size = flex() }
     bottomButtons
   ]

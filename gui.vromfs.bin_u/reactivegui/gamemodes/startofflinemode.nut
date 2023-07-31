@@ -15,7 +15,7 @@ let MAX_SLOTS = 6
 let function getBulletsForTestFlight(unitName) {
   let { primary = null, secondary = null } = loadUnitBulletsChoice(unitName)?.commonWeapons
   if (primary == null)
-    return null
+    return [{ name = "", count = 10000 }]
   let { bulletsOrder, total, catridge, guns } = primary
   let allowed = clone bulletsOrder
   let maxSlots = secondary == null ? MAX_SLOTS : MAX_SLOTS - 1

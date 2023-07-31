@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
+let { blinkAnimation, clearBlinkInterval } = require("backButtonBlink.nut")
 
 let height = hdpx(60)
 let width  = (78.0 / 59.0 * height).tointeger()
@@ -20,6 +21,8 @@ return function backButton(onClick, override = {}) {
     hotkeys = [[btnBEscUp, loc("mainmenu/btnBack")]]
     onClick
     sound = { click  = "click" }
+    transform = {}
+    animations = blinkAnimation
+    onDetach = clearBlinkInterval
   }.__update(override)
 }
-

@@ -18,6 +18,7 @@ let { unitAttrPage, rowsPosPadL, rowsPosPadR } = require("%rGui/unitAttr/unitAtt
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let buyUnitLevelWnd = require("buyUnitLevelWnd.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
+let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 
 isUnitAttrOpened.subscribe(@(_) resetAttrState())
 
@@ -115,6 +116,11 @@ let function pageBlock() {
   }
 }
 
+let applyAction = function() {
+  applyAttributes()
+  backButtonBlink("UnitAttr")
+}
+
 let actionButtons = @() {
   watch = [selAttrSpCost, attrUnitLevelsToMax]
   size = SIZE_TO_CONTENT
@@ -126,7 +132,7 @@ let actionButtons = @() {
           @() buyUnitLevelWnd(attrUnitName.value),
           { hotkeys = ["^J:Y"] })
     selAttrSpCost.value <= 0 ? null
-      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAttributes, { hotkeys = ["^J:X"] })
+      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, { hotkeys = ["^J:X"] })
   ]
 }
 
@@ -138,7 +144,7 @@ let navBar = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
   })
 
 let function onClose() {
-  if (selAttrSpCost.value == 0)
+  if (selAttrSpCost.value == 0 || unitInProgress.value != null) //no need this message when apply unit stats is already in progress
     isUnitAttrOpened(false)
   else
     openMsgBox({

@@ -9,6 +9,7 @@ let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnima
   ANIMATION_STEP
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { deleteJustUnlockedUnit } = require("%rGui/unit/justUnlockedUnits.nut")
+let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 
 let unitPlateWidth = hdpx(414)
 let unitPlateHeight = hdpx(174)
@@ -287,7 +288,10 @@ let mkUnitLockedFg = @(isLocked, lockedText, justUnlockedDelay = null, name = ""
                       animations = unlockAnimation(
                         justUnlockedDelay - 0.8 * ANIMATION_STEP,
                         lockIconSize,
-                        @() deleteJustUnlockedUnit(name)
+                        function() {
+                          deleteJustUnlockedUnit(name)
+                          backButtonBlink("UnitsWnd")
+                        }
                       )
                     })
                   mkIcon("!ui/gameuiskin#lock_bottom.svg", [(lockIconSize * 0.75).tointeger(), (lockIconSize * 0.75).tointeger()],

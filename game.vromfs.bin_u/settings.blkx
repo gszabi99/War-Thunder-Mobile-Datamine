@@ -1296,9 +1296,12 @@
               },
               {
                 "gpu": [
+                  "640",
                   "650",
                   "660"
                 ],
+                "driverMinVer0": 512,
+                "driverMinVer1": 416,
                 "data": {
                   "affected": true
                 }

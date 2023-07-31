@@ -12,6 +12,7 @@ start_es_loading()
 
 require("%globalScripts/ui_globals.nut")
 require("%appGlobals/sqevents.nut")
+require("%globalScripts/debugTools/matchingErrorDebug.nut")
 
 require("%globalScripts/version.nut")
 require("%sqStdLibs/scriptReloader/scriptReloader.nut")

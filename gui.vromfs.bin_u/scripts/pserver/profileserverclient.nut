@@ -98,7 +98,7 @@ let function checkAndLogError(id, action, cb, data) {
     let dumpStr = json.to_string(data)
     logErr = " ".concat("(full answer dump)", dumpStr)
   }
-  logerr($"[profileServerClient] request {id}: {action} returned error: {logErr}")
+  logerr($"[profileServerClient] {action} returned error: {logErr}")
   cb?({ error = err })
 }
 

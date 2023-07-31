@@ -1409,8 +1409,8 @@
         },
         "limits": {
           "yaw": [
-            -145.0,
-            0.0
+            0.0,
+            145.0
           ],
           "pitch": [
             -10.0,
@@ -1525,8 +1525,8 @@
         },
         "limits": {
           "yaw": [
-            0.0,
-            155.0
+            -155.0,
+            0.0
           ],
           "pitch": [
             -10.0,
@@ -2122,7 +2122,7 @@
         }
       },
       {
-        "trigger": "gunner32",
+        "trigger": "gunner33",
         "triggerGroup": "torpedoes",
         "external": true,
         "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",

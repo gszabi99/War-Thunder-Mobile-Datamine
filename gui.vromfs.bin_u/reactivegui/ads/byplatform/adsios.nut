@@ -9,6 +9,7 @@ let { is_ios } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, debugAdsWndParams
 } = require("%rGui/ads/adsInternalState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let isDebug = !is_ios
 let { DBGLEVEL } = require("dagor.system")
@@ -52,7 +53,8 @@ let { setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriori
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
 let needAdsLoadExt = Computed(@() isInited.value && needAdsLoad.value && !isLoaded.value)
-let allProviders = keepref(Computed(@() serverConfigs.value?.adsCfg.iOS ?? {}))
+let allProviders = keepref(Computed(@() !isLoggedIn.value ? {}
+  : serverConfigs.value?.adsCfg.iOS ?? {}))
 
 let function initProviders(providers) {
   if (providers.len() == 0) {

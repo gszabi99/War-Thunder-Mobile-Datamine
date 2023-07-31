@@ -16,16 +16,15 @@ let matchingErrMsg = @(error_text) loc("yn1/error/fmt",
   })
 
 let function defErrMsg(res) {
-  local errCode = res == "0" ? "" : res
-  local errMsg = loc("yn1/error/" + errCode, "")
-  if (!errMsg.len()) {
-    errMsg = $"0x{errCode}"
-    errCode = ""
-  }
+  let errCode = res == "0" ? "" : res
+  let errMsg = loc("yn1/error/" + errCode, "")
+  if (errMsg.len() > 0)
+    return errMsg
+
   return loc("yn1/error/fmt", {
     text = loc("yn1/connect_error", "")
-    err_msg = errMsg
-    err_code = errCode
+    err_msg = $"0x{errCode}"
+    err_code = ""
   })
 }
 
