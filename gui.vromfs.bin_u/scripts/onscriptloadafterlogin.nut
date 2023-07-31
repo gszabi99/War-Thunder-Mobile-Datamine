@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { get_settings_blk } = require("blkGetters")
 
 let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")

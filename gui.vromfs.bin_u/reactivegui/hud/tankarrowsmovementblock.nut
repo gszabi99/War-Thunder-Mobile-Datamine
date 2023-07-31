@@ -11,6 +11,8 @@ let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg,
 } = require("%rGui/components/movementArrows.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
 let { isStickActiveByArrows, stickDelta } = require("stickState.nut")
+let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
+let { currentGearDownOnStopButtonTouch } = require("%rGui/options/options/tankControlsOptions.nut")
 let { Point2 } = require("dagor.math")
 let { send } = require("eventbus")
 
@@ -101,7 +103,10 @@ let function steeringAxelerate(id, flipX) {
 }
 
 let function mkSteerParams(isRight) {
-  let onTouchUpdate = @() steeringAxelerate("gm_steering", isRight)
+  let function onTouchUpdate() {
+    steeringAxelerate("gm_steering", isRight)
+    steeringAxelerate("wheel_steering", isRight)
+  }
   let shortcutId = isRight ? "gm_steering_right" : "gm_steering_left"
   return {
     ovr = { key = shortcutId }
@@ -110,6 +115,7 @@ let function mkSteerParams(isRight) {
       if (cruiseControl.value == 0)
         curSteerValue = 1
       steeringAxelerate("gm_steering", isRight)
+      steeringAxelerate("wheel_steering", isRight)
       setInterval(0.3, onTouchUpdate)
       playSound("steer")
       if (!isTurnTypesCtrlShowed.value) {
@@ -120,10 +126,17 @@ let function mkSteerParams(isRight) {
     function onTouchEnd() {
       clearTimer(onTouchUpdate)
       setVirtualAxisValue("gm_steering", 0)
+      setVirtualAxisValue("wheel_steering", 0)
       steerWatch(0)
       curSteerValue = minSteer
     }
   }
+}
+
+let fullStopOnTouchButton = Computed(@() currentTankMoveCtrlType.value == "arrows" && currentGearDownOnStopButtonTouch.value)
+let function setGmBrakeAxis(v) {
+  setVirtualAxisValue("gm_brake_left", v)
+  setVirtualAxisValue("gm_brake_right", v)
 }
 
 let function mkStopParams() {
@@ -132,19 +145,22 @@ let function mkStopParams() {
     ovr = { key = "gm_brake" }
     shortcutId
     function onTouchBegin() {
-      setVirtualAxisValue("gm_brake_left", 1)
-      setVirtualAxisValue("gm_brake_right", 1)
+      setGmBrakeAxis(1)
       toNeutral()
-      setTimeout(delayReverse, toReverse)
+      setTimeout(fullStopOnTouchButton.value ? 0 : delayReverse, toReverse)
+      if (fullStopOnTouchButton.value)
+        isStopButtonVisible(false)
     }
     function onTouchEnd() {
-      setVirtualAxisValue("gm_brake_left", 0)
-      setVirtualAxisValue("gm_brake_right", 0)
+      if (!fullStopOnTouchButton.value)
+        setGmBrakeAxis(0)
       clearTimer(toReverse)
       isStopButtonVisible(false)
     }
   }
 }
+
+speed.subscribe(@(v) v == 0 ? setGmBrakeAxis(0) : null)
 
 let leftArrow = mkMoveLeftBtn(mkSteerParams(false))
 let rightArrow = mkMoveRightBtn(mkSteerParams(true))
@@ -155,6 +171,7 @@ let function mkEngineBtn(isBackward, id, children) {
   let onTouchUpdate = @() updateAxeleration(isBackward)
   return mkMoveVertBtn(
     function onTouchBegin() {
+      setGmBrakeAxis(0)
       playHapticPattern(isBackward ? HAPT_BACKWARD : HAPT_FORWARD)
       if (axelerate(isBackward))
         setTimeout(delayLow, onTouchUpdate)

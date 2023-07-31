@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Computed, Watched } = require("frp")
 let { subscribe } = require("eventbus")

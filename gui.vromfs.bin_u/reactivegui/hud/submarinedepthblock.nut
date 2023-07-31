@@ -142,7 +142,6 @@ let function depthSlider() {
   return {
     watch = [wishDist, periscopeDepthCtrl, maxControlDepth]
     size = flex()
-    pos = [-sliderPadding, 0]
     padding = sliderPadding
     behavior = Behaviors.Slider
     fValue = wishDist.value
@@ -182,7 +181,6 @@ let function depthSlider() {
 let depthSliderBlock = @() {
   watch = isControlDepthAllowed
   size = [fullWidth, height]
-  pos = [sliderPadding, 0]
   opacity = isControlDepthAllowed.value ? 1 : 0.3
   children = depthSlider
   transitions = [
@@ -190,8 +188,41 @@ let depthSliderBlock = @() {
   ]
 }
 
+let depthSliderEditView = @() {
+  size = [fullWidth, height]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    {
+      size = [scaleWidth, height - 2 * sliderPadding + scaleWidth]
+      pos = [-hdpx(13), 0]
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_9RECT
+      image = depthBgrImage
+      texOffs = [scaleWidth, 0]
+      screenOffs = [scaleWidth, 0]
+    }
+    {
+      size  = [knobSize, knobSize]
+      pos = [-hdpx(13), 0]
+      rendObj = ROBJ_SOLID
+      color = knobColor
+      transform = { rotate = 45 }
+    }
+    {
+      pos = [-hdpx(5), hdpx(50)]
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_TOP
+      rendObj = ROBJ_IMAGE
+      size = [periscopIcon.width, periscopIcon.height]
+      image = Picture($"ui/gameuiskin#hud_periscope.svg:{periscopIcon.width}:{periscopIcon.height}:P")
+    }
+  ]
+}
+
 return {
   depthSliderBlock
+  depthSliderEditView
   isDeeperThanPeriscopeDepth
   isNotOnTheSurface
 }

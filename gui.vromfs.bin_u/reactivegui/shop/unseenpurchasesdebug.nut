@@ -8,6 +8,8 @@ let fakeUnseenPurchases = {
     source = "lootbox"
     goods = [
       { id = "wp", gType = "currency", count = 2000 },
+      { id = "alpha_tester", gType = "decorator", count = 0 },
+      { id = "chevron", gType = "decorator", count = 0 },
       { id = "gold", gType = "currency", count = 1000 },
       { id = "premium", gType = "premium", count = 30 },
       { id = "ship_tool_kit", gType = "item", count = 20 },

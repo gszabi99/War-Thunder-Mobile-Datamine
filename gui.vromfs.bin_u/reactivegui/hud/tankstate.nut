@@ -17,6 +17,7 @@ let tankStateNative = {
   hasDebuffTracks = Watched(0)
   hasDebuffFire = Watched(0)
   primaryRocketGun = Watched(false)
+  hasSecondaryGun = Watched(false)
 }
 
 interopGen({

@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { registerUnicastEvent, registerBroadcastEvent } = require("%sqstd/ecs.nut")
 let dedicLogerrSqEvents = require("%globalScripts/debugTools/dedicLogerrSqEvents.nut")
 

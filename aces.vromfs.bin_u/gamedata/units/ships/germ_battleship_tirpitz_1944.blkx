@@ -2791,6 +2791,13 @@
         ]
       },
       {
+        "name": "ammo_expl",
+        "fx": {
+          "name": "explosion_ship_ammo",
+          "centerDmgPart": true
+        }
+      },
+      {
         "name": "fire_after_hit_huge",
         "lifetime": 8.0,
         "fx": {

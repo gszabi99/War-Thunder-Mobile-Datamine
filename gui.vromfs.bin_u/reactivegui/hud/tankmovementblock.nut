@@ -1,19 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
-let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
 let { Point2 } = require("dagor.math")
-let tankArrowsMovementBlock = require("%rGui/hud/tankArrowsMovementBlock.nut")
-let { currentTankMoveControlType } = require("%rGui/options/options/controlsOptions.nut")
-let { isGamepad, isKeyboard } = require("%rGui/activeControls.nut")
+let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { setVirtualAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
 let { isStickActiveByStick, stickDelta } = require("stickState.nut")
-let { isUnitDelayed } = require("%rGui/hudState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
 let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering
 } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
 let { setMoveControlByArrows } = require("hudState")
 
+let stickZoneSize = [shHud(40), shHud(40)]
 let bgRadius = shHud(15)
 let imgBgSize = 2 * bgRadius
 let imgRotationSize = (0.1 * imgBgSize).tointeger()
@@ -109,11 +106,11 @@ let imgStick = {
   transform = {}
 }
 
-let touchZone  = @() {
-  watch = currentTankMoveControlType
-  key = currentTankMoveControlType
+let tankMoveStick  = @() {
+  watch = currentTankMoveCtrlType
+  key = currentTankMoveCtrlType
   behavior = Behaviors.TouchScreenStick
-  size = [shHud(40), shHud(40)]
+  size = stickZoneSize
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_LEFT
   touchStickAction = {
@@ -123,7 +120,7 @@ let touchZone  = @() {
   deadZoneForStraightMove = 20 //degrees
   valueAfterDeadZone = steeringStart
   maxValueRadius = bgRadius
-  useCenteringOnTouchBegin = currentTankMoveControlType.value == "stick"
+  useCenteringOnTouchBegin = currentTankMoveCtrlType.value == "stick"
 
   onChange = @(v) stickDelta(Point2(v.x, v.y))
 
@@ -180,10 +177,9 @@ let gamepadAxisListener = axisListener({
 
 let updateStickActive = @(delta) isStickActiveByStick(delta.lengthSq() > 0.04)
 
-let gamepadMoveBlock = {
+let tankGamepadStick = {
   key = {}
   size = [imgBgSize, imgBgSize]
-  pos = [sh(20) - 0.5 * imgBgSize, -sh(20) + 0.5 * imgBgSize]
   function onAttach() {
     stickDelta.subscribe(updateStickActive)
     updateStickActive(stickDelta.value)
@@ -203,18 +199,25 @@ let gamepadMoveBlock = {
   ]
 }
 
-let mkMovementControl = @() {
-  watch = [currentTankMoveControlType, isUnitDelayed, isGamepad, isKeyboard]
-  key = "tank_move_stick_zone"
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_LEFT
-  children = isUnitDelayed.value ? null
-    : isGamepad.value ? gamepadMoveBlock
-    : isKeyboard.value || currentTankMoveControlType.value == "arrows" ? tankArrowsMovementBlock
-    : touchZone
-  transform = {}
-  animations = dfAnimBottomLeft
+let tankGamepadMoveBlock = {
+  size = stickZoneSize
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = tankGamepadStick
 }
 
-return mkMovementControl
+let tankMoveStickView = {
+  size = stickZoneSize
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = [
+    fullImgBg
+    imgStick
+  ]
+}
 
+return {
+  tankMoveStick
+  tankGamepadMoveBlock
+  tankMoveStickView
+}

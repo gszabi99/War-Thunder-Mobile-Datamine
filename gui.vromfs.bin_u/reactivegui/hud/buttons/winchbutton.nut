@@ -3,13 +3,14 @@ let { AB_WINCH, AB_WINCH_ATTACH, AB_WINCH_DETACH, getActionType
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { btnBgColor, touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 
 let borderWidth = hdpxi(1)
-let imageSizeDecrease = 2 * hdpxi(3)
 let colorActive = 0xFFDADADA
 let colorInactive = 0x806D6D6D
+
+let imgSize = (touchButtonSize * 0.8  + 0.5).tointeger()
 
 let winchImages = {
   [AB_WINCH] = "hud_winch.svg",
@@ -19,19 +20,19 @@ let winchImages = {
 
 let winchAction = Computed(@() actionBarItems.value?[winchImages.findindex(@(_, aType) aType in actionBarItems.value)])
 
-let stateFlags = Watched(0) //sameState for all winch buttons
-let winchButton = @(size) function() {
+let stateFlags = Watched(0)
+let function winchButton() {
   let res = { watch = [winchAction, stateFlags], key = winchAction }
   if (winchAction.value == null)
     return res
 
   let { shortcutIdx, selected, active } = winchAction.value
-  let imgSize = size - imageSizeDecrease
   let color = selected || active ? colorActive : colorInactive
   let image = winchImages[getActionType(winchAction.value)]
   let shortcutId = $"ID_ACTION_BAR_ITEM_{shortcutIdx + 1}"
+
   return res.__update({
-    size = [size, size]
+    size = [touchButtonSize, touchButtonSize]
     rendObj = ROBJ_BOX
     borderColor = stateFlags.value & S_ACTIVE ? 0 : color
     fillColor = btnBgColor.empty

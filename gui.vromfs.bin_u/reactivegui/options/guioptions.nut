@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addUserOption, get_gui_option, set_gui_option } = require("guiOptions")
 let { send } = require("eventbus")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 //options should have full list on get profile for correct load
 let optListNative = [
@@ -12,6 +12,8 @@ let optListNative = [
   "OPT_RAYTRACING"
   "OPT_SHOW_MOVE_DIRECTION"
   "OPT_AUTO_ZOOM"
+  "OPT_TARGET_TRACKING"
+  "OPT_CAMERA_ROTATION_ASSIST"
 ]
 
 let optListScriptOnly = [
@@ -21,9 +23,9 @@ let optListScriptOnly = [
   "OPT_HAPTIC_INTENSITY_ON_SHOOT"
   "OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT"
   "OPT_HAPTIC_INTENSITY_ON_COLLISION"
-  "OPT_TARGET_TRACKING"
   "OPT_ARMOR_PIERCING_FIXED"
   "OPT_AUTO_ZOOM"
+  "OPT_GEAR_DOWN_ON_STOP_BUTTON"
 ]
 
 let export = {}
@@ -37,15 +39,15 @@ foreach (id in optListScriptOnly)
 
 let function mkOptionValueNative(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
-  let value = Watched(isOnlineSettingsAvailable.value ? getSaved() : validate(defValue))
+  let value = Watched(isSettingsAvailable.value ? getSaved() : validate(defValue))
   let function updateSaved() {
-    if (!isOnlineSettingsAvailable.value || get_gui_option(id) == value.value)
+    if (!isSettingsAvailable.value || get_gui_option(id) == value.value)
       return
     set_gui_option(id, value.value)
     send("saveProfile", {})
   }
   updateSaved()
-  isOnlineSettingsAvailable.subscribe(function(_) {
+  isSettingsAvailable.subscribe(function(_) {
     value(getSaved())
     updateSaved()
   })
@@ -55,9 +57,9 @@ let function mkOptionValueNative(id, defValue, validate) {
 
 let function mkOptionValueScriptOnly(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
-  let value = Watched(isOnlineSettingsAvailable.value ? getSaved() : validate(defValue))
+  let value = Watched(isSettingsAvailable.value ? getSaved() : validate(defValue))
   local isInit = false
-  isOnlineSettingsAvailable.subscribe(function(_) {
+  isSettingsAvailable.subscribe(function(_) {
     let v = getSaved()
     if (value.value == v)
       return

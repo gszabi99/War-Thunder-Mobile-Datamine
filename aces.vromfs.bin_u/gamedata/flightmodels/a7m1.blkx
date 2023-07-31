@@ -2,9 +2,13 @@
   "model": "a7m1",
   "fmFile": "fm/a7m1.blk",
   "useTouchShooting": true,
+  "tpsCameraTargetOffsetAtZoom": [
+    40.0,
+    10.0,
+    0.0
+  ],
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
-  "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.34,
   "gearSinkRangeC": 0.13,
@@ -1720,13 +1724,6 @@
         "blk": "gameData/FlightModels/weaponPresets/a7m_type97_2bombs.blk"
       }
     ]
-  },
-  "default_skin_tomoe": {
-    "name": "default_tomoe",
-    "replace_tex": {
-      "from": "a7m1_a*",
-      "to": "a7m1_a*"
-    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

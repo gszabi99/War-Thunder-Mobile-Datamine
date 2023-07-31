@@ -34,6 +34,59 @@ let mkGradientCtorDoubleSideX = @(color1, color2, middle = 0.4) function(params,
   }
 }
 
+let mkGradientCtorDoubleSideY = @(color1, color2, middle = 0.4) function(params, bmp) {
+  let { w, h } = params
+  let c1 = colorParts(color1)
+  let c2 = colorParts(color2)
+  for (local y = 0; y < h; y++) {
+    let rel = y.tofloat() / (h - 1)
+    let v = rel < middle ? rel / middle
+      : rel > 1.0 - middle ? (1.0 - rel) / middle
+      : 1.0
+    let color = partsToColor(lerpColorParts(c1, c2, v))
+    for (local x = 0; x < w; x++)
+      bmp.setPixel(x, y, color)
+  }
+}
+
+//p1, p2 : array(2)
+let mkGradientCtorInclined = function(color1, color2, p1, p2) {
+  let x1 = p1[0]
+  let x2 = p2[0]
+  let y1 = p1[1]
+  let y2 = p2[1]
+  let dx = x2 - x1
+  let dy = y2 - y1
+  if (dx == 0) {
+    logerr("mkGradientCtorInclined does not support gradient with x0 == x1. Use mkColoredGradientY instead.")
+    return @(_, __) null
+  }
+  return function(params, bmp) {
+    let { w, h } = params
+    local startTop = (w - 1).tofloat() * (x1 + y1 * dy / dx)
+    let startFullDiff = -(w - 1).tofloat() * dy / dx
+    local width = (w - 1).tofloat() * (dx + dy * dy / dx)
+    let colorStart = width < 0 ? color2 : color1
+    let colorEnd = width < 0 ? color1 : color2
+    let c1 = colorParts(colorStart)
+    let c2 = colorParts(colorEnd)
+    if (width < 0) {
+      startTop = startTop + width
+      width = -width
+    }
+    for (local y = 0; y < h; y++) {
+      let start = startTop + y * startFullDiff / (h - 1)
+      for (local x = 0; x < w; x++) {
+        let xf = x.tofloat()
+        let color = xf <= start ? colorStart
+          : xf >= start + width ? colorEnd
+          : partsToColor(lerpColorParts(c1, c2, (xf - start) / width))
+        bmp.setPixel(x, h - 1 - y, color)
+      }
+    }
+  }
+}
+
 let gradTranspDoubleSideX = mkBitmapPicture(gradTexSize, 4, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF))
 
 let gradCircCornerSize = 20
@@ -78,6 +131,21 @@ let gradRadialSq = mkBitmapPicture(gradCircCornerSize * 2, gradCircCornerSize * 
         bmp.setPixel(x, y, mkWhite((0xFF * mult * mult).tointeger()))
       }
   })
+
+let mkGradientCtorRadial = @(color1, color2, r1, gradWidth, cx, cy) function(params, bmp) {
+  let { w, h } = params
+  let r2 = r1 + gradWidth
+  let c1 = colorParts(color1)
+  let c2 = colorParts(color2)
+  for (local y = 0; y < h; y++)
+    for (local x = 0; x < w; x++) {
+      let r = getDistance(x - cx, y - cy)
+      let color = r <= r1 ? color1
+        : r >= r2 ? color2
+        : partsToColor(lerpColorParts(c1, c2, (r - r1) / gradWidth))
+      bmp.setPixel(x, h - 1 - y, color)
+    }
+}
 
 let simpleHorGrad = mkBitmapPicture(10, 2,
   function(params, bmp) {
@@ -151,6 +219,9 @@ return {
 
   //ctors
   mkGradientCtorDoubleSideX
+  mkGradientCtorDoubleSideY
+  mkGradientCtorInclined
+  mkGradientCtorRadial
   mkColoredGradientY
   mkFontGradient
   mkRingGradient

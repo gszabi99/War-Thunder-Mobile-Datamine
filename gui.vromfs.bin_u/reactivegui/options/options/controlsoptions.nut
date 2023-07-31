@@ -2,38 +2,15 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { send } = require("eventbus")
 let { DBGLEVEL } = require("dagor.system")
-let { OPT_TANK_MOVEMENT_CONTROL,  /* OPT_TANK_TARGETING_CONTROL,  */ OPT_CAMERA_SENSE_IN_ZOOM,
+let { OPT_CAMERA_SENSE_IN_ZOOM,
   OPT_CAMERA_SENSE, OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
-  OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED,
-  OPT_AUTO_ZOOM, mkOptionValue } = require("%rGui/options/guiOptions.nut")
-let { CAM_TYPE_NORMAL, CAM_TYPE_BINOCULAR, set_camera_sens, set_should_target_tracking,
-  set_armor_piercing_fixed, set_auto_zoom } = require("controlsOptions")
+  OPT_HAPTIC_INTENSITY_ON_COLLISION, mkOptionValue
+} = require("%rGui/options/guiOptions.nut")
+let { CAM_TYPE_NORMAL, CAM_TYPE_BINOCULAR, set_camera_sens } = require("controlsOptions")
 let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION } = require("hapticVibration")
 let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { abTests } = require("%appGlobals/pServer/campaign.nut")
-
-let validate = @(val, list) list.contains(val) ? val : list[0]
-
-let tankMoveControlTypesList = ["stick", "stick_static", "arrows"]
-let currentTankMoveControlType = mkOptionValue(OPT_TANK_MOVEMENT_CONTROL, null,
-  @(v) validate(v, tankMoveControlTypesList))
-let tankMoveControlType = {
-  locId = "options/tank_movement_control"
-  ctrlType = OCT_LIST
-  value = currentTankMoveControlType
-  list = tankMoveControlTypesList
-  valToString = @(v) loc($"options/{v}")
-}
-
-// let tankTargetControlTypesList = ["autoAim", "directAim"]
-// let tankTargetControlType = {
-//   locId = "options/tank_targeting_control"
-//   ctrlType = OCT_LIST
-//   value = mkOptionValue(OPT_TANK_TARGETING_CONTROL, null, @(v) validate(v, tankTargetControlTypesList))
-//   list = tankTargetControlTypesList
-//   valToString = @(v) loc($"options/{v}")
-// }
+let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
 
 let function cameraSenseSlider(camType, locId, optId) {
   let value = mkOptionValue(optId, 1.0)
@@ -50,46 +27,6 @@ let function cameraSenseSlider(camType, locId, optId) {
       unit = 0.03 //step
     }
   }
-}
-
-let targetTrackingList = [false, true]
-let currentTargetTrackingType = mkOptionValue(OPT_TARGET_TRACKING, true, @(v) validate(v, targetTrackingList))
-set_should_target_tracking(currentTargetTrackingType.value)
-currentTargetTrackingType.subscribe(@(v) set_should_target_tracking(v))
-let targetTrackingType = {
-  locId = "options/target_tracking"
-  ctrlType = OCT_LIST
-  value = currentTargetTrackingType
-  list = targetTrackingList
-  valToString = @(v) loc(v ? "options/enable" : "options/disable")
-}
-
-let armorPiercingFixedList = [false, true]
-let piercingIndicatorDefault = Computed(@() abTests.value?.fixedPiercingIndicator == "true")
-let currentArmorPiercingFixedRaw = mkOptionValue(OPT_ARMOR_PIERCING_FIXED)
-let currentArmorPiercingFixed = Computed(@()
-  validate(currentArmorPiercingFixedRaw.value ?? piercingIndicatorDefault.value, armorPiercingFixedList))
-set_armor_piercing_fixed(currentArmorPiercingFixed.value)
-currentArmorPiercingFixed.subscribe(@(v) set_armor_piercing_fixed(v))
-let currentArmorPiercingType = {
-  locId = "options/armor_piercing_fixed"
-  ctrlType = OCT_LIST
-  value = currentArmorPiercingFixed
-  setValue = @(v) currentArmorPiercingFixedRaw(v)
-  list = armorPiercingFixedList
-  valToString = @(v) loc(v ? "options/enable" : "options/disable")
-}
-
-let autoZoomList = [false, true]
-let currentAutoZoom = mkOptionValue(OPT_AUTO_ZOOM, true, @(v) validate(v, autoZoomList))
-set_auto_zoom(currentAutoZoom.value)
-currentAutoZoom.subscribe(@(v) set_auto_zoom(v))
-let currentAutoZoomType = {
-  locId = "options/auto_zoom"
-  ctrlType = OCT_LIST
-  value = currentAutoZoom
-  list = autoZoomList
-  valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
 
 let function hapticIntensitySlider(locId, optId, intensityType = -1) {
@@ -128,24 +65,13 @@ let optFreeCameraInertia = {
   }
 }
 
-let moveDirestionList = [false, true]
-let currentShowMoveDirection = mkOptionValue(OPT_SHOW_MOVE_DIRECTION, true, @(v) validate(v, moveDirestionList))
-let showMoveDirection = {
-  locId = "options/show_move_direction"
-  ctrlType = OCT_LIST
-  value = currentShowMoveDirection
-  list = moveDirestionList
-  valToString = @(v) loc(v ? "options/enable" : "options/disable")
-}
-
 return {
-  currentTankMoveControlType
-  tankMoveControlType
-  currentArmorPiercingFixed
   controlsOptions = [
-    tankMoveControlType
-    targetTrackingType
-    // tankTargetControlType
+    {
+      locId = "hudTuning/open"
+      ctrlType = OCT_BUTTON
+      onClick = openTuningRecommended
+    }
     hapticIntensitySlider("options/vibration", OPT_HAPTIC_INTENSITY)
     hapticIntensitySlider("options/vibration_on_shoot", OPT_HAPTIC_INTENSITY_ON_SHOOT, ON_SHOOT)
     hapticIntensitySlider("options/vibration_on_hero_get_shot", OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT, ON_HERO_GET_SHOT)
@@ -153,8 +79,5 @@ return {
     cameraSenseSlider(CAM_TYPE_NORMAL, "options/camera_sensitivity", OPT_CAMERA_SENSE)
     cameraSenseSlider(CAM_TYPE_BINOCULAR, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM)
     DBGLEVEL > 0 ? optFreeCameraInertia : null
-    showMoveDirection
-    currentArmorPiercingType
-    currentAutoZoomType
   ]
 }

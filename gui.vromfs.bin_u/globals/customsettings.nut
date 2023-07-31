@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 /**
  * Function get_local_custom_settings_blk() returns app->playerProfile->settings.customSettings

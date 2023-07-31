@@ -1,16 +1,13 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
+let { split_by_chars, startswith } = require("string")
 let { getCurrentSteamLanguage } = require("%scripts/language.nut")
 let userstat = require("userstat")
 let { subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { register_command } = require("console")
-let { split_by_chars } = require("string")
 let { arrayByRows } = require("%sqstd/underscore.nut")
-let { isProfileReceived } = require("%appGlobals/loginState.nut")
+let { isProfileReceived, isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let charClientEvent = require("charClientEvent.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
@@ -19,6 +16,9 @@ let { mnSubscribe } = require("%appGlobals/matchingNotifications.nut")
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
+
+//profile increase days for daily rewards, and matching need to receive notifications
+let isReadyToConnect = Computed(@() isProfileReceived.value && isMatchingConnected.value)
 
 let { request, registerHandler } = charClientEvent("userStats", userstat)
 
@@ -40,7 +40,7 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, defVal
 
   let prepareToRequest = @() lastTime.mutate(@(v) v.request = get_time_msec())
   let function refresh(context = null) {
-    if (!isProfileReceived.value) {
+    if (!isReadyToConnect.value) {
       onRefresh({ error = "not logged in" }, context)
       return
     }
@@ -56,9 +56,9 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, defVal
     refresh(context)
   }
 
-  isProfileReceived.subscribe(@(v) v ? forceRefresh() : data(defValue))
+  isReadyToConnect.subscribe(@(v) v ? forceRefresh() : data(defValue))
 
-  if (isProfileReceived.value && lastTime.value.update <= 0 && lastTime.value.request <= 0)
+  if (isReadyToConnect.value && lastTime.value.update <= 0 && lastTime.value.request <= 0)
     refresh()
 
   register_command(@() forceRefresh({ needPrint = true }), $"userstat.get.{persistName}")
@@ -96,7 +96,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
   || userstatStats.value.len() == 0)
 let needValidateMissingData = keepref(Computed(@()
-  isUserstatMissingData.value && isProfileReceived.value && !isInBattle.value))
+  isUserstatMissingData.value && isReadyToConnect.value && !isInBattle.value))
 
 let function updateValidationTimer(needValidate) {
   if (!needValidate) {
@@ -117,23 +117,24 @@ registerHandler("ChangeStats", function(result) {
   }
 })
 
+let function getDebugSimilarStatsText(stat) {
+  let similar = []
+  let parts = split_by_chars(stat, "_", true)
+  foreach (s, _v in userstatDescList.value?.stats ?? {})
+    foreach (part in parts)
+      if (s.indexof(part) != null) {
+        similar.append(s)
+        break
+      }
+  return "\n      ".join(["  Similar stats:"].extend(arrayByRows(similar, 8).map(@(v) ", ".join(v))))
+}
+
 let function changeStat(stat, mode, amount, shouldSet) {
   local errorText = null
   if (type(amount) != "integer" && type(amount) != "float")
     errorText = $"Amount must be numeric (current = {amount})"
-  else if (userstatDescList.value?.stats[stat] == null) {
-    errorText = $"Stat {stat} does not exist."
-    let similar = []
-    let parts = split_by_chars(stat, "_", true)
-    foreach (s, _v in userstatDescList.value?.stats ?? {})
-      foreach (part in parts)
-        if (s.indexof(part) != null) {
-          similar.append(s)
-          break
-        }
-    let statsText = "\n      ".join(["  Similar stats:"].extend(arrayByRows(similar, 8).map(@(v) ", ".join(v))))
-    errorText = "\n  ".join([errorText, statsText], true)
-  }
+  else if (userstatDescList.value?.stats[stat] == null)
+    errorText = $"Stat {stat} does not exist.\n  {getDebugSimilarStatsText(stat)}"
 
   if (errorText != null) {
     console_print({ error = errorText })
@@ -156,6 +157,21 @@ mnSubscribe("userStat", function(ev) {
   if (ev?.func == "changed")
     unlocksUpdatable.forceRefresh()
 })
+
+let function debugStatValues(stat) {
+  if (userstatDescList.value?.stats[stat] == null)
+    return console_print($"Stat {stat} does not exist.\n  {getDebugSimilarStatsText(stat)}")
+
+  let rows = []
+  foreach(tblId, tbl in userstatStats.value?.stats ?? {})
+    foreach(modeId, mode in tbl)
+      if (!startswith(modeId, "$"))
+        rows.append($"{tblId}/{modeId} = {mode?[stat]}")
+
+  return console_print("\n".join(rows))
+}
+
+register_command(debugStatValues, $"userstat.debugStatValues")
 
 let registered = {}
 let function registerOnce(func, id) {

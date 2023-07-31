@@ -19,6 +19,7 @@ require("%rGui/hudHints/shipDeathTimer.nut")
 require("%rGui/hudHints/leaveZoneTimer.nut")
 require("%rGui/hudHints/debuffWarnngs.nut")
 require("%rGui/hudHints/killStreakHint.nut")
+require("hudTuning/hudTuningWnd.nut")
 require("%rGui/tutorial/tutorialWnd/tutorialWnd.nut")
 require("%rGui/tutorial/startFirstBattleTutorial.nut")
 require("%rGui/feedback/rateGameState.nut")
@@ -38,6 +39,8 @@ require("debugTools/debugGamepadIconsWnd.nut")
 require("unlocks/loginAwardWnd.nut")
 require("unit/hangarUnitBattleData.nut")
 require("%rGui/mainMenu/expirienceWnd.nut")
+require("%rGui/decorators/decoratorsScene.nut")
+require("options/chooseMovementControls/chooseMovementControlsWnd.nut")
 
 let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")
 let { scenesOrder, getTopScene } = require("navState.nut")
@@ -53,13 +56,14 @@ let hudSpectator = require("%rGui/hud/hudSpectator.nut")
 let hudArtilleryMap = require("%rGui/hud/hudArtilleryMap.nut")
 let flightMenu = require("%rGui/flightMenu/flightMenu.nut")
 let mpStatisticsWnd = require("%rGui/mpStatistics/mpStatisticsWnd.nut")
-let { needChooseMoveControlsType, chooseMoveControlsTypeWnd
-} = require("%rGui/options/chooseMovementControls/chooseMovementControlsWnd.nut")
+let { needChooseMoveControlsTypeInBattle
+} = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
+let chooseMoveControlsScene = require("%rGui/options/chooseMovementControls/chooseMovementControlsScene.nut")
 let hudBase = require("%rGui/hud/hudBase.nut")
 
 let battleScene = @() {
   watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu,
-    isMpStatisticsActive, needChooseMoveControlsType]
+    isMpStatisticsActive, needChooseMoveControlsTypeInBattle]
   key = {}
   size = flex()
   children = isInFlightMenu.value ? flightMenu
@@ -67,7 +71,7 @@ let battleScene = @() {
     : isInSpectatorMode.value ? hudSpectator
     : isInRespawn.value ? respawnWnd
     : isInArtilleryMap.value ? hudArtilleryMap
-    : needChooseMoveControlsType.value ? chooseMoveControlsTypeWnd
+    : needChooseMoveControlsTypeInBattle.value ? chooseMoveControlsScene
     : hudBase
 }
 

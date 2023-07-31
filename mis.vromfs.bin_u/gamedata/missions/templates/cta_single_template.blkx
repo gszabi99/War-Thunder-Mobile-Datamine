@@ -204,6 +204,30 @@
           "from": 1,
           "to_not_including": 3
         },
+        "missionBattleArea": [
+          {
+            "air": false,
+            "ground": true,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": true,
+            "detectionArea": false,
+            "killOutOfBattleArea": false,
+            "area": "@t1_spawn_killarea",
+            "team": "B"
+          },
+          {
+            "air": false,
+            "ground": true,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": true,
+            "detectionArea": false,
+            "killOutOfBattleArea": false,
+            "area": "@t2_spawn_killarea",
+            "team": "A"
+          }
+        ],
         "triggerEnable": {
           "target": [
             "check_if_side_t1",
@@ -2742,7 +2766,9 @@
     "mission_time_left": 900,
     "random_mission_id": 0,
     "string_mission_id": "",
-    "battle_type_name": ""
+    "battle_type_name": "",
+    "t1_spawn_killarea": "t1_spawn_killarea",
+    "t2_spawn_killarea": "t2_spawn_killarea"
   },
   "dialogs": {},
   "airfields": {},

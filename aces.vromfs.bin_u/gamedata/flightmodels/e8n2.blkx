@@ -2,6 +2,11 @@
   "model": "e8n2",
   "fmFile": "fm/e8n2.blk",
   "useTouchShooting": true,
+  "tpsCameraTargetOffsetAtZoom": [
+    40.0,
+    10.0,
+    0.0
+  ],
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",

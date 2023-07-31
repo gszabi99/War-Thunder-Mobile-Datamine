@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 // warning disable: -file:forbidden-function
 

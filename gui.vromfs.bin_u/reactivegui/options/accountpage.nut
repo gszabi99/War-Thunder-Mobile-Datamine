@@ -7,13 +7,14 @@ let { contentWidth } = require("optionsStyle.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { mkLevelBg, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { myUserName, myAvatar, myUserId } = require("%appGlobals/profileStates.nut")
+let { myAvatar, myUserId } = require("%appGlobals/profileStates.nut")
 let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { authTags } = require("%appGlobals/loginState.nut")
+let { premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { is_ios } = require("%sqstd/platform.nut")
+let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
+let { myNameWithFrame, openDecoratorsScene } = require("%rGui/decorators/decoratorState.nut")
 
 let DELETE_PROFILE_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
 let ACTIVATE_PROMO_CODE_URL = "auto_local auto_login https://store.gaijin.net/activate.php"
@@ -60,39 +61,29 @@ let avatar = {
   ]
 }
 
-let changeNameMsgBox = @() openMsgBox({
-  text = loc("mainmenu/questionChangeName")
-  buttons = [
-    { id = "no", isCancel = true }
-    { id = "yes", styleId = "PRIMARY", isDefault = true, cb = @() send("changeName", {}) }
-  ]
-})
-
 let pnStateFlags = Watched(0)
-let isGoogleLogin = Computed(@() authTags.value.contains("gplogin"))
 let myUserNameBtn = @() {
   behavior = Behaviors.Button
-  watch = isGoogleLogin
-  onClick = isGoogleLogin.value ? null : changeNameMsgBox
+  onClick = openDecoratorsScene
   onElemState = @(s) pnStateFlags(s)
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap
   children = [
     @() {
-      watch = myUserName
+      watch = myNameWithFrame
       rendObj = ROBJ_TEXT
-      text = myUserName.value
+      text = myNameWithFrame.value ?? ""
     }.__update(fontMedium)
-    isGoogleLogin.value ? null
-      : @() {
-        watch = pnStateFlags
-        size = array(2, imgBtnSize)
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#menu_edit.svg:{imgBtnSize}:{imgBtnSize}")
-        transform = { scale = pnStateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-        transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
-      }
+    @() {
+      watch = pnStateFlags
+      size = array(2, imgBtnSize)
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#menu_edit.svg:{imgBtnSize}:{imgBtnSize}")
+      color = pnStateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+      transform = { scale = pnStateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+      transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
+    }
   ]
 }
 
@@ -120,6 +111,7 @@ let userInfoBlock = {
       gap
       children = [
         myUserNameBtn
+        mkTitle(fontSmall)
         @() {
           watch = myUserId
           rendObj = ROBJ_TEXT

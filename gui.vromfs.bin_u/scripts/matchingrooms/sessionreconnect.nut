@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 from "%scripts/dagui_library.nut" import *
 let { send, subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")

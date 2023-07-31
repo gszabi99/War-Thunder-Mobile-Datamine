@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 from "%scripts/dagui_library.nut" import *
 let { get_arg_value_by_name } = require("dagor.system")
@@ -40,6 +37,7 @@ serverConfigs.subscribe(@(_) needRefresh(true))
 let profileKeysAffectData = {
   units = true
   items = true
+  decorators = true
   levelInfo = true
   lastBattles = true
   premium = true

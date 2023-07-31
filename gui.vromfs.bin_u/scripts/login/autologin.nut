@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 from "%scripts/dagui_library.nut" import *
 let { is_ios, is_android } = require("%sqstd/platform.nut")
@@ -17,6 +14,7 @@ let isAutologinUsed = mkHardWatched("login.isAutologinUsed", false)
 let availableBase = { [LT_GAIJIN] = false } //loginType = isAutoLoginDefault
 if (is_ios) {
   availableBase[LT_APPLE] <- true
+  availableBase[LT_FACEBOOK] <- true
   availableBase[LT_GUEST] <- true
 } else if (is_android)
   availableBase.__update({

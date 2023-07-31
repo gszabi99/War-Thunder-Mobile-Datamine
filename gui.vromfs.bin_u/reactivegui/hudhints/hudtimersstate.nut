@@ -3,6 +3,7 @@ let { subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { crewState, crewDriverState, crewGunnerState, crewLoaderState } = require("%rGui/hud/crewState.nut")
+let { mkCountdownTimerSec } = require("%globalScripts/timers.nut")
 
 let REPAIR_SHOW_TIME_THRESHOLD = 0.5
 let winkFast = 1.5
@@ -12,6 +13,13 @@ let timersVisibility = Computed(function(prev) {
   let res = activeTimers.value.map(@(_) true)
   return isEqual(prev, res) ? prev : res
 })
+
+let countdowns = {}
+let function getTimerCountdownSec(id) {
+  if (id not in countdowns)
+    countdowns[id] <- mkCountdownTimerSec(Computed(@() activeTimers.value?[id].endTime ?? 0))
+  return countdowns[id]
+}
 
 let deleteF = @(tbl, field) field in tbl ? delete tbl[field] : null
 let mkTimer = @(time, ovr = {}) {
@@ -144,4 +152,5 @@ return {
   activeTimers
   timersVisibility
   removeTimer
+  getTimerCountdownSec
 }

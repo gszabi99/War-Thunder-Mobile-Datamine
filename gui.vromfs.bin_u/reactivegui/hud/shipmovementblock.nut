@@ -202,7 +202,6 @@ let function movementBlock(unitType) {
     watch = [isUnitDelayed, isGamepad]
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_LEFT
-    margin = [0, 0, shHud(5), 0]
     flow = FLOW_HORIZONTAL
     children = isUnitDelayed.value ? null
       : [

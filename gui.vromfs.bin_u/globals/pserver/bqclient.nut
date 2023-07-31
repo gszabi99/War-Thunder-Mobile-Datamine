@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { send } = require("eventbus")
 let { getLocTextForLang } = require("dagor.localize")
 let { send_to_bq_offer } = require("pServerApi.nut")

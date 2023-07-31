@@ -12,7 +12,7 @@ let dbgShowPrice = mkWatched(persist, "dbgShowPrice", false)
 let showPriceOnBanner = Computed(@() (abTests.value?.showPriceOnBanner == "true") != dbgShowPrice.value)
 
 let dbgOpenType = mkWatched(persist, "dbgOpenType", null)
-let offerOpenType = Computed(@() dbgOpenType.value ?? abTests.value?.offerOpenType ?? OT_ONLY_BANNER)
+let offerOpenType = Computed(@() dbgOpenType.value ?? abTests.value?.offerOpenType ?? OT_ONLY_LOGIN)
 
 register_command(function() {
   dbgShowPrice(!dbgShowPrice.value)

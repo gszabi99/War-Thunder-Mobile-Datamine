@@ -5,7 +5,7 @@ let { btnBgColor, borderColorPushed, borderNoAmmoColor, borderColor
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { canZoom, isInZoom } = require("%rGui/hudState.nut")
+let { canZoom, isInZoom, isTrackingActive } = require("%rGui/hudState.nut")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
@@ -128,6 +128,19 @@ let mkBtnImage = @(size, image, color = 0xFFFFFFFF) {
   keepAspect = KEEP_ASPECT_FIT
   color
 }
+
+let circleBtnEditViewCtor = @(size, imgSize) @(image) {
+  size = [size, size]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#hud_bg_round_border.svg:{size}:{size}:P")
+  color = borderColor
+  children = [
+    mkBtnBg(size, btnBgColor.empty)
+    mkBtnImage(imgSize, image)
+  ]
+}
+let mkCircleBtnEditView = circleBtnEditViewCtor(buttonSize, buttonImgSize)
+let mkBigCircleBtnEditView = circleBtnEditViewCtor(bigButtonSize, bigButtonImgSize)
 
 let countTextStyle = {
   rendObj = ROBJ_TEXT
@@ -287,7 +300,7 @@ let mkCircleTankSecondaryGun = @(shortcutId, img = null) @(actionItem) function(
 
 let function mkCircleZoom() {
   let stateFlags = Watched(0)
-  let imgSize = (0.9 * buttonSize).tointeger()
+  let imgSize = (0.8 * buttonSize).tointeger()
   return @() {
     watch = [canZoom, isInZoom]
     key = "btn_zoom_circle"
@@ -306,8 +319,32 @@ let function mkCircleZoom() {
       mkBtnBg(buttonSize, btnBgColor.empty)
       mkBtnBorder(buttonSize, canZoom.value, stateFlags)
       mkBtnImage(imgSize,
-        isInZoom.value ? "ui/gameuiskin#hud_binoculars_zoom.svg" : "ui/gameuiskin#hud_binoculars.svg")
+        isInZoom.value ? "ui/gameuiskin#hud_tank_binoculars_zoom.svg" : "ui/gameuiskin#hud_tank_binoculars.svg")
       mkGamepadShortcutImage("ID_ZOOM_TOGGLE", defShortcutOvr)
+    ]
+  }
+}
+
+let function mkCircleTargetTrackingBtn() {
+  let stateFlags = Watched(0)
+  let imgSize = (0.8 * buttonSize).tointeger()
+  let color = Computed(@() isTrackingActive.value ? 0xFFFFFFFF : disabledColor)
+  let bgColor = Computed(@() isTrackingActive.value ? btnBgColor.ready : btnBgColor.empty)
+
+  return @() {
+    watch = isTrackingActive
+    key = "btn_target_tracking_circle"
+    size = [bigButtonSize, bigButtonSize]
+    behavior = Behaviors.Button
+    eventPassThrough = true
+    hotkeys = mkGamepadHotkey("ID_TOGGLE_TARGET_TRACKING")
+    onClick = @() toggleShortcut("ID_TOGGLE_TARGET_TRACKING")
+    onElemState = @(v) stateFlags(v)
+    children = [
+      mkBtnBg(bigButtonSize, bgColor.value)
+      mkBtnBorder(bigButtonSize, canZoom.value, stateFlags)
+      mkBtnImage(imgSize, "ui/gameuiskin#hud_tank_target_tracking.svg", color.value)
+      mkGamepadShortcutImage("ID_TOGGLE_TARGET_TRACKING", defShortcutOvr)
     ]
   }
 }
@@ -341,4 +378,8 @@ return {
   mkCircleZoom
   mkSimpleCircleTouchBtn
   mkCountTextRight
+  mkCircleTargetTrackingBtn
+
+  mkCircleBtnEditView
+  mkBigCircleBtnEditView
 }

@@ -51,13 +51,24 @@ let mkVerticalPannableArea = @(content, override) {
   }
 }.__update(override)
 
-let function mkOptionsScene(sceneId, tabs){
-
-  let isOpened = mkWatched(persist, $"{sceneId}_isOpened", false)
+let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null) {
+  isOpened = isOpened ?? mkWatched(persist, $"{sceneId}_isOpened", false)
   let curTabIdx = mkWatched(persist, $"{sceneId}_curTabIdx", 0)
   let close = @() isOpened(false)
   let backBtn = backButton(close)
   isAuthorized.subscribe(@(_) isOpened(false))
+
+  let resetCurTabIdx = @() curTabIdx(tabs.findindex(@(t) t?.isVisible.value ?? true))
+
+  foreach(idx, tab in tabs) {
+    let { isVisible = null } = tab
+    if (isVisible == null)
+      continue
+    let tabIdx = idx
+    isVisible.subscribe(@(v) v || tabIdx != curTabIdx.value ? null : resetCurTabIdx())
+    if (tabIdx == curTabIdx.value)
+      resetCurTabIdx()
+  }
 
   let function curOptionsContent() {
     let tab = tabs?[curTabIdx.value]
@@ -100,8 +111,17 @@ let function mkOptionsScene(sceneId, tabs){
     padding = saBordersRv
     flow = FLOW_VERTICAL
     gap = hdpx(50)
+
     children = [
-      backBtn
+      {
+        size = [flex(), SIZE_TO_CONTENT]
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        children = [
+          backBtn
+          addHeaderComp
+        ]
+      }
       {
         size = flex()
         flow = FLOW_HORIZONTAL
@@ -117,7 +137,7 @@ let function mkOptionsScene(sceneId, tabs){
 
   return function(pageId = null) {
     if (pageId != null)
-      curTabIdx(tabs.findindex(@(v) v?.id == pageId) ?? curTabIdx.value)
+      curTabIdx(tabs.findindex(@(v) v?.id == pageId && (v?.isVisible.value ?? true)) ?? curTabIdx.value)
     isOpened(true)
   }
 }

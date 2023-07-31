@@ -11,4 +11,5 @@ return {
   tabW
   contentOffset
   contentWidth
+  minContentOffset
 }

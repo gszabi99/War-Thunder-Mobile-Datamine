@@ -7,7 +7,7 @@ let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.
 let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
 let backButton = require("%rGui/components/backButton.nut")
-let scoreBoard = require("%rGui/hud/scoreBoard.nut")
+let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
 let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { playersDamageStats, requestPlayersDamageStats } = require("playersDamageStats.nut")
@@ -28,7 +28,7 @@ let playersByTeam = Computed(function() {
         let { id, userId, name, isBot, aircraftName = "" } = p
         let nickname = getPlayerName(name, myUserRealName.value, myUserName.value)
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id.tostring()]
-        let { level = 1, hasPremium = false } = !isBot
+        let { level = 1, hasPremium = false, decorators = null } = !isBot
           ? playersCommonStats.value?[userId.tointeger()]
           : genBotCommonStats(name, aircraftName, allUnitsCfgFlat.value?[aircraftName] ?? {}, playerLevelInfo.value.level)
         return p.__merge({
@@ -37,6 +37,7 @@ let playersByTeam = Computed(function() {
           score
           level
           hasPremium
+          decorators
         })
       })
       .sort(playersSortFunc(battleCampaign.value)))

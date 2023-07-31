@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 from "%globalScripts/logs.nut" import *
 let { Watched } = require("frp")
@@ -14,6 +11,7 @@ let { updateAllConfigs } = require("servConfigs.nut")
 const PROGRESS_UNIT = "UnitInProgress"
 const PROGRESS_REWARD = "RewardInProgress"
 const PROGRESS_SHOP = "ShopPurchaseInProgress"
+const PROGRESS_DECORATORS = "DecoratorInProgress"
 const PROGRESS_SCH_REWARD = "SchRewardInProgress"
 const PROGRESS_LOOTBOX = "LootboxInProgress"
 const PROGRESS_LEVEL = "LevelInProgress"
@@ -175,6 +173,7 @@ return {
   unitInProgress = mkProgress(PROGRESS_UNIT)
   rewardInProgress = mkProgress(PROGRESS_REWARD)
   shopPurchaseInProgress = mkProgress(PROGRESS_SHOP)
+  decoratorInProgress = mkProgress(PROGRESS_DECORATORS)
   schRewardInProgress = mkProgress(PROGRESS_SCH_REWARD)
   lootboxInProgress = mkProgress(PROGRESS_LOOTBOX)
   levelInProgress = mkProgress(PROGRESS_LEVEL)
@@ -197,6 +196,37 @@ return {
   add_player_exp = @(campaign, playerExp, cb = null) request({
     method = "add_player_exp"
     params = { campaign, playerExp }
+  }, cb)
+
+  add_decorator = @(name, cb = null) request({
+    method = "add_decorator"
+    params = { name }
+  }, cb)
+
+  set_current_decorator = @(name, cb = null) request({
+    method = "set_current_decorator"
+    params = { name }
+    progressId = PROGRESS_DECORATORS
+    progressValue = name
+  }, cb)
+
+  remove_decorator = @(name, cb = null) request({
+    method = "remove_decorator"
+    params = { name }
+  }, cb)
+
+  buy_decorator = @(name, currencyId, price, cb = null) request({
+    method = "buy_decorator"
+    params = { name, currencyId, price }
+    progressId = PROGRESS_DECORATORS
+    progressValue = name
+  }, cb)
+
+  unset_current_decorator = @(decorType , cb = null) request({
+    method = "unset_current_decorator"
+    params = { decorType }
+    progressId = PROGRESS_DECORATORS
+    progressValue = decorType
   }, cb)
 
   get_player_level_rewards = @(campaign, level, cb = null) request({
@@ -435,6 +465,11 @@ return {
   debug_offer_generation_stats = @(campaign, cb = null) request({
     method = "debug_offer_generation_stats"
     params = { campaign }
+  }, cb)
+
+  debug_offer_possible_units = @(cb = null) request({
+    method = "debug_offer_possible_units"
+    params = {}
   }, cb)
 
   shift_all_offers_time = @(time, cb = null) request({

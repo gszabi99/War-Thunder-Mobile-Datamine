@@ -66,6 +66,14 @@ let shipSelectShortcuts = {
   [TRIGGER_GROUP_EXTRA_GUN_4] = "ID_SHIP_WEAPON_EXTRA_GUN_4",
 }
 
+let fixedPositionWeapons = [
+  "ID_ZOOM",
+  "EII_SUPPORT_PLANE",
+  "EII_SUPPORT_PLANE_2",
+  "EII_SUPPORT_PLANE_3",
+  "EII_DIVING_LOCK"
+].reduce(@(res, v) res.__update({ [v] = true }), {})
+
 let weaponsList = Computed(@() unitType.value == AIR ? aircraftWeaponsList
   : unitType.value == TANK ? []
   : shipWeaponsList)
@@ -146,6 +154,27 @@ local visibleWeaponsList = Computed(function(prev) {
 
   return isEqual(res, prev) ? prev : res
 })
+
+let visibleWeaponsMap = Computed(function() {
+  let res = {}
+  foreach (item in visibleWeaponsList.value)
+    if ("viewCfg" in item)
+      res[item.viewCfg.selShortcut] <- {
+        actionItem = item.actionItem,
+        buttonConfig = item.viewCfg,
+        id = item.viewCfg.selShortcut
+      }
+    else
+      res[item.id] <- {
+        actionItem = item.actionItem,
+        id = item.id
+      }
+  return res
+})
+
+let visibleWeaponsDynamic = Computed(@()
+  visibleWeaponsMap.value.filter(@(_, id) id not in fixedPositionWeapons)
+    .values().sort(@(a, b) (a?.actionItem.id ?? 0) <=> (b?.actionItem.id ?? 0)))
 
 let userHoldWeapKeys = Watched({})
 let userHoldWeapInside = Watched({})
@@ -230,6 +259,8 @@ let isChainedWeapons = mkWatched(persist, "isChainedWeapons", true)
 
 return {
   visibleWeaponsList
+  visibleWeaponsMap
+  visibleWeaponsDynamic
   hasCrosshairForWeapon
   hasAimingModeForWeapon
   isCurHoldWeaponInCancelZone

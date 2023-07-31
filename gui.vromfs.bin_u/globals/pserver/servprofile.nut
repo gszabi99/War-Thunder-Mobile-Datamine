@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { ndbRead, ndbExists  } = require("nestdb")
 let { Watched } = require("frp")
 

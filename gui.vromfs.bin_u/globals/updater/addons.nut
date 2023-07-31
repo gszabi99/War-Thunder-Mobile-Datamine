@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { loc } = require("dagor.localize")
 let { get_addon_size } = require("contentUpdater")
 let { startswith } = require("string")
@@ -23,6 +20,7 @@ let comma = loc("ui/comma")
 let naval     = [ PKG_COMMON, PKG_NAVAL, PKG_COMMON_HQ, PKG_NAVAL_HQ ]
 let ground    = [ PKG_COMMON, PKG_GROUND, PKG_COMMON_HQ, PKG_GROUND_HQ ]
 let dev       = [ PKG_DEV ]
+let initialAddons = [ "pkg_secondary_hq", "pkg_secondary" ]
 
 let gameModeAddonToAddonSetMap = {
   [PKG_NAVAL] = naval,
@@ -38,9 +36,11 @@ let toIdsMap = @(list) list
 let addonLocId = toIdsMap([ PKG_COMMON, PKG_COMMON_HQ, PKG_NAVAL_HQ, PKG_GROUND_HQ ])
   .map(@(_) "")
   .__update({
-    [PKG_NAVAL]     = "addon/naval",
-    [PKG_GROUND]    = "addon/ground",
-    [PKG_DEV]       = "addon/dev",
+    [PKG_NAVAL]       = "addon/naval",
+    [PKG_GROUND]      = "addon/ground",
+    [PKG_DEV]         = "addon/dev",
+    pkg_secondary     = "addon/pkg_secondary",
+    pkg_secondary_hq  = "addon/pkg_secondary",
   })
 
 let function getAddonNameImpl(addon) {
@@ -100,6 +100,7 @@ return freeze({
   naval
   ground
   dev
+  initialAddons
 
   gameModeAddonToAddonSetMap
 

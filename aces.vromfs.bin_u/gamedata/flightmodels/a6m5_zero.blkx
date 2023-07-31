@@ -2,9 +2,13 @@
   "model": "a6m5",
   "fmFile": "fm/a6m5_zero.blk",
   "useTouchShooting": true,
+  "tpsCameraTargetOffsetAtZoom": [
+    40.0,
+    10.0,
+    0.0
+  ],
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
-  "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "type": "typeFighter",
   "paratrooper": "japan_para",
@@ -1614,12 +1618,6 @@
     "nonExtinguishFireTime": 5.0
   },
   "modifications": {},
-  "default_skin_tomoe": {
-    "replace_tex": {
-      "from": "a6m5_a*",
-      "to": "a6m5_a*"
-    }
-  },
   "cutting": {
     "_emtr_break_wing0_l_from": [
       -0.457871,

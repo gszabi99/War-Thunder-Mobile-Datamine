@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { kwarg } = require("%sqstd/functools.nut")
 let { Computed, Watched } = require("frp")

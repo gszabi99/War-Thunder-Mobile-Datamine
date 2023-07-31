@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 

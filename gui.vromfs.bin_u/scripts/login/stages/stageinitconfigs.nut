@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { LOGIN_STATE } = require("%appGlobals/loginState.nut")
 let { deferOnce } = require("dagor.workcycle")

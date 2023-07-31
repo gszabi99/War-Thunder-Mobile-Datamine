@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Point3 } = require("%sqstd/math_ex.nut")
 let DataBlock  = require("DataBlock")

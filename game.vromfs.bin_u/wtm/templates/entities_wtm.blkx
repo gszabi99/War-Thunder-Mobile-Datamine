@@ -2318,9 +2318,12 @@
       "value": -1
     }
   },
-  "pserver_action_idx": {
-    "pserver_action_idx": 0,
-    "rnd_seed": 0
+  "message_queue": {
+    "_singleton": true,
+    "transaction_id:u64": {
+      "value": 0
+    },
+    "sentStatsToUserstat:object": {}
   },
   "damage_log": {
     "damageLog:array": {},

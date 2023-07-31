@@ -22,8 +22,10 @@ let loginName = mkWatched(persist, "loginName", "")
 let loginPas = mkWatched(persist, "loginPas", "")
 let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
 let check2StepAuthCode = mkWatched(persist, "check2StepAuthCode", false)
+let showPasswordIconSize = [hdpxi(50), hdpxi(40)]
 
 let isShowLanguagesList = Watched(false)
+let isPasswordVisible = Watched(false)
 
 loginName.subscribe(@(_) check2StepAuthCode(false))
 check2StepAuthCode.subscribe(@(v) v ? isLoginByGajin(true) : null)
@@ -133,6 +135,26 @@ let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch,
   onEscape = @() textWatch("")
 }.__update(options))
 
+let mkPasswordInputField = @() {
+  watch = isPasswordVisible
+  valign = ALIGN_CENTER
+  size = [flex(), SIZE_TO_CONTENT]
+  children = [
+    mkTextInputField(loginPas, loc("mainmenu/password"), { password = isPasswordVisible.value ? null : "\u2022" })
+    {
+      rendObj = ROBJ_IMAGE
+      size = showPasswordIconSize
+      image = Picture($"ui/gameuiskin#icon_password_hide.svg:{showPasswordIconSize[0]}:showPasswordIconSize[1]:P")
+      hplace = ALIGN_RIGHT
+      pos = [-hdpx(16), 0]
+      behavior = Behaviors.Button
+      onClick = @() isPasswordVisible(!isPasswordVisible.value)
+      opacity = isPasswordVisible.value ? 1.0 : 0.4
+      keepAspect = true
+    }
+  ]
+}
+
 let sighUp = urlText(loc("mainmenu/signUp"), loc("url/signUp"), { ovr = { hplace = ALIGN_RIGHT } })
 let recoveryPassword = urlText(loc("msgbox/btn_recovery"), loc("url/recovery"))
 
@@ -150,7 +172,7 @@ let gaijinAuthorization = @() {
       ]
     }
     mkTextInputField(loginName, loc("mainmenu/login"), { inputType = "mail" })
-    mkTextInputField(loginPas, loc("mainmenu/password"), { password = "\u2022" })
+    mkPasswordInputField
     check2StepAuthCode.value
       ? mkTextInputField(twoStepAuthCode, loc("mainmenu/2stepVerifCode"), { inputType = "num" })
       : null

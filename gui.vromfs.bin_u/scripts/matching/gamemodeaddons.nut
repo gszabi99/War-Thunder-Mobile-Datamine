@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 from "%scripts/dagui_library.nut" import *
 let { get_addon_version, is_addon_exists_in_game_folder } = require("contentUpdater")
 let { check_version } = require("%sqstd/version_compare.nut")

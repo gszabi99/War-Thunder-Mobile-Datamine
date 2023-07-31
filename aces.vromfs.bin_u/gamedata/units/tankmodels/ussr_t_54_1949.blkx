@@ -1028,7 +1028,6 @@
         "ratio": [
           -6.0,
           0.0,
-          6.0,
           2.8,
           2.0,
           1.43,
@@ -1605,62 +1604,6 @@
     ],
     "detectionHeight": 2.4
   },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
-      }
-    }
-  ],
   "battleHideNodes": {
     "n": "details"
   },
@@ -2477,14 +2420,9 @@
       "blk": "gameData/units/tankModels/weaponPresets/ussr_t_54_1949_default.blk"
     }
   },
-  "user_skin": {
-    "name": "ussr_t_54_1949",
-    "replace_tex": {
-      "from": "ussr_camo_green*"
-    }
-  },
   "modifications": {
     "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
     "tank_smoke_screen_system_mod": {
@@ -2829,6 +2767,160 @@
           }
         }
       ]
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_dkgreen_ltgreen_brown*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": -15.0,
+      "decal0Line0": [
+        2.68121,
+        -0.0699171,
+        0.773548,
+        0.795495
+      ],
+      "decal0Line1": [
+        0.144841,
+        -2.68634,
+        -0.744842,
+        4.05796
+      ],
+      "decal0Line2": [
+        -2.67005,
+        -0.0699171,
+        0.811246,
+        0.389985
+      ],
+      "decal0Line3": [
+        0.284118,
+        -2.68634,
+        0.703594,
+        4.06851
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.273362,
+        0.270672,
+        -0.923044,
+        -1.52627
+      ],
+      "decal0CPNormDepth1": [
+        0.273362,
+        0.270672,
+        0.923044,
+        -1.52627
+      ],
+      "decal0RotScale": [
+        1.59682,
+        0.358237
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.242379,
+      "decal0Tex": "ussr_numbers_0",
+      "decal1Line0": [
+        2.58171,
+        -0.0703555,
+        1.06139,
+        0.472166
+      ],
+      "decal1Line1": [
+        0.225424,
+        -2.68668,
+        -0.726411,
+        4.08211
+      ],
+      "decal1Line2": [
+        -2.56638,
+        -0.0703555,
+        1.09795,
+        0.715275
+      ],
+      "decal1Line3": [
+        0.360236,
+        -2.68668,
+        0.669865,
+        4.07574
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.372298,
+        0.271222,
+        -0.887599,
+        -1.52052
+      ],
+      "decal1CPNormDepth1": [
+        0.372298,
+        0.271222,
+        0.887599,
+        -1.52052
+      ],
+      "decal1RotScale": [
+        1.59698,
+        0.358132
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.222726,
+      "decal1Tex": "ussr_numbers_4",
+      "decal2Line0": [
+        2.54233,
+        -0.0708508,
+        1.14746,
+        -0.133881
+      ],
+      "decal2Line1": [
+        0.257515,
+        -2.67903,
+        -0.735971,
+        4.04057
+      ],
+      "decal2Line2": [
+        -2.52517,
+        -0.0708508,
+        1.18476,
+        1.32014
+      ],
+      "decal2Line3": [
+        0.391533,
+        -2.67903,
+        0.674292,
+        4.00212
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        0.401563,
+        0.278296,
+        -0.872524,
+        -1.5346
+      ],
+      "decal2CPNormDepth1": [
+        0.401563,
+        0.278296,
+        0.872524,
+        -1.5346
+      ],
+      "decal2RotScale": [
+        1.59724,
+        0.358399
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": false,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.23159,
+      "decal2Tex": "ussr_numbers_3"
     }
   }
 }

@@ -1,8 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-#default:no-func-decl-sugar
-#default:no-class-decl-sugar
-#default:explicit-this
-#default:no-root-fallback
 
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 
@@ -155,3 +151,7 @@ if (isReadyToFullLoad.value || shouldDisableMenu || isOfflineMenu || !isFullScri
 let { defer } = require("dagor.workcycle")
 let { reloadDargUiScript } = require("reactiveGuiCommand")
 require("eventbus").subscribe("reloadDargVM", @(_) defer(@() reloadDargUiScript(false)))
+
+let { registerMplayerCallbacks } = require("mplayer_callbacks")
+let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
+require("eventbus").subscribe("register_mplayer_callbacks", @(_) registerMplayerCallbacks({ frameNick }))

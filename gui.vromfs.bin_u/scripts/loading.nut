@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { loading_is_in_progress, loading_is_finished, loading_press_apply } = require("loading")
 let { isInLoadingScreen, isMissionLoading } = require("%appGlobals/clientState/clientState.nut")

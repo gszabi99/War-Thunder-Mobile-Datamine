@@ -1,50 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkLinearGradientImg, mkRadialGradientImg } = require("%darg/helpers/mkGradientImg.nut")
+let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkGradientCtorDoubleSideX, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 
 let btnH = hdpx(103)
 let gap = hdpx(10)
 let selLineH = hdpx(5).tointeger()
 
-let bgColor = 0x80000000
-let activeBgColor = 0x8052C4E4
+let bgColor = 0x990C1113
+let activeBgColor = 0xFF52C4E4
+let lineColor = 0xFF75D0E7
 let textColor = 0xFFFFFFFF
 let transDuration = 0.3
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
 
-
-let lineTexW = hdpx(150)
-let lineTexOfs = (0.5 * lineTexW).tointeger() - 2
-let lineGradient = mkLinearGradientImg({
-  points = [
-    { offset = 0, color = colorArr(0) },
-    { offset = 45, color = colorArr(activeBgColor) },
-    { offset = 55, color = colorArr(activeBgColor) },
-    { offset = 100, color = colorArr(0) }
-  ]
-  width = lineTexW
-  height = 4
-  x1 = 0
-  y1 = 0
-  x2 = lineTexW
-  y2 = 0
-})
-
-let btnGradient = mkRadialGradientImg({
-  points = [{ offset = 0, color = colorArr(activeBgColor) }, { offset = 100, color = colorArr(bgColor) }]
-  width = 2 * btnH
-  height = btnH
-  cx = btnH
-  cy = btnH
-  r = 1.5 * btnH
-})
+let lineGradient = mkBitmapPicture(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColor))
+let btnGradient = mkBitmapPicture(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 8, gradTexSize * 4 / 8, gradTexSize / 2, gradTexSize / 4))
 
 let btnLine = @(isActive) {
   size = [flex(), selLineH]
   rendObj = ROBJ_9RECT
   image = lineGradient
-  texOffs = [0, lineTexOfs]
-  screenOffs = [0, lineTexOfs]
+  texOffs = [0, 0.45 * gradTexSize]
+  screenOffs = [0, hdpx(50)]
   opacity = isActive ? 1 : 0
   transitions = opacityTransition
 }
@@ -58,15 +37,14 @@ let function btnBase(textOrCtor, sf, isSelected) {
         size = flex()
         rendObj = ROBJ_SOLID
         color = bgColor
-        opacity = isActive ? 0 : 1
-        transitions = opacityTransition
       }
       {
         size = flex()
         rendObj = ROBJ_IMAGE
         image = btnGradient
+        keepAspect = KEEP_ASPECT_FILL
         opacity = isActive ? 1
-          : sf & S_HOVER ? 0.75
+          : sf & S_HOVER ? 0.5
           : 0
         transitions = opacityTransition
       }

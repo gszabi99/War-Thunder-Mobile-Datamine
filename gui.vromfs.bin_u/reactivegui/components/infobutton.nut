@@ -12,12 +12,14 @@ let pattern = {
   }
 }
 
-let gradient = {
+let gradientCommon = {
   size = flex()
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#gradient_button.svg")
-  color = 0xFF16B2E9
+  color = 0xFF848484
 }
+
+let gradientPrimary = gradientCommon.__merge({ color = 0xFF16B2E9 })
 
 let iText = {
   vplace = ALIGN_CENTER
@@ -30,14 +32,14 @@ let iText = {
 }
 
 let defSize = [evenPx(70), evenPx(70)]
-let function infoBlueButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
+let mkInfoButtonCtor = @(bgColor, gradient) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
     size
     rendObj = ROBJ_SOLID
-    color = 0xFF0593AD
+    color = bgColor
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
     sound = { click  = "click" }
@@ -53,6 +55,9 @@ let function infoBlueButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   }.__update(ovr)
 }
+
+let infoBlueButton = mkInfoButtonCtor(0xFF0593AD, gradientPrimary)
+let infoCommonButton = mkInfoButtonCtor(0xFF646464, gradientCommon)
 
 let function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
@@ -77,4 +82,5 @@ let function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
 return {
   infoBlueButton
   infoGreyButton
+  infoCommonButton
 }

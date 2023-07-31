@@ -3,6 +3,7 @@ from "shortcutConsts.nut" import *
 let allShortcuts = {
   ID_FLIGHTMENU = "J:Start" //can't be changed. Need here for correct show in the controls help.
   ID_CONTINUE = "J:RT | Space"
+  ID_CAMERA_NEUTRAL =  "J:LS | N"
 
   //TANK shortcuts:
   ID_FIRE_GM = "J:RT | Space"
@@ -10,6 +11,7 @@ let allShortcuts = {
   ID_FIRE_GM_SPECIAL_GUN = "J:LB | Z"
   ID_FIRE_GM_MACHINE_GUN = "J:RB | X"
   ID_ZOOM_TOGGLE = "J:RS | V"
+  ID_TOGGLE_TARGET_TRACKING =  "J:LT | B"
 
   ID_ACTION_BAR_ITEM_7 = "J:B | 1" //fighter
   ID_ACTION_BAR_ITEM_9 = "J:A | 2" //bomber
@@ -18,6 +20,7 @@ let allShortcuts = {
   ID_SMOKE_SCREEN = "J:D.Right | 4"
   ID_ACTION_BAR_ITEM_11 = "J:D.Left | 5" //toolkit
   ID_ACTION_BAR_ITEM_6 = "J:D.Left | 5" //extinguisher
+  ID_SHOW_HERO_MODULES = "J:X | 6"
 
   ID_ACTION_BAR_ITEM_10 = "J:D.Up | Q" //winch
   ID_NEXT_BULLET_TYPE = "J:Y | E"

@@ -1,6 +1,22 @@
 {
   "mandatoryLandquality": 1,
   "z_far": 50000.0,
+  "gridSteps": [
+    2048.0,
+    2048.0
+  ],
+  "numBorderCellsXPos": 8,
+  "numBorderCellsXNeg": 8,
+  "numBorderCellsZPos": 8,
+  "numBorderCellsZNeg": 8,
+  "mirrorShrinkXPos": 256.0,
+  "mirrorShrinkXNeg": 256.0,
+  "mirrorShrinkZPos": 256.0,
+  "mirrorShrinkZNeg": 256.0,
+  "lastClip": true,
+  "lastclip_horizon": true,
+  "rendinstPreloadDistance": 7000.0,
+  "clipmap_tex_mips": 5,
   "mapCoord0": [
     -32768.0,
     -32768.0
@@ -12,10 +28,6 @@
   "minAreaSize": [
     12000.0,
     12000.0
-  ],
-  "gridSteps": [
-    2048.0,
-    2048.0
   ],
   "tankMapCoord0": [
     1584.0,
@@ -33,29 +45,39 @@
     2048.0,
     2048.0
   ],
-  "numBorderCellsXPos": 8,
-  "numBorderCellsXNeg": 8,
-  "numBorderCellsZPos": 8,
-  "numBorderCellsZNeg": 8,
-  "mirrorShrinkXPos": 256.0,
-  "mirrorShrinkXNeg": 256.0,
-  "mirrorShrinkZPos": 256.0,
-  "mirrorShrinkZNeg": 256.0,
   "customLevelMap": "avg_abandoned_factory_tankmap*",
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "water_level": 7.0,
-  "lastClip": true,
-  "lastclip_horizon": true,
   "soundAmbientPath": "sounds/ambient",
   "soundAmbientPathStudio": "aircraft/ambient",
   "soundAmbientEvent": "global_amb",
-  "wind_scale": 0.8,
-  "max_wind_strength": 2.5,
   "average_ground_level": 8.0,
   "puddlesPowerScale": 1.0,
   "puddlesSpread": 1.0,
-  "clipmap_tex_mips": 5,
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": false,
+    "grass": true,
+    "water3d": true,
+    "staticScene": true,
+    "riExtraMinSizeForReflection": 5.0
+  },
+  "clipmap": {
+    "texelSize": 0.03125,
+    "lastClipSize": 512
+  },
+  "earth": {
+    "earthWorldEnabled": true,
+    "earthWorldMin": [
+      -32768.0,
+      -32768.0
+    ],
+    "earthWorldMax": [
+      32768.0,
+      32768.0
+    ]
+  },
   "micro_details": {
     "micro_detail": [
       "microdetail_stone_a_tex_n*",
@@ -94,17 +116,6 @@
     "year": 1942,
     "month": 7,
     "day": 28
-  },
-  "earth": {
-    "earthWorldEnabled": true,
-    "earthWorldMin": [
-      -32768.0,
-      -32768.0
-    ],
-    "earthWorldMax": [
-      32768.0,
-      32768.0
-    ]
   },
   "shader_vars": {
     "land_smoothness_detect_color": [
@@ -416,14 +427,6 @@
       "default"
     ]
   },
-  "render": {
-    "lmesh": true,
-    "onlyUnderwaterLmesh": false,
-    "grass": true,
-    "water3d": true,
-    "staticScene": true,
-    "riExtraMinSizeForReflection": 5.0
-  },
   "overrideRiLodRange": {
     "tree_sea_bush_a": {
       "lod0": 200.0,
@@ -449,9 +452,5 @@
       "lod0": 200.0,
       "lod1": 1500.0
     }
-  },
-  "clipmap": {
-    "texelSize": 0.03125,
-    "lastClipSize": 512
   }
 }

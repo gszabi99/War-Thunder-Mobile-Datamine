@@ -2037,7 +2037,6 @@
         "ratio": [
           -6.0,
           0.0,
-          6.0,
           2.8,
           2.0,
           1.43,
@@ -2593,6 +2592,7 @@
   "modifications": {
     "tank_tool_kit_expendable": {},
     "art_support": {},
+    "upgraded": {},
     "tank_extinguisher": {}
   },
   "ammoLoadDistribution": {
@@ -2604,12 +2604,6 @@
       "ammo_turret_02_dm": {
         "count": 1000
       }
-    }
-  },
-  "user_skin": {
-    "name": "zsu_23_4",
-    "replace_tex": {
-      "from": "ussr_camo_green*"
     }
   },
   "skin": [
@@ -2666,17 +2660,162 @@
         "from": "ussr_camo_green*",
         "to": "ussr_camo_winter_lines*"
       }
-    },
-    {
-      "name": "ussr_modern_green",
-      "nameLocId": "skin/ussr_modern_green",
-      "descLocId": "skin/ussr_modern_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_modern_green*"
-      }
     }
   ],
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_dkgreen_ltgreen_brown*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": -55.0,
+      "decal0Line0": [
+        2.79334,
+        -1.22101E-07,
+        4.99657E-07,
+        2.04975
+      ],
+      "decal0Line1": [
+        -1.221E-07,
+        -2.79334,
+        -4.28622E-06,
+        4.08815
+      ],
+      "decal0Line2": [
+        -2.79334,
+        -1.22101E-07,
+        4.99658E-07,
+        -1.04975
+      ],
+      "decal0Line3": [
+        1.22102E-07,
+        -2.79334,
+        4.28622E-06,
+        4.08815
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        1.78875E-07,
+        1.53444E-06,
+        -1.0,
+        -1.44882
+      ],
+      "decal0CPNormDepth1": [
+        1.78875E-07,
+        1.53444E-06,
+        1.0,
+        -1.44882
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.357994
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "ussr_numbers_8",
+      "decal1Line0": [
+        2.79044,
+        -1.21974E-07,
+        4.99138E-07,
+        1.32018
+      ],
+      "decal1Line1": [
+        -1.21973E-07,
+        -2.79044,
+        -4.28176E-06,
+        4.07916
+      ],
+      "decal1Line2": [
+        -2.79044,
+        -1.21974E-07,
+        4.99138E-07,
+        -0.320181
+      ],
+      "decal1Line3": [
+        1.21975E-07,
+        -2.79044,
+        4.28176E-06,
+        4.07916
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        1.78875E-07,
+        1.53444E-06,
+        -1.0,
+        -1.44882
+      ],
+      "decal1CPNormDepth1": [
+        1.78875E-07,
+        1.53444E-06,
+        1.0,
+        -1.44882
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.358367
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.2,
+      "decal1Tex": "ussr_numbers_5",
+      "decal2Line0": [
+        2.7908,
+        -1.2199E-07,
+        -4.44189E-12,
+        0.627891
+      ],
+      "decal2Line1": [
+        -1.2199E-07,
+        -2.7908,
+        -8.81688E-06,
+        4.08442
+      ],
+      "decal2Line2": [
+        -2.7908,
+        -1.2199E-07,
+        -3.17278E-12,
+        0.372109
+      ],
+      "decal2Line3": [
+        1.2199E-07,
+        -2.7908,
+        8.81688E-06,
+        4.08442
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        -1.30199E-12,
+        3.15926E-06,
+        -1.0,
+        -1.44882
+      ],
+      "decal2CPNormDepth1": [
+        -1.30199E-12,
+        3.15926E-06,
+        1.0,
+        -1.44882
+      ],
+      "decal2RotScale": [
+        1.5708,
+        0.35832
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": false,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.2,
+      "decal2Tex": "ussr_numbers_9"
+    }
+  },
   "battleHideNodes": {
     "n": "details"
   }

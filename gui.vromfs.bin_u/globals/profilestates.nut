@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { INVALID_USER_ID } = require("matching.errors")
 let { Computed } = require("frp")

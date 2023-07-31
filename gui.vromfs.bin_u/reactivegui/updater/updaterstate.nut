@@ -12,7 +12,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { localizeAddonsLimited } = require("%appGlobals/updater/addons.nut")
+let { localizeAddonsLimited, initialAddons } = require("%appGlobals/updater/addons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
@@ -40,6 +40,13 @@ let updaterError = mkHardWatched("updater.updaterError", null)
 let firstPriorityAddons = mkWatched(persist, "firstPriorityAddons", {})
 let downloadWndParams = mkWatched(persist, "downloadWndParams", null)
 let progressPercent = Computed(@() downloadState.value?.percent ?? 0)
+let initialAddonsToDownload = Computed(function(prev) {
+  let res = {}
+  foreach(a in initialAddons)
+    if (!(hasAddons.value?[a] ?? true))
+      res[a] <- true
+  return isEqual(res, prev) ? prev : res
+})
 
 let needStartDownloadAddons = keepref(Computed(function() {
   if (isDownloadPaused.value || !isLoggedIn.value || isInLoadingScreen.value || isInMpBattle.value
@@ -47,7 +54,7 @@ let needStartDownloadAddons = keepref(Computed(function() {
       || (isConnectionLimited.value && !allowLimitedDownload.value))
     return {}
 
-  let addons = firstPriorityAddons.value //first priority on addons requested by download addons window
+  let addons = firstPriorityAddons.value.__merge(initialAddonsToDownload.value) //first priority on addons requested by download addons window
   local res = addonsToDownload.value.filter(@(_, a) a in addons)
   if (res.len() != 0)
     return res
@@ -182,8 +189,14 @@ let maxCurCampaignMRank = Computed(function() {
   return res
 })
 
-let addonsToAutoDownload = keepref(Computed(@() !isAnyCampaignSelected.value ? []
-  : getCampaignPkgsForOnlineBattle(curCampaign.value, maxCurCampaignMRank.value)))
+let addonsToAutoDownload = keepref(Computed(function() {
+  if (!isAnyCampaignSelected.value)
+    return initialAddonsToDownload.value?.keys()
+  let list = clone initialAddonsToDownload.value
+  foreach(a in getCampaignPkgsForOnlineBattle(curCampaign.value, maxCurCampaignMRank.value))
+    list[a] <- true
+  return list.keys()
+}))
 
 let function startDownloadAddons(addons) {
   if (addons.len() == 0)
@@ -220,7 +233,7 @@ let function openDownloadAddonsWnd(addons = [], successEventId = null, context =
   if (fullAddons.len() != addonsToDownload.value.len())
     addonsToDownload(fullAddons)
 
-  firstPriorityAddons(rqAddons)
+  firstPriorityAddons(rqTbl)
   downloadWndParams({ addons, successEventId, context })
 
   if (rqAddons.len() != 0)

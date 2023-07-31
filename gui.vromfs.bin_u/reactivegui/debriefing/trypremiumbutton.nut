@@ -1,12 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
-let { gradRadial } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradRadial } = require("%rGui/style/gradients.nut")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
+
 
 let btnW  = hdpxi(225)
 let btnH = hdpxi(200)
 let premIconW = hdpxi(140)
 let premIconH = hdpxi(97)
+
+let glareAnimDuration = 0.4
+let glareRepeatDelay = 2
+let startGlareAnim = @() anim_start("glareAnim")
+let glareWidth = hdpx(40)
+let glareHeight = btnH * 1.25
 
 let glowColor = 0xFF8A5627
 let bgColor = 0xFF1A1D1E
@@ -53,6 +61,23 @@ let btnText = {
   fontFxColor = 0xFF000000
 }.__update(fontTiny)
 
+let glare = {
+  key = "glare"
+  rendObj = ROBJ_IMAGE
+  size = [glareWidth, glareHeight]
+  image = gradTranspDoubleSideX
+  color = 0x00A0A0A0
+  transform = { translate = [-glareWidth * 3, 0], rotate = 25 }
+  vplace = ALIGN_CENTER
+  onAttach = @() clearTimer(startGlareAnim)
+  animations = [{
+    prop = AnimProp.translate, duration = glareAnimDuration, delay = 0.5, play = true,
+    to = [btnW + glareWidth * 2, 0],
+    trigger = "glareAnim",
+    onFinish = @() resetTimeout(glareRepeatDelay, startGlareAnim),
+  }]
+}
+
 let function tryPremiumButton() {
   let stateFlags = Watched(0)
   return @() {
@@ -75,6 +100,7 @@ let function tryPremiumButton() {
       btnGlow
       btnIcon
       btnText
+      glare
     ]
   }
 }

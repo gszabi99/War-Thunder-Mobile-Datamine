@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { register_command } = require("console")
-let { lerp, lerpClamped, ceil } = require("%sqstd/math.nut")
+let { lerp, lerpClamped } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { activeTimers, timersVisibility, removeTimer } = require("hudTimersState.nut")
+let { activeTimers, timersVisibility, removeTimer, getTimerCountdownSec } = require("hudTimersState.nut")
 let { get_time_msec } = require("dagor.time")
 let { playerUnitName } = require("%rGui/hudState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
@@ -111,11 +111,6 @@ let timers = [
   },
 ]
 
-let function timeLeftText(endTime) {
-  let sec = ceil(0.001 * (endTime - get_time_msec())).tointeger()
-  return sec <= 0 ? "" : sec.tostring()
-}
-
 let function progressCircle(timer) {
   let { startTime = 0, endTime = 0, isForward = true } = timer
   let timeLeft = endTime - get_time_msec()
@@ -164,17 +159,16 @@ let timerTextStyle = {
   fontFx = FFT_GLOW
 }.__update(fontTiny)
 
-let function timerText(timer) {
-  let { endTime = 0, needCountdown = false, text = null } = timer
+let function timerText(id, timer) {
+  let { needCountdown = false, text = null } = timer
   if (!needCountdown)
-    return timerTextStyle.__update({ text })
-  let leftTimeInitial = timeLeftText(endTime)
-  if (leftTimeInitial == "")
-    return null
-  return timerTextStyle.__update({
-    behavior = Behaviors.RtPropUpdate
-    text = leftTimeInitial
-    update = @() { text = timeLeftText(endTime) }
+    return timerTextStyle.__merge({ key = id, text })
+
+  let timeLeft = getTimerCountdownSec(id)
+  return @() timerTextStyle.__merge({
+    watch = timeLeft
+    key = id
+    text = timeLeft.value == 0 ? "" : timeLeft.value
   })
 }
 
@@ -186,7 +180,7 @@ let timerVisual = @(timerCfg, timer) {
   children = [
     progressCircle(timer)
     timerIcon(timerCfg, timer)
-    timerText(timer)
+    timerText(timerCfg.id, timer)
   ]
 }
 

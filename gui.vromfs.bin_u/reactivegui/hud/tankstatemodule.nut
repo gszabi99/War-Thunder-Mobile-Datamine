@@ -4,8 +4,13 @@ let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, has
   hasDebuffDriver, hasDebuffGunner, hasDebuffLoader
 } = require("%rGui/hud/tankState.nut")
 let { isStickActive, stickDelta } = require("stickState.nut")
-let { mkDebuffIcon } = require("components/debuffIcon.nut")
-
+let { mkDebuffIcon, mkDebuffIconEditView } = require("components/debuffIcon.nut")
+let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
+let { mkGamepadHotkey, mkContinuousButtonParams, mkGamepadShortcutImage
+} = require("%rGui/controls/shortcutSimpleComps.nut")
+let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
+let { isInZoom } = require("%rGui/hudState.nut")
 
 let damagePanelSize = hdpxi(175)
 let moveTypeImageSize = hdpxi(50)
@@ -60,19 +65,19 @@ let mkDebuffsRow = @(debuffsCfg) function() {
   }
   return {
     watch = debuffsCfg.map(@(c) c.watch)
-    size = [4 * iconSize, iconSize]
+    size = [debuffsCfg.len() * iconSize, iconSize]
     halign = ALIGN_RIGHT
     children
   }
 }
 
-let crewDebuffsRow = mkDebuffsRow([
+let crewDebuffs = mkDebuffsRow([
   mkDebuffCfg(hasDebuffGunner, "crew_gunner_indicator.svg")
   mkDebuffCfg(hasDebuffDriver, "crew_driver_indicator.svg")
   mkDebuffCfg(hasDebuffLoader, "crew_loader_indicator.svg")
 ])
 
-let techDebuffsRow = mkDebuffsRow([
+let techDebuffs = mkDebuffsRow([
   mkDebuffCfg(hasDebuffGuns, "gun_state_indicator.svg")
   mkDebuffCfg(hasDebuffTurretDrive, "turret_gear_state_indicator.svg")
   mkDebuffCfg(hasDebuffEngine, "engine_state_indicator.svg")
@@ -80,8 +85,31 @@ let techDebuffsRow = mkDebuffsRow([
   mkDebuffCfg(hasDebuffFire, "fire_indicator.svg")
 ])
 
-local speedText = {
-  padding = [0, hdpx(4)] //debuff icons has some empty horzontal spaces, so add a bit offset to align with them
+let crewDebuffsEditView = {
+  size = [3 * iconSize, iconSize]
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_RIGHT
+  children = [
+    mkDebuffIconEditView($"ui/gameuiskin#crew_loader_indicator.svg:{iconSize}:{iconSize}", iconSize)
+    mkDebuffIconEditView($"ui/gameuiskin#crew_driver_indicator.svg:{iconSize}:{iconSize}", iconSize)
+    mkDebuffIconEditView($"ui/gameuiskin#crew_gunner_indicator.svg:{iconSize}:{iconSize}", iconSize)
+  ]
+}
+
+let techDebuffsEditView = {
+  size = [5 * iconSize, iconSize]
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_RIGHT
+  children = [
+    mkDebuffIconEditView($"ui/gameuiskin#fire_indicator.svg:{iconSize}:{iconSize}", iconSize)
+    mkDebuffIconEditView($"ui/gameuiskin#track_state_indicator.svg:{iconSize}:{iconSize}", iconSize)
+    mkDebuffIconEditView($"ui/gameuiskin#engine_state_indicator.svg:{iconSize}:{iconSize}", iconSize)
+    mkDebuffIconEditView($"ui/gameuiskin#turret_gear_state_indicator.svg:{iconSize}:{iconSize}", iconSize)
+    mkDebuffIconEditView($"ui/gameuiskin#gun_state_indicator.svg:{iconSize}:{iconSize}", iconSize)
+  ]
+}
+
+let speedText = {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
   gap = hdpx(2)
@@ -98,23 +126,12 @@ local speedText = {
   ]
 }
 
-let infoBlock = {
-  size = [SIZE_TO_CONTENT, flex()]
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_BOTTOM
-  pos = [pw(-100), pw(10)]
-  padding = [0, hdpx(45)]
-  flow = FLOW_VERTICAL
-  valign = ALIGN_BOTTOM
-  halign = ALIGN_RIGHT
-  children = [
-    speedText
-    crewDebuffsRow
-    techDebuffsRow
-  ]
-}
+let speedTextEditView = {
+  rendObj = ROBJ_TEXT
+  text = "".concat("XX ", loc("measureUnits/kmh"))
+}.__update(fontVeryTiny)
 
-return {
+let xrayDoll = {
   size = [damagePanelSize, damagePanelSize]
   rendObj = ROBJ_XRAYDOLL
   rotateWithCamera = true
@@ -123,13 +140,61 @@ return {
   drawTargetingSightLine = true
   modulateSilhouetteColor = true
 
+  children = {
+    size = [damagePanelSize, damagePanelSize]
+    behavior = Behaviors.XrayDoll
+    transform = {}
+    children = moveTypeImage
+  }
+}
+
+let dollEditView = {
+  size = [damagePanelSize, damagePanelSize]
+  rendObj = ROBJ_BOX
+  borderWidth = hdpx(3)
+  borderColor
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("xray/model")
+  }.__update(fontSmall)
+}
+
+let function useShortcutOn(shortcutId) {
+  setShortcutOn(shortcutId)
+  updateActionBarDelayed()
+}
+let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(60), ph(-50)] }
+
+let shortcutId = "ID_SHOW_HERO_MODULES"
+let doll = mkContinuousButtonParams(
+  function onTouchBegin() {
+    if (!isInZoom.value)
+      useShortcutOn(shortcutId)
+  },
+  @() setShortcutOff(shortcutId),
+  shortcutId,
+).__update({
+  key = "tank_state_button"
+  hplace = ALIGN_LEFT
+  behavior = Behaviors.TouchAreaOutButton
+  eventPassThrough = true
+  hotkeys = mkGamepadHotkey(shortcutId)
   children = [
-    {
-      size = [damagePanelSize, damagePanelSize]
-      behavior = Behaviors.XrayDoll
-      transform = {}
-      children = moveTypeImage
-    }
-    infoBlock
+    xrayDoll
+    mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
   ]
+})
+
+
+return {
+  doll
+  dollEditView
+  speedText
+  speedTextEditView
+  crewDebuffs
+  crewDebuffsEditView
+  techDebuffs
+  techDebuffsEditView
 }

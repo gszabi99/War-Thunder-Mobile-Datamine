@@ -47,6 +47,16 @@
     "ricochetCosinePower": 2.0,
     "ricochetDamage": 0.05
   },
+  "armor_jet_engine": {
+    "armorThickness": 5.0,
+    "armorThrough": 40.0,
+    "restrainDamage": 0.3,
+    "ricochetAngle": 60.0,
+    "ricochetCosinePower": 2.0,
+    "ricochetDamage": 0.05,
+    "explosionArmorQuality": 1.1,
+    "shatterArmorQuality": 1.1
+  },
   "armor_engine_light": {
     "armorThickness": 1.0,
     "armorThrough": 18.0,
@@ -397,6 +407,24 @@
     "ricochetDamage": 0.3
   },
   "glass105": {
+    "armorThickness": 105.0,
+    "armorThrough": 21.0,
+    "restrainDamage": 0.2,
+    "armorQuality": 0.2,
+    "ricochetAngle": 85.0,
+    "ricochetCosinePower": 1.0,
+    "ricochetDamage": 0.3
+  },
+  "glass107": {
+    "armorThickness": 105.0,
+    "armorThrough": 21.0,
+    "restrainDamage": 0.2,
+    "armorQuality": 0.2,
+    "ricochetAngle": 85.0,
+    "ricochetCosinePower": 1.0,
+    "ricochetDamage": 0.3
+  },
+  "glass106": {
     "armorThickness": 105.0,
     "armorThrough": 21.0,
     "restrainDamage": 0.2,

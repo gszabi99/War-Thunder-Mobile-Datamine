@@ -1698,12 +1698,6 @@
     "art_support": {},
     "tank_extinguisher": {}
   },
-  "user_skin": {
-    "name": "t32",
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
-  },
   "skin": [
     {
       "name": "us_camo_dark_green_dark_earth",
@@ -2595,6 +2589,66 @@
     "preset": {
       "name": "us_t32e1_default",
       "blk": "gameData/units/tankModels/weaponPresets/us_t32e1_default.blk"
+    }
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "us_camo_desert_pink_olive*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 4.0,
+      "decal0Line0": [
+        4.84736E-08,
+        -4.84736E-08,
+        1.62651,
+        0.462979
+      ],
+      "decal0Line1": [
+        1.15011,
+        -1.15011,
+        -7.10968E-08,
+        -1.22713
+      ],
+      "decal0Line2": [
+        4.84736E-08,
+        -4.84736E-08,
+        -1.62651,
+        0.537021
+      ],
+      "decal0Line3": [
+        1.15011,
+        -1.15011,
+        7.10968E-08,
+        -1.22713
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.707107,
+        0.707107,
+        0.0,
+        -2.79496
+      ],
+      "decal0CPNormDepth1": [
+        -0.707107,
+        -0.707107,
+        -0.0,
+        2.66401
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.614815
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.246465,
+      "decal0Tex": "usa_tank_emblem_08"
     }
   }
 }

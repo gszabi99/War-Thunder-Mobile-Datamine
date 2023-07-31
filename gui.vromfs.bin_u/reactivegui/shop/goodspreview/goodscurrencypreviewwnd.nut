@@ -3,15 +3,16 @@ let { lerp } = require("%sqstd/math.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview
 } = require("%rGui/shop/goodsPreviewState.nut")
-let { mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, mkInfoText, mkActiveItemHint,
+let { mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimeInfoItem, aTimeInfoItemOffset, aTimeInfoLight,
-  aTimePriceFull, opacityAnims, colorAnims
+  aTimePriceStrike, opacityAnims, colorAnims, oldPriceBlock
 } = require("goodsPreviewPkg.nut")
 let { gradRadial, mkRingGradient } = require("%rGui/style/gradients.nut")
 let { mkLensFlareCutRadiusLeft, lensLine } = require("%rGui/style/lensFlare.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
+let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let { mkSparks } = require("%rGui/effects/sparks.nut")
 let { playSound } = require("sound_wt")
+let { mkCurrencyComp, CS_BIG } = require("%rGui/components/currencyComp.nut")
 
 let isOpened = Computed(@() previewType.value == GPT_CURRENCY)
 let imageHeight = hdpx(450)
@@ -30,41 +31,46 @@ let aTimeImageBounce = 0.4
 let aTimeImageAppearStart = aTimeFlareMiddle - 0.5 * aTimeImageAppear
 
 let aTimeHeaderStart = aTimeImageAppearStart + aTimeImageAppear + aTimeImageBounce
-let aTimeItemsStart = aTimeHeaderStart + aTimePackNameFull
-let aTimeItemsBack = 0.15
-let aTimeItemsFull = aTimeItemsBack + aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeInfoItemOffset
-let aTimePriceStart = aTimeItemsStart + aTimeItemsFull
+let aTimeGoldStart = aTimeHeaderStart + aTimePackNameFull
+let aTimeGoldBack = 0.15
+let aTimeGoldFull = aTimeGoldBack + aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeInfoItemOffset
+let aTimePriceStart = aTimeGoldStart + aTimeGoldFull
 
 let scaleFlareColor = 0x00151730
 let lensStarOppositeColor = 0x00072232
 let lensStarReflColor = 0x001670A8
 let lensStarGlow = 0x00072232
 
-let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTimeHeaderStart)
-let rightBottomBlock = mkPriceWithTimeBlock(aTimePriceStart)
-
-let activeItemHint = {
-  size = [0, 0]
-  children = mkActiveItemHint({ pos = [1.5 * doubleSideGradientPaddingX, -doubleSideGradientPaddingY] })
-}
-
-let itemsInfo = @() doubleSideGradient.__merge({
-  watch = previewGoods
-  pos = [-doubleSideGradientPaddingX, 0]
-  flow = FLOW_VERTICAL
-  gap = hdpx(10)
-  children = [
-    mkInfoText(loc("shop/youWillGet"), aTimePriceStart + aTimePriceFull)
-    {
-      flow = FLOW_HORIZONTAL
-      children = [
-        mkPreviewItems(previewGoods.value, aTimeItemsStart + aTimeItemsBack)
-        activeItemHint
-      ]
-    }
-  ]
-  animations = colorAnims(aTimeItemsBack, aTimeItemsStart)
+let currencyStyle = CS_BIG.__merge({
+  textColor = 0xFFF4CC42,
+  iconSize = hdpxi(74),
+  fontStyle = fontLarge
+  iconGap = hdpx(20)
 })
+let currencyOldStyle = currencyStyle.__merge({ iconSize = hdpxi(60), fontStyle = fontBig })
+
+let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTimeHeaderStart)
+let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart)
+
+let function goldInfo() {
+  let { gold = 0, discountInPercent = 0 } = previewGoods.value
+  let oldGold = gold * (1.0 - (discountInPercent / 100.0))
+  return doubleSideGradient.__merge({
+    watch = previewGoods
+    pos = [-doubleSideGradientPaddingX, 0]
+    flow = FLOW_VERTICAL
+    gap = hdpx(10)
+    children = [
+      oldPriceBlock(mkCurrencyComp(oldGold, "gold", currencyOldStyle),
+        aTimeGoldStart + aTimeGoldBack)
+      mkCurrencyComp(gold, "gold", currencyStyle)
+        .__update({
+          animations = opacityAnims(0.5, aTimeGoldStart + aTimeGoldBack + aTimePriceStrike)
+        })
+    ]
+    animations = colorAnims(aTimeGoldBack, aTimeGoldStart)
+  })
+}
 
 let headerPanel = {
   vplace = ALIGN_TOP
@@ -73,7 +79,7 @@ let headerPanel = {
   gap = hdpx(30)
   children = [
     header
-    itemsInfo
+    goldInfo
   ]
 }
 

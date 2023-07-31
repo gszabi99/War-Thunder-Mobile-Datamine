@@ -6,8 +6,9 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { hitCameraRenderSize, hitResultStyle } = require("%rGui/hud/hitCamera/hitCameraConfig.nut")
 let hitCameraDmgPanel = require("hitCameraDmgPanel.nut")
 let hitCameraDebuffs = require("hitCameraDebuffs.nut")
-let { hitCameraResultPlate } = require("hitCameraResultPlate.nut")
+let { hitCameraResultPlate, hitResultPlateHeight } = require("hitCameraResultPlate.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
+let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
 let maxResultTextWidth = hdpx(330)
 let needShow = Watched(shouldShowHc.value)
@@ -121,8 +122,29 @@ let hitCameraBlock = @() {
   transitions = [{ prop = AnimProp.opacity, duration = hcFadeTime.value }]
 }
 
-return @() {
+let hitCamera = @() {
   watch = isHcRender
-  hplace = ALIGN_RIGHT
   children = isHcRender.value ? hitCameraBlock : null
+}
+
+let hitCameraEditView = {
+  rendObj = ROBJ_BOX
+  borderWidth = hdpx(3)
+  borderColor
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("options/xray_kill")
+  }.__update(fontSmall)
+}
+
+let hitCameraCommonEditView = hitCameraEditView.__merge({ size = hitCameraRenderSize })
+let hitCameraTankEditView = hitCameraEditView.__merge(
+  { size = [hitCameraRenderSize[0], hitCameraRenderSize[1] + hitResultPlateHeight] })
+
+return {
+  hitCamera
+  hitCameraCommonEditView
+  hitCameraTankEditView
 }

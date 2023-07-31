@@ -1,18 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let { dfAnimRight } = require("%rGui/style/unitDelayAnims.nut")
-let { SHIP } = require("%appGlobals/unitConst.nut")
 let { isUnitDelayed } = require("%rGui/hudState.nut")
-let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
-let { rightAlignWeaponryBlock, currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
-let hudTopCenter = require("%rGui/hud/hudTopCenter.nut")
+let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
+let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudTopLeft = require("hudTopLeft.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
-let hudBottom = require("shipHudBottom.nut")
 let { shipSight } = require("%rGui/hud/sight.nut")
-let hitCamera = require("hitCamera/hitCamera.nut")
 let { bulletToggleButton, bulletHintRightAlign } = require("bullets/bulletToggleButton.nut")
-let zoomSlider = require("%rGui/hud/zoomSlider.nut")
-
+let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
+let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
+let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 
 let bulletTogglePlace = @() {
   watch = isUnitDelayed
@@ -35,16 +32,15 @@ return {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   key = "ship-hud-touch"
+  onAttach = @() startActionBarUpdate("shipHud")
+  onDetach = @() stopActionBarUpdate("shipHud")
   children = [
     hudTopLeft
-    zoomSlider
-    hudTopCenter
-    hitCamera
-    hudBottom
+    hudTimersBlock
     hudBottomCenter
-    shipMovementBlock(SHIP)
     bulletTogglePlace
-    rightAlignWeaponryBlock
+    hudTopMainLog
+    hudTuningElems
     shipSight
     currentWeaponNameText
   ]

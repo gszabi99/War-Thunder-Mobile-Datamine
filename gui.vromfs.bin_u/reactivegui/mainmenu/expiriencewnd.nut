@@ -7,8 +7,8 @@ let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor,
   levelProgressBorderWidth } = require("%rGui/components/levelBlockPkg.nut")
 let Rand = require("%sqstd/rand.nut")
 let { buyUnitsData, rankToReqPlayerLvl } = require("%appGlobals/unitsState.nut")
-let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, mkUnitLevel,
-  mkUnitBg, mkUnitImage, mkUnitTexts } = require("%rGui/unit/components/unitPlateComp.nut")
+let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight,
+  mkUnitBg, mkUnitImage, mkUnitTexts, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { isExpirienceWndOpen } = require("expWndState.nut")
@@ -33,7 +33,7 @@ let function mkUnitPlate(unit, onClick) {
   if (unit == null)
     return null
   let stateFlags = Watched(0)
-  let levelUnit = rankToReqPlayerLvl.value?[unit.rank]
+  let levelUnit = rankToReqPlayerLvl.value?[unit.rank] ?? 0
   return @() {
     watch = stateFlags
     size = [ unitsPlateCombinedW, unitPlateHeight ]
@@ -59,9 +59,11 @@ let function mkUnitPlate(unit, onClick) {
           mkUnitImage(unit)
           mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
           {
-            size = [hdpx(20),hdpx(20)]
             vplace = ALIGN_BOTTOM
-            children = mkUnitLevel(levelUnit)
+            children = mkPlateText(" ".concat(loc("mainmenu/rank"), levelUnit.tostring()),{
+              color = 0xFF9C9EA0
+              margin = [0,0,hdpx(10),hdpx(10)]
+            }.__update(fontSmall))
           }
         ]
       }

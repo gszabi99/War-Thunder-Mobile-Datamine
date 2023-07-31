@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 const APP_ID = 1180 //WTM appid.
 const CONTACTS_GAME_ID = "wtm"

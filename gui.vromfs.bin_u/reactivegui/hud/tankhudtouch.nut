@@ -1,30 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
-let { dfAnimLeft, dfAnimBottomCenter } = require("%rGui/style/unitDelayAnims.nut")
-let tankMovementBlock = require("%rGui/hud/tankMovementBlock.nut")
-let tankStateModule = require("%rGui/hud/tankStateModule.nut")
 let tankWeaponryBlock = require("tankWeaponryBlock.nut")
-let hudTopCenter = require("%rGui/hud/hudTopCenter.nut")
+let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
+let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
-let { tankCrosshairColor, tankZoomAutoAimMode, isUnitDelayed, tankCrosshairDmTestResult
+let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult
 } = require("%rGui/hudState.nut")
 let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
-let { crosshairScreenPosition, crosshairDestinationScreenPosition } = require("%rGui/hud/commonState.nut")
-let { shootReadyness, primaryRocketGun } = require("%rGui/hud/tankState.nut")
-let { getSvgImage, touchMenuButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let actionBar = require("actionBar/actionBar.nut")
-let hudTimers = require("%rGui/hudHints/hudTimers.ui.nut")
+let { crosshairScreenPosition, crosshairDestinationScreenPosition, crosshairSecondaryScreenPosition
+} = require("%rGui/hud/commonState.nut")
+let { shootReadyness, primaryRocketGun, hasSecondaryGun } = require("%rGui/hud/tankState.nut")
+let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
-let tacticalMapTransparent = require("components/tacticalMapTransparent.nut")
+let { tacticalMapSize } = require("components/tacticalMap.nut")
 let { logerrAndKillLogPlace } = require("%rGui/hudHints/hintBlocks.nut")
-let winchButton = require("buttons/winchButton.nut")(touchMenuButtonSize)
-let { mkCircleTankPrimaryGun, mkCountTextRight } = require("buttons/circleTouchHudButtons.nut")
-let { primaryAction } = require("actionBar/actionBarState.nut")
-let hitCamera = require("hitCamera/hitCamera.nut")
-let zoomSlider = require("%rGui/hud/zoomSlider.nut")
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
-let { currentArmorPiercingFixed } = require("%rGui/options/options/controlsOptions.nut")
+let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
+let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 
 let crosshairReadyColor = Color(232, 75, 60)
 let crosshairSize = evenPx(38)
@@ -82,7 +76,27 @@ let screenPositionUpdate = @() {
     }
   }
 
+let secondarySightPositionUpdate = @() {
+    transform = {
+      translate = [
+        crosshairSecondaryScreenPosition.value.x,
+        crosshairSecondaryScreenPosition.value.y
+      ]
+    }
+  }
+
 subscribe("onControlledBulletStart", @(d) anim_start(triggers?[d.triggerGroup]))
+
+let function mkCrosshairLine(from, to, ovr) {
+  return {
+      key = hasNoPenetrationState.value
+      rendObj = ROBJ_SOLID
+      color = tankCrosshairColor.value
+      transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = Linear }]
+      transform = { translate = hasNoPenetrationState.value ? from : [0, 0] }
+      animations = hasNoPenetrationState.value ? mkCrosshairAnims(from, to) : mkCrosshairAnims([0, 0], to)
+    }.__update(ovr)
+}
 
 let arcadeCrosshairSight = @() tankZoomAutoAimMode.value  ?
 { watch = [tankCrosshairColor, tankZoomAutoAimMode ] }
@@ -95,54 +109,10 @@ let arcadeCrosshairSight = @() tankZoomAutoAimMode.value  ?
   size = [crosshairSimpleSize, crosshairSimpleSize]
   pos = [-saBorders[0] - crosshairHalfSize, -saBorders[1] - crosshairHalfSize]
   children = [
-    {
-      key = hasNoPenetrationState.value
-      rendObj = ROBJ_SOLID
-      color = tankCrosshairColor.value
-      size = sizeAim
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_LEFT
-      transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = Linear }]
-      transform = { translate = hasNoPenetrationState.value ? [0, -halfCrosshairLineHeight] : [0, 0] }
-      animations = hasNoPenetrationState.value ? mkCrosshairAnims([0, -halfCrosshairLineHeight], [0, hdpx(-30)])
-        : mkCrosshairAnims([0, 0], [0, hdpx(-30)])
-    }
-    {
-      key = hasNoPenetrationState.value
-      rendObj = ROBJ_SOLID
-      color = tankCrosshairColor.value
-      size = sizeAimRv
-      hplace = ALIGN_LEFT
-      vplace = ALIGN_CENTER
-      transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = Linear }]
-      transform = { translate = hasNoPenetrationState.value ? [-halfCrosshairLineHeight, 0] : [0, 0] }
-      animations = hasNoPenetrationState.value ? mkCrosshairAnims([-halfCrosshairLineHeight, 0], [hdpx(-30), 0])
-        : mkCrosshairAnims([0, 0], [hdpx(-30), 0])
-    }
-    {
-      key = hasNoPenetrationState.value
-      rendObj = ROBJ_SOLID
-      color = tankCrosshairColor.value
-      size = sizeAim
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_BOTTOM
-      transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = Linear }]
-      transform = { translate = hasNoPenetrationState.value ? [0, halfCrosshairLineHeight] : [0, 0] }
-      animations = hasNoPenetrationState.value ? mkCrosshairAnims([0, halfCrosshairLineHeight], [0, hdpx(30)])
-        : mkCrosshairAnims([0, 0], [0, hdpx(30)])
-    }
-    {
-      key = hasNoPenetrationState.value
-      rendObj = ROBJ_SOLID
-      color = tankCrosshairColor.value
-      size = sizeAimRv
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_RIGHT
-      transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = Linear }]
-      transform = { translate = hasNoPenetrationState.value ? [halfCrosshairLineHeight, 0] : [0, 0] }
-      animations = hasNoPenetrationState.value ? mkCrosshairAnims([halfCrosshairLineHeight, 0], [hdpx(30), 0])
-        : mkCrosshairAnims([0, 0], [hdpx(30), 0])
-    }
+    mkCrosshairLine([0, -halfCrosshairLineHeight], [0, hdpx(-30)], { size = sizeAim, hplace = ALIGN_CENTER, vplace = ALIGN_LEFT })
+    mkCrosshairLine([-halfCrosshairLineHeight, 0], [hdpx(-30), 0], {size = sizeAimRv, hplace = ALIGN_LEFT, vplace = ALIGN_CENTER })
+    mkCrosshairLine([0, halfCrosshairLineHeight], [0, hdpx(30)], {size = sizeAim, hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM })
+    mkCrosshairLine([halfCrosshairLineHeight, 0], [hdpx(30), 0], {size = sizeAimRv, hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER })
   ]
   update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate
 }
@@ -178,19 +148,23 @@ let circle = @(color, width) {
     ]
 }
 
-let mkCircleGunPosition = {
-  behavior = Behaviors.RtPropUpdate
-  pos = [-saBorders[0] - crosshairHalfSize, -saBorders[1] - crosshairHalfSize]
-  size = [crosshairSimpleSize, crosshairSimpleSize]
-  children = [circle(Color(200, 200, 200, 200), crosshairLineWidth)]
-  update = screenPositionUpdate
+let function mkCircleGunPosition(for_secondary) {
+  let color = for_secondary ? Color(150, 150, 150, 150) : Color(200, 200, 200, 200)
+  return {
+    behavior = Behaviors.RtPropUpdate
+    pos = [-saBorders[0] - crosshairHalfSize, -saBorders[1] - crosshairHalfSize]
+    size = [crosshairSimpleSize, crosshairSimpleSize]
+    children = [circle(color, crosshairLineWidth)]
+    update = for_secondary ? secondarySightPositionUpdate : screenPositionUpdate
+  }
 }
 
 let arcadeCrosshair = @() {
-  watch = [currentArmorPiercingFixed, primaryRocketGun]
+  watch = [currentArmorPiercingFixed, primaryRocketGun, hasSecondaryGun]
   children = [
     primaryRocketGun.value ? null : arcadeCrosshairSight
-    currentArmorPiercingFixed.value && !primaryRocketGun.value ? mkCircleGunPosition : null
+    currentArmorPiercingFixed.value && !primaryRocketGun.value ? mkCircleGunPosition(false) : null
+    hasSecondaryGun.value ? mkCircleGunPosition(true) : null
   ]
 }
 
@@ -225,67 +199,16 @@ let gunReadyIndicator = @() {
   children = mkReadyPart(shootReadyness.value)
 }
 
-let controlsWrapper = {
-  padding = [0, 0, 0, hdpx(540)]
-  size = [flex(), SIZE_TO_CONTENT]
-  valign = ALIGN_BOTTOM
-  children = [
-    tankStateModule
-    actionBar
-  ]
-}
-
-let hudBottom = @() {
-  watch = isUnitDelayed
-  size = [flex(), SIZE_TO_CONTENT]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_BOTTOM
-  halign = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  gap = hdpx(10)
-  children = isUnitDelayed.value ? null
-    : [
-        hudTimers
-        controlsWrapper
-      ]
-  transform = {}
-  animations = dfAnimBottomCenter
-}
-
-let mapGap = hdpx(40)
 let hudTopLeft = {
-  flow = FLOW_VERTICAL
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(90)
   children = [
+    menuButton
     {
-      flow = FLOW_HORIZONTAL
-      gap = mapGap
-      children = [
-        menuButton
-        tacticalMapTransparent
-      ]
-    }
-    @() {
-      watch = isUnitDelayed
-      flow = FLOW_HORIZONTAL
-      gap = mapGap
-      children = [
-        isUnitDelayed.value ? null : winchButton
-        logerrAndKillLogPlace
-      ]
-      transform = {}
-      animations = dfAnimLeft
+      pos = [0, tacticalMapSize[1]]
+      children = logerrAndKillLogPlace
     }
   ]
-}
-
-let leftShootButton = @() {
-  watch = [primaryAction, isUnitDelayed]
-  vplace = ALIGN_CENTER
-  pos = [hdpx(10), hdpx(10)]
-  children = isUnitDelayed.value || primaryAction.value == null ? null
-    : mkCircleTankPrimaryGun(primaryAction.value, "btn_weapon_primary_alt", mkCountTextRight)
-  transform = {}
-  animations = dfAnimLeft
 }
 
 return {
@@ -293,16 +216,15 @@ return {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   key = "tank-hud-touch"
+  onAttach = @() startActionBarUpdate("tankHud")
+  onDetach = @() stopActionBarUpdate("tankHud")
   children = [
     hudTopLeft
-    zoomSlider
-    hudTopCenter
-    hitCamera
-    tankMovementBlock
-    hudBottom
+    hudTimersBlock
+    hudTopMainLog
     hudBottomCenter
-    leftShootButton
     tankWeaponryBlock
+    hudTuningElems
     gunReadyIndicator
     tankSight
     arcadeCrosshairAim

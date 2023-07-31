@@ -5588,17 +5588,17 @@ Artık gerçek bir deniz kurdusun!";"좋아, 성공했어!
 "hints/ufo/hover_mode";"Press {shortcut} to switch to HOVER mode";"Appuyez sur {shortcut} pour passer en mode HOVER";"Tieni premuto {shortcut} per passare alla modalità HOVERING";"Drücke {shortcut} um in den SCHWEBEMODUS zu wechseln";"Presiona {shortcut} para cambiar a modo estacionario";"Нажмите {shortcut} для перехода в режим HOVER";"Wciśnij {shortcut}, aby przejść do trybu ZAWISU";"Pressione {shortcut} para ativar modo PAIRAR ";"{shortcut} tuşuna basarak HAVADA TUTUNMA moduna geçiş yap";"{shortcut} 을(를) 눌러 호버링 모드로 전환";"按 {shortcut} 键\t切\t换\t至\t悬\t浮\t模\t式";"{shortcut}を\t押すと\tホバーモードに\t切り\t替わります";"按 {shortcut} 鍵\t切\t換\t至\t懸\t浮\t模\t式";;
 "hint/mechanic_should_relies_on_himself";"Aircraft maintenance technicians can only rely on their own skills";"Les techniciens de maintenance d'aéronefs ne peuvent seulement que compter sur leurs propres compétences";"I tecnici manutentori degli aerei possono fare affidamento solo sulle proprie capacità";"Flugzeug-Wartungsarbeitentechniker können sich nur auf ihre eigenen Fähigkeiten verlassen";"Técnicos de mantenimiento de aeronaves solo pueden confiar en sus propias habilidades";"Авиатехник может полагаться только на свои собственные навыки";"Mechanicy lotniczy mogą polegać tylko na własnych umiejętnościach";"Técnicos de manutenção em aeronaves podem apenas confiar em suas próprias habiliadades";"Uçak bakım teknisyenleri sadece kendi becerilerine güvenebilirler.";"비행기 정비사들은 자신의 능력에만 의지해야한다";"飞\t机\t维\t护\t技\t师\t不\t相\t信\t眼\t泪，\t只\t相\t信\t自\t己\t高\t超\t的\t技\t巧";"航空機の\tメンテナンス\t技術者は、\t自分の\tスキルのみが\t頼りです";"飛\t機\t維\t護\t技\t師\t不\t相\t信\t眼\t淚，\t只\t相\t信\t自\t己\t高\t超\t的\t技\t巧";;
 "hint/warning_aircraft_is_faulty";"The aircraft is non-functional. Run diagnostics to identify defects and get additional Aircraft Maintenance Technician Toolkits in the Workshop.
-Press {{ID_CONTINUE}} to continue";"L'avion est non opérationnel. Exécutez un diagnostic pour identifier les défauts et obtenir des kits d'outils supplémentaires pour les techniciens de maintenance aéronautique dans l'atelier. 
-\Appuyez sur {{ID_CONTINUE}} pour continuer";"L'aereo non funziona. Fai delle diagnosi per identificare i difetti ed ottieni delle Cassette per la Manutenzione Aerea addizionali nell'inventario.
-Premi {{ID_CONTINUE}} per continuare";"Dieses Flugzeug ist nicht funktionsfähig. Führe Diagnosen aus um defekte Teile zu identifizieren und bekomme zusätzliche Flugzeug-Wartungstechnicker Werkzeugsätze in der Wektstatt.
- Drücke {{ID_CONTINUE}} um fortzusetzen";"El avión no está operativo. Haga los diagnósticos para identificar los defectos y conseguir Cajas de Herramientas de Mantenimiento del Avión en el Taller.
-Presione {{ID_CONTINUE}} para continuar";"Самолёт неисправен. Проведите его диагностику, чтобы выявить неполадки и получить дополнительные Наборы авиатехника в Мастерской.
-Нажмите {{ID_CONTINUE}} для продолжения";"Samolot nie działa. Przeprowadź diagnostykę, aby zidentyfikować usterki i uzyskać dodatkowe zestawy narzędzi dla technika samolotu w warsztacie. 
- Naciśnij {{ID_CONTINUE}}, aby kontynuować";"Aeronave não está funcional. Faça diagnóstico para identificar os defeitos e conseguir  Kits de Manutenção em Aeronaves na oficina. 
-Pressione {{ID_CONTINUE}} para continuar";"Uçak kullanılabilir değil. Tanılama yaparak hataları keşfet ve Atölye'den Uçak Bakım Teknisyeni Araç takımı al.
- {{ID_CONTINUE}} tuşuna basarak devam et.";"항공기가 작동 불가능하다. 워크샵에서 정밀 분석을 통해 결함을 찾고 항공기 정비 툴킷을 추가 획득하라.
+Press {{ID_CONTINUE}} to continue";"L'avion est non opérationnel. Exécutez un diagnostic pour identifier les défauts et obtenir des kits d'outils supplémentaires pour les techniciens de maintenance aéronautique dans l'atelier.
+Appuyez sur {{ID_CONTINUE}} pour continuer";"L'aereo non è funzionale. Lancia la diagnostica per identificare i difetti ed ottenere Cassette Attrezzi Tecnici della Manutenzione Aerea aggiuntive nella Fucina.
+Premi {{ID_CONTINUE}} per continuare";"Das Flugzeug ist nicht funktionstüchtig. Führen Sie Diagnosen zur Ermittlung von Defekten durch und besorgen Sie sich zusätzliche „Flugzeug-Wartungstechniker-Toolkits“ in der Werkstatt.
+Drücken Sie {{ID_CONTINUE}} zum Fortfahren.";"El avión no funciona. Ejecuta los diagnósticos para identificar los defectos y consigue más Herramientas de Técnico de Mantenimiento de Aviones en el Taller.
+Pulsa {{ID_CONTINUE}} para continuar";"Самолёт неисправен. Проведите его диагностику, чтобы выявить неполадки и получить дополнительные Наборы авиатехника в Мастерской.
+Нажмите {{ID_CONTINUE}} для продолжения";"Samolot jest niesprawny. Przeprowadź diagnostykę, aby zidentyfikować usterki i uzyskać dodatkowe zestawy narzędzi dla techników obsługi technicznej samolotów w Warsztacie.
+Naciśnij {{ID_CONTINUE}}, aby kontynuować";"A aeronave não está a funcionar. Execute o diagnóstico para identificar falhas e obtenha Caixas de Ferramentas de Técnico de Manutenção de Aeronaves adicionais na Oficina.
+Prima {{ID_CONTINUE}} para continuar";"Uçak işlevsel değil. Kusurları tespit etmek ve Atölyede ek Uçak Bakımı Teknisyen Alet Çantası almak için tanılamayı çalıştır.
+Devam etmek için {{ID_CONTINUE}} düğmesine bas";"항공기가 작동 불가능한 상태입니다. 워크샵에서 정밀 분석을 통해 결함을 찾고 항공기 정비 툴킷을 추가로 획득하십시오.
 {{ID_CONTINUE}} 를 눌러 계속";"这\t架\t飞\t机\t无\t法\t正\t常\t运\t作。\t前\t往\t组\t装\t工\t坊，\t使\t用\t诊\t断\t工\t具\t来\t识\t别\t受\t损\t零\t件\t并\t取\t得\t飞\t机\t维\t护\t技\t师\t工\t具\t箱。
-按 {{ID_CONTINUE}} 键\t继\t续";"この\t航空機は\t故障しています。\t診断を\t行なって\t故障個所を\t見つけ、\tワークショップで\t追加の\t航空機\tメンテナンス\t技術者\tツールキットを\t手に\t入れましょう。\t
+按 {{ID_CONTINUE}} 键\t继\t续";"この\t航空機は\t故障しています。\t診断を\t行なって\t故障個所を\t見つけ、\tワークショップで\t追加の\t航空機\tメンテナンス\t技術者工具\tセットを\t手に\t入れましょう。\t
 {{ID_CONTINUE}}を\t押すと\t続行します";"這\t架\t飛\t機\t無\t法\t正\t常\t運\t作。\t前\t往\t組\t裝\t工\t坊，\t使\t用\t診\t斷\t工\t具\t來\t識\t別\t受\t損\t零\t件\t並\t取\t得\t飛\t機\t維\t護\t技\t師\t工\t具\t箱。 
 按 {{ID_CONTINUE}} 鍵\t繼\t續";;
 "hints/spawn_on_backup_zone";"Your plane can't respawn at airfield. Backup spawn zone selected";"Votre avion ne peut pas réapparaître à l'aérodrome. Zone de réapparition sélectionnée";"Il tuo aereo non può rigenerarsi sull'aeroporto. Zona di backup selezionata";"Dein Flugzeug kann nicht auf diesem Flugfeld spawnen. Ersatzspawn ausgewählt";"Tu aeronave no puede reaparecer en el aeródromo. Zona de aparición de respaldo seleccionada";"Ваш самолёт не смог появиться на аэродроме. Выбрана запасная точка появления";"Twój samolot nie może odrodzić się na lotnisku. Wybrano strefę zapasową";"Seu avião não pode reaparecer no aeródromo. Zona de aparição reserva selecionada.  ";"Uçağın hava-alanında doğamıyor. Yedek doğma bölgesi seçildi";"비행장에서 부활할 수 없음. 백업 스폰 지점 선택됨";"无\t法\t在\t机\t场\t重\t生，\t已\t选\t择\t备\t用\t出\t生\t点";"あなたの\t飛行機は\t飛行場に\tリスポーンできません。\t予備の\tスポーンゾーンが\t選択されました";"無\t法\t在\t機\t場\t重\t生，\t已\t選\t擇\t備\t用\t出\t生\t點";;
@@ -5979,11 +5979,12 @@ Savunma bölgelerinin birinde siper al ya da düşman alanını terk et!";"전�
 "hints/defdom_you_are_damaged_timer";"Your vehicle has been damaged by an electromagnetic blow
 Systems will be restored in: {var}";"Votre véhicule a été endommagé par une onde électromagnétique
 Les systèmes seront restaurés dans: {var}";"Il tuo veicolo è stato danneggiato da un'onda elettromagnetica
-I sistemi saranno ripristinati tra: {var}";"Dein Fahrzeug wurde von einem elektromagnetischem Impuls beschädigt\die Systeme werden wiederhergestellt in: {var}";"Tu vehículo ha sido dañado por un golpe electromagnético
-Los sistemas se restablecerán en: {var}";"Ваша техника была повреждена электромагнитным ударом
+I sistemi saranno ripristinati tra: {var}";"Ihr Fahrzeug wurde durch einen elektromagnetischen Schlag beschädigt.
+Die Systeme sind wieder funktionsfähig in: {var}";"Tu vehículo ha sido dañado por un golpe electromagnético
+Los sistemas se restablecerán en {var}";"Ваша техника была повреждена электромагнитным ударом
 Системы будут восстановлены через: {var}";"Twój pojazd został uszkodzony przez impuls elektromagnetyczny
-Systemy zostaną przywrócone za: {var}";"O seu veículo encontra-se danificado por um impulso eletromagnético 
-Sistemas serão restaurados em: {var}";"Aracın, elektromanyetik patlamadan hasar aldı
+Systemy zostaną przywrócone za: {var}";"O seu veículo foi danificado por uma explosão eletromagnética
+Os sistemas serão restaurados dentro de: {var}";"Aracın, elektromanyetik patlamadan hasar aldı
 Sistemlerin geri yüklenmesine kalan: {var}";"장비가 전자기파에 의한 피해를 입었습니다
 시스템 재기동까지: {var}";"载\t具\t遭\t受\t电\t磁\t冲\t击，\t各\t项\t系\t统\t已\t停\t转
 重\t启\t倒\t计\t时：\t{var}";"機体は\t電磁爆発によって\tダメージを\t受けました
@@ -6009,11 +6010,11 @@ Sistemlerin geri yüklenmesine kalan: {var}";"장비가 전자기파에 의한 �
 Hitting them will lead to various effects.";"Les navires ont plusieurs <color=#ffff00>MODULES</color> fonctionnels.
 Les toucher entraînera divers effets.";"Le navi hanno vari <color=#ffff00>MODULI</color>.
  Colpendoli otterrai vari effetti.";"Schiffe verfügen über zahlreiche funktionale <color=#ffff00>MODULE</color>.
-Sie zu treffen hat unterschiedliche Auswirkungen.";"Los barcos tienen varios <color=#ffff00>MÓDULOS</color> funcionales.
+Sie zu treffen hat unterschiedliche Effekte.";"Los barcos tienen varios <color=#ffff00>MÓDULOS</color> funcionales.
 Al golpearlos se producen varios efectos.";"Корабли имеют несколько функциональных <color=#ffff00>МОДУЛЕЙ</color>.
 Попадания по ним приводят к различным эффектам";"Okręty mają kilka funkcjonalnych <color=#ffff00>MODUŁÓW</color>.
-Ich trafienie prowadzi do różnych efektów.";"Os navios têm vários <color=#ffff00>MÓDULOS</color> funcionais.
-Acertar neles causará vários efeitos.";"Gemilerin birkaç işlevsel <color=#ffff00>MODÜLÜ</color> bulunur.
+Uderzenie w nie wywoła różne efekty.";"Os navios têm vários <color=#ffff00>MÓDULOS</color> funcionais.
+Se forem atingidos, as consequências serão diversas.";"Gemilerin birkaç işlevsel <color=#ffff00>MODÜLÜ</color> bulunur.
 Modüllere isabet ettirmek çeşitli etkilere neden olur.";"함선에는 작동에 필요한 <color=#ffff00>모듈 또는 부품</color>이 존재합니다.
  이 부분을 공격하면 다양한 효과를 낼 수 있습니다.";"舰\t艇\t有\t多\t个\t功\t能 <color=#ffff00>\t模\t块\t</color>。
 命\t中\t不\t同\t的\t模\t块\t能\t够\t造\t成\t不\t同\t的\t毁\t伤\t效\t果。";"船には\t複数の\t便利な<color=#ffff00>モジュール</color>が\t搭載されています。\t
@@ -6025,11 +6026,11 @@ Hitting them will lead to various effects.";;
 part of the crew is not lost forever, but become <color=#ff4444>wounded</color>";"Lorsque le navire subit des dégâts,
 une partie de l'équipage n'est pas perdue à jamais, mais devient <color=#ff4444>blessée</color>";"Quando la nave prende danni,
 parte del suo equipaggio non viene perso per sempre, ma diventa <color=#ff4444>ferito</color>";"Wenn das Schiff Schaden nimmt,
-ist ein Teil der Besatzung nicht für immer verloren, sondern wird <color=#ff4444>verwundet</color>";"Cuando la nave sufre daños,
+ist ein Teil der Mannschaft nicht für immer verloren, sondern wird <color=#ff4444>verwundet</color>";"Cuando la nave sufre daños,
 parte de la tripulación no se pierde para siempre, sino que queda <color=#ff4444>herida</color>";"Когда корабль получает повреждения,
 часть экипажа не теряется безвозратно, а становятся <color=#ff4444>раненными</color>";"Gdy okręt doznaje uszkodzeń,
-część załogi nie jest tracona na zawsze, ale staje się <color=#ff4444>ranna</color>";"Quando o navio levar danos,
- parte da tripulação não é perdida para sempre, mas sim <color=#ff4444>ferida</color>";"Gemi hasar aldığında
+część załogi nie jest tracona na zawsze, ale staje się <color=#ff4444>ranna</color>";"Quando o navio sofre danos,
+parte da tripulação não é perdida para sempre, mas fica <color=#ff4444>ferida</color>";"Gemi hasar aldığında
 mürettebatın bir kısmı tamamen kaybedilmese de <color=#ff4444>yaralanır</color>";"함선이 피해를 입을 경우,
  승조원의 일부가 완전히 사라지지는 않지만<color=#ff4444>부상자</color>가 발생하게 됩니다.";"舰\t艇\t遭\t受\t攻\t击\t后，
 部\t分\t乘\t员\t不\t会\t直\t接\t损\t失，\t但\t会\t因 <color=#ff4444>\t受\t伤\t</color> 退\t出\t战\t斗";"船が\tダメージを\t受けても
@@ -6043,16 +6044,16 @@ mürettebatın bir kısmı tamamen kaybedilmese de <color=#ff4444>yaralanır</co
 "hints/wtm_tutorial_tank/arrows";"Push ""forward"" arrow button to drive the tank forward.
 Push ""left"" and ""right"" arrow buttons to rotate the tank.";"Appuyez sur la flèche ""avant"" pour faire avancer le char.
 Appuyez sur les flèches ""gauche"" et ""droite"" pour faire pivoter le char.";"Premi la freccia ""avanti"" per guidare il carro armato in avanti.
-Premi le frecce ""sinistra"" e ""destra"" per ruotare il carro.";"Drücke die ""Vorwärts""-Pfeiltaste, um den Panzer vorwärts zu fahren.
-Drücke die ""Links""- und ""Rechts""-Pfeiltasten, um den Panzer zu drehen.";"Pulsa el botón de flecha ""adelante"" para hacer avanzar el tanque.
+Premi le frecce ""sinistra"" e ""destra"" per ruotare il carro.";"Drücken Sie die „Vorwärts“-Pfeiltaste, damit sich der Panzer nach vorwärts bewegt.
+Drücken Sie die „Links“- und „Rechts“-Pfeiltasten, damit sich der Panzer dreht.";"Pulsa el botón de flecha ""adelante"" para hacer avanzar el tanque.
 Pulsa los botones de flecha ""izquierda"" y ""derecha"" para girar el tanque.";"Нажмите кнопку ""вперёд"", чтобы двигаться по направлению корпуса.
 Используйте кнопки ""влево"" или ""вправо"", чтобы поворачивать корпусом танка";"Naciśnij strzałkę ""do przodu"", aby jechać czołgiem do przodu.
-Naciskaj strzałki ""w lewo"" i ""w prawo"", aby obracać czołg.";"Pressione o botão da seta para a frente para avançar com o tanque. 
-Pressione os botões das setas para a esquerda e direita para rodar o tanque.";"Tankı ileriye sürmek için ""ileri"" ok düğmesine bas.
+Naciskaj strzałki ""w lewo"" i ""w prawo"", aby obracać czołg.";"Prima o botão de seta ""para a frente"" para conduzir o tanque para a frente.
+Prima os botões de setas ""para a esquerda"" e ""para a direita"" para rodar o tanque.";"Tankı ileriye sürmek için ""ileri"" ok düğmesine bas.
 Tankı döndürmek için ""sol"" ve ""sağ"" ok düğmelerine bas.";"""앞"" 방향 화살표 버튼을 누르면 전차가 앞으로 이동합니다.
  ""좌"" ""우"" 화살표 버튼을 누르면 전차의 진행 방향을 바꿀 수 있습니다.";"按\t下\t“前\t进”\t箭\t头\t按\t钮\t可\t使\t坦\t克\t向\t前\t行\t驶。
-按\t下\t“向\t左”\t与\t“向\t右”\t箭\t头\t可\t进\t行\t转\t向。";"「前進」\tの\t矢印\tボタンを\t押すと、\t戦車が\t前進しましょう。\t
-「左」\tと「右」\tの\t矢印\tボタンを\t押すと、\t戦車が\t回転します";"Push ""forward"" arrow button to drive the tank forward.
+按\t下\t“向\t左”\t与\t“向\t右”\t箭\t头\t可\t进\t行\t转\t向。";"「前進」\tの\t矢印\tボタンを\t押すと、\t戦車が\t前進します。\t
+「左」\tと「右」\tの\t矢印\tボタンを\t押すと、\t戦車が\t回転します。";"Push ""forward"" arrow button to drive the tank forward.
 Push ""left"" and ""right"" arrow buttons to rotate the tank.";;
 "hints/wtm_tutorial_tank/minimap";"Allied and located enemy tank markers are displayed on minimap";"Les marqueurs des chars alliés et ennemis reperés sont affichés sur la minimap";"I segnalini dei mezzi alleati e di quelli nemici sono visualizzati sulla minimappa";"Alliierte und geortete gegnerische Panzermarkierungen werden auf der Minikarte angezeigt";"Los marcadores de tanques aliados y enemigos localizados se muestran en el minimapa";"Маркеры союзной и известной вражеской техники отображаются на миникарте";"Znaczniki czołgów sojuszników i zlokalizowanych wrogów są wyświetlone na minimapie.";"Os marcadores de tanques aliados e inimigos localizados são apresentados no minimapa";"Müttefik ve konumu belirlenen düşman tank işaretçileri mini harita üzerinde gösterilir";"아군 전차와 위치가 드러난 적의 전차는 미니맵에 표시됩니다.";"友\t军\t与\t敌\t方\t坦\t克\t的\t方\t位\t标\t记\t在\t小\t地\t图\t上";"味方の\t戦車と\t発見した\t敵の\t戦車の\tマーカーが\tミニマップに\t表示されます";"友\t軍\t與\t敵\t方\t坦\t克\t的\t方\t位\t標\t記\t在\t小\t地\t圖\t上";;
 "hints/wtm_tutorial/tap_on_the_screen";"Tap on the screen to continue";"Appuyez sur l'écran pour continuer";"Tocca lo schermo per continuare";"Tippen Sie zum Fortfahren auf den Bildschirm";"Toca en la pantalla para continuar";"Коснитесь экрана, чтобы продолжить";"Naciśnij ekran, aby kontynuować.";"Toque na tela para continuar";"Ekrana dokun ve devam et";"화면을 탭하여 계속";"点\t击\t屏\t幕\t继\t续";"画面を\tタップして\t続けましょう";"點\t擊\t屏\t幕\t繼\t續";;
@@ -6060,10 +6061,10 @@ Push ""left"" and ""right"" arrow buttons to rotate the tank.";;
 <color=#ff0000>+</color> — armor is too thick to penetrate";"<color=#00ff00>+</color> — l'obus perforera le blindage au point visé
 <color=#ff0000>+</color> — le blindage est trop épais pour le perforer";"<color=#00ff00>+</color> — il colpo penetrerà la corazza nel punto in cui si mira
 <color=#ff0000>+</color> — la corazza è troppo spessa da penetrare";"<color=#00ff00>+</color> — das Geschoss durchdringt die Panzerung an der anvisierten Stelle
-<color=#ff0000>+</color> — die Panzerung ist zu dick, um durchdrungen zu werden";"<color=#00ff00>+</color> - el proyectil penetrará el blindaje en el punto apuntado
-<color=#ff0000>+</color> - el blindaje es demasiado grueso para penetrarlo";"<color=#00ff00>+</color> — снаряд пробьет броню в указанной точке
+<color=#ff0000>+</color> — die Panzerung ist zu dick, um durchdrungen zu werden";"<color=#00ff00>+</color> — el proyectil penetrará el blindaje en el punto apuntado
+<color=#ff0000>+</color> — el blindaje es demasiado grueso para penetrarlo";"<color=#00ff00>+</color> — снаряд пробьет броню в указанной точке
 <color=#ff0000>+</color> — толщина брони слишком высока, пробитие не произойдёт";"<color=#00ff00>+</color> – pocisk przebije pancerz we wskazanym miejscu
-<color=#ff0000>+</color> – pancerz jest zbyt gruby, aby go przebić.";"<color=#00ff00>+</color> — o projétil penetra a blindagem no ponto da mira
+<color=#ff0000>+</color> – pancerz jest zbyt gruby, aby go przebić";"<color=#00ff00>+</color> — o projétil penetra a blindagem no ponto da mira
 <color=#ff0000>+</color> — a blindagem é demasiado espessa para ser penetrada";"<color=#00ff00>+</color> — Mühimmat, nişan alınan noktadan zırh deler
 <color=#ff0000>+</color> — Zırh, delinemeyecek kadar kalın";"<color=#00ff00>+</color> — 포탄이 조준한 곳을 관통할 수 있음을 의미하며
 <color=#ff0000>+</color> — 의 경우 장갑의 두께가 너무 두꺼워 관통할 수 없음을 의미합니다";"<color=#00ff00>+</color>：\t炮\t弹\t能\t够\t击\t穿\t准\t星\t位\t置\t的\t装\t甲

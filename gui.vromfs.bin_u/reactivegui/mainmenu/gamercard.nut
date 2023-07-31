@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
-let { myUserName, myAvatar } = require("%appGlobals/profileStates.nut")
+let { myAvatar } = require("%appGlobals/profileStates.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
@@ -20,6 +20,8 @@ let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let premIconWithTimeOnChange = require("premIconWithTimeOnChange.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
+let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
+let { myNameWithFrame } = require("%rGui/decorators/decoratorState.nut")
 
 let avatarSize       = hdpx(96)
 let profileGap       = hdpx(45)
@@ -44,9 +46,9 @@ let avatar = @() {
 }
 
 let name =  @() textParams.__merge({
-  watch = [myUserName, havePremium]
+  watch = [havePremium, myNameWithFrame]
   vplace = ALIGN_CENTER
-  text = myUserName.value
+  text = myNameWithFrame.value ?? ""
   color = havePremium.value ? premiumTextColor : textColor
 })
 
@@ -156,7 +158,14 @@ let function mkProfileHolder(canOpenLevelUp) {
         onClick = @() accountOptionsScene()
         children = [
           avatar
-          name
+          {
+            flow = FLOW_VERTICAL
+            vplace = ALIGN_CENTER
+            children = [
+              name
+              mkTitle(fontTinyAccented)
+            ]
+          }
         ]
       }
       mkLevelBlock(canOpenLevelUp)

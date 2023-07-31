@@ -733,7 +733,42 @@
         ],
         "wait": {
           "time": 0.1
-        }
+        },
+        "unitRespawn": [
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "target_tank01",
+            "target": "spawn_01",
+            "shouldKeepFormation": false
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "target_tank02",
+            "target": "spawn_02",
+            "shouldKeepFormation": false
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "target_tank03",
+            "target": "spawn_03",
+            "shouldKeepFormation": false
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -830,7 +865,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -844,6 +879,9 @@
           "compTime": "less",
           "ignoreTime": true,
           "continuousCheck": false
+        },
+        "playerShortcutPressed": {
+          "control": "ANY"
         }
       },
       "actions": {
@@ -1420,7 +1458,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -1434,6 +1472,9 @@
           "compTime": "less",
           "ignoreTime": true,
           "continuousCheck": false
+        },
+        "playerShortcutPressed": {
+          "control": "ANY"
         }
       },
       "actions": {
@@ -1490,7 +1531,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -1504,6 +1545,9 @@
           "compTime": "less",
           "ignoreTime": true,
           "continuousCheck": false
+        },
+        "playerShortcutPressed": {
+          "control": "ANY"
         }
       },
       "actions": {
@@ -1727,7 +1771,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -1741,6 +1785,9 @@
           "compTime": "less",
           "ignoreTime": true,
           "continuousCheck": false
+        },
+        "playerShortcutPressed": {
+          "control": "ANY"
         }
       },
       "actions": {
@@ -2077,7 +2124,7 @@
       "comments": "here we need to detect that player aimed at the tank part we need him to",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -2091,6 +2138,9 @@
           "compTime": "less",
           "ignoreTime": true,
           "continuousCheck": false
+        },
+        "playerShortcutPressed": {
+          "control": "ANY"
         }
       },
       "actions": {
@@ -2344,6 +2394,9 @@
           "compTime": "less",
           "ignoreTime": true,
           "continuousCheck": false
+        },
+        "playerShortcutPressed": {
+          "control": "ANY"
         }
       },
       "actions": {
@@ -4385,7 +4438,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -4399,6 +4452,9 @@
           "compTime": "less",
           "ignoreTime": true,
           "continuousCheck": false
+        },
+        "playerShortcutPressed": {
+          "control": "ANY"
         }
       },
       "actions": {
@@ -4772,7 +4828,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -4786,6 +4842,9 @@
           "compTime": "less",
           "ignoreTime": true,
           "continuousCheck": false
+        },
+        "playerShortcutPressed": {
+          "control": "ANY"
         }
       },
       "actions": {
@@ -6057,12 +6116,12 @@
         "way": {}
       },
       {
-        "name": "target_tank03",
+        "name": "target_tank02",
         "tm": [
           [
-            -0.960062,
+            -0.0106697,
             0.0,
-            0.279788
+            -0.999943
           ],
           [
             0.0,
@@ -6070,17 +6129,17 @@
             0.0
           ],
           [
-            -0.279788,
+            0.999943,
             0.0,
-            -0.960062
+            -0.0106697
           ],
           [
-            1869.08,
+            1868.86,
             8.13704,
-            1800.13
+            1812.96
           ]
         ],
-        "unit_class": "ussr_t_34_1941_tutorial",
+        "unit_class": "germ_pzkpfw_IV_ausf_F_tutorial",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6115,12 +6174,12 @@
         "way": {}
       },
       {
-        "name": "target_tank02",
+        "name": "target_tank03",
         "tm": [
           [
-            -0.0106697,
+            -0.960062,
             0.0,
-            -0.999943
+            0.279788
           ],
           [
             0.0,
@@ -6128,17 +6187,17 @@
             0.0
           ],
           [
-            0.999943,
+            -0.279788,
             0.0,
-            -0.0106697
+            -0.960062
           ],
           [
-            1868.86,
+            1869.08,
             8.13704,
-            1812.96
+            1800.13
           ]
         ],
-        "unit_class": "germ_pzkpfw_IV_ausf_F_tutorial",
+        "unit_class": "ussr_t_34_1941_tutorial",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6719,6 +6778,87 @@
           1868.9,
           9.20359,
           1813.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.999995,
+          0.0,
+          0.00318864
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.00318864,
+          0.0,
+          -0.999995
+        ],
+        [
+          1869.43,
+          8.13704,
+          1827.67
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0106697,
+          0.0,
+          -0.999943
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999943,
+          0.0,
+          -0.0106697
+        ],
+        [
+          1868.86,
+          8.13704,
+          1812.96
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.960062,
+          0.0,
+          0.279788
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.279788,
+          0.0,
+          -0.960062
+        ],
+        [
+          1869.08,
+          8.13704,
+          1800.13
         ]
       ],
       "objLayer": 0,

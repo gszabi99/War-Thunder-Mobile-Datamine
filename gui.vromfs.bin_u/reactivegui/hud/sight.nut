@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { tankZoomAutoAimMode, tankCrosshairColor } = require("%rGui/hudState.nut")
+let { tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera } = require("%rGui/hudState.nut")
 let { hasCrosshairForWeapon, isCurHoldWeaponInCancelZone
 } = require("%rGui/hud/currentWeaponsStates.nut")
 let { primaryAction, secondaryAction } = require("actionBar/actionBarState.nut")
@@ -7,6 +7,7 @@ let { isSecondaryBulletsSame } = require("bullets/hudUnitBulletsState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
 let { targetSelectionProgress } = require("%rGui/hud/targetSelectionProgress.nut")
+let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
 
 let crosshairColorFire = Color(70, 70, 70)
 let reloadColorPrimary = 0xCC23CACC
@@ -92,15 +93,28 @@ let reloadIndicator = @() {
     .map(@(v) v.comp)
 }
 
+let pointCrosshairScreenPositionUpdate = @() {
+    transform = {
+      translate = [
+        pointCrosshairScreenPosition.value.x,
+        pointCrosshairScreenPosition.value.y
+      ]
+    }
+  }
+
 let pointCrosshair = {
+  behavior = Behaviors.RtPropUpdate
   size = [pointSize, pointSize]
+  pos = [-saBorders[0] - pointSize * 0.5, -saBorders[1] - pointSize * 0.5]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#sight_point.svg:{pointSize}:{pointSize}")
   color = crosshairColor
-  transform = { pivot = [0.5, 0.5] }
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_TOP
   key = "crosshairInZoom"
   animations = fireAnimationsInZomm
   children = reloadIndicator
+  update = pointCrosshairScreenPositionUpdate
 }
 
 let circleCrosshair = {
@@ -191,13 +205,14 @@ let shipSight = @() {
 }
 
 let tankSight = @() {
-  watch = [isCurHoldWeaponInCancelZone, tankZoomAutoAimMode, tankCrosshairColor]
+  watch = [isCurHoldWeaponInCancelZone, tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera]
   size = flex()
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
     targetSelectionProgress
-    isCurHoldWeaponInCancelZone.value ? cancelShootMark
+    isFreeCamera.value ? (isCurHoldWeaponInCancelZone.value ? cancelShootMark : null)
+      : isCurHoldWeaponInCancelZone.value ? cancelShootMark
       : !tankZoomAutoAimMode.value ? pointCrosshair
       : tankCrosshairColor.value != 0 ? mkCrosshairAutoAim(tankCrosshairColor.value)
       : null

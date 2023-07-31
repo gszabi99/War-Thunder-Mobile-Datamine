@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Computed } = require("frp")
 let { serverConfigs } = require("servConfigs.nut")
@@ -115,6 +112,7 @@ let exportProfile = {
   unseenPurchases = {}
   activeOffers = null
   abTests = {}
+  decorators = {}
 }.map(@(value, key) Computed(@() campProfile.value?[key] ?? value))
 
 return exportProfile.__update({

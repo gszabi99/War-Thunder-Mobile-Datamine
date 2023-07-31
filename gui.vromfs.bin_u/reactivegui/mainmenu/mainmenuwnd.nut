@@ -28,6 +28,7 @@ let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { allow_players_online_info } = require("%appGlobals/permissions.nut")
+let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -170,6 +171,7 @@ return {
   onAttach = @() isMainMenuAttached(true)
   onDetach = @() isMainMenuAttached(false)
   children = [
+    lqTexturesWarningHangar
     gamercardPlace
     leftBottomButtons
     toBattleButtonPlace

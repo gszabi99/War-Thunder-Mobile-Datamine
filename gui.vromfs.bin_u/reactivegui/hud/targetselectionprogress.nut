@@ -46,7 +46,7 @@ let mkTargetCorner = @(cdLeft, delay, ovr) {
   ]
 }.__update(ovr)
 
-let mkTargetSelectionData = function(endTime, cooldown, textSize) {
+let function mkTargetSelectionData(endTime, cooldown, textSize) {
   if (endTime <= 0 || cooldown <= 0)
     return null
 
@@ -123,4 +123,5 @@ let targetSelectionProgress = @() {
 return {
   targetSelectionProgress
   targetName
+  mkTargetSelectionData
 }

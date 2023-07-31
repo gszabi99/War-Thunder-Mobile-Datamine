@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let logR = log_with_prefix("[RIGHTS] ")
 let { readPermissions, readPenalties } = require("%appGlobals/permissions/permission_utils.nut")
 let { rights } = require("%appGlobals/permissions/userRights.nut")

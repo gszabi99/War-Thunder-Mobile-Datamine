@@ -1,13 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 //-file:plus-string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { format } = require("string")
 let { doesLocTextExist } = require("dagor.localize")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { register_command } = require("console")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+
+let curtomUrls = {
+  [SERVER_ERROR_MAINTENANCE] = "https://www.wtmobile.com/news",
+}
 
 let function matchingErrData(error_text) {
   let bqLocId = $"matching/{error_text}"
@@ -60,7 +61,7 @@ let function errorCodeToString(error_code) {
       return "80130184" // special error for this
   }
 
-  return format("%X", error_code)
+  return format("%X", error_code & 0xFFFFFFFF)
 }
 
 let function getErrorData(error_code) {
@@ -80,7 +81,7 @@ let function getErrorMsgParams(errCodeBase) {
     viewType = "errorMsg"
     text
     bqLocId
-    moreInfoLink = "".concat(loc($"url/knowledgebase"), errCode)
+    moreInfoLink = curtomUrls?[errCodeBase] ?? "".concat(loc($"url/knowledgebase"), errCode)
     debugString = ("LAST_SESSION_DEBUG_INFO" in getroottable()) ? ::LAST_SESSION_DEBUG_INFO : null
   }
 }

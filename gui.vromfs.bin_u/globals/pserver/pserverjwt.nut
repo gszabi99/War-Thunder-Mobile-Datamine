@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 from "%globalScripts/logs.nut" import *
 let { json_to_string } = require("json")

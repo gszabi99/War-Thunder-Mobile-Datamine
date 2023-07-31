@@ -306,6 +306,8 @@
   "tankTouchAimSensMult": 1.0,
   "shipTouchSensMult": 0.2,
   "shipTouchAimSensMult": 0.3,
+  "aircraftTouchSensMult": 1.0,
+  "aircraftTouchAimSensMult": 0.35,
   "loadNetEffectiveness": 100,
   "forceShowIndicators": true,
   "drawDamagePoints": true,
@@ -320,6 +322,7 @@
   "dayTimeSpeed": 0.0,
   "syncWeatherPeriod": 1000000.0,
   "useMedicalKitWithToolkit": true,
+  "dumpActiveGMUnitsPosEveryTick": 100,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -4824,7 +4827,7 @@
         "seriousOffenderTimer": 30.0,
         "criticalOffenderPriorityTimer": 75.0,
         "tankGunnerCameraFromSight": false,
-        "canLoseControlsByStamina": true,
+        "canLoseControlsByStamina": false,
         "staminaIndication": true,
         "attenuationControlsByStaminaMult": 1.0,
         "staminaUsageSpeedMult": 1.0,

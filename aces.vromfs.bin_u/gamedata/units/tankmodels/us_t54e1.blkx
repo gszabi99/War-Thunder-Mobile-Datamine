@@ -2603,102 +2603,67 @@
     "art_support": {},
     "tank_extinguisher": {}
   },
-  "user_skin": {
-    "name": "t54e1",
+  "default_skin": {
     "replace_tex": {
-      "from": "us_camo_olive*"
+      "from": "us_camo_olive*",
+      "to": "us_camo_desert_pink_olive*"
     }
   },
-  "skin": [
-    {
-      "name": "us_camo_dark_green_dark_earth",
-      "nameLocId": "skin/us_camo_dark_green_dark_earth",
-      "descLocId": "skin/us_camo_dark_green_dark_earth/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_dark_green_dark_earth*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_dark_khaki",
-      "nameLocId": "skin/us_camo_desert_pink_dark_khaki",
-      "descLocId": "skin/us_camo_desert_pink_dark_khaki/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_dark_khaki*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_lines",
-      "nameLocId": "skin/us_camo_desert_pink_lines",
-      "descLocId": "skin/us_camo_desert_pink_lines/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_lines*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive",
-      "nameLocId": "skin/us_camo_desert_pink_olive",
-      "descLocId": "skin/us_camo_desert_pink_olive/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive_drab",
-      "nameLocId": "skin/us_camo_desert_pink_olive_drab",
-      "descLocId": "skin/us_camo_desert_pink_olive_drab/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive_drab*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive_drab_dark_earth",
-      "nameLocId": "skin/us_camo_desert_pink_olive_drab_dark_earth",
-      "descLocId": "skin/us_camo_desert_pink_olive_drab_dark_earth/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive_drab_dark_earth*"
-      }
-    },
-    {
-      "name": "us_camo_olive_drab",
-      "nameLocId": "skin/us_camo_olive_drab",
-      "descLocId": "skin/us_camo_olive_drab/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_olive_drab*"
-      }
-    },
-    {
-      "name": "us_camo_winter_olive",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_winter_olive*"
-      }
-    },
-    {
-      "name": "us_camo_olive_drab_olive",
-      "nameLocId": "skin/us_camo_olive_drab_olive",
-      "descLocId": "skin/us_camo_olive_drab_olive/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_olive_drab_olive*"
-      }
-    },
-    {
-      "name": "modern_snow_temperate",
-      "nameLocId": "skin/usa_modern_snow_temperate",
-      "descLocId": "skin/usa_modern_snow_temperate/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_snow_temperate*"
-      }
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 31.0,
+      "decal0Line0": [
+        2.79169,
+        -8.06094E-08,
+        0.0450006,
+        2.35194
+      ],
+      "decal0Line1": [
+        0.0142548,
+        -2.64827,
+        -0.884328,
+        6.17416
+      ],
+      "decal0Line2": [
+        -2.79169,
+        -1.04012E-07,
+        0.0450007,
+        -1.35194
+      ],
+      "decal0Line3": [
+        0.0142551,
+        -2.64827,
+        0.884328,
+        6.17416
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0152874,
+        0.316772,
+        -0.948379,
+        -1.73883
+      ],
+      "decal0CPNormDepth1": [
+        0.0152874,
+        0.316772,
+        0.948379,
+        -1.73883
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358159
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.285375,
+      "decal0Tex": "usa_tank_emblem_08"
     }
-  ]
+  },
+  "battleHideNodes": {
+    "n": "details"
+  }
 }

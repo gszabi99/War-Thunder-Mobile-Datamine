@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { LOGIN_STATE } = require("%appGlobals/loginState.nut")
 let { check_purchases, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")

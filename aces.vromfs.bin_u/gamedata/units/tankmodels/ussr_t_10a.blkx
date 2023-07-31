@@ -56,7 +56,6 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_no_therm_small",
   "spawn_count": {
     "numSpawnsPerBattleSimulation": 2
   },
@@ -1905,6 +1904,7 @@
   "modifications": {
     "tank_tool_kit_expendable": {},
     "art_support": {},
+    "upgraded": {},
     "tank_extinguisher": {},
     "tank_engine_smoke_screen_system": {},
     "tank_smoke_screen_system_mod": {
@@ -2407,68 +2407,6 @@
       ]
     }
   },
-  "user_skin": {
-    "name": "t_10m",
-    "replace_tex": {
-      "from": "ussr_camo_green*"
-    }
-  },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
-      }
-    }
-  ],
   "DamageEffects": {
     "part": [
       {
@@ -2908,6 +2846,66 @@
       "emtr_exhaust_01",
       "emtr_exhaust_04"
     ]
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_dkgreen_ltgreen_brown*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": -22.0,
+      "decal0Line0": [
+        2.68362,
+        -0.099099,
+        0.479353,
+        -1.2178
+      ],
+      "decal0Line1": [
+        0.277406,
+        -1.89308,
+        -1.9444,
+        1.78783
+      ],
+      "decal0Line2": [
+        -2.63998,
+        -0.0990989,
+        0.679748,
+        2.34287
+      ],
+      "decal0Line3": [
+        0.556086,
+        -1.89308,
+        1.88373,
+        1.60144
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.147841,
+        0.719086,
+        -0.679013,
+        -2.26247
+      ],
+      "decal0CPNormDepth1": [
+        0.147841,
+        0.719086,
+        0.679013,
+        -2.26247
+      ],
+      "decal0RotScale": [
+        1.6231,
+        0.366583
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.283383,
+      "decal0Tex": "back_20"
+    }
   },
   "battleHideNodes": {
     "n": "details"

@@ -415,10 +415,12 @@
       ],
       "engine_rooms": {
         "engine_room1": {
-          "engineRoomDmPart": "engine_room_01_dm"
+          "engineRoomDmPart": "engine_room_01_dm",
+          "funnelDmPart": "funnel_01_dm"
         },
         "engine_room2": {
-          "engineRoomDmPart": "engine_room_02_dm"
+          "engineRoomDmPart": "engine_room_02_dm",
+          "funnelDmPart": "funnel_02_dm"
         }
       }
     },
@@ -1672,6 +1674,13 @@
             "emitter": "emtr_fire_dmg_02"
           }
         ]
+      },
+      {
+        "name": "ammo_expl",
+        "fx": {
+          "name": "explosion_ship_ammo",
+          "centerDmgPart": true
+        }
       },
       {
         "name": "fire_after_hit_huge",

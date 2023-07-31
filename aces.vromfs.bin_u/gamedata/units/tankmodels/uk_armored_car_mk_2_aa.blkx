@@ -2231,21 +2231,15 @@
   "modifications": {
     "tank_tool_kit_expendable": {},
     "art_support": {},
-    "tank_extinguisher": {},
-    "upgraded": {}
+    "tank_extinguisher": {}
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "uk_camo_very_dark_drab*"
-    }
-  },
-  "upgraded_skin": {
+  "default_skin": {
     "replace_tex": {
       "from": "uk_camo_very_dark_drab*",
       "to": "uk_camo_light_stone_slate_grey*"
     }
   },
-  "upgradedDecals": {
+  "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
@@ -2440,7 +2434,7 @@
       "decal3Tex": "uk_guards_armoured_division"
     }
   },
-  "upgradedAttachables": {
+  "defaultAttachables": {
     "default": {
       "attachable": [
         {
@@ -2510,89 +2504,6 @@
       ]
     }
   },
-  "skin": [
-    {
-      "name": "uk_camo_earth_yellow",
-      "nameLocId": "skin/uk_camo_earth_yellow",
-      "descLocId": "skin/uk_camo_earth_yellow/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_earth_yellow*"
-      }
-    },
-    {
-      "name": "uk_camo_light_mud_blue_black",
-      "nameLocId": "skin/uk_camo_light_mud_blue_black",
-      "descLocId": "skin/uk_camo_light_mud_blue_black/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_light_mud_blue_black*"
-      }
-    },
-    {
-      "name": "uk_camo_light_mud_slate_grey",
-      "nameLocId": "skin/uk_camo_light_mud_slate_grey",
-      "descLocId": "skin/uk_camo_light_mud_slate_grey/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_light_mud_slate_grey*"
-      }
-    },
-    {
-      "name": "uk_camo_light_stone_dark_green",
-      "nameLocId": "skin/uk_camo_light_stone_dark_green",
-      "descLocId": "skin/uk_camo_light_stone_dark_green/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_light_stone_dark_green*"
-      }
-    },
-    {
-      "name": "uk_camo_light_stone_light_grey_slate_grey",
-      "nameLocId": "skin/uk_camo_light_stone_light_grey_slate_grey",
-      "descLocId": "skin/uk_camo_light_stone_light_grey_slate_grey/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_light_stone_light_grey_slate_grey*"
-      }
-    },
-    {
-      "name": "uk_camo_light_stone_slate_grey",
-      "nameLocId": "skin/uk_camo_light_stone_slate_grey",
-      "descLocId": "skin/uk_camo_light_stone_slate_grey/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_light_stone_slate_grey*"
-      }
-    },
-    {
-      "name": "uk_camo_middle_deep_bronze_greens",
-      "nameLocId": "skin/uk_camo_middle_deep_bronze_greens",
-      "descLocId": "skin/uk_camo_middle_deep_bronze_greens/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_middle_deep_bronze_greens*"
-      }
-    },
-    {
-      "name": "uk_camo_winter_olive",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "us_camo_winter_olive*"
-      }
-    },
-    {
-      "name": "fr_camo_winter_green_white",
-      "nameLocId": "skin/fr_camo_winter_green_white",
-      "descLocId": "skin/fr_camo_winter_green_white/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "fr_camo_winter_green_white*"
-      }
-    }
-  ],
   "battleHideNodes": {
     "n": "details"
   }

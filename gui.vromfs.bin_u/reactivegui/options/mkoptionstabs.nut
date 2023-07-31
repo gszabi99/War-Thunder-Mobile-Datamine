@@ -7,12 +7,14 @@ let iconSize = hdpx(100).tointeger()
 let textColor = 0xFFFFFFFF
 
 let function tabData(tab, idx) {
-  let { locId  = "", image = null } = tab
+  let { locId  = "", image = null, isVisible = null } = tab
   return {
     id = idx
+    isVisible
     content = {
       size = [ flex(), tabH ]
       padding = [hdpx(10), hdpx(20)]
+      flow = FLOW_HORIZONTAL
       children = [
         image == null ? null
           : {
@@ -24,8 +26,10 @@ let function tabData(tab, idx) {
               keepAspect = KEEP_ASPECT_FIT
             }
         {
-          hplace = ALIGN_RIGHT
-          rendObj = ROBJ_TEXT
+          size = flex()
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          halign = ALIGN_RIGHT
           color = textColor
           text = loc(locId)
         }.__update(fontSmall)
@@ -35,4 +39,4 @@ let function tabData(tab, idx) {
 }
 
 return @(tabs, curTabIdx)
-  mkTabs(tabs.map(@(t, i) tabData(t, i)), curTabIdx).__merge({ size = [ tabW, SIZE_TO_CONTENT ] })
+  mkTabs(tabs.map(@(t, i) tabData(t, i)), curTabIdx, { size = [ tabW, SIZE_TO_CONTENT ] })

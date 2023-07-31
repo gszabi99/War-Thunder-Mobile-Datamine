@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 from "%appGlobals/unitConst.nut" import *
 from "%globalScripts/logs.nut" import *

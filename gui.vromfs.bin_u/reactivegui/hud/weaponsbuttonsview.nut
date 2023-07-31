@@ -7,7 +7,8 @@ let { touchButtonSize, borderWidth, btnBgColor, getSvgImage, imageColor, imageDi
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapKeys, userHoldWeapInside, isChainedWeapons
 } = require("%rGui/hud/currentWeaponsStates.nut")
-let { hasTarget, hasTargetCandidate, groupAttack, targetState, torpedoDistToLive, canZoom, isInZoom, unitType } = require("%rGui/hudState.nut")
+let { hasTarget, hasTargetCandidate, groupAttack, targetState, torpedoDistToLive, canZoom, isInZoom, unitType,
+  groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir } = require("%rGui/hudState.nut")
 let { playHapticPattern } = require("hapticVibration")
 let { fire, isFullBuoyancy } = require("%rGui/hud/shipState.nut")
 let { playSound } = require("sound_wt")
@@ -22,6 +23,7 @@ let { lowerAircraftCamera } = require("camera_control")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkBtnGlare, mkActionGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { isNotOnTheSurface, isDeeperThanPeriscopeDepth } = require("%rGui/hud/submarineDepthBlock.nut")
+let { TANK } = require("%appGlobals/unitConst.nut")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 let zoomImgSize = touchButtonSize
@@ -59,7 +61,7 @@ let svgNullable = @(image, size) ((image ?? "") == "") ? null
   : Picture($"{image}:{size}:{size}")
 
 let weaponryButtonRotate = 45
-let countPosUnderActionItem = (0.4 * touchButtonSize).tointeger()
+let countHeightUnderActionItem = (0.4 * touchButtonSize).tointeger()
 let zoneRadiusX = 2.5 * touchButtonSize
 let zoneRadiusY = touchButtonSize
 let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(-50)] }
@@ -114,10 +116,12 @@ let function mkActionItemProgress(itemValue, isAvailable) {
       from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull, trigger }]
   }
 }
+
 let mkActionItemCount = @(count) {
   rendObj = ROBJ_TEXT
-  vplace = ALIGN_BOTTOM
-  pos = [ 0, countPosUnderActionItem ]
+  size = [touchButtonSize, countHeightUnderActionItem]
+  halign = ALIGN_CENTER
+  valign = ALIGN_BOTTOM
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = 50
   fontFx = FFT_GLOW
@@ -134,7 +138,7 @@ let mkActionItemImage = @(getImage, isAvailable) @() {
   color = !isAvailable ? imageDisabledColor : imageColor
 }
 
-let function mkActionItem(buttonConfig, actionItem, ovr = {}) {
+let function mkActionItem(buttonConfig, actionItem) {
   if (actionItem == null)
     return null
   let { getShortcut, getImage, haptPatternId = -1, key = null, sound = "", getAnimationKey = null } = buttonConfig
@@ -143,40 +147,70 @@ let function mkActionItem(buttonConfig, actionItem, ovr = {}) {
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   let animationKey = getAnimationKey ? getAnimationKey(unitType.value) : null
   return {
-    key = key ?? shortcutId
-    behavior = Behaviors.Button
-    eventPassThrough = true
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    size = [touchButtonSize, touchButtonSize]
-    function onClick() {
-      if ((actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
-        return
-      if (actionItem?.available)
-        playSound(sound)
-      useShortcut(shortcutId)
-      playHapticPattern(haptPatternId)
-    }
-    hotkeys = mkGamepadHotkey(shortcutId)
-    onElemState = @(v) stateFlags(v)
+    size = [touchButtonSize, touchButtonSize + countHeightUnderActionItem]
+    flow = FLOW_VERTICAL
     children = [
-      mkActionItemProgress(actionItem, isAvailable)
-      @() {
-        watch = [stateFlags]
-        rendObj = ROBJ_BOX
-        size = flex()
-        borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
-          : !isAvailable ? borderNoAmmoColor
-          : borderColor
-        borderWidth
+      {
+        key = key ?? shortcutId
+        behavior = Behaviors.Button
+        eventPassThrough = true
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        size = [touchButtonSize, touchButtonSize]
+        function onClick() {
+          if ((actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
+            return
+          if (actionItem?.available)
+            playSound(sound)
+          useShortcut(shortcutId)
+          playHapticPattern(haptPatternId)
+        }
+        hotkeys = mkGamepadHotkey(shortcutId)
+        onElemState = @(v) stateFlags(v)
+        children = [
+          mkActionItemProgress(actionItem, isAvailable)
+          @() {
+            watch = [stateFlags]
+            rendObj = ROBJ_BOX
+            size = flex()
+            borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
+              : !isAvailable ? borderNoAmmoColor
+              : borderColor
+            borderWidth
+          }
+          mkActionItemImage(getImage, isAvailable)
+          mkActionGlare(actionItem)
+          mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
+          mkConsumableSpend(animationKey)
+        ]
       }
-      mkActionItemImage(getImage, isAvailable)
-      mkActionGlare(actionItem)
       mkActionItemCount(actionItem.count)
-      mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
-      mkConsumableSpend(animationKey)
     ]
-  }.__update(ovr)
+  }
+}
+
+let mkActionItemEditView = @(image) {
+  size = [touchButtonSize, touchButtonSize + countHeightUnderActionItem]
+  flow = FLOW_VERTICAL
+  children = [
+    {
+      size = [touchButtonSize, touchButtonSize]
+      rendObj = ROBJ_BOX
+      fillColor = btnBgColor.empty
+      borderColor
+      borderWidth
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      children = {
+        rendObj = ROBJ_IMAGE
+        size = [touchButtonSize, touchButtonSize]
+        image = Picture($"{image}:{touchButtonSize}:{touchButtonSize}:P")
+        keepAspect = KEEP_ASPECT_FIT
+        color = imageColor
+      }
+    }
+    mkActionItemCount(0)
+  ]
 }
 
 let debuffImages = Computed(function() {
@@ -198,7 +232,7 @@ let function setNextRepairImage() {
     curRepairImageIdx(-1)
 }
 
-let function mkRepairActionItem(buttonConfig, actionItem, ovr = {}) {
+let function mkRepairActionItem(buttonConfig, actionItem) {
   let { getShortcut, getImage, haptPatternId = -1, actionKey = "btn_repair", getAnimationKey = null } = buttonConfig
   let stateFlags = Watched(0)
   let isAvailable = actionItem != null && isAvailableActionItem(actionItem)
@@ -206,81 +240,88 @@ let function mkRepairActionItem(buttonConfig, actionItem, ovr = {}) {
   let shortcutId = actionItem == null ? null
     : getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   let animationKey = getAnimationKey ? getAnimationKey(unitType.value) : null
+  let hotkey = (unitType.value != TANK || isAvailable) ? shortcutId : null
   return {
-    key = actionKey
-    behavior = Behaviors.Button
-    eventPassThrough = true
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    size = [touchButtonSize, touchButtonSize]
-    function onClick() {
-      if (actionItem == null) {
-        addCommonHint(loc("hint/noItemsForRepair"))
-        return
-      }
-      if ((actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
-        return
-      if (actionItem?.available)
-        playSound("repair")
-      useShortcut(shortcutId)
-      playHapticPattern(haptPatternId)
-    }
-    hotkeys = mkGamepadHotkey(shortcutId)
-    onElemState = @(v) stateFlags(v)
+    size = [touchButtonSize, touchButtonSize + countHeightUnderActionItem]
+    flow = FLOW_VERTICAL
     children = [
-      mkActionItemProgress(actionItem, isAvailable || isInCooldown)
-      @() {
-        watch = [stateFlags]
-        rendObj = ROBJ_BOX
-        size = flex()
-        borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
-          : !isAvailable ? borderNoAmmoColor
-          : borderColor
-        borderWidth
-      }
-      @() {
-        watch = [debuffImages, curRepairImageIdx, unitType]
-        size = flex()
+      {
+        key = actionKey
+        behavior = Behaviors.Button
+        eventPassThrough = true
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
-        clipChildren = true
-        children = [
-            isAvailable && debuffImages.value.len() > 0
-            ? {
-                rendObj = ROBJ_IMAGE
-                size = flex()
-                image = repairSwithAnimImage
-                keepAspect = KEEP_ASPECT_FIT
-                color = isInCooldown ? Color(0, 0, 0, 0)
-                  : !isAvailable ? imageDisabledColor
-                  : imageColor
-                key = $"switch_repair_image_{curRepairImageIdx.value}"
-                animations = [
-                  { prop = AnimProp.scale, from = [0.2, 0.2], to = [1.6, 1.6], play = true,
-                    duration = 3.0, easing = Linear,
-                    onFinish = @() setNextRepairImage()
-                  }
-                ]
-                transform = { pivot = [0.5, 0.5] }
-            }
-            : null,
-          {
-            size = debuffImages.value?[curRepairImageIdx.value] != null
-              ? [debuffImgSize, debuffImgSize]
-              : [touchButtonSize, touchButtonSize]
-            rendObj = ROBJ_IMAGE
-            image = debuffImages.value?[curRepairImageIdx.value] ?? svgNullable(getImage(unitType.value), touchButtonSize)
-            keepAspect = KEEP_ASPECT_FIT
-            color = !isAvailable ? imageDisabledColor : imageColor
+        size = [touchButtonSize, touchButtonSize]
+        function onClick() {
+          if (actionItem == null) {
+            addCommonHint(loc("hint/noItemsForRepair"))
+            return
           }
+          if ((actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
+            return
+          if (actionItem?.available)
+            playSound("repair")
+          useShortcut(shortcutId)
+          playHapticPattern(haptPatternId)
+        }
+        hotkeys = mkGamepadHotkey(hotkey)
+        onElemState = @(v) stateFlags(v)
+        children = [
+          mkActionItemProgress(actionItem, isAvailable || isInCooldown)
+          @() {
+            watch = [stateFlags]
+            rendObj = ROBJ_BOX
+            size = flex()
+            borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
+              : !isAvailable ? borderNoAmmoColor
+              : borderColor
+            borderWidth
+          }
+          @() {
+            watch = [debuffImages, curRepairImageIdx, unitType]
+            size = flex()
+            valign = ALIGN_CENTER
+            halign = ALIGN_CENTER
+            clipChildren = true
+            children = [
+                isAvailable && debuffImages.value.len() > 0
+                ? {
+                    rendObj = ROBJ_IMAGE
+                    size = flex()
+                    image = repairSwithAnimImage
+                    keepAspect = KEEP_ASPECT_FIT
+                    color = isInCooldown ? Color(0, 0, 0, 0)
+                      : !isAvailable ? imageDisabledColor
+                      : imageColor
+                    key = $"switch_repair_image_{curRepairImageIdx.value}"
+                    animations = [
+                      { prop = AnimProp.scale, from = [0.2, 0.2], to = [1.6, 1.6], play = true,
+                        duration = 3.0, easing = Linear,
+                        onFinish = @() setNextRepairImage()
+                      }
+                    ]
+                    transform = { pivot = [0.5, 0.5] }
+                }
+                : null,
+              {
+                size = debuffImages.value?[curRepairImageIdx.value] != null
+                  ? [debuffImgSize, debuffImgSize]
+                  : [touchButtonSize, touchButtonSize]
+                rendObj = ROBJ_IMAGE
+                image = debuffImages.value?[curRepairImageIdx.value] ?? svgNullable(getImage(unitType.value), touchButtonSize)
+                keepAspect = KEEP_ASPECT_FIT
+                color = !isAvailable ? imageDisabledColor : imageColor
+              }
+            ]
+          }
+          mkActionGlare(actionItem)
+          mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
+          mkConsumableSpend(animationKey)
         ]
       }
-      mkActionGlare(actionItem)
       mkActionItemCount(actionItem?.count ?? 0)
-      mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
-      mkConsumableSpend(animationKey)
     ]
-  }.__update(ovr)
+  }
 }
 
 let function mkBtnBg(isAvailable, itemV, onFinishExt = null) {
@@ -540,6 +581,47 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
       addChild
     ]
   }, ovr)
+}
+
+let groupsInAirByIdx = [groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir]
+
+let function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
+  if (actionItem == null)
+    return null
+  let { key, getShortcut, getPlaneImage, groupInAirIdx = -1 } = buttonConfig
+  let imgSize = (defImageSize + 0.5).tointeger()
+  let stateFlags = getWeapStateFlags(key)
+  let isAvailable = isActionAvailable(actionItem)
+  let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
+  let isGroupInAir = groupsInAirByIdx?[groupInAirIdx] ?? Watched(false)
+
+  return @() {
+    watch = isGroupInAir
+    size = [touchButtonSize, touchButtonSize]
+    behavior = Behaviors.Button
+    eventPassThrough = true
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    hotkeys = mkGamepadHotkey(shortcutId)
+    onClick = @() toggleShortcut(shortcutId)
+    onElemState = @(v) stateFlags(v)
+    children = [
+      mkBtnBg(isAvailable, actionItem, @() playSound("weapon_secondary_ready"))
+      mkBtnBorder(stateFlags, isAvailable)
+      isGroupInAir.value ? null : mkBtnZone(key)
+      {
+        rendObj = ROBJ_IMAGE
+        size = isGroupInAir.value ? [imgSize * 1.15, imgSize * 1.15] : [imgSize, imgSize]
+        pos = isGroupInAir.value ? [hdpx(3), 0] : [0, -hdpx(5)]
+        image = svgNullable(getPlaneImage(isGroupInAir.value), imgSize)
+        keepAspect = KEEP_ASPECT_FIT
+        color = !isAvailable ? imageDisabledColor : imageColor
+      }
+      isGroupInAir.value ? null : mkAmmoCount(actionItem.count, false)
+      mkActionBtnGlare(actionItem)
+      mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr)
+    ]
+  }.__update(ovr)
 }
 
 let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
@@ -927,4 +1009,9 @@ return {
   mkLockButton
   mkGroupAttackButton
   mkZoomButton
+  mkPlaneItem
+
+  mkActionItemEditView
+
+  defImageSize
 }

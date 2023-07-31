@@ -1685,32 +1685,56 @@
         ]
       },
       {
-        "name": "p_47n_15",
-        "weap": "P_47D_default",
+        "name": "do_335a_1",
+        "weap": "do_335a_1_bomb",
+        "rankRange": [
+          5,
+          5
+        ]
+      },
+      {
+        "name": "canberra_bimk6",
+        "weap": "canberra_5x1000lbs",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "wyvern_s4",
-        "weap": "wyvern_s4_3x1000lb",
+        "name": "so_4050_vautour_2a",
+        "weap": "so_4050_vautour_2a_bombs_500",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "p_47n_15",
-        "weap": "P_47D_default",
+        "name": "il_28sh",
+        "weap": "il_28sh_4xfab500",
+        "rankRange": [
+          6,
+          6
+        ]
+      },
+      {
+        "name": "canberra_bimk6",
+        "weap": "canberra_5x1000lbs",
         "rankRange": [
           7,
           50
         ]
       },
       {
-        "name": "wyvern_s4",
-        "weap": "wyvern_s4_3x1000lb",
+        "name": "so_4050_vautour_2a",
+        "weap": "so_4050_vautour_2a_bombs_500",
+        "rankRange": [
+          7,
+          50
+        ]
+      },
+      {
+        "name": "il_28sh",
+        "weap": "il_28sh_4xfab500",
         "rankRange": [
           7,
           50
@@ -1823,48 +1847,48 @@
         ]
       },
       {
-        "name": "f8f1",
-        "weap": "f8f1_default",
+        "name": "mig_15",
+        "weap": "mig_15_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "bf_109k_4",
-        "weap": "Bf_109K4_default",
+        "name": "meteor_fmk8",
+        "weap": "meteor_fmk8_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "la_9",
-        "weap": "la_9_default",
+        "name": "me_262c_2b",
+        "weap": "me_262c_2b_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "f8f1",
-        "weap": "f8f1_default",
+        "name": "mig_15",
+        "weap": "mig_15_default",
         "rankRange": [
           7,
           50
         ]
       },
       {
-        "name": "bf_109k_4",
-        "weap": "Bf_109K4_default",
+        "name": "meteor_fmk8",
+        "weap": "meteor_fmk8_default",
         "rankRange": [
           7,
           50
         ]
       },
       {
-        "name": "la_9",
-        "weap": "la_9_default",
+        "name": "me_262c_2b",
+        "weap": "me_262c_2b_default",
         "rankRange": [
           7,
           50

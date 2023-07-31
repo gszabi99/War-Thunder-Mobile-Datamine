@@ -126,27 +126,7 @@
           "preload": false,
           "optional": true
         },
-        "crew_dialogs_ground_new": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
         "_crew_dialogs_ground_<lang>": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "_crew_dialogs_ground_new_<lang>": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "crew_dialogs_naval_new": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "_crew_dialogs_naval_new_<lang>": {
           "async": true,
           "preload": false,
           "optional": true
@@ -156,27 +136,29 @@
           "preload": false,
           "optional": true
         },
-        "crew_dialogs_ground_new.assets": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "crew_dialogs_naval_new.assets": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
         "_crew_dialogs_ground_<lang>.assets": {
           "async": true,
           "preload": false,
           "optional": true
-        },
-        "_crew_dialogs_ground_new_<lang>.assets": {
+        }
+      },
+      "crew_extended": {
+        "crew_dialogs_<type>_new": {
           "async": true,
           "preload": false,
           "optional": true
         },
-        "_crew_dialogs_naval_new_<lang>.assets": {
+        "crew_dialogs_<type>_new.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "_crew_dialogs_<type>_new_<lang>": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "_crew_dialogs_<type>_new_<lang>.assets": {
           "async": true,
           "preload": false,
           "optional": true
@@ -595,7 +577,7 @@
       0.4
     ],
     "eventBoosterEngine": "engineBooster",
-    "eventBoosterCockpitEngine": "engineBooster_cockpit",
+    "eventBoosterCockpitEngine": "",
     "eventBoosterAiEngine": "engineBooster_ai",
     "eventWaveHitBoat": "collision_wave_boat",
     "eventWaveHitShip": "collision_wave_ship",
@@ -1120,6 +1102,29 @@
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8
       }
+    }
+  },
+  "engine_jet_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_jet_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_jet_ai",
+      "rpmSmooth": 0.005,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
     }
   },
   "engine01_ai": {
@@ -1810,29 +1815,6 @@
       "eventSurround": "",
       "eventLod1": "engine_bomber_ai",
       "rpmSmooth": 0.014,
-      "loadScale": 6.0,
-      "loadSmooth": 0.05,
-      "distSmooth": 0.9,
-      "distScaleOnNotHero": 1.0
-    }
-  },
-  "engine_jet_ai": {
-    "effects": {
-      "path": "aircraft/engines",
-      "wep": "engine_wep",
-      "overheatOutside": "engine_overheat_camera",
-      "overheatCockpit": "engine_overheat_cockpit",
-      "dive": "engine_dive",
-      "timeFallingDown": 2.0,
-      "engineVolumeOnOverheat": 0.8
-    },
-    "outside": {
-      "path": "aircraft/engines",
-      "eventFront": "",
-      "eventBack": "engine_jet_ai",
-      "eventSurround": "",
-      "eventLod1": "engine_jet_ai",
-      "rpmSmooth": 0.005,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
@@ -2753,6 +2735,31 @@
         "distSmooth": 0.9,
         "distScaleOnNotHero": 0.8
       }
+    }
+  },
+  "engine_jet": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_start",
+      "eventStop": "engine_jet_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_jet",
+      "eventSurround": "",
+      "eventLod1": "engine_jet",
+      "rpmSmooth": 0.001,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
     }
   },
   "engine01": {

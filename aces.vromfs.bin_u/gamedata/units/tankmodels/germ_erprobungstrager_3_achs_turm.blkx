@@ -1972,7 +1972,7 @@
       "cls_turret": 0.3
     },
     "tracks": {
-      "animationMultiplier": -0.68,
+      "animationMultiplier": 0.68,
       "width": 0.55,
       "height": 0.08
     },
@@ -2708,5 +2708,68 @@
     "tank_tool_kit_expendable": {},
     "art_support": {},
     "tank_extinguisher": {}
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_carc*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": -34.0,
+      "decal0Line0": [
+        2.78942,
+        -1.21962E-07,
+        0.091574,
+        -1.22452
+      ],
+      "decal0Line1": [
+        -0.000499729,
+        -2.79088,
+        0.0152184,
+        6.52619
+      ],
+      "decal0Line2": [
+        -2.78942,
+        -1.21962E-07,
+        0.091574,
+        2.22458
+      ],
+      "decal0Line3": [
+        -0.000499485,
+        -2.79088,
+        -0.0152184,
+        6.52618
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0328109,
+        -0.00545577,
+        -0.999447,
+        -1.43385
+      ],
+      "decal0CPNormDepth1": [
+        0.0328109,
+        -0.00545577,
+        0.999447,
+        -1.43313
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358305
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.221967,
+      "decal0Tex": "ge_bundeswehr_insignia"
+    }
+  },
+  "battleHideNodes": {
+    "n": "details"
   }
 }

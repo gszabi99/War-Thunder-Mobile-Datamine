@@ -22,8 +22,10 @@ let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
+let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 
-let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel" ]
+let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator" ]
 
 let wndWidth = saSize[0]
 let maxWndHeight = saSize[1]
@@ -90,8 +92,8 @@ let stackData = Computed(function() {
   foreach (arr in stacksSorted)
     arr.sort(@(a, b) a.order <=> b.order)
 
-  let { currency = [], premium = [], item = [], unitUpgrade = [], unit = [] } = stacksSorted
-  let rewardIcons = [].extend(currency, premium, item)
+  let { currency = [], premium = [], item = [], unitUpgrade = [], unit = [], decorator = [] } = stacksSorted
+  let rewardIcons = [].extend(currency, premium, item, decorator)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   let idxOffsetPlates = rewardIcons.len()
@@ -210,6 +212,27 @@ let function mkRerwardIcon(startDelay, imgPath, sizeMulX = 1.0, sizeMulY = 1.0) 
   }
 }
 
+let decoratorIconByType = {
+  nickFrame = @(decoratorId) frameNick(" ", decoratorId)
+  title = @(decoratorId) loc($"title/{decoratorId}")
+}
+
+let function mkDecoratorRewardIcon(startDelay, decoratorId) {
+  return {
+    size = [SIZE_TO_CONTENT, rewIconSize]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = [
+      @() {
+        watch = allDecorators
+        size = [SIZE_TO_CONTENT, flex()]
+        rendObj = ROBJ_TEXT
+        text = decoratorIconByType?[allDecorators.value?[decoratorId].dType](decoratorId) ?? decoratorId
+      }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale), fontBig)
+    ]
+  }
+}
+
 let mkCurrencyIcon = @(startDelay, id) {
   size = [rewIconSize, rewIconSize]
   halign = ALIGN_CENTER
@@ -220,7 +243,7 @@ let mkCurrencyIcon = @(startDelay, id) {
   ]
 }
 
-let function mkRerwardLabel(startDelay, text) {
+let function mkRewardLabel(startDelay, text) {
   return {
     rendObj = ROBJ_TEXT
     color = 0xFFFFFFFF
@@ -238,32 +261,42 @@ let function mkRerwardLabel(startDelay, text) {
   }.__update(fontMediumShaded)
 }
 
+let mkDecoratorRewardLabel = @(startDelay, decoratorId)
+  @() {
+    watch = allDecorators
+    children = mkRewardLabel(startDelay, loc($"decorator/{allDecorators.value?[decoratorId].dType}"))
+  }
+
 let rewardCtors = {
   currency = {
-    mkIcon = @(startDelay, id) mkCurrencyIcon(startDelay, id)
-    mkText = @(startDelay, count) mkRerwardLabel(startDelay, decimalFormat(count))
+    mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id)
+    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
   }
   premium = {
-    mkIcon = @(startDelay, _id) mkRerwardIcon(startDelay, "ui/gameuiskin#premium_active.svg" , 1.43, 1.0)
-    mkText = @(startDelay, count) mkRerwardLabel(startDelay, "".concat(count, loc("measureUnits/days")))
+    mkIcon = @(rewardInfo) mkRerwardIcon(rewardInfo.startDelay, "ui/gameuiskin#premium_active.svg" , 1.43, 1.0)
+    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay,
+      "".concat(rewardInfo.count, loc("measureUnits/days")))
   }
   item = {
-    mkIcon = @(startDelay, id) mkCurrencyIcon(startDelay, id)
-    mkText = @(startDelay, count) mkRerwardLabel(startDelay, decimalFormat(count))
+    mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id)
+    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
+  }
+  decorator = {
+    mkIcon = @(rewardInfo) mkDecoratorRewardIcon(rewardInfo.startDelay, rewardInfo.id)
+    mkText = @(rewardInfo) mkDecoratorRewardLabel(rewardInfo.startDelay, rewardInfo.id)
   }
 }
 
 let function mkRewardIconComp(rewardInfo) {
-  let { gType, id, count, startDelay } = rewardInfo
-  let { mkIcon, mkText } = rewardCtors[gType]
+  let { mkIcon, mkText } = rewardCtors[rewardInfo.gType]
+
   return {
-    size = [rewIconSize, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     gap = rewIconToTextGap
     children = [
-      mkIcon(startDelay, id)
-      mkText(startDelay, count)
+      mkIcon(rewardInfo)
+      mkText(rewardInfo)
     ]
   }
 }

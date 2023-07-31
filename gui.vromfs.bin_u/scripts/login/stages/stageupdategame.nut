@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { LOGIN_STATE, LOGIN_UPDATER_EVENT_ID } = require("%appGlobals/loginState.nut")
 let { setAutologinType, setAutologinEnabled } = require("%scripts/login/autoLogin.nut")

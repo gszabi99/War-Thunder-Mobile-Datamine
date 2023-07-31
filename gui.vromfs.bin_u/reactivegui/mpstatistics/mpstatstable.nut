@@ -5,6 +5,7 @@ let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 
+
 let cellTextColor = Color(255, 255, 255)
 let unitDeadTextColor = Color(56, 56, 56, 56)
 let rowBgLocalPlayerColor = Color(40, 96, 128, 128)

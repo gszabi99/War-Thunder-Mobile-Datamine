@@ -2460,7 +2460,6 @@
     "tank_tool_kit_expendable": {},
     "art_support": {},
     "tank_extinguisher": {},
-    "upgraded": {},
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "effects": {
@@ -2838,18 +2837,13 @@
     ],
     "detectionHeight": 2.48
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "uk_camo_very_dark_drab*"
-    }
-  },
-  "upgraded_skin": {
+  "default_skin": {
     "replace_tex": {
       "from": "uk_camo_very_dark_drab*",
       "to": "uk_camo_light_stone_slate_grey*"
     }
   },
-  "upgradedDecals": {
+  "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
@@ -3044,7 +3038,7 @@
       "decal3Tex": "uk_blue_squadron_hq"
     }
   },
-  "upgradedAttachables": {
+  "defaultAttachables": {
     "default": {
       "attachable": [
         {

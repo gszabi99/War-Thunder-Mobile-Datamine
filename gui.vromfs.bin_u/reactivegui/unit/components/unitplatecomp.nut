@@ -85,7 +85,7 @@ let levelBg = mkLevelBg({
 let mkIcon = @(icon, iconSize, override = {}) {
   size = iconSize
   rendObj = ROBJ_IMAGE
-  image = Picture($"{icon}:{iconSize[0]}:{iconSize[1]}")
+  image = Picture($"{icon}:{iconSize[0]}:{iconSize[1]}:P")
   keepAspect = KEEP_ASPECT_FIT
 }.__update(override)
 
@@ -300,7 +300,7 @@ let mkUnitLockedFg = @(isLocked, lockedText, justUnlockedDelay = null, name = ""
               }
 
           isLocked.value
-            ? mkIcon("!ui/gameuiskin#lock_icon.svg", [lockIconSize, lockIconSize], { color = levelTextColor })
+            ? mkIcon("ui/gameuiskin#lock_icon.svg", [lockIconSize, lockIconSize], { color = levelTextColor })
             : null
 
           @() lockedText.value != ""
@@ -344,7 +344,7 @@ let mkUnitSlotLockedLine = @(slot) {
           valign = ALIGN_CENTER
           gap = hdpx(10)
           children = [
-            mkIcon("!ui/gameuiskin#lock_icon.svg", [lockIconSize, lockIconSize], { color = slotLockedTextColor })
+            mkIcon("ui/gameuiskin#lock_icon.svg", [lockIconSize, lockIconSize], { color = slotLockedTextColor })
             slotLockedText(loc("requirement/platoonLevel/short", { level = slot.reqLevel }))
           ]
         }

@@ -2480,6 +2480,8 @@
           3
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
+        "barrelDP": "tt_01_dm",
+        "breechDP": "tt_01_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -2559,6 +2561,8 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
+        "barrelDP": "tt_02_dm",
+        "breechDP": "tt_02_dm",
         "speedYaw": 50.0,
         "shotFreq": 0.14,
         "turret": {

@@ -66,8 +66,24 @@ let capZonesList = @() {
   children = array(capZonesCount.value).map(@(_, i) mkCapZone(i))
 }
 
+let capZonesEditView = {
+  size = [SIZE_TO_CONTENT, zoneSize * bigZoneMul]
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(10)
+  children = array(3).map(@(_, i) {
+    rendObj = ROBJ_IMAGE
+    size = [zoneSize, zoneSize]
+    image = getZoneIcon(i, zoneSize * bigZoneMul)
+    transform = {
+      pivot = [0.5, 0],
+      scale = [1.0, 1.0]
+    }
+  })
+}
+
 return {
   capZonesList
   capZoneCtr
   getZoneIcon
+  capZonesEditView
 }

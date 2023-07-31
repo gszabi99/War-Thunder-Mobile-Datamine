@@ -2,11 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { scopeSize } = require("%rGui/hud/commonSight.nut")
 let { oxygen, waterDist, periscopeDepthCtrl } = require("%rGui/hud/shipState.nut")
 
-let oxygenWidth = scopeSize[0] / 3
 let mText = loc("measureUnits/meters_alt")
 let textPadding = hdpx(5)
 
 let zeroOxygen = Computed(@() oxygen.value.tointeger() == 0)
+let depthWidth = scopeSize[0] / 3
+let depthHeight = scopeSize[1] * 0.6
 let depthText = Computed(@() zeroOxygen.value ? loc("controls/lack_of_oxygen")
   : waterDist.value.tointeger() == 0 ? loc("controls/submarine_on_water")
   : waterDist.value.tointeger() <= periscopeDepthCtrl.value.tointeger() ? loc("controls/submarine_depth_periscope")
@@ -18,25 +19,40 @@ depthText.subscribe(@(_) zeroOxygen.value
   : anim_start("depth_status_highlight")
 )
 
-return {
-  pos = [-scopeSize[0] / 2 - oxygenWidth / 2 - hdpx(10), 0]
+let fontFx = {
+  fontFxColor = Color(0, 0, 0, 255)
+  fontFxFactor = 50
+  fontFx = FFT_GLOW
+}
+
+let oxygenMark = {
+  flow = FLOW_HORIZONTAL
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text =  "O"
+    }.__update(fontMedium, fontFx)
+    {
+      rendObj = ROBJ_TEXT
+      pos = [0, hdpx(20)]
+      text =  "2"
+    }.__update(fontTiny, fontFx)
+  ]
+}
+
+let depthControl = {
   halign = ALIGN_RIGHT
   valign = ALIGN_BOTTOM
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
   gap = hdpx(5)
-  size = [oxygenWidth, hdpx(scopeSize[1])]
+  size = [depthWidth, depthHeight]
   flow = FLOW_VERTICAL
   children = [
     @() {
       watch = waterDist
       rendObj = ROBJ_TEXT
-      fontFxColor = Color(0, 0, 0, 255)
-      fontFxFactor = 50
-      fontFx = FFT_GLOW
       text = $"{waterDist.value.tointeger()} {mText}"
-      padding = [ 0, textPadding, 0, 0]
-    }.__update(fontMedium),
+      padding = [0, textPadding, 0, 0]
+    }.__update(fontMedium, fontFx)
     {
       size = [flex(), SIZE_TO_CONTENT]
       rendObj = ROBJ_SOLID
@@ -65,32 +81,41 @@ return {
         size = [flex(), SIZE_TO_CONTENT]
         halign = ALIGN_RIGHT
         behavior = [Behaviors.TextArea]
-        fontFxColor = Color(0, 0, 0, 255)
-        fontFxFactor = 50
-        fontFx = FFT_GLOW
         text = depthText.value
-      }.__update(fontTiny)
-    },
+      }.__update(fontTiny, fontFx)
+    }
+  ]
+}
+
+let depthControlEditView = {
+  halign = ALIGN_RIGHT
+  valign = ALIGN_BOTTOM
+  gap = hdpx(5)
+  size = [depthWidth, depthHeight]
+  flow = FLOW_VERTICAL
+  children = [
     {
-      flow = FLOW_HORIZONTAL
-      children = [
-        {
-          rendObj = ROBJ_TEXT
-          fontFxColor = Color(0, 0, 0, 255)
-          fontFxFactor = 50
-          fontFx = FFT_GLOW
-          text =  "O"
-        }.__update(fontMedium),
-        {
-          rendObj = ROBJ_TEXT
-          fontFxColor = Color(0, 0, 0, 255)
-          fontFxFactor = 50
-          fontFx = FFT_GLOW
-          pos = [0, hdpx(20)]
-          text =  "2"
-        }.__update(fontTiny)
-      ]
-    },
+      padding = [0, textPadding, 0, 0]
+      rendObj = ROBJ_TEXT
+      text = $"XX {mText}"
+    }.__update(fontMedium, fontFx)
+    {
+      margin = textPadding
+      rendObj = ROBJ_TEXTAREA
+      size = [flex(), SIZE_TO_CONTENT]
+      halign = ALIGN_RIGHT
+      behavior = [Behaviors.TextArea]
+      text = loc("controls/submarine_depth")
+    }.__update(fontTiny, fontFx)
+  ]
+}
+
+let oxygenLevel = {
+  halign = ALIGN_RIGHT
+  gap = hdpx(5)
+  flow = FLOW_VERTICAL
+  children = [
+    oxygenMark
     {
       size = [shHud(10), hdpx(10)]
       children = [
@@ -110,4 +135,30 @@ return {
       ]
     }
   ]
+}
+
+let oxygenLevelEditView = {
+  halign = ALIGN_RIGHT
+  gap = hdpx(5)
+  flow = FLOW_VERTICAL
+  children = [
+    oxygenMark
+    {
+      size = [shHud(10), hdpx(10)]
+      children = [
+        {
+          rendObj = ROBJ_SOLID
+          color = Color(44, 253, 255)
+          size = flex()
+        }
+      ]
+    }
+  ]
+}
+
+return {
+  oxygenLevel
+  oxygenLevelEditView
+  depthControl
+  depthControlEditView
 }

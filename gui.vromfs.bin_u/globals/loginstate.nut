@@ -1,12 +1,10 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { Computed } = require("frp")
 let { get_settings_blk } = require("blkGetters")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
+let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
 
 let LOGIN_STATE = { //bit mask
   //before full load
@@ -61,6 +59,7 @@ let isOnlyGuestLogin = get_settings_blk()?.onlyGuestLogin ?? false
 local availableLoginTypes = { [loginTypes.LT_GAIJIN] = true }
 if (is_ios) {
   availableLoginTypes[loginTypes.LT_APPLE] <- true
+  availableLoginTypes[loginTypes.LT_FACEBOOK] <- true
   availableLoginTypes[loginTypes.LT_GUEST] <- true
 } else if (is_android) {
   if (isOnlyGuestLogin)
@@ -72,6 +71,8 @@ if (is_ios) {
       [loginTypes.LT_FACEBOOK] = true,
     })
 }
+
+let isOnlineSettingsAvailable = Computed(@() (loginState.value & LOGIN_STATE.ONLINE_SETTINGS_AVAILABLE) != 0)
 
 return loginTypes.__merge({
   LOGIN_STATE
@@ -85,7 +86,8 @@ return loginTypes.__merge({
 
   isLoginStarted = Computed(@() (loginState.value & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.value & LOGIN_STATE.AUTHORIZED) != 0)
-  isOnlineSettingsAvailable = Computed(@() (loginState.value & LOGIN_STATE.ONLINE_SETTINGS_AVAILABLE) != 0)
+  isOnlineSettingsAvailable
+  isSettingsAvailable = Computed(@() isAppLoaded.value && (isOnlineSettingsAvailable.value || !isLoginRequired.value))
   isMatchingConnected = Computed(@() (loginState.value & LOGIN_STATE.MATCHING_CONNECTED) != 0)
   isProfileReceived = Computed(@() (loginState.value & LOGIN_STATE.PROFILE_RECEIVED) != 0)
 

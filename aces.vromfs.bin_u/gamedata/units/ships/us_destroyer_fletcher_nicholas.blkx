@@ -1429,6 +1429,8 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
+        "barrelDP": "tt_01_dm",
+        "breechDP": "tt_01_dm",
         "speedYaw": 50.0,
         "shotFreq": 0.18,
         "turret": {
@@ -1506,6 +1508,8 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
+        "barrelDP": "tt_02_dm",
+        "breechDP": "tt_02_dm",
         "speedYaw": 50.0,
         "shotFreq": 0.18,
         "turret": {
@@ -2291,6 +2295,8 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
+        "barrelDP": "tt_01_dm",
+        "breechDP": "tt_01_dm",
         "speedYaw": 50.0,
         "shotFreq": 0.18,
         "turret": {
@@ -2368,6 +2374,8 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
+        "barrelDP": "tt_02_dm",
+        "breechDP": "tt_02_dm",
         "speedYaw": 50.0,
         "shotFreq": 0.18,
         "turret": {
@@ -2708,6 +2716,13 @@
             "emitter": "emtr_fire_dmg_02"
           }
         ]
+      },
+      {
+        "name": "ammo_expl",
+        "fx": {
+          "name": "explosion_ship_ammo",
+          "centerDmgPart": true
+        }
       },
       {
         "name": "fire_after_hit_huge",

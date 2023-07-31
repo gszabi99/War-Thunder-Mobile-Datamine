@@ -81,4 +81,5 @@ let fakeHitCameraResultPlate = @(text) mkhitCameraResultPlate("miss", text)
 return {
   hitCameraResultPlate
   fakeHitCameraResultPlate
+  hitResultPlateHeight
 }

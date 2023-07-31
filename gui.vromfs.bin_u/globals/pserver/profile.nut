@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Computed } = require("frp")
 let { units, levelInfo, campConfigs } = require("campaign.nut")

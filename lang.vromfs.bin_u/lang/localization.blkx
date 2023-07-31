@@ -40,6 +40,7 @@
   },
   "locTableFull": {
     "file": [
+      "%lang/units.csv",
       "%lang/matching.csv",
       "%lang/serverErrors.csv"
     ]

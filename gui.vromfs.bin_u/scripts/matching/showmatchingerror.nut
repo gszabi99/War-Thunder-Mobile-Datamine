@@ -1,8 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { replace } = require("%sqstd/string.nut")

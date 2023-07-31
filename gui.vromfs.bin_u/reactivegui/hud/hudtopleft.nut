@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
-let tacticalMapTransparent = require("components/tacticalMapTransparent.nut")
 let { logerrAndKillLogPlace } = require("%rGui/hudHints/hintBlocks.nut")
+let { tacticalMapSize } = require("%rGui/hud/components/tacticalMap.nut")
 
 return {
   flow = FLOW_HORIZONTAL
@@ -11,7 +11,7 @@ return {
     {
       flow = FLOW_VERTICAL
       children = [
-        tacticalMapTransparent
+        { size = tacticalMapSize }
         logerrAndKillLogPlace
       ]
     }

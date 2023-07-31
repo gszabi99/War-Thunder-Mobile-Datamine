@@ -1,137 +1,78 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
-let { dfAnimBottomLeft, dfAnimBottomRight } = require("%rGui/style/unitDelayAnims.nut")
 let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { visibleWeaponsList, currentHoldWeaponName, isChainedWeapons } = require("%rGui/hud/currentWeaponsStates.nut")
+let { visibleWeaponsMap, currentHoldWeaponName, isChainedWeapons } = require("%rGui/hud/currentWeaponsStates.nut")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
-let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
 let { scopeSize } = require("%rGui/hud/commonSight.nut")
-let { isInZoom, isUnitDelayed } = require("%rGui/hudState.nut")
 
 let halfScopeHeight = scopeSize[1] / 2
-let logerrWithPrefix = @(text) logerr($"[HUD: WeaponButtons] {text}")
 
 let chainImgSize = (0.5 * touchButtonSize).tointeger()
-let chainBgImgSize = [(touchButtonSize *2.5).tointeger(), (touchButtonSize * 1.1).tointeger()]
+let chainHaloSize = 0.1
+let chainBgImgSize = [
+  (touchButtonSize * (2.4 + chainHaloSize)).tointeger(),
+  (touchButtonSize * (1.0 + chainHaloSize)).tointeger()]
 let chainImageOn = Picture($"ui/gameuiskin#hud_chain_on.svg:{chainImgSize}:{chainImgSize}:P")
 let chainImageOff = Picture($"ui/gameuiskin#hud_chain_off.svg:{chainImgSize}:{chainImgSize}:P")
 let chainImageBg = Picture($"ui/gameuiskin#hud_chain_bg.svg:{chainBgImgSize[0]}:{chainBgImgSize[1]}:P")
 
-let weaponryPlacePosition = [
-  { hplace = ALIGN_LEFT, vplace = ALIGN_TOP }                                                //zoom always
-  { hplace = ALIGN_CENTER, vplace = ALIGN_TOP }                                              //1
-  { hplace = ALIGN_LEFT, vplace = ALIGN_CENTER, pos = [ touchButtonSize, 0] }                //2
-  { hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM }                                           //3
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER, pos = [ -touchButtonSize, 0] }              //4
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP }                                               //5
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER, pos = [ touchButtonSize,  0] }              //6
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP, pos = [ -touchButtonSize, -touchButtonSize] }  //7
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [ 0, 0] }                             //8
-]
+let function mkChainedWeapons(actionCtor, visibleIds) {
+  let actionItems = []
+  let buttonsConfig = []
 
-let weaponryLeftAlignPlacePosition = [
-  { hplace = ALIGN_CENTER, vplace = ALIGN_TOP, pos = [ 0, -touchButtonSize] }                //zoom always
-  { hplace = ALIGN_CENTER, vplace = ALIGN_TOP, pos = [ -touchButtonSize, 0] }                //1
-  { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER}                                            //2
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [ -touchButtonSize, 0] }              //3
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER }                                            //4
-  { hplace = ALIGN_LEFT, vplace = ALIGN_BOTTOM, pos = [ touchButtonSize, 0] }                //5
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [ touchButtonSize, 0] }               //6
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP, pos = [ -touchButtonSize, 0] }                 //7
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP, pos = [ -touchButtonSize, 2 * touchButtonSize]}//8
-]
-
-let mkChainIcon = function(weaponsList, weaponryPositions) {
-  local numButtonsChained = 0
-  local chainPos = {}
-  foreach (info in weaponsList) {
-    let { id, viewCfg = null } = info
-    let w = viewCfg ?? weaponsButtonsConfig[id]
-    if (w?.additionalShortcutId) {
-      numButtonsChained++
-      if (w?.drawChain)
-        chainPos.__update(weaponryPositions[w.weaponPlacePosIdx])
-    }
+  foreach (id in visibleIds) {
+    actionItems.append(visibleWeaponsMap.value?[id])
+    buttonsConfig.append(weaponsButtonsConfig?[id])
   }
-  if (numButtonsChained < 2 || chainPos.len() == 0)
+
+  let numButtonsChained = buttonsConfig.len()
+  if (numButtonsChained == 0)
     return null
-  let curPos = (chainPos?.pos ?? [0, 0]).map(@(v) v + touchButtonSize * 0.5)
-  chainPos.__update({pos = curPos})
-  return @(){
+
+  return @() {
     watch = isChainedWeapons
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    children = [
-      isChainedWeapons.value
-      ? {
-          rendObj = ROBJ_IMAGE
-          image = chainImageBg
-          opacity = 0.3
-          transform = { rotate = 45 }
-          size = chainBgImgSize
-        }
-      : null
-      {
-        behavior = Behaviors.TouchScreenButton
-        onTouchBegin = @() isChainedWeapons(!isChainedWeapons.value)
-        rendObj = ROBJ_IMAGE
-        opacity = 0.5
-        image = isChainedWeapons.value ? chainImageOn : chainImageOff
-        size = [chainImgSize, chainImgSize]
-      }
-    ]
-  }.__update(chainPos)
-}
+    size = [touchButtonSize * 2, touchButtonSize * 2]
+    children = numButtonsChained == 1
+      ? actionCtor(buttonsConfig[0], actionItems[0])
+      : [
+          actionCtor(buttonsConfig[0], actionItems[0])
 
+          {
+            pos = [- touchButtonSize * 0.25, touchButtonSize * 0.45]
+            rendObj = ROBJ_IMAGE
+            image = chainImageBg
+            opacity = isChainedWeapons.value ? 0.3 : 0.0
+            transform = { rotate = 45 }
+            size = chainBgImgSize
+          }
 
-let function mkWeaponsButtons(weaponsList, weaponryPositions, isZoomView) {
-  let res = []
-  local nextIdx = 1
-  let occupiedPlacesIdx = {}
-  foreach (_, info in weaponsList) {
-    let { id, actionItem, viewCfg = null } = info
-    let w = viewCfg ?? weaponsButtonsConfig[id]
-    local placeIdx = w?.weaponPlacePosIdx ?? nextIdx
-    local hasForcePlace = "weaponPlacePosIdx" in w
-    if (hasForcePlace && (placeIdx in occupiedPlacesIdx)) {
-      placeIdx = nextIdx
-      hasForcePlace = false
-      logerrWithPrefix($"Two weapons with one weaponPlacePosIdx: {placeIdx}")
-      continue
-    }
+          {
+            pos = [touchButtonSize * 0.75, touchButtonSize * 0.75]
+            behavior = Behaviors.TouchScreenButton
+            onTouchBegin = @() isChainedWeapons(!isChainedWeapons.value)
+            rendObj = ROBJ_IMAGE
+            opacity = 0.5
+            image = isChainedWeapons.value ? chainImageOn : chainImageOff
+            size = [chainImgSize, chainImgSize]
+          }
 
-    let bestIdx = hasForcePlace ? placeIdx
-      : weaponryPositions.findindex(@(_, idx) idx >= nextIdx && (idx not in occupiedPlacesIdx))
-    if (bestIdx == null) {
-      logerrWithPrefix("Not all weapons fit in the allotted spaces")
-      return res
-    }
-    nextIdx = hasForcePlace ? nextIdx : bestIdx + 1
-    if (hasForcePlace)
-      occupiedPlacesIdx[placeIdx] <- true
-    if (w?.visibleInZoom && !isZoomView)
-      continue
-    res.append(weaponsButtonsView?[w.mkButtonFunction](w, actionItem, weaponryPositions[bestIdx]))
+          actionCtor(buttonsConfig[1], actionItems[1],
+            { pos = [touchButtonSize, touchButtonSize] })
+        ]
   }
-  res.append(mkChainIcon(weaponsList, weaponryPositions))
-  return res
 }
 
-let mkWeaponryBlock = @(placePosition, ovr = {}) @() {
-  watch = [ visibleWeaponsList, isInZoom, isUnitDelayed]
-  size = [5 * touchButtonSize, 3 * touchButtonSize]
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_BOTTOM
-  pos = [0, -shHud(0.4)]
-  children = isUnitDelayed.value ? null
-    : mkWeaponsButtons(visibleWeaponsList.value, placePosition, isInZoom.value)
-  transform = {}
-  animations = dfAnimBottomRight
+let mkSimpleChainIcon = @(ovr = {}) {
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    {
+      rendObj = ROBJ_IMAGE
+      image = chainImageOn
+      size = [chainImgSize, chainImgSize]
+    }
+  ]
 }.__update(ovr)
-
-let rightAlignWeaponryBlock = mkWeaponryBlock(weaponryPlacePosition)
-let leftAlignWeaponryBlock = mkWeaponryBlock(weaponryLeftAlignPlacePosition,
-  { hplace = ALIGN_LEFT, animations = dfAnimBottomLeft })
 
 let weaponHintText = Watched(null)
 let clearWeaponText = @() weaponHintText(null)
@@ -180,7 +121,7 @@ let currentWeaponNameText = @() {
 }
 
 return {
-  leftAlignWeaponryBlock
-  rightAlignWeaponryBlock
   currentWeaponNameText
+  mkSimpleChainIcon
+  mkChainedWeapons
 }

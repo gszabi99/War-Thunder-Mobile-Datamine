@@ -8,8 +8,8 @@ let { rqPlayerAndDo } = require("%rGui/hudHints/rqPlayersAndDo.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { switchSpectatorTarget, getSpectatorTargetId } = require("guiSpectator")
-let hudTopCenter = require("%rGui/hud/hudTopCenter.nut")
-let tacticalMapTransparent = require("components/tacticalMapTransparent.nut")
+let { hudTopCenter } = require("%rGui/hud/hudTopCenter.nut")
+let { tacticalMap } = require("components/tacticalMap.nut")
 
 let bgButtonColor = Color(32, 34, 38, 216)
 let bgButtonColorPushed = Color(16, 18, 22, 216)
@@ -49,7 +49,7 @@ let topLeft = {
   gap = hdpx(40)
   children = [
     menuButton
-    tacticalMapTransparent
+    tacticalMap
   ]
 }
 

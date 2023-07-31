@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { decode } = require("jwt")
 let { logerr } = require("dagor.debug")

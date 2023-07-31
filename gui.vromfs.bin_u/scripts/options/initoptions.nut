@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { subscribe } = require("eventbus")
 let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY } = require("colorCorrector")
 let { loadAsCurrentPreset, getDefaultPresetPath } = require("controls")

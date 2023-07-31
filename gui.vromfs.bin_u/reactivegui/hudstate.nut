@@ -22,6 +22,8 @@ let hudStateNative = {
   torpedoDistToLive = 0
   canZoom = false
   isInZoom = false
+  isTrackingActive = false
+  isFreeCamera = false
   zoomMult = 1.0
   playerRoundKills = 0
   playerAiRoundKills = 0
@@ -31,6 +33,10 @@ let hudStateNative = {
   isUnitDelayed = false
   isUnitAlive = false
   inKillZone = false
+  groupIsInAir = false
+  group2IsInAir = false
+  group3IsInAir = false
+  group4IsInAir = false
 }.map(@(val, key) mkWatched(persist, key, val))
 
 interopGet({

@@ -47,6 +47,7 @@ let { abs } = require("%sqstd/math.nut")
 let { justUnlockedUnits, justBoughtUnits, deleteJustBoughtUnit, UNLOCK_DELAY } = require("%rGui/unit/justUnlockedUnits.nut")
 let { scaleAnimation, revealAnimation, raisePlatesAnimation, RAISE_PLATE_TOTAL
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
+let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
@@ -576,6 +577,7 @@ let unitsWnd = {
   onAttach = @() isAttached(true)
   onDetach = @() isAttached(false)
   children = [
+    lqTexturesWarningHangar
     {
       size = [ flex(), unitsPlateCombinedHeight ]
       pos = [ 0, sh(100) - unitsPlateCombinedHeight - saBorders[1] ]

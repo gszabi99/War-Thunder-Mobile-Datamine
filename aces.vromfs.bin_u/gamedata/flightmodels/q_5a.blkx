@@ -2,9 +2,13 @@
   "model": "q_5a",
   "fmFile": "fm/q_5a.blk",
   "useTouchShooting": true,
-  "gForceTolerationMult": 1.3,
+  "tpsCameraTargetOffsetAtZoom": [
+    40.0,
+    10.0,
+    0.0
+  ],
+  "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
-  "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.166,
   "gearSinkRangeC": 0.188,
   "gyroSight": true,
@@ -1762,7 +1766,7 @@
     "Range": 1200.0
   },
   "Sound": {
-    "Engine": "engine05_RD9_N1_WEP",
+    "Engine": "engine_jet",
     "gun": "gun_default"
   },
   "sensors": {
@@ -1798,8 +1802,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "q_5a_4x250kg_bombs",
-      "blk": "gameData/FlightModels/weaponPresets/q_5a_4x250kg_bombs.blk"
+      "name": "q_5a_4x250kg_3_bombs",
+      "blk": "gameData/FlightModels/weaponPresets/q_5a_4x250kg_3_bombs.blk"
     }
   },
   "turbulence": {
@@ -1949,13 +1953,6 @@
         "to": 0.0
       }
     ]
-  },
-  "default_skin_tomoe": {
-    "name": "q_5a_tomoe",
-    "replace_tex": {
-      "from": "q_5a_c*",
-      "to": "q_5a_c*"
-    }
   },
   "parachutes": {
     "emitterRange": [

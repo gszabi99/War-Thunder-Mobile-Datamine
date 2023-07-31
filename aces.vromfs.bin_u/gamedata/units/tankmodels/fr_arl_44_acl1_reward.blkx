@@ -2302,7 +2302,13 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_01",
+        "ex_armor_02"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {

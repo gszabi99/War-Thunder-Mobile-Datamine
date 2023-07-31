@@ -150,9 +150,7 @@ let nextButton = @() {
 
 let header = {
   size = [flex(), SIZE_TO_CONTENT]
-  flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  gap = hdpx(30)
   children = [
     backButton(function() {
       markAllVersionsSeen()
@@ -161,10 +159,12 @@ let header = {
     @() {
       watch = curPatchnoteContent
       rendObj = ROBJ_TEXT
+      size = [flex(), SIZE_TO_CONTENT]
+      halign = ALIGN_CENTER
       color = activeTextColor
       text = curPatchnoteContent.value?.title
       margin = [0, 0, 0, hdpx(15)]
-    }.__update(fontMedium)
+    }.__update(fontBig)
   ]
 }
 

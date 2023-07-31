@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { get_time_msec } = require("dagor.time")
 let { setTimeout } = require("dagor.workcycle")

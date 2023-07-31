@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { get_user_system_info, get_battery, is_charging, get_thermal_state } = require("sysinfo")
 let { get_game_version_str } = require("app")
@@ -19,7 +16,7 @@ let function getSysInfo() {
   tbl.userName <- myUserName.value
   tbl.appsflyer_id <- getAppsFlyerUID()
   tbl.gameVersion <- get_game_version_str()
-  tbl.tankMoveControlType <- get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick"
+  tbl.tankMoveControlType <- get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
   tbl.battery <- get_battery()
   tbl.isCharging <- is_charging()
   tbl.thermalState <- get_thermal_state()

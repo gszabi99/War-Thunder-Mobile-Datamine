@@ -294,6 +294,20 @@
       "material": "wood"
     },
     {
+      "name": "asian_pagoda_foundation_lamp_00",
+      "destructionImpulse": 30.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "asian_pagoda_foundation_lamp_01",
+      "destructionImpulse": 30.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
       "name": "iceberg_chunk_1a",
       "destroyedModelName": "iceberg_chunk_1a_destr_phobj",
       "updateDist": 1000.0,
@@ -8139,6 +8153,175 @@
       "fx": "ad_tree_felling_leaves_green_medium",
       "fxScale": 1.0,
       "material": "wood"
+    },
+    {
+      "name": "tree_sakura_a",
+      "destructionImpulse": 80000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.66,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.5,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_leaves_sakura_medium",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_sakura_b",
+      "destructionImpulse": 80000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.66,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.5,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_leaves_sakura_medium",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_sakura_medium_a",
+      "destructionImpulse": 80000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.6,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_leaves_sakura_medium",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_sakura_medium_b",
+      "destructionImpulse": 80000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.6,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_leaves_sakura_medium",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_sakura_bush_a",
+      "destructionImpulse": 30000.0,
+      "canopyTopPart": 0.7,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.65,
+      "canopyOpacity": 0.7,
+      "fx": "ad_bush_felling_leaves_sakura",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "tree_sakura_bush_b",
+      "destructionImpulse": 30000.0,
+      "canopyTopPart": 0.7,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.65,
+      "canopyOpacity": 0.7,
+      "fx": "ad_bush_felling_leaves_sakura",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_cryptomeria_large_a",
+      "destructionImpulse": 800000.0,
+      "canopyTriangle": true,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.0,
+      "canopyWidthPart": 0.23,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_cryptomeria_large_b",
+      "destructionImpulse": 800000.0,
+      "canopyTriangle": true,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.0,
+      "canopyWidthPart": 0.23,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_cryptomeria_large_c",
+      "destructionImpulse": 800000.0,
+      "canopyTriangle": true,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.0,
+      "canopyWidthPart": 0.23,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_pine_medium_a",
+      "destructionImpulse": 80000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_pine_medium_b",
+      "destructionImpulse": 80000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_pine_medium_c",
+      "destructionImpulse": 80000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_pine_large_a",
+      "destructionImpulse": 800000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_pine_large_b",
+      "destructionImpulse": 800000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_pine_large_c",
+      "destructionImpulse": 800000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_asian_pine_large_d",
+      "destructionImpulse": 800000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
     }
   ],
   "default_building": {
@@ -11908,44 +12091,188 @@
       "hp": 15.0,
       "impulseThreshold": 0.0
     },
-    "japan_statue_cat_a": {
-      "nextRes": "japan_statue_cat_a_dmg",
-      "physRes": "japan_statue_cat_a_destr_phobj",
+    "asian_statue_cat_a": {
+      "nextRes": "asian_statue_cat_a_dmg",
+      "physRes": "asian_statue_cat_a_destr_phobj",
       "hp": 12.0,
       "impulseThreshold": 0.0,
       "fx": "ad_dust_stucco",
       "fxScale": 1.0
     },
-    "japan_statue_cat_c": {
-      "nextRes": "japan_statue_cat_c_dmg",
-      "physRes": "japan_statue_cat_c_destr_phobj",
+    "asian_statue_cat_c": {
+      "nextRes": "asian_statue_cat_c_dmg",
+      "physRes": "asian_statue_cat_c_destr_phobj",
       "hp": 12.0,
       "impulseThreshold": 0.0,
       "fx": "ad_dust_stucco",
       "fxScale": 1.0
     },
-    "japan_lamp_a": {
-      "nextRes": "japan_lamp_a_dmg",
-      "physRes": "japan_lamp_a_destr_phobj",
+    "asian_lamp_a": {
+      "nextRes": "asian_lamp_a_dmg",
+      "physRes": "asian_lamp_a_destr_phobj",
       "hp": 12.0,
       "impulseThreshold": 0.0,
       "fx": "ad_dust_stucco",
       "fxScale": 1.0
     },
-    "japan_lamp_b": {
-      "nextRes": "japan_lamp_b_dmg",
-      "physRes": "japan_lamp_b_destr_phobj",
+    "asian_lamp_b": {
+      "nextRes": "asian_lamp_b_dmg",
+      "physRes": "asian_lamp_b_destr_phobj",
       "hp": 12.0,
       "impulseThreshold": 0.0,
       "fx": "ad_dust_stucco",
       "fxScale": 1.0
     },
-    "japan_statue_dragon_a": {
-      "nextRes": "japan_statue_dragon_a_dmg",
-      "physRes": "japan_statue_dragon_a_destr_phobj",
+    "asian_statue_dragon_a": {
+      "nextRes": "asian_statue_dragon_a_dmg",
+      "physRes": "asian_statue_dragon_a_destr_phobj",
       "hp": 12.0,
       "impulseThreshold": 1.0,
       "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_foundation_fence_00": {
+      "physRes": "asian_pagoda_foundation_fence_00_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_pagoda_foundation_fence_01": {
+      "physRes": "asian_pagoda_foundation_fence_01_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_foundation_fence_02": {
+      "physRes": "asian_pagoda_foundation_fence_02_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_pagoda_foundation_fence_03": {
+      "physRes": "asian_pagoda_foundation_fence_03_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_a_fence_00": {
+      "physRes": "asian_pagoda_a_fence_00_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_a_fence_01": {
+      "physRes": "asian_pagoda_a_fence_01_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_a_fence_02": {
+      "physRes": "asian_pagoda_a_fence_02_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_pagoda_a_fence_03": {
+      "physRes": "asian_pagoda_a_fence_03_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_a_fence_04": {
+      "physRes": "asian_pagoda_a_fence_04_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_pagoda_a_fence_05": {
+      "physRes": "asian_pagoda_a_fence_05_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_pagoda_a_fence_06": {
+      "physRes": "asian_pagoda_a_fence_06_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_a_fence_07": {
+      "physRes": "asian_pagoda_a_fence_07_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_c_fence_01": {
+      "physRes": "asian_pagoda_c_fence_01_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_pagoda_c_fence_02": {
+      "physRes": "asian_pagoda_c_fence_02_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_pagoda_c_fence_03": {
+      "physRes": "asian_pagoda_c_fence_03_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0
+    },
+    "asian_pagoda_c_fence_04": {
+      "physRes": "asian_pagoda_c_fence_04_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_pagoda_c_fence_gate": {
+      "physRes": "asian_pagoda_c_fence_gate_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    "asian_portal_a": {
+      "nextRes": "asian_portal_a_dmg",
+      "physRes": "asian_portal_a_destr_phobj",
+      "hp": 300.0,
+      "impulseThreshold": 5.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0
+    },
+    "asian_portal_b": {
+      "nextRes": "asian_portal_b_dmg",
+      "physRes": "asian_portal_b_destr_phobj",
+      "hp": 600.0,
+      "impulseThreshold": 5.0,
+      "fx": "ad_wood_big",
       "fxScale": 1.0
     },
     "japan_gazebo_a": {

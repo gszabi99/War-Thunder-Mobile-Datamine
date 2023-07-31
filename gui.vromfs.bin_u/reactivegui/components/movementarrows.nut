@@ -225,6 +225,99 @@ let function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFF
   }
 }
 
+let function mkMoveHorView(flipX) {
+  let horAnimSize = horAnimSizeMul.map(@(v, i) (v * horSize[i]).tointeger())
+  let cornerOffset = (0.72 * horAnimSize[0]).tointeger()
+  return {
+    size = horSize
+    children = [
+      {
+        size = horSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_bg.svg:{horSize[0]}:{horSize[1]}")
+        color = bgColor
+        flipX
+      }
+      {
+        size = horSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_outline.svg:{horSize[0]}:{horSize[1]}")
+        flipX
+      }
+      {
+        size = horAnimSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_corner.svg:{horAnimSize[0]}:{horAnimSize[1]}")
+        hplace = flipX ? ALIGN_RIGHT : ALIGN_LEFT
+        vplace = ALIGN_CENTER
+        margin = [0, cornerOffset]
+        flipX
+      }
+    ]
+  }
+}
+
+let function mkMoveVertView(flipY) {
+  let verCornerSize = verCornerSizeMul.map(@(v, i) (v * verSize[i]).tointeger())
+  let cornerOffset = (0.3 * verCornerSize[1]).tointeger()
+  return {
+    size = verSize
+    children = [
+      {
+        size = verSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_bg.svg:{verSize[0]}:{verSize[1]}")
+        color = bgColor
+        flipY
+      }
+      {
+        size = verSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_outline.svg:{verSize[0]}:{verSize[1]}")
+        flipY
+      }
+      {
+        size = verCornerSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_corner.svg:{verCornerSize[0]}:{verCornerSize[1]}")
+        vplace = flipY ? ALIGN_BOTTOM : ALIGN_TOP
+        hplace = ALIGN_CENTER
+        margin = [flipY ? 0 : cornerOffset, 0, flipY ? cornerOffset : 0, 0]
+        transitions = [{ prop = AnimProp.color, duration = animTime }]
+        flipY
+      }
+    ]
+  }
+}
+
+let mkMoveArrowsView = @(midGap, midComp = null) {
+  valign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  children = [
+    mkMoveHorView(false)
+    {
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      gap = midGap
+      children = [
+        mkMoveVertView(false)
+        midComp
+        mkMoveVertView(true)
+      ]
+    }
+    mkMoveHorView(true)
+  ]
+}
+
+let moveArrowsView = mkMoveArrowsView(shHud(2), null)
+let moveArrowsViewWithMode = mkMoveArrowsView(0,
+  {
+    size = [flex(), hdpx(30)]
+    rendObj = ROBJ_TEXT
+    halign = ALIGN_CENTER
+    text = loc("HUD/ENGINE_REV_STOP_SHORT")
+  }.__update(fontTiny))
+
 return {
   mkMoveLeftBtn = mkMoveHorCtor(false)
   mkMoveRightBtn = mkMoveHorCtor(true)
@@ -238,4 +331,7 @@ return {
 
   fillMoveColorDef
   fillMoveColorBlocked
+
+  moveArrowsView
+  moveArrowsViewWithMode
 }

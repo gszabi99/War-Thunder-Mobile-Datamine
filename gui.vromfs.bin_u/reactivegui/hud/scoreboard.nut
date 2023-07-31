@@ -134,4 +134,29 @@ let function scoreBoard() {
   }
 }
 
-return scoreBoard
+let scoreBoardEditView = {
+  flow = FLOW_HORIZONTAL
+  gap = -0.15 * timerBgWidth
+  children = [
+    mkLinearScoreBar("localTeam")
+    {
+      rendObj = ROBJ_IMAGE
+      size = [timerBgWidth, timerBgHeight]
+      image = getSvgImage("hud_time_bg", timerBgWidth, timerBgHeight)
+      color = Color(0, 0, 0, 77)
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = @() {
+        watch = timeLeft
+        rendObj = ROBJ_TEXT
+        text = "xx:xx"
+      }.__update(fontTiny)
+    }
+    mkLinearScoreBar("enemyTeam")
+  ]
+}
+
+return {
+  scoreBoard
+  scoreBoardEditView
+}

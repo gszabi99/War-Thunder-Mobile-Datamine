@@ -2,10 +2,14 @@
   "model": "ju_87d_5",
   "fmFile": "fm/ju_87d_5.blk",
   "useTouchShooting": true,
+  "tpsCameraTargetOffsetAtZoom": [
+    40.0,
+    10.0,
+    0.0
+  ],
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
-  "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.162,
   "gearSinkRangeC": 0.085,
   "type": [
@@ -3775,12 +3779,6 @@
     "climbSpeed": 4.16,
     "maxSpeed": 111.11,
     "turnTime": 40.0268
-  },
-  "default_skin_tomoe": {
-    "replace_tex": {
-      "from": "ju_87d_5_a*",
-      "to": "ju_87d_5_a*"
-    }
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

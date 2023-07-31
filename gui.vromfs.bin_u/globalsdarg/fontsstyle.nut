@@ -39,6 +39,10 @@ let fontBig = {
   font = Fonts.muller_medium
   fontSize = hdpxi(57)
 }
+let fontLarge = {
+  font = Fonts.muller_medium
+  fontSize = hdpxi(77)
+}
 let fontVeryLarge = {
   font = Fonts.muller_medium
   fontSize = hdpxi(97)
@@ -60,6 +64,7 @@ let fontsSets = {
     fontSmallAccented
     fontMedium
     fontBig
+    fontLarge
     fontVeryLarge
   }
   commonShaded = {

@@ -1,15 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { leftAlignWeaponryBlock, currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
+let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
 let { logerrAndKillLogPlace } = require("%rGui/hudHints/hintBlocks.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
-let aircraftMovementBlock = require("%rGui/hud/aircraftMovementBlock.nut")
-let hudTopCenter = require("%rGui/hud/hudTopCenter.nut")
+let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let aircraftSight = require("%rGui/hud/aircraftSight.nut")
-let hitCamera = require("hitCamera/hitCamera.nut")
 let bombMissedHint = require("%rGui/hud/bombMissedHint.nut")
-let zoomSlider = require("%rGui/hud/zoomSlider.nut")
+let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
+let { radarSize } = require("%rGui/hud/aircraftRadar.nut")
 
 let topLeft = {
   flow = FLOW_HORIZONTAL
@@ -19,10 +18,7 @@ let topLeft = {
     {
       flow = FLOW_VERTICAL
       children = [
-        {
-          size = [hdpx(300), hdpx(300)]
-          rendObj = ROBJ_RADAR
-        }
+        { size = [radarSize, radarSize] }
         logerrAndKillLogPlace
       ]
     }
@@ -38,13 +34,10 @@ return {
   onDetach = @() stopActionBarUpdate("airHud")
   children = [
     bombMissedHint
+    hudTuningElems
     topLeft
-    zoomSlider
-    hudTopCenter
-    hitCamera
+    hudTopMainLog
     hudBottomCenter
-    leftAlignWeaponryBlock
-    aircraftMovementBlock
     currentWeaponNameText
     aircraftSight
   ]

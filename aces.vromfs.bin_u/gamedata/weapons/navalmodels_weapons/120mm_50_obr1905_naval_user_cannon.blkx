@@ -6,7 +6,7 @@
   "aimMinDist": 10.0,
   "aimMaxDist": 10000.0,
   "attackMaxDist": 10000.0,
-  "shotFreq": 0.25,
+  "shotFreq": 0.43,
   "bullets": 1,
   "recoilOffset": 0.406,
   "recoilTimes": [
@@ -50,7 +50,7 @@
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "120mm_obr1911_sap",
     "dynamicKv": true,
-    "hitPowerMult": 450.0,
+    "hitPowerMult": 350.0,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -253,7 +253,7 @@
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "120mm_obr1911_sap",
       "dynamicKv": true,
-      "hitPowerMult": 450.0,
+      "hitPowerMult": 350.0,
       "relativeVelHitShift": [
         300.0,
         1000.0

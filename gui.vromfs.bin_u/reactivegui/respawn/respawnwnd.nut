@@ -17,7 +17,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
-let scoreBoard = require("%rGui/hud/scoreBoard.nut")
+let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, mkUnitPrice,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")

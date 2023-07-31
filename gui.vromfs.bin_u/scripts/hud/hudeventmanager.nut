@@ -1,8 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 let { subscribeHudEvents } = require("hudMessages")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { send_foreign } = require("eventbus")

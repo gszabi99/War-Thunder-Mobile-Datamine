@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { get_settings_blk } = require("blkGetters")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")

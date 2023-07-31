@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 from "%globalScripts/logs.nut" import *
 let { Watched, Computed } = require("frp")
 let { subscribe } = require("eventbus")

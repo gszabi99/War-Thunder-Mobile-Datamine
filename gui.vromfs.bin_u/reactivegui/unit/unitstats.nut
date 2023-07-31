@@ -363,7 +363,9 @@ let function getUnitStats(unit, shopCfg, statsList, weapStatsList) {
 
   local weaponsIdx = statsList.findindex(@(stat) stat?.isAfterWeapons ?? false)
   foreach (stat in weapStatsList) {
-    let list = unit.unitType == "tank" ? weapByType?.mainCannon : weapByType?[stat.id]
+    let list = unit.unitType == "tank"
+      ? weapByType?[shopCfg?.mainWeaponType ?? "mainCannon"]
+      : weapByType?[stat.id]
     if (list == null)
       continue
     if (unit.unitType != "tank")

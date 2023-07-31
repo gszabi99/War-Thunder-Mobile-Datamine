@@ -2968,5 +2968,115 @@
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_carc*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 24.0,
+      "decal0Line0": [
+        2.78052,
+        -0.0643859,
+        0.594977,
+        -0.979477
+      ],
+      "decal0Line1": [
+        0.253715,
+        -2.43417,
+        -1.44911,
+        3.89552
+      ],
+      "decal0Line2": [
+        -2.78052,
+        0.0643856,
+        0.594977,
+        1.97948
+      ],
+      "decal0Line3": [
+        0.253715,
+        -2.43417,
+        1.44911,
+        3.89552
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.190566,
+        0.516751,
+        -0.834657,
+        -2.01806
+      ],
+      "decal0CPNormDepth1": [
+        0.190566,
+        0.516751,
+        0.834657,
+        -2.01806
+      ],
+      "decal0RotScale": [
+        1.59724,
+        0.351593
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.207978,
+      "decal0Tex": "ge_bundeswehr_insignia",
+      "decal1Line0": [
+        2.75238,
+        -0.0639395,
+        0.470418,
+        0.147927
+      ],
+      "decal1Line1": [
+        0.16512,
+        -2.46585,
+        -1.30126,
+        4.17721
+      ],
+      "decal1Line2": [
+        -2.75238,
+        0.0639393,
+        0.470418,
+        0.852073
+      ],
+      "decal1Line3": [
+        0.16512,
+        -2.46585,
+        1.30126,
+        4.17721
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.159362,
+        0.469076,
+        -0.868661,
+        -1.93329
+      ],
+      "decal1CPNormDepth1": [
+        0.159362,
+        0.469076,
+        0.868661,
+        -1.93329
+      ],
+      "decal1RotScale": [
+        1.59672,
+        0.358035
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": true,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.203499,
+      "decal1Tex": "leopard_457_decal"
+    }
+  },
+  "battleHideNodes": {
+    "n": "details"
   }
 }

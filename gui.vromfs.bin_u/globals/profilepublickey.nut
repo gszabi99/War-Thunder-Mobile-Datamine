@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 return @"
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD4aLxMTwNr+EfaJJoIVacCQhcW

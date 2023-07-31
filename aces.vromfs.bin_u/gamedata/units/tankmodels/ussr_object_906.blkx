@@ -58,7 +58,6 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenFx": "smokescreen_no_therm_small",
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,
@@ -2591,6 +2590,7 @@
   ],
   "modifications": {
     "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
     "tank_engine_smoke_screen_system": {}
@@ -2737,6 +2737,66 @@
       "emtr_exhaust_01",
       "emtr_exhaust_04"
     ]
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_dkgreen_ltgreen_brown*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 35.0,
+      "decal0Line0": [
+        2.7789,
+        0.0574326,
+        0.246467,
+        -0.669311
+      ],
+      "decal0Line1": [
+        0.199096,
+        -2.17374,
+        -1.73827,
+        2.64783
+      ],
+      "decal0Line2": [
+        -2.78554,
+        0.0574326,
+        0.154332,
+        1.55426
+      ],
+      "decal0Line3": [
+        0.0520769,
+        -2.17374,
+        1.74886,
+        2.70658
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0559852,
+        0.626681,
+        -0.777263,
+        -2.01836
+      ],
+      "decal0CPNormDepth1": [
+        0.0559852,
+        0.626681,
+        0.777263,
+        -2.01836
+      ],
+      "decal0RotScale": [
+        1.54438,
+        0.358371
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.215201,
+      "decal0Tex": "back_20"
+    }
   },
   "battleHideNodes": {
     "n": "details"

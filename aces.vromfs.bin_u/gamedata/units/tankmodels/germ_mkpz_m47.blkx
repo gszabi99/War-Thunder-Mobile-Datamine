@@ -2614,6 +2614,7 @@
   "modifications": {
     "tank_tool_kit_expendable": {},
     "art_support": {},
+    "upgraded": {},
     "tank_extinguisher": {},
     "tank_smoke_screen_system_mod": {
       "tier": 2,
@@ -2903,5 +2904,33 @@
       "from": "us_camo_olive*",
       "to": "ger_camo_bronzegruen*"
     }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "ger_camo_carc*"
+    },
+    "set_tex": [
+      {
+        "from": "m47_patton_II_body_c*",
+        "to": "mkpz_m47_skin_body_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "m47_patton_II_turret_c*",
+        "to": "mkpz_m47_skin_turret_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 63.0
+    }
+  },
+  "battleHideNodes": {
+    "n": "details"
   }
 }

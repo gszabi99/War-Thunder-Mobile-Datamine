@@ -1,8 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { dfAnimBottomCenter } = require("%rGui/style/unitDelayAnims.nut")
-let { resetTimeout } = require("dagor.workcycle")
 let { setZoomMult } = require("controls")
-let { isUnitDelayed, isInZoom, zoomMult } = require("%rGui/hudState.nut")
+let { isInZoom, zoomMult } = require("%rGui/hudState.nut")
 
 
 let stepZoom = 0.01
@@ -14,10 +12,6 @@ let knobPadding = scaleWidth
 let sliderPadding = 2 * scaleWidth
 let fullWidth = knobSize + 2 * sliderPadding
 let zoomScaleHeight = height - knobSize
-
-let idleTimeForZoomOpacity = 5
-let needOpacityZoom = Watched(false)
-let makeOpacityZoom = @() needOpacityZoom(true)
 
 let knobColor = Color(230, 230, 230, 230)
 
@@ -42,12 +36,10 @@ let zoomBgrImage = Picture("!ui/gameuiskin#hud_plane_slider.avif")
 
 let function changeZoomValue(val) {
   val = clamp(val, 0, 1.0)
-  needOpacityZoom(false)
-  resetTimeout(idleTimeForZoomOpacity, makeOpacityZoom)
   setZoomMult(1.0 - val)
 }
 
-let function zoomSlider() {
+let function mkZoomSlider(isDynamic = false) {
   let knob = {
     size  = [knobSize + 2 * knobPadding, knobSize + 2 * knobPadding]
     pos = [0, ((1.0 - zoomMult.value) * zoomScaleHeight).tointeger() - knobPadding]
@@ -65,10 +57,10 @@ let function zoomSlider() {
   }
 
   return {
-    watch = [ zoomMult, needOpacityZoom ]
+    watch = zoomMult
     key = zoomMult
     size = [fullWidth, height]
-    pos = [-shHud(50), 0]
+    pos = isDynamic ? null : [-shHud(50), 0]
     padding = [0, sliderPadding]
     behavior = Behaviors.Slider
     fValue = zoomMult.value
@@ -76,8 +68,6 @@ let function zoomSlider() {
     max = 1.0
     unit = stepZoom
     orientation = O_VERTICAL
-    opacity = needOpacityZoom.value ? 0.5 : 1.0
-    transitions = [{ prop = AnimProp.opacity, duration = 0.5, easing = Linear }]
     children = [
       {
         flow = FLOW_HORIZONTAL
@@ -94,19 +84,42 @@ let function zoomSlider() {
       }
       knob
     ]
-    onAttach = @() needOpacityZoom(true)
     onChange = changeZoomValue
   }
 }
 
-let viewSlider = @() {
-  watch = [isInZoom, isUnitDelayed]
-  size = [fullWidth, height]
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  children = !isInZoom.value || isUnitDelayed.value ? null : zoomSlider
-  transform = {}
-  animations = dfAnimBottomCenter
+let zoomSlider = @() {
+  watch = isInZoom
+  children = !isInZoom.value ? null : @() mkZoomSlider(true)
 }
 
-return viewSlider
+let zoomSliderEditView = {
+  size = [fullWidth, height]
+  padding = [0, sliderPadding]
+  children = [
+    {
+      flow = FLOW_HORIZONTAL
+      vplace = ALIGN_CENTER
+      pos =  [scaleWidth, 0]
+      children = [
+        {
+          size = [scaleWidth, zoomScaleHeight]
+          rendObj = ROBJ_IMAGE
+          image = zoomBgrImage
+        }
+        zoomScale
+      ]
+    }
+    {
+      size  = [knobSize, knobSize]
+      pos = [- knobSize * 0.6, knobSize * 0.5]
+      rendObj = ROBJ_IMAGE
+      image = Picture("ui/gameuiskin#hud_binoculars_zoom.svg")
+    }
+  ]
+}
+
+return {
+  zoomSlider
+  zoomSliderEditView
+}

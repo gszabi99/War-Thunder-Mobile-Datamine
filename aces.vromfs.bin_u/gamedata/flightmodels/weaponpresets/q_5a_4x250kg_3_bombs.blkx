@@ -1,6 +1,36 @@
 {
-  "Weapon": {
-    "slot": 3,
-    "preset": "gp250_3_x4"
-  }
+  "Weapon": [
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+      "emitter": "china_gp_250_3_001",
+      "bullets": 1,
+      "external": true,
+      "separate": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+      "emitter": "china_gp_250_3_002",
+      "bullets": 1,
+      "external": true,
+      "separate": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+      "emitter": "china_gp_250_3_003",
+      "bullets": 1,
+      "external": true,
+      "separate": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+      "emitter": "china_gp_250_3_004",
+      "bullets": 1,
+      "external": true,
+      "separate": true
+    }
+  ]
 }

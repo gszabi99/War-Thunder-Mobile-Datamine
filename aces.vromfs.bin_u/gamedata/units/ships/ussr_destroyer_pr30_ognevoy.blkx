@@ -1451,11 +1451,14 @@
         "maxAngularSpeed": 0.8,
         "startSpeed": 20.0,
         "useStartSpeed": true,
+        "barrelDP": "tt_01_dm",
+        "breechDP": "tt_01_dm",
         "speedYaw": 55.0,
         "shotFreq": 0.17,
         "turret": {
           "head": "tt_head_01",
-          "gun": "tt_01"
+          "gun": "tt_01",
+          "gunnerDm": "tt_01_dm"
         },
         "limits": {
           "yaw": [
@@ -1505,11 +1508,14 @@
         "maxAngularSpeed": 0.8,
         "startSpeed": 20.0,
         "useStartSpeed": true,
+        "barrelDP": "tt_02_dm",
+        "breechDP": "tt_02_dm",
         "speedYaw": 55.0,
         "shotFreq": 0.17,
         "turret": {
           "head": "tt_head_02",
-          "gun": "tt_02"
+          "gun": "tt_02",
+          "gunnerDm": "tt_02_dm"
         },
         "limits": {
           "yaw": [
@@ -1821,6 +1827,13 @@
             "emitter": "emtr_fire_dmg_02"
           }
         ]
+      },
+      {
+        "name": "ammo_expl",
+        "fx": {
+          "name": "explosion_ship_ammo",
+          "centerDmgPart": true
+        }
       },
       {
         "name": "fire_after_hit_huge",

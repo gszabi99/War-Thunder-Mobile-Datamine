@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 
@@ -17,9 +14,12 @@ let function getUnitAnyPrice(unit, isForLevelUp) {
   return { currencyId, price, fullPrice, discount }
 }
 
+let isUnitGloballyUnavailable = @(u) u.costGold <= 0 && u.costWp <= 0 && !u.isHidden
+
 let sortUnits = @(a, b)
      a.rank <=> b.rank
   || a.mRank <=> b.mRank
+  || isUnitGloballyUnavailable(a) <=> isUnitGloballyUnavailable(b)
   || a.unitType <=> b.unitType
   || a.unitClass <=> b.unitClass
   || a.isPremium <=> b.isPremium

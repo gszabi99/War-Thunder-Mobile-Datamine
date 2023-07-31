@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
 let debufBlinkTime = 0.7
 let debuffColor = 0xFFFF0802
@@ -26,6 +27,14 @@ let mkDebuffIcon = @(image, iconSize) {
   animations = debuffAnims
 }
 
+let mkDebuffIconEditView = @(image, iconSize) {
+  size = [iconSize, iconSize]
+  rendObj = ROBJ_IMAGE
+  color = borderColor
+  image = Picture(image)
+}
+
 return {
   mkDebuffIcon
+  mkDebuffIconEditView
 }

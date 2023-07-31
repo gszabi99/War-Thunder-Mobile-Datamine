@@ -23,13 +23,12 @@ const SEEN_SAVE_ID = "changelog/lastSeenId"
 const MSEC_BETWEEN_REQUESTS = 600000
 const MAX_VERSIONS_AMOUNT = 5
 const MIN_SESSIONS_TO_FORCE_SHOW = 5
-const SHOULD_SHOW_PATCHNOTES_AUTOMATICALLY = false
 
 let shortLang = loc("current_lang")
 let patchPlatform = platformId == "android" ? "android" : "ios"
 let cfgId = get_cur_circuit_name().indexof("production") != null || get_cur_circuit_name().indexof("stable") != null
   ? "wtm_production" : "wtm_test"
-let GET_ALL_URL = $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgId}/{shortLang}/?platform={patchPlatform}"
+let GET_ALL_URL = $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgId}/{shortLang}/?platform={patchPlatform}&kind=patchnote"
 let getPatchUrl = @(id)
   $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgId}/{shortLang}/{id}/?platform={patchPlatform}"
 
@@ -82,8 +81,7 @@ let curPatchnoteId = Computed(function() {
 let curPatchnoteContent = Computed(@() receivedPatchnotes.value?[curPatchnoteId.value])
 let curPatchnoteIdx = Computed(@() versions.value.findindex(@(v) v.id == curPatchnoteId.value) ?? -1)
 let haveUnseenVersions = Computed(@() unseenPatchnoteId.value != null)
-let needShowChangeLog = Computed(@() SHOULD_SHOW_PATCHNOTES_AUTOMATICALLY
-  && isMainMenuAttached.value // warning disable: -const-in-bool-expr
+let needShowChangeLog = Computed(@() isMainMenuAttached.value
   && haveUnseenVersions.value
   && (sharedStats.value?.sessionsCountPersist ?? 0) >= MIN_SESSIONS_TO_FORCE_SHOW
   && !hasModalWindows.value

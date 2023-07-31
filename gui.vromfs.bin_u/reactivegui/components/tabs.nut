@@ -1,44 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkLinearGradientImg } = require("%darg/helpers/mkGradientImg.nut")
+let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkGradientCtorDoubleSideY, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 
 let tabsGap = hdpx(10)
 let selLineGap = hdpx(10)
 let selLineWidth = hdpx(7)
 let tabExtraWidth = selLineWidth + selLineGap
 
-let bgColor = 0x80000000
-let activeBgColor = 0x8052C4E4
+let bgColor = 0x990C1113
+let activeBgColor = 0xFF52C4E4
+let lineColor = 0xFF75D0E7
 let transDuration = 0.3
 
-let bgGradTextureW = hdpx(100)
-let bgGradTextureH = hdpx(50)
-let lineGradTextureW = 4
-let lineGradTextureH = bgGradTextureH
-
-let bgGradient = mkLinearGradientImg({
-  points = [{ offset = 0, color = colorArr(activeBgColor) }, { offset = 100, color = colorArr(bgColor) }]
-  width = bgGradTextureW
-  height = bgGradTextureH
-  x1 = 0.25 * bgGradTextureW
-  y1 = 0.35 * bgGradTextureH
-  x2 = 0.75 * bgGradTextureW
-  y2 = 0.20 * bgGradTextureH
-})
-
-let lineGradient = mkLinearGradientImg({
-  points = [
-    { offset = 0, color = colorArr(0) },
-    { offset = 30, color = colorArr(activeBgColor) },
-    { offset = 70, color = colorArr(activeBgColor) },
-    { offset = 100, color = colorArr(0) }
-  ]
-  width = lineGradTextureW
-  height = lineGradTextureH
-  x1 = 0
-  y1 = 0
-  x2 = 0
-  y2 = lineGradTextureH
-})
+let bgGradient = mkBitmapPicture(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 4, gradTexSize * 6 / 16, gradTexSize * 3 / 16, gradTexSize * 3 / 8))
+let lineGradient = mkBitmapPicture(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColor, 0.25))
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
 
@@ -60,7 +36,6 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
       size = flex()
       rendObj = ROBJ_SOLID
       color = bgColor
-      opacity = isActive.value ? 0 : 1
       transitions = opacityTransition
     }
     @() {
@@ -68,8 +43,8 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
       size = flex()
       rendObj = ROBJ_IMAGE
       image = bgGradient
-      opacity = isActive.value ? 0.5
-        : isHover.value ? 0.35
+      opacity = isActive.value ? 1
+        : isHover.value ? 0.5
         : 0
       transitions = opacityTransition
     }
@@ -98,12 +73,30 @@ let function mkTab(id, content, curTabId, tabOverride) {
   }
 }
 
-let mkTabs = @(tabsData, curTabId) {
+let tabsRoot = {
   size = [ flex(), SIZE_TO_CONTENT ]
   flow = FLOW_VERTICAL
   gap = tabsGap
-  children = tabsData.map(@(tab)
-    mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}))
+}
+
+let function mkTabs(tabsData, curTabId, ovr = {}) {
+  let watch = tabsData.map(@(t) t?.isVisible).filter(@(v) v != null)
+  if (watch.len() == 0)
+    return tabsRoot.__merge(
+      {
+        children = tabsData.map(@(tab)
+          mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}))
+      },
+      ovr)
+
+  return @() tabsRoot.__merge(
+    {
+      watch
+      children = tabsData
+        .filter(@(tab) tab?.isVisible.value ?? true)
+        .map(@(tab) mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}))
+    },
+    ovr)
 }
 
 return {

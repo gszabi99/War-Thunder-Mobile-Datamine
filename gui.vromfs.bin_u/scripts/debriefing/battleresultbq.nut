@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/ecs.nut" import *
@@ -94,7 +91,7 @@ let function onFrameTimes(evt, _eid, _comp) {
     fpsLimit = get_gui_option(OPT_FPS) ?? get_default_fps_limit()
     videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY) ?? get_default_graphics_preset()
     sessionId = get_mp_session_id_int()
-    tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick"
+    tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
     battery = get_battery()
     isCharging = is_charging()
     thermalState = get_thermal_state()

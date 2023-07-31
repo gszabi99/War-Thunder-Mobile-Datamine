@@ -2472,43 +2472,37 @@
   "default_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",
-      "to": "fr_camo_vert_olive_arme*"
-    }
-  },
-  "upgraded_skin": {
-    "replace_tex": {
-      "from": "us_camo_olive*",
       "to": "fr_camo_green_brown*"
     }
   },
-  "upgradedDecals": {
+  "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 84.0,
       "decal0Line0": [
-        1.84826,
-        -0.00043303,
-        -5.87664E-06,
-        0.13496
+        2.05483,
+        -8.98197E-08,
+        -6.52098E-06,
+        0.31386
       ],
       "decal0Line1": [
-        -0.00043303,
-        -1.84826,
-        -4.78217E-05,
-        3.15054
+        -8.99884E-08,
+        -2.05483,
+        -5.3168E-05,
+        3.45573
       ],
       "decal0Line2": [
-        -1.84826,
-        0.000432868,
-        -5.87663E-06,
-        0.86504
+        -2.05483,
+        -8.98197E-08,
+        -6.52097E-06,
+        0.68614
       ],
       "decal0Line3": [
-        -0.000432868,
-        -1.84826,
-        4.78217E-05,
-        3.15054
+        8.9651E-08,
+        -2.05483,
+        5.3168E-05,
+        3.45573
       ],
       "decal0HaveCP": true,
       "decal0CPNormDepth": [
@@ -2524,13 +2518,13 @@
         -1.29035
       ],
       "decal0RotScale": [
-        1.57103,
-        0.541048
+        1.5708,
+        0.486657
       ],
       "decal0Mirrored": false,
       "decal0Wrap": false,
       "decal0Abs": true,
-      "decal0OppositeMirrored": true,
+      "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.203396,
       "decal0Tex": "french_tank_emblem_02",
       "decal1Line0": [
@@ -2629,7 +2623,7 @@
       "decal2Tex": "fr_2nd_bat_2nd_company_4th_platoon"
     }
   },
-  "upgradedAttachables": {
+  "defaultAttachables": {
     "default": {
       "attachable": {
         "node": "superstructure_back_dm",
@@ -2664,61 +2658,5 @@
         ]
       }
     }
-  },
-  "skin": [
-    {
-      "name": "fr_camo_desert_storm",
-      "nameLocId": "skin/fr_camo_desert_storm",
-      "descLocId": "skin/fr_camo_desert_storm/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_desert_storm*"
-      }
-    },
-    {
-      "name": "fr_camo_green_brown",
-      "nameLocId": "skin/fr_camo_green_brown",
-      "descLocId": "skin/fr_camo_green_brown/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_green_brown*"
-      }
-    },
-    {
-      "name": "fr_camo_green_sand_brown",
-      "nameLocId": "skin/fr_camo_green_sand_brown",
-      "descLocId": "skin/fr_camo_green_sand_brown/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_green_sand_brown*"
-      }
-    },
-    {
-      "name": "fr_camo_jaune_sahara",
-      "nameLocId": "skin/fr_camo_jaune_sahara",
-      "descLocId": "skin/fr_camo_jaune_sahara/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_jaune_sahara*"
-      }
-    },
-    {
-      "name": "fr_camo_winter_green_white",
-      "nameLocId": "skin/fr_camo_winter_green_white",
-      "descLocId": "skin/fr_camo_winter_green_white/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_winter_green_white*"
-      }
-    },
-    {
-      "name": "fr_camo_winter_base",
-      "nameLocId": "skin/fr_camo_winter_base",
-      "descLocId": "skin/fr_camo_winter_base/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_winter_base*"
-      }
-    }
-  ]
+  }
 }

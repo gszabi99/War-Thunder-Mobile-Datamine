@@ -1,9 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 //-file:plus-string
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 from "%appGlobals/unitConst.nut" import *
 

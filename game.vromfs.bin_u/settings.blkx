@@ -168,6 +168,15 @@
         "vrom": "ui/fonts.vromfs.bin",
         "mount": "ui/",
         "vromIgnoreForServer": true,
+        "vromOptional": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/fontsMin.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "vromOptional": true,
         "mountAsPack": true,
         "webFs": true
       },
@@ -205,6 +214,8 @@
   "addons": {
     "folder": [
       "content.hq/hq_tex",
+      "content/pkg_secondary",
+      "content.hq/pkg_secondary_hq",
       "content/pkg_dev",
       "content.hq/pkg_dev_hq",
       "content/pkg_common",
@@ -240,6 +251,8 @@
   "addons_no_check": {
     "folder": [
       "content.hq/hq_tex",
+      "content/pkg_secondary",
+      "content.hq/pkg_secondary_hq",
       "content/pkg_dev",
       "content.hq/pkg_dev_hq",
       "content/pkg_common",
@@ -275,6 +288,8 @@
   "addonsDownloadable": {
     "folder": [
       "content.hq/hq_tex",
+      "content/pkg_secondary",
+      "content.hq/pkg_secondary_hq",
       "content.hq/pkg_dev_hq",
       "content/pkg_common",
       "content.hq/pkg_common_hq",
@@ -405,6 +420,7 @@
     "sky_panorama_patch": false,
     "allowHmap": false,
     "useCellSBuffer": true,
+    "beforeRenderFrameFrameBoundary": true,
     "dynrendInitialMainRingBufferSize": 65536,
     "dynrendInitialRingBufferSize": 65536,
     "cellsVBcfg": {
@@ -560,7 +576,13 @@
       60.0
     ],
     "logerrOnSecLayer": true,
-    "mobileStyleFpsString": true
+    "mobileStyleFpsString": true,
+    "unsupportedVfxShaders": {
+      "shader": [
+        "dafx_modfx_volshape_render",
+        "dafx_modfx_volshape_wboit_render"
+      ]
+    }
   },
   "directx": {
     "debug": false,
@@ -1131,8 +1153,8 @@
         "hangarTankLod": 1,
         "hangarShipLod": 0,
         "compatibilityShadowQuality": "low",
-        "grassRadiusMul": 0.25,
-        "grassDensityMul": 0.25,
+        "grassRadiusMul": 0.45,
+        "grassDensityMul": 0.15,
         "fxDensityMul": 0.5,
         "rendinstDistMul": 0.5,
         "compatibilityRendinstDistMul": 0.5,

@@ -1755,36 +1755,29 @@
             -15.0,
             55.0
           ]
-        }
-      },
-      {
-        "trigger": "gunner4",
-        "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "bone_commander_sight_v",
-        "speedYaw": 0.0,
-        "speedPitch": 0.0,
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "parkInDeadzone": false,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_commander_sight_v",
-          "gunnerDm": "commander_dm",
-          "verDriveDm": "commander_panoramic_sight_dm",
-          "horDriveDm": "drive_turret_h_dm",
-          "rotatedTurret": "bone_turret"
         },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -17.0,
-            65.0
-          ]
-        }
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -90.0
+            ],
+            "pitch": [
+              -90.0,
+              90.0
+            ]
+          },
+          {
+            "yaw": [
+              90.0,
+              180.0
+            ],
+            "pitch": [
+              -90.0,
+              90.0
+            ]
+          }
+        ]
       }
     ]
   },
@@ -2443,6 +2436,7 @@
   },
   "modifications": {
     "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
     "tank_smoke_screen_system_mod": {
@@ -2714,36 +2708,29 @@
                   -15.0,
                   55.0
                 ]
-              }
-            },
-            {
-              "trigger": "gunner4",
-              "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "bone_commander_sight_v",
-              "speedYaw": 0.0,
-              "speedPitch": 0.0,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "parkInDeadzone": false,
-              "turret": {
-                "head": "bone_turret",
-                "gun": "bone_commander_sight_v",
-                "gunnerDm": "commander_dm",
-                "verDriveDm": "commander_panoramic_sight_dm",
-                "horDriveDm": "drive_turret_h_dm",
-                "rotatedTurret": "bone_turret"
               },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -17.0,
-                  65.0
-                ]
-              }
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -180.0,
+                    -90.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    90.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    90.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    90.0
+                  ]
+                }
+              ]
             },
             {
               "trigger": "gunner5",
@@ -2806,6 +2793,66 @@
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_carc*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": -33.0,
+      "decal0Line0": [
+        2.79204,
+        -4.02329E-08,
+        -8.2345E-08,
+        -2.35131
+      ],
+      "decal0Line1": [
+        -1.20423E-07,
+        -2.36226,
+        -1.48837,
+        2.00723
+      ],
+      "decal0Line2": [
+        -2.79204,
+        -4.29764E-08,
+        8.40736E-08,
+        3.35131
+      ],
+      "decal0Line3": [
+        1.23665E-07,
+        -2.36226,
+        1.48837,
+        2.00723
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        9.21666E-10,
+        0.533074,
+        -0.846068,
+        -1.98651
+      ],
+      "decal0CPNormDepth1": [
+        9.21666E-10,
+        0.533074,
+        0.846068,
+        -1.98651
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358161
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "ge_bundeswehr_insignia"
+    }
   },
   "battleHideNodes": {
     "n": "details"

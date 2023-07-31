@@ -8,6 +8,11 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { INVALID_USER_ID } = require("matching.errors")
+let { json_to_string } = require("json")
+let { get_common_local_settings_blk } = require("blkGetters")
+let { send } = require("eventbus")
+
+const FIRST_LOGIN_EVENT = "first_login_event"
 
 let function sendEvent(id) {
   log($"[appsFlyer] send event {id}")
@@ -49,8 +54,16 @@ isLoggedIn.subscribe(function(v) {
 })
 
 myUserId.subscribe(function(v) {
-  if (v != INVALID_USER_ID)
+  if (v != INVALID_USER_ID) {
     setAppsFlyerCUID(v.tostring())
+    let blk = get_common_local_settings_blk()
+    let wasLoginedBefore = blk?[FIRST_LOGIN_EVENT] ?? false
+    if (!wasLoginedBefore) {
+      logEvent("af_first_login",json_to_string({cuid = v.tostring()}, false))
+      blk[FIRST_LOGIN_EVENT] = true
+      send("saveProfile", {})
+    }
+  }
 })
 
 let loginCount = keepref(Computed(@() sharedStats.value?.loginDaysCount ?? 0))

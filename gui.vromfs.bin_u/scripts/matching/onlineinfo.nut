@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 from "%scripts/dagui_library.nut" import *
 let { totalPlayers, totalRooms } = require("%appGlobals/gameModes/gameModes.nut")
 

@@ -1,8 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
 let { floor, fabs } = require("%sqstd/math.nut")
-let { dfAnimBottomRight } = require("%rGui/style/unitDelayAnims.nut")
-let { isUnitDelayed } = require("%rGui/hudState.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue
 } = require("%globalScripts/controls/shortcutActions.nut")
 let { Trt, TrtMode, Spd, DistanceToGround, IsSpdCritical } = require("%rGui/hud/airState.nut")
@@ -135,7 +133,6 @@ let function throttleSlider() {
     watch = [ userTrottle, needOpacityThrottle ]
     key = userTrottle
     size = [fullWidth, height]
-    pos = [-sliderPadding, 0]
     padding = [0, sliderPadding]
     behavior = Behaviors.Slider
     fValue = userTrottle.value
@@ -182,16 +179,6 @@ let function throttleSlider() {
   }
 }
 
-let movementSlider = @() {
-  watch = isUnitDelayed
-  size = [fullWidth, height]
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_RIGHT
-  children = isUnitDelayed.value ? null : throttleSlider
-  transform = {}
-  animations = dfAnimBottomRight
-}
-
 let throttleAxisUpdate = @()
   changeThrottleValue(userTrottle.value - throttlePerTick * throttleAxisVal.value)
 
@@ -211,30 +198,9 @@ let gamepadAxisListener = axisListener({
   [mouse_aim_y] = @(v) setVirtualAxisValue("mouse_aim_y", v),
 })
 
-let movementBlock = {
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_RIGHT
-  flow = FLOW_VERTICAL
-  gap = hdpx(20)
+let aircraftMovement = {
   children = [
-    {
-      flow = FLOW_VERTICAL
-      gap = hdpx(5)
-      children = [
-        @() {
-          watch = [ Spd, IsSpdCritical ]
-          rendObj = ROBJ_TEXT
-          color = IsSpdCritical.value ? redColor : neutralColor
-          text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), Spd.value, loc("measureUnits/kmh"))
-        }.__update(fontSmallAccented)
-        @() {
-          watch = DistanceToGround
-          rendObj = ROBJ_TEXT
-          text = " ".concat(loc("HUD/ALTITUDE_SHORT"), floor(DistanceToGround.value), loc("measureUnits/meters_alt"))
-        }.__update(fontSmallAccented)
-      ]
-    }
-    movementSlider
+    throttleSlider
     @() {
       watch = isGamepad
       children = isGamepad.value ? gamepadAxisListener : null
@@ -242,4 +208,70 @@ let movementBlock = {
   ]
 }
 
-return movementBlock
+let aircraftMovementEditView = {
+  size = [fullWidth, height]
+  padding = [0, sliderPadding]
+  children = [
+    {
+      size = [scaleWidth, throttleScaleHeight]
+      pos =  [scaleWidth, 0]
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = throttleBgrImage
+      children = [
+        throttleScale
+        {
+          rendObj = ROBJ_MASK
+          size = [knobSize, throttleScaleHeight]
+          pos = [scaleWidth, 0]
+          image = getSvgImage("hud_plane_gradient", knobSize, throttleScaleHeight)
+          children = {
+            rendObj = ROBJ_SOLID
+            size = flex()
+          }
+        }
+      ]
+    }
+  ]
+}
+
+let aircraftIndicators = {
+  flow = FLOW_VERTICAL
+  gap = hdpx(5)
+  children = [
+    @() {
+      watch = [Spd, IsSpdCritical]
+      rendObj = ROBJ_TEXT
+      color = IsSpdCritical.value ? redColor : neutralColor
+      text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), Spd.value, loc("measureUnits/kmh"))
+    }.__update(fontSmallAccented)
+    @() {
+      watch = DistanceToGround
+      rendObj = ROBJ_TEXT
+      text = " ".concat(loc("HUD/ALTITUDE_SHORT"), floor(DistanceToGround.value), loc("measureUnits/meters_alt"))
+    }.__update(fontSmallAccented)
+  ]
+}
+
+let aircraftIndicatorsEditView = {
+  flow = FLOW_VERTICAL
+  gap = hdpx(5)
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      color = neutralColor
+      text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), "xxx", loc("measureUnits/kmh"))
+    }.__update(fontSmallAccented)
+    {
+      rendObj = ROBJ_TEXT
+      text = " ".concat(loc("HUD/ALTITUDE_SHORT"), "xxxx", loc("measureUnits/meters_alt"))
+    }.__update(fontSmallAccented)
+  ]
+}
+
+return {
+  aircraftMovement
+  aircraftIndicators
+  aircraftMovementEditView
+  aircraftIndicatorsEditView
+}

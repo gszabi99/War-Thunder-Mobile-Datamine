@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { get_player_tags } = require("auth_wt")
 let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, authTags } = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
@@ -10,7 +7,8 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let googlePlayAccount = require("android.account.googleplay")
 let appleAccount = require("ios.account.apple")
 let { getUUID } = require("ios.platform")
-let fbAccount = require("android.account.fb")
+let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
+let fbAccount = is_ios ? require("ios.account.facebook") : require("android.account.fb")
 let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { openUrl } = require("%scripts/url.nut")
@@ -92,7 +90,7 @@ subscribe("android.account.googleplay.onSignInCallback",
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
   }))
 
-subscribe("android.account.fb.onSignInCallback",
+subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.facebook.onSignInCallback",
   onlyActiveStageCb(function(msg) {
     let { token, status } = msg
     if (status != fbAccount.FB_RESULT_OK) {
@@ -161,7 +159,8 @@ let loginByType = {
   },
 
   [LT_FACEBOOK] = function(_as) {
-    googlePlayAccount.signOut(false)
+    if (is_android)
+      googlePlayAccount.signOut(false)
     fbAccount.startFBSignIn() //will be event android.account.fb.onSignInCallback as result
   },
 

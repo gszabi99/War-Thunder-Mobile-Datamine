@@ -606,7 +606,7 @@
       "smokeTime": 20.0,
       "groundCollisionEffect": "smoke_shell_explosion",
       "ricochetEffect": "hit_59_80mm_metal_ap",
-      "waterCollisionEffect": "120-203_smoke_water_splash",
+      "waterCollisionEffect": "hit_81_105mm_water",
       "waterFxScale": [
         0.6,
         0.7

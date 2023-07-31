@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { defer } = require("dagor.workcycle")
 let { LOGIN_STATE } = require("%appGlobals/loginState.nut")
 let { get_all_configs, registerHandler, localizePServerError

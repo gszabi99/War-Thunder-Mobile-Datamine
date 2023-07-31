@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
 let { add_unit_exp, add_player_exp, add_wp, add_gold, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
-  userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler
+  userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
+  add_decorator,  set_current_decorator, remove_decorator, unset_current_decorator
 } = pServerApi
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -39,6 +40,11 @@ register_command(@(unitName) add_unit(unitName, "consolePrintResult"), "meta.add
 register_command(@(unitName) remove_unit(unitName, "consolePrintResult"), "meta.remove_unit")
 register_command(@() add_unit(hangarUnitName.value, "consolePrintResult"), "meta.add_hangar_unit")
 register_command(@() remove_unit(hangarUnitName.value, "consolePrintResult"), "meta.remove_hangar_unit")
+
+register_command(@(name) set_current_decorator(name, "consolePrintResult"), "meta.set_current_decorator")
+register_command(@(name) add_decorator(name, "consolePrintResult"), "meta.add_decorator")
+register_command(@(name) remove_decorator(name, "consolePrintResult"), "meta.remove_decorator")
+register_command(@(name) unset_current_decorator(name, "consolePrintResult"), "meta.unset_current_decorator")
 
 register_command(function(count) {
   add_wp(count * 100)

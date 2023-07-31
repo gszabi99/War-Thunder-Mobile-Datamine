@@ -2664,10 +2664,63 @@
     "tank_smoke_screen_system_mod": true
   },
   "default_skin": {
-    "name": "default",
     "replace_tex": {
       "from": "ger_camo_dunkelgelb*",
-      "to": "ger_camo_bronzegruen*"
+      "to": "ger_camo_dunkelgelb_green*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": -12.0,
+      "decal0Line0": [
+        2.05606,
+        -3.20225E-08,
+        3.19816E-05,
+        3.26318
+      ],
+      "decal0Line1": [
+        1.60236E-05,
+        -1.77859,
+        -1.03151,
+        4.19821
+      ],
+      "decal0Line2": [
+        -2.05606,
+        -6.01095E-08,
+        3.22263E-05,
+        -2.26318
+      ],
+      "decal0Line3": [
+        1.62033E-05,
+        -1.77859,
+        1.03151,
+        4.19821
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        1.35132E-05,
+        0.501689,
+        -0.865048,
+        -2.42349
+      ],
+      "decal0CPNormDepth1": [
+        1.35132E-05,
+        0.501689,
+        0.865048,
+        -2.42349
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.486366
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "back_16"
     }
   },
   "battleHideNodes": {

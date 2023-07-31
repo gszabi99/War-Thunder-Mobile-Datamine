@@ -2517,8 +2517,7 @@
   "modifications": {
     "tank_tool_kit_expendable": {},
     "art_support": {},
-    "tank_extinguisher": {},
-    "upgraded": {}
+    "tank_extinguisher": {}
   },
   "cockpit": {
     "zoomOutFov": 40.0,
@@ -2542,18 +2541,13 @@
     ],
     "detectionHeight": 2.4
   },
-  "user_skin": {
-    "replace_tex": {
-      "from": "uk_camo_very_dark_drab*"
-    }
-  },
-  "upgraded_skin": {
+  "default_skin": {
     "replace_tex": {
       "from": "uk_camo_very_dark_drab*",
       "to": "uk_camo_light_stone_slate_grey*"
     }
   },
-  "upgradedDecals": {
+  "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
       "camo_scale": 40.0,
@@ -2748,7 +2742,7 @@
       "decal3Tex": "uk_guards_armoured_division"
     }
   },
-  "upgradedAttachables": {
+  "defaultAttachables": {
     "default": {
       "attachable": {
         "node": "turret_back_dm",

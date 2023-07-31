@@ -1,7 +1,3 @@
-#default:no-func-decl-sugar
-#default:no-class-decl-sugar
-#default:no-root-fallback
-#default:explicit-this
 
 from "%globalsDarg/darg_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
@@ -39,6 +35,7 @@ let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.
 let { getenv = @(...) null} = require_optional("system")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")
 let watermark = require("%rGui/mainMenu/watermark.nut")
+let { tooltipComp } = require("tooltip.nut")
 
 local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)
@@ -97,13 +94,12 @@ let cursor = Cursor({
   image = Picture($"ui/gameuiskin#cursor.svg:{cursorSize}:{cursorSize}")
 })
 
-
 return function() {
   let children = !isLoggedIn.value && isLoginRequired.value
       ? [sceneBeforeLogin, modalWindowsComponent]
     : isInLoadingScreen.value ? [loadingScreen]
     : [sceneAfterLogin]
-  children.append(hotkeysPanel, inspectorRoot, debugSafeArea, fpsLineComp, deviceStateArea, watermark)
+  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp, deviceStateArea, watermark)
   if (isDebugTouchesActive.value)
     children.append(debugTouchesUi)
   return {
