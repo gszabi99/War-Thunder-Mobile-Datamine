@@ -8,6 +8,7 @@ let { subscribe } = require("eventbus")
 let { dgs_get_settings } = require("dagor.system")
 let { isDownloadedFromGooglePlay, getPackageName } = require("android.platform")
 let { shell_execute } = require("dagor.shell")
+let { is_ios } = require("%sqstd/platform.nut")
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
@@ -30,7 +31,9 @@ subscribeFMsgBtns({
   matchingExitGame = @(_) exitGame()
 
   function exitGameForUpdate(_) {
-    if (isDownloadedFromGooglePlay())
+    if (is_ios)
+      shell_execute({ cmd = "open", file = "itms-apps://itunes.apple.com/app/apple-store/id1577525428?mt=8" })
+    else if (isDownloadedFromGooglePlay())
       shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })
     else {
       let url = dgs_get_settings()?.storeUrl

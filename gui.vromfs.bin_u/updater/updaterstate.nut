@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
 let logU = log_with_prefix("[UPDATER] ")
 let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
-let { is_android } = require("%sqstd/platform.nut")
+let { is_android, is_ios } = require("%sqstd/platform.nut")
 
-let contentUpdater = is_android ? require_optional("contentUpdater") : require("dbgContentUpdater.nut")
+let contentUpdater = (is_android || is_ios) ? require_optional("contentUpdater") : require("dbgContentUpdater.nut")
 let { get_total_download_mb, get_progress_percent, get_eta, get_download_speed,
   UPDATER_DOWNLOADING, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_INCOMPATIBLE_VERSION

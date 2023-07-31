@@ -152,7 +152,7 @@ let topButtons = @() {
   children = [
     !isInMenu.value ? null : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
     { size = flex() }
-    textButtonCommon(loc("options/delete_profile"), @() send("openUrl", { baseUrl = DELETE_PROFILE_URL }), buttonsWidthStyle)
+    textButtonCommon(loc("options/delete_profile"), @() send("openUrl", { baseUrl = DELETE_PROFILE_URL, useExternalBrowser = true }), buttonsWidthStyle)
   ]
 }
 

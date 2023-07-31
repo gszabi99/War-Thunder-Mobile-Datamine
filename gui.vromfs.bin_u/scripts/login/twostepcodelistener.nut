@@ -6,7 +6,6 @@ from "%scripts/dagui_library.nut" import *
 let { subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { isLoginStarted, isLoggedIn, loginState, LOGIN_STATE } = require("%appGlobals/loginState.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { authState } = require("%scripts/login/authState.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 
@@ -27,23 +26,21 @@ subscribe("StartListenTwoStepCode",
 
 let doLogin = @() loginState(loginState.value | LOGIN_STATE.LOGIN_STARTED)
 
-addListenersWithoutEnv({
-  function ProceedGetTwoStepCode(p) {
-    if (isLoginStarted.value || isLoggedIn.value)
-      return
-    let { status, code } = p
-    if (status == YU2_TIMEOUT && attemptsRequest2step.value > 0) {
-      deferOnce(doLogin)
-      return
-    }
-
-    if (status != YU2_OK)
-      return
-
-    authState.mutate(function(s) {
-      s.check2StepAuthCode = true
-      s.twoStepAuthCode = code
-    })
+subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
+  if (isLoginStarted.value || isLoggedIn.value)
+    return
+  let { status, code } = p
+  if (status == YU2_TIMEOUT && attemptsRequest2step.value > 0) {
     deferOnce(doLogin)
+    return
   }
+
+  if (status != YU2_OK)
+    return
+
+  authState.mutate(function(s) {
+    s.check2StepAuthCode = true
+    s.twoStepAuthCode = code
+  })
+  deferOnce(doLogin)
 })

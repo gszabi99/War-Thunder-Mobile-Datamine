@@ -1,21 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let eventbus = require("eventbus")
+let { send } = require("eventbus")
 let { register_command } = require("console")
-let { setTimeout } = require("dagor.workcycle")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
-let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
+let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
+let { isOldFeedbackCompleted, isRateGameSeen } = require("%rGui/feedback/rateGameState.nut")
 
 let feedbackTube = "user_feedback"
 let pollId = "feedback_alpha"
@@ -28,17 +22,18 @@ let questions = [
   { id = "wishes",    defVal = "", title = loc("feedback/message") }
 ].map(@(q) q.__update({ val = Watched(q.defVal) }))
 
-const SHOW_AFTER_BATTLES_ANYTIME = 7
-const SHOW_AFTER_BATTLES = 3
-const SHOW_BY_KILLS = 2
 const RATE_STARS_TOTAL = 5
 const SAVE_ID_FEEDBACK_ANSWERS_COUNT = "feedbackAlpha"
 
-let starIconSize = hdpx(96)
+let starIconSize = hdpxi(80)
+let starIconGap = hdpx(60)
 
 let isOpened = mkWatched(persist, "isOpened", false)
-let canShowThisSession = mkHardWatched("feedbackWnd.canShowThisSession", true)
-let close = @() isOpened(false)
+
+let function close() {
+  isOpened(false)
+  isRateGameSeen(true)
+}
 
 let questionAnswered = Watched(questions.len())
 let function updateAnswersCount() {
@@ -52,6 +47,8 @@ let haveQuestionsLeft = Computed(@() questionAnswered.value < questions.len())
 let isQuestionLast = Computed(@() questionAnswered.value == questions.len() - 1)
 let isCurQuestionRating = Computed(@() type(questions?[questionAnswered.value].val.value) == "integer")
 
+haveQuestionsLeft.subscribe(@(v) isOldFeedbackCompleted(!v))
+
 let hasAnswerForCurQuestion = Watched(false)
 let function updateHasAnswer() {
   let q = questions?[questionAnswered.value]
@@ -61,37 +58,6 @@ foreach (q in questions)
   q.val.subscribe(@(_) updateHasAnswer())
 questionAnswered.subscribe(@(_) updateHasAnswer())
 updateHasAnswer()
-
-let wasInBattle = Watched(false)
-isInDebriefing.subscribe(function(val) {
-  if (val)
-    wasInBattle(true)
-})
-
-let needFeedBackByDebriefing = @(dData) (dData?.sessionId ?? -1) != -1
-  && ((dData?.isWon ?? false) || (dData?.players[myUserId.value.tostring()]?.kills ?? 0) >= SHOW_BY_KILLS)
-
-let needFeedbackWnd = Computed(@() canShowThisSession.value
-  && haveQuestionsLeft.value
-  && (lastBattles.value.len() >= SHOW_AFTER_BATTLES_ANYTIME
-    || (lastBattles.value.len() >= SHOW_AFTER_BATTLES && needFeedBackByDebriefing(debriefingData.value))
-  ))
-
-let readyToOpenFeedbackWnd = keepref(Computed(@() needFeedbackWnd.value
-  && wasInBattle.value
-  && isInMenuNoModals.value
-))
-
-readyToOpenFeedbackWnd.subscribe(function(val) {
-  if (!val)
-    return
-  setTimeout(0.1, function() {
-    if (readyToOpenFeedbackWnd.value)
-      isOpened(true)
-  })
-})
-
-isLoggedIn.subscribe(@(_) canShowThisSession(true))
 
 let btnClose = {
   size  = [hdpx(30), hdpx(30)]
@@ -105,10 +71,7 @@ let btnClose = {
   color = 0xFFA0A0A0
   lineWidth = hdpx(6)
   behavior = Behaviors.Button
-  function onClick() {
-    canShowThisSession(false)
-    close()
-  }
+  onClick = close
 }
 
 let function onBtnApply() {
@@ -122,7 +85,7 @@ let function onBtnApply() {
 
   questionAnswered(questionAnswered.value + 1)
   get_local_custom_settings_blk()[SAVE_ID_FEEDBACK_ANSWERS_COUNT] = questionAnswered.value
-  eventbus.send("saveProfile", {})
+  send("saveProfile", {})
 
   if (!haveQuestionsLeft.value)
     close()
@@ -144,7 +107,7 @@ let mkTitle = @(text) textarea.__merge({
 
 let mkRateStarsRow = @(valueWatch) {
   flow = FLOW_HORIZONTAL
-  gap = hdpx(50)
+  gap = starIconGap
   children = array(RATE_STARS_TOTAL).map(@(_, idx) function() {
     let rating = idx + 1
     let icon = rating <= valueWatch.value ? "rate_star_filled" : "rate_star_empty"
@@ -242,11 +205,14 @@ let feedbackWnd = bgShaded.__merge({
 })
 
 register_command(function() {
-    if (!isOpened.value)
+    if (!isOpened.value) {
+      isRateGameSeen(false)
       questionAnswered(0)
-    canShowThisSession(true)
+    }
     isOpened(!isOpened.value)
   }, "ui.debug.feedback")
 
 isOpened.subscribe(@(v) v ? questions.each(@(q) q.val(q.defVal)) : null)
 registerScene("feedbackWnd", feedbackWnd, close, isOpened)
+
+return @() isOpened(true)

@@ -31,12 +31,15 @@ let { debriefingData } = require("debriefingState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { mkDebriefingStats } = require("mkDebriefingStats.nut")
+let mkPlayersByTeam = require("mkPlayersByTeam.nut")
 let mpStatisticsStaticWnd = require("%rGui/mpStatistics/mpStatisticsStaticWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let { playSound, startSound, stopSound } = require("sound_wt")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
+let { needRateGame } = require("%rGui/feedback/rateGameState.nut")
+let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
 
 let closeDebriefing = @() send("Debriefing_CloseInDagui", {})
 let startBattle = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId }) //FIXME: Should to use game mode from debriefing
@@ -118,12 +121,18 @@ let updateHangarUnit = @(unitId) unitId == null ? null : setHangarUnit(unitId)
 
 let toHangarButton = @(campaign) textButtonPrimary(
   utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short" : "return_to_hangar/short")),
-  closeDebriefing,
+  function() {
+    if (needRateGame.value)
+      return requestShowRateGame()
+    closeDebriefing()
+  },
   { hotkeys = [btnBEscUp] })
 let lvlUpButton = textButtonBattle(utf8ToUpper(loc("msgbox/btn_get")), closeDebriefing,
   { hotkeys = ["^J:X | Enter"] })
 let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
+    if (needRateGame.value)
+      return requestShowRateGame()
     offerMissingUnitItemsMessage(curUnit.value, startBattle)
     closeDebriefing()
   },
@@ -701,30 +710,8 @@ let function isUnitReceiveLevel(data) {
 }
 
 let function openMpStatistics() {
-  let { campaign = "", userId = 0, userName = "", localTeam = 0, players = {}, playersCommonStats = {} } = debriefingData.value
-  let mplayersList = players.values().map(function(p) {
-    let isLocal = p.userId == userId
-    let pUserIdStr = p.userId.tostring()
-    let { level = 1, hasPremium = false } = playersCommonStats?[pUserIdStr]
-    let pUnit = playersCommonStats?[pUserIdStr].unit
-    let mainUnitName = pUnit?.name ?? (p.aircraftName ?? "")
-    let isUnitPremium = pUnit?.isPremium ?? false
-    return p.__merge({
-      userId = pUserIdStr
-      isLocal
-      isDead = false
-      name = isLocal ? userName
-        : p.isBot ? loc(p.name)
-        : p.name
-      score = p?.dmgScoreBonus ?? 0.0
-      level
-      hasPremium
-      isUnitPremium
-      mainUnitName
-    })
-  })
-  let teamsOrder = localTeam == 2 ? [ 2, 1 ] : [ 1, 2 ]
-  let playersByTeam = teamsOrder.map(@(team) mplayersList.filter(@(v) v.team == team))
+  let { campaign = "" } = debriefingData.value
+  let playersByTeam = mkPlayersByTeam(debriefingData.value)
   mpStatisticsStaticWnd({ playersByTeam, campaign, title = loc("debriefing/players_stats") })
 }
 

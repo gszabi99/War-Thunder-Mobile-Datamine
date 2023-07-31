@@ -2,8 +2,10 @@
 #no-root-fallback
 #explicit-this
 
+from "%globalScripts/logs.nut" import *
 let { Computed } = require("frp")
 let { DBGLEVEL } = require("dagor.system")
+let { trim } = require("%sqstd/string.nut")
 let { rights } = require("permissions/userRights.nut")
 
 let defaults = {
@@ -16,12 +18,16 @@ let defaults = {
   can_receive_dedic_logerr = DBGLEVEL > 0
   allow_players_online_info = false
   can_use_internal_support_form = false
+  allow_review_cue = false
 }
 
 let allPermissions = Computed(function() {
   let res = clone defaults
-  foreach (id in rights.value?.permissions.value ?? [])
+  foreach (id in rights.value?.permissions.value ?? []) {
+    if (trim(id) != id)
+      logerr($"Permission ID with whitespace detected: \"{id}\"")
     res[id] <- true
+  }
   return res
 })
 

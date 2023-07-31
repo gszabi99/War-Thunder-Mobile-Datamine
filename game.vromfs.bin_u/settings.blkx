@@ -541,7 +541,7 @@
     "noGuiFade": false,
     "disableHangar": false,
     "disableChat": false,
-    "workThreadsStackSize": 262144,
+    "workThreadsStackSize": 393216,
     "enableMouseHints": true,
     "replayDofFar": [
       100.0,

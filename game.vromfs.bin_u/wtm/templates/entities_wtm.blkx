@@ -2165,8 +2165,9 @@
   "tank_wtm_extinguisher_ecs": {
     "_extends": "extinguisher_ecs",
     "mod__name": "tank_extinguisher",
-    "mod__enabled_without_mod": false,
+    "mod__enabled_without_mod": true,
     "mod__count_effects_mod": false,
+    "mod__count_for_players": 0,
     "mod__count_for_bots": 2
   },
   "tank_wtm_medicalkit_ecs": {
