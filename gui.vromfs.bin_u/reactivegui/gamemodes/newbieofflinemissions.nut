@@ -40,13 +40,13 @@ let newbieOfflineMissions = Computed(function() {
   if (list == null)
     return null
 
-  let level = curUnit.value?.level ?? 0
+  let { level = 0, mRank = 0 } = curUnit.value
   let platoonUnit = curUnit.value?.platoonUnits.findvalue(@(u) (u?.reqLevel ?? 0) <= level)
   if (platoonUnit != null) //offline missions does not have units choice, so go to online newbie mode in the such case
     return null
 
   let stats = newbieModeStats.value
-  return list.findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0 && cfg.isFit(stats))
+  return list.findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0 && cfg.isFit(stats, mRank))
     ?.offlineMissions
 })
 

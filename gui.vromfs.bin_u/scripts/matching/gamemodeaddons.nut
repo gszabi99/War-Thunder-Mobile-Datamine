@@ -27,8 +27,10 @@ let function getModeAddonsInfo(mode, unitName) {
     updateDiff += version == "" ? -1 : 1
   }
 
-  let campAddons = isNewbieMode(name) ? getCampaignPkgsForNewbieBattle(campaign, isNewbieModeSingle(name))
-    : getCampaignPkgsForOnlineBattle(campaign, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
+  let { mRank = 1 } = serverConfigs.value?.allUnits[unitName]
+  let campAddons = isNewbieMode(name)
+    ? getCampaignPkgsForNewbieBattle(campaign, mRank, isNewbieModeSingle(name))
+    : getCampaignPkgsForOnlineBattle(campaign, mRank)
   foreach (addon in campAddons)
     if (addon not in addons) {
       let has = hasAddons.value?[addon] ?? false

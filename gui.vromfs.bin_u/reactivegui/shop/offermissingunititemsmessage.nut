@@ -23,6 +23,7 @@ let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitAttributes } = require("%rGui/unitAttr/unitAttrState.nut")
 let { ceil } = require("%sqstd/math.nut")
+let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 
 let itemsGap = hdpx(50)
 let itemImageSize = hdpxi(80)
@@ -95,15 +96,19 @@ let mkMissingItemsComp = @(unit) Computed(function() {
   let consumablesList = itemsCfgOrdered.value.filter(@(i) i.name != "spare")
   foreach (cfg in consumablesList) {
     let { battleLimit = 0, itemsPerUse = 0, name = "" } = cfg
-    let { itemsByAttributes = [] } = serverConfigs.value
+    let { itemsByAttributes = [], itemsByModifications = [] } = serverConfigs.value
     if (battleLimit <= 0)
       continue
     let attributes = itemsByAttributes.filter(@(item) item.item == name)
+    let attrByModifications = itemsByModifications.filter(@(item) item.item == name)
     local limitItems = battleLimit
     foreach(attr in attributes){
       let curLevel = unitAttributes.value?[attr?.category][attr?.attribute] ?? 0
       limitItems += attr?.battleLimitAdd?[curLevel - 1] ?? 0
     }
+    foreach(attr in attrByModifications)
+      if (unitMods.value?[attr?.mod])
+        limitItems *= attr?.battleLimitMul ?? 1
     let perUse = itemsPerUse <= 0 ? unitItemsPerUse : itemsPerUse
     let reqItems = perUse * limitItems
     let hasItems = items.value?[name].count ?? 0

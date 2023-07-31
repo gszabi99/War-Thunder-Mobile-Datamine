@@ -33,7 +33,8 @@ let function mkDataWatched(key, defValue = null) {
   return res
 }
 
-let function makeUpdatable(persistName, refreshAction, getHeaders = null, defValue = {}) {
+let function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefreshRequests = []) {
+  let defValue = {}
   let data = mkDataWatched($"userstat.{persistName}", defValue)
   let lastTime = mkDataWatched($"userstat.{persistName}_lastTime", { request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
@@ -48,6 +49,14 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, defVal
       console_print(result?.error ? result : result?.response)
   }
   registerHandler(refreshAction, onRefresh)
+
+  foreach(actionId in customRefreshRequests)
+    registerHandler(actionId, function(result, _) {
+      if (result?.error || result?.response == null)
+        return
+      data(result.response)
+      lastTime.mutate(@(v) v.update = get_time_msec())
+    })
 
   let prepareToRequest = @() lastTime.mutate(@(v) v.request = get_time_msec())
   let function refresh(context = null) {
@@ -88,7 +97,7 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, defVal
 let descListUpdatable = makeUpdatable("descList", "GetUserStatDescList",
   @() { language = getCurrentSteamLanguage() })
 let statsUpdatable = makeUpdatable("stats", "GetStats")
-let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks")
+let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks", null, ["GrantRewards"])
 
 let userstatUnlocks = unlocksUpdatable.data
 let userstatDescList = descListUpdatable.data

@@ -10,7 +10,6 @@ let chooseBenchmarkWnd = require("chooseBenchmarkWnd.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
-let { openChangeLog, isVersionsReceived } = require("%rGui/changelog/changeLogState.nut")
 let { openNewsWnd, isFeedReceived } = require("%rGui/changelog/newsState.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -68,10 +67,6 @@ let NEWS = {
   name = loc("mainmenu/btnNews")
   cb = openNewsWnd
 }
-let CHANGELOG = {
-  name = loc("mainmenu/btnChangelog")
-  cb = openChangeLog
-}
 let STORE = {
   name = loc("topmenu/store")
   cb = openShopWnd
@@ -98,8 +93,6 @@ let function getPublicButtons() {
     res.append(GAMEPAD_HELP)
   if (isFeedReceived.value)
     res.append(NEWS)
-  if (isVersionsReceived.value)
-    res.append(CHANGELOG)
   if (canShowLoginAwards.value || isUserstatMissingData.value)
     res.append(LOGIN_AWARD)
   res.append(BUG_REPORT)
@@ -130,7 +123,7 @@ let getTopMenuButtons = @() [
 let topMenuButtonsGenId = Computed(function(prev) {
   let vals = [   //warning disable: -declared-never-used
     can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad,
-    isFeedReceived, isVersionsReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData
+    isFeedReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData
   ]
   return prev == FRP_INITIAL ? 0 : prev + 1
 })

@@ -508,6 +508,8 @@
     ],
     "logerrOnSecLayer": true,
     "mobileStyleFpsString": true,
+    "sendFullLogOnFatalIntervalHours": 4,
+    "useANRWatcherThreadProbability": 0.1,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",
@@ -764,9 +766,9 @@
     "occlusionSunDirThreshold": 0.5,
     "shadowsDistMulInZoom": 3.0,
     "enableStaticInTps": true,
-    "enableSparseUpdate": false,
     "low": {
       "cascadeWidth": 512,
+      "enableSparseUpdate": false,
       "underwaterCascadeWidth": 512,
       "splitsW": 2,
       "splitsH": 1,
@@ -821,6 +823,7 @@
     },
     "medium": {
       "cascadeWidth": 1024,
+      "enableSparseUpdate": false,
       "underwaterCascadeWidth": 512,
       "splitsW": 2,
       "splitsH": 1,
@@ -875,6 +878,7 @@
     },
     "high": {
       "cascadeWidth": 1536,
+      "enableSparseUpdate": false,
       "underwaterCascadeWidth": 1024,
       "splitsW": 2,
       "splitsH": 1,
@@ -1270,6 +1274,110 @@
         "virtualTextureAnisotropy": 8,
         "texelSizeMul": 1,
         "minTexTileBorder": 1
+      }
+    }
+  },
+  "ios_presets": {
+    "low": {
+      "graphics": {
+        "backgroundScale": 0.5,
+        "backgroundScaleAt120": 0.5,
+        "fxDensityMul": 0.8,
+        "compatibilityShadowQuality": "low",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "force8bitRT": false,
+        "allowETC2": true,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
+        "asyncPSO": true,
+        "asyncLoadPSOCache": true,
+        "grassRadiusMul": 0.8,
+        "grassDensityMul": 0.87,
+        "grassQuality": "low",
+        "grassAlphaToCoverage": false,
+        "compatibilityRendinstDistMul": 0.8
+      }
+    },
+    "medium": {
+      "graphics": {
+        "backgroundScale": 0.5,
+        "backgroundScaleAt120": 0.5,
+        "fxDensityMul": 0.8,
+        "compatibilityShadowQuality": "medium",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "force8bitRT": false,
+        "allowETC2": true,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "grassQuality": "low",
+        "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
+        "asyncPSO": true,
+        "grassRadiusMul": 0.8,
+        "asyncLoadPSOCache": true,
+        "grassDensityMul": 0.87,
+        "grassAlphaToCoverage": false,
+        "compatibilityRendinstDistMul": 0.8
+      }
+    },
+    "high": {
+      "graphics": {
+        "backgroundScale": 0.633,
+        "backgroundScaleAt120": 0.5,
+        "fxDensityMul": 1.0,
+        "compatibilityShadowQuality": "medium",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "force8bitRT": false,
+        "allowETC2": true,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "grassQuality": "high",
+        "grassAlphaToCoverage": true,
+        "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
+        "asyncPSO": true,
+        "asyncLoadPSOCache": true
+      }
+    },
+    "max": {
+      "graphics": {
+        "backgroundScale": 0.633,
+        "backgroundScaleAt120": 0.5,
+        "fxDensityMul": 1.0,
+        "compatibilityShadowQuality": "high",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "force8bitRT": false,
+        "allowETC2": true,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "grassQuality": "high",
+        "grassAlphaToCoverage": true,
+        "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
+        "asyncPSO": true,
+        "asyncLoadPSOCache": true
       }
     }
   },

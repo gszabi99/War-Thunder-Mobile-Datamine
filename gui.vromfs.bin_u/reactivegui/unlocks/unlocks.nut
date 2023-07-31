@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isEqual } = require("%sqstd/underscore.nut")
-let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler,
-  forceRefreshUnlocks, forceRefreshStats
+let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler
 } = require("userstat.nut")
 
 
@@ -88,11 +87,10 @@ userstatRegisterHandler("GrantRewards", function(result, context) {
   let { unlockName  = null } = context
   if (unlockName in unlockRewardsInProgress.value)
     unlockRewardsInProgress.mutate(@(v) delete v[unlockName])
-  log("GrantRewards result:", result)
   if ("error" in result)
-    return
-  forceRefreshUnlocks()
-  forceRefreshStats()
+    log("GrantRewards result: ", result)
+  else
+    log("GrantRewards result success: ", context)
 })
 
 let function receiveUnlockRewards(unlockName, stage, context = null) {

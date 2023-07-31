@@ -30,6 +30,7 @@ let myUnits = Computed(function() {
 
 let curUnit = Computed(@() myUnits.value.findvalue(@(u) u?.isCurrent)
   ?? myUnits.value.findvalue(@(_) true))
+let curUnitMRank = Computed(@() curUnit.value?.mRank ?? 0)
 
 let playerLevelInfo = Computed(function() {
   let res = defaultProfileLevelInfo.__merge(levelInfo.value)
@@ -59,5 +60,6 @@ return {
   allUnitsCfgFlat
   myUnits
   curUnit
+  curUnitMRank
   playerLevelInfo
 }

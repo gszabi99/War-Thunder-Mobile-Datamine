@@ -5,6 +5,7 @@ let { newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
 } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let newbieModeStats = require("newbieModeStats.nut")
+let { curUnitMRank } = require("%appGlobals/pServer/profile.nut")
 
 let forceNewbieModeIdx = mkWatched(persist, "forceNewbieModeIdx", -1)
 
@@ -21,7 +22,7 @@ let curNewbieMode = Computed(function() {
   }
   else
     foreach (cfg in list)
-      if (cfg.isFit(stats)) {
+      if (cfg.isFit(stats, curUnitMRank.value)) {
         res = allGameModes.value.findvalue(@(gm) gm?.name == cfg.gmName)
         if (res != null)
           break

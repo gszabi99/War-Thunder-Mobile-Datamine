@@ -30,7 +30,7 @@ let shortLang = loc("current_lang")
 let newsPlatform = platformId == "android" ? "android" : "ios"
 let cfgId = get_cur_circuit_name().indexof("production") != null || get_cur_circuit_name().indexof("stable") != null
   ? "wtm_production" : "wtm_test"
-let getFeedUrl = $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgId}/{shortLang}/?platform={newsPlatform}&kind=news"
+let getFeedUrl = $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgId}/{shortLang}/?platform={newsPlatform}"
 let getArticleUrl = @(id) $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgId}/{shortLang}/{id}/?platform={newsPlatform}"
 
 let receivedArticles = hardPersistWatched("news.receivedArticles", {})

@@ -90,7 +90,7 @@ let currentArmorPiercingType = {
 }
 
 let autoZoomList = [false, true]
-let autoZoomDefault = Computed(@() (abTests.value?.tankAutoZoom ?? "true") == "true")
+let autoZoomDefault = Computed(@() (abTests.value?.tankAutoZoom ?? "false") == "true")
 let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM)
 let currentAutoZoom = Computed(@()
   validate(currentAutoZoomRaw.value ?? autoZoomDefault.value, autoZoomList))

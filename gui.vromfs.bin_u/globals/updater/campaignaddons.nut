@@ -59,11 +59,12 @@ let function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   return res
 }
 
-let function getCampaignPkgsForNewbieBattle(campaign, isSingle) {
+let function getCampaignPkgsForNewbieBattle(campaign, mRank, isSingle) {
   let postfix = getCampaignAddonPostfix(campaign)
   let res = clone (commonAddons?[postfix] ?? [])
-  if (!isSingle)
-    appendRankAddon(res, postfix, 1)
+  let maxRank = max(mRank, isSingle ? 0 : 2)
+  for (local i = maxRank; i >= 1 ; i--)
+    appendRankAddon(res, postfix, i)
   return res
 }
 

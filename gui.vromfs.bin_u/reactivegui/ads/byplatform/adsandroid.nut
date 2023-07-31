@@ -90,6 +90,13 @@ let function initProviders(providers) {
 initProviders(allProviders.value)
 allProviders.subscribe(initProviders)
 
+
+let statusNames = {}
+foreach(id, val in ads)
+  if (type(val) == "integer" && id.startswith("ADS_STATUS_"))
+    statusNames[val] <- id
+let getStatusName = @(v) statusNames?[v] ?? v
+
 subscribe("android.ads.onInit", function(msg) {
   let { status, provider } = msg
   if (status != ADS_STATUS_OK)
@@ -125,7 +132,7 @@ let function retryLoad() {
 
 subscribe("android.ads.onLoad", function (params) {
   let { status, provider = "unknown" } = params
-  logA($"Ads: onLoad {status}")
+  logA($"onLoad {getStatusName(status)}")
   isLoadStarted = false
   isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())
   if (isLoaded.value) {
@@ -145,7 +152,7 @@ subscribe("android.ads.onLoad", function (params) {
 
 subscribe("android.ads.onShow", function (params) { //we got this event on start ads show, and on finish
   let { status, provider = "unknown" } = params
-  logA($"Ads: onShow {status}")
+  logA($"onShow {getStatusName(status)}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   if (status == ADS_STATUS_SHOWN)
     sendAdsBqEvent("show_start", provider)
   else {
@@ -157,7 +164,7 @@ subscribe("android.ads.onShow", function (params) { //we got this event on start
 
 subscribe("android.ads.onReward", function (params) {
   let { provider = "unknown" } = params
-  logA($"Ads: onReward {params.amount} {params.type}")
+  logA($"onReward {params.amount} {params.type}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   giveReward()
   sendAdsBqEvent("receive_reward", provider)
 })

@@ -48,7 +48,7 @@ let optRayTracing = {
 }
 
 return [
-  is_ios ? null : optQuality,
+  optQuality,
   optFpsLimit,
   (inline_raytracing_available() && !is_ios) ? optRayTracing : null
 ]
