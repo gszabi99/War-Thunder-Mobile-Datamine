@@ -81,7 +81,7 @@
       "level": "levels/avg_abandoned_factory.bin",
       "type": "singleMission",
       "environment": "Day",
-      "weather": "clear",
+      "weather": "cloudy",
       "checkFriendlyFireAlsoFromAircrafts": true,
       "gt_training": true,
       "locName": "missions/_Conq1;abandoned_factory/name",

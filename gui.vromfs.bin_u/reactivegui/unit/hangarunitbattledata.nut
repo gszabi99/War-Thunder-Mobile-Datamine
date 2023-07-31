@@ -42,7 +42,7 @@ let function setBattleDataToClientEcs(bd) {
 let function mkHangarBattleData() {
   if (hangarUnit.value == null)
     return null
-  let { name, country = "", unitType = "", mods = null, modPreset = "", weapons = {},
+  let { name, country = "", unitType = "", mods = null, modPreset = "",
     isUpgraded = false, isPremium = false
   } = hangarUnit.value
 
@@ -63,7 +63,7 @@ let function mkHangarBattleData() {
       unitType
       isUpgraded
       isPremium = isPremium || isUpgraded
-      weapons = weapons.map(@(w) !!w)
+      weapons = {} //olnly default weapon atm
       attributes = {} //no need in the hangar
     }
   }

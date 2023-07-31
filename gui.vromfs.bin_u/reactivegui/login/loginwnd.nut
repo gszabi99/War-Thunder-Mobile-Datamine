@@ -152,7 +152,7 @@ let gaijinAuthorization = @() {
     mkTextInputField(loginName, loc("mainmenu/login"), { inputType = "mail" })
     mkTextInputField(loginPas, loc("mainmenu/password"), { password = "\u2022" })
     check2StepAuthCode.value
-      ? mkTextInputField(twoStepAuthCode, loc("mainmenu/2stepVerifCode"), { inputType = "integer" })
+      ? mkTextInputField(twoStepAuthCode, loc("mainmenu/2stepVerifCode"), { inputType = "num" })
       : null
     recoveryPassword
     {

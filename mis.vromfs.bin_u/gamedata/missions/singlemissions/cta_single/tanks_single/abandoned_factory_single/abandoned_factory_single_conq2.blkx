@@ -83,7 +83,7 @@
       "restoreType": "attempts",
       "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "clear",
+      "weather": "cloudy",
       "gt_training": true,
       "locName": "missions/_Conq2;abandoned_factory/name",
       "locDesc": "abandoned_factory/desc;missions/_Conq2/desc",

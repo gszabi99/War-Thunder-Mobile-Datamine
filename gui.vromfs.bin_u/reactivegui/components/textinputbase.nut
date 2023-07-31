@@ -77,8 +77,6 @@ let function isValidStrByType(str, inputType) {
      return isStringLikelyEmail(str)
   if (inputType == "num")
      return isStringInt(str) || isStringFloat(str)
-  if (inputType == "integer")
-     return isStringInt(str)
   if (inputType == "float")
      return isStringFloat(str)
   if (inputType == "lat")

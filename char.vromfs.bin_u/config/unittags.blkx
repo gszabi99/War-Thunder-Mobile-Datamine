@@ -1025,17 +1025,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1400,
     "tierGroup": 4,
-    "bullets": {
-      "203mm_60_skc_34_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "203mm_ger_skc34_pzgr_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_heavy_cruiser": true,
@@ -1112,17 +1101,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 194,
     "tierGroup": 2,
-    "bullets": {
-      "127mm_38_mk12_turret_mk22_twin_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "127mm_usa_mk32_common_sap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -1184,17 +1162,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1255,
     "tierGroup": 4,
-    "bullets": {
-      "152mm_6inch_47_mk_16_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_he",
-          "isHE": true
-        },
-        "152mm_us_mk35_navy_ap": {
-          "icon": "hud_ammo_ap1_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -1247,17 +1214,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1516,
     "tierGroup": 7,
-    "bullets": {
-      "305mm_50_12inch_mk8_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_us_mk8_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battlecruiser": true,
@@ -1308,17 +1264,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1730,
     "tierGroup": 6,
-    "bullets": {
-      "305mm_52_obr1907_1941_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_ussr_52_obr1907_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -1369,16 +1314,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1360,
     "tierGroup": 6,
-    "bullets": {
-      "356mm_45_41st_year_type_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1"
-        },
-        "356mm_jp_type3_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -1419,17 +1354,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 692,
     "tierGroup": 4,
-    "bullets": {
-      "180mm_57_b1p_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "180mm_ussr_b1k_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -1815,18 +1739,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 324,
     "tierGroup": 1,
-    "bullets": {
-      "127mm_45_skc_34_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "128mm_ger_HE_naval_base_fuze": {
-          "icon": "hud_ammo_he",
-          "isHE": true
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -1879,17 +1791,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 270,
     "tierGroup": 2,
-    "bullets": {
-      "130mm_50_b13_1936_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "130mm_ussr_SAP": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -1951,17 +1852,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 284,
     "tierGroup": 1,
-    "bullets": {
-      "130mm_58_sm_2_1_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "130mm_ussr_sm2_1_pb42_navy_sap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -2014,14 +1904,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 170,
     "tierGroup": 1,
-    "bullets": {
-      "102mm_45_4in_qf_mark16_21_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -2064,17 +1946,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 342,
     "tierGroup": 2,
-    "bullets": {
-      "150mm_l_48_c_36_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "150mm_ger_c36_naval_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -2301,17 +2172,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 260,
     "tierGroup": 2,
-    "bullets": {
-      "120mm_45_4_7in_mark12_cp19_mount_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "120mm_uk_navy_AP": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -2382,17 +2242,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 812,
     "tierGroup": 5,
-    "bullets": {
-      "305mm_45_12inch_mark10_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_uk_4crh_mk6a_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -2443,17 +2292,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1300,
     "tierGroup": 5,
-    "bullets": {
-      "305mm_52_obr1907_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_ussr_52_obr1907_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -2504,17 +2342,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1244,
     "tierGroup": 6,
-    "bullets": {
-      "305mm_50_12inch_mk7_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_us_mk15_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -2555,17 +2382,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 272,
     "tierGroup": 1,
-    "bullets": {
-      "127mm_38_mk12_turret_mk30_single_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "127mm_usa_mk32_common_sap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -2618,17 +2434,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 784,
     "tierGroup": 3,
-    "bullets": {
-      "203mm_50_8inch_mk8_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "203mm_uk_mk8_mark_ib_sapc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -2692,17 +2497,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 936,
     "tierGroup": 3,
-    "bullets": {
-      "150mm_60_skc_25_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "150mm_ger_c36_naval_he_base_fuse": {
-          "icon": "hud_ammo_ap2_he0"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -2764,17 +2558,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1272,
     "tierGroup": 3,
-    "bullets": {
-      "152mm_57_b38_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "152mm_ussr_b38_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -2836,17 +2619,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 680,
     "tierGroup": 3,
-    "bullets": {
-      "203mm_50_3rd_year_type_no2_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "200mm_jp_type88_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -2910,17 +2682,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 748,
     "tierGroup": 4,
-    "bullets": {
-      "152mm_6inch_50_bl_mk23_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "152mm_uk_navy_5_10crh_cpbc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -2982,17 +2743,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1184,
     "tierGroup": 3,
-    "bullets": {
-      "203mm_55_8inch_mk14_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "203mm_us_mk19_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -3045,17 +2795,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1384,
     "tierGroup": 5,
-    "bullets": {
-      "305mm_45_12inch_mk5_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_us_45_mk15_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -3096,17 +2835,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 876,
     "tierGroup": 4,
-    "bullets": {
-      "203mm_50_3rd_year_type_no2_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "200mm_jp_type88_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -3170,17 +2898,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1112,
     "tierGroup": 5,
-    "bullets": {
-      "305mm_50_skl_50_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_ger_l_3_4_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -3221,17 +2938,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1084,
     "tierGroup": 6,
-    "bullets": {
-      "305mm_50_skl_50_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_ger_l_3_4_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -3272,17 +2978,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1908,
     "tierGroup": 7,
-    "bullets": {
-      "283mm_54_5_skc_34_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "280mm_ger_skc34_pzgr_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -3346,14 +3041,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 264,
     "tierGroup": 1,
-    "bullets": {
-      "100mm_65_type_98_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_he",
-          "isHE": true
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -3406,14 +3093,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 220,
     "tierGroup": 2,
-    "bullets": {
-      "127mm_5_50_type_3_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_he",
-          "isHE": true
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -3535,17 +3214,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1480,
     "tierGroup": 7,
-    "bullets": {
-      "305mm_61_sm33_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_ussr_52_obr1907_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -3596,17 +3264,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1420,
     "tierGroup": 7,
-    "bullets": {
-      "356mm_45_14inch_mk7_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "356mm_us_45_mk16_navy_apcbc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -3657,16 +3314,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1900,
     "tierGroup": 7,
-    "bullets": {
-      "356mm_45_41st_year_type_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1"
-        },
-        "356mm_jp_type3_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -3717,26 +3364,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1052,
     "tierGroup": 5,
-    "bullets": {
-      "305mm_50_41st_year_type_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_jp_50_41st_yt_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      },
-      "305mm_45_41st_year_type_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_jp_50_41st_yt_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -3796,17 +3423,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1880,
     "tierGroup": 8,
-    "bullets": {
-      "406mm_50_16inch_mk7_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "406mm_us_50_mk8_navy_apcbc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battlecruiser": true,
@@ -3857,17 +3473,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 2608,
     "tierGroup": 8,
-    "bullets": {
-      "380mm_52_skc_34_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "380mm_skc34_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battlecruiser": true,
@@ -3918,17 +3523,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1292,
     "tierGroup": 8,
-    "bullets": {
-      "406mm_50_b37_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "406mm_ussr_50_obr1915_1928_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -3979,17 +3573,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1996,
     "tierGroup": 8,
-    "bullets": {
-      "381mm_42_bl_mk1_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "381mm_uk_bl_mk1_4crh_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -4040,17 +3623,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 2500,
     "tierGroup": 8,
-    "bullets": {
-      "460mm_45_41_type94_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "460mm_jp_type91_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -4243,17 +3815,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 270,
     "tierGroup": 1,
-    "bullets": {
-      "130mm_50_b13_1936_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "130mm_ussr_SAP": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -4315,17 +3876,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 194,
     "tierGroup": 2,
-    "bullets": {
-      "127mm_54_mk18_turret_mk42_single_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "127mm_usa_mk42_mod0_common_sap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -4387,17 +3937,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 748,
     "tierGroup": 3,
-    "bullets": {
-      "152mm_6inch_50_bl_mk23_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "152mm_uk_navy_5_10crh_cpbc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -4448,17 +3987,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1400,
     "tierGroup": 4,
-    "bullets": {
-      "283mm_52_skc_28_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "280mm_ger_skc28_pzgr_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_heavy_cruiser": true,
@@ -4525,16 +4053,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1900,
     "tierGroup": 6,
-    "bullets": {
-      "356mm_45_41st_year_type_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1"
-        },
-        "356mm_jp_type3_navy_apc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -4585,17 +4103,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1480,
     "tierGroup": 7,
-    "bullets": {
-      "305mm_54_b_50_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "305mm_ussr_54_b_50_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -4646,17 +4153,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 1384,
     "tierGroup": 5,
-    "bullets": {
-      "356mm_45_14inch_mk8_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "356mm_us_45_mk16_navy_apcbc": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_light_cruiser": true,
@@ -4751,17 +4247,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 2608,
     "tierGroup": 8,
-    "bullets": {
-      "380mm_52_skc_34_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "380mm_skc34_navy_ap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_battlecruiser": true,
@@ -4814,17 +4299,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 272,
     "tierGroup": 1,
-    "bullets": {
-      "127mm_38_mk12_turret_mk30_single_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        },
-        "127mm_usa_mk32_common_sap": {
-          "icon": "hud_ammo_ap2_he1"
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,
@@ -4877,14 +4351,6 @@
     "testFlight": "testFlight_destroyer_usa_tfs",
     "crewTotalCount": 170,
     "tierGroup": 1,
-    "bullets": {
-      "102mm_45_4in_qf_mark16_21_naval_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he1",
-          "isHE": true
-        }
-      }
-    },
     "tags": {
       "country_germany": true,
       "type_destroyer": true,

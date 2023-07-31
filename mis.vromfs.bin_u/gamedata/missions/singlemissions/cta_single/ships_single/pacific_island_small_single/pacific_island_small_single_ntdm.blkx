@@ -48,7 +48,7 @@
       "type": "singleMission",
       "level": "levels/pacific_islands.bin",
       "environment": "Day",
-      "weather": "clear",
+      "weather": "thin_clouds",
       "gt_training": true,
       "checkFriendlyFireAlsoFromAircrafts": true,
       "preventBotsLeavingBattleArea": true,

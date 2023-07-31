@@ -2,7 +2,7 @@ let newbieGameModesConfig = {
   tanks = [
     {
       gmName = "tank_new_players_battle_single"
-      isFit = @(s) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 5 || !s.hasPkg))
+      isFit = @(s) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
       isSingle = true
       offlineMissions = [
         "abandoned_factory_single_Conq1"
@@ -12,13 +12,13 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "tank_new_players_battle_coop"
-      isFit = @(s) s.anyBattles < 3 || (s.anyBattles < 6 && s.kills < 7)
+      isFit = @(s) s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5)
     }
   ]
   ships = [
     {
       gmName = "ship_new_players_battle_single"
-      isFit = @(s) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
+      isFit = @(s) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 2 || !s.hasPkg))
       isSingle = true
       offlineMissions = [
         "pacific_island_small_single_NTdm"
@@ -26,7 +26,7 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "ship_new_players_battle_coop"
-      isFit = @(s) s.anyBattles < 4 || (s.anyBattles < 7 && s.kills < 6)
+      isFit = @(s) s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 3)
     }
   ]
 }
