@@ -1229,5 +1229,67 @@
         "minTexTileBorder": 1
       }
     }
+  },
+  "vulkan": {
+    "vendor": {
+      "Qualcomm": {
+        "driverProps": {
+          "adrenoClearStoreRace": {
+            "entry": [
+              {
+                "driverMinVer0": 512,
+                "driverMinVer1": 530,
+                "data": {
+                  "affected": true
+                }
+              },
+              {
+                "gpu": [
+                  "650",
+                  "660"
+                ],
+                "data": {
+                  "affected": true
+                }
+              }
+            ]
+          },
+          "limitedDXCSupport": {
+            "entry": {
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 415,
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "msaaAndInstancingHang": {
+            "entry": {
+              "gpu": [
+                "615",
+                "616",
+                "618",
+                "619"
+              ],
+              "data": {
+                "affected": true
+              }
+            }
+          }
+        }
+      },
+      "ARM": {
+        "driverProps": {
+          "brokenImpostorShadows": {
+            "entry": {
+              "gpu": "G51",
+              "data": {
+                "affected": true
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
