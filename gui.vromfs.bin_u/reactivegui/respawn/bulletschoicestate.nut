@@ -72,7 +72,7 @@ let chosenBullets = Computed(function() {
           break
       }
 
-  local notInitedCount = res.reduce(@(res, bData) bData.count < 0 ? res + 1 : res, 0)
+  local notInitedCount = res.reduce(@(accum, bData) bData.count < 0 ? accum + 1 : accum, 0)
   if (notInitedCount > 0)
     foreach (bData in res)
       if (bData.count < 0) {

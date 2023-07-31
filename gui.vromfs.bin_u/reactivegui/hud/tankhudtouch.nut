@@ -6,7 +6,7 @@ let tankStateModule = require("%rGui/hud/tankStateModule.nut")
 let tankWeaponryBlock = require("tankWeaponryBlock.nut")
 let hudTopCenter = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
-let { tankSight } = require("%rGui/hud/sight.nut")
+let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { tankCrosshairColor, tankZoomAutoAimMode, isUnitDelayed, tankCrosshairDmTestResult
 } = require("%rGui/hudState.nut")
 let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
@@ -23,7 +23,7 @@ let { mkCircleTankPrimaryGun } = require("buttons/circleTouchHudButtons.nut")
 let { primaryAction } = require("actionBar/actionBarState.nut")
 let hitCamera = require("hitCamera/hitCamera.nut")
 let zoomSlider = require("%rGui/hud/zoomSlider.nut")
-let { DM_TEST_NOT_PENETRATE } = require("crosshair")
+let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 
 
 let crosshairReadyColor = Color(232, 75, 60)
@@ -32,13 +32,12 @@ let crosshairReadySize = (1.7 * crosshairSize).tointeger()
 let readyImage = getSvgImage("reload_indication_in_zoom", crosshairReadySize)
 
 let crosshairHalfSize = (0.5 * crosshairSimpleSize).tointeger()
-let crosshairLineWidth = evenPx(2)
-let crosshairLineHeight = evenPx(10)
 let halfCrosshairLineHeight = (0.5 * crosshairLineHeight).tointeger()
 let sizeAim = [crosshairLineWidth, crosshairLineHeight]
 let sizeAimRv = [sizeAim[1], sizeAim[0]]
 
-let hasNoPenetrationState = Computed(@() tankCrosshairDmTestResult.value == DM_TEST_NOT_PENETRATE)
+let hasNoPenetrationState = Computed(@() tankCrosshairDmTestResult.value == DM_TEST_NOT_PENETRATE ||
+                                         tankCrosshairDmTestResult.value == DM_TEST_RICOCHET)
 
 let triggers = [TRIGGER_GROUP_PRIMARY, TRIGGER_GROUP_SECONDARY, TRIGGER_GROUP_COAXIAL_GUN, TRIGGER_GROUP_MACHINE_GUN]
   .reduce(function(res, t) {

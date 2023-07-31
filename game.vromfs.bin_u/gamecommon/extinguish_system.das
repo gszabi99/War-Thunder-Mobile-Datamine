@@ -181,6 +181,7 @@ def extinguish_system_init_handle_es(evt : CmdInitComponent;
     return
 
   extinguish_system_extinguisher_count = 0
+  extinguish_system_extinguisher_count_max = 0
   extinguish_system_penalty_without_mod = false
   extinguish_system_auto_extinguisher = false
   extinguish_system_cooldown = 0.0f

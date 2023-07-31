@@ -846,11 +846,6 @@
         "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
         "emitter": "bone_torpedo_01",
         "useEmitter": true,
-        "emitterGenRange": [
-          6,
-          7
-        ],
-        "emitterGenFmt": "bone_torpedo_%02d",
         "bullets": 72,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [

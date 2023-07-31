@@ -15,6 +15,8 @@ let crosshairLineWidth = hdpx(2)
 let sightColor = Color(160, 160, 160, 200)
 let cancelShootSize = hdpxi(70)
 
+let crosshairLineHeight = evenPx(10)
+
 let crosshairSize = shHud(3.5)
 let pointSize = hdpxi(10)
 let crosshairLineSize = hdpx(10)
@@ -206,4 +208,6 @@ return {
   shipSight
   tankSight
   pointCrosshair
+  crosshairLineWidth
+  crosshairLineHeight
 }

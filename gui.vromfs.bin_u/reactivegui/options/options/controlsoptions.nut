@@ -40,11 +40,11 @@ let function cameraSenseSlider(camType, locId, optId) {
     locId
     value
     ctrlType = OCT_SLIDER
-    valToString = @(v) $"{v*100}%"
+    valToString = @(v) $"{((v/3)*100 + 0.5).tointeger()}%"
     ctrlOverride = {
-      min = 0.1
+      min = 0.03
       max = 3
-      unit = 0.01 //step
+      unit = 0.03 //step
     }
   }
 }
@@ -69,11 +69,11 @@ let function hapticIntensitySlider(locId, optId, intensityType = -1) {
     locId
     value
     ctrlType = OCT_SLIDER
-    valToString = @(v) $"{v*100}%"
+    valToString = @(v) $"{((v/3)*100 + 0.5).tointeger()}%"
     ctrlOverride = {
-      min = 0.1
+      min = 0
       max = 3
-      unit = 0.1 //step
+      unit = 0.03 //step
     }
   }
 }

@@ -11,10 +11,18 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
-
+let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
+
+let {
+  YU2_OK = 0,
+  registerApplePurchase = @(_, eventId) setTimeout(0.1,
+    @() send(eventId, { status = 0, transaction_id = "id" }))
+} = require("auth_wt")
+
 let { //defaults only to allow test this module on PC
   AS_OK = 0,
+  AS_CANCELED = -1,
   AS_NOT_INITED = -12,
   initAndRequestData = function(list) {
     let result = {
@@ -30,7 +38,8 @@ let { //defaults only to allow test this module on PC
     setTimeout(0.1, @() send("ios.billing.onInitAndDataRequested", result))
   },
   startPurchaseAsync = @(_) setTimeout(1.0,
-    @() send("ios.billing.onIosPurchaseCallback", { status = 0, value = "token_for_register_purchase" }))
+    @() send("ios.billing.onPurchaseCallback", { status = 0, data = "receipt_or_error" })),
+  confirmPurchase = @(_) setTimeout(1.0, @() send("ios.billing.onConfirmPurchaseCallback",{status = true}))
 } = require("ios.billing.appstore")
 
 const REPEAT_ON_ERROR_MSEC = 60000
@@ -62,6 +71,42 @@ isAuthorized.subscribe(function(v) {
     return
   lastInitStatus(AS_NOT_INITED)
   products({})
+})
+
+subscribe("ios.billing.onConfirmPurchaseCallback", function(result) {
+  purchaseInProgress(null)
+  if (result.status) {
+    startSeveralCheckPurchases()
+    return
+  }
+  openFMsgBox({ text = loc("msg/onApplePurchaseConfirmError") })
+})
+
+subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
+  let {status, transaction_id = null } = result
+
+  if (status == YU2_OK && transaction_id) {
+    logG($"register_apple_purchase success")
+    confirmPurchase(transaction_id)
+    return
+  }
+  purchaseInProgress(null)
+  logG($"register_apple_purchase error={status}")
+  openFMsgBox({ text = loc("msg/onApplePurchaseAuthError" {error = status}) })
+})
+
+subscribe("ios.billing.onPurchaseCallback", function(result) {
+  let { status, data = null } = result
+  logG("onPurchaseCallback status = ", status)
+  if (status == AS_OK && data) {
+    registerApplePurchase(data,"ios.billing.onAuthPurchaseCallback")
+  } else {
+    purchaseInProgress(null)
+    if (status != AS_CANCELED) {
+      local error_text = data ?? "fail"
+      openFMsgBox({ text = loc($"msg/onApplePurchaseError/{error_text}") })
+    }
+  }
 })
 
 subscribe("ios.billing.onInitAndDataRequested", function(result) {
@@ -159,13 +204,6 @@ let function buyPlatformGoods(goodsOrId) {
   purchaseInProgress(productId)
 }
 
-subscribe("ios.billing.onIosPurchaseCallback", function(result) {
-  purchaseInProgress(null)
-  let { status } = result
-  logG("onIosPurchaseCallback status = ", status)
-  if (status == AS_OK)
-    startSeveralCheckPurchases()
-})
 
 let platformPurchaseInProgress = Computed(@() offerProductId.value == purchaseInProgress.value ? activeOffers.value?.id
   : goodsIdByProductId.value?[purchaseInProgress.value])

@@ -8,6 +8,7 @@ let { subscribe, send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let googlePlayAccount = require("android.account.googleplay")
+let appleAccount = require("ios.account.apple")
 let fbAccount = require("android.account.fb")
 let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -130,6 +131,28 @@ subscribe("android.account.onGuestFIDReciveCallback",
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
   }))
 
+subscribe("ios.account.apple.onAppleLoginToken",
+  onlyActiveStageCb(function(msg) {
+    let { status, token=null } = msg
+    if (status != appleAccount.APPLE_LOGIN_SUCCESS) {
+      if (status == appleAccount.APPLE_LOGIN_CANCEL) {
+        interruptStage({ error = "Cancel login"})
+        return
+      }
+      send_counter("auth.apple_signin_errors", 1, { error = status })
+      interruptStage({ error = $"Apple sign in failed: {status}" })
+      errorMsgBox(YU2_UNKNOWN,
+        [
+          { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
+          { id = "tryAgain", isPrimary = true, isDefault = true }
+        ])
+      return
+    }
+    logStage("Apple check_login_pass")
+    let result = ::check_login_pass("", token, "apple", "apple", false, false)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
+}))
+
 let loginByType = {
   [LT_GOOGLE] = function(_as) {
     googlePlayAccount.signOut(false)
@@ -147,9 +170,7 @@ let loginByType = {
   },
 
   [LT_APPLE] = function(_as) {
-    let result = ::check_login_pass("", "", "apple", "apple", false, false)
-    //check_login_pass is not instant
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
+    appleAccount.getAppleLoginToken()
   },
 
   [LT_GAIJIN] = function(as) {

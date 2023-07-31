@@ -771,11 +771,6 @@
         "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
         "emitter": "bone_torpedo_01",
         "useEmitter": true,
-        "emitterGenRange": [
-          4,
-          5
-        ],
-        "emitterGenFmt": "bone_torpedo_%02d",
         "bullets": 44,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [

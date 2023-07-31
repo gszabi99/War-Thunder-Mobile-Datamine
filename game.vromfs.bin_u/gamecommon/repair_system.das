@@ -67,12 +67,13 @@ def load_toolkit_mod_blk(blk : DataBlock&;
                          var repair_system_speed_multiplier_base : float&;
                          var repair_system_repair_hp_multiplier : float&;
                          is_default_toolkit : bool)
-  var gm = unit |> as_gm()
-  if gm != null && repair_system_toolkit_count_max == 0
-    repair_system_toolkit_count_max = gm.toolkit.count
-
   repair_system_toolkit_count_max = blk |> datablock_getInt("toolkitActivationCount", repair_system_toolkit_count_max)
   let available_without_toolkit = blk |> datablock_getBool("repairAvailable", false) || is_default_toolkit
+
+  var gm = unit |> as_gm()
+  if gm != null && (repair_system_toolkit_count_max < 0 && !available_without_toolkit || repair_system_toolkit_count_max == 0)
+    repair_system_toolkit_count_max = gm.toolkit.count
+
   set_flag(repair_system_state, RepairState REPAIR_AVAILABLE_WITHOUT_TOOLKIT,
     blk |> datablock_getBool("repairAvailable",
     get_flag(repair_system_state, RepairState REPAIR_AVAILABLE_WITHOUT_TOOLKIT)))
