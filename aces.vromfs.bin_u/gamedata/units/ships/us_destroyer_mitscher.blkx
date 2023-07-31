@@ -258,6 +258,7 @@
       "hp": 42110.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
+      "auxiliary_caliber_turret_01_dm": {},
       "auxiliary_caliber_turret_02_dm": {}
     },
     "fire_control": {
@@ -348,6 +349,7 @@
         "name": [
           "main_caliber_turret_01_dm",
           "main_caliber_turret_02_dm",
+          "auxiliary_caliber_turret_01_dm",
           "auxiliary_caliber_turret_02_dm"
         ],
         "onHit": {
@@ -676,8 +678,6 @@
           1.0
         ],
         "linkSleeveToGun": false,
-        "barrelDP": "main_caliber_gun_01_dm",
-        "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.238,
@@ -722,14 +722,36 @@
         },
         "limits": {
           "yaw": [
-            -155.0,
-            155.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
             85.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -155.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              155.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -757,8 +779,6 @@
           1.0
         ],
         "linkSleeveToGun": false,
-        "barrelDP": "main_caliber_gun_02_dm",
-        "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.238,
@@ -803,14 +823,36 @@
         },
         "limits": {
           "yaw": [
-            -155.0,
-            155.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
             85.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -155.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              155.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -858,18 +900,41 @@
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
-          "gun": "auxiliary_caliber_gun_01"
+          "gun": "auxiliary_caliber_gun_01",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm"
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
             85.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -916,18 +981,41 @@
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
-          "gun": "auxiliary_caliber_gun_01"
+          "gun": "auxiliary_caliber_gun_01",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm"
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
             85.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -974,18 +1062,41 @@
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
-          "gun": "auxiliary_caliber_gun_02"
+          "gun": "auxiliary_caliber_gun_04",
+          "gunnerDm": "auxiliary_caliber_turret_02_dm"
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
             85.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -1032,18 +1143,41 @@
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
-          "gun": "auxiliary_caliber_gun_02"
+          "gun": "auxiliary_caliber_gun_04",
+          "gunnerDm": "auxiliary_caliber_turret_02_dm"
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
             85.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -1281,12 +1415,6 @@
         "external": true,
         "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark35_torpedo.blk",
         "emitter": "bone_torpedo_01",
-        "useEmitter": true,
-        "emitterGenRange": [
-          1,
-          4
-        ],
-        "emitterGenFmt": "bone_torpedo_%02d",
         "bullets": 10,
         "startFx": "start_torpedo",
         "startFxOffset": [
@@ -1302,8 +1430,116 @@
         "maxAngularSpeed": 0.8,
         "shotFreq": 0.17,
         "turret": {
-          "head": "tt_01",
-          "gun": "tt_01"
+          "head": "bone_torpedo_01",
+          "gun": "bone_torpedo_01"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner11",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark35_torpedo.blk",
+        "emitter": "bone_torpedo_02",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.17,
+        "turret": {
+          "head": "bone_torpedo_02",
+          "gun": "bone_torpedo_02"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner12",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark35_torpedo.blk",
+        "emitter": "bone_torpedo_03",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.17,
+        "turret": {
+          "head": "bone_torpedo_03",
+          "gun": "bone_torpedo_03"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner13",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark35_torpedo.blk",
+        "emitter": "bone_torpedo_04",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.17,
+        "turret": {
+          "head": "bone_torpedo_04",
+          "gun": "bone_torpedo_04"
         },
         "limits": {
           "yaw": [
@@ -1325,7 +1561,7 @@
     }
   },
   "torpedoSeries": {
-    "delay": 6.0,
+    "delay": 1.0,
     "count": 4
   },
   "modifications": {

@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { get_settings_blk } = require("blkGetters")
 
 require("topMenuButtonsActions.nut")
 
@@ -34,5 +35,7 @@ require("%scripts/debriefing/battleResultBq.nut")
 require("%scripts/matching/queueToGameMode.nut")
 require("%scripts/matching/queuesClient.nut")
 require("%scripts/matching/queueStats.nut")
+if (!(get_settings_blk()?.debug.skipPopups ?? false))
+  require("%scripts/matchingRooms/sessionReconnect.nut")
 require("%scripts/hud/hud.nut")
 require("userstat.nut")

@@ -11,13 +11,6 @@ let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("
 let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
 
-::getFromSettingsBlk <- function getFromSettingsBlk(path, defVal = null) {
-  // Important: On production, settings blk does NOT contain all variables from config.blk, use getSystemConfigOption() instead.
-  let blk = ::get_settings_blk()
-  let val = get_blk_value_by_path(blk, path)
-  return (val != null) ? val : defVal
-}
-
 ::on_cannot_create_session <- @() openFMsgBox({ text = loc("NET_CANNOT_CREATE_SESSION") })
 
 subscribeFMsgBtns({

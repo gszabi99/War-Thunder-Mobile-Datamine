@@ -959,7 +959,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_38_mk12_turret_mk22_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_13",
         "flash": "emtr_gun_flame_13",
@@ -1032,7 +1032,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_38_mk12_turret_mk22_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_14",
         "flash": "emtr_gun_flame_14",
@@ -1094,7 +1094,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_38_mk12_turret_mk22_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_15",
         "flash": "emtr_gun_flame_15",
@@ -1156,7 +1156,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_38_mk12_turret_mk22_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_16",
         "flash": "emtr_gun_flame_16",

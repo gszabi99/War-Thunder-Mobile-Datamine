@@ -12,7 +12,7 @@ let { start_updater_addons, stop_updater, UPDATER_EVENT_ERROR, UPDATER_EVENT_FIN
 } = require("contentUpdater")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
-let { onlyActiveStageCb, export, finalizeStage
+let { onlyActiveStageCb, export, finalizeStage, interruptStage
 } = require("mkStageBase.nut")("updateGame", LOGIN_STATE.LOGGED_INTO_CONTACTS, LOGIN_STATE.GAME_UPDATED)
 
 let finish = onlyActiveStageCb(function() {
@@ -26,12 +26,14 @@ let finish = onlyActiveStageCb(function() {
 subscribe(LOGIN_UPDATER_EVENT_ID,
   onlyActiveStageCb(function(evt) {
     let { eventType } = evt
-    if (eventType == UPDATER_EVENT_ERROR)
+    if (eventType == UPDATER_EVENT_ERROR) {
+      interruptStage(evt)
       openFMsgBox({
         uid = "login_updater_error"
         text = loc($"updater/error/{evt?.error}")
         isPersist = true
       })
+    }
     else if (eventType == UPDATER_EVENT_FINISH)
       finish()
   }))

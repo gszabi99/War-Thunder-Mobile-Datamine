@@ -859,6 +859,16 @@
             30.0
           ]
         },
+        "limitsDeadzone": {
+          "yaw": [
+            -25.0,
+            25.0
+          ],
+          "pitch": [
+            -20.0,
+            30.0
+          ]
+        },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,

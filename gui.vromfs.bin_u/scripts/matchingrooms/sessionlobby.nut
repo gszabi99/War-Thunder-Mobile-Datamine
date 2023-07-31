@@ -12,6 +12,7 @@ let { subscribe } = require("eventbus")
 let { get_mp_session_id_str } = require("multiplayer")
 let base64 = require("base64")
 let DataBlock = require("DataBlock")
+let { deferOnce } = require("dagor.workcycle")
 let { isEqual, isEmpty, isInteger, isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { missionAvailabilityFlag, isAvailableByMissionSettings } = require("%scripts/missions/missionsUtils.nut")
@@ -184,6 +185,8 @@ let function setRoomAttributes(params, cb) {
   ::matching.rpc_call("mrooms.set_attributes", params, cb)
 }
 
+local delayedJoinRoomFunc = null
+
 ::SessionLobby <- {
   [PERSISTENT_DATA_PARAMS] = [
     "roomId", "settings", "uploadedMissionId", "status",
@@ -218,12 +221,6 @@ let function setRoomAttributes(params, cb) {
   isReady = false
   myState = PLAYER_IN_LOBBY_NOT_READY
 
-  reconnectData = {
-    inviteData = null
-    sendResp = null
-  }
-
-  delayedJoinRoomFunc = null
   needJoinSessionAfterMyInfoApply = false
 
   roomTimers = [
@@ -721,11 +718,13 @@ let getMaxEconomicRank = @() 30 //it used only for create room. So better to rem
 ::SessionLobby.onEventSignOut <- @(_) this.leaveRoom()
 
 ::SessionLobby.afterLeaveRoom <- function afterLeaveRoom(_p) {
+  if (delayedJoinRoomFunc != null) {
+    deferOnce(delayedJoinRoomFunc)
+    delayedJoinRoomFunc = null
+  }
+
   this.roomId = INVALID_ROOM_ID
   this.switchStatus(lobbyStates.NOT_IN_ROOM)
-  let guiScene = ::get_main_gui_scene()
-  if (guiScene)
-    guiScene.performDelayed(this, this.checkSessionReconnect) //notify room leave will be received soon
 }
 
 ::SessionLobby.sendJoinRoomRequest <- function sendJoinRoomRequest(join_params, _cb = function(...) {}) {
@@ -761,7 +760,7 @@ let getMaxEconomicRank = @() 30 //it used only for create room. So better to rem
     return
 
   if (!isLoggedIn.value || this.isInRoom()) {
-    this.delayedJoinRoomFunc = (@(v_roomId, senderId, v_password, cb) function() { this.joinRoom(v_roomId, senderId, v_password, cb) })(v_roomId, senderId, v_password, cb)
+    delayedJoinRoomFunc = @() ::SessionLobby.joinRoom(v_roomId, senderId, v_password, cb)
 
     if (this.isInRoom())
       this.leaveRoom()
@@ -987,42 +986,6 @@ isInLoadingScreen.subscribe(function(v) {
     )
 })
 
-::SessionLobby.checkSessionReconnect <- function checkSessionReconnect() {
-  if (!isLoggedIn.value)
-    return
-
-  if (this.delayedJoinRoomFunc) {
-    this.delayedJoinRoomFunc()
-    this.delayedJoinRoomFunc = null
-  }
-
-  this.checkSessionInvite()
-}
-
-subscribeFMsgBtns({
-  function reconnectApply(inviteData) {
-    ::SessionLobby.reconnectData.sendResp?({})
-    ::SessionLobby.joinRoom(inviteData.roomId)
-  }
-  reconnectReject = @(_) ::SessionLobby.reconnectData.sendResp?({ error_id = "INVITE_REJECTED" })
-})
-
-::SessionLobby.checkSessionInvite <- function checkSessionInvite() {
-  if (!this.reconnectData.inviteData || !this.reconnectData.sendResp)
-    return
-
-  openFMsgBox({
-    uid = "reconnect_msg"
-    text = loc("msgbox/return_to_battle_session")
-    buttons = [
-      { id = "no", eventId = "reconnectReject", isCancel = true }
-      { id = "yes", eventId = "reconnectApply", isPrimary = true, context = this.reconnectData.inviteData, isDefault = true }
-    ]
-    isPersist = true
-  })
-  this.reconnectData.inviteData = null
-}
-
 ::SessionLobby.canJoinSession <- function canJoinSession() {
   return this.isRoomInSession
 }
@@ -1053,22 +1016,10 @@ isLoggedIn.subscribe(function(v) {
   if (!v)
     return
   setHostCb()
-  if (!::getFromSettingsBlk("debug/skipPopups"))
-    ::SessionLobby.checkSessionReconnect()
 })
 
 foreach (notificationName, callback in
   {
-    ["mrooms.reconnect_invite2"] = function (invite_data, send_resp) {
-      log("got reconnect invite from matching")
-      if (::is_in_flight())
-        return
-
-     ::SessionLobby.reconnectData.inviteData = invite_data
-     ::SessionLobby.reconnectData.sendResp = send_resp
-     ::SessionLobby.checkSessionReconnect()
-    },
-
     ["match.notify_wait_for_session_join"] = @(_params) ::SessionLobby.setWaitForQueueRoom(true),
 
     ["match.notify_join_session_aborted"] = @(_params) ::SessionLobby.leaveWaitForQueueRoom()

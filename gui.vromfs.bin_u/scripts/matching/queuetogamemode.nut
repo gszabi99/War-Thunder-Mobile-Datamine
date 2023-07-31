@@ -5,64 +5,19 @@
 from "%scripts/dagui_library.nut" import *
 let { subscribe, send } = require("eventbus")
 let { setTimeout } = require("dagor.workcycle")
-let { get_addon_version, is_addon_exists_in_game_folder } = require("contentUpdater")
+let { get_addon_version } = require("contentUpdater")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isMatchingOnline, showMatchingConnectProgress } = require("matchingOnline.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { isNewbieMode, isNewbieModeSingle } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
-let { check_version } = require("%sqstd/version_compare.nut")
-let { gameModeAddonToAddonSetMap, localizeAddons, getAddonsSizeStr
-} = require("%appGlobals/updater/addons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
-} = require("%appGlobals/updater/campaignAddons.nut")
+let { getModeAddonsInfo } = require("gameModeAddons.nut")
 
 let startBattleDelayed = persist("startBattleDelayed", @() { modeId = null })
-
-let function getModeAddonsInfo(mode, unitName) {
-  let { reqPkg = {} } = mode
-  local addons = {}  //addon = needDownload
-  local updateDiff = 0
-  foreach (addon, reqVersion in reqPkg) {
-    if (is_addon_exists_in_game_folder(addon)) {
-      addons[addon] <- false
-      continue
-    }
-    let version = get_addon_version(addon)
-    if (version != "" && check_version(reqVersion, version)) {
-      addons[addon] <- false
-      continue
-    }
-    addons[addon] <- true
-    updateDiff += version == "" ? -1 : 1
-  }
-
-  let campAddons = isNewbieMode(mode.name) ? getCampaignPkgsForNewbieBattle(curCampaign.value, isNewbieModeSingle(mode.name))
-    : getCampaignPkgsForOnlineBattle(curCampaign.value, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
-  foreach (addon in campAddons)
-    if (addon not in addons) {
-      let has = hasAddons.value?[addon] ?? false
-      addons[addon] <- !has
-      updateDiff += has ? 0 : -1
-    }
-
-  let toDownload = addons.filter(@(v) v)
-  foreach (addon in addons) {
-    let list = gameModeAddonToAddonSetMap?[addon]
-    if (list == null)
-      continue
-    foreach (a in list)
-      if (a not in addons && !hasAddons.value?[a])
-        toDownload[a] <- true
-  }
-  return { addonsToDownload = toDownload.keys(), updateDiff }
-}
 
 let function queueToGameModeImpl(mode) {
   if (isInQueue.value)

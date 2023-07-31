@@ -402,6 +402,7 @@
     "enableClipmapDecals": false,
     "underwaterFogUseShadows": 1,
     "allowHmap": false,
+    "useCellSBuffer": true,
     "sky_panorama_patch": false
   },
   "ps4": {
