@@ -3,6 +3,7 @@ from "%appGlobals/unitConst.nut" import *
 let { register_command } = require("console")
 let { json_to_string, parse_json } = require("json")
 let { get_local_custom_settings_blk } = require("blkGetters")
+let { send } = require("eventbus")
 let { eachParam, isDataBlock } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
@@ -61,6 +62,7 @@ let function savePreset(unitType, preset) {
   let htBlk = blk.addBlock(SAVE_ID)
   htBlk[unitType] = json_to_string(preset)
   presetsSaved.mutate(@(v) v[unitType] <- preset)
+  send("saveProfile", {})
 }
 
 local lastHistoryIdx = curHistoryIdx.value
