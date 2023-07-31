@@ -19,8 +19,9 @@ let function tabData(tab, idx) {
               size = [iconSize, iconSize]
               vplace = ALIGN_CENTER
               rendObj = ROBJ_IMAGE
-              image = Picture($"{image}:{iconSize}:{iconSize}")
+              image = Picture($"{image}:{iconSize}:{iconSize}:P")
               color = textColor
+              keepAspect = KEEP_ASPECT_FIT
             }
         {
           hplace = ALIGN_RIGHT

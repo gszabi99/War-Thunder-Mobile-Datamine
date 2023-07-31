@@ -2208,5 +2208,9 @@
   },
   "simple_tank_wtm": {
     "_extends": "simple_tank"
+  },
+  "game_mode_info": {
+    "_singleton": true,
+    "game_mode_name": ""
   }
 }

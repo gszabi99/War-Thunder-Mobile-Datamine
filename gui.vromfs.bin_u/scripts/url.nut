@@ -2,14 +2,17 @@
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
 from "%scripts/dagui_library.nut" import *
+let { subscribe } = require("eventbus")
 let { split_by_chars } = require("string")
-let { shell_launch, get_authenticated_url_sso } = require("url")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { shell_launch } = require("url")
+let { get_authenticated_url_sso } = require("auth_wt")
+let { to_string, parse } = require("json")
+let { defer } = require("dagor.workcycle")
+let logUrl = log_with_prefix("[URL] ")
+let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
-let eventbus = require("eventbus")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { is_android } = require("%sqstd/platform.nut")
 
@@ -31,18 +34,68 @@ let function getUrlWithQrRedirect(url) {
   return QR_REDIRECT_URL.subst(lang, base64.encodeString(url))
 }
 
-let canAutoLogin = @() isAuthorized.value
+let openUrlExternalImpl = shell_launch
+let function openUrlImpl(url, onCloseUrl) {
+  local success = false
+  if (is_android)
+    success = require("android.webview").show(url, true, onCloseUrl)
+  if (!success)
+    openUrlExternalImpl(url)
+}
 
-let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
+subscribe("onAuthenticatedUrlResult", function(msg) {
+  let { status, contextStr, url } = msg
+  let { onCloseUrl = "", useExternalBrowser = false, notAuthUrl = "", shouldEncode = false
+  } = contextStr != "" ? parse(contextStr) : null
+  local urlToOpen = url
+  local logPrefix = "request open authenticated"
+  if (status == YU2_OK) {
+    if (shouldEncode)
+      urlToOpen = $"{url}&ret_enc=1" //This parameter is needed for coded complex links.
+  }
+  else {
+    urlToOpen = notAuthUrl
+    logPrefix = "request open after fail authenticate"
+    ::send_error_log("Authorize url: failed to get authenticated url with error " + status,
+      false, AUTH_ERROR_LOG_COLLECTION)
+    if (urlToOpen == "")
+      return
+  }
+
+  defer(function() { //open url action is still sync, and can be too long. So lauch it on the next frame
+    if (useExternalBrowser) {
+      logUrl($"{logPrefix} in external browser {urlToOpen} (base url = {notAuthUrl})")
+      openUrlExternalImpl(urlToOpen)
+    }
+    else {
+      logUrl($"{logPrefix} {urlToOpen} (base url = {notAuthUrl})")
+      openUrlImpl(urlToOpen, onCloseUrl)
+    }
+  })
+})
+
+let function openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser) {
+  let shouldEncode = !isInArray(URL_TAG_NO_ENCODING, urlTags)
+  local autoLoginUrl = url
+  if (shouldEncode)
+    autoLoginUrl = base64.encodeString(autoLoginUrl)
+
+  let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
+  let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
+  get_authenticated_url_sso(autoLoginUrl, "", ssoService, "onAuthenticatedUrlResult",
+    to_string({ onCloseUrl, useExternalBrowser, notAuthUrl = url, shouldEncode }))
+}
+
+let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExternalBrowser=false) {
   if (baseUrl == null || baseUrl == "") {
-    log("Error: tried to open an empty url")
+    logUrl("Error: tried to open an empty url")
     return null
   }
 
   local url = clearBorderSymbols(baseUrl, [URL_TAGS_DELIMITER])
   let urlTags = split_by_chars(baseUrl, URL_TAGS_DELIMITER)
   if (!urlTags.len()) {
-    log("Error: tried to open an empty url")
+    logUrl("Error: tried to open an empty url")
     return null
   }
   let urlWithoutTags = urlTags.remove(urlTags.len() - 1)
@@ -53,52 +106,18 @@ let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) 
     url = urlType.applyCurLang(url)
 
   let shouldLogin = isInArray(URL_TAG_AUTO_LOGIN, urlTags)
-  if (!isAlreadyAuthenticated && shouldLogin && canAutoLogin()) {
-    let shouldEncode = !isInArray(URL_TAG_NO_ENCODING, urlTags)
-    local autoLoginUrl = url
-    if (shouldEncode)
-      autoLoginUrl = base64.encodeString(autoLoginUrl)
-
-    let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
-    let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
-    let authData = get_authenticated_url_sso(autoLoginUrl, ssoService)
-
-    if (authData.yuplayResult == YU2_OK)
-      url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
-    else
-      ::send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
-      false, AUTH_ERROR_LOG_COLLECTION)
+  if (!isAlreadyAuthenticated && shouldLogin && isAuthorized.value) {
+    logUrl($"request to authenticate url {url} (base url = {baseUrl})")
+    openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser)
   }
-
-  return {
-    url = url
-    urlWithoutTags = urlWithoutTags
-    urlTags = urlTags
-    urlType = urlType
+  else if (useExternalBrowser) {
+    logUrl($"request open in external browser {url} (base url = {baseUrl})")
+    openUrlExternalImpl(url)
   }
-}
-
-let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "") {
-  //shell_launch can be long sync function so call it delayed to avoid broke current call.
-  ::get_gui_scene().performDelayed(getroottable(), function() {
-    let urlConfig = getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated)
-    if (urlConfig == null)
-      return
-
-    let url = urlConfig.url
-    let urlType = urlConfig.urlType
-
-    log("Open url with urlType = " + urlType.typeName + ": " + url)
-    log("Base Url = " + baseUrl)
-
-    local success = false
-    if (is_android)
-      success = require("android.webview").show(url, true, onCloseUrl)
-    if (!success)
-      shell_launch(url)
-
-    ::broadcastEvent("BrowserOpened", { url = url, external = true })
-  })
+  else {
+    logUrl($"request open {url} (base url = {baseUrl})")
+    openUrlImpl(url, onCloseUrl)
+  }
 }
 
 local function validateLink(link) {
@@ -112,7 +131,7 @@ local function validateLink(link) {
   }
 
   link = clearBorderSymbols(link, [URL_TAGS_DELIMITER])
-  local linkStartIdx = ::g_string.lastIndexOf(link, URL_TAGS_DELIMITER)
+  local linkStartIdx = lastIndexOf(link, URL_TAGS_DELIMITER)
   if (linkStartIdx < 0)
     linkStartIdx = 0
 
@@ -130,22 +149,21 @@ local function validateLink(link) {
   return null
 }
 
-let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCloseUrl = "") {
+let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCloseUrl = "", useExternalBrowser = false) {
   let bigQueryInfoObject = { url = baseUrl }
   if (! ::u.isEmpty(biqQueryKey))
     bigQueryInfoObject["from"] <- biqQueryKey
 
   sendUiBqEvent("player_opens_external_browser", bigQueryInfoObject)
 
-  open(baseUrl, isAlreadyAuthenticated, onCloseUrl)
+  open(baseUrl, isAlreadyAuthenticated, onCloseUrl, useExternalBrowser)
 }
 
-eventbus.subscribe("openUrl", kwarg(openUrl))
+subscribe("openUrl", kwarg(openUrl))
 ::open_url <- openUrl //use in native code
 
 return {
   openUrl
   validateLink
-  getAuthenticatedUrlConfig
   getUrlWithQrRedirect
 }

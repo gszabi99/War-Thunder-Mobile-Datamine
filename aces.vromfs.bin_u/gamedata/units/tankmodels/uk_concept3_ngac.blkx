@@ -2494,146 +2494,52 @@
       "decal0WidthBox": 0.200003,
       "decal0Tex": "uk_red_squadron_b",
       "decal1Line0": [
-        8.13628E-08,
-        -8.13628E-08,
-        2.73008,
-        -1.55542
-      ],
-      "decal1Line1": [
-        1.93046,
-        -1.93046,
-        -1.19336E-07,
-        -3.85148
-      ],
-      "decal1Line2": [
-        8.13628E-08,
-        -8.13628E-08,
-        -2.73008,
-        2.55542
-      ],
-      "decal1Line3": [
-        1.93046,
-        -1.93046,
-        1.19336E-07,
-        -3.85148
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        0.707107,
-        0.707107,
-        0.0,
-        -2.77975
-      ],
-      "decal1CPNormDepth1": [
-        -0.707107,
-        -0.707107,
-        -0.0,
-        2.76954
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.366289
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.232261,
-      "decal1Tex": "uk_1st_armoured_division",
-      "decal2Line0": [
         2.79368,
         -8.32581E-08,
         -0.0036855,
         -0.928886
       ],
-      "decal2Line1": [
+      "decal1Line1": [
         -0.00155306,
         -2.53356,
         -1.17717,
         2.93755
       ],
-      "decal2Line2": [
+      "decal1Line2": [
         -2.79368,
         -1.24887E-07,
         -0.00368542,
         1.92889
       ],
-      "decal2Line3": [
+      "decal1Line3": [
         -0.00155281,
         -2.53356,
         1.17717,
         2.93755
       ],
-      "decal2HaveCP": true,
-      "decal2CPNormDepth": [
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
         -0.00119638,
         0.42137,
         -0.906888,
         -1.68112
       ],
-      "decal2CPNormDepth1": [
+      "decal1CPNormDepth1": [
         -0.00119638,
         0.42137,
         0.906888,
         -1.68112
       ],
-      "decal2RotScale": [
+      "decal1RotScale": [
         1.5708,
         0.357951
       ],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": true,
-      "decal2OppositeMirrored": false,
-      "decal2WidthBox": 0.203378,
-      "decal2Tex": "uk_vechicle_recognition_marking",
-      "decal3Line0": [
-        0.0,
-        -1.45949E-07,
-        -3.33892,
-        3.32419
-      ],
-      "decal3Line1": [
-        -0.0,
-        -3.33892,
-        1.45949E-07,
-        3.86291
-      ],
-      "decal3Line2": [
-        0.0,
-        -1.45949E-07,
-        3.33892,
-        -2.32419
-      ],
-      "decal3Line3": [
-        0.0,
-        -3.33892,
-        -1.45949E-07,
-        3.86291
-      ],
-      "decal3HaveCP": true,
-      "decal3CPNormDepth": [
-        -1.0,
-        0.0,
-        0.0,
-        -3.03793
-      ],
-      "decal3CPNormDepth1": [
-        1.0,
-        -0.0,
-        -0.0,
-        3.03244
-      ],
-      "decal3RotScale": [
-        1.5708,
-        0.299498
-      ],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": false,
-      "decal3OppositeMirrored": false,
-      "decal3WidthBox": 0.206025,
-      "decal3Tex": "uk_1st_armoured_division"
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": true,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.203378,
+      "decal1Tex": "uk_vechicle_recognition_marking"
     }
   },
   "battleHideNodes": {

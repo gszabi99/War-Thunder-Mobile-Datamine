@@ -18,13 +18,15 @@
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 12,
       "reqFeature": "ShipsFirstChoice",
+      "missionProgressType": "split",
       "gt_mp_tickets": true,
       "gt_mp_capture": true,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
       "openDiffLevels": false,
-      "scoreLimit": 10000,
-      "ctaCaptureZoneEqualPenaltyMul": 0.0,
+      "scoreLimit": 1000,
+      "allowEmptyTeams": true,
+      "useDeathmatchHUD": true,
       "restoreType": "manual",
       "difficulty": "arcade",
       "optionalTakeOff": false,
@@ -68,6 +70,7 @@
             "calmDetection": true
           },
           {
+            "aiOrBotCanUseRepair": false,
             "object": "ai",
             "object_marking": 0,
             "object_var_name": "",
@@ -130,6 +133,15 @@
             "player_killed",
             "player_out_of_bounds"
           ]
+        },
+        "wait": {
+          "time": 1.0
+        },
+        "gameMPChangeScore": {
+          "value": -80,
+          "valueSystem": "percentage",
+          "team": "Both",
+          "ignoreSingleMissions": false
         }
       },
       "else_actions": {}
@@ -1125,7 +1137,13 @@
       "actions": {
         "wait": [
           {
-            "time": 0.8
+            "time": 1.0
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.1
           },
           {
             "time": 4.0
@@ -1144,6 +1162,32 @@
           },
           {
             "time": 2.0
+          }
+        ],
+        "unitSetProperties": [
+          {
+            "object": "ai",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "attack_type": "dont_aim"
+          },
+          {
+            "object": "player",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "isImmortal": true
+          },
+          {
+            "object": "ai",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "attack_type": "fire_at_will"
           }
         ],
         "unitRestore": {
@@ -1172,32 +1216,6 @@
           "target": "player",
           "partName": "compartment_01_dm"
         },
-        "unitSetProperties": [
-          {
-            "object": "ai",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "attack_type": "dont_aim"
-          },
-          {
-            "object": "player",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "isImmortal": true
-          },
-          {
-            "object": "ai",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "attack_type": "fire_at_will"
-          }
-        ],
         "playerControls": [
           {
             "setStatus": "disable",
@@ -1215,19 +1233,6 @@
           {
             "setStatus": "enable",
             "control": "ID_SHIP_ACTION_BAR_ITEM_11"
-          },
-          {
-            "setStatus": "enable",
-            "control": [
-              "ID_SHIP_WEAPON_ALL",
-              "ID_SHIP_WEAPON_PRIMARY",
-              "ID_SHIP_WEAPON_SECONDARY",
-              "ID_SHIP_WEAPON_MACHINEGUN",
-              "ID_SHIP_WEAPON_TORPEDOES",
-              "ID_SHIP_WEAPON_DEPTH_CHARGE",
-              "ID_SHIP_WEAPON_ROCKETS",
-              "ID_SHIP_WEAPON_MINE"
-            ]
           }
         ],
         "playHint": [
@@ -1370,6 +1375,19 @@
         }
       },
       "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "ID_SHIP_WEAPON_ALL",
+            "ID_SHIP_WEAPON_PRIMARY",
+            "ID_SHIP_WEAPON_SECONDARY",
+            "ID_SHIP_WEAPON_MACHINEGUN",
+            "ID_SHIP_WEAPON_TORPEDOES",
+            "ID_SHIP_WEAPON_DEPTH_CHARGE",
+            "ID_SHIP_WEAPON_ROCKETS",
+            "ID_SHIP_WEAPON_MINE"
+          ]
+        },
         "unitSetProperties": [
           {
             "object": "ai",
@@ -1377,7 +1395,10 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "attack_type": "fire_at_will"
+            "attack_type": "fire_at_will",
+            "accuracy": 0.2,
+            "maxDeviationAngle": 30.0,
+            "effShootingRate": 0.2
           },
           {
             "object": "player",
@@ -1442,13 +1463,14 @@
           "params": "",
           "event": "task 10/10: target destroyed"
         },
+        "gameMPChangeScore": {
+          "value": -20,
+          "valueSystem": "percentage",
+          "team": "B",
+          "ignoreSingleMissions": false
+        },
         "wait": {
           "time": 1.0
-        },
-        "gameMPChangeScore": {
-          "value": -200,
-          "valueSystem": "percentage",
-          "team": "B"
         },
         "missionCompleted": {
           "timer": false,
@@ -2991,7 +3013,7 @@
           "triggerActivate": {
             "target": "all_done",
             "activate_type": "ignoreConditions",
-            "check_trigger_status": false,
+            "check_trigger_status": true,
             "after_activation": "disable"
           }
         },
@@ -3203,7 +3225,7 @@
               "ammunition_storage_02_dm"
             ]
           },
-          "__unitDamage": [
+          "unitDamage": [
             {
               "power": 0.2,
               "useEffect": false,
@@ -3272,6 +3294,37 @@
           }
         },
         "actions": {
+          "playHint": [
+            {
+              "hintType": "bottom",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "hideCur",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
+          "wait": {
+            "time": 0.3
+          },
           "playerControls": {
             "setStatus": "enable",
             "control": [
@@ -3318,34 +3371,6 @@
               ]
             }
           ],
-          "playHint": [
-            {
-              "hintType": "standard",
-              "name": "",
-              "action": "hideCur",
-              "shouldFadeOut": false,
-              "isOverFade": false,
-              "time": -1.0,
-              "priority": 0,
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0
-            },
-            {
-              "hintType": "bottom",
-              "name": "",
-              "action": "hideCur",
-              "shouldFadeOut": false,
-              "isOverFade": false,
-              "time": -1.0,
-              "priority": 0,
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0
-            }
-          ],
           "__unitShowXray": {
             "show": false,
             "blink": true,
@@ -3357,7 +3382,7 @@
               "ammunition_storage_02_dm"
             ]
           },
-          "unitDamage": [
+          "__unitDamage": [
             {
               "power": 0.2,
               "useEffect": false,

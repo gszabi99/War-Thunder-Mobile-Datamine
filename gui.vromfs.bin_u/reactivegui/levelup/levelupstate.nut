@@ -80,6 +80,7 @@ let function openLvlUpWndIfCan() {
 }
 
 return {
+  maxRewardLevel
   isLvlUpOpened
   rewardsToReceive
   failedRewardsLevelStr

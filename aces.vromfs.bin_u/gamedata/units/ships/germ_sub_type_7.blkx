@@ -1633,45 +1633,15 @@
     }
   },
   "breaches": {
-    "repairSpeed": 50.0,
-    "waterMassVel": -120000.0,
-    "waterMassMult": 15.0,
-    "sizeToRepair": [
-      0.01,
-      10.0,
-      1.0,
-      10.0
-    ],
-    "additionalWaterDeathThreshold": 7500000.0,
-    "additionalWaterCoverPartsThreshold": 5000000.0,
-    "additionalWaterShouldDiePercent": 0.3,
-    "fatalBreachDrownTime": 20.0,
-    "maxHeelingAngle": 36.0,
-    "maxHeelingTime": 8.0,
-    "criticalHeelingAnglePercent": 0.75,
-    "maxCriticalHeelingTime": 3.0,
-    "heelingDeathHeightOffsetMult": 0.0,
-    "sideCenterOfMassOffsetPercent": 0.2,
-    "additionalWaterInfluenceOnSpeed": 3.0
+    "additionalWaterDeathThreshold": 440000.0,
+    "additionalWaterCoverPartsThreshold": 180000.0
   },
   "shipCover": {
-    "cover": [
-      {
-        "part": "compartment_01_dm",
-        "weight": 1.0,
-        "maxWaterAlive": 0.6
-      },
-      {
-        "part": "compartment_02_dm",
-        "weight": 1.0,
-        "maxWaterAlive": 0.6
-      },
-      {
-        "part": "compartment_03_dm",
-        "weight": 1.0,
-        "maxWaterAlive": 0.6
-      }
-    ]
+    "cover": {
+      "part": "compartment_02_dm",
+      "weight": 1.0,
+      "maxWaterAlive": 1.0
+    }
   },
   "difficulty": {
     "arcade": {

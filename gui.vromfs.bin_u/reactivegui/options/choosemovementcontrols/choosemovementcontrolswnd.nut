@@ -5,7 +5,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { textButtonCommon, buttonStyles } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, buttonStyles } = require("%rGui/components/textButton.nut")
 let { firstBattleTutor, tutorialMissions } = require("%rGui/tutorial/tutorialMissions.nut")
 let { tankMoveControlType } = require("%rGui/options/options/controlsOptions.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -160,7 +160,7 @@ let chooseMoveControlsTypeWnd = bgShaded.__merge({
             padding = [hdpx(10), 0]
             children = selectedValue.value == ""
               ? { size = [0, buttonStyles.defButtonHeight] }
-              : textButtonCommon(utf8ToUpper(loc("msgbox/btn_apply")), close, { hotkeys = ["^J:X | Enter"] })
+              : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), close, { hotkeys = ["^J:X | Enter"] })
           }
         ]
       }

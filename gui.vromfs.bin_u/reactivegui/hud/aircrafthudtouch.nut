@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { leftAlignWeaponryBlock, currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
 let { logerrAndKillLogPlace } = require("%rGui/hudHints/hintBlocks.nut")
+let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let aircraftMovementBlock = require("%rGui/hud/aircraftMovementBlock.nut")
 let hudTopCenter = require("%rGui/hud/hudTopCenter.nut")
@@ -32,6 +33,8 @@ return {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   key = "aircraft-hud-touch"
+  onAttach = @() startActionBarUpdate("airHud")
+  onDetach = @() stopActionBarUpdate("airHud")
   children = [
     bombMissedHint
     topLeft

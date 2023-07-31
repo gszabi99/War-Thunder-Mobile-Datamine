@@ -10,7 +10,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let tryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts,
@@ -29,6 +29,7 @@ let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { openUnitAttrWnd } = require("%rGui/unitAttr/unitAttrState.nut")
 let { debriefingData } = require("debriefingState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { mkDebriefingStats } = require("mkDebriefingStats.nut")
 let mpStatisticsStaticWnd = require("%rGui/mpStatistics/mpStatisticsStaticWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
@@ -115,19 +116,25 @@ let missionResultParamsByType = {
 
 let updateHangarUnit = @(unitId) unitId == null ? null : setHangarUnit(unitId)
 
-let toHangarButton = @(campaign) textButtonCommon(
+let toHangarButton = @(campaign) textButtonPrimary(
   utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short" : "return_to_hangar/short")),
   closeDebriefing,
   { hotkeys = [btnBEscUp] })
-let lvlUpButton = textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")), closeDebriefing,
+let lvlUpButton = textButtonBattle(utf8ToUpper(loc("msgbox/btn_get")), closeDebriefing,
   { hotkeys = ["^J:X | Enter"] })
-let toBattleButton = textButtonPrimary(utf8ToUpper(loc("mainmenu/toBattle/short")),
+let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
     offerMissingUnitItemsMessage(curUnit.value, startBattle)
     closeDebriefing()
   },
   { hotkeys = ["^J:X | Enter"] })
-let upgradeUnitButton = @(campaign) textButtonCommon(
+let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
+  function() {
+    startCurNewbieMission()
+    closeDebriefing()
+  },
+  { hotkeys = ["^J:X | Enter"] })
+let upgradeUnitButton = @(campaign) textButtonPrimary(
   utf8ToUpper(loc(campaign == "tanks" ? "mainmenu/btnUpgradePlatoon" : "mainmenu/btnUpgradeShip")),
   function() {
     countUpgradeButtonPushed(countUpgradeButtonPushed.value + 1)
@@ -140,7 +147,13 @@ let upgradeUnitButton = @(campaign) textButtonCommon(
   { hotkeys = [btnBEscUp] }
 )
 
-let mkNewPlatoonUnitButton = @(newPlatoonUnit) textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")),
+let toBattleButtonPlace = @() {
+  watch = newbieOfflineMissions
+  children = newbieOfflineMissions.value != null ? startOfflineMissionButton
+    : toBattleButton
+}
+
+let mkNewPlatoonUnitButton = @(newPlatoonUnit) textButtonBattle(utf8ToUpper(loc("msgbox/btn_get")),
   function() {
     closeDebriefing()
     unitDetailsWnd({ name = debriefingData.value?.unit.name, selUnitName = newPlatoonUnit.name })
@@ -540,12 +553,13 @@ let function mkPlayerLevelLine(data, animStartTime) {
 let function mkUnitLevelLine(data, animStartTime) {
   let { reward = {}, unit = null, campaign = "" } = data
   let { unitExp = {} } = reward
-  return {
-    size = [flex(), SIZE_TO_CONTENT]
-    halign = ALIGN_CENTER
-    children = mkLevelLine(unit, unitExp,
-      loc(campaign == "tanks" ? "debriefing/platoonExp" : "debriefing/shipExp"),animStartTime,  unitExpColor)
-  }
+  return unitExp.len() == 0 ? null
+    : {
+        size = [flex(), SIZE_TO_CONTENT]
+        halign = ALIGN_CENTER
+        children = mkLevelLine(unit, unitExp,
+          loc(campaign == "tanks" ? "debriefing/platoonExp" : "debriefing/shipExp"),animStartTime,  unitExpColor)
+      }
 }
 
 let mkUnitPlateBlock = @(unit) {
@@ -740,7 +754,7 @@ let function getNewPlatoonUnit(debrData) {
 
 let function debriefingWnd() {
   let { reward = {}, player = {}, isWon = false, isFinished = false, isDeserter = false, isDisconnected = false,
-    teams = [], campaign = "", players = {}
+    teams = [], campaign = "", players = {}, isSingleMission = false
   } = debriefingData.value
   let { exp = 0, nextLevelExp = 0 } = player
   let hasLevelUp = nextLevelExp != 0 && (nextLevelExp <= (exp + (reward?.playerExp.totalExp ?? 0)))
@@ -753,6 +767,12 @@ let function debriefingWnd() {
   let isAnyTeamDestroyed = null != teams.findvalue(@(t) (t?.tickets ?? 0) == 0)
   let rewardsInfo = getRewardsInfo(debriefingData.value)
   let newPlatoonUnit = getNewPlatoonUnit(debriefingData.value)
+  let playersStatsBtn = isSingleMission || players.len() == 0 ? null
+    : {
+        hplace = ALIGN_LEFT
+        valign = ALIGN_BOTTOM
+        children = translucentButton("ui/gameuiskin#menu_stats.svg", "", openMpStatistics)
+      }
   return bgShaded.__merge({
     watch = debriefingData
     key = debriefingData
@@ -774,50 +794,57 @@ let function debriefingWnd() {
           mkContentBlock(debriefingData.value, rewardsInfo)
         ]
       }
-      players.len() == 0 ? null : {
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_BOTTOM
-        children = translucentButton("ui/gameuiskin#menu_stats.svg", "", openMpStatistics)
-      }
       {
+        watch = countUpgradeButtonPushed
         size = [flex(), SIZE_TO_CONTENT]
         vplace = ALIGN_BOTTOM
-        flow = FLOW_VERTICAL
-        gap = hdpx(60)
+        valign = ALIGN_BOTTOM
+        flow = FLOW_HORIZONTAL
         children = [
-          !rewardsInfo.needShowPremiumTeaser
-            ? null
-            : @() havePremium.value ? { watch = havePremium } : {
-                watch = havePremium
-                hplace = ALIGN_RIGHT
-                children = tryPremiumButton()
-              }
-          {
-            watch = countUpgradeButtonPushed
+          @() {
+            size = [flex(), SIZE_TO_CONTENT]
+            halign = ALIGN_LEFT
+            flow = FLOW_VERTICAL
+            gap = hdpx(60)
+            children =
+              [
+                playersStatsBtn
+                newPlatoonUnit != null || hasLevelUp ? null
+                  : isUnitReceiveLevel(debriefingData.value) ? upgradeUnitButton(campaign)
+                  : toHangarButton(campaign)
+              ]
+          }
+          @() {
             size = [flex(), SIZE_TO_CONTENT]
             halign = ALIGN_RIGHT
-            flow = FLOW_HORIZONTAL
-            gap = buttonsHGap
-            children = hasLevelUp ? [
-                  playerLevelUpText(loc("levelUp/playerLevelUp"))
-                  lvlUpButton
-                ]
-              : newPlatoonUnit != null ? [
-                  playerLevelUpText(loc("levelUp/receiveNewPlatoonUnit"))
-                  mkNewPlatoonUnitButton(newPlatoonUnit)
-                ]
-              : isUnitReceiveLevel(debriefingData.value) ? [
-                  upgradeUnitButton(campaign)
-                  { size = flex() }
-                  minCountUpgradeButtonPushed <= countUpgradeButtonPushed.value
-                    ? toBattleButton
-                    : null
-                ]
-              : [
-                  toHangarButton(campaign)
-                  { size = flex() }
-                  toBattleButton
-                ]
+            flow = FLOW_VERTICAL
+            gap = hdpx(60)
+            children = [
+              !rewardsInfo.needShowPremiumTeaser ? null: @() havePremium.value
+                ? { watch = havePremium }
+                : {
+                    watch = havePremium
+                    children = tryPremiumButton()
+                  }
+              {
+                flow = FLOW_HORIZONTAL
+                gap = buttonsHGap
+                children = hasLevelUp ? [
+                      playerLevelUpText(loc("levelUp/playerLevelUp"))
+                      lvlUpButton
+                    ]
+                  : newPlatoonUnit != null ? [
+                      playerLevelUpText(loc("levelUp/receiveNewPlatoonUnit"))
+                      mkNewPlatoonUnitButton(newPlatoonUnit)
+                    ]
+                  : isUnitReceiveLevel(debriefingData.value) ? [
+                      minCountUpgradeButtonPushed <= countUpgradeButtonPushed.value
+                        ? toBattleButtonPlace
+                        : null
+                    ]
+                  : toBattleButtonPlace
+              }
+            ]
           }
         ]
       }

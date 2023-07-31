@@ -150,10 +150,6 @@
   },
   "clipmap": {
     "texelSize": 0.03125,
-    "texSize": [
-      2048,
-      2048
-    ],
     "lastClipSize": 512
   }
 }

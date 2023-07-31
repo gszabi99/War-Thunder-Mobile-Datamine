@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 
 let allStages = [
   "stageAuth.nut"
-  "stageContacts.nut"
   "stageUpdateGame.nut"
   "stageMatching.nut"
   "stageProfile.nut"
@@ -13,6 +12,7 @@ let allStages = [
   "stageCheckPurchases.nut"
   "stageOnlineSettings.nut"
   "stageInitConfigs.nut"
+  "stageLegalAccept.nut"
 ]
   .map(@(name) require($"stages/{name}"))
   .extend(require("stages/nativeOnlineStages.nut"))

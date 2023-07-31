@@ -2777,7 +2777,7 @@
       ],
       "decal0Mirrored": false,
       "decal0Wrap": false,
-      "decal0Abs": true,
+      "decal0Abs": false,
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.227512,
       "decal0Tex": "ge_afrika_korps_emblem",

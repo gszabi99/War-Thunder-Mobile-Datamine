@@ -1961,11 +1961,11 @@
     "replace_tex": [
       {
         "from": "e7k2_c*",
-        "to": "e7k2_c_tomoe*"
+        "to": "e7k2_c*"
       },
       {
         "from": "e7k2_c_dmg*",
-        "to": "e7k2_c_tomoe_dmg*"
+        "to": "e7k2_c_dmg*"
       }
     ]
   },

@@ -18,6 +18,8 @@ require("%rGui/notifications/foreignMsgBox.nut")
 require("%rGui/notifications/appsFlyerEvents.nut")
 require("%rGui/options/guiOptions.nut") //need to register options before load profile
 require("debugTools/pServerConsoleCmd.nut")
+require("%appGlobals/clientState/initWindowState.nut")
+require("account/legalAcceptWnd.nut")
 
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { modalWindowsComponent, hideAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -34,6 +36,7 @@ let hotkeysPanel = require("controlsMenu/hotkeysPanel.nut")
 let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
 let { getenv = @(...) null} = require_optional("system")
 let watermark = require("%rGui/mainMenu/watermark.nut")
+let deviceStateArea = require("%rGui/hud/deviceState.nut")
 
 local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)
@@ -85,7 +88,6 @@ let debugSafeArea = @() !debugSa.value ? { watch = debugSa }
       borderWidth = 1
     }
 
-
 let cursorSize = hdpxi(32)
 let cursor = Cursor({
   size = [cursorSize, cursorSize]
@@ -99,7 +101,7 @@ return function() {
       ? [sceneBeforeLogin, modalWindowsComponent]
     : isInLoadingScreen.value ? [loadingScreen]
     : [sceneAfterLogin]
-  children.append(hotkeysPanel, inspectorRoot, debugSafeArea, fpsLineComp, watermark)
+  children.append(hotkeysPanel, inspectorRoot, debugSafeArea, fpsLineComp, deviceStateArea, watermark)
   if (isDebugTouchesActive.value)
     children.append(debugTouchesUi)
   return {

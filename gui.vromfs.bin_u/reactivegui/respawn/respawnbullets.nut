@@ -4,13 +4,12 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets
 } = require("bulletsChoiceState.nut")
 let { bulletsAABB } = require("respawnAnimState.nut")
-let { bg, headerText, header, gap } = require("respawnComps.nut")
+let { bg, bulletsBlockWidth, bulletsBlockMargin, headerText, header, gap, bulletsLegend } = require("respawnComps.nut")
 let { slider, sliderValueSound, sliderBtn, mkSliderKnob } = require("%rGui/components/slider.nut")
 let { mkBulletIcon } = require("bulletsComps.nut")
 let respawnChooseBulletWnd = require("respawnChooseBulletWnd.nut")
 let { getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
 
-let bulletsBlockWidth = hdpx(500)
 let padding = hdpx(10)
 let headerHeight = hdpx(100)
 let choiceCount = Computed(@() chosenBullets.value.len())
@@ -146,11 +145,17 @@ let function respawnBullets() {
   let { caliber = 0.0, isBulletBelt = false } = bulletsInfo.value.bulletSets.findvalue(@(_) true)
   return res.__update({
     size = [bulletsBlockWidth, SIZE_TO_CONTENT]
-    margin = [0, 0, 0, hdpx(40)]
-    flow = FLOW_VERTICAL
-    gap
-    children = [header(headerText(loc(isBulletBelt ? "machinegun/caliber" : "gun/caliber", { caliber })))]
-      .extend(array(choiceCount.value).map(@(_, idx) mkBulletSlot(idx)))
+    children = [
+      {
+          size = [bulletsBlockWidth, SIZE_TO_CONTENT]
+          margin = [0, 0, 0, bulletsBlockMargin]
+          flow = FLOW_VERTICAL
+          gap
+          children = [header(headerText(loc(isBulletBelt ? "machinegun/caliber" : "gun/caliber", { caliber })))]
+            .extend(array(choiceCount.value).map(@(_, idx) mkBulletSlot(idx)))
+      },
+      bulletsLegend
+    ]
   })
 }
 

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logShop = log_with_prefix("[SHOP] ")
 let { round } = require("math")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
-let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServerApi.nut")
+let { shopPurchaseInProgress, buy_goods, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
@@ -34,19 +34,20 @@ let function getCantPurchaseReason(goods) {
   return null
 }
 
-let function onShopItemPurchaseResult(res) {
-  if (res?.error != null)
-    openMsgBox({ text = loc("msgbox/internal_error_header") })
-}
+registerHandler("onShopGoodsPurchase",
+  function(res) {
+    if (res?.error != null)
+      openMsgBox({ text = loc("msgbox/internal_error_header") })
+  })
 
-let function purchaseShopItemImpl(goodsId, currencyId, price, cb) {
+let function purchaseGoodsImpl(goodsId, currencyId, price) {
   if (shopPurchaseInProgress.value != null)
     return "shopPurchaseInProgress"
-  buy_goods(goodsId, currencyId, price, cb)
+  buy_goods(goodsId, currencyId, price, "onShopGoodsPurchase")
   return ""
 }
 
-let function purchaseShopItem(goodsId) {
+let function purchaseGoods(goodsId) {
   logShop($"User tries to purchase: {goodsId}")
   if (shopPurchaseInProgress.value != null)
     return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.value}")
@@ -71,7 +72,7 @@ let function purchaseShopItem(goodsId) {
   let { discountInPercent = 0 } = goods
   let finalPrice = discountInPercent <= 0 ? price : round(price * (1.0 - (discountInPercent / 100.0)))
   let function purchaseFunc() {
-    let errString = purchaseShopItemImpl(goodsId, currencyId, finalPrice, onShopItemPurchaseResult)
+    let errString = purchaseGoodsImpl(goodsId, currencyId, finalPrice)
     if (errString != "")
       logShop($"ERROR: {errString}")
   }
@@ -82,4 +83,4 @@ let function purchaseShopItem(goodsId) {
     purchaseFunc)
 }
 
-return purchaseShopItem
+return purchaseGoods

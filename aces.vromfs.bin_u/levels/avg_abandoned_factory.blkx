@@ -424,12 +424,34 @@
     "staticScene": true,
     "riExtraMinSizeForReflection": 5.0
   },
+  "overrideRiLodRange": {
+    "tree_sea_bush_a": {
+      "lod0": 200.0,
+      "lod1": 1500.0
+    },
+    "tree_sea_bush_b": {
+      "lod0": 200.0,
+      "lod1": 1500.0
+    },
+    "tree_sea_bush_c": {
+      "lod0": 200.0,
+      "lod1": 1500.0
+    },
+    "tree_sea_bush_d": {
+      "lod0": 200.0,
+      "lod1": 1500.0
+    },
+    "tree_sea_bush_e": {
+      "lod0": 200.0,
+      "lod1": 1500.0
+    },
+    "tree_sea_bush_f": {
+      "lod0": 200.0,
+      "lod1": 1500.0
+    }
+  },
   "clipmap": {
     "texelSize": 0.03125,
-    "texSize": [
-      2048,
-      2048
-    ],
     "lastClipSize": 512
   }
 }

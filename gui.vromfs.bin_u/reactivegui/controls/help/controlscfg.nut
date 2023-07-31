@@ -10,6 +10,7 @@ let shortcutsByUnitTypes = {
       cLoc("hotkeys/primaryGun", "ID_SHIP_WEAPON_PRIMARY"),
       cLoc("hotkeys/secondaryGun", "ID_SHIP_WEAPON_SECONDARY"),
       cLoc("hotkeys/extraGun", "ID_SHIP_WEAPON_EXTRA_GUN_1"),
+      cLoc("hotkeys/extraGun", "ID_SHIP_WEAPON_EXTRA_GUN_2"),
       "ID_SHIP_WEAPON_TORPEDOES", "ID_SHIP_SMOKE_SCREEN_GENERATOR", "ID_WTM_LAUNCH_AIRCRAFT",
       "ID_SHIP_WEAPON_MINE", "ID_NEXT_BULLET_TYPE", "ID_SHIP_ACTION_BAR_ITEM_11",
     ]

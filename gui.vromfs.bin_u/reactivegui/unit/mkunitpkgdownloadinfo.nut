@@ -5,7 +5,7 @@ let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { localizeAddonsLimited, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { openDownloadAddonsWnd, addonsToDownload } = require("%rGui/updater/updaterState.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
-let { textButtonFaded } = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 
@@ -45,7 +45,7 @@ let function mkUnitPkgDownloadInfo(unitW, needProgress = true) {
             pkg = localizeAddonsLimited(reqPkgList.value, 3)
             size = getAddonsSizeStr(reqPkgList.value)
           }))
-          textButtonFaded(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(reqPkgList.value))
+          textButtonCommon(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(reqPkgList.value))
         ]
   }
 }

@@ -10,4 +10,8 @@ return {
   badTextColor2 = 0xFFE66464
 
   localPlayerColor = 0xFFDDA339
+  //Modal window
+  decorativeLineBgMW = 0xFFD4D4D4
+  headerBgMW = 0x0A585858
+  bgMW = 0xDC000000
 }

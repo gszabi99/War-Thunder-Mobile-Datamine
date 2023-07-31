@@ -7,7 +7,7 @@ let { selSlot } = require("respawnState.nut")
 let { createHighlight } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 let { darkCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { mkBulletIcon, bulletIconSize } = require("bulletsComps.nut")
-let { textButtonCommon, textButtonFaded } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let getBulletStats = require("bulletStats.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
@@ -188,8 +188,8 @@ let function applyButton() {
   let { reqLevel = 0 } = fromUnitTags?[curSlotName.value]
   let isEnoughLevel = reqLevel <= (selSlot.value?.level ?? 0)
   let children = savedSlotName.value == curSlotName.value ? null
-    : !isEnoughLevel ? textButtonFaded(applyText, @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }))
-    : textButtonCommon(applyText, applyBullet)
+    : !isEnoughLevel ? textButtonCommon(applyText, @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }))
+    : textButtonPrimary(applyText, applyBullet)
   return {
     watch = [savedSlotName, curSlotName, bulletsInfo, selSlot]
     vplace = ALIGN_BOTTOM

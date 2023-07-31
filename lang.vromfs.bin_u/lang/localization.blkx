@@ -1,7 +1,7 @@
 {
   "english_us": "English",
   "default_audio": "English",
-  "default_lang": "Turkish",
+  "default_lang": "English",
   "locTable": {
     "file": [
       "%lang/matching.csv",
@@ -47,13 +47,36 @@
     ]
   },
   "full_translation": {
-    "lang": "Turkish"
+    "lang": [
+      "English",
+      "French",
+      "German",
+      "Russian",
+      "Japanese"
+    ]
   },
   "video_translation": {
-    "lang": "English"
+    "lang": [
+      "English",
+      "Russian"
+    ]
   },
   "text_translation": {
-    "lang": "Turkish"
+    "lang": [
+      "English",
+      "French",
+      "Italian",
+      "German",
+      "Spanish",
+      "Portuguese",
+      "Russian",
+      "Polish",
+      "Turkish",
+      "Korean",
+      "Japanese",
+      "Chinese",
+      "TChinese"
+    ]
   },
   "abbreviation_languages_table": {
     "ps4": {

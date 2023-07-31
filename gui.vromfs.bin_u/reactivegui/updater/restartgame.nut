@@ -24,7 +24,7 @@ let showRestartMessage = @(text) openMsgBox({
   text
   buttons = [
     { id = "later", isCancel = true }
-    { id = "restart", cb = restart, isPrimary = true, isDefault = true }
+    { id = "restart", cb = restart, styleId = "PRIMARY", isDefault = true }
   ]
 })
 

@@ -1660,11 +1660,11 @@
     "replace_tex": [
       {
         "from": "fw_190a_1_a*",
-        "to": "fw_190a_1_a_tomoe*"
+        "to": "fw_190a_1_a*"
       },
       {
         "from": "fw_190a_1_a_dmg*",
-        "to": "fw_190a_1_a_tomoe_dmg*"
+        "to": "fw_190a_1_a_dmg*"
       }
     ]
   },

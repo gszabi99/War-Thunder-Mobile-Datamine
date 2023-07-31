@@ -84,7 +84,7 @@ subscribeFMsgBtns({
 let openYesNoMsg = @(text, eventId) openFMsgBox({ text,
   buttons = [
     { id = "no", isCancel = true }
-    { id = "yes", eventId, isPrimary = true, isDefault = true }
+    { id = "yes", eventId, styleId = "PRIMARY", isDefault = true }
   ]
 })
 

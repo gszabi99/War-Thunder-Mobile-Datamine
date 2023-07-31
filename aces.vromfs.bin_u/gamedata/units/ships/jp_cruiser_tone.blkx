@@ -978,30 +978,32 @@
             180.0
           ],
           "pitch": [
-            -10.0,
+            -20.0,
             55.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -165.0,
-            55.0,
-            60.0
-          ],
-          "lim2": [
-            -165.0,
-            165.0,
-            -10.0,
-            55.0
-          ],
-          "lim3": [
-            165.0,
-            180.0,
-            55.0,
-            60.0
-          ]
-        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -165.0
+            ],
+            "pitch": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "yaw": [
+              165.0,
+              180.0
+            ],
+            "pitch": [
+              0.0,
+              0.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -1058,30 +1060,32 @@
             180.0
           ],
           "pitch": [
-            -10.0,
+            -20.0,
             55.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -165.0,
-            55.0,
-            60.0
-          ],
-          "lim2": [
-            -165.0,
-            165.0,
-            -10.0,
-            55.0
-          ],
-          "lim3": [
-            165.0,
-            180.0,
-            55.0,
-            60.0
-          ]
-        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -165.0
+            ],
+            "pitch": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "yaw": [
+              165.0,
+              180.0
+            ],
+            "pitch": [
+              0.0,
+              0.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -1095,7 +1099,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_50_3rd_year_type_no2_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_09",
         "flash": "emtr_gun_flame_09",
@@ -1138,27 +1142,17 @@
             155.0
           ],
           "pitch": [
-            -10.0,
+            -20.0,
             55.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -155.0,
-            -25.0,
-            -10.0,
-            55.0
+        "limitsDeadzone": {
+          "yaw": [
+            -20.0,
+            20.0
           ],
-          "lim2": [
-            -25.0,
-            25.0,
-            55.0,
-            60.0
-          ],
-          "lim3": [
-            25.0,
-            155.0,
-            -10.0,
+          "pitch": [
+            -20.0,
             55.0
           ]
         },
@@ -1175,7 +1169,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_50_3rd_year_type_no2_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_10",
         "flash": "emtr_gun_flame_10",
@@ -1218,27 +1212,17 @@
             155.0
           ],
           "pitch": [
-            -10.0,
+            -20.0,
             55.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -155.0,
-            -25.0,
-            -10.0,
-            55.0
+        "limitsDeadzone": {
+          "yaw": [
+            -20.0,
+            20.0
           ],
-          "lim2": [
-            -25.0,
-            25.0,
-            55.0,
-            60.0
-          ],
-          "lim3": [
-            25.0,
-            155.0,
-            -10.0,
+          "pitch": [
+            -20.0,
             55.0
           ]
         },
@@ -1255,7 +1239,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_50_3rd_year_type_no2_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_13",
         "flash": "emtr_gun_flame_13",
@@ -1309,27 +1293,17 @@
             155.0
           ],
           "pitch": [
-            -10.0,
+            -20.0,
             55.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -155.0,
-            -35.0,
-            -10.0,
-            55.0
+        "limitsDeadzone": {
+          "yaw": [
+            -32.0,
+            32.0
           ],
-          "lim2": [
-            -35.0,
-            35.0,
-            55.0,
-            60.0
-          ],
-          "lim3": [
-            35.0,
-            155.0,
-            -10.0,
+          "pitch": [
+            -20.0,
             55.0
           ]
         },
@@ -1346,7 +1320,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "secondary",
+        "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/203mm_50_3rd_year_type_no2_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_14",
         "flash": "emtr_gun_flame_14",
@@ -1389,27 +1363,17 @@
             155.0
           ],
           "pitch": [
-            -10.0,
+            -20.0,
             55.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -155.0,
-            -35.0,
-            -10.0,
-            55.0
+        "limitsDeadzone": {
+          "yaw": [
+            -32.0,
+            32.0
           ],
-          "lim2": [
-            -35.0,
-            35.0,
-            55.0,
-            60.0
-          ],
-          "lim3": [
-            35.0,
-            155.0,
-            -10.0,
+          "pitch": [
+            -20.0,
             55.0
           ]
         },
@@ -1426,7 +1390,7 @@
       },
       {
         "trigger": "gunner4",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_32",
         "flash": "emtr_gun_flame_32",
@@ -1484,7 +1448,7 @@
       },
       {
         "trigger": "gunner4",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_31",
         "flash": "emtr_gun_flame_31",
@@ -1543,7 +1507,7 @@
       },
       {
         "trigger": "gunner5",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_34",
         "flash": "emtr_gun_flame_34",
@@ -1602,7 +1566,7 @@
       },
       {
         "trigger": "gunner5",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_33",
         "flash": "emtr_gun_flame_33",
@@ -1660,7 +1624,7 @@
       },
       {
         "trigger": "gunner6",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_42",
         "flash": "emtr_gun_flame_42",
@@ -1719,7 +1683,7 @@
       },
       {
         "trigger": "gunner6",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_41",
         "flash": "emtr_gun_flame_41",
@@ -1778,7 +1742,7 @@
       },
       {
         "trigger": "gunner7",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_44",
         "flash": "emtr_gun_flame_44",
@@ -1836,7 +1800,7 @@
       },
       {
         "trigger": "gunner7",
-        "triggerGroup": "extra_gun_1",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_43",
         "flash": "emtr_gun_flame_43",

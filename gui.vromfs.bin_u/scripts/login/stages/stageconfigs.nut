@@ -4,20 +4,23 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 let { defer } = require("dagor.workcycle")
 let { LOGIN_STATE } = require("%appGlobals/loginState.nut")
-let { get_all_configs } = require("%appGlobals/pServer/pServerApi.nut")
+let { get_all_configs, registerHandler, localizePServerError
+} = require("%appGlobals/pServer/pServerApi.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 let { onlyActiveStageCb, export, finalizeStage, interruptStage
 } = require("mkStageBase.nut")("configs", LOGIN_STATE.AUTH_AND_UPDATED, LOGIN_STATE.CONFIGS_RECEIVED)
 
-let start = @() get_all_configs(onlyActiveStageCb(function(res) {
+registerHandler("onLoginGetConfigs", onlyActiveStageCb(function(res, _) {
   if (res?.error != null) {
     defer(@() interruptStage(res)) //sign_out has big sync time, so better to not do it on the same frame with pServer logerr
-    openFMsgBox({ text = res.error })
+    openFMsgBox({ text = localizePServerError(res.error) })
   }
   else
     finalizeStage()
 }))
+
+let start = @() get_all_configs("onLoginGetConfigs")
 
 return export.__merge({
   start

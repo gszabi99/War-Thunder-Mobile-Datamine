@@ -2681,54 +2681,7 @@
       "decal0Abs": true,
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.2,
-      "decal0Tex": "back_16",
-      "decal1Line0": [
-        2.21798,
-        -3.31783E-08,
-        0.195273,
-        0.266978
-      ],
-      "decal1Line1": [
-        0.0831281,
-        -2.01473,
-        -0.944199,
-        3.92999
-      ],
-      "decal1Line2": [
-        -2.21798,
-        -6.63567E-08,
-        0.195273,
-        0.733021
-      ],
-      "decal1Line3": [
-        0.0831283,
-        -2.01473,
-        0.944199,
-        3.92999
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        0.0793582,
-        0.425702,
-        -0.901377,
-        -1.77009
-      ],
-      "decal1CPNormDepth1": [
-        0.0793582,
-        0.425702,
-        0.901377,
-        -1.77009
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.449123
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.200007,
-      "decal1Tex": "ge_tank_emblem_10"
+      "decal0Tex": "back_16"
     }
   },
   "skin": [

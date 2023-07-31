@@ -7,7 +7,7 @@ return freeze({
   defButtonHeight
   defButtonMinWidth
 
-  COMMON = { // Blue
+  PRIMARY = { // Blue
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
@@ -29,7 +29,7 @@ return freeze({
       color = Color(233, 184, 22)
     }
   }
-  PRIMARY = { // Red
+  BATTLE = { // Red
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
@@ -52,7 +52,7 @@ return freeze({
       fontFxFactor = 0
     }
   }
-  FADED = { // Gray
+  COMMON = { // Gray
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth

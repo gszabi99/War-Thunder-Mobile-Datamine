@@ -2496,50 +2496,50 @@
       "decal0Tex": "back_16",
       "decal1Line0": [
         0.0,
-        -1.41724E-07,
-        3.24227,
-        -2.07038
+        -1.4175E-07,
+        3.24286,
+        1.14537
       ],
       "decal1Line1": [
         0.0,
-        -3.24227,
-        -1.41724E-07,
-        5.14569
+        -3.24286,
+        -1.4175E-07,
+        5.11152
       ],
       "decal1Line2": [
         0.0,
-        -1.41724E-07,
-        -3.24227,
-        3.07038
+        -1.4175E-07,
+        -3.24286,
+        -0.145369
       ],
       "decal1Line3": [
         0.0,
-        -3.24227,
-        1.41724E-07,
-        5.14569
+        -3.24286,
+        1.4175E-07,
+        5.11152
       ],
       "decal1HaveCP": true,
       "decal1CPNormDepth": [
         1.0,
         0.0,
         0.0,
-        -1.95653
+        -1.95881
       ],
       "decal1CPNormDepth1": [
         -1.0,
         -0.0,
         -0.0,
-        1.9412
+        1.94348
       ],
       "decal1RotScale": [
         1.5708,
-        0.308426
+        0.30837
       ],
       "decal1Mirrored": false,
       "decal1Wrap": false,
       "decal1Abs": false,
       "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.221677,
+      "decal1WidthBox": 0.221673,
       "decal1Tex": "ge_afrika_korps_emblem"
     }
   },

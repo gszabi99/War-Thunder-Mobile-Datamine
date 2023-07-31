@@ -3,7 +3,7 @@ let { clearTimer, setInterval } = require("dagor.workcycle")
 let { btnBUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textButtonCommon, buttonStyles } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, buttonStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = buttonStyles
 let scrollbar = require("%rGui/components/scrollbar.nut")
 let { formatText } = require("textFormatters.nut")
@@ -134,9 +134,9 @@ let patchnoteContent = @() {
       ]
 }
 
-let btnNext  = textButtonCommon(loc("mainmenu/btnNextItem"), nextPatchNote,
+let btnNext  = textButtonPrimary(loc("mainmenu/btnNextItem"), nextPatchNote,
   { hotkeys = [$"{btnBUp} | Tab"] })
-let btnClose = textButtonCommon(loc("mainmenu/btnClose"),
+let btnClose = textButtonPrimary(loc("mainmenu/btnClose"),
   function() {
     markAllVersionsSeen()
     closeChangeLog()

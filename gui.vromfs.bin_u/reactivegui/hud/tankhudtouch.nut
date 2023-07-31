@@ -10,7 +10,7 @@ let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/
 let { tankCrosshairColor, tankZoomAutoAimMode, isUnitDelayed, tankCrosshairDmTestResult
 } = require("%rGui/hudState.nut")
 let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
-let { crosshairScreenPosition } = require("%rGui/hud/commonState.nut")
+let { crosshairScreenPosition, crosshairDestinationScreenPosition } = require("%rGui/hud/commonState.nut")
 let { shootReadyness } = require("%rGui/hud/tankState.nut")
 let { getSvgImage, touchMenuButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let actionBar = require("actionBar/actionBar.nut")
@@ -19,11 +19,12 @@ let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let tacticalMapTransparent = require("components/tacticalMapTransparent.nut")
 let { logerrAndKillLogPlace } = require("%rGui/hudHints/hintBlocks.nut")
 let winchButton = require("buttons/winchButton.nut")(touchMenuButtonSize)
-let { mkCircleTankPrimaryGun } = require("buttons/circleTouchHudButtons.nut")
+let { mkCircleTankPrimaryGun, mkCountTextRight } = require("buttons/circleTouchHudButtons.nut")
 let { primaryAction } = require("actionBar/actionBarState.nut")
 let hitCamera = require("hitCamera/hitCamera.nut")
 let zoomSlider = require("%rGui/hud/zoomSlider.nut")
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
+let { currentArmorPiercingFixed } = require("%rGui/options/options/controlsOptions.nut")
 
 
 let crosshairReadyColor = Color(232, 75, 60)
@@ -64,13 +65,31 @@ let mkCrosshairAnims = @(from, to) [
   }
 ]
 
+let sightDestinationUpdate = @() {
+  transform = {
+    translate = [
+      crosshairDestinationScreenPosition.value.x
+      crosshairDestinationScreenPosition.value.y
+    ]
+  }
+}
+
+let screenPositionUpdate = @() {
+    transform = {
+      translate = [
+        crosshairScreenPosition.value.x,
+        crosshairScreenPosition.value.y
+      ]
+    }
+  }
+
 subscribe("onControlledBulletStart", @(d) anim_start(triggers?[d.triggerGroup]))
 
-let arcadeCrosshair = @() tankZoomAutoAimMode.value  ?
+let arcadeCrosshairSight = @() tankZoomAutoAimMode.value  ?
 { watch = [tankCrosshairColor, tankZoomAutoAimMode ] }
 :
 {
-  watch = [tankCrosshairColor, tankZoomAutoAimMode, hasNoPenetrationState ]
+  watch = [tankCrosshairColor, tankZoomAutoAimMode, hasNoPenetrationState, currentArmorPiercingFixed ]
   behavior = Behaviors.RtPropUpdate
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -126,14 +145,13 @@ let arcadeCrosshair = @() tankZoomAutoAimMode.value  ?
         : mkCrosshairAnims([0, 0], [hdpx(30), 0])
     }
   ]
-  update = @() { transform = {
-    translate = [crosshairScreenPosition.value.x, crosshairScreenPosition.value.y] } }
+  update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate
 }
 
 
 let arcadeCrosshairAim = @() tankZoomAutoAimMode.value ?
 {
-  watch = [tankCrosshairColor, tankZoomAutoAimMode]
+  watch = [tankCrosshairColor, tankZoomAutoAimMode, currentArmorPiercingFixed]
   behavior = Behaviors.RtPropUpdate
   color = crosshairColor
   size = [crosshairSimpleSize, crosshairSimpleSize]
@@ -142,21 +160,40 @@ let arcadeCrosshairAim = @() tankZoomAutoAimMode.value ?
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   commands = [
-      [VECTOR_FILL_COLOR, Color(0, 0, 0, 0)],
+      [VECTOR_FILL_COLOR, 0],
       [VECTOR_ELLIPSE, 50, 50, 40, 40],
     ]
-  update = @() {
-    transform = {
-      translate = [
-        crosshairScreenPosition.value.x,
-        crosshairScreenPosition.value.y
-      ]
-    }
-  }
+  update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate
 }
 :
 { watch = [tankCrosshairColor, tankZoomAutoAimMode] }
 
+let circle = @(color, width) {
+    color
+    fillColor = 0
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = flex()
+    lineWidth = width
+    commands = [
+      [VECTOR_ELLIPSE, 50, 50, 50, 50],
+    ]
+}
+
+let mkCircleGunPosition = {
+  behavior = Behaviors.RtPropUpdate
+  pos = [-saBorders[0] - crosshairHalfSize, -saBorders[1] - crosshairHalfSize]
+  size = [crosshairSimpleSize, crosshairSimpleSize]
+  children = [circle(Color(200, 200, 200, 200), crosshairLineWidth)]
+  update = screenPositionUpdate
+}
+
+let arcadeCrosshair = @() {
+  watch = currentArmorPiercingFixed
+  children = [
+    arcadeCrosshairSight
+    currentArmorPiercingFixed.value ? mkCircleGunPosition : null
+  ]
+}
 
 let mkReadyPart = @(progress) {
   size = flex()
@@ -247,7 +284,7 @@ let leftShootButton = @() {
   vplace = ALIGN_CENTER
   pos = [hdpx(10), hdpx(10)]
   children = isUnitDelayed.value || primaryAction.value == null ? null
-    : mkCircleTankPrimaryGun(primaryAction.value, "btn_weapon_primary_alt")
+    : mkCircleTankPrimaryGun(primaryAction.value, "btn_weapon_primary_alt", mkCountTextRight)
   transform = {}
   animations = dfAnimLeft
 }

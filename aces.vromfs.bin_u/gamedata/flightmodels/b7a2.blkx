@@ -3842,7 +3842,7 @@
   "default_skin_tomoe": {
     "replace_tex": {
       "from": "aichi_b7a2_dark_green_c*",
-      "to": "aichi_b7a2_dark_green_c_tomoe*"
+      "to": "aichi_b7a2_dark_green_c*"
     }
   },
   "cutting": {

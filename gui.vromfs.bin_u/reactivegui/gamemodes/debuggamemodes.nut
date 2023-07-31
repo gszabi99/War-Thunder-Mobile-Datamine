@@ -4,7 +4,7 @@ let { debugModes } = require("gameModeState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { textButtonFaded } = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 
 let wndUid = "debugGameModes"
@@ -34,7 +34,7 @@ let function gameModesList() {
 
   let modes = debugModes.value.values()
     .sort(@(a, b) (a?.name ?? "") <=> (b?.name ?? ""))
-    .map(@(m) textButtonFaded(m?.name ?? m?.gameModeId ?? "!!!ERROR!!!",
+    .map(@(m) textButtonCommon(m?.name ?? m?.gameModeId ?? "!!!ERROR!!!",
       function() {
         send("queueToGameMode", { modeId = m?.gameModeId })
         close()

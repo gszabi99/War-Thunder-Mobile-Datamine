@@ -11,9 +11,8 @@ let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/init
 let LOGIN_STATE = { //bit mask
   //before full load
   AUTHORIZED                  = 0x0001 //succesfully connected to auth
-  LOGGED_INTO_CONTACTS        = 0x0002
-  GAME_UPDATED                = 0x0004
-  ONLINE_BINARIES_INITED      = 0x0008
+  GAME_UPDATED                = 0x0002
+  ONLINE_BINARIES_INITED      = 0x0004
 
   PROFILE_RECEIVED            = 0x0010
   CONFIGS_RECEIVED            = 0x0020
@@ -21,6 +20,7 @@ let LOGIN_STATE = { //bit mask
   CONFIGS_INITED              = 0x0080
 
   ONLINE_SETTINGS_AVAILABLE   = 0x0100
+  LEGAL_ACCEPTED              = 0x0200
 
   //not required for login
   HANGAR_LOADED               = 0x1000
@@ -29,9 +29,9 @@ let LOGIN_STATE = { //bit mask
 
   //masks
   NOT_LOGGED_IN               = 0x0000
-  AUTH_AND_UPDATED            = 0x0007
-  READY_TO_FULL_LOAD          = 0x010F
-  LOGGED_IN                   = 0x01FF // logged in to all hosts and all configs are loaded
+  AUTH_AND_UPDATED            = 0x0003
+  READY_TO_FULL_LOAD          = 0x0107
+  LOGGED_IN                   = 0x03F7 // logged in to all hosts and all configs are loaded
 }
 
 let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
@@ -39,6 +39,8 @@ let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
 let loginState = sharedWatched("loginState", @() LOGIN_STATE.NOT_LOGGED_IN)
 let isLoginRequired = sharedWatched("isLoginRequired", @() !shouldDisableMenu && !isOfflineMenu)
 let authTags = sharedWatched("authTags", @() [])
+let isLoginByGajin = sharedWatched("isLoginByGajin", @() false)
+let legalListForApprove = sharedWatched("legalsToApprove", @() {})
 
 let function getLoginStateDebugStr(state = null) {
   state = state ?? loginState.value
@@ -75,11 +77,12 @@ return loginTypes.__merge({
   loginState
   isLoginRequired
   authTags
+  isLoginByGajin
   availableLoginTypes
+  legalListForApprove
 
   isLoginStarted = Computed(@() (loginState.value & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.value & LOGIN_STATE.AUTHORIZED) != 0)
-  isLoggedIntoContacts = Computed(@() (loginState.value & LOGIN_STATE.LOGGED_INTO_CONTACTS) != 0)
   isOnlineSettingsAvailable = Computed(@() (loginState.value & LOGIN_STATE.ONLINE_SETTINGS_AVAILABLE) != 0)
   isMatchingConnected = Computed(@() (loginState.value & LOGIN_STATE.MATCHING_CONNECTED) != 0)
   isProfileReceived = Computed(@() (loginState.value & LOGIN_STATE.PROFILE_RECEIVED) != 0)

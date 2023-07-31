@@ -6,13 +6,13 @@ let { screenlog } = require("dagor.debug")
 let { defer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { reset_profile, reset_profile_with_stats, unlock_all_units, add_gold, add_wp,
-  reset_scheduled_reward_timers, upgrade_unit, downgrade_unit
+  reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
-let { textButtonFaded } = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
@@ -28,6 +28,7 @@ let debugOffersWnd = require("debugOffersWnd.nut")
 let { isDebugTouchesActive } = require("debugTouches.nut")
 let debugUnlocks = require("debugUnlocks.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+let { startDebugNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 
 let wndWidth = sh(130)
 let gap = hdpx(10)
@@ -35,16 +36,16 @@ let gap = hdpx(10)
 let wndUid = "debugCommandsWnd"
 let close = @() removeModalWindow(wndUid)
 
-let slogResult = @(res) screenlog(res?.error == null ? "SUCCESS!" : "ERROR")
-let mkBtn = @(label, func) textButtonFaded(label, func, { ovr = { size = [flex(), hdpx(100)] } })
+registerHandler("sceenlogResult", @(res) screenlog(res?.error == null ? "SUCCESS!" : "ERROR"))
+let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = [flex(), hdpx(100)] } })
 let withClose = @(action) function() {
   close()
   action()
 }
 
 let commandsList = [
-  { label = "meta.add_gold 1000", func = @() add_gold(1000, slogResult) }
-  { label = "meta.add_wp 100 000", func = @() add_wp(100000, slogResult) }
+  { label = "meta.add_gold 1000", func = @() add_gold(1000, "sceenlogResult") }
+  { label = "meta.add_wp 100 000", func = @() add_wp(100000, "sceenlogResult") }
   { label = "meta.reset_profile", func = withClose(reset_profile) }
   { label = "meta.reset_profile_with_stats", func = withClose(reset_profile_with_stats) }
   { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
@@ -54,6 +55,7 @@ let commandsList = [
   { label = "toggle_debug_touches", func = withClose(@() isDebugTouchesActive(!isDebugTouchesActive.value)) }
   { label = "meta.reset_custom_settings", func = withClose(resetCustomSettings) }
   { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug(!isTutorialMissionsDebug.value)) }
+  { label = "startFirstBattlesOfflineMission", func = withClose(startDebugNewbieMission) }
   { label = "copy_last_debriefing",
     function func() {
       close()
@@ -135,7 +137,7 @@ let consoleTextInput = {
       onChange = @(value) consoleText(value)
       onReturn = consoleExecute
     })
-    textButtonFaded("Enter", consoleExecute,
+    textButtonCommon("Enter", consoleExecute,
       { ovr = { minWidth = hdpx(150), size = [hdpx(150), defButtonHeight] } })
   ]
 }

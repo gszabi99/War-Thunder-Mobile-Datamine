@@ -403,9 +403,7 @@
     "underwaterFogUseShadows": 1,
     "allowHmap": false,
     "useCellSBuffer": true,
-    "sky_panorama_patch": false,
-    "allowETC2": false,
-    "compress_panorama": false
+    "sky_panorama_patch": false
   },
   "ps4": {
     "garlic_size_mb": 2560,
@@ -615,7 +613,7 @@
     "swFeedbackOuterMipTiles": 6,
     "texTileSize": 128,
     "fallbackMetersInTexelGround": 4.0,
-    "virtualTextureMipCnt": 3,
+    "virtualTextureMipCnt": 2,
     "virtualTextureAnisotropy": 1
   },
   "clipmapImpostor": {
@@ -638,10 +636,7 @@
     "publicConfigsUrl": "http://public-configs.warthunder.com/",
     "httpClientPollInThread": true,
     "publicConfigsUrls": {
-      "url": [
-        "http://public-configs.warthunder.com/",
-        "http://public-configs-warthunder-gcore.cdn.gaijin.net/"
-      ]
+      "url": "http://public-configs.warthunder.com/"
     }
   },
   "general": {
@@ -835,7 +830,7 @@
       "staticCascade0Dist": 800.0,
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
-      "staticCascadeMinHeight": 0.0,
+      "staticCascadeMinHeight": -20.0,
       "staticCascadeMaxHeight": 100.0,
       "staticCascadeTransition": false,
       "staticCascadeDualPass": false,
@@ -849,7 +844,7 @@
         "staticCascade0Dist": 100.0,
         "staticCascadeStarting": 0,
         "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": 0.0,
+        "staticCascadeMinHeight": -20.0,
         "staticCascadeMaxHeight": 100.0,
         "staticCascadeTransition": false,
         "staticCascadeDualPass": false,
@@ -889,7 +884,7 @@
       "staticCascade0Dist": 800.0,
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
-      "staticCascadeMinHeight": 0.0,
+      "staticCascadeMinHeight": -20.0,
       "staticCascadeMaxHeight": 100.0,
       "staticCascadeTransition": false,
       "staticCascadeDualPass": false,
@@ -903,7 +898,7 @@
         "staticCascade0Dist": 100.0,
         "staticCascadeStarting": 0,
         "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": 0.0,
+        "staticCascadeMinHeight": -20.0,
         "staticCascadeMaxHeight": 100.0,
         "staticCascadeTransition": false,
         "staticCascadeDualPass": false,
@@ -943,7 +938,7 @@
       "staticCascade0Dist": 800.0,
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
-      "staticCascadeMinHeight": 0.0,
+      "staticCascadeMinHeight": -20.0,
       "staticCascadeMaxHeight": 100.0,
       "staticCascadeTransition": false,
       "staticCascadeDualPass": false,
@@ -957,7 +952,7 @@
         "staticCascade0Dist": 100.0,
         "staticCascadeStarting": 0,
         "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": 0.0,
+        "staticCascadeMinHeight": -20.0,
         "staticCascadeMaxHeight": 100.0,
         "staticCascadeTransition": false,
         "staticCascadeDualPass": false,
@@ -994,7 +989,7 @@
       "staticCascade0Dist": 800.0,
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
-      "staticCascadeMinHeight": 0.0,
+      "staticCascadeMinHeight": -20.0,
       "staticCascadeMaxHeight": 100.0,
       "staticCascadeTransition": false,
       "staticCascadeDualPass": false,
@@ -1008,7 +1003,7 @@
         "staticCascade0Dist": 100.0,
         "staticCascadeStarting": 0,
         "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": 0.0,
+        "staticCascadeMinHeight": -20.0,
         "staticCascadeMaxHeight": 100.0,
         "staticCascadeTransition": false,
         "staticCascadeDualPass": false,
@@ -1065,7 +1060,7 @@
         "compatibilityShadowQuality": "low",
         "grassRadiusMul": 0.5,
         "grassDensityMul": 0.5,
-        "fxDensityMul": 0.5,
+        "fxDensityMul": 0.2,
         "rendinstDistMul": 0.5,
         "compatibilityRendinstDistMul": 0.5,
         "tireTracksQuality": 0,
@@ -1086,12 +1081,27 @@
         "riExtraMinSizeForDraftDepth": 15.0,
         "underwaterFogUseShadows": 0,
         "underwaterFogUseSimple": true,
-        "texquality": "low"
+        "texquality": "low",
+        "fftWaterRenderResolution": 7,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": false,
+        "enableWakeDisplacement": false,
+        "enableWaterProjFx": false,
+        "sharpen": 0.0
       },
       "render": {
         "grassInCompatibility": false
       },
       "clipmap": {
+        "texSize": [
+          2048,
+          2048
+        ],
+        "swFeedbackMipTiles0": 2,
+        "swFeedbackMipTiles1": 2,
+        "swFeedbackMipTiles2": 2,
+        "swFeedbackInnerMipTiles": 2,
+        "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 1,
         "texelSizeMul": 2,
         "minTexTileBorder": 4
@@ -1130,12 +1140,27 @@
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
-        "texquality": "high"
+        "texquality": "high",
+        "fftWaterRenderResolution": 7,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "sharpen": 0.2
       },
       "render": {
         "grassInCompatibility": false
       },
       "clipmap": {
+        "texSize": [
+          2048,
+          3072
+        ],
+        "swFeedbackMipTiles0": 6,
+        "swFeedbackMipTiles1": 6,
+        "swFeedbackMipTiles2": 4,
+        "swFeedbackInnerMipTiles": 2,
+        "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 2,
         "texelSizeMul": 1,
         "minTexTileBorder": 1
@@ -1174,12 +1199,27 @@
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
-        "texquality": "high"
+        "texquality": "high",
+        "fftWaterRenderResolution": 8,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "sharpen": 0.2
       },
       "render": {
         "grassInCompatibility": true
       },
       "clipmap": {
+        "texSize": [
+          3072,
+          4096
+        ],
+        "swFeedbackMipTiles0": 10,
+        "swFeedbackMipTiles1": 8,
+        "swFeedbackMipTiles2": 4,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 4,
         "texelSizeMul": 1,
         "minTexTileBorder": 1
@@ -1218,12 +1258,27 @@
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
-        "texquality": "high"
+        "texquality": "high",
+        "fftWaterRenderResolution": 8,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "sharpen": 0.2
       },
       "render": {
         "grassInCompatibility": true
       },
       "clipmap": {
+        "texSize": [
+          4096,
+          4096
+        ],
+        "swFeedbackMipTiles0": 12,
+        "swFeedbackMipTiles1": 10,
+        "swFeedbackMipTiles2": 6,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 6,
         "virtualTextureAnisotropy": 8,
         "texelSizeMul": 1,
         "minTexTileBorder": 1

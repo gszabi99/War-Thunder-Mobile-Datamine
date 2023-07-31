@@ -55,7 +55,7 @@ let benchmark = @(stats) {
   children = statsCfg.map(@(cfg) mkStatRow(cfg, stats))
 }
 
-let buttons = mkMsgBoxBtnsSet(wndUid, [ { id = "ok", isPrimary = true, cb = close } ])
+let buttons = mkMsgBoxBtnsSet(wndUid, [ { id = "ok", styleId = "PRIMARY", cb = close } ])
 
 let openBenchmark = @(data) addModalWindow(bgShaded.__merge({
   key = wndUid

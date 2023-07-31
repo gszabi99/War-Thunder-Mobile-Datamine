@@ -7,7 +7,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlot, playerSelectedSlotIdx
 } = require("respawnState.nut")
-let { bulletsToSpawn } = require("bulletsChoiceState.nut")
+let { bulletsToSpawn, hasLowBullets, hasZeroBullets } = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
 let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn
 } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -16,7 +16,7 @@ let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
-let { textButtonFaded, textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
 let scoreBoard = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, mkUnitPrice,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
@@ -36,6 +36,7 @@ let levelHolderSize = evenPx(84)
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 
 let needCancel = Computed(@() isRespawnStarted.value && !isRespawnInProgress.value && respawnSlots.value.len() > 1)
+let showLowBulletsWarning = Watched(true)
 let startRespawnTime = mkWatched(persist, "startRespawnTime", -1)
 isRespawnStarted.subscribe(function(v) {
   if (v)
@@ -170,20 +171,37 @@ let function cancelBtn() {
         text = $"{timeToRespawn.value}{loc("mainmenu/seconds")}" }))
   return {
     watch = timeToRespawn
-    children = textButtonFaded(btnText, cancelRespawn, { hotkeys = [btnBEscUp] })
+    children = textButtonCommon(btnText, cancelRespawn, { hotkeys = [btnBEscUp] })
   }
 }
 
 let waitSpinner = mkSpinner()
+let toBattleLoc = utf8ToUpper(loc("mainmenu/toBattle/short"))
+let function toBattle() {
+  if (hasZeroBullets.value)
+    openMsgBox({ text = loc("respawn/zero_ammo") })
+  else if (hasLowBullets.value && showLowBulletsWarning.value) {
+    openMsgBox({
+      text = loc("respawn/low_ammo")
+      buttons = [
+        { id = "cancel", isCancel = true }
+        { id = "yes", styleId = "BATTLE", text = toBattleLoc,
+          cb = @() respawn(selSlot.value, bulletsToSpawn.value) }
+      ]
+    })
+    showLowBulletsWarning(false)
+  }
+  else
+    respawn(selSlot.value, bulletsToSpawn.value)
+}
+
 let buttons = @() {
   watch = [needCancel, isRespawnStarted, selSlot]
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
   children = !(selSlot.value?.canSpawn ?? false) ? null
-    : !isRespawnStarted.value
-      ? textButtonPrimary(utf8ToUpper(loc("mainmenu/toBattle/short")),
-          @() respawn(selSlot.value, bulletsToSpawn.value),
-          { hotkeys = ["^J:X | Enter"] })
+    : !isRespawnStarted.value ? textButtonBattle(toBattleLoc, toBattle,
+      { hotkeys = ["^J:X | Enter"] })
     : needCancel.value ? cancelBtn
     : waitSpinner
 }

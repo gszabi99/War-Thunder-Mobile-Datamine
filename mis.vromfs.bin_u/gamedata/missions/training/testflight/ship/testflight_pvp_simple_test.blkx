@@ -11,7 +11,7 @@
       "wing": "t1_player02"
     },
     "mission": {
-      "level": "levels/pacific_island_proto_small.bin",
+      "level": "levels/pacific_islands.bin",
       "type": "testFlight",
       "environment": "6.73",
       "weather": "thin_clouds",

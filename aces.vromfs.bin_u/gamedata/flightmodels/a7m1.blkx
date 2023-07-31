@@ -1726,11 +1726,11 @@
     "replace_tex": [
       {
         "from": "a7m1_a*",
-        "to": "a7m1_a_tomoe*"
+        "to": "a7m1_a*"
       },
       {
         "from": "a7m1_a_dmg*",
-        "to": "a7m1_a_tomoe_dmg*"
+        "to": "a7m1_a_dmg*"
       }
     ]
   },

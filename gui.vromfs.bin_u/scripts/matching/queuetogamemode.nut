@@ -16,12 +16,17 @@ let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.n
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getModeAddonsInfo } = require("gameModeAddons.nut")
+let { balanceGold } = require("%appGlobals/currenciesState.nut")
 
 let startBattleDelayed = persist("startBattleDelayed", @() { modeId = null })
 
 let function queueToGameModeImpl(mode) {
   if (isInQueue.value)
     return
+  if (balanceGold.value < 0) {
+    send("showNegativeBalanceWarning", {})
+    return
+  }
 
   let { addonsToDownload, updateDiff } = getModeAddonsInfo(mode, curUnit.value?.name)
   if (addonsToDownload.len() > 0) {
@@ -39,7 +44,7 @@ let function queueToGameModeImpl(mode) {
         { text = loc(isUpdate ? "ugm/btnUpdate" : "msgbox/btn_download")
           eventId = "downloadAddonsForQueue"
           context = { addons = addonsToDownload, modeId = mode.gameModeId }
-          isPrimary = true
+          styleId = "PRIMARY"
           isDefault = true
         }
       ]

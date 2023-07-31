@@ -5,7 +5,7 @@
 from "%scripts/dagui_library.nut" import *
 let json = require("json")
 let io = require("io")
-let { get_default_battle_data } = require("%appGlobals/pServer/pServerApi.nut")
+let { get_default_battle_data, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { register_command } = require("console")
 
 const WTM_PATH = "../../skyquake/prog/scripts/wtm/"
@@ -20,9 +20,11 @@ let function saveResult(res, fileName) {
   console_print($"Saved json to {fullName}")
 }
 
-register_command(@() get_default_battle_data(function(res) {
+registerHandler("saveDefaultBattleData", function(res) {
   if ("error" in res)
     console_print(toString(res))
   else
     saveResult(res, DEF_BATTLE_DATA)
-}), "meta.genDefaultBattleData")
+})
+
+register_command(@() get_default_battle_data("saveDefaultBattleData"), "meta.genDefaultBattleData")

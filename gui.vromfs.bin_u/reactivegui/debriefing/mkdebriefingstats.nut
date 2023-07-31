@@ -82,6 +82,16 @@ let statsByCamp = {
   ],
 }
 
+let statsByCampSingle = {
+  ships = [
+    { locId = "debriefing/NavalKills", getVal = @(_, player) (player?.kills ?? 0) <= 0 ? null : player.kills }
+  ],
+
+  tanks = [
+    { locId = "debriefing/GroundKills", getVal = @(_, player) (player?.kills ?? 0) <= 0 ? null : player.kills }
+  ],
+}
+
 let stopCountSound = @() stopSound("coin_counter")
 
 local maxSoundEndTime = 0
@@ -179,50 +189,50 @@ let function mkItemsUsedRows(itemsUsed, startTime) {
 let function mkDebriefingStats(data, startAnimTime) {
   let { isSingleMission = false, reward = {}, players = {}, userId = -1, campaign = "",
     itemsUsed = {}, userName = ""} = data
-  if (isSingleMission)
-    return {
-      debriefingStats = {}
-      statsAnimEndTime = 0
-    }
-  let stats = statsByCamp?[campaign] ?? []
+  let stats = (isSingleMission ? statsByCampSingle : statsByCamp)?[campaign] ?? []
   local player = players?[userId.tostring()]
 
-  let mplayersList = players.values().filter(@(v) v.team == player?.team)
-    .map(function(p) {
-      let isLocal = p.userId == userId
-      let pUserIdStr = p.userId.tointeger()
-      return p.__merge({
-        userId = pUserIdStr
-        isLocal
-        isDead = false
-        name = isLocal ? userName
-          : p.isBot ? loc(p.name)
-          : p.name
-        score = p?.dmgScoreBonus ?? 0.0
+  if (!isSingleMission) {
+    let mplayersList = players.values().filter(@(v) v?.team == player?.team)
+      .map(function(p) {
+        let isLocal = p.userId == userId
+        let pUserIdStr = p.userId.tointeger()
+        return p.__merge({
+          userId = pUserIdStr
+          isLocal
+          isDead = false
+          name = isLocal ? userName
+            : p.isBot ? loc(p.name)
+            : p.name
+          score = p?.dmgScoreBonus ?? 0.0
+        })
       })
-    })
-    .sort(playersSortFunc(campaign))
+      .sort(playersSortFunc(campaign))
 
-  let place = (mplayersList.findindex(@(v) v.userId == player?.userId ) ?? 0) + 1
-  player = player?.__merge({ place })
-
+    let place = (mplayersList.findindex(@(v) v.userId == player?.userId ) ?? 0) + 1
+    player = player?.__merge({ place })
+  }
 
   let statsContent = stats.map(function(s, i) {
     let val = s.getVal(reward, player)
     return val == null ? null : mkStat(loc(s.locId), val, (startAnimTime + offsetTime * 1000 * i), s?.valueCtor)
   })
 
-  let countStats = statsContent.len() + itemsUsed.len()
+  let children = statsContent.extend(mkItemsUsedRows(itemsUsed, startAnimTime + offsetTime * 1000 * statsContent.len()))
 
-  return {
-    debriefingStats = {
-      size = [flex(), SIZE_TO_CONTENT]
-      flow = FLOW_VERTICAL
-      children =
-        statsContent.extend(mkItemsUsedRows(itemsUsed, startAnimTime + offsetTime * 1000 * statsContent.len()))
-    }
-    statsAnimEndTime = endHeaderLineAnim + offsetTime * countStats
-  }
+  return children.len() == 0
+    ? {
+        debriefingStats = {}
+        statsAnimEndTime = 0
+      }
+    : {
+        debriefingStats = {
+          size = [flex(), SIZE_TO_CONTENT]
+          flow = FLOW_VERTICAL
+          children
+        }
+        statsAnimEndTime = endHeaderLineAnim + offsetTime * children.len()
+      }
 }
 
 return {

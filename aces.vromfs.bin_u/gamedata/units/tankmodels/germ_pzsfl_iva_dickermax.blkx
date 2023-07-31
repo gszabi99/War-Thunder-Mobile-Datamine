@@ -2779,51 +2779,51 @@
       "decal0Tex": "back_16",
       "decal1Line0": [
         0.0,
-        -1.07293E-07,
-        2.45457,
-        -0.889486
+        -1.22033E-07,
+        2.79179,
+        -1.17453
       ],
       "decal1Line1": [
         0.0,
-        -2.45457,
-        -1.07293E-07,
-        5.58096
+        -2.79179,
+        -1.22033E-07,
+        6.11028
       ],
       "decal1Line2": [
         0.0,
-        -1.07293E-07,
-        -2.45457,
-        1.88949
+        -1.22033E-07,
+        -2.79179,
+        2.17453
       ],
       "decal1Line3": [
         0.0,
-        -2.45457,
-        1.07293E-07,
-        5.58096
+        -2.79179,
+        1.22033E-07,
+        6.11028
       ],
       "decal1HaveCP": true,
       "decal1CPNormDepth": [
         1.0,
         0.0,
         0.0,
-        -0.748199
+        -0.763546
       ],
       "decal1CPNormDepth1": [
         -1.0,
         -0.0,
         -0.0,
-        0.72304
+        0.741825
       ],
       "decal1RotScale": [
         1.5708,
-        0.407403
+        0.358193
       ],
       "decal1Mirrored": false,
       "decal1Wrap": false,
       "decal1Abs": false,
       "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.234557,
-      "decal1Tex": "ge_653rd_heavy_panzerjager_battalion"
+      "decal1WidthBox": 0.23034,
+      "decal1Tex": "ge_521h_pzj_abt"
     }
   },
   "skin": [

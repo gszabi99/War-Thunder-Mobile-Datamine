@@ -5,7 +5,7 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonBright, textButtonCommon, textButtonFaded, buttonsHGap
+let { textButtonBright, textButtonPrimary, textButtonCommon, buttonsHGap
 } = require("%rGui/components/textButton.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { devMenuContent, openDevMenuButton, needShowDevMenu } = require("%rGui/flightMenu/devFlightMenu.nut")
@@ -33,13 +33,13 @@ let menuContent = @(isAlive, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBattle
         : campaign == "ships" ? "return_to_port/short"
         : "return_to_hangar/short")),
       quitMission)
-    textButtonCommon(utf8ToUpper(loc("btn/continueBattle")), battleResume,
+    textButtonPrimary(utf8ToUpper(loc("btn/continueBattle")), battleResume,
       { hotkeys = [btnBEscUp] })
   ])
 
-let optionsButton = textButtonFaded(utf8ToUpper(loc("mainmenu/btnOptions")), optionsScene,
+let optionsButton = textButtonCommon(utf8ToUpper(loc("mainmenu/btnOptions")), optionsScene,
   { hotkeys = ["^J:Y"] })
-let helpButton = textButtonFaded(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
+let helpButton = textButtonCommon(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
   { hotkeys = ["^J:X"] })
 
 

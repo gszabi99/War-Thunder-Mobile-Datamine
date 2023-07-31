@@ -1,25 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { newbieGameModesConfig, prepareStatsForNewbieConfig, isNewbieMode, isNewbieModeSingle
+let { newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
 } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let newbieModeStats = require("newbieModeStats.nut")
 
 let forceNewbieModeIdx = mkWatched(persist, "forceNewbieModeIdx", -1)
-let hasCurCampaignNewbiePkg = Computed(function() {
-  let addons = getCampaignPkgsForOnlineBattle(curCampaign.value, 1)
-  return addons.len() == 0 || null == addons.findvalue(@(a) !hasAddons.value?[a])
-})
 
 let curNewbieMode = Computed(function() {
   let list = newbieGameModesConfig?[curCampaign.value]
   if (list == null)
     return null
 
-  let stats = prepareStatsForNewbieConfig(sharedStatsByCampaign.value)
-    .__update({ hasPkg = hasCurCampaignNewbiePkg.value })
+  let stats = newbieModeStats.value
   local res = null
   if (forceNewbieModeIdx.value >= 0) {
     let gmName = list?[forceNewbieModeIdx.value].gmName

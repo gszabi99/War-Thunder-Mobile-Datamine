@@ -66,7 +66,7 @@ let function onCampaignButtonClick(campaign) {
       text = loc("msg/needTutorialToAccessCampaign")
       buttons = [
         { id = "no", isCancel = true }
-        { id = "yes", isPrimary = true, isDefault = true, cb = applyCampaign }
+        { id = "yes", styleId = "PRIMARY", isDefault = true, cb = applyCampaign }
       ]
     })
   else

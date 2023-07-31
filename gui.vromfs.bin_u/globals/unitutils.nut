@@ -31,6 +31,7 @@ let sortUnitsByPrice = @(a, b)
   || sortUnits(a, b)
 
 return {
+  applyDiscount
   getUnitAnyPrice
   sortUnits
   sortUnitsByPrice

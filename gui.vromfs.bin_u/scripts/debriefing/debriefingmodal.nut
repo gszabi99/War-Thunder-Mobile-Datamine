@@ -4,6 +4,7 @@
 
 from "%scripts/dagui_library.nut" import *
 let { subscribe, send } = require("eventbus")
+let { destroy_session } = require("multiplayer")
 let json = require("%sqstd/json.nut")
 let { register_command } = require("console")
 let { setTimeout } = require("dagor.workcycle")
@@ -15,7 +16,7 @@ let { is_benchmark_game_mode, get_game_mode } = require("mission")
 
 ::gui_start_debriefing <- function gui_start_debriefing() {
   if (needLogoutAfterSession.value) {
-    ::destroy_session()
+    destroy_session("on needLogoutAfterSession from gui_start_debriefing")
     //need delay after destroy session before is_multiplayer become false
     setTimeout(0.3, startLogout)
     return

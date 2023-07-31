@@ -82,7 +82,7 @@ let function showReconnectMsg() {
     text = loc("msgbox/return_to_battle_session")
     buttons = [
       { id = "no", eventId = "reconnectReject", isCancel = true }
-      { id = "yes", eventId = "reconnectApply", isPrimary = true, isDefault = true }
+      { id = "yes", eventId = "reconnectApply", styleId = "PRIMARY", isDefault = true }
     ]
     isPersist = true
   })

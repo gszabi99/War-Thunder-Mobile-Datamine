@@ -12,6 +12,7 @@ let tankStateNative = {
   shootReadyness = Watched(0)
   hasDebuffGuns = Watched(0)
   hasDebuffTurretDrive = Watched(0)
+  allowShoot = Watched(false)
   hasDebuffEngine = Watched(0)
   hasDebuffTracks = Watched(0)
   hasDebuffFire = Watched(0)

@@ -4,7 +4,7 @@
 
 let { loc } = require("dagor.localize")
 let { Computed } = require("frp")
-let { set_current_unit, buy_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { set_current_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { curUnit, myUnits, playerLevelInfo, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
@@ -79,13 +79,6 @@ let function setCurrentUnit(unitName) {
   return ""
 }
 
-let function buyUnit(unitName, currencyId, price, cb = null) {
-  if (unitInProgress.value != null)
-    return "unitInProgress"
-  buy_unit(unitName, currencyId, price, cb)
-  return ""
-}
-
 return {
   US_UNKNOWN
   US_OWN
@@ -101,5 +94,4 @@ return {
   getUnitLockedShortText
 
   setCurrentUnit
-  buyUnit
 }

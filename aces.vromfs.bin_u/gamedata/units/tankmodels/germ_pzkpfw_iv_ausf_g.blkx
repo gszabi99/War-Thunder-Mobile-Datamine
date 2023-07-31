@@ -2740,25 +2740,25 @@
         2.93047,
         -8.75176E-08,
         0.18963,
-        -0.383489
+        -0.327373
       ],
       "decal0Line1": [
         0.0829346,
         -2.64086,
         -1.28164,
-        4.57174
+        4.53124
       ],
       "decal0Line2": [
         -2.93047,
         -1.31276E-07,
         0.18963,
-        1.36248
+        1.30636
       ],
       "decal0Line3": [
         0.0829348,
         -2.64086,
         1.28164,
-        4.42974
+        4.38923
       ],
       "decal0HaveCP": true,
       "decal0CPNormDepth": [
@@ -2779,57 +2779,57 @@
       ],
       "decal0Mirrored": false,
       "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0OppositeMirrored": true,
-      "decal0WidthBox": 0.223855,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.223264,
       "decal0Tex": "back_16",
       "decal1Line0": [
-        1.14131E-07,
-        0.0,
-        2.61102,
-        -2.55253
+        -2.69948,
+        -1.18553E-07,
+        0.705059,
+        3.99497
       ],
       "decal1Line1": [
-        2.61102,
-        0.0,
-        -1.14131E-07,
-        -6.40364
+        0.0167612,
+        -2.78924,
+        0.0641735,
+        4.26612
       ],
       "decal1Line2": [
-        1.14131E-07,
-        0.0,
-        -2.61102,
-        3.55253
+        2.69948,
+        -1.2375E-07,
+        0.705059,
+        -2.99497
       ],
       "decal1Line3": [
-        2.61102,
-        0.0,
-        1.14131E-07,
-        -6.40364
+        0.016761,
+        -2.78924,
+        -0.0641737,
+        4.26612
       ],
       "decal1HaveCP": true,
       "decal1CPNormDepth": [
-        0.0,
-        1.0,
-        0.0,
-        -1.16405
+        0.252635,
+        0.0237726,
+        0.96727,
+        -1.42435
       ],
       "decal1CPNormDepth1": [
-        -0.0,
-        -1.0,
-        -0.0,
-        1.15513
+        0.252635,
+        0.0237726,
+        -0.96727,
+        -1.42435
       ],
       "decal1RotScale": [
         1.5708,
-        0.382992
+        0.358419
       ],
       "decal1Mirrored": false,
       "decal1Wrap": false,
       "decal1Abs": false,
       "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.24706,
-      "decal1Tex": "ge_stug_abt_189"
+      "decal1WidthBox": 0.287998,
+      "decal1Tex": "back_16"
     }
   },
   "skin": [

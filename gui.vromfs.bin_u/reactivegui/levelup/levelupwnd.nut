@@ -3,7 +3,6 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { isLvlUpOpened, rewardsToReceive, upgradeUnitName, closeLvlUpWnd } = require("levelUpState.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
@@ -17,8 +16,10 @@ let backButton = require("%rGui/components/backButton.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
+let { maxRewardLevel } = require("%rGui/levelUp/levelUpState.nut")
+
 
 let flagHeight = hdpx(180)
 let headerLineColor = 0xFFFFB70B
@@ -80,7 +81,7 @@ let headerLine = @(delay) {
 let wpStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpWp" })
 let goldStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpGold" })
 let headerPanel = @() {
-  watch = playerLevelInfo
+  watch = maxRewardLevel
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   children = [
@@ -105,7 +106,7 @@ let headerPanel = @() {
       animations = appearAnim(balanceAppearDelay, balanceAppearTime)
     }
     headerLine(animStartDelay)
-    levelUpFlag(flagHeight, playerLevelInfo.value.level + 1, animStartDelay)
+    levelUpFlag(flagHeight, maxRewardLevel.value, animStartDelay)
   ]
 }
 
@@ -131,7 +132,7 @@ let levelUpRequirePkgDownload = {
       fontFxFactor = 50
       fontFx = FFT_GLOW
     }.__update(fontSmall)
-    textButtonPrimary(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(lvlUpUnitsPkgs.value))
+    textButtonBattle(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(lvlUpUnitsPkgs.value))
   ]
 }
 

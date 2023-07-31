@@ -4,12 +4,22 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 
-let scenes = {} //id = { scene, onClearScenes }
+let scenes = {} //id = { scene, onClearScenes, alwaysOnTop }
 let scenesVersion = Watched(0)
 let scenesOrderSaved = mkHardWatched("navState.scenesOrder", [])
 let scenesOrder = Computed(function(prev) {
   let ver = scenesVersion //warning disable: -declared-never-used
-  let res = scenesOrderSaved.value.filter(@(v) v in scenes)
+  let top = []
+  let res = []
+  foreach(s in scenesOrderSaved.value) {
+    if (s not in scenes)
+      continue
+    else if (scenes[s].alwaysOnTop)
+      top.append(s)
+    else
+      res.append(s)
+  }
+  res.extend(top)
   return isEqual(prev, res) ? prev : res
 })
 
@@ -35,12 +45,12 @@ let function removeScene(id) {
     scenesOrderSaved.mutate(@(v) v.remove(idx))
 }
 
-let function registerScene(id, scene, onClearScenes = null, isOpenedWatch = null) {
+let function registerScene(id, scene, onClearScenes = null, isOpenedWatch = null, alwaysOnTop = false) {
   if (id in scenes) {
     logerr($"Already registered navState scene {id}")
     return
   }
-  scenes[id] <- { scene, onClearScenes }
+  scenes[id] <- { scene, onClearScenes, alwaysOnTop }
   scenesVersion(scenesVersion.value + 1)
 
   if (isOpenedWatch == null)

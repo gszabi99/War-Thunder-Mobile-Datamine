@@ -1627,11 +1627,11 @@
     "replace_tex": [
       {
         "from": "a6m2_a*",
-        "to": "a6m2_a_tomoe*"
+        "to": "a6m2_a*"
       },
       {
         "from": "a6m2_a_dmg*",
-        "to": "a6m2_a_tomoe_dmg*"
+        "to": "a6m2_a_dmg*"
       }
     ]
   },

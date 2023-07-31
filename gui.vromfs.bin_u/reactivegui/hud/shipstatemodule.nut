@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hasDebuffFire, curRelativeHealth, maxHealth, hasDebuffFlooding, hasDebuffGuns, hasDebuffEngines, hasDebuffMoveControl,
-hasDebuffTorpedoes, buoyancy, maxHpToRepair } = require("%rGui/hud/shipState.nut")
+hasDebuffTorpedoes, maxHpToRepair } = require("%rGui/hud/shipState.nut")
 let { teamBlueLightColor } = require("%rGui/style/teamColors.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
@@ -36,17 +36,6 @@ let healthColor = Computed(function() {
     return teamBlueLightColor
   return currConfig.color
 })
-
-let buoyancyColor = Computed(function() {
-  let currConfig = colorConfig.findvalue(@(v) v.remainValue > buoyancy.value)
-  if (currConfig == null)
-    return teamBlueLightColor
-  if (currConfig?.showTeamColor ?? false)
-    return teamBlueLightColor
-  return currConfig.color
-})
-
-let isVisibleBuoyancy = Computed(@() buoyancy.value < 0.9995)
 
 remainingHpPercent.subscribe(function(value) {
   if (value < 1.0 && value < prevHpPercent)
@@ -98,7 +87,6 @@ let mkCrewIcon = @(icon) {
 
 let crewIcon = mkCrewIcon("ship_crew.svg")
 let hpToRepairIcon = mkCrewIcon("hud_crew_wounded.svg")
-let buoyancyIcon = mkCrewIcon("buoyancy_icon.svg")
 
 return {
   size = [healthImageWidth, SIZE_TO_CONTENT]
@@ -110,23 +98,6 @@ return {
       hplace = ALIGN_RIGHT
       gap = shHud(1.6)
       children = [
-        @() {
-          flow = FLOW_HORIZONTAL
-          valign = ALIGN_CENTER
-          watch = isVisibleBuoyancy
-          children = isVisibleBuoyancy.value ? [
-            buoyancyIcon
-            @() {
-              watch = [buoyancy, buoyancyColor]
-              rendObj = ROBJ_TEXT
-              color = buoyancyColor.value
-              text =  $"{(buoyancy.value * 100).tointeger()} %"
-              fontFxColor = Color(0, 0, 0, 255)
-              fontFxFactor = 50
-              fontFx = FFT_GLOW
-            }.__update(fontSmall)
-          ] : null
-        }
         {
           flow = FLOW_HORIZONTAL
           valign = ALIGN_CENTER

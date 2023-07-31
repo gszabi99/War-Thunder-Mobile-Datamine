@@ -25,7 +25,7 @@ let function openMessageIfNeed() {
     text = loc("msg/allowMobileNetworkDownload")
     buttons = [
       { id = "no", isCancel = true, cb = @() isAsked(true) }
-      { id = "yes", isPrimary = true, isDefault = true,
+      { id = "yes", styleId = "PRIMARY", isDefault = true,
         function cb() {
           isAsked(true)
           allowLimitedDownload(true)

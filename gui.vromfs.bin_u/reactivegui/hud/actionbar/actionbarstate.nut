@@ -1,9 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getActionBarItems } = require("hudActionBar")
+let { clearTimer, setInterval } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getActionType, AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON } = require("actionType.nut")
 
 let actionBar = Watched([])
+let actionBarUpdaters = Watched({})
+let needUpdate = keepref(Computed(@() actionBarUpdaters.value.len() > 0))
 
 let function actionIsEqual(a, b) {
   if (type(a) != type(b))
@@ -49,9 +52,24 @@ let updateActionBarDelayed = @() gui_scene.resetTimeout(0.1, @() updateActionBar
 let primaryAction = Computed(@() actionBarItems.value?[AB_PRIMARY_WEAPON])
 let secondaryAction = keepref(Computed(@() actionBarItems.value?[AB_SECONDARY_WEAPON]))
 
+let startActionBarUpdate = @(id) id in actionBarUpdaters.value ? null
+  : actionBarUpdaters.mutate(@(v) v[id] <- true)
+let stopActionBarUpdate = @(id) id not in actionBarUpdaters.value ? null
+  : actionBarUpdaters.mutate(@(v) delete v[id])
+
+needUpdate.subscribe(function(v) {
+  if (v) {
+    updateActionBar()
+    setInterval(0.3, updateActionBar)
+  }
+  else
+    clearTimer(updateActionBar)
+})
+
 return {
-  updateActionBar
   updateActionBarDelayed
+  startActionBarUpdate
+  stopActionBarUpdate
   actionBarItems
   curActionBarTypes
   primaryAction

@@ -5,7 +5,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { sin, cos, PI } = require("math")
 let { registerScene } = require("%rGui/navState.nut")
 let { debugAdsWndParams } = require("adsInternalState.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 
 
 let isOpened = Computed(@() debugAdsWndParams.value != null)
@@ -92,7 +92,7 @@ let debugAdsScene = {
       rendObj = ROBJ_TEXT
       text = isRewardReceived.value ? "Rewards received" : ""
     }
-    textButtonCommon("Debug cancel", close, { ovr = { vplace = ALIGN_BOTTOM, hplace = ALIGN_RIGHT, margin = sh(5) } })
+    textButtonPrimary("Debug cancel", close, { ovr = { vplace = ALIGN_BOTTOM, hplace = ALIGN_RIGHT, margin = sh(5) } })
   ]
 }
 

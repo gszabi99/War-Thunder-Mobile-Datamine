@@ -68,9 +68,8 @@ let function tryApplyChangedHosts() {
 isInBattle.subscribe(@(_) tryApplyChangedHosts())
 
 ::matching.subscribe("hmanager.notify_hosts_list_changed", function(result) {
+  logCH($"Changed hosts:", result)
   let hosts = result.filter(@(_, ip) reIP.match(ip))
-  logCH($"Changed hosts:")
-  hosts.each(@(clusterNames, ip) logCH($"{ip} = [{",".join(clusterNames)}]"))
   clusterHostsChangePending(hosts)
   tryApplyChangedHosts()
 })

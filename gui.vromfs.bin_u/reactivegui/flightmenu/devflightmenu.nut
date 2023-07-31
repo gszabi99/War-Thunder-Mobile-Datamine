@@ -4,7 +4,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { can_debug_missions } = require("%appGlobals/permissions.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonFaded } = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
 
 let isShowDevMenu = mkWatched(persist, "isShowDevMenu", false)
@@ -37,7 +37,7 @@ let devMenuContent = @() {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   gap = hdpx(30)
-  children = buttonsList.value.map(@(b) textButtonFaded(utf8ToUpper(getFlightButtonText(b)),
+  children = buttonsList.value.map(@(b) textButtonCommon(utf8ToUpper(getFlightButtonText(b)),
     flightMenuButtonsAction?[b] ?? getFlightMenuButtonAction(b)))
   animations = wndSwitchAnim
 }
@@ -47,7 +47,7 @@ let openDevMenuButton = @() {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   children = can_debug_missions.value
-    ? textButtonFaded(isShowDevMenu.value ? "Close Dev Menu" : "Open Dev Menu", switchShowDevMenu,
+    ? textButtonCommon(isShowDevMenu.value ? "Close Dev Menu" : "Open Dev Menu", switchShowDevMenu,
         { hotkeys = ["^J:RT"] })
     : null
 }

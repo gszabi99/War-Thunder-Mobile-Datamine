@@ -1823,7 +1823,7 @@
   "default_skin_tomoe": {
     "replace_tex": {
       "from": "b6n2_dark_green_c*",
-      "to": "b6n2_dark_green_c_tomoe*"
+      "to": "b6n2_dark_green_c*"
     }
   },
   "cutting": {

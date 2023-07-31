@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { lootboxInProgress, open_lootbox } = require("%appGlobals/pServer/pServerApi.nut")
+let { lootboxInProgress, open_lootbox, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
@@ -17,9 +17,11 @@ let canOpen = Computed(@() !isInBattle.value && lootboxInProgress.value == null 
 
 let idToOpen = keepref(Computed(@() canOpen.value ? lootboxes.value.findindex(@(_) true) : null))
 
+registerHandler("onAutoOpenLootbox", @(res) res?.error == null ? null : wasErrorSoon(true))
+
 let function tryOpen() {
   if (idToOpen.value != null)
-    open_lootbox(idToOpen.value, @(res) res?.error == null ? null : wasErrorSoon(true))
+    open_lootbox(idToOpen.value, "onAutoOpenLootbox")
 }
 tryOpen()
 idToOpen.subscribe(@(_) deferOnce(tryOpen))

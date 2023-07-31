@@ -33,7 +33,7 @@ needShowExitToUpdate.subscribe(function(v) {
   openFMsgBox({
     text = loc("msg/updateAvailable/mandatory")
     isPersist = true
-    buttons = [{ text = loc("ugm/btnUpdate"), eventId = "exitGameForUpdate", isPrimary = true, isDefault = true }]
+    buttons = [{ text = loc("ugm/btnUpdate"), eventId = "exitGameForUpdate", styleId = "PRIMARY", isDefault = true }]
   })
 })
 
@@ -43,6 +43,6 @@ needShowSuggestToUpdate.subscribe(@(v) !v ? null
       isPersist = true
       buttons = [
         { id = "cancel", isCancel = true }
-        { text = loc("ugm/btnUpdate"), eventId = "exitGameForUpdate", isPrimary = true, isDefault = true }
+        { text = loc("ugm/btnUpdate"), eventId = "exitGameForUpdate", styleId = "PRIMARY", isDefault = true }
       ]
     }))

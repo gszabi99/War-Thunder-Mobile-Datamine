@@ -41,7 +41,7 @@ let function showNoBalanceMsg(price, currencyId, onGoToShop) {
     }
     buttons = [
       { id = "cancel", isCancel = true }
-      { id = "replenish", isPrimary = true, isDefault = true,
+      { id = "replenish", styleId = "PRIMARY", isDefault = true,
         function cb() {
           openShopWndByCurrencyId(currencyId)
           onGoToShop?()
@@ -67,21 +67,33 @@ let msgContent = @(text, priceComp) {
   flow = FLOW_VERTICAL
   children = [
     msgBoxText(text, { size = [flex(), SIZE_TO_CONTENT] })
-    priceComp
+    {
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(32)
+      children = priceComp
+    }
   ]
 }
 
-let function openMsgBoxPurchase(text, price, purchaseFunc) {
-  if (showNoBalanceMsgIfNeed(price.price, price.currencyId))
-    return
+let function openMsgBoxPurchase(text, prices, purchaseFunc) {
+  let priceComp = []
+  let priceList = type(prices) == "array" ? prices : [prices]
 
-  let priceComp = mkCurrencyComp(price.price, price.currencyId, CS_INCREASED_ICON)
-    .__update({ margin = [ hdpx(25), 0, 0, 0 ] })
+  foreach(price in priceList) {
+    if (showNoBalanceMsgIfNeed(price.price, price.currencyId))
+      return
+
+    priceComp.append(
+      mkCurrencyComp(price.price, price.currencyId, CS_INCREASED_ICON)
+        .__update({ margin = [ hdpx(25), 0, 0, 0 ] })
+    )
+  }
+
   openMsgBox({
     text = msgContent(text, priceComp),
     buttons = [
       { id = "cancel", isCancel = true }
-      { id = "purchase", cb = purchaseFunc, isPurchase = true, isDefault = true }
+      { id = "purchase", cb = purchaseFunc, styleId = "PURCHASE", isDefault = true }
     ]
   })
 }

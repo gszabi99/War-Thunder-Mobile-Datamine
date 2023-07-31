@@ -2,11 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 
 let eventbus = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
-let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_FACEBOOK, availableLoginTypes
+let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_FACEBOOK, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
+let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { defButtonHeight, BRIGHT } = require("%rGui/components/buttonStyles.nut")
-let { mkCustomButton, textButtonBright, textButtonFaded, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { mkCustomButton, textButtonBright, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let urlText = require("%rGui/components/urlText.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { optLang } = require("%rGui/options/options/langOptions.nut")
@@ -14,13 +15,14 @@ let mkOption = require("%rGui/options/mkOption.nut")
 let { contentWidth } = require("%rGui/options/optionsStyle.nut")
 let { btnBUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { getCurrentLanguage } = require("dagor.localize")
 
+let fbButtonVisible = getCurrentLanguage() != "Russian"
 let loginName = mkWatched(persist, "loginName", "")
 let loginPas = mkWatched(persist, "loginPas", "")
 let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
 let check2StepAuthCode = mkWatched(persist, "check2StepAuthCode", false)
 
-let isLoginByGajin = mkWatched(persist, "isLoginByGajin", false)
 let isShowLanguagesList = Watched(false)
 
 loginName.subscribe(@(_) check2StepAuthCode(false))
@@ -41,9 +43,6 @@ let googleLogoWidth = (59.0 / 62.0 * googleLogoHeight).tointeger()
 let cancelText = utf8ToUpper(loc("mainmenu/btnCancel"))
 
 let urlColor = Color(0, 204, 255)
-
-let PRIVACY_POLICY_URL = "https://gaijin.net/privacypolicy/"
-let EULA_URL = "https://gaijin.net/eula/"
 
 local languageTitle = loc("profile/language")
 let languageTitleEn = loc("profile/language/en")
@@ -160,7 +159,7 @@ let gaijinAuthorization = @() {
       flow = FLOW_HORIZONTAL
       gap = buttonsHGap
       children = [
-        textButtonFaded(cancelText, @() isLoginByGajin.update(false), { hotkeys = [btnBUp] })
+        textButtonCommon(cancelText, @() isLoginByGajin.update(false), { hotkeys = [btnBUp] })
         textButtonBright(utf8ToUpper(loc("msgbox/btn_signIn")), doLoginGaijin, { hotkeys = ["^J:X"] })
       ]
     }
@@ -258,10 +257,12 @@ let loginButtons = {
   [LT_FIREBASE] = mkCustomButton(firebaseLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_FIREBASE }),
     BRIGHT),
-  [LT_FACEBOOK] = mkCustomButton(fbLoginButtonContent,
+  [LT_FACEBOOK] = !fbButtonVisible ? null
+    : mkCustomButton(fbLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_FACEBOOK }),
-    BRIGHT),
-}
+     BRIGHT),
+}.filter(@(button) button != null)
+
 let mainAuthorizationButtons = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_FACEBOOK, LT_GAIJIN]
   .filter(@(lt) availableLoginTypes?[lt] ?? false)
   .map(@(lt) loginButtons?[lt])
@@ -283,7 +284,7 @@ let langOptionsContent = {
   valign = ALIGN_CENTER
   children = [
     mkOption(optLang)
-    textButtonFaded(cancelText, @() isShowLanguagesList.update(false))
+    textButtonCommon(cancelText, @() isShowLanguagesList.update(false))
   ]
 }
 
@@ -310,7 +311,7 @@ let supportBlock = {
 }
 
 let urlOvr = { ovr = { color = urlColor }, childOvr  = { color = urlColor } }
-let eulaUrl = urlText(loc("userAgreement"), EULA_URL, urlOvr)
+let termsOfServiceUrl = urlText(loc("termsOfService"), TERMS_OF_SERVICE_URL, urlOvr)
 let privacyPolicyUrl = urlText(loc("privacyPolicy"), PRIVACY_POLICY_URL, urlOvr)
 let checkAutoLogin = @() eventbus.send("login.checkAutoStart", {})
 
@@ -333,7 +334,7 @@ return {
       vplace = ALIGN_BOTTOM
       flow = FLOW_HORIZONTAL
       children = [
-        eulaUrl
+        termsOfServiceUrl
         {
           rendObj = ROBJ_TEXT
           text = loc("ui/comma")

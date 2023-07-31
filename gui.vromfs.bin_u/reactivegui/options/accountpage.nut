@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
+let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%rGui/globals/timeToText.nut")
 let { contentWidth } = require("optionsStyle.nut")
-let { textButtonFaded, textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { mkLevelBg, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { myUserName, myAvatar, myUserId } = require("%appGlobals/profileStates.nut")
@@ -12,7 +13,6 @@ let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 
-let PRIVACY_POLICY_URL = "https://gaijin.net/privacypolicy/"
 let DELETE_PROFILE_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
 
 let avatarSize = hdpx(200)
@@ -61,7 +61,7 @@ let changeNameMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionChangeName")
   buttons = [
     { id = "no", isCancel = true }
-    { id = "yes", isPrimary = true, isDefault = true, cb = @() send("changeName", {}) }
+    { id = "yes", styleId = "PRIMARY", isDefault = true, cb = @() send("changeName", {}) }
   ]
 })
 
@@ -135,9 +135,9 @@ let bottomButtons = {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   children = [
-    textButtonCommon(loc("mainmenu/support"), @() send("openUrl", { baseUrl = loc("url/support") }), buttonsWidthStyle)
+    textButtonPrimary(loc("mainmenu/support"), @() send("openUrl", { baseUrl = loc("url/support") }), buttonsWidthStyle)
     { size = flex() }
-    textButtonCommon(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }))
+    textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }))
   ]
 }
 
@@ -145,7 +145,7 @@ let logoutMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionChangePlayer")
   buttons = [
     { id = "no", isCancel = true }
-    { id = "yes", isPrimary = true, isDefault = true, cb = @() send("logOutManually", {}) }
+    { id = "yes", styleId = "PRIMARY", isDefault = true, cb = @() send("logOutManually", {}) }
   ]
 })
 
@@ -156,9 +156,9 @@ return @() {
   children = [
     userInfoBlock
     { size = flex() }
-    !isInMenu.value ? null : textButtonFaded(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
+    !isInMenu.value ? null : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
     { size = flex() }
-    textButtonFaded(loc("options/delete_profile"), @() send("openUrl", { baseUrl = DELETE_PROFILE_URL }), buttonsWidthStyle)
+    textButtonCommon(loc("options/delete_profile"), @() send("openUrl", { baseUrl = DELETE_PROFILE_URL }), buttonsWidthStyle)
     { size = flex() }
     bottomButtons
   ]

@@ -4,7 +4,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let Rand = require("%sqstd/rand.nut")
 let { closeLvlUpWnd, upgradeUnitName, skipLevelUpUnitPurchase } = require("levelUpState.nut")
 let { unitInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { textButtonCommon, textButtonPurchase, textButtonFaded, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPurchase, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
@@ -100,10 +100,10 @@ let unitActionButtons = function() {
     flow = FLOW_HORIZONTAL
     gap = buttonsHGap
     children = [
-      needSkipBtn.value ? textButtonCommon(utf8ToUpper(loc("msgbox/btn_skip")), skipLevelUpUnitPurchase)
+      needSkipBtn.value ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")), skipLevelUpUnitPurchase)
         : null
       isPaid ? textButtonPurchase(utf8ToUpper(loc("msgbox/btn_purchase")), onBuyUnit)
-        : isFree ? textButtonCommon(utf8ToUpper(loc("msgbox/btn_get")), onBuyUnit)
+        : isFree ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")), onBuyUnit)
         : null
     ]
   }
@@ -118,7 +118,7 @@ let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
     valign = ALIGN_CENTER
   })
 
-let btnLater = textButtonFaded(utf8ToUpper(loc("msgbox/btn_later")), closeLvlUpWnd,
+let btnLater = textButtonCommon(utf8ToUpper(loc("msgbox/btn_later")), closeLvlUpWnd,
   { ovr = { hotkeys = [[btnBEscUp, { action = closeLvlUpWnd }]] } })
 
 let navBarPlace = {

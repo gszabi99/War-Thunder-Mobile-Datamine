@@ -1754,7 +1754,7 @@
   "default_skin_tomoe": {
     "replace_tex": {
       "from": "b5n2_c*",
-      "to": "b5n2_c_tomoe*"
+      "to": "b5n2_c*"
     }
   },
   "cutting": {

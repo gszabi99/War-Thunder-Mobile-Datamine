@@ -3,12 +3,12 @@ let { screenlog } = require("dagor.debug")
 let { tostring_r } = require("%sqstd/string.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { set_purch_player_type, check_new_offer, debug_offer_generation_stats, shift_all_offers_time,
-  generate_fixed_type_offer
+  generate_fixed_type_offer, registerHandler
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
-let { textButtonFaded } = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
@@ -18,28 +18,36 @@ let gap = hdpx(10)
 
 let wndUid = "debugOffersWnd"
 let close = @() removeModalWindow(wndUid)
-let slogRes = @(res) screenlog(res?.error == null ? "SUCCESS!" : "ERROR")
-let function closeOnSuccess(res) {
-  slogRes(res)
-  if (res?.error == null)
-    close()
-}
 
-let mkBtn = @(label, func) textButtonFaded(label, func, { ovr = { size = [flex(), hdpx(100)] } })
+registerHandler("closeOfferWndOnSuccess",
+  function closeOnSuccess(res) {
+    screenlog(res?.error == null ? "SUCCESS!" : "ERROR")
+    if (res?.error == null)
+      close()
+  })
+
+registerHandler("onDebugShiftOffer", @(_) check_new_offer(curCampaign.value, "closeOfferWndOnSuccess"))
+
+let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = [flex(), hdpx(100)] } })
 let infoTextOvr = { halign = ALIGN_LEFT, preformatted = FMT_KEEP_SPACES | FMT_NO_WRAP }.__update(fontTiny)
+
+registerHandler("onDebugOfferStats",
+  function(res) {
+    let data = clone res
+    if ("isCustom" in data)
+      delete data.isCustom
+    openMsgBox({
+      text = msgBoxText(tostring_r(res), infoTextOvr)
+      wndOvr = { size = [hdpx(1100), hdpx(1000)] }
+    })
+  })
 
 let commandsList = [
   { label = "gen_next_day_offer",
-    func = @() shift_all_offers_time(86400, @(_) check_new_offer(curCampaign.value, closeOnSuccess))
+    func = @() shift_all_offers_time(86400, "onDebugShiftOffer")
   }
   { label = "debug_offer_generation_stats",
-    func = @() debug_offer_generation_stats(curCampaign.value,
-      function(res) {
-        let data = clone res
-        if ("isCustom" in data)
-          delete data.isCustom
-        openMsgBox({ text = msgBoxText(tostring_r(res), infoTextOvr) })
-      })
+    func = @() debug_offer_generation_stats(curCampaign.value, "onDebugOfferStats")
   }
 ]
 
@@ -47,7 +55,7 @@ foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade"]) {
   let offerType = ot
   commandsList.append({
     label = $"generate {offerType}",
-    func = @() generate_fixed_type_offer(curCampaign.value, offerType, closeOnSuccess)
+    func = @() generate_fixed_type_offer(curCampaign.value, offerType, "closeOfferWndOnSuccess")
   })
 }
 
@@ -58,7 +66,7 @@ let pPlayerTypes = {
 }
 pPlayerTypes.each(@(pType, id) commandsList.append({
   label = $"set purch type {id}",
-  func = @() set_purch_player_type(pType, slogRes)
+  func = @() set_purch_player_type(pType, "sceenlogResult")
 }))
 
 let function mkCommandsList() {

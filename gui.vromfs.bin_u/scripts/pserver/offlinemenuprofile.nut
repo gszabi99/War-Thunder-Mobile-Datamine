@@ -9,7 +9,7 @@ let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpe
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { generate_full_offline_profile } = require("%appGlobals/pServer/pServerApi.nut")
+let { generate_full_offline_profile, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { units } = require("%appGlobals/pServer/campaign.nut")
 
@@ -63,33 +63,33 @@ let function saveResult(res, fileName) {
   console_print($"Saved json to {fullName}")
 }
 
-let function onFullProfileGenerated(res) {
-  if (res?.error != null) {
-    console_print("Failed to generate profile. See profile server error for details")
-    return
-  }
-  let profile = clone res
-  if ("isCustom" in profile)
-    delete profile.isCustom
-  saveResult(profile, PROFILE)
-  saveResult(serverConfigs.value.__merge({
-    adsCfg = {}
-    allGoods = {}
-    clientMissionRewards = {}
-    playerLevelRewards = {}
-    playerLevels = {}
-    schRewards = {}
-  }), CONFIGS)
-}
+registerHandler("onFullProfileGenerated",
+  function(res) {
+    if (res?.error != null) {
+      console_print("Failed to generate profile. See profile server error for details")
+      return
+    }
+    let profile = clone res
+    if ("isCustom" in profile)
+      delete profile.isCustom
+    saveResult(profile, PROFILE)
+    saveResult(serverConfigs.value.__merge({
+      adsCfg = {}
+      allGoods = {}
+      clientMissionRewards = {}
+      playerLevelRewards = {}
+      playerLevels = {}
+      schRewards = {}
+    }), CONFIGS)
+  })
 
-register_command(@() generate_full_offline_profile(onFullProfileGenerated),
+register_command(@() generate_full_offline_profile("onFullProfileGenerated"),
   $"debug.generate_offline_profile")
 
 
 let offlineActions = {
   check_new_offer = @(_) {}
   get_battle_data_jwt = @(_) {}
-  send_to_bq = @(_) {}
 
   function set_current_campaign(p) {
     let saveBlk = get_common_local_settings_blk()

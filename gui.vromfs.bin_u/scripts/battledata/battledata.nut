@@ -30,7 +30,10 @@ enum ACTION {
   REQUEST = "request"
 }
 
-let state = persist("realBattleData", @() Watched(null)) //eid, sessionId, slots, data, isBattleDataReceived
+let state = mkWatched(persist, "state", null) //eid, sessionId, slots, data, isBattleDataReceived
+let isBattleDataApplied = mkWatched(persist, "isBattleDataApplied", false)
+let wasBattleDataApplied = mkWatched(persist, "wasBattleDataApplied", false)
+let lastClientBattleData = mkWatched(persist, "lastAppliedClientBattleData", null)
 
 let curAction = keepref(Computed(function() {
   let { isBattleDataReceived = null, sessionId = -1, data = null, slots = null } = state.value
@@ -151,9 +154,11 @@ let function setBattleDataToClientEcs(bd) {
   battleDataQuery(function(_, c) {
     if (c.server_player__userId != myUserId.value)
       return
-    logBD("Set my battle data to client entity")
+    logBD("Set my battle data to client entity ", bd?.unit.name)
     c.battleData = bd
     isFound = true
+    lastClientBattleData(bd)
+    isBattleDataApplied(true)
   })
 
   if (isFound)
@@ -168,17 +173,27 @@ let function setBattleDataToClientEcs(bd) {
       server_player__userId = [myUserId.value, ecs.TYPE_UINT64]
       isBattleDataReceived = true
       battleData = bd
-    }, @(_e) logBD("Created wtm_server_player with battle data for not multiplayer battle."))
+    },
+    function(_e) {
+      logBD("Created wtm_server_player with battle data for not multiplayer battle. ", bd?.unit.name)
+      lastClientBattleData(bd)
+      isBattleDataApplied(true)
+    })
 }
 
 eventbus.subscribe("CreateBattleDataForClient",
-  @(_) setBattleDataToClientEcs(::is_multiplayer() ? state.value?.data : battleData.value?.payload))
+  @(_) ::is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
+    : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)
+    : logBD("Ignore set battle data to client because of not actual"))
 
 let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !::is_multiplayer() ? null
   : state.value?.data))
 mpBattleDataForClientEcs.subscribe(@(v) setBattleDataToClientEcs(v))
 
 realBattleData.subscribe(@(v) battleCampaign(v?.campaign ?? ""))
+
+isInBattle.subscribe(@(v) v ? wasBattleDataApplied(isBattleDataApplied.value) : isBattleDataApplied(false))
+isBattleDataApplied.subscribe(@(v) v ? wasBattleDataApplied(v) : null)
 
 register_command(function() {
   if (state.value == null)
@@ -190,6 +205,8 @@ register_command(function() {
 
 return {
   battleData = realBattleData
+  lastClientBattleData
   curBattleUnit = Computed(@() realBattleData.value?.unit)
   isBattleDataReceived = Computed(@() state.value?.isBattleDataReceived)
+  wasBattleDataApplied
 }

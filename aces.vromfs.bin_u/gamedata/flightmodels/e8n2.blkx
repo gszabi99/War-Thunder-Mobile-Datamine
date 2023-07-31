@@ -3497,11 +3497,11 @@
     "replace_tex": [
       {
         "from": "e8n2_c*",
-        "to": "e8n2_c_tomoe*"
+        "to": "e8n2_c*"
       },
       {
         "from": "e8n2_c_dmg*",
-        "to": "e8n2_c_tomoe_dmg*"
+        "to": "e8n2_c_dmg*"
       }
     ]
   },

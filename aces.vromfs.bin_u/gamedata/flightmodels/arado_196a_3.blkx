@@ -3371,11 +3371,11 @@
     "replace_tex": [
       {
         "from": "ar_196a_3_c*",
-        "to": "ar_196a_3_c_tomoe*"
+        "to": "ar_196a_3_c*"
       },
       {
         "from": "ar_196a_3_c_dmg*",
-        "to": "ar_196a_3_c_tomoe_dmg*"
+        "to": "ar_196a_3_c_dmg*"
       }
     ]
   },

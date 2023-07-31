@@ -3,7 +3,7 @@
 #explicit-this
 
 from "%scripts/dagui_library.nut" import *
-let { isLoggedIntoContacts } = require("%appGlobals/loginState.nut")
+let { isLoggedIntoContacts } = require("loginContacts.nut")
 let { rights, rightsError } = require("%appGlobals/permissions/userRights.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let client = require("contacts")

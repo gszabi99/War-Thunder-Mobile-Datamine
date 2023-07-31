@@ -7,7 +7,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { mkUnitLevelBlock, levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
-let { textButtonCommon, textButtonPurchase, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPurchase, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { isUnitAttrOpened, attrUnitData, curCategoryId, selAttrSpCost, leftUnitSp, isUnitMaxSkills,
   getSpCostText, resetAttrState, applyAttributes, availableAttributes, attrUnitLevelsToMax,
@@ -126,7 +126,7 @@ let actionButtons = @() {
           @() buyUnitLevelWnd(attrUnitName.value),
           { hotkeys = ["^J:Y"] })
     selAttrSpCost.value <= 0 ? null
-      : textButtonCommon(utf8ToUpper(loc("msgbox/btn_apply")), applyAttributes, { hotkeys = ["^J:X"] })
+      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAttributes, { hotkeys = ["^J:X"] })
   ]
 }
 
@@ -148,7 +148,7 @@ let function onClose() {
         { id = "reset", cb = @() isUnitAttrOpened(false), hotkeys = ["^J:X"] }
         {
           id = "apply"
-          isPrimary = true
+          styleId = "PRIMARY"
           isDefault = true
           cb = function() {
             applyAttributes()

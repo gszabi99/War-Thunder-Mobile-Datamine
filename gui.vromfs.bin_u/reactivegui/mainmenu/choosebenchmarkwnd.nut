@@ -4,7 +4,7 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { benchmarkGameModes } = require("%rGui/gameModes/gameModeState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
-let { textButtonFaded } = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 
 let wndUid = "chooseBenchmark"
 let close = @() removeModalWindow(wndUid)
@@ -36,7 +36,7 @@ let function byRows(list) {
 let btnStyle = { ovr = { size = [flex(), hdpx(100)] } }
 let function missionsListUi() {
   let children = [byRows(benchmarksList.value.map(@(b)
-    textButtonFaded(
+    textButtonCommon(
       b.name,
       function() {
         close()
@@ -53,7 +53,7 @@ let function missionsListUi() {
       }.__update(fontSmall),
       byRows(benchmarkGameModes.value.values()
         .sort(@(a, b) a <=> b)
-        .map(@(gm) textButtonFaded(
+        .map(@(gm) textButtonCommon(
           loc($"gameMode/{gm.name}", gm.name),
           function() {
             close()

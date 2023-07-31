@@ -35,7 +35,8 @@ if (isGoodsRequested.value)
 let goodsIdByGuid = Computed(function() {
   let res = {}
   foreach (id, goods in campConfigs.value?.allGoods ?? {})
-    if (can_debug_shop.value || !goods.isShowDebugOnly) {
+    if ((can_debug_shop.value || !goods.isShowDebugOnly)
+        && !goods?.isHiddenInGaijinStore) {
       let { purchaseGuid = "" } = goods
       if (purchaseGuid != "")
         res[purchaseGuid] <- id

@@ -106,11 +106,11 @@
         },
         "unitSetProperties": [
           {
+            "object": "target_tanks_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "target_tanks_squad",
             "isImmortal": true,
             "stealthRadius": 0.0,
             "attack_type": "dont_aim",
@@ -119,25 +119,25 @@
             "lockSpeed": true
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "look_at_01",
               "look_tank01",
               "look_tank02",
               "look_tank03"
             ],
-            "stealthRadius": 0.0,
-            "calmDetection": true
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "stealthRadius": 0.0,
+            "calmDetection": true
+          },
+          {
             "object": "player",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "isImmortal": true
           }
         ],
@@ -247,7 +247,7 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 1/7: camera swiped"
+          "event": "task 1/9: camera swiped"
         },
         "hudElementShow": {
           "element": "img_swipe_to_rotate_cam",
@@ -437,6 +437,18 @@
         }
       },
       "actions": {
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "task 2/9: player moved"
+        },
+        "triggerEnable": [
+          {
+            "target": "timing_rec_driving_01"
+          },
+          {
+            "target": "driving_reach_waypoint"
+          }
+        ],
         "hudElementSelectionShade": {
           "element": ""
         },
@@ -472,9 +484,6 @@
         },
         "wait": {
           "time": 1.0
-        },
-        "triggerEnable": {
-          "target": "driving_reach_waypoint"
         }
       },
       "else_actions": {}
@@ -505,9 +514,18 @@
         }
       },
       "actions": {
-        "triggerDisable": {
-          "target": "driving_player_moved"
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "task 3/9: first waypoint"
         },
+        "triggerDisable": [
+          {
+            "target": "timing_rec_driving_01"
+          },
+          {
+            "target": "driving_player_moved"
+          }
+        ],
         "playHint": {
           "hintType": "tutorialHint",
           "name": "",
@@ -576,9 +594,14 @@
       },
       "conditions": {},
       "actions": {
-        "triggerEnable": {
-          "target": "driving_to_fire_range_waypoint4"
-        },
+        "triggerEnable": [
+          {
+            "target": "driving_to_fire_range_waypoint4"
+          },
+          {
+            "target": "timing_rec_driving_02"
+          }
+        ],
         "wait": [
           {
             "time": 0.5
@@ -662,7 +685,10 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 2/7: reached shooting waypoint"
+          "event": "task 4/9: reached shooting waypoint"
+        },
+        "triggerDisable": {
+          "target": "timing_rec_driving_02"
         },
         "unitPlayEffect": {
           "effect_type": "specify",
@@ -739,19 +765,19 @@
         ],
         "unitSetProperties": [
           {
+            "object": "target_tanks_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "target_tanks_squad",
             "stealthRadius": 1000.0
           },
           {
+            "object": "target_tanks_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "target_tanks_squad",
             "isImmortal": false
           }
         ],
@@ -1240,7 +1266,7 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 3/7: aimed at first target"
+          "event": "task 5/9: aimed at first target"
         },
         "varSetBool": {
           "value": true,
@@ -1304,7 +1330,7 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 4/7: zoomed in"
+          "event": "task 6/9: zoomed in"
         },
         "playHint": {
           "hintType": "tutorialHint",
@@ -1439,14 +1465,14 @@
           "object": "@target_area"
         },
         "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "target_tank01",
             "target_tank02"
           ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "showXray": true
         },
         "varSetString": {
@@ -1611,7 +1637,7 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 5/7: first shot"
+          "event": "task 7/9: first shot"
         },
         "playHint": {
           "hintType": "tutorialHint",
@@ -1731,14 +1757,9 @@
           "value": false,
           "var": "xray_explaining"
         },
-        "triggerEnable": [
-          {
-            "target": "target_hints_enable"
-          },
-          {
-            "target": "shootingP1_player_killed_crew"
-          }
-        ]
+        "triggerEnable": {
+          "target": "shootingP1_player_killed_crew"
+        }
       },
       "else_actions": {}
     },
@@ -1775,7 +1796,7 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 6/7: first target killed"
+          "event": "task 8/9: first target killed"
         },
         "triggerDisable": {
           "target": "shootingP1_player_shot"
@@ -1789,11 +1810,11 @@
           "target": "target_tank01"
         },
         "__unitSetProperties": {
+          "object": "target_tank01",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank01",
           "stealthRadius": 0.0
         },
         "playHint": {
@@ -1871,11 +1892,11 @@
           "element": ""
         },
         "__unitSetProperties": {
+          "object": "target_tank01",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank01",
           "stealthRadius": 0.0,
           "calmDetection": true,
           "forceLockTarget": false
@@ -1903,11 +1924,11 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "target_tank02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank02",
           "stealthRadius": 1000.0
         },
         "unitSetIndication": {
@@ -2132,11 +2153,11 @@
           "target": "shootingP1_engine_hit_xray"
         },
         "unitSetProperties": {
+          "object": "target_tank02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank02",
           "isImmortal": false
         },
         "unitBlinkPart": {
@@ -2280,11 +2301,11 @@
           "target": "target_tank02"
         },
         "unitSetProperties": {
+          "object": "target_tank02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank02",
           "stealthRadius": 0.0
         },
         "unitBlinkPart": {
@@ -2437,11 +2458,11 @@
           "target": "target_tank02"
         },
         "unitSetProperties": {
+          "object": "target_tank02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank02",
           "stealthRadius": 0.0
         },
         "playerControls": [
@@ -2827,11 +2848,11 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "player",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "player",
           "isImmortal": false
         },
         "triggerEnable": {
@@ -2867,11 +2888,11 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "player",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "player",
           "isImmortal": true
         },
         "triggerEnable": {
@@ -2938,11 +2959,11 @@
       "conditions": {},
       "actions": {
         "unitSetProperties": {
+          "object": "target_tanks_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tanks_squad",
           "isImmortal": false
         },
         "varSetString": {
@@ -2964,6 +2985,16 @@
               "targets_killed",
               "first_target"
             ]
+          },
+          {
+            "target": [
+              "timing_rec_killing_target_01",
+              "timing_rec_killing_target_02",
+              "timing_rec_killing_target_03"
+            ]
+          },
+          {
+            "target": "target_hints_enable"
           }
         ],
         "wait": {
@@ -3005,11 +3036,11 @@
       },
       "actions": {
         "__unitSetProperties": {
+          "object": "target_tank01",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank01",
           "showXray": true
         },
         "__unitBlinkPart": {
@@ -3106,11 +3137,11 @@
       },
       "actions": {
         "__unitSetProperties": {
+          "object": "target_tank02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank02",
           "showXray": true
         },
         "__unitBlinkPart": [
@@ -3251,9 +3282,14 @@
             "target": "target_03_hint"
           }
         ],
-        "triggerEnable": {
-          "target": "target_no_target"
-        },
+        "triggerEnable": [
+          {
+            "target": "target_no_target"
+          },
+          {
+            "target": "target_03_first_hit"
+          }
+        ],
         "wait": {
           "time": 1.0
         }
@@ -3289,11 +3325,11 @@
       "actions": {},
       "else_actions": {
         "__unitSetProperties": {
+          "object": "@targeted_tank",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "@targeted_tank",
           "showXray": false
         },
         "varSetString": {
@@ -3342,7 +3378,25 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "varCompareBool": [
+          {
+            "var_value": "xray_explaining",
+            "value": false,
+            "comparasion_func": "equal"
+          },
+          {
+            "var_value": "shooting_explaining",
+            "value": false,
+            "comparasion_func": "equal"
+          },
+          {
+            "var_value": "shooting_explained",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        ]
+      },
       "actions": {
         "triggerEnable": {
           "target": [
@@ -4316,11 +4370,11 @@
           "freq": 3.0
         },
         "unitSetProperties": {
+          "object": "target_tank03",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank03",
           "showXray": true
         }
       },
@@ -4356,6 +4410,362 @@
         }
       },
       "else_actions": {}
+    },
+    "target_03_first_hit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_tank03"
+        },
+        "unitWhenStatus": {
+          "object_type": "isActive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "target_tank03"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "target_03_hit_2nd"
+        },
+        "triggerEnable": {
+          "target": "target_03_marker_turn"
+        }
+      },
+      "else_actions": {}
+    },
+    "target_03_second_hit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_tank03"
+        },
+        "unitWhenStatus": {
+          "object_type": "isActive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "target_tank03"
+        }
+      },
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "target_03_hit_2nd"
+        },
+        "triggerDisable": {
+          "target": "target_03_marker_red"
+        }
+      },
+      "else_actions": {}
+    },
+    "target_03_marker_green": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "target_03_hit_2nd",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "hudCrosshairShow": [
+          {
+            "show": true,
+            "penetration": true,
+            "offsetX": 0.0,
+            "offsetY": 1.8,
+            "offsetZ": -0.4
+          },
+          {
+            "show": true,
+            "penetration": true,
+            "offsetX": 0.0,
+            "offsetY": 1.8,
+            "offsetZ": 0.42
+          }
+        ],
+        "wait": [
+          {
+            "time": 1.0
+          },
+          {
+            "time": 3.0
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "target_03_marker_red": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "target_03_hit_2nd",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "hudCrosshairShow": [
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 1.2,
+            "offsetZ": -0.15
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 0.9,
+            "offsetZ": 0.0
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 0.5,
+            "offsetZ": -0.33
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 0.5,
+            "offsetZ": 0.33
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 0.7,
+            "offsetZ": -0.33
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 0.7,
+            "offsetZ": 0.33
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 1.2,
+            "offsetZ": -0.5
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 1.35,
+            "offsetZ": 0.3
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 1.25,
+            "offsetZ": -1.05
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 1.25,
+            "offsetZ": 1.05
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 1.9,
+            "offsetZ": -0.6
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 1.9,
+            "offsetZ": 0.6
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 1.65,
+            "offsetZ": -0.2
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 2.05,
+            "offsetZ": -0.2
+          },
+          {
+            "show": true,
+            "penetration": false,
+            "offsetX": 0.0,
+            "offsetY": 2.05,
+            "offsetZ": 0.2
+          }
+        ],
+        "wait": [
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          },
+          {
+            "time": 0.5
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "target_03_marker_turn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isTargetedByPlayer",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "target_tank03"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": [
+            "target_03_marker_green",
+            "target_03_marker_red"
+          ]
+        }
+      },
+      "else_actions": {
+        "triggerDisable": {
+          "target": [
+            "target_03_marker_green",
+            "target_03_marker_red"
+          ]
+        },
+        "hudCrosshairShow": {
+          "show": false,
+          "penetration": false,
+          "offsetX": 0.0,
+          "offsetY": 0.0,
+          "offsetZ": 0.0
+        }
+      }
     },
     "target_hint_off": {
       "is_enabled": false,
@@ -4429,12 +4839,20 @@
           "params": "",
           "event": "stage: target 01 killed"
         },
+        "triggerDisable": [
+          {
+            "target": "timing_rec_killing_target_01"
+          },
+          {
+            "target": "target_01_hint"
+          }
+        ],
         "unitSetProperties": {
+          "object": "target_tank01",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank01",
           "showXray": false
         },
         "varModify": {
@@ -4455,9 +4873,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "var_name": "targets_killed"
-        },
-        "triggerDisable": {
-          "target": "target_01_hint"
         },
         "triggerEnable": {
           "target": "timer_2sec"
@@ -4507,6 +4922,14 @@
           "params": "",
           "event": "stage: target 02 killed"
         },
+        "triggerDisable": [
+          {
+            "target": "timing_rec_killing_target_02"
+          },
+          {
+            "target": "target_02_hint"
+          }
+        ],
         "unitDamage": {
           "power": 1.0,
           "useEffect": false,
@@ -4528,11 +4951,11 @@
           "doExplosion": true
         },
         "unitSetProperties": {
+          "object": "target_tank02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank02",
           "showXray": false
         },
         "varModify": {
@@ -4553,9 +4976,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "var_name": "targets_killed"
-        },
-        "triggerDisable": {
-          "target": "target_02_hint"
         },
         "triggerEnable": {
           "target": "timer_2sec"
@@ -4615,12 +5035,27 @@
           "params": "",
           "event": "stage: target 03 killed"
         },
+        "triggerDisable": [
+          {
+            "target": "timing_rec_killing_target_03"
+          },
+          {
+            "target": [
+              "target_03_hint",
+              "target_03_first_hit",
+              "target_03_second_hit",
+              "target_03_marker_green",
+              "target_03_marker_red",
+              "target_03_marker_turn"
+            ]
+          }
+        ],
         "unitSetProperties": {
+          "object": "target_tank03",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_tank03",
           "showXray": false
         },
         "unitDamage": {
@@ -4662,8 +5097,12 @@
           "object_var_value": 0,
           "var_name": "targets_killed"
         },
-        "triggerDisable": {
-          "target": "target_03_hint"
+        "hudCrosshairShow": {
+          "show": false,
+          "penetration": false,
+          "offsetX": 0.0,
+          "offsetY": 0.0,
+          "offsetZ": 0.0
         },
         "triggerEnable": {
           "target": "timer_2sec"
@@ -4708,14 +5147,14 @@
           "time": 0.1
         },
         "__unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "target_tank01",
             "target_tank02"
           ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "showXray": true
         },
         "triggerEnable": {
@@ -4792,7 +5231,7 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 7/7: mission completed"
+          "event": "task 9/9: mission completed"
         },
         "playHint": {
           "hintType": "tutorialHint",
@@ -4865,6 +5304,10 @@
           "setStatus": "enable",
           "control": "ALL"
         },
+        "unitSetProperties": {
+          "object": "player",
+          "cannotMove": false
+        },
         "triggerEnable": {
           "target": "@controls_current"
         }
@@ -4903,6 +5346,10 @@
             "ID_TRANS_GEAR_NEUTRAL",
             "ID_FIRE_GM_MACHINE_GUN"
           ]
+        },
+        "unitSetProperties": {
+          "object": "player",
+          "cannotMove": true
         }
       },
       "else_actions": {}
@@ -4975,7 +5422,11 @@
               "ID_TRANS_GEAR_DOWN"
             ]
           }
-        ]
+        ],
+        "unitSetProperties": {
+          "object": "player",
+          "cannotMove": true
+        }
       },
       "else_actions": {}
     },
@@ -5014,7 +5465,11 @@
               "ID_TRANS_GEAR_DOWN"
             ]
           }
-        ]
+        ],
+        "unitSetProperties": {
+          "object": "player",
+          "cannotMove": true
+        }
       },
       "else_actions": {}
     },
@@ -5197,11 +5652,11 @@
             "control": "ALL"
           },
           "unitSetProperties": {
+            "object": "player",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player",
             "isImmortal": false
           },
           "triggerEnable": {
@@ -5254,6 +5709,194 @@
         },
         "else_actions": {}
       }
+    },
+    "timing_rec_driving_01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 20.0
+        },
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "timing: 20 sec driving first"
+        }
+      },
+      "else_actions": {}
+    },
+    "timing_rec_driving_02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 20.0
+        },
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "timing: 20 sec driving to shoot"
+        }
+      },
+      "else_actions": {}
+    },
+    "timing_rec_killing_target_01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_tank01"
+        },
+        "unitWhenStatus": {
+          "object_type": "isAlive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "target_tank01"
+        }
+      },
+      "actions": {
+        "bigQueryAddRecord": [
+          {
+            "params": "",
+            "event": "shot: no kill 01"
+          },
+          {
+            "params": "",
+            "event": "timing: 30 sec killing target 01"
+          }
+        ],
+        "wait": {
+          "time": 30.0
+        }
+      },
+      "else_actions": {}
+    },
+    "timing_rec_killing_target_02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_tank02"
+        },
+        "unitWhenStatus": {
+          "object_type": "isAlive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "target_tank02"
+        }
+      },
+      "actions": {
+        "bigQueryAddRecord": [
+          {
+            "params": "",
+            "event": "shot: no kill 02"
+          },
+          {
+            "params": "",
+            "event": "timing: 30 sec killing target 02"
+          }
+        ],
+        "wait": {
+          "time": 30.0
+        }
+      },
+      "else_actions": {}
+    },
+    "timing_rec_killing_target_03": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_tank03"
+        },
+        "unitWhenStatus": {
+          "object_type": "isAlive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "target_tank03"
+        }
+      },
+      "actions": {
+        "bigQueryAddRecord": [
+          {
+            "params": "",
+            "event": "shot: no kill 03"
+          },
+          {
+            "params": "",
+            "event": "timing: 30 sec killing target 03"
+          }
+        ],
+        "wait": {
+          "time": 30.0
+        }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -5288,7 +5931,9 @@
     "hint_loader": false,
     "hint_machine_gunner": false,
     "xray_explaining": false,
-    "shooting_explaining": false
+    "shooting_explaining": false,
+    "target_03_hit_1st": false,
+    "target_03_hit_2nd": false
   },
   "dialogs": {},
   "airfields": {},
@@ -5830,19 +6475,19 @@
       "type": "Sphere",
       "tm": [
         [
-          20.0,
+          24.0,
           0.0,
           0.0
         ],
         [
           0.0,
-          20.0,
+          24.0,
           0.0
         ],
         [
           0.0,
           0.0,
-          20.0
+          24.0
         ],
         [
           1829.6,

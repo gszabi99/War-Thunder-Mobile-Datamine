@@ -16,7 +16,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { mkRewardImage, getRewardName } = require("rewardsView/rewardsPresentation.nut")
 let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { textButtonPrimary, textButtonCommon, textButtonFaded, buttonsHGap
+let { textButtonBattle, textButtonPrimary, textButtonCommon, buttonsHGap
 } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { canShowAds } = require("%rGui/ads/adsState.nut")
@@ -179,19 +179,19 @@ let btnStyle = {
   childOvr = fontTiny
 }
 
-let receiveBtn = @(stateFlags) textButtonPrimary(
+let receiveBtn = @(stateFlags) textButtonBattle(
   utf8ToUpper(loc("btn/receive")),
   receiveLoginAward,
   btnStyle.__merge({ stateFlags })
 )
 
-let watchAdsBtn = @(stateFlags) textButtonCommon(
+let watchAdsBtn = @(stateFlags) textButtonPrimary(
   utf8ToUpper(loc("shop/watchAdvert/short")),
   showLoginAwardAds,
   btnStyle.__merge({ childOvr = fontVeryTiny, stateFlags })
 )
 
-let watchAdsNotReadyBtn = @(stateFlags) textButtonFaded(
+let watchAdsNotReadyBtn = @(stateFlags) textButtonCommon(
   utf8ToUpper(loc("shop/watchAdvert/short")),
   showLoginAwardAds,
   btnStyle.__merge({ childOvr = fontVeryTiny, stateFlags })

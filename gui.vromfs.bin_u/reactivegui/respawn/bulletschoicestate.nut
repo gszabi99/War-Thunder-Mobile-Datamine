@@ -12,6 +12,8 @@ let { round } = require("math")
 
 const BULLETS_SLOTS = 2
 const SAVE_ID = "bullets"
+let BULLETS_LOW_AMOUNT = 5
+let BULLETS_LOW_PERCENT = 25.0
 
 let unitName = Computed(@() selSlot.value?.name)
 let unitLevel = Computed(@() selSlot.value?.level ?? 0)
@@ -96,6 +98,11 @@ let bulletsToSpawn = Computed(function() {
   return res
 })
 
+let chosenBulletsAmount = Computed(@() chosenBullets.value.reduce(@(acc, bullet) acc + bullet.count, 0))
+let hasZeroBullets = Computed(@() chosenBulletsAmount.value == 0)
+let hasLowBullets = Computed(@() chosenBulletsAmount.value < BULLETS_LOW_AMOUNT
+  || chosenBulletsAmount.value < bulletsInfo.value.total * BULLETS_LOW_PERCENT / 100)
+
 let function saveBullets(name, blk) {
   let sBlk = get_local_custom_settings_blk()
   set_blk_value_by_path(sBlk, $"{SAVE_ID}/{name}", blk)//-param-pos
@@ -156,6 +163,8 @@ return {
   bulletStep
   bulletTotalSteps
   bulletLeftSteps
+  hasLowBullets
+  hasZeroBullets
 
   setCurUnitBullets
   setOrSwapUnitBullet

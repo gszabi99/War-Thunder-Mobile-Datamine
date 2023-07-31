@@ -35,9 +35,18 @@ let function getBulletsForTestFlight(unitName) {
   return res
 }
 
+let function donloadUnitPacksAndSend(unitName, eventId, params) {
+  let pkgs = getUnitPkgs(unitName, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
+    .filter(@(v) !hasAddons.value?[v])
+  if (pkgs.len() == 0)
+    send(eventId, params)
+  else
+    openDownloadAddonsWnd(pkgs, eventId, params)
+}
+
 let function startTestFlight(unitName, missionName = null) {
   if (unitName == null) {
-    openMsgBox(loc("No selected unit"))
+    openMsgBox({ text = loc("No selected unit") })
     return
   }
 
@@ -49,12 +58,23 @@ let function startTestFlight(unitName, missionName = null) {
       : "testFlight_ussr_tft")
     bullets = getBulletsForTestFlight(unitName)
   }
-  let pkgs = getUnitPkgs(unitName, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
-    .filter(@(v) !hasAddons.value?[v])
-  if (pkgs.len() == 0)
-    send("startTestFlight", params)
-  else
-    openDownloadAddonsWnd(pkgs, "startTestFlight", params)
+  donloadUnitPacksAndSend(unitName, "startTestFlight", params)
 }
 
-return startTestFlight
+let function startOfflineBattle(unitName, missionName) {
+  if (unitName == null) {
+    openMsgBox({ text = loc("No selected unit") })
+    return
+  }
+  donloadUnitPacksAndSend(unitName, "startTraining",
+    {
+      unitName
+      missionName
+      bullets = getBulletsForTestFlight(unitName)
+    })
+}
+
+return {
+  startTestFlight
+  startOfflineBattle
+}

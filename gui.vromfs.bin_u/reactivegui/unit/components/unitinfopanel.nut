@@ -60,9 +60,11 @@ let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride
         gap = hdpx(20)
         children = [
           {
-            size = [hdpx(50), hdpx(50)]
+            size = [hdpx(90), hdpx(40)]
             rendObj = ROBJ_IMAGE
-            image = Picture("ui/gameuiskin#icon_premium.avif")
+            keepAspect = KEEP_ASPECT_FIT
+            vplace = ALIGN_BOTTOM
+            image = Picture("ui/gameuiskin#icon_premium.svg")
           }.__update(imgOverride)
           title
         ]
@@ -295,19 +297,6 @@ let unitConsumablesBlock = @(unit, itemsList) {
     mkConsumableRow(itemCfg.name, (itemCfg?.itemsPerUse ?? 0) > 0 ? itemCfg.itemsPerUse : unit.itemsPerUse))
 }
 
-let mkTextUnderlined = @(text) mkText({
-  margin = [ statsGap + statsInsideGap + progressHt, 0, 0, 0 ]
-  text
-  children = {
-    size = flex()
-    margin = [ 0, hdpx(2) ]
-    rendObj = ROBJ_FRAME
-    borderWidth = [ 0, 0, hdpx(1), 0 ]
-    color = textColor
-  }
-})
-let txtMore = mkTextUnderlined(loc("msgbox/btn_more"))
-
 let unitRewardsBlock = @(unit) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -360,7 +349,6 @@ let unitInfoPanel = @(override = {}, unit = hangarUnit) function() {
       unitHeaderBlock(unit.value, mkPlatoonOrUnitTitle)
       unitStatsBlock(unitStats, prevStats)
       unitArmorBlock(unit.value, false)
-      txtMore
     ]
   }, override)
 }

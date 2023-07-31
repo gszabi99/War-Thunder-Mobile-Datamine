@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { is_android, is_ios } = require("%sqstd/platform.nut")
 let { isDownloadedFromGooglePlay = @() false } = require("android.platform")
-let { isGuestLogin } = require("%rGui/account/emailRegistrationState.nut")
+let { isGuestLogin, renewGuestRegistrationTags } = require("%rGui/account/emailRegistrationState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allow_online_purchases } = require("%appGlobals/permissions.nut")
 let { platformGoods, platformOffer, platformGoodsDebugInfo, buyPlatformGoods,
@@ -12,11 +12,12 @@ let { platformGoods, platformOffer, platformGoodsDebugInfo, buyPlatformGoods,
 
 let function buyPlatformGoodsExt(goodsOrId) {
   if (isGuestLogin.value) {
+    renewGuestRegistrationTags()
     openFMsgBox({
       text = loc("msg/needRegistrationBeforePurchase")
       buttons = [
         { id = "cancel", isCancel = true }
-        { id = "linkEmail", eventId = "openGuestEmailRegistration", isPrimary = true, isDefault = true }
+        { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
       ]
     })
     return

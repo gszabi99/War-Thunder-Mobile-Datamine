@@ -2,9 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { send, subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { register_command } = require("console")
-let { getPlayerSsoShortTokenAsync = null, YU2_OK, getPlayerSsoShortToken } = require("auth_wt")
-let { get_authenticated_url_sso } = require("url")
-let { authTags } = require("%appGlobals/loginState.nut")
+let { getPlayerSsoShortTokenAsync = null, YU2_OK, getPlayerSsoShortToken, renewToken, get_player_tags, get_authenticated_url_sso
+} = require("auth_wt")
+let { to_string } = require("json")
+let logGuest = log_with_prefix("[GUEST] ")
+let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { authTags, isLoginByGajin } = require("%appGlobals/loginState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { windowActive } = require("%globalScripts/windowState.nut")
 
@@ -17,42 +20,79 @@ let needVerifyEmailBase = Computed(@() !isGuestLogin.value
   && !(authTags.value.contains("gplogin") || authTags.value.contains("applelogin") || authTags.value.contains("fblogin")))
 let isDebugVerifyEmail = mkWatched(persist, "isDebugVerifyEmail", false)
 let needVerifyEmail = Computed(@() needVerifyEmailBase.value != isDebugVerifyEmail.value)
-local needRelogin = false
+local needCheckRelogin = mkHardWatched("guest.needCheckRelogin", false)
 
 let openGuestEmailRegistrationImpl = @(stoken) send("openUrl",
   { baseUrl = $"https://login.gaijin.net/{loc("current_lang")}/guest?stoken={stoken}" })
 
 subscribe("onGetStokenForGuestEmail", function(msg) {
   let { status, stoken = null } = msg
-  if (status != YU2_OK)
+  if (status != YU2_OK) {
+    logGuest("Error on get SSO token for guewt registration = ", status)
     openFMsgBox({ text = loc("error/serverTemporaryUnavailable") })
+  }
   else {
-    needRelogin = true
+    logGuest("Open guest registration link")
+    needCheckRelogin(true)
     openGuestEmailRegistrationImpl(stoken)
   }
 })
 
 let function openGuestEmailRegistration() {
-  if (getPlayerSsoShortTokenAsync != null)
+  if (getPlayerSsoShortTokenAsync != null) {
+    logGuest("getPlayerSsoShortTokenAsync")
     getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
+  }
   else
-    defer(@() openGuestEmailRegistrationImpl(getPlayerSsoShortToken()))
+    defer(function() {
+      logGuest("getPlayerSsoShortTokenSync")
+      openGuestEmailRegistrationImpl(getPlayerSsoShortToken())
+    })
 }
 
-let openVerifyEmail = @() defer(@() send("openUrl", {
-  baseUrl = get_authenticated_url_sso($"/user.php?skin_lang={loc("current_lang")}").url
-})) //get_authenticated_url_sso function is not aSync, so better to do it out of main script path
+let function openVerifyEmail() {
+  logGuest("Open verify message")
+  let url = $"/user.php?skin_lang={loc("current_lang")}"
+  get_authenticated_url_sso(url, "", "", "onAuthenticatedUrlResult", to_string({ notAuthUrl = url }))
+}
 
 subscribeFMsgBtns({
   openGuestEmailRegistration = @(_) openGuestEmailRegistration()
 })
 
 windowActive.subscribe(function(v) {
-  if (!v || !needRelogin)
+  if (!v || !needCheckRelogin.value)
     return
-  needRelogin = false
-  defer(@() send("relogin", {})) //to avoid call ecs destroy direct from ecs event about window active
+  needCheckRelogin(false)
+  logGuest("Request renew token")
+  renewToken("onRenewAuthToken")
 })
+
+let function onGuestTagsUpdate() {
+  if (isGuestLogin.value)
+    return
+  isLoginByGajin.update(true)
+  openFMsgBox({ text = loc("msg/needToLoginByYourLinkedMail"), isPersist = true })
+  defer(@() send("logOutManually", {})) //to avoid call ecs destroy direct from ecs event about window active
+}
+
+subscribe("onRenewAuthToken", function(_) {
+  authTags(get_player_tags())
+  isDebugGuestLogin(false)
+  logGuest($"onRenewAuthToken. isGuestLogin = {isGuestLogin.value}, Tags = ", authTags.value)
+  onGuestTagsUpdate()
+})
+
+subscribe("onRenewGuestAuthTokenInAdvance", function(_) {
+  authTags(get_player_tags())
+  logGuest($"onRenewGuestAuthTokenInAdvance. isGuestLogin = {isGuestLogin.value}, Tags = ", authTags.value)
+  onGuestTagsUpdate()
+})
+
+let function renewGuestRegistrationTags() {
+  logGuest("Request renew guest token in advance")
+  renewToken("onRenewGuestAuthTokenInAdvance")
+}
 
 register_command(function() {
     isDebugGuestLogin(!isDebugGuestLogin.value)
@@ -67,6 +107,7 @@ register_command(function() {
 return {
   isGuestLogin
   openGuestEmailRegistration
+  renewGuestRegistrationTags
   needVerifyEmail
   openVerifyEmail
 }

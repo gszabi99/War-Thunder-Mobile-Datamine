@@ -3779,7 +3779,7 @@
   "default_skin_tomoe": {
     "replace_tex": {
       "from": "ju_87d_5_a*",
-      "to": "ju_87d_5_a_tomoe*"
+      "to": "ju_87d_5_a*"
     }
   },
   "cutting": {

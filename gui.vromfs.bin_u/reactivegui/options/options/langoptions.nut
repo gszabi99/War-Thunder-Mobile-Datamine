@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { getLocalLanguage, getSpeechLanguage, setSpeechLanguage } = require("language")
 let eventbus = require("eventbus")
-let { DBGLEVEL } = require("dagor.system")
 let { ndbRead, ndbExists } = require("nestdb")
 
 const NDB_ID = "language.localizationInfo"
@@ -48,6 +47,6 @@ return {
   optLang
   langOptions = [
     optLang
-    DBGLEVEL > 0 ? optLangVoice : null
+    optLangVoice
   ]
 }

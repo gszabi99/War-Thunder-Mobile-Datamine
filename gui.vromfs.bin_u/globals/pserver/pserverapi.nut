@@ -6,6 +6,7 @@ from "%globalScripts/logs.nut" import *
 let { Watched } = require("frp")
 let eventbus = require("eventbus")
 let { rnd_int } = require("dagor.random")
+let { loc } = require("dagor.localize")
 let servProfile = require("servProfile.nut")
 let { updateAllConfigs } = require("servConfigs.nut")
 
@@ -15,18 +16,50 @@ const PROGRESS_REWARD = "RewardInProgress"
 const PROGRESS_SHOP = "ShopPurchaseInProgress"
 const PROGRESS_SCH_REWARD = "SchRewardInProgress"
 const PROGRESS_LOOTBOX = "LootboxInProgress"
+const PROGRESS_LEVEL = "LevelInProgress"
 
-
+let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
+let lastProfileKeysUpdated = Watched({})
+
+let function call(id, result, context) {
+  if (id not in handlers)
+    return
+  let handler = handlers[id]
+  if (handler.getfuncinfos().parameters.len() == 2)
+    handler(result)
+  else
+    handler(result, context)
+}
+
+let function callAll(execData, result) {
+  if (type(execData) == "string") {
+    call(execData, result, null)
+    return
+  }
+  if (type(execData) == "array") {
+    foreach(e in execData)
+      callAll(e, result)
+    return
+  }
+  if (type(execData) != "table")
+    return
+
+  let { id = null, executeAfter = null } = execData
+  call(id, result, execData)
+  if (executeAfter != null)
+    callAll(executeAfter, result)
+}
+
+let function popCallback(uid, result) {
+  if (uid in requestData.callbacks)
+    callAll(delete requestData.callbacks[uid], result)
+}
 
 let function handleMessages(msg) {
   let result = msg.data?.result
-  let cb = requestData.callbacks?[msg.id]
-
   if (!result) {
-    let errorStr = msg.data?.error?.message ?? msg.data?.error ?? "unknown error"
-    if (cb)
-      cb({ error = errorStr })
+    popCallback(msg.id, { error = "unknown error" }.__update(msg.data))
     return
   }
 
@@ -36,10 +69,13 @@ let function handleMessages(msg) {
     if (result?.full ?? false) {
       log("Full servProfile received")
       servProfile(result)
+      lastProfileKeysUpdated(result
+        .map(@(v, k) type(v) == "table" && k != "configs")
+        .filter(@(v) v))
     }
     else {
       let newProfile = clone servProfile.value
-      local hasChanges = false
+      let updatedKeys = {}
       foreach (k, v in result)
         if (type(v) != "table" || k == "configs")
           continue
@@ -52,25 +88,49 @@ let function handleMessages(msg) {
           }
           else
             newProfile[k] <- (k in newProfile) ? newProfile[k].__merge(v) : v
-          hasChanges = true
+          updatedKeys[k] <- true
         }
-      if (hasChanges)
+      if (updatedKeys.len() != 0) {
         servProfile(newProfile)
+        lastProfileKeysUpdated(updatedKeys)
+      }
     }
 
-  if (cb) {
-    delete requestData.callbacks[msg.id]
-    cb(result)
-  }
+  popCallback(msg.id, result)
 }
 
+lastProfileKeysUpdated.whiteListMutatorClosure(handleMessages)
+
 eventbus.subscribe("profile_srv.response", handleMessages)
+
+let function checkHandlerId(id) {
+  if (id not in handlers)
+    logerr($"Not registered pServerApi callbakc id: {id}")
+}
+
+let function addCallback(idStr, cb) {
+  if (type(cb) == "string") {
+    requestData.callbacks[idStr] <- cb
+    checkHandlerId(cb)
+  }
+  else if (type(cb) == "table") {
+    if (type(cb?.id) == "string") {
+      requestData.callbacks[idStr] <- cb
+      checkHandlerId(cb.id)
+    } else
+      logerr($"Bad type of pServerApi callback id: {type(cb?.id)}. String required.")
+  }
+  else if (type(cb) == "array")
+    requestData.callbacks[idStr] <- cb
+  else
+    logerr($"Bad type of pServerApi callback data: {type(cb)}. String, table or array required")
+}
 
 let function request(data, cb = null) {
   requestData.id = requestData.id + 1
   let idStr = requestData.id.tostring()
-  if (cb)
-    requestData.callbacks[idStr] <- cb
+  if (cb != null)
+    addCallback(idStr, cb)
 
   eventbus.send("profile_srv.request", { id = idStr, data })
 }
@@ -83,12 +143,41 @@ let function mkProgress(id) {
   return res
 }
 
+let function registerHandler(id, handler) {
+  if (id in handlers) {
+    logerr($"pServerApi handler {id} is already registered")
+    return
+  }
+  let nargs = handler.getfuncinfos().parameters.len() - 1
+  if (nargs == 1 || nargs == 2)
+    handlers[id] <- handler
+  else
+    logerr($"pServerApi handler {id} has wrong number of parameters. Should be 1 or 2")
+}
+
+let function localizePServerError(err) {
+  if (type(err) == "table" && "message" in err) {
+    let msg = loc($"error/{err.message}", err.message)
+    let code = "code" in err ? $"(code: {err.code})" : ""
+    return "\n".join([msg, code], true)
+  }
+  if (type(err) == "string")
+    return loc($"error/{err}")
+  return loc("matching/SERVER_ERROR_INTERNAL")
+}
+
 return {
+  registerHandler
+  callHandler = callAll
+  localizePServerError
+  lastProfileKeysUpdated
+
   unitInProgress = mkProgress(PROGRESS_UNIT)
   rewardInProgress = mkProgress(PROGRESS_REWARD)
   shopPurchaseInProgress = mkProgress(PROGRESS_SHOP)
   schRewardInProgress = mkProgress(PROGRESS_SCH_REWARD)
   lootboxInProgress = mkProgress(PROGRESS_LOOTBOX)
+  levelInProgress = mkProgress(PROGRESS_LEVEL)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -248,6 +337,8 @@ return {
   buy_player_level = @(campaign, curLevel, expLeft, price, cb = null) request({
     method = "buy_player_level"
     params = { campaign, curLevel, expLeft, price }
+    progressId = PROGRESS_LEVEL
+    progressValue = curLevel
   }, cb)
 
   buy_unit_level = @(unitName, curLevel, tgtLevel, expLeft, price, cb = null) request({
@@ -304,6 +395,11 @@ return {
     params = { campaign, missionId }
   }, cb)
 
+  apply_first_battles_reward = @(campaign, unitName, rewardId, kills, cb = null) request({
+    method = "apply_first_battles_reward_v2"
+    params = { campaign, unitName, rewardId, kills }
+  }, cb)
+
   apply_scheduled_reward = @(rewardId, cb = null) request({
     method = "apply_scheduled_reward"
     params = { rewardId }
@@ -313,11 +409,6 @@ return {
 
   reset_scheduled_reward_timers = @(cb = null) request({
     method = "reset_scheduled_reward_timers"
-  }, cb)
-
-  send_to_bq = @(tableId, info, cb = null) request({
-    method = "send_to_bq"
-    params = { tableId, info }
   }, cb)
 
   send_to_bq_offer = @(campaign, info, cb = null) request({

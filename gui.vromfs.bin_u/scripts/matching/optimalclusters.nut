@@ -34,6 +34,7 @@ const MINOR_MS = 1000 // Minor time diff to avoid timer divirgence when collecti
 let optimalClusters = mkHardWatched("optimalClusters", {})
 let requestsCounter = mkHardWatched("requestsCounter", 0)
 let hostsCfg = persist("hostsCfg", @() {})
+let clusterStats = persist("clusterStats", @() [])
 let isProbingActive = Computed(@() isInMenu.value && isMatchingOnline.value)
 
 // Writes to stream a 64-bit integer as Network Endian
@@ -184,18 +185,16 @@ let function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
   if (rttSamples.len() == SAMPLES_COUNT_MAX)
     rttSamples.remove(0)
   rttSamples.append(rtt)
-  let rttSamplesSorted = clone rttSamples
-  rttSamplesSorted.sort()
   hostInfo.__update({
     lastRequestId = 0
     lastRequestTimeMs = 0
     errors = 0
-    avgRTT = median(rttSamplesSorted)
+    avgRTT = median((clone rttSamples).sort())
     lastAnswerTimeMs = receivedTimeMs
   })
 }
 
-let function getOptimalClusters() {
+let function getClusterStats() {
   // Usually multiple hosts relates to every cluster (like 5 hosts has "EU" in clustersList),
   // but also, a host can participate in multiple clusters, this is why clustersList is an array.
 
@@ -207,40 +206,42 @@ let function getOptimalClusters() {
       clustersToHostsMap[clusterId].append(hostInfo)
     }
 
-  let clustersInfo = clustersToHostsMap
+  let res = clustersToHostsMap
     .map(function(hosts, clusterId) {
         let measuredHostsRTT = hosts.map(@(h) h.avgRTT).filter(@(rtt) rtt != null)
-        let knownCount = measuredHostsRTT.len()
-        let unknownCount = hosts.len() - knownCount
         measuredHostsRTT.sort()
         return {
           clusterId
           hostsRTT = median(measuredHostsRTT)
-          measuredHostsRTT
-          knownCount
-          unknownCount
         }
       })
-    .filter(@(c) c.hostsRTT != null)
     .values()
-  clustersInfo.sort(@(a, b) a.hostsRTT <=> b.hostsRTT)
+  res.sort(@(a, b)
+    (a.hostsRTT != null ? -1 : 1) <=> (b.hostsRTT != null ? -1 : 1)
+    || a.hostsRTT <=> b.hostsRTT)
+  return res
+}
 
-  if (clustersInfo.len() == 0)
+let function getOptimalClusters(stats) {
+  stats = stats.filter(@(c) c.hostsRTT != null)
+  if (stats.len() == 0)
     return []
 
-  let fastClusters = clustersInfo
+  let fastClusters = stats
     .filter(@(c) c.hostsRTT <= OPTIMAL_RTT_LIMIT_MS)
   if (fastClusters.len())
     return fastClusters.map(@(c) c.clusterId)
 
-  let rttLimit = clustersInfo[0].hostsRTT + INSIGNIFICANT_RTT_DIFF_MS
-  return clustersInfo
+  let rttLimit = stats[0].hostsRTT + INSIGNIFICANT_RTT_DIFF_MS
+  return stats
     .filter(@(c) c.hostsRTT <= rttLimit)
     .map(@(c) c.clusterId)
 }
 
 let function onClustersRecalc() {
-  let newOptimalClusters = getOptimalClusters()
+  clusterStats.clear()
+  clusterStats.extend(getClusterStats())
+  let newOptimalClusters = getOptimalClusters(clusterStats)
   if (isEqual(newOptimalClusters, optimalClusters.value))
     return
   logOC("Optimal clusters:", newOptimalClusters)
@@ -306,4 +307,5 @@ if (isProbingActive.value)
 
 return {
   optimalClusters
+  clusterStats
 }

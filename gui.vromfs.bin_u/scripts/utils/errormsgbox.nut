@@ -86,7 +86,7 @@ register_command(
   function() {
     ::LAST_SESSION_DEBUG_INFO <- "sid:12345678"
     errorMsgBox(SERVER_ERROR_FORCE_DISCONNECT,
-      [{ id = "exit", eventId = "matchingExitGame", isPrimary = true, isDefault = true }],
+      [{ id = "exit", eventId = "matchingExitGame", styleId = "PRIMARY", isDefault = true }],
       { isPersist = true })
   },
   "debug.matchingError")
@@ -95,7 +95,7 @@ register_command(
     [
       { id = "recovery", eventId = "loginRecovery", hotkeys = ["^J:X"] }
       { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:Y"] }
-      { id = "tryAgain", isPrimary = true, isDefault = true }
+      { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
     ]),
   "debug.loginError")
 

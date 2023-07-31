@@ -8,6 +8,7 @@ let { DM_TEST_EMPTY } = require("crosshair")
 
 let hudStateNative = {
   playerUnitName = ""
+  targetUnitName = ""
   unitType = ""
   playerArmyForHud = -1
   isPlayingReplay = false

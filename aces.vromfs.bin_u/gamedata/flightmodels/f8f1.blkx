@@ -1569,11 +1569,11 @@
     "replace_tex": [
       {
         "from": "f8f1_bearcat_c*",
-        "to": "f8f1_bearcat_c_tomoe*"
+        "to": "f8f1_bearcat_c*"
       },
       {
         "from": "f8f1_bearcat_c_dmg*",
-        "to": "f8f1_bearcat_c_tomoe_dmg*"
+        "to": "f8f1_bearcat_c_dmg*"
       }
     ]
   },

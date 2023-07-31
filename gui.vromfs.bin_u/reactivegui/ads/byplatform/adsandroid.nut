@@ -23,7 +23,7 @@ let { isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityF
   : {
       isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
       getProvidersStatus = @() json.to_string(
-        debugAdsInited.map(@(provider, isInited) { provider, isInited })
+        debugAdsInited.map(@(isInited, provider) { provider, isInited })
           .values())
       setPriorityForProvider = @(_, __) null
       function addProviderInitWithPriority(provider, _, __) {

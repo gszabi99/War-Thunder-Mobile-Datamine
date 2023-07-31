@@ -1618,11 +1618,11 @@
     "replace_tex": [
       {
         "from": "a6m5_a*",
-        "to": "a6m5_a_tomoe*"
+        "to": "a6m5_a*"
       },
       {
         "from": "a6m5_a_dmg*",
-        "to": "a6m5_a_tomoe_dmg*"
+        "to": "a6m5_a_dmg*"
       }
     ]
   },

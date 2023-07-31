@@ -78,10 +78,14 @@ let function useShortcutOn(shortcutId) {
 let isAvailableActionItem = @(itemValue) itemValue.count != 0 && (itemValue?.available ?? true)
 
 let function mkActionItemProgress(itemValue, isAvailable) {
-  let { cooldownEndTime = 0, cooldownTime = 1, id = null } = itemValue
-  let cooldownDuration = cooldownEndTime - ::get_mission_time()
+  let { cooldownEndTime = 0, cooldownTime = 1, blockedCooldownEndTime = 0, blockedCooldownTime = 1, id = null
+  } = itemValue
+  let isBlocked = blockedCooldownEndTime > 0 && cooldownEndTime == 0
+  let endTime = isBlocked ? blockedCooldownEndTime : cooldownEndTime
+  let time = isBlocked ? blockedCooldownTime : cooldownTime
+  let cooldownDuration = endTime - ::get_mission_time()
   let hasCooldown = isAvailable && cooldownDuration > 0
-  let cooldown = hasCooldown ? (1 - (cooldownDuration / max(cooldownTime, 1))) : 1
+  let cooldown = hasCooldown ? (1 - (cooldownDuration / max(time, 1))) : 1
   let trigger = $"action_cd_finish_{id}"
   return {
     size = flex()
@@ -97,7 +101,7 @@ let function mkActionItemProgress(itemValue, isAvailable) {
         : btnBgColor.ready
       bgColor = btnBgColor.empty
       fValue = 1.0
-      key = $"action_bg_{id}_{cooldownEndTime}"
+      key = $"action_bg_{id}_{endTime}"
       animations = [
         { prop = AnimProp.fValue, from = cooldown, to = 1.0, duration = cooldownDuration, play = true
           onFinish = @() isAvailable ? anim_start(trigger) : null

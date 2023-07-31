@@ -3022,54 +3022,7 @@
       "decal0Abs": true,
       "decal0OppositeMirrored": true,
       "decal0WidthBox": 0.204494,
-      "decal0Tex": "back_16",
-      "decal1Line0": [
-        0.0,
-        -1.69473E-07,
-        3.87708,
-        1.89393
-      ],
-      "decal1Line1": [
-        0.0,
-        -3.87708,
-        -1.69473E-07,
-        5.83405
-      ],
-      "decal1Line2": [
-        0.0,
-        -1.69473E-07,
-        -3.87708,
-        -0.893932
-      ],
-      "decal1Line3": [
-        0.0,
-        -3.87708,
-        1.69473E-07,
-        5.83405
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        1.0,
-        0.0,
-        0.0,
-        -1.98639
-      ],
-      "decal1CPNormDepth1": [
-        -1.0,
-        -0.0,
-        -0.0,
-        1.94006
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.257926
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.215268,
-      "decal1Tex": "ge_15th_panzer_division"
+      "decal0Tex": "back_16"
     }
   },
   "skin": [

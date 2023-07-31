@@ -12,13 +12,14 @@ let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenu
 let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor,
   levelProgressBarWidth, levelProgressBorderWidth
 } = require("%rGui/components/levelBlockPkg.nut")
-let optionsScene = require("%rGui/options/optionsScene.nut")
+let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyBalance, mkItemsBalance } = require("balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let premIconWithTimeOnChange = require("premIconWithTimeOnChange.nut")
+let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 
 let avatarSize       = hdpx(96)
 let profileGap       = hdpx(45)
@@ -50,9 +51,9 @@ let name =  @() textParams.__merge({
 })
 
 let levelUpReadyAnim = { prop = AnimProp.opacity, duration = 3.0, easing = CosineFull, play = true, loop = true }
-let levelBg = mkLevelBg()
 
 let mkLevelBlock = @(canOpenLevelUp) function() {
+  let stateFlags = Watched(0)
   let { exp, nextLevelExp, level, isReadyForLevelUp } = playerLevelInfo.value
   let isMaxLevel = nextLevelExp == 0
   let levelNextText = isReadyForLevelUp ? (level + 1).tostring() : ""
@@ -80,15 +81,30 @@ let mkLevelBlock = @(canOpenLevelUp) function() {
             }
           })
         : null
-      levelBg
-      textParams.__merge({
+      @() mkLevelBg({
+        ovr = {
+          watch = stateFlags
+          onElemState = @(sf) stateFlags(sf)
+          behavior = isMaxLevel ? null : Behaviors.Button
+          onClick = openExpWnd
+          color = stateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
+          transform = {
+            rotate = 45
+            scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+          }
+        }
+      })
+      @() textParams.__merge({
+        watch = stateFlags
         key = playerLevelInfo.value
         text = isMaxLevel ? maxLevelStarChar : level
         pos = [0, isMaxLevel ? -hdpx(2) : 0]
-        opacity = 1.0
         animations = isReadyForLevelUp
           ? [ levelUpReadyAnim.__merge({ from = 1.0, to = 0.0 }) ]
           : null
+        transform = {
+          scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+        }
       })
       isReadyForLevelUp
         ? textParams.__merge({
@@ -137,7 +153,7 @@ let function mkProfileHolder(canOpenLevelUp) {
         gap = profileGap
         behavior = Behaviors.Button
         onElemState = @(sf) stateFlags(sf)
-        onClick = @() optionsScene("account")
+        onClick = @() accountOptionsScene()
         children = [
           avatar
           name
@@ -200,8 +216,21 @@ let gamercardBalanceNotButtons = @() {
     )
 }
 
+let gamercardBalanceBtns = {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_RIGHT
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = [
+    mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
+    mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
+  ]
+}
+
 return {
   mkGamercard
   gamercardHeight
   gamercardBalanceNotButtons
+  gamercardBalanceBtns
 }

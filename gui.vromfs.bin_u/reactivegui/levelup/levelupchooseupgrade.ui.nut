@@ -6,7 +6,7 @@ let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { upgradeUnitName } = require("levelUpState.nut")
 let { getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
-let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPricePurchase, buttonStyles } = require("%rGui/components/textButton.nut")
@@ -18,6 +18,7 @@ let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let getUpgradeOldPrice = require("%rGui/levelUp/getUpgradeOldPrice.nut")
 let openUnitsWnd = require("%rGui/unit/unitsWnd.nut")
+let { setCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 
 let contentAppearTime = 0.3
@@ -35,15 +36,24 @@ let header = @() {
   )
 }.__update(fontSmall)
 
-let purchaseHandler = @(unitName, isUpgraded = false) purchaseUnit(unitName, isUpgraded, openUnitsWnd)
+registerHandler("onPurchaseUnitInLevelUp",
+  function(res) {
+    if (res?.error == null)
+      openUnitsWnd()
+  })
+let function purchaseHandler(unitName, isUpgraded = false) {
+  if (isUpgraded)
+    setCustomHangarUnit(allUnitsCfg.value[unitName].__merge({ isUpgraded = true }))
+  purchaseUnit(unitName, isUpgraded, "onPurchaseUnitInLevelUp")
+}
 
-let function buyButtonCommon(unit) {
+let function buyButtonPrimary(unit) {
   let price = unit != null ? getUnitAnyPrice(unit, true) : null
   return price == null ? null
     : textButtonPricePurchase(utf8ToUpper(loc(price.price == 0 ? "msgbox/btn_get" : "msgbox/btn_purchase")),
         mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON),
         @() purchaseHandler(unit.name),
-        buttonStyles.COMMON)
+        buttonStyles.PRIMARY)
 }
 
 let function buyButtonUpgraded(unit, allUnits) {
@@ -115,7 +125,7 @@ let unitBlock = @(unit) {
     }.__update(fontMedium)
     @() {
       watch = allUnitsCfg
-      children = buttonBlock(unit?.isUpgraded ? buyButtonUpgraded(unit, allUnitsCfg.value) : buyButtonCommon(unit))
+      children = buttonBlock(unit?.isUpgraded ? buyButtonUpgraded(unit, allUnitsCfg.value) : buyButtonPrimary(unit))
     }
   ]
 }

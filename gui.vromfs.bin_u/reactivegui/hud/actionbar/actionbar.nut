@@ -6,7 +6,8 @@ let { EII_TOOLKIT, EII_EXTINGUISHER, EII_MEDICALKIT, EII_SMOKE_SCREEN, EII_SMOKE
   EII_SPECIAL_UNIT, EII_SPECIAL_UNIT_2, EII_ARTILLERY_TARGET } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { touchButtonMargin } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
-let { actionBarItems, curActionBarTypes, updateActionBar } = require("actionBarState.nut")
+let { actionBarItems, curActionBarTypes, startActionBarUpdate, stopActionBarUpdate
+} = require("actionBarState.nut")
 let { unitType, isUnitDelayed } = require("%rGui/hudState.nut")
 
 
@@ -39,11 +40,8 @@ let function actionBar() {
     watch = [curActionBarTypes, debugButtons, unitType, isUnitDelayed]
     key = actionBarItems
     hplace = ALIGN_RIGHT
-    onAttach = function() {
-      updateActionBar()
-      gui_scene.setInterval(0.3, updateActionBar)
-    }
-    onDetach = @() gui_scene.clearTimer(updateActionBar)
+    onAttach = @() startActionBarUpdate("mainActionBar")
+    onDetach = @() stopActionBarUpdate("mainActionBar")
 
     flow = FLOW_HORIZONTAL
     gap = touchButtonMargin

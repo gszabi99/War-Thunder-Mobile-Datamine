@@ -5,7 +5,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { msgBoxBg, msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { buy_unit_level, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { buy_unit_level, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { getSpCostText } = require("%rGui/unitAttr/unitAttrState.nut")
 let { balanceGold, GOLD } = require("%appGlobals/currenciesState.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -39,11 +39,13 @@ let needShowWnd = keepref(Computed(@() levelsToMax.value > 0))
 
 let close = @() unitName(null)
 
+registerHandler("closeBuyUnitLevelWnd", @(_) close())
+
 let function onClickPurchase(unitNameV, curLevel, tgtLevel, nextLevelExp, costGold) {
   if (unitInProgress.value != null)
     return
   if (!showNoBalanceMsgIfNeed(costGold, GOLD, close))
-    buy_unit_level(unitNameV, curLevel, tgtLevel, nextLevelExp, costGold, @(_) close())
+    buy_unit_level(unitNameV, curLevel, tgtLevel, nextLevelExp, costGold, "closeBuyUnitLevelWnd")
 }
 
 let patternImage = {
@@ -250,10 +252,14 @@ let openImpl = @() addModalWindow(bgShaded.__merge({
   children = @() msgBoxBg.__merge({
     watch = unitName
     flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
     children = [
       msgBoxHeaderWithClose(loc("header/unitLevelBoost", { unitName = loc(getUnitLocId(unitName.value)) }),
         close,
-        { minWidth = SIZE_TO_CONTENT, padding = [0, buttonsHGap] })
+        {
+          minWidth = SIZE_TO_CONTENT,
+          padding = [0, buttonsHGap]
+        })
       wndContent
     ]
   })

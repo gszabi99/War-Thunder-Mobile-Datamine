@@ -18,6 +18,7 @@ let optList = [
   "OPT_RAYTRACING"
   "OPT_TARGET_TRACKING"
   "OPT_SHOW_MOVE_DIRECTION"
+  "OPT_ARMOR_PIERCING_FIXED"
 ]
 
 let export = {}

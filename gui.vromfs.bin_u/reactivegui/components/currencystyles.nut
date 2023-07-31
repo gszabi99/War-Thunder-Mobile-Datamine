@@ -18,6 +18,11 @@ let CS_INCREASED_ICON = CS_COMMON.__merge({
   discountFontStyle = fontSmall
 })
 
+let CS_SMALL_INCREASED_ICON = CS_COMMON.__merge({
+  fontStyle = fontTiny
+  iconSize = hdpxi(50)
+})
+
 let gamercardGap = sw(100) >= hdpx(2200) ? hdpx(45)
   : sw(100) >= hdpx(2000) ? hdpx(30)
   : hdpx(25)
@@ -31,6 +36,7 @@ let CS_GAMERCARD = sw(100) >= hdpx(2100)
 return freeze({
   gamercardGap
   CS_SMALL = CS_COMMON.__merge({ fontStyle = fontTiny, iconSize = hdpxi(30) })
+  CS_SMALL_INCREASED_ICON
   CS_COMMON
   CS_NO_BALANCE = CS_COMMON.__merge({ textColor = 0xFFFF4040 })
   CS_INCREASED_ICON

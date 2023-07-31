@@ -14,7 +14,6 @@ let { get_meta_mission_info_by_name, do_start_flight, select_mission,
 let { set_game_mode } = require("mission")
 
 let TESTFLIGHT_MISSION = "testFlight_destroyer_usa_tfs"
-let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
 let optModeTraining = addOptionMode("OPTIONS_MODE_TRAINING") //hardcoded in the native code
 let optModeGameplay = addOptionMode("OPTIONS_MODE_GAMEPLAY") //hardcoded in the native code
 let bulletOptions = array(BULLETS_SETS_QUANTITY).map(@(_, idx) {
@@ -25,8 +24,9 @@ let USEROPT_AIRCRAFT = addUserOption("USEROPT_AIRCRAFT")
 let USEROPT_WEAPONS = addUserOption("USEROPT_WEAPONS")
 let USEROPT_SKIN = addUserOption("USEROPT_SKIN")
 
-let function startTestFlight(unitName, testFlightName = TESTFLIGHT_MISSION, bullets = null) {
-  let misBlk = get_meta_mission_info_by_name(testFlightName)
+let function startOfflineMission(unitName, missionId, bullets, gameMode = GM_TEST_FLIGHT
+) {
+  let misBlk = get_meta_mission_info_by_name(missionId)
   if (misBlk == null) {
     openFMsgBox({ text = "Mission not found." })
     return
@@ -38,7 +38,8 @@ let function startTestFlight(unitName, testFlightName = TESTFLIGHT_MISSION, bull
   }
   actualizeBattleData(unitName)
 
-  misBlk["_gameMode"] = GM_TEST_FLIGHT
+  if (gameMode != null)
+    misBlk["_gameMode"] = gameMode
   misBlk["difficulty"] = "arcade"
 
   setGuiOptionsMode(optModeTraining)
@@ -80,11 +81,9 @@ let function sendBenchmarksList(_) {
       }))
 }
 
-subscribe("startTestFlight", @(params) startTestFlight(params.unitName, params?.missionName ?? TESTFLIGHT_MISSION, params?.bullets))
+subscribe("startTestFlight", @(p)
+  startOfflineMission(p.unitName, p?.missionName ?? TESTFLIGHT_MISSION, p?.bullets))
+subscribe("startTraining", @(p)
+  startOfflineMission(p.unitName, p.missionName, p?.bullets, GM_TRAINING))
 subscribe("startBenchmark", @(v) openBenchmarkWnd(v.id))
 subscribe("getBenchmarksList", sendBenchmarksList)
-
-return {
-  startTestFlight
-  TF_SHIP_TUNE_MISSION
-}

@@ -2882,10 +2882,10 @@
       ],
       "decal0Mirrored": false,
       "decal0Wrap": false,
-      "decal0Abs": true,
+      "decal0Abs": false,
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.233928,
-      "decal0Tex": "ge_tank_emblem_00",
+      "decal0Tex": "ge_tank_emblem_10",
       "decal1Line0": [
         3.00937,
         -1.31544E-07,

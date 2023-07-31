@@ -19,6 +19,7 @@
   "simpleSound": true,
   "allwaysLoadCockpitSounds": false,
   "forceGameLanguage": true,
+  "noCockpitSounds": true,
   "language": "Russian",
   "banksFolder": "sound",
   "banksExtension": ".bank",
@@ -176,6 +177,28 @@
           "optional": true
         },
         "_crew_dialogs_naval_new_<lang>.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "mission": {
+        "crew_dialogs_common": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "crew_dialogs_common.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "_crew_dialogs_common_<lang>": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "_crew_dialogs_common_<lang>.assets": {
           "async": true,
           "preload": false,
           "optional": true
@@ -8867,7 +8890,7 @@
           "minSpeechInterval": 0.0,
           "delayTime": 0.5
         },
-        "targetHit": {
+        "targetHitTank": {
           "event": "06_shooting_results/voice_message_driver_correction_bracketed",
           "playerRole": "driver",
           "player": -1,

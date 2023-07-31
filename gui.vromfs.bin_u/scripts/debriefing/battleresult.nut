@@ -17,9 +17,10 @@ let { myUserId, myUserName } = require("%appGlobals/profileStates.nut")
 let { battleData } = require("%scripts/battleData/battleData.nut")
 let { singleMissionResult } = require("singleMissionResult.nut")
 let { isInBattle, battleSessionId } = require("%appGlobals/clientState/clientState.nut")
-let { get_mp_session_id_int } = require("multiplayer")
+let { get_mp_session_id_int, destroy_session } = require("multiplayer")
 let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
+let { get_local_mplayer } = require("mission")
 
 const destroySessionTimeout = 2.0
 const SAVE_FILE = "battleResult.json"
@@ -58,7 +59,7 @@ let needDestroySession = keepref(Computed(@() gotQuitToDebriefing.value
 
 let function doDestroySession() {
   gotQuitToDebriefing(false)
-  ::destroy_session()
+  destroy_session("on needDestroySession by battleResult received")
 }
 needDestroySession.subscribe(@(v) v ? deferOnce(doDestroySession) : null)
 
@@ -74,7 +75,7 @@ let function onBattleResult(evt, _eid, comp) {
   baseBattleResult(evt.data.__merge(
     battleData.value ?? {}
     {
-      localTeam = ::get_local_mplayer()?.team
+      localTeam = get_local_mplayer()?.team
       teams = ::get_mp_tbl_teams()
       userName = myUserName.value
     }))

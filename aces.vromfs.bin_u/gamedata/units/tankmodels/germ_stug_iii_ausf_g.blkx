@@ -2399,52 +2399,52 @@
       "camo_scale": -10.0,
       "camo_rotation": -7.0,
       "decal0Line0": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        8.31848E-08,
+        -8.31848E-08,
+        2.79122,
+        -2.91101
       ],
       "decal0Line1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        1.97369,
+        -1.97369,
+        -1.22008E-07,
+        -2.73392
       ],
       "decal0Line2": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        8.31848E-08,
+        -8.31848E-08,
+        -2.79122,
+        3.91101
       ],
       "decal0Line3": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        1.97369,
+        -1.97369,
+        1.22008E-07,
+        -2.73392
       ],
-      "decal0HaveCP": false,
+      "decal0HaveCP": true,
       "decal0CPNormDepth": [
+        0.707107,
+        0.707107,
         0.0,
-        0.0,
-        0.0,
-        0.0
+        -2.74409
       ],
       "decal0CPNormDepth1": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        -0.707107,
+        -0.707107,
+        -0.0,
+        2.72315
       ],
       "decal0RotScale": [
         1.5708,
-        1.0
+        0.358266
       ],
       "decal0Mirrored": false,
       "decal0Wrap": false,
       "decal0Abs": false,
       "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.0,
-      "decal0Tex": "",
+      "decal0WidthBox": 0.211309,
+      "decal0Tex": "ge_stug_abt_189",
       "decal1Line0": [
         3.33066,
         -1.45588E-07,

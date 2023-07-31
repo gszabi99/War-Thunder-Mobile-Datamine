@@ -2,13 +2,13 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { get_player_tags } = require("auth_wt")
 let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, authTags } = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let googlePlayAccount = require("android.account.googleplay")
-let appleAccount = require_optional("ios.account.apple") ?? { getAppleLoginToken = @() null, APPLE_LOGIN_SUCCESS = 1, APPLE_LOGIN_CANCEL = 4 }
+let appleAccount = require("ios.account.apple")
 let fbAccount = require("android.account.fb")
 let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -30,13 +30,13 @@ let mkInterruptWithRecoveryMsg = @(errCode) function() {
     [
       { id = "recovery", eventId = "loginRecovery", hotkeys = ["^J:X"] }
       { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:Y"] }
-      { id = "tryAgain", isPrimary = true, isDefault = true }
+      { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
     ])
 }
 
 let proceedAuthByResult = {
   [YU2_OK] = function() {
-    authTags(::get_player_tags())
+    authTags(get_player_tags())
     finalizeStage()
   },
 
@@ -65,7 +65,7 @@ let function proceedAuthorizationResult(result) {
   errorMsgBox(result,
     [
       { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
-      { id = "tryAgain", isPrimary = true, isDefault = true }
+      { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
     ])
   interruptStage({ errCode = result })
 }
@@ -80,7 +80,7 @@ subscribe("android.account.googleplay.onSignInCallback",
       errorMsgBox(YU2_UNKNOWN,
         [
           { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
-          { id = "tryAgain", isPrimary = true, isDefault = true }
+          { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
         ])
       return
     }
@@ -101,7 +101,7 @@ subscribe("android.account.fb.onSignInCallback",
         errorMsgBox(YU2_UNKNOWN,
           [
             { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
-            { id = "tryAgain", isPrimary = true, isDefault = true }
+            { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
           ])
       }
       return
@@ -120,7 +120,7 @@ subscribe("android.account.onGuestFIDReciveCallback",
       errorMsgBox(YU2_UNKNOWN,
         [
           { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
-          { id = "tryAgain", isPrimary = true, isDefault = true }
+          { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
         ])
       return
     }
@@ -144,7 +144,7 @@ subscribe("ios.account.apple.onAppleLoginToken",
       errorMsgBox(YU2_UNKNOWN,
         [
           { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
-          { id = "tryAgain", isPrimary = true, isDefault = true }
+          { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
         ])
       return
     }

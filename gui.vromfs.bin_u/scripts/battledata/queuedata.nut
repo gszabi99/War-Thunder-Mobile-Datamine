@@ -6,8 +6,8 @@ from "%scripts/dagui_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { get_queue_data_jwt } = require("%appGlobals/pServer/pServerApi.nut")
+let { get_queue_data_jwt, registerHandler, callHandler, lastProfileKeysUpdated
+} = require("%appGlobals/pServer/pServerApi.nut")
 let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pServer/pServerJwt.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { register_command } = require("console")
@@ -24,44 +24,58 @@ let needActualize = Computed(@() !isQueueDataActual.value && isLoggedIn.value)
 let needDebugNewResult = Watched(false)
 
 serverConfigs.subscribe(@(_) needRefresh(true))
-servProfile.subscribe(@(_) needRefresh(true))
 isInMpSession.subscribe(@(v) !v ? needRefresh(true) : null)
 
-let function actualizeQueueData(cb = null) {
+let profileKeysAffectQueue = {
+  units = true
+  items = true
+  sharedStats = true
+  sharedStatsByCampaign = true
+  sharedStatsByUnits = true
+}
+lastProfileKeysUpdated.subscribe(function(list) {
+  if (list.findvalue(@(_, k) profileKeysAffectQueue?[k]) != null)
+    needRefresh(true)
+})
+
+let function actualizeQueueData(executeAfter = null) {
   let unitName = curUnit.value?.name
   if (unitName == null) {
-    cb?({ error = "No current unit" })
+    callHandler(executeAfter, { error = "No current unit" })
     return
   }
 
-  let actualize = callee()
-  get_queue_data_jwt(unitName, function(res) {
-    if (unitName != curUnit.value?.name) {
-      actualize(cb)
-      return
-    }
-    if (res?.error != null) {
-      lastResult(res.__merge({ unitName }))
-      cb?(res)
-      return
-    }
+  get_queue_data_jwt(unitName, { id = "onGetQueueData", unitName, extExecuteAfter = executeAfter })
+}
 
-    let result = decodeJwtAndHandleErrors(res).__update({ unitName })
-    lastResult(result)
-    if ("error" not in result)
-      successResult(result)
-    needRefresh(false)
-    cb?(result)
-  })
+registerHandler("onGetQueueData", function(res, context) {
+  let { unitName, extExecuteAfter  = null } = context
+  if (unitName != curUnit.value?.name) {
+    actualizeQueueData(extExecuteAfter)
+    return
+  }
+  if (res?.error != null) {
+    lastResult(res.__merge({ unitName }))
+    callHandler(extExecuteAfter, res)
+    return
+  }
+
+  let result = decodeJwtAndHandleErrors(res).__update({ unitName })
+  lastResult(result)
+  if ("error" not in result)
+    successResult(result)
+  needRefresh(false)
+  callHandler(extExecuteAfter, result)
+})
+
+let function actualizeIfNeed() {
+  if (needActualize.value)
+    actualizeQueueData()
 }
 
 let function delayedActualize() {
   if (needActualize.value)
-    resetTimeout(SILENT_ACTUALIZE_DELAY,
-      function() {
-        if (needActualize.value)
-          actualizeQueueData()
-      })
+    resetTimeout(SILENT_ACTUALIZE_DELAY, actualizeIfNeed)
 }
 delayedActualize()
 needActualize.subscribe(function(v) {

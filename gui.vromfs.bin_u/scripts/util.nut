@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 110
-let { is_mplayer_host, is_mplayer_peer } = require("multiplayer")
+let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
@@ -15,7 +15,7 @@ let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
 
 subscribeFMsgBtns({
   function onLostPsnOk(_) {
-    ::destroy_session()
+    destroy_session("after 'on lost psn' message")
     startLogout()
   }
 })

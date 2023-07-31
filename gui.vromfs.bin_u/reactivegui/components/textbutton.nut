@@ -111,7 +111,7 @@ let function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
   }
 }
 
-let function mkCustomButton(content, onClick, style = buttonStyles.COMMON) {
+let function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let { ovr = {}, childOvr = {}, gradientOvr = {}, hotkeyBlockOvr = {}, hotkeys = null } = style
   let stateFlags = style?.stateFlags ?? Watched(0)
   let contentExt = mkButtonContentWithHotkey(stateFlags, hotkeys,
@@ -143,7 +143,7 @@ let function mkCustomButton(content, onClick, style = buttonStyles.COMMON) {
   }.__update(ovr)
 }
 
-let textButton = @(text, onClick, style = buttonStyles.COMMON)
+let textButton = @(text, onClick, style = buttonStyles.PRIMARY)
   mkCustomButton(mkButtonText(text), onClick, style)
 
 return {
@@ -153,16 +153,16 @@ return {
   buttonsHGap
   buttonStyles
 
-  textButtonCommon = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.COMMON, styleOvr)) // Blue
+  textButtonPrimary = @(text, onClick, styleOvr = null)
+    textButton(text, onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr)) // Blue
   textButtonPurchase = @(text, onClick, styleOvr = null)
     textButton(text, onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden
-  textButtonPrimary = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr)) // Red
+  textButtonBattle = @(text, onClick, styleOvr = null)
+    textButton(text, onClick, mergeStyles(buttonStyles.BATTLE, styleOvr)) // Red
   textButtonBright = @(text, onClick, styleOvr = null)
     textButton(text, onClick, mergeStyles(buttonStyles.BRIGHT, styleOvr)) // White
-  textButtonFaded = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.FADED, styleOvr)) // Gray
+  textButtonCommon = @(text, onClick, styleOvr = null)
+    textButton(text, onClick, mergeStyles(buttonStyles.COMMON, styleOvr)) // Gray
   textButtonPricePurchase = @(text, priceComp, onClick, styleOvr = null)
     mkCustomButton(mkPriceTextsComp(text, priceComp), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden + Price
 }

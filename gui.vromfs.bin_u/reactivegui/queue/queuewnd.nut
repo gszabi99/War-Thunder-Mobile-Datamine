@@ -5,7 +5,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { secondsToTimeSimpleString, millisecondsToSecondsInt } = require("%sqstd/time.nut")
-let { textButtonFaded } = require("%rGui/components/textButton.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING
 } = require("%appGlobals/queueState.nut")
@@ -115,7 +115,7 @@ let cancelOvr = { hotkeys = [[btnBEscUp, loc("mainmenu/btnCancel")]] }
 
 let isCancelInProgress = Computed(@() curQueueState.value == QS_LEAVING)
 let cancelQueueButton = mkSpinnerHideBlock(isCancelInProgress,
-  textButtonFaded(utf8ToUpper(loc("mainmenu/btnCancel")), leaveQueue, cancelOvr),
+  textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), leaveQueue, cancelOvr),
   {
     size = [SIZE_TO_CONTENT, defButtonHeight]
     minWidth = defButtonMinWidth
@@ -134,7 +134,7 @@ let cancelJoiningButton = @() {
   onAttach = @() resetTimeout(timeToShowCancelJoining, allowCancelJoining)
   onDetach = @() clearTimer(allowCancelJoining)
   children = !canCancelJoining.value ? null
-    : textButtonFaded(utf8ToUpper(loc("mainmenu/btnCancel")), @() send("cancelJoiningSession", {}), cancelOvr)
+    : textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), @() send("cancelJoiningSession", {}), cancelOvr)
 }
 
 let mkText = @(text) {

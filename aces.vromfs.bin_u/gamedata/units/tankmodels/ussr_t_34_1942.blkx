@@ -2556,7 +2556,7 @@
       ],
       "decal0Mirrored": false,
       "decal0Wrap": false,
-      "decal0Abs": true,
+      "decal0Abs": false,
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.223901,
       "decal0Tex": "ussr_circles_emblem",

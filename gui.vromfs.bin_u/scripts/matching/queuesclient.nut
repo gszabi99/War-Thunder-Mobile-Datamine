@@ -18,6 +18,7 @@ let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
+let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 
 
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
@@ -37,15 +38,18 @@ let writeJwtData = @() curQueue.mutate(function(q) {
   logQ($"Queue {q.unitName} params by token: ", payload)
 })
 
+registerHandler("onActiveQueueActualizeData",
+  function(res) {
+    if (("error" in res) && curQueueState.value == QS_ACTUALIZE)
+      curQueue(null)
+  })
+
 let queueSteps = {
   [QS_ACTUALIZE] = function() {
     if (isQueueDataActual.value)
       writeJwtData()
     else
-      actualizeQueueData(function(res) {
-        if (("error" in res) && curQueueState.value == QS_ACTUALIZE)
-          curQueue(null)
-      })
+      actualizeQueueData("onActiveQueueActualizeData")
   },
 
   [QS_JOINING] = @() ::matching.rpc_call("match.enqueue",

@@ -52,6 +52,7 @@
   "distanceViewMultiplier": 2.0,
   "changeDmPanelColorDependingOnHp": false,
   "drawHpBar": false,
+  "drawTargetNameFromDarg": true,
   "showDamageLog": false,
   "showHitCameraOnTargetSelect": true,
   "showReturnToMapHintFromDarg": true,

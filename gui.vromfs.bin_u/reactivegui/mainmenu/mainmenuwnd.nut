@@ -4,7 +4,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -15,17 +15,18 @@ let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
-let { totalPlayers, totalRooms } = require("%appGlobals/gameModes/gameModes.nut")
+let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
 let { campaignsList, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let chooseCampaignWnd = require("chooseCampaignWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
-let startTestFlight = require("startTestFlight.nut")
+let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { allow_players_online_info } = require("%appGlobals/permissions.nut")
 
 let unitNameStateFlags = Watched(0)
@@ -61,13 +62,12 @@ let campaignsBtn = @() {
 }
 
 let onlineInfo = @() {
-  watch = [totalPlayers, totalRooms, allow_players_online_info]
+  watch = [totalPlayers, allow_players_online_info]
   rendObj = ROBJ_TEXT
-  text = !allow_players_online_info.value || totalPlayers.value < 0 || totalRooms.value < 0
+  text = !allow_players_online_info.value || totalPlayers.value < 0
     ? null
-    : loc("mainmenu/online_info", {
+    : loc("mainmenu/online_info/player_online", {
         playersOnline = totalPlayers.value
-        battles = totalRooms.value
       })
   color = 0xD0D0D0D0
 }.__update(fontVeryTinyShaded)
@@ -122,7 +122,7 @@ let queueCurRandomBattleMode = @() send("queueToGameMode", { modeId = randomBatt
 
 let hotkeyX = ["^J:X | Enter"]
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
-let toBattleButton = textButtonPrimary(toBattleText,
+let toBattleButton = textButtonBattle(toBattleText,
   function() {
     if (curUnit.value != null)
       offerMissingUnitItemsMessage(curUnit.value, queueCurRandomBattleMode)
@@ -130,15 +130,16 @@ let toBattleButton = textButtonPrimary(toBattleText,
       logerr($"Unable to start battle because no units (unit in hangar = {hangarUnit.value?.name})")
   },
   { hotkeys = hotkeyX })
-let startTutorButton = textButtonPrimary(toBattleText,
+let startTutorButton = textButtonBattle(toBattleText,
   @() startTutor(firstBattleTutor.value),
   { ovr = { key = "toBattleButton" }, hotkeys = hotkeyX })
-let startTestFlightButton = textButtonPrimary(toBattleText,
+let startTestFlightButton = textButtonBattle(toBattleText,
   @() startTestFlight(curUnit.value?.name),
   { hotkeys = hotkeyX })
+let startOfflineMissionButton = textButtonBattle(toBattleText, startCurNewbieMission, { hotkeys = hotkeyX })
 
 let toBattleButtonPlace = @() {
-  watch = needFirstBattleTutor
+  watch = [needFirstBattleTutor, newbieOfflineMissions]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
@@ -147,6 +148,7 @@ let toBattleButtonPlace = @() {
     unitName
     isOfflineMenu ? startTestFlightButton
       : needFirstBattleTutor.value ? startTutorButton
+      : newbieOfflineMissions.value != null ? startOfflineMissionButton
       : toBattleButton
   ]
 }
@@ -155,7 +157,7 @@ let exitMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionQuitGame")
   buttons = [
     { id = "no", isCancel = true }
-    { id = "yes", isPrimary = true, cb = @() send("exitGame", {}) }
+    { id = "yes", styleId = "PRIMARY", cb = @() send("exitGame", {}) }
   ]
 })
 

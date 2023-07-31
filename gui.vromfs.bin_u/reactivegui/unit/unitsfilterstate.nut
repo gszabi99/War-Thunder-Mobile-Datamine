@@ -6,6 +6,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL
 } = require("%appGlobals/unitsState.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 
 const OPT_MULTISELECT = "multiselect"
@@ -22,6 +23,8 @@ let curFilters = mkWatched(persist, "curFilters", {})
 let mkValue = @(id, defValue = null) Computed(@() curFilters.value?[id] ?? defValue)
 let saveValue = @(id, value) curFilters.mutate(@(f) f[id] <- value)
 let mkSetValue = @(id) @(value) saveValue(id, value)
+
+curCampaign.subscribe(@(_) curFilters({}))
 
 let mkListToggleValue = @(id, allValuesW) function toggleValue(value, isChecked) {
   local res = curFilters.value?[id]

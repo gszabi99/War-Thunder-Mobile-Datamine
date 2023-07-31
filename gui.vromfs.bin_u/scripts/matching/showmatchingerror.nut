@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { replace } = require("%sqstd/string.nut")
 let { isDownloadedFromGooglePlay } = require("android.platform")
 
 let customErrorHandlers = {
@@ -16,7 +17,7 @@ let customErrorHandlers = {
       buttons = [
         { id = "cancel", isCancel = true }
         { text = loc("updater/btnUpdate"), eventId = "exitGameForUpdate",
-          isPrimary = true, isDefault = true }
+          styleId = "PRIMARY", isDefault = true }
       ]
       isPersist = true
     })
@@ -34,7 +35,7 @@ let function showMatchingError(response) {
   }
 
   let errorId = response?.error_id ?? ::matching.error_string(response.error)
-  local text = loc("".concat("matching/", ::g_string.replace(errorId, ".", "_")))
+  local text = loc("".concat("matching/", replace(errorId, ".", "_")))
   if ("error_message" in response)
     text = $"{text}\n<B>{response.error_message}</B>"
 

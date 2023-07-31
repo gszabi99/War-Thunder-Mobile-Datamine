@@ -11,6 +11,7 @@ let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { weaponTouchIcons } = require("%appGlobals/weaponPresentation.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { allowShoot } = require("%rGui/hud/tankState.nut")
 
 let bigButtonSize = hdpxi(150)
 let bigButtonImgSize = (0.65 * bigButtonSize + 0.5).tointeger()
@@ -128,16 +129,28 @@ let mkBtnImage = @(size, image, color = 0xFFFFFFFF) {
   color
 }
 
-let mkCountText = @(text, color) {
+let countTextStyle = {
   rendObj = ROBJ_TEXT
   vplace = ALIGN_BOTTOM
-  pos = [pw(80), ph(-90)]
   fontFxColor = 0xFF000000
   fontFxFactor = 50
   fontFx = FFT_GLOW
-  color
-  text
 }.__update(fontVeryTiny)
+
+let mkCountTextRight = @(text, color)
+  countTextStyle.__merge({
+    pos = [pw(80), ph(-90)]
+    color
+    text
+  })
+
+let mkCountTextLeft = @(text, color)
+  countTextStyle.__merge({
+    hplace = ALIGN_RIGHT
+    pos = [pw(-80), ph(-90)]
+    color
+    text
+  })
 
 let waitForAimIcon = {
   rendObj = ROBJ_IMAGE
@@ -155,15 +168,16 @@ let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, p
 
 let primStateFlags = Watched(0) //same state flags for all primary buttons on the screen
 let primGroup = ElemGroup()
-let function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary") {
+let mkCircleTankPrimaryGun = @(actionItem, key = "btn_weapon_primary", countCtor = mkCountTextLeft) function() {
   let isAvailable = isActionAvailable(actionItem)
   let { count, countEx, isBulletBelt = false } = actionItem
   let isWaitForAim = !(actionItem?.aimReady ?? true)
-  let color = !isAvailable || isWaitForAim ? disabledColor : 0xFFFFFFFF
+  let isWaitToShoot = !allowShoot.value
+  let color = !isAvailable || isWaitToShoot ? disabledColor : 0xFFFFFFFF
   let isContinuous = actionItem.isBulletBelt
   let image = weaponTouchIcons?[actionItem.weaponName] ?? "ui/gameuiskin#hud_main_weapon_fire.svg"
   let function onTouchBegin() {
-    if (isWaitForAim)
+    if (isWaitForAim && isWaitToShoot)
       addCommonHint(loc("hints/wait_for_aiming"))
     else if (isActionAvailable(actionItem)) {
       if (isContinuous)
@@ -175,6 +189,10 @@ let function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary") {
 
   let res = isContinuous
     ? mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_GM"), "ID_FIRE_GM", primStateFlags)
+        .__update({
+          behavior = Behaviors.TouchAreaOutButton
+          eventPassThrough = true
+        })
     : {
         behavior = Behaviors.Button
         onElemState = @(v) primStateFlags(v)
@@ -183,6 +201,7 @@ let function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary") {
       }
 
   return res.__update({ //warning disable: -unwanted-modification
+    watch = allowShoot
     key
     size = [bigButtonSize, bigButtonSize]
     group = primGroup
@@ -190,7 +209,7 @@ let function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary") {
       mkCircleProgressBg(bigButtonSize, actionItem)
       mkBtnBorder(bigButtonSize, isAvailable, primStateFlags)
       mkBtnImage(bigButtonImgSize, image, color)
-      count < 0 ? null : mkCountText(isBulletBelt ? $"{count}/{countEx}" : count, color)
+      count < 0 ? null : countCtor(isBulletBelt ? $"{count}/{countEx}" : count, color)
       isWaitForAim ? waitForAimIcon : null
       mkCircleGlare(bigButtonSize, actionItem)
       mkGamepadShortcutImage("ID_FIRE_GM", defShortcutOvr)
@@ -198,14 +217,15 @@ let function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary") {
   })
 }
 
-let function mkCircleTankMachineGun(actionItem) {
+let mkCircleTankMachineGun = @(actionItem) function() {
   let isAvailable = isActionAvailable(actionItem)
   let isWaitForAim = !(actionItem?.aimReady ?? true)
-  let color = !isAvailable || isWaitForAim ? disabledColor : 0xFFFFFFFF
+  let isWaitToShoot = !allowShoot.value
+  let color = !isAvailable || isWaitToShoot ? disabledColor : 0xFFFFFFFF
   let stateFlags = Watched(0)
   let res = mkContinuousButtonParams(
     function onTouchBegin() {
-      if (isWaitForAim)
+      if (isWaitForAim && isWaitToShoot)
         addCommonHint(loc("hints/wait_for_aiming"))
       else if (isActionAvailable(actionItem))
         useShortcutOn("ID_FIRE_GM_MACHINE_GUN")
@@ -216,6 +236,7 @@ let function mkCircleTankMachineGun(actionItem) {
   )
 
   return res.__update({
+    watch = allowShoot
     key = "btn_machinegun"
     size = [buttonSize, buttonSize]
     behavior = Behaviors.TouchAreaOutButton
@@ -224,22 +245,23 @@ let function mkCircleTankMachineGun(actionItem) {
       mkCircleProgressBg(buttonSize, actionItem)
       mkBtnBorder(buttonSize, isAvailable, stateFlags)
       mkBtnImage(buttonImgSize, "ui/gameuiskin#hud_aircraft_machine_gun.svg", color)
-      actionItem.count < 0 ? null : mkCountText(actionItem.count, color)
+      actionItem.count < 0 ? null : mkCountTextLeft(actionItem.count, color)
       isWaitForAim ? waitForAimIcon : null
       mkGamepadShortcutImage("ID_FIRE_GM_MACHINE_GUN", defShortcutOvr)
     ]
   })
 }
 
-let mkCircleTankSecondaryGun = @(shortcutId, img = null) function(actionItem) {
+let mkCircleTankSecondaryGun = @(shortcutId, img = null) @(actionItem) function() {
   let isAvailable = isActionAvailable(actionItem)
   let isWaitForAim = !(actionItem?.aimReady ?? true)
-  let color = !isAvailable || isWaitForAim ? disabledColor : 0xFFFFFFFF
+  let isWaitToShoot = !allowShoot.value
+  let color = !isAvailable || isWaitToShoot ? disabledColor : 0xFFFFFFFF
   let stateFlags = Watched(0)
   let image = weaponTouchIcons?[actionItem.weaponName] ?? img
   let res = mkContinuousButtonParams(
     function onTouchBegin() {
-      if (isWaitForAim)
+      if (isWaitForAim && isWaitToShoot)
         addCommonHint(loc("hints/wait_for_aiming"))
       else if (isActionAvailable(actionItem))
         useShortcutOn(shortcutId)
@@ -250,13 +272,14 @@ let mkCircleTankSecondaryGun = @(shortcutId, img = null) function(actionItem) {
   )
 
   return res.__update({
+    watch = allowShoot
     key = "btn_weapon_secondary"
     size = [buttonSize, buttonSize]
     children = [
       mkCircleProgressBg(buttonSize, actionItem)
       mkBtnBorder(buttonSize, isAvailable, stateFlags)
       mkBtnImage(buttonImgSize, image,  color)
-      actionItem.count < 0 ? null : mkCountText(actionItem.count, color)
+      actionItem.count < 0 ? null : mkCountTextLeft(actionItem.count, color)
       isWaitForAim ? waitForAimIcon : null
       mkGamepadShortcutImage(shortcutId, defShortcutOvr)
     ]
@@ -316,4 +339,5 @@ return {
   mkCircleTankSecondaryGun
   mkCircleZoom
   mkSimpleCircleTouchBtn
+  mkCountTextRight
 }

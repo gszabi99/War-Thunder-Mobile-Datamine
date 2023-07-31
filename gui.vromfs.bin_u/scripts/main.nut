@@ -44,7 +44,6 @@ set_rnd_seed(get_local_unixtime())
 
 //------- vvv files before login vvv ----------
 
-::g_string <- require("%sqstd/string.nut") //put g_string to root_table
 ::u <- require("%sqStdLibs/helpers/u.nut") //put u to roottable
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -120,6 +119,7 @@ require("%scripts/debugTools/dbgDedicLogerrs.nut")
 require("%scripts/matching/gameModesUpdate.nut")
 require("utils/restartGame.nut")
 require("%globalScripts/debugTools/dbgTimer.nut").registerConsoleCommand("dagui")
+require("bqQueue.nut")
   // end of Independent Modules
 
 end_es_loading()

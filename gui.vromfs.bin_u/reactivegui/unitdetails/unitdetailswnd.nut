@@ -12,9 +12,9 @@ let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, unitPlatesGap
 let backButton = require("%rGui/components/backButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { can_debug_units } = require("%appGlobals/permissions.nut")
-let startTestFlight = require("%rGui/mainMenu/startTestFlight.nut")
+let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let curSelectedUnitId = Watched("")
@@ -152,7 +152,7 @@ let testDriveButton = @() {
   watch = can_debug_units
   vplace = ALIGN_BOTTOM
   children = !can_debug_units.value ? null
-    : textButtonCommon("Test Drive",
+    : textButtonPrimary("Test Drive",
         @() startTestFlight(unitToShow.value?.name),
         { hotkeys = ["^J:X | Enter"] })
 }

@@ -1750,8 +1750,8 @@
     }
   },
   "breaches": {
-    "additionalWaterDeathThreshold": 4400000.0,
-    "additionalWaterCoverPartsThreshold": 1800000.0
+    "additionalWaterDeathThreshold": 440000.0,
+    "additionalWaterCoverPartsThreshold": 180000.0
   },
   "shipCover": {
     "cover": {

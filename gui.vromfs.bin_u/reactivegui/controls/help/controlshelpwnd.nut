@@ -9,10 +9,19 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let mkControlsHelpXone = require("mkControlsHelpXone.nut")
+let mkControlsHelpSony = require("mkControlsHelpSony.nut")
+let mkControlsHelpNintendo = require("mkControlsHelpNintendo.nut")
 let { gamepadShortcuts, gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
 let { axisToHotkey } = require("%rGui/controls/axisToHotkey.nut")
 let listButton = require("%rGui/components/listButton.nut")
+let { gamepadPreset } = require("%rGui/controlsMenu/gamepadVendor.nut")
 
+let typeGamepad = {
+  xone = mkControlsHelpXone
+  sony = mkControlsHelpSony
+  nintendo = mkControlsHelpNintendo
+}
+let mkControlsHelp = typeGamepad?[gamepadPreset] ?? mkControlsHelpXone
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let curUnitType = mkWatched(persist, "curUnitType", null)
@@ -55,7 +64,7 @@ let function content() {
   return {
     watch = curUnitType
     size = flex()
-    children = mkControlsHelpXone(texts)
+    children = mkControlsHelp(texts)
   }
 }
 

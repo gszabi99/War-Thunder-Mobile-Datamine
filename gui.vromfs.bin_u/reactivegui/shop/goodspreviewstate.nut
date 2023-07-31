@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
+let { defer } = require("dagor.workcycle")
 let { activeOffer } = require("offerState.nut")
 let { shopGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -44,6 +45,15 @@ let isPreviewGoodsPurchasing = Computed(@() previewGoods.value?.id != null
 isPreviewGoodsPurchasing.subscribe(@(v) v ? null : closeGoodsPreview())
 
 subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
+
+let offerUnitName = keepref(Computed(@() activeOffer.value?.id == openedGoodsId.value ? previewGoodsUnit.value?.name
+  : null))
+local offerPrevUnitName = offerUnitName.value
+offerUnitName.subscribe(function(v) {
+  if (offerPrevUnitName != null && (v != null || activeOffer.value?.id == openedGoodsId.value))
+    defer(closeGoodsPreview)
+  offerPrevUnitName = v
+})
 
 return {
   GPT_UNIT

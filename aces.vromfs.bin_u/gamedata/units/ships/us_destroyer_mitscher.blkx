@@ -307,6 +307,15 @@
       "genericDamageMult": 1.0,
       "ammunition_storage_01_dm": {},
       "ammunition_storage_02_dm": {}
+    },
+    "torpedo_tubes": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 42110.0,
+      "genericDamageMult": 1.0,
+      "fireParamsPreset": "ship_aux_fire",
+      "tt_01_dm": {},
+      "tt_02_dm": {}
     }
   },
   "tank_crew": {
@@ -385,6 +394,38 @@
             "fxEventName": "fire_after_hit_med"
           }
         }
+      },
+      {
+        "name": [
+          "tt_01_dm",
+          "tt_02_dm"
+        ],
+        "onHit": [
+          {
+            "damage": 300.0,
+            "damageType": "generic",
+            "isSingleAction": false,
+            "moduleStatusEffect": {
+              "name": "shotFreqMult",
+              "prob": 1.0
+            },
+            "action": {
+              "type": "forcedExplosion",
+              "probability": 0.5,
+              "damage": 2000.0,
+              "damageType": "explosion",
+              "fxEvent": "ammo_expl",
+              "parts": {
+                "part": "compartment_05_dm"
+              }
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 300.0,
+            "fire": 0.05
+          }
+        ]
       },
       {
         "name": "bridge_dm",
@@ -514,6 +555,8 @@
         "compartment_06_dm",
         "funnel_01_dm",
         "funnel_02_dm",
+        "tt_01_dm",
+        "tt_02_dm",
         "bridge_dm",
         "engine_room_01_dm",
         "engine_room_02_dm",
@@ -730,26 +773,28 @@
             85.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -155.0,
-            85.0,
-            90.0
-          ],
-          "lim2": [
-            -155.0,
-            155.0,
-            -20.0,
-            40.0
-          ],
-          "lim3": [
-            155.0,
-            180.0,
-            85.0,
-            90.0
-          ]
-        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -155.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              155.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -829,26 +874,28 @@
             85.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -155.0,
-            85.0,
-            90.0
-          ],
-          "lim2": [
-            -155.0,
-            155.0,
-            -20.0,
-            40.0
-          ],
-          "lim3": [
-            155.0,
-            180.0,
-            85.0,
-            90.0
-          ]
-        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -155.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              155.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -909,26 +956,28 @@
             85.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -150.0,
-            85.0,
-            90.0
-          ],
-          "lim2": [
-            -150.0,
-            150.0,
-            -20.0,
-            40.0
-          ],
-          "lim3": [
-            150.0,
-            180.0,
-            85.0,
-            90.0
-          ]
-        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -988,26 +1037,28 @@
             85.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -150.0,
-            85.0,
-            90.0
-          ],
-          "lim2": [
-            -150.0,
-            150.0,
-            -20.0,
-            40.0
-          ],
-          "lim3": [
-            150.0,
-            180.0,
-            85.0,
-            90.0
-          ]
-        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -1067,26 +1118,28 @@
             85.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -150.0,
-            85.0,
-            90.0
-          ],
-          "lim2": [
-            -150.0,
-            150.0,
-            -20.0,
-            40.0
-          ],
-          "lim3": [
-            150.0,
-            180.0,
-            85.0,
-            90.0
-          ]
-        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -1146,26 +1199,28 @@
             85.0
           ]
         },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -150.0,
-            85.0,
-            90.0
-          ],
-          "lim2": [
-            -150.0,
-            150.0,
-            -20.0,
-            40.0
-          ],
-          "lim3": [
-            150.0,
-            180.0,
-            85.0,
-            90.0
-          ]
-        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -150.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          },
+          {
+            "yaw": [
+              150.0,
+              180.0
+            ],
+            "pitch": [
+              -15.0,
+              85.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,

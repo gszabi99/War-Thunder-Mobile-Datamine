@@ -2,12 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { rewardsToReceive, failedRewardsLevelStr } = require("levelUpState.nut")
-let { rewardInProgress, get_player_level_rewards } = require("%appGlobals/pServer/pServerApi.nut")
+let { rewardsToReceive, failedRewardsLevelStr, maxRewardLevel } = require("levelUpState.nut")
+let { rewardInProgress, get_player_level_rewards, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
@@ -56,22 +55,23 @@ let function startCurrencyAnims() {
 let function receiveRewards() {
   if (rewardInProgress.value)
     return
-  let levels = rewardsToReceive.value.keys()
-  local level = null
-  let function receiveNext(res) {
-    if ("error" in res)
-      failedRewardsLevelStr.mutate(@(v) v[level.tostring()] <- true)
-    if (levels.len() == 0)
-      return
-    startCurrencyAnims()
-    level = levels.pop()
-    get_player_level_rewards(curCampaign.value, level, receiveNext)
-  }
-  receiveNext(null)
+  let level = rewardsToReceive.value.findindex(@(_) true)
+  if (level == null)
+    return
+  startCurrencyAnims()
+  get_player_level_rewards(curCampaign.value, level,
+    { id = "playerLevelRewards.receiveNext", level })
 }
 
+registerHandler("playerLevelRewards.receiveNext",
+  function(res, context) {
+    if ("error" in res)
+      failedRewardsLevelStr.mutate(@(v) v[context.level.tostring()] <- true)
+    receiveRewards()
+  })
+
 let receiveBtn = mkSpinnerHideBlock(Computed(@() rewardInProgress.value != null),
-  textButtonCommon(utf8ToUpper(loc("btn/receive")), receiveRewards),
+  textButtonPrimary(utf8ToUpper(loc("btn/receive")), receiveRewards),
   {
     size = [flex(), defButtonHeight]
     halign = ALIGN_CENTER
@@ -147,12 +147,12 @@ let function rewardsList() {
 }
 
 let levelUpText = @() {
-  watch = playerLevelInfo
+  watch = maxRewardLevel
   size = [flex(), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
-  text = loc("levelUp/newLevel", { level = playerLevelInfo.value.level + 1 })
+  text = loc("levelUp/newLevel", { level = maxRewardLevel.value })
 }.__update(fontMedium)
 
 return {

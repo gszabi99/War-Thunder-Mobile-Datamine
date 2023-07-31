@@ -13,9 +13,12 @@ let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { openChangeLog, isVersionsReceived } = require("%rGui/changelog/changeLogState.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let startTestFlight = require("startTestFlight.nut")
+let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { isLoginAwardOpened, canShowLoginAwards } = require("%rGui/unlocks/loginAwardState.nut")
+let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 let { startTutor, firstBattleTutor } = require("%rGui/tutorial/tutorialMissions.nut")
+let { openBugReport } = require("%rGui/feedback/bugReport.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
@@ -70,7 +73,12 @@ let STORE = {
 }
 let LOGIN_AWARD = {
   name = loc("dailyRewards/header")
-  cb = @() isLoginAwardOpened(true)
+  cb = @() canShowLoginAwards.value ? isLoginAwardOpened(true)
+    : openMsgBox({ text = loc("error/serverTemporaryUnavailable") })
+}
+let BUG_REPORT = {
+  name = loc("mainmenu/btnBugReport")
+  cb = openBugReport
 }
 let TUTORIAL = {
   name = loc("mainmenu/btnTutorial")
@@ -85,8 +93,9 @@ let function getPublicButtons() {
     res.append(GAMEPAD_HELP)
   if (isVersionsReceived.value)
     res.append(CHANGELOG)
-  if (canShowLoginAwards.value)
+  if (canShowLoginAwards.value || isUserstatMissingData.value)
     res.append(LOGIN_AWARD)
+  res.append(BUG_REPORT)
   return res
 }
 
@@ -112,7 +121,10 @@ let getTopMenuButtons = @() [
 ]
 
 let topMenuButtonsGenId = Computed(function(prev) {
-  let vals = [can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad, isVersionsReceived, firstBattleTutor] //warning disable: -declared-never-used
+  let vals = [   //warning disable: -declared-never-used
+    can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad,
+    isVersionsReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData
+  ]
   return prev == FRP_INITIAL ? 0 : prev + 1
 })
 

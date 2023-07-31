@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hasTarget } = require("%rGui/hudState.nut")
+let { hasTarget, targetUnitName } = require("%rGui/hudState.nut")
 let { startCrosshairAnimationTime } = require("%rGui/hud/commonState.nut")
 let { TargetLockTime } = require("%rGui/hud/airState.nut")
 let { crosshairSimpleSize, pointingAnimSteps, pointingSectors, mkSector } = require("%rGui/hud/commonSight.nut")
+let { targetName } = require("%rGui/hud/targetSelectionProgress.nut")
 
-let function crosshairSimple() {
+let function targetLockProgress() {
   if (!hasTarget.value)
     return { watch = [ hasTarget ] }
 
@@ -14,18 +15,21 @@ let function crosshairSimple() {
   return {
     watch = [ hasTarget, TargetLockTime, startCrosshairAnimationTime ]
     size = [crosshairSimpleSize, crosshairSimpleSize]
-    behavior = Behaviors.Indicator
-    key = $"crosshairSimple_{leftTimeAnimKey}"
+    key = $"targetLockProgress_{leftTimeAnimKey}"
     children = pointingSectors.map(@(sector, idx) mkSector(sector, idx, leftTimeAnimKey, stepAnimTime))
     transform = { pivot = [0.5, 0.5] }
   }
 }
 
-let aircraftSight = {
-  size = [sw(100), sh(100)]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  children = crosshairSimple
+let aircraftSight = @() {
+  watch = [ hasTarget, targetUnitName ]
+  transform = {}
+  behavior = Behaviors.Indicator
+  flow = FLOW_HORIZONTAL
+  children = [
+    hasTarget.value ? targetName(targetUnitName.value) : null
+    targetLockProgress
+  ]
 }
 
 return aircraftSight

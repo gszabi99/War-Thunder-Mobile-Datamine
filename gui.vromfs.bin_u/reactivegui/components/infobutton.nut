@@ -27,10 +27,10 @@ let iText = {
   fontFx = FFT_GLOW
   fontFxFactor = hdpx(64)
   fontFxColor = 0xFF000000
-}.__update(fontSmallAccented)
+}
 
 let defSize = [evenPx(70), evenPx(70)]
-let function infoBlueButton(onClick, ovr = {}) {
+let function infoBlueButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
   let stateFlags = Watched(0)
   return @() {
@@ -46,7 +46,7 @@ let function infoBlueButton(onClick, ovr = {}) {
     children = [
       pattern
       gradient
-      iText
+      iText.__merge(textOvr)
     ]
 
     transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
@@ -54,7 +54,7 @@ let function infoBlueButton(onClick, ovr = {}) {
   }.__update(ovr)
 }
 
-let function infoGreyButton(onClick, ovr = {}) {
+let function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
   return @() {
     size
@@ -69,7 +69,7 @@ let function infoGreyButton(onClick, ovr = {}) {
         image = Picture($"ui/gameuiskin#gradient_button.svg")
         color = 0x0A262626
       }
-      iText
+      iText.__merge(textOvr)
     ]
   }.__update(ovr)
 }

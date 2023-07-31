@@ -46,35 +46,60 @@
             "flight_target01"
           ]
         },
-        "missionMarkAsRespawnPoint": {
-          "loc_name": "",
-          "spawnEffect": false,
-          "isGroundZone": false,
-          "isUnit": false,
-          "radius": -1.0,
-          "isStrictSpawn": false,
-          "isAirfield": false,
-          "useExisting": false,
-          "isIndividual": false,
-          "removeAreas": false,
-          "canSpawnOnNeutral": false,
-          "showOnMap": true,
-          "onlyOnePlayerPerSpawnPoint": false,
-          "resetStrictSpawnIndex": false,
-          "replaceAreas": false,
-          "forceCreate": false,
-          "ignoreTeamsOnReuse": false,
-          "target": [
-            "artillery_spawn01",
-            "artillery_spawn02",
-            "artillery_spawn03",
-            "artillery_spawn04"
-          ],
-          "team": "A",
-          "tags": {
-            "artillery": true
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "",
+            "spawnEffect": false,
+            "isGroundZone": false,
+            "isUnit": false,
+            "radius": -1.0,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": [
+              "artillery_spawn01",
+              "artillery_spawn02",
+              "artillery_spawn03",
+              "artillery_spawn04"
+            ],
+            "team": "A",
+            "tags": {
+              "artillery": true
+            }
+          },
+          {
+            "loc_name": "",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": false,
+            "radius": -1.0,
+            "target": "@PLAYER_SPAWN",
+            "team": "A",
+            "tags": {
+              "tank": true
+            }
           }
-        }
+        ]
       },
       "else_actions": {}
     },
@@ -818,7 +843,8 @@
     "tanks_total": 0,
     "unit_var": 0,
     "target_tanks_squad": "",
-    "target_respawn_time": 5
+    "target_respawn_time": 5,
+    "PLAYER_SPAWN": "spawn01"
   },
   "dialogs": {},
   "airfields": {},

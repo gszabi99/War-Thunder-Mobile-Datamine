@@ -7,7 +7,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textButtonFaded, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
@@ -213,7 +213,7 @@ let feedbackWnd = bgShaded.__merge({
               @() {
                 watch = [ isQuestionLast ]
                 children = !isQuestionLast.value
-                  ? textButtonFaded(utf8ToUpper(loc("msgbox/btn_skip")), onBtnSkip)
+                  ? textButtonCommon(utf8ToUpper(loc("msgbox/btn_skip")), onBtnSkip)
                   : null
               }
               {
@@ -227,7 +227,7 @@ let feedbackWnd = bgShaded.__merge({
                 watch = [ isQuestionLast, hasAnswerForCurQuestion, isCurQuestionRating ]
                 hplace = ALIGN_RIGHT
                 children = isQuestionLast.value || hasAnswerForCurQuestion.value
-                  ? textButtonCommon(
+                  ? textButtonPrimary(
                       utf8ToUpper(loc(isCurQuestionRating.value ? "msgbox/btn_rate" : "mainmenu/btnSend")),
                       onBtnApply)
                   : null

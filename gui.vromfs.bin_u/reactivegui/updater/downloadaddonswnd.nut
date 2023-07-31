@@ -69,7 +69,7 @@ let openLimitConnectionMsgBox = @() openMsgBox({
   text = loc("msg/allowMobileNetworkDownload")
   buttons = [
     { id = "no", isCancel = true }
-    { id = "yes", isPrimary = true, isDefault = true,
+    { id = "yes", styleId = "PRIMARY", isDefault = true,
       function cb() {
         allowLimitedDownload(true)
         isDownloadPaused(false)

@@ -1975,11 +1975,11 @@
     "replace_tex": [
       {
         "from": "he_111h_6_a*",
-        "to": "he_111h_6_a_tomoe*"
+        "to": "he_111h_6_a*"
       },
       {
         "from": "he_111h_6_a_dmg*",
-        "to": "he_111h_6_a_tomoe_dmg*"
+        "to": "he_111h_6_a_dmg*"
       }
     ]
   },

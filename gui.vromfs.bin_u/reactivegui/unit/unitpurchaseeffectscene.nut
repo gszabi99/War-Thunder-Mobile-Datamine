@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { hide_unit, show_unit, enable_scene_camera, disable_scene_camera, reset_camera_pos_dir } = require("hangar")
+let { hide_unit, show_unit, enable_scene_camera, disable_scene_camera, reset_camera_pos_dir, set_camera_shift_upper
+} = require("hangar")
 let { resetTimeout } = require("dagor.workcycle")
 let { sin, cos, asin, PI, ceil } = require("math")
-let { registerScene } = require("%rGui/navState.nut")
+let { registerScene, scenesOrder } = require("%rGui/navState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { hangarUnit, setCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { gradRadial, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let mkBehindSceneEmitter = require("%rGui/effects/mkBehindSceneEmitter.nut")
 let mkSparkStarMoveOut = require("%rGui/effects/mkSparkStarMoveOut.nut")
@@ -14,7 +15,9 @@ let { playSound } = require("sound_wt")
 
 
 let unitToShow = mkWatched(persist, "unit", null)
-let isOpened = Computed(@() isInMenu.value && !hasModalWindows.value && unitToShow.value != null)
+let hasLvlUpScene = Computed(@() scenesOrder.value.findindex(@(v) v == "levelUpWnd") != null)
+let isOpened = Computed(@() isInMenu.value && !hasModalWindows.value
+  && unitToShow.value != null && !hasLvlUpScene.value)
 let close = @() unitToShow(null)
 
 let BASE_DELAY = 0.2
@@ -199,7 +202,7 @@ let mkUnitEffectScene = @(color) {
     hide_unit()
     disable_scene_camera()
     reset_camera_pos_dir()
-    setCustomHangarUnit(unitToShow.value)
+    set_camera_shift_upper()
   }
   function onDetach() {
     show_unit()
@@ -220,7 +223,7 @@ let mkUnitEffectScene = @(color) {
 //no need to subscribe and try change color on the go, but need correct color on creation.
 let unitEffectScene = @() mkUnitEffectScene(getFxColor(unitToShow.value))
 
-registerScene("unitPurchaseEffectScene", unitEffectScene, close, isOpened)
+registerScene("unitPurchaseEffectScene", unitEffectScene, close, isOpened, true)
 
 register_command(@() unitToShow(hangarUnit.value), "ui.debug.unitPurchaseEffect")
 

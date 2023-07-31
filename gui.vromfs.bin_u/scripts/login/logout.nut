@@ -3,6 +3,7 @@
 #explicit-this
 
 from "%scripts/dagui_library.nut" import *
+let { destroy_session } = require("multiplayer")
 let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
 let { isOnlineSettingsAvailable, loginState, LOGIN_STATE, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
@@ -11,12 +12,14 @@ let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWil
 let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
 let { isAutologinUsed, setAutologinEnabled } = require("autoLogin.nut")
 let { resetLoginPass } = require("auth_wt")
+let { forceSendBqQueue } = require("%scripts/bqQueue.nut")
 
 let canLogout = @() !::disable_network()
 
 let function startLogout() {
   if (loginState.value == LOGIN_STATE.NOT_LOGGED_IN)
     return
+  forceSendBqQueue()
   if (!canLogout())
     return ::exit_game()
 
@@ -27,7 +30,7 @@ let function startLogout() {
       return
     }
     else
-      ::destroy_session()
+      destroy_session("on startLogout")
   }
 
   if (shouldDisableMenu || isOnlineSettingsAvailable.value)

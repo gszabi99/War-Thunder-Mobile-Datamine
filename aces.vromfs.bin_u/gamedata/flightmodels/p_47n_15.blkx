@@ -1763,11 +1763,11 @@
     "replace_tex": [
       {
         "from": "p_47n_20_aluminum_1948_c*",
-        "to": "p_47n_20_aluminum_1948_c_tomoe*"
+        "to": "p_47n_20_aluminum_1948_c*"
       },
       {
         "from": "p_47n_20_aluminum_1948_c_dmg*",
-        "to": "p_47n_20_aluminum_1948_c_tomoe_dmg*"
+        "to": "p_47n_20_aluminum_1948_c_dmg*"
       }
     ]
   },

@@ -3,27 +3,29 @@ let { set_camera_shift_centered, set_camera_shift_upper } = require("hangar")
 let { get_time_msec } = require("dagor.time")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { wndSwitchAnim, WND_REVEAL } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let { playerLevelInfo, allUnitsCfg, myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
-let { getUnitPresentation, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { hangarUnitName, loadedHangarUnitName, setHangarUnit } = require("hangarUnit.nut")
 let { sortUnits, getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
 let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, rankToReqPlayerLvl, getUnitLockedShortText,
-  setCurrentUnit
+  setCurrentUnit, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
 } = require("%appGlobals/unitsState.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { textButtonCommon, textButtonPurchase, textButtonPricePurchase, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPurchase, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
+let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnderlineFullHeight,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitCanPurchaseShade, mkUnitTexts, mkUnitLevel, mkUnitPrice,
   mkUnitLockedFg, mkUnitEquippedFrame, mkUnitEquippedTopLine, mkUnitSelectedUnderline,
-  mkPlatoonPlateFrame, mkPlatoonBgPlates, platoonSelPlatesGap, mkPlatoonEquippedIcon, mkPlatoonSelectedGlow
+  mkPlatoonPlateFrame, platoonSelPlatesGap, mkPlatoonEquippedIcon, mkPlatoonSelectedGlow,
+  mkUnitEmptyLockedFg, bgPlatesTranslate, mkPlateText, plateTextsPad
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInfoPanel, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -35,13 +37,16 @@ let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let mkUnitPkgDownloadInfo = require("mkUnitPkgDownloadInfo.nut")
 let { isPurchEffectVisible } = require("unitPurchaseEffectScene.nut")
-
+let { gradTranspDoubleSideX, gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
+let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { abs } = require("%sqstd/math.nut")
+let { justUnlockedUnits, justBoughtUnits, deleteJustBoughtUnit, UNLOCK_DELAY } = require("%rGui/unit/justUnlockedUnits.nut")
+let { scaleAnimation, revealAnimation, raisePlatesAnimation, RAISE_PLATE_TOTAL
+} = require("%rGui/unit/components/unitUnlockAnimation.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
@@ -49,6 +54,8 @@ let isOpened = mkWatched(persist, "isOpened", false)
 let isFiltersVisible = Watched(false)
 let filters = [optName, optCountry, optUnitClass, optMRank, optStatus]
 let activeFilters = Watched(0)
+
+let gapFromUnitsBlockToBtns = hdpx(4)
 
 let isAttached = Watched(false)
 isAttached.subscribe(function(v) {
@@ -64,6 +71,7 @@ let holdInfo = {} //unitName = { press = int, release = int }
 let availableUnitsList = Computed(@() allUnitsCfg.value
   .map(@(u, id) myUnits.value?[id] ?? u)
   .values()
+  .filter(@(u) !u?.isHidden)
   .sort(sortUnits))
 
 let curSelectedUnit = Watched(null)
@@ -191,7 +199,6 @@ let bgTextMessage = {
   texOffs = gradCircCornerOffset
 }
 
-
 let function findGoodsPrem(shopGoodsList){
   local res = null
   local delta = 0
@@ -214,8 +221,8 @@ let function findGoodsPrem(shopGoodsList){
 let function unitActionButtons() {
   let children = []
   if (canEquipSelectedUnit.value)
-  children.append(
-    textButtonCommon(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
+    children.append(
+      textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
   else if (curSelectedUnit.value in canBuyUnits.value) {
     let unit = canBuyUnits.value[curSelectedUnit.value]
     let isForLevelUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
@@ -227,7 +234,7 @@ let function unitActionButtons() {
           onBuyUnit, { hotkeys = ["^J:X"] }))
     }
   }
-  else {
+  else if (canBuyUnitsStatus.value?[curSelectedUnit.value] == US_TOO_LOW_LEVEL){
     let deltaLevels = curSelectedUnitLevel.value - playerLevelInfo.value.level
     if(deltaLevels >= 2)
       children.append(bgTextMessage.__merge({
@@ -240,31 +247,36 @@ let function unitActionButtons() {
             : loc("unitWnd/explore_request")
         }.__update(fontTiny)
       }))
-    else if(deltaLevels == 1) {
-      let goods = findGoodsPrem(shopGoods.value)
+    else if(deltaLevels == 1 && canBuyUnitsStatus.value?[curSelectedUnit.value] != US_NOT_FOR_SALE) {
       children.append(
-        !havePremium.value
-          ? textButtonPurchase(utf8ToUpper(loc("msgbox/speed_explore")), @() openGoodsPreview(goods.id))
-          : bgTextMessage.__merge({
-            children = @(){
-              size = SIZE_TO_CONTENT
-              rendObj = ROBJ_TEXT
-              color = 0xFFFFFF
-              text = loc("unitWnd/expirience_request")
-            }.__update(fontTiny)
-          })
+        textButtonPurchase(
+          utf8ToUpper(loc("units/btn_speed_explore")),
+          havePremium.value ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
+            : @() openGoodsPreview(findGoodsPrem(shopGoods.value).id)
+        )
       )
     }
   }
+  children.append(
+    infoBlueButton(
+      @() unitDetailsWnd({ name = hangarUnitName.value })
+      {
+        size = [defButtonHeight, defButtonHeight]
+        hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+      }
+      fontBig)
+  )
+
   return {
     watch = [
       curSelectedUnit,curSelectedUnitPrice,
       canBuyUnits, canEquipSelectedUnit, havePremium,
-      playerLevelInfo, curCampaign, shopGoods, buyUnitsData]
+      canBuyUnitsStatus, playerLevelInfo, curCampaign,
+      shopGoods, buyUnitsData]
     size = SIZE_TO_CONTENT
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = buttonsHGap
+    gap = hdpx(24)
     children
   }
 }
@@ -306,6 +318,40 @@ let hoverBg = {
   rendObj = ROBJ_BOX
 }
 
+let function mkPlatoonPlates(unit) {
+  let platoonUnits = unit.platoonUnits
+  let platoonSize = platoonUnits?.len() ?? 0
+  let canPurchase = Computed(@() unit.name in canBuyUnits.value)
+  let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
+  let isSelected = Computed(@() curSelectedUnit.value == unit.name)
+  let isEquipped = Computed(@() unit.name == curUnitName.value)
+  let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
+  let justBoughtDelay = Computed(@() !justBoughtUnits.value?[unit.name] ? null
+    : justUnlockedDelay.value ? justBoughtUnits.value?[unit.name]
+    : WND_REVEAL)
+
+  return @() {
+    watch = [isSelected, justUnlockedDelay, justBoughtDelay]
+    size = flex()
+    children = platoonUnits?.map(@(_, idx) {
+      size = flex()
+      transform = { translate = bgPlatesTranslate(platoonSize, idx, isSelected.value || justBoughtDelay.value) }
+      transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+      animations = raisePlatesAnimation(justBoughtDelay.value,
+        bgPlatesTranslate(platoonSize, idx, isSelected.value || justBoughtDelay.value), idx, platoonSize,
+          @() deleteJustBoughtUnit(unit.name))
+      children = [
+        mkUnitBg(unit, {}, justUnlockedDelay.value)
+        mkUnitCanPurchaseShade(canPurchase)
+        mkUnitEmptyLockedFg(isLocked, justUnlockedDelay.value)
+        mkPlatoonPlateFrame(isEquipped, isLocked, justUnlockedDelay.value)
+        !justBoughtDelay.value ? null : mkPlateText(loc(getUnitPresentation(platoonUnits?[platoonSize - idx - 1]).locId),
+          { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, padding = plateTextsPad, animations = revealAnimation() })
+      ]
+    })
+  }
+}
+
 let function mkPlatoonPlate(unit) {
   let stateFlags = Watched(0)
   if (unit == null)
@@ -320,13 +366,15 @@ let function mkPlatoonPlate(unit) {
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
-  let lockedText = Computed(@() getUnitLockedShortText(unit,
-    canBuyUnitsStatus.value?[unit.name], rankToReqPlayerLvl.value?[unit.rank]))
   let canBuyForLvlUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
   let price = canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp) : null
+  let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
+  let lockedText = Computed(@() getUnitLockedShortText(unit,
+    justUnlockedDelay.value ? US_TOO_LOW_LEVEL : canBuyUnitsStatus.value?[unit.name],
+    rankToReqPlayerLvl.value?[unit.rank]))
 
   return @() {
-    watch = [isSelected, stateFlags]
+    watch = [isSelected, stateFlags, justUnlockedDelay]
     behavior = Behaviors.Button
     clickableInfo = isSelected.value ? { skipDescription = true } : loc("mainmenu/btnSelect")
     sound = { click  = "choose" }
@@ -339,20 +387,20 @@ let function mkPlatoonPlate(unit) {
       {
         size = [ unitPlateWidth, unitPlateHeight ]
         children = [
-          mkPlatoonBgPlates(unit, unit.platoonUnits, canPurchase, isLocked, isSelected, isEquipped)
-          mkUnitBg(unit)
-          mkPlatoonSelectedGlow(unit, isSelected)
+          mkPlatoonPlates(unit)
+          mkUnitBg(unit, {}, justUnlockedDelay.value)
+          mkPlatoonSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(unit)
           mkUnitCanPurchaseShade(canPurchase)
-          mkUnitTexts(unit, getPlatoonName(unit.name, loc))
-          unit?.level == null ? null : mkUnitLevel(unit.level)
-          price != null ? mkUnitPrice(price) : null
-          mkUnitLockedFg(isLocked, lockedText)
-          mkPlatoonPlateFrame(isEquipped)
-          mkPlatoonEquippedIcon(unit, isEquipped)
+          mkUnitTexts(unit, loc(getUnitLocId(unit)), justUnlockedDelay.value)
+          unit?.level == null ? null : mkUnitLevel(unit.level, justUnlockedDelay.value)
+          price != null ? mkUnitPrice(price, justUnlockedDelay.value) : null
+          mkUnitLockedFg(isLocked, lockedText, justUnlockedDelay.value, unit.name)
+          mkPlatoonPlateFrame(isEquipped, isLocked, justUnlockedDelay.value)
+          mkPlatoonEquippedIcon(unit, isEquipped, justUnlockedDelay.value)
         ]
       }
-      mkUnitSelectedUnderline(isSelected)
+      mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)
     ]
   }
 }
@@ -372,13 +420,15 @@ let function mkUnitPlate(unit) {
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
-  let lockedText = Computed(@() getUnitLockedShortText(unit,
-    canBuyUnitsStatus.value?[unit.name], rankToReqPlayerLvl.value?[unit.rank]))
   let canBuyForLvlUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
   let price = canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp) : null
+  let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
+  let lockedText = Computed(@() getUnitLockedShortText(unit,
+    justUnlockedDelay.value ? US_TOO_LOW_LEVEL : canBuyUnitsStatus.value?[unit.name],
+    rankToReqPlayerLvl.value?[unit.rank]))
 
   return @() {
-    watch = [isSelected, stateFlags]
+    watch = [isSelected, stateFlags, justUnlockedDelay]
     size = [ unitPlateWidth, unitsPlateCombinedHeight ]
     behavior = Behaviors.Button
     clickableInfo = isSelected.value ? { skipDescription = true } : loc("mainmenu/btnSelect")
@@ -389,22 +439,24 @@ let function mkUnitPlate(unit) {
     flow = FLOW_VERTICAL
     children = [
       stateFlags.value & S_HOVER ? hoverBg : null
-      mkUnitEquippedTopLine(isEquipped)
+      mkUnitEquippedTopLine(isEquipped, justUnlockedDelay.value)
       {
         size = [ unitPlateWidth, unitPlateHeight ]
+        transform = {}
+        animations = scaleAnimation(justUnlockedDelay.value, [1.05, 1.05])
         children = [
-          mkUnitBg(unit)
-          mkUnitSelectedGlow(unit, isSelected)
+          mkUnitBg(unit, {}, justUnlockedDelay.value)
+          mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(unit)
           mkUnitCanPurchaseShade(canPurchase)
-          mkUnitTexts(unit, loc(p.locId))
-          unit?.level == null ? null : mkUnitLevel(unit.level)
-          price != null ? mkUnitPrice(price) : null
-          mkUnitLockedFg(isLocked, lockedText)
-          mkUnitEquippedFrame(unit, isEquipped)
+          mkUnitTexts(unit, loc(p.locId), justUnlockedDelay.value)
+          unit?.level == null ? null : mkUnitLevel(unit.level, justUnlockedDelay.value)
+          price != null ? mkUnitPrice(price, justUnlockedDelay.value) : null
+          mkUnitLockedFg(isLocked, lockedText, justUnlockedDelay.value, unit.name)
+          mkUnitEquippedFrame(unit, isEquipped, justUnlockedDelay.value)
         ]
       }
-      mkUnitSelectedUnderline(isSelected)
+      mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)
     ]
   }
 }
@@ -452,7 +504,7 @@ let function unitsBlock() {
       filtered = filtered.filter(@(u) f.isFit(u, value))
   }
   let platoonSize = (filtered?[0].platoonUnits ?? []).len()
-  let gap = platoonSize > 0 ? (platoonSize + 0.5) * platoonSelPlatesGap : 0
+  let gap = platoonSize > 0 ? (platoonSize + 0.8) * platoonSelPlatesGap : 0
   return {
     watch = listWatches
     size = [filtered.len() == 0 ? flex() : SIZE_TO_CONTENT, unitsPlateCombinedHeight]
@@ -486,6 +538,35 @@ let gamercardPlace = {
   ]
 }
 
+let function platoonsHeader() {
+  let revealDelay = Computed(@() !justBoughtUnits.value ? null
+    : !justUnlockedUnits.value ? RAISE_PLATE_TOTAL + 1.0
+    : UNLOCK_DELAY + RAISE_PLATE_TOTAL + 1.0)
+
+  return curCampaign.value != "tanks" ? { watch = [curCampaign] } : {
+    watch = [curCampaign]
+    size = [hdpx(800), hdpx(80)]
+    hplace = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = gradTranspDoubleSideX
+    color = 0xA0000000
+    margin = [0 , 0, hdpx(5), 0]
+    animations = revealAnimation(revealDelay.value)
+    children = [
+      {
+        text = loc("header/platoons")
+        rendObj = ROBJ_TEXT
+        color = 0xFFFFFFFF
+        fontFx = FFT_GLOW
+        fontFxFactor = max(64, hdpx(64))
+        fontFxColor = 0xFF000000
+      }.__update(fontMedium)
+    ]
+  }
+}
+
 let unitsWnd = {
   key = {}
   size = [ sw(100), sh(100) ]
@@ -501,14 +582,25 @@ let unitsWnd = {
       children = mkHorizPannableArea(unitsBlock)
     }
     {
-      size = [ saSize[0], saSize[1] - unitsPlateCombinedHeight - translucentButtonsVGap ]
+      size = [ saSize[0],
+        saSize[1] - unitsPlateCombinedHeight - translucentButtonsVGap - gapFromUnitsBlockToBtns ]
       pos = [ 0, saBorders[1] ]
       hplace = ALIGN_CENTER
       children = [
         gamercardPlace
         unitTweakingButtons
         unitActions
-        mkUnitPkgDownloadInfo(Computed(@() allUnitsCfg.value?[curSelectedUnit.value]))
+        {
+          vplace = ALIGN_BOTTOM
+          hplace = ALIGN_CENTER
+          flow = FLOW_VERTICAL
+          gap = hdpx(20)
+          children = [
+            mkUnitPkgDownloadInfo(Computed(@() allUnitsCfg.value?[curSelectedUnit.value]))
+            platoonsHeader
+          ]
+        }
+
       ]
     }
     unitFilterButton

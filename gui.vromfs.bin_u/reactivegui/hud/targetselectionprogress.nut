@@ -1,63 +1,126 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { targetUnitName } = require("%rGui/hudState.nut")
 
-let color = Color(200, 200, 200, 200)
+let color = Color(255, 255, 255, 255)
 
 let defTransform = {}
 let cooldownEndTime = Watched(0.0)
 let cooldownTime = Watched(0.0)
+let showTargetName = Watched(false)
 
-let size = (1.7 * shHud(3.5)).tointeger()
-let selectionReloadImage = getSvgImage("reload_indication_in_zoom", size)
+let TARGET_UPSCALE = 0.3
+let targetSize = hdpx(16)
+let targetImage = getSvgImage("target_lock_corner", targetSize)
+let targetOffset = [0, - hdpx(20)]
 
 subscribe("on_delayed_target_select:show", function(data) {
-  let { startTime = 0.0, endTime = 0.0 } = data
+  let { lockTime = 0.0, endTime = 0.0 } = data
   cooldownEndTime(endTime)
-  cooldownTime(endTime - startTime)
+  cooldownTime(lockTime)
+  showTargetName(true)
 })
 
 subscribe("on_delayed_target_select:hide", function(_) {
   cooldownEndTime(0.0)
+  showTargetName(false)
 })
 
-let mkTargetSelectionData = function(endTime, cooldown) {
-  let cdLeft = endTime - ::get_mission_time()
-  if (endTime <= 0)
+let mkTargetCorner = @(cdLeft, delay, ovr) {
+  rendObj = ROBJ_PROGRESS_CIRCULAR
+  fgColor = color
+  bgColor = 0
+  opacity = 1.0
+  fValue = 1.0
+  image = targetImage
+  animations = [
+    {
+      prop = AnimProp.opacity, from = 0.0, to = 0.0, play = true,
+      duration = delay
+    }
+    {
+      prop = AnimProp.fValue, from = 0.0, to = 0.75, play = true,
+      delay, duration = cdLeft / 5.0
+    }
+  ]
+}.__update(ovr)
+
+let mkTargetSelectionData = function(endTime, cooldown, textSize) {
+  if (endTime <= 0 || cooldown <= 0)
     return null
+
+  let cdLeft = (endTime - ::get_mission_time())
+  let iconSize = [targetSize, targetSize]
+  let delay = - cdLeft * (1 - cdLeft / cooldown)
+  let upscaleX = textSize[0] ? (hdpx(15) / textSize[0] + 1.0) : 1.1
+
   return {
-      size = flex()
-      rendObj = ROBJ_PROGRESS_CIRCULAR
-      image = selectionReloadImage
-      fgColor = color
-      bgColor = 0
-      opacity = 1.0
-      bValue = 1.0
-      fValue = 1.0
-      key = $"reload_sector_{endTime}_{cooldown}_{color}"
-      transform = {}
-      animations = [
-        {
-          prop = AnimProp.fValue, to = 1.0, play = true,
-          from = (1 - (cdLeft / max(cooldown, 1))),
-          duration = cdLeft
-        }
-        {
-          prop = AnimProp.opacity, from = 1.0, to = 1.0, play = true,
-          duration = cdLeft
-        }
-      ]
+    pos = targetOffset
+    size = [textSize[0] + hdpx(30), textSize[1] + hdpx(10)]
+    key = $"reload_sector_{endTime}_{cooldown}_{color}"
+    transform = {}
+    animations = [
+      {
+        prop = AnimProp.scale, from = [1.0, 1.0], to = [upscaleX, 1.1], play = true,
+        delay = cdLeft, duration = TARGET_UPSCALE, easing = InOutQuad
+      }
+    ]
+    children = [
+      mkTargetCorner(cdLeft, delay, {
+        vplace = ALIGN_TOP
+        hplace = ALIGN_RIGHT
+        size = iconSize
+        transform = { rotate = - 90 }
+      })
+      mkTargetCorner(cdLeft, delay + cdLeft * 0.25, {
+        vplace = ALIGN_BOTTOM
+        hplace = ALIGN_RIGHT
+        size = iconSize
+      })
+      mkTargetCorner(cdLeft, delay + cdLeft * 0.5, {
+        vplace = ALIGN_BOTTOM
+        hplace = ALIGN_LEFT
+        size = iconSize
+        transform = { rotate = 90 }
+      })
+      mkTargetCorner(cdLeft, delay + cdLeft * 0.75, {
+        vplace = ALIGN_TOP
+        hplace = ALIGN_LEFT
+        size = iconSize
+        transform = { rotate = 180 }
+      })
+    ]
   }
 }
 
+let targetName = @(text) {
+  pos = targetOffset
+  rendObj = ROBJ_TEXT
+  color
+  opacity = 1.0
+  text
+  animations = [
+    {
+      prop = AnimProp.opacity, from = 0.0, to = 1.0, play = true,
+      duration = 0.5
+    }
+  ]
+}.__update(fontTiny)
+
 let targetSelectionProgress = @() {
-  watch = [cooldownTime, cooldownEndTime ]
+  watch = [cooldownTime, cooldownEndTime, targetUnitName]
   transform = defTransform
   behavior = Behaviors.Indicator
-  size = [shHud(2), shHud(2)]
-  children = mkTargetSelectionData(cooldownEndTime.value, cooldownTime.value)
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    showTargetName.value ? targetName(targetUnitName.value) : null
+    mkTargetSelectionData(cooldownEndTime.value, cooldownTime.value, calc_str_box(targetUnitName.value, fontTiny))
+  ]
 }
 
 return {
   targetSelectionProgress
+  targetName
 }

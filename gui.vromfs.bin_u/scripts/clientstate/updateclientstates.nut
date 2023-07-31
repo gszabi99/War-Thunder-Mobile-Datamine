@@ -9,6 +9,7 @@ let { isInBattle, isInLoadingScreen, localMPlayerId, localMPlayerTeam, battleSes
   isInFlightMenu, isMpStatisticsActive, isInMpSession
 } = require("%appGlobals/clientState/clientState.nut")
 let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
+let { get_local_mplayer } = require("mission")
 
 let function updateStates() {
   let isInFlight = ::is_in_flight()
@@ -16,7 +17,7 @@ let function updateStates() {
   isInLoadingScreen.update(loading_is_in_progress())
   isInFlightMenu(false)
   isMpStatisticsActive(false)
-  let { id = -1, team = MP_TEAM_NEUTRAL } = isInFlight ? ::get_local_mplayer() : null
+  let { id = -1, team = MP_TEAM_NEUTRAL } = isInFlight ? get_local_mplayer() : null
   localMPlayerId(id)
   localMPlayerTeam(team)
 }

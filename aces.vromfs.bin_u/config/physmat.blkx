@@ -78,7 +78,7 @@
       ],
       "explosionPatchHeightScale": 0.01,
       "explosionWreckage": "ground_expl",
-      "iak": 0.2,
+      "iak": 1.0,
       "damage_k": 0.3,
       "deformable_width": 0.15,
       "tankTracksTexId": 0,

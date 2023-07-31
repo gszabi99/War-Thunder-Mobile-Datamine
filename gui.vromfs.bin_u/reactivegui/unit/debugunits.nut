@@ -10,7 +10,7 @@ let { hangar_load_model } = require("hangar")
 let { gatherUnitStatsLimits } = require("unitStats.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitTags, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let startTestFlight = require("%rGui/mainMenu/startTestFlight.nut")
+let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 
 let function debugUnitStats() {
   let { allUnits = {} } = serverConfigs.value

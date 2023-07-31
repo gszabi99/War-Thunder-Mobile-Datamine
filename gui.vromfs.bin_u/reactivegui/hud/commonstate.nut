@@ -5,6 +5,7 @@ let { Point2 } = require("dagor.math")
 let commonState = {
   startCrosshairAnimationTime = Watched(0)
   crosshairScreenPosition = Watched(Point2(0, 0))
+  crosshairDestinationScreenPosition = Watched(Point2(0, 0))
 }
 
 interopGet({

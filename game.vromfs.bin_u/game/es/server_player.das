@@ -35,12 +35,18 @@ def create_server_player_es(evt : EventOnPlayerConnected;
   if evt.userId != m_player.userId
     return
 
-  let serverPlayerEid = find_server_player_eid(player_eid)
+  var serverPlayerEid = find_server_player_eid(player_eid)
   if !!serverPlayerEid
-    query(serverPlayerEid) <| $ [es] (var server_player__connId : int&)
-      print("[ServerPlayer]: Restore the server player with id {player_id} for user {m_player.userId} and connection id {connId}")
-      server_player__connId = connId
-    return
+    query(serverPlayerEid) <| $ [es] (var server_player__connId : int&; server_player__userId : uint64)
+      if server_player__userId == m_player.userId
+        print("[ServerPlayer]: Restore the server player with id {player_id} for user {m_player.userId} and connection id {connId}")
+        server_player__connId = connId
+        return
+      print("[ServerPlayer]: Server player with id {player_id} not same with userId {m_player.userId} and need recreating")
+      destroyEntity(serverPlayerEid)
+      serverPlayerEid = INVALID_ENTITY_ID
+    if serverPlayerEid != INVALID_ENTITY_ID
+      return
 
   if connId < 0
     print("[ServerPlayer]: Cannot create server player with id {player_id} for user {m_player.userId} due to connection is not created")

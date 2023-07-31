@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { subscribe } = require("eventbus")
 let { LOGIN_STATE } = require("%appGlobals/loginState.nut")
 
 let { onlyActiveStageCb, export, finalizeStage
@@ -13,7 +13,6 @@ let { onlyActiveStageCb, export, finalizeStage
 const EATT_UNKNOWN = -1
 
 let finalize = onlyActiveStageCb(finalizeStage)
-::onUpdateProfile <- @(_taskId, _action, _transactionType = EATT_UNKNOWN) //code callback on profile update
-  finalize()
+subscribe("onUpdateProfile", @(_) finalize())
 
 return export

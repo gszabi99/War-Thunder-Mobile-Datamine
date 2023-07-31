@@ -9,7 +9,7 @@ from "%appGlobals/unitConst.nut" import *
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { subscribe } = require("eventbus")
-let { get_mp_session_id_str } = require("multiplayer")
+let { get_mp_session_id_str, destroy_session } = require("multiplayer")
 let base64 = require("base64")
 let DataBlock = require("DataBlock")
 let { deferOnce } = require("dagor.workcycle")
@@ -487,7 +487,7 @@ let getMaxEconomicRank = @() 30 //it used only for create room. So better to rem
   if (this.status == lobbyStates.NOT_IN_ROOM) {
     this.resetParams()
     if (wasStatus == lobbyStates.JOINING_SESSION)
-      ::destroy_session()
+      destroy_session("on leave room while joining session")
   }
 
   this.updateMyState()
@@ -892,7 +892,7 @@ let getMaxEconomicRank = @() 30 //it used only for create room. So better to rem
 }
 
 subscribeFMsgBtns({
-  destroySession = @(_) ::destroy_session()
+  destroySession = @(_) destroy_session("after error message from host")
 })
 
 ::SessionLobby.hostCb <- function hostCb(res) {
@@ -907,7 +907,7 @@ subscribeFMsgBtns({
     this.leaveRoom()
 
   errorMsgBox(errorCode,
-    [{ id = "ok", eventId = "destroySession", isPrimary = true, isDefault = true }],
+    [{ id = "ok", eventId = "destroySession", styleId = "PRIMARY", isDefault = true }],
     { isPersist = true })
 }
 
@@ -1028,14 +1028,14 @@ foreach (notificationName, callback in
   ::matching.subscribe(notificationName, callback)
 
 subscribe("cancelJoiningSession", function(_) {
-  ::destroy_session()
+  destroy_session("on cancel joining session")
   ::SessionLobby.leaveRoom()
 })
 
 ::on_connection_failed <- function on_connection_failed(text) {
   if (!::SessionLobby.isInRoom())
     return
-  ::destroy_session()
+  destroy_session("on connection failed while in the room")
   ::SessionLobby.leaveRoom()
   openFMsgBox({ text })
 }

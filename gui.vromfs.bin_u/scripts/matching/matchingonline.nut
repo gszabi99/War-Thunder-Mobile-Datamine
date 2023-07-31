@@ -7,8 +7,7 @@ let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { subscribe } = require("eventbus")
 let { dgs_get_settings } = require("dagor.system")
 let { isDownloadedFromGooglePlay, getPackageName } = require("android.platform")
-let { shell_execute = null } = require_optional("dagor.shell")
-let { format } = require("string")
+let { shell_execute } = require("dagor.shell")
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
@@ -31,11 +30,11 @@ subscribeFMsgBtns({
 
   function exitGameForUpdate(_) {
     if (isDownloadedFromGooglePlay())
-      shell_execute?({ cmd = "action", file = $"market://details?id={getPackageName()}" })
+      shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })
     else {
       let url = dgs_get_settings()?.storeUrl
       if (url != null)
-        shell_execute?({ cmd = "action", file = url })
+        shell_execute({ cmd = "action", file = url })
     }
     exitGame()
   }
@@ -57,17 +56,15 @@ let function destroyConnectProgressMessages() {
   closeFMsgBox("matching_connect_progressbox")
 }
 
-let unify = @(err) err | 0xFFFFFFFF00000000 //matching errors has different values on android and PC, it just a fast fix
-
 let customErrorHandlers = {
-  [unify(SERVER_ERROR_INVALID_VERSION)] = function onInvalidVersion(_, __, ___) {
+  [SERVER_ERROR_INVALID_VERSION] = function onInvalidVersion(_, __, ___) {
     openFMsgBox({
       uid = "errorMessageBox"
       text = loc(isDownloadedFromGooglePlay() ? "updater/newVersion/desc/android"
         : "updater/newVersion/desc")
       buttons = [
         { text = loc("updater/btnUpdate"), eventId = "exitGameForUpdate",
-          isPrimary = true, isDefault = true }
+          styleId = "PRIMARY", isDefault = true }
       ]
       isPersist = true
     })
@@ -75,9 +72,8 @@ let customErrorHandlers = {
 }
 
 let function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
-  log($"logoutWithMsgBox reason = {format("0x%X", reason)}.  (SERVER_ERROR_INVALID_VERSION = {format("0x%X", SERVER_ERROR_INVALID_VERSION)})")
   destroyConnectProgressMessages()
-  let handler = customErrorHandlers?[unify(reason)]
+  let handler = customErrorHandlers?[reason]
   if (handler != null) {
     handler(message, reasonDomain, forceExit)
     return
@@ -98,7 +94,7 @@ let function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) 
   openFMsgBox(msg
     .__update({
       text = (message ?? "") == "" ? msg.text : $"{msg.text}\n\n{message}"
-      buttons = [{ id, eventId, isPrimary = true, isDefault = true }]
+      buttons = [{ id, eventId, styleId = "PRIMARY", isDefault = true }]
       isPersist = true
     }))
 }

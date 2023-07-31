@@ -16,7 +16,12 @@ let userstatDescList = mkUserstatWatch("descList", "GetUserStatDescList")
 let userstatUnlocks = mkUserstatWatch("unlocks", "GetUnlocks")
 let userstatStats = mkUserstatWatch("stats", "GetStats")
 
+let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
+  || userstatDescList.value.len() == 0
+  || userstatStats.value.len() == 0)
+
 return {
+  isUserstatMissingData
   userstatDescList
   userstatUnlocks
   userstatStats
