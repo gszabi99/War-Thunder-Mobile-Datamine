@@ -47,6 +47,10 @@ let function mkFreeCameraButton(ovr = {}) {
         else
           setShortcutOff("ID_CAMERA_NEUTRAL")
     }
+    function onDetach() {
+      stateFlags(0)
+      setShortcutOff("ID_CAMERA_NEUTRAL")
+    }
   }.__update(ovr)
 }
 

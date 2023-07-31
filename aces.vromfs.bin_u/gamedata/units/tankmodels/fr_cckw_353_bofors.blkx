@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
+  "minRelativeTankCameraThreshold": 1.3,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.05,
@@ -2566,8 +2567,8 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      4.4,
-      -13.0
+      2.0,
+      -17.5
     ],
     "headPosOnShooting": [
       -2.2,
@@ -2903,42 +2904,6 @@
       "decal1OppositeMirrored": true,
       "decal1WidthBox": 0.282379,
       "decal1Tex": "back_27"
-    }
-  },
-  "defaultAttachables": {
-    "default": {
-      "attachable": {
-        "node": "turret_top_dm",
-        "name": "jerrycan",
-        "tm": [
-          [
-            2.18512E-06,
-            0.0111421,
-            -0.999938
-          ],
-          [
-            -1.0,
-            -0.000189662,
-            -4.29887E-06
-          ],
-          [
-            0.000189707,
-            -0.999938,
-            -0.0111421
-          ],
-          [
-            0.340271,
-            0.856201,
-            1.24257
-          ]
-        ],
-        "slotId": 2,
-        "traceNorm": [
-          0.0,
-          0.0,
-          0.0
-        ]
-      }
     }
   },
   "battleHideNodes": {

@@ -6320,7 +6320,8 @@
             0.1
           ],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "attack_type": "fire_at_will",
+          "isDelayed": true
         },
         "way": {}
       },
@@ -6378,7 +6379,8 @@
             0.1
           ],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "attack_type": "fire_at_will",
+          "isDelayed": true
         },
         "way": {}
       },
@@ -6436,7 +6438,8 @@
             0.1
           ],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "attack_type": "fire_at_will",
+          "isDelayed": true
         },
         "way": {}
       },
@@ -6494,7 +6497,8 @@
             0.1
           ],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "attack_type": "fire_at_will",
+          "isDelayed": true
         },
         "way": {}
       }

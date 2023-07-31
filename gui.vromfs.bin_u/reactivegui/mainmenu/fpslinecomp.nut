@@ -74,6 +74,7 @@ let fpsLineComp = {
   flow = FLOW_HORIZONTAL
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM
+  pos = [saBorders[0], 0]
   gap
   children = [
     graphicsComp

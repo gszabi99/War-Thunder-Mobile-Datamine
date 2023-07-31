@@ -10,7 +10,7 @@ let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 
-let MAX_SLOTS = 6
+let MAX_SLOTS = 2
 
 let function getBulletsForTestFlight(unitName) {
   let { primary = null, secondary = null } = loadUnitBulletsChoice(unitName)?.commonWeapons

@@ -4,7 +4,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { download_addons_in_background, stop_updater, is_updater_running, get_addon_version,
   get_incomplete_addons, is_addon_exists_in_game_folder, UPDATER_RESULT_SUCCESS, UPDATER_ERROR,
   UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS, UPDATER_EVENT_ERROR,
-  UPDATER_EVENT_FINISH,
+  UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING
 } = require("contentUpdater")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let logA = log_with_prefix("[ADDONS] ")
@@ -34,12 +34,21 @@ let allowLimitedDownload = Watched(get_local_custom_settings_blk()?[ALLOW_LIMITE
 let downloadInProgress = mkHardWatched("updater.downloadInProgress", {})
 let currentStage = mkHardWatched("updater.currentStage", null)
 let totalSizeBytes = mkHardWatched("updater.totalSizeBytes", 0)
+let toDownloadSizeBytes = mkHardWatched("updater.toDownloadSizeBytes", 0)
 let downloadState = mkHardWatched("updater.downloadState", null)
 let updaterError = mkHardWatched("updater.updaterError", null)
 
 let firstPriorityAddons = mkWatched(persist, "firstPriorityAddons", {})
 let downloadWndParams = mkWatched(persist, "downloadWndParams", null)
-let progressPercent = Computed(@() downloadState.value?.percent ?? 0)
+let progressPercent = Computed(function() {
+  let { percent = null } = downloadState.value
+  if (totalSizeBytes.value == 0 || percent == null)
+    return percent
+  return clamp((100.0 + toDownloadSizeBytes.value * (percent - 100.0) / totalSizeBytes.value + 0.5).tointeger(), 0, 100)
+})
+
+let isStageDownloading = Computed(@() currentStage.value == UPDATER_DOWNLOADING)
+
 let initialAddonsToDownload = Computed(function(prev) {
   let res = {}
   foreach(a in initialAddons)
@@ -48,16 +57,19 @@ let initialAddonsToDownload = Computed(function(prev) {
   return isEqual(res, prev) ? prev : res
 })
 
-let needStartDownloadAddons = keepref(Computed(function() {
-  if (isDownloadPaused.value || !isLoggedIn.value || isInLoadingScreen.value || isInMpBattle.value
-      || !isAnyCampaignSelected.value || addonsToDownload.value.len() == 0
-      || (isConnectionLimited.value && !allowLimitedDownload.value))
-    return {}
+let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
+
+let wantStartDownloadAddons = Computed(function(prev) {
+  if (!isLoggedIn.value || addonsToDownload.value.len() == 0)
+    return prevIfEqual(prev, {})
 
   let addons = firstPriorityAddons.value.__merge(initialAddonsToDownload.value) //first priority on addons requested by download addons window
   local res = addonsToDownload.value.filter(@(_, a) a in addons)
   if (res.len() != 0)
-    return res
+    return prevIfEqual(prev, res)
+
+  if (!isAnyCampaignSelected.value)
+    return prevIfEqual(prev, {})
 
   let campaign = curCampaign.value
   if (curUnit.value != null) {
@@ -65,12 +77,20 @@ let needStartDownloadAddons = keepref(Computed(function() {
       : getCampaignPkgsForOnlineBattle(campaign, curUnit.value.mRank)
     res = addonsToDownload.value.filter(@(_, a) curUnitAddons.contains(a))
     if (res.len() != 0)
-      return res
+      return prevIfEqual(prev, res)
   }
 
   res = addonsToDownload.value.filter(@(_, a) (getAddonCampaign(a) ?? campaign) == campaign)
-  return res.len() != 0 ? res : addonsToDownload.value
-}))
+  return prevIfEqual(prev, res.len() != 0 ? res : addonsToDownload.value)
+})
+
+let needStartDownloadAddons = keepref(Computed(@()
+  isDownloadPaused.value
+      || isInLoadingScreen.value
+      || isInMpBattle.value
+      || (isConnectionLimited.value && !allowLimitedDownload.value)
+    ? {}
+    : wantStartDownloadAddons.value))
 
 let function cleanAddonsToDownload() {
   if (needStartDownloadAddons.value.len() == 0)
@@ -126,17 +146,25 @@ addonsToDownload.subscribe(function(v) {
   isDownloadPaused(false)
   currentStage(null)
   totalSizeBytes(0)
+  toDownloadSizeBytes(0)
   downloadState(null)
   updaterError(null)
+})
+
+wantStartDownloadAddons.subscribe(function(_) {
+  totalSizeBytes(0)
+  toDownloadSizeBytes(0)
+  downloadState(null)
 })
 
 subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
   let { eventType } = evt
   if (eventType == UPDATER_EVENT_STAGE)
     currentStage(evt?.stage)
-  else if (eventType == UPDATER_EVENT_DOWNLOAD_SIZE)
-    totalSizeBytes(evt?.toDownload ?? 0)
-  else if (eventType == UPDATER_EVENT_PROGRESS)
+  else if (eventType == UPDATER_EVENT_DOWNLOAD_SIZE) {
+    toDownloadSizeBytes(evt?.toDownload ?? 0)
+    totalSizeBytes(evt?.total ?? 0)
+  } else if (eventType == UPDATER_EVENT_PROGRESS)
     downloadState(evt)
   else if (eventType == UPDATER_EVENT_ERROR) {
     let errText = evt?.error ?? UPDATER_ERROR
@@ -174,8 +202,7 @@ let function getAddonPriority(addon) {
 let downloadAddonsStr = Computed(function() {
   if (addonsToDownload.value.len() == 0)
     return ""
-  let list = (needStartDownloadAddons.value.len() != 0 ? needStartDownloadAddons.value : addonsToDownload.value)
-    .keys()
+  let list = wantStartDownloadAddons.value.keys()
   list.sort(@(a, b) getAddonPriority(b) <=> getAddonPriority(a)
     || b <=> a)
 
@@ -263,4 +290,5 @@ return {
   downloadState
   updaterError
   progressPercent
+  isStageDownloading
 }

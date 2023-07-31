@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { UPDATER_DOWNLOADING } = require("contentUpdater")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { downloadWndParams, closeDownloadAddonsWnd, addonsToDownload, isDownloadPaused, downloadAddonsStr,
-  currentStage, totalSizeBytes, downloadState, updaterError, progressPercent, allowLimitedDownload,
-  isDownloadPausedByConnection, isDownloadInProgress
+  totalSizeBytes, downloadState, updaterError, progressPercent, allowLimitedDownload,
+  isDownloadPausedByConnection, isDownloadInProgress, isStageDownloading
 } = require("updaterState.nut")
 let { loadingAnimBg, gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
 let { titleLogo } = require("%globalsDarg/components/titleLogo.nut")
@@ -17,6 +16,8 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let wndUid = "downloadAddonsWnd"
 let spinnerSize = hdpx(100).tointeger()
+let downloadingColor = 0xFF00FDFF
+let checkingColor = 0x80808080
 
 let statusText = Computed(@() addonsToDownload.value.len() == 0 ? loc("updater/status/complete")
   : isDownloadPaused.value ? "".concat(
@@ -26,7 +27,7 @@ let statusText = Computed(@() addonsToDownload.value.len() == 0 ? loc("updater/s
       loc("updater/status/pausedByConnection", { addonInfo = downloadAddonsStr.value }),
       colon, getDownloadInfoText(totalSizeBytes.value, 0, 0))
   : updaterError.value != null ? loc($"updater/error/{updaterError.value}")
-  : currentStage.value != UPDATER_DOWNLOADING ? loc("pl1/check_profile")
+  : !isStageDownloading.value ? loc("pl1/check_profile")
   : "".concat(
       loc("updater/status/downloading", { addonInfo = downloadAddonsStr.value }),
       colon, getDownloadInfoText(totalSizeBytes.value, downloadState.value?.etaSec ?? 0, downloadState.value?.dspeed ?? 0))
@@ -119,10 +120,10 @@ let bottomBlock = {
           rendObj = ROBJ_SOLID
           color = 0xFF827A7A
           children = @() {
-            watch = progressPercent
-            size = [pw(progressPercent.value), flex()]
+            watch = [progressPercent, isStageDownloading]
+            size = [pw(progressPercent.value ?? 0), flex()]
             rendObj = ROBJ_SOLID
-            color = 0xFF00FDFF
+            color = isStageDownloading.value ? downloadingColor : checkingColor
           }
         }
       ]

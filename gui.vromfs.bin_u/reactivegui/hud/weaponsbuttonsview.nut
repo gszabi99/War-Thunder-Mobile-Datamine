@@ -213,6 +213,31 @@ let mkActionItemEditView = @(image) {
   ]
 }
 
+let mkBulletEditView = @(image, bulletNumber) {
+  size = [touchButtonSize, touchButtonSize]
+  rendObj = ROBJ_BOX
+  fillColor = btnBgColor.empty
+  borderColor
+  borderWidth
+  children = [
+    {
+      rendObj = ROBJ_IMAGE
+      size = [touchButtonSize, touchButtonSize]
+      image = Picture($"{image}:{touchButtonSize}:{touchButtonSize}:P")
+      keepAspect = KEEP_ASPECT_FIT
+      color = imageColor
+    }
+    {
+      rendObj = ROBJ_TEXT
+      size = [touchButtonSize, touchButtonSize]
+      padding = [0, hdpx(6), hdpx(2), 0]
+      valign = ALIGN_BOTTOM
+      halign = ALIGN_RIGHT
+      text = getRomanNumeral(bulletNumber)
+    }.__update(fontVeryTiny)
+  ]
+}
+
 let debuffImages = Computed(function() {
   let res = []
   if (fire.value)
@@ -1012,6 +1037,7 @@ return {
   mkPlaneItem
 
   mkActionItemEditView
+  mkBulletEditView
 
   defImageSize
 }

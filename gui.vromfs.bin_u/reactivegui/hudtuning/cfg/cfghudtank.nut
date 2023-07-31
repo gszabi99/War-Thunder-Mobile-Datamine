@@ -26,6 +26,8 @@ let { doll, dollEditView, speedText, speedTextEditView, crewDebuffs, crewDebuffs
 //let { moveIndicator, moveIndicatorTankEditView } = require("%rGui/hud/components/moveIndicator.nut")
 let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
+let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
+let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
@@ -103,6 +105,18 @@ return {
     { defTransform = mkRBPos([hdpx(-600), hdpx(43)]) })
   abSpecialUnit = withActionBarButtonCtor(EII_SPECIAL_UNIT, TANK,
     { defTransform = mkRBPos([hdpx(-750), hdpx(43)]) })
+
+  bulletMain = {
+    ctor = @() bulletMainButton
+    defTransform = mkRBPos([hdpx(-900), 0])
+    editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 1)
+  }
+
+  bulletExtra = {
+    ctor = @() bulletExtraButton
+    defTransform = mkRBPos([hdpx(-1050), 0])
+    editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 2)
+  }
 
   moveStick = {
     ctor = @() @() {

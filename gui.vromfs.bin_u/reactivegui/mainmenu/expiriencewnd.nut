@@ -13,6 +13,7 @@ let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { isExpirienceWndOpen } = require("expWndState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let wndWidth = hdpx(1400)
 let levelSquareWidth = hdpx(100)
@@ -186,7 +187,7 @@ let expirienceWnd = {
 let expirienceBuyingWnd = bgShaded.__merge({
   size = flex()
   key = expBuyWndUid
-  hotkeys = [["Esc", { action = closeExpirienceWnd }]]
+  hotkeys = [[btnBEscUp, { action = closeExpirienceWnd }]]
   onClick = closeExpirienceWnd
   children = expirienceWnd
 })

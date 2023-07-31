@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
-let tankWeaponryBlock = require("tankWeaponryBlock.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
@@ -223,7 +222,6 @@ return {
     hudTimersBlock
     hudTopMainLog
     hudBottomCenter
-    tankWeaponryBlock
     hudTuningElems
     gunReadyIndicator
     tankSight

@@ -1,28 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let { UPDATER_DOWNLOADING } = require("contentUpdater")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { addonsToDownload, openDownloadAddonsWnd, downloadAddonsStr, isDownloadPaused,
-  currentStage, updaterError, progressPercent, isDownloadPausedByConnection
+  updaterError, progressPercent, isDownloadPausedByConnection, isStageDownloading
 } = require("updaterState.nut")
 
 let blockSize = [hdpx(400), evenPx(150)]
 let padding = hdpxi(15)
 let progressSize = blockSize[1] - 2 * padding
+let checkingColor = 0x80808080
 
 let progress = @() {
-  watch = progressPercent
+  watch = [progressPercent, isStageDownloading]
   size = [progressSize, progressSize]
   rendObj = ROBJ_PROGRESS_CIRCULAR
   image = Picture($"ui/gameuiskin#circular_progress_1.svg:{progressSize}:{progressSize}")
-  fgColor = 0xFFFFFFFF
+  fgColor = isStageDownloading.value ? 0xFFFFFFFF : checkingColor
   bgColor = 0x33555555
-  fValue = 0.01 * progressPercent.value
+  fValue = 0.01 * (progressPercent.value ?? 0)
 
   children = {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     rendObj = ROBJ_TEXT
-    text = $"{progressPercent.value}%"
+    text = progressPercent.value == null ? "-" : $"{progressPercent.value}%"
+    color = isStageDownloading.value ? 0xFFFFFFFF : checkingColor
   }.__update(fontTiny)
 }
 
@@ -30,10 +31,10 @@ let function statusBlock() {
   let statusText = isDownloadPaused.value ? loc("updater/status/paused/short")
     : isDownloadPausedByConnection.value ? loc("updater/status/pausedByConnection/short")
     : updaterError.value != null ? loc($"updater/error/{updaterError.value}")
-    : currentStage.value != UPDATER_DOWNLOADING ? loc("pl1/check_profile")
+    : !isStageDownloading.value ? loc("pl1/check_profile")
     : loc("updater/status/downloading/short")
   return {
-    watch = [isDownloadPaused, updaterError, currentStage, downloadAddonsStr]
+    watch = [isDownloadPaused, updaterError, downloadAddonsStr, isStageDownloading, isDownloadPausedByConnection]
     size = flex()
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
