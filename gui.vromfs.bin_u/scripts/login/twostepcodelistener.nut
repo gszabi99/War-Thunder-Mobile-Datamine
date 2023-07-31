@@ -4,11 +4,11 @@ let { subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { isLoginStarted, isLoggedIn, loginState, LOGIN_STATE } = require("%appGlobals/loginState.nut")
 let { authState } = require("%scripts/login/authState.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
-let attemptsRequest2step = mkHardWatched("login.attemptsRequest2step", MAX_GET_2STEP_CODE_ATTEMPTS)
+let attemptsRequest2step = hardPersistWatched("login.attemptsRequest2step", MAX_GET_2STEP_CODE_ATTEMPTS)
 isLoginStarted.subscribe(function(_v) {
   attemptsRequest2step(attemptsRequest2step.value - 1)
   if (attemptsRequest2step.value < 0) //on zero automatic attempts will be ignored until player do not login by self again.

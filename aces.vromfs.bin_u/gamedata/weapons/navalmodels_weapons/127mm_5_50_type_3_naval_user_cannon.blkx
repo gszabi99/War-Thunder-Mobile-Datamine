@@ -27,7 +27,6 @@
     "bulletCount": 40,
     "mass": 23.0,
     "explosiveType": "tnt",
-    "explosiveMass": 5.0,
     "caliber": 0.127,
     "speed": 910.0,
     "maxDistance": 50000.0,

@@ -3,13 +3,13 @@
     "dynAtlas": true,
     "name": "units",
     "size": [
-      1024,
+      2048,
       1024
     ],
     "lazyAlloc": true,
     "maxAllowedPicSz": [
-      256,
-      128
+      512,
+      256
     ],
     "premultiplyAlpha": false,
     "margin": 4,

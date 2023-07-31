@@ -42,6 +42,7 @@ let mkInfoButtonCtor = @(bgColor, gradient) function(onClick, ovr = {}, textOvr 
     color = bgColor
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
+    xmbNode = {}
     sound = { click  = "click" }
     onClick
     brightness = stateFlags.value & S_HOVER ? 1.5 : 1

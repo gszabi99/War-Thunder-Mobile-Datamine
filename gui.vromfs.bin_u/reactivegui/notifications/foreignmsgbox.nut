@@ -3,10 +3,10 @@ let { subscribe, send } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { openMsgBox, closeMsgBox, defaultBtnsCfg } = require("%rGui/components/msgBox.nut")
 let msgBoxError = require("%rGui/components/msgBoxError.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 
-let persistMsgBoxes = mkHardWatched("persistMsgBoxes", [])
+let persistMsgBoxes = hardPersistWatched("persistMsgBoxes", [])
 
 let ctors = {
   errorMsg = msgBoxError

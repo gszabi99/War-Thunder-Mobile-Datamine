@@ -13,6 +13,7 @@
   "entitiesBlk": "%wtmGameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
   "game_das_loading_threads": 1,
+  "addAllAddonsToBasePath": false,
   "clientBitType": "auto",
   "releaseChannel": "",
   "renderer3": "auto",
@@ -245,78 +246,8 @@
       "content/pkg_tier_6_ground",
       "content.hq/pkg_tier_6_ground_hq",
       "content/pkg_tier_7_ground",
-      "content.hq/pkg_tier_7_ground_hq"
-    ]
-  },
-  "addons_no_check": {
-    "folder": [
-      "content.hq/hq_tex",
-      "content/pkg_secondary",
-      "content.hq/pkg_secondary_hq",
-      "content/pkg_dev",
-      "content.hq/pkg_dev_hq",
-      "content/pkg_common",
-      "content.hq/pkg_common_hq",
-      "content/pkg_naval",
-      "content.hq/pkg_naval_hq",
-      "content/pkg_ground",
-      "content.hq/pkg_ground_hq",
-      "content/pkg_tier_1_naval",
-      "content.hq/pkg_tier_1_naval_hq",
-      "content/pkg_tier_2_naval",
-      "content.hq/pkg_tier_2_naval_hq",
-      "content/pkg_tier_3_naval",
-      "content.hq/pkg_tier_3_naval_hq",
-      "content/pkg_tier_4_naval",
-      "content.hq/pkg_tier_4_naval_hq",
-      "content/pkg_tier_1_ground",
-      "content.hq/pkg_tier_1_ground_hq",
-      "content/pkg_tier_2_ground",
-      "content.hq/pkg_tier_2_ground_hq",
-      "content/pkg_tier_3_ground",
-      "content.hq/pkg_tier_3_ground_hq",
-      "content/pkg_tier_4_ground",
-      "content.hq/pkg_tier_4_ground_hq",
-      "content/pkg_tier_5_ground",
-      "content.hq/pkg_tier_5_ground_hq",
-      "content/pkg_tier_6_ground",
-      "content.hq/pkg_tier_6_ground_hq",
-      "content/pkg_tier_7_ground",
-      "content.hq/pkg_tier_7_ground_hq"
-    ]
-  },
-  "addonsDownloadable": {
-    "folder": [
-      "content.hq/hq_tex",
-      "content/pkg_secondary",
-      "content.hq/pkg_secondary_hq",
-      "content.hq/pkg_dev_hq",
-      "content/pkg_common",
-      "content.hq/pkg_common_hq",
-      "content.hq/pkg_naval_hq",
-      "content.hq/pkg_ground_hq",
-      "content/pkg_tier_1_naval",
-      "content.hq/pkg_tier_1_naval_hq",
-      "content/pkg_tier_2_naval",
-      "content.hq/pkg_tier_2_naval_hq",
-      "content/pkg_tier_3_naval",
-      "content.hq/pkg_tier_3_naval_hq",
-      "content/pkg_tier_4_naval",
-      "content.hq/pkg_tier_4_naval_hq",
-      "content/pkg_tier_1_ground",
-      "content.hq/pkg_tier_1_ground_hq",
-      "content/pkg_tier_2_ground",
-      "content.hq/pkg_tier_2_ground_hq",
-      "content/pkg_tier_3_ground",
-      "content.hq/pkg_tier_3_ground_hq",
-      "content/pkg_tier_4_ground",
-      "content.hq/pkg_tier_4_ground_hq",
-      "content/pkg_tier_5_ground",
-      "content.hq/pkg_tier_5_ground_hq",
-      "content/pkg_tier_6_ground",
-      "content.hq/pkg_tier_6_ground_hq",
-      "content/pkg_tier_7_ground",
-      "content.hq/pkg_tier_7_ground_hq"
+      "content.hq/pkg_tier_7_ground_hq",
+      "content/pkg_video"
     ]
   },
   "addonToXboxChunk": {
@@ -328,7 +259,6 @@
     "drawDebug": false,
     "disable_backbuffer_aa": true,
     "maxTexCount": 65535,
-    "sRGBrw": true,
     "enableHmdSupport": true,
     "allowDx10Fallback": false,
     "adaptive_vsync": false,
@@ -423,6 +353,7 @@
     "beforeRenderFrameFrameBoundary": true,
     "dynrendInitialMainRingBufferSize": 65536,
     "dynrendInitialRingBufferSize": 65536,
+    "enableZoomVignette": true,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }
@@ -1083,9 +1014,11 @@
       },
       "graphics": {
         "backgroundScale": 0.75,
-        "limitPlayerUnitsLod": 2,
+        "limitPlayerAirplaneUnitsLod": 1,
+        "limitPlayerTankUnitsLod": 2,
         "limitPlayerShipUnitsLod": 1,
-        "limitNonPlayerUnitsLod": 2,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 2,
         "limitNonPlayerShipUnitsLod": 1,
         "hangarTankLod": 1,
         "hangarShipLod": 1,
@@ -1120,7 +1053,8 @@
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": false,
         "enableWakeDisplacement": false,
-        "enableWaterProjFx": false
+        "enableWaterProjFx": false,
+        "enableGrassTrackMask": false
       },
       "render": {
         "grassInCompatibility": false
@@ -1146,10 +1080,12 @@
       },
       "graphics": {
         "backgroundScale": 0.75,
-        "limitPlayerUnitsLod": 1,
+        "limitPlayerAirplaneUnitsLod": 1,
+        "limitPlayerTankUnitsLod": 1,
         "limitPlayerShipUnitsLod": 1,
-        "limitNonPlayerUnitsLod": -1,
-        "limitNonPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
         "hangarTankLod": 1,
         "hangarShipLod": 0,
         "compatibilityShadowQuality": "low",
@@ -1183,7 +1119,8 @@
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
-        "enableWaterProjFx": true
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": false
       },
       "render": {
         "grassInCompatibility": true
@@ -1209,9 +1146,11 @@
       },
       "graphics": {
         "backgroundScale": 1.0,
-        "limitPlayerUnitsLod": -1,
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
-        "limitNonPlayerUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": -1,
+        "limitNonPlayerTankUnitsLod": -1,
         "limitNonPlayerShipUnitsLod": -1,
         "hangarTankLod": 0,
         "hangarShipLod": 0,
@@ -1246,7 +1185,8 @@
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
-        "enableWaterProjFx": true
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": false
       },
       "render": {
         "grassInCompatibility": true
@@ -1272,9 +1212,11 @@
       },
       "graphics": {
         "backgroundScale": 1.0,
-        "limitPlayerUnitsLod": -1,
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
-        "limitNonPlayerUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": -1,
+        "limitNonPlayerTankUnitsLod": -1,
         "limitNonPlayerShipUnitsLod": -1,
         "hangarTankLod": 0,
         "hangarShipLod": 0,
@@ -1309,7 +1251,8 @@
         "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
-        "enableWaterProjFx": true
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": true
       },
       "render": {
         "grassInCompatibility": true

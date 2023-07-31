@@ -15,6 +15,11 @@ require %game.unit.extinguish_system_common
 require %game.events
 
 
+[es(no_order)]
+def fire_damage_init_es(evt : CmdInitComponent; var fire_damage__updateBurnInterval : float&)
+  fire_damage__updateBurnInterval = get_app().gameParams.updateBurnInterval
+
+
 [soa_es, es(tag=server, no_order)]
 def fire_damage_update_es(act : UpdateStageInfoAct;
                           eid : EntityId;
@@ -56,7 +61,8 @@ def fire_damage_update_es(act : UpdateStageInfoAct;
         fireParamsId=data.fire_data__fireParamsId,
         initiatorId=data.fire_data__initiatorId,
         seed=seed,
-        sph = float4(sph.c.x, sph.c.y, sph.c.z, sph.r)
+        sph = float4(sph.c.x, sph.c.y, sph.c.z, sph.r),
+        atTime = act.curTime
       ]])
 
   // update underwater (this used to update only when extinguisher was not active, but it does not seem to be reasonable)

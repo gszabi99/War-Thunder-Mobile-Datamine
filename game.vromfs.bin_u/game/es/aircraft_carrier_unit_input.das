@@ -11,6 +11,7 @@ require %appGame.wtm_events
 [es(tag=input, REQUIRE=(controlledHero, aircraftCarrier))]
 def aircarft_carrier_input_spawn_requiest(evt : EventOnKeyUp;
                                           eid : EntityId;
+                                          uid : int;
                                           aircraft_carrier__aircraftSpawnRequestInterval : float;
                                           var aircraft_carrier__lastAircraftSpawnRequestAtTime : FloatList)
   let aircraftIndex = evt.eventId - int(ShortcutEventId ID_WTM_LAUNCH_AIRCRAFT)
@@ -21,6 +22,12 @@ def aircarft_carrier_input_spawn_requiest(evt : EventOnKeyUp;
   let spawnInterval = aircraft_carrier__aircraftSpawnRequestInterval
   if curTime - aircraft_carrier__lastAircraftSpawnRequestAtTime[aircraftIndex] < spawnInterval
     return
+
+  let unit = get_unit(uid)
+  if unit != null
+    let supportId = get_support_plane_id(uid, aircraftIndex)
+    if get_unit(supportId) == null
+      return
 
   aircraft_carrier__lastAircraftSpawnRequestAtTime[aircraftIndex] = curTime
 
@@ -62,6 +69,7 @@ def aircarft_carrier_plane_change_request(evt : EventOnKeyUp;
     return
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit.id, uid)
+  set_group_return(supportPlaneIdx, false)
   sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneChange idx=supportPlaneIdx]])
 
 [es(tag=input, REQUIRE=(controlledHero))]
@@ -82,3 +90,22 @@ def aircarft_carrier_plane_group_attack(evt : EventOnKeyUp;
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit.id, uid)
   sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneGroupAttack idx=supportPlaneIdx, targetId=get_group_attack_target_id(supportPlaneIdx), attack=get_group_attack(supportPlaneIdx)]])
+
+[es(tag=input, REQUIRE=(controlledHero))]
+def aircarft_carrier_plane_return(evt : EventOnKeyUp;
+                                  uid : int)
+  if evt.eventId != int(ShortcutEventId ID_WTM_AIRCRAFT_RETURN)
+    return
+
+  toggle_group_return()
+
+  let unit = get_unit(uid)
+  if unit.isGroundModel
+    return
+
+  let ownedUnit = get_owned_unit(uid)
+  if !ownedUnit.isGroundModel
+    return
+
+  let supportPlaneIdx = find_support_plane_index(ownedUnit.id, uid)
+  sendEvent(ownedUnit.eid, [[CmdReturnAircraftToShip idx=supportPlaneIdx, rtb=get_group_return(supportPlaneIdx)]])

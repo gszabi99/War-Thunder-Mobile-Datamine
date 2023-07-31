@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.45,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "sound": {
@@ -1594,8 +1595,8 @@
     "sightName": "tsh2_22",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.7,
+      -13.0
     ],
     "headPosOnShooting": [
       -0.6,

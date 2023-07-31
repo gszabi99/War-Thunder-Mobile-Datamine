@@ -3082,6 +3082,28 @@
       }
     }
   },
+  "abGroupsBoostParams": {
+    "group_0": {
+      "newbMultsTankMissionCount": 5,
+      "botTankDamageMultNewbRange": [
+        0.1,
+        0.5
+      ],
+      "botTankPenetrationMultNewbRange": [
+        0.5,
+        0.75
+      ],
+      "newbMultsShipMissionCount": 5,
+      "botShipDamageMultNewbRange": [
+        0.05,
+        0.5
+      ],
+      "shipDamageToBotMultNewbRange": [
+        1.2,
+        1.0
+      ]
+    }
+  },
   "damageTypesProps": {
     "collision": {
       "disableEffects": true,

@@ -55,7 +55,7 @@
     true,
     true
   ],
-  "minRelativeTankCameraThreshold": 1.6,
+  "minRelativeTankCameraThreshold": 1.4,
   "tank_crew": {
     "changeTimeMult": 1.0,
     "gunner": {
@@ -86,7 +86,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2682,8 +2683,8 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      2.0,
-      -16.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       0.2,

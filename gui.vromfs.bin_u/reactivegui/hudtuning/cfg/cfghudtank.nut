@@ -10,7 +10,7 @@ let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, 
   mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight, mkCircleTargetTrackingBtn
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { withActionButtonCtor, withActionBarButtonCtor, withAnyActionBarButtonCtor,
-  mkRBPos, mkLBPos, mkRTPos, mkLTPos } = require("hudTuningPkg.nut")
+  mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos } = require("hudTuningPkg.nut")
 let { tankMoveStick, tankMoveStickView, tankGamepadMoveBlock
 } = require("%rGui/hud/tankMovementBlock.nut")
 let tankArrowsMovementBlock = require("%rGui/hud/tankArrowsMovementBlock.nut")
@@ -23,15 +23,21 @@ let { tacticalMap, tacticalMapEditView } = require("%rGui/hud/components/tactica
 let winchButton = require("%rGui/hud/buttons/winchButton.nut")
 let { doll, dollEditView, speedText, speedTextEditView, crewDebuffs, crewDebuffsEditView,
   techDebuffs, techDebuffsEditView } = require("%rGui/hud/tankStateModule.nut")
-//let { moveIndicator, moveIndicatorTankEditView } = require("%rGui/hud/components/moveIndicator.nut")
+let { moveIndicator, moveIndicatorTankEditView } = require("%rGui/hud/components/moveIndicator.nut")
 let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
 let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")
+let { DBGLEVEL } = require("dagor.system")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
 let isTargetTracking = Computed(@() !currentTargetTrackingType.value)
+
+let aspectRatio = sw(100) / sh(100)
+let actionBarInterval = aspectRatio < 2 ? 130 : 150
+let actionBarTransform = @(idx, isBullet = false)
+  mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
 
 return {
   primaryGunRight = withActionButtonCtor(AB_PRIMARY_WEAPON, mkCircleTankPrimaryGun,
@@ -94,27 +100,27 @@ return {
   }
 
   abExtinguisher = withActionBarButtonCtor(EII_EXTINGUISHER, TANK,
-    { defTransform = mkRBPos([hdpx(0), hdpx(43)]) })
-  abToolkit = withActionBarButtonCtor(EII_TOOLKIT, TANK, {
-    defTransform = mkRBPos([hdpx(-150), hdpx(43)]) })
+    { defTransform = actionBarTransform(0) })
+  abToolkit = withActionBarButtonCtor(EII_TOOLKIT, TANK,
+    { defTransform = actionBarTransform(1) })
   abSmokeGrenade = withAnyActionBarButtonCtor([ EII_SMOKE_GRENADE, EII_SMOKE_SCREEN ], TANK,
-    { defTransform = mkRBPos([hdpx(-300), hdpx(43)]) })
+    { defTransform = actionBarTransform(2) })
   abArtilleryTarget = withActionBarButtonCtor(EII_ARTILLERY_TARGET, TANK,
-    { defTransform = mkRBPos([hdpx(-450), hdpx(43)]) })
+    { defTransform = actionBarTransform(3) })
   abSpecialUnit2 = withActionBarButtonCtor(EII_SPECIAL_UNIT_2, TANK,
-    { defTransform = mkRBPos([hdpx(-600), hdpx(43)]) })
+    { defTransform = actionBarTransform(4) })
   abSpecialUnit = withActionBarButtonCtor(EII_SPECIAL_UNIT, TANK,
-    { defTransform = mkRBPos([hdpx(-750), hdpx(43)]) })
+    { defTransform = actionBarTransform(5) })
 
   bulletMain = {
     ctor = @() bulletMainButton
-    defTransform = mkRBPos([hdpx(-900), 0])
+    defTransform = actionBarTransform(6, true)
     editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 1)
   }
 
   bulletExtra = {
     ctor = @() bulletExtraButton
-    defTransform = mkRBPos([hdpx(-1050), 0])
+    defTransform = actionBarTransform(7, true)
     editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 2)
   }
 
@@ -162,12 +168,14 @@ return {
     hideForDelayed = false
   }
 
-  //moveIndicator = {
-  //  ctor = @() moveIndicator
-  //  defTransform = mkCBPos([0, -sh(20)])
-  //  editView = moveIndicatorTankEditView
-   // hideForDelayed = false
-  //}
+  moveIndicator = DBGLEVEL > 0
+    ? {
+        ctor = @() moveIndicator
+        defTransform = mkCBPos([0, -sh(20)])
+        editView = moveIndicatorTankEditView
+        hideForDelayed = false
+      }
+  : null
 
   speedText = {
     ctor = @() speedText
@@ -189,4 +197,4 @@ return {
     editView = techDebuffsEditView
     hideForDelayed = false
   }
-}.__update(cfgHudCommon)
+}.__update(cfgHudCommon).filter(@(v) v != null)

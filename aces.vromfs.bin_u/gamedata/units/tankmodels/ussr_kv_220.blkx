@@ -45,10 +45,7 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "minRelativeTankCameraThreshold": [
-    1.4,
-    1.6
-  ],
+  "minRelativeTankCameraThreshold": 1.47,
   "DamageEffects": {
     "part": [
       {
@@ -2382,8 +2379,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -18.0
+      3.8,
+      -13.9
     ],
     "headPosOnShooting": [
       -0.6,

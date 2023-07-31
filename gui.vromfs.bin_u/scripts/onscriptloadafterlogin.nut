@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { get_settings_blk } = require("blkGetters")
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("topMenuButtonsActions.nut")
 
 foreach (fn in [
@@ -19,7 +19,7 @@ foreach (fn in [
 
   "%scripts/matchingRooms/mrooms.nut"
 ]) {
-  g_script_reloader.loadOnce(fn)
+  loadOnce(fn)
 }
 
 require("%scripts/clientState/updateClientStates.nut")

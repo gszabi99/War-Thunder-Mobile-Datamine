@@ -3,7 +3,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { is_user_mission } = require("%scripts/util.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { debug_dump_stack } = require("dagor.debug")
@@ -1004,7 +1004,7 @@ isInLoadingScreen.subscribe(function(v) {
 
 ::web_rpc.register_handler("join_battle", SessionLobby.rpcJoinBattle)
 
-g_script_reloader.registerPersistentData("SessionLobby", SessionLobby, SessionLobby[PERSISTENT_DATA_PARAMS])
+registerPersistentData("SessionLobby", SessionLobby, SessionLobby[PERSISTENT_DATA_PARAMS])
 subscribe_handler(SessionLobby, ::g_listener_priority.DEFAULT_HANDLER)
 
 isMatchingOnline.subscribe(@(_) SessionLobby.leaveRoom())

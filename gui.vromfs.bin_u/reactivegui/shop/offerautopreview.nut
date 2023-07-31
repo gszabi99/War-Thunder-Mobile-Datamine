@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { OT_ONLY_LOGIN, OT_ENTER_MAINMENU, OT_NEW_OFFER, offerOpenType
 } = require("offerTests.nut")
 let { openGoodsPreview, previewGoods } = require("%rGui/shop/goodsPreviewState.nut")
@@ -10,8 +10,8 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
-let showedTime = mkHardWatched("offerAutoPreview.showedTime", {})
-let enteredMenuTime = mkHardWatched("offerAutoPreview.enteredMenuTime", {})
+let showedTime = hardPersistWatched("offerAutoPreview.showedTime", {})
+let enteredMenuTime = hardPersistWatched("offerAutoPreview.enteredMenuTime", {})
 let canShow = Computed(@() visibleOffer.value != null
   && reqAddonsToShowOffer.value.len() == 0
   && isInMenuNoModals.value

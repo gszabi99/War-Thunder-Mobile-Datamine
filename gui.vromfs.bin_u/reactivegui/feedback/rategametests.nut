@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
 
 let arrBattlesMin = [ 2, 5 ]
@@ -11,9 +11,9 @@ let cfgBattlesMin = Computed(@() abTests.value?.reviewCueBattlesMin.tointeger() 
 let cfgKillsMin = Computed(@() abTests.value?.reviewCueKillsMin.tointeger() ?? arrKillsMin[0])
 let cfgPlaceMax = Computed(@() abTests.value?.reviewCuePlaceMax.tointeger() ?? arrPlaceMax[0])
 
-let dbgBattlesMinShift = mkHardWatched("dbgBattlesMinShift", 0)
-let dbgKillsMinShift = mkHardWatched("dbgKillsMinShift", 0)
-let dbgPlaceMaxShift = mkHardWatched("dbgPlaceMaxShift", 0)
+let dbgBattlesMinShift = hardPersistWatched("dbgBattlesMinShift", 0)
+let dbgKillsMinShift = hardPersistWatched("dbgKillsMinShift", 0)
+let dbgPlaceMaxShift = hardPersistWatched("dbgPlaceMaxShift", 0)
 
 let battlesMin = Computed(@() dbgBattlesMinShift.value == 0
   ? cfgBattlesMin.value

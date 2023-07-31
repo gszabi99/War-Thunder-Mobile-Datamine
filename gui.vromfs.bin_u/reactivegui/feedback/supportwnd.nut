@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getLocalLanguage } = require("language")
 let { utf8ToUpper, validateEmail } = require("%sqstd/string.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { sendErrorBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -30,11 +30,11 @@ let categoryCfg = [
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened(false)
 
-let fieldEmail = mkHardWatched("fieldEmail", "")
-let fieldName = mkHardWatched("fieldName", "")
-let fieldCategory = mkHardWatched("fieldCategory", "")
-let fieldSubject = mkHardWatched("fieldSubject", "")
-let fieldMessage = mkHardWatched("fieldMessage", "")
+let fieldEmail = hardPersistWatched("fieldEmail", "")
+let fieldName = hardPersistWatched("fieldName", "")
+let fieldCategory = hardPersistWatched("fieldCategory", "")
+let fieldSubject = hardPersistWatched("fieldSubject", "")
+let fieldMessage = hardPersistWatched("fieldMessage", "")
 
 let function resetForm() {
   foreach (field in [ fieldEmail, fieldName, fieldCategory, fieldSubject, fieldMessage ])
@@ -100,7 +100,7 @@ let mkVerticalPannableArea = @(content, override) {
   size = flex()
   flow = FLOW_VERTICAL
   clipChildren = true
-  children = class {
+  children = {
     size = flex()
     behavior = Behaviors.Pannable
     skipDirPadNav = true

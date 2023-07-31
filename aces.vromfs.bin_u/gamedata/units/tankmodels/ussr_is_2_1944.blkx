@@ -44,7 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "minRelativeTankCameraThreshold": 1.6,
+  "minRelativeTankCameraThreshold": 1.3,
   "tank_crew": {
     "changeTimeMult": 1.0,
     "gunner": {
@@ -1773,8 +1773,8 @@
     "sightName": "tsh_16",
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      3.8,
+      -13.4
     ],
     "headPosOnShooting": [
       0.1,

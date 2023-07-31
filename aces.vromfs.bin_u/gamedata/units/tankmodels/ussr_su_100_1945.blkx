@@ -44,7 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.7,
+  "minRelativeTankCameraThreshold": 1.62,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.4,
@@ -2223,8 +2223,8 @@
     "sightName": "tsh_19",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       0.8,

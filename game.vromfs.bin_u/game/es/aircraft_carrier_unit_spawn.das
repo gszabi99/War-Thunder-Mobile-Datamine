@@ -18,3 +18,8 @@ def aircarft_carrier_unit_change_es(evt : CmdRequestSupportPlaneChange; uid : in
 def aircarft_carrier_unit_group_attack_es(evt : CmdRequestSupportPlaneGroupAttack; uid : int)
   get_unit_for_edit(uid) <| $(var unit)
     *unit |> supportPlaneAttackOrder(evt.idx, evt.targetId, evt.attack)
+
+[es(tag=server)]
+def aircarft_carrier_unit_return(evt : CmdReturnAircraftToShip; uid : int)
+  get_unit_for_edit(uid) <| $(var unit)
+    *unit |> supportPlaneReturnOrder(evt.idx, evt.rtb)

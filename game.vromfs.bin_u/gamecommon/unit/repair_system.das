@@ -145,7 +145,7 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
   // load parts
   load_repair_parts(
     unit,
-    unit.isTank || unit.isWalker ? get_dm_params().tankRepairParts : get_dm_params().shipRepairParts, false,
+    unit.isTank || unit.isWalker || unit.isHuman ? get_dm_params().tankRepairParts : get_dm_params().shipRepairParts, false,
     repair_system_parts_id,
     repair_system_parts_state,
     repair_system_parts_hp,
@@ -253,7 +253,8 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   set_flag(repair_system_state, RepairState REPAIR_AVAILABLE,
     get_flag(repair_system_state, RepairState HAS_REPAIR_TOOLKIT) ||
     get_flag(repair_system_state, RepairState REPAIR_PENALTY_WITHOUT_TOOLKIT) ||
-    get_flag(repair_system_state, RepairState IS_BOT)
+    get_flag(repair_system_state, RepairState IS_BOT) ||
+    get_flag(repair_system_state, RepairState REPAIR_ON_BASE)
   )
   let repair_with_mods_available = is_repair_with_mods_availabile(repair_system_state)
 
@@ -511,10 +512,14 @@ def repair_system_handle_restore_es(evt : EventUnitRespawn;
                                     repair_system_toolkit_count_max : int;
                                     var repair_system_parts_state : UInt32List&)
   let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  if unit == null
     return
   let gm = unit |> as_gm()
-  let toolkit_count = gm != null ? gm.toolkit.count : 0
+
+  var toolkit_count = 0
+  if gm != null && !unit.isDelayed
+    gm.toolkit |> reinit_expendable_modification()
+    toolkit_count = gm.toolkit.count
 
   repair_system_remaining_repair_time = -1.0f
   for part_state in repair_system_parts_state

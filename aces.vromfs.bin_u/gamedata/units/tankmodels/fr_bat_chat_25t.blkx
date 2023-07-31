@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.75,
+  "minRelativeTankCameraThreshold": 1.47,
   "rearmTimeOnField": 120.0,
   "canReloadNonGuns": [
     true,
@@ -2444,8 +2444,8 @@
     "sightName": "periscope_25t",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.7,
+      -12.2
     ],
     "headPosOnShooting": [
       -0.45,

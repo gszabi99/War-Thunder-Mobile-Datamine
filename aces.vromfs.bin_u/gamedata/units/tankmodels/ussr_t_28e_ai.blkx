@@ -46,7 +46,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.4,
   "controlDevices": {
     "device": [
       {
@@ -862,8 +861,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      4.0,
+      -14.2
     ],
     "headPosOnShooting": [
       0.1,

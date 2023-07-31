@@ -76,6 +76,7 @@ def music_init_es(evt : Event;
       music__cooldownCalm = musicBlk |> datablock_getReal("cooldown_calm", 300.)
       music__cooldownBattle = musicBlk |> datablock_getReal("cooldown_battle", 180.)
       music__useHangarMusicForUnitType = musicBlk |> datablock_getBool("use_hangar_music_for_type", false)
+  print("[MUSIC] es inited")
 
 
 def get_game_state(forced : bool) : GameState
@@ -154,10 +155,10 @@ def unit_rank_or_type_changed(unit_rank : int;
   return rankChanged || typeChanged;
 
 
-def update_hangar() : int
+def update_hangar(default_value : int) : int
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
-    return -1
+    return default_value
   return hero.unitCountryId
 
 
@@ -241,7 +242,7 @@ def music_es(info : ParallelUpdateFrameDelayed;
   var hangarCountryId = -1
   var hangarTypeChanged = false
   if gameState == GameState HANGAR
-    hangarCountryId = update_hangar()
+    hangarCountryId = update_hangar(music__curHangarCountry_id)
     musicState = GameMusicState MUSIC_STATE_HANGAR
     ecs::query() <| $ [es(REQUIRE=controlledHero)] (unitType : int)
       if music__curUnitType != unitType
@@ -278,7 +279,6 @@ def music_es(info : ParallelUpdateFrameDelayed;
                             curMusicState == int(GameMusicState MUSIC_STATE_LOOSE)) &&
                             is_track_playing())
   let hangarTrackEnded = curMusicState == int(GameMusicState MUSIC_STATE_HANGAR) && !is_track_playing()
-
   if musicState == GameMusicState MUSIC_STATE_HANGAR
     if !lockedHangar && !winOrLoosePlaying
       if music__useHangarMusicForUnitType
@@ -287,6 +287,8 @@ def music_es(info : ParallelUpdateFrameDelayed;
           overwrite_and_set_music_state(int(musicState), trackName)
       elif hangarCountryChanged
         overwrite_and_set_music_state(int(musicState), make_hangar_event_name(hangarCountryId))
+      elif hangarTrackEnded
+        overwrite_and_set_music_state(int(musicState), "")
       music__curHangarCountry_id = hangarCountryId
       music__lockedHangar = false
     elif hangarTrackEnded

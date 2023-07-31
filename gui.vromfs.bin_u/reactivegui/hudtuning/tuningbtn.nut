@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { withHoldTooltip } = require("%rGui/tooltip.nut")
 
 let size = evenPx(70)
 let imgSize = evenPx(54)
@@ -19,15 +20,21 @@ let tuningBtnImg = @(image, ovr = {}) {
   color = btnImgColor
 }.__update(ovr)
 
-let function tuningBtn(image, onClick, ovr = {}) {
+let function tuningBtn(image, onClick, description, ovr = {}) {
   let stateFlags = Watched(0)
   let children = type(image) == "string" ? tuningBtnImg(image) : image
+  let key = {}
   return @() {
+    key
     watch = stateFlags
     size = [size, size]
     rendObj = ROBJ_SOLID
     color = btnBgColorDefault
-    onElemState = @(sf) stateFlags(sf)
+    onElemState = withHoldTooltip(stateFlags, key, @(){
+      content = loc(description)
+      flow = FLOW_VERTICAL
+      valign = ALIGN_BOTTOM
+    })
     behavior = Behaviors.Button
     onClick
     sound = { click  = "click" }
@@ -37,14 +44,14 @@ let function tuningBtn(image, onClick, ovr = {}) {
   }.__update(ovr)
 }
 
-let tuningBtnInactive = @(image, onClick)
+let tuningBtnInactive = @(image, onClick, description)
   tuningBtn(tuningBtnImg(image, { color = btnImgColorDisabled }),
-    onClick,
+    onClick, description,
     { color = btnBgColorDisabled })
 
-let tuningBtnWithActivity = @(isActive, image, onClick) @() {
+let tuningBtnWithActivity = @(isActive, image, onClick, description) @() {
   watch = isActive
-  children = (isActive.value ? tuningBtn : tuningBtnInactive)(image, onClick)
+  children = (isActive.value ? tuningBtn : tuningBtnInactive)(image, onClick, description)
 }
 
 return {

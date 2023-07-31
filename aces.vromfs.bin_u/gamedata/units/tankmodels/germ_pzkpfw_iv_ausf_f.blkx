@@ -1446,7 +1446,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2375,15 +2376,15 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -16.5
+      3.8,
+      -12.85
     ],
     "headPosOnShooting": [
       -0.53,
       3.2,
       -0.06
     ],
-    "detectionHeight": 2.68
+    "detectionHeight": 2.6
   },
   "ammoStowages": {
     "ammo1": {

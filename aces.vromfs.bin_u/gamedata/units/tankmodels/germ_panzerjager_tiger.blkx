@@ -44,7 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.45,
+  "minRelativeTankCameraThreshold": 1.38,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -2393,8 +2393,8 @@
     "sightName": "wzf_2_7",
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      3.8,
+      -13.8
     ],
     "headPosOnShooting": [
       0.65,

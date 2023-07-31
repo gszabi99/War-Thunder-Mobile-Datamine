@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { abs } = require("math")
 let { round_by_value } = require("%sqstd/math.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS, TIME_MINUTE_IN_SECONDS } = require("%sqstd/time.nut")
 let { secondsToHoursLoc } = require("%rGui/globals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -17,8 +17,8 @@ let premIconW = hdpxi(90)
 let premIconH = hdpxi(70)
 let highlightTrigger = {}
 
-let visibleEndsAt = mkHardWatched("premium.visibleEndsAt", premiumEndsAt.value ?? -1)
-let changeOrders = mkHardWatched("premium.changeOrders", [])
+let visibleEndsAt = hardPersistWatched("premium.visibleEndsAt", premiumEndsAt.value ?? -1)
+let changeOrders = hardPersistWatched("premium.changeOrders", [])
 let nextChange = Computed(@() changeOrders.value?[0])
 
 isProfileReceived.subscribe(function(_) {

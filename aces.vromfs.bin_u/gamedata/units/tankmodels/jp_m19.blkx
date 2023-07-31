@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "minRelativeTankCameraThreshold": 1.3,
+  "minRelativeTankCameraThreshold": 1.4,
   "controlDevices": {
     "device": [
       {
@@ -2372,8 +2372,8 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      2.3,
-      -16.5
+      3.7,
+      -13.0
     ],
     "headPosOnShooting": [
       -1.7,

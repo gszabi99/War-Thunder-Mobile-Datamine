@@ -24,7 +24,7 @@ let fontShade = {
 let fontByWidth = @(text, width) calc_str_box(text, fontSmall)[0] > width
   ? fontTiny : fontSmall
 
-let mkGradientBlock = @(color, children, width = hintWidth, padding = hdpx(20)) {
+let mkGradientBlock = @(color, children, width = hintWidth, padding = hdpx(10)) {
   size = [width, SIZE_TO_CONTENT]
   children = [
     {

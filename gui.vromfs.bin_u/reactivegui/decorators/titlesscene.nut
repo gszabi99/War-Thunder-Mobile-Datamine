@@ -13,15 +13,12 @@ let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
-let { tabW } = require("%rGui/options/optionsStyle.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 
 let gap = hdpx(15)
 let checkIconSize = hdpx(45)
-let minContentOffset = hdpx(300)
 let rowHeight = hdpx(75)
-let contentWidth = (saSize[0] - tabW - minContentOffset)
 let minRows = 6
 let columns = 2
 
@@ -200,7 +197,8 @@ let titleContent = {
 
 let titlesScene = @() {
   watch = hasVisibleTitles
-  size = [contentWidth, flex()]
+  size = flex()
+  maxWidth = hdpx(1800)
   children = hasVisibleTitles.value ? titleContent
     : {
       halign = ALIGN_CENTER

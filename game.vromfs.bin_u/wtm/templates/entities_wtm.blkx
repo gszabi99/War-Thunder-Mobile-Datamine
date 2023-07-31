@@ -1,8 +1,6 @@
 {
-  "import": [
-    "#game_pkg_dev/templates/*.blk",
-    "%danetlibs/route_prober/templates/route_prober.blk"
-  ],
+  "import_optional": "#game_pkg_dev/templates/*.blk",
+  "import": "%danetlibs/route_prober/templates/route_prober.blk",
   "ecs_no_debug": {
     "noECSDebug:tag": {
       "_tags": "ecsDebug"
@@ -1162,6 +1160,27 @@
     "ammo_slots__numAmmo:list<ip2>": {},
     "ammo_slots__node": {}
   },
+  "tank_engine": {
+    "_extends": "replicating",
+    "_group": [
+      {
+        "_replicate": true,
+        "tank_engine__overheat": false
+      },
+      {
+        "_tags": "server",
+        "tank_engine__overheatDelay": 0.0,
+        "tank_engine__overheatDamage": 0.0,
+        "tank_engine__overheatDamageType": -1,
+        "tank_engine__overheatDamageCooldown": 0.0,
+        "tank_engine__overheatDamageTime": -1.0,
+        "tank_engine__brokenRadiatorFxEventId": -1,
+        "tank_engine__engine_parts": {},
+        "tank_engine__radiator_parts": {},
+        "tank_engine__overheatOffender": {}
+      }
+    ]
+  },
   "ground_unit": {
     "_extends": [
       "simple_ground_unit",
@@ -1169,6 +1188,7 @@
       "unit_fire_and_extinguish",
       "unit_fire_damage",
       "unit_fire_fx",
+      "tank_engine",
       "unit_ammo_stowage"
     ],
     "move_sys__maxDecel": 0.0,
@@ -1382,6 +1402,7 @@
     "syncVromsStep": 0,
     "syncVromsStartAtTime": 0,
     "receiveLogerr": false,
+    "connectedAtTimeMsec": -1.0,
     "_tracked": [
       "connId",
       "syncVromsStep"
@@ -1533,13 +1554,8 @@
     "_extends": "replicating",
     "smoke__activate_time": 0.0,
     "smoke__time": 0.0,
-    "smoke__fx_activate_time": 0.0,
     "smoke__fx_time": 0.0,
     "smoke__smokeFxId": -1,
-    "smoke__tFadeIn": 4.0,
-    "smoke__tFadeOut": 7.0,
-    "smoke__tFadeInMul": 0.2,
-    "smoke__tFadeOutMul": 0.9,
     "_group": {
       "_replicate": true,
       "smoke__pos": [
@@ -1804,19 +1820,19 @@
     ],
     "_tracked": "sand_worm__victimUid",
     "_replicated": "sand_worm__victimUid",
+    "worm_visual__res": "shai_char",
+    "sand_worm__animTime": 10.0,
+    "sand_worm__animName": "shai_action",
+    "sand_worm__attackSfx": "desert/creature_attack",
+    "sand_worm__attackFxName": "duna_worm_dust_cmps_fx",
     "_group": [
       {
         "_tags": "render",
-        "worm_visual__res": "shai_char",
         "sand_worm__animVarId": -1,
         "sand_worm__animValue": -1.0,
-        "sand_worm__animTime": 10.0,
-        "sand_worm__animName": "shai_action",
         "sand_worm__linkNodeId": -1,
         "sand_worm__linkNodeName": "trigger",
-        "sand_worm__attackSfx": "desert/creature_attack",
         "sand_worm__attackFxId": -1,
-        "sand_worm__attackFxName": "duna_worm_dust_cmps_fx",
         "worm_visual": {}
       },
       {
@@ -2026,45 +2042,34 @@
     }
   },
   "arh_shell": {
+    "_extends": "replicating",
     "arh_shell:tag": {}
   },
   "shell": {
-    "_extends": "projectile",
+    "_extends": [
+      "projectile",
+      "replicating"
+    ],
     "shell_ref": {}
   },
   "rocket": {
-    "_extends": [
-      "shell",
-      "replicating"
-    ],
+    "_extends": "shell",
     "rocket_component": {}
   },
   "bomb": {
-    "_extends": [
-      "shell",
-      "replicating"
-    ],
+    "_extends": "shell",
     "bomb_component": {}
   },
   "torpedo": {
-    "_extends": [
-      "shell",
-      "replicating"
-    ],
+    "_extends": "shell",
     "torpedo_component": {}
   },
   "payload": {
-    "_extends": [
-      "shell",
-      "replicating"
-    ],
+    "_extends": "shell",
     "payload_component": {}
   },
   "jettisoned": {
-    "_extends": [
-      "shell",
-      "replicating"
-    ],
+    "_extends": "shell",
     "jettisoned_component": {}
   },
   "sound_point": {
@@ -2340,8 +2345,26 @@
   "simple_tank_wtm": {
     "_extends": "simple_tank"
   },
-  "falling_weather_effect_template": {
-    "_extends": "replicating",
+  "dafx_rain": {
+    "_singleton": true,
+    "_group": {
+      "_track": true,
+      "far_rain__density": 10.0,
+      "far_rain__speed": 1.0,
+      "far_rain__width": 1.0,
+      "far_rain__length": 1.0,
+      "far_rain__alpha": 1.0,
+      "far_rain__maxDensity": 10.0,
+      "far_rain__effectTemplates:array": {
+        "template": [
+          "camera_rain_light_effect",
+          "camera_rain_drop_splashes_effect"
+        ]
+      }
+    },
+    "rain_tag:tag": {}
+  },
+  "camera_bound_rain_effect_template": {
     "transform": [
       [
         1.0,
@@ -2371,55 +2394,47 @@
         0.0,
         0.0
       ],
-      "camera_effect__distance": 0.0
+      "camera_effect__distance": 0.0,
+      "effect__name": "",
+      "is_ground_effect": false
     },
     "effect": {
       "_tags": "render"
-    }
-  },
-  "dafx_rain": {
-    "_singleton": true,
-    "_extends": "falling_weather_effect_template",
-    "_group": [
-      {
-        "_track": true,
-        "far_rain__density": 10.0,
-        "far_rain__speed": 1.0,
-        "far_rain__width": 1.0,
-        "far_rain__length": 1.0,
-        "far_rain__alpha": 1.0,
-        "far_rain__maxDensity": 10.0
-      },
-      {
-        "_tags": "render",
-        "camera_effect__offset": [
-          0.0,
-          -4.0,
-          0.0
-        ],
-        "camera_effect__distance": 3.0
-      }
-    ],
-    "rain_tag:tag": {}
-  },
-  "camera_rain_light_template": {
-    "_extends": "dafx_rain",
-    "effect": {
-      "_tags": "render"
     },
+    "rain_effect_tag:tag": {}
+  },
+  "camera_rain_light_effect": {
+    "_extends": "camera_bound_rain_effect_template",
     "_group": {
       "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
       "effect__name": "camera_rain_light_cmps_fx"
     }
   },
-  "camera_rain_heavy_template": {
-    "_extends": "dafx_rain",
-    "effect": {
-      "_tags": "render"
-    },
+  "camera_rain_heavy_effect": {
+    "_extends": "camera_bound_rain_effect_template",
     "_group": {
       "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
       "effect__name": "camera_rain_heavy_cmps_fx"
+    }
+  },
+  "camera_rain_drop_splashes_effect": {
+    "_extends": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "camera_rain_drops_cmps_fx",
+      "is_ground_effect": true
     }
   },
   "lightning_animchar": {

@@ -29,14 +29,19 @@ let function gatherUnitTagsCfg(unitName) {
   res.tags <- (res?.tags ?? {}).filter(@(v) v)
   res.unitType <- calcUnitTypeFromTags(res)
 
-  if (isDataBlock(blk?.bullets)) {
+  let blockName = "bullets"
+  let bulletsBlk = blk?.bullets ?? blk?.Shop.weapons
+
+  if (isDataBlock(bulletsBlk)) {
     res.bulletsOrder <- {}
+    if (blockName not in res)
+      res[blockName] <- res?.Shop.weapons ?? {}
     res.bullets = res.bullets.filter(@(v) type(v) == "table")
     foreach (id, bList in res.bullets) {
       if ("default" in bList)
         bList[""] <- delete bList["default"]
       let ordered = []
-      eachBlock(blk.bullets[id], @(b) ordered.append(remapBulletName(b.getBlockName())))
+      eachBlock(bulletsBlk[id], @(b) ordered.append(remapBulletName(b.getBlockName())))
       res.bulletsOrder[id] <- ordered
     }
   }

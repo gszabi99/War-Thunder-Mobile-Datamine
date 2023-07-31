@@ -3,6 +3,7 @@ options no_aot
 options strict_smart_pointers
 
 require ecs
+require ECSGlobalTags
 require strings
 require daslib/ast_boost
 require daslib/templates_boost
@@ -317,11 +318,7 @@ class SoaTemplateStructMacro : AstStructureAnnotation
     if length(errors) > 0
       return false
 
-    let cmdArgs <- get_command_line_arguments()
-    var checkSizes = !is_in_aot()
-    for idx in range(length(cmdArgs) - 1)
-      if cmdArgs[idx] == "-sConfig"
-        checkSizes = cmdArgs[idx + 1] == "dev"
+    let checkSizes = !is_in_aot() && ecs_has_tag("dev")
 
     // push
     var inscope push_op <- make_named_call(st, stype, "push", "push", /*isConst*/true, checkSizes)

@@ -64,8 +64,7 @@
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "customLevelMap": "avg_japan_tankmap*",
-  "average_ground_level": 360.0,
-  "levelMapAltOffset": 1800.0,
+  "average_ground_level": 60.0,
   "water_level": 0.0,
   "soundAmbientPath": "sounds/ambient",
   "soundAmbientPathStudio": "aircraft/ambient",
@@ -94,6 +93,13 @@
       32768.0,
       32768.0
     ]
+  },
+  "riExtraBBoxScaleForPrepasses": {
+    "granite_stone_sharp_grey_small_a": 7.0,
+    "granite_stone_sharp_grey_small_e": 7.0,
+    "granite_stone_sharp_grey_small_c": 7.0,
+    "granite_stone_sharp_grey_small_b": 7.0,
+    "granite_stone_sharp_grey_small_d": 7.0
   },
   "micro_details": {
     "micro_detail": [

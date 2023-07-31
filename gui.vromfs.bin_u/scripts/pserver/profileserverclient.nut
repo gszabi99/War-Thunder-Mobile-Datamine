@@ -12,13 +12,13 @@ let { defer, setTimeout, resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { APP_ID } = require("%appGlobals/gameIdentifiers.nut")
 let { offlineActions } = require("offlineMenuProfile.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 const MAX_REQUESTS_HISTORY = 20
 const PROGRESS_TIMEOUT_SEC = 30
-let debugDelay = mkHardWatched("pserver.debugDelay", 0.0)
-let lastRequests = mkHardWatched("pserver.lastRequests", [])
-let progressTimeouts = mkHardWatched("pserver.inProgress", {}) //progressId = { value, timeout }
+let debugDelay = hardPersistWatched("pserver.debugDelay", 0.0)
+let lastRequests = hardPersistWatched("pserver.lastRequests", [])
+let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) //progressId = { value, timeout }
 let nextTimeout = keepref(Computed(@() progressTimeouts.value
   .reduce(@(res, v) res <= 0 ? v.timeout : min(res, v.timeout), 0)))
 

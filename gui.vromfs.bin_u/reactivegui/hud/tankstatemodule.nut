@@ -7,10 +7,10 @@ let { isStickActive, stickDelta } = require("stickState.nut")
 let { mkDebuffIcon, mkDebuffIconEditView } = require("components/debuffIcon.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { mkGamepadHotkey, mkContinuousButtonParams, mkGamepadShortcutImage
-} = require("%rGui/controls/shortcutSimpleComps.nut")
+let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let { isInZoom } = require("%rGui/hudState.nut")
+let damagePanelBacklight = require("components/damagePanelBacklight.nut")
 
 let damagePanelSize = hdpxi(175)
 let moveTypeImageSize = hdpxi(50)
@@ -131,21 +131,26 @@ let speedTextEditView = {
   text = "".concat("XX ", loc("measureUnits/kmh"))
 }.__update(fontVeryTiny)
 
-let xrayDoll = {
+let xrayDoll = @(stateFlags) {
   size = [damagePanelSize, damagePanelSize]
-  rendObj = ROBJ_XRAYDOLL
-  rotateWithCamera = true
-  drawOutlines = false
-  drawSilhouette = true
-  drawTargetingSightLine = true
-  modulateSilhouetteColor = true
-
-  children = {
-    size = [damagePanelSize, damagePanelSize]
-    behavior = Behaviors.XrayDoll
-    transform = {}
-    children = moveTypeImage
-  }
+  children = [
+    damagePanelBacklight(stateFlags, damagePanelSize)
+    {
+      rendObj = ROBJ_XRAYDOLL
+      size = flex()
+      rotateWithCamera = true
+      drawOutlines = false
+      drawSilhouette = true
+      drawTargetingSightLine = true
+      modulateSilhouetteColor = true
+      children = {
+        size = flex()
+        behavior = Behaviors.XrayDoll
+        transform = {}
+        children = moveTypeImage
+      }
+    }
+  ]
 }
 
 let dollEditView = {
@@ -168,25 +173,34 @@ let function useShortcutOn(shortcutId) {
 let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(60), ph(-50)] }
 
 let shortcutId = "ID_SHOW_HERO_MODULES"
-let doll = mkContinuousButtonParams(
-  function onTouchBegin() {
-    if (!isInZoom.value)
-      useShortcutOn(shortcutId)
-  },
-  @() setShortcutOff(shortcutId),
-  shortcutId,
-).__update({
+let stateFlags = Watched(0)
+let isActive = @(sf) (sf & S_ACTIVE) != 0
+let doll =  @() {
   key = "tank_state_button"
-  hplace = ALIGN_LEFT
   behavior = Behaviors.TouchAreaOutButton
+  watch = isInZoom
   eventPassThrough = true
+  function onElemState(sf) {
+    let prevSf = stateFlags.value
+    stateFlags(sf)
+    let active = isActive(sf) && !isInZoom.value
+
+    if (active != isActive(prevSf))
+      if (active)
+        useShortcutOn(shortcutId)
+      else
+        setShortcutOff(shortcutId)
+  }
+  function onDetach() {
+    stateFlags(0)
+    setShortcutOff(shortcutId)
+  }
   hotkeys = mkGamepadHotkey(shortcutId)
   children = [
-    xrayDoll
+    !isInZoom.value ? xrayDoll(stateFlags) : null
     mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
   ]
-})
-
+}
 
 return {
   doll

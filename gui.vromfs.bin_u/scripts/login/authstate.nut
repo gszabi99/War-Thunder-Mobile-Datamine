@@ -4,9 +4,9 @@ let { send, subscribe } = require("eventbus")
 let { LT_GAIJIN } = require("%appGlobals/loginState.nut")
 let { getAutologinType } = require("autoLogin.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let authState = mkHardWatched("login.authState", {
+let authState = hardPersistWatched("login.authState", {
   loginType = LT_GAIJIN
   loginName = ""
   loginPas = ""

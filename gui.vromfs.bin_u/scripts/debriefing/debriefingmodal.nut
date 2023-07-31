@@ -10,6 +10,7 @@ let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { battleResult, debugBattleResult } = require("battleResult.nut")
 let loadRootScreen = require("%scripts/loadRootScreen.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
+let { stat_get_benchmark } = require("guiMission")
 
 ::gui_start_debriefing <- function gui_start_debriefing() {
   if (needLogoutAfterSession.value) {
@@ -22,7 +23,7 @@ let { is_benchmark_game_mode, get_game_mode } = require("mission")
   let gm = get_game_mode()
   if (is_benchmark_game_mode()) {
     let title = ::loc_current_mission_name()
-    let stats = ::stat_get_benchmark()
+    let stats = stat_get_benchmark()
     loadRootScreen()
     send("showBenchmarkResult", { title, stats })
     return

@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce, registerPersistentData, isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { set_rnd_seed } = require("dagor.random")
 clear_vm_entity_systems()
 start_es_loading()
@@ -32,7 +32,7 @@ let { is_pc } = require("%sqstd/platform.nut")
 
 ::cross_call_api <- {}
 
-g_script_reloader.registerPersistentData("MainGlobals", getroottable(),
+registerPersistentData("MainGlobals", getroottable(),
   [ "is_debug_mode_enabled", "is_dev_version" ])
 
 //------- vvv enums vvv ----------
@@ -102,7 +102,7 @@ foreach (fn in [
 
   "%scripts/debugTools/dbgUtils.nut"
 ]) {
-  g_script_reloader.loadOnce(fn)
+  loadOnce(fn)
 }
 
   // Independent Modules (before login)
@@ -116,7 +116,7 @@ require("bqQueue.nut")
 
 end_es_loading()
 
-if (!g_script_reloader.isInReloading)
+if (!isInReloading())
   ::run_reactive_gui()
 
 //------- ^^^ files before login ^^^ ----------
@@ -154,4 +154,6 @@ require("eventbus").subscribe("reloadDargVM", @(_) defer(@() reloadDargUiScript(
 
 let { registerMplayerCallbacks } = require("mplayer_callbacks")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-require("eventbus").subscribe("register_mplayer_callbacks", @(_) registerMplayerCallbacks({ frameNick }))
+let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
+require("eventbus").subscribe("register_mplayer_callbacks",
+  @(_) registerMplayerCallbacks({ frameNick = @(nick, frameId) frameNick(getPlayerName(nick), frameId) }))

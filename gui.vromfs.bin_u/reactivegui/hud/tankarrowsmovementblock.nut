@@ -73,8 +73,10 @@ let function updateStickDelta(_) {
 cruiseControl.subscribe(updateStickDelta)
 steerWatch.subscribe(updateStickDelta)
 
+let fullStopOnTouchButton = Computed(@() currentTankMoveCtrlType.value == "arrows" && currentGearDownOnStopButtonTouch.value)
+
 let function toNeutral() {
-  if (holdingForStopShowCount > 0) {
+  if (holdingForStopShowCount > 0 && !fullStopOnTouchButton.value) {
     send("hint:holding_for_stop:show", {})
     --holdingForStopShowCount
   }
@@ -86,6 +88,11 @@ let function toReverse() {
   prevCruiseControl = CRUISE_CONTROL_N
   changeCruiseControl(CRUISE_CONTROL_R)
   isStopButtonVisible(false)
+}
+
+let function setGmBrakeAxis(v) {
+  setVirtualAxisValue("gm_brake_left", v)
+  setVirtualAxisValue("gm_brake_right", v)
 }
 
 let function updateAxeleration(flipY) {
@@ -112,6 +119,7 @@ let function mkSteerParams(isRight) {
     ovr = { key = shortcutId }
     shortcutId
     function onTouchBegin() {
+      setGmBrakeAxis(0)
       if (cruiseControl.value == 0)
         curSteerValue = 1
       steeringAxelerate("gm_steering", isRight)
@@ -131,12 +139,6 @@ let function mkSteerParams(isRight) {
       curSteerValue = minSteer
     }
   }
-}
-
-let fullStopOnTouchButton = Computed(@() currentTankMoveCtrlType.value == "arrows" && currentGearDownOnStopButtonTouch.value)
-let function setGmBrakeAxis(v) {
-  setVirtualAxisValue("gm_brake_left", v)
-  setVirtualAxisValue("gm_brake_right", v)
 }
 
 let function mkStopParams() {
@@ -159,8 +161,6 @@ let function mkStopParams() {
     }
   }
 }
-
-speed.subscribe(@(v) v == 0 ? setGmBrakeAxis(0) : null)
 
 let leftArrow = mkMoveLeftBtn(mkSteerParams(false))
 let rightArrow = mkMoveRightBtn(mkSteerParams(true))

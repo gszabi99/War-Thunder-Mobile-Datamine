@@ -75,6 +75,7 @@ let function mainToolbar() {
   }
   let toggleTime = @() editorTimeStop(!editorTimeStop.value)
   let toggleHelp = @() showHelp.update(!showHelp.value)
+  let save = @() get_instance().saveObjects("")
 
   return {
     cursor = cursors.normal
@@ -112,7 +113,7 @@ let function mainToolbar() {
       toolbarButton(svg("gui_toggle"), @() showUIinEditor(!showUIinEditor.value), "Show UI", showUIinEditor.value)
       toolbarButton(svg("time_toggle"), toggleTime, "Toggle time (Ctrl+T)", !editorTimeStop.value)
       separator
-      toolbarButton(svg("save"), @() get_instance().saveObjects(""), "Save")
+      toolbarButton(svg("save"), save, "Save")
       toolbarButton(svg("help"), toggleHelp, "Help (F1)", showHelp.value)
 
       de4workModes.value.len() <= 1 ? null : separator
@@ -129,6 +130,7 @@ let function mainToolbar() {
       ["F1", toggleHelp],
       ["P", togglePropPanel],
       ["L.Ctrl !L.Alt T", toggleTime],
+      ["L.Ctrl !L.Alt S", save],
       ["Esc", @() daEditor4.setEditMode(DE4_MODE_SELECT)]
     ]
   }

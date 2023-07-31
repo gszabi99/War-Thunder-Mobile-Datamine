@@ -47,6 +47,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "minRelativeTankCameraThreshold": 1.45,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -1382,7 +1383,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2327,8 +2329,8 @@
     "sightName": "telescope_m71g",
     "headPos": [
       0.0,
-      2.0,
-      -16.5
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       -0.1,

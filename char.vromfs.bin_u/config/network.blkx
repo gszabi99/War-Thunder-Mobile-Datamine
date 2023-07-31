@@ -108,7 +108,7 @@
   },
   "wtm-dev": {
     "appPerm": 72,
-    "matchServer": "match-dev-wtm-mn-ru-01.warthunder.com:7852",
+    "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7852",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
@@ -166,7 +166,7 @@
   },
   "wtm-staging": {
     "appPerm": 73,
-    "matchServer": "match-dev-wtm-mn-ru-01.warthunder.com:7853",
+    "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7853",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
@@ -241,7 +241,7 @@
   },
   "wtm-stable": {
     "appPerm": 50074,
-    "matchServer": "match-dev-wtm-mn-ru-01.warthunder.com:7854",
+    "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7854",
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
@@ -288,6 +288,58 @@
     "cloud_server": {
       "servers": {
         "url": "https://cloud-stable-01.gaijin.net:13443/char"
+      }
+    }
+  },
+  "wtm-submission": {
+    "appPerm": 50102,
+    "matchServer": "match-wtm-submission-sv-lx-01.warthunder.com:7854",
+    "useTamVoice": true,
+    "vivoxServerURL": "https://not.used",
+    "vivoxEcho": "tamvchn://echo123",
+    "circuitPostfix": "-wtm-submission",
+    "queryTimeoutMs": 180000,
+    "disableScaleWPByPlayers": true,
+    "enableNetConsole": true,
+    "marketplaceURL": "https://trade-dev.gaijin.net/",
+    "enableUGC": true,
+    "enableApex": true,
+    "skinsDecalsCacheSz": 1073741824,
+    "contentUpdater": {
+      "enabled": true,
+      "flag": "--force_check"
+    },
+    "webVromfs": {
+      "replaceUrls": "test.webVromfs.baseUrls"
+    },
+    "inventory": {
+      "servers": {
+        "url": "https://inventory-submission-01.gaijin.net:8443/char"
+      }
+    },
+    "contacts": {
+      "servers": {
+        "url": "https://contacts-submission-01.gaijin.net:9443/json"
+      }
+    },
+    "userstat": {
+      "servers": {
+        "url": "https://userstat-submission-01.gaijin.net:11443/char"
+      }
+    },
+    "nickserver": {
+      "servers": {
+        "url": "https://nick-server.gaijin.net/public/resolve/nicks"
+      }
+    },
+    "profile_server": {
+      "servers": {
+        "url": "https://profile-submission-01.gaijin.net:10443/json-rpc"
+      }
+    },
+    "cloud_server": {
+      "servers": {
+        "url": "https://cloud-submission-01.gaijin.net:13443/char"
       }
     }
   },

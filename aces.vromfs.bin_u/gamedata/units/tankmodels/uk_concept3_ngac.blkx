@@ -44,7 +44,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.65,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "controlDevices": {
@@ -2357,8 +2356,8 @@
     "openedCockpit": false,
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      3.9,
+      -13.1
     ],
     "headPosOnShooting": [
       -0.2,

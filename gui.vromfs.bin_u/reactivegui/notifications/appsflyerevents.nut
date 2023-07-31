@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { logEvent, setAppsFlyerCUID = @(_) null } = require("appsFlyer")
+let { logEvent, setAppsFlyerCUID } = require("appsFlyer")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { firstBattleTutor, tutorialMissions } = require("%rGui/tutorial/tutorialMissions.nut")
 let { lastBattles, sharedStats, curCampaign } = require("%appGlobals/pServer/campaign.nut")

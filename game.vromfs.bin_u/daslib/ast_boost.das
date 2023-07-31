@@ -194,9 +194,13 @@ def find_arg(args:AnnotationArgumentList; argn:string) : RttiValue
     return RttiValue_nothing()
 
 def private apply_tag_annotation(tag:string; ann:FunctionAnnotationPtr)
+    var inscope funcs : array<FunctionPtr>
     for_each_tag_function(this_module(), tag) <| $ ( func )
-        var inscope tagAnn := ann
-        add_function_annotation(func, tagAnn)
+        funcs |> push_clone(func)
+    for func in funcs
+        if true
+            var inscope tagAnn := ann
+            add_function_annotation(func, tagAnn)
 
 def setup_tag_annotation(name,tag:string; classPtr)
     var inscope ann <- make_function_annotation(name, classPtr)
@@ -953,13 +957,13 @@ def getVectorElementType ( bt:Type )
 
 def getVectorOffset ( bt:Type; ident:string )
     var ofs = -1
-    if ident=="x" || ident=="X"
+    if ident=="x" || ident=="X" || ident=="r" || ident=="R"
         ofs = 0
-    elif ident=="y" || ident=="Y"
+    elif ident=="y" || ident=="Y" || ident=="g" || ident=="G"
         ofs = 1
-    elif ident=="z" || ident=="Z"
+    elif ident=="z" || ident=="Z" || ident=="b" || ident=="B"
         ofs = 2
-    elif ident=="w" || ident=="W"
+    elif ident=="w" || ident=="W" || ident=="a" || ident=="A"
         ofs = 3
     let count = getVectorElementCount(bt)
     return ofs>=count ? -1 : ofs

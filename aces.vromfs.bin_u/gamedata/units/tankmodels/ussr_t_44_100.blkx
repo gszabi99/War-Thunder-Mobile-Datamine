@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.55,
+  "minRelativeTankCameraThreshold": 1.44,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "DamageEffects": {
@@ -2132,8 +2132,8 @@
     "sightName": "tsh_16",
     "headPos": [
       0.0,
-      2.0,
-      -16.5
+      3.8,
+      -12.9
     ],
     "headPosOnShooting": [
       -0.4,

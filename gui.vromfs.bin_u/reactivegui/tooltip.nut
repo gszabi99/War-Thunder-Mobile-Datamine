@@ -1,7 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+let { resetTimeout } = require("dagor.workcycle")
 
+const REPAY_TIME = 0.3
 let state = Watched(null)
 local curContent = null
+local delayedTooltip = null
 
 let TOOLTIP_PARAMS = {
   flow = FLOW_HORIZONTAL //how popup need to flow against target point
@@ -72,9 +75,11 @@ let function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
 let function hideTooltip() {
   state(null)
   curContent = null
+  delayedTooltip = null
 }
 
 let function showTooltip(rectOrPos, params) {
+  delayedTooltip = null
   if (params == null) {
     hideTooltip()
     return
@@ -95,6 +100,31 @@ let function showTooltip(rectOrPos, params) {
   let { flow, flowOffset, halign, valign } = newState
   newState.position <- calcPosition(rectOrPos, flow, flowOffset, halign, valign)
   state(newState)
+}
+
+let function showDelayedTooltipImpl() {
+  if (delayedTooltip == null)
+    return
+  let { rectOrPos, params } = delayedTooltip
+  showTooltip(rectOrPos, params)
+}
+
+let function showDelayedTooltip(rectOrPos, params, repayTime = REPAY_TIME) {
+  hideTooltip()
+  delayedTooltip = { rectOrPos, params }
+  resetTimeout(repayTime, showDelayedTooltipImpl)
+}
+
+let withHoldTooltip = @(stateFlags, key, tooltipCtor) function(sf) {
+  let hasHint = (stateFlags.value & S_ACTIVE) != 0
+  let needHint = (sf & S_ACTIVE) != 0
+  stateFlags(sf)
+  if (hasHint == needHint)
+    return
+  if (needHint)
+    showDelayedTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor())
+  else
+    hideTooltip()
 }
 
 let translateAnimation = @(flow, halign, valign, duration)
@@ -146,7 +176,9 @@ let function tooltipComp() {
 return {
   tooltipComp
   showTooltip
+  showDelayedTooltip
   hideTooltip
+  withHoldTooltip
 
   tooltipBg
   mkTooltipText

@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.45,
+  "minRelativeTankCameraThreshold": 1.37,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.05,
@@ -1587,7 +1587,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_M32_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/76mm_M32_m41_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2363,8 +2363,8 @@
     "sightName": "telescope_m97_periscope_m20",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       -0.4,

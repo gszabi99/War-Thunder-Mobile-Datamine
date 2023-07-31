@@ -185,6 +185,12 @@
         "template": "steering_gear_#10#",
         "explosionTorpedoDamageMult": 1.0
       }
+    },
+    "shaft": {
+      "hitTestType": "inner",
+      "shaft_NN": {
+        "template": "shaft_#04#"
+      }
     }
   },
   "fuel": {
@@ -461,6 +467,15 @@
   "optic_body_2": {},
   "optic_body_NN": {
     "template": "optic_body_#06#"
+  },
+  "ex_lantern_NN": {
+    "template": "ex_lantern_#10#"
+  },
+  "aps_sensor_NN": {
+    "template": "aps_sensor_#10#"
+  },
+  "aps_launcher_NN": {
+    "template": "aps_launcher_#10#"
   },
   "radiator": {
     "vital": true,

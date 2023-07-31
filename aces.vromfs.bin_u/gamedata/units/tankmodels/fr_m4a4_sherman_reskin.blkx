@@ -826,7 +826,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -1619,23 +1620,6 @@
         "name": "tank_engine_fire"
       }
     }
-  },
-  "cockpit": {
-    "zoomOutFov": 40.0,
-    "zoomInFov": 21.0,
-    "sightFov": 20.0,
-    "sightName": "default_tank_spg",
-    "headPos": [
-      0.0,
-      2.0,
-      -17.0
-    ],
-    "headPosOnShooting": [
-      -0.8,
-      3.45,
-      0.46
-    ],
-    "detectionHeight": 2.74
   },
   "battleHideNodes": {
     "n": "details"
@@ -2463,6 +2447,23 @@
       "name": "fr_m4a4_sherman_reskin_default",
       "blk": "gameData/units/tankModels/weaponPresets/fr_m4a4_sherman_reskin_default.blk"
     }
+  },
+  "cockpit": {
+    "zoomOutFov": 40.0,
+    "zoomInFov": 21.0,
+    "sightFov": 20.0,
+    "sightName": "default_tank_spg",
+    "headPos": [
+      0.0,
+      3.8,
+      -13.0
+    ],
+    "headPosOnShooting": [
+      -0.8,
+      3.45,
+      0.46
+    ],
+    "detectionHeight": 2.74
   },
   "modifications": {
     "tank_tool_kit_expendable": {},

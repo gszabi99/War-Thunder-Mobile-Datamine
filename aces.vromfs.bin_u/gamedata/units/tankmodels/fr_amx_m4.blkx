@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.55,
+  "minRelativeTankCameraThreshold": 1.43,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.15,
@@ -1639,7 +1639,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2587,8 +2588,8 @@
     "sightName": "periscope_40t",
     "headPos": [
       0.0,
-      2.0,
-      -18.0
+      3.8,
+      -13.9
     ],
     "headPosOnShooting": [
       -0.3,

@@ -55,7 +55,7 @@
     true,
     true
   ],
-  "minRelativeTankCameraThreshold": 1.7,
+  "minRelativeTankCameraThreshold": 1.4,
   "class_tags": {},
   "PhysSys": {
     "find": "^bone_suspension_(._\\d\\d)$",
@@ -2193,21 +2193,21 @@
     }
   },
   "cockpit": {
+    "zoomOutFov": 40.0,
+    "zoomInFov": 21.0,
+    "sightFov": 20.0,
+    "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -16.5
+      3.8,
+      -12.85
     ],
     "headPosOnShooting": [
       0.0,
       3.3,
       0.0
     ],
-    "detectionHeight": 2.4,
-    "zoomOutFov": 40.0,
-    "zoomInFov": 21.0,
-    "sightFov": 20.0,
-    "sightName": "default_tank_spg"
+    "detectionHeight": 2.4
   },
   "ammo": {
     "combustionTime": 10.0,

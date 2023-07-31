@@ -4,7 +4,7 @@ let { send } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { doesLocTextExist } = require("dagor.localize")
 let { isEqual } = require("%sqstd/underscore.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -20,10 +20,10 @@ const AUTO_UPDATE_TIME_SEC = 3600
 
 let successPaymentUrl = "https://store.gaijin.net/success_payment.php" //webview should close on success payment url
 
-let isGoodsRequested = mkHardWatched("goodsGaijin.isGoodsRequested", false)
-let goodsInfo = mkHardWatched("goodsGaijin.goodsInfo", {})
-let lastError = mkHardWatched("goodsGaijin.lastError", null)
-let lastUpdateTime = mkHardWatched("goodsGaijin.lastUpdateTime", 0)
+let isGoodsRequested = hardPersistWatched("goodsGaijin.isGoodsRequested", false)
+let goodsInfo = hardPersistWatched("goodsGaijin.goodsInfo", {})
+let lastError = hardPersistWatched("goodsGaijin.lastError", null)
+let lastUpdateTime = hardPersistWatched("goodsGaijin.lastUpdateTime", 0)
 let needForceUpdate = Watched(false)
 let needRetry = Computed(@() lastError.value != null && !isInBattle.value && !isGoodsRequested.value)
 

@@ -1,5 +1,5 @@
 from "%sqstd/ecs.nut" import *
-from "state.nut" import selectedEntity, selectedEntities, selectedCompName
+from "state.nut" import selectedEntity, selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey, selectedCompName
 from "%darg/ui_imports.nut" import *
 
 
@@ -14,17 +14,9 @@ selectedEntity.subscribe(function(_eid) {
   selectedCompName(null)
 })
 
-let function addEntitySelection(eid, _comp) {
-  selectedEntities.mutate(@(val) val[eid] <- true)
-}
-
-let function removeEntitySelection(eid, _comp) {
-  selectedEntities.mutate(@(val) delete val[eid])
-}
-
 register_es("update_selected_entities", {
-    onInit = addEntitySelection,
-    onDestroy = removeEntitySelection
+    onInit = @(eid, _comp) selectedEntitiesSetKeyVal(eid, true)
+    onDestroy = @(eid, _comp) selectedEntitiesDeleteKey(eid)
   },
   { comps_rq = ["daeditor__selected"]}
 )

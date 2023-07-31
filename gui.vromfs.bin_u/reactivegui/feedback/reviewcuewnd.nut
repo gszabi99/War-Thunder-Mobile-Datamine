@@ -193,13 +193,24 @@ let bgGradientComp = doubleSideGradBase.__merge({
   ]
 })
 
+let imagesPreloadComp = {
+  children = array(5).map(@(_, i) {
+    size = [1, 1]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"!ui/images/review_cue_{i + 1}.avif")
+    opacity = 0.01
+  })
+}
+
 let girlImage = @() {
-  watch = [hasAppliedRating, isRatedExcellent]
+  watch = [fieldRating, hasAppliedRating, isRatedExcellent]
   size = [hdpxi(644), hdpxi(914)]
   vplace = ALIGN_BOTTOM
   pos = [ sw(50) - (contentW / 2) - hdpxi(444), 0 ]
   rendObj = ROBJ_IMAGE
-  image = !hasAppliedRating.value ? Picture($"!ui/images/review_cue_2.avif")
+  image = !hasAppliedRating.value && fieldRating.value == 0 ? Picture($"!ui/images/review_cue_2.avif")
+    : !hasAppliedRating.value && fieldRating.value < RATE_STARS_TOTAL ? Picture($"!ui/images/review_cue_4.avif")
+    : !hasAppliedRating.value && fieldRating.value == RATE_STARS_TOTAL ? Picture($"!ui/images/review_cue_5.avif")
     : isRatedExcellent.value ? Picture($"!ui/images/review_cue_3.avif")
     : Picture($"!ui/images/review_cue_1.avif")
 }
@@ -208,6 +219,7 @@ let reviewCueWnd = bgShaded.__merge({
   key = {}
   size = flex()
   children = [
+    imagesPreloadComp
     bgGradientComp
     girlImage
     {

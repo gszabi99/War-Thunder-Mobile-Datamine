@@ -161,7 +161,24 @@
         "hudElementEnlarge": {
           "element": "pointerWaypoint",
           "enlarge": true
-        }
+        },
+        "unitSetVar": [
+          {
+            "object_var_name": "lookat_name",
+            "object": "target_tank01",
+            "object_var_string": "look_tank01"
+          },
+          {
+            "object_var_name": "lookat_name",
+            "object": "target_tank02",
+            "object_var_string": "look_tank02"
+          },
+          {
+            "object_var_name": "lookat_name",
+            "object": "target_tank03",
+            "object_var_string": "look_tank03"
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -733,42 +750,7 @@
         ],
         "wait": {
           "time": 0.1
-        },
-        "unitRespawn": [
-          {
-            "delay": 1.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "target_tank01",
-            "target": "spawn_01",
-            "shouldKeepFormation": false
-          },
-          {
-            "delay": 1.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "target_tank02",
-            "target": "spawn_02",
-            "shouldKeepFormation": false
-          },
-          {
-            "delay": 1.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "target_tank03",
-            "target": "spawn_03",
-            "shouldKeepFormation": false
-          }
-        ]
+        }
       },
       "else_actions": {}
     },
@@ -938,16 +920,51 @@
             "realtimeTriggers": true
           }
         ],
-        "unitRespawn": {
-          "delay": 1.0,
-          "offset": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "object": "player",
-          "target": "caponier_spawn_area"
-        },
+        "unitRespawn": [
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "player",
+            "target": "caponier_spawn_area"
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "target_tank01",
+            "target": "spawn_01",
+            "shouldKeepFormation": false
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "target_tank02",
+            "target": "spawn_02",
+            "shouldKeepFormation": false
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "target_tank03",
+            "target": "spawn_03",
+            "shouldKeepFormation": false
+          }
+        ],
         "wait": [
           {
             "time": 0.01
@@ -1107,7 +1124,7 @@
           "viewAngle": 5.0
         },
         "playerWhenCameraState": {
-          "value": -5.0,
+          "value": -6.5,
           "state": "pitch",
           "comparasion_func": "more"
         }
@@ -1273,17 +1290,6 @@
           "value": "",
           "comparasion_func": "notEqual"
         },
-        "playerSeesUnit": {
-          "target_type": "isAlive",
-          "check_targets": "any",
-          "target": "@targeted_tank",
-          "viewAngle": 5.0
-        },
-        "playerWhenCameraState": {
-          "value": -5.0,
-          "state": "pitch",
-          "comparasion_func": "more"
-        },
         "varCompareBool": [
           {
             "var_value": "turret_rotating",
@@ -1310,8 +1316,17 @@
           "value": true,
           "var": "shooting_explaining"
         },
-        "__wait": {
-          "time": 0.5
+        "unitGetVar": {
+          "object_marking": 0,
+          "object": "@targeted_tank",
+          "object_var_name": "lookat_name",
+          "out_var_string": "lookat_current"
+        },
+        "wait": {
+          "time": 0.1
+        },
+        "playerSetMouseAim": {
+          "lookat": "@lookat_current"
         },
         "playHint": {
           "hintType": "tutorialHint",
@@ -1370,6 +1385,12 @@
           "params": "",
           "event": "task 6/9: zoomed in"
         },
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "wait": {
+          "time": 0.5
+        },
         "playHint": {
           "hintType": "tutorialHint",
           "name": "",
@@ -1383,12 +1404,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "shouldBlink": false
-        },
-        "hudElementSelectionShade": {
-          "element": ""
-        },
-        "__wait": {
-          "time": 0.5
         },
         "triggerEnable": {
           "target": "shootingP1_about_crosshair"
@@ -2050,7 +2065,7 @@
           "viewAngle": 5.0
         },
         "playerWhenCameraState": {
-          "value": -5.0,
+          "value": -6.5,
           "state": "pitch",
           "comparasion_func": "more"
         }
@@ -3076,11 +3091,18 @@
           "target": "target_tank01",
           "viewAngle": 5.0
         },
-        "playerWhenCameraState": {
-          "value": -5.0,
-          "state": "pitch",
-          "comparasion_func": "more"
-        },
+        "playerWhenCameraState": [
+          {
+            "value": -4.7,
+            "state": "pitch",
+            "comparasion_func": "less"
+          },
+          {
+            "value": -8.3,
+            "state": "pitch",
+            "comparasion_func": "more"
+          }
+        ],
         "varCompareString": {
           "var_value": "targeted_tank",
           "value": "target_tank01",
@@ -3167,17 +3189,12 @@
         },
         "playerWhenCameraState": [
           {
-            "value": -119.47,
-            "state": "yaw",
-            "comparasion_func": "more"
-          },
-          {
-            "value": 109.91,
-            "state": "yaw",
+            "value": -4.7,
+            "state": "pitch",
             "comparasion_func": "less"
           },
           {
-            "value": -5.0,
+            "value": -8.3,
             "state": "pitch",
             "comparasion_func": "more"
           }
@@ -3286,11 +3303,18 @@
           "target": "target_tank03",
           "viewAngle": 5.0
         },
-        "playerWhenCameraState": {
-          "value": -5.0,
-          "state": "pitch",
-          "comparasion_func": "more"
-        },
+        "playerWhenCameraState": [
+          {
+            "value": -4.7,
+            "state": "pitch",
+            "comparasion_func": "less"
+          },
+          {
+            "value": -8.3,
+            "state": "pitch",
+            "comparasion_func": "more"
+          }
+        ],
         "varCompareString": {
           "var_value": "targeted_tank",
           "value": "target_tank03",
@@ -3370,7 +3394,7 @@
           "viewAngle": 5.0
         },
         "playerWhenCameraState": {
-          "value": -5.0,
+          "value": -6.5,
           "state": "pitch",
           "comparasion_func": "notMore"
         }
@@ -5512,7 +5536,8 @@
               "ID_ACTION_BAR_ITEM_2",
               "ID_ACTION_BAR_ITEM_3",
               "ID_ACTION_BAR_ITEM_4",
-              "ID_ACTION_BAR_ITEM_5"
+              "ID_ACTION_BAR_ITEM_5",
+              "ID_FIRE_GM_MACHINE_GUN"
             ]
           },
           {
@@ -5992,7 +6017,8 @@
     "xray_explaining": false,
     "shooting_explaining": false,
     "target_03_hit_1st": false,
-    "target_03_hit_2nd": false
+    "target_03_hit_2nd": false,
+    "lookat_current": ""
   },
   "dialogs": {},
   "airfields": {},
@@ -6136,7 +6162,7 @@
           [
             1868.86,
             8.13704,
-            1812.96
+            1813.67
           ]
         ],
         "unit_class": "germ_pzkpfw_IV_ausf_F_tutorial",
@@ -6285,9 +6311,9 @@
             -0.999962
           ],
           [
-            1851.79,
-            5.5,
-            1813.27
+            1901.21,
+            11.0,
+            1813.66
           ]
         ],
         "unit_class": "dummy",
@@ -6345,7 +6371,7 @@
           ],
           [
             1869.43,
-            5.97675,
+            5.9,
             1827.67
           ]
         ],
@@ -6403,9 +6429,9 @@
             -0.0106697
           ],
           [
-            1868.86,
-            5.97675,
-            1812.96
+            1868.9,
+            5.9,
+            1813.71
           ]
         ],
         "unit_class": "dummy",
@@ -6463,7 +6489,7 @@
           ],
           [
             1869.08,
-            5.97675,
+            5.9,
             1800.13
           ]
         ],
@@ -6669,9 +6695,9 @@
           -220.373
         ],
         [
-          1799.76,
-          2.46085,
-          1809.56
+          1799.68,
+          2.46115,
+          1808.4
         ]
       ],
       "objLayer": 0,
@@ -6781,7 +6807,7 @@
         [
           1868.9,
           9.20359,
-          1813.0
+          1813.71
         ]
       ],
       "objLayer": 0,
@@ -6835,7 +6861,7 @@
         [
           1868.86,
           8.13704,
-          1812.96
+          1813.67
         ]
       ],
       "objLayer": 0,

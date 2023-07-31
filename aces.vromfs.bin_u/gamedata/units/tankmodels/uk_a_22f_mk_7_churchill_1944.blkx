@@ -46,7 +46,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "minRelativeTankCameraThreshold": 1.7,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -1478,7 +1477,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -1691,7 +1691,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_QQF_MkV_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/75mm_QQF_MkV_churchill_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2421,8 +2421,8 @@
     "sightName": "no50x3_ml_mk2",
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      3.8,
+      -13.4
     ],
     "headPosOnShooting": [
       0.0,
@@ -2471,7 +2471,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_QQF_MkV_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/75mm_QQF_MkV_churchill_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,

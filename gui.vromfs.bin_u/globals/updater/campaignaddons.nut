@@ -86,4 +86,5 @@ return {
   getCampaignPkgsForOnlineBattle
   getCampaignPkgsForNewbieBattle
   getAddonCampaign
+  getAddonPostfix
 }

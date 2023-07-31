@@ -44,7 +44,7 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": 1.45,
   "dm_for_shop": {
     "armorThicknessFront": [
       1.0,
@@ -1965,8 +1965,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.6
     ],
     "headPosOnShooting": [
       0.9,

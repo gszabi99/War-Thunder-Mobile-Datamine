@@ -27,7 +27,7 @@ let hudTopMainLog = @() {
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
-    { size = [SIZE_TO_CONTENT, hdpx(140)] }
+    { size = [SIZE_TO_CONTENT, hdpx(105)] }
     lqTexturesWarningBattle
     getHudConfigParameter("showDamageLog") ? hudDamageLog : null
     mainHintsBlock

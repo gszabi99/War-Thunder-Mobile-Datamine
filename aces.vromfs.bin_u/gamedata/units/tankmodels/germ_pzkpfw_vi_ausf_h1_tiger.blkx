@@ -44,6 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
+  "minRelativeTankCameraThreshold": 1.45,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -1807,7 +1808,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -1975,7 +1977,17 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_01",
+        "ex_armor_02",
+        "ex_armor_body_04",
+        "ex_armor_body_05",
+        "ex_armor_body_06",
+        "ex_armor_turret_r_04"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2552,8 +2564,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.2
     ],
     "headPosOnShooting": [
       -0.45,
@@ -2768,7 +2780,17 @@
                 ]
               }
             }
-          ]
+          ],
+          "hideNodes": {
+            "node": [
+              "ex_armor_01",
+              "ex_armor_02",
+              "ex_armor_body_04",
+              "ex_armor_body_05",
+              "ex_armor_body_06",
+              "ex_armor_turret_r_04"
+            ]
+          }
         }
       }
     }

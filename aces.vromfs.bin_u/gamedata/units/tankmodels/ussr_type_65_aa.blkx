@@ -46,7 +46,10 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": [
+    1.42,
+    1.4
+  ],
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2681,8 +2684,8 @@
     "sightName": "tsh_16",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       0.0,

@@ -62,7 +62,8 @@ let manipulator = {
   size = flex()
   behavior = Behaviors.ProcessPointingInput
   function onPointerPress(evt) {
-    if (pointer.value != null && pointer.value.id != evt.pointerId)
+    if (evt.accumRes == R_PROCESSED
+        || (pointer.value != null && pointer.value.id != evt.pointerId))
       return 0
     let elem = findElemInScene(evt.x, evt.y)
     selectedId(elem?.id)

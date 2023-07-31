@@ -1278,7 +1278,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.333,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
         "bullets": 180,

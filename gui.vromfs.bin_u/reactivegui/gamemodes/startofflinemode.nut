@@ -5,12 +5,17 @@ let { SHIP, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
+let { getUnitPkgs, getAddonPostfix, getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 
 let MAX_SLOTS = 2
+
+let testFlightExtPacks = { //for bots
+  ground = getCampaignPkgsForOnlineBattle("tanks", 1) //t_34_1942
+  naval = getCampaignPkgsForOnlineBattle("ships", 1) //cruiser_admiral_hipper
+}
 
 let function getBulletsForTestFlight(unitName) {
   let { primary = null, secondary = null } = loadUnitBulletsChoice(unitName)?.commonWeapons
@@ -35,8 +40,9 @@ let function getBulletsForTestFlight(unitName) {
   return res
 }
 
-let function donloadUnitPacksAndSend(unitName, eventId, params) {
+let function donloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
   let pkgs = getUnitPkgs(unitName, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
+    .extend(extAddons)
     .filter(@(v) !hasAddons.value?[v])
   if (pkgs.len() == 0)
     send(eventId, params)
@@ -58,7 +64,8 @@ let function startTestFlight(unitName, missionName = null) {
       : "testFlight_ussr_tft")
     bullets = getBulletsForTestFlight(unitName)
   }
-  donloadUnitPacksAndSend(unitName, "startTestFlight", params)
+  donloadUnitPacksAndSend(unitName, testFlightExtPacks?[getAddonPostfix(unitName)] ?? [],
+    "startTestFlight", params)
 }
 
 let function startOfflineBattle(unitName, missionName) {
@@ -66,7 +73,7 @@ let function startOfflineBattle(unitName, missionName) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  donloadUnitPacksAndSend(unitName, "startTraining",
+  donloadUnitPacksAndSend(unitName, [], "startTraining",
     {
       unitName
       missionName

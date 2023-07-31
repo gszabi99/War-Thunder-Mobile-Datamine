@@ -9,10 +9,10 @@ let { download_addons_in_background, stop_updater, is_updater_running, get_addon
 let { get_local_custom_settings_blk } = require("blkGetters")
 let logA = log_with_prefix("[ADDONS] ")
 let { isEqual } = require("%sqstd/underscore.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { localizeAddonsLimited, initialAddons } = require("%appGlobals/updater/addons.nut")
+let { localizeAddonsLimited, initialAddons, latestDownloadAddons } = require("%appGlobals/updater/addons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
@@ -24,19 +24,19 @@ let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameMo
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
 let ALLOW_LIMITED_DOWNLOAD_SAVE_ID = "allowLimitedConnectionDownload"
 
-let addonsToDownload = mkHardWatched("updater.addonsToDownload",
+let addonsToDownload = hardPersistWatched("updater.addonsToDownload",
   get_incomplete_addons().reduce(function(res, v) {
     res[v] <- true
     return res
   }, {}))
-let isDownloadPaused = mkHardWatched("updater.isDownloadPaused", false)
+let isDownloadPaused = hardPersistWatched("updater.isDownloadPaused", false)
 let allowLimitedDownload = Watched(get_local_custom_settings_blk()?[ALLOW_LIMITED_DOWNLOAD_SAVE_ID] ?? false)
-let downloadInProgress = mkHardWatched("updater.downloadInProgress", {})
-let currentStage = mkHardWatched("updater.currentStage", null)
-let totalSizeBytes = mkHardWatched("updater.totalSizeBytes", 0)
-let toDownloadSizeBytes = mkHardWatched("updater.toDownloadSizeBytes", 0)
-let downloadState = mkHardWatched("updater.downloadState", null)
-let updaterError = mkHardWatched("updater.updaterError", null)
+let downloadInProgress = hardPersistWatched("updater.downloadInProgress", {})
+let currentStage = hardPersistWatched("updater.currentStage", null)
+let totalSizeBytes = hardPersistWatched("updater.totalSizeBytes", 0)
+let toDownloadSizeBytes = hardPersistWatched("updater.toDownloadSizeBytes", 0)
+let downloadState = hardPersistWatched("updater.downloadState", null)
+let updaterError = hardPersistWatched("updater.updaterError", null)
 
 let firstPriorityAddons = mkWatched(persist, "firstPriorityAddons", {})
 let downloadWndParams = mkWatched(persist, "downloadWndParams", null)
@@ -49,13 +49,17 @@ let progressPercent = Computed(function() {
 
 let isStageDownloading = Computed(@() currentStage.value == UPDATER_DOWNLOADING)
 
-let initialAddonsToDownload = Computed(function(prev) {
+let function mkAddonsToDownload(list, hasAddonsV, prev) {
   let res = {}
-  foreach(a in initialAddons)
-    if (!(hasAddons.value?[a] ?? true))
+  foreach(a in list)
+    if (!(hasAddonsV?[a] ?? true))
       res[a] <- true
   return isEqual(res, prev) ? prev : res
-})
+}
+
+let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(initialAddons, hasAddons.value, prev))
+let latestAddonsToDownload = Computed(@(prev)
+  mkAddonsToDownload(latestDownloadAddons?[curCampaign.value] ?? [], hasAddons.value, prev))
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
 
@@ -81,6 +85,10 @@ let wantStartDownloadAddons = Computed(function(prev) {
   }
 
   res = addonsToDownload.value.filter(@(_, a) (getAddonCampaign(a) ?? campaign) == campaign)
+  if (res.len() != 0)
+    return prevIfEqual(prev, res)
+
+  res = addonsToDownload.value.filter(@(_, a) a in latestAddonsToDownload.value)
   return prevIfEqual(prev, res.len() != 0 ? res : addonsToDownload.value)
 })
 
@@ -219,7 +227,7 @@ let maxCurCampaignMRank = Computed(function() {
 let addonsToAutoDownload = keepref(Computed(function() {
   if (!isAnyCampaignSelected.value)
     return initialAddonsToDownload.value?.keys()
-  let list = clone initialAddonsToDownload.value
+  let list = initialAddonsToDownload.value.__merge(latestAddonsToDownload.value)
   foreach(a in getCampaignPkgsForOnlineBattle(curCampaign.value, maxCurCampaignMRank.value))
     list[a] <- true
   return list.keys()

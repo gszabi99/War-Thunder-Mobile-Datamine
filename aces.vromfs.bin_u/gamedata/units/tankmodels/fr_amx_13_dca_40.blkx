@@ -46,7 +46,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "minRelativeTankCameraThreshold": 1.7,
   "rearmTimeOnField": 120.0,
   "canReloadNonGuns": [
     true,
@@ -2777,8 +2776,8 @@
     "sightName": "l_862",
     "headPos": [
       0.0,
-      2.0,
-      -16.5
+      3.7,
+      -12.4
     ],
     "headPosOnShooting": [
       -0.9,

@@ -44,7 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.6,
+  "minRelativeTankCameraThreshold": 1.55,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.35,
@@ -2290,8 +2290,8 @@
     "sightName": "no43x3_ml_mk3",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.9,
+      -13.5
     ],
     "headPosOnShooting": [
       0.1,

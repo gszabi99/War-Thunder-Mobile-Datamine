@@ -104,7 +104,7 @@ registerHandler("onDebugOfferUnits",
       title = "Offer allowed units"
       text = makeVertScroll(
         mkUnitsTexts(textsByCamp),
-        { rootBase = class { behavior = Behaviors.Pannable } })
+        { rootBase = { behavior = Behaviors.Pannable } })
       wndOvr = { size = [hdpx(max(1100, 650 * textsByCamp.len())), hdpx(1000)] }
       buttons = [
         { text = "COPY", cb = @() copy_to_clipboard(json_to_string(textsByCamp)) }

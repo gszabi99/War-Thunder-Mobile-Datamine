@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-//let { moveIndicator, moveIndicatorShipEditView } = require("%rGui/hud/components/moveIndicator.nut")
+let { moveIndicator, moveIndicatorShipEditView } = require("%rGui/hud/components/moveIndicator.nut")
 let { doll, dollEditView, shipDebuffs, shipDebuffsEditView, crewHealth, crewHealthEditView
 } = require("%rGui/hud/shipStateModule.nut")
 let { tacticalMap, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
-let { mkLBPos, mkLTPos, mkRTPos } = require("hudTuningPkg.nut")
+let { mkLBPos, mkLTPos, mkRTPos, mkCBPos } = require("hudTuningPkg.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
+let { DBGLEVEL } = require("dagor.system")
 
 return {
   hitCamera = {
@@ -21,12 +22,14 @@ return {
     hideForDelayed = false
   }
 
-  //moveIndicator = {
-  //  ctor = @() moveIndicator
-  //  defTransform = mkLBPos([hdpx(984), 0])
-  //  editView = moveIndicatorShipEditView
-  //  hideForDelayed = false
- // }
+  moveIndicator = DBGLEVEL > 0
+    ? {
+      ctor = @() moveIndicator
+      defTransform = mkCBPos([0, -sh(13)])
+      editView = moveIndicatorShipEditView
+      hideForDelayed = false
+    }
+  : null
 
   doll = {
     ctor = @() doll
@@ -48,4 +51,4 @@ return {
     editView = crewHealthEditView
     hideForDelayed = false
   }
-}
+}.filter(@(v) v != null)

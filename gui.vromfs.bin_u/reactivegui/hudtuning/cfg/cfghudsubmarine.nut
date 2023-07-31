@@ -5,13 +5,16 @@ let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
 let { mkZoomButton, mkDivingLockButton } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { mkRBPos, mkLBPos, weaponryButtonCtor, weaponryButtonDynamicCtor, withActionBarButtonCtor
+let { mkRBPos, mkLBPos, mkCBPos, weaponryButtonCtor, weaponryButtonDynamicCtor, withActionBarButtonCtor
 } = require("hudTuningPkg.nut")
 let { depthSliderBlock, depthSliderEditView } = require("%rGui/hud/submarineDepthBlock.nut")
 let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
 let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
 let { oxygenLevel, oxygenLevelEditView, depthControl, depthControlEditView
 } = require("%rGui/hud/oxygenBlock.nut")
+let { scopeSize } = require("%rGui/hud/commonSight.nut")
+
+let oxygenBlockPosX = - (scopeSize[0] * 2 / 3 + hdpx(5))
 
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
   zoom = weaponryButtonCtor("ID_ZOOM", mkZoomButton,
@@ -65,14 +68,14 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   oxygen = {
     ctor = @() oxygenLevel
-    defTransform = mkLBPos([hdpx(634), hdpx(-381)])
+    defTransform = mkCBPos([oxygenBlockPosX, hdpx(-381)])
     editView = oxygenLevelEditView
     hideForDelayed = false
   }
 
   depthControl = {
     ctor = @() depthControl
-    defTransform = mkLBPos([hdpx(544), hdpx(-452)])
+    defTransform = mkCBPos([oxygenBlockPosX, hdpx(-452)])
     editView = depthControlEditView
     hideForDelayed = false
   }

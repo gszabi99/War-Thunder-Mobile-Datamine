@@ -26,8 +26,8 @@ let function close() {
 let backBtn = backButton(close)
 
 let baseUnit = Computed(function() {
-  let { name = null } = openUnitOvr.value
-  local res = myUnits.value?[name] ?? allUnitsCfg.value?[name]
+  let { name = null, canShowOwnUnit = true} = openUnitOvr.value
+  local res = canShowOwnUnit ? myUnits.value?[name] ?? allUnitsCfg.value?[name] : allUnitsCfg.value?[name]
   if (res == null)
     return res
   res = res.__merge(openUnitOvr.value)

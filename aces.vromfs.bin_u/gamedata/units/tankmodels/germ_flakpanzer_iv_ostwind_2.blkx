@@ -55,7 +55,7 @@
     true,
     true
   ],
-  "minRelativeTankCameraThreshold": 1.6,
+  "minRelativeTankCameraThreshold": 1.45,
   "class_tags": {},
   "PhysSys": {
     "find": "^bone_suspension_(._\\d\\d)$",
@@ -3055,8 +3055,8 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      2.0,
-      -16.0
+      3.8,
+      -12.85
     ],
     "headPosOnShooting": [
       -0.4,

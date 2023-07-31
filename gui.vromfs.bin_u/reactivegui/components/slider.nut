@@ -80,6 +80,7 @@ let function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
         watch = valueWatch
         size = flex()
         behavior = Behaviors.Slider
+        xmbNode = {}
         onElemState = @(sf) stateFlags(sf)
         onChange
         min = 0
@@ -163,6 +164,7 @@ let function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
   return @() bg.__merge(bgOvrW.value, {
     watch = [stateFlags, bgOvrW]
     behavior = Behaviors.Button
+    xmbNode = {}
     function onElemState(sf) {
       stateFlags(sf)
       let isActive = !!(sf & S_ACTIVE)

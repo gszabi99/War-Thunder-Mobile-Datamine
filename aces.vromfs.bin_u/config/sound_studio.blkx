@@ -7,6 +7,7 @@
   "sampleRate": 44100,
   "rejectFarOneshots": true,
   "androidUseOpenSLFallback": true,
+  "blockFailedEvents": true,
   "memoryPc": 100,
   "memoryPS4": 175,
   "memoryPCLowMode": 100,
@@ -23,6 +24,7 @@
   "language": "Russian",
   "banksFolder": "sound",
   "banksExtension": ".bank",
+  "fmodLoglevel": "none",
   "waitForMenuMusic": true,
   "useOneshotForAirGunSound": true,
   "minArtHitInterval": 0.2,
@@ -270,7 +272,8 @@
       "Japanese": "jp",
       "Vietnamese": "vi",
       "TChinese": "zhtw",
-      "HChinese": "zhhx"
+      "HChinese": "zhhx",
+      "USA": "en"
     }
   },
   "budget": {
@@ -8474,6 +8477,10 @@
         "heavyVehicle": true
       },
       "Japanese": {
+        "warShip": true,
+        "heavyVehicle": true
+      },
+      "USA": {
         "warShip": true,
         "heavyVehicle": true
       }

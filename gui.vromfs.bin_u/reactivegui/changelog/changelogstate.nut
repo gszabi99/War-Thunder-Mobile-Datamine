@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe, send } = require("eventbus")
+let utf8 = require("utf8")
 let http = require("dagor.http")
 let { get_time_msec } = require("dagor.time")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
@@ -9,7 +10,7 @@ let { register_command } = require("console")
 let { get_cur_circuit_name } = require("app")
 let { platformId } = require("%sqstd/platform.nut")
 let { mkVersionFromString, versionToInt } = require("%sqstd/version.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn, isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -32,8 +33,8 @@ let GET_ALL_URL = $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgId}/{shor
 let getPatchUrl = @(id)
   $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgId}/{shortLang}/{id}/?platform={patchPlatform}"
 
-let receivedPatchnotes = mkHardWatched("changelog.receivedPatchnotes", {})
-let versions = mkHardWatched("changelog.versions", [])
+let receivedPatchnotes = hardPersistWatched("changelog.receivedPatchnotes", {})
+let versions = hardPersistWatched("changelog.versions", [])
 let isChangeLogOpened = mkWatched(persist, "isOpened", false)
 let isVersionsReceived = Computed(@() versions.value.len() > 0)
 let receivedPatchnotesLang = persist("receivedPatchnotesLang", @() { value = null })
@@ -136,7 +137,7 @@ let function mkVersion(v) {
   let version = mkVersionFromString(tVersion)
   let title = v?.title ?? tVersion
   local shortTitle = v?.titleshort ?? "undefined"
-  if (shortTitle == "undefined" || shortTitle.len() > 50)
+  if (shortTitle == "undefined" || utf8(shortTitle).charCount() > 50)
     shortTitle = null
   let { id, date = "" } = v
   return { version, title, tVersion, versionType, shortTitle, iVersion = versionToInt(version), id, date }
@@ -209,7 +210,7 @@ isMainMenuAttached.subscribe(@(v) v ? requestAllPatchnotes() : null)
 
 let ERROR_PAGE = {
   title = loc("matching/SERVER_ERROR_BAD_REQUEST")
-  content = { v = loc("matching/SERVER_ERROR_INTERNAL") }
+  content = [ { v = loc("matching/SERVER_ERROR_INTERNAL") } ]
 }
 
 subscribe(PATCHNOTE_RECEIVED, function onPatchnoteReceived(response) {

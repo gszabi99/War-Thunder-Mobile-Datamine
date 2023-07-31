@@ -1386,7 +1386,7 @@
     "Shop": {
       "shipCrewMax": 1260,
       "shipCrewMin": 460,
-      "shipCrewRating": 1.14121,
+      "shipCrewRating": 1.13424,
       "maxSpeed": 16.72,
       "turningTime": 22,
       "supportPlane": "os2u_1_naval",
@@ -1405,7 +1405,7 @@
         "127mm_38_mk12_turret_mk28_twin_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 600.0,
-          "shotFreq": 0.33,
+          "shotFreq": 0.333,
           "gunsCount": 12,
           "caliber": 127.0,
           "ammoCount": 5400,
@@ -1537,8 +1537,8 @@
     },
     "Shop": {
       "shipCrewMax": 1360,
-      "shipCrewMin": 510,
-      "shipCrewRating": 1.37515,
+      "shipCrewMin": 410,
+      "shipCrewRating": 1.71879,
       "maxSpeed": 12.16,
       "turningTime": 43,
       "mainWeaponCaliber": 356.0,
@@ -1546,7 +1546,7 @@
         "356mm_45_41st_year_type_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 2700.0,
-          "shotFreq": 0.041,
+          "shotFreq": 0.05,
           "gunsCount": 12,
           "caliber": 356.0,
           "ammoCount": 1080,
@@ -1555,7 +1555,7 @@
         "140mm_50_3rd_year_type_14_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 400.0,
-          "shotFreq": 0.25,
+          "shotFreq": 0.263,
           "gunsCount": 20,
           "caliber": 140.0,
           "ammoCount": 4000,
@@ -1810,7 +1810,7 @@
           "distToLive": 3500.0,
           "gunsCount": 10,
           "caliber": 533.0,
-          "ammoCount": 72,
+          "ammoCount": 60,
           "isBeltAmmo": false
         },
         "germ_mine_emc": {
@@ -2040,7 +2040,7 @@
         "130mm_50_b13_1936_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 650.0,
-          "shotFreq": 0.222,
+          "shotFreq": 0.238,
           "gunsCount": 4,
           "caliber": 130.0,
           "ammoCount": 600,
@@ -2692,7 +2692,7 @@
     "Shop": {
       "shipCrewMax": 280,
       "shipCrewMin": 80,
-      "shipCrewRating": 1.03,
+      "shipCrewRating": 1.0,
       "maxSpeed": 18.0,
       "turningTime": 13,
       "addTorpedoesCountPack": 4,
@@ -2720,11 +2720,11 @@
         "us_533mm_21in_mark15_torpedo": {
           "wtype": "torpedo",
           "damage": 6000.0,
-          "shotFreq": 0.18,
+          "shotFreq": 0.21,
           "distToLive": 3500.0,
           "gunsCount": 2,
           "caliber": 533.0,
-          "ammoCount": 10,
+          "ammoCount": 20,
           "isBeltAmmo": false
         }
       }
@@ -2867,8 +2867,8 @@
     },
     "Shop": {
       "shipCrewMax": 1270,
-      "shipCrewMin": 370,
-      "shipCrewRating": 1.3,
+      "shipCrewMin": 360,
+      "shipCrewRating": 1.30636,
       "maxSpeed": 17.03,
       "turningTime": 24,
       "addTorpedoesCountPack": 5,
@@ -2928,8 +2928,8 @@
     },
     "Shop": {
       "shipCrewMax": 800,
-      "shipCrewMin": 150,
-      "shipCrewRating": 2.04545,
+      "shipCrewMin": 200,
+      "shipCrewRating": 1.5,
       "maxSpeed": 16.97,
       "turningTime": 22,
       "supportPlane": "e7k2",
@@ -2940,7 +2940,7 @@
         "203mm_50_3rd_year_type_no2_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1000.0,
-          "shotFreq": 0.13,
+          "shotFreq": 0.135,
           "gunsCount": 6,
           "caliber": 203.0,
           "ammoCount": 720,
@@ -2972,7 +2972,7 @@
           "distToLive": 3500.0,
           "gunsCount": 2,
           "caliber": 610.0,
-          "ammoCount": 28,
+          "ammoCount": 32,
           "isBeltAmmo": false
         }
       }
@@ -3156,7 +3156,7 @@
         "203mm_50_3rd_year_type_no2_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1000.0,
-          "shotFreq": 0.1,
+          "shotFreq": 0.119,
           "gunsCount": 8,
           "caliber": 203.0,
           "ammoCount": 960,
@@ -3165,7 +3165,7 @@
         "127mm_5_40_type_89_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 300.0,
-          "shotFreq": 0.19,
+          "shotFreq": 0.333,
           "gunsCount": 8,
           "caliber": 127.0,
           "ammoCount": 1600,
@@ -3188,7 +3188,7 @@
           "distToLive": 3500.0,
           "gunsCount": 4,
           "caliber": 610.0,
-          "ammoCount": 52,
+          "ammoCount": 48,
           "isBeltAmmo": false
         }
       }
@@ -3402,8 +3402,8 @@
     },
     "Shop": {
       "shipCrewMax": 220,
-      "shipCrewMin": 50,
-      "shipCrewRating": 1.38606,
+      "shipCrewMin": 60,
+      "shipCrewRating": 1.23212,
       "maxSpeed": 17.49,
       "turningTime": 13,
       "addTorpedoesCountPack": 4,
@@ -3411,8 +3411,8 @@
       "weapons": {
         "127mm_5_50_type_3_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 500.0,
-          "shotFreq": 0.213,
+          "damage": 0,
+          "shotFreq": 0.286,
           "gunsCount": 6,
           "caliber": 127.0,
           "ammoCount": 900,
@@ -3431,11 +3431,11 @@
         "jp_610mm_type90_torpedo": {
           "wtype": "torpedo",
           "damage": 8000.0,
-          "shotFreq": 0.1,
+          "shotFreq": 0.08,
           "distToLive": 3500.0,
           "gunsCount": 3,
           "caliber": 610.0,
-          "ammoCount": 34,
+          "ammoCount": 36,
           "isBeltAmmo": false
         },
         "germ_mine_emc": {
@@ -3463,8 +3463,8 @@
     },
     "Shop": {
       "shipCrewMax": 1190,
-      "shipCrewMin": 350,
-      "shipCrewRating": 1.73606,
+      "shipCrewMin": 290,
+      "shipCrewRating": 2.14848,
       "maxSpeed": 12.86,
       "turningTime": 35,
       "mainWeaponCaliber": 381.0,
@@ -3472,7 +3472,7 @@
         "381mm_42_bl_mk1_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 2750.0,
-          "shotFreq": 0.038,
+          "shotFreq": 0.056,
           "gunsCount": 8,
           "caliber": 381.0,
           "ammoCount": 960,
@@ -3481,7 +3481,7 @@
         "152mm_6inch_45_bl_mk7_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 900.0,
-          "shotFreq": 0.5,
+          "shotFreq": 0.385,
           "gunsCount": 8,
           "caliber": 152.0,
           "ammoCount": 1040,
@@ -3490,7 +3490,7 @@
         "102mm_45_4in_qf_mark16_21_naval_user_cannon": {
           "wtype": "aaa",
           "damage": 400.0,
-          "shotFreq": 0.5,
+          "shotFreq": 0.385,
           "aimMaxDist": 3500.0,
           "gunsCount": 8,
           "caliber": 102.0,
@@ -3750,7 +3750,7 @@
         "127mm_38_mk12_turret_mk32_twin_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 600.0,
-          "shotFreq": 0.24,
+          "shotFreq": 0.25,
           "gunsCount": 20,
           "caliber": 127.0,
           "ammoCount": 9000,
@@ -3900,7 +3900,7 @@
         "133mm_5_25inch_50_qf_mk1_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 400.0,
-          "shotFreq": 0.063,
+          "shotFreq": 0.333,
           "gunsCount": 16,
           "caliber": 133.0,
           "ammoCount": 2880,
@@ -4299,8 +4299,8 @@
     },
     "Shop": {
       "shipCrewMax": 1180,
-      "shipCrewMin": 370,
-      "shipCrewRating": 1.32,
+      "shipCrewMin": 350,
+      "shipCrewRating": 1.40242,
       "maxSpeed": 14.66,
       "turningTime": 26,
       "supportPlane": "arado_196a_3",
@@ -4311,7 +4311,7 @@
         "283mm_52_skc_28_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1200.0,
-          "shotFreq": 0.069,
+          "shotFreq": 0.091,
           "gunsCount": 6,
           "caliber": 283.0,
           "ammoCount": 720,
@@ -4320,7 +4320,7 @@
         "150mm_55_skc_28_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 650.0,
-          "shotFreq": 0.357,
+          "shotFreq": 0.333,
           "gunsCount": 8,
           "caliber": 150.0,
           "ammoCount": 1600,
@@ -4339,11 +4339,11 @@
         "de_533mm_g7a_torpedo": {
           "wtype": "torpedo",
           "damage": 6300.0,
-          "shotFreq": 0.13,
+          "shotFreq": 0.11,
           "distToLive": 3500.0,
           "gunsCount": 2,
           "caliber": 533.0,
-          "ammoCount": 9,
+          "ammoCount": 16,
           "isBeltAmmo": false
         }
       }
@@ -4462,8 +4462,8 @@
     },
     "Shop": {
       "shipCrewMax": 1390,
-      "shipCrewMin": 420,
-      "shipCrewRating": 1.56242,
+      "shipCrewMin": 390,
+      "shipCrewRating": 1.67182,
       "maxSpeed": 10.65,
       "turningTime": 47,
       "supportPlane": "os2u_1_naval",
@@ -4473,7 +4473,7 @@
         "356mm_45_14inch_mk8_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 2700.0,
-          "shotFreq": 0.048,
+          "shotFreq": 0.056,
           "gunsCount": 12,
           "caliber": 356.0,
           "ammoCount": 1200,
@@ -4482,7 +4482,7 @@
         "127mm_51_mk7_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 460.0,
-          "shotFreq": 0.3125,
+          "shotFreq": 0.22,
           "gunsCount": 12,
           "caliber": 127.0,
           "ammoCount": 2760,
@@ -4610,7 +4610,7 @@
     "Shop": {
       "shipCrewMax": 280,
       "shipCrewMin": 80,
-      "shipCrewRating": 1.03,
+      "shipCrewRating": 1.0,
       "maxSpeed": 18.0,
       "turningTime": 13,
       "addTorpedoesCountPack": 4,
@@ -4638,11 +4638,11 @@
         "us_533mm_21in_mark15_torpedo": {
           "wtype": "torpedo",
           "damage": 6000.0,
-          "shotFreq": 0.18,
+          "shotFreq": 0.21,
           "distToLive": 3500.0,
           "gunsCount": 4,
           "caliber": 533.0,
-          "ammoCount": 20,
+          "ammoCount": 40,
           "isBeltAmmo": false
         }
       }
@@ -7652,7 +7652,7 @@
       "type_heavy_tank": true
     },
     "bullets": {
-      "75mm_QQF_MkV_user_cannon": {
+      "75mm_QQF_MkV_churchill_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
@@ -7684,11 +7684,11 @@
       "maxSpeedBackward": 2.53456,
       "powerToWeightRatio": 8.43373,
       "weapons": {
-        "75mm_QQF_MkV_user_cannon": {
+        "75mm_QQF_MkV_churchill_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
           "armorPower": 90.9827,
-          "reloadTime": 5.0,
+          "reloadTime": 4.54545,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
         },
@@ -8063,7 +8063,7 @@
           "wtype": "mainCannon",
           "caliber": 90.0,
           "armorPower": 215.056,
-          "reloadTime": 10.0,
+          "reloadTime": 9.50029,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
         },
@@ -8647,7 +8647,7 @@
           "wtype": "mainCannon",
           "caliber": 76.2,
           "armorPower": 216.0,
-          "reloadTime": 5.88235,
+          "reloadTime": 5.34759,
           "gunnerTurretRotationSpeed": 15.0,
           "isBeltAmmo": false
         },
@@ -8672,7 +8672,7 @@
       "type_medium_tank": true
     },
     "bullets": {
-      "76mm_17pdr_QF_user_cannon": {
+      "76mm_17pdr_QF_challenger_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
@@ -8712,11 +8712,11 @@
       "maxSpeedBackward": 3.04518,
       "powerToWeightRatio": 19.0476,
       "weapons": {
-        "76mm_17pdr_QF_user_cannon": {
+        "76mm_17pdr_QF_challenger_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 76.2,
           "armorPower": 171.58,
-          "reloadTime": 5.88235,
+          "reloadTime": 5.34759,
           "gunnerTurretRotationSpeed": 33.0,
           "isBeltAmmo": false
         },
@@ -8795,7 +8795,7 @@
       "canRepairAnyAlly": true
     },
     "bullets": {
-      "75mm_SA_49_user_cannon": {
+      "75mm_SA_49_ebr_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he1"
         },
@@ -8824,11 +8824,11 @@
       "maxSpeedBackward": 104.877,
       "powerToWeightRatio": 16.0,
       "weapons": {
-        "75mm_SA_49_user_cannon": {
+        "75mm_SA_49_ebr_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
           "armorPower": 103.959,
-          "reloadTime": 5.9988,
+          "reloadTime": 5.71314,
           "gunnerTurretRotationSpeed": 26.0,
           "isBeltAmmo": false
         },
@@ -8853,7 +8853,7 @@
       "type_medium_tank": true
     },
     "bullets": {
-      "75mm_SA_50_user_cannon": {
+      "75mm_SA_50_fl_10_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
@@ -8881,11 +8881,11 @@
       "maxSpeedBackward": 4.93975,
       "powerToWeightRatio": 13.2013,
       "weapons": {
-        "75mm_SA_50_user_cannon": {
+        "75mm_SA_50_fl_10_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 75.0,
           "armorPower": 182.683,
-          "reloadTime": 5.0,
+          "reloadTime": 4.7619,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": false
         },
@@ -9014,7 +9014,7 @@
       "type_medium_tank": true
     },
     "bullets": {
-      "76mm_M1_user_cannon": {
+      "76mm_M1_m4a3e8_76w_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
@@ -9050,11 +9050,11 @@
       "maxSpeedBackward": 5.43584,
       "powerToWeightRatio": 15.1976,
       "weapons": {
-        "76mm_M1_user_cannon": {
+        "76mm_M1_m4a3e8_76w_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 76.2,
           "armorPower": 134.336,
-          "reloadTime": 5.88235,
+          "reloadTime": 5.60224,
           "gunnerTurretRotationSpeed": 21.0,
           "isBeltAmmo": false
         },
@@ -9089,7 +9089,7 @@
       "canRepairAnyAlly": true
     },
     "bullets": {
-      "76mm_M32_user_cannon": {
+      "76mm_M32_m41_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
@@ -9125,11 +9125,11 @@
       "maxSpeedBackward": 18.816,
       "powerToWeightRatio": 21.7014,
       "weapons": {
-        "76mm_M32_user_cannon": {
+        "76mm_M32_m41_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 76.2,
           "armorPower": 177.046,
-          "reloadTime": 5.88235,
+          "reloadTime": 5.60224,
           "gunnerTurretRotationSpeed": 36.0,
           "isBeltAmmo": false
         },
@@ -9162,7 +9162,7 @@
       "type_heavy_tank": true
     },
     "bullets": {
-      "90mm_M3_user_cannon": {
+      "90mm_M3_t26e5_user_cannon": {
         "default": {
           "icon": "hud_ammo_ap2_he0"
         },
@@ -9198,11 +9198,11 @@
       "maxSpeedBackward": 11.8094,
       "powerToWeightRatio": 10.7759,
       "weapons": {
-        "90mm_M3_user_cannon": {
+        "90mm_M3_t26e5_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 90.0,
           "armorPower": 174.863,
-          "reloadTime": 7.49625,
+          "reloadTime": 7.14286,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
         },

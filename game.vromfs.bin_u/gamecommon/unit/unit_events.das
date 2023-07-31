@@ -44,6 +44,7 @@ struct EventUnitDamage
   damage : float
   damageTypeId : int
   prevHpFixed : uint16
+  hpFixed : uint16
   offender : OffenderData
   pos : float3
   effectProb : float
@@ -61,3 +62,7 @@ struct CmdApplyPartDamageEffect
   dmEffects : int
   pos : float3
   seed : int
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventEngineOverheatDamage
+  start : bool

@@ -42,7 +42,7 @@ let tipsWnd = @(tips) {
   color = 0xFF000000
   children = makeVertScroll(
     tipsText(tips),
-    { rootBase = class { behavior = Behaviors.Pannable } })
+    { rootBase = { behavior = Behaviors.Pannable } })
 }
 
 let open = @() addModalWindow({

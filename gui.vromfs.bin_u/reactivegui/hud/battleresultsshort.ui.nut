@@ -8,7 +8,6 @@ let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { playersDamageStats, requestPlayersDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { setTimeout } = require("dagor.workcycle")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 
 let changeTextBgColorDuration = 0.1
@@ -165,7 +164,7 @@ let placeInTeam = @() localUserPlace.value == null ? { watch = localUserPlace } 
       animations = [
         { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.25, 1.25], duration = placeIconDuration / 2,
           easing = InQuad, delay = placeIconDelay, play = true,
-          sound = { start = setTimeout(placeIconDelay, @() playSound("place"))}}
+          sound = { start = "place" }}
         { prop = AnimProp.scale, from = [1.25, 1.25], to = [1, 1], play = true,
           delay = placeIconDelay + placeIconDuration / 2,
           duration = placeIconDuration / 2, easing = InQuad }

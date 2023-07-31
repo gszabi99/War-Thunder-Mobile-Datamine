@@ -44,7 +44,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.55,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.55,
@@ -2161,8 +2160,8 @@
     "sightName": "sfl_zf_1a",
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      3.8,
+      -13.5
     ],
     "headPosOnShooting": [
       -2.1,

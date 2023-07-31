@@ -11,6 +11,8 @@ let chooseTuningUnitTypeWnd = require("chooseTuningUnitTypeWnd.nut")
 
 let gap = hdpx(30)
 
+let isOpen = mkWatched(persist, "isOpen", true)
+
 let function askSaveAndClose() {
   if (!isCurPresetChanged.value) {
     closeTuning()
@@ -34,23 +36,38 @@ let function askSaveAndClose() {
   })
 }
 
+let toggleBtn = @() {
+  watch = isOpen
+  hplace = ALIGN_LEFT
+  pos = [sw(37), saBorders[1]]
+  children = tuningBtn("ui/gameuiskin#hud_tank_arrow_segment.svg",
+    @() isOpen(!isOpen.value),
+    isOpen.value ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",
+    {
+      color = btnBgColorDefault
+      transform = isOpen.value ? {} : { rotate = 180 }
+      transitions = [{ prop = AnimProp.rotate, duration = 0.2, easing = InOutQuad }]
+    })
+}
+
 let exitBtn = @() {
   watch = isCurPresetChanged
   children = tuningBtn("ui/gameuiskin#icon_exit.svg",
     askSaveAndClose,
+    "hudTuning/exit/desc",
     {
       color = isCurPresetChanged.value ? btnBgColorNegative : btnBgColorPositive
     })
 }
 
 let saveBtn = tuningBtnWithActivity(isCurPresetChanged, "ui/gameuiskin#icon_save.svg",
-  saveCurrentTransform)
+  saveCurrentTransform,"hudTuning/save/desc")
 
 let resetBtn = @() {
   watch = tuningTransform
   children = (tuningTransform.value?.len() ?? 0) == 0 ? null
     : tuningBtn("ui/gameuiskin#icon_reset_to_default.svg",
-        @() tuningTransform({}),
+        @() tuningTransform({}),"hudTuning/reset/desc",
         { color = btnBgColorNegative })
 }
 
@@ -66,7 +83,7 @@ let function historyFwd() {
 
 let historyBackBtn = tuningBtnWithActivity(Computed(@() (curHistoryIdx.value ?? 0) > 0),
   "ui/gameuiskin#icon_cancel.svg",
-  historyBack)
+  historyBack, "hudTuning/back/desc")
 
 let function historyFwdBtn() {
   let isAvailable = curHistoryIdx.value != null && curHistoryIdx.value < history.value.len() - 1
@@ -75,14 +92,15 @@ let function historyFwdBtn() {
     children = tuningBtn(
       tuningBtnImg("ui/gameuiskin#icon_cancel.svg",
         { flipX = true, color = isAvailable ? btnImgColor : btnImgColorDisabled }),
-      historyFwd,
+      historyFwd,"hudTuning/fwd/desc",
       {
         color = isAvailable ? btnBgColorDefault : btnBgColorDisabled
       })
   }
 }
 
-let changeUnitTypeBtn = tuningBtn("ui/gameuiskin#campaign.svg", chooseTuningUnitTypeWnd)
+let changeUnitTypeBtn = tuningBtn("ui/gameuiskin#campaign.svg", chooseTuningUnitTypeWnd,
+  "hudTuning/changeHudType/desc")
 
 let curUnitTypeInfo = @() {
   watch = tuningUnitType
@@ -111,11 +129,21 @@ let content = {
 let hudTuningOptions = @() {
   watch = transformInProgress
   size = [flex(), SIZE_TO_CONTENT]
-  padding = [saBordersRv[0], saBordersRv[1], gap, saBordersRv[1]]
-  rendObj = ROBJ_SOLID, color = 0xC0000000
-  children = content
   transform = { translate = [0, transformInProgress.value == null ? 0 : hdpx(-500)] }
   transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+  children = [
+    @() {
+      watch = isOpen
+      size = [flex(), SIZE_TO_CONTENT]
+      padding = [saBordersRv[0], saBordersRv[1], gap, saBordersRv[1]]
+      rendObj = ROBJ_SOLID
+      color = 0xC0000000
+      children = content
+      transform = { translate = [0, isOpen.value ? 0 : hdpx(-500)] }
+      transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+    }
+    toggleBtn
+  ]
 }
 
 return hudTuningOptions

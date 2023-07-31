@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logFB = log_with_prefix("[FIRST_BATTLE_TUTOR] ")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInMenuNoModals, isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { needFirstBattleTutor, startTutor, firstBattleTutor, isTutorialMissionsDebug
 } = require("tutorialMissions.nut")
@@ -9,7 +9,7 @@ let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId
 } = require("tutorialWnd/tutorialWndState.nut")
 
 const TUTORIAL_ID = "startFirstBattle"
-let isSkipped = mkHardWatched("firstBattleTutorial.isSkipped", false)
+let isSkipped = hardPersistWatched("firstBattleTutorial.isSkipped", false)
 let showTutorial = keepref(Computed(@() needFirstBattleTutor.value
   && !isSkipped.value
   && isInMenuNoModals.value

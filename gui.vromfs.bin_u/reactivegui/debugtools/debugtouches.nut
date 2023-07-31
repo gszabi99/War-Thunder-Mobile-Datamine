@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_settings_blk } = require("blkGetters")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let isDebugTouchesActive = mkHardWatched("isDebugTouchesActive",
+let isDebugTouchesActive = hardPersistWatched("isDebugTouchesActive",
   get_settings_blk()?.debug.debugTouches ?? false)
 let activePointers = Watched({})
 let pointerPos = {}

@@ -1803,8 +1803,8 @@ Oyunun kök dizininde ""UserSkins"" klasöründe bulabilirsiniz.";"사용자 조
 {bullet}";"次の\t砲弾
 {bullet}";"次\t發\t炮\t彈
 {bullet}";;
-"hint/nextBullet/short";"NEXT";"NEXT";"NEXT";"NEXT";"NEXT";"СЛЕДУЮЩИЙ";"NEXT";"NEXT";"NEXT";"NEXT";"NEXT";"NEXT";"NEXT";;9
-"hint/currentBullet/short";"CURRENT";"CURRENT";"CURRENT";"CURRENT";"CURRENT";"ТЕКУЩИЙ";"CURRENT";"CURRENT";"CURRENT";"CURRENT";"CURRENT";"CURRENT";"CURRENT";;9
+"hint/nextBullet/short";"NEXT";"SUIVANT";"PROSSIMO";"NÄCHSTE";"SIGUIENTE";"СЛЕДУЮЩИЙ";"NASTĘPNY";"SEGUINTE";"SONRAKİ";"다음";"下\t一\t种";"次へ";"NEXT";;9
+"hint/currentBullet/short";"CURRENT";"ACTUEL";"ATTUALE";"AKTUELL";"ACTUAL";"ТЕКУЩИЙ";"BIEŻĄCY";"ATUAL";"MEVCUT";"현재";"当\t前";"現在";"CURRENT";;9
 "hud/movementArrows/stopBtn";"STOP";"STOP";"STOP";"HALT";"STOP";"СТОП";"STOP";"STOP";"DUR";"정지";"停\t车";"停止";"STOP";;4
 "hint/noMoreBulletsTypeLeft";"There are no other types of shells to change";"Il n'y a pas d'autres types d'obus à charger";"Non ci sono altri tipi di colpi da cambiare";"Keine weiteren Geschosstypen zum Wechseln";"No hay otros tipos de proyectiles a cambiar";"Нет других типов снарядов для смены";"Nie ma innych rodzajów pocisków.";"Não há outros tipos de projéteis para alterar";"Değiştirilecek başka bir mermi tipi yok";"다른 종류의 포탄이 존재하지 않습니다";"未\t携\t带\t其\t他\t类\t型\t炮\t弹，\t无\t法\t切\t换\t弹\t种";"変更できる\t他の\t砲弾の\t種類がありません";"未\t攜\t帶\t其\t他\t類\t型\t炮\t彈，\t無\t法\t切\t換\t彈\t種";;
 "hint/noItemsForRepair";"Not enough items to repair.";"Pas assez d'objets pour réparer.";"Non ci sono abbastanza oggetti per riparare.";"Nicht genügend Gegenstände zu reparieren.";"No hay suficientes objetos para reparar.";"Недостаточно предметов для ремонта.";"Za mało przedmiotów potrzebujących naprawy.";"Equipamentos insuficientes para reparar.";"Tamir için yeterli öğe yok.";"수리하는 데 필요한 아이템이 부족합니다.";"道\t具\t不\t足，\t无\t法\t维\t修";"修理に\t必要な\tアイテムが\t足りません。";"道\t具\t不\t足，\t無\t法\t維\t修";;

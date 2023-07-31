@@ -47,7 +47,9 @@ let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride
   let title = {
     rendObj = ROBJ_TEXT
     size = SIZE_TO_CONTENT
-    text = "  ".concat(unitNameCtor(unit), getUnitClassFontIcon(unit))
+    text = getUnitClassFontIcon(unit) == ""
+      ? unitNameCtor(unit)
+      : "  ".concat(unitNameCtor(unit), getUnitClassFontIcon(unit))
     color = isElite ? premiumTextColor : textColor
     fontFx = FFT_GLOW
     fontFxFactor = 64

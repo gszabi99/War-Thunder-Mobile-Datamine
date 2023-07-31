@@ -6,7 +6,7 @@ let { deferOnce, resetTimeout, setInterval, clearTimer } = require("dagor.workcy
 let { canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer
 } = require("guiRespawn")
 let { get_game_mode, get_game_type } = require("mission")
-let { quit_to_debriefing } = require("guiMission")
+let { quit_to_debriefing, get_respawns_left } = require("guiMission")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curBattleUnit, isBattleDataReceived } = require("%scripts/battleData/battleData.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -41,7 +41,7 @@ subscribe("getLocalPlayerSpawnInfo",
   @(_) send("localPlayerSpawnInfo",
     {
       isAlive = ::is_player_unit_alive()
-      hasSpawns = ::get_respawns_left() != 0
+      hasSpawns = get_respawns_left() != 0
     }))
 
 let function applyRespawnDataCb(result) {
@@ -143,7 +143,7 @@ subscribe("cancelRespawn", function(_) {
 
 ::gui_start_respawn <- function gui_start_respawn(_ = false) {
   logR($"gui_start_respawn {::is_respawn_screen()}")
-  respawnsLeft(::get_respawns_left())
+  respawnsLeft(get_respawns_left())
   isBatleDataRequired((get_game_type() & (GT_VERSUS | GT_COOPERATIVE)) != 0
     && get_game_mode() != GM_SINGLE_MISSION)
   isInRespawn(::is_respawn_screen()) //is it possible to call gui_start_respawn without is_respawn_screen ?

@@ -19,17 +19,22 @@ let isStageAllowed = @(state, stage) (state & stage.reqState) == stage.reqState
 local prevState = loginState.value
 let function startNextLoginStages() {
   let state = loginState.value
+  let wasState = prevState
+  prevState = state
   if (isNeedUpdateStages(state))
     foreach (stage in curStages)
       if ("start" in stage
         && !isStageCompleted(state, stage)
         && isStageAllowed(state, stage)
-        && !isStageAllowed(prevState, stage)
+        && !isStageAllowed(wasState, stage)
       ) {
         stage.logStage("Start")
         stage.start()
+        if (loginState.value == LOGIN_STATE.NOT_LOGGED_IN) {
+          stage.logStage("login process was interrupted right from stage start")
+          break
+        }
       }
-  prevState = state
 }
 loginState.subscribe(function(s) {
   if (s == LOGIN_STATE.NOT_LOGGED_IN)

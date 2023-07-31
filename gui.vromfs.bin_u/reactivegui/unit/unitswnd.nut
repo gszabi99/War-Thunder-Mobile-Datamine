@@ -472,7 +472,7 @@ let mkHorizPannableArea = @(content) {
     scrollHandler = scrollHandler
     children = content
     xmbNode = XmbContainer({
-      canFocus = @() false
+      canFocus = false
       scrollSpeed = 5.0
       isViewport = true
     })

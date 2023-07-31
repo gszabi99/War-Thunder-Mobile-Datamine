@@ -432,36 +432,6 @@
             "name": "ussr_object_906",
             "weight": 1.0,
             "country": "germany"
-          },
-          {
-            "name": "us_m47_patton_II",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_m103",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_t114",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_leopard_I",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_mkpz_m48a2c",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_mkpz_m47",
-            "weight": 1.0,
-            "country": "germany"
           }
         ]
       },
@@ -472,47 +442,17 @@
         ],
         "tank": [
           {
-            "name": "us_m60a1",
+            "name": "ussr_t_54_1949",
             "weight": 1.0,
             "country": "germany"
           },
           {
-            "name": "us_m60a2",
+            "name": "ussr_t_10a",
             "weight": 1.0,
             "country": "germany"
           },
           {
-            "name": "us_m3_bradley",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_leopard_I_a1",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_mkpz_m48a2ga2",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_raketenjagdpanzer_2_hot",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_55a",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_62",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_it_1",
+            "name": "ussr_object_906",
             "weight": 1.0,
             "country": "germany"
           }

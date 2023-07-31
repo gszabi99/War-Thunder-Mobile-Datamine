@@ -12,11 +12,13 @@ let tabs = [
     locId = "decorators/nickFrame"
     image = "ui/gameuiskin#profile_decor_icon.svg"
     content = nickFramesScene
+    isFullWidth = true
   }
   {
     locId = "decorators/title"
     image = "ui/gameuiskin#profile_tilte_icon.svg"
     content = titlesScene
+    isFullWidth = true
   }
   {
     locId = "changeName"

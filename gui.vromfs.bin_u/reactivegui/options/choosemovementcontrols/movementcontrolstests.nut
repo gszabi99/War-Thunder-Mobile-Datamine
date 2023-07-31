@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
 
 let CTRL_TYPE_STICK = "stick"
@@ -12,11 +12,11 @@ let typesTotal = ctrlTypesList.len()
 
 let cfgDefaultValue = Computed(@() abTests.value?.controlsTypeDefault ?? CTRL_TYPE_STICK_STATIC)
 let cfgNeedRecommend = Computed(@() (abTests.value?.controlsTypeRecommend ?? "true") == "true")
-let cfgNeedForceShow = Computed(@() (abTests.value?.controlsTypeForceShow ?? "true") == "true")
+let cfgNeedForceShow = Computed(@() (abTests.value?.controlsTypeForceShow ?? "false") == "true")
 
-let dbgDefaultValueShift = mkHardWatched("dbgDefaultValueShift", 0)
-let dbgNeedRecommend = mkHardWatched("dbgNeedRecommend", false)
-let dbgNeedForceShow = mkHardWatched("dbgNeedForceShow", false)
+let dbgDefaultValueShift = hardPersistWatched("dbgDefaultValueShift", 0)
+let dbgNeedRecommend = hardPersistWatched("dbgNeedRecommend", false)
+let dbgNeedForceShow = hardPersistWatched("dbgNeedForceShow", false)
 
 let defaultValue = Computed(@() dbgDefaultValueShift.value == 0
   ? cfgDefaultValue.value

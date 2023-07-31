@@ -3,7 +3,7 @@ from "%rGui/shop/shopCommon.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkColoredGradientY, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, mkFontGradient, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
@@ -13,6 +13,9 @@ let { secondsToHoursLoc } = require("%rGui/globals/timeToText.nut")
 let { getFontSizeToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkFireParticles, mkAshes, mkSparks } = require("%rGui/effects/mkFireParticles.nut")
+let { getRomanNumeral } = require("%sqstd/math.nut")
+let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
+let mkUnseenGoodsMark = require("%rGui/components/mkUnseenGoodsMark.nut")
 
 let goodsW = hdpx(555)
 let goodsH = hdpx(378)
@@ -107,7 +110,7 @@ let oldAmountStrikeThrough = {
   commands = [[VECTOR_LINE, -10, 35, 110, 65]]
 }
 
-let mkGradText = @(text, fontSize, fontTex) {
+let mkGradText = @(text, fontSize, fontTex, ovr = {}) {
   rendObj = ROBJ_TEXT
   text
   font = Fonts.wtfont
@@ -128,7 +131,15 @@ let mkGradText = @(text, fontSize, fontTex) {
     fontFxOffsY = -hdpx(1)
     fontFx = FFT_GLOW
   }
-}
+}.__update(ovr)
+
+let mkGradRank = @(rank)
+  mkGradText(
+    getRomanNumeral(rank)
+    hdpx(42)
+    mkFontGradient(0xFFFFFFFF, 0xFF785443)
+    { children = null }
+  )
 
 
 let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
@@ -144,12 +155,12 @@ let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
       halign = ALIGN_RIGHT
       children = [
         oldAmount <= 0 ? null
-          : mkGradText("".concat("+", numberToTextForWtFont(decimalFormat(oldAmount))), hdpx(58), fontTex)
+          : mkGradText(numberToTextForWtFont(decimalFormat(oldAmount)), hdpx(58), fontTex)
             .__update({
               margin = [ hdpx(0), hdpx(33), 0, 0 ]
               children = oldAmountStrikeThrough
             })
-        mkGradText("".concat("+", numberToTextForWtFont(decimalFormat(amount))), hdpx(70), fontTex).__update({
+        mkGradText(numberToTextForWtFont(decimalFormat(amount)), hdpx(70), fontTex).__update({
           margin = [oldAmount > 0  ? hdpx(40) : 0, hdpx(33), 0, 0]
         })
       ]
@@ -176,22 +187,28 @@ let mkDiscountCorner = @(discountPrc) discountPrc <= 0 || discountPrc >= 100 ? n
 let popularMarkH = hdpxi(50)
 let popularMarkTexOffs = [ 0, popularMarkH / 2, 0, popularMarkH / 10 ]
 
-let popularMark = {
-  size  = [ SIZE_TO_CONTENT, popularMarkH ]
-  rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#tag_popular.svg:{popularMarkH}:{popularMarkH}")
-  keepAspect = KEEP_ASPECT_NONE
-  screenOffs = popularMarkTexOffs
-  texOffs = popularMarkTexOffs
-  color = tagRedColor
-  padding = [ 0, hdpx(30), 0, hdpx(20) ]
-  children = txt({
-    text = utf8ToUpper(loc("shop/item/popular/short"))
-    vplace = ALIGN_CENTER
-  })
-}
+let function mkGoodsNewPopularMark(goods) {
+  let isPopular = goods?.isPopular
+  let isNew = Computed(@() goods.id in shopUnseenGoods.value)
 
-let mkGoodsPopularMark = @(goods) (goods?.isPopular ?? false) ? popularMark : null
+  return @() !isNew.value && !isPopular ? { watch = isNew }
+    : isNew.value ? mkUnseenGoodsMark({ watch = isNew })
+    : {
+        watch = isNew
+        size  = [ SIZE_TO_CONTENT, popularMarkH ]
+        rendObj = ROBJ_9RECT
+        image = Picture($"ui/gameuiskin#tag_popular.svg:{popularMarkH}:{popularMarkH}")
+        keepAspect = KEEP_ASPECT_NONE
+        screenOffs = popularMarkTexOffs
+        texOffs = popularMarkTexOffs
+        color = tagRedColor
+        padding = [ 0, hdpx(30), 0, hdpx(20) ]
+        children = txt({
+          text = utf8ToUpper(loc("shop/item/popular/short"))
+          vplace = ALIGN_CENTER
+        })
+      }
+}
 
 let firstPurchMarkH = hdpxi(60)
 let firstPurchMarkTexOffs = [ 0, firstPurchMarkH / 10, 0, firstPurchMarkH / 2 ]
@@ -468,7 +485,7 @@ let function mkGoodsTimeTimeProgress(goods) {
 }
 
 let mkGoodsCommonParts = @(goods, state) [
-  mkGoodsPopularMark(goods)
+  mkGoodsNewPopularMark(goods)
   mkFirstPurchBonusMark(goods, state)
   mkGoodsWaitSpinner(state)
   mkGoodsTimeTimeProgress(goods)
@@ -521,6 +538,7 @@ return {
   mkFitCenterImg
   mkGoodsImg
   mkGradText
+  mkGradRank
   mkCurrencyAmountTitle
   numberToTextForWtFont
   mkPricePlate

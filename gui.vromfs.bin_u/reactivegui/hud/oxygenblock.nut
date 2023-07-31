@@ -114,6 +114,7 @@ let oxygenLevel = {
   halign = ALIGN_RIGHT
   gap = hdpx(5)
   flow = FLOW_VERTICAL
+  size = [depthWidth, SIZE_TO_CONTENT]
   children = [
     oxygenMark
     {
@@ -141,6 +142,7 @@ let oxygenLevelEditView = {
   halign = ALIGN_RIGHT
   gap = hdpx(5)
   flow = FLOW_VERTICAL
+  size = [depthWidth, SIZE_TO_CONTENT]
   children = [
     oxygenMark
     {

@@ -163,6 +163,32 @@
       "forPremiumVehicle": false
     },
     {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2133.7,
+          8.04736,
+          1892.3
+        ]
+      ],
+      "ecs_fx__res": "fire_ground_medium_fx"
+    },
+    {
       "_template": "unit_loader",
       "setting__unitType": "objectGroups",
       "setting__playerNo": -1,
@@ -173,6 +199,7 @@
       "setting__army": 2,
       "setting__count": 1,
       "setting__active": true,
+      "setting__loadSound": false,
       "setting__tm": [
         [
           0.979691,
@@ -208,6 +235,7 @@
       "setting__army": 1,
       "setting__count": 1,
       "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
       "setting__tm": [
         [
           1.0,
@@ -243,6 +271,7 @@
       "setting__army": 1,
       "setting__count": 1,
       "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
       "setting__tm": [
         [
           1.0,
@@ -278,6 +307,7 @@
       "setting__army": 1,
       "setting__count": 1,
       "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
       "setting__tm": [
         [
           1.0,

@@ -46,10 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": [
-    1.4,
-    1.4
-  ],
+  "minRelativeTankCameraThreshold": 1.4,
   "attachables": {
     "ex_armor_01_dm": true,
     "ex_decor_01_dm": true,
@@ -826,7 +823,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2454,8 +2452,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       -0.8,

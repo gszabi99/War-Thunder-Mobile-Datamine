@@ -7,7 +7,8 @@ let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkGamercard, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { shopCategoriesCfg } = require("shopCommon.nut")
-let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount } = require("%rGui/shop/shopState.nut")
+let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent
+} = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory } = require("schRewardsState.nut")
 let { mkShopTabs, tabW } = require("%rGui/shop/shopWndTabs.nut")
 let { mkShopPage } = require("%rGui/shop/shopWndPage.nut")
@@ -57,7 +58,7 @@ let pannable = @(ovr) {
   behavior = Behaviors.Pannable
   scrollHandler = ScrollHandler()
   xmbNode = XmbContainer({
-    canFocus = @() false
+    canFocus = false
     scrollSpeed = 5.0
     isViewport = true
     scrollToEdge = true
@@ -68,6 +69,11 @@ let isPurchNoNeedResultWindow = @(purch) purch?.source == "purchaseInternal"
   && null == purch.goods.findvalue(@(g) g.gType != "item" && g.gType != "currency" && g.gType != "premium")
 let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
 
+let function onClose() {
+  saveSeenGoodsCurrent()
+  close()
+}
+
 let shopScene = bgShaded.__merge({
   key = {}
   size = flex()
@@ -77,7 +83,7 @@ let shopScene = bgShaded.__merge({
   onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
   onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
   children = [
-    mkGamercard(close, true)
+    mkGamercard(onClose, true)
     {
       size = [saSize[0] + saBorders[0], flex()]
       flow = FLOW_HORIZONTAL

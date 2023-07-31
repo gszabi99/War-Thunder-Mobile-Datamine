@@ -41,7 +41,6 @@ let function bulletIcon(id, isNext, isCurrent, isBulletBelt) {
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
     onClick = @() onToggleBullet(isNext, isCurrent)
-    eventPassThrough = true
     onElemState = @(v) stateFlags(v)
     hotkeys = mkGamepadHotkey("ID_NEXT_BULLET_TYPE")
     children = {

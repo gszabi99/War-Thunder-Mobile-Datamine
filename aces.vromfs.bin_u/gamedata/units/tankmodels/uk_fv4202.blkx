@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.6,
+  "minRelativeTankCameraThreshold": 1.44,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -2366,8 +2366,8 @@
     "sightName": "no1_mk3",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.4
     ],
     "headPosOnShooting": [
       -0.45,

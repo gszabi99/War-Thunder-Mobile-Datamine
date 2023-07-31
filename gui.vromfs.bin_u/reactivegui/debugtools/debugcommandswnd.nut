@@ -176,7 +176,7 @@ return @() addModalWindow({
       consoleTextInput
       makeVertScroll(
         mkCommandsList(),
-        { rootBase = class { behavior = Behaviors.Pannable } })
+        { rootBase = { behavior = Behaviors.Pannable } })
     ]
   }
 })

@@ -47,7 +47,10 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": [
+    1.4,
+    1.4
+  ],
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1376,7 +1379,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2526,8 +2530,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       0.4,

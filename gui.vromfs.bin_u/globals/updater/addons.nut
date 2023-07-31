@@ -21,6 +21,9 @@ let naval     = [ PKG_COMMON, PKG_NAVAL, PKG_COMMON_HQ, PKG_NAVAL_HQ ]
 let ground    = [ PKG_COMMON, PKG_GROUND, PKG_COMMON_HQ, PKG_GROUND_HQ ]
 let dev       = [ PKG_DEV ]
 let initialAddons = [ "pkg_secondary_hq", "pkg_secondary" ]
+let latestDownloadAddons = { //addons to download after other required campaign addons is already downloaded
+  tanks = ["pkg_video"]
+}
 
 let gameModeAddonToAddonSetMap = {
   [PKG_NAVAL] = naval,
@@ -41,6 +44,7 @@ let addonLocId = toIdsMap([ PKG_COMMON, PKG_COMMON_HQ, PKG_NAVAL_HQ, PKG_GROUND_
     [PKG_DEV]         = "addon/dev",
     pkg_secondary     = "addon/pkg_secondary",
     pkg_secondary_hq  = "addon/pkg_secondary",
+    pkg_video         = "addon/pkg_video",
   })
 
 let function getAddonNameImpl(addon) {
@@ -101,6 +105,7 @@ return freeze({
   ground
   dev
   initialAddons
+  latestDownloadAddons
 
   gameModeAddonToAddonSetMap
 

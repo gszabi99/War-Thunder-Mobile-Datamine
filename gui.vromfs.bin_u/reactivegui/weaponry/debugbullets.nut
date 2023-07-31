@@ -8,10 +8,16 @@ register_command(@(unitName) log($"Unit {unitName} full all bullets: ", loadUnit
   "debug.get_unit_bullets_full_all")
 register_command(@(unitName) log($"Unit {unitName} full common bullets: ", loadUnitBulletsFull(unitName)?.commonWeapons),
   "debug.get_unit_bullets_full_common")
+register_command(@(unitName) log($"Unit {unitName} full common bullets: ", loadUnitBulletsFull(unitName)?.commonWeapons.primary),
+  "debug.get_unit_bullets_full_common_primary")
 register_command(@(unitName) log($"Unit {unitName} choice all bullets: ", loadUnitBulletsChoice(unitName)),
   "debug.get_unit_bullets_choice_all")
 register_command(@(unitName) log($"Unit {unitName} choice common bullets: ", loadUnitBulletsChoice(unitName)?.commonWeapons),
   "debug.get_unit_bullets_choice_common")
+register_command(@(unitName) log($"Unit {unitName} choice common bullets: ", loadUnitBulletsChoice(unitName)?.commonWeapons.primary),
+  "debug.get_unit_bullets_choice_common_primary")
+register_command(@(unitName) log($"Unit {unitName} choice common primary bulletsSets: ", loadUnitBulletsChoice(unitName)?.commonWeapons.primary.bulletSets),
+  "debug.get_unit_bullets_choice_common_primary_bulletSets")
 
 
 let function countBulletsStats(loadBullets) {

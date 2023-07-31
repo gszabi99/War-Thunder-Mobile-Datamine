@@ -900,7 +900,7 @@
     "clipType": "trace",
     "zoomToGun": false,
     "useCockpitOffsets": true,
-    "fovVertAnglesOffsetPart": 0.0,
+    "fovVertAnglesOffsetPart": -0.09,
     "isMouseView": true,
     "cameraControlViewRadius": 5.0,
     "cameraUpOffset": 0.0,

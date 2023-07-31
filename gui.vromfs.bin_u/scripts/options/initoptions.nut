@@ -3,9 +3,9 @@ let { subscribe } = require("eventbus")
 let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY } = require("colorCorrector")
 let { loadAsCurrentPreset, getDefaultPresetPath } = require("controls")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let failedLoadPreset = mkHardWatched("options.failedLoadPreset", null)
+let failedLoadPreset = hardPersistWatched("options.failedLoadPreset", null)
 
 let function initOptions() {
   //not default hues was saved before 26.08.2022. So reset its value to default.

@@ -488,4 +488,11 @@ return {
     progressId = PROGRESS_LOOTBOX
     progressValue = id
   }, cb)
+
+  reset_mutations_timestamp = @(cb = null) request({ method = "reset_mutations_timestamp" }, cb)
+
+  apply_profile_mutation = @(id, cb = null) request({
+    method = "apply_profile_mutation"
+    params = { id }
+  }, cb)
 }

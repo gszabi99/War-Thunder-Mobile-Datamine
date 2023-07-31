@@ -40,6 +40,7 @@ return {
   ALIGN_LT = ALIGN_L | ALIGN_T
   ALIGN_LB = ALIGN_L | ALIGN_B
   ALIGN_CT = ALIGN_C | ALIGN_T
+  ALIGN_CB = ALIGN_C | ALIGN_B
 
   alignToDargPlace
 }

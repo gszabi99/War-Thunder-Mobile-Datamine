@@ -1,5 +1,6 @@
-
 from "%scripts/dagui_library.nut" import *
+let { format } = require("string")
+let { register_command } = require("console")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { subscribe } = require("eventbus")
 let { dgs_get_settings } = require("dagor.system")
@@ -74,6 +75,8 @@ let customErrorHandlers = {
 }
 
 let function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
+  logMC($"{forceExit ? "exit" : "logout"}WithMsgBox: reason = {format("0x%X", reason)}, message = {message}, domain = {reasonDomain}")
+  logMC($"SERVER_ERROR_INVALID_VERSION = {format("0x%X", SERVER_ERROR_INVALID_VERSION)}")
   destroyConnectProgressMessages()
   let handler = customErrorHandlers?[reason]
   if (handler != null) {
@@ -119,6 +122,10 @@ subscribe("on_online_unavailable", function(_) {
 
 ::exit_with_msgbox <- @(params)
   logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true)
+
+register_command(
+  @() logoutWithMsgBox(SERVER_ERROR_INVALID_VERSION, "Test invalid version", null, false),
+  "debug.matchingLogoutInvalidVersion")
 
 return {
   isMatchingOnline

@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "minRelativeTankCameraThreshold": 1.3,
+  "minRelativeTankCameraThreshold": 1.4,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.05,
@@ -2375,8 +2375,8 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      3.6,
+      -13.0
     ],
     "headPosOnShooting": [
       -2.2,

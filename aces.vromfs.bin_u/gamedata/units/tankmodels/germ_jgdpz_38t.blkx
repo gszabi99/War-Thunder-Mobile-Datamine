@@ -44,7 +44,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.8,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.65,
@@ -1629,7 +1628,18 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_decor_body_01",
+        "ex_decor_body_02",
+        "ex_decor_body_03",
+        "ex_decor_body_r_01",
+        "ex_decor_body_r_02",
+        "ex_decor_body_l_01",
+        "ex_decor_body_l_02"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2220,8 +2230,8 @@
     "sightName": "sfl_zf_1a",
     "headPos": [
       0.0,
-      2.0,
-      -15.5
+      3.65,
+      -12.2
     ],
     "headPosOnShooting": [
       -0.8,

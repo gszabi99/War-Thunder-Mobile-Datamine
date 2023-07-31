@@ -2,10 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED,
-  OPT_AUTO_ZOOM, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_ROTATION_ASSIST, mkOptionValue } = require("%rGui/options/guiOptions.nut")
-let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing_fixed,
+  OPT_AUTO_ZOOM, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_ROTATION_ASSIST,
+  OPT_SHOW_RETICLE, mkOptionValue } = require("%rGui/options/guiOptions.nut")
+let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing_fixed, set_show_reticle,
   set_auto_zoom
 } = require("controlsOptions")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
@@ -35,6 +37,19 @@ let gearDownOnStopButtonTouch = {
     valToString = @(v) loc(v ? "options/on_touch" : "options/on_hold")
 }
 
+let showReticleButtonList = [false, true]
+let currentShowReticle =
+  mkOptionValue(OPT_SHOW_RETICLE, false, @(v) validate(v, showReticleButtonList))
+set_show_reticle(currentShowReticle.value)
+currentShowReticle.subscribe(@(v) set_show_reticle(v))
+let showReticleButtonTouch = {
+    locId = "options/show_reticle"
+    ctrlType = OCT_LIST
+    value = currentShowReticle
+    list = showReticleButtonList
+    valToString = @(v) loc(v ? "options/enable" : "options/disable")
+}
+
 // let tankTargetControlTypesList = ["autoAim", "directAim"]
 // let tankTargetControlType = {
 //   locId = "options/tank_targeting_control"
@@ -58,7 +73,7 @@ let targetTrackingType = {
 }
 
 let armorPiercingFixedList = [false, true]
-let piercingIndicatorDefault = Computed(@() abTests.value?.fixedPiercingIndicator == "true")
+let piercingIndicatorDefault = Computed(@() (abTests.value?.fixedPiercingIndicator ?? "true") == "true")
 let currentArmorPiercingFixedRaw = mkOptionValue(OPT_ARMOR_PIERCING_FIXED)
 let currentArmorPiercingFixed = Computed(@()
   validate(currentArmorPiercingFixedRaw.value ?? piercingIndicatorDefault.value, armorPiercingFixedList))
@@ -75,13 +90,20 @@ let currentArmorPiercingType = {
 }
 
 let autoZoomList = [false, true]
-let currentAutoZoom = mkOptionValue(OPT_AUTO_ZOOM, true, @(v) validate(v, autoZoomList))
+let autoZoomDefault = Computed(@() (abTests.value?.tankAutoZoom ?? "true") == "true")
+let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM)
+let currentAutoZoom = Computed(@()
+  validate(currentAutoZoomRaw.value ?? autoZoomDefault.value, autoZoomList))
 set_auto_zoom(currentAutoZoom.value)
 currentAutoZoom.subscribe(@(v) set_auto_zoom(v))
 let currentAutoZoomType = {
   locId = "options/auto_zoom"
   ctrlType = OCT_LIST
   value = currentAutoZoom
+  setValue = function(v) {
+    sendUiBqEvent("options_changed_tank_auto_zoom", { id = v ? "true" : "false" })
+    currentAutoZoomRaw(v)
+  }
   list = autoZoomList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/auto_zoom")
@@ -123,6 +145,7 @@ return {
     cameraRotationAssist
     showMoveDirection
     currentArmorPiercingType
+    showReticleButtonTouch
     currentAutoZoomType
   ]
 }

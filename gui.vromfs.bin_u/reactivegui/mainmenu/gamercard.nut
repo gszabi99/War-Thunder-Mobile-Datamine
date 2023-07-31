@@ -4,8 +4,8 @@ let { myAvatar } = require("%appGlobals/profileStates.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { SC_GOLD, SC_WP, SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
+let { SC_GOLD, SC_WP } = require("%rGui/shop/shopCommon.nut")
+let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/shop/shopState.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
@@ -16,12 +16,13 @@ let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyBalance, mkItemsBalance } = require("balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { textColor, premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let premIconWithTimeOnChange = require("premIconWithTimeOnChange.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame } = require("%rGui/decorators/decoratorState.nut")
+let mkUnseenGoodsMark = require("%rGui/components/mkUnseenGoodsMark.nut")
 
 let avatarSize       = hdpx(96)
 let profileGap       = hdpx(45)
@@ -30,6 +31,9 @@ let levelHolderSize          = hdpx(60)
 let levelHolderPlace         = avatarSize - levelHolderSize / 2
 
 let gamercardHeight  = avatarSize + levelHolderSize / 2
+
+let stateFlagShopBtn = Watched(0)
+let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@(category) category == true))
 
 let textParams = {
   rendObj = ROBJ_TEXT
@@ -186,18 +190,39 @@ let mkLeftBlock = @(backCb, canOpenLevelUp) {
 
 let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
 
-let rightBlock = @() {
-  watch = itemsOrder
+let shopBtn = @() {
+  watch = [stateFlagShopBtn, needShopUnseenMark]
+  size = [hdpxi(65), hdpxi(60)]
+  onElemState = @(sf) stateFlagShopBtn(sf)
+  behavior = Behaviors.Button
+  rendObj = ROBJ_IMAGE
+  onClick = @() openShopWnd(SC_GOLD)
+  color = stateFlagShopBtn.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+  image = Picture($"ui/gameuiskin#icon_shop.svg:{hdpxi(65)}:{hdpxi(60)}:P")
+  transform = {
+    scale = stateFlagShopBtn.value & S_ACTIVE ? [0.9, 0.9] : [1, 1]
+  }
+  children = needShopUnseenMark.value
+    ? mkUnseenGoodsMark({
+      pos = [hdpx(30), -hdpx(25)]
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+    })
+    : null
+}
+
+let rightBlock = @(){
+  watch = isShopOpened
   size = [ SIZE_TO_CONTENT, avatarSize ]
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_RIGHT
   valign = ALIGN_CENTER
   gap = gamercardGap
   children = [premIconWithTimeOnChange]
-    .extend(itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES))))
     .append(
       mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
       mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
+      !isShopOpened.value ? shopBtn : null
       dropMenuBtn
     )
 }

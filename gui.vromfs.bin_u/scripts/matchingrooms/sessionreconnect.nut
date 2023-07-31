@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { send, subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let logR = log_with_prefix("[SESSION_RECONNECT] ")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState.nut")
 let { joinRoom } = require("sessionLobby.nut")
@@ -15,7 +15,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 const MSG_UID = "reconnect_msg"
 
-let inviteData = mkHardWatched("session.inviteData", null)
+let inviteData = hardPersistWatched("session.inviteData", null)
 local sendResp = null //FIXME: Better to do it by eventbus instead
 let isNeedReconnectMsg = Computed(@()
   inviteData.value != null

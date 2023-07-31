@@ -49,7 +49,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.55,
+  "minRelativeTankCameraThreshold": 1.4,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "DamageParts": {
@@ -2127,8 +2127,8 @@
     "sightName": "no43",
     "headPos": [
       0.0,
-      2.0,
-      -18.0
+      3.8,
+      -14.0
     ],
     "headPosOnShooting": [
       -0.0,

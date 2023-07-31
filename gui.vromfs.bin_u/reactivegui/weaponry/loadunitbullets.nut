@@ -51,6 +51,11 @@ let function gatherWeaponsFromBlk(weaponsBlk) {
   return res
 }
 
+let function appendOnce(arr, v) {
+  if (!arr.contains(v))
+    arr.append(v)
+}
+
 let function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
   if (bulletsBlk.paramCount() == 0 && bulletsBlk.blockCount() == 0)
     return null
@@ -78,30 +83,34 @@ let function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
   local res = null
   foreach (b in bulletsList) {
     let paramsBlk = isDataBlock(b?.rocket) ? b.rocket : b
-    if (res == null)
-      if (!paramsBlk?.caliber)
-        continue
-      else
-        res = {
-          id
-          weaponBlkName
-          weaponType
-          caliber = 1000.0 * paramsBlk.caliber
-          bullets = []
-          bulletNames = []
-          bulletDataByType = {}
-          isBulletBelt = isBulletBelt && weaponType == WT_GUNS
-        }
+    let shellAnimations = paramsBlk % "shellAnimation"
+    if (res != null) {
+      foreach (anim in shellAnimations)
+        appendOnce(res.shellAnimations, anim)
+    }
+    else if (!paramsBlk?.caliber)
+      continue
+    else
+      res = {
+        id
+        weaponBlkName
+        weaponType
+        caliber = 1000.0 * paramsBlk.caliber
+        bullets = []
+        bulletNames = []
+        bulletDataByType = {}
+        isBulletBelt = isBulletBelt && weaponType == WT_GUNS
+        shellAnimations = clone shellAnimations
+      }
 
     let bulletType = b?.bulletType ?? b.getBlockName()
-    let bulletTypeFull = (paramsBlk?.selfDestructionInAir ?? false) ? $"{bulletType}@s_d" : bulletType
-    res.bullets.append(bulletTypeFull)
+    res.bullets.append(bulletType)
     res.bulletDataByType[bulletType] <- {}
 
     if (paramsBlk?.guiCustomIcon != null) {
       if (res?.customIconsMap == null)
         res.customIconsMap <- {}
-      res.customIconsMap[bulletTypeFull] <- paramsBlk.guiCustomIcon
+      res.customIconsMap[bulletType] <- paramsBlk.guiCustomIcon
     }
 
     if ("bulletName" in b)

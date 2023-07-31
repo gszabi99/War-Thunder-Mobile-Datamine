@@ -44,6 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
+  "minRelativeTankCameraThreshold": 1.45,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,
@@ -1891,8 +1892,8 @@
     "sightName": "t2s_29_14",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.6
     ],
     "headPosOnShooting": [
       0.1,

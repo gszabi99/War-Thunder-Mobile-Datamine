@@ -8,7 +8,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { parse_json, json_to_string } = require("json")
 let { registerGoogleplayPurchase, YU2_WRONG_PAYMENT, YU2_OK } = require("auth_wt")
 let logG = log_with_prefix("[GOODS] ")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
@@ -58,8 +58,8 @@ let register_googleplay_purchase = !is_pc ? registerGoogleplayPurchase
 
 
 const REPEAT_ON_ERROR_MSEC = 60000
-let lastInitStatus = mkHardWatched("goodsAndroid.lastInitStatus", GP_NOT_INITED)
-let skusInfo = mkHardWatched("goodsAndroid.skusInfo", {})
+let lastInitStatus = hardPersistWatched("goodsAndroid.lastInitStatus", GP_NOT_INITED)
+let skusInfo = hardPersistWatched("goodsAndroid.skusInfo", {})
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 let nextRefreshTime = Watched(-1)
 let availableSkusPrices = Computed(function() {

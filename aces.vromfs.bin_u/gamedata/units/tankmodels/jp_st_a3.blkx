@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.3,
+  "minRelativeTankCameraThreshold": 1.19,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.2,
@@ -2466,8 +2466,8 @@
     "sightName": "type_61_direct_primary",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.2
     ],
     "headPosOnShooting": [
       -0.1,

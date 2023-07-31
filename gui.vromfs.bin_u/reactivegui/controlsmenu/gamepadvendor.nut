@@ -4,7 +4,7 @@ let { VendorId, getJoystickVendor } = require("controls")
 let { UNKNOWN, MICROSOFT, SONY, NINTENDO } = VendorId
 let { register_command } = require("console")
 let { resetTimeout } = require("dagor.workcycle")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let defGamepadPresetId = "xone"
 let vendorIdToGamepadPresetId = {
@@ -13,8 +13,8 @@ let vendorIdToGamepadPresetId = {
   [NINTENDO] = "nintendo",
 }
 
-let lastVendorId = mkHardWatched("lastGamepadVendorId", null)
-let debugVendorId = mkHardWatched("debugGamepadVendorId", null)
+let lastVendorId = hardPersistWatched("lastGamepadVendorId", null)
+let debugVendorId = hardPersistWatched("debugGamepadVendorId", null)
 let curVendorId = Computed(@() debugVendorId.value ?? lastVendorId.value)
 let presetId = Computed(@() vendorIdToGamepadPresetId?[curVendorId.value] ?? defGamepadPresetId)
 

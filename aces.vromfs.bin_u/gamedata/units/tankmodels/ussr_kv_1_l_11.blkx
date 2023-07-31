@@ -45,7 +45,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "minRelativeTankCameraThreshold": 1.4,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.95,
@@ -1419,7 +1418,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2308,8 +2308,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.3
     ],
     "headPosOnShooting": [
       0.7,

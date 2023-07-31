@@ -288,4 +288,5 @@ return {
   unitAttrPage
   rowsPosPadL
   rowsPosPadR
+  rowHeight
 }

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -10,8 +10,8 @@ let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style
 let { goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
 let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("balanceAnimations.nut")
 
-let visibleBalance = mkHardWatched("balance.visibleBalance", {})
-let changeOrders = mkHardWatched("balance.changeOrders", {})
+let visibleBalance = hardPersistWatched("balance.visibleBalance", {})
+let changeOrders = hardPersistWatched("balance.changeOrders", {})
 let items = Computed(@() servProfile.value?.items ?? {})
 isAuthorized.subscribe(function(_) {
   visibleBalance({})

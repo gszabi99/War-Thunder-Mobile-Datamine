@@ -52,7 +52,7 @@
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "152mm_45_cpbc",
       "dynamicKv": true,
-      "hitPowerMult": 900.0,
+      "hitPowerMult": 600.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -251,7 +251,7 @@
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "152mm_45_cpbc",
       "dynamicKv": true,
-      "hitPowerMult": 900.0,
+      "hitPowerMult": 600.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -882,7 +882,7 @@
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "152mm_45_cpbc",
       "dynamicKv": true,
-      "hitPowerMult": 900.0,
+      "hitPowerMult": 600.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0

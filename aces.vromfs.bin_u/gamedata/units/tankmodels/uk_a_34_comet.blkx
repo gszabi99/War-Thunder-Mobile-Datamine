@@ -46,7 +46,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.6,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "arcadeTurnPowerMult": 1.2,
@@ -1430,7 +1429,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2538,8 +2538,8 @@
     "sightName": "no43x3_ml_mk3",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.3
     ],
     "headPosOnShooting": [
       -0.3,

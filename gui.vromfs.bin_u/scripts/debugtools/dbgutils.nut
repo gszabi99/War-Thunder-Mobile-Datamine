@@ -2,13 +2,13 @@
 // warning disable: -file:forbidden-function
 
 from "%scripts/dagui_library.nut" import *
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { reload } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/language.nut")
 let { register_command } = require("console")
 
 let function reload_dagui() {
   ::get_cur_gui_scene()?.resetGamepadMouseTarget()
-  let res = g_script_reloader.reload(::reload_main_script_module)
+  let res = reload(::reload_main_script_module)
   ::update_objects_under_windows_state(::get_cur_gui_scene())
   dlog("Dagui reloaded")
   return res

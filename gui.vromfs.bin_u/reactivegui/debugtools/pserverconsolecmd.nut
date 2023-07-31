@@ -3,7 +3,8 @@ let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
 let { add_unit_exp, add_player_exp, add_wp, add_gold, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
-  add_decorator,  set_current_decorator, remove_decorator, unset_current_decorator
+  add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
+  apply_profile_mutation
 } = pServerApi
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -45,6 +46,7 @@ register_command(@(name) set_current_decorator(name, "consolePrintResult"), "met
 register_command(@(name) add_decorator(name, "consolePrintResult"), "meta.add_decorator")
 register_command(@(name) remove_decorator(name, "consolePrintResult"), "meta.remove_decorator")
 register_command(@(name) unset_current_decorator(name, "consolePrintResult"), "meta.unset_current_decorator")
+register_command(@(id) apply_profile_mutation(id, "consolePrintResult"), "meta.apply_profile_mutation")
 
 register_command(function(count) {
   add_wp(count * 100)
@@ -72,7 +74,8 @@ foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade"]) {
 }
 
 foreach (cmd in ["get_all_configs", "reset_profile", "reset_profile_with_stats",
-  "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "check_purchases"
+  "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "check_purchases",
+  "reset_mutations_timestamp"
 ]) {
   let action = pServerApi[cmd]
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")

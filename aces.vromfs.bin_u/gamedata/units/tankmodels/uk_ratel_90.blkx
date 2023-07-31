@@ -44,7 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": 1.32,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -2381,8 +2381,8 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      2.0,
-      -18.0
+      3.8,
+      -13.7
     ],
     "headPosOnShooting": [
       1.4,

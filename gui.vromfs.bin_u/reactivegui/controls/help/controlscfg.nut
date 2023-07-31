@@ -12,7 +12,7 @@ let shortcutsByUnitTypes = {
       cLoc("hotkeys/extraGun", "ID_SHIP_WEAPON_EXTRA_GUN_1"),
       cLoc("hotkeys/extraGun", "ID_SHIP_WEAPON_EXTRA_GUN_2"),
       "ID_SHIP_WEAPON_TORPEDOES", "ID_SHIP_SMOKE_SCREEN_GENERATOR", "ID_WTM_LAUNCH_AIRCRAFT",
-      "ID_SHIP_WEAPON_MINE", "ID_NEXT_BULLET_TYPE", "ID_SHIP_ACTION_BAR_ITEM_11",
+      "ID_SHIP_WEAPON_MINE", "ID_NEXT_BULLET_TYPE", "ID_SHIP_ACTION_BAR_ITEM_11", "ID_SHOW_HERO_MODULES",
     ]
       .extend(sameLoc("hotkeys/steering", ["ship_steering_rangeMin", "ship_steering_rangeMax"]))
     axes = sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["ship_mouse_aim_x", "ship_mouse_aim_y"])
@@ -21,7 +21,7 @@ let shortcutsByUnitTypes = {
     shortcuts = [
       "ID_FLIGHTMENU", "submarine_main_engine_rangeMax", "submarine_main_engine_rangeMin",
       "ID_SUBMARINE_WEAPON_TORPEDOES", "ID_DIVING_LOCK", "ID_SHIP_WEAPON_MINE",
-      "ID_SUBMARINE_ACTION_BAR_ITEM_11",
+      "ID_SUBMARINE_ACTION_BAR_ITEM_11", "ID_SHOW_HERO_MODULES",
       cLoc("hotkeys/submarine_depth_rangeInc", "submarine_depth_inc"),
       cLoc("hotkeys/submarine_depth_rangeDec", "submarine_depth_dec"),
     ]
@@ -45,7 +45,7 @@ let shortcutsByUnitTypes = {
       "ID_CAMERA_NEUTRAL", "ID_TOGGLE_TARGET_TRACKING", "ID_NEXT_BULLET_TYPE",
       cLoc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11", "ID_ACTION_BAR_ITEM_11"),
     ]
-    axes = ["gm_throttle", "gm_steering"]
+    axes = ["gm_throttle", "gm_steering", "wheel_steering"]
       .extend(sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["gm_mouse_aim_x", "gm_mouse_aim_y"]))
   }
 }

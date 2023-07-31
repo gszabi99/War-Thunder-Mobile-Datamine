@@ -1,4 +1,5 @@
 from "daRg" import *
+require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let log = require("%globalScripts/logs.nut")
 let { loc } = require("dagor.localize")
 let dargBaseLib = require("%darg/darg_library.nut")

@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 /**
  * u is a set of utility functions, trashbin
@@ -409,6 +407,14 @@ let function search(data, predicate, reverseOrder = false) {
 }
 
 
+let function find_in_array(arr, val, def = -1) {
+  if (type(arr) != "array" && type(arr) != "table")
+    return def
+
+  return arr.findindex(@(v) v==val) ?? def
+}
+
+
 local export = underscore.__merge({
   appendOnce
   chooseRandom
@@ -432,6 +438,7 @@ local export = underscore.__merge({
   filter
   keys
   values
+  find_in_array
 
 }, functools)
 

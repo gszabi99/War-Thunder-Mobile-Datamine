@@ -44,7 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": 1.29,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -2628,8 +2628,8 @@
     "sightName": "telescope_t143e1",
     "headPos": [
       0.0,
-      2.0,
-      -18.0
+      3.8,
+      -13.9
     ],
     "headPosOnShooting": [
       -0.6,

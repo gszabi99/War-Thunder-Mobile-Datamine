@@ -17,7 +17,7 @@
       "modClass": "unsinkability",
       "isReserve": true,
       "effects": {
-        "smokeScreenCount": 5,
+        "smokeScreenCount": 1000,
         "smokeScreenTime": 30.0,
         "smokeScreenCooldown": 60.0
       }
@@ -27,6 +27,28 @@
       "effects": {
         "toolkitActivationCount": 30,
         "repairAvailable": true
+      }
+    },
+    "weapons_torpedo_damage_mode": {},
+    "weapons_torpedo_movement_mode": {},
+    "weapons_contact_mines": {},
+    "weapons_depth_charges": {},
+    "protection_new_fireProtection": {},
+    "protection_ammo_wetting": {},
+    "protection_new_sonar": {},
+    "maintanance_powered_toolkit": {},
+    "maintanance_new_propellers": {
+      "invertEnableLogic": true,
+      "effects": {
+        "mulTimeToMaxSpeed": 1.15,
+        "mulTimeToMaxReverseSpeed": 1.15
+      }
+    },
+    "maintanance_new_engines": {
+      "invertEnableLogic": true,
+      "effects": {
+        "mulMaxSpeed": 0.8,
+        "mulMaxReverseSpeed": 0.8
       }
     },
     "203mm_ger_skc34_sprgr_kz_navy_he": {
@@ -46,9 +68,6 @@
       }
     },
     "tank_engine_smoke_screen_system": {
-      "image": "#ui/gameuiskin#engine_smoke_screen_system.png",
-      "tier": 4,
-      "modClass": "protection",
       "effects": {
         "smokeScreenCount": 3,
         "smokeScreenTime": 25.0,
@@ -56,17 +75,29 @@
       }
     },
     "tank_smoke_screen_system_mod": {
-      "modClass": "firepower",
       "requiresModelReload": true,
-      "image": "#ui/gameuiskin#smoke_screen.png",
       "group": "smoke_mod"
     },
     "art_support": {
-      "image": "#ui/gameuiskin#art_support.png",
-      "tier": 4,
-      "modClass": "firepower",
       "effects": {
-        "rcostAddParam": 0.9595,
+        "supportUnitClass": "structures/ussr_122mm_m30",
+        "supportUnitTag": "artillery"
+      }
+    },
+    "art_support_mortars": {
+      "effects": {
+        "supportUnitClass": "structures/ussr_122mm_m30",
+        "supportUnitTag": "artillery"
+      }
+    },
+    "art_support_highcaliber": {
+      "effects": {
+        "supportUnitClass": "structures/ussr_122mm_m30",
+        "supportUnitTag": "artillery"
+      }
+    },
+    "art_support_smoke": {
+      "effects": {
         "supportUnitClass": "structures/ussr_122mm_m30",
         "supportUnitTag": "artillery"
       }
@@ -89,6 +120,81 @@
     "tank_additional_armor": {
       "turn_it_off": true,
       "invertEnableLogic": true
+    },
+    "machinegun_belt_tracer": {
+      "effects": {
+        "additiveBulletMod": "machinegun_belt_tracer"
+      }
+    },
+    "machinegun_belt_ap": {
+      "effects": {
+        "additiveBulletMod": "machinegun_belt_ap"
+      }
+    },
+    "machinegun_belt_stealth": {
+      "effects": {
+        "additiveBulletMod": "machinegun_belt_stealth"
+      }
+    },
+    "ostketten_tank_tracks": {
+      "requiresModelReload": true,
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "effects": {
+        "mulFrontalStaticFriction": 1.02,
+        "mulFrontalSlidingFriction": 1.05,
+        "mulSideRotMinSpd": 1.05,
+        "mulSideRotMaxSpd": 1.05,
+        "mulSideRotMinFric": 0.95,
+        "mulSideRotMaxFric": 0.95,
+        "hideNodes": {
+          "node": [
+            "track_l",
+            "track_r"
+          ]
+        },
+        "tracks": {
+          "width": 0.56,
+          "nonSymmetricMesh": true
+        },
+        "damagePartsOverride": {
+          "tracks": {
+            "hpMult": 1.2,
+            "track_l_01_dm": {},
+            "track_r_01_dm": {}
+          }
+        }
+      }
+    },
+    "winterketten_tank_tracks": {
+      "requiresModelReload": true,
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "effects": {
+        "mulFrontalStaticFriction": 1.02,
+        "mulFrontalSlidingFriction": 1.05,
+        "mulSideRotMinSpd": 1.05,
+        "mulSideRotMaxSpd": 1.05,
+        "mulSideRotMinFric": 0.95,
+        "mulSideRotMaxFric": 0.95,
+        "tracks": {
+          "width": 0.56,
+          "nonSymmetricMesh": true
+        },
+        "hideNodes": {
+          "node": [
+            "track_l",
+            "track_r"
+          ]
+        },
+        "damagePartsOverride": {
+          "tracks": {
+            "hpMult": 1.2,
+            "track_l_01_dm": {},
+            "track_r_01_dm": {}
+          }
+        }
+      }
     }
   }
 }

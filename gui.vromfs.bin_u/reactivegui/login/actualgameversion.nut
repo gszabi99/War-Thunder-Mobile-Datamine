@@ -5,7 +5,7 @@ let { parse_json } = require("json")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { get_cur_circuit_name } = require("app")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 
 const REQUEST_PERIOD_MSEC = 1800000
@@ -22,8 +22,8 @@ let tag = {
 }?[get_cur_circuit_name()]
 
 
-let actualGameVersion = mkHardWatched("actualGameVersion.value")
-let nextRequestTime = mkHardWatched("actualGameVersion.nextTime")
+let actualGameVersion = hardPersistWatched("actualGameVersion.value")
+let nextRequestTime = hardPersistWatched("actualGameVersion.nextTime")
 let needRequest = Watched(nextRequestTime.value <= get_time_msec())
 let allowRequest = Computed(@() needRequest.value && !isInBattle.value && !isInLoadingScreen.value)
 

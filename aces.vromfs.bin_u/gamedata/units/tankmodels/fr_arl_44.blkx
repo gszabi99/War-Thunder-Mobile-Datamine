@@ -44,6 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
+  "minRelativeTankCameraThreshold": 1.46,
   "controlDevices": {
     "device": [
       {
@@ -1545,7 +1546,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2401,8 +2403,8 @@
     "sightName": "sfl_zf",
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      4.05,
+      -14.0
     ],
     "headPosOnShooting": [
       -0.6,

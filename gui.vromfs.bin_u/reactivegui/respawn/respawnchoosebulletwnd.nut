@@ -13,6 +13,7 @@ let getBulletStats = require("bulletStats.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { getAmmoNameText, getAmmoNameShortText, getAmmoTypeText, getAmmoAdviceText
 } = require("%rGui/weaponry/weaponsVisual.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
 let WND_UID = "respawn_choose_bullet_wnd"
 let minWndWidth = hdpx(700)
@@ -36,10 +37,14 @@ let usedBullets = Computed(function() {
   return res
 })
 
+let hasBulletsVideo = Computed(@() hasAddons.value?.pkg_video ?? false)
+
 let close = @() openParams(null)
 savedSlotName.subscribe(@(v) curSlotName(v))
 chosenBullets.subscribe(@(_) curSlotName(savedSlotName.value))
 openParams.subscribe(@(_) wndAABB(null))
+
+let getWndWidth = @(bSetsCount) max(minBulletWidth * bSetsCount, minWndWidth)
 
 let function mkBulletButton(name, bSet, fromUnitTags) {
   let isCurrent = Computed(@() name == curSlotName.value)
@@ -86,7 +91,7 @@ let function bulletsList() {
     return { watch = bulletsInfo }
   let { bulletSets, bulletsOrder, fromUnitTags } = bulletsInfo.value
   return {
-    size = [max(minBulletWidth * bulletSets.len(), minWndWidth), bulletHeight]
+    size = [getWndWidth(bulletSets.len()), bulletHeight]
     flow = FLOW_HORIZONTAL
     children = bulletsOrder.map(@(name) mkBulletButton(name, bulletSets[name], fromUnitTags?[name]))
   }
@@ -121,6 +126,31 @@ let mkStatTextarea = @(text, color = 0xFFC0C0C0) {
   color
 }.__update(fontVeryTiny)
 
+let function mkShellVideo(videos, width) {
+  if (videos.len() == 0)
+    return null
+  let idx = Watched(0)
+  let watch = [idx, hasBulletsVideo]
+  return @() !hasBulletsVideo.value ? { watch }
+    : {
+        watch
+        key = videos
+        size = [width, (0.25 * width + 0.5).tointeger()]
+        margin = [hdpx(10), 0, 0, 0]
+        hplace = ALIGN_CENTER
+        children = {
+          size = flex()
+          key = idx.value
+          rendObj = ROBJ_MOVIE
+          behavior = Behaviors.Movie
+          loop = videos.len() == 1
+          keepAspect = true
+          movie = $"content/pkg_video/{videos[idx.value]}"
+          onFinish = @() idx((idx.value + 1) % videos.len())
+        }
+      }
+}
+
 let function curBulletInfo() {
   if (bulletsInfo.value == null)
     return { watch = bulletsInfo }
@@ -145,6 +175,8 @@ let function curBulletInfo() {
   let adviceText = getAmmoAdviceText(bSet)
   if (adviceText != "")
     children.append(mkStatTextarea(adviceText))
+  children.append(mkShellVideo(bSet?.shellAnimations ?? [], getWndWidth(bulletSets.len())))
+
   children.append(separator)
   if (reqLevel > (selSlot.value?.level ?? 0))
     children.append(mkStatRow(loc("requiredPlatoonLevel"), reqLevel, lockedColor))

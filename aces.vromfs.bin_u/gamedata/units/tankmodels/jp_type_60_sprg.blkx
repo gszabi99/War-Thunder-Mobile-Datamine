@@ -44,7 +44,7 @@
   "destroysTrees": true,
   "isSequentialPrimaryShot": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.9,
+  "minRelativeTankCameraThreshold": 1.7,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,
@@ -2787,8 +2787,8 @@
     "sightName": "telescope_m71c",
     "headPos": [
       0.0,
-      2.0,
-      -15.0
+      3.4,
+      -11.7
     ],
     "headPosOnShooting": [
       -0.3,

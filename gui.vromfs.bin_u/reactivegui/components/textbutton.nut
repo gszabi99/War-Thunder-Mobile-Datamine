@@ -125,6 +125,7 @@ let function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
     rendObj = ROBJ_BOX
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
+    xmbNode = {}
     hotkeys
     sound = {
       click  = "click"

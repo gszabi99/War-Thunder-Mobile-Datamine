@@ -1,4 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
+let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 
 let function mkPlayersByTeam(dData) {
   let { userId = 0, userName = "", localTeam = 0, players = {}, playersCommonStats = {} } = dData
@@ -9,13 +11,14 @@ let function mkPlayersByTeam(dData) {
     let pUnit = playersCommonStats?[pUserIdStr].unit
     let mainUnitName = pUnit?.name ?? (p.aircraftName ?? "")
     let isUnitPremium = pUnit?.isPremium ?? false
+    let frameId = playersCommonStats?[p.userId.tostring()].decorators.nickFrame
     return p.__merge({
       userId = pUserIdStr
       isLocal
       isDead = false
-      name = isLocal ? userName
+      name = isLocal ? frameNick(userName, frameId)
         : p.isBot ? loc(p.name)
-        : p.name
+        : frameNick(getPlayerName(p.name), frameId)
       score = p?.dmgScoreBonus ?? 0.0
       level
       hasPremium

@@ -1401,7 +1401,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -1747,7 +1748,20 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_body_01",
+        "ex_armor_body_02",
+        "ex_armor_body_03",
+        "ex_armor_body_04",
+        "ex_armor_body_05",
+        "ex_armor_body_06",
+        "ex_armor_body_07",
+        "ex_armor_body_08",
+        "ex_armor_body_09"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2575,8 +2589,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       0.6,

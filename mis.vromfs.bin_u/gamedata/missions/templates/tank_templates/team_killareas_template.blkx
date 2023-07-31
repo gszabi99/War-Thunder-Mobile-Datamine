@@ -53,200 +53,8 @@
         ],
         "triggerEnable": {
           "target": [
-            "team_killareas_check_arcade",
-            "team_killareas_check_realistic",
-            "team_killareas_check_hardcore"
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "team_killareas_check_arcade": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "gameWhenDifficulty": {
-          "difficulty": "arcade",
-          "is": "equal"
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": [
             "t1_detection_areas_init",
             "t2_detection_areas_init"
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "team_killareas_check_realistic": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "gameWhenDifficulty": {
-          "difficulty": "realistic",
-          "is": "equal"
-        }
-      },
-      "actions": {
-        "varAddString": {
-          "value": "_realistic",
-          "digits": 0,
-          "var": [
-            "t1_killarea_temp",
-            "t2_killarea_temp"
-          ]
-        },
-        "triggerEnable": {
-          "target": "team_killareas_check_realistic_t1_exist"
-        }
-      },
-      "else_actions": {}
-    },
-    "team_killareas_check_realistic_t1_exist": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": [
-          {
-            "target": "@t1_killarea_temp",
-            "type": "area"
-          },
-          {
-            "target": "@t1_killarea_temp",
-            "type": "squad"
-          }
-        ]
-      },
-      "actions": {
-        "comment": {
-          "value": "��������� ���� �� realistic ������� � �������"
-        },
-        "triggerEnable": {
-          "target": "team_killareas_check_realistic_t2_exist"
-        }
-      },
-      "else_actions": {
-        "comment": {
-          "value": "������� ����� ������"
-        },
-        "triggerEnable": {
-          "target": [
-            "t1_detection_areas_init",
-            "t2_detection_areas_init"
-          ]
-        }
-      }
-    },
-    "team_killareas_check_realistic_t2_exist": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "objectExists": [
-          {
-            "target": "@t2_killarea_temp",
-            "type": "area"
-          },
-          {
-            "target": "@t2_killarea_temp",
-            "type": "squad"
-          }
-        ]
-      },
-      "actions": {
-        "comment": {
-          "value": "��������� ���� �� realistic ������� � �������"
-        },
-        "varAddString": {
-          "value": "_realistic",
-          "digits": 0,
-          "var": [
-            "t1_killarea",
-            "t2_killarea"
-          ]
-        },
-        "triggerEnable": {
-          "target": [
-            "t1_detection_areas_init",
-            "t2_detection_areas_init"
-          ]
-        }
-      },
-      "else_actions": {
-        "comment": {
-          "value": "������� ����� ������"
-        },
-        "triggerEnable": {
-          "target": [
-            "t1_detection_areas_init",
-            "t2_detection_areas_init"
-          ]
-        }
-      }
-    },
-    "team_killareas_check_hardcore": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "gameWhenDifficulty": {
-          "difficulty": "simulator",
-          "is": "equal"
-        }
-      },
-      "actions": {
-        "varAddString": {
-          "value": "_hardcore",
-          "digits": 0,
-          "var": [
-            "t1_killarea",
-            "t2_killarea"
-          ]
-        },
-        "triggerEnable": {
-          "target": [
-            "t1_kill_areas_init",
-            "t2_kill_areas_init"
           ]
         }
       },
@@ -282,10 +90,10 @@
           "mapArea": false,
           "killArea": false,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": true,
           "airMapArea": false,
           "area": "@t1_killarea",
+          "newGridHorizontalCellCount": 0,
           "team": "B"
         },
         "triggerEnable": {
@@ -327,10 +135,10 @@
           "mapArea": false,
           "killArea": false,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": true,
           "airMapArea": false,
           "area": "@t2_killarea",
+          "newGridHorizontalCellCount": 0,
           "team": "A"
         },
         "triggerEnable": {
@@ -372,10 +180,10 @@
           "mapArea": false,
           "killArea": true,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": true,
           "airMapArea": false,
           "area": "@t1_killarea",
+          "newGridHorizontalCellCount": 0,
           "team": "B"
         },
         "triggerEnable": {
@@ -417,10 +225,10 @@
           "mapArea": false,
           "killArea": true,
           "killOutOfBattleArea": false,
-          "newGridHorizontalCellCount": 0,
           "detectionArea": true,
           "airMapArea": false,
           "area": "@t2_killarea",
+          "newGridHorizontalCellCount": 0,
           "team": "A"
         },
         "triggerEnable": {

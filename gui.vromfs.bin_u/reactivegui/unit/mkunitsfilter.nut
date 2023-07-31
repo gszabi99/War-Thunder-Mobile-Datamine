@@ -52,9 +52,11 @@ let function mkCheckBtn(text, isChecked, hasValues, onClick) {
 }
 
 let filterCtors = {
-  [OCT_TEXTINPUT] = @(filter, width) textInput(filter.value, {
-    size = [min(width, hdpx(300)), inputFullHeight - 2 * inputPadding[0]]
-    padding = inputPadding
+  [OCT_TEXTINPUT] = @(filter, _) textInput(filter.value, {
+    ovr = {
+      size = [flex(), inputFullHeight]
+      padding = inputPadding
+    }
     setValue = filter.setValue
     onAttach = @() set_kb_focus(filter.value) //hack for keyboard, and work only because single
   }),

@@ -55,6 +55,7 @@
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "127mm_51_apc",
       "dynamicKv": true,
+      "hitPowerMult": 450.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -456,6 +457,7 @@
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "127mm_51_apc",
       "dynamicKv": true,
+      "hitPowerMult": 450.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0

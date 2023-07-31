@@ -791,7 +791,6 @@ def ship_handle_water_net_sync_es(evt : EventShipWaterNetSync;
   ship_additional_water_right_side = evt.waterRightSide
   for part_water, cur_water in ship_cover_parts_water, *evt.coverPartsWater
     part_water.x = cur_water
-  print("received water sync!");
 
 
 def send_breaches_net_sync_event(eid : EntityId;

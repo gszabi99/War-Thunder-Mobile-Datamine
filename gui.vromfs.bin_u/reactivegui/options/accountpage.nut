@@ -92,9 +92,10 @@ let mkPremiumTimeLeftText = function() {
   let res = { watch = [ premiumEndsAt ] }
   let timeLeft = max(0, premiumEndsAt.value - serverTime.value)
   if (timeLeft == 0)
-    return res
+    return res.__update({ size = flex() })
   res.watch.append(serverTime)
   return res.__update({
+    padding = [hdpx(40), 0, hdpx(25), 0]
     rendObj = ROBJ_TEXT
     text = "".concat(premiumAccountTxt, colon, secondsToHoursLoc(timeLeft))
     color = premiumTextColor
@@ -117,7 +118,6 @@ let userInfoBlock = {
           rendObj = ROBJ_TEXT
           text = "".concat(loc("options/userId"), colon, myUserId.value)
         }.__update(fontTiny)
-        mkPremiumTimeLeftText
       ]
     }
   ]
@@ -166,7 +166,7 @@ return {
   flow = FLOW_VERTICAL
   children = [
     userInfoBlock
-    { size = flex() }
+    mkPremiumTimeLeftText
     topButtons
     { size = flex() }
     is_ios ? null

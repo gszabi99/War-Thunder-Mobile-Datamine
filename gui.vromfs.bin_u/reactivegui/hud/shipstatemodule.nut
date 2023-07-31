@@ -10,6 +10,7 @@ let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcu
 let { mkGamepadHotkey, mkContinuousButtonParams, mkGamepadShortcutImage
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
+let damagePanelBacklight = require("components/damagePanelBacklight.nut")
 
 let iconSize = shHud(3.5)
 let crewIconSize = shHud(4.0)
@@ -74,19 +75,25 @@ let debuffGuns = mkDebuff(hasDebuffGuns, "hud_debuff_weapon.svg")
 let debuffControl = mkDebuff(hasDebuffMoveControl, "hud_debuff_control.svg")
 let debuffTorpedoes = mkDebuff(hasDebuffTorpedoes, "hud_debuff_torpedo_tubes.svg")
 
-let xrayDoll = @() {
-  watch = healthColor
-  color = getHudConfigParameter("changeDmPanelColorDependingOnHp") ? healthColor.value : teamBlueLightColor
+let xrayDoll = @(stateFlags) {
   size = [healthImageWidth, healthImageHeight]
-  transform = {
-    rotate = 90
-  }
-  rendObj = ROBJ_XRAYDOLL
-  rotateWithCamera = false
-  drawOutlines = false
-  drawSilhouette = true
-  drawTargetingSightLine = true
-  modulateSilhouetteColor = true
+  children = [
+    damagePanelBacklight(stateFlags, healthImageHeight * 2.2)
+    @() {
+      watch = healthColor
+      color = getHudConfigParameter("changeDmPanelColorDependingOnHp") ? healthColor.value : teamBlueLightColor
+      size = flex()
+      transform = {
+        rotate = 90
+      }
+      rendObj = ROBJ_XRAYDOLL
+      rotateWithCamera = false
+      drawOutlines = false
+      drawSilhouette = true
+      drawTargetingSightLine = true
+      modulateSilhouetteColor = true
+    }
+  ]
 }
 
 let function useShortcutOn(shortcutId) {
@@ -96,20 +103,21 @@ let function useShortcutOn(shortcutId) {
 let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(60), ph(-50)] }
 
 let shortcutId = "ID_SHOW_HERO_MODULES"
+let stateFlags = Watched(0)
 let doll = mkContinuousButtonParams(
   function onTouchBegin() {
     useShortcutOn(shortcutId)
   },
   @() setShortcutOff(shortcutId),
   shortcutId,
+  stateFlags
 ).__update({
   key = "ship_state_button"
-  hplace = ALIGN_LEFT
   behavior = Behaviors.TouchAreaOutButton
   eventPassThrough = true
   hotkeys = mkGamepadHotkey(shortcutId)
   children = [
-    xrayDoll
+    xrayDoll(stateFlags)
     mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
   ]
 })

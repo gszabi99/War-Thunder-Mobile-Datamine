@@ -87,7 +87,7 @@ return @() addModalWindow({
       }
       makeVertScroll(
         gameModesList,
-        { rootBase = class { behavior = Behaviors.Pannable } })
+        { rootBase = { behavior = Behaviors.Pannable } })
     ]
   }
 })

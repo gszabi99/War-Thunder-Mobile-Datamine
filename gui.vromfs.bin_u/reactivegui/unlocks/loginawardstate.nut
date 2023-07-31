@@ -3,7 +3,7 @@ let { register_command } = require("console")
 let { subscribe } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { activeUnlocks, receiveUnlockRewards, unlockRewardsInProgress, getRelativeStageData
-} = require("unlocks.nut")
+} = require("%rGui/unlocks/unlocks.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { isAdsAvailable, canShowAds, showAdsForReward } = require("%rGui/ads/adsState.nut")

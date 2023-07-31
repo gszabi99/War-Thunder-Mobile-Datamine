@@ -3,9 +3,9 @@ from "connectionStatusConsts.nut" import *
 let { subscribe, send } = require("eventbus")
 let { register_command } = require("console")
 let { is_android } = require("%sqstd/platform.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let debugStatus = mkHardWatched("connectionStatus.debugStatus", 0)
+let debugStatus = hardPersistWatched("connectionStatus.debugStatus", 0)
 let { get_connection_status, CONN_LIMITED, CONN_OK, CONN_NO_CONNECTION, CONN_UNKNOWN
 } = is_android ? require("android.updater")
   : { //debug_mode

@@ -95,6 +95,7 @@
   "rocketIndicatorShowUnguided": false,
   "rocketIndicatorLosCheck": true,
   "forceShowDetectedOnce": true,
+  "rearmSupportPlaneInAir": false,
   "deltaTimeMultCCIP": 1.0,
   "warningMessageForLWS": true,
   "warningSoundForLWS": true,
@@ -6774,6 +6775,10 @@
       0.5
     ]
   },
+  "zoomVignette": {
+    "multiplier": 0.15,
+    "width": -0.6
+  },
   "splatter": {
     "screenTex": "splatter",
     "glassTex": "splatter",
@@ -6920,8 +6925,8 @@
   "joystickSettings": {
     "relativeAxisTimeThreshold": 0.25,
     "relativeAxisStepViscosity": 0.2,
-    "mouseAimJoystickSensitivity": 8.0,
-    "mouseAimGmJoystickSensitivity": 8.0,
+    "mouseAimJoystickSensitivity": 1.0,
+    "mouseAimGmJoystickSensitivity": 1.0,
     "tankCameraYLimits": [
       -12.0,
       14.0
@@ -10583,6 +10588,10 @@
       "enemy": "aircraft"
     }
   },
+  "unitPoseIndicator": {
+    "enableHud": false,
+    "enableModel": false
+  },
   "wodParams": {
     "gForce": 0.1,
     "angVel": 1.0,
@@ -10658,6 +10667,7 @@
     "spikeCircle": "searchlight_earth_flare",
     "noiseTexture": "snow_noise_mask",
     "sourceTex": "source_tex",
+    "shouldUsePrivateDepth": true,
     "armorThicknessMax": 300.0,
     "hsvRange": [
       160.0,

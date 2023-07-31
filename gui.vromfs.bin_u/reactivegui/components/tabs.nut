@@ -51,7 +51,7 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
   ].append(content)
 }.__merge(tabOverride)
 
-let function mkTab(id, content, curTabId, tabOverride) {
+let function mkTab(id, content, curTabId, tabOverride, onClick = null) {
   let stateFlags = Watched(0)
   let isActive = Computed (@() curTabId.value == id || (stateFlags.value & S_ACTIVE) != 0)
   let isHover = Computed (@() stateFlags.value & S_HOVER)
@@ -61,7 +61,7 @@ let function mkTab(id, content, curTabId, tabOverride) {
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
     clickableInfo = loc("mainmenu/btnSelect")
-    onClick = @() curTabId(id)
+    onClick = onClick ?? @() curTabId(id)
     sound = { click = "choose" }
     flow = FLOW_HORIZONTAL
     gap = selLineGap
@@ -79,13 +79,13 @@ let tabsRoot = {
   gap = tabsGap
 }
 
-let function mkTabs(tabsData, curTabId, ovr = {}) {
+let function mkTabs(tabsData, curTabId, ovr = {}, onClick = null) {
   let watch = tabsData.map(@(t) t?.isVisible).filter(@(v) v != null)
   if (watch.len() == 0)
     return tabsRoot.__merge(
       {
         children = tabsData.map(@(tab)
-          mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}))
+          mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}, onClick ? @() onClick(tab.id) : null))
       },
       ovr)
 
@@ -94,7 +94,7 @@ let function mkTabs(tabsData, curTabId, ovr = {}) {
       watch
       children = tabsData
         .filter(@(tab) tab?.isVisible.value ?? true)
-        .map(@(tab) mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}))
+        .map(@(tab) mkTab(tab.id, tab.content, curTabId, tab?.override ?? {}, onClick ? @() onClick(tab.id) : null))
     },
     ovr)
 }

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_SUPPORT_PLANE_CHANGE,
-  AB_SUPPORT_PLANE_GROUP_ATTACK, AB_DIVING_LOCK,
+  AB_SUPPORT_PLANE_GROUP_ATTACK, AB_SUPPORT_PLANE_RETURN, AB_DIVING_LOCK,
   AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET
 } = require("actionBar/actionType.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -150,6 +150,12 @@ let actionBarItemsConfig = {
     getShortcut = @(_, __) "ID_WTM_AIRCRAFT_GROUP_ATTACK"
     mkButtonFunction = "mkGroupAttackButton"
     actionType = AB_SUPPORT_PLANE_GROUP_ATTACK
+  },
+  ID_WTM_AIRCRAFT_RETURN = {
+    getShortcut = @(_, __) "ID_WTM_AIRCRAFT_RETURN"
+    image = "!ui/gameuiskin#hud_aircraft_fighter.svg"
+    mkButtonFunction = "mkSimpleButton"
+    actionType = AB_SUPPORT_PLANE_RETURN
   },
   EII_DIVING_LOCK = {
     getShortcut = @(_, __) "ID_DIVING_LOCK"

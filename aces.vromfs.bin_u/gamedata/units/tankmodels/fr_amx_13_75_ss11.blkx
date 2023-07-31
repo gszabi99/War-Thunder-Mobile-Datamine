@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.75,
+  "minRelativeTankCameraThreshold": 1.3,
   "rearmTimeOnField": 120.0,
   "canReloadNonGuns": [
     true,
@@ -2360,8 +2360,8 @@
     "sightName": "l_862",
     "headPos": [
       0.0,
-      2.0,
-      -16.5
+      3.5,
+      -11.6
     ],
     "headPosOnShooting": [
       -1.0,

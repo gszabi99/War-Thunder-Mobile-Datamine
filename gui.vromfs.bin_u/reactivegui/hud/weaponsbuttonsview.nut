@@ -153,7 +153,6 @@ let function mkActionItem(buttonConfig, actionItem) {
       {
         key = key ?? shortcutId
         behavior = Behaviors.Button
-        eventPassThrough = true
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         size = [touchButtonSize, touchButtonSize]
@@ -273,7 +272,6 @@ let function mkRepairActionItem(buttonConfig, actionItem) {
       {
         key = actionKey
         behavior = Behaviors.Button
-        eventPassThrough = true
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         size = [touchButtonSize, touchButtonSize]

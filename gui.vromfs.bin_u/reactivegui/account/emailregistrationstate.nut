@@ -6,7 +6,7 @@ let { getPlayerSsoShortTokenAsync, YU2_OK, renewToken, get_player_tags, get_auth
 } = require("auth_wt")
 let { json_to_string } = require("json")
 let logGuest = log_with_prefix("[GUEST] ")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { authTags, isLoginByGajin } = require("%appGlobals/loginState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { windowActive } = require("%globalScripts/windowState.nut")
@@ -20,7 +20,7 @@ let needVerifyEmailBase = Computed(@() !isGuestLogin.value
   && !(authTags.value.contains("gplogin") || authTags.value.contains("applelogin") || authTags.value.contains("fblogin")))
 let isDebugVerifyEmail = mkWatched(persist, "isDebugVerifyEmail", false)
 let needVerifyEmail = Computed(@() needVerifyEmailBase.value != isDebugVerifyEmail.value)
-local needCheckRelogin = mkHardWatched("guest.needCheckRelogin", false)
+local needCheckRelogin = hardPersistWatched("guest.needCheckRelogin", false)
 
 let openGuestEmailRegistrationImpl = @(stoken) send("openUrl",
   { baseUrl = $"https://login.gaijin.net/{loc("current_lang")}/guest?stoken={stoken}" })

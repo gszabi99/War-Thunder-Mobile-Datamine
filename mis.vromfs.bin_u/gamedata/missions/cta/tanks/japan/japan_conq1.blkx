@@ -80,10 +80,9 @@
     "mission": {
       "level": "levels/avg_japan.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
+      "checkFriendlyFireAlsoFromAircrafts": true,
       "locName": "missions/_Conq1;japan/name",
       "locDesc": "japan/desc;missions/_Conq1/desc",
       "scoreLimit": 14000,
@@ -96,10 +95,11 @@
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
       "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
-      "checkFriendlyFireAlsoFromAircrafts": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -245,13 +245,15 @@
         ],
         [
           2679.93,
-          11.7969,
+          -288.167,
           1847.37
         ]
       ],
       "unit_class": "ussr_t_34_1942",
       "objLayer": 1,
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "",
       "bullets0": "",
       "bullets1": "",
@@ -261,6 +263,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -300,7 +304,7 @@
           ],
           [
             2714.81,
-            90.2499,
+            -209.714,
             1799.01
           ]
         ],
@@ -339,7 +343,7 @@
           ],
           [
             2714.81,
-            90.2499,
+            -209.714,
             1799.01
           ]
         ],
@@ -378,7 +382,7 @@
           ],
           [
             1626.05,
-            9.4,
+            -290.564,
             1887.9
           ]
         ],
@@ -417,7 +421,7 @@
           ],
           [
             1626.05,
-            9.4,
+            -290.564,
             1887.9
           ]
         ],
@@ -459,7 +463,7 @@
         ],
         [
           1692.2,
-          325.75,
+          25.786,
           2277.5
         ]
       ],
@@ -486,7 +490,7 @@
         ],
         [
           2743.88,
-          0.000610352,
+          -299.963,
           1885.21
         ]
       ],
@@ -513,7 +517,7 @@
         ],
         [
           1636.21,
-          0.000610352,
+          -299.963,
           1857.91
         ]
       ],
@@ -540,7 +544,7 @@
         ],
         [
           2012.4,
-          0.1,
+          -299.864,
           1908.5
         ]
       ],

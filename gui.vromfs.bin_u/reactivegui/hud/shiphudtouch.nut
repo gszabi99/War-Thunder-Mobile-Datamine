@@ -17,10 +17,10 @@ return {
   onDetach = @() stopActionBarUpdate("shipHud")
   children = [
     hudTopLeft
-    hudTimersBlock
     hudBottomCenter
     hudTopMainLog
     hudTuningElems
+    hudTimersBlock
     shipSight
     currentWeaponNameText
   ]

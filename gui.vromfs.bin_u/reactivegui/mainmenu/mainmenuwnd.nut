@@ -29,6 +29,14 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { allow_players_online_info } = require("%appGlobals/permissions.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
+let { mkGradRank } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
+let { itemsOrder } = require("%appGlobals/itemsState.nut")
+let { mkItemsBalance } = require("balanceComps.nut")
+let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
+let { openShopWnd } = require("%rGui/shop/shopState.nut")
+
 
 let unitNameStateFlags = Watched(0)
 
@@ -45,11 +53,15 @@ let unitName = @() hangarUnit.value == null ? { watch = hangarUnit }
   : {
     watch = [hangarUnit, unitNameStateFlags]
     onElemState = @(sf) unitNameStateFlags(sf)
-    margin =  [hdpx(74), 0]
     behavior = Behaviors.Button
-    vplace = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(24)
     onClick = @() unitDetailsWnd({ name = hangarUnit.value.name })
-    children = mkPlatoonOrUnitTitle(hangarUnit.value, {},  unitNameStateFlags.value & S_HOVER ? { color = hoverColor } : {})
+    children = [
+      mkPlatoonOrUnitTitle(
+        hangarUnit.value, {}, unitNameStateFlags.value & S_HOVER ? { color = hoverColor } : {})
+      mkGradRank(hangarUnit.value.mRank)
+    ]
   }
 
 let campaignsBtnComp = translucentButton("ui/gameuiskin#campaign.svg",
@@ -139,6 +151,27 @@ let startTestFlightButton = textButtonBattle(toBattleText,
   { hotkeys = hotkeyX })
 let startOfflineMissionButton = textButtonBattle(toBattleText, startCurNewbieMission, { hotkeys = hotkeyX })
 
+let mkMRankRange = @() curUnitMRankRange.value == null
+  ? { watch = curUnitMRankRange }
+  : {
+      watch = curUnitMRankRange
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_CENTER
+      gap = hdpx(12)
+      children = [
+        { rendObj = ROBJ_TEXT, text = loc("mainmenu/battleTiers") }.__update(fontTinyAccented)
+        mkGradRank(curUnitMRankRange.value.minMRank)
+        { rendObj = ROBJ_TEXT, text = "-" }.__update(fontTinyAccented)
+        mkGradRank(curUnitMRankRange.value.maxMRank)
+      ]
+    }
+
+let consumablesPanel = @(){
+  watch = itemsOrder
+  flow = FLOW_HORIZONTAL
+  children = itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
+}
+
 let toBattleButtonPlace = @() {
   watch = [needFirstBattleTutor, newbieOfflineMissions]
   hplace = ALIGN_RIGHT
@@ -146,7 +179,21 @@ let toBattleButtonPlace = @() {
   halign = ALIGN_RIGHT
   flow = FLOW_VERTICAL
   children = [
-    unitName
+    {
+      rendObj = ROBJ_9RECT
+      image = gradTranspDoubleSideX
+      padding = [ hdpx(24), 0, hdpx(12), 0 ]
+      texOffs = [0 , gradDoubleTexOffset]
+      screenOffs = [0, hdpx(70)]
+      color = 0x50000000
+      flow = FLOW_VERTICAL
+      halign = ALIGN_RIGHT
+      children = [
+        unitName
+        consumablesPanel
+        mkMRankRange
+      ]
+    }
     isOfflineMenu ? startTestFlightButton
       : needFirstBattleTutor.value ? startTutorButton
       : newbieOfflineMissions.value != null ? startOfflineMissionButton

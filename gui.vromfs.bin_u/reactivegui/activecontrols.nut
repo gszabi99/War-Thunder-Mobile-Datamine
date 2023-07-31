@@ -5,7 +5,7 @@ let { DEV_MOUSE, DEV_KBD, DEV_GAMEPAD, DEV_TOUCH, get_last_used_device_mask
 } = require("lastInputMonitor")
 let { get_settings_blk } = require("blkGetters")
 let { is_pc, is_mobile } = require("%sqstd/platform.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let defControlsType = is_pc ? DEV_MOUSE : DEV_TOUCH
 let isEmuTouch = get_settings_blk()?.debug.emuTouchScreen ?? false
@@ -17,7 +17,7 @@ let NEED_CURSOR_MASK =
 let ALLOWED_MASK = DEV_GAMEPAD | DEV_TOUCH
   | (is_pc ? DEV_MOUSE | DEV_KBD : 0)
 
-let forcedControlsType = mkHardWatched("forcedControlsType")
+let forcedControlsType = hardPersistWatched("forcedControlsType")
 let lastActiveControlsTypeRaw = Watched(get_last_used_device_mask())
 let lastActiveControlsType = Computed(@(prev) (lastActiveControlsTypeRaw.value & ALLOWED_MASK)
   || (prev == FRP_INITIAL ? 0 : prev))

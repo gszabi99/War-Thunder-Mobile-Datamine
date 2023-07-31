@@ -5,11 +5,11 @@ let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let posIndicatorSize = [shHud(25), shHud(15)]
 let iconSize = (posIndicatorSize[1] * 0.7).tointeger()
 
-//let moveIndicator = @() {
-//  watch = isInZoom
-//  size = posIndicatorSize
-//  rendObj = isInZoom.value ? ROBJ_UNIT_POSE_INDICATOR : null
-//}
+let moveIndicator = @() {
+  watch = isInZoom
+  size = posIndicatorSize
+  rendObj = isInZoom.value ? ROBJ_UNIT_POSE_INDICATOR : null
+}
 
 let moveIndicatorEditView = @(image) {
   size = posIndicatorSize
@@ -38,7 +38,7 @@ let moveIndicatorTankEditView = moveIndicatorEditView("unit_tank.svg")
 let moveIndicatorShipEditView = moveIndicatorEditView("unit_ship.svg")
 
 return {
- // moveIndicator
+  moveIndicator
   moveIndicatorTankEditView
   moveIndicatorShipEditView
 }

@@ -12,7 +12,7 @@ let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { median } = require("%sqstd/math.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let { get_gui_option, addUserOption } = require("guiOptions")
@@ -27,7 +27,7 @@ let OPT_GRAPHICS_QUALITY = addUserOption("OPT_GRAPHICS_QUALITY")
 let OPT_FPS = addUserOption("OPT_FPS")
 let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
 
-let curCluster = mkHardWatched("curCluster", "")
+let curCluster = hardPersistWatched("curCluster", "")
 curQueue.subscribe(@(v) (v?.joinedClusters ?? {}).len() == 0 ? ""
   : curCluster(",".join(v.joinedClusters.keys())))
 

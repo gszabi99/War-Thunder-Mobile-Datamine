@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkZoomButton, mkLockButton, mkWeaponryItemSelfAction, mkWeaponryContinuousSelfAction, mkSimpleButton
+let { mkZoomButton, mkLockButton, mkWeaponryItemSelfAction, mkWeaponryContinuousSelfAction, mkSimpleButton, mkGroupAttackButton
 } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
 let { mkLBPos, mkLTPos, mkRBPos, mkRTPos,
@@ -15,6 +15,8 @@ let {
 let { aircraftRadarEditView, aircraftRadar } = require("%rGui/hud/aircraftRadar.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
+let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
+let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 
 return cfgHudCommon.__merge({
   bomb = weaponryButtonCtor("ID_BOMBS", mkWeaponryItemSelfAction,
@@ -70,6 +72,18 @@ return cfgHudCommon.__merge({
       editView = mkWeaponBtnEditView("ui/gameuiskin#hud_aircraft_fighter.svg")
     })
 
+  groupAttack = weaponryButtonCtor("ID_WTM_AIRCRAFT_GROUP_ATTACK", mkGroupAttackButton,
+    {
+      defTransform = mkLBPos([hdpx(541), hdpx(-225)])
+      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_aircraft_fighter.svg")
+    })
+
+  groupReturn = weaponryButtonCtor("ID_WTM_AIRCRAFT_RETURN", mkSimpleButton,
+    {
+      defTransform = mkLBPos([hdpx(431), hdpx(-335)])
+      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_aircraft_fighter.svg")
+    })
+
   back = weaponryButtonsGroupCtor([
       "ID_WTM_RETURN_TO_SHIP",
       "ID_WTM_RETURN_TO_SHIP_2",
@@ -107,5 +121,11 @@ return cfgHudCommon.__merge({
     defTransform = mkRBPos([0, hdpx(-290)])
     editView = aircraftIndicatorsEditView
     hideForDelayed = false
+  }
+
+  freeCameraButton = {
+    ctor = mkFreeCameraButton
+    defTransform = mkLTPos([hdpx(0), hdpx(450)])
+    editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
   }
 })

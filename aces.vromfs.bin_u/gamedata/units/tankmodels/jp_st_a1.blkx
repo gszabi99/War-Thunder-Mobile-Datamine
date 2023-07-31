@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.42,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.15,
@@ -2449,8 +2450,8 @@
     "sightName": "tzf_1a",
     "headPos": [
       0.0,
-      2.0,
-      -17.5
+      3.8,
+      -13.2
     ],
     "headPosOnShooting": [
       0.1,

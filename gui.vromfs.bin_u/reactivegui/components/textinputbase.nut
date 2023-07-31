@@ -50,26 +50,6 @@ let function isStringLikelyEmail(str, _verbose = true) {
   return true
 }
 
-let function defaultFrame(inputObj, group, sf) {
-  return {
-    rendObj = ROBJ_FRAME
-    borderWidth = [hdpx(1), hdpx(1), 0, hdpx(1)]
-    size = [flex(), SIZE_TO_CONTENT]
-    color = (sf & S_KB_FOCUS) ? Color(180, 180, 180) : Color(120, 120, 120)
-    group = group
-
-    children = {
-      rendObj = ROBJ_FRAME
-      borderWidth = [0, 0, hdpx(1), 0]
-      size = [flex(), SIZE_TO_CONTENT]
-      color = (sf & S_KB_FOCUS) ? Color(250, 250, 250) : Color(180, 180, 180)
-      group = group
-
-      children = inputObj
-    }
-  }
-}
-
 let function isValidStrByType(str, inputType) {
   if (str == "")
     return true
@@ -84,17 +64,15 @@ let function isValidStrByType(str, inputType) {
   return true
 }
 
-let defaultColors = {
-  placeHolderColor = Color(80, 80, 80, 80)
-  textColor = Color(255, 255, 255)
-  backGroundColor = Color(28, 28, 28, 150)
-  highlightFailure = Color(255, 60, 70)
-}
+let textColor = Color(255, 255, 255)
+let placeHolderColor = Color(80, 80, 80, 80)
+let backGroundColor = 0xFF000000
+let failureColor = Color(255, 60, 70)
 
 
 let failAnim = @(trigger) {
   prop = AnimProp.color
-  from = defaultColors.highlightFailure
+  from = failureColor
   easing = OutCubic
   duration = 1.0
   trigger = trigger
@@ -102,15 +80,14 @@ let failAnim = @(trigger) {
 
 let interactiveValidTypes = ["num", "lat", "integer", "float"]
 
-let function textInput(text_state, options = {}, frameCtor = defaultFrame) {
+let function textInput(text_state, options = {}) {
   let group = ElemGroup()
   let {
     setValue = @(v) text_state(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = null,
-    title = null, font = null, fontSize = null, hotkeys = null,
-    size = [flex(), fontH(100)], textmargin = [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
-    margin = [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
+    title = null, hotkeys = null,
     xmbNode = null, imeOpenJoyBtn = null, charMask = null,
+    ovr = {}, textStyle = {},
 
     //handlers
     onBlur = null, onReturn = null,
@@ -121,8 +98,6 @@ let function textInput(text_state, options = {}, frameCtor = defaultFrame) {
   local {
     isValidResult = null, isValidChange = null
   } = options
-
-  let colors = defaultColors.__merge(options?.colors ?? {})
 
   isValidResult = isValidResult ?? @(new_value) isValidStrByType(new_value, inputType)
   isValidChange = isValidChange
@@ -162,12 +137,9 @@ let function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     let phBase = {
       text = placeholder
       rendObj = ROBJ_TEXT
-      font
-      fontSize
-      color = colors.placeHolderColor
       animations = [failAnim(text_state)]
       margin = [0, sh(0.5)]
-    }
+    }.__update(textStyle, { color = placeHolderColor })
     placeholderObj = placeholder instanceof Watched
       ? @() phBase.__update({ watch = placeholder, text = placeholder.value })
       : phBase
@@ -178,13 +150,10 @@ let function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     rendObj = ROBJ_TEXT
     behavior = [Behaviors.TextInput, Behaviors.Button]
 
-    size
-    font
-    fontSize
-    color = colors.textColor
+    size = [flex(), fontH(100)]
+    color = textColor
     group
-    margin = textmargin
-    valign = valignText
+    valign = ALIGN_CENTER
 
     animations = [failAnim(text_state)]
 
@@ -214,32 +183,23 @@ let function textInput(text_state, options = {}, frameCtor = defaultFrame) {
         && (showPlaceHolderOnFocus || !(stateFlags.value & S_KB_FOCUS))
       ? placeholderObj
       : null
-  }
+  }.__update(textStyle)
 
   return @() {
-    watch = [stateFlags]
+    watch = stateFlags
+    size = [flex(), SIZE_TO_CONTENT]
     onElemState = @(sf) stateFlags(sf)
-    margin
-    padding
 
     rendObj = ROBJ_BOX
-    fillColor = colors.backGroundColor
-    borderWidth = 0
-    borderRadius
+    fillColor = backGroundColor
+    borderRadius = hdpx(3)
     clipChildren = true
-    size = [flex(), SIZE_TO_CONTENT]
     group
     animations = [failAnim(text_state)]
-    valign
+    valign = ALIGN_CENTER
 
-    children = frameCtor(inputObj, group, stateFlags.value)
-  }
+    children = inputObj
+  }.__update(ovr)
 }
 
-
-let export = class{
-  defaultColors = defaultColors
-  _call = @(_self, text_state, options = {}, frameCtor = defaultFrame) textInput(text_state, options, frameCtor)
-}()
-
-return export
+return textInput

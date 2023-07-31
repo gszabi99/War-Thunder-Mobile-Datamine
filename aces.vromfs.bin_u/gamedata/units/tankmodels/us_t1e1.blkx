@@ -2624,8 +2624,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -18.0
+      3.8,
+      -13.6
     ],
     "headPosOnShooting": [
       -0.5,

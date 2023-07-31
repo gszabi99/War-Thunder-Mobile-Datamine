@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.45,
+  "minRelativeTankCameraThreshold": 1.34,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -1453,7 +1453,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2419,8 +2420,8 @@
     "sightName": "tzf_12a",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.3
     ],
     "headPosOnShooting": [
       -0.6,

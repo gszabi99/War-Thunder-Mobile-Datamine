@@ -11,7 +11,7 @@ let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
-  quit_mission_after_complete, restart_mission
+  quit_mission_after_complete, restart_mission, get_mission_restore_type
 } = require("guiMission")
 
 let function canRestart() {
@@ -23,7 +23,7 @@ let function canRestart() {
 
 let function canBailout() {
   let gm = get_game_mode()
-  return (::get_mission_restore_type() != ERT_MANUAL || gm == GM_TEST_FLIGHT)
+  return (get_mission_restore_type() != ERT_MANUAL || gm == GM_TEST_FLIGHT)
     && !is_benchmark_game_mode()
     && !::is_camera_not_flight()
     && ::is_player_can_bailout()

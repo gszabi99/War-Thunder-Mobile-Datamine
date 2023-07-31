@@ -12,7 +12,7 @@ let { set_current_decorator, unset_current_decorator, decoratorInProgress
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { tabW } = require("%rGui/options/optionsStyle.nut")
+let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { CS_SMALL, CS_INCREASED_ICON } = require("%rGui/components/currencyStyles.nut")
@@ -28,10 +28,9 @@ let CS_DECORATORS = CS_SMALL.__merge({
   fontStyle = fontTiny
 })
 
-let minContentOffset = hdpx(300)
-let contentWidth = (saSize[0] - tabW - minContentOffset)
 let maxDecInRow = 9
-let columns = min((saSize[0] - tabW - minContentOffset)/(gap + squareSize[0]), maxDecInRow)
+let columns = min(contentWidthFull / (gap + squareSize[0]), maxDecInRow)
+
 
 let selectedDecorator = Watched(chosenNickFrame.value?.name)
 
@@ -105,7 +104,7 @@ let function tagBtn(item) {
       scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1]
     }
     children = [
-      {
+      @() {
         watch = isAvailable
         rendObj = ROBJ_TEXT
         halign = ALIGN_CENTER
@@ -202,7 +201,7 @@ let framesList = @() {
 }
 
 let decorationNameWnd = {
-  size = [contentWidth, flex()]
+  size = flex()
   flow = FLOW_VERTICAL
   gap
   children = [

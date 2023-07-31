@@ -1409,7 +1409,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2506,8 +2507,8 @@
     "sightName": "telescope_m71g",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       -1.5,
@@ -2520,6 +2521,9 @@
     "tank_tool_kit_expendable": {},
     "art_support": {},
     "tank_extinguisher": {}
+  },
+  "battleHideNodes": {
+    "n": "details"
   },
   "dm_for_shop": {
     "armorThicknessFront": [
@@ -2738,9 +2742,6 @@
         "param": "camo_skin_tex"
       }
     ]
-  },
-  "battleHideNodes": {
-    "n": "details"
   },
   "defaultDecals": {
     "default": {

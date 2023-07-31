@@ -1,4 +1,4 @@
-from "%scripts/dagui_library.nut" import *
+from "%globalsDarg/darg_library.nut" import *
 
 let isExpirienceWndOpen = Watched(false)
 

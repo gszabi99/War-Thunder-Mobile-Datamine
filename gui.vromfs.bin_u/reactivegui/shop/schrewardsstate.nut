@@ -9,6 +9,7 @@ let { isAdsAvailable, canShowAds, showAdsForReward } = require("%rGui/ads/adsSta
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 
+let watchedSchRewardAd = Watched({})
 let schRewards = Computed(@() (campConfigs.value?.schRewards ?? {})
   .filter(@(g) isGoodsFitToCampaign(g, campConfigs.value))
   .map(@(g, id) g.__merge({ id, gtype = getGoodsType(g), isFreeReward = true })))
@@ -30,6 +31,13 @@ let schRewardsByCategory = Computed(function() {
 })
 
 let actualSchRewardByCategory = Watched({})
+let actualSchRewards = Computed(function() {
+  let res = {}
+  foreach (v in actualSchRewardByCategory.value)
+    res[v.id] <- v
+  return res
+})
+
 let nextUpdate = Watched({ time = 0 }) //even when value changed to the same, better to restart timer.
 
 let READY_ADVERT      = 10000000000
@@ -103,11 +111,16 @@ subscribe("adsRewardApply", function(data) {
   if (reward == null)
     return
   let receivedTime = receivedSchRewards.value?[schRewardId] ?? 0
-  if (receivedTime + reward.interval <= serverTime.value)
+  if (receivedTime + reward.interval <= serverTime.value) {
     apply_scheduled_reward(schRewardId)
+    watchedSchRewardAd({ schRewardId, receivedTime })
+  }
+
 })
 
 return {
   actualSchRewardByCategory
+  actualSchRewards
   onSchRewardReceive
+  watchedSchRewardAd
 }

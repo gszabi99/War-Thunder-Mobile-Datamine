@@ -11,15 +11,15 @@ let { getSysInfo } = require("%scripts/login/sysInfo.nut")
 let { applyRights } = require("%scripts/login/applyRights.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { rightsError } = require("%appGlobals/permissions/userRights.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isAuthAndUpdated } = require("%appGlobals/loginState.nut")
 let charClientEvent = require("%scripts/charClientEvent.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 const RETRY_LOGIN_MSEC = 5000 //120000
 
-let isLoggedIntoContacts = mkHardWatched("isLoggedIntoContacts", false)
-let lastLoginErrorTime = mkHardWatched("lastLoginErrorTime", -1)
+let isLoggedIntoContacts = hardPersistWatched("isLoggedIntoContacts", false)
+let lastLoginErrorTime = hardPersistWatched("lastLoginErrorTime", -1)
 
 let { request, registerHandler } = charClientEvent("contacts", contacts)
 

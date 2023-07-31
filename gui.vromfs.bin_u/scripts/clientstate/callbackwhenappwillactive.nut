@@ -2,9 +2,9 @@ from "%scripts/dagui_library.nut" import *
 let { send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { windowActive } = require("%globalScripts/windowState.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let cbs = mkHardWatched("callbackWhenAppWillActive", [])
+let cbs = hardPersistWatched("callbackWhenAppWillActive", [])
 
 let function popCbs() {
   let list = cbs.value

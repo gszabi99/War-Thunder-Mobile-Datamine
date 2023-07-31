@@ -44,6 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.52,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -1644,7 +1645,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_17pdr_QF_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/76mm_17pdr_QF_challenger_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.195,
@@ -2331,8 +2332,8 @@
     "sightName": "no43x3_ml_mk3",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.5
     ],
     "headPosOnShooting": [
       0.6,
@@ -2426,7 +2427,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_17pdr_QF_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/76mm_17pdr_QF_challenger_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.195,

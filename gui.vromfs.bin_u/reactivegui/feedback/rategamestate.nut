@@ -5,7 +5,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDownloadedFromGooglePlay } = require("android.platform")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { allow_review_cue } = require("%appGlobals/permissions.nut")
 let { sendCustomBqEvent, sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
@@ -36,7 +36,7 @@ let SHOULD_USE_REVIEW_CUE = true // true = use reviewCueWnd, false = use feedbac
 let userFeedbackTube = "user_feedback"
 let pollId = "review_que"
 
-let isRateGameSeen = mkHardWatched("rateGameState.isRateGameSeen", false)
+let isRateGameSeen = hardPersistWatched("rateGameState.isRateGameSeen", false)
 isLoggedIn.subscribe(@(_) isRateGameSeen(false))
 
 let isRatedOnStore = Watched(false)

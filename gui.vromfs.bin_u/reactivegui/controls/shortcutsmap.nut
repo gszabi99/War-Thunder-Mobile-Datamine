@@ -29,6 +29,8 @@ let allShortcuts = {
   ID_TRANS_GEAR_DOWN = "S | Down"
   gm_steering_right = "D | Right"
   gm_steering_left = "A | Left"
+  wheel_steering_right = "D | Right"
+  wheel_steering_left = "A | Left"
 
   //SHIP shortcuts:
   ship_main_engine_rangeMax = "J:LS.Up | W | Up"
@@ -40,7 +42,7 @@ let allShortcuts = {
   ID_SHIP_WEAPON_EXTRA_GUN_1 = "J:LT | Z" //minigun
   ID_SHIP_WEAPON_EXTRA_GUN_2 = "J:LB | T"
   ID_SHIP_WEAPON_TORPEDOES = "J:A | X"
-  ID_SHIP_WEAPON_MINE = "J:X | C"
+  ID_SHIP_WEAPON_MINE = "J:B | C"
   ID_WTM_LAUNCH_AIRCRAFT = "J:D.Down | Q" //also used for aircraft return to ship
 
 
@@ -75,6 +77,7 @@ let gamepadAxes = {
   gm_mouse_aim_y = JOY_XBOX_REAL_AXIS_R_THUMB_V
   gm_throttle = JOY_XBOX_REAL_AXIS_L_THUMB_V
   gm_steering = JOY_XBOX_REAL_AXIS_L_THUMB_H
+  wheel_steering = JOY_XBOX_REAL_AXIS_L_THUMB_H
 
   //SHIP
   ship_mouse_aim_x = JOY_XBOX_REAL_AXIS_R_THUMB_H

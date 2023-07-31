@@ -8,6 +8,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let LOAD_ADS_BEFORE_TIME = 120 //2 min before ads will be ready to watch
 let RETRY_LOAD_TIMEOUT = 120
+let RETRY_INC_TIMEOUT = 60 //increase time with each fail, but reset on success. Also retry after battle without timeout
 
 let needAdsLoadByTime = Watched(false)
 let needAdsLoad = Computed(@() !isInBattle.value && needAdsLoadByTime.value)
@@ -47,6 +48,7 @@ let cancelReward = @() rewardInfo(null)
 
 return {
   RETRY_LOAD_TIMEOUT
+  RETRY_INC_TIMEOUT
   needAdsLoad
   rewardInfo
   giveReward

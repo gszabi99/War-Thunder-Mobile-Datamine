@@ -633,7 +633,7 @@ let function mkContentBlock(data, rewardsInfo) {
     teaserWp <= 0 ? null : { value = teaserWp, contentCtor = @(value) mkCurrencyComp(value, WP, CS_DEBRIEFING_REWARD) }
   ].filter(@(v) v != null)
 
-  let { statsAnimEndTime, debriefingStats } = mkDebriefingStats(data, get_time_msec() + mainMissionResultAnimTime * 1000)
+  let { statsAnimEndTime, debriefingStats } = mkDebriefingStats(data, get_time_msec() + (1000 * mainMissionResultAnimTime).tointeger())
   let rewardsStartTime = statsAnimEndTime + deltaStartTimeLevelReward
 
   let totalRewardsCompsArr = mkAnimatedRewards(0, totalRewardsCtors, rewardsStartTime)
@@ -781,7 +781,7 @@ let function debriefingWnd() {
           mkContentBlock(debriefingData.value, rewardsInfo)
         ]
       }
-      {
+      @() {
         watch = countUpgradeButtonPushed
         size = [flex(), SIZE_TO_CONTENT]
         vplace = ALIGN_BOTTOM

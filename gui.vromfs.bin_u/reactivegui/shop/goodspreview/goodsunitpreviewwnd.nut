@@ -167,6 +167,7 @@ let unitInfoButton = {
         unitDetailsWnd({
           name = previewGoodsUnit.value?.name
           isUpgraded = previewGoodsUnit.value?.isUpgraded ?? false
+          canShowOwnUnit = false
         })
         skipAnimsOnce(true)
       },

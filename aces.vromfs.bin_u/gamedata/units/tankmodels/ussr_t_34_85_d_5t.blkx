@@ -46,6 +46,10 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": [
+    1.42,
+    1.45
+  ],
   "sound": {
     "EngineName": "engine_medium_diesel",
     "TrackSoundPathStudio": "ground/engines",
@@ -2488,8 +2492,8 @@
     "sightName": "tsh_15",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       0.3,

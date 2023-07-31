@@ -5,7 +5,7 @@ let { get_time_msec } = require("dagor.time")
 let { doesLocTextExist } = require("dagor.localize")
 let logG = log_with_prefix("[GOODS] ")
 let { is_pc } = require("%sqstd/platform.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
@@ -43,8 +43,8 @@ let { //defaults only to allow test this module on PC
 } = !is_pc ? require("ios.billing.appstore") : {}
 
 const REPEAT_ON_ERROR_MSEC = 60000
-let lastInitStatus = mkHardWatched("goodsIos.lastInitStatus", AS_NOT_INITED)
-let products = mkHardWatched("goodsIos.products", {})
+let lastInitStatus = hardPersistWatched("goodsIos.lastInitStatus", AS_NOT_INITED)
+let products = hardPersistWatched("goodsIos.products", {})
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 let availablePrices = Computed(function() {
   let res = {}

@@ -213,8 +213,8 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
         }
         textInput(filterText, {
           placeholder = "filter..."
-          textmargin = hdpx(5)
-          margin = 0
+          textStyle = fontVeryTiny
+          ovr = { padding = [hdpx(5), hdpx(10)] }
           onChange = @(value) filterText(value)
           onEscape = @() filterText.value == "" ? close() : filterText("")
           hotkeys = [["L.Ctrl C", { action = @() copy_to_clipboard(textWatch.value) }]]
@@ -229,7 +229,7 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
         size = [flex(), SIZE_TO_CONTENT]
         children = mkInfoBlock(curTab.value, tabs, filterText, textWatch)
       },
-      { rootBase = class { behavior = Behaviors.Pannable } })
+      { rootBase = { behavior = Behaviors.Pannable } })
   ]
 }
 

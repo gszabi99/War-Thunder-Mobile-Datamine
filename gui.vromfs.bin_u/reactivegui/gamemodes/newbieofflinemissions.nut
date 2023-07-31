@@ -15,13 +15,13 @@ let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { startOfflineBattle } = require("startOfflineMode.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { apply_first_battles_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 
 let ERROR_REPEAT_TIME_MSEC = 60000
 
-let delayedRewards = mkHardWatched("newbieOfflineMissions.delayedRewards", {}) //userId -> campaign -> { rewardId, unitName }
-let lastErrorTime = mkHardWatched("newbieOfflineMissions.lastErrorTime", -1)
+let delayedRewards = hardPersistWatched("newbieOfflineMissions.delayedRewards", {}) //userId -> campaign -> { rewardId, unitName }
+let lastErrorTime = hardPersistWatched("newbieOfflineMissions.lastErrorTime", -1)
 let isRewardRequested = mkWatched(persist, "isRewardRequested", false)
 let curDelayedRewardId = Computed(function() {
   let list = delayedRewards.value?[myUserId.value][curCampaign.value] ?? []

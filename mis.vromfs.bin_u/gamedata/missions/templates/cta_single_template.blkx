@@ -138,7 +138,8 @@
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "@bq_record"
+          "event": "@bq_record",
+          "name": ""
         },
         "varSetInt": [
           {
@@ -990,7 +991,8 @@
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "@bq_record"
+          "event": "@bq_record",
+          "name": ""
         },
         "triggerDisable": {
           "target": [
@@ -1086,7 +1088,8 @@
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "@bq_record"
+          "event": "@bq_record",
+          "name": ""
         },
         "triggerDisable": {
           "target": [
@@ -1180,7 +1183,8 @@
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "@bq_record"
+          "event": "@bq_record",
+          "name": ""
         },
         "triggerDisable": {
           "target": [
@@ -1278,7 +1282,8 @@
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "@bq_record"
+          "event": "@bq_record",
+          "name": ""
         },
         "varSetInt": {
           "value": 1,
@@ -1885,8 +1890,8 @@
         "gameMPChangeScore": {
           "value": -20,
           "valueSystem": "percentage",
-          "team": "A",
-          "ignoreSingleMissions": false
+          "ignoreSingleMissions": false,
+          "team": "A"
         }
       },
       "else_actions": {}
@@ -1931,8 +1936,8 @@
         "gameMPChangeScore": {
           "value": -20,
           "valueSystem": "percentage",
-          "team": "B",
-          "ignoreSingleMissions": false
+          "ignoreSingleMissions": false,
+          "team": "B"
         }
       },
       "else_actions": {}
@@ -2006,7 +2011,8 @@
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "@bq_record"
+          "event": "@bq_record",
+          "name": ""
         },
         "missionCompleted": {
           "team": "A",
@@ -2086,7 +2092,8 @@
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "@bq_record"
+          "event": "@bq_record",
+          "name": ""
         },
         "missionFailed": {
           "team": "A",
@@ -2160,7 +2167,8 @@
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "@bq_record"
+          "event": "@bq_record",
+          "name": ""
         },
         "triggerDisable": {
           "target": [
@@ -2642,7 +2650,8 @@
           ],
           "bigQueryAddRecord": {
             "params": "",
-            "event": "@bq_kills_record"
+            "event": "@bq_kills_record",
+            "name": ""
           }
         },
         "else_actions": {}
@@ -2693,7 +2702,8 @@
           ],
           "bigQueryAddRecord": {
             "params": "",
-            "event": "@bq_deaths_record"
+            "event": "@bq_deaths_record",
+            "name": ""
           }
         },
         "else_actions": {}

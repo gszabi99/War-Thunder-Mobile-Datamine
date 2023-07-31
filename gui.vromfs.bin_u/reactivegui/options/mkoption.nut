@@ -50,6 +50,7 @@ let function mkInfoButton(desc, locId){
     key
     watch = stateFlags
     behavior = Behaviors.Button
+    xmbNode = {}
     function onElemState(sf) {
       let hasHint = (stateFlags.value & S_ACTIVE) != 0
       let needHint =  (sf & S_ACTIVE) != 0

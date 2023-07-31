@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ALIGN_RB, ALIGN_LB, ALIGN_RT, ALIGN_LT, ALIGN_CT } = require("%rGui/hudTuning/hudTuningConsts.nut")
+let { ALIGN_RB, ALIGN_LB, ALIGN_RT, ALIGN_LT, ALIGN_CT, ALIGN_CB } = require("%rGui/hudTuning/hudTuningConsts.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { visibleWeaponsMap, visibleWeaponsDynamic } = require("%rGui/hud/currentWeaponsStates.nut")
@@ -133,6 +133,11 @@ let mkCTPos = @(pos) {
   align = ALIGN_CT
 }
 
+let mkCBPos = @(pos) {
+  pos
+  align = ALIGN_CB
+}
+
 return {
   withActionButtonCtor
   withActionBarButtonCtor
@@ -147,4 +152,5 @@ return {
   mkRTPos
   mkLTPos
   mkCTPos
+  mkCBPos
 }

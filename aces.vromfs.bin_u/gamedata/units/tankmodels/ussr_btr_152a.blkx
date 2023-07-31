@@ -48,7 +48,6 @@
     1.2,
     1.2
   ],
-  "minRelativeTankCameraThreshold": 1.6,
   "controlDevices": {
     "device": [
       {
@@ -2580,8 +2579,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.0
     ],
     "headPosOnShooting": [
       -1.2,

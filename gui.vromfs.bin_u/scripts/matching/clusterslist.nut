@@ -7,11 +7,11 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingOnline } = require("matchingOnline.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { optimalClusters } = require("%scripts/matching/optimalClusters.nut")
 
 const MAX_FETCH_RETRIES = 5
-let clusters = mkHardWatched("matching.clusters", [])
+let clusters = hardPersistWatched("matching.clusters", [])
 local isFetching = false
 local failedFetches = 0
 

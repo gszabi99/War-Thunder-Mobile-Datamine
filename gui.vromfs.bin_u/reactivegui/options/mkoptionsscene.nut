@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { contentOffset, contentWidth, tabW } = require("optionsStyle.nut")
+let { contentOffset, minContentOffset, contentWidth, contentWidthFull, tabW } = require("optionsStyle.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let backButton = require("%rGui/components/backButton.nut")
@@ -10,12 +10,14 @@ let mkOption = require("mkOption.nut")
 let mkOptionsTabs = require("mkOptionsTabs.nut")
 let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
 let { lerpClamped } = require("%sqstd/math.nut")
+let { isGamepad, isKeyboard } = require("%rGui/activeControls.nut")
 
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
 let topAreaSize = saBorders[1] + backButtonHeight + gapBackButton
 let gradientHeightBottom = hdpxi(256)
 let gradientHeightTop = min(topAreaSize, gradientHeightBottom)
+let isMoveByKeys = Computed(@() isGamepad.value || isKeyboard.value)
 
 let pageHeight = sh(100)
 let pageMask = mkBitmapPicture(2, (pageHeight / 10).tointeger(),
@@ -34,22 +36,44 @@ let pageMask = mkBitmapPicture(2, (pageHeight / 10).tointeger(),
     }
   })
 
-let mkVerticalPannableArea = @(content, override) {
-  flow = FLOW_VERTICAL
-  clipChildren = true
-  children = {
-    size = flex()
-    behavior = Behaviors.Pannable
+let function mkVerticalPannableArea(content, override) {
+  let root = {
+    watch = isMoveByKeys
     rendObj = ROBJ_MASK
     image = pageMask
-    flow = FLOW_VERTICAL
-    children = [
-    { size = [flex(), topAreaSize] }
-    content
-    { size = [flex(), gradientHeightBottom] }
-  ]
+  }.__update(override)
+
+  let pannable = {
+    size = flex()
+    behavior = Behaviors.Pannable
+    skipDirPadNav = true
+    xmbNode = {
+      canFocus = @() false
+      scrollSpeed = 5.0
+      isViewport = true
+      scrollToEdge = true
+      screenSpaceNav = true
+    }
   }
-}.__update(override)
+
+  return @() isMoveByKeys.value
+    ? root.__merge({
+        padding = [topAreaSize, 0, gradientHeightBottom, 0]
+        children = pannable.__merge({
+          children = content
+        })
+      })
+    : root.__merge({
+        children = pannable.__merge({
+          flow = FLOW_VERTICAL
+          children = [
+            { size = [flex(), topAreaSize] }
+            content
+            { size = [flex(), gradientHeightBottom] }
+          ]
+        })
+      })
+}
 
 let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null) {
   isOpened = isOpened ?? mkWatched(persist, $"{sceneId}_isOpened", false)
@@ -72,35 +96,38 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null
 
   let function curOptionsContent() {
     let tab = tabs?[curTabIdx.value]
-    return tab?.content ?
-      {
-        watch = curTabIdx
-        size = [contentWidth, flex()]
-        children = {
-          pos = [contentOffset, 0]
-          key = tab
-          size = flex()
-          flow = FLOW_VERTICAL
-          halign = ALIGN_CENTER
-          children = tab?.content
-          animations = wndSwitchAnim
+    let { isFullWidth = false } = tab
+    return tab?.content
+      ? {
+          watch = curTabIdx
+          size = [isFullWidth ? contentWidthFull : contentWidth, flex()]
+          children = {
+            pos = [isFullWidth ? minContentOffset : contentOffset, 0]
+            key = tab
+            size = flex()
+            flow = FLOW_VERTICAL
+            children = tab?.content
+            animations = wndSwitchAnim
+          }
         }
-      }
-    : mkVerticalPannableArea(
-      {
-        pos = [contentOffset, 0]
-        key = tab
-        size = [contentWidth, SIZE_TO_CONTENT]
-        flow = FLOW_VERTICAL
-        halign = ALIGN_CENTER
-        children = tab?.options.filter(@(v) v != null).map(mkOption)
-        animations = wndSwitchAnim
-      },
-      {
-        watch = curTabIdx
-        size = [sw(100) - tabW - saBorders[1], sh(100)]
-        pos = [0, -topAreaSize]
-      })
+      : {
+          watch = curTabIdx
+          size = flex()
+          children = mkVerticalPannableArea(
+            {
+              pos = [contentOffset, 0]
+              key = tab
+              size = [contentWidth, SIZE_TO_CONTENT]
+              flow = FLOW_VERTICAL
+              halign = ALIGN_CENTER
+              children = tab?.options.filter(@(v) v != null).map(mkOption)
+              animations = wndSwitchAnim
+            },
+            {
+              size = [sw(100) - tabW - saBorders[1], sh(100)]
+              pos = [0, -topAreaSize]
+            })
+        }
   }
 
   let tabsList = mkOptionsTabs(tabs, curTabIdx)

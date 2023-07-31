@@ -1,4 +1,3 @@
-from "%scripts/dagui_library.nut" import *
 let { get_settings_blk } = require("blkGetters")
 
 let setBlk = get_settings_blk()

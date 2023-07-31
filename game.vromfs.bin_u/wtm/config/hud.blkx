@@ -55,6 +55,7 @@
   "drawTargetNameFromDarg": true,
   "showDamageLog": false,
   "showHitCameraOnTargetSelect": true,
+  "drawTargetingSightInZoom": true,
   "showReturnToMapHintFromDarg": true,
   "shouldDrawWeaponAllowableAngles": false,
   "allowableAnglesColor": "AP//yA==",
@@ -693,6 +694,7 @@
     "crosshairDifferentDistanceAlpha": 255,
     "blinkingMouseAimScale": 1.1,
     "crosshairDmCheckIntervalmsec": 250.0,
+    "crosshairReticleWidth": 1.0,
     "arcadeMissColor": "////yA==",
     "arcadeIdealColor": "/zIy/w==",
     "arcadeCutoff": 5.0,
@@ -727,6 +729,11 @@
       4.0,
       0.05
     ],
+    "missileSalvoTimerOffset": [
+      100.0,
+      60.0
+    ],
+    "missileSalvoTimerScale": 1.0,
     "rangefinderUseThousandth": false,
     "rangefinderVerticalOffset": 0.1,
     "rangefinderHorizontalOffset": 5.0,
@@ -1070,6 +1077,11 @@
       4.0,
       0.05
     ],
+    "missileSalvoTimerOffset": [
+      100.0,
+      60.0
+    ],
+    "missileSalvoTimerScale": 1.0,
     "rangefinderUseThousandth": true,
     "rangefinderVerticalOffset": 15.0,
     "rangefinderHorizontalOffset": 5.0,
@@ -2617,14 +2629,17 @@
       "support_plane_group_attack": {
         "shortcutIdx": 31
       },
-      "stealth_activate": {
+      "support_plane_return": {
         "shortcutIdx": 32
       },
-      "weapon_lock": {
+      "stealth_activate": {
         "shortcutIdx": 33
       },
-      "diving_lock": {
+      "weapon_lock": {
         "shortcutIdx": 34
+      },
+      "diving_lock": {
+        "shortcutIdx": 35
       }
     },
     "wheelActions": {
@@ -3284,18 +3299,10 @@
   },
   "touchAreaLimitsTanks": {
     "area": [
-      [
-        0.0,
-        1.0,
-        0.5,
-        -0.5
-      ],
-      [
-        0.24,
-        0.25,
-        0.1,
-        0.4
-      ]
+      0.24,
+      0.25,
+      0.1,
+      0.4
     ]
   },
   "move_direction_arrow": {

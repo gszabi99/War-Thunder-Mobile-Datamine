@@ -3,7 +3,7 @@
 from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 local MRoomsHandlers = class {
   [PERSISTENT_DATA_PARAMS] = [
@@ -24,7 +24,7 @@ local MRoomsHandlers = class {
     this.roomMembers = []
     this.roomOps = {}
 
-    g_script_reloader.registerPersistentData("MRoomsHandlers", this, this[PERSISTENT_DATA_PARAMS])
+    registerPersistentData("MRoomsHandlers", this, this[PERSISTENT_DATA_PARAMS])
 
     foreach (notificationName, callback in
               {

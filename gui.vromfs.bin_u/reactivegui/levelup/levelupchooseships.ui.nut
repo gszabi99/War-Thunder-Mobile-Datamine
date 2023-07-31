@@ -183,7 +183,7 @@ let mkVerticalPannableArea = @(content, override = {}) {
   size = flex()
   flow = FLOW_VERTICAL
   clipChildren = true
-  children = class {
+  children = {
     size = flex()
     behavior = Behaviors.Pannable
     children = content

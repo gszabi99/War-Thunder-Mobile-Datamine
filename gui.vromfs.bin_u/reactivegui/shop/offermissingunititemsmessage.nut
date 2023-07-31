@@ -8,9 +8,8 @@ let { items } = require("%appGlobals/pServer/campaign.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textButtonBattle, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, PURCHASE } = require("%rGui/components/buttonStyles.nut")
-let { decorativeLineBgMW, bgMW } = require("%rGui/style/stdColors.nut")
+let { decorativeLineBgMW } = require("%rGui/style/stdColors.nut")
 let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServerApi.nut")
-let { msgBoxText } = require("%rGui/components/msgBox.nut")
 let { mkCurrencyComp, CS_INCREASED_ICON, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -20,40 +19,60 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 } = require("unseenPurchasesState.nut")
 let { balanceWp, balanceGold } = require("%appGlobals/currenciesState.nut")
 let { CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
-let { ceil } = require("%sqstd/math.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { unitAttributes } = require("%rGui/unitAttr/unitAttrState.nut")
+let { ceil } = require("%sqstd/math.nut")
 
 let itemsGap = hdpx(50)
 let itemImageSize = hdpxi(80)
 
 let itemBuyingWidth = hdpx(1000)
-let itemBuyingHeaderHeight = sh(8)
 let insideIndent = hdpxi(50)
 
 let itemSize = hdpx(160)
+let battleItemIconSize = hdpxi(105)
+let arrowSize =  [hdpxi(80), hdpxi(60)]
 
 let WND_UID = "itemWnd"
 let close = @() removeModalWindow(WND_UID)
 
+let defaultPurchaseDesc = "msg/purchaseDesc/toolKit"
+
+let battleItemsIcons = {
+  ship_tool_kit = $"ui/gameuiskin#hud_consumable_repair.svg"
+  ship_smoke_screen_system_mod = $"ui/gameuiskin#hud_consumable_smoke.svg"
+  tank_tool_kit_expendable = $"ui/gameuiskin#hud_consumable_repair.svg"
+  tank_extinguisher = $"ui/gameuiskin#fire_indicator.svg"
+}
+
+let purchaseDesc = {
+  ship_tool_kit = "msg/purchaseDesc/toolKit"
+  tank_tool_kit_expendable = "msg/purchaseDesc/toolKit"
+  tank_extinguisher = "msg/purchaseDesc/extinguisher"
+  ship_smoke_screen_system_mod = "msg/purchaseDesc/smoke"
+}
+
 let decorativeLine = @(){
-  rendObj = ROBJ_IMAGE
+  rendObj = ROBJ_9RECT
   image = gradTranspDoubleSideX
   color = decorativeLineBgMW
   size = [ itemBuyingWidth, hdpx(6) ]
 }
 
-let itemBuyingHeader = @(unit){
-  rendObj = ROBJ_IMAGE
-  image = gradTranspDoubleSideX
-  color = bgMW
-  size = [ itemBuyingWidth, itemBuyingHeaderHeight ]
-  valign = ALIGN_CENTER
+let itemBuyingHeader = @(unit, itemId){
+  size = [ itemBuyingWidth, SIZE_TO_CONTENT ]
   halign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text =  loc("header/notFullBattleItems", {unitName = getPlatoonOrUnitName(unit, loc)?? ""})
+  pos = [0, hdpx(-50)]
+  colorTable = {
+    shipNameColor = 0x1052C4E4
+  }
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  text = loc("header/notFullBattleItems", {
+    itemName = loc($"item/{itemId}/notEnough")
+    unitName = getPlatoonOrUnitName(unit, loc)?? ""})
   }.__update(fontMedium)
-}
 
 let function getCheapestGoods(allGoods, isFit) {
   let byCurrency = {}
@@ -76,17 +95,25 @@ let mkMissingItemsComp = @(unit) Computed(function() {
   let consumablesList = itemsCfgOrdered.value.filter(@(i) i.name != "spare")
   foreach (cfg in consumablesList) {
     let { battleLimit = 0, itemsPerUse = 0, name = "" } = cfg
+    let { itemsByAttributes = [] } = serverConfigs.value
     if (battleLimit <= 0)
       continue
+    let attributes = itemsByAttributes.filter(@(item) item.item == name)
+    local limitItems = battleLimit
+    foreach(attr in attributes){
+      let curLevel = unitAttributes.value?[attr?.category][attr?.attribute] ?? 0
+      limitItems += attr?.battleLimitAdd?[curLevel - 1] ?? 0
+    }
     let perUse = itemsPerUse <= 0 ? unitItemsPerUse : itemsPerUse
-    let reqItems = perUse * battleLimit
+    let reqItems = perUse * limitItems
     let hasItems = items.value?[name].count ?? 0
     if (reqItems <= hasItems)
       continue
+    let hasUsing = ceil(hasItems/perUse)
     let goods = getCheapestGoods(shopGoods.value, @(goods) (goods?.items[name] ?? 0) > 0)
     let { price = 0 } = goods?.price
     if (price > 0)
-      res.append({ itemId = name, reqItems, hasItems, goods })
+      res.append({ itemId = name, reqItems, hasItems, goods, hasUsing, limitItems})
   }
   return res
 })
@@ -142,12 +169,15 @@ let mkMsButtons = @(goods, toBattle)
     })
 
 let countText = @(count){
-  rendObj = ROBJ_TEXT
-  color = 0xFFFFFFFF
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  colorTable = {
+    mark = 0xFFFF0000
+  }
   text = count
 }.__update(fontTiny)
 
-let function mkMsgContent(item, needSwitchAnim, toBattle) {
+let function mkMsgContent(item, needSwitchAnim, toBattle, unit) {
   return {
     key = item.itemId
     rendObj = ROBJ_9RECT
@@ -155,12 +185,14 @@ let function mkMsgContent(item, needSwitchAnim, toBattle) {
     padding = [ insideIndent, 0 ]
     size = [ flex(), SIZE_TO_CONTENT ]
     texOffs = [0 , gradDoubleTexOffset]
-    screenOffs = [0, hdpx(120)]
-    color = bgMW
+    screenOffs = [ hdpx(200), hdpx(300)]
+    color = 0xCC000000
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
+    vplace = ALIGN_CENTER
     children = [
+      itemBuyingHeader(unit, item.itemId)
       @(){
         pos = [-hdpx(35), 0]
         size = SIZE_TO_CONTENT
@@ -170,7 +202,7 @@ let function mkMsgContent(item, needSwitchAnim, toBattle) {
         padding = [ insideIndent*2, 0 ]
         children = [
           @() {
-            size = [hdpx(160), hdpx(160)]
+            size = [itemSize, itemSize]
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/images/offer_item_slot_bg.avif:{itemSize}:{itemSize}")
             children = [
@@ -192,13 +224,13 @@ let function mkMsgContent(item, needSwitchAnim, toBattle) {
           }
           {
             margin = [0, hdpx(25),0,hdpx(25)]
-            size = [hdpx(80), hdpx(60)]
+            size = arrowSize
             valign = ALIGN_CENTER
             rendObj = ROBJ_IMAGE
-            image = Picture($"!ui/gameuiskin#arrow_icon.svg:{hdpx(80)}:{hdpx(60)}:P")
+            image = Picture($"ui/gameuiskin#arrow_icon.svg:{arrowSize[0]}:{arrowSize[1]}:P")
           }
           {
-            size = [hdpx(105), hdpx(105)]
+            size = [battleItemIconSize, battleItemIconSize]
             rendObj = ROBJ_BOX
             color = 0xFFFFFFFF
             borderColor = 0xFFFFFFFF
@@ -207,8 +239,8 @@ let function mkMsgContent(item, needSwitchAnim, toBattle) {
             children = [
               {
                 rendObj = ROBJ_IMAGE
-                size = [hdpx(105), hdpx(105)]
-                image = Picture($"!ui/gameuiskin#hud_consumable_repair.svg:{itemSize}:{itemSize}:P")
+                size = [battleItemIconSize, battleItemIconSize]
+                image = Picture($"{battleItemsIcons[item.itemId]}:{battleItemIconSize}:{battleItemIconSize}:P")
               }
               @() {
                 size = [flex(), hdpx(30)]
@@ -219,21 +251,28 @@ let function mkMsgContent(item, needSwitchAnim, toBattle) {
                 color = 0x80000000
                 flow = FLOW_HORIZONTAL
                 gap = hdpx(5)
-                children = countText("".concat(ceil(item.hasItems*100/item.reqItems).tostring() , "/10"))
+                children = countText($"<color=@mark>{item.hasUsing}</color>/{item.limitItems}")
               }
             ]
           }
         ]
       }
+      {
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        size = [hdpx(700), SIZE_TO_CONTENT]
+        halign = ALIGN_CENTER
+        colorTable = {
+          mark = 0xFFFF0000
+        }
+        text = loc(purchaseDesc?[item?.itemId] ?? defaultPurchaseDesc)
+      }.__update(fontTiny)
       @() {
         pos = [hdpx(250), 0]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        flow = FLOW_VERTICAL
-        children = [
-          msgBoxText(loc("msg/doYouWantPurchase"), { size = [hdpx(300), SIZE_TO_CONTENT] }.__update(fontTiny))
-          mkItemsRewards(item.goods)
-        ]
+        flow = FLOW_HORIZONTAL
+        children = mkItemsRewards(item.goods)
       }
       mkMsButtons(item.goods, toBattle)
     ]
@@ -265,7 +304,7 @@ let function itemsPurchaseMessage(missItems, toBattle, unit) {
         needSwitchAnim = true
       }
       children = itemToShow.value == null ? null
-        : mkMsgContent(itemToShow.value, needSwitchAnim, toBattle)
+        : mkMsgContent(itemToShow.value, needSwitchAnim, toBattle, unit)
     }
   }
   addModalWindow(bgShaded.__merge({
@@ -283,7 +322,6 @@ let function itemsPurchaseMessage(missItems, toBattle, unit) {
       children =
         [
           decorativeLine
-          itemBuyingHeader(unit)
           content
           decorativeLine
         ]
@@ -298,7 +336,6 @@ let function offerMissingUnitItemsMessage(unit, toBattle) {
     toBattle()
     return
   }
-
   let missItems = mkMissingItemsComp(unit)
   if (missItems.value.len() == 0) {
     toBattle()

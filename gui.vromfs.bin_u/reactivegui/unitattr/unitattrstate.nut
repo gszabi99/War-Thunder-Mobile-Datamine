@@ -8,6 +8,7 @@ let isUnitAttrOpened = mkWatched(persist, "isUnitAttrOpened", false)
 
 let selAttributes = mkWatched(persist, "selAttributes", {})
 let curCategoryId = mkWatched(persist, "curCategoryId", null)
+let lastModifiedAttr = Watched(null)
 
 const AVAIL_PART_FOR_GROUP = 0.7
 const MAX_AVAIL_STATUS = 3
@@ -143,11 +144,14 @@ let function getMaxAttrLevelData(attr, fromLevel, availSp) {
   return { maxLevel, maxLevelSp }
 }
 
-let setAttribute = @(catId, attrId, value) selAttributes(selAttributes.value.__merge({
-  [catId] = (selAttributes.value?[catId] ?? {}).__merge({
-     [attrId] = value
-  })
-}))
+let function setAttribute(catId, attrId, value) {
+  selAttributes(selAttributes.value.__merge({
+    [catId] = (selAttributes.value?[catId] ?? {}).__merge({
+      [attrId] = value
+    })
+  }))
+  lastModifiedAttr(attrId)
+}
 
 return {
   openUnitAttrWnd = @() isUnitAttrOpened(true)
@@ -167,6 +171,7 @@ return {
   leftUnitSp
   isUnitMaxSkills
   availableAttributes
+  lastModifiedAttr
 
   attrPresets
 

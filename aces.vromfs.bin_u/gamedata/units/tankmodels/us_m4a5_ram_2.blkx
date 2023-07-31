@@ -45,7 +45,6 @@
   "destroysTrees": true,
   "type": "typeMediumTank",
   "minRelativeTankCameraThreshold": 1.4,
-  "testFlight": "testFlight_tank_ussr",
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
@@ -2622,8 +2621,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -16.0
+      3.7,
+      -13.0
     ],
     "headPosOnShooting": [
       -0.5,

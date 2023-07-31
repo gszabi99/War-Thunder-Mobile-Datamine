@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "minRelativeTankCameraThreshold": 1.75,
+  "minRelativeTankCameraThreshold": 1.48,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,
@@ -2636,8 +2636,8 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -12.9
     ],
     "headPosOnShooting": [
       -0.36,
@@ -3149,5 +3149,8 @@
       "decal2WidthBox": 0.208192,
       "decal2Tex": "ussr_numbers_0"
     }
+  },
+  "battleHideNodes": {
+    "n": "details"
   }
 }

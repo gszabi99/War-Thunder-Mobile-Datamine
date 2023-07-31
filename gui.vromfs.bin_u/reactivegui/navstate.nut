@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 
 let scenes = {} //id = { scene, onClearScenes, alwaysOnTop }
 let scenesVersion = Watched(0)
-let scenesOrderSaved = mkHardWatched("navState.scenesOrder", [])
+let scenesOrderSaved = hardPersistWatched("navState.scenesOrder", [])
 let scenesOrder = Computed(function(prev) {
   let ver = scenesVersion //warning disable: -declared-never-used
   let top = []

@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 let { split_by_chars, startswith } = require("string")
 let { getCurrentSteamLanguage } = require("%scripts/language.nut")
 let userstat = require("userstat")
@@ -10,7 +11,6 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { isProfileReceived, isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let charClientEvent = require("charClientEvent.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { mnSubscribe } = require("%appGlobals/matchingNotifications.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
@@ -22,9 +22,20 @@ let isReadyToConnect = Computed(@() isProfileReceived.value && isMatchingConnect
 
 let { request, registerHandler } = charClientEvent("userStats", userstat)
 
+let function mkDataWatched(key, defValue = null) {
+  local val = defValue
+  if (ndbExists(key))
+    val = ndbRead(key)
+  else
+    ndbWrite(key, val)
+  let res = Watched(val)
+  res.subscribe(@(v) ndbWrite(key, v))
+  return res
+}
+
 let function makeUpdatable(persistName, refreshAction, getHeaders = null, defValue = {}) {
-  let data = mkHardWatched($"userstat.{persistName}", defValue)
-  let lastTime = mkHardWatched($"userstat.{persistName}_lastTime", { request = 0, update = 0 })
+  let data = mkDataWatched($"userstat.{persistName}", defValue)
+  let lastTime = mkDataWatched($"userstat.{persistName}_lastTime", { request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
     && lastTime.value.request + STATS_REQUEST_TIMEOUT > get_time_msec()
   let canRefresh = @() !isRequestInProgress()

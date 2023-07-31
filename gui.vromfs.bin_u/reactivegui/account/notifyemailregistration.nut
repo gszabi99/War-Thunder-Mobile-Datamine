@@ -4,7 +4,7 @@ let { isGuestLogin, openGuestEmailRegistration, renewGuestRegistrationTags, need
 } = require("emailRegistrationState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { register_command } = require("console")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
@@ -13,7 +13,7 @@ let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let GUEST_MSG_UID = "guestEmailRegistration"
 let VERIFY_MSG_UID = "verifyEmail"
 
-let isGuestMsgShowed = mkHardWatched("isGuestMsgShowed", false)
+let isGuestMsgShowed = hardPersistWatched("isGuestMsgShowed", false)
 let hasOnlineBattles = Computed(@()
   servProfile.value?.sharedStatsByCampaign.findindex(@(s) (s?.battles ?? 0) > 0) != null)
 let battlesTotal = Computed(@()
@@ -24,7 +24,7 @@ let needShowGuestMsg = keepref(Computed(@() !isGuestMsgShowed.value
   && isInMenuNoModals.value
   && isGuestLogin.value
   && ((playerLevelInfo.value?.level ?? 0) > 1 || battlesTotal.value > 2)))
-let isVerifyMsgShowed = mkHardWatched("isVerifyMsgShowed", false)
+let isVerifyMsgShowed = hardPersistWatched("isVerifyMsgShowed", false)
 let needShowVerifyMsg = keepref(Computed(@() !isVerifyMsgShowed.value
   && isInMenuNoModals.value
   && needVerifyEmail.value

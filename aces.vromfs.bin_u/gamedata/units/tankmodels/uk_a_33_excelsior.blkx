@@ -46,10 +46,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "minRelativeTankCameraThreshold": [
-    1.6,
-    1.6
-  ],
   "rearmSmokeTimeOnField": [
     60.0,
     60.0
@@ -58,6 +54,7 @@
     true,
     true
   ],
+  "minRelativeTankCameraThreshold": 1.65,
   "xray_viewer_data": {
     "armorArrayHull": {
       "xrayDmPart": "composite_armor_hull_01_dm",
@@ -821,7 +818,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -2338,8 +2336,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.2
     ],
     "headPosOnShooting": [
       0.4,

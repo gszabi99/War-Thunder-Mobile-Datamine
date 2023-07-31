@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.7,
+  "minRelativeTankCameraThreshold": 1.55,
   "rearmTimeOnField": 120.0,
   "canReloadNonGuns": [
     true,
@@ -1661,7 +1661,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_SA_49_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/75mm_SA_49_ebr_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -2503,8 +2503,8 @@
     "sightName": "fl_11_sight",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -12.8
     ],
     "headPosOnShooting": [
       0.0,
@@ -2727,7 +2727,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_SA_49_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/75mm_SA_49_ebr_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "maxAdditionalPitch": 0.0,

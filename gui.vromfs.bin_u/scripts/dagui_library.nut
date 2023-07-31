@@ -1,4 +1,4 @@
-
+require("%sqstd/globalState.nut").setUniqueNestKey("dagui")
 let { kwarg } = require("%sqstd/functools.nut")
 let { Computed, Watched } = require("frp")
 let log = require("%globalScripts/logs.nut")
@@ -14,7 +14,6 @@ let function colorize(color, text) {
     return text
   return "".concat("<color=", color, ">", text, "</color>")
 }
-
 
 return log.__merge({
   debugTableData

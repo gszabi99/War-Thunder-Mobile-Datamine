@@ -5,7 +5,8 @@ let { setAutologinType, setAutologinEnabled } = require("%scripts/login/autoLogi
 let { authState } = require("%scripts/login/authState.nut")
 let { send_counter } = require("statsd")
 let { subscribe } = require("eventbus")
-let { start_updater_addons, stop_updater, UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH
+let { start_updater_addons, stop_updater, UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH,
+  UPDATER_RESULT_SUCCESS, UPDATER_RESULT_TERMINATED
 } = require("contentUpdater")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
@@ -20,22 +21,41 @@ let finish = onlyActiveStageCb(function() {
   finalizeStage()
 })
 
+local hasError = false
 subscribe(LOGIN_UPDATER_EVENT_ID,
   onlyActiveStageCb(function(evt) {
     let { eventType } = evt
     if (eventType == UPDATER_EVENT_ERROR) {
       interruptStage(evt)
+      hasError = true
       openFMsgBox({
         uid = "login_updater_error"
         text = loc($"updater/error/{evt?.error}")
         isPersist = true
       })
     }
-    else if (eventType == UPDATER_EVENT_FINISH)
-      finish()
+    else if (eventType == UPDATER_EVENT_FINISH) {
+      let isSuccess = evt?.result == UPDATER_RESULT_SUCCESS
+      if (isSuccess) {
+        finish()
+        return
+      }
+
+      interruptStage(evt)
+      if (hasError)
+        return
+
+      let errId = evt?.result == UPDATER_RESULT_TERMINATED ? "terminated" : "initFailed"
+      openFMsgBox({
+        uid = "login_updater_error"
+        text = loc($"updater/error/{errId}")
+        isPersist = true
+      })
+    }
   }))
 
 let function start() {
+  hasError = false
   if (start_updater_addons(LOGIN_UPDATER_EVENT_ID))
     send_counter("sq.updater.started", 1)
   else

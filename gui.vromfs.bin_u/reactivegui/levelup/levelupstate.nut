@@ -1,4 +1,4 @@
-from "%scripts/dagui_library.nut" import *
+from "%globalsDarg/darg_library.nut" import *
 let { setTimeout } = require("dagor.workcycle")
 let { levelup_without_unit } = require("%appGlobals/pServer/pServerApi.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")

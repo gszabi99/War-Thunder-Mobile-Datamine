@@ -20,11 +20,18 @@ let helpTankControls = require("%rGui/loading/complexScreens/helpTankControls.nu
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { mkGradRank } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
+let { unitType } = require("%rGui/hudState.nut")
+let { TANK } = require("%appGlobals/unitConst.nut")
 
 let textColor = 0xFFF0F0F0
 let timeToShowCancelJoining = 30
 let spinnerSize = hdpxi(64)
 let spinnerGap = hdpx(20)
+let hintIconSize = hdpxi(50)
+let hintIconTank = "hud_tank_binoculars.svg"
+let hintIconShip = "hud_binoculars.svg"
 
 let needShowQueueWindow = keepref(Computed(@() !isInBattle.value
   && (isInQueue.value || isInJoiningGame.value)))
@@ -113,17 +120,38 @@ let joiningHeader = {
 let leaveQueue = @() send("leaveQueue", {})
 let cancelOvr = { hotkeys = [[btnBEscUp, loc("mainmenu/btnCancel")]] }
 
+let mkMRankRange = @() {
+  watch = curUnitMRankRange
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = hdpx(12)
+  children = [
+    { rendObj = ROBJ_TEXT, text = loc("mainmenu/battleTiers") }.__update(fontSmall)
+    mkGradRank(curUnitMRankRange.value.minMRank)
+    { rendObj = ROBJ_TEXT, text = "-" }.__update(fontSmall)
+    mkGradRank(curUnitMRankRange.value.maxMRank)
+  ]
+}
 let isCancelInProgress = Computed(@() curQueueState.value == QS_LEAVING)
-let cancelQueueButton = mkSpinnerHideBlock(isCancelInProgress,
-  textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), leaveQueue, cancelOvr),
-  {
-    size = [SIZE_TO_CONTENT, defButtonHeight]
-    minWidth = defButtonMinWidth
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    hplace = ALIGN_RIGHT
-    vplace = ALIGN_BOTTOM
-  })
+let cancelQueueButton = {
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_BOTTOM
+  flow = FLOW_VERTICAL
+  halign = ALIGN_RIGHT
+  gap = hdpx(12)
+  children = [
+    mkMRankRange
+    mkSpinnerHideBlock(isCancelInProgress,
+      textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), leaveQueue, cancelOvr),
+      {
+        size = [SIZE_TO_CONTENT, defButtonHeight]
+        minWidth = defButtonMinWidth
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+      }
+    )
+  ]
+}
 
 let allowCancelJoining = @() canCancelJoining(true)
 let cancelJoiningButton = @() {
@@ -133,18 +161,28 @@ let cancelJoiningButton = @() {
   hplace = ALIGN_RIGHT
   onAttach = @() resetTimeout(timeToShowCancelJoining, allowCancelJoining)
   onDetach = @() clearTimer(allowCancelJoining)
-  children = !canCancelJoining.value ? null
-    : textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), @() send("cancelJoiningSession", {}), cancelOvr)
+  children = !canCancelJoining.value
+    ? null
+    : {
+        flow = FLOW_VERTICAL
+        halign = ALIGN_RIGHT
+        gap = hdpx(12)
+        children = [
+          mkMRankRange
+          textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), @() send("cancelJoiningSession", {}), cancelOvr)
+        ]
+      }
 }
 
 let mkText = @(text) {
   text
 }.__update(textParams)
 
-let hintIcon = {
-  size = [hdpx(50), hdpx(50)]
+let hintIcon = @() {
+  watch = unitType
+  size = [hintIconSize, hintIconSize]
   rendObj = ROBJ_IMAGE
-  image = Picture("!ui/gameuiskin#sniper_mode.avif")
+  image = Picture($"ui/gameuiskin#{unitType.value == TANK ? hintIconTank : hintIconShip}:{hintIconSize}:{hintIconSize}:P")
 }
 
 let aimingHint = {

@@ -1,17 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { goodTextColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkOfferWrap, txt, textArea, mkBgImg, mkFitCenterImg, mkPricePlate,
-  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts
+  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, goodsH, goodsW, mkGradRank
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
+let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
 
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let fonticonPreview = "⌡"
+let consumableSize = hdpx(120)
+let eliteMarkSize = hdpxi(70)
 
 let bgHiglight = {
   size = flex()
@@ -37,11 +42,12 @@ let getLocNameUnit = function(goods) {
   return unit != null ? getPlatoonOrUnitName(unit, loc) : goods.id
 }
 
+let imgSize = [hdpxi(500), hdpxi(250)]
 let mkUnitImg = @(img) {
-  size = flex()
+  size = imgSize
   margin = [ hdpx(40), hdpx(40), 0, 0 ]
   rendObj = ROBJ_IMAGE
-  image = Picture(img)
+  image = Picture($"{img}:{imgSize[0]}:{imgSize[1]}:P")
   keepAspect = KEEP_ASPECT_FIT
   imageHalign = ALIGN_LEFT
   imageValign = ALIGN_BOTTOM
@@ -73,11 +79,11 @@ let function mkSquareIconBtn(text, onClick, ovr) {
   }.__merge(ovr)
 }
 
-let eliteSize = hdpxi(50)
 let eliteMark = {
-  size = [eliteSize, eliteSize]
+  size = [eliteMarkSize, flex()]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#icon_premium.avif:{eliteSize}:{eliteSize}")
+  keepAspect = KEEP_ASPECT_FIT
+  image = Picture($"ui/gameuiskin#icon_premium.svg")
 }
 
 let function mkUnitTexts(goods, unit) {
@@ -87,7 +93,7 @@ let function mkUnitTexts(goods, unit) {
   return {
     size = flex()
     flow = FLOW_VERTICAL
-    padding = [ hdpx(53), hdpx(34), 0, hdpx(34) ]
+    padding = [hdpx(15), hdpx(34), 0, hdpx(34)]
     children = [
       {
         hplace = ALIGN_RIGHT
@@ -117,33 +123,108 @@ let function mkUnitTexts(goods, unit) {
   }
 }
 
-let mkPurchasedText = @(unit) @() !isUnitOrUnitUpgradePurchased(myUnits.value, unit)
-  ? { watch = myUnits }
-  : textArea({
-      watch = myUnits
-      halign = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      pos = [0, hdpx(30) ]
-      text = loc("mainmenu/itemReceived")
-      color = goodTextColor
-      transform = { rotate = -20 }
-    }.__update(fontBig))
+let purchasedPlate = {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = 0x990C1113
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("shop/unit_bought")
+  }.__update(fontMedium)
+}
+
+let unitFrame = {
+  size = flex()
+  rendObj = ROBJ_FRAME
+  borderWidth = hdpx(2)
+  color = 0xFFFFFFFF
+}
+
+let platoonPlatesGap = hdpx(6)
+let bgPlatesTranslate = @(platoonSize, idx)
+  [(idx - platoonSize) * platoonPlatesGap, (idx - platoonSize) * platoonPlatesGap]
+
+let function mkPlatoonBgPlates(unit, platoonUnits) {
+  if (!platoonUnits)
+    return null
+  let platoonSize = platoonUnits.len()
+  let bgPlatesComp = {
+    size = flex()
+    children = [
+      mkBgImg($"!ui/unitskin#flag_{unit.country}.avif")
+      mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
+      unitFrame
+    ]
+  }
+
+  return {
+    size = flex()
+    children = platoonUnits.map(@(_, idx) bgPlatesComp.__merge({
+      transform = { translate = bgPlatesTranslate(platoonSize, idx) }
+    }))
+  }
+}
+
+let mkConsumableIcons = @(items) {
+  flow = FLOW_HORIZONTAL
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_CENTER
+  children = items?.map(@(item)
+    mkCurrencyImage(item[0], consumableSize, {
+      children = {
+        pos = [-consumableSize * 0.05, -consumableSize * 0.1]
+        vplace = ALIGN_CENTER
+        rendObj = ROBJ_TEXT
+        text = "".concat("+", item[1])
+        color = premiumTextColor
+      }.__update(fontMediumShaded)
+    }))
+}
+
+let mkMRank = @(mRank) !mRank ? null : {
+  padding = [hdpx(10), hdpx(15)]
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_BOTTOM
+  children = mkGradRank(mRank)
+}
 
 let function mkGoodsUnit(goods, onClick, state, animParams) {
   let unit = getUnit(goods)
   let p = getUnitPresentation(unit)
-  return mkGoodsWrap(onClick,
+  let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
+  let platoonOffset = platoonPlatesGap * (unit?.platoonUnits.len() ?? 0)
+
+  let function onUnitClick() {
+    if (isPurchased)
+      unitDetailsWnd(unit)
+    else
+      onClick()
+    saveSeenGoods([goods.id])
+  }
+
+  return mkGoodsWrap(onUnitClick,
     unit == null ? [] : @(sf) [
+      mkPlatoonBgPlates(unit, unit?.platoonUnits)
       mkBgImg($"!ui/unitskin#flag_{unit.country}.avif")
       mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
       sf & S_HOVER ? bgHiglight : null
       mkUnitImg(p.image)
       mkUnitTexts(goods, unit)
-      mkPurchasedText(unit)
-      mkSquareIconBtn(fonticonPreview, @() openGoodsPreview(goods.id),
+      mkSquareIconBtn(fonticonPreview, @() isPurchased ? unitDetailsWnd(unit) : openGoodsPreview(goods.id),
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
+      mkConsumableIcons(goods?.items.topairs())
+      mkMRank(unit?.mRank)
+      unitFrame
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGrad, state, animParams))
+    isPurchased ? purchasedPlate : mkPricePlate(goods, priceBgGrad, state, animParams),
+    {
+      watch = myUnits
+      size = [goodsW, goodsH - platoonOffset / 2]
+      pos = [0, platoonOffset]
+    }
+  )
 }
 
 let function mkOfferUnit(goods, onClick, state, needPrice) {

@@ -52,7 +52,7 @@
     "explodeTreshold": 0.1,
     "fuseDelayDist": 10.0,
     "fuseOnWater": true,
-    "hitPowerMult": 300.0,
+    "hitPowerMult": 400.0,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -247,7 +247,7 @@
       "explodeTreshold": 0.1,
       "fuseDelayDist": 10.0,
       "fuseOnWater": true,
-      "hitPowerMult": 300.0,
+      "hitPowerMult": 400.0,
       "relativeVelHitShift": [
         300.0,
         1000.0

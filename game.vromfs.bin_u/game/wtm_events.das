@@ -19,7 +19,9 @@ struct CmdRequestSupportPlaneGroupAttack
   attack : bool
 
 [cpp_event(unicast)]
-struct CmdReturnAircraftToShip {}
+struct CmdReturnAircraftToShip
+  idx : int
+  rtb : bool
 
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
@@ -43,6 +45,7 @@ struct EventOnPlayerCriticalHit
   victimPlayerId : uint8
   victimUnitId : int
 
+
 [cpp_event(broadcast)]
 struct EventOnPlayerKill
   offenderPlayerId : uint8
@@ -55,6 +58,7 @@ struct EventOnPlayerKill
   killerPos : float3
   victimPos : float3
   weaponId : int
+
 
 [cpp_event(broadcast)]
 struct EventOnPlayerDeath

@@ -71,6 +71,7 @@ let function listButton(textOrCtor, isSelected, onClick, override = {}) {
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
     onClick
+    xmbNode = {}
 
     children = [
       btnBase(textOrCtor, stateFlags.value, isSelected.value)

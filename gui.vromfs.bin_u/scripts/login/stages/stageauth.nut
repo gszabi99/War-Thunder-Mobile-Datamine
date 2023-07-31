@@ -13,6 +13,8 @@ let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { openUrl } = require("%scripts/url.nut")
 let { send_counter } = require("statsd")
+let { sendErrorBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { getLocTextForLang } = require("dagor.localize")
 
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage
 } = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
@@ -71,19 +73,24 @@ let function proceedAuthorizationResult(result) {
 
 subscribe("android.account.googleplay.onSignInCallback",
   onlyActiveStageCb(function(msg) {
-    let { player_id, server_auth } = msg
+    let { player_id, server_auth, error_code = null } = msg
     let errStr = msg.error
     if (errStr != "") {
       send_counter("auth.google_signin_errors", 1, { error = errStr })
-      interruptStage({ error = $"Google sign in failed: {errStr}" })
-      errorMsgBox(YU2_UNKNOWN,
-        [
-          { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
-          { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
-        ])
+      interruptStage({ error = $"Google sign in failed: {errStr} {error_code}" })
+      if (errStr != "gp_canceled") {
+        let errLocId = $"yn1/login/{errStr}"
+        sendErrorBqEvent($"{getLocTextForLang(errLocId, "English")}{error_code}")
+        let errCodeStr = error_code != null ? $"\n\n<color={0x80808080}>{error_code}</color>" : ""
+        openFMsgBox({ text = $"{loc(errLocId)}{errCodeStr}",
+          buttons = [
+            { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
+            { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
+          ]
+        })
+      }
       return
     }
-
     logStage("Google check_login_pass")
     let result = ::check_login_pass(player_id, server_auth, "google", "google", false, false)
     //check_login_pass is not instant
