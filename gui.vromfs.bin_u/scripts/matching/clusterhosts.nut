@@ -31,15 +31,15 @@ let function fetchClusterHosts() {
       isFetching = false
 
       if (result.error == OPERATION_COMPLETE) {
+        logCH($"Fetched hosts:", result)
         failedFetches = 0
         let hosts = result.filter(@(_, ip) reIP.match(ip))
-        logCH($"Fetched hosts:")
-        hosts.each(@(clusterNames, ip) logCH($"{ip} = [{",".join(clusterNames)}]"))
         clusterHosts(hosts)
         return
       }
 
-      if (++failedFetches <= MAX_FETCH_RETRIES)
+      failedFetches++
+      if (failedFetches < MAX_FETCH_RETRIES)
         resetTimeout(0.1, again)
       else {
         failedFetches = 0

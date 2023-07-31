@@ -7,7 +7,7 @@ let { get_time_msec } = require("dagor.time")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { send, last_error, close_socket } = require("dagor.udp")
 let { rnd_float } = require("dagor.random")
-let { number_of_set_bits } = require("%sqstd/math.nut")
+let { median, number_of_set_bits } = require("%sqstd/math.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { gameStartServerTimeMsec } = require("%appGlobals/userstats/serverTime.nut")
@@ -152,8 +152,10 @@ let function tryProbeHosts() {
     return
   let nowMs = get_time_msec()
   hostsCfg.each(function(hostInfo) {
-    if (isHostNeedRetry(hostInfo, nowMs))
+    if (isHostNeedRetry(hostInfo, nowMs)) {
       hostInfo.errors++
+      logOC($"Host {hostInfo.ip} failed to respond {hostInfo.errors} time(s)")
+    }
     else if (isHostNeedRegularUpdate(hostInfo, nowMs))
       hostInfo.errors = 0
   })
@@ -171,51 +173,77 @@ let function tryProbeHosts() {
       lastRequestId = id
       lastRequestTimeMs = nowMs
     })
-    let res = send(CLIENT_SOCKET_ID, ip, port, data)
-    let resTxt = res ? "" : $", ERROR: {last_error()}"
-    logOC($"Sending request to {ip}{resTxt}")
+    if (!send(CLIENT_SOCKET_ID, ip, port, data))
+      logOC($"Failed to send request to host {ip}, ERROR: {last_error()}")
   }
   scheduleNextProbeTime(callee())
 }
-
-let calcAvg = @(arr) arr.reduce(@(acc, v) acc + v) / arr.len()
 
 let function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
   let { rttSamples } = hostInfo
   if (rttSamples.len() == SAMPLES_COUNT_MAX)
     rttSamples.remove(0)
   rttSamples.append(rtt)
+  let rttSamplesSorted = clone rttSamples
+  rttSamplesSorted.sort()
   hostInfo.__update({
     lastRequestId = 0
     lastRequestTimeMs = 0
     errors = 0
-    avgRTT = calcAvg(rttSamples)
+    avgRTT = median(rttSamplesSorted)
     lastAnswerTimeMs = receivedTimeMs
   })
 }
 
-let function getOptimalHosts() {
-  let measuredHosts = hostsCfg.filter(@(c) c.avgRTT != null).values()
-  if (measuredHosts.len() == 0)
+let function getOptimalClusters() {
+  // Usually multiple hosts relates to every cluster (like 5 hosts has "EU" in clustersList),
+  // but also, a host can participate in multiple clusters, this is why clustersList is an array.
+
+  let clustersToHostsMap = {}
+  foreach (hostInfo in hostsCfg)
+    foreach (clusterId in hostInfo.clustersList) {
+      if (clustersToHostsMap?[clusterId] == null)
+        clustersToHostsMap[clusterId] <- []
+      clustersToHostsMap[clusterId].append(hostInfo)
+    }
+
+  let clustersInfo = clustersToHostsMap
+    .map(function(hosts, clusterId) {
+        let measuredHostsRTT = hosts.map(@(h) h.avgRTT).filter(@(rtt) rtt != null)
+        let knownCount = measuredHostsRTT.len()
+        let unknownCount = hosts.len() - knownCount
+        measuredHostsRTT.sort()
+        return {
+          clusterId
+          hostsRTT = median(measuredHostsRTT)
+          measuredHostsRTT
+          knownCount
+          unknownCount
+        }
+      })
+    .filter(@(c) c.hostsRTT != null)
+    .values()
+  clustersInfo.sort(@(a, b) a.hostsRTT <=> b.hostsRTT)
+
+  if (clustersInfo.len() == 0)
     return []
-  measuredHosts.sort(@(a, b) a.avgRTT <=> b.avgRTT)
 
-  let fastHosts = measuredHosts
-    .filter(@(info) info.avgRTT <= OPTIMAL_RTT_LIMIT_MS)
-  if (fastHosts.len() > 0)
-    return fastHosts
+  let fastClusters = clustersInfo
+    .filter(@(c) c.hostsRTT <= OPTIMAL_RTT_LIMIT_MS)
+  if (fastClusters.len())
+    return fastClusters.map(@(c) c.clusterId)
 
-  let rttLimit = measuredHosts[0].avgRTT + INSIGNIFICANT_RTT_DIFF_MS
-  return measuredHosts
-    .filter(@(info) info.avgRTT <= rttLimit)
+  let rttLimit = clustersInfo[0].hostsRTT + INSIGNIFICANT_RTT_DIFF_MS
+  return clustersInfo
+    .filter(@(c) c.hostsRTT <= rttLimit)
+    .map(@(c) c.clusterId)
 }
 
 let function onClustersRecalc() {
-  let newOptimalHosts = getOptimalHosts()
-  let newOptimalClusters = newOptimalHosts.reduce(@(acc, v) acc.extend(v.clustersList), [])
+  let newOptimalClusters = getOptimalClusters()
   if (isEqual(newOptimalClusters, optimalClusters.value))
     return
-  logOC("".concat("Optimal clusters changed: ", ", ".join(newOptimalClusters)))
+  logOC("Optimal clusters:", newOptimalClusters)
   optimalClusters.update(newOptimalClusters)
 }
 
@@ -235,7 +263,7 @@ let function onUdpPacket(evt) {
   if (id != lastRequestId || delayMs < 0 || rtt < 0
       || !checkPacketSign(id, timestamp, sign, delayMs))
     return logIgnoredMsg(evt)
-  logOC($"Received answer from {host}, RTT: {rtt} ms")
+  logOC($"Host {host} responded, RTT: {rtt} ms")
   updateHostAvgRTT(hostInfo, rtt, recvTime)
   resetTimeout(CLUSTERS_RECALC_DELAY_SEC, onClustersRecalc)
 }

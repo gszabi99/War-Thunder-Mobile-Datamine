@@ -96,6 +96,8 @@ let selClusters = Computed(function() {
   return res.len() ? res : clusters.value
 })
 
+selClusters.subscribe(@(v) logC("Selected clusters:", v))
+
 return {
   clusters
   selClusters

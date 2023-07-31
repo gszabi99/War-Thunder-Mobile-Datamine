@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { send, subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { register_command } = require("console")
-let { getPlayerSsoShortToken } = require("auth_wt")
+let { getPlayerSsoShortTokenAsync = null, YU2_OK, getPlayerSsoShortToken } = require("auth_wt")
 let { get_authenticated_url_sso } = require("url")
 let { authTags } = require("%appGlobals/loginState.nut")
-let { subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
+let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { windowActive } = require("%globalScripts/windowState.nut")
 
 let isGuestLoginBase = Computed(@() authTags.value.contains("guestlogin")
@@ -19,11 +19,24 @@ let isDebugVerifyEmail = mkWatched(persist, "isDebugVerifyEmail", false)
 let needVerifyEmail = Computed(@() needVerifyEmailBase.value != isDebugVerifyEmail.value)
 local needRelogin = false
 
+let openGuestEmailRegistrationImpl = @(stoken) send("openUrl",
+  { baseUrl = $"https://login.gaijin.net/{loc("current_lang")}/guest?stoken={stoken}" })
+
+subscribe("onGetStokenForGuestEmail", function(msg) {
+  let { status, stoken = null } = msg
+  if (status != YU2_OK)
+    openFMsgBox({ text = loc("error/serverTemporaryUnavailable") })
+  else {
+    needRelogin = true
+    openGuestEmailRegistrationImpl(stoken)
+  }
+})
+
 let function openGuestEmailRegistration() {
-  needRelogin = true
-  send("openUrl", {
-    baseUrl = $"https://login.gaijin.net/{loc("current_lang")}/guest?stoken={getPlayerSsoShortToken()}"
-  })
+  if (getPlayerSsoShortTokenAsync != null)
+    getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
+  else
+    defer(@() openGuestEmailRegistrationImpl(getPlayerSsoShortToken()))
 }
 
 let openVerifyEmail = @() defer(@() send("openUrl", {
