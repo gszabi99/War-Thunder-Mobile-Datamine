@@ -12,6 +12,7 @@ let { canLogout, startLogout } = require("%scripts/login/logout.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
+let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 enum REASON_DOMAIN {
   MATCHING = "matching"
@@ -58,6 +59,7 @@ let function destroyConnectProgressMessages() {
 
 let customErrorHandlers = {
   [SERVER_ERROR_INVALID_VERSION] = function onInvalidVersion(_, __, ___) {
+    sendErrorBqEvent("Downoad new version (required)")
     openFMsgBox({
       uid = "errorMessageBox"
       text = loc(isDownloadedFromGooglePlay() ? "updater/newVersion/desc/android"
@@ -90,6 +92,7 @@ let function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) 
   let id = needExit ? "exit" : "ok"
   let eventId = needExit ? "matchingExitGame" : null
   let msg = getErrorMsgParams(reason)
+  sendErrorLocIdBqEvent(msg.bqLocId)
 
   openFMsgBox(msg
     .__update({

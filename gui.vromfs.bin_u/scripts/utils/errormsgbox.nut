@@ -3,29 +3,39 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
 let { format } = require("string")
+let { doesLocTextExist } = require("dagor.localize")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { register_command } = require("console")
+let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
-let matchingErrMsg = @(error_text) loc("yn1/error/fmt",
-  {
-    text = loc("yn1/connect_error"),
-    err_msg = loc("matching/" + error_text, error_text),
-    err_code = ""
-  })
+let function matchingErrData(error_text) {
+  let bqLocId = $"matching/{error_text}"
+  return {
+    bqLocId
+    text = loc("yn1/error/fmt",
+      {
+        text = loc("yn1/connect_error"),
+        err_msg = loc(bqLocId, error_text),
+        err_code = ""
+      })
+  }
+}
 
-let function defErrMsg(res) {
+let function defErrData(res) {
   let errCode = res == "0" ? "" : res
-  let errMsg = loc("yn1/error/" + errCode, "")
-  if (errMsg.len() > 0)
-    return errMsg
+  let bqLocId = $"yn1/error/{errCode}"
+  if (doesLocTextExist(bqLocId))
+    return { bqLocId, text = loc(bqLocId) }
 
-  return loc("yn1/error/fmt", {
-    text = loc("yn1/connect_error", "")
-    err_msg = $"0x{errCode}"
-    err_code = ""
-  })
+  return {
+    bqLocId
+    text = loc("yn1/error/fmt", {
+      text = loc("yn1/connect_error", "")
+      err_msg = $"0x{errCode}"
+      err_code = ""
+    })
+  }
 }
 
 let function errorCodeToString(error_code) {
@@ -55,30 +65,31 @@ let function errorCodeToString(error_code) {
 
 let function getErrorData(error_code) {
   local errCode = error_code
-  local text = null
   if (type(error_code) != "string") {
     errCode = errorCodeToString(error_code)
     if (::matching.is_matching_error(error_code))
-      text = matchingErrMsg(::matching.error_string(error_code))
+      return matchingErrData(::matching.error_string(error_code)).__update({ errCode })
   }
-
-  return { errCode, text = text ?? defErrMsg(errCode) }
+  return defErrData(errCode).__update({ errCode })
 }
 
 let function getErrorMsgParams(errCodeBase) {
-  local { text, errCode } = getErrorData(errCodeBase)
+  local { text, errCode, bqLocId } = getErrorData(errCodeBase)
   return {
     uid = "errorMessageBox"
     viewType = "errorMsg"
     text
+    bqLocId
     moreInfoLink = "".concat(loc($"url/knowledgebase"), errCode)
     debugString = ("LAST_SESSION_DEBUG_INFO" in getroottable()) ? ::LAST_SESSION_DEBUG_INFO : null
   }
 }
 
-let errorMsgBox = @(errCode, buttons, ovr = {})
-  openFMsgBox(getErrorMsgParams(errCode)
-    .__update(ovr, { buttons }))
+let function errorMsgBox(errCode, buttons, ovr = {}) {
+  let params = getErrorMsgParams(errCode)
+  sendErrorLocIdBqEvent(params.bqLocId)
+  openFMsgBox(params.__update(ovr, { buttons }))
+}
 
 
 register_command(

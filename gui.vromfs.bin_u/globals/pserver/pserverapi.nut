@@ -159,11 +159,11 @@ let function localizePServerError(err) {
   if (type(err) == "table" && "message" in err) {
     let msg = loc($"error/{err.message}", err.message)
     let code = "code" in err ? $"(code: {err.code})" : ""
-    return "\n".join([msg, code], true)
+    return { bqLocId = err.message, text = "\n".join([msg, code], true) }
   }
   if (type(err) == "string")
-    return loc($"error/{err}")
-  return loc("matching/SERVER_ERROR_INTERNAL")
+    return { bqLocId = err, text = loc($"error/{err}", err) }
+  return { bqLocId = "profile server internal error", text = loc("matching/SERVER_ERROR_INTERNAL") }
 }
 
 return {
@@ -191,6 +191,7 @@ return {
   unlock_all_common_units = @(cb = null) request({ method = "unlock_all_common_units" }, cb)
   unlock_all_premium_units = @(cb = null) request({ method = "unlock_all_premium_units" }, cb)
   unlock_all_units = @(cb = null) request({ method = "unlock_all_units" }, cb)
+  royal_beta_units_unlock = @(cb = null) request({ method = "royal_beta_units_unlock" }, cb)
   generate_full_offline_profile = @(cb = null) request({ method = "generate_full_offline_profile" }, cb)
 
   add_player_exp = @(campaign, playerExp, cb = null) request({

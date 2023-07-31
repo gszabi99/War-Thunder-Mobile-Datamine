@@ -5,6 +5,7 @@
   "locTable": {
     "file": [
       "%lang/matching.csv",
+      "%lang/serverErrors.csv",
       "%lang/controls.csv",
       "%lang/encyclopedia_tips.csv",
       "%lang/menu.csv",
@@ -34,16 +35,13 @@
       "%lang/_online.csv",
       "%lang/_legal.csv",
       "%lang/wtm_common.csv",
-      "%lang/help.csv",
-      "%lang/pc_UiMessages.csv"
+      "%lang/help.csv"
     ]
   },
   "locTableFull": {
     "file": [
-      "%lang/units.csv",
-      "%lang/_common_languages.csv",
-      "%lang/missions_versus.csv",
-      "%lang/missions_locations.csv"
+      "%lang/matching.csv",
+      "%lang/serverErrors.csv"
     ]
   },
   "full_translation": {

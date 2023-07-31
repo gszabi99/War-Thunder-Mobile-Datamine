@@ -6,7 +6,8 @@ let { screenlog } = require("dagor.debug")
 let { defer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { reset_profile, reset_profile_with_stats, unlock_all_units, add_gold, add_wp,
-  reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler
+  reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
+  royal_beta_units_unlock
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -50,9 +51,10 @@ let commandsList = [
   { label = "meta.reset_profile_with_stats", func = withClose(reset_profile_with_stats) }
   { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
   { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }
+  { label = "meta.royal_beta_units_unlock", func = withClose(royal_beta_units_unlock) }
+  { label = "toggle_debug_touches", func = withClose(@() isDebugTouchesActive(!isDebugTouchesActive.value)) }
   { label = "upgrade_cur_unit", func = withClose(@() upgrade_unit(hangarUnitName.value)) }
   { label = "downgrade_cur_unit", func = withClose(@() downgrade_unit(hangarUnitName.value)) }
-  { label = "toggle_debug_touches", func = withClose(@() isDebugTouchesActive(!isDebugTouchesActive.value)) }
   { label = "meta.reset_custom_settings", func = withClose(resetCustomSettings) }
   { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug(!isTutorialMissionsDebug.value)) }
   { label = "startFirstBattlesOfflineMission", func = withClose(startDebugNewbieMission) }

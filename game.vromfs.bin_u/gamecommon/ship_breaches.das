@@ -304,9 +304,9 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
     )
 
 
-def fixup_breaches_soa(var ship_breaches_id : IntList&; var ship_breaches_offender : BreachOffenderDataList&)
-  if length(ship_breaches_id) != length(ship_breaches_offender)
-    ship_breaches_offender |> resize(length(ship_breaches_id))
+def soa_safe_erase(var arr; idx)
+  if idx < length(arr)
+    erase(arr, idx)
 
 
 [es]
@@ -323,23 +323,32 @@ def ship_remove_breach_handle_es(evt : EventShipRemoveBreach;
                                  var ship_breaches_cover_id : IntList&;
                                  var ship_breaches_leaked_amount : FloatList&;
                                  var ship_breaches_offender : BreachOffenderDataList&)
-  fixup_breaches_soa(ship_breaches_id, ship_breaches_offender)
   for i in iter_range(ship_breaches_id)
     if ship_breaches_id[i] == evt.breachId
       let local_pos = ship_breaches_pos[i]
-      ship_breaches_id |> erase(i)
-      ship_breaches_pos |> erase(i)
-      ship_breaches_normal |> erase(i)
-      ship_breaches_size |> erase(i)
-      ship_breaches_amount_to_repair |> erase(i)
-      ship_breaches_depth_scale |> erase(i)
-      ship_breaches_next_check |> erase(i)
-      ship_breaches_part_id |> erase(i)
-      ship_breaches_cover_id |> erase(i)
-      ship_breaches_leaked_amount |> erase(i)
-      ship_breaches_offender |> erase(i)
+      ship_breaches_id |> soa_safe_erase(i)
+      ship_breaches_pos |> soa_safe_erase(i)
+      ship_breaches_normal |> soa_safe_erase(i)
+      ship_breaches_size |> soa_safe_erase(i)
+      ship_breaches_amount_to_repair |> soa_safe_erase(i)
+      ship_breaches_depth_scale |> soa_safe_erase(i)
+      ship_breaches_next_check |> soa_safe_erase(i)
+      ship_breaches_part_id |> soa_safe_erase(i)
+      ship_breaches_cover_id |> soa_safe_erase(i)
+      ship_breaches_leaked_amount |> soa_safe_erase(i)
+      ship_breaches_offender |> soa_safe_erase(i)
       sendEvent(eid, [[EventShipOnRemoveBreach localPos=local_pos]])
       break
+
+
+def soa_safe_emplace(var arr; idx; item)
+  let len = length(arr)
+  if len == idx
+    arr |> push(item)
+  else
+    if len > idx
+      arr |> resize(idx + 1)
+    arr[idx] = item
 
 
 [es]
@@ -397,18 +406,18 @@ def add_breach_handle_es(evt : EventShipAddBreach;
     if breach_id_to_remove == -1
       return
 
-  fixup_breaches_soa(ship_breaches_id, ship_breaches_offender)
-  ship_breaches_id |> push(evt.id)
-  ship_breaches_pos |> push(pos)
-  ship_breaches_normal |> push(evt.localNormal)
-  ship_breaches_size |> push(size)
-  ship_breaches_amount_to_repair |> push(amountToRepair)
-  ship_breaches_depth_scale |> push(0.0f)
-  ship_breaches_next_check |> push(float(get_app().usefulTotalTime))
-  ship_breaches_part_id |> push(part_id)
-  ship_breaches_cover_id |> push(cover_id)
-  ship_breaches_leaked_amount |> push(0.0f)
-  ship_breaches_offender |> push(evt.offender)
+  let idx = length(ship_breaches_id)
+  ship_breaches_id |> soa_safe_emplace(idx, evt.id)
+  ship_breaches_pos |> soa_safe_emplace(idx, pos)
+  ship_breaches_normal |> soa_safe_emplace(idx, evt.localNormal)
+  ship_breaches_size |> soa_safe_emplace(idx, size)
+  ship_breaches_amount_to_repair |> soa_safe_emplace(idx, amountToRepair)
+  ship_breaches_depth_scale |> soa_safe_emplace(idx, 0.0f)
+  ship_breaches_next_check |> soa_safe_emplace(idx, float(get_app().usefulTotalTime))
+  ship_breaches_part_id |> soa_safe_emplace(idx, part_id)
+  ship_breaches_cover_id |> soa_safe_emplace(idx, cover_id)
+  ship_breaches_leaked_amount |> soa_safe_emplace(idx, 0.0f)
+  ship_breaches_offender |> soa_safe_emplace(idx, evt.offender)
 
   sendEvent(eid, [[EventShipOnGotBreach breachId=evt.id, localPos=evt.localPos, offender=evt.offender]])
   if ship_unwatering_remaining_time > 0.0f || ship_damage_control_running

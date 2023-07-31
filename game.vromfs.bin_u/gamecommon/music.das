@@ -87,7 +87,7 @@ def get_game_state(forced : bool) : GameState
         let localPlayer = getLocalPlayer()
         if forced
           return GameState FORCED
-        elif !localPlayer.isInFlight || *app |> checkInFlightMenu(false)
+        elif localPlayer != null && (!localPlayer.isInFlight || *app |> checkInFlightMenu(false))
           return GameState MISSION_MENU
         else
           return GameState MISSION

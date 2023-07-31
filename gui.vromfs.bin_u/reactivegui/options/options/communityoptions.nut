@@ -2,6 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
 let { getCurrentLanguage } = require("dagor.localize")
 let { getCountryCode } = require("auth_wt")
+let { can_use_internal_support_form } = require("%appGlobals/permissions.nut")
+let { openSupportWnd } = require("%rGui/feedback/supportWnd.nut")
 
 let iconSize = hdpxi(120)
 let itemSize = [hdpx(200), hdpx(200)]
@@ -43,7 +45,9 @@ let feedBackList = [
   {
     text = loc("mainmenu/support")
     image = "ui/gameuiskin#icon_social_support.svg"
-    url = loc("url/feedback/support")
+    onClick = @() can_use_internal_support_form.value
+      ? openSupportWnd()
+      : send("openUrl", { baseUrl = loc("url/feedback/support"), useExternalBrowser = true })
   }
 ]
 
@@ -84,14 +88,14 @@ let function mkNetworkItem(item){
 }
 
 let function mkFeedBackButtons(item){
-  let { text = "", image = null, url = "" } = item
+  let { text = "", image = null, onClick = @() null } = item
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
-    onClick = @() send("openUrl", { baseUrl = url, useExternalBrowser = true })
+    onClick
     onElemState = @(v) stateFlags(v)
     transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
