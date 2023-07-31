@@ -64,7 +64,6 @@
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm",
     "sound": "atgm_TOW",
-    "sound_inside": "atgm_TOW_interior",
     "mesh": "bgm_71_tow_rocket_deployed",
     "recoilMultiplier": 0.05,
     "stabilityRicochetModifier": {

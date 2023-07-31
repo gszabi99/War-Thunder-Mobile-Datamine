@@ -1,19 +1,11 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
 let { get_base_game_version_str } = require("app")
 let { send } = require("eventbus")
-let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
+let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
-
-let updateUrl = is_ios ? "https://apps.apple.com/us/app/war-thunder-mobile/id1577525428"
-  : is_android ? "https://play.google.com/console/u/0/developers/5621070044383975821/app/4975398800615320917/"
-  : "https://apps.apple.com/us/app/war-thunder-mobile/id1577525428"
-
-subscribeFMsgBtns({
-  updateGame = @(_) send("openUrl", { baseUrl = updateUrl })
-})
+let actualGameVersion = require("actualGameVersion.nut")
 
 let needExitToUpdate = Computed(function() {
   let { reqVersion = "" } = campConfigs.value?.circuit
@@ -22,7 +14,9 @@ let needExitToUpdate = Computed(function() {
 })
 
 let needSuggestToUpdate = Computed(function() {
-  let { actualVersion = "" } = campConfigs.value?.circuit
+  let actualVersion = actualGameVersion.value
+    ?? campConfigs.value?.circuit.actualVersion
+    ?? ""
   let version = get_base_game_version_str()
   return actualVersion == "" || version == "" ? false : !check_version(actualVersion, version)
 })
@@ -39,9 +33,7 @@ needShowExitToUpdate.subscribe(function(v) {
   openFMsgBox({
     text = loc("msg/updateAvailable/mandatory")
     isPersist = true
-    buttons = updateUrl == null
-      ? [{ id = "exit", eventId = "loginExitGame", isPrimary = true, isDefault = true }]
-      : [{ text = loc("ugm/btnUpdate"), eventId = "updateGame", isPrimary = true, isDefault = true }]
+    buttons = [{ text = loc("ugm/btnUpdate"), eventId = "exitGameForUpdate", isPrimary = true, isDefault = true }]
   })
 })
 
@@ -49,9 +41,8 @@ needShowSuggestToUpdate.subscribe(@(v) !v ? null
   : openFMsgBox({
       text = loc("msg/updateAvailable/optional")
       isPersist = true
-      buttons = updateUrl == null ? null
-        : [
-            { id = "cancel", isCancel = true }
-            { text = loc("ugm/btnUpdate"), eventId = "updateGame", isPrimary = true, isDefault = true }
-          ]
+      buttons = [
+        { id = "cancel", isCancel = true }
+        { text = loc("ugm/btnUpdate"), eventId = "exitGameForUpdate", isPrimary = true, isDefault = true }
+      ]
     }))

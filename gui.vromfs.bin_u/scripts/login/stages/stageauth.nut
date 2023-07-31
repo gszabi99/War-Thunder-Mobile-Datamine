@@ -8,7 +8,7 @@ let { subscribe, send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let googlePlayAccount = require("android.account.googleplay")
-let appleAccount = require("ios.account.apple")
+let appleAccount = require_optional("ios.account.apple") ?? { getAppleLoginToken = @() null, APPLE_LOGIN_SUCCESS = 1, APPLE_LOGIN_CANCEL = 4 }
 let fbAccount = require("android.account.fb")
 let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")

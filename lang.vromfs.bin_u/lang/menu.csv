@@ -2663,6 +2663,7 @@ Grup halinde maksimum 2 kişi oynayabilirsiniz.";"친구와 편대를 이루어 
 "mainmenu/shortcuts";"Mapping Mode";"Mapping des touches";"Assegnaz. tasti";"Tastenbelegung";"Modo de Mapeo";"Режим назначения";"Przypisanie przycisków";"Botão do mapeamento";"Eşleştirme modu";"버튼 설정";"按\t键\t映\t射";"ボタンマッピング";"按\t鍵\t映\t射";;
 "mainmenu/settings";"Settings";"Réglages";"Impostazioni";"Einstellungen";"Ajustes";"Настройка";"Ustawienia";"Configurações";"Ayarlar";"설정";"设\t置";"設定";"設\t置";;
 "mainmenu/ping";"Ping";"Ping";"Ping";"Latenz";"Ping";"Пинг";"Ping";"Ping";"Ping";"핑";"Ping";"Ping";"Ping";;
+"mainmenu/packet_loss/abbr";"PL";"PL";"PL";"PL";"PL";"PL";"PL";"PL";"PL";"PL";"PL";"PL";"PL";"Max 3 chars";
 "mainmenu/devices";"Axis Mapping";"Carte des axes";"Assegnaz. asse";"Achsenbelegung";"Mapeo de Ejes";"Настройка осей";"Przypisanie osi";"Mapeamento do eixo";"Eksen eşleştirme";"축 설정";"轴\t映\t射\t设\t置";"操作軸\tマッピング";"軸\t映\t射\t設\t置";;
 "mainmenu/btnUGM";"User Missions";"Missions de l'utilisateur";"Missioni utente";"Selbsterstellte Missionen";"Misiones de Usuario";"Пользовательские миссии";"Misje użytkownika";"Missões de usuário";"Kullanıcı Görevleri";"사용자 임무";"玩\t家\t任\t务";"ユーザーミッション";"玩\t家\t任\t務";;
 "ugm/btnComments";"Comments";"Commentaires";"Commenti";"Kommentare";"Comentarios";"Комментарии";"Komentarze";"Comentários";"Yorumlar";"코멘트";"评\t论";"コメント";"評\t論";;

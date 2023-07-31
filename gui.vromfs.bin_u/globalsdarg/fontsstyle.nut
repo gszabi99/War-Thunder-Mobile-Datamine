@@ -44,6 +44,8 @@ let fontVeryLarge = {
   fontSize = hdpxi(97)
 }
 
+let fontVeryTinyShaded = fontVeryTiny.__merge(shade)
+let fontTinyAccentedShaded = fontTinyAccented.__merge(shade)
 let fontMediumShaded = fontMedium.__merge(shade)
 let fontBigShaded = fontBig.__merge(shade)
 let fontVeryLargeShaded = fontVeryLarge.__merge(shade)
@@ -61,6 +63,8 @@ let fontsSets = {
     fontVeryLarge
   }
   commonShaded = {
+    fontVeryTinyShaded
+    fontTinyAccentedShaded
     fontMediumShaded
     fontBigShaded
     fontVeryLargeShaded

@@ -1686,9 +1686,6 @@
     "Range": 978.0
   },
   "Sound": {
-    "turretTurnSfxPath": "sounds/effects",
-    "turretTurnSfxPathStudio": "aircraft/effects",
-    "turretTurnSfxName": "gun_turn_manual",
     "Engine": "engine_radial",
     "gun": "gun_fw"
   },
@@ -1824,16 +1821,10 @@
   },
   "modifications": {},
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "b6n2_dark_green_c*",
-        "to": "b6n2_dark_green_c_tomoe*"
-      },
-      {
-        "from": "b6n2_dark_green_c_dmg*",
-        "to": "b6n2_dark_green_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "b6n2_dark_green_c*",
+      "to": "b6n2_dark_green_c_tomoe*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

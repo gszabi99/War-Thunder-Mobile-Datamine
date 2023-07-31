@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_game_version_str } = require("app")
+let { get_base_game_version_str } = require("app")
 let { UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_DOWNLOADING_YUP
 } = require("contentUpdater")
 let { updaterState } = require("loginUpdaterState.nut")
@@ -59,7 +59,7 @@ let bottomBlock = {
           hplace = ALIGN_RIGHT
           text = "\n".concat(
             "".concat(loc("userID"), colon, myUserId.value)
-            "".concat(loc("mainmenu/version"), colon, get_game_version_str())
+            "".concat(loc("mainmenu/version"), colon, get_base_game_version_str())
           )
         }.__update(fontTiny)
       ]

@@ -1606,9 +1606,7 @@
   },
   "Sound": {
     "Engine": "engine_v12",
-    "gun": "gun_default",
-    "cockpitOpen": "cockpit_door2_open",
-    "cockpitClose": "cockpit_door2_close"
+    "gun": "gun_default"
   },
   "flexWing": {
     "wingStrainCoeff": 0.2,

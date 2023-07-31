@@ -1159,7 +1159,7 @@
             -975.705
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1221,7 +1221,7 @@
             -984.676
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1283,7 +1283,7 @@
             -993.646
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1345,7 +1345,7 @@
             -1002.62
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1407,7 +1407,7 @@
             -1011.59
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1469,7 +1469,7 @@
             -950.884
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1531,7 +1531,7 @@
             -941.939
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1593,7 +1593,7 @@
             -932.995
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1655,7 +1655,7 @@
             -924.051
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1717,7 +1717,7 @@
             -915.106
           ]
         ],
-        "unit_class": "f6f-3",
+        "unit_class": "f6f_3",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,

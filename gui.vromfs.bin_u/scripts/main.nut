@@ -82,6 +82,7 @@ require("%scripts/pServer/profileServerClient.nut")
 require("%scripts/pServer/writeProfileToNdb.nut")
 require("%scripts/currencies.nut")
 require("%scripts/matching/matchingClient.nut")
+require("%scripts/matching/onlineInfo.nut")
 
 
 foreach (fn in [

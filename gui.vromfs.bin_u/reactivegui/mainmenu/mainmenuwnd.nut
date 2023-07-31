@@ -15,6 +15,7 @@ let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+let { totalPlayers, totalRooms } = require("%appGlobals/gameModes/gameModes.nut")
 let { campaignsList, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let chooseCampaignWnd = require("chooseCampaignWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
@@ -25,6 +26,7 @@ let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { allow_players_online_info } = require("%appGlobals/permissions.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -58,6 +60,18 @@ let campaignsBtn = @() {
     : campaignsBtnComp
 }
 
+let onlineInfo = @() {
+  watch = [totalPlayers, totalRooms, allow_players_online_info]
+  rendObj = ROBJ_TEXT
+  text = !allow_players_online_info.value || totalPlayers.value < 0 || totalRooms.value < 0
+    ? null
+    : loc("mainmenu/online_info", {
+        playersOnline = totalPlayers.value
+        battles = totalRooms.value
+      })
+  color = 0xD0D0D0D0
+}.__update(fontVeryTinyShaded)
+
 let gamercardPlace = {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
@@ -68,7 +82,10 @@ let gamercardPlace = {
       children = [
         {
           pos = [0, hdpx(45)]
-          children = downloadInfoBlock
+          children = [
+            onlineInfo
+            downloadInfoBlock
+          ]
         }
         {
           hplace = ALIGN_RIGHT

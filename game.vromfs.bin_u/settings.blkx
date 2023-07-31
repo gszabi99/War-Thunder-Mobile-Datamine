@@ -403,7 +403,9 @@
     "underwaterFogUseShadows": 1,
     "allowHmap": false,
     "useCellSBuffer": true,
-    "sky_panorama_patch": false
+    "sky_panorama_patch": false,
+    "allowETC2": false,
+    "compress_panorama": false
   },
   "ps4": {
     "garlic_size_mb": 2560,

@@ -14,6 +14,7 @@ let defaults = {
   allow_online_purchases = false
   can_use_debug_console = DBGLEVEL > 0
   can_receive_dedic_logerr = DBGLEVEL > 0
+  allow_players_online_info = false
 }
 
 let allPermissions = Computed(function() {

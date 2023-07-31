@@ -1680,9 +1680,6 @@
     "Range": 1300.0
   },
   "Sound": {
-    "turretTurnSfxPath": "sounds/effects",
-    "turretTurnSfxPathStudio": "aircraft/effects",
-    "turretTurnSfxName": "gun_turn_manual",
     "Engine": "engine_radial",
     "gun": "gun_default"
   },

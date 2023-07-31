@@ -1808,129 +1808,396 @@
   },
   "cutscene": {
     "ship": {
-      "musicName": "naval/music/cutscene_offer",
-      "from": [
-        2367.0,
-        7.0,
-        -5135.0
-      ],
-      "to": [
-        2506.0,
-        7.0,
-        -6207.0
-      ],
-      "timeToStop": 100.0,
-      "cameraRelativeSpeed": 0.3,
-      "shootToPos": [
-        5668.0,
-        60.0,
-        -10632.5
-      ],
-      "shootAfterTime": 3.0,
-      "numShots": 1,
-      "cameraPath": {
-        "point": [
-          {
-            "from": [
-              0.8,
-              0.01,
-              0.7
-            ],
-            "to": [
-              0.75,
-              0.01,
-              0.1
-            ]
-          },
-          {
-            "from": [
-              1.0,
-              0.01,
-              0.6
-            ],
-            "to": [
-              0.7,
-              0.01,
-              0.1
-            ]
-          },
-          {
-            "from": [
-              1.3,
-              0.01,
-              0.5
-            ],
-            "to": [
-              0.66,
-              0.05,
-              0.1
+      "preset": [
+        {
+          "id": "v1",
+          "musicName": "naval/music/cutscene_offer",
+          "from": [
+            2367.0,
+            7.0,
+            -5135.0
+          ],
+          "to": [
+            2506.0,
+            7.0,
+            -6207.0
+          ],
+          "timeToStop": 100.0,
+          "cameraRelativeSpeed": 0.3,
+          "shootToPos": [
+            5668.0,
+            60.0,
+            -10632.5
+          ],
+          "shootAfterTime": 3.0,
+          "numShots": 1,
+          "cameraPath": {
+            "point": [
+              {
+                "from": [
+                  0.8,
+                  0.01,
+                  0.7
+                ],
+                "to": [
+                  0.75,
+                  0.01,
+                  0.1
+                ]
+              },
+              {
+                "from": [
+                  1.0,
+                  0.01,
+                  0.6
+                ],
+                "to": [
+                  0.7,
+                  0.01,
+                  0.1
+                ]
+              },
+              {
+                "from": [
+                  1.3,
+                  0.01,
+                  0.5
+                ],
+                "to": [
+                  0.66,
+                  0.05,
+                  0.1
+                ]
+              }
             ]
           }
-        ]
-      }
+        },
+        {
+          "id": "v3",
+          "musicName": "naval/music/cutscene_offer",
+          "from": [
+            2367.0,
+            7.0,
+            -5135.0
+          ],
+          "to": [
+            2506.0,
+            7.0,
+            -6207.0
+          ],
+          "timeToStop": 100.0,
+          "cameraRelativeSpeed": 0.9,
+          "shootToPos": [
+            5668.0,
+            60.0,
+            -10632.5
+          ],
+          "shootAfterTime": 3.0,
+          "numShots": 1,
+          "cameraPath": {
+            "point": [
+              {
+                "from": [
+                  0.1,
+                  0.8,
+                  0.5
+                ],
+                "to": [
+                  0.01,
+                  0.01,
+                  -0.1
+                ]
+              },
+              {
+                "from": [
+                  0.9,
+                  0.3,
+                  1.0
+                ],
+                "to": [
+                  0.01,
+                  0.01,
+                  0.1
+                ]
+              },
+              {
+                "from": [
+                  2.1,
+                  0.2,
+                  1.0
+                ],
+                "to": [
+                  0.3,
+                  0.1,
+                  0.1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "v4",
+          "musicName": "naval/music/cutscene_offer",
+          "from": [
+            2367.0,
+            7.0,
+            -5135.0
+          ],
+          "to": [
+            2506.0,
+            7.0,
+            -6207.0
+          ],
+          "timeToStop": 100.0,
+          "cameraRelativeSpeed": 0.5,
+          "shootToPos": [
+            -576.9,
+            60.0,
+            -10632.5
+          ],
+          "shootAfterTime": 3.0,
+          "numShots": 1,
+          "cameraPath": {
+            "point": [
+              {
+                "from": [
+                  -0.2,
+                  0.1,
+                  -0.2
+                ],
+                "to": [
+                  -0.1,
+                  0.03,
+                  -0.1
+                ],
+                "roll": 15.0
+              },
+              {
+                "from": [
+                  0.6,
+                  0.12,
+                  -0.3
+                ],
+                "to": [
+                  0.3,
+                  0.05,
+                  -0.1
+                ],
+                "roll": 15.0
+              },
+              {
+                "from": [
+                  1.6,
+                  0.12,
+                  -0.3
+                ],
+                "to": [
+                  1.1,
+                  0.1,
+                  -0.1
+                ],
+                "roll": 0.0
+              }
+            ]
+          }
+        }
+      ]
     },
     "tank": {
-      "musicName": "naval/music/cutscene_offer_tanks",
-      "from": [
-        2163.9,
-        8.05,
-        1666.9
-      ],
-      "to": [
-        2140.4,
-        8.05,
-        1666.9
-      ],
-      "startSpeed": 4.0,
-      "timeToStop": 0.7,
-      "cameraRelativeSpeed": 1.2,
-      "shootToPos": [
-        2022.3,
-        8.0,
-        1615.1
-      ],
-      "shootAfterTime": 2.2,
-      "numShots": 1,
-      "cameraPath": {
-        "point": [
-          {
-            "from": [
-              0.1,
-              0.7,
-              2.0
-            ],
-            "to": [
-              -0.1,
-              0.6,
-              0.1
-            ]
-          },
-          {
-            "from": [
-              1.0,
-              0.5,
-              1.5
-            ],
-            "to": [
-              0.0,
-              0.4,
-              0.1
-            ]
-          },
-          {
-            "from": [
-              2.1,
-              0.3,
-              1.5
-            ],
-            "to": [
-              0.0,
-              0.2,
-              0.0
+      "preset": [
+        {
+          "id": "v1",
+          "musicName": "naval/music/cutscene_offer_tanks",
+          "from": [
+            2163.9,
+            8.05,
+            1666.9
+          ],
+          "to": [
+            2140.4,
+            8.05,
+            1666.9
+          ],
+          "startSpeed": 4.0,
+          "timeToStop": 0.7,
+          "cameraRelativeSpeed": 1.2,
+          "shootToPos": [
+            2022.3,
+            8.0,
+            1615.1
+          ],
+          "shootAfterTime": 2.2,
+          "numShots": 1,
+          "cameraPath": {
+            "point": [
+              {
+                "from": [
+                  0.1,
+                  0.7,
+                  2.0
+                ],
+                "to": [
+                  -0.1,
+                  0.6,
+                  0.1
+                ]
+              },
+              {
+                "from": [
+                  1.0,
+                  0.5,
+                  1.5
+                ],
+                "to": [
+                  0.0,
+                  0.4,
+                  0.1
+                ]
+              },
+              {
+                "from": [
+                  2.1,
+                  0.3,
+                  1.5
+                ],
+                "to": [
+                  0.0,
+                  0.2,
+                  0.0
+                ]
+              }
             ]
           }
-        ]
-      }
+        },
+        {
+          "id": "v3",
+          "musicName": "naval/music/cutscene_offer_tanks",
+          "from": [
+            2163.9,
+            8.05,
+            1666.9
+          ],
+          "to": [
+            2140.4,
+            8.05,
+            1666.9
+          ],
+          "startSpeed": 4.0,
+          "timeToStop": 0.7,
+          "cameraRelativeSpeed": 1.9,
+          "shootToPos": [
+            2022.3,
+            8.0,
+            1615.1
+          ],
+          "shootAfterTime": 2.2,
+          "numShots": 1,
+          "cameraPath": {
+            "point": [
+              {
+                "from": [
+                  -0.8,
+                  2.0,
+                  0.2
+                ],
+                "to": [
+                  0.1,
+                  0.1,
+                  -0.1
+                ]
+              },
+              {
+                "from": [
+                  0.6,
+                  1.0,
+                  1.2
+                ],
+                "to": [
+                  0.1,
+                  0.2,
+                  0.1
+                ]
+              },
+              {
+                "from": [
+                  1.8,
+                  0.5,
+                  1.5
+                ],
+                "to": [
+                  0.15,
+                  0.2,
+                  0.1
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "v4",
+          "musicName": "naval/music/cutscene_offer_tanks",
+          "from": [
+            2163.9,
+            8.05,
+            1666.9
+          ],
+          "to": [
+            2140.4,
+            8.05,
+            1666.9
+          ],
+          "startSpeed": 4.0,
+          "timeToStop": 0.7,
+          "cameraRelativeSpeed": 1.9,
+          "shootToPos": [
+            2022.3,
+            30.0,
+            1690.0
+          ],
+          "shootAfterTime": 2.2,
+          "numShots": 1,
+          "cameraPath": {
+            "point": [
+              {
+                "from": [
+                  -1.5,
+                  0.1,
+                  -1.5
+                ],
+                "to": [
+                  -0.1,
+                  0.1,
+                  -0.1
+                ]
+              },
+              {
+                "from": [
+                  0.5,
+                  0.3,
+                  -1.3
+                ],
+                "to": [
+                  0.0,
+                  0.1,
+                  -0.1
+                ]
+              },
+              {
+                "from": [
+                  3.0,
+                  0.5,
+                  -0.8
+                ],
+                "to": [
+                  0.1,
+                  0.2,
+                  -0.1
+                ]
+              }
+            ]
+          }
+        }
+      ]
     }
   }
 }
