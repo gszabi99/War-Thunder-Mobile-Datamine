@@ -6,12 +6,12 @@ let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps,
 let { bulletsAABB } = require("respawnAnimState.nut")
 let { bg, bulletsBlockWidth, bulletsBlockMargin, headerText, header, gap, bulletsLegend } = require("respawnComps.nut")
 let { slider, sliderValueSound, sliderBtn, mkSliderKnob } = require("%rGui/components/slider.nut")
-let { mkBulletIcon } = require("bulletsComps.nut")
+let mkBulletSlot = require("mkBulletSlot.nut")
 let respawnChooseBulletWnd = require("respawnChooseBulletWnd.nut")
 let { getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
 
 let padding = hdpx(10)
-let headerHeight = hdpx(100)
+let headerHeight = hdpx(105)
 let choiceCount = Computed(@() chosenBullets.value.len())
 let btnSize = evenPx(80)
 let knobSize = evenPx(50)
@@ -19,6 +19,7 @@ let sliderGap = knobSize / 2 + (0.1 * btnSize).tointeger()
 let sliderSize = [bulletsBlockWidth - 2 * (btnSize + sliderGap + padding), evenPx(80)]
 let hoverColor = 0x8052C4E4
 
+let curSlotName = Watched(-1)
 
 let mkText = @(ovr) {
   rendObj = ROBJ_TEXT
@@ -30,9 +31,9 @@ let function onHeaderClick(key, slotIdx) {
     respawnChooseBulletWnd(slotIdx, gui_scene.getCompAABBbyKey(key), gui_scene.getCompAABBbyKey("respawnWndContent"))
 }
 
-let function bulletHeader(bSlot, bInfo) {
+let function bulletHeader(bSlot, bInfo, maxCount) {
   let fromUnitTags = Computed(@() bulletsInfo.value?.fromUnitTags[bSlot.value?.name])
-  let countText = Computed(@() $"{bSlot.value?.count ?? 0}/{bulletStep.value * bulletTotalSteps.value}")
+  let countText = Computed(@() $"{bSlot.value?.count ?? 0}/{bulletStep.value * maxCount.value}")
   let nameText = Computed(@() getAmmoNameShortText(bInfo.value))
   let { idx = -1 } = bSlot.value
   let key = $"respBulletsHeader{idx}"
@@ -48,15 +49,19 @@ let function bulletHeader(bSlot, bInfo) {
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
-    onClick = @() onHeaderClick(key, bSlot.value?.idx)
+    onClick = function(){
+      curSlotName(idx)
+      onHeaderClick(key, bSlot.value?.idx)
+    }
     children = [
-      mkBulletIcon(bInfo.value, fromUnitTags.value)
+      @() mkBulletSlot(bInfo.value, fromUnitTags.value, {
+        watch = [fromUnitTags, bInfo]
+      })
       {
-        size = flex()
         padding
         flow = FLOW_VERTICAL
         valign = ALIGN_CENTER
-        halign = ALIGN_RIGHT
+        halign = ALIGN_LEFT
         gap = { size = flex() }
         children = [
           @() mkText({ watch = nameText, text = nameText.value })
@@ -81,11 +86,11 @@ let btnTextInc = mkBtnTextCtor({ text = "+" })
 let knobCtor = @(relValue, stateFlags, fullW)
   mkSliderKnob(relValue, stateFlags, fullW, { size = [knobSize, knobSize] })
 
-let function bulletSlider(bSlot) {
+let function bulletSlider(bSlot, maxCount) {
   let count = Computed(@() bSlot.value?.count ?? 0)
   let minOvr = Computed(@() count.value == 0 ? inactiveBtnOvr : {})
   let maxOvr = Computed(@() (bulletLeftSteps.value == 0
-    || count.value >= bulletTotalSteps.value * bulletStep.value)
+    || count.value >= maxCount.value * bulletStep.value)
       ? inactiveBtnOvr
       : {})
   let function onChange(value) {
@@ -99,7 +104,7 @@ let function bulletSlider(bSlot) {
     setCurUnitBullets(idx, name, newVal)
   }
   return @() bg.__merge({
-    watch = [bulletTotalSteps, bulletStep]
+    watch = [maxCount, bulletStep]
     size = [flex(), headerHeight]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -114,7 +119,7 @@ let function bulletSlider(bSlot) {
           size = sliderSize
           unit = bulletStep.value
           min = 0
-          max = bulletTotalSteps.value * bulletStep.value
+          max = maxCount.value * bulletStep.value
           onChange
         },
         knobCtor)
@@ -125,15 +130,17 @@ let function bulletSlider(bSlot) {
   })
 }
 
-let function mkBulletSlot(idx) {
+let function mkBulletSliderSlot(idx) {
   let bSlot = Computed(@() chosenBullets.value?[idx])
   let bInfo = Computed(@() bulletsInfo.value?.bulletSets[bSlot.value?.name])
+  let maxCount = Computed(@() min(bulletTotalSteps.value,
+    bulletsInfo.value?.fromUnitTags[bSlot.value?.name]?.maxCount ?? bulletTotalSteps.value))
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
-      bulletHeader(bSlot, bInfo)
-      bulletSlider(bSlot)
+      bulletHeader(bSlot, bInfo, maxCount)
+      bulletSlider(bSlot, maxCount)
     ]
   }
 }
@@ -152,7 +159,7 @@ let function respawnBullets() {
         flow = FLOW_VERTICAL
         gap
         children = [header(headerText(loc(isBulletBelt ? "machinegun/caliber" : "gun/caliber", { caliber })))]
-          .extend(array(choiceCount.value).map(@(_, idx) mkBulletSlot(idx)))
+          .extend(array(choiceCount.value).map(@(_, idx) mkBulletSliderSlot(idx)))
       },
       bulletsLegend
     ]

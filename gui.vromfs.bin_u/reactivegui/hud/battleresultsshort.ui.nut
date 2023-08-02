@@ -9,6 +9,8 @@ let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { playersDamageStats, requestPlayersDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
+let { rnd_int } = require("dagor.random")
+
 
 let changeTextBgColorDuration = 0.1
 let textBlockBounceDuration = 0.3
@@ -42,8 +44,6 @@ let localTeamList = Computed(function() {
 let missionResult = Watched(null)
 let needShowResultScreen = Computed(@() missionResult.value == GO_WIN || missionResult.value == GO_FAIL)
 let localUserPlace = Computed(function() {
-  if (!isInMpSession.value)
-    return null
   let localUserIndex = localTeamList.value.findindex(@(player) player.isLocal)
   return localUserIndex != null ? localUserIndex + 1 : null
 })
@@ -67,8 +67,11 @@ let localUserScores = Computed(function() {
   if (player == null || scoreInfo == null)
     return null
   let v = scoreInfo.getVal(player)
-  if (v <= 0)
+  if (v <= 0) {
+    if (!isInMpSession.value)
+      return { label = scoreInfo.label, val = scoreInfo.toText(rnd_int(10000, 50000)) }
     return null
+  }
   let { label, toText } = scoreInfo
   return {
     label

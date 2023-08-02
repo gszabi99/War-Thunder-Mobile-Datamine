@@ -37,7 +37,7 @@
   "expClass": "exp_fortification",
   "artilleryDispersion": 15.0,
   "artilleryAdjustmentDispersion": 30.0,
-  "artilleryNumBullets": 12,
+  "artilleryNumBullets": 15,
   "artilleryNumBulletsForAdjustment": 4,
   "artilleryTimeToFirstShot": 6.0,
   "artilleryTimeBetweenShots": 0.3,

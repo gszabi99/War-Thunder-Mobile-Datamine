@@ -40,6 +40,7 @@ let isLoginRequired = sharedWatched("isLoginRequired", @() !shouldDisableMenu &&
 let authTags = sharedWatched("authTags", @() [])
 let isLoginByGajin = sharedWatched("isLoginByGajin", @() false)
 let legalListForApprove = sharedWatched("legalsToApprove", @() {})
+let isMatchingOnline = sharedWatched("isMatchingOnline", @() false)
 
 let function getLoginStateDebugStr(state = null) {
   state = state ?? loginState.value
@@ -84,6 +85,7 @@ return loginTypes.__merge({
   isLoginByGajin
   availableLoginTypes
   legalListForApprove
+  isMatchingOnline
 
   isLoginStarted = Computed(@() (loginState.value & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.value & LOGIN_STATE.AUTHORIZED) != 0)

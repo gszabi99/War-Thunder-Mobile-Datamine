@@ -14,11 +14,11 @@ let getDefaultBattleData = require("%appGlobals/data/getDefaultBattleData.nut")
 let { mkCmdSetBattleJwtData, mkCmdGetMyBattleData,
   mkCmdSetDefaultBattleData, CmdSetMyBattleData } = require("%appGlobals/sqevents.nut")
 let { register_command } = require("console")
-let eventbus = require("eventbus")
+let { subscribe } = require("eventbus")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
+let { battleCampaign, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
 
 enum ACTION {
   NOTHING = "nothing"
@@ -179,7 +179,7 @@ let function setBattleDataToClientEcs(bd) {
     })
 }
 
-eventbus.subscribe("CreateBattleDataForClient",
+subscribe("CreateBattleDataForClient",
   @(_) is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
     : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)
     : logBD("Ignore set battle data to client because of not actual"))
@@ -193,6 +193,9 @@ realBattleData.subscribe(@(v) battleCampaign(v?.campaign ?? ""))
 isInBattle.subscribe(@(v) v ? wasBattleDataApplied(isBattleDataApplied.value) : isBattleDataApplied(false))
 isBattleDataApplied.subscribe(@(v) v ? wasBattleDataApplied(v) : null)
 
+let battleUnitName = keepref(Computed(@() !isInBattle.value ? null : state.value?.slots[0]))
+battleUnitName.subscribe(@(v) mainBattleUnitName(v))
+
 register_command(function() {
   if (state.value == null)
     return console_print("No info about battle data")
@@ -205,6 +208,7 @@ return {
   battleData = realBattleData
   lastClientBattleData
   curBattleUnit = Computed(@() realBattleData.value?.unit)
+  curBattleItems = Computed(@() realBattleData.value?.items)
   isBattleDataReceived = Computed(@() state.value?.isBattleDataReceived)
   wasBattleDataApplied
 }

@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
+let { ceil } = require("math")
 let { defer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bulletsInfo, chosenBullets, setOrSwapUnitBullet } = require("bulletsChoiceState.nut")
+let { bulletsInfo, chosenBullets, setOrSwapUnitBullet, visibleBullets } = require("bulletsChoiceState.nut")
 let { selSlot } = require("respawnState.nut")
 let { createHighlight } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 let { darkCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { mkBulletIcon, bulletIconSize } = require("bulletsComps.nut")
+let mkBulletSlot = require("mkBulletSlot.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let getBulletStats = require("bulletStats.nut")
@@ -14,13 +15,21 @@ let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGro
 let { getAmmoNameText, getAmmoNameShortText, getAmmoTypeText, getAmmoAdviceText
 } = require("%rGui/weaponry/weaponsVisual.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
+
 
 let WND_UID = "respawn_choose_bullet_wnd"
+let bulletSlotSize = [hdpxi(350), hdpxi(105)]
 let minWndWidth = hdpx(700)
-let minBulletWidth = max(bulletIconSize[0], hdpx(150))
-let bulletHeight = bulletIconSize[1] + hdpx(50)
+let minBulletWidth = max(bulletSlotSize[0], hdpx(150))
+let bulletHeight = bulletSlotSize[1]
 let statRowHeight = hdpx(28)
 let lockedColor = 0xFFF04005
+
+let maxColumns = 2
+let slotsGap = hdpx(5)
+let bulletsColumnsCount = @(bSetsCount) min(maxColumns, bSetsCount)
+let bulletsListWidth = @(columns) max((minBulletWidth * columns) + slotsGap, minWndWidth)
 
 let openParams = mkWatched(persist, "openParams", null)
 let curSlotName = mkWatched(persist, "curSlotName", "")
@@ -44,26 +53,27 @@ savedSlotName.subscribe(@(v) curSlotName(v))
 chosenBullets.subscribe(@(_) curSlotName(savedSlotName.value))
 openParams.subscribe(@(_) wndAABB(null))
 
-let getWndWidth = @(bSetsCount) max(minBulletWidth * bSetsCount, minWndWidth)
-
-let function mkBulletButton(name, bSet, fromUnitTags) {
+let function mkBulletButton(name, bSet, fromUnitTags, columns) {
   let isCurrent = Computed(@() name == curSlotName.value)
   let color = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.value?.level ?? 0) ? lockedColor
     : name in usedBullets.value ? 0xFF808080
     : 0xFFFFFFFF)
   let children = [
-    @() mkBulletIcon(bSet, fromUnitTags,
+    @() mkBulletSlot(bSet, fromUnitTags,
       {
-        watch = color
+        watch = isCurrent
+        size = columns < 2 ? [minWndWidth, bulletHeight] : bulletSlotSize
+        halign = columns < 2 ? ALIGN_CENTER : null
         vplace = ALIGN_BOTTOM
-        hplace = ALIGN_CENTER
-        color = color.value
+        hplace = ALIGN_LEFT
+        color = isCurrent.value ? 0xFF75D0E7 : 0xFF264A4E
       })
     @() {
       watch = color
-      hplace = ALIGN_RIGHT
+      hplace = ALIGN_LEFT
       rendObj = ROBJ_TEXT
       color = color.value
+      padding = [0, 0, 0, hdpx(10)]
       text = getAmmoNameShortText(bSet)
       maxWidth = pw(100)
       behavior = Behaviors.Marquee
@@ -75,10 +85,6 @@ let function mkBulletButton(name, bSet, fromUnitTags) {
 
   return @() {
     watch = isCurrent
-    size = flex()
-    padding = hdpx(6)
-    rendObj = ROBJ_SOLID
-    color = isCurrent.value ? 0xFF2C6775 : 0xFF000000
     behavior = Behaviors.Button
     onClick
     children
@@ -90,10 +96,22 @@ let function bulletsList() {
   if (bulletsInfo.value == null)
     return { watch = bulletsInfo }
   let { bulletSets, bulletsOrder, fromUnitTags } = bulletsInfo.value
+  let columns = bulletsColumnsCount(bulletSets.len())
+  let rows = ceil(bulletSets.len().tofloat()/columns)
   return {
-    size = [getWndWidth(bulletSets.len()), bulletHeight]
-    flow = FLOW_HORIZONTAL
-    children = bulletsOrder.map(@(name) mkBulletButton(name, bulletSets[name], fromUnitTags?[name]))
+    watch = [bulletsInfo, visibleBullets]
+    size = [bulletsListWidth(columns), bulletHeight * rows]
+    flow = FLOW_VERTICAL
+    gap = slotsGap
+    children = arrayByRows(
+        bulletsOrder
+          .filter(@(name) visibleBullets.value?[name] ?? false)
+          .map(@(name) mkBulletButton(name, bulletSets[name], fromUnitTags?[name], columns)), columns)
+      .map(@(item) {
+        flow = FLOW_HORIZONTAL
+        children = item
+        gap = slotsGap
+      })
   }
 }
 
@@ -159,7 +177,7 @@ let function curBulletInfo() {
   let bSet = bulletSets?[curSlotName.value]
   let tags = fromUnitTags?[curSlotName.value]
   let { reqLevel = 0 } = tags
-
+  let columns = bulletsColumnsCount(bulletSets.len())
   let children = [
     {
       size = [ flex(), SIZE_TO_CONTENT ]
@@ -175,7 +193,7 @@ let function curBulletInfo() {
   let adviceText = getAmmoAdviceText(bSet)
   if (adviceText != "")
     children.append(mkStatTextarea(adviceText))
-  children.append(mkShellVideo(bSet?.shellAnimations ?? [], getWndWidth(bulletSets.len())))
+  children.append(mkShellVideo(bSet?.shellAnimations ?? [], bulletsListWidth(columns)))
 
   children.append(separator)
   if (reqLevel > (selSlot.value?.level ?? 0))
@@ -185,28 +203,11 @@ let function curBulletInfo() {
   return {
     watch = [bulletsInfo, curSlotName]
     size = [flex(), SIZE_TO_CONTENT]
-    minHeight = hdpx(550)
-    padding = hdpx(40)
+    minHeight = hdpx(500)
+    padding = hdpx(15)
     flow = FLOW_VERTICAL
     children
   }
-}
-
-let wndKey = {}
-let window = {
-  key = wndKey
-  onAttach = @() defer(@() wndAABB(gui_scene.getCompAABBbyKey(wndKey)))
-  stopMouse = true
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_RIGHT
-  rendObj = ROBJ_SOLID
-  color = 0xA0000000
-  flow = FLOW_VERTICAL
-  halign = ALIGN_CENTER
-  children = [
-    bulletsList
-    curBulletInfo
-  ]
 }
 
 let function applyBullet() {
@@ -224,10 +225,32 @@ let function applyButton() {
     : textButtonPrimary(applyText, applyBullet)
   return {
     watch = [savedSlotName, curSlotName, bulletsInfo, selSlot]
-    vplace = ALIGN_BOTTOM
-    hplace = ALIGN_RIGHT
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    size = [flex(), hdpx(110)]
     children
   }
+}
+
+let wndKey = {}
+
+let window = {
+  key = wndKey
+  onAttach = @() defer(@() wndAABB(gui_scene.getCompAABBbyKey(wndKey)))
+  stopMouse = true
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_RIGHT
+  rendObj = ROBJ_SOLID
+  color = 0xA0000000
+  flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  padding = [hdpx(15), 0]
+  maxHeight = saSize[1]
+  children = [
+    bulletsList
+    curBulletInfo
+    applyButton
+  ]
 }
 
 let mkBg = @(box) box == null
@@ -314,10 +337,7 @@ let function content() {
         size = flex()
         padding = wndBox == null ? null
           : [wndBox.t, sw(100) - wndBox.r, sh(100) - wndBox.b, wndBox.l]
-        children = [
-          window
-          applyButton
-        ]
+        children = window
       }
       animLines
     ]

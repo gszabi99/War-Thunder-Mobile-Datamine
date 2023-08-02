@@ -13,7 +13,7 @@ let mkText = @(text) {
   text
 }.__update(fontSmall)
 
-let function showNoBalanceMsg(price, currencyId, onGoToShop) {
+let function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
   let notEnough = Computed(@() price - (balance.value?[currencyId] ?? 0))
   notEnough.subscribe(@(v) v <= 0 ? closeMsgBox(NO_BALANCE_UID) : null)
   let replaceTable = {
@@ -43,7 +43,7 @@ let function showNoBalanceMsg(price, currencyId, onGoToShop) {
       { id = "cancel", isCancel = true }
       { id = "replenish", styleId = "PRIMARY", isDefault = true,
         function cb() {
-          openShopWndByCurrencyId(currencyId)
+          openShopWndByCurrencyId(currencyId, bqPurchaseInfo)
           onGoToShop?()
         }
       }
@@ -51,12 +51,12 @@ let function showNoBalanceMsg(price, currencyId, onGoToShop) {
   })
 }
 
-let function showNoBalanceMsgIfNeed(price, currencyId, onGoToShop = null) {
+let function showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, onGoToShop = null) {
   let hasBalance = (balance.value?[currencyId] ?? 0) >= price
   if (hasBalance)
     return false
 
-  showNoBalanceMsg(price, currencyId, onGoToShop)
+  showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop)
   return true
 }
 
@@ -75,12 +75,12 @@ let msgContent = @(text, priceComp) {
   ]
 }
 
-let function openMsgBoxPurchase(text, prices, purchaseFunc) {
+let function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo) {
   let priceComp = []
   let priceList = type(prices) == "array" ? prices : [prices]
 
   foreach(price in priceList) {
-    if (showNoBalanceMsgIfNeed(price.price, price.currencyId))
+    if (showNoBalanceMsgIfNeed(price.price, price.currencyId, bqPurchaseInfo))
       return
 
     priceComp.append(

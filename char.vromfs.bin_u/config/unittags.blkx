@@ -1359,15 +1359,6 @@
           "caliber": 533.0,
           "ammoCount": 18,
           "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 20,
-          "isBeltAmmo": false
         }
       }
     }
@@ -2230,15 +2221,6 @@
           "caliber": 533.0,
           "ammoCount": 9,
           "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 20,
-          "isBeltAmmo": false
         }
       }
     }
@@ -2465,15 +2447,6 @@
           "caliber": 530.0,
           "ammoCount": 7,
           "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 20,
-          "isBeltAmmo": false
         }
       }
     }
@@ -2523,6 +2496,46 @@
           "gunsCount": 2,
           "caliber": 76.2,
           "ammoCount": 300,
+          "isBeltAmmo": false
+        }
+      }
+    }
+  },
+  "uk_battlecruiser_invincible": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 812,
+    "tierGroup": 5,
+    "tags": {
+      "country_germany": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 1030,
+      "shipCrewMin": 290,
+      "shipCrewRating": 1.68758,
+      "maxSpeed": 13.7,
+      "turningTime": 29,
+      "mainWeaponCaliber": 305.0,
+      "weapons": {
+        "305mm_45_12inch_mark10_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 1800.0,
+          "shotFreq": 0.125,
+          "gunsCount": 8,
+          "caliber": 305.0,
+          "ammoCount": 880,
+          "isBeltAmmo": false
+        },
+        "102mm_40_4in_qf_mark3_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 250.0,
+          "shotFreq": 0.5,
+          "gunsCount": 12,
+          "caliber": 102.0,
+          "ammoCount": 1200,
           "isBeltAmmo": false
         }
       }
@@ -3287,8 +3300,8 @@
     },
     "Shop": {
       "shipCrewMax": 1910,
-      "shipCrewMin": 710,
-      "shipCrewRating": 1.57515,
+      "shipCrewMin": 590,
+      "shipCrewRating": 1.89455,
       "maxSpeed": 16.3,
       "turningTime": 26,
       "supportPlane": "arado_196a_3",
@@ -3411,7 +3424,7 @@
       "weapons": {
         "127mm_5_50_type_3_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 0,
+          "damage": 500.0,
           "shotFreq": 0.286,
           "gunsCount": 6,
           "caliber": 127.0,
@@ -3436,15 +3449,6 @@
           "gunsCount": 3,
           "caliber": 610.0,
           "ammoCount": 36,
-          "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 20,
           "isBeltAmmo": false
         }
       }
@@ -4770,6 +4774,10 @@
         "76mm_ussr_APCR_1943": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 18
+        },
+        "76mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -4832,6 +4840,10 @@
         "75mm_usa_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 6
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -4904,6 +4916,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 11,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -5024,7 +5040,7 @@
       "type_spaa": true
     },
     "bullets": {
-      "12_7mm_M2_HB_user_machinegun": {
+      "12_7mm_M2_HB_user_machinegun_for_M16": {
         "default": {
           "icon": "hud_ammo_bullet_ap"
         },
@@ -5059,11 +5075,11 @@
       "maxSpeedBackward": 9.96311,
       "powerToWeightRatio": 17.3099,
       "weapons": {
-        "12_7mm_M2_HB_user_machinegun": {
+        "12_7mm_M2_HB_user_machinegun_for_M16": {
           "wtype": "mainCannon",
           "caliber": 12.7,
           "armorPower": 23.3753,
-          "reloadTime": 0.104167,
+          "reloadTime": 0.104348,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
         }
@@ -5092,6 +5108,10 @@
         "76mm_usa_M93_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 6
+        },
+        "76mm_us_M88_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -5162,6 +5182,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 6,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -5232,6 +5256,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 11,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -5410,6 +5438,10 @@
         "76mm_usa_M93_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 16
+        },
+        "76mm_us_M88_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -5679,6 +5711,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 6,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -5741,6 +5777,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 6,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -5803,6 +5843,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 6,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6012,6 +6056,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 11,
           "isHE": true
+        },
+        "75mm_ger_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6074,6 +6122,10 @@
         "75mm_ger_kwk40_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 6
+        },
+        "75mm_ger_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6136,6 +6188,10 @@
         "75mm_ger_kwk40_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 12
+        },
+        "75mm_ger_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6198,6 +6254,10 @@
         "75mm_ger_kwk40_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 14
+        },
+        "75mm_ger_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6548,6 +6608,10 @@
         "75mm_ger_kwk40_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 16
+        },
+        "75mm_ger_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6601,6 +6665,10 @@
         "75mm_ger_kwk40_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 8
+        },
+        "75mm_ger_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6667,6 +6735,10 @@
         "76mm_ussr_AP_1942": {
           "icon": "hud_ammo_ap3_he0",
           "reqLevel": 14
+        },
+        "76mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6737,6 +6809,10 @@
         "76mm_ussr_APCR_1943": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 20
+        },
+        "76mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -6976,6 +7052,10 @@
         "76mm_ussr_APCR_1943": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 22
+        },
+        "76mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -7430,6 +7510,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 16,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -7462,7 +7546,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -7542,6 +7626,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 8,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -7574,7 +7662,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -7602,6 +7690,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 8,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -7634,7 +7726,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -7663,6 +7755,10 @@
         "75mm_britain_APCBC": {
           "icon": "hud_ammo_ap2_he0",
           "reqLevel": 13
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -7695,7 +7791,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -7761,7 +7857,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -7839,7 +7935,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -7869,6 +7965,10 @@
           "icon": "hud_ammo_he",
           "reqLevel": 6,
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -8070,7 +8170,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 18.0,
           "isBeltAmmo": true
@@ -8128,7 +8228,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 18.0,
           "isBeltAmmo": true
@@ -8186,7 +8286,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 18.0,
           "isBeltAmmo": true
@@ -8220,6 +8320,10 @@
         "76mm_britain_17pdr_APCBC": {
           "icon": "hud_ammo_ap3_he0",
           "reqLevel": 15
+        },
+        "76mm_britain_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -8427,7 +8531,7 @@
         "7_7mm_Type_97_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.7,
-          "armorPower": 7.33333,
+          "armorPower": 5.075,
           "reloadTime": 0.120482,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -8489,7 +8593,7 @@
         "7_7mm_Type_97_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.7,
-          "armorPower": 7.33333,
+          "armorPower": 5.075,
           "reloadTime": 0.120482,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -8654,7 +8758,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -8691,6 +8795,10 @@
         "76mm_britain_17pdr_APDS": {
           "icon": "hud_ammo_apds",
           "reqLevel": 14
+        },
+        "76mm_britain_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -8803,6 +8911,10 @@
           "icon": "hud_ammo_he",
           "isHE": true,
           "reqLevel": 3
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -8835,7 +8947,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -8892,7 +9004,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -9004,6 +9116,58 @@
       }
     }
   },
+  "fr_amx_13_dca_40_reskin1": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_france": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "bullets": {
+      "40mm_Mle51_t1_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "40mm_L70_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "40mm_L70_HE": {
+          "icon": "hud_ammo_bullet_he",
+          "reqLevel": 18
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 40.0,
+      "armorThicknessFront": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "crew": 5,
+      "mass": 15500.0,
+      "maxSpeedForward": 60.0771,
+      "maxSpeedBackward": 6.89432,
+      "powerToWeightRatio": 17.4194,
+      "weapons": {
+        "40mm_Mle51_t1_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 40.0,
+          "armorPower": 47.6356,
+          "reloadTime": 0.25,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
   "us_m4a3e8_76w_sherman": {
     "type": "tank",
     "hangar_place": "tank",
@@ -9029,6 +9193,10 @@
         "76mm_usa_M93_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 6
+        },
+        "76mm_us_M88_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -9104,6 +9272,10 @@
         "76mm_usa_M32_APDS": {
           "icon": "hud_ammo_apds",
           "reqLevel": 11
+        },
+        "76mm_us_M361_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -9177,6 +9349,10 @@
         "90mm_us_M304_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 16
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -9339,7 +9515,7 @@
         "7_92mm_MG42_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.05,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -9566,6 +9742,10 @@
         "100mm_ussr_APCBC": {
           "icon": "hud_ammo_ap3_he1",
           "reqLevel": 11
+        },
+        "100mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -9688,6 +9868,10 @@
         "76mm_britain_17pdr_APDS": {
           "icon": "hud_ammo_apds",
           "reqLevel": 9
+        },
+        "76mm_britain_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -9720,7 +9904,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -9757,6 +9941,10 @@
         "76mm_britain_17pdr_APDS": {
           "icon": "hud_ammo_apds",
           "reqLevel": 14
+        },
+        "76mm_britain_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -9789,7 +9977,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 15.0,
           "isBeltAmmo": true
@@ -9817,6 +10005,10 @@
         "90mm_CN90_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "90mm_CN90_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -9940,6 +10132,10 @@
         "90mm_us_M332_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 9
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -10016,6 +10212,10 @@
         "76mm_usa_M32_APDS": {
           "icon": "hud_ammo_apds",
           "reqLevel": 11
+        },
+        "76mm_us_M361_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -10098,6 +10298,10 @@
         "90mm_us_M332_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 21
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -10496,7 +10700,7 @@
         "7_92mm_MG42_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.05,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -10842,6 +11046,10 @@
         "100mm_ussr_APCBC": {
           "icon": "hud_ammo_ap3_he1",
           "reqLevel": 19
+        },
+        "100mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -10882,7 +11090,7 @@
         "12_7mm_DShK_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 17.75,
+          "armorPower": 24.0,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -10951,7 +11159,7 @@
         "12_7mm_DShK_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 17.75,
+          "armorPower": 24.0,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -11090,6 +11298,10 @@
         "84mm_britain_20pdr_APDS": {
           "icon": "hud_ammo_apds",
           "reqLevel": 3
+        },
+        "84mm_britain_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -11233,7 +11445,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -11264,6 +11476,11 @@
         "20mm_Oerlikon_AP": {
           "reqLevel": 18,
           "icon": "hud_ammo_bullet_ap"
+        }
+      },
+      "103mm_MILAN_rocket_launcher": {
+        "default": {
+          "icon": "hud_ammo_atgm"
         }
       }
     },
@@ -11367,7 +11584,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -11424,7 +11641,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 18.0,
           "isBeltAmmo": true
@@ -11487,7 +11704,7 @@
         "7_5mm_MAC_31_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.5,
-          "armorPower": 7.33333,
+          "armorPower": 5.66667,
           "reloadTime": 0.109087,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
@@ -11698,6 +11915,10 @@
         },
         "75mm_ger_kwk40_APCR": {
           "icon": "hud_ammo_apcr"
+        },
+        "75mm_ger_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -11818,6 +12039,10 @@
         },
         "76mm_ussr_APCR_1943": {
           "icon": "hud_ammo_apcr"
+        },
+        "76mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -11881,6 +12106,10 @@
         "76mm_ussr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "76mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -12122,6 +12351,10 @@
         "76mm_usa_M42A1_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "76mm_us_M88_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -12185,6 +12418,10 @@
         },
         "75mm_usa_APCR": {
           "icon": "hud_ammo_apcr"
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -12310,6 +12547,10 @@
         "76mm_usa_M42A1_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "76mm_us_M88_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -12760,7 +13001,7 @@
         "12_7mm_DShK_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 17.75,
+          "armorPower": 24.0,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -12854,6 +13095,10 @@
         "100mm_ussr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "100mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -12916,17 +13161,17 @@
           "icon": "hud_ammo_ap1_he1",
           "reqLevel": 3
         },
-        "90mm_us_M304_APCR": {
-          "icon": "hud_ammo_apcr",
-          "reqLevel": 6
-        },
         "90mm_us_T108_HEAT": {
           "icon": "hud_ammo_heat",
-          "reqLevel": 9
+          "reqLevel": 6
         },
         "90mm_us_M332_APCR": {
           "icon": "hud_ammo_apcr",
-          "reqLevel": 12
+          "reqLevel": 9
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -12988,6 +13233,10 @@
         "120mm_usa_M469_HEAT": {
           "icon": "hud_ammo_heat",
           "reqLevel": 8
+        },
+        "120mm_us_M357_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -13318,7 +13567,7 @@
           "isBeltAmmo": true
         },
         "12_7mm_M80_user_machinegun": {
-          "wtype": "auxCannon",
+          "wtype": "machinegun",
           "caliber": 12.7,
           "armorPower": 2.0,
           "reloadTime": 0.2,
@@ -13553,6 +13802,10 @@
         "90mm_us_M431_HEAT": {
           "icon": "hud_ammo_heat",
           "reqLevel": 14
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -13635,6 +13888,10 @@
         "90mm_us_M332_APCR": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 22
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -13698,6 +13955,11 @@
         "20mm_rh202_HE": {
           "icon": "hud_ammo_bullet_he",
           "reqLevel": 18
+        }
+      },
+      "103mm_MILAN_rocket_launcher": {
+        "default": {
+          "icon": "hud_ammo_atgm"
         }
       }
     },
@@ -13991,6 +14253,10 @@
         "100mm_ussr_APDS": {
           "icon": "hud_ammo_apds",
           "reqLevel": 12
+        },
+        "100mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -14031,7 +14297,7 @@
         "12_7mm_DShK_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 17.75,
+          "armorPower": 24.0,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -14096,7 +14362,7 @@
         "12_7mm_DShK_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 17.75,
+          "armorPower": 24.0,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -14313,7 +14579,7 @@
         "12_7mm_M85_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 23.2348,
+          "armorPower": 25.7069,
           "reloadTime": 0.0959997,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": true
@@ -14379,7 +14645,7 @@
         "12_7mm_M85_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 23.2348,
+          "armorPower": 25.7069,
           "reloadTime": 0.0959997,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": true
@@ -14420,7 +14686,9 @@
         }
       },
       "127mm_TOW_rocket_launcher": {
-        "default": {}
+        "default": {
+          "icon": "hud_ammo_atgm"
+        }
       }
     },
     "Shop": {
@@ -14460,7 +14728,7 @@
         "127mm_TOW_rocket_launcher": {
           "wtype": "rockets",
           "caliber": 127.0,
-          "armorPower": 1.0,
+          "armorPower": 430.0,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 25.0,
           "isBeltAmmo": false
@@ -14726,7 +14994,7 @@
         "12_7mm_DShK_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 17.75,
+          "armorPower": 24.0,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -14791,7 +15059,7 @@
         "7_62mm_PKT_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.62,
-          "armorPower": 8.5,
+          "armorPower": 4.825,
           "reloadTime": 0.0857633,
           "gunnerTurretRotationSpeed": 7.0,
           "isBeltAmmo": true
@@ -14871,6 +15139,10 @@
         "75mm_britain_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -14903,7 +15175,7 @@
         "7_92mm_BESA_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.92,
-          "armorPower": 10.0,
+          "armorPower": 10.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 10.0,
           "isBeltAmmo": true
@@ -15037,6 +15309,10 @@
         "76mm_britain_17pdr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "76mm_britain_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -15109,6 +15385,10 @@
         },
         "90mm_jp_M82_APCBC": {
           "icon": "hud_ammo_ap1_he1"
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -15181,6 +15461,8 @@
       }
     },
     "Shop": {
+      "mainWeaponCaliber": 106.0,
+      "mainWeaponType": "auxCannon",
       "armorThicknessFront": [
         0.0,
         0.05,
@@ -15314,13 +15596,13 @@
         "7_62mm_L8A1_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.62,
-          "armorPower": 7.33333,
+          "armorPower": 6.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
         },
         "12_7mm_L21A1_user_machinegun": {
-          "wtype": "auxCannon",
+          "wtype": "machinegun",
           "caliber": 12.7,
           "armorPower": 6.81633,
           "reloadTime": 0.2,
@@ -15330,7 +15612,7 @@
         "7_62mm_L37A1_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.62,
-          "armorPower": 7.33333,
+          "armorPower": 6.5,
           "reloadTime": 0.092308,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -15517,11 +15799,13 @@
     "bullets": {
       "136mm_k3s_hot_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_heat"
+          "icon": "hud_ammo_atgm"
         }
       }
     },
     "Shop": {
+      "mainWeaponCaliber": 136.0,
+      "mainWeaponType": "rockets",
       "armorThicknessFront": [
         0.05,
         0.05,
@@ -15570,11 +15854,13 @@
     "bullets": {
       "180mm_2k4_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_heat"
+          "icon": "hud_ammo_atgm"
         }
       }
     },
     "Shop": {
+      "mainWeaponCaliber": 180.0,
+      "mainWeaponType": "rockets",
       "armorThicknessFront": [
         0.6,
         0.25,
@@ -15657,7 +15943,7 @@
         "7_62mm_L37A1_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 7.62,
-          "armorPower": 7.33333,
+          "armorPower": 6.5,
           "reloadTime": 0.092308,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -15746,6 +16032,11 @@
         "15mm_ger_apcr": {
           "icon": "hud_ammo_bullet_ap",
           "reqLevel": 21
+        }
+      },
+      "15mm_MG151_mid_drilling_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
         }
       }
     },
@@ -15858,7 +16149,7 @@
         "12_7mm_M2_HB_user_machinegun": {
           "wtype": "machinegun",
           "caliber": 12.7,
-          "armorPower": 28.794,
+          "armorPower": 23.3753,
           "reloadTime": 0.104167,
           "gunnerTurretRotationSpeed": 5.0,
           "isBeltAmmo": true
@@ -15953,6 +16244,10 @@
         },
         "default": {
           "icon": "hud_ammo_ap1_he0"
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       },
       "110mm_M8_rocket_launcher": {
@@ -15999,6 +16294,219 @@
           "armorPower": 6.5,
           "reloadTime": 0.120048,
           "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "fr_m4a4_cn_75_50": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_france": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "bullets": {
+      "75mm_SA_50_M4A4_user_cannon": {
+        "75mm_SA50_APCBC": {
+          "icon": "hud_ammo_ap2_he0"
+        },
+        "default": {
+          "icon": "hud_ammo_ap1_he0"
+        },
+        "75mm_SA50_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 75.0,
+      "armorThicknessFront": [
+        0.3,
+        0.4,
+        0.3
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.1,
+        0.8
+      ],
+      "crew": 5,
+      "mass": 34300.0,
+      "maxSpeedForward": 40.2604,
+      "maxSpeedBackward": 4.93975,
+      "powerToWeightRatio": 11.6618,
+      "weapons": {
+        "75mm_SA_50_M4A4_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 75.0,
+          "armorPower": 182.683,
+          "reloadTime": 7.50187,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_M1919A4_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.120048,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "fr_m36b2_cefeo": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_france": true,
+      "tank": true,
+      "type_tank_destroyer": true
+    },
+    "bullets": {
+      "90mm_M3_M36B2_user_cannon": {
+        "90mm_us_M82_APCBC": {
+          "icon": "hud_ammo_ap2_he1"
+        },
+        "default": {
+          "icon": "hud_ammo_ap1_he0"
+        },
+        "90mm_us_M71_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "90mm_us_T108_HEAT": {
+          "icon": "hud_ammo_heat"
+        },
+        "90mm_us_M304_APCR": {
+          "icon": "hud_ammo_apcr"
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 90.0,
+      "armorThicknessFront": [
+        0.2,
+        0.25,
+        0.55
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.1,
+        0.8
+      ],
+      "crew": 5,
+      "mass": 29937.0,
+      "maxSpeedForward": 40.1666,
+      "maxSpeedBackward": 5.18966,
+      "powerToWeightRatio": 13.6954,
+      "weapons": {
+        "90mm_M3_M36B2_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 90.0,
+          "armorPower": 174.863,
+          "reloadTime": 7.49625,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": false
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        },
+        "7_62mm_M1919A4_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.120048,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "fr_m4a3e2_sherman_jumbo": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_france": true,
+      "tank": true,
+      "type_heavy_tank": true
+    },
+    "bullets": {
+      "75mm_m3_user_cannon": {
+        "75mm_usa_APCBC": {
+          "icon": "hud_ammo_ap2_he1"
+        },
+        "default": {
+          "icon": "hud_ammo_ap1_he0"
+        },
+        "75mm_usa_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "75mm_usa_APCR": {
+          "icon": "hud_ammo_apcr"
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 75.0,
+      "armorThicknessFront": [
+        0.95,
+        0.0,
+        0.05
+      ],
+      "armorThicknessSide": [
+        0.25,
+        0.0,
+        0.75
+      ],
+      "crew": 5,
+      "mass": 37800.0,
+      "maxSpeedForward": 35.3047,
+      "maxSpeedBackward": 4.58835,
+      "powerToWeightRatio": 13.2275,
+      "weapons": {
+        "75mm_m3_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 75.0,
+          "armorPower": 90.9827,
+          "reloadTime": 5.0,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_M1919A4_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.120048,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
         }
       }

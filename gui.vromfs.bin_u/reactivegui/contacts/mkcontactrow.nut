@@ -1,111 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { Contact } = require("contact.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("contactPublicInfo.nut")
-let { mkContactOnlineStatus } = require("contactPresence.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
+let { mkContactOnlineStatus, presences } = require("contactPresence.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { darkenBgColor, borderWidth, avatarSize, rowHeight, gap,
+  contactNameBlock, contactAvatar, contactLevelBlock
+} = require("contactInfoPkg.nut")
+let { isInSquad, squadId, isInvitedToSquad, squadMembers } = require("%appGlobals/squadState.nut")
+let { onlineColor, offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
 
-let borderWidth = hdpx(3)
-let avatarSize = hdpxi(90)
-let rowHeight = avatarSize + 2 * borderWidth
-let gap = hdpx(24)
 
-let nameColor = 0xFF00FCFF
-let titleColor = 0xFFFFFFFF
-let onlineColor = 0xFFFFFFFF
-let offlineColor = 0xFFFF4020
-let darkenBgColor = 0x80001521
-
-let function nameBlock(contact, info) {
-  let { nickFrame = null, title = null } = info?.decorators
-  return {
-    size = flex()
-    flow = FLOW_VERTICAL
-    children = [
-      {
-        size = [SIZE_TO_CONTENT, flex()]
-        valign = ALIGN_CENTER
-        rendObj = ROBJ_TEXT
-        color = nameColor
-        text = frameNick(getPlayerName(contact.realnick), nickFrame)
-      }.__update(fontTiny)
-      {
-        size = [SIZE_TO_CONTENT, flex()]
-        valign = ALIGN_CENTER
-        rendObj = ROBJ_TEXT
-        color = titleColor
-        text = title == null ? null
-          : loc($"title/{title}")
-      }.__update(fontTiny)
-    ]
-  }
-}
-
-let emptyAvatar = freeze({
-  size = [avatarSize, avatarSize]
-  rendObj = ROBJ_SOLID
-  color = 0x80000000
-})
-
-let function avatar(info) {
-  let { campaigns = null } = info
-  if (campaigns == null)
-    return emptyAvatar
-  let { ships = 0, tanks = 0 } = campaigns
-  let image = ships > tanks ? "cardicon_default" : "cardicon_tanker"
-  return {
-    size = [avatarSize, avatarSize]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/images/avatars/{image}.avif")
-  }
-}
-
-let levelBg = freeze(mkLevelBg())
-let levelMark = @(text) {
-  size = array(2, hdpx(60))
-  margin = hdpx(10)
-  children = [
-    levelBg
-    {
-      rendObj = ROBJ_TEXT
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
-      pos = [0, -hdpx(2)]
-      text
-    }.__update(fontSmall)
-  ]
-}
-
-let function levelBlock(info) {
-  let { playerLevel = null } = info
-  return {
-    size = [1.5 * avatarSize, flex()]
+let function onlineBlock(uid, onlineStatus, battleUnit) {
+  let onlineText = Computed(@() onlineStatus.value == null ? ""
+    : !onlineStatus.value ? colorize(offlineColor, loc("contacts/offline"))
+    : battleUnit.value != null ? "\n".concat(loc("status/in_battle"), loc($"campaign/{battleUnit.value?.campaign ?? ""}"))
+    : colorize(onlineColor, loc("contacts/online")))
+  let squadText = Computed(@() !isInSquad.value ? ""
+    : squadId.value == uid ? colorize(leaderColor, loc("status/squad_leader"))
+    : squadMembers.value?[uid].ready ? colorize(memberReadyColor, loc("status/squad_ready"))
+    : uid in squadMembers.value ? colorize(memberNotReadyColor, loc("status/squad_not_ready"))
+    : isInvitedToSquad.value?[uid] ? loc("status/squad_invited")
+    : "")
+  return @() {
+    watch = [onlineText, squadText]
+    size = [2 * avatarSize, flex()]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    children = playerLevel == null ? null
-      : levelMark(playerLevel)
-  }
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    text = "\n".join([squadText.value, onlineText.value], true)
+  }.__update(fontVeryTiny)
 }
-
-let onlineBlock = @(onlineStatus) @() onlineStatus.value == null ? { watch = onlineStatus }
-  : {
-      watch = onlineStatus
-      size = [1.5 * avatarSize, flex()]
-      valign = ALIGN_CENTER
-      halign = ALIGN_CENTER
-      children = {
-        rendObj = ROBJ_TEXT
-        color = onlineStatus.value ? onlineColor : offlineColor
-        text = onlineStatus.value ? loc("contacts/online") : loc("contacts/offline")
-      }.__update(fontVeryTiny)
-    }
 
 let function mkContactRow(uid, rowIdx, isSelected, onClick) {
   let userId = uid.tostring()
   let contact = Contact(userId)
   let info = mkPublicInfo(userId)
   let onlineStatus = mkContactOnlineStatus(userId)
+  let battleUnit = Computed(@() serverConfigs.value?.allUnits[presences.value?[userId].battleUnit])
   let stateFlags = Watched(0)
   let isHovered = Computed(@() (stateFlags.value & S_HOVER) != 0)
   return @() {
@@ -129,10 +61,10 @@ let function mkContactRow(uid, rowIdx, isSelected, onClick) {
     gap
 
     children = [
-      levelBlock(info.value)
-      avatar(info.value)
-      nameBlock(contact.value, info.value)
-      onlineBlock(onlineStatus)
+      contactLevelBlock(info.value)
+      contactAvatar(info.value)
+      contactNameBlock(contact.value, info.value)
+      onlineBlock(uid.tointeger(), onlineStatus, battleUnit)
     ]
   }
 }

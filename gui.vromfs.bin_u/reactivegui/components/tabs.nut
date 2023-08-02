@@ -103,4 +103,5 @@ return {
   tabExtraWidth
   mkTabs
   tabsGap
+  bgColor
 }

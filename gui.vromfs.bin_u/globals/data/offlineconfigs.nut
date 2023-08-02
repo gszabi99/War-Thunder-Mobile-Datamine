@@ -1,13 +1,169 @@
 return {
   "adsCfg": {},
+  "allDecorators": {
+    "aircraft": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "alpha_tester": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "beta_tester": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "bullet": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cannon": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "captain-lieutenant": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "captain_1st_rank": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "chevron": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 150
+      }
+    },
+    "colonel": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "general": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "lieutenant": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "medal": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "pilot": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "rear_admiral": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "sailor": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "ship": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "tank": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "tankman": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "waves": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 450
+      }
+    },
+    "wings": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 300
+      }
+    }
+  },
   "allGoods": {},
   "allItems": {
-    "art_support": {
-      "battleLimit": 4,
-      "campaign": "tanks",
-      "itemsPerUse": 0,
-      "name": "art_support"
-    },
     "ship_smoke_screen_system_mod": {
       "battleLimit": 10,
       "campaign": "ships",
@@ -47,6 +203,7 @@ return {
       "costWp": 902150,
       "country": "country_france",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -90,6 +247,7 @@ return {
       "costWp": 0,
       "country": "country_france",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": true,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -126,6 +284,50 @@ return {
         }
       }
     },
+    "fr_m4a4_sherman_reward": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "itemsPerUse": 1,
+      "levelPreset": "tanks_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modPreset": "tank_default",
+      "name": "fr_m4a4_sherman_reward",
+      "platoonUnits": [
+        {
+          "name": "fr_amx_13_fl_11_reward",
+          "reqLevel": 5
+        },
+        {
+          "name": "fr_arl_44_acl1_reward",
+          "reqLevel": 10
+        },
+        {
+          "name": "fr_cckw_353_bofors_reward",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 2,
+      "rewardExpMul": 1.559999942779541,
+      "rewardWpMul": 1.5900000333786011,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 420,
+      "weapons": {
+        "fr_m4a4_sherman_reward_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "fr_panhard_ebr_1951": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
@@ -133,11 +335,12 @@ return {
       "costWp": 156850,
       "country": "country_france",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_5",
-      "levelUpDiscount": 1.0,
+      "levelUpDiscount": 0.0,
       "mRank": 3,
       "modPreset": "tank_default",
       "name": "fr_panhard_ebr_1951",
@@ -170,27 +373,28 @@ return {
       }
     },
     "germ_battleship_bismarck": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
-      "isHidden": false,
+      "isEvent": false,
+      "isHidden": true,
       "isPremium": true,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "germ_battleship_bismarck",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 24.760000228881836,
-      "rewardWpMul": 3.9200000762939453,
+      "rank": 19,
+      "rewardExpMul": 28.459999084472656,
+      "rewardWpMul": 3.9600000381469727,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "germ_battleship_bismarck_default": {
           "costWp": 0,
@@ -200,12 +404,13 @@ return {
       }
     },
     "germ_battleship_helgoland": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 120800,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -230,17 +435,18 @@ return {
       }
     },
     "germ_battleship_kaiser": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 224100,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 3,
       "levelPreset": "ships_15",
-      "levelUpDiscount": 1.0,
+      "levelUpDiscount": 0.0,
       "mRank": 3,
       "modPreset": "empty",
       "name": "germ_battleship_kaiser",
@@ -266,21 +472,22 @@ return {
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "germ_battleship_scharnhorst",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "germ_battleship_scharnhorst_default": {
           "costWp": 0,
@@ -290,27 +497,28 @@ return {
       }
     },
     "germ_battleship_tirpitz_1944": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "germ_battleship_tirpitz_1944",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "germ_battleship_tirpitz_1944_default": {
           "costWp": 0,
@@ -322,10 +530,11 @@ return {
     "germ_cruiser_admiral_graf_spee": {
       "attrPreset": "shipDefault",
       "campaign": "ships",
-      "costGold": 1660,
+      "costGold": 1290,
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 2,
@@ -356,6 +565,7 @@ return {
       "costWp": 45900,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -386,6 +596,7 @@ return {
       "costWp": 35000,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -413,9 +624,10 @@ return {
       "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 12850,
+      "costWp": 25700,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -443,14 +655,15 @@ return {
       "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 24300,
+      "costWp": 28580,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_4",
-      "levelUpDiscount": 0.0,
+      "levelUpDiscount": 0.15000000596046448,
       "mRank": 1,
       "modPreset": "empty",
       "name": "germ_destroyer_class1936a_mob_z32",
@@ -476,10 +689,11 @@ return {
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 6,
       "modPreset": "tank_default",
@@ -498,12 +712,12 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 14.899999618530273,
-      "rewardWpMul": 4.1999998092651367,
+      "rank": 10,
+      "rewardExpMul": 18.619998931884766,
+      "rewardWpMul": 4.2599997520446777,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "germ_erprobungstrager_3_achs_turm_default": {
           "costWp": 0,
@@ -519,10 +733,11 @@ return {
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 6,
       "modPreset": "tank_default",
@@ -541,12 +756,12 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 7.4499998092651367,
-      "rewardWpMul": 2.0999999046325684,
+      "rank": 10,
+      "rewardExpMul": 9.3099994659423828,
+      "rewardWpMul": 2.1299998760223389,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "germ_leopard_I_default": {
           "costWp": 0,
@@ -562,10 +777,11 @@ return {
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 7,
       "modPreset": "tank_default",
@@ -584,12 +800,12 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 7.4499998092651367,
-      "rewardWpMul": 2.0999999046325684,
+      "rank": 10,
+      "rewardExpMul": 9.3099994659423828,
+      "rewardWpMul": 2.1299998760223389,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "germ_leopard_I_a1_default": {
           "costWp": 0,
@@ -602,9 +818,10 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 10300,
+      "costWp": 20600,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -645,14 +862,15 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 12500,
+      "costWp": 20300,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_2",
-      "levelUpDiscount": 0.0,
+      "levelUpDiscount": 0.5,
       "mRank": 2,
       "modPreset": "tank_default",
       "name": "germ_pzkpfw_IV_ausf_G",
@@ -687,10 +905,11 @@ return {
     "germ_pzkpfw_VI_ausf_b_tiger_IIh_sla": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 13140,
+      "costGold": 11600,
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 2,
@@ -734,6 +953,7 @@ return {
       "costWp": 49150,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -777,6 +997,7 @@ return {
       "costWp": 636200,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -820,6 +1041,7 @@ return {
       "costWp": 889650,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -859,10 +1081,11 @@ return {
     "germ_pzsfl_IVa_dickermax": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 570,
+      "costGold": 1320,
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -900,27 +1123,28 @@ return {
       }
     },
     "germ_sub_type_21": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipNoGuns",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "germ_sub_type_21",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "submarine",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "germ_sub_type_21_default": {
           "costWp": 0,
@@ -930,17 +1154,18 @@ return {
       }
     },
     "germ_sub_type_7": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipNoGuns",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 70350,
       "country": "country_germany",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
       "levelPreset": "ships_11",
-      "levelUpDiscount": 1.0,
+      "levelUpDiscount": 0.0,
       "mRank": 2,
       "modPreset": "empty",
       "name": "germ_sub_type_7",
@@ -960,27 +1185,28 @@ return {
       }
     },
     "jp_battleship_fuso": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "jp_battleship_fuso",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "jp_battleship_fuso_default": {
           "costWp": 0,
@@ -990,12 +1216,13 @@ return {
       }
     },
     "jp_battleship_hyuga": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 496900,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
@@ -1020,12 +1247,13 @@ return {
       }
     },
     "jp_battleship_settsu": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 169100,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 3,
@@ -1050,27 +1278,28 @@ return {
       }
     },
     "jp_battleship_yamato": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "jp_battleship_yamato",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "jp_battleship_yamato_default": {
           "costWp": 0,
@@ -1086,6 +1315,7 @@ return {
       "costWp": 37900,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -1116,6 +1346,7 @@ return {
       "costWp": 94400,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -1143,14 +1374,15 @@ return {
       "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 17750,
+      "costWp": 27300,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_3",
-      "levelUpDiscount": 0.0,
+      "levelUpDiscount": 0.34999999403953552,
       "mRank": 1,
       "modPreset": "empty",
       "name": "jp_destroyer_akizuki",
@@ -1176,11 +1408,12 @@ return {
       "costWp": 30100,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_5",
-      "levelUpDiscount": 1.0,
+      "levelUpDiscount": 0.0,
       "mRank": 1,
       "modPreset": "empty",
       "name": "jp_destroyer_fubuki",
@@ -1206,6 +1439,7 @@ return {
       "costWp": 392950,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -1245,10 +1479,11 @@ return {
     "jp_st_a3": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 8760,
+      "costGold": 7200,
       "costWp": 0,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -1289,14 +1524,15 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 13300,
+      "costWp": 26600,
       "country": "country_japan",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_3",
-      "levelUpDiscount": 1.0,
+      "levelUpDiscount": 0.5,
       "mRank": 2,
       "modPreset": "tank_default",
       "name": "jp_type_3_chi_nu_75cm_type_5",
@@ -1335,11 +1571,12 @@ return {
       "costWp": 12900,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_3",
-      "levelUpDiscount": 0.0,
+      "levelUpDiscount": 0.5,
       "mRank": 2,
       "modPreset": "tank_default",
       "name": "uk_a30_sp_avenger",
@@ -1378,6 +1615,7 @@ return {
       "costWp": 153350,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -1421,6 +1659,7 @@ return {
       "costWp": 684450,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -1458,12 +1697,13 @@ return {
       }
     },
     "uk_battleship_dreadnought": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 124500,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -1488,27 +1728,28 @@ return {
       }
     },
     "uk_battleship_king_george_1945": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "uk_battleship_king_george_1945",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "uk_battleship_king_george_1945_default": {
           "costWp": 0,
@@ -1518,27 +1759,28 @@ return {
       }
     },
     "uk_battleship_vanguard": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "uk_battleship_vanguard",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "uk_battleship_vanguard_default": {
           "costWp": 0,
@@ -1548,12 +1790,13 @@ return {
       }
     },
     "uk_battleship_warspite": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 440700,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
@@ -1584,10 +1827,11 @@ return {
       "costWp": 0,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 7,
       "modPreset": "tank_default",
@@ -1606,12 +1850,12 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 14.899999618530273,
-      "rewardWpMul": 4.1999998092651367,
+      "rank": 10,
+      "rewardExpMul": 18.619998931884766,
+      "rewardWpMul": 4.2599997520446777,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "uk_chieftain_mk_3_default": {
           "costWp": 0,
@@ -1621,12 +1865,13 @@ return {
       }
     },
     "uk_cruiser_belfast": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
-      "costGold": 870,
+      "costGold": 1190,
       "costWp": 0,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -1651,12 +1896,13 @@ return {
       }
     },
     "uk_cruiser_kent": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 38000,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -1687,6 +1933,7 @@ return {
       "costWp": 55150,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -1714,9 +1961,10 @@ return {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 10000,
+      "costWp": 20000,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -1747,11 +1995,12 @@ return {
       "costWp": 30250,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_5",
-      "levelUpDiscount": 1.0,
+      "levelUpDiscount": 0.0,
       "mRank": 1,
       "modPreset": "empty",
       "name": "uk_destroyer_tribal",
@@ -1777,6 +2026,7 @@ return {
       "costWp": 1133600,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -1820,6 +2070,7 @@ return {
       "costWp": 0,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": true,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -1859,10 +2110,11 @@ return {
     "uk_sherman_ic_firefly": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 1970,
+      "costGold": 3860,
       "costWp": 0,
       "country": "country_uk",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -1900,27 +2152,28 @@ return {
       }
     },
     "us_aircraftcarrier_essex": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_germany",
       "isDefault": false,
-      "isHidden": false,
+      "isEvent": false,
+      "isHidden": true,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "us_aircraftcarrier_essex",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "us_aircraftcarrier_essex_default": {
           "costWp": 0,
@@ -1930,27 +2183,28 @@ return {
       }
     },
     "us_battlecruiser_alaska_class": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 602650,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "us_battlecruiser_alaska_class",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "us_battlecruiser_alaska_class_default": {
           "costWp": 0,
@@ -1960,12 +2214,13 @@ return {
       }
     },
     "us_battleship_arizona_1931": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
-      "costGold": 3260,
+      "costGold": 2490,
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 3,
@@ -1990,27 +2245,28 @@ return {
       }
     },
     "us_battleship_iowa": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "us_battleship_iowa",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "us_battleship_iowa_default": {
           "costWp": 0,
@@ -2020,12 +2276,13 @@ return {
       }
     },
     "us_battleship_north_dakota": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 164700,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 3,
@@ -2050,12 +2307,13 @@ return {
       }
     },
     "us_battleship_wyoming_class": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 283150,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 3,
@@ -2086,6 +2344,7 @@ return {
       "costWp": 47700,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -2116,6 +2375,7 @@ return {
       "costWp": 36700,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -2143,9 +2403,10 @@ return {
       "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 10100,
+      "costWp": 20200,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -2172,12 +2433,13 @@ return {
     "us_destroyer_fletcher_nicholas": {
       "attrPreset": "shipDefault",
       "campaign": "ships",
-      "costGold": 660,
+      "costGold": 0,
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
-      "isHidden": false,
-      "isPremium": true,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_3",
       "levelUpDiscount": 0.0,
@@ -2186,8 +2448,8 @@ return {
       "name": "us_destroyer_fletcher_nicholas",
       "platoonUnits": [],
       "rank": 3,
-      "rewardExpMul": 3.0399999618530273,
-      "rewardWpMul": 2.7200000286102295,
+      "rewardExpMul": 1.5199999809265137,
+      "rewardWpMul": 1.3600000143051147,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 480,
@@ -2202,10 +2464,11 @@ return {
     "us_destroyer_mitscher": {
       "attrPreset": "shipDefault",
       "campaign": "ships",
-      "costGold": 780,
+      "costGold": 1050,
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -2233,14 +2496,15 @@ return {
       "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 18500,
+      "costWp": 28460,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_3",
-      "levelUpDiscount": 0.0,
+      "levelUpDiscount": 0.34999999403953552,
       "mRank": 1,
       "modPreset": "empty",
       "name": "us_destroyer_porter",
@@ -2266,6 +2530,7 @@ return {
       "costWp": 1086800,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -2309,10 +2574,11 @@ return {
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 6,
       "modPreset": "tank_default",
@@ -2331,14 +2597,58 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 7.4499998092651367,
-      "rewardWpMul": 2.0999999046325684,
+      "rank": 10,
+      "rewardExpMul": 9.3099994659423828,
+      "rewardWpMul": 2.1299998760223389,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "us_m47_patton_II_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_m4_sherman_calliope": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 1920,
+      "costWp": 0,
+      "country": "country_usa",
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "itemsPerUse": 1,
+      "levelPreset": "tanks_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modPreset": "tank_default",
+      "name": "us_m4_sherman_calliope",
+      "platoonUnits": [
+        {
+          "name": "us_m4a5_ram_2",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_t1e1",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m19_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 3,
+      "rewardExpMul": 3.8999998569488525,
+      "rewardWpMul": 3.4600000381469727,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 450,
+      "weapons": {
+        "us_m4_sherman_calliope_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2349,9 +2659,10 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 10000,
+      "costWp": 20000,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -2395,6 +2706,7 @@ return {
       "costWp": 47950,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -2435,14 +2747,15 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 12000,
+      "costWp": 20200,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_2",
-      "levelUpDiscount": 0.0,
+      "levelUpDiscount": 0.5,
       "mRank": 2,
       "modPreset": "tank_default",
       "name": "us_m4a2_sherman",
@@ -2481,6 +2794,7 @@ return {
       "costWp": 387350,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -2524,10 +2838,11 @@ return {
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 7,
       "modPreset": "tank_default",
@@ -2546,12 +2861,12 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 7.4499998092651367,
-      "rewardWpMul": 2.0999999046325684,
+      "rank": 10,
+      "rewardExpMul": 9.3099994659423828,
+      "rewardWpMul": 2.1299998760223389,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "us_m60a1_default": {
           "costWp": 0,
@@ -2561,12 +2876,13 @@ return {
       }
     },
     "us_sub_balao": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipNoGuns",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 57300,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -2591,27 +2907,28 @@ return {
       }
     },
     "us_sub_tang": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipNoGuns",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "us_sub_tang",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "submarine",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "us_sub_tang_default": {
           "costWp": 0,
@@ -2623,10 +2940,11 @@ return {
     "us_t20": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 3770,
+      "costGold": 4290,
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -2670,10 +2988,11 @@ return {
       "costWp": 0,
       "country": "country_usa",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 6,
       "modPreset": "tank_default",
@@ -2692,12 +3011,12 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 14.899999618530273,
-      "rewardWpMul": 4.1999998092651367,
+      "rank": 10,
+      "rewardExpMul": 18.619998931884766,
+      "rewardWpMul": 4.2599997520446777,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "us_t54e1_default": {
           "costWp": 0,
@@ -2707,27 +3026,28 @@ return {
       }
     },
     "ussr_battlecruiser_kronshtadt": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
-      "isHidden": false,
+      "isEvent": false,
+      "isHidden": true,
       "isPremium": true,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "ussr_battlecruiser_kronshtadt",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 24.760000228881836,
-      "rewardWpMul": 3.9200000762939453,
+      "rank": 19,
+      "rewardExpMul": 28.459999084472656,
+      "rewardWpMul": 3.9600000381469727,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "ussr_battlecruiser_kronshtadt_default": {
           "costWp": 0,
@@ -2737,27 +3057,28 @@ return {
       }
     },
     "ussr_battlecruiser_stalingrad": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "ussr_battlecruiser_stalingrad",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "ussr_battlecruiser_stalingrad_default": {
           "costWp": 0,
@@ -2767,12 +3088,13 @@ return {
       }
     },
     "ussr_battleship_imperatritsa_mariya": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 197300,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 3,
@@ -2797,12 +3119,13 @@ return {
       }
     },
     "ussr_battleship_parizhskaya_kommuna": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 377550,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
@@ -2826,28 +3149,60 @@ return {
         }
       }
     },
+    "ussr_battleship_poltava": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 2330,
+      "costWp": 0,
+      "country": "country_ussr",
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_14",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modPreset": "empty",
+      "name": "ussr_battleship_poltava",
+      "platoonUnits": [],
+      "rank": 14,
+      "rewardExpMul": 14.159999847412109,
+      "rewardWpMul": 3.7599999904632568,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 1240,
+      "weapons": {
+        "ussr_battleship_poltava_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "ussr_battleship_pr23_sovetskij_soyuz": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "ussr_battleship_pr23_sovetskij_soyuz",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "ussr_battleship_pr23_sovetskij_soyuz_default": {
           "costWp": 0,
@@ -2863,11 +3218,12 @@ return {
       "costWp": 69150,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
       "levelPreset": "ships_11",
-      "levelUpDiscount": 1.0,
+      "levelUpDiscount": 0.0,
       "mRank": 2,
       "modPreset": "empty",
       "name": "ussr_cruiser_kirov",
@@ -2893,6 +3249,7 @@ return {
       "costWp": 40500,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -2920,14 +3277,15 @@ return {
       "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 24750,
+      "costWp": 29120,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_4",
-      "levelUpDiscount": 0.0,
+      "levelUpDiscount": 0.15000000596046448,
       "mRank": 1,
       "modPreset": "empty",
       "name": "ussr_destroyer_7y",
@@ -2949,10 +3307,11 @@ return {
     "ussr_destroyer_pr30_ognevoy": {
       "attrPreset": "shipDefault",
       "campaign": "ships",
-      "costGold": 660,
+      "costGold": 900,
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -2980,9 +3339,10 @@ return {
       "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 13000,
+      "costWp": 26000,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -3009,10 +3369,11 @@ return {
     "ussr_is_2_1944_revenge": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 11110,
+      "costGold": 9570,
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -3052,10 +3413,11 @@ return {
     "ussr_kv_220": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 3770,
+      "costGold": 6150,
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -3099,21 +3461,22 @@ return {
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 4,
-      "levelPreset": "ships_18",
+      "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
       "modPreset": "empty",
       "name": "ussr_sub_pr613",
       "platoonUnits": [],
-      "rank": 18,
-      "rewardExpMul": 12.380000114440918,
-      "rewardWpMul": 1.9600000381469727,
+      "rank": 19,
+      "rewardExpMul": 14.229999542236328,
+      "rewardWpMul": 1.9800000190734863,
       "unitClass": "submarine",
       "unitType": "ship",
-      "upgradeCostGold": 2910,
+      "upgradeCostGold": 3440,
       "weapons": {
         "ussr_sub_pr613_default": {
           "costWp": 0,
@@ -3123,12 +3486,13 @@ return {
       }
     },
     "ussr_sub_pr641": {
-      "attrPreset": "shipDefault",
+      "attrPreset": "shipNoGuns",
       "campaign": "ships",
-      "costGold": 1150,
+      "costGold": 1670,
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 2,
@@ -3159,6 +3523,7 @@ return {
       "costWp": 97800,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -3185,10 +3550,11 @@ return {
     "ussr_t_34E": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 470,
+      "costGold": 1050,
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": true,
       "itemsPerUse": 1,
@@ -3229,9 +3595,10 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 10000,
+      "costWp": 20000,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -3272,14 +3639,15 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 12000,
+      "costWp": 20000,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_2",
-      "levelUpDiscount": 0.0,
+      "levelUpDiscount": 0.5,
       "mRank": 2,
       "modPreset": "tank_default",
       "name": "ussr_t_34_1942",
@@ -3318,11 +3686,12 @@ return {
       "costWp": 48750,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_4",
-      "levelUpDiscount": 1.0,
+      "levelUpDiscount": 0.0,
       "mRank": 3,
       "modPreset": "tank_default",
       "name": "ussr_t_34_85_d_5t",
@@ -3361,6 +3730,7 @@ return {
       "costWp": 662950,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 1,
@@ -3404,6 +3774,7 @@ return {
       "costWp": 1109950,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
@@ -3444,13 +3815,14 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 1363700,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 6,
       "modPreset": "tank_default",
@@ -3469,12 +3841,12 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 7.4499998092651367,
-      "rewardWpMul": 2.0999999046325684,
+      "rank": 10,
+      "rewardExpMul": 9.3099994659423828,
+      "rewardWpMul": 2.1299998760223389,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "ussr_t_54_1949_default": {
           "costWp": 0,
@@ -3490,10 +3862,11 @@ return {
       "costWp": 0,
       "country": "country_ussr",
       "isDefault": false,
+      "isEvent": false,
       "isHidden": false,
       "isPremium": false,
       "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
       "mRank": 7,
       "modPreset": "tank_default",
@@ -3512,12 +3885,12 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 7.4499998092651367,
-      "rewardWpMul": 2.0999999046325684,
+      "rank": 10,
+      "rewardExpMul": 9.3099994659423828,
+      "rewardWpMul": 2.1299998760223389,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "ussr_t_55a_default": {
           "costWp": 0,
@@ -3583,7 +3956,6 @@ return {
   "lootboxesCfg": {
     "every_day_award_big_pack_1": {
       "rewards": {
-        "everyday_premium_day": 1.0,
         "everyday_wp_medium": 1.0
       }
     },
@@ -3616,9 +3988,6 @@ return {
       }
     }
   },
-  "modsLimit": {
-    "tanks": 3
-  },
   "playerLevelRewards": {},
   "playerLevels": {},
   "playerStartLevel": {
@@ -3627,6 +3996,7 @@ return {
   },
   "rewardsCfg": {
     "everyday_gold": {
+      "decorators": [],
       "gold": 150,
       "items": {},
       "lootboxes": {},
@@ -3635,16 +4005,8 @@ return {
       "units": [],
       "wp": 0
     },
-    "everyday_premium_day": {
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 1,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
     "everyday_spare": {
+      "decorators": [],
       "gold": 0,
       "items": {
         "spare": 1
@@ -3656,6 +4018,7 @@ return {
       "wp": 0
     },
     "everyday_wp_big": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {},
@@ -3665,6 +4028,7 @@ return {
       "wp": 30000
     },
     "everyday_wp_medium": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {},
@@ -3674,6 +4038,7 @@ return {
       "wp": 20000
     },
     "everyday_wp_small": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {},
@@ -3683,6 +4048,7 @@ return {
       "wp": 15000
     },
     "offer_gift_gold": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {},
@@ -3692,9 +4058,10 @@ return {
       "wp": 10
     },
     "offer_gift_ship_repair": {
+      "decorators": [],
       "gold": 0,
       "items": {
-        "ship_tool_kit": 20
+        "ship_tool_kit": 15
       },
       "lootboxes": {},
       "premiumDays": 0,
@@ -3703,9 +4070,10 @@ return {
       "wp": 0
     },
     "offer_gift_ship_smoke": {
+      "decorators": [],
       "gold": 0,
       "items": {
-        "ship_smoke_screen_system_mod": 20
+        "ship_smoke_screen_system_mod": 15
       },
       "lootboxes": {},
       "premiumDays": 0,
@@ -3714,6 +4082,7 @@ return {
       "wp": 0
     },
     "offer_gift_spare": {
+      "decorators": [],
       "gold": 0,
       "items": {
         "spare": 1
@@ -3725,9 +4094,10 @@ return {
       "wp": 0
     },
     "offer_gift_tank_extinguisher": {
+      "decorators": [],
       "gold": 0,
       "items": {
-        "tank_extinguisher": 20
+        "tank_extinguisher": 5
       },
       "lootboxes": {},
       "premiumDays": 0,
@@ -3736,9 +4106,10 @@ return {
       "wp": 0
     },
     "offer_gift_tank_repair": {
+      "decorators": [],
       "gold": 0,
       "items": {
-        "tank_tool_kit_expendable": 20
+        "tank_tool_kit_expendable": 10
       },
       "lootboxes": {},
       "premiumDays": 0,
@@ -3747,6 +4118,7 @@ return {
       "wp": 0
     },
     "offer_gift_wp": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {},
@@ -3926,6 +4298,119 @@ return {
           }
         ],
         "id": "ship_engine_room"
+      }
+    ],
+    "shipNoGuns": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ai_aa_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ai_aa_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_artillery"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_count",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_damage_control"
+      }
+    ],
+    "subNoGuns": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_count",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_damage_control"
       }
     ],
     "tankDefault": [
@@ -9390,6 +9875,74 @@ return {
       "min": 39,
       "total": 312
     },
+    "shipNoGuns": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        9,
+        10,
+        11,
+        11,
+        12,
+        12,
+        13,
+        14,
+        15,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        18
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 273
+    },
+    "subNoGuns": {
+      "average": 39,
+      "fullAttr": 0,
+      "levels": [
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        7,
+        8,
+        9,
+        9,
+        10,
+        10,
+        11,
+        12,
+        13,
+        13,
+        14,
+        16
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 195
+    },
     "tankDefault": {
       "average": 39,
       "fullAttr": 43,
@@ -9427,74 +9980,246 @@ return {
   },
   "unitModPresets": {
     "empty": {},
+    "ship_default": {
+      "maintanance_new_engines": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "maintanance_new_propellers": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "maintanance_powered_toolkit": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_ammo_wetting": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_new_fireProtection": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_new_sonar": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_contact_mines": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_depth_charges": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "submarine_default": {
+      "maintanance_new_engines": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "maintanance_new_propellers": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "maintanance_powered_toolkit": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_ammo_wetting": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_new_fireProtection": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_new_sonar": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_contact_mines": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_torpedo_damage_mode": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 17,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_torpedo_movement_mode": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
     "tank_default": {
       "art_support": {
         "costGold": 0,
         "costWp": 0,
-        "group": "art_support_type",
+        "group": "",
+        "isAlwaysOn": true,
         "isDefault": true,
         "reqLevel": 0,
         "reqMod": "",
         "tier": 1
       },
-      "art_support_division": {
+      "art_support_highcaliber": {
         "costGold": 0,
         "costWp": 1000,
-        "group": "art_support_type",
+        "group": "art_support",
+        "isAlwaysOn": false,
         "isDefault": false,
-        "reqLevel": 20,
+        "reqLevel": 15,
         "reqMod": "",
         "tier": 1
       },
       "art_support_mortars": {
         "costGold": 0,
         "costWp": 1000,
-        "group": "art_support_type",
+        "group": "art_support",
+        "isAlwaysOn": false,
         "isDefault": false,
         "reqLevel": 10,
         "reqMod": "",
         "tier": 1
       },
-      "art_support_regiment": {
+      "art_support_smoke": {
         "costGold": 0,
         "costWp": 1000,
-        "group": "art_support_type",
-        "isDefault": false,
-        "reqLevel": 15,
-        "reqMod": "",
-        "tier": 1
-      },
-      "art_support_rockets": {
-        "costGold": 0,
-        "costWp": 1000,
-        "group": "art_support_type",
-        "isDefault": false,
-        "reqLevel": 25,
-        "reqMod": "",
-        "tier": 1
-      },
-      "machinegun_belt_ap_pack": {
-        "costGold": 0,
-        "costWp": 1000,
-        "group": "machinegun_belt_type",
+        "group": "art_support",
+        "isAlwaysOn": false,
         "isDefault": false,
         "reqLevel": 20,
         "reqMod": "",
         "tier": 1
       },
-      "machinegun_belt_stealth_pack": {
+      "machinegun_belt_ap": {
         "costGold": 0,
         "costWp": 1000,
-        "group": "machinegun_belt_type",
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_stealth": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "belts",
+        "isAlwaysOn": false,
         "isDefault": false,
         "reqLevel": 25,
         "reqMod": "",
         "tier": 1
       },
-      "machinegun_belt_tracer_pack": {
+      "machinegun_belt_tracer": {
         "costGold": 0,
         "costWp": 1000,
-        "group": "machinegun_belt_type",
+        "group": "belts",
+        "isAlwaysOn": false,
         "isDefault": false,
         "reqLevel": 15,
         "reqMod": "",
@@ -9503,7 +10228,8 @@ return {
       "ostketten_tank_tracks": {
         "costGold": 0,
         "costWp": 1000,
-        "group": "additional_tracks",
+        "group": "tracks",
+        "isAlwaysOn": false,
         "isDefault": false,
         "reqLevel": 25,
         "reqMod": "",
@@ -9513,6 +10239,7 @@ return {
         "costGold": 0,
         "costWp": 1000,
         "group": "",
+        "isAlwaysOn": false,
         "isDefault": false,
         "reqLevel": 25,
         "reqMod": "",
@@ -9520,55 +10247,133 @@ return {
       },
       "tank_engine_smoke_screen_system": {
         "costGold": 0,
-        "costWp": 0,
-        "group": "",
-        "isDefault": true,
-        "reqLevel": 0,
-        "reqMod": "",
-        "tier": 1
-      },
-      "tank_extinguisher": {
-        "costGold": 0,
-        "costWp": 0,
-        "group": "",
-        "isDefault": true,
-        "reqLevel": 0,
+        "costWp": 1000,
+        "group": "smoke",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 20,
         "reqMod": "",
         "tier": 1
       },
       "tank_smoke_screen_system_mod": {
         "costGold": 0,
-        "costWp": 0,
-        "group": "",
-        "isDefault": true,
-        "reqLevel": 0,
-        "reqMod": "",
-        "tier": 1
-      },
-      "tank_tool_kit": {
-        "costGold": 0,
-        "costWp": 0,
-        "group": "",
-        "isDefault": true,
-        "reqLevel": 0,
-        "reqMod": "",
-        "tier": 1
-      },
-      "upgraded": {
-        "costGold": 0,
-        "costWp": 0,
-        "group": "",
-        "isDefault": true,
-        "reqLevel": 0,
+        "costWp": 1000,
+        "group": "smoke",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 10,
         "reqMod": "",
         "tier": 1
       },
       "winterketten_tank_tracks": {
         "costGold": 0,
         "costWp": 1000,
-        "group": "additional_tracks",
+        "group": "tracks",
+        "isAlwaysOn": false,
         "isDefault": false,
         "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "torpedo_ship": {
+      "maintanance_new_engines": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "maintanance_new_propellers": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "maintanance_powered_toolkit": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipMaintanance",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_ammo_wetting": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_new_fireProtection": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "protection_new_sonar": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipProtection",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_contact_mines": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_depth_charges": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_torpedo_damage_mode": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "weapons_torpedo_movement_mode": {
+        "costGold": 0,
+        "costWp": 1000,
+        "group": "shipWeapons",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "reqLevel": 12,
         "reqMod": "",
         "tier": 1
       }
@@ -9576,6 +10381,7 @@ return {
   },
   "userstatRewards": {
     "1": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {},
@@ -9584,7 +10390,41 @@ return {
       "units": [],
       "wp": 10000
     },
+    "1000": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 3,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "1001": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [
+        "us_destroyer_fletcher_nicholas",
+        "fr_m4a4_sherman_reward"
+      ],
+      "wp": 0
+    },
+    "1002": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 1,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
     "2": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {
@@ -9595,7 +10435,158 @@ return {
       "units": [],
       "wp": 0
     },
+    "2000": {
+      "decorators": ["tankman"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2001": {
+      "decorators": ["sailor"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2002": {
+      "decorators": ["pilot"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2003": {
+      "decorators": ["lieutenant"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2004": {
+      "decorators": ["colonel"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2005": {
+      "decorators": ["general"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2006": {
+      "decorators": ["captain-lieutenant"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2007": {
+      "decorators": ["captain_1st_rank"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2008": {
+      "decorators": ["rear_admiral"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2009": {
+      "decorators": ["alpha_tester"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2010": {
+      "decorators": ["beta_tester"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2011": {
+      "decorators": ["bullet"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2012": {
+      "decorators": ["cannon"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2013": {
+      "decorators": ["medal"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "2014": {
+      "decorators": ["aircraft"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
     "3": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {
@@ -9607,6 +10598,7 @@ return {
       "wp": 0
     },
     "4": {
+      "decorators": [],
       "gold": 0,
       "items": {},
       "lootboxes": {
@@ -9616,6 +10608,305 @@ return {
       "unitUpgrades": [],
       "units": [],
       "wp": 0
+    },
+    "5": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 1000
+    },
+    "6": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 2000
+    },
+    "7": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 3000
+    },
+    "8": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 6000
+    },
+    "reward_alpha_wipe_gift": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 3,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_daily_login_day_14": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {
+        "every_day_award_big_pack_2": 1
+      },
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_daily_login_day_7": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {
+        "every_day_award_big_pack_1": 1
+      },
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_daily_login_first": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 10000
+    },
+    "reward_daily_login_regular": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {
+        "every_day_award_small_pack": 1
+      },
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_daily_quest_big": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 2000
+    },
+    "reward_daily_quest_small": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 1000
+    },
+    "reward_decorator_artillery_kill": {
+      "decorators": ["cannon"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_decorator_first_place_score": {
+      "decorators": ["medal"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_decorator_flyout": {
+      "decorators": ["aircraft"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_decorator_kills": {
+      "decorators": ["bullet"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_release_celebration_units": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [
+        "us_destroyer_fletcher_nicholas",
+        "fr_m4a4_sherman_reward"
+      ],
+      "wp": 0
+    },
+    "reward_title_air_kills": {
+      "decorators": ["pilot"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_alpha_member": {
+      "decorators": ["alpha_tester"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_beta_member": {
+      "decorators": ["beta_tester"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_ships_kills": {
+      "decorators": ["sailor"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_ships_level_15": {
+      "decorators": ["captain_1st_rank"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_ships_level_25": {
+      "decorators": ["rear_admiral"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_ships_level_3": {
+      "decorators": ["captain-lieutenant"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_tanks_kills": {
+      "decorators": ["tankman"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_tanks_level_14": {
+      "decorators": ["general"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_tanks_level_3": {
+      "decorators": ["lieutenant"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_title_tanks_level_7": {
+      "decorators": ["colonel"],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 0
+    },
+    "reward_weekly_quest_big": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 6000
+    },
+    "reward_weekly_quest_small": {
+      "decorators": [],
+      "gold": 0,
+      "items": {},
+      "lootboxes": {},
+      "premiumDays": 0,
+      "unitUpgrades": [],
+      "units": [],
+      "wp": 3000
     }
   }
 }

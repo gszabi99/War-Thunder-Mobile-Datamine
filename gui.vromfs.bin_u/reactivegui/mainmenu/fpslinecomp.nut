@@ -3,6 +3,7 @@ let { subscribe } = require("eventbus")
 let { isShowDebugInterface, is_app_loaded } = require("app")
 let { format } = require("string")
 let { toUpper } = require("%sqstd/string.nut")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
 let state = Watched({
@@ -70,18 +71,21 @@ let latencyComp = @() textStyle.__merge({
   text = latencyText.value
 })
 
-let fpsLineComp = {
+let fpsLineCompChildren = [
+  graphicsComp
+  gpuComp
+  sessionComp
+  latencyComp
+]
+
+let fpsLineComp = @() {
+  watch = isInBattle
   flow = FLOW_HORIZONTAL
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM
   pos = [saBorders[0], 0]
   gap
-  children = [
-    graphicsComp
-    gpuComp
-    sessionComp
-    latencyComp
-  ]
+  children = isInBattle.value ? fpsLineCompChildren : null
 }
 
 return fpsLineComp

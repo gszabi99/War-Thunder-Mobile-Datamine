@@ -109,7 +109,7 @@ let function bulletButton(isMain) {
         padding = [0, 0, 0, hdpx(4)]
         rendObj = ROBJ_TEXT
         text = bulletCount.value
-      }.__update(fontVeryTiny)
+      }.__update(fontVeryTinyShaded)
     ]
   }
 }

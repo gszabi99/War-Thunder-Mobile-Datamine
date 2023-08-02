@@ -83,6 +83,7 @@ let actionBarItemsConfig = {
     actionType = AB_DEPTH_CHARGE
     mkButtonFunction = "mkWeaponryItem"
     hasAimingMode = false
+    canShipLowerCamera = true
   },
   EII_MINE = {
     getShortcut = @(_, __) "ID_SHIP_WEAPON_MINE"
@@ -91,12 +92,14 @@ let actionBarItemsConfig = {
     mkButtonFunction = "mkWeaponryItem"
     hasAimingMode = false
     haptPatternId = HAPT_SHOOT_MINES
+    canShipLowerCamera = true
   },
   EII_MORTAR = {
     getShortcut = @(_, __) "ID_SHIP_WEAPON_MORTAR"
-    getImage = @(_) "!ui/gameuiskin#hud_ship_mortar.svg"
+    getImage = @(_) "!ui/gameuiskin#hud_depth_charge.svg"
     actionType = AB_MORTAR
     mkButtonFunction = "mkWeaponryItem"
+    canShipLowerCamera = true
   },
   EII_ROCKET = {
     getShortcut = @(unitType, __) unitType == SUBMARINE ? "ID_SUBMARINE_WEAPON_ROCKETS" : "ID_SHIP_WEAPON_ROCKETS"

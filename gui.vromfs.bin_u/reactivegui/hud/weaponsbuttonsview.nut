@@ -24,6 +24,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkBtnGlare, mkActionGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { isNotOnTheSurface, isDeeperThanPeriscopeDepth } = require("%rGui/hud/submarineDepthBlock.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
+let { set_can_lower_camera } = require("controlsOptions")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 let zoomImgSize = touchButtonSize
@@ -483,7 +484,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
     return null
   let { key, getShortcut, getImage, getAlternativeImage = @() null, selShortcut = null,
     hasAim = false, fireAnimKey = "fire", canShootWithoutTarget = true,
-    needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canLowerCamera = false,
+    needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canLowerCamera = false, canShipLowerCamera = false,
     addChild = null } = buttonConfig
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
   let altImage = getAlternativeImage()
@@ -508,6 +509,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
       clearTimer(lowerCamera)
       lowerAircraftCamera(false)
     }
+    set_can_lower_camera(false)
     unmarkWeapKeyHold(key)
     setDrawWeaponAllowableAngles(false, -1)
     if (key in userHoldWeapInside.value)
@@ -550,6 +552,8 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let function onTouchBegin() {
     isTouchPushed = true
     onButtonPush()
+    if (canShipLowerCamera)
+      set_can_lower_camera(true)
     if (isInDeadZone)
       setDrawWeaponAllowableAngles(true, actionItem?.triggerGroupNo ?? -1)
   }

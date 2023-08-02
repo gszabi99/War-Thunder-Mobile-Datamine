@@ -6,7 +6,8 @@ let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { SC_GOLD, SC_WP } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/shop/shopState.nut")
-//let { openContacts } = require("%rGui/contacts/contactsState.nut")
+let { openContacts } = require("%rGui/contacts/contactsState.nut")
+let { requestsToMeUids } = require("%rGui/contacts/contactLists.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
@@ -214,7 +215,13 @@ let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", @() openShopWnd(SC_GOLD)
     children = needShopUnseenMark.value ? priorityUnseenMark : null
   })
 
-let contactsBtn = null //mkImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts)
+let contactsBtn = mkImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts,
+  @() {
+    watch = requestsToMeUids
+    pos = [hdpx(5), -hdpx(5)]
+    hplace = ALIGN_RIGHT
+    children = requestsToMeUids.value.len() > 0 ? priorityUnseenMark : null
+  })
 
 let rightBlock = @(){
   watch = isShopOpened

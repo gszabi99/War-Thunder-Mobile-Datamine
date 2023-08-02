@@ -7,6 +7,7 @@ let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 
@@ -78,7 +79,8 @@ let function purchaseGoods(goodsId) {
   openMsgBoxPurchase(
     loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp)) }),
     { price = finalPrice, currencyId },
-    purchaseFunc)
+    purchaseFunc,
+    mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}"))
 }
 
 return purchaseGoods

@@ -3,6 +3,9 @@ let { decorators, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { doesLocTextExist } = require("dagor.localize")
+let { register_command } = require("console")
+let { mark_decorators_seen, mark_decorators_unseen } = require("%appGlobals/pServer/pServerApi.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let isDecoratorsSceneOpened = mkWatched(persist, "isDecoratorsSceneOpened", false)
 
@@ -14,6 +17,10 @@ let allFrames = Computed(@() allDecorators.value?.filter(@(dec) dec.dType == "ni
 
 let availTitles = Computed(@() decorators.value?.filter(@(frame) frame.name in allTitles.value) ?? {})
 let availNickFrames = Computed(@() decorators.value?.filter(@(frame) frame.name in allFrames.value) ?? {})
+
+let ignoreUnseenDecoratorsList = hardPersistWatched("ignoreUnseenDecoratorsList", {})
+let unseenDecorators = Computed(@() myDecorators.value.filter(@(d) !d.wasSeen &&
+  d.name not in ignoreUnseenDecoratorsList.value))
 
 let chosenTitle = Computed(@() availTitles.value.findvalue(@(v) v.isCurrent))
 let chosenNickFrame = Computed(@() availNickFrames.value.findvalue(@(v) v.isCurrent))
@@ -29,6 +36,28 @@ let function getReceiveReason(decName){
   return null
 }
 
+let function markDecoratorsSeen(names) {
+  let unseenNames = names.filter(@(name) name in unseenDecorators.value)
+  if (unseenNames.len() == 0)
+    return
+  ignoreUnseenDecoratorsList.mutate(@(v) unseenNames.each(@(name) v[name] <- true))
+  mark_decorators_seen(unseenNames)
+}
+
+let function markDecoratorSeen(name) {
+  if (!name)
+    return
+  if (name in unseenDecorators.value) {
+    ignoreUnseenDecoratorsList.mutate(@(v) v[name] <- true)
+    mark_decorators_seen([name])
+  }
+}
+
+register_command(@() mark_decorators_seen(allDecorators.value.keys(), "consolePrintResult")
+  "meta.mark_all_decorators_seen")
+register_command(@() mark_decorators_unseen(allDecorators.value.keys(), "consolePrintResult")
+  "meta.mark_all_decorators_unseen")
+
 return {
   isDecoratorsSceneOpened
   openDecoratorsScene = @() isDecoratorsSceneOpened(true)
@@ -39,6 +68,12 @@ return {
   availNickFrames
   allDecorators
   myDecorators
+
+  unseenDecorators
+  ignoreUnseenDecoratorsList
+  markDecoratorsSeen
+  markDecoratorSeen
+
   allTitles
   allFrames
   myNameWithFrame

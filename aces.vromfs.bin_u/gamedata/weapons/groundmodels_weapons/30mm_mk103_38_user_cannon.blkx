@@ -62,6 +62,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "ap_i",
+      "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
       "bulletName": "30mm_PzGr",
       "relativeVelHitShift": [
         300.0,
@@ -429,6 +430,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "bulletName": "30mm_PzGr",
         "relativeVelHitShift": [
           300.0,
@@ -588,6 +590,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "bulletName": "30mm_PzGr",
         "relativeVelHitShift": [
           300.0,
@@ -747,6 +750,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "bulletName": "30mm_PzGr",
         "relativeVelHitShift": [
           300.0,
@@ -1121,6 +1125,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
         "bulletName": "30mm_PzGr_H",
         "nearHitPower": [
           1.0,
@@ -2339,6 +2344,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "bulletName": "30mm_PzGr",
         "relativeVelHitShift": [
           300.0,

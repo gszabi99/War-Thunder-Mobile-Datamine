@@ -9,6 +9,7 @@ let { getUnitPkgs, getAddonPostfix, getCampaignPkgsForOnlineBattle } = require("
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
+let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 
 let MAX_SLOTS = 2
 
@@ -50,7 +51,7 @@ let function donloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
     openDownloadAddonsWnd(pkgs, eventId, params)
 }
 
-let function startTestFlight(unitName, missionName = null) {
+let function startTestFlightImpl(unitName, missionName = null) {
   if (unitName == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
@@ -67,6 +68,9 @@ let function startTestFlight(unitName, missionName = null) {
   donloadUnitPacksAndSend(unitName, testFlightExtPacks?[getAddonPostfix(unitName)] ?? [],
     "startTestFlight", params)
 }
+
+let startTestFlight = @(unitName, missionName = null)
+  notAvailableForSquadMsg(@() startTestFlightImpl(unitName, missionName))
 
 let function startOfflineBattle(unitName, missionName) {
   if (unitName == null) {

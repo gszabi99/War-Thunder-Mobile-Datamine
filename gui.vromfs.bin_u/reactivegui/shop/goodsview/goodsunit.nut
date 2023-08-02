@@ -6,12 +6,14 @@ let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = requir
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkOfferWrap, txt, textArea, mkBgImg, mkFitCenterImg, mkPricePlate,
-  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, goodsH, goodsW, mkGradRank
+  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, goodsH, goodsW
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+
 
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let fonticonPreview = "⌡"
@@ -238,7 +240,7 @@ let function mkOfferUnit(goods, onClick, state, needPrice) {
     unit == null ? [] : @(sf) [
       mkBgImg(bgImg)
       sf & S_HOVER ? bgHiglight : null
-      mkFitCenterImg(p.image)
+      mkFitCenterImg(unit.isUpgraded ? p.upgradedImage : p.image)
       mkOfferTexts(getPlatoonOrUnitName(unit, loc), endTime)
       discountTagBig(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)),

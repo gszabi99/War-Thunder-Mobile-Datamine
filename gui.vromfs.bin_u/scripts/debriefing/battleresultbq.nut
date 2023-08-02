@@ -83,7 +83,7 @@ let function onFrameTimes(evt, _eid, _comp) {
     platform = get_platform_string_id()
     country = getCountryCode()
     cluster = curCluster.value
-    clusters_rtt = ",".join(clusterStats.map(@(c)
+    clusters_rtt = ",".join(clusterStats.value.map(@(c)
       ":".join([ c.clusterId, c.hostsRTT == null ? null : round(c.hostsRTT).tointeger()], true)))
     campaign = battleCampaign.value != "" ? battleCampaign.value
       : (battleResult.value?.campaign ?? curCampaign.value ?? "")

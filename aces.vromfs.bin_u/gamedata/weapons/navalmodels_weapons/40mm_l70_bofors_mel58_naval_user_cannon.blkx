@@ -81,6 +81,7 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
     "bulletName": "40mm_m_dn51",
     "dynamicKv": true,
     "explodeTreshold": 0.1,
@@ -292,6 +293,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
       "bulletName": "40mm_m_dn51",
       "dynamicKv": true,
       "explodeTreshold": 0.1,
@@ -703,6 +705,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "dynamicKv": true,
       "relativeVelArmorShift": [
         200.0,

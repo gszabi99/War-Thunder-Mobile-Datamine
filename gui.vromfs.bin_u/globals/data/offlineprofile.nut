@@ -1,20 +1,16 @@
 return {
   "full": true,
   "items": {
-    "art_support": {
-      "count": 1050,
-      "name": "art_support"
-    },
     "ship_smoke_screen_system_mod": {
-      "count": 1050,
+      "count": 1055,
       "name": "ship_smoke_screen_system_mod"
     },
     "ship_tool_kit": {
-      "count": 1100,
+      "count": 1105,
       "name": "ship_tool_kit"
     },
     "spare": {
-      "count": 1010,
+      "count": 1015,
       "name": "spare"
     },
     "tank_extinguisher": {
@@ -40,7 +36,7 @@ return {
       "seenLevel": 0
     }
   },
-  "timeMs": 1682681149427,
+  "timeMs": 1689958006357,
   "units": {
     "fr_bat_chat_25t": {
       "attrLevels": {},
@@ -50,18 +46,55 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "fr_bat_chat_25t",
       "seenLevel": -1,
       "sp": 0,
       "weapons": {
         "fr_bat_chat_25t_default": true
+      }
+    },
+    "fr_m4a4_cn_75_50": {
+      "attrLevels": {
+        "tank_crew": {
+          "agility": 5,
+          "eyesight": 5,
+          "vitality": 5
+        },
+        "tank_fire_power": {
+          "accuracy": 5,
+          "loading_time_mult": 5,
+          "tracking": 5
+        },
+        "tank_protection": {
+          "battleRepairItems": 5,
+          "driving": 5,
+          "field_repair": 5
+        }
+      },
+      "curencyOpId": -1,
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "art_support": true,
+        "art_support_highcaliber": false,
+        "art_support_mortars": false,
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
+      },
+      "name": "fr_m4a4_cn_75_50",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "fr_m4a4_cn_75_50_default": true
       }
     },
     "fr_m4a4_sherman": {
@@ -89,27 +122,38 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "fr_m4a4_sherman",
       "seenLevel": -1,
       "sp": 0,
       "weapons": {
         "fr_m4a4_sherman_default": true
+      }
+    },
+    "fr_m4a4_sherman_reward": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {
+        "art_support": true
+      },
+      "name": "fr_m4a4_sherman_reward",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "fr_m4a4_sherman_reward_default": true
       }
     },
     "fr_panhard_ebr_1951": {
@@ -120,12 +164,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "fr_panhard_ebr_1951",
       "seenLevel": -1,
@@ -143,10 +182,6 @@ return {
           "attrib_player_gun_accuracy": 5,
           "attrib_player_gun_reload_rate": 5
         },
-        "ship_damage_control": {
-          "attrib_torpedo_count": 5,
-          "attrib_torpedo_distance": 5
-        },
         "ship_engine_room": {
           "attrib_ship_endurance": 5,
           "attrib_ship_max_speed": 5,
@@ -158,7 +193,16 @@ return {
       "isCurrent": false,
       "isUpgraded": false,
       "level": 25,
-      "mods": {},
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": true,
+        "protection_new_fireProtection": false,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": true,
+        "weapons_depth_charges": false
+      },
       "name": "germ_battleship_bismarck",
       "seenLevel": -1,
       "sp": 0,
@@ -250,7 +294,18 @@ return {
       "isCurrent": false,
       "isUpgraded": false,
       "level": 25,
-      "mods": {},
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": false,
+        "protection_new_fireProtection": true,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": false,
+        "weapons_depth_charges": false,
+        "weapons_torpedo_damage_mode": false,
+        "weapons_torpedo_movement_mode": true
+      },
       "name": "germ_cruiser_admiral_graf_spee",
       "seenLevel": -1,
       "sp": 0,
@@ -343,21 +398,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "germ_erprobungstrager_3_achs_turm",
       "seenLevel": -1,
@@ -374,12 +423,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "germ_leopard_I",
       "seenLevel": -1,
@@ -396,12 +440,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "germ_leopard_I_a1",
       "seenLevel": -1,
@@ -418,12 +457,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "germ_pzkpfw_IV_ausf_F2",
       "seenLevel": -1,
@@ -440,12 +474,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "germ_pzkpfw_IV_ausf_G",
       "seenLevel": -1,
@@ -479,21 +508,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "germ_pzkpfw_VI_ausf_b_tiger_IIh_sla",
       "seenLevel": -1,
@@ -510,12 +533,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "germ_pzkpfw_VI_ausf_h1_tiger",
       "seenLevel": -1,
@@ -532,12 +550,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "germ_pzkpfw_V_ausf_d_panther",
       "seenLevel": -1,
@@ -554,12 +567,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "germ_pzkpfw_V_ausf_f_panther",
       "seenLevel": -1,
@@ -593,21 +601,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "germ_pzsfl_IVa_dickermax",
       "seenLevel": -1,
@@ -766,6 +768,36 @@ return {
         "jp_destroyer_fubuki_default": true
       }
     },
+    "jp_destroyer_hatsuzuki": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {},
+      "name": "jp_destroyer_hatsuzuki",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "jp_destroyer_hatsuzuki_default": true
+      }
+    },
+    "jp_destroyer_teruzuki": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {},
+      "name": "jp_destroyer_teruzuki",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "jp_destroyer_teruzuki_default": true
+      }
+    },
     "jp_st_a1": {
       "attrLevels": {},
       "curencyOpId": -1,
@@ -774,12 +806,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "jp_st_a1",
       "seenLevel": -1,
@@ -813,21 +840,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "jp_st_a3",
       "seenLevel": -1,
@@ -844,12 +865,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "jp_type_3_chi_nu_75cm_type_5",
       "seenLevel": -1,
@@ -866,12 +882,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "uk_a30_sp_avenger",
       "seenLevel": -1,
@@ -888,12 +899,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "uk_a_34_comet",
       "seenLevel": -1,
@@ -910,18 +916,50 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "uk_a_43_black_prince",
       "seenLevel": -1,
       "sp": 0,
       "weapons": {
         "uk_a_43_black_prince_default": true
+      }
+    },
+    "uk_battlecruiser_invincible": {
+      "attrLevels": {
+        "ship_artillery": {
+          "attrib_ai_aa_accuracy": 5,
+          "attrib_ai_aa_distance": 5,
+          "attrib_he_shell_damage": 5,
+          "attrib_player_gun_accuracy": 5,
+          "attrib_player_gun_reload_rate": 5
+        },
+        "ship_engine_room": {
+          "attrib_ship_endurance": 5,
+          "attrib_ship_max_speed": 5,
+          "attrib_ship_steering": 5
+        }
+      },
+      "curencyOpId": -1,
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": true,
+        "protection_new_fireProtection": false,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": true,
+        "weapons_depth_charges": false
+      },
+      "name": "uk_battlecruiser_invincible",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "uk_battlecruiser_invincible_default": true
       }
     },
     "uk_battleship_dreadnought": {
@@ -1009,21 +1047,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "uk_chieftain_mk_3",
       "seenLevel": -1,
@@ -1041,10 +1073,6 @@ return {
           "attrib_player_gun_accuracy": 5,
           "attrib_player_gun_reload_rate": 5
         },
-        "ship_damage_control": {
-          "attrib_torpedo_count": 5,
-          "attrib_torpedo_distance": 5
-        },
         "ship_engine_room": {
           "attrib_ship_endurance": 5,
           "attrib_ship_max_speed": 5,
@@ -1056,7 +1084,16 @@ return {
       "isCurrent": false,
       "isUpgraded": false,
       "level": 25,
-      "mods": {},
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": true,
+        "protection_new_fireProtection": false,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": true,
+        "weapons_depth_charges": false
+      },
       "name": "uk_cruiser_belfast",
       "seenLevel": -1,
       "sp": 0,
@@ -1132,12 +1169,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "uk_fv4202",
       "seenLevel": -1,
@@ -1171,21 +1203,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "uk_sherman_II",
       "seenLevel": -1,
@@ -1219,21 +1245,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "uk_sherman_ic_firefly",
       "seenLevel": -1,
@@ -1281,10 +1301,6 @@ return {
           "attrib_player_gun_accuracy": 5,
           "attrib_player_gun_reload_rate": 5
         },
-        "ship_damage_control": {
-          "attrib_torpedo_count": 5,
-          "attrib_torpedo_distance": 5
-        },
         "ship_engine_room": {
           "attrib_ship_endurance": 5,
           "attrib_ship_max_speed": 5,
@@ -1296,7 +1312,16 @@ return {
       "isCurrent": false,
       "isUpgraded": false,
       "level": 25,
-      "mods": {},
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": true,
+        "protection_new_fireProtection": false,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": true,
+        "weapons_depth_charges": false
+      },
       "name": "us_battleship_arizona_1931",
       "seenLevel": -1,
       "sp": 0,
@@ -1395,29 +1420,12 @@ return {
       }
     },
     "us_destroyer_fletcher_nicholas": {
-      "attrLevels": {
-        "ship_artillery": {
-          "attrib_ai_aa_accuracy": 5,
-          "attrib_ai_aa_distance": 5,
-          "attrib_he_shell_damage": 5,
-          "attrib_player_gun_accuracy": 5,
-          "attrib_player_gun_reload_rate": 5
-        },
-        "ship_damage_control": {
-          "attrib_torpedo_count": 5,
-          "attrib_torpedo_distance": 5
-        },
-        "ship_engine_room": {
-          "attrib_ship_endurance": 5,
-          "attrib_ship_max_speed": 5,
-          "attrib_ship_steering": 5
-        }
-      },
+      "attrLevels": {},
       "curencyOpId": -1,
       "exp": 0,
       "isCurrent": false,
       "isUpgraded": false,
-      "level": 25,
+      "level": 0,
       "mods": {},
       "name": "us_destroyer_fletcher_nicholas",
       "seenLevel": -1,
@@ -1450,7 +1458,18 @@ return {
       "isCurrent": false,
       "isUpgraded": false,
       "level": 25,
-      "mods": {},
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": false,
+        "protection_new_fireProtection": true,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": false,
+        "weapons_depth_charges": false,
+        "weapons_torpedo_damage_mode": false,
+        "weapons_torpedo_movement_mode": true
+      },
       "name": "us_destroyer_mitscher",
       "seenLevel": -1,
       "sp": 0,
@@ -1481,12 +1500,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "us_m26e1_pershing",
       "seenLevel": -1,
@@ -1503,18 +1517,72 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "us_m47_patton_II",
       "seenLevel": -1,
       "sp": 0,
       "weapons": {
         "us_m47_patton_II_default": true
+      }
+    },
+    "us_m4_sherman_calliope": {
+      "attrLevels": {
+        "tank_crew": {
+          "agility": 5,
+          "eyesight": 5,
+          "vitality": 5
+        },
+        "tank_fire_power": {
+          "accuracy": 5,
+          "loading_time_mult": 5,
+          "tracking": 5
+        },
+        "tank_protection": {
+          "battleRepairItems": 5,
+          "driving": 5,
+          "field_repair": 5
+        }
+      },
+      "curencyOpId": -1,
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "art_support": true,
+        "art_support_highcaliber": false,
+        "art_support_mortars": false,
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
+      },
+      "name": "us_m4_sherman_calliope",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "us_m4_sherman_calliope_default": true
+      }
+    },
+    "us_m4_sherman_reward": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {
+        "art_support": true
+      },
+      "name": "us_m4_sherman_reward",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "us_m4_sherman_reward_default": true
       }
     },
     "us_m4a1_1942_sherman": {
@@ -1525,12 +1593,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "us_m4a1_1942_sherman",
       "seenLevel": -1,
@@ -1547,12 +1610,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "us_m4a1_76w_sherman",
       "seenLevel": -1,
@@ -1569,12 +1627,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "us_m4a2_sherman",
       "seenLevel": -1,
@@ -1591,12 +1644,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "us_m4a3e8_76w_sherman",
       "seenLevel": -1,
@@ -1613,12 +1661,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "us_m60a1",
       "seenLevel": -1,
@@ -1682,21 +1725,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "us_t20",
       "seenLevel": -1,
@@ -1730,21 +1767,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "us_t54e1",
       "seenLevel": -1,
@@ -1762,10 +1793,6 @@ return {
           "attrib_player_gun_accuracy": 5,
           "attrib_player_gun_reload_rate": 5
         },
-        "ship_damage_control": {
-          "attrib_torpedo_count": 5,
-          "attrib_torpedo_distance": 5
-        },
         "ship_engine_room": {
           "attrib_ship_endurance": 5,
           "attrib_ship_max_speed": 5,
@@ -1777,7 +1804,16 @@ return {
       "isCurrent": false,
       "isUpgraded": false,
       "level": 25,
-      "mods": {},
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": true,
+        "protection_new_fireProtection": false,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": true,
+        "weapons_depth_charges": false
+      },
       "name": "ussr_battlecruiser_kronshtadt",
       "seenLevel": -1,
       "sp": 0,
@@ -1828,6 +1864,43 @@ return {
       "sp": 0,
       "weapons": {
         "ussr_battleship_parizhskaya_kommuna_default": true
+      }
+    },
+    "ussr_battleship_poltava": {
+      "attrLevels": {
+        "ship_artillery": {
+          "attrib_ai_aa_accuracy": 5,
+          "attrib_ai_aa_distance": 5,
+          "attrib_he_shell_damage": 5,
+          "attrib_player_gun_accuracy": 5,
+          "attrib_player_gun_reload_rate": 5
+        },
+        "ship_engine_room": {
+          "attrib_ship_endurance": 5,
+          "attrib_ship_max_speed": 5,
+          "attrib_ship_steering": 5
+        }
+      },
+      "curencyOpId": -1,
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": true,
+        "protection_new_fireProtection": false,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": true,
+        "weapons_depth_charges": false
+      },
+      "name": "ussr_battleship_poltava",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "ussr_battleship_poltava_default": true
       }
     },
     "ussr_battleship_pr23_sovetskij_soyuz": {
@@ -1914,7 +1987,18 @@ return {
       "isCurrent": false,
       "isUpgraded": false,
       "level": 25,
-      "mods": {},
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": false,
+        "protection_new_fireProtection": true,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": false,
+        "weapons_depth_charges": false,
+        "weapons_torpedo_damage_mode": false,
+        "weapons_torpedo_movement_mode": true
+      },
       "name": "ussr_destroyer_pr30_ognevoy",
       "seenLevel": -1,
       "sp": 0,
@@ -1962,21 +2046,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "ussr_is_2_1944_revenge",
       "seenLevel": -1,
@@ -2010,21 +2088,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "ussr_kv_220",
       "seenLevel": -1,
@@ -2050,13 +2122,6 @@ return {
     },
     "ussr_sub_pr641": {
       "attrLevels": {
-        "ship_artillery": {
-          "attrib_ai_aa_accuracy": 5,
-          "attrib_ai_aa_distance": 5,
-          "attrib_he_shell_damage": 5,
-          "attrib_player_gun_accuracy": 5,
-          "attrib_player_gun_reload_rate": 5
-        },
         "ship_damage_control": {
           "attrib_torpedo_count": 5,
           "attrib_torpedo_distance": 5
@@ -2072,7 +2137,17 @@ return {
       "isCurrent": false,
       "isUpgraded": false,
       "level": 25,
-      "mods": {},
+      "mods": {
+        "maintanance_new_engines": false,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": true,
+        "protection_ammo_wetting": false,
+        "protection_new_fireProtection": true,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": false,
+        "weapons_torpedo_damage_mode": false,
+        "weapons_torpedo_movement_mode": true
+      },
       "name": "ussr_sub_pr641",
       "seenLevel": -1,
       "sp": 0,
@@ -2120,21 +2195,15 @@ return {
       "level": 25,
       "mods": {
         "art_support": true,
-        "art_support_division": false,
+        "art_support_highcaliber": false,
         "art_support_mortars": false,
-        "art_support_regiment": false,
-        "art_support_rockets": false,
-        "machinegun_belt_ap_pack": true,
-        "machinegun_belt_stealth_pack": false,
-        "machinegun_belt_tracer_pack": false,
-        "ostketten_tank_tracks": false,
-        "tank_additional_armor": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true,
-        "winterketten_tank_tracks": true
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
       },
       "name": "ussr_t_34E",
       "seenLevel": -1,
@@ -2151,12 +2220,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "ussr_t_34_1941_l_11",
       "seenLevel": -1,
@@ -2173,12 +2237,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "ussr_t_34_1942",
       "seenLevel": -1,
@@ -2195,12 +2254,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "ussr_t_34_85_d_5t",
       "seenLevel": -1,
@@ -2217,12 +2271,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "ussr_t_34_85_zis_53",
       "seenLevel": -1,
@@ -2239,12 +2288,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "ussr_t_44",
       "seenLevel": -1,
@@ -2261,12 +2305,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "ussr_t_54_1949",
       "seenLevel": -1,
@@ -2283,12 +2322,7 @@ return {
       "isUpgraded": false,
       "level": 0,
       "mods": {
-        "art_support": true,
-        "tank_engine_smoke_screen_system": true,
-        "tank_extinguisher": true,
-        "tank_smoke_screen_system_mod": true,
-        "tank_tool_kit": true,
-        "upgraded": true
+        "art_support": true
       },
       "name": "ussr_t_55a",
       "seenLevel": -1,

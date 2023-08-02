@@ -2463,9 +2463,18 @@
     "detectionHeight": 2.74
   },
   "modifications": {
+    "art_support": {},
     "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},
-    "art_support": {}
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {}
   },
   "default_skin": {
     "replace_tex": {

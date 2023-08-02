@@ -15,8 +15,96 @@ let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getModeAddonsInfo } = require("gameModeAddons.nut")
 let { balanceGold } = require("%appGlobals/currenciesState.nut")
+let { isInSquad, isSquadLeader, squadMembers, squadId, isInvitedToSquad, squadOnline,
+  MAX_SQUAD_MRANK_DIFF, squadLeaderCampaign
+} = require("%appGlobals/squadState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { getRomanNumeral } = require("%sqstd/math.nut")
 
 let startBattleDelayed = persist("startBattleDelayed", @() { modeId = null })
+let maxSquadRankDiff = mkWatched(persist, "minSquadRankDiff", MAX_SQUAD_MRANK_DIFF)
+
+isInSquad.subscribe(@(_) maxSquadRankDiff(MAX_SQUAD_MRANK_DIFF))
+
+let function msgBoxWithFalse(params) {
+  openFMsgBox(params)
+  return false
+}
+
+let function isSquadReadyWithMsgbox(mode, allReqAddons) {
+  let { minSquadSize = 1 } = mode
+  if (!isInSquad.value) {
+    if (minSquadSize > 1)
+      return msgBoxWithFalse({ text = loc("squad/minimumSquadSizeWarning", { count = minSquadSize }) })
+    return true
+  }
+
+  if (!isSquadLeader.value)
+    return msgBoxWithFalse({ text = loc("squad/only_leader_can_queue") })
+
+  if (squadMembers.value.len() < minSquadSize)
+    return msgBoxWithFalse({ text = loc("squad/minimumSquadSizeWarning", { count = minSquadSize }) })
+
+  let { maxSquadSize = minSquadSize } = mode
+  if (squadMembers.value.len() > maxSquadSize) {
+    if (maxSquadSize == 1)
+      openFMsgBox({ text = loc("squad/modeNotAvailableForSquad") })
+    else
+      openFMsgBox({ text = loc("squad/minimumSquadSizeWarning", { count = minSquadSize }) })
+    return false
+  }
+
+  if (isInvitedToSquad.value.len() > 0)
+    return msgBoxWithFalse({ text = loc("squad/has_non_accept_invites") })
+
+  if (squadMembers.value.findindex(@(_, uid) !squadOnline.value?[uid]))
+    return msgBoxWithFalse({ text = loc("squad/has_offline_members") })
+
+  local rankMin = curUnit.value?.mRank ?? 0
+  local rankMax = rankMin
+  foreach(m in squadMembers.value) {
+    let mRank = serverConfigs.value?.allUnits[m?.units[squadLeaderCampaign.value]].mRank
+    if (mRank == null)
+      continue
+    rankMin = min(rankMin, mRank)
+    rankMax = max(rankMax, mRank)
+  }
+  if (rankMax - rankMin > maxSquadRankDiff.value)
+    return msgBoxWithFalse({
+      text = loc("msg/bigRankDiff/toBattle", {
+        rankMin = colorize("@mark", getRomanNumeral(rankMin)),
+        rankMax = colorize("@mark", getRomanNumeral(rankMax)),
+      })
+      buttons = [
+        { id = "cancel", isCancel = true }
+        { text = loc("squad/rankCheck")
+          styleId = "PRIMARY"
+          eventId = "initiateSquadMRankCheck"
+        }
+        { text = loc("mainmenu/toBattle/short")
+          eventId = "incMaxSquadRankDiffAndQueue"
+          context = { diff = rankMax - rankMin, modeId = mode.gameModeId }
+          styleId = "BATTLE"
+          isDefault = true
+        }
+      ]
+    })
+
+  local hasAllAddons = true
+  foreach(uid, member in squadMembers.value)
+    if (uid != squadId.value
+        && (member?.missingAddons ?? []).findvalue(@(a) a in allReqAddons)) {
+      hasAllAddons = false
+      break
+    }
+  if (!hasAllAddons)
+    return msgBoxWithFalse({ text = loc("squad/not_all_has_packs") })
+
+  if (squadMembers.value.findindex(@(m, uid) uid != squadId.value && !m?.ready))
+    return msgBoxWithFalse({ text = loc("squad/not_all_ready") })
+
+  return true
+}
 
 let function queueToGameModeImpl(mode) {
   if (isInQueue.value)
@@ -26,7 +114,10 @@ let function queueToGameModeImpl(mode) {
     return
   }
 
-  let { addonsToDownload, updateDiff } = getModeAddonsInfo(mode, curUnit.value?.name)
+  let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode, curUnit.value?.name)
+  if (!isSquadReadyWithMsgbox(mode, allReqAddons))
+    return
+
   if (addonsToDownload.len() > 0) {
     let isUpdate = updateDiff >= 0
     let locs = localizeAddons(addonsToDownload)
@@ -142,6 +233,10 @@ subscribeFMsgBtns({
   }
   function queueToGameModeRetry(p) {
     sendBqIfNeed(p)
+    queueToGameMode(p.modeId)
+  }
+  function incMaxSquadRankDiffAndQueue(p) {
+    maxSquadRankDiff(p.diff)
     queueToGameMode(p.modeId)
   }
 })

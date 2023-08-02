@@ -47,6 +47,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_t",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
       "bulletName": "20mm_pzgr",
       "onHitChanceMultFire": 3.5,
       "relativeVelHitShift": [
@@ -256,6 +257,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "bulletName": "20mm_sprgr",
       "speed": 900.0,
       "maxDistance": 4000.0,
@@ -320,6 +322,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "armorpower": {
         "ArmorPower0m": [
@@ -455,6 +460,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "bulletName": "20mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -664,6 +670,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "20mm_sprgr",
         "speed": 900.0,
         "maxDistance": 4000.0,
@@ -728,6 +735,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "armorpower": {
           "ArmorPower0m": [
@@ -860,6 +870,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "bulletName": "20mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -1069,6 +1080,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "20mm_sprgr",
         "speed": 900.0,
         "maxDistance": 4000.0,
@@ -1133,6 +1145,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "armorpower": {
           "ArmorPower0m": [
@@ -1269,6 +1284,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "bulletName": "20mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -1472,6 +1488,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "bulletName": "20mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -1675,6 +1692,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "bulletName": "20mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [
@@ -1884,6 +1902,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "20mm_sprgr",
         "speed": 900.0,
         "maxDistance": 4000.0,
@@ -1948,6 +1967,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "armorpower": {
           "ArmorPower0m": [
@@ -2090,6 +2112,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "20mm_sprgr",
         "speed": 900.0,
         "maxDistance": 4000.0,
@@ -2154,6 +2177,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "armorpower": {
           "ArmorPower0m": [
@@ -2292,6 +2318,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "20mm_sprgr",
         "speed": 900.0,
         "maxDistance": 4000.0,
@@ -2356,6 +2383,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "armorpower": {
           "ArmorPower0m": [
@@ -2494,6 +2524,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "20mm_sprgr",
         "speed": 900.0,
         "maxDistance": 4000.0,
@@ -2558,6 +2589,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "armorpower": {
           "ArmorPower0m": [
@@ -2690,6 +2724,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "bulletName": "20mm_pzgr",
         "onHitChanceMultFire": 3.5,
         "relativeVelHitShift": [

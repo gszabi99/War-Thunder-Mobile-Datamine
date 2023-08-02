@@ -44,6 +44,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_ball.ivf",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -201,6 +202,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_ball.ivf",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -358,6 +360,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_ball.ivf",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -515,6 +518,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "ap_i",
+      "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
       "relativeVelHitShift": [
         300.0,
         1000.0

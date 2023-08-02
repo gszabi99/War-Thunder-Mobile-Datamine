@@ -48,6 +48,31 @@ let fontVeryLarge = {
   fontSize = hdpxi(97)
 }
 
+let fontWtSmall = {
+  font = Fonts.wtfont
+  fontSize = hdpxi(35)
+}
+let fontWtMedium = {
+  font = Fonts.wtfont
+  fontSize = hdpxi(42)
+}
+let fontWtBig = {
+  font = Fonts.wtfont
+  fontSize = hdpxi(58)
+}
+let fontWtLarge = {
+  font = Fonts.wtfont
+  fontSize = hdpxi(70)
+}
+let fontWtVeryLarge = {
+  font = Fonts.wtfont
+  fontSize = hdpxi(100)
+}
+let fontWtExtraLarge = {
+  font = Fonts.wtfont
+  fontSize = hdpxi(150)
+}
+
 let fontVeryTinyShaded = fontVeryTiny.__merge(shade)
 let fontTinyShaded = fontTiny.__merge(shade)
 let fontTinyAccentedShaded = fontTinyAccented.__merge(shade)
@@ -69,6 +94,12 @@ let fontsSets = {
     fontBig
     fontLarge
     fontVeryLarge
+    fontWtSmall
+    fontWtMedium
+    fontWtBig
+    fontWtLarge
+    fontWtVeryLarge
+    fontWtExtraLarge
   }
   commonShaded = {
     fontVeryTinyShaded

@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getRomanNumeral } = require("%sqstd/math.nut")
 let { mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
 let { getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { mkLinearGradientImg, mkRadialGradientImg } = require("%darg/helpers/mkGradientImg.nut")
@@ -10,6 +9,7 @@ let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnima
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { deleteJustUnlockedUnit } = require("%rGui/unit/justUnlockedUnits.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 
 let unitPlateWidth = hdpx(414)
 let unitPlateHeight = hdpx(174)
@@ -215,7 +215,7 @@ let mkUnitTexts = @(unit, unitLocName, justUnlockedDelay = null) {
         mkPlateText(getUnitClassFontIcon(unit), fontSmall)
       ]
     }
-    unit.mRank <= 0 ? null : mkPlateText(getRomanNumeral(unit.mRank), {
+    unit.mRank <= 0 ? null : mkGradRank(unit.mRank, {
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
       pos = [0, hdpx(5) ]

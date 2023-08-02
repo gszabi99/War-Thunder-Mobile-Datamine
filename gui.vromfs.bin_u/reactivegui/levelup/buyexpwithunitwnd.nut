@@ -15,6 +15,7 @@ let { mkCustomButton } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper, utf8ToLower } = require("%sqstd/string.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { buy_player_level, buy_unit, registerHandler, levelInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
@@ -325,6 +326,7 @@ let openConfirmationWnd = @(unit, campaign, lvlUpPrice, levelInfo) openMsgBoxPur
         $"{loc(getUnitPresentation(unit).locId)}, {loc("mainmenu/rank")} {levelInfo.level + 1} ") })
     mkPriceParameters(unit)
     mkPurchaseFunc(unit, campaign, lvlUpPrice, levelInfo)
+    mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, (levelInfo.level + 1).tostring())
   )
 
 let function mkBuyBtn(unit) {

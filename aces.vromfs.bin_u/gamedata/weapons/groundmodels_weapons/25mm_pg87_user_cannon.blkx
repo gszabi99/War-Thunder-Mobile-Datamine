@@ -67,6 +67,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "25mm_type_87_api",
       "relativeVelHitShift": [
         300.0,
@@ -229,6 +230,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "frag_i_t",
+      "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
       "bulletName": "25mm_type_87_he",
       "hitPowerMult": 5.0,
       "explodeTreshold": 0.1,
@@ -430,6 +432,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "frag_i_t",
+      "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
       "bulletName": "25mm_type_87_he",
       "hitPowerMult": 5.0,
       "explodeTreshold": 0.1,
@@ -634,6 +637,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "25mm_type_87_api",
       "relativeVelHitShift": [
         300.0,

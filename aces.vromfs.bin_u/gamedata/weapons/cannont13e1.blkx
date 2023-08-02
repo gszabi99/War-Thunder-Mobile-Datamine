@@ -219,6 +219,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
       "bulletName": "75mm_m48",
       "hitPowerMult": 2.0,
       "onHitChanceMultFire": 2.0,
@@ -585,6 +586,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_i_t_shell.ivf",
       "bulletName": "75mm_m48",
       "hitPowerMult": 2.0,
       "onHitChanceMultFire": 2.0,

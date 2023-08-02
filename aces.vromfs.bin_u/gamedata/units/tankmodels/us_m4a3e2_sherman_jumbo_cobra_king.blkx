@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "minRelativeTankCameraThreshold": 1.35,
+  "minRelativeTankCameraThreshold": 1.32,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1641,12 +1641,8 @@
       "fricSideRot": [
         5.0,
         0.0,
-        0.6,
+        0.2,
         0.3
-      ],
-      "fricFrontal": [
-        1.0,
-        0.8
       ]
     },
     "collisionProps": {
@@ -2517,11 +2513,6 @@
     ],
     "detectionHeight": 2.97
   },
-  "modifications": {
-    "tank_tool_kit_expendable": {},
-    "art_support": {},
-    "tank_extinguisher": {}
-  },
   "battleHideNodes": {
     "n": "details"
   },
@@ -2724,6 +2715,20 @@
       "name": "us_m4a3e2_sherman_jumbo_cobra_king_default",
       "blk": "gameData/units/tankModels/weaponPresets/us_m4a3e2_sherman_jumbo_cobra_king_default.blk"
     }
+  },
+  "modifications": {
+    "art_support": {},
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {}
   },
   "default_skin": {
     "replace_tex": {

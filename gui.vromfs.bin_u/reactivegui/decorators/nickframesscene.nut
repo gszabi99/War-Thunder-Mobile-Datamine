@@ -3,8 +3,8 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { chosenNickFrame, allFrames, availNickFrames, getReceiveReason
-} = require("decoratorState.nut")
+let { chosenNickFrame, allFrames, availNickFrames, getReceiveReason,
+unseenDecorators, markDecoratorSeen, markDecoratorsSeen } = require("decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress
@@ -18,6 +18,9 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { CS_SMALL, CS_INCREASED_ICON } = require("%rGui/components/currencyStyles.nut")
 let purchaseDecorator = require("purchaseDecorator.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 
 let gap = hdpx(15)
@@ -31,7 +34,6 @@ let CS_DECORATORS = CS_SMALL.__merge({
 let maxDecInRow = 9
 let columns = min(contentWidthFull / (gap + squareSize[0]), maxDecInRow)
 
-
 let selectedDecorator = Watched(chosenNickFrame.value?.name)
 
 let choosenMark = {
@@ -43,10 +45,11 @@ let choosenMark = {
 }
 
 let buySelectedDecorator = @()
-  purchaseDecorator(selectedDecorator.value, frameNick("", selectedDecorator.value))
+  purchaseDecorator(selectedDecorator.value, frameNick("", selectedDecorator.value),
+    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedDecorator.value))
 
 let function applySelectedDecorator() {
-  if (selectedDecorator.value == null) {
+  if (selectedDecorator.value == "") {
     unset_current_decorator("nickFrame")
     return
   }
@@ -83,9 +86,11 @@ let function tagBtn(item) {
   let name = item[0]
   let price = item[1].price
   let stateFlags = Watched(0)
-  let isChoosen = Computed(@() chosenNickFrame.value?.name == name)
+  let isChoosen = Computed(@() chosenNickFrame.value?.name == name ||
+    (chosenNickFrame.value == null && name == ""))
   let isSelected = Computed(@() selectedDecorator.value == name)
-  let isAvailable = Computed(@() name in availNickFrames.value || name == null)
+  let isAvailable = Computed(@() name in availNickFrames.value || name == "")
+  let isUnseen = Computed(@() name in unseenDecorators.value)
   return @() {
     watch = stateFlags
     rendObj = ROBJ_SOLID
@@ -93,13 +98,15 @@ let function tagBtn(item) {
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
     size = squareSize
-    function onClick(){
+    function onClick() {
+      markDecoratorSeen(name)
       if (!isSelected.value)
         selectedDecorator(name)
       else if (isSelected.value && !isChoosen.value
           && decoratorInProgress.value != (name ?? "nickFrame"))
         applySelectedDecorator()
     }
+    onHover = hoverHoldAction("markDecoratorsSeen", name, markDecoratorSeen)
     transform = {
       scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1]
     }
@@ -116,7 +123,7 @@ let function tagBtn(item) {
         text = frameNick("", name)
       }.__update(fontBig)
       @() {
-        watch = [isChoosen, isSelected, isAvailable]
+        watch = [isChoosen, isSelected, isAvailable, isUnseen]
         size = flex()
         rendObj = ROBJ_BOX
         borderWidth = hdpx(2)
@@ -124,7 +131,7 @@ let function tagBtn(item) {
           : (stateFlags.value & S_ACTIVE) || isSelected.value ? 0xFFFFFFFF
           : 0xFF4F4F4F
         children = !isAvailable.value
-            ? {
+          ? {
               size =[hdpx(25),hdpx(32)]
               margin = [hdpx(10),hdpx(15)]
               rendObj = ROBJ_IMAGE
@@ -134,6 +141,11 @@ let function tagBtn(item) {
           : isChoosen.value || isSelected.value
             ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.value != null),
               isChoosen.value ? choosenMark : null)
+          : isUnseen.value
+            ? {
+                margin = [hdpx(15), hdpx(20)]
+                children = priorityUnseenMark
+              }
           : null
       }
       price.price <= 0 || isAvailable.value ? null
@@ -157,7 +169,7 @@ let function footer() {
     gap
     children = [
       selectedDecorator.value == chosenNickFrame.value?.name ? null
-        : selectedDecorator.value in availNickFrames.value || selectedDecorator.value == null
+        : selectedDecorator.value in availNickFrames.value || selectedDecorator.value == ""
           ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedDecorator,
             { hotkeys = ["^J:X | Enter"] })
         : (price?.price ?? 0) > 0
@@ -183,7 +195,7 @@ let framesList = @() {
     allFrames.value.filter(@(frame, key) !frame.isHidden || (key in (availNickFrames.value)))
       .topairs()
       .sort(@(a,b) (b[0] in availNickFrames.value)<=>(a[0] in availNickFrames.value))
-      .insert(0, [ null,
+      .insert(0, [ "",
         {
           price = {
             price = 0
@@ -201,9 +213,11 @@ let framesList = @() {
 }
 
 let decorationNameWnd = {
+  key = {}
   size = flex()
   flow = FLOW_VERTICAL
   gap
+  onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availNickFrames.value).keys())
   children = [
     header
     makeVertScroll(framesList)

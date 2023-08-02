@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "minRelativeTankCameraThreshold": 1.35,
+  "minRelativeTankCameraThreshold": 1.32,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1844,12 +1844,8 @@
       "fricSideRot": [
         5.0,
         0.0,
-        0.6,
+        0.2,
         0.3
-      ],
-      "fricFrontal": [
-        1.0,
-        0.8
       ]
     },
     "collisionProps": {

@@ -1358,7 +1358,7 @@
     },
     "max": {
       "graphics": {
-        "backgroundScale": 0.633,
+        "backgroundScale": 0.75,
         "backgroundScaleAt120": 0.5,
         "fxDensityMul": 1.0,
         "compatibilityShadowQuality": "high",
@@ -1424,6 +1424,18 @@
                 "616",
                 "618",
                 "619"
+              ],
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "msaaAndBlendingHang": {
+            "entry": {
+              "gpu": [
+                "725",
+                "730",
+                "740"
               ],
               "data": {
                 "affected": true

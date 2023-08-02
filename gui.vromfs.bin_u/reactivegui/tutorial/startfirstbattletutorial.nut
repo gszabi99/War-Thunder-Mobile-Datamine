@@ -7,10 +7,12 @@ let { needFirstBattleTutor, startTutor, firstBattleTutor, isTutorialMissionsDebu
 let { resetTimeout } = require("dagor.workcycle")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId
 } = require("tutorialWnd/tutorialWndState.nut")
+let { isInSquad } = require("%appGlobals/squadState.nut")
 
 const TUTORIAL_ID = "startFirstBattle"
 let isSkipped = hardPersistWatched("firstBattleTutorial.isSkipped", false)
 let showTutorial = keepref(Computed(@() needFirstBattleTutor.value
+  && !isInSquad.value
   && !isSkipped.value
   && isInMenuNoModals.value
   && !isTutorialActive.value))

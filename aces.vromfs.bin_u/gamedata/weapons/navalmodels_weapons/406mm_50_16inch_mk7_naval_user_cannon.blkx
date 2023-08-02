@@ -90,6 +90,9 @@
         ]
       ]
     },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "damage": {
       "kinetic": {
         "damageType": "generic",
@@ -290,6 +293,9 @@
             0.9
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {
@@ -753,6 +759,9 @@
             0.9
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {

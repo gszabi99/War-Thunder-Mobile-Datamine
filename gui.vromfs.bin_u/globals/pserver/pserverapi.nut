@@ -231,6 +231,16 @@ return {
     progressValue = decorType
   }, cb)
 
+  mark_decorators_seen = @(names, cb = null) request({
+    method = "mark_decorators_seen"
+    params = { names }
+  }, cb)
+
+  mark_decorators_unseen = @(names, cb = null) request({
+    method = "mark_decorators_unseen"
+    params = { names }
+  }, cb)
+
   get_player_level_rewards = @(campaign, level, cb = null) request({
     method = "get_player_level_rewards"
     params = { campaign, level }

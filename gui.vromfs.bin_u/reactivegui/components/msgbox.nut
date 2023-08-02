@@ -8,6 +8,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
 let { btnAUp, btnBUp, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
+let { locColorTable } = require("%rGui/style/stdColors.nut")
 
 let wndWidthDefault = hdpx(1106) // 1-2 buttons
 let wndWidthWide = hdpx(1500) // 3 buttons
@@ -44,6 +45,7 @@ let msgBoxText = @(text, ovr = {}) {
   valign = ALIGN_CENTER
   color = 0xFFC0C0C0
   text
+  colorTable = locColorTable
 }.__update(fontSmall, ovr)
 
 let msgBoxBg = {

@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
 let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
+let { authTags } = require("%appGlobals/loginState.nut")
+let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%rGui/globals/timeToText.nut")
 let { contentWidth } = require("optionsStyle.nut")
@@ -17,7 +19,11 @@ let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, openDecoratorsScene } = require("%rGui/decorators/decoratorState.nut")
 
 let DELETE_PROFILE_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
+let LINK_TO_GAIJIN_ACCOUNT_URL = "auto_local auto_login https://wtmobile.com/connect"
 let ACTIVATE_PROMO_CODE_URL = "auto_local auto_login https://store.gaijin.net/activate.php"
+
+let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.value
+  && (authTags.value.contains("gplogin") || authTags.value.contains("applelogin") || authTags.value.contains("fblogin")))
 
 let avatarSize = hdpx(200)
 let levelBlockSize = hdpx(60)
@@ -140,22 +146,42 @@ let logoutMsgBox = @() openMsgBox({
 let topButtons = @() {
   watch = isInMenu
   size = [flex(), SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
+  gap = { size = flex() }
   children = [
     !isInMenu.value ? null : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
-    { size = flex() }
     textButtonCommon(loc("options/delete_profile"), @() send("openUrl", { baseUrl = DELETE_PROFILE_URL, useExternalBrowser = true }), buttonsWidthStyle)
+  ]
+}
+
+let middleButtons = @() {
+  watch = canLinkToGaijinAccount
+  size = [flex(), SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  gap = { size = flex() }
+  children = [
+    !canLinkToGaijinAccount.value ? null
+      : textButtonPrimary(loc("msgbox/btn_linkEmail"),
+          @() send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL, useExternalBrowser = true }),
+          buttonsWidthStyle)
+    is_ios ? null
+      : textButtonPrimary(loc("mainmenu/btnActivateCode"),
+          @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL, useExternalBrowser = true }),
+          buttonsWidthStyle)
   ]
 }
 
 let bottomButtons = {
   size = [flex(), SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
+  gap = { size = flex() }
   children = [
     textButtonPrimary(loc("mainmenu/support"),
       @() send("openUrl", { baseUrl = loc("url/support"), useExternalBrowser = true }),
       buttonsWidthStyle)
-    { size = flex() }
     textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
   ]
 }
@@ -169,8 +195,7 @@ return {
     mkPremiumTimeLeftText
     topButtons
     { size = flex() }
-    is_ios ? null
-      : textButtonPrimary(loc("mainmenu/btnActivateCode"), @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),{ ovr = { hplace = ALIGN_CENTER }.__update(buttonsWidthStyle.ovr) })
+    middleButtons
     { size = flex() }
     bottomButtons
   ]

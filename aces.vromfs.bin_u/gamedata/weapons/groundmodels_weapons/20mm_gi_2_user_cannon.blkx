@@ -71,6 +71,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
       "bulletName": "20mm_m601",
       "relativeVelHitShift": [
         300.0,
@@ -756,6 +757,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
         "bulletName": "20mm_m601",
         "relativeVelHitShift": [
           300.0,
@@ -929,6 +931,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
         "bulletName": "20mm_m601",
         "relativeVelHitShift": [
           300.0,
@@ -1097,6 +1100,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
         "bulletName": "20mm_m601",
         "relativeVelHitShift": [
           300.0,

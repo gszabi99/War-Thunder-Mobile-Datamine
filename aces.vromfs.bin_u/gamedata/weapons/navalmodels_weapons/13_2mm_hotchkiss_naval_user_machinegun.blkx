@@ -41,6 +41,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "t_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/t_ball.ivf",
       "maxDistance": 3000.0,
       "dynamicKv": true,
       "groundCollisionEffect": "hit_8_11mm_dirt_ap",
@@ -193,6 +194,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_ball.ivf",
       "dynamicKv": true,
       "relativeVelArmorShift": [
         200.0,
@@ -355,6 +357,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_i_shell.ivf",
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
       "explodeTreshold": 0.1,
@@ -560,6 +563,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_ball.ivf",
       "dynamicKv": true,
       "relativeVelArmorShift": [
         200.0,
@@ -715,6 +719,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/t_ball.ivf",
         "maxDistance": 3000.0,
         "dynamicKv": true,
         "groundCollisionEffect": "hit_8_11mm_dirt_ap",
@@ -867,6 +872,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1029,6 +1035,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,
@@ -1234,6 +1241,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1400,6 +1408,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,
@@ -1614,6 +1623,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,
@@ -1828,6 +1838,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,
@@ -2032,6 +2043,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/t_ball.ivf",
         "maxDistance": 3000.0,
         "dynamicKv": true,
         "groundCollisionEffect": "hit_8_11mm_dirt_ap",
@@ -2188,6 +2200,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -2341,6 +2354,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -2494,6 +2508,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -2646,6 +2661,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/t_ball.ivf",
         "maxDistance": 3000.0,
         "dynamicKv": true,
         "groundCollisionEffect": "hit_8_11mm_dirt_ap",

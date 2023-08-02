@@ -19,13 +19,15 @@ let { mkDiscountPriceComp, CS_COMMON } = require("%rGui/components/currencyComp.
 let { discountTag } = require("%rGui/components/discountTag.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
+let { PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
+
 
 let WND_UID = "buyUnitLevelWnd" //we no need several such messages at all.
 let patternImgAR = 0.71
 let blockSize = [hdpxi(500), evenPx(200)]
 let patternSize = [(patternImgAR * blockSize[1]).tointeger(), blockSize[1]].map(@(v) ceil(0.5 * v).tointeger())
 let numberSize = hdpx(100)
-let levelsSize = hdpx(70)
 let textGradient = mkFontGradient(0xFFFFFFFF, 0xFF12B2E6)
 let priceBgGradient = mkColoredGradientY(0xFF00AAF8, 0xFF007683, 12)
 let priceBgBorder = 0x7F003570  //0xB2004A9D//0xFF006AE1
@@ -44,7 +46,8 @@ registerHandler("closeBuyUnitLevelWnd", @(_) close())
 let function onClickPurchase(unitNameV, curLevel, tgtLevel, nextLevelExp, costGold) {
   if (unitInProgress.value != null)
     return
-  if (!showNoBalanceMsgIfNeed(costGold, GOLD, close))
+  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, $"{unitNameV} {curLevel} +{tgtLevel - curLevel}")
+  if (!showNoBalanceMsgIfNeed(costGold, GOLD, bqPurchaseInfo, close))
     buy_unit_level(unitNameV, curLevel, tgtLevel, nextLevelExp, costGold, "closeBuyUnitLevelWnd")
 }
 
@@ -71,29 +74,6 @@ let pattern = {
     })
 }
 
-let mkGradText = @(text, fontSize, ovr = {}) {
-  rendObj = ROBJ_TEXT
-  text
-  font = Fonts.wtfont
-  fontSize
-  fontTex = textGradient
-  fontTexSv = 0
-  fontFxColor = 0xFF000000
-  fontFx = FFT_BLUR
-
-  children = {
-    rendObj = ROBJ_TEXT
-    color = 0
-    text
-    font = Fonts.wtfont
-    fontSize
-    fontFxColor = 0x20808080
-    fontFxOffsX = -hdpx(1)
-    fontFxOffsY = -hdpx(1)
-    fontFx = FFT_GLOW
-  }
-}.__update(ovr)
-
 let numberBox = @(text) {
   size = [ph(100), ph(100)]
   valign = ALIGN_CENTER
@@ -107,7 +87,9 @@ let numberBox = @(text) {
       borderWidth = hdpx(3)
       transform = { rotate = 45 }
     }
-    mkGradText(text, numberSize, { pos = [-0.1 * numberSize, 0] })
+    mkGradGlowText(text, fontWtVeryLarge, textGradient, {
+      pos = [-0.1 * numberSize, 0]
+    })
   ]
 }
 
@@ -157,7 +139,11 @@ let mkLevelInfo = @(levels, sp) {
           flow = FLOW_VERTICAL
           halign = ALIGN_RIGHT
           children = [
-            mkGradText(utf8ToUpper(loc("purchase/levels", { levels })), levelsSize)
+            mkGradGlowText(
+              utf8ToUpper(loc("purchase/levels", { levels }))
+              fontWtLarge
+              textGradient
+            )
             mkSpText(sp)
           ]
         }

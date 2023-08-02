@@ -12,10 +12,11 @@ let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 
 let GUEST_MSG_UID = "guestEmailRegistration"
 let VERIFY_MSG_UID = "verifyEmail"
+let ONLINE_BATTLES_TO_VERIFY = 10
 
 let isGuestMsgShowed = hardPersistWatched("isGuestMsgShowed", false)
-let hasOnlineBattles = Computed(@()
-  servProfile.value?.sharedStatsByCampaign.findindex(@(s) (s?.battles ?? 0) > 0) != null)
+let hasEnoughOnlineBattles = Computed(@()
+  servProfile.value?.sharedStatsByCampaign.findindex(@(s) (s?.battles ?? 0) > ONLINE_BATTLES_TO_VERIFY) != null)
 let battlesTotal = Computed(@()
   servProfile.value?.sharedStatsByCampaign?.reduce(
     @(acc, campaign) acc + (campaign?.battles ?? 0) + (campaign?.offlineBattles ?? 0), 0))
@@ -28,7 +29,7 @@ let isVerifyMsgShowed = hardPersistWatched("isVerifyMsgShowed", false)
 let needShowVerifyMsg = keepref(Computed(@() !isVerifyMsgShowed.value
   && isInMenuNoModals.value
   && needVerifyEmail.value
-  && hasOnlineBattles.value))
+  && hasEnoughOnlineBattles.value))
 
 
 let function openGuestMsg() {

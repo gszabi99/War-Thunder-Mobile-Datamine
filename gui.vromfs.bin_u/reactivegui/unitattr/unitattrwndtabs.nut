@@ -49,6 +49,7 @@ let function tabData(tab) {
 }
 
 return {
+  contentMargin
   mkUnitAttrTabs = @(tabs, curTabId)
     mkTabs(tabs.map(@(t) tabData(t)), curTabId)
 }

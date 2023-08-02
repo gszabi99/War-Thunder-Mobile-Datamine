@@ -131,10 +131,10 @@ let speedTextEditView = {
   text = "".concat("XX ", loc("measureUnits/kmh"))
 }.__update(fontVeryTiny)
 
-let xrayDoll = @(stateFlags) {
+let xrayDoll = @(stateFlags, isGlowVisible) @() {
   size = [damagePanelSize, damagePanelSize]
   children = [
-    damagePanelBacklight(stateFlags, damagePanelSize)
+    isGlowVisible ? damagePanelBacklight(stateFlags, damagePanelSize) : null
     {
       rendObj = ROBJ_XRAYDOLL
       size = flex()
@@ -197,7 +197,7 @@ let doll =  @() {
   }
   hotkeys = mkGamepadHotkey(shortcutId)
   children = [
-    !isInZoom.value ? xrayDoll(stateFlags) : null
+    xrayDoll(stateFlags, !isInZoom.value)
     mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
   ]
 }

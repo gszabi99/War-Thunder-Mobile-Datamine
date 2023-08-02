@@ -19,8 +19,8 @@ let tagRedColor = 0xC8C80000
 
 let scrollHandler = ScrollHandler()
 let scrollStep = hdpx(75)
-let selectorBtnW = hdpx(420)
-let selectorBtnH = hdpx(100)
+let selectorBtnW = hdpx(465)
+let selectorBtnH = hdpx(110)
 let selectorBtnMinGap = hdpx(10)
 let selectorBtnGap = Watched(selectorBtnMinGap)
 let selectorImgSize = hdpxi(92)
@@ -326,7 +326,7 @@ let newsWnd = bgShaded.__merge({
     {
       size = flex()
       flow = FLOW_HORIZONTAL
-      gap = hdpx(75)
+      gap = hdpx(30)
       children = [
         articleContent
         articleSelector

@@ -2,9 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let presences = hardPersistWatched("contactPresence", {})
+let squadStatus = hardPersistWatched("contactSquadStatus", {})
 
 let calcStatus = @(presence) presence?.unknown ? null : presence?.online
-let onlineStatus = Watched(presences.value.map(calcStatus))
+let onlineStatusBase = Watched(presences.value.map(calcStatus))
+
+let onlineStatus = Computed(@() onlineStatusBase.value.__merge(squadStatus.value))
 
 let mkUpdatePresences = @(watch) function(newPresences) {
   if (newPresences.len() > 10) { //faster way when many presences received
@@ -23,13 +26,13 @@ let mkUpdatePresences = @(watch) function(newPresences) {
 }
 
 let updatePresencesImpl = mkUpdatePresences(presences)
-//here will be squad status
+let updateSquadPresences = mkUpdatePresences(squadStatus)
 
 let function updatePresences(newPresences) {
   updatePresencesImpl(newPresences)
-  onlineStatus.mutate(@(v) v.__update(newPresences.map(calcStatus)))
+  onlineStatusBase.mutate(@(v) v.__update(newPresences.map(calcStatus)))
 }
-onlineStatus.whiteListMutatorClosure(updatePresences)
+onlineStatusBase.whiteListMutatorClosure(updatePresences)
 
 let function isContactOnline(userId, onlineStatusVal) {
   let uid = type(userId) == "integer" ? userId.tostring() : userId
@@ -42,6 +45,7 @@ return {
   presences
   onlineStatus
   updatePresences
+  updateSquadPresences
 
   isContactOnline
   mkContactOnlineStatus

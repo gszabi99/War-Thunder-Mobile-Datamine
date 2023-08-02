@@ -7,7 +7,7 @@
       "invertEnableLogic": false,
       "isReserve": true,
       "effects": {
-        "toolkitActivationCount": 30,
+        "toolkitActivationCount": 10,
         "repairAvailable": true
       }
     },
@@ -29,22 +29,49 @@
         "repairAvailable": true
       }
     },
-    "weapons_torpedo_damage_mode": {},
-    "weapons_torpedo_movement_mode": {},
-    "weapons_contact_mines": {},
-    "weapons_depth_charges": {},
-    "protection_new_fireProtection": {},
-    "protection_ammo_wetting": {},
-    "protection_new_sonar": {},
-    "maintanance_powered_toolkit": {},
-    "maintanance_new_propellers": {
-      "invertEnableLogic": true,
+    "weapons_torpedo_damage_mode": {
+      "image": "#ui/gameuiskin#weapons_torpedo_damage_mode"
+    },
+    "weapons_torpedo_movement_mode": {
+      "image": "#ui/gameuiskin#weapons_torpedo_movement_mode"
+    },
+    "weapons_contact_mines": {
+      "image": "#ui/gameuiskin#weapons_contact_mines"
+    },
+    "weapons_depth_charges": {
+      "image": "#ui/gameuiskin#weapons_depth_charges"
+    },
+    "protection_new_fireProtection": {
+      "image": "#ui/gameuiskin#protection_new_fireProtection"
+    },
+    "protection_ammo_wetting": {
+      "image": "#ui/gameuiskin#protection_ammo_wetting"
+    },
+    "protection_new_sonar": {
+      "image": "#ui/gameuiskin#protection_new_sonar",
       "effects": {
-        "mulTimeToMaxSpeed": 1.15,
-        "mulTimeToMaxReverseSpeed": 1.15
+        "sonarDetectionRadius": 750.0,
+        "sonarDetectionDepth": 50.0,
+        "sonarTimeStep": 5.0
+      }
+    },
+    "maintanance_powered_toolkit": {
+      "image": "#ui/gameuiskin#maintanance_powered_toolkit",
+      "effects": {
+        "durationMul": 1.0,
+        "repairSpeedMul": 1.15,
+        "maxHpMul": 1.0
+      }
+    },
+    "maintanance_new_propellers": {
+      "image": "#ui/gameuiskin#maintanance_new_propellers",
+      "effects": {
+        "mulTimeToMaxSpeed": 0.85,
+        "mulTimeToMaxReverseSpeed": 0.85
       }
     },
     "maintanance_new_engines": {
+      "image": "#ui/gameuiskin#maintanance_new_engines",
       "invertEnableLogic": true,
       "effects": {
         "mulMaxSpeed": 0.8,
@@ -78,6 +105,19 @@
       "requiresModelReload": true,
       "group": "smoke_mod"
     },
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {
+      "effects": {
+        "smokeScreenCooldownMul": 0.4,
+        "rearmSmokeTimeOnFieldMul": 0.4
+      }
+    },
+    "tank_smoke_screen_long_duration": {
+      "effects": {
+        "smokeTimeMul": 1.4,
+        "smokeScreenTimeMul": 1.4
+      }
+    },
     "art_support": {
       "effects": {
         "supportUnitClass": "structures/ussr_122mm_m30",
@@ -86,19 +126,19 @@
     },
     "art_support_mortars": {
       "effects": {
-        "supportUnitClass": "structures/ussr_122mm_m30",
+        "supportUnitClass": "structures/ussr_82mm_bm36",
         "supportUnitTag": "artillery"
       }
     },
     "art_support_highcaliber": {
       "effects": {
-        "supportUnitClass": "structures/ussr_122mm_m30",
+        "supportUnitClass": "structures/ussr_152mm_d1",
         "supportUnitTag": "artillery"
       }
     },
     "art_support_smoke": {
       "effects": {
-        "supportUnitClass": "structures/ussr_122mm_m30",
+        "supportUnitClass": "structures/ussr_122mm_m30_smoke",
         "supportUnitTag": "artillery"
       }
     },
@@ -123,17 +163,17 @@
     },
     "machinegun_belt_tracer": {
       "effects": {
-        "additiveBulletMod": "machinegun_belt_tracer"
+        "bulletMod": "machinegun_belt_tracer"
       }
     },
     "machinegun_belt_ap": {
       "effects": {
-        "additiveBulletMod": "machinegun_belt_ap"
+        "bulletMod": "machinegun_belt_ap"
       }
     },
     "machinegun_belt_stealth": {
       "effects": {
-        "additiveBulletMod": "machinegun_belt_stealth"
+        "bulletMod": "machinegun_belt_stealth"
       }
     },
     "ostketten_tank_tracks": {

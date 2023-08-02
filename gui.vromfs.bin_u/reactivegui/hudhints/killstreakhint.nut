@@ -11,7 +11,7 @@ let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { modifyOrAddEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
 let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
 let { rqPlayersAndDo } = require("rqPlayersAndDo.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
+let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 
 
 let HINT_TYPE = "killStreak"
@@ -22,9 +22,10 @@ local dbgTimeLeft = 0
 const MP_TEAM_NEUTRAL = 0
 
 let getPlayerColor = @(player) player.isLocal ? localPlayerColor
+  : player?.isInHeroSquad ? mySquadLightColor
   : player.team == MP_TEAM_NEUTRAL ? null
-  : player.team == localMPlayerTeam.value ? teamBlueColor
-  : teamRedColor
+  : player.team == localMPlayerTeam.value ? teamBlueLightColor
+  : teamRedLightColor
 
 let function getColoredName(player) {
   let color = getPlayerColor(player)
@@ -81,7 +82,7 @@ let participantsRow = @(participants, slotsCount) function() {
         rendObj = ROBJ_TEXT
         text = loc("country/VS")
         color = 0xFFFFFFFF
-      }.__update(fontTiny))
+      }.__update(fontTinyShaded))
       .extend(list[false])
   }
 }
@@ -108,7 +109,7 @@ registerHintCreator(HINT_TYPE, function(data) {
           time = $"{timeSeconds}{loc("debriefing/timeSec")}",
           player = player == null ? "???" : getColoredName(player)
         })
-      }.__update(fontTiny)
+      }.__update(fontTinyShaded)
     ]
     transform = {}
     animations = [

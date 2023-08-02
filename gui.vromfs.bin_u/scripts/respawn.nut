@@ -6,15 +6,15 @@ let { deferOnce, resetTimeout, setInterval, clearTimer } = require("dagor.workcy
 let { canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer
 } = require("guiRespawn")
 let { get_game_mode, get_game_type } = require("mission")
-let { quit_to_debriefing, get_respawns_left } = require("guiMission")
+let { quit_to_debriefing, get_respawns_left,
+  get_mp_respawn_countdown, get_mission_status } = require("guiMission")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { curBattleUnit, isBattleDataReceived } = require("%scripts/battleData/battleData.nut")
+let { curBattleUnit, curBattleItems, isBattleDataReceived } = require("%scripts/battleData/battleData.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isInRespawn, respawnUnitInfo, isRespawnStarted, timeToRespawn, isRespawnInProgress,
+let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRespawn, isRespawnInProgress,
   isRespawnDataInProgress, isBatleDataRequired, respawnsLeft
 } = require("%appGlobals/clientState/respawnStateBase.nut")
-
 
 let unitToSpawn = Computed(@() !isBatleDataRequired.value || isBattleDataReceived.value
   ? curBattleUnit.value : null)
@@ -34,6 +34,7 @@ isInRespawn.subscribe(function(v) {
     return
   ::disable_flight_menu(true)
   respawnUnitInfo(unitToSpawn.value)
+  respawnUnitItems(curBattleItems.value)
 })
 unitToSpawn.subscribe(@(v) isInRespawn.value ? respawnUnitInfo(v) : null)
 
@@ -91,7 +92,7 @@ let function tryRespawn() {
 }
 
 let function onCountdownTimer() {
-  timeToRespawn(::get_mp_respawn_countdown())
+  timeToRespawn(get_mp_respawn_countdown())
   if (!isRespawnStarted.value)
     clearTimer(onCountdownTimer)
   else
@@ -102,7 +103,7 @@ let function updateRespawnStep() {
   if (!isRespawnStarted.value || isRespawnInProgress.value) //respawnInProgress can't be interrupted
     return
 
-  if (::get_mission_status() > MISSION_STATUS_RUNNING)
+  if (get_mission_status() > MISSION_STATUS_RUNNING)
     quit_to_debriefing()
 
   if (isRespawnDataInProgress.value)

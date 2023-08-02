@@ -2,8 +2,14 @@ from "%globalsDarg/darg_library.nut" import *
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { openUnitAttrWnd, availableAttributes } = require("unitAttrState.nut")
 let mkAvailAttrMark = require("mkAvailAttrMark.nut")
+let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
 
-let status = Computed(@() availableAttributes.value.status)
+let status = keepref(Computed(function() {
+  local status = availableAttributes.value.status
+  if (status == -1 && unseenModsByCategory.value.len() > 0)
+    status = 0
+  return status
+}))
 
 let statusMark = @(sf) @() {
     watch = status

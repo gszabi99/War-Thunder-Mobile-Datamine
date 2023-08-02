@@ -12,6 +12,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { gameStartServerTimeMsec } = require("%appGlobals/userstats/serverTime.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
+let { myClustersRTT } = require("%appGlobals/squadState.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
 let { clusterHosts } = require("%scripts/matching/clusterHosts.nut")
 
@@ -28,13 +29,14 @@ const SAMPLES_COUNT_MAX = 5 // A max number of samples used for the calculation 
 const RETRY_PROBE_DELAY_SEC = 30 // Delay to repoeat request when answer is not received
 const MAX_ERRORS = 3 // Stop retries when host not responding multiple times, until next probing of all hosts
 const OPTIMAL_RTT_LIMIT_MS = 100 // Hosts whose average RTT falls within the limit are considered to be optimal
+const OPTIMAL_RTT_LIMIT_MS_SQUAD = 150 // Cluster is optimal if all Squad members' maximum RTT is below this limit
 const INSIGNIFICANT_RTT_DIFF_MS = 25 // Extra diff to collect more hosts which are not optimal
 const MINOR_MS = 1000 // Minor time diff to avoid timer divirgence when collecting hosts to probe
 
-let optimalClusters = hardPersistWatched("optimalClusters", {})
+let clusterStats = hardPersistWatched("clusterStats", [])
+let optimalClusters = hardPersistWatched("optimalClusters", [])
 let requestsCounter = hardPersistWatched("requestsCounter", 0)
 let hostsCfg = persist("hostsCfg", @() {})
-let clusterStats = persist("clusterStats", @() [])
 let isProbingActive = Computed(@() isInMenu.value && isMatchingOnline.value)
 
 // Writes to stream a 64-bit integer as Network Endian
@@ -238,15 +240,65 @@ let function getOptimalClusters(stats) {
     .map(@(c) c.clusterId)
 }
 
+let function getOptimalClustersForSquad(squadMembersVal) {
+  let squadSize = squadMembersVal.len()
+  if (squadSize == 0)
+    return null
+  let membersClustersRTT = squadMembersVal.map(@(m) m?.clustersRTT ?? {})
+  let rttStats = {}
+  foreach (v in membersClustersRTT)
+    foreach (clusterId, rtt in v) {
+      if (clusterId not in rttStats)
+        rttStats[clusterId] <- { list = [] }
+      rttStats[clusterId].list.append(rtt)
+    }
+  foreach (clusterId, v in rttStats) {
+    let size = v.list.len()
+    v.list.sort()
+    v.__update({
+      clusterId
+      size
+      slowest = v.list[size - 1]
+    })
+  }
+  let rttStatsList = rttStats.values()
+  rttStatsList.sort(@(a, b) b.size <=> a.size
+    || a.slowest <=> b.slowest)
+  for (local minSize = squadSize; minSize > 0; minSize--) {
+    foreach (needOptimalSpeed in [ true, false ]) {
+      local stats = rttStatsList.filter(@(v) v.size >= minSize)
+      if (!stats.len())
+        continue
+      let rttLimit = needOptimalSpeed
+        ? OPTIMAL_RTT_LIMIT_MS_SQUAD
+        : stats.map(@(v) v.slowest).reduce(@(res, v) min(res, v)) + INSIGNIFICANT_RTT_DIFF_MS
+      stats = stats.filter(@(v) v.slowest <= rttLimit)
+      if (stats.len())
+        return stats.map(@(v) v.clusterId)
+    }
+  }
+  return null
+}
+
 let function onClustersRecalc() {
-  clusterStats.clear()
-  clusterStats.extend(getClusterStats())
-  let newOptimalClusters = getOptimalClusters(clusterStats)
+  let newClusterStats = getClusterStats()
+  if (!isEqual(newClusterStats, clusterStats.value))
+    clusterStats(newClusterStats)
+}
+
+clusterStats.subscribe(function(val) {
+  let newOptimalClusters = getOptimalClusters(val)
   if (isEqual(newOptimalClusters, optimalClusters.value))
     return
   logOC("Optimal clusters:", newOptimalClusters)
   optimalClusters.update(newOptimalClusters)
-}
+})
+
+clusterStats.subscribe(function(val) {
+  let newMyClustersRTT = val.filter(@(v) v.hostsRTT != null).map(@(v) [ v.clusterId, v.hostsRTT ]).totable()
+  if (!isEqual(newMyClustersRTT, myClustersRTT.value))
+    myClustersRTT(newMyClustersRTT)
+})
 
 let logIgnoredMsg = @(evt) logOC($"Ignored packet from {evt.host}: \"{toHexStr(evt.data.as_string())}\"")
 
@@ -308,4 +360,5 @@ if (isProbingActive.value)
 return {
   optimalClusters
   clusterStats
+  getOptimalClustersForSquad
 }

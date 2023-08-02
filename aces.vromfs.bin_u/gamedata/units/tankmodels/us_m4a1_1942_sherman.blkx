@@ -2531,17 +2531,20 @@
     }
   },
   "modifications": {
+    "upgraded": {},
     "art_support": {},
-    "art_support_smoke": {},
-    "art_support_mortars": {},
-    "art_support_highcaliber": {},
-    "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},
+    "tank_extinguisher": {},
+    "tank_additional_armor": {},
     "machinegun_belt_ap": {},
     "machinegun_belt_tracer": {},
     "machinegun_belt_stealth": {},
-    "upgraded": {},
-    "tank_additional_armor": {}
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {}
   },
   "upgraded_skin": {
     "replace_tex": {

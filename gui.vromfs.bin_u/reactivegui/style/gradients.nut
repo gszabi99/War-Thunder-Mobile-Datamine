@@ -157,6 +157,15 @@ let simpleHorGrad = mkBitmapPicture(10, 2,
     }
   })
 
+let simpleVerGrad = mkBitmapPicture(2, 10,
+  function(params, bmp) {
+    let { w, h } = params
+    for (local y = 0; y < h; y++) {
+      let color = mkWhite((0xFF * y.tofloat()/ (h - 1) + 0.5).tointeger())
+      for (local x = 0; x < w; x++)
+        bmp.setPixel(x, y, color)
+    }
+  })
 
 let mkColoredGradientY = @(colorTop, colorBottom, height = 12)
   mkBitmapPicture(4, height,
@@ -216,6 +225,7 @@ return {
   gradRadial
   gradRadialSq
   simpleHorGrad
+  simpleVerGrad
 
   //ctors
   mkGradientCtorDoubleSideX

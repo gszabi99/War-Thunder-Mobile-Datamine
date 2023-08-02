@@ -20,10 +20,13 @@ let helpTankControls = require("%rGui/loading/complexScreens/helpTankControls.nu
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { mkGradRank } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
+let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
+let { leaveSquad } = require("%rGui/squad/squadManager.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let textColor = 0xFFF0F0F0
 let timeToShowCancelJoining = 30
@@ -117,20 +120,41 @@ let joiningHeader = {
   ]
 }
 
-let leaveQueue = @() send("leaveQueue", {})
+let leaveQueueImpl = @() send("leaveQueue", {})
 let cancelOvr = { hotkeys = [[btnBEscUp, loc("mainmenu/btnCancel")]] }
+
+let function leaveQueue() {
+  if (!isInSquad.value || isSquadLeader.value) {
+    leaveQueueImpl()
+    return
+  }
+
+  openMsgBox({
+    text = loc("squad/only_leader_can_cancel")
+    buttons = [
+      { text = loc("squadAction/leave"),
+        function cb() {
+          leaveSquad()
+          leaveQueueImpl()
+        }
+      }
+      { id = "cancel", styleId = "PRIMARY", isCancel = true }
+    ]
+  })
+}
 
 let mkMRankRange = @() {
   watch = curUnitMRankRange
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(12)
-  children = [
-    { rendObj = ROBJ_TEXT, text = loc("mainmenu/battleTiers") }.__update(fontSmall)
-    mkGradRank(curUnitMRankRange.value.minMRank)
-    { rendObj = ROBJ_TEXT, text = "-" }.__update(fontSmall)
-    mkGradRank(curUnitMRankRange.value.maxMRank)
-  ]
+  children = curUnitMRankRange.value == null ? null
+    : [
+        { rendObj = ROBJ_TEXT, text = loc("mainmenu/battleTiers") }.__update(fontSmall)
+        mkGradRank(curUnitMRankRange.value.minMRank)
+        { rendObj = ROBJ_TEXT, text = "-" }.__update(fontSmall)
+        mkGradRank(curUnitMRankRange.value.maxMRank)
+      ]
 }
 let isCancelInProgress = Computed(@() curQueueState.value == QS_LEAVING)
 let cancelQueueButton = {

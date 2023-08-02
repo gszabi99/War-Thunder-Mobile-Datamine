@@ -41,6 +41,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -231,6 +232,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_i_shell.ivf",
       "explosiveType": "comp_b",
       "explosiveMass": 0.014,
       "hitPowerMult": 1.0,
@@ -437,6 +439,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_i_shell.ivf",
       "explosiveType": "comp_b",
       "explosiveMass": 0.014,
       "hitPowerMult": 1.0,
@@ -645,6 +648,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -835,6 +839,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -1044,6 +1049,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -1234,6 +1240,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -1433,6 +1440,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
@@ -1624,6 +1632,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -1833,6 +1842,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -2022,6 +2032,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -2212,6 +2223,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -2411,6 +2423,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
@@ -2599,6 +2612,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
@@ -2790,6 +2804,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -2996,6 +3011,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -3202,6 +3218,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,

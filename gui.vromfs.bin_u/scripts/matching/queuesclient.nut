@@ -6,16 +6,18 @@ let { send, subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let queueState = require("%appGlobals/queueState.nut")
 let { curQueue, isInQueue, curQueueState, queueStates,
-  QS_ACTUALIZE, QS_JOINING, QS_IN_QUEUE, QS_LEAVING
+  QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_JOINING, QS_IN_QUEUE, QS_LEAVING
 } = queueState
 let { TEAM_ANY } = require("%appGlobals/teams.nut")
 let { selClusters } = require("clustersList.nut")
+let { getOptimalClustersForSquad } = require("optimalClusters.nut")
 let { queueData, isQueueDataActual, actualizeQueueData } = require("%scripts/battleData/queueData.nut")
 let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+let { isInSquad, squadMembers } = require("%appGlobals/squadState.nut")
 
 
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
@@ -27,13 +29,33 @@ let writeJwtData = @() curQueue.mutate(function(q) {
   let { payload = {}, jwt = "" } = queueData.value
   let myParams = { profileJwt = jwt }
 
-  q.state = QS_JOINING
+  q.state = QS_ACTUALIZE_SQUAD
   q.params = q.params.__merge({
     players = { [myUserId.value.tostring()] = myParams }
   })
   q.unitName <- queueData.value?.unitName
   logQ($"Queue {q.unitName} params by token: ", payload)
 })
+
+let function tryWriteMembersData() {
+  let playersUpd = {}
+  foreach(uid, m in squadMembers.value) {
+    if (uid == myUserId.value)
+      continue
+    let { queueToken = "" } = m
+    if (queueToken == "") {
+      logQ($"Squad member {uid} has invalid queue token. wait for validation.")
+      return
+    }
+    playersUpd[uid.tostring()] <- { profileJwt = queueToken }
+  }
+
+  curQueue.mutate(function(q) {
+    q.params.players = q.params.players.__merge(playersUpd)
+    q.state = QS_JOINING
+    logQ($"Add {playersUpd.len()} squad members to queue state")
+  })
+}
 
 registerHandler("onActiveQueueActualizeData",
   function(res) {
@@ -47,6 +69,13 @@ let queueSteps = {
       writeJwtData()
     else
       actualizeQueueData("onActiveQueueActualizeData")
+  },
+
+  [QS_ACTUALIZE_SQUAD] = function() {
+    if (!isInSquad.value)
+      setQueueState(QS_JOINING)
+    else
+      tryWriteMembersData()
   },
 
   [QS_JOINING] = @() ::matching.rpc_call("match.enqueue",
@@ -85,9 +114,20 @@ doStepActionDelayed()
 
 curQueueState.subscribe(@(_) doStepActionDelayed())
 
+let leaveQueue = @() isInQueue.value ? setQueueState(QS_LEAVING) : null
+
 isQueueDataActual.subscribe(function(v) {
   if (v && curQueueState.value == QS_ACTUALIZE)
     writeJwtData()
+})
+
+squadMembers.subscribe(function(v) {
+  if (curQueueState.value != QS_ACTUALIZE_SQUAD)
+    return
+  if (v.len() <= 1) //leave squad, or alone in the squad
+    leaveQueue()
+  else
+    tryWriteMembersData()
 })
 
 let function joinQueue(params) {
@@ -96,15 +136,13 @@ let function joinQueue(params) {
     return
   }
   let paramsExt = {
-    clusters = selClusters.value
+    clusters = getOptimalClustersForSquad(squadMembers.value) ?? selClusters.value
     team = TEAM_ANY
     jip = true
   }.__update(params)
   logQ("Request join queue: ", paramsExt)
   curQueue({ state = QS_ACTUALIZE, params = paramsExt })
 }
-
-let leaveQueue = @() isInQueue.value ? setQueueState(QS_LEAVING) : null
 
 ::matching.subscribe("match.notify_queue_join", function(params) {
   logQ("match.notify_queue_join ", params)
@@ -129,16 +167,25 @@ let leaveQueue = @() isInQueue.value ? setQueueState(QS_LEAVING) : null
     destroyQueue()
     return
   }
+
   if (curQueue.value.params?.mode != params?.mode)
     return
-  let joinedClusters = clone (curQueue.value?.joinedClusters ?? {})
+
+  let { joinedClusters = {} } = curQueue.value
+  if (joinedClusters.len() == 0 && curQueue.value.params?.cluster == cluster) {
+    destroyQueue()
+    return
+  }
   if (cluster not in joinedClusters)
     return
-  delete joinedClusters[cluster]
-  if (joinedClusters.len() == 0)
+  if (joinedClusters.len() == 1)
     destroyQueue() //last cluster leave
   else
-    curQueue.mutate(@(v) v.joinedClusters = joinedClusters) //remove single cluster
+    curQueue.mutate(function(v) {
+      let newClusters = clone joinedClusters
+      delete newClusters[cluster]
+      v.joinedClusters = newClusters
+    })
 })
 
 subscribe("leaveQueue", @(_) leaveQueue())

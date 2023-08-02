@@ -42,6 +42,7 @@
     "stabilityReductionAfterPenetration": 0.3,
     "bulletType": "he_i_ball",
     "slopeEffectPreset": "ap",
+    "shellAnimation": "video/shells_animations/he_ball.ivf",
     "modelName": "tank_bullet_ball",
     "maxDistance": 2000.0,
     "hitPowerMult": 0.3,

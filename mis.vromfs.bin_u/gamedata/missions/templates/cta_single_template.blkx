@@ -994,6 +994,11 @@
           "event": "@bq_record",
           "name": ""
         },
+        "missionCompleted": {
+          "team": "A",
+          "timer": false,
+          "debriefingTimer": 2
+        },
         "triggerDisable": {
           "target": [
             "tanks_player_victory",
@@ -1090,6 +1095,11 @@
           "params": "",
           "event": "@bq_record",
           "name": ""
+        },
+        "missionFailed": {
+          "team": "A",
+          "debriefingTimer": 2,
+          "timer": false
         },
         "triggerDisable": {
           "target": [

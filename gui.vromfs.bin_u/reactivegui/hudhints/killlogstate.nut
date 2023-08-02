@@ -6,7 +6,7 @@ let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
+let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { rqPlayersAndDo } = require("rqPlayersAndDo.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
 
@@ -36,11 +36,12 @@ let getVictimUnitType = @(msg) hudMessagesUnitTypesMap?[msg.victimUnitType] ?? g
 let getUnitTypeSuffix = @(unitType) unitTypeSuffix?[unitType] ?? unitTypeSuffix[SHIP]
 
 let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
- : team == localMPlayerTeam.value ? teamBlueColor
- : teamRedColor
+ : team == localMPlayerTeam.value ? teamBlueLightColor
+ : teamRedLightColor
 
 let function getTargetName(player, unitNameLoc, team) {
   let color = (player?.isLocal ?? false) ? localPlayerColor
+    : player?.isInHeroSquad ? mySquadLightColor
     : getTeamColor(team)
   let text = player == null ? unitNameLoc // AI
     : getPlayerName(player.name, myUserRealName.value, myUserName.value) //real player or bot

@@ -2579,12 +2579,6 @@
     "sightName": "default_tank_spg",
     "detectionHeight": 2.82
   },
-  "modifications": {
-    "tank_tool_kit_expendable": {},
-    "art_support": {},
-    "tank_extinguisher": {},
-    "upgraded": {}
-  },
   "skin": [
     {
       "name": "us_camo_dark_green_dark_earth",
@@ -2806,6 +2800,21 @@
       "name": "us_m42_duster_reskin1_default",
       "blk": "gameData/units/tankModels/weaponPresets/us_m42_duster_reskin1_default.blk"
     }
+  },
+  "modifications": {
+    "upgraded": {},
+    "art_support": {},
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {}
   },
   "default_skin": {
     "set_tex": [

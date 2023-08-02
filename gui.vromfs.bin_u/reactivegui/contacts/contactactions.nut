@@ -5,8 +5,13 @@ let { friendsUids, myRequestsUids, requestsToMeUids, rejectedByMeUids, myBlackli
 let { contactsInProgress, addToFriendList, cancelMyFriendRequest, approveFriendRequest,
   rejectFriendRequest, removeFromFriendList, addToBlackList, removeFromBlackList
 } = require("contactsState.nut")
+let { inviteToSquad, dismissSquadMember, transferSquad, revokeSquadInvite,
+  leaveSquadMessage, isInSquad, isSquadLeader, squadMembers, isInvitedToSquad, canInviteToSquad
+} = require("%rGui/squad/squadManager.nut")
+let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
 
 let mkCommonInProgress = @(userId) Computed(@() userId in contactsInProgress.value)
+let isInMySquad = @(userId, members) members?[userId.tointeger()] != null
 
 let actions = {
   INVITE_TO_FRIENDS = {
@@ -67,6 +72,48 @@ let actions = {
     mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value && userId in myBlacklistUids.value)
     action = removeFromBlackList
     mkIsInProgress = mkCommonInProgress
+  }
+
+  INVITE_TO_SQUAD = {
+    locId = "squad/invite_player"
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
+      && canInviteToSquad.value
+      && !isInMySquad(userId, squadMembers.value)
+      && maxSquadSize.value > 1
+      && !isInvitedToSquad.value?[userId.tointeger()]
+      && userId not in myBlacklistUids.value
+    )
+    action = @(userId) inviteToSquad(userId.tointeger())
+  }
+
+  REVOKE_INVITE = {
+    locId = "squad/revoke_invite"
+    mkIsVisible = @(userId) Computed(@() isSquadLeader.value
+      && (isInvitedToSquad.value?[userId.tointeger()] ?? false)
+      && !isInMySquad(userId, squadMembers.value))
+    action = @(userId) revokeSquadInvite(userId.tointeger())
+  }
+
+  REMOVE_FROM_SQUAD = {
+    locId = "squad/remove_player"
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
+      && isSquadLeader.value
+      && isInMySquad(userId, squadMembers.value))
+    action = @(userId) dismissSquadMember(userId.tointeger())
+  }
+
+  PROMOTE_TO_LEADER = {
+    locId = "squad/tranfer_leadership"
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
+      && isSquadLeader.value
+      && isInMySquad(userId, squadMembers.value))
+    action = @(userId) transferSquad(userId.tointeger())
+  }
+
+  LEAVE_SQUAD = {
+    locId = "squadAction/leave"
+    mkIsVisible = @(userId) Computed(@() userId == myUserIdStr.value && isInSquad.value)
+    action = @(_) leaveSquadMessage()
   }
 }
 

@@ -13,7 +13,7 @@ let { isUnitAttrOpened, attrUnitData, curCategory, curCategoryId, selAttrSpCost,
   isUnitMaxSkills, getSpCostText, resetAttrState, applyAttributes, availableAttributes,
   attrUnitLevelsToMax, attrUnitName, lastModifiedAttr
 } = require("%rGui/unitAttr/unitAttrState.nut")
-let { mkUnitAttrTabs } = require("%rGui/unitAttr/unitAttrWndTabs.nut")
+let { mkUnitAttrTabs, contentMargin } = require("%rGui/unitAttr/unitAttrWndTabs.nut")
 let { unitAttrPage, rowsPosPadL, rowsPosPadR, rowHeight } = require("%rGui/unitAttr/unitAttrWndPage.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let buyUnitLevelWnd = require("buyUnitLevelWnd.nut")
@@ -21,6 +21,7 @@ let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { tooltipBg } = require("%rGui/tooltip.nut")
+let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 
 
 isUnitAttrOpened.subscribe(@(_) resetAttrState())
@@ -28,10 +29,14 @@ isUnitAttrOpened.subscribe(@(_) resetAttrState())
 let pageWidth = hdpx(855)
 let attrDetailsWidth = hdpx(650)
 let connectLineWidth = hdpx(50)
+let tabW = hdpx(460)
 
 let rowHighlightAnimDuration = 0.1
-let isAttrDetailsVisible = Watched(false)
 let attrRowHighlightColor = 0x052E2E2E
+
+let isAttrDetailsVisible = Watched(false)
+let showAttrStateFlags = Watched(0)
+showAttrStateFlags.subscribe(@(sf) isAttrDetailsVisible(!!(sf & S_ACTIVE)))
 
 let defCategoryImage = "ui/gameuiskin#upgrades_captain_icon.avif"
 let categoryImages = {
@@ -185,8 +190,6 @@ let function pageBlock() {
   }
 }
 
-let showAttrDetails = @() isAttrDetailsVisible(!isAttrDetailsVisible.value)
-
 let applyAction = function() {
   applyAttributes()
   backButtonBlink("UnitAttr")
@@ -198,7 +201,8 @@ let actionButtons = @() {
   flow = FLOW_HORIZONTAL
   gap = buttonsHGap
   children = [
-    textButtonPrimary(utf8ToUpper(loc("terms_wnd/more_detailed")), showAttrDetails, { hotkeys = ["^J:A"] } )
+    textButtonPrimary(utf8ToUpper(loc("terms_wnd/more_detailed")), @() null,
+      { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags })
     attrUnitLevelsToMax.value <= 0 ? null
       : textButtonPurchase(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
           @() buyUnitLevelWnd(attrUnitName.value),
@@ -250,10 +254,20 @@ let unitAttrWnd = {
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
       children = [
-        mkVerticalPannableArea(categoriesBlock, {
-          size = [ hdpx(460), flex() ]
-          margin = [ hdpx(24), 0, 0, 0 ]
-        })
+        {
+          size = flex()
+          flow = FLOW_VERTICAL
+          children = [
+            mkVerticalPannableArea(categoriesBlock, {
+              size = [ tabW, flex() ]
+              margin = [ hdpx(24), 0, 0, 0 ]
+            })
+            btnOpenUnitMods({
+              hotkeys = ["^J:X"],
+              ovr = { margin = [0, 0, 0, contentMargin], size = [tabW - contentMargin, defButtonHeight] },
+            })
+          ]
+        }
         {
           size = flex()
           flow = FLOW_VERTICAL

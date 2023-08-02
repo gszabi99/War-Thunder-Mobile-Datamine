@@ -82,6 +82,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
       "selfDestructionInAir": true,
       "dynamicKv": true,
       "relativeVelHitShift": [
@@ -299,6 +300,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "selfDestructionInAir": true,
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
@@ -337,6 +339,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {
@@ -515,6 +520,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "selfDestructionInAir": true,
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
@@ -553,6 +559,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {
@@ -731,6 +740,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "selfDestructionInAir": true,
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
@@ -769,6 +779,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {
@@ -947,6 +960,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "selfDestructionInAir": true,
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
@@ -985,6 +999,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {
@@ -1163,6 +1180,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "selfDestructionInAir": true,
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
@@ -1201,6 +1219,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {
@@ -1382,6 +1403,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
         "selfDestructionInAir": true,
         "dynamicKv": true,
         "relativeVelHitShift": [
@@ -1599,6 +1621,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "selfDestructionInAir": true,
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
@@ -1637,6 +1660,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -1815,6 +1841,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "selfDestructionInAir": true,
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
@@ -1853,6 +1880,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -2031,6 +2061,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "selfDestructionInAir": true,
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
@@ -2069,6 +2100,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -2247,6 +2281,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "selfDestructionInAir": true,
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
@@ -2285,6 +2320,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -2463,6 +2501,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "selfDestructionInAir": true,
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
@@ -2501,6 +2540,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {

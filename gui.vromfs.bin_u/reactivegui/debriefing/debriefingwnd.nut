@@ -4,6 +4,7 @@ let { defer, setTimeout, resetTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { can_write_replays } = require("%appGlobals/permissions.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -11,6 +12,7 @@ let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { textButtonPrimary, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { commonGlare } = require("%rGui/components/glare.nut")
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let tryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts,
@@ -27,7 +29,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { openUnitAttrWnd } = require("%rGui/unitAttr/unitAttrState.nut")
-let { debriefingData } = require("debriefingState.nut")
+let { debriefingData, isDebriefingAnimFinished } = require("debriefingState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { mkDebriefingStats } = require("mkDebriefingStats.nut")
@@ -40,6 +42,10 @@ let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { needRateGame } = require("%rGui/feedback/rateGameState.nut")
 let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
+let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
+let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
+let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
+
 
 let closeDebriefing = @() send("Debriefing_CloseInDagui", {})
 let startBattle = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId }) //FIXME: Should to use game mode from debriefing
@@ -153,13 +159,20 @@ let upgradeUnitButton = @(campaign) textButtonPrimary(
     openUnitAttrWnd()
     closeDebriefing()
   },
-  { hotkeys = [btnBEscUp] }
+  {
+    hotkeys = [btnBEscUp]
+    ovr = {
+      children = commonGlare
+      clipChildren = true
+    }
+  }
 )
 
 let toBattleButtonPlace = @() {
-  watch = newbieOfflineMissions
-  children = newbieOfflineMissions.value != null ? startOfflineMissionButton
-    : toBattleButton
+  watch = [newbieOfflineMissions, isInSquad, isSquadLeader]
+  children = !isInSquad.value && newbieOfflineMissions.value != null ? startOfflineMissionButton
+    : !isInSquad.value || isSquadLeader.value ? toBattleButton
+    : null
 }
 
 let mkNewPlatoonUnitButton = @(newPlatoonUnit) textButtonBattle(utf8ToUpper(loc("msgbox/btn_get")),
@@ -739,6 +752,13 @@ let function getNewPlatoonUnit(debrData) {
   return leftExp >= 0 ? unit.__merge({ name = pUnitName }) : null
 }
 
+let saveReplayBtn = @() {
+  watch = [can_write_replays, hasUnsavedReplay]
+  hplace = ALIGN_LEFT
+  children = !can_write_replays.value || !hasUnsavedReplay.value ? null
+    : translucentButton("ui/gameuiskin#icon_save.svg", "", saveReplayWindow)
+}
+
 let function debriefingWnd() {
   let { reward = {}, player = {}, isWon = false, isFinished = false, isDeserter = false, isDisconnected = false,
     teams = [], campaign = "", players = {}, isSingleMission = false
@@ -766,6 +786,8 @@ let function debriefingWnd() {
     onAttach = function() {
       updateHangarUnit(reward?.unitName)
       playSound(isWon ? "stats_winner_start" : "stats_looser_start")
+      isDebriefingAnimFinished(false)
+      resetTimeout(2.0, @() isDebriefingAnimFinished(true))
     }
     size = flex()
     padding = saBordersRv
@@ -795,6 +817,7 @@ let function debriefingWnd() {
             gap = hdpx(60)
             children =
               [
+                saveReplayBtn
                 playersStatsBtn
                 newPlatoonUnit != null || hasLevelUp ? null
                   : isUnitReceiveLevel(debriefingData.value) ? upgradeUnitButton(campaign)

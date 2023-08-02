@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkBgImg, borderBg, mkGradText, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, bgImg,
+let { mkGoodsWrap, mkBgImg, borderBg, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, bgImg,
   oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let openPremiumDescription = require("%rGui/shop/premiumDescription.nut")
 let { infoGreyButton } = require("%rGui/components/infoButton.nut")
+let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 
 
 let iconPrem = mkBgImg("ui/gameuiskin/premium_active_big.avif")
@@ -38,17 +39,19 @@ let mkPremiumDaysTitle = function(amount, oldAmount) {
     hplace = ALIGN_RIGHT
     halign = ALIGN_CENTER
     children = [
-      mkGradText(numberToTextForWtFont(amount), hdpx(150), numFontGrad).__update({
+      {
         pos = [ 0, hdpx(38) ]
-        children = oldAmount <= 0 ? null
-          : mkGradText(numberToTextForWtFont(oldAmount), fontSize, numFontGrad)
-              .__update({
+        children = [
+          mkGradGlowText(numberToTextForWtFont(amount), fontWtExtraLarge, numFontGrad)
+          oldAmount <= 0 ? null
+            : mkGradGlowText(numberToTextForWtFont(oldAmount), fontWtBig, numFontGrad, {
                 pos = [pw(-90), ph(-15)]
                 hplace = ALIGN_RIGHT
                 children = oldAmountStrikeThrough
               })
-      })
-      mkGradText(daysText, fontSize, daysFontGrad).__update({
+        ]
+      }
+      mkGradGlowText(daysText, fontWtBig, daysFontGrad, {
         pos = [ daysOffset, hdpx(173) ]
       })
     ]

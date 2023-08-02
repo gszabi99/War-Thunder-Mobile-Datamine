@@ -6,9 +6,10 @@ let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpe
 let { ceil } = require("%sqstd/math.nut")
 let { eachBlock, isDataBlock } = require("%sqstd/datablock.nut")
 let { selSlot, cancelRespawn } = require("respawnState.nut")
+let { respawnUnitItems } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { round } = require("math")
+
 
 const BULLETS_SLOTS = 2
 const SAVE_ID = "bullets"
@@ -21,6 +22,9 @@ let bulletsInfo = Computed(@() unitName.value == null ? null
   : loadUnitBulletsChoice(unitName.value)?.commonWeapons.primary) //not support weapon presets yet beacause they are all empty.
 let bulletsInfoSec = Computed(@() unitName.value == null ? null
   : loadUnitBulletsChoice(unitName.value)?.commonWeapons.secondary) //not support weapon presets yet beacause they are all empty.
+
+let hasChangedCurSlotBullets = Watched(false)
+selSlot.subscribe(@(_) hasChangedCurSlotBullets(false))
 
 let savedBullets = Watched(null)
 let function loadSavedBullets(name) {
@@ -43,24 +47,38 @@ let bulletStep = Computed(function() {
 let bulletTotalSteps = Computed(@()
   ceil((bulletsInfo.value?.total ?? 1).tofloat() / bulletStep.value).tointeger())
 
+let visibleBullets = Computed(function() {
+  let res = {}
+  if (bulletsInfo.value == null)
+    return res
+  let { fromUnitTags, bulletSets } = bulletsInfo.value
+  foreach(name, _ in bulletSets) {
+    let { reqModification = "" } = fromUnitTags?[name]
+    if (reqModification == "" || (respawnUnitItems.value?[reqModification] ?? 0) > 0)
+      res[name] <- true
+  }
+  return res
+})
+
 let chosenBullets = Computed(function() {
   let res = []
   if (bulletsInfo.value == null)
     return res
-  let { fromUnitTags, bulletsOrder, bulletSets } = bulletsInfo.value
+  let { fromUnitTags, bulletsOrder } = bulletsInfo.value
   let level = unitLevel.value
   let stepSize = bulletStep.value
+  let visible = visibleBullets.value
   local leftSteps = bulletTotalSteps.value
   let used = {}
   if (savedBullets.value != null)
     eachBlock(savedBullets.value, function(blk) {
       let { name = null, count = 0 } = blk
       if (res.len() >= BULLETS_SLOTS
-          || name not in bulletSets
+          || !visible?[name]
           || name in used
           || (fromUnitTags?[name].reqLevel ?? 0) > level)
         return
-      let steps = min(leftSteps, ceil(count.tofloat() / stepSize))
+      let steps = min(ceil(count.tofloat() / stepSize), leftSteps, fromUnitTags?[name].maxCount ?? leftSteps)
       leftSteps -= steps
       res.append({ name, count = steps * stepSize, idx = res.len() })
       used[name] <- true
@@ -68,21 +86,26 @@ let chosenBullets = Computed(function() {
 
   if (res.len() < BULLETS_SLOTS)
     foreach (bName in bulletsOrder)
-      if ((bName not in used) && (fromUnitTags?[bName].reqLevel ?? 0) <= level) {
+      if ((bName not in used)
+          && visible?[bName]
+          && (fromUnitTags?[bName].reqLevel ?? 0) <= level
+      ) {
         res.append({ name = bName, count = -1, idx = res.len() })
         if (res.len() >= BULLETS_SLOTS)
           break
       }
 
   local notInitedCount = res.reduce(@(accum, bData) bData.count < 0 ? accum + 1 : accum, 0)
-  if (notInitedCount > 0)
+  if (notInitedCount > 0) {
+    leftSteps = leftSteps / 2 //fill only half by default
     foreach (bData in res)
       if (bData.count < 0) {
-        let steps = leftSteps / notInitedCount
+        let steps = min(leftSteps / notInitedCount, fromUnitTags?[bData.name].maxCount ?? leftSteps)
         leftSteps -= steps
-        bData.count = stepSize * round(steps / 2.0)
+        bData.count = stepSize * steps
         notInitedCount--
       }
+  }
 
   return res
 })
@@ -104,6 +127,7 @@ let hasLowBullets = Computed(@() chosenBulletsAmount.value < BULLETS_LOW_AMOUNT
   || chosenBulletsAmount.value < bulletsInfo.value.total * BULLETS_LOW_PERCENT / 100)
 
 let function saveBullets(name, blk) {
+  hasChangedCurSlotBullets(true)
   let sBlk = get_local_custom_settings_blk()
   set_blk_value_by_path(sBlk, $"{SAVE_ID}/{name}", blk)//-param-pos
   send("saveProfile", {})
@@ -158,6 +182,7 @@ let bulletLeftSteps = Computed(function() {
 
 return {
   bulletsInfo
+  visibleBullets
   chosenBullets
   bulletsToSpawn
   bulletStep
@@ -165,6 +190,7 @@ return {
   bulletLeftSteps
   hasLowBullets
   hasZeroBullets
+  hasChangedCurSlotBullets
 
   setCurUnitBullets
   setOrSwapUnitBullet

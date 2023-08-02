@@ -13,7 +13,7 @@ registerHandler("onDecoratorPurchaseResult",
     set_current_decorator(decId)
   })
 
-let function purchaseDecorator(decId, localizedName) {
+let function purchaseDecorator(decId, localizedName, bqPurchaseInfo) {
   if (decoratorInProgress.value != null)
     return
   if (decId in myDecorators.value) {
@@ -38,7 +38,8 @@ let function purchaseDecorator(decId, localizedName) {
     loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor, localizedName) }),
     decor.price,
-    purchaseFunc)
+    purchaseFunc,
+    bqPurchaseInfo)
 }
 
 return purchaseDecorator

@@ -94,6 +94,9 @@
         50000.0
       ]
     },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "damage": {
       "kinetic": {
         "damageType": "generic",
@@ -771,6 +774,9 @@
           1.0,
           50000.0
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {

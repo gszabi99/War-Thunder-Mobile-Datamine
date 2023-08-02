@@ -281,6 +281,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_belt.ivf",
       "bulletName": "57mm_shot_mk8t",
       "dynamicKv": true,
       "relativeVelArmorShift": [

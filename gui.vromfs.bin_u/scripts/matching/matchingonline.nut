@@ -8,6 +8,7 @@ let { isDownloadedFromGooglePlay, getPackageName } = require("android.platform")
 let { shell_execute } = require("dagor.shell")
 let { is_ios } = require("%sqstd/platform.nut")
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
+let { isMatchingOnline } = require("%appGlobals/loginState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
@@ -19,7 +20,7 @@ enum REASON_DOMAIN {
   AUTH = "auth"
 }
 
-let isMatchingOnline = Watched(::is_online_available())
+isMatchingOnline(::is_online_available())
 
 subscribeFMsgBtns({
   matchingConnectCancel = @(_) openFMsgBox({

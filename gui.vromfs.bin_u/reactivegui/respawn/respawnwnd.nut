@@ -7,7 +7,8 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlot, playerSelectedSlotIdx
 } = require("respawnState.nut")
-let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets } = require("bulletsChoiceState.nut")
+let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
+} = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
 let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn
 } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -184,7 +185,7 @@ let function toBattle() {
     respawn(selSlot.value, bulletsToSpawn.value)
   else if (hasZeroBullets.value)
     openMsgBox({ text = loc("respawn/zero_ammo") })
-  else if (hasLowBullets.value && showLowBulletsWarning.value) {
+  else if (hasLowBullets.value && hasChangedCurSlotBullets.value && showLowBulletsWarning.value) {
     openMsgBox({
       text = loc("respawn/low_ammo")
       buttons = [

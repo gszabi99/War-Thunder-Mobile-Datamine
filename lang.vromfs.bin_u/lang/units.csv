@@ -873,7 +873,7 @@
 "jp_halftrack_m16_0";"Multiple Gun Motor Carriage M16";"Multiple Gun Motor Carriage M16";"Multiple Gun Motor Carriage M16";"Multiple Gun Motor Carriage M16";"Vehículo Motorizado de Cañones Múltiples M16";"Multiple Gun Motor Carriage M16";"M16 MGMC";"Multiple Gun Motor Carriage M16";"M16 Çok Namlulu Motorlu Top Arabası";"다연장자주대공차량 M16";"M16 多\t管\t机\t枪\t运\t载\t车";"陸上自衛隊 M16 対空自走砲";"M16 多\t管\t機\t槍\t運\t載\t車";;
 "jp_halftrack_m16_1";"▅M16";"▅M16";"▅M16";"▅M16";"▅M16";"▅M16";"▅M16";"▅M16";"▅M16";"▅M16";"▅\tM16";"▅M16";"▅\tM16";;
 "jp_halftrack_m16_2";"SPAA";"AA auto-moteur";"Antiaerea";"Flugabwehrfahrzeug";"AAA";"ЗСУ";"Samobieżne Działo Plot";"SPAA";"KMUS";"자주대공포";"自\t行\t防\t空\t炮";"自走式対空砲";"自\t行\t防\t空\t炮";;
-"us_halftrack_m16_shop";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 多\t管\t机\t枪\t运\t载\t车";"M16 MGMC";"M16 MGMC";;
+"us_halftrack_m16_shop";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";"M16 MGMC";;
 "us_halftrack_m16_0";"Multiple Gun Motor Carriage M16";"Multiple Gun Motor Carriage M16";"Multiple Gun Motor Carriage M16";"Multiple Gun Motor Carriage M16";"Cañón múltiple autopropulsado M16";"Multiple Gun Motor Carriage M16";"Multiple Gun Motor Carriage M16";"Multiple Gun Motor Carriage M16";"Çoklu Silahlı Motorlu Taşıyıcı, M16";"다연장자주대공차량 M16";"M16 多\t管\t机\t枪\t运\t载\t车";"M16 対空自走砲";"M16 MGMC";;
 "us_halftrack_m16_1";"M16";"M16";"M16";"M16";"M16";"M16";"M16";"M16";"M16";"M16";"M16 多\t管\t机\t枪\t运\t载\t车";"M16";"M16 MGMC";;
 "us_halftrack_m16_2";"SPAA";"AA auto-moteur";"Antiaerea";"Flugabwehrfahrzeug";"Antiaéreo autopropulsado";"ЗСУ";"Samobieżne Działo Plot.";"AAAP";"KMUS";"자주대공포";"自\t行\t防\t空\t炮";"自走式対空砲";"自\t行\t防\t空\t炮";;
@@ -929,7 +929,7 @@
 "us_t1e1_0";"Heavy Tank T1E1";"Char lourd T1E1";"Heavy Tank T1E1";"Schwerer Panzer T1E1";"Tanque Pesado T1E1";"Heavy Tank T1E1";"Czołg ciężki T1E1";"Tanque Pesado T1E1";"T1E1 Ağır Tankı";"T1E1 중전차";"重\t型\t坦\t克 T1E1";"T1E1 重戦車";"Heavy Tank T1E1";;
 "us_t1e1_1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";"T1E1";;
 "us_t1e1_2";"Heavy tank";"Char lourd";"Carro armato pesante";"Schwerer Panzer";"Tanque pesado";"Тяжёлый танк";"Czołg ciężki";"Tanque Pesado";"Ağır tank";"중전차";"重\t型\t坦\t克";"重戦車";"Heavy tank";;
-"us_halftrack_m13_shop";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGC";"M13 MGMC";"M13 多\t管\t机\t枪\t运\t载\t车";"M13 MGC";"M13 MGMC";;
+"us_halftrack_m13_shop";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGMC";"M13 MGC";"M13 MGMC";"M13 MGMC";"M13 MGC";"M13 MGMC";;
 "us_halftrack_m13_0";"Multiple Gun Motor Carriage M13";"Multiple Gun Motor Carriage M13";"Multiple Gun Motor Carriage M13";"Multiple Gun Motor Carriage M13";"Cañón múltiple autopropulsado M13";"Multiple Gun Motor Carriage M13";"Multiple Gun Motor Carriage M13";"Multiple Gun Motor Carriage M13";"Çoklu Silahlı Motorlu Taşıyıcı, M13";"다연장자주대공차량 M13";"M13 多\t管\t机\t枪\t运\t载\t车";"M13 対空自走砲";"M13 半\t履\t帶\t防\t空\t車";;
 "us_halftrack_m13_1";"M13";"M13";"M13";"M13";"M13";"M13";"M13";"M13";"M13";"M13";"M13 多\t管\t机\t枪\t运\t载\t车";"M13";"M13 MGMC";;
 "us_halftrack_m13_2";"SPAA";"AA auto-moteur";"Antiaerea";"Flugabwehrfahrzeug";"Antiaéreo autopropulsado";"ЗСУ";"Samobieżne Działo Plot.";"AAAP";"KMUS";"자주대공포";"自\t行\t防\t空\t炮";"自走式対空砲";"自\t行\t防\t空\t炮";;
@@ -1760,9 +1760,9 @@
 "germ_flakpanzer_IV_Kugelblitz_0";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"4호 대공전차 쿠겔블리츠";"四\t号\t防\t空\t坦\t克\t“球\t形\t闪\t电”";"IV 号対空戦車 クーゲルブリッツ";"四\t號\t“球\t型\t閃\t電”\t防\t空\t坦\t克 l Flakpanzer IV Kugelblitz";;
 "germ_flakpanzer_IV_Kugelblitz_1";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"쿠겔블리츠";"“球\t形\t闪\t电”\t自\t行\t防\t空\t炮";"IV 号対空戦車 クーゲルブリッツ";"“球\t型\t閃\t電”\t防\t空\t坦\t克";;
 "germ_flakpanzer_IV_Kugelblitz_2";"SPAA";"AA auto-moteur";"Antiaerea";"Flugabwehrfahrzeug";"Antiaéreo autopropulsado";"ЗСУ";"Samobieżne Działo Plot.";"AAAP";"KMUS";"자주대공포";"自\t行\t防\t空\t炮";"自走式対空砲";"自\t行\t防\t空\t炮";;
-"germ_flakpanzer_IV_Kugelblitz_reskin_shop";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"쿠겔블리츠";"“球\t形\t闪\t电”\t自\t行\t防\t空\t炮";"クーゲルブリッツ";"Kugelblitz";;
-"germ_flakpanzer_IV_Kugelblitz_reskin_0";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"4호 대공전차 쿠겔블리츠";"四\t号\t防\t空\t坦\t克\t“球\t形\t闪\t电”";"IV 号対空戦車 クーゲルブリッツ";"Flakpanzer IV Kugelblitz";;
-"germ_flakpanzer_IV_Kugelblitz_reskin_1";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"쿠겔블리츠";"“球\t形\t闪\t电”\t自\t行\t防\t空\t炮";"クーゲルブリッツ";"Kugelblitz";;
+"germ_flakpanzer_IV_Kugelblitz_reskin_shop";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"쿠겔블리츠";"球\t形\t闪\t电";"クーゲルブリッツ";"Kugelblitz";;
+"germ_flakpanzer_IV_Kugelblitz_reskin_0";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"Flakpanzer IV Kugelblitz";"4호 대공전차 쿠겔블리츠";"四\t号\t防\t空\t坦\t克 球\t形\t闪\t电";"IV 号対空戦車 クーゲルブリッツ";"Flakpanzer IV Kugelblitz";;
+"germ_flakpanzer_IV_Kugelblitz_reskin_1";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"Kugelblitz";"쿠겔블리츠";"球\t形\t闪\t电";"クーゲルブリッツ";"Kugelblitz";;
 "germ_flakpanzer_IV_Kugelblitz_reskin_2";"SPAA";"AA auto-moteur";"Antiaerea";"Flugabwehrfahrzeug";"AAA";"ЗСУ";"Samobieżne działo przeciwlotnicze";"AAAP";"Kundağı Motorlu Uçaksavar";"자주대공포";"自\t行\t防\t空\t炮";"自走式対空砲";"SPAA";;
 "germ_pzkpfw_e_100_shop";"E-100";"E-100";"E-100";"E-100";"E-100";"E-100";"E-100";"E-100";"E-100";"E-100";"E 100 式\t坦\t克";"E-100";"E-100";;
 "germ_pzkpfw_e_100_0";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"Pz.Kpfw. E-100";"E 100 式\t坦\t克";"E-100 戦車";"裝\t甲\t作\t戰\t載\t具 E-100";;
@@ -2606,6 +2606,10 @@
 "fr_amx_13_dca_40_reskin_0";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX 13/40 防\t空\t型";"AMX-13 DCA 40";"40 毫\t米 AMX 13 DCA";;
 "fr_amx_13_dca_40_reskin_1";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX 13/40 防\t空\t型";"AMX-13 DCA 40";"40 毫\t米 AMX 13 DCA";;
 "fr_amx_13_dca_40_reskin_2";"SPAA";"AA auto-moteur";"Antiaerea";"Flugabwehrfahrzeug";"AAA";"ЗСУ";"Samobieżne Działo Plot";"AAAP";"KMUS";"자주대공포";"自\t行\t防\t空\t炮";"自走式対空砲";"自\t行\t防\t空\t炮";;
+"fr_amx_13_dca_40_reskin1_shop";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""사부아""";"AMX-13 DCA/40 (“萨\t瓦”\t号)";"AMX-13 DCA 40 ""Savoie""";"AMX-13 DCA 40 ""Savoie""";;
+"fr_amx_13_dca_40_reskin1_0";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX 13 防\t空\t型";"AMX-13 DCA 40";"AMX-13 DCA 40";;
+"fr_amx_13_dca_40_reskin1_1";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX-13 DCA 40";"AMX 13 防\t空\t型";"AMX-13 DCA 40";"AMX-13 DCA 40";;
+"fr_amx_13_dca_40_reskin1_2";"SPAA";"AA auto-moteur";"Antiaerea";"SPAA";"AAA";"ЗСУ";"SPAA";"SPAA";"SPAA";"자주대공포";"自\t行\t防\t空\t炮";"SPAA";"SPAA";;
 "fr_amx_30_b2_shop";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX 30B2";"AMX-30B2";"AMX 30B2";;
 "fr_amx_30_b2_0";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX 30B2";"AMX-30B2";"AMX 30B2";;
 "fr_amx_30_b2_1";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX-30B2";"AMX 30B2";"AMX-30B2";"AMX 30B2";;
@@ -2695,6 +2699,10 @@
 "fr_somua_sau40_1";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40";"SAu 40
 ";;
 "fr_somua_sau40_2";"Tank Destroyer";"Chasseur de chars";"Cacciacarri";"Jagdpanzer";"Destructor de Tanques";"Истребитель танков";"Niszczyciel czołgów";"Caçador de Tanques";"Tank Muhribi";"구축전차";"坦\t克\t歼\t击\t车";"駆逐戦車";"坦\t殲";;
+"fr_m36b2_cefeo_shop";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄\tM36B2";"▄M36B2";"▄M36B2";;
+"fr_m36b2_cefeo_0";"▄90 mm Gun Motor Carriage M36B2";"▄90 mm Gun Motor Carriage M36B2";"▄90 mm Gun Motor Carriage M36B2";"▄90 mm Gun Motor Carriage M36B2";"▄Vehículo Motorizado con Cañón de 90 mm M36B2";"▄90 mm Gun Motor Carriage M36B2";"▄90 mm Gun Motor Carriage M36B2";"▄90 mm Gun Motor Carriage M36B2";"▄90 mm Gun Motor Carriage M36B2";"▄90mm 자주포 M36B2";"▄\t90 毫\t米\t火\t炮\t运\t载\t车 M36B2";"▄90 mm Gun Motor Carriage M36B2";"▄90 mm Gun Motor Carriage M36B2";;
+"fr_m36b2_cefeo_1";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄M36B2";"▄\tM36B2";"▄M36B2";"▄M36B2";;
+"fr_m36b2_cefeo_2";"TD";"Chasseur de chars";"Cacciacarri";"TD";"TD";"ИТ";"TD";"TD";"TD";"구축전차";"坦\t克\t歼\t击\t车";"TD";"TD";;
 "fr_m10_shop";"▄M10 GMC";"▄M10 GMC";"M10 GMC";"▄M10 GMC";"▄M10 GMC";"▄M10 GMC";"▄M10 GMC";"▄M10 GMC";"▄M10 GMC";"▄M10 GMC";"☨ M10 火\t炮\t运\t载\t车";"▄M10 GMC";"☨ M10 GMC";;
 "fr_m10_0";"▄3-inch Gun Motor Carriage M10";"▄3-inch Gun Motor Carriage M10";"3-inch Gun Motor Carriage M10";"▄3-inch Gun Motor Carriage M10";"▄Cañón Autopropulsado M10 de 3 Pulgadas";"▄3-inch Gun Motor Carriage M10";"▄3-inch Gun Motor Carriage M10";"▄3-inch Gun Motor Carriage M10";"▄3-inç Silahlı Motorlu Taşıyıcı, M10";"▄3인치 자주포 M10";"☨ M10 3 英\t寸\t火\t炮\t运\t载\t车";"▄3\tインチ 対戦車自走砲 M10";"☨ M10  ""\t狼\t獾\t"" 坦\t克\t殲\t擊\t車";;
 "fr_m10_1";"▄M10";"▄M10";"M10";"▄M10";"▄M10";"▄M10";"▄M10";"▄M10";"▄M10";"▄M10";"☨ M10 火\t炮\t运\t载\t车";"▄M10";"☨ M10 GMC";;
@@ -4702,9 +4710,9 @@
 "mig-15_ns23_0";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"МиГ-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"米\t格\t-15";"MiG-15";"米\t格\t-15";;
 "mig-15_ns23_1";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"МиГ-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"米\t格\t-15";"MiG-15";"米\t格\t-15";;
 "mig-15_ns23_2";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"МиГ-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"米\t格\t-15";"MiG-15";"米\t格\t-15";;
-"mig-15bis_nr23_china_shop";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"␗\t米\t格\t-15 比\t斯\t/NR-23";"MiG-15bis NR-23";"␗\t米\t格\t-15 比\t斯";;
-"mig-15bis_nr23_china_0";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"␗\t米\t格\t-15 二\t型\t/NR-23";"MiG-15bis NR-23";"␗\t米\t格\t-15 比\t斯 NR-23 ";;
-"mig-15bis_nr23_china_1";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"␗\t米\t格\t-15 比\t斯";"J-2";"␗\t米\t格\t-15 比\t斯";;
+"mig-15bis_nr23_china_shop";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"␗\t米\t格\t-15bis";"MiG-15bis NR-23";"␗\t米\t格\t-15 比\t斯";;
+"mig-15bis_nr23_china_0";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"␗\t米\t格\t-15bis";"MiG-15bis NR-23";"␗\t米\t格\t-15 比\t斯 NR-23 ";;
+"mig-15bis_nr23_china_1";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"␗\t米\t格\t-15bis";"J-2";"␗\t米\t格\t-15 比\t斯";;
 "mig-15bis_nr23_china_2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"J-2";"␗\t米\t格\t-15";"J-2";"␗\t米\t格\t-15";;
 "mig-17_china_shop";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"␗\t米\t格\t-17";"J-4";"␗\t米\t格\t-17";;
 "mig-17_china_0";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"J-4";"␗\t米\t格\t-17";"J-4";"␗\t米\t格\t-17";;
@@ -4733,13 +4741,13 @@
 "q_5a_1";"Q-5A";"Q-5A";"Q-5A/B";"Q-5A/B
 ";"Q-5A";"Q-5A";"Q-5A/B";"Q-5A/B";"Q-5A";"Q-5A";"强\t-5I";"Q-5A";"強\t-5A/B";;
 "q_5a_2";"Q-5";"Q-5";"Q-5";"Q-5";"Q-5";"Q-5";"Q-5";"Q-5";"Q-5A";"Q-5";"强\t-5";"Q-5";"强\t-5";;
-"mig-15bis_ns23_shop";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"МиГ-15бис НС-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"米\t格\t-15 比\t斯\t/NS-23";"MiG-15bis NS-23";"米\t格\t-15 比\t斯 NS-23";;
-"mig-15bis_ns23_0";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"МиГ-15бис НС-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"米\t格\t-15 二\t型\t/NS-23";"MiG-15bis NS-23";"米\t格\t-15 比\t斯 NS-23";;
-"mig-15bis_ns23_1";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"МиГ-15бис";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"米\t格\t-15 比\t斯";"MiG-15bis";"米\t格\t-15 比\t斯";;
+"mig-15bis_ns23_shop";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"МиГ-15бис НС-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"米\t格\t-15bis/NS-23";"MiG-15bis NS-23";"米\t格\t-15 比\t斯 NS-23";;
+"mig-15bis_ns23_0";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"МиГ-15бис НС-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"MiG-15bis NS-23";"米\t格\t-15bis/NS-23";"MiG-15bis NS-23";"米\t格\t-15 比\t斯 NS-23";;
+"mig-15bis_ns23_1";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"МиГ-15бис";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"米\t格\t-15bis";"MiG-15bis";"米\t格\t-15 比\t斯";;
 "mig-15bis_ns23_2";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"МиГ-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"米\t格\t-15";"MiG-15";"米\t格\t-15";;
-"mig-15bis_ns23_china_shop";"␗MiG-15bis NS-23";"MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗МиГ-15бис НС-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23 ";"␗\t米\t格\t-15 比\t斯\t/NS-23";"MiG-15bis NS-23";"␗\t米\t格\t-15 比\t斯 NS-23";;
-"mig-15bis_ns23_china_0";"␗MiG-15bis NS-23";"MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗МиГ-15бис НС-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗\t米\t格\t-15 二\t型\t/NS-23";"MiG-15bis NS-23";"␗\t米\t格\t-15 比\t斯 NS-23";;
-"mig-15bis_ns23_china_1";"␗MiG-15bis";"MiG-15bis";"␗MiG-15bis";"␗MiG-15bis";"␗MiG-15bis";"␗МиГ-15бис";"␗MiG-15bis";"␗MiG-15bis";"␗MiG-15bis";"␗MiG-15bis";"␗\t米\t格\t-15 比\t斯";"␗MiG-15bis";"␗\t米\t格\t-15 比\t斯";;
+"mig-15bis_ns23_china_shop";"␗MiG-15bis NS-23";"MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗МиГ-15бис НС-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23 ";"␗\t米\t格\t-15bis/NS-23";"MiG-15bis NS-23";"␗\t米\t格\t-15 比\t斯 NS-23";;
+"mig-15bis_ns23_china_0";"␗MiG-15bis NS-23";"MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗МиГ-15бис НС-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗MiG-15bis NS-23";"␗\t米\t格\t-15bis/NS-23";"MiG-15bis NS-23";"␗\t米\t格\t-15 比\t斯 NS-23";;
+"mig-15bis_ns23_china_1";"␗MiG-15bis";"MiG-15bis";"␗MiG-15bis";"␗MiG-15bis";"␗MiG-15bis";"␗МиГ-15бис";"␗MiG-15bis";"␗MiG-15bis";"␗MiG-15bis";"␗MiG-15bis";"␗\t米\t格\t-15bis";"␗MiG-15bis";"␗\t米\t格\t-15 比\t斯";;
 "mig-15bis_ns23_china_2";"␗MiG-15";"MiG-15";"␗MiG-15";"␗MiG-15";"␗MiG-15";"␗МиГ-15";"␗MiG-15";"␗MiG-15";"␗MiG-15";"␗MiG-15";"␗\t米\t格\t-15";"␗MiG-15";"␗\t米\t格\t-15";;
 "mig-9_china_shop";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗\t米\t格\t-9";"␗MiG-9";"␗\t米\t格\t-9";;
 "mig-9_china_0";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗MiG-9";"␗\t米\t格\t-9";"␗MiG-9";"␗\t米\t格\t-9";;
@@ -5196,8 +5204,8 @@
 "fw_190a_1_0";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1";"Fw 190 A-1 伯\t劳\t鸟";"Fw 190 A-1";"Fw 190 A-1";;
 "fw_190a_1_1";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";"Fw 190 A";;
 "fw_190a_1_2";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";"Fw 190";;
-"mig-15bis_nr23_german_shop";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀\t米\t格\t-15 比\t斯";"▀MiG-15bis";"▀\t米\t格\t-15 比\t斯";;
-"mig-15bis_nr23_german_0";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀\t米\t格\t-15 二\t型";"▀MiG-15bis";"▀\t米\t格\t-15 比\t斯";;
+"mig-15bis_nr23_german_shop";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀\t米\t格\t-15bis";"▀MiG-15bis";"▀\t米\t格\t-15 比\t斯";;
+"mig-15bis_nr23_german_0";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀MiG-15bis";"▀\t米\t格\t-15bis";"▀MiG-15bis";"▀\t米\t格\t-15 比\t斯";;
 "mig-15bis_nr23_german_1";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀\t米\t格\t-15";"▀MiG-15";"▀\t米\t格\t-15";;
 "mig-15bis_nr23_german_2";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀MiG-15";"▀\t米\t格\t-15";"▀MiG-15";"▀\t米\t格\t-15";;
 "il_28_german_shop";"▀IL-28";"▀IL-28";"▀IL-28";"▀IL-28";"▀IL-28";"▀IL-28";"▀Ił-28";"▀IL-28";"▀IL-28";"▀IL-28";"▀\t伊\t尔\t-28";"▀IL-28";"▀ 伊\t爾\t-28";;
@@ -5273,7 +5281,7 @@
 "a6m2_mod11_1";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"零\t战\t一\t一\t型";"零式戦一一型";"零\t戰\t一\t一\t型";;
 "a6m2_mod11_2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"零\t战\t一\t一\t型";"零式戦一一型";"零\t戰\t一\t一\t型";;
 "me-262c-1a_shop";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a";"Me 262 C-1a\t“祖\t国\t卫\t士”\tI";"Me 262 C-1a";"Me 262 C-1a";;
-"me-262c-1a_0";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a 하이맛쉬쳐 I";"Me 262 C-1a\t“祖\t国\t卫\t士”\tI";"Me 262 C-1a ハイマートシュッツァー I";"Me 262 C-1a 祖\t國\t衛\t士 I";;
+"me-262c-1a_0";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a Heimatschützer I";"Me 262 C-1a 하이맛쉬쳐 I";"Me 262 C-1a 祖\t国\t卫\t士 I";"Me 262 C-1a ハイマートシュッツァー I";"Me 262 C-1a 祖\t國\t衛\t士 I";;
 "me-262c-1a_1";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";"Me 262 C";;
 "me-262c-1a_2";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";"Me 262";;
 "avenger_mk1_shop";"▄Avenger Mk II";"▄Avenger Mk II";"▄Avenger Mk II";"▄Avenger Mk II";"▄Avenger Mk II";"▄Avenger Mk.II";"▄Avenger Mk II";"▄Avenger Mk II";"▄Avenger Mk II";"▄어벤저 Mk I";"▄\t“复\t仇\t者”\tMk II";"アヴェンジャー Mk.1";"▄\t復\t仇\t者 Mk II";;
@@ -5556,7 +5564,7 @@
 "douglas_ad_4_0";"AD-4 Skyraider";"AD-4 Skyraider";"AD-4 Skyraider";"AD-4 Skyraider";"AD-4 Skyraider";"AD-4 Skyraider";"AD-4 Skyraider";"AD-4 Skyraider";"AD-4 Skyraider";"AD-4 스카이레이더";"AD-4\t“天\t袭\t者”";"AD-4 スカイレイダー";"AD-4 天\t襲\t者";;
 "douglas_ad_4_1";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";;
 "douglas_ad_4_2";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";"AD-4";;
-"shop/group/douglas_ad_group";"AD";"AD";"AD";"AD";"AD";"AD";"AD";"AD";"REKLAM";"AD";"AD";"AD";"AD";;
+"shop/group/douglas_ad_group";"AD";"AD";"AD";"AD";"AD";"AD";"AD";"AD";"REKLAM";"AD";"天\t袭\t者";"AD";"AD";;
 "a2d_shop";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1\t“天\t鲨”";"A2D-1";"A2D-1";;
 "a2d_0";"A2D-1 Skyshark";"A2D-1 Skyshark";"A2D-1 Skyshark";"A2D-1 Skyshark";"A2D-1 Skyshark";"A2D-1 Skyshark";"A2D-1 Skyshark";"A2D-1 Skyshark";"A2D-1 Skyshark";"A2D-1 스카이샤크";"A2D-1\t“天\t鲨”";"A2D-1 スカイシャーク";"A2D-1 天\t鲨";;
 "a2d_1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";"A2D-1";;
@@ -6062,7 +6070,7 @@
 "ki_100_early_1";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"五\t式\t战";"五式戦一型";"五\t式\t戰";;
 "ki_100_early_2";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"Ki-100";"五\t式\t战";"五式戦一型";"五\t式\t戰";;
 "p_47n_15_shop";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";"P-47N-15";;
-"p_47n_15_0";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 썬더볼트";"P-47N-15 \t“雷\t电”";"P-47N-15 サンダーボルト";"P-47N-15 Thunderbolt";;
+"p_47n_15_0";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 Thunderbolt";"P-47N-15 썬더볼트";"P-47N-15 \t雷\t电";"P-47N-15 サンダーボルト";"P-47N-15 Thunderbolt";;
 "p_47n_15_1";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";"P-47N";;
 "p_47n_15_2";"P-47";"P-47";"P-47";"P-47";"P-47";"P-47";"P-47";"P-47";"P-47";"P-47";"P-47";"P-47";"P-47";;
 "seafire_mk3_shop";"Seafire LF Mk.III";"Seafire LF Mk.III";"Seafire LF Mk.III";"Seafire LF Mk.III";"Seafire LF Mk.III";"Seafire LF Mk.III";"Seafire LF Mk.III";"Seafire LF Mk.III";"Seafire LF Mk.III";"시파이어 LF Mk.III";"海\t火 LF Mk III";"シーファイア LF Mk.III";"Seafire LF Mk.III";;
@@ -6479,7 +6487,7 @@
 "ussr_btr_152a_shop";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"БТР-152А";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";;
 "ussr_btr_152a_0";"KB ZIS BTR-152A";"KB ZIS BTR-152A";"KB ZIS BTR-152A";"KB ZIS BTR-152A";"KB ZIS BTR-152A";"КБ ЗИС БТР-152А";"KB ZIS BTR-152A";"KB ZIS BTR-152A";"KB ZIS BTR-152A";"KB ZIS BTR-152A";"BTR-152A";"KB ZIS BTR-152A";"KB ZIS BTR-152A";;
 "ussr_btr_152a_1";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"БТР-152А";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";"BTR-152A";;
-"ussr_btr_152a_2";"SPAA";"AA auto-moteur";"Antiaerea";"Flugabwehrfahrzeug";"Antiaéreo autopropulsado";"ЗСУ";"Działo samobieżne";"AAAP";"KMUS";"자주대공포";"自\t行\t火\t炮";"自走式対空砲";"自\t行\t火\t炮";;
+"ussr_btr_152a_2";"SPAA";"AA auto-moteur";"Antiaerea";"Flugabwehrfahrzeug";"Antiaéreo autopropulsado";"ЗСУ";"Działo samobieżne";"AAAP";"KMUS";"자주대공포";"自\t行\t防\t空\t炮";"自走式対空砲";"自\t行\t火\t炮";;
 "uk_daimler_mk_2_shop";"Daimler Mk II";"Daimler Mk II";"Daimler Mk II";"Daimler AC Mk II";"Daimler Mk II";"Daimler Mk II";"Daimler AC Mk.II";"Daimler AC Mk.II";"Daimler Mk. II";"다임러 Mk.II";"戴\t姆\t勒\t装\t甲\t车 Mk II";"ダイムラー Mk II";"戴\t姆\t勒 Mk II";;
 "uk_daimler_mk_2_0";"Armoured Car, Daimler Mk II";"Armoured Car, Daimler Mk II";"Armoured Car, Daimler Mk II";"Daimler Armoured Car Mk II";"Automóvil Blindado Daimler Mk II";"Armoured Car, Daimler Mk II";"Samochód pancerny Daimler Mk.II";"Carro Blindado Daimler Mk.II";"Zırhlı Araç, Daimler Mk. II";"장갑차, 다임러 Mk.II";"戴\t姆\t勒\t装\t甲\t车 Mk II";"装甲車、\tダイムラー Mk II";"戴\t姆\t勒\t裝\t甲\t車 Mk II";;
 "uk_daimler_mk_2_1";"Daimler Mk II";"Daimler Mk II";"Daimler Mk II";"AC Mk II";"Daimler Mk II";"Daimler Mk II";"AC Mk.II";"AC Mk.II";"Daimler Mk. II";"다임러 Mk.II";"戴\t姆\t勒\t装\t甲\t车 Mk II";"ダイムラー Mk II";"戴\t姆\t勒 Mk II";;
@@ -7581,9 +7589,9 @@
 "us_destroyer_sumner_0";"Allan M. Sumner-class, USS Sumner (DD-692), 1944";"Classe Allen M. Sumner, USS Allen M. Sumner (DD-692), 1944";"Allan M. USS Sumner (DD-692), 1944";"Allan M. Sumner-Klasse, USS Allen M. Sumner (DD-692), 1944";"Clase Allan M. Sumner, USS Sumner (DD-692), 1944";"Тип Allen M. Sumner, USS Sumner (DD-692), 1944";"Typ Allan M. Sumner, USS Sumner (DD-692), 1944";"Classe Allan M. Sumner, USS Sumner (DD-692), 1944";"Allan M. Sumner-sınıfı, USS Allen M. Sumner (DD-692), 1944";"앨런 M. 섬너급 구축함, USS 섬너 (DD-692) 1944";"艾\t伦·M·萨\t姆\t纳\t级\t驱\t逐\t舰\t“艾\t伦·M·萨\t姆\t纳”\t号 (DD-692, 1944)";"アレン・\tM・サムナー\t級、\t米海軍 サムナー (DD-692)、\t1944";"艾\t倫·M·桑\t拿\t級\t“艾\t倫·M·桑\t拿”\t號 (DD-692)";;
 "us_destroyer_sumner_1";"USS Sumner";"USS Allen M. Sumner";"USS Sumner";"USS Allen M. Sumner";"USS Sumner";"USS Sumner";"USS Sumner";"USS Sumner";"USS Sumner";"USS 섬너";"艾\t伦·M·萨\t姆\t纳\t级\t驱\t逐\t舰";"米海軍 サムナー";"桑\t拿\t級";;
 "us_destroyer_sumner_2";"Destroyer";"Destroyer";"Cacciatorpediniere";"Zerstörer";"Destructor";"Эсминец";"Niszczyciel";"Contratorpedeiro";"Muhrip";"구축함";"驱\t逐\t舰";"デストロイヤー";"驅\t逐\t艦";;
-"mig-15bis_ish_shop";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"МиГ-15бис ИШ";"MiG-15bis ISZ";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"米\t格\t-15 比\t斯 ISh";"MiG-15bis ISH";"米\t格\t-15 比\t斯 ISH";;
-"mig-15bis_ish_0";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"МиГ-15бис ИШ";"MiG-15bis ISZ";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"米\t格\t-15 二\t型 ISh";"MiG-15bis ISH";"米\t格\t-15 比\t斯 ISH";;
-"mig-15bis_ish_1";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"МиГ-15бис ИШ";"MiG-15bis ISZ";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"米\t格\t-15 比\t斯";"MiG-15bis ISH";"米\t格\t-15 比\t斯";;
+"mig-15bis_ish_shop";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"МиГ-15бис ИШ";"MiG-15bis ISZ";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"米\t格\t-15bis ISH";"MiG-15bis ISH";"米\t格\t-15 比\t斯 ISH";;
+"mig-15bis_ish_0";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"МиГ-15бис ИШ";"MiG-15bis ISZ";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"米\t格\t-15bis ISH";"MiG-15bis ISH";"米\t格\t-15 比\t斯 ISH";;
+"mig-15bis_ish_1";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"МиГ-15бис ИШ";"MiG-15bis ISZ";"MiG-15bis ISH";"MiG-15bis ISH";"MiG-15bis ISH";"米\t格\t-15bis ISH";"MiG-15bis ISH";"米\t格\t-15 比\t斯";;
 "mig-15bis_ish_2";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"МиГ-15";"MiG-15";"MiG-15";"MiG-15";"MiG-15";"米\t格\t-15";"MiG-15";"米\t格\t-15";;
 "f-100a_china_shop";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗\tF-100A\t“超\t级\t佩\t刀\t“";"␗F-100A";"␗ F-100A";;
 "f-100a_china_0";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗F-100A";"␗\tF-100A\t“超\t级\t佩\t刀\t“";"␗F-100A";"␗ F-100A 超\t級\t軍\t刀";;

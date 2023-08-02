@@ -30,6 +30,7 @@ let { isDebugTouchesActive } = require("debugTouches.nut")
 let debugUnlocks = require("debugUnlocks.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { startDebugNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
+let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 
 let wndWidth = sh(130)
 let gap = hdpx(10)
@@ -57,7 +58,8 @@ let commandsList = [
   { label = "downgrade_cur_unit", func = withClose(@() downgrade_unit(hangarUnitName.value)) }
   { label = "meta.reset_custom_settings", func = withClose(resetCustomSettings) }
   { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug(!isTutorialMissionsDebug.value)) }
-  { label = "startFirstBattlesOfflineMission", func = withClose(startDebugNewbieMission) }
+  { label = "startFirstBattlesOfflineMission",
+    func = withClose(@() notAvailableForSquadMsg(startDebugNewbieMission)) }
   { label = "copy_last_debriefing",
     function func() {
       close()

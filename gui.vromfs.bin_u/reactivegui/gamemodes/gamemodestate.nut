@@ -50,6 +50,8 @@ let benchmarkGameModes = Computed(@() allGameModes.value.filter(@(m) m?.displayT
 let debugModes = Computed(@() allGameModes.value.filter(@(m, id) m?.displayType != "random_battle"
   && id not in benchmarkGameModes.value))
 
+let maxSquadSize = Computed(@() allGameModes.value.reduce(@(res, m) max(res, m?.maxSquadSize ?? m?.minSquadSize ?? 1), 1))
+
 register_command(
   @() log("curRandomBattleModeName = ", randomBattleMode.value?.name)
   "debug.getCurRandomBattleModeName")
@@ -68,4 +70,5 @@ return {
   debugModes
   benchmarkGameModes
   forceNewbieModeIdx
+  maxSquadSize
 }

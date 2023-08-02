@@ -2059,23 +2059,23 @@
           0.8
         ],
         "artilleryDispersionMult": [
-          1.3,
+          1.0,
           1.0
         ],
         "artilleryAdjustmentDispersionMult": [
-          1.3,
+          1.0,
           1.0
         ],
         "artilleryTimeToFirstShotMult": [
-          1.3,
+          1.0,
           1.0
         ],
         "artilleryTimeBetweenShotsMult": [
-          1.3,
+          1.0,
           1.0
         ],
         "artilleryTimeBetweenAdjustmentsShots": [
-          1.3,
+          1.0,
           1.0
         ],
         "radioDistanceMult": [

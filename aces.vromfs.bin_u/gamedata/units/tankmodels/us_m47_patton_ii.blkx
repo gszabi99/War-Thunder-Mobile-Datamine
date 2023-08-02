@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.31,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.4,
@@ -2594,8 +2595,8 @@
     "sightName": "periscope_t35",
     "headPos": [
       0.0,
-      2.0,
-      -18.0
+      3.8,
+      -13.2
     ],
     "headPosOnShooting": [
       -0.2,
@@ -2605,10 +2606,19 @@
     "detectionHeight": 2.95
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
-    "art_support": {},
     "upgraded": {},
-    "tank_extinguisher": {}
+    "art_support": {},
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {}
   },
   "upgraded_skin": {
     "replace_tex": {

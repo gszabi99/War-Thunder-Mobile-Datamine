@@ -45,6 +45,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "30mm_UBR6",
       "relativeVelHitShift": [
         300.0,
@@ -216,6 +217,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "bulletName": "30mm_UOF8",
       "hitPowerMult": 2.0,
       "fuseDelayDist": 0.0,
@@ -244,6 +246,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [
@@ -403,6 +408,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "bulletName": "30mm_UOF8",
       "hitPowerMult": 2.0,
       "fuseDelayDist": 0.0,
@@ -431,6 +437,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower0m": [
@@ -586,6 +595,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "30mm_UBR6",
       "relativeVelHitShift": [
         300.0,
@@ -753,6 +763,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "bulletName": "30mm_UBR6",
       "relativeVelHitShift": [
         300.0,
@@ -1703,6 +1714,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "bulletName": "30mm_UBR6",
         "relativeVelHitShift": [
           300.0,
@@ -2138,6 +2150,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
         "bulletName": "30mm_UOR6",
         "hitPowerMult": 2.0,
         "fuseDelayDist": 0.0,
@@ -2329,6 +2342,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
         "fuseDelayDist": 0.0,
@@ -2357,6 +2371,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower0m": [
@@ -2516,6 +2533,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
         "fuseDelayDist": 0.0,
@@ -2544,6 +2562,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower0m": [
@@ -2703,6 +2724,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
         "fuseDelayDist": 0.0,
@@ -2731,6 +2753,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower0m": [
@@ -2890,6 +2915,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "bulletName": "30mm_UOF8",
         "hitPowerMult": 2.0,
         "fuseDelayDist": 0.0,
@@ -2918,6 +2944,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower0m": [

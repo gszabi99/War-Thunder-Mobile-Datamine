@@ -65,6 +65,7 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
     "bulletName": "40mm_sprgr_patr_flak28_he",
     "selfDestructionInAir": true,
     "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -278,6 +279,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
       "bulletName": "40mm_sprgr_patr_flak28_he",
       "selfDestructionInAir": true,
       "selfDestructionFx": "explosion_air_selfexplosion_small",

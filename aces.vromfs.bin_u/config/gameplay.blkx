@@ -3884,5 +3884,14 @@
   "reloadingTorpedoMults": {
     "exp_destroyer_0": 2.0,
     "exp_cruiser_0": 2.0
+  },
+  "depthChargeSalvoParams": {
+    "salvoDuration": 12.5,
+    "salvoCountRel": 1.0,
+    "explosionDepth": [
+      20.0,
+      40.0
+    ],
+    "uniteTriggerGroups": true
   }
 }

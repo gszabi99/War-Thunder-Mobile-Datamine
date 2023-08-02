@@ -35,6 +35,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "frag_i_t",
+      "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
       "modelName": "tank_bullet_ap",
       "explosiveType": "a_ix_2",
       "explosiveMass": 0.00413,
@@ -241,6 +242,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
       "explosiveType": "tetryl",
       "explosiveMass": 0.004,
       "hitPowerMult": 1.0,
@@ -443,6 +445,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
@@ -628,6 +631,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "modelName": "tank_bullet_ap",
         "explosiveType": "a_ix_2",
         "explosiveMass": 0.00413,
@@ -827,6 +831,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
@@ -1016,6 +1021,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
@@ -1201,6 +1207,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "modelName": "tank_bullet_ap",
         "explosiveType": "a_ix_2",
         "explosiveMass": 0.00413,
@@ -1407,6 +1414,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "explosiveType": "tetryl",
         "explosiveMass": 0.004,
         "hitPowerMult": 1.0,
@@ -1613,6 +1621,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "tetryl",
         "explosiveMass": 0.003,
         "hitPowerMult": 1.0,
@@ -1662,6 +1671,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1814,6 +1826,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "modelName": "tank_bullet_ap",
         "explosiveType": "a_ix_2",
         "explosiveMass": 0.00413,
@@ -2013,6 +2026,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
@@ -2198,6 +2212,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [

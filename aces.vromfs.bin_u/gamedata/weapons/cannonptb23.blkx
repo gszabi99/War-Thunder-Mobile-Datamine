@@ -36,6 +36,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "frag_i_t",
+      "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
       "modelName": "tank_bullet_he",
       "explosiveType": "a_ix_2",
       "explosiveMass": 0.0156,
@@ -227,6 +228,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "ap_i",
+      "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
       "modelName": "tank_bullet_ap",
       "onHitChanceMultFire": 12.0,
       "relativeVelHitShift": [
@@ -415,6 +417,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i",
+        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
         "modelName": "tank_bullet_he",
         "explosiveType": "a_ix_2",
         "explosiveMass": 0.0156,
@@ -605,6 +608,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "modelName": "tank_bullet_he",
         "explosiveType": "a_ix_2",
         "explosiveMass": 0.0156,
@@ -796,6 +800,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 12.0,
         "relativeVelHitShift": [
@@ -985,6 +990,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 12.0,
         "relativeVelHitShift": [
@@ -1170,6 +1176,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 12.0,
         "relativeVelHitShift": [
@@ -1355,6 +1362,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": 12.0,
         "relativeVelHitShift": [
@@ -1540,6 +1548,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "modelName": "tank_bullet_he",
         "explosiveType": "a_ix_2",
         "explosiveMass": 0.0156,

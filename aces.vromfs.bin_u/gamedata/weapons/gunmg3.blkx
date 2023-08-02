@@ -36,6 +36,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "t_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/t_ball.ivf",
       "modelName": "tank_bullet_ball",
       "hitPowerMult": 2.9,
       "onHitChanceMultFire": 1.5,
@@ -231,6 +232,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_ball.ivf",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [
@@ -421,6 +423,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_ball.ivf",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [
@@ -611,6 +614,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_ball.ivf",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [
@@ -801,6 +805,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_ball.ivf",
       "modelName": "tank_bullet_ball",
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [

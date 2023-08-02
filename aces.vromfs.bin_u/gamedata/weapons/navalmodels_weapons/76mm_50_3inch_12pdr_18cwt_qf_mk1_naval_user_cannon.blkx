@@ -31,21 +31,22 @@
     "caliber": 0.076,
     "speed": 805.0,
     "maxDistance": 40000.0,
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "secondaryShattersPreset": "ap_large_caliber",
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "he_frag_base_fuse_tank",
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
+    "bulletType": "sap_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "76mm_50_mk2_common",
     "dynamicKv": true,
@@ -69,15 +70,21 @@
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
-        0.5
+        0.2
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.4
       ],
       "mod3": [
-        30.0,
-        0.99
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
       ]
     },
     "pressureDamage": {
@@ -229,21 +236,22 @@
       "caliber": 0.076,
       "speed": 805.0,
       "maxDistance": 40000.0,
-      "normalizationPreset": "heat",
-      "ricochetPreset": "he",
-      "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.5,
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
+      "secondaryShattersPreset": "ap_large_caliber",
+      "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "he_frag_base_fuse_tank",
+      "stabilityReductionAfterPenetration": 0.0,
+      "stucking": 0.7,
+      "stuckingAngle": 45.0,
+      "bulletType": "sap_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "76mm_50_mk2_common",
       "dynamicKv": true,
@@ -267,15 +275,21 @@
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
-          0.5
+          0.2
         ],
         "mod2": [
-          15.0,
-          0.7
+          20.0,
+          0.4
         ],
         "mod3": [
-          30.0,
-          0.99
+          [
+            30.0,
+            0.6
+          ],
+          [
+            45.0,
+            0.9
+          ]
         ]
       },
       "pressureDamage": {

@@ -3,7 +3,7 @@ from "%rGui/shop/shopCommon.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkColoredGradientY, mkFontGradient, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
@@ -13,9 +13,9 @@ let { secondsToHoursLoc } = require("%rGui/globals/timeToText.nut")
 let { getFontSizeToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkFireParticles, mkAshes, mkSparks } = require("%rGui/effects/mkFireParticles.nut")
-let { getRomanNumeral } = require("%sqstd/math.nut")
 let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { mkGradText, mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 
 let goodsW = hdpx(555)
 let goodsH = hdpx(378)
@@ -28,7 +28,7 @@ let advertSize = hdpxi(60)
 let glareWidth = sh(8)
 let startOfferGlareAnim = @() anim_start("offerGlareAnim")
 let offerGlareAnimDuration = 0.4
-let offerGlareRepeatDelay = 2
+let offerGlareRepeatDelay = 6.0
 let goodsGlareAnimDuration = 0.2
 
 let offerW = hdpx(420)
@@ -110,57 +110,26 @@ let oldAmountStrikeThrough = {
   commands = [[VECTOR_LINE, -10, 35, 110, 65]]
 }
 
-let mkGradText = @(text, fontSize, fontTex, ovr = {}) {
-  rendObj = ROBJ_TEXT
-  text
-  font = Fonts.wtfont
-  fontSize
-  fontFxColor = 0xFF000000
-  fontFx = FFT_BLUR
-  fontTex
-  fontTexSv = 0
-
-  children = {
-    rendObj = ROBJ_TEXT
-    color = 0
-    text
-    font = Fonts.wtfont
-    fontSize
-    fontFxColor = 0x20808080
-    fontFxOffsX = -hdpx(1)
-    fontFxOffsY = -hdpx(1)
-    fontFx = FFT_GLOW
-  }
-}.__update(ovr)
-
-let mkGradRank = @(rank)
-  mkGradText(
-    getRomanNumeral(rank)
-    hdpx(42)
-    mkFontGradient(0xFFFFFFFF, 0xFF785443)
-    { children = null }
-  )
-
-
 let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
   halign = ALIGN_RIGHT
   flow = FLOW_VERTICAL
   hplace = ALIGN_RIGHT
   children = [
     slotName
-      ? mkGradText(slotName, hdpx(35), fontTex).__update({margin = [ 0, hdpx(33), 0, 0 ]})
+      ? mkGradGlowText(slotName, fontWtSmall, fontTex, {
+          margin = [ 0, hdpx(33), 0, 0 ]
+        })
       : null
     {
       margin = [ slotName ? 0 : hdpx(20), 0]
       halign = ALIGN_RIGHT
       children = [
         oldAmount <= 0 ? null
-          : mkGradText(numberToTextForWtFont(decimalFormat(oldAmount)), hdpx(58), fontTex)
-            .__update({
+          : mkGradText(numberToTextForWtFont(decimalFormat(oldAmount)), fontWtBig, fontTex, {
               margin = [ hdpx(0), hdpx(33), 0, 0 ]
               children = oldAmountStrikeThrough
             })
-        mkGradText(numberToTextForWtFont(decimalFormat(amount)), hdpx(70), fontTex).__update({
+        mkGradGlowText(numberToTextForWtFont(decimalFormat(amount)), fontWtLarge, fontTex, {
           margin = [oldAmount > 0  ? hdpx(40) : 0, hdpx(33), 0, 0]
         })
       ]
@@ -542,8 +511,6 @@ return {
   borderBg
   mkFitCenterImg
   mkGoodsImg
-  mkGradText
-  mkGradRank
   mkCurrencyAmountTitle
   numberToTextForWtFont
   mkPricePlate

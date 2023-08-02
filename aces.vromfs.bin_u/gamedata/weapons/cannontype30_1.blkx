@@ -40,6 +40,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "t_shell",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/t_shell.ivf",
       "modelName": "tank_bullet_ap",
       "recoilMultiplier": 0.35,
       "hitPowerMult": 2.0,
@@ -228,6 +229,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "recoilMultiplier": 0.35,
       "hitPowerMult": 2.0,
       "nearHitPower": [
@@ -303,6 +305,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -623,6 +628,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_shell",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/t_shell.ivf",
         "modelName": "tank_bullet_ap",
         "recoilMultiplier": 0.35,
         "hitPowerMult": 2.0,
@@ -1233,6 +1239,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_shell",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/t_shell.ivf",
         "modelName": "tank_bullet_ap",
         "recoilMultiplier": 0.35,
         "hitPowerMult": 2.0,
@@ -1421,6 +1428,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.35,
         "hitPowerMult": 2.0,
         "nearHitPower": [
@@ -1496,6 +1504,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1607,6 +1618,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.35,
         "hitPowerMult": 2.0,
         "nearHitPower": [
@@ -1682,6 +1694,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1793,6 +1808,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.35,
         "hitPowerMult": 2.0,
         "nearHitPower": [
@@ -1868,6 +1884,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "visual": {
           "range_percent_of_ammo": [

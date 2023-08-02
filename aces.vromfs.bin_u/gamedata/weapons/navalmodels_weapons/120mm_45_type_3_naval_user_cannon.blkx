@@ -90,6 +90,9 @@
         ]
       ]
     },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "damage": {
       "shatter": {
         "useRealShatters": true,
@@ -296,6 +299,9 @@
             ]
           ]
         },
+        "pressureDamage": {
+          "damageType": "pressure"
+        },
         "damage": {
           "shatter": {
             "useRealShatters": true,
@@ -501,6 +507,9 @@
               0.9
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "shatter": {

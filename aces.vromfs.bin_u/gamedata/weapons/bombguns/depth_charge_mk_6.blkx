@@ -1,12 +1,13 @@
 {
   "bombGun": true,
   "preset_cost": 10,
-  "shotFreq": 0.25,
+  "shotFreq": 5.0,
   "sound": "weapon.bombgun",
   "reloadTime": 60.0,
   "mesh": "depth_charge_mk6",
   "bomb": {
-    "mass": 190.0,
+    "detonationRadius": 15.0,
+    "mass": 700.0,
     "explosiveType": "tnt",
     "explosiveMass": 100.0,
     "bombType": "he_bomb",
@@ -26,6 +27,12 @@
     ],
     "rendinstDamageRadius": 30.0,
     "isDepthCharge": true,
+    "splash": {
+      "innerRadius": 40.0,
+      "penetration": 100.0,
+      "damage": 3500.0,
+      "damageType": "explosion"
+    },
     "DamageParts": {
       "body": {
         "hp": 35.0,

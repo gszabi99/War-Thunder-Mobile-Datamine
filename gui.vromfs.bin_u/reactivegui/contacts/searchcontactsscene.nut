@@ -7,7 +7,9 @@ let { mkSpinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
 let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
 let mkContactRow = require("mkContactRow.nut")
 let { mkContactActionBtnPrimary, mkContactActionBtn } = require("mkContactActionBtn.nut")
-let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST } = require("contactActions.nut")
+let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST,
+  INVITE_TO_SQUAD, REVOKE_INVITE
+} = require("contactActions.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
@@ -118,8 +120,8 @@ let contactsBlock = @() {
   watch = [isSearchInProgress, hasResult, isNotFound]
   size = flex()
   children = isSearchInProgress.value ? inProgressInfo
-    : hasResult ? contactsList
-    : isNotFound ? notFoundMsg
+    : hasResult.value ? contactsList
+    : isNotFound.value ? notFoundMsg
     : null
 }
 
@@ -131,9 +133,11 @@ let buttons = @() {
   gap
   children = selectedUserId.value == null ? null
     : [
-        mkContactActionBtn(REMOVE_FROM_BLACKLIST, selectedUserId.value, { hotkeys = ["^J:Y"] })
-        mkContactActionBtn(ADD_TO_BLACKLIST, selectedUserId.value, { hotkeys = ["^J:RB"] })
-        mkContactActionBtn(CANCEL_INVITE, selectedUserId.value, { hotkeys = ["^J:Y"] })
+        mkContactActionBtn(REMOVE_FROM_BLACKLIST, selectedUserId.value, { hotkeys = ["^J:RB"] })
+        mkContactActionBtn(ADD_TO_BLACKLIST, selectedUserId.value, { hotkeys = ["^J:RT"] })
+        mkContactActionBtn(REVOKE_INVITE, selectedUserId.value, { hotkeys = ["^J:LB"] })
+        mkContactActionBtnPrimary(INVITE_TO_SQUAD, selectedUserId.value, { hotkeys = ["^J:Y"] })
+        mkContactActionBtn(CANCEL_INVITE, selectedUserId.value, { hotkeys = ["^J:RB"] })
         mkContactActionBtnPrimary(INVITE_TO_FRIENDS, selectedUserId.value, { hotkeys = ["^J:X | Enter"] })
       ]
 }

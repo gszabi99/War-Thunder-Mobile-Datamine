@@ -46,7 +46,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.3,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -2414,8 +2413,8 @@
     "sightName": "fl_11_sight",
     "headPos": [
       0.0,
-      3.5,
-      -11.6
+      3.6,
+      -12.3
     ],
     "headPosOnShooting": [
       -0.7,
@@ -2549,10 +2548,18 @@
     }
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
     "art_support": {},
     "tank_extinguisher": {},
-    "upgraded": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "tier": 3,
       "effects": {

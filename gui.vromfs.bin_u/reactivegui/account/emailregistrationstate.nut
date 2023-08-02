@@ -45,7 +45,7 @@ let function openGuestEmailRegistration() {
 
 let function openVerifyEmail() {
   logGuest("Open verify message")
-  let url = $"/user.php?skin_lang={loc("current_lang")}"
+  let url = $"https://store.gaijin.net/user.php?skin_lang={loc("current_lang")}"
   get_authenticated_url_sso(url, "", "", "onAuthenticatedUrlResult", json_to_string({ notAuthUrl = url }))
 }
 

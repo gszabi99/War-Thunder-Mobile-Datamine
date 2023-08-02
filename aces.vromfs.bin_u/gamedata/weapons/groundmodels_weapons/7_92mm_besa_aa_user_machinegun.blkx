@@ -46,6 +46,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ball.ivf",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -224,6 +225,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "t_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/t_ball.ivf",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -399,6 +401,7 @@
       "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "i_t_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/i_t_ball.ivf",
       "effectiveDistance": 400.0,
       "relativeVelHitShift": [
         300.0,
@@ -600,6 +603,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -778,6 +782,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/t_ball.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -953,6 +958,7 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "i_t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/i_t_ball.ivf",
         "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
@@ -1151,6 +1157,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ball.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -1333,6 +1340,7 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "i_t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/i_t_ball.ivf",
         "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
@@ -1531,6 +1539,7 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "i_t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/i_t_ball.ivf",
         "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
@@ -1729,6 +1738,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -1907,6 +1917,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/t_ball.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -2086,6 +2097,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -2264,6 +2276,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_ball.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -2442,6 +2455,7 @@
         "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "i_t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/i_t_ball.ivf",
         "effectiveDistance": 400.0,
         "relativeVelHitShift": [
           300.0,
@@ -2640,6 +2654,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/t_ball.ivf",
         "relativeVelHitShift": [
           300.0,
           1000.0

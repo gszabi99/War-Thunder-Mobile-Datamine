@@ -936,6 +936,7 @@ Belirtilen fiyatlar tek kullanım içindir. Birkaç tane yedek aracınız olabil
 "modification/t-18/desc";"Allows installation of 1 torpedo.";"Permet l'installation d'une torpille.";"Permette l'installazione di 1 siluro.";"Ermöglicht die Anbringung eines Torpedos.";"Permite la instalación de 1 torpedo.";"Возможность установить на самолёт торпеду.";"Pozwala na podwieszenie jednej torpedy.";"Allows installation of 1 torpedo.";"1 adet torpido yüklenmesini sağlar.";"어뢰 1발을 장착할 수 있게 된다.";"可\t携\t带 1 枚\t鱼\t雷";"追加武装に\t魚雷一発が\t選択可能になります。";"可\t攜\t帶 1 枚\t魚\t雷。";;
 "modification/hampden_2x500lb_torpedo";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";"SBC/TSC";;
 "modification/hampden_2x500lb_torpedo/desc";"Allows installation of torpedo and bombs weaponry.";"Permet l'installation de bombes et / ou torpilles.";"Permette l'installazione di siluri e bombe.";"Ermöglicht die Anbringung von Torpedo- und Bombenbewaffnung.";"Permite la instalación de bombas y torpedos.";"Возможность установить на самолёт торпедно-бомбовое вооружение.";"Umożliwia podwieszenie bomb i torpedy.";"Permite a instalação de bombas e torpedos.";"Torpido ve bombaların yüklenmesine izin verir.";"어뢰 및 폭탄을 장착할 수 있게 된다.";"可\t携\t带\t鱼\t雷\t及\t炸\t弹。";"魚雷と\t爆弾の\t搭載が\t可能になります。";"可\t攜\t帶\t魚\t雷\t及\t炸\t彈。";;
+"modification/tracks";"WIP";"WIP";"WIP";"WIP";"WIP";"Расширенные траки";"WIP";"WIP";"WIP";"WIP";"WIP";"WIP";"WIP";;
 "modification/winterketten_tank_tracks";"Winterketten";"Winterketten";"Winterketten";"Winterketten";"Winterketten";"Winterketten";"Winterketten";"Winterketten";"Winterketten";"윈터케텐";"冬\t季\t履\t带";"Winterketten";"冬\t季\t履\t帶";;
 "modification/winterketten_tank_tracks/desc";"Winterketten tracks pack. Additionally improves passing ability.";"Pack de chenilles Winterketten. Améliore la capacité de franchissement.";"Pacchetto cingoli Winterketten. Migliora l'agilità del veicolo";"Winterketten zu Verbesserung der Geländegängigkeit.";"Orugas Winterketten. Mejoran la tracción y capacidad de desplazamiento.";"Замена стандартных гусениц на Winterketten. Дополнительное улучшение проходимости.";"Gąsienice zimowe (Winterketten). Dodatkowo poprawia przyczepność.";"Winterketten tracks pack. Additionally improves passing ability.";"Winterketten tracks pack. Additionally improves passing ability.";"윈터케텐 궤도 팩. 주행 성능을 개선한다.";"换\t装\t冬\t季\t履\t带，\t提\t升\t履\t带\t接\t地\t面\t积，\t从\t而\t改\t善\t车\t辆\t的\t通\t过\t性\t能。";"Winterketten 履帯\tパック。\t追加で\t進行性能を\t向上させます。";"換\t裝\t冬\t季\t履\t帶，\t提\t升\t履\t帶\t接\t地\t面\t積，\t從\t而\t改\t善\t車\t輛\t的\t移\t動\t性\t能。";;
 "modification/ostketten_tank_tracks";"Ostketten";"Ostketten";"Ostketten";"Ostketten";"Ostketten";"Ostketten";"Ostketten";"Ostketten";"Ostketten";"오스트케텐";"东\t线\t履\t带";"Ostketten";"東\t線\t履\t帶";;
@@ -974,6 +975,7 @@ Belirtilen fiyatlar tek kullanım içindir. Birkaç tane yedek aracınız olabil
 "modification/manual_extinguisher/desc";"Fire Prevention Equipment. Includes hand fire extinguishers or automatic sprinkler systems, allows for stifling a fire that may arise in a tank.";"Équipement Anti-feu. Comprend des extincteurs manuels ou un système extinction automatique d'incendie, permettant d'étouffer un feu dans un véhicule.";"Sistema Anti Incendio.Include estintori e sistemi antincendio automatici, permette il contenimento delle fiamme prima che si propaghino per il carro armato.";"Ausrüstung zur Brandbekämpfung. Dazu gehören Handfeuerlöscher oder automatische Löschsysteme, die zur Bekämpfung von auftauchenden Bränden innerhalb des Panzers eingesetzt werden können.";"Equipo de Prevención de Incendios. Incluye extintor manual o sistemas de rociadores automáticos, permite sofocar un incendio que pueda surgir en el tanque.";"Противопожарное оборудование. Включает в себя ручные огнетушители или автоматические противопожарные системы, позволяет ликвидировать возникший в танке пожар.";"Sprzęt przeciwpożarowy. W zestawie znajduje się ręczna gaśnica lub automatyczny system zraszania, umożliwia stłumić ogień który może doprowadzić do eksplozji pojazdu. ";"Equipamentos de prevenção de incêndio. Inclui extintores manuais ou sistemas de chuveiros automáticos, permite para sufocar um incêndio que possam surgir num tanque.";"Yangın önleme ekipmanı. Yangın söndürücü veya otomatik yangın boğucu sistemden oluşur, tankın içinde oluşabilecek yangınları söndürür.";"차내 화재 진압 장비. 수동식 소화기와 자동 살수장치를 포함하며 전차에 발생한 화재를 진압할 수 있게 해 준다.";"包\t含\t手\t动\t灭\t火\t器\t和\t自\t动\t灭\t火\t系\t统。\t装\t配\t后\t可\t在\t战\t场\t上\t进\t行\t紧\t急\t灭\t火\t处\t理。";"これには\t手動消火器、\t自動消火\tシステムが\t含まれている。\t戦場で\t緊急消火を\t行うことができる。";"包\t含\t滅\t火\t器\t和\t自\t動\t滅\t火\t系\t統。\t裝\t備\t後\t可\t在\t戰\t場\t上\t進\t行\t緊\t急\t滅\t火";;
 "modification/tank_camouflage";"Camouflage";"camouflage";"Mimetizzazione";"Maßnahmen zur Tarnung";"Camuflaje";"Маскировка";"Kamuflaż";"Camuflagem";"Kamuflaj";"위장도색";"伪\t装";"迷彩";"偽\t裝";;
 "modification/tank_camouflage/desc";"Tank camouflage improves stealth in a field and decreases detection range by enemy tanks and aviation.";"Le camouflage améliore la furtivité sur le terrain et diminue la portée de détection par l'aviation et les chars ennemis.";"La mimetizzazione migliora il cammuffamento in battaglia e diminuisce la capacità di essere rilevati dai carri e aerei nemici.";"Durch die Anwendung von Tarnmaßnahmen wird die Sichtbarkeit des Panzers im Felde reduziert und damit die Wahrscheinlichkeit der Aufklärung durch feindliche Landstreitkräfte und Flugzeuge verringert.";"El camuflaje del tanque mejora el sigilo en un campo y disminuye el rango de detección por la aviación y los tanques enemigos.";"Маскировка танка в полевых условиях снижает его заметность и дальность обнаружения вражескими танками и авиацией.";"Kamuflaż zwiększa niewykrywalność na polu i zmniejsza zasięg, w którym może zostać wykryty przez wrogie czołgi i lotnictwo.";"Camuflagem do tanque melhora a baixa visibilidade em batalha diminuindo assim o alcance de detecção dos tanques e aviões inimigos.";"Tank kamuflajı sahada gizlenme yeteneğini arttırır ve düşman tank ve uçaklarının keşif mesafesini düşürür.";"전차 위장은 야전에서의 은폐성을 향상시키며 적 전차와 항공기에게 발견될 수 있는 거리를 줄인다.";"强\t化\t车\t辆\t伪\t装，\t从\t而\t加\t大\t识\t别\t难\t度。";"戦車迷彩は\tステルス\t性を\t向上させ\t敵戦車や\t航空機による\t検出範囲を\t減少させる。";"強\t化\t車\t輛\t偽\t裝，\t從\t而\t加\t大\t識\t別\t難\t度。";;
+"modification/armor";"Add-on Armor";"Module de blindage supplémentaire";"Piastre aggiuntive";"Add-on Armor";"Blindaje Adicional";"Накладная броня";"Add-on Armor";"Add-on Armor";"Harici Zırh";"추가 장갑";"附\t加\t装\t甲";"Add-on Armor";"Add-on Armor";;
 "modification/tank_additional_armor";"Add-on Armor";"Module de blindage supplémentaire";"Piastre aggiuntive";"Zusätzliche Panzerung";"Agregados de blindaje";"Накладная броня";"Dodatkowy pancerz";"Armadura Extra";"Harici Zırh";"추가 장갑";"附\t加\t装\t甲";"追加装甲";"附\t加\t裝\t甲";;
 "modification/tank_additional_armor/desc";"Use of spare tracks or other alternate materials as an additional armor. It slightly increases tank protection but also - its weight.";"Utilisation d'éléments de chenilles ou d'autres matériaux de rechange comme blindage supplémentaire. Augmente légèrement les protections du tank, mais aussi son poids.";"Utilizza le parti di ricambio dei cingoli come protezione aggiuntiva. Aumenta sensibilmente la protezione del carro armato ma allo stesso tempo il suo peso.";"Nutzung übriger Kettenglieder und alternativer Materialien als zusätzliche Panzerung. Erhöht leicht die Schutzwirkung der Panzerung auf Kosten zusätzlichen Gewichts.";"Uso de repuestos de orugas u otros materiales como blindaje adicional. Esto aumenta ligeramente la protección del tanque, pero también - su peso.";"Использование запасных траков или других подручных материалов в качестве дополнительной брони. Незначительно увеличивает защищённость танка, но увеличивает вес машины.";"Wykorzystanie zamiennych gąsienic lub innych alternatywnych materiałów jako dodatkowy pancerz. Nieznacznie zwiększa ochronę czołgu, ale także jego wagę.";"Utilização de lagartas de reserva ou outros materiais alternativos como armadura extra. Aumenta ligeiramente a protecção do tanque mas também o seu peso.";"Yedek palet ve diğer alternatif malzemelerin ek tank zırhı gibi kullanımı. Tam olmasa da tank korumasını aynı zamanda - ağırlığını arttırır.";"예비궤도나 기타 대체재를 추가 장갑으로써 사용한다. 전차의 방호력이 증가되지만 무게도 증가한다.";"外\t挂\t履\t带\t板\t等\t部\t件，\t从\t而\t以\t小\t幅\t增\t重\t为\t代\t价\t稍\t稍\t提\t升\t防\t御\t性\t能。";"予備履帯やその\t他代替材を\t追加装甲として\t使用する。\t戦車の\t装甲が\t増大するが\t重量も\t増大する。";"外\t掛\t履\t帶\t板\t等\t部\t件，\t從\t而\t以\t小\t幅\t增\t重\t為\t代\t價\t稍\t稍\t提\t升\t防\t禦\t性\t能。";;
 "modification/new_tank_horizontal_aiming";"Horizontal Drive";"Mécanisme de rotation";"Meccanica Torretta";"Drehkranz";"Unidad de la Torreta";"Горизонтальный привод";"Napęd wieży";"Mecanismo Horizontal da Torre";"Yatay Sürücü";"선회장치";"方\t向\t机";"砲塔駆動機構";"炮\t塔\t旋\t轉\t機\t構";;
@@ -994,12 +996,171 @@ Belirtilen fiyatlar tek kullanım içindir. Birkaç tane yedek aracınız olabil
 "modification/modern_tank_laser_rangefinder/desc";"Setting and adjustment of the tank rangefinder, allows you to more accurately measure the distance to the target.";"Réglages et ajustements du télémètre du char vous permettant de mesurer la distance de la cible de manière précise.";"Impostazione e regolazione del telemetro, permette di misurare più accuratamente la distanza del bersaglio.";"Die Feinabstimmung des Entfernungsmessers erlaubt eine genauere Entfernungsmessung zum Ziel.";"Configuración y ajuste del telémetro de tanque, le permite medir con mayor precisión la distancia al blanco.";"Настройка и выверка танкового дальномера, позволяет с большей точностью замерять дальность до цели.";"Ustawienie i regulacja dalmierza czołgu pozwoli ci na bardziej precyzyjne określanie odległości do celu.";"Configuração e ajuste do telémetro do carro de combate, permitindo medir a distância ao alvo com maior exatidão.";"Tankın mesafe bulucusunun kurulması ve ayarlanması, hedefe olan mesafeyi daha doğru bir şekilde ölçmenizi sağlar.";"전차 거리측정기를 설정하고 조정하여 목표물과의 거리를 더욱 정확히 측정할 수 있게 된다.";"安\t装\t并\t调\t试\t测\t距\t仪，\t从\t而\t获\t得\t更\t精\t准\t的\t目\t标\t距\t离\t信\t息。";"戦車の\tレンジファインダーの\t設定と\t調整により、\t標的までの\t距離をより\t正確に\t計測できるようになります。";"安\t裝\t並\t調\t試\t測\t距\t儀，\t從\t而\t獲\t得\t更\t精\t準\t的\t目\t標\t距\t離\t資\t訊。";;
 "modification/tank_rangefinder";"Rangefinder";"Télémètre";"Telemetro";"Entfernungsmesser";"Telémetro";"Дальномер";"Dalmierz";"Telémetro";"Mesafe bulucu";"거리 측정기";"测\t距\t仪";"距離測定器";"測\t距\t儀";;
 "modification/tank_rangefinder/desc";"Setting and adjustment of the tank rangefinder, allows you to more accurately measure the distance to the target.";"Réglages et ajustements du télémètre du char vous permettant de mesurer la distance de la cible de manière précise.";"Impostazione e regolazione del telemetro, permette di misurare più accuratamente la distanza del bersaglio.";"Die Feinabstimmung des Entfernungsmessers erlaubt eine genauere Entfernungsmessung zum Ziel.";"Configuración y ajuste del telémetro de tanque, le permite medir con mayor precisión la distancia al blanco.";"Настройка и выверка танкового дальномера, позволяет с большей точностью замерять дальность до цели.";"Ustawienie i regulacja dalmierza czołgu pozwoli ci na bardziej precyzyjne określanie odległości do celu.";"Configuração e ajuste do telémetro do tanque, permite medir com mais precisão a distância ao alvo.";"Tankın mesafe bulucusunun kurulması ve ayarlanması, hedefe olan mesafenin daha doğrulukla ölçülmesini sağlar.";"전차 거리측정기를 설정하고 조정하여 목표물과의 거리를 더욱 정확히 측정할 수 있게 된다.";"安\t装\t并\t调\t试\t测\t距\t仪，\t从\t而\t获\t得\t更\t精\t准\t的\t目\t标\t距\t离\t信\t息。";"設定と\t戦車距離計の\t調整、\tより\t正確に\t目標までの\t距離を\t測定することが\t可能になる。";"安\t裝\t並\t調\t試\t測\t距\t儀，\t從\t而\t獲\t得\t更\t精\t準\t的\t目\t標\t距\t離\t資\t訊。";;
-"modification/art_support";"Artillery Support";"Support d'artillerie";"Supporto di Artiglieria";"Sperrfeuer anfordern";"Soporte de Artillería";"Артиллерийская поддержка";"Wsparcie artyleryjskie";"Suporte de Artilharia";"Topçu Desteği";"포격 지원";"火\t炮\t支\t援";"砲撃支援";"火\t炮\t支\t援";;
-"modification/art_support/desc";"A possibility of making a call for fire on indicated square.";"Possibilité de faire un appel de feu sur le lieu indiqué.";"Rende possibile di chiamare il fuoco dell'artiglieria su una zona preposta.";"Gibt die Möglichkeit, einen Artillerieschlag auf einen bestimmten Bereich anzufordern.";"La posibilidad de hacer una llamada de fuego de artillería en una zona indicada.";"Возможность вызова артиллерийского удара по указанному квадрату.";"Możliwość wezwania ostrzału artyleryjskiego na wskazany obszar.";"""A possiblidade de pedir apoio de fogo no sector indicado";"İşaretçi kare içine topçu ateşi çağırmayı sağlar.";"포병의 화력 지원을 요청할 수 있다.";"允\t许\t召\t唤\t友\t军\t火\t炮\t打\t击\t指\t定\t区\t域。";"砲撃による\t支援を\t要求することができる。";"允\t許\t召\t喚\t友\t軍\t火\t炮\t打\t擊\t指\t定\t區\t域。";;
+"modification/art_support";"Artillery Support";"Support d'artillerie";"Supporto di Artiglieria";"Sperrfeuer anfordern";"Soporte de Artillería";"Артиллерия";"Wsparcie artyleryjskie";"Suporte de Artilharia";"Topçu Desteği";"포격 지원";"火\t炮\t支\t援";"砲撃支援";"火\t炮\t支\t援";"max 20 symbols";
+"modification/art_support/desc";"A possibility of making a call for fire on indicated square.
+Range - 700 m
+Accuracy - medium
+Explosive force - medium";"Une possibilité de faire un appel d'artillerie sur la place indiquée.
+Portée - 700 m
+Précision - moyenne
+Force explosive - moyenne";"Prossibilità di effettuare una chiamata sul riquadro indicato.
+Raggio - 700 m
+Precisione - media
+Forza esplosiva - media";"Gibt die Möglichkeit, einen Artillerieschlag auf einen bestimmten Bereich anzufordern.";"Posibilidad de hacer una llamada de artillería en la casilla indicada.
+Alcance - 700 m
+Precisión - media
+Fuerza explosiva - media";"Возможность вызова артиллерийского удара по указанному квадрату.
+Дальность - 700 метров
+Точность - средняя
+Сила взрыва - средняя";"Możliwość wezwania ostrzału artyleryjskiego na wskazany obszar.";"""A possiblidade de pedir apoio de fogo no sector indicado";"İşaretlenen bölgeye ateş desteği çağırma şansı.
+Menzil - 700 m
+İsabet - orta
+Patlama gücü - orta";"정해진 범위에 화력 지원을 요청할 수 있습니다.
+범위 - 700m
+정확도 - 중간
+폭발력 - 중간";"允\t许\t向\t地\t图\t中\t指\t定\t区\t域\t呼\t叫\t炮\t火\t打\t击。
+呼\t叫\t范\t围：\t700 米
+精\t确\t度：\t中\t等
+爆\t炸\t威\t力：\t中\t等";"砲撃による\t支援を\t要求することができる。";"允\t許\t召\t喚\t友\t軍\t火\t炮\t打\t擊\t指\t定\t區\t域。";;
+"modification/art_support_highcaliber";"High caliber";"Gros calibre";"Grosso calibro";"High caliber";"Gran calibre";"Крупный калибр";"High caliber";"High caliber";"Yüksek kalibre";"대구경 포격";"大\t口\t径";"High caliber";"High caliber";"max 20 symbols";
+"modification/art_support_highcaliber/desc";"A high caliber artillery salvo. Effective against heavy vehicles.
+Range - 700 m
+Accuracy - low
+Explosive force - high";"Une salve d'artillerie de gros calibre. Efficace contre les véhicules lourds.
+Portée - 700 m
+Précision - faible
+Force explosive - élevée";"Una salva d'artiglieria d'alto calibro. Efficace contro mezzi pesanti.
+Raggio - 700 m
+Precisione - bassa
+Forza esplosiva - alta";"A high caliber artillery salvo. Effective against heavy vehicles.
+Range - 700 m
+Accuracy - low
+Explosive force - high";"Una salva de artillería de alto calibre. Eficaz contra vehículos pesados.
+Alcance - 700 m
+Precisión - baja
+Fuerza explosiva - alta";"Залп крупнокалиберной артиллерии. Эффективен против тяжёлой техники. 
+Дальность - 700 метров
+Точность - низкая
+Сила взрыва - большая";"A high caliber artillery salvo. Effective against heavy vehicles.
+Range - 700 m
+Accuracy - low
+Explosive force - high";"A high caliber artillery salvo. Effective against heavy vehicles.
+Range - 700 m
+Accuracy - low
+Explosive force - high";"Yüksek kalibre topçu salvosu. Ağır araçlara karşı etkili.
+Menzil - 700 m
+İsabet - düşük
+Patlama gücü - yüksek";"대구경 포탄이 투하됩니다. 두꺼운 장갑을 지닌 장비에도 타격을 입힐 수 있습니다.
+범위 - 700m
+정확도 - 낮음
+폭발력 - 높음";"呼\t叫\t大\t口\t径\t火\t炮\t齐\t射，\t可\t有\t效\t反\t制\t重\t型\t装\t甲\t单\t位。
+呼\t叫\t范\t围：\t700 米
+精\t确\t度：\t低
+爆\t炸\t威\t力：\t高";"A high caliber artillery salvo. Effective against heavy vehicles.
+Range - 700 m
+Accuracy - low
+Explosive force - high";"A high caliber artillery salvo. Effective against heavy vehicles.
+Range - 700 m
+Accuracy - low
+Explosive force - high";;
+"modification/art_support_mortars";"Mortars";"Mortiers";"Mortai";"Mortars";"Morteros";"Миномёты";"Mortars";"Mortars";"Havan topu";"박격포격";"迫\t击\t炮";"Mortars";"Mortars";"max 20 symbols";
+"modification/art_support_mortars/desc";"Saturation fire from mortars. Effective against light vehicles.
+Range - 840 m
+Accuracy - very high
+Explosive force - low";"Tirs de saturation des mortiers. Efficace contre les véhicules légers.
+Portée - 840 m
+Précision - très élevée
+Force explosive - faible";"Saturazione di fuoco dai mortai. Efficace contro mezzi leggeri.
+Raggio - 840 m
+Precisione - molto alta
+Forza esplosiva - bassa";"Saturation fire from mortars. Effective against light vehicles.
+Range - 840 m
+Accuracy - very high
+Explosive force - low";"Fuego de saturación de morteros. Eficaz contra vehículos ligeros.
+Alcance - 840 m
+Precisión - muy alta
+Fuerza explosiva - baja";"Массированный огонь из миномётов. Эффективен против лёгкой техники. 
+Дальность - 840 метров
+Точность - очень высокая
+Сила взрыва - малая";"Saturation fire from mortars. Effective against light vehicles.
+Range - 840 m
+Accuracy - very high
+Explosive force - low";"Saturation fire from mortars. Effective against light vehicles.
+Range - 840 m
+Accuracy - very high
+Explosive force - low";"Havanlardan satürasyon ateşi. Hafif araçlara karşı etkili
+Menzil - 840 m
+İsabet - çok yüksek
+Patlama gücü - düşük";"박격포를 사용해 포화 공격을 진행합니다. 얇은 장갑을 지닌 장비에 타격을 입힐 수 있습니다.
+범위 - 840m
+정확도 - 매우 높음
+폭발력 - 낮음";"呼\t叫\t迫\t击\t炮\t对\t指\t定\t区\t域\t展\t开\t饱\t和\t炮\t击，\t对\t于\t轻\t装\t甲\t单\t位\t尤\t其\t致\t命。
+呼\t叫\t范\t围：\t840 米
+精\t确\t度：\t非\t常\t高
+爆\t炸\t威\t力：\t低";"Saturation fire from mortars. Effective against light vehicles.
+Range - 840 m
+Accuracy - very high
+Explosive force - low";"Saturation fire from mortars. Effective against light vehicles.
+Range - 840 m
+Accuracy - very high
+Explosive force - low";;
+"modification/art_support_smoke";"Smoke shells";"Obus fumigènes";"Granate fumogene";"Smoke shells";"Proyectiles de humo";"Дымовые снаряды";"Smoke shells";"Smoke shells";"Sis Mermisi";"연막 포격";"烟\t雾\t弹";"Smoke shells";"Smoke shells";"max 20 symbols";
+"modification/art_support_smoke/desc";"Non-lethal artillery. Covers an area with an aimed smoke screen.
+Range - 525 m
+Accuracy - high
+Explosive force - very low";"Artillerie non létale. Couvre une zone d'un écran de fumée ciblé.
+Portée - 525 m
+Précision - élevée
+Force explosive - très faible";"Artiglieria non letale. Copre l'area puntata con una cortina fumogena.
+Raggio - 525m
+Precisione - alta
+Forza esplosiva - molto bassa";"Non-lethal artillery. Covers an area with an aimed smoke screen.
+Range - 525 m
+Accuracy - high
+Explosive force - very low";"Artillería no letal. Cubre una zona con una pantalla de humo apuntada.
+Alcance - 525 m
+Precisión - alta
+Fuerza explosiva - muy baja";"Нелетальная артиллерия. Накрывает участок местности дымовой завесой.
+Дальность - 525 метров
+Точность - высокая
+Сила взрыва - очень маленькая";"Non-lethal artillery. Covers an area with an aimed smoke screen.
+Range - 525 m
+Accuracy - high
+Explosive force - very low";"Non-lethal artillery. Covers an area with an aimed smoke screen.
+Range - 525 m
+Accuracy - high
+Explosive force - very low";"Öldürücü olmayan topçu ateşi. Nişan alınan alanı sis perdesi ile kaplar.
+Menzil - 525 m
+İsabet - yüksek
+Patlama gücü - çok düşük";"지정한 위치에 살상력이 없는 연막탄을 투하합니다.
+범위 - 525m
+정확도 - 높음
+폭발력 - 매우 낮음";"呼\t叫\t火\t炮\t阵\t地\t对\t指\t定\t区\t域\t进\t行\t烟\t幕\t覆\t盖，\t无\t法\t对\t敌\t方\t装\t甲\t车\t辆\t造\t成\t伤\t害。
+呼\t叫\t范\t围：\t525 米
+精\t确\t度：\t高
+爆\t炸\t威\t力：\t非\t常\t低";"Non-lethal artillery. Covers an area with an aimed smoke screen.
+Range - 525 m
+Accuracy - high
+Explosive force - very low";"Non-lethal artillery. Covers an area with an aimed smoke screen.
+Range - 525 m
+Accuracy - high
+Explosive force - very low";;
 "modification/tank_new_gun";"Adjustment of Fire";"Réglage du tir";"Aggiustamento del tiro";"Einschießen";"Ajuste del disparo";"Пристрелка орудия";"Kalibracja Działa";"Ajuste de Disparo";"Silah Ayarı";"영점 조절";"校\t准\t主\t炮";"砲火調整";"校\t準\t主\t炮";;
 "modification/tank_new_gun/desc";"Gun calibration. Eliminates errors of misalignment between the gun and the target, improves fire accuracy.";"Calibrage du canon. Élimine les erreurs d'alignement entre le canon et la cible, améliore la précision du tir.";"Calibrazione del cannone. Elimina gli errori di disallineamento tra il cannone ed il bersaglio, migliora la precisione di fuoco.";"Die Kalibrierung des Hauptgeschützes durch Einschießen eliminiert Fehler durch falschen Abgleich zwischen Geschütz und Ziel und erhöht dadurch die Zielgenauigkeit der Bewaffnung des Panzers.";"Calibración del cañón. Elimina los errores de alineación entre el arma y el objetivo, mejora la precisión de disparo.";"Приведение орудия к нормальному бою. Устраняет ошибки рассогласования прицела и пушки, повышает точность стрельбы.";"Kalibracja działa. Eliminuje błędy niewspółosiowości pomiędzy działem i celem, poprawia celność prowadzonego ognia.";"Calibração da arma. Elimina erros de desalinhamento entre a arma e o alvo, melhora a precisão de disparo.";"Silah sıfırlama.  Silah ve hedef arasındaki hizalama hatalarını giderir, atış hassasiyetini arttırır.";"주포의 영점을 조절한다. 주포와 조준기 사이의 정렬 불량을 수정하여 사격 정확도를 향상시킨다.";"维\t护、\t校\t准\t主\t炮，\t从\t而\t提\t高\t射\t击\t精\t度。";"銃の\t射撃修正。\t銃と\t標的の\t間の\t照準\tミスの\t失敗を\t無くし、\t射撃の\t精度を\t改善する。";"維\t護、\t校\t準\t主\t炮，\t從\t而\t提\t高\t射\t擊\t精\t度。";;
-"modification/tank_smoke_screen_system_mod";"Smoke grenade";"Grenade fumigène";"Granata fumogena";"Nebeltöpfe";"Granada de humo";"Дымовая граната";"Granat dymny";"Granada de fumo";"Sis Bombası";"연막탄";"烟\t雾\t弹";"発煙弾発射機";"煙\t霧\t彈";;
-"modification/tank_smoke_screen_system_mod/desc";"Allows use of smoke screen system.";"Permet l’utilisation du système d'écran de fumée.";"Consente l'utilizzo del sistema della Cortina Fumogena.";"Ermöglicht den Einsatz von Nebeltöpfen zur Verhüllung des eigenen Fahrzeugs.";"Permite el uso del sistema de cortina de humo.";"Позволяет использовать систему постановки дымовой завесы.";"Umożliwia korzystanie z zasłony dymnej.";"Permite o uso do sistema de cortina de fumo.";"Sis perdesi sistemi kullanımına izin verir.";"연막차장의 사용을 가능하게한다.";"可\t释\t放\t烟\t雾。";"煙幕の\t使用を\t可能にする。";"可\t釋\t放\t煙\t霧。";;
+"modification/smoke";"Smoke screen";"Écran de fumée";"Cortina fumogena";"Smoke screen";"Cortina de humo";"Дымовая завеса";"Smoke screen";"Smoke screen";"Sis perdesi";"연막 차장";"释\t放\t烟\t雾";"Smoke screen";"Smoke screen";"max 20 symbols";" "
+"modification/tank_smoke_screen_low_cooldown";"Reload system";"Système de rechargement";"Ricarica il sistema";"Reload system";"Sistema de recarga";"Система перезарядки";"Reload system";"Reload system";"Yükleme sistemi";"재장전 시스템";"复\t装\t系\t统";"Reload system";"Reload system";"max 20 symbols";
+"modification/tank_smoke_screen_low_cooldown/desc";"Increases the speed of a smoke screen and ESS reload by 60%.";"Augmente la vitesse de création d'un écran de fumée et le rechargement ESS de 60 %.";"Aumenta la velocità della ricarica della cortina fumogena e ESS del 60%.";"Increases the speed of a smoke screen and ESS reload by 60%.";"Aumenta la velocidad de recarga de la cortina de humo y del ESS en un 60%.";"На 60% ускоряет перезарядку дымовых гранат и ТДА.";"Increases the speed of a smoke screen and ESS reload by 60%.";"Increases the speed of a smoke screen and ESS reload by 60%.";"Sis perdesi hızı ve ESS yeniden yükleme hızını %60 oranında artırır.";"ESS와 연막탄의 재장전 속도를 60% 증가시킵니다.";"烟\t雾\t弹\t装\t填\t速\t度\t以\t及\t引\t擎\t发\t烟\t装\t置\t整\t备\t速\t度\t加\t快 60%";"Increases the speed of a smoke screen and ESS reload by 60%.";"Increases the speed of a smoke screen and ESS reload by 60%.";;
+"modification/tank_smoke_screen_long_duration";"Dense smoke";"Fumée dense";"Fumogeno denso";"Dense smoke";"Humo denso";"Плотный дым";"Dense smoke";"Dense smoke";"Yoğun sis";"짙은 연막";"防\t御\t烟\t幕";"Dense smoke";"Dense smoke";"max 20 symbols";
+"modification/tank_smoke_screen_long_duration/desc";"Increases the duration of smoke screen from smoke grenades and ESS.";"Augmente la durée de l'écran de fumée des grenades fumigènes et de l'ESS.";"Aumenta la durata delle cortine fumogene dalle granate fumogene e ESS.";"Increases the duration of smoke screen from smoke grenades and ESS.";"Aumenta la duración de la cortina de humo de las granadas de humo y ESS.";"На 40% увеличивает время действия дымовой завесы от дымовых гранат и ТДА.";"Increases the duration of smoke screen from smoke grenades and ESS.";"Increases the duration of smoke screen from smoke grenades and ESS.";"Sis bombaları ve ESS' ile oluşturan sis perdesi süresini artırır.";"연막탄과 ESS 에서 만들어진 연막의 지속 시간이 증가합니다.";"延\t长\t烟\t雾\t弹\t与\t引\t擎\t发\t烟\t装\t置\t产\t生\t烟\t幕\t的\t有\t效\t时\t间。";"Increases the duration of smoke screen from smoke grenades and ESS.";"Increases the duration of smoke screen from smoke grenades and ESS.";;
+"modification/tank_smoke_screen_smoke_shell";"Smoke shell";"Obus fumigène";"Granata fumogena";"Smoke shell";"Proyectil de humo";"Дымовой снаряд";"Smoke shell";"Smoke shell";"Sis Mermisi";"연막탄";"烟\t雾\t弹";"Smoke shell";"Smoke shell";"max 20 symbols";
+"modification/tank_smoke_screen_smoke_shell/desc";"Gives access to smoke shells (maximum 2 per drive) to some tanks in the platoon. Before using them, change one of shell types to smoke in the battle vehicle and armament selection window.";"Donne accès aux obus fumigènes (maximum 2 par sortie) à certains chars du peloton. Avant de les utiliser, changez l'un des types d'obus en fumigène dans la fenêtre de sélection du véhicule de combat et de l'armement.";"Permette l'accesso alle granate fumogene (massimo 2 per guida) ad alcuni carri nel plotone. Prima di usarli, cambia un tipo di colpi a quello fumogeno nella finestra di scelta armamento del veicolo.";"Gives access to smoke shells (maximum 2 per drive) to some tanks in the platoon. Before using them, change one of shell types to smoke in the battle vehicle and armament selection window.";"Da acceso a proyectiles de humo (máximo 2 por unidad) a algunos tanques del pelotón. Antes de utilizarlos, cambia uno de los tipos de proyectil a humo en la ventana de selección de vehículo de combate y armamento.";"Предоставляет доступ к дымовым снарядам (не более двух на выезд) некоторым танкам во взводе. Перед использованием необходимо заменить один из снарядов на дымовые в окне выбора техники в бою.";"Gives access to smoke shells (maximum 2 per drive) to some tanks in the platoon. Before using them, change one of shell types to smoke in the battle vehicle and armament selection window.";"Gives access to smoke shells (maximum 2 per drive) to some tanks in the platoon. Before using them, change one of shell types to smoke in the battle vehicle and armament selection window.";"Birlikteki bazı tanklara duman mermilerine (sürüş başı en fazla 2 adet) erişim hakkı verir. Kullanmadan önce, savaşılan aracın mühimmat seçim ekranında mermi tiplerinden birini duman olarak değiştirin.";"소대 내 일부 전차가 연막탄을 사용할 수 있게 됩니다 (최대 2대). 사용 전, 무장 선택 창에서 해당 장비의 탄종을 연막탄으로 변경해야 합니다. ";"允\t许\t小\t队\t中\t部\t分\t坦\t克\t携\t带\t烟\t雾\t弹\t（每\t辆\t坦\t克\t最\t多\t携\t带 2 枚）\t参\t加\t战\t斗。\t使\t用\t烟\t雾\t弹\t前\t必\t须\t在\t出\t击\t前\t或\t在\t武\t器\t选\t择\t界\t面\t为\t载\t具\t配\t备\t烟\t雾\t弹。";"Gives access to smoke shells (maximum 2 per drive) to some tanks in the platoon. Before using them, change one of shell types to smoke in the battle vehicle and armament selection window.";"Gives access to smoke shells (maximum 2 per drive) to some tanks in the platoon. Before using them, change one of shell types to smoke in the battle vehicle and armament selection window.";;
+"modification/belts";"Machinegun belts";"Ceinture de mitrailleuse";"Nastri di mitragliatrice";"Machinegun belts";"Cinturones de ametralladora";"Пулемётные ленты";"Machinegun belts";"Machinegun belts";"Makineli tüfek kemeri";"기관총 탄띠";"机\t枪\t弹\t链";"Machinegun belts";"Machinegun belts";"max 20 symbols";
+"modification/machinegun_belt_tracer";"Tracer belt";"Ceinture de balles traçantes";"Nastro con traccianti";"Tracer belt";"Cinturón de trazadoras";"Трассирующая лента";"Tracer belt";"Tracer belt";"İzli mermi kemeri";"예광탄 탄띠";"曳\t光\t弹\t链";"Tracer belt";"Tracer belt";"max 20 symbols";
+"modification/machinegun_belt_tracer/desc";"Tracer bullets in the belt leave a smoke trace in the air. It is effective against unarmored targets, causing fire on piercing more often, while piercing the armor less effectively.";"Les balles traçantes dans la ceinture laissent une trace de fumée dans l'air. C'est efficace contre les cibles non blindées, provoquant plus souvent des incendies lors des pénétrations, tout en perçant moins efficacement le blindage.";"I proiettili traccianti rilasciano una traccia fumogena in aria. E' efficace contro bersagli non corazzati, causando incendi più frequenti mentre la penetrazione è meno efficace.";"Tracer bullets in the belt leave a smoke trace in the air. It is effective against unarmored targets, causing fire on piercing more often, while piercing the armor less effectively.";"Las balas trazadoras del cinturón dejan un rastro de humo en el aire. Es eficaz contra objetivos sin blindaje, provocando fuegos al perforar con mayor frecuencia, mientras que perfora el blindaje con menor eficacia.";"Трассирующие пули этой ленты оставляют в воздухе дымный след. Лента эффективна против небронированных целей и чаще вызывает возгарание при пробитии. Слабее прочих лент пробивает броню.";"Tracer bullets in the belt leave a smoke trace in the air. It is effective against unarmored targets, causing fire on piercing more often, while piercing the armor less effectively.";"Tracer bullets in the belt leave a smoke trace in the air. It is effective against unarmored targets, causing fire on piercing more often, while piercing the armor less effectively.";"Kemerdeki izli mermiler havada bir duman izi bırakır. Zırhsız hedeflere karşı etkildiir, delme halinde çok sık yangın çıkarır, ancak delme konusunda daha etkisizdir.";"탄띠에 든 예광탄은 공중에 옅은 연기를 남깁니다. 장갑이 없는 장비를 상대할 때 효과적이며 관통 시 화재가 일어날 확률이 높지만, 약간 낮은 관통력을 가지고 있습니다.";"曳\t光\t弹\t会\t在\t空\t中\t留\t下\t明\t显\t的\t飞\t行\t轨\t迹。\t用\t于\t对\t抗\t非\t装\t甲\t目\t标\t非\t常\t有\t效，\t可\t大\t大\t提\t升\t目\t标\t被\t命\t中\t后\t的\t起\t火\t几\t率，\t而\t穿\t甲\t性\t能\t则\t有\t所\t下\t降。";"Tracer bullets in the belt leave a smoke trace in the air. It is effective against unarmored targets, causing fire on piercing more often, while piercing the armor less effectively.";"Tracer bullets in the belt leave a smoke trace in the air. It is effective against unarmored targets, causing fire on piercing more often, while piercing the armor less effectively.";;
+"modification/machinegun_belt_ap";"Armor piercing belt";"Ceinture anti-blindage";"Nastro con colpi perforanti";"Armor piercing belt";"Cinturón perforante de armadura";"Бронебойная лента";"Armor piercing belt";"Armor piercing belt";"Zırh delici mermi kemeri";"철갑탄 탄띠";"穿\t甲\t弹\t链";"Armor piercing belt";"Armor piercing belt";"max 20 symbols";
+"modification/machinegun_belt_ap/desc";"The belt mostly consists of armor piercing bullets. It easily pierces thinner armor, but it's worse against aircraft.";"La ceinture se compose principalement de balles perforantes. Elles percent facilement les blindages les plus fins, mais c'est moins efficace contre les avions.";"Il caricatore consiste in gran parti di colpi penetranti. Penetrano più facilmente le corazze sottili ma sono peggiori contro gli aerei.";"The belt mostly consists of armor piercing bullets. It easily pierces thinner armor, but it's worse against aircraft.";"El cinturón se compone principalmente de balas perforantes. Perfora fácilmente los blindajes más finos, pero es peor contra los aviones.";"Большинсвто пуль в ленте бронебойные. Лента эффективна против тонкой брони. Слабее прочих лент справляется с авиацией.";"The belt mostly consists of armor piercing bullets. It easily pierces thinner armor, but it's worse against aircraft.";"The belt mostly consists of armor piercing bullets. It easily pierces thinner armor, but it's worse against aircraft.";"Kemer büyük ölçüde zırh delici mermilerden oluşur. İnce zırhı rahatlıkla deler ancak uçaklara karşı daha kötüdür.";"대부분 철갑탄으로 이루어진 탄띠입니다. 얇은 장갑 정도는 쉽게 관통할 수 있지만, 항공기를 상대하기에는 효율적이지 않습니다.";"该\t弹\t链\t主\t要\t组\t分\t为\t穿\t甲\t弹。\t可\t轻\t易\t撕\t碎\t轻\t装\t甲\t目\t标\t的\t防\t护，\t但\t用\t于\t对\t抗\t空\t中\t单\t位\t的\t毁\t伤\t相\t较\t其\t他\t弹\t药\t要\t更\t弱\t一\t些。";"The belt mostly consists of armor piercing bullets. It easily pierces thinner armor, but it's worse against aircraft.";"The belt mostly consists of armor piercing bullets. It easily pierces thinner armor, but it's worse against aircraft.";;
+"modification/machinegun_belt_stealth";"Stealth belt";"Ceinture furtive";"Nastro senza traccianti";"Stealth belt";"Cinturón de sigilo";"Скрытая лента";"Stealth belt";"Stealth belt";"Gizli kemer";"무예광 탄띠";"匿\t踪\t弹\t链";"Stealth belt";"Stealth belt";"max 20 symbols";
+"modification/machinegun_belt_stealth/desc";"The belt lacks tracer bullets, making firing less noticeable. It makes firing at long distances more difficult.";"La ceinture n'a pas de balles traçantes, ce qui rend le tir moins perceptible. Cela rend plus difficile le tir à longue distance.";"Le munizioni non hanno proiettili traccianti, facendoli diventare meno ravvisabili. Rendono il fuoco alle lunghe distanze più difficile.";"The belt lacks tracer bullets, making firing less noticeable. It makes firing at long distances more difficult.";"El cinturón carece de balas trazadoras, lo que hace que los disparos sean menos perceptibles. Hace más difícil disparar a larga distancia.";"В ленте отсутствуют трассирующие пули, делая стрельбу менее заметной. Затрудняет стрельбу на дальние дистанции.";"The belt lacks tracer bullets, making firing less noticeable. It makes firing at long distances more difficult.";"The belt lacks tracer bullets, making firing less noticeable. It makes firing at long distances more difficult.";"Kemer'de izli mermi bulunmaz, bu yüzden atış daha az belirgin olur. Uzun mesafelerde atış yapmayı zorlaştırır.";"탄띠에 예광탄이 존재하지 않으므로 사격하는 위치가 노출될 확률이 줄어들지만, 장거리 사격 시의 난이도가 올라갑니다.";"该\t弹\t链\t不\t包\t含\t任\t何\t曳\t光\t弹\t药。\t敌\t方\t单\t位\t难\t以\t察\t觉\t遭\t受\t火\t力，\t不\t过\t也\t让\t远\t距\t离\t命\t中\t敌\t人\t变\t得\t更\t加\t困\t难。";"The belt lacks tracer bullets, making firing less noticeable. It makes firing at long distances more difficult.";"The belt lacks tracer bullets, making firing less noticeable. It makes firing at long distances more difficult.";;
 "modification/thermal_vision_system";"TVD";"TVD";"TVD";"TVD";"TVD";"ТПВ";"Termowizja";"TVD";"TVS";"TVD";"热\t成\t像\t观\t瞄\t设\t备";"サーマルビジョンシステム";"TVD";;
 "modification/night_vision_system";"NVD";"NVD";"NVD";"NVD";"NVD";"ПНВ";"NVD";"DVN";"GGE";"NVD";"夜\t视\t仪";"NVD（暗視装置）";"NVD";;
 "modification/night_vision_system/desc";"Allows use of night vision devices.";"Permet l'utilisation du système de vision nocturne.";"Permette l'utlizzo di visori notturni";"Erlaubt die Nutzung von Nachtsichtgeräten.";"Permite el uso de dispositivos de visión nocturna.";"Позволяет использовать приборы ночного видения.";"Pozwala na korzystanie z urządzeń noktowizyjnych.";"Permite o uso de equipamentos de Visão Noturna.";"Gece görüş sistemlerinin kullanılmasına izin verir.";"야시장비를 사용할 수 있게 된다.";"可\t使\t用\t夜\t视\t设\t备，\t如\t微\t光\t夜\t视\t仪、\t热\t成\t像\t传\t感\t器\t等。
@@ -1878,7 +2039,7 @@ Yeniden doğma noktalarının olduğu modlarda, uçağın doğma maliyetini bir 
 "engine_manufacturer/walter";"Walter";"Walter";"Walter";"Walter";"Walter";"Walter";"Walter";"Walter";"Walter";"발터";"瓦\t尔\t特";"ヴァルター";"瓦\t尔\t特";;
 "engine_model/hwk_109_509a-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";"HWK 109-509A-2";;
 "engine_model/jumo004b-1";"Jumo 004B-1";"Jumo 004B-1";"Jumo 004B-1";"Jumo 004B-1";"Jumo 004B-1";"Jumo 004B-1";"Jumo 004D";"Jumo 004B-1";"Jumo 004D";"유모 004B-1";"Jumo 004B-1";"ユモ 004D";"Jumo 004B-1";;
-"engine_model/bmw_003";003;"BMW 003";3;3;3;003;3;3;3;3;3;3;3;;
+"engine_model/bmw_003";003;3;3;3;3;003;3;3;3;3;3;3;3;;
 "engine_model/bmw_003r";"003-R";"003-R";"003-R";"003-R";"003-R";"003-R";"003-R";"003-R";"003-R";"003-R";"003-R";"003-R";"003-R";;
 "engine_model/bmw_003e";"003-E";"003-E";"003-E";"003-E";"003-E";"003-E";"003-E";"003-E";"003-E";"003-E";"003-E";"003-E";"003-E";;
 "engine_manufacturer/fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"Fiat";"피아트";"菲\t亚\t特";"フィアット";"菲\t亚\t特";;
@@ -1980,9 +2141,9 @@ Yeniden doğma noktalarının olduğu modlarda, uçağın doğma maliyetini bir 
 "modification/new_ship_screw";"Propeller Replacement";"Remplacement des hélices";"Sostituzione Elica";"Neue Schraube";"Recambio de hélice";"Замена винтов";"Wymiana śruby okrętowej";"Propeller Replacement";"Pervane Değişimi";"프로펠러 교체";"更\t换\t桨\t叶";"スクリュー\t交換";"更\t換\t槳\t葉";;
 "modification/new_ship_screw/desc";"Replacing the propellers increases acceleration and maximum forward speed.";"Le remplacement des hélices améliore l'accélération et la vitesse maximale.";"Sostituendo le eliche viene aumentata l'accelerazione e la velocità massima.";"Durch den Austausch der Schiffsschraube(n) wird die Beschleunigung und Höchstgeschwindigkeit verbessert.";"Reemplazar las hélices aumenta la aceleración y la velocidad de avance máxima.";"Замена гребных винтов улучшает разгон и максимальную скорость хода.";"Wymiana śrub napędowych poprawia przyspieszenie i prędkość maksymalną.";"Replacing the propellers increases acceleration and maximum forward speed.";"Pervanelerin değiştirilmesi hızlanmayı ve en yüksek ileri hızı arttırır.";"프로펠러를 교체해 함선의 가속력과 전진시 최대 속도를 높입니다.";"更\t换\t老\t旧\t的\t桨\t叶，\t从\t而\t提\t升\t最\t大\t前\t进\t航\t速\t和\t加\t速\t性\t能。";"スクリューを\t交換し、\t加速と\t最大前進速度が\t増加させる。";"更\t換\t槳\t葉，\t從\t而\t提\t升\t加\t速\t度\t和\t最\t大\t前\t進\t航\t速";;
 "modification/new_ship_hull";"Dry-Docking";"Cale-sèche";"Bacino di Carenaggio";"Trockendock Besuch";"Dique seco";"Докование";"Nowy kadłub";"Dry-Docking";"Kuru-Yerleştirme";"건선거 정비";"干\t船\t坞\t维\t护";"乾\tドック";"乾\t船\t塢\t維\t護";;
-"modification/new_ship_hull/desc";"Cleaning the ship’s bottom from seashells and algae. Increases maximum forward speed.";"Nettoyage des coquillages et des algues sur la coque du navire. Augmente la vitesse de pointe.";"Pulisce lo scafo da alghe e conchiglie. Aumenta la velocità massima.";"Regelmäßige Besuche im Trockendock, um den Schiffsrumpf von Muschel- und Algenbewuchs zu befreien, erhöhen die Höchstgeschwindigkeit des Schiffs.";"Limpia el casco del barco de conchas y algas. Aumenta la velocidad de avance máxima.";"Чистка днища корабля от ракушек и водорослей. Увеличивает максимальную скорость хода.";"Czyszczenie spodu okrętu z muszli i glonów. Zwiększa prędkość maksymalną.";"Limpeza do fundo do navio de algas e crustáceos. Aumenta a velocidade máxima em frente.";"Gemi'nin altının deniz kabukları ve yosunlardan temizlenmesi. En yüksek ileri hızı arttırır.";"함선 아래에 달라붙은 조개껍데기와 해조류를 떼어내어 전진 시 최대 속도가 증가합니다.";"在\t干\t船\t坞\t对\t舰\t船\t进\t行\t维\t护，\t清\t理\t船\t体\t上\t附\t着\t的\t贝\t类\t和\t海\t藻，\t从\t而\t提\t升\t最\t大\t前\t进\t航\t速。";"貝殻や\t藻類から\t艦底を\t清掃し、\t 最大前進速度を\t増加させる。";"在\t乾\t船\t塢\t對\t船\t艦\t進\t行\t維\t護，\t清\t理\t船\t體\t上\t附\t著\t的\t貝\t類\t和\t海\t藻，\t從\t而\t提\t升\t最\t大\t前\t進\t航\t速";;
+"modification/new_ship_hull/desc";"Cleaning the vessel’s bottom from seashells and algae. Increases maximum forward speed.";"Nettoyage des coquillages et des algues sur la coque du navire. Augmente la vitesse de pointe.";"Pulisce lo scafo da alghe e conchiglie. Aumenta la velocità massima.";"Regelmäßige Besuche im Trockendock, um den Schiffsrumpf von Muschel- und Algenbewuchs zu befreien, erhöhen die Höchstgeschwindigkeit des Schiffs.";"Limpia el casco del barco de conchas y algas. Aumenta la velocidad de avance máxima.";"Чистка днища корабля от ракушек и водорослей. Увеличивает максимальную скорость хода.";"Czyszczenie spodu okrętu z muszli i glonów. Zwiększa prędkość maksymalną.";"Limpeza do fundo do navio de algas e crustáceos. Aumenta a velocidade máxima em frente.";"Gemi'nin altının deniz kabukları ve yosunlardan temizlenmesi. En yüksek ileri hızı arttırır.";"함선 아래에 달라붙은 조개껍데기와 해조류를 떼어내어 전진 시 최대 속도가 증가합니다.";"在\t干\t船\t坞\t对\t舰\t船\t进\t行\t维\t护，\t清\t理\t船\t体\t上\t附\t着\t的\t贝\t类\t和\t海\t藻，\t从\t而\t提\t升\t最\t大\t前\t进\t航\t速。";"貝殻や\t藻類から\t艦底を\t清掃し、\t 最大前進速度を\t増加させる。";"在\t乾\t船\t塢\t對\t船\t艦\t進\t行\t維\t護，\t清\t理\t船\t體\t上\t附\t著\t的\t貝\t類\t和\t海\t藻，\t從\t而\t提\t升\t最\t大\t前\t進\t航\t速";;
 "modification/new_ship_rudder";"Rudder Replacement";"Remplacement de la gouverne";"Controllo Timone";"Neues Ruder";"Controles del timón";"Замена рулей";"Wymiana steru";"Rudder Replacement";"Dümen Değişimi";"러더 교체";"更\t换\t船\t舵";"舵交換";"更\t換\t船\t舵";;
-"modification/new_ship_rudder/desc";"Replacing the rudder blades and steering mechanisms. Increases the ship's turning ability and decreases its turning time and radius.";"Remplacement des gouvernes et des mécanismes de direction. Augmente la capacité de rotation du navire et diminue son temps de rotation et le rayon.";"Sostituisce le lame del timone e i meccanismi di virata. Diminuisce il tempo ed il raggio di virata.";"Durch Austausch der Ruderblätter und der Lenkanlage wird die Wendigkeit des Schiffs erhöht und sowohl Wendezeit als auch Wenderadius verringert.";"Reemplaza las palas de timón y los mecanismos de dirección. Disminuye tiempo y radio de giro.";"Замена пера руля, рулевых механизмов. Улучшает поворотливость корабля, уменьшая время и радиус циркуляции.";"Wymiana płetw steru i mechanizmów sterowych. Poprawia zwrotność, zmniejsza promień i czas zakrętu.";"Replacing the rudder blades and steering mechanisms. Increases the ship's turning ability and decreases its turning time and radius.";"Dümen bıçaklarının ve yön mekanizmalarının değişimi. Gemi'nin dönüş kabiliyetini arttırır ve dönüş süresi ile çapını azaltır.";"러더 날과 조타 장비를 교체하여 함선의 선회시간과 선회반경을 줄인다.";"更\t换\t老\t旧\t的\t舵\t叶\t和\t转\t向\t结\t构，\t从\t而\t降\t低\t转\t向\t半\t径\t和\t耗\t时。";"舵板と\t操舵装置を\t交換し、\t艦艇の\t旋回能力を\t増加させ、\t旋回時間と\t半径を\t減少させる。";"更\t換\t船\t舵\t和\t轉\t向\t結\t構，\t從\t而\t降\t低\t轉\t向\t半\t徑\t與\t時\t間";;
+"modification/new_ship_rudder/desc";"Replacing the rudder blades and steering mechanisms. Increases the vessel's turning ability and decreases its turning time and radius.";"Remplacement des gouvernes et des mécanismes de direction. Augmente la capacité de rotation du navire et diminue son temps de rotation et le rayon.";"Sostituisce le lame del timone e i meccanismi di virata. Aumenta la capacità di virare e diminuisce il tempo ed il raggio di virata.";"Durch Austausch der Ruderblätter und der Lenkanlage wird die Wendigkeit des Schiffs erhöht und sowohl Wendezeit als auch Wenderadius verringert.";"Reemplaza las palas de timón y los mecanismos de dirección. Disminuye tiempo y radio de giro.";"Замена пера руля, рулевых механизмов. Улучшает поворотливость корабля, уменьшая время и радиус циркуляции.";"Wymiana płetw steru i mechanizmów sterowych. Poprawia zwrotność, zmniejsza promień i czas zakrętu.";"Replacing the rudder blades and steering mechanisms. Increases the ship's turning ability and decreases its turning time and radius.";"Dümen bıçaklarının ve yön mekanizmalarının değişimi. Gemi'nin dönüş kabiliyetini arttırır ve dönüş süresi ile çapını azaltır.";"러더 날과 조타 장비를 교체하여 함선의 선회시간과 선회반경을 줄인다.";"更\t换\t老\t旧\t的\t舵\t叶\t和\t转\t向\t结\t构，\t从\t而\t降\t低\t转\t向\t半\t径\t和\t耗\t时。";"舵板と\t操舵装置を\t交換し、\t艦艇の\t旋回能力を\t増加させ、\t旋回時間と\t半径を\t減少させる。";"更\t換\t船\t舵\t和\t轉\t向\t結\t構，\t從\t而\t降\t低\t轉\t向\t半\t徑\t與\t時\t間";;
 "modification/ship_tool_kit";"Tool Set";"Trousse d'outils";"Attrezzi";"Neue Werkzeuge";"Kit de herramientas";"Инструменты";"Zestaw naprawczy";"Tool Set";"Alet Kiti";"수리공구";"维\t修\t组\t件";"工具\tセット";"維\t修\t組\t件";;
 "modification/ship_tool_kit/desc";"Reserve tools and implements. A set of tools and spare parts for offshore maintenance.";"Trousse d'outils et consommables. Un kit d'outils et de pièces détachées pour la maintenance en mer.";"Attrezzi di riserva. Un set di attrezzi e parti di ricambio per la manutenzione sul campo.";"Ein neuer Satz an Ersatzwerkzeugen, um auch unter Gefechtsbedingungen Reparaturen durchführen zu können.";"Reserva de herramientas e instrumentos. Un conjunto de herramientas y piezas de repuesto para mantenimiento costa afuera.";"Набор инструментов и запчастей, позволяющих выполнить ремонт в море.";"Części zapasowe i dodatkowe narzędzia pozwalają na wykonywanie napraw na morzu.";"Reserve tools and implements. A set of tools and spare parts for offshore maintenance.";"Yedek alet ve edevatlar. Açık denizde bakım için aletler ve yedek parçalar takımı.";"해상에서 정비를 하기 위해 예비 공구와 수리부속을 탑재한다.";"预\t留\t多\t套\t用\t于\t海\t上\t维\t修\t的\t工\t具\t和\t备\t用\t套\t件。";"道具や\t器具を\t用意する。\t沖合での\tメンテナンス\t用の\t工具\tセットと\t予備部品を\t載せる。";"預\t留\t多\t套\t用\t於\t海\t上\t維\t修\t的\t工\t具\t和\t備\t用\t套\t件。";;
 "modification/manual_ship_extinguisher";"Fire Protection System";"Système de Protection Contre les Incendies";"Sistema Antincendio";"Feuerlöscher";"Sistema de supresión de fuego";"Система тушения";"System przeciwpożarowy";"Fire Protection System";"Yangın Önleme Sistemi";"소화 체계";"灭\t火\t系\t统";"消火装置";"滅\t火\t系\t統";;
@@ -2750,3 +2911,131 @@ Yeniden doğma noktalarının olduğu modlarda, uçağın doğma maliyetini bir 
 "counterMeasures/l_166";"L-166";"L-166";"L-166";"L-166";"L-166";"Л-166";"L-166";"L-166";"L-166";"L-166";"L-166";"L-166";"L-166";;
 "modification/305mm_ussr_52_obr1907_1941_navy_he";"12-inch HE patt.1928";"HE de 12 pouces mod. 1928";"HE da 12"" mod.1928";"12-inch HE Mod. 1928";"12-inch HE patt.1928";"305-мм ОФ обр.1928";"HE patt.1928 kal. 12 in";"12-inch HE patt.1928";"12 inç HE patt.1928";"1928형 12인치 HE";"1928 型\t榴\t弹";"12\tインチ HE patt.1928";"12-inch HE patt.1928";;
 "modification/305mm_ussr_52_obr1907_1941_navy_he_ammo_pack";"12-inch HE patt.1928";"HE de 12 pouces mod. 1928";"HE da 12"" mod.1928";"12-inch HE Mod. 1928";"12-inch HE patt.1928";"305-мм ОФ обр.1928";"HE patt.1928 kal. 12 in";"12-inch HE patt.1928";"12 inç HE patt.1928";"1928형 12인치 HE";"1928 型\t榴\t弹";"12\tインチ HE patt.1928";"12-inch HE patt.1928";;
+"modification/shipWeapons";"Weapons";"Armes";"Armi";"Weapons";"Armas";"Вооружение";"Weapons";"Weapons";"Silahlar";"무장";"武\t器\t配\t置";"Weapons";"Weapons";"max 20 symbols";
+"modification/shipProtection";"Protection";"Protection";"Protezione";"Protection";"Protección";"Защита";"Protection";"Protection";"Koruma";"방어력";"装\t甲\t防\t护";"Protection";"Protection";"max 20 symbols";
+"modification/shipMaintanance";"Maintenance";"Maintenance";"Manutenzione";"Maintenance";"Mantenimiento";"Подвижность и ремонт";"Maintenance";"Maintenance";"Bakım";"정비";"后\t勤\t维\t护";"Maintenance";"Maintenance";"max 20 symbols";
+"modification/shipTorpedoes";"Torpedoes";"Torpilles";"Siluri";"Torpedoes";"Torpedos";"Торпеды";"Torpedoes";"Torpedoes";"Torpidolar";"어뢰";"鱼\t雷";"Torpedoes";"Torpedoes";;
+"modification/weapons_contact_mines";"Moored contact mines";"Mines à orin à contact";"Mine a contatto ormeggiate";"Moored contact mines";"Minas de contacto amarradas";"Контактные мины";"Moored contact mines";"Moored contact mines";"Demirlenmiş müsademeli mayınlar";"계류식 접촉기뢰";"触\t发\t引\t信\t系\t留\t水\t雷";"Moored contact mines";"Moored contact mines";"max 20 symbols";
+"modification/weapons_contact_mines/desc";"Drops near the water surface
+Deal massive amount of damage on contact with enemies";"Larguée près de la surface de l'eau
+Inflige une quantité importante de dégâts au contact des ennemis";"Viene sganciata sulla superficie dell'acqua
+Infligge grossi danni al contatto con i nemici";"Drops near the water surface
+Deal massive amount of damage on contact with enemies";"Cae cerca de la superficie del agua
+Infligen una cantidad de daño masiva al contacto con los enemigos";"Устанавливаются у поверхности воды
+Наносят большое количество урона при контакте с противником";"Drops near the water surface
+Deal massive amount of damage on contact with enemies";"Drops near the water surface
+Deal massive amount of damage on contact with enemies";"Su yüzeyine yakın bırakılır
+Doğrudan temasta düşmana çok büyük hasar verir";"수면 위에 투하되는 무기입니다.
+적에게 닿을 경우, 폭발하여 큰 피해를 입힙니다.";"可\t投\t放\t系\t留\t在\t水\t面\t上
+一\t旦\t触\t发\t可\t对\t敌\t方\t目\t标\t造\t成\t客\t观\t伤\t害";"Drops near the water surface
+Deal massive amount of damage on contact with enemies";"Drops near the water surface
+Deal massive amount of damage on contact with enemies";;
+"modification/weapons_depth_charges";"Depth charges";"Grenades anti-sous-marine";"Cariche di profondità";"Depth charges";"Cargas de profundidad";"Глубинные бомбы";"Depth charges";"Depth charges";"Sualtı bombaları";"폭뢰";"深\t水\t炸\t弹";"Depth charges";"Depth charges";"max 20 symbols";
+"modification/weapons_depth_charges/desc";"Can be used to attack a submarine near the vessel";"Peut être utilisé pour attaquer un sous-marin près du navire";"Può essere usata per attaccare un sommergibile vicino al vascello";"Can be used to attack a submarine near the vessel";"Puede utilizarse para atacar a un submarino cerca del buque";"Подходят для атаки подводной лодки вблизи корабля";"Can be used to attack a submarine near the vessel";"Can be used to attack a submarine near the vessel";"Gemiye yakın bir denizaltıya saldırı için kullanılabilir";"잠수함이나 근처에 있는 함선을 공격할 때 사용됩니다.";"可\t用\t于\t反\t制\t舰\t艇\t周\t围\t的\t潜\t艇\t单\t位";"Can be used to attack a submarine near the vessel";"Can be used to attack a submarine near the vessel";;
+"modification/weapons_torpedo_movement_mode";"Faster torpedo";"Torpille plus rapide";"Siluro più veloce";"Faster torpedo";"Torpedo más rápido";"Ускоренная торпеда";"Faster torpedo";"Faster torpedo";"Daha hızlı torpidolar";"고속 어뢰";"高\t速\t鱼\t雷";"Faster torpedo";"Faster torpedo";"max 20 symbols";
+"modification/weapons_torpedo_movement_mode/desc";"Faster but less powerful torpedo
++30% to torpedo speed
+-30% to damage";"Torpille plus rapide mais moins puissante
++30% à la vitesse des torpilles
+-30% aux dégâts";"Siluro più veloce ma meno potente
++30% alla velocità
+-30% ai danni";"Faster but less powerful torpedo
++30% to torpedo speed
+-30% to damage";"Torpedo más rápido pero menos potente
++30% a la velocidad del torpedo;
+-30% al daño";"Более быстрая, но менее мощная торпеда
++30% к скорости торпеды
+-30% к урону";"Faster but less powerful torpedo
++30% to torpedo speed
+-30% to damage";"Faster but less powerful torpedo
++30% to torpedo speed
+-30% to damage";"Daha hızlı fakat daha az güçlü torpido
++%30 torpido hızı
+-%30 hasar";"속도는 빠르지만, 파괴력은 낮은 어뢰입니다.
+어뢰 속도 +30%
+피해량 -30%";"牺\t牲\t部\t分\t装\t药\t量\t以\t提\t高\t航\t速
+鱼\t雷\t最\t大\t航\t速\t提\t升 30%
+命\t中\t后\t伤\t害\t减\t少 30%";"Faster but less powerful torpedo
++30% to torpedo speed
+-30% to damage";"Faster but less powerful torpedo
++30% to torpedo speed
+-30% to damage";;
+"modification/weapons_torpedo_damage_mode";"Powered torpedo";"Torpille plus puissante";"Siluro potenziato";"Powered torpedo";"Torpedo Potenciado";"Усиленная торпеда";"Powered torpedo";"Powered torpedo";"Güçlendirilmiş torpido";"강화 어뢰";"高\t能\t鱼\t雷";"Powered torpedo";"Powered torpedo";"max 20 symbols";
+"modification/weapons_torpedo_damage_mode/desc";"More powerful but less fast torpedo
++30% to damage
+-30% to torpedo speed";"Torpille plus puissante mais moins rapide
++30% aux dégâts
+-30% à la vitesse des torpilles";"Siluro più potente ma meno veloce
++30% ai danni
+-30% alla velocità";"More powerful but less fast torpedo
++30% to damage
+-30% to torpedo speed";"Torpedo más potente pero menos rápido
++30% al daño 
+-30% a la velocidad del torpedo";"Более мощная, но менее быстрая торпеда
++30% к урону
+-30% к скорости хода";"More powerful but less fast torpedo
++30% to damage
+-30% to torpedo speed";"More powerful but less fast torpedo
++30% to damage
+-30% to torpedo speed";"Daha güçlü fakat daha yavaş torpido
++%30 hasar
+-%30 hız";"파괴력은 강하나, 속도가 느린 어뢰입니다.
+피해량 +30%
+어뢰 속도 -30%";"牺\t牲\t部\t分\t航\t行\t速\t度\t提\t升\t鱼\t雷\t威\t力
+命\t中\t后\t伤\t害\t提\t升 30%
+最\t大\t航\t行\t速\t度\t减\t少 30%";"More powerful but less fast torpedo
++30% to damage
+-30% to torpedo speed";"More powerful but less fast torpedo
++30% to damage
+-30% to torpedo speed";;
+"modification/protection_ammo_wetting";"Storage wetting";"Inondation des soutes";"Bagno munizioni";"Storage wetting";"Humectación del almacenamiento";"Орошение боеукладки";"Storage wetting";"Storage wetting";"Depo ıslatma";"습식 탄약고";"湿\t式\t弹\t药\t储\t备";"Storage wetting";"Storage wetting";"max 20 symbols";
+"modification/protection_ammo_wetting/desc";"Take less damage in case of detonation of the ammunition storages by 25%";"Subissez moins de dégâts en cas de détonation des stocks de munitions de 25 %";"Prendono meno danni in caso di detonazione delle stive munizioni del 25%";"Take less damage in case of detonation of the ammunition storages by 25%";"Recibe un 25% menos de daño en caso de detonación de los depósitos de munición";"Снижает урон при детонации погребов боезапаса на 25%";"Take less damage in case of detonation of the ammunition storages by 25%";"Take less damage in case of detonation of the ammunition storages by 25%";"Mühimmat depolarının infilak etmesi durumunda hasarı %15 azaltır";"습식 탄약고 시스템을 채택하여 화재 발생 시 탄약고 유폭 확률을 25% 줄여줍니다.";"弹\t药\t殉\t爆\t造\t成\t伤\t害\t减\t少 25%";"Take less damage in case of detonation of the ammunition storages by 25%";"Take less damage in case of detonation of the ammunition storages by 25%";;
+"modification/protection_new_sonar";"Sonar station";"Station sonar";"Stazione sonar";"Sonar station";"Estación de sonar";"Гидроакустика";"Sonar station";"Sonar station";"Sonar istasyonu";"소나 스테이션";"声\t呐\t设\t备";"Sonar station";"Sonar station";"max 20 symbols";
+"modification/protection_new_sonar/desc";"Detects submarines near the ship
+radius: up to 1,5 km 
+depth: up to 50 m";"Détecte les sous-marins à proximité du navire
+rayon: jusqu'à 1,5 km
+profondeur: jusqu'à 100 m";"Avvista i sommergibili vicino alla nave
+raggio: fino a 1,5km
+profondità: fino a 100m";"Detects submarines near the ship
+radius: up to 1,5 km 
+depth: up to 50 m";"Detecta submarinos cerca del barco
+radio: hasta 1,5 km 
+profundidad: hasta 100 m";"Обнаруживает подводные лодки вокруг корабля
+Радиус: до 1,5 км
+Глубина: до 50 м";"Detects submarines near the ship
+radius: up to 1,5 km 
+depth: up to 50 m";"Detects submarines near the ship
+radius: up to 1,5 km 
+depth: up to 50 m";"Gemiye yakın denizaltıları tespit eder
+yarı çap: 1,5 km'ye kadar 
+derinlik: 100 m'ye kadar";"함선 근처의 잠수함을 감지해낼 수 있습니다.
+범위: 최대 1.5km
+심도: 최대 100m";"探\t测\t舰\t艇\t周\t边\t潜\t艇\t单\t位\t的\t位\t置
+最\t大\t探\t测\t半\t径：\t1.5 千\t米
+最\t大\t探\t测\t深\t度：\t100 米";"Detects submarines near the ship
+radius: up to 1,5 km 
+depth: up to 50 m";"Detects submarines near the ship
+radius: up to 1,5 km 
+depth: up to 50 m";;
+"modification/protection_new_fireProtection";"Fire protection";"Protection contre l’incendie";"Sistema antincendio";"Fire protection";"Protección contra incendios";"Защита от пожара";"Fire protection";"Fire protection";"Yangından korunma";"방화 체계";"防\t火\t改\t造";"Fire protection";"Fire protection";"max 20 symbols";
+"modification/protection_new_fireProtection/desc";"Take 50% less fire damage";"Subit 50% de dégâts de feu en moins";"Si subiscono il 50% in meno di danni da incendio";"Take 50% less fire damage";"Recibe un 50% menos de daño por fuego";"Снижает урон от пожара на 50%";"Take 50% less fire damage";"Take 50% less fire damage";"%50 daha az yangın hasarı al";"화재로 인한 피해가 50% 감소합니다.";"舰\t艇\t起\t火\t后\t造\t成\t的\t伤\t害\t减\t少 50%";"Take 50% less fire damage";"Take 50% less fire damage";;
+"modification/maintanance_new_propellers";"New propellers";"Nouvelles hélices";"Nuove eliche";"New propellers";"Hélices nuevas";"Новые винты";"New propellers";"New propellers";"Yeni pervaneler";"새 프로펠러";"螺\t旋\t桨\t翻\t新";"New propellers";"New propellers";"max 20 symbols";
+"modification/maintanance_new_propellers/desc";"Reduces the acceleration and deceleration times by 15%";"Réduit les temps d'accélération et de décélération de 15 %";"Riduce i tempi di accelerazione e decelerazione del 15%";"Reduces the acceleration and deceleration times by 15%";"Reduce el tiempo de aceleración y deceleración en un 15%";"Ускоряет разгон и остановку на 15%";"Reduces the acceleration and deceleration times by 15%";"Reduces the acceleration and deceleration times by 15%";"Hızlanma ve yavaşlama süresini %15 azaltır";"가속 시간과 제동 시간이 15% 감소합니다.";"加\t速\t与\t减\t速\t效\t率\t均\t提\t升 15%";"Reduces the acceleration and deceleration times by 15%";"Reduces the acceleration and deceleration times by 15%";;
+"modification/maintanance_new_engines";"New engines";"Nouveaux moteurs";"Nuovi motori";"New engines";"Motores nuevos";"Новые машины";"New engines";"New engines";"Yeni motorlar";"새 엔진";"轮\t机\t翻\t新";"New engines";"New engines";"max 20 symbols";
+"modification/maintanance_new_engines/desc";"Increases the maximum speed by 20%";"Augmente la vitesse maximale de 20%";"Aumenta la velocità massima del 20%";"Increases the maximum speed by 20%";"Aumenta la velocidad máxima en un 20%";"Увеличивает максимальную скорость на 20%";"Increases the maximum speed by 20%";"Increases the maximum speed by 20%";"Son hızı %20 artırır";"최대 속도가 20% 증가합니다.";"航\t行\t极\t速\t提\t升 20%";"Increases the maximum speed by 20%";"Increases the maximum speed by 20%";;
+"modification/maintanance_powered_toolkit";"Enhanced toolkit";"Boîte à outils améliorée";"Attrezzi migliorati";"Enhanced toolkit";"Kit de herramientas mejorado";"Усиленный ремонт";"Enhanced toolkit";"Enhanced toolkit";"İyileştirilmiş tamir kiti";"강화된 수리도구";"进\t阶\t维\t修\t套\t件";"Enhanced toolkit";"Enhanced toolkit";"max 20 symbols";
+"modification/maintanance_powered_toolkit/desc";"Toolkits restores 15% more damage
+Maximum times you can repair in battle is reduced by 3";"Les boîtes à outils restaurent 15 % de dégâts supplémentaires
+Le nombre maximum de réparations en combat est réduit de 3";"Le cassette degli attrezzi fanno recuperare il 15% di danni in più
+Le volte massime in cui ci si può riparare in battaglia è ridotto di 3";"Toolkits restores 15% more damage
+Maximum times you can repair in battle is reduced by 3";"Los kits de herramientas restauran un 15% más de daño
+El número máximo de veces que puedes reparar en batalla se reducen por 3";"Ремкомплекты восстанавливают на 15% больше повреждений
+Максимальное количество ремонтов бою меньше на 3";"Toolkits restores 15% more damage
+Maximum times you can repair in battle is reduced by 3";"Toolkits restores 15% more damage
+Maximum times you can repair in battle is reduced by 3";"Tamir kitleri %15 daha fazla hasar onarır
+Muharebede yapabileceğiniz en fazla tamir sayısı 3 azalır";"수리도구를 통해 피해량의 15%를 추가로 복구합니다.
+전투 중 수리할 수 있는 횟수가 3회 감소합니다.";"使\t用\t修\t理\t套\t件\t能\t够\t额\t外\t恢\t复 15% 耐\t久\t值
+战\t斗\t中\t可\t用\t维\t修\t套\t件\t数\t量\t减\t少\t至 3 次";"Toolkits restores 15% more damage
+Maximum times you can repair in battle is reduced by 3";"Toolkits restores 15% more damage
+Maximum times you can repair in battle is reduced by 3";;

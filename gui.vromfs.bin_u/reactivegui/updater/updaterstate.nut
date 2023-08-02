@@ -20,6 +20,7 @@ let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campai
 let { myUnits, curUnitMRank } = require("%appGlobals/pServer/profile.nut")
 let { isConnectionLimited } = require("connectionStatus/connectionStatus.nut")
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
+let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
 let ALLOW_LIMITED_DOWNLOAD_SAVE_ID = "allowLimitedConnectionDownload"
@@ -67,7 +68,7 @@ let wantStartDownloadAddons = Computed(function(prev) {
   if (!isLoggedIn.value || addonsToDownload.value.len() == 0)
     return prevIfEqual(prev, {})
 
-  let addons = firstPriorityAddons.value.__merge(initialAddonsToDownload.value) //first priority on addons requested by download addons window
+  let addons = firstPriorityAddons.value.__merge(initialAddonsToDownload.value, squadAddons.value) //first priority on addons requested by download addons window
   local res = addonsToDownload.value.filter(@(_, a) a in addons)
   if (res.len() != 0)
     return prevIfEqual(prev, res)
@@ -226,7 +227,7 @@ let maxCurCampaignMRank = Computed(function() {
 let addonsToAutoDownload = keepref(Computed(function() {
   if (!isAnyCampaignSelected.value)
     return initialAddonsToDownload.value?.keys()
-  let list = initialAddonsToDownload.value.__merge(latestAddonsToDownload.value)
+  let list = initialAddonsToDownload.value.__merge(latestAddonsToDownload.value, squadAddons.value)
   foreach(a in getCampaignPkgsForOnlineBattle(curCampaign.value, maxCurCampaignMRank.value))
     list[a] <- true
   return list.keys()

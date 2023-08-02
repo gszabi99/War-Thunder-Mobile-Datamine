@@ -30,7 +30,6 @@ let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnde
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInfoPanel, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
 let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
-//let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { curFilters, optName, optCountry, optUnitClass, optMRank, optStatus
 } = require("%rGui/unit/unitsFilterState.nut")
 let mkUnitsFilter = require("%rGui/unit/mkUnitsFilter.nut")
@@ -44,6 +43,7 @@ let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
+let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { abs } = require("%sqstd/math.nut")
 let { justUnlockedUnits, justBoughtUnits, deleteJustBoughtUnit, UNLOCK_DELAY } = require("%rGui/unit/justUnlockedUnits.nut")
 let { scaleAnimation, revealAnimation, raisePlatesAnimation, RAISE_PLATE_TOTAL
@@ -129,7 +129,8 @@ let function onSetCurrentUnit() {
 let function onBuyUnit() {
   if (curSelectedUnit.value == null || unitInProgress.value != null)
     return
-  purchaseUnit(curSelectedUnit.value)
+  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, curSelectedUnit.value)
+  purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)
 }
 
 curSelectedUnit.subscribe(function(unitId) {
@@ -187,12 +188,7 @@ let unitTweakingButtons = @() isShowedUnitOwned.value
       watch = isShowedUnitOwned
       size = SIZE_TO_CONTENT
       vplace = ALIGN_BOTTOM
-      flow = FLOW_VERTICAL
-      gap = translucentButtonsVGap
-      children = [
-        btnOpenUnitAttr
-        //btnOpenUnitMods
-      ]
+      children = btnOpenUnitAttr
     }
   : { watch = isShowedUnitOwned }
 
@@ -255,11 +251,12 @@ let function unitActionButtons() {
         }.__update(fontTiny)
       }))
     else if(deltaLevels == 1 && canBuyUnitsStatus.value?[curSelectedUnit.value] != US_NOT_FOR_SALE) {
+      let premId = findGoodsPrem(shopGoods.value)?.id
       children.append(
         textButtonPurchase(
           utf8ToUpper(loc("units/btn_speed_explore")),
-          havePremium.value ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
-            : @() openGoodsPreview(findGoodsPrem(shopGoods.value).id)
+          havePremium.value || premId == null ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
+            : @() openGoodsPreview(premId)
         )
       )
     }

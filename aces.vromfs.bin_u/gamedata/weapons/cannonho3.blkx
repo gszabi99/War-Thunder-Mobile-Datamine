@@ -35,6 +35,7 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "frag_i",
+      "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
       "modelName": "tank_bullet_he",
       "recoilMultiplier": 0.3,
       "explosiveType": "petn",
@@ -240,6 +241,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
       "recoilMultiplier": 0.3,
       "explosiveType": "petn",
       "explosiveMass": 0.005,
@@ -290,6 +292,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -445,6 +450,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "recoilMultiplier": 0.3,
       "explosiveType": "petn",
       "explosiveMass": 0.005,
@@ -495,6 +501,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -648,6 +657,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "recoilMultiplier": 0.3,
       "onHitChanceMultFire": 4.0,
       "relativeVelHitShift": [
@@ -843,6 +853,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
         "explosiveMass": 0.005,
@@ -893,6 +904,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1048,6 +1062,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
         "explosiveMass": 0.005,
@@ -1098,6 +1113,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1251,6 +1269,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 4.0,
         "relativeVelHitShift": [
@@ -1446,6 +1465,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 4.0,
         "relativeVelHitShift": [
@@ -1637,6 +1657,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 4.0,
         "relativeVelHitShift": [
@@ -1822,6 +1843,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i",
+        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
         "modelName": "tank_bullet_he",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
@@ -2027,6 +2049,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
         "explosiveMass": 0.005,
@@ -2077,6 +2100,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -2234,6 +2260,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 4.0,
         "relativeVelHitShift": [
@@ -2426,6 +2453,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
         "explosiveMass": 0.005,
@@ -2476,6 +2504,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -2628,6 +2659,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i",
+        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
         "modelName": "tank_bullet_he",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
@@ -2826,6 +2858,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i",
+        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
         "modelName": "tank_bullet_he",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
@@ -3031,6 +3064,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
         "explosiveMass": 0.005,
@@ -3081,6 +3115,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -3235,6 +3272,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.3,
         "explosiveType": "petn",
         "explosiveMass": 0.005,
@@ -3285,6 +3323,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [

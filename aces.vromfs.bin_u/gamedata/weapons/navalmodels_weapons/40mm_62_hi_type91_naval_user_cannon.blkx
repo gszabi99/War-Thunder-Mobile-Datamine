@@ -50,6 +50,7 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
     "dynamicKv": true,
     "relativeVelHitShift": [
       300.0,
@@ -270,6 +271,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "dynamicKv": true,
         "relativeVelHitShift": [
           300.0,
@@ -688,6 +690,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "dynamicKv": true,
         "relativeVelHitShift": [
           300.0,
@@ -1110,6 +1113,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "dynamicKv": true,
         "relativeVelHitShift": [
           300.0,
@@ -1328,6 +1332,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "dynamicKv": true,
         "relativeVelHitShift": [
           300.0,
@@ -1546,6 +1551,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "dynamicKv": true,
         "relativeVelHitShift": [
           300.0,
@@ -2568,6 +2574,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "dynamicKv": true,
         "relativeVelHitShift": [
           300.0,

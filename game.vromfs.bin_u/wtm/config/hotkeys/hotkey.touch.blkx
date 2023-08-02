@@ -4,7 +4,50 @@
     "basePresetPaths": {
       "default": "wtm/config/hotkeys/hotkey.empty.blk"
     },
-    "hotkeys": {},
+    "hotkeys": {
+      "ID_REPLAY_PAUSE": {
+        "keyboardKey": 57
+      },
+      "ID_REPLAY_FASTER": {
+        "keyboardKey": 201
+      },
+      "ID_REPLAY_SLOWER": {
+        "keyboardKey": 209
+      },
+      "ID_REPLAY_CAMERA_FREE": {
+        "keyboardKey": [
+          29,
+          63
+        ]
+      },
+      "ID_TOGGLE_FOLLOWING_CAMERA": {
+        "keyboardKey": 39
+      },
+      "cam_fwd_rangeMax": {
+        "keyboardKey": 17
+      },
+      "cam_fwd_rangeMin": {
+        "keyboardKey": 31
+      },
+      "cam_strafe_rangeMax": {
+        "keyboardKey": 32
+      },
+      "cam_strafe_rangeMin": {
+        "keyboardKey": 30
+      },
+      "ID_REPLAY_CAMERA_ZOOM_OUT": {
+        "keyboardKey": 44
+      },
+      "ID_REPLAY_CAMERA_ZOOM_IN": {
+        "keyboardKey": 45
+      },
+      "cam_vert_rangeMax": {
+        "keyboardKey": 18
+      },
+      "cam_vert_rangeMin": {
+        "keyboardKey": 16
+      }
+    },
     "axes": {
       "ship_main_engine": {
         "innerDeadzone": 0.02,

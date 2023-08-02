@@ -12,8 +12,10 @@ let { gameModeAddonToAddonSetMap } = require("%appGlobals/updater/addons.nut")
 let function getModeAddonsInfo(mode, unitName) {
   let { reqPkg = {}, campaign = curCampaign.value, name = "" } = mode
   local addons = {}  //addon = needDownload
+  local allReqAddons = {}
   local updateDiff = 0
   foreach (addon, reqVersion in reqPkg) {
+    allReqAddons[addon] <- true
     if (is_addon_exists_in_game_folder(addon)) {
       addons[addon] <- false
       continue
@@ -31,12 +33,14 @@ let function getModeAddonsInfo(mode, unitName) {
   let campAddons = isNewbieMode(name)
     ? getCampaignPkgsForNewbieBattle(campaign, mRank, isNewbieModeSingle(name))
     : getCampaignPkgsForOnlineBattle(campaign, mRank)
-  foreach (addon in campAddons)
-    if (addon not in addons) {
-      let has = hasAddons.value?[addon] ?? false
-      addons[addon] <- !has
-      updateDiff += has ? 0 : -1
-    }
+  foreach (addon in campAddons) {
+    allReqAddons[addon] <- true
+    if (addon in addons)
+      continue
+    let has = hasAddons.value?[addon] ?? false
+    addons[addon] <- !has
+    updateDiff += has ? 0 : -1
+  }
 
   let toDownload = addons.filter(@(v) v)
   foreach (addon in addons) {
@@ -47,7 +51,17 @@ let function getModeAddonsInfo(mode, unitName) {
       if (a not in addons && !hasAddons.value?[a])
         toDownload[a] <- true
   }
-  return { addonsToDownload = toDownload.keys(), updateDiff }
+
+  let allReqAddonsFinal = clone allReqAddons
+  foreach (addon in allReqAddons) {
+    let list = gameModeAddonToAddonSetMap?[addon]
+    if (list == null)
+      continue
+    foreach (a in list)
+      allReqAddonsFinal[a] <- true
+  }
+
+  return { addonsToDownload = toDownload.keys(), updateDiff, allReqAddons = allReqAddonsFinal }
 }
 
 return {

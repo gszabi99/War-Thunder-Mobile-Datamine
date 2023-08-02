@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { unit, unitMods, curModId, getModCurrency, getModCost } = require("unitModsState.nut")
+let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp } = require("unitModsState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { mkLevelLock, mkNotPurchasedShade } = require("modsComps.nut")
 
 let modsGap = hdpx(10)
 let selLineGap = hdpx(14)
@@ -11,15 +12,13 @@ let lineColor = 0xFF75D0E7
 let bgColor = 0x990C1113
 let activeBgColor = 0xFF52C4E4
 let transDuration = 0.3
-let contentMargin = hdpx(20)
-let lockedBg = 0x80000000
+let contentMargin = [hdpx(10), hdpx(15)]
 let modH = hdpx(170)
 let modW = hdpx(440)
 let equippedColor = 0xFF50C0FF
 let equippedFrameWidth = hdpx(4)
-let lockIconSize = hdpxi(44)
 let modTotalH = modH + selLineHeight + selLineGap
-let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:P"
+let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:O:P"
 
 let iconTankSize = [hdpxi(95), hdpxi(41)]
 let iconShipSize = [hdpxi(44), hdpxi(51)]
@@ -35,18 +34,10 @@ let iconsCfg = {
 }
 
 let bgGradient = mkBitmapPicture(gradTexSize, gradTexSize / 4,
-  mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 8, gradTexSize / 3, gradTexSize / 2, gradTexSize / 4))
+  mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
 let lineGradient = mkBitmapPicture(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColor))
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
-
-let mkNotPurchasedShade = @(isPurchased) @() isPurchased.value ? { watch = isPurchased }
-  : {
-      watch = isPurchased
-      size = flex()
-      rendObj = ROBJ_SOLID
-      color = lockedBg
-    }
 
 let selectedLine = @(isActive) @() {
   watch = isActive
@@ -56,25 +47,6 @@ let selectedLine = @(isActive) @() {
   opacity = isActive.value ? 1 : 0
   transitions = opacityTransition
 }
-
-let mkLevelLock = @(isLocked, reqLevel) @() !isLocked.value ? { watch = isLocked }
-  : {
-      watch = isLocked
-      flow = FLOW_HORIZONTAL
-      valign = ALIGN_CENTER
-      gap = hdpx(40)
-      children = [
-        {
-          rendObj = ROBJ_IMAGE
-          size = [lockIconSize, lockIconSize]
-          image = Picture($"ui/gameuiskin#lock_icon.svg:{lockIconSize}:{lockIconSize}:P")
-        }
-        {
-          rendObj = ROBJ_TEXT
-          text = "".concat(loc("multiplayer/level"), "  ", reqLevel)
-        }.__update(fontSmall)
-      ]
-    }
 
 let mkModContent = @(content, isActive, isHover) {
   size = [SIZE_TO_CONTENT, modH]
@@ -115,7 +87,7 @@ let function mkEquippedIcon(isEquipped) {
   return @() !isEquipped.value ? { watch = [unit, isEquipped] }
     : {
         watch = [unit, isEquipped]
-        margin = hdpx(10)
+        margin = contentMargin
         hplace = ALIGN_RIGHT
         vplace = ALIGN_BOTTOM
         size = icon.value.size
@@ -132,10 +104,11 @@ let function modData(mod) {
   let image = $"ui/gameuiskin#{id}.avif:O:P"
   let reqLevel = mod?.reqLevel ?? 0
   let currency = getModCurrency(mod)
-  let cost = getModCost(mod)
+  let cost = mkCurUnitModCostComp(mod)
   let isLocked = Computed(@() reqLevel > (unit.value?.level ?? 0))
   let isPurchased = Computed(@() unitMods.value?[id] != null)
   let isEquipped = Computed(@() unitMods.value?[id])
+  let textSize = calc_str_box(loc(locId), fontSmallShaded)[0]
 
   return {
     id
@@ -155,27 +128,24 @@ let function modData(mod) {
         }
 
         {
-          maxWidth = modW - contentMargin * 2
+          maxWidth = textSize > modW ? modW - contentMargin[1] * 2 : null
           vplace = ALIGN_TOP
           hplace = ALIGN_RIGHT
-          margin = [contentMargin - hdpx(10), contentMargin]
+          margin = contentMargin
           rendObj = ROBJ_TEXT
           text = loc(locId)
-          fontFx = FFT_GLOW
-          fontFxFactor = 48
-          fontFxColor = 0xFF000000
           behavior = Behaviors.Marquee
           delay = 1
           speed = hdpx(50)
-        }.__update(fontSmall)
+        }.__update(fontSmallShaded)
 
         mkNotPurchasedShade(isPurchased)
         mkEquippedFrame(isEquipped)
         mkEquippedIcon(isEquipped)
         mkLevelLock(isLocked, reqLevel)
         @() {
-          watch = [isPurchased, isLocked]
-          children = isPurchased.value || isLocked.value ? null : mkCurrencyComp(cost, currency)
+          watch = [isPurchased, isLocked, cost]
+          children = isPurchased.value || isLocked.value ? null : mkCurrencyComp(cost.value, currency)
         }
       ]
     }

@@ -233,15 +233,14 @@
       "armorThickness": 15.0,
       "hp": 31900.0,
       "genericDamageMult": 1.0,
-      "explosionDamageMult": 2.0,
       "compartment_02_dm": {
-        "pressureDamageMult": 10.0
+        "pressureDamageMult": 30.0
       },
       "compartment_03_dm": {
-        "pressureDamageMult": 10.0
+        "pressureDamageMult": 30.0
       },
       "compartment_04_dm": {
-        "pressureDamageMult": 10.0
+        "pressureDamageMult": 30.0
       },
       "compartment_01_dm": {}
     },
@@ -251,8 +250,7 @@
       "hp": 31900.0,
       "fireParamsPreset": "common_ship_fire",
       "genericDamageMult": 1.0,
-      "pressureDamageMult": 10.0,
-      "explosionDamageMult": 2.0,
+      "pressureDamageMult": 30.0,
       "bridge_dm": {}
     },
     "turrets": {
@@ -261,7 +259,6 @@
       "hp": 31900.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
-      "explosionDamageMult": 2.0,
       "main_caliber_turret_01_dm": {}
     },
     "engine_rooms": {
@@ -410,7 +407,6 @@
       "part": [
         "compartment_01_dm",
         "engine_room_01_dm",
-        "main_caliber_turret_01_dm",
         "ammunition_storage_01_dm",
         "ammunition_storage_02_dm"
       ],
@@ -878,15 +874,6 @@
             0.0
           ]
         }
-      },
-      {
-        "trigger": "mines",
-        "triggerGroup": "mine",
-        "blk": "gameData/weapons/mines/germ_mine_emc.blk",
-        "emitter": "bone_mine_01",
-        "bullets": 40,
-        "dropSpeed": 5.0,
-        "external": true
       }
     ]
   },
@@ -902,7 +889,357 @@
   },
   "modifications": {
     "ship_tool_kit": {},
-    "upgraded": {}
+    "upgraded": {},
+    "weapons_contact_mines": {
+      "effects": {
+        "commonWeapons": {
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+              "emitter": "bone_torpedo_01",
+              "useEmitter": true,
+              "bullets": 52,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.1,
+              "turret": {
+                "head": "bone_torpedo_01",
+                "gun": "bone_torpedo_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+              "emitter": "bone_torpedo_02",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.1,
+              "turret": {
+                "head": "bone_torpedo_02",
+                "gun": "bone_torpedo_02"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+              "emitter": "bone_torpedo_03",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.1,
+              "turret": {
+                "head": "bone_torpedo_03",
+                "gun": "bone_torpedo_03"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+              "emitter": "bone_torpedo_04",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.1,
+              "turret": {
+                "head": "bone_torpedo_04",
+                "gun": "bone_torpedo_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+              "emitter": "bone_torpedo_05",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.1,
+              "turret": {
+                "head": "bone_torpedo_05",
+                "gun": "bone_torpedo_05"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+              "emitter": "bone_torpedo_06",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.1,
+              "turret": {
+                "head": "bone_torpedo_06",
+                "gun": "bone_torpedo_06"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+              "emitter": "bone_torpedo_07",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.1,
+              "turret": {
+                "head": "bone_torpedo_07",
+                "gun": "bone_torpedo_07"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+              "emitter": "bone_torpedo_08",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.1,
+              "turret": {
+                "head": "bone_torpedo_08",
+                "gun": "bone_torpedo_08"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "mines",
+              "triggerGroup": "mine",
+              "blk": "gameData/weapons/mines/germ_mine_emc.blk",
+              "emitter": "bone_mine_01",
+              "bullets": 40,
+              "dropSpeed": 5.0,
+              "external": true
+            }
+          ]
+        }
+      }
+    },
+    "weapons_torpedo_movement_mode": {
+      "effects": {
+        "splashDamageMul": 0.7,
+        "maxSpeedInWater": 6.945
+      }
+    },
+    "weapons_torpedo_damage_mode": {
+      "effects": {
+        "splashDamageMul": 1.3,
+        "maxSpeedInWater": -6.945
+      }
+    },
+    "protection_ammo_wetting": {
+      "effects": {
+        "forcedExplosion": {
+          "relativeDamage": 0.25
+        }
+      }
+    },
+    "protection_new_sonar": {},
+    "protection_new_fireProtection": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "fireDamageMult": 0.5,
+            "compartment_01_dm": {},
+            "compartment_02_dm": {},
+            "compartment_03_dm": {},
+            "compartment_04_dm": {},
+            "bridge_dm": {},
+            "engine_room_01_dm": {}
+          }
+        }
+      }
+    },
+    "maintanance_new_propellers": {},
+    "maintanance_new_engines": {},
+    "maintanance_powered_toolkit": {}
   },
   "Effects": {
     "waterSplashFx": "water_splash_medium",

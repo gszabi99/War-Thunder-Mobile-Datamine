@@ -51,7 +51,7 @@
     "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "102mm_45_sap",
     "dynamicKv": true,
-    "hitPowerMult": 250.0,
+    "hitPowerMult": 300.0,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -88,6 +88,9 @@
           0.9
         ]
       ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "damage": {
       "kinetic": {
@@ -535,6 +538,9 @@
             0.9
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {

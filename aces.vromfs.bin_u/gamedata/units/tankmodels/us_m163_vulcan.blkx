@@ -51,6 +51,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
+  "minRelativeTankCameraThreshold": 1.34,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,
@@ -2648,8 +2649,8 @@
     "openedCockpit": true,
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -12.7
     ],
     "headPosOnShooting": [
       -1.0,
@@ -2674,10 +2675,19 @@
     }
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
-    "art_support": {},
     "upgraded": {},
-    "tank_extinguisher": {}
+    "art_support": {},
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {}
   },
   "upgraded_skin": {
     "replace_tex": {

@@ -62,6 +62,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_ball.ivf",
       "onHitChanceMultFire": 8.0,
       "relativeVelHitShift": [
         300.0,
@@ -243,6 +244,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_t_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_t_ball.ivf",
       "bulletName": "14mm_apit",
       "onHitChanceMultFire": 7.0,
       "relativeVelHitShift": [
@@ -426,6 +428,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "he_i_ball",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/he_ball.ivf",
       "bulletName": "14mm_mdz",
       "hitPowerMult": 1.0,
       "onHitChanceMultFire": 3.0,
@@ -620,6 +623,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_ball.ivf",
         "bulletName": "14mm_apit",
         "onHitChanceMultFire": 7.0,
         "relativeVelHitShift": [
@@ -803,6 +807,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "apcr_i_ball_bs41",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/apcr_i_ball.ivf",
         "onHitChanceMultFire": 6.5,
         "relativeVelHitShift": [
           300.0,
@@ -984,6 +989,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_ball.ivf",
         "bulletName": "14mm_apit",
         "onHitChanceMultFire": 7.0,
         "relativeVelHitShift": [
@@ -1167,6 +1173,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "he_i_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/he_ball.ivf",
         "bulletName": "14mm_mdz",
         "hitPowerMult": 1.0,
         "onHitChanceMultFire": 3.0,
@@ -1362,6 +1369,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "he_i_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/he_ball.ivf",
         "bulletName": "14mm_mdz",
         "hitPowerMult": 1.0,
         "onHitChanceMultFire": 3.0,
@@ -1553,6 +1561,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t_ball",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_ball.ivf",
         "bulletName": "14mm_apit",
         "onHitChanceMultFire": 7.0,
         "relativeVelHitShift": [

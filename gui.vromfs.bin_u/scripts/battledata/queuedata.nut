@@ -9,8 +9,11 @@ let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pSe
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { register_command } = require("console")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
+let { myQueueToken } = require("%appGlobals/queueState.nut")
+let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut")
 
 const SILENT_ACTUALIZE_DELAY = 60
+const SQUAD_ACTUALIZE_DELAY = 0.2
 
 let lastResult = persist("lastResult", @() Watched(null))
 let successResult = persist("lastSuccessResult", @() Watched(null))
@@ -19,6 +22,9 @@ let isQueueDataActual = Computed(@() !needRefresh.value && successResult.value?.
 let queueDataError = Computed(@() lastResult.value?.error)
 let needActualize = Computed(@() !isQueueDataActual.value && isLoggedIn.value)
 let needDebugNewResult = Watched(false)
+let actualizeDelay = Computed(@() isInSquad.value && (isSquadLeader.value || isReady.value)
+  ? SQUAD_ACTUALIZE_DELAY
+  : SILENT_ACTUALIZE_DELAY)
 
 serverConfigs.subscribe(@(_) needRefresh(true))
 isInMpSession.subscribe(@(v) !v ? needRefresh(true) : null)
@@ -72,9 +78,10 @@ let function actualizeIfNeed() {
 
 let function delayedActualize() {
   if (needActualize.value)
-    resetTimeout(SILENT_ACTUALIZE_DELAY, actualizeIfNeed)
+    resetTimeout(actualizeDelay.value, actualizeIfNeed)
 }
 delayedActualize()
+actualizeDelay.subscribe(@(_) delayedActualize())
 needActualize.subscribe(function(v) {
   if (!v)
     return
@@ -96,6 +103,10 @@ successResult.subscribe(function(_) {
   needDebugNewResult(false)
   printQueueDataResult()
 })
+
+let syncQueueToken = @() myQueueToken(successResult.value?.jwt ?? "")
+syncQueueToken()
+successResult.subscribe(@(_) syncQueueToken())
 
 register_command(function() {
   if (needActualize.value) {

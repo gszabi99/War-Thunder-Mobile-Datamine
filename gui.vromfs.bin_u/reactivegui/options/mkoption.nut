@@ -60,6 +60,7 @@ let function mkInfoButton(desc, locId){
       if (needHint)
         showTooltip(gui_scene.getCompAABBbyKey(key), {
           content = "\n".concat(loc(locId), desc),
+          flow = FLOW_HORIZONTAL
           halign = ALIGN_LEFT })
       else
         hideTooltip()

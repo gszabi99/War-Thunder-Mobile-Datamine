@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { chooseRandom } = require("%sqstd/rand.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
-let { textButtonBattle } = require("%rGui/components/textButton.nut")
+let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -12,31 +13,36 @@ let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut"
 let unitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
-//let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
 let { campaignsList, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let chooseCampaignWnd = require("chooseCampaignWnd.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
-let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
+let { startTestFlight, startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
+let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { allow_players_online_info } = require("%appGlobals/permissions.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
-let { mkGradRank } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { mkItemsBalance } = require("balanceComps.nut")
 let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
+let squadPanel = require("%rGui/squad/squadPanel.nut")
+let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut")
+let setReady = require("%rGui/squad/setReady.nut")
+let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = require("%rGui/squad/readyCheck.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 
 
 let unitNameStateFlags = Watched(0)
@@ -110,21 +116,16 @@ let gamercardPlace = {
   ]
 }
 
-let unitsBtnCfg = {
-  ships = { img = "ui/gameuiskin#unit_ship.svg", txt = loc("options/chooseUnitsType/ship") }
-  tanks = { img = "ui/gameuiskin#unit_tank.svg", txt = loc("options/chooseUnitsType/tank") }
-}
-
+let curCampPresentation = Computed(@() getCampaignPresentation(curCampaign.value))
 let leftBottomButtons = @() {
-  watch = curCampaign
+  watch = curCampPresentation
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = translucentButtonsVGap
   children = [
     campaignsBtn
     btnOpenUnitAttr
-    //btnOpenUnitMods
-    translucentButton(unitsBtnCfg?[curCampaign.value].img ?? "", unitsBtnCfg?[curCampaign.value].txt ?? "",
+    translucentButton(curCampPresentation.value.icon, loc(curCampPresentation.value.unitsLocId),
       function() {
         unitsWnd()
         openLvlUpWndIfCan()
@@ -134,6 +135,24 @@ let leftBottomButtons = @() {
 
 
 let queueCurRandomBattleMode = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
+
+let function startCurUnitOfflineBattle() {
+  if (curUnit.value == null)
+    return
+  let { name, campaign } = curUnit.value
+  let missions = newbieGameModesConfig?[campaign]
+    .reduce(@(res, cfg) res.extend(cfg?.offlineMissions ?? []), [])
+    ?? []
+  if (missions.len() == 0) {
+    log($"OflineStartBattle: test flight, because no mission for campaign {campaign} ({name})")
+    startTestFlight(curUnit.value?.name)
+  }
+  else {
+    let mission = chooseRandom(missions)
+    log($"OflineStartBattle: start mission {mission} for {name}")
+    startOfflineBattle(name, mission)
+  }
+}
 
 let hotkeyX = ["^J:X | Enter"]
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
@@ -148,10 +167,21 @@ let toBattleButton = textButtonBattle(toBattleText,
 let startTutorButton = textButtonBattle(toBattleText,
   @() startTutor(firstBattleTutor.value),
   { ovr = { key = "toBattleButton" }, hotkeys = hotkeyX })
-let startTestFlightButton = textButtonBattle(toBattleText,
-  @() startTestFlight(curUnit.value?.name),
+let startOfflineBattleButton = textButtonBattle(toBattleText,
+  startCurUnitOfflineBattle,
   { hotkeys = hotkeyX })
 let startOfflineMissionButton = textButtonBattle(toBattleText, startCurNewbieMission, { hotkeys = hotkeyX })
+
+let toSquadBattleButton = toBattleButton
+let readyButton = textButtonBattle(utf8ToUpper(loc("mainmenu/btnReady")),
+  @() setReady(true),
+  { hotkeys = hotkeyX })
+let notReadyButton = textButtonCommon(utf8ToUpper(loc("multiplayer/state/player_not_ready")),
+  @() setReady(false),
+  { hotkeys = hotkeyX })
+let readyCheckText = utf8ToUpper(loc("squad/readyCheckBtn"))
+let readyCheckButton = textButtonPrimary(readyCheckText, initiateReadyCheck, { hotkeys = hotkeyX })
+let readyCheckButtonInactive = textButtonCommon(readyCheckText, initiateReadyCheck, { hotkeys = hotkeyX })
 
 let mkMRankRange = @() curUnitMRankRange.value == null
   ? { watch = curUnitMRankRange }
@@ -175,7 +205,8 @@ let consumablesPanel = @(){
 }
 
 let toBattleButtonPlace = @() {
-  watch = [needFirstBattleTutor, newbieOfflineMissions]
+  watch = [ needFirstBattleTutor, newbieOfflineMissions, isInSquad, isSquadLeader, isReady,
+    needReadyCheckButton, isReadyCheckSuspended ]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
@@ -196,7 +227,12 @@ let toBattleButtonPlace = @() {
         mkMRankRange
       ]
     }
-    isOfflineMenu ? startTestFlightButton
+    needReadyCheckButton.value && isReadyCheckSuspended.value ? readyCheckButtonInactive
+      : needReadyCheckButton.value ? readyCheckButton
+      : isSquadLeader.value ? toSquadBattleButton
+      : isInSquad.value && !isReady.value ? readyButton
+      : isInSquad.value && isReady.value ? notReadyButton
+      : isOfflineMenu ? startOfflineBattleButton
       : needFirstBattleTutor.value ? startTutorButton
       : newbieOfflineMissions.value != null ? startOfflineMissionButton
       : toBattleButton
@@ -211,6 +247,18 @@ let exitMsgBox = @() openMsgBox({
   ]
 })
 
+let bottomCenterBlock = {
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  gap = hdpx(24)
+  children = [
+    mkUnitPkgDownloadInfo(curUnit, false)
+    squadPanel
+  ]
+}
+
 return {
   key = {}
   size = saSize
@@ -224,7 +272,7 @@ return {
     gamercardPlace
     leftBottomButtons
     toBattleButtonPlace
-    mkUnitPkgDownloadInfo(curUnit, false)
+    bottomCenterBlock
   ]
   animations = wndSwitchAnim
   hotkeys = [

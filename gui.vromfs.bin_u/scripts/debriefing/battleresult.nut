@@ -17,7 +17,8 @@ let { isInBattle, battleSessionId } = require("%appGlobals/clientState/clientSta
 let { get_mp_session_id_int, destroy_session } = require("multiplayer")
 let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { get_local_mplayer } = require("mission")
+let { get_local_mplayer, get_mplayers_list } = require("mission")
+let { get_mp_tbl_teams } = require("guiMission")
 
 const destroySessionTimeout = 2.0
 const SAVE_FILE = "battleResult.json"
@@ -73,7 +74,7 @@ let function onBattleResult(evt, _eid, comp) {
     battleData.value ?? {}
     {
       localTeam = get_local_mplayer()?.team
-      teams = ::get_mp_tbl_teams()
+      teams = get_mp_tbl_teams()
       userName = myUserName.value
     }))
   debugBattleResult(null)
@@ -89,7 +90,14 @@ register_es("battle_result_es",
 
 register_es("battle_result_mplayers_es",
   {
-    [EventResultMPlayers] = @(evt, _eid, _comp) resultPlayers(evt.data),
+    [EventResultMPlayers] = function(evt, _eid, _comp) {
+      let res = evt.data.__merge({ players = clone (evt.data?.players ?? {}) })
+      let localPlayers = get_mplayers_list(GET_MPLAYERS_LIST, true)
+      foreach(p in localPlayers)
+        if (p.userId in res.players)
+          res.players[p.userId] = p.__merge(res.players[p.userId])
+      resultPlayers(res)
+    },
   }, {})
 
 let find_local_player_query = SqQuery("find_local_player_query", { comps_rq = ["localPlayer"] })

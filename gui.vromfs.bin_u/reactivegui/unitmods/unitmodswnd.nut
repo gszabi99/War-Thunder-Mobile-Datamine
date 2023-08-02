@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
+let { modsInProgress, buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkGamercard, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { isUnitModsOpen, closeUnitModsWnd, modsCategories, curCategoryId, curMod, curModId,
-  modsSorted, unit, curModIndex, buyCurUnitMod, enableCurUnitMod, disableCurUnitMod,
-  isCurModPurchased, isCurModEnabled, isCurModLocked, getModCost, getModCurrency
+  modsSorted, unit, curModIndex, enableCurUnitMod, disableCurUnitMod,
+  isCurModPurchased, isCurModEnabled, isCurModLocked, setCurUnitSeenModsCurrent,
+  getModCurrency, getModCost, curUnitAllModsCost
 } = require("unitModsState.nut")
 let { mkModsCategories, tabW, tabH } = require("unitModsWndTabs.nut")
 let { mkMods, modW, modTotalH, modsGap } = require("unitModsCarousel.nut")
@@ -12,14 +14,23 @@ let { textButtonPrimary, textButtonPurchase } = require("%rGui/components/textBu
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { modsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { tabsGap } = require("%rGui/components/tabs.nut")
+let { tabsGap, bgColor, tabExtraWidth } = require("%rGui/components/tabs.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
+let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
 
-let blocksGap = hdpx(40)
+let blocksGap = hdpx(60)
+let iconSize = hdpxi(140)
 let modsWidth = saSize[0] - modW - blocksGap
-let catsHeight = saSize[1] - tabH - gamercardHeight
+let catsBlockMargin = hdpx(24)
+let catsBlockHeight = saSize[1] - gamercardHeight - catsBlockMargin
+let catsHeight = Computed(@() min((tabH + tabsGap) * modsCategories.value.len() - tabsGap, catsBlockHeight))
+let emptyCatSlotHeight = Computed(@() catsBlockHeight - catsHeight.value - tabsGap)
+
+let pageWidth = saSize[0] + saBorders[0] - tabW
+let pageMask = mkBitmapPicture((pageWidth / 10).tointeger(), 2, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF, 0.05))
 
 let modsScrollHandler = ScrollHandler()
 let catsScrollHandler = ScrollHandler()
@@ -29,12 +40,11 @@ curModIndex.subscribe(@(v) v == null ? null
 
 curCategoryId.subscribe(@(v) v == null ? null
   : catsScrollHandler.scrollToY((modsCategories.value.findindex(@(cat) cat == v) ?? 0)
-    * (tabH + tabsGap) - catsHeight + tabH))
+    * (tabH + tabsGap) - catsHeight.value + tabH))
 
 let mkVerticalPannableArea = @(content) {
   clipChildren = true
   size = [tabW, flex()]
-  margin = [hdpx(24), 0, 0, 0]
   children = {
     size = flex()
     behavior = Behaviors.Pannable
@@ -49,19 +59,27 @@ let mkVerticalPannableArea = @(content) {
 }
 
 let mkHorizontalPannableArea = @(content) {
+  rendObj = ROBJ_MASK
+  image = pageMask
   clipChildren = true
   size = [flex(), modTotalH]
-  children = {
-    size = flex()
-    behavior = Behaviors.Pannable
-    scrollHandler = modsScrollHandler
-    children = content
-    xmbNode = {
-      canFocus = false
-      scrollSpeed = 5.0
-      isViewport = true
+  flow = FLOW_HORIZONTAL
+  children = [
+    { size = [blocksGap, flex()] }
+    {
+      size = flex()
+      padding = [0, saBorders[0], 0, 0]
+      behavior = Behaviors.Pannable
+      scrollHandler = modsScrollHandler
+      children = content
+      xmbNode = {
+        canFocus = false
+        scrollSpeed = 5.0
+        isViewport = true
+      }
     }
-  }
+  ]
+
 }
 
 let categoriesBlock = @() {
@@ -80,26 +98,65 @@ let modsBlock = @() {
   children = mkMods(modsSorted.value)
 }
 
+let mkModIcon = @() {
+  watch = curMod
+  size = [iconSize * 2.3, iconSize]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#{curMod.value?.name}.avif:O:P")
+  keepAspect = KEEP_ASPECT_FILL
+}
+
 let mkModsInfo = @() {
   watch = unit
   rendObj = ROBJ_IMAGE
-  size = [modW * 1.5, SIZE_TO_CONTENT]
+  size = [modW * 2, SIZE_TO_CONTENT]
   pos = [saBorders[0], 0]
   image = Picture("ui/gameuiskin#debriefing_bg_grad@@ss.avif:O:P")
-  color = 0x60090F16
+  color = 0x90090F16
+  margin = [0, saBorders[0], 0, 0]
   padding = [hdpx(30), saBorders[0]]
   flow = FLOW_VERTICAL
   gap = hdpx(30)
   children = [
     mkPlatoonOrUnitTitle(unit.value)
-    @() curModId.value == null ? { watch = curModId }
-      : {
-          watch = curModId
-          size = [flex(), SIZE_TO_CONTENT]
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          text = loc($"modification/{curModId.value}/desc")
-        }.__update(fontTiny)
+    @() {
+      watch = [curMod, curModId]
+      size = [flex(), SIZE_TO_CONTENT]
+      flow = FLOW_VERTICAL
+      gap = hdpx(5)
+      children = curModId.value == null ? null
+        : [
+            {
+              size = [flex(), SIZE_TO_CONTENT]
+              flow = FLOW_HORIZONTAL
+              children = [
+                mkModIcon
+                {
+                  size = flex()
+                  rendObj = ROBJ_TEXTAREA
+                  behavior = Behaviors.TextArea
+                  halign = ALIGN_RIGHT
+                  text = loc($"modification/{curMod.value?.name}")
+                }.__update(fontSmall)
+              ]
+            }
+
+            {
+              size = [flex(), SIZE_TO_CONTENT]
+              rendObj = ROBJ_TEXTAREA
+              behavior = Behaviors.TextArea
+              text = loc($"modification/{curMod.value?.name}/desc")
+            }.__update(fontTiny)
+
+            unit.value.level >= (curMod.value?.reqLevel ?? 0) ? null
+              : {
+                  size = [flex(), SIZE_TO_CONTENT]
+                  padding = [hdpx(20), 0, 0, 0]
+                  rendObj = ROBJ_TEXT
+                  text = loc("mod/reqLevel", { level = curMod.value?.reqLevel })
+                }.__update(fontSmall)
+          ]
+    }
   ]
 }
 
@@ -110,11 +167,23 @@ let spinner = {
   children = mkSpinner
 }
 
-let onPurchase = @() openMsgBoxPurchase(
-  loc("shop/needMoneyQuestion",
-    { item = colorize(userlogTextColor, loc($"modification/{curMod.value.name}")) }),
-  { price = getModCost(curMod.value), currencyId = getModCurrency(curMod.value) },
-  buyCurUnitMod)
+let function onPurchase() {
+  let unitName = unit.value.name
+  let modName = curMod.value.name
+  let price = getModCost(curMod.value, curUnitAllModsCost.value)
+  let currencyId = getModCurrency(curMod.value)
+  openMsgBoxPurchase(
+    loc("shop/needMoneyQuestion",
+      { item = colorize(userlogTextColor, loc($"modification/{modName}")) }),
+    { price, currencyId },
+    @() buy_unit_mod(unitName, modName, currencyId, price),
+    mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}"))
+}
+
+let function onClose() {
+  setCurUnitSeenModsCurrent()
+  closeUnitModsWnd()
+}
 
 let unitModsWnd = {
   key = {}
@@ -123,24 +192,38 @@ let unitModsWnd = {
   behavior = Behaviors.HangarCameraControl
   flow = FLOW_VERTICAL
   children = [
-    mkGamercard(@() isUnitModsOpen(false), true)
+    mkGamercard(onClose, true)
     {
-      size = flex()
+      size = [saSize[0] + saBorders[0], flex()]
       flow = FLOW_HORIZONTAL
-      gap = blocksGap
       children = [
-        mkVerticalPannableArea(categoriesBlock)
+        @() {
+          watch = emptyCatSlotHeight
+          size = [tabW, flex()]
+          margin = [catsBlockMargin, 0, 0, 0]
+          flow = FLOW_VERTICAL
+          children = emptyCatSlotHeight.value <= 0 ? mkVerticalPannableArea(categoriesBlock)
+            : [
+                categoriesBlock
+                {
+                  margin = [tabsGap, 0, 0, tabExtraWidth]
+                  size = [tabW - tabExtraWidth, emptyCatSlotHeight.value]
+                  rendObj = ROBJ_SOLID
+                  color = bgColor
+                }
+              ]
+        }
         {
           size = flex()
           flow = FLOW_VERTICAL
           halign = ALIGN_RIGHT
-          gap = blocksGap
           children = [
             mkModsInfo
             { size = flex() }
             @() {
               watch = [isCurModPurchased, isCurModEnabled, isCurModLocked, curMod, modsInProgress]
-              size = [flex(), buttonStyles.defButtonHeight]
+              size = [flex(), SIZE_TO_CONTENT]
+              margin = [hdpx(40), saBorders[0], hdpx(40), 0]
               halign = ALIGN_RIGHT
               children = isCurModLocked.value || !curMod.value ? null
                 : modsInProgress.value != null ? spinner

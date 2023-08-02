@@ -22,10 +22,10 @@
 • При выходе командира из полка заместитель становится новым командиром.
 • Командир не может покинуть полк, если не назначен заместитель.";"Utwórz Dywizjon";"Criar esquadrão";"• Filoda en fazla 128 üye olabilir.
 • Filoda sadece bir komutan olabilir.
-• Komutan, en fazla bir kişi olmak üzere yardımcı atayabilir.
+• Komutan, en fazla bir kişi olmak üzere vekil atayabilir.
 • Yardımcı, komutanın tüm yetkilerine sahiptir ancak filoyu dağıtamaz, komutanı görevden alamaz ve komutanın rütbesini değiştiremez.
-• Komutan filodan ayrıldığında yardımcı yeni komutan olur.
-• Komutan, yardımcı atamadan filodan ayrılamaz.";"비행대 창설";"创\t建\t正\t规\t联\t队";"部隊を\t作成";"創\t建\t聯\t隊";;
+• Komutan filodan ayrıldığında vekil yeni komutan olur.
+• Komutan, vekil atamadan filodan ayrılamaz.";"비행대 창설";"创\t建\t正\t规\t联\t队";"部隊を\t作成";"創\t建\t聯\t隊";;
 "clan/clan_type/battalion";"Training squadron";"Escadron d'entrainement";"Squadriglia d'addestramento";"Trainings-Kampfgruppe";"Escuadrón de Entrenamiento";"Учебный полк";"Dywizjon Szkoleniowy";"Esquadrão de formação";"Eğitim filosu";"훈련 비행대";"见\t习\t联\t队";"訓練部隊";"實\t習\t聯\t隊";;
 "clan/clan_type/battalion/tooltip";"• In the training squadron, only the roles of the commander, officers and privates are available. The role of the deputy is not available. The commander cannot transfer their role to anyone or leave the training squadron, and instead, can only disband it, or update it to a regular squadron with golden eagles.
 • The training squadron has a composition limited to ten participants and twenty recruits awaiting consideration of applications.

@@ -6,6 +6,7 @@ require Mission
 require WTDamageModel
 require %game.events
 require WarShipModel
+require DagorDataBlock
 require DagorConsole
 require %appGame.wtm_events
 
@@ -15,6 +16,25 @@ def repair_meta_parts_on_damage_es(evt : EventOnMetaPartDamage;
                                    var meta_parts_hp_repair__maxHp : float&)
   let damage = rel_hp_fixed_to_float(evt.damage)
   meta_parts_hp_repair__maxHp -= damage * meta_parts_hp_repair__lostMult
+
+
+[es(tag=server, on_appear)]
+def repair_meta_parts_init_es(evt : Event;
+                              uid : int;
+                              var meta_parts_hp_repair__duration : float&;
+                              var meta_parts_hp_repair__speed : float&;
+                              var meta_parts_hp_repair__maxHp : float&)
+  var unit = get_unit(uid)
+  if unit == null
+    return
+  let modBlk = unit.modBlk
+  let durationMul = modBlk |> datablock_getReal("durationMul", 1.)
+  let repairSpeedMul = modBlk |> datablock_getReal("repairSpeedMul", 1.)
+  let maxHpMul = modBlk |> datablock_getReal("maxHpMul", 1.)
+
+  meta_parts_hp_repair__duration *= durationMul
+  meta_parts_hp_repair__speed *= repairSpeedMul
+  meta_parts_hp_repair__maxHp *= maxHpMul
 
 
 [es(tag=server, on_event = EventRepairMetaPart)]

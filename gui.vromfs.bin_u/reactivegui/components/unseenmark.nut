@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { gradRadial } = require("%rGui/style/gradients.nut")
+let { UNSEEN_LOW, UNSEEN_NORMAL, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 
 let fillColor = 0xFFFFB70B
 let lowPriorityFillColor = 0xFF808080
@@ -86,8 +87,20 @@ let lowPriorityUnseenMark = unseenMark.__merge({
   fillColor = lowPriorityFillColor
 })
 
+let markByPriority = {
+  [UNSEEN_LOW] = lowPriorityUnseenMark,
+  [UNSEEN_NORMAL] = unseenMark,
+  [UNSEEN_HIGH] = priorityUnseenMark,
+}
+
+let mkUnseenMark = @(priorirty, ovr = {}) @() {
+  watch = priorirty
+  children = markByPriority?[priorirty.value]
+}.__update(ovr)
+
 return {
   priorityUnseenMark
   unseenMark
   lowPriorityUnseenMark
+  mkUnseenMark
 }

@@ -42,6 +42,7 @@
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "frag_i_t",
+    "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
     "onHitChanceMultFire": 40.0,
     "dynamicKv": true,
     "explodeTreshold": 0.1,
@@ -247,6 +248,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -429,6 +431,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,
@@ -632,6 +635,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,
@@ -831,6 +835,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,
@@ -1030,6 +1035,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,
@@ -1233,6 +1239,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1423,6 +1430,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1609,6 +1617,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1795,6 +1804,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1977,6 +1987,7 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "frag_i_t",
+        "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "explodeTreshold": 0.1,

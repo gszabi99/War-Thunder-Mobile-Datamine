@@ -19,6 +19,7 @@ let { playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/pro
 let { buyUnitsData, rankToReqPlayerLvl } = require("%appGlobals/unitsState.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 
 
 let contentAppearTime = 0.3
@@ -62,8 +63,10 @@ let function onBuyUnit() {
 
   if ((unit?.upgradeCostGold ?? 0) > 0)
     upgradeUnitName(curSelectedUnit.value)
-  else
-    purchaseUnit(curSelectedUnit.value)
+  else {
+    let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, curSelectedUnit.value)
+    purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)
+  }
 }
 
 curSelectedUnit.subscribe(function(unitId) {

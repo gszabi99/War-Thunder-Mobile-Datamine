@@ -42,6 +42,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "recoilMultiplier": 0.35,
       "explosiveType": "petn",
       "explosiveMass": 0.007,
@@ -92,6 +93,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -246,6 +250,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "recoilMultiplier": 0.35,
       "explosiveType": "petn",
       "explosiveMass": 0.007,
@@ -296,6 +301,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -630,6 +638,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "t_shell",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/t_shell.ivf",
       "modelName": "tank_bullet_ap",
       "recoilMultiplier": 0.3,
       "hitPowerMult": 7.0,
@@ -828,6 +837,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.35,
         "explosiveType": "petn",
         "explosiveMass": 0.007,
@@ -878,6 +888,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1031,6 +1044,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
@@ -1217,6 +1231,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
@@ -1407,6 +1422,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
@@ -1594,6 +1610,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.35,
         "explosiveType": "petn",
         "explosiveMass": 0.007,
@@ -1644,6 +1661,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1798,6 +1818,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "recoilMultiplier": 0.35,
         "explosiveType": "petn",
         "explosiveMass": 0.007,
@@ -1848,6 +1869,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [

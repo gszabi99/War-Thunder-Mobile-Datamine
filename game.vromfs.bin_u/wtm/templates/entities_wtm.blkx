@@ -2188,7 +2188,8 @@
       "mod": [
         "tank_wtm_toolkit_ecs",
         "tank_wtm_extinguisher_ecs",
-        "tank_wtm_medicalkit_ecs"
+        "tank_wtm_medicalkit_ecs",
+        "tank_smokescreen_ecs"
       ]
     }
   },

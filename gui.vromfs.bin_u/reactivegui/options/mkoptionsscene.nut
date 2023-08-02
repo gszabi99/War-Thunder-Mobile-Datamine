@@ -21,11 +21,17 @@ let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100),
   [gradientHeightTop, gradientHeightBottom],
   [topAreaSize, gradientHeightBottom])
 
-let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null) {
+let function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHeaderComp = null) {
   isOpened = isOpened ?? mkWatched(persist, $"{sceneId}_isOpened", false)
-  let curTabIdx = mkWatched(persist, $"{sceneId}_curTabIdx", 0)
+  curTabId = curTabId ?? Watched(null)
+  let findTabIdxById = @(pageId) pageId == null ? null
+    : tabs.findindex(@(v) v?.id == pageId && (v?.isVisible.value ?? true))
+  let curTabIdx = mkWatched(persist, $"{sceneId}_curTabIdx", findTabIdxById(curTabId.value) ?? 0)
   let close = @() isOpened(false)
-  let backBtn = backButton(close)
+  let backBtn = backButton(function() {
+    curTabId(null)
+    close()
+  })
   isAuthorized.subscribe(@(_) isOpened(false))
 
   let resetCurTabIdx = @() curTabIdx(tabs.findindex(@(t) t?.isVisible.value ?? true))
@@ -36,9 +42,16 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null
       continue
     let tabIdx = idx
     isVisible.subscribe(@(v) v || tabIdx != curTabIdx.value ? null : resetCurTabIdx())
-    if (tabIdx == curTabIdx.value)
+    if (tabIdx == curTabIdx.value && !isVisible.value)
       resetCurTabIdx()
   }
+
+  let function setTabById(id) {
+    let idx = findTabIdxById(id)
+    if (idx != null && (tabs[idx]?.isVisible.value ?? true))
+      curTabIdx(idx)
+  }
+  curTabId.subscribe(setTabById)
 
   let function curOptionsContent() {
     let tab = tabs?[curTabIdx.value]
@@ -106,8 +119,7 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, addHeaderComp = null
   registerScene(sceneId, optionsScene, close, isOpened)
 
   return function(pageId = null) {
-    if (pageId != null)
-      curTabIdx(tabs.findindex(@(v) v?.id == pageId && (v?.isVisible.value ?? true)) ?? curTabIdx.value)
+    setTabById(pageId)
     isOpened(true)
   }
 }

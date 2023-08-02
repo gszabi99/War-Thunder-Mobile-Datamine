@@ -66,6 +66,7 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
     "bulletName": "40mm_mk_i_navy",
     "dynamicKv": true,
     "relativeVelHitShift": [
@@ -103,6 +104,9 @@
           0.3
         ]
       ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "damage": {
       "kinetic": {
@@ -280,6 +284,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -476,6 +481,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "bulletName": "40mm_mk_i_navy",
         "dynamicKv": true,
         "relativeVelHitShift": [
@@ -513,6 +519,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -692,6 +701,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -884,6 +894,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1076,6 +1087,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1272,6 +1284,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "bulletName": "40mm_mk_i_navy",
         "dynamicKv": true,
         "relativeVelHitShift": [
@@ -1309,6 +1322,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -1492,6 +1508,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "bulletName": "40mm_mk_i_navy",
         "dynamicKv": true,
         "relativeVelHitShift": [
@@ -1529,6 +1546,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -1708,6 +1728,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "bulletName": "40mm_mk_i_navy",
         "dynamicKv": true,
         "relativeVelHitShift": [
@@ -1745,6 +1766,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -1924,6 +1948,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "bulletName": "40mm_mk_i_navy",
         "dynamicKv": true,
         "relativeVelHitShift": [
@@ -1961,6 +1986,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -2136,6 +2164,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,

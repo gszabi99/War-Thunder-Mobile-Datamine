@@ -35,6 +35,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_t",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
       "modelName": "tank_bullet_ap",
       "onHitChanceMultFire": [
         10.0,
@@ -216,6 +217,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
       "speed": 950.0,
       "maxDistance": 2000.0,
       "hitPowerMult": 1.5,
@@ -265,6 +267,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -418,6 +423,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
       "speed": 950.0,
       "maxDistance": 2000.0,
       "hitPowerMult": 1.5,
@@ -467,6 +473,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -620,6 +629,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
       "speed": 950.0,
       "maxDistance": 2000.0,
       "hitPowerMult": 1.5,
@@ -669,6 +679,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -820,6 +833,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_t",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
       "modelName": "tank_bullet_ap",
       "onHitChanceMultFire": [
         10.0,
@@ -1003,6 +1017,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
       "speed": 950.0,
       "maxDistance": 2000.0,
       "hitPowerMult": 1.5,
@@ -1052,6 +1067,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -1208,6 +1226,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "speed": 950.0,
         "maxDistance": 2000.0,
         "hitPowerMult": 1.5,
@@ -1257,6 +1276,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1406,6 +1428,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "modelName": "tank_bullet_ap",
         "onHitChanceMultFire": [
           10.0,

@@ -159,3 +159,7 @@ let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 require("eventbus").subscribe("register_mplayer_callbacks",
   @(_) registerMplayerCallbacks({ frameNick = @(nick, frameId) frameNick(getPlayerName(nick), frameId) }))
+
+/*use by client .cpp code*/
+let { squadMembers } = require("%appGlobals/squadState.nut")
+::is_in_my_squad <- @(userId, _checkAutosquad = true) userId in squadMembers.value

@@ -10,6 +10,7 @@ let { register_command } = require("console")
 let { send } = require("eventbus")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
+let { isInSquad } = require("%appGlobals/squadState.nut")
 
 let getFirstBattleTutor = @(campaign) $"tutorial_{campaign}_1"
 let firstBattleTutor = Computed(@() getFirstBattleTutor(curCampaign.value))
@@ -56,6 +57,7 @@ let function mkRewardBattleData(rewards) {
 
 let needForceStartTutorial = keepref(Computed(@()
   needFirstBattleTutor.value
+  && !isInSquad.value
   && isAnyCampaignSelected.value
   && isProfileReceived.value
   && isLoggedIn.value
@@ -75,6 +77,12 @@ let function startTutor(id) {
   setTimeout(0.1, @() isDebugMode(false))
 }
 
+let function rewardTutorialMission(campaign) {
+  let id = getFirstBattleTutor(campaign)
+  if (id in missionsWithRewards.value)
+    apply_client_mission_reward(campaign, id)
+}
+
 needForceStartTutorial.subscribe(@(v) v ? startTutor(firstBattleTutor.value) : null)
 
 register_command(@() isDebugMode(!isDebugMode.value), "debug.first_battle_tutorial")
@@ -86,4 +94,5 @@ return {
   startTutor
   isTutorialMissionsDebug = isDebugMode
   tutorialMissions
+  rewardTutorialMission
 }

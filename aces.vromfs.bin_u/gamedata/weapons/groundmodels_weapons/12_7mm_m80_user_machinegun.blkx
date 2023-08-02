@@ -42,6 +42,7 @@
     "stabilityReductionAfterPenetration": 0.3,
     "bulletType": "he_i_ball",
     "slopeEffectPreset": "ap",
+    "shellAnimation": "video/shells_animations/he_ball.ivf",
     "bulletName": "t_ball_M48A2",
     "maxDistance": 2000.0,
     "hitPowerMult": 1.0,

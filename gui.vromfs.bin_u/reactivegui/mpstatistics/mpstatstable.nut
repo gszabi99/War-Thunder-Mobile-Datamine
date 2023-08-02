@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getUnitLocId, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
+let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
@@ -170,6 +170,8 @@ let getColumnsByCampaign = @(campaign) columnsByCampaign?[campaign] ?? columnsBy
 
 let function mkPlayerRow(columnCfg, player, teamColor, idx, unitsCfg) {
   let { columns, rowOvr = {} } = columnCfg
+
+  let playerColor = player?.isInHeroSquad ? mySquadLightColor : teamColor
   return {
     size = [ flex(), rowHeight ]
     rendObj = ROBJ_SOLID
@@ -183,7 +185,7 @@ let function mkPlayerRow(columnCfg, player, teamColor, idx, unitsCfg) {
         size = [width, rowHeight]
         halign = halign
         valign = ALIGN_CENTER
-        children = contentCtor != null ? contentCtor(player, teamColor, halign, unitsCfg, idx)
+        children = contentCtor != null ? contentCtor(player, playerColor, halign, unitsCfg, idx)
           : cellTextProps.__merge({ text = getText(player) })
       }
     })
@@ -212,7 +214,7 @@ let mkMpStatsTable = @(columnsCfg, teams, unitsCfg) {
   flow = FLOW_HORIZONTAL
   gap = hdpx(30)
   children = teams.map(function(team, teamIdx) {
-    let teamColor = teamIdx == 0 ? teamBlueColor : teamRedColor
+    let teamColor = teamIdx == 0 ? teamBlueLightColor : teamRedLightColor
     let columnCfg = columnsCfg[teamIdx % columnsCfg.len()]
     return {
       size = [ flex(), SIZE_TO_CONTENT ]

@@ -57,8 +57,8 @@
   "tank_vision_grass_displacement_rad": 10.0,
   "bombingZoneHpToTntEquivalentTons": 0.000125,
   "maxDistForWatchXRayInSpectator": 50.0,
-  "killZoneVisibilityDistance": 100.0,
-  "detectionZoneVisibilityDistance": 150.0,
+  "killZoneVisibilityDistance": 50.0,
+  "detectionZoneVisibilityDistance": 50.0,
   "showEnemyAtKillZone": true,
   "effectsZNearOffsetInCockpit": 2.0,
   "invisibleSupportUnits": true,
@@ -6937,8 +6937,8 @@
     ],
     "tankCameraVRLimitDelay": 3.0,
     "shipCameraYLimits": [
-      -7.0,
-      6.0
+      -23.0,
+      15.0
     ],
     "groundZoomSwitchDeltaMax": 5.0,
     "groundZoomSwitchValueThreshold": 10.0,
@@ -13976,7 +13976,15 @@
         "pacific_island_medium_a",
         "pacific_island_medium_b",
         "pacific_island_small_a",
-        "pacific_island_small_b"
+        "pacific_island_small_b",
+        "scandi_island_stone_snow_big_850x1050_a",
+        "scandi_island_stone_snow_big_950x1000_a",
+        "scandi_island_stone_snow_big_1000x1050_a",
+        "scandi_island_stone_snow_huge_1450x1250_a",
+        "scandi_island_stone_snow_medium_700x700_a",
+        "scandi_island_stone_snow_medium_1000x450_a",
+        "scandi_island_stone_snow_small_350x300_a",
+        "scandi_island_stone_snow_small_500x450_a"
       ]
     },
     "badLod1ForStaticShadow": {}

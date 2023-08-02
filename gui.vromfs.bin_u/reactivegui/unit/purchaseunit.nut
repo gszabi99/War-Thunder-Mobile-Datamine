@@ -21,7 +21,7 @@ registerHandler("onUnitPurchaseResult",
     requestOpenUnitPurchEffect(myUnits.value?[unitId])
   })
 
-let function purchaseUnit(unitId, isUpgraded = false, executeAfter = null) {
+let function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter = null) {
   if (unitInProgress.value != null)
     return
   let unit = allUnitsCfg.value?[unitId]
@@ -57,7 +57,8 @@ let function purchaseUnit(unitId, isUpgraded = false, executeAfter = null) {
     loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor, loc(getUnitPresentation(unit).locId)) }),
     price,
-    purchaseFunc)
+    purchaseFunc,
+    bqPurchaseInfo)
 }
 
 return purchaseUnit

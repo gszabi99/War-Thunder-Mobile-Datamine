@@ -41,6 +41,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "explosiveType": "comp_b",
       "explosiveMass": 0.014,
       "hitPowerMult": 1.0,
@@ -90,6 +91,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -244,6 +248,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
       "explosiveType": "comp_b",
       "explosiveMass": 0.014,
       "hitPowerMult": 1.0,
@@ -293,6 +298,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "hitpower": {
         "HitPower10m": [
@@ -446,6 +454,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [
         300.0,
@@ -640,6 +649,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -689,6 +699,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -842,6 +855,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
@@ -1037,6 +1051,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -1086,6 +1101,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1239,6 +1257,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
@@ -1430,6 +1449,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -1479,6 +1499,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1633,6 +1656,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -1682,6 +1706,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -1839,6 +1866,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
@@ -2029,6 +2057,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "onHitChanceMultFire": 10.0,
         "relativeVelHitShift": [
           300.0,
@@ -2220,6 +2249,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -2269,6 +2299,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -2616,6 +2649,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -2665,6 +2699,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -2819,6 +2856,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -2868,6 +2906,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [
@@ -3022,6 +3063,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "explosiveType": "comp_b",
         "explosiveMass": 0.014,
         "hitPowerMult": 1.0,
@@ -3071,6 +3113,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "hitpower": {
           "HitPower10m": [

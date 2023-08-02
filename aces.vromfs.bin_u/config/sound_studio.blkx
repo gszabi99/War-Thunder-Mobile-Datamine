@@ -589,7 +589,9 @@
     "shockImpulseThreshold": 1.0,
     "eventSleeveHullMed": "shell_fall_hull_med",
     "eventSleeveHullSmall": "shell_fall_hull_small",
-    "eventSleeveHullBig": "shell_fall_hull_big"
+    "eventSleeveHullBig": "shell_fall_hull_big",
+    "eventSonar": "sonar",
+    "sonarTimeStep": 5.0
   },
   "explosions": {
     "path": "aircraft/explosions",
@@ -10066,6 +10068,12 @@
           "player": -1,
           "minSpeechInterval": 10.0
         },
+        "acousticReport": {
+          "event": "07_environment/voice_message_officer_acoustic_report",
+          "playerRole": "commander",
+          "minSpeechInterval": 30.0,
+          "player": -1
+        },
         "attackAircraftInView": {
           "event": "07_environment/target/sailor/voice_message_sailor_attack_aircraft",
           "playerRole": "sailor",
@@ -10467,6 +10475,19 @@
           "player": -1,
           "delayTime": 1.5,
           "minSpeechInterval": 5.0
+        },
+        "acousticDeath": {
+          "event": "07_environment/voice_message_officer_submarine_destroyed",
+          "playerRole": "commander",
+          "player": -1,
+          "delayTime": 1.5,
+          "minSpeechInterval": 30.0
+        },
+        "acousticFarHit": {
+          "event": "07_environment/voice_message_officer_submarine_hit",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 15.0
         },
         "enemyDestroyed": {
           "event": "07_environment/voice_message_officer_target_destroyed",

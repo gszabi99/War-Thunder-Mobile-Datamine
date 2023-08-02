@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { can_debug_configs, can_debug_missions, can_use_debug_console } = require("%appGlobals/permissions.nut")
+let { can_debug_configs, can_debug_missions, can_use_debug_console, can_view_replays, can_write_replays
+} = require("%appGlobals/permissions.nut")
 let { openDebugProfileWnd } = require("%rGui/debugTools/debugProfileWnd.nut")
 let { openDebugConfigWnd } = require("%rGui/debugTools/debugConfigsWnd.nut")
 let debugShopWnd = require("%rGui/debugTools/debugShopWnd.nut")
@@ -7,6 +8,8 @@ let openDebugCommandsWnd = require("%rGui/debugTools/debugCommandsWnd.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
 let debugGameModes = require("%rGui/gameModes/debugGameModes.nut")
 let chooseBenchmarkWnd = require("chooseBenchmarkWnd.nut")
+let replaysWnd = require("%rGui/replay/replaysWnd.nut")
+let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
@@ -19,6 +22,8 @@ let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 let { startTutor, firstBattleTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
+let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
@@ -37,7 +42,15 @@ let TF_SHIP_TUNE = {
 }
 let BENCHMARK = {
   name = loc("mainmenu/btnBenchmark")
-  cb = chooseBenchmarkWnd
+  cb = @() notAvailableForSquadMsg(chooseBenchmarkWnd)
+}
+let REPLAYS = {
+  name = loc("mainmenu/btnReplays")
+  cb = @() notAvailableForSquadMsg(replaysWnd)
+}
+let SAVE_LAST_REPLAY = {
+  name = loc("mainmenu/btnSaveReplay")
+  cb = saveReplayWindow
 }
 let GAMEPAD_HELP = {
   name = loc("flightmenu/btnControlsHelp")
@@ -45,7 +58,7 @@ let GAMEPAD_HELP = {
 }
 let DEBUG_EVENTS = {
   name = "Debug Game Modes"
-  cb = debugGameModes
+  cb = @() notAvailableForSquadMsg(debugGameModes)
 }
 let DEBUG_CONFIGS = {
   name = "Debug Configs"
@@ -82,7 +95,7 @@ let BUG_REPORT = {
 }
 let TUTORIAL = {
   name = loc("mainmenu/btnTutorial")
-  cb = @() startTutor(firstBattleTutor.value)
+  cb = @() notAvailableForSquadMsg(@() startTutor(firstBattleTutor.value))
 }
 
 let function getPublicButtons() {
@@ -95,6 +108,10 @@ let function getPublicButtons() {
     res.append(NEWS)
   if (canShowLoginAwards.value || isUserstatMissingData.value)
     res.append(LOGIN_AWARD)
+  if (can_view_replays.value)
+    res.append(REPLAYS)
+  if (can_write_replays.value && hasUnsavedReplay.value)
+    res.append(SAVE_LAST_REPLAY)
   res.append(BUG_REPORT)
   return res
 }
@@ -123,7 +140,8 @@ let getTopMenuButtons = @() [
 let topMenuButtonsGenId = Computed(function(prev) {
   let vals = [   //warning disable: -declared-never-used
     can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad,
-    isFeedReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData
+    isFeedReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData,
+    can_view_replays, can_write_replays, hasUnsavedReplay
   ]
   return prev == FRP_INITIAL ? 0 : prev + 1
 })

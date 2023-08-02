@@ -13,6 +13,7 @@ let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServer
 let { mkCurrencyComp, CS_INCREASED_ICON, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
+let { PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
@@ -156,7 +157,8 @@ let function mkPurchaseBtn(goods, toBattle) {
     })
     mkCustomButton(mkCurrencyComp(price, currencyId),
       function() {
-        if (!showNoBalanceMsgIfNeed(price, currencyId, close))
+        let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, goods.id)
+        if (!showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, close))
           buy_goods(goods.id, currencyId, price)
     }, stylePurchase)
   ]

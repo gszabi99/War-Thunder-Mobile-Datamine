@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { locColorTable } = require("%rGui/style/stdColors.nut")
 
 const REPAY_TIME = 0.3
 let state = Watched(null)
@@ -7,7 +8,7 @@ local curContent = null
 local delayedTooltip = null
 
 let TOOLTIP_PARAMS = {
-  flow = FLOW_HORIZONTAL //how popup need to flow against target point
+  flow = FLOW_VERTICAL //how popup need to flow against target point
   flowOffset = hdpx(20) //popup offset from coords in popup flow direction
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -28,10 +29,7 @@ let mkTooltipText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = 0xFFE0E0E0
-  colorTable = {
-    mark = 0xFFFFB70B
-    darken = 0xFF8898CC
-  }
+  colorTable = locColorTable
   text
 }.__update(fontSmall, ovr)
 
@@ -52,7 +50,7 @@ let function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
 
   if (flow == FLOW_VERTICAL) {
     if (res.valign == ALIGN_CENTER)
-      res.valign = (res.pos[1] > sh(100) - res.pos[1] - size[1]) ? ALIGN_BOTTOM : ALIGN_TOP
+      res.valign = (2.0 * res.pos[1] > sh(100) - res.pos[1] - size[1]) ? ALIGN_BOTTOM : ALIGN_TOP
     res.pos[1] += res.valign == ALIGN_BOTTOM ? -flowOffset : flowOffset + size[1]
 
     res.pos[0] += res.halign == ALIGN_CENTER ? size[0] / 2
@@ -84,14 +82,14 @@ let function showTooltip(rectOrPos, params) {
     hideTooltip()
     return
   }
-  let { content = null } = params
+  let content = type(params) == "string" ? params : params?.content
   if (content == null || content == "") {
     logerr("try to show tooltip with empty content")
     hideTooltip()
     return
   }
 
-  let newState = TOOLTIP_PARAMS.__merge(params)
+  let newState = TOOLTIP_PARAMS.__merge(type(params) == "string" ? { content } : params)
   if (type(content) != "string") {
     curContent = content
     newState.content = null

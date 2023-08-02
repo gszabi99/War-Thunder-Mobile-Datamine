@@ -11,6 +11,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { actualSchRewardByCategory, actualSchRewards, watchedSchRewardAd } = require("schRewardsState.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 
 let isShopOpened = mkWatched(persist, "isShopOpened", false)
 let shopOpenCount = Watched(0)
@@ -145,7 +146,7 @@ let function onTabChange(id) {
   curCategoryId(id)
 }
 
-let function openShopWnd(catId = null) {
+let function openShopWnd(catId = null, bqPurchaseInfo = null) {
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return
@@ -154,10 +155,12 @@ let function openShopWnd(catId = null) {
   curCategoryId(catId in goodsByCategory.value ? catId
     : shopCategoriesCfg.findvalue(@(c) c.id in goodsByCategory.value)?.id)
   shopOpenCount(shopOpenCount.value + 1)
+  sendBqEventOnOpenCurrencyShop(bqPurchaseInfo)
   isShopOpened(true)
 }
 
-let openShopWndByCurrencyId = @(currencyId) openShopWnd(categoryByCurrency?[currencyId])
+let openShopWndByCurrencyId = @(currencyId, bqPurchaseInfo)
+  openShopWnd(categoryByCurrency?[currencyId], bqPurchaseInfo.__merge({ id = currencyId }))
 
 register_command(function() {
   shopSeenGoods({})

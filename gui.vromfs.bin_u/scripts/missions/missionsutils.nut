@@ -6,6 +6,7 @@ from "%appGlobals/unitConst.nut" import *
 
 let DataBlock  = require("DataBlock")
 let { split_by_chars } = require("string")
+let { get_current_mission_desc } = require("guiMission")
 
 let missionAvailabilityFlag = {
   [AIR] = "isAirplanesAllowed",
@@ -58,7 +59,7 @@ let getMissionLocName = @(config, key = "locId")
 
 ::loc_current_mission_name <- function loc_current_mission_name() {
   let misBlk = DataBlock()
-  ::get_current_mission_desc(misBlk)
+  get_current_mission_desc(misBlk)
   let teamId = hudArmyToTeamId?[::get_player_army_for_hud()] ?? ""
   let locNameByTeamParamName = $"locNameTeam{teamId}"
   local ret = ""

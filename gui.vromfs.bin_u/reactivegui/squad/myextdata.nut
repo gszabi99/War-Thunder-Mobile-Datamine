@@ -1,0 +1,44 @@
+from "%globalsDarg/darg_library.nut" import *
+let { isEqual } = require("%sqstd/underscore.nut")
+let { bindSquadROVar } = require("squadManager.nut")
+let { myQueueToken } = require("%appGlobals/queueState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { myClustersRTT } = require("%appGlobals/squadState.nut")
+let { readyCheckTime } = require("readyCheck.nut")
+let { mRankCheckTime } = require("mRankCheck.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+
+let curUnits = keepref(Computed(function() {
+  let { allUnits = null } = serverConfigs.value
+  let { units = null } = servProfile.value
+  if (units == null || allUnits == null)
+    return null
+  let res = {}
+  foreach(u in units) {
+    if (!u?.isCurrent)
+      continue
+    let campaign = allUnits?[u.name].campaign
+    if (campaign != null && campaign not in res)
+      res[campaign] <- u.name
+  }
+  return res
+}))
+
+let missingAddons = keepref(Computed(function(prev) {
+  let res = hasAddons.value.filter(@(v) !v)
+    .keys()
+    .sort()
+  return isEqual(prev, res) ? prev : res
+}))
+
+bindSquadROVar("campaign", curCampaign)
+bindSquadROVar("units", curUnits)
+bindSquadROVar("missingAddons", missingAddons)
+bindSquadROVar("queueToken", myQueueToken)
+bindSquadROVar("inBattle", isInBattle)
+bindSquadROVar("readyCheckTime", readyCheckTime)
+bindSquadROVar("mRankCheckTime", mRankCheckTime)
+bindSquadROVar("clustersRTT", myClustersRTT)

@@ -14,4 +14,15 @@ return {
   decorativeLineBgMW = 0xFFD4D4D4
   headerBgMW = 0x0A585858
   bgMW = 0xDC000000
+
+  onlineColor = 0xFFFFFFFF
+  offlineColor = 0xFFFF4020
+  leaderColor = 0xFFFDCF17
+  memberNotReadyColor = 0xFFFF4020
+  memberReadyColor = 0xFF20E040
+
+  locColorTable = {
+    mark = 0xFFFFB70B
+    darken = 0xFF8898CC
+  }
 }

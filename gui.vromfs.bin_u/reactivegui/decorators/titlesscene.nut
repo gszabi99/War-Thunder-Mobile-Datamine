@@ -3,10 +3,10 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { ceil } = require("%sqstd/math.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { chosenTitle, allTitles, chosenNickFrame,
-  availTitles, getReceiveReason } = require("decoratorState.nut")
-let { set_current_decorator, unset_current_decorator,
-  decoratorInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { chosenTitle, allTitles, chosenNickFrame, availTitles, getReceiveReason,
+unseenDecorators, markDecoratorSeen, markDecoratorsSeen } = require("decoratorState.nut")
+let { set_current_decorator, unset_current_decorator, decoratorInProgress
+} = require("%appGlobals/pServer/pServerApi.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
@@ -15,6 +15,9 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+
 
 let gap = hdpx(15)
 let checkIconSize = hdpx(45)
@@ -37,7 +40,7 @@ let choosenMark = {
 }
 
 let function applySelectedTitle(){
-  if (selectedTitle.value == null) {
+  if (selectedTitle.value == "") {
     unset_current_decorator("title")
     return
   }
@@ -66,8 +69,10 @@ let header = {
 
 let function titleRow(name, locName, rowIdx) {
   let stateFlags = Watched(0)
-  let isChoosen = Computed(@() chosenTitle.value?.name == name)
+  let isChoosen = Computed(@() chosenTitle.value?.name == name ||
+    (chosenTitle.value == null && name == ""))
   let isSelected = Computed(@() selectedTitle.value == name)
+  let isUnseen = Computed(@() name in unseenDecorators.value)
   return {
     rendObj = ROBJ_SOLID
     size = [flex(), rowHeight]
@@ -75,13 +80,15 @@ let function titleRow(name, locName, rowIdx) {
     behavior = Behaviors.Button
     valign = ALIGN_CENTER
     onElemState = @(sf) stateFlags(sf)
-    function onClick(){
+    function onClick() {
+      markDecoratorSeen(name)
       if (!isSelected.value)
         selectedTitle(name)
       else if (isSelected.value && !isChoosen.value
           && decoratorInProgress.value != (name ?? "title"))
         applySelectedTitle()
     }
+    onHover = hoverHoldAction("markDecoratorSeen", name, markDecoratorSeen)
     children = @(){
       watch = [stateFlags, isSelected]
       flow = FLOW_HORIZONTAL
@@ -94,12 +101,12 @@ let function titleRow(name, locName, rowIdx) {
         : 0x00000000
       children = [
         @() {
-          watch = [isChoosen, availTitles]
+          watch = [isChoosen, availTitles, isUnseen]
           size = [hdpx(85),hdpx(85)]
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
-          children = name != null && name not in availTitles.value
-              ? {
+          children = name != "" && name not in availTitles.value
+            ? {
                 size =[hdpx(35),hdpx(45)]
                 rendObj = ROBJ_IMAGE
                 color = 0xFFFFB70B
@@ -108,7 +115,12 @@ let function titleRow(name, locName, rowIdx) {
             : isChoosen.value || isSelected.value
               ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.value != null),
                 isChoosen.value ? choosenMark : null)
-            : null
+            : isUnseen.value
+              ? {
+                  margin = [hdpx(15), hdpx(20)]
+                  children = priorityUnseenMark
+                }
+              : null
         }
         {
           rendObj = ROBJ_TEXT
@@ -137,7 +149,7 @@ let footer = @() {
   children = [
     selectedTitle.value == chosenTitle.value?.name
         ? null
-      : selectedTitle.value in availTitles.value || selectedTitle.value == null
+      : selectedTitle.value in availTitles.value || selectedTitle.value == ""
         ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedTitle,
           { hotkeys = ["^J:X | Enter"] })
       : textButtonCommon(loc("mainmenu/btnEquip"), applySelectedTitle)
@@ -159,7 +171,7 @@ let function titlesList() {
     .map(@(name) { name, locName = loc($"title/{name}") })
     .sort(@(a,b) (b.name in availTitles.value) <=> (a.name in availTitles.value)
       || a.locName <=> b.locName)
-    .insert(0, { name = null, locName = loc("title/empty") })
+    .insert(0, { name = "", locName = loc("title/empty") })
     .map(@(v, idx) titleRow(v.name, v.locName, idx % rows))
 
   for(local i = titleComps.len(); i < total; i++)
@@ -197,8 +209,10 @@ let titleContent = {
 
 let titlesScene = @() {
   watch = hasVisibleTitles
+  key = hasVisibleTitles
   size = flex()
   maxWidth = hdpx(1800)
+  onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availTitles.value).keys())
   children = hasVisibleTitles.value ? titleContent
     : {
       halign = ALIGN_CENTER

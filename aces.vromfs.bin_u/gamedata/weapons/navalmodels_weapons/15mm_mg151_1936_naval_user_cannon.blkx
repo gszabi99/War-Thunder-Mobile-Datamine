@@ -40,6 +40,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_t",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
       "relativeVelArmorShift": [
@@ -203,6 +204,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
       "speed": 960.0,
       "maxDistance": 3500.0,
       "dynamicKv": true,
@@ -406,6 +408,7 @@
       "stabilityReductionAfterPenetration": 0.3,
       "bulletType": "ap_i_t",
       "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
       "relativeVelArmorShift": [
@@ -570,6 +573,7 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
       "selfDestructionInAir": true,
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
@@ -598,6 +602,9 @@
             0.3
           ]
         ]
+      },
+      "pressureDamage": {
+        "damageType": "pressure"
       },
       "damage": {
         "kinetic": {
@@ -773,6 +780,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "relativeVelArmorShift": [
@@ -936,6 +944,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "speed": 960.0,
         "maxDistance": 3500.0,
         "dynamicKv": true,
@@ -1143,6 +1152,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "relativeVelArmorShift": [
@@ -1300,6 +1310,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "relativeVelArmorShift": [
@@ -1457,6 +1468,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "relativeVelArmorShift": [
@@ -1620,6 +1632,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "speed": 960.0,
         "maxDistance": 3500.0,
         "dynamicKv": true,
@@ -1833,6 +1846,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "speed": 960.0,
         "maxDistance": 3500.0,
         "dynamicKv": true,
@@ -2043,6 +2057,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
         "selfDestructionInAir": true,
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
@@ -2071,6 +2086,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -2249,6 +2267,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
         "speed": 960.0,
         "maxDistance": 3500.0,
         "dynamicKv": true,
@@ -2452,6 +2471,7 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "ap_i_t",
         "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
         "relativeVelArmorShift": [

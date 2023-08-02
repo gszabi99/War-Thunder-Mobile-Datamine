@@ -118,6 +118,7 @@ let function mkUnitsFilter(options, allUnits, width) {
     }
     return {
       watch
+      stopMouse = true
       flow = FLOW_VERTICAL
       gap = valueGap
       children = filters.map(@(f) mkFilter(f, width))

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
+let { rnd_int } = require("dagor.random")
 let { register_command } = require("console")
 let { HUD_MSG_MULTIPLAYER_DMG, UT_Unknown, UT_Ship } = require("hudMessages")
 let { GO_WIN, GO_FAIL, GO_NONE } = require("guiMission")
@@ -75,14 +76,16 @@ register_command(
     isKill = true
     action = "kill"
 
-    playerId = localMPlayerId.value,
-    team = 3 - localMPlayerTeam.value
+    playerId = rnd_int(0, 1) ? localMPlayerId.value
+      : localMPlayerId.value == 0 ? 1
+      : 0,
+    team = localMPlayerTeam.value
     unitName = allUnitsCfg.value.findvalue(@(_) true)?.name ?? ""
     unitType = UT_Ship
     unitNameLoc = "Killer Unit"
 
-    victimPlayerId = localMPlayerId.value,
-    victimTeam = localMPlayerTeam.value
+    victimPlayerId = localMPlayerId.value == 0 ? 1 : 0,
+    victimTeam = 3- localMPlayerTeam.value
     victimUnitName = allUnitsCfg.value.findvalue(@(_) true)?.name ?? ""
     victimUnitType = UT_Ship
     victimUnitNameLoc = "Victim Unit"

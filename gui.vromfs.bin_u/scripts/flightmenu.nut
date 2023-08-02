@@ -11,14 +11,14 @@ let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
-  quit_mission_after_complete, restart_mission, get_mission_restore_type
+  quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status
 } = require("guiMission")
 
 let function canRestart() {
   return !is_multiplayer()
     && !is_benchmark_game_mode()
     && (get_game_type() & GT_COOPERATIVE) == 0
-    && ::get_mission_status() != MISSION_STATUS_SUCCESS
+    && get_mission_status() != MISSION_STATUS_SUCCESS
 }
 
 let function canBailout() {
@@ -27,10 +27,10 @@ let function canBailout() {
     && !is_benchmark_game_mode()
     && !::is_camera_not_flight()
     && ::is_player_can_bailout()
-    && ::get_mission_status() == MISSION_STATUS_RUNNING
+    && get_mission_status() == MISSION_STATUS_RUNNING
 }
 
-let isMissionFailed = @() ::get_mission_status() == MISSION_STATUS_FAIL
+let isMissionFailed = @() get_mission_status() == MISSION_STATUS_FAIL
 
 let function closeFlightMenu() {
   if (isMissionFailed())
@@ -90,7 +90,7 @@ let function restartMission() {
   if (!canRestart())
     return
 
-  if (::get_mission_status() != MISSION_STATUS_RUNNING)
+  if (get_mission_status() != MISSION_STATUS_RUNNING)
     restart_mission()
   else
     openYesNoMsg(loc("flightmenu/questionRestartMission"), "fMenuRestart")
@@ -100,7 +100,7 @@ let function quitMission() {
   if (("is_offline_version" in getroottable()) && ::is_offline_version)
     return restart_mission()
 
-  if (::get_mission_status() == MISSION_STATUS_RUNNING) {
+  if (get_mission_status() == MISSION_STATUS_RUNNING) {
     local text = ""
     if (is_mplayer_host())
       text = loc("flightmenu/questionQuitMissionHost")

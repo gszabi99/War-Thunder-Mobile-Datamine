@@ -4,10 +4,11 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { campaignsList, setCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
-let { needFirstBattleTutorForCampaign } = require("%rGui/tutorial/tutorialMissions.nut")
+let { needFirstBattleTutorForCampaign, rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened(false)
@@ -61,7 +62,12 @@ let function onCampaignButtonClick(campaign) {
   if (!isAnyCampaignSelected.value)
     sendUiBqEvent("campaign_first_choice", { id = campaign })
 
-  if (isAnyCampaignSelected.value && needFirstBattleTutorForCampaign(campaign))
+  if (!isAnyCampaignSelected.value || !needFirstBattleTutorForCampaign(campaign)) {
+    applyCampaign()
+    return
+  }
+
+  if (!isInSquad.value) {
     openMsgBox({
       text = loc("msg/needTutorialToAccessCampaign")
       buttons = [
@@ -69,8 +75,19 @@ let function onCampaignButtonClick(campaign) {
         { id = "yes", styleId = "PRIMARY", isDefault = true, cb = applyCampaign }
       ]
     })
-  else
+    return
+  }
+
+  if (squadLeaderCampaign.value == campaign) {
+    rewardTutorialMission(campaign)
     applyCampaign()
+    return
+  }
+
+  openMsgBox({
+    text = loc("msg/needTutorialToAccessCampaign/inSquad")
+    buttons = [{ id = "ok", styleId = "PRIMARY", isDefault = true, cb = close }]
+  })
 }
 
 let function mkCampaignButton(campaign, campaignW) {

@@ -4,6 +4,7 @@ let { Computed } = require("frp")
 let { DBGLEVEL } = require("dagor.system")
 let { trim } = require("%sqstd/string.nut")
 let { rights } = require("permissions/userRights.nut")
+let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 
 let defaults = {
   can_debug_configs = DBGLEVEL > 0
@@ -16,6 +17,9 @@ let defaults = {
   allow_players_online_info = false
   can_use_internal_support_form = false
   allow_review_cue = false
+  can_view_replays = DBGLEVEL > 0 || isOfflineMenu
+  can_write_replays = DBGLEVEL > 0
+  can_link_to_gaijin_account = DBGLEVEL > 0
 }
 
 let allPermissions = Computed(function() {

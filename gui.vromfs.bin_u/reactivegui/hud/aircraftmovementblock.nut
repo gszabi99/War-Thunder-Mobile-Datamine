@@ -170,8 +170,8 @@ let function throttleSlider() {
       btnImageThrottleInc
       btnImageThrottleDec
     ]
-    onAttach = function() {
-      gui_scene.setTimeout(0.1, @() userTrottle(maxThrottle - Trt[0].value))
+    function onAttach() {
+      resetTimeout(0.1, @() userTrottle(maxThrottle - Trt[0].value))
       setShortcutOn("throttle_rangeMax")
       needOpacityThrottle(true)
     }

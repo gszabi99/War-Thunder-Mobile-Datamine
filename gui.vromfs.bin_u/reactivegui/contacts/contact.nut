@@ -1,12 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let { send, subscribe } = require("eventbus")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 
 const NAME_CB_ID = "contacts.onReceiveNicknames"
 let invalidNickName = "????????"
 let allContacts = hardPersistWatched("allContacts", {})
 
 let isValidContactNick = @(c) c.value.realnick != invalidNickName
+let isValidUserIdNick = @(userId)
+  (allContacts.value?[userId.tostring()].realnick ?? invalidNickName) != invalidNickName
 
 let function Contact(userId) {
   if (type(userId) != "string")
@@ -47,6 +50,12 @@ allContacts.whiteListMutatorClosure(initContact)
 allContacts.whiteListMutatorClosure(updateContact)
 allContacts.whiteListMutatorClosure(updateContactNames)
 
+let getContactNick = @(contact) getPlayerName(contact?.realnick ?? invalidNickName)
+
+let callCb = @(cb, result) type(cb) == "string" ? send(cb, result)
+  : "id" in cb ? send(cb.id, { context = cb, result })
+  : null
+
 let requestedUids = {}
 
 subscribe(NAME_CB_ID, function(msg) {
@@ -63,30 +72,29 @@ subscribe(NAME_CB_ID, function(msg) {
   }
 
   updateContactNames(changeList)
-
-  if (onFinish)
-    send(onFinish, result)
+  callCb(onFinish, result)
 })
 
 //contactsContainer - array or table of contacts
-let function validateNickNames(contactsContainer, onFinish = null) {
+let function validateNickNames(allUids, onFinish = null) {
   let uids = []
-  foreach (c in contactsContainer) {
-    if (!isValidContactNick(c) && !(c.value.uid in requestedUids)) {
-      uids.append(c.value.uid)
-      requestedUids[c.value.uid] <- true
+  foreach(u in allUids) {
+    let uid = u.tostring()
+    if (!isValidUserIdNick(uid) && !(uid in requestedUids)) {
+      uids.append(uid)
+      requestedUids[uid] <- true
     }
   }
+
   if (!uids.len()) {
-    if (onFinish)
-      send(onFinish, {})
+    callCb(onFinish, {})
     return
   }
 
   send("matchingCall",
     {
       action = "mproxy.nick_server_request"
-      params = { ids = uids }
+      params = { ids = uids.map(@(u) u.tointeger()) }
       cb = {
         id = NAME_CB_ID
         uids
@@ -102,4 +110,5 @@ return {
   updateContactNames
   validateNickNames
   isValidContactNick
+  getContactNick
 }

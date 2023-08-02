@@ -7,12 +7,12 @@ let isMoveByKeys = Computed(@() isGamepad.value || isKeyboard.value)
 
 let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
-
-  let pageMask = mkBitmapPicture(2, (height / 10).tointeger(),
+  let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
+  let pageMask = mkBitmapPicture(2, (height * scaleMul + 0.5).tointeger(),
     function(params, bmp) {
       let { w, h } = params
       let gradStart1 = gradientOffset[1] * h / height
-      let gradStart2 = h - (gradientOffset[0] / 10).tointeger()
+      let gradStart2 = h - (gradientOffset[0] * scaleMul + 0.5).tointeger()
       for (local y = 0; y < h; y++) {
         let v = y < gradStart1 ? lerpClamped(0, gradStart1, 0.0, 1.0, y)
         : y > gradStart2 ? lerpClamped(gradStart2, h - 1, 1.0, 0.0, y)

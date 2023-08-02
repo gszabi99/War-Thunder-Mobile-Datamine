@@ -5,6 +5,7 @@ let { isGamepad } = require("%rGui/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { btnA } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
+let { withHoldTooltip } = require("%rGui/tooltip.nut")
 
 
 let buttonsHGap = hdpx(64)
@@ -69,8 +70,9 @@ let mergeStyles = @(s1, s2) (s2?.len() ?? 0) == 0 ? s1
       childOvr = mergeParam("childOvr", s1, s2)
       gradientOvr = mergeParam("gradientOvr", s1, s2)
       hotkeyBlockOvr = mergeParam("hotkeyBlockOvr", s1, s2)
-      hotkeys = s1?.hotkeys ?? s2?.hotkeys
+      hotkeys = s2?.hotkeys ?? s1?.hotkeys
       stateFlags = s2?.stateFlags ?? s1?.stateFlags
+      tooltipCtor = s1?.tooltipCtor ?? s2?.tooltipCtor
     }
 
 let btnImgCache = {}
@@ -117,19 +119,32 @@ let function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
 }
 
 let function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
-  let { ovr = {}, childOvr = {}, gradientOvr = {}, hotkeyBlockOvr = {}, hotkeys = null } = style
+  let { ovr = {}, childOvr = {}, gradientOvr = {}, hotkeyBlockOvr = {}, hotkeys = null,
+    tooltipCtor = null
+  } = style
   let stateFlags = style?.stateFlags ?? Watched(0)
   let contentExt = mkButtonContentWithHotkey(stateFlags, hotkeys,
     (type(content) == "table") ? content.__merge(childOvr) : content,
     { size = ovr?.size }.__update(hotkeyBlockOvr)
   )
+
+  local ovrExt = ovr
+  let addChild = ovr?.children
+  if (addChild != null) {
+    ovrExt = clone ovr
+    delete ovrExt.children
+  }
+
+  let key = ovr?.key ?? {}
   return @() {
     watch = stateFlags
+    key
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_BOX
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
+    onElemState = tooltipCtor == null ? @(v) stateFlags(v)
+      : withHoldTooltip(stateFlags, key, tooltipCtor)
     xmbNode = {}
     hotkeys
     sound = {
@@ -145,8 +160,8 @@ let function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
     children = [
       pattern
       mkGradient(gradientOvr)
-    ].append(contentExt)
-  }.__update(ovr)
+    ].append(contentExt, addChild)
+  }.__update(ovrExt)
 }
 
 let textButton = @(text, onClick, style = buttonStyles.PRIMARY)

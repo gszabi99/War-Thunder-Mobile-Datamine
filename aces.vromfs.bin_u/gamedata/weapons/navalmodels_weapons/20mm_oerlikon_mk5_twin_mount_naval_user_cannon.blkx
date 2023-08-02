@@ -49,6 +49,7 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
     "speed": 844.0,
     "maxDistance": 8000.0,
     "dynamicKv": true,
@@ -260,6 +261,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
         "speed": 844.0,
         "maxDistance": 8000.0,
         "dynamicKv": true,
@@ -469,6 +471,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "speed": 838.0,
         "maxDistance": 8000.0,
         "onHitChanceMultFire": 40.0,
@@ -499,6 +502,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -674,6 +680,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -866,6 +873,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1054,6 +1062,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1242,6 +1251,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -1431,6 +1441,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "speed": 838.0,
         "maxDistance": 8000.0,
         "onHitChanceMultFire": 40.0,
@@ -1461,6 +1472,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -1641,6 +1655,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
         "speed": 844.0,
         "maxDistance": 8000.0,
         "dynamicKv": true,
@@ -1850,6 +1865,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "speed": 838.0,
         "maxDistance": 8000.0,
         "onHitChanceMultFire": 40.0,
@@ -1880,6 +1896,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {
@@ -2055,6 +2074,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
         "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
@@ -2244,6 +2264,7 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
         "speed": 838.0,
         "maxDistance": 8000.0,
         "onHitChanceMultFire": 40.0,
@@ -2274,6 +2295,9 @@
               0.3
             ]
           ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
         },
         "damage": {
           "kinetic": {

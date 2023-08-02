@@ -14,17 +14,21 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isContactsLoggedIn, isMatchingConnected } = require("%appGlobals/loginState.nut")
+let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
 const ADD_MODE = "add"
 const DEL_MODE = "del"
 const APPROVED_MAIL = "approved_mail"
 const REQUESTS_TO_ME_MAIL = "requests_to_me_mail"
-const GAME_GROUP_NAME = "WTM"
+const GAME_GROUP_NAME = "warthunder"
 
 const FETCH_CB = "contacts.onFetch"
+const SEARCH_TAB = "search"
+const FRIENDS_TAB = "friends"
 
 let isContactsOpened = mkWatched(persist, "isContactsOpened", false)
+let contactsOpenTabId = Watched(null)
 let searchedNick = mkWatched(persist, "searchedNick", null)
 let searchContactsResultRaw = mkWatched(persist, "searchContactsResultRaw", null)
 let isSearchInProgress = Watched(false)
@@ -179,8 +183,9 @@ let function clearSearchData() {
 }
 
 let function mkSimpleContactAction(actionId, mkData, onSucces = null) {
-  registerHandler(actionId, function(result, context) {
+  registerHandler(actionId, function(answer, context) {
     let { userId = null } = context
+    let { result = null } = answer
     let isSuccess = result?.success ?? true
     logC($"request result {actionId}: ", result)
 
@@ -196,9 +201,11 @@ let function mkSimpleContactAction(actionId, mkData, onSucces = null) {
       fetchContacts()
       onSucces?(context)
     }
-    else if ("error" in result)
-      openFMsgBox({ text = loc(result.error) })
-
+    else if ("error" in result) {
+      let locId = $"error/{result.error}"
+      sendErrorLocIdBqEvent(locId)
+      openFMsgBox({ text = loc(locId) })
+    }
   })
 
   return function(userId) {
@@ -234,6 +241,11 @@ let addToBlackList = mkSimpleContactAction("cln_blacklist_request_for_contact",
   @(userId) { requestorUid = userId, groupName = GAME_GROUP_NAME })
 let removeFromBlackList = mkSimpleContactAction("cln_remove_from_blacklist_for_contact",
   @(userId) { requestorUid = userId, groupName = GAME_GROUP_NAME })
+
+let function openContacts(tabId = null) {
+  contactsOpenTabId(tabId)
+  isContactsOpened(true)
+}
 
 //----------- Debug Block -----------------
 if (is_pc) {
@@ -285,8 +297,11 @@ return {
   searchedNick = Computed(@() searchedNick.value)
   clearSearchData
 
+  openContacts
+  SEARCH_TAB
+  FRIENDS_TAB
+  contactsOpenTabId
   isContactsOpened
-  openContacts = @() isContactsOpened(true)
   getContactsInviteId
   canFetchContacts
 
