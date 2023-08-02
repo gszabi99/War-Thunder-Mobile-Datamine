@@ -1,0 +1,328 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "t1_player01"
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": "t1_player02"
+    },
+    "mission": {
+      "level": "levels/pacific_islands.bin",
+      "type": "testFlight",
+      "environment": "6.73",
+      "weather": "thin_clouds",
+      "windDirection": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "locName": "missions/testSail",
+      "restoreType": "manual",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": ""
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "respawns": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isKilled",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 3.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "t1_player01",
+          "target": "spawn01"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
+        "name": "t1_player01",
+        "tm": [
+          [
+            -0.0730448,
+            0.0,
+            -0.99733
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99733,
+            0.0,
+            -0.0730448
+          ],
+          [
+            1782.38,
+            0.000244141,
+            1229.13
+          ]
+        ],
+        "unit_class": "germ_cruiser_admiral_hipper",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_player02",
+        "tm": [
+          [
+            0.160923,
+            0.0,
+            0.986968
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.986968,
+            0.0,
+            0.160923
+          ],
+          [
+            1498.31,
+            -0.000976559,
+            -2936.54
+          ]
+        ],
+        "unit_class": "germ_cruiser_admiral_hipper",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "hold_fire"
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {
+    "wp_for_plane": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999935,
+          0.0,
+          0.0113978
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0113978,
+          0.0,
+          -0.999935
+        ],
+        [
+          1800.35,
+          500.0,
+          1228.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -20.0,
+          0.0,
+          -34.641
+        ],
+        [
+          0.0,
+          40.0,
+          0.0
+        ],
+        [
+          34.641,
+          0.0,
+          -20.0
+        ],
+        [
+          1800.36,
+          3.8147E-06,
+          1229.11
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6512.22,
+          0.0,
+          6212.16
+        ],
+        [
+          0.0,
+          9000.0,
+          0.0
+        ],
+        [
+          -6212.16,
+          0.0,
+          6512.22
+        ],
+        [
+          1859.81,
+          0.000488281,
+          1517.01
+        ]
+      ],
+      "objLayer": 2,
+      "props": {}
+    },
+    "battlearea_fake": {
+      "type": "Box",
+      "tm": [
+        [
+          15000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1344.27,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          15000.0
+        ],
+        [
+          -1342.02,
+          0.0,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

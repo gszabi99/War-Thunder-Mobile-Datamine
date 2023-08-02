@@ -1,0 +1,215 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/japan/template_japan_tank_spawns.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
+        "name": "t1_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2264.2,
+            42.1992,
+            521.4
+          ]
+        ],
+        "props": {
+          "squad_members": "t1_killarea_block01"
+        }
+      },
+      {
+        "name": "t2_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1800.3,
+            33.3492,
+            510.766
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_killarea_block01"
+        }
+      }
+    ]
+  },
+  "areas": {
+    "bttl_battle_area_arcade": {
+      "type": "Box",
+      "tm": [
+        [
+          1100.0,
+          0.0,
+          -2.79744E-05
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          2.79744E-05,
+          0.0,
+          1100.0
+        ],
+        [
+          2032.55,
+          60.9362,
+          2104.35
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_killarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          80.3342,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          2281.83,
+          35.1582,
+          2529.78
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          80.3342,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          1788.56,
+          26.8002,
+          1683.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

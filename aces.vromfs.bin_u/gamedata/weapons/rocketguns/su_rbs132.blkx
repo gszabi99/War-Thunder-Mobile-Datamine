@@ -1,0 +1,139 @@
+{
+  "rocketGun": true,
+  "preset_cost": 50,
+  "mesh": "su_rbs_132_rocket",
+  "helicopterGroup": 2,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": {
+    "caliber": 0.132,
+    "length": 1.5,
+    "explosiveType": "tnt",
+    "explosiveMass": 5.0,
+    "mass": 51.6,
+    "massEnd": 43.77,
+    "statType": "hydra",
+    "explodeTreshold": 8.0,
+    "fuseDelayDist": 1.0,
+    "maxDistance": 7100.0,
+    "minDistance": 30.0,
+    "force": 16512.0,
+    "timeFire": 1.0,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "distFromCmToStab": 0.01,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "dragCx": 0.16,
+    "CxK": 0.11,
+    "hitPowerMult": 600.0,
+    "rendinstDamageRadius": 0.15,
+    "distanceFuse": false,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 0.0,
+    "maxSpeed": 320.0,
+    "amountPerTier": 1.0,
+    "iconType": "rockets_ap_large",
+    "advancedMissiles": false,
+    "autoaimEnabled": false,
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "fireEffect": "rocket_fire_dark_multiple",
+    "smokeEffect": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.2,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
+    "shellAnimation": "video/shells_animations/rocket_he.ivf",
+    "maxDeltaAngle": 3.5,
+    "explosionEffect": "explosion_midair_medium",
+    "groundCollisionEffect": "hit_59_80mm_dirt_he",
+    "ricochetEffect": "hit_59_80mm_metal_ap",
+    "waterCollisionEffect": "hit_59_80mm_water",
+    "explosionPatchRadius": 3.4,
+    "armorpower": {
+      "ArmorPower0m": [
+        85.0,
+        10.0
+      ],
+      "ArmorPower500m": [
+        75.0,
+        500.0
+      ],
+      "ArmorPower7000m": [
+        20.0,
+        7000.0
+      ]
+    },
+    "hitpower": {
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower10000m": [
+        1.0,
+        10000.0
+      ]
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "collisions": {
+      "steel": {
+        "fx": "explosion_midair_tiny"
+      },
+      "armor": {
+        "fx": "explosion_midair_tiny"
+      },
+      "buildings": {
+        "fx": "explosion_midair_tiny"
+      },
+      "wood": {
+        "fx": "explosion_midair_tiny"
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    }
+  }
+}

@@ -1,0 +1,420 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/pacific_islands.bin",
+      "environment": "Day",
+      "weather": "clear",
+      "locName": "pacific_island/name",
+      "locDesc": "pacific_island/desc",
+      "scoreLimit": 10000,
+      "timeLimit": 10,
+      "deathPenaltyMul": 0.0,
+      "useDeathmatchHUD": true,
+      "showTacticalMapCellSize": true,
+      "country_axis": "usa",
+      "country_allies": "germany",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "checkFriendlyFireAlsoFromAircrafts": true,
+      "preventBotsLeavingBattleArea": true,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": false,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "ship",
+              "side": "ally",
+              "target": "briefing_t1_fleet"
+            },
+            {
+              "icontype": "ship",
+              "side": "enemy",
+              "target": "briefing_t2_fleet"
+            },
+            {
+              "icontype": "ship",
+              "side": "ally",
+              "target": "briefing_t1_spawn01"
+            },
+            {
+              "icontype": "ship",
+              "side": "ally",
+              "target": "briefing_t1_spawn02"
+            },
+            {
+              "icontype": "ship",
+              "side": "enemy",
+              "target": "briefing_t2_spawn01"
+            },
+            {
+              "icontype": "ship",
+              "side": "enemy",
+              "target": "briefing_t2_spawn02"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/navy_templates/ntdm_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/navy_templates/ship_base_logic.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/ships/pacific_island_small/mainareas/pacific_island_small_NTdm_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          -2.21533E-07,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          -2.21533E-07
+        ],
+        [
+          7810.25,
+          400.0,
+          2416.9
+        ]
+      ],
+      "unit_class": "germ_cruiser_admiral_hipper",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 1,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "briefing_t1_fleet": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -420.1,
+          27.85,
+          -2184.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_spawn01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1371.6,
+          -36.05,
+          -2207.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_spawn02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1114.3,
+          -37.55,
+          -2165.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_spawn01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -846.75,
+          -38.85,
+          2170.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_spawn02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1632.25,
+          -45.0,
+          2054.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_fleet": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          61.05,
+          -41.2,
+          2226.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

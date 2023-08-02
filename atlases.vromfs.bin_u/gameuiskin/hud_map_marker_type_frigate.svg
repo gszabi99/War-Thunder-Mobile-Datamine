@@ -1,0 +1,11 @@
+<svg id="TYPES" xmlns="http://www.w3.org/2000/svg" width="16" height="23" viewBox="0 0 16 23">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="type_frigate" class="cls-1" d="M16,23H0V7.353L8,0l8,7V23ZM3,20H13V9L8,5,3,9V20Z"/>
+</svg>

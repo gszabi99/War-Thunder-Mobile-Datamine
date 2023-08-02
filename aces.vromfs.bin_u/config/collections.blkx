@@ -1,0 +1,320 @@
+{
+  "collection17": {
+    "locId": "collection/assault_rifle_ag",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "attachable": [
+        "akms_ag",
+        "cn_qbz_95_ag",
+        "g36k_ag",
+        "l85a1_ag"
+      ]
+    },
+    "prize": {
+      "attachable": "m4_carbine_ag"
+    }
+  },
+  "collection18": {
+    "locId": "collection/winter_2021_pinup",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "ny_marathon_decal_usa",
+        "ny_marathon_decal_ussr",
+        "ny_marathon_decal_uk",
+        "ny_marathon_decal_japan",
+        "ny_marathon_decal_italy",
+        "ny_marathon_decal_germany",
+        "ny_marathon_decal_france",
+        "ny_marathon_decal_china",
+        "ny_marathon_decal_sweden"
+      ]
+    },
+    "prize": {
+      "decal": "ny_marathon_decal_collection"
+    }
+  },
+  "collection13": {
+    "locId": "collection/ammunition",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "attachable": [
+        "ussr_body_armor_6b43",
+        "ussr_ammunition_wwii",
+        "ger_ammunition_wwii",
+        "usa_ciras_land"
+      ]
+    },
+    "prize": {
+      "attachable": "iotv_body_armor"
+    }
+  },
+  "collection14": {
+    "locId": "collection/camo_trophy_2018",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "advancing_storm_decal",
+        "project_x_decal",
+        "valkyries_decal"
+      ]
+    },
+    "prize": {
+      "decal": "pirate_girl_decal"
+    }
+  },
+  "collection15": {
+    "locId": "collection/camo_trophy_2019",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "imperial_navy_decal",
+        "locked_on_decal",
+        "night_vision_decal",
+        "supersonic_decal"
+      ]
+    },
+    "prize": {
+      "decal": "catwoman_decal"
+    }
+  },
+  "collection16": {
+    "locId": "collection/camo_trophy_2020",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "1_95_decal",
+        "1_97_decal",
+        "starfighters_decal",
+        "raining_fire_decal",
+        "new_power_decal"
+      ]
+    },
+    "prize": {
+      "decal": "fantom_girl_decal"
+    }
+  },
+  "collection1": {
+    "locId": "collection/machineguns",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "attachable": [
+        "type_88",
+        "rpk",
+        "mg3_kws",
+        "m249"
+      ]
+    },
+    "prize": {
+      "attachable": "sweden_kg_m40"
+    }
+  },
+  "collection2": {
+    "locId": "collection/mythical_creatures",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "basilisk_decal",
+        "cerberus_decal",
+        "chimera_decal",
+        "echidna_decal",
+        "harpy_decal",
+        "hippocampus_decal",
+        "lernaean_hydra_decal",
+        "minotaur_decal",
+        "sphinx_decal",
+        "wyvern_decal"
+      ]
+    },
+    "prize": {
+      "decal": "werewolf_decal"
+    }
+  },
+  "collection3": {
+    "locId": "collection/rifles",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "attachable": [
+        "arisaka_44",
+        "g41",
+        "lee_enfield",
+        "m1_carabine",
+        "svt_40",
+        "mauser_98k",
+        "type_99_sniper"
+      ]
+    },
+    "prize": {
+      "attachable": "sweden_gevar_m38"
+    }
+  },
+  "collection4": {
+    "locId": "collection/helmets",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "attachable": [
+        "german_tank_helmet",
+        "helmet_gk80a_steel",
+        "helmet_m1",
+        "helmet_m21_18",
+        "helmet_m26",
+        "helmet_m33",
+        "helmet_type90",
+        "uk_early_helmet",
+        "ussr_tank_helmet"
+      ]
+    },
+    "prize": {
+      "attachable": "helmet_m1_late"
+    }
+  },
+  "collection5": {
+    "locId": "collection/assault_rifle",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "attachable": [
+        "type_89f",
+        "m4_carbine",
+        "l85a1",
+        "g36k",
+        "famas_f1",
+        "akms"
+      ]
+    },
+    "prize": {
+      "attachable": "akms_premium"
+    }
+  },
+  "collection6": {
+    "locId": "collection/hats",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "attachable": [
+        "feather_hat",
+        "foil_hat",
+        "helmet_hat",
+        "jester_hat",
+        "leprechaun_hat",
+        "pirate_hat",
+        "rabbit_hat",
+        "sombrero_hat",
+        "uncle_sams_hat",
+        "magic_hat"
+      ]
+    },
+    "prize": {
+      "attachable": "mad_hatter_hat"
+    }
+  },
+  "collection7": {
+    "locId": "collection/fire_decal",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "fire_decal_1",
+        "fire_decal_2",
+        "fire_decal_3",
+        "fire_decal_4",
+        "fire_decal_5",
+        "fire_decal_6",
+        "fire_decal_7",
+        "fire_decal_8",
+        "fire_decal_9"
+      ]
+    },
+    "prize": {
+      "decal": "ifrit_decal"
+    }
+  },
+  "collection8": {
+    "locId": "collection/fifa2018_group_a_b",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "ball_urugvay",
+        "ball_russia",
+        "ball_saudi_arabia",
+        "ball_egypt",
+        "ball_spain",
+        "ball_portugal",
+        "ball_iran",
+        "ball_morocco"
+      ]
+    },
+    "prize": {
+      "decal": "ball_1_decal"
+    }
+  },
+  "collection9": {
+    "locId": "collection/fifa2018_group_c_d",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "ball_france",
+        "ball_denmark",
+        "ball_peru",
+        "ball_australia",
+        "ball_croatia",
+        "ball_argentina",
+        "ball_nigeria",
+        "ball_iceland"
+      ]
+    },
+    "prize": {
+      "decal": "ball_2_decal"
+    }
+  },
+  "collection10": {
+    "locId": "collection/fifa2018_group_e_f",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "ball_brazil",
+        "ball_swiss",
+        "ball_serbia",
+        "ball_costa_rica",
+        "ball_sweden",
+        "ball_mexico",
+        "ball_south_korea",
+        "ball_germany"
+      ]
+    },
+    "prize": {
+      "decal": "ball_3_decal"
+    }
+  },
+  "collection11": {
+    "locId": "collection/fifa2018_group_g_h",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "ball_belgium",
+        "ball_uk",
+        "ball_tunisia",
+        "ball_panama",
+        "ball_colombia",
+        "ball_japan",
+        "ball_senegal",
+        "ball_poland"
+      ]
+    },
+    "prize": {
+      "decal": "ball_4_decal"
+    }
+  },
+  "collection12": {
+    "locId": "collection/fifa2018_super",
+    "reqFeature": "Collection",
+    "collectionItems": {
+      "decal": [
+        "ball_1_decal",
+        "ball_2_decal",
+        "ball_3_decal",
+        "ball_4_decal"
+      ]
+    },
+    "prize": {
+      "attachable": "sports_balls"
+    }
+  }
+}

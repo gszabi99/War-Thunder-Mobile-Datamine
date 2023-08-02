@@ -1,0 +1,146 @@
+{
+  "country_germany": {
+    "army": {
+      "range": [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ]
+    },
+    "helicopters": {
+      "range": [
+        {},
+        {},
+        {}
+      ]
+    },
+    "aviation": {
+      "range": [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ]
+    },
+    "ships": {
+      "range": [
+        {
+          "germ_destroyer_class1934a_1940": {
+            "rank": 1
+          }
+        },
+        {
+          "ussr_destroyer_7y": {
+            "rank": 1
+          }
+        },
+        {
+          "ussr_destroyer_pr56_spokoinyy": {
+            "rank": 1
+          }
+        },
+        {
+          "germ_cruiser_admiral_hipper": {
+            "rank": 1
+          }
+        },
+        {
+          "us_destroyer_porter": {
+            "rank": 1
+          }
+        },
+        {
+          "uk_destroyer_hunt_4series": {
+            "rank": 1
+          }
+        },
+        {
+          "germ_destroyer_class1936a_mob_z32": {
+            "rank": 1
+          }
+        },
+        {
+          "uk_destroyer_tribal": {
+            "rank": 1
+          }
+        },
+        {
+          "us_sub_balao": {
+            "rank": 1
+          }
+        },
+        {
+          "us_cruiser_cleveland_class_cleveland": {
+            "rank": 2
+          }
+        },
+        {
+          "ussr_cruiser_kirov": {
+            "rank": 2
+          }
+        },
+        {
+          "us_battlecruiser_alaska_class": {
+            "rank": 3
+          }
+        },
+        {
+          "ussr_battleship_parizhskaya_kommuna": {
+            "rank": 3
+          }
+        },
+        {
+          "us_aircraftcarrier_forrestal": {
+            "rank": 3
+          }
+        }
+      ]
+    },
+    "boats": {
+      "range": [
+        {},
+        {},
+        {}
+      ]
+    }
+  },
+  "country_usa": {
+    "ships": {
+      "range": [
+        {},
+        {},
+        {},
+        {}
+      ]
+    },
+    "aviation": {
+      "range": [
+        {
+          "sb2c_1c": {
+            "rank": 1
+          }
+        },
+        {
+          "f6f_3": {
+            "rank": 1
+          }
+        }
+      ]
+    }
+  },
+  "country_ussr": {
+    "ships": {
+      "range": [
+        {},
+        {},
+        {}
+      ]
+    }
+  }
+}

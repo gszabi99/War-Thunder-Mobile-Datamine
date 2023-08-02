@@ -1,0 +1,6 @@
+{
+  "widthThreshold": 0.3,
+  "enableGenMuls": false,
+  "underwaterFoamWidth": 3.0,
+  "underwaterFoamAlphaMult": 0.7
+}

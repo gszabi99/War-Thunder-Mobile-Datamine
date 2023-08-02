@@ -1,0 +1,141 @@
+{
+  "mandatoryLandquality": 1,
+  "z_far": 50000.0,
+  "gridSteps": [
+    2048.0,
+    2048.0
+  ],
+  "numBorderCellsXPos": 8,
+  "numBorderCellsXNeg": 8,
+  "numBorderCellsZPos": 8,
+  "numBorderCellsZNeg": 8,
+  "mirrorShrinkXPos": 256.0,
+  "mirrorShrinkXNeg": 256.0,
+  "mirrorShrinkZPos": 256.0,
+  "mirrorShrinkZNeg": 256.0,
+  "lastClip": true,
+  "lastclip_horizon": true,
+  "rendinstPreloadDistance": 7000.0,
+  "clipmap_tex_mips": 5,
+  "mapCoord0": [
+    -32768.0,
+    -32768.0
+  ],
+  "mapCoord1": [
+    32768.0,
+    32768.0
+  ],
+  "minAreaSize": [
+    12000.0,
+    12000.0
+  ],
+  "tankMapCoord0": [
+    2722.7,
+    1478.7
+  ],
+  "tankMapCoord1": [
+    3822.7,
+    2578.7
+  ],
+  "tankGridSteps": [
+    275.0,
+    275.0
+  ],
+  "tankGridSize": [
+    2048.0,
+    2048.0
+  ],
+  "customLevelMap": "avg_stalingrad_factory_tankmap*",
+  "lightprobe_xz": [
+    3000.0,
+    1850.0
+  ],
+  "lightprobe_offset": 5.0,
+  "water_level": -12.0,
+  "levelMapAltOffset": 11.0,
+  "dirt_type": "snow",
+  "heli_ground_effect": "snow",
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
+  "average_ground_albedo": 0.7,
+  "land_translucency": "no",
+  "average_ground_level": 16.0,
+  "puddlesPowerScale": 0.0,
+  "puddlesSpread": 0.75,
+  "layeredFogThicknessScale100": 50.0,
+  "layeredFogHeightOffset": -12.0,
+  "layeredFogDensityMul": 0.5,
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": false,
+    "grass": true,
+    "water3d": true,
+    "staticScene": true,
+    "riExtraMinSizeForReflection": 5.0
+  },
+  "clipmap": {
+    "texelSize": 0.03125,
+    "lastClipSize": 512
+  },
+  "earth": {
+    "earthWorldEnabled": true,
+    "earthWorldMin": [
+      -32768.0,
+      -32768.0
+    ],
+    "earthWorldMax": [
+      32768.0,
+      32768.0
+    ]
+  },
+  "terraform": {
+    "diffuseTex": "underground_snow_soil_a_tex_d",
+    "diffuseAboveTex": "",
+    "detailRTex": "underground_snow_soil_a_tex_r",
+    "normalsTex": "underground_snow_soil_a_tex_n",
+    "digGroundAlpha": 6.1,
+    "digRoughness": 0.31
+  },
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_scan_sand_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_snow_b_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_snow_b_tex_n*",
+      "microdetail_ice_a_tex_n*",
+      "microdetail_ice_a_tex_n*",
+      "microdetail_wood_b_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 1.11,
+    "microdetail_sand_c_tex_n": {
+      "sparkles": 1.0
+    },
+    "microdetail_snow_a_tex_n": {
+      "sparkles": 1.0
+    },
+    "microdetail_snow_b_tex_n": {
+      "sparkles": 1.0
+    }
+  },
+  "stars": {
+    "latitude": 36.0,
+    "longitude": 44.0,
+    "year": 1943,
+    "month": 1,
+    "day": 20
+  },
+  "waterStub": {
+    "enable": true
+  },
+  "technicsSkins": {
+    "groundSkin": [
+      "winter",
+      "default"
+    ]
+  }
+}

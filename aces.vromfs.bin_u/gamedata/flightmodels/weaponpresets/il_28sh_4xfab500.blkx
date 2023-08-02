@@ -1,0 +1,80 @@
+{
+  "Weapon": [
+    {
+      "trigger": "rockets",
+      "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+      "emitter": "su_s_24_rocket_003",
+      "bullets": 1,
+      "separate": true,
+      "external": true
+    },
+    {
+      "trigger": "rockets",
+      "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+      "emitter": "su_s_24_rocket_005",
+      "bullets": 1,
+      "separate": true,
+      "external": true
+    },
+    {
+      "trigger": "rockets",
+      "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+      "emitter": "su_s_24_rocket_001",
+      "bullets": 1,
+      "separate": true,
+      "external": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
+      "emitter": "su_fab500_1",
+      "bullets": 1,
+      "separate": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
+      "emitter": "su_fab500_2",
+      "bullets": 1,
+      "separate": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
+      "emitter": "su_fab500_3",
+      "bullets": 1,
+      "separate": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
+      "emitter": "su_fab500_4",
+      "bullets": 1,
+      "separate": true
+    },
+    {
+      "trigger": "rockets",
+      "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+      "emitter": "su_s_24_rocket_002",
+      "bullets": 1,
+      "separate": true,
+      "external": true
+    },
+    {
+      "trigger": "rockets",
+      "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+      "emitter": "su_s_24_rocket_006",
+      "bullets": 1,
+      "separate": true,
+      "external": true
+    },
+    {
+      "trigger": "rockets",
+      "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+      "emitter": "su_s_24_rocket_004",
+      "bullets": 1,
+      "separate": true,
+      "external": true
+    }
+  ]
+}

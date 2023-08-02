@@ -1,0 +1,18 @@
+{
+  "benchmark": {
+    "benchmark": {
+      "m": [
+        "benchmark_pacific",
+        "benchmark_tank",
+        "benchmark_tank_corpses",
+        "benchmark_tank_paused",
+        "benchmark_tank_paused_24h"
+      ]
+    }
+  },
+  "test": {
+    "test_single": {
+      "m": "small_mission"
+    }
+  }
+}

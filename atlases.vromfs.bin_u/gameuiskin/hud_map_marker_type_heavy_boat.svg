@@ -1,0 +1,11 @@
+<svg id="TYPES" xmlns="http://www.w3.org/2000/svg" width="16" height="23" viewBox="0 0 16 23">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="type_heavy_boat" class="cls-1" d="M16,23L0.064,23,8,3Z"/>
+</svg>

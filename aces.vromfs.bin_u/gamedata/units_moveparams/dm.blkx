@@ -1,0 +1,24 @@
+{
+  "DamageParts": {
+    "armor20": {
+      "body_dm": {
+        "hp": 30.0
+      }
+    }
+  },
+  "effects": {
+    "level": [
+      0.9,
+      0.5,
+      0.2
+    ]
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onKill": {
+        "fire": 1.0
+      }
+    }
+  }
+}

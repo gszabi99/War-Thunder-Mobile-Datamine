@@ -1,0 +1,34 @@
+{
+  "normalizationPreset": "apcr",
+  "ricochetPreset": "apds",
+  "secondaryShattersPreset": "apds",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterPenetration": 0.0,
+  "stucking": 0.7,
+  "stuckingAngle": 45.0,
+  "bulletType": "apds_l15_tank",
+  "slopeEffectPreset": "apds_l15",
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
+  "shellAnimation": "video/shells_animations/apds.ivf",
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.2
+    ],
+    "mod2": [
+      20.0,
+      0.45
+    ]
+  },
+  "tracePattern": {
+    "caliber": 10.0,
+    "circleCount": 2,
+    "pointCount": 6
+  }
+}

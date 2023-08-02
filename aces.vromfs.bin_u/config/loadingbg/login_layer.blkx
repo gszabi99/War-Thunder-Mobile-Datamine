@@ -1,0 +1,11 @@
+{
+  "imgLayer": {
+    "layerSensitivity": "0",
+    "img": {
+      "size": "pw, ph",
+      "re-type": "9rect",
+      "background-image": "ui/bkg/login_bkg_s_1.jpg?P1",
+      "background-repeat": "expand"
+    }
+  }
+}

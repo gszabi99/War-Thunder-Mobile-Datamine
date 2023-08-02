@@ -1,0 +1,79 @@
+{
+  "ship_unlocks": {
+    "unlock_ap_shells": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_aa_shells": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_dive_shells": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_pow_torpedo": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_speed_torpedo": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_guided_torpedo": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_pow_dc": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_bottom_mine": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_supportPlane_smokeScreen": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_supportPlane_attacker": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_supportPlane_bomber": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "weaponry"
+    },
+    "unlock_h_accoustic_prior": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "fire_control"
+    },
+    "unlock_radar_prior": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "fire_control"
+    },
+    "unlock_fire_control_prior": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "fire_control"
+    },
+    "unlock_new_toolkit": {
+      "image": "#ui/gameuiskin#new_ship_hull",
+      "tier": 1,
+      "modClass": "damage_control"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "generic": {},
+  "genericLongRod": {
+    "inherit": "generic"
+  },
+  "tandemPrecharge": {
+    "inherit": "generic"
+  },
+  "explosion": {},
+  "explosionTorpedo": {
+    "inherit": "explosion"
+  },
+  "shatter": {},
+  "secondaryShatter": {},
+  "fire": {},
+  "cumulative": {},
+  "explosiveFormedProjectile": {
+    "inherit": "cumulative"
+  },
+  "collision": {},
+  "drowning": {},
+  "laserBeam": {},
+  "fireExplosion": {
+    "inherit": "explosion"
+  },
+  "pressure": {}
+}

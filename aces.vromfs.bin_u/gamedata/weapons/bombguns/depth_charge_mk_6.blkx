@@ -1,0 +1,71 @@
+{
+  "bombGun": true,
+  "preset_cost": 10,
+  "shotFreq": 0.25,
+  "sound": "weapon.bombgun",
+  "reloadTime": 60.0,
+  "mesh": "depth_charge_mk6",
+  "bomb": {
+    "mass": 190.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 100.0,
+    "bombType": "he_bomb",
+    "bombName": "mk_6",
+    "dragCx": 0.07,
+    "caliber": 0.36,
+    "length": 1.0,
+    "distFromCmToStab": 0.77,
+    "sound": "weapon.bomb_std",
+    "explosionFx": "bomb_expl_200kg",
+    "explosionPatchRadius": 8.0,
+    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "explodeTreshold": 0.01,
+    "explodeRadius": [
+      6.0,
+      16.0
+    ],
+    "rendinstDamageRadius": 30.0,
+    "isDepthCharge": true,
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    },
+    "damage": {
+      "explosive": {
+        "radius": 0.0,
+        "offset": 0.0
+      },
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.0,
+        "segment": [
+          {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              90.0
+            ],
+            "countPortion": 0.5
+          },
+          {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [
+              270.0,
+              359.0
+            ],
+            "countPortion": 0.5
+          }
+        ]
+      }
+    }
+  }
+}
