@@ -21,11 +21,6 @@ let hoverColor = 0x8052C4E4
 
 let curSlotName = Watched(-1)
 
-let mkText = @(ovr) {
-  rendObj = ROBJ_TEXT
-  color = 0xFFFFFFFF
-}.__update(fontTiny, ovr)
-
 let function onHeaderClick(key, slotIdx) {
   if (slotIdx != null)
     respawnChooseBulletWnd(slotIdx, gui_scene.getCompAABBbyKey(key), gui_scene.getCompAABBbyKey("respawnWndContent"))
@@ -58,14 +53,25 @@ let function bulletHeader(bSlot, bInfo, maxCount) {
         watch = [fromUnitTags, bInfo]
       })
       {
+        size = [flex(), SIZE_TO_CONTENT]
         padding
         flow = FLOW_VERTICAL
         valign = ALIGN_CENTER
         halign = ALIGN_LEFT
         gap = { size = flex() }
         children = [
-          @() mkText({ watch = nameText, text = nameText.value })
-          @() mkText({ watch = countText, text = countText.value })
+          @() {
+            watch = nameText
+            size = [flex(), SIZE_TO_CONTENT]
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            text = nameText.value
+          }.__update(fontTiny)
+          @() {
+            watch = countText
+            rendObj = ROBJ_TEXT
+            text = countText.value
+          }.__update(fontTiny)
         ]
       }
     ]

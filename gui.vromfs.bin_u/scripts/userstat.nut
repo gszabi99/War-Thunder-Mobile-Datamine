@@ -3,7 +3,7 @@ let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 let { split_by_chars, startswith } = require("string")
 let { getCurrentSteamLanguage } = require("%scripts/language.nut")
 let userstat = require("userstat")
-let { subscribe } = require("eventbus")
+let { subscribe, send } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { register_command } = require("console")
@@ -22,20 +22,24 @@ let isReadyToConnect = Computed(@() isProfileReceived.value && isMatchingConnect
 
 let { request, registerHandler } = charClientEvent("userStats", userstat)
 
-let function mkDataWatched(key, defValue = null) {
+let function mkDataWatched(key, defValue = null, evtName = null) {
   local val = defValue
   if (ndbExists(key))
     val = ndbRead(key)
   else
     ndbWrite(key, val)
   let res = Watched(val)
-  res.subscribe(@(v) ndbWrite(key, v))
+  res.subscribe(function(v) {
+    ndbWrite(key, v)
+    if (evtName != null)
+      send(evtName, {})
+  })
   return res
 }
 
 let function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefreshRequests = []) {
   let defValue = {}
-  let data = mkDataWatched($"userstat.{persistName}", defValue)
+  let data = mkDataWatched($"userstat.{persistName}", defValue, $"userstat.update.{persistName}")
   let lastTime = mkDataWatched($"userstat.{persistName}_lastTime", { request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
     && lastTime.value.request + STATS_REQUEST_TIMEOUT > get_time_msec()

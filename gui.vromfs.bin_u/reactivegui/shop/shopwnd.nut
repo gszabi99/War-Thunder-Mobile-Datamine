@@ -5,18 +5,19 @@ let { lerpClamped } = require("%sqstd/math.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { mkGamercard, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight, mkLeftBlock, gamercardBalanceBtns, gamercardItemsBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { shopCategoriesCfg } = require("shopCommon.nut")
-let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent
-} = require("%rGui/shop/shopState.nut")
+let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory } = require("schRewardsState.nut")
 let { mkShopTabs, tabW } = require("%rGui/shop/shopWndTabs.nut")
 let { mkShopPage } = require("%rGui/shop/shopWndPage.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("unseenPurchasesState.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-
+let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
+
 
 let gapFromGamercard = hdpx(40)
 let gapFromTabs = hdpx(47)
@@ -74,6 +75,22 @@ let function onClose() {
   close()
 }
 
+
+let mkShopGamercard = {
+  size = [ saSize[0], gamercardHeight ]
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = [
+    mkLeftBlock(onClose)
+    {size = flex()}
+    premIconWithTimeOnChange
+    gamercardItemsBalanceBtns
+    gamercardBalanceBtns({ size = SIZE_TO_CONTENT, hplace = ALIGN_RIGHT})
+  ]
+}
+
+
 let shopScene = bgShaded.__merge({
   key = {}
   size = flex()
@@ -83,7 +100,7 @@ let shopScene = bgShaded.__merge({
   onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
   onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
   children = [
-    mkGamercard(onClose, true)
+    mkShopGamercard
     {
       size = [saSize[0] + saBorders[0], flex()]
       flow = FLOW_HORIZONTAL

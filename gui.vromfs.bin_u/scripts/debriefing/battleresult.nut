@@ -18,7 +18,7 @@ let { get_mp_session_id_int, destroy_session } = require("multiplayer")
 let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { get_local_mplayer, get_mplayers_list } = require("mission")
-let { get_mp_tbl_teams } = require("guiMission")
+let { get_mp_tbl_teams = @() [] } = require("guiMission")
 
 const destroySessionTimeout = 2.0
 const SAVE_FILE = "battleResult.json"

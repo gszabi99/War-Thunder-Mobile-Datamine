@@ -3,7 +3,7 @@ let { send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
+let { mkGamercard, gamercardItemsBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
 let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
@@ -34,10 +34,6 @@ let { allow_players_online_info } = require("%appGlobals/permissions.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
-let { itemsOrder } = require("%appGlobals/itemsState.nut")
-let { mkItemsBalance } = require("balanceComps.nut")
-let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut")
 let setReady = require("%rGui/squad/setReady.nut")
@@ -96,7 +92,7 @@ let gamercardPlace = {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
-    mkGamercard(null, true)
+    mkGamercard
     {
       size = [flex(), SIZE_TO_CONTENT]
       children = [
@@ -198,12 +194,6 @@ let mkMRankRange = @() curUnitMRankRange.value == null
       ]
     }
 
-let consumablesPanel = @(){
-  watch = itemsOrder
-  flow = FLOW_HORIZONTAL
-  children = itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
-}
-
 let toBattleButtonPlace = @() {
   watch = [ needFirstBattleTutor, newbieOfflineMissions, isInSquad, isSquadLeader, isReady,
     needReadyCheckButton, isReadyCheckSuspended ]
@@ -223,7 +213,7 @@ let toBattleButtonPlace = @() {
       halign = ALIGN_RIGHT
       children = [
         unitName
-        consumablesPanel
+        gamercardItemsBalanceBtns
         mkMRankRange
       ]
     }

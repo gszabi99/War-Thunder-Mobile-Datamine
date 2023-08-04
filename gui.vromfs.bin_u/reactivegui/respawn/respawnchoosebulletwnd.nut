@@ -96,17 +96,18 @@ let function bulletsList() {
   if (bulletsInfo.value == null)
     return { watch = bulletsInfo }
   let { bulletSets, bulletsOrder, fromUnitTags } = bulletsInfo.value
-  let columns = bulletsColumnsCount(bulletSets.len())
-  let rows = ceil(bulletSets.len().tofloat()/columns)
+  let visibleBulletsList = bulletsOrder.filter(@(name) visibleBullets.value?[name] ?? false)
+  let numberBullets = visibleBulletsList.len()
+  let columns = bulletsColumnsCount(numberBullets)
+  let rows = ceil(numberBullets.tofloat()/columns)
   return {
     watch = [bulletsInfo, visibleBullets]
     size = [bulletsListWidth(columns), bulletHeight * rows]
     flow = FLOW_VERTICAL
     gap = slotsGap
     children = arrayByRows(
-        bulletsOrder
-          .filter(@(name) visibleBullets.value?[name] ?? false)
-          .map(@(name) mkBulletButton(name, bulletSets[name], fromUnitTags?[name], columns)), columns)
+      visibleBulletsList
+        .map(@(name) mkBulletButton(name, bulletSets[name], fromUnitTags?[name], columns)), columns)
       .map(@(item) {
         flow = FLOW_HORIZONTAL
         children = item

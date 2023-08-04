@@ -61,13 +61,17 @@ let function reconnect(roomId, attribs) {
 
 subscribeFMsgBtns({
   function reconnectApply(_) {
-    let { roomId, attribs = null } = reconnectData.value
     logR($"Apply")
+    if (reconnectData.value == null)
+      return
+    let { roomId, attribs = null } = reconnectData.value
     reconnect(roomId, attribs)
     reconnectData(null)
   }
   function reconnectReject(_) {
     logR($"Reject")
+    if (reconnectData.value == null)
+      return
     rejectedRoomsIds.mutate(@(v) v.append(reconnectData.value.roomId))
     reconnectData(null)
   }

@@ -7,7 +7,7 @@ let { canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer
 } = require("guiRespawn")
 let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, get_respawns_left,
-  get_mp_respawn_countdown, get_mission_status } = require("guiMission")
+  get_mp_respawn_countdown = @() 0, get_mission_status = @() 0 } = require("guiMission")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curBattleUnit, curBattleItems, isBattleDataReceived } = require("%scripts/battleData/battleData.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")

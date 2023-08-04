@@ -7,7 +7,7 @@ let profilePublicKey = require("%appGlobals/profilePublicKey.nut")
 let { debugTableData } = require("%sqStdLibs/helpers/toString.nut")
 
 let function decodeJwtAndHandleErrors(data) {
-  let jwt = data?.jwt ?? ""
+  let jwt = type(data) == "string" ? data : data?.jwt ?? ""
   let jwtDecoded = decode(jwt, profilePublicKey)
 
   let { payload = null } = jwtDecoded

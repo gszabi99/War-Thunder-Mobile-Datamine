@@ -3,7 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let textColor = 0xFFD0D0D0
 let headerHeight = hdpx(60)
 let gap = hdpx(10)
-let bulletsBlockWidth = hdpx(500)
+let bulletsBlockWidth = hdpx(520)
 let bulletsBlockMargin = hdpx(40)
 
 let bg = {

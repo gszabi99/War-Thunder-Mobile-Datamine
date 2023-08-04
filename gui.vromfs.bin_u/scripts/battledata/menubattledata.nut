@@ -7,6 +7,7 @@ let io = require("io")
 let { get_time_msec } = require("dagor.time")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { get_battle_data_jwt, registerHandler, callHandler, lastProfileKeysUpdated
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pServer/pServerJwt.nut")
@@ -20,6 +21,7 @@ const SILENT_ACTUALIZE_DELAY = 60
 let battleUnitName = persist("battleDataUnit", @() Watched(null))
 let needRefresh = persist("needRefresh", @() Watched(false))
 let lastResult = persist("lastResult", @() Watched(null))
+let hasBattleUnit = Computed(@() battleUnitName.value in servProfile.value?.units)
 let isBattleDataActual = isOfflineMenu ? Computed(@() true)
   : Computed(@() battleUnitName.value != null
       && "error" not in lastResult.value
@@ -27,6 +29,7 @@ let isBattleDataActual = isOfflineMenu ? Computed(@() true)
       && (!needRefresh.value || shouldDisableMenu))
 let needActualize = Computed(@()
   !isBattleDataActual.value
+    && hasBattleUnit.value
     && isLoggedIn.value
     && !isInMpSession.value
     && battleUnitName.value != null)

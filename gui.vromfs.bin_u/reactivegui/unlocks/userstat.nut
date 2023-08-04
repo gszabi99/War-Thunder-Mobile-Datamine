@@ -1,20 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
-let { ndbRead, ndbExists } = require("nestdb")
+let { send, subscribe } = require("eventbus")
+let { ndbTryRead } = require("nestdb")
 let charClientEventExt = require("%rGui/charClientEventExt.nut")
 
 let { request, registerHandler, registerExecutor } = charClientEventExt("userStats")
 
-let function mkUserstatWatch(id, refreshAction, defValue = {}) {
+let function mkUserstatWatch(id, defValue = {}) {
   let key = $"userstat.{id}"
-  let data = Watched(ndbExists(key) ? ndbRead(key) : defValue) //no need to write to ndb, it will be saved by daguiVm
-  registerHandler(refreshAction, @(result) data(result?.error ? defValue : (result?.response ?? defValue)))
+  let data = Watched(ndbTryRead(key) ?? defValue) //no need to write to ndb, it will be saved by daguiVm
+  subscribe($"userstat.update.{id}", @(_) data(ndbTryRead(key) ?? defValue))
   return data
 }
 
-let userstatDescList = mkUserstatWatch("descList", "GetUserStatDescList")
-let userstatUnlocks = mkUserstatWatch("unlocks", "GetUnlocks")
-let userstatStats = mkUserstatWatch("stats", "GetStats")
+let userstatDescList = mkUserstatWatch("descList")
+let userstatUnlocks = mkUserstatWatch("unlocks")
+let userstatStats = mkUserstatWatch("stats")
 
 let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0

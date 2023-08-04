@@ -764,7 +764,9 @@ let function debriefingWnd() {
     teams = [], campaign = "", players = {}, isSingleMission = false
   } = debriefingData.value
   let { exp = 0, nextLevelExp = 0 } = player
-  let hasLevelUp = nextLevelExp != 0 && (nextLevelExp <= (exp + (reward?.playerExp.totalExp ?? 0)))
+  let hasLevelUp = nextLevelExp != 0
+    && nextLevelExp != exp
+    && (nextLevelExp <= (exp + (reward?.playerExp.totalExp ?? 0)))
   let missionResult = debriefingData.value == null ? missionResultParamsByType.unknown
     : isDisconnected ? missionResultParamsByType.disconnect
     : isDeserter ? missionResultParamsByType.deserter

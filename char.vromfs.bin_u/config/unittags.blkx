@@ -1668,15 +1668,6 @@
           "caliber": 533.0,
           "ammoCount": 60,
           "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 20,
-          "isBeltAmmo": false
         }
       }
     }
@@ -1727,28 +1718,9 @@
           "damage": 6300.0,
           "shotFreq": 0.1,
           "distToLive": 3500.0,
-          "gunsCount": 1,
+          "gunsCount": 5,
           "caliber": 533.0,
           "ammoCount": 44,
-          "isBeltAmmo": false
-        },
-        "us_533mm_21in_mark15_torpedo": {
-          "wtype": "torpedo",
-          "damage": 6000.0,
-          "shotFreq": 0.1,
-          "distToLive": 3500.0,
-          "gunsCount": 4,
-          "caliber": 533.0,
-          "ammoCount": 0,
-          "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 20,
           "isBeltAmmo": false
         }
       }
@@ -1803,15 +1775,6 @@
           "caliber": 533.0,
           "ammoCount": 60,
           "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 20,
-          "isBeltAmmo": false
         }
       }
     }
@@ -1845,15 +1808,6 @@
           "gunsCount": 8,
           "caliber": 533.0,
           "ammoCount": 52,
-          "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 40,
           "isBeltAmmo": false
         }
       }
@@ -1942,15 +1896,6 @@
           "gunsCount": 6,
           "caliber": 533.0,
           "ammoCount": 72,
-          "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 22,
           "isBeltAmmo": false
         }
       }
@@ -4534,15 +4479,6 @@
           "gunsCount": 10,
           "caliber": 533.0,
           "ammoCount": 58,
-          "isBeltAmmo": false
-        },
-        "germ_mine_emc": {
-          "wtype": "mine",
-          "damage": 12000.0,
-          "shotFreq": 1.0,
-          "gunsCount": 1,
-          "caliber": 0,
-          "ammoCount": 32,
           "isBeltAmmo": false
         }
       }

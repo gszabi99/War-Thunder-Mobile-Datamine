@@ -58,6 +58,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
+  "smokeScreenFx": "smokescreen_medium",
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,

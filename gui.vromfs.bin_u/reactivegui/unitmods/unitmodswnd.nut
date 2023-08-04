@@ -117,47 +117,48 @@ let mkModsInfo = @() {
   padding = [hdpx(30), saBorders[0]]
   flow = FLOW_VERTICAL
   gap = hdpx(30)
-  children = [
-    mkPlatoonOrUnitTitle(unit.value)
-    @() {
-      watch = [curMod, curModId]
-      size = [flex(), SIZE_TO_CONTENT]
-      flow = FLOW_VERTICAL
-      gap = hdpx(5)
-      children = curModId.value == null ? null
-        : [
-            {
-              size = [flex(), SIZE_TO_CONTENT]
-              flow = FLOW_HORIZONTAL
-              children = [
-                mkModIcon
+  children = unit.value == null ? null
+    : [
+        mkPlatoonOrUnitTitle(unit.value)
+        @() {
+          watch = [curMod, curModId]
+          size = [flex(), SIZE_TO_CONTENT]
+          flow = FLOW_VERTICAL
+          gap = hdpx(5)
+          children = curModId.value == null ? null
+            : [
                 {
-                  size = flex()
+                  size = [flex(), SIZE_TO_CONTENT]
+                  flow = FLOW_HORIZONTAL
+                  children = [
+                    mkModIcon
+                    {
+                      size = flex()
+                      rendObj = ROBJ_TEXTAREA
+                      behavior = Behaviors.TextArea
+                      halign = ALIGN_RIGHT
+                      text = loc($"modification/{curMod.value?.name}")
+                    }.__update(fontSmall)
+                  ]
+                }
+
+                {
+                  size = [flex(), SIZE_TO_CONTENT]
                   rendObj = ROBJ_TEXTAREA
                   behavior = Behaviors.TextArea
-                  halign = ALIGN_RIGHT
-                  text = loc($"modification/{curMod.value?.name}")
-                }.__update(fontSmall)
+                  text = loc($"modification/{curMod.value?.name}/desc")
+                }.__update(fontTiny)
+
+                unit.value.level >= (curMod.value?.reqLevel ?? 0) ? null
+                  : {
+                      size = [flex(), SIZE_TO_CONTENT]
+                      padding = [hdpx(20), 0, 0, 0]
+                      rendObj = ROBJ_TEXT
+                      text = loc("mod/reqLevel", { level = curMod.value?.reqLevel })
+                    }.__update(fontSmall)
               ]
-            }
-
-            {
-              size = [flex(), SIZE_TO_CONTENT]
-              rendObj = ROBJ_TEXTAREA
-              behavior = Behaviors.TextArea
-              text = loc($"modification/{curMod.value?.name}/desc")
-            }.__update(fontTiny)
-
-            unit.value.level >= (curMod.value?.reqLevel ?? 0) ? null
-              : {
-                  size = [flex(), SIZE_TO_CONTENT]
-                  padding = [hdpx(20), 0, 0, 0]
-                  rendObj = ROBJ_TEXT
-                  text = loc("mod/reqLevel", { level = curMod.value?.reqLevel })
-                }.__update(fontSmall)
-          ]
-    }
-  ]
+        }
+      ]
 }
 
 let spinner = {
@@ -192,7 +193,7 @@ let unitModsWnd = {
   behavior = Behaviors.HangarCameraControl
   flow = FLOW_VERTICAL
   children = [
-    mkGamercard(onClose, true)
+    mkGamercard(onClose)
     {
       size = [saSize[0] + saBorders[0], flex()]
       flow = FLOW_HORIZONTAL

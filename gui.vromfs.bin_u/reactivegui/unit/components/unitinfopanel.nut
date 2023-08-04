@@ -13,6 +13,7 @@ let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { itemsCfgOrdered } = require("%appGlobals/itemsState.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
+let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -342,11 +343,11 @@ let unitInfoPanel = @(override = {}, unit = hangarUnit) function() {
 
   let prevStats = lastUnitStats
   let unitStats = mkUnitStatsCompShort(unit.value, unit.value?.attrLevels,
-    attrPresets.value?[unit.value?.attrPreset])
+    attrPresets.value?[unit.value?.attrPreset], unitMods.value)
   lastUnitStats = unitStats
 
   return panelBg.__merge({
-    watch = unit
+    watch = [unit, unitMods, attrPresets]
     children = [
       unitHeaderBlock(unit.value, mkPlatoonOrUnitTitle)
       unitStatsBlock(unitStats, prevStats)
@@ -361,11 +362,11 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
 
   let prevStats = lastUnitStats
   let unitStats = mkUnitStatsCompFull(unit.value, unit.value?.attrLevels,
-    attrPresets.value?[unit.value?.attrPreset])
+    attrPresets.value?[unit.value?.attrPreset], unitMods.value)
   lastUnitStats = unitStats
 
   return panelBg.__merge({
-    watch = [ unit, itemsCfgOrdered ]
+    watch = [ unit, itemsCfgOrdered, unitMods, attrPresets ]
     children = [
       unitHeaderBlock(unit.value, mkUnitTitle)
       unitStatsBlock(unitStats, prevStats)

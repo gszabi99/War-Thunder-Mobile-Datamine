@@ -3102,6 +3102,26 @@
         1.2,
         1.0
       ]
+    },
+    "group_1": {
+      "newbMultsTankMissionCount": 5,
+      "botTankDamageMultNewbRange": [
+        0.1,
+        0.5
+      ],
+      "botTankPenetrationMultNewbRange": [
+        0.5,
+        0.75
+      ],
+      "newbMultsShipMissionCount": 5,
+      "botShipDamageMultNewbRange": [
+        0.025,
+        0.25
+      ],
+      "shipDamageToBotMultNewbRange": [
+        1.4,
+        1.0
+      ]
     }
   },
   "damageTypesProps": {

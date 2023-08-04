@@ -7,8 +7,11 @@ let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInMenu, isInDebriefing, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { WP, balanceWp } = require("%appGlobals/currenciesState.nut")
+let { getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
 
-let isSeen = mkWatched(persist, "isSeen", false) // To show it after login once.
+let isSeen = hardPersistWatched("isLevelUpSeen", false) // To show it after login once.
 let isLvlUpOpened = mkWatched(persist, "isOpened", false)
 let failedRewardsLevelStr = mkWatched(persist, "failedRewardsLevelStr", {})
 let upgradeUnitName = mkWatched(persist, "upgradeUnitName", null)
@@ -18,7 +21,17 @@ isInDebriefing.subscribe(function(v) {
   if (!v)
     return
   failedRewardsLevelStr({}) //try to receive faile rewards again. Maybe there was a connection error or something like that
-  isSeen(false) // To show it after each Debriefing
+
+  local hasBalanceForLevelUpUnit = false
+  foreach(unit in buyUnitsData.value.canBuyOnLvlUp) {
+    let { currencyId = null, price = 0 } = getUnitAnyPrice(unit, true)
+    if (currencyId != WP || price > balanceWp.value)
+      continue
+    hasBalanceForLevelUpUnit = true
+    break
+  }
+  if (hasBalanceForLevelUpUnit)
+    isSeen(false)
 })
 isLvlUpOpened.subscribe(@(_) upgradeUnitName(null))
 

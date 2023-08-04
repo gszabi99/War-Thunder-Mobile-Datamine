@@ -119,7 +119,7 @@
     0.0,
     1.0
   ],
-  "breachMinSize": 0.05,
+  "breachMinSize": 10000.0,
   "schemeDeathMovieShipBulletSpeed": 4.0,
   "schemeDeathMovieShipShardSpeed": 16.0,
   "waterLineEnabled": true,

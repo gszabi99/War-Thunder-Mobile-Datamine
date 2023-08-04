@@ -5,7 +5,7 @@ let { isGamepad } = require("%rGui/activeControls.nut")
 let { dfAnimBottomRight } = require("%rGui/style/unitDelayAnims.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { setAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
-let { wishDist, waterDist, periscopeDepthCtrl, maxControlDepth } = require("%rGui/hud/shipState.nut")
+let { wishDist, waterDist, periscopeDepthCtrl, deadZoneDepth, maxControlDepth } = require("%rGui/hud/shipState.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 
@@ -46,12 +46,12 @@ let function depthValueUpdate() {
 
 depthChangeDir.subscribe(@(_) depthValueUpdate())
 
-let mkMarksOfDepth = @(countOfMarks) {
+let mkMarksOfDepth = @(firstMark, countOfMarks) {
   size = [hdpx(20), flex()]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(2.5)
-  commands = array(countOfMarks).map(function(_, i) {
-    let y = 100.0 * i / max(1, countOfMarks - 1)
+  commands = array(max(1, countOfMarks - firstMark)).map(function(_, i) {
+    let y = 100.0 * (i +  firstMark) / max(1, countOfMarks - 1)
     return [VECTOR_LINE, 0, y, 100 - 50 * (i % 2), y]
   })
 }
@@ -123,7 +123,9 @@ let btnImageDepthDec = mkGamepadShortcutImg("submarine_depth_dec",
 
 let function depthSlider() {
   let minVal = maxControlDepth.value > 0 ? periscopeDepthCtrl.value / maxControlDepth.value : 0.0
+  let deadZoneVal = maxControlDepth.value > 0 ? deadZoneDepth.value / maxControlDepth.value : 0.0
   let countOfMarks = max((maxControlDepth.value - periscopeDepthCtrl.value) / markStep + 1, 2).tointeger()
+  let firstMark = (deadZoneDepth.value / markStep).tointeger()
 
   let wishDistClamped = clamp(wishDist.value, minVal, 1.0)
 
@@ -169,10 +171,13 @@ let function depthSlider() {
           btnImageDepthDec
         ]
       }
-      mkMarksOfDepth(countOfMarks)
+      mkMarksOfDepth(firstMark, countOfMarks)
       mkMarksOfDepthTexts(countOfMarks, periscopeDepthCtrl.value)
     ]
-    onChange = @(val) setAxisValue("submarine_depth", val)
+    onChange = function(val) {
+      let newVal = val < minVal + deadZoneVal / 2.0 ? minVal : max(minVal + deadZoneVal, val)
+      setAxisValue("submarine_depth", newVal)
+    }
     transform = {}
     animations = dfAnimBottomRight.extend(wndSwitchAnim)
   }

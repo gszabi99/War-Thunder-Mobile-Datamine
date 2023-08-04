@@ -17,7 +17,8 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { isInSquad, squadMembers } = require("%appGlobals/squadState.nut")
+let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
+let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
 
 
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
@@ -42,9 +43,20 @@ let function tryWriteMembersData() {
   foreach(uid, m in squadMembers.value) {
     if (uid == myUserId.value)
       continue
-    let { queueToken = "" } = m
+    let { queueToken = "", units = {} } = m
     if (queueToken == "") {
       logQ($"Squad member {uid} has invalid queue token. wait for validation.")
+      return
+    }
+    let { payload = null } = decodeJwtAndHandleErrors(queueToken)
+    if (payload == null) {
+      logQ($"Squad member {uid} has invalid queue token. wait for validation.")
+      return
+    }
+    let unitName = units?[squadLeaderCampaign.value]
+    let tokenUnitName = payload?.crafts_info[0].name
+    if (unitName != tokenUnitName) {
+      logQ($"Squad member {uid} token unit name {tokenUnitName} not same with unit name {unitName}. wait for validation.")
       return
     }
     playersUpd[uid.tostring()] <- { profileJwt = queueToken }
@@ -122,6 +134,16 @@ isQueueDataActual.subscribe(function(v) {
 })
 
 squadMembers.subscribe(function(v) {
+  if (!isInQueue.value || !isSquadLeader.value)
+    return
+
+  foreach(uid, m in squadMembers.value)
+    if (uid != myUserId.value && !m?.ready) {
+      logQ("Leave queue because member become not ready")
+      leaveQueue()
+      return
+    }
+
   if (curQueueState.value != QS_ACTUALIZE_SQUAD)
     return
   if (v.len() <= 1) //leave squad, or alone in the squad

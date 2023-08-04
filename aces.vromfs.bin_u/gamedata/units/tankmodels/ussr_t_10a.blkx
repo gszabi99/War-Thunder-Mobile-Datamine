@@ -57,6 +57,7 @@
   ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
+  "smokeScreenFx": "smokescreen_medium",
   "spawn_count": {
     "numSpawnsPerBattleSimulation": 2
   },

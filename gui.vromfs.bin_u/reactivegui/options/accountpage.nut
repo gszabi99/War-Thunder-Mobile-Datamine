@@ -6,7 +6,7 @@ let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%rGui/globals/timeToText.nut")
 let { contentWidth } = require("optionsStyle.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { mkLevelBg, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { myAvatar, myUserId } = require("%appGlobals/profileStates.nut")
@@ -143,46 +143,41 @@ let logoutMsgBox = @() openMsgBox({
   ]
 })
 
-let topButtons = @() {
-  watch = isInMenu
-  size = [flex(), SIZE_TO_CONTENT]
-  halign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  gap = { size = flex() }
-  children = [
-    !isInMenu.value ? null : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
-    textButtonCommon(loc("options/delete_profile"), @() send("openUrl", { baseUrl = DELETE_PROFILE_URL, useExternalBrowser = true }), buttonsWidthStyle)
-  ]
-}
+let mkButtonRow = @(children) !children.findvalue(@(v) v != null) ? null
+  : {
+      flow = FLOW_HORIZONTAL
+      gap = buttonsHGap
+      children
+    }
 
-let middleButtons = @() {
-  watch = canLinkToGaijinAccount
-  size = [flex(), SIZE_TO_CONTENT]
-  halign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  gap = { size = flex() }
+let buttons = @() {
+  watch = [canLinkToGaijinAccount, isInMenu]
+  flow = FLOW_VERTICAL
+  gap = buttonsHGap
   children = [
-    !canLinkToGaijinAccount.value ? null
-      : textButtonPrimary(loc("msgbox/btn_linkEmail"),
-          @() send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL, useExternalBrowser = true }),
-          buttonsWidthStyle)
-    is_ios ? null
-      : textButtonPrimary(loc("mainmenu/btnActivateCode"),
-          @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL, useExternalBrowser = true }),
-          buttonsWidthStyle)
-  ]
-}
-
-let bottomButtons = {
-  size = [flex(), SIZE_TO_CONTENT]
-  halign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  gap = { size = flex() }
-  children = [
-    textButtonPrimary(loc("mainmenu/support"),
-      @() send("openUrl", { baseUrl = loc("url/support"), useExternalBrowser = true }),
-      buttonsWidthStyle)
-    textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
+    !isInMenu.value ? null
+      : mkButtonRow([
+          textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
+          textButtonCommon(loc("options/delete_profile"),
+            @() send("openUrl", { baseUrl = DELETE_PROFILE_URL, useExternalBrowser = true }),
+            buttonsWidthStyle)
+        ])
+    mkButtonRow([
+      !canLinkToGaijinAccount.value ? null
+        : textButtonPrimary(loc("msgbox/btn_linkEmail"),
+            @() send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL, useExternalBrowser = true }),
+            buttonsWidthStyle)
+      is_ios ? null
+        : textButtonPrimary(loc("mainmenu/btnActivateCode"),
+            @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL, useExternalBrowser = true }),
+            buttonsWidthStyle)
+    ])
+    mkButtonRow([
+      textButtonPrimary(loc("mainmenu/support"),
+        @() send("openUrl", { baseUrl = loc("url/support"), useExternalBrowser = true }),
+        buttonsWidthStyle)
+      textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
+    ])
   ]
 }
 
@@ -193,10 +188,7 @@ return {
   children = [
     userInfoBlock
     mkPremiumTimeLeftText
-    topButtons
     { size = flex() }
-    middleButtons
-    { size = flex() }
-    bottomButtons
+    buttons
   ]
 }

@@ -5,6 +5,7 @@ let { round, round_by_value } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
+let { get_modifications_blk } = require("blkGetters")
 
 let iconDamage = "►"
 let iconCooldown = "▩"
@@ -17,6 +18,12 @@ let tankAttrToTankCrewParamsMap = {
   vitality = [ "driver", "damageMultiplier" ]
   driving = [ "driver", "brakesTau" ]
   field_repair = [ "driver", "fieldRepairSpeedMultiplier" ]
+}
+
+let function modsMul(attrId, mods) {
+  if (attrId == "attrib_ship_max_speed" && !mods?.maintanance_new_engines)
+    return get_modifications_blk()?.modifications.maintanance_new_engines.effects.mulMaxSpeed ?? 1.0
+  return 1.0
 }
 
 let isPoint2 = @(p) type(p) == "instance" && p instanceof Point2
@@ -253,7 +260,7 @@ let getAttrMul = @(cfg, attrId, step, stepsTotal) stepsTotal != 0
   ? ((cfg.getMulMax(attrId) - cfg.getMulMin(attrId)) / stepsTotal * step) + cfg.getMulMin(attrId)
   : 1.0
 
-let function getAttrValData(unitType, attr, step, shopCfg, servConfigs) {
+let function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
   let attrId = attr.id
   let stepsTotal = attr.levelCost.len() // Total level progress steps
   let cfg = attrValCfg?[unitType][attrId] ?? attrValCfgDefault
@@ -263,12 +270,12 @@ let function getAttrValData(unitType, attr, step, shopCfg, servConfigs) {
     return data
 
   let textVal = cfg?.getAttrValText(attrId, step, stepsTotal, shopCfg)
-    ?? cfg.valueToText(cfg.getBaseVal(shopCfg) * getAttrMul(cfg, attrId, step, stepsTotal))
+    ?? cfg.valueToText(cfg.getBaseVal(shopCfg) * getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods))
     ?? ""
   return textVal == "" ? [] : [{ ctor = ROBJ_TEXT, value = textVal }]
 }
 
-let function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset) {
+let function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
   let stats = shopCfg != null ? deep_clone(shopCfg) : null
   if (attrLevels == null || stats == null)
     return stats
@@ -280,7 +287,7 @@ let function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset) {
         continue
       let stepsTotal = attrPreset?.findvalue(@(v) v.id == catId).attrList
         .findvalue(@(v) v.id == attrId).levelCost.len() ?? 0
-      cfg.updateStats(stats, getAttrMul(cfg, attrId, step, stepsTotal))
+      cfg.updateStats(stats, getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods))
     }
   return stats
 }

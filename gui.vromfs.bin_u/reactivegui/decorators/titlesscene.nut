@@ -154,8 +154,10 @@ let footer = @() {
           { hotkeys = ["^J:X | Enter"] })
       : textButtonCommon(loc("mainmenu/btnEquip"), applySelectedTitle)
     {
-      rendObj = ROBJ_TEXT
-      vplace = ALIGN_CENTER
+      size = flex()
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      valign = ALIGN_CENTER
       text = getReceiveReason(selectedTitle.value)
     }.__update(fontSmallAccented)
   ]

@@ -4,7 +4,7 @@ let { myAvatar } = require("%appGlobals/profileStates.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { SC_GOLD, SC_WP } = require("%rGui/shop/shopCommon.nut")
+let { SC_GOLD, SC_WP, SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/shop/shopState.nut")
 let { openContacts } = require("%rGui/contacts/contactsState.nut")
 let { requestsToMeUids } = require("%rGui/contacts/contactLists.nut")
@@ -34,6 +34,9 @@ let levelHolderPlace         = avatarSize - levelHolderSize / 2
 
 let gamercardHeight  = avatarSize + levelHolderSize / 2
 
+let levelStateFlags = Watched(0)
+let profileStateFlags = Watched(0)
+
 let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@(category) category == true))
 
 let textParams = {
@@ -59,12 +62,11 @@ let name =  @() textParams.__merge({
 
 let levelUpReadyAnim = { prop = AnimProp.opacity, duration = 3.0, easing = CosineFull, play = true, loop = true }
 
-let mkLevelBlock = @(canOpenLevelUp) function() {
-  let stateFlags = Watched(0)
+let function levelBlock() {
   let { exp, nextLevelExp, level, isReadyForLevelUp } = playerLevelInfo.value
   let isMaxLevel = nextLevelExp == 0
   let levelNextText = isReadyForLevelUp ? (level + 1).tostring() : ""
-  let needLevelUpBtn = canOpenLevelUp && isReadyForLevelUp
+  let needLevelUpBtn = isReadyForLevelUp
   return {
     watch = playerLevelInfo
     size = [levelHolderSize, levelHolderSize]
@@ -90,19 +92,19 @@ let mkLevelBlock = @(canOpenLevelUp) function() {
         : null
       @() mkLevelBg({
         ovr = {
-          watch = stateFlags
-          onElemState = @(sf) stateFlags(sf)
+          watch = levelStateFlags
+          onElemState = @(sf) levelStateFlags(sf)
           behavior = isMaxLevel ? null : Behaviors.Button
           onClick = openExpWnd
-          color = stateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
+          color = levelStateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
           transform = {
             rotate = 45
-            scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+            scale = levelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
           }
         }
       })
       @() textParams.__merge({
-        watch = stateFlags
+        watch = levelStateFlags
         key = playerLevelInfo.value
         text = isMaxLevel ? maxLevelStarChar : level
         pos = [0, isMaxLevel ? -hdpx(2) : 0]
@@ -110,7 +112,7 @@ let mkLevelBlock = @(canOpenLevelUp) function() {
           ? [ levelUpReadyAnim.__merge({ from = 1.0, to = 0.0 }) ]
           : null
         transform = {
-          scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+          scale = levelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
         }
       })
       isReadyForLevelUp
@@ -145,47 +147,44 @@ let hoverBg = {
   texOffs = gradCircCornerOffset
 }
 
-let function mkProfileHolder(canOpenLevelUp) {
-  let stateFlags = Watched(0)
-  return {
-    children = [
-      @() {
-        watch = stateFlags
-        size = flex()
-        children = stateFlags.value & S_HOVER ? hoverBg : null
-      }
-      {
-        flow = FLOW_HORIZONTAL
-        size = [SIZE_TO_CONTENT, avatarSize]
-        gap = profileGap
-        behavior = Behaviors.Button
-        onElemState = @(sf) stateFlags(sf)
-        onClick = @() accountOptionsScene()
-        children = [
-          avatar
-          {
-            flow = FLOW_VERTICAL
-            vplace = ALIGN_CENTER
-            children = [
-              name
-              mkTitle(fontTinyAccented)
-            ]
-          }
-        ]
-      }
-      mkLevelBlock(canOpenLevelUp)
-    ]
-  }
+let gamercardProfile = {
+  children = [
+    @() {
+      watch = profileStateFlags
+      size = flex()
+      children = profileStateFlags.value & S_HOVER ? hoverBg : null
+    }
+    {
+      flow = FLOW_HORIZONTAL
+      size = [SIZE_TO_CONTENT, avatarSize]
+      gap = profileGap
+      behavior = Behaviors.Button
+      onElemState = @(sf) profileStateFlags(sf)
+      onClick = @() accountOptionsScene()
+      children = [
+        avatar
+        {
+          flow = FLOW_VERTICAL
+          vplace = ALIGN_CENTER
+          children = [
+            name
+            mkTitle(fontTinyAccented)
+          ]
+        }
+      ]
+    }
+    levelBlock
+  ]
 }
 
-let mkLeftBlock = @(backCb, canOpenLevelUp) {
+let mkLeftBlock = @(backCb) {
   size = [ SIZE_TO_CONTENT, gamercardHeight ]
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_LEFT
   gap = gamercardGap
   children = [
     backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
-    mkProfileHolder(canOpenLevelUp)
+    gamercardProfile
   ]
 }
 
@@ -240,11 +239,11 @@ let rightBlock = @(){
     )
 }
 
-let mkGamercard = @(backCb = null, canOpenLevelUp = false) {
+let mkGamercard = @(backCb = null) {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
   children = [
-    mkLeftBlock(backCb, canOpenLevelUp)
+    mkLeftBlock(backCb)
     rightBlock
   ]
 }
@@ -263,7 +262,7 @@ let gamercardBalanceNotButtons = @() {
     )
 }
 
-let gamercardBalanceBtns = {
+let gamercardBalanceBtns = @(ovr = {}){
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
@@ -273,10 +272,20 @@ let gamercardBalanceBtns = {
     mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
     mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
   ]
+}.__update(ovr)
+
+let gamercardItemsBalanceBtns = @(){
+  watch = itemsOrder
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
 }
 
 return {
+  mkLeftBlock
   mkGamercard
+  gamercardItemsBalanceBtns
   gamercardHeight
   gamercardBalanceNotButtons
   gamercardBalanceBtns

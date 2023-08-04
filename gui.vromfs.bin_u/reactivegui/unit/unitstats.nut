@@ -381,15 +381,15 @@ let function getUnitStats(unit, shopCfg, statsList, weapStatsList) {
   return unitStats.filter(@(v) v != null)
 }
 
-let function mkUnitStatsCompFull(unit, attrLevels, attrPreset) {
+let function mkUnitStatsCompFull(unit, attrLevels, attrPreset, mods) {
   let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
-  let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset)
+  let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, statsCfg?[unitType].full ?? [], weaponsCfg?[unitType].full ?? [])
 }
 
-let function mkUnitStatsCompShort(unit, attrLevels, attrPreset) {
+let function mkUnitStatsCompShort(unit, attrLevels, attrPreset, mods) {
   let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
-  let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset)
+  let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])
 }
 

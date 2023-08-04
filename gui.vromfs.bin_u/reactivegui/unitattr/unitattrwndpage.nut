@@ -13,6 +13,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 
 
 let progressBtnSize = evenPx(72)
@@ -242,9 +243,9 @@ let function mkAttrRow(attr) {
   let attrLocName = getAttrLabelText(attrUnitType.value, attr.id)
   let mkBtnOnClick = @(diff) @() applyAttrRowChange(catId, attr.id, selLevel.value + diff, selLevel, minLevel, maxLevel)
   let mkCellOnClick = @(val) @() applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
-  let curValueData = Computed(@() getAttrValData(attrUnitType.value, attr, minLevel.value, shopCfg, serverConfigs.value))
+  let curValueData = Computed(@() getAttrValData(attrUnitType.value, attr, minLevel.value, shopCfg, serverConfigs.value, unitMods.value))
   let selValueData = Computed(@() selLevel.value > minLevel.value
-    ? getAttrValData(attrUnitType.value, attr, selLevel.value, shopCfg, serverConfigs.value)
+    ? getAttrValData(attrUnitType.value, attr, selLevel.value, shopCfg, serverConfigs.value, unitMods.value)
     : [])
 
   return {

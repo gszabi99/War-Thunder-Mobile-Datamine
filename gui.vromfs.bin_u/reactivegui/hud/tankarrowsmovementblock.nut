@@ -113,6 +113,8 @@ let function mkSteerParams(isRight) {
   let function onTouchUpdate() {
     steeringAxelerate("gm_steering", isRight)
     steeringAxelerate("wheel_steering", isRight)
+    if (speed.value == 0)
+      toNeutral()
   }
   let shortcutId = isRight ? "gm_steering_right" : "gm_steering_left"
   return {

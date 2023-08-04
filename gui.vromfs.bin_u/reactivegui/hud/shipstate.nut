@@ -109,6 +109,7 @@ let shipState = {
   wishDist = Watched(0)
   maxControlDepth = Watched(0.0)
   periscopeDepthCtrl = Watched(0.0)
+  deadZoneDepth = Watched(0.0)
   oxygen = Watched(100)
   isTargetRepair = Watched(false)
   targetHp = Watched(0)

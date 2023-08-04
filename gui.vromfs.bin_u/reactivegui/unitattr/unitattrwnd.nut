@@ -248,7 +248,7 @@ let unitAttrWnd = {
   behavior = Behaviors.HangarCameraControl
   flow = FLOW_VERTICAL
   children = [
-    mkGamercard(onClose, true)
+    mkGamercard(onClose)
     {
       size = flex()
       flow = FLOW_HORIZONTAL

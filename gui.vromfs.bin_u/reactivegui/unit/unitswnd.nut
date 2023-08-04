@@ -530,7 +530,7 @@ let function unitsBlock() {
 
 let gamercardPlace = {
   children = [
-    mkGamercard(close, true)
+    mkGamercard(close)
     unitInfoPanel({
       pos = unitInfoPanelDefPos
       behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
