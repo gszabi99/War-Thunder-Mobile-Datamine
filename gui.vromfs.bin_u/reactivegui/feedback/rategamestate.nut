@@ -12,10 +12,11 @@ let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
 let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
+let { debriefingData, isNoExtraScenesAfterDebriefing } = require("%rGui/debriefing/debriefingState.nut")
 let mkPlayersByTeam = require("%rGui/debriefing/mkPlayersByTeam.nut")
 let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { battlesMin, killsMin, placeMax, isTestingBattlesMin } = require("%rGui/feedback/rateGameTests.nut")
+let { battlesMin, killsMin, placeMax, reqVictory, reqMultiplayer, reqNoExtraScenes, isTestingBattlesMin
+} = require("%rGui/feedback/rateGameTests.nut")
 
 let { storeId, showAppReview } = is_ios ? { storeId = "apple", showAppReview = require("ios.platform").showAppReview }
   : is_android && isDownloadedFromGooglePlay() ? { storeId = "google", showAppReview = require("android.platform").showAppReview }
@@ -67,26 +68,33 @@ let isGameUnrated = Computed(@()
   && (SHOULD_USE_REVIEW_CUE || !isOldFeedbackCompleted.value) //warning disable: -const-in-bool-expr
 )
 
-let function needRateGameByDebriefing(dData, killsMinV, placeMaxV) {
-  let { sessionId = -1, isWon = false, campaign = "", players = {} } = dData
-  if (sessionId == -1 || !isWon)
+let function needRateGameByDebriefing(dData, killsMinV, placeMaxV, reqVictoryV, reqMultiplayerV) {
+  let { sessionId = -1, isWon = false, isFinished = false, isTutorial = false, campaign = "", players = {} } = dData
+  if (!isFinished || isTutorial)
+    return false
+  let isMultiplayer = sessionId != -1
+  if (!isMultiplayer && reqMultiplayerV)
+    return false
+  if (!isWon && reqVictoryV)
     return false
   let myUserIdStr = myUserId.value.tostring()
   let player = players?[myUserIdStr]
-  if (player == null)
+  if (player == null && reqMultiplayerV)
     return false
   let { kills = 0, groundKills = 0, navalKills = 0 } = player
   let killsTotal = kills + groundKills + navalKills
   if (killsTotal < killsMinV)
     return false
-  local place = -1
-  let playersByTeam = mkPlayersByTeam(dData)
-  foreach (team in playersByTeam) {
-    team.sort(playersSortFunc(campaign))
-    let idx = team.findindex(@(p) p?.userId == myUserIdStr)
-    if (idx != null) {
-      place = idx + 1
-      break
+  local place = isMultiplayer ? -1 : 1
+  if (isMultiplayer) {
+    let playersByTeam = mkPlayersByTeam(dData)
+    foreach (team in playersByTeam) {
+      team.sort(playersSortFunc(campaign))
+      let idx = team.findindex(@(p) p?.userId == myUserIdStr)
+      if (idx != null) {
+        place = idx + 1
+        break
+      }
     }
   }
   if (place == -1 || place > placeMaxV)
@@ -101,7 +109,8 @@ let needRateGame = Computed(@() allow_review_cue.value
   && !isRateGameSeen.value
   && lastBattles.value.len() >= showAfterBattlesCount.value
   && canRateGameByCurTime()
-  && needRateGameByDebriefing(debriefingData.value, killsMin.value, placeMax.value)
+  && (isNoExtraScenesAfterDebriefing.value || !reqNoExtraScenes.value)
+  && needRateGameByDebriefing(debriefingData.value, killsMin.value, placeMax.value, reqVictory.value, reqMultiplayer.value)
 )
 
 let function onRateGameOpen() {

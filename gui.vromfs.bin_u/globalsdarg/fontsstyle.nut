@@ -1,5 +1,11 @@
 let { Fonts } = require("daRg")
 let { hdpxi } = require("screenUnits.nut")
+let { getLocalLanguage = @() "" } = require_optional("language")
+
+let isJp = getLocalLanguage() == "Japanese"
+let muller_regular = isJp ? Fonts.muller_regular_jp : Fonts.muller_regular
+let muller_medium = isJp ? Fonts.muller_medium_jp : Fonts.muller_medium
+let wtfont = Fonts.wtfont
 
 let shade = {
   fontFx = FFT_GLOW
@@ -8,68 +14,68 @@ let shade = {
 }
 
 let fontVeryVeryTiny = {
-  font = Fonts.muller_regular
+  font = muller_regular
   fontSize = hdpxi(15)
 }
 let fontVeryTiny = {
-  font = Fonts.muller_regular
+  font = muller_regular
   fontSize = hdpxi(22)
 }
 let fontTiny = {
-  font = Fonts.muller_regular
+  font = muller_regular
   fontSize = hdpxi(27)
 }
 let fontTinyAccented = {
-  font = Fonts.muller_medium
+  font = muller_medium
   fontSize = hdpxi(29)
 }
 let fontSmall = {
-  font = Fonts.muller_medium
+  font = muller_medium
   fontSize = hdpxi(35)
 }
 let fontSmallAccented = {
-  font = Fonts.muller_medium
+  font = muller_medium
   fontSize = hdpxi(37)
 }
 let fontMedium = {
-  font = Fonts.muller_medium
+  font = muller_medium
   fontSize = hdpxi(42)
 }
 let fontBig = {
-  font = Fonts.muller_medium
+  font = muller_medium
   fontSize = hdpxi(57)
 }
 let fontLarge = {
-  font = Fonts.muller_medium
+  font = muller_medium
   fontSize = hdpxi(77)
 }
 let fontVeryLarge = {
-  font = Fonts.muller_medium
+  font = muller_medium
   fontSize = hdpxi(97)
 }
 
 let fontWtSmall = {
-  font = Fonts.wtfont
+  font = wtfont
   fontSize = hdpxi(35)
 }
 let fontWtMedium = {
-  font = Fonts.wtfont
+  font = wtfont
   fontSize = hdpxi(42)
 }
 let fontWtBig = {
-  font = Fonts.wtfont
+  font = wtfont
   fontSize = hdpxi(58)
 }
 let fontWtLarge = {
-  font = Fonts.wtfont
+  font = wtfont
   fontSize = hdpxi(70)
 }
 let fontWtVeryLarge = {
-  font = Fonts.wtfont
+  font = wtfont
   fontSize = hdpxi(100)
 }
 let fontWtExtraLarge = {
-  font = Fonts.wtfont
+  font = wtfont
   fontSize = hdpxi(150)
 }
 

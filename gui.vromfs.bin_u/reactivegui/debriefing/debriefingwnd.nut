@@ -29,7 +29,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { openUnitAttrWnd } = require("%rGui/unitAttr/unitAttrState.nut")
-let { debriefingData, isDebriefingAnimFinished } = require("debriefingState.nut")
+let { debriefingData, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing } = require("debriefingState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { mkDebriefingStats } = require("mkDebriefingStats.nut")
@@ -128,15 +128,23 @@ let updateHangarUnit = @(unitId) unitId == null ? null : setHangarUnit(unitId)
 let toHangarButton = @(campaign) textButtonPrimary(
   utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short" : "return_to_hangar/short")),
   function() {
+    isNoExtraScenesAfterDebriefing(true)
     if (needRateGame.value)
       return requestShowRateGame()
     closeDebriefing()
   },
   { hotkeys = [btnBEscUp] })
-let lvlUpButton = textButtonBattle(utf8ToUpper(loc("msgbox/btn_get")), closeDebriefing,
+let lvlUpButton = textButtonBattle(utf8ToUpper(loc("msgbox/btn_get")),
+  function() {
+    isNoExtraScenesAfterDebriefing(false)
+    if (needRateGame.value)
+      return requestShowRateGame()
+    closeDebriefing()
+  },
   { hotkeys = ["^J:X | Enter"] })
 let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
+    isNoExtraScenesAfterDebriefing(true)
     if (needRateGame.value)
       return requestShowRateGame()
     offerMissingUnitItemsMessage(curUnit.value, startBattle)
@@ -145,6 +153,9 @@ let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")
   { hotkeys = ["^J:X | Enter"] })
 let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
+    isNoExtraScenesAfterDebriefing(true)
+    if (needRateGame.value)
+      return requestShowRateGame()
     startCurNewbieMission()
     closeDebriefing()
   },
@@ -152,6 +163,9 @@ let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBat
 let upgradeUnitButton = @(campaign) textButtonPrimary(
   utf8ToUpper(loc(campaign == "tanks" ? "mainmenu/btnUpgradePlatoon" : "mainmenu/btnUpgradeShip")),
   function() {
+    isNoExtraScenesAfterDebriefing(false)
+    if (needRateGame.value)
+      return requestShowRateGame()
     countUpgradeButtonPushed(countUpgradeButtonPushed.value + 1)
     get_local_custom_settings_blk()[SAVE_ID_UPGRADE_BUTTON_PUSHED] = countUpgradeButtonPushed.value
     send("saveProfile", {})
@@ -177,6 +191,9 @@ let toBattleButtonPlace = @() {
 
 let mkNewPlatoonUnitButton = @(newPlatoonUnit) textButtonBattle(utf8ToUpper(loc("msgbox/btn_get")),
   function() {
+    isNoExtraScenesAfterDebriefing(false)
+    if (needRateGame.value)
+      return requestShowRateGame()
     closeDebriefing()
     unitDetailsWnd({ name = debriefingData.value?.unit.name, selUnitName = newPlatoonUnit.name })
     requestOpenUnitPurchEffect(newPlatoonUnit)
@@ -252,8 +269,7 @@ let mkMissionResultLine = @(missionResult) {
 }
 
 let playerLevelUpText = @(text) {
-  size = SIZE_TO_CONTENT
-  maxWidth = hdpx(350)
+  maxWidth = hdpx(400)
   halign = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_TEXTAREA

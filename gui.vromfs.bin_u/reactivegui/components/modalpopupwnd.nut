@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let POPUP_PARAMS = {
   uid = null //when not set, will be generated
@@ -66,7 +67,7 @@ local lastPopupIdx = 0
 local function add(rectOrPos, popup) {
   popup = POPUP_PARAMS.__merge(popup)
   popup.uid = popup?.uid ?? $"modal_popup_{lastPopupIdx++}"
-  popup.hotkeys = popup.hotkeys ?? [["^J:B | Esc", { action = @() remove(popup.uid), description = loc("Cancel") }]]
+  popup.hotkeys = popup.hotkeys ?? [[btnBEscUp, { action = @() remove(popup.uid), description = loc("Cancel") }]]
 
   let offsets = calcOffsets(rectOrPos, popup.popupFlow, popup.popupOffset, popup.popupHalign, popup.popupValign)
   addModalWindow(popup.popupBg.__merge({

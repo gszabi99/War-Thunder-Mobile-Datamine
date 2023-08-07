@@ -7,6 +7,7 @@ let cfgByUnitType = require("cfgByUnitType.nut")
 let { unitTypeOrder } = require("%appGlobals/unitConst.nut")
 let { tuningUnitType, isCurPresetChanged, saveCurrentTransform } = require("hudTuningState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let wndUid = "chooseTuningUnitType"
 let close = @() removeModalWindow(wndUid)
@@ -58,7 +59,7 @@ return @() addModalWindow(bgShaded.__merge({
   key = wndUid
   size = flex()
   stopHotkeys = true
-  hotkeys = [["Esc", { action = close }]]
+  hotkeys = [[btnBEscUp, { action = close }]]
   children = {
     size = [sh(65), SIZE_TO_CONTENT]
     stopMouse = true

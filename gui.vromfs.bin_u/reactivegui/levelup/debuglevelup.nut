@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { levelUpSizePx, levelUpFlag } = require("levelUpFlag.nut")
 let { register_command } = require("console")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 const WND_UID = "debug_level_up_flag"
 let isOpened = mkWatched(persist, "isOpened", false)
@@ -20,7 +21,7 @@ let openImpl = @() addModalWindow({
   halign = ALIGN_CENTER
   children = flag
   onClick = @() animKey(animKey.value + 1)
-  hotkeys = [["^Esc", { action = close, description = loc("Cancel") }]]
+  hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
 })
 
 if (isOpened.value)

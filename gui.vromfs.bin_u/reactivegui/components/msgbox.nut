@@ -132,6 +132,8 @@ register_command(@() openMsgBox("Some test message box\nwith two buttons", null,
   ),
   "debug.showMessageBox")
 
+register_command(@(text) openMsgBox(text), "debug.showMessageBoxText")
+
 return {
   openMsgBox = kwarg(openMsgBox)
   closeMsgBox

@@ -4,6 +4,7 @@ let backButton = require("%rGui/components/backButton.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
 let premDescWndUid = "prem_desc_wnd_uid"
@@ -113,7 +114,7 @@ isPremiumDescriptionWndVisible.subscribe(function(isOpened) {
   if (isOpened) {
     addModalWindow(premiumDescriptionWnd.__merge({
       key = premDescWndUid
-      hotkeys = [["Esc", { action = closePremiumDescriptionWnd }]]
+      hotkeys = [[btnBEscUp, { action = closePremiumDescriptionWnd }]]
       onClick = @() closePremiumDescriptionWnd()
     }))
     return

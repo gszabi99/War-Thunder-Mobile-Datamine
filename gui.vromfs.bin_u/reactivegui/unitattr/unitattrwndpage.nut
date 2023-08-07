@@ -8,7 +8,7 @@ let { curCategory, curCategoryId, totalUnitSp, leftUnitSp, getSpCostText, unitAt
 } = require("%rGui/unitAttr/unitAttrState.nut")
 let { getAttrLabelText, getAttrValData } = require("%rGui/unitAttr/unitAttrValues.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
+let { textColor, badTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
@@ -65,17 +65,17 @@ let progressBtnContentBase = {
   image = Picture($"ui/gameuiskin#rhombus.svg:{progressBtnSize}:{progressBtnSize}:P")
   halign = ALIGN_CENTER
 }
-let mkProgressBtnContentDec = @(isAvailable)
+let mkProgressBtnContentDec = @(isAvailable) @(sf)
   @() progressBtnContentBase.__merge({
     watch = isAvailable
     opacity = isAvailable.value ? 1 : 0.33
     children = [
       bgShaded.__merge({ size = flex() })
       btnBg.__merge({ size  = flex() })
-      btnTextDec
+      sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec
     ]
   })
-let mkProgressBtnContentInc = @(isAvailable)
+let mkProgressBtnContentInc = @(isAvailable) @(sf)
   @() progressBtnContentBase.__merge({
     watch = isAvailable
     clipChildren = true
@@ -83,18 +83,18 @@ let mkProgressBtnContentInc = @(isAvailable)
     children = [
       bgShaded.__merge({ size = flex() })
       btnBg.__merge({ size  = flex() })
-      btnTextInc
+      sf & S_HOVER ? btnTextInc.__merge({ color = hoverColor }) : btnTextInc
       isAvailable.value ? incBtnGlare : null
     ]
   })
 
-let function mkProgressBtn(children, onClick) {
+let function mkProgressBtn(childrenCtor, onClick) {
   let stateFlags = Watched(0)
   return @() progressBtnBase.__merge({
     watch = stateFlags
     onClick
     onElemState = @(v) stateFlags(v)
-    children
+    children = childrenCtor(stateFlags.value)
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
   })
 }

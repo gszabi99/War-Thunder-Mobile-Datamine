@@ -33,7 +33,7 @@ let function getReceiveReason(decName){
   let locId = $"decor/{decName}/receiveReason"
   if(doesLocTextExist(locId))
     return loc(locId)
-  return null
+  return loc("decor/decorNotAvailable")
 }
 
 let function markDecoratorsSeen(names) {

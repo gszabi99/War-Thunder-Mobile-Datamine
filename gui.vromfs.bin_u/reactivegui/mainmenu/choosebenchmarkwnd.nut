@@ -5,6 +5,7 @@ let { benchmarkGameModes } = require("%rGui/gameModes/gameModeState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let wndUid = "chooseBenchmark"
 let close = @() removeModalWindow(wndUid)
@@ -73,7 +74,7 @@ let function missionsListUi() {
 
 return @() addModalWindow({
   key = wndUid
-  hotkeys = [["Esc", { action = close }]]
+  hotkeys = [[btnBEscUp, { action = close }]]
   size = flex()
   onAttach = @() send("getBenchmarksList", {})
   children = {

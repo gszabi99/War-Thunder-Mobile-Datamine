@@ -47,7 +47,7 @@ let function openUrlImpl(url, onCloseUrl) {
 
 subscribe("onAuthenticatedUrlResult", function(msg) {
   let { status, contextStr = "", url = null } = msg
-  let { onCloseUrl = "", useExternalBrowser = false, notAuthUrl = "", shouldEncode = false
+  let { onCloseUrl = "", useExternalBrowser = true, notAuthUrl = "", shouldEncode = false
   } = contextStr != "" ? parse_json(contextStr) : null
   local urlToOpen = url
   local logPrefix = "request open authenticated"
@@ -88,7 +88,7 @@ let function openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser) 
     json_to_string({ onCloseUrl, useExternalBrowser, notAuthUrl = url, shouldEncode }))
 }
 
-let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExternalBrowser=false) {
+let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExternalBrowser=true) {
   if (baseUrl == null || baseUrl == "") {
     logUrl("Error: tried to open an empty url")
     return null
@@ -151,7 +151,7 @@ local function validateLink(link) {
   return null
 }
 
-let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCloseUrl = "", useExternalBrowser = false) {
+let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCloseUrl = "", useExternalBrowser = true) {
   let bigQueryInfoObject = { url = baseUrl }
   if (! u.isEmpty(biqQueryKey))
     bigQueryInfoObject["from"] <- biqQueryKey

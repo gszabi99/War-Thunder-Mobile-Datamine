@@ -9,7 +9,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { gameModeAddonToAddonSetMap } = require("%appGlobals/updater/addons.nut")
 
-let function getModeAddonsInfo(mode, unitName) {
+let function getModeAddonsInfo(mode, unitNames) {
   let { reqPkg = {}, campaign = curCampaign.value, name = "" } = mode
   local addons = {}  //addon = needDownload
   local allReqAddons = {}
@@ -29,7 +29,9 @@ let function getModeAddonsInfo(mode, unitName) {
     updateDiff += version == "" ? -1 : 1
   }
 
-  let { mRank = 1 } = serverConfigs.value?.allUnits[unitName]
+  local mRank = 1
+  foreach(uName in unitNames)
+    mRank = max(mRank, serverConfigs.value?.allUnits[uName].mRank ?? 1)
   let campAddons = isNewbieMode(name)
     ? getCampaignPkgsForNewbieBattle(campaign, mRank, isNewbieModeSingle(name))
     : getCampaignPkgsForOnlineBattle(campaign, mRank)

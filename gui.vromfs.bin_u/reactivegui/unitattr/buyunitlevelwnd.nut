@@ -102,7 +102,7 @@ let mkSpText = @(sp) {
   fontFxColor = 0x40000000
 }.__update(fontTiny)
 
-let mkLevelInfo = @(levels, sp) {
+let mkLevelInfo = @(levels, sp, sf) {
   size = blockSize
   rendObj = ROBJ_SOLID,
   color = 0xFF01364A
@@ -115,7 +115,7 @@ let mkLevelInfo = @(levels, sp) {
       rendObj = ROBJ_IMAGE
       image = gradCircularSqCorners
       color = 0xFF12B2E6
-      opacity = 0.5
+      opacity = sf & S_HOVER ? 1.0 : 0.5
     }
     {
       size = flex()
@@ -124,6 +124,7 @@ let mkLevelInfo = @(levels, sp) {
       texOffs = [gradCircCornerOffset, gradCircCornerOffset]
       screenOffs = array(2, blockSize[1] / 2)
       color = 0xFF39A2C8
+      brightness = sf & S_HOVER ? 1.3 : 1
     }
     pattern
     {
@@ -206,7 +207,7 @@ let function mkLevelBlock(levels, costMul, unitV, levelsSp) {
     flow = FLOW_VERTICAL
     gap = hdpx(40)
     children = [
-      mkLevelInfo(levels, sp)
+      mkLevelInfo(levels, sp, stateFlags.value)
       mkLevelPrice(fullCostGold, costGold, costMul)
     ]
 

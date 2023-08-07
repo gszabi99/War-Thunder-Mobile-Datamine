@@ -5,6 +5,7 @@ let { unitTypeFontIcons, unitTypeColors } = require("%appGlobals/unitPresentatio
 let { register_command } = require("console")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
 let wndUid = "debugLoadingTips"
@@ -48,7 +49,7 @@ let tipsWnd = @(tips) {
 let open = @() addModalWindow({
   key = wndUid
   size = flex()
-  hotkeys = [["Esc", @() removeModalWindow(wndUid)]]
+  hotkeys = [[btnBEscUp, @() removeModalWindow(wndUid)]]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = tipsWnd(getTipsList())

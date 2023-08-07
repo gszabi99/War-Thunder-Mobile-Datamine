@@ -12,7 +12,8 @@ return {
   btnB
   btnAUp = $"^{btnA}"
   btnBUp = $"^{btnB}"
-  btnBEscUp = $"^{btnB} | Esc"
+  btnBEscUp = $"^{btnB} | Esc | Backspace" //Backspace for back button on android
+  btnBEsc = $"{btnB} | Esc | Backspace" //Backspace for back button on android
   clickButtons
   EMPTY_ACTION = @() null
 }

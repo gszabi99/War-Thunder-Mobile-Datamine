@@ -39,6 +39,7 @@ let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut"
 let setReady = require("%rGui/squad/setReady.nut")
 let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = require("%rGui/squad/readyCheck.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
 let unitNameStateFlags = Watched(0)
@@ -266,6 +267,6 @@ return {
   ]
   animations = wndSwitchAnim
   hotkeys = [
-    ["Esc", {action=exitMsgBox}]
+    [btnBEscUp, {action=exitMsgBox}]
   ]
 }

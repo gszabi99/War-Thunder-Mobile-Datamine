@@ -106,6 +106,18 @@ let function isSquadReadyWithMsgbox(mode, allReqAddons) {
   return true
 }
 
+let function getAllBattleUnits() {
+  let res = {}
+  if (curUnit.value != null)
+    res[curUnit.value.name] <- true
+  foreach(m in squadMembers.value) {
+    let name = m?.units[squadLeaderCampaign.value]
+    if (name != null)
+      res[name] <- true
+  }
+  return res.keys()
+}
+
 let function queueToGameModeImpl(mode) {
   if (isInQueue.value)
     return
@@ -114,7 +126,7 @@ let function queueToGameModeImpl(mode) {
     return
   }
 
-  let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode, curUnit.value?.name)
+  let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode, getAllBattleUnits())
   if (!isSquadReadyWithMsgbox(mode, allReqAddons))
     return
 
@@ -196,7 +208,7 @@ let function queueToGameModeAfterAddons(modeId) {
   let mode = allGameModes.value?[modeId]
   if (mode == null)
     return //mode missing while downloading, no need error here
-  let { addonsToDownload } = getModeAddonsInfo(mode, curUnit.value?.name)
+  let { addonsToDownload } = getModeAddonsInfo(mode, getAllBattleUnits())
   if (addonsToDownload.len() == 0)
     queueToGameMode(modeId)
   else

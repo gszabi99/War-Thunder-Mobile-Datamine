@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
-let { btnB } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { btnBEsc } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 let menuButtonSize = hdpx(60)
@@ -105,7 +105,7 @@ let mkDropMenuBtn = @(getButtons, buttonsGeneration) function() {
       children = menuUi
       popupOffset = hdpx(5)
       popupHalign = ALIGN_RIGHT
-      hotkeys = [[$"^J:Start | {btnB} | Esc", { action = close, description = loc("Cancel") }]]
+      hotkeys = [[$"^J:Start | {btnBEsc}", { action = close, description = loc("Cancel") }]]
     })
   }
   res.children <- makeMenuBtn(openMenu)

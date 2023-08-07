@@ -47,7 +47,7 @@ let feedBackList = [
     image = "ui/gameuiskin#icon_social_support.svg"
     onClick = @() can_use_internal_support_form.value
       ? openSupportWnd()
-      : send("openUrl", { baseUrl = loc("url/feedback/support"), useExternalBrowser = true })
+      : send("openUrl", { baseUrl = loc("url/feedback/support") })
   }
 ]
 
@@ -65,7 +65,7 @@ let function mkNetworkItem(item){
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
-    onClick = @() send("openUrl", { baseUrl = url, useExternalBrowser = true })
+    onClick = @() send("openUrl", { baseUrl = url })
     onElemState = @(v) stateFlags(v)
     transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]

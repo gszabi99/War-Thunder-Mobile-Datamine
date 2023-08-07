@@ -243,7 +243,7 @@ local function mkDebugScreen(tabs, close, rootOverride = {}, filterText = defFil
     watch = tabs
     size = flex()
     children = debugWndContent(tabs.value, curTab, filterText, close, textWatch)
-    hotkeys = [["^J:B | Esc", { action = close, description = loc("Cancel") }]]
+    hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   }.__update(rootOverride)
 }
 
@@ -258,7 +258,7 @@ local function openDebugWnd(tabs, childrenOverTabs = null, rootOverride = {}, wn
   return addModalWindow({
     key = wndUid
     size = flex()
-    hotkeys = [["^J:B | Esc", { action = close, description = loc("Cancel") }]]
+    hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
     children = @() {
       watch = tabs
       size = flex()

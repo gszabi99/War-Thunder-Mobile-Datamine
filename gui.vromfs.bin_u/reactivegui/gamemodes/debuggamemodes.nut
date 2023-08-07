@@ -6,6 +6,7 @@ let { closeButton } = require("%rGui/components/debugWnd.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let wndUid = "debugGameModes"
 let close = @() removeModalWindow(wndUid)
@@ -61,7 +62,7 @@ return @() addModalWindow({
   key = wndUid
   size = flex()
   stopHotkeys = true
-  hotkeys = [["Esc", { action = close }]]
+  hotkeys = [[btnBEscUp, { action = close }]]
   children = {
     size = [sh(130), sh(90)]
     stopMouse = true

@@ -159,22 +159,22 @@ let buttons = @() {
       : mkButtonRow([
           textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
           textButtonCommon(loc("options/delete_profile"),
-            @() send("openUrl", { baseUrl = DELETE_PROFILE_URL, useExternalBrowser = true }),
+            @() send("openUrl", { baseUrl = DELETE_PROFILE_URL }),
             buttonsWidthStyle)
         ])
     mkButtonRow([
       !canLinkToGaijinAccount.value ? null
         : textButtonPrimary(loc("msgbox/btn_linkEmail"),
-            @() send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL, useExternalBrowser = true }),
+            @() send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL }),
             buttonsWidthStyle)
       is_ios ? null
         : textButtonPrimary(loc("mainmenu/btnActivateCode"),
-            @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL, useExternalBrowser = true }),
+            @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
             buttonsWidthStyle)
     ])
     mkButtonRow([
       textButtonPrimary(loc("mainmenu/support"),
-        @() send("openUrl", { baseUrl = loc("url/support"), useExternalBrowser = true }),
+        @() send("openUrl", { baseUrl = loc("url/support") }),
         buttonsWidthStyle)
       textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
     ])

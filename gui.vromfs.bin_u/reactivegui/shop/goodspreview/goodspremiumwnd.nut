@@ -8,6 +8,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { previewGoods, GPT_PREMIUM , closeGoodsPreview, previewType} = require("%rGui/shop/goodsPreviewState.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let premDescWndUid = "prem_desc_wnd_uid"
 
@@ -131,7 +132,7 @@ let premiumDescriptionWnd = {
   color = premiumDescriptionWndBg
   padding = saBordersRv
   behavior = Behaviors.Button
-  hotkeys = [["Esc", { action = closeGoodsPreview }]]
+  hotkeys = [[btnBEscUp, { action = closeGoodsPreview }]]
   onClick = closeGoodsPreview
   children = [
     backBtn

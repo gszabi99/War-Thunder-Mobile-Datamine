@@ -36,6 +36,7 @@ let function getSingleMissionResult(rewardData) {
     res.__update({
       isFinished = true
       isWon = true
+      isTutorial
       teams = [ { tickets = 0 } ]
     })
   if (rewardData?.battleData != null) {
