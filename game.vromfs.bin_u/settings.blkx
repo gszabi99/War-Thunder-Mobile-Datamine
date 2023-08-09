@@ -1001,7 +1001,16 @@
     "pc": true,
     "graphics": {
       "dafx_modfx_bboard_render": true,
-      "sparks_ps": true
+      "sparks_ps": true,
+      "gen_weather": true,
+      "render_full_tonemap": true
+    },
+    "compute": {
+      "skies_generate_transmittance_cs": true,
+      "skies_approximate_ms_lut_cs": true,
+      "indirect_irradiance_ms_cs": true,
+      "gen_curl_clouds_2d": true,
+      "gen_cloud_field_cmpr": true
     }
   },
   "level": {
