@@ -1,7 +1,7 @@
 
 let { loc } = require("dagor.localize")
 let { Computed } = require("frp")
-let { set_current_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { set_current_unit, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { curUnit, myUnits, playerLevelInfo, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
@@ -65,7 +65,7 @@ let function getUnitLockedShortText(unit, status, reqPlayerLevel) {
 }
 
 let function setCurrentUnit(unitName) {
-  if (unitInProgress.value != null)
+  if (curUnitInProgress.value != null)
     return "unitInProgress"
   if (unitName not in myUnits.value)
     return "unitNotOwn"

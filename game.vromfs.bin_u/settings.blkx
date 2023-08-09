@@ -264,7 +264,7 @@
     "adaptive_vsync": false,
     "compatibilityMode": true,
     "useTiledRender": true,
-    "postfx_antialiasing": "none",
+    "postfx_antialiasing": "high_fxaa",
     "alpha_to_coverage": false,
     "instancing": "auto",
     "fonts": "medium",
@@ -354,6 +354,7 @@
     "dynrendInitialMainRingBufferSize": 65536,
     "dynrendInitialRingBufferSize": 65536,
     "enableZoomVignette": true,
+    "allowDisablingMSAA": true,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }

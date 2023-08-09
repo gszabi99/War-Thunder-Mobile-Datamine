@@ -107,7 +107,6 @@ foreach (fn in [
 }
 
   // Independent Modules (before login)
-require("login/loginContacts.nut")
 require("%scripts/login/updateRights.nut")
 require("%scripts/debugTools/dbgDedicLogerrs.nut")
 require("%scripts/matching/gameModesUpdate.nut")

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { inKillZone } = require("%rGui/hudState.nut")
 let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
 let { addEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
-let { secondsToTimeAbbrString } = require("%rGui/globals/timeToText.nut")
+let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let eventbus = require("eventbus")
 
 let HINT_TYPE = "returnToMapMessage"

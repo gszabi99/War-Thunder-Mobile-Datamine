@@ -44,6 +44,7 @@ let function getAddonsToDownload(attribs) {
   let { game_mode_id = null } = attribs
   let mode = allGameModes.value?[game_mode_id]
   let unitName = getAttribUnitName(attribs) ?? getMaxRankUnitName()
+  log("[ADDONS] getModeAddonsInfo at sessionReconnect for unit: ", unitName)
   return getModeAddonsInfo(mode, [unitName]).addonsToDownload
 }
 

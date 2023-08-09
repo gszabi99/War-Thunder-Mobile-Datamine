@@ -15,7 +15,7 @@ let { sortUnits, getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
 let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, rankToReqPlayerLvl, getUnitLockedShortText,
   setCurrentUnit, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
 } = require("%appGlobals/unitsState.nut")
-let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { unitInProgress, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
 let { textButtonPrimary, textButtonPurchase, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
@@ -120,7 +120,7 @@ let function close() {
 }
 
 let function onSetCurrentUnit() {
-  if (curSelectedUnit.value == null || unitInProgress.value != null)
+  if (curSelectedUnit.value == null || curUnitInProgress.value != null)
     return
   setCurrentUnit(curSelectedUnit.value)
   isOpened(false)
@@ -285,7 +285,7 @@ let function unitActionButtons() {
   }
 }
 
-let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
+let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null || curUnitInProgress.value != null),
   unitActionButtons,
   {
     size = [flex(), defButtonHeight]

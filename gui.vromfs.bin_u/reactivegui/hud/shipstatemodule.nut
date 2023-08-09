@@ -7,8 +7,8 @@ let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let { mkDebuffIcon, mkDebuffIconEditView } = require("components/debuffIcon.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { mkGamepadHotkey, mkContinuousButtonParams, mkGamepadShortcutImage
-} = require("%rGui/controls/shortcutSimpleComps.nut")
+let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { isInZoom } = require("%rGui/hudState.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let damagePanelBacklight = require("components/damagePanelBacklight.nut")
 
@@ -104,23 +104,33 @@ let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [
 
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)
-let doll = mkContinuousButtonParams(
-  function onTouchBegin() {
-    useShortcutOn(shortcutId)
-  },
-  @() setShortcutOff(shortcutId),
-  shortcutId,
-  stateFlags
-).__update({
+let isActive = @(sf) (sf & S_ACTIVE) != 0
+let doll =  @() {
   key = "ship_state_button"
   behavior = Behaviors.TouchAreaOutButton
+  watch = isInZoom
   eventPassThrough = true
+  function onElemState(sf) {
+    let prevSf = stateFlags.value
+    stateFlags(sf)
+    let active = isActive(sf) && !isInZoom.value
+
+    if (active != isActive(prevSf))
+      if (active)
+        useShortcutOn(shortcutId)
+      else
+        setShortcutOff(shortcutId)
+  }
+  function onDetach() {
+    stateFlags(0)
+    setShortcutOff(shortcutId)
+  }
   hotkeys = mkGamepadHotkey(shortcutId)
   children = [
-    xrayDoll(stateFlags)
+    xrayDoll(isInZoom.value ? null : stateFlags)
     mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
   ]
-})
+}
 
 let dollEditView = {
   size = [healthImageWidth, healthImageHeight]

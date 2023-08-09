@@ -28,6 +28,16 @@ let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
 
+let openConfirmationTutorialMsg = @() openMsgBox({
+  text = loc("tutorial/startConfirmation")
+  buttons = [
+    { id = "cancel", isCancel = true }
+    { id = "startTutorial", styleId = "PRIMARY", isDefault = true,
+      cb = @() notAvailableForSquadMsg(@() startTutor(firstBattleTutor.value))
+    }
+  ]
+})
+
 let OPTIONS = {
   name = loc("mainmenu/btnOptions")
   cb = optionsScene
@@ -95,19 +105,19 @@ let BUG_REPORT = {
 }
 let TUTORIAL = {
   name = loc("mainmenu/btnTutorial")
-  cb = @() notAvailableForSquadMsg(@() startTutor(firstBattleTutor.value))
+  cb = openConfirmationTutorialMsg
 }
 
 let function getPublicButtons() {
   let res = [OPTIONS, STORE]
-  if (firstBattleTutor.value)
-    res.append(TUTORIAL)
   if (isGamepad.value)
     res.append(GAMEPAD_HELP)
   if (isFeedReceived.value)
     res.append(NEWS)
   if (canShowLoginAwards.value || isUserstatMissingData.value)
     res.append(LOGIN_AWARD)
+  if (firstBattleTutor.value)
+    res.append(TUTORIAL)
   if (can_view_replays.value)
     res.append(REPLAYS)
   if (can_write_replays.value && hasUnsavedReplay.value)

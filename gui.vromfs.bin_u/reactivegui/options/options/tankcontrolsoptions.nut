@@ -121,15 +121,23 @@ let showMoveDirection = {
 }
 
 
-let cameraRotationList = [false, true]
-let currentCameraRotationAssist = mkOptionValue(OPT_CAMERA_ROTATION_ASSIST, true, @(v) validate(v, cameraRotationList))
+let cameraRotationAssistList = [false, true]
+let cameraRotationAssistDefault = Computed(@() (abTests.value?.tankCameraRotationAssist ?? "true") == "true")
+let currentCameraRotationAssistRaw = mkOptionValue(OPT_CAMERA_ROTATION_ASSIST)
+let currentCameraRotationAssist = Computed(@() validate(
+  currentCameraRotationAssistRaw.value ?? cameraRotationAssistDefault
+  cameraRotationAssistList))
 set_camera_rotation_assist(currentCameraRotationAssist.value)
 currentCameraRotationAssist.subscribe(@(v) set_camera_rotation_assist(v))
 let cameraRotationAssist = {
   locId = "options/camera_rotation_assist"
   ctrlType = OCT_LIST
   value = currentCameraRotationAssist
-  list = cameraRotationList
+  function setValue(v) {
+    currentCameraRotationAssistRaw(v)
+    sendUiBqEvent("camera_rotation_assist_change", { id = v ? "true" : "false" })
+  }
+  list = cameraRotationAssistList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
 

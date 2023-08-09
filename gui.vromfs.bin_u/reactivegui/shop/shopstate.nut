@@ -9,9 +9,11 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
-let { actualSchRewardByCategory, actualSchRewards, watchedSchRewardAd } = require("schRewardsState.nut")
+let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
+} = require("schRewardsState.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 
 let isShopOpened = mkWatched(persist, "isShopOpened", false)
 let shopOpenCount = Watched(0)
@@ -19,7 +21,9 @@ let shopOpenCount = Watched(0)
 let curCategoryId = mkWatched(persist, "curCategoryId", null)
 
 let SEEN_GOODS = "shopSeenGoods"
+let UNMARK_SEEN_COUNTERS = "unmarkSeenCounters"
 let shopSeenGoods = mkWatched(persist, "shopSeenGoods", {})
+let unmarkSeenCounters = mkWatched(persist, "unmarkSeenCounters", {})
 
 let categoryByCurrency = {
   [WP] = SC_WP,
@@ -76,44 +80,98 @@ let goodsIdsByCategory = Computed(function() {
   return goods
 })
 
-let function removeSeenGood(id) {
-  if (id not in shopSeenGoods.value)
+let function unmarkSeenGoods(unmarkSeen, unmarkCounters = {}) {
+  let toRemove = unmarkSeen.filter(@(id) id in shopSeenGoods.value)
+  let counters = unmarkCounters.filter(@(id, count) unmarkSeenCounters.value?[id] != count)
+  if (toRemove.len() == 0 && counters.len() == 0)
     return
-  shopSeenGoods.mutate(@(v) delete v[id])
+
   let sBlk = get_local_custom_settings_blk()
-  let blk = sBlk.addBlock(SEEN_GOODS)
-  blk[id] = null
+
+  if (toRemove.len() != 0) {
+    let seenBlk = sBlk.addBlock(SEEN_GOODS)
+    shopSeenGoods.mutate(function(v) {
+      foreach(id in toRemove) {
+        delete v[id]
+        seenBlk[id] = null
+      }
+    })
+  }
+
+  if (counters.len() != 0) {
+    unmarkSeenCounters(unmarkSeenCounters.value.__merge(counters))
+    let blk = sBlk.addBlock(UNMARK_SEEN_COUNTERS)
+    foreach (id, v in counters)
+      blk[id] = v
+  }
+
   send("saveProfile", {})
 }
-watchedSchRewardAd.subscribe(@(v) removeSeenGood(v.schRewardId))
+lastAppliedSchReward.subscribe(function(v) {
+  let { rewardId } = v
+  let unmarkSeen = [rewardId]
+  let unmarkCounters = {}
+
+  let { gtype = null, needAdvert = false } = schRewards.value?[rewardId]
+  if (gtype != null && !needAdvert)
+    foreach(id, rew in schRewards.value)
+      if (rew.gtype == gtype && id != rewardId && rew.needAdvert) {
+        unmarkSeen.append(id)
+        unmarkCounters[id] <- 1
+      }
+
+  unmarkSeenGoods(unmarkSeen, unmarkCounters)
+})
+
+isInDebriefing.subscribe(function(v) {
+  if (!v)
+    unmarkSeenGoods(unmarkSeenCounters.value.filter(@(c) c == 0).keys())
+})
 
 let function saveSeenGoods(ids) {
-  shopSeenGoods.mutate(function(v) {
-    foreach (id in ids) {
-      let schReward = actualSchRewards.value?[id]
-      if (schReward?.needAdvert == false || schReward?.isReady == false)
-        continue
-      v[id] <- true
-    }
-  })
+  let upd = {}
+  let cUpd = {}
+  foreach(id in ids) {
+    if (shopSeenGoods.value?[id])
+      continue
+    let schReward = actualSchRewards.value?[id]
+    if (schReward != null && (!schReward.needAdvert || !schReward.isReady))
+      continue
+    upd[id] <- true
+    if (id in unmarkSeenCounters.value)
+      cUpd[id] <- unmarkSeenCounters.value[id] - 1
+  }
+  if (upd.len() == 0)
+    return
+
   let sBlk = get_local_custom_settings_blk()
-  let blk = sBlk.addBlock(SEEN_GOODS)
-  foreach (id, isSeen in shopSeenGoods.value)
-    if (isSeen)
-      blk[id] = true
+  shopSeenGoods(shopSeenGoods.value.__merge(upd))
+  let seenBlk = sBlk.addBlock(SEEN_GOODS)
+  foreach (id, _ in upd)
+    seenBlk[id] = true
+
+  if (cUpd.len() != 0) {
+    unmarkSeenCounters(unmarkSeenCounters.value.__merge(cUpd))
+    let cBlk = sBlk.addBlock(UNMARK_SEEN_COUNTERS)
+    foreach (id, v in cUpd)
+      cBlk[id] = v
+  }
   send("saveProfile", {})
 }
 
 let function loadSeenGoods() {
   let blk = get_local_custom_settings_blk()
-  let htBlk = blk?[SEEN_GOODS]
-  if (!isDataBlock(htBlk)) {
-    shopSeenGoods({})
-    return
-  }
-  let res = {}
-  eachParam(htBlk, @(isSeen, id) res[id] <- isSeen)
-  shopSeenGoods(res)
+  let seenBlk = blk?[SEEN_GOODS]
+  let seen = {}
+  if (isDataBlock(seenBlk))
+    eachParam(seenBlk, @(isSeen, id) seen[id] <- isSeen)
+  shopSeenGoods(seen)
+
+  let countersBlk = blk?[UNMARK_SEEN_COUNTERS]
+  let counters = {}
+  if (isDataBlock(countersBlk))
+    eachParam(countersBlk, @(v, id) counters[id] <- v)
+  unmarkSeenCounters(counters)
 }
 
 if (shopSeenGoods.value.len() == 0)
@@ -165,7 +223,9 @@ let openShopWndByCurrencyId = @(currencyId, bqPurchaseInfo)
 register_command(function() {
   shopSeenGoods({})
   get_local_custom_settings_blk().removeBlock(SEEN_GOODS)
+  get_local_custom_settings_blk().removeBlock(UNMARK_SEEN_COUNTERS)
   send("saveProfile", {})
+  log("Success")
 }, "debug.reset_seen_goods")
 
 return {

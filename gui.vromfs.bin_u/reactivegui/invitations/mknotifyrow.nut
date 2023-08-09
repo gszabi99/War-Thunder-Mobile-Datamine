@@ -7,7 +7,7 @@ let { darkenBgColor, borderWidth, rowHeight, gap,
   contactNameBlock, contactAvatar, contactLevelBlock
 } = require("%rGui/contacts/contactInfoPkg.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { secondsToHoursLoc } = require("%rGui/globals/timeToText.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 
 let maxWidth = hdpx(1300)

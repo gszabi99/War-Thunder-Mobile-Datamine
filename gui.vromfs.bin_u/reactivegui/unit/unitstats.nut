@@ -117,7 +117,7 @@ let statsShip = {
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
   }
   allCannons = {
-    isAvailable = @(_) true
+    isAvailable = @(s) s?.weapons.findvalue(@(w) w?.wtype in allCannons) != null
     getHeader = @(_) loc("stats/allCannons")
     getValue = @(s) (s?.weapons ?? []).reduce(function(res, w) {
         let { wtype = "", shotFreq = 0, damage = 0, gunsCount = 1 } = w

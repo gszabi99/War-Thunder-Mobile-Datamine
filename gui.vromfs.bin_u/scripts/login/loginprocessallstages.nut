@@ -4,6 +4,7 @@ let allStages = [
   "stageAuth.nut"
   "stageUpdateGame.nut"
   "stageMatching.nut"
+  "stageContacts.nut"
   "stageProfile.nut"
   "stageConfigs.nut"
   "stageCheckPurchases.nut"

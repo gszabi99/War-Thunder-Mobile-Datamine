@@ -6,6 +6,9 @@ let { shopGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
+let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
+let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
 let GPT_UNIT = "unit"
 let GPT_CURRENCY = "currency"
@@ -15,7 +18,20 @@ let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
 let openPreviewCount = Watched(0)
 
+let function getAddonsToShowGoods(goods) {
+  let unit = serverConfigs.value?.allUnits[goods?.unitUpgrades[0] ?? goods?.units[0]]
+  if (unit == null)
+    return []
+  return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.value?[a])
+}
+
 let function openGoodsPreview(id) {
+  let addons = getAddonsToShowGoods(shopGoods.value?[id])
+  if (addons.len() != 0) {
+    openDownloadAddonsWnd(addons, "openGoodsPreview", { id })
+    return
+  }
+
   openedGoodsId(id)
   openPreviewCount(openPreviewCount.value + 1)
 }

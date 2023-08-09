@@ -4,7 +4,7 @@ let { mkRingGradient } = require("%rGui/style/gradients.nut")
 
 let gradient = mkRingGradient(50, 10, 20)
 
-let damagePanelBacklight = @(stateFlags, size) @() !(stateFlags.value & S_ACTIVE)
+let damagePanelBacklight = @(stateFlags, size) @() !stateFlags || !(stateFlags.value & S_ACTIVE)
   ? { watch = stateFlags }
   : {
       watch = stateFlags

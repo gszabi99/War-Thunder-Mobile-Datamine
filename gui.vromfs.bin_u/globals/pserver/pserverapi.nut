@@ -9,6 +9,7 @@ let { updateAllConfigs } = require("servConfigs.nut")
 
 
 const PROGRESS_UNIT = "UnitInProgress"
+const PROGRESS_CUR_UNIT = "CurUnitInProgress"
 const PROGRESS_REWARD = "RewardInProgress"
 const PROGRESS_SHOP = "ShopPurchaseInProgress"
 const PROGRESS_DECORATORS = "DecoratorInProgress"
@@ -172,6 +173,7 @@ return {
   lastProfileKeysUpdated
 
   unitInProgress = mkProgress(PROGRESS_UNIT)
+  curUnitInProgress = mkProgress(PROGRESS_CUR_UNIT)
   rewardInProgress = mkProgress(PROGRESS_REWARD)
   shopPurchaseInProgress = mkProgress(PROGRESS_SHOP)
   decoratorInProgress = mkProgress(PROGRESS_DECORATORS)
@@ -288,7 +290,7 @@ return {
   set_current_unit = @(unitName, cb = null) request({
     method = "set_current_unit"
     params = { unitName }
-    progressId = PROGRESS_UNIT
+    progressId = PROGRESS_CUR_UNIT
     progressValue = unitName
   }, cb)
 

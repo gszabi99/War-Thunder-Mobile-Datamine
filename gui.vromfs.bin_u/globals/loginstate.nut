@@ -19,18 +19,18 @@ let LOGIN_STATE = { //bit mask
 
   ONLINE_SETTINGS_AVAILABLE   = 0x0100
   LEGAL_ACCEPTED              = 0x0200
+  CONTACTS_LOGGED_IN          = 0x0400
 
   //not required for login
   HANGAR_LOADED               = 0x1000
   LOGIN_STARTED               = 0x2000
   PURCHASES_RECEIVED          = 0x4000
-  CONTACTS_LOGGED_IN          = 0x8000
 
   //masks
   NOT_LOGGED_IN               = 0x0000
   AUTH_AND_UPDATED            = 0x0003
   READY_TO_FULL_LOAD          = 0x0107
-  LOGGED_IN                   = 0x03F7 // logged in to all hosts and all configs are loaded
+  LOGGED_IN                   = 0x07F7 // logged in to all hosts and all configs are loaded
 }
 
 let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"

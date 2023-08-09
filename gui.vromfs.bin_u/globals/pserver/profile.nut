@@ -1,6 +1,7 @@
 
 let { Computed } = require("frp")
 let { units, levelInfo, campConfigs } = require("campaign.nut")
+let { curUnitInProgress } = require("pServerApi.nut")
 
 let defaultProfileLevelInfo = {
   exp = 0,
@@ -28,7 +29,8 @@ let myUnits = Computed(function() {
     (cfg?[u.name] ?? {}).__merge(u, (u?.isUpgraded ?? false) ? upgradeUnitBonus : {}))
 })
 
-let curUnit = Computed(@() myUnits.value.findvalue(@(u) u?.isCurrent)
+let curUnit = Computed(@() myUnits.value?[curUnitInProgress.value]
+  ?? myUnits.value.findvalue(@(u) u?.isCurrent)
   ?? myUnits.value.findvalue(@(_) true))
 let curUnitMRank = Computed(@() curUnit.value?.mRank ?? 0)
 

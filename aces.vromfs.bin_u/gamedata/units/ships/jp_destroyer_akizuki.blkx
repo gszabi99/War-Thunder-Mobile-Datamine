@@ -956,7 +956,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "primary",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_09",
         "flash": "emtr_gun_flame_09",
@@ -1036,7 +1036,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "primary",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_10",
         "flash": "emtr_gun_flame_10",
@@ -1116,7 +1116,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "primary",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_11",
         "flash": "emtr_gun_flame_11",
@@ -1176,7 +1176,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "primary",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_12",
         "flash": "emtr_gun_flame_12",
@@ -1740,7 +1740,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_09",
               "flash": "emtr_gun_flame_09",
@@ -1820,7 +1820,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_10",
               "flash": "emtr_gun_flame_10",
@@ -1900,7 +1900,7 @@
             },
             {
               "trigger": "gunner3",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_11",
               "flash": "emtr_gun_flame_11",
@@ -1960,7 +1960,7 @@
             },
             {
               "trigger": "gunner3",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_12",
               "flash": "emtr_gun_flame_12",
@@ -2525,7 +2525,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_09",
               "flash": "emtr_gun_flame_09",
@@ -2605,7 +2605,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_10",
               "flash": "emtr_gun_flame_10",
@@ -2685,7 +2685,7 @@
             },
             {
               "trigger": "gunner3",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_11",
               "flash": "emtr_gun_flame_11",
@@ -2745,7 +2745,7 @@
             },
             {
               "trigger": "gunner3",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/100mm_65_type_98_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_12",
               "flash": "emtr_gun_flame_12",

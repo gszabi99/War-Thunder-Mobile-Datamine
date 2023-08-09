@@ -3,13 +3,13 @@ let { subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { shopCategoriesCfg, getGoodsType, isGoodsFitToCampaign } = require("shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
-let { schRewardInProgress, apply_scheduled_reward } = require("%appGlobals/pServer/pServerApi.nut")
+let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isAdsAvailable, canShowAds, showAdsForReward } = require("%rGui/ads/adsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 
-let watchedSchRewardAd = Watched({})
+let lastAppliedSchReward = Watched({})
 let schRewards = Computed(@() (campConfigs.value?.schRewards ?? {})
   .filter(@(g) isGoodsFitToCampaign(g, campConfigs.value))
   .map(@(g, id) g.__merge({ id, gtype = getGoodsType(g), isFreeReward = true })))
@@ -89,6 +89,16 @@ let function resetUpdateTimer() {
 resetUpdateTimer()
 nextUpdate.subscribe(@(_) resetUpdateTimer())
 
+registerHandler("onSchRewardApplied", function(res, context) {
+  if (res?.error != null)
+      return
+  let { rewardId } = context
+  lastAppliedSchReward({ rewardId, time = serverTime.value })
+})
+
+let applyScheduledReward = @(rewardId)
+  apply_scheduled_reward(rewardId, { id = "onSchRewardApplied", rewardId })
+
 let function onSchRewardReceive(schReward) {
   if (schRewardInProgress.value == schReward.id)
     return
@@ -98,7 +108,7 @@ let function onSchRewardReceive(schReward) {
   }
 
   if (!schReward.needAdvert)
-    apply_scheduled_reward(schReward.id)
+    applyScheduledReward(schReward.id)
   else if (canShowAds.value)
     showAdsForReward({ schRewardId = schReward.id, bqId = $"scheduled_{schReward.id}" })
   else
@@ -111,16 +121,14 @@ subscribe("adsRewardApply", function(data) {
   if (reward == null)
     return
   let receivedTime = receivedSchRewards.value?[schRewardId] ?? 0
-  if (receivedTime + reward.interval <= serverTime.value) {
-    apply_scheduled_reward(schRewardId)
-    watchedSchRewardAd({ schRewardId, receivedTime })
-  }
-
+  if (receivedTime + reward.interval <= serverTime.value)
+    applyScheduledReward(schRewardId)
 })
 
 return {
+  schRewards
   actualSchRewardByCategory
   actualSchRewards
   onSchRewardReceive
-  watchedSchRewardAd
+  lastAppliedSchReward
 }

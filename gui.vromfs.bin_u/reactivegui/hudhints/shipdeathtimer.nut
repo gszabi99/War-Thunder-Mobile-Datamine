@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { timeToDeath } = require("%rGui/hud/shipState.nut")
 let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
 let { addEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
-let { secondsToTimeAbbrString } = require("%rGui/globals/timeToText.nut")
+let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 
 let HINT_TYPE = "deathTimer"
 let alert = Color(221, 17, 17)

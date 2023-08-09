@@ -835,7 +835,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "primary",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/130mm_50_b13_1936_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
@@ -906,7 +906,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "primary",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/130mm_50_b13_1936_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
@@ -977,7 +977,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "secondary",
+        "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/76mm_55_39k_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
@@ -1035,7 +1035,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "secondary",
+        "triggerGroup": "extra_gun_1",
         "blk": "gameData/Weapons/navalModels_weapons/76mm_55_39k_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
@@ -1693,7 +1693,7 @@
             },
             {
               "trigger": "gunner1",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/130mm_50_b13_1936_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_03",
               "flash": "emtr_gun_flame_03",
@@ -1764,7 +1764,7 @@
             },
             {
               "trigger": "gunner1",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/130mm_50_b13_1936_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_04",
               "flash": "emtr_gun_flame_04",
@@ -1835,7 +1835,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "secondary",
+              "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/76mm_55_39k_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_05",
               "flash": "emtr_gun_flame_05",
@@ -1893,7 +1893,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "secondary",
+              "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/76mm_55_39k_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_06",
               "flash": "emtr_gun_flame_06",
@@ -2548,7 +2548,7 @@
             },
             {
               "trigger": "gunner1",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/130mm_50_b13_1936_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_03",
               "flash": "emtr_gun_flame_03",
@@ -2619,7 +2619,7 @@
             },
             {
               "trigger": "gunner1",
-              "triggerGroup": "primary",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/130mm_50_b13_1936_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_04",
               "flash": "emtr_gun_flame_04",
@@ -2690,7 +2690,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "secondary",
+              "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/76mm_55_39k_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_05",
               "flash": "emtr_gun_flame_05",
@@ -2748,7 +2748,7 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "secondary",
+              "triggerGroup": "extra_gun_1",
               "blk": "gameData/Weapons/navalModels_weapons/76mm_55_39k_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_06",
               "flash": "emtr_gun_flame_06",

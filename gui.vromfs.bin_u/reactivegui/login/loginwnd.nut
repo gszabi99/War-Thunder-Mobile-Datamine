@@ -13,7 +13,7 @@ let { textInput } = require("%rGui/components/textInput.nut")
 let { optLang } = require("%rGui/options/options/langOptions.nut")
 let mkOption = require("%rGui/options/mkOption.nut")
 let { contentWidth } = require("%rGui/options/optionsStyle.nut")
-let { btnBUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getCurrentLanguage } = require("dagor.localize")
 
@@ -181,7 +181,7 @@ let gaijinAuthorization = @() {
       flow = FLOW_HORIZONTAL
       gap = buttonsHGap
       children = [
-        textButtonCommon(cancelText, @() isLoginByGajin.update(false), { hotkeys = [btnBUp] })
+        textButtonCommon(cancelText, @() isLoginByGajin.update(false), { hotkeys = [btnBEscUp] })
         textButtonBright(utf8ToUpper(loc("msgbox/btn_signIn")), doLoginGaijin, { hotkeys = ["^J:X"] })
       ]
     }
@@ -329,7 +329,7 @@ let langOptionsContent = {
   valign = ALIGN_CENTER
   children = [
     mkOption(optLang)
-    textButtonCommon(cancelText, @() isShowLanguagesList.update(false))
+    textButtonCommon(cancelText, @() isShowLanguagesList.update(false), { hotkeys = [btnBEscUp] })
   ]
 }
 

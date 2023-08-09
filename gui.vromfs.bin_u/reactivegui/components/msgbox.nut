@@ -6,7 +6,7 @@ let { textButton, buttonsHGap, mergeStyles } = require("%rGui/components/textBut
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
-let { btnAUp, btnBUp, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { btnAUp, btnBEscUp, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 
@@ -30,7 +30,7 @@ let function mkBtn(b, wndUid) {
     mergeStyles(style ?? buttonStyles.COMMON, {
       hotkeys = hotkeys
         ?? (isDefault ? [btnAUp]
-          : isCancel ? [btnBUp]
+          : isCancel ? [btnBEscUp]
           : null)
     }))
 }

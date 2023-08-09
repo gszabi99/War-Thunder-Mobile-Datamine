@@ -126,7 +126,9 @@ let function queueToGameModeImpl(mode) {
     return
   }
 
-  let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode, getAllBattleUnits())
+  let allBattlenits = getAllBattleUnits()
+  log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", getAllBattleUnits())
+  let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode, allBattlenits)
   if (!isSquadReadyWithMsgbox(mode, allReqAddons))
     return
 
