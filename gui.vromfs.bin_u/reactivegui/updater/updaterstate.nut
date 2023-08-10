@@ -18,7 +18,7 @@ let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbie
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { myUnits, curUnitMRank } = require("%appGlobals/pServer/profile.nut")
-let { isConnectionLimited } = require("connectionStatus/connectionStatus.nut")
+let { isConnectionLimited, hasConnection } = require("connectionStatus/connectionStatus.nut")
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 
@@ -97,6 +97,7 @@ let needStartDownloadAddons = keepref(Computed(@()
       || isInLoadingScreen.value
       || isInMpBattle.value
       || (isConnectionLimited.value && !allowLimitedDownload.value)
+      || !hasConnection.value
     ? {}
     : wantStartDownloadAddons.value))
 
@@ -287,7 +288,8 @@ return {
   downloadWndParams
   allowLimitedDownload
   isDownloadPausedByConnection = Computed(@() addonsToDownload.value.len() > 0
-    && isConnectionLimited.value && !allowLimitedDownload.value)
+    && ((isConnectionLimited.value && !allowLimitedDownload.value)
+      || !hasConnection.value))
   isDownloadInProgress = Computed(@() downloadInProgress.value.len() > 0)
 
   addonsToDownload = Computed(@() addonsToDownload.value)

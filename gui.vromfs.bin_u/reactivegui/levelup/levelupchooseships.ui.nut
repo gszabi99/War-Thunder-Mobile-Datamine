@@ -20,6 +20,7 @@ let { buyUnitsData, rankToReqPlayerLvl } = require("%appGlobals/unitsState.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
 let contentAppearTime = 0.3
@@ -60,13 +61,18 @@ let function onBuyUnit() {
   let unit = allUnitsCfg.value?[curSelectedUnit.value]
   if (unit == null)
     return
-
+  sendNewbieBqEvent("chooseUnitInLevelUpWnd", { status = curSelectedUnit.value })
   if ((unit?.upgradeCostGold ?? 0) > 0)
     upgradeUnitName(curSelectedUnit.value)
   else {
     let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, curSelectedUnit.value)
     purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)
   }
+}
+
+let function onSkipUnitPurchase() {
+  sendNewbieBqEvent("skipChooseUnitInLevelUpWnd", { status = playerLevelInfo.value.level.tostring() })
+  skipLevelUpUnitPurchase()
 }
 
 curSelectedUnit.subscribe(function(unitId) {
@@ -103,7 +109,7 @@ let unitActionButtons = function() {
     flow = FLOW_HORIZONTAL
     gap = buttonsHGap
     children = [
-      needSkipBtn.value ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")), skipLevelUpUnitPurchase)
+      needSkipBtn.value ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")), onSkipUnitPurchase)
         : null
       isPaid ? textButtonPurchase(utf8ToUpper(loc("msgbox/btn_purchase")), onBuyUnit)
         : isFree ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")), onBuyUnit)

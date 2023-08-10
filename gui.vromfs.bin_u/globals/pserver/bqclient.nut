@@ -2,6 +2,8 @@ let { send } = require("eventbus")
 let { getLocTextForLang } = require("dagor.localize")
 let { send_to_bq_offer } = require("pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
+let servProfile = require("servProfile.nut")
 
 let addEventTime = @(data) serverTime.value > 0 ? data.__merge({ eventTime = serverTime.value })
   : data //when eventTime not set, profile server will add it by self
@@ -21,10 +23,32 @@ let sendCustomBqEvent = @(tableId, data) send("sendBqEvent",
 
 let sendOfferBqEvent = @(event, campaign) send_to_bq_offer(campaign, addEventTime({ event }))
 
+
+let getTotalBattles = @(stats) (stats?.battles ?? 0) + (stats?.offlineBattles ?? 0)
+
+let function needSendNewbieEvent() {
+  let statsByCamp = servProfile.value?.sharedStatsByCampaign ?? {}
+  foreach(stats in statsByCamp)
+    if (getTotalBattles(stats) > 2)
+      return false
+  return true
+}
+
+let function sendNewbieBqEvent(actionId, data = {}) {
+  if (!needSendNewbieEvent())
+    return
+
+  let campBattles = getTotalBattles(sharedStatsByCampaign.value)
+  send("sendBqEvent",
+    { tableId = "gui_events",
+      data = addEventTime(data.__merge({ event = "newbieNavigation", id = actionId, level = campBattles })) })
+}
+
 return {
   sendUiBqEvent
   sendErrorBqEvent
   sendErrorLocIdBqEvent
   sendCustomBqEvent
   sendOfferBqEvent
+  sendNewbieBqEvent
 }

@@ -8,6 +8,7 @@ let { getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPricePurchase, buttonStyles } = require("%rGui/components/textButton.nut")
@@ -43,6 +44,7 @@ registerHandler("onPurchaseUnitInLevelUp",
       openUnitsWnd()
   })
 let function purchaseHandler(unitName, isUpgraded = false) {
+  sendNewbieBqEvent("buyUnitInLevelUpWnd", { status = unitName, params = isUpgraded ? "upgraded" : "common" })
   if (isUpgraded)
     setCustomHangarUnit(allUnitsCfg.value[unitName].__merge({ isUpgraded = true }))
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, unitName)

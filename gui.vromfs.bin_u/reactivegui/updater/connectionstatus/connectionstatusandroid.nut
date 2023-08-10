@@ -29,7 +29,9 @@ let connectionStatus = Computed(@() connectionStatusMap?[connectionStatusAnd.val
 subscribe("android.network.onConnectionStatusChange", @(msg) connectionStatusAnd(msg.status))
 
 register_command(function() {
-  let status = connectionStatusAnd.value == CONN_OK ? CONN_LIMITED : CONN_OK
+  local status = connectionStatusAnd.value + 1
+  if (status > CONN_LIMITED)
+    status = CONN_NO_CONNECTION
   debugStatus(status)
   send("android.network.onConnectionStatusChange", { status })
   console_print($"Connection status changed to {connectionStatusMap[status]}") //warning disable: -forbidden-function

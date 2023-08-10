@@ -49,6 +49,7 @@ let { justUnlockedUnits, justBoughtUnits, deleteJustBoughtUnit, UNLOCK_DELAY } =
 let { scaleAnimation, revealAnimation, raisePlatesAnimation, RAISE_PLATE_TOTAL
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
@@ -528,9 +529,14 @@ let function unitsBlock() {
   }
 }
 
+let function closeByBackBtn() {
+  close()
+  sendNewbieBqEvent("leaveUnitsListWndByBackBtn")
+}
+
 let gamercardPlace = {
   children = [
-    mkGamercard(close)
+    mkGamercard(closeByBackBtn)
     unitInfoPanel({
       pos = unitInfoPanelDefPos
       behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
@@ -577,7 +583,10 @@ let unitsWnd = {
   stopMouse = true
   stopHotkeys = true
   behavior = Behaviors.HangarCameraControl
-  onAttach = @() isAttached(true)
+  function onAttach() {
+    isAttached(true)
+    sendNewbieBqEvent("openUnitsListWnd")
+  }
   onDetach = @() isAttached(false)
   children = [
     lqTexturesWarningHangar

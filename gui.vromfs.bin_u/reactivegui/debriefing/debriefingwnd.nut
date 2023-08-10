@@ -45,6 +45,7 @@ let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
 let closeDebriefing = @() send("Debriefing_CloseInDagui", {})
@@ -144,6 +145,7 @@ let lvlUpButton = textButtonBattle(utf8ToUpper(loc("msgbox/btn_get")),
   { hotkeys = ["^J:X | Enter"] })
 let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
+    sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "online_battle" })
     isNoExtraScenesAfterDebriefing(true)
     if (needRateGame.value)
       return requestShowRateGame()
@@ -153,6 +155,7 @@ let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")
   { hotkeys = ["^J:X | Enter"] })
 let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
+    sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "offline_battle" })
     isNoExtraScenesAfterDebriefing(true)
     if (needRateGame.value)
       return requestShowRateGame()
@@ -806,7 +809,9 @@ let function debriefingWnd() {
       playSound(isWon ? "stats_winner_start" : "stats_looser_start")
       isDebriefingAnimFinished(false)
       resetTimeout(2.0, @() isDebriefingAnimFinished(true))
+      sendNewbieBqEvent("openDebriefing", { status = isWon ? "win" : "loose" })
     }
+    onDetach = @() sendNewbieBqEvent("closeDebriefing", { status = isWon ? "win" : "loose" })
     size = flex()
     padding = saBordersRv
     children = [

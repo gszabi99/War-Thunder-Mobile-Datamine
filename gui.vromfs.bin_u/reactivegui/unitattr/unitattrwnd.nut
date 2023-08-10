@@ -22,9 +22,13 @@ let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { tooltipBg } = require("%rGui/tooltip.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
-isUnitAttrOpened.subscribe(@(_) resetAttrState())
+isUnitAttrOpened.subscribe(function(v) {
+  resetAttrState()
+  sendNewbieBqEvent(v ? "openUnitAttributesWnd" : "closeUnitAttributesWnd")
+})
 
 let pageWidth = hdpx(855)
 let attrDetailsWidth = hdpx(650)

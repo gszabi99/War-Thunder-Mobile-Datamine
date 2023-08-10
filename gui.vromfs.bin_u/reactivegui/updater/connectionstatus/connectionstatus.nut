@@ -7,4 +7,5 @@ connectionStatus.subscribe(@(s) log($"Connection status changed to: {s}"))
 return {
   connectionStatus
   isConnectionLimited = Computed(@() connectionStatus.value == CON_LIMITED)
+  hasConnection = Computed(@() connectionStatus.value != CON_NO_CONNECTION)
 }

@@ -19,6 +19,7 @@ let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.n
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { maxRewardLevel } = require("%rGui/levelUp/levelUpState.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
 let flagHeight = hdpx(180)
@@ -78,6 +79,11 @@ let headerLine = @(delay) {
   ]
 }
 
+let function closeByBackButton() {
+  sendNewbieBqEvent("pressBackInLevelUpWnd")
+  closeLvlUpWnd()
+}
+
 let wpStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpWp" })
 let goldStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpGold" })
 let headerPanel = @() {
@@ -90,7 +96,7 @@ let headerPanel = @() {
       hplace = ALIGN_LEFT
       children = rewardsToReceive.value.len() > 0 ? null
         : upgradeUnitName.value != null ? backButton(@() upgradeUnitName(null))
-        : !hasLvlUpPkgs.value ? backButton(closeLvlUpWnd)
+        : !hasLvlUpPkgs.value ? backButton(closeByBackButton)
         : null
     }
     {
@@ -141,6 +147,8 @@ let function levelUpWnd() {
   return {
     watch = [rewardsToReceive, upgradeUnitName, hasLvlUpPkgs]
     key = isLvlUpOpened
+    onAttach = @() sendNewbieBqEvent("openLevelUpWnd")
+    onDetach = @() sendNewbieBqEvent("closeLevelUpWnd")
     size = flex()
     padding = saBordersRv
     behavior = shouldShowRewards ? null : Behaviors.HangarCameraControl

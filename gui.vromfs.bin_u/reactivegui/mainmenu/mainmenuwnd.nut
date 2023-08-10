@@ -40,6 +40,7 @@ let setReady = require("%rGui/squad/setReady.nut")
 let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = require("%rGui/squad/readyCheck.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
 let unitNameStateFlags = Watched(0)
@@ -134,19 +135,23 @@ let leftBottomButtons = @() {
 let queueCurRandomBattleMode = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
 
 let function startCurUnitOfflineBattle() {
-  if (curUnit.value == null)
+  if (curUnit.value == null) {
+    sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = "no unit!!!" })
     return
+  }
   let { name, campaign } = curUnit.value
   let missions = newbieGameModesConfig?[campaign]
     .reduce(@(res, cfg) res.extend(cfg?.offlineMissions ?? []), [])
     ?? []
   if (missions.len() == 0) {
     log($"OflineStartBattle: test flight, because no mission for campaign {campaign} ({name})")
+    sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = "testflight" })
     startTestFlight(curUnit.value?.name)
   }
   else {
     let mission = chooseRandom(missions)
     log($"OflineStartBattle: start mission {mission} for {name}")
+    sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = mission })
     startOfflineBattle(name, mission)
   }
 }
@@ -155,6 +160,7 @@ let hotkeyX = ["^J:X | Enter"]
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
 let toBattleButton = textButtonBattle(toBattleText,
   function() {
+    sendNewbieBqEvent("pressToBattleButton", { status = "online_battle", params = randomBattleMode.value?.name ?? "" })
     if (curUnit.value != null)
       offerMissingUnitItemsMessage(curUnit.value, queueCurRandomBattleMode)
     else if (!openLvlUpWndIfCan())
@@ -162,12 +168,20 @@ let toBattleButton = textButtonBattle(toBattleText,
   },
   { hotkeys = hotkeyX })
 let startTutorButton = textButtonBattle(toBattleText,
-  @() startTutor(firstBattleTutor.value),
+  function() {
+    sendNewbieBqEvent("pressToBattleButton", { status = "tutorial" })
+    startTutor(firstBattleTutor.value)
+  },
   { ovr = { key = "toBattleButton" }, hotkeys = hotkeyX })
 let startOfflineBattleButton = textButtonBattle(toBattleText,
   startCurUnitOfflineBattle,
   { hotkeys = hotkeyX })
-let startOfflineMissionButton = textButtonBattle(toBattleText, startCurNewbieMission, { hotkeys = hotkeyX })
+let startOfflineMissionButton = textButtonBattle(toBattleText,
+  function() {
+    sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.value) })
+    startCurNewbieMission()
+  },
+  { hotkeys = hotkeyX })
 
 let toSquadBattleButton = toBattleButton
 let readyButton = textButtonBattle(utf8ToUpper(loc("mainmenu/btnReady")),

@@ -27,6 +27,7 @@ let { TANK } = require("%appGlobals/unitConst.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { leaveSquad } = require("%rGui/squad/squadManager.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let textColor = 0xFFF0F0F0
 let timeToShowCancelJoining = 30
@@ -245,6 +246,7 @@ let key = {}
 let queueWindow = @() {
   watch = isInJoiningGame
   key
+  onAttach = @() sendNewbieBqEvent("openQueueWindow")
   size = flex()
   children = [
     bgImage

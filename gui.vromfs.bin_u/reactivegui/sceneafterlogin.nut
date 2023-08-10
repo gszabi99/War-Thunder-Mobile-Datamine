@@ -51,7 +51,7 @@ require("squad/myExtData.nut")
 let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")
 let { scenesOrder, getTopScene } = require("navState.nut")
 let { behindScene } = require("behindScene.nut")
-let { isInBattle, isInFlightMenu, isMpStatisticsActive
+let { isInBattle, isInMpSession, isInFlightMenu, isMpStatisticsActive
 } = require("%appGlobals/clientState/clientState.nut")
 let { isInRespawn } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { isInSpectatorMode, isInArtilleryMap } = require("%rGui/hudState.nut")
@@ -63,6 +63,10 @@ let hudArtilleryMap = require("%rGui/hud/hudArtilleryMap.nut")
 let flightMenu = require("%rGui/flightMenu/flightMenu.nut")
 let mpStatisticsWnd = require("%rGui/mpStatistics/mpStatisticsWnd.nut")
 let hudBase = require("%rGui/hud/hudBase.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+
+isInBattle.subscribe(@(v)
+  sendNewbieBqEvent(v ? "enterBattle" : "leaveBattle", { status = isInMpSession.value ? "online" : "offline" }))
 
 let battleScene = @() {
   watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu, isMpStatisticsActive]

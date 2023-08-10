@@ -15,6 +15,7 @@ let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let curSelectedUnitId = Watched("")
@@ -64,7 +65,6 @@ unitToShow.subscribe(function(unit) {
   if (unit != null)
     setCustomHangarUnit(unit, false)
 })
-
 
 let function platoonTitle(unit) {
   let { name, isUpgraded = false, isPremium = false } = unit
@@ -163,7 +163,10 @@ let sceneRoot = {
   behavior = Behaviors.HangarCameraControl
   animations = wndSwitchAnim
 
-  onAttach = @() isWindowAttached(true)
+  function onAttach() {
+    isWindowAttached(true)
+    sendNewbieBqEvent("openUnitDetails", { status = unitToShow.value?.name ?? "" })
+  }
   onDetach = @() isWindowAttached(false)
 
   children = {

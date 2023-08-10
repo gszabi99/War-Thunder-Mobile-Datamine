@@ -9,6 +9,7 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { enable_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { roundPrice } = require("%appGlobals/pServer/pServerMath.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let SEEN_MODS = "seenMods"
 let seenMods = mkWatched(persist, "SEEN_MODS", {})
@@ -22,6 +23,8 @@ let unit = Computed(@() myUnits.value?[hangarUnitName.value])
 let unitName = Computed(@() unit.value?.name)
 let unitMods = Computed(@() unit.value?.mods)
 let unitModPreset = Computed(@() unit.value?.modPreset)
+
+isUnitModsOpen.subscribe(@(v) sendNewbieBqEvent(v ? "openUnitModificationsWnd" : "closeUnitModificationsWnd"))
 
 let modsPresets = Computed(function() {
   let { unitModPresets = [] } = campConfigs.value
