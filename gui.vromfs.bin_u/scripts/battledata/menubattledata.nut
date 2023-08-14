@@ -102,7 +102,7 @@ let function actualizeIfNeed() {
 
 let function delayedActualize() {
   if (needActualize.value)
-    resetTimeout(min(1.0, lastActTime.value + SILENT_ACTUALIZE_DELAY - get_time_msec()), actualizeIfNeed)
+    resetTimeout(max(1.0, 0.001 * (lastActTime.value - get_time_msec()) + SILENT_ACTUALIZE_DELAY), actualizeIfNeed)
 }
 delayedActualize()
 needActualize.subscribe(function(v) {

@@ -19,6 +19,7 @@ let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
 let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
+let { curUnitName } = require("%appGlobals/pServer/profile.nut")
 
 
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
@@ -131,6 +132,13 @@ let leaveQueue = @() isInQueue.value ? setQueueState(QS_LEAVING) : null
 isQueueDataActual.subscribe(function(v) {
   if (v && curQueueState.value == QS_ACTUALIZE)
     writeJwtData()
+})
+
+curUnitName.subscribe(function(_) {  //leave queue if unit change
+  if (!isInQueue.value)
+    return
+  logQ("Leave queue by curUnit change")
+  leaveQueue()
 })
 
 squadMembers.subscribe(function(v) {

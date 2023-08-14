@@ -422,12 +422,12 @@
     "turning90degTimeSec": 30
   },
   "divingLockCooldown": {
-    "submerging": 6.0,
-    "surfacing": 8.0
+    "submerging": 8.0,
+    "surfacing": 10.0
   },
   "torpedoShootCooldown": {
-    "submerging": 5.0,
-    "surfacing": 9.0,
+    "submerging": 7.0,
+    "surfacing": 12.0,
     "surfacingToPeriscope": 6.0
   },
   "ShipPhys": {
@@ -1067,7 +1067,7 @@
     }
   },
   "torpedoSeries": {
-    "delay": 0.5,
+    "delay": 1.0,
     "count": 5
   },
   "modifications": {

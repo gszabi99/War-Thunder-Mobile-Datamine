@@ -1,5 +1,5 @@
-
-let { Computed } = require("frp")
+let { deferOnce } = require("dagor.workcycle")
+let { Computed, Watched } = require("frp")
 let { units, levelInfo, campConfigs } = require("campaign.nut")
 let { curUnitInProgress } = require("pServerApi.nut")
 
@@ -29,10 +29,15 @@ let myUnits = Computed(function() {
     (cfg?[u.name] ?? {}).__merge(u, (u?.isUpgraded ?? false) ? upgradeUnitBonus : {}))
 })
 
-let curUnit = Computed(@() myUnits.value?[curUnitInProgress.value]
+let curUnitInProgressExt = Watched(curUnitInProgress.value)
+curUnitInProgress.subscribe(@(v) v != null ? curUnitInProgressExt(v)
+  : deferOnce(@() curUnitInProgressExt(curUnitInProgress.value)))
+
+let curUnit = Computed(@() myUnits.value?[curUnitInProgressExt.value]
   ?? myUnits.value.findvalue(@(u) u?.isCurrent)
   ?? myUnits.value.findvalue(@(_) true))
 let curUnitMRank = Computed(@() curUnit.value?.mRank ?? 0)
+let curUnitName = Computed(@() curUnit.value?.name)
 
 let playerLevelInfo = Computed(function() {
   let res = defaultProfileLevelInfo.__merge(levelInfo.value)
@@ -63,5 +68,6 @@ return {
   myUnits
   curUnit
   curUnitMRank
+  curUnitName
   playerLevelInfo
 }

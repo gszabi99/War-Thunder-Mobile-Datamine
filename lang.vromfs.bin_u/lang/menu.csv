@@ -115,6 +115,7 @@
 "quests/common";"Common";"Commun";"Comuni";"Allgemein";"Común";"Обычные";"Zwykłe";"Comum";"Genel";"일반";"普\t通";"コモン";"普\t通";;
 "quests/addProgress";"Add progress";"Ajouter la progression";"Aggiungi progressi";"Fortschritt hinzufügen";"Añadir progreso";"Ускорить прогресс";"Dodaj postęp";"Adicionar progresso";"İlerleyiş ekle";"진행도 추가";"增\t加\t进\t度";"進捗を\t追加";"增\t加\t進\t度";;
 "quests/untilTheEnd";"Until the end";"Until the end";"Until the end";"Until the end";"Until the end";"До окончания";"Until the end";"Until the end";"Until the end";"Until the end";"Until the end";"Until the end";"Until the end";;
+"quests/completed";"Completed";"Completed";"Completed";"Completed";"Completed";"Выполнено";"Completed";"Completed";"Completed";"Completed";"Completed";"Completed";"Completed";;
 "flightmenu";"Flight menu";"Menu de vol";"Menu di volo";"Flugmenü";"Menú de vuelo";"Меню полета";"Menu lotu";"Menu de voo";"Uçuş menüsü";"비행 메뉴";"飞\t行\t菜\t单";"飛行\tメニュー";"飛\t行\t選\t單";"NOT TRANSLATED";
 "flightmenu/title";"Pause";"Pause";"Pausa";"Pause";"Pausa";"Пауза";"Pauza";"Pausa";"Duraklat";"일시 정지";"暂\t停";"ポーズ";"暫\t停";;
 "flightmenu/btnResume";"Resume";"Reprendre";"Riprendi";"Fortsetzen";"Reanudar";"Продолжить";"Wznów";"Resumo";"Devam et";"돌아가기";"继\t续";"ゲームに\t戻る";"繼\t續";;
@@ -214,6 +215,7 @@ Takım arkadaşlarınızda savaşı kaybetmiş olacak.";"격납고로 돌아가�
 "msgbox/btn_later";"Later";"Plus tard";"Dopo";"Später";"Más Tarde";"Позже";"Później";"Mais tarde";"Daha sonra ";"나중에";"稍\t后";"後で";"稍\t後";;
 "msgbox/btn_revoke_invites";"Revoke invites";"Annuler les invitations";"Revoca inviti";"Einladungen widerrufen";"Cancelar invitaciones";"Отозвать приглашения";"Wycofaj zaproszenia";"Revogar convites";"Davetleri iptal et";"취소";"取\t消\t邀\t请";"招待を\t取り\t消す";"取\t消\t邀\t請";;
 "msgbox/btn_relogin";"Relogin";"Reconnexion";"Rilogga";"Re-Login";"Volver a iniciar sesión";"Перелогиниться";"Zaloguj ponownie";"Relogar";"Tekrar giriş yapın";"재접속";"重\t新\t登\t录";"再度\tログイン";"重\t新\t登\t入";;
+"msgbox/btn_logout";"Log Out";"Log Out";"Log Out";"Log Out";"Log Out";"Выйти";"Log Out";"Log Out";"Log Out";"Log Out";"Log Out";"Log Out";"Log Out";;
 "msgbox/btn_bind";"Bind";"Lier";"Collega";"Verknüpfen";"Enlazar";"Привязать";"Złącz";"Vincular";"Birleştir";"할당";"绑\t定";"バインド";"綁\t定";;
 "msgbox/btn_rate";"Rate";"Évaluation";"Dai un voto";"Bewerten";"Puntuar";"Оценить";"Oceń";"Classificar";"Puanla";"평가";"评\t分";"評価";"評\t分";;
 "units/btn_speed_explore";"Speed up the research";"Accélérer la recherche";"Velocizza la ricerca";"Beschleunige die Forschung";"Acelera la investigación";"Ускорить исследование";"Przyspiesz badanie";"Acelerar a investigação";"Araştırmayı hızlandır";"연구 속도 증가";"加\t速\t研\t发";"研究を\tスピードアップしましょう";"加\t速\t研\t發";;
@@ -1237,6 +1239,7 @@ Devam etmek istiyor musunuz ? ";"주의! 확인을 누른 후 자동으로 브�
 続行してよろしいですか？";"注\t意! 點\t擊\t確\t認\t後，\t瀏\t覽\t器\t將\t自\t動\t打\t開\t暱\t稱\t變\t更\t頁\t面，\t操\t作\t完\t成\t後\t需\t要\t手\t動\t重\t啟\t遊\t戲
 要\t繼\t續\t嗎？";;
 "mainmenu/questionChangePlayer";"Are you sure you want to log out and then log in as another player?";"Êtes-vous sûr de vouloir fermer la session et ouvrir une session en tant qu'un autre joueur ?";"Disconnettere e accedere come altro giocatore?";"Möchtest du dich wirklich ausloggen und mit einem anderen Konto wieder einloggen?";"¿Seguro que quieres cerrar la sesión e iniciarla como un jugador diferente?";"Вы действительно желаете выйти и зайти заново под другим аккаунтом?";"Czy na pewno chcesz się wylogować i zalogować jako inny gracz?";"Tens a certeza de que desejas encerrar a sessão e em seguida fazer login como outro jogador?";"Çıkış yapıp başka bir oyuncu olarak girmek istediğinden emin misin?";"로그아웃 후 다른 플레이어로 로그인 하시겠습니까?";"确\t定\t注\t销\t并\t登\t录\t其\t他\t账\t号\t吗？";"一旦\tログアウトして\t他の\tユーザー\t名で\t再度\tログインしますか？";"確\t定\t要\t登\t出\t並\t用\t其\t他\t玩\t家\t身\t分\t登\t入\t嗎?";;
+"mainmenu/questionDeleteAcount";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Вы действительно желаете выйти и перейти к процедуре УДАЛЕНИЯ вашего аккаунта?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";"Are you sure you want to log out and proceed with the process of DELETING your account?";;
 "crew/currentAircraft";"Current Vehicle";"Véhicule actuel";"Unità attuale";"Aktuelles Fahrzeug";"Vehículo Actual";"Текущая техника";"Wybrana Maszyna";"Veículo atual";"Şu an ki araç";"현재 장비";"当\t前\t载\t具";"選択中の\t兵器";"目\t前\t載\t具";"COMMON FOR PLANES AND TANKS";
 "crew/forUnit";"For ""{unitName}""";"Pour ""{unitName}""";"Per ""{unitName}""";"Für ""{unitName}""";"Para ""{unitName}""";"Для ""{unitName}""";"Dla „{unitName}”";"Para ""{unitName}""";"For ""{unitName}""";"""{unitName}"" 에 영향을 미침";"用\t于\t“{unitName}”";"「{unitName}」\t用";"由 ""{unitName}""";;
 "crew/incCost/tooltip";"Cost of New Skill Level";"Coût du nouveau niveau de compétence";"Costo del nuovo livello di competenza";"Kosten für die nächste Fähigkeitsstufe";"Coste del nuevo nivel de habilidad";"Стоимость нового уровня умения";"Koszt nowego poziomu umiejętności";"Custo do novo nível de habilidade";"Yeni Beceri Düzeyi'nin bedeli";"새로운 스킬 레벨로 올리는 데 드는 승무원 경험치";"该\t技\t能\t升\t级 1 点\t所\t需\t耗\t费\t的\t经\t验\t点\t数";"新しい\tスキル レベルの\tコスト";"該\t技\t能\t升\t級 1 點\t所\t需\t耗\t費\t的\t經\t驗\t點\t數";;
@@ -2672,7 +2675,7 @@ Grup halinde maksimum 2 kişi oynayabilirsiniz.";"친구와 편대를 이루어 
 "mainmenu/btnCancel";"Cancel";"Annuler";"Annulla";"Abbrechen";"Cancelar";"Отмена";"Anuluj";"Cancelar";"İptal";"취소";"取\t消";"キャンセル";"取\t消";;
 "Cancel";"Cancel";"Annuler";"Annulla";"Abbrechen";"Cancelar";"Отмена";"Anuluj";"Cancelar";"İptal";"취소";"取\t消";"キャンセル";"取\t消";;
 "profile/duplicateName";"Profile with this name already exists";"Un profil existe déjà sous ce nom";"Esiste già un profilo con questo nome";"Ein Profil mit diesem Namen existiert bereits.";"Ya existe un perfil con ese nombre";"Профиль с таким именем уже существует";"Istnieje już profil o takiej nazwie.";"Perfil com este nome já existe";"Bu isimde bir profil var";"이 이름을 가진 프로필이 이미 존재합니다.";"此\t用\t户\t名\t已\t存\t在";"この\tプロフィール\t名は\t既に\t存在します";"此\t用\t戶\t名\t已\t存\t在";;
-"mainmenu/btnProfileDelete";"Delete Profile";"Supprimer le profil";"Elimina profilo";"Profil löschen";"Borrar Perfil";"Удалить профиль";"Usuń profil";"Excluir perfil";"Profili Sil";"프로필 삭제";"删\t除\t档\t案";"プロフィールを\t削除する";"刪\t除\t個\t人\t資\t料";;
+"mainmenu/btnAccountDelete";"Delete Account";"Delete Account";"Delete Account";"Delete Account";"Delete Account";"Удалить аккаунт";"Delete Account";"Delete Account";"Delete Account";"Delete Account";"Delete Account";"Delete Account";"Delete Account";;
 "profile/manageProfiles";"Manage Profiles";"Gérer les profils";"Gestisci profili";"Profile verwalten";"Administrar Perfiles";"Управление профилями";"Zarządzaj profilami";"Gerenciar perfis";"Profilleri Yönet";"프로필 관리";"管\t理\t玩\t家\t资\t料";"プロフィールの\t管理";"管\t理\t個\t人\t資\t料";;
 "mainmenu/layouts";"Layouts";"Dispositions";"Layout";"Belegungen";"Diseños";"Конфигурации управления";"Układy";"Layouts";"Düzenler";"레이아웃";"按\t键\t设\t置";"レイアウト";"設\t置";;
 "mainmenu/custom";"Custom Layout";"Mise en page personnalisée";"Layout personalizzato";"Individuelle Belegung";"Diseño Personalizado";"Пользовательская раскладка";"Układ Niestandardowy";"Layout personalizado";"Özel düzen";"사용자 지정 레이아웃";"自\t定\t义\t按\t键";"カスタム レイアウト";"自\t定\t設\t置";;
@@ -6730,6 +6733,20 @@ savaşı başlat";"""전투 시작!"" 버튼을 눌러
 加\t入\t战\t斗";"「出撃！」\tボタンを\t押して
 戦闘を\t開始しましょう";"點\t擊\t“開\t始\t戰\t鬥！”\t按\t鈕
 加\t入\t戰\t鬥";;
+"tutorial/pressBackToReturnToMainScreen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Нажмите кнопку ""Назад""
+чтобы вернуться на главный экран";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";"Press the ""Back"" button
+to return to the home screen";;
 "tutorial/missionFinished";"Tutorial is finished";"Tutoriel terminé";"Il tutorial è finito";"Tutorial abgeschlossen";"El tutorial ha terminado";"Обучение завершено";"Ukończyłeś szkolenie";"O tutorial foi finalizado";"Eğitim tamamlandı";"훈련 종료.";"教\t程\t已\t结\t束";"チュートリアルが\t終了しました";"教\t程\t已\t結\t束";;
 "TapAnyToContinue";"Tap to continue";"Appuyez pour continuer";"Tocca per continuare";"Zum Fortfahren tippen";"Toca para continuar";"Нажмите, чтобы продолжить";"Naciśnij, aby kontynuować.";"Toque para continuar";"Devam düğmesine dokun";"터치하여 계속";"点\t击\t继\t续";"タップして\t続ける";"點\t擊\t繼\t續";;
 "HoldToSkip";"Hold to skip";"Maintenez pour passer";"Tieni premuto per saltare";"Zum Überspringen gedrückt halten";"Mantén para saltar";"Удерживайте, чтобы пропустить";"Przytrzymaj, aby pominąć.";"Segure para avançar";"Geçmek için basılı tut";"길게 터치하여 건너뛰기";"长\t按\t跳\t过";"長押しして\tスキップ";"長\t按\t跳\t過";;
@@ -6997,3 +7014,31 @@ ve devam et";"확인
 "hudTuning/changeHudType/desc";"Change vehicle type";"Changer de type de véhicule";"Cambia tipologia veicolo";"Fahrzeugtyp wechseln";"Cambiar tipo de vehículo";"Сменить тип техники";"Zmień typ maszyny";"Mudar tipo de veículo";"Araç tipini değiştir";"장비 유형 변경";"更\t换\t载\t具\t类\t型";"機体\tタイプの\t変更";"更\t換\t載\t具\t類\t型";;
 "justNow";"Just now";"Juste maintenant";"Ora";"Gerade jetzt";"Justo ahora";"Прямо сейчас";"Przed chwilą";"Agora mesmo";"Şu an";"조금 전";"刚\t刚";"たった\t今";"剛\t剛";;
 "timeAgo";"{time} ago";"il y a {time}";"{time} fa";"Vor {time}";"Hace {time}";"{time} назад";"{time} wcześniej";"Há {time}";"{time} önce";"{time} 전";"{time} 前";"{time}前";"{time} 前";;
+"IDFA/header";"We would like to use your activity data";"We would like to use your activity data";"We would like to use your activity data";"We would like to use your activity data";"We would like to use your activity data";"Мы хотели бы использовать данные о вашей активности";"We would like to use your activity data";"We would like to use your activity data";"We would like to use your activity data";"We would like to use your activity data";"We would like to use your activity data";"We would like to use your activity data";"We would like to use your activity data";;
+"IDFA/desc";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"Так мы сможем показывать вам более актуальную рекламу.
+
+Больше или меньше её не станет, но вы будете реже сталкиваться с неподходящими темами";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";"So we can show you more relevant ads.
+
+You won't see more or fewer ads, but you'll be less likely to see irrelevant content.";;
