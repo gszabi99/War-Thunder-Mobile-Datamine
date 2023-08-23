@@ -9,6 +9,7 @@ let { platformGoods, platformOffer, platformGoodsDebugInfo, buyPlatformGoods,
 } = is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsAndroid.nut")
   : is_ios ? require("byPlatform/goodsIos.nut")
   : require("byPlatform/goodsGaijin.nut")
+let { isForbiddenPlatformPurchaseFromRussia, openMsgBoxInAppPurchasesFromRussia } = require("inAppPurchasesFromRussia.nut")
 
 subscribeFMsgBtns({
   buyPlatformGoods = function(context) {
@@ -37,6 +38,11 @@ let function buyPlatformGoodsExt(goodsOrId) {
 
   if (!allow_online_purchases.value) {
     openFMsgBox({ text = loc("msg/purchasesDisabledDuringTest") })
+    return
+  }
+
+  if (isForbiddenPlatformPurchaseFromRussia(goodsOrId, platformGoods.value)) {
+    openMsgBoxInAppPurchasesFromRussia()
     return
   }
 

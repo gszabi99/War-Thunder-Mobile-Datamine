@@ -26,7 +26,7 @@ const MSEC_BETWEEN_REQUESTS = 600000
 const MIN_SESSIONS_TO_FORCE_SHOW = 5
 const EMPTY_PAGE_ID = -1
 
-let shortLang = loc("current_lang")
+let shortLang = loc("current_lang") == "ru" ? "ru" : "en"
 let newsPlatform = platformId == "android" ? "android" : "ios"
 let cfgId = get_cur_circuit_name().indexof("production") != null || get_cur_circuit_name().indexof("stable") != null
   ? "wtm_production" : "wtm_test"
@@ -35,17 +35,18 @@ let getArticleUrl = @(id) $"https://newsfeed.gap.gaijin.net/api/patchnotes/{cfgI
 
 let receivedArticles = hardPersistWatched("news.receivedArticles", {})
 let newsfeed = hardPersistWatched("news.newsfeed", [])
+let requestMadeTime = hardPersistWatched("news.requestMadeTime", 0)
 let isNewsWndOpened = mkWatched(persist, "isOpened", false)
 let isFeedReceived = Computed(@() newsfeed.value.len() > 0)
 let receivedNewsFeedLang = persist("receivedNewsFeedLang", @() { value = null })
 let playerSelectedArticleId = Watched(null)
 let lastSeenId = Watched(-1)
 let articlesPerPage = Watched(8)
-local requestMadeTime = 0
 
 if (receivedNewsFeedLang.value != shortLang) {
   receivedArticles({})
   newsfeed([])
+  requestMadeTime(0)
 }
 
 let unseenArticleId = Computed(function() {
@@ -161,8 +162,8 @@ subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {
 
 let function requestNewsFeed() {
   let currTimeMsec = get_time_msec()
-  if (requestMadeTime > 0
-      && (currTimeMsec - requestMadeTime < MSEC_BETWEEN_REQUESTS))
+  if (requestMadeTime.value > 0
+      && (currTimeMsec - requestMadeTime.value < MSEC_BETWEEN_REQUESTS))
     return
 
   httpRequest({
@@ -171,7 +172,7 @@ let function requestNewsFeed() {
     context = shortLang
     respEventId = NEWSFEED_RECEIVED
   })
-  requestMadeTime = currTimeMsec
+  requestMadeTime(currTimeMsec)
 }
 
 isMainMenuAttached.subscribe(@(v) v ? requestNewsFeed() : null)

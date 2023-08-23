@@ -188,6 +188,8 @@ return {
     textButton(text, onClick, mergeStyles(buttonStyles.BRIGHT, styleOvr)) // White
   textButtonCommon = @(text, onClick, styleOvr = null)
     textButton(text, onClick, mergeStyles(buttonStyles.COMMON, styleOvr)) // Gray
+  textButtonSecondary = @(text, onClick, styleOvr = null)
+    textButton(text, onClick, mergeStyles(buttonStyles.SECONDARY, styleOvr)) // Green
   textButtonPricePurchase = @(text, priceComp, onClick, styleOvr = null)
     mkCustomButton(mkPriceTextsComp(text, priceComp), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden + Price
 }

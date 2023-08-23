@@ -190,7 +190,7 @@ let function toBattle() {
       text = loc("respawn/low_ammo")
       buttons = [
         { id = "cancel", isCancel = true }
-        { id = "yes", styleId = "BATTLE", text = toBattleLoc,
+        { text = toBattleLoc, styleId = "BATTLE",
           cb = @() respawn(selSlot.value, bulletsToSpawn.value) }
       ]
     })

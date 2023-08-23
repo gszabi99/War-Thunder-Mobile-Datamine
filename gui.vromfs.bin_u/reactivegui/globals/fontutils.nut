@@ -49,8 +49,28 @@ let function getFontToFitWidth(textOrTextareaComp, maxWidthPx, orderedFontsList)
   return {}
 }
 
+/**
+ * Selects a font style (font props table) from orderedFontsList, with maximal fontSize
+ * to fit into maxHeightPx height.
+ * @param {integer|float} maxHeightPx - Maximum text height (fontSize) in pixels.
+ * @param {array} orderedFontsList - Non-emply list of font style tables, ordered by fontSize.
+ * from lesser to bigger (like fontsLists.common from fontsStyle.nut).
+ * @return {table} - font style (font props table).
+ */
+let function getFontToFitHeight(maxHeightPx, orderedFontsList) {
+  let listLen = orderedFontsList.len()
+  local res = orderedFontsList[listLen - 1]
+  for (local i = 0; i < listLen; i++)
+    if (orderedFontsList[i].fontSize <= maxHeightPx)
+      res = orderedFontsList[i]
+    else
+      break
+  return res
+}
+
 return {
   getTextScaleToFitWidth
   getFontSizeToFitWidth
   getFontToFitWidth
+  getFontToFitHeight
 }

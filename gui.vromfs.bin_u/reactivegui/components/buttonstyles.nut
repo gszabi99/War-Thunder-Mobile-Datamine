@@ -63,4 +63,15 @@ return freeze({
       color = Color(132, 132, 132)
     }
   }
+  SECONDARY = { // Green
+    ovr = {
+      size = [SIZE_TO_CONTENT, defButtonHeight]
+      minWidth = defButtonMinWidth
+      fillColor = Color(46, 193, 129)
+      borderColor = Color(74, 74, 74)
+    }
+    gradientOvr = {
+      color = Color(66, 199, 141)
+    }
+  }
 })

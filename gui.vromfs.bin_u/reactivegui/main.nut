@@ -36,7 +36,6 @@ let hotkeysPanel = require("controlsMenu/hotkeysPanel.nut")
 let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
 let { getenv = @(...) null} = require_optional("system")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")
-let watermark = require("%rGui/mainMenu/watermark.nut")
 let { tooltipComp } = require("tooltip.nut")
 
 local sceneAfterLogin = null
@@ -101,11 +100,12 @@ return function() {
       ? [sceneBeforeLogin, modalWindowsComponent]
     : isInLoadingScreen.value ? [loadingScreen]
     : [sceneAfterLogin]
-  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp, deviceStateArea, watermark)
+  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp, deviceStateArea)
   if (isDebugTouchesActive.value)
     children.append(debugTouchesUi)
   return {
     watch = [isInLoadingScreen, isLoggedIn, isAllScriptsLoaded, isDebugTouchesActive, needShowCursor]
+    key = "sceneRoot"
     size = flex()
     children
     cursor = needShowCursor.value ? cursor : null

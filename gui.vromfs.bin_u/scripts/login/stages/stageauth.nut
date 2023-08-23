@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { get_player_tags } = require("auth_wt")
-let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, authTags } = require("%appGlobals/loginState.nut")
+let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, curLoginType, authTags
+} = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
@@ -25,7 +26,7 @@ subscribeFMsgBtns({
   loginRecovery = @(_) openUrl(loc("url/recovery"), false, "login_wnd")
 })
 
-let mkInterruptWithRecoveryMsg = @(errCode) function() {
+let mkInterruptWithRecoveryMsg = @(errCode) function(_loginType) {
   interruptStage({ errCode })
   errorMsgBox(errCode,
     [
@@ -36,12 +37,13 @@ let mkInterruptWithRecoveryMsg = @(errCode) function() {
 }
 
 let proceedAuthByResult = {
-  [YU2_OK] = function() {
+  [YU2_OK] = function(loginType) {
+    curLoginType(loginType)
     authTags(get_player_tags())
     finalizeStage()
   },
 
-  [YU2_2STEP_AUTH] = function() { //error, received if user not logged, because he have 2step authorization activated
+  [YU2_2STEP_AUTH] = function(_loginType) { //error, received if user not logged, because he have 2step authorization activated
     authState.mutate(@(a) a.__update({ check2StepAuthCode = true }))
     interruptStage({ error = "Need 2step auth" })
     send("StartListenTwoStepCode", {})
@@ -50,16 +52,16 @@ let proceedAuthByResult = {
   [YU2_WRONG_LOGIN] = mkInterruptWithRecoveryMsg(YU2_WRONG_LOGIN),
   [YU2_WRONG_PARAMETER] = mkInterruptWithRecoveryMsg(YU2_WRONG_PARAMETER),
 
-  [YU2_DOI_INCOMPLETE] = function() {
+  [YU2_DOI_INCOMPLETE] = function(_loginType) {
     interruptStage({ error = "DOI_INCOMPLETE" })
     openFMsgBox({ text = loc("yn1/login/DOI_INCOMPLETE"), uid = "verification_email_to_complete" })
   },
 }
 
-let function proceedAuthorizationResult(result) {
+let function proceedAuthorizationResult(result, loginType) {
   let action = proceedAuthByResult?[result]
   if (action != null) {
-    action()
+    action(loginType)
     return
   }
 
@@ -94,7 +96,7 @@ subscribe("android.account.googleplay.onSignInCallback",
     logStage("Google check_login_pass")
     let result = ::check_login_pass(player_id, server_auth, "google", "google", false, false)
     //check_login_pass is not instant
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GOOGLE))(result)
   }))
 
 subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.facebook.onSignInCallback",
@@ -114,7 +116,7 @@ subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.face
     }
     logStage("Facebook check_login_pass")
     let result = ::check_login_pass(token, "", "facebook", "facebook", false, false)
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_FACEBOOK))(result)
   }))
 
 subscribe("android.account.onGuestFIDReciveCallback",
@@ -134,7 +136,7 @@ subscribe("android.account.onGuestFIDReciveCallback",
     logStage("Firebase check_login_pass")
     let result = ::check_login_pass(guest_FID, "", "firebase", "firebase", false, false)
     //check_login_pass is not instant
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_FIREBASE))(result)
   }))
 
 subscribe("ios.account.apple.onAppleLoginToken",
@@ -156,7 +158,7 @@ subscribe("ios.account.apple.onAppleLoginToken",
     }
     logStage("Apple check_login_pass")
     let result = ::check_login_pass("", token, "apple", "apple", false, false)
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_APPLE))(result)
 }))
 
 let loginByType = {
@@ -178,7 +180,7 @@ let loginByType = {
 
   [LT_GUEST] = function(_as) {
     let result = ::check_login_pass(getUUID(), "", "guest", "guest", false, false)
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GUEST))(result)
   },
 
   [LT_APPLE] = function(_as) {
@@ -193,7 +195,7 @@ let loginByType = {
       true,
       false)
     //check_login_pass is not instant
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result))(result)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GAIJIN))(result)
   },
 }
 

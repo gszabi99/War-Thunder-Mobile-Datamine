@@ -8,6 +8,7 @@ let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let curtomUrls = {
   [SERVER_ERROR_MAINTENANCE] = "https://www.wtmobile.com/news",
+  ["CANNOT_LOGIN_WITH_LINKED_ACCOUNT"] = "",
 }
 
 let function matchingErrData(error_text) {

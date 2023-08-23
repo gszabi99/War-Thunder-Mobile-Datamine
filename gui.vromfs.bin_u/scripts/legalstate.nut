@@ -11,21 +11,26 @@ let { legalToApprove } = require("%appGlobals/legal.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { sendErrorBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 const VERSIONS_ID = "legalVersions"
 const VERSIONS_URL = "https://legal.gaijin.net/api/v1/getversions?filter=default,gamerules,gamerules-wtm,wtm-compliance-policy"
 const VERSIONS_RESP_ID = "legalVersion.result"
 
+let versionsFallback = {
+  privacypolicy = 1681821489
+  termsofservice = 1681820778
+  gamerules = 1681821726
+}
+
 let acceptedVersions = Watched(null)
 let isLoginAllowed = Computed(@() legalToApprove.findvalue(@(_, id) id in acceptedVersions.value) != null)
-let requiredVersions = hardPersistWatched("requiredVersions")
+let requiredVersionsRaw = hardPersistWatched("requiredVersionsRaw")
 let lastVersionsError = hardPersistWatched("lastVersionsError")
+let isFailedToGetLegalVersions = Computed(@() requiredVersionsRaw.value == null && lastVersionsError.value != null)
+let requiredVersions = Computed(@() isFailedToGetLegalVersions.value ? versionsFallback : requiredVersionsRaw.value)
 let needApprove = Computed(@() !isOnlineSettingsAvailable.value ? {}
-  : legalToApprove.map(@(_, id) id in requiredVersions.value && requiredVersions.value?[id] != acceptedVersions.value?[id]))
-let isFailedToGetLegalVersions = Computed(@() requiredVersions.value == null && lastVersionsError.value != null)
-let needInterruptLoginByFailedLegal = Computed(@() isFailedToGetLegalVersions.value
-  && acceptedVersions.value != null && !isLoginAllowed.value)
+  : legalToApprove.map(@(_, id) id in requiredVersions.value
+      && (id not in acceptedVersions.value || requiredVersions.value[id] > acceptedVersions.value[id])))
 
 let function loadAcceptedVersions() {
   let blk = get_local_custom_settings_blk()
@@ -70,7 +75,7 @@ subscribe(VERSIONS_RESP_ID, function(response) {
   let { status = -1, http_code = -1, body = null } = response
   let hasError = status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code
   if (hasError) {
-    if (requiredVersions.value == null)
+    if (requiredVersionsRaw.value == null)
       lastVersionsError({ status, http_code })
     return
   }
@@ -80,14 +85,14 @@ subscribe(VERSIONS_RESP_ID, function(response) {
   }
   catch(e) {}
   if (result?.status == "OK") {
-    requiredVersions(result?.result)
+    requiredVersionsRaw(result?.result)
     lastVersionsError(null)
   } else
     lastVersionsError({ status = result?.status, isParsingError = true })
 })
 
 let function requestVersionsOnce() {
-  if (requiredVersions.value != null)
+  if (requiredVersionsRaw.value != null)
     return
   request({
     method = "GET"
@@ -98,17 +103,6 @@ let function requestVersionsOnce() {
 if (isAuthorized.value)
   requestVersionsOnce()
 isAuthorized.subscribe(@(v) v ? requestVersionsOnce() : null)
-
-let function sendLegalErroToBq() {
-  if (lastVersionsError.value == null)
-    return
-  let { status = null, http_code = -1, isParsingError = false } = lastVersionsError.value
-  if (isParsingError)
-    sendErrorBqEvent("Failed to parse legal versions", { status = status?.tostring() ?? "null" })
-  else
-    sendErrorBqEvent("Failed to get legal versions", { status = status?.tostring() ?? "null", params = http_code.tostring() })
-}
-
 
 register_command(
   function() {
@@ -126,6 +120,4 @@ register_command(
 
 return {
   isLoginAllowed
-  sendLegalErroToBq
-  needInterruptLoginByFailedLegal
 }

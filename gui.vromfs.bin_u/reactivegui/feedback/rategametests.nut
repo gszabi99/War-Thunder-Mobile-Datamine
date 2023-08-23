@@ -3,16 +3,16 @@ let { register_command } = require("console")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
 
-let arrBattlesMin = [ 2, 0 ]
-let arrKillsMin = [ 2, 0 ]
+let arrBattlesMin = [ 0, 2 ]
+let arrKillsMin = [ 0, 2 ]
 let arrPlaceMax = [ 99, 3 ]
 
 let cfgBattlesMin = Computed(@() abTests.value?.reviewCueBattlesMin.tointeger() ?? arrBattlesMin[0])
 let cfgKillsMin = Computed(@() abTests.value?.reviewCueKillsMin.tointeger() ?? arrKillsMin[0])
 let cfgPlaceMax = Computed(@() abTests.value?.reviewCuePlaceMax.tointeger() ?? arrPlaceMax[0])
-let cfgReqVictory = Computed(@() (abTests.value?.reviewCueReqVictory ?? "true") == "true")
-let cfgReqMultiplayer = Computed(@() (abTests.value?.reviewCueReqMultiplayer ?? "true") == "true")
-let cfgReqNoExtraScenes = Computed(@() (abTests.value?.reviewCueReqNoExtraScenes ?? "true") == "true")
+let cfgReqVictory = Computed(@() (abTests.value?.reviewCueReqVictory ?? "false") == "true")
+let cfgReqMultiplayer = Computed(@() (abTests.value?.reviewCueReqMultiplayer ?? "false") == "true")
+let cfgReqNoExtraScenes = Computed(@() (abTests.value?.reviewCueReqNoExtraScenes ?? "false") == "true")
 
 let dbgBattlesMinShift = hardPersistWatched("dbgBattlesMinShift", 0)
 let dbgKillsMinShift = hardPersistWatched("dbgKillsMinShift", 0)

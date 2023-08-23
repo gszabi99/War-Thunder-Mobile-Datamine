@@ -37,6 +37,7 @@ let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
 
 let loginState = sharedWatched("loginState", @() LOGIN_STATE.NOT_LOGGED_IN)
 let isLoginRequired = sharedWatched("isLoginRequired", @() !shouldDisableMenu && !isOfflineMenu)
+let curLoginType = sharedWatched("curLoginType", @() "")
 let authTags = sharedWatched("authTags", @() [])
 let isLoginByGajin = sharedWatched("isLoginByGajin", @() false)
 let legalListForApprove = sharedWatched("legalsToApprove", @() {})
@@ -81,6 +82,7 @@ return loginTypes.__merge({
   LOGIN_UPDATER_EVENT_ID
   loginState
   isLoginRequired
+  curLoginType
   authTags
   isLoginByGajin
   availableLoginTypes

@@ -36,8 +36,8 @@ let function showChangeCampaignMsg() {
     text = loc("squad/cant_ready/need_change_campaign",
       { campaign = colorize("@mark", loc($"campaign/{squadLeaderCampaign.value}")) })
     buttons = [
-      { id = "no", isCancel = true }
-      { id = "yes", isDefault = true, styleId = "PRIMARY", eventId = "squadChangeCampaignByLeader" }
+      { id = "cancel", isCancel = true }
+      { id = "continue", isDefault = true, styleId = "PRIMARY", eventId = "squadChangeCampaignByLeader" }
     ]
   })
 }

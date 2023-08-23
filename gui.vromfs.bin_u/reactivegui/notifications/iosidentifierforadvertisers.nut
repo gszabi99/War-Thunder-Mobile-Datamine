@@ -11,17 +11,22 @@ let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
+let { setTimeout } = require("dagor.workcycle")
 
 
 let IDFA_SCENE_ID = "iosIdentifierForAdvertisers"
 
 let currentSettingForIDFA = hardPersistWatched("currentSettingForIDFA", getTrackingPermission())
-let needShow = Computed(@() !needFirstBattleTutor.value
+let isForceClosed = mkWatched(persist, "isForceClosed", false)
+let needShow = Computed(@() !isForceClosed.value
+  && !needFirstBattleTutor.value
   && newbieOfflineMissions.value == null
   && currentSettingForIDFA.value == ATT_NOT_DETERMINED)
 let canShow = Computed(@() isMainMenuAttached.value && isOutOfBattleAndResults.value)
 let needOpen = keepref(Computed(@() canShow.value && needShow.value))
 let isOpened = mkWatched(persist, "isOpened", needOpen.value)
+let isPending = Watched(false)
 
 let bagImgWidth = hdpxi(850)
 
@@ -34,6 +39,7 @@ subscribe("ios.platform.onPermissionTrackCallback", function(p) {
       break
     }
   currentSettingForIDFA(result)
+  isPending(false)
   log("ios.platform.onPermissionTrackCallback: ", result)
 })
 
@@ -79,7 +85,14 @@ let desc = mkTextarea(
   pw(100)
   { margin = [hdpx(110), 0, 0, 0] }.__update(fontMedium)
 )
-let btnNext = textButtonPrimary(utf8ToUpper(loc("mainmenu/btnNext")), requestTrackingPermission)
+let btnNext = mkSpinnerHideBlock(isPending, textButtonPrimary(
+  utf8ToUpper(loc("mainmenu/btnNext"))
+  function() {
+    isPending(true)
+    setTimeout(10, @() isForceClosed(true))
+    requestTrackingPermission()
+  }
+))
 
 let IDFAwnd = {
   rendObj = ROBJ_IMAGE
@@ -88,6 +101,7 @@ let IDFAwnd = {
   image = mkColoredGradientY(0xFF253e52, 0xFF142a3b)
   flow = FLOW_HORIZONTAL
   gap = hdpx(70)
+  onDetach = @() isPending(false)
   children = [
     bagImg
     defenceAndGeoIcons

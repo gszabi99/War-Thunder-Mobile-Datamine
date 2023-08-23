@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setTimeout } = require("dagor.workcycle")
+let { resetTimeout } = require("dagor.workcycle")
 let { levelup_without_unit } = require("%appGlobals/pServer/pServerApi.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs, receivedLevelsRewards, curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -66,7 +66,7 @@ let needOpenLevelUpWnd = keepref(Computed(@() hasDataForLevelWnd.value
 needOpenLevelUpWnd.subscribe(function(val) {
   if (!val)
     return
-  setTimeout(0.1, function() {
+  resetTimeout(0.1, function() {
     if (needOpenLevelUpWnd.value)
       isLvlUpOpened(true)
   })

@@ -3,12 +3,11 @@ from "hudTuningConsts.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let cfgByUnitType = require("cfgByUnitType.nut")
-let { isTuningOpened, tuningUnitType, tuningTransform, transformInProgress, selectedId, allTuningUnitTypes
+let { isTuningOpened, tuningUnitType, tuningTransform, transformInProgress, selectedId,
+  allTuningUnitTypes, closeTuning
 } = require("hudTuningState.nut")
 let manipulator = require("hudTuningManipulator.nut")
 let hudTuningOptions = require("hudTuningOptions.nut")
-
-let close = @() isTuningOpened(false)
 
 let lineWidth = evenPx(4)
 let lineColor = 0xC01860C0
@@ -104,4 +103,4 @@ let tuningScene = {
   animations = wndSwitchAnim
 }
 
-registerScene("hudTuningWnd", tuningScene, close, isTuningOpened)
+registerScene("hudTuningWnd", tuningScene, closeTuning, isTuningOpened)

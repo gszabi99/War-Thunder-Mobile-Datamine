@@ -1,6 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let getBulletImage = require("%appGlobals/config/bulletsPresentation.nut")
-let { simpleVerGrad } = require("%rGui/style/gradients.nut")
+let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+
+let bgSlotColor = 0xFF51C1D1
+let slotBGImage = mkBitmapPicture(gradTexSize, gradTexSize,
+  mkGradientCtorRadial(bgSlotColor, 0 , 20, 55, 35, 0))
 
 let function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovr = {}) {
   if (bulletInfo == null)
@@ -14,9 +19,7 @@ let function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovr = {}) {
   return {
     flow = FLOW_HORIZONTAL
     rendObj = ROBJ_IMAGE
-    image = simpleVerGrad
-    color = 0xFF264A4E
-    flipY = true
+    image = slotBGImage
     children = [
       {
         size = [hdpxi(214), hdpxi(105)]

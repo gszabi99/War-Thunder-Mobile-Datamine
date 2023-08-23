@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
 let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
-let { authTags } = require("%appGlobals/loginState.nut")
+let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK } = require("%appGlobals/loginState.nut")
 let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -9,21 +9,21 @@ let { contentWidth } = require("optionsStyle.nut")
 let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { mkLevelBg, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { myAvatar, myUserId } = require("%appGlobals/profileStates.nut")
+let { myUserId } = require("%appGlobals/profileStates.nut")
 let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { is_ios } = require("%sqstd/platform.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
-let { myNameWithFrame, openDecoratorsScene } = require("%rGui/decorators/decoratorState.nut")
+let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
-let DELETE_PROFILE_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
 let LINK_TO_GAIJIN_ACCOUNT_URL = "auto_local auto_login https://wtmobile.com/connect"
 let ACTIVATE_PROMO_CODE_URL = "auto_local auto_login https://store.gaijin.net/activate.php"
 
 let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.value
-  && (authTags.value.contains("gplogin") || authTags.value.contains("applelogin") || authTags.value.contains("fblogin")))
+  && [ LT_GOOGLE, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.value))
 
 let avatarSize = hdpx(200)
 let levelBlockSize = hdpx(60)
@@ -58,10 +58,10 @@ let avatar = {
   borderColor = borderColor
   children = [
     @() {
-      watch = myAvatar
-      size = flex()
+      watch = myAvatarImage
+      size = [avatarSize, avatarSize]
       rendObj = ROBJ_IMAGE
-      image = Picture($"!ui/images/avatars/{myAvatar.value}.avif")
+      image =  Picture($"{myAvatarImage.value}:{avatarSize}:{avatarSize}:P")
     }
     levelMark
   ]
@@ -69,6 +69,7 @@ let avatar = {
 
 let pnStateFlags = Watched(0)
 let myUserNameBtn = @() {
+  watch = hasUnseenDecorators
   behavior = Behaviors.Button
   onClick = openDecoratorsScene
   onElemState = @(s) pnStateFlags(s)
@@ -90,6 +91,8 @@ let myUserNameBtn = @() {
       transform = { scale = pnStateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
       transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
     }
+    !hasUnseenDecorators.value ? null
+      : priorityUnseenMark
   ]
 }
 
@@ -138,8 +141,16 @@ let buttonsWidthStyle = {
 let logoutMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionChangePlayer")
   buttons = [
-    { id = "no", isCancel = true }
-    { id = "yes", styleId = "PRIMARY", isDefault = true, cb = @() send("logOutManually", {}) }
+    { id = "cancel", isCancel = true }
+    { id = "logout", styleId = "PRIMARY", isDefault = true, cb = @() send("logOutManually", {}) }
+  ]
+})
+
+let logoutToDeleteAccountMsgBox = @() openMsgBox({
+  text = loc("mainmenu/questionDeleteAcount")
+  buttons = [
+    { id = "cancel", isCancel = true }
+    { id = "delete", text = loc("mainmenu/btnAccountDelete"), styleId = "PRIMARY", isDefault = true, cb = @() send("deleteAccount", {}) }
   ]
 })
 
@@ -158,9 +169,7 @@ let buttons = @() {
     !isInMenu.value ? null
       : mkButtonRow([
           textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
-          textButtonCommon(loc("options/delete_profile"),
-            @() send("openUrl", { baseUrl = DELETE_PROFILE_URL }),
-            buttonsWidthStyle)
+          textButtonCommon(loc("mainmenu/btnAccountDelete"), logoutToDeleteAccountMsgBox, buttonsWidthStyle)
         ])
     mkButtonRow([
       !canLinkToGaijinAccount.value ? null

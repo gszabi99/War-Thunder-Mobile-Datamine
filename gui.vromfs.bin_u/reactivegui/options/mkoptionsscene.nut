@@ -95,6 +95,11 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, add
     flow = FLOW_VERTICAL
     gap = hdpx(50)
 
+    function onAttach() {
+      if (curTabIdx.value not in tabs || !(tabs[curTabIdx.value]?.isVisible.value ?? true))
+        resetCurTabIdx()
+    }
+
     children = [
       {
         size = [flex(), SIZE_TO_CONTENT]

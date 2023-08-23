@@ -10,8 +10,10 @@ let { textButtonBattle, mkCustomButton, mergeStyles } = require("%rGui/component
 let { defButtonHeight, PURCHASE } = require("%rGui/components/buttonStyles.nut")
 let { decorativeLineBgMW } = require("%rGui/style/stdColors.nut")
 let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkCurrencyComp, CS_INCREASED_ICON, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
+let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { REWARD_STYLE_MEDIUM, mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
@@ -27,12 +29,10 @@ let { ceil } = require("%sqstd/math.nut")
 let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 
 let itemsGap = hdpx(50)
-let itemImageSize = hdpxi(80)
 
 let itemBuyingWidth = hdpx(1000)
 let insideIndent = hdpxi(50)
 
-let itemSize = hdpx(160)
 let battleItemIconSize = hdpxi(105)
 let arrowSize =  [hdpxi(80), hdpxi(60)]
 
@@ -184,6 +184,9 @@ let countText = @(count){
   text = count
 }.__update(fontTiny)
 
+let mkItemPlate = @(itemId, count)
+  mkRewardPlate(getRewardsViewInfo({ items = { [itemId] = count } })[0], REWARD_STYLE_MEDIUM)
+
 let function mkMsgContent(item, needSwitchAnim, toBattle, unit) {
   return {
     key = item.itemId
@@ -208,27 +211,7 @@ let function mkMsgContent(item, needSwitchAnim, toBattle, unit) {
         valign = ALIGN_CENTER
         padding = [ insideIndent*2, 0 ]
         children = [
-          @() {
-            size = [itemSize, itemSize]
-            rendObj = ROBJ_IMAGE
-            image = Picture($"ui/images/offer_item_slot_bg.avif:{itemSize}:{itemSize}")
-            children = [
-              mkCurrencyImage(item.itemId , itemImageSize, {
-                margin = hdpx(10)
-              })
-              {
-                size = [itemSize, hdpx(35)]
-                vplace = ALIGN_BOTTOM
-                valign = ALIGN_CENTER
-                halign = ALIGN_RIGHT
-                rendObj = ROBJ_SOLID
-                color = 0x80000000
-                flow = FLOW_HORIZONTAL
-                gap = hdpx(5)
-                children = countText(item.hasItems)
-              }
-            ]
-          }
+          mkItemPlate(item.itemId, item.hasItems)
           {
             margin = [0, hdpx(25),0,hdpx(25)]
             size = arrowSize

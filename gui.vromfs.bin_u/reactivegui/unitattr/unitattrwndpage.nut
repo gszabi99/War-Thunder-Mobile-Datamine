@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
+let { get_time_msec } = require("dagor.time")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { btnTextDec, btnTextInc, btnBg } = require("%rGui/components/slider.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
@@ -14,7 +15,7 @@ let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
-
+let buyUnitLevelWnd = require("buyUnitLevelWnd.nut")
 
 let progressBtnSize = evenPx(72)
 let progressBtnGap = hdpx(30)
@@ -38,6 +39,8 @@ let incBtnAnimDuration = 0.3
 let incBtnAnimRepeat = 2
 
 let startIncBtnGlare = @() anim_start("incBtnGlareAnim")
+
+let boost_cooldown = 500
 
 let progressBtnBase = {
   size = [ progressBtnSize, progressBtnSize ]
@@ -202,14 +205,29 @@ let function mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive) {
   }
 }
 
+local  lastClickTime = 0
+
 let function applyAttrRowChange(catId, attrId, tryValue, selLevel, minLevel, maxLevel) {
   local val = clamp(tryValue, minLevel.value, maxLevel.value)
   if (val == selLevel.value && tryValue <= maxLevel.value)
     val = max(val - 1, minLevel.value)
   if (val == selLevel.value)
-    return
+    return false
   playSound("click")
   setAttribute(catId, attrId, val)
+  lastClickTime = get_time_msec()
+  return true
+}
+
+let function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {
+  if (!applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
+    let currTime = get_time_msec()
+    if (lastClickTime + boost_cooldown < currTime) { //cooldown check
+      let nextIncCost = attr.levelCost?[selLevel.value] ?? 0 //for max level reach condition
+      if (nextIncCost > 0)
+        buyUnitLevelWnd(attrUnitName.value)
+    }
+  }
 }
 
 let function mkRowProgressBar(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
@@ -241,7 +259,7 @@ let function mkAttrRow(attr) {
   let canDec = Computed(@() selLevel.value > minLevel.value)
   let canInc = Computed(@() selLevel.value < maxLevel.value)
   let attrLocName = getAttrLabelText(attrUnitType.value, attr.id)
-  let mkBtnOnClick = @(diff) @() applyAttrRowChange(catId, attr.id, selLevel.value + diff, selLevel, minLevel, maxLevel)
+  let mkBtnOnClick = @(diff) @() applyAttrRowChangeOrBoost(catId, attr, selLevel.value + diff, selLevel, minLevel, maxLevel)
   let mkCellOnClick = @(val) @() applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
   let curValueData = Computed(@() getAttrValData(attrUnitType.value, attr, minLevel.value, shopCfg, serverConfigs.value, unitMods.value))
   let selValueData = Computed(@() selLevel.value > minLevel.value

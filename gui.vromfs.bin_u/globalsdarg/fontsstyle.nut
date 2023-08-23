@@ -1,8 +1,10 @@
 let { Fonts } = require("daRg")
 let { hdpxi } = require("screenUnits.nut")
 let { getLocalLanguage = @() "" } = require_optional("language")
+let { getCurrentLanguage = @() "" } = require_optional("dagor.localize")
 
-let isJp = getLocalLanguage() == "Japanese"
+let language = getLocalLanguage() == "" ? getCurrentLanguage() : getLocalLanguage()
+let isJp = language == "Japanese"
 let muller_regular = isJp ? Fonts.muller_regular_jp : Fonts.muller_regular
 let muller_medium = isJp ? Fonts.muller_medium_jp : Fonts.muller_medium
 let wtfont = Fonts.wtfont
@@ -100,12 +102,6 @@ let fontsSets = {
     fontBig
     fontLarge
     fontVeryLarge
-    fontWtSmall
-    fontWtMedium
-    fontWtBig
-    fontWtLarge
-    fontWtVeryLarge
-    fontWtExtraLarge
   }
   commonShaded = {
     fontVeryTinyShaded
@@ -116,6 +112,14 @@ let fontsSets = {
     fontMediumShaded
     fontBigShaded
     fontVeryLargeShaded
+  }
+  fontWt = {
+    fontWtSmall
+    fontWtMedium
+    fontWtBig
+    fontWtLarge
+    fontWtVeryLarge
+    fontWtExtraLarge
   }
 }
 

@@ -1,13 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
-let { myAvatar } = require("%appGlobals/profileStates.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { SC_GOLD, SC_WP, SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/shop/shopState.nut")
-let { openContacts } = require("%rGui/contacts/contactsState.nut")
-let { requestsToMeUids } = require("%rGui/contacts/contactLists.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
@@ -23,7 +20,7 @@ let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style
 let premIconWithTimeOnChange = require("premIconWithTimeOnChange.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
-let { myNameWithFrame } = require("%rGui/decorators/decoratorState.nut")
+let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 let avatarSize       = hdpx(96)
@@ -47,10 +44,12 @@ let textParams = {
 }.__update(fontSmall)
 
 let avatar = @() {
-  watch = myAvatar
+  watch = [myAvatarImage, hasUnseenDecorators]
   rendObj = ROBJ_IMAGE
   size = [avatarSize, avatarSize]
-  image = Picture($"!ui/images/avatars/{myAvatar.value}.avif")
+  image = Picture($"{myAvatarImage.value}:{avatarSize}:{avatarSize}:P")
+  halign = ALIGN_RIGHT
+  children = hasUnseenDecorators.value ? priorityUnseenMark : null
 }
 
 let name =  @() textParams.__merge({
@@ -214,14 +213,6 @@ let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", @() openShopWnd(SC_GOLD)
     children = needShopUnseenMark.value ? priorityUnseenMark : null
   })
 
-let contactsBtn = mkImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts,
-  @() {
-    watch = requestsToMeUids
-    pos = [hdpx(5), -hdpx(5)]
-    hplace = ALIGN_RIGHT
-    children = requestsToMeUids.value.len() > 0 ? priorityUnseenMark : null
-  })
-
 let rightBlock = @(){
   watch = isShopOpened
   size = [ SIZE_TO_CONTENT, avatarSize ]
@@ -229,14 +220,13 @@ let rightBlock = @(){
   hplace = ALIGN_RIGHT
   valign = ALIGN_CENTER
   gap = gamercardGap
-  children = [premIconWithTimeOnChange]
-    .append(
-      mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
-      mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
-      contactsBtn
-      !isShopOpened.value ? shopBtn : null
-      dropMenuBtn
-    )
+  children = [
+    !isShopOpened.value ? shopBtn : null
+    premIconWithTimeOnChange
+    mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
+    mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
+    dropMenuBtn
+  ]
 }
 
 let mkGamercard = @(backCb = null) {

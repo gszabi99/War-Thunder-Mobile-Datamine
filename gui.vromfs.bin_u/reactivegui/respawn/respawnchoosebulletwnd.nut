@@ -66,7 +66,7 @@ let function mkBulletButton(name, bSet, fromUnitTags, columns) {
         halign = columns < 2 ? ALIGN_CENTER : null
         vplace = ALIGN_BOTTOM
         hplace = ALIGN_LEFT
-        color = isCurrent.value ? 0xFF75D0E7 : 0xFF264A4E
+        color = isCurrent.value ? 0xFF51C1D1 : 0x80296169
       })
     @() {
       watch = color
@@ -175,10 +175,12 @@ let function curBulletInfo() {
     return { watch = bulletsInfo }
 
   let { bulletSets, fromUnitTags, unitName } = bulletsInfo.value
+  let { caliber = 0.0 } = bulletSets.findvalue(@(_) true)
   let bSet = bulletSets?[curSlotName.value]
   let tags = fromUnitTags?[curSlotName.value]
   let { reqLevel = 0 } = tags
   let columns = bulletsColumnsCount(bulletSets.len())
+  let bulletName = getAmmoNameText(bSet)
   let children = [
     {
       size = [ flex(), SIZE_TO_CONTENT ]
@@ -186,7 +188,7 @@ let function curBulletInfo() {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       color = 0xFFFFFFFF
-      text = getAmmoNameText(bSet)
+      text = loc($"bulletNameWithCaliber", {caliber, bulletName})
     }.__update(fontTiny)
     mkStatTextarea(getAmmoTypeText(bSet))
   ]
@@ -218,7 +220,7 @@ let function applyBullet() {
 
 let applyText = utf8ToUpper(loc("msgbox/btn_choose"))
 let function applyButton() {
-  let { fromUnitTags } = bulletsInfo.value
+  let { fromUnitTags = null } = bulletsInfo.value
   let { reqLevel = 0 } = fromUnitTags?[curSlotName.value]
   let isEnoughLevel = reqLevel <= (selSlot.value?.level ?? 0)
   let children = savedSlotName.value == curSlotName.value ? null
@@ -245,7 +247,7 @@ let window = {
   color = 0xA0000000
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  padding = [hdpx(15), 0]
+  padding = [0, 0, hdpx(15), 0]
   maxHeight = saSize[1]
   children = [
     bulletsList

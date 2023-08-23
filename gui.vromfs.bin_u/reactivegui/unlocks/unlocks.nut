@@ -108,6 +108,8 @@ return {
   unlockProgress
   emptyProgress = freeze(emptyProgress)
   getRelativeStageData
+  unlockTables
+  allUnlocksRaw
 
   unlockRewardsInProgress
   receiveUnlockRewards

@@ -4,17 +4,18 @@ let { get_time_msec } = require("dagor.time")
 let { stop_prem_cutscene } = require("hangar")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { previewGoods, isPreviewGoodsPurchasing } = require("%rGui/shop/goodsPreviewState.nut")
 let purchaseGoods = require("%rGui/shop/purchaseGoods.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
-let { mkCurrencyComp, mkPriceExtText, CS_BIG, mkCurrencyImage} = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyComp, mkPriceExtText, CS_BIG } = require("%rGui/components/currencyComp.nut")
+let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts
+} = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
@@ -28,10 +29,6 @@ let purchGap = hdpx(20)
 let horGap = hdpx(60)
 let oldPriceTranslate = [0,
   purchGap + 0.5 * buttonStyles.defButtonHeight + 0.5 * calc_str_box("2", currencyStyle.fontStyle)[1]]
-let itemSize = hdpx(160)
-let goldImageSize = hdpxi(120)
-let itemImageSize = hdpxi(80)
-let itemCurrencySize = hdpxi(25)
 
 //animation preview header
 let aTimePackNameFull = 0.5
@@ -53,16 +50,6 @@ let aTimeInfoLight = 0.2
 
 let ANIM_SKIP = {}
 let ANIM_SKIP_DELAY = {}
-
-let customItemImage = {
-  gold = {
-    image = "ui/gameuiskin/shop_eagles_02.avif"
-    ovr = {
-      size = [goldImageSize * 555 / 291, goldImageSize]
-      pos = [0.2 * goldImageSize, -0.07 * goldImageSize]
-    }
-  }
-}
 
 let function opacityAnims(duration, delay, soundName = "", skipTrigger = ANIM_SKIP_DELAY) {
   let res = [
@@ -350,25 +337,29 @@ let mkTimeBlock = @(animStartTime, child) doubleSideGradient.__merge({
 let mkPriceWithTimeBlock = @(animStartTime) mkTimeBlock(animStartTime, purchaseButtonBlock(animStartTime + aTimeTime))
 let mkPriceWithTimeBlockNoOldPrice = @(animStartTime) mkTimeBlock(animStartTime, purchaseButtonNoOldPrice)
 
-let function mkItemImpl(itemId, count, start) {
-  let { image = null,  ovr = {} } = customItemImage?[itemId]
-  let size = ovr?.size ?? [itemImageSize, itemImageSize]
-  let isCurrency = itemId == "wp" || itemId == "gold"
-  let countText = {
-    rendObj = ROBJ_TEXT
-    color = 0xFFFFFFFF
-    text = decimalFormat(count)
-  }.__update(fontTiny)
+let mkItemBlink = @(start) {
+  size = flex()
+  rendObj = ROBJ_9RECT
+  image = gradCircularSqCorners
+  texOffs = [gradCircCornerOffset, gradCircCornerOffset]
+  screenOffs = hdpx(30)
+  opacity = 0.0
+  transform = {}
+  animations = opacityAnims(aTimeInfoLight, start, "element_appear", ANIM_SKIP)
+    .append(
+      { prop = AnimProp.opacity, from = 1.0, to = 1.0, play = true,
+        duration = aTimeInfoItem, delay = start + aTimeInfoLight, trigger = ANIM_SKIP }
+      { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.25, 1.25], easing = CosineFull, play = true,
+        duration = aTimeInfoLight + aTimeInfoItem, delay = start, trigger = ANIM_SKIP }
+    )
+}
+
+let function mkItemImpl(r, rStyle, start) {
+  let itemId = r.id
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [itemSize, itemSize]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/images/offer_item_slot_bg.avif:{itemSize}:{itemSize}")
     behavior = Behaviors.Button
-    picSaturate = stateFlags.value & S_ACTIVE ? 2
-      : stateFlags.value & S_HOVER ? 1.5
-      : 1
     clickableInfo = loc("options/info")
     onClick = @() null
     function onElemState(sf) {
@@ -379,83 +370,35 @@ let function mkItemImpl(itemId, count, start) {
     }
     onDetach = @() activeItemId.value == itemId ? activeItemId(null) : null
     children = [
-      image != null
-        ? {
-            size
-            margin = hdpx(10)
-            hplace = ALIGN_CENTER
-            rendObj = ROBJ_IMAGE
-            image = Picture($"{image}:{size[0]}:{size[1]}:P")
-            keepAspect = KEEP_ASPECT_FIT
-          }.__update(ovr)
-        : mkCurrencyImage(itemId, itemImageSize, {
-            margin = hdpx(10)
-          }).__update(ovr)
-      {
-        size = [flex(), hdpx(35)]
-        vplace = ALIGN_BOTTOM
-        valign = ALIGN_CENTER
-        halign = ALIGN_RIGHT
-        rendObj = ROBJ_SOLID
-        color = 0x80000000
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(5)
-        children = !isCurrency ? countText
-          : [
-              mkCurrencyImage(itemId, itemCurrencySize)
-              countText
-            ]
-      }
+      mkRewardPlateBg(r, rStyle).__update({
+        picSaturate = stateFlags.value & S_ACTIVE ? 2
+          : stateFlags.value & S_HOVER ? 1.5
+          : 1
+      })
+      mkRewardPlateImage(r, rStyle)
+      mkRewardPlateTexts(r, rStyle)
     ]
     animations = opacityAnims(aTimeInfoItem, start + aTimeInfoLight)
   }
 }
 
-let function mkItem(itemId, count, idx, animStartTime) {
+let function mkItem(r, rStyle, idx, animStartTime) {
   let start = animStartTime + aTimeInfoItemOffset * idx
   return {
-    size = [itemSize, itemSize]
     children = [
-      {
-        size = flex()
-        rendObj = ROBJ_9RECT
-        image = gradCircularSqCorners
-        texOffs = [gradCircCornerOffset, gradCircCornerOffset]
-        screenOffs = hdpx(30)
-        opacity = 0.0
-        transform = {}
-        animations = opacityAnims(aTimeInfoLight, start, "element_appear", ANIM_SKIP)
-          .append(
-            { prop = AnimProp.opacity, from = 1.0, to = 1.0, play = true,
-              duration = aTimeInfoItem, delay = start + aTimeInfoLight, trigger = ANIM_SKIP }
-            { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.25, 1.25], easing = CosineFull, play = true,
-              duration = aTimeInfoLight + aTimeInfoItem, delay = start, trigger = ANIM_SKIP }
-          )
-      }
-      mkItemImpl(itemId, count, start)
+      mkItemBlink(start)
+      mkItemImpl(r, rStyle, start)
     ]
   }
 }
 
 let function mkPreviewItems(goods, animStartTime) {
-  let { items = {}, wp = 0, gold = 0 } = goods
-  if (items.len() == 0 && gold == 0 && wp == 0)
-    return null
-  let itemsLeft = clone items
-  let children = []
-  if (gold > 0)
-    children.append(mkItem("gold", gold, children.len(), animStartTime))
-  if (wp > 0)
-    children.append(mkItem("wp", wp, children.len(), animStartTime))
-  foreach (itemId in itemsOrderFull)
-    if (itemId in itemsLeft)
-      children.append(mkItem(itemId, delete itemsLeft[itemId], children.len(), animStartTime))
-  foreach (itemId, count in itemsLeft)
-    children.append(mkItem(itemId, count, children.len(), animStartTime))
-  return {
+  let info = getRewardsViewInfo(goods.__merge({ units = [], unitUpgrades = [] }))
+    .sort(sortRewardsViewInfo)
+  return info.len() == 0 ? null : {
     flow = FLOW_HORIZONTAL
     gap = hdpx(20)
-    children
+    children = info.map(@(r, idx) mkItem(r, REWARD_STYLE_MEDIUM, idx, animStartTime))
   }
 }
 
@@ -506,7 +449,6 @@ return {
   mkPreviewHeader
   mkPriceWithTimeBlock
   mkPriceWithTimeBlockNoOldPrice
-  mkItem
   mkPreviewItems
   mkActiveItemHint
   mkInfoText

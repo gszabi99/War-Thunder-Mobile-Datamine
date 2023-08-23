@@ -509,6 +509,7 @@ return {
   mkBgImg
   bgImg
   borderBg
+  tagRedColor
   mkFitCenterImg
   mkGoodsImg
   mkCurrencyAmountTitle

@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
+let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 
 let nameColor = 0xFF00FCFF
 let titleColor = 0xFFFFFFFF
@@ -38,19 +39,11 @@ let function contactNameBlock(contact, info, addChildren = []) {
 }
 
 let function contactAvatar(info, size = avatarSize) {
-  let { campaigns = null } = info
-  if (campaigns == null)
-    return {
-      size = [size, size]
-      rendObj = ROBJ_SOLID
-      color = 0x80000000
-    }
-  let { ships = 0, tanks = 0 } = campaigns
-  let image = ships > tanks ? "cardicon_default" : "cardicon_tanker"
+  let { avatar = null } = info?.decorators
   return {
     size = [size, size]
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/images/avatars/{image}.avif")
+    image = Picture($"{getAvatarImage(avatar)}:{size}:{size}:P")
   }
 }
 

@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+let { send } = require("eventbus")
 let { resetTimeout } = require("dagor.workcycle")
+let { get_local_custom_settings_blk } = require("blkGetters")
 let { isGuestLogin, openGuestEmailRegistration, renewGuestRegistrationTags, needVerifyEmail, openVerifyEmail
 } = require("emailRegistrationState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
@@ -8,11 +10,13 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { register_command } = require("console")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let GUEST_MSG_UID = "guestEmailRegistration"
 let VERIFY_MSG_UID = "verifyEmail"
 let ONLINE_BATTLES_TO_VERIFY = 10
+let NOTIFY_PERIOD = 604800 //s in one week
 
 let isGuestMsgShowed = hardPersistWatched("isGuestMsgShowed", false)
 let hasEnoughOnlineBattles = Computed(@()
@@ -26,11 +30,27 @@ let needShowGuestMsg = keepref(Computed(@() !isGuestMsgShowed.value
   && isGuestLogin.value
   && ((playerLevelInfo.value?.level ?? 0) > 1 || battlesTotal.value > 2)))
 let isVerifyMsgShowed = hardPersistWatched("isVerifyMsgShowed", false)
+
+let isVerifyMsgTimerPassed = hardPersistWatched("isVerifyMsgTimerPassed", false)
+let lastVerifyMsgTime = Watched(0)
+let function setVerifyMsgTimerPassed() {isVerifyMsgTimerPassed(true)}
+lastVerifyMsgTime.subscribe(function(value) {
+  if (serverTime.value > value + NOTIFY_PERIOD)
+    setVerifyMsgTimerPassed()
+  else
+    resetTimeout(value + NOTIFY_PERIOD - serverTime.value, setVerifyMsgTimerPassed)
+})
+let function loadVerifyMsgTime() { lastVerifyMsgTime(get_local_custom_settings_blk()?[VERIFY_MSG_UID] ?? 0) }
+if (isLoggedIn.value)
+  loadVerifyMsgTime()
+isLoggedIn.subscribe(@(v) v ? loadVerifyMsgTime(): null)
+
 let needShowVerifyMsg = keepref(Computed(@() !isVerifyMsgShowed.value
   && isInMenuNoModals.value
   && needVerifyEmail.value
-  && hasEnoughOnlineBattles.value))
-
+  && hasEnoughOnlineBattles.value
+  && isVerifyMsgTimerPassed.value
+  ))
 
 let function openGuestMsg() {
   if (!needShowGuestMsg.value)
@@ -58,6 +78,12 @@ needShowGuestMsg.subscribe(@(_) openGuestMsgDelayed())
 
 isGuestLogin.subscribe(@(v) v ? null : closeMsgBox(GUEST_MSG_UID))
 
+let function saveVerifyMsgTime() {
+  isVerifyMsgTimerPassed(false)
+  lastVerifyMsgTime(serverTime.value)
+  get_local_custom_settings_blk()[VERIFY_MSG_UID] = lastVerifyMsgTime.value
+  send("saveProfile", {})
+}
 
 let function openVerifyMsg() {
   if (!needShowVerifyMsg.value)
@@ -66,11 +92,17 @@ let function openVerifyMsg() {
     uid = VERIFY_MSG_UID
     text = loc("mainmenu/email_not_verified")
     buttons = [
-      { id = "later", isCancel = true, cb = @() isVerifyMsgShowed(true) }
+      { id = "later", isCancel = true,
+        function cb() {
+          isVerifyMsgShowed(true)
+          saveVerifyMsgTime()
+        }
+      }
       { id = "verify", styleId = "PRIMARY", isDefault = true,
         function cb() {
           isVerifyMsgShowed(true)
           openVerifyEmail()
+          saveVerifyMsgTime()
         }
       }
     ]
@@ -85,3 +117,10 @@ needShowVerifyMsg.subscribe(@(_) openVerifyMsgDelayed())
 needVerifyEmail.subscribe(@(v) v ? null : closeMsgBox(VERIFY_MSG_UID))
 
 register_command(@() isGuestMsgShowed(false), "debug.reset_guest_msg_showed")
+register_command(function() {
+  lastVerifyMsgTime(0)
+  get_local_custom_settings_blk()[VERIFY_MSG_UID] = lastVerifyMsgTime.value
+  send("saveProfile", {})
+  isVerifyMsgShowed(false)
+}, "debug.reset_verify_msg_timer")
+

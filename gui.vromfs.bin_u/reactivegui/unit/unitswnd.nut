@@ -50,24 +50,23 @@ let { scaleAnimation, revealAnimation, raisePlatesAnimation, RAISE_PLATE_TOTAL
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { isUnitsWndAttached, isUnitsWndOpened } = require("%rGui/mainMenu/mainMenuState.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
-let isOpened = mkWatched(persist, "isOpened", false)
 let isFiltersVisible = Watched(false)
 let filters = [optName, optCountry, optUnitClass, optMRank, optStatus]
 let activeFilters = Watched(0)
 
 let gapFromUnitsBlockToBtns = hdpx(4)
 
-let isAttached = Watched(false)
-isAttached.subscribe(function(v) {
+isUnitsWndAttached.subscribe(function(v) {
   if (v)
     set_camera_shift_upper()
   else if (!isPurchEffectVisible.value)
     set_camera_shift_centered()
 })
-loadedHangarUnitName.subscribe(@(_) isAttached.value ? set_camera_shift_upper() : null)
+loadedHangarUnitName.subscribe(@(_) isUnitsWndAttached.value ? set_camera_shift_upper() : null)
 
 let holdInfo = {} //unitName = { press = int, release = int }
 
@@ -89,7 +88,7 @@ let canEquipSelectedUnit = Computed(@() (curSelectedUnit.value in myUnits.value)
 let isShowedUnitOwned = Computed(@() hangarUnitName.value in myUnits.value)
 
 curUnitName.subscribe(function(v) {
-  if (v != null && !isAttached.value && curSelectedUnit.value != null)
+  if (v != null && !isUnitsWndAttached.value && curSelectedUnit.value != null)
     curSelectedUnit(v)
 })
 
@@ -117,14 +116,14 @@ curFilters.subscribe(function(_) {
 
 let function close() {
   curSelectedUnit(null)
-  isOpened(false)
+  isUnitsWndOpened(false)
 }
 
 let function onSetCurrentUnit() {
   if (curSelectedUnit.value == null || curUnitInProgress.value != null)
     return
   setCurrentUnit(curSelectedUnit.value)
-  isOpened(false)
+  isUnitsWndOpened(false)
 }
 
 let function onBuyUnit() {
@@ -512,6 +511,7 @@ let function unitsBlock() {
   let gap = platoonSize > 0 ? (platoonSize + 0.8) * platoonSelPlatesGap : 0
   return {
     watch = listWatches
+    key = "unitsWndList"
     size = [filtered.len() == 0 ? flex() : SIZE_TO_CONTENT, unitsPlateCombinedHeight]
     flow = FLOW_HORIZONTAL
     gap
@@ -584,10 +584,10 @@ let unitsWnd = {
   stopHotkeys = true
   behavior = Behaviors.HangarCameraControl
   function onAttach() {
-    isAttached(true)
+    isUnitsWndAttached(true)
     sendNewbieBqEvent("openUnitsListWnd")
   }
-  onDetach = @() isAttached(false)
+  onDetach = @() isUnitsWndAttached(false)
   children = [
     lqTexturesWarningHangar
     {
@@ -622,6 +622,6 @@ let unitsWnd = {
   animations = wndSwitchAnim
 }
 
-registerScene("unitsWnd", unitsWnd, close, isOpened)
+registerScene("unitsWnd", unitsWnd, close, isUnitsWndOpened)
 
-return @() isOpened(true)
+return @() isUnitsWndOpened(true)

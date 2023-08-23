@@ -1,17 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
+let avatarScene = require("avatarScene.nut")
 let nickFramesScene  = require("nickFramesScene.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let titlesScene = require("titlesScene.nut")
 let changeNameScene = require("changeNameScene.nut")
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { isDecoratorsSceneOpened, unseenDecorators, availNickFrames,
+let { isDecoratorsSceneOpened, unseenDecorators, availNickFrames, availAvatars,
 availTitles } = require("decoratorState.nut")
 let { authTags } = require("%appGlobals/loginState.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 
 let tabs = [
   {
-    locId = "decorators/nickFrame"
+    locId = "decorator/avatar"
+    image = "ui/gameuiskin#profile_avatar_icon.svg"
+    content = avatarScene
+    isFullWidth = true
+    unseen = Computed(@() availAvatars.value.findindex(@(_, id) id in unseenDecorators.value) != null
+      ? UNSEEN_HIGH : SEEN)
+  }
+  {
+    locId = "decorator/nickFrame"
     image = "ui/gameuiskin#profile_decor_icon.svg"
     content = nickFramesScene
     isFullWidth = true
@@ -19,7 +28,7 @@ let tabs = [
       ? UNSEEN_HIGH : SEEN)
   }
   {
-    locId = "decorators/title"
+    locId = "decorator/title"
     image = "ui/gameuiskin#profile_tilte_icon.svg"
     content = titlesScene
     isFullWidth = true

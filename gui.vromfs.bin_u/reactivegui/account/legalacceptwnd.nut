@@ -9,28 +9,60 @@ let { msgBoxHeader, msgBoxBg } = require("%rGui/components/msgBox.nut")
 let urlText = require("%rGui/components/urlText.nut")
 let { buttonsHGap, mkCustomButton, buttonStyles } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { legalSorted } = require("%appGlobals/legal.nut")
+let { legalToApprove } = require("%appGlobals/legal.nut")
+let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 const WND_UID = "legalAcceptWnd"
 let isOpened = keepref(Computed(@() legalListForApprove.value.findvalue(@(v) v) != null))
 
 let urlColor = 0xFF17C0FC
-let wndWidthDefault = hdpx(1100)
+let wndWidthDefault = hdpx(1300)
 let wndHeight = hdpx(650)
 
 let urlStyle = { ovr = { color = urlColor }, childOvr = { color = urlColor } }
-let function legalInfo(legalCfg) {
+let function legalInfoUrl(legalCfg) {
   let { url, locId } = legalCfg
-  return urlText(loc(locId), url, urlStyle)
+  return urlText(loc($"{locId}"), url, urlStyle)
 }
 
-let legalList = @() {
+let function replaceExtremeSpacesToNbsp(text) {
+  local result = text
+  if (result.startswith(" "))
+    result = "".concat(nbsp, result.slice(1))
+  if (result.endswith(" "))
+    result = "".concat(result.slice(0, -1), nbsp)
+  return result
+}
+
+let mkTextarea = @(text) {
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  preformatted = FMT_KEEP_SPACES
+  text = replaceExtremeSpacesToNbsp(text) // FIXME: nbsp is workaround because 'preformatted = FMT_KEEP_SPACES' does not keep extreme spaces
+  maxWidth = wndWidthDefault - buttonsHGap
+}.__update(fontSmall)
+
+let legalList = {
   size = [flex(), SIZE_TO_CONTENT]
-  gap = hdpx(50)
-  flow = FLOW_VERTICAL
-  children = legalSorted
-    .filter(@(l) legalListForApprove.value?[l.id] ?? false)
-    .map(legalInfo)
+  children = [
+    wrap(
+      mkTextRow(
+        loc("legals/byClickingBtnYouAcceptAllLegals")
+        mkTextarea
+        {
+          ["{btnText}"] = mkTextarea(utf8ToUpper(loc("terms_wnd/accept/noNewLine"))), //warning disable: -forgot-subst
+          ["{termsOfServiceUrl}"] = legalInfoUrl(legalToApprove["termsofservice"]), //warning disable: -forgot-subst
+          ["{gameRulesUrl}"] = legalInfoUrl(legalToApprove["gamerules"]), //warning disable: -forgot-subst
+          ["{privacyPolicyUrl}"] = legalInfoUrl(legalToApprove["privacypolicy"]) //warning disable: -forgot-subst
+        }
+      ),
+      {
+        width = wndWidthDefault - buttonsHGap
+        flow = FLOW_HORIZONTAL
+        vGap = hdpx(16)
+      }
+    )
+  ]
 }
 
 let acceptText = {

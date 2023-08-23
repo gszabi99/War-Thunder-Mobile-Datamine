@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { frnd } = require("dagor.random")
+let { resetTimeout } = require("dagor.workcycle")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -12,7 +13,6 @@ let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -24,6 +24,10 @@ let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
+let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
+let { bgGradient } = require("unseenPurchaseComps.nut")
+let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator" ]
 
@@ -114,9 +118,22 @@ let stackData = Computed(function() {
   }.filter(@(v) v.len() != 0))
 })
 
+let isJustUnlockedUnitsOutdated = Watched(false)
+let restartOutdateTimer = @() resetTimeout(15.0, @() isJustUnlockedUnitsOutdated(true))
+if (hasJustUnlockedUnitsAnimation.value)
+  restartOutdateTimer()
+hasJustUnlockedUnitsAnimation.subscribe(function(v) {
+  isJustUnlockedUnitsOutdated(false)
+  if (v)
+    restartOutdateTimer()
+})
+
 let needShow = keepref(Computed(@() !hasActiveCustomUnseenView.value
   && unseenPurchasesExt.value.len() != 0
-  && isInMenu.value && isLoggedIn.value))
+  && isInMenu.value
+  && isLoggedIn.value
+  && !isTutorialActive.value
+  && (!hasJustUnlockedUnitsAnimation.value || isJustUnlockedUnitsOutdated.value)))
 
 let WND_UID = "unseenPurchaseWindow"
 let close = @() removeModalWindow(WND_UID)
@@ -212,24 +229,33 @@ let function mkRerwardIcon(startDelay, imgPath, sizeMulX = 1.0, sizeMulY = 1.0) 
   }
 }
 
-let decoratorIconByType = {
-  nickFrame = @(decoratorId) frameNick(" ", decoratorId)
-  title = @(decoratorId) loc($"title/{decoratorId}")
+let mkTextDecoratorCtor = @(getText) @(decoratorId) {
+  size = [SIZE_TO_CONTENT, flex()]
+  rendObj = ROBJ_TEXT
+  text = getText(decoratorId)
+}
+
+let mkImageDecoratorCtor = @(decoratorId) {
+  size = [hdpxi(150), hdpxi(150)]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{getAvatarImage(decoratorId)}:{hdpxi(150)}:{hdpxi(150)}:P")
+}
+
+let decoratorCompByType = {
+  nickFrame =  mkTextDecoratorCtor(@(id) frameNick(" ", id))
+  title     =  mkTextDecoratorCtor(@(id) loc($"title/{id}"))
+  avatar    =  mkImageDecoratorCtor
 }
 
 let function mkDecoratorRewardIcon(startDelay, decoratorId) {
-  return {
+  let decoratorType = Computed(@() allDecorators.value?[decoratorId].dType)
+  return @(){
+    watch = decoratorType
     size = [SIZE_TO_CONTENT, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = [
-      @() {
-        watch = allDecorators
-        size = [SIZE_TO_CONTENT, flex()]
-        rendObj = ROBJ_TEXT
-        text = decoratorIconByType?[allDecorators.value?[decoratorId].dType](decoratorId) ?? decoratorId
-      }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale), fontBig)
-    ]
+    children = decoratorCompByType[decoratorType.value](decoratorId)
+      .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale), fontBig)
   }
 }
 
@@ -368,35 +394,11 @@ let mkUnitRewards = @(unitsData) unitsData.len() == 0 ? null : @() {
     })
 }
 
-let bgGradWidth = hdpx(1200)
-let bgGradLineHeight = hdpx(4)
-let doubleSideGradBG = {
-  size = [bgGradWidth, flex()]
-  rendObj = ROBJ_9RECT
-  image = gradTranspDoubleSideX
-  texOffs = [0, gradDoubleTexOffset]
-  screenOffs = [0, 0.45 * bgGradWidth]
-  color = 0xA0000000
-}
-let doubleSideGradLine = doubleSideGradBG.__merge({
-  size = [bgGradWidth, bgGradLineHeight]
-  color = fadedTextColor
-})
-let bgGradientComp = {
-  size = flex()
-  halign = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  children = [
-    doubleSideGradLine
-    doubleSideGradBG
-    doubleSideGradLine
-  ]
-
-  transform = { pivot = [0.5, 0] }
+let bgGradientComp = bgGradient.__merge({
   animations = [ { prop = AnimProp.scale, from = [1, 0], to = [1, 1],
     duration = aIntroTime,
     play = true, trigger = ANIM_SKIP } ]
-}
+})
 
 let mkWndTitle = @(startDelay) {
   margin = [0, 0, hdpx(55), 0]

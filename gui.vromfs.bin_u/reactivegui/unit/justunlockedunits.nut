@@ -6,6 +6,7 @@ let UNLOCK_STEP = 1.5
 
 let justUnlockedUnits = Watched(null)
 let justBoughtUnits = Watched(null)
+let hasJustUnlockedUnitsAnimation = Computed(@() (justUnlockedUnits.value?.len() ?? 0) != 0)
 
 let prevCanBuyUnitsStatus = Watched(canBuyUnitsStatus.value)
 
@@ -45,6 +46,7 @@ canBuyUnitsStatus.subscribe(@(v) updateJustUnlockedUnits(v))
 return {
   justBoughtUnits
   justUnlockedUnits
+  hasJustUnlockedUnitsAnimation
   deleteJustUnlockedUnit
   deleteJustBoughtUnit
   UNLOCK_DELAY

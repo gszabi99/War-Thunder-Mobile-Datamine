@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let defaultLootbox = "ui/gameuiskin#crate_small_1.avif"
+let defaultLootbox = "ui/gameuiskin#daily_box_small.avif"
 let lootboxImage = {
   every_day_award_small_pack = "ui/gameuiskin#daily_box_small.avif"
   every_day_award_big_pack_1 = "ui/gameuiskin#daily_box_big.avif"

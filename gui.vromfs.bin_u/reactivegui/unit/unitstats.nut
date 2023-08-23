@@ -5,6 +5,7 @@ let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { applyAttrLevels } = require("%rGui/unitAttr/unitAttrValues.nut")
 let { TANK, SHIP, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { get_game_params } = require("gameparams")
+let { attrPresets } = require("%rGui/unitAttr/unitAttrState.nut")
 
 let aircraftMark = "▭"
 let cannonMark = "⋖"
@@ -12,6 +13,8 @@ let cannonMark = "⋖"
 let goodPenetrationColor = 0xFF64B140
 let normalPenetrationColor = 0xFFFFD966
 let badPenetrationColor = 0xFFE06666
+
+let MAX_ATTR_VALUE = 5
 
 let armorProtectionPercentageColors = [
   goodPenetrationColor,
@@ -381,13 +384,24 @@ let function getUnitStats(unit, shopCfg, statsList, weapStatsList) {
   return unitStats.filter(@(v) v != null)
 }
 
+let setMaxAttrs = @(attrPreset) attrPresets.value?[attrPreset]
+  .reduce(function(res, v) {
+    res[v.id] <- v.attrList.reduce(function(acc, a) {
+      acc[a.id] <- MAX_ATTR_VALUE
+      return acc
+    }, {})
+    return res
+  }, {})
+
 let function mkUnitStatsCompFull(unit, attrLevels, attrPreset, mods) {
+  attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
   let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, statsCfg?[unitType].full ?? [], weaponsCfg?[unitType].full ?? [])
 }
 
 let function mkUnitStatsCompShort(unit, attrLevels, attrPreset, mods) {
+  attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
   let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])

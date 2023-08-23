@@ -155,7 +155,6 @@ let function respawnBullets() {
   let res = { watch = [bulletsInfo, choiceCount], animations = wndSwitchAnim }
   if (bulletsInfo.value == null)
     return res
-  let { caliber = 0.0, isBulletBelt = false } = bulletsInfo.value.bulletSets.findvalue(@(_) true)
   return res.__update({
     flow = FLOW_HORIZONTAL
     children = [
@@ -164,7 +163,7 @@ let function respawnBullets() {
         margin = [0, hdpx(20), 0, bulletsBlockMargin]
         flow = FLOW_VERTICAL
         gap
-        children = [header(headerText(loc(isBulletBelt ? "machinegun/caliber" : "gun/caliber", { caliber })))]
+        children = [header(headerText(loc("respawn/chooseBullets")))]
           .extend(array(choiceCount.value).map(@(_, idx) mkBulletSliderSlot(idx)))
       },
       bulletsLegend

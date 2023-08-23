@@ -520,6 +520,7 @@ return {
   mkUnitSelectedUnderlineVert
   mkSingleUnitPlate
   mkPlateText
+  mkIcon
 
   mkPlatoonPlateFrame
   mkPlatoonBgPlates

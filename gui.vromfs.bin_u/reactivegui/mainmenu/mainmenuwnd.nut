@@ -40,6 +40,7 @@ let setReady = require("%rGui/squad/setReady.nut")
 let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = require("%rGui/squad/readyCheck.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let btnOpenQuests = require("%rGui/quests/btnOpenQuests.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
@@ -122,6 +123,7 @@ let leftBottomButtons = @() {
   gap = translucentButtonsVGap
   children = [
     campaignsBtn
+    btnOpenQuests
     btnOpenUnitAttr
     translucentButton(curCampPresentation.value.icon, loc(curCampPresentation.value.unitsLocId),
       function() {
@@ -157,6 +159,7 @@ let function startCurUnitOfflineBattle() {
 }
 
 let hotkeyX = ["^J:X | Enter"]
+let battleBtnOvr = { ovr = { key = "toBattleButton" }, hotkeys = hotkeyX }
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
 let toBattleButton = textButtonBattle(toBattleText,
   function() {
@@ -166,22 +169,22 @@ let toBattleButton = textButtonBattle(toBattleText,
     else if (!openLvlUpWndIfCan())
       logerr($"Unable to start battle because no units (unit in hangar = {hangarUnit.value?.name})")
   },
-  { hotkeys = hotkeyX })
+  battleBtnOvr)
 let startTutorButton = textButtonBattle(toBattleText,
   function() {
     sendNewbieBqEvent("pressToBattleButton", { status = "tutorial" })
     startTutor(firstBattleTutor.value)
   },
-  { ovr = { key = "toBattleButton" }, hotkeys = hotkeyX })
+  battleBtnOvr)
 let startOfflineBattleButton = textButtonBattle(toBattleText,
   startCurUnitOfflineBattle,
-  { hotkeys = hotkeyX })
+  battleBtnOvr)
 let startOfflineMissionButton = textButtonBattle(toBattleText,
   function() {
     sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.value) })
     startCurNewbieMission()
   },
-  { hotkeys = hotkeyX })
+  battleBtnOvr)
 
 let toSquadBattleButton = toBattleButton
 let readyButton = textButtonBattle(utf8ToUpper(loc("mainmenu/btnReady")),
@@ -247,8 +250,8 @@ let toBattleButtonPlace = @() {
 let exitMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionQuitGame")
   buttons = [
-    { id = "no", isCancel = true }
-    { id = "yes", styleId = "PRIMARY", cb = @() send("exitGame", {}) }
+    { id = "cancel", isCancel = true }
+    { text = loc("mainmenu/btnQuit"), styleId = "PRIMARY", cb = @() send("exitGame", {}) }
   ]
 })
 

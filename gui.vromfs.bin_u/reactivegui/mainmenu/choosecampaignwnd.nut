@@ -71,8 +71,8 @@ let function onCampaignButtonClick(campaign) {
     openMsgBox({
       text = loc("msg/needTutorialToAccessCampaign")
       buttons = [
-        { id = "no", isCancel = true }
-        { id = "yes", styleId = "PRIMARY", isDefault = true, cb = applyCampaign }
+        { id = "cancel", isCancel = true }
+        { text = loc("multiplayer/btnStart"), styleId = "PRIMARY", isDefault = true, cb = applyCampaign }
       ]
     })
     return

@@ -1,10 +1,10 @@
-
 from "%scripts/dagui_library.nut" import *
 let { subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_multiplayer } = require("%scripts/util.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { destroy_session } = require("multiplayer")
-let { isOnlineSettingsAvailable, loginState, LOGIN_STATE, isLoggedIn } = require("%appGlobals/loginState.nut")
+let { isOnlineSettingsAvailable, loginState, LOGIN_STATE, isLoggedIn, curLoginType, authTags
+} = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
 let { openUrl } = require("%scripts/url.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
@@ -12,6 +12,8 @@ let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
 let { isAutologinUsed, setAutologinEnabled } = require("autoLogin.nut")
 let { resetLoginPass } = require("auth_wt")
 let { forceSendBqQueue } = require("%scripts/bqQueue.nut")
+
+let DELETE_ACCOUNT_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
 
 let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
 
@@ -42,6 +44,8 @@ let function startLogout() {
 
   if (isLoggedIn.value) {
     loginState(LOGIN_STATE.NOT_LOGGED_IN)
+    curLoginType("")
+    authTags([])
     ::sign_out()
   }
   else
@@ -63,6 +67,11 @@ subscribe("relogin", function(_) {
 
 subscribe("changeName", function(_) {
   openUrl(loc("url/changeName"))
+  callbackWhenAppWillActive("logOut")
+})
+
+subscribe("deleteAccount", function(_) {
+  openUrl(DELETE_ACCOUNT_URL)
   callbackWhenAppWillActive("logOut")
 })
 

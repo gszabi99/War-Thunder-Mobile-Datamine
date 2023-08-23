@@ -13,6 +13,8 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { json_to_string } = require("json")
+let { logEvent } = require("appsFlyer")
 let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
 
 let {
@@ -95,11 +97,24 @@ subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
   openFMsgBox({ text = loc("msg/onApplePurchaseAuthError" {error = status}) })
 })
 
+let function sendLogPurchaseData(product_id,transaction_id) {
+  //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081
+  local af = {
+    af_order_id = transaction_id
+    af_content_id = product_id
+    af_revenue = availablePrices.value?[product_id].price ?? -1
+    af_price = availablePrices.value?[product_id].price ?? -1
+    af_currency = availablePrices.value?[product_id].currencyId ?? "USD"
+  }
+  logEvent("af_purchase", json_to_string(af, true))
+}
+
 subscribe("ios.billing.onPurchaseCallback", function(result) {
-  let { status, data = null, transaction_id = null } = result
+  let { status, id = null, data = null, transaction_id = null } = result
   logG("onPurchaseCallback status = ", status)
-  if (status == AS_OK && data && transaction_id) {
+  if (status == AS_OK && id && data && transaction_id) {
     registerApplePurchase(transaction_id, data, "ios.billing.onAuthPurchaseCallback")
+    sendLogPurchaseData(id,transaction_id)
   } else {
     purchaseInProgress(null)
     if (status != AS_CANCELED) {

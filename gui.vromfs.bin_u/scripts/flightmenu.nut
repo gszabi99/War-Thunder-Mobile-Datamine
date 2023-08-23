@@ -79,10 +79,10 @@ subscribeFMsgBtns({
   fMenuBailout = @(_) doBailout()
 })
 
-let openYesNoMsg = @(text, eventId) openFMsgBox({ text,
+let openConfirmMsg = @(text, confirmBtnText, eventId) openFMsgBox({ text,
   buttons = [
-    { id = "no", isCancel = true }
-    { id = "yes", eventId, styleId = "PRIMARY", isDefault = true }
+    { id = "cancel", isCancel = true }
+    { text = confirmBtnText, eventId, styleId = "PRIMARY", isDefault = true }
   ]
 })
 
@@ -93,12 +93,14 @@ let function restartMission() {
   if (get_mission_status() != MISSION_STATUS_RUNNING)
     restart_mission()
   else
-    openYesNoMsg(loc("flightmenu/questionRestartMission"), "fMenuRestart")
+    openConfirmMsg(loc("flightmenu/questionRestartMission"), loc("flightmenu/btnRestart"), "fMenuRestart")
 }
 
 let function quitMission() {
   if (("is_offline_version" in getroottable()) && ::is_offline_version)
     return restart_mission()
+
+  let quitBtnText = loc("return_to_hangar/short")
 
   if (get_mission_status() == MISSION_STATUS_RUNNING) {
     local text = ""
@@ -108,10 +110,10 @@ let function quitMission() {
       text = loc("flightmenu/questionQuitMissionInProgress")
     else
       text = loc("flightmenu/questionQuitMission")
-    openYesNoMsg(text, "fMenuQuitRunningMission")
+    openConfirmMsg(text, quitBtnText, "fMenuQuitRunningMission")
   }
   else if (isMissionFailed())
-    openYesNoMsg(loc("flightmenu/questionQuitMission"), "fMenuQuitFailedMission")
+    openConfirmMsg(loc("flightmenu/questionQuitMission"), quitBtnText, "fMenuQuitFailedMission")
   else {
     quit_mission_after_complete()
     closeFlightMenu()
@@ -120,7 +122,7 @@ let function quitMission() {
 
 let function bailout() {
   if (canBailout())
-    openYesNoMsg(loc("flightmenu/questionLeaveTheTank"), "fMenuBailout")
+    openConfirmMsg(loc("flightmenu/questionLeaveTheTank"), loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")
   else
     closeFlightMenu()
 }

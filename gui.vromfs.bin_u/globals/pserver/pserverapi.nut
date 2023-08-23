@@ -59,7 +59,7 @@ let function popCallback(uid, result) {
 let function handleMessages(msg) {
   let result = msg.data?.result
   if (!result) {
-    popCallback(msg.id, { error = "unknown error" }.__update(msg.data))
+    popCallback(msg.id, { error = "unknown error" }.__update(type(msg.data) == "table" ? msg.data : { data = msg.data }))
     return
   }
 
@@ -505,6 +505,11 @@ return {
     params = { id }
     progressId = PROGRESS_LOOTBOX
     progressValue = id
+  }, cb)
+
+  add_lootbox = @(id, count, cb = null) request({
+    method = "add_lootbox"
+    params = { id, count }
   }, cb)
 
   reset_mutations_timestamp = @(cb = null) request({ method = "reset_mutations_timestamp" }, cb)

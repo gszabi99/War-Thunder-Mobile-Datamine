@@ -418,8 +418,8 @@ subscribeFMsgBtns({
 let leaveSquadMessage = @(cb = null) openFMsgBox({
   text = loc("squad/ask/leave")
   buttons = [
-    { id = "no", isCancel = true }
-    { id = "yes", isDefault = true, eventId = "leaveSquad", context = { cb }}
+    { id = "cancel", isCancel = true }
+    { id = "leaveSquad", isDefault = true, eventId = "leaveSquad", context = { cb }}
   ]
 })
 
@@ -429,8 +429,8 @@ let function dismissSquadMember(userId) {
   openFMsgBox({
     text = loc("squad/ask/remove", { name = getContactNick(allContacts.value?[userId.tostring()]) })
     buttons = [
-      { id = "no", isCancel = true }
-      { id = "yes", eventId = "dismissSquadMember", context = { userId }}
+      { id = "cancel", isCancel = true }
+      { id = "removeSquadMember", eventId = "dismissSquadMember", context = { userId }}
     ]
   })
 }

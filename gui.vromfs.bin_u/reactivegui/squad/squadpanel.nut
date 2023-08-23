@@ -5,7 +5,7 @@ let { isInSquad, squadMembers, squadMembersOrder, isInvitedToSquad, squadId, squ
 } = require("%appGlobals/squadState.nut")
 let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
 let { openContacts, SEARCH_TAB, FRIENDS_TAB } = require("%rGui/contacts/contactsState.nut")
-let { friendsUids } = require("%rGui/contacts/contactLists.nut")
+let { friendsUids, requestsToMeUids } = require("%rGui/contacts/contactLists.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
 let { mkContactOnlineStatus } = require("%rGui/contacts/contactPresence.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -17,6 +17,8 @@ let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let invitationsBtn = require("%rGui/invitations/invitationsBtn.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let squadMemberInfoWnd = require("squadMemberInfoWnd.nut")
+let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 
 let gap = hdpx(24)
@@ -35,17 +37,22 @@ let statusSpinner = mkSpinner(statusSize)
 let squadInviteButton = framedImageBtn("ui/gameuiskin#btn_inc.svg",
   @() openContacts(friendsUids.value.len() > 0 ? FRIENDS_TAB : SEARCH_TAB))
 
+let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts, {},
+  @() {
+    watch = requestsToMeUids
+    margin = hdpx(8)
+    hplace = ALIGN_RIGHT
+    vplace = ALIGN_TOP
+    children = requestsToMeUids.value.len() > 0 ? priorityUnseenMark : null
+  })
+
 let avatar = @(info, onlineStatus, isInviteeV) function() {
-  let { campaigns = null } = info.value
-  if (campaigns == null)
-    return { watch = info }
-  let { ships = 0, tanks = 0 } = campaigns
-  let image = ships > tanks ? "cardicon_default" : "cardicon_tanker"
+  let { avatar = null } = info.value?.decorators
   return {
     watch = [info, onlineStatus]
     size = [avatarSize, avatarSize]
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/images/avatars/{image}.avif")
+    image = Picture($"{getAvatarImage(avatar)}:{avatarSize}:{avatarSize}:P")
     picSaturate = isInviteeV ? 0.3 : 1.0
     brightness = isInviteeV ? 0.5
       : !onlineStatus.value ? 0.6
@@ -161,6 +168,7 @@ let buttonsRow = @(inSquad) {
   valign = ALIGN_CENTER
   gap
   children = [
+    contactsBtn
     invitationsBtn
     inSquad ? squadMembersList : squadInviteButton
   ]

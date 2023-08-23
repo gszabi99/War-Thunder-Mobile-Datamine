@@ -82,7 +82,7 @@ let mkEquippedFrame = @(isEquipped) @() !isEquipped.value ? { watch = isEquipped
     }
 
 let function mkEquippedIcon(isEquipped) {
-  let icon = Computed(@() iconsCfg?[unit.value.unitType] ?? iconsCfg.tank)
+  let icon = Computed(@() iconsCfg?[unit.value?.unitType] ?? iconsCfg.tank)
 
   return @() !isEquipped.value ? { watch = [unit, isEquipped] }
     : {

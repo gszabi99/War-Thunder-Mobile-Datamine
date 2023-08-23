@@ -11,6 +11,7 @@ return function backButton(onClick, override = {}) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
+    key = "backButton"
     onElemState = @(sf) stateFlags(sf)
     behavior = Behaviors.Button
     rendObj = ROBJ_IMAGE

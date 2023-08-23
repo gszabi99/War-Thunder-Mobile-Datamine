@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let logR = log_with_prefix("[UNSEEN_REWARDS] ")
 let { resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { unseenPurchases } = require("%appGlobals/pServer/campaign.nut")
@@ -10,6 +11,11 @@ let isShowDelayed = Watched(false)
 let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.value
   ?? (isShowDelayed.value ? {}
     : unseenPurchases.value.filter(@(_, id) id not in ignoreUnseen.value)))
+
+let unseenPurchasesCount = keepref(Computed(@() unseenPurchases.value.len()))
+unseenPurchasesCount.subscribe(@(c) logR("unseenPurchasesCount = ", c))
+let unseenPurchasesCountExt = keepref(Computed(@() unseenPurchasesExt.value.len()))
+unseenPurchasesCountExt.subscribe(@(c) logR("unseenPurchasesCountExt = ", c))
 
 let function markPurchasesSeen(seenIds) {
   if (unseenPurchasesDebug.value != null)
@@ -57,9 +63,13 @@ let function addCustomUnseenPurchHandler(isUnseenFit, showUnseen) {
   incCustomVersion()
 }
 
-let undelayShow = @() isShowDelayed(false)
+let function undelayShow() {
+  logR("undelayShow unseen")
+  isShowDelayed(false)
+}
 let function delayShow(time) {
   isShowDelayed(true)
+  logR("delayShow unseen for ", time)
   resetTimeout(time, undelayShow)
 }
 

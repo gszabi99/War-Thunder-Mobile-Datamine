@@ -1,6 +1,9 @@
+from "%globalsDarg/darg_library.nut" import *
 let communityOptions = require("options/communityOptions.nut")
 let accountPage = require("accountPage.nut")
 let { mkOptionsScene } = require("mkOptionsScene.nut")
+let { hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
+let { UNSEEN_HIGH, SEEN } = require("%rGui/unseenPriority.nut")
 
 let tabs = [
   {
@@ -8,6 +11,7 @@ let tabs = [
     locId = "options/account"
     image = "ui/gameuiskin#menu_account.svg"
     content = accountPage
+    unseen = Computed(@() hasUnseenDecorators.value ? UNSEEN_HIGH : SEEN)
   }
   {
     locId = "options/community"

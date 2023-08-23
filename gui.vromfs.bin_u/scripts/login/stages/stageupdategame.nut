@@ -11,7 +11,7 @@ let { start_updater_addons, stop_updater, UPDATER_EVENT_ERROR, UPDATER_EVENT_FIN
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 let { onlyActiveStageCb, export, finalizeStage, interruptStage
-} = require("mkStageBase.nut")("updateGame", LOGIN_STATE.AUTHORIZED, LOGIN_STATE.GAME_UPDATED)
+} = require("mkStageBase.nut")("updateGame", LOGIN_STATE.AUTHORIZED | LOGIN_STATE.CONTACTS_LOGGED_IN, LOGIN_STATE.GAME_UPDATED)
 
 let finish = onlyActiveStageCb(function() {
   let as = authState.value

@@ -1,0 +1,221 @@
+{
+  "Simulator": {
+    "batterySize": -1
+  },
+  "iPhone": {
+    "batterySize": 1400
+  },
+  "iPhone 3G": {
+    "batterySize": 1150
+  },
+  "iPhone 3GS": {
+    "batterySize": 1219
+  },
+  "iPhone 4": {
+    "batterySize": 1420
+  },
+  "iPhone 4S": {
+    "batterySize": 1432
+  },
+  "iPhone 5": {
+    "batterySize": 1440
+  },
+  "iPhone 5C": {
+    "batterySize": 1510
+  },
+  "iPhone 5S": {
+    "batterySize": 1560
+  },
+  "iPhone 6": {
+    "batterySize": 1810
+  },
+  "iPhone 6 Plus": {
+    "batterySize": 2915
+  },
+  "iPhone 6S": {
+    "batterySize": 1715
+  },
+  "iPhone 6S Plus": {
+    "batterySize": 2750
+  },
+  "iPhone SE 1st Gen": {
+    "batterySize": 1624
+  },
+  "iPhone SE 2nd Gen": {
+    "batterySize": 1821
+  },
+  "iPhone SE 3rd Gen": {
+    "batterySize": 2018
+  },
+  "iPhone 7": {
+    "batterySize": 1960
+  },
+  "iPhone 7 Plus": {
+    "batterySize": 2900
+  },
+  "iPhone 8": {
+    "batterySize": 1821
+  },
+  "iPhone 8 Plus": {
+    "batterySize": 2691
+  },
+  "iPhone X": {
+    "batterySize": 2716
+  },
+  "iPhone XS": {
+    "batterySize": 2658
+  },
+  "iPhone XS Max": {
+    "batterySize": 3174
+  },
+  "iPhone XR": {
+    "batterySize": 2942
+  },
+  "iPhone 11": {
+    "batterySize": 3110
+  },
+  "iPhone 11 Pro": {
+    "batterySize": 3046
+  },
+  "iPhone 11 Pro Max": {
+    "batterySize": 3969
+  },
+  "iPhone 12 Mini": {
+    "batterySize": 2227
+  },
+  "iPhone 12": {
+    "batterySize": 2815
+  },
+  "iPhone 12 Pro": {
+    "batterySize": 2815
+  },
+  "iPhone 12 Pro Max": {
+    "batterySize": 3687
+  },
+  "iPhone 13 Pro": {
+    "batterySize": 3095
+  },
+  "iPhone 13 Pro Max": {
+    "batterySize": 4352
+  },
+  "iPhone 13 Mini": {
+    "batterySize": 2406
+  },
+  "iPhone 13": {
+    "batterySize": 3227
+  },
+  "iPhone 14": {
+    "batterySize": 3279
+  },
+  "iPhone 14 Plus": {
+    "batterySize": 4325
+  },
+  "iPhone 14 Pro": {
+    "batterySize": 3200
+  },
+  "iPhone 14 Pro Max": {
+    "batterySize": 4323
+  },
+  "iPad 1": {
+    "batterySize": 6600
+  },
+  "iPad 3G": {
+    "batterySize": 6600
+  },
+  "iPad 2": {
+    "batterySize": 6930
+  },
+  "iPad 3": {
+    "batterySize": 11560
+  },
+  "iPad Mini": {
+    "batterySize": 4440
+  },
+  "iPad Mini Retina": {
+    "batterySize": 6450
+  },
+  "iPad 4": {
+    "batterySize": 11560
+  },
+  "iPad Air": {
+    "batterySize": 8827
+  },
+  "iPad Mini 3": {
+    "batterySize": 6470
+  },
+  "iPad Mini 4": {
+    "batterySize": 5124
+  },
+  "iPad Air 2": {
+    "batterySize": 8600
+  },
+  "iPad Pro 9.7 inch": {
+    "batterySize": 8827
+  },
+  "iPad Pro 12.9 inch": {
+    "batterySize": 9720
+  },
+  "iPad 5": {
+    "batterySize": 8827
+  },
+  "iPad Pro 2": {
+    "batterySize": 10850
+  },
+  "iPad Pro 2 10.5 inch": {
+    "batterySize": 8134
+  },
+  "iPad 6": {
+    "batterySize": 8827
+  },
+  "iPad 7": {
+    "batterySize": 8827
+  },
+  "iPad Pro 3 11 inch": {
+    "batterySize": 7812
+  },
+  "iPad Pro 3 12.9 inch": {
+    "batterySize": 9720
+  },
+  "iPad Pro 4 11 inch": {
+    "batterySize": 7600
+  },
+  "iPad Pro 4 12.9 inch": {
+    "batterySize": 9720
+  },
+  "iPad Mini 5": {
+    "batterySize": 5124
+  },
+  "iPad Air 3": {
+    "batterySize": 8134
+  },
+  "iPad 8": {
+    "batterySize": 8686
+  },
+  "iPad 9": {
+    "batterySize": 8686
+  },
+  "iPad Mini 6": {
+    "batterySize": 5124
+  },
+  "iPad Air 4": {
+    "batterySize": 7604
+  },
+  "iPad Pro 5 11 inch": {
+    "batterySize": 7538
+  },
+  "iPad Pro 5 12.9 inch": {
+    "batterySize": 10533
+  },
+  "iPad Air 5": {
+    "batterySize": 8827
+  },
+  "iPad 10": {
+    "batterySize": 7606
+  },
+  "iPad Pro 6 11 inch": {
+    "batterySize": 7538
+  },
+  "iPad Pro 6 12.9 inch": {
+    "batterySize": 9720
+  }
+}

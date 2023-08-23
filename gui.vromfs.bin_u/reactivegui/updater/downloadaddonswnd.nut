@@ -69,8 +69,8 @@ let tip = gradientLoadingTip.__merge({ pos = [0, sh(-15)] })
 let openLimitConnectionMsgBox = @() openMsgBox({
   text = loc("msg/allowMobileNetworkDownload")
   buttons = [
-    { id = "no", isCancel = true }
-    { id = "yes", styleId = "PRIMARY", isDefault = true,
+    { id = "cancel", isCancel = true }
+    { id = "download", styleId = "PRIMARY", isDefault = true,
       function cb() {
         allowLimitedDownload(true)
         isDownloadPaused(false)

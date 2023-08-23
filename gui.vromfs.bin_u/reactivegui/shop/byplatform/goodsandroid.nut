@@ -16,6 +16,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { logEvent } = require("appsFlyer")
 
 
 let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 7) % 1000000)
@@ -203,12 +204,26 @@ let function buyPlatformGoods(goodsOrId) {
 
 let noNeedLogerr = [ GP_SERVICE_TIMEOUT, GP_USER_CANCELED, GP_DEVELOPER_ERROR ]
 
+let function sendLogPurchaseData(json_value) {
+  //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081
+  local googleResp = parse_json(json_value)
+  local af = {
+    af_order_id = googleResp.orderId
+    af_content_id = googleResp.productId
+    af_revenue = availableSkusPrices.value?[googleResp.productId].price ?? -1
+    af_price = availableSkusPrices.value?[googleResp.productId].price ?? -1
+    af_currency = availableSkusPrices.value?[googleResp.productId].currencyId ?? "USD" //or af_purchase_currency?
+  }
+  logEvent("af_purchase", json_to_string(af, true))
+}
+
 subscribe("android.billing.googleplay.onGooglePurchaseCallback", function(result) {
   let { status, value = "" } = result
   let statusName = getStatusName(status)
   logG("onGooglePurchaseCallback status = ", statusName)
   if (status == GP_OK) {
     register_googleplay_purchase(value, false, "auth.onRegisterGooglePurchase")
+    sendLogPurchaseData(value)
     return
   }
   purchaseInProgress(null)

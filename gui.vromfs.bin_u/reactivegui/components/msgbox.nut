@@ -144,4 +144,7 @@ return {
   msgBoxBg
   msgBoxHeader
   msgBoxHeaderWithClose
+
+  wndWidthDefault
+  wndHeight
 }

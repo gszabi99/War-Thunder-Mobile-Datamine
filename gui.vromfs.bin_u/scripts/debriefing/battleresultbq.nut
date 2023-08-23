@@ -7,7 +7,7 @@ let { get_default_graphics_preset, get_default_fps_limit } = require("graphicsOp
 let { EventOnSetupFrameTimes } = require("gameEvents")
 let { get_mp_session_id_int } = require("multiplayer")
 let { get_current_mission_name } = require("mission")
-let { get_battery, is_charging, get_thermal_state } = require("sysinfo")
+let { get_battery, get_battery_capacity_mah = @() -1, is_charging, get_thermal_state } = require("sysinfo")
 let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
@@ -69,15 +69,31 @@ let function activatePingMeasurement(isActivate, needReset) {
     clearTimer(onCollectPing)
   }
 }
-isInBattle.subscribe(@(v) activatePingMeasurement(v, v))
-if (isInBattle.value)
+
+local batteryOnBattleStart = 0
+
+let function startBatteryChargeDrainGather() {
+  batteryOnBattleStart = get_battery()
+}
+
+isInBattle.subscribe(function(v) {
+  activatePingMeasurement(v, v)
+  if (v)
+    startBatteryChargeDrainGather()
+})
+
+if (isInBattle.value) {
   activatePingMeasurement(true, false)
+}
 
 let function onFrameTimes(evt, _eid, _comp) {
   log("[BQ] send battle fps info to BQ")
   let data = blk2SquirrelObjNoArrays(evt[0])
   if ("time" in data)
     delete data.time
+
+  let drainPercentage = batteryOnBattleStart - get_battery()
+  let drainmAh = drainPercentage * get_battery_capacity_mah()
 
   data.__update({
     platform = get_platform_string_id()
@@ -94,6 +110,8 @@ let function onFrameTimes(evt, _eid, _comp) {
     tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
     battery = get_battery()
     isCharging = is_charging()
+    batteryDrainPercentage = drainPercentage
+    batteryDrainmAh = drainmAh
     thermalState = get_thermal_state()
     pingMin
     pingMax
