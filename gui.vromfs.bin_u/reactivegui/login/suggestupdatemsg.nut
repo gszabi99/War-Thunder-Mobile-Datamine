@@ -1,11 +1,12 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
 let { get_base_game_version_str } = require("app")
 let { send } = require("eventbus")
-let { is_ios } = require("%sqstd/platform.nut")
+let { is_android } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
+let { isDownloadedFromGooglePlay } = require("android.platform")
 let actualGameVersion = require("actualGameVersion.nut")
 
 let needExitToUpdate = Computed(function() {
@@ -14,7 +15,7 @@ let needExitToUpdate = Computed(function() {
   return reqVersion == "" || version == "" ? false : !check_version(reqVersion, version)
 })
 
-let shouldCheckHotfixVersion = !is_ios
+let shouldCheckHotfixVersion = is_android && !isDownloadedFromGooglePlay()
 let needSuggestToUpdate = Computed(function() {
   local actualVersion = actualGameVersion.value
   if (actualVersion == null)

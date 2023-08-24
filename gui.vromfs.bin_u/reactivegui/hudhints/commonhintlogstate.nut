@@ -145,6 +145,12 @@ subscribe("hint:gun_overheat_warning", function(_) {
   addCommonHint(loc("hints/gun_overheat_warning"))
 })
 
+subscribe("hint:use_gun_for_spaa:show", function(_) {
+  if (incHintCounter("use_gun_for_spaa", 3)){
+    addCommonHint(loc("hints/use_gun_for_spaa"))
+  }
+})
+
 subscribe("hint:holding_for_stop:show", function(_) {
   if (!incHintCounter("holding_for_stop", 5))
     return
