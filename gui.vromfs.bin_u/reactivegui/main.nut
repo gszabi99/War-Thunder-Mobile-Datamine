@@ -37,6 +37,9 @@ let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.
 let { getenv = @(...) null} = require_optional("system")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")
 let { tooltipComp } = require("tooltip.nut")
+let { waitboxes } = require("notifications/waitBox.nut")
+let { bgShadedDark } = require("style/backgrounds.nut")
+let { spinnerOpacityAnim, spinner } = require("components/spinner.nut")
 
 local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)
@@ -95,12 +98,37 @@ let cursor = Cursor({
   image = Picture($"ui/gameuiskin#cursor.svg:{cursorSize}:{cursorSize}")
 })
 
+let waitbox = @() {
+  watch = waitboxes
+  size = flex()
+  children = waitboxes.value.len() == 0 ? null
+    : bgShadedDark.__merge({
+        key = waitboxes.value[0]
+        size = flex()
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        flow = FLOW_VERTICAL
+        gap = hdpx(50)
+        children = [
+          {
+            size = [hdpx(1200), SIZE_TO_CONTENT]
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            halign = ALIGN_CENTER
+            text = waitboxes.value[0].text
+          }.__update(fontSmall)
+          spinner
+        ]
+        animations = [spinnerOpacityAnim]
+      })
+}
+
 return function() {
   let children = !isLoggedIn.value && isLoginRequired.value
       ? [sceneBeforeLogin, modalWindowsComponent]
     : isInLoadingScreen.value ? [loadingScreen]
     : [sceneAfterLogin]
-  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp, deviceStateArea)
+  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp, deviceStateArea, waitbox)
   if (isDebugTouchesActive.value)
     children.append(debugTouchesUi)
   return {

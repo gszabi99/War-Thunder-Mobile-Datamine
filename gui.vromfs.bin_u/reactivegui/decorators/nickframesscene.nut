@@ -161,18 +161,22 @@ let function tagBtn(item) {
 
 let function footer() {
   let { price = null } = allFrames.value?[selectedDecorator.value]
+  let canBuy = (price?.price ?? 0) > 0
+  let canEquip = selectedDecorator.value in availNickFrames.value || selectedDecorator.value == ""
+  let isCurrent = selectedDecorator.value == chosenNickFrame.value?.name
+
   return {
-    watch = [selectedDecorator, chosenNickFrame, allFrames]
+    watch = [selectedDecorator, chosenNickFrame, allFrames, availNickFrames]
     size = [flex(), defButtonHeight]
     vplace = ALIGN_BOTTOM
     flow = FLOW_HORIZONTAL
     gap
     children = [
-      selectedDecorator.value == chosenNickFrame.value?.name ? null
-        : selectedDecorator.value in availNickFrames.value || selectedDecorator.value == ""
+      isCurrent ? null
+        : canEquip
           ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedDecorator,
             { hotkeys = ["^J:X | Enter"] })
-        : (price?.price ?? 0) > 0
+        : canBuy
           ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
               mkCurrencyComp(price.price, price.currencyId, CS_INCREASED_ICON),
               buySelectedDecorator)
@@ -180,7 +184,7 @@ let function footer() {
       {
         rendObj = ROBJ_TEXT
         vplace = ALIGN_CENTER
-        text = getReceiveReason(selectedDecorator.value)
+        text = canEquip || canBuy || isCurrent ? null : getReceiveReason(selectedDecorator.value)
       }.__update(fontSmallAccented)
     ]
   }

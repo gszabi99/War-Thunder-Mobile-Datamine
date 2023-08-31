@@ -1,68 +1,120 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { send, subscribe } = require("eventbus")
+let { register_command } = require("console")
 let { isDownloadedFromGooglePlay = @() false } = require("android.platform")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { buttonsHGap } = require("%rGui/components/textButton.nut")
-let { msgBoxBg, msgBoxHeaderWithClose, msgBoxText, mkMsgBoxBtnsSet, wndWidthDefault, wndHeight
-} = require("%rGui/components/msgBox.nut")
+let { toIntegerSafe } = require("%sqstd/string.nut")
+let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
+let { addGoodsInfoGuids, goodsInfo } = require("byPlatform/gaijinGoodsInfo.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
+let { addWaitbox, removeWaitbox, waitboxes } = require("%rGui/notifications/waitBox.nut")
 
-let INGAME_PURCHASES_IN_RUSSIA_URL = "auto_local auto_login https://wtmobile.com/premium-webmagazin"
-let paymentDisabledInRussiaCurrencies = [ "rub", "byn" ]
+let INGAME_PURCHASES_IN_RUSSIA_URL
+  = "auto_login https://wtmobile.com/premium-webmagazin?skin_lang=ru"
+let INGAME_PURCHASES_IN_RUSSIA_URL_GOODS_ID
+  = "auto_login https://wtmobile.com/premium-webmagazin?id={id}&skin_lang=ru" // warning disable: -forgot-subst
+
+let paymentDisabledInRussiaCurrencies = [ "rub", "byn" ].reduce(@(res, v) res.rawset(v, true), {})
+let isDebugDisabledCurrency = mkWatched(persist, "isDebugDisabledCurrency", false)
 
 const WND_UID = "inAppPurchasesRussiaWnd"
-let close = @() removeModalWindow(WND_UID)
 
-let function getPlatformGoodsRealCurrencyId(goodsOrId, platformGoodsVal) {
-  let goods = type(goodsOrId) == "table" ? goodsOrId : platformGoodsVal?[goodsOrId]
-  return goods?.priceExt.currencyId.tolower() ?? ""
+let getPlatformGoodsRealCurrencyId = @(goods) goods?.priceExt.currencyId.tolower() ?? ""
+
+let isDisabledCurrency = @(goods) getPlatformGoodsRealCurrencyId(goods) in paymentDisabledInRussiaCurrencies
+let isForbiddenPlatformPurchaseFromRussia = isDownloadedFromGooglePlay() ? isDisabledCurrency
+  : @(goods) isDebugDisabledCurrency.value && isDisabledCurrency(goods)
+
+let function getGoodsWebId(guid) {
+  let { url = "" } = goodsInfo.value?[guid]
+  if (url == "")
+    return null
+  let parts = url.split_by_chars("?&")
+  let idPart = parts.findvalue(@(v) v.startswith("id="))
+  if (idPart == null)
+    return null
+  let strId = idPart.slice(3)
+  return toIntegerSafe(strId, null)
 }
 
-let isForbiddenPlatformPurchaseFromRussia = isDownloadedFromGooglePlay()
-  ? @(goodsOrId, platformGoodsVal)
-      paymentDisabledInRussiaCurrencies.contains(getPlatformGoodsRealCurrencyId(goodsOrId, platformGoodsVal))
-  : @(...) false
+let function openPurchaseByGuids(guids) {
+  local id = null
+  foreach(guid in guids) {
+    id = getGoodsWebId(guid)
+    if (id != null)
+      break
+  }
+  if (id == null)
+    return false
 
-let openReadMoreUrl = @() send("openUrl", { baseUrl = INGAME_PURCHASES_IN_RUSSIA_URL })
+  send("openUrl", { baseUrl = INGAME_PURCHASES_IN_RUSSIA_URL_GOODS_ID.subst({ id }) })
+  severalCheckPurchasesOnActivate()
+  return true
+}
 
-let wndComp = bgShaded.__merge({
-  key = WND_UID
-  size = flex()
-  onClick = @() null
-  animations = wndSwitchAnim
-  children = msgBoxBg.__merge({
-    size = [ wndWidthDefault, wndHeight ]
-    flow = FLOW_VERTICAL
-    children = [
-      msgBoxHeaderWithClose(null, close)
-      {
-        size = flex()
-        flow = FLOW_VERTICAL
-        padding = [ 0, buttonsHGap, buttonsHGap, buttonsHGap ]
-        children = [
-          msgBoxText(loc("msg/inAppPurchasesInRussia"))
-          {
-            size = [ flex(), SIZE_TO_CONTENT ]
-            halign = ALIGN_CENTER
-            children = mkMsgBoxBtnsSet(WND_UID, [{
-                id = "readMoreOnline"
-                cb = openReadMoreUrl
-                styleId = "PRIMARY"
-                isDefault = true
-              }])
-          }
-        ]
-      }
-    ]
-  })
+let function openDefaultPurchase() {
+  send("openUrl", { baseUrl = INGAME_PURCHASES_IN_RUSSIA_URL })
+  severalCheckPurchasesOnActivate()
+}
+
+subscribeFMsgBtns({
+  function openRussiaInAppPurchase(guids) {
+    if (!openPurchaseByGuids(guids))
+      addWaitbox({
+        uid = WND_UID
+        text = loc("msgbox/please_wait")
+        time = 10
+        eventId = "openRussiaInAppPurchase.timeout"
+        context = guids
+      })
+  }
 })
 
-let function openMsgBoxInAppPurchasesFromRussia() {
-  close()
-  addModalWindow(wndComp)
-  return WND_UID
+subscribe("openRussiaInAppPurchase.timeout", function(guids) {
+  if (!openPurchaseByGuids(guids))
+    openDefaultPurchase()
+})
+
+goodsInfo.subscribe(function(_) {
+  let wbox = waitboxes.value.findvalue(@(w) w.uid == WND_UID)
+  if (wbox == null)
+    return
+  if (openPurchaseByGuids(wbox.context))
+    removeWaitbox(WND_UID)
+})
+
+let function openMsgBoxInAppPurchasesFromRussia(goods) {
+  let { purchaseGuids = {}, relatedGaijinId = "" } = goods
+  let relatedGoodsGuid = campConfigs.value?.allGoods[relatedGaijinId].purchaseGuids.gaijin.guid
+  let guids = [
+    relatedGoodsGuid
+    purchaseGuids?.gaijin.guid
+    purchaseGuids?.android.guid
+  ].filter(@(v) v != null)
+  foreach(info in purchaseGuids)
+    if (!guids.contains(info.guid))
+      guids.append(info.guid)
+
+  addGoodsInfoGuids(guids)
+
+  openFMsgBox({
+    uid = WND_UID
+    text = loc("msg/inAppPurchasesInRussia")
+    viewType = "withWndClose"
+    buttons = [{
+      id = "readMoreOnline"
+      eventId = "openRussiaInAppPurchase"
+      context = guids
+      styleId = "PRIMARY"
+      isDefault = true
+    }]
+  })
 }
+
+register_command(function() {
+  isDebugDisabledCurrency(!isDebugDisabledCurrency.value)
+  console_print("isDebugDisabledCurrency = ", isDebugDisabledCurrency.value) //warning disable: -forbidden-function
+}, "ui.debug.shopDisabledCurrency")
 
 return {
   isForbiddenPlatformPurchaseFromRussia

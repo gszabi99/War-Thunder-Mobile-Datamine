@@ -6,6 +6,7 @@ let { newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let newbieModeStats = require("newbieModeStats.nut")
 let { curUnitMRank } = require("%appGlobals/pServer/profile.nut")
+let { isInSquad } = require("%appGlobals/squadState.nut")
 
 let forceNewbieModeIdx = mkWatched(persist, "forceNewbieModeIdx", -1)
 
@@ -31,7 +32,7 @@ let curNewbieMode = Computed(function() {
 })
 
 let randomBattleMode = Computed(function() {
-  if (curNewbieMode.value != null)
+  if (curNewbieMode.value != null && !isInSquad.value)
     return curNewbieMode.value
   if (allGameModes.value.len() == 0)
     return null

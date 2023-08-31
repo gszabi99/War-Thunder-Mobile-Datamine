@@ -510,6 +510,7 @@ let showMessage = @() addModalWindow(bgShadedDark.__merge({
   onClick = onCloseRequest
   children = messageWnd
   animations = wndSwitchAnim
+  sound = { attach = "element_appear" }
 }))
 
 if (needShow.value)

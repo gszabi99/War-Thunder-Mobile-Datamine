@@ -1411,7 +1411,7 @@
                   "660"
                 ],
                 "driverMinVer0": 512,
-                "driverMinVer1": 416,
+                "driverMinVer1": 445,
                 "data": {
                   "affected": true
                 }

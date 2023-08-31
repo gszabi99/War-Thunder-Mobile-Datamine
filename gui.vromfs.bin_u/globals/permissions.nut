@@ -11,7 +11,6 @@ let defaults = {
   can_debug_missions = DBGLEVEL > 0
   can_debug_units = DBGLEVEL > 0
   can_debug_shop = DBGLEVEL > 0
-  allow_online_purchases = false
   can_use_debug_console = DBGLEVEL > 0
   can_receive_dedic_logerr = DBGLEVEL > 0
   allow_players_online_info = false

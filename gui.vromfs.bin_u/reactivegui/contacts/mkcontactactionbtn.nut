@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { textButtonMultiline, mergeStyles } = require("%rGui/components/textButton.nut")
 let { COMMON, PRIMARY, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 
 let neverInProgress = Watched(false)
 
@@ -10,7 +10,7 @@ let progressWait = {
   size = [defButtonMinWidth, defButtonHeight]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = mkSpinner()
+  children = spinner
 }
 
 let function mkContactActionBtn(actionCfg, userId, btnStyle = {}) {

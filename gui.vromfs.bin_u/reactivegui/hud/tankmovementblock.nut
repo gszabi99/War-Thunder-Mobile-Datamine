@@ -22,7 +22,6 @@ let imgArrowSmallH = (23.0 / 35 * imgArrowW).tointeger()
 let imgArrowSmallPosX = 0.35 * imgBgSize + 0.5 * imgArrowSmallW
 let imgArrowSmallPosY = 0.35 * imgBgSize + 0.5 * imgArrowSmallH
 let stickSize = shHud(11)
-let steeringStart = 0.34
 
 let imgRotaion = {
   size = [imgRotationSize, imgRotationSize]
@@ -117,8 +116,14 @@ let tankMoveStick  = @() {
     horizontal = "gm_steering"
     vertical = "gm_throttle"
   }
-  deadZoneForStraightMove = 20 //degrees
-  valueAfterDeadZone = steeringStart
+  deadZoneForStraightMove = 20
+  deadZoneForTurnAround = 85
+  valueAfterDeadZone = 0.34
+  steeringTable = [
+    [0, 0],
+    [80, 0.7],
+    [81, 1.0]
+  ]
   maxValueRadius = bgRadius
   useCenteringOnTouchBegin = currentTankMoveCtrlType.value == "stick"
 

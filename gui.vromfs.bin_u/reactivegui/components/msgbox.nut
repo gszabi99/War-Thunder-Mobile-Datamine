@@ -88,7 +88,7 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) msgBoxBg.__mer
   size = [ buttonsArray.len() <= 2 ? wndWidthDefault : wndWidthWide, wndHeight ]
   flow = FLOW_VERTICAL
   children = [
-    title == null ? null : msgBoxHeader(title)
+    type(title) == "string" ? msgBoxHeader(title) : title,
     {
       size = flex()
       flow = FLOW_VERTICAL

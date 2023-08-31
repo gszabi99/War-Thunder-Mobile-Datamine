@@ -1,20 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { addUserOption, get_gui_option, set_gui_option } = require("guiOptions")
+let { addUserOption, addLocalUserOption, get_gui_option, set_gui_option } = require("guiOptions")
 let { send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 //options should have full list on get profile for correct load
 let optListNative = [
   "OPT_TANK_MOVEMENT_CONTROL"
-  "OPT_GRAPHICS_QUALITY"
   "OPT_CAMERA_SENSE"
   "OPT_FREE_CAMERA_TANK"
   "OPT_FREE_CAMERA_PLANE"
-  "OPT_FPS"
-  "OPT_RAYTRACING"
   "OPT_SHOW_MOVE_DIRECTION"
   "OPT_TARGET_TRACKING"
   "OPT_SHOW_RETICLE"
+]
+
+let optListLocalNative = [
+  "OPT_GRAPHICS_QUALITY"
+  "OPT_FPS"
+  "OPT_RAYTRACING"
 ]
 
 let optListScriptOnly = [
@@ -34,6 +37,10 @@ let export = {}
 let nativeOptions = {}
 foreach (id in optListNative) {
   export[id] <- addUserOption(id)
+  nativeOptions[export[id]] <- true
+}
+foreach (id in optListLocalNative) {
+  export[id] <- addLocalUserOption(id)
   nativeOptions[export[id]] <- true
 }
 foreach (id in optListScriptOnly)
@@ -85,7 +92,7 @@ let function mkOptionValue(id, defValue = null, validate = @(v) v) {
     logerr($"Try to init option value twice")
     return optionValues[id]
   }
-  let ctor = id in nativeOptions ? mkOptionValueNative : mkOptionValueScriptOnly
+  let ctor = (id in nativeOptions || id in optListLocalNative) ? mkOptionValueNative : mkOptionValueScriptOnly
   optionValues[id] <- ctor(id, defValue, validate)
   return optionValues[id]
 }

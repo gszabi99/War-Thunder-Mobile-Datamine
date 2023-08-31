@@ -1386,6 +1386,9 @@ Yeniden doğma noktalarının olduğu modlarda, uçağın doğma maliyetini bir 
 "37mm_usa_m59a1_AP/name";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";"M59A1";;
 "25mm_ussr_72K_HE/name";"OZT";"OZT";"OZT";"OZT";"OZT";"ОЗТ";"OZT";"OZT";"OZT";"OZT";"OZT";"OZT";"OZT";;
 "25mm_ussr_72K_AP/name";"BZT";"BZT";"BZT";"BZT";"BZT";"БЗТ";"BZT";"BZT";"BZT";"BZT";"BZT";"BZT";"BZT";;
+"35mm_kda_HE/name";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";"DM11A1";;
+"35mm_kda_APDS/name";"DM23";"DM23";"DM23";"DM23";"DM23";"DM23";"DM23";"DM23";"DM23";"DM23";"DM23";"DM23";"DM23";;
+"35mm_kda_APHEI/name";"DM13";"DM13";"DM13";"DM13";"DM13";"DM13";"DM13";"DM13";"DM13";"DM13";"DM13";"DM13";"DM13";;
 "57mm_ussr_AP/name";"BR-281";"BR-281";"BR-281";"BR-281";"BR-281";"БР-281";"BR-281";"BR-281";"BR-281";"BR-281";"BR-281";"BR-281";"BR-281";;
 "57mm_ussr_HE/name";"OR-281U";"OR-281U";"OR-281U";"OR-281U";"OR-281U";"ОР-281У";"OR-281U";"OR-281U";"OR-281U";"OR-281U";"OR-281U";"OR-281U";"OR-281U";;
 "57mm_ussr_APCBC/name";"BR-281U";"BR-281U";"BR-281U";"BR-281U";"BR-281U";"БР-281У";"BR-281U";"BR-281U";"BR-281U";"BR-281U";"BR-281U";"BR-281U";"BR-281U";;

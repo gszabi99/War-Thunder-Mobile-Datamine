@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let logC = log_with_prefix("[CLUSTERS] ")
 let { getCountryCode } = require("auth_wt")
-let { getClustersByCountry } = require("%appGlobals/defaultClusters.nut")
+let { getClustersByCountry, getForbiddenClustersByCountry } = require("%appGlobals/defaultClusters.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingOnline } = require("matchingOnline.nut")
@@ -15,13 +15,18 @@ let clusters = hardPersistWatched("matching.clusters", [])
 local isFetching = false
 local failedFetches = 0
 
+let function getValidClusters(clustersList) {
+  let forbiddenClusters = getForbiddenClustersByCountry(getCountryCode())
+  return clustersList.filter(@(cluster) !forbiddenClusters.contains(cluster))
+}
+
 let function applyClusters(res) {
   logC("clusters received", res)
-  let newClusters = res?.clusters
-  if (type(newClusters) != "array")
+  if (type(res?.clusters) != "array")
     return false
-  clusters(newClusters)
-  return newClusters.len() > 0
+  let newClusters = getValidClusters(res.clusters)
+  clusters(newClusters.len() == 0 ? res.clusters : newClusters)
+  return clusters.value.len() > 0
 }
 
 let function fetchClusters() {
@@ -65,9 +70,13 @@ let function onClustersChanged(params) {
       list.remove(idx)
   }
 
-  foreach (cluster in params?.added ?? [])
+  let { added = [] } = params
+  foreach (cluster in getValidClusters(added))
     if (!list.contains(cluster))
       list.append(cluster)
+
+  if (list.len() == 0)
+    list.extend(added)
 
   logC("clusters list updated", list)
   clusters(list)

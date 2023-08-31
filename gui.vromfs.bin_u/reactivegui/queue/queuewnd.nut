@@ -7,7 +7,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { secondsToTimeSimpleString, millisecondsToSecondsInt } = require("%sqstd/time.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING
+let { isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING, QS_ACTUALIZE, QS_ACTUALIZE_SQUAD
 } = require("%appGlobals/queueState.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { get_time_msec } = require("dagor.time")
@@ -92,17 +92,20 @@ let function waitTime() {
   }, fontMedium)
 }
 
-let waitingBlock = {
+let waitingBlock = @() {
+  watch = curQueueState
   hplace = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = spinnerGap
   children = [
     textParams.__merge({
-      text = loc("yn1/waiting_time")
+      text = curQueueState.value == QS_ACTUALIZE ? loc("wait/actualizeProfile")
+        : curQueueState.value == QS_ACTUALIZE_SQUAD ? loc("wait/actualizeSquadMembersProfile")
+        : loc("yn1/waiting_time")
       color = textColor
     }, fontMedium)
-    waitTime
+    curQueueState.value != QS_ACTUALIZE && curQueueState.value != QS_ACTUALIZE_SQUAD ? waitTime : null
     waitCircle
   ]
 }

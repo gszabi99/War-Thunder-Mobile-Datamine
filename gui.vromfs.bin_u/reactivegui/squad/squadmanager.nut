@@ -3,6 +3,7 @@ let logS = log_with_prefix("[SQUAD] ")
 let { send, subscribe } = require("eventbus")
 let { fabs } = require("math")
 let { OK } = require("matching.errors")
+let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { debounce } = require("%sqstd/timers.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -17,7 +18,7 @@ let { allContacts, validateNickNames, getContactNick, updateContact } = require(
 let { onlineStatus, isContactOnline, updateSquadPresences } = require("%rGui/contacts/contactPresence.nut")
 let squadState = require("%appGlobals/squadState.nut")
 let { squadId, isReady, isInSquad, isSquadLeader, isInvitedToSquad, squadMembers, squadMyState,
-  squadLeaderCampaign, squadMembersOrder, squadOnline
+  squadLeaderCampaign, squadMembersOrder, squadOnline, squadLeaderQueueDataCheckTime
 } = squadState
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
@@ -33,6 +34,7 @@ const SHOW_MSG = "squad.showMessage"
 
 let delayedInvites = mkWatched(persist, "delayedInvites", {})
 let isSquadDataInited = hardPersistWatched("isSquadDataInited", false)
+let squadJoinTime = mkWatched(persist, "squadJoinTime", 0)
 
 let myExtDataRW = {}
 let myDataRemote = hardPersistWatched("myDataRemoteWatch", {})
@@ -41,6 +43,7 @@ let canFetchSquad = keepref(Computed(@() isMatchingOnline.value && isContactsLog
 
 
 squadId.subscribe(@(_) isSquadDataInited(false))
+isInSquad.subscribe(@(v) v ? squadJoinTime(get_time_msec()) : null)
 squadMembers.subscribe(@(list) validateNickNames(list.keys()))
 isInvitedToSquad.subscribe(@(list) validateNickNames(list.keys()))
 squadLeaderCampaign.subscribe(@(_) setReady(false))
@@ -101,6 +104,13 @@ let updateMyData = debounce(function updateMyDataImpl() {
 
 foreach (w in [squadMyState, myDataLocal, myDataRemote])
   w.subscribe(@(_) updateMyData())
+
+squadLeaderQueueDataCheckTime.subscribe(function(_) {
+  if (!isInSquad.value || isSquadLeader.value || squadJoinTime.value + 1000 > get_time_msec())
+    return
+  logS("update my data by squad leader queueData request: ", myDataLocal.value)
+  matchingCall("msquad.set_member_data", myDataLocal.value)
+})
 
 let function linkVarToMsquad(name, var) {
   myDataLocal.mutate(@(v) v[name] <- var.value)

@@ -183,6 +183,11 @@ let countryToCluster = {
   VN = "SA" // Vietnam
 }
 
+let forbiddenClusters = {
+  UA = [ "RU" ]
+}
+
 return {
   getClustersByCountry = @(code) countryToCluster?[code].split_by_chars(";", true) ?? []
+  getForbiddenClustersByCountry = @(code) forbiddenClusters?[code] ?? []
 }

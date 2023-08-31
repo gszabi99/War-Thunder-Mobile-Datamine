@@ -17,7 +17,7 @@ let { gradCircularSmallHorCorners, gradCircCornerOffset, mkFontGradient, gradCir
 } = require("%rGui/style/gradients.nut")
 let { mkDiscountPriceComp, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { discountTag } = require("%rGui/components/discountTag.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
@@ -152,8 +152,6 @@ let mkLevelInfo = @(levels, sp, sf) {
     }
   ]
 }
-
-let spinner = mkSpinner()
 
 let mkLevelPrice = @(fullCostGold, costGold, costMul) @() {
   watch = [unitInProgress, balanceGold]

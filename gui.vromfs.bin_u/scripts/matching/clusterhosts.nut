@@ -1,9 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
 let regexp2 = require("regexp2")
+let { getCountryCode } = require("auth_wt")
 let { resetTimeout } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { getForbiddenClustersByCountry } = require("%appGlobals/defaultClusters.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
 
 const MAX_FETCH_RETRIES = 5
@@ -17,6 +19,16 @@ local isFetching = false
 local failedFetches = 0
 
 let reIP = regexp2(@"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$")
+
+let getValidHosts = @(serverAnswer) serverAnswer.filter(function(clusters, ip) {
+  if (!reIP.match(ip))
+    return false
+  let forbiddenClusters = getForbiddenClustersByCountry(getCountryCode())
+  foreach (cluster in clusters)
+    if (forbiddenClusters.contains(cluster))
+      return false
+  return true
+})
 
 let function fetchClusterHosts() {
   if (!canFetchHosts.value || isFetching)
@@ -33,8 +45,7 @@ let function fetchClusterHosts() {
       if (result.error == OPERATION_COMPLETE) {
         logCH($"Fetched hosts:", result)
         failedFetches = 0
-        let hosts = result.filter(@(_, ip) reIP.match(ip))
-        clusterHosts(hosts)
+        clusterHosts(getValidHosts(result))
         return
       }
 
@@ -69,8 +80,7 @@ isInBattle.subscribe(@(_) tryApplyChangedHosts())
 
 ::matching.subscribe("hmanager.notify_hosts_list_changed", function(result) {
   logCH($"Changed hosts:", result)
-  let hosts = result.filter(@(_, ip) reIP.match(ip))
-  clusterHostsChangePending(hosts)
+  clusterHostsChangePending(getValidHosts(result))
   tryApplyChangedHosts()
 })
 

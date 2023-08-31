@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { get_default_graphics_preset, get_default_fps_limit, get_maximum_frames_per_second, is_broken_grass_flag_set
+let { get_maximum_frames_per_second, is_broken_grass_flag_set
 } = require("graphicsOptions")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
@@ -10,7 +10,7 @@ let { inline_raytracing_available } = require("sysinfo")
 
 let qualitiesList = ["low", "medium", "high", "max"]
 let validateQuality = @(q) qualitiesList.contains(q) ? q : qualitiesList[0]
-let qualityValue = mkOptionValue(OPT_GRAPHICS_QUALITY, get_default_graphics_preset(), validateQuality)
+let qualityValue = mkOptionValue(OPT_GRAPHICS_QUALITY, qualitiesList[0], validateQuality)
 let optQuality = {
   locId = "options/graphicQuality"
   ctrlType = OCT_LIST
@@ -24,8 +24,8 @@ let optQuality = {
   }
 }
 
-let fpsValue = mkOptionValue(OPT_FPS, get_default_fps_limit())
 let allFpsValues = [30, 60, 120]
+let fpsValue = mkOptionValue(OPT_FPS, allFpsValues[0])
 let maxFps = get_maximum_frames_per_second()
 let optFpsLimit = {
   locId = "options/fps_limit"

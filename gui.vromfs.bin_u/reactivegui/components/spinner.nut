@@ -31,6 +31,7 @@ let function mkSpinnerHideBlock(watch, content, blockOvr = {}, spinner = null) {
 }
 
 return {
+  spinner = mkSpinner()
   mkSpinner
   mkSpinnerHideBlock
   spinnerOpacityAnim

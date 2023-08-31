@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { doesLocTextExist } = require("dagor.localize")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let currencyStyles = require("currencyStyles.nut")
 let { CS_COMMON, CS_GAMERCARD } = currencyStyles
 
@@ -81,17 +81,14 @@ let mkFreeText = @(style = CS_COMMON) {
   fontFx = style.fontFx
 }.__update(style.fontStyle)
 
-let function mkPriceExtText(price, currencyId, style = CS_COMMON) {
-  let locId = $"priceText/{currencyId}"
-  return {
-    rendObj = ROBJ_TEXT
-    text = doesLocTextExist(locId) ? loc(locId, { price }) : price
-    color = style.textColor
-    fontFxColor = style.fontFxColor
-    fontFxFactor = style.fontFxFactor
-    fontFx = style.fontFx
-  }.__update(style.fontStyle)
-}
+let mkPriceExtText = @(price, currencyId, style = CS_COMMON) {
+  rendObj = ROBJ_TEXT
+  text = getPriceExtStr(price, currencyId)
+  color = style.textColor
+  fontFxColor = style.fontFxColor
+  fontFxFactor = style.fontFxFactor
+  fontFx = style.fontFx
+}.__update(style.fontStyle)
 
 let function strikeThrough(content, style = CS_COMMON) {
   return {

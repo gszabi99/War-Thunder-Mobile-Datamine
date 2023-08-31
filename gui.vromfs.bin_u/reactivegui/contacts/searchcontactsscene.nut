@@ -3,7 +3,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { searchContactsResult, isSearchInProgress, searchContacts, searchedNick, clearSearchData
 } = require("contactsState.nut")
 let { floatingTextInput, floatingTextInputHeight } = require("%rGui/components/textInput.nut")
-let { mkSpinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
+let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
 let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
 let mkContactRow = require("mkContactRow.nut")
 let { mkContactActionBtnPrimary, mkContactActionBtn } = require("mkContactActionBtn.nut")
@@ -107,7 +107,7 @@ let inProgressInfo = {
       text = loc("contacts/search_placeholder")
       animations = [spinnerOpacityAnim]
     }.__update(fontSmall)
-    mkSpinner()
+    spinner
   ]
 }
 

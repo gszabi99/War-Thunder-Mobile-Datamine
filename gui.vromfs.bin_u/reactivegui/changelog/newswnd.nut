@@ -5,7 +5,7 @@ let { registerScene } = require("%rGui/navState.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let scrollbar = require("%rGui/components/scrollbar.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { formatText } = require("textFormatters.nut")
 let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nextArticle, prevArticle,
@@ -250,7 +250,7 @@ let articleLoading = freeze({
   gap = hdpx(20)
   children = [
     formatText([{ v = loc("loading"), t = "h2", halign = ALIGN_CENTER }]),
-    mkSpinner()
+    spinner
   ]
 })
 

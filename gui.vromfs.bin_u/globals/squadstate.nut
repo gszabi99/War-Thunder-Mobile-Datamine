@@ -14,12 +14,14 @@ let squadLeaderState = Computed(@() squadMembers.value?[squadId.value])
 let squadLeaderCampaign = Computed(@() squadLeaderState.value?.campaign)
 let squadLeaderReadyCheckTime = Computed(@() squadLeaderState.value?.readyCheckTime ?? 0)
 let squadLeaderMRankCheckTime = Computed(@() squadLeaderState.value?.mRankCheckTime ?? 0)
+let squadLeaderQueueDataCheckTime = Computed(@() squadLeaderState.value?.queueDataCheckTime ?? 0)
 
 let isInSquad = Computed(@() squadId.value != null)
 let isSquadLeader = Computed(@() squadId.value == myUserId.value)
 let isLeavingWillDisbandSquad = Computed(@() squadLen.value == 1 || (squadLen.value + isInvitedToSquad.value.len() <= 2))
 let canInviteToSquad = Computed(@() !isInSquad.value || isSquadLeader.value)
 let myClustersRTT = sharedWatched("myClustersRTT", @() {})
+let queueDataCheckTime = sharedWatched("queueDataCheckTime", @() 0)
 
 return {
   MAX_SQUAD_MRANK_DIFF = 1
@@ -37,10 +39,12 @@ return {
   squadLeaderCampaign
   squadLeaderReadyCheckTime
   squadLeaderMRankCheckTime
+  squadLeaderQueueDataCheckTime
 
   isInSquad
   isSquadLeader
   isLeavingWillDisbandSquad
   canInviteToSquad
   myClustersRTT
+  queueDataCheckTime
 }

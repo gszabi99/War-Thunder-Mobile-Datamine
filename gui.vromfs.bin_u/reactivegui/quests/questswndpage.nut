@@ -5,7 +5,7 @@ let { textButtonSecondary, textButtonCommon } = require("%rGui/components/textBu
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { receiveUnlockRewards, unlockRewardsInProgress, unlockTables } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, timeUntilTheEnd, allQuestsCompleted
 } = require("questsComps.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize } = require("rewardsComps.nut")
@@ -40,7 +40,6 @@ let mkVerticalPannableAreaTwoBlocks = verticalPannableAreaCtor(sh(100) - topArea
 let pannableCtors = [mkVerticalPannableAreaNoBlocks, mkVerticalPannableAreaOneBlock, mkVerticalPannableAreaTwoBlocks]
 
 let newMarkSize = calc_comp_size(newMark)
-let spinner = mkSpinner()
 
 let receiveReward = @(questName) receiveUnlockRewards(questName, 1, { stage = 1 })
 

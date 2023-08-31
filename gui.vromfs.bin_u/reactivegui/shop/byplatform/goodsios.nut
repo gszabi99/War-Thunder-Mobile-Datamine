@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { send, subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
-let { doesLocTextExist } = require("dagor.localize")
 let logG = log_with_prefix("[GOODS] ")
 let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -12,6 +11,7 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
+let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { json_to_string } = require("json")
 let { logEvent } = require("appsFlyer")
@@ -55,11 +55,10 @@ let availablePrices = Computed(function() {
     if (productId == null || price == null || price_currency == null)
       continue
     let currencyId = price_currency.tolower()
-    let locId = $"priceText/{currencyId}"
     res[productId] <- {
       price
       currencyId
-      priceText = doesLocTextExist(locId) ? loc(locId, { price }) : $"{price} {price_currency}"
+      priceText = getPriceExtStr(price, currencyId)
     }
   }
   return res
@@ -199,7 +198,7 @@ let platformGoods = Computed(function() {
   let allGoods = campConfigs.value?.allGoods ?? {}
   let productToGoodsId = goodsIdByProductId.value
   let res = {}
-  foreach (productId, priceExt in availablePrices.value) { //todo: need to divide price and currency here to 2 fields
+  foreach (productId, priceExt in availablePrices.value) {
     let goodsId = productToGoodsId?[productId]
     let goods = allGoods?[goodsId]
     if (goods != null)

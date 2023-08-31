@@ -1,36 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let logG = log_with_prefix("[GOODS] ")
 let { send } = require("eventbus")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { doesLocTextExist } = require("dagor.localize")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
-let { requestData, createGuidsRequestParams } = require("%rGui/shop/httpRequest.nut")
+let { addGoodsInfoGuids, addGoodsInfoGuid, goodsInfo } = require("gaijinGoodsInfo.nut")
+let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 
-
-const REPEAT_ON_ERROR_SEC = 60
-const NO_ANSWER_TIMEOUT_SEC = 60
-const AUTO_UPDATE_TIME_SEC = 3600
 
 let successPaymentUrl = "https://store.gaijin.net/success_payment.php" //webview should close on success payment url
-
-let isGoodsRequested = hardPersistWatched("goodsGaijin.isGoodsRequested", false)
-let goodsInfo = hardPersistWatched("goodsGaijin.goodsInfo", {})
-let lastError = hardPersistWatched("goodsGaijin.lastError", null)
-let lastUpdateTime = hardPersistWatched("goodsGaijin.lastUpdateTime", 0)
-let needForceUpdate = Watched(false)
-let needRetry = Computed(@() lastError.value != null && !isInBattle.value && !isGoodsRequested.value)
-
-let resetRequestedFlag = @() isGoodsRequested(false)
-isGoodsRequested.subscribe(@(_) resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag))
-if (isGoodsRequested.value)
-  resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag)
 
 let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid
   ?? goods?.purchaseGuid ?? "" //compatibility with pserver 0.0.8.x  2023.05.16
@@ -47,59 +24,17 @@ let goodsIdByGuid = Computed(function() {
   return res
 })
 
-let guidsForRequest = keepref(Computed(function(prev) {
-  if (!isAuthorized.value)
-    return []
-  let res = goodsIdByGuid.value.filter(@(_, guid) needForceUpdate.value || (guid not in goodsInfo.value))
-    .keys()
-  let offerGuid = getGaijinGuid(activeOffers.value)
-  if (offerGuid != "" && (offerGuid not in goodsInfo.value))
-    res.append(offerGuid)
-  return isEqual(prev, res) ? prev : res
-}))
+let addGoodsInfoTbl = @(tbl) addGoodsInfoGuids(tbl.keys())
+addGoodsInfoTbl(goodsIdByGuid.value)
+goodsIdByGuid.subscribe(addGoodsInfoTbl)
 
-let function refreshAvailableGuids() {
-  if (guidsForRequest.value.len() == 0)
-    return
-  logG("requestData: ", guidsForRequest.value)
-  isGoodsRequested(true)
-  requestData(
-    "https://api.gaijinent.com/item_info.php",
-    createGuidsRequestParams(guidsForRequest.value),
-    function(data) {
-      isGoodsRequested(false)
-      lastError(null)
-      lastUpdateTime(serverTime.value)
-      let list = data?.items
-      if (type(list) == "table" && list.len() > 0)
-        goodsInfo.mutate(@(v) v.__update(list))
-    },
-    function(errData) {
-      isGoodsRequested(false)
-      lastError(errData)
-    }
-  )
+let function addOfferGuid(offer) {
+  let offerGuid = getGaijinGuid(offer)
+  if (offerGuid != "")
+    addGoodsInfoGuid(offerGuid)
 }
-
-guidsForRequest.subscribe(@(_) refreshAvailableGuids())
-needRetry.subscribe(@(v) v ? resetTimeout(REPEAT_ON_ERROR_SEC, refreshAvailableGuids)
-  : clearTimer(refreshAvailableGuids))
-if (needRetry.value)
-  resetTimeout(REPEAT_ON_ERROR_SEC, refreshAvailableGuids)
-else if (goodsInfo.value.len() == 0)
-  refreshAvailableGuids()
-
-let forceUpdateAllGuids = @() needForceUpdate(true)
-let function startAutoUpdateTimer() {
-  needForceUpdate(false)
-  if (isInBattle.value || lastUpdateTime.value <= 0)
-    clearTimer(forceUpdateAllGuids)
-  else
-    resetTimeout(max(0.1, lastUpdateTime.value + AUTO_UPDATE_TIME_SEC - serverTime.value), forceUpdateAllGuids)
-}
-startAutoUpdateTimer()
-lastUpdateTime.subscribe(@(_) startAutoUpdateTimer())
-isInBattle.subscribe(@(_) startAutoUpdateTimer())
+addOfferGuid(activeOffers.value)
+activeOffers.subscribe(addOfferGuid)
 
 let function buildPurchaseUrl(info) {
   let { url = "" } = info
@@ -117,13 +52,13 @@ let function mkGoods(baseGoods, info) {
   let { shop_price = 0, shop_price_curr = "" } = info
   if (shop_price <= 0)
     return null
-  let locId = $"priceText/{shop_price_curr.tolower()}"
+  let currencyId = shop_price_curr.tolower()
   return baseGoods.__merge({
     purchaseUrl = buildPurchaseUrl(info)
     priceExt = {
       price = shop_price
-      currencyId = shop_price_curr
-      priceText = doesLocTextExist(locId) ? loc(locId, { price = shop_price }) : $"{shop_price}{shop_price_curr}"
+      currencyId
+      priceText = getPriceExtStr(shop_price, currencyId)
     }
   })
 }

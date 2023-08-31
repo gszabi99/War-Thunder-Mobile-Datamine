@@ -15,6 +15,7 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
+let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { logEvent } = require("appsFlyer")
 
@@ -38,10 +39,11 @@ let { //defaults only to allow test this module on PC
           title = $"{v.google_id} title",
           name = $"{v.google_id} name",
           description = $"{v.google_id} description",
-          price = $"RUB {round_by_value(0.000001 * getDebugPriceMicros(v.google_id), 0.01)}",
+          price = $"{round_by_value(0.000001 * getDebugPriceMicros(v.google_id), 0.01)} ₽".replace(".", ","),
           price_amount_micros = getDebugPriceMicros(v.google_id)
           price_currency_code = "RUB"
           skuDetailsToken = $"{v.google_id}_token"
+          iconUrl = $"https://example.com/{v.google_id}"
         }))
     }
     setTimeout(0.1, @() send("android.billing.googleplay.onInitAndDataRequested", result))
@@ -49,7 +51,7 @@ let { //defaults only to allow test this module on PC
   startPurchaseAsync = @(_) setTimeout(1.0,
     @() send("android.billing.googleplay.onGooglePurchaseCallback", {
       status = dbgStatuses[dbgStatusIdx++ % dbgStatuses.len()],
-      value = "token_for_register_purchase"
+      value = "{ \"orderId\" : -1, \"productId\" : \"debug\" }"
     })),
   confirmPurchase = @(_) setTimeout(1.0, @() send("android.billing.googleplay.onConfirmPurchaseCallback", { status = 0, value = "{}" })),
   checkPurchases = @() null
@@ -66,17 +68,16 @@ let nextRefreshTime = Watched(-1)
 let availableSkusPrices = Computed(function() {
   let res = {}
   foreach (info in skusInfo.value) {
-    let { productId = null, price_currency_code = null, price = null, price_amount_micros = null
+    let { productId = null, price_currency_code = null, price_amount_micros = null
     } = info
     if (productId == null || price_amount_micros == null || price_currency_code == null)
       continue
     let priceFloat = round_by_value(0.000001 * price_amount_micros, 0.01)
     let currencyId = price_currency_code.tolower()
-    let locId = $"priceText/{currencyId}"
     res[productId] <- {
       price = priceFloat
       currencyId
-      priceText = doesLocTextExist(locId) ? loc(locId, { price = priceFloat }) : price
+      priceText = getPriceExtStr(priceFloat, currencyId)
     }
   }
   return res
@@ -177,7 +178,7 @@ let platformGoods = Computed(function() {
   let allGoods = campConfigs.value?.allGoods ?? {}
   let skuToGoodsId = goodsIdBySku.value
   let res = {}
-  foreach (sku, priceExt in availableSkusPrices.value) { //todo: need to divide price and currency here to 2 fields
+  foreach (sku, priceExt in availableSkusPrices.value) {
     let goodsId = skuToGoodsId?[sku]
     let goods = allGoods?[goodsId]
     if (goods != null)

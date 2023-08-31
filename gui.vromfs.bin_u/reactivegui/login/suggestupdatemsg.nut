@@ -3,11 +3,13 @@ let { get_base_game_version_str } = require("app")
 let { send } = require("eventbus")
 let { is_android } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
 let { isDownloadedFromGooglePlay } = require("android.platform")
 let actualGameVersion = require("actualGameVersion.nut")
+
+const SUGGEST_UPDATE = "suggest_update_msg"
 
 let needExitToUpdate = Computed(function() {
   let { reqVersion = "" } = campConfigs.value?.circuit
@@ -52,12 +54,19 @@ needShowExitToUpdate.subscribe(function(v) {
   })
 })
 
-needShowSuggestToUpdate.subscribe(@(v) !v ? null
-  : openFMsgBox({
+let function updateSuggestState(isActive) {
+  if (isActive)
+    openFMsgBox({
+      uid = SUGGEST_UPDATE
       text = loc("msg/updateAvailable/optional")
       isPersist = true
       buttons = [
         { id = "cancel", isCancel = true }
         { text = loc("ugm/btnUpdate"), eventId = "exitGameForUpdate", styleId = "PRIMARY", isDefault = true }
-      ]
-    }))
+      ]})
+  else
+    closeFMsgBox(SUGGEST_UPDATE)
+}
+
+needShowSuggestToUpdate.subscribe(updateSuggestState)
+updateSuggestState(needShowSuggestToUpdate.value)

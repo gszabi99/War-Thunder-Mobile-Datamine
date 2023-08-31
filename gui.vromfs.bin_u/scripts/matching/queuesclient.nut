@@ -17,11 +17,15 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
+let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign, queueDataCheckTime
+} = require("%appGlobals/squadState.nut")
 let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
 let { curUnitName } = require("%appGlobals/pServer/profile.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
+let isSquadActualizeSend = mkWatched(persist, "isSquadActualizeSend", false)
 
+isInQueue.subscribe(@(_) isSquadActualizeSend(false))
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
 
 let setQueueState = @(state) curQueue.mutate(@(q) q.state = state)
@@ -39,6 +43,13 @@ let writeJwtData = @() curQueue.mutate(function(q) {
   logQ($"Queue {q.unitName} params by token: ", payload)
 })
 
+let function actualizeSquadQueueOnce() {
+  if (isSquadActualizeSend.value)
+    return
+  isSquadActualizeSend(true)
+  queueDataCheckTime(serverTime.value)
+}
+
 let function tryWriteMembersData() {
   let playersUpd = {}
   foreach(uid, m in squadMembers.value) {
@@ -47,17 +58,20 @@ let function tryWriteMembersData() {
     let { queueToken = "", units = {} } = m
     if (queueToken == "") {
       logQ($"Squad member {uid} has invalid queue token. wait for validation.")
+      actualizeSquadQueueOnce()
       return
     }
     let { payload = null } = decodeJwtAndHandleErrors(queueToken)
     if (payload == null) {
       logQ($"Squad member {uid} has invalid queue token. wait for validation.")
+      actualizeSquadQueueOnce()
       return
     }
     let unitName = units?[squadLeaderCampaign.value]
     let tokenUnitName = payload?.crafts_info[0].name
     if (unitName != tokenUnitName) {
       logQ($"Squad member {uid} token unit name {tokenUnitName} not same with unit name {unitName}. wait for validation.")
+      actualizeSquadQueueOnce()
       return
     }
     playersUpd[uid.tostring()] <- { profileJwt = queueToken }

@@ -22,7 +22,7 @@ let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, mkUnitPrice,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
 let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -178,7 +178,6 @@ let function cancelBtn() {
   }
 }
 
-let waitSpinner = mkSpinner()
 let toBattleLoc = utf8ToUpper(loc("mainmenu/toBattle/short"))
 let function toBattle() {
   if (chosenBullets.value.len() == 0) //no need to validate bullets count when no bullets choice at all
@@ -207,7 +206,7 @@ let buttons = @() {
     : !isRespawnStarted.value ? textButtonBattle(toBattleLoc, toBattle,
       { hotkeys = ["^J:X | Enter"] })
     : needCancel.value ? cancelBtn
-    : waitSpinner
+    : spinner
 }
 
 let rightBlock = {

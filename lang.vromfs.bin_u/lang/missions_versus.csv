@@ -3486,15 +3486,15 @@ A zona capturada pelo inimigo pode ser recapturada.";"[Sancak] modunda oyuncular
 Bayraktar yok edilerek bayrak ele geçirilebilir.
 Aynı anda en fazla 1/3 düşman noktası yakabilirsin.
 Sadece bayraktar, düşman bölgesini ele geçirebilir.
-Düşmanın ele geçirdiği bölge, tekrar ele geçirilebilir.";"In [Banner] mode, players have to capture the flag and assault enemy positions while holding it.
+Düşmanın ele geçirdiği bölge, tekrar ele geçirilebilir.";"[깃발 뺏기] 모드에선 깃발을 뺏고 유지한 채 적을 강습해야 합니다.
 
-- Grab the Banner!
-- Assault the enemy position while holding it.
+- 깃발을 뺏어야 한다!
+- 그 상태를 유지하며 적을 습격하라.
 
-The flag can be intercepted by destroying the standard bearer.
-You can burn up to 1/3 enemy points at a time.
-Only the standard bearer can capture the enemy zone.
-The zone captured by the enemy can be recaptured.";"在\t【护\t旗\t】\t模\t式\t中，\t玩\t家\t需\t要\t抢\t占\t旗\t帜，\t并\t将\t其\t带\t往\t敌\t方\t阵\t地\t的\t目\t标\t战\t区。
+깃발 운반자를 격파하면 깃발을 뺏을 수 있습니다.
+한 번에 적의 점수 중 1/3을 소모시킬 수 있습니다.
+깃발 운반자만이 적의 지역을 점령할 수 있습니다.
+적이 점령한 지역은 아군이 다시 점령할 수 있습니다.";"在\t【护\t旗\t】\t模\t式\t中，\t玩\t家\t需\t要\t抢\t占\t旗\t帜，\t并\t将\t其\t带\t往\t敌\t方\t阵\t地\t的\t目\t标\t战\t区。
 
 • 抢\t占\t旗\t帜！
 • 将\t旗\t帜\t带\t往\t目\t标\t战\t区
@@ -3529,8 +3529,8 @@ Si destruyes a un jugador que porte la bandera enemiga, esta cae al piso. Si la 
 Если убить игрока, который несёт Флаг противника, Флаг падает на землю. Если флаг подбирает товарищ по команде, он продолжает его нести. Если Флаг поднимает игрок команды, чей Флаг был похищен, Флаг возвращается в начальное положение.";"W trybie [Przejęcie flagi] gracze muszą przejąć flagę przeciwnika i dostarczyć ją do swojej flagi.
 Jeśli zniszczysz gracza niosącego flagę wroga, flaga spadnie na ziemię. Jeśli flaga zostanie podniesiona przez członka drużyny, będzie on nadal ją niósł. Jeśli flaga zostanie podniesiona przez gracza z drużyny, której flaga została skradziona, flaga wraca do swojej pierwotnej pozycji.";"No modo [Capture the Flag], os jogadores devem capturar a bandeira do inimigo e trazê-la sua área.
 Se você abater um jogador que carrega a bandeira inimiga, a Bandeira cai no chão. Se a bandeira for apanhada por um colega de equipe, ele continuará a levá-la. Se a bandeira for apanhada por um jogador da equipe cuja bandeira foi roubada, a bandeira retorna à sua posição original.";"[Bayrağı Ele Geçir] modunda oyuncuların, düşmanın Bayrağını ele geçirmesi ve kendi Bayrağına getirmesi gerekir.
-Düşman bayrağını taşıyan bir oyuncuyu yok edersen Bayrak yere düşer. Bayrağı bir takım arkadaşı alırsa taşımaya devam eder. Takımdan Bayrağı çalınmış başka bir oyuncu Bayrağı alırsa Bayrak başlangıçtaki konumuna geri döner.";"In [Capture the Flag] mode, players have to capture the enemy's Flag and bring it to their Flag.
-If you destroy a player who carries the enemy flag, the Flag falls to the ground. If the flag is picked up by a teammate, they will continue to carry it. If the Flag is picked up by a player of the team whose Flag was stolen, the Flag returns to its original position.";"在\t【夺\t旗\t】\t模\t式\t中，\t玩\t家\t需\t要\t夺\t取\t敌\t方\t旗\t帜\t并\t带\t回\t己\t方\t旗\t帜\t位\t置。
+Düşman bayrağını taşıyan bir oyuncuyu yok edersen Bayrak yere düşer. Bayrağı bir takım arkadaşı alırsa taşımaya devam eder. Takımdan Bayrağı çalınmış başka bir oyuncu Bayrağı alırsa Bayrak başlangıçtaki konumuna geri döner.";"[깃발뺏기] 모드의 경우, 플레이어들은 적의 깃발을 빼앗아 아군의 깃발지점으로 가져와야 합니다.
+만약 당신이 적의 깃발을 가진 적 플레이어를 파괴한다면, 깃발은 땅으로 떨어집니다. 떨어진 깃발을 아군이 다시 집는다면, 계속 깃발을 옮길 수 있습니다. 만약 떨어진 적의 깃발을 적이 집게 된다면, 깃발은 처음 위치로 돌아가게 됩니다.";"在\t【夺\t旗\t】\t模\t式\t中，\t玩\t家\t需\t要\t夺\t取\t敌\t方\t旗\t帜\t并\t带\t回\t己\t方\t旗\t帜\t位\t置。
 旗\t手\t的\t载\t具\t被\t击\t毁\t后，\t旗\t帜\t将\t会\t掉\t在\t原\t地。
 若\t拾\t起\t旗\t帜\t的\t玩\t家\t为\t旗\t手\t的\t队\t友，\t则\t该\t玩\t家\t应\t继\t续\t运\t送\t旗\t帜。
 若\t拾\t起\t旗\t帜\t的\t玩\t家\t属\t于\t被\t夺\t走\t旗\t帜\t的\t阵\t营，\t则\t旗\t帜\t将\t返\t回\t原\t位。";"[旗の\t確保]モードでは、\tプレイヤーは\t敵の\t旗を\t奪い、\tそれを\t自軍の\t旗まで\t運ばなければなりません。\t
@@ -3641,10 +3641,10 @@ Fleet objectives:
 - Destroy the enemy fleet with a cover.";"[┚ Karşılaşması] modunda takımların, arkada yer alan bir siperle düşman filosunu yok etmesi gerekir.
 
 Filo hedefleri:
-- Bir siperle düşman filosunu yok et.";"In [┚ Encounter] teams must destroy the enemy fleet with a cover located in the rear.
+- Bir siperle düşman filosunu yok et.";"[┚ 조우전] 에서 각 편은 후방에 엄폐한 적 함대를 격파해야 합니다.
 
-Fleet objectives:
-- Destroy the enemy fleet with a cover.";"在\t【┚ 海\t上\t交\t锋\t】\t模\t式\t中，\t玩\t家\t必\t须\t摧\t毁\t敌\t军\t所\t保\t护\t的\t后\t方\t舰\t队。
+해군 목표:
+- 엄폐한 적 함대를 섬멸하라.";"在\t【┚ 海\t上\t交\t锋\t】\t模\t式\t中，\t玩\t家\t必\t须\t摧\t毁\t敌\t军\t所\t保\t护\t的\t后\t方\t舰\t队。
 
 任\t务\t目\t标：
 • 摧\t毁\t受\t保\t护\t的\t敌\t方\t舰\t队";"[┚ 会戦]モードでは\tチームは\t後方に\t配置された\t掩護で\t敵艦隊を\t撃破しなければなりません。\t
@@ -3654,7 +3654,7 @@ Fleet objectives:
 
 任\t務\t目\t標：
 • 摧\t毀\t受\t保\t護\t的\t敵\t方\t艦\t隊";;
-"missions/_NDom";"[┚ Domination]";"[┚ Domination]";"[┚Predominio]";"[Flottenvorherrschaft]";"[┚ Dominación]";"[┚ Превосходство]";"[Dominacja na morzu]";"[┚ Domination]";"[Deniz Hakimiyeti]";"[┚ Domination]";"【┚ 海\t域\t控\t制\t】";"[┚ 支配]";"【┚ 海\t域\t控\t制\t】";;
+"missions/_NDom";"[┚ Domination]";"[┚ Domination]";"[┚Predominio]";"[Flottenvorherrschaft]";"[┚ Dominación]";"[┚ Превосходство]";"[Dominacja na morzu]";"[┚ Domination]";"[Deniz Hakimiyeti]";"[┚ 해상 점령전]";"【┚ 海\t域\t控\t制\t】";"[┚ 支配]";"【┚ 海\t域\t控\t制\t】";;
 "missions/_NDom/desc";"In [┚ Domination] mode teams fight for control over three strategic points in the location.
 
 Fleet objectives:
@@ -3686,10 +3686,10 @@ Objetivos da esquadra:
 [Deniz Egemenliği] modunda takımlar konumun iüç stratejik noktasının kontrolü için savaşır.
 
 Donanma görevleri:
-- Noktaları ele geçir ve avantajı elinde tut ╸,╹,╺";"In [┚ Domination] mode teams fight for control over three strategic points in the location.
+- Noktaları ele geçir ve avantajı elinde tut ╸,╹,╺";"[┚ 해상 점령전] 모드에서 각 팀은 두 개의 전략적 지점을 점령하기 위해 싸우게 됩니다.
 
-Fleet objectives:
-- Capture and keep the advantage by points captured ╸,╹,╺";"在\t【┚ 海\t域\t控\t制\t】\t模\t式\t中，\t玩\t家\t的\t主\t要\t任\t务\t是\t占\t领\t并\t守\t住\t海\t区。\t当\t一\t方\t占\t领\t了\t更\t多\t海\t区\t时，\t另\t一\t方\t便\t会\t逐\t渐\t减\t分。\t分\t数\t耗\t尽\t的\t一\t方\t落\t败。
+해군 목표:
+-  ╸,╹,╺지점을 점령하고 우세를 유지하라";"在\t【┚ 海\t域\t控\t制\t】\t模\t式\t中，\t玩\t家\t的\t主\t要\t任\t务\t是\t占\t领\t并\t守\t住\t海\t区。\t当\t一\t方\t占\t领\t了\t更\t多\t海\t区\t时，\t另\t一\t方\t便\t会\t逐\t渐\t减\t分。\t分\t数\t耗\t尽\t的\t一\t方\t落\t败。
 
 任\t务\t目\t标：
 • 攻\t占\t并\t防\t守\t海\t区 ╸,╹,╺";"[┚ 支配] モードでは、\tチーム\t同士で\t3ヵ\t所の\t海上\tゾーンの\t支配権をめぐって\t戦います。\t
@@ -3745,12 +3745,11 @@ Düşmanın stratejik noktasını ele geçirdiğinde anında zafer kazanırsın.
 
 Filo hedefleri:
 - Düşmanın stratejik noktasını etkinleştirmek için ╸ ve ╹ noktalarını ele geçir
-- Anında zafer kazanmak için haritadaki tüm etkin noktaları ele geçir";"In [┚ Battle] mode, teams will initially have one strategic point that is not available for capture by the enemy team. In order to activate an enemy’s strategic point for capture, you must control both of the regular capture points (╸ and ╹).
-Capturing an enemy strategic point will result in an instant victory.
+- Anında zafer kazanmak için haritadaki tüm etkin noktaları ele geçir";"[┚ 해상 전투] 모드에서 각 편은 적군이 일반적인 방법으론 점령할 수 없는 전략적 지점을 하나씩 가지고 시작합니다. 상대편의 점령 지점을 탈환하려면 일반 점령 지점 (╸ 및 ╹) 을 점령하고 있어야 합니다. 적의 점령 지점을 점령하면 즉시 승리합니다.
 
-Fleet objectives:
-- Capture point ╸ and ╹ to activate the enemy strategic point
-- Capture all active points on the map for an instant victory";"在\t【┚ 海\t域\t攻\t陷\t】\t模\t式\t中，\t开\t局\t时\t双\t方\t各\t持\t一\t初\t始\t海\t区，\t且\t无\t法\t被\t敌\t方\t占\t领。
+해군 목표::
+- ╸ 및 ╹지점을 점령하여 적의 점령 지점을 점령할 수 있도록 하라
+- 지도 상에 표시된 활성화 지점을 모두 점령하여 즉시 승리하라";"在\t【┚ 海\t域\t攻\t陷\t】\t模\t式\t中，\t开\t局\t时\t双\t方\t各\t持\t一\t初\t始\t海\t区，\t且\t无\t法\t被\t敌\t方\t占\t领。
 当\t一\t方\t成\t功\t占\t领\t海\t区 ╸,╹ 后，\t就\t能\t够\t继\t续\t占\t领\t敌\t方\t的\t初\t始\t海\t区。\t玩\t家\t可\t通\t过\t夺\t回\t海\t区\t来\t重\t置\t占\t领\t进\t度。
 成\t功\t占\t领\t对\t方\t初\t始\t海\t区\t的\t一\t方\t立\t即\t获\t胜。
 
@@ -3822,11 +3821,11 @@ Donanma görevleri:
 -Düşman noktasını ele geçir <color=@teamRedColor>╶</color>
 -Müttefik noktasının ele geçirilmesine engel ol <color=@teamBlueColor>╶</color>";"
 
-In [┚ Battle] mode each of the teams starts with one strategic point captured. If one of the teams manages to re-capture another team's point, it wins instantly.
+[┚ 해상 전투] 모드에서 각 편은 하나씩의 전략적 지점을 점령한 채로 시작합다. 만약 어떤 팀이 다른 팀의 지점을 점령하면 곧바로 승리하게 됩니다.
 
-Fleet objectives:
-- Capture the enemy point <color=@teamRedColor>╶</color>
-- Prevent the capture of the allied point <color=@teamBlueColor>╶</color>";"
+해군 목표:
+- 적의 지점(<color=@teamRedColor>╶</color>) 을 점령하라
+- 아군 지점(<color=@teamBlueColor>╶</color>) 이 점령되지 않게 하라";"
 
 在\t【┚ 海\t域\t攻\t陷\t】\t模\t式\t中，\t开\t局\t时\t双\t方\t各\t持\t一\t初\t始\t海\t区。\t此\t后，\t成\t功\t占\t领\t对\t方\t海\t区\t的\t一\t方\t立\t即\t获\t胜。
 
@@ -3984,7 +3983,7 @@ Donanma görevleri:
 "missions/training_ground_race/desc";"Make your way to the finish line with the aid of both your driving and shooting skills!";"Frayez-vous un chemin jusqu'à la ligne d'arrivée grâce à vos compétences de pilote et de tireur!";"Fatti strada fino al traguardo con l'aiuto delle tue abilità di guida e di tiro!";"Schlage dich mit Hilfe deiner Fahr- und Schießkünste bis zur Zielline durch!";"¡Alcanza la meta con la ayuda de tus habilidades tanto de manejo como de tiro!";"Опередите своих соперников при помощи навыков вождения танка и меткости стрельбы!";"Dotrzyj do mety wykorzystując swoje umiejętności strzeleckie i rajdowe!";"Faça você mesmo o seu caminho para a linha de chegada com o auxílio de suas habilidades de condução e tiro!";"Bitiş çizgisine hem atış hem de sürücülük yeteneklerin ile ulaş!";"조종술과 포술을 모두 활용해 결승선에 도달하라!";"通\t过\t高\t超\t的\t驾\t驶\t及\t射\t击\t技\t巧\t抵\t达\t终\t点。";"操縦と\t射撃の\t両方を\t駆使して、\tゴールを\t目指しましょう！";"通\t過\t高\t超\t的\t駕\t駛\t及\t射\t擊\t技\t巧\t抵\t達\t終\t點。";;
 "missions/black_sea_race";"Naval Biathlon";"Biathlon Naval";"Biathlon Navale";"Marine-Biathlon";"Biatlón Naval";"Морской биатлон";"Naval Biathlon";"Biatlo de navios";"Naval Biathlon";"해상 바이애슬론";"海\t军\t两\t项\t赛";"艦艇\tバイアスロン";"海\t軍\t兩\t項\t賽";;
 "missions/black_sea_race/desc";"Make your way to the finish line with the aid of both your steering and shooting skills!";"Frayez-vous un chemin jusqu'à la ligne d'arrivée grâce à vos compétences de pilote et de tireur!";"Fatti strada fino al traguardo con l'aiuto delle tue abilità di pilotaggio e di tiro!";"Begib dich mit Hilfe deiner Lenk- und Schießfähigkeiten auf den Weg zur Ziellinie!";"¡Alcanza la meta con la ayuda de tus habilidades tanto de navegación como de tiro!";"Опередите своих соперников при помощи навыков маневрирования и меткости стрельбы!";"Make your way to the finish line with the aid of both your steering and shooting skills!";"Make your way to the finish line with the aid of both your steering and shooting skills!";"Make your way to the finish line with the aid of both your steering and shooting skills!";"항해술과 포술을 모두 활용해 결승선에 도달하라!";"通\t过\t高\t超\t的\t航\t行\t及\t射\t击\t技\t巧\t抵\t达\t终\t点。";"操縦と\t射撃の\t両方の\tスキルの\t力を\t借りて、\tゴール\t目指して\t突っ\t走りましょう！";"通\t過\t高\t超\t的\t航\t行\t及\t射\t擊\t技\t巧\t抵\t達\t終\t點。";;
-"missions/_BfD_norespawn";"[Operation]";"[Operation]";"[Operazione]";"[Operation]";"[Operation]";"[Операция]";"[Operacja]";"[Operation]";"[Operation]";"[Operation]";"【军\t事\t行\t动\t】";"[作戦]";"【軍\t事\t行\t動\t】";;
+"missions/_BfD_norespawn";"[Operation]";"[Operation]";"[Operazione]";"[Operation]";"[Operation]";"[Операция]";"[Operacja]";"[Operation]";"[Operation]";"[작전]";"【军\t事\t行\t动\t】";"[作戦]";"【軍\t事\t行\t動\t】";;
 "missions/_BfD_norespawn/desc";"
 
 In [Operation] mode teams should complete various tasks in order to win.
@@ -4044,12 +4043,12 @@ Görev hedefleri:
 - Düşman üslerini yok et
 - Düşman hava-alanını yok et";"
 
-In [Operation] mode teams should complete various tasks in order to win.
+[작전]모드에서 각 편은 승리를 위해 다양한 임무를 수행해야 합니다.
 
-Mission objectives:
-- Destroy indicated ground targets
-- Destroy the enemy bases
-- Destroy the enemy airfield";"
+임무 목표:
+- 표시된 지상군을 격파하라
+- 적의 거점을 파괴하라
+- 적의 비행장을 파괴하라";"
 
 在\t【军\t事\t行\t动\t】\t模\t式\t中，\t玩\t家\t需\t要\t完\t成\t多\t个\t任\t务\t目\t标\t以\t获\t取\t胜\t利。
 
@@ -4129,12 +4128,12 @@ Görev hedefleri:
 - Düşman üslerini yok et
 - Düşman hava-alanını yok et";"
 
-In [Front Line] mode teams should complete various tasks at the front line in order to win.
+[전선]모드에서 각 팀은 승리를 위해 전선에서 펼쳐지는 다양한 임무를 수행해야 합니다.
 
-Mission objectives:
-- Destroy indicated ground targets
-- Destroy the enemy bases
-- Destroy the enemy airfield";"
+임무 목표:
+- 표시된 지상군을 격파하라
+- 적의 거점을 파괴하라
+- 적의 비행장을 파괴하라";"
 
 在\t【前\t线\t作\t战\t】\t模\t式\t中，\t玩\t家\t需\t要\t在\t前\t线\t完\t成\t多\t个\t任\t务\t目\t标\t以\t获\t取\t胜\t利。
 
@@ -4156,7 +4155,7 @@ Mission objectives:
 • 炸\t毀\t敵\t方\t機\t場";;
 "missions/_frontline_GS";"[Front Line]";"[Ligne de front]";"[Prima linea]";"[Frontlinie]";"[Primera linea]";"[Линия фронта]";"[Linia Frontu]";"[Linha da Frente]";"[Ön Cephe]";"[전선]";"【前\t线\t作\t战\t】";"[前線]";"【前\t線\t作\t戰\t】";;
 "missions/_frontline_GS/desc";"In [Front Line] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"Dans le mode [Ligne de Front], les équipes devront détruire les cibles indiquées et compléter les tâches afin de gagner. Chaque unité détruite affecte le résultat!";"In modalità [Prima Linea] le squadre devono distruggere i bersagli indicati e soddisfare le altre missioni per vincere.
-Ciascuna unità distrutta influisce sul risultato!";"Im Modus [Frontlinie] sollten Teams angezeigte Ziele zerstören und andere Aufgaben erfüllen, um zu gewinnen. Jede zerstörte Einheit beeinflusst das Ergebnis!";"En el modo [Primera Línea] los equipos deben destruir los objetivos indicados y completar otras tareas para ganar. Cada unidad destruida afecta el resultado.";"В режиме [Линия фронта] команды должны уничтожать отмеченные цели и выполнять сопутствующие задания для достижения победы. Каждая уничтоженная единица техники влияет на результат!";"W trybie [Linia Frontu] celem jest zniszczenie wskazanych celów oraz wypełnienie pozostałych zadań. Liczy się każda zniszczona jednostka!";"In [Front Line] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"[Ön Cephe] modunda takımlar kazanmak için belirtilmiş hedefleri yok etmeli ve diğer görevleri de tamamlamalıdır. Her yok edilen birim sonucu etkiler!";"In [Front Line] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"在\t【前\t线\t作\t战\t】\t模\t式\t中，\t玩\t家\t必\t须\t摧\t毁\t敌\t军\t的\t地\t面\t目\t标，\t并\t完\t成\t一\t系\t列\t任\t务\t才\t能\t获\t胜。\t你\t所\t摧\t毁\t的\t每\t一\t个\t单\t位\t都\t将\t影\t响\t战\t争\t进\t程！";"[前線]モードでは、\tチームの\t勝利のために\t指定された\tターゲットの\t破壊や\t他の\tタスクを\t実行する\t必要があります。\t 破壊された\tユニットの\t数が\t勝敗に\t影響します！";"在\t【前\t線\t作\t戰\t】\t模\t式\t中，\t玩\t家\t必\t須\t摧\t毀\t敵\t軍\t的\t地\t面\t目\t標，\t並\t完\t成\t一\t系\t列\t任\t務\t才\t能\t獲\t勝。\t你\t所\t摧\t毀\t的\t每\t一\t個\t單\t位\t都\t將\t影\t響\t戰\t爭\t進\t程！";;
+Ciascuna unità distrutta influisce sul risultato!";"Im Modus [Frontlinie] sollten Teams angezeigte Ziele zerstören und andere Aufgaben erfüllen, um zu gewinnen. Jede zerstörte Einheit beeinflusst das Ergebnis!";"En el modo [Primera Línea] los equipos deben destruir los objetivos indicados y completar otras tareas para ganar. Cada unidad destruida afecta el resultado.";"В режиме [Линия фронта] команды должны уничтожать отмеченные цели и выполнять сопутствующие задания для достижения победы. Каждая уничтоженная единица техники влияет на результат!";"W trybie [Linia Frontu] celem jest zniszczenie wskazanych celów oraz wypełnienie pozostałych zadań. Liczy się każda zniszczona jednostka!";"In [Front Line] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"[Ön Cephe] modunda takımlar kazanmak için belirtilmiş hedefleri yok etmeli ve diğer görevleri de tamamlamalıdır. Her yok edilen birim sonucu etkiler!";"[전선] 모드에서, 각 편은 지정된 목표를 격파하고 다른 임무를 완료해야 승리할 수 있습니다. 적을 격파할 때 마다 게임 결과에 영향을 미칩니다!";"在\t【前\t线\t作\t战\t】\t模\t式\t中，\t玩\t家\t必\t须\t摧\t毁\t敌\t军\t的\t地\t面\t目\t标，\t并\t完\t成\t一\t系\t列\t任\t务\t才\t能\t获\t胜。\t你\t所\t摧\t毁\t的\t每\t一\t个\t单\t位\t都\t将\t影\t响\t战\t争\t进\t程！";"[前線]モードでは、\tチームの\t勝利のために\t指定された\tターゲットの\t破壊や\t他の\tタスクを\t実行する\t必要があります。\t 破壊された\tユニットの\t数が\t勝敗に\t影響します！";"在\t【前\t線\t作\t戰\t】\t模\t式\t中，\t玩\t家\t必\t須\t摧\t毀\t敵\t軍\t的\t地\t面\t目\t標，\t並\t完\t成\t一\t系\t列\t任\t務\t才\t能\t獲\t勝。\t你\t所\t摧\t毀\t的\t每\t一\t個\t單\t位\t都\t將\t影\t響\t戰\t爭\t進\t程！";;
 "missions/el_amain_BfD_norespawn";"[Operation] El Alamein";"[Operation] El Alamein";"[Operazione] Battaglia di El Alamein";"[Operation] El Alamein";"[Operation] El Alamein";"[Операция] Сражение при Эль-Аламейне";"[Operation] El Alamein";"[Operation] El Alamein";"[Operation] El Alameyn";"[Operation] 엘 알라메인";"【军\t事\t行\t动\t】\t阿\t拉\t曼\t战\t役";"[作戦] エル・アラメイン";"【軍\t事\t行\t動\t】\t阿\t拉\t曼\t戰\t役";;
 "missions/malta_alt_chapter1_BfD_norespawn";"[Operation] Landing to Malta";"[Operation] Débarquement à Malte";"[Operazione] Sbarco su Malta";"[Operation] Landung auf Malta";"[Operation] Desembarco en Malta";"[Учения] Высадка на Мальту";"[Operation] Lądowanie na Malcie";"[Operation] Desembarque em Malta";"[Operation] Malta'ya Çıkartma";"[Operation] 몰타 착륙";"【军\t事\t行\t动\t】\t登\t陆\t马\t耳\t他";"[作戦] マルタ\t島への\t上陸";"【軍\t事\t行\t動\t】\t登\t陸\t馬\t耳\t他";;
 "missions/malta_alt_chapter2_BfD_norespawn";"[Operation] Battle at Malta";"[Operation] Bataille de Malte";"[Operazione] Battaglia di Malta";"[Operation] Schlacht von Malta";"[Operation] Batalla en Malta";"[Учения] Сражение на Мальте";"[Operation] Bitwa o Maltę";"[Operation] Batalha em Malta";"[Operation] Malta'da Muharebe";"[Operation] 몰타 전투";"【军\t事\t行\t动\t】\t马\t耳\t他\t之\t战";"[作戦] マルタ\t島の\t戦い";"【軍\t事\t行\t動\t】\t馬\t耳\t他\t之\t戰";;
@@ -4164,12 +4163,12 @@ Ciascuna unità distrutta influisce sul risultato!";"Im Modus [Frontlinie] sollt
 "missions/zhengzhou_46_BfD_norespawn/desc";;;;;;"В 1946 году Войска коммунистов нанесли несколько крупных ударов по войскам националистического Китая. Президент США Труман подписал приказ о масштабной военной поддержке гоминьдановцам, а СССР стала оказывать помощь правительству Мао Цзэдуна.";;;;;;;;;
 "sector_montmedy/name";"Maginot Line";"Ligne Maginot";"Linea Maginot";"Maginot-Linie";"Línea Maginot";"Линия Мажино";"Linia Maginota";"Linha Marginot";"Maginot Hattı";"마지노 선";"马\t其\t诺\t防\t线 • 蒙\t梅\t迪\t防\t区";"マジノ\t線";"馬\t其\t諾\t防\t線 • 蒙\t梅\t迪\t防\t區";;
 "sector_montmedy/desc";;;;;;;;;;;;;;;
-"missions/_ny_ctf";"Chasing Christmas";"A la poursuite de Noël";"Inseguendo il Natale";"Jägerliche Weihnacht";"Persiguiendo la Navidad";"Охота за зелёненькой";"Chasing Christmas";"Chasing Christmas";"Yılbaşını Yakalama";"Chasing Christmas";"逐\t梦\t圣\t诞\t节";"クリスマスを\t追いかけて";"逐\t夢\t聖\t誕\t節";;
-"missions/_ny_ctf/desc";"Try to capture the enemy Christmas tree whilst keeping yours safe or at least be the first to bring the other team’s tree home!";"Essayez de capturer le sapin de Noël ennemi tout en protégeant le vôtre ou au moins soyez le premier à ramener le sapin de l’équipe adverse à la maison!";"Prova a catturare l'albero di natale nemico mantenendo il tuo al sicuro o sii il primo a portare l'albero a casa!";"Versuche, den Weihnachtsbaum des Gegners zu stehlen und verhindere, dass der Gegner gleiches tut! Ziel ist es, als erster den Weihnachtsbaum des Gegners nach Hause zu bringen.";"¡Intenta capturar el árbol de Navidad enemigo mientras resguardas el tuyo, o sé el primero en llevar el árbol del otro equipo a tu base!";"Постарайтесь завладеть ёлочкой другой команды и сохранить свою, ну или хотя бы первым принесите себе чужую. Ведь две лучше, чем одна!";"Try to capture the enemy Christmas tree whilst keeping yours safe or at least be the first to bring the other team’s tree home!";"Tente capturar a árvore de natal adversária mantendo a sua segura, ou pelo menos tente trazer a árvore adversária primeiro!";"Kendi Yılbaşı ağacını korur iken düşmanınkini ele geçirmeye çalış veya en azından diğer takımın ağacını eve getiren ilk kişi ol!";"Try to capture the enemy Christmas tree whilst keeping yours safe or at least be the first to bring the other team’s tree home!";"在\t这\t场\t比\t拼\t中，\t试\t着\t夺\t取\t敌\t方\t的\t圣\t诞\t树\t吧！\t哪\t怕\t不\t能\t全\t身\t而\t退，\t也\t要\t当\t第\t一\t个\t带\t回\t圣\t诞\t树\t的\t人！";"安全を\t確保しながら\t敵の\tクリスマスツリーを\t確保するか、\t少なくとも\t他の\tチームの\tツリーを\t最初に\t持ち\t帰ってください。";"在\t這\t場\t比\t拼\t中，\t試\t著\t奪\t取\t敵\t方\t的\t聖\t誕\t樹\t吧！\t哪\t怕\t不\t能\t全\t身\t而\t退，\t也\t要\t當\t第\t一\t個\t帶\t回\t聖\t誕\t樹\t的\t人！";;
-"missions/_ny_gift_ctf";"Festive Delivery";"Livraison festive";"Spedizioni Natalizie";"Festliche Fracht";"Reparto Festivo";"Новогодняя доставка";"Festive Delivery";"Festive Delivery";"Bayramlık Teslimat";"Festive Delivery";"节\t日\t速\t递";"祝祭の\t配達";"節\t日\t速\t遞";;
-"missions/_ny_gift_ctf/desc";"Two teams of Christmas elves are helping Santa gather presents. The team that collects the most presents wins.";"Deux équipes de lutins de Noël aident le père Noël à rassembler des cadeaux. L'équipe qui apporte le plus de cadeaux l'emporte.";"Due squadre di elfi natalizi stanno aiutando Babbo Natale a portare i doni. La squadra che porta più regali vince.";"In 'Festliche Fracht' sind die Elfen des Weihnachtsmanns schwer damit beschäftigt, rechtzeitig alle Geschenke zu verteilen. Das Team, das die meisten Geschenke verteilt, gewinnt.";"Dos equipos de duendes de Navidad están ayudando a Papá Noel a reunir regalos. El equipo que junte mas regalos gana.";"Две команды — команда зайчиков и команда лисичек — помогут Дедушке собрать подарки под ёлочкой. А победит та из них, которая принесёт под свою ёлочку больше подарков.";"Dwie drużyny świątecznych elfów pomagają Mikołajowi zbierać prezenty. Drużyna, która zbierze najwięcej prezentów, wygrywa.";"Duas equipes de élvos de Natal estão ajudando o Pai Natal / Papai Noel a apanhar presentes. A equipa que trouxer mais presentes ganha.";"İki takım Yılbaşı elfleri Noel Baba'ya hediyeleri toplaması için yardım ediyor. En çok hediyeyi getiren takım kazanır.";"Two teams of Christmas elves are helping Santa gather presents. The team that collects the most presents wins.";"圣\t诞\t精\t灵\t们\t分\t成\t了\t两\t队，\t想\t要\t比\t一\t比\t谁\t能\t为\t圣\t诞\t老\t人\t带\t来\t更\t多\t礼\t物。\t收\t集\t更\t多\t礼\t物\t的\t一\t方\t将\t会\t获\t胜。";"2\tつの\tチームの\tクリスマスの\t妖精が\tサンタの\tプレゼント\t集めを\t手伝っています。\t一番多くの\tプレゼントを\t集めた\tチームの\t勝ちです。";"聖\t誕\t精\t靈\t們\t分\t成\t了\t兩\t隊，\t想\t要\t比\t一\t比\t誰\t能\t為\t聖\t誕\t老\t人\t帶\t來\t更\t多\t禮\t物。\t收\t集\t更\t多\t禮\t物\t的\t一\t方\t將\t會\t獲\t勝。";;
-"missions/_naval_ny_gift_ctf";"┚ Festive Delivery";"┚ Livraison festive";"┚ Spedizioni Festive";"┚ Festliche Fracht";"┚ Reparto Festivo";"┚ Новогодняя доставка";"┚ Festive Delivery";"┚ Entrega Festiva";"┚ Bayramlık Teslimat";"┚ Festive Delivery";"┚ 节\t日\t速\t递";"┚ 祝祭の\t配達";"┚ 節\t日\t速\t遞";;
-"missions/_naval_ny_gift_ctf/desc";"Two teams of Christmas elves are helping Santa gather presents again. The team that collects 3 presents and takes them to their own Christmas tree wins.";"Deux équipes de lutins de Noël aident de nouveau le père Noël à rassembler des cadeaux. L'équipe qui apporte 3 cadeaux en dessous de son sapin de Noël l'emporte.";"Due squadre di elfi natalizi stanno aiutando Babbo Natale a portare i doni. La squadra che porta 3 regali sotto il proprio Albero di Natale vince.";"Zwei Weihnachtselfen-Teams helfen dem Weihnachtsmann dabei, wieder Geschenke zu sammeln. Das Team, das 3 Geschenke unter den eigenen Weihnachtsbaum bringt, gewinnt.";"Dos equipos de duendes de Navidad están ayudando a Papá Noel a reunir regalos ora vez. El equipo que junte 3 regalos bajo su propio árbol de Navidad gana.";"Две команды — команда боевых пингвинов и морских котиков спешат помочь Дедушке собрать выпавшие из мешка прямо в воду подарки! Победит та команда, которая первой принесёт под свою ёлочку 3 подарка.";"Dwie drużyny świątecznych elfów ponownie pomagają Mikołajowi zbierać prezenty. Drużyna, która zbierze 3 prezenty i zaniesie je pod własną choinkę, wygrywa.";"Two teams of Christmas elves are helping Santa gather presents again. The team that collects 3 presents and takes them to their own Christmas tree wins.";"İki takım Yılbaşı elfleri Noel Baba'ya hediyeleri toplaması için yardım ediyor. 3 hediyeyi kendi Yılbaşı ağaçlarının altına getiren takım kazanır.";"Two teams of Christmas elves are helping Santa gather presents again. The team that collects 3 presents and takes them to their own Christmas tree wins.";"圣\t诞\t精\t灵\t们\t再\t次\t分\t成\t了\t两\t队，\t想\t要\t比\t一\t比\t谁\t能\t为\t圣\t诞\t老\t人\t带\t来\t更\t多\t礼\t物。\t率\t先\t将 3 份\t礼\t物\t带\t到\t己\t方\t圣\t诞\t树\t下\t的\t一\t方\t将\t会\t获\t胜。";"2\tつの\tチームの\tクリスマスの\t妖精が\tサンタさんの\tプレゼント\t集めを\t手伝っています。\t3\tつの\tプレゼントを\t集めて、\t自分の\tクリスマスツリーに\t持って\t行った\tチームの\t勝ちです。";"聖\t誕\t精\t靈\t們\t再\t次\t分\t成\t了\t兩\t隊，\t想\t要\t比\t一\t比\t誰\t能\t為\t聖\t誕\t老\t人\t帶\t來\t更\t多\t禮\t物。\t率\t先\t將 3 份\t禮\t物\t帶\t到\t己\t方\t聖\t誕\t樹\t下\t的\t一\t方\t將\t會\t獲\t勝。";;
+"missions/_ny_ctf";"Chasing Christmas";"A la poursuite de Noël";"Inseguendo il Natale";"Jägerliche Weihnacht";"Persiguiendo la Navidad";"Охота за зелёненькой";"Chasing Christmas";"Chasing Christmas";"Yılbaşını Yakalama";"크리스마스 체이싱";"逐\t梦\t圣\t诞\t节";"クリスマスを\t追いかけて";"逐\t夢\t聖\t誕\t節";;
+"missions/_ny_ctf/desc";"Try to capture the enemy Christmas tree whilst keeping yours safe or at least be the first to bring the other team’s tree home!";"Essayez de capturer le sapin de Noël ennemi tout en protégeant le vôtre ou au moins soyez le premier à ramener le sapin de l’équipe adverse à la maison!";"Prova a catturare l'albero di natale nemico mantenendo il tuo al sicuro o sii il primo a portare l'albero a casa!";"Versuche, den Weihnachtsbaum des Gegners zu stehlen und verhindere, dass der Gegner gleiches tut! Ziel ist es, als erster den Weihnachtsbaum des Gegners nach Hause zu bringen.";"¡Intenta capturar el árbol de Navidad enemigo mientras resguardas el tuyo, o sé el primero en llevar el árbol del otro equipo a tu base!";"Постарайтесь завладеть ёлочкой другой команды и сохранить свою, ну или хотя бы первым принесите себе чужую. Ведь две лучше, чем одна!";"Try to capture the enemy Christmas tree whilst keeping yours safe or at least be the first to bring the other team’s tree home!";"Tente capturar a árvore de natal adversária mantendo a sua segura, ou pelo menos tente trazer a árvore adversária primeiro!";"Kendi Yılbaşı ağacını korur iken düşmanınkini ele geçirmeye çalış veya en azından diğer takımın ağacını eve getiren ilk kişi ol!";"아군 트리를 보호하면서 적의 성탄절 트리를 빼앗아 가져오세요!";"在\t这\t场\t比\t拼\t中，\t试\t着\t夺\t取\t敌\t方\t的\t圣\t诞\t树\t吧！\t哪\t怕\t不\t能\t全\t身\t而\t退，\t也\t要\t当\t第\t一\t个\t带\t回\t圣\t诞\t树\t的\t人！";"安全を\t確保しながら\t敵の\tクリスマスツリーを\t確保するか、\t少なくとも\t他の\tチームの\tツリーを\t最初に\t持ち\t帰ってください。";"在\t這\t場\t比\t拼\t中，\t試\t著\t奪\t取\t敵\t方\t的\t聖\t誕\t樹\t吧！\t哪\t怕\t不\t能\t全\t身\t而\t退，\t也\t要\t當\t第\t一\t個\t帶\t回\t聖\t誕\t樹\t的\t人！";;
+"missions/_ny_gift_ctf";"Festive Delivery";"Livraison festive";"Spedizioni Natalizie";"Festliche Fracht";"Reparto Festivo";"Новогодняя доставка";"Festive Delivery";"Festive Delivery";"Bayramlık Teslimat";"성탄절 배달";"节\t日\t速\t递";"祝祭の\t配達";"節\t日\t速\t遞";;
+"missions/_ny_gift_ctf/desc";"Two teams of Christmas elves are helping Santa gather presents. The team that collects the most presents wins.";"Deux équipes de lutins de Noël aident le père Noël à rassembler des cadeaux. L'équipe qui apporte le plus de cadeaux l'emporte.";"Due squadre di elfi natalizi stanno aiutando Babbo Natale a portare i doni. La squadra che porta più regali vince.";"In 'Festliche Fracht' sind die Elfen des Weihnachtsmanns schwer damit beschäftigt, rechtzeitig alle Geschenke zu verteilen. Das Team, das die meisten Geschenke verteilt, gewinnt.";"Dos equipos de duendes de Navidad están ayudando a Papá Noel a reunir regalos. El equipo que junte mas regalos gana.";"Две команды — команда зайчиков и команда лисичек — помогут Дедушке собрать подарки под ёлочкой. А победит та из них, которая принесёт под свою ёлочку больше подарков.";"Dwie drużyny świątecznych elfów pomagają Mikołajowi zbierać prezenty. Drużyna, która zbierze najwięcej prezentów, wygrywa.";"Duas equipes de élvos de Natal estão ajudando o Pai Natal / Papai Noel a apanhar presentes. A equipa que trouxer mais presentes ganha.";"İki takım Yılbaşı elfleri Noel Baba'ya hediyeleri toplaması için yardım ediyor. En çok hediyeyi getiren takım kazanır.";"두 팀의 성탄절 엘프들이 산타가 선물을 모으는 것을 돕고 있습니다. 더 많은 선물을 모으는 팀이 승리합니다.";"圣\t诞\t精\t灵\t们\t分\t成\t了\t两\t队，\t想\t要\t比\t一\t比\t谁\t能\t为\t圣\t诞\t老\t人\t带\t来\t更\t多\t礼\t物。\t收\t集\t更\t多\t礼\t物\t的\t一\t方\t将\t会\t获\t胜。";"2\tつの\tチームの\tクリスマスの\t妖精が\tサンタの\tプレゼント\t集めを\t手伝っています。\t一番多くの\tプレゼントを\t集めた\tチームの\t勝ちです。";"聖\t誕\t精\t靈\t們\t分\t成\t了\t兩\t隊，\t想\t要\t比\t一\t比\t誰\t能\t為\t聖\t誕\t老\t人\t帶\t來\t更\t多\t禮\t物。\t收\t集\t更\t多\t禮\t物\t的\t一\t方\t將\t會\t獲\t勝。";;
+"missions/_naval_ny_gift_ctf";"┚ Festive Delivery";"┚ Livraison festive";"┚ Spedizioni Festive";"┚ Festliche Fracht";"┚ Reparto Festivo";"┚ Новогодняя доставка";"┚ Festive Delivery";"┚ Entrega Festiva";"┚ Bayramlık Teslimat";"┚ 성탄절 배달";"┚ 节\t日\t速\t递";"┚ 祝祭の\t配達";"┚ 節\t日\t速\t遞";;
+"missions/_naval_ny_gift_ctf/desc";"Two teams of Christmas elves are helping Santa gather presents again. The team that collects 3 presents and takes them to their own Christmas tree wins.";"Deux équipes de lutins de Noël aident de nouveau le père Noël à rassembler des cadeaux. L'équipe qui apporte 3 cadeaux en dessous de son sapin de Noël l'emporte.";"Due squadre di elfi natalizi stanno aiutando Babbo Natale a portare i doni. La squadra che porta 3 regali sotto il proprio Albero di Natale vince.";"Zwei Weihnachtselfen-Teams helfen dem Weihnachtsmann dabei, wieder Geschenke zu sammeln. Das Team, das 3 Geschenke unter den eigenen Weihnachtsbaum bringt, gewinnt.";"Dos equipos de duendes de Navidad están ayudando a Papá Noel a reunir regalos ora vez. El equipo que junte 3 regalos bajo su propio árbol de Navidad gana.";"Две команды — команда боевых пингвинов и морских котиков спешат помочь Дедушке собрать выпавшие из мешка прямо в воду подарки! Победит та команда, которая первой принесёт под свою ёлочку 3 подарка.";"Dwie drużyny świątecznych elfów ponownie pomagają Mikołajowi zbierać prezenty. Drużyna, która zbierze 3 prezenty i zaniesie je pod własną choinkę, wygrywa.";"Two teams of Christmas elves are helping Santa gather presents again. The team that collects 3 presents and takes them to their own Christmas tree wins.";"İki takım Yılbaşı elfleri Noel Baba'ya hediyeleri toplaması için yardım ediyor. 3 hediyeyi kendi Yılbaşı ağaçlarının altına getiren takım kazanır.";"두 팀의 성탄절 엘프들이 산타가 선물을 모으는 것을 돕고 있습니다. 먼저 3개의 선물을 각자의 성탄절 트리로 먼저 가져가는 팀이 승리합니다.";"圣\t诞\t精\t灵\t们\t再\t次\t分\t成\t了\t两\t队，\t想\t要\t比\t一\t比\t谁\t能\t为\t圣\t诞\t老\t人\t带\t来\t更\t多\t礼\t物。\t率\t先\t将 3 份\t礼\t物\t带\t到\t己\t方\t圣\t诞\t树\t下\t的\t一\t方\t将\t会\t获\t胜。";"2\tつの\tチームの\tクリスマスの\t妖精が\tサンタさんの\tプレゼント\t集めを\t手伝っています。\t3\tつの\tプレゼントを\t集めて、\t自分の\tクリスマスツリーに\t持って\t行った\tチームの\t勝ちです。";"聖\t誕\t精\t靈\t們\t再\t次\t分\t成\t了\t兩\t隊，\t想\t要\t比\t一\t比\t誰\t能\t為\t聖\t誕\t老\t人\t帶\t來\t更\t多\t禮\t物。\t率\t先\t將 3 份\t禮\t物\t帶\t到\t己\t方\t聖\t誕\t樹\t下\t的\t一\t方\t將\t會\t獲\t勝。";;
 "missions/tank_football_Tdm";"Tank Football";"Football de chars";"Calcio per carri armati";"Panzerfußball";"Fútbol tanquista";"Танковый футбол";"Futbol pancerny";"Futebol de Tanques";"Tank Futbolu";"전차 축구";"坦\t克\t足\t球\t赛";"戦車\tフットボール";"坦\t克\t足\t球\t賽";;
 "missions/tank_football_Tdm_squads";"Tank Football (squads)";"Football de chars (escouades)";"Calcio per carri armati (plotoni)";"Panzerfußball (Staffel)";"Fútbol tanquista (escuadras)";"Танковый футбол (отряды)";"Futbol pancerny (oddziały)";"Futebol de Tanques (Equipes)";"Tank Futbolu (takımlar)";"전차 축구 (편대)";"坦\t克\t足\t球\t赛\t（组\t队\t战）";"戦車\tフットボール（分隊）";"坦\t克\t足\t球\t賽\t（組\t隊\t戰）";;
 "missions/tank_football_Tdm/desc";"In Tank Football, players need to put the ball into the opponent's goal.
@@ -4188,7 +4187,7 @@ Maçın sonunda daha fazla puanı alan takım galip olur.";"전차 축구에서 
 在\t比\t賽\t結\t束\t時\t得\t分\t更\t高\t的\t一\t方\t將\t會\t獲\t勝。";;
 "missions/respawn_outfield";"Outfield player";"Joueur hors-jeu";"Giocatore fuori campo";"Feldspieler";"Jugador fuera de campo";"Полевой игрок";"Zawodnik z pola";"Outfield player";"Saha dışı oyuncu";"아웃필드 플레이어";"球\t场";"アウトフィールド・プレイヤー";"球\t場";;
 "missions/respawn_keeper";"Goalkeeper";"Gardien de but";"Portiere";"Torhüter";"Portero";"Вратарь";"Bramkarz";"Goleiro / Guarda Redes";"Kaleci";"골키퍼";"球\t门";"ゴールキーパー";"球\t門";;
-"missions/respawn_ingame";"At the touch-line";"Sur la ligne de touche";"Alla linea di bordo campo";"An der Seitenlinie";"En la línea de banda";"На бровке";"Na linii bocznej";"At the touch-line";"At the touch-line";"At the touch-line";"边\t线";"タッチライン\t配備";"邊\t線";;
+"missions/respawn_ingame";"At the touch-line";"Sur la ligne de touche";"Alla linea di bordo campo";"An der Seitenlinie";"En la línea de banda";"На бровке";"Na linii bocznej";"At the touch-line";"At the touch-line";"터치라인 배속";"边\t线";"タッチライン\t配備";"邊\t線";;
 "missions/naval_newbie";"(boats)";"(bateaux)";"(navi)";"(Boote)";"(barcos)";"(катера)";"(łodzie)";"(barcos)";"(botlar)";"(보트)";"（小\t型\t舰\t艇）";"（ボート）";"（小\t型\t艦\t艇）";;
 "missions/air_newbie";"(light vehicles)";"(véhicules légers)";"(veicoli leggeri)";"(leichte Fahrzeuge)
 ";"(vehículos ligeros)";"(лёгкая техника)";"(lekkie pojazdy)";"(veículos ligeiros)";"(hafif araçlar)";"(경장갑 차량)";"（轻\t型\t载\t具）";"（軽機体）";"（輕\t型\t載\t具）";;
@@ -4318,13 +4317,13 @@ Savunucuların görevleri:
 Saldırganların görevleri:
 - Düşman gemi konvoyunu yok et";"
 
-In [┚ Convoy] mode one of the teams covers the naval convoy from attacks from the second team.
+[┚ 수송대] 모드에서는 한 팀이 다른 팀의 공격으로부터 차량 수송대를 방어해야 한다.
 
-Defenders' objectives:
-- Defend the ship convoy
+방어 목표:
+- 해상 수송대를 방어하라
 
-Attackers' objectives:
-- Destroy the enemy ship convoy";"
+공격 목표:
+- 해상 수송대를 격파하라";"
 
 在\t【┚ 护\t卫\t行\t动\t】\t模\t式\t中，\t一\t方\t需\t要\t保\t护\t友\t军\t的\t水\t面\t部\t队，\t而\t另\t一\t方\t则\t需\t要\t不\t惜\t一\t切\t摧\t毁\t它\t们。
 
@@ -4374,10 +4373,10 @@ Objetivo da missão:
 - Dar cobertura às embarcações no nosso comboio antes que saíam da zona de combate";"Deniz konvoyumuz, düşman gemilerinin saldırısına uğruyor.
 
 Görev hedefi:
-- Konvoyumuzdaki gemileri çatışma alanından ayrılana kadar koru";"Our naval convoy is being attacked by enemy vessels.
+- Konvoyumuzdaki gemileri çatışma alanından ayrılana kadar koru";"아군 수송대가 적 함대의 공격을 받고 있다.
 
-Mission objective:
-- Cover the vessels in our convoy before they leave the combat area";"我\t方\t水\t面\t部\t队\t正\t遭\t受\t敌\t方\t海\t军\t的\t攻\t击。
+임무 목표:
+- 아군 해상 수송대가 전투 지역을 벗어나기 전까지 보호하라";"我\t方\t水\t面\t部\t队\t正\t遭\t受\t敌\t方\t海\t军\t的\t攻\t击。
 
 任\t务\t目\t标：
 • 保\t护\t友\t军\t船\t队，\t直\t到\t安\t全\t离\t开\t作\t战\t区\t域";"我々の\t輸送船団が\t敵艦の\t攻撃を\t受けています。\t
@@ -4414,10 +4413,10 @@ Objetivo da missão:
 - Destruir o comboio inimigo antes que este saía da zona de combate";"Bir düşman deniz konvoyuna saldırdık.
 
 Görev hedefi:
-- Düşman konvoyu çatışma alanından ayrılmadan önce konvoyu yok et";"We have attacked an enemy naval convoy.
+- Düşman konvoyu çatışma alanından ayrılmadan önce konvoyu yok et";"아군이 적의 해상 수송대를 공격 중이다.
 
-Mission objective:
-- Destroy the enemy convoy before it leaves the combat area";"我\t方\t海\t军\t正\t在\t攻\t击\t敌\t方\t水\t面\t部\t队。
+임무 목표:
+- 적의 수송대가 전투 지역을 벗어나기 전까지 적의 수송대를 섬멸하라";"我\t方\t海\t军\t正\t在\t攻\t击\t敌\t方\t水\t面\t部\t队。
 
 任\t务\t目\t标：
 • 摧\t毁\t敌\t方\t船\t队，\t阻\t止\t其\t离\t开\t作\t战\t区\t域";"我々は\t敵の\t輸送船団を\t攻撃しました。\t
@@ -4585,7 +4584,7 @@ Objetivos de la misión:
 "missions/april_spitzbergen_deathmatch_NTdm";"Underwater hunting";"Chasse sous-marine";"Caccia sottomarina";"Unterwasserjagd";"Caza submarina";"Подводная охота";"Podwodne łowy";"Caça submarina";"Su altında avlanma";"수중 사냥";"水\t中\t猎\t杀\t战";"水中\tハンティング";"水\t下\t狩\t獵";;
 "missions/april_spitzbergen_deathmatch_NTdm/desc";"Your task is to find and destroy strategic submarines ready for a nuclear strike.";"Votre tâche est de trouver et de détruire les sous-marins stratégiques prêts à effectuer une frappe nucléaire.";"Il tuo compito è di trovare e distruggere i sottomarini strategici pronti ad un attacco nucleare.";"Deine Aufgabe ist es, die strategischen U-Boote ausfindig zu machen und zu zerstören, welche bereit für einen nuklearen Atomschlag sind.";"Tu tarea es encontrar y destruir los submarinos estratégicos preparados para un ataque nuclear.";"Ваша задача — поиск и уничтожение стратегических подводных лодок, готовых к ядерному удару.";"Twoim zadaniem jest odszukać i zniszczyć strategoczne okręty podwodne gotowe do przeprowadzenia ataku nuklearnego";"A tarefa é identificar e afundar submarinos estratégicos prontos para efetuar um ataque nuclear.";"Görevin, nükleer saldırıya hazır stratejik denizaltıları bulup yok etmektir.";"당신은 핵 공격을 가할 준비가 완료된 전략 잠수함을 찾아내고 격파하셔야 합니다.";"搜\t索\t并\t猎\t杀\t正\t在\t准\t备\t核\t打\t击\t的\t敌\t方\t战\t略\t核\t潜\t艇";"あなたの\t任務は、\t核攻撃を\t企む\t戦略潜水艦を\t発見して\t破壊すること。";"搜\t索\t並\t獵\t殺\t正\t在\t準\t備\t核\t打\t擊\t的\t敵\t方\t核\t潛\t艇";;
 "missions/arcade_floating_islands_AfD";"TailSpin";"TailSpin";"TailSpin";"TailSpin";"TailSpin";"Чудесные виражи";"TailSpin";"TailSpin";"Viril";"빙글뱅글";"《航\t空\t大\t英\t雄\t》";"きりもみ\t降下";"航\t空\t小\t英\t雄";;
-"missions/arcade_floating_islands_AfD/desc";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"L'air au-dessus de la baie de Cape-Sommerset est instable - les clans rivaux de la République des Pirates de l'AIR ont décidé de déterminer une fois pour toutes le maître de la région de Soaring Rocks.";"L'area sulla baia di Capo-Sommerset è istabile - le bande rivali della Repubblica Aerea Pirata hanno deciso di determinare chi sia il capo della regione delle Rocce Flottanti una volta per tutte.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"El ambiente sobre la bahía del Cabo Sommerset está tenso - los clanes rivales de los Piratas del Cielo están decididos a determinar al amo de la región de Soaring Rocks de una vez por todas.";"Над бухтой Кейп-Сомерсет снова неспокойно - противоборствующие кланы Республики Воздушных Пиратов решили раз и навсегда выяснить, кому быть хозяином региона волшебных Парящих Скал.";"Powietrze nad zatoką Cape-Sommerset jest niespokojne - rywalizujące ze sobą klany z Republiki Powietrznych Piratów postanowiły raz na zawsze wyłonić władcę regionu Soaring Rocks.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"Cape-Sommerset körfezindeki hava bulanık. Hava Korsanları Cumhuriyeti'nden rakip klanlar, Yükselen Kayalar bölgesinin efendisini belirlemeye kararlı.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"开\t普\t-\t萨\t默\t塞\t特\t的\t海\t湾\t上\t空，\t此\t刻\t已\t是\t山\t雨\t欲\t来。\t面\t对\t凌\t霄\t岩\t海\t的\t领\t土\t问\t题，\t空\t中\t海\t盗\t共\t和\t国\t的\t两\t大\t派\t系\t终\t于\t擦\t枪\t走\t火，\t决\t心\t通\t过\t彻\t底\t的\t毁\t灭\t来\t永\t久\t解\t决\t这\t一\t争\t端。";"ケープ・サマーセット\t港の\t上を\t流れる\t空気が\t不安定だ。\t空賊国からやって\t来た\tライバルの\tクランは、\tこれを\t最後に\tソーキング・ロックス\t地帯の\t支配者を\t定めることに\t決めた。";"開\t普\t-\t薩\t默\t塞\t特\t的\t海\t灣\t上\t空，\t此\t刻\t已\t是\t山\t雨\t欲\t來。\t面\t對\t凌\t霄\t岩\t海\t的\t領\t土\t問\t題，\t空\t中\t海\t盜\t共\t和\t國\t的\t兩\t大\t派\t系\t終\t於\t擦\t槍\t走\t火，\t決\t心\t通\t過\t徹\t底\t的\t毀\t滅\t來\t永\t久\t解\t決\t這\t一\t爭\t端。";;
+"missions/arcade_floating_islands_AfD/desc";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"L'air au-dessus de la baie de Cape-Sommerset est instable - les clans rivaux de la République des Pirates de l'AIR ont décidé de déterminer une fois pour toutes le maître de la région de Soaring Rocks.";"L'area sulla baia di Capo-Sommerset è istabile - le bande rivali della Repubblica Aerea Pirata hanno deciso di determinare chi sia il capo della regione delle Rocce Flottanti una volta per tutte.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"El ambiente sobre la bahía del Cabo Sommerset está tenso - los clanes rivales de los Piratas del Cielo están decididos a determinar al amo de la región de Soaring Rocks de una vez por todas.";"Над бухтой Кейп-Сомерсет снова неспокойно - противоборствующие кланы Республики Воздушных Пиратов решили раз и навсегда выяснить, кому быть хозяином региона волшебных Парящих Скал.";"Powietrze nad zatoką Cape-Sommerset jest niespokojne - rywalizujące ze sobą klany z Republiki Powietrznych Piratów postanowiły raz na zawsze wyłonić władcę regionu Soaring Rocks.";"The air above Cape-Sommerset bay is unsettled - rival clans from the Air Pirates Republic decided to determine the master of the region of Soaring Rocks once and for all.";"Cape-Sommerset körfezindeki hava bulanık. Hava Korsanları Cumhuriyeti'nden rakip klanlar, Yükselen Kayalar bölgesinin efendisini belirlemeye kararlı.";"비행석 지역의 진정한 주인을 결정하기 위한 스카이 파이레츠 공화국 소속 세력들의 격돌이 이어집니다. 케이프-소머셋 만의 상공은 바람 잘 날이 없군요.";"开\t普\t-\t萨\t默\t塞\t特\t的\t海\t湾\t上\t空，\t此\t刻\t已\t是\t山\t雨\t欲\t来。\t面\t对\t凌\t霄\t岩\t海\t的\t领\t土\t问\t题，\t空\t中\t海\t盗\t共\t和\t国\t的\t两\t大\t派\t系\t终\t于\t擦\t枪\t走\t火，\t决\t心\t通\t过\t彻\t底\t的\t毁\t灭\t来\t永\t久\t解\t决\t这\t一\t争\t端。";"ケープ・サマーセット\t港の\t上を\t流れる\t空気が\t不安定だ。\t空賊国からやって\t来た\tライバルの\tクランは、\tこれを\t最後に\tソーキング・ロックス\t地帯の\t支配者を\t定めることに\t決めた。";"開\t普\t-\t薩\t默\t塞\t特\t的\t海\t灣\t上\t空，\t此\t刻\t已\t是\t山\t雨\t欲\t來。\t面\t對\t凌\t霄\t岩\t海\t的\t領\t土\t問\t題，\t空\t中\t海\t盜\t共\t和\t國\t的\t兩\t大\t派\t系\t終\t於\t擦\t槍\t走\t火，\t決\t心\t通\t過\t徹\t底\t的\t毀\t滅\t來\t永\t久\t解\t決\t這\t一\t爭\t端。";;
 "missions/air_skyscraper_city_BfD_norespawn";"[Operation] City";"[Operation] Ville";"[Operazione] Città";"[Operation] Stadt";"[Operation] Ciudad";"[Операция] Мегаполис";"[Operacja] Miasto";"[Operation] Cidade";"[Operasyon] Şehir";"[작전] 도시";"【军\t事\t行\t动\t】\t大\t都\t会";"[作戦] 都市";"【軍\t事\t行\t動\t】\t城\t市";;
 "nuclear_incident/name";"Ground zero";"Ground zero";"Ground zero";"Ground Zero";"Zona cero";"Эпицентр";"Strefa zero";"Ground zero";"Sıfır noktası";"그라운드 제로";"阿\t拉\t斯\t加 • 核\t爆\t原\t点";"グラウンド・ゼロ";"原\t爆\t點";;
 "nuclear_incident/desc";;;;;;;;;;;;;;;
@@ -4610,7 +4609,7 @@ Objetivos de la misión:
 "missions/middle_east_1973";"[Assault] Sinai (1973)";"[Assault] Sinai (1973)";"[Assalto] Sinai (1973)";"[Assault] Sinai (1973)";"[Assault] Sinaí (1973)";"[Штурм] Синай (1973)";"[Szturm] Synaj (1973)";"[Assault] Sinai (1973)";"[Taarruz] Sinai (1973)";"[Assault] 시나이 (1973)";"【拉\t锯\t战\t】\t西\t奈\t半\t岛\t（1973 年）";"[襲撃] シナイ (1973)";"【突\t擊\t】\t西\t奈\t半\t島\t（1973 年）";;
 "missions/africa_desert_convoy_pvet";"[Convoy] Second battle of El Alamein (1942)";"[Convoy] Seconde bataille d'El Alamein (1942)";"[Convoglio] Seconda battaglia di El Alamein (1942)";"[Convoy] Zweite Schlacht von El Alamein (1942)";"[Convoy] Segunda batalla de El Alamein (1942)";"[Конвой] Второе сражение за Эль-Аламейн (1942)";"[Konwój] Druga bitwa pod El Alamein (1942)";"[Convoy] Segunda Batalha de El Alamein  (1942)";"[Konvoy] II. El-Alameyn Muharebesi (1942)";"[Convoy] 2차 엘 알라메인 전투 (1942)";"【护\t送\t行\t动\t】\t第\t二\t次\t阿\t拉\t曼\t战\t役\t（1942 年）";"[輸送団] 第二次\tエル・アラメインの\t戦い (1942)";"【護\t送\t行\t動\t】\t第\t二\t次\t阿\t拉\t曼\t戰\t役\t（1942 年）";;
 "missions/volokolamsk_convoy_pvet";"[Convoy] Volokolamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Convoglio] Volokolamsk (1942)";"[Convoy] Wolokolamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Конвой] Волоколамск (1942)";"[Konwój] Wołokołamsk (1942)";"[Convoy] Volokolamsk (1942)";"[Konvoy] Volokolamsk (1942)";"[Convoy] 볼로콜람스크 (1942)";"【护\t送\t行\t动\t】\t沃\t洛\t科\t拉\t姆\t斯\t克\t（1942 年）";"[輸送団] ヴォロコラムスク (1942)";"【護\t送\t行\t動\t】\t沃\t洛\t科\t拉\t姆\t斯\t克\t（1942 年）";;
-"country_sky_pirates";"The Republic of Sky Pirates";"La République des pirates du ciel";"Repubblica dei Pirati del Cielo";"Die Republik der Himmelspiraten";"La República de Piratas del Cielo";"Республика Воздушных Пиратов";"Republika Podniebnych Piratów";"The Republic of Sky Pirates";"Hava Korsanları Cumhuriyeti";"The Republic of Sky Pirates";"空\t中\t海\t盗\t共\t和\t国";"空賊共和国";"空\t中\t海\t盜\t共\t和\t國";;
+"country_sky_pirates";"The Republic of Sky Pirates";"La République des pirates du ciel";"Repubblica dei Pirati del Cielo";"Die Republik der Himmelspiraten";"La República de Piratas del Cielo";"Республика Воздушных Пиратов";"Republika Podniebnych Piratów";"The Republic of Sky Pirates";"Hava Korsanları Cumhuriyeti";"스카이 파이레츠 공화국";"空\t中\t海\t盗\t共\t和\t国";"空賊共和国";"空\t中\t海\t盜\t共\t和\t國";;
 "event/war2077";"Warfare 2077";"Warfare 2077";"Teatro 2077";"Warfare 2077";"Warfare 2077";"Война 2077";"Warfare 2077";"Warfare 2077";"Harp 2077";"워페어 2077";"赛\t博\t雷\t霆 2077";"戦争 2077";"賽\t博\t雷\t霆 2077";;
 "missions/western_europe_Dom";"Warfare 2077";"Warfare 2077";"Teatro 2077";"Warfare 2077";"Warfare 2077";"Война 2077";"Warfare 2077";"Warfare 2077";"Harp 2077";"워페어 2077";"雷\t霆\t战\t争 2077";"戦争 2077";"賽\t博\t雷\t霆 2077";;
 "missions/_defdom";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Превосходство]";"[DEF-Domination]";"[DEF-Domination]";"[DEF-Domination]";"[우세 점령(방어)]";"【DEF 最\t终\t防\t卫\t圈\t】";"[DEF-ドミネーション]";"【DEF 最\t終\t防\t衛\t圈\t】";;
@@ -4650,9 +4649,10 @@ DEF-zones are not capable of preventing aircraft from being irradiated, so they 
 Yayıcılar yerin altındadır ve yatay eksendeki hedeflere saldırmada etkili değildir. Bu nedenle yayıcıların altındaki alanlar güvenlidir ve haritada Savunma bölgeleri olarak işaretlenir.
 Savunma bölgeleri, uçakların radyasyona maruz kalmasını önlemez, bu nedenle uçakların elektromanyetik saldırı sırasında savaş bölgesinden uzak durmaları tavsiye edilir.";"
 
-In [DEF-Domination] mode, the area of hostilities is guarded by a defense system that accumulates charge and periodically inflicts an electromagnetic blow on all invaders.
-The emitters are located underground and are ineffective for attacking targets along the applicate axis. Thus, the areas above the emitters are safe and are marked on the map as DEF-zones.
-DEF-zones are not capable of preventing aircraft from being irradiated, so they are advised to keep their distance from the battlefield during an electromagnetic strike.";"
+[DEF-Domination] 모드에서, 적 구역은 모든 침입자들에게 주기적으로 전자기장을 충전 및 방출하는 방어체계로 방어되고 있습니다.
+방출기는 지하에 존재하며, 축을 따라 목표를 공격하는데에 비효율적입니다.
+따라서 방출기 바로 위의 영역은 안전하며, 지도에 안전지대로써 표시됩니다.
+항공기는 안전지대에서도 전자기장에 노출되기 때문에, 전자기 타격 상황에는 전장과 거리를 유지하십시오.";"
 
 在\t【DEF 最\t终\t防\t卫\t圈\t】\t模\t式\t中，\t交\t战\t区\t受\t到\t一\t套\t自\t主\t式\t防\t卫\t系\t统\t的\t保\t护。\t每\t隔\t一\t段\t时\t间，\t防\t卫\t系\t统\t就\t会\t充\t能\t完\t毕，\t对\t所\t有\t入\t侵\t者\t释\t放\t电\t磁\t冲\t击\t波。
 由\t于\t冲\t击\t波\t发\t生\t器\t位\t于\t地\t下\t深\t处，\t对\t垂\t直\t方\t向\t的\t攻\t击\t十\t分\t微\t弱。\t因\t此，\t前\t往\t发\t生\t器\t上\t方\t的\t区\t域\t（地\t图\t上\t标\t记\t为 DEF 防\t卫\t区），\t即\t可\t有\t效\t避\t免\t电\t磁\t冲\t击\t的\t影\t响。
@@ -4699,9 +4699,9 @@ Düşmanları vurarak ve takım arkadaşlarını destekleyerek yeni uçakların 
 İlerlemeni ekranın altından görebilirsin. Burada hangi uçağın açıldığı ve kalan uçakların açılması için yapılması gerekenler görünür!
 Açık uçakların hepsi savaşta kullanılabilir!";"
 
-Unlock new aircraft by shooting down enemies and supporting your teammates!
-You can monitor your progress at the bottom of the screen - which aircraft are already open and what needs to be done to open the rest!
-All open aircraft are available in battle!";"协\t助\t友\t军\t并\t击\t落\t敌\t方\t单\t位\t以\t解\t锁\t新\t机\t型！
+적기를 격추하고 아군을 보조하여 새로운 항공기를 획득하십시오!
+어떠한 항공기를 이미 획득하였고 어떠한 항공기가 남아있는지 화면 하단에서 진행 과정을 직접 확인하실 수 있습니다.
+획득한 모든 항공기는 전투에서 사용하실 수 있습니다!";"协\t助\t友\t军\t并\t击\t落\t敌\t方\t单\t位\t以\t解\t锁\t新\t机\t型！
 界\t面\t下\t方\t显\t示\t了\t当\t前\t已\t解\t锁\t和\t尚\t未\t解\t锁\t的\t机\t型，\t可\t用\t于\t确\t认\t解\t锁\t进\t度。
 已\t解\t锁\t的\t机\t型\t均\t可\t在\t战\t斗\t中\t使\t用！";"
 
