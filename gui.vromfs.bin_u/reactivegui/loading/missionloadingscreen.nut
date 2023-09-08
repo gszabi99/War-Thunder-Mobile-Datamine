@@ -11,15 +11,15 @@ let { titleLogo, titleLogoSize } = require("%globalsDarg/components/titleLogo.nu
 let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankCaptureZone ]
 
 //no need to subscribe on sharedStatsByCampaign because we do not want to switch loading screen during loading
-let tanksScreen = @() get_mp_session_id_int() == -1 ? helpTankControls
-  : tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]
+let tanksScreen = @() get_mp_session_id_int() == -1 ? helpTankControls()
+  : tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
 
-let bgImagesByCampaign = {
-  ships = [
+let mkBgImagesByCampaign = {
+  ships = @() [
     helpShipParts
     gradientLoadingTip.__merge({ vplace = ALIGN_TOP, pos = [0, sh(82)] })
   ]
-  tanks = [
+  tanks = @() [
     tanksScreen()
     gradientLoadingTip.__merge({ vplace = ALIGN_TOP, pos = [0, sh(82)] })
   ]
@@ -28,7 +28,7 @@ let bgImagesByCampaign = {
 let bgImage = @() {
   watch = curCampaign
   size = flex()
-  children = bgImagesByCampaign?[curCampaign.value]
+  children = mkBgImagesByCampaign?[curCampaign.value]()
 }
 
 return {

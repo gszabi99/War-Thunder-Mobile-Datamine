@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBgImageByPx } = require("%globalsDarg/components/mkAnimBg.nut")
 
-return [
+return @() [
   {
     moveX = sh(6)
     children = mkBgImageByPx("ui/bkg/login_layer_testloading_0.avif")

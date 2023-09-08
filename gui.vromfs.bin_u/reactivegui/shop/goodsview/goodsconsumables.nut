@@ -4,7 +4,7 @@ let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkColoredGradientY, mkFontGradient,
   gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, txt,borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
-  bgImg, goodsSmallSize, goodsBgH, mkBgParticles
+  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let icons = {
@@ -62,7 +62,7 @@ let function mkGoodsConsumables(goods, onClick, state, animParams) {
   let nameConsumable =  loc($"item/{itemId}")
   return mkGoodsWrap(onClick,
     @(sf) [
-      bgImg
+      mkSlotBgImg()
       mkBgParticles([goodsSmallSize[0], goodsBgH])
       borderBg
       sf & S_HOVER ? bgHiglight : null

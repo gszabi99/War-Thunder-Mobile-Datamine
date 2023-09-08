@@ -66,7 +66,7 @@ let mkBgImg = @(img) {
   keepAspect = KEEP_ASPECT_NONE
 }
 
-let bgImg = mkBgImg("ui/gameuiskin/shop_bg_slot.avif")
+let mkSlotBgImg = @() mkBgImg("ui/gameuiskin/shop_bg_slot.avif")
 
 let mkBgParticles = @(effectSize) {
   children = [
@@ -507,7 +507,7 @@ return {
   txt
   textArea
   mkBgImg
-  bgImg
+  mkSlotBgImg
   borderBg
   tagRedColor
   mkFitCenterImg

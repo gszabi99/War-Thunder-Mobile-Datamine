@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkBgImg, borderBg, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, bgImg,
+let { mkGoodsWrap, mkBgImg, borderBg, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, mkSlotBgImg,
   oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let openPremiumDescription = require("%rGui/shop/premiumDescription.nut")
@@ -9,7 +9,7 @@ let { infoGreyButton } = require("%rGui/components/infoButton.nut")
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 
 
-let iconPrem = mkBgImg("ui/gameuiskin/premium_active_big.avif")
+let mkIconPrem = @() mkBgImg("ui/gameuiskin/premium_active_big.avif")
   .__update({
     vplace = ALIGN_CENTER
     size = [hdpx(300), hdpx(200)]
@@ -74,13 +74,13 @@ let function mkGoodsPremium(goods, onClick, state, animParams) {
     margin = [ sh(1), 0, 0, 0 ]
     size = flex()
     children = [
-      iconPrem
+      mkIconPrem()
       mkPremiumDaysTitle(premiumDays, viewBaseValue)
     ]
   }
   return mkGoodsWrap(onClick,
     @(sf) [
-      bgImg
+      mkSlotBgImg()
       mkBgParticles([goodsSmallSize[0], goodsBgH])
       borderBg
       sf & S_HOVER ? bgHiglight : null

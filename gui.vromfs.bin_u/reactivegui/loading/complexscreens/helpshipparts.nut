@@ -236,19 +236,23 @@ let function mkTgtPoint(hint) {
   }
 }
 
-return {
-  size = [sw(100), sh(100)]
-  rendObj = ROBJ_SOLID
-  color = 0xFF000000
-  children = {
-    size = [sw(100), sw(100).tofloat() / bgSize[0] * bgSize[1]]
-    pos = [0, -sh(1.5)]
-    rendObj = ROBJ_IMAGE
-    vplace = ALIGN_CENTER
-    hplace = ALIGN_CENTER
-    image = Picture(bgImage)
-    children = [allLines]
-      .extend(hints.map(mkTgtPoint))
-      .extend(hints.map(mkHintBlock))
+let function makeScreen() {
+  return {
+    size = [sw(100), sh(100)]
+    rendObj = ROBJ_SOLID
+    color = 0xFF000000
+    children = {
+      size = [sw(100), sw(100).tofloat() / bgSize[0] * bgSize[1]]
+      pos = [0, -sh(1.5)]
+      rendObj = ROBJ_IMAGE
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      image = Picture(bgImage)
+      children = [allLines]
+        .extend(hints.map(mkTgtPoint))
+        .extend(hints.map(mkHintBlock))
+    }
   }
 }
+
+return makeScreen

@@ -14,7 +14,7 @@ let { median } = require("%sqstd/math.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
-let { get_gui_option, addUserOption, addLocalUserOption } = require("guiOptions")
+let { get_gui_option, addUserOption, addLocalUserOption = @(id) require("guiOptions").addUserOption(id) } = require("guiOptions")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { battleResult } = require("battleResult.nut")
@@ -111,8 +111,8 @@ let function onFrameTimes(evt, _eid, _comp) {
     campaign = battleCampaign.value != "" ? battleCampaign.value
       : (battleResult.value?.campaign ?? curCampaign.value ?? "")
     mission = get_current_mission_name()
-    fpsLimit = get_gui_option(OPT_FPS)
-    videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY)
+    fpsLimit = get_gui_option(OPT_FPS) ?? 30
+    videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY) ?? "low"
     sessionId = get_mp_session_id_int()
     tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
     battery = get_battery()

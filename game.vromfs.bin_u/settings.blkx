@@ -1392,6 +1392,7 @@
     }
   },
   "vulkan": {
+    "texUploadLimitMb": 32,
     "vendor": {
       "Qualcomm": {
         "driverProps": {

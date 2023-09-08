@@ -1150,7 +1150,10 @@
             "time": 7.0
           },
           {
-            "time": 4.0
+            "time": 2.0
+          },
+          {
+            "time": 2.0
           },
           {
             "time": 4.0
@@ -1324,6 +1327,9 @@
             "element": "btn_repair"
           }
         ],
+        "triggerEnable": {
+          "target": "repair_done"
+        },
         "__hudElementSelectionShade": {
           "element": ""
         },
@@ -1334,9 +1340,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "accuracy": 0.0
-        },
-        "triggerEnable": {
-          "target": "repair_done"
         }
       },
       "else_actions": {}
@@ -1370,6 +1373,9 @@
         }
       },
       "actions": {
+        "triggerDisable": {
+          "target": "repair_hint"
+        },
         "playerControls": {
           "setStatus": "enable",
           "control": [

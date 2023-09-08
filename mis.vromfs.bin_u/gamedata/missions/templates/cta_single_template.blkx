@@ -78,12 +78,17 @@
           "isAllPlayersInGame": {}
         },
         "actions": {
-          "triggerEnable": {
-            "target": [
-              "check_is_tank_battle",
-              "check_is_ship_battle"
-            ]
-          }
+          "triggerEnable": [
+            {
+              "target": [
+                "check_is_tank_battle",
+                "check_is_ship_battle"
+              ]
+            },
+            {
+              "target": "mission_timer"
+            }
+          ]
         },
         "else_actions": {}
       },
@@ -273,6 +278,29 @@
             "ignoreSingleMissions": false
           }
         }
+      },
+      "mission_timer": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "mission_time"
+          }
+        },
+        "else_actions": {}
       }
     },
     "tanks": {
@@ -362,7 +390,10 @@
               "player_fade_on_respawn",
               "tanks_player_victory",
               "tanks_player_defeat",
-              "tanks_timeout"
+              "tanks_timeout",
+              "bq_player_on_point",
+              "bq_player_check_shooting",
+              "bq_player_not_shooting"
             ]
           }
         },
@@ -1122,7 +1153,327 @@
                 "@t2_bot10_name"
               ]
             }
+          ],
+          "unitSetVar": {
+            "object_var_name": "death_count",
+            "object": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "object_var_value": 0
+          },
+          "triggerEnable": {
+            "target": [
+              "bots_check_killed",
+              "bots_check_respawn",
+              "bots_check_no_respawns",
+              "bots_reset_mark_on_respawn"
+            ]
+          }
+        },
+        "else_actions": {}
+      },
+      "bots_check_killed": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": [
+            {
+              "object_type": "isInactive",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            },
+            {
+              "object_type": "isNotMarked",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            }
           ]
+        },
+        "actions": {
+          "unitMark": {
+            "target_marking": 0,
+            "target": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "useForTriggerFiltered": true
+          },
+          "unitModifyVar": {
+            "object_var_name": "death_count",
+            "operator": "add",
+            "value": 1,
+            "object": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "useForTriggerFiltered": true
+          }
+        },
+        "else_actions": {}
+      },
+      "bots_check_respawn": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": [
+            {
+              "object_type": "isUnitVar",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "death_count",
+              "object_var_comp_op": "more",
+              "object_var_value": 1,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            },
+            {
+              "object_type": "isActive",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "death_count",
+              "object_var_comp_op": "more",
+              "object_var_value": 1,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            }
+          ]
+        },
+        "actions": {
+          "unitPutToSleep": {
+            "target": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "useForTriggerFiltered": true
+          }
+        },
+        "else_actions": {}
+      },
+      "bots_check_no_respawns": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ]
+          }
+        },
+        "actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "bots_no_respawns_timer"
+          }
+        },
+        "else_actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "bots_no_respawns_timer"
+          }
+        }
+      },
+      "bots_reset_mark_on_respawn": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": [
+            {
+              "object_type": "isActive",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            },
+            {
+              "object_type": "isMarked",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            }
+          ]
+        },
+        "actions": {
+          "unitMark": {
+            "target_marking": 0,
+            "target": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "useForTriggerFiltered": true,
+            "reset_marking": true
+          }
         },
         "else_actions": {}
       },
@@ -1131,7 +1482,7 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
@@ -1140,12 +1491,19 @@
           }
         },
         "conditions": {
-          "varCompareInt": {
-            "var_value": "t2_mp_tickets",
-            "value": 0,
-            "comparasion_func": "notMore",
-            "var_value_other": "t2_mp_tickets_delta"
-          }
+          "varCompareInt": [
+            {
+              "var_value": "t2_mp_tickets",
+              "value": 0,
+              "comparasion_func": "notMore",
+              "var_value_other": "t2_mp_tickets_delta"
+            },
+            {
+              "var_value": "bots_no_respawns_timer",
+              "value": 10,
+              "comparasion_func": "notLess"
+            }
+          ]
         },
         "actions": {
           "varSetString": {
@@ -1181,6 +1539,17 @@
               "digits": 0,
               "var": "bq_record",
               "input_var": "player_death_count"
+            },
+            {
+              "value": " on point time: ",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "bq_on_point_time"
             }
           ],
           "bigQueryAddRecord": {
@@ -1345,6 +1714,17 @@
               "digits": 0,
               "var": "bq_record",
               "input_var": "player_death_count"
+            },
+            {
+              "value": " on point time: ",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "bq_on_point_time"
             }
           ],
           "bigQueryAddRecord": {
@@ -2959,6 +3339,191 @@
           }
         },
         "else_actions": {}
+      },
+      "bq_player_on_point": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "any",
+            "object": "@t1_player_name",
+            "target": "@zone_name"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "bq_on_point_time"
+          },
+          "triggerEnable": {
+            "target": "bq_player_point_first_enter"
+          }
+        },
+        "else_actions": {}
+      },
+      "bq_player_point_first_enter": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "bq_point_entered",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "varSetString": {
+            "value": "",
+            "var": "bq_point_first_enter_record",
+            "input_var": "string_mission_id"
+          },
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_point_first_enter_record",
+              "input_var": "battle_type_name"
+            },
+            {
+              "value": "point enter: ",
+              "digits": 0,
+              "var": "bq_point_first_enter_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_point_first_enter_record",
+              "input_var": "mission_time"
+            }
+          ],
+          "bigQueryAddRecord": {
+            "params": "",
+            "event": "@bq_point_first_enter_record",
+            "name": ""
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "bq_point_entered"
+          }
+        },
+        "else_actions": {}
+      },
+      "bq_player_check_shooting": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isShooting",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "@t1_player_name"
+          }
+        },
+        "actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "bq_player_not_shooting"
+          }
+        },
+        "else_actions": {}
+      },
+      "bq_player_not_shooting": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "bq_player_not_shooting",
+            "value": 60,
+            "comparasion_func": "notLess"
+          }
+        },
+        "actions": {
+          "varSetString": {
+            "value": "",
+            "var": "bq_not_shooting_record",
+            "input_var": "string_mission_id"
+          },
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_not_shooting_record",
+              "input_var": "battle_type_name"
+            },
+            {
+              "value": "player not shooting for 60 seconds",
+              "digits": 0,
+              "var": "bq_not_shooting_record"
+            }
+          ],
+          "bigQueryAddRecord": {
+            "params": "",
+            "event": "@bq_not_shooting_record",
+            "name": ""
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "bq_player_not_shooting"
+          }
+        },
+        "else_actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "bq_player_not_shooting"
+          }
+        }
       }
     }
   },
@@ -3030,7 +3595,14 @@
     "string_mission_id": "",
     "battle_type_name": "",
     "t1_spawn_killarea": "t1_spawn_killarea",
-    "t2_spawn_killarea": "t2_spawn_killarea"
+    "t2_spawn_killarea": "t2_spawn_killarea",
+    "bots_no_respawns_timer": 0,
+    "bq_point_entered": false,
+    "mission_time": 0,
+    "bq_on_point_time": 0,
+    "bq_point_first_enter_record": "",
+    "bq_player_not_shooting": 0,
+    "bq_not_shooting_record": ""
   },
   "dialogs": {},
   "airfields": {},

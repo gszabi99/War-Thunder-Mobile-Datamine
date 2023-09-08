@@ -1168,7 +1168,7 @@
         },
         "wait": [
           {
-            "time": 0.01
+            "time": 0.1
           },
           {
             "time": 4.0
@@ -1212,7 +1212,7 @@
         },
         "wait": [
           {
-            "time": 0.01
+            "time": 0.1
           },
           {
             "time": 0.5
@@ -1509,7 +1509,7 @@
         ],
         "wait": [
           {
-            "time": 0.01
+            "time": 0.1
           },
           {
             "time": 2.0
@@ -1573,7 +1573,7 @@
           "after_activation": "disable"
         },
         "wait": {
-          "time": 0.01
+          "time": 0.1
         },
         "varSetBool": {
           "value": true,
@@ -3431,7 +3431,7 @@
           }
         ],
         "wait": {
-          "time": 0.01
+          "time": 0.1
         },
         "triggerEnable": {
           "target": [

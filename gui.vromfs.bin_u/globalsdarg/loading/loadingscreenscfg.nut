@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBgImageByPx } = require("%globalsDarg/components/mkAnimBg.nut")
+let mkLayersComplexShip1 = require("complex_ship_1.nut")
 
 let fallbackLoadingImage = "ui/bkg/login_bkg_s_1.avif"
 
@@ -8,61 +9,69 @@ let mkSingleImageLayers = @(image) [{
   children = mkBgImageByPx(image)
 }]
 
+/*
+Here, layers are described as functions (not daRG elems) so that Picture elems in it (loading screen image
+takes 11 MB in memory) do not take up memory when they are not used. Because global Picture objects exported
+from the module prevent textures from storing texture references and prevent them from being deallocated.
+You can use a console command "app.tex" and then filter its output by "ui/" to see all UI textures currently
+loaded in memory, and how much memory each one takes up.
+*/
+
 let screensList = {
   simple_ship_1 = {
     camp = [ "ships" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_s_1.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_1.avif")
   }
   simple_ship_2 = {
     camp = [ "ships" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_s_2.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_2.avif")
   }
   simple_ship_3 = {
     camp = [ "ships" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_s_3.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_3.avif")
   }
   simple_ship_4 = {
     camp = [ "ships" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_s_4.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_4.avif")
   }
   complex_ship_1 = {
     camp = [ "ships" ]
     weight = 2.0
-    layers = require("complex_ship_1.nut")
+    mkLayers = mkLayersComplexShip1
   }
   simple_tank_1 = {
     camp = [ "tanks" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_t_1.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_1.avif")
   }
   simple_tank_2 = {
     camp = [ "tanks" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_t_2.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_2.avif")
   }
   simple_tank_3 = {
     camp = [ "tanks" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_t_3.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_3.avif")
   }
   simple_tank_4 = {
     camp = [ "tanks" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_t_4.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_4.avif")
   }
   simple_tank_5 = {
     camp = [ "tanks" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_t_5.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_5.avif")
   }
   simple_tank_6 = {
     camp = [ "tanks" ]
     weight = 1.0
-    layers = mkSingleImageLayers("ui/bkg/login_bkg_t_6.avif")
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_6.avif")
   }
 }
 

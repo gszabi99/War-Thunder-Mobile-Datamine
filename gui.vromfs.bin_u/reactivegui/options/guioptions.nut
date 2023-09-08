@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { addUserOption, addLocalUserOption, get_gui_option, set_gui_option } = require("guiOptions")
+let { addUserOption, addLocalUserOption = @(id) require("guiOptions").addUserOption(id), get_gui_option, set_gui_option } = require("guiOptions")
 let { send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 

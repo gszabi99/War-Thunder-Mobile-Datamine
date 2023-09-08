@@ -1572,7 +1572,25 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_turret_r_01",
+        "ex_armor_turret_r_02",
+        "ex_armor_turret_r_03",
+        "ex_armor_turret_l_01",
+        "ex_armor_turret_l_02",
+        "ex_armor_turret_l_03",
+        "ex_armor_01",
+        "ex_armor_02",
+        "ex_armor_03",
+        "ex_armor_04",
+        "ex_armor_05",
+        "ex_armor_06",
+        "ex_armor_07",
+        "ex_armor_08"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {

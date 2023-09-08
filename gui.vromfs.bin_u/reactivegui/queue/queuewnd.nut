@@ -234,15 +234,15 @@ let aimingHint = {
   ]
 }
 
-let bgImagesByCampaign = {
-  ships = helpShipParts
-  tanks = helpTankControls
+let mkBgImagesByCampaign = {
+  ships = @() helpShipParts
+  tanks = @() helpTankControls
 }
 
 let bgImage = @() {
   watch = curCampaign
   size = flex()
-  children = bgImagesByCampaign?[curCampaign.value]
+  children = mkBgImagesByCampaign?[curCampaign.value]()
 }
 
 let key = {}

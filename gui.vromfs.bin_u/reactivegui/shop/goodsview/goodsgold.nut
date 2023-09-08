@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkOfferWrap, borderBg, mkBgImg, bgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle, mkOfferTexts,
+let { mkGoodsWrap, mkOfferWrap, borderBg, mkBgImg, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle, mkOfferTexts,
   mkFitCenterImg, mkPricePlate, mkGoodsCommonParts, mkOfferCommonParts, goodsBgH, mkBgParticles
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
@@ -16,17 +16,17 @@ let bgHiglight = {
 }
 
 let imgCfg = [
-  { img = mkGoodsImg($"ui/gameuiskin/shop_eagles_01.avif"), amountAtLeast = 0 }
-  { img = mkGoodsImg($"ui/gameuiskin/shop_eagles_02.avif"), amountAtLeast = 400 }
-  { img = mkGoodsImg($"ui/gameuiskin/shop_eagles_03.avif"), amountAtLeast = 600 }
-  { img = mkGoodsImg($"ui/gameuiskin/shop_eagles_04.avif"), amountAtLeast = 1200 }
-  { img = mkGoodsImg($"ui/gameuiskin/shop_eagles_05.avif"), amountAtLeast = 2400 }
-  { img = mkGoodsImg($"ui/gameuiskin/shop_eagles_06.avif"), amountAtLeast = 4000 }
-  { img = mkGoodsImg($"ui/gameuiskin/shop_eagles_07.avif"), amountAtLeast = 8000 }
+  { mkImg = @() mkGoodsImg($"ui/gameuiskin/shop_eagles_01.avif"), amountAtLeast = 0 }
+  { mkImg = @() mkGoodsImg($"ui/gameuiskin/shop_eagles_02.avif"), amountAtLeast = 400 }
+  { mkImg = @() mkGoodsImg($"ui/gameuiskin/shop_eagles_03.avif"), amountAtLeast = 600 }
+  { mkImg = @() mkGoodsImg($"ui/gameuiskin/shop_eagles_04.avif"), amountAtLeast = 1200 }
+  { mkImg = @() mkGoodsImg($"ui/gameuiskin/shop_eagles_05.avif"), amountAtLeast = 2400 }
+  { mkImg = @() mkGoodsImg($"ui/gameuiskin/shop_eagles_06.avif"), amountAtLeast = 4000 }
+  { mkImg = @() mkGoodsImg($"ui/gameuiskin/shop_eagles_07.avif"), amountAtLeast = 8000 }
 ]
 
 let getImgByAmount = @(amount)
-  imgCfg?[max(0, (imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()) - 1)].img
+  imgCfg?[max(0, (imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()) - 1)].mkImg()
 
 let function getLocNameGold(goods) {
   let amount = goods?.gold ?? 0
@@ -37,7 +37,7 @@ let function mkGoodsGold(goods, onClick, state, animParams) {
   let { gold = 0, viewBaseValue = 0 } = goods
   return mkGoodsWrap(onClick,
     @(sf) [
-      bgImg
+      mkSlotBgImg()
       mkBgParticles([goodsSmallSize[0], goodsBgH])
       borderBg
       sf & S_HOVER ? bgHiglight : null

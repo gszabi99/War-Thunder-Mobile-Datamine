@@ -47,7 +47,7 @@ let loadingAnimBg = @() {
   size = flex()
   onAttach = @() isBgAttached(true)
   onDetach = @() isBgAttached(false)
-  children = mkAnimBg(screensList?[curScreenId.value].layers ?? [], fallbackLoadingImage)
+  children = mkAnimBg(screensList?[curScreenId.value].mkLayers() ?? [], fallbackLoadingImage)
 }
 
 return {
