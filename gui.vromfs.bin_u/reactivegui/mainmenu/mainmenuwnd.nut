@@ -42,6 +42,7 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let btnOpenQuests = require("%rGui/quests/btnOpenQuests.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let eventBanner = require("%rGui/event/eventBanner.nut")
 
 
 let unitNameStateFlags = Watched(0)
@@ -107,8 +108,13 @@ let gamercardPlace = {
           ]
         }
         {
+          flow = FLOW_VERTICAL
+          gap = translucentButtonsVGap / 2
           hplace = ALIGN_RIGHT
-          children = offerPromo
+          children = [
+            offerPromo
+            eventBanner
+          ]
         }
       ]
     }

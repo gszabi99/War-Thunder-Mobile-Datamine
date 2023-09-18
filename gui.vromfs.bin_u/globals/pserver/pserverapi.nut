@@ -439,6 +439,16 @@ return {
     params = { count }
   }, cb)
 
+  add_warbond = @(count, cb = null) request({
+    method = "add_warbond"
+    params = { count }
+  }, cb)
+
+  add_event_key = @(count, cb = null) request({
+    method = "add_event_key"
+    params = { count }
+  }, cb)
+
   apply_client_mission_reward = @(campaign, missionId, cb = null) request({
     method = "apply_client_mission_reward"
     params = { campaign, missionId }
@@ -510,6 +520,13 @@ return {
   add_lootbox = @(id, count, cb = null) request({
     method = "add_lootbox"
     params = { id, count }
+  }, cb)
+
+  buy_lootbox = @(id, currencyId, price, count, cb = null) request({
+    method = "buy_lootbox"
+    params = { id, currencyId, price, count }
+    progressId = PROGRESS_LOOTBOX
+    progressValue = id
   }, cb)
 
   reset_mutations_timestamp = @(cb = null) request({ method = "reset_mutations_timestamp" }, cb)

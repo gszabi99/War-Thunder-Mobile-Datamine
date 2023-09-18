@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { statusText, progressPercent } = require("updaterState.nut")
 let { loadingAnimBg } = require("%globalsDarg/loading/loadingAnimBg.nut")
-let { titleLogo } = require("%globalsDarg/components/titleLogo.nut")
+let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let { gradientLoadingTip } = require("loadingTip.nut")
 
 let spinnerSize = hdpxi(100)
@@ -50,7 +50,7 @@ return {
       size = flex()
       padding = saBordersRv
       children = [
-        titleLogo
+        mkTitleLogo()
         waitSpinner
         gradientLoadingTip
         bottomBlock

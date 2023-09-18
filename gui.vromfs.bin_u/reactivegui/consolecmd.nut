@@ -4,6 +4,8 @@ let { register_command } = require("console")
 let { round } =  require("math")
 let { format } =  require("string")
 let { hexStringToInt } = require("%sqstd/string.nut")
+let { allPermissions, dbgPermissions } = require("%appGlobals/permissions.nut")
+let { localizeAddons } = require("%appGlobals/updater/addons.nut")
 
 register_command(@() inspectorToggle(), "ui.inspector")
 
@@ -21,3 +23,10 @@ register_command(function(colorStr, multiplier) {
   let resColor = (a << 24) + (r << 16) + (g << 8) + b
   log(format("color = 0x%X, Color(%d, %d, %d, %d)", resColor, r, g, b, a))
 }, "debug.multiply_color")
+
+allPermissions.value.each(@(_, id) register_command(function() {
+  dbgPermissions.mutate(@(v) v[id] <- !v?[id])
+  log($"{id} = {allPermissions.value?[id]}")
+}, $"toggle_permission.{id}"))
+
+register_command(@(name) log(localizeAddons([name])), "debug.addonLoc")

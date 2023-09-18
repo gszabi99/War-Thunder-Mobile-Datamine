@@ -11,6 +11,7 @@ let { unseenPurchasesExt, markPurchasesSeen, hasActiveCustomUnseenView
 } = require("unseenPurchasesState.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
@@ -33,9 +34,9 @@ let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitM
 
 let wndWidth = saSize[0]
 let maxWndHeight = saSize[1]
-let rewIconSize = hdpx(100)
+let rewIconSize = hdpxi(200)
 let rewIconToTextGap = hdpx(29)
-let rewIconsGap = hdpx(80)
+let rewIconsGap = hdpx(150)
 let rewIconsRowToUnitPlatesGap = hdpx(60)
 let rewIconsPerRow = ((wndWidth + rewIconsGap) / (rewIconSize + rewIconsGap)).tointeger()
 let unitPlatesGap = hdpx(40)
@@ -71,8 +72,6 @@ let aTitleScaleDownTime = aTitleScaleUpTime
 let aTitleScaleMin = 0.75
 let aTitleScaleMax = 1.1
 
-let orderByCurrency = { gold = 0, wp = 1 }
-
 let stackData = Computed(function() {
   let stackRaw = {}
   foreach (purch in unseenPurchasesExt.value)
@@ -85,6 +84,9 @@ let stackData = Computed(function() {
       else
         stackRaw[gType][id].count += count
     }
+
+  if (stackRaw?.unit != null && stackRaw?.unitUpgrade != null)
+    stackRaw.unit = stackRaw.unit.filter(@(_, unitName) stackRaw.unitUpgrade?[unitName] == null)
 
   foreach (gType, _ in stackRaw)
     if (!knownGTypes.contains(gType))
@@ -163,7 +165,7 @@ let mkRewardAnimProps = @(startDelay, scaleTo) {
 }
 
 let function mkHighlight(startDelay, sizeMul) {
-  let highlightSize = hdpx(sizeMul * rewIconSize)
+  let highlightSize = (sizeMul * rewIconSize + 0.5).tointeger()
   let startRotation = frnd() * 360
   return {
     size = [highlightSize, highlightSize]

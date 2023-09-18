@@ -40,6 +40,8 @@ let eventUnlocksByDays = Computed(function() {
   return days
 })
 
+let isEventActive = Computed(@() eventUnlocksByDays.value.len() != 0)
+
 let eventDays = Computed(function(prev) {
   let res = eventUnlocksByDays.value.keys()
     .sort(@(a, b) a.tointeger() <=> b.tointeger())
@@ -86,8 +88,6 @@ let questsBySection = Computed(function() {
   return res
 })
 
-let activeQuestsBySection = Computed(@() questsBySection.value.map(@(q) q.filter(@(u) !u.isFinished)))
-
 let function saveSeenQuests(ids) {
   seenQuests.mutate(function(v) {
     foreach (id in ids)
@@ -116,11 +116,11 @@ let function loadSeenQuests() {
 if (seenQuests.value.len() == 0)
   loadSeenQuests()
 
-let hasUnseenQuestsBySection = Computed(@() activeQuestsBySection.value.map(@(quests)
+let hasUnseenQuestsBySection = Computed(@() questsBySection.value.map(@(quests)
   null != quests.findindex(@(v, id) (id not in seenQuests.value && id not in inactiveEventUnlocks.value) || v.hasReward)))
 
 let saveSeenQuestsCurSection = @() !hasUnseenQuestsBySection.value?[curSectionId.value] ? null
-  : saveSeenQuests(activeQuestsBySection.value?[curSectionId.value].filter(@(v) !v.hasReward).keys())
+  : saveSeenQuests(questsBySection.value?[curSectionId.value].filter(@(v) !v.hasReward).keys())
 
 let function onSectionChange(id) {
   saveSeenQuestsCurSection()
@@ -152,7 +152,6 @@ return {
 
   curSectionId
   questsBySection
-  activeQuestsBySection
   onSectionChange
 
   seenQuests
@@ -161,7 +160,9 @@ return {
 
   questsCfg
   sectionsCfg
+  eventUnlocksByDays
   inactiveEventUnlocks
+  isEventActive
 
   COMMON_TAB
   EVENT_TAB

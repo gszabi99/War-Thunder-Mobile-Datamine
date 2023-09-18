@@ -94,7 +94,7 @@ struct EventFinishAssist
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventTeamKill
-{}
+  victimEid : EntityId
 
 [cpp_event(unicast, with_scheme)]
 struct EventGunShot
@@ -147,3 +147,12 @@ struct CmdLockHangarMusic
 [cpp_event(unicast, with_scheme)]
 struct EventOnTrailerDead
 {}
+
+[cpp_event(broadcast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
+struct EventTryControlBurav
+  uid : int
+  target : float2
+
+[cpp_event(unicast, with_scheme)]
+struct EventKilledByBurav
+  killerUid : int

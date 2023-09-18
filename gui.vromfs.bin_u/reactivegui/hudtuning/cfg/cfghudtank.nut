@@ -114,13 +114,13 @@ return {
 
   bulletMain = {
     ctor = @() bulletMainButton
-    defTransform = actionBarTransform(6, true)
+    defTransform = actionBarTransform(7, true)
     editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 1)
   }
 
   bulletExtra = {
     ctor = @() bulletExtraButton
-    defTransform = actionBarTransform(7, true)
+    defTransform = actionBarTransform(6, true)
     editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 2)
   }
 

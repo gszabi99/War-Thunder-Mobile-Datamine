@@ -47,6 +47,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.47,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
@@ -460,7 +461,7 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
@@ -491,8 +492,7 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 5.0,
-      "armorThrough": 150.0,
+      "armorThickness": 50.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -561,6 +561,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -619,6 +639,19 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
+      "ammo_body_61_dm": {},
+      "ammo_body_62_dm": {},
+      "ammo_body_63_dm": {},
+      "ammo_body_64_dm": {},
+      "ammo_body_65_dm": {},
+      "ammo_body_66_dm": {},
+      "ammo_body_67_dm": {},
+      "ammo_body_68_dm": {},
+      "ammo_body_69_dm": {},
+      "ammo_body_70_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -639,6 +672,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -658,7 +695,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -2080,6 +2121,144 @@
       "collisionNode": "cls_turret"
     }
   },
+  "ammoStowages": {
+    "ammo1": {
+      "removeLoadedAmmo": true,
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "replenishmentDelay": 4.0,
+      "replenishmentTime": 12.0,
+      "shells": [
+        {
+          "firstStage": true,
+          "ammo_body_25_dm": {
+            "count": 1
+          },
+          "ammo_body_26_dm": {
+            "count": 1
+          },
+          "ammo_body_27_dm": {
+            "count": 1
+          },
+          "ammo_body_28_dm": {
+            "count": 1
+          },
+          "ammo_body_29_dm": {
+            "count": 1
+          },
+          "ammo_body_30_dm": {
+            "count": 1
+          },
+          "ammo_body_31_dm": {
+            "count": 1
+          },
+          "ammo_body_32_dm": {
+            "count": 1
+          },
+          "ammo_body_33_dm": {
+            "count": 1
+          },
+          "ammo_body_34_dm": {
+            "count": 1
+          },
+          "ammo_body_35_dm": {
+            "count": 1
+          },
+          "ammo_body_36_dm": {
+            "count": 1
+          },
+          "ammo_body_37_dm": {
+            "count": 1
+          },
+          "ammo_body_38_dm": {
+            "count": 1
+          },
+          "ammo_body_39_dm": {
+            "count": 1
+          },
+          "ammo_body_40_dm": {
+            "count": 1
+          }
+        },
+        {
+          "reloadTimeMult": 1.62,
+          "ammo_body_01_dm": {
+            "count": 1
+          },
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_03_dm": {
+            "count": 1
+          },
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_09_dm": {
+            "count": 1
+          },
+          "ammo_body_10_dm": {
+            "count": 1
+          },
+          "ammo_body_11_dm": {
+            "count": 1
+          },
+          "ammo_body_12_dm": {
+            "count": 1
+          },
+          "ammo_body_13_dm": {
+            "count": 1
+          },
+          "ammo_body_14_dm": {
+            "count": 1
+          },
+          "ammo_body_15_dm": {
+            "count": 1
+          },
+          "ammo_body_16_dm": {
+            "count": 1
+          },
+          "ammo_body_17_dm": {
+            "count": 1
+          },
+          "ammo_body_18_dm": {
+            "count": 1
+          },
+          "ammo_body_19_dm": {
+            "count": 1
+          },
+          "ammo_body_20_dm": {
+            "count": 1
+          },
+          "ammo_body_21_dm": {
+            "count": 1
+          },
+          "ammo_body_22_dm": {
+            "count": 1
+          },
+          "ammo_body_23_dm": {
+            "count": 1
+          },
+          "ammo_body_24_dm": {
+            "count": 1
+          }
+        }
+      ]
+    }
+  },
   "unitFx": {
     "event": [
       {
@@ -2510,8 +2689,8 @@
     "sightName": "tsh2b_41",
     "headPos": [
       0.0,
-      3.3,
-      -12.5
+      3.8,
+      -13.3
     ],
     "headPosOnShooting": [
       -0.2,
@@ -2521,209 +2700,220 @@
     "detectionHeight": 2.2
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_engine_smoke_screen_system": {}
   },
-  "user_skin": {
-    "name": "t_62",
+  "upgraded_skin": {
     "replace_tex": {
-      "from": "ussr_camo_green*"
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_winter_lines*"
     }
   },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
-      }
-    }
-  ],
-  "ammoStowages": {
-    "ammo1": {
-      "removeLoadedAmmo": true,
-      "weaponTrigger": "gunner0",
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "replenishmentDelay": 4.0,
-      "replenishmentTime": 12.0,
-      "shells": [
-        {
-          "firstStage": true,
-          "ammo_body_25_dm": {
-            "count": 1
-          },
-          "ammo_body_26_dm": {
-            "count": 1
-          },
-          "ammo_body_27_dm": {
-            "count": 1
-          },
-          "ammo_body_28_dm": {
-            "count": 1
-          },
-          "ammo_body_29_dm": {
-            "count": 1
-          },
-          "ammo_body_30_dm": {
-            "count": 1
-          },
-          "ammo_body_31_dm": {
-            "count": 1
-          },
-          "ammo_body_32_dm": {
-            "count": 1
-          },
-          "ammo_body_33_dm": {
-            "count": 1
-          },
-          "ammo_body_34_dm": {
-            "count": 1
-          },
-          "ammo_body_35_dm": {
-            "count": 1
-          },
-          "ammo_body_36_dm": {
-            "count": 1
-          },
-          "ammo_body_37_dm": {
-            "count": 1
-          },
-          "ammo_body_38_dm": {
-            "count": 1
-          },
-          "ammo_body_39_dm": {
-            "count": 1
-          },
-          "ammo_body_40_dm": {
-            "count": 1
-          }
-        },
-        {
-          "reloadTimeMult": 1.62,
-          "ammo_body_01_dm": {
-            "count": 1
-          },
-          "ammo_body_02_dm": {
-            "count": 1
-          },
-          "ammo_body_03_dm": {
-            "count": 1
-          },
-          "ammo_body_04_dm": {
-            "count": 1
-          },
-          "ammo_body_05_dm": {
-            "count": 1
-          },
-          "ammo_body_06_dm": {
-            "count": 1
-          },
-          "ammo_body_07_dm": {
-            "count": 1
-          },
-          "ammo_body_08_dm": {
-            "count": 1
-          },
-          "ammo_body_09_dm": {
-            "count": 1
-          },
-          "ammo_body_10_dm": {
-            "count": 1
-          },
-          "ammo_body_11_dm": {
-            "count": 1
-          },
-          "ammo_body_12_dm": {
-            "count": 1
-          },
-          "ammo_body_13_dm": {
-            "count": 1
-          },
-          "ammo_body_14_dm": {
-            "count": 1
-          },
-          "ammo_body_15_dm": {
-            "count": 1
-          },
-          "ammo_body_16_dm": {
-            "count": 1
-          },
-          "ammo_body_17_dm": {
-            "count": 1
-          },
-          "ammo_body_18_dm": {
-            "count": 1
-          },
-          "ammo_body_19_dm": {
-            "count": 1
-          },
-          "ammo_body_20_dm": {
-            "count": 1
-          },
-          "ammo_body_21_dm": {
-            "count": 1
-          },
-          "ammo_body_22_dm": {
-            "count": 1
-          },
-          "ammo_body_23_dm": {
-            "count": 1
-          },
-          "ammo_body_24_dm": {
-            "count": 1
-          }
-        }
-      ]
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": -8.0,
+      "decal0Line0": [
+        4.02531,
+        -0.110358,
+        1.64738,
+        -0.600697
+      ],
+      "decal0Line1": [
+        0.315466,
+        -4.20966,
+        -1.05284,
+        6.24783
+      ],
+      "decal0Line2": [
+        -4.02531,
+        0.110358,
+        1.64738,
+        1.6007
+      ],
+      "decal0Line3": [
+        0.315466,
+        -4.20966,
+        1.05284,
+        6.24783
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.372498,
+        0.251341,
+        -0.893349,
+        -1.76487
+      ],
+      "decal0CPNormDepth1": [
+        0.372498,
+        0.251341,
+        0.893349,
+        -1.76487
+      ],
+      "decal0RotScale": [
+        1.59701,
+        0.229844
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.210679,
+      "decal0Tex": "ussr_90_guards_division",
+      "decal1Line0": [
+        4.32279,
+        4.88872E-05,
+        0.495899,
+        -0.826931
+      ],
+      "decal1Line1": [
+        0.160798,
+        -4.11619,
+        -1.40128,
+        5.74751
+      ],
+      "decal1Line2": [
+        -4.32279,
+        -4.926E-05,
+        0.495899,
+        1.82693
+      ],
+      "decal1Line3": [
+        0.160798,
+        -4.11619,
+        1.40128,
+        5.74751
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.107812,
+        0.324163,
+        -0.939838,
+        -1.80365
+      ],
+      "decal1CPNormDepth1": [
+        0.107812,
+        0.324163,
+        0.939838,
+        -1.80365
+      ],
+      "decal1RotScale": [
+        1.57078,
+        0.229825
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": true,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.211583,
+      "decal1Tex": "ussr_numbers_2",
+      "decal2Line0": [
+        4.32487,
+        -0.108519,
+        0.454821,
+        0.00422174
+      ],
+      "decal2Line1": [
+        0.0466435,
+        -4.11007,
+        -1.42418,
+        5.73452
+      ],
+      "decal2Line2": [
+        -4.32487,
+        0.108519,
+        0.454821,
+        0.995779
+      ],
+      "decal2Line3": [
+        0.0466438,
+        -4.11007,
+        1.42418,
+        5.73452
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        0.106954,
+        0.326617,
+        -0.939086,
+        -1.80644
+      ],
+      "decal2CPNormDepth1": [
+        0.106954,
+        0.326617,
+        0.939086,
+        -1.80644
+      ],
+      "decal2RotScale": [
+        1.59719,
+        0.229881
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": true,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.212491,
+      "decal2Tex": "ussr_numbers_8",
+      "decal3Line0": [
+        4.0372,
+        -0.321,
+        1.58453,
+        0.563694
+      ],
+      "decal3Line1": [
+        0.2086,
+        -4.12324,
+        -1.36679,
+        5.7858
+      ],
+      "decal3Line2": [
+        -4.0372,
+        0.320999,
+        1.58453,
+        0.436307
+      ],
+      "decal3Line3": [
+        0.208601,
+        -4.12324,
+        1.36679,
+        5.7858
+      ],
+      "decal3HaveCP": true,
+      "decal3CPNormDepth": [
+        0.368648,
+        0.309238,
+        -0.876625,
+        -1.84369
+      ],
+      "decal3CPNormDepth1": [
+        0.368648,
+        0.309238,
+        0.876625,
+        -1.84369
+      ],
+      "decal3RotScale": [
+        1.64849,
+        0.229944
+      ],
+      "decal3Mirrored": false,
+      "decal3Wrap": false,
+      "decal3Abs": true,
+      "decal3OppositeMirrored": false,
+      "decal3WidthBox": 0.218438,
+      "decal3Tex": "ussr_numbers_8"
     }
   },
   "smokeScreenExhaustEmitters": {

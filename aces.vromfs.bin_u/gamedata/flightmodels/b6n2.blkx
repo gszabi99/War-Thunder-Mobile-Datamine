@@ -1799,7 +1799,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "b6n2_type91mod3_torpedo",
+      "name": "b6n2_default",
       "blk": "gameData/FlightModels/weaponPresets/b6n2_type91mod3_torpedo.blk"
     }
   },

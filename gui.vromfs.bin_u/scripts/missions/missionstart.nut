@@ -13,6 +13,9 @@ subscribe("startSingleMission", function(msg) {
     return
   }
 
+  ::hud_request_hud_tank_debuffs_state()
+  ::hud_request_hud_crew_state()
+  ::hud_request_hud_ship_debuffs_state()
   let missionCopy = DataBlock()
   missionCopy.setFrom(mission)
   select_mission(missionCopy, true)

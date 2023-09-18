@@ -4,6 +4,7 @@ let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { crewState, crewDriverState, crewGunnerState, crewLoaderState } = require("%rGui/hud/crewState.nut")
 let { mkCountdownTimerSec } = require("%globalScripts/timers.nut")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let REPAIR_SHOW_TIME_THRESHOLD = 0.5
 let winkFast = 1.5
@@ -147,6 +148,7 @@ crewLoaderState.subscribe(@(data) onCrewMemberState("loader_status", data))
 
 subscribe("LocalPlayerDead", clearTimers)
 subscribe("MissionResult", clearTimers)
+isInBattle.subscribe(@(_) clearTimers(null))
 
 return {
   activeTimers

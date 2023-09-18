@@ -7,7 +7,7 @@ let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let controlsTypesButton = require("controlsTypesButton.nut")
-let controlsTypesAnims = require("controlsTypesAnims.nut")
+let controlsTypesAnimsCtors = require("controlsTypesAnims.nut")
 
 let defaultValue = "stick_static"
 let btnW = evenPx(380)
@@ -78,7 +78,7 @@ let mkBtnContent = @(id, isRecommended) {
   flow = FLOW_VERTICAL
   gap = hdpx(10)
   children = [
-    controlsTypesAnims?[id]
+    controlsTypesAnimsCtors?[id]()
     {
       halign = ALIGN_CENTER
       flow = FLOW_VERTICAL
@@ -90,7 +90,7 @@ let mkBtnContent = @(id, isRecommended) {
   ]
 }
 
-let optButtonsRow = {
+let mkOptButtonsRow = @() {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   gap = btnGap
@@ -113,7 +113,7 @@ let getDescText = @(id, isRecommended) id == "" ? "" : "".concat(
 
 let onAttach = @() selectedValue(currentTankMoveCtrlType.value)
 
-let chooseMoveControlsScene = bgShaded.__merge({
+let mkChooseMoveControlsScene = @() bgShaded.__merge({
   key = {}
   size = flex()
   valign = ALIGN_CENTER
@@ -134,7 +134,7 @@ let chooseMoveControlsScene = bgShaded.__merge({
         halign = ALIGN_CENTER
         children = [
           txt({ text = loc("options/choose_movement_controls")}.__update(fontMedium))
-          optButtonsRow
+          mkOptButtonsRow()
           @() txtArea({
             watch = [selectedValue]
             minHeight = hdpx(132)
@@ -153,4 +153,4 @@ let chooseMoveControlsScene = bgShaded.__merge({
   }
 })
 
-return chooseMoveControlsScene
+return mkChooseMoveControlsScene

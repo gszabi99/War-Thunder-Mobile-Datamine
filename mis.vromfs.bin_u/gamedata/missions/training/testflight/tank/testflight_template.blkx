@@ -99,7 +99,10 @@
               "tank": true
             }
           }
-        ]
+        ],
+        "missionSetProperties": {
+          "artilleryCooldown": 1.0
+        }
       },
       "else_actions": {}
     },

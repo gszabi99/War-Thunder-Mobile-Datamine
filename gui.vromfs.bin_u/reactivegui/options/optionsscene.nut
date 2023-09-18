@@ -1,5 +1,5 @@
 let soundOptions = require("options/soundOptions.nut")
-let graphicOptions = require("options/graphicOptions.nut")
+let { graphicOptions } = require("options/graphicOptions.nut")
 let { langOptions } = require("options/langOptions.nut")
 let { controlsOptions } = require("options/controlsOptions.nut")
 let { tankControlsOptions } = require("options/tankControlsOptions.nut")

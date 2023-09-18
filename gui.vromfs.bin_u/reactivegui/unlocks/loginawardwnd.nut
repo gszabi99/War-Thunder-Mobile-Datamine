@@ -11,6 +11,7 @@ let { loginAwardUnlock, isLoginAwardOpened, receiveLoginAward, isLoginAwardInPro
   hasLoginAwardByAds, showLoginAwardAds
 } = require("loginAwardState.nut")
 let { getRelativeStageData } = require("unlocks.nut")
+let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let backButton = require("%rGui/components/backButton.nut")
@@ -22,6 +23,9 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { canShowAds } = require("%rGui/ads/adsState.nut")
 let { isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
 let { playSound } = require("sound_wt")
+let { isGamepad } = require("%rGui/activeControls.nut")
+let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
+let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 
 let itemBlockSize = [ (itemWidth + itemGap) * 4 + itemBigWidth + backItemOffset, itemBigHeight ]
 let imageSize = hdpxi(210)
@@ -53,6 +57,8 @@ local lastAnimState = -1
 local animStateStartTime = 0
 let close = @() isLoginAwardOpened(false)
 let canClose = Computed(@() !loginAwardUnlock.value?.hasReward)
+
+let activePlateHotkeys = ["^J:X | Enter"]
 
 let mkText = @(text, style) {
   text
@@ -131,12 +137,12 @@ let highlightNextReceive = highlightCanReceive.__merge({
   }]
 })
 
-let bigSlotImage = {
+let mkBigSlotImage = @(ovr) {
   size = flex()
   rendObj = ROBJ_IMAGE
   image = Picture("ui/images/daily_slot_bg_art.avif")
   keepAspect = KEEP_ASPECT_FILL
-}
+}.__update(ovr)
 
 let checkImg = {
   key = {}
@@ -174,47 +180,44 @@ let mkDayText = @(text, isReceived) {
 }
 
 let btnStyle = {
-  hotkeys = ["^J:X | Enter"],
   ovr = { size = flex(), minWidth = 0, behavior = null, onElemState = null }
   childOvr = fontTiny
 }
 
-let receiveBtn = @(stateFlags) textButtonBattle(
+let receiveBtn = textButtonBattle(
   utf8ToUpper(loc("btn/receive")),
-  receiveLoginAward,
-  btnStyle.__merge({ stateFlags })
+  null,
+  btnStyle
 )
 
-let watchAdsBtn = @(stateFlags) textButtonPrimary(
+let watchAdsBtn = textButtonPrimary(
   utf8ToUpper(loc("shop/watchAdvert/short")),
-  showLoginAwardAds,
-  btnStyle.__merge({ childOvr = fontVeryTiny, stateFlags })
+  null,
+  btnStyle.__merge({ childOvr = fontVeryTiny })
 )
 
-let watchAdsNotReadyBtn = @(stateFlags) textButtonCommon(
+let watchAdsNotReadyBtn = textButtonCommon(
   utf8ToUpper(loc("shop/watchAdvert/short")),
-  showLoginAwardAds,
-  btnStyle.__merge({ childOvr = fontVeryTiny, stateFlags })
+  null,
+  btnStyle.__merge({ childOvr = fontVeryTiny })
 )
 
-let buttonBlock = function(stateFlags) {
+let activePlateButtonBlock = function() {
   let targetButtonComponent = @() {
     watch = [loginAwardUnlock, hasLoginAwardByAds, canShowAds, isShowUnseenDelayed]
     size = flex()
     children = isShowUnseenDelayed.value ? null //delay unseen for animation, so no need button at that time also.
-      : loginAwardUnlock.value?.hasReward ? receiveBtn(stateFlags)
+      : loginAwardUnlock.value?.hasReward ? receiveBtn
       : !hasLoginAwardByAds.value ? null
-      : canShowAds.value ? watchAdsBtn(stateFlags)
-      : watchAdsNotReadyBtn(stateFlags)
+      : canShowAds.value ? watchAdsBtn
+      : watchAdsNotReadyBtn
   }
-
   let blockOvr = {
     size = [flex(), buttonHeight]
     vplace = ALIGN_BOTTOM
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
   }
-
   return mkSpinnerHideBlock(isLoginAwardInProgress, targetButtonComponent, blockOvr)
 }
 
@@ -223,6 +226,14 @@ let onActivePlateClick = @() isShowUnseenDelayed.value ? null
   : !hasLoginAwardByAds.value ? null
   : canShowAds.value ? showLoginAwardAds()
   : null
+
+let function activePlateHotkeyComp() {
+  let res = { watch = isGamepad }
+  return !isGamepad.value ? res : res.__update({
+    margin = hdpx(8)
+    children = mkBtnImageComp(getGamepadHotkey(activePlateHotkeys), hdpx(32))
+  })
+}
 
 let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, animState) {
   let place = rewardsPlaces?[periodIdx]
@@ -247,7 +258,6 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
   let endTime = startTime + (1000 * animTime).tointeger()
   let afterAnimProps = { opacity, transform = { translate } }
   let isCurrentActivePlate = isNextReceive || (curStage == lastRewardedStage && stageIdx == curStage - 1)
-  let stateFlags = Watched(0)
 
   local animData = afterAnimProps
   if (endTime > get_time_msec() && prevTransform != null) {
@@ -256,7 +266,7 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
     let beforeAnimProps = { opacity = prevOpacity, transform = { translate = prevTranslate } }
     animData = {
       transform = {}
-      behavior = [Behaviors.RtPropUpdate, Behaviors.Button]
+      behavior = Behaviors.RtPropUpdate
       function update() {
         let time = get_time_msec()
         if (time <= startTime)
@@ -279,7 +289,7 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
     : rewardBg
   let children = [
     slotType == SLOT_COMMON ? null
-      : bigSlotImage.__merge({ color = !isReceived && slotType == SLOT_HUGE ? hugeRewardBgColor : bg.fillColor })
+      : mkBigSlotImage({ color = !isReceived && slotType == SLOT_HUGE ? hugeRewardBgColor : bg.fillColor })
     slotType == SLOT_HUGE ? null
       : {
           size = flex()
@@ -326,23 +336,33 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
         valign = ALIGN_CENTER
         color = isReceived ? 0x80808080 : 0xFFFFFFFF
       }.__update(fontVeryTiny))
-    isCurrentActivePlate ? buttonBlock(stateFlags) : null
+    isCurrentActivePlate ? activePlateButtonBlock() : null
+    isCurrentActivePlate ? activePlateHotkeyComp : null
     needReceiveAnim ? checkImgWithAnim
       : isReceived ? checkImg
       : null
   ]
-
-  return @() {
-    watch = stateFlags
-    key = stageIdx
+  let plateBase = {
     size
     rendObj = ROBJ_SOLID
     color = 0xFF000000
     padding = hdpx(2)
+    children = bg.__merge({ children })
+  }
+  let stateFlags = !isCurrentActivePlate ? null : Watched(0)
+  let plateComp = !isCurrentActivePlate ? plateBase : @() plateBase.__update({
+    watch = stateFlags
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
-    onClick = isCurrentActivePlate ? onActivePlateClick : null
-    children = bg.__merge({ children })
+    onClick = onActivePlateClick
+    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
+    sound = { click  = "click" }
+    hotkeys = activePlateHotkeys
+  })
+  return {
+    key = stageIdx
+    children = plateComp
   }.__update(animData)
 }
 
@@ -401,6 +421,20 @@ let function itemsBlock() {
   }
 }
 
+let function rewardText() {
+  let { wtm_skip_days_streak = 0, wt_skip_days_streak = 0 } = userstatStats.value?.stats.daily.meta_common
+  let skipDays = min(wtm_skip_days_streak, wt_skip_days_streak)
+  return mkText(loc(skipDays == 1 ? "EveryDayLoginAward/resetPeriod1"
+                  : skipDays == 2 ? "EveryDayLoginAward/resetPeriod2"
+                  : skipDays >= 3 ? "EveryDayLoginAward/resetPeriod3"
+                  : "dailyRewards/desc")
+    { watch = userstatStats
+      vplace = ALIGN_BOTTOM
+      hplace = ALIGN_CENTER
+      color = commonTextColor
+    }.__update(fontTiny))
+}
+
 let content = {
   size = flex()
   halign = ALIGN_CENTER
@@ -409,8 +443,7 @@ let content = {
   gap = hdpx(50)
   children = [
     itemsBlock
-    mkText(loc("dailyRewards/desc"),
-      { vplace = ALIGN_BOTTOM, hplace = ALIGN_CENTER, color = commonTextColor }.__update(fontTiny))
+    rewardText
   ]
 }
 

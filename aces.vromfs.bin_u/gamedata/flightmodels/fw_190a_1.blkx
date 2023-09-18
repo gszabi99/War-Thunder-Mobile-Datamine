@@ -1630,8 +1630,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fw_190a_5_default",
-      "blk": "gameData/FlightModels/weaponPresets/fw_190a_5_default.blk"
+      "name": "fw_190a_1_default",
+      "blk": "gameData/FlightModels/weaponPresets/fw_190a_1_default.blk"
     }
   },
   "turbulence": {

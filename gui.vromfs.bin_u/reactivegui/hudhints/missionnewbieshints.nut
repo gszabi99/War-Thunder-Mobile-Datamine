@@ -6,6 +6,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { get_time_msec } = require("dagor.time")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 enum CFG_TYPES {
   MISSION_START
@@ -45,6 +46,8 @@ let nextStageTimeSec = keepref(Computed(@() !isHudAttached.value || seriaState.v
   : seriaState.value.nextStageTime))
 
 let clearHintStage = @() seriaState({cfgId = -1, idx = -1, nextStageTime = 0})
+
+isInBattle.subscribe(@(_) clearHintStage())
 
 let function nextStage() {
   local { idx, cfgId } = seriaState.value

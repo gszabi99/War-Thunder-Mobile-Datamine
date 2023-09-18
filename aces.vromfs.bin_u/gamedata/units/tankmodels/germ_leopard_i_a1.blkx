@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.4,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -2566,8 +2567,8 @@
     "sightName": "tzf_1a",
     "headPos": [
       0.0,
-      3.3,
-      -12.5
+      3.8,
+      -13.5
     ],
     "headPosOnShooting": [
       -0.1,
@@ -2583,9 +2584,18 @@
     ]
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "modClass": "protection",
       "tier": 4,
@@ -3088,5 +3098,112 @@
   },
   "battleHideNodes": {
     "n": "details"
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_modern_threecolor*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.78116,
+        -1.35221E-07,
+        0.247588,
+        -0.420542
+      ],
+      "decal0Line1": [
+        0.110725,
+        -2.49738,
+        -1.24378,
+        4.03383
+      ],
+      "decal0Line2": [
+        -2.78116,
+        -1.56024E-07,
+        0.247588,
+        1.42054
+      ],
+      "decal0Line3": [
+        0.110725,
+        -2.49738,
+        1.24378,
+        4.03383
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.079311,
+        0.447216,
+        -0.890903,
+        -2.03313
+      ],
+      "decal0CPNormDepth1": [
+        0.079311,
+        0.447216,
+        0.890903,
+        -2.03313
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358146
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.241584,
+      "decal0Tex": "ge_bundeswehr_insignia",
+      "decal1Line0": [
+        -3.60455,
+        0.216329,
+        2.43257,
+        2.6629
+      ],
+      "decal1Line1": [
+        0.509722,
+        -4.17469,
+        1.12656,
+        6.02076
+      ],
+      "decal1Line2": [
+        3.53256,
+        0.216329,
+        2.53598,
+        -2.22195
+      ],
+      "decal1Line3": [
+        0.879562,
+        -4.17469,
+        -0.869091,
+        5.76763
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.548554,
+        0.279616,
+        0.787974,
+        -2.08364
+      ],
+      "decal1CPNormDepth1": [
+        0.548554,
+        0.279616,
+        -0.787974,
+        -2.08364
+      ],
+      "decal1RotScale": [
+        1.51902,
+        0.229676
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.206255,
+      "decal1Tex": "ge_93rd_pz_bat"
+    }
   }
 }

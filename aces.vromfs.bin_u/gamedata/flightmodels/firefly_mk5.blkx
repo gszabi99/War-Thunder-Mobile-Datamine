@@ -1635,7 +1635,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "firefly_mk5_1000lbs_bombs",
+      "name": "firefly_mk5_default",
       "blk": "gameData/FlightModels/weaponPresets/firefly_mk5_1000lbs_bombs.blk"
     }
   },

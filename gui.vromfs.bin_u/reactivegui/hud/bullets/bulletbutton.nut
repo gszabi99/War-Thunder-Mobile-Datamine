@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { doesLocTextExist } = require("dagor.localize")
 let { touchButtonSize, btnBgColor, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { currentBulletName, toggleNextBullet, bulletsInfo, nextBulletName, mainBulletInfo, extraBulletInfo,
   mainBulletCount, extraBulletCount } = require("hudUnitBulletsState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
+let { getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
 
 let colorActive = 0xFFDADADA
 let colorInactive = 0x806D6D6D
@@ -55,12 +55,7 @@ let function bulletIcon(id, isNext, isCurrent, isBulletBelt) {
 }
 
 let function bulletName(name) {
-  local locId = $"{name}/short"
-  if (!doesLocTextExist(locId))
-    locId = $"{name}/name/short"
-  let text = name == null ? ""
-    : loc(doesLocTextExist(locId) ? locId : name)
-
+  let text = getAmmoTypeShortText(name)
   return {
     rendObj = ROBJ_TEXT
     vplace = ALIGN_BOTTOM

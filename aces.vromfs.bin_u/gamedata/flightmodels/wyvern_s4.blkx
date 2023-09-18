@@ -1814,7 +1814,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "wyvern_s4_3x1000lb",
+      "name": "wyvern_s4_default",
       "blk": "gameData/FlightModels/weaponPresets/wyvern_s4_3x1000lb.blk"
     }
   },

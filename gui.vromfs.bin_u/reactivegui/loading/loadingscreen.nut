@@ -8,7 +8,7 @@ let { loadingAnimBg, isLoadinAnimBgAttached, curScreenId, screenWeights
 let { register_command } = require("console")
 let { isInLoadingScreen, isMissionLoading } = require("%appGlobals/clientState/clientState.nut")
 let { gradientLoadingTip } = require("mkLoadingTip.nut")
-let { titleLogo } = require("%globalsDarg/components/titleLogo.nut")
+let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let missionLoadingScreen = require("missionLoadingScreen.nut")
 let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
 
@@ -30,7 +30,7 @@ let loadingScreen = @() {
   children = isMissionLoading.value ? missionLoadingScreen
     : [
         loadingAnimBg
-        titleLogo.__merge({ margin = saBordersRv })
+        mkTitleLogo({ margin = saBordersRv })
         gradientLoadingTip
       ]
   animations = wndSwitchAnim

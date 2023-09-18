@@ -12,6 +12,7 @@ let authState = hardPersistWatched("login.authState", {
   loginPas = ""
   twoStepAuthCode = ""
   check2StepAuthCode = false
+  email2step = false
 })
 
 let sendState = @(v) send("updateAuthStates", v)
@@ -27,6 +28,7 @@ let function resetAuthState() {
     s.loginName = lp.login
     s.loginPas = lp.password
     s.check2StepAuthCode = false
+    s.email2step = false
   })
 }
 

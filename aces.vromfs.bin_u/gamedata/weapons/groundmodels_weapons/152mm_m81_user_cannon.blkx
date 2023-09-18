@@ -595,7 +595,7 @@
       "caliber": 0.152,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
-      "sound": "atgm_cannon",
+      "sound": "atgm",
       "mesh": "mgm_61b_rocket",
       "recoilMultiplier": 0.05,
       "stabilityRicochetModifier": {
@@ -618,6 +618,7 @@
       "rocket": {
         "caliber": 0.152,
         "mass": 27.8,
+        "explosiveType": "comp_b",
         "explosiveMass": 3.6,
         "massEnd": 23.12,
         "normalizationPreset": "heat",

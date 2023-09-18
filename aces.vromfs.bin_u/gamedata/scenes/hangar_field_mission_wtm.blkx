@@ -261,11 +261,48 @@
     },
     {
       "_template": "unit_loader",
+      "setting__unitType": "tank",
+      "setting__playerNo": -1,
+      "setting__className": "tankModels/us_halftrack_m16",
+      "setting__unit_class": "us_halftrack_m16",
+      "setting__name": "armada_30",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__isDead": true,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2217.6,
+          8.13,
+          1887.4
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
       "setting__unitType": "aircraft",
       "setting__playerNo": -1,
       "setting__className": "fw_190a_1",
       "setting__unit_class": "fw_190a_1",
-      "setting__name": "armada_30",
+      "setting__name": "armada_31",
       "setting__weapons": "",
       "setting__skin": "",
       "setting__army": 1,
@@ -297,11 +334,48 @@
     },
     {
       "_template": "unit_loader",
+      "setting__unitType": "aircraft",
+      "setting__playerNo": -1,
+      "setting__className": "fw_190a_1",
+      "setting__unit_class": "fw_190a_1",
+      "setting__name": "armada_32",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__isDead": true,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2157.7,
+          8.13,
+          1909.8
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
       "setting__unitType": "ship",
       "setting__playerNo": -1,
       "setting__className": "ships/us_destroyer_fletcher",
       "setting__unit_class": "us_destroyer_fletcher",
-      "setting__name": "armada_31",
+      "setting__name": "armada_33",
       "setting__weapons": "",
       "setting__skin": "",
       "setting__army": 1,

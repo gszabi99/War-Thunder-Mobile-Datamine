@@ -37,6 +37,10 @@ let function startOfflineMission(unitName, missionId, bullets, gameMode = GM_TES
   }
   actualizeBattleData(unitName)
 
+  ::hud_request_hud_tank_debuffs_state()
+  ::hud_request_hud_crew_state()
+  ::hud_request_hud_ship_debuffs_state()
+
   if (gameMode != null)
     misBlk["_gameMode"] = gameMode
   misBlk["difficulty"] = "arcade"

@@ -101,7 +101,7 @@ let function goToStep(idxOrId) {
     : (steps.findindex(@(s) s?.id == idxOrId) ?? -1)
   steps?[stepIdx.value].onFinish()
 
-  if (idx in steps) {
+  if (idx in steps) { // waring disable: -in-instead-contains
     steps?[idx].beforeStart()
     state.mutate(@(s) s.step <- idx)
     return

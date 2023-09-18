@@ -42,4 +42,5 @@ return freeze({
   CS_INCREASED_ICON
   CS_GAMERCARD
   CS_BIG = CS_INCREASED_ICON.__merge({ fontStyle = fontMedium, iconSize = hdpxi(60) })
+  CS_VERY_BIG = CS_INCREASED_ICON.__merge({ fontStyle = fontMedium, iconSize = hdpxi(70) })
 })

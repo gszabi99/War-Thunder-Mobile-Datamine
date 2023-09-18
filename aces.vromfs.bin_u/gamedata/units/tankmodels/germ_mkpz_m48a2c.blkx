@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.38,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "sound": {
@@ -2544,8 +2545,8 @@
     "sightName": "telescope_t156e1",
     "headPos": [
       0.0,
-      2.0,
-      -18.0
+      3.8,
+      -13.3
     ],
     "headPosOnShooting": [
       0.1,

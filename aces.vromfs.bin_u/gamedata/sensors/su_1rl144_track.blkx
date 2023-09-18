@@ -160,7 +160,8 @@
         "init": {
           "setEnabled": {
             "value": false
-          }
+          },
+          "setTargetDesignationRange": {}
         },
         "setStandbyModeCommon": {
           "setEnabled": {
@@ -261,16 +262,16 @@
           }
         },
         "setRadarLosVisualPreLockMode": {
-          "setLosVisualPreLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "radarLosLock"
-          }
+          },
+          "setLosVisualPreLockModeCommon": {}
         },
         "setIrstLosVisualPreLockMode": {
-          "setLosVisualPreLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "irstLosLock"
-          }
+          },
+          "setLosVisualPreLockModeCommon": {}
         },
         "setLosLockModeCommon": {
           "setEnabled": {
@@ -500,7 +501,7 @@
         },
         "radarFinishedTrack": {
           "stateFrom": "radarTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "command": [
             "selectTarget",
             "designateTarget"
@@ -589,7 +590,7 @@
         },
         "irstFinishedTrack": {
           "stateFrom": "irstTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "command": [
             "selectTarget",
             "designateTarget"
@@ -626,6 +627,9 @@
           "command": "typeSwitch",
           "stateTo": "irstTrack",
           "actions": {
+            "setScanPattern": {
+              "scanPattern": "irstTrack"
+            },
             "setModeName": {
               "name": "IRST track"
             },
@@ -637,6 +641,9 @@
           "command": "typeSwitch",
           "stateTo": "radarTrack",
           "actions": {
+            "setScanPattern": {
+              "scanPattern": "radarTrack"
+            },
             "setModeName": {
               "name": "track"
             },
@@ -694,7 +701,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": {},
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 2.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -708,9 +718,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 2.0
             }
           }
         }

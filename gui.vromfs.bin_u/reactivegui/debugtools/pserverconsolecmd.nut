@@ -4,7 +4,7 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, change_item_count, set_pur
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
-  apply_profile_mutation, add_lootbox
+  apply_profile_mutation, add_lootbox, add_warbond, add_event_key
 } = pServerApi
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -31,6 +31,8 @@ register_command(@() resetCustomSettings(), "meta.reset_custom_settings")
 register_command(@(exp) add_player_exp(curCampaign.value, exp, "consolePrintResult"), "meta.add_player_exp")
 register_command(@(wp) add_wp(wp, "consolePrintResult"), "meta.add_wp")
 register_command(@(gold) add_gold(gold, "consolePrintResult"), "meta.add_gold")
+register_command(@(warbond) add_warbond(warbond, "consolePrintResult"), "meta.add_warbond")
+register_command(@(event_key) add_event_key(event_key, "consolePrintResult"), "meta.add_event_key")
 register_command(@(name, count) change_item_count(name, count, "consolePrintResult"), "meta.change_item_count")
 register_command(@(id, count) userstat_add_item(id, count, "consolePrintResult"), "meta.userstat_add_item")
 register_command(@(seconds) seconds < 0
@@ -53,6 +55,8 @@ register_command(@(id, count) add_lootbox(id, count, "consolePrintResult"), "met
 register_command(function(count) {
   add_wp(count * 100)
   add_gold(count * 10)
+  add_warbond(count * 10)
+  add_event_key(count * 1)
   foreach (item in itemsOrderFull)
     change_item_count(item, count)
 

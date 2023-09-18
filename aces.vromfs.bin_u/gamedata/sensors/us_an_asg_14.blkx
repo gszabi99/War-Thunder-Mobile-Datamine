@@ -210,6 +210,9 @@
           ],
           "clearTargets": {},
           "clearTargetsOfInterest": {},
+          "setCueEnabled": {
+            "value": true
+          },
           "setTransiver": {
             "transiver": "search"
           },
@@ -224,6 +227,9 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         },
         "setDesignationLockMode": {
@@ -231,6 +237,16 @@
             "value": true
           },
           "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": [
+            {
+              "scanPattern": "designationLock"
+            },
+            {
+              "scanPattern": "designationLock"
+            }
+          ],
+          "resetScanPhase": {},
           "setCenterAzimuth": [
             {
               "source": "targetDesignation"
@@ -257,16 +273,6 @@
             "source": "targetDesignation",
             "width": 30.0
           },
-          "setScanPatternSet": {},
-          "setScanPattern": [
-            {
-              "scanPattern": "designationLock"
-            },
-            {
-              "scanPattern": "designationLock"
-            }
-          ],
-          "resetScanPhase": {},
           "clearTargets": {},
           "setFsmActive": {
             "fsm": "lock",
@@ -362,6 +368,11 @@
               "type": 0,
               "self": true,
               "sensorIndex": 0
+            },
+            "designateTargetUnderCue": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
             }
           }
         },
@@ -415,7 +426,7 @@
         },
         "finishedDesignationTrack": {
           "stateFrom": "designationTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "command": "selectTarget",
           "stateTo": "search",
           "actions": {
@@ -480,20 +491,28 @@
             "setNextDetectedTargetActive": {}
           }
         },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 0,
-              "self": true
-            }
           }
         }
       }
@@ -510,7 +529,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -521,7 +542,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
@@ -547,7 +570,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": {},
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -561,9 +587,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
             }
           }
         }

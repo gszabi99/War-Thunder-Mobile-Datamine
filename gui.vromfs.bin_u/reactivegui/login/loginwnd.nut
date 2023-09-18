@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let eventbus = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
+let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
 let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { defButtonHeight, BRIGHT } = require("%rGui/components/buttonStyles.nut")
 let { mkCustomButton, textButtonBright, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
-let urlText = require("%rGui/components/urlText.nut")
+let { urlText, urlLikeButton } = require("%rGui/components/urlText.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { optLang } = require("%rGui/options/options/langOptions.nut")
 let mkOption = require("%rGui/options/mkOption.nut")
@@ -22,18 +22,33 @@ let loginName = mkWatched(persist, "loginName", "")
 let loginPas = mkWatched(persist, "loginPas", "")
 let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
 let check2StepAuthCode = mkWatched(persist, "check2StepAuthCode", false)
+let hasEmail2step = mkWatched(persist, "hasEmail2step", false)
 let showPasswordIconSize = [hdpxi(50), hdpxi(40)]
 
 let isShowLanguagesList = Watched(false)
 let isPasswordVisible = Watched(false)
+let isCanViewPassword = Watched(true)
 
-loginName.subscribe(@(_) check2StepAuthCode(false))
+loginName.subscribe(function(_) {
+  check2StepAuthCode(false)
+  hasEmail2step(false)
+})
+
+loginPas.subscribe(function(v) {
+  check2StepAuthCode(false)
+  hasEmail2step(false)
+  if (v == "")
+    isCanViewPassword(true)
+})
+
 check2StepAuthCode.subscribe(@(v) v ? isLoginByGajin(true) : null)
 
 eventbus.subscribe("updateAuthStates", function(params) {
   loginName(params?.loginName ?? loginName.value)
   loginPas(params?.loginPas ?? loginPas.value)
+  isCanViewPassword(loginPas.value == "")
   check2StepAuthCode(params?.check2StepAuthCode ?? check2StepAuthCode.value)
+  hasEmail2step(params?.email2step ?? false)
 })
 
 let gaijinLogoWidth = (256.0 / 128.0 * defButtonHeight).tointeger()
@@ -41,10 +56,12 @@ let appleLogoHeight = (0.5 * defButtonHeight).tointeger()
 let appleLogoWidth = (48.0 / 58.0 * appleLogoHeight).tointeger()
 let googleLogoHeight = (0.5 * defButtonHeight).tointeger()
 let googleLogoWidth = (59.0 / 62.0 * googleLogoHeight).tointeger()
-
+let refrIconSize = hdpxi(37)
 let cancelText = utf8ToUpper(loc("mainmenu/btnCancel"))
 
 let urlColor = Color(0, 204, 255)
+
+let resendTimeout = 30
 
 local languageTitle = loc("profile/language")
 let languageTitleEn = loc("profile/language/en")
@@ -122,7 +139,7 @@ let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#me
     }
   })
 
-let gaijinLogo = {
+let mkGaijinLogo = @() {
   size = [ gaijinLogoWidth, defButtonHeight ]
   rendObj = ROBJ_IMAGE
   image = Picture($"!ui/gaijin_logo.svg:{gaijinLogoWidth}:{defButtonHeight}")
@@ -136,30 +153,77 @@ let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch,
 }.__update(options))
 
 let mkPasswordInputField = @() {
-  watch = isPasswordVisible
+  watch = [isPasswordVisible, isCanViewPassword]
   valign = ALIGN_CENTER
   size = [flex(), SIZE_TO_CONTENT]
   children = [
     mkTextInputField(loginPas, loc("mainmenu/password"), { password = isPasswordVisible.value ? null : "\u2022" })
-    {
-      rendObj = ROBJ_IMAGE
-      size = showPasswordIconSize
-      image = Picture($"ui/gameuiskin#icon_password_hide.svg:{showPasswordIconSize[0]}:showPasswordIconSize[1]:P")
-      hplace = ALIGN_RIGHT
-      pos = [-hdpx(16), 0]
-      behavior = Behaviors.Button
-      onClick = @() isPasswordVisible(!isPasswordVisible.value)
-      opacity = isPasswordVisible.value ? 1.0 : 0.4
-      keepAspect = true
-    }
+    isCanViewPassword.value
+      ? {
+          rendObj = ROBJ_IMAGE
+          size = showPasswordIconSize
+          image = Picture($"ui/gameuiskin#icon_password_hide.svg:{showPasswordIconSize[0]}:showPasswordIconSize[1]:P")
+          hplace = ALIGN_RIGHT
+          pos = [-hdpx(16), 0]
+          behavior = Behaviors.Button
+          onClick = @() isPasswordVisible(!isPasswordVisible.value)
+          opacity = isPasswordVisible.value ? 1.0 : 0.4
+          keepAspect = true
+        }
+      : null
   ]
 }
 
 let sighUp = urlText(loc("mainmenu/signUp"), loc("url/signUp"), { ovr = { hplace = ALIGN_RIGHT } })
 let recoveryPassword = urlText(loc("msgbox/btn_recovery"), loc("url/recovery"))
 
+let resendTimer = Watched(resendTimeout)
+local timerMult = 1;
+let function updateResendTimer() {
+  let v = resendTimer.value - 1
+  if ( v >= 0 )
+    resendTimer(v)
+}
+
+check2StepAuthCode.subscribe( function (v) { if (v) resendTimer(resendTimeout * timerMult) } )
+
+let function doResendCode() {
+  timerMult++
+  eventbus.send("doLogin", {
+    loginType = LT_GAIJIN
+    loginName = loginName.value
+    loginPas = loginPas.value
+    check2StepAuthCode = false
+    twoStepAuthCode = ""
+  })
+}
+let resendCodeBlock = @() {
+  size = [flex(), hdpx(55)]
+  flow = FLOW_HORIZONTAL
+  watch = [resendTimer]
+  valign = ALIGN_CENTER
+  children = resendTimer.value > 0
+    ? {
+        rendObj = ROBJ_TEXT
+        text = loc("msgbox/btn_resend_code_message", {value = resendTimer.value})
+        color = Color(192, 192, 192)
+        fontFx = FFT_GLOW
+        fontFxFactor = 64
+        fontFxColor = Color(0, 0, 0)
+      }.__update(fontSmall)
+    : [
+        urlLikeButton(loc("msgbox/btn_resend_code"), doResendCode, { ovr = { hplace = ALIGN_RIGHT } })
+        {
+          size = [ refrIconSize, refrIconSize ]
+          rendObj = ROBJ_IMAGE
+          image = Picture($"ui/gameuiskin#refresh.svg:{refrIconSize}:{refrIconSize}:P")
+          keepAspect = KEEP_ASPECT_FIT
+        }
+      ]
+}
+
 let gaijinAuthorization = @() {
-  watch = check2StepAuthCode
+  watch = [check2StepAuthCode, hasEmail2step]
   flow = FLOW_VERTICAL
   gap = hdpx(30)
   children = [
@@ -167,7 +231,7 @@ let gaijinAuthorization = @() {
       size = [flex(), SIZE_TO_CONTENT]
       valign = ALIGN_CENTER
       children = [
-        gaijinLogo
+        mkGaijinLogo()
         sighUp
       ]
     }
@@ -176,7 +240,7 @@ let gaijinAuthorization = @() {
     check2StepAuthCode.value
       ? mkTextInputField(twoStepAuthCode, loc("mainmenu/2stepVerifCode"), { inputType = "num" })
       : null
-    recoveryPassword
+    hasEmail2step.value ? resendCodeBlock : recoveryPassword
     {
       flow = FLOW_HORIZONTAL
       gap = buttonsHGap
@@ -288,39 +352,41 @@ let guestLoginButtonContent = {
   ]
 }
 
-let loginButtons = {
-  [LT_GAIJIN] = mkCustomButton(gaijinLogo, @() isLoginByGajin.update(true), BRIGHT),
-  [LT_GOOGLE] = mkCustomButton(googleLoginButtonContent,
+let loginButtonCtors = {
+  [LT_GAIJIN] = @() mkCustomButton(mkGaijinLogo(), @() isLoginByGajin.update(true), BRIGHT),
+  [LT_GOOGLE] = @() mkCustomButton(googleLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_GOOGLE }),
     BRIGHT),
-  [LT_APPLE] = mkCustomButton(appleLoginButtonContent,
+  [LT_APPLE] = @() mkCustomButton(appleLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_APPLE }),
     BRIGHT),
-  [LT_FIREBASE] = mkCustomButton(firebaseLoginButtonContent,
+  [LT_FIREBASE] = @() mkCustomButton(firebaseLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_FIREBASE }),
     BRIGHT),
-  [LT_GUEST] = mkCustomButton(guestLoginButtonContent,
+  [LT_GUEST] = @() mkCustomButton(guestLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_GUEST }),
     BRIGHT),
   [LT_FACEBOOK] = !fbButtonVisible ? null
-    : mkCustomButton(fbLoginButtonContent,
-    @() eventbus.send("doLogin", { loginType = LT_FACEBOOK }),
-     BRIGHT),
-}.filter(@(button) button != null)
+    : @() mkCustomButton(fbLoginButtonContent,
+        @() eventbus.send("doLogin", { loginType = LT_FACEBOOK }),
+         BRIGHT),
+}.filter(@(btnCtor) btnCtor != null)
 
-let mainAuthorizationButtons = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN]
-  .filter(@(lt) availableLoginTypes?[lt] ?? false)
-  .map(@(lt) loginButtons?[lt])
-
-mainAuthorizationButtons.insert(0, {
-  rendObj = ROBJ_TEXT
-  halign = ALIGN_CENTER
-  text = loc("choose_authorization_method")
-  color = Color(255, 255, 255)
-  fontFx = FFT_GLOW
-  fontFxFactor = 64
-  fontFxColor = Color(0, 0, 0)
-}.__update(fontMedium))
+let function mkMainAuthorizationButtons() {
+  let res = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN]
+    .filter(@(lt) availableLoginTypes?[lt] ?? false)
+    .map(@(lt) loginButtonCtors?[lt]())
+  res.insert(0, {
+    rendObj = ROBJ_TEXT
+    halign = ALIGN_CENTER
+    text = loc("choose_authorization_method")
+    color = Color(255, 255, 255)
+    fontFx = FFT_GLOW
+    fontFxFactor = 64
+    fontFxColor = Color(0, 0, 0)
+  }.__update(fontMedium))
+  return res
+}
 
 let langOptionsContent = {
   size = [contentWidth, flex()]
@@ -342,7 +408,7 @@ let contentBlock = @() {
   gap = buttonsHGap
   children = isShowLanguagesList.value ? langOptionsContent
     : isLoginByGajin.value ? gaijinAuthorization
-    : mainAuthorizationButtons
+    : mkMainAuthorizationButtons()
 }
 
 let supportBlock = {
@@ -360,7 +426,7 @@ let termsOfServiceUrl = urlText(loc("termsOfService"), TERMS_OF_SERVICE_URL, url
 let privacyPolicyUrl = urlText(loc("privacyPolicy"), PRIVACY_POLICY_URL, urlOvr)
 let checkAutoLogin = @() eventbus.send("login.checkAutoStart", {})
 
-return {
+let mkLoginWnd = @() {
   key = {}
   size = flex()
   padding = saBordersRv
@@ -370,6 +436,10 @@ return {
   function onAttach() {
     eventbus.send("authState.request", {})
     deferOnce(checkAutoLogin)
+    setInterval(1.0, updateResendTimer)
+  }
+  function onDetach() {
+    clearTimer(updateResendTimer)
   }
   children = [
     contentBlock
@@ -390,3 +460,5 @@ return {
   ]
   animations = wndSwitchAnim
 }
+
+return mkLoginWnd

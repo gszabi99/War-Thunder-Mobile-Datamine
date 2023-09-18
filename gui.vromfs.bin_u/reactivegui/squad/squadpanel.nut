@@ -13,7 +13,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { framedImageBtn } = require("%rGui/components/imageButton.nut")
+let { framedImageBtn, framedBtnSize } = require("%rGui/components/imageButton.nut")
 let invitationsBtn = require("%rGui/invitations/invitationsBtn.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let squadMemberInfoWnd = require("squadMemberInfoWnd.nut")
@@ -40,9 +40,7 @@ let squadInviteButton = framedImageBtn("ui/gameuiskin#btn_inc.svg",
 let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts, {},
   @() {
     watch = requestsToMeUids
-    margin = hdpx(8)
-    hplace = ALIGN_RIGHT
-    vplace = ALIGN_TOP
+    pos = [0.5 * framedBtnSize[0], -0.5 * framedBtnSize[1]]
     children = requestsToMeUids.value.len() > 0 ? priorityUnseenMark : null
   })
 
@@ -168,8 +166,8 @@ let buttonsRow = @(inSquad) {
   valign = ALIGN_CENTER
   gap
   children = [
-    contactsBtn
     invitationsBtn
+    contactsBtn
     inSquad ? squadMembersList : squadInviteButton
   ]
 }

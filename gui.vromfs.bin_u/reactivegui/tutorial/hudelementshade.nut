@@ -8,11 +8,14 @@ let { lightCtor, darkCtor, pointerArrow, mkPointerArrow } = require("tutorialWnd
 let { register_command } = require("console")
 let { getNativeElementBoxes } = require("hudSelectionShade")
 let { elements, sizeIncDef, pushedArrowColor } = require("hudElementsCfg.nut")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let isHudShadeAtached = Watched(false)
 let lastShadeEvent = mkWatched(persist, "lastShadeEvent", null)
-subscribe("hudElementSelectionShade", @(ev) lastShadeEvent(ev))
 let isHudShadeActive = Computed(@() isHudShadeAtached.value && (lastShadeEvent.value?.enabled ?? false))
+
+subscribe("hudElementSelectionShade", @(ev) lastShadeEvent(ev))
+isInBattle.subscribe(@(_) lastShadeEvent(null))
 
 let staticUpdateInterval = 0.5
 let dynamicUpdateInterval = 0.02

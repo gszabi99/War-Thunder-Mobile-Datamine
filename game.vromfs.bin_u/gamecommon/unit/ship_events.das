@@ -48,11 +48,11 @@ struct EventShipAddBreach
 
 [cpp_event(unicast, with_scheme)]
 struct EventShipPartDrowned
-  partId : int
+  packedPartId : uint
 
 [cpp_event(unicast, with_scheme)]
 struct EventShipDrownedPartRestored
-  partId : int
+  packedPartId : uint
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
 struct EventShipStartDamageControl

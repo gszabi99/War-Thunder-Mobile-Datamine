@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.45,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
@@ -429,7 +430,7 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
@@ -460,8 +461,7 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 5.0,
-      "armorThrough": 150.0,
+      "armorThickness": 50.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -530,6 +530,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -588,6 +608,19 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
+      "ammo_body_61_dm": {},
+      "ammo_body_62_dm": {},
+      "ammo_body_63_dm": {},
+      "ammo_body_64_dm": {},
+      "ammo_body_65_dm": {},
+      "ammo_body_66_dm": {},
+      "ammo_body_67_dm": {},
+      "ammo_body_68_dm": {},
+      "ammo_body_69_dm": {},
+      "ammo_body_70_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -608,6 +641,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -627,7 +664,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -2528,111 +2569,6 @@
       }
     }
   },
-  "commanderView": {
-    "optics": "commander_optics_square",
-    "zoomOutFov": 15.0,
-    "zoomInFov": 14.7,
-    "sightSize": [
-      0.29,
-      0.2
-    ],
-    "ircmProjector": {
-      "node": "bone_commander_sight_v",
-      "beamRadius": [
-        600.0,
-        50.0
-      ],
-      "projectorPower": [
-        0.02,
-        0.04
-      ]
-    }
-  },
-  "cockpit": {
-    "zoomOutFov": 21.1,
-    "zoomInFov": 10.5,
-    "sightFov": 10.0,
-    "sightName": "tsh2_22",
-    "headPos": [
-      0.0,
-      3.3,
-      -12.5
-    ],
-    "headPosOnShooting": [
-      -0.5,
-      3.2,
-      -0.5
-    ],
-    "detectionHeight": 2.4
-  },
-  "modifications": {
-    "tank_tool_kit_expendable": {},
-    "art_support": {},
-    "tank_extinguisher": {},
-    "tank_engine_smoke_screen_system": {}
-  },
-  "user_skin": {
-    "name": "t_54_1951",
-    "replace_tex": {
-      "from": "ussr_camo_green*"
-    }
-  },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
-      }
-    }
-  ],
   "ammoStowages": {
     "ammo1": {
       "removeLoadedAmmo": true,
@@ -2778,6 +2714,119 @@
           }
         }
       ]
+    }
+  },
+  "commanderView": {
+    "optics": "commander_optics_square",
+    "zoomOutFov": 15.0,
+    "zoomInFov": 14.7,
+    "sightSize": [
+      0.29,
+      0.2
+    ],
+    "ircmProjector": {
+      "node": "bone_commander_sight_v",
+      "beamRadius": [
+        600.0,
+        50.0
+      ],
+      "projectorPower": [
+        0.02,
+        0.04
+      ]
+    }
+  },
+  "cockpit": {
+    "zoomOutFov": 21.1,
+    "zoomInFov": 10.5,
+    "sightFov": 10.0,
+    "sightName": "tsh2_22",
+    "headPos": [
+      0.0,
+      3.8,
+      -13.1
+    ],
+    "headPosOnShooting": [
+      -0.5,
+      3.2,
+      -0.5
+    ],
+    "detectionHeight": 2.4
+  },
+  "modifications": {
+    "upgraded": {},
+    "art_support": {},
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
+    "tank_engine_smoke_screen_system": {}
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_winter_lines*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.54495,
+        -0.0659332,
+        1.14667,
+        0.0291612
+      ],
+      "decal0Line1": [
+        0.443636,
+        -2.51476,
+        -1.12922,
+        3.41691
+      ],
+      "decal0Line2": [
+        -2.54495,
+        0.0659329,
+        1.14667,
+        0.970839
+      ],
+      "decal0Line3": [
+        0.443636,
+        -2.51476,
+        1.12922,
+        3.41691
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.379433,
+        0.433879,
+        -0.817178,
+        -1.74412
+      ],
+      "decal0CPNormDepth1": [
+        0.379433,
+        0.433879,
+        0.817178,
+        -1.74412
+      ],
+      "decal0RotScale": [
+        1.59701,
+        0.358151
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.267489,
+      "decal0Tex": "ussr_tank_emblem_09"
     }
   },
   "smokeScreenExhaustEmitters": {

@@ -43,7 +43,6 @@ let inProgress = { image = "!ui/unitskin#image_in_progress.avif" }
 let overrides = {
   //here all overrides by unit
   us_m3a3_bradley_reskin = inProgress
-  germ_flakpanzer_IV_Ostwind_reskin = inProgress
   germ_flakpz_I_Gepard_reskin = inProgress
   ussr_zsu_23_4_reskin = inProgress
   jp_type_87_reskin = inProgress

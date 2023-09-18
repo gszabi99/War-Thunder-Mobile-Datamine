@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { setCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonName
 } = require("%appGlobals/unitPresentation.nut")
 let { unitInfoPanelFull, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -64,6 +64,8 @@ let unitToShow = keepref(Computed(function() {
 unitToShow.subscribe(function(unit) {
   if (unit != null)
     setCustomHangarUnit(unit, false)
+  else
+    resetCustomHangarUnit()
 })
 
 let function platoonTitle(unit) {

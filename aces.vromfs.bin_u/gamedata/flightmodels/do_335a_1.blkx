@@ -1788,7 +1788,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "do_335a_1_bomb",
+      "name": "do_335a_1_default",
       "blk": "gameData/FlightModels/weaponPresets/do_335a_1_bomb.blk"
     }
   },

@@ -1,4 +1,4 @@
-let { loc } = require("dagor.localize")
+let { loc, doesLocTextExist } = require("dagor.localize")
 let { get_addon_size } = require("contentUpdater")
 let { startswith } = require("string")
 let { unique } = require("%sqstd/underscore.nut")
@@ -24,6 +24,7 @@ let initialAddons = [ "pkg_secondary_hq", "pkg_secondary" ]
 let latestDownloadAddons = { //addons to download after other required campaign addons is already downloaded
   tanks = ["pkg_video"]
 }
+let commonUhqAddons = ["pkg_environment_uhq"]
 
 let gameModeAddonToAddonSetMap = {
   [PKG_NAVAL] = naval,
@@ -42,17 +43,17 @@ let addonLocId = toIdsMap([ PKG_COMMON, PKG_COMMON_HQ, PKG_NAVAL_HQ, PKG_GROUND_
     [PKG_NAVAL]       = "addon/naval",
     [PKG_GROUND]      = "addon/ground",
     [PKG_DEV]         = "addon/dev",
-    pkg_secondary     = "addon/pkg_secondary",
     pkg_secondary_hq  = "addon/pkg_secondary",
-    pkg_video         = "addon/pkg_video",
   })
 
 let function getAddonNameImpl(addon) {
-  let locId = addonLocId?[addon]
+  local locId = addonLocId?[addon]
   if (locId != null)
     return locId == "" ? "" : loc(locId)
-  if (!startswith(addon, "pkg_tier_"))
-    return addon
+  if (!startswith(addon, "pkg_tier_")) {
+    locId = $"addon/{addon}"
+    return doesLocTextExist(locId) ? loc(locId) : addon
+  }
   let list = addon.split("_")
   let postfixIdx = list.len() - (list.top() == "hq" ? 2 : 1)
   let postfix = list[postfixIdx]
@@ -105,6 +106,7 @@ return freeze({
   ground
   dev
   initialAddons
+  commonUhqAddons
   latestDownloadAddons
 
   gameModeAddonToAddonSetMap

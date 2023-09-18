@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
 let iOsPlaform = require("ios.platform")
-let { requestTrackingPermission = @() null, getTrackingPermission = @() -1, ATT_NOT_DETERMINED = 0 } = iOsPlaform
+let { requestTrackingPermission, getTrackingPermission, ATT_NOT_DETERMINED } = iOsPlaform
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
 let { newbieOfflineMissions } = require("%rGui/gameModes/newbieOfflineMissions.nut")

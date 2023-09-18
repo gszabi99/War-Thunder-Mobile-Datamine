@@ -12,6 +12,7 @@ let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST,
 } = require("contactActions.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
 
 let searchIconSize = hdpxi(60)
@@ -80,20 +81,27 @@ let searchBlock = {
 let pannableTopOffset = gap
 let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - topAreaSize - floatingTextInputHeight,
   [pannableTopOffset, gradientHeightBottom])
+let scrollHandler = ScrollHandler()
 
-let contactsList = mkVerticalPannableArea(
-  @() {
-    watch = searchContactsResult
-    size = [flex(), SIZE_TO_CONTENT]
-    flow = FLOW_VERTICAL
-    children = searchContactsResult.value
-      .map(@(name, uid) { uid, name })
-      .values()
-      .sort(@(a, b) a.name <=> b.name)
-      .map(@(c, idx) mkContactRow(c.uid, idx,
-        Computed(@() selectedUserId.value == c.uid),
-        @() playerSelectedUserId(c.uid)))
-  })
+let contactsList = {
+  size = flex()
+  children = [
+    mkVerticalPannableArea(
+      @() {
+        watch = searchContactsResult
+        size = [flex(), SIZE_TO_CONTENT]
+        flow = FLOW_VERTICAL
+        children = searchContactsResult.value
+          .map(@(name, uid) { uid, name })
+          .values()
+          .sort(@(a, b) a.name <=> b.name)
+          .map(@(c, idx) mkContactRow(c.uid, idx,
+            Computed(@() selectedUserId.value == c.uid),
+            @() playerSelectedUserId(c.uid)))
+      }, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+    mkScrollArrow(scrollHandler, MR_B)
+  ]
+}
 
 let inProgressInfo = {
   size = flex()

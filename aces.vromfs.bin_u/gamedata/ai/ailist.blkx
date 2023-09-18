@@ -1142,21 +1142,87 @@
     {
       "name": "tankBot",
       "selectStrategy": "ordered",
-      "sequencer": {
-        "selector": {
-          "selectStrategy": "ordered",
-          "selectOnSuccess": true,
+      "sequencer": [
+        {
+          "or": {
+            "checkTeamTickets": {
+              "op": "less",
+              "allyTeam": true,
+              "ticketsPercent": 0.3
+            },
+            "checkCapturePoint": {
+              "dist": 100000.0,
+              "canCapture": true,
+              "timeCaptured": 90.0
+            }
+          },
           "setCapturePointAsDest": {
-            "dist": 20.0
+            "dist": 10.0,
+            "canCapture": true,
+            "stayOnPointTime": 60.0,
+            "canUseIndirectPath": false,
+            "includeSpawnPoints": false
           },
           "selectExplicitDestination": {
             "minDist": 20.0
+          },
+          "driveToPos": {
+            "dist": 10.0
           }
         },
-        "driveToPos": {
-          "dist": 10.0
+        {
+          "checkCapturePoint": {
+            "dist": 100000.0,
+            "canCapture": true
+          },
+          "selector": {
+            "selectStrategy": "random",
+            "selectOnSuccess": true,
+            "setCapturePointAsDest": {
+              "dist": 20.0,
+              "canCapture": true,
+              "stayOnPointTime": 30.0,
+              "includeSpawnPoints": false
+            },
+            "pursueTarget": {
+              "distanceMin": 20.0,
+              "distanceMax": 50.0
+            }
+          },
+          "selectExplicitDestination": {
+            "minDist": 20.0
+          },
+          "driveToPos": {
+            "dist": 10.0
+          }
+        },
+        {
+          "checkCapturePoint": {
+            "dist": 100000.0,
+            "canCapture": false
+          },
+          "selector": {
+            "selectStrategy": "random",
+            "selectOnSuccess": true,
+            "setCapturePointAsDest": {
+              "dist": 20.0,
+              "canCapture": false,
+              "stayOnPointTime": 5.0,
+              "includeSpawnPoints": false
+            },
+            "pursueTarget": {
+              "distanceMin": 15.0,
+              "distanceMax": 70.0
+            }
+          },
+          "selectExplicitDestination": {
+            "minDist": 20.0
+          },
+          "driveToPos": {
+            "dist": 10.0
+          }
         }
-      }
+      ]
     },
     {
       "name": "shipMissionUnit",

@@ -5,7 +5,7 @@ let { UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_DOWNLOADING_YUP
 let { updaterState } = require("loginUpdaterState.nut")
 let { gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let { titleLogo } = require("%globalsDarg/components/titleLogo.nut")
+let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
 let { getDownloadInfoText } = require("%globalsDarg/updaterUtils.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -91,15 +91,13 @@ let waitSpinner = {
   animations = [{ prop = AnimProp.rotate, from = 0, to = 360, duration = 3.0, play = true, loop = true }]
 }
 
-let titleLogoWithPos = titleLogo.__merge({ margin = saBordersRv })
-
 let loginUpdaterKey = {}
-let loginUpdater = {
+let mkLoginUpdater = @() {
   key = loginUpdaterKey
   size = flex()
   children = [
     waitSpinner
-    titleLogoWithPos
+    mkTitleLogo({ margin = saBordersRv })
     {
       size = flex()
       padding = saBordersRv
@@ -114,4 +112,4 @@ let loginUpdater = {
   animations = wndSwitchAnim
 }
 
-return loginUpdater
+return mkLoginUpdater

@@ -40,7 +40,7 @@ let animCompBase = {
   clipChildren = true
 }
 
-let fingerComp = {
+let mkFingerComp = @() {
   size = [fingerW, fingerH]
   pos = [fingerX, fingerY]
   hplace = ALIGN_CENTER
@@ -233,51 +233,57 @@ let mkStickAnimComp = @(stickBg, stickHead, finger) animCompBase.__merge({
   ]
 })
 
-let staticStickComps = {
-  finger = clone fingerComp
-  head = clone stickHeadComp
+let function mkStaticStickAnim() {
+  let staticStickComps = {
+    finger = mkFingerComp()
+    head = clone stickHeadComp
+  }
+  buildAnimSteps("StaticStick", staticStickComps, buildStickAnimStep, [
+    { t = GESTURE.HOLD, x = 0.0, y = -0.36 }
+    { t = GESTURE.HOLD, x = 0.36, y = 0.0 }
+    { t = GESTURE.HOLD, x = -0.26, y = 0.26 }
+  ])
+  return mkStickAnimComp(stickBgComp, staticStickComps.head, staticStickComps.finger)
 }
-buildAnimSteps("StaticStick", staticStickComps, buildStickAnimStep, [
-  { t = GESTURE.HOLD, x = 0.0, y = -0.36 }
-  { t = GESTURE.HOLD, x = 0.36, y = 0.0 }
-  { t = GESTURE.HOLD, x = -0.26, y = 0.26 }
-])
-let staticStickAnim = mkStickAnimComp(stickBgComp, staticStickComps.head, staticStickComps.finger)
 
-let dynamicStickComps = {
-  finger = clone fingerComp
-  head = clone stickHeadComp
-  bg = clone stickBgComp
+let function mkDynamicStickAnim() {
+  let dynamicStickComps = {
+    finger = mkFingerComp()
+    head = clone stickHeadComp
+    bg = clone stickBgComp
+  }
+  buildAnimSteps("DynamicStick", dynamicStickComps, buildStickAnimStep, [
+    { t = GESTURE.SLIDE, x = 0.20, y = 0.20, x2 = 0.20, y2 = -0.16 }
+    { t = GESTURE.SLIDE, x = -0.20, y = -0.20, x2 = 0.16, y2 = -0.20 }
+    { t = GESTURE.SLIDE, x = 0.20, y = -0.20, x2 = -0.06, y2 = 0.06 }
+  ])
+  return mkStickAnimComp(dynamicStickComps.bg, dynamicStickComps.head, dynamicStickComps.finger)
 }
-buildAnimSteps("DynamicStick", dynamicStickComps, buildStickAnimStep, [
-  { t = GESTURE.SLIDE, x = 0.20, y = 0.20, x2 = 0.20, y2 = -0.16 }
-  { t = GESTURE.SLIDE, x = -0.20, y = -0.20, x2 = 0.16, y2 = -0.20 }
-  { t = GESTURE.SLIDE, x = 0.20, y = -0.20, x2 = -0.06, y2 = 0.06 }
-])
-let dynamicStickAnim = mkStickAnimComp(dynamicStickComps.bg, dynamicStickComps.head, dynamicStickComps.finger)
 
-let arrowsComps = {
-  finger = clone fingerComp
-  down = arrowsWidgetParts.arrowDown
-  stop = arrowsWidgetParts.arrowStop
-  upH = arrowsWidgetParts.arrowUpH
-  stopH = arrowsWidgetParts.arrowStopH
-  leftH = arrowsWidgetParts.arrowLeftH
+let function mkArrowsAnim() {
+  let arrowsComps = {
+    finger = mkFingerComp()
+    down = arrowsWidgetParts.arrowDown
+    stop = arrowsWidgetParts.arrowStop
+    upH = arrowsWidgetParts.arrowUpH
+    stopH = arrowsWidgetParts.arrowStopH
+    leftH = arrowsWidgetParts.arrowLeftH
+  }
+  buildAnimSteps("Arrows", arrowsComps, buildArrowsAnimStep, [
+    { t = GESTURE.TAP, x = 0.0, y = -0.28, btnId = "up" }
+    { t = GESTURE.HOLD, x = -0.52, y = 0.0, btnId = "left" }
+    { t = GESTURE.TAP, x = 0.0, y = 0.24, btnId = "stop" }
+  ])
+  return animCompBase.__merge({
+    children = [
+      arrowsWidgetComp // arrowsWidgetParts comps are inside
+      arrowsComps.finger
+    ]
+  })
 }
-buildAnimSteps("Arrows", arrowsComps, buildArrowsAnimStep, [
-  { t = GESTURE.TAP, x = 0.0, y = -0.28, btnId = "up" }
-  { t = GESTURE.HOLD, x = -0.52, y = 0.0, btnId = "left" }
-  { t = GESTURE.TAP, x = 0.0, y = 0.24, btnId = "stop" }
-])
-let arrowsAnim = animCompBase.__merge({
-  children = [
-    arrowsWidgetComp // arrowsWidgetParts comps are inside
-    arrowsComps.finger
-  ]
-})
 
 return { // keys are control type IDs
-  stick = dynamicStickAnim
-  stick_static = staticStickAnim
-  arrows = arrowsAnim
+  stick = mkDynamicStickAnim
+  stick_static = mkStaticStickAnim
+  arrows = mkArrowsAnim
 }

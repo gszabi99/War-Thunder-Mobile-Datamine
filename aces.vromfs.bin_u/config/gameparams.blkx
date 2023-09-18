@@ -119,6 +119,7 @@
   ],
   "timeBeforeEngineNoticeFire": 0.5,
   "enableImpostorPreshadowCompression": false,
+  "forceDisableRadarsOnSpawnGm": true,
   "teleScale": 0.03,
   "minSkyAmbientLighting": [
     0.00954,
@@ -12725,6 +12726,38 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "bosvark_spaag"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "panhard_ebr_1951"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "panhard_ebr_1951"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "panhard_ebr_1951"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "panhard_ebr_1951"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "panhard_ebr_1951"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "panhard_ebr_1951"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "panhard_ebr_1951"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "panhard_ebr_1951"
         }
       ]
     },
@@ -13646,17 +13679,11 @@
         "water_pipes_b_angle_top",
         "cargo_ramp_a",
         "_dp_",
-        "american_town_building_1_floor_a_",
-        "american_town_building_1_floor_b_",
-        "american_town_building_1_floor_c_",
-        "american_town_building_1_floor_d_",
-        "american_town_building_1_floor_e_",
-        "american_town_building_2_floors_a_",
-        "american_town_building_2_floors_b_",
-        "american_town_building_2_floors_c_",
-        "american_town_building_2_floors_d_",
-        "american_town_building_2_floors_e_",
-        "american_town_building_3_floors_a_"
+        "_dp0",
+        "_awning",
+        "_annex",
+        "_stair",
+        "_front_railing"
       ],
       "excRE": [
         "american_statue_a",
@@ -13674,54 +13701,7 @@
         "water_pipes_b_start",
         "brick_fence_e",
         "brick_fence_column_c",
-        "soviet_town_building_5_floors_a_dp_01",
-        "soviet_town_building_5_floors_a_dp_02",
-        "soviet_town_building_5_floors_a_dp_03",
-        "soviet_town_building_5_floors_a_dp_04",
-        "soviet_town_building_5_floors_a_dp_05",
-        "soviet_town_building_5_floors_a_dp_06",
-        "soviet_town_building_5_floors_a_dp_07",
-        "soviet_town_building_5_floors_a_dp_08",
-        "soviet_town_building_5_floors_b_dp_01",
-        "soviet_town_building_5_floors_b_dp_02",
-        "soviet_town_building_5_floors_b_dp_03",
-        "soviet_town_building_5_floors_b_dp_04",
-        "soviet_town_building_5_floors_b_dp_05",
-        "soviet_town_building_5_floors_b_dp_06",
-        "soviet_town_building_5_floors_b_dp_07",
-        "soviet_town_building_5_floors_b_dp_08",
-        "soviet_town_building_5_floors_c_dp_01",
-        "soviet_town_building_5_floors_c_dp_02",
-        "soviet_town_building_5_floors_c_dp_03",
-        "soviet_town_building_5_floors_c_dp_04",
-        "soviet_town_building_5_floors_c_dp_05",
-        "soviet_town_building_5_floors_c_dp_06",
-        "soviet_town_building_5_floors_c_dp_07",
-        "soviet_town_building_5_floors_c_dp_08",
-        "soviet_town_building_5_floors_c_dp_09",
-        "soviet_town_building_5_floors_d_dp_01",
-        "soviet_town_building_5_floors_d_dp_02",
-        "soviet_town_building_5_floors_d_dp_03",
-        "soviet_town_building_5_floors_d_dp_04",
-        "soviet_town_building_5_floors_d_dp_05",
-        "soviet_town_building_5_floors_d_dp_06",
-        "soviet_town_building_5_floors_d_dp_07",
-        "soviet_town_building_5_floors_d_dp_08",
-        "soviet_town_building_9_floors_a_dp_01",
-        "soviet_town_building_9_floors_a_dp_02",
-        "soviet_town_building_9_floors_a_dp_03",
-        "soviet_town_building_9_floors_a_dp_04",
-        "soviet_town_building_9_floors_a_dp_05",
-        "soviet_town_building_9_floors_a_dp_06",
-        "soviet_town_building_store_a_dp_01",
-        "soviet_town_building_store_a_dp_02",
-        "soviet_town_building_store_a_dp_03",
-        "soviet_town_building_store_b_dp_01",
-        "soviet_town_building_store_b_dp_02",
-        "soviet_town_building_store_b_dp_03",
-        "soviet_town_building_store_c_dp_01",
-        "soviet_town_building_store_c_dp_02",
-        "soviet_town_building_store_c_dp_03"
+        "asian_pagoda_a_annex"
       ]
     },
     "hideForMode1": {
@@ -13984,7 +13964,25 @@
         "scandi_island_stone_snow_medium_700x700_a",
         "scandi_island_stone_snow_medium_1000x450_a",
         "scandi_island_stone_snow_small_350x300_a",
-        "scandi_island_stone_snow_small_500x450_a"
+        "scandi_island_stone_snow_small_500x450_a",
+        "ships_graveyard_island_big_a",
+        "ships_graveyard_island_huge_a",
+        "ships_graveyard_island_medium_a",
+        "ships_graveyard_island_medium_b",
+        "ships_graveyard_island_medium_c",
+        "ships_graveyard_island_small_a",
+        "ships_graveyard_island_small_b",
+        "volcano_a",
+        "red_sandstone_cliff_a",
+        "red_sandstone_cliff_b",
+        "red_sandstone_cliff_c",
+        "red_sandstone_cliff_arc_a",
+        "red_sandstone_cliff_vert_c",
+        "red_sandstone_cliff_vert_d",
+        "red_sandstone_rock_a",
+        "red_sandstone_rock_b",
+        "red_sandstone_rock_c",
+        "red_sandstone_rock_d"
       ]
     },
     "badLod1ForStaticShadow": {}

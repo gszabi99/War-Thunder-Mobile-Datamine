@@ -5,6 +5,7 @@ let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/
 let { setVirtualAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
 let { isStickActiveByStick, stickDelta } = require("stickState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { IsTracked } = require("%rGui/hud/tankState.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
 let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering, wheel_steering
 } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
@@ -106,22 +107,23 @@ let imgStick = {
 }
 
 let tankMoveStick  = @() {
-  watch = currentTankMoveCtrlType
+  watch = [IsTracked, currentTankMoveCtrlType]
   key = currentTankMoveCtrlType
   behavior = Behaviors.TouchScreenStick
   size = stickZoneSize
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_LEFT
   touchStickAction = {
-    horizontal = "gm_steering"
+    horizontal = IsTracked.value ? "gm_steering" : "wheel_steering"
     vertical = "gm_throttle"
   }
-  deadZoneForStraightMove = 20
-  deadZoneForTurnAround = 85
-  valueAfterDeadZone = 0.34
+  deadZoneForStraightMove = 0
+  deadZoneForTurnAround = 90
   steeringTable = [
-    [0, 0],
-    [80, 0.7],
+    [12, 0],
+    [13, 0.2],
+    [60, 0.5],
+    [80, 0.9],
     [81, 1.0]
   ]
   maxValueRadius = bgRadius

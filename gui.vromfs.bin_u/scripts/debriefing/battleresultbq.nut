@@ -6,7 +6,7 @@ let { round } =  require("math")
 let { EventOnSetupFrameTimes } = require("gameEvents")
 let { get_mp_session_id_int } = require("multiplayer")
 let { get_current_mission_name } = require("mission")
-let { get_battery, get_battery_capacity_mah = @() -1, is_charging, get_thermal_state, get_network_connection_type = @() -1 } = require("sysinfo")
+let { get_battery, get_battery_capacity_mah, is_charging, get_thermal_state, get_network_connection_type } = require("sysinfo")
 let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
@@ -14,7 +14,7 @@ let { median } = require("%sqstd/math.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
-let { get_gui_option, addUserOption, addLocalUserOption = @(id) require("guiOptions").addUserOption(id) } = require("guiOptions")
+let { get_gui_option, addUserOption, addLocalUserOption } = require("guiOptions")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { battleResult } = require("battleResult.nut")
@@ -111,8 +111,8 @@ let function onFrameTimes(evt, _eid, _comp) {
     campaign = battleCampaign.value != "" ? battleCampaign.value
       : (battleResult.value?.campaign ?? curCampaign.value ?? "")
     mission = get_current_mission_name()
-    fpsLimit = get_gui_option(OPT_FPS) ?? 30
-    videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY) ?? "low"
+    fpsLimit = get_gui_option(OPT_FPS)
+    videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY)
     sessionId = get_mp_session_id_int()
     tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
     battery = get_battery()

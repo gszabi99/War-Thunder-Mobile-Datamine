@@ -10,7 +10,7 @@ let backButton = require("%rGui/components/backButton.nut")
 let { formatText } = require("textFormatters.nut")
 let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nextArticle, prevArticle,
   newsfeed, curArticleContent, articlesPerPage, pagesCount, curPageIdx,
-  lastSeenId, isArticleSeen, markCurArticleSeen, markAllArticlesSeen, closeNewsWnd
+  unreadArticles, markCurArticleSeen, closeNewsWnd
 } = require("newsState.nut")
 
 let textColor = 0xFFFFFFFF
@@ -118,7 +118,7 @@ let mkThumbnailImg = @(thumb) {
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
 
-let function articleTabBase(info, sf, isSelected, isSeen) {
+let function articleTabBase(info, sf, isSelected, isUnseen) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   let isHovered = sf & S_HOVER
   let { shortTitle, title, thumb, isPinned } = info
@@ -141,16 +141,21 @@ let function articleTabBase(info, sf, isSelected, isSeen) {
           thumb == null ? null : mkThumbnailImg(thumb)
           {
             size = [flex(), SIZE_TO_CONTENT]
-            behavior = Behaviors.TextArea
+            maxHeight = ph(100)
+            behavior = [Behaviors.TextArea, Behaviors.Marquee]
             rendObj = ROBJ_TEXTAREA
             halign = ALIGN_RIGHT
-            valign = ALIGN_CENTER
             color = textColor
             text = shortTitle ?? title
+
+            // For marquee:
+            orientation = O_VERTICAL
+            speed = hdpx(30)
+            delay = [5, 2]
           }.__update(fontTiny)
         ]
       }
-      @() { watch = isSeen }.__update(isSeen.value ? {} : newMark)
+      @() { watch = isUnseen }.__update(isUnseen.value ? newMark : {})
       {
         size = flex()
         rendObj = ROBJ_BOX
@@ -170,7 +175,7 @@ let function articleTab(info) {
   let stateFlags = Watched(0)
   let { id } = info
   let isSelected = Computed(@() curArticleId.value == id)
-  let isSeen = Computed(@() isArticleSeen(id, lastSeenId.value))
+  let isUnseen = Computed(@() unreadArticles.value?[id] ?? false)
   return @() {
     watch = [isSelected, stateFlags]
     behavior = Behaviors.Button
@@ -182,7 +187,7 @@ let function articleTab(info) {
       markCurArticleSeen()
       playerSelectedArticleId(id)
     }
-    children = articleTabBase(info, stateFlags.value, isSelected.value, isSeen)
+    children = articleTabBase(info, stateFlags.value, isSelected.value, isUnseen)
   }
 }
 
@@ -291,7 +296,6 @@ let wndHeader = {
   valign = ALIGN_CENTER
   children = [
     backButton(function() {
-      markAllArticlesSeen()
       closeNewsWnd()
     })
     {

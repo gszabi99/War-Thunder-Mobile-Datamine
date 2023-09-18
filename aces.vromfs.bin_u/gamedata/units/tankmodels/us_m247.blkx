@@ -48,8 +48,8 @@
   "autoSightDistanceCorrection": true,
   "radarAnimVar": "radar_drive",
   "radarAntenaSpeed": 720.0,
-  "radarDeployTime": 6.0,
   "type": "typeSPAA",
+  "minRelativeTankCameraThreshold": 1.1,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -509,7 +509,7 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
@@ -540,8 +540,7 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 5.0,
-      "armorThrough": 150.0,
+      "armorThickness": 50.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -610,6 +609,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -668,6 +687,19 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
+      "ammo_body_61_dm": {},
+      "ammo_body_62_dm": {},
+      "ammo_body_63_dm": {},
+      "ammo_body_64_dm": {},
+      "ammo_body_65_dm": {},
+      "ammo_body_66_dm": {},
+      "ammo_body_67_dm": {},
+      "ammo_body_68_dm": {},
+      "ammo_body_69_dm": {},
+      "ammo_body_70_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -688,6 +720,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -707,7 +743,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1711,6 +1751,24 @@
     }
   },
   "class_tags": {},
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apg_66_m_247.blk",
+        "turretIndex": 0,
+        "designationFromBody": true,
+        "designationTurretIndex": 0,
+        "dmPart": "antenna_target_location_dm",
+        "radarParkingAzimuth": 180.0,
+        "radarDeployTime": 6.0
+      },
+      {
+        "blk": "gameData/sensors/us_m_247_track.blk",
+        "turretIndex": 0,
+        "dmPart": "antenna_target_tagging_dm"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": [
       {
@@ -2615,24 +2673,6 @@
       0.32
     ]
   },
-  "cockpit": {
-    "zoomOutFov": 6.14,
-    "zoomInFov": 6.14,
-    "sightFov": 3.0,
-    "sightName": "aa_sight",
-    "headPos": [
-      0.0,
-      4.0,
-      -13.5
-    ],
-    "headPosOnShooting": [
-      -0.7,
-      4.5,
-      0.3
-    ],
-    "detectionHeight": 3.42,
-    "bone_turret": "bone_turret"
-  },
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
@@ -2644,18 +2684,46 @@
         "explosionEvent": "ammo_explosion",
         "wreckedPartId": 0,
         "ammo_body_03_dm": {
-          "count": 400
+          "count": 250
         },
         "ammo_body_01_dm": {
-          "count": 160
+          "count": 250
         }
       }
     }
   },
+  "cockpit": {
+    "zoomOutFov": 6.14,
+    "zoomInFov": 6.14,
+    "sightFov": 3.0,
+    "sightName": "aa_sight",
+    "headPos": [
+      0.0,
+      3.8,
+      -13.7
+    ],
+    "headPosOnShooting": [
+      -0.7,
+      4.5,
+      0.3
+    ],
+    "detectionHeight": 3.42,
+    "bone_turret": "bone_turret"
+  },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "tier": 3,
       "effects": {
@@ -3040,161 +3108,66 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "skin": [
-    {
-      "name": "us_camo_dark_green_dark_earth",
-      "nameLocId": "skin/us_camo_dark_green_dark_earth",
-      "descLocId": "skin/us_camo_dark_green_dark_earth/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_dark_green_dark_earth*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_dark_khaki",
-      "nameLocId": "skin/us_camo_desert_pink_dark_khaki",
-      "descLocId": "skin/us_camo_desert_pink_dark_khaki/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_dark_khaki*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_lines",
-      "nameLocId": "skin/us_camo_desert_pink_lines",
-      "descLocId": "skin/us_camo_desert_pink_lines/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_lines*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive",
-      "nameLocId": "skin/us_camo_desert_pink_olive",
-      "descLocId": "skin/us_camo_desert_pink_olive/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive_drab",
-      "nameLocId": "skin/us_camo_desert_pink_olive_drab",
-      "descLocId": "skin/us_camo_desert_pink_olive_drab/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive_drab*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive_drab_dark_earth",
-      "nameLocId": "skin/us_camo_desert_pink_olive_drab_dark_earth",
-      "descLocId": "skin/us_camo_desert_pink_olive_drab_dark_earth/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive_drab_dark_earth*"
-      }
-    },
-    {
-      "name": "us_camo_olive_drab",
-      "nameLocId": "skin/us_camo_olive_drab",
-      "descLocId": "skin/us_camo_olive_drab/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_olive_drab*"
-      }
-    },
-    {
-      "name": "us_camo_winter_olive",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_winter_olive*"
-      }
-    },
-    {
-      "name": "us_camo_olive_drab_olive",
-      "nameLocId": "skin/us_camo_olive_drab_olive",
-      "descLocId": "skin/us_camo_olive_drab_olive/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_olive_drab_olive*"
-      }
-    },
-    {
-      "name": "modern_snow_temperate",
-      "nameLocId": "skin/usa_modern_snow_temperate",
-      "descLocId": "skin/usa_modern_snow_temperate/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_snow_temperate*"
-      }
-    },
-    {
-      "name": "us_camo_modern_desert_tan",
-      "nameLocId": "skin/us_camo_modern_desert_tan",
-      "descLocId": "skin/us_camo_modern_desert_tan/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_modern_desert_tan*"
-      }
-    },
-    {
-      "name": "modern_gray_desert",
-      "nameLocId": "skin/usa_modern_gray_desert",
-      "descLocId": "skin/usa_modern_gray_desert/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_gray_desert*"
-      }
-    },
-    {
-      "name": "modern_seventh_army",
-      "nameLocId": "skin/usa_modern_seventh_army",
-      "descLocId": "skin/usa_modern_seventh_army/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_seventh_army*"
-      }
-    },
-    {
-      "name": "modern_winter_verdant",
-      "nameLocId": "skin/usa_modern_winter_verdant",
-      "descLocId": "skin/usa_modern_winter_verdant/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_winter_verdant*"
-      }
-    },
-    {
-      "name": "ger_camo_carc",
-      "nameLocId": "skin/ger_camo_carc",
-      "descLocId": "skin/ger_camo_carc/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "ger_camo_carc*"
-      }
-    },
-    {
-      "name": "usa_modern_red_desert",
-      "nameLocId": "skin/usa_modern_red_desert",
-      "descLocId": "skin/usa_modern_red_desert/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_red_desert*"
-      }
-    },
-    {
-      "name": "usa_modern_summer_verdant",
-      "nameLocId": "skin/usa_modern_summer_verdant",
-      "descLocId": "skin/usa_modern_summer_verdant/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_summer_verdant*"
-      }
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "usa_modern_tropical*"
     }
-  ],
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.81677,
+        -1.6158E-07,
+        -0.0024585,
+        -0.994706
+      ],
+      "decal0Line1": [
+        -0.00078355,
+        -2.66994,
+        -0.897584,
+        5.13526
+      ],
+      "decal0Line2": [
+        -2.81677,
+        -1.46578E-07,
+        -0.00245855,
+        1.99472
+      ],
+      "decal0Line3": [
+        -0.000783304,
+        -2.66994,
+        0.897584,
+        5.13148
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.000827317,
+        0.318657,
+        -0.94787,
+        -2.09893
+      ],
+      "decal0CPNormDepth1": [
+        -0.000827317,
+        0.318657,
+        0.94787,
+        -2.10292
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.355016
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.240389,
+      "decal0Tex": "usa_tank_emblem_08"
+    }
+  },
   "battleHideNodes": {
     "n": "details"
   }

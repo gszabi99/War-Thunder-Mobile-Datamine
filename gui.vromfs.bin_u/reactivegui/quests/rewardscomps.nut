@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { opacityAnims, aTimeInfoItem } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { REWARD_STYLE_SMALL, mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
+let { REWARD_STYLE_SMALL, REWARD_SIZE_SMALL, mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkIcon } = require("%rGui/unit/components/unitPlateComp.nut")
 let { openRewardsList } = require("questsState.nut")
 
@@ -38,9 +38,6 @@ let mkRewardsListBtn = @(rewards) {
   valign = ALIGN_CENTER
   children = array(3).map(@(_) rewardsListIcon)
 }
-
-let mkQuestRewardPlate = @(r, startIdx, rStyle = rStyleDefault)
-  mkRewardPlate(r, rStyle, { animations = opacityAnims(aTimeInfoItem, REWARD_INTERVAL * (startIdx + 1)) })
 
 let mkRewardLabel = @(children, height = rewardLabelHeight) {
   size = [flex(), height]
@@ -79,14 +76,27 @@ let mkProgressBarReward = @(children) {
 
 let rewardProgressBarCtor = @(r, isUnlocked) mkProgressBarReward(currencyProgressBarRewardCtor(r, isUnlocked))
 
-let function mkRewardsPreview(rewards) {
+let mkQuestRewardPlate = @(r, startIdx, isReceived = false, rStyle = rStyleDefault) {
+  children = [
+    mkRewardPlate(r, rStyle, { animations = opacityAnims(aTimeInfoItem, REWARD_INTERVAL * (startIdx + 1)) })
+    !isReceived ? null
+      : {
+          size = [REWARD_SIZE_SMALL, REWARD_SIZE_SMALL]
+          halign = ALIGN_LEFT
+          valign = ALIGN_TOP
+          children = mkCompletedIcon
+        }
+  ]
+}
+
+let function mkRewardsPreview(rewards, isReceived) {
   local rewardsSize = 0
   local res = []
   foreach (idx, r in rewards) {
     rewardsSize += r.slots
     if (rewardsSize > REWARDS_PREVIEW_SLOTS || (rewardsSize == REWARDS_PREVIEW_SLOTS && rewards.len() > idx + 1))
       return res.append(mkRewardsListBtn(rewards))
-    res.append(mkQuestRewardPlate(r, idx))
+    res.append(mkQuestRewardPlate(r, idx, isReceived))
   }
   return res
 }

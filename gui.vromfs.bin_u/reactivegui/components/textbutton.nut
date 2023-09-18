@@ -56,7 +56,7 @@ let mkPriceTextsComp = @(text, priceComp) {
   valign = ALIGN_CENTER
   gap = hdpx(3)
   children = [
-    mkButtonText(text, fontTiny)
+    !text ? null : mkButtonText(text, fontTiny)
     priceComp
   ]
 }

@@ -10,6 +10,7 @@ let { get_cur_circuit_block } = require("blkGetters")
 let logBQ = log_with_prefix("[BQ] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
+let { disableNetwork } = require("%appGlobals/clientState/initialState.nut")
 
 const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
 const RETRY_MSEC = 300000 //retry send on error
@@ -123,10 +124,12 @@ queue.subscribe(function(v) {
   wasQueueLen = v.len()
 })
 
-subscribe("sendBqEvent", @(msg) queueByUserId.mutate(
-  @(v) v[myUserId.value] <- (clone (v?[myUserId.value] ?? [])).append(msg)))
+if (!disableNetwork) {
+  subscribe("sendBqEvent", @(msg) queueByUserId.mutate(
+    @(v) v[myUserId.value] <- (clone (v?[myUserId.value] ?? [])).append(msg)))
 
-subscribe("app.shutdown", @(_) sendAll())
+  subscribe("app.shutdown", @(_) sendAll())
+}
 
 return {
   forceSendBqQueue = sendAll

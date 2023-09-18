@@ -12,7 +12,8 @@ let levelProgressBorderColor = Color(0, 0, 0)
 let levelProgressBarHeight   = hdpx(15)
 let levelProgressBarWidth    = hdpx(400)
 let levelProgressBorderWidth = hdpx(2)
-let levelProgressBarFillWidth = levelProgressBarWidth - levelProgressBorderWidth
+let levelProgressBarFillWidth = levelProgressBarWidth - levelProgressBorderWidth * 2
+let rotateCompensate = 1.1
 
 let mkLevelBg = @(override = {}) {
   size = flex()
@@ -35,7 +36,7 @@ let mkProgressLevelBg = @(override = {}) {
   size = [levelProgressBarWidth, levelProgressBarHeight]
   rendObj = ROBJ_BOX
   hplace = ALIGN_LEFT
-  padding = [levelProgressBorderWidth, levelProgressBorderWidth, levelProgressBorderWidth, 0]
+  padding = levelProgressBorderWidth
   fillColor = levelProgressBgColor
   borderColor = levelProgressBorderColor
   borderWidth = levelProgressBorderWidth
@@ -48,6 +49,7 @@ return {
   levelProgressBarWidth
   levelProgressBorderWidth
   levelProgressBarFillWidth
+  rotateCompensate
   maxLevelStarChar
   playerExpColor
   unitExpColor

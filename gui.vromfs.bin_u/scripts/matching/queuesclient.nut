@@ -1,9 +1,9 @@
-
 from "%scripts/dagui_library.nut" import *
-let { get_time_msec } = require("dagor.time")
 let logQ = log_with_prefix("[QUEUE] ")
+let { get_time_msec } = require("dagor.time")
 let { send, subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
+let { SERVER_ERROR_REQUEST_REJECTED, SERVER_ERROR_NOT_IN_QUEUE } = require("matching.errors")
 let queueState = require("%appGlobals/queueState.nut")
 let { curQueue, isInQueue, curQueueState, queueStates,
   QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_JOINING, QS_IN_QUEUE, QS_LEAVING

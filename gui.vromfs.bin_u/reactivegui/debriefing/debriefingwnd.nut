@@ -21,7 +21,7 @@ let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts,
 let { lerpClamped } = require("%sqstd/math.nut")
 let { getUnitPresentation, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
 let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor, unitExpColor,
-  levelProgressBarWidth, levelProgressBarFillWidth
+  levelProgressBarWidth, levelProgressBarFillWidth, rotateCompensate
 } = require("%rGui/components/levelBlockPkg.nut")
 let { WP } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp, mkExp, CS_COMMON } = require("%rGui/components/currencyComp.nut")
@@ -84,7 +84,7 @@ let deltaStartTimeRewards = rewardAnimTime / 2
 let deltaStartTimeLevelReward = maxLevelProgressAnimTime/2
 let premRewStartTime = 0.35
 
-let CS_DEBRIEFING_REWARD = CS_COMMON.__update({
+let CS_DEBRIEFING_REWARD = CS_COMMON.__merge({
   fontStyle = fontTinyAccented
 })
 
@@ -372,13 +372,13 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
   let animationTrigger = $"progressFillFinished_{lineColor}"
   return {
     watch = curLevelIdxWatch
-    size = [levelProgressBarWidth + 2 * levelBlockSize, SIZE_TO_CONTENT]
+    size = [levelProgressBarWidth + 2 * rotateCompensate * levelBlockSize, SIZE_TO_CONTENT]
     hplace = ALIGN_CENTER
     valign = ALIGN_CENTER
     onDetach = stopLevelLineSound
     children = [
       mkProgressLevelBg({
-        pos = [levelBlockSize, 0]
+        pos = [levelBlockSize * rotateCompensate, 0]
         children = [
           {
             key = $"line_{levelUpsArray[curLevelIdxWatch.value]}"

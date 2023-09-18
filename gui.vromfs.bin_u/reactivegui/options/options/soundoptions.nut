@@ -2,24 +2,38 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 from "soundOptions" import *
 let { send } = require("eventbus")
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 const SOUND_MAX = 100 //in the native code they are fixed, and get_volume_limits return always the same values
 
 let getVolumeInt = @(sndType) is_sound_inited() ? (get_sound_volume(sndType) * 100.0 + 0.5).tointeger()
   : 100
-let setVolumes = @(sndTypes, val) sndTypes.each(function(st) {
-  if (val == getVolumeInt(st))
-    return
-  set_sound_volume(st, val.tofloat() / SOUND_MAX, true)
-  send("saveProfile", {})
-})
+let setVolumes = @(sndTypes, val) sndTypes.reduce(function(res, v) {
+  if (val == getVolumeInt(v))
+    return res
+  set_sound_volume(v, val.tofloat() / SOUND_MAX, true)
+  return true
+}, false)
 
 let function mkSoundSlider(sndTypes, locId) {
-  let volumes = sndTypes.map(getVolumeInt)
-  let curVal = volumes.reduce(@(res, v) max(res, v), 0)
-  let value = Watched(curVal)
-  setVolumes(sndTypes, curVal) //sync volumes
-  value.subscribe(@(v) setVolumes(sndTypes, v))
+  let function getSaved() {
+    let volumes = sndTypes.map(getVolumeInt)
+    return volumes.reduce(@(res, v) max(res, v), 0)
+  }
+  let value = Watched(getSaved())
+  let function updateSaved() {
+    if (!isSettingsAvailable.value)
+      return
+    if (setVolumes(sndTypes, value.value))
+      send("saveProfile", {})
+  }
+  updateSaved()
+  isSettingsAvailable.subscribe(function(_) {
+    value(getSaved())
+    updateSaved()
+  })
+  value.subscribe(@(_) updateSaved())
+
   return {
     locId
     value

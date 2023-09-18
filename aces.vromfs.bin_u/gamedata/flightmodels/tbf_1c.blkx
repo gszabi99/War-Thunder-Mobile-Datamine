@@ -2070,7 +2070,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "tbf_1c_mk13_torpedo",
+      "name": "tbf_1c_default",
       "blk": "gameData/FlightModels/weaponPresets/tbf_1c_mk13_torpedo.blk"
     }
   },

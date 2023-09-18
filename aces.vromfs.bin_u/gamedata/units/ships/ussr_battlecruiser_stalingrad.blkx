@@ -25,7 +25,7 @@
   "ikPilotMaxRenderDistance": 160.0,
   "useSimpleDeathConditionsAndEffects": false,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 64450.0,
+  "multHpFromMetaparts": 102320.0,
   "type": "typeDestroyer",
   "expClass": "exp_cruiser",
   "timeToFire": 40.0,
@@ -213,7 +213,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 64450.0,
+      "hp": 102320.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -239,7 +239,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 64450.0,
+      "hp": 102320.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -249,7 +249,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 64450.0,
+      "hp": 102320.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {},
@@ -260,7 +260,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 64450.0,
+      "hp": 102320.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
@@ -283,7 +283,7 @@
     "fire_control": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 64450.0,
+      "hp": 102320.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.05,
       "fireParamsPreset": "ship_aux_fire",
@@ -331,7 +331,7 @@
     "citadel_armor": {
       "armorClass": "ship_RHA",
       "armorThickness": 200.0,
-      "hp": 64450.0,
+      "hp": 102320.0,
       "fireDamageMult": 0.001,
       "armor_cit_01_dm": {},
       "armor_cit_02_dm": {},
@@ -570,7 +570,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 64450.0,
+      "hp": 102320.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -583,6 +583,10 @@
         "funnel_02_dm",
         "bridge_dm",
         "engine_room_01_dm",
+        "fire_director_01_dm",
+        "fire_director_02_dm",
+        "fire_director_03_dm",
+        "fire_director_04_dm",
         "main_caliber_turret_01_dm",
         "main_caliber_turret_02_dm",
         "main_caliber_turret_03_dm",
@@ -729,7 +733,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -742,7 +746,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -801,7 +805,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -814,7 +818,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -859,7 +863,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -872,7 +876,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -917,7 +921,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -930,7 +934,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -975,7 +979,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -988,7 +992,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1033,7 +1037,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -1046,7 +1050,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1091,7 +1095,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -1104,7 +1108,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1149,7 +1153,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -1162,7 +1166,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1207,7 +1211,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.063,
+        "shotFreq": 0.059,
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "bullets": 100,
@@ -1220,7 +1224,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1279,7 +1283,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1292,7 +1296,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1335,7 +1339,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1348,7 +1352,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1391,7 +1395,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1404,7 +1408,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1447,7 +1451,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1460,7 +1464,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1503,7 +1507,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1516,7 +1520,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1559,7 +1563,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1572,7 +1576,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1615,7 +1619,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1628,7 +1632,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1671,7 +1675,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1684,7 +1688,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1727,7 +1731,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1740,7 +1744,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1783,7 +1787,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1796,7 +1800,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1839,7 +1843,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1852,7 +1856,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -1895,7 +1899,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.5,
+        "shotFreq": 0.333,
         "speedYaw": 70.0,
         "speedPitch": 70.0,
         "bullets": 250,
@@ -1908,7 +1912,7 @@
         "aimMaxDist": 14000.0,
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
+        "accuracyAir": 0.4,
         "accuracyGnd": 1.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
@@ -2301,7 +2305,3220 @@
   "modifications": {
     "ship_tool_kit": {},
     "ship_smoke_screen_system_mod": {},
-    "upgraded": {}
+    "upgraded": {},
+    "weapons_contact_mines": {
+      "effects": {
+        "commonWeapons": {
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_01",
+              "flash": "emtr_gun_flame_01",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_01",
+                "gun": "main_caliber_gun_01",
+                "barrel": "gun_barrel_01",
+                "gunnerDm": "main_caliber_turret_01_dm",
+                "linkedAnimPart": {
+                  "horNode": [
+                    "fire_director_01_dm",
+                    "fire_director_02_dm"
+                  ],
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
+              },
+              "limits": {
+                "yaw": [
+                  -155.0,
+                  155.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_02",
+              "flash": "emtr_gun_flame_02",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_01",
+                "gun": "main_caliber_gun_01",
+                "barrel": "gun_barrel_02",
+                "gunnerDm": "main_caliber_turret_01_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -155.0,
+                  155.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_03",
+              "flash": "emtr_gun_flame_03",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_01",
+                "gun": "main_caliber_gun_01",
+                "barrel": "gun_barrel_03",
+                "gunnerDm": "main_caliber_turret_01_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -155.0,
+                  155.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_04",
+              "flash": "emtr_gun_flame_04",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_02",
+                "gun": "main_caliber_gun_02",
+                "barrel": "gun_barrel_04",
+                "gunnerDm": "main_caliber_turret_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_05",
+              "flash": "emtr_gun_flame_05",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_02",
+                "gun": "main_caliber_gun_02",
+                "barrel": "gun_barrel_05",
+                "gunnerDm": "main_caliber_turret_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_06",
+              "flash": "emtr_gun_flame_06",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_02",
+                "gun": "main_caliber_gun_02",
+                "barrel": "gun_barrel_06",
+                "gunnerDm": "main_caliber_turret_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "secondary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_83",
+              "flash": "emtr_gun_flame_83",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_03",
+                "gun": "main_caliber_gun_03",
+                "barrel": "gun_barrel_83",
+                "gunnerDm": "main_caliber_turret_03_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "secondary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_84",
+              "flash": "emtr_gun_flame_84",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_03",
+                "gun": "main_caliber_gun_03",
+                "barrel": "gun_barrel_84",
+                "gunnerDm": "main_caliber_turret_03_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "secondary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_85",
+              "flash": "emtr_gun_flame_85",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_03",
+                "gun": "main_caliber_gun_03",
+                "barrel": "gun_barrel_85",
+                "gunnerDm": "main_caliber_turret_03_dm",
+                "linkedAnimPart": {
+                  "horNode": [
+                    "fire_director_03_dm",
+                    "fire_director_04_dm"
+                  ],
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_07",
+              "flash": "emtr_gun_flame_07",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -147.0,
+                  147.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_08",
+              "flash": "emtr_gun_flame_08",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -147.0,
+                  147.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_09",
+              "flash": "emtr_gun_flame_09",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_02",
+                "gun": "auxiliary_caliber_gun_02"
+              },
+              "limits": {
+                "yaw": [
+                  -150.0,
+                  150.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_10",
+              "flash": "emtr_gun_flame_10",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_02",
+                "gun": "auxiliary_caliber_gun_02"
+              },
+              "limits": {
+                "yaw": [
+                  -150.0,
+                  150.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_11",
+              "flash": "emtr_gun_flame_11",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_03",
+                "gun": "auxiliary_caliber_gun_03"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  0.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_12",
+              "flash": "emtr_gun_flame_12",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_03",
+                "gun": "auxiliary_caliber_gun_03"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  0.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_13",
+              "flash": "emtr_gun_flame_13",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_04",
+                "gun": "auxiliary_caliber_gun_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_14",
+              "flash": "emtr_gun_flame_14",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_04",
+                "gun": "auxiliary_caliber_gun_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_63",
+              "flash": "emtr_gun_flame_63",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_05",
+                "gun": "auxiliary_caliber_gun_05"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_64",
+              "flash": "emtr_gun_flame_64",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_05",
+                "gun": "auxiliary_caliber_gun_05"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner8",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_65",
+              "flash": "emtr_gun_flame_65",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_06",
+                "gun": "auxiliary_caliber_gun_06"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  0.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner8",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_66",
+              "flash": "emtr_gun_flame_66",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_06",
+                "gun": "auxiliary_caliber_gun_06"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  0.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner9",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_16",
+              "flash": "emtr_gun_flame_16",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_01",
+                "gun": "aa_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner10",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_20",
+              "flash": "emtr_gun_flame_20",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_02",
+                "gun": "aa_gun_02"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner11",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_24",
+              "flash": "emtr_gun_flame_24",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_03",
+                "gun": "aa_gun_03"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner12",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_28",
+              "flash": "emtr_gun_flame_28",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_04",
+                "gun": "aa_gun_04"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner13",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_75",
+              "flash": "emtr_gun_flame_75",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_15",
+                "gun": "aa_gun_15"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner14",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_79",
+              "flash": "emtr_gun_flame_79",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_16",
+                "gun": "aa_gun_16"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "mines",
+              "triggerGroup": "mine",
+              "blk": "gameData/weapons/mines/germ_mine_emc.blk",
+              "emitter": "bone_mine_01",
+              "bullets": 10,
+              "dropSpeed": 5.0,
+              "external": true
+            }
+          ]
+        }
+      }
+    },
+    "weapons_depth_charges": {
+      "effects": {
+        "commonWeapons": {
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_01",
+              "flash": "emtr_gun_flame_01",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_01",
+                "gun": "main_caliber_gun_01",
+                "barrel": "gun_barrel_01",
+                "gunnerDm": "main_caliber_turret_01_dm",
+                "linkedAnimPart": {
+                  "horNode": [
+                    "fire_director_01_dm",
+                    "fire_director_02_dm"
+                  ],
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
+              },
+              "limits": {
+                "yaw": [
+                  -155.0,
+                  155.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_02",
+              "flash": "emtr_gun_flame_02",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_01",
+                "gun": "main_caliber_gun_01",
+                "barrel": "gun_barrel_02",
+                "gunnerDm": "main_caliber_turret_01_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -155.0,
+                  155.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_03",
+              "flash": "emtr_gun_flame_03",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_01",
+                "gun": "main_caliber_gun_01",
+                "barrel": "gun_barrel_03",
+                "gunnerDm": "main_caliber_turret_01_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -155.0,
+                  155.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_04",
+              "flash": "emtr_gun_flame_04",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_02",
+                "gun": "main_caliber_gun_02",
+                "barrel": "gun_barrel_04",
+                "gunnerDm": "main_caliber_turret_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_05",
+              "flash": "emtr_gun_flame_05",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_02",
+                "gun": "main_caliber_gun_02",
+                "barrel": "gun_barrel_05",
+                "gunnerDm": "main_caliber_turret_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_06",
+              "flash": "emtr_gun_flame_06",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_02",
+                "gun": "main_caliber_gun_02",
+                "barrel": "gun_barrel_06",
+                "gunnerDm": "main_caliber_turret_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "secondary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_83",
+              "flash": "emtr_gun_flame_83",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_03",
+                "gun": "main_caliber_gun_03",
+                "barrel": "gun_barrel_83",
+                "gunnerDm": "main_caliber_turret_03_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "secondary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_84",
+              "flash": "emtr_gun_flame_84",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_03",
+                "gun": "main_caliber_gun_03",
+                "barrel": "gun_barrel_84",
+                "gunnerDm": "main_caliber_turret_03_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "secondary",
+              "blk": "gameData/Weapons/navalModels_weapons/305mm_61_sm33_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_85",
+              "flash": "emtr_gun_flame_85",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.059,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "bullets": 100,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_03",
+                "gun": "main_caliber_gun_03",
+                "barrel": "gun_barrel_85",
+                "gunnerDm": "main_caliber_turret_03_dm",
+                "linkedAnimPart": {
+                  "horNode": [
+                    "fire_director_03_dm",
+                    "fire_director_04_dm"
+                  ],
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
+              },
+              "limits": {
+                "yaw": [
+                  -152.0,
+                  152.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_07",
+              "flash": "emtr_gun_flame_07",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -147.0,
+                  147.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_08",
+              "flash": "emtr_gun_flame_08",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -147.0,
+                  147.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_09",
+              "flash": "emtr_gun_flame_09",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_02",
+                "gun": "auxiliary_caliber_gun_02"
+              },
+              "limits": {
+                "yaw": [
+                  -150.0,
+                  150.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_10",
+              "flash": "emtr_gun_flame_10",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_02",
+                "gun": "auxiliary_caliber_gun_02"
+              },
+              "limits": {
+                "yaw": [
+                  -150.0,
+                  150.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_11",
+              "flash": "emtr_gun_flame_11",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_03",
+                "gun": "auxiliary_caliber_gun_03"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  0.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_12",
+              "flash": "emtr_gun_flame_12",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_03",
+                "gun": "auxiliary_caliber_gun_03"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  0.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_13",
+              "flash": "emtr_gun_flame_13",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_04",
+                "gun": "auxiliary_caliber_gun_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_14",
+              "flash": "emtr_gun_flame_14",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_04",
+                "gun": "auxiliary_caliber_gun_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_63",
+              "flash": "emtr_gun_flame_63",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_05",
+                "gun": "auxiliary_caliber_gun_05"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner7",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_64",
+              "flash": "emtr_gun_flame_64",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_05",
+                "gun": "auxiliary_caliber_gun_05"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner8",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_65",
+              "flash": "emtr_gun_flame_65",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_06",
+                "gun": "auxiliary_caliber_gun_06"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  0.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner8",
+              "triggerGroup": "extra_gun_1",
+              "blk": "gameData/Weapons/navalModels_weapons/130mm_60_bl109a_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_66",
+              "flash": "emtr_gun_flame_66",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.333,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 250,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_06",
+                "gun": "auxiliary_caliber_gun_06"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  0.0
+                ],
+                "pitch": [
+                  -20.0,
+                  83.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner9",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_16",
+              "flash": "emtr_gun_flame_16",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_01",
+                "gun": "aa_gun_01"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner10",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_20",
+              "flash": "emtr_gun_flame_20",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_02",
+                "gun": "aa_gun_02"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner11",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_24",
+              "flash": "emtr_gun_flame_24",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_03",
+                "gun": "aa_gun_03"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner12",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_28",
+              "flash": "emtr_gun_flame_28",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_04",
+                "gun": "aa_gun_04"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner13",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_75",
+              "flash": "emtr_gun_flame_75",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_15",
+                "gun": "aa_gun_15"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner14",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_89_sm_20_zif_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_79",
+              "flash": "emtr_gun_flame_79",
+              "useEmitter": true,
+              "isBulletBelt": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 2000,
+              "useGunnerTargetingQuality": false,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_16",
+                "gun": "aa_gun_16"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -20.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner29",
+              "triggerGroup": "mortar",
+              "weaponType": "bombs",
+              "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
+              "emitter": "bone_bomb_01",
+              "bullets": 6,
+              "external": true,
+              "dropSpeed": 7.0,
+              "useEmitter": true,
+              "allowableDelta": 180.0,
+              "turret": {
+                "head": "bone_bomb_01",
+                "gun": "bone_bomb_01"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner30",
+              "triggerGroup": "mortar",
+              "weaponType": "bombs",
+              "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
+              "emitter": "bone_bomb_02",
+              "bullets": 6,
+              "external": true,
+              "dropSpeed": 7.0,
+              "useEmitter": true,
+              "allowableDelta": 180.0,
+              "turret": {
+                "head": "bone_bomb_02",
+                "gun": "bone_bomb_02"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "protection_ammo_wetting": {
+      "effects": {
+        "forcedExplosion": {
+          "relativeDamage": 0.25
+        }
+      }
+    },
+    "protection_new_sonar": {},
+    "protection_new_fireProtection": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "fireDamageMult": 0.5,
+            "compartment_04_dm": {},
+            "compartment_05_dm": {},
+            "compartment_06_dm": {},
+            "bridge_dm": {},
+            "engine_room_01_dm": {},
+            "main_caliber_turret_01_dm": {},
+            "main_caliber_turret_02_dm": {},
+            "main_caliber_turret_03_dm": {},
+            "fire_director_01_dm": {},
+            "fire_director_02_dm": {},
+            "fire_director_03_dm": {},
+            "fire_director_04_dm": {}
+          }
+        }
+      }
+    },
+    "maintanance_new_propellers": {},
+    "maintanance_new_engines": {},
+    "maintanance_powered_toolkit": {}
   },
   "sound": {
     "EngineName": "engine_shipmid01",

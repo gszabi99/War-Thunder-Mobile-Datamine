@@ -38,6 +38,7 @@ let compNameFilter = require("components/apNameFilter.nut")(filterString, select
 let {riSelectShown, riSelectWindow, openRISelectForEntity} = require("riSelect.nut")
 
 let combobox = require("%daeditor/components/combobox.nut")
+let {getEntityExtraName} = require("%daeditor/daeditor_es.nut")
 
 let entitySortState = Watched({})
 
@@ -132,7 +133,9 @@ let function panelRowColorC(comp_fullname, stateFlags, selectedCompNameVal, isOd
   if (comp_fullname == selectedCompNameVal) {
     color = colors.Active
   } else {
-    color = (stateFlags & S_TOP_HOVER) ? colors.GridRowHover : isOdd ? colors.GridBg[0] : colors.GridBg[1]
+    color = stateFlags & S_TOP_HOVER ? colors.GridRowHover
+      : isOdd ? colors.GridBg[0]
+      : colors.GridBg[1]
   }
   return color
 }
@@ -201,7 +204,10 @@ let function panelCompRow(params={}) {
   let isOdd = toggleBg()
   let stateFlags = Watched(0)
   let group = ElemGroup()
-  let comp_name_text = get_tagged_comp_name(comp_flags, (comp_name_ext ? comp_name_ext : comp_name))
+  local comp_name_text = get_tagged_comp_name(comp_flags, (comp_name_ext ? comp_name_ext : comp_name))
+  if (comp_sq_type == "TMatrix")
+    comp_name_text = $"{comp_name_text}[3]"
+
   local comp_fullname = clone rawComponentName
   foreach (comp_key in (path ?? []))
     comp_fullname = $"{comp_fullname}.{comp_key}"
@@ -1071,8 +1077,8 @@ let function mkEntityRow(eid, template_name, name, is_odd) {
   let group = ElemGroup()
   let stateFlags = Watched(0)
 
-  let riExtraName = obsolete_dbg_get_comp_val(eid, "ri_extra__name")
-  let extra = (riExtraName != null) ? $"/ {riExtraName}" : ""
+  let extraName = getEntityExtraName(eid)
+  let extra = (extraName != null) ? $"/ {extraName}" : ""
 
   let div = (template_name != name) ? "•" : "|"
 

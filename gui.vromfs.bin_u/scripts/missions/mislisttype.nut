@@ -227,9 +227,9 @@ g_mislist_type.template <- {
   }
 
   sortMissionsByName = function(missions) {
-    let sortData = u.map(missions, (@(m) { locName = this.getMissionNameText(m), mission = m }).bindenv(this))
+    let sortData = missions.map((@(m) { locName = this.getMissionNameText(m), mission = m }).bindenv(this))
     sortData.sort(@(a, b) a.locName <=> b.locName)
-    return u.map(sortData, @(d) d.mission)
+    return sortData.map(@(d) d.mission)
   }
 }
 

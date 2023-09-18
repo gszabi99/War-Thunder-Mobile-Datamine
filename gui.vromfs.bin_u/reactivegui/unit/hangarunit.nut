@@ -17,6 +17,7 @@ let loadedInfo = Watched({
 let loadedHangarUnitName = Computed(@() loadedInfo.value.name)
 let isLoadedHangarUnitUpgraded = Computed(@() loadedInfo.value.isUpgraded)
 let hangarUnitData = mkWatched(persist, "hangarUnitData", null)
+let hangarUnitDataBackup = mkWatched(persist, "hangarUnitDataBackup", null)
 let hangarUnitName = Computed(@() hangarUnitData.value?.name ?? loadedHangarUnitName.value ?? "")
 
 let hangarUnit = Computed(function() {
@@ -117,8 +118,18 @@ loadedInfo.subscribe(function(lInfo) {
 let setHangarUnit = @(unitName, isFullChange = true)
   hangarUnitData({ name = unitName ?? "", isFullChange })
 
-let setCustomHangarUnit = @(customUnit, isFullChange = true)
+let function setCustomHangarUnit(customUnit, isFullChange = true) {
+  if (hangarUnitDataBackup.value == null)
+    hangarUnitDataBackup(hangarUnitData.value)
   hangarUnitData({ name = customUnit.name, custom = customUnit, isFullChange })
+}
+
+let function resetCustomHangarUnit() {
+  if (hangarUnitDataBackup.value) {
+    hangarUnitData(hangarUnitDataBackup.value)
+    hangarUnitDataBackup(null)
+  }
+}
 
 subscribe("downloadAddonsFinished", function(_) {
   if (isInBattle.value || isInLoadingScreen.value)
@@ -150,5 +161,6 @@ return {
 
   setHangarUnit  //unit will be used from own units or from allUnitsCfg
   setCustomHangarUnit  //will be forced cutsom unit params
+  resetCustomHangarUnit //restore previous unit after custom one
   isHangarUnitLoaded
 }

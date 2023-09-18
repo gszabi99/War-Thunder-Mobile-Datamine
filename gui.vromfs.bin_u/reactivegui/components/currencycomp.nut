@@ -17,12 +17,14 @@ let iconsCoef = {
 
 let getSizeIcon = @(currencyId, size) (size * (iconsCoef?[currencyId] ?? defCoef) + 0.5).tointeger()
 
+// TODO: add eventKey icon
 let icons = {
   // Currencies
   wp   = "ui/gameuiskin#currency_lions.svg"
   gold = "ui/gameuiskin#currency_eagles.svg"
   unitExp = "ui/gameuiskin#experience_icon.svg"
   playerExp = "ui/gameuiskin#experience_icon.svg"
+  warbond = "ui/gameuiskin#warbonds_gamercard.avif"
   // Consumables
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
@@ -30,7 +32,7 @@ let icons = {
   tank_extinguisher = "ui/gameuiskin#shop_consumables_tank_extinguisher_gamercard.avif"
   spare = "ui/gameuiskin#shop_consumables_tank_cards_gamercard.avif"
   // Placeholder
-  placeholder = $"ui/gameuiskin#icon_primary_attention.svg"
+  placeholder = "ui/gameuiskin#icon_primary_attention.svg"
 }
 
 let currencyIconsColor = {
@@ -173,7 +175,7 @@ let function mkExp(value, color, style = CS_GAMERCARD) {
   }
 }
 
-return currencyStyles.__merge({
+return freeze(currencyStyles.__merge({
   mkCurrencyImage
   currencyIconsColor
 
@@ -182,4 +184,4 @@ return currencyStyles.__merge({
   mkPriceExtText
   mkDiscountPriceExtComp
   mkExp
-})
+}))

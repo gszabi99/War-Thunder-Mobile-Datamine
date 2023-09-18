@@ -4,7 +4,7 @@ let { GO_WIN, GO_FAIL } = require("guiMission")
 let { playSound } = require("sound_wt")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
+let { isInMpSession, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { playersDamageStats, requestPlayersDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
@@ -237,6 +237,13 @@ eventbus.subscribe("MissionResult", function(data) {
   eventbus.send("MpStatistics_GetTeamsList", {})
   requestPlayersDamageStats()
   missionResult(resultNum)
+})
+
+isInBattle.subscribe(function(v) {
+  if (!v)
+    return
+  missionResult(null)
+  localTeamListBase([])
 })
 
 return battleResultsShort

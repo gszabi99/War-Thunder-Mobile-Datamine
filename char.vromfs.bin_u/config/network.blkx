@@ -116,6 +116,7 @@
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
     "enableNetConsole": true,
+    "useANRWatcherThreadProbability": 0.5,
     "marketplaceURL": "https://trade-dev.gaijin.net/",
     "enableUGC": true,
     "enableApex": true,
@@ -184,6 +185,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
       "enabled": true,
+      "shouldLogToCrashlytics": true,
       "flag": [
         "--force_check",
         "--http_peers http://seeder.gaijin.lan/content/",
@@ -255,6 +257,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
       "enabled": true,
+      "shouldLogToCrashlytics": true,
       "flag": "--force_check"
     },
     "webVromfs": {
@@ -307,6 +310,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
       "enabled": true,
+      "shouldLogToCrashlytics": true,
       "flag": "--force_check"
     },
     "webVromfs": {
@@ -364,6 +368,7 @@
     "disableAsserts": true,
     "contentUpdater": {
       "enabled": true,
+      "shouldLogToCrashlytics": true,
       "flag": "--force_check"
     },
     "webVromfs": {

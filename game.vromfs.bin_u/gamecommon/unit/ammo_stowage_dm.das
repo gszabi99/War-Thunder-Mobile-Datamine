@@ -70,14 +70,14 @@ struct ExplosionParams
 
 
 def add_to_explosion_params(var params : ExplosionParams&;
-                            ballistics_props : BallisticsProjectileProps&;
+                            mass : float;
                             dmg_props_id : int;
                             bullet_count : int)
   let explosive_props = get_explosive_props(dmg_props_id)
   let explosive_mass = explosive_props != null ? explosive_props.mass * float(bullet_count) : 0.0f
   let shell_mass = get_mass_prop_value(dmg_props_id, 0.0f) * float(bullet_count)
   let powder_props = get_powder_props(dmg_props_id)
-  let powder_mass = powder_props != null ? powder_props.portion * ballistics_props.mass * float(bullet_count) : 0.0f
+  let powder_mass = powder_props != null ? powder_props.portion * mass * float(bullet_count) : 0.0f
 
   params.shellMass += shell_mass
   params.powderMass += powder_mass
@@ -115,12 +115,12 @@ def calc_explosion_params(unit : Unit?; stowage_id : int; cluster_id : int;
       let base_gun = weapon |> as_base_gun()
       if gun != null
         for bullet_set in gun.properties.bulletSets
-          for ptr, dmg_props_id in bullet_set.bullet, bullet_set.damagePropsIds
+          for props in bullet_set.bullet
             num_ammo += bullet_set.bulletsCount
-            add_to_explosion_params(result, ptr.props.ballisticProps, dmg_props_id, bullet_set.bulletsCount)
+            add_to_explosion_params(result, props.ballisticProps.mass, props.damagePropsId, bullet_set.bulletsCount)
       elif base_gun != null
         num_ammo += base_gun.countBullets
-        add_to_explosion_params(result, base_gun.prop.shellProps.ballisticProps, base_gun.damagePropsId, base_gun.countBullets)
+        add_to_explosion_params(result, base_gun.prop.shellProps.ballisticProps.mass, base_gun.damagePropsId, base_gun.countBullets)
 
   if num_ammo > 0
     let k = float(v.ammo_clusters__exterminatedAmmo[cluster_id]) / float(num_ammo);
@@ -153,11 +153,13 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
 
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
   var hit_slot_id = -1
+  var cluster_center_pos = float3(0.0f);
   for slot_id in slots_range.x..slots_range.y
     set_slot_enabled(unit, stowage_id, slot_id, AmmoSlotEnabledState DISABLED_SIMPLE) <| v
     if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE)
       hit_slot_id = slot_id
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE, false)
+    cluster_center_pos += calc_slot_pos(slot_id) <| v
   sendEventImmediate(eid, [[EventAmmoStowageSetup
     netSyncIfRequired=false,
     canLoadToBreach=true,
@@ -180,7 +182,7 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
     penetration = powder_mass_to_splash.penetration |> interpolate_tab_float_interpolate(explosion_params.powderMass),
     damage = powder_mass_to_splash.damage |> interpolate_tab_float_interpolate(explosion_params.powderMass),
     damageTypeId = explosion_params.splashDamageTypeId,
-    pos = calc_slot_pos(hit_slot_id) <| v
+    pos = cluster_center_pos / float(slots_range.y - slots_range.x)
   ]])
 
   sendEvent(eid, [[EventFireSystemStartBurnWithOffender
@@ -211,11 +213,13 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
 
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
   var hit_slot_id = -1
+  var cluster_center_pos = float3(0.0f);
   for slot_id in slots_range.x..slots_range.y
     set_slot_enabled(unit, stowage_id, slot_id, AmmoSlotEnabledState DISABLED_SIMPLE) <| v
     if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE)
       hit_slot_id = slot_id
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE, false)
+    cluster_center_pos += calc_slot_pos(slot_id) <| v
   sendEventImmediate(eid, [[EventAmmoStowageSetup
     netSyncIfRequired=false,
     canLoadToBreach=true,
@@ -238,7 +242,7 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
     packedPartId=hit_slot_part_id.packed,
     stowageId=stowage_id,
     clusterId=cluster_id,
-    pos=calc_slot_pos(hit_slot_id) <| v,
+    pos=cluster_center_pos / float(slots_range.y - slots_range.x),
     strengthEquivalent=explosion_params.strengthEquivalent,
     brisanceEquivalent=explosion_params.brisanceEquivalent,
     shellMass=explosion_params.shellMass,

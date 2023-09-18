@@ -98,25 +98,28 @@
           "setEnabled": {
             "value": false
           },
+          "setTargetDesignationRange": [
+            {},
+            {
+              "azimuthRange": [
+                -115.0,
+                115.0
+              ],
+              "elevationRange": [
+                -50.0,
+                25.0
+              ],
+              "distanceRange": [
+                0.0,
+                15000.0
+              ]
+            }
+          ],
           "setTransiver": {
             "transiver": "track"
           },
           "setSignal": {
             "signal": "track"
-          },
-          "setTargetDesignationRange": {
-            "azimuthRange": [
-              -115.0,
-              115.0
-            ],
-            "elevationRange": [
-              -50.0,
-              25.0
-            ],
-            "distanceRange": [
-              0.0,
-              15000.0
-            ]
           }
         },
         "setStandbyMode": {
@@ -371,7 +374,7 @@
         },
         "finishedTrack": {
           "stateFrom": "track",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "command": [
             "selectTarget",
             "designateTarget"
@@ -436,7 +439,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": {},
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -450,9 +456,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 2.0
             }
           }
         }

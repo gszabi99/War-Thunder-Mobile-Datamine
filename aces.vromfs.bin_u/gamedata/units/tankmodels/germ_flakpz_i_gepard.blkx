@@ -24,9 +24,6 @@
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchShooting": true,
   "ecsTemplate": "tank_wtm",
-  "radarAnimVar": "radar_drive",
-  "radarDeployTime": 3.0,
-  "radarAntenaSpeed": 720.0,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -48,7 +45,10 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarAnimVar": "radar_drive",
+  "radarAntenaSpeed": 720.0,
   "type": "typeSPAA",
+  "minRelativeTankCameraThreshold": 1.22,
   "drowningCheckHeightMultiplier": 0.45,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
@@ -393,7 +393,7 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
@@ -424,8 +424,7 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 5.0,
-      "armorThrough": 150.0,
+      "armorThickness": 50.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -494,6 +493,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -552,6 +571,19 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
+      "ammo_body_61_dm": {},
+      "ammo_body_62_dm": {},
+      "ammo_body_63_dm": {},
+      "ammo_body_64_dm": {},
+      "ammo_body_65_dm": {},
+      "ammo_body_66_dm": {},
+      "ammo_body_67_dm": {},
+      "ammo_body_68_dm": {},
+      "ammo_body_69_dm": {},
+      "ammo_body_70_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -572,6 +604,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -591,7 +627,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1636,7 +1676,7 @@
         "defaultPitch": 0.0,
         "speedYaw": 90.0,
         "speedPitch": 42.0,
-        "bullets": 340,
+        "bullets": 320,
         "rearmCartridgeTime": 20.0,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -1776,7 +1816,7 @@
         "defaultPitch": 0.0,
         "speedYaw": 90.0,
         "speedPitch": 42.0,
-        "bullets": 340,
+        "bullets": 320,
         "rearmCartridgeTime": 20.0,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -1949,6 +1989,24 @@
       "name": "germ_flakpz_I_Gepard_default",
       "blk": "gameData/units/tankModels/weaponPresets/germ_flakpz_I_Gepard_default.blk"
     }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/de_gepard_sr.blk",
+        "turretIndex": 0,
+        "designationFromBody": true,
+        "designationTurretIndex": 0,
+        "dmPart": "antenna_target_location_dm",
+        "radarParkingAzimuth": 180.0,
+        "radarDeployTime": 3.0
+      },
+      {
+        "blk": "gameData/sensors/de_gepard_fr.blk",
+        "turretIndex": 0,
+        "dmPart": "antenna_target_tagging_dm"
+      }
+    ]
   },
   "VehiclePhys": {
     "Mass": {
@@ -2521,6 +2579,22 @@
       }
     }
   },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_dm": {
+          "count": 640
+        }
+      }
+    }
+  },
   "commanderView": {
     "aimModeAvailable": true,
     "optics": "commander_optics_square",
@@ -2534,8 +2608,8 @@
   "cockpit": {
     "headPos": [
       0.0,
-      4.0,
-      -13.5
+      3.8,
+      -14.0
     ],
     "headPosOnShooting": [
       0.7,
@@ -2549,9 +2623,18 @@
     "detectionHeight": 3.72
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "tier": 3,
       "effects": {
@@ -2583,7 +2666,7 @@
               "defaultPitch": 0.0,
               "speedYaw": 90.0,
               "speedPitch": 42.0,
-              "bullets": 340,
+              "bullets": 320,
               "rearmCartridgeTime": 20.0,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
@@ -2723,7 +2806,7 @@
               "defaultPitch": 0.0,
               "speedYaw": 90.0,
               "speedPitch": 42.0,
-              "bullets": 340,
+              "bullets": 320,
               "rearmCartridgeTime": 20.0,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
@@ -2951,23 +3034,111 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "ammoStowages": {
-    "ammo1": {
-      "weaponTrigger": "gunner0",
-      "removeLoadedAmmo": false,
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_body_dm": {
-          "count": 640
-        },
-        "ammo_turret_01_dm": {
-          "count": 40
-        }
-      }
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_modern_threecolor*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.79111,
+        -1.22003E-07,
+        -2.77399E-07,
+        -2.36574
+      ],
+      "decal0Line1": [
+        -1.22003E-07,
+        -2.79111,
+        -3.3926E-07,
+        7.58526
+      ],
+      "decal0Line2": [
+        -2.79111,
+        -1.22003E-07,
+        -2.77399E-07,
+        3.36574
+      ],
+      "decal0Line3": [
+        1.22003E-07,
+        -2.79111,
+        3.3926E-07,
+        7.58526
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -9.93869E-08,
+        1.21551E-07,
+        -1.0,
+        -0.727709
+      ],
+      "decal0CPNormDepth1": [
+        -9.93869E-08,
+        1.21551E-07,
+        1.0,
+        -0.72771
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358281
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.210035,
+      "decal0Tex": "ge_bundeswehr_insignia",
+      "decal1Line0": [
+        2.79123,
+        -1.14291E-07,
+        4.5172E-08,
+        1.1112
+      ],
+      "decal1Line1": [
+        -1.00819E-07,
+        -2.75112,
+        -0.471512,
+        6.47384
+      ],
+      "decal1Line2": [
+        -2.79123,
+        -1.14468E-07,
+        2.11542E-07,
+        -0.111203
+      ],
+      "decal1Line3": [
+        1.43198E-07,
+        -2.75112,
+        0.471512,
+        6.47384
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        4.42935E-08,
+        0.168926,
+        -0.985629,
+        -1.75439
+      ],
+      "decal1CPNormDepth1": [
+        4.42935E-08,
+        0.168926,
+        0.985629,
+        -1.75439
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.358265
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.222022,
+      "decal1Tex": "de_flugabwehrregiment_2"
     }
   },
   "dmgAngles": {

@@ -255,7 +255,7 @@ let function mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag = true
     image = priceBgTex
     picSaturate = state.value & DELAYED ? 0 : 1.0
     children = [
-      price > 0 && currencyId != "" ? mkDiscountPriceComp(price, finalPrice, currencyId, CS_COMMON.__update({fontStyle = fontMedium}))
+      price > 0 && currencyId != "" ? mkDiscountPriceComp(price, finalPrice, currencyId, CS_COMMON.__merge({fontStyle = fontMedium}))
         : "priceText" in priceExt ? txt({ text = priceExt.priceText }.__update(fontMedium))
         : null
       needDiscountTag ? mkDiscountCorner(discountInPercent) : null
@@ -519,6 +519,7 @@ return {
   mkOfferCommonParts
   oldAmountStrikeThrough
   mkOfferTexts
+  mkGoodsTimeTimeProgress
 
   goodsGlareAnimDuration
   mkBgParticles

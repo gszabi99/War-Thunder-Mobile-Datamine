@@ -1971,7 +1971,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "he111h_6_4xSC250",
+      "name": "he_111h_6_default",
       "blk": "gameData/FlightModels/weaponPresets/he_111h_6_4xSC250.blk"
     }
   },

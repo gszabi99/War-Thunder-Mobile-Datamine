@@ -1,8 +1,9 @@
-
 from "%globalsDarg/darg_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+let { get_time_msec } = require("dagor.time")
 
 log("LOAD RGUI SCRIPTS CORE")
+let startLoadTime = get_time_msec()
 clear_vm_entity_systems()
 
 require("%appGlobals/sqevents.nut")
@@ -10,6 +11,7 @@ require("%globalScripts/sharedEnums.nut")
 require("initVM.nut")
 require("%appGlobals/pServer/pServerApi.nut")
 require("consoleCmd.nut")
+require("%sqstd/regScriptProfiler.nut")("darg")
 require("%rGui/notifications/foreignMsgBox.nut")
 require("%rGui/notifications/appsFlyerEvents.nut")
 require("%rGui/options/guiOptions.nut") //need to register options before load profile
@@ -41,6 +43,8 @@ let { waitboxes } = require("notifications/waitBox.nut")
 let { bgShadedDark } = require("style/backgrounds.nut")
 let { spinnerOpacityAnim, spinner } = require("components/spinner.nut")
 
+log($"DaRg scripts load before login {get_time_msec() - startLoadTime} msec")
+
 local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)
 
@@ -64,9 +68,11 @@ if (isReadyToFullLoad.value || !isLoginRequired.value || getenv("QUIRREL_SCRIPTS
 let function loadAfterLogin() {
   if (sceneAfterLogin != null)
     return
+  let t = get_time_msec()
   start_es_loading()
   loadAfterLoginImpl()
   end_es_loading()
+  log($"DaRg scripts load after login {get_time_msec() - t} msec")
 }
 isReadyToFullLoad.subscribe(@(v) v ? loadAfterLogin() : null)
 isLoginRequired.subscribe(@(v) v ? null : loadAfterLogin())
@@ -132,7 +138,7 @@ return function() {
   if (isDebugTouchesActive.value)
     children.append(debugTouchesUi)
   return {
-    watch = [isInLoadingScreen, isLoggedIn, isAllScriptsLoaded, isDebugTouchesActive, needShowCursor]
+    watch = [isInLoadingScreen, isLoggedIn, isLoginRequired, isAllScriptsLoaded, isDebugTouchesActive, needShowCursor]
     key = "sceneRoot"
     size = flex()
     children

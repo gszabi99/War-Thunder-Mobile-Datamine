@@ -23,7 +23,7 @@ let { lowerAircraftCamera } = require("camera_control")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkBtnGlare, mkActionGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { isNotOnTheSurface, isDeeperThanPeriscopeDepth } = require("%rGui/hud/submarineDepthBlock.nut")
-let { TANK } = require("%appGlobals/unitConst.nut")
+let { TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { set_can_lower_camera } = require("controlsOptions")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
@@ -240,14 +240,17 @@ let mkBulletEditView = @(image, bulletNumber) {
 
 let debuffImages = Computed(function() {
   let res = []
-  if (fire.value)
-    res.append(fireImage)
-  if (!isFullBuoyancy.value)
-    res.append(buoyancyImage)
+  if ([ SHIP, BOAT, SUBMARINE ].contains(unitType.value)) {
+    if (fire.value)
+      res.append(fireImage)
+    if (!isFullBuoyancy.value)
+      res.append(buoyancyImage)
+  }
   return res
 })
 
 let curRepairImageIdx = Watched(-1) //-1 for show repair image
+unitType.subscribe(@(_) curRepairImageIdx(-1))
 
 let function setNextRepairImage() {
   let nextIdx = curRepairImageIdx.value + 1
@@ -493,7 +496,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let canShoot = Computed(@() (canShootWithoutTarget || hasTarget.value) && hasReachableTarget.value)
 
   let isAvailable = isActionAvailable(actionItem)
-  let isBlocked = Computed(@() unitType.value == "submarine" && isNotOnTheSurface.value
+  let isBlocked = Computed(@() unitType.value == SUBMARINE && isNotOnTheSurface.value
     && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_SECONDARY))
   let isAltImage = (altImage ?? "") != "" && actionItem.count < (actionItem?.countEx ?? 0)
   let isWaitForAim = hasAim && !(actionItem?.aimReady ?? true)
@@ -659,7 +662,7 @@ let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
   let stateFlags = Watched(0)
   let isAvailable = isActionAvailable(actionItem)
-  let isBlocked = Computed(@() unitType.value == "submarine" && isNotOnTheSurface.value
+  let isBlocked = Computed(@() unitType.value == SUBMARINE && isNotOnTheSurface.value
     && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_SECONDARY))
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
 
@@ -772,7 +775,8 @@ let periscopIcon = {
 
 let function mkSubmarineWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   local btnCfg = {
-    addChild = mkWeaponBlockReasonIcon(Computed(@() unitType.value == "submarine" && isDeeperThanPeriscopeDepth.value), periscopIcon)
+    addChild = mkWeaponBlockReasonIcon(Computed(@()
+      unitType.value == SUBMARINE && isDeeperThanPeriscopeDepth.value), periscopIcon)
   }
   return mkWeaponryItem(buttonConfig.__merge(btnCfg), actionItem, ovr)
 }
@@ -795,7 +799,8 @@ let function mkWeaponryItemByTrigger(buttonConfig, actionItem, ovr = {}) {
     relImageSize
     hasAim = true
     hasCrosshair = true
-    addChild = mkWeaponBlockReasonIcon(Computed(@() unitType.value == "submarine" && isNotOnTheSurface.value), surfacingIcon)
+    addChild = mkWeaponBlockReasonIcon(Computed(@()
+      unitType.value == SUBMARINE && isNotOnTheSurface.value), surfacingIcon)
   }
   let key = $"btn_weapon_{trigger}"
   let isMainCaliber = sizeOrder == 0

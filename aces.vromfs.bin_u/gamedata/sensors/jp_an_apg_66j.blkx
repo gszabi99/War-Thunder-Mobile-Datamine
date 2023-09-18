@@ -3,18 +3,50 @@
   "name": "AN/APG-66J",
   "showMissileLaunchZone": true,
   "transivers": {
-    "common": {
+    "pulse": {
       "sideLobesAttenuation": -22.0,
       "power": 350.0,
       "band": 8,
       "rcs": 3.0,
-      "range": 56000.0,
-      "rangeMax": 150000.0,
+      "range": 60000.0,
+      "rangeMax": 130000.0,
       "timeGainControl": true,
       "antenna": {
-        "angleHalfSens": 3.5,
-        "sideLobesSensitivity": -32.0
+        "azimuth": {
+          "angleHalfSens": 3.5,
+          "sideLobesSensitivity": -32.0
+        },
+        "elevation": {
+          "angleHalfSens": 4.8,
+          "sideLobesSensitivity": -32.0
+        }
       }
+    },
+    "pulseDoppler": {
+      "sideLobesAttenuation": -22.0,
+      "power": 350.0,
+      "band": 8,
+      "rcs": 3.0,
+      "range": 45000.0,
+      "rangeMax": 100000.0,
+      "timeGainControl": true,
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 3.5,
+          "sideLobesSensitivity": -32.0
+        },
+        "elevation": {
+          "angleHalfSens": 4.8,
+          "sideLobesSensitivity": -32.0
+        }
+      }
+    }
+  },
+  "illuminationTransmitter": {
+    "power": 200.0,
+    "antenna": {
+      "angleHalfSens": 12.0,
+      "sideLobesSensitivity": -30.0
     }
   },
   "scanPatterns": {
@@ -25,13 +57,14 @@
         60.0
       ],
       "elevationLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "rollStabLimit": 70.0,
-      "period": 0.35,
+      "pitchStabLimit": 60.0,
+      "period": 0.65,
       "width": 10.0,
-      "barHeight": 2.5,
+      "barHeight": 4.0,
       "barsCount": 2,
       "rowMajor": true
     },
@@ -46,9 +79,10 @@
         60.0
       ],
       "rollStabLimit": 70.0,
-      "period": 2.0,
+      "pitchStabLimit": 60.0,
+      "period": 3.8,
       "width": 30.0,
-      "barHeight": 2.5,
+      "barHeight": 4.0,
       "barsCount": 4,
       "rowMajor": true
     },
@@ -63,11 +97,47 @@
         60.0
       ],
       "rollStabLimit": 70.0,
-      "period": 2.0,
+      "pitchStabLimit": 60.0,
+      "period": 3.8,
       "width": 60.0,
-      "barHeight": 2.5,
+      "barHeight": 4.0,
       "barsCount": 2,
       "rowMajor": true
+    },
+    "hudLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "period": 1.0,
+      "width": 10.0,
+      "barHeight": 4.8,
+      "barsCount": 4,
+      "rowMajor": true,
+      "indicate": true
+    },
+    "verticalLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "period": 1.0,
+      "width": 20.0,
+      "barHeight": 4.8,
+      "barsCount": 2,
+      "rowMajor": false,
+      "centerElevation": 15.0,
+      "indicate": true
     },
     "boresightLock": {
       "type": "cone",
@@ -79,8 +149,9 @@
         -60.0,
         60.0
       ],
-      "period": 1.0,
+      "period": 0.3,
       "width": 1.75,
+      "centerElevation": -3.0,
       "indicate": true
     },
     "designationLock": {
@@ -94,11 +165,12 @@
         60.0
       ],
       "rollStabLimit": 70.0,
-      "period": 0.5,
+      "pitchStabLimit": 30.0,
+      "period": 1.0,
       "width": 10.0,
-      "barHeight": 2.5,
-      "barsCount": 2,
-      "rowMajor": false,
+      "barHeight": 4.0,
+      "barsCount": 4,
+      "rowMajor": true,
       "indicate": true
     },
     "track": {
@@ -132,13 +204,12 @@
     "pulseDopplerSearch": {
       "dynamicRange": [
         40.0,
-        15.0
+        10.0
       ],
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
+      "mainBeamNotchWidth": 60.0,
       "distance": {
         "presents": true,
         "minValue": 500.0,
@@ -147,10 +218,10 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 40.0,
+        "minValue": -1500.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
-        "width": 0.0
+        "width": 30.0
       }
     },
     "pulseTrack": {
@@ -173,14 +244,13 @@
     "pulseDopplerTrack": {
       "dynamicRange": [
         40.0,
-        15.0
+        10.0
       ],
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 12.0,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
+      "mainBeamNotchWidth": 40.0,
       "track": true,
       "distance": {
         "presents": true,
@@ -190,10 +260,10 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 40.0,
+        "minValue": -1500.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
-        "width": 0.0
+        "width": 20.0
       }
     }
   },
@@ -204,18 +274,20 @@
       "scanPattern3": "searchWide"
     },
     "boresightLock": {
-      "scanPattern1": "boresightLock"
+      "scanPattern1": "boresightLock",
+      "scanPattern2": "verticalLock",
+      "scanPattern3": "hudLock"
     }
   },
   "scopeRangeSets": {
     "common": {
-      "range1": 18500.0,
-      "range2": 37000.0,
-      "range3": 74000.0,
-      "range4": 148000.0
+      "range1": 37000.0,
+      "range2": 74000.0,
+      "range3": 148000.0,
+      "range4": 18500.0
     },
     "boresightLock": {
-      "range1": 9250.0
+      "range1": 18500.0
     }
   },
   "fsms": {
@@ -227,20 +299,27 @@
             "value": false
           },
           "setTransiver": {
-            "transiver": "common"
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
-            "signal": "pulseSearch"
+            "signal": "pulseDopplerSearch"
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
               -60.0,
               60.0
             ],
+            "azmithWidth": 5.0,
+            "elevationRange": [
+              -30.0,
+              30.0
+            ],
             "distanceRange": [
               0.0,
               74000.0
-            ]
+            ],
+            "distanceWidth": 2000.0,
+            "distanceRelWidthMin": 0.05
           }
         },
         "setStandbyModeCommon": {
@@ -263,14 +342,18 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
           },
-          "setIllumination": {
-            "illumination": false
+          "setFsmActive": {
+            "fsm": "illumination",
+            "active": false
           }
         },
         "setPulseStandbyMode": {
           "setStandbyModeCommon": {},
           "setModeName": {
             "name": "standby"
+          },
+          "setTransiver": {
+            "transiver": "pulse"
           },
           "setSignal": {
             "signal": "pulseSearch"
@@ -279,20 +362,29 @@
         "setPulseDopplerStandbyMode": {
           "setStandbyModeCommon": {},
           "setModeName": {
-            "name": "PD VS standby"
+            "name": "PD standby"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
-            "signal": "pulseSearch"
+            "signal": "pulseDopplerSearch"
           }
         },
         "setSearchModeCommon": {
           "setEnabled": {
             "value": true
           },
-          "setFsmActive": {
-            "fsm": "search",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "search",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -303,20 +395,23 @@
           },
           "clearTargets": {},
           "clearTargetsOfInterest": {},
+          "setCueEnabled": {
+            "value": true
+          },
           "setScanPatternSet": {
             "scanPatternSet": "common"
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setPulseSearchMode": {
           "setSearchModeCommon": {},
           "setModeName": {
             "name": "search"
+          },
+          "setTransiver": {
+            "transiver": "pulse"
           },
           "setSignal": {
             "signal": "pulseSearch"
@@ -325,7 +420,10 @@
         "setPulseDopplerSearchMode": {
           "setSearchModeCommon": {},
           "setModeName": {
-            "name": "PD VS search"
+            "name": "PD search"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseDopplerSearch"
@@ -335,6 +433,9 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         },
         "setDesignationLockModeCommon": {
@@ -342,6 +443,11 @@
             "value": true
           },
           "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "designationLock"
+          },
+          "resetScanPhase": {},
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
@@ -350,30 +456,38 @@
           },
           "setDistGatePos": {
             "source": "targetDesignation",
-            "width": 1000.0
+            "width": 2000.0
           },
-          "setRelSpeedGatePos": {
-            "source": "targetDesignation",
-            "width": 30.0
-          },
-          "setScanPatternSet": {},
-          "setScanPattern": {
-            "scanPattern": "designationLock"
-          },
-          "resetScanPhase": {},
-          "setFsmActive": {
-            "fsm": "lock",
-            "active": true
-          },
-          "clearTargets": {},
-          "setIllumination": {
-            "illumination": false
-          }
+          "setRelSpeedGatePos": [
+            {
+              "source": "targetDesignation",
+              "width": 30.0
+            },
+            {
+              "source": "constRange",
+              "pos": 0.0,
+              "width": 3000.0
+            }
+          ],
+          "setFsmActive": [
+            {
+              "fsm": "lock",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
+          "clearTargets": {}
         },
         "setPulseDesignationLockMode": {
           "setDesignationLockModeCommon": {},
           "setModeName": {
             "name": "acquisition"
+          },
+          "setTransiver": {
+            "transiver": "pulse"
           },
           "setSignal": {
             "signal": "pulseTrack"
@@ -382,7 +496,10 @@
         "setPulseDopplerDesignationLockMode": {
           "setDesignationLockModeCommon": {},
           "setModeName": {
-            "name": "PD VS acquisition"
+            "name": "PD acquisition"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseDopplerTrack"
@@ -397,9 +514,6 @@
           "setScanPatternSet": {
             "scanPatternSet": "boresightLock"
           },
-          "setScanPattern": {
-            "scanPattern": "boresightLock"
-          },
           "resetScanPhase": {},
           "setCenterAzimuth": {
             "source": "constant",
@@ -409,31 +523,37 @@
             "source": "constant",
             "value": 0.0
           },
-          "setFsmActive": {
-            "fsm": "lock",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "lock",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 4625.0,
-            "width": 9250.0
+            "pos": 9250.0,
+            "width": 18500.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
-            "pos": 675.0,
-            "width": 1350.0
+            "pos": 0.0,
+            "width": 3000.0
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setPulseBoresightLockMode": {
           "setBoresightLockModeCommon": {},
           "setModeName": {
             "name": "ACM"
+          },
+          "setTransiver": {
+            "transiver": "pulse"
           },
           "setSignal": {
             "signal": "pulseTrack"
@@ -442,7 +562,10 @@
         "setPulseDopplerBoresightLockMode": {
           "setBoresightLockModeCommon": {},
           "setModeName": {
-            "name": "PD VS ACM"
+            "name": "PD ACM"
+          },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
           },
           "setSignal": {
             "signal": "pulseDopplerTrack"
@@ -474,18 +597,24 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": {
-            "fsm": "track",
-            "active": true
-          },
-          "setIllumination": {
-            "illumination": true
-          }
+          "setFsmActive": [
+            {
+              "fsm": "track",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": true
+            }
+          ]
         },
         "setPulseTrackMode": {
           "setTrackModeCommon": {},
           "setModeName": {
             "name": "track"
+          },
+          "setTransiver": {
+            "transiver": "pulse"
           },
           "setSignal": {
             "signal": "pulseTrack"
@@ -496,6 +625,9 @@
           "setModeName": {
             "name": "PD track"
           },
+          "setTransiver": {
+            "transiver": "pulseDoppler"
+          },
           "setSignal": {
             "signal": "pulseDopplerTrack"
           }
@@ -505,10 +637,10 @@
         "init": {
           "stateFrom": "init",
           "event": "init",
-          "stateTo": "pulseStandby",
+          "stateTo": "pulseDopplerStandby",
           "actions": {
             "init": {},
-            "setPulseStandbyMode": {}
+            "setPulseDopplerStandbyMode": {}
           }
         },
         "pulseSwitchOn": {
@@ -549,24 +681,22 @@
             "setPulseDopplerStandbyMode": {}
           }
         },
-        "pulseToPulseDopplerStandby": [
-          {
-            "stateFrom": "pulseStandby",
-            "command": "modeSwitch",
-            "stateTo": "pulseDopplerStandby",
-            "actions": {
-              "setPulseDopplerStandbyMode": {}
-            }
-          },
-          {
-            "stateFrom": "pulseDopplerStandby",
-            "command": "modeSwitch",
-            "stateTo": "pulseStandby",
-            "actions": {
-              "setPulseStandbyMode": {}
-            }
+        "pulseToPulseDopplerStandby": {
+          "stateFrom": "pulseStandby",
+          "command": "modeSwitch",
+          "stateTo": "pulseDopplerStandby",
+          "actions": {
+            "setPulseDopplerStandbyMode": {}
           }
-        ],
+        },
+        "pulseDopplerToPulseStandby": {
+          "stateFrom": "pulseDopplerStandby",
+          "command": "modeSwitch",
+          "stateTo": "pulseStandby",
+          "actions": {
+            "setPulseStandbyMode": {}
+          }
+        },
         "pulseToPulseDopplerSearch": {
           "stateFrom": "pulseSearch",
           "command": "modeSwitch",
@@ -604,6 +734,11 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
+            },
+            "designateTargetUnderCue": {
               "type": 0,
               "self": true,
               "sensorIndex": 0
@@ -660,7 +795,7 @@
         },
         "finishedDesignationTrack": {
           "stateFrom": "pulseDesignationTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "command": "selectTarget",
           "stateTo": "pulseSearch",
           "actions": {
@@ -676,6 +811,11 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
+            },
+            "designateTargetUnderCue": {
               "type": 0,
               "self": true,
               "sensorIndex": 0
@@ -732,7 +872,7 @@
         },
         "finishedPulseDopplerDesignationTrack": {
           "stateFrom": "pulseDopplerDesignationTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "command": "selectTarget",
           "stateTo": "pulseDopplerSearch",
           "actions": {
@@ -805,7 +945,7 @@
         },
         "brokenPulseBoresightTrack": {
           "stateFrom": "pulseBoresightTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "stateTo": "pulseBoresightLock",
           "actions": {
             "setFsmActive": {
@@ -898,7 +1038,7 @@
         },
         "brokenPulseDopplerBoresightTrack": {
           "stateFrom": "pulseDopplerBoresightTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "stateTo": "pulseDopplerBoresightLock",
           "actions": {
             "setFsmActive": {
@@ -929,7 +1069,7 @@
               "fsm": "track",
               "active": false
             },
-            "setPulseDopplerStandbyMode": {}
+            "setPulseDopplerSearchMode": {}
           }
         },
         "switchScanPattern": {
@@ -937,7 +1077,9 @@
             "pulseStandby",
             "pulseDopplerStandby",
             "pulseSearch",
-            "pulseDopplerSearch"
+            "pulseDopplerSearch",
+            "pulseBoresightLock",
+            "pulseDopplerBoresightLock"
           ],
           "command": "scanPatternSwitch",
           "actions": {
@@ -958,7 +1100,25 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {}
+            "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
           }
         },
         "detect": {
@@ -988,20 +1148,29 @@
             "setNextDetectedTargetActive": {}
           }
         },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {},
+            "setCueDopplerSpeed": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 0,
-              "self": true
-            }
           }
         }
       }
@@ -1018,7 +1187,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -1029,7 +1200,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
@@ -1055,7 +1228,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": {},
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 3.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1069,9 +1245,45 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
+            }
+          }
+        }
+      }
+    },
+    "illumination": {
+      "stateInit": "init",
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "stateTo": "active",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true
+            }
+          }
+        },
+        "deactivate": {
+          "event": "fsmDeactivate",
+          "stateTo": "inactive",
+          "actions": {
+            "setIllumination": {
+              "transiver": false
+            }
+          }
+        },
+        "activateIllumination": {
+          "event": "sarhMissileLaunch",
+          "actions": {
+            "setIlluminationTimeOut": {
+              "timeOut": 60.0
+            }
+          }
+        },
+        "updateIllumination": {
+          "event": "update",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true
             }
           }
         }

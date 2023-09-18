@@ -4,7 +4,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { decorativeLineBgMW, bgMW } = require("%rGui/style/stdColors.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor,
-  levelProgressBorderWidth } = require("%rGui/components/levelBlockPkg.nut")
+  levelProgressBorderWidth, rotateCompensate } = require("%rGui/components/levelBlockPkg.nut")
 let Rand = require("%sqstd/rand.nut")
 let { buyUnitsData, rankToReqPlayerLvl } = require("%appGlobals/unitsState.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight,
@@ -112,10 +112,10 @@ let function progressLine() {
         children = [
           mkProgressLevelBg({
             key = playerLevelInfo.value
-            pos = [levelSquareWidth, 0]
+            pos = [levelSquareWidth * rotateCompensate, 0]
             size = [levelLineWidth, levelLineHeight]
             children = {
-              size = [((levelLineWidth - levelProgressBorderWidth)
+              size = [((levelLineWidth - levelProgressBorderWidth * 2)
                 * clamp(exp, 0, nextLevelExp) / nextLevelExp).tointeger(),
               flex()]
               rendObj = ROBJ_SOLID

@@ -658,16 +658,6 @@
             "name": "ussr_battleship_pr23_sovetskij_soyuz",
             "weight": 1.0,
             "country": "germany"
-          },
-          {
-            "name": "uk_battleship_vanguard",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "jp_battleship_yamato",
-            "weight": 1.0,
-            "country": "germany"
           }
         ]
       }

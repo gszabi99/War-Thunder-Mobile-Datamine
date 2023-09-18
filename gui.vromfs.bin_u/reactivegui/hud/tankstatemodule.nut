@@ -24,7 +24,7 @@ let moveType = Computed(function() {
   let isForward = sd.y >= 0
   let isRight = sd.x <= 0
   let steering = fabs(sd.x)
-  let image = sd.x == 0 ? "ui/gameuiskin#hud_tank_arrow_forward.svg"
+  let image = steering < 0.1 ? "ui/gameuiskin#hud_tank_arrow_forward.svg"
     : steering < 0.5 ? "ui/gameuiskin#hud_tank_arrow_right_01.svg"
     : steering < 0.7 ? "ui/gameuiskin#hud_tank_arrow_right_02.svg"
     : steering < 0.9 ? "ui/gameuiskin#hud_tank_arrow_right_03.svg"

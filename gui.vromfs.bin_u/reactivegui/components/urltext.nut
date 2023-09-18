@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let eventbus = require("eventbus")
 
-let function url(text, baseUrl, style = {}) {
+let function urlLikeButton(text, action, style = {}) {
   let { ovr = {}, childOvr = {} } = style
   let stateFlags = Watched(0)
   return @() {
@@ -17,7 +17,7 @@ let function url(text, baseUrl, style = {}) {
     fontFx = FFT_GLOW
     fontFxFactor = 64
     fontFxColor = Color(0, 0, 0)
-    onClick = @() eventbus.send("openUrl", { baseUrl })
+    onClick = action
     transform = {
       scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1]
     }
@@ -32,4 +32,11 @@ let function url(text, baseUrl, style = {}) {
   }.__update(fontSmall, ovr)
 }
 
-return url
+let function urlText(text, baseUrl, style = {}) {
+  return text != "" ? urlLikeButton(text, @() eventbus.send("openUrl", { baseUrl }), style) : null
+}
+
+return {
+  urlText
+  urlLikeButton
+}

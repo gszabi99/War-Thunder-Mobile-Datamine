@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curSectionId, activeQuestsBySection, seenQuests, saveSeenQuestsCurSection, sectionsCfg, inactiveEventUnlocks
+let { curSectionId, questsBySection, seenQuests, saveSeenQuestsCurSection, sectionsCfg, inactiveEventUnlocks
 } = require("questsState.nut")
 let { textButtonSecondary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -12,6 +12,7 @@ let { mkRewardsPreview, questItemsGap, statusIconSize } = require("rewardsComps.
 let { mkQuestBar, mkProgressBar, progressBarHeight, progressBarMargin } = require("questBar.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
@@ -29,6 +30,9 @@ let aspectRatio = sw(100) / sh(100)
 let btnSize = [aspectRatio < 2 ? hdpx(230) : hdpx(300), hdpx(90)]
 let childOvr = aspectRatio < 2 ? fontSmallShaded : null
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
+
+let scrollHandler = ScrollHandler()
+curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
 
 let topBlockHeight = max(sectionBtnHeight, progressBarHeight + progressBarMargin)
 let mkVerticalPannableAreaNoBlocks = verticalPannableAreaCtor(sh(100) - topAreaSize,
@@ -76,6 +80,14 @@ let function mkQuest(quest) {
             utf8ToUpper(loc("btn/receive")),
             @() receiveReward(quest.name),
             btnStyle)
+      : quest?.isFinished
+        ? {
+            size = btnSize
+            rendObj = ROBJ_TEXT
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            text = utf8ToUpper(loc("ui/received"))
+          }.__update(fontSmallAccentedShaded)
       : textButtonCommon(
           utf8ToUpper(loc("btn/receive")),
           @() anim_start($"unfilledBarEffect_{quest.name}"),
@@ -137,7 +149,7 @@ let function mkQuest(quest) {
             flow = FLOW_HORIZONTAL
             gap = questItemsGap
             halign = ALIGN_RIGHT
-            children = rewardsPreview.value.len() > 0 ? mkRewardsPreview(rewardsPreview.value) : null
+            children = rewardsPreview.value.len() > 0 ? mkRewardsPreview(rewardsPreview.value, quest?.isFinished) : null
           }
 
           mkBtn
@@ -175,7 +187,8 @@ let function mkSectionTabs(sections) {
 let function questsWndPage(sections, progressUnlock = Watched(null)) {
   let endsAt = Computed(@() userstatStats.value?.stats[sectionsCfg.value?[curSectionId.value].timerId]["$endsAt"])
 
-  let questsSort = @(a, b) b.isCompleted <=> a.isCompleted
+  let questsSort = @(a, b) b.hasReward <=> a.hasReward
+    || a.isFinished <=> b.isFinished
     || a.name in seenQuests.value <=> b.name in seenQuests.value
     || a.name <=> b.name
 
@@ -200,28 +213,34 @@ let function questsWndPage(sections, progressUnlock = Watched(null)) {
             { pos = [- tabW - minContentOffset, 0], margin = [0, 0, 0, tabExtraWidth] })
       }
       @() {
-        watch = [progressUnlock, blocksOnTop, sections, activeQuestsBySection]
+        watch = [progressUnlock, blocksOnTop, sections, questsBySection]
         size = flex()
         flow = FLOW_VERTICAL
         children = [
-          sections.value.findindex(@(s) activeQuestsBySection.value[s].len() > 0) == null ? allQuestsCompleted : null
+          sections.value.findindex(@(s) questsBySection.value[s].len() > 0) == null ? allQuestsCompleted : null
           progressUnlock.value ? mkProgressBar(progressUnlock.value) : null
           sections.value.len() > 1 ? mkSectionTabs(sections.value) : null
-          pannableCtors[blocksOnTop.value](@() {
-            watch = [curSectionId, seenQuests, activeQuestsBySection]
-            size = [flex(), SIZE_TO_CONTENT]
-            flow = FLOW_VERTICAL
-            gap = hdpx(20)
-            children = activeQuestsBySection.value?[curSectionId.value ?? sections.value?[0]]
-              .values()
-              .sort(questsSort)
-              .map(@(quest) mkQuest(quest))
-            onAttach = @() curSectionId(sections.value?[0])
-            function onDetach() {
-              saveSeenQuestsCurSection()
-              curSectionId(null)
-            }
-          })
+          {
+            size = flex()
+            children = [
+              pannableCtors[blocksOnTop.value](@() {
+                watch = [curSectionId, seenQuests, questsBySection]
+                size = [flex(), SIZE_TO_CONTENT]
+                flow = FLOW_VERTICAL
+                gap = hdpx(20)
+                children = questsBySection.value?[curSectionId.value ?? sections.value?[0]]
+                  .values()
+                  .sort(questsSort)
+                  .map(@(quest) mkQuest(quest))
+                onAttach = @() curSectionId(sections.value?[0])
+                function onDetach() {
+                  saveSeenQuestsCurSection()
+                  curSectionId(null)
+                }
+              }, { pos = [0, 0] }, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+              mkScrollArrow(scrollHandler, MR_B)
+            ]
+          }
         ]
       }
     ]

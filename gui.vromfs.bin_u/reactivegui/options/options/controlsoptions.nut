@@ -6,7 +6,7 @@ let { OPT_CAMERA_SENSE_IN_ZOOM, OPT_FREE_CAMERA_TANK, OPT_FREE_CAMERA_PLANE,
   OPT_CAMERA_SENSE, OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
   OPT_HAPTIC_INTENSITY_ON_COLLISION, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
-let { CAM_TYPE_NORMAL, CAM_TYPE_BINOCULAR, CAM_TYPE_FREE_TANK=2, CAM_TYPE_FREE_PLANE=3, set_camera_sens } = require("controlsOptions")
+let { CAM_TYPE_NORMAL, CAM_TYPE_BINOCULAR, CAM_TYPE_FREE_TANK, CAM_TYPE_FREE_PLANE, set_camera_sens } = require("controlsOptions")
 let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION } = require("hapticVibration")
 let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")

@@ -13,6 +13,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { SERVER_ERROR_INVALID_VERSION } = require("matching.errors")
 
 enum REASON_DOMAIN {
   MATCHING = "matching"
@@ -77,7 +78,6 @@ let customErrorHandlers = {
 
 let function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
   logMC($"{forceExit ? "exit" : "logout"}WithMsgBox: reason = {format("0x%X", reason)}, message = {message}, domain = {reasonDomain}")
-  logMC($"SERVER_ERROR_INVALID_VERSION = {format("0x%X", SERVER_ERROR_INVALID_VERSION)}")
   destroyConnectProgressMessages()
   let handler = customErrorHandlers?[reason]
   if (handler != null) {

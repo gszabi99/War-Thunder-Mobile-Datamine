@@ -44,6 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
+  "minRelativeTankCameraThreshold": 1.72,
   "rearmTimeOnField": 25.0,
   "dm_for_shop": {
     "armorThicknessFront": [
@@ -422,7 +423,7 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
@@ -453,8 +454,7 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 5.0,
-      "armorThrough": 150.0,
+      "armorThickness": 50.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -523,6 +523,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -581,6 +601,19 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
+      "ammo_body_61_dm": {},
+      "ammo_body_62_dm": {},
+      "ammo_body_63_dm": {},
+      "ammo_body_64_dm": {},
+      "ammo_body_65_dm": {},
+      "ammo_body_66_dm": {},
+      "ammo_body_67_dm": {},
+      "ammo_body_68_dm": {},
+      "ammo_body_69_dm": {},
+      "ammo_body_70_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -601,6 +634,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -620,7 +657,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1633,11 +1674,10 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "triggerGroup": "primary",
         "blk": "gameData/Weapons/groundModels_weapons/106mm_M40A1C_user_cannon.blk",
-        "flash": "emtr_gun_flame_01",
+        "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "emitter": "bone_rocket_01",
+        "emitter": "bone_rocket_03",
         "emitterGenRange": [
           1,
           6
@@ -1752,7 +1792,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "secondary",
+        "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
@@ -1797,8 +1837,8 @@
         }
       },
       {
-        "trigger": "gunner3",
-        "triggerGroup": "secondary",
+        "trigger": "gunner2",
+        "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_02",
         "flash": "emtr_mg_flame_02",
@@ -1844,8 +1884,8 @@
         }
       },
       {
-        "trigger": "gunner4",
-        "triggerGroup": "secondary",
+        "trigger": "gunner2",
+        "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_03",
         "flash": "emtr_mg_flame_03",
@@ -1891,8 +1931,8 @@
         }
       },
       {
-        "trigger": "gunner5",
-        "triggerGroup": "secondary",
+        "trigger": "gunner2",
+        "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_04",
         "flash": "emtr_mg_flame_04",
@@ -2621,8 +2661,8 @@
     "sightName": "periscope_m20a3c",
     "headPos": [
       0.0,
-      3.1,
-      -15.5
+      3.4,
+      -11.7
     ],
     "headPosOnShooting": [
       -0.5,

@@ -2032,7 +2032,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "canberra_5x1000lbs",
+      "name": "canberra_bimk6_default",
       "blk": "gameData/FlightModels/weaponPresets/canberra_5x1000lbs.blk"
     }
   },

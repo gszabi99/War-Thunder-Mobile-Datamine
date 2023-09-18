@@ -6,7 +6,7 @@ let helpTankCaptureZone = require("complexScreens/helpTankCaptureZone.nut")
 let helpTankControls = require("complexScreens/helpTankControls.nut")
 let helpTankParts = require("complexScreens/helpTankParts.nut")
 let { gradientLoadingTip } = require("mkLoadingTip.nut")
-let { titleLogo, titleLogoSize } = require("%globalsDarg/components/titleLogo.nut")
+let { mkTitleLogo, titleLogoSize } = require("%globalsDarg/components/titleLogo.nut")
 
 let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankCaptureZone ]
 
@@ -31,13 +31,15 @@ let bgImage = @() {
   children = mkBgImagesByCampaign?[curCampaign.value]()
 }
 
-return {
+let mkMissionLoadingScreen = @() {
   size = flex()
   children = [
     bgImage
-    titleLogo.__merge({
+    mkTitleLogo({
       size = titleLogoSize.map(@(v) (0.7 * v + 0.5).tointeger())
       pos = saBorders
     })
   ]
 }
+
+return mkMissionLoadingScreen

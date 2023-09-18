@@ -1,6 +1,34 @@
 {
   "mandatoryLandquality": 1,
   "z_far": 50000.0,
+  "gridSteps": [
+    [
+      2048.0,
+      2048.0
+    ],
+    [
+      2048.0,
+      2048.0
+    ]
+  ],
+  "numBorderCellsXPos": 8,
+  "numBorderCellsXNeg": 8,
+  "numBorderCellsZPos": 8,
+  "numBorderCellsZNeg": 8,
+  "mirrorShrinkXPos": 256.0,
+  "mirrorShrinkXNeg": 256.0,
+  "mirrorShrinkZPos": 256.0,
+  "mirrorShrinkZNeg": 256.0,
+  "lastClip": [
+    true,
+    true
+  ],
+  "lastclip_horizon": [
+    true,
+    true
+  ],
+  "rendinstPreloadDistance": 7000.0,
+  "clipmap_tex_mips": 5,
   "mapCoord0": [
     -32768.0,
     -32768.0
@@ -21,12 +49,6 @@
     12000.0,
     12000.0
   ],
-  "gridSteps": [
-    2048.0,
-    2048.0
-  ],
-  "hmapDistanceMul": 5.0,
-  "hmapLodCount": 6,
   "aiTanksMapCoord0": [
     0.0,
     0.0
@@ -36,12 +58,12 @@
     4096.0
   ],
   "tankMapCoord0": [
-    0.0,
-    0.0
+    1496.1,
+    1494.5
   ],
   "tankMapCoord1": [
-    4096.0,
-    4096.0
+    2596.1,
+    2594.5
   ],
   "tankGridSteps": [
     204.0,
@@ -51,33 +73,43 @@
     4096.0,
     4096.0
   ],
-  "numBorderCellsXPos": 8,
-  "numBorderCellsXNeg": 8,
-  "numBorderCellsZPos": 8,
-  "numBorderCellsZNeg": 8,
-  "mirrorShrinkXPos": 256.0,
-  "mirrorShrinkXNeg": 256.0,
-  "mirrorShrinkZPos": 256.0,
-  "mirrorShrinkZNeg": 256.0,
-  "customLevelMap": "avg_poland_tankmap*",
-  "dirt_type": "sand",
+  "customLevelMap": "avg_american_valley_tankmap*",
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
-  "addWhiteTemp": -300.0,
+  "water_level": -10.0,
+  "dirt_type": "sand",
   "soundAmbientPath": "sounds/ambient",
   "soundAmbientPathStudio": "aircraft/ambient",
-  "soundAmbientEvent": "global_amb_desert",
-  "water_level": -10.0,
-  "lastClip": true,
-  "lastclip_horizon": true,
-  "wind_scale": 0.8,
-  "max_wind_strength": 2.5,
+  "soundAmbientEvent": "global_amb",
   "average_ground_level": 8.0,
   "puddlesPowerScale": 0.0,
   "puddlesSpread": 0.0,
   "layeredFogThicknessScale100": 12.0,
   "layeredFogHeightOffset": 7.0,
   "layeredFogDensityMul": 1.0,
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": false,
+    "grass": true,
+    "water3d": true,
+    "staticScene": true,
+    "riExtraMinSizeForReflection": 5.0
+  },
+  "clipmap": {
+    "texelSize": 0.03125,
+    "lastClipSize": 512
+  },
+  "earth": {
+    "earthWorldEnabled": true,
+    "earthWorldMin": [
+      -32768.0,
+      -32768.0
+    ],
+    "earthWorldMax": [
+      32768.0,
+      32768.0
+    ]
+  },
   "micro_details": {
     "micro_detail": [
       "microdetail_stone_a_tex_n*",
@@ -120,25 +152,12 @@
     "month": 6,
     "day": 31
   },
-  "earth": {
-    "earthWorldEnabled": true,
-    "earthWorldMin": [
-      -32768.0,
-      -32768.0
-    ],
-    "earthWorldMax": [
-      32768.0,
-      32768.0
-    ]
-  },
   "shader_vars": {
-    "parallax_shadow_strength": 7.0,
-    "parallax_shadow_length": 2.0,
-    "land_bump_scale": -0.3,
+    "land_bump_scale": -4.0,
     "land_smoothness_detect_color": [
+      0.36,
       0.31,
-      0.31,
-      0.28,
+      0.33,
       0.3
     ],
     "translucency_detection_hardness": 1.0,
@@ -148,10 +167,6 @@
       0.5,
       0.0
     ],
-    "hmap_displacement_down": -0.1,
-    "hmap_displacement_up": 0.3,
-    "sparkles_size": 2.0,
-    "sparkles_density": 0.1,
     "water_color_noise_size": 1137.0,
     "max_river_width": 500.0,
     "ocean_density": 0.2,
@@ -180,7 +195,7 @@
       0.17,
       0.0
     ],
-    "min_land_height": 0.1
+    "min_land_height": 0.15
   },
   "randomGrass": {
     "density": 1.5,
@@ -208,9 +223,7 @@
     "helicopterVerMul": 1.0,
     "helicopterToDirectWindMul": 2.0,
     "helicopterFalloff": 0.001,
-    "poland_detailed_town": "poland_detailed_town_scatter_mask",
-    "poland_detailed_fields": "poland_detailed_fields_scatter_mask",
-    "poland_fields_b": "poland_fields_b_mask",
+    "america_detailed_tex_d": "america_detailed_mask",
     "layer": [
       {
         "maskChannel": [
@@ -220,7 +233,7 @@
           0.0
         ],
         "res": "grass_reed_a",
-        "density": 0.5,
+        "density": 0.2,
         "horScale": 1.2,
         "horMinScale": 0.9,
         "verScale": 1.2,
@@ -242,7 +255,7 @@
           0.0
         ],
         "res": "grass_wheat_a",
-        "density": 1.2,
+        "density": 0.2,
         "horScale": 1.8,
         "horMinScale": 0.9,
         "verScale": 1.2,
@@ -264,7 +277,7 @@
           0.0
         ],
         "res": "grass_sword_a",
-        "density": 1.0,
+        "density": 0.2,
         "horScale": 1.2,
         "horMinScale": 0.9,
         "verScale": 1.2,
@@ -286,7 +299,7 @@
           0.0
         ],
         "res": "grass_tavolga_a",
-        "density": 1.0,
+        "density": 0.2,
         "horScale": 1.2,
         "horMinScale": 0.5,
         "verScale": 1.2,
@@ -308,7 +321,7 @@
           0.0
         ],
         "res": "grass_daisies_a",
-        "density": 1.0,
+        "density": 0.2,
         "horScale": 1.2,
         "horMinScale": 0.9,
         "verScale": 1.2,
@@ -330,7 +343,7 @@
           0.0
         ],
         "res": "grass_heather_a",
-        "density": 1.0,
+        "density": 0.2,
         "horScale": 1.2,
         "horMinScale": 0.5,
         "verScale": 1.2,
@@ -374,7 +387,7 @@
           0.0
         ],
         "res": "grass_simple_a",
-        "density": 3.5,
+        "density": 0.2,
         "horScale": 1.2,
         "horMinScale": 0.9,
         "verScale": 1.0,
@@ -396,7 +409,7 @@
           0.0
         ],
         "res": "grass_fill_a",
-        "density": 3.0,
+        "density": 0.2,
         "horScale": 1.2,
         "horMinScale": 0.5,
         "verScale": 1.2,
@@ -417,7 +430,7 @@
           0.0
         ],
         "res": "grass_fill_a",
-        "density": 3.0,
+        "density": 0.2,
         "horScale": 1.2,
         "horMinScale": 0.5,
         "verScale": 1.8,
@@ -433,70 +446,6 @@
     ]
   },
   "overrideRiLodRange": {
-    "tree_sea_bush_a": {
-      "lod0": 30.0,
-      "lod1": 1200.0
-    },
-    "tree_sea_bush_b": {
-      "lod0": 40.0,
-      "lod1": 1000.0
-    },
-    "bush_flowers_a": {
-      "lod0": 50.0,
-      "lod1": 800.0
-    },
-    "bush_flowers_b": {
-      "lod0": 30.0,
-      "lod1": 900.0
-    },
-    "bush_flowers_c": {
-      "lod0": 40.0,
-      "lod1": 600.0
-    },
-    "rail_crosstie": {
-      "lod0": 120.0,
-      "lod1": 300.0
-    },
-    "sassaul_bush_a": {
-      "lod0": 50.0,
-      "lod1": 500.0
-    },
-    "sassaul_bush_b": {
-      "lod0": 50.0,
-      "lod1": 1000.0
-    },
-    "sassaul_bush_c": {
-      "lod0": 50.0,
-      "lod1": 1500.0
-    },
-    "sassaul_bush_d": {
-      "lod0": 50.0,
-      "lod1": 2000.0
-    },
-    "bush_desert_a": {
-      "lod0": 50.0,
-      "lod1": 750.0
-    },
-    "bush_desert_b": {
-      "lod0": 50.0,
-      "lod1": 500.0
-    },
-    "tree_dracena_bush_a": {
-      "lod0": 150.0,
-      "lod1": 1050.0
-    },
-    "tree_dracena_bush_b": {
-      "lod0": 150.0,
-      "lod1": 1350.0
-    },
-    "tree_dracena_bush_c": {
-      "lod0": 150.0,
-      "lod1": 1150.0
-    },
-    "tree_dracena_bush_d": {
-      "lod0": 150.0,
-      "lod1": 1550.0
-    },
     "african_cactus_a": {
       "lod0": 100.0,
       "lod1": 150.0
@@ -540,26 +489,6 @@
     "african_cactus_h": {
       "lod0": 50.0,
       "lod1": 150.0
-    },
-    "desert_dry_tree_a": {
-      "lod0": 50.0,
-      "lod1": 900.0
-    },
-    "desert_dry_tree_b": {
-      "lod0": 50.0,
-      "lod1": 800.0
-    },
-    "desert_dry_tree_c": {
-      "lod0": 50.0,
-      "lod1": 700.0
-    },
-    "desert_dry_tree_d": {
-      "lod0": 50.0,
-      "lod1": 600.0
-    },
-    "desert_dry_tree_e": {
-      "lod0": 50.0,
-      "lod1": 500.0
     },
     "american_cliff_huge_a": {
       "lod0": 300.0,
@@ -682,402 +611,13 @@
     "africa_small_rock_b": {
       "lod0": 40.0,
       "lod1": 80.0
-    },
-    "american_railway_traffic_light_a": {
-      "lod0": 30.0,
-      "lod1": 90.0,
-      "lod2": 600.0
-    },
-    "syrian_border_b": {
-      "lod0": 80.0,
-      "lod1": 260.0
-    },
-    "wood_fence_m_pole": {
-      "lod0": 80.0,
-      "lod1": 200.0
-    },
-    "wood_fence_n_pole": {
-      "lod0": 80.0,
-      "lod1": 200.0
-    },
-    "wood_fence_o_pole": {
-      "lod0": 80.0,
-      "lod1": 200.0
-    },
-    "wood_fence_p_pole": {
-      "lod0": 80.0,
-      "lod1": 200.0
-    },
-    "wood_fence_m_w1000_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_m_w1500_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_m_w1500_b": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_m_w500_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_m_gate_single_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_n_w1000_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_n_w1500_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_n_w1500_b": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_n_w500_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_n_gate_double_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_o_w1000_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_o_w1500_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_o_w1500_b": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_o_w500_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_o_gate_single_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_p_w1000_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_p_w1500_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_p_w1500_b": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_p_w500_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "wood_fence_p_gate_single_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "concrete_fence_f_column": {
-      "lod0": 80.0,
-      "lod1": 400.0
-    },
-    "wood_fence_a": {
-      "lod0": 80.0,
-      "lod1": 500.0
-    },
-    "debris_trash_concrete_column_a_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 250.0
-    },
-    "debris_trash_concrete_column_b_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 150.0
-    },
-    "debris_trash_concrete_column_c_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 100.0
-    },
-    "debris_trash_concrete_column_d_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 250.0
-    },
-    "debris_trash_concrete_small_part_a1_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 150.0
-    },
-    "debris_trash_concrete_small_part_a2_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 100.0
-    },
-    "debris_trash_concrete_small_part_b1_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 250.0
-    },
-    "debris_trash_concrete_small_part_b2_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 150.0
-    },
-    "debris_trash_concrete_small_part_b3_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 100.0
-    },
-    "heap_debris_brick_small_5x5": {
-      "lod0": 40.0,
-      "lod1": 100.0,
-      "lod2": 250.0
-    },
-    "debris_trash_concrete_small_part_c1_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 150.0
-    },
-    "debris_trash_concrete_small_part_c2_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 250.0
-    },
-    "debris_trash_concrete_small_part_c3_secondlayer": {
-      "lod0": 45.0,
-      "lod1": 100.0
-    },
-    "hatch_a": {
-      "lod0": 70.0
-    },
-    "hatch_c": {
-      "lod0": 70.0
-    },
-    "oil_barrel_a": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 350.0
-    },
-    "oil_barrel_b": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 350.0
-    },
-    "tyre_a": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "tyre_a_torn": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_a": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_b": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_c": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_d": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_e": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_f": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_g": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_h": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_i": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_j": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
-    },
-    "box_k": {
-      "lod0": 50.0,
-      "lod1": 100.0,
-      "lod2": 200.0
     }
   },
   "forceTexLQ": {
-    "tex": [
-      "soviet_village_overlay*",
-      "american_boxcar_wagon_tex_d*",
-      "american_boxcar_wagon_tex_n*",
-      "american_running_gear_wagon_tex_d*",
-      "american_running_gear_wagon_tex_n*",
-      "american_passenger_wagon_tex_d*",
-      "american_passenger_wagon_tex_n*",
-      "dodge_m37_b1_tex_d*",
-      "dodge_m37_b1_tex_n*",
-      "american_emd_f3_locomotive_tex_d*",
-      "american_gondola_wagon_tex_d*",
-      "af_concrete_walls_overlay*",
-      "park_sett_road_d_tex_d*",
-      "park_sett_road_d_tex_r*",
-      "chevrolet_150_a_tex_d*",
-      "chevrolet_ad_tex_d*",
-      "chevrolet_150_a_tex_n*",
-      "chevrolet_ad_tex_n*",
-      "rambler_american_tex_d*",
-      "rambler_american_tex_n*",
-      "ground_decal_asphalt_dirt_tex_d*",
-      "ground_decal_asphalt_dirt_tex_r*",
-      "african_cactuses_a_tex_d*",
-      "african_houses_overlay*",
-      "american_cliff_huge_overlay*",
-      "arabian_cliff_tex_d*",
-      "hawaii_viilage_tex_d*",
-      "hawaii_viilage_tex_n*",
-      "america_detailed_grass_m*",
-      "america_detailed_grass_masks*",
-      "decal_road_sand_b_tex_d*",
-      "decal_road_sand_b_tex_r*",
-      "normandy_fortifications_tex_d*",
-      "fortress_rocks_n*",
-      "sirya_antenna_conditioner_d*",
-      "soviet_village_overlay*",
-      "small_buildings_overlay_tex_d*",
-      "syrian_gas_station_overlay*",
-      "syrian_water_tank_a_tex_d*",
-      "syrian_water_tank_a_tex_n*",
-      "wire_netting_a_tex_d*",
-      "storage_gsm_fuel_tank_horizontal_a_n*",
-      "soil_errosion_loft_b_tex_r*",
-      "tree_poplar_branches_tex_d*",
-      "tree_populus_branches_tex_d*"
-    ]
+    "tex": "fortress_rocks_n*"
   },
   "forceTexMQ": {
-    "tex": [
-      "decal_asphalt_road_b_tex_d*",
-      "decal_asphalt_road_b_tex_r*",
-      "america_win_doors_tex_d*",
-      "america_win_doors_tex_n*",
-      "detail_dunes_tex_d*",
-      "detail_dunes_tex_r*",
-      "ground_decal_asphalt_cracked_tex_d*",
-      "ground_decal_asphalt_cracked_tex_r*",
-      "tunisia_cliffs_tex_n*",
-      "africa_cliffs_tex_n*",
-      "america_buildings_overlay_tex_d*",
-      "american_cliff_overlay*",
-      "american_emd_f3_locomotive_tex_n*",
-      "american_gondola_wagon_tex_n*",
-      "ground_decal_desert_trampled_soil_tex_d*",
-      "ground_decal_desert_trampled_soil_tex_r*",
-      "ground_decal_soil_cliff_tex_d*",
-      "ground_decal_soil_cliff_tex_r*",
-      "ground_decal_tropical_leaves_crack_soil_tex_d*",
-      "ground_decal_tropical_leaves_crack_soil_tex_r*",
-      "ground_decal_town_debris_tex_d*",
-      "ground_decal_town_debris_tex_r*",
-      "sand_errosion_loft_a_tex_d*",
-      "sand_errosion_loft_a_tex_r*",
-      "wood_siding_a_tex_d*",
-      "wood_siding_a_tex_n*",
-      "wood_siding_b_tex_d*",
-      "wood_siding_b_tex_n*",
-      "african_cactuses_a_tex_n*",
-      "decal_concrete_plates_b_tex_d*",
-      "decal_concrete_plates_b_tex_r*",
-      "european_town_stuff_tex_n*",
-      "arabian_cliff_tex_n*",
-      "decal_road_rail_tex_d*",
-      "decal_road_sand_b_tex_d*",
-      "decal_sett_medieval_road_a_mediterranean_tex_d*",
-      "decal_sett_medieval_road_a_mediterranean_tex_r*",
-      "european_town_stuff_tex_d*",
-      "wood_painted_a_tex_d*",
-      "wood_rough_tex_e_d*",
-      "wood_plank_tex_e_d*",
-      "wood_plank_tex_c_d*",
-      "wood_painted_a_tex_n*",
-      "america_main_desert_a_tex*",
-      "america_main_desert_b_tex*",
-      "america_main_desert_c_tex*",
-      "tunisia_main_desert_a_tex*",
-      "america_main_fields_tex_d*",
-      "america_main_town_tex_d*",
-      "american_cliff_huge_tex_n*",
-      "debris_bricks_trash_d*",
-      "debris_bricks_trash_n*",
-      "debris_concrete_a_tex_d*",
-      "debris_concrete_a_tex_n*",
-      "debris_concrete_b_tex_d*",
-      "american_parking_meter_tex_n*",
-      "brick_large_blocks_a_d*",
-      "brick_large_blocks_a_n*",
-      "brick_medieval_a_d*",
-      "brick_medieval_c_tex_d*",
-      "brick_medieval_c_tex_n*",
-      "brick_medieval_f_tex_n*",
-      "debris_concrete_b_tex_n*",
-      "kamenka_bridge_wood_planks_n*",
-      "tree_populus_branches_flowers_tex_d*",
-      "tree_populus_branches_tex_d*",
-      "tree_populus_sea_branches_tex_d*",
-      "decal_ground_building_dirt_a_tex_d*",
-      "decal_ground_building_dirt_a_tex_r*",
-      "concrere_fortifications_d*",
-      "concrere_fortifications_n*",
-      "concrete_panels_b_tex_d*",
-      "concrete_panels_b_tex_n*",
-      "concrete_plates_n*",
-      "concrete_reinforced_broken_a_tex_d*",
-      "concrete_reinforced_broken_a_tex_n*",
-      "ground_decal_oil_puddle_tex_d*",
-      "syrian_gas_station_overlay*",
-      "global_brick_wall_tex_n*",
-      "krymsk_cliff_tex_n*",
-      "modern_brick_painted_b_tex_d*",
-      "stone_buildings_constructor_tex_n*",
-      "american_motel_overlay*",
-      "ground_decal_oil_puddle_tex_r*",
-      "ground_decal_oil_puddle_tex_r*",
-      "stucco_new_d*",
-      "stucco_new_n*",
-      "stucco_rough_tex_d*",
-      "stucco_rough_tex_n*",
-      "stucco_white_broken_a_d*",
-      "stucco_white_broken_a_n*",
-      "stucco_white_d*",
-      "stucco_white_n*",
-      "stucco_white_rough_tex_d*",
-      "stucco_yellow_dirt_a_n*"
-    ]
+    "tex": "decal_asphalt_road_b_tex_d*"
   },
   "technicsSkins": {
     "groundSkin": [

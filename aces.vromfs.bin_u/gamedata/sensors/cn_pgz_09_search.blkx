@@ -242,6 +242,24 @@
             "setNextDetectedTargetActive": {}
           }
         },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
@@ -252,6 +270,10 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
+              "type": 0,
+              "sensorIndex": 1
+            },
+            "designateTargetUnderCue": {
               "type": 0,
               "sensorIndex": 1
             }

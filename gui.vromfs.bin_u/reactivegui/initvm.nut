@@ -7,6 +7,7 @@ gui_scene.setConfigProps({
   clickRumbleEnabled = false
   reportNestedWatchedUpdate = DBGLEVEL > 0
   kbCursorControl = true
+  actionClickByBehavior = true
 
   gamepadCursorSpeed = 1.85
   gamepadCursorNonLin = 0.5

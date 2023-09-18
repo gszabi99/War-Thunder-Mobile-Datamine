@@ -230,8 +230,24 @@
       "material": "wood"
     },
     {
+      "name": "wood_fence_a_white",
+      "destroyedModelName": "wood_fence_a_white_destr_phobj",
+      "destructionImpulse": 20.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
       "name": "wood_fence_b",
       "destroyedModelName": "wood_fence_b_destr_phobj",
+      "destructionImpulse": 20.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "wood_fence_b_white",
+      "destroyedModelName": "wood_fence_b_white_destr_phobj",
       "destructionImpulse": 20.0,
       "fx": "ad_fence_wood_small",
       "fxScale": 1.0,
@@ -306,6 +322,776 @@
       "fx": "ad_fence_wood_small",
       "fxScale": 1.0,
       "material": "wood"
+    },
+    {
+      "name": "abandoned_street_light_a",
+      "destroyedModelName": "abandoned_street_light_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 0.7
+    },
+    {
+      "name": "american_conditioner_a",
+      "destroyedModelName": "american_conditioner_a_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_conditioner_b",
+      "destroyedModelName": "american_conditioner_b_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_conditioner_c",
+      "destroyedModelName": "american_conditioner_c_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_dumpster_a",
+      "destroyedModelName": "american_dumpster_a_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true,
+      "material": "metal"
+    },
+    {
+      "name": "american_dumpster_b",
+      "destroyedModelName": "american_dumpster_b_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true,
+      "material": "metal"
+    },
+    {
+      "name": "american_mall_roof_decor",
+      "destroyedModelName": "american_mall_roof_decor_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "apexDestructible": false
+    },
+    {
+      "name": "american_newsstand_a",
+      "destroyedModelName": "american_newsstand_a_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "apexDestructible": false
+    },
+    {
+      "name": "american_newsstand_shelf_a",
+      "destroyedModelName": "american_newsstand_shelf_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 1.0,
+      "apexDestructible": false
+    },
+    {
+      "name": "american_roof_conditioner_c",
+      "destroyedModelName": "american_roof_conditioner_c_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "material": "metal"
+    },
+    {
+      "name": "modern_semaphore_a",
+      "destroyedModelName": "modern_semaphore_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0
+    },
+    {
+      "name": "modern_semaphore_a_barrier_a",
+      "destroyedModelName": "modern_semaphore_a_barrier_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0
+    },
+    {
+      "name": "american_street_trash_can_a",
+      "destroyedModelName": "american_street_trash_can_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true,
+      "material": "metal"
+    },
+    {
+      "name": "american_street_trash_can_a_cover",
+      "destroyedModelName": "american_street_trash_can_a_cover_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal",
+      "fxScale": 0.5
+    },
+    {
+      "name": "american_street_trash_can_a_garbage",
+      "destroyedModelName": "american_street_trash_can_a_garbage_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    {
+      "name": "american_street_trash_can_b",
+      "destroyedModelName": "american_street_trash_can_b_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true,
+      "material": "metal"
+    },
+    {
+      "name": "american_street_trash_can_b_cover",
+      "destroyedModelName": "american_street_trash_can_b_cover_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal",
+      "fxScale": 0.5
+    },
+    {
+      "name": "american_street_trash_can_b_garbage",
+      "destroyedModelName": "american_street_trash_can_b_garbage_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    {
+      "name": "american_street_trash_can_c",
+      "destroyedModelName": "american_street_trash_can_c_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true,
+      "material": "metal"
+    },
+    {
+      "name": "american_street_trash_can_c_cover",
+      "destroyedModelName": "american_street_trash_can_c_cover_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal",
+      "fxScale": 0.5
+    },
+    {
+      "name": "american_street_trash_can_c_garbage",
+      "destroyedModelName": "american_street_trash_can_c_garbage_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    {
+      "name": "american_street_trash_can_d",
+      "destroyedModelName": "american_street_trash_can_d_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true,
+      "material": "metal"
+    },
+    {
+      "name": "american_street_trash_can_d_cover",
+      "destroyedModelName": "american_street_trash_can_d_cover_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal",
+      "fxScale": 0.5
+    },
+    {
+      "name": "american_street_trash_can_d_garbage",
+      "destroyedModelName": "american_street_trash_can_d_garbage_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "isParent": true
+    },
+    {
+      "name": "american_switchboard_a",
+      "destroyedModelName": "american_switchboard_a_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_switchboard_b",
+      "destroyedModelName": "american_switchboard_b_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_switchboard_c",
+      "destroyedModelName": "american_switchboard_c_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "modern_traffic_light_a_head",
+      "destroyedModelName": "modern_traffic_light_a_head_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 0.7
+    },
+    {
+      "name": "modern_traffic_light_g_a",
+      "destroyedModelName": "modern_traffic_light_g_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "modern_traffic_light_g_b",
+      "destroyedModelName": "modern_traffic_light_g_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "modern_traffic_light_h_a",
+      "destroyedModelName": "modern_traffic_light_h_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "modern_traffic_light_h_b",
+      "destroyedModelName": "modern_traffic_light_h_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_wastebasket_a",
+      "destroyedModelName": "american_wastebasket_a_destr_phobj",
+      "destructionImpulse": 10000.0
+    },
+    {
+      "name": "brick_fence_k",
+      "destroyedModelName": "brick_fence_k_destr_phobj",
+      "destructionImpulse": 50000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "apexDestructible": false
+    },
+    {
+      "name": "brick_fence_k_pillar",
+      "destroyedModelName": "brick_fence_k_pillar_destr_phobj",
+      "destructionImpulse": 50000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "apexDestructible": false
+    },
+    {
+      "name": "brick_fence_k_section",
+      "destroyedModelName": "brick_fence_k_section_destr_phobj",
+      "destructionImpulse": 50000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "apexDestructible": false
+    },
+    {
+      "name": "cardboard_a_a",
+      "destroyedModelName": "cardboard_a_a_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "cardboard_a_b",
+      "destroyedModelName": "cardboard_a_b_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_sand",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "cardboard_a_c",
+      "destroyedModelName": "cardboard_a_c_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_sand",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "cardboard_b_a",
+      "destroyedModelName": "cardboard_b_a_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.5,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "cardboard_b_b",
+      "destroyedModelName": "cardboard_b_b_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_sand",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "cardboard_b_c",
+      "destroyedModelName": "cardboard_b_c_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_sand",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "cardboard_box_pile_a",
+      "destroyedModelName": "cardboard_box_pile_a_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "cardboard_box_pile_b",
+      "destroyedModelName": "cardboard_box_pile_b_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "cardboard_box_pile_c",
+      "destroyedModelName": "cardboard_box_pile_c_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbadge_bag_a",
+      "destroyedModelName": "garbadge_bag_a_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbadge_bag_b",
+      "destroyedModelName": "garbadge_bag_b_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbadge_bag_c",
+      "destroyedModelName": "garbadge_bag_c_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbadge_bag_piles_a",
+      "destroyedModelName": "garbadge_bag_piles_a_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbadge_bag_piles_b",
+      "destroyedModelName": "garbadge_bag_piles_b_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbage_cardboard_a_a",
+      "destroyedModelName": "garbage_cardboard_a_a_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbage_cardboard_a_b",
+      "destroyedModelName": "garbage_cardboard_a_b_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbage_cardboard_a_c",
+      "destroyedModelName": "garbage_cardboard_a_c_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbage_cardboard_b_a",
+      "destroyedModelName": "garbage_cardboard_b_a_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbage_cardboard_b_b",
+      "destroyedModelName": "garbage_cardboard_b_b_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "garbage_cardboard_b_c",
+      "destroyedModelName": "garbage_cardboard_b_c_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_paper_splash_medium",
+      "fxScale": 0.7,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "waste_container_metal_small_a",
+      "destroyedModelName": "waste_container_metal_small_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.5
+    },
+    {
+      "name": "american_roof_signboard_a_bank",
+      "destroyedModelName": "american_roof_signboard_a_bank_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_roof_signboard_a_bank_dstest",
+      "destroyedModelName": "american_roof_signboard_a_bank_dstest_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_roof_signboard_a_cafe",
+      "destroyedModelName": "american_roof_signboard_a_cafe_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_roof_signboard_a_homemade",
+      "destroyedModelName": "american_roof_signboard_a_homemade_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_wall_signboard_a_cream",
+      "destroyedModelName": "american_wall_signboard_a_cream_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_wall_signboard_a_hotel",
+      "destroyedModelName": "american_wall_signboard_a_hotel_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_wall_signboard_b_bank",
+      "destroyedModelName": "american_wall_signboard_b_bank_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_wall_signboard_b_pizza",
+      "destroyedModelName": "american_wall_signboard_b_pizza_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "american_wall_signboard_c_cafe",
+      "destroyedModelName": "american_wall_signboard_c_cafe_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "material": "metal"
+    },
+    {
+      "name": "construction_fence_a",
+      "destroyedModelName": "construction_fence_a_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "construction_fence_gate",
+      "destroyedModelName": "construction_fence_gate_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "construction_fence_a_pillar",
+      "destroyedModelName": "construction_fence_a_pillar_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "construction_fence_a_grape_a",
+      "destroyedModelName": "construction_fence_a_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "construction_fence_a_grape_b",
+      "destroyedModelName": "construction_fence_a_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "construction_fence_a_grape_c",
+      "destroyedModelName": "construction_fence_a_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "construction_fence_a_grape_d",
+      "destroyedModelName": "construction_fence_a_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "sicily_fence_piers",
+      "destroyedModelName": "sicily_fence_piers_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_piers_column",
+      "destroyedModelName": "sicily_fence_piers_column_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "sicily_fence_cafe_a",
+      "destroyedModelName": "sicily_fence_cafe_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_cafe_b",
+      "destroyedModelName": "sicily_fence_cafe_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_cafe_c",
+      "destroyedModelName": "sicily_fence_cafe_c_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_cafe_d",
+      "destroyedModelName": "sicily_fence_cafe_d_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_house_a",
+      "destroyedModelName": "sicily_fence_house_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_house_a_column",
+      "destroyedModelName": "sicily_fence_house_a_column_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_house_a_door",
+      "destroyedModelName": "sicily_fence_house_a_door_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "sicily_fence_house_b",
+      "destroyedModelName": "sicily_fence_house_b_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_house_b_column",
+      "destroyedModelName": "sicily_fence_house_b_column_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_house_b_door",
+      "destroyedModelName": "sicily_fence_house_b_door_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "sicily_fence_villa_a",
+      "destroyedModelName": "sicily_fence_villa_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_villa_a_column",
+      "destroyedModelName": "sicily_fence_villa_a_column_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "sicily_fence_villa_a_door_a",
+      "destroyedModelName": "sicily_fence_villa_a_door_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "sicily_fence_villa_a_door_b",
+      "destroyedModelName": "sicily_fence_villa_a_door_b_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "oil_barrel_a",
+      "destroyedModelName": "oil_barrel_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "oil_barrel_b",
+      "destroyedModelName": "oil_barrel_b_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "box_b",
+      "destroyedModelName": "box_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "material": "wood",
+      "stopsBullets": false
+    },
+    {
+      "name": "box_c",
+      "destroyedModelName": "box_c_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "material": "wood",
+      "stopsBullets": false
+    },
+    {
+      "name": "box_e",
+      "destroyedModelName": "box_e_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "material": "wood",
+      "stopsBullets": false
+    },
+    {
+      "name": "box_f",
+      "destroyedModelName": "box_f_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "material": "wood",
+      "stopsBullets": false
+    },
+    {
+      "name": "box_g",
+      "destroyedModelName": "box_g_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "material": "wood",
+      "stopsBullets": false
+    },
+    {
+      "name": "box_i",
+      "destroyedModelName": "box_i_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "material": "wood",
+      "stopsBullets": false
     },
     {
       "name": "iceberg_chunk_1a",
@@ -1412,483 +2198,27 @@
       "combinedRendinstHeight": 52.0
     },
     {
-      "name": "american_gas_station",
+      "name": "american_church_a_full",
       "immortal": true
     },
     {
-      "name": "american_gas_station_pump_n",
+      "name": "american_county_courthouse_a_full",
       "immortal": true
     },
     {
-      "name": "american_gas_station_shop_dmg",
+      "name": "american_garage_a_full",
       "immortal": true
     },
     {
-      "name": "american_suburb_building_1_floor_a",
+      "name": "american_mall_full",
       "immortal": true
     },
     {
-      "name": "american_suburb_building_1_floor_a_dp_01_dmg",
+      "name": "american_mall_roof_decor",
       "immortal": true
     },
     {
-      "name": "american_suburb_building_1_floor_a_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_b",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_b_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_b_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_b_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_b_dp_04_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_c",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_c_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_c_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_c_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_d",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_d_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_d_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_d_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_d_dp_04_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_e",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_e_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_e_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_e_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_e_dp_04_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_e_dp_05_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_f",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_f_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_1_floor_f_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_a",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_a_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_a_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_b",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_b_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_b_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_b_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_c_annex",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_c_annex_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_c",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_c_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_c_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_2_floors_c_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_3_floors_a",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_3_floors_a_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_3_floors_a_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_3_floors_a_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_3_floors_a_dp_04_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_suburb_building_3_floors_a_dp_05_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_a",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_a_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_a_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_a_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_b",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_b_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_b_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_c",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_c_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_c_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_d",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_d_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_d_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_e",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_e_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_e_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_f",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_f_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_f_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_g",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_g_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_1_floor_g_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_a",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_a_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_a_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_b",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_b_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_b_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_b_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_c",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_c_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_c_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_c_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_c_dp_04_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_c_dp_05_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_d",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_d_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_d_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_d_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_e",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_e_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_e_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_e_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_f",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_f_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_2_floors_f_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_3_floors_a",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_3_floors_a_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_town_building_3_floors_a_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_church_a",
-      "immortal": true
-    },
-    {
-      "name": "american_county_courthouse_a",
-      "immortal": true
-    },
-    {
-      "name": "american_county_courthouse_a_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_county_courthouse_a_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_county_courthouse_a_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_county_courthouse_a_dp_04_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_garage_a",
-      "immortal": true
-    },
-    {
-      "name": "american_garage_a_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_mall",
-      "immortal": true
-    },
-    {
-      "name": "american_mall_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_mall_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_mall_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_mall_dp_04_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_mall_dp_05_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_mall_dp_06_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_motel",
-      "immortal": true
-    },
-    {
-      "name": "american_motel_dp_01_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_motel_dp_02_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_motel_dp_03_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_motel_dp_04_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_motel_dp_05_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_motel_dp_06_dmg",
-      "immortal": true
-    },
-    {
-      "name": "american_motel_dp_07_dmg",
+      "name": "american_motel_full",
       "immortal": true
     },
     {
@@ -1896,39 +2226,187 @@
       "immortal": true
     },
     {
-      "name": "american_train_depot",
+      "name": "american_suburb_building_1_floor_a_full",
       "immortal": true
     },
     {
-      "name": "american_train_depot_dp_01_dmg",
+      "name": "american_suburb_building_1_floor_b_full",
       "immortal": true
     },
     {
-      "name": "american_train_depot_dp_02_dmg",
+      "name": "american_suburb_building_2_floors_a_full",
       "immortal": true
     },
     {
-      "name": "american_train_depot_dp_03_dmg",
+      "name": "american_suburb_building_2_floors_b_full",
       "immortal": true
     },
     {
-      "name": "american_train_depot_dp_04_dmg",
+      "name": "american_suburb_building_3_floors_a_full",
       "immortal": true
     },
     {
-      "name": "american_train_depot_dp_05_dmg",
+      "name": "american_suburb_building_3_floors_a_full",
       "immortal": true
     },
     {
-      "name": "american_train_depot_dp_06_dmg",
+      "name": "american_town_building_1_floor_a_full",
       "immortal": true
     },
     {
-      "name": "american_train_depot_dp_07_dmg",
+      "name": "american_town_building_1_floor_a_roof_decor",
       "immortal": true
     },
     {
-      "name": "american_train_depot_dp_08_dmg",
+      "name": "american_town_building_1_floor_b_full",
+      "immortal": true
+    },
+    {
+      "name": "american_town_building_1_floor_b_roof_decor",
+      "immortal": true
+    },
+    {
+      "name": "american_town_building_2_floors_a_full",
+      "immortal": true
+    },
+    {
+      "name": "american_town_building_2_floors_b_full",
+      "immortal": true
+    },
+    {
+      "name": "american_town_building_3_floors_a_full",
+      "immortal": true
+    },
+    {
+      "name": "american_train_depot_full",
+      "immortal": true
+    },
+    {
+      "name": "asian_house_a",
+      "immortal": true
+    },
+    {
+      "name": "asian_house_b_full",
+      "immortal": true
+    },
+    {
+      "name": "asian_house_c_full",
+      "immortal": true
+    },
+    {
+      "name": "asian_house_d_full",
+      "immortal": true
+    },
+    {
+      "name": "asian_house_e_full",
+      "immortal": true
+    },
+    {
+      "name": "asian_house_f_full",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_a",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_a_annex_back",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_a_annex_center",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_a_annex_left",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_a_annex_right",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_c_base",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_c_middle",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_c_top",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_foundation_a",
+      "immortal": true
+    },
+    {
+      "name": "asian_pagoda_foundation_b",
+      "immortal": true
+    },
+    {
+      "name": "asian_portal_c",
+      "immortal": true
+    },
+    {
+      "name": "asian_shed_a",
+      "immortal": true
+    },
+    {
+      "name": "asian_terrace_a_full",
+      "immortal": true
+    },
+    {
+      "name": "concrete_border_ring_a",
+      "immortal": true
+    },
+    {
+      "name": "granite_stone_sharp_grey_small_a",
+      "immortal": true
+    },
+    {
+      "name": "granite_stone_sharp_grey_small_b",
+      "immortal": true
+    },
+    {
+      "name": "granite_stone_sharp_grey_small_c",
+      "immortal": true
+    },
+    {
+      "name": "granite_stone_sharp_grey_small_d",
+      "immortal": true
+    },
+    {
+      "name": "granite_stone_sharp_grey_small_e",
+      "immortal": true
+    },
+    {
+      "name": "granite_stone_smooth_grey_moss_a",
+      "immortal": true
+    },
+    {
+      "name": "granite_stone_smooth_grey_moss_b",
+      "immortal": true
+    },
+    {
+      "name": "japan_background_a",
+      "immortal": true
+    },
+    {
+      "name": "japan_background_b",
+      "immortal": true
+    },
+    {
+      "name": "japan_background_c",
+      "immortal": true
+    },
+    {
+      "name": "japan_background_d",
+      "immortal": true
+    },
+    {
+      "name": "japan_background_e",
       "immortal": true
     },
     {
@@ -6412,6 +6890,74 @@
       "immortal": true
     },
     {
+      "name": "desert_cliff_big_a",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_big_b",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_big_c",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_huge_a",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_huge_b",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_huge_c",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_huge_d",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_medium_a",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_medium_b",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_medium_c",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_medium_d",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_small_a",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_small_b",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_smaller_a",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_smaller_b",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_smaller_c",
+      "immortal": true
+    },
+    {
+      "name": "desert_cliff_smaller_d",
+      "immortal": true
+    },
+    {
       "name": "b17e_cabin_dstr_rendinst",
       "immortal": true,
       "material": "metal"
@@ -8322,6 +8868,105 @@
       "fxScale": 1.0,
       "dmPreset": "trees_medium",
       "material": "wood"
+    },
+    {
+      "name": "african_cactus_a",
+      "destroyedModelName": "african_cactus_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_b_a",
+      "destroyedModelName": "african_cactus_b_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_b_b",
+      "destroyedModelName": "african_cactus_b_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_b_c",
+      "destroyedModelName": "african_cactus_b_c_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_c",
+      "destroyedModelName": "african_cactus_c_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_d",
+      "destroyedModelName": "african_cactus_d_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_e_a",
+      "destroyedModelName": "african_cactus_e_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_e_b",
+      "destroyedModelName": "african_cactus_e_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_f",
+      "destroyedModelName": "african_cactus_f_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_g",
+      "destroyedModelName": "african_cactus_g_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "african_cactus_h",
+      "destroyedModelName": "african_cactus_h_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.2,
+      "stopsBullets": false,
+      "material": "transparentBeton"
     }
   ],
   "default_building": {
@@ -10244,25 +10889,9 @@
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
-    "american_church_a_bell": {
-      "nextRes": "american_church_a_bell_dmg",
-      "hp": 7.0,
-      "dmPreset": "frame_metal_house",
-      "impulseThreshold": 1.0,
-      "fx": "ad_church_bell",
-      "fxScale": 1.0
-    },
-    "american_church_a_bell_dmg": {
-      "nextRes": "american_church_a_bell",
-      "hp": 7.0,
-      "dmPreset": "frame_metal_house",
-      "impulseThreshold": 1.5,
-      "fx": "ad_church_bell",
-      "fxScale": 1.0
-    },
-    "american_lamp_post_high_a": {
-      "nextRes": "american_lamp_post_high_a_dmg",
-      "physRes": "american_lamp_post_high_a_destr_phobj",
+    "modern_lamp_post_high_a": {
+      "nextRes": "modern_lamp_post_high_a_dmg",
+      "physRes": "modern_lamp_post_high_a_destr_phobj",
       "hp": 17.0,
       "impulseThreshold": 1.0,
       "isParent": true,
@@ -10270,9 +10899,9 @@
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_lamp_post_high_a_on": {
-      "nextRes": "american_lamp_post_high_a_dmg",
-      "physRes": "american_lamp_post_high_a_destr_phobj",
+    "modern_lamp_post_high_a_on": {
+      "nextRes": "modern_lamp_post_high_a_dmg",
+      "physRes": "modern_lamp_post_high_a_destr_phobj",
       "hp": 17.0,
       "impulseThreshold": 1.0,
       "isParent": true,
@@ -10280,9 +10909,9 @@
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_lamp_post_high_a_damaged": {
-      "nextRes": "american_lamp_post_high_a_dmg",
-      "physRes": "american_lamp_post_high_a_destr_phobj",
+    "modern_lamp_post_high_a_damaged": {
+      "nextRes": "modern_lamp_post_high_a_dmg",
+      "physRes": "modern_lamp_post_high_a_destr_phobj",
       "hp": 17.0,
       "impulseThreshold": 1.0,
       "isParent": true,
@@ -10290,54 +10919,54 @@
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_lamp_post_low_a_double": {
-      "nextRes": "american_lamp_post_low_a_double_dmg",
-      "physRes": "american_lamp_post_low_a_double_destr_phobj",
+    "modern_lamp_post_low_a_double": {
+      "nextRes": "modern_lamp_post_low_a_double_dmg",
+      "physRes": "modern_lamp_post_low_a_double_destr_phobj",
       "hp": 13.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_lamp_post_low_a_double_on": {
-      "nextRes": "american_lamp_post_low_a_double_dmg",
-      "physRes": "american_lamp_post_low_a_double_destr_phobj",
+    "modern_lamp_post_low_a_double_on": {
+      "nextRes": "modern_lamp_post_low_a_double_dmg",
+      "physRes": "modern_lamp_post_low_a_double_destr_phobj",
       "hp": 13.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_lamp_post_low_a_double_damaged": {
-      "nextRes": "american_lamp_post_low_a_double_dmg",
-      "physRes": "american_lamp_post_low_a_double_destr_phobj",
+    "modern_lamp_post_low_a_double_damaged": {
+      "nextRes": "modern_lamp_post_low_a_double_dmg",
+      "physRes": "modern_lamp_post_low_a_double_destr_phobj",
       "hp": 13.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_lamp_post_low_a_single": {
-      "nextRes": "american_lamp_post_low_a_single_dmg",
-      "physRes": "american_lamp_post_low_a_single_destr_phobj",
+    "modern_lamp_post_low_a_single": {
+      "nextRes": "modern_lamp_post_low_a_single_dmg",
+      "physRes": "modern_lamp_post_low_a_single_destr_phobj",
       "hp": 13.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_lamp_post_low_a_single_on": {
-      "nextRes": "american_lamp_post_low_a_single_dmg",
-      "physRes": "american_lamp_post_low_a_single_destr_phobj",
+    "modern_lamp_post_low_a_single_on": {
+      "nextRes": "modern_lamp_post_low_a_single_dmg",
+      "physRes": "modern_lamp_post_low_a_single_destr_phobj",
       "hp": 13.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_lamp_post_low_a_single_damaged": {
-      "nextRes": "american_lamp_post_low_a_single_dmg",
-      "physRes": "american_lamp_post_low_a_single_destr_phobj",
+    "modern_lamp_post_low_a_single_damaged": {
+      "nextRes": "modern_lamp_post_low_a_single_dmg",
+      "physRes": "modern_lamp_post_low_a_single_destr_phobj",
       "hp": 13.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
@@ -10345,43 +10974,43 @@
       "material": "transparentCamera"
     },
     "american_mailbox_city_a": {
-      "nextRes": "american_mailbox_city_a_dmg",
-      "physRes": "american_mailbox_city_a_destr_phobj",
+      "nextRes": "modern_mailbox_city_a_dmg",
+      "physRes": "modern_mailbox_city_a_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.0,
       "fx": "ad_paper_splash_medium",
       "fxScale": 1.0
     },
-    "american_traffic_light_a": {
-      "nextRes": "american_traffic_light_a_dmg",
-      "physRes": "american_traffic_light_a_destr_phobj",
+    "modern_traffic_light_a": {
+      "nextRes": "modern_traffic_light_a_dmg",
+      "physRes": "modern_traffic_light_a_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_traffic_light_a_corner": {
-      "nextRes": "american_traffic_light_a_corner_dmg",
-      "physRes": "american_traffic_light_a_corner_destr_phobj",
+    "modern_traffic_light_a_corner": {
+      "nextRes": "modern_traffic_light_a_corner_dmg",
+      "physRes": "modern_traffic_light_a_corner_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_railway_traffic_light_a": {
-      "nextRes": "american_railway_traffic_light_a_dmg",
-      "physRes": "american_railway_traffic_light_a_destr_phobj",
+    "modern_railway_traffic_light_a": {
+      "nextRes": "modern_railway_traffic_light_a_dmg",
+      "physRes": "modern_railway_traffic_light_a_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_railway_signal_bridge_a": {
-      "nextRes": "american_railway_signal_bridge_a_dmg",
-      "physRes": "american_railway_signal_bridge_a_destr_phobj",
+    "modern_railway_signal_bridge_a": {
+      "nextRes": "modern_railway_signal_bridge_a_dmg",
+      "physRes": "modern_railway_signal_bridge_a_destr_phobj",
       "hp": 30.0,
       "impulseThreshold": 1.0,
       "isParent": true,
@@ -10389,8 +11018,8 @@
       "fxScale": 1.0
     },
     "american_semaphore_a": {
-      "nextRes": "american_semaphore_a_dmg",
-      "physRes": "american_semaphore_a_destr_phobj",
+      "nextRes": "modern_semaphore_a_dmg",
+      "physRes": "modern_semaphore_a_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "isParent": true,
@@ -19679,45 +20308,45 @@
       "fx": "ad_sand",
       "fxScale": 0.6
     },
-    "american_traffic_light_b": {
-      "nextRes": "american_traffic_light_b_dmg",
-      "physRes": "american_traffic_light_b_destr_phobj",
+    "modern_traffic_light_b": {
+      "nextRes": "modern_traffic_light_b_dmg",
+      "physRes": "modern_traffic_light_b_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_traffic_light_c": {
-      "nextRes": "american_traffic_light_c_dmg",
-      "physRes": "american_traffic_light_c_destr_phobj",
+    "modern_traffic_light_c": {
+      "nextRes": "modern_traffic_light_c_dmg",
+      "physRes": "modern_traffic_light_c_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_traffic_light_d": {
-      "nextRes": "american_traffic_light_d_dmg",
-      "physRes": "american_traffic_light_d_destr_phobj",
+    "modern_traffic_light_d": {
+      "nextRes": "modern_traffic_light_d_dmg",
+      "physRes": "modern_traffic_light_d_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_traffic_light_e": {
-      "nextRes": "american_traffic_light_e_dmg",
-      "physRes": "american_traffic_light_e_destr_phobj",
+    "modern_traffic_light_e": {
+      "nextRes": "modern_traffic_light_e_dmg",
+      "physRes": "modern_traffic_light_e_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
-    "american_traffic_light_f": {
-      "nextRes": "american_traffic_light_f_dmg",
-      "physRes": "american_traffic_light_f_destr_phobj",
+    "modern_traffic_light_f": {
+      "nextRes": "modern_traffic_light_f_dmg",
+      "physRes": "modern_traffic_light_f_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "fx": "ad_metal",
@@ -20839,6 +21468,86 @@
       "fx": "ad_windows_big",
       "fxScale": 0.9,
       "useVsm": true
+    },
+    "american_mall_annex": {
+      "physRes": "american_mall_annex_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_town_building_awning_a": {
+      "physRes": "american_town_building_awning_a_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_town_building_awning_b": {
+      "physRes": "american_town_building_awning_b_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_town_building_awning_c": {
+      "physRes": "american_town_building_awning_c_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_town_building_awning_d": {
+      "physRes": "american_town_building_awning_d_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_town_building_awning_e": {
+      "physRes": "american_town_building_awning_e_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_mall_stair": {
+      "physRes": "american_mall_stair_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_town_building_1_floor_a_stairs": {
+      "physRes": "american_town_building_1_floor_a_stairs_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_town_building_3_floors_a_back_stairs": {
+      "physRes": "american_town_building_3_floors_a_back_stairs_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "american_statue_a_dp_01": {
+      "physRes": "american_statue_a_dp_01_destr_phobj",
+      "hp": 10.0,
+      "isParent": true,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
     },
     "tram_pole_concrete_a": {
       "nextRes": "tram_pole_concrete_a_dmg",

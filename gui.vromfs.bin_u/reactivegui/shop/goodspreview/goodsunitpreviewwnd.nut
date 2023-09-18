@@ -15,7 +15,7 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
   aTimeInfoItemOffset, aTimeInfoLight, aTimePriceFull, horGap, mkActiveItemHint, mkInfoText
 } = require("goodsPreviewPkg.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, SHIP_PRESET_TYPE, TANK_PRESET_TYPE } = require("hangar")
-let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit, isHangarUnitLoaded
+let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit, resetCustomHangarUnit, isHangarUnitLoaded
 } = require("%rGui/unit/hangarUnit.nut")
 let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
@@ -74,6 +74,8 @@ let unitForShow = keepref(Computed(@() isWindowAttached.value ? previewGoodsUnit
 unitForShow.subscribe(function(unit) {
   if (unit != null)
     setCustomHangarUnit(unit)
+  else
+    resetCustomHangarUnit()
 })
 
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null

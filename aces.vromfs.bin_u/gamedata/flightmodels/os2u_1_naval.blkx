@@ -1621,8 +1621,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "os2u_naval_default",
-      "blk": "gameData/FlightModels/weaponPresets/os2u_naval_default.blk"
+      "name": "os2u_1_naval_default",
+      "blk": "gameData/FlightModels/weaponPresets/os2u_1_naval_default.blk"
     }
   },
   "jetwash": {

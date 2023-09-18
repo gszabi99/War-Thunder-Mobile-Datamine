@@ -13,6 +13,7 @@ let lastAppliedSchReward = Watched({})
 let schRewards = Computed(@() (campConfigs.value?.schRewards ?? {})
   .filter(@(g) isGoodsFitToCampaign(g, campConfigs.value))
   .map(@(g, id) g.__merge({ id, gtype = getGoodsType(g), isFreeReward = true })))
+let schRewardsStatus = Watched({})
 
 let schRewardsByCategory = Computed(function() {
   let res = {}
@@ -24,9 +25,12 @@ let schRewardsByCategory = Computed(function() {
       listByType[gt] <- list
   }
   let hasAds = isAdsAvailable
-  foreach (goods in schRewards.value)
+  foreach (goods in schRewards.value) {
+    if (goods?.isHidden) // Hidden for shop
+      continue
     if (!goods.needAdvert || hasAds)
       listByType[goods.gtype].append(goods)
+  }
   return res.filter(@(list) list.len() > 0)
 })
 
@@ -52,14 +56,16 @@ let function updateActualSchRewards() {
   let curTime = serverTime.value
   local nextTime = 0
   local actual = {}
+  local status = {}
+  foreach (r in schRewards.value) {
+    let readyTime = (received?[r.id] ?? 0) + r.interval
+    status[r.id] <- { isReady = readyTime <= curTime, readyTime }
+  }
   foreach (catId, list in schRewardsByCategory.value) {
-    let listExt = list.map(function(r) {
-      let readyTime = (received?[r.id] ?? 0) + r.interval
-      return r.__merge({ isReady = readyTime <= curTime, readyTime })
-    })
     local reward = null
     local priority = 0
-    foreach (r in listExt) {
+    foreach (r in list) {
+      r.__update(status?[r.id])
       let pr = getRewardPriority(r)
       if (reward != null && priority >= pr)
         continue
@@ -73,6 +79,7 @@ let function updateActualSchRewards() {
 
   nextUpdate({ time = nextTime })
   actualSchRewardByCategory(actual)
+  schRewardsStatus(status)
 }
 updateActualSchRewards()
 schRewardsByCategory.subscribe(@(_) updateActualSchRewards())
@@ -127,6 +134,7 @@ subscribe("adsRewardApply", function(data) {
 
 return {
   schRewards
+  schRewardsStatus
   actualSchRewardByCategory
   actualSchRewards
   onSchRewardReceive

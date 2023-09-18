@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.32,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "sound": {
@@ -2462,6 +2463,199 @@
     "ex_decor_r_11_dm": true,
     "ex_decor_l_11_dm": true
   },
+  "VehiclePhys": {
+    "Mass": {
+      "Empty": 46800.0,
+      "Fuel": 1000.0,
+      "TakeOff": 47800.0,
+      "momentOfInertia": [
+        2.5,
+        2.5,
+        5.0
+      ],
+      "CenterOfGravity": [
+        0.1,
+        0.5,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ],
+      "AdvancedMass": false,
+      "trackMass": 2500.0
+    },
+    "tracks": {
+      "animationMultiplier": 0.6381,
+      "height": 0.095,
+      "width": 0.5
+    },
+    "collisionProps": {
+      "cls_turret": "convex_hull",
+      "cls_body": "convex_hull"
+    },
+    "engine": {
+      "horsePowers": 825.0,
+      "maxRPM": 2800.0,
+      "minRPM": 500.0
+    },
+    "mechanics": {
+      "maxBrakeForce": 220000.0,
+      "driveGearRadius": 0.33,
+      "mainGearRatio": 29.7,
+      "sideGearRatio": 1.0,
+      "neutralGearRatio": 3.0,
+      "gearRatios": {
+        "ratio": [
+          -1.4,
+          -3.5,
+          0.0,
+          1.5,
+          1.0,
+          0.428,
+          0.244
+        ]
+      }
+    },
+    "suspension": {
+      "suspensionOffsets": [
+        -0.16,
+        -0.12,
+        0.1
+      ],
+      "defaultGearRadius": 0.37,
+      "frontBackGearRadius": 0.24,
+      "topGearRadius": 0.13,
+      "defaultDampeningForce": [
+        150000.0,
+        150000.0
+      ],
+      "dampeningRelaxationRatio": 0.4,
+      "dampeningCompressionRatio": 0.15,
+      "wheel_r_01": 0.35,
+      "wheel_r_02": 0.33,
+      "wheel_r_03": 0.333,
+      "wheel_r_04": 0.333,
+      "wheel_r_05": 0.328,
+      "wheel_r_06": 0.35,
+      "wheel_l_01": 0.35,
+      "wheel_l_02": 0.333,
+      "wheel_l_03": 0.333,
+      "wheel_l_04": 0.333,
+      "wheel_l_05": 0.328,
+      "wheel_l_06": 0.35,
+      "wheel_r_drive": 0.29,
+      "wheel_l_drive": 0.29,
+      "wheel_r_front": 0.35,
+      "wheel_l_front": 0.35,
+      "wheel_l_top_01": 0.2,
+      "wheel_l_top_02": 0.2,
+      "wheel_l_top_03": 0.2,
+      "wheel_r_top_01": 0.2,
+      "wheel_r_top_02": 0.2,
+      "wheel_r_top_03": 0.2
+    }
+  },
+  "wreckedParts": {
+    "part": {
+      "node": "bone_turret",
+      "mass": 8000.0,
+      "cutDamage": 1000.0,
+      "deviation": 0.5,
+      "rotation": 0.5,
+      "collisionNode": "cls_turret"
+    }
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "removeLoadedAmmo": true,
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "replenishmentDelay": 4.0,
+      "replenishmentTime": 10.0,
+      "shells": [
+        {
+          "firstStage": true,
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 2
+          },
+          "ammo_turret_03_dm": {
+            "count": 2
+          },
+          "ammo_turret_04_dm": {
+            "count": 2
+          },
+          "ammo_turret_05_dm": {
+            "count": 2
+          },
+          "ammo_turret_06_dm": {
+            "count": 2
+          },
+          "ammo_turret_07_dm": {
+            "count": 2
+          },
+          "ammo_turret_08_dm": {
+            "count": 2
+          },
+          "ammo_turret_09_dm": {
+            "count": 2
+          },
+          "ammo_turret_10_dm": {
+            "count": 1
+          },
+          "ammo_turret_11_dm": {
+            "count": 2
+          }
+        },
+        {
+          "reloadTimeMult": 1.28,
+          "ammo_turret_12_dm": {
+            "count": 2
+          },
+          "ammo_turret_13_dm": {
+            "count": 2
+          },
+          "ammo_body_01_dm": {
+            "count": 2
+          },
+          "ammo_body_02_dm": {
+            "count": 2
+          },
+          "ammo_body_03_dm": {
+            "count": 2
+          },
+          "ammo_body_04_dm": {
+            "count": 2
+          },
+          "ammo_body_05_dm": {
+            "count": 2
+          },
+          "ammo_body_06_dm": {
+            "count": 2
+          },
+          "ammo_body_07_dm": {
+            "count": 2
+          },
+          "ammo_body_08_dm": {
+            "count": 2
+          },
+          "ammo_body_09_dm": {
+            "count": 2
+          },
+          "ammo_body_10_dm": {
+            "count": 2
+          },
+          "ammo_body_11_dm": {
+            "count": 2
+          }
+        }
+      ]
+    }
+  },
   "cockpit": {
     "zoomOutFov": 11.0,
     "zoomInFov": 9.2,
@@ -2469,8 +2663,8 @@
     "sightName": "telescope_t156e1",
     "headPos": [
       0.0,
-      3.7,
-      -13.0
+      3.8,
+      -13.3
     ],
     "headPosOnShooting": [
       0.1,
@@ -2480,9 +2674,18 @@
     "detectionHeight": 2.92
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "modClass": "protection",
@@ -2758,197 +2961,205 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "ammoStowages": {
-    "ammo1": {
-      "removeLoadedAmmo": true,
-      "weaponTrigger": "gunner0",
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "replenishmentDelay": 4.0,
-      "replenishmentTime": 10.0,
-      "shells": [
-        {
-          "firstStage": true,
-          "ammo_turret_01_dm": {
-            "count": 1
-          },
-          "ammo_turret_02_dm": {
-            "count": 2
-          },
-          "ammo_turret_03_dm": {
-            "count": 2
-          },
-          "ammo_turret_04_dm": {
-            "count": 2
-          },
-          "ammo_turret_05_dm": {
-            "count": 2
-          },
-          "ammo_turret_06_dm": {
-            "count": 2
-          },
-          "ammo_turret_07_dm": {
-            "count": 2
-          },
-          "ammo_turret_08_dm": {
-            "count": 2
-          },
-          "ammo_turret_09_dm": {
-            "count": 2
-          },
-          "ammo_turret_10_dm": {
-            "count": 1
-          },
-          "ammo_turret_11_dm": {
-            "count": 2
-          }
-        },
-        {
-          "reloadTimeMult": 1.28,
-          "ammo_turret_12_dm": {
-            "count": 2
-          },
-          "ammo_turret_13_dm": {
-            "count": 2
-          },
-          "ammo_body_01_dm": {
-            "count": 2
-          },
-          "ammo_body_02_dm": {
-            "count": 2
-          },
-          "ammo_body_03_dm": {
-            "count": 2
-          },
-          "ammo_body_04_dm": {
-            "count": 2
-          },
-          "ammo_body_05_dm": {
-            "count": 2
-          },
-          "ammo_body_06_dm": {
-            "count": 2
-          },
-          "ammo_body_07_dm": {
-            "count": 2
-          },
-          "ammo_body_08_dm": {
-            "count": 2
-          },
-          "ammo_body_09_dm": {
-            "count": 2
-          },
-          "ammo_body_10_dm": {
-            "count": 2
-          },
-          "ammo_body_11_dm": {
-            "count": 2
-          }
-        }
-      ]
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_modern_threecolor*"
     }
   },
-  "VehiclePhys": {
-    "Mass": {
-      "Empty": 46800.0,
-      "Fuel": 1000.0,
-      "TakeOff": 47800.0,
-      "momentOfInertia": [
-        2.5,
-        2.5,
-        5.0
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.78175,
+        -0.000648706,
+        0.211355,
+        -0.717767
       ],
-      "CenterOfGravity": [
-        0.1,
-        0.5,
-        0.0
+      "decal0Line1": [
+        0.0558984,
+        -2.68816,
+        -0.743956,
+        5.02327
       ],
-      "CenterOfGravityClampY": [
-        0.0,
-        0.7
+      "decal0Line2": [
+        -2.78175,
+        0.000648493,
+        0.211355,
+        1.71779
       ],
-      "AdvancedMass": false,
-      "trackMass": 2500.0
-    },
-    "tracks": {
-      "animationMultiplier": 0.6381,
-      "height": 0.095,
-      "width": 0.5
-    },
-    "collisionProps": {
-      "cls_turret": "convex_hull",
-      "cls_body": "convex_hull"
-    },
-    "engine": {
-      "horsePowers": 825.0,
-      "maxRPM": 2800.0,
-      "minRPM": 500.0
-    },
-    "mechanics": {
-      "maxBrakeForce": 220000.0,
-      "driveGearRadius": 0.33,
-      "mainGearRatio": 29.7,
-      "sideGearRatio": 1.0,
-      "neutralGearRatio": 3.0,
-      "gearRatios": {
-        "ratio": [
-          -1.4,
-          -3.5,
-          0.0,
-          1.5,
-          1.0,
-          0.428,
-          0.244
-        ]
-      }
-    },
-    "suspension": {
-      "suspensionOffsets": [
-        -0.16,
-        -0.12,
-        0.1
+      "decal0Line3": [
+        0.0558986,
+        -2.68816,
+        0.743956,
+        5.02336
       ],
-      "defaultGearRadius": 0.37,
-      "frontBackGearRadius": 0.24,
-      "topGearRadius": 0.13,
-      "defaultDampeningForce": [
-        150000.0,
-        150000.0
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0730636,
+        0.267425,
+        -0.960805,
+        -1.72338
       ],
-      "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15,
-      "wheel_r_01": 0.35,
-      "wheel_r_02": 0.33,
-      "wheel_r_03": 0.333,
-      "wheel_r_04": 0.333,
-      "wheel_r_05": 0.328,
-      "wheel_r_06": 0.35,
-      "wheel_l_01": 0.35,
-      "wheel_l_02": 0.333,
-      "wheel_l_03": 0.333,
-      "wheel_l_04": 0.333,
-      "wheel_l_05": 0.328,
-      "wheel_l_06": 0.35,
-      "wheel_r_drive": 0.29,
-      "wheel_l_drive": 0.29,
-      "wheel_r_front": 0.35,
-      "wheel_l_front": 0.35,
-      "wheel_l_top_01": 0.2,
-      "wheel_l_top_02": 0.2,
-      "wheel_l_top_03": 0.2,
-      "wheel_r_top_01": 0.2,
-      "wheel_r_top_02": 0.2,
-      "wheel_r_top_03": 0.2
-    }
-  },
-  "wreckedParts": {
-    "part": {
-      "node": "bone_turret",
-      "mass": 8000.0,
-      "cutDamage": 1000.0,
-      "deviation": 0.5,
-      "rotation": 0.5,
-      "collisionNode": "cls_turret"
+      "decal0CPNormDepth1": [
+        0.0730636,
+        0.267425,
+        0.960805,
+        -1.72326
+      ],
+      "decal0RotScale": [
+        1.57104,
+        0.358453
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.230866,
+      "decal0Tex": "ge_bundeswehr_insignia",
+      "decal1Line0": [
+        -2.79242,
+        -7.54339E-08,
+        -0.0558623,
+        0.55596
+      ],
+      "decal1Line1": [
+        -0.024669,
+        -2.50589,
+        1.23315,
+        4.12936
+      ],
+      "decal1Line2": [
+        2.79242,
+        -1.1185E-07,
+        -0.0558624,
+        0.444034
+      ],
+      "decal1Line3": [
+        -0.0246692,
+        -2.50589,
+        -1.23315,
+        4.12921
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        -0.0179451,
+        0.441605,
+        0.89703,
+        -1.93572
+      ],
+      "decal1CPNormDepth1": [
+        -0.0179451,
+        0.441605,
+        -0.89703,
+        -1.93582
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.35804
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.267231,
+      "decal1Tex": "germany_numbers_2",
+      "decal2Line0": [
+        -2.78933,
+        9.42175E-05,
+        -0.111105,
+        -0.0137852
+      ],
+      "decal2Line1": [
+        -0.0538665,
+        -2.44266,
+        1.35026,
+        3.84126
+      ],
+      "decal2Line2": [
+        2.78933,
+        9.41863E-05,
+        -0.111001,
+        1.01351
+      ],
+      "decal2Line3": [
+        -0.0536513,
+        -2.44266,
+        -1.35027,
+        3.84114
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        -0.0348102,
+        0.484083,
+        0.874329,
+        -1.99406
+      ],
+      "decal2CPNormDepth1": [
+        -0.0348102,
+        0.484083,
+        -0.874329,
+        -1.99417
+      ],
+      "decal2RotScale": [
+        1.57076,
+        0.358226
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": false,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.278836,
+      "decal2Tex": "germany_numbers_0",
+      "decal3Line0": [
+        -2.79061,
+        0.0652024,
+        0.0648141,
+        0.908329
+      ],
+      "decal3Line1": [
+        -0.0282268,
+        -2.481,
+        1.28054,
+        4.02868
+      ],
+      "decal3Line2": [
+        2.78824,
+        0.0652024,
+        0.131985,
+        -0.0930939
+      ],
+      "decal3Line3": [
+        0.118389,
+        -2.481,
+        -1.27537,
+        4.00221
+      ],
+      "decal3HaveCP": true,
+      "decal3CPNormDepth": [
+        0.0313365,
+        0.458144,
+        0.888326,
+        -1.95965
+      ],
+      "decal3CPNormDepth1": [
+        0.0313365,
+        0.458144,
+        -0.888326,
+        -1.95975
+      ],
+      "decal3RotScale": [
+        1.54452,
+        0.35815
+      ],
+      "decal3Mirrored": false,
+      "decal3Wrap": false,
+      "decal3Abs": false,
+      "decal3OppositeMirrored": false,
+      "decal3WidthBox": 0.273018,
+      "decal3Tex": "germany_numbers_3"
     }
   }
 }

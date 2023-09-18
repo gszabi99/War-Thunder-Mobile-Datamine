@@ -15,7 +15,7 @@ let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGro
 let { getAmmoNameText, getAmmoNameShortText, getAmmoTypeText, getAmmoAdviceText
 } = require("%rGui/weaponry/weaponsVisual.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
+let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 
 
 let WND_UID = "respawn_choose_bullet_wnd"
@@ -25,6 +25,7 @@ let minBulletWidth = max(bulletSlotSize[0], hdpx(150))
 let bulletHeight = bulletSlotSize[1]
 let statRowHeight = hdpx(28)
 let lockedColor = 0xFFF04005
+let wndKey = {}
 
 let maxColumns = 2
 let slotsGap = hdpx(5)
@@ -52,6 +53,11 @@ let close = @() openParams(null)
 savedSlotName.subscribe(@(v) curSlotName(v))
 chosenBullets.subscribe(@(_) curSlotName(savedSlotName.value))
 openParams.subscribe(@(_) wndAABB(null))
+curSlotName.subscribe(@(_) defer( function() {
+  let aabb = gui_scene.getCompAABBbyKey(wndKey)
+  if (!isEqual(aabb, wndAABB.value))
+    wndAABB(aabb)
+}))
 
 let function mkBulletButton(name, bSet, fromUnitTags, columns) {
   let isCurrent = Computed(@() name == curSlotName.value)
@@ -234,8 +240,6 @@ let function applyButton() {
     children
   }
 }
-
-let wndKey = {}
 
 let window = {
   key = wndKey

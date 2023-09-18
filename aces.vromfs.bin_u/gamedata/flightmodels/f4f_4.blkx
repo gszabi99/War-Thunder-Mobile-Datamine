@@ -1723,7 +1723,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "f4f_4_bombs",
+      "name": "f4f_4_default",
       "blk": "gameData/FlightModels/weaponPresets/f4f_4_bombs.blk"
     }
   },

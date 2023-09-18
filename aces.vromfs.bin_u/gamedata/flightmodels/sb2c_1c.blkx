@@ -1653,16 +1653,10 @@
     "head": "turret1"
   },
   "weapon_presets": {
-    "preset": [
-      {
-        "name": "sb2c_1c_torpedo_case",
-        "blk": "gameData/FlightModels/weaponPresets/sb2c_1c_torpedo_case.blk"
-      },
-      {
-        "name": "sb2c_1c_2x500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/sb2c_1c_2x500lbs.blk"
-      }
-    ]
+    "preset": {
+      "name": "sb2c_1c_default",
+      "blk": "gameData/FlightModels/weaponPresets/sb2c_1c_2x500lbs.blk"
+    }
   },
   "jetwash": {
     "radius": 10.0,

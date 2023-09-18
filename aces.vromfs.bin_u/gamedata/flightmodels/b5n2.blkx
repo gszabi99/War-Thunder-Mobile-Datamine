@@ -1730,7 +1730,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "b5n2_type91mod3_torpedo",
+      "name": "b5n2_default",
       "blk": "gameData/FlightModels/weaponPresets/b5n2_type91mod3_torpedo.blk"
     }
   },

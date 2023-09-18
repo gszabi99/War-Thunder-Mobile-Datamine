@@ -655,6 +655,7 @@
         "mass": 27.0,
         "massEnd": 24.65,
         "massEnd1": 22.3,
+        "explosiveType": "comp_b",
         "explosiveMass": 3.47,
         "normalizationPreset": "heat",
         "ricochetPreset": "atgm",

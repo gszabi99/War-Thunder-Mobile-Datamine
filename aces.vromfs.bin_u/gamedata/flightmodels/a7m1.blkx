@@ -1714,16 +1714,10 @@
     }
   },
   "weapon_presets": {
-    "preset": [
-      {
-        "name": "a7m_default",
-        "blk": "gameData/FlightModels/weaponPresets/a6m2_default.blk"
-      },
-      {
-        "name": "a7m_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/a7m_type97_2bombs.blk"
-      }
-    ]
+    "preset": {
+      "name": "a7m1_default",
+      "blk": "gameData/FlightModels/weaponPresets/a7m1_default.blk"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { addonsToDownload, openDownloadAddonsWnd, downloadAddonsStr, isDownloadPaused,
+let { wantStartDownloadAddons, openDownloadAddonsWnd, downloadAddonsStr, isDownloadPaused,
   updaterError, progressPercent, isDownloadPausedByConnection, isStageDownloading
 } = require("updaterState.nut")
 
@@ -91,7 +91,7 @@ let downloadInfoBlock = @() {
 }
 
 return @() {
-  watch = addonsToDownload
-  children = addonsToDownload.value.len() == 0 ? null
+  watch = wantStartDownloadAddons
+  children = wantStartDownloadAddons.value.len() == 0 ? null
     : downloadInfoBlock
 }

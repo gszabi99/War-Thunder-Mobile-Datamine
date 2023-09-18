@@ -27,6 +27,8 @@ let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
+let TEST_AIR_BATTLE_MISSION = "abandoned_factory_single_AD"
+let TEST_AIR_BATTLE_UNIT = "fw_190a_1"
 
 let openConfirmationTutorialMsg = @() openMsgBox({
   text = loc("tutorial/startConfirmation")
@@ -49,6 +51,10 @@ let TEST_FLIGHT = {
 let TF_SHIP_TUNE = {
   name = "Ship Tuning"
   cb = @() startTestFlight(hangarUnitName.value, TF_SHIP_TUNE_MISSION)
+}
+let TEST_AIR_BATTLE = {
+  name = "Test Air Battle"
+  cb = @() startTestFlight(TEST_AIR_BATTLE_UNIT, TEST_AIR_BATTLE_MISSION)
 }
 let BENCHMARK = {
   name = loc("mainmenu/btnBenchmark")
@@ -132,7 +138,7 @@ let function getDevButtons() {
     return res
 
   if (can_debug_missions.value)
-    res.append(TEST_FLIGHT, TF_SHIP_TUNE, BENCHMARK, DEBUG_EVENTS)
+    res.append(TEST_FLIGHT, TF_SHIP_TUNE, TEST_AIR_BATTLE, BENCHMARK, DEBUG_EVENTS)
   else if (isOfflineMenu)
     res.append(TEST_FLIGHT, BENCHMARK)
   if (can_debug_configs.value)

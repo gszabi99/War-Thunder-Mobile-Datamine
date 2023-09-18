@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.4,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
@@ -2489,8 +2490,8 @@
     "sightName": "tzf_1a",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.5
     ],
     "headPosOnShooting": [
       -0.1,

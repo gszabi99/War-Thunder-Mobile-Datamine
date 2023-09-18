@@ -36,6 +36,11 @@ let columns = min(contentWidthFull / (gap + squareSize[0]), maxDecInRow)
 
 let selectedDecorator = Watched(chosenNickFrame.value?.name)
 
+chosenNickFrame.subscribe(function(v){
+  if (v && v.name)
+    markDecoratorSeen(v.name)
+})
+
 let choosenMark = {
   size = [checkIconSize,checkIconSize]
   margin = [hdpxi(10),hdpxi(15)]

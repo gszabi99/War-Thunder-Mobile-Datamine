@@ -17,8 +17,10 @@ let fakeUnseenPurchases = {
       { id = "tank_tool_kit_expendable", gType = "item", count = 50 },
       { id = "tank_extinguisher", gType = "item", count = 30 },
       { id = "spare", gType = "item", count = 100 },
-      { id = "uk_destroyer_tribal", gType = "unitUpgrade", count = 1 },
+      { id = "ussr_sub_pr641", gType = "unit", count = 1 },
       { id = "ussr_t_34_85_zis_53", gType = "unit", count = 1 },
+      { id = "uk_destroyer_tribal", gType = "unitUpgrade", count = 1 },
+      { id = "ussr_t_34_85_zis_53", gType = "unitUpgrade", count = 1 },
     ]
   }
 }

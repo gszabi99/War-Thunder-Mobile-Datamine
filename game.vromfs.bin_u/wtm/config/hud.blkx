@@ -61,6 +61,7 @@
   "allowableAnglesColor": "AP//yA==",
   "allowableAnglesSectorRadius": 2000.0,
   "drawNativeTankSpeedInSpectator": false,
+  "maxShipRelativeHpRepairHint": 0.12,
   "skins": {
     "defSkin": "ui/gameuiskin"
   },
@@ -585,7 +586,7 @@
     "colorShipHighlightScale": 32,
     "mouseAimArrowInVR": false,
     "mousePointer": "mouse_pointer.svg:45:45:K",
-    "mousePointerAfterCockpitOpacity": 0.3,
+    "mousePointerAfterCockpitOpacity": 1.0,
     "mousePointerRadius": 21.0,
     "mouseAimDisplaceOpacity": 0.4,
     "mouseAimDisplaceWidth": 3.0,
@@ -1313,7 +1314,7 @@
     "colorWaypointAlly": "NLCw/w==",
     "colorWaypointEnemy": "/1pS/w==",
     "colorPremiumVehicle": "/9cA/w==",
-    "colorSubmerged": "MgoKUA==",
+    "colorSubmerged": "/4aA/w==",
     "alphaRange": [
       3000.0,
       5000.0
@@ -2139,7 +2140,7 @@
   },
   "screenLogo": {
     "noHud": {
-      "texture": "title",
+      "texture": "stub",
       "alignAnchor": "lb",
       "position": [
         5.0,
@@ -2147,12 +2148,12 @@
       ],
       "color": "////Wg==",
       "linkColor": "////Wg==",
-      "scale": 0.25,
+      "scale": 1.0,
       "font": "very_tiny_text",
       "linkVerticalShift": -8
     },
     "hud": {
-      "texture": "title",
+      "texture": "stub",
       "alignAnchor": "c",
       "position": [
         640.0,
@@ -2160,7 +2161,7 @@
       ],
       "color": "////Wg==",
       "linkColor": "////Wg==",
-      "scale": 0.25,
+      "scale": 1.0,
       "font": "very_tiny_text",
       "linkVerticalShift": -8
     },

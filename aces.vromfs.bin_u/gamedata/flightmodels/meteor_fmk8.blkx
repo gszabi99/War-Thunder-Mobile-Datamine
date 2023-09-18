@@ -1802,7 +1802,7 @@
   "weapon_presets": {
     "preset": {
       "name": "meteor_fmk8_default",
-      "blk": "gameData/FlightModels/weaponPresets/meteor_fmk3_default.blk"
+      "blk": "gameData/FlightModels/weaponPresets/meteor_fmk8_default.blk"
     }
   },
   "turbulence": {

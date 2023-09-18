@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection,
+let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, isEventActive,
   COMMON_TAB, EVENT_TAB, PROMO_TAB } = require("questsState.nut")
 let questsWndPage = require("questsWndPage.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
+let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { WP, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 
 let function isUnseen(sections, hasUnseen) {
   foreach (section in sections)
@@ -44,4 +46,10 @@ let tabs = [
   }
 ]
 
-mkOptionsScene("questsWnd", tabs, isQuestsOpen)
+let gamercardQuestBtns = @() {
+  watch = isEventActive
+  size = flex()
+  children = mkCurrenciesBtns(isEventActive.value ? [WARBOND, WP, GOLD] : [WP, GOLD])
+}
+
+mkOptionsScene("questsWnd", tabs, isQuestsOpen, null, gamercardQuestBtns)

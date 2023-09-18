@@ -48,8 +48,8 @@
   "radarAnimVar": "radar_drive",
   "radarAnimPitchVar": "radar_drive2",
   "radarAntenaSpeed": 720.0,
-  "radarDeployTime": 3.0,
   "type": "typeSPAA",
+  "minRelativeTankCameraThreshold": 1.22,
   "drowningCheckHeightMultiplier": 0.6,
   "dm_for_shop": {
     "armorThicknessFront": [
@@ -317,7 +317,7 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
@@ -348,8 +348,7 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 5.0,
-      "armorThrough": 150.0,
+      "armorThickness": 50.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -418,6 +417,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -476,6 +495,19 @@
       "ammo_body_55_dm": {},
       "ammo_body_56_dm": {},
       "ammo_body_57_dm": {},
+      "ammo_body_58_dm": {},
+      "ammo_body_59_dm": {},
+      "ammo_body_60_dm": {},
+      "ammo_body_61_dm": {},
+      "ammo_body_62_dm": {},
+      "ammo_body_63_dm": {},
+      "ammo_body_64_dm": {},
+      "ammo_body_65_dm": {},
+      "ammo_body_66_dm": {},
+      "ammo_body_67_dm": {},
+      "ammo_body_68_dm": {},
+      "ammo_body_69_dm": {},
+      "ammo_body_70_dm": {},
       "ammo_body_l_01_dm": {},
       "ammo_body_l_02_dm": {},
       "ammo_body_l_03_dm": {},
@@ -496,6 +528,10 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
+      "ammo_body_l_21_dm": {},
+      "ammo_body_l_22_dm": {},
+      "ammo_body_l_23_dm": {},
+      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -515,7 +551,11 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {}
+      "ammo_body_r_20_dm": {},
+      "ammo_body_r_21_dm": {},
+      "ammo_body_r_22_dm": {},
+      "ammo_body_r_23_dm": {},
+      "ammo_body_r_24_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -1812,6 +1852,17 @@
       "blk": "gameData/units/tankModels/weaponPresets/ussr_zsu_37_2_default.blk"
     }
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/su_1rl34.blk",
+      "turretIndex": 0,
+      "designationFromBody": true,
+      "designationTurretIndex": 0,
+      "dmPart": "antenna_target_tagging_dm",
+      "radarParkingAzimuth": 180.0,
+      "radarDeployTime": 3.0
+    }
+  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 25000.0,
@@ -1969,6 +2020,22 @@
       "deviation": 0.5,
       "rotation": 0.5,
       "collisionNode": "cls_turret_01"
+    }
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_dm": {
+          "count": 540
+        }
+      }
     }
   },
   "unitFx": {
@@ -2397,8 +2464,8 @@
   "cockpit": {
     "headPos": [
       0.0,
-      4.1,
-      -14.0
+      3.8,
+      -13.6
     ],
     "headPosOnShooting": [
       -0.4,
@@ -2411,89 +2478,128 @@
     "sightName": "default_tank_spg",
     "detectionHeight": 2.5
   },
-  "ammoStowages": {
-    "ammo1": {
-      "weaponTrigger": "gunner0",
-      "removeLoadedAmmo": false,
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_turret_dm": {
-          "count": 540
-        }
-      }
-    }
-  },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
-    "tank_extinguisher": {}
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {}
   },
-  "user_skin": {
-    "name": "ussr_zsu_37",
+  "upgraded_skin": {
     "replace_tex": {
-      "from": "ussr_camo_green*"
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_winter_lines*"
     }
   },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
-      }
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.79166,
+        -1.22121E-07,
+        -0.000966119,
+        4.1249
+      ],
+      "decal0Line1": [
+        -7.74428E-05,
+        -2.7827,
+        -0.223418,
+        5.91844
+      ],
+      "decal0Line2": [
+        -2.79166,
+        -1.21344E-07,
+        -0.000966151,
+        -3.1249
+      ],
+      "decal0Line3": [
+        -7.71988E-05,
+        -2.7827,
+        0.223418,
+        5.91844
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.000344972,
+        0.0800305,
+        -0.996792,
+        -1.54952
+      ],
+      "decal0CPNormDepth1": [
+        -0.000344972,
+        0.0800305,
+        0.996792,
+        -1.54952
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.35821
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.20002,
+      "decal0Tex": "ussr_numbers_0",
+      "decal1Line0": [
+        2.79112,
+        -1.21396E-07,
+        -0.000629862,
+        3.52463
+      ],
+      "decal1Line1": [
+        -5.0403E-05,
+        -2.78221,
+        -0.222809,
+        5.92214
+      ],
+      "decal1Line2": [
+        -2.79112,
+        -1.20853E-07,
+        -0.000629884,
+        -2.52463
+      ],
+      "decal1Line3": [
+        -5.0159E-05,
+        -2.78221,
+        0.222809,
+        5.92214
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        -0.000224949,
+        0.0798279,
+        -0.996809,
+        -1.54899
+      ],
+      "decal1CPNormDepth1": [
+        -0.000224949,
+        0.0798279,
+        0.996809,
+        -1.54899
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.35828
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.20004,
+      "decal1Tex": "ussr_numbers_8"
     }
-  ],
+  },
   "battleHideNodes": {
     "n": "details"
   }

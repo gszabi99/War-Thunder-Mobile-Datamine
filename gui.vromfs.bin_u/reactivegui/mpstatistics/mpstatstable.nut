@@ -186,7 +186,7 @@ let function mkPlayerRow(columnCfg, player, teamColor, idx, unitsCfg) {
         halign = halign
         valign = ALIGN_CENTER
         children = contentCtor != null ? contentCtor(player, playerColor, halign, unitsCfg, idx)
-          : cellTextProps.__merge({ text = getText(player) })
+          : cellTextProps.__merge({ text = getText?(player) })
       }
     })
   }.__update(rowOvr)

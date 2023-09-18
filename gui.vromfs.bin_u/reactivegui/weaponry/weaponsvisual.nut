@@ -47,6 +47,13 @@ let function getAmmoTypeText(bSet) {
     : " ".concat(loc($"{btype}/name/short"), loc("ui/mdash"), loc($"{btype}/name"))
 }
 
+let function getAmmoTypeShortText(name) {
+  local locId = $"{name}/short"
+  if (!doesLocTextExist(locId))
+    locId = $"{name}/name/short"
+  return (name == null) ? "" : loc(doesLocTextExist(locId) ? locId : name)
+}
+
 // Returns usage advice for a shell or machinegun belt
 let function getAmmoAdviceText(bSet) {
   let { isBulletBelt = false, bullets = [] } = bSet
@@ -60,6 +67,7 @@ let function getAmmoAdviceText(bSet) {
 return {
   getAmmoNameText
   getAmmoNameShortText
+  getAmmoTypeShortText
   getAmmoTypeText
   getAmmoAdviceText
 }

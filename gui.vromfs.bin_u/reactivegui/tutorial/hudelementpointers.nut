@@ -7,6 +7,7 @@ let { getBox, incBoxSize, findGoodArrowPos, sizePosToBox, leftArrowPos, rightArr
 let { pointerArrow } = require("tutorialWnd/tutorialWndDefStyle.nut")
 let { register_command } = require("console")
 let { elements, sizeIncDef } = require("hudElementsCfg.nut")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let isHudPointersAtached = Watched(false)
 let activeIds = mkWatched(persist, "activeIds", {})
@@ -18,6 +19,8 @@ let curElements = Computed(@() activeIds.value.map(@(_, id) elements?[id])
 let isActive = Computed(@() isHudPointersAtached.value && curElements.value.len() > 0)
 let updateInterval = keepref(Computed(@() isActive.value ? 0.5 : 0))
 let curBoxes = Watched([])
+
+isInBattle.subscribe(@(_) activeIds({}))
 
 let function updateExpires() {
   if (activeIds.value.len() == 0)

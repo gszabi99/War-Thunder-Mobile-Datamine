@@ -72,9 +72,6 @@
             "source": "constant",
             "value": 0.0
           },
-          "setScopeRange": {
-            "scopeRangeIndex": 0
-          },
           "setTargetDesignationRange": {
             "azimuthRange": [
               -9.0,
@@ -93,7 +90,8 @@
           "setEnabled": {
             "value": false
           },
-          "clearTargets": {}
+          "clearTargets": {},
+          "clearTargetsOfInterest": {}
         },
         "setLockMode": {
           "setModeName": {
@@ -197,7 +195,7 @@
         ],
         "finishedTrack": {
           "stateFrom": "track",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "stateTo": "lock",
           "actions": {
             "setFsmActive": {
@@ -258,7 +256,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": {},
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 0.5
+            },
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
@@ -266,9 +267,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 0.5
             }
           }
         }

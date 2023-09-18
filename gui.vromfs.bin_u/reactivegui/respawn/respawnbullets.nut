@@ -141,12 +141,13 @@ let function mkBulletSliderSlot(idx) {
   let bInfo = Computed(@() bulletsInfo.value?.bulletSets[bSlot.value?.name])
   let maxCount = Computed(@() min(bulletTotalSteps.value,
     bulletsInfo.value?.fromUnitTags[bSlot.value?.name]?.maxCount ?? bulletTotalSteps.value))
-  return {
+  return @() {
+    watch = bulletTotalSteps
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
       bulletHeader(bSlot, bInfo, maxCount)
-      bulletSlider(bSlot, maxCount)
+      bulletTotalSteps.value > 1 ? bulletSlider(bSlot, maxCount) : null
     ]
   }
 }

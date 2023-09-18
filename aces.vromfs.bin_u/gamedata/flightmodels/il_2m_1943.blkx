@@ -1938,8 +1938,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "il_2_1941_4xfab100_8x_rbs132",
-      "blk": "gameData/FlightModels/weaponPresets/il_2_1941_4xfab100_8x_rbs132.blk"
+      "name": "il_2m_1943_default",
+      "blk": "gameData/FlightModels/weaponPresets/il_2m_1943_4xfab100_8x_rbs132.blk"
     }
   },
   "turbulence": {

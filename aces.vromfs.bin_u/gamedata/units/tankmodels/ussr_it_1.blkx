@@ -48,6 +48,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.48,
   "rearmTimeOnField": 45.0,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
@@ -388,7 +389,7 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
@@ -419,8 +420,7 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 5.0,
-      "armorThrough": 150.0,
+      "armorThickness": 50.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -1300,6 +1300,7 @@
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "reloadAnimVar": "it_1_action",
+        "staticElevation": 1.25,
         "ammoDP": "gun_barrel_03_dm",
         "barrelDP": "gun_barrel_03_dm",
         "breechDP": "gun_barrel_dm",
@@ -1618,6 +1619,55 @@
       "deviation": 0.5,
       "rotation": 0.5,
       "collisionNode": "cls_turret"
+    }
+  },
+  "ammoLoadDistribution": {
+    "primaryShells": {
+      "ammo_body_01_dm": {
+        "count": 1
+      },
+      "ammo_body_02_dm": {
+        "count": 1
+      },
+      "ammo_body_03_dm": {
+        "count": 1
+      },
+      "ammo_body_04_dm": {
+        "count": 1
+      },
+      "ammo_body_05_dm": {
+        "count": 1
+      },
+      "ammo_body_06_dm": {
+        "count": 1
+      },
+      "ammo_body_07_dm": {
+        "count": 1
+      },
+      "ammo_body_08_dm": {
+        "count": 1
+      },
+      "ammo_body_09_dm": {
+        "count": 1
+      },
+      "ammo_body_10_dm": {
+        "count": 1
+      },
+      "ammo_body_11_dm": {
+        "count": 1
+      },
+      "ammo_body_12_dm": {
+        "count": 1
+      },
+      "ammo_body_13_dm": {
+        "count": 1
+      },
+      "ammo_body_14_dm": {
+        "count": 1
+      },
+      "ammo_body_15_dm": {
+        "count": 1
+      }
     }
   },
   "unitFx": {
@@ -2051,7 +2101,7 @@
     "headPos": [
       0.0,
       3.0,
-      -12.5
+      -13.3
     ],
     "headPosOnShooting": [
       -0.2,
@@ -2061,120 +2111,32 @@
     "detectionHeight": 2.2
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_engine_smoke_screen_system": {}
   },
-  "user_skin": {
-    "name": "it_1",
+  "upgraded_skin": {
     "replace_tex": {
-      "from": "ussr_camo_green*"
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_winter_lines*"
     }
   },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
-      }
-    }
-  ],
-  "ammoLoadDistribution": {
-    "primaryShells": {
-      "ammo_body_01_dm": {
-        "count": 1
-      },
-      "ammo_body_02_dm": {
-        "count": 1
-      },
-      "ammo_body_03_dm": {
-        "count": 1
-      },
-      "ammo_body_04_dm": {
-        "count": 1
-      },
-      "ammo_body_05_dm": {
-        "count": 1
-      },
-      "ammo_body_06_dm": {
-        "count": 1
-      },
-      "ammo_body_07_dm": {
-        "count": 1
-      },
-      "ammo_body_08_dm": {
-        "count": 1
-      },
-      "ammo_body_09_dm": {
-        "count": 1
-      },
-      "ammo_body_10_dm": {
-        "count": 1
-      },
-      "ammo_body_11_dm": {
-        "count": 1
-      },
-      "ammo_body_12_dm": {
-        "count": 1
-      },
-      "ammo_body_13_dm": {
-        "count": 1
-      },
-      "ammo_body_14_dm": {
-        "count": 1
-      },
-      "ammo_body_15_dm": {
-        "count": 1
-      }
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "smokeScreenExhaustEmitters": {

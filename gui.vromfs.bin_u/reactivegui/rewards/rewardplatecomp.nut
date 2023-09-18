@@ -25,7 +25,8 @@ let mkRewardStyle = @(boxSize) {
   labelCurrencyNeedCompact = boxSize < fontLabel.fontSize * 5.5
 }
 
-let REWARD_STYLE_SMALL = mkRewardStyle(hdpxi(114))
+let REWARD_SIZE_SMALL = hdpxi(114)
+let REWARD_STYLE_SMALL = mkRewardStyle(REWARD_SIZE_SMALL)
 let REWARD_STYLE_MEDIUM = mkRewardStyle(hdpxi(160))
 
 // SHARED PARTS ///////////////////////////////////////////////////////////////
@@ -340,6 +341,7 @@ let mkRewardPlate = @(r, rStyle, ovr = {}) {
 }.__update(ovr)
 
 return {
+  REWARD_SIZE_SMALL
   REWARD_STYLE_SMALL
   REWARD_STYLE_MEDIUM
 

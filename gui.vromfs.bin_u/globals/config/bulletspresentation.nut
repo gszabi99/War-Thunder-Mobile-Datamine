@@ -36,6 +36,10 @@ let bulletsImages = {
   apds_fs_tungsten_caliber_fins_tank  = "shell_apds_fs_tungsten_caliber_fins_tank"
   apds_fs_tungsten_l10_l15_tank       = "shell_apds_fs_tungsten_l10_l15_tank"
   apds_fs_tungsten_small_core_tank    = "shell_apds_fs_tungsten_small_core_tank"
+  atgm_tank                           = "shell_atgm_tank"
+  atgm_tandem_tank                    = "shell_atgm_tandem_tank"
+  atgm_he_tank                        = "shell_atgm_he_tank"
+  atgm_vt_fuze_tank                   = "shell_atgm_vt_fuze_tank"
   shell_bullet_belt_tank              = "shell_bullet_belt_tank"
 }
 

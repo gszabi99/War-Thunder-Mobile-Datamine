@@ -74,7 +74,7 @@ let header = {
   children = mkText(loc("help/header/tankModules"))
 }
 
-let function makeScreen() {
+function makeScreen() {
   return {
     size = [sw(100), sh(100)]
     rendObj = ROBJ_SOLID

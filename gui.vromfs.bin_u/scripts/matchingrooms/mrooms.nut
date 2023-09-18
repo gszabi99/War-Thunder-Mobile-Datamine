@@ -1,7 +1,6 @@
-
-
 from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
+let { OPERATION_COMPLETE, INVALID_ROOM_ID } = require("matching.errors")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 

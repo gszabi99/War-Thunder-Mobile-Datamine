@@ -5,7 +5,7 @@ let { GO_WIN, GO_FAIL, GO_EARLY, GO_WAITING_FOR_RESULT, GO_NONE, MISSION_CAPTURI
 } = require("guiMission")
 let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
+let { localMPlayerId, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rqPlayerAndDo } = require("rqPlayersAndDo.nut")
@@ -20,6 +20,7 @@ let state = require("%sqstd/mkEventLogState.nut")({
 })
 let { addEvent, modifyOrAddEvent, removeEvent, clearEvents } = state
 
+isInBattle.subscribe(@(_) clearEvents())
 
 const MISSION_HINT = "mission_hint"
 

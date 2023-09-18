@@ -2107,7 +2107,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "b7a2_type91mod2_torpedo",
+      "name": "b7a2_default",
       "blk": "gameData/FlightModels/weaponPresets/b7a2_type91mod2_torpedo.blk"
     }
   },

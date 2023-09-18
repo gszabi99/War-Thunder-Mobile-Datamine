@@ -2078,7 +2078,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "il_28sh_4xfab500",
+      "name": "il_28sh_default",
       "blk": "gameData/FlightModels/weaponPresets/il_28sh_4xfab500.blk"
     }
   },

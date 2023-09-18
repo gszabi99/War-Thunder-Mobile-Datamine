@@ -1,14 +1,24 @@
+let offlineMissionsSets = {
+  abandoned_factory = [
+    "abandoned_factory_single_Conq1"
+    "abandoned_factory_single_Conq2"
+    "abandoned_factory_single_Conq3"
+  ]
+  poland = [
+    "poland_single_Conq1"
+    "poland_single_Conq2"
+    "poland_single_Conq3"
+  ]
+}
+
 let newbieGameModesConfig = {
   tanks = [
     {
       gmName = "tank_new_players_battle_single"
       isFit = @(s, _) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
       isSingle = true
-      offlineMissions = [
-        "abandoned_factory_single_Conq1"
-        "abandoned_factory_single_Conq2"
-        "abandoned_factory_single_Conq3"
-      ]
+      offlineMissionsSets
+      offlineMissions = offlineMissionsSets.abandoned_factory
     }
     {
       gmName = "tank_new_players_battle_coop"

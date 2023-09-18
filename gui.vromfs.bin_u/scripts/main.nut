@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+let { get_time_msec, get_local_unixtime } = require("dagor.time")
+let startLoadTime = get_time_msec()
 
 let { loadOnce, registerPersistentData, isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { set_rnd_seed } = require("dagor.random")
@@ -15,7 +16,6 @@ require("%globalScripts/version.nut")
 require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
-let { get_local_unixtime } = require("dagor.time")
 if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
 
@@ -111,7 +111,7 @@ require("%scripts/login/updateRights.nut")
 require("%scripts/debugTools/dbgDedicLogerrs.nut")
 require("%scripts/matching/gameModesUpdate.nut")
 require("utils/restartGame.nut")
-require("%globalScripts/debugTools/dbgTimer.nut").registerConsoleCommand("dagui")
+require("%sqstd/regScriptProfiler.nut")("dagui")
 require("bqQueue.nut")
   // end of Independent Modules
 
@@ -131,10 +131,12 @@ local isFullScriptsLoaded = false
   if (isFullScriptsLoaded)
     return
   isFullScriptsLoaded = true
+  let t = get_time_msec()
   start_es_loading()
   log("LOAD MAIN SCRIPTS AFTER LOGIN")
   require("%scripts/onScriptLoadAfterLogin.nut")
   end_es_loading()
+  log($"DaGui scripts load after login {get_time_msec() - t} msec")
 }
 
 //------- ^^^ files after login ^^^ ----------
@@ -145,6 +147,8 @@ if (is_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug/netLoger
 
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
+
+log($"DaGui scripts load before login {get_time_msec() - startLoadTime} msec")
 
 if (isReadyToFullLoad.value || shouldDisableMenu || isOfflineMenu || !isFullScriptsLoaded ) //scripts reload
   ::load_scripts_after_login_once()

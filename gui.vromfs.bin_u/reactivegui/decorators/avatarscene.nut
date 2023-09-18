@@ -130,7 +130,7 @@ let footer = @() {
       {
         rendObj = ROBJ_TEXT
         vplace = ALIGN_CENTER
-        text = loc("decor/avatarIsNotOpen")
+        text = getReceiveReason(selectedAvatar.value) ?? loc("decor/avatarIsNotOpen")
       }.__update(fontSmallAccented)
     ]
 }

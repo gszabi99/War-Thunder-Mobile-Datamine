@@ -25,7 +25,7 @@ let maxRewardCountTime = 1.0
 let buttonAppearDelay = rewardStartCount + maxRewardCountTime
 let buttonAppearTime = 1.0
 
-let iconSize = hdpx(80).tointeger()
+let iconSize = hdpxi(160)
 let hideCurrencyTrigger = {}
 
 let rewardsSum = Computed(@() rewardsToReceive.value.reduce(
@@ -140,7 +140,7 @@ let function rewardsList() {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = hdpx(200)
+    gap = hdpx(150)
     children
     animations = appearAnim(rewardAppearDelay, rewardAppearTime)
   }

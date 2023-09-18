@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
+let { OPERATION_COMPLETE } = require("matching.errors")
 let regexp2 = require("regexp2")
 let { getCountryCode } = require("auth_wt")
 let { resetTimeout } = require("dagor.workcycle")

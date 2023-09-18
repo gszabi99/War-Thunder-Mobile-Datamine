@@ -1826,8 +1826,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "triplex_rockets",
-      "blk": "gameData/FlightModels/weaponPresets/sea_fury_triplex_rockets.blk"
+      "name": "sea_fury_fb11_default",
+      "blk": "gameData/FlightModels/weaponPresets/sea_fury_fb11_triplex_rockets.blk"
     }
   },
   "turbulence": {

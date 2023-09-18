@@ -5,7 +5,7 @@ let { subscribe } = require("eventbus")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
-let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
+let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { rqPlayersAndDo } = require("rqPlayersAndDo.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
@@ -16,7 +16,9 @@ let state = require("%sqstd/mkEventLogState.nut")({
   defTtl = 10
   isEventsEqual = @(a, b) a?.text == b?.text
 })
-let { addEvent } = state
+let { addEvent, clearEvents } = state
+
+isInBattle.subscribe(@(_) clearEvents())
 
 //todo: export from native code to darg
 const MP_TEAM_NEUTRAL = 0

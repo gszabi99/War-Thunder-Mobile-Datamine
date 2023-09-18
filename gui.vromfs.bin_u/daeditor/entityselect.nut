@@ -10,6 +10,7 @@ let mkWindow = require("components/window.nut")
 let nameFilter = require("components/nameFilter.nut")
 let combobox = require("%daeditor/components/combobox.nut")
 let scrollbar = require("%daeditor/components/scrollbar.nut")
+let {getEntityExtraName} = require("%daeditor/daeditor_es.nut")
 let { format } = require("string")
 let entity_editor = require("entity_editor")
 let mkSortModeButton = require("components/mkSortModeButton.nut")
@@ -44,7 +45,7 @@ let function matchEntityByText(eid, text) {
     return false
   if (tplName.tolower().contains(text.tolower()))
     return true
-  let riExtraName = obsolete_dbg_get_comp_val(eid, "ri_extra__name")
+  let riExtraName = getEntityExtraName(eid)
   if (riExtraName != null && riExtraName.tolower().contains(text.tolower()))
     return true
   return false
@@ -185,16 +186,12 @@ let removeSelectedByEditorTemplate = @(tname) tname.replace("+daeditor_selected+
 let function listRow(eid, idx) {
   return watchElemState(function(sf) {
     let isSelected = selectionState.value?[eid]
+    let color = isSelected ? colors.Active
+      : sf & S_TOP_HOVER ? colors.GridRowHover
+      : colors.GridBg[idx % colors.GridBg.len()]
 
-    local color
-    if (isSelected) {
-      color = colors.Active
-    } else {
-      color = (sf & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
-    }
-
-    let riExtraName = obsolete_dbg_get_comp_val(eid, "ri_extra__name")
-    let extra = (riExtraName != null) ? $"/ {riExtraName}" : ""
+    let extraName = getEntityExtraName(eid)
+    let extra = (extraName != null) ? $"/ {extraName}" : ""
 
     local tplName = g_entity_mgr.getEntityTemplateName(eid) ?? ""
     let name = removeSelectedByEditorTemplate(tplName)

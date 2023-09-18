@@ -8,9 +8,12 @@ let unseenPurchasesDebug = require("unseenPurchasesDebug.nut")
 
 let ignoreUnseen = Watched({}) //no need to persist them if has errors with pServer, better to show window again after reload scripts.
 let isShowDelayed = Watched(false)
+let seenPurchasesNoNeedToShow = Computed(@() unseenPurchases.value
+  .filter(@(data) data.goods.findvalue(@(g) g.gType != "lootbox") == null))
 let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.value
   ?? (isShowDelayed.value ? {}
-    : unseenPurchases.value.filter(@(_, id) id not in ignoreUnseen.value)))
+    : unseenPurchases.value.filter(@(_, id) id not in ignoreUnseen.value
+        && id not in seenPurchasesNoNeedToShow.value)))
 
 let unseenPurchasesCount = keepref(Computed(@() unseenPurchases.value.len()))
 unseenPurchasesCount.subscribe(@(c) logR("unseenPurchasesCount = ", c))
@@ -21,12 +24,19 @@ let function markPurchasesSeen(seenIds) {
   if (unseenPurchasesDebug.value != null)
     return unseenPurchasesDebug(null)
 
+  let hasNotIgnore = seenIds.findvalue(@(id) id not in ignoreUnseen.value) != null
+  if (!hasNotIgnore)
+    return
+
   ignoreUnseen.mutate(function(v) {
     foreach (id in seenIds)
       v[id] <- true
   })
   clear_unseen_purchases(seenIds)
 }
+
+markPurchasesSeen(seenPurchasesNoNeedToShow.value.keys())
+seenPurchasesNoNeedToShow.subscribe(@(v) markPurchasesSeen(v.keys()))
 
 let customUnseenPurchHandlers = []
 let customUnseenPurchVersion = Watched(0)
@@ -68,9 +78,15 @@ let function undelayShow() {
   isShowDelayed(false)
 }
 let function delayShow(time) {
-  isShowDelayed(true)
-  logR("delayShow unseen for ", time)
-  resetTimeout(time, undelayShow)
+  if (time > 0) {
+    logR("delayShow unseen for ", time)
+    isShowDelayed(true)
+    resetTimeout(time, undelayShow)
+  }
+  else {
+    logR("undelayShow unseen")
+    isShowDelayed(false)
+  }
 }
 
 register_command(@() console_print("unseenPurchasesExt = ", unseenPurchasesExt.value) , "debug.currentUnseenPurchases") //warning disable: -forbidden-function

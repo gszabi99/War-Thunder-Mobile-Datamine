@@ -1840,7 +1840,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "so_4050_vautour_2a_bombs_500",
+      "name": "so_4050_vautour_2a_default",
       "blk": "gameData/FlightModels/weaponPresets/so_4050_vautour_2a_bombs_500.blk"
     }
   },

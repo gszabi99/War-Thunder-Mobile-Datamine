@@ -1764,8 +1764,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "Bf_109K4_default",
-      "blk": "gameData/FlightModels/weaponPresets/Bf_109K_4_default.blk"
+      "name": "bf_109k_4_default",
+      "blk": "gameData/FlightModels/weaponPresets/bf_109k_4_default.blk"
     }
   },
   "turbulence": {

@@ -46,6 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
+  "minRelativeTankCameraThreshold": 1.35,
   "rearmSmokeTimeOnField": 60.0,
   "rearmTimeOnField": 45.0,
   "dm_for_shop": {
@@ -386,7 +387,7 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
@@ -417,8 +418,7 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 5.0,
-      "armorThrough": 150.0,
+      "armorThickness": 50.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -1833,8 +1833,8 @@
     "sightName": "centauro",
     "headPos": [
       0.0,
-      2.9,
-      -11.0
+      3.8,
+      -13.2
     ],
     "headPosOnShooting": [
       0.0,
@@ -1921,9 +1921,18 @@
     }
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
+    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "effects": {
@@ -2138,6 +2147,66 @@
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "ger_camo_modern_threecolor*"
+    }
+  },
+  "upgradedDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -2.79249,
+        -1.62042E-07,
+        0.000101783,
+        3.6319
+      ],
+      "decal0Line1": [
+        5.84393E-05,
+        -2.28718,
+        1.60214,
+        2.08797
+      ],
+      "decal0Line2": [
+        2.79249,
+        -8.9623E-08,
+        0.000101453,
+        -2.63189
+      ],
+      "decal0Line3": [
+        5.81952E-05,
+        -2.28718,
+        -1.60214,
+        2.08797
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        2.9813E-05,
+        0.573729,
+        0.819045,
+        -1.93124
+      ],
+      "decal0CPNormDepth1": [
+        2.9813E-05,
+        0.573729,
+        -0.819045,
+        -1.93124
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358103
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.201382,
+      "decal0Tex": "ge_bundeswehr_insignia"
+    }
   },
   "battleHideNodes": {
     "n": "details"

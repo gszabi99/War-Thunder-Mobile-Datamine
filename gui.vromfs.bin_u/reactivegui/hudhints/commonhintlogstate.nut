@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { subscribe, send } = require("eventbus")
 let { format } =  require("string")
 let { register_command } = require("console")
-let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
+let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
@@ -16,8 +16,10 @@ let state = require("%sqstd/mkEventLogState.nut")({
   defTtl = 3
   isEventsEqual = @(a, b) "id" in a ? a?.id == b?.id : a?.text == b?.text
 })
-let { addEvent, modifyOrAddEvent, removeEvent } = state
+let { addEvent, modifyOrAddEvent, removeEvent, clearEvents } = state
 let COUNTER_SAVE_ID = "hintCounter"
+
+isInBattle.subscribe(@(_) clearEvents())
 
 //todo: export from native code to darg
 const MP_TEAM_NEUTRAL = 0
@@ -168,6 +170,19 @@ subscribe("hint:repair_module:hide", function(_) {
   removeEvent({ id = REPAIR_MODULE_ID })
   removeHudElementPointer("btn_repair")
 })
+
+const SHIP_REPAIR_OFFER_ID = "ship_offer_repair"
+subscribe("hint:ship_offer_repair::show", function(_) {
+  // if (!incHintCounter(SHIP_REPAIR_OFFER_ID, 15))
+  //   return
+  addCommonHintWithTtl(loc("hints/ship_offer_repair"), 30, SHIP_REPAIR_OFFER_ID)
+  addHudElementPointer("btn_repair", 30)
+})
+subscribe("hint:ship_offer_repair::hide", function(_) {
+  removeEvent({ id = SHIP_REPAIR_OFFER_ID })
+  removeHudElementPointer("btn_repair")
+})
+
 
 const EXTINGUISH_FIRE_ID = "can_extinguish_fire"
 subscribe("hint:can_extinguish_fire:show", function(_) {

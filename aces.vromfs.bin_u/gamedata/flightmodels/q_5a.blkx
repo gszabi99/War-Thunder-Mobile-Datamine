@@ -1802,7 +1802,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "q_5a_4x250kg_3_bombs",
+      "name": "q_5a_default",
       "blk": "gameData/FlightModels/weaponPresets/q_5a_4x250kg_3_bombs.blk"
     }
   },

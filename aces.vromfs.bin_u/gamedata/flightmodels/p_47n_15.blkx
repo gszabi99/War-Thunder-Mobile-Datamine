@@ -1727,8 +1727,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "P_47D_default",
-      "blk": "gameData/FlightModels/weaponPresets/p_47d_rockets_2x_1000.blk"
+      "name": "p_47n_15_default",
+      "blk": "gameData/FlightModels/weaponPresets/p_47n_15_rockets_2x_1000.blk"
     }
   },
   "jetwash": {

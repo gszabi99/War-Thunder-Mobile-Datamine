@@ -79,7 +79,7 @@ let mkSectionBtn = @(id, width = sectionBtnMaxWidth, font = fontSmallShaded, isL
   ]
 }
 
-let timeUntilTheEnd = @(time, ovr) {
+let timeUntilTheEnd = @(time, ovr = {}) {
   hplace = ALIGN_LEFT
   vplace = ALIGN_BOTTOM
   rendObj = ROBJ_TEXT

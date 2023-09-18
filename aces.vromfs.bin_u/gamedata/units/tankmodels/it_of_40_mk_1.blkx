@@ -3081,5 +3081,8 @@
         }
       ]
     }
+  },
+  "battleHideNodes": {
+    "n": "details"
   }
 }

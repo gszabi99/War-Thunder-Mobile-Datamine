@@ -139,6 +139,7 @@ let cameraRotationAssist = {
   }
   list = cameraRotationAssistList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/camera_rotation_assist")
 }
 
 return {

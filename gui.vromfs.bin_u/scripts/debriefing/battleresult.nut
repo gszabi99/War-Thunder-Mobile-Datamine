@@ -1,5 +1,3 @@
-
-
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let logBD = log_with_prefix("[BATTLE_RESULT] ")
@@ -18,7 +16,7 @@ let { get_mp_session_id_int, destroy_session } = require("multiplayer")
 let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { get_local_mplayer, get_mplayers_list } = require("mission")
-let { get_mp_tbl_teams = @() [] } = require("guiMission")
+let { get_mp_tbl_teams } = require("guiMission")
 
 const destroySessionTimeout = 2.0
 const SAVE_FILE = "battleResult.json"
@@ -135,6 +133,7 @@ isInBattle.subscribe(@(v) v ? playersCommonStats({}) : null)
 let function requestEarlyExitRewards() {
   logBD("Request early exit rewards")
   sendNetEvent(find_local_player_eid(), CmdApplyMyBattleResultOnExit())
+  send("matchingApiNotify", { name = "match.remove_from_session" }) //no need reconnect
 }
 
 subscribe("onBattleConnectionFailed", @(p) connectFailedData(p.__merge({ sessionId = battleSessionId.value })))

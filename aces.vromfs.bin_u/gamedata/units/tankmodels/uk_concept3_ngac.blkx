@@ -116,6 +116,30 @@
       0.95
     ]
   },
+  "steeringTable": {
+    "point": [
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.05
+      ],
+      [
+        60.0,
+        0.5
+      ],
+      [
+        80.0,
+        0.9
+      ],
+      [
+        81.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",

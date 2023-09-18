@@ -2299,7 +2299,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "il_4_2x_fab500_1xfab1000",
+      "name": "il_4_default",
       "blk": "gameData/FlightModels/weaponPresets/il_4_2x_fab500_1xfab1000.blk"
     }
   },

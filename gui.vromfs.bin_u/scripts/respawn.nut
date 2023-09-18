@@ -7,7 +7,7 @@ let { canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer
 } = require("guiRespawn")
 let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, get_respawns_left,
-  get_mp_respawn_countdown = @() 0, get_mission_status = @() 0 } = require("guiMission")
+  get_mp_respawn_countdown, get_mission_status } = require("guiMission")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curBattleUnit, curBattleItems, isBattleDataReceived } = require("%scripts/battleData/battleData.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -83,6 +83,9 @@ let function tryRespawn() {
     return
 
   ::disable_flight_menu(false)
+  ::hud_request_hud_tank_debuffs_state()
+  ::hud_request_hud_crew_state()
+  ::hud_request_hud_ship_debuffs_state()
   logR("Call doRespawnPlayer")
   isRespawnInProgress(doRespawnPlayer())
   if (!isRespawnInProgress.value) {

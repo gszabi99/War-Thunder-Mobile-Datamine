@@ -6,7 +6,7 @@ from "%appGlobals/unitConst.nut" import *
 
 let DataBlock  = require("DataBlock")
 let { split_by_chars } = require("string")
-let { get_current_mission_desc  = @(_) null } = require("guiMission")
+let { get_current_mission_desc } = require("guiMission")
 
 let missionAvailabilityFlag = {
   [AIR] = "isAirplanesAllowed",

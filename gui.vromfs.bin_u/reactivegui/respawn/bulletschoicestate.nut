@@ -69,11 +69,12 @@ let chosenBullets = Computed(function() {
   let stepSize = bulletStep.value
   let visible = visibleBullets.value
   local leftSteps = bulletTotalSteps.value
+  local bulletSlots = min(BULLETS_SLOTS, bulletTotalSteps.value)
   let used = {}
   if (savedBullets.value != null)
     eachBlock(savedBullets.value, function(blk) {
       let { name = null, count = 0 } = blk
-      if (res.len() >= BULLETS_SLOTS
+      if (res.len() >= bulletSlots
           || !visible?[name]
           || name in used
           || (fromUnitTags?[name].reqLevel ?? 0) > level)
@@ -84,20 +85,21 @@ let chosenBullets = Computed(function() {
       used[name] <- true
     })
 
-  if (res.len() < BULLETS_SLOTS)
+  if (res.len() < bulletSlots)
     foreach (bName in bulletsOrder)
       if ((bName not in used)
           && visible?[bName]
           && (fromUnitTags?[bName].reqLevel ?? 0) <= level
       ) {
         res.append({ name = bName, count = -1, idx = res.len() })
-        if (res.len() >= BULLETS_SLOTS)
+        if (res.len() >= bulletSlots)
           break
       }
 
   local notInitedCount = res.reduce(@(accum, bData) bData.count < 0 ? accum + 1 : accum, 0)
   if (notInitedCount > 0) {
-    leftSteps = leftSteps / 2 //fill only half by default
+    if (leftSteps > 1)
+      leftSteps = leftSteps / 2 //fill only half by default
     foreach (bData in res)
       if (bData.count < 0) {
         let steps = min(leftSteps / notInitedCount, fromUnitTags?[bData.name].maxCount ?? leftSteps)

@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { downloadWndParams, closeDownloadAddonsWnd, addonsToDownload, isDownloadPaused, downloadAddonsStr,
+let { downloadWndParams, closeDownloadAddonsWnd, wantStartDownloadAddons, isDownloadPaused, downloadAddonsStr,
   totalSizeBytes, downloadState, updaterError, progressPercent, allowLimitedDownload,
   isDownloadPausedByConnection, isDownloadInProgress, isStageDownloading
 } = require("updaterState.nut")
 let { loadingAnimBg, gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
-let { titleLogo } = require("%globalsDarg/components/titleLogo.nut")
+let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
 let { getDownloadInfoText } = require("%globalsDarg/updaterUtils.nut")
@@ -19,7 +19,7 @@ let spinnerSize = hdpx(100).tointeger()
 let downloadingColor = 0xFF00FDFF
 let checkingColor = 0x80808080
 
-let statusText = Computed(@() addonsToDownload.value.len() == 0 ? loc("updater/status/complete")
+let statusText = Computed(@() wantStartDownloadAddons.value.len() == 0 ? loc("updater/status/complete")
   : isDownloadPaused.value ? "".concat(
       loc("updater/status/paused", { addonInfo = downloadAddonsStr.value }),
       colon, getDownloadInfoText(totalSizeBytes.value, 0, 0))
@@ -55,12 +55,12 @@ let headerRight = @() {
   ]
 }
 
-let headerLeft = {
+let mkHeaderLeft = @() {
   flow = FLOW_VERTICAL
   gap = hdpx(40)
   children = [
     backButton(closeDownloadAddonsWnd)
-    titleLogo
+    mkTitleLogo()
   ]
 }
 
@@ -80,8 +80,8 @@ let openLimitConnectionMsgBox = @() openMsgBox({
 })
 
 let function pauseButton() {
-  let res = { watch = [isDownloadPaused, isDownloadPausedByConnection, addonsToDownload] }
-  if (addonsToDownload.value.len() == 0)
+  let res = { watch = [isDownloadPaused, isDownloadPausedByConnection, wantStartDownloadAddons] }
+  if (wantStartDownloadAddons.value.len() == 0)
     return res
   return res.__update({
     opacity = isDownloadPausedByConnection.value ? 0.3 : 1.0
@@ -112,7 +112,9 @@ let bottomBlock = {
       children = [
         @() {
           watch = statusText
-          rendObj = ROBJ_TEXT
+          size = [flex(), SIZE_TO_CONTENT]
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
           text = statusText.value
         }.__update(fontMediumShaded)
         {
@@ -132,7 +134,7 @@ let bottomBlock = {
 }
 
 let progressWndKey = {}
-let progressWnd = {
+let mkProgressWnd = @() {
   key = progressWndKey
   size = flex()
   children = [
@@ -141,7 +143,7 @@ let progressWnd = {
       size = flex()
       padding = saBordersRv
       children = [
-        headerLeft
+        mkHeaderLeft()
         headerRight
         tip
         bottomBlock
@@ -156,7 +158,7 @@ let progressWnd = {
 let openProgressWnd = @() addModalWindow({
   key = wndUid
   size = flex()
-  children = progressWnd
+  children = mkProgressWnd()
   onClick = @() null
 })
 

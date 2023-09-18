@@ -12,7 +12,8 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { localizeAddonsLimited, initialAddons, latestDownloadAddons } = require("%appGlobals/updater/addons.nut")
+let { localizeAddonsLimited, initialAddons, latestDownloadAddons, commonUhqAddons
+} = require("%appGlobals/updater/addons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
@@ -21,13 +22,15 @@ let { myUnits, curUnitMRank } = require("%appGlobals/pServer/profile.nut")
 let { isConnectionLimited, hasConnection } = require("connectionStatus/connectionStatus.nut")
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
+let { needUhqTextures } = require("%rGui/options/options/graphicOptions.nut")
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
 let ALLOW_LIMITED_DOWNLOAD_SAVE_ID = "allowLimitedConnectionDownload"
 
 let addonsToDownload = hardPersistWatched("updater.addonsToDownload",
   get_incomplete_addons().reduce(function(res, v) {
-    res[v] <- true
+    if (!v.endswith("_uhq")) //no need to finalize uhq addons by default.
+      res[v] <- true
     return res
   }, {}))
 let isDownloadPaused = hardPersistWatched("updater.isDownloadPaused", false)
@@ -62,10 +65,23 @@ let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(initialAddons,
 let latestAddonsToDownload = Computed(@(prev)
   mkAddonsToDownload(latestDownloadAddons?[curCampaign.value] ?? [], hasAddons.value, prev))
 
+let uhqAddonsToDownload = Computed(function(prev) {
+  if (!needUhqTextures.value)
+    return isEqual(prev, {}) ? prev : {}
+  let res = clone commonUhqAddons
+  foreach(a, has in hasAddons.value)
+    if (has) {
+      let uhq = $"{a}_uhq"
+      if (uhq in hasAddons.value)
+        res.append(uhq)
+    }
+  return mkAddonsToDownload(res, hasAddons.value, prev)
+})
+
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
 
 let wantStartDownloadAddons = Computed(function(prev) {
-  if (!isLoggedIn.value || addonsToDownload.value.len() == 0)
+  if (!isLoggedIn.value || (addonsToDownload.value.len() + uhqAddonsToDownload.value.len()) == 0)
     return prevIfEqual(prev, {})
 
   let addons = firstPriorityAddons.value.__merge(initialAddonsToDownload.value, squadAddons.value) //first priority on addons requested by download addons window
@@ -89,7 +105,13 @@ let wantStartDownloadAddons = Computed(function(prev) {
     return prevIfEqual(prev, res)
 
   res = addonsToDownload.value.filter(@(_, a) a in latestAddonsToDownload.value)
-  return prevIfEqual(prev, res.len() != 0 ? res : addonsToDownload.value)
+  if (res.len() != 0)
+    return prevIfEqual(prev, res)
+
+  if (addonsToDownload.value.len() != 0)
+    return prevIfEqual(prev, addonsToDownload.value)
+
+  return prevIfEqual(prev, uhqAddonsToDownload.value)
 })
 
 let needStartDownloadAddons = keepref(Computed(@()
@@ -209,7 +231,7 @@ let function getAddonPriority(addon) {
 }
 
 let downloadAddonsStr = Computed(function() {
-  if (addonsToDownload.value.len() == 0)
+  if (wantStartDownloadAddons.value.len() == 0)
     return ""
   let list = wantStartDownloadAddons.value.keys()
   list.sort(@(a, b) getAddonPriority(b) <=> getAddonPriority(a)
@@ -293,6 +315,7 @@ return {
   isDownloadInProgress = Computed(@() downloadInProgress.value.len() > 0)
 
   addonsToDownload = Computed(@() addonsToDownload.value)
+  wantStartDownloadAddons
   isDownloadPaused
   downloadAddonsStr
   currentStage

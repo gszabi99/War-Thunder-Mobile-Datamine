@@ -47,6 +47,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "minRelativeTankCameraThreshold": 1.35,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "rearmTimeOnField": 70.0,
@@ -2379,8 +2380,8 @@
     "sightName": "peri_z11a1",
     "headPos": [
       0.0,
-      2.0,
-      -17.0
+      3.8,
+      -13.5
     ],
     "headPosOnShooting": [
       0.1,

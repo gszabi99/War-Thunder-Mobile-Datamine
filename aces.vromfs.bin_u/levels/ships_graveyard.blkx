@@ -92,7 +92,8 @@
   "render": {
     "lmesh": true,
     "onlyUnderwaterLmesh": true,
-    "riExtraMinSizeForReflection": 100.0
+    "riExtraMinSizeForReflection": 100.0,
+    "riExToHeightmap": true
   },
   "overrideRiLodRange": {
     "tree_acacia_tall_a": {

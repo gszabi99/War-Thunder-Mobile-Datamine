@@ -1,7 +1,7 @@
-
 from "%scripts/dagui_library.nut" import *
 let logGM = log_with_prefix("[GAME_MODES] ")
 let { rnd_int } = require("dagor.random")
+let { OPERATION_COMPLETE } = require("matching.errors")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { gameModesRaw } = require("%appGlobals/gameModes/gameModes.nut")

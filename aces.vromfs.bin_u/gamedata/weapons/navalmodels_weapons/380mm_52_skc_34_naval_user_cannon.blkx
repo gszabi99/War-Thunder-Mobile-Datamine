@@ -49,7 +49,7 @@
     "shellAnimation": "video/shells_animations/aphe.ivf",
     "bulletName": "380mm_psgr_l_44_ap",
     "dynamicKv": true,
-    "hitPowerMult": 2750.0,
+    "hitPowerMult": 2800.0,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -256,7 +256,7 @@
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "380mm_psgr_l_44_ap",
       "dynamicKv": true,
-      "hitPowerMult": 2750.0,
+      "hitPowerMult": 2800.0,
       "relativeVelHitShift": [
         300.0,
         1000.0

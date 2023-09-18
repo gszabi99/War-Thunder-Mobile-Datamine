@@ -2098,10 +2098,6 @@
         0.99,
         1.0
       ],
-      "crewShipToSubmarineVisionDistances": [
-        700.0,
-        300.0
-      ],
       "crewSubmarineVisionDistances": [
         1500.0,
         1000.0

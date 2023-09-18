@@ -3,15 +3,15 @@ let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { isChooseMovementControlsOpened } = require("chooseMovementControlsState.nut")
-let chooseMovementControlsScene = require("chooseMovementControlsScene.nut")
+let mkChooseMoveControlsScene = require("chooseMovementControlsScene.nut")
 
 let close = @() isChooseMovementControlsOpened(false)
 
-let wnd = {
+let mkScene = @() {
   key = {}
   size = flex()
   children = [
-    chooseMovementControlsScene
+    mkChooseMoveControlsScene()
     {
       margin = saBordersRv
       children = backButton(close)
@@ -20,4 +20,4 @@ let wnd = {
   animations = wndSwitchAnim
 }
 
-registerScene("chooseMovementControls", wnd, close, isChooseMovementControlsOpened)
+registerScene("chooseMovementControls", mkScene, close, isChooseMovementControlsOpened)

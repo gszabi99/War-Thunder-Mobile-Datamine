@@ -15,6 +15,7 @@ let hitResultCfg = {
   [DM_HIT_RESULT_TORPEDO]     = { locId = "hitcamera/result/torpedo",   styleId = "kill" }, // 11
   [DM_HIT_RESULT_DESTRUCTION] = { locId = "hitcamera/result/kill",      styleId = "kill" }, // 12
   [DM_HIT_RESULT_BREAKING]    = { locId = "hitcamera/result/breaking",  styleId = "hit"  }, // 13
+  [DM_HIT_RESULT_INVULNERABLE] = { locId = "hitcamera/result/invulnerable", styleId = "miss" },//14
 }
 
 let defPartPriority = 1

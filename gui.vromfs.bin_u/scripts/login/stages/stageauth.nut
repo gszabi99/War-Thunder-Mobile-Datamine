@@ -44,7 +44,8 @@ let proceedAuthByResult = {
   },
 
   [YU2_2STEP_AUTH] = function(_loginType) { //error, received if user not logged, because he have 2step authorization activated
-    authState.mutate(@(a) a.__update({ check2StepAuthCode = true }))
+    let value = ::is_has_email_two_step_type_sync()
+    authState.mutate(@(a) a.__update({ check2StepAuthCode = true, email2step = value }))
     interruptStage({ error = "Need 2step auth" })
     send("StartListenTwoStepCode", {})
   },

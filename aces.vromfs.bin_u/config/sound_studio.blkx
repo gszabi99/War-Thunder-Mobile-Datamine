@@ -24,7 +24,6 @@
   "language": "Russian",
   "banksFolder": "sound",
   "banksExtension": ".bank",
-  "fmodLoglevel": "none",
   "waitForMenuMusic": true,
   "useOneshotForAirGunSound": true,
   "minArtHitInterval": 0.2,
@@ -590,8 +589,7 @@
     "eventSleeveHullMed": "shell_fall_hull_med",
     "eventSleeveHullSmall": "shell_fall_hull_small",
     "eventSleeveHullBig": "shell_fall_hull_big",
-    "eventSonar": "sonar",
-    "sonarTimeStep": 5.0
+    "eventSonar": "sonar"
   },
   "explosions": {
     "path": "aircraft/explosions",
@@ -8516,7 +8514,7 @@
           "event": "05_targeting/voice_message_commander_target",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 5.0
         },
         "someTank": {
           "event": "05_targeting/voice_message_commander_target_tank",

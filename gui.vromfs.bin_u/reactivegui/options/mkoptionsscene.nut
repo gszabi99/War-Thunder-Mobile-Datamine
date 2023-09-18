@@ -4,6 +4,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 
 let { registerScene } = require("%rGui/navState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
@@ -17,9 +18,21 @@ let topAreaSize = saBorders[1] + backButtonHeight + gapBackButton
 let gradientHeightBottom = hdpxi(256)
 let gradientHeightTop = min(topAreaSize, gradientHeightBottom)
 
+let scrollHandler = ScrollHandler()
+
 let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100),
   [gradientHeightTop, gradientHeightBottom],
   [topAreaSize, gradientHeightBottom])
+
+let scrollArrowsBlock = {
+  size = [SIZE_TO_CONTENT, saSize[1]]
+  hplace = ALIGN_CENTER
+  pos = [0, -topAreaSize + saBorders[1]]
+  children = [
+    mkScrollArrow(scrollHandler, MR_T)
+    mkScrollArrow(scrollHandler, MR_B)
+  ]
+}
 
 let function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHeaderComp = null) {
   isOpened = isOpened ?? mkWatched(persist, $"{sceneId}_isOpened", false)
@@ -52,6 +65,7 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, add
       curTabIdx(idx)
   }
   curTabId.subscribe(setTabById)
+  curTabIdx.subscribe(@(_) scrollHandler.scrollToY(0))
 
   let function curOptionsContent() {
     let tab = tabs?[curTabIdx.value]
@@ -72,17 +86,21 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, add
       : {
           watch = curTabIdx
           size = flex()
-          children = mkVerticalPannableArea(
-            {
-              pos = [contentOffset, 0]
-              key = tab
-              size = [contentWidth, SIZE_TO_CONTENT]
-              flow = FLOW_VERTICAL
-              halign = ALIGN_CENTER
-              children = tab?.options.filter(@(v) v != null).map(mkOption)
-              animations = wndSwitchAnim
-            },
-            { size = [sw(100) - tabW - saBorders[1], sh(100)] })
+          children = [
+            mkVerticalPannableArea(
+              {
+                pos = [contentOffset, 0]
+                key = tab
+                size = [contentWidth, SIZE_TO_CONTENT]
+                flow = FLOW_VERTICAL
+                halign = ALIGN_CENTER
+                children = tab?.options.filter(@(v) v != null).map(mkOption)
+                animations = wndSwitchAnim
+              },
+              { size = [sw(100) - tabW - saBorders[1], sh(100)] },
+              { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+            scrollArrowsBlock
+          ]
         }
   }
 

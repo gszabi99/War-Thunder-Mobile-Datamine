@@ -24,6 +24,8 @@
   "use_eac": false,
   "forcedLauncher": 0,
   "use_release_candidate": false,
+  "preallocTotalMb": 600,
+  "preallocChunkCount": 100,
   "unknownProximityMeansPanorama": true,
   "fastReturnToPanorama": true,
   "rendinstOcclusionByUnitType": true,
@@ -116,6 +118,10 @@
     "%updater": {
       "forSource": "../../skyquake/prog/scripts/wtm/updater",
       "forVromfs": "updater"
+    },
+    "%gameBase": {
+      "forSource": "../../skyquake/prog/gameBase/content",
+      "forVromfs": ""
     }
   },
   "addonBasePath": {
@@ -247,7 +253,10 @@
       "content.hq/pkg_tier_6_ground_hq",
       "content/pkg_tier_7_ground",
       "content.hq/pkg_tier_7_ground_hq",
-      "content/pkg_video"
+      "content/pkg_video",
+      "content.hq/pkg_environment_uhq",
+      "content.hq/pkg_ground_uhq",
+      "content.hq/pkg_naval_uhq"
     ]
   },
   "addonToXboxChunk": {
@@ -274,7 +283,8 @@
     "latency": 0,
     "vrStreamerMode": false,
     "vreye": "left",
-    "fpsLimitOnUpdater": 10
+    "fpsLimitOnUpdater": 10,
+    "msgBoxAndQuitOnInitVideoFail": true
   },
   "graphics": {
     "useHdr": true,
@@ -354,7 +364,9 @@
     "dynrendInitialMainRingBufferSize": 65536,
     "dynrendInitialRingBufferSize": 65536,
     "enableZoomVignette": true,
-    "allowDisablingMSAA": true,
+    "allowDepthResolvePath": true,
+    "allowDepthOneSamplePath": true,
+    "allow_uhq_textures": false,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }
@@ -421,7 +433,8 @@
     "enableVR": false
   },
   "input": {
-    "gyroscopeEnabled": false
+    "gyroscopeEnabled": false,
+    "moveCalculationsSinceLastEventRejectCount": 5
   },
   "mouse": {
     "touchScreen": true
@@ -619,6 +632,7 @@
     "lqTexMaxSizeKB": 2048,
     "defStubTexColor": "UFBQAA==",
     "verboseLogs": false,
+    "enableCurQLMismatchAssert": false,
     "lqIsSplitBQ": false,
     "lqMipBiasHQ": 2,
     "lqMipBiasMQ": 3,
@@ -1003,14 +1017,19 @@
       "dafx_modfx_bboard_render": true,
       "sparks_ps": true,
       "gen_weather": true,
-      "render_full_tonemap": true
+      "render_full_tonemap": true,
+      "skies_render_screeen": true,
+      "strata_clouds": true
     },
     "compute": {
       "skies_generate_transmittance_cs": true,
       "skies_approximate_ms_lut_cs": true,
       "indirect_irradiance_ms_cs": true,
       "gen_curl_clouds_2d": true,
-      "gen_cloud_field_cmpr": true
+      "gen_cloud_field_cmpr": true,
+      "trace_clouds_cs": true,
+      "skies_view_lut_tex_prepare_cs": true,
+      "clouds2_temporal_cs": true
     }
   },
   "level": {
@@ -1019,6 +1038,72 @@
         "eVER",
         "lmap"
       ]
+    }
+  },
+  "overrides": {
+    "xiaomi_11t": {
+      "codename": "21081111RG",
+      "vulkan": {
+        "preRotation": false
+      },
+      "android": {
+        "lowPerfCores": 15,
+        "highPerfCores": 240,
+        "antiThrottlingSleepMs": 5,
+        "antiThrottlingFpsLimit": 50
+      }
+    },
+    "xiaomi_11tpro": {
+      "codename": "2107113SG",
+      "vulkan": {
+        "blackUnitWorkaround": true
+      },
+      "android": {
+        "lowPerfCores": 15,
+        "highPerfCores": 240,
+        "antiThrottlingSleepMs": 5,
+        "antiThrottlingFpsLimit": 50
+      }
+    },
+    "a52s": {
+      "codename": "SM-A528B",
+      "vulkan": {
+        "blackUnitWorkaround": true
+      }
+    },
+    "ipad_pro": {
+      "codename": [
+        "iPad8",
+        "iPad13,4",
+        "iPad13,5",
+        "iPad13,6",
+        "iPad13,7",
+        "iPad13,8",
+        "iPad13,9",
+        "iPad13,10",
+        "iPad13,11",
+        "iPad14"
+      ],
+      "video": {
+        "fpsLimit": 60
+      }
+    },
+    "texture_uhq": {
+      "codename": [
+        "iPhone14,",
+        "iPhone15,",
+        "iPhone16,",
+        "iPad8,",
+        "iPad13,",
+        "iPad14,",
+        "iPad15,"
+      ],
+      "graphics": {
+        "allow_uhq_textures": true
+      },
+      "texStreaming": {
+        "forceMemQuotaKB": 4000000
+      }
     }
   },
   "android_presets": {
@@ -1061,6 +1146,7 @@
         "riExtraMinSizeForDraftDepth": 15.0,
         "underwaterFogUseShadows": 0,
         "underwaterFogUseSimple": true,
+        "underwaterFogUseTAA": false,
         "texquality": "low",
         "fxTarget": "high",
         "fftWaterRenderResolution": 7,
@@ -1127,6 +1213,7 @@
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": false,
         "texquality": "high",
         "fxTarget": "high",
         "fftWaterRenderResolution": 7,
@@ -1193,6 +1280,7 @@
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": false,
         "texquality": "high",
         "fxTarget": "high",
         "fftWaterRenderResolution": 8,
@@ -1259,6 +1347,7 @@
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": true,
         "texquality": "high",
         "fxTarget": "ultrahigh",
         "fftWaterRenderResolution": 8,

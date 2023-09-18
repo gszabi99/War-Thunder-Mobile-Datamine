@@ -1,6 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+let { register_command } = require("console")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getShortName } = require("%scripts/language.nut")
 let { subscribe } = require("eventbus")
@@ -27,6 +27,8 @@ const AUTH_ERROR_LOG_COLLECTION = "log"
 let qrRedirectSupportedLangs = ["ru", "en", "fr", "de", "es", "pl", "cs", "pt", "ko", "tr"]
 const QR_REDIRECT_URL = "https://login.gaijin.net/{0}/qr/{1}"
 
+let isDebugSsoLogin = mkWatched(persist, "isDebugSsoLogin", false)
+
 let function getUrlWithQrRedirect(url) {
   local lang = getShortName()
   if (!isInArray(lang, qrRedirectSupportedLangs))
@@ -34,7 +36,10 @@ let function getUrlWithQrRedirect(url) {
   return QR_REDIRECT_URL.subst(lang, base64.encodeString(url))
 }
 
-let openUrlExternalImpl = shell_launch
+let openUrlExternalImpl = @(url)
+  shell_launch(!isDebugSsoLogin.value ? url
+    : url.replace("login.gaijin.net", "login-sso-test.gaijin.net"))
+
 let function openUrlImpl(url, onCloseUrl) {
   local success = false
   if (is_android)
@@ -128,7 +133,7 @@ local function validateLink(link) {
 
   if (!u.isString(link)) {
     log("CHECK LINK result: " + toString(link))
-    assert(false, "CHECK LINK: Link recieved not as text")
+    assert(false, "CHECK LINK: Link received not as text")
     return null
   }
 
@@ -163,6 +168,11 @@ let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", 
 
 subscribe("openUrl", kwarg(openUrl))
 ::open_url <- openUrl //use in native code
+
+register_command(function() {
+  isDebugSsoLogin(!isDebugSsoLogin.value)
+  dlog("isDebug mode ? ", isDebugSsoLogin.value) //warning disable: -forbidden-function
+}, "url.login-sso-test")
 
 return {
   openUrl

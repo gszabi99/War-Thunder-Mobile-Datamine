@@ -5,6 +5,7 @@ let { DBGLEVEL } = require("dagor.system")
 let { trim } = require("%sqstd/string.nut")
 let { rights } = require("permissions/userRights.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
+let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
 let defaults = {
   can_debug_configs = DBGLEVEL > 0
@@ -19,7 +20,11 @@ let defaults = {
   can_view_replays = DBGLEVEL > 0 || isOfflineMenu
   can_write_replays = DBGLEVEL > 0
   can_link_to_gaijin_account = DBGLEVEL > 0
+  has_additional_graphics_settings = DBGLEVEL > 0
+  has_additional_graphics_content = DBGLEVEL > 0
 }
+
+let dbgPermissions = sharedWatched("dbgPermissions", @() {})
 
 let allPermissions = Computed(function() {
   let res = clone defaults
@@ -28,9 +33,13 @@ let allPermissions = Computed(function() {
       logerr($"Permission ID with whitespace detected: \"{id}\"")
     res[id] <- true
   }
+  foreach(id, v in dbgPermissions.value)
+    if (v && (id in res))
+      res[id] = !res[id]
   return res
 })
 
 return {
   allPermissions
+  dbgPermissions
 }.__merge(defaults.map(@(_, key) Computed(@() allPermissions.value[key])))

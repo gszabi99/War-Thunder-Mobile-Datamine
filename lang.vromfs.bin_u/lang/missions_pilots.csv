@@ -1,631 +1,631 @@
-"<ID|readonly|noverify>";"<English>";"<French>";"<Italian>";"<German>";"<Spanish>";"<Russian>";"<Polish>";"<Portuguese>";"<Turkish>";"<Korean>";"<Chinese>";"<Japanese>";"<TChinese>";"<Comments>";"<max_chars>"
-"country_japan_pilot_1";"Hiroyoshi Nishizawa";"Hitoyoshi Ishikawa";"Hiroyoshi Nishizawa";"Hiroyoshi Nishizawa";"Hiroyoshi Nishizawa";"Хироёси Нисизава";"Hiroyoshi Nishizawa";"Hiroyoshi Nishizawa";"Hiroyoshi Nishizawa";"니시자와 히로요시";"西\t泽\t广\t义";"西沢広義";"西\t澤\t廣\t義";;
-"country_japan_pilot_2";"Tetsuzo Iwamoto";"Etsuko Iwamoto";"Tetsuzo Iwamoto";"Tetsuzo Iwamoto";"Tetsuzo Iwamoto";"Тетсузо Ивамото";"Tetsuzo Iwamoto";"Tetsuzo Iwamoto";"Tetsuzo Iwamoto";"이와모토 테츠조";"岩\t本\t彻\t三";"岩本徹三";"岩\t本\t徹\t三";;
-"country_japan_pilot_3";"Shigeo Fukumoto";"Shigeo Fukumoto";"Shigeo Fukumoto";"Shigeo Fukumoto";"Shigeo Fukumoto";"Сигео Фукумото";"Shigeo Fukumoto";"Shigeo Fukumoto";"Shigeo Fukumoto";"후쿠모토 시게오";"福\t本\t繁\t夫";"福本繁夫";"福\t本\t繁\t夫";;
-"country_japan_pilot_4";"Shoichi Sugita";"Shoichi Sugita";"Shoichi Sugita";"Shoichi Sugita";"Shoichi Sugita";"Сёити Сугита";"Shoichi Sugita";"Shoichi Sugita";"Shoichi Sugita";"스기타 쇼이치";"杉\t田\t庄\t一";"杉田庄一";"杉\t田\t莊\t一";;
-"country_australia_pilot_1";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Этвуд Чени";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"앳우드 채니";"阿\t特\t伍\t德·查\t尼";"アトウッド・チェイニー";"阿\t特\t伍\t德．查\t尼";;
-"country_australia_pilot_2";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Морган Бретт";"Morgan Brett";"Morgan Brett";"Morgan Brett";"모건 브렛";"摩\t根·布\t雷\t特";"モーガン・ブレット";"摩\t根．布\t雷\t特";;
-"country_australia_pilot_3";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Мартин Блэки";"Martin Blakey";"Martin Blakey";"Martin Blakey";"마틴 블래키";"马\t丁·布\t莱\t基";"マーチン・ブランキー";"馬\t丁．布\t萊\t基";;
-"country_australia_pilot_4";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Оскар Аткин";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"오스카 앳킨";"奥\t斯\t卡·阿\t特\t金";"オスカー・アトキン";"奧\t斯\t卡．阿\t特\t金";;
-"country_britain_pilot_1";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Этвуд Чени";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"앳우드 채니";"阿\t特\t伍\t德·查\t尼";"アトウッド・チェイニー";"阿\t特\t伍\t德．查\t尼";;
-"country_britain_pilot_2";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Морган Бретт";"Morgan Brett";"Morgan Brett";"Morgan Brett";"모건 브렛";"摩\t根·布\t雷\t特";"モーガン・ブレット";"摩\t根．佈\t雷\t特";;
-"country_britain_pilot_3";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Мартин Блэки";"Martin Blakey";"Martin Blakey";"Martin Blakey";"마틴 블래키";"马\t丁·布\t莱\t基";"マーチン・ブランキー";"馬\t丁．布\t萊\t基";;
-"country_britain_pilot_4";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Оскар Аткин";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"오스카 앳킨";"奥\t斯\t卡·阿\t特\t金";"オスカー・アトキン";"奧\t斯\t卡．阿\t特\t金";;
-"country_germany_pilot_1";"Dietrich Newman";"Dietrich Newman";"Dietrich Newman";"Dietrich Neumann";"Dietrich Newman";"Дитрих Ньюман";"Dietrich Newman";"Dietrich Newman";"Dietrich Newman";"디트리히 노이만";"迪\t特\t里\t希·纽\t曼";"ディートリヒ・ニューマン";"迪\t特\t裡\t希．紐\t曼";;
-"country_germany_pilot_2";"Gunther Beyer";"Gunther Beyer";"Gunther Beyer";"Günther Beyer";"Gunther Beyer";"Гюнтер Бейер";"Gunther Beyer";"Gunther Beyer";"Gunther Beyer";"군터 바이어";"贡\t特\t尔·拜\t尔";"グンサー・ベイヤー";"鞏\t特\t爾．拜\t爾";;
-"country_germany_pilot_3";"Hans Meymberg";"Hans Meymberg";"Hans Meymberg";"Hans Meymberg";"Hans Meymberg";"Ганс Меймберг";"Hans Meymberg";"Hans Meymberg";"Hans Meymberg";"한스 마임버그";"汉\t斯·梅\t姆\t伯\t格";"ハンス・メイムバーグ";"漢\t斯．梅\t姆\t伯\t格";;
-"country_germany_pilot_4";"Paul Schweiger";"Paul Schweiger";"Paul Schweiger";"Paul Schweiger";"Paul Schweiger";"Пол Швайгер";"Paul Schweiger";"Paul Schweiger";"Paul Schweiger";"폴 슈바이거";"保\t罗·施\t威\t格";"ポール・シュバイガー";"保\t羅．施\t威\t格";;
-"country_italy_pilot_1";"Adriano Visconti";"Adriano Visconti";"Adriano Visconti";"Adriano Visconti";"Adriano Visconti";"Адриано Висконти";"Adriano Visconti";"Adriano Visconti";"Adriano Visconti";"아드리아노 비스콘티";"阿\t德\t里\t亚\t诺·维\t斯\t康\t蒂";"アドリアーノ・ヴィスコンティ";"阿\t德\t里\t亞\t諾．維\t斯\t康\t蒂";;
-"country_italy_pilot_2";"Franco Lucchin";"Franco Lucchin";"Franco Lucchini";"Franco Lucchin";"Franco Lucchini";"Франко Лючин";"Franco Lucchin";"Franco Lucchin";"Franco Lucchini";"프랑코 루친";"弗\t朗\t哥·鲁\t奇\t尼";"フランコ・ルッチン";"弗\t朗\t哥．魯\t奇\t尼";;
-"country_italy_pilot_3";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Терезио Витторио Мартиноли";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"테레지오 비토리오 마르티놀리";"特\t雷\t西\t奥·维\t托\t里\t奥·马\t蒂\t诺\t里";"テレジオ・ヴィットリオ・マルティノリ";"特\t雷\t西\t奧．維\t托\t裡\t奧．馬\t蒂\t諾\t里";;
-"country_italy_pilot_4";"Leonardo Ferrulli";"Leonardo Ferrulli";"Leonardo Ferrulli";"Leonardo Ferrulli";"Leonardo Ferrulli";"Леонардо Ферулли";"Leonardo Ferrulli";"Leonardo Ferrulli";"Leonardo Ferrulli";"레오나르도 페루리";"莱\t昂\t纳\t多·菲\t鲁\t里";"レオナルド・フェルッリ";"萊\t昂\t納\t多．菲\t魯\t里";;
-"country_usa_pilot_1";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Этвуд Чени";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"앳우드 채니";"阿\t特\t伍\t德·查\t尼";"アトウッド・チェイニー";"阿\t特\t伍\t德．查\t尼";;
-"country_usa_pilot_2";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Морган Бретт";"Morgan Brett";"Morgan Brett";"Morgan Brett";"모건 브렛";"摩\t根·布\t雷\t特";"モーガン・ブレット";"摩\t根．布\t雷\t特";;
-"country_usa_pilot_3";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Мартин Блэки";"Martin Blakey";"Martin Blakey";"Martin Blakey";"마틴 블래키";"马\t丁·布\t莱\t基";"マーチン・ブランキー";"馬\t丁．布\t萊\t基";;
-"country_usa_pilot_4";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Оскар Аткин";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"오스카 앳킨";"奥\t斯\t卡·阿\t特\t金";"オスカー・アトキン";"奧\t斯\t卡．阿\t特\t金";;
-"country_ussr_pilot_1";"Georgy Badaev";"Georgy Badaev";"Georgy Badaev";"Georgy Badaev";"Georgy Badaev";"Георгий Бадаев";"Gieorgij Badajew";"Georgy Badaev";"Georgy Badaev";"게오르기 바다예프";"格\t奥\t尔\t基·巴\t达\t耶\t夫";"ゲオルギ・バダエフ";"格\t奧\t爾\t基．巴\t達\t耶\t夫";;
-"country_ussr_pilot_2";"Roman Marinin";"Roman Marinin";"Roman Marinin";"Roman Marinin";"Roman Marinin";"Роман Маринин";"Roman Marinin";"Roman Marinin";"Roman Marinin";"로만 마리닌";"罗\t曼·马\t列\t宁";"ローマン・マリニン";"羅\t曼．馬\t列\t寧";;
-"country_ussr_pilot_3";"Dmitry Strelcov";"Dmitry Strelcov";"Dmitry Strelcov";"Dimitry Strelcov";"Dmitry Strelcov";"Дмитрий Стрельцов";"Dmitrij Strielcow";"Dmitry Strelcov";"Dmitry Strelcov";"드미트리 스트렐코프";"德\t米\t特\t里·斯\t特\t列\t尔\t科\t夫";"ディミトリー・ストレルコフ";"德\t米\t特\t裡．斯\t特\t列\t爾\t科\t夫";;
-"country_ussr_pilot_4";"Mikhail Tanaev";"Mikhail Tanaev";"Mikhail Tanaev";"Mikhail Tanaev";"Mikhail Tanaev";"Михаил Танаев";"Michaił Tanajew";"Mikhail Tanaev";"Mikhail Tanaev";"미하일 타나에프";"米\t哈\t伊\t尔·塔\t纳\t耶\t夫";"ミハイル・タナエフ";"米\t哈\t伊\t爾．塔\t納\t耶\t夫";;
-"coop/Bot0";"Boris";"Boris";"Boris";"Boris";"Boris";"Boris";"Borys";"Boris";"Boris";"보리스";"鲍\t里\t斯";"ボリス";"伯\t里\t斯";;
-"coop/Bot1";"John";"John";"John";"John";"John";"John";"John";"John";"John";"존";"约\t翰";"ジョン";"約\t翰";;
-"coop/Bot2";"Vladimir";"Vladimir";"Vladimir";"Wladimir";"Vladimir";"Vladimir";"Władimir";"Vladimir";"Vladimir";"블라디미르";"弗\t拉\t基\t米\t尔";"ウラジミール";"弗\t拉\t基\t米\t爾";;
-"coop/Bot3";"Sam";"Sam";"Sam";"Sam";"Sam";"Sam";"Sam";"Sam";"Sam";"샘";"山\t姆";"サム";"山\t姆";;
-"coop/Bot4";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"페드로";"佩\t德\t罗";"ペドロ";"佩\t德\t羅";;
-"coop/Bot5";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"새뮤얼";"塞\t缪\t尔";"サミュエル";"撒\t母\t耳";;
-"coop/Bot6";"Haru";"Haru";"Haru";"Haru";"Haru";"Haru";"Haru";"Haru";"Haru";"하루";"哈\t鲁";"ハル";"哈\t魯";;
-"coop/Bot7";"Lucy";"Lucy";"Lucia";"Lucy";"Lucy";"Lucy";"Lucy";"Lucy";"Lucy";"루시";"露\t西";"ルーシー";"露\t西";;
-"coop/Bot8";"Harry";"Harry";"Harry";"Harry";"Harry";"Harry";"Harry";"Harry";"Harry";"해리";"哈\t利";"ハリー";"哈\t利";;
-"coop/Bot9";"Leo";"Leo";"Leo";"Leo";"Leo";"Leo";"Leo";"Leo";"Leo";"레오";"利\t奥";"リオ";"利\t奧";;
-"coop/Bot10";"Max";"Max";"Max";"Max";"Max";"Max";"Max";"Max";"Max";"맥스";"马\t克\t斯";"マックス";"馬\t克\t斯";;
-"coop/Bot11";"Adam";"Adam";"Adam";"Adam";"Adam";"Adam";"Adam";"Adam";"Adam";"애덤";"亚\t当";"アダム";"亞\t當";;
-"coop/Bot12";"Luke";"Luke";"Luca";"Luke";"Luke";"Luke";"Luke";"Luke";"Luke";"루크";"卢\t克";"ルーク";"盧\t克";;
-"coop/Bot13";"Henry";"Henry";"Henry";"Henry";"Henry";"Henry";"Henry";"Henry";"Henry";"헨리";"亨\t利";"ヘンリー";"亨\t利";;
-"coop/Bot14";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"라이언";"瑞\t恩";"ライアン";"瑞\t恩";;
-"coop/Bot15";"Alex";"Alex";"Alex";"Alex";"Alex";"Alex";"Alex";"Alex";"Alex";"알렉스";"亚\t历\t克\t斯";"アレックス";"亞\t曆\t克\t斯";;
-"coop/Bot16";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"료";"亮";"リョウ";"亮";;
-"coop/Bot17";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"신야";"慎\t也";"シンヤ";"慎\t也";;
-"coop/Bot18";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"테츠오";"哲\t生";"テツオ";"哲\t生";;
-"coop/Bot19";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"쇼지";"庄\t司";"ショウジ";"莊\t司";;
-"coop/Bot20";"Akira";"Akira";"Akira";"Akira";"Akira";"Akira";"Akira";"Akira";"Akira";"아키라";"彰";"アキラ";"彰";;
-"coop/Bot21";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"야스시";"康";"ヤスシ";"康";;
-"coop/Bot22";"Jun";"Jun";"Giu";"Jun";"Jun";"Jun";"Jun";"Jun";"Jun";"준";"纯";"ジュン";"純";;
-"coop/Bot23";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"켄지";"健\t二";"ケンジ";"健\t二";;
-"coop/Bot24";"Kirill";"Kirill";"Kirill";"Kirill";"Kirill";"Kirill";"Kirył";"Kirill";"Kirill";"키릴";"基\t里\t尔";"キリル";"基\t里\t爾";;
-"coop/Bot25";"Vasiliy";"Vasiliy";"Vasiliy";"Wasiliy";"Vasiliy";"Vasiliy";"Wasilij";"Vasiliy";"Vasiliy";"바실리";"瓦\t西\t里";"ワシリー";"瓦\t西\t裡";;
-"coop/Bot26";"Sergey";"Sergey";"Sergey";"Sergey";"Sergey";"Sergey";"Siergiej";"Sergey";"Sergey";"세르게이";"谢\t尔\t盖";"セルゲイ";"謝\t爾\t蓋";;
-"coop/Bot27";"Ivan";"Ivan";"Ivan";"Ivan";"Ivan";"Ivan";"Iwan";"Ivan";"İvan";"이반";"伊\t万";"イヴァン";"伊\t萬";;
-"coop/Bot28";"Igor";"Igor";"Igor";"Igor";"Igor";"Igor";"Igor";"Igor";"İgor";"이고르";"伊\t格\t尔";"イゴール";"伊\t格\t爾";;
-"coop/Bot29";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"지오반니";"乔\t万\t尼";"ジョバンニ";"喬\t萬\t尼";;
-"coop/Bot30";"Mario";"Mario";"Mario";"Mario";"Mario";"Mario";"Mario";"Mario";"Mario";"마리오";"马\t里\t奥";"マリオ";"馬\t里\t奧";;
-"coop/Bot31";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"루이지";"路\t易\t吉";"ルイジ";"路\t易\t吉";;
-"coop/Bot32";"Erich";"Erich";"Erich";"Erich";"Erich";"Erich";"Erich";"Erich";"Erich";"에리히";"埃\t里\t希";"エーリヒ";"埃\t裡\t希";;
-"coop/BotPrefix";"[ai] ";"[ai] ";"[ai] ";"[ai] ";"[ai] ";"[ии] ";"[ai] ";"[ai] ";"[ai] ";"[ai]";"AI";"[アイ]";"AI";;
-"country_japan_pilot_5";"Eiji Togan";"Eiji Togan";"Eiji Togan";"Eiji Togan";"Eiji Togan";"Эйдзи Тоган";"Eiji Togan";"Eiji Togan";"Eiji Togan";"토간 에이지";"东\t岸\t荣\t治";"若松 幸禧・\t赤松 貞明";"東\t岸\t榮\t治";;
-"country_japan_pilot_6";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Ясухиро Генрюсай";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"겐류사이 야스히로";"源\t柳\t斋\t康\t弘";"岩橋・\t岩本";"源\t柳\t齋\t康\t弘";;
-"country_japan_pilot_7";"Susumu Kakimoto";"Susumu Kakimoto";"Susumu Kakimoto";"Susumu Kakimoto";"Susumu Kakimoto";"Сусуми Какимото";"Susumu Kakimoto";"Susumu Kakimoto";"Susumu Kakimoto";"가키모토 스스무";"柿\t本\t进";"柿本 進";"柿\t本\t進";;
-"country_japan_pilot_8";"Kanichi Masuzawa";"Kanichi Masuzawa";"Kanichi Masuzawa";"Kanichi Masuzawa";"Kanichi Masuzawa";"Каничи Масузава";"Kanichi Masuzow";"Kanichi Masuzawa";"Kanichi Masuzawa";"마스자와 칸이치";"増\t泽\t宽\t一";"増沢貫一";"増\t澤\t寬\t一";;
-"country_japan_pilot_9";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Коширо Ямагучи";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"야마구치 코시로";"山\t口\t幸\t四\t郎";"山口　\t幸四郎";"山\t口\t幸\t四\t郎";;
-"country_japan_pilot_10";"Toshiya Serizawa";"Toshiya Serizawa";"Toshiya Serizawa";"Toshiya Serizawa";"Toshiya Serizawa";"Тошия Сэридзава";"Toshiya Serizawa";"Toshiya Serizawa";"Toshiya Serizawa";"세리자와 토시야";"芹\t泽\t俊\t哉";"上原　\t利明";"芹\t澤\t俊\t哉";;
-"country_japan_pilot_11";"Yukio Onozaki";"Yukio Onozaki";"Yukio Onozaki";"Yukio Onozaki";"Yukio Onozaki";"Юкио Онодзаки";"Yukio Onozaki";"Yukio Onozaki";"Yukio Onozaki";"오노자키 유키오";"小\t野\t崎\t由\t纪\t夫";"小野崎　\t幸夫";"小\t野\t崎\t由\t紀\t夫";;
-"country_japan_pilot_12";"Hiroshi Koga";"Hiroshi Koga";"Hiroshi Koga";"Hiroshi Koga";"Hiroshi Koga";"Хироси Кога";"Hiroshi Koga";"Hiroshi Koga";"Hiroshi Koga";"코가 히로시";"古\t贺\t弘";"古賀　\t弘";"古\t賀\t弘";;
-"country_australia_pilot_5";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Хьюго Вильфред Стэнли";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"휴고 윌프레드 스탠리";"雨\t果·威\t尔\t弗\t雷\t德·斯\t坦\t利";"ヒューゴ・ウィルフレッド・スタンレー";"雨\t果．威\t爾\t弗\t雷\t德．斯\t坦\t利";;
-"country_australia_pilot_6";"Arthur Waters";"Arthur Waters";"Arthur Waters";"Arthur Waters";"Arthur Waters";"Артур Вотерс";"Arthur Waters";"Arthur Waters";"Arthur Waters";"아서 월터스";"亚\t瑟·沃\t特\t斯";"アーサー・ウォーターズ";"亞\t瑟．沃\t特\t斯";;
-"country_australia_pilot_7";"Robert Armstrong";"Robert Armstrong";"Robert Armstrong";"Robert Armstrong";"Robert Armstrong";"Роберт Армстронг";"Robert Armstrong";"Robert Armstrong";"Robert Armstrong";"로버트 암스트롱";"罗\t伯\t特·阿\t姆\t斯\t特\t朗";"ロバート・アームストロング";"羅\t伯\t特．阿\t姆\t斯\t壯";;
-"country_australia_pilot_8";"Wilfred Sheen";"Wilfred Sheen";"Wilfred Sheen";"Wilfred Sheen";"Wilfred Sheen";"Уилфред Шин";"Wilfred Sheen";"Wilfred Sheen";"Wilfred Sheen";"윌프레드 쉰";"威\t尔\t弗\t雷\t德·西\t恩";"ウィルフレッド・シーン";"威\t爾\t弗\t雷\t德．西\t恩";;
-"country_australia_pilot_9";"Caldwell Rawlinson";"Caldwell Rawlinson";"Caldwell Rawlinson";"Caldwell Rawlinson";"Caldwell Rawlinson";"Колдуэлл Раулинсон";"Caldwell Rawlinson";"Caldwell Rawlinson";"Caldwell Rawlinson";"콜드웰 로린슨";"考\t德\t威\t尔·罗\t林\t森";"コールドウェル・ローリンソン";"考\t德\t威\t爾．羅\t林\t森";;
-"country_australia_pilot_10";"Ian Cronin";"Ian Cronin";"Ian Cronin";"Ian Cronin";"Ian Cronin";"Иан Кронин";"Ian Cronin";"Ian Cronin";"İan Cronin";"이안 크로닌";"伊\t恩·克\t罗\t宁";"イアン・クローニン";"伊\t恩．克\t羅\t寧";;
-"country_australia_pilot_11";"Stig Truscott";"Stig Truscott";"Stig Truscott";"Stig Truscott";"Stig Truscott";"Стиг Траскотт";"Stig Truscott";"Stig Truscott";"Stig Truscott";"스티그 트루스캇";"斯\t蒂\t格·特\t拉\t斯\t科\t特";"スティグ・トラスコット";"斯\t蒂\t格．特\t拉\t斯\t科\t特";;
-"country_australia_pilot_12";"Clive ""Killer"" MacLachlan";"Clive ""Killer"" MacLachlan";"Clive ""Killer"" MacLachlan";"Clive ""Killer"" MacLachlan";"Clive ""Asesino"" MacLachlan";"Клайв ""Киллер"" МакЛахлан";"Clive „Zabójca” MacLachlan";"Clive ""Assassino"" MacLachlan ";"Clive ""Katil"" MacLachlan";"클라이브 '킬러' 맥라클란";"克\t莱\t夫·“杀\t手”·麦\t克\t拉\t克\t伦";"クライブ「キラー」\tマクラクラン";"克\t萊\t夫．""\t殺\t手\t""．麥\t克\t拉\t克\t倫";;
-"country_britain_pilot_5";"George Aitken";"George Aitken";"George Aitken";"George Aitken";"George Aitken";"Джордж Айткен";"George Aitken";"George Aitken";"George Aitken";"조지 에이트켄";"乔\t治·艾\t特\t肯";"ジョージ・アイトケン";"喬\t治．艾\t特\t肯";;
-"country_britain_pilot_6";"Peter Vaykeham";"Peter Vaykeham";"Peter Vaykeham";"Peter Vaykeham";"Peter Vaykeham";"Питер Вайкехам";"Peter Vaykeham";"Peter Vaykeham";"Peter Vaykeham";"피터 바이크험";"彼\t得·维\t克\t汉\t姆";"ピーター・ベイケハム";"彼\t得．維\t克\t漢\t姆";;
-"country_britain_pilot_7";"Dudley Carey";"Dudley Carey";"Dudley Carey";"Dudley Carey";"Dudley Carey";"Дудли Кэри";"Dudley Carey";"Dudley Carey";"Dudley Carey";"두들리 케어리";"达\t德\t利·凯\t里";"ダッドリー・ケリー";"達\t德\t利．凱\t里";;
-"country_britain_pilot_8";"Jack Bader";"Jack Bader";"Jack Bader";"Jack Bader";"Jack Bader";"Джек Бэйдер";"Jack Bader";"Jack Bader";"Jack Bader";"잭 베이더";"杰\t克·巴\t德";"ジャック・ベダー";"傑\t克．巴\t德";;
-"country_britain_pilot_9";"Ernest Neville Tak";"Ernest Neville Tak";"Ernest Neville Tak";"Ernest Neville Tak";"Ernest Neville Tak";"Эрнест Невилль Так";"Ernest Neville Tak";"Ernest Neville Tak";"Ernest Neville Tak";"어니스트 네빌 탁";"欧\t内\t斯\t特·内\t维\t尔·塔\t克";"アーンスト・ネビル・タック";"歐\t尼\t斯\t特．內\t維\t爾．塔\t克";;
-"country_britain_pilot_10";"Frank Dandes";"Frank Dandes";"Frank Dandes";"Frank Dandes";"Frank Dandes";"Френк Дандэс";"Frank Dandes";"Frank Dandes";"Frank Dandes";"프랭크 댄데스";"弗\t兰\t克·但\t德\t斯";"フランク ・ ダンデズ";"弗\t蘭\t克．但\t德\t斯";;
-"country_britain_pilot_11";"Patrick Dow";"Patrick Dow";"Patrick Dow";"Patrick Dow";"Patrick Dow";"Патрик Доу";"Patrick Dow";"Patrick Dow";"Patrick Dow";"패트릭 다우";"帕\t特\t里\t克·道";"パトリック・ドー";"派\t翠\t克．道";;
-"country_britain_pilot_12";"Arthur Semple";"Arthur Semple";"Arthur Semple";"Arthur Semple";"Arthur Semple";"Артур Сэмпл";"Arthur Semple";"Arthur Semple";"Arthur Semple";"아서 셈플";"亚\t瑟·森\t普\t尔";"アーサー・センプル";"亞\t瑟．森\t普\t爾";;
-"country_germany_pilot_5";"Horst Adrian";"Horst Adrian";"Horst Adrian";"Horst Adrian";"Horst Adrian";"Хорст Адриан";"Horst Adrian";"Adrian Horst";"Horst Adrian";"호르스트 에이드리언";"霍\t斯\t特·艾\t德\t里\t安";"ホースト・エイドリアン";"霍\t斯\t特．艾\t德\t里\t安";;
-"country_germany_pilot_6";"Ulrich Kupfer";"Ulrich Kupfer";"Ulrich Kupfer";"Ulrich Kupfer";"Ulrich Kupfer";"Ульрих Купфер";"Ulrich Kupfer";"Ulrich Kupfer";"Ulrich Kupfer";"울리히 쿠퍼";"乌\t尔\t里\t希·库\t普\t弗";"ウルリッヒ・クファー";"烏\t爾\t裡\t希．庫\t普\t弗";;
-"country_germany_pilot_7";"Ernest Greiner";"Ernest Greiner";"Ernest Greiner";"Ernest Greiner";"Ernest Greiner";"Эрнест Грейнер";"Ernest Greiner";"Ernest Greiner";"Ernest Greiner";"어니스트 그레이너";"欧\t内\t斯\t特·格\t雷\t纳";"アーンスト・グレイナー";"歐\t尼\t斯\t特．格\t雷\t納";;
-"country_germany_pilot_8";"Frederick Lemke";"Frederick Lemke";"Frederick Lemke";"Frederick Lemke";"Frederick Lemke";"Фридрих Лемке";"Frederick Lemke";"Frederick Lemke";"Frederick Lemke";"프레드릭 렘케";"弗\t雷\t德\t里\t克·莱\t姆\t克";"フレデリック・レムケ";"弗\t雷\t德\t里\t克．萊\t姆\t克";;
-"country_germany_pilot_9";"Julius Nordmann";"Julius Nordmann";"Julius Nordmann";"Julius Nordmann";"Julius Nordmann";"Юлиус Нордманн";"Julius Nordmann";"Julius Nordmann";"Julius Nordmann";"율리우스 노르트만";"朱\t利\t叶\t斯·诺\t德\t曼";"ユリウス・ノードマン";"朱\t利\t斯．諾\t德\t曼";;
-"country_germany_pilot_10";"Emil Moritz";"Emil Moritz";"Emil Moritz";"Emil Moritz";"Emil Moritz";"Эмиль Моритц";"Emil Moritz";"Emil Moritz";"Emil Moritz";"에밀 모리츠";"埃\t米\t尔·莫\t里\t茨";"エミル・モリッツ";"埃\t米\t爾．莫\t里\t茨";;
-"country_germany_pilot_11";"Willie Trenkel";"Willie Trenkel";"Willie Trenkel";"Willie Trenkel";"Willie Trenkel";"Вилли Тренкель";"Willie Trenkel";"Willie Trenkel";"Willie Trenkel";"빌리 트렝켈";"威\t利·特\t伦\t克\t尔";"ウィリー・トレンケル";"威\t利．特\t倫\t克\t爾";;
-"country_germany_pilot_12";"Heinz Shnaufer";"Heinz Shnaufer";"Heinz Shnaufer";"Heinz Schnaufer";"Heinz Shnaufer";"Хайнц Шнауфер";"Heinz Shnaufer";"Heinz Shnaufer";"Heinz Shnaufer";"하인트 슈나우퍼";"海\t因\t茨·施\t瑙\t夫\t尔";"ハインツ・シュナウファー";"海\t因\t茨．施\t瑙\t夫\t爾";;
-"country_italy_pilot_5";"Giuseppe Firulli";"Giuseppe Firulli";"Giuseppe Firulli";"Giuseppe Firulli";"Giuseppe Firulli";"Джузеппе Фирулли";"Giuseppe Firulli";"Giuseppe Firulli";"Giuseppe Firulli";"쥬세페 휘룰리";"朱\t塞\t佩·菲\t鲁\t里";"ジョセッぺ・フィルーリ";"朱\t塞\t佩．菲\t魯\t裡";;
-"country_italy_pilot_6";"Franco Tarantola";"Franco Tarantola";"Ennio Tarantola";"Franco Tarantola";"Franco Tarantola";"Франко Тарантола";"Franco Tarantola";"Franco Tarantola";"Franco Tarantola";"프랑코 타란톨라";"弗\t朗\t哥·塔\t兰\t托\t拉";"フランコ・タラントーラ";"弗\t朗\t哥．塔\t蘭\t托\t拉";;
-"country_italy_pilot_7";"Carlo Baschirotto";"Carlo Baschirotto";"Gian Lino Baschirotto";"Carlo Baschirotto";"Carlo Baschirotto";"Карло Басчиротто";"Carlo Baschirotto";"Carlo Baschirotto";"Carlo Baschirotto";"카를로 바스치로토";"卡\t罗·巴\t斯\t齐\t洛\t托";"カルロ・バシロット";"卡\t羅．巴\t斯\t齊\t洛\t托";;
-"country_italy_pilot_8";"Hugo Reiner";"Hugo Reiner";"Hugo Reiner";"Hugo Reiner";"Hugo Reiner";"Уго Рейнер";"Hugo Reiner";"Hugo Reiner";"Hugo Reiner";"휴고 라이너";"雨\t果·雷\t纳";"ヒューゴ・レイナー";"雨\t果．雷\t納";;
-"country_italy_pilot_9";"Andrea Visconti";"Andrea Visconti";"Adriano Visconti";"Andrea Visconti";"Andrea Visconti";"Андреа Висконти";"Andrea Visconti";"Andrea Visconti";"Andrea Visconti";"안드레아 비스콘티";"安\t德\t烈\t亚·维\t斯\t康\t蒂";"アンドレア・ヴィスコンティ";"安\t德\t莉\t亞．維\t斯\t康\t蒂";;
-"country_italy_pilot_10";"Luigi Corrado";"Luigi Corrado";"Luigi Corrado";"Luigi Corrado";"Luigi Corrado";"Луиджи Коррадо";"Luigi Corrado";"Luigi Corrado";"Luigi Corrado";"루이지 코라도";"路\t易\t吉·科\t拉\t多";"ルイジ・コラード";"路\t易\t吉．柯\t拉\t多";;
-"country_italy_pilot_11";"Leonardo Lucchini";"Leonardo Lucchini";"Leonardo Lucchini";"Leonardo Lucchini";"Leonardo Lucchini";"Леонардо Луччини";"Leonardo Luchchini";"Leonardo Lucchini";"Leonardo Lucchini";"레오나르도 루치니";"莱\t昂\t纳\t多·卢\t基\t尼";"レオナルド・ルッキーニ";"萊\t昂\t納\t多．盧\t基\t尼";;
-"country_italy_pilot_12";"Giulio Drago";"Giulio Drago";"Ugo Drago";"Giulio Drago";"Giulio Drago";"Джулио Драго";"Giulio Drago";"Giulio Drago";"Giulio Drago";"쥴리오 드라고";"朱\t利\t奥·德\t拉\t戈";"ジュリオ・ドラゴ";"朱\t利\t奧．德\t拉\t戈";;
-"country_usa_pilot_5";"Tom Anderson";"Tom Anderson";"Tom Anderson";"Tom Anderson";"Tom Anderson";"Том Андерсон";"Tom Anderson";"Tom Anderson";"Tom Anderson";"톰 앤더슨";"汤\t姆·安\t德\t森";"トム・アンダーソン";"湯\t姆．安\t德\t森";;
-"country_usa_pilot_6";"Donald Hill";"Donald Hill";"Donald Hill";"Donald Hill";"Donald Hill";"Дональд Хилл";"Donald Hill";"Donald Hill";"Donald Hill";"도널드 힐";"唐\t纳\t德·希\t尔";"ドナルド・ヒル";"唐\t納\t德．希\t爾";;
-"country_usa_pilot_7";"Thomas Carson";"Thomas Carson";"Thomas Carson";"Thomas Carson";"Thomas Carson";"Томас Карсон";"Thomas Carson";"Thomas Carson";"Thomas Carson";"토마스 칼슨";"托\t马\t斯·卡\t森";"トーマス・カーソン";"湯\t瑪\t斯．卡\t森";;
-"country_usa_pilot_8";"Scott Johnson";"Scott Johnson";"Scott Johnson";"Scott Johnson";"Scott Johnson";"Скотт Джонсон";"Scott Johnson";"Scott Johnson";"Scott Johnson";"스콧 존슨";"斯\t科\t特·约\t翰\t逊";"スコット・ジョンソン";"斯\t科\t特．詹\t森";;
-"country_usa_pilot_9";"Hamilton McGuire";"Hamilton McGuire";"Hamilton McGuire";"Hamilton McGuire";"Hamilton McGuire";"Гамильтон МакГвайр";"Hamilton McGuire";"Hamilton McGuire";"Hamilton McGuire";"해밀턴 맥과이어";"汉\t密\t尔\t顿·麦\t圭\t尔";"ハミルトン・マグワイヤー";"漢\t密\t爾\t頓．麥\t圭\t爾";;
-"country_usa_pilot_10";"Gomez Gabreski";"Gomez Gabreski";"Gomez Gabreski";"Gomez Gabreski";"Gomez Gabreski";"Гомес Габрески";"Gomez Gabreski";"Gomez Gabreski";"Gomez Gabreski";"고메즈 가브레스키";"戈\t麦\t斯·加\t布\t雷\t斯\t基";"ゴメス・ガブレスキー";"戈\t麥\t斯．加\t佈\t雷\t斯\t基";;
-"country_usa_pilot_11";"Lance Curtis";"Lance Curtis";"Lance Curtis";"Lance Curtis";"Lance Curtis";"Лэнс Кертис";"Lance Curtis";"Lance Curtis";"Lance Curtis";"랜스 커티스";"兰\t斯·柯\t蒂\t斯";"ランス・カーティス";"蘭\t斯．柯\t帝\t士";;
-"country_usa_pilot_12";"Frank Blaksli";"Frank Blaksli";"Frank Blaksli";"Frank Blaksli";"Frank Blaksli";"Фрэнк Блаксли";"Frank Blaksli";"Frank Blaksli";"Frank Blaksli";"프랑크 블랙슬리";"弗\t兰\t克·布\t拉\t克\t斯\t利";"フランク・ブラクシル";"弗\t蘭\t克．布\t拉\t克\t斯\t利";;
-"country_ussr_pilot_5";"Konstantin Deacons";"Konstantin Deacons";"Konstantin Deacons";"Konstantin Deacons";"Konstantin Deacons";"Константин Дьячков";"Konstantin Dikons";"Konstantin Deacons";"Konstantin Deacons";"콘스탄틴 디컨";"康\t斯\t坦\t丁·迪\t肯\t斯";"コンスタンティン・ディーコンズ";"康\t斯\t坦\t丁．迪\t肯\t斯";;
-"country_ussr_pilot_6";"Leonid Golubev";"Leonid Golubev";"Leonid Golubev";"Leonid Golubev";"Leonid Golubev";"Леонид Голубев";"Leonid Gołubiew";"Leonid Golubev";"Leonid Golubev";"레오니트 골루볘브";"里\t奥\t尼\t德·戈\t卢\t别\t夫";"レオニッド・グルベフ";"裡\t奧\t尼\t德．戈\t盧\t別\t夫";;
-"country_ussr_pilot_7";"Eugene Zaitsev";"Eugene Zaitsev";"Eugene Zaitsev";"Eugene Zaitsev";"Eugene Zaitsev";"Евгений Зайцев";"Jewgienij Zajcew";"Eugene Zaitsev";"Eugene Zaitsev";"유진 자이체프";"尤\t金·扎\t伊\t采\t夫";"ユージーン・ザイツェフ";"尤\t金．紮\t伊\t采\t夫";;
-"country_ussr_pilot_8";"Ivan Kuznetsov";"Ivan Kuznetsov";"Ivan Kuznetsov";"Ivan Kuznetsov";"Ivan Kuznetsov";"Иван Кузнецов";"Iwan Kuzniecow";"Ivan Kuznetsov";"İvan Kuznetsov";"이반 쿠즈네초프";"伊\t万·库\t兹\t涅\t佐\t夫";"イワン・クズネツォフ";"伊\t萬．庫\t茲\t涅\t佐\t夫";;
-"country_ussr_pilot_9";"Semyon Zinchenko";"Semyon Zinchenko";"Semyon Zinchenko";"Semyon Zinchenko";"Semyon Zinchenko";"Семен Зинченко";"Siemion Zinczenko";"Semyon Zinchenko";"Semyon Zinchenko";"세묜 진첸코";"塞\t姆\t扬·津\t琴\t科";"セミョン・ジンチェンコ";"塞\t姆\t揚．津\t琴\t科";;
-"country_ussr_pilot_10";"Nicholas Maksimov";"Nicholas Maksimov";"Nicholas Maksimov";"Nicholas Maksimov";"Nicholas Maksimov";"Николай Максимов";"Nikołaj Maksimow";"Nicholas Maksimov";"Nicholas Maksimov";"니콜라스 막시모프";"尼\t古\t拉\t斯·马\t克\t西\t莫\t夫";"ニコラス・マクシモフ";"尼\t古\t拉\t斯．馬\t克\t西\t莫\t夫";;
-"country_ussr_pilot_11";"Peter Rudenko";"Peter Rudenko";"Peter Rudenko";"Peter Rudenko";"Peter Rudenko";"Петр Руденко";"Piotr Rudenko";"Peter Rudenko";"Peter Rudenko";"피터 루덴코";"彼\t得·卢\t登\t科";"ピーター・ルーデンコ";"彼\t得．盧\t登\t科";;
-"country_ussr_pilot_12";"Victor Tokarev";"Victor Tokarev";"Victor Tokarev";"Victor Tokarev";"Victor Tokarev";"Виктор Токарев";"Wiktor Tokariew";"Victor Tokarev";"Victor Tokarev";"빅터 토카레프";"维\t克\t多·托\t卡\t列\t夫";"ビクター・トカレフ";"維\t克\t多．托\t卡\t列\t夫";;
-"coop/Bot33";"Abelard";"Abelard";"Abelard";"Abelard";"Abelardo";"Abelard";"Abelard";"Abelard";"Abelard";"아벨라르";"阿\t伯\t拉\t德";"アベラール";"阿\t伯\t拉\t德";;
-"coop/Bot34";"Ada";"Ada";"Ada";"Ada";"Ada";"Ada";"Ada";"Ada";"Ada";"에이다";"艾\t达";"エイダ";"艾\t達";;
-"coop/Bot35";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"아달하르트";"阿\t达\t尔\t哈\t特";"アーダルハルト";"阿\t達\t爾\t哈\t特";;
-"coop/Bot36";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"아달마르";"阿\t达\t尔\t马";"アダルマール";"阿\t達\t爾\t馬";;
-"coop/Bot37";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"아달불프";"阿\t达\t尔\t沃\t尔\t夫";"アダルウォルフ";"阿\t達\t爾\t沃\t爾\t夫";;
-"coop/Bot38";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"아그네테";"阿\t格\t内\t特";"アグネッタ";"阿\t格\t內\t特";;
-"coop/Bot39";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"알브레흐트";"阿\t尔\t布\t雷\t西\t特";"アルブレヒト";"阿\t爾\t佈\t雷\t西\t特";;
-"coop/Bot40";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"알도";"奥\t尔\t多";"アルド";"奧\t爾\t多";;
-"coop/Bot41";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"알드리히";"奥\t德\t里\t奇";"アルドリッチ";"奧\t德\t里\t奇";;
-"coop/Bot42";"Alf";"Alf";"Alf";"Alf";"Alf";"Alf";"Alf";"Alf";"Alf";"알프";"阿\t尔\t夫";"アルフ";"阿\t爾\t夫";;
-"coop/Bot43";"Alfons";"Alfons";"Alfons";"Alfons";"Alfonso";"Alfons";"Alfons";"Alfons";"Alfons";"알폰스";"阿\t尔\t方\t斯";"アルフォンス";"阿\t爾\t方\t斯";;
-"coop/Bot44";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"알메리히";"阿\t尔\t梅\t利\t希";"アルメリック";"阿\t爾\t梅\t利\t希";;
-"coop/Bot45";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"알리히";"阿\t尔\t利\t希";"アルドリッチ";"阿\t爾\t利\t希";;
-"coop/Bot46";"Altman";"Altman";"Altman";"Altman";"Altman";"Altman";"Altman";"Altman";"Altman";"알트만";"阿\t尔\t特\t曼";"アルトマン";"阿\t爾\t特\t曼";;
-"coop/Bot47";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"아말리히";"阿\t玛\t尔\t利\t希";"アマルリック";"阿\t瑪\t爾\t利\t希";;
-"coop/Bot48";"Anke";"Anke";"Anke";"Anke";"Anke";"Anke";"Anke";"Anke";"Anke";"안케";"安\t克";"アンケ";"安\t克";;
-"coop/Bot49";"Anshelm";"Anshelm";"Anshelm";"Anshelm";"Anselmo";"Anshelm";"Anshelm";"Anshelm";"Anshelm";"안셸름";"安\t斯\t赫\t尔\t姆";"アンセルムス";"安\t斯\t赫\t爾\t姆";;
-"coop/Bot50";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"아른발트";"阿\t恩\t斯\t瓦\t尔\t德";"アーンウォルド";"阿\t恩\t斯\t瓦\t爾\t德";;
-"coop/Bot51";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"바르다불프";"巴\t尔\t达\t沃\t尔\t夫";"ボードウルフ";"巴\t爾\t達\t沃\t爾\t夫";;
-"coop/Bot52";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"베라흐트라벤";"贝\t拉\t特\t拉\t本";"ベビーラフトラベン";"貝\t拉\t特\t拉\t本";;
-"coop/Bot53";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"베르트람";"伯\t特\t伦";"ベルトラム";"伯\t特\t倫";;
-"coop/Bot54";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"베른하르트";"伯\t恩\t哈\t特";"ベルンハルト";"伯\t恩\t哈\t特";;
-"coop/Bot55";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"베르톨트";"贝\t特\t霍\t尔\t德";"ベルトルド";"貝\t特\t霍\t爾\t德";;
-"coop/Bot56";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"부르크하르트";"布\t克\t哈\t德";"ブルクハルト";"布\t克\t哈\t德";;
-"coop/Bot57";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"데드리히";"德\t德\t里\t希";"ディードリッヒ";"德\t德\t里\t希";;
-"coop/Bot58";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"디트마르";"迪\t特\t马\t尔";"ディトマー";"迪\t特\t瑪\t律";;
-"coop/Bot59";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"디트리히";"迪\t特\t里\t希";"ディートリッヒ";"迪\t特\t裡\t希";;
-"coop/Bot60";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"디르크";"迪\t尔\t克";"ディルク";"迪\t爾\t克";;
-"coop/Bot61";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"에버하르트";"埃\t伯\t哈\t德";"エバーハルト";"埃\t伯\t哈\t德";;
-"coop/Bot62";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"에흐하르트";"埃\t希\t哈\t特";"エックハルト";"埃\t希\t哈\t特";;
-"coop/Bot63";"Eduard";"Eduard";"Eduard";"Eduard";"Eduardo";"Eduard";"Eduard";"Eduard";"Eduard";"에두아르트";"爱\t德\t华";"エドワード";"愛\t德\t華";;
-"coop/Bot64";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"에머리히";"埃\t梅\t里\t希";"エメリッヒ";"埃\t梅\t裡\t希";;
-"coop/Bot65";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"엥겔베르트";"恩\t格\t尔\t贝\t特";"エンゲルベルト";"恩\t格\t爾\t貝\t特";;
-"coop/Bot66";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"에르트만";"埃\t德\t曼";"エルトマン";"埃\t德\t曼";;
-"coop/Bot67";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"에르하르트";"埃\t哈\t德";"エアハルト";"埃\t哈\t德";;
-"coop/Bot68";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"에르빈";"埃\t尔\t温";"アーウェン";"埃\t爾\t溫";;
-"coop/Bot69";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"프리드헬름";"弗\t里\t德\t黑\t尔\t姆";"フリードヘルム";"弗\t裡\t德\t黑\t爾\t姆";;
-"coop/Bot70";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"프리드리히";"弗\t里\t德\t里\t希";"フリードリヒ";"弗\t裡\t德\t里\t希";;
-"coop/Bot71";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"프리츠";"弗\t里\t茨";"フリッツ";"弗\t裡\t茨";;
-"coop/Bot72";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"감하르트";"加\t姆\t哈\t德";"ガムハルト";"加\t姆\t哈\t德";;
-"coop/Bot73";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"가우프리트";"高\t弗\t里\t德";"ガウフリート";"高\t弗\t裡\t德";;
-"coop/Bot74";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"게베르트";"格\t贝\t尔\t特";"ゲバート";"格\t貝\t爾\t特";;
-"coop/Bot75";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"게르하르트";"格\t尔\t哈\t特";"ゲールハルト";"格\t爾\t哈\t特";;
-"coop/Bot76";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"게리트";"格\t里\t特";"ゲリット";"格\t裡\t特";;
-"coop/Bot77";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"게르트라우트";"格\t尔\t特\t劳\t德";"ゲルトラウト";"格\t爾\t特\t勞\t德";;
-"coop/Bot78";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"게르불프";"格\t尔\t沃\t尔\t夫";"ゲルブルプ";"格\t爾\t沃\t爾\t夫";;
-"coop/Bot79";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"기스프리트";"吉\t斯\t弗\t里\t德";"ガルフリッド";"吉\t斯\t弗\t裡\t德";;
-"coop/Bot80";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"고트프리트";"戈\t特\t弗\t里\t德";"ゴットフリート";"戈\t特\t弗\t裡\t德";;
-"coop/Bot81";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"고트하르트";"戈\t特\t哈\t德";"ゴットハルト";"戈\t特\t哈\t德";;
-"coop/Bot82";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"고틀리프";"戈\t特\t里\t布";"ゴットリーブ";"戈\t特\t裡\t布";;
-"coop/Bot83";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"고트샬크";"戈\t特\t沙\t尔\t克";"ゴットシャルク";"戈\t特\t沙\t爾\t克";;
-"coop/Bot84";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"고츠";"格\t茨";"ゲッツ";"格\t茨";;
-"coop/Bot85";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"그리젤다";"格\t里\t瑟\t尔\t达";"グリゼルダ";"格\t裡\t瑟\t爾\t達";;
-"coop/Bot86";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"함프레흐트";"汉\t普\t雷\t西\t特";"ハムプレックス";"漢\t普\t雷\t西\t特";;
-"coop/Bot87";"Hans";"Hans";"Hans";"Hans";"Hans";"Hans";"Hans";"Hans";"Hans";"한스";"汉\t斯";"ハンス";"漢\t斯";;
-"coop/Bot88";"Harald";"Harald";"Harald";"Harald";"Harald";"Harald";"Harald";"Harald";"Harald";"하랄드";"哈\t拉\t尔\t德";"ハラルド";"哈\t拉\t爾\t德";;
-"coop/Bot89";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"하르트만";"哈\t特\t曼";"ハルトマン";"哈\t特\t曼";;
-"coop/Bot90";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"하르트비히";"哈\t特\t维\t希";"ハートウィグ";"哈\t特\t維\t希";;
-"coop/Bot91";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"하일가르";"海\t尔\t加";"ハイルガー";"海\t爾\t加";;
-"coop/Bot92";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"하임브레흐트";"海\t姆\t布\t雷\t希\t特";"ヘイメブレックス";"海\t姆\t佈\t雷\t希\t特";;
-"coop/Bot93";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"하이머리히";"海\t梅\t里\t希";"ヘイメリッヒ";"海\t梅\t裡\t希";;
-"coop/Bot94";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"헬무트";"赫\t尔\t穆\t特";"ヘルムート";"赫\t爾\t穆\t特";;
-"coop/Bot95";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"흐로트가르";"赫\t罗\t德\t加";"フロッガー";"赫\t羅\t德\t加";;
-"coop/Bot96";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"흐로트리크";"赫\t罗\t德\t里\t克";"フリッグ";"赫\t羅\t德\t里\t克";;
-"coop/Bot97";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"흐로트불프";"赫\t罗\t德\t沃\t尔\t夫";"フロットブルプ";"赫\t羅\t德\t沃\t爾\t夫";;
-"coop/Bot98";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"흐로트게르";"赫\t罗\t特\t格";"フロットゲル";"赫\t羅\t特\t格";;
-"coop/Bot99";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"훈크베르흐트";"洪\t克\t伯\t希\t特";"フランベルク";"洪\t克\t伯\t希\t特";;
-"coop/Bot100";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"후프레흐트";"胡\t普\t雷\t希\t特";"フープユトレヒト";"胡\t普\t雷\t希\t特";;
-"coop/Bot101";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"이름가르트";"伊\t姆\t加\t德";"イルムガルト";"伊\t姆\t加\t德";;
-"coop/Bot102";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"요르크";"约\t尔\t格";"ヨルグ";"約\t爾\t格";;
-"coop/Bot103";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"카이저";"凯\t泽";"カイゼル";"凱\t澤";;
-"coop/Bot104";"Karl";"Karl";"Karl";"Karl";"Karl";"Karl";"Karl";"Karl";"Karl";"카를";"卡\t尔";"カール";"卡\t爾";;
-"coop/Bot105";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"카를만";"卡\t尔\t曼";"カルマン";"卡\t爾\t曼";;
-"coop/Bot106";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"카르스텐";"卡\t斯\t滕";"カルステン";"卡\t斯\t滕";;
-"coop/Bot107";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"카시미르";"卡\t西\t米\t尔";"カシミール";"凱\t西\t米\t爾";;
-"coop/Bot108";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"카스파르";"卡\t斯\t帕";"カスパー";"卡\t斯\t帕";;
-"coop/Bot109";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"키퍼";"基\t弗";"キーファー";"基\t弗";;
-"coop/Bot110";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"클라우스";"克\t劳\t斯";"クラウス";"克\t勞\t斯";;
-"coop/Bot111";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"클레멘스";"克\t莱\t门\t斯";"クレメンス";"克\t萊\t門\t斯";;
-"coop/Bot112";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"코나르트";"康\t拉\t德";"コンラード";"康\t拉\t德";;
-"coop/Bot113";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"쿠르트";"库\t尔\t特";"カート";"庫\t爾\t特";;
-"coop/Bot114";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"람프레흐트";"兰\t普\t雷\t西\t特";" ランプレヒト";"蘭\t普\t雷\t西\t特";;
-"coop/Bot115";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"레베레흐트";"莱\t贝\t雷\t希\t特";"レベレヒト";"萊\t貝\t雷\t希\t特";;
-"coop/Bot116";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"레온하르트";"莱\t昂\t哈\t特";"レオンハルト";"萊\t昂\t哈\t特";;
-"coop/Bot117";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"레벤하르트";"莱\t文\t哈\t特";"レウェンハート";"萊\t文\t哈\t特";;
-"coop/Bot118";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"로렌츠";"洛\t伦\t兹";"ローレンツ";"洛\t倫\t茲";;
-"coop/Bot119";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"루트비히";"路\t德\t维\t希";"ラドヴィグ";"路\t德\t維\t希";;
-"coop/Bot120";"Luther";"Luther";"Luther";"Luther";"Luther";"Luther";"Luther";"Luther";"Luther";"루터";"路\t德";"ルター";"路\t德";;
-"coop/Bot121";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"만프리트";"曼\t弗\t里\t德";"マンフレッド";"曼\t弗\t裡\t德";;
-"coop/Bot122";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"마인하르트";"迈\t因\t哈\t德";"マインハルト";"邁\t因\t哈\t德";;
-"coop/Bot123";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"모리츠";"莫\t里\t茨";"モーリッツ";"莫\t里\t茨";;
-"coop/Bot124";"Otto";"Otto";"Otto";"Otto";"Otto";"Otto";"Otto";"Otto";"Otto";"오토";"奥\t托";"オットー";"奧\t托";;
-"coop/Bot125";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"라인하르트";"莱\t因\t哈\t德";"ラインハルト";"萊\t因\t哈\t德";;
-"coop/Bot126";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"라인홀트";"莱\t因\t霍\t尔\t德";"ラインホルト";"萊\t因\t霍\t爾\t德";;
-"coop/Bot127";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"라인문트";"莱\t因\t蒙\t德";"ラインムント";"萊\t因\t蒙\t德";;
-"coop/Bot128";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"뤼디거";"吕\t迪\t格";"ラディガー";"呂\t迪\t格";;
-"coop/Bot129";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"루돌프";"鲁\t道\t夫";"ルドルフ";"魯\t道\t夫";;
-"coop/Bot130";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"루프레흐트";"鲁\t普\t雷\t希\t特";"ルプレヒト";"魯\t普\t雷\t希\t特";;
-"coop/Bot131";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"지크프리트";"西\t格\t弗\t里\t德";"ジークフリート";"西\t格\t弗\t裡\t德";;
-"coop/Bot132";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"지크하르트";"西\t格\t哈\t德";"ジークハルト";"西\t格\t哈\t德";;
-"coop/Bot133";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"지크문트";"西\t格\t蒙\t德";"ジークムント";"西\t格\t蒙\t德";;
-"coop/Bot134";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"지크바르트";"西\t格\t瓦\t尔\t德";"シーグワルト";"西\t格\t瓦\t爾\t德";;
-"coop/Bot135";"Sigismund";"Sigismund";"Sigismund";"Sigismund";"Segismundo";"Sigismund";"Sigismund";"Sigismund";"Sigismund";"지기스문트";"西\t吉\t斯\t蒙\t德";"ジギスムント";"西\t吉\t斯\t蒙\t德";;
-"coop/Bot136";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"스테펜";"斯\t特\t芬";"ステファン";"斯\t特\t芬";;
-"coop/Bot137";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"스반힐다";"斯\t旺\t希\t尔\t达";"スワンヒルダ";"斯\t旺\t希\t島\t達";;
-"coop/Bot138";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"테데리히";"特\t德\t里\t希";"シアドア";"特\t德\t里\t希";;
-"coop/Bot139";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"토이도발트";"托\t伊\t多\t巴\t尔\t德";"トイモバルト";"托\t伊\t多\t巴\t爾\t德";;
-"coop/Bot140";"Udo";"Udo";"Udo";"Udo";"Udo";"Udo";"Udo";"Udo";"Udo";"우도";"乌\t多";"ウド";"烏\t多";;
-"coop/Bot141";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"울브레흐트";"乌\t尔\t布\t雷\t希\t特";"アルブレヒト";"烏\t爾\t佈\t雷\t希\t特";;
-"coop/Bot142";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"울리히";"乌\t尔\t里\t希";"ウルリッヒ";"烏\t爾\t裡\t希";;
-"coop/Bot143";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"우베";"乌\t韦";"ウーヴェ";"烏\t韋";;
-"coop/Bot144";"Volker";"Volker";"Volker";"Volker";"Volker";"Volker";"Volker";"Volker";"Volker";"볼커";"福\t尔\t克\t尔";"ヴォルカー";"福\t爾\t克\t爾";;
-"coop/Bot145";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"발라흐프리트";"瓦\t拉\t弗\t里\t德";"ワラフリド";"瓦\t拉\t弗\t裡\t德";;
-"coop/Bot146";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"발데마르";"瓦\t尔\t德\t马";"ヴァルデマール";"瓦\t爾\t德\t馬";;
-"coop/Bot147";"Walther";"Walther";"Walther";"Walther";"Walter";"Walther";"Walther";"Walther";"Walther";"발터";"瓦\t尔\t特";"ヴァルター";"瓦\t爾\t特";;
-"coop/Bot148";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"반다";"万\t达";"ワンダ";"萬\t達";;
-"coop/Bot149";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"벤첼";"文\t策\t尔";"ウェンツェル";"文\t策\t爾";;
-"coop/Bot150";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"베르너";"韦\t恩\t赫\t尔";"ウェルナー";"韋\t恩\t赫\t爾";;
-"coop/Bot151";"Werther";"Werther";"Werther";"Werther";"Werther";"Werther";"Werther";"Werther";"Werther";"베르테르";"韦\t特";"ウェルテル";"韋\t特";;
-"coop/Bot152";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"빌프리트";"维\t尔\t弗\t里\t德";"ウィルフリード";"維\t爾\t弗\t裡\t德";;
-"coop/Bot153";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"빌베르트";"维\t尔\t贝\t特";"ウィルバート";"維\t爾\t貝\t特";;
-"coop/Bot154";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"빌헬름";"威\t廉";"ウィルヘルム";"威\t廉";;
-"coop/Bot155";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"빌마르";"维\t尔\t马\t尔";"ウィルマー";"維\t爾\t瑪\t律";;
-"coop/Bot156";"Witold";"Witold";"Witold";"Witold";"Witold";"Witold";"Witold";"Witold";"Witold";"비톨트";"维\t托\t尔\t德";"ヴィトルド";"維\t托\t爾\t德";;
-"coop/Bot157";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"볼프";"沃\t尔\t夫";"ウルフ";"沃\t爾\t夫";;
-"coop/Bot158";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"볼프강";"沃\t尔\t夫\t冈";"ウォルフガング";"沃\t爾\t夫\t岡";;
-"coop/Bot159";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"볼프람";"沃\t尔\t弗\t拉\t姆";"ウォルフラム";"沃\t爾\t弗\t拉\t姆";;
-"coop/Bot160";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"아키히코";"彰\t彦";"アキヒコ";"彰\t彥";;
-"coop/Bot161";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"아키히로";"昭\t宏";"アキヒロ";"昭\t宏";;
-"coop/Bot162";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"아키카즈";"秋\t和";"アキカズ";"秋\t和";;
-"coop/Bot163";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"아키노리";"明\t宪";"アキノリ";"明\t憲";;
-"coop/Bot164";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"아키스케";"淳\t介";"アキスケ";"淳\t介";;
-"coop/Bot165";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"아키유키";"昭\t之";"アキユキ";"昭\t之";;
-"coop/Bot166";"Arata";"Arata";"Arata";"Arata";"Arata";"Arata";"Arata";"Arata";"Arata";"아라타";"新\t田";"アラタ";"新\t田";;
-"coop/Bot167";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"아츠코";"淳\t子";"アツコ";"淳\t子";;
-"coop/Bot168";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"아츠시";"敦\t史";"アツシ";"敦\t史";;
-"coop/Bot169";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"다이치";"太\t智";"ダイチ";"大\t智";;
-"coop/Bot170";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"다이히로";"大\t弘";"ダイヒロ";"大\t弘";;
-"coop/Bot171";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"다이스케";"大\t辅";"ダイスケ";"大\t輔";;
-"coop/Bot172";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"고로";"五\t郎";"ゴロウ";"五\t郎";;
-"coop/Bot173";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"후미오";"文\t雄";"フミオ";"文\t雄";;
-"coop/Bot174";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"하치로";"八\t郎";"ハチロウ";"八\t郎";;
-"coop/Bot175";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"히데아키";"秀\t明";"ヒデアキ";"秀\t明";;
-"coop/Bot176";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"히데히코";"英\t彦";"ヒデヒロ";"英\t彥";;
-"coop/Bot177";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"히데히로";"秀\t弘";"ヒデヒロ";"秀\t弘";;
-"coop/Bot178";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"히데이치";"秀\t一";"ヒデイチ";"秀\t一";;
-"coop/Bot179";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"히데카즈";"英\t寿";"ヒデカズ";"英\t壽";;
-"coop/Bot180";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"히데노리";"荣\t徳";"ヒデノリ";"秀\t則";;
-"coop/Bot181";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"히데스케";"秀\t助";"ヒデスケ";"秀\t助";;
-"coop/Bot182";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"히데유키";"秀\t之";"ヒデユキ";"秀\t之";;
-"coop/Bot183";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"히로아키";"浩\t明";"ヒロアキ";"浩\t明";;
-"coop/Bot184";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"히로히코";"裕\t彦";"ヒロヒコ";"裕\t彥";;
-"coop/Bot185";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"히로이치";"博\t一";"ヒロイチ";"博\t一";;
-"coop/Bot186";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"히로카즈";"广\t和";"ヒロカズ";"廣\t和";;
-"coop/Bot187";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"히로노리";"弘\t典";"ヒロノリ";"弘\t典";;
-"coop/Bot188";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"히로스케";"广\t介";"ヒロスケ";"廣\t介";;
-"coop/Bot189";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"히로유키";"启\t之";"ヒロユキ";"啟\t之";;
-"coop/Bot190";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"히사시";"寿";"ヒサシ";"壽";;
-"coop/Bot191";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"히소카";"久\t香";"ヒソカ";"久\t香";;
-"coop/Bot192";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"히토시";"仁\t志";"ヒトシ";"仁\t志";;
-"coop/Bot193";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"호타카";"誉\t高";"ホタカ";"譽\t高";;
-"coop/Bot194";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"이치로";"一\t郎";"イチロウ";"一\t郎";;
-"coop/Bot195";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"이자나기";"伊\t邪\t那\t岐";"イザナギ";"伊\t邪\t那\t岐";;
-"coop/Bot196";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"지로";"二\t郎";"ジロウ";"二\t郎";;
-"coop/Bot197";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"준이치";"顺\t一";"ジュンイチ";"順\t一";;
-"coop/Bot198";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"카에데";"枫";"カエデ";"楓";;
-"coop/Bot199";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"카타시";"刚";"ツヨシ";"剛";;
-"coop/Bot200";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"카츠미";"胜\t美";"カツミ";"勝\t美";;
-"coop/Bot201";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"카츠오";"克\t雄";"カツオ";"克\t雄";;
-"coop/Bot202";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"카즈히코";"和\t彦";"カズヒコ";"和\t彥";;
-"coop/Bot203";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"카즈히로";"一\t弘";"カズヒロ";"一\t弘";;
-"coop/Bot204";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"케이히로";"庆\t熙";"ケイヒロ";"慶\t熙";;
-"coop/Bot205";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"케이이치";"圭\t一";"ケイイチ";"圭\t一";;
-"coop/Bot206";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"케이스케";"启\t介";"ケイスケ";"啟\t介";;
-"coop/Bot207";"Ken";"Ken";"Ken";"Ken";"Ken";"Ken";"Ken";"Ken";"Ken";"켄";"研";"ケン";"研";;
-"coop/Bot208";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"키치로";"吉\t郎";"キチロウ";"吉\t郎";;
-"coop/Bot209";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"키요시";"清";"キヨシ";"清";;
-"coop/Bot210";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"코이치";"孝\t一";"コウイチ";"孝\t一";;
-"coop/Bot211";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"쿠니오";"邦\t夫";"クニオ";"邦\t夫";;
-"coop/Bot212";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"쿄우";"京";"キョウ";"京";;
-"coop/Bot213";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"마코토";"诚";"マコト";"誠";;
-"coop/Bot214";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"마모루";"真\t守";"マモル";"真\t守";;
-"coop/Bot215";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"마사아키";"正\t昭";"マサキ";"正\t昭";;
-"coop/Bot216";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"마사히코";"昌\t彦";"マサヒロ";"昌\t彥";;
-"coop/Bot217";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"마사히로";"正\t弘";"マサヒロ";"正\t弘";;
-"coop/Bot218";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"마사카즈";"真\t和";"マサカズ";"真\t和";;
-"coop/Bot219";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"마사노리";"正\t宪";"マサノリ";"正\t憲";;
-"coop/Bot220";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"마사스케";"政\t助";"マサスケ";"政\t助";;
-"coop/Bot221";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"마사유키";"昌\t之";"マサユキ";"昌\t之";;
-"coop/Bot222";"Midori";"Midori";"Midori";"Midori";"Midori";"Midori";"Midori";"Midori";"Midori";"미도리";"绿";"ミドリ";"綠";;
-"coop/Bot223";"Minori";"Minori";"Minori";"Minori";"Minori";"Minori";"Minori";"Minori";"Minori";"미노리";"实";"ミノリ";"實";;
-"coop/Bot224";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"미츠코";"光\t子";"ミツコ";"光\t子";;
-"coop/Bot225";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"나오키";"直\t树";"ナオキ";"直\t樹";;
-"coop/Bot226";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"나츠코";"夏\t子";"ナツコ";"夏\t子";;
-"coop/Bot227";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"노부아키";"伸\t明";"ノブアキ";"伸\t明";;
-"coop/Bot228";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"노부히코";"信\t彦";"ノブヒコ";"信\t彥";;
-"coop/Bot229";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"노부히로";"延\t博";"ノブヒロ";"延\t博";;
-"coop/Bot230";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"노부이치";"信\t一";"ノブイチ";"信\t一";;
-"coop/Bot231";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"노부카즈";"信\t和";"ノブカズ";"信\t和";;
-"coop/Bot232";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"노부노리";"宣\t德";"ノブノリ";"宣\t德";;
-"coop/Bot233";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"노부스케";"延\t助";"ノブスケ";"延\t助";;
-"coop/Bot234";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"노부유키";"修\t之";"ノブユキ";"修\t之";;
-"coop/Bot235";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"노리아키";"宪\t昭";"ノリアキ";"憲\t昭";;
-"coop/Bot236";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"노리히코";"纪\t彦";"ノリヒコ";"紀\t彥";;
-"coop/Bot237";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"노리히로";"典\t弘";"ノリヒコ";"典\t弘";;
-"coop/Bot238";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"노리이치";"德\t一";"ノリイチ";"德\t一";;
-"coop/Bot239";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"노리카즈";"哲\t一";"ノリカズ";"哲\t一";;
-"coop/Bot240";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"노리스케";"则\t祐";"ノリスケ";"則\t祐";;
-"coop/Bot241";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"노리유키";"敬\t之";"ノリユキ";"敬\t之";;
-"coop/Bot242";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"오로치";"大\t蛇";"オロチ";"大\t蛇";;
-"coop/Bot243";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"라이덴";"来\t田";"ライデン";"來\t田";;
-"coop/Bot244";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"사부로";"三\t郎";"サブロウ";"三\t郎";;
-"coop/Bot245";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"사토루";"聪";"サトル";"聰";;
-"coop/Bot246";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"사토시";"智";"サトシ";"智";;
-"coop/Bot247";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"세이이치";"诚\t一";"セイイチ";"誠\t一";;
-"coop/Bot248";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"세이카즈";"政";"セイカズ";"政";;
-"coop/Bot249";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"세이스케";"诚\t亮";"セイスケ";"誠\t亮";;
-"coop/Bot250";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"세츠코";"雪\t子";"セツコ";"雪\t子";;
-"coop/Bot251";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"시게루";"茂";"シゲル";"茂";;
-"coop/Bot252";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"스스미";"进";"ススム";"進";;
-"coop/Bot253";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"타다오";"忠\t生";"タダオ";"忠\t生";;
-"coop/Bot254";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"타다시";"规";"タダシ";"規";;
-"coop/Bot255";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"타카아키";"隆\t明";"タカアキ";"隆\t明";;
-"coop/Bot256";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"타카히코";"高\t彦";"タカヒロ";"高\t彥";;
-"coop/Bot257";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"타카히로";"孝\t宏";"タカヒロ";"孝\t宏";;
-"coop/Bot258";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"타카이치";"孝\t一";"タカイチ";"高\t一";;
-"coop/Bot259";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"타카카즈";"刚\t一";"タカカズ";"剛\t一";;
-"coop/Bot260";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"타카노리";"隆\t则";"タカノリ";"隆\t則";;
-"coop/Bot261";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"타카스케";"孝\t祐";"タカスケ";"孝\t祐";;
-"coop/Bot262";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"타카유키";"隆\t行";"タカユキ";"隆\t行";;
-"coop/Bot263";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"토미오";"富\t雄";"トミオ";"富\t雄";;
-"coop/Bot264";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"토시아키";"俊\t明";"トシアキ";"俊\t明";;
-"coop/Bot265";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"토시히코";"利\t彦";"トシヒロ";"利\t彥";;
-"coop/Bot266";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"토시히로";"敏\t弘";"トシヒロ";"敏\t弘";;
-"coop/Bot267";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"토시이치";"寿\t一";"トシイチ";"壽\t一";;
-"coop/Bot268";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"토시카즈";"俊\t和";"トシカズ";"俊\t和";;
-"coop/Bot269";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"토시노리";"利\t则";"トシノリ";"利\t則";;
-"coop/Bot270";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"토시스케";"利\t辅";"トシスケ";"利\t輔";;
-"coop/Bot271";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"토시유키";"智\t之";"トシユキ";"智\t之";;
-"coop/Bot272";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"야스히코";"康\t彦";"ヤスヒロ";"康\t彥";;
-"coop/Bot273";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"야스히로";"泰\t弘";"ヤスヒロ";"泰\t弘";;
-"coop/Bot274";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"야스이치";"安\t一";"ヤスイチ";"安\t一";;
-"coop/Bot275";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"야스코";"恭\t子";"ヤスコ";"恭\t子";;
-"coop/Bot276";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"야스카즈";"保\t和";"ヤスカズ";"保\t和";;
-"coop/Bot277";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"야스스케";"康\t辅";"ヤススケ";"康\t輔";;
-"coop/Bot278";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"야스유키";"靖\t之";"ヤスユキ";"靖\t之";;
-"coop/Bot279";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"요시아키";"义\t明";"ヨシアキ";"義\t明";;
-"coop/Bot280";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"요시히코";"佳\t彦";"ヨシヒコ";"佳\t彥";;
-"coop/Bot281";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"요시히로";"吉\t弘";"ヨシヒロ";"吉\t弘";;
-"coop/Bot282";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"요시이치";"能\t一";"ヨシイチ";"能\t一";;
-"coop/Bot283";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"요시카즈";"庆\t和";"ヨシカズ";"慶\t和";;
-"coop/Bot284";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"요시노리";"义\t则";"ヨシノリ";"義\t則";;
-"coop/Bot285";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"요시스케";"吉\t亮";"ヨシスケ";"吉\t亮";;
-"coop/Bot286";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"요시유키";"善\t之";"ヨシユキ";"善\t之";;
-"coop/Bot287";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"유이치";"由\t一";"ヨウイチ";"由\t一";;
-"coop/Bot288";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"아파나시";"阿\t法\t纳\t西";"アファナシー";"阿\t法\t納\t西";;
-"coop/Bot289";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"아그리핀";"阿\t格\t里\t平";"アグリフィン";"阿\t格\t裡\t平";;
-"coop/Bot290";"Akim";"Akim";"Akim";"Akim";"Akim";"Akim";"Akim";"Akim";"Akim";"아킴";"阿\t基\t姆";"アキム";"阿\t基\t姆";;
+"<ID|readonly|noverify>";"<English>";"<French>";"<Italian>";"<German>";"<Spanish>";"<Russian>";"<Polish>";"<Portuguese>";"<Turkish>";"<Korean>";"<Chinese>";"<Japanese>";"<TChinese>"
+"country_japan_pilot_1";"Hiroyoshi Nishizawa";"Hitoyoshi Ishikawa";"Hiroyoshi Nishizawa";"Hiroyoshi Nishizawa";"Hiroyoshi Nishizawa";"Хироёси Нисизава";"Hiroyoshi Nishizawa";"Hiroyoshi Nishizawa";"Hiroyoshi Nishizawa";"니시자와 히로요시";"西\t泽\t广\t义";"西沢広義";"西\t澤\t廣\t義"
+"country_japan_pilot_2";"Tetsuzo Iwamoto";"Etsuko Iwamoto";"Tetsuzo Iwamoto";"Tetsuzo Iwamoto";"Tetsuzo Iwamoto";"Тетсузо Ивамото";"Tetsuzo Iwamoto";"Tetsuzo Iwamoto";"Tetsuzo Iwamoto";"이와모토 테츠조";"岩\t本\t彻\t三";"岩本徹三";"岩\t本\t徹\t三"
+"country_japan_pilot_3";"Shigeo Fukumoto";"Shigeo Fukumoto";"Shigeo Fukumoto";"Shigeo Fukumoto";"Shigeo Fukumoto";"Сигео Фукумото";"Shigeo Fukumoto";"Shigeo Fukumoto";"Shigeo Fukumoto";"후쿠모토 시게오";"福\t本\t繁\t夫";"福本繁夫";"福\t本\t繁\t夫"
+"country_japan_pilot_4";"Shoichi Sugita";"Shoichi Sugita";"Shoichi Sugita";"Shoichi Sugita";"Shoichi Sugita";"Сёити Сугита";"Shoichi Sugita";"Shoichi Sugita";"Shoichi Sugita";"스기타 쇼이치";"杉\t田\t庄\t一";"杉田庄一";"杉\t田\t莊\t一"
+"country_australia_pilot_1";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Этвуд Чени";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"앳우드 채니";"阿\t特\t伍\t德·查\t尼";"アトウッド・チェイニー";"阿\t特\t伍\t德．查\t尼"
+"country_australia_pilot_2";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Морган Бретт";"Morgan Brett";"Morgan Brett";"Morgan Brett";"모건 브렛";"摩\t根·布\t雷\t特";"モーガン・ブレット";"摩\t根．布\t雷\t特"
+"country_australia_pilot_3";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Мартин Блэки";"Martin Blakey";"Martin Blakey";"Martin Blakey";"마틴 블래키";"马\t丁·布\t莱\t基";"マーチン・ブランキー";"馬\t丁．布\t萊\t基"
+"country_australia_pilot_4";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Оскар Аткин";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"오스카 앳킨";"奥\t斯\t卡·阿\t特\t金";"オスカー・アトキン";"奧\t斯\t卡．阿\t特\t金"
+"country_britain_pilot_1";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Этвуд Чени";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"앳우드 채니";"阿\t特\t伍\t德·查\t尼";"アトウッド・チェイニー";"阿\t特\t伍\t德．查\t尼"
+"country_britain_pilot_2";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Морган Бретт";"Morgan Brett";"Morgan Brett";"Morgan Brett";"모건 브렛";"摩\t根·布\t雷\t特";"モーガン・ブレット";"摩\t根．佈\t雷\t特"
+"country_britain_pilot_3";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Мартин Блэки";"Martin Blakey";"Martin Blakey";"Martin Blakey";"마틴 블래키";"马\t丁·布\t莱\t基";"マーチン・ブランキー";"馬\t丁．布\t萊\t基"
+"country_britain_pilot_4";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Оскар Аткин";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"오스카 앳킨";"奥\t斯\t卡·阿\t特\t金";"オスカー・アトキン";"奧\t斯\t卡．阿\t特\t金"
+"country_germany_pilot_1";"Dietrich Newman";"Dietrich Newman";"Dietrich Newman";"Dietrich Neumann";"Dietrich Newman";"Дитрих Ньюман";"Dietrich Newman";"Dietrich Newman";"Dietrich Newman";"디트리히 노이만";"迪\t特\t里\t希·纽\t曼";"ディートリヒ・ニューマン";"迪\t特\t裡\t希．紐\t曼"
+"country_germany_pilot_2";"Gunther Beyer";"Gunther Beyer";"Gunther Beyer";"Günther Beyer";"Gunther Beyer";"Гюнтер Бейер";"Gunther Beyer";"Gunther Beyer";"Gunther Beyer";"군터 바이어";"贡\t特\t尔·拜\t尔";"グンサー・ベイヤー";"鞏\t特\t爾．拜\t爾"
+"country_germany_pilot_3";"Hans Meymberg";"Hans Meymberg";"Hans Meymberg";"Hans Meymberg";"Hans Meymberg";"Ганс Меймберг";"Hans Meymberg";"Hans Meymberg";"Hans Meymberg";"한스 마임버그";"汉\t斯·梅\t姆\t伯\t格";"ハンス・メイムバーグ";"漢\t斯．梅\t姆\t伯\t格"
+"country_germany_pilot_4";"Paul Schweiger";"Paul Schweiger";"Paul Schweiger";"Paul Schweiger";"Paul Schweiger";"Пол Швайгер";"Paul Schweiger";"Paul Schweiger";"Paul Schweiger";"폴 슈바이거";"保\t罗·施\t威\t格";"ポール・シュバイガー";"保\t羅．施\t威\t格"
+"country_italy_pilot_1";"Adriano Visconti";"Adriano Visconti";"Adriano Visconti";"Adriano Visconti";"Adriano Visconti";"Адриано Висконти";"Adriano Visconti";"Adriano Visconti";"Adriano Visconti";"아드리아노 비스콘티";"阿\t德\t里\t亚\t诺·维\t斯\t康\t蒂";"アドリアーノ・ヴィスコンティ";"阿\t德\t里\t亞\t諾．維\t斯\t康\t蒂"
+"country_italy_pilot_2";"Franco Lucchin";"Franco Lucchin";"Franco Lucchini";"Franco Lucchin";"Franco Lucchini";"Франко Лючин";"Franco Lucchin";"Franco Lucchin";"Franco Lucchini";"프랑코 루친";"弗\t朗\t哥·鲁\t奇\t尼";"フランコ・ルッチン";"弗\t朗\t哥．魯\t奇\t尼"
+"country_italy_pilot_3";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Терезио Витторио Мартиноли";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"Teresio Vittorio Martinoli";"테레지오 비토리오 마르티놀리";"特\t雷\t西\t奥·维\t托\t里\t奥·马\t蒂\t诺\t里";"テレジオ・ヴィットリオ・マルティノリ";"特\t雷\t西\t奧．維\t托\t裡\t奧．馬\t蒂\t諾\t里"
+"country_italy_pilot_4";"Leonardo Ferrulli";"Leonardo Ferrulli";"Leonardo Ferrulli";"Leonardo Ferrulli";"Leonardo Ferrulli";"Леонардо Ферулли";"Leonardo Ferrulli";"Leonardo Ferrulli";"Leonardo Ferrulli";"레오나르도 페루리";"莱\t昂\t纳\t多·菲\t鲁\t里";"レオナルド・フェルッリ";"萊\t昂\t納\t多．菲\t魯\t里"
+"country_usa_pilot_1";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"Этвуд Чени";"Atwood Chaney";"Atwood Chaney";"Atwood Chaney";"앳우드 채니";"阿\t特\t伍\t德·查\t尼";"アトウッド・チェイニー";"阿\t特\t伍\t德．查\t尼"
+"country_usa_pilot_2";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Morgan Brett";"Морган Бретт";"Morgan Brett";"Morgan Brett";"Morgan Brett";"모건 브렛";"摩\t根·布\t雷\t特";"モーガン・ブレット";"摩\t根．布\t雷\t特"
+"country_usa_pilot_3";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Martin Blakey";"Мартин Блэки";"Martin Blakey";"Martin Blakey";"Martin Blakey";"마틴 블래키";"马\t丁·布\t莱\t基";"マーチン・ブランキー";"馬\t丁．布\t萊\t基"
+"country_usa_pilot_4";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"Оскар Аткин";"Oscar Atkin";"Oscar Atkin";"Oscar Atkin";"오스카 앳킨";"奥\t斯\t卡·阿\t特\t金";"オスカー・アトキン";"奧\t斯\t卡．阿\t特\t金"
+"country_ussr_pilot_1";"Georgy Badaev";"Georgy Badaev";"Georgy Badaev";"Georgy Badaev";"Georgy Badaev";"Георгий Бадаев";"Gieorgij Badajew";"Georgy Badaev";"Georgy Badaev";"게오르기 바다예프";"格\t奥\t尔\t基·巴\t达\t耶\t夫";"ゲオルギ・バダエフ";"格\t奧\t爾\t基．巴\t達\t耶\t夫"
+"country_ussr_pilot_2";"Roman Marinin";"Roman Marinin";"Roman Marinin";"Roman Marinin";"Roman Marinin";"Роман Маринин";"Roman Marinin";"Roman Marinin";"Roman Marinin";"로만 마리닌";"罗\t曼·马\t列\t宁";"ローマン・マリニン";"羅\t曼．馬\t列\t寧"
+"country_ussr_pilot_3";"Dmitry Strelcov";"Dmitry Strelcov";"Dmitry Strelcov";"Dimitry Strelcov";"Dmitry Strelcov";"Дмитрий Стрельцов";"Dmitrij Strielcow";"Dmitry Strelcov";"Dmitry Strelcov";"드미트리 스트렐코프";"德\t米\t特\t里·斯\t特\t列\t尔\t科\t夫";"ディミトリー・ストレルコフ";"德\t米\t特\t裡．斯\t特\t列\t爾\t科\t夫"
+"country_ussr_pilot_4";"Mikhail Tanaev";"Mikhail Tanaev";"Mikhail Tanaev";"Mikhail Tanaev";"Mikhail Tanaev";"Михаил Танаев";"Michaił Tanajew";"Mikhail Tanaev";"Mikhail Tanaev";"미하일 타나에프";"米\t哈\t伊\t尔·塔\t纳\t耶\t夫";"ミハイル・タナエフ";"米\t哈\t伊\t爾．塔\t納\t耶\t夫"
+"coop/Bot0";"Boris";"Boris";"Boris";"Boris";"Boris";"Boris";"Borys";"Boris";"Boris";"보리스";"鲍\t里\t斯";"ボリス";"伯\t里\t斯"
+"coop/Bot1";"John";"John";"John";"John";"John";"John";"John";"John";"John";"존";"约\t翰";"ジョン";"約\t翰"
+"coop/Bot2";"Vladimir";"Vladimir";"Vladimir";"Wladimir";"Vladimir";"Vladimir";"Władimir";"Vladimir";"Vladimir";"블라디미르";"弗\t拉\t基\t米\t尔";"ウラジミール";"弗\t拉\t基\t米\t爾"
+"coop/Bot3";"Sam";"Sam";"Sam";"Sam";"Sam";"Sam";"Sam";"Sam";"Sam";"샘";"山\t姆";"サム";"山\t姆"
+"coop/Bot4";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"Pedro";"페드로";"佩\t德\t罗";"ペドロ";"佩\t德\t羅"
+"coop/Bot5";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"Samuel";"새뮤얼";"塞\t缪\t尔";"サミュエル";"撒\t母\t耳"
+"coop/Bot6";"Haru";"Haru";"Haru";"Haru";"Haru";"Haru";"Haru";"Haru";"Haru";"하루";"哈\t鲁";"ハル";"哈\t魯"
+"coop/Bot7";"Lucy";"Lucy";"Lucia";"Lucy";"Lucy";"Lucy";"Lucy";"Lucy";"Lucy";"루시";"露\t西";"ルーシー";"露\t西"
+"coop/Bot8";"Harry";"Harry";"Harry";"Harry";"Harry";"Harry";"Harry";"Harry";"Harry";"해리";"哈\t利";"ハリー";"哈\t利"
+"coop/Bot9";"Leo";"Leo";"Leo";"Leo";"Leo";"Leo";"Leo";"Leo";"Leo";"레오";"利\t奥";"リオ";"利\t奧"
+"coop/Bot10";"Max";"Max";"Max";"Max";"Max";"Max";"Max";"Max";"Max";"맥스";"马\t克\t斯";"マックス";"馬\t克\t斯"
+"coop/Bot11";"Adam";"Adam";"Adam";"Adam";"Adam";"Adam";"Adam";"Adam";"Adam";"애덤";"亚\t当";"アダム";"亞\t當"
+"coop/Bot12";"Luke";"Luke";"Luca";"Luke";"Luke";"Luke";"Luke";"Luke";"Luke";"루크";"卢\t克";"ルーク";"盧\t克"
+"coop/Bot13";"Henry";"Henry";"Henry";"Henry";"Henry";"Henry";"Henry";"Henry";"Henry";"헨리";"亨\t利";"ヘンリー";"亨\t利"
+"coop/Bot14";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"Ryan";"라이언";"瑞\t恩";"ライアン";"瑞\t恩"
+"coop/Bot15";"Alex";"Alex";"Alex";"Alex";"Alex";"Alex";"Alex";"Alex";"Alex";"알렉스";"亚\t历\t克\t斯";"アレックス";"亞\t曆\t克\t斯"
+"coop/Bot16";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"Ryo";"료";"亮";"リョウ";"亮"
+"coop/Bot17";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"Shinya";"신야";"慎\t也";"シンヤ";"慎\t也"
+"coop/Bot18";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"Tetsuo";"테츠오";"哲\t生";"テツオ";"哲\t生"
+"coop/Bot19";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"Shoji";"쇼지";"庄\t司";"ショウジ";"莊\t司"
+"coop/Bot20";"Akira";"Akira";"Akira";"Akira";"Akira";"Akira";"Akira";"Akira";"Akira";"아키라";"彰";"アキラ";"彰"
+"coop/Bot21";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"Yasushi";"야스시";"康";"ヤスシ";"康"
+"coop/Bot22";"Jun";"Jun";"Giu";"Jun";"Jun";"Jun";"Jun";"Jun";"Jun";"준";"纯";"ジュン";"純"
+"coop/Bot23";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"Kenji";"켄지";"健\t二";"ケンジ";"健\t二"
+"coop/Bot24";"Kirill";"Kirill";"Kirill";"Kirill";"Kirill";"Kirill";"Kirył";"Kirill";"Kirill";"키릴";"基\t里\t尔";"キリル";"基\t里\t爾"
+"coop/Bot25";"Vasiliy";"Vasiliy";"Vasiliy";"Wasiliy";"Vasiliy";"Vasiliy";"Wasilij";"Vasiliy";"Vasiliy";"바실리";"瓦\t西\t里";"ワシリー";"瓦\t西\t裡"
+"coop/Bot26";"Sergey";"Sergey";"Sergey";"Sergey";"Sergey";"Sergey";"Siergiej";"Sergey";"Sergey";"세르게이";"谢\t尔\t盖";"セルゲイ";"謝\t爾\t蓋"
+"coop/Bot27";"Ivan";"Ivan";"Ivan";"Ivan";"Ivan";"Ivan";"Iwan";"Ivan";"İvan";"이반";"伊\t万";"イヴァン";"伊\t萬"
+"coop/Bot28";"Igor";"Igor";"Igor";"Igor";"Igor";"Igor";"Igor";"Igor";"İgor";"이고르";"伊\t格\t尔";"イゴール";"伊\t格\t爾"
+"coop/Bot29";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"Giovanni";"지오반니";"乔\t万\t尼";"ジョバンニ";"喬\t萬\t尼"
+"coop/Bot30";"Mario";"Mario";"Mario";"Mario";"Mario";"Mario";"Mario";"Mario";"Mario";"마리오";"马\t里\t奥";"マリオ";"馬\t里\t奧"
+"coop/Bot31";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"Luigi";"루이지";"路\t易\t吉";"ルイジ";"路\t易\t吉"
+"coop/Bot32";"Erich";"Erich";"Erich";"Erich";"Erich";"Erich";"Erich";"Erich";"Erich";"에리히";"埃\t里\t希";"エーリヒ";"埃\t裡\t希"
+"coop/BotPrefix";"[ai] ";"[ai] ";"[ai] ";"[ai] ";"[ai] ";"[ии] ";"[ai] ";"[ai] ";"[ai] ";"[ai]";"AI";"[アイ]";"AI"
+"country_japan_pilot_5";"Eiji Togan";"Eiji Togan";"Eiji Togan";"Eiji Togan";"Eiji Togan";"Эйдзи Тоган";"Eiji Togan";"Eiji Togan";"Eiji Togan";"토간 에이지";"东\t岸\t荣\t治";"若松 幸禧・\t赤松 貞明";"東\t岸\t榮\t治"
+"country_japan_pilot_6";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Ясухиро Генрюсай";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"Yasuhiro Genryusai";"겐류사이 야스히로";"源\t柳\t斋\t康\t弘";"岩橋・\t岩本";"源\t柳\t齋\t康\t弘"
+"country_japan_pilot_7";"Susumu Kakimoto";"Susumu Kakimoto";"Susumu Kakimoto";"Susumu Kakimoto";"Susumu Kakimoto";"Сусуми Какимото";"Susumu Kakimoto";"Susumu Kakimoto";"Susumu Kakimoto";"가키모토 스스무";"柿\t本\t进";"柿本 進";"柿\t本\t進"
+"country_japan_pilot_8";"Kanichi Masuzawa";"Kanichi Masuzawa";"Kanichi Masuzawa";"Kanichi Masuzawa";"Kanichi Masuzawa";"Каничи Масузава";"Kanichi Masuzow";"Kanichi Masuzawa";"Kanichi Masuzawa";"마스자와 칸이치";"増\t泽\t宽\t一";"増沢貫一";"増\t澤\t寬\t一"
+"country_japan_pilot_9";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Коширо Ямагучи";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"Koshiro Yamaguchi";"야마구치 코시로";"山\t口\t幸\t四\t郎";"山口　\t幸四郎";"山\t口\t幸\t四\t郎"
+"country_japan_pilot_10";"Toshiya Serizawa";"Toshiya Serizawa";"Toshiya Serizawa";"Toshiya Serizawa";"Toshiya Serizawa";"Тошия Сэридзава";"Toshiya Serizawa";"Toshiya Serizawa";"Toshiya Serizawa";"세리자와 토시야";"芹\t泽\t俊\t哉";"上原　\t利明";"芹\t澤\t俊\t哉"
+"country_japan_pilot_11";"Yukio Onozaki";"Yukio Onozaki";"Yukio Onozaki";"Yukio Onozaki";"Yukio Onozaki";"Юкио Онодзаки";"Yukio Onozaki";"Yukio Onozaki";"Yukio Onozaki";"오노자키 유키오";"小\t野\t崎\t由\t纪\t夫";"小野崎　\t幸夫";"小\t野\t崎\t由\t紀\t夫"
+"country_japan_pilot_12";"Hiroshi Koga";"Hiroshi Koga";"Hiroshi Koga";"Hiroshi Koga";"Hiroshi Koga";"Хироси Кога";"Hiroshi Koga";"Hiroshi Koga";"Hiroshi Koga";"코가 히로시";"古\t贺\t弘";"古賀　\t弘";"古\t賀\t弘"
+"country_australia_pilot_5";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Хьюго Вильфред Стэнли";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"Hugo Wilfred Stanley";"휴고 윌프레드 스탠리";"雨\t果·威\t尔\t弗\t雷\t德·斯\t坦\t利";"ヒューゴ・ウィルフレッド・スタンレー";"雨\t果．威\t爾\t弗\t雷\t德．斯\t坦\t利"
+"country_australia_pilot_6";"Arthur Waters";"Arthur Waters";"Arthur Waters";"Arthur Waters";"Arthur Waters";"Артур Вотерс";"Arthur Waters";"Arthur Waters";"Arthur Waters";"아서 월터스";"亚\t瑟·沃\t特\t斯";"アーサー・ウォーターズ";"亞\t瑟．沃\t特\t斯"
+"country_australia_pilot_7";"Robert Armstrong";"Robert Armstrong";"Robert Armstrong";"Robert Armstrong";"Robert Armstrong";"Роберт Армстронг";"Robert Armstrong";"Robert Armstrong";"Robert Armstrong";"로버트 암스트롱";"罗\t伯\t特·阿\t姆\t斯\t特\t朗";"ロバート・アームストロング";"羅\t伯\t特．阿\t姆\t斯\t壯"
+"country_australia_pilot_8";"Wilfred Sheen";"Wilfred Sheen";"Wilfred Sheen";"Wilfred Sheen";"Wilfred Sheen";"Уилфред Шин";"Wilfred Sheen";"Wilfred Sheen";"Wilfred Sheen";"윌프레드 쉰";"威\t尔\t弗\t雷\t德·西\t恩";"ウィルフレッド・シーン";"威\t爾\t弗\t雷\t德．西\t恩"
+"country_australia_pilot_9";"Caldwell Rawlinson";"Caldwell Rawlinson";"Caldwell Rawlinson";"Caldwell Rawlinson";"Caldwell Rawlinson";"Колдуэлл Раулинсон";"Caldwell Rawlinson";"Caldwell Rawlinson";"Caldwell Rawlinson";"콜드웰 로린슨";"考\t德\t威\t尔·罗\t林\t森";"コールドウェル・ローリンソン";"考\t德\t威\t爾．羅\t林\t森"
+"country_australia_pilot_10";"Ian Cronin";"Ian Cronin";"Ian Cronin";"Ian Cronin";"Ian Cronin";"Иан Кронин";"Ian Cronin";"Ian Cronin";"İan Cronin";"이안 크로닌";"伊\t恩·克\t罗\t宁";"イアン・クローニン";"伊\t恩．克\t羅\t寧"
+"country_australia_pilot_11";"Stig Truscott";"Stig Truscott";"Stig Truscott";"Stig Truscott";"Stig Truscott";"Стиг Траскотт";"Stig Truscott";"Stig Truscott";"Stig Truscott";"스티그 트루스캇";"斯\t蒂\t格·特\t拉\t斯\t科\t特";"スティグ・トラスコット";"斯\t蒂\t格．特\t拉\t斯\t科\t特"
+"country_australia_pilot_12";"Clive ""Killer"" MacLachlan";"Clive ""Killer"" MacLachlan";"Clive ""Killer"" MacLachlan";"Clive ""Killer"" MacLachlan";"Clive ""Asesino"" MacLachlan";"Клайв ""Киллер"" МакЛахлан";"Clive „Zabójca” MacLachlan";"Clive ""Assassino"" MacLachlan ";"Clive ""Katil"" MacLachlan";"클라이브 '킬러' 맥라클란";"克\t莱\t夫·“杀\t手”·麦\t克\t拉\t克\t伦";"クライブ「キラー」\tマクラクラン";"克\t萊\t夫．""\t殺\t手\t""．麥\t克\t拉\t克\t倫"
+"country_britain_pilot_5";"George Aitken";"George Aitken";"George Aitken";"George Aitken";"George Aitken";"Джордж Айткен";"George Aitken";"George Aitken";"George Aitken";"조지 에이트켄";"乔\t治·艾\t特\t肯";"ジョージ・アイトケン";"喬\t治．艾\t特\t肯"
+"country_britain_pilot_6";"Peter Vaykeham";"Peter Vaykeham";"Peter Vaykeham";"Peter Vaykeham";"Peter Vaykeham";"Питер Вайкехам";"Peter Vaykeham";"Peter Vaykeham";"Peter Vaykeham";"피터 바이크험";"彼\t得·维\t克\t汉\t姆";"ピーター・ベイケハム";"彼\t得．維\t克\t漢\t姆"
+"country_britain_pilot_7";"Dudley Carey";"Dudley Carey";"Dudley Carey";"Dudley Carey";"Dudley Carey";"Дудли Кэри";"Dudley Carey";"Dudley Carey";"Dudley Carey";"두들리 케어리";"达\t德\t利·凯\t里";"ダッドリー・ケリー";"達\t德\t利．凱\t里"
+"country_britain_pilot_8";"Jack Bader";"Jack Bader";"Jack Bader";"Jack Bader";"Jack Bader";"Джек Бэйдер";"Jack Bader";"Jack Bader";"Jack Bader";"잭 베이더";"杰\t克·巴\t德";"ジャック・ベダー";"傑\t克．巴\t德"
+"country_britain_pilot_9";"Ernest Neville Tak";"Ernest Neville Tak";"Ernest Neville Tak";"Ernest Neville Tak";"Ernest Neville Tak";"Эрнест Невилль Так";"Ernest Neville Tak";"Ernest Neville Tak";"Ernest Neville Tak";"어니스트 네빌 탁";"欧\t内\t斯\t特·内\t维\t尔·塔\t克";"アーンスト・ネビル・タック";"歐\t尼\t斯\t特．內\t維\t爾．塔\t克"
+"country_britain_pilot_10";"Frank Dandes";"Frank Dandes";"Frank Dandes";"Frank Dandes";"Frank Dandes";"Френк Дандэс";"Frank Dandes";"Frank Dandes";"Frank Dandes";"프랭크 댄데스";"弗\t兰\t克·但\t德\t斯";"フランク ・ ダンデズ";"弗\t蘭\t克．但\t德\t斯"
+"country_britain_pilot_11";"Patrick Dow";"Patrick Dow";"Patrick Dow";"Patrick Dow";"Patrick Dow";"Патрик Доу";"Patrick Dow";"Patrick Dow";"Patrick Dow";"패트릭 다우";"帕\t特\t里\t克·道";"パトリック・ドー";"派\t翠\t克．道"
+"country_britain_pilot_12";"Arthur Semple";"Arthur Semple";"Arthur Semple";"Arthur Semple";"Arthur Semple";"Артур Сэмпл";"Arthur Semple";"Arthur Semple";"Arthur Semple";"아서 셈플";"亚\t瑟·森\t普\t尔";"アーサー・センプル";"亞\t瑟．森\t普\t爾"
+"country_germany_pilot_5";"Horst Adrian";"Horst Adrian";"Horst Adrian";"Horst Adrian";"Horst Adrian";"Хорст Адриан";"Horst Adrian";"Adrian Horst";"Horst Adrian";"호르스트 에이드리언";"霍\t斯\t特·艾\t德\t里\t安";"ホースト・エイドリアン";"霍\t斯\t特．艾\t德\t里\t安"
+"country_germany_pilot_6";"Ulrich Kupfer";"Ulrich Kupfer";"Ulrich Kupfer";"Ulrich Kupfer";"Ulrich Kupfer";"Ульрих Купфер";"Ulrich Kupfer";"Ulrich Kupfer";"Ulrich Kupfer";"울리히 쿠퍼";"乌\t尔\t里\t希·库\t普\t弗";"ウルリッヒ・クファー";"烏\t爾\t裡\t希．庫\t普\t弗"
+"country_germany_pilot_7";"Ernest Greiner";"Ernest Greiner";"Ernest Greiner";"Ernest Greiner";"Ernest Greiner";"Эрнест Грейнер";"Ernest Greiner";"Ernest Greiner";"Ernest Greiner";"어니스트 그레이너";"欧\t内\t斯\t特·格\t雷\t纳";"アーンスト・グレイナー";"歐\t尼\t斯\t特．格\t雷\t納"
+"country_germany_pilot_8";"Frederick Lemke";"Frederick Lemke";"Frederick Lemke";"Frederick Lemke";"Frederick Lemke";"Фридрих Лемке";"Frederick Lemke";"Frederick Lemke";"Frederick Lemke";"프레드릭 렘케";"弗\t雷\t德\t里\t克·莱\t姆\t克";"フレデリック・レムケ";"弗\t雷\t德\t里\t克．萊\t姆\t克"
+"country_germany_pilot_9";"Julius Nordmann";"Julius Nordmann";"Julius Nordmann";"Julius Nordmann";"Julius Nordmann";"Юлиус Нордманн";"Julius Nordmann";"Julius Nordmann";"Julius Nordmann";"율리우스 노르트만";"朱\t利\t叶\t斯·诺\t德\t曼";"ユリウス・ノードマン";"朱\t利\t斯．諾\t德\t曼"
+"country_germany_pilot_10";"Emil Moritz";"Emil Moritz";"Emil Moritz";"Emil Moritz";"Emil Moritz";"Эмиль Моритц";"Emil Moritz";"Emil Moritz";"Emil Moritz";"에밀 모리츠";"埃\t米\t尔·莫\t里\t茨";"エミル・モリッツ";"埃\t米\t爾．莫\t里\t茨"
+"country_germany_pilot_11";"Willie Trenkel";"Willie Trenkel";"Willie Trenkel";"Willie Trenkel";"Willie Trenkel";"Вилли Тренкель";"Willie Trenkel";"Willie Trenkel";"Willie Trenkel";"빌리 트렝켈";"威\t利·特\t伦\t克\t尔";"ウィリー・トレンケル";"威\t利．特\t倫\t克\t爾"
+"country_germany_pilot_12";"Heinz Shnaufer";"Heinz Shnaufer";"Heinz Shnaufer";"Heinz Schnaufer";"Heinz Shnaufer";"Хайнц Шнауфер";"Heinz Shnaufer";"Heinz Shnaufer";"Heinz Shnaufer";"하인트 슈나우퍼";"海\t因\t茨·施\t瑙\t夫\t尔";"ハインツ・シュナウファー";"海\t因\t茨．施\t瑙\t夫\t爾"
+"country_italy_pilot_5";"Giuseppe Firulli";"Giuseppe Firulli";"Giuseppe Firulli";"Giuseppe Firulli";"Giuseppe Firulli";"Джузеппе Фирулли";"Giuseppe Firulli";"Giuseppe Firulli";"Giuseppe Firulli";"쥬세페 휘룰리";"朱\t塞\t佩·菲\t鲁\t里";"ジョセッぺ・フィルーリ";"朱\t塞\t佩．菲\t魯\t裡"
+"country_italy_pilot_6";"Franco Tarantola";"Franco Tarantola";"Ennio Tarantola";"Franco Tarantola";"Franco Tarantola";"Франко Тарантола";"Franco Tarantola";"Franco Tarantola";"Franco Tarantola";"프랑코 타란톨라";"弗\t朗\t哥·塔\t兰\t托\t拉";"フランコ・タラントーラ";"弗\t朗\t哥．塔\t蘭\t托\t拉"
+"country_italy_pilot_7";"Carlo Baschirotto";"Carlo Baschirotto";"Gian Lino Baschirotto";"Carlo Baschirotto";"Carlo Baschirotto";"Карло Басчиротто";"Carlo Baschirotto";"Carlo Baschirotto";"Carlo Baschirotto";"카를로 바스치로토";"卡\t罗·巴\t斯\t齐\t洛\t托";"カルロ・バシロット";"卡\t羅．巴\t斯\t齊\t洛\t托"
+"country_italy_pilot_8";"Hugo Reiner";"Hugo Reiner";"Hugo Reiner";"Hugo Reiner";"Hugo Reiner";"Уго Рейнер";"Hugo Reiner";"Hugo Reiner";"Hugo Reiner";"휴고 라이너";"雨\t果·雷\t纳";"ヒューゴ・レイナー";"雨\t果．雷\t納"
+"country_italy_pilot_9";"Andrea Visconti";"Andrea Visconti";"Adriano Visconti";"Andrea Visconti";"Andrea Visconti";"Андреа Висконти";"Andrea Visconti";"Andrea Visconti";"Andrea Visconti";"안드레아 비스콘티";"安\t德\t烈\t亚·维\t斯\t康\t蒂";"アンドレア・ヴィスコンティ";"安\t德\t莉\t亞．維\t斯\t康\t蒂"
+"country_italy_pilot_10";"Luigi Corrado";"Luigi Corrado";"Luigi Corrado";"Luigi Corrado";"Luigi Corrado";"Луиджи Коррадо";"Luigi Corrado";"Luigi Corrado";"Luigi Corrado";"루이지 코라도";"路\t易\t吉·科\t拉\t多";"ルイジ・コラード";"路\t易\t吉．柯\t拉\t多"
+"country_italy_pilot_11";"Leonardo Lucchini";"Leonardo Lucchini";"Leonardo Lucchini";"Leonardo Lucchini";"Leonardo Lucchini";"Леонардо Луччини";"Leonardo Luchchini";"Leonardo Lucchini";"Leonardo Lucchini";"레오나르도 루치니";"莱\t昂\t纳\t多·卢\t基\t尼";"レオナルド・ルッキーニ";"萊\t昂\t納\t多．盧\t基\t尼"
+"country_italy_pilot_12";"Giulio Drago";"Giulio Drago";"Ugo Drago";"Giulio Drago";"Giulio Drago";"Джулио Драго";"Giulio Drago";"Giulio Drago";"Giulio Drago";"쥴리오 드라고";"朱\t利\t奥·德\t拉\t戈";"ジュリオ・ドラゴ";"朱\t利\t奧．德\t拉\t戈"
+"country_usa_pilot_5";"Tom Anderson";"Tom Anderson";"Tom Anderson";"Tom Anderson";"Tom Anderson";"Том Андерсон";"Tom Anderson";"Tom Anderson";"Tom Anderson";"톰 앤더슨";"汤\t姆·安\t德\t森";"トム・アンダーソン";"湯\t姆．安\t德\t森"
+"country_usa_pilot_6";"Donald Hill";"Donald Hill";"Donald Hill";"Donald Hill";"Donald Hill";"Дональд Хилл";"Donald Hill";"Donald Hill";"Donald Hill";"도널드 힐";"唐\t纳\t德·希\t尔";"ドナルド・ヒル";"唐\t納\t德．希\t爾"
+"country_usa_pilot_7";"Thomas Carson";"Thomas Carson";"Thomas Carson";"Thomas Carson";"Thomas Carson";"Томас Карсон";"Thomas Carson";"Thomas Carson";"Thomas Carson";"토마스 칼슨";"托\t马\t斯·卡\t森";"トーマス・カーソン";"湯\t瑪\t斯．卡\t森"
+"country_usa_pilot_8";"Scott Johnson";"Scott Johnson";"Scott Johnson";"Scott Johnson";"Scott Johnson";"Скотт Джонсон";"Scott Johnson";"Scott Johnson";"Scott Johnson";"스콧 존슨";"斯\t科\t特·约\t翰\t逊";"スコット・ジョンソン";"斯\t科\t特．詹\t森"
+"country_usa_pilot_9";"Hamilton McGuire";"Hamilton McGuire";"Hamilton McGuire";"Hamilton McGuire";"Hamilton McGuire";"Гамильтон МакГвайр";"Hamilton McGuire";"Hamilton McGuire";"Hamilton McGuire";"해밀턴 맥과이어";"汉\t密\t尔\t顿·麦\t圭\t尔";"ハミルトン・マグワイヤー";"漢\t密\t爾\t頓．麥\t圭\t爾"
+"country_usa_pilot_10";"Gomez Gabreski";"Gomez Gabreski";"Gomez Gabreski";"Gomez Gabreski";"Gomez Gabreski";"Гомес Габрески";"Gomez Gabreski";"Gomez Gabreski";"Gomez Gabreski";"고메즈 가브레스키";"戈\t麦\t斯·加\t布\t雷\t斯\t基";"ゴメス・ガブレスキー";"戈\t麥\t斯．加\t佈\t雷\t斯\t基"
+"country_usa_pilot_11";"Lance Curtis";"Lance Curtis";"Lance Curtis";"Lance Curtis";"Lance Curtis";"Лэнс Кертис";"Lance Curtis";"Lance Curtis";"Lance Curtis";"랜스 커티스";"兰\t斯·柯\t蒂\t斯";"ランス・カーティス";"蘭\t斯．柯\t帝\t士"
+"country_usa_pilot_12";"Frank Blaksli";"Frank Blaksli";"Frank Blaksli";"Frank Blaksli";"Frank Blaksli";"Фрэнк Блаксли";"Frank Blaksli";"Frank Blaksli";"Frank Blaksli";"프랑크 블랙슬리";"弗\t兰\t克·布\t拉\t克\t斯\t利";"フランク・ブラクシル";"弗\t蘭\t克．布\t拉\t克\t斯\t利"
+"country_ussr_pilot_5";"Konstantin Deacons";"Konstantin Deacons";"Konstantin Deacons";"Konstantin Deacons";"Konstantin Deacons";"Константин Дьячков";"Konstantin Dikons";"Konstantin Deacons";"Konstantin Deacons";"콘스탄틴 디컨";"康\t斯\t坦\t丁·迪\t肯\t斯";"コンスタンティン・ディーコンズ";"康\t斯\t坦\t丁．迪\t肯\t斯"
+"country_ussr_pilot_6";"Leonid Golubev";"Leonid Golubev";"Leonid Golubev";"Leonid Golubev";"Leonid Golubev";"Леонид Голубев";"Leonid Gołubiew";"Leonid Golubev";"Leonid Golubev";"레오니트 골루볘브";"里\t奥\t尼\t德·戈\t卢\t别\t夫";"レオニッド・グルベフ";"裡\t奧\t尼\t德．戈\t盧\t別\t夫"
+"country_ussr_pilot_7";"Eugene Zaitsev";"Eugene Zaitsev";"Eugene Zaitsev";"Eugene Zaitsev";"Eugene Zaitsev";"Евгений Зайцев";"Jewgienij Zajcew";"Eugene Zaitsev";"Eugene Zaitsev";"유진 자이체프";"尤\t金·扎\t伊\t采\t夫";"ユージーン・ザイツェフ";"尤\t金．紮\t伊\t采\t夫"
+"country_ussr_pilot_8";"Ivan Kuznetsov";"Ivan Kuznetsov";"Ivan Kuznetsov";"Ivan Kuznetsov";"Ivan Kuznetsov";"Иван Кузнецов";"Iwan Kuzniecow";"Ivan Kuznetsov";"İvan Kuznetsov";"이반 쿠즈네초프";"伊\t万·库\t兹\t涅\t佐\t夫";"イワン・クズネツォフ";"伊\t萬．庫\t茲\t涅\t佐\t夫"
+"country_ussr_pilot_9";"Semyon Zinchenko";"Semyon Zinchenko";"Semyon Zinchenko";"Semyon Zinchenko";"Semyon Zinchenko";"Семен Зинченко";"Siemion Zinczenko";"Semyon Zinchenko";"Semyon Zinchenko";"세묜 진첸코";"塞\t姆\t扬·津\t琴\t科";"セミョン・ジンチェンコ";"塞\t姆\t揚．津\t琴\t科"
+"country_ussr_pilot_10";"Nicholas Maksimov";"Nicholas Maksimov";"Nicholas Maksimov";"Nicholas Maksimov";"Nicholas Maksimov";"Николай Максимов";"Nikołaj Maksimow";"Nicholas Maksimov";"Nicholas Maksimov";"니콜라스 막시모프";"尼\t古\t拉\t斯·马\t克\t西\t莫\t夫";"ニコラス・マクシモフ";"尼\t古\t拉\t斯．馬\t克\t西\t莫\t夫"
+"country_ussr_pilot_11";"Peter Rudenko";"Peter Rudenko";"Peter Rudenko";"Peter Rudenko";"Peter Rudenko";"Петр Руденко";"Piotr Rudenko";"Peter Rudenko";"Peter Rudenko";"피터 루덴코";"彼\t得·卢\t登\t科";"ピーター・ルーデンコ";"彼\t得．盧\t登\t科"
+"country_ussr_pilot_12";"Victor Tokarev";"Victor Tokarev";"Victor Tokarev";"Victor Tokarev";"Victor Tokarev";"Виктор Токарев";"Wiktor Tokariew";"Victor Tokarev";"Victor Tokarev";"빅터 토카레프";"维\t克\t多·托\t卡\t列\t夫";"ビクター・トカレフ";"維\t克\t多．托\t卡\t列\t夫"
+"coop/Bot33";"Abelard";"Abelard";"Abelard";"Abelard";"Abelardo";"Abelard";"Abelard";"Abelard";"Abelard";"아벨라르";"阿\t伯\t拉\t德";"アベラール";"阿\t伯\t拉\t德"
+"coop/Bot34";"Ada";"Ada";"Ada";"Ada";"Ada";"Ada";"Ada";"Ada";"Ada";"에이다";"艾\t达";"エイダ";"艾\t達"
+"coop/Bot35";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"Adalhard";"아달하르트";"阿\t达\t尔\t哈\t特";"アーダルハルト";"阿\t達\t爾\t哈\t特"
+"coop/Bot36";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"Adalmar";"아달마르";"阿\t达\t尔\t马";"アダルマール";"阿\t達\t爾\t馬"
+"coop/Bot37";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"Adalwulf";"아달불프";"阿\t达\t尔\t沃\t尔\t夫";"アダルウォルフ";"阿\t達\t爾\t沃\t爾\t夫"
+"coop/Bot38";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"Agnethe";"아그네테";"阿\t格\t内\t特";"アグネッタ";"阿\t格\t內\t特"
+"coop/Bot39";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"Albrecht";"알브레흐트";"阿\t尔\t布\t雷\t西\t特";"アルブレヒト";"阿\t爾\t佈\t雷\t西\t特"
+"coop/Bot40";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"Aldo";"알도";"奥\t尔\t多";"アルド";"奧\t爾\t多"
+"coop/Bot41";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"Aldrich";"알드리히";"奥\t德\t里\t奇";"アルドリッチ";"奧\t德\t里\t奇"
+"coop/Bot42";"Alf";"Alf";"Alf";"Alf";"Alf";"Alf";"Alf";"Alf";"Alf";"알프";"阿\t尔\t夫";"アルフ";"阿\t爾\t夫"
+"coop/Bot43";"Alfons";"Alfons";"Alfons";"Alfons";"Alfonso";"Alfons";"Alfons";"Alfons";"Alfons";"알폰스";"阿\t尔\t方\t斯";"アルフォンス";"阿\t爾\t方\t斯"
+"coop/Bot44";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"Almerich";"알메리히";"阿\t尔\t梅\t利\t希";"アルメリック";"阿\t爾\t梅\t利\t希"
+"coop/Bot45";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"Alrich";"알리히";"阿\t尔\t利\t希";"アルドリッチ";"阿\t爾\t利\t希"
+"coop/Bot46";"Altman";"Altman";"Altman";"Altman";"Altman";"Altman";"Altman";"Altman";"Altman";"알트만";"阿\t尔\t特\t曼";"アルトマン";"阿\t爾\t特\t曼"
+"coop/Bot47";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"Amalrich";"아말리히";"阿\t玛\t尔\t利\t希";"アマルリック";"阿\t瑪\t爾\t利\t希"
+"coop/Bot48";"Anke";"Anke";"Anke";"Anke";"Anke";"Anke";"Anke";"Anke";"Anke";"안케";"安\t克";"アンケ";"安\t克"
+"coop/Bot49";"Anshelm";"Anshelm";"Anshelm";"Anshelm";"Anselmo";"Anshelm";"Anshelm";"Anshelm";"Anshelm";"안셸름";"安\t斯\t赫\t尔\t姆";"アンセルムス";"安\t斯\t赫\t爾\t姆"
+"coop/Bot50";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"Arnwald";"아른발트";"阿\t恩\t斯\t瓦\t尔\t德";"アーンウォルド";"阿\t恩\t斯\t瓦\t爾\t德"
+"coop/Bot51";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"Bardawulf";"바르다불프";"巴\t尔\t达\t沃\t尔\t夫";"ボードウルフ";"巴\t爾\t達\t沃\t爾\t夫"
+"coop/Bot52";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"Berahthraben";"베라흐트라벤";"贝\t拉\t特\t拉\t本";"ベビーラフトラベン";"貝\t拉\t特\t拉\t本"
+"coop/Bot53";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"Berhtram";"베르트람";"伯\t特\t伦";"ベルトラム";"伯\t特\t倫"
+"coop/Bot54";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"Bernhardt";"베른하르트";"伯\t恩\t哈\t特";"ベルンハルト";"伯\t恩\t哈\t特"
+"coop/Bot55";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"Berthold";"베르톨트";"贝\t特\t霍\t尔\t德";"ベルトルド";"貝\t特\t霍\t爾\t德"
+"coop/Bot56";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"Burkhard";"부르크하르트";"布\t克\t哈\t德";"ブルクハルト";"布\t克\t哈\t德"
+"coop/Bot57";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"Dedrich";"데드리히";"德\t德\t里\t希";"ディードリッヒ";"德\t德\t里\t希"
+"coop/Bot58";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"Dietmar";"디트마르";"迪\t特\t马\t尔";"ディトマー";"迪\t特\t瑪\t律"
+"coop/Bot59";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"Dietrich";"디트리히";"迪\t特\t里\t希";"ディートリッヒ";"迪\t特\t裡\t希"
+"coop/Bot60";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"Dirk";"디르크";"迪\t尔\t克";"ディルク";"迪\t爾\t克"
+"coop/Bot61";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"Eberhard";"에버하르트";"埃\t伯\t哈\t德";"エバーハルト";"埃\t伯\t哈\t德"
+"coop/Bot62";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"Echhardt";"에흐하르트";"埃\t希\t哈\t特";"エックハルト";"埃\t希\t哈\t特"
+"coop/Bot63";"Eduard";"Eduard";"Eduard";"Eduard";"Eduardo";"Eduard";"Eduard";"Eduard";"Eduard";"에두아르트";"爱\t德\t华";"エドワード";"愛\t德\t華"
+"coop/Bot64";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"Emmerich";"에머리히";"埃\t梅\t里\t希";"エメリッヒ";"埃\t梅\t裡\t希"
+"coop/Bot65";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"Engelbert";"엥겔베르트";"恩\t格\t尔\t贝\t特";"エンゲルベルト";"恩\t格\t爾\t貝\t特"
+"coop/Bot66";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"Erdmann";"에르트만";"埃\t德\t曼";"エルトマン";"埃\t德\t曼"
+"coop/Bot67";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"Erhard";"에르하르트";"埃\t哈\t德";"エアハルト";"埃\t哈\t德"
+"coop/Bot68";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"Erwin";"에르빈";"埃\t尔\t温";"アーウェン";"埃\t爾\t溫"
+"coop/Bot69";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"Friedhelm";"프리드헬름";"弗\t里\t德\t黑\t尔\t姆";"フリードヘルム";"弗\t裡\t德\t黑\t爾\t姆"
+"coop/Bot70";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"Friedrich";"프리드리히";"弗\t里\t德\t里\t希";"フリードリヒ";"弗\t裡\t德\t里\t希"
+"coop/Bot71";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"Fritz";"프리츠";"弗\t里\t茨";"フリッツ";"弗\t裡\t茨"
+"coop/Bot72";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"Gamhard";"감하르트";"加\t姆\t哈\t德";"ガムハルト";"加\t姆\t哈\t德"
+"coop/Bot73";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"Gaufrid";"가우프리트";"高\t弗\t里\t德";"ガウフリート";"高\t弗\t裡\t德"
+"coop/Bot74";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"Gebbert";"게베르트";"格\t贝\t尔\t特";"ゲバート";"格\t貝\t爾\t特"
+"coop/Bot75";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"Gerhardt";"게르하르트";"格\t尔\t哈\t特";"ゲールハルト";"格\t爾\t哈\t特"
+"coop/Bot76";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"Gerrit";"게리트";"格\t里\t特";"ゲリット";"格\t裡\t特"
+"coop/Bot77";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"Gertraud";"게르트라우트";"格\t尔\t特\t劳\t德";"ゲルトラウト";"格\t爾\t特\t勞\t德"
+"coop/Bot78";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"Gerwulf";"게르불프";"格\t尔\t沃\t尔\t夫";"ゲルブルプ";"格\t爾\t沃\t爾\t夫"
+"coop/Bot79";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"Gisfrid";"기스프리트";"吉\t斯\t弗\t里\t德";"ガルフリッド";"吉\t斯\t弗\t裡\t德"
+"coop/Bot80";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"Gottfried";"고트프리트";"戈\t特\t弗\t里\t德";"ゴットフリート";"戈\t特\t弗\t裡\t德"
+"coop/Bot81";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"Gotthard";"고트하르트";"戈\t特\t哈\t德";"ゴットハルト";"戈\t特\t哈\t德"
+"coop/Bot82";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"Gottlieb";"고틀리프";"戈\t特\t里\t布";"ゴットリーブ";"戈\t特\t裡\t布"
+"coop/Bot83";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"Gottshalk";"고트샬크";"戈\t特\t沙\t尔\t克";"ゴットシャルク";"戈\t特\t沙\t爾\t克"
+"coop/Bot84";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"Gotz";"고츠";"格\t茨";"ゲッツ";"格\t茨"
+"coop/Bot85";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"Griselda";"그리젤다";"格\t里\t瑟\t尔\t达";"グリゼルダ";"格\t裡\t瑟\t爾\t達"
+"coop/Bot86";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"Hamprecht";"함프레흐트";"汉\t普\t雷\t西\t特";"ハムプレックス";"漢\t普\t雷\t西\t特"
+"coop/Bot87";"Hans";"Hans";"Hans";"Hans";"Hans";"Hans";"Hans";"Hans";"Hans";"한스";"汉\t斯";"ハンス";"漢\t斯"
+"coop/Bot88";"Harald";"Harald";"Harald";"Harald";"Harald";"Harald";"Harald";"Harald";"Harald";"하랄드";"哈\t拉\t尔\t德";"ハラルド";"哈\t拉\t爾\t德"
+"coop/Bot89";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"Hartmann";"하르트만";"哈\t特\t曼";"ハルトマン";"哈\t特\t曼"
+"coop/Bot90";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"Hartwig";"하르트비히";"哈\t特\t维\t希";"ハートウィグ";"哈\t特\t維\t希"
+"coop/Bot91";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"Heilgar";"하일가르";"海\t尔\t加";"ハイルガー";"海\t爾\t加"
+"coop/Bot92";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"Heimbrecht";"하임브레흐트";"海\t姆\t布\t雷\t希\t特";"ヘイメブレックス";"海\t姆\t佈\t雷\t希\t特"
+"coop/Bot93";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"Heimerich";"하이머리히";"海\t梅\t里\t希";"ヘイメリッヒ";"海\t梅\t裡\t希"
+"coop/Bot94";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"Helmuth";"헬무트";"赫\t尔\t穆\t特";"ヘルムート";"赫\t爾\t穆\t特"
+"coop/Bot95";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"Hrodgar";"흐로트가르";"赫\t罗\t德\t加";"フロッガー";"赫\t羅\t德\t加"
+"coop/Bot96";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"Hrodrick";"흐로트리크";"赫\t罗\t德\t里\t克";"フリッグ";"赫\t羅\t德\t里\t克"
+"coop/Bot97";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"Hrodwulf";"흐로트불프";"赫\t罗\t德\t沃\t尔\t夫";"フロットブルプ";"赫\t羅\t德\t沃\t爾\t夫"
+"coop/Bot98";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"Hrotger";"흐로트게르";"赫\t罗\t特\t格";"フロットゲル";"赫\t羅\t特\t格"
+"coop/Bot99";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"Huncbercht";"훈크베르흐트";"洪\t克\t伯\t希\t特";"フランベルク";"洪\t克\t伯\t希\t特"
+"coop/Bot100";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"Hupprecht";"후프레흐트";"胡\t普\t雷\t希\t特";"フープユトレヒト";"胡\t普\t雷\t希\t特"
+"coop/Bot101";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"Irmgard";"이름가르트";"伊\t姆\t加\t德";"イルムガルト";"伊\t姆\t加\t德"
+"coop/Bot102";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"Jorg";"요르크";"约\t尔\t格";"ヨルグ";"約\t爾\t格"
+"coop/Bot103";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"Kaiser";"카이저";"凯\t泽";"カイゼル";"凱\t澤"
+"coop/Bot104";"Karl";"Karl";"Karl";"Karl";"Karl";"Karl";"Karl";"Karl";"Karl";"카를";"卡\t尔";"カール";"卡\t爾"
+"coop/Bot105";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"Karlmann";"카를만";"卡\t尔\t曼";"カルマン";"卡\t爾\t曼"
+"coop/Bot106";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"Karsten";"카르스텐";"卡\t斯\t滕";"カルステン";"卡\t斯\t滕"
+"coop/Bot107";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"Kasimir";"카시미르";"卡\t西\t米\t尔";"カシミール";"凱\t西\t米\t爾"
+"coop/Bot108";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"Kaspar";"카스파르";"卡\t斯\t帕";"カスパー";"卡\t斯\t帕"
+"coop/Bot109";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"Kiefer";"키퍼";"基\t弗";"キーファー";"基\t弗"
+"coop/Bot110";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"Klaus";"클라우스";"克\t劳\t斯";"クラウス";"克\t勞\t斯"
+"coop/Bot111";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"Klemens";"클레멘스";"克\t莱\t门\t斯";"クレメンス";"克\t萊\t門\t斯"
+"coop/Bot112";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"Konrad";"코나르트";"康\t拉\t德";"コンラード";"康\t拉\t德"
+"coop/Bot113";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"Kurt";"쿠르트";"库\t尔\t特";"カート";"庫\t爾\t特"
+"coop/Bot114";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"Lamprecht";"람프레흐트";"兰\t普\t雷\t西\t特";" ランプレヒト";"蘭\t普\t雷\t西\t特"
+"coop/Bot115";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"Leberecht";"레베레흐트";"莱\t贝\t雷\t希\t特";"レベレヒト";"萊\t貝\t雷\t希\t特"
+"coop/Bot116";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"Leonhardt";"레온하르트";"莱\t昂\t哈\t特";"レオンハルト";"萊\t昂\t哈\t特"
+"coop/Bot117";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"Lewenhart";"레벤하르트";"莱\t文\t哈\t特";"レウェンハート";"萊\t文\t哈\t特"
+"coop/Bot118";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"Lorenz";"로렌츠";"洛\t伦\t兹";"ローレンツ";"洛\t倫\t茲"
+"coop/Bot119";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"Ludwig";"루트비히";"路\t德\t维\t希";"ラドヴィグ";"路\t德\t維\t希"
+"coop/Bot120";"Luther";"Luther";"Luther";"Luther";"Luther";"Luther";"Luther";"Luther";"Luther";"루터";"路\t德";"ルター";"路\t德"
+"coop/Bot121";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"Manfried";"만프리트";"曼\t弗\t里\t德";"マンフレッド";"曼\t弗\t裡\t德"
+"coop/Bot122";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"Meinhard";"마인하르트";"迈\t因\t哈\t德";"マインハルト";"邁\t因\t哈\t德"
+"coop/Bot123";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"Moritz";"모리츠";"莫\t里\t茨";"モーリッツ";"莫\t里\t茨"
+"coop/Bot124";"Otto";"Otto";"Otto";"Otto";"Otto";"Otto";"Otto";"Otto";"Otto";"오토";"奥\t托";"オットー";"奧\t托"
+"coop/Bot125";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"Reinhard";"라인하르트";"莱\t因\t哈\t德";"ラインハルト";"萊\t因\t哈\t德"
+"coop/Bot126";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"Reinhold";"라인홀트";"莱\t因\t霍\t尔\t德";"ラインホルト";"萊\t因\t霍\t爾\t德"
+"coop/Bot127";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"Reinmund";"라인문트";"莱\t因\t蒙\t德";"ラインムント";"萊\t因\t蒙\t德"
+"coop/Bot128";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"Rudiger";"뤼디거";"吕\t迪\t格";"ラディガー";"呂\t迪\t格"
+"coop/Bot129";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"Rudolf";"루돌프";"鲁\t道\t夫";"ルドルフ";"魯\t道\t夫"
+"coop/Bot130";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"Rupprecht";"루프레흐트";"鲁\t普\t雷\t希\t特";"ルプレヒト";"魯\t普\t雷\t希\t特"
+"coop/Bot131";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"Siegfried";"지크프리트";"西\t格\t弗\t里\t德";"ジークフリート";"西\t格\t弗\t裡\t德"
+"coop/Bot132";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"Sieghard";"지크하르트";"西\t格\t哈\t德";"ジークハルト";"西\t格\t哈\t德"
+"coop/Bot133";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"Siegmund";"지크문트";"西\t格\t蒙\t德";"ジークムント";"西\t格\t蒙\t德"
+"coop/Bot134";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"Siegward";"지크바르트";"西\t格\t瓦\t尔\t德";"シーグワルト";"西\t格\t瓦\t爾\t德"
+"coop/Bot135";"Sigismund";"Sigismund";"Sigismund";"Sigismund";"Segismundo";"Sigismund";"Sigismund";"Sigismund";"Sigismund";"지기스문트";"西\t吉\t斯\t蒙\t德";"ジギスムント";"西\t吉\t斯\t蒙\t德"
+"coop/Bot136";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"Steffen";"스테펜";"斯\t特\t芬";"ステファン";"斯\t特\t芬"
+"coop/Bot137";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"Swanhilda";"스반힐다";"斯\t旺\t希\t尔\t达";"スワンヒルダ";"斯\t旺\t希\t島\t達"
+"coop/Bot138";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"Tederich";"테데리히";"特\t德\t里\t希";"シアドア";"特\t德\t里\t希"
+"coop/Bot139";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"Theudobald";"토이도발트";"托\t伊\t多\t巴\t尔\t德";"トイモバルト";"托\t伊\t多\t巴\t爾\t德"
+"coop/Bot140";"Udo";"Udo";"Udo";"Udo";"Udo";"Udo";"Udo";"Udo";"Udo";"우도";"乌\t多";"ウド";"烏\t多"
+"coop/Bot141";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"Ulbrecht";"울브레흐트";"乌\t尔\t布\t雷\t希\t特";"アルブレヒト";"烏\t爾\t佈\t雷\t希\t特"
+"coop/Bot142";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"Ulrich";"울리히";"乌\t尔\t里\t希";"ウルリッヒ";"烏\t爾\t裡\t希"
+"coop/Bot143";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"Uwe";"우베";"乌\t韦";"ウーヴェ";"烏\t韋"
+"coop/Bot144";"Volker";"Volker";"Volker";"Volker";"Volker";"Volker";"Volker";"Volker";"Volker";"볼커";"福\t尔\t克\t尔";"ヴォルカー";"福\t爾\t克\t爾"
+"coop/Bot145";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"Walahfried";"발라흐프리트";"瓦\t拉\t弗\t里\t德";"ワラフリド";"瓦\t拉\t弗\t裡\t德"
+"coop/Bot146";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"Waldemar";"발데마르";"瓦\t尔\t德\t马";"ヴァルデマール";"瓦\t爾\t德\t馬"
+"coop/Bot147";"Walther";"Walther";"Walther";"Walther";"Walter";"Walther";"Walther";"Walther";"Walther";"발터";"瓦\t尔\t特";"ヴァルター";"瓦\t爾\t特"
+"coop/Bot148";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"Wanda";"반다";"万\t达";"ワンダ";"萬\t達"
+"coop/Bot149";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"Wenzel";"벤첼";"文\t策\t尔";"ウェンツェル";"文\t策\t爾"
+"coop/Bot150";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"Wernher";"베르너";"韦\t恩\t赫\t尔";"ウェルナー";"韋\t恩\t赫\t爾"
+"coop/Bot151";"Werther";"Werther";"Werther";"Werther";"Werther";"Werther";"Werther";"Werther";"Werther";"베르테르";"韦\t特";"ウェルテル";"韋\t特"
+"coop/Bot152";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"Wilfried";"빌프리트";"维\t尔\t弗\t里\t德";"ウィルフリード";"維\t爾\t弗\t裡\t德"
+"coop/Bot153";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"Wilbert";"빌베르트";"维\t尔\t贝\t特";"ウィルバート";"維\t爾\t貝\t特"
+"coop/Bot154";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"Wilhelm";"빌헬름";"威\t廉";"ウィルヘルム";"威\t廉"
+"coop/Bot155";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"Wilmar";"빌마르";"维\t尔\t马\t尔";"ウィルマー";"維\t爾\t瑪\t律"
+"coop/Bot156";"Witold";"Witold";"Witold";"Witold";"Witold";"Witold";"Witold";"Witold";"Witold";"비톨트";"维\t托\t尔\t德";"ヴィトルド";"維\t托\t爾\t德"
+"coop/Bot157";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"Wolf";"볼프";"沃\t尔\t夫";"ウルフ";"沃\t爾\t夫"
+"coop/Bot158";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"Wolfgang";"볼프강";"沃\t尔\t夫\t冈";"ウォルフガング";"沃\t爾\t夫\t岡"
+"coop/Bot159";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"Wolfram";"볼프람";"沃\t尔\t弗\t拉\t姆";"ウォルフラム";"沃\t爾\t弗\t拉\t姆"
+"coop/Bot160";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"Akihiko";"아키히코";"彰\t彦";"アキヒコ";"彰\t彥"
+"coop/Bot161";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"Akihiro";"아키히로";"昭\t宏";"アキヒロ";"昭\t宏"
+"coop/Bot162";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"Akikazu";"아키카즈";"秋\t和";"アキカズ";"秋\t和"
+"coop/Bot163";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"Akinori";"아키노리";"明\t宪";"アキノリ";"明\t憲"
+"coop/Bot164";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"Akisuke";"아키스케";"淳\t介";"アキスケ";"淳\t介"
+"coop/Bot165";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"Akiyuki";"아키유키";"昭\t之";"アキユキ";"昭\t之"
+"coop/Bot166";"Arata";"Arata";"Arata";"Arata";"Arata";"Arata";"Arata";"Arata";"Arata";"아라타";"新\t田";"アラタ";"新\t田"
+"coop/Bot167";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"Atsuko";"아츠코";"淳\t子";"アツコ";"淳\t子"
+"coop/Bot168";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"Atsushi";"아츠시";"敦\t史";"アツシ";"敦\t史"
+"coop/Bot169";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"Daichi";"다이치";"太\t智";"ダイチ";"大\t智"
+"coop/Bot170";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"Daihiro";"다이히로";"大\t弘";"ダイヒロ";"大\t弘"
+"coop/Bot171";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"Daisuke";"다이스케";"大\t辅";"ダイスケ";"大\t輔"
+"coop/Bot172";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"Gorou";"고로";"五\t郎";"ゴロウ";"五\t郎"
+"coop/Bot173";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"Fumio";"후미오";"文\t雄";"フミオ";"文\t雄"
+"coop/Bot174";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"Hachiro";"하치로";"八\t郎";"ハチロウ";"八\t郎"
+"coop/Bot175";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"Hideaki";"히데아키";"秀\t明";"ヒデアキ";"秀\t明"
+"coop/Bot176";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"Hidehiko";"히데히코";"英\t彦";"ヒデヒロ";"英\t彥"
+"coop/Bot177";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"Hidehiro";"히데히로";"秀\t弘";"ヒデヒロ";"秀\t弘"
+"coop/Bot178";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"Hideichi";"히데이치";"秀\t一";"ヒデイチ";"秀\t一"
+"coop/Bot179";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"Hidekazu";"히데카즈";"英\t寿";"ヒデカズ";"英\t壽"
+"coop/Bot180";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"Hidenori";"히데노리";"荣\t徳";"ヒデノリ";"秀\t則"
+"coop/Bot181";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"Hidesuke";"히데스케";"秀\t助";"ヒデスケ";"秀\t助"
+"coop/Bot182";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"Hideyuki";"히데유키";"秀\t之";"ヒデユキ";"秀\t之"
+"coop/Bot183";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"Hiroaki";"히로아키";"浩\t明";"ヒロアキ";"浩\t明"
+"coop/Bot184";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"Hirohiko";"히로히코";"裕\t彦";"ヒロヒコ";"裕\t彥"
+"coop/Bot185";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"Hiroichi";"히로이치";"博\t一";"ヒロイチ";"博\t一"
+"coop/Bot186";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"Hirokazu";"히로카즈";"广\t和";"ヒロカズ";"廣\t和"
+"coop/Bot187";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"Hironori";"히로노리";"弘\t典";"ヒロノリ";"弘\t典"
+"coop/Bot188";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"Hirosuke";"히로스케";"广\t介";"ヒロスケ";"廣\t介"
+"coop/Bot189";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"Hiroyuki";"히로유키";"启\t之";"ヒロユキ";"啟\t之"
+"coop/Bot190";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"Hisashi";"히사시";"寿";"ヒサシ";"壽"
+"coop/Bot191";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"Hisoka";"히소카";"久\t香";"ヒソカ";"久\t香"
+"coop/Bot192";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"Hitoshi";"히토시";"仁\t志";"ヒトシ";"仁\t志"
+"coop/Bot193";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"Hotaka";"호타카";"誉\t高";"ホタカ";"譽\t高"
+"coop/Bot194";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"Ichirou";"이치로";"一\t郎";"イチロウ";"一\t郎"
+"coop/Bot195";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"Izanagi";"이자나기";"伊\t邪\t那\t岐";"イザナギ";"伊\t邪\t那\t岐"
+"coop/Bot196";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"Jirou";"지로";"二\t郎";"ジロウ";"二\t郎"
+"coop/Bot197";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"Junichi";"준이치";"顺\t一";"ジュンイチ";"順\t一"
+"coop/Bot198";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"Kaede";"카에데";"枫";"カエデ";"楓"
+"coop/Bot199";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"Katashi";"카타시";"刚";"ツヨシ";"剛"
+"coop/Bot200";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"Katsumi";"카츠미";"胜\t美";"カツミ";"勝\t美"
+"coop/Bot201";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"Katsuo";"카츠오";"克\t雄";"カツオ";"克\t雄"
+"coop/Bot202";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"Kazuhiko";"카즈히코";"和\t彦";"カズヒコ";"和\t彥"
+"coop/Bot203";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"Kazuhiro";"카즈히로";"一\t弘";"カズヒロ";"一\t弘"
+"coop/Bot204";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"Keihiro";"케이히로";"庆\t熙";"ケイヒロ";"慶\t熙"
+"coop/Bot205";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"Keiichi";"케이이치";"圭\t一";"ケイイチ";"圭\t一"
+"coop/Bot206";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"Keisuke";"케이스케";"启\t介";"ケイスケ";"啟\t介"
+"coop/Bot207";"Ken";"Ken";"Ken";"Ken";"Ken";"Ken";"Ken";"Ken";"Ken";"켄";"研";"ケン";"研"
+"coop/Bot208";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"Kichirou";"키치로";"吉\t郎";"キチロウ";"吉\t郎"
+"coop/Bot209";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"Kiyoshi";"키요시";"清";"キヨシ";"清"
+"coop/Bot210";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"Koichi";"코이치";"孝\t一";"コウイチ";"孝\t一"
+"coop/Bot211";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"Kunio";"쿠니오";"邦\t夫";"クニオ";"邦\t夫"
+"coop/Bot212";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"Kyou";"쿄우";"京";"キョウ";"京"
+"coop/Bot213";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"Makoto";"마코토";"诚";"マコト";"誠"
+"coop/Bot214";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"Mamoru";"마모루";"真\t守";"マモル";"真\t守"
+"coop/Bot215";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"Masaaki";"마사아키";"正\t昭";"マサキ";"正\t昭"
+"coop/Bot216";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"Masahiko";"마사히코";"昌\t彦";"マサヒロ";"昌\t彥"
+"coop/Bot217";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"Masahiro";"마사히로";"正\t弘";"マサヒロ";"正\t弘"
+"coop/Bot218";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"Masakazu";"마사카즈";"真\t和";"マサカズ";"真\t和"
+"coop/Bot219";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"Masanori";"마사노리";"正\t宪";"マサノリ";"正\t憲"
+"coop/Bot220";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"Masasuke";"마사스케";"政\t助";"マサスケ";"政\t助"
+"coop/Bot221";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"Masayuki";"마사유키";"昌\t之";"マサユキ";"昌\t之"
+"coop/Bot222";"Midori";"Midori";"Midori";"Midori";"Midori";"Midori";"Midori";"Midori";"Midori";"미도리";"绿";"ミドリ";"綠"
+"coop/Bot223";"Minori";"Minori";"Minori";"Minori";"Minori";"Minori";"Minori";"Minori";"Minori";"미노리";"实";"ミノリ";"實"
+"coop/Bot224";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"Mitsuko";"미츠코";"光\t子";"ミツコ";"光\t子"
+"coop/Bot225";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"Naoki";"나오키";"直\t树";"ナオキ";"直\t樹"
+"coop/Bot226";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"Natsuko";"나츠코";"夏\t子";"ナツコ";"夏\t子"
+"coop/Bot227";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"Nobuaki";"노부아키";"伸\t明";"ノブアキ";"伸\t明"
+"coop/Bot228";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"Nobuhiko";"노부히코";"信\t彦";"ノブヒコ";"信\t彥"
+"coop/Bot229";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"Nobuhiro";"노부히로";"延\t博";"ノブヒロ";"延\t博"
+"coop/Bot230";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"Nobuichi";"노부이치";"信\t一";"ノブイチ";"信\t一"
+"coop/Bot231";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"Nobukazu";"노부카즈";"信\t和";"ノブカズ";"信\t和"
+"coop/Bot232";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"Nobunori";"노부노리";"宣\t德";"ノブノリ";"宣\t德"
+"coop/Bot233";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"Nobusuke";"노부스케";"延\t助";"ノブスケ";"延\t助"
+"coop/Bot234";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"Nobuyuki";"노부유키";"修\t之";"ノブユキ";"修\t之"
+"coop/Bot235";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"Noriaki";"노리아키";"宪\t昭";"ノリアキ";"憲\t昭"
+"coop/Bot236";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"Norihiko";"노리히코";"纪\t彦";"ノリヒコ";"紀\t彥"
+"coop/Bot237";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"Norihiro";"노리히로";"典\t弘";"ノリヒコ";"典\t弘"
+"coop/Bot238";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"Noriichi";"노리이치";"德\t一";"ノリイチ";"德\t一"
+"coop/Bot239";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"Norikazu";"노리카즈";"哲\t一";"ノリカズ";"哲\t一"
+"coop/Bot240";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"Norisuke";"노리스케";"则\t祐";"ノリスケ";"則\t祐"
+"coop/Bot241";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"Noriyuki";"노리유키";"敬\t之";"ノリユキ";"敬\t之"
+"coop/Bot242";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"Orochi";"오로치";"大\t蛇";"オロチ";"大\t蛇"
+"coop/Bot243";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"Raiden";"라이덴";"来\t田";"ライデン";"來\t田"
+"coop/Bot244";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"Saburo";"사부로";"三\t郎";"サブロウ";"三\t郎"
+"coop/Bot245";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"Satoru";"사토루";"聪";"サトル";"聰"
+"coop/Bot246";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"Satoshi";"사토시";"智";"サトシ";"智"
+"coop/Bot247";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"Seiichi";"세이이치";"诚\t一";"セイイチ";"誠\t一"
+"coop/Bot248";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"Seikazu";"세이카즈";"政";"セイカズ";"政"
+"coop/Bot249";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"Seisuke";"세이스케";"诚\t亮";"セイスケ";"誠\t亮"
+"coop/Bot250";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"Setsuko";"세츠코";"雪\t子";"セツコ";"雪\t子"
+"coop/Bot251";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"Shigeru";"시게루";"茂";"シゲル";"茂"
+"coop/Bot252";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"Susumi";"스스미";"进";"ススム";"進"
+"coop/Bot253";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"Tadao";"타다오";"忠\t生";"タダオ";"忠\t生"
+"coop/Bot254";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"Tadashi";"타다시";"规";"タダシ";"規"
+"coop/Bot255";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"Takaaki";"타카아키";"隆\t明";"タカアキ";"隆\t明"
+"coop/Bot256";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"Takahiko";"타카히코";"高\t彦";"タカヒロ";"高\t彥"
+"coop/Bot257";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"Takahiro";"타카히로";"孝\t宏";"タカヒロ";"孝\t宏"
+"coop/Bot258";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"Takaichi";"타카이치";"孝\t一";"タカイチ";"高\t一"
+"coop/Bot259";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"Takakazu";"타카카즈";"刚\t一";"タカカズ";"剛\t一"
+"coop/Bot260";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"Takanori";"타카노리";"隆\t则";"タカノリ";"隆\t則"
+"coop/Bot261";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"Takasuke";"타카스케";"孝\t祐";"タカスケ";"孝\t祐"
+"coop/Bot262";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"Takayuki";"타카유키";"隆\t行";"タカユキ";"隆\t行"
+"coop/Bot263";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"Tomio";"토미오";"富\t雄";"トミオ";"富\t雄"
+"coop/Bot264";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"Toshiaki";"토시아키";"俊\t明";"トシアキ";"俊\t明"
+"coop/Bot265";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"Toshihiko";"토시히코";"利\t彦";"トシヒロ";"利\t彥"
+"coop/Bot266";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"Toshihiro";"토시히로";"敏\t弘";"トシヒロ";"敏\t弘"
+"coop/Bot267";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"Toshiichi";"토시이치";"寿\t一";"トシイチ";"壽\t一"
+"coop/Bot268";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"Toshikazu";"토시카즈";"俊\t和";"トシカズ";"俊\t和"
+"coop/Bot269";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"Toshinori";"토시노리";"利\t则";"トシノリ";"利\t則"
+"coop/Bot270";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"Toshisuke";"토시스케";"利\t辅";"トシスケ";"利\t輔"
+"coop/Bot271";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"Toshiyuki";"토시유키";"智\t之";"トシユキ";"智\t之"
+"coop/Bot272";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"Yasuhiko";"야스히코";"康\t彦";"ヤスヒロ";"康\t彥"
+"coop/Bot273";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"Yasuhiro";"야스히로";"泰\t弘";"ヤスヒロ";"泰\t弘"
+"coop/Bot274";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"Yasuichi";"야스이치";"安\t一";"ヤスイチ";"安\t一"
+"coop/Bot275";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"Yasuko";"야스코";"恭\t子";"ヤスコ";"恭\t子"
+"coop/Bot276";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"Yasukazu";"야스카즈";"保\t和";"ヤスカズ";"保\t和"
+"coop/Bot277";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"Yasusuke";"야스스케";"康\t辅";"ヤススケ";"康\t輔"
+"coop/Bot278";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"Yasuyuki";"야스유키";"靖\t之";"ヤスユキ";"靖\t之"
+"coop/Bot279";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"Yoshiaki";"요시아키";"义\t明";"ヨシアキ";"義\t明"
+"coop/Bot280";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"Yoshihiko";"요시히코";"佳\t彦";"ヨシヒコ";"佳\t彥"
+"coop/Bot281";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"Yoshihiro";"요시히로";"吉\t弘";"ヨシヒロ";"吉\t弘"
+"coop/Bot282";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"Yoshiichi";"요시이치";"能\t一";"ヨシイチ";"能\t一"
+"coop/Bot283";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"Yoshikazu";"요시카즈";"庆\t和";"ヨシカズ";"慶\t和"
+"coop/Bot284";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"Yoshinori";"요시노리";"义\t则";"ヨシノリ";"義\t則"
+"coop/Bot285";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"Yoshisuke";"요시스케";"吉\t亮";"ヨシスケ";"吉\t亮"
+"coop/Bot286";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"Yoshiyuki";"요시유키";"善\t之";"ヨシユキ";"善\t之"
+"coop/Bot287";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"Yuichi";"유이치";"由\t一";"ヨウイチ";"由\t一"
+"coop/Bot288";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"Afanasiy";"아파나시";"阿\t法\t纳\t西";"アファナシー";"阿\t法\t納\t西"
+"coop/Bot289";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"Agripin";"아그리핀";"阿\t格\t里\t平";"アグリフィン";"阿\t格\t裡\t平"
+"coop/Bot290";"Akim";"Akim";"Akim";"Akim";"Akim";"Akim";"Akim";"Akim";"Akim";"아킴";"阿\t基\t姆";"アキム";"阿\t基\t姆"
 "coop/Bot291";"Aleksandr";"Aleksandr";"Aleksandr";"Aleksandr";"Aleksandr";"Aleksandr";"Aleksandr";"Aleksandr
-";"Aleksandr";"알렉산드르";"亚\t历\t山\t大";"アレクサンドル";"亞\t歷\t山\t大";;
-"coop/Bot292";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"알렉세이";"阿\t列\t克\t谢";"アレクセイ";"阿\t列\t克\t謝";;
-"coop/Bot293";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"아나톨리";"阿\t纳\t托\t利";"アナトリー";"阿\t納\t托\t利";;
-"coop/Bot294";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"안드레이";"安\t德\t烈";"アンドレイ";"安\t德\t列";;
-"coop/Bot295";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"아니심";"阿\t尼\t西\t姆";"アニミズム";"阿\t尼\t西\t姆";;
-"coop/Bot296";"Anton";"Anton";"Anton";"Anton";"Anton";"Anton";"Anton";"Anton";"Anton";"안톤";"安\t东";"アントン";"安\t東";;
-"coop/Bot297";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"아리스타르흐";"阿\t里\t斯\t塔\t尔\t赫";"アリスタルフ";"阿\t里\t斯\t塔\t爾\t赫";;
-"coop/Bot298";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"알카디";"阿\t尔\t卡\t季";"アルカージー";"阿\t爾\t卡\t季";;
-"coop/Bot299";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"아르히프";"阿\t尔\t希\t普";"アルヒープ";"阿\t爾\t希\t普";;
-"coop/Bot300";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"아르셰니";"阿\t尔\t谢\t尼";"アルセニー";"阿\t爾\t謝\t尼";;
-"coop/Bot301";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"아르테미";"阿\t尔\t捷\t米";"アルチョーム";"阿\t爾\t捷\t米";;
-"coop/Bot302";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"보그단";"波\t格\t丹";"ボグダン";"波\t格\t丹";;
-"coop/Bot303";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"보리슬라프";"鲍\t里\t斯\t拉\t夫";"ボリスラフ";"伯\t里\t斯\t拉\t夫";;
-"coop/Bot304";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"브로니슬라프";"布\t罗\t尼\t斯\t拉\t夫";"ブロニスワフ";"布\t羅\t尼\t斯\t拉\t夫";;
-"coop/Bot305";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"다닐";"丹\t尼\t尔";"ダニー";"丹\t尼\t爾";;
-"coop/Bot306";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"데미얀";"杰\t米\t扬";"デミヤン";"傑\t米\t揚";;
-"coop/Bot307";"Denis";"Denis";"Denis";"Denis";"Denis";"Denis";"Denis";"Denis";"Denis";"데니스";"丹\t尼\t斯";"デニス";"丹\t尼\t斯";;
-"coop/Bot308";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"드미트리";"德\t米\t特\t里";"ドミトリー";"德\t米\t特\t裡";;
-"coop/Bot309";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"도로페이";"多\t罗\t费";"ドロフェイ";"多\t羅\t費";;
-"coop/Bot310";"Efim";"Efim";"Efim";"Efim";"Efim";"Efim";"Efim";"Efim";"Efim";"예핌";"叶\t菲\t姆";"エフィム";"葉\t菲\t姆";;
-"coop/Bot311";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"예프렘";"叶\t夫\t列\t姆";"エフレム";"葉\t夫\t列\t姆";;
-"coop/Bot312";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"예프로신";"叶\t夫\t罗\t辛";"エフロシン";"葉\t夫\t羅\t辛";;
-"coop/Bot313";"Egor";"Egor";"Egor";"Egor";"Egor";"Egor";"Egor";"Egor";"Egor";"예고르";"叶\t戈\t尔";"エゴール";"葉\t戈\t爾";;
-"coop/Bot314";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"예멜리안";"叶\t梅\t利\t扬";"エルミアン";"葉\t梅\t利\t揚";;
-"coop/Bot315";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"예르몰라이";"叶\t尔\t莫\t莱";"エルモライ";"葉\t爾\t莫\t萊";;
-"coop/Bot316";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"예프게니";"叶\t夫\t根\t尼";"エウゲニー";"葉\t夫\t根\t尼";;
-"coop/Bot317";"Faina";"Faina";"Faina";"Faina";"Faina";"Faina";"Faina";"Faina";"Faina";"파이나";"法\t因\t娜";"ファイナ";"法\t因\t娜";;
-"coop/Bot318";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"파데이";"法\t杰\t伊";"ファジェイ";"法\t傑\t伊";;
-"coop/Bot319";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"페도트";"费\t多\t特";"フョードル";"費\t多\t特";;
-"coop/Bot320";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"페오도르";"费\t奥\t多\t尔";"フィアドー";"費\t奧\t多\t爾";;
-"coop/Bot321";"Filat";"Filat";"Filat";"Filat";"Filat";"Filat";"Filat";"Filat";"Filat";"필라트";"菲\t拉\t特";"フィラット";"菲\t拉\t特";;
-"coop/Bot322";"Foka";"Foka";"Foka";"Foka";"Foka";"Foka";"Foka";"Foka";"Foka";"포카";"福\t卡";"フォーカ";"福\t卡";;
-"coop/Bot323";"Foma";"Foma";"Foma";"Foma";"Foma";"Foma";"Foma";"Foma";"Foma";"포마";"福\t马";"フォーマ";"福\t馬";;
-"coop/Bot324";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"가브릴";"加\t夫\t里\t尔";"ガブリエル";"加\t夫\t里\t爾";;
-"coop/Bot325";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"게나디";"根\t纳\t季";"ゲンナディ";"根\t納\t季";;
-"coop/Bot326";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"게라심";"格\t拉\t西\t姆";"ゲラシム";"格\t拉\t西\t姆";;
-"coop/Bot327";"German";"German";"German";"German";"German";"German";"German";"German";"German";"게르만";"格\t尔\t玛\t尼";"ジャーマン";"格\t爾\t瑪\t尼";;
-"coop/Bot328";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"글레브";"格\t列\t布";"グリー";"格\t列\t布";;
-"coop/Bot329";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"고르데이";"戈\t尔\t杰\t尹";"ゴディ";"戈\t爾\t傑\t尹";;
-"coop/Bot330";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"그리고리";"格\t里\t戈\t里";"グリゴリ";"格\t裡\t戈\t裡";;
-"coop/Bot331";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"이그나트";"伊\t格\t纳\t特";"イグナート";"伊\t格\t納\t特";;
-"coop/Bot332";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"일라리온";"伊\t拉\t里\t翁";"イラリオン";"伊\t拉\t裡\t翁";;
-"coop/Bot333";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"일리야";"伊\t利\t亚";"イリヤ";"伊\t利\t亞";;
-"coop/Bot334";"Inna";"Inna";"Inna";"Inna";"Inna";"Inna";"Inna";"Inna";"Inna";"이나";"因\t纳";"インナ";"因\t納";;
-"coop/Bot335";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"이노켄치";"因\t诺\t肯\t季";"インノケンティー";"因\t諾\t肯\t季";;
-"coop/Bot336";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"이폴리트";"伊\t波\t利\t特";"イポリット";"伊\t波\t利\t特";;
-"coop/Bot337";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"이라클리";"伊\t拉\t克\t利";"イラクリー";"伊\t拉\t克\t利";;
-"coop/Bot338";"Karp";"Karp";"Karp";"Karp";"Karp";"Karp";"Karp";"Karp";"Karp";"카르프";"卡\t尔\t普";"カープ";"卡\t爾\t普";;
-"coop/Bot339";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"하리톤";"哈\t里\t顿";"ハリトン";"哈\t裡\t頓";;
-"coop/Bot340";"Klara";"Klara";"Klara";"Klara";"Klara";"Klara";"Klara";"Klara";"Klara";"클라라";"克\t拉\t拉";"クララ";"克\t拉\t拉";;
-"coop/Bot341";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"클리멘트";"克\t里\t门\t特";"クリメント";"克\t裡\t門\t特";;
-"coop/Bot342";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"콘드라티";"孔\t德\t拉\t季";"コンドラティ";"孔\t德\t拉\t季";;
-"coop/Bot343";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"콘스탄틴";"康\t斯\t坦\t丁";"コンスタンチン";"康\t斯\t坦\t丁";;
-"coop/Bot344";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"쿠즈마";"库\t兹\t马";"クズマ";"庫\t茲\t馬";;
-"coop/Bot345";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"라브렌티";"拉\t夫\t连\t季";"ラヴレンチー";"拉\t夫\t連\t季";;
-"coop/Bot346";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"라리사";"拉\t里\t莎";"ラリサ";"拉\t裡\t莎";;
-"coop/Bot347";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"라자르";"拉\t扎\t尔";"ラザール";"拉\t紮\t爾";;
-"coop/Bot348";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"레오니드";"列\t昂\t尼\t德";"レオニド";"列\t昂\t尼\t德";;
-"coop/Bot349";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"레온티";"列\t昂\t季";"レオンチー";"列\t昂\t季";;
-"coop/Bot350";"Lev";"Lev";"Lev";"Lev";"Lev";"Lev";"Lev";"Lev";"Lev";"레프";"列\t夫";"レブ";"列\t夫";;
-"coop/Bot351";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"리디야";"利\t季\t娅";"リジヤ";"利\t季\t婭";;
-"coop/Bot352";"Makar";"Makar";"Makar";"Makar";"Makar";"Makar";"Makar";"Makar";"Makar";"마카르";"马\t卡\t尔";"メイカー";"馬\t卡\t爾";;
-"coop/Bot353";"Matvey";"Matvey";"Matvey";"Matvey";"Mateo";"Matvey";"Matvey";"Matvey";"Matvey";"마트베이";"马\t特\t维";"マトヴェイ";"馬\t特\t維";;
-"coop/Bot354";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"막시밀리안";"马\t克\t西\t米\t利\t安";"マクシミリアン";"馬\t克\t西\t米\t利\t安";;
-"coop/Bot355";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"미하일";"米\t哈\t伊\t尔";"ミハイル";"米\t哈\t伊\t爾";;
-"coop/Bot356";"Miron";"Miron";"Miron";"Miron";"Miron";"Miron";"Miron";"Miron";"Miron";"미론";"米\t龙";"ミロン";"米\t龍";;
-"coop/Bot357";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"미트로판";"米\t特\t罗\t凡";"ミトロファン";"米\t特\t羅\t凡";;
-"coop/Bot358";"Modest";"Modest";"Modest";"Modest";"Modesto";"Modest";"Modest";"Modest";"Modest";"모데스트";"莫\t杰\t斯\t特";"モデスト";"莫\t傑\t斯\t特";;
-"coop/Bot359";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"나데즈다";"娜\t杰\t日\t达";"ナデジュダ";"娜\t傑\t日\t達";;
-"coop/Bot360";"Naum";"Naum";"Naum";"Naum";"Naum";"Naum";"Naum";"Naum";"Naum";"나움";"瑙\t姆";"ナウム";"瑙\t姆";;
-"coop/Bot361";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"나자르";"纳\t扎\t尔";"ナザル";"納\t紮\t爾";;
-"coop/Bot362";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"네스토르";"涅\t斯\t托\t尔";"ネストル";"涅\t斯\t托\t爾";;
-"coop/Bot363";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"니키포르";"尼\t基\t福\t尔";"ニキフォル";"尼\t基\t福\t爾";;
-"coop/Bot364";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"니키타";"尼\t基\t塔";"ニキータ";"尼\t基\t塔";;
-"coop/Bot365";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"니코딤";"尼\t科\t季\t姆";"ニコディム";"尼\t科\t季\t姆";;
-"coop/Bot366";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"니콜라이";"尼\t古\t拉";"ニコライ";"尼\t古\t拉";;
-"coop/Bot367";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"올레그";"奥\t列\t格";"オレグ";"奧\t列\t格";;
-"coop/Bot368";"Osip";"Osip";"Osip";"Osip";"Osip";"Osip";"Osip";"Osip";"Osip";"오시프";"奥\t西\t普";"オシップ";"奧\t西\t普";;
-"coop/Bot369";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"판크라티";"潘\t克\t拉\t季";"ハンクラティー";"潘\t克\t拉\t季";;
-"coop/Bot370";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"파벨";"帕\t维\t尔";"パーベル";"帕\t維\t爾";;
-"coop/Bot371";"Platon";"Platon";"Platon";"Platon";"Platon";"Platon";"Platon";"Platon";"Platon";"플라톤";"普\t拉\t东";"プラトン";"普\t拉\t東";;
-"coop/Bot372";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"폴리카르프";"波\t利\t卡\t尔\t普";"ポリスカールプ";"波\t利\t卡\t爾\t普";;
-"coop/Bot373";"Polina";"Polina";"Polina";"Polina";"Polina";"Polina";"Polina";"Polina";"Polina";"폴리나";"波\t林\t娜";"ポリーナ";"波\t林\t娜";;
-"coop/Bot374";"Prohor";"Prohor";"Prohor";"Prohor";"Projor";"Prohor";"Prohor";"Prohor";"Prohor";"프로호르";"普\t罗\t霍\t尔";"プロホル";"普\t羅\t霍\t爾";;
-"coop/Bot375";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"프로코피";"普\t罗\t科\t皮";"プロコフィエフ";"普\t羅\t科\t皮";;
-"coop/Bot376";"Pyotr";"Pyotr";"Pyotr";"Pyotr";"Piotr";"Pyotr";"Pyotr";"Pyotr";"Pyotr";"표트르";"彼\t得";"ピュートル";"彼\t得";;
-"coop/Bot377";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"라이사";"赖\t萨";"ライサ";"賴\t薩";;
-"coop/Bot378";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"로디온";"罗\t季\t翁";"ロディオン";"羅\t季\t翁";;
-"coop/Bot379";"Roman";"Roman";"Roman";"Roman";"Romano";"Roman";"Roman";"Roman";"Roman";"로만";"里\t姆\t斯\t基";"ロマン";"里\t姆\t斯\t基";;
-"coop/Bot380";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"로스티슬라프";"罗\t斯\t季\t斯\t拉\t夫";"ロスティスラフ";"羅\t斯\t季\t斯\t拉\t夫";;
-"coop/Bot381";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"루슬란";"鲁\t斯\t兰";"ルスラーン";"魯\t斯\t蘭";;
-"coop/Bot382";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"사무일";"萨\t穆\t伊\t尔";"サムイル";"薩\t穆\t伊\t爾";;
-"coop/Bot383";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"사벨리";"萨\t韦\t里";"シャバレー";"薩\t韋\t裡";;
-"coop/Bot384";"Semyon";"Semyon";"Semyon";"Semyon";"Semión";"Semyon";"Semyon";"Semyon";"Semyon";"세묜";"谢\t苗";"セミョーン";"謝\t苗";;
-"coop/Bot385";"Savva";"Savva";"Savva";"Savva";"Savva";"Savva";"Savva";"Savva";"Savva";"사바";"萨\t瓦";"サーヴァ";"薩\t瓦";;
-"coop/Bot386";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"세라핌";"谢\t拉\t菲\t姆";"セラフィム";"謝\t拉\t菲\t姆";;
-"coop/Bot387";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"시도르";"西\t多\t尔";"シードル";"西\t多\t爾";;
-"coop/Bot388";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"스피리돈";"斯\t皮\t里\t东";"スピリドン";"斯\t皮\t裡\t東";;
-"coop/Bot389";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"스테판";"斯\t捷\t潘";"スティーブン";"斯\t捷\t潘";;
-"coop/Bot390";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"스뱌토폴크";"斯\t维\t亚\t托\t波\t尔\t克";"スヴャトポルク";"斯\t維\t亞\t托\t波\t爾\t克";;
-"coop/Bot391";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"스뱌토슬라프";"斯\t维\t亚\t托\t斯\t拉\t夫";"スヴャトスラフ";"斯\t維\t亞\t托\t斯\t拉\t夫";;
-"coop/Bot392";"Taras";"Taras";"Taras";"Taras";"Taras";"Taras";"Taras";"Taras";"Taras";"타라스";"塔\t拉\t斯";"タラス";"塔\t拉\t斯";;
-"coop/Bot393";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"테렌티";"捷\t连\t季";"テレンチ";"捷\t連\t季";;
-"coop/Bot394";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"티혼";"吉\t洪";"ティホン";"吉\t洪";;
-"coop/Bot395";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"티모페이";"季\t莫\t费";"ティモフェイ";"季\t莫\t費";;
-"coop/Bot396";"Timur";"Timur";"Timur";"Timur";"Timur";"Timur";"Timur";"Timur";"Timur";"티무르";"铁\t木\t尔";"ティムール";"鐵\t木\t爾";;
-"coop/Bot397";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"바딤";"瓦\t季\t姆";"ヴァディム";"瓦\t季\t姆";;
-"coop/Bot398";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"발레리";"瓦\t列\t里";"ヴァレリー";"瓦\t列\t里";;
-"coop/Bot399";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"바르폴로메이";"瓦\t尔\t福\t洛\t梅";"バールポロメイ";"瓦\t爾\t福\t洛\t梅";;
-"coop/Bot400";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"베네딕트";"韦\t涅\t季\t克\t特";"ヴェネジークト";"韋\t涅\t季\t克\t特";;
-"coop/Bot401";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"베니아민";"韦\t尼\t阿\t明";"ヴェニアミン";"韋\t尼\t阿\t明";;
-"coop/Bot402";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"비켄티";"维\t肯\t季";"ヒケンティ";"維\t肯\t季";;
-"coop/Bot403";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"빅토르";"维\t克\t托";"ヴィクター";"維\t克\t托";;
-"coop/Bot404";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"비탈리";"维\t塔\t利";"ヴィタリー";"維\t塔\t利";;
-"coop/Bot405";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"블라디슬라프";"弗\t拉\t季\t斯\t拉\t夫";"ウラジスラフ";"弗\t拉\t季\t斯\t拉\t夫";;
-"coop/Bot406";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"블라드렌";"弗\t拉\t德\t连";"ヴラドレン";"弗\t拉\t德\t連";;
-"coop/Bot407";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"브세볼로드";"弗\t谢\t沃\t洛\t德";"フセボロド";"弗\t謝\t沃\t洛\t德";;
-"coop/Bot408";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"뱌체슬라프";"维\t亚\t切\t斯\t拉\t夫";"ビャチェスラフ";"維\t亞\t切\t斯\t拉\t夫";;
-"coop/Bot409";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"야코프";"雅\t科\t夫";"ヤーコフ";"雅\t科\t夫";;
-"coop/Bot410";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"야로폴크";"亚\t罗\t波\t尔\t克";"ヤロポルク";"亞\t羅\t波\t爾\t克";;
-"coop/Bot411";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"야로슬라프";"雅\t罗\t斯\t拉\t夫";"ヤロスラフ";"雅\t羅\t斯\t拉\t夫";;
-"coop/Bot412";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"유리";"尤\t里";"ユーリイ";"尤\t裡";;
-"coop/Bot413";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"자하르";"扎\t法\t尔";"ザハール";"紮\t法\t爾";;
-"coop/Bot414";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"지나이다";"季\t娜\t伊\t达";"ジナイーダ";"季\t娜\t伊\t達";;
-"coop/Bot415";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"지노비";"济\t诺\t维";"ジノーヴィー";"濟\t諾\t維";;
-"coop/Bot416";"Aaron";"Aaron";"Aaron";"Aaron";"Aarón";"Aaron";"Aaron";"Aaron";"Aaron";"아론";"亚\t伦";"アーロン";"亞\t倫";;
-"coop/Bot417";"Abel";"Abel";"Abel";"Abel";"Abel";"Abel";"Abel";"Abel";"Abel";"에이벨";"亚\t伯";"アベル";"亞\t伯";;
-"coop/Bot418";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"애보트";"艾\t伯\t特";"アボット";"亞\t伯\t特";;
-"coop/Bot419";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"에이브레헴";"亚\t伯\t拉\t罕";"アブラハム";"亞\t伯\t拉\t罕";;
-"coop/Bot420";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"액컬리";"阿\t克\t利";"アッカリー";"阿\t克\t利";;
-"coop/Bot421";"Aden";"Aden";"Aden";"Aden";"Aden";"Aden";"Aden";"Aden";"Aden";"에이든";"亚\t丁";"アデン";"亞\t丁";;
-"coop/Bot422";"Addison";"Addison";"Addison";"Addison";"Addison";"Addison";"Addison";"Addison";"Addison";"애디슨";"阿\t狄\t森";"アディソン";"阿\t狄\t森";;
-"coop/Bot423";"Alan";"Alan";"Alan";"Alan";"Alan";"Alan";"Alan";"Alan";"Alan";"앨런";"艾\t伦";"アラン";"艾\t倫";;
-"coop/Bot424";"Albert";"Albert";"Albert";"Albert";"Albert";"Albert";"Albert";"Albert";"Albert";"앨베르트";"艾\t伯\t特";"アルバート";"艾\t伯\t特";;
-"coop/Bot425";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"앨프러드";"阿\t尔\t弗\t雷\t德";"アルフレッド";"阿\t爾\t弗\t雷\t德";;
-"coop/Bot426";"Alice";"Alice";"Alice";"Alice";"Alicia";"Alice";"Alice";"Alice";"Alice";"앨리스";"爱\t丽\t丝";"アリス";"愛\t麗\t絲";;
-"coop/Bot427";"Allister";"Allister";"Allister";"Allister";"Allister";"Allister";"Allister";"Allister";"Allister";"앨리스터";"阿\t利\t斯\t特";"アリスター";"阿\t利\t斯\t特";;
-"coop/Bot428";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"아치볼드";"阿\t奇\t博\t尔\t德";"アーチバルト";"阿\t奇\t博\t爾\t德";;
-"coop/Bot429";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"아놀드";"阿\t诺\t德";"アーノルド";"阿\t諾\t德";;
-"coop/Bot430";"Arthur";"Arthur";"Arthur";"Arthur";"Arturo";"Arthur";"Arthur";"Arthur";"Arthur";"아서";"亚\t瑟";"アーサー";"亞\t瑟";;
-"coop/Bot431";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"애쉬튼";"阿\t什\t顿";"アシュトン";"阿\t什\t頓";;
-"coop/Bot432";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"오브리";"奥\t布\t里";"オーブリー";"奧\t布\t里";;
-"coop/Bot433";"Austin";"Austin";"Austin";"Austin";"Austin";"Austin";"Austin";"Austin";"Austin";"오스틴";"奥\t斯\t汀";"オースティン";"奧\t斯\t丁";;
-"coop/Bot434";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"발라드";"巴\t拉\t德";"バラード";"巴\t拉\t德";;
-"coop/Bot435";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"발타사르";"巴\t尔\t萨\t泽";"バルタザール";"巴\t爾\t薩\t澤";;
-"coop/Bot436";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"바너비";"巴\t纳\t比";"バーナビー";"巴\t納\t比";;
-"coop/Bot437";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"박스터";"巴\t克\t斯\t特";"バクスター";"巴\t克\t斯\t特";;
-"coop/Bot438";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"베넷";"班\t尼\t特";"ベネット";"班\t尼\t特";;
-"coop/Bot439";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"벤자민";"本\t杰\t明";"ベンジャミン";"本\t傑\t明";;
-"coop/Bot440";"Benson";"Benson";"Benson";"Benson";"Benson";"Benson";"Benson";"Benson";"Benson";"벤슨";"本\t森";"ベンソン";"本\t森";;
-"coop/Bot441";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"브래들리";"布\t拉\t德\t利";"ブラッドリー";"布\t蘭\t得\t利";;
-"coop/Bot442";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"브랜트";"勃\t兰\t特";"ブラント";"勃\t蘭\t特";;
-"coop/Bot443";"Brian";"Brian";"Brian";"Brian";"Brian";"Brian";"Brian";"Brian";"Brian";"브라이언";"布\t莱\t恩";"ブライアン";"布\t萊\t恩";;
-"coop/Bot444";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"브루스";"布\t鲁\t斯";"ブルース";"布\t魯\t斯";;
-"coop/Bot445";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"캐시디";"卡\t西\t迪";"キャシディ";"凱\t西\t迪";;
-"coop/Bot446";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"세실";"塞\t西\t尔";"セシル";"塞\t西\t爾";;
-"coop/Bot447";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"채드윅";"查\t德\t威\t克";"チャドウィック";"查\t德\t威\t克";;
-"coop/Bot448";"Charles";"Charles";"Charles";"Charles";"Charles";"Charles";"Charles";"Charles";"Charles";"찰스";"查\t尔\t斯";"チャールズ";"查\t理\t斯";;
-"coop/Bot449";"Chester";"Chester";"Chester";"Chester";"Chester";"Chester";"Chester";"Chester";"Chester";"체스터";"切\t斯\t特";"チェスター";"賈\t斯\t特";;
-"coop/Bot450";"Christian";"Christian";"Christian";"Christian";"Cristiano";"Christian";"Christian";"Christian";"Christian";"크리스티안";"克\t里\t斯\t蒂\t安";"クリスチャン";"克\t利\t斯\t蒂\t安";;
-"coop/Bot451";"Christopher";"Christopher";"Christopher";"Christopher";"Cristóbal";"Christopher";"Christopher";"Christopher";"Christopher";"크리스토퍼";"克\t里\t斯\t托\t弗";"クリストファー";"克\t里\t斯\t托\t弗";;
-"coop/Bot452";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"쿠퍼";"库\t珀";"クーパー";"庫\t珀";;
-"coop/Bot453";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"크로포드";"克\t劳\t福\t德";"クロフォード";"克\t勞\t福\t德";;
-"coop/Bot454";"Darren";"Darren";"Darren";"Darren";"Darren";"Darren";"Darren";"Darren";"Darren";"대런";"达\t伦";"ダレン";"達\t倫";;
-"coop/Bot455";"David";"David";"David";"David";"David";"David";"David";"David";"David";"데이빗";"大\t卫";"デイビット";"大\t衛";;
-"coop/Bot456";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"데이튼";"戴\t顿";"デイトン";"戴\t頓";;
-"coop/Bot457";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"데릭";"德\t瑞\t克";"デリック";"德\t瑞\t克";;
-"coop/Bot458";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"덱스터";"德\t克\t斯\t特";"デクスター";"德\t克\t斯\t特";;
-"coop/Bot459";"Donald";"Donald";"Donald";"Donald";"Donald";"Donald";"Donald";"Donald";"Donald";"도널드";"唐\t纳\t德";"ドナルド";"唐\t納\t德";;
-"coop/Bot460";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"도너번";"多\t诺\t万";"ドノバン";"多\t諾\t萬";;
-"coop/Bot461";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"도로시";"多\t罗\t茜";"ドロシー";"多\t羅\t茜";;
-"coop/Bot462";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"더글러스";"道\t格\t拉\t斯";"ダグラス";"道\t格\t拉\t斯";;
-"coop/Bot463";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"두들리";"达\t德\t利";"ダドリー";"達\t德\t利";;
-"coop/Bot464";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"드웨인";"德\t韦\t恩";"ドウェイン";"德\t韋\t恩";;
-"coop/Bot465";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"에드윈";"埃\t德\t温";"エドウィン";"愛\t德\t溫";;
-"coop/Bot466";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"엘리엇";"埃\t利\t奥\t特";"エリオット";"埃\t利\t奧\t特";;
-"coop/Bot467";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"핑걸";"芬\t戈\t尔";"フィンガル";"芬\t戈\t爾";;
-"coop/Bot468";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"플렛쳐";"弗\t莱\t彻";"フレッチャー";"弗\t萊\t徹";;
-"coop/Bot469";"Florence";"Florence";"Florence";"Florence";"Florence";"Florence";"Florence";"Florence";"Florence";"플로렌스";"弗\t洛\t伦\t斯";"フローレンス";"弗\t洛\t倫\t斯";;
-"coop/Bot470";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"플린";"弗\t林";"フリン";"弗\t林";;
-"coop/Bot471";"Francis";"Francis";"Francis";"Francis";"Francis";"Francis";"Francis";"Francis";"Francis";"프랜시스";"弗\t朗\t西\t斯";"フランシス";"法\t蘭\t西\t斯";;
-"coop/Bot472";"Frank";"Frank";"Frank";"Frank";"Frank";"Frank";"Frank";"Frank";"Frank";"프랭크";"弗\t兰\t克";"フランク";"弗\t蘭\t克";;
-"coop/Bot473";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"갤러해드";"加\t拉\t哈\t德";"ガラハッド";"加\t拉\t哈\t德";;
-"coop/Bot474";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"개릿";"加\t勒\t特";"ギャレット";"加\t勒\t特";;
-"coop/Bot475";"Gill";"Gill";"Gill";"Gill";"Gill";"Gill";"Gill";"Gill";"Gill";"질";"吉\t尔";"ギル";"吉\t爾";;
-"coop/Bot476";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"글렌";"格\t伦";"グレン";"葛\t籣";;
-"coop/Bot477";"Goliath";"Goliath";"Goliath";"Goliath";"Goliat";"Goliath";"Goliath";"Goliath";"Goliath";"골라이엇";"格\t里\t亚\t斯";"ゴリアテ";"格\t裡\t亞\t斯";;
-"coop/Bot478";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"고든";"戈\t登";"ゴードン";"戈\t登";;
-"coop/Bot479";"Graham";"Graham";"Graham";"Graham";"Graham";"Graham";"Graham";"Graham";"Graham";"그레이엄";"格\t拉\t汉\t姆";"グレイアム";"格\t拉\t漢\t姆";;
-"coop/Bot480";"Griffith";"Griffith";"Griffith";"Griffith";"Griffith";"Griffith";"Griffith";"Hadley";"Griffith";"그리피스";"格\t里\t菲\t斯";"グリフィス";"格\t里\t菲\t斯";;
-"coop/Bot481";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"해들리";"哈\t德\t利";"ハドレー";"哈\t德\t利";;
-"coop/Bot482";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"해밀턴";"汉\t密\t尔\t顿";"ハミルトン";"漢\t密\t爾\t頓";;
-"coop/Bot483";"Howard";"Howard";"Howard";"Howard";"Howard";"Howard";"Howard";"Howard";"Howard";"하워드";"霍\t华\t德";"ハワード";"霍\t華\t德";;
-"coop/Bot484";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"허드슨";"哈\t德\t森";"ハドソン";"哈\t德\t森";;
-"coop/Bot485";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"어빈";"尔\t湾";"アーヴィン";"爾\t灣";;
-"coop/Bot486";"Jack";"Jack";"Jack";"Jack";"Jack";"Jack";"Jack";"Jack";"Jack";"잭";"杰\t克";"ジャック";"傑\t克";;
-"coop/Bot487";"James";"James";"James";"James";"James";"James";"James";"James";"James";"제임스";"詹\t姆\t斯";"ジェームズ";"詹\t姆\t斯";;
-"coop/Bot488";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"자레드";"贾\t里\t德";"ジャレッド";"傑\t瑞\t德";;
-"coop/Bot489";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"조셉";"约\t瑟\t夫";"ジョセフ";"約\t瑟\t夫";;
-"coop/Bot490";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"조너선";"乔\t纳\t森";"ジョナサン";"喬\t納\t森";;
-"coop/Bot491";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"조던";"乔\t丹";"ジョーダン";"喬\t丹";;
-"coop/Bot492";"Justin";"Justin";"Justin";"Justin";"Justin";"Justin";"Justin";"Justin";"Justin";"저스틴";"贾\t斯\t汀";"ジャスティン";"賈\t斯\t汀";;
-"coop/Bot493";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"카메론";"卡\t梅\t伦";"カメロン";"卡\t梅\t倫";;
-"coop/Bot494";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"키건";"基\t根";"キーガン";"基\t根";;
-"coop/Bot495";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"케빈";"凯\t文";"ケビン";"凱\t文";;
-"coop/Bot496";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"킴벌리";"金\t伯\t利";"キンバリー";"金\t伯\t利";;
-"coop/Bot497";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"코디";"科\t迪";"コディ";"科\t迪";;
-"coop/Bot498";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"로렌스";"劳\t伦\t斯";"ローレンス";"勞\t倫\t斯";;
-"coop/Bot499";"Lee";"Lee";"Lee";"Lee";"Lee";"Lee";"Lee";"Lee";"Lee";"리";"李";"リー";"李";;
-"coop/Bot500";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"리로이";"勒\t罗\t伊";"ルロワ";"勒\t羅\t伊";;
-"coop/Bot501";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"린지";"林\t赛";"リンジー";"琳\t賽";;
-"coop/Bot502";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"로이드";"劳\t埃\t德";"ロイド";"勞\t埃\t德";;
-"coop/Bot503";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"매켄지";"麦\t肯\t锡";"マッケンジー";"麥\t肯\t錫";;
-"coop/Bot504";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"매디슨";"麦\t迪\t逊";"マディソン";"麥\t迪\t森";;
-"coop/Bot505";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"맬컴";"马\t尔\t科\t姆";"マルコム";"瑪\t律\t科\t姆";;
-"coop/Bot506";"Manley";"Manley";"Manley";"Manley";"Manley";"Manley";"Manley";"Manley";"Manley";"맨리";"曼\t利";"マンリー";"曼\t利";;
-"coop/Bot507";"Mark";"Mark";"Mark";"Mark";"Mark";"Mark";"Mark";"Mark";"Mark";"마크";"马\t克";"マーク";"馬\t克";;
-"coop/Bot508";"Mary";"Mary";"Mary";"Mary";"Mary";"Mary";"Mary";"Mary";"Mary";"메리";"玛\t丽";"メアリー";"瑪\t麗";;
-"coop/Bot509";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"메이너드";"梅\t纳\t德";"メイナード";"梅\t納\t德";;
-"coop/Bot510";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"메러디스";"梅\t瑞\t狄\t斯";"メレディス";"梅\t瑞\t狄\t斯";;
-"coop/Bot511";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"머빈";"默\t文";"マービン";"默\t文";;
-"coop/Bot512";"Milton";"Milton";"Milton";"Milton";"Milton";"Milton";"Milton";"Milton";"Milton";"밀튼";"弥\t尔\t顿";"ミルトン";"彌\t爾\t頓";;
-"coop/Bot513";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"모건";"摩\t根";"モーガン";"摩\t根";;
-"coop/Bot514";"Morton";"Morton";"Morton";"Morton";"Morton";"Morton";"Morton";"Murray";"Morton";"모튼";"莫\t顿";"モートン";"莫\t頓";;
-"coop/Bot515";"Murray";"Murray";"Murray";"Murray";"Murray";"Murray";"Murray";"Nathan";"Murray";"머레이";"穆\t雷";"マレー";"穆\t雷";;
-"coop/Bot516";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"네이선";"内\t森";"ネイサン";"南\t森";;
-"coop/Bot517";"Neville";"Neville";"Neville";"Neville";"Neville";"Neville";"Neville";"Neville";"Neville";"네빌";"内\t维\t尔";"ネビル";"內\t維\t爾";;
-"coop/Bot518";"Norman";"Norman";"Norman";"Norman";"Norman";"Norman";"Norman";"Norman";"Norman";"노먼";"诺\t曼";"ノルマン";"諾\t曼";;
-"coop/Bot519";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"올리버";"奥\t利\t弗";"オリバー";"奧\t利\t弗";;
-"coop/Bot520";"Omar";"Omar";"Omar";"Omar";"Omar";"Omar";"Omar";"Omar";"Omar";"오마르";"奥\t马\t尔";"オマール";"奧\t馬\t爾";;
-"coop/Bot521";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"오스카";"奥\t斯\t卡";"オスカー";"奧\t斯\t卡";;
-"coop/Bot522";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"패트릭";"帕\t特\t里\t克";"パトリック";"派\t翠\t克";;
-"coop/Bot523";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"필립";"菲\t利\t普";"フィリップ";"菲\t力\t浦";;
-"coop/Bot524";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"퀸랜";"昆\t兰";"クインラン";"昆\t蘭";;
-"coop/Bot525";"Randall";"Randall";"Randall";"Randall";"Randall";"Randall";"Randall";"Randall";"Randall";"랜덜";"兰\t德\t尔";"ランドール";"蘭\t德\t爾";;
-"coop/Bot526";"Richard";"Richard";"Richard";"Richard";"Richard";"Richard";"Richard";"Richard";"Richard";"리차드";"理\t查\t德";"リチャード";"理\t查";;
-"coop/Bot527";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"리치";"里\t奇";"リッチー";"里\t奇";;
-"coop/Bot528";"Robin";"Robin";"Robin";"Robin";"Robin";"Robin";"Robin";"Robin";"Robin";"로빈";"罗\t宾";"ロビン";"羅\t賓";;
-"coop/Bot529";"Robert";"Robert";"Robert";"Robert";"Robert";"Robert";"Robert";"Robert";"Robert";"로버트";"罗\t伯\t特";"ロバート";"羅\t伯\t特";;
-"coop/Bot530";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"로널드";"罗\t纳\t德";"ロナルド";"羅\t奈\t爾\t得";;
-"coop/Bot531";"Scott";"Scott";"Scott";"Scott";"Scott";"Scott";"Scott";"Scott";"Scott";"스콧";"斯\t科\t特";"スコット";"斯\t科\t特";;
-"coop/Bot532";"Seth";"Seth";"Seth";"Seth";"Seth";"Seth";"Seth";"Seth";"Seth";"세스";"塞\t思";"セト";"塞\t思";;
-"coop/Bot533";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"섀넌";"香\t农";"シャノン";"香\t農";;
-"coop/Bot534";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"셰리던";"谢\t里\t丹";"シェリダン";"謝\t裡\t丹";;
-"coop/Bot535";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"시드니";"西\t德\t尼";"シドニー";"西\t德\t尼";;
-"coop/Bot536";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"싱클레어";"辛\t克\t莱";"シンクレア";"辛\t克\t萊";;
-"coop/Bot537";"Steven";"Steven";"Steven";"Steven";"Steven";"Steven";"Steven";"Steven";"Steven";"스티븐";"史\t蒂\t文";"スティーブン";"史\t蒂\t文";;
-"coop/Bot538";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"스튜어트";"斯\t图\t尔\t特";"スチュワート";"斯\t圖\t爾\t特";;
-"coop/Bot539";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"테런스";"特\t伦\t斯";"テレンス";"特\t倫\t斯";;
-"coop/Bot540";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"토마스";"托\t马\t斯";"トマス";"湯\t瑪\t斯";;
-"coop/Bot541";"William";"William";"William";"William";"Guillermo";"William";"William";"William";"William";"윌리엄";"威\t廉";"ウィリアム";"威\t廉";;
-"coop/Bot542";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"우드로우";"伍\t德\t罗";"ウッドロウ";"伍\t德\t羅";;
-"coop/Bot543";"York";"York";"York";"York";"York";"York";"York";"York";"York";"요크";"约\t克";"ヨーク";"約\t克";;
+";"Aleksandr";"알렉산드르";"亚\t历\t山\t大";"アレクサンドル";"亞\t歷\t山\t大"
+"coop/Bot292";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"Aleksey";"알렉세이";"阿\t列\t克\t谢";"アレクセイ";"阿\t列\t克\t謝"
+"coop/Bot293";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"Anatoliy";"아나톨리";"阿\t纳\t托\t利";"アナトリー";"阿\t納\t托\t利"
+"coop/Bot294";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"Andrey";"안드레이";"安\t德\t烈";"アンドレイ";"安\t德\t列"
+"coop/Bot295";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"Anisim";"아니심";"阿\t尼\t西\t姆";"アニミズム";"阿\t尼\t西\t姆"
+"coop/Bot296";"Anton";"Anton";"Anton";"Anton";"Anton";"Anton";"Anton";"Anton";"Anton";"안톤";"安\t东";"アントン";"安\t東"
+"coop/Bot297";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"Aristarkh";"아리스타르흐";"阿\t里\t斯\t塔\t尔\t赫";"アリスタルフ";"阿\t里\t斯\t塔\t爾\t赫"
+"coop/Bot298";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"Arkadiy";"알카디";"阿\t尔\t卡\t季";"アルカージー";"阿\t爾\t卡\t季"
+"coop/Bot299";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"Arkhip";"아르히프";"阿\t尔\t希\t普";"アルヒープ";"阿\t爾\t希\t普"
+"coop/Bot300";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"Arseniy";"아르셰니";"阿\t尔\t谢\t尼";"アルセニー";"阿\t爾\t謝\t尼"
+"coop/Bot301";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"Artemiy";"아르테미";"阿\t尔\t捷\t米";"アルチョーム";"阿\t爾\t捷\t米"
+"coop/Bot302";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"Bogdan";"보그단";"波\t格\t丹";"ボグダン";"波\t格\t丹"
+"coop/Bot303";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"Borislav";"보리슬라프";"鲍\t里\t斯\t拉\t夫";"ボリスラフ";"伯\t里\t斯\t拉\t夫"
+"coop/Bot304";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"Bronislav";"브로니슬라프";"布\t罗\t尼\t斯\t拉\t夫";"ブロニスワフ";"布\t羅\t尼\t斯\t拉\t夫"
+"coop/Bot305";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"Daniil";"다닐";"丹\t尼\t尔";"ダニー";"丹\t尼\t爾"
+"coop/Bot306";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"Demyan";"데미얀";"杰\t米\t扬";"デミヤン";"傑\t米\t揚"
+"coop/Bot307";"Denis";"Denis";"Denis";"Denis";"Denis";"Denis";"Denis";"Denis";"Denis";"데니스";"丹\t尼\t斯";"デニス";"丹\t尼\t斯"
+"coop/Bot308";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"Dmitriy";"드미트리";"德\t米\t特\t里";"ドミトリー";"德\t米\t特\t裡"
+"coop/Bot309";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"Dorofey";"도로페이";"多\t罗\t费";"ドロフェイ";"多\t羅\t費"
+"coop/Bot310";"Efim";"Efim";"Efim";"Efim";"Efim";"Efim";"Efim";"Efim";"Efim";"예핌";"叶\t菲\t姆";"エフィム";"葉\t菲\t姆"
+"coop/Bot311";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"Efrem";"예프렘";"叶\t夫\t列\t姆";"エフレム";"葉\t夫\t列\t姆"
+"coop/Bot312";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"Efrosin";"예프로신";"叶\t夫\t罗\t辛";"エフロシン";"葉\t夫\t羅\t辛"
+"coop/Bot313";"Egor";"Egor";"Egor";"Egor";"Egor";"Egor";"Egor";"Egor";"Egor";"예고르";"叶\t戈\t尔";"エゴール";"葉\t戈\t爾"
+"coop/Bot314";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"Emelian";"예멜리안";"叶\t梅\t利\t扬";"エルミアン";"葉\t梅\t利\t揚"
+"coop/Bot315";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"Ermolay";"예르몰라이";"叶\t尔\t莫\t莱";"エルモライ";"葉\t爾\t莫\t萊"
+"coop/Bot316";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"Evgeniy";"예프게니";"叶\t夫\t根\t尼";"エウゲニー";"葉\t夫\t根\t尼"
+"coop/Bot317";"Faina";"Faina";"Faina";"Faina";"Faina";"Faina";"Faina";"Faina";"Faina";"파이나";"法\t因\t娜";"ファイナ";"法\t因\t娜"
+"coop/Bot318";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"Faddey";"파데이";"法\t杰\t伊";"ファジェイ";"法\t傑\t伊"
+"coop/Bot319";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"Fedot";"페도트";"费\t多\t特";"フョードル";"費\t多\t特"
+"coop/Bot320";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"Feodor";"페오도르";"费\t奥\t多\t尔";"フィアドー";"費\t奧\t多\t爾"
+"coop/Bot321";"Filat";"Filat";"Filat";"Filat";"Filat";"Filat";"Filat";"Filat";"Filat";"필라트";"菲\t拉\t特";"フィラット";"菲\t拉\t特"
+"coop/Bot322";"Foka";"Foka";"Foka";"Foka";"Foka";"Foka";"Foka";"Foka";"Foka";"포카";"福\t卡";"フォーカ";"福\t卡"
+"coop/Bot323";"Foma";"Foma";"Foma";"Foma";"Foma";"Foma";"Foma";"Foma";"Foma";"포마";"福\t马";"フォーマ";"福\t馬"
+"coop/Bot324";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"Gavriil";"가브릴";"加\t夫\t里\t尔";"ガブリエル";"加\t夫\t里\t爾"
+"coop/Bot325";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"Gennadiy";"게나디";"根\t纳\t季";"ゲンナディ";"根\t納\t季"
+"coop/Bot326";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"Gerasim";"게라심";"格\t拉\t西\t姆";"ゲラシム";"格\t拉\t西\t姆"
+"coop/Bot327";"German";"German";"German";"German";"German";"German";"German";"German";"German";"게르만";"格\t尔\t玛\t尼";"ジャーマン";"格\t爾\t瑪\t尼"
+"coop/Bot328";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"Gleb";"글레브";"格\t列\t布";"グリー";"格\t列\t布"
+"coop/Bot329";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"Gordey";"고르데이";"戈\t尔\t杰\t尹";"ゴディ";"戈\t爾\t傑\t尹"
+"coop/Bot330";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"Grigoriy";"그리고리";"格\t里\t戈\t里";"グリゴリ";"格\t裡\t戈\t裡"
+"coop/Bot331";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"Ignat";"이그나트";"伊\t格\t纳\t特";"イグナート";"伊\t格\t納\t特"
+"coop/Bot332";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"Illarion";"일라리온";"伊\t拉\t里\t翁";"イラリオン";"伊\t拉\t裡\t翁"
+"coop/Bot333";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"Ilya";"일리야";"伊\t利\t亚";"イリヤ";"伊\t利\t亞"
+"coop/Bot334";"Inna";"Inna";"Inna";"Inna";"Inna";"Inna";"Inna";"Inna";"Inna";"이나";"因\t纳";"インナ";"因\t納"
+"coop/Bot335";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"Innokentiy";"이노켄치";"因\t诺\t肯\t季";"インノケンティー";"因\t諾\t肯\t季"
+"coop/Bot336";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"Ippolit";"이폴리트";"伊\t波\t利\t特";"イポリット";"伊\t波\t利\t特"
+"coop/Bot337";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"Irakliy";"이라클리";"伊\t拉\t克\t利";"イラクリー";"伊\t拉\t克\t利"
+"coop/Bot338";"Karp";"Karp";"Karp";"Karp";"Karp";"Karp";"Karp";"Karp";"Karp";"카르프";"卡\t尔\t普";"カープ";"卡\t爾\t普"
+"coop/Bot339";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"Khariton";"하리톤";"哈\t里\t顿";"ハリトン";"哈\t裡\t頓"
+"coop/Bot340";"Klara";"Klara";"Klara";"Klara";"Klara";"Klara";"Klara";"Klara";"Klara";"클라라";"克\t拉\t拉";"クララ";"克\t拉\t拉"
+"coop/Bot341";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"Kliment";"클리멘트";"克\t里\t门\t特";"クリメント";"克\t裡\t門\t特"
+"coop/Bot342";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"Kondratiy";"콘드라티";"孔\t德\t拉\t季";"コンドラティ";"孔\t德\t拉\t季"
+"coop/Bot343";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"Konstantin";"콘스탄틴";"康\t斯\t坦\t丁";"コンスタンチン";"康\t斯\t坦\t丁"
+"coop/Bot344";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"Kuzma";"쿠즈마";"库\t兹\t马";"クズマ";"庫\t茲\t馬"
+"coop/Bot345";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"Lavrentiy";"라브렌티";"拉\t夫\t连\t季";"ラヴレンチー";"拉\t夫\t連\t季"
+"coop/Bot346";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"Larisa";"라리사";"拉\t里\t莎";"ラリサ";"拉\t裡\t莎"
+"coop/Bot347";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"Lazar";"라자르";"拉\t扎\t尔";"ラザール";"拉\t紮\t爾"
+"coop/Bot348";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"Leonid";"레오니드";"列\t昂\t尼\t德";"レオニド";"列\t昂\t尼\t德"
+"coop/Bot349";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"Leontiy";"레온티";"列\t昂\t季";"レオンチー";"列\t昂\t季"
+"coop/Bot350";"Lev";"Lev";"Lev";"Lev";"Lev";"Lev";"Lev";"Lev";"Lev";"레프";"列\t夫";"レブ";"列\t夫"
+"coop/Bot351";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"Lidiya";"리디야";"利\t季\t娅";"リジヤ";"利\t季\t婭"
+"coop/Bot352";"Makar";"Makar";"Makar";"Makar";"Makar";"Makar";"Makar";"Makar";"Makar";"마카르";"马\t卡\t尔";"メイカー";"馬\t卡\t爾"
+"coop/Bot353";"Matvey";"Matvey";"Matvey";"Matvey";"Mateo";"Matvey";"Matvey";"Matvey";"Matvey";"마트베이";"马\t特\t维";"マトヴェイ";"馬\t特\t維"
+"coop/Bot354";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"Maksimilian";"막시밀리안";"马\t克\t西\t米\t利\t安";"マクシミリアン";"馬\t克\t西\t米\t利\t安"
+"coop/Bot355";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"Mikhail";"미하일";"米\t哈\t伊\t尔";"ミハイル";"米\t哈\t伊\t爾"
+"coop/Bot356";"Miron";"Miron";"Miron";"Miron";"Miron";"Miron";"Miron";"Miron";"Miron";"미론";"米\t龙";"ミロン";"米\t龍"
+"coop/Bot357";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"Mitrofan";"미트로판";"米\t特\t罗\t凡";"ミトロファン";"米\t特\t羅\t凡"
+"coop/Bot358";"Modest";"Modest";"Modest";"Modest";"Modesto";"Modest";"Modest";"Modest";"Modest";"모데스트";"莫\t杰\t斯\t特";"モデスト";"莫\t傑\t斯\t特"
+"coop/Bot359";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"Nadezhda";"나데즈다";"娜\t杰\t日\t达";"ナデジュダ";"娜\t傑\t日\t達"
+"coop/Bot360";"Naum";"Naum";"Naum";"Naum";"Naum";"Naum";"Naum";"Naum";"Naum";"나움";"瑙\t姆";"ナウム";"瑙\t姆"
+"coop/Bot361";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"Nazar";"나자르";"纳\t扎\t尔";"ナザル";"納\t紮\t爾"
+"coop/Bot362";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"Nestor";"네스토르";"涅\t斯\t托\t尔";"ネストル";"涅\t斯\t托\t爾"
+"coop/Bot363";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"Nikifor";"니키포르";"尼\t基\t福\t尔";"ニキフォル";"尼\t基\t福\t爾"
+"coop/Bot364";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"Nikita";"니키타";"尼\t基\t塔";"ニキータ";"尼\t基\t塔"
+"coop/Bot365";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"Nikodim";"니코딤";"尼\t科\t季\t姆";"ニコディム";"尼\t科\t季\t姆"
+"coop/Bot366";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"Nikolay";"니콜라이";"尼\t古\t拉";"ニコライ";"尼\t古\t拉"
+"coop/Bot367";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"Oleg";"올레그";"奥\t列\t格";"オレグ";"奧\t列\t格"
+"coop/Bot368";"Osip";"Osip";"Osip";"Osip";"Osip";"Osip";"Osip";"Osip";"Osip";"오시프";"奥\t西\t普";"オシップ";"奧\t西\t普"
+"coop/Bot369";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"Pankratiy";"판크라티";"潘\t克\t拉\t季";"ハンクラティー";"潘\t克\t拉\t季"
+"coop/Bot370";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"Pavel";"파벨";"帕\t维\t尔";"パーベル";"帕\t維\t爾"
+"coop/Bot371";"Platon";"Platon";"Platon";"Platon";"Platon";"Platon";"Platon";"Platon";"Platon";"플라톤";"普\t拉\t东";"プラトン";"普\t拉\t東"
+"coop/Bot372";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"Polikarp";"폴리카르프";"波\t利\t卡\t尔\t普";"ポリスカールプ";"波\t利\t卡\t爾\t普"
+"coop/Bot373";"Polina";"Polina";"Polina";"Polina";"Polina";"Polina";"Polina";"Polina";"Polina";"폴리나";"波\t林\t娜";"ポリーナ";"波\t林\t娜"
+"coop/Bot374";"Prohor";"Prohor";"Prohor";"Prohor";"Projor";"Prohor";"Prohor";"Prohor";"Prohor";"프로호르";"普\t罗\t霍\t尔";"プロホル";"普\t羅\t霍\t爾"
+"coop/Bot375";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"Prokopiy";"프로코피";"普\t罗\t科\t皮";"プロコフィエフ";"普\t羅\t科\t皮"
+"coop/Bot376";"Pyotr";"Pyotr";"Pyotr";"Pyotr";"Piotr";"Pyotr";"Pyotr";"Pyotr";"Pyotr";"표트르";"彼\t得";"ピュートル";"彼\t得"
+"coop/Bot377";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"Raisa";"라이사";"赖\t萨";"ライサ";"賴\t薩"
+"coop/Bot378";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"Rodion";"로디온";"罗\t季\t翁";"ロディオン";"羅\t季\t翁"
+"coop/Bot379";"Roman";"Roman";"Roman";"Roman";"Romano";"Roman";"Roman";"Roman";"Roman";"로만";"里\t姆\t斯\t基";"ロマン";"里\t姆\t斯\t基"
+"coop/Bot380";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"Rostislav";"로스티슬라프";"罗\t斯\t季\t斯\t拉\t夫";"ロスティスラフ";"羅\t斯\t季\t斯\t拉\t夫"
+"coop/Bot381";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"Ruslan";"루슬란";"鲁\t斯\t兰";"ルスラーン";"魯\t斯\t蘭"
+"coop/Bot382";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"Samuil";"사무일";"萨\t穆\t伊\t尔";"サムイル";"薩\t穆\t伊\t爾"
+"coop/Bot383";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"Saveliy";"사벨리";"萨\t韦\t里";"シャバレー";"薩\t韋\t裡"
+"coop/Bot384";"Semyon";"Semyon";"Semyon";"Semyon";"Semión";"Semyon";"Semyon";"Semyon";"Semyon";"세묜";"谢\t苗";"セミョーン";"謝\t苗"
+"coop/Bot385";"Savva";"Savva";"Savva";"Savva";"Savva";"Savva";"Savva";"Savva";"Savva";"사바";"萨\t瓦";"サーヴァ";"薩\t瓦"
+"coop/Bot386";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"Serafim";"세라핌";"谢\t拉\t菲\t姆";"セラフィム";"謝\t拉\t菲\t姆"
+"coop/Bot387";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"Sidor";"시도르";"西\t多\t尔";"シードル";"西\t多\t爾"
+"coop/Bot388";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"Spiridon";"스피리돈";"斯\t皮\t里\t东";"スピリドン";"斯\t皮\t裡\t東"
+"coop/Bot389";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"Stepan";"스테판";"斯\t捷\t潘";"スティーブン";"斯\t捷\t潘"
+"coop/Bot390";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"Svyatopolk";"스뱌토폴크";"斯\t维\t亚\t托\t波\t尔\t克";"スヴャトポルク";"斯\t維\t亞\t托\t波\t爾\t克"
+"coop/Bot391";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"Svyatoslav";"스뱌토슬라프";"斯\t维\t亚\t托\t斯\t拉\t夫";"スヴャトスラフ";"斯\t維\t亞\t托\t斯\t拉\t夫"
+"coop/Bot392";"Taras";"Taras";"Taras";"Taras";"Taras";"Taras";"Taras";"Taras";"Taras";"타라스";"塔\t拉\t斯";"タラス";"塔\t拉\t斯"
+"coop/Bot393";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"Terentiy";"테렌티";"捷\t连\t季";"テレンチ";"捷\t連\t季"
+"coop/Bot394";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"Tikhon";"티혼";"吉\t洪";"ティホン";"吉\t洪"
+"coop/Bot395";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"Timofey";"티모페이";"季\t莫\t费";"ティモフェイ";"季\t莫\t費"
+"coop/Bot396";"Timur";"Timur";"Timur";"Timur";"Timur";"Timur";"Timur";"Timur";"Timur";"티무르";"铁\t木\t尔";"ティムール";"鐵\t木\t爾"
+"coop/Bot397";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"Vadim";"바딤";"瓦\t季\t姆";"ヴァディム";"瓦\t季\t姆"
+"coop/Bot398";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"Valeriy";"발레리";"瓦\t列\t里";"ヴァレリー";"瓦\t列\t里"
+"coop/Bot399";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"Varfolomey";"바르폴로메이";"瓦\t尔\t福\t洛\t梅";"バールポロメイ";"瓦\t爾\t福\t洛\t梅"
+"coop/Bot400";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"Venedikt";"베네딕트";"韦\t涅\t季\t克\t特";"ヴェネジークト";"韋\t涅\t季\t克\t特"
+"coop/Bot401";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"Veniamin";"베니아민";"韦\t尼\t阿\t明";"ヴェニアミン";"韋\t尼\t阿\t明"
+"coop/Bot402";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"Vikentiy";"비켄티";"维\t肯\t季";"ヒケンティ";"維\t肯\t季"
+"coop/Bot403";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"Viktor";"빅토르";"维\t克\t托";"ヴィクター";"維\t克\t托"
+"coop/Bot404";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"Vitaliy";"비탈리";"维\t塔\t利";"ヴィタリー";"維\t塔\t利"
+"coop/Bot405";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"Vladislav";"블라디슬라프";"弗\t拉\t季\t斯\t拉\t夫";"ウラジスラフ";"弗\t拉\t季\t斯\t拉\t夫"
+"coop/Bot406";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"Vladlen";"블라드렌";"弗\t拉\t德\t连";"ヴラドレン";"弗\t拉\t德\t連"
+"coop/Bot407";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"Vsevolod";"브세볼로드";"弗\t谢\t沃\t洛\t德";"フセボロド";"弗\t謝\t沃\t洛\t德"
+"coop/Bot408";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"Vyacheslav";"뱌체슬라프";"维\t亚\t切\t斯\t拉\t夫";"ビャチェスラフ";"維\t亞\t切\t斯\t拉\t夫"
+"coop/Bot409";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"Yakov";"야코프";"雅\t科\t夫";"ヤーコフ";"雅\t科\t夫"
+"coop/Bot410";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"Yaropolk";"야로폴크";"亚\t罗\t波\t尔\t克";"ヤロポルク";"亞\t羅\t波\t爾\t克"
+"coop/Bot411";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"Yaroslav";"야로슬라프";"雅\t罗\t斯\t拉\t夫";"ヤロスラフ";"雅\t羅\t斯\t拉\t夫"
+"coop/Bot412";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"Yuriy";"유리";"尤\t里";"ユーリイ";"尤\t裡"
+"coop/Bot413";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"Zakhar";"자하르";"扎\t法\t尔";"ザハール";"紮\t法\t爾"
+"coop/Bot414";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"Zinaida";"지나이다";"季\t娜\t伊\t达";"ジナイーダ";"季\t娜\t伊\t達"
+"coop/Bot415";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"Zinoviy";"지노비";"济\t诺\t维";"ジノーヴィー";"濟\t諾\t維"
+"coop/Bot416";"Aaron";"Aaron";"Aaron";"Aaron";"Aarón";"Aaron";"Aaron";"Aaron";"Aaron";"아론";"亚\t伦";"アーロン";"亞\t倫"
+"coop/Bot417";"Abel";"Abel";"Abel";"Abel";"Abel";"Abel";"Abel";"Abel";"Abel";"에이벨";"亚\t伯";"アベル";"亞\t伯"
+"coop/Bot418";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"Abbott";"애보트";"艾\t伯\t特";"アボット";"亞\t伯\t特"
+"coop/Bot419";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"Abraham";"에이브레헴";"亚\t伯\t拉\t罕";"アブラハム";"亞\t伯\t拉\t罕"
+"coop/Bot420";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"Ackerley";"액컬리";"阿\t克\t利";"アッカリー";"阿\t克\t利"
+"coop/Bot421";"Aden";"Aden";"Aden";"Aden";"Aden";"Aden";"Aden";"Aden";"Aden";"에이든";"亚\t丁";"アデン";"亞\t丁"
+"coop/Bot422";"Addison";"Addison";"Addison";"Addison";"Addison";"Addison";"Addison";"Addison";"Addison";"애디슨";"阿\t狄\t森";"アディソン";"阿\t狄\t森"
+"coop/Bot423";"Alan";"Alan";"Alan";"Alan";"Alan";"Alan";"Alan";"Alan";"Alan";"앨런";"艾\t伦";"アラン";"艾\t倫"
+"coop/Bot424";"Albert";"Albert";"Albert";"Albert";"Albert";"Albert";"Albert";"Albert";"Albert";"앨베르트";"艾\t伯\t特";"アルバート";"艾\t伯\t特"
+"coop/Bot425";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"Alfred";"앨프러드";"阿\t尔\t弗\t雷\t德";"アルフレッド";"阿\t爾\t弗\t雷\t德"
+"coop/Bot426";"Alice";"Alice";"Alice";"Alice";"Alicia";"Alice";"Alice";"Alice";"Alice";"앨리스";"爱\t丽\t丝";"アリス";"愛\t麗\t絲"
+"coop/Bot427";"Allister";"Allister";"Allister";"Allister";"Allister";"Allister";"Allister";"Allister";"Allister";"앨리스터";"阿\t利\t斯\t特";"アリスター";"阿\t利\t斯\t特"
+"coop/Bot428";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"Archibald";"아치볼드";"阿\t奇\t博\t尔\t德";"アーチバルト";"阿\t奇\t博\t爾\t德"
+"coop/Bot429";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"Arnold";"아놀드";"阿\t诺\t德";"アーノルド";"阿\t諾\t德"
+"coop/Bot430";"Arthur";"Arthur";"Arthur";"Arthur";"Arturo";"Arthur";"Arthur";"Arthur";"Arthur";"아서";"亚\t瑟";"アーサー";"亞\t瑟"
+"coop/Bot431";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"Ashton";"애쉬튼";"阿\t什\t顿";"アシュトン";"阿\t什\t頓"
+"coop/Bot432";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"Aubrey";"오브리";"奥\t布\t里";"オーブリー";"奧\t布\t里"
+"coop/Bot433";"Austin";"Austin";"Austin";"Austin";"Austin";"Austin";"Austin";"Austin";"Austin";"오스틴";"奥\t斯\t汀";"オースティン";"奧\t斯\t丁"
+"coop/Bot434";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"Ballard";"발라드";"巴\t拉\t德";"バラード";"巴\t拉\t德"
+"coop/Bot435";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"Balthasar";"발타사르";"巴\t尔\t萨\t泽";"バルタザール";"巴\t爾\t薩\t澤"
+"coop/Bot436";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"Barnaby";"바너비";"巴\t纳\t比";"バーナビー";"巴\t納\t比"
+"coop/Bot437";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"Baxter";"박스터";"巴\t克\t斯\t特";"バクスター";"巴\t克\t斯\t特"
+"coop/Bot438";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"Bennett";"베넷";"班\t尼\t特";"ベネット";"班\t尼\t特"
+"coop/Bot439";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"Benjamin";"벤자민";"本\t杰\t明";"ベンジャミン";"本\t傑\t明"
+"coop/Bot440";"Benson";"Benson";"Benson";"Benson";"Benson";"Benson";"Benson";"Benson";"Benson";"벤슨";"本\t森";"ベンソン";"本\t森"
+"coop/Bot441";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"Bradley";"브래들리";"布\t拉\t德\t利";"ブラッドリー";"布\t蘭\t得\t利"
+"coop/Bot442";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"Brandt";"브랜트";"勃\t兰\t特";"ブラント";"勃\t蘭\t特"
+"coop/Bot443";"Brian";"Brian";"Brian";"Brian";"Brian";"Brian";"Brian";"Brian";"Brian";"브라이언";"布\t莱\t恩";"ブライアン";"布\t萊\t恩"
+"coop/Bot444";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"Bruce";"브루스";"布\t鲁\t斯";"ブルース";"布\t魯\t斯"
+"coop/Bot445";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"Cassidy";"캐시디";"卡\t西\t迪";"キャシディ";"凱\t西\t迪"
+"coop/Bot446";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"Cecil";"세실";"塞\t西\t尔";"セシル";"塞\t西\t爾"
+"coop/Bot447";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"Chadwick";"채드윅";"查\t德\t威\t克";"チャドウィック";"查\t德\t威\t克"
+"coop/Bot448";"Charles";"Charles";"Charles";"Charles";"Charles";"Charles";"Charles";"Charles";"Charles";"찰스";"查\t尔\t斯";"チャールズ";"查\t理\t斯"
+"coop/Bot449";"Chester";"Chester";"Chester";"Chester";"Chester";"Chester";"Chester";"Chester";"Chester";"체스터";"切\t斯\t特";"チェスター";"賈\t斯\t特"
+"coop/Bot450";"Christian";"Christian";"Christian";"Christian";"Cristiano";"Christian";"Christian";"Christian";"Christian";"크리스티안";"克\t里\t斯\t蒂\t安";"クリスチャン";"克\t利\t斯\t蒂\t安"
+"coop/Bot451";"Christopher";"Christopher";"Christopher";"Christopher";"Cristóbal";"Christopher";"Christopher";"Christopher";"Christopher";"크리스토퍼";"克\t里\t斯\t托\t弗";"クリストファー";"克\t里\t斯\t托\t弗"
+"coop/Bot452";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"Cooper";"쿠퍼";"库\t珀";"クーパー";"庫\t珀"
+"coop/Bot453";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"Crawford";"크로포드";"克\t劳\t福\t德";"クロフォード";"克\t勞\t福\t德"
+"coop/Bot454";"Darren";"Darren";"Darren";"Darren";"Darren";"Darren";"Darren";"Darren";"Darren";"대런";"达\t伦";"ダレン";"達\t倫"
+"coop/Bot455";"David";"David";"David";"David";"David";"David";"David";"David";"David";"데이빗";"大\t卫";"デイビット";"大\t衛"
+"coop/Bot456";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"Dayton";"데이튼";"戴\t顿";"デイトン";"戴\t頓"
+"coop/Bot457";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"Derrick";"데릭";"德\t瑞\t克";"デリック";"德\t瑞\t克"
+"coop/Bot458";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"Dexter";"덱스터";"德\t克\t斯\t特";"デクスター";"德\t克\t斯\t特"
+"coop/Bot459";"Donald";"Donald";"Donald";"Donald";"Donald";"Donald";"Donald";"Donald";"Donald";"도널드";"唐\t纳\t德";"ドナルド";"唐\t納\t德"
+"coop/Bot460";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"Donovan";"도너번";"多\t诺\t万";"ドノバン";"多\t諾\t萬"
+"coop/Bot461";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"Dorothy";"도로시";"多\t罗\t茜";"ドロシー";"多\t羅\t茜"
+"coop/Bot462";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"Douglas";"더글러스";"道\t格\t拉\t斯";"ダグラス";"道\t格\t拉\t斯"
+"coop/Bot463";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"Dudley";"두들리";"达\t德\t利";"ダドリー";"達\t德\t利"
+"coop/Bot464";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"Dwayne";"드웨인";"德\t韦\t恩";"ドウェイン";"德\t韋\t恩"
+"coop/Bot465";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"Edwin";"에드윈";"埃\t德\t温";"エドウィン";"愛\t德\t溫"
+"coop/Bot466";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"Elliott";"엘리엇";"埃\t利\t奥\t特";"エリオット";"埃\t利\t奧\t特"
+"coop/Bot467";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"Fingall";"핑걸";"芬\t戈\t尔";"フィンガル";"芬\t戈\t爾"
+"coop/Bot468";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"Fletcher";"플렛쳐";"弗\t莱\t彻";"フレッチャー";"弗\t萊\t徹"
+"coop/Bot469";"Florence";"Florence";"Florence";"Florence";"Florence";"Florence";"Florence";"Florence";"Florence";"플로렌스";"弗\t洛\t伦\t斯";"フローレンス";"弗\t洛\t倫\t斯"
+"coop/Bot470";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"Flynn";"플린";"弗\t林";"フリン";"弗\t林"
+"coop/Bot471";"Francis";"Francis";"Francis";"Francis";"Francis";"Francis";"Francis";"Francis";"Francis";"프랜시스";"弗\t朗\t西\t斯";"フランシス";"法\t蘭\t西\t斯"
+"coop/Bot472";"Frank";"Frank";"Frank";"Frank";"Frank";"Frank";"Frank";"Frank";"Frank";"프랭크";"弗\t兰\t克";"フランク";"弗\t蘭\t克"
+"coop/Bot473";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"Galahad";"갤러해드";"加\t拉\t哈\t德";"ガラハッド";"加\t拉\t哈\t德"
+"coop/Bot474";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"Garrett";"개릿";"加\t勒\t特";"ギャレット";"加\t勒\t特"
+"coop/Bot475";"Gill";"Gill";"Gill";"Gill";"Gill";"Gill";"Gill";"Gill";"Gill";"질";"吉\t尔";"ギル";"吉\t爾"
+"coop/Bot476";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"Glenn";"글렌";"格\t伦";"グレン";"葛\t籣"
+"coop/Bot477";"Goliath";"Goliath";"Goliath";"Goliath";"Goliat";"Goliath";"Goliath";"Goliath";"Goliath";"골라이엇";"格\t里\t亚\t斯";"ゴリアテ";"格\t裡\t亞\t斯"
+"coop/Bot478";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"Gordon";"고든";"戈\t登";"ゴードン";"戈\t登"
+"coop/Bot479";"Graham";"Graham";"Graham";"Graham";"Graham";"Graham";"Graham";"Graham";"Graham";"그레이엄";"格\t拉\t汉\t姆";"グレイアム";"格\t拉\t漢\t姆"
+"coop/Bot480";"Griffith";"Griffith";"Griffith";"Griffith";"Griffith";"Griffith";"Griffith";"Hadley";"Griffith";"그리피스";"格\t里\t菲\t斯";"グリフィス";"格\t里\t菲\t斯"
+"coop/Bot481";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"Hadley";"해들리";"哈\t德\t利";"ハドレー";"哈\t德\t利"
+"coop/Bot482";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"Hamilton";"해밀턴";"汉\t密\t尔\t顿";"ハミルトン";"漢\t密\t爾\t頓"
+"coop/Bot483";"Howard";"Howard";"Howard";"Howard";"Howard";"Howard";"Howard";"Howard";"Howard";"하워드";"霍\t华\t德";"ハワード";"霍\t華\t德"
+"coop/Bot484";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"Hudson";"허드슨";"哈\t德\t森";"ハドソン";"哈\t德\t森"
+"coop/Bot485";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"Irvine";"어빈";"尔\t湾";"アーヴィン";"爾\t灣"
+"coop/Bot486";"Jack";"Jack";"Jack";"Jack";"Jack";"Jack";"Jack";"Jack";"Jack";"잭";"杰\t克";"ジャック";"傑\t克"
+"coop/Bot487";"James";"James";"James";"James";"James";"James";"James";"James";"James";"제임스";"詹\t姆\t斯";"ジェームズ";"詹\t姆\t斯"
+"coop/Bot488";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"Jarred";"자레드";"贾\t里\t德";"ジャレッド";"傑\t瑞\t德"
+"coop/Bot489";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"Joseph";"조셉";"约\t瑟\t夫";"ジョセフ";"約\t瑟\t夫"
+"coop/Bot490";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"Johnathan";"조너선";"乔\t纳\t森";"ジョナサン";"喬\t納\t森"
+"coop/Bot491";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"Jordan";"조던";"乔\t丹";"ジョーダン";"喬\t丹"
+"coop/Bot492";"Justin";"Justin";"Justin";"Justin";"Justin";"Justin";"Justin";"Justin";"Justin";"저스틴";"贾\t斯\t汀";"ジャスティン";"賈\t斯\t汀"
+"coop/Bot493";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"Kameron";"카메론";"卡\t梅\t伦";"カメロン";"卡\t梅\t倫"
+"coop/Bot494";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"Keegan";"키건";"基\t根";"キーガン";"基\t根"
+"coop/Bot495";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"Kevin";"케빈";"凯\t文";"ケビン";"凱\t文"
+"coop/Bot496";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"Kimberley";"킴벌리";"金\t伯\t利";"キンバリー";"金\t伯\t利"
+"coop/Bot497";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"Kodey";"코디";"科\t迪";"コディ";"科\t迪"
+"coop/Bot498";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"Laurence";"로렌스";"劳\t伦\t斯";"ローレンス";"勞\t倫\t斯"
+"coop/Bot499";"Lee";"Lee";"Lee";"Lee";"Lee";"Lee";"Lee";"Lee";"Lee";"리";"李";"リー";"李"
+"coop/Bot500";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"Leroy";"리로이";"勒\t罗\t伊";"ルロワ";"勒\t羅\t伊"
+"coop/Bot501";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"Lindsay";"린지";"林\t赛";"リンジー";"琳\t賽"
+"coop/Bot502";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"Lloyd";"로이드";"劳\t埃\t德";"ロイド";"勞\t埃\t德"
+"coop/Bot503";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"Mackenzie";"매켄지";"麦\t肯\t锡";"マッケンジー";"麥\t肯\t錫"
+"coop/Bot504";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"Maddison";"매디슨";"麦\t迪\t逊";"マディソン";"麥\t迪\t森"
+"coop/Bot505";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"Malcolm";"맬컴";"马\t尔\t科\t姆";"マルコム";"瑪\t律\t科\t姆"
+"coop/Bot506";"Manley";"Manley";"Manley";"Manley";"Manley";"Manley";"Manley";"Manley";"Manley";"맨리";"曼\t利";"マンリー";"曼\t利"
+"coop/Bot507";"Mark";"Mark";"Mark";"Mark";"Mark";"Mark";"Mark";"Mark";"Mark";"마크";"马\t克";"マーク";"馬\t克"
+"coop/Bot508";"Mary";"Mary";"Mary";"Mary";"Mary";"Mary";"Mary";"Mary";"Mary";"메리";"玛\t丽";"メアリー";"瑪\t麗"
+"coop/Bot509";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"Maynard";"메이너드";"梅\t纳\t德";"メイナード";"梅\t納\t德"
+"coop/Bot510";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"Meredith";"메러디스";"梅\t瑞\t狄\t斯";"メレディス";"梅\t瑞\t狄\t斯"
+"coop/Bot511";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"Mervin";"머빈";"默\t文";"マービン";"默\t文"
+"coop/Bot512";"Milton";"Milton";"Milton";"Milton";"Milton";"Milton";"Milton";"Milton";"Milton";"밀튼";"弥\t尔\t顿";"ミルトン";"彌\t爾\t頓"
+"coop/Bot513";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"Morgan";"모건";"摩\t根";"モーガン";"摩\t根"
+"coop/Bot514";"Morton";"Morton";"Morton";"Morton";"Morton";"Morton";"Morton";"Murray";"Morton";"모튼";"莫\t顿";"モートン";"莫\t頓"
+"coop/Bot515";"Murray";"Murray";"Murray";"Murray";"Murray";"Murray";"Murray";"Nathan";"Murray";"머레이";"穆\t雷";"マレー";"穆\t雷"
+"coop/Bot516";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"Nathan";"네이선";"内\t森";"ネイサン";"南\t森"
+"coop/Bot517";"Neville";"Neville";"Neville";"Neville";"Neville";"Neville";"Neville";"Neville";"Neville";"네빌";"内\t维\t尔";"ネビル";"內\t維\t爾"
+"coop/Bot518";"Norman";"Norman";"Norman";"Norman";"Norman";"Norman";"Norman";"Norman";"Norman";"노먼";"诺\t曼";"ノルマン";"諾\t曼"
+"coop/Bot519";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"Oliver";"올리버";"奥\t利\t弗";"オリバー";"奧\t利\t弗"
+"coop/Bot520";"Omar";"Omar";"Omar";"Omar";"Omar";"Omar";"Omar";"Omar";"Omar";"오마르";"奥\t马\t尔";"オマール";"奧\t馬\t爾"
+"coop/Bot521";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"Oscar";"오스카";"奥\t斯\t卡";"オスカー";"奧\t斯\t卡"
+"coop/Bot522";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"Patrick";"패트릭";"帕\t特\t里\t克";"パトリック";"派\t翠\t克"
+"coop/Bot523";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"Philipp";"필립";"菲\t利\t普";"フィリップ";"菲\t力\t浦"
+"coop/Bot524";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"Quinlan";"퀸랜";"昆\t兰";"クインラン";"昆\t蘭"
+"coop/Bot525";"Randall";"Randall";"Randall";"Randall";"Randall";"Randall";"Randall";"Randall";"Randall";"랜덜";"兰\t德\t尔";"ランドール";"蘭\t德\t爾"
+"coop/Bot526";"Richard";"Richard";"Richard";"Richard";"Richard";"Richard";"Richard";"Richard";"Richard";"리차드";"理\t查\t德";"リチャード";"理\t查"
+"coop/Bot527";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"Ritchie";"리치";"里\t奇";"リッチー";"里\t奇"
+"coop/Bot528";"Robin";"Robin";"Robin";"Robin";"Robin";"Robin";"Robin";"Robin";"Robin";"로빈";"罗\t宾";"ロビン";"羅\t賓"
+"coop/Bot529";"Robert";"Robert";"Robert";"Robert";"Robert";"Robert";"Robert";"Robert";"Robert";"로버트";"罗\t伯\t特";"ロバート";"羅\t伯\t特"
+"coop/Bot530";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"Ronald";"로널드";"罗\t纳\t德";"ロナルド";"羅\t奈\t爾\t得"
+"coop/Bot531";"Scott";"Scott";"Scott";"Scott";"Scott";"Scott";"Scott";"Scott";"Scott";"스콧";"斯\t科\t特";"スコット";"斯\t科\t特"
+"coop/Bot532";"Seth";"Seth";"Seth";"Seth";"Seth";"Seth";"Seth";"Seth";"Seth";"세스";"塞\t思";"セト";"塞\t思"
+"coop/Bot533";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"Shannon";"섀넌";"香\t农";"シャノン";"香\t農"
+"coop/Bot534";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"Sheridan";"셰리던";"谢\t里\t丹";"シェリダン";"謝\t裡\t丹"
+"coop/Bot535";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"Sidney";"시드니";"西\t德\t尼";"シドニー";"西\t德\t尼"
+"coop/Bot536";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"Sinclair";"싱클레어";"辛\t克\t莱";"シンクレア";"辛\t克\t萊"
+"coop/Bot537";"Steven";"Steven";"Steven";"Steven";"Steven";"Steven";"Steven";"Steven";"Steven";"스티븐";"史\t蒂\t文";"スティーブン";"史\t蒂\t文"
+"coop/Bot538";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"Stewart";"스튜어트";"斯\t图\t尔\t特";"スチュワート";"斯\t圖\t爾\t特"
+"coop/Bot539";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"Terrence";"테런스";"特\t伦\t斯";"テレンス";"特\t倫\t斯"
+"coop/Bot540";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"Thomas";"토마스";"托\t马\t斯";"トマス";"湯\t瑪\t斯"
+"coop/Bot541";"William";"William";"William";"William";"Guillermo";"William";"William";"William";"William";"윌리엄";"威\t廉";"ウィリアム";"威\t廉"
+"coop/Bot542";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"Woodrow";"우드로우";"伍\t德\t罗";"ウッドロウ";"伍\t德\t羅"
+"coop/Bot543";"York";"York";"York";"York";"York";"York";"York";"York";"York";"요크";"约\t克";"ヨーク";"約\t克"

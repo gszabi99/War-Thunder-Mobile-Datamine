@@ -1603,8 +1603,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "a6m2_default",
-      "blk": "gameData/FlightModels/weaponPresets/a6m2_default.blk"
+      "name": "a6m2_zero_default",
+      "blk": "gameData/FlightModels/weaponPresets/a6m2_zero_default.blk"
     }
   },
   "turbulence": {

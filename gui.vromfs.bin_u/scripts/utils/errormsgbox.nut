@@ -2,13 +2,17 @@ from "%scripts/dagui_library.nut" import *
 //-file:plus-string
 let { format } = require("string")
 let { doesLocTextExist } = require("dagor.localize")
+let { SERVER_ERROR_MAINTENANCE, SERVER_ERROR_FORCE_DISCONNECT } = require("matching.errors")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { register_command } = require("console")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { authState } = require("%scripts/login/authState.nut")
 
 let curtomUrls = {
   [SERVER_ERROR_MAINTENANCE] = "https://www.wtmobile.com/news",
   ["CANNOT_LOGIN_WITH_LINKED_ACCOUNT"] = "",
+  [YU2_WRONG_2STEP_CODE] = loc($"url/profile/security"),
+  [YU2_PROFILE_DELETED] = loc($"url/feedback/support"),
 }
 
 let function matchingErrData(error_text) {
@@ -60,6 +64,11 @@ let function errorCodeToString(error_code) {
 
     case YU2_SSL_CACERT:
       return "80130184" // special error for this
+
+    case YU2_WRONG_2STEP_CODE: {
+      let { email2step } = authState.value
+      return email2step ? "YU2_WRONG_2STEP_CODE_EMAIL" : "YU2_WRONG_2STEP_CODE"
+    }
   }
 
   return format("%X", error_code & 0xFFFFFFFF)

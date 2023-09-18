@@ -1,8 +1,7 @@
 //-file:plus-string
-
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-
+let { SERVER_ERROR_ROOM_PASSWORD_MISMATCH, INVALID_ROOM_ID } = require("matching.errors")
 let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { is_user_mission } = require("%scripts/util.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

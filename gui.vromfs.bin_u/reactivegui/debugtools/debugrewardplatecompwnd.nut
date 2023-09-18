@@ -32,10 +32,12 @@ let dbgRewardsTbl = {
     "bullet"
   ]
   units = [
-    "uk_battlecruiser_invincible"
+    "ussr_sub_pr641"
+    "ussr_t_34_85_zis_53"
   ]
   unitUpgrades = [
-    "fr_panhard_ebr_1951"
+    "uk_destroyer_tribal"
+    "ussr_t_34_85_zis_53"
   ]
 }
 
@@ -44,8 +46,11 @@ let dbgRewardsInfo = getRewardsViewInfo(dbgRewardsTbl).sort(sortRewardsViewInfo)
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened(false)
 
+let opacityGradientSize = saBorders[1]
 let wndHeaderHeight = hdpx(60)
-let wndHeaderGap = hdpx(30)
+let wndContentWidth = saSize[0]
+let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
+
 let wndHeader = {
   size = [flex(), wndHeaderHeight]
   valign = ALIGN_CENTER
@@ -65,37 +70,35 @@ let wndHeader = {
 let mkRewardPlateCompsByStyle = @(rStyle) {
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
-  margin = hdpx(50)
   flow = FLOW_HORIZONTAL
-  children = wrap(dbgRewardsInfo.map(@(r) mkRewardPlate(r, rStyle))
-    { width = saSize[0], hGap = rStyle.boxGap, vGap = rStyle.boxGap })
+  children = wrap(dbgRewardsInfo.map(@(r) mkRewardPlate(r, rStyle)),
+    { flow = FLOW_HORIZONTAL, width = wndContentWidth, hGap = rStyle.boxGap, vGap = rStyle.boxGap })
 }
 
-let wndContentHeight = saSize[1] - wndHeaderHeight - wndHeaderGap
-let wndContent = verticalPannableAreaCtor(wndContentHeight, [hdpx(30), hdpx(30)])({
+let mkWndContent = @() verticalPannableAreaCtor(wndContentHeight, [opacityGradientSize, opacityGradientSize])({
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
+  gap = hdpx(50)
   children = [
     REWARD_STYLE_SMALL
     REWARD_STYLE_MEDIUM
   ].map(@(rStyle) mkRewardPlateCompsByStyle(rStyle))
 })
 
-let debugRewardPlateCompWnd = bgShaded.__merge({
+let mkDebugRewardPlateCompWnd = @() bgShaded.__merge({
   key = isOpened
   size = flex()
   padding = saBordersRv
   flow = FLOW_VERTICAL
-  gap = wndHeaderGap
   children = [
     wndHeader
-    wndContent
+    mkWndContent()
   ]
   animations = wndSwitchAnim
 })
 
-registerScene("debugRewardPlateCompWnd", debugRewardPlateCompWnd, close, isOpened)
+registerScene("debugRewardPlateCompWnd", mkDebugRewardPlateCompWnd, close, isOpened)
 
 register_command(@() isOpened(true), "ui.debug.reward_plate_comp")

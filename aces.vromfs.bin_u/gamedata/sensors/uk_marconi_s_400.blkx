@@ -250,6 +250,9 @@
           },
           "clearTargets": {},
           "clearTargetsOfInterest": {},
+          "setCueEnabled": {
+            "value": true
+          },
           "setTransiver": {
             "transiver": "search"
           },
@@ -272,6 +275,9 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         },
         "setLockMode": {
@@ -282,10 +288,7 @@
             "value": true
           },
           "setCenterAzimuth": {
-            "source": "activeDetectedTarget"
-          },
-          "setCenterElevation": {
-            "source": "activeDetectedTarget"
+            "source": "targetDesignation"
           },
           "clearTargets": {},
           "clearTargetsOfInterest": {},
@@ -448,6 +451,11 @@
               "type": 0,
               "self": true,
               "sensorIndex": 0
+            },
+            "designateTargetUnderCue": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
             }
           }
         },
@@ -555,7 +563,7 @@
         },
         "finishedTrack": {
           "stateFrom": "track",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "command": [
             "selectTarget",
             "designateTarget"
@@ -656,6 +664,18 @@
           "actions": {
             "setNextDetectedTargetActive": {}
           }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
         }
       }
     },
@@ -665,16 +685,15 @@
         "scan": {
           "event": "update",
           "actions": {
-            "setCenterAzimuth": {
-              "source": "body"
-            },
             "scan": {}
           }
         },
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -685,7 +704,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
@@ -711,7 +732,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": {},
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -725,9 +749,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
             }
           }
         }

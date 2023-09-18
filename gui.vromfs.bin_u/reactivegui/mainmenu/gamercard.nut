@@ -2,14 +2,14 @@ from "%globalsDarg/darg_library.nut" import *
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, WARBOND, EVENT_KEY } = require("%appGlobals/currenciesState.nut")
 let { SC_GOLD, SC_WP, SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/shop/shopState.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
 let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor,
-  levelProgressBarWidth, levelProgressBorderWidth
+  levelProgressBarWidth, levelProgressBorderWidth, rotateCompensate
 } = require("%rGui/components/levelBlockPkg.nut")
 let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
@@ -33,6 +33,14 @@ let gamercardHeight  = avatarSize + levelHolderSize / 2
 
 let levelStateFlags = Watched(0)
 let profileStateFlags = Watched(0)
+
+// TODO: open buy warbond wnd
+let openBuyCurrencyWnd = {
+  [WP] = @() openShopWnd(SC_WP),
+  [GOLD] = @() openShopWnd(SC_GOLD),
+  [WARBOND] = @() null,
+  [EVENT_KEY] = null
+}
 
 let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@(category) category == true))
 
@@ -76,13 +84,13 @@ let function levelBlock() {
         !isMaxLevel
         ? mkProgressLevelBg({
             key = playerLevelInfo.value
-            pos = [levelHolderPlace - levelProgressBorderWidth, 0]
+            pos = [levelHolderSize * rotateCompensate, 0]
             opacity = 1.0,
             animations = isReadyForLevelUp
               ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
               : null
             children = {
-              size = [((levelProgressBarWidth - levelProgressBorderWidth) * clamp(exp, 0, nextLevelExp) / nextLevelExp).tointeger(),
+              size = [((levelProgressBarWidth - levelProgressBorderWidth * 2) * clamp(exp, 0, nextLevelExp) / nextLevelExp).tointeger(),
                 flex()]
               rendObj = ROBJ_SOLID
               color = playerExpColor
@@ -205,7 +213,7 @@ let function mkImageBtn(image, onClick, children = null) {
   }
 }
 
-let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", @() openShopWnd(SC_GOLD),
+let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", openBuyCurrencyWnd[GOLD],
   @() {
     watch = needShopUnseenMark
     pos = [hdpx(5), -hdpx(5)]
@@ -223,8 +231,8 @@ let rightBlock = @(){
   children = [
     !isShopOpened.value ? shopBtn : null
     premIconWithTimeOnChange
-    mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
-    mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
+    mkCurrencyBalance(WP, openBuyCurrencyWnd[WP])
+    mkCurrencyBalance(GOLD, openBuyCurrencyWnd[GOLD])
     dropMenuBtn
   ]
 }
@@ -252,18 +260,6 @@ let gamercardBalanceNotButtons = @() {
     )
 }
 
-let gamercardBalanceBtns = @(ovr = {}){
-  size = [flex(), SIZE_TO_CONTENT]
-  flow = FLOW_HORIZONTAL
-  halign = ALIGN_RIGHT
-  valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = [
-    mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
-    mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
-  ]
-}.__update(ovr)
-
 let gamercardItemsBalanceBtns = @(){
   watch = itemsOrder
   flow = FLOW_HORIZONTAL
@@ -272,6 +268,17 @@ let gamercardItemsBalanceBtns = @(){
   children = itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
 }
 
+let mkCurrenciesBtns = @(currencies, ovr = {}) {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_RIGHT
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = currencies.map(@(c) mkCurrencyBalance(c, openBuyCurrencyWnd[c]))
+}.__update(ovr)
+
+let gamercardBalanceBtns = mkCurrenciesBtns([WP, GOLD])
+
 return {
   mkLeftBlock
   mkGamercard
@@ -279,4 +286,5 @@ return {
   gamercardHeight
   gamercardBalanceNotButtons
   gamercardBalanceBtns
+  mkCurrenciesBtns
 }

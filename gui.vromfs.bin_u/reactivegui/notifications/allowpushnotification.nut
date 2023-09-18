@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { deferOnce } = require("dagor.workcycle")
-let { getApiVersion = @() -1 /*, checkAndRequestPermission = @(...) null */ } = require("android.platform")
+let { getApiVersion, checkAndRequestPermission } = require("android.platform")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { isNoExtraScenesAfterDebriefing } = require("%rGui/debriefing/debriefingState.nut")
@@ -18,8 +18,7 @@ let function show() {
   if (!needAskPermissions || isShowed.value)
     return
   isShowed(true)
-  //disabled until we push fresh binary with proper java code
-  //checkAndRequestPermission("","","", "android.permission.POST_NOTIFICATIONS")
+  checkAndRequestPermission("","","", "android.permission.POST_NOTIFICATIONS")
 }
 
 let function openAfterDebriefing() {

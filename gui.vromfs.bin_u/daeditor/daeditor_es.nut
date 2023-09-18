@@ -20,3 +20,23 @@ register_es("update_selected_entities", {
   },
   { comps_rq = ["daeditor__selected"]}
 )
+
+let getEntityExtraNameQuery = SqQuery("getEntityExtraNameQuery", {
+  comps_ro = [
+    ["ri_extra__name", TYPE_STRING, null],
+    ["floatingRiGroup__resName", TYPE_STRING, null],
+    ["ri_gpu_object__name", TYPE_STRING, null],
+    ["groupName", TYPE_STRING, null],
+  ]
+})
+
+let function getEntityExtraName(eid) {
+  let extraName = getEntityExtraNameQuery(eid,
+    @(_eid, comp) comp.ri_extra__name ?? comp.floatingRiGroup__resName ?? comp.ri_gpu_object__name ?? comp.groupName) ?? ""
+
+  return extraName.strip() == "" ? null : extraName
+}
+
+return {
+  getEntityExtraName
+}
