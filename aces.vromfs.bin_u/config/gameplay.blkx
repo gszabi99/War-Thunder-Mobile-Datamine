@@ -1832,7 +1832,7 @@
       },
       {
         "name": "bf_109k_4",
-        "weap": "Bf_109K4_default",
+        "weap": "bf_109k_4_default",
         "rankRange": [
           5,
           5

@@ -1551,6 +1551,16 @@
           "caliber": 140.0,
           "ammoCount": 4000,
           "isBeltAmmo": false
+        },
+        "7_7mm_lewis_amg_1916_naval_user_machinegun": {
+          "wtype": "aaa",
+          "damage": 15.0,
+          "shotFreq": 9.17,
+          "aimMaxDist": 2000.0,
+          "gunsCount": 6,
+          "caliber": 7.7,
+          "ammoCount": 3600,
+          "isBeltAmmo": true
         }
       }
     }
@@ -2317,6 +2327,16 @@
           "caliber": 102.0,
           "ammoCount": 1200,
           "isBeltAmmo": false
+        },
+        "76mm_45_3in_20cwt_qf_mk1_naval_user_cannon": {
+          "wtype": "aaa",
+          "damage": 100.0,
+          "shotFreq": 0.2,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 2,
+          "caliber": 76.2,
+          "ammoCount": 300,
+          "isBeltAmmo": false
         }
       }
     }
@@ -2467,6 +2487,16 @@
           "caliber": 127.0,
           "ammoCount": 3680,
           "isBeltAmmo": false
+        },
+        "76mm_3_50_mk10_ww1_mk11_mount_naval_user_cannon": {
+          "wtype": "aaa",
+          "damage": 125.0,
+          "shotFreq": 0.316,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 8,
+          "caliber": 76.2,
+          "ammoCount": 300,
+          "isBeltAmmo": true
         }
       }
     }

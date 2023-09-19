@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let logM = log_with_prefix("[MSGBOX] ")
 let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
@@ -109,11 +110,15 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) msgBoxBg.__mer
   ovr)
 
 let defaultBtnsCfg = freeze([ { id = "ok", styleId = "PRIMARY", isDefault = true } ])
-let closeMsgBox = removeModalWindow
+let function closeMsgBox(uid) {
+  if (removeModalWindow(uid))
+    logM($"close '{uid}'")
+}
 
 let function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wndOvr = {}) {
   uid = uid ?? $"msgbox_{text}"
   closeMsgBox(uid)
+  logM($"open '{uid}'")
   addModalWindow(bgShaded.__merge({
     key = uid
     size = flex()

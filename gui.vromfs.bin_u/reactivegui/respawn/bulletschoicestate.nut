@@ -100,9 +100,10 @@ let chosenBullets = Computed(function() {
   if (notInitedCount > 0) {
     if (leftSteps > 1)
       leftSteps = leftSteps / 2 //fill only half by default
+    let stepsPerUnit = max(leftSteps / notInitedCount, 1);
     foreach (bData in res)
-      if (bData.count < 0) {
-        let steps = min(leftSteps / notInitedCount, fromUnitTags?[bData.name].maxCount ?? leftSteps)
+      if (bData.count < 0 && leftSteps > 0) {
+        let steps = min(stepsPerUnit, leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
         leftSteps -= steps
         bData.count = stepSize * steps
         notInitedCount--

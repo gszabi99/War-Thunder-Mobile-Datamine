@@ -2344,6 +2344,121 @@
           "verticalSpeedLimitKPH": 100.0,
           "speedFromVehicleVerticalMult": -1.0
         }
+      },
+      {
+        "trigger": "gunner16",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/76mm_45_3in_20cwt_qf_mk1_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_22",
+        "flash": "emtr_gun_flame_22",
+        "useEmitter": true,
+        "barrelDP": "aa_gun_02_dm",
+        "breechDP": "aa_gun_02_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "isBulletBelt": true,
+        "speedYaw": 70.0,
+        "speedPitch": 70.0,
+        "bullets": 150,
+        "useGunnerTargetingQuality": true,
+        "fireConeAngle": 1.0,
+        "allowableDelta": 1.0,
+        "ChainfireTime": 2.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 10.0,
+        "aimMaxDist": 3500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.4,
+        "accuracyAir": 0.4,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 1.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 1.0,
+        "errMeasureVelFwdShift": 0.01,
+        "errMeasureVelDir": 0.1,
+        "errTargetting": 0.1,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "aa_turret_02",
+          "gun": "aa_gun_02",
+          "gunnerDm": "aa_turret_02_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            85.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -177.0,
+            28.0,
+            85.0
+          ],
+          "lim2": [
+            -177.0,
+            -167.0,
+            16.0,
+            85.0
+          ],
+          "lim3": [
+            -167.0,
+            -122.0,
+            -2.0,
+            85.0
+          ],
+          "lim4": [
+            -122.0,
+            -21.0,
+            -10.0,
+            85.0
+          ],
+          "lim5": [
+            -21.0,
+            21.0,
+            -4.0,
+            85.0
+          ],
+          "lim6": [
+            21.0,
+            122.0,
+            -10.0,
+            85.0
+          ],
+          "lim7": [
+            122.0,
+            167.0,
+            -2.0,
+            85.0
+          ],
+          "lim8": [
+            167.0,
+            177.0,
+            16.0,
+            85.0
+          ],
+          "lim9": [
+            177.0,
+            180.0,
+            28.0,
+            85.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 100.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 100.0,
+          "speedFromVehicleVerticalMult": -1.0
+        }
       }
     ]
   },
@@ -3878,6 +3993,121 @@
               }
             },
             {
+              "trigger": "gunner16",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/76mm_45_3in_20cwt_qf_mk1_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_22",
+              "flash": "emtr_gun_flame_22",
+              "useEmitter": true,
+              "barrelDP": "aa_gun_02_dm",
+              "breechDP": "aa_gun_02_dm",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "isBulletBelt": true,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 150,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_02",
+                "gun": "aa_gun_02",
+                "gunnerDm": "aa_turret_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  85.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -180.0,
+                  -177.0,
+                  28.0,
+                  85.0
+                ],
+                "lim2": [
+                  -177.0,
+                  -167.0,
+                  16.0,
+                  85.0
+                ],
+                "lim3": [
+                  -167.0,
+                  -122.0,
+                  -2.0,
+                  85.0
+                ],
+                "lim4": [
+                  -122.0,
+                  -21.0,
+                  -10.0,
+                  85.0
+                ],
+                "lim5": [
+                  -21.0,
+                  21.0,
+                  -4.0,
+                  85.0
+                ],
+                "lim6": [
+                  21.0,
+                  122.0,
+                  -10.0,
+                  85.0
+                ],
+                "lim7": [
+                  122.0,
+                  167.0,
+                  -2.0,
+                  85.0
+                ],
+                "lim8": [
+                  167.0,
+                  177.0,
+                  16.0,
+                  85.0
+                ],
+                "lim9": [
+                  177.0,
+                  180.0,
+                  28.0,
+                  85.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
               "trigger": "mines",
               "triggerGroup": "mine",
               "blk": "gameData/weapons/mines/germ_mine_emc.blk",
@@ -5397,6 +5627,121 @@
                   0.0,
                   0.0,
                   15.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner16",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/76mm_45_3in_20cwt_qf_mk1_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_22",
+              "flash": "emtr_gun_flame_22",
+              "useEmitter": true,
+              "barrelDP": "aa_gun_02_dm",
+              "breechDP": "aa_gun_02_dm",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "isBulletBelt": true,
+              "speedYaw": 70.0,
+              "speedPitch": 70.0,
+              "bullets": 150,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "aa_turret_02",
+                "gun": "aa_gun_02",
+                "gunnerDm": "aa_turret_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  85.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -180.0,
+                  -177.0,
+                  28.0,
+                  85.0
+                ],
+                "lim2": [
+                  -177.0,
+                  -167.0,
+                  16.0,
+                  85.0
+                ],
+                "lim3": [
+                  -167.0,
+                  -122.0,
+                  -2.0,
+                  85.0
+                ],
+                "lim4": [
+                  -122.0,
+                  -21.0,
+                  -10.0,
+                  85.0
+                ],
+                "lim5": [
+                  -21.0,
+                  21.0,
+                  -4.0,
+                  85.0
+                ],
+                "lim6": [
+                  21.0,
+                  122.0,
+                  -10.0,
+                  85.0
+                ],
+                "lim7": [
+                  122.0,
+                  167.0,
+                  -2.0,
+                  85.0
+                ],
+                "lim8": [
+                  167.0,
+                  177.0,
+                  16.0,
+                  85.0
+                ],
+                "lim9": [
+                  177.0,
+                  180.0,
+                  28.0,
+                  85.0
                 ]
               },
               "gunStabilizer": {

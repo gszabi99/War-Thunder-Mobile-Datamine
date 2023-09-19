@@ -65,7 +65,7 @@
 "stats/gunnerTurretRotationSpeed";"Turret Rotation Speed";"Vitesse de Rotation Tourelle";"Velocità di rotazione torretta";"Turmdrehgeschwindigkeit";"Velocidad de Rotación de la Torreta";"Скорость вращения башни";"Prędkość obrotu wieży";"Rapidez de Rotação da Torre";"Taret Dönüş Hızı";"포탑 회전 속도";"炮\t塔\t转\t速";"砲塔回転速度";"炮\t塔\t轉\t速"
 "stats/maxSpeedForward";"Speed";"Vitesse";"Velocità";"Geschwindigkeit";"Velocidad";"Скорость";"Prędkość";"Velocidade";"Hız";"속도";"前\t进\t极\t速";"速度";"速\t度"
 "stats/maxSpeedBackward";"Reverse";"Marche arrière";"Retromarcia";"Rückwärts";"Marcha atrás";"Задний ход";"Wstecz";"Ré";"Geri";"후진";"后\t退\t极\t速";"逆回転する";"後\t退\t速\t度"
-"stats/powerToWeightRatio";"Specific Power";"Puissance Massique";"Potenza Specifica";"Spezifische Leistung";"Potencia Específica";"Удельная мощность";"Stosunek mocy do masy";"Potência Mássica";"Spesifik Güç";"추중비";"功\t重\t比";"比出力";"功\t重\t比"
+"stats/powerToWeightRatio";"Specific Power";"Puissance Massique";"Potenza Specifica";"Spezifische Leistung";"Potencia Específica";"Удельная мощность";"Stosunek mocy do masy";"Potência Mássica";"Özgül Güç";"추중비";"功\t重\t比";"比出力";"功\t重\t比"
 "stats/mass";"Mass";"Masse";"Massa";"Masse";"Masa";"Масса";"Masa";"Massa";"Kütle";"중량";"载\t具\t质\t量";"重量";"載\t具\t重\t量"
 "stats/crew";"Crew";"Équipage";"Equipaggio";"Besatzung";"Tripulación";"Экипаж";"Załoga";"Tripulação";"Mürettebat";"승무원";"乘\t员\t数\t量";"搭乗員";"乘\t員\t組"
 "stats/armorThicknessFront";"Front Protection";"Blindage Frontal";"Protezione Frontale";"Frontschutz";"Protección Frontal";"Защита лба";"Ochrona z przodu";"Proteção Frontal";"Ön Koruma";"전면 방호력";"正\t面\t防\t护";"正面防御力";"正\t面\t防\t護"
