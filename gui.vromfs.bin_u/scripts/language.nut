@@ -13,6 +13,8 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 
+// Please use lang codes from ISO 639-1 standard for chatId
+// See https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 let allLangs = [
   { id = "English", icon = "#ui/gameuiskin#lang_usa.svg", chatId = "en", hasUnitSpeech = true }
   { id = "Russian", icon = "#ui/gameuiskin#lang_russia.svg", chatId = "ru", hasUnitSpeech = true }

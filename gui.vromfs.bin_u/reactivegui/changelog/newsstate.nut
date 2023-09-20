@@ -26,7 +26,17 @@ const MSEC_BETWEEN_REQUESTS = 600000
 const MIN_SESSIONS_TO_FORCE_SHOW = 5
 const EMPTY_PAGE_ID = -1
 
-let shortLang = loc("current_lang") == "ru" ? "ru" : "en"
+// Map from ISO 639-1 standard lang codes to news server lang codes
+// See https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+let langCodeRemap = {
+  zh = "cn"
+  ko = "kr"
+  ja = "en"
+  it = "en"
+}
+
+let iso639LangCode = loc("current_lang")
+let shortLang = langCodeRemap?[iso639LangCode] ?? iso639LangCode
 let newsPlatform = platformId == "android" ? "android" : "ios"
 let cfgId = get_cur_circuit_name().indexof("production") != null || get_cur_circuit_name().indexof("stable") != null
   ? "wtm_production" : "wtm_test"

@@ -79,7 +79,9 @@ let chosenBullets = Computed(function() {
           || name in used
           || (fromUnitTags?[name].reqLevel ?? 0) > level)
         return
-      let steps = min(ceil(count.tofloat() / stepSize), leftSteps, fromUnitTags?[name].maxCount ?? leftSteps)
+      local steps = min(ceil(count.tofloat() / stepSize), leftSteps, fromUnitTags?[name].maxCount ?? leftSteps)
+      if (bulletTotalSteps.value == 1) //special case when user have saved 0 (and disabled choose slider)
+        steps = 1
       leftSteps -= steps
       res.append({ name, count = steps * stepSize, idx = res.len() })
       used[name] <- true
@@ -102,11 +104,14 @@ let chosenBullets = Computed(function() {
       leftSteps = leftSteps / 2 //fill only half by default
     let stepsPerUnit = max(leftSteps / notInitedCount, 1);
     foreach (bData in res)
-      if (bData.count < 0 && leftSteps > 0) {
-        let steps = min(stepsPerUnit, leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
-        leftSteps -= steps
-        bData.count = stepSize * steps
-        notInitedCount--
+      if (bData.count < 0) {
+        bData.count = 0
+        if (leftSteps > 0) {
+          let steps = min(stepsPerUnit, leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
+          leftSteps -= steps
+          bData.count = stepSize * steps
+          notInitedCount--
+        }
       }
   }
 

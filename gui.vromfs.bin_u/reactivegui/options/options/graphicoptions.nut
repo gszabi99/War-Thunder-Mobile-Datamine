@@ -4,14 +4,18 @@ let { send } = require("eventbus")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported
 } = require("graphicsOptions")
+let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { is_ios } = require("%sqstd/platform.nut")
-let { inline_raytracing_available } = require("sysinfo")
+let { is_ios, is_pc } = require("%sqstd/platform.nut")
 let { has_additional_graphics_settings, has_additional_graphics_content } = require("%appGlobals/permissions.nut")
 
-let qualitiesList = ["low", "medium", "high", "max"]
+let qualitiesListDev = ["movie"]
+let minMemory = 4096
+let qualitiesList = (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory
+  ? ["low"]
+  : ["low", "medium", "high", "max"].extend(is_pc ? qualitiesListDev : [])
 let validateQuality = @(q) qualitiesList.contains(q) ? q : qualitiesList[0]
 let qualityValue = mkOptionValue(OPT_GRAPHICS_QUALITY, qualitiesList[0], validateQuality)
 let optQuality = {
