@@ -1090,11 +1090,7 @@
     },
     "texture_uhq": {
       "codename": [
-        "iPhone14,",
-        "iPhone15,",
         "iPhone16,",
-        "iPad8,",
-        "iPad13,",
         "iPad14,",
         "iPad15,"
       ],
@@ -1103,6 +1099,15 @@
       },
       "texStreaming": {
         "forceMemQuotaKB": 4000000
+      }
+    },
+    "rt_shadows": {
+      "codename": [
+        "iPhone16,",
+        "iPad15,"
+      ],
+      "metal": {
+        "allowRt": true
       }
     }
   },
@@ -1393,15 +1398,14 @@
         "allowETC2": true,
         "anisotropy": 8,
         "compatibilityAnisotropy": 8,
-        "treeAlphaToCoverage": true,
-        "impostorAlphaToCoverage": true,
-        "asyncPSO": true,
-        "asyncLoadPSOCache": true,
+        "grassQuality": "low",
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
-        "grassQuality": "low",
         "grassAlphaToCoverage": false,
-        "compatibilityRendinstDistMul": 0.8
+        "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
+        "compatibilityRendinstDistMul": 0.8,
+        "enableGrassTrackMask": false
       }
     },
     "medium": {
@@ -1421,14 +1425,13 @@
         "anisotropy": 8,
         "compatibilityAnisotropy": 8,
         "grassQuality": "low",
-        "treeAlphaToCoverage": true,
-        "impostorAlphaToCoverage": true,
-        "asyncPSO": true,
         "grassRadiusMul": 0.8,
-        "asyncLoadPSOCache": true,
         "grassDensityMul": 0.87,
         "grassAlphaToCoverage": false,
-        "compatibilityRendinstDistMul": 0.8
+        "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
+        "compatibilityRendinstDistMul": 0.8,
+        "enableGrassTrackMask": false
       }
     },
     "high": {
@@ -1448,11 +1451,13 @@
         "anisotropy": 8,
         "compatibilityAnisotropy": 8,
         "grassQuality": "high",
+        "grassRadiusMul": 1.0,
+        "grassDensityMul": 1.0,
         "grassAlphaToCoverage": true,
         "treeAlphaToCoverage": true,
         "impostorAlphaToCoverage": true,
-        "asyncPSO": true,
-        "asyncLoadPSOCache": true
+        "compatibilityRendinstDistMul": 1.0,
+        "enableGrassTrackMask": true
       }
     },
     "max": {
@@ -1472,11 +1477,13 @@
         "anisotropy": 8,
         "compatibilityAnisotropy": 8,
         "grassQuality": "high",
+        "grassRadiusMul": 1.0,
+        "grassDensityMul": 1.0,
         "grassAlphaToCoverage": true,
         "treeAlphaToCoverage": true,
         "impostorAlphaToCoverage": true,
-        "asyncPSO": true,
-        "asyncLoadPSOCache": true
+        "compatibilityRendinstDistMul": 1.0,
+        "enableGrassTrackMask": true
       }
     }
   },

@@ -8,13 +8,13 @@ let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { is_ios, is_pc } = require("%sqstd/platform.nut")
+let { is_ios, is_pc, is_android } = require("%sqstd/platform.nut")
 let { has_additional_graphics_settings, has_additional_graphics_content } = require("%appGlobals/permissions.nut")
 
 let qualitiesListDev = ["movie"]
 let minMemory = 4096
-let qualitiesList = (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory
-  ? ["low"]
+let qualitiesList = is_android && (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory
+  ? ["low", "medium"]
   : ["low", "medium", "high", "max"].extend(is_pc ? qualitiesListDev : [])
 let validateQuality = @(q) qualitiesList.contains(q) ? q : qualitiesList[0]
 let qualityValue = mkOptionValue(OPT_GRAPHICS_QUALITY, qualitiesList[0], validateQuality)

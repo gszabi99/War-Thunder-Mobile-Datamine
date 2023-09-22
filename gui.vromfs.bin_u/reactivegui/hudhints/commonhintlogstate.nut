@@ -140,6 +140,10 @@ subscribe("hint:need_target_for_lock", function(_) {
   addCommonHint(loc("hints/need_target_for_lock"))
 })
 
+subscribe("hint:kill_streak_fighter_reverted", function(_) {
+  addCommonHint(loc("hints/kill_streak_fighter_reverted"))
+})
+
 const GUT_OVERHEAT_WARNING = "gun_overheat_warning"
 subscribe("hint:gun_overheat_warning", function(_) {
   if (!incHintCounter(GUT_OVERHEAT_WARNING, 5))

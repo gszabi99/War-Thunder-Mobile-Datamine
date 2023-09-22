@@ -40,8 +40,8 @@ let { //defaults only to allow test this module on PC
           name = $"{v.google_id} name",
           description = $"{v.google_id} description",
           price = $"{round_by_value(0.000001 * getDebugPriceMicros(v.google_id), 0.01)} ₽".replace(".", ","),
-          price_amount_micros = getDebugPriceMicros(v.google_id)
-          price_currency_code = "RUB"
+          priceAmountMicros = getDebugPriceMicros(v.google_id)
+          priceCurrencyCode = "RUB"
           skuDetailsToken = $"{v.google_id}_token"
           iconUrl = $"https://example.com/{v.google_id}"
         }))
@@ -68,12 +68,15 @@ let nextRefreshTime = Watched(-1)
 let availableSkusPrices = Computed(function() {
   let res = {}
   foreach (info in skusInfo.value) {
-    let { productId = null, price_currency_code = null, price_amount_micros = null
+    let { productId = null, price_currency_code = null, price_amount_micros = null, //compatibility with old googleplay format. Was changed near 20.09.2023
+      priceCurrencyCode = null, priceAmountMicros = null
     } = info
-    if (productId == null || price_amount_micros == null || price_currency_code == null)
+    let code = price_currency_code ?? priceCurrencyCode
+    let amountMicros = price_amount_micros ?? priceAmountMicros
+    if (productId == null || amountMicros == null || code == null)
       continue
-    let priceFloat = round_by_value(0.000001 * price_amount_micros, 0.01)
-    let currencyId = price_currency_code.tolower()
+    let priceFloat = round_by_value(0.000001 * amountMicros, 0.01)
+    let currencyId = code.tolower()
     res[productId] <- {
       price = priceFloat
       currencyId
