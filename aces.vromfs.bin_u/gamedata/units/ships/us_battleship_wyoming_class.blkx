@@ -1,5 +1,5 @@
 {
-  "ecsTemplate": "ship_wtm",
+  "ecsTemplate": "ship_wtm+aircraft_carrier",
   "hasQualityModels": true,
   "useTouchShooting": true,
   "radioDist": 50000.0,
@@ -30,6 +30,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_battleship",
+  "allowSupportPlane": true,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
   "smokeScreenEffectTime": 30.0,
@@ -791,6 +792,17 @@
   },
   "optics": {
     "binoculars": "navy_binoculars"
+  },
+  "supportPlane": {
+    "supportPlaneClass": "soc_1",
+    "behTreeName": "supportPlaneBot",
+    "planeStartThrottle": 1.0,
+    "needDespawnOnReturn": true,
+    "count": 3,
+    "catapult": {
+      "visualNode": "",
+      "head": "catapult_01"
+    }
   },
   "commonWeapons": {
     "Weapon": [
@@ -2988,6 +3000,29 @@
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 100.0,
           "speedFromVehicleVerticalMult": -1.0
+        }
+      },
+      {
+        "dummy": true,
+        "trigger": "gunner30",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "catapult_01",
+        "allowableDelta": 360.0,
+        "parkInDeadzone": false,
+        "turret": {
+          "head": "catapult_01",
+          "gun": "catapult_01"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
         }
       }
     ]
@@ -5200,6 +5235,29 @@
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 100.0,
                 "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner30",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "catapult_01",
+              "allowableDelta": 360.0,
+              "parkInDeadzone": false,
+              "turret": {
+                "head": "catapult_01",
+                "gun": "catapult_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             },
             {
@@ -7416,7 +7474,30 @@
               }
             },
             {
+              "dummy": true,
               "trigger": "gunner30",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "catapult_01",
+              "allowableDelta": 360.0,
+              "parkInDeadzone": false,
+              "turret": {
+                "head": "catapult_01",
+                "gun": "catapult_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner31",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -7442,7 +7523,7 @@
               }
             },
             {
-              "trigger": "gunner31",
+              "trigger": "gunner32",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",

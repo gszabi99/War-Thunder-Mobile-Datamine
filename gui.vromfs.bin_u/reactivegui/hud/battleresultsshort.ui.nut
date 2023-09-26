@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let eventbus = require("eventbus")
+let { get_local_mplayer } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { playSound } = require("sound_wt")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { isInMpSession, isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { playersDamageStats, requestPlayersDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
+let { localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { rnd_int } = require("dagor.random")
+let { mkPlaceIconBig, playerPlaceIconBigSize } = require("%rGui/components/playerPlaceIcon.nut")
+let { mkImageWithCount, myPlace, isPlaceVisible, icons, viewMuls } = require("%rGui/hud/myScores.nut")
 
 
 let changeTextBgColorDuration = 0.1
@@ -31,58 +31,31 @@ let failBgColor = 0x66550101
 let whiteBgColor = 0xFFFFFF
 let noBgColor = 0x00000000
 let blackBgColor = 0xFF000000
-let iconPlaceDimension = hdpxi(130)
 
-let localTeamListBase = Watched([])
-let localTeamList = Computed(function() {
-  let res = localTeamListBase.value.map(function(p) {
-    let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[p.id.tostring()]
-    return p.__merge({ damage, score })
-  })
-  return res.sort(playersSortFunc(battleCampaign.value))
-})
+let gap = hdpx(10)
+let scoresTextWidth = hdpx(580)
+
 let missionResult = Watched(null)
 let needShowResultScreen = Computed(@() missionResult.value == GO_WIN || missionResult.value == GO_FAIL)
-let localUserPlace = Computed(function() {
-  let localUserIndex = localTeamList.value.findindex(@(player) player.isLocal)
-  return localUserIndex != null ? localUserIndex + 1 : null
-})
 
-let scoreInfoByCampaign = {
-  ships = {
-    label = "".concat(loc("debriefing/damageDealt"), colon)
-    getVal = @(p) p.damage.tointeger()
-    toText = @(v) decimalFormat(v)
-  }
-  tanks = {
-    label = loc("debriefing/earnedScores")
-    getVal = @(p) (100 * p.score).tointeger()
-    toText = @(v) decimalFormat(v)
-  }
+let scoresByCampaign = {
+  ships = [
+    {
+      name = "damage"
+      locId = "debriefing/damageDealt"
+    }
+  ]
+  tanks = [
+    {
+      name = "score"
+      locId = "debriefing/totalscore"
+    }
+    {
+      name = "groundKills"
+      locId = "debriefing/GroundKills"
+    }
+  ]
 }
-
-let localUserScores = Computed(function() {
-  let player = localTeamList.value.findvalue(@(p) p.isLocal)
-  let scoreInfo = scoreInfoByCampaign?[battleCampaign.value]
-  if (player == null || scoreInfo == null)
-    return null
-  let v = scoreInfo.getVal(player)
-  if (v <= 0) {
-    if (!isInMpSession.value)
-      return { label = scoreInfo.label, val = scoreInfo.toText(rnd_int(10000, 50000)) }
-    return null
-  }
-  let { label, toText } = scoreInfo
-  return {
-    label
-    val = toText(v)
-  }
-})
-
-let iconForUserPosition = Computed(@() localUserPlace.value == 1 ? "ui/gameuiskin#player_rank_badge_gold.avif"
-    : localUserPlace.value == 2 ? "ui/gameuiskin#player_rank_badge_silver.avif"
-    : localUserPlace.value == 3 ? "ui/gameuiskin#player_rank_badge_bronze.avif"
-    : null)
 
 let resultLocId = {
   [GO_WIN] = "debriefing/victory",
@@ -151,53 +124,32 @@ let resultTextBlock = @() {
   transitions = [{ prop = AnimProp.borderColor, duration = borderColorTransitionDuration}]
 }
 
-eventbus.subscribe("MpStatistics_TeamsList", @(teams) localTeamListBase(teams?.data[0]))
-
-let placeInTeam = @() localUserPlace.value == null ? { watch = localUserPlace } : {
-  watch = [iconForUserPosition, localUserPlace]
-  valign = ALIGN_CENTER
+let mkUserScores = @(valueCtor, locId) {
   flow = FLOW_HORIZONTAL
-  gap = sh(localUserPlace.value > 3 ? 0 : 5)
-  animations = opacityAnims(placeInTeamTextOpacityDuration, placeInTeamTextOpacityDelay)
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  animations = opacityAnims(earnedScoresOpacityDuration, earnedScoresOpacityDelay)
   children = [
-    { rendObj = ROBJ_TEXT, text = loc("debriefing/placeInMyTeam") }.__update(fontSmallAccented)
     {
+      size = [scoresTextWidth, SIZE_TO_CONTENT]
+      rendObj = ROBJ_TEXT
+      text = "".concat(loc(locId), colon)
+    }.__update(fontSmall)
+    {
+      size = [playerPlaceIconBigSize, playerPlaceIconBigSize]
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = valueCtor
       transform = {}
       animations = [
-        { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.25, 1.25], duration = placeIconDuration / 2,
+        { prop = AnimProp.scale, to = [1.25, 1.25], duration = placeIconDuration / 2,
           easing = InQuad, delay = placeIconDelay, play = true,
           sound = { start = "place" }}
         { prop = AnimProp.scale, from = [1.25, 1.25], to = [1, 1], play = true,
           delay = placeIconDelay + placeIconDuration / 2,
           duration = placeIconDuration / 2, easing = InQuad }
       ]
-      children = [
-        iconForUserPosition.value
-          ? {
-          rendObj = ROBJ_IMAGE,
-          size = [iconPlaceDimension, iconPlaceDimension]
-          image = Picture($"{iconForUserPosition.value}:{iconPlaceDimension}")
-          transform = {}
-          } : null
-        { rendObj = ROBJ_TEXT, text = localUserPlace.value,
-          size = [iconPlaceDimension, iconPlaceDimension],
-          valign = ALIGN_CENTER
-          halign = ALIGN_CENTER,
-          fontFx = FFT_GLOW
-        }.__update(fontSmallAccented)
-      ]
     }
-  ]
-}
-
-let earnedScores = @(text, value) {
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = sh(2)
-  animations = opacityAnims(earnedScoresOpacityDuration, earnedScoresOpacityDelay)
-  children = [
-    { rendObj = ROBJ_TEXT, text = text }.__update(fontSmall)
-    { rendObj = ROBJ_TEXT, text = value }.__update(fontSmall)
   ]
 }
 
@@ -212,15 +164,21 @@ let function battleResultsShort() {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       flow = FLOW_VERTICAL
+      gap
       children = [
         resultTextBlock
         @() {
-          watch = localUserScores
+          watch = [battleCampaign, isPlaceVisible, localPlayerDamageStats, myPlace]
           flow = FLOW_VERTICAL
-          children = [
-            placeInTeam
-            localUserScores.value ? earnedScores(localUserScores.value.label, localUserScores.value.val) : null
-          ]
+          gap
+          children = !isPlaceVisible.value ? null
+            : [mkUserScores(mkPlaceIconBig(myPlace.value), loc("debriefing/placeInMyTeam"))]
+                .extend(scoresByCampaign?[battleCampaign.value]
+                  .map(function(v) {
+                    let mul = viewMuls?[v.name] ?? 1.0
+                    let score = localPlayerDamageStats.value?[v.name] ?? get_local_mplayer()?[v.name] ?? 0
+                    return mkUserScores(mkImageWithCount(mul * score, icons?[v.name]), v.locId)
+                  }))
         }
       ]
     })
@@ -235,7 +193,6 @@ eventbus.subscribe("MissionResult", function(data) {
   let soundName = resultNum == GO_WIN ? "message_win" : "message_loose"
   playSound(soundName)
   eventbus.send("MpStatistics_GetTeamsList", {})
-  requestPlayersDamageStats()
   missionResult(resultNum)
 })
 
@@ -243,7 +200,6 @@ isInBattle.subscribe(function(v) {
   if (!v)
     return
   missionResult(null)
-  localTeamListBase([])
 })
 
 return battleResultsShort

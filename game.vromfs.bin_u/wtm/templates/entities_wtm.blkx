@@ -2401,6 +2401,15 @@
       }
     ]
   },
+  "wtm_player_stats": {
+    "_extends": "replicating",
+    "player_id": -1,
+    "_group": {
+      "_replicate": true,
+      "stats__damage": 0.0,
+      "stats__score": 0.0
+    }
+  },
   "wtm_server_player": {
     "_extends": [
       "server_player",
@@ -2436,6 +2445,7 @@
     "sentStatsToUserstat:object": {}
   },
   "damage_log": {
+    "nextStatsSyncTime": 0.0,
     "damageLog:array": {},
     "captureLog:array": {},
     "damageLogPlayers:object": {},

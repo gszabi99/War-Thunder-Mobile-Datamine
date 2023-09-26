@@ -31,6 +31,7 @@ let optListScriptOnly = [
   "OPT_AUTO_ZOOM"
   "OPT_GEAR_DOWN_ON_STOP_BUTTON"
   "OPT_CAMERA_ROTATION_ASSIST"
+  "OPT_HUD_TANK_SHOW_SCORE"
 ]
 
 let export = {}

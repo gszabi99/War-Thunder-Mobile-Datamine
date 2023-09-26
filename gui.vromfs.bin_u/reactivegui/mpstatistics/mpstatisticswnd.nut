@@ -4,13 +4,13 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { gameOverReason } = require("%rGui/missionState.nut")
 let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
-let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { sortAndFillPlayerPlaces } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
 let backButton = require("%rGui/components/backButton.nut")
 let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
 let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { playersDamageStats, requestPlayersDamageStats } = require("playersDamageStats.nut")
+let { playersDamageStats } = require("playersDamageStats.nut")
 let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -23,11 +23,11 @@ let playersByTeamBase = Watched([])
 let missionName = Watched("")
 let playersByTeam = Computed(function() {
   let res = playersByTeamBase.value
-    .map(@(list) list
-      .map(function(p) {
+    .map(@(list) sortAndFillPlayerPlaces(battleCampaign.value,
+      list.map(function(p) {
         let { id, userId, name, isBot, aircraftName = "" } = p
         let nickname = getPlayerName(name, myUserRealName.value, myUserName.value)
-        let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id.tostring()]
+        let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
         let { level = 1, hasPremium = false, decorators = null } = !isBot
           ? playersCommonStats.value?[userId.tointeger()]
           : genBotCommonStats(name, aircraftName, allUnitsCfgFlat.value?[aircraftName] ?? {}, playerLevelInfo.value.level)
@@ -39,8 +39,7 @@ let playersByTeam = Computed(function() {
           hasPremium
           decorators
         })
-      })
-      .sort(playersSortFunc(battleCampaign.value)))
+      })))
   let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)
   res.each(@(t) t.resize(maxTeamSize, null))
   return res
@@ -56,10 +55,7 @@ gameOverReason.subscribe(function(val) {
     onQuit()
 })
 
-let function requestPlayersByTeams() {
-  eventbus.send("MpStatistics_GetTeamsList", {})
-  requestPlayersDamageStats()
-}
+let requestPlayersByTeams = @() eventbus.send("MpStatistics_GetTeamsList", {})
 
 let function onAttach() {
   isAttached(true)

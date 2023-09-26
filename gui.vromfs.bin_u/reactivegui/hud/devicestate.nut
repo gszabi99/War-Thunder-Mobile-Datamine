@@ -105,6 +105,7 @@ let function updateBatteryState() {
   batteryCharge(getBattery())
   isCharging(is_charging())
 }
+
 let batteryIconFn = Computed(@() batteryCharge.value < 0 ? ""
   : isCharging.value > 0 ? "icon_battery_charging"
   : batteryCharge.value >= BATTERY_LEVEL_HIGH ? "icon_battery_high"

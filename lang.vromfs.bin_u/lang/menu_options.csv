@@ -80,7 +80,7 @@
 "options/time9";"9 AM";"9H";"9:00";"9 AM";"9 AM";"9:00";"9:00";"09:00";"ÖÖ 9";"오전 9시";"9:00";"9:00";"9:00"
 "options/time10";"10 AM";"10H";"10:00";"10 AM";"10 AM";"10:00";"10:00";"10:00";"ÖÖ 10";"오전 10시";"10:00";"10:00";"10:00"
 "options/time11";"11 AM";"11H";"11:00";"11 AM";"11 AM";"11:00";"11:00";"11:00";"ÖÖ 11";"오전 11시";"11:00";"11:00";"11:00"
-"options/time12";"12 AM";"12H";"12:00";12;"12 AM";"12:00";"12:00";"12:00";"ÖÖ 12";"정오";"12:00";"12:00";"凌\t晨 12 點"
+"options/time12";"12 AM";"12H";"12:00";"12 ";"12 AM";"12:00";"12:00";"12:00";"ÖÖ 12";"정오";"12:00";"12:00";"凌\t晨 12 點"
 "options/time13";"1 PM";"13H";"13:00";"1 PM";"1 PM";"13:00";"13:00";"13:00";"ÖS 1";"오후 1시";"13:00";"13:00";"13:00"
 "options/time14";"2 PM";"14H";"14:00";"2 PM";"2 PM";"14:00";"14:00";"14:00";"ÖS 2";"오후 2시";"14:00";"14:00";"14:00"
 "options/time15";"3 PM";"15H";"15:00";"3 PM";"3 PM";"15:00";"15:00";"15:00";"ÖS 3";"오후 3시";"15:00";"15:00";"15:00"
@@ -1794,61 +1794,61 @@ Eğer onu yapmak için şimdi hazır değilseniz bu ayarı her zaman oyunun ana 
 <color=@mark>\t啟\t用\t</color>：\t準\t星\t對\t應\t火\t炮\t預\t計\t瞄\t準\t方\t位，\t圓\t圈\t顯\t示\t火\t炮\t當\t前\t指\t向"
 "msg/deviceMayStartToWarmUp";"The device may start to warm up at this FPS value";"L'appareil peut chauffer à cette valeur de FPS";"Il dispositivo potrebbe iniziare a scaldarsi con questo valore FPS";"Das Gerät kann bei diesem FPS-Wert warmlaufen.";"El dispositivo puede empezar a calentarse con este valor de FPS";"Устройство может начать нагреваться при таком значении FPS";"Urządzenie może się nagrzewać przy tej liczbie klatek na sekundę.";"O dispositivo pode começar a aquecer se este valor de FPS for atingido";"Bu cihaz, bu FPS değerinde ısınabilir";"이 FPS 값을 사용하면 디바이스의 온도가 상승할 수 있습니다.";"以\t当\t前\t帧\t率\t运\t行\t游\t戏\t可\t能\t导\t致\t设\t备\t发\t热";"この\tFPS\t値だと、\tデバイスの\t温度が\t上がる\t可能性があります。";"以\t當\t前\t幀\t率\t運\t行\t遊\t戲\t可\t能\t導\t致\t設\t備\t發\t熱"
 "msg/needRestartToApplyTextures";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"После завершения скачивания текстур сверхвысокого качества
-необходимо перезапустить игру для их применения.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
-you need to restart the game to apply them.";"After you finish downloading the ultra high quality textures,
+you need to restart the game to apply them.";"Après avoir fini de télécharger les textures de très haute qualité,
+vous devez redémarrer le jeu pour les appliquer.";"Dopo aver terminato il download delle texture a qualità ultra alta,
+devi riavviare il gioco per applicarle.";"Nach dem Herunterladen der ultrahochwertigen Texturen,
+musst Du das Spiel neu starten, um sie anzuwenden.";"Cuando termines de descargar las texturas de ultra alta calidad
+deberás reiniciar el juego para aplicarlas.";"После завершения скачивания текстур сверхвысокого качества
+необходимо перезапустить игру для их применения.";"Po zakończeniu pobierania tekstur w bardzo wysokiej jakości,
+należy ponownie uruchomić grę, aby je zastosować.";"Depois de descarregares as texturas de ultra alta qualidade,
+terás de reiniciar o jogo para as aplicares.";"Çok yüksek kaliteli dokuları indirdikten sonra, 
+oyuna uygulamak için oyunu yeniden başlatmanız gerekli.";"초고화질 텍스쳐를 다운로드한 뒤에는
+게임을 재시작하여 적용할 수 있습니다.";"下\t载\t超\t高\t品\t质\t材\t质\t文\t件\t后，
+需\t要\t重\t启\t游\t戏\t客\t户\t端\t以\t应\t用\t新\t画\t面\t选\t项。";"超高画質\tテクスチャの\tダウンロードが\t完了したら、\t
+ゲームを\t再起動して\t適用する\t必要があります。";"After you finish downloading the ultra high quality textures,
 you need to restart the game to apply them."
 "msg/suggestUhqTextures";"Your device supports <color=@mark>Ultra High texture quality</color>.
 Вo you want to download them?
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+Required {size}";"Votre appareil prend en charge l'<color=@mark>ultra-haute qualité de textures</color>.
+Voulez-vous les télécharger?
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+Requis {size}";"Il tuo dispositivo supporta le <color=@mark>texture a qualità Ultra Alta</color>.
+Vuoi scaricarle?
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+Sono necessari {size}";"Dein Gerät unterstützt <color=@mark>Ultra High Texture Quality</color>.
+Willst Du sie herunterladen?
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+Erforderlich {size}";"Tu dispositivo es compatible con la <color=@mark>calidad de textura Ultra Alta</color>.
+¿Quieres descargarlas?
 
-Required {size}";"Ваше устройство поддерживает <color=@mark>текстуры сверхвысокого качества</color>.
+Requerido {size}";"Ваше устройство поддерживает <color=@mark>текстуры сверхвысокого качества</color>.
 Хотите скачать их?
 
-Требуется {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+Требуется {size}";"Twoje urządzenie obsługuje <color=@mark>Najwyższą jakość tekstur</color>.
+Czy chcesz je pobrać?
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+Wymagane {size}";"O teu dispositivo suporta <color=@mark>texturas de Ultra Alta qualidade</color>.
+Queres transferi-las?
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+Requer {size}";"Cihazınız <color=@mark>Çok Yüksek Doku Kalitesi</color> destekliyor.
+İndirmek istiyor musunuz?
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+Gerekli alan {size}";"현재 사용 중인 디바이스가 <color=@mark>초고화질 택스쳐</color>를 지원합니다.
+지금 다운받으시겠습니까?
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+필요한 저장공간: {size}";"当\t前\t设\t备\t支\t持 <color=@mark>\t超\t高\t品\t质\t贴\t图\t</color>。
+是\t否\t下\t载\t材\t质\t包？
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
-Вo you want to download them?
+需\t要 {size}";"お\t使いの\tデバイスは<color=@mark>超高画質\tテクスチャ</color>に\t対応しています。\t
+ダウンロードしますか？
 
-Required {size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
+必要容量{size}";"Your device supports <color=@mark>Ultra High texture quality</color>.
 Вo you want to download them?
 
 Required {size}"
-"btnHighQuality";"High quality";"High quality";"High quality";"High quality";"High quality";"Высокое качество";"High quality";"High quality";"High quality";"High quality";"High quality";"High quality";"High quality"
-"btnUltraHighQuality";"Ultra high quality";"Ultra high quality";"Ultra high quality";"Ultra high quality";"Ultra high quality";"Сверхвысокое качество";"Ultra high quality";"Ultra high quality";"Ultra high quality";"Ultra high quality";"Ultra high quality";"Ultra high quality";"Ultra high quality"
+"btnHighQuality";"High quality";"Haute qualité";"Alta qualità";"Hohe Qualität";"Alta calidad";"Высокое качество";"Wysoka jakość";"Alta qualidade";"Yüksek kalite";"높은 품질";"高\t品\t质";"高画質";"High quality"
+"btnUltraHighQuality";"Ultra high quality";"Ultra-haute qualité";"Qualità Ultra Alta";"Extrem hohe Qualität";"Calidad ultra alta";"Сверхвысокое качество";"Ultra wysoka jakość";"Ultra alta qualidade";"Çok yüksek kalite";"초고품질";"超\t高\t品\t质";"超高画質";"Ultra high quality"
 "option_can_be_changed_later";"You can change this in Options at any time.";"Vous pouvez modifier cela dans les Options à tout moment.";"Puoi cambiare queste Opzioni in qualsiasi momento.";"Sie können dies jederzeit unter Einstellungen ändern.";"Puedes cambiarlo en Opciones en cualquier momento.";"Вы можете изменить это в Настройках в любое время.";"Możesz w każdej chwili zmienić to ustawienie w menu opcji.";"Pode alterar isso nas Configurações a qualquer altura.";"Bunu istediğin zaman Seçeneklerden değiştirebilirsin.";"설정은 환경 설정에서 언제든 변경하실 수 있습니다.";"任\t何\t时\t候\t都\t能\t在\t游\t戏\t选\t项\t中\t改\t变\t此\t设\t置。";"この\tオプションはいつでも\t変更することができます。";"任\t何\t時\t候\t都\t能\t在\t遊\t戲\t選\t項\t中\t改\t變\t此\t設\t置。"
 "option_recommended";"Recommended";"Recommandée";"Raccomandati";"Empfohlen";"Recomendado";"Рекомендуется";"Zalecane";"Recomendado";"Tavsiye edilen";"추천";"推\t荐";"推奨";"推\t薦"
 "options/show_move_direction";"<color=@darken>Show move direction</color>";"<color=@darken>Afficher la direction du déplacement</color>";"<color=@darken>Mosra la direzione di movimento</color>";"<color=@darken>Bewegungsrichtung anzeigen</color>";"<color=@darken>Mostrar dirección de movimiento</color>";"<color=@darken>Показывать направление движения</color>";"<color=@darken>Pokazuje kierunek ruchu</color>";"<color=@darken>Mostrar direção do movimento</color>";"<color=@darken>Hareket yönünü göster</color>";"<color=@darken>이동 방향 표시</color>";"<color=@darken>\t显\t示\t移\t动\t方\t向\t</color>";"<color=@darken>移動方向を\t表示</color>";"<color=@darken>\t顯\t示\t移\t動\t方\t向\t</color>"

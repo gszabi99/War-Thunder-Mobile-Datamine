@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkZoomButton, mkLockButton, mkWeaponryItemSelfAction, mkWeaponryContinuousSelfAction, mkSimpleButton, mkGroupAttackButton
 } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { mkLBPos, mkLTPos, mkRBPos, mkRTPos,
+let { mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos,
   weaponryButtonCtor, weaponryButtonsGroupCtor, weaponryButtonsChainedCtor } = require("hudTuningPkg.nut")
 let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkSimpleChainIcon } = require("%rGui/hud/weaponryBlockImpl.nut")
@@ -17,6 +17,9 @@ let cfgHudCommon = require("cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
+let { mkMyPlace, myPlaceUi, mkMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
+
+let isMyScoresFitTop = saRatio >= 1.92
 
 return cfgHudCommon.__merge({
   bomb = weaponryButtonCtor("ID_BOMBS", mkWeaponryItemSelfAction,
@@ -107,6 +110,20 @@ return cfgHudCommon.__merge({
     ctor = @() aircraftRadar
     defTransform = mkLTPos([hdpx(105), 0])
     editView = aircraftRadarEditView
+    hideForDelayed = false
+  }
+
+  myPlace = {
+    ctor = @() myPlaceUi
+    defTransform = isMyScoresFitTop ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(260)])
+    editView = mkMyPlace(1)
+    hideForDelayed = false
+  }
+
+  myScores = {
+    ctor = @() myScoresUi
+    defTransform = isMyScoresFitTop ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
+    editView = mkMyScores(22100)
     hideForDelayed = false
   }
 

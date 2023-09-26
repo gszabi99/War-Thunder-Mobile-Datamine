@@ -786,6 +786,17 @@
   "optics": {
     "binoculars": "navy_binoculars"
   },
+  "supportPlane": {
+    "supportPlaneClass": "arado_196a_3",
+    "behTreeName": "supportPlaneBot",
+    "planeStartThrottle": 1.0,
+    "needDespawnOnReturn": true,
+    "count": 3,
+    "catapult": {
+      "visualNode": "",
+      "head": "catapult_01"
+    }
+  },
   "commonWeapons": {
     "Weapon": [
       {
@@ -2501,6 +2512,33 @@
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 100.0,
           "speedFromVehicleVerticalMult": -1.0
+        }
+      },
+      {
+        "dummy": true,
+        "trigger": "gunner31",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "catapult_01",
+        "allowableDelta": 360.0,
+        "parkInDeadzone": false,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 10.0,
+        "speedPitch": 0.0,
+        "turret": {
+          "head": "catapult_01",
+          "gun": "catapult_01"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
         }
       }
     ]
@@ -4235,6 +4273,33 @@
               }
             },
             {
+              "dummy": true,
+              "trigger": "gunner31",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "catapult_01",
+              "allowableDelta": 360.0,
+              "parkInDeadzone": false,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 10.0,
+              "speedPitch": 0.0,
+              "turret": {
+                "head": "catapult_01",
+                "gun": "catapult_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
               "trigger": "mines",
               "triggerGroup": "mine",
               "blk": "gameData/weapons/mines/germ_mine_emc.blk",
@@ -5964,6 +6029,33 @@
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 100.0,
                 "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner31",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "catapult_01",
+              "allowableDelta": 360.0,
+              "parkInDeadzone": false,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 10.0,
+              "speedPitch": 0.0,
+              "turret": {
+                "head": "catapult_01",
+                "gun": "catapult_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             },
             {

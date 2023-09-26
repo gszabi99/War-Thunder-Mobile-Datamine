@@ -4,6 +4,7 @@ let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGu
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
+let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 
 
 let cellTextColor = Color(255, 255, 255)
@@ -14,13 +15,6 @@ let rowBgEvenColor = Color(0, 0, 0, 0)
 
 let rowHeight = hdpx(76)
 let rowHeadIconSize = hdpx(44)
-let playerPlaceIconSize = hdpx(90)
-
-let placeBadgeByIdx = [
-  Picture("!ui/gameuiskin#player_rank_badge_gold.avif")
-  Picture("!ui/gameuiskin#player_rank_badge_silver.avif")
-  Picture("!ui/gameuiskin#player_rank_badge_bronze.avif")
-]
 
 let cellTextProps = {
   rendObj = ROBJ_TEXT
@@ -67,7 +61,7 @@ let function getUnitNameText(unitId, halign, unitCfg) {
   return " ".join(ordered, true)
 }
 
-let function mkNameContent(player, teamColor, halign, unitsCfg, _idx) {
+let function mkNameContent(player, teamColor, halign, unitsCfg) {
   let unitName = player?.mainUnitName ?? player.aircraftName
   let nameCell = {
     valign = ALIGN_CENTER
@@ -118,17 +112,8 @@ let function mkNameContent(player, teamColor, halign, unitsCfg, _idx) {
   return res
 }
 
-let mkPlaceContent = @(_player, _teamColor, _halign, _unitsCfg, idx) {
-  size = [playerPlaceIconSize, playerPlaceIconSize]
-  rendObj = ROBJ_IMAGE
-  image = placeBadgeByIdx?[idx]
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text = idx + 1
-  }.__update(fontTiny)
-}
+let mkPlaceContent = @(player, _teamColor, _halign, _unitsCfg)
+  (player?.place ?? 0) > 0 ? mkPlaceIcon(player.place) : null
 
 let cellDefaults = { width = rowHeight, halign = ALIGN_CENTER }
 let function mirrorColumn(column) {
@@ -185,7 +170,7 @@ let function mkPlayerRow(columnCfg, player, teamColor, idx, unitsCfg) {
         size = [width, rowHeight]
         halign = halign
         valign = ALIGN_CENTER
-        children = contentCtor != null ? contentCtor(player, playerColor, halign, unitsCfg, idx)
+        children = contentCtor != null ? contentCtor(player, playerColor, halign, unitsCfg)
           : cellTextProps.__merge({ text = getText?(player) })
       }
     })

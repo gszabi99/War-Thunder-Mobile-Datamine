@@ -1,22 +1,78 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
-let { sendNetEvent, CmdGetPlayersStats } = require("dasevents")
-let { EventPlayerStats } = require("%appGlobals/sqevents.nut")
+let { get_mplayer_by_id } = require("mission")
+let { resetTimeout } = require("dagor.workcycle")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
-let playersDamageStats = mkWatched(persist, "playersDamageStats", {})
+let playersDamageStats = Watched({})
+let statsRaw = Watched({})
+let localPlayerId = Watched(-1)
+let playerTeams = Watched({})
+let playerTeamDamageStats = Computed(function() {
+  let team = playerTeams.value?[localPlayerId.value]
+  if (team == null)
+    return {}
+  return playersDamageStats.value.filter(@(_, id) playerTeams.value?[id] == team)
+})
 
-let find_local_player_query = SqQuery("find_local_player_query", { comps_rq = ["localPlayer"] })
-let find_local_player_eid = @()
-  find_local_player_query(@(eid, _) eid) ?? INVALID_ENTITY_ID
+let syncStats = @() playersDamageStats(clone statsRaw.value)
+statsRaw.subscribe(@(_)
+  resetTimeout(playersDamageStats.value.len() == 0 ? 0.01 : 0.1, syncStats))
 
-let requestPlayersDamageStats = @()
-  sendNetEvent(find_local_player_eid(), CmdGetPlayersStats())
+playersDamageStats.subscribe(function(stats) {
+  if (!isInBattle.value)
+    return
+  let upd = []
+  foreach(id, _ in stats)
+    if (id not in playerTeams.value)
+      upd.append(id)
+  if (upd.len() == 0)
+    return
+
+  let teams = clone playerTeams.value
+  foreach(id in upd) {
+    let { team = null, isLocal = false } = get_mplayer_by_id(id)
+    if (team != null)
+      teams[id] <- team
+    if (isLocal)
+      localPlayerId(id)
+  }
+  playerTeams(teams)
+})
+
+isInBattle.subscribe(function(_) {
+  localPlayerId(-1)
+  playerTeams({})
+  playersDamageStats({})
+  statsRaw({})
+})
 
 register_es("players_damage_stats_es",
-  { [EventPlayerStats] = @(evt, _eid, _comp) playersDamageStats(evt.data?.damage ?? {}) },
-  { comps_rq = [["server_player__userId", TYPE_UINT64]] })
+  {
+    [["onInit", "onChange"]] = function trackDamageStats(_, comp) {
+      let { stats__damage, stats__score, player_id } = comp
+      statsRaw.mutate(@(v) v[player_id] <- {
+        damage = stats__damage
+        score = stats__score
+      })
+    },
+    [["onDestroy"]] = function trackDamageStats(_, comp) {
+      let { player_id } = comp
+      if (player_id.tostring() in statsRaw.value)
+        statsRaw.mutate(@(v) delete v[player_id])
+    },
+  },
+  {
+    comps_track = [
+      ["stats__damage", TYPE_FLOAT],
+      ["stats__score", TYPE_FLOAT],
+    ]
+    comps_ro = [["player_id", TYPE_INT]]
+  })
 
 return {
   playersDamageStats
-  requestPlayersDamageStats
+  localPlayerId
+  playerTeamDamageStats
+  localPlayerDamageStats = Computed(@() playersDamageStats.value?[localPlayerId.value])
 }

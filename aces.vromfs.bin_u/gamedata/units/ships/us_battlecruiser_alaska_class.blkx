@@ -736,6 +736,17 @@
   "optics": {
     "binoculars": "navy_binoculars"
   },
+  "supportPlane": {
+    "supportPlaneClass": "os2u_1_naval",
+    "behTreeName": "supportPlaneBot",
+    "planeStartThrottle": 1.0,
+    "needDespawnOnReturn": true,
+    "count": 3,
+    "catapult": {
+      "visualNode": "",
+      "head": "catapult_01"
+    }
+  },
   "commonWeapons": {
     "Weapon": [
       {

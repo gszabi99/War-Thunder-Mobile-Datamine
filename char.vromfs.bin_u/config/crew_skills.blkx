@@ -3742,7 +3742,7 @@
         ],
         "leadership": [
           0.0,
-          0.2
+          0.0
         ],
         "machineGunError": [
           1.0,
@@ -3805,6 +3805,10 @@
           1.0
         ],
         "artilleryTimeBetweenAdjustmentsShots": [
+          1.0,
+          1.0
+        ],
+        "artilleryTimeBetweenAdjustmentsShotsMult": [
           1.0,
           1.0
         ],

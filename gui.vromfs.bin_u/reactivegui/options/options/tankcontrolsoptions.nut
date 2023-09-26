@@ -3,7 +3,8 @@ from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED,
   OPT_AUTO_ZOOM, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_ROTATION_ASSIST,
-  OPT_SHOW_RETICLE, mkOptionValue } = require("%rGui/options/guiOptions.nut")
+  OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, mkOptionValue
+} = require("%rGui/options/guiOptions.nut")
 let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing_fixed, set_show_reticle,
   set_auto_zoom
 } = require("controlsOptions")
@@ -142,10 +143,28 @@ let cameraRotationAssist = {
   description = loc("options/desc/camera_rotation_assist")
 }
 
+let hudScoreTankList = ["score", "kills"]
+let hudScoreTankDefault = Computed(@() validate(abTests.value?.tankHudScores, hudScoreTankList))
+let hudScoreTankRaw = mkOptionValue(OPT_HUD_TANK_SHOW_SCORE)
+let hudScoreTank = Computed(@()
+  validate(hudScoreTankRaw.value ?? hudScoreTankDefault.value, hudScoreTankList))
+let optHudScoreTank = {
+  locId = "options/tankHudScores"
+  ctrlType = OCT_LIST
+  value = hudScoreTank
+  function setValue(v) {
+    hudScoreTankRaw(v)
+    sendUiBqEvent("tank_hud_scores_change", { id = v })
+  }
+  list = hudScoreTankList
+  valToString = @(v) loc($"multiplayer/{v}")
+}
+
 return {
   currentGearDownOnStopButtonTouch
   currentTargetTrackingType
   currentArmorPiercingFixed
+  hudScoreTank
   tankControlsOptions = [
     tankMoveControlType
     gearDownOnStopButtonTouch
@@ -156,5 +175,6 @@ return {
     currentArmorPiercingType
     showReticleButtonTouch
     currentAutoZoomType
+    optHudScoreTank
   ]
 }

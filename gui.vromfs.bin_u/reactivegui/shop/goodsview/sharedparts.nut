@@ -297,16 +297,19 @@ let function mkFreePricePlate(goods, state) {
 let function mkPricePlate(goods, priceBgTex, state, animParams = null, needDiscountTag = true) {
   let trigger = {}
   let startGlareAnim = @() anim_start(trigger)
+  let { isReady = true } = goods
 
-  return {
+  return @() {
+    watch = state
     size = flex()
     clipChildren = true
     children = [
       (goods?.isFreeReward ?? false)
         ? mkFreePricePlate(goods, state)
         : mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag)
-      animParams != null
-        ? {
+      animParams == null || ((state.value & (PURCHASING | NOT_READY)) || !isReady)
+        ? null
+        : {
           rendObj = ROBJ_IMAGE
           size = [glareWidth, ph(140)]
           image = gradTranspDoubleSideX
@@ -321,7 +324,6 @@ let function mkPricePlate(goods, priceBgTex, state, animParams = null, needDisco
             onFinish = @() resetTimeout(animParams.repeatDelay, startGlareAnim),
           }]
         }
-        : null
     ]
   }
 }

@@ -6,65 +6,55 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { gradRadial } = require("%rGui/style/gradients.nut")
 let { startSound, stopSound } = require("sound_wt")
+let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 
 let statIncreaseAnimTimeMsec = 500
 let iconSize = hdpxi(30)
-let playerPlaceIconSize = [hdpx(80), hdpx(80)]
 let endHeaderLineAnim = 1.0
 let offsetTime = 0.1
 
 let activeCounters = Watched({})
 let isCounterActive = keepref(Computed(@() activeCounters.value.len() > 0))
 
+let placeGlowColor = [0x40bbbbbb, 0x40ffdb7b, 0x407be1ff, 0x40ffb67b]
+
 let function playerPlaceCtor(_, place, startTimeMSec) {
   let startTimeSec =  0.001 * (startTimeMSec - get_time_msec())
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = [flex(), playerPlaceIconSize]
     halign = ALIGN_RIGHT
-    valign = ALIGN_CENTER
-    children = [
-      {
-        pos = [hdpx(7), 0]
-        size = [hdpx(30), hdpx(30)]
-        rendObj = ROBJ_IMAGE
-        image = gradRadial
-        color = place == 1 ? 0x40ffdb7b
-          : place == 2 ? 0x407be1ff
-          : 0x40ffb67b
-        transform = {}
-        animations = [
-          {
-            prop = AnimProp.scale, from = [1, 1], to = [5, 5],
-            duration = 0.5, easing = CosineFull,  delay = startTimeSec, play = true
-          }
-        ]
-      }
-      {
-        pos = [hdpx(33), 0]
-        hplace = ALIGN_RIGHT
-        size = playerPlaceIconSize
-        rendObj = ROBJ_IMAGE
-        image = place == 1 ? Picture("!ui/gameuiskin#player_rank_badge_gold.avif")
-          : place == 2 ? Picture("!ui/gameuiskin#player_rank_badge_silver.avif")
-          : Picture("!ui/gameuiskin#player_rank_badge_bronze.avif")
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = {
-          rendObj = ROBJ_TEXT
-          text = place
-        }.__update(fontVeryTiny)
-        transform = {}
-        animations = [
-          {
-            prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3],
-            duration = 0.5, easing = CosineFull, delay = startTimeSec, play = true
-          }
-        ]
-      }
-    ]
+    children = {
+      size = [hdpx(20), flex()] //width of single number in the score for correct align
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      children = [
+        {
+          size = [playerPlaceIconSize, playerPlaceIconSize]
+          rendObj = ROBJ_IMAGE
+          image = gradRadial
+          color = placeGlowColor?[place] ?? placeGlowColor[0]
+          transform = { scale = [0.3, 0.3] }
+          animations = [
+            {
+              prop = AnimProp.scale, to = [2, 2],
+              duration = 0.5, easing = CosineFull,  delay = startTimeSec, play = true
+            }
+          ]
+        }
+        mkPlaceIcon(place).__update({
+          transform = {}
+          animations = [
+            {
+              prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3],
+              duration = 0.5, easing = CosineFull, delay = startTimeSec, play = true
+            }
+          ]
+        })
+      ]
+    }
   }
 }
 
@@ -183,31 +173,30 @@ let function mkItemsUsedRows(itemsUsed, startTime) {
   })
 }
 
+let function getPlayerPlace(campaign, player, allPlayers) {
+  let key = getScoreKeyRaw(campaign)
+  let score = player?[key] ?? 0
+  let { team = null } = player
+  if (score <= 0 || team == null)
+    return null
+
+  local place = 1
+  foreach(p in allPlayers)
+    if (p.team == team && (p?[key] ?? 0) > score)
+      place++
+  return place
+}
+
 let function mkDebriefingStats(data, startAnimTime) {
   let { isSingleMission = false, reward = {}, players = {}, userId = -1, campaign = "",
-    itemsUsed = {}, userName = ""} = data
+    itemsUsed = {} } = data
   let stats = (isSingleMission ? statsByCampSingle : statsByCamp)?[campaign] ?? []
   local player = players?[userId.tostring()]
 
-  if (!isSingleMission) {
-    let mplayersList = players.values().filter(@(v) v?.team == player?.team)
-      .map(function(p) {
-        let isLocal = p.userId == userId
-        let pUserIdStr = p.userId.tointeger()
-        return p.__merge({
-          userId = pUserIdStr
-          isLocal
-          isDead = false
-          name = isLocal ? userName
-            : p.isBot ? loc(p.name)
-            : p.name
-          score = p?.dmgScoreBonus ?? 0.0
-        })
-      })
-      .sort(playersSortFunc(campaign))
-
-    let place = (mplayersList.findindex(@(v) v.userId == player?.userId ) ?? 0) + 1
-    player = player?.__merge({ place })
+  if (!isSingleMission && player != null) {
+    let place = getPlayerPlace(campaign, player, players)
+    if (place != null)
+      player = player.__merge({ place })
   }
 
   let statsContent = stats.map(function(s, i) {

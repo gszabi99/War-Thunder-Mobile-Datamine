@@ -1548,6 +1548,24 @@
                 "affected": true
               }
             }
+          },
+          "brokenShadersAfterAppSwitch": {
+            "entry": {
+              "gpu": [
+                "610",
+                "612",
+                "613",
+                "615",
+                "616",
+                "618",
+                "619",
+                "620",
+                "630"
+              ],
+              "data": {
+                "affected": true
+              }
+            }
           }
         }
       },

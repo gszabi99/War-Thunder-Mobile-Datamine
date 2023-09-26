@@ -772,7 +772,7 @@
     "behTreeName": "supportPlaneBot",
     "planeStartThrottle": 1.0,
     "needDespawnOnReturn": true,
-    "count": 4,
+    "count": 3,
     "catapult": {
       "visualNode": "",
       "head": "catapult_01"

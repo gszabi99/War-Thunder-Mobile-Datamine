@@ -3,6 +3,7 @@ let {
   isDownloadedFromGooglePlay = @() false,
   getPackageName = @() ""
 } = require_optional("android.platform")
+let { is_ios } = require("%sqstd/platform.nut")
 let { register_command  = @(_, __) null } = require_optional("console") //only in debug mode
 let { shell_execute } = require("dagor.shell")
 let { dgs_get_settings, exit } = require("dagor.system")
@@ -120,7 +121,7 @@ let function openUpdateUrl() {
   else {
     let url = dgs_get_settings()?.storeUrl
     if (url != null)
-      shell_execute({ cmd = "action", file = url })
+      shell_execute({ cmd = is_ios ? "open" : "action", file = url })
   }
   exit(0)
 }

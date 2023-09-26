@@ -754,6 +754,17 @@
     ],
     "detectionHeight": 44.4
   },
+  "supportPlane": {
+    "supportPlaneClass": "osprey_mk4",
+    "behTreeName": "supportPlaneBot",
+    "planeStartThrottle": 1.0,
+    "needDespawnOnReturn": true,
+    "count": 3,
+    "catapult": {
+      "visualNode": "",
+      "head": "catapult_01"
+    }
+  },
   "commonWeapons": {
     "Weapon": [
       {

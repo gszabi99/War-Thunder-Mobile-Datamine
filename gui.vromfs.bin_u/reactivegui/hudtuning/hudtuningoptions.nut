@@ -39,7 +39,7 @@ let function askSaveAndClose() {
 let toggleBtn = @() {
   watch = isOpen
   hplace = ALIGN_LEFT
-  pos = [sw(37), saBorders[1]]
+  pos = [sw(37), 0]
   children = tuningBtn("ui/gameuiskin#hud_tank_arrow_segment.svg",
     @() isOpen(!isOpen.value),
     isOpen.value ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",

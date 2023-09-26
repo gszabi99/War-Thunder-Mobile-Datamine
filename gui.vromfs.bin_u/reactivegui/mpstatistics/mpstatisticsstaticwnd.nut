@@ -4,7 +4,7 @@ let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let backButton = require("%rGui/components/backButton.nut")
-let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { sortAndFillPlayerPlaces } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
 
 let config = Watched(null)
@@ -15,9 +15,8 @@ let campaign = Computed(@() config.value?.campaign ?? "")
 let title = Computed(@() config.value?.title ?? "")
 let playersByTeam = Computed(function() {
   let res = (config.value?.playersByTeam ?? [])
-    .map(@(list) list
-      .map(@(p) p.__merge({ nickname = getPlayerName(p.name) }))
-      .sort(playersSortFunc(campaign.value)))
+    .map(@(list) sortAndFillPlayerPlaces(campaign.value,
+      list.map(@(p) p.__merge({ nickname = getPlayerName(p.name) }))))
   let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)
   res.each(@(t) t.resize(maxTeamSize, null))
   return res

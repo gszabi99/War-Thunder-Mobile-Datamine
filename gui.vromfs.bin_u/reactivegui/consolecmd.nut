@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { startSound, playSound, stopSound } = require("sound_wt")
 let { inspectorToggle } = require("%darg/helpers/inspector.nut")
 let { register_command } = require("console")
 let { round } =  require("math")
@@ -30,3 +31,7 @@ allPermissions.value.each(@(_, id) register_command(function() {
 }, $"toggle_permission.{id}"))
 
 register_command(@(name) log(localizeAddons([name])), "debug.addonLoc")
+
+register_command(@(name) playSound(name), "debug.guiSound.play")
+register_command(@(name) startSound(name), "debug.guiSound.start")
+register_command(@(name) stopSound(name), "debug.guiSound.stop")

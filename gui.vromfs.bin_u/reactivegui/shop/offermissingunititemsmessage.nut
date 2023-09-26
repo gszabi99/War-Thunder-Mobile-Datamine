@@ -116,7 +116,7 @@ let mkMissingItemsComp = @(unit) Computed(function() {
     if (reqItems <= hasItems)
       continue
     let hasUsing = ceil(hasItems/perUse)
-    let goods = getCheapestGoods(shopGoods.value, @(goods) (goods?.items[name] ?? 0) > 0)
+    let goods = getCheapestGoods(shopGoods.value, @(goods_) (goods_?.items[name] ?? 0) > 0)
     let { price = 0 } = goods?.price
     if (price > 0)
       res.append({ itemId = name, reqItems, hasItems, goods, hasUsing, limitItems})

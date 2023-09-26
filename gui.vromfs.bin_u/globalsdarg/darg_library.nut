@@ -57,6 +57,7 @@ return dargBaseLib.__merge(
   saSize
   saBorders
   saBordersRv //for paddings and margin
+  saRatio = saSize[0].tofloat() / saSize[1]
 
   //text helper
   colon = loc("ui/colon")

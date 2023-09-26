@@ -1896,6 +1896,19 @@
           "drawFromGui": true,
           "element": "btn_zoom"
         },
+        "triggerActivate": {
+          "target": "controls_disable",
+          "activate_type": "checkConidtions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        },
+        "wait": {
+          "time": 0.1
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_ZOOM_TOGGLE"
+        },
         "triggerEnable": {
           "target": "shootingP1_switch_to_normal_view"
         }
@@ -1962,6 +1975,9 @@
           "stealthRadius": 0.0,
           "calmDetection": true,
           "forceLockTarget": false
+        },
+        "triggerEnable": {
+          "target": "controls_enable"
         }
       },
       "else_actions": {}
@@ -6426,9 +6442,9 @@
             -0.999995
           ],
           [
-            1869.43,
-            5.9,
-            1827.67
+            1879.7,
+            5.18169,
+            1831.65
           ]
         ],
         "unit_class": "dummy",
@@ -6485,8 +6501,8 @@
             -0.0106697
           ],
           [
-            1868.9,
-            5.9,
+            1879.17,
+            5.18169,
             1813.71
           ]
         ],
@@ -6544,9 +6560,9 @@
             -0.960062
           ],
           [
-            1869.08,
-            5.9,
-            1800.13
+            1879.35,
+            5.18169,
+            1796.48
           ]
         ],
         "unit_class": "dummy",

@@ -59,6 +59,11 @@ let stats = [
     getValue = @(bSet, _tags, _unitName) (bSet?.explodeTreshold ?? 0) <= 0 ? null
       : "".concat(roundToDigits(bSet.explodeTreshold, 2), loc("measureUnits/mm"))
   }
+  {
+    locId = "controls/help/reload_timer"
+    getValue = @(_bSet, tags, _unitName) (tags?.shotFreq ?? 0) <= 0 ? null
+      : "".concat(round(1.0 / tags.shotFreq), loc("measureUnits/seconds"))
+  }
 ]
 
 let getBulletStats = @(bSet, tags, unitName) bSet == null ? []

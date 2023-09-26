@@ -44,9 +44,11 @@ loginPas.subscribe(function(v) {
 check2StepAuthCode.subscribe(@(v) v ? isLoginByGajin(true) : null)
 
 eventbus.subscribe("updateAuthStates", function(params) {
+  let incomingPass = params?.loginPas ?? loginPas.value
+  let isPassEqual = (loginPas.value == incomingPass)
   loginName(params?.loginName ?? loginName.value)
-  loginPas(params?.loginPas ?? loginPas.value)
-  isCanViewPassword(loginPas.value == "")
+  loginPas(incomingPass)
+  isCanViewPassword(loginPas.value == "" || (isCanViewPassword.value && isPassEqual))
   check2StepAuthCode(params?.check2StepAuthCode ?? check2StepAuthCode.value)
   hasEmail2step(params?.email2step ?? false)
 })

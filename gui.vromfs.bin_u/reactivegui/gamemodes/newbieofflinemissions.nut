@@ -133,7 +133,7 @@ myUserId.subscribe(function(_) {
 debriefingData.subscribe(function(data) {
   let { userId = null, campaign = null, predefinedId = null } = data
   //check userId to ignore debug debriefing
-  if (userId != myUserId.value || campaign != curCampaign.value || predefinedId != firstBattlesRewardId.value)
+  if (userId != myUserId.value || campaign == null || campaign != curCampaign.value || predefinedId != firstBattlesRewardId.value)
     return
   let unitName = data?.reward.unitName
   let kills = data?.players[myUserId.value.tostring()].kills ?? 0

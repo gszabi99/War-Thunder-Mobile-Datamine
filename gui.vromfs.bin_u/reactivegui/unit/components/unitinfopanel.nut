@@ -14,6 +14,7 @@ let { itemsCfgOrdered } = require("%appGlobals/itemsState.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
+let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -29,6 +30,10 @@ let unitInfoPanelDefPos = [ saBorders[0], hdpx(100) ]
 
 let diffAnimDelay = 0.5
 let diffAnimTime = 0.5
+
+let canUseItemByUnit = {
+  ship_smoke_screen_system_mod = @(unitName) getUnitBlkDetails(unitName).hasShipSmokeScreen
+}
 
 let mkText = @(override = {}) {
   color = textColor
@@ -296,8 +301,10 @@ let unitConsumablesBlock = @(unit, itemsList) {
   margin = [ statsGap, 0, 0, 0 ]
   gap = statsGap + statsInsideGap + progressHt
   flow = FLOW_VERTICAL
-  children = itemsList.map(@(itemCfg)
-    mkConsumableRow(itemCfg.name, (itemCfg?.itemsPerUse ?? 0) > 0 ? itemCfg.itemsPerUse : unit.itemsPerUse))
+  children = itemsList
+    .filter(@(cfg) canUseItemByUnit?[cfg.name](unit.name) ?? true)
+    .map(@(itemCfg)
+      mkConsumableRow(itemCfg.name, (itemCfg?.itemsPerUse ?? 0) > 0 ? itemCfg.itemsPerUse : unit.itemsPerUse))
 }
 
 let unitRewardsBlock = @(unit) {
@@ -367,12 +374,13 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
 
   return panelBg.__merge({
     watch = [ unit, itemsCfgOrdered, unitMods, attrPresets ]
-    children = [
-      unitHeaderBlock(unit.value, mkUnitTitle)
-      unitStatsBlock(unitStats, prevStats)
-      unitArmorBlock(unit.value, false)
-      unitConsumablesBlock(unit.value, itemsCfgOrdered.value)
-    ]
+    children = unit.value == null ? null
+      : [
+          unitHeaderBlock(unit.value, mkUnitTitle)
+          unitStatsBlock(unitStats, prevStats)
+          unitArmorBlock(unit.value, false)
+          unitConsumablesBlock(unit.value, itemsCfgOrdered.value)
+        ]
   }, override)
 }
 

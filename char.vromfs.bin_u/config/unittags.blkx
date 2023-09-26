@@ -1432,6 +1432,8 @@
       "shipCrewRating": 1.95303,
       "maxSpeed": 16.83,
       "turningTime": 39,
+      "supportPlane": "os2u_1_naval",
+      "supportPlaneCount": 3,
       "mainWeaponCaliber": 305.0,
       "weapons": {
         "305mm_50_12inch_mk8_naval_user_cannon": {
@@ -2299,7 +2301,7 @@
     "tierGroup": 5,
     "tags": {
       "country_germany": true,
-      "type_battleship": true,
+      "type_battlecruiser": true,
       "ship": true
     },
     "Shop": {
@@ -2468,6 +2470,8 @@
       "shipCrewRating": 1.71879,
       "maxSpeed": 10.8,
       "turningTime": 41,
+      "supportPlane": "soc_1",
+      "supportPlaneCount": 3,
       "mainWeaponCaliber": 305.0,
       "weapons": {
         "305mm_50_12inch_mk7_naval_user_cannon": {
@@ -2922,7 +2926,7 @@
     "tierGroup": 5,
     "tags": {
       "country_germany": true,
-      "type_light_cruiser": true,
+      "type_battleship": true,
       "ship": true
     },
     "Shop": {
@@ -2962,7 +2966,7 @@
     "tierGroup": 4,
     "tags": {
       "country_germany": true,
-      "type_light_cruiser": true,
+      "type_heavy_cruiser": true,
       "ship": true
     },
     "Shop": {
@@ -3025,7 +3029,7 @@
     "tierGroup": 5,
     "tags": {
       "country_germany": true,
-      "type_light_cruiser": true,
+      "type_battleship": true,
       "ship": true
     },
     "Shop": {
@@ -3065,7 +3069,7 @@
     "tierGroup": 6,
     "tags": {
       "country_germany": true,
-      "type_light_cruiser": true,
+      "type_battleship": true,
       "ship": true
     },
     "Shop": {
@@ -3105,7 +3109,7 @@
     "tierGroup": 7,
     "tags": {
       "country_germany": true,
-      "type_light_cruiser": true,
+      "type_battleship": true,
       "ship": true
     },
     "Shop": {
@@ -3168,7 +3172,7 @@
     "tierGroup": 1,
     "tags": {
       "country_germany": true,
-      "type_light_cruiser": true,
+      "type_destroyer": true,
       "ship": true
     },
     "Shop": {
@@ -3220,7 +3224,7 @@
     "tierGroup": 1,
     "tags": {
       "country_germany": true,
-      "type_light_cruiser": true,
+      "type_destroyer": true,
       "ship": true
     },
     "Shop": {
@@ -3272,7 +3276,7 @@
     "tierGroup": 2,
     "tags": {
       "country_germany": true,
-      "type_light_cruiser": true,
+      "type_destroyer": true,
       "ship": true
     },
     "Shop": {
@@ -3333,6 +3337,8 @@
       "shipCrewRating": 2.14848,
       "maxSpeed": 12.86,
       "turningTime": 35,
+      "supportPlane": "osprey_mk4",
+      "supportPlaneCount": 3,
       "mainWeaponCaliber": 381.0,
       "weapons": {
         "381mm_42_bl_mk1_naval_user_cannon": {
@@ -3384,7 +3390,7 @@
     "tierGroup": 7,
     "tags": {
       "country_germany": true,
-      "type_battleship": true,
+      "type_battlecruiser": true,
       "ship": true
     },
     "Shop": {
@@ -3443,6 +3449,8 @@
       "shipCrewRating": 3.23788,
       "maxSpeed": 14.44,
       "turningTime": 30,
+      "supportPlane": "osprey_mk4",
+      "supportPlaneCount": 3,
       "mainWeaponCaliber": 356.0,
       "weapons": {
         "356mm_45_14inch_mk7_naval_user_cannon": {
@@ -3593,7 +3601,7 @@
     "tierGroup": 8,
     "tags": {
       "country_germany": true,
-      "type_battlecruiser": true,
+      "type_battleship": true,
       "ship": true
     },
     "Shop": {
@@ -3643,7 +3651,7 @@
     "tierGroup": 8,
     "tags": {
       "country_germany": true,
-      "type_battlecruiser": true,
+      "type_battleship": true,
       "ship": true
     },
     "Shop": {
@@ -3652,6 +3660,8 @@
       "shipCrewRating": 3.78667,
       "maxSpeed": 15.7,
       "turningTime": 32,
+      "supportPlane": "arado_196a_3",
+      "supportPlaneCount": 3,
       "mainWeaponCaliber": 380.0,
       "weapons": {
         "380mm_52_skc_34_naval_user_cannon": {
@@ -4173,7 +4183,7 @@
     "tierGroup": 5,
     "tags": {
       "country_germany": true,
-      "type_battleship": true,
+      "type_battlecruiser": true,
       "ship": true
     },
     "Shop": {

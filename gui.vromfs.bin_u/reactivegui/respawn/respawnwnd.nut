@@ -221,7 +221,7 @@ let rightBlock = {
 
 let updateSlotAABB = @() slotAABB(selSlot.value == null ? null
   : gui_scene.getCompAABBbyKey(selSlot.value))
-selSlot.subscribe(@(_) updateSlotAABB())
+selSlot.subscribe(@(_) deferOnce(updateSlotAABB))
 
 let function respawnBulletsPlace() {
   let res = { watch = slotAABB, onAttach = @() deferOnce(updateSlotAABB) }

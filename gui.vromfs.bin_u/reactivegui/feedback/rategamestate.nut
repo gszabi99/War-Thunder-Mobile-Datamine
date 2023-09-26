@@ -13,8 +13,7 @@ let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { debriefingData, isNoExtraScenesAfterDebriefing } = require("%rGui/debriefing/debriefingState.nut")
-let mkPlayersByTeam = require("%rGui/debriefing/mkPlayersByTeam.nut")
-let playersSortFunc = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { battlesMin, killsMin, placeMax, reqVictory, reqMultiplayer, reqNoExtraScenes, isTestingBattlesMin
 } = require("%rGui/feedback/rateGameTests.nut")
 
@@ -81,25 +80,23 @@ let function needRateGameByDebriefing(dData, killsMinV, placeMaxV, reqVictoryV, 
   let player = players?[myUserIdStr]
   if (player == null && reqMultiplayerV)
     return false
-  let { kills = 0, groundKills = 0, navalKills = 0 } = player
+  let { kills = 0, groundKills = 0, navalKills = 0, team = null } = player
   let killsTotal = kills + groundKills + navalKills
   if (killsTotal < killsMinV)
     return false
-  local place = isMultiplayer ? -1 : 1
-  if (isMultiplayer) {
-    let playersByTeam = mkPlayersByTeam(dData)
-    foreach (team in playersByTeam) {
-      team.sort(playersSortFunc(campaign))
-      let idx = team.findindex(@(p) p?.userId == myUserIdStr)
-      if (idx != null) {
-        place = idx + 1
-        break
-      }
-    }
-  }
-  if (place == -1 || place > placeMaxV)
+  if (!isMultiplayer)
+    return true
+
+  let key = getScoreKeyRaw(campaign)
+  let score = player?[key] ?? 0
+  if (team == null || score <= 0)
     return false
-  return true
+
+  local place = 1
+  foreach(p in players)
+    if (p.team == team && (p?[key] ?? 0) > score)
+      place++
+  return place <= placeMaxV
 }
 
 let canRateGameByCurTime = @() lastSeenDate.value + (SKIP_HOURS_WHEN_REJECTED * 3600) <= serverTime.value
