@@ -151,6 +151,18 @@
   "iPhone 14 Pro Max": {
     "codename": "iPhone15,3"
   },
+  "iPhone 15": {
+    "codename": "iPhone15,4"
+  },
+  "iPhone 15 Plus": {
+    "codename": "iPhone15,5"
+  },
+  "iPhone 15 Pro": {
+    "codename": "iPhone16,1"
+  },
+  "iPhone 15 Pro Max": {
+    "codename": "iPhone16,2"
+  },
   "iPod 1st Gen": {
     "codename": "iPod1,1"
   },

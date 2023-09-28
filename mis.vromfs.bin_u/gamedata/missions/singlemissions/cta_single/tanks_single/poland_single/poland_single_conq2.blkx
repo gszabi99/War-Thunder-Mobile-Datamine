@@ -105,146 +105,9 @@
         "isTanksAllowed": true,
         "isShipsAllowed": false,
         "isHelicoptersAllowed": true
-      },
-      "mission": [
-        {
-          "difficulty": "arcade",
-          "useAlternativeMapCoord": false,
-          "scoreLimit": 14000,
-          "randomSpawnTeams": false,
-          "remapAiTankModels": true
-        },
-        {
-          "difficulty": "realistic",
-          "useAlternativeMapCoord": false,
-          "scoreLimit": 16000,
-          "randomSpawnTeams": true,
-          "remapAiTankModels": true
-        },
-        {
-          "difficulty": "hardcore",
-          "useAlternativeMapCoord": false,
-          "scoreLimit": 18000,
-          "randomSpawnTeams": true,
-          "remapAiTankModels": true
-        }
-      ]
-    },
-    "spectator_points": {},
-    "briefing": {
-      "place_loc": "",
-      "date_loc": "",
-      "objective_loc": "",
-      "music": "action_01",
-      "part": {
-        "event": "",
-        "minTime": 0,
-        "slide": [
-          {
-            "difficulty": "arcade",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_02"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_02"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_capture_zone"
-              }
-            ]
-          },
-          {
-            "difficulty": "realistic",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_02"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_02"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_capture_zone"
-              }
-            ]
-          },
-          {
-            "difficulty": "hardcore",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_02"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_02"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_capture_zone"
-              }
-            ]
-          }
-        ]
       }
-    }
+    },
+    "spectator_points": {}
   },
   "imports": {
     "import_record": [
@@ -278,6 +141,20 @@
       },
       {
         "file": "gameData/missions/cta/tanks/poland/battleareas/template_poland_Conq2_battleareas.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/cta_single_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
