@@ -99,7 +99,7 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.05,
+          "countPortion": 0.0,
           "segment": [
             {
               "radiusScale": 0.3,
@@ -301,7 +301,7 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.05,
+          "countPortion": 0.0,
           "segment": [
             {
               "radiusScale": 0.3,
@@ -938,7 +938,7 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.05,
+          "countPortion": 0.0,
           "segment": [
             {
               "radiusScale": 0.3,

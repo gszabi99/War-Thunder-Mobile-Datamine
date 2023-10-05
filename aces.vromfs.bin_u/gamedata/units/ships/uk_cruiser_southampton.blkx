@@ -23,7 +23,7 @@
   "tailStartOffset": 10.0,
   "useSimpleDeathConditionsAndEffects": false,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 43560.0,
+  "multHpFromMetaparts": 53220.0,
   "type": "typeDestroyer",
   "expClass": "exp_cruiser",
   "timeToFire": 40.0,
@@ -212,7 +212,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 43560.0,
+      "hp": 53220.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -238,7 +238,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 43560.0,
+      "hp": 53220.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -248,7 +248,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 43560.0,
+      "hp": 53220.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {},
@@ -260,7 +260,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 43560.0,
+      "hp": 53220.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_03_dm": {},
@@ -282,7 +282,7 @@
     "fire_control": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 43560.0,
+      "hp": 53220.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.05,
       "fireParamsPreset": "ship_aux_fire",
@@ -330,7 +330,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 43560.0,
+      "hp": 53220.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {},
@@ -339,7 +339,7 @@
     "citadel_armor": {
       "armorClass": "ship_RHA",
       "armorThickness": 114.3,
-      "hp": 43560.0,
+      "hp": 53220.0,
       "fireDamageMult": 0.001,
       "armor_cit_01_dm": {},
       "armor_cit_02_dm": {},
@@ -624,7 +624,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 43560.0,
+      "hp": 53220.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",

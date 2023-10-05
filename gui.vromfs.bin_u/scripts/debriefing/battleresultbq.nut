@@ -7,6 +7,7 @@ let { EventOnSetupFrameTimes } = require("gameEvents")
 let { get_mp_session_id_int } = require("multiplayer")
 let { get_current_mission_name } = require("mission")
 let { get_battery, get_battery_capacity_mah, is_charging, get_thermal_state, get_network_connection_type } = require("sysinfo")
+let { get_is_emulator, get_is_emulated_input } = require("emulatorDetection")
 let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
@@ -117,6 +118,8 @@ let function onFrameTimes(evt, _eid, _comp) {
     tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
     battery = get_battery()
     isCharging = is_charging()
+    isEmulator = get_is_emulator()
+    isEmulatedInput = get_is_emulated_input()
     batteryDrainPercentage = drainPercentage
     batteryDrainmAh = drainmAh
     thermalState = get_thermal_state()

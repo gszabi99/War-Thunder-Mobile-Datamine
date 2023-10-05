@@ -331,7 +331,7 @@
     "forceSky11bitRT": true,
     "riGpuObjects": false,
     "heightmapDimBits": 4,
-    "mirrorQuality": 5,
+    "mirrorQuality": 0,
     "forceUnitsLodForWater": 2,
     "impostorMaxTexSize": 128,
     "waterPerlin": true,
@@ -718,7 +718,7 @@
   },
   "unitedVdata.rendInst": {
     "common": {
-      "IB": 16384,
+      "IB": 4096,
       "VB1": 16384,
       "VB2": 0
     }

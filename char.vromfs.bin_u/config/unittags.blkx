@@ -1251,8 +1251,8 @@
     },
     "Shop": {
       "shipCrewMax": 1400,
-      "shipCrewMin": 340,
-      "shipCrewRating": 1.71879,
+      "shipCrewMin": 280,
+      "shipCrewRating": 2.1,
       "maxSpeed": 16.71,
       "turningTime": 26,
       "supportPlane": "arado_196a_3",
@@ -1376,8 +1376,8 @@
     },
     "Shop": {
       "shipCrewMax": 1260,
-      "shipCrewMin": 460,
-      "shipCrewRating": 1.13424,
+      "shipCrewMin": 370,
+      "shipCrewRating": 1.38606,
       "maxSpeed": 16.72,
       "turningTime": 22,
       "supportPlane": "os2u_1_naval",
@@ -1428,8 +1428,8 @@
     },
     "Shop": {
       "shipCrewMax": 1520,
-      "shipCrewMin": 460,
-      "shipCrewRating": 1.95303,
+      "shipCrewMin": 310,
+      "shipCrewRating": 2.90879,
       "maxSpeed": 16.83,
       "turningTime": 39,
       "supportPlane": "os2u_1_naval",
@@ -1480,8 +1480,8 @@
     },
     "Shop": {
       "shipCrewMax": 1730,
-      "shipCrewMin": 580,
-      "shipCrewRating": 1.54697,
+      "shipCrewMin": 400,
+      "shipCrewRating": 2.25788,
       "maxSpeed": 11.06,
       "turningTime": 37,
       "mainWeaponCaliber": 305.0,
@@ -1530,8 +1530,8 @@
     },
     "Shop": {
       "shipCrewMax": 1360,
-      "shipCrewMin": 410,
-      "shipCrewRating": 1.71879,
+      "shipCrewMin": 300,
+      "shipCrewRating": 2.35212,
       "maxSpeed": 12.16,
       "turningTime": 43,
       "mainWeaponCaliber": 356.0,
@@ -1558,10 +1558,10 @@
           "wtype": "aaa",
           "damage": 15.0,
           "shotFreq": 9.17,
-          "aimMaxDist": 2000.0,
+          "aimMaxDist": 3500.0,
           "gunsCount": 6,
           "caliber": 7.7,
-          "ammoCount": 3600,
+          "ammoCount": 11640,
           "isBeltAmmo": true
         }
       }
@@ -1580,8 +1580,8 @@
     },
     "Shop": {
       "shipCrewMax": 700,
-      "shipCrewMin": 180,
-      "shipCrewRating": 1.58121,
+      "shipCrewMin": 150,
+      "shipCrewRating": 1.93212,
       "maxSpeed": 18.52,
       "turningTime": 19,
       "supportPlane": "kor_1",
@@ -1644,8 +1644,8 @@
     },
     "Shop": {
       "shipCrewMax": 80,
-      "shipCrewMin": 20,
-      "shipCrewRating": 0.65303,
+      "shipCrewMin": 10,
+      "shipCrewRating": 0.797879,
       "maxSpeed": 4.5,
       "underwaterSpeed": 10.4175,
       "turningTime": 30,
@@ -1699,7 +1699,7 @@
     "Shop": {
       "shipCrewMax": 60,
       "shipCrewMin": 10,
-      "shipCrewRating": 0.611818,
+      "shipCrewRating": 0.747576,
       "maxSpeed": 4.12,
       "underwaterSpeed": 9.6408,
       "turningTime": 30,
@@ -1752,8 +1752,8 @@
     },
     "Shop": {
       "shipCrewMax": 70,
-      "shipCrewMin": 20,
-      "shipCrewRating": 0.55697,
+      "shipCrewMin": 10,
+      "shipCrewRating": 0.680303,
       "maxSpeed": 5.25,
       "underwaterSpeed": 11.6025,
       "turningTime": 30,
@@ -2196,7 +2196,7 @@
     "Shop": {
       "shipCrewMax": 260,
       "shipCrewMin": 80,
-      "shipCrewRating": 1.14394,
+      "shipCrewRating": 1.1,
       "maxSpeed": 18.5,
       "turningTime": 14,
       "addTorpedoesCountPack": 1,
@@ -2256,8 +2256,8 @@
     },
     "Shop": {
       "shipCrewMax": 820,
-      "shipCrewMin": 190,
-      "shipCrewRating": 2.04697,
+      "shipCrewMin": 150,
+      "shipCrewRating": 2.56758,
       "maxSpeed": 10.8,
       "turningTime": 34,
       "mainWeaponCaliber": 305.0,
@@ -2306,8 +2306,8 @@
     },
     "Shop": {
       "shipCrewMax": 1030,
-      "shipCrewMin": 290,
-      "shipCrewRating": 1.68758,
+      "shipCrewMin": 230,
+      "shipCrewRating": 2.11667,
       "maxSpeed": 13.7,
       "turningTime": 29,
       "mainWeaponCaliber": 305.0,
@@ -2356,8 +2356,8 @@
     },
     "Shop": {
       "shipCrewMax": 1300,
-      "shipCrewMin": 460,
-      "shipCrewRating": 1.31242,
+      "shipCrewMin": 370,
+      "shipCrewRating": 1.64636,
       "maxSpeed": 10.83,
       "turningTime": 34,
       "mainWeaponCaliber": 305.0,
@@ -2406,8 +2406,8 @@
     },
     "Shop": {
       "shipCrewMax": 1120,
-      "shipCrewMin": 380,
-      "shipCrewRating": 1.37515,
+      "shipCrewMin": 300,
+      "shipCrewRating": 1.72485,
       "maxSpeed": 11.83,
       "turningTime": 34,
       "mainWeaponCaliber": 305.0,
@@ -2466,8 +2466,8 @@
     },
     "Shop": {
       "shipCrewMax": 1250,
-      "shipCrewMin": 370,
-      "shipCrewRating": 1.71879,
+      "shipCrewMin": 270,
+      "shipCrewRating": 2.35212,
       "maxSpeed": 10.8,
       "turningTime": 41,
       "supportPlane": "soc_1",
@@ -2494,13 +2494,13 @@
         },
         "76mm_3_50_mk10_ww1_mk11_mount_naval_user_cannon": {
           "wtype": "aaa",
-          "damage": 125.0,
+          "damage": 80.0,
           "shotFreq": 0.316,
           "aimMaxDist": 3500.0,
           "gunsCount": 8,
           "caliber": 76.2,
-          "ammoCount": 300,
-          "isBeltAmmo": true
+          "ammoCount": 1600,
+          "isBeltAmmo": false
         }
       }
     }
@@ -2570,8 +2570,8 @@
     },
     "Shop": {
       "shipCrewMax": 790,
-      "shipCrewMin": 240,
-      "shipCrewRating": 1.21242,
+      "shipCrewMin": 220,
+      "shipCrewRating": 1.35788,
       "maxSpeed": 15.69,
       "turningTime": 27,
       "supportPlane": "osprey_mk4",
@@ -2633,8 +2633,8 @@
     },
     "Shop": {
       "shipCrewMax": 940,
-      "shipCrewMin": 220,
-      "shipCrewRating": 1.57515,
+      "shipCrewMin": 200,
+      "shipCrewRating": 1.76394,
       "maxSpeed": 16.71,
       "turningTime": 20,
       "addTorpedoesCountPack": 2,
@@ -2694,8 +2694,8 @@
     },
     "Shop": {
       "shipCrewMax": 1270,
-      "shipCrewMin": 360,
-      "shipCrewRating": 1.30636,
+      "shipCrewMin": 330,
+      "shipCrewRating": 1.46303,
       "maxSpeed": 17.03,
       "turningTime": 24,
       "addTorpedoesCountPack": 5,
@@ -2755,8 +2755,8 @@
     },
     "Shop": {
       "shipCrewMax": 800,
-      "shipCrewMin": 200,
-      "shipCrewRating": 1.5,
+      "shipCrewMin": 180,
+      "shipCrewRating": 1.68,
       "maxSpeed": 16.97,
       "turningTime": 22,
       "supportPlane": "e7k2",
@@ -2818,8 +2818,8 @@
     },
     "Shop": {
       "shipCrewMax": 750,
-      "shipCrewMin": 230,
-      "shipCrewRating": 1.32,
+      "shipCrewMin": 190,
+      "shipCrewRating": 1.61273,
       "maxSpeed": 16.46,
       "turningTime": 22,
       "addTorpedoesCountPack": 2,
@@ -2879,8 +2879,8 @@
     },
     "Shop": {
       "shipCrewMax": 1190,
-      "shipCrewMin": 400,
-      "shipCrewRating": 1.11242,
+      "shipCrewMin": 360,
+      "shipCrewRating": 1.24606,
       "maxSpeed": 16.82,
       "turningTime": 23,
       "supportPlane": "soc_1",
@@ -2931,8 +2931,8 @@
     },
     "Shop": {
       "shipCrewMax": 1390,
-      "shipCrewMin": 330,
-      "shipCrewRating": 2.0,
+      "shipCrewMin": 310,
+      "shipCrewRating": 2.09727,
       "maxSpeed": 11.03,
       "turningTime": 34,
       "mainWeaponCaliber": 305.0,
@@ -2971,8 +2971,8 @@
     },
     "Shop": {
       "shipCrewMax": 880,
-      "shipCrewMin": 230,
-      "shipCrewRating": 1.55364,
+      "shipCrewMin": 190,
+      "shipCrewRating": 1.89848,
       "maxSpeed": 18.26,
       "turningTime": 22,
       "supportPlane": "e8n2",
@@ -3034,8 +3034,8 @@
     },
     "Shop": {
       "shipCrewMax": 1120,
-      "shipCrewMin": 350,
-      "shipCrewRating": 1.51576,
+      "shipCrewMin": 280,
+      "shipCrewRating": 1.90121,
       "maxSpeed": 10.5,
       "turningTime": 32,
       "mainWeaponCaliber": 305.0,
@@ -3074,8 +3074,8 @@
     },
     "Shop": {
       "shipCrewMax": 1090,
-      "shipCrewMin": 330,
-      "shipCrewRating": 1.68424,
+      "shipCrewMin": 240,
+      "shipCrewRating": 2.30485,
       "maxSpeed": 12.03,
       "turningTime": 46,
       "mainWeaponCaliber": 305.0,
@@ -3114,8 +3114,8 @@
     },
     "Shop": {
       "shipCrewMax": 1910,
-      "shipCrewMin": 590,
-      "shipCrewRating": 1.89455,
+      "shipCrewMin": 420,
+      "shipCrewRating": 2.66182,
       "maxSpeed": 16.3,
       "turningTime": 26,
       "supportPlane": "arado_196a_3",
@@ -3281,8 +3281,8 @@
     },
     "Shop": {
       "shipCrewMax": 220,
-      "shipCrewMin": 60,
-      "shipCrewRating": 1.23212,
+      "shipCrewMin": 70,
+      "shipCrewRating": 1.05606,
       "maxSpeed": 17.49,
       "turningTime": 13,
       "addTorpedoesCountPack": 4,
@@ -3291,7 +3291,7 @@
         "127mm_5_50_type_3_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 500.0,
-          "shotFreq": 0.286,
+          "shotFreq": 0.2,
           "gunsCount": 6,
           "caliber": 127.0,
           "ammoCount": 900,
@@ -3310,7 +3310,7 @@
         "jp_610mm_type90_torpedo": {
           "wtype": "torpedo",
           "damage": 8000.0,
-          "shotFreq": 0.08,
+          "shotFreq": 0.06,
           "distToLive": 3500.0,
           "gunsCount": 3,
           "caliber": 610.0,
@@ -3333,8 +3333,8 @@
     },
     "Shop": {
       "shipCrewMax": 1190,
-      "shipCrewMin": 290,
-      "shipCrewRating": 2.14848,
+      "shipCrewMin": 210,
+      "shipCrewRating": 2.91636,
       "maxSpeed": 12.86,
       "turningTime": 35,
       "supportPlane": "osprey_mk4",
@@ -3547,8 +3547,8 @@
     },
     "Shop": {
       "shipCrewMax": 1060,
-      "shipCrewMin": 340,
-      "shipCrewRating": 1.46879,
+      "shipCrewMin": 270,
+      "shipCrewRating": 1.84242,
       "maxSpeed": 10.8,
       "turningTime": 35,
       "mainWeaponCaliber": 305.0,
@@ -3559,7 +3559,7 @@
           "shotFreq": 0.1,
           "gunsCount": 4,
           "caliber": 305.0,
-          "ammoCount": 320,
+          "ammoCount": 1280,
           "isBeltAmmo": false
         },
         "305mm_45_41st_year_type_naval_user_cannon": {
@@ -3568,7 +3568,7 @@
           "shotFreq": 0.1,
           "gunsCount": 8,
           "caliber": 305.0,
-          "ammoCount": 640,
+          "ammoCount": 2560,
           "isBeltAmmo": false
         },
         "152mm_45_41st_year_type_naval_user_cannon": {
@@ -3577,7 +3577,7 @@
           "shotFreq": 0.5,
           "gunsCount": 10,
           "caliber": 152.0,
-          "ammoCount": 1500,
+          "ammoCount": 6000,
           "isBeltAmmo": false
         },
         "76mm_40_41st_year_type_naval_user_cannon": {
@@ -3606,8 +3606,8 @@
     },
     "Shop": {
       "shipCrewMax": 2800,
-      "shipCrewMin": 590,
-      "shipCrewRating": 3.06242,
+      "shipCrewMin": 550,
+      "shipCrewRating": 3.29273,
       "maxSpeed": 16.72,
       "turningTime": 27,
       "mainWeaponCaliber": 406.0,
@@ -3615,7 +3615,7 @@
         "406mm_50_16inch_mk7_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 3000.0,
-          "shotFreq": 0.077,
+          "shotFreq": 0.059,
           "gunsCount": 9,
           "caliber": 406.0,
           "ammoCount": 1215,
@@ -3624,7 +3624,7 @@
         "127mm_38_mk12_turret_mk32_twin_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 600.0,
-          "shotFreq": 0.25,
+          "shotFreq": 0.204,
           "gunsCount": 20,
           "caliber": 127.0,
           "ammoCount": 9000,
@@ -3708,12 +3708,12 @@
     },
     "Shop": {
       "shipCrewMax": 1940,
-      "shipCrewMin": 330,
-      "shipCrewRating": 3.78667,
+      "shipCrewMin": 310,
+      "shipCrewRating": 3.98424,
       "maxSpeed": 14.92,
       "turningTime": 29,
       "supportPlane": "kor_1",
-      "supportPlaneCount": 4,
+      "supportPlaneCount": 3,
       "mainWeaponCaliber": 406.0,
       "weapons": {
         "406mm_50_b37_naval_user_cannon": {
@@ -3728,7 +3728,7 @@
         "152mm_57_b38_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 600.0,
-          "shotFreq": 0.333,
+          "shotFreq": 0.25,
           "gunsCount": 12,
           "caliber": 152.0,
           "ammoCount": 2160,
@@ -3761,7 +3761,7 @@
     "Shop": {
       "shipCrewMax": 280,
       "shipCrewMin": 80,
-      "shipCrewRating": 1.06,
+      "shipCrewRating": 1.12,
       "maxSpeed": 19.0,
       "turningTime": 14,
       "addTorpedoesCountPack": 2,
@@ -3882,8 +3882,8 @@
     },
     "Shop": {
       "shipCrewMax": 960,
-      "shipCrewMin": 310,
-      "shipCrewRating": 1.17515,
+      "shipCrewMin": 270,
+      "shipCrewRating": 1.31606,
       "maxSpeed": 16.71,
       "turningTime": 22,
       "mainWeaponCaliber": 152.0,
@@ -3935,8 +3935,8 @@
     },
     "Shop": {
       "shipCrewMax": 1180,
-      "shipCrewMin": 350,
-      "shipCrewRating": 1.40242,
+      "shipCrewMin": 230,
+      "shipCrewRating": 2.08333,
       "maxSpeed": 14.66,
       "turningTime": 26,
       "supportPlane": "arado_196a_3",
@@ -3998,8 +3998,8 @@
     },
     "Shop": {
       "shipCrewMax": 1390,
-      "shipCrewMin": 390,
-      "shipCrewRating": 1.67182,
+      "shipCrewMin": 310,
+      "shipCrewRating": 2.09727,
       "maxSpeed": 10.65,
       "turningTime": 47,
       "supportPlane": "os2u_1_naval",
@@ -4052,7 +4052,7 @@
     "Shop": {
       "shipCrewMax": 70,
       "shipCrewMin": 20,
-      "shipCrewRating": 0.598182,
+      "shipCrewRating": 0.730909,
       "maxSpeed": 7.72,
       "underwaterSpeed": 8.2604,
       "turningTime": 30,
@@ -4095,9 +4095,9 @@
           "wtype": "mainCannon",
           "damage": 600.0,
           "shotFreq": 0.333,
-          "gunsCount": 10,
+          "gunsCount": 5,
           "caliber": 127.0,
-          "ammoCount": 3600,
+          "ammoCount": 1800,
           "isBeltAmmo": false
         },
         "20mm_oerlikon_mk2_single_naval_user_cannon": {
@@ -4105,9 +4105,9 @@
           "damage": 15.0,
           "shotFreq": 7.5,
           "aimMaxDist": 3500.0,
-          "gunsCount": 10,
+          "gunsCount": 5,
           "caliber": 20.0,
-          "ammoCount": 18000,
+          "ammoCount": 9000,
           "isBeltAmmo": true
         },
         "us_533mm_21in_mark15_torpedo": {
@@ -4115,9 +4115,9 @@
           "damage": 6000.0,
           "shotFreq": 0.21,
           "distToLive": 3500.0,
-          "gunsCount": 4,
+          "gunsCount": 2,
           "caliber": 533.0,
-          "ammoCount": 40,
+          "ammoCount": 20,
           "isBeltAmmo": false
         }
       }
@@ -4188,8 +4188,8 @@
     },
     "Shop": {
       "shipCrewMax": 880,
-      "shipCrewMin": 180,
-      "shipCrewRating": 2.29333,
+      "shipCrewMin": 190,
+      "shipCrewRating": 2.21485,
       "maxSpeed": 11.27,
       "turningTime": 33,
       "mainWeaponCaliber": 305.0,
@@ -4200,7 +4200,7 @@
           "shotFreq": 0.1,
           "gunsCount": 4,
           "caliber": 305.0,
-          "ammoCount": 320,
+          "ammoCount": 1280,
           "isBeltAmmo": false
         },
         "152mm_45_41st_year_type_naval_user_cannon": {
@@ -4209,7 +4209,7 @@
           "shotFreq": 0.5,
           "gunsCount": 12,
           "caliber": 152.0,
-          "ammoCount": 1800,
+          "ammoCount": 7200,
           "isBeltAmmo": false
         },
         "76mm_40_41st_year_type_naval_user_cannon": {

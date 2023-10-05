@@ -24,7 +24,7 @@
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 18380.0,
+  "multHpFromMetaparts": 22450.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -231,7 +231,7 @@
     "hull": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 18380.0,
+      "hp": 22450.0,
       "genericDamageMult": 1.0,
       "compartment_02_dm": {
         "pressureDamageMult": 30.0
@@ -247,7 +247,7 @@
     "bridge": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 18380.0,
+      "hp": 22450.0,
       "fireParamsPreset": "common_ship_fire",
       "genericDamageMult": 1.0,
       "pressureDamageMult": 30.0,
@@ -256,7 +256,7 @@
     "main_turrets": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 18380.0,
+      "hp": 22450.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {},
@@ -265,7 +265,7 @@
     "aux_turrets": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 18380.0,
+      "hp": 22450.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
@@ -274,7 +274,7 @@
     "engine_rooms": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 18380.0,
+      "hp": 22450.0,
       "fireParamsPreset": "common_ship_fire",
       "genericDamageMult": 1.0,
       "engine_room_01_dm": {}
@@ -282,7 +282,7 @@
     "rudder": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 18380.0,
+      "hp": 22450.0,
       "fireDamageMult": 0.001,
       "genericDamageMult": 1.0,
       "steering_gear_01_dm": {}
@@ -397,7 +397,7 @@
   },
   "MetaParts": {
     "upper_hull": {
-      "hp": 18380.0,
+      "hp": 22450.0,
       "maxDamageMode": true,
       "part": [
         "compartment_02_dm",
@@ -417,7 +417,7 @@
       ]
     },
     "lower_and_inner_hull": {
-      "hp": 18380.0,
+      "hp": 22450.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",

@@ -522,10 +522,11 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let function onButtonReleaseWhileActiveZone() {
     onStopTouch()
     if (!canShoot.value) {
-      addCommonHint(!needCheckTargetReachable || targetState.value == 0 ? loc("hints/select_enemy_to_shoot")
-        : targetState.value == 1 ? loc("hints/submarine_deeper_periscope")
-        : targetState.value == 2 ? loc("hints/target_is_far_for_effective_hit", { dist = torpedoDistToLive.value })
-        : loc("hints/target_is_not_reachable"))
+      if (targetState.value < 3) {
+        addCommonHint(!needCheckTargetReachable || targetState.value == 0 ? loc("hints/select_enemy_to_shoot")
+          : targetState.value == 1 ? loc("hints/submarine_deeper_periscope")
+          : loc("hints/target_is_far_for_effective_hit", { dist = torpedoDistToLive.value }))
+      }
       return
     }
     if (isWaitForAim) {

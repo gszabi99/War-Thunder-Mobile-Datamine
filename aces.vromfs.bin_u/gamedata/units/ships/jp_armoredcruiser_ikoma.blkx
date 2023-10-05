@@ -25,7 +25,7 @@
   "ikPilotMaxRenderDistance": 170.0,
   "useSimpleDeathConditionsAndEffects": false,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 75680.0,
+  "multHpFromMetaparts": 73090.0,
   "type": "typeDestroyer",
   "expClass": "exp_cruiser",
   "timeToFire": 40.0,
@@ -212,7 +212,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 75680.0,
+      "hp": 73090.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -238,7 +238,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 75680.0,
+      "hp": 73090.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -248,7 +248,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 75680.0,
+      "hp": 73090.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {},
@@ -258,7 +258,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 75680.0,
+      "hp": 73090.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
@@ -335,7 +335,7 @@
     "citadel_armor": {
       "armorClass": "ship_RHA",
       "armorThickness": 200.0,
-      "hp": 75680.0,
+      "hp": 73090.0,
       "fireDamageMult": 0.001,
       "armor_cit_01_dm": {},
       "armor_cit_02_dm": {},
@@ -583,7 +583,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 75680.0,
+      "hp": 73090.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -620,15 +620,15 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 12700000.0,
+      "Empty": 10700000.0,
       "momentOfInertia": [
-        49.0,
-        1155.0,
-        700.0
+        159.0,
+        855.0,
+        900.0
       ],
       "CenterOfGravity": [
         -1.0,
-        0.2,
+        -0.8,
         0.0
       ]
     },
@@ -750,8 +750,6 @@
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "barrelDP": "main_caliber_gun_01_dm",
-        "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.1,
@@ -787,8 +785,7 @@
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
-          "barrel": "gun_barrel_01",
-          "gunnerDm": "main_caliber_turret_01_dm"
+          "barrel": "gun_barrel_01"
         },
         "limits": {
           "yaw": [
@@ -856,8 +853,6 @@
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
-        "barrelDP": "main_caliber_gun_02_dm",
-        "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.1,
@@ -893,8 +888,7 @@
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
-          "barrel": "gun_barrel_01",
-          "gunnerDm": "main_caliber_turret_01_dm"
+          "barrel": "gun_barrel_01"
         },
         "limits": {
           "yaw": [
@@ -962,8 +956,6 @@
         "emitter": "emtr_gun_flame_27",
         "flash": "emtr_gun_flame_27",
         "useEmitter": true,
-        "barrelDP": "main_caliber_gun_03_dm",
-        "breechDP": "main_caliber_gun_03_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.1,
@@ -999,8 +991,7 @@
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
-          "barrel": "gun_barrel_02",
-          "gunnerDm": "main_caliber_turret_02_dm"
+          "barrel": "gun_barrel_02"
         },
         "limits": {
           "yaw": [
@@ -1068,8 +1059,6 @@
         "emitter": "emtr_gun_flame_28",
         "flash": "emtr_gun_flame_28",
         "useEmitter": true,
-        "barrelDP": "main_caliber_gun_04_dm",
-        "breechDP": "main_caliber_gun_04_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.1,
@@ -1105,8 +1094,7 @@
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
-          "barrel": "gun_barrel_02",
-          "gunnerDm": "main_caliber_turret_02_dm"
+          "barrel": "gun_barrel_02"
         },
         "limits": {
           "yaw": [
@@ -1174,8 +1162,6 @@
         "emitter": "emtr_gun_flame_07",
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_05_dm",
-        "breechDP": "auxiliary_caliber_gun_05_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1261,8 +1247,6 @@
         "emitter": "emtr_gun_flame_08",
         "flash": "emtr_gun_flame_08",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_06_dm",
-        "breechDP": "auxiliary_caliber_gun_06_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1348,8 +1332,6 @@
         "emitter": "emtr_gun_flame_09",
         "flash": "emtr_gun_flame_09",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_07_dm",
-        "breechDP": "auxiliary_caliber_gun_07_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1435,8 +1417,6 @@
         "emitter": "emtr_gun_flame_10",
         "flash": "emtr_gun_flame_10",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_08_dm",
-        "breechDP": "auxiliary_caliber_gun_08_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1522,8 +1502,6 @@
         "emitter": "emtr_gun_flame_13",
         "flash": "emtr_gun_flame_13",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_09_dm",
-        "breechDP": "auxiliary_caliber_gun_09_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1589,8 +1567,6 @@
         "emitter": "emtr_gun_flame_14",
         "flash": "emtr_gun_flame_14",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_10_dm",
-        "breechDP": "auxiliary_caliber_gun_10_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1656,8 +1632,6 @@
         "emitter": "emtr_gun_flame_19",
         "flash": "emtr_gun_flame_19",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_15_dm",
-        "breechDP": "auxiliary_caliber_gun_15_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1723,8 +1697,6 @@
         "emitter": "emtr_gun_flame_20",
         "flash": "emtr_gun_flame_20",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_16_dm",
-        "breechDP": "auxiliary_caliber_gun_16_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1790,8 +1762,6 @@
         "emitter": "emtr_gun_flame_23",
         "flash": "emtr_gun_flame_23",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_19_dm",
-        "breechDP": "auxiliary_caliber_gun_19_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1877,8 +1847,6 @@
         "emitter": "emtr_gun_flame_24",
         "flash": "emtr_gun_flame_24",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_20_dm",
-        "breechDP": "auxiliary_caliber_gun_20_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -1964,8 +1932,6 @@
         "emitter": "emtr_gun_flame_25",
         "flash": "emtr_gun_flame_25",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_21_dm",
-        "breechDP": "auxiliary_caliber_gun_21_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -2051,8 +2017,6 @@
         "emitter": "emtr_gun_flame_26",
         "flash": "emtr_gun_flame_26",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_22_dm",
-        "breechDP": "auxiliary_caliber_gun_22_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "shotFreq": 0.5,
@@ -2470,8 +2434,6 @@
               "emitter": "emtr_gun_flame_03",
               "flash": "emtr_gun_flame_03",
               "useEmitter": true,
-              "barrelDP": "main_caliber_gun_01_dm",
-              "breechDP": "main_caliber_gun_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.1,
@@ -2507,8 +2469,7 @@
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
+                "barrel": "gun_barrel_01"
               },
               "limits": {
                 "yaw": [
@@ -2576,8 +2537,6 @@
               "emitter": "emtr_gun_flame_04",
               "flash": "emtr_gun_flame_04",
               "useEmitter": true,
-              "barrelDP": "main_caliber_gun_02_dm",
-              "breechDP": "main_caliber_gun_02_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.1,
@@ -2613,8 +2572,7 @@
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
+                "barrel": "gun_barrel_01"
               },
               "limits": {
                 "yaw": [
@@ -2682,8 +2640,6 @@
               "emitter": "emtr_gun_flame_27",
               "flash": "emtr_gun_flame_27",
               "useEmitter": true,
-              "barrelDP": "main_caliber_gun_03_dm",
-              "breechDP": "main_caliber_gun_03_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.1,
@@ -2719,8 +2675,7 @@
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02",
-                "gunnerDm": "main_caliber_turret_02_dm"
+                "barrel": "gun_barrel_02"
               },
               "limits": {
                 "yaw": [
@@ -2788,8 +2743,6 @@
               "emitter": "emtr_gun_flame_28",
               "flash": "emtr_gun_flame_28",
               "useEmitter": true,
-              "barrelDP": "main_caliber_gun_04_dm",
-              "breechDP": "main_caliber_gun_04_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.1,
@@ -2825,8 +2778,7 @@
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02",
-                "gunnerDm": "main_caliber_turret_02_dm"
+                "barrel": "gun_barrel_02"
               },
               "limits": {
                 "yaw": [
@@ -2894,8 +2846,6 @@
               "emitter": "emtr_gun_flame_07",
               "flash": "emtr_gun_flame_07",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_05_dm",
-              "breechDP": "auxiliary_caliber_gun_05_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -2981,8 +2931,6 @@
               "emitter": "emtr_gun_flame_08",
               "flash": "emtr_gun_flame_08",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_06_dm",
-              "breechDP": "auxiliary_caliber_gun_06_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3068,8 +3016,6 @@
               "emitter": "emtr_gun_flame_09",
               "flash": "emtr_gun_flame_09",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_07_dm",
-              "breechDP": "auxiliary_caliber_gun_07_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3155,8 +3101,6 @@
               "emitter": "emtr_gun_flame_10",
               "flash": "emtr_gun_flame_10",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_08_dm",
-              "breechDP": "auxiliary_caliber_gun_08_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3242,8 +3186,6 @@
               "emitter": "emtr_gun_flame_13",
               "flash": "emtr_gun_flame_13",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_09_dm",
-              "breechDP": "auxiliary_caliber_gun_09_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3309,8 +3251,6 @@
               "emitter": "emtr_gun_flame_14",
               "flash": "emtr_gun_flame_14",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_10_dm",
-              "breechDP": "auxiliary_caliber_gun_10_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3376,8 +3316,6 @@
               "emitter": "emtr_gun_flame_19",
               "flash": "emtr_gun_flame_19",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_15_dm",
-              "breechDP": "auxiliary_caliber_gun_15_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3443,8 +3381,6 @@
               "emitter": "emtr_gun_flame_20",
               "flash": "emtr_gun_flame_20",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_16_dm",
-              "breechDP": "auxiliary_caliber_gun_16_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3510,8 +3446,6 @@
               "emitter": "emtr_gun_flame_23",
               "flash": "emtr_gun_flame_23",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_19_dm",
-              "breechDP": "auxiliary_caliber_gun_19_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3597,8 +3531,6 @@
               "emitter": "emtr_gun_flame_24",
               "flash": "emtr_gun_flame_24",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_20_dm",
-              "breechDP": "auxiliary_caliber_gun_20_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3684,8 +3616,6 @@
               "emitter": "emtr_gun_flame_25",
               "flash": "emtr_gun_flame_25",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_21_dm",
-              "breechDP": "auxiliary_caliber_gun_21_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -3771,8 +3701,6 @@
               "emitter": "emtr_gun_flame_26",
               "flash": "emtr_gun_flame_26",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_22_dm",
-              "breechDP": "auxiliary_caliber_gun_22_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -4191,8 +4119,6 @@
               "emitter": "emtr_gun_flame_03",
               "flash": "emtr_gun_flame_03",
               "useEmitter": true,
-              "barrelDP": "main_caliber_gun_01_dm",
-              "breechDP": "main_caliber_gun_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.1,
@@ -4228,8 +4154,7 @@
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
+                "barrel": "gun_barrel_01"
               },
               "limits": {
                 "yaw": [
@@ -4297,8 +4222,6 @@
               "emitter": "emtr_gun_flame_04",
               "flash": "emtr_gun_flame_04",
               "useEmitter": true,
-              "barrelDP": "main_caliber_gun_02_dm",
-              "breechDP": "main_caliber_gun_02_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.1,
@@ -4334,8 +4257,7 @@
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
+                "barrel": "gun_barrel_01"
               },
               "limits": {
                 "yaw": [
@@ -4403,8 +4325,6 @@
               "emitter": "emtr_gun_flame_27",
               "flash": "emtr_gun_flame_27",
               "useEmitter": true,
-              "barrelDP": "main_caliber_gun_03_dm",
-              "breechDP": "main_caliber_gun_03_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.1,
@@ -4440,8 +4360,7 @@
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02",
-                "gunnerDm": "main_caliber_turret_02_dm"
+                "barrel": "gun_barrel_02"
               },
               "limits": {
                 "yaw": [
@@ -4509,8 +4428,6 @@
               "emitter": "emtr_gun_flame_28",
               "flash": "emtr_gun_flame_28",
               "useEmitter": true,
-              "barrelDP": "main_caliber_gun_04_dm",
-              "breechDP": "main_caliber_gun_04_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.1,
@@ -4546,8 +4463,7 @@
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02",
-                "gunnerDm": "main_caliber_turret_02_dm"
+                "barrel": "gun_barrel_02"
               },
               "limits": {
                 "yaw": [
@@ -4615,8 +4531,6 @@
               "emitter": "emtr_gun_flame_07",
               "flash": "emtr_gun_flame_07",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_05_dm",
-              "breechDP": "auxiliary_caliber_gun_05_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -4702,8 +4616,6 @@
               "emitter": "emtr_gun_flame_08",
               "flash": "emtr_gun_flame_08",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_06_dm",
-              "breechDP": "auxiliary_caliber_gun_06_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -4789,8 +4701,6 @@
               "emitter": "emtr_gun_flame_09",
               "flash": "emtr_gun_flame_09",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_07_dm",
-              "breechDP": "auxiliary_caliber_gun_07_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -4876,8 +4786,6 @@
               "emitter": "emtr_gun_flame_10",
               "flash": "emtr_gun_flame_10",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_08_dm",
-              "breechDP": "auxiliary_caliber_gun_08_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -4963,8 +4871,6 @@
               "emitter": "emtr_gun_flame_13",
               "flash": "emtr_gun_flame_13",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_09_dm",
-              "breechDP": "auxiliary_caliber_gun_09_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -5030,8 +4936,6 @@
               "emitter": "emtr_gun_flame_14",
               "flash": "emtr_gun_flame_14",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_10_dm",
-              "breechDP": "auxiliary_caliber_gun_10_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -5097,8 +5001,6 @@
               "emitter": "emtr_gun_flame_19",
               "flash": "emtr_gun_flame_19",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_15_dm",
-              "breechDP": "auxiliary_caliber_gun_15_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -5164,8 +5066,6 @@
               "emitter": "emtr_gun_flame_20",
               "flash": "emtr_gun_flame_20",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_16_dm",
-              "breechDP": "auxiliary_caliber_gun_16_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -5231,8 +5131,6 @@
               "emitter": "emtr_gun_flame_23",
               "flash": "emtr_gun_flame_23",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_19_dm",
-              "breechDP": "auxiliary_caliber_gun_19_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -5318,8 +5216,6 @@
               "emitter": "emtr_gun_flame_24",
               "flash": "emtr_gun_flame_24",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_20_dm",
-              "breechDP": "auxiliary_caliber_gun_20_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -5405,8 +5301,6 @@
               "emitter": "emtr_gun_flame_25",
               "flash": "emtr_gun_flame_25",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_21_dm",
-              "breechDP": "auxiliary_caliber_gun_21_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
@@ -5492,8 +5386,6 @@
               "emitter": "emtr_gun_flame_26",
               "flash": "emtr_gun_flame_26",
               "useEmitter": true,
-              "barrelDP": "auxiliary_caliber_gun_22_dm",
-              "breechDP": "auxiliary_caliber_gun_22_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "shotFreq": 0.5,
