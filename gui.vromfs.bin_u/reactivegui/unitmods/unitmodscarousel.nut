@@ -142,7 +142,12 @@ let function modData(mod) {
         mkNotPurchasedShade(isPurchased)
         mkEquippedFrame(isEquipped)
         mkEquippedIcon(isEquipped)
-        mkLevelLock(isLocked, reqLevel)
+        {
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_BOTTOM
+          padding = hdpx(10)
+          children = mkLevelLock(isLocked, reqLevel)
+        }
         @() {
           watch = [isPurchased, isLocked, cost]
           children = isPurchased.value || isLocked.value ? null : mkCurrencyComp(cost.value, currency)

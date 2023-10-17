@@ -330,7 +330,7 @@ let function mkRewardIconComp(rewardInfo) {
 }
 
 let mkRewardIconsBlock = @(rewards) rewards.len() == 0 ? null : {
-  flow = FLOW_HORIZONTAL
+  flow = FLOW_VERTICAL
   gap = rewIconsGap
   children = arrayByRows(rewards, rewIconsPerRow)
     .map(@(row) {
@@ -473,6 +473,7 @@ let function mkMsgContent(stackDataV) {
     onClick = onCloseRequest
     flow = FLOW_VERTICAL
     gap = hdpx(44)
+    sound = { attach = (unitPlates.len() > 0 ? "meta_daily_reward" : "meta_unlock_unit") }
     children = [
       mkWndTitle(outroDelay)
       {
@@ -512,7 +513,7 @@ let showMessage = @() addModalWindow(bgShadedDark.__merge({
   onClick = onCloseRequest
   children = messageWnd
   animations = wndSwitchAnim
-  sound = { attach = "element_appear" }
+  sound = { detach  = "meta_reward_window_close" }
 }))
 
 if (needShow.value)

@@ -1,23 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
-let { getRomanNumeral } = require("%sqstd/math.nut")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { GPT_UNIT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem,
-  aTimeInfoItemOffset, aTimeInfoLight, aTimePriceFull, horGap, mkActiveItemHint, mkInfoText
+  aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
 } = require("goodsPreviewPkg.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, SHIP_PRESET_TYPE, TANK_PRESET_TYPE } = require("hangar")
-let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit, resetCustomHangarUnit, isHangarUnitLoaded
-} = require("%rGui/unit/hangarUnit.nut")
-let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
+let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit, resetCustomHangarUnit, isHangarUnitLoaded,
+  hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { gradCircularSqCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
@@ -25,11 +21,23 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP } = require("%appGlobals/unitConst.nut")
-let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getPlatoonOrUnitName, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { unitSelUnderlineFullHeight, unitPlatesGap,
+  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert
+} = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { REWARD_SIZE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 
 
-let TIME_TO_SHOW_UI = 5.0 //timer need to show UI eve with bug with cutscene
+let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
+
+let unitPlateWidth = hdpx(320)
+let unitPlateSize = [unitPlateWidth, unitPlateWidth * 0.45]
+let unitPlateSizeMain = unitPlateSize.map(@(v) v * 1.16)
+let unitPlateSizeSingle = unitPlateSize.map(@(v) v * 1.3)
+let verticalGap = hdpx(20)
 
 let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
@@ -39,8 +47,9 @@ let isOpened = Computed(@() previewType.value == GPT_UNIT)
 //anim pack info
 let aTimePackInfoStart = aTimePackNameFull
 let aTimePackInfoHeader = 0.3
-let aTimePackUnitInfoStart = aTimePackInfoStart + 0.15
-let aTimePackUnitInfo = 0.3
+let aTimePackUnitInfoStart = aTimePackInfoHeader + 0.05
+let aTimePackUnitPlates = 0.3
+let aTimePackUnitPlatesOffset = 0.05
 let aTimeFirstItemOfset = 0.1
 let aTimeInfoHeaderFull = aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeFirstItemOfset + 3 * aTimeInfoItemOffset
 //anim price and time
@@ -70,18 +79,35 @@ isPurchEffectVisible.subscribe(function(v) {
 
 subscribe("onCutsceneUnitShoot", @(_) resetTimeout(TIME_TO_SHOW_UI_AFTER_SHOT, showUi))
 
-let unitForShow = keepref(Computed(@() isWindowAttached.value ? previewGoodsUnit.value : null))
+let curSelectedUnitId = Watched("")
+previewGoodsUnit.subscribe(@(v) curSelectedUnitId(v?.name ?? ""))
+
+let unitForShow = keepref(Computed(function() {
+  if (!isWindowAttached.value || previewGoodsUnit.value == null)
+    return null
+  let unitName = curSelectedUnitId.value
+  if (unitName == previewGoodsUnit.value.name || unitName == "")
+    return previewGoodsUnit.value
+  return previewGoodsUnit.value.__merge({ name = unitName })
+}))
+
 unitForShow.subscribe(function(unit) {
   if (unit != null)
     setCustomHangarUnit(unit)
   else
     resetCustomHangarUnit()
 })
-
+/*
+previewGoodsUnit.subscribe(function(unit) {
+  if (unit != null)
+    set_load_sounds_for_model(true)
+})
+*/
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
   && loadedHangarUnitName.value == unitForShow.value?.name
   && isLoadedHangarUnitUpgraded.value == (unitForShow.value?.isUpgraded ?? false)
   && isHangarUnitLoaded.value ))
+
 let function showCutscene(v) {
   if (!v)
     stop_prem_cutscene()
@@ -95,55 +121,85 @@ let function showCutscene(v) {
 showCutscene(needShowCutscene.value)
 needShowCutscene.subscribe(showCutscene)
 
+let function openDetailsWnd() {
+  hangarUnitDataBackup({
+    name = unitForShow.value.name,
+    custom = unitForShow.value,
+    isFullChange = true
+  })
+  unitDetailsWnd({
+    name = previewGoodsUnit.value?.name
+    isUpgraded = previewGoodsUnit.value?.isUpgraded ?? false
+    canShowOwnUnit = false
+  })
+  skipAnimsOnce(true)
+}
 
-let rightBottomBlock = mkPriceWithTimeBlock(aTimePriceStart)
-let headerLeft = mkPreviewHeader(Computed(@() unitForShow.value ? getPlatoonOrUnitName(unitForShow.value, loc) : ""), closeGoodsPreview, 0)
+let function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
+  let p = getUnitPresentation(platoonUnit)
+  let isSelected = Computed(@() onSelectUnit != null && curSelectedUnitId.value == platoonUnit.name)
+  let size = idx != 0 ? unitPlateSize
+    : onSelectUnit == null ? unitPlateSizeSingle
+    : unitPlateSizeMain
 
-let function mkUnitShortInfo(unit) {
-  let { isUpgraded = false, isPremium = false, unitClass = "", unitType = "", mRank = 1 } = unit
-  let isElite = isUpgraded || isPremium
-  let unitTypeName = loc($"mainmenu/type_{unitClass == "" ? unitType : unitClass}")
   return {
-    rendObj = ROBJ_TEXT
-    color = isElite ? premiumTextColor : 0xFFFFFFFF
-    text = comma.concat(
-      isElite ? loc("shop/premUnitType", { unitType = unitTypeName }) : unitTypeName,
-      " ".concat(loc("options/mRank"), getRomanNumeral(mRank))
-    )
-    animations = opacityAnims(aTimePackUnitInfo, aTimePackUnitInfoStart, "element_appear")
-  }.__update(fontSmall)
-}
-
-let unitInfoChildren = @(unit) unit == null ? []
-  : [
-      mkInfoText(loc("shop/youWillGet"), aTimePriceStart + aTimePriceFull)
-      mkUnitShortInfo(unit)
-      mkUnitBonuses(unit, { animations = opacityAnims(aTimePackUnitInfo, aTimePackUnitInfoStart) })
+    behavior = Behaviors.Button
+    onClick = onSelectUnit
+    sound = { click  = "choose" }
+    flow = FLOW_HORIZONTAL
+    children = [
+      onSelectUnit == null ? null : mkUnitSelectedUnderlineVert(isSelected)
+      {
+        size
+        children = [
+          mkUnitBg(unit)
+          mkUnitSelectedGlow(unit, isSelected)
+          mkUnitImage(unit.__merge(platoonUnit))
+          mkUnitTexts(unit, loc(p.locId))
+          mkGradRank(unit.mRank, {
+            hplace = ALIGN_RIGHT
+            vplace = ALIGN_BOTTOM
+            padding = [0, hdpx(5)]
+          })
+        ]
+      }
     ]
-
-let activeItemHint = {
-  size = [0, 0]
-  children = mkActiveItemHint({ pos = [2 * doubleSideGradientPaddingX, -doubleSideGradientPaddingY] })
+    animations = opacityAnims(aTimePackUnitPlates, aTimePackUnitInfoStart + aTimePackUnitPlatesOffset * idx)
+  }
 }
 
-let packInfo = @() doubleSideGradient.__merge({
-  watch = [previewGoods, previewGoodsUnit]
-  pos = [-doubleSideGradientPaddingX, 0]
+let platoonUnitsBlock = @() {
+  watch = previewGoodsUnit
   flow = FLOW_VERTICAL
-  gap = hdpx(10)
-  children = unitInfoChildren(previewGoodsUnit.value).append(
-    { size = [hdpx(10), hdpx(10)] }
-    mkInfoText(loc("shop/additionalBonus"), aTimePriceStart + aTimePriceFull + 0.3)
+  gap = unitPlatesGap
+  children = [ { name = previewGoodsUnit.value.name, reqLevel = 0 } ]
+    .extend(previewGoodsUnit.value?.platoonUnits)
+    .map(@(pu, idx) mkUnitPlate(idx, previewGoodsUnit.value, pu, @() curSelectedUnitId(pu.name)))
+}
+
+let singleUnitBlock = @() {
+  watch = previewGoodsUnit
+  children = mkUnitPlate(0, previewGoodsUnit.value, { name = previewGoodsUnit.value.name, reqLevel = 0 })
+}
+
+let header = mkPreviewHeader(Computed(@() previewGoodsUnit.value ? getPlatoonOrUnitName(previewGoodsUnit.value, loc) : ""), closeGoodsPreview, 0)
+
+let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
+  children = [
     {
-      flow = FLOW_HORIZONTAL
-      children = [
-        mkPreviewItems(previewGoods.value, aTimePackInfoStart + aTimeFirstItemOfset)
-        activeItemHint
-      ]
+      size = flex()
+      pos = [-saBorders[0], REWARD_SIZE_MEDIUM * 1.1 * hintOffsetMulY]
+      valign = hintOffsetMulY > 0 ? ALIGN_TOP : ALIGN_BOTTOM
+      children = activeItemHint
     }
-  )
-  animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
-})
+    @() {
+      watch = previewGoods
+      flow = FLOW_HORIZONTAL
+      children = mkPreviewItems(previewGoods.value, aTimePackInfoStart + aTimeFirstItemOfset)
+      animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
+    }
+  ]
+}.__update(ovr)
 
 let unitInfoButton = {
   size = [evenPx(70), evenPx(70)]
@@ -159,14 +215,7 @@ let unitInfoButton = {
       color = 0xFF000000
     }
     infoBlueButton(
-      function() {
-        unitDetailsWnd({
-          name = previewGoodsUnit.value?.name
-          isUpgraded = previewGoodsUnit.value?.isUpgraded ?? false
-          canShowOwnUnit = false
-        })
-        skipAnimsOnce(true)
-      },
+      openDetailsWnd,
       { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
     )
   ]
@@ -186,20 +235,43 @@ let balanceBlock = @() {
   animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 }
 
-let headerPanel = {
-  size = [flex(), SIZE_TO_CONTENT]
+let leftBlock = {
+  size = flex()
   flow = FLOW_VERTICAL
-  gap = hdpx(20)
+  children = [
+    platoonUnitsBlock
+    { size = flex() }
+    packInfo(-1, { pos = [unitSelUnderlineFullHeight, 0] })
+  ]
+}
+
+let leftBlockSingleUnit = {
+  size = flex()
+  flow = FLOW_VERTICAL
+  gap = verticalGap * 2
+  children = [
+    singleUnitBlock
+    packInfo
+  ]
+}
+
+let rightBlock = {
+  size = flex()
+  flow = FLOW_VERTICAL
+  gap = verticalGap
   children = [
     {
       size = [flex(), SIZE_TO_CONTENT]
-      valign = ALIGN_CENTER
-      children = [
-        headerLeft
-        balanceBlock
-      ]
+      children = unitInfoPanel({
+        behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
+        eventPassThrough = true
+        onClick = openDetailsWnd
+        clickableInfo = loc("msgbox/btn_more")
+      }, mkUnitTitle)
+      animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
     }
-    packInfo
+    { size = flex() }
+    mkPriceWithTimeBlock(aTimePriceStart)
   ]
 }
 
@@ -207,7 +279,7 @@ let isPurchNoNeedResultWindow = @(purch) purch?.source == "purchaseInternal"
   && null == purch.goods.findvalue(@(g) g.gType != "unit" && g.gType != "unitUpgrade" && g.gType != "unitLevel")
 let markPurchasesSeenDelayed = function(purchList) {
   defer(function() {
-    local unit = myUnits.value?[purchList.findvalue(@(_) true).goods[0].id]
+    local unit = myUnits.value?[purchList.findvalue(@(_) true)?.goods[0].id]
     if (unit == null)
       return
     markPurchasesSeen(purchList.keys())
@@ -219,6 +291,9 @@ let previewWnd = @() {
   watch = needShowUi
   key = isOpened
   size = flex()
+  padding = saBordersRv
+  flow = FLOW_VERTICAL
+  gap = verticalGap
   behavior = Behaviors.HangarCameraControl
   stopMouse = true
   stopHotkeys = true
@@ -234,14 +309,24 @@ let previewWnd = @() {
   }
 
   children = !needShowUi.value ? doubleClickListener(@() needShowUi(true))
-    : {
-        size = flex()
-        margin = saBordersRv
-        children = [
-          headerPanel
-          rightBottomBlock
-        ]
-      }
+    : [
+        {
+          size = [flex(), SIZE_TO_CONTENT]
+          valign = ALIGN_CENTER
+          children = [
+            header
+            balanceBlock
+          ]
+        }
+        @() {
+          watch = previewGoodsUnit
+          size = flex()
+          children = [
+            previewGoodsUnit.value?.platoonUnits.len() == 0 ? leftBlockSingleUnit : leftBlock
+            rightBlock
+          ]
+        }
+      ]
 }
 
 registerScene("goodsUnitPreviewWnd", previewWnd, closeGoodsPreview, isOpened)

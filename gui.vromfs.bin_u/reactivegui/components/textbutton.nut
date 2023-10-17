@@ -171,6 +171,7 @@ let textButtonMultiline = @(text, onClick, style = buttonStyles.COMMON)
   mkCustomButton(mkButtonTextMultiline(text), onClick, style)
 
 return {
+  paddingX
   mkCustomButton
   textButton
   textButtonMultiline

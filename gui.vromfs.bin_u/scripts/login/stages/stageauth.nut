@@ -38,6 +38,7 @@ let mkInterruptWithRecoveryMsg = @(errCode) function(_loginType) {
 
 let proceedAuthByResult = {
   [YU2_OK] = function(loginType) {
+    send_counter("sq.app.stage", 1, { stage = "auth_done" })
     curLoginType(loginType)
     authTags(get_player_tags())
     finalizeStage()
@@ -201,6 +202,8 @@ let loginByType = {
 }
 
 let function start() {
+  send_counter("sq.app.stage", 1, { stage = "auth_start" })
+
   let { loginType } = authState.value
   let loginStart = loginByType?[loginType]
   if (loginStart == null) {

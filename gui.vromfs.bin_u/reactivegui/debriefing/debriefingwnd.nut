@@ -46,7 +46,7 @@ let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-
+let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 
 let closeDebriefing = @() send("Debriefing_CloseInDagui", {})
 let startBattle = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId }) //FIXME: Should to use game mode from debriefing
@@ -149,7 +149,7 @@ let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")
     isNoExtraScenesAfterDebriefing(true)
     if (needRateGame.value)
       return requestShowRateGame()
-    offerMissingUnitItemsMessage(curUnit.value, startBattle)
+    showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.value, startBattle))
     closeDebriefing()
   },
   { hotkeys = ["^J:X | Enter"] })

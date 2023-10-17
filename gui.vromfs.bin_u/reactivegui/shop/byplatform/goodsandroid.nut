@@ -211,12 +211,13 @@ let noNeedLogerr = [ GP_SERVICE_TIMEOUT, GP_USER_CANCELED, GP_DEVELOPER_ERROR ]
 let function sendLogPurchaseData(json_value) {
   //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081
   local googleResp = parse_json(json_value)
+  let { orderId = null, productId = null } = googleResp
   local af = {
-    af_order_id = googleResp.orderId
-    af_content_id = googleResp.productId
-    af_revenue = availableSkusPrices.value?[googleResp.productId].price ?? -1
-    af_price = availableSkusPrices.value?[googleResp.productId].price ?? -1
-    af_currency = availableSkusPrices.value?[googleResp.productId].currencyId ?? "USD" //or af_purchase_currency?
+    af_order_id = orderId
+    af_content_id = productId
+    af_revenue = availableSkusPrices.value?[productId].price ?? -1
+    af_price = availableSkusPrices.value?[productId].price ?? -1
+    af_currency = availableSkusPrices.value?[productId].currencyId ?? "USD" //or af_purchase_currency?
   }
   logEvent("af_purchase", json_to_string(af, true))
 }

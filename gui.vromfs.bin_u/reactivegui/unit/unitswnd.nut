@@ -7,28 +7,29 @@ let { wndSwitchAnim, WND_REVEAL } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
+let { levelBlock, gamercardWithoutLevelBlock, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { playerLevelInfo, allUnitsCfg, myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { hangarUnitName, loadedHangarUnitName, setHangarUnit } = require("hangarUnit.nut")
 let { sortUnits, getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
-let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, rankToReqPlayerLvl, getUnitLockedShortText,
+let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, rankToReqPlayerLvl,
   setCurrentUnit, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
 } = require("%appGlobals/unitsState.nut")
 let { unitInProgress, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { textButtonPrimary, textButtonPurchase, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
+let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnderlineFullHeight,
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitCanPurchaseShade, mkUnitTexts, mkUnitLevel, mkUnitPrice,
+  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitCanPurchaseShade, mkUnitTexts, mkUnitLock, mkUnitPrice,
   mkUnitLockedFg, mkUnitEquippedFrame, mkUnitEquippedTopLine, mkUnitSelectedUnderline,
   mkPlatoonPlateFrame, platoonSelPlatesGap, mkPlatoonEquippedIcon, mkPlatoonSelectedGlow,
   mkUnitEmptyLockedFg, bgPlatesTranslate, mkPlateText, plateTextsPad
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { unitInfoPanel, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { unitInfoPanel, unitInfoPanelDefPos, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let { curFilters, optName, optCountry, optUnitClass, optMRank, optStatus
 } = require("%rGui/unit/unitsFilterState.nut")
@@ -51,12 +52,17 @@ let { scaleAnimation, revealAnimation, raisePlatesAnimation, RAISE_PLATE_TOTAL
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isUnitsWndAttached, isUnitsWndOpened } = require("%rGui/mainMenu/mainMenuState.nut")
+let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
+let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
+let backButton = require("%rGui/components/backButton.nut")
+let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
 let isFiltersVisible = Watched(false)
 let filters = [optName, optCountry, optUnitClass, optMRank, optStatus]
 let activeFilters = Watched(0)
+let profileStateFlags = Watched(0)
 
 let gapFromUnitsBlockToBtns = hdpx(4)
 
@@ -80,6 +86,8 @@ let curSelectedUnit = Watched(null)
 let curSelectedUnitLevel = Computed(@() rankToReqPlayerLvl.value?[allUnitsCfg.value
   .findvalue(@(u) u.name == curSelectedUnit.value)?.rank] ?? 0)
 let curUnitName = Computed(@() curUnit.value?.name)
+
+curCampaign.subscribe(@(_) curSelectedUnit(curUnitName.value))
 
 let curSelectedUnitPrice = Computed(@()
   (allUnitsCfg.value?[curSelectedUnit.value]?.costGold ?? 0) + (allUnitsCfg.value?[curSelectedUnit.value]?.costWp ?? 0))
@@ -253,11 +261,10 @@ let function unitActionButtons() {
     else if(deltaLevels == 1 && canBuyUnitsStatus.value?[curSelectedUnit.value] != US_NOT_FOR_SALE) {
       let premId = findGoodsPrem(shopGoods.value)?.id
       children.append(
-        textButtonPurchase(
-          utf8ToUpper(loc("units/btn_speed_explore")),
-          havePremium.value || premId == null ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
-            : @() openGoodsPreview(premId)
-        )
+        textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), curSelectedUnitLevel.value,
+          havePremium.value || premId == null
+          ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
+          : @() openGoodsPreview(premId), { hotkeys = ["^J:Y"] })
       )
     }
   }
@@ -370,15 +377,12 @@ let function mkPlatoonPlate(unit) {
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
-  let canBuyForLvlUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
-  let price = canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp) : null
+  let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
+  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value) : null)
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
-  let lockedText = Computed(@() getUnitLockedShortText(unit,
-    justUnlockedDelay.value ? US_TOO_LOW_LEVEL : canBuyUnitsStatus.value?[unit.name],
-    rankToReqPlayerLvl.value?[unit.rank]))
-
+  let campaignLevel = Computed(@() rankToReqPlayerLvl.value?[unit.rank])
   return @() {
-    watch = [isSelected, stateFlags, justUnlockedDelay]
+    watch = [isSelected, stateFlags, justUnlockedDelay, price]
     behavior = Behaviors.Button
     clickableInfo = isSelected.value ? { skipDescription = true } : loc("mainmenu/btnSelect")
     sound = { click  = "choose" }
@@ -396,10 +400,12 @@ let function mkPlatoonPlate(unit) {
           mkPlatoonSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(unit)
           mkUnitCanPurchaseShade(canPurchase)
+          mkUnitLockedFg(isLocked, justUnlockedDelay.value)
           mkUnitTexts(unit, loc(getUnitLocId(unit)), justUnlockedDelay.value)
-          unit?.level == null ? null : mkUnitLevel(unit.level, justUnlockedDelay.value)
-          price != null ? mkUnitPrice(price, justUnlockedDelay.value) : null
-          mkUnitLockedFg(isLocked, lockedText, justUnlockedDelay.value, unit.name)
+          unit.mRank <= 0
+            ? null
+            : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value, campaignLevel.value)
+          price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkPlatoonPlateFrame(isEquipped, isLocked, justUnlockedDelay.value)
           mkPlatoonEquippedIcon(unit, isEquipped, justUnlockedDelay.value)
         ]
@@ -419,20 +425,16 @@ let function mkUnitPlate(unit) {
     if (isHold(unit.name))
       unitDetailsWnd({ name = hangarUnitName.value })
   }
-  let p = getUnitPresentation(unit)
   let isSelected = Computed(@() curSelectedUnit.value == unit.name)
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
+  let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
+  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value) : null)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
-  let canBuyForLvlUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
-  let price = canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp) : null
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
-  let lockedText = Computed(@() getUnitLockedShortText(unit,
-    justUnlockedDelay.value ? US_TOO_LOW_LEVEL : canBuyUnitsStatus.value?[unit.name],
-    rankToReqPlayerLvl.value?[unit.rank]))
-
+  let campaignLevel = Computed(@() rankToReqPlayerLvl.value?[unit.rank])
   return @() {
-    watch = [isSelected, stateFlags, justUnlockedDelay]
+    watch = [isSelected, stateFlags, justUnlockedDelay, price]
     size = [ unitPlateWidth, unitsPlateCombinedHeight ]
     behavior = Behaviors.Button
     clickableInfo = isSelected.value ? { skipDescription = true } : loc("mainmenu/btnSelect")
@@ -453,10 +455,12 @@ let function mkUnitPlate(unit) {
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(unit)
           mkUnitCanPurchaseShade(canPurchase)
-          mkUnitTexts(unit, loc(p.locId), justUnlockedDelay.value)
-          unit?.level == null ? null : mkUnitLevel(unit.level, justUnlockedDelay.value)
-          price != null ? mkUnitPrice(price, justUnlockedDelay.value) : null
-          mkUnitLockedFg(isLocked, lockedText, justUnlockedDelay.value, unit.name)
+          mkUnitLockedFg(isLocked, justUnlockedDelay.value)
+          mkUnitTexts(unit, loc(getUnitLocId(unit)), justUnlockedDelay.value)
+          unit.mRank <= 0
+            ? null
+            : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value, campaignLevel.value)
+          price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkUnitEquippedFrame(unit, isEquipped, justUnlockedDelay.value)
         ]
       }
@@ -534,9 +538,65 @@ let function closeByBackBtn() {
   sendNewbieBqEvent("leaveUnitsListWndByBackBtn")
 }
 
+let gamercardLevelBlock = {
+  children = [
+    @(){
+      watch = [profileStateFlags, curCampaign]
+      rendObj = ROBJ_TEXT
+      text = loc($"gamercard/levelCamp/header/{curCampaign.value}")
+      flow = FLOW_HORIZONTAL
+      pos = [hdpx(70), -hdpx(30)]
+      behavior = Behaviors.Button
+      onElemState = @(sf) profileStateFlags(sf)
+      color = profileStateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
+    }.__update(fontSmall)
+    {
+      size = [0, 0]
+      children = doubleSideGradient.__merge(
+        {
+          padding = [hdpx(5), hdpx(50)]
+          pos = [hdpx(20) hdpx(45)]
+          children =
+          @(){
+            watch = playerLevelInfo
+            halign = ALIGN_LEFT
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            maxWidth = hdpx(600)
+            text = playerLevelInfo.value?.nextLevelExp == 0
+              ? loc("gamercard/levelCamp/maxLevel/campaign")
+              : loc("gamercard/levelCamp/desc")
+          }.__update(fontVeryTiny)
+        })
+    }
+    @() levelBlock({pos = [0, 0]})
+  ]
+}
+
+let mkLevelBlock = @(backCb) {
+  size = [ SIZE_TO_CONTENT, gamercardHeight ]
+  flow = FLOW_HORIZONTAL
+  hplace = ALIGN_LEFT
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = [
+    backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
+    gamercardLevelBlock
+  ]
+}
+
+let mkGamercardUnitWnd = @(backCb = null) {
+  size = [ saSize[0], gamercardHeight ]
+  hplace = ALIGN_CENTER
+  children = [
+    mkLevelBlock(backCb)
+    gamercardWithoutLevelBlock
+  ]
+}
+
 let gamercardPlace = {
   children = [
-    mkGamercard(closeByBackBtn)
+    mkGamercardUnitWnd(closeByBackBtn)
     unitInfoPanel({
       pos = unitInfoPanelDefPos
       behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
@@ -544,7 +604,7 @@ let gamercardPlace = {
       onClick = @() unitDetailsWnd({ name = hangarUnitName.value })
       clickableInfo = loc("msgbox/btn_more")
       hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-    })
+    }, mkUnitTitle )
   ]
 }
 
@@ -555,7 +615,7 @@ let function platoonsHeader() {
 
   return curCampaign.value != "tanks" ? { watch = [curCampaign] } : {
     watch = [curCampaign]
-    size = [hdpx(800), hdpx(80)]
+    size = [hdpx(500), hdpx(80)]
     hplace = ALIGN_CENTER
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER

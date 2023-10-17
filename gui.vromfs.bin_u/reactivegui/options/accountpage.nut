@@ -18,6 +18,7 @@ let { is_ios } = require("%sqstd/platform.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { openSuportWebsite } = require("%rGui/feedback/supportState.nut")
 
 let LINK_TO_GAIJIN_ACCOUNT_URL = "auto_local auto_login https://wtmobile.com/connect"
 let ACTIVATE_PROMO_CODE_URL = "auto_local auto_login https://store.gaijin.net/activate.php"
@@ -72,6 +73,7 @@ let myUserNameBtn = @() {
   watch = hasUnseenDecorators
   behavior = Behaviors.Button
   onClick = openDecoratorsScene
+  sound = { click  = "meta_profile_edit" }
   onElemState = @(s) pnStateFlags(s)
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -183,7 +185,7 @@ let buttons = @() {
     ])
     mkButtonRow([
       textButtonPrimary(loc("mainmenu/support"),
-        @() send("openUrl", { baseUrl = loc("url/support") }),
+        openSuportWebsite,
         buttonsWidthStyle)
       textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
     ])

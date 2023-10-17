@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { send } = require("eventbus")
 let { getLocalLanguage } = require("language")
 let { utf8ToUpper, validateEmail } = require("%sqstd/string.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -14,6 +15,7 @@ let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nu
 let { textInput } = require("%rGui/components/textInput.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let backButton = require("%rGui/components/backButton.nut")
+let { canUseZendesk } = require("%rGui/feedback/supportState.nut")
 let { hasLogFile } = require("logFileAttachment.nut")
 let { requestState, submitSupportRequest, onRequestResultSeen } = require("supportRequest.nut")
 
@@ -228,6 +230,10 @@ requestState.subscribe(function(v) {
 
 registerScene("supportWnd", supportWnd, onClose, isOpened)
 
+let openSupportTicketWnd = @() isOpened(true)
+let openSupportTicketUrl = @() send("openUrl", { baseUrl = loc("url/feedback/support") })
+let openSupportTicketWndOrUrl = @() canUseZendesk.value ? openSupportTicketWnd() : openSupportTicketUrl()
+
 return {
-  openSupportWnd = @() isOpened(true)
+  openSupportTicketWndOrUrl
 }

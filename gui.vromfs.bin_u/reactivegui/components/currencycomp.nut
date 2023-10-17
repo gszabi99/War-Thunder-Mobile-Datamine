@@ -14,6 +14,7 @@ let iconsCoef = {
   tank_extinguisher = 1.6
   spare = 1.8
 }
+let maxIconsCoef = iconsCoef.reduce(@(a, b) max(a, b))
 
 let getSizeIcon = @(currencyId, size) (size * (iconsCoef?[currencyId] ?? defCoef) + 0.5).tointeger()
 
@@ -178,6 +179,7 @@ let function mkExp(value, color, style = CS_GAMERCARD) {
 return freeze(currencyStyles.__merge({
   mkCurrencyImage
   currencyIconsColor
+  maxIconsCoef
 
   mkCurrencyComp
   mkDiscountPriceComp

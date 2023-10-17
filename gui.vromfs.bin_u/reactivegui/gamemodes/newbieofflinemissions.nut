@@ -208,8 +208,9 @@ register_command(function() {
     return
   }
   let presetsKeys = presets.keys()
-  let currentPresetIdx = presetsKeys.indexof(@(key) key == (dbgTankMissionsPresetId.value
-    ?? abTests.value?.tanksOfflineMissions)) ?? 0
+  let currentPresetIdx = presetsKeys
+    .indexof(dbgTankMissionsPresetId.value ?? abTests.value?.tanksOfflineMissions)
+    ?? 0
   let newPresetId = presetsKeys[(currentPresetIdx + 1) % presetsKeys.len()]
   dbgTankMissionsPresetId(newPresetId)
   dlog("new offline missions preset: ", presets?[dbgTankMissionsPresetId.value]) // warning disable: -forbidden-function

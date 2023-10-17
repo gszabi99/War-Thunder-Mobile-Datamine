@@ -26,8 +26,9 @@ let mkRewardStyle = @(boxSize) {
 }
 
 let REWARD_SIZE_SMALL = hdpxi(114)
+let REWARD_SIZE_MEDIUM = hdpxi(160)
 let REWARD_STYLE_SMALL = mkRewardStyle(REWARD_SIZE_SMALL)
-let REWARD_STYLE_MEDIUM = mkRewardStyle(hdpxi(160))
+let REWARD_STYLE_MEDIUM = mkRewardStyle(REWARD_SIZE_MEDIUM)
 
 // SHARED PARTS ///////////////////////////////////////////////////////////////
 
@@ -343,6 +344,7 @@ let mkRewardPlate = @(r, rStyle, ovr = {}) {
 return {
   REWARD_SIZE_SMALL
   REWARD_STYLE_SMALL
+  REWARD_SIZE_MEDIUM
   REWARD_STYLE_MEDIUM
 
   getRewardPlateSize

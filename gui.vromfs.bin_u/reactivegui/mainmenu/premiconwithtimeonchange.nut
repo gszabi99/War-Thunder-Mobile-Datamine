@@ -148,6 +148,7 @@ let function premIconWithTimeOnChange() {
         valign = ALIGN_CENTER
         behavior = Behaviors.Button
         onClick = @() openShopWnd(SC_PREMIUM)
+        sound = { click  = "meta_shop_buttons" }
         onElemState = @(sf) stateFlags(sf)
         flow = FLOW_HORIZONTAL
         gap = hdpx(10)

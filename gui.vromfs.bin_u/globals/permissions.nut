@@ -15,12 +15,10 @@ let defaults = {
   can_use_debug_console = DBGLEVEL > 0
   can_receive_dedic_logerr = DBGLEVEL > 0
   allow_players_online_info = false
-  can_use_internal_support_form = false
   allow_review_cue = false
   can_view_replays = DBGLEVEL > 0 || isOfflineMenu
   can_write_replays = DBGLEVEL > 0
   can_link_to_gaijin_account = DBGLEVEL > 0
-  has_additional_graphics_settings = DBGLEVEL > 0
   has_additional_graphics_content = DBGLEVEL > 0
 }
 

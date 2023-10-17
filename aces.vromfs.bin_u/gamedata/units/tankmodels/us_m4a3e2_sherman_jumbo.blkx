@@ -47,6 +47,30 @@
   "destroysTrees": true,
   "type": "typeHeavyTank",
   "minRelativeTankCameraThreshold": 1.32,
+  "steeringTable": {
+    "point": [
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.35
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        80.0,
+        0.9
+      ],
+      [
+        81.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1884,7 +1908,7 @@
       "fricSideRot": [
         5.0,
         0.0,
-        0.2,
+        0.6,
         0.3
       ]
     },

@@ -618,6 +618,11 @@
       "url": "http://public-configs.warthunder.com/"
     }
   },
+  "yunetwork": {
+    "statsd": {
+      "project": "wtm"
+    }
+  },
   "general": {
     "environment": "day",
     "weather": "clear"
@@ -768,6 +773,15 @@
     "addons": {
       "disableFastVersionCheck": true,
       "shouldSaveGameVersionToCache": true,
+      "startMetric": "addons_update_start",
+      "stopMetric": "addons_update_stop",
+      "flag": "--onlypacks"
+    },
+    "background_addons": {
+      "disableFastVersionCheck": true,
+      "shouldSaveGameVersionToCache": true,
+      "startMetric": "background_addons_update_start",
+      "stopMetric": "background_addons_update_stop",
       "flag": "--onlypacks"
     }
   },
@@ -1581,6 +1595,14 @@
           },
           "pollFences": {
             "entry": {
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "brokenShadersAfterAppSwitch": {
+            "entry": {
+              "gpu": "G76",
               "data": {
                 "affected": true
               }

@@ -81,6 +81,7 @@ let mkDropMenu = @(columnsList) {
   color = Color(32, 34, 38, 216)
   gap = separatorV
   flow = FLOW_HORIZONTAL
+  sound = { detach  = "menu_close" }
   children = columnsList.map(mkColumn)
 }
 

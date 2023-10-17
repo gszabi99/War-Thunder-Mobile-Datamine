@@ -2,19 +2,19 @@ from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
+let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { mkUnitLevelBlock, levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
-let { textButtonPrimary, textButtonPurchase, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
+let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { isUnitAttrOpened, attrUnitData, curCategory, curCategoryId, selAttrSpCost, leftUnitSp,
   isUnitMaxSkills, getSpCostText, resetAttrState, applyAttributes, availableAttributes,
   attrUnitLevelsToMax, attrUnitName, lastModifiedAttr
 } = require("%rGui/unitAttr/unitAttrState.nut")
 let { mkUnitAttrTabs, contentMargin } = require("%rGui/unitAttr/unitAttrWndTabs.nut")
-let { unitAttrPage, rowsPosPadL, rowsPosPadR, rowHeight } = require("%rGui/unitAttr/unitAttrWndPage.nut")
+let { unitAttrPage, rowsPosPadL, rowHeight } = require("%rGui/unitAttr/unitAttrWndPage.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let buyUnitLevelWnd = require("buyUnitLevelWnd.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
@@ -23,7 +23,7 @@ let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradie
 let { tooltipBg } = require("%rGui/tooltip.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 isUnitAttrOpened.subscribe(function(v) {
   resetAttrState()
@@ -145,53 +145,41 @@ let attrDetails = @() {
     : null
 }
 
-let function pageBlock() {
-  let unit = attrUnitData.value.unit
-
-  return {
-    watch = attrUnitData
-    rendObj = ROBJ_IMAGE
-    size = [ SIZE_TO_CONTENT, flex() ]
-    maxHeight = ph(100)
-    pos = [ saBorders[0], 0 ]
-    hplace = ALIGN_RIGHT
-    image = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss.avif")
-    color = Color(9, 15, 22, 96)
-    padding = [ hdpx(15), saBorders[0] ]
-    flow = FLOW_VERTICAL
-    children = [
-      mkPlatoonOrUnitTitle(unit, { padding = [ 0, 0, 0, rowsPosPadL + levelHolderSize ] })
-      {
-        size = [ flex(), hdpx(25) ]
-        padding = [ 0, rowsPosPadR, 0, rowsPosPadL ]
-        valign = ALIGN_CENTER
-        children = mkUnitLevelBlock(unit)
-      }
-      @() !isUnitMaxSkills.value
-        ? {
-          watch = isUnitMaxSkills
-          padding = [ 0, 0, 0, rowsPosPadL + levelHolderSize ]
-          flow = FLOW_HORIZONTAL
-          children = [
-            txt({ text = "".concat(loc("unit/upgradePoints"), loc("ui/colon")) })
-            @() txt({
-              watch = leftUnitSp
-              text = getSpCostText(leftUnitSp.value)
-              color = leftUnitSp.value > 0 ? textColor : badTextColor
-            })
-          ]
-        }
-        : { watch = isUnitMaxSkills }
-      { size = [ flex(), hdpx(60) ] }
-      {
-        size = [ pageWidth, flex() ]
+let pageBlock = {
+  rendObj = ROBJ_IMAGE
+  size = [ SIZE_TO_CONTENT, flex() ]
+  maxHeight = ph(100)
+  pos = [ saBorders[0], 0 ]
+  hplace = ALIGN_RIGHT
+  image = Picture("ui/gameuiskin#debriefing_bg_grad@@ss.avif:0:P")
+  color = Color(9, 15, 22, 96)
+  padding = [ hdpx(15), saBorders[0] ]
+  flow = FLOW_VERTICAL
+  children = [
+    @() !isUnitMaxSkills.value
+      ? {
+        watch = isUnitMaxSkills
+        padding = [ 0, 0, 0, rowsPosPadL + levelHolderSize ]
+        flow = FLOW_HORIZONTAL
         children = [
-          mkVerticalPannableArea(unitAttrPage)
-          attrDetails
+          txt({ text = "".concat(loc("unit/upgradePoints"), loc("ui/colon")) })
+          @() txt({
+            watch = leftUnitSp
+            text = getSpCostText(leftUnitSp.value)
+            color = leftUnitSp.value > 0 ? textColor : badTextColor
+          })
         ]
       }
-    ]
-  }
+      : { watch = isUnitMaxSkills }
+    { size = [ flex(), hdpx(60) ] }
+    {
+      size = [ pageWidth, flex() ]
+      children = [
+        mkVerticalPannableArea(unitAttrPage)
+        attrDetails
+      ]
+    }
+  ]
 }
 
 let applyAction = function() {
@@ -200,7 +188,7 @@ let applyAction = function() {
 }
 
 let actionButtons = @() {
-  watch = [selAttrSpCost, attrUnitLevelsToMax]
+  watch = [selAttrSpCost, attrUnitLevelsToMax, attrUnitName, attrUnitData]
   size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL
   gap = buttonsHGap
@@ -208,9 +196,9 @@ let actionButtons = @() {
     textButtonPrimary(utf8ToUpper(loc("terms_wnd/more_detailed")), @() null,
       { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags })
     attrUnitLevelsToMax.value <= 0 ? null
-      : textButtonPurchase(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
-          @() buyUnitLevelWnd(attrUnitName.value),
-          { hotkeys = ["^J:Y"] })
+      : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
+        (attrUnitData.value?.unit.level ?? 0) + 1,
+        @() buyUnitLevelWnd(attrUnitName.value), { hotkeys = ["^J:Y"] })
     selAttrSpCost.value <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, { hotkeys = ["^J:X"] })
   ]
@@ -252,7 +240,10 @@ let unitAttrWnd = {
   behavior = Behaviors.HangarCameraControl
   flow = FLOW_VERTICAL
   children = [
-    mkGamercard(onClose)
+    @(){
+      watch = curCampaign
+      children = mkGamercardUnitCampaign(onClose, $"gamercard/levelUnitAttr/desc/{curCampaign.value}")
+    }
     {
       size = flex()
       flow = FLOW_HORIZONTAL

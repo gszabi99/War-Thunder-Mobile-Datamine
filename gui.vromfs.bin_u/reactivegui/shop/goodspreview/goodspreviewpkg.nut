@@ -10,7 +10,6 @@ let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { mkCurrencyComp, mkPriceExtText, CS_BIG } = require("%rGui/components/currencyComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -20,7 +19,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let backButton = require("%rGui/components/backButton.nut")
-let { gradCircularSqCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
+let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 
 let activeItemId = Watched(null)
 
@@ -425,22 +424,24 @@ let mkInfoText = @(text, appearDelay) {
   animations = opacityAnims(1.0, appearDelay)
 }.__update(fontTiny)
 
-let mkActiveItemHint = @(ovr = {}) @() activeItemId.value == null ? { watch = activeItemId }
-  : doubleSideGradient.__merge(
-      {
-        watch = activeItemId
-        children = {
-          size = [hdpx(500), SIZE_TO_CONTENT]
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          text = "\n".concat(
-            colorize(0xFFFFFFFF, loc($"item/{activeItemId.value}")),
-            loc($"item/{activeItemId.value}/desc")
-          )
-          color = 0xFFA0A0A0
-        }.__update(fontSmall)
-      },
-      ovr)
+let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
+  : {
+      watch = activeItemId
+      rendObj = ROBJ_IMAGE
+      image = gradTranspDoubleSideX
+      color = 0xFF000000
+      padding = [hdpx(10), saBorders[0]]
+      children = {
+        size = [hdpx(500), SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        text = "\n".concat(
+          colorize(0xFFFFFFFF, loc($"item/{activeItemId.value}")),
+          loc($"item/{activeItemId.value}/desc")
+        )
+        color = 0xFFD0D0D0
+      }.__update(fontTiny)
+    }
 
 return {
   activeItemId
@@ -450,7 +451,7 @@ return {
   mkPriceWithTimeBlock
   mkPriceWithTimeBlockNoOldPrice
   mkPreviewItems
-  mkActiveItemHint
+  activeItemHint
   mkInfoText
   opacityAnims
   colorAnims

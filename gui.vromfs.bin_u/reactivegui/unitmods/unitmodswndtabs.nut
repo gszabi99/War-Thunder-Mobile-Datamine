@@ -18,9 +18,9 @@ let iconSize = hdpxi(60)
 
 let mkCatIcon = @(cat) {
   size = [iconSize, iconSize]
-  pos = [-contentMargin[1], hdpx(5)]
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_RIGHT
+  margin = hdpx(10)
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_LEFT
   rendObj = ROBJ_IMAGE
   image = Picture(getCatIcon(cat))
   keepAspect = KEEP_ASPECT_FILL
@@ -84,10 +84,9 @@ let function tabData(tab, ovr = {}) {
 
         @() {
           watch = reqLevel
-          size = flex()
-          padding = hdpx(40)
-          valign = ALIGN_CENTER
-          halign = ALIGN_CENTER
+          hplace  =  ALIGN_RIGHT
+          vplace = ALIGN_BOTTOM
+          padding = hdpx(10)
           children = mkLevelLock(isLocked, reqLevel.value)
         }
 

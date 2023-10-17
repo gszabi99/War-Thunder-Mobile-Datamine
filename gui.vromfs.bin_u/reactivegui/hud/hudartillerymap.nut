@@ -46,7 +46,7 @@ let function updateData() {
   isArtilleryEnabled(available)
   isArtilleryReady(available && cooldownEndTime <= ::get_mission_time())
   let ap = getMapRelativePlayerPos()
-  if (avatarPos.value[0] != ap[0] || avatarPos.value[1] != ap[1])
+  if (ap.len() >= 2 && (avatarPos.value[0] != ap[0] || avatarPos.value[1] != ap[1]))
     avatarPos(ap)
   artilleryRange(getArtilleryRange())
 }

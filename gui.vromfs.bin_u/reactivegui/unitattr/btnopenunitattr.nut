@@ -5,10 +5,10 @@ let mkAvailAttrMark = require("mkAvailAttrMark.nut")
 let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
 
 let status = keepref(Computed(function() {
-  local status = availableAttributes.value.status
-  if (status == -1 && unseenModsByCategory.value.len() > 0)
-    status = 0
-  return status
+  local res = availableAttributes.value.status
+  if (res == -1 && unseenModsByCategory.value.len() > 0)
+    res = 0
+  return res
 }))
 
 let statusMark = @(sf) @() {

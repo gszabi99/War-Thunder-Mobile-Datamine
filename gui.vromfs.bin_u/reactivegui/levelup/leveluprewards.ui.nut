@@ -8,7 +8,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyImage, maxIconsCoef } = require("%rGui/components/currencyComp.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addCompToCompAnim } = require("%darg/helpers/compToCompAnim.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
@@ -89,12 +89,16 @@ let function mkCurrencyReward(id, amount, countDelay) {
     gap = hdpx(20)
     halign = ALIGN_CENTER
     children = [
-      mkCurrencyImage(id, iconSize, {
-        key = $"received_{id}"
-        animations = [{
-          prop = AnimProp.opacity, duration = 10000, trigger = hideCurrencyTrigger, from = 0, to = 0
-        }]
-      })
+      {
+        size = [iconSize * maxIconsCoef, iconSize * maxIconsCoef]
+        halign = ALIGN_CENTER
+        children = mkCurrencyImage(id, iconSize, {
+          key = $"received_{id}"
+          animations = [{
+            prop = AnimProp.opacity, duration = 10000, trigger = hideCurrencyTrigger, from = 0, to = 0
+          }]
+        })
+      }
       {
         size = calc_str_box({ text = decimalFormat(amount) }.__update(countTextStyle))
         rendObj = ROBJ_TEXT
@@ -140,7 +144,7 @@ let function rewardsList() {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = hdpx(150)
+    gap = hdpx(100)
     children
     animations = appearAnim(rewardAppearDelay, rewardAppearTime)
   }

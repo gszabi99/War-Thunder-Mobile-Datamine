@@ -74,14 +74,15 @@ subscribe("acceptAllLegals", function(_) {
 subscribe(VERSIONS_RESP_ID, function(response) {
   let { status = -1, http_code = -1, body = null } = response
   let hasError = status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code
-  if (hasError) {
+  if (hasError || body == null) {
     if (requiredVersionsRaw.value == null)
       lastVersionsError({ status, http_code })
     return
   }
   local result = null
+  let bodyStr = body.as_string()
   try {
-    result = body != null ? parse_json(body.as_string()) : null
+    result = body != null ? parse_json(bodyStr) : null
   }
   catch(e) {}
   if (result?.status == "OK") {

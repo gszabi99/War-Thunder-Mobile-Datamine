@@ -7,6 +7,7 @@ let { is_ios } = require("%sqstd/platform.nut")
 let { register_command  = @(_, __) null } = require_optional("console") //only in debug mode
 let { shell_execute } = require("dagor.shell")
 let { dgs_get_settings, exit } = require("dagor.system")
+let { send_counter } = require("statsd")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { needUpdateMsg } = require("updaterState.nut")
 
@@ -116,6 +117,8 @@ let function mkButton(text, onClick) {
 }
 
 let function openUpdateUrl() {
+  send_counter("sq.app.stage", 1, { stage = "open_update_from_store_url" })
+
   if (isDownloadedFromGooglePlay())
     shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })
   else {

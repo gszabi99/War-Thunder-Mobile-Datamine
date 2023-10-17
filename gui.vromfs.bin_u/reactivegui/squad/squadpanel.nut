@@ -35,16 +35,16 @@ let spinner = mkSpinner(evenPx(50))
 let statusSpinner = mkSpinner(statusSize)
 
 let squadInviteButton = framedImageBtn("ui/gameuiskin#btn_inc.svg",
-  @() openContacts(friendsUids.value.len() > 0 ? FRIENDS_TAB : SEARCH_TAB))
+  @() openContacts(friendsUids.value.len() > 0 ? FRIENDS_TAB : SEARCH_TAB), { sound = { click  = "meta_squad_button" }})
 
-let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts, {},
+let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts, { sound = { click  = "meta_squad_button" }},
   @() {
     watch = requestsToMeUids
     pos = [0.5 * framedBtnSize[0], -0.5 * framedBtnSize[1]]
     children = requestsToMeUids.value.len() > 0 ? priorityUnseenMark : null
   })
 
-let avatar = @(info, onlineStatus, isInviteeV) function() {
+let mkAvatar = @(info, onlineStatus, isInviteeV) function() {
   let { avatar = null } = info.value?.decorators
   return {
     watch = [info, onlineStatus]
@@ -122,7 +122,7 @@ let function mkMember(uid) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
-      avatar(info, onlineStatus, isInvitee.value)
+      mkAvatar(info, onlineStatus, isInvitee.value)
       memberStatus(isLeader, state, onlineStatus)
       mkRank(rank)
       isInvitee.value ? spinner : null

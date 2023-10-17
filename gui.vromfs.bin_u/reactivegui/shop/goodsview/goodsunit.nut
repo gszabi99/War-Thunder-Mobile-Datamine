@@ -233,7 +233,7 @@ let function mkOfferUnit(goods, onClick, state, needPrice) {
   let unit = getUnit(goods)
   let { endTime = 0, discountInPercent = 0 } = goods
   let p = getUnitPresentation(unit)
-  let bgImg = unit.unitType == "tank"
+  let bgImg = unit?.unitType == "tank"
     ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   return mkOfferWrap(onClick,

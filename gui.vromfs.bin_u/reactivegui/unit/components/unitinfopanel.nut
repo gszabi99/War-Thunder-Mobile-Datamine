@@ -14,7 +14,9 @@ let { itemsCfgOrdered } = require("%appGlobals/itemsState.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -307,44 +309,60 @@ let unitConsumablesBlock = @(unit, itemsList) {
       mkConsumableRow(itemCfg.name, (itemCfg?.itemsPerUse ?? 0) > 0 ? itemCfg.itemsPerUse : unit.itemsPerUse))
 }
 
+let function unitMRankBlock(mRank) {
+  if (!mRank || mRank <= 0)
+    return null
+
+  return {
+    size = [statsWidth, SIZE_TO_CONTENT]
+    margin = [hdpx(15), 0, 0, 0]
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    children = [
+      {
+        rendObj = ROBJ_TEXT
+        text = loc("attrib_section/mRank")
+        size = [flex(), SIZE_TO_CONTENT]
+      }.__update(fontTiny)
+      mkGradRank(mRank)
+    ]
+  }
+}
+
 let unitRewardsBlock = @(unit) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  margin = [hdpx(30), 0, 0, 0]
   size = [ statsWidth, hdpx(40) ]
   children = [
     {
-        rendObj = ROBJ_TEXT
-        text = loc("attrib_section/battleRewards")
-        size = [ flex(), SIZE_TO_CONTENT ]
+      rendObj = ROBJ_TEXT
+      text = loc("attrib_section/battleRewards")
+      size = [ flex(), SIZE_TO_CONTENT ]
     }.__update(fontTiny)
     mkUnitBonuses(unit, {}, mkBonusTiny)
   ]
 }
 
-let function unitHeaderBlock(unit, unitTitleCtor) {
-  let isMarkable = unit?.isPremium || unit?.isUpgraded
-
-  return {
-    flow = FLOW_VERTICAL
-    children = [
-      unitTitleCtor(unit, {
-        size = [ statsWidth, SIZE_TO_CONTENT ]
-        padding = [ 0, 0, 0, isMarkable ? 0 : levelHolderSize ]
-      })
-      {
-        size = [ statsWidth, isMarkable ? hdpx(20) : hdpx(25) ]
-        valign = ALIGN_CENTER
-        children = mkUnitLevelBlock(unit)
-      }
-      unitRewardsBlock(unit)
-    ]
-  }
+let unitHeaderBlock = @(unit, unitTitleCtor) @(){
+  watch = myUnits
+  hplace = ALIGN_RIGHT
+  minWidth = statsWidth
+  padding = hdpx(10)
+  children = [
+    {
+      margin =[hdpx(5), 0, 0, levelHolderSize]
+      pos = [0, -hdpx(20)]
+      children = unitTitleCtor(unit)
+    }
+    unit.name in myUnits.value
+      ? mkUnitLevelBlock(unit)
+      : null
+  ]
 }
 
 local lastUnitStats = null
 
-let unitInfoPanel = @(override = {}, unit = hangarUnit) function() {
+let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit) function() {
   if (unit.value == null)
     return { watch = unit }
 
@@ -355,11 +373,18 @@ let unitInfoPanel = @(override = {}, unit = hangarUnit) function() {
 
   return panelBg.__merge({
     watch = [unit, unitMods, attrPresets]
-    children = [
-      unitHeaderBlock(unit.value, mkPlatoonOrUnitTitle)
-      unitStatsBlock(unitStats, prevStats)
-      unitArmorBlock(unit.value, false)
-    ]
+    children = {
+      minWidth = statsWidth
+      flow = FLOW_VERTICAL
+      halign = ALIGN_RIGHT
+      children = [
+        unitHeaderBlock(unit.value, headerCtor)
+        unitMRankBlock(unit.value?.mRank)
+        unitRewardsBlock(unit.value)
+        unitStatsBlock(unitStats, prevStats)
+        unitArmorBlock(unit.value, false)
+      ]
+    }
   }, override)
 }
 
@@ -376,7 +401,8 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
     watch = [ unit, itemsCfgOrdered, unitMods, attrPresets ]
     children = unit.value == null ? null
       : [
-          unitHeaderBlock(unit.value, mkUnitTitle)
+          unitMRankBlock(unit.value?.mRank)
+          unitRewardsBlock(unit.value)
           unitStatsBlock(unitStats, prevStats)
           unitArmorBlock(unit.value, false)
           unitConsumablesBlock(unit.value, itemsCfgOrdered.value)

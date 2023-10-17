@@ -16,6 +16,7 @@ let { contentWidth } = require("%rGui/options/optionsStyle.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getCurrentLanguage } = require("dagor.localize")
+let { openSuportWebsite } = require("%rGui/feedback/supportState.nut")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
 let loginName = mkWatched(persist, "loginName", "")
@@ -127,9 +128,8 @@ let function transparentButton(text, icon, onClick, override = {}) {
 let languageButton = transparentButton(languageTitle, "ui/gameuiskin#menu_lang.svg",
   @() isShowLanguagesList.update(true))
 
-let supportUrl = loc("url/support")
 let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#menu_support.svg",
-  @() eventbus.send("openUrl", { baseUrl = supportUrl }),
+  openSuportWebsite,
   {
     textOverride = {
       children = {

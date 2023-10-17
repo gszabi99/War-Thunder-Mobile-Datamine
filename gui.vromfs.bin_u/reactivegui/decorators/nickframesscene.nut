@@ -101,6 +101,7 @@ let function tagBtn(item) {
     rendObj = ROBJ_SOLID
     color = 0xAA000000
     behavior = Behaviors.Button
+    sound = { click  = "meta_profile_elements" }
     onElemState = @(sf) stateFlags(sf)
     size = squareSize
     function onClick() {

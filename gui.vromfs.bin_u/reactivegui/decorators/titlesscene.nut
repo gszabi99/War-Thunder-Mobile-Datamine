@@ -78,6 +78,7 @@ let function titleRow(name, locName, rowIdx) {
     size = [flex(), rowHeight]
     color = bgColor(rowIdx)
     behavior = Behaviors.Button
+    sound = { click  = "meta_profile_elements" }
     valign = ALIGN_CENTER
     onElemState = @(sf) stateFlags(sf)
     function onClick() {

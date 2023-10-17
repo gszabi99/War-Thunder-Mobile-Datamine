@@ -3,10 +3,10 @@ let logUpdate = log_with_prefix("[UPDATE] appStore: ")
 let { subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { checkAppStoreUpdate } = require("ios.platform")
+let { checkAppStoreUpdate, checkAppStoreUpdateWithVersion = null } = require("ios.platform")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-
+let { get_base_game_version_str } = require("app")
 
 const REQUEST_PERIOD_MSEC = 1800000
 let needSuggestToUpdate = hardPersistWatched("appStore.needSuggestToUpdate")
@@ -22,7 +22,10 @@ let function requestNeedUpdate() {
     return
   needRequest(false)
   logUpdate("request")
-  checkAppStoreUpdate()
+  if (checkAppStoreUpdateWithVersion != null)
+    checkAppStoreUpdateWithVersion(get_base_game_version_str())
+  else
+    checkAppStoreUpdate()
 }
 
 subscribe("ios.platform.onUpdateCheck", function(response) {

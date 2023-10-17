@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { modsInProgress, buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkGamercard, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { mkGamercardUnitCampaign, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { isUnitModsOpen, closeUnitModsWnd, modsCategories, curCategoryId, curMod, curModId,
   modsSorted, unit, curModIndex, enableCurUnitMod, disableCurUnitMod,
   isCurModPurchased, isCurModEnabled, isCurModLocked, setCurUnitSeenModsCurrent,
@@ -11,8 +11,8 @@ let { isUnitModsOpen, closeUnitModsWnd, modsCategories, curCategoryId, curMod, c
 let { mkModsCategories, tabW, tabH } = require("unitModsWndTabs.nut")
 let { mkMods, modW, modTotalH, modsGap } = require("unitModsCarousel.nut")
 let { textButtonPrimary, textButtonPurchase } = require("%rGui/components/textButton.nut")
+let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { tabsGap, bgColor, tabExtraWidth } = require("%rGui/components/tabs.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -20,6 +20,9 @@ let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%r
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
+let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 let blocksGap = hdpx(60)
 let iconSize = hdpxi(140)
@@ -107,9 +110,9 @@ let mkModIcon = @() {
 }
 
 let mkModsInfo = @() {
-  watch = unit
+  watch = [unit, curMod]
   rendObj = ROBJ_IMAGE
-  size = [modW * 2, SIZE_TO_CONTENT]
+  size = curMod.value ? [modW * 2, SIZE_TO_CONTENT] : [ 0, 0]
   pos = [saBorders[0], 0]
   image = Picture("ui/gameuiskin#debriefing_bg_grad@@ss.avif:O:P")
   color = 0x90090F16
@@ -119,7 +122,6 @@ let mkModsInfo = @() {
   gap = hdpx(30)
   children = unit.value == null ? null
     : [
-        mkPlatoonOrUnitTitle(unit.value)
         @() {
           watch = [curMod, curModId]
           size = [flex(), SIZE_TO_CONTENT]
@@ -152,7 +154,6 @@ let mkModsInfo = @() {
                 unit.value.level >= (curMod.value?.reqLevel ?? 0) ? null
                   : {
                       size = [flex(), SIZE_TO_CONTENT]
-                      padding = [hdpx(20), 0, 0, 0]
                       rendObj = ROBJ_TEXT
                       text = loc("mod/reqLevel", { level = curMod.value?.reqLevel })
                     }.__update(fontSmall)
@@ -193,7 +194,10 @@ let unitModsWnd = {
   behavior = Behaviors.HangarCameraControl
   flow = FLOW_VERTICAL
   children = [
-    mkGamercard(onClose)
+    @(){
+      watch = curCampaign
+      children = mkGamercardUnitCampaign(onClose, $"gamercard/levelUnitMod/desc/{curCampaign.value}")
+    }
     {
       size = [saSize[0] + saBorders[0], flex()]
       flow = FLOW_HORIZONTAL
@@ -222,11 +226,15 @@ let unitModsWnd = {
             mkModsInfo
             { size = flex() }
             @() {
-              watch = [isCurModPurchased, isCurModEnabled, isCurModLocked, curMod, modsInProgress]
+              watch = [isCurModPurchased, isCurModEnabled,
+                isCurModLocked, curMod, modsInProgress]
               size = [flex(), SIZE_TO_CONTENT]
-              margin = [hdpx(40), saBorders[0], hdpx(40), 0]
+              margin = [hdpx(25), saBorders[0], hdpx(25), 0]
               halign = ALIGN_RIGHT
-              children = isCurModLocked.value || !curMod.value ? null
+              children = !curMod.value ? null
+                : isCurModLocked.value
+                  ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curMod.value?.reqLevel,
+                    @() buyUnitLevelWnd(unit.value.name), { hotkeys = ["^J:Y"] })
                 : modsInProgress.value != null ? spinner
                 : !isCurModPurchased.value ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchase)
                 : !isCurModEnabled.value ? textButtonPrimary(loc("mod/enable"), enableCurUnitMod)

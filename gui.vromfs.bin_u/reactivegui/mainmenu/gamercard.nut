@@ -8,7 +8,7 @@ let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/sho
 let backButton = require("%rGui/components/backButton.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
-let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor,
+let { mkLevelBg, mkProgressLevelBg, playerExpColor,
   levelProgressBarWidth, levelProgressBorderWidth, rotateCompensate
 } = require("%rGui/components/levelBlockPkg.nut")
 let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
@@ -22,6 +22,11 @@ let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
+let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
+let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 
 let avatarSize       = hdpx(96)
 let profileGap       = hdpx(45)
@@ -69,7 +74,7 @@ let name =  @() textParams.__merge({
 
 let levelUpReadyAnim = { prop = AnimProp.opacity, duration = 3.0, easing = CosineFull, play = true, loop = true }
 
-let function levelBlock() {
+let function levelBlock(ovr = {}) {
   let { exp, nextLevelExp, level, isReadyForLevelUp } = playerLevelInfo.value
   let isMaxLevel = nextLevelExp == 0
   let levelNextText = isReadyForLevelUp ? (level + 1).tostring() : ""
@@ -81,8 +86,7 @@ let function levelBlock() {
     valign = ALIGN_CENTER
     pos = [levelHolderPlace, levelHolderPlace]
     children = [
-        !isMaxLevel
-        ? mkProgressLevelBg({
+        mkProgressLevelBg({
             key = playerLevelInfo.value
             pos = [levelHolderSize * rotateCompensate, 0]
             opacity = 1.0,
@@ -90,13 +94,13 @@ let function levelBlock() {
               ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
               : null
             children = {
-              size = [((levelProgressBarWidth - levelProgressBorderWidth * 2) * clamp(exp, 0, nextLevelExp) / nextLevelExp).tointeger(),
-                flex()]
+              size = isMaxLevel
+                ? flex()
+                : [((levelProgressBarWidth - levelProgressBorderWidth * 2) * clamp(exp, 0, nextLevelExp) / nextLevelExp).tointeger(),flex()]
               rendObj = ROBJ_SOLID
               color = playerExpColor
             }
           })
-        : null
       @() mkLevelBg({
         ovr = {
           watch = levelStateFlags
@@ -113,7 +117,7 @@ let function levelBlock() {
       @() textParams.__merge({
         watch = levelStateFlags
         key = playerLevelInfo.value
-        text = isMaxLevel ? maxLevelStarChar : level
+        text = level
         pos = [0, isMaxLevel ? -hdpx(2) : 0]
         animations = isReadyForLevelUp
           ? [ levelUpReadyAnim.__merge({ from = 1.0, to = 0.0 }) ]
@@ -139,7 +143,7 @@ let function levelBlock() {
           }
         : null
     ]
-  }
+  }.__update(ovr)
 }
 
 
@@ -168,6 +172,7 @@ let gamercardProfile = {
       behavior = Behaviors.Button
       onElemState = @(sf) profileStateFlags(sf)
       onClick = @() accountOptionsScene()
+      sound = { click  = "meta_profile_button" }
       children = [
         avatar
         {
@@ -184,6 +189,65 @@ let gamercardProfile = {
   ]
 }
 
+let function platoonOrUnitTitle(unit) {
+  let { isUpgraded = false, isPremium = false } = unit
+  let isElite = isUpgraded || isPremium
+  let text = getPlatoonOrUnitName(unit, loc)
+  return {
+    minWidth = hdpx(500)
+    children = [
+      {
+        margin = [0, 0, 0, evenPx(84)]
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        pos = [0, -hdpx(20)]
+        gap = hdpx(20)
+        children = [
+          !isElite ? null : {
+            size = [hdpx(90), hdpx(40)]
+            rendObj = ROBJ_IMAGE
+            keepAspect = KEEP_ASPECT_FIT
+            image = Picture("ui/gameuiskin#icon_premium.svg")
+          }
+          {
+            rendObj = ROBJ_TEXT
+            color = isElite ? premiumTextColor : textColor
+            fontFx = FFT_GLOW
+            fontFxColor = 0xFF000000
+            fontFxFactor = hdpx(64)
+            text
+          }.__update(fontSmall)
+        ]
+      }
+      mkUnitLevelBlock(unit)
+    ]
+  }
+}
+
+let gamercardUnitLevelLine = @(unit, keyHintText){
+  children = [
+    platoonOrUnitTitle(unit)
+    {
+      size = [0, 0]
+      children = doubleSideGradient.__merge(
+        {
+          padding = [hdpx(5), hdpx(50)]
+          pos = [hdpx(30) hdpx(55)]
+          children = @(){
+            watch = curCampaign
+            halign = ALIGN_LEFT
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            maxWidth = hdpx(600)
+            text = (unit?.level ?? -1) == unit?.levels.len() || unit?.isUpgraded || unit?.isPremium
+              ? loc($"gamercard/levelCamp/maxLevel/{curCampaign.value}")
+              : loc(keyHintText)
+          }.__update(fontVeryTiny)
+        })
+    }
+  ]
+}
+
 let mkLeftBlock = @(backCb) {
   size = [ SIZE_TO_CONTENT, gamercardHeight ]
   flow = FLOW_HORIZONTAL
@@ -195,9 +259,22 @@ let mkLeftBlock = @(backCb) {
   ]
 }
 
+let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = null) @() {
+  watch = hangarUnit
+  size = [ SIZE_TO_CONTENT, gamercardHeight ]
+  flow = FLOW_HORIZONTAL
+  hplace = ALIGN_LEFT
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = [
+    backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
+    gamercardUnitLevelLine(unit ?? hangarUnit.value, keyHintText)
+  ]
+}
+
 let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
 
-let function mkImageBtn(image, onClick, children = null) {
+let function mkImageBtn(image, onClick, children = null, ovr = {}) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -210,7 +287,7 @@ let function mkImageBtn(image, onClick, children = null) {
     image = Picture($"{image}:{hdpxi(65)}:{hdpxi(60)}:P")
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     children
-  }
+  }.__update(ovr)
 }
 
 let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", openBuyCurrencyWnd[GOLD],
@@ -219,7 +296,8 @@ let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", openBuyCurrencyWnd[GOLD]
     pos = [hdpx(5), -hdpx(5)]
     hplace = ALIGN_RIGHT
     children = needShopUnseenMark.value ? priorityUnseenMark : null
-  })
+  },
+  { sound = { click  = "meta_shop_buttons" } } )
 
 let rightBlock = @(){
   watch = isShopOpened
@@ -260,6 +338,35 @@ let gamercardBalanceNotButtons = @() {
     )
 }
 
+let gamercardWithoutLevelBlock = {
+  size = [ saSize[0], gamercardHeight ]
+  hplace = ALIGN_CENTER
+  children =
+    @(){
+      watch = isShopOpened
+      size = [ SIZE_TO_CONTENT, avatarSize ]
+      flow = FLOW_HORIZONTAL
+      hplace = ALIGN_RIGHT
+      valign = ALIGN_CENTER
+      gap = gamercardGap
+      children = [
+        !isShopOpened.value ? shopBtn : null
+        premIconWithTimeOnChange
+        mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
+        mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
+      ]
+    }
+}
+
+let mkGamercardUnitCampaign = @(backCb, keyHintText){
+  size = [ saSize[0], gamercardHeight ]
+  hplace = ALIGN_CENTER
+  children = [
+    mkLeftBlockUnitCampaign(backCb, keyHintText)
+    gamercardWithoutLevelBlock
+  ]
+}
+
 let gamercardItemsBalanceBtns = @(){
   watch = itemsOrder
   flow = FLOW_HORIZONTAL
@@ -280,8 +387,12 @@ let mkCurrenciesBtns = @(currencies, ovr = {}) {
 let gamercardBalanceBtns = mkCurrenciesBtns([WP, GOLD])
 
 return {
+  levelBlock
   mkLeftBlock
+  mkLeftBlockUnitCampaign
+  gamercardWithoutLevelBlock
   mkGamercard
+  mkGamercardUnitCampaign
   gamercardItemsBalanceBtns
   gamercardHeight
   gamercardBalanceNotButtons

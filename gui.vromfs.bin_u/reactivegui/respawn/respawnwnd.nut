@@ -20,7 +20,8 @@ let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
 let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, mkUnitPrice,
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
+  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine,
+  mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
@@ -30,6 +31,8 @@ let respawnMap = require("respawnMap.ui.nut")
 let respawnBullets = require("respawnBullets.nut")
 let { bg, headerText, headerHeight, header, gap, headerMarquee } = require("respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
+let { SPARE } = require("%appGlobals/itemsState.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullHeight
 let mapMaxSize = hdpx(650)
@@ -68,7 +71,7 @@ let sparePrice = {
   children = mkUnitPrice({
     fullPrice = 1,
     price = 1,
-    currencyId = "spare"
+    currencyId = SPARE
   })
 }
 
@@ -94,7 +97,13 @@ let function mkSlotPlate(slot, baseUnit) {
           canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
           mkUnitImage(unit).__update(imgOvr)
           mkUnitTexts(unit, loc(p.locId))
-          canSpawn ? null : mkUnitSlotLockedLine(slot)
+          canSpawn
+            ? mkGradRank(unit.mRank, {
+              hplace = ALIGN_RIGHT
+              vplace = ALIGN_BOTTOM
+              padding = hdpx(10)
+            })
+            : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null
         ]
       }

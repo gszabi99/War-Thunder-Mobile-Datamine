@@ -2446,6 +2446,7 @@
   },
   "damage_log": {
     "nextStatsSyncTime": 0.0,
+    "maxMrank": 0,
     "damageLog:array": {},
     "captureLog:array": {},
     "damageLogPlayers:object": {},

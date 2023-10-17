@@ -7551,19 +7551,17 @@
     },
     "bullets": {
       "40mm_QF_2pdr_Churchill_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap2_he0"
+        "40mm_uk_2pdr_APCBC": {
+          "icon": "hud_ammo_ap4_he0"
         },
         "40mm_uk_2pdr_APHE": {
           "icon": "hud_ammo_ap1_he1"
         },
-        "40mm_uk_2pdr_APHV": {
-          "icon": "hud_ammo_ap3_he0",
-          "reqLevel": 8
+        "default": {
+          "icon": "hud_ammo_ap2_he0"
         },
-        "40mm_uk_2pdr_APCBC": {
-          "icon": "hud_ammo_ap4_he0",
-          "reqLevel": 11
+        "40mm_uk_2pdr_APHV": {
+          "icon": "hud_ammo_ap3_he0"
         }
       },
       "76mm_3inch_howitzer_MkI_user_cannon": {
@@ -7633,12 +7631,10 @@
           "icon": "hud_ammo_ap1_he1"
         },
         "75mm_usa_APCR": {
-          "icon": "hud_ammo_apcr",
-          "reqLevel": 3
+          "icon": "hud_ammo_apcr"
         },
         "75mm_usa_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 6,
           "isHE": true
         },
         "75mm_us_M89_Smoke": {
@@ -9347,11 +9343,11 @@
         },
         "85mm_ussr_APHE": {
           "icon": "hud_ammo_ap1_he2",
-          "reqLevel": 3
+          "reqLevel": 13
         },
         "85mm_ussr_APCR": {
           "icon": "hud_ammo_apcr",
-          "reqLevel": 6
+          "reqLevel": 16
         }
       }
     },
@@ -9473,7 +9469,7 @@
         },
         "122mm_ussr_APHE": {
           "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 13
+          "reqLevel": 3
         }
       }
     },
@@ -11836,15 +11832,15 @@
     },
     "bullets": {
       "152mm_M10T_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap2_he2"
-        },
         "152mm_ussr_APCBC": {
           "icon": "hud_ammo_ap1_he1"
         },
         "152mm_ussr_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "default": {
+          "icon": "hud_ammo_ap2_he2"
         }
       }
     },

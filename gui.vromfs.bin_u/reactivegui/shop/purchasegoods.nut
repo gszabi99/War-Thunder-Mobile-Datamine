@@ -10,6 +10,8 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
+let { playSound } = require("sound_wt")
+let { GOLD } = require("%appGlobals/currenciesState.nut")
 
 let function getCantPurchaseReason(goods) {
   let hasUnits = goods.units.filter(@(unitId) myUnits.value?[unitId] != null)
@@ -81,6 +83,7 @@ let function purchaseGoods(goodsId) {
     { price = finalPrice, currencyId },
     purchaseFunc,
     mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}"))
+  playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
 }
 
 return purchaseGoods

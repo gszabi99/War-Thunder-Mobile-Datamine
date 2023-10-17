@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
+let { send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { shopGoods } = require("shopState.nut")
@@ -20,13 +21,18 @@ let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradie
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("unseenPurchasesState.nut")
-let { balanceWp, balanceGold } = require("%appGlobals/currenciesState.nut")
+let { balanceWp, balanceGold, balance } = require("%appGlobals/currenciesState.nut")
 let { CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitAttributes } = require("%rGui/unitAttr/unitAttrState.nut")
 let { ceil } = require("%sqstd/math.nut")
 let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
+let { get_local_custom_settings_blk } = require("blkGetters")
+let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
+let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 let itemsGap = hdpx(50)
 
@@ -41,6 +47,15 @@ let close = @() removeModalWindow(WND_UID)
 
 let defaultPurchaseDesc = "msg/purchaseDesc/toolKit"
 
+let TIMERS_SHOWING_MISS_ITEMS = "timersShowingMissItemsWnd"
+
+let itemShowCd = {
+  spare = {
+    hasBalance = TIME_DAY_IN_SECONDS
+    noBalance = 7 * TIME_DAY_IN_SECONDS
+  }
+}
+
 let battleItemsIcons = {
   ship_tool_kit = $"ui/gameuiskin#hud_consumable_repair.svg"
   ship_smoke_screen_system_mod = $"ui/gameuiskin#hud_consumable_smoke.svg"
@@ -53,6 +68,7 @@ let purchaseDesc = {
   tank_tool_kit_expendable = "msg/purchaseDesc/toolKit"
   tank_extinguisher = "msg/purchaseDesc/extinguisher"
   ship_smoke_screen_system_mod = "msg/purchaseDesc/smoke"
+  spare = "item/spare/desc"
 }
 
 let decorativeLine = @(){
@@ -71,9 +87,7 @@ let itemBuyingHeader = @(unit, itemId){
   }
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  text = loc("header/notFullBattleItems", {
-    itemName = loc($"item/{itemId}/notEnough")
-    unitName = getPlatoonOrUnitName(unit, loc)?? ""})
+  text = loc($"header/notEnough/{itemId}", {unitName = getPlatoonOrUnitName(unit, loc)?? ""})
   }.__update(fontMedium)
 
 let function getCheapestGoods(allGoods, isFit) {
@@ -91,11 +105,10 @@ let function getCheapestGoods(allGoods, isFit) {
   return byCurrency?.wp ?? byCurrency.findvalue(@(_) true)
 }
 
-let mkMissingItemsComp = @(unit) Computed(function() {
+let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
   let res = []
   let unitItemsPerUse = unit?.itemsPerUse ?? 0
-  let consumablesList = itemsCfgOrdered.value.filter(@(i) i.name != "spare")
-  foreach (cfg in consumablesList) {
+  foreach (cfg in itemsCfgOrdered.value) {
     let { battleLimit = 0, itemsPerUse = 0, name = "" } = cfg
     let { itemsByAttributes = [], itemsByModifications = [] } = serverConfigs.value
     if (battleLimit <= 0)
@@ -115,11 +128,20 @@ let mkMissingItemsComp = @(unit) Computed(function() {
     let hasItems = items.value?[name].count ?? 0
     if (reqItems <= hasItems)
       continue
-    let hasUsing = ceil(hasItems/perUse)
-    let goods = getCheapestGoods(shopGoods.value, @(goods_) (goods_?.items[name] ?? 0) > 0)
-    let { price = 0 } = goods?.price
-    if (price > 0)
-      res.append({ itemId = name, reqItems, hasItems, goods, hasUsing, limitItems})
+    let hasUsing = ceil(hasItems/(perUse == 0 ? 1 : perUse))
+    let goods = getCheapestGoods(shopGoods.value, @(g) (g?.items[name] ?? 0) > 0)
+    let { price = 0, currencyId = ""} = goods?.price
+    let canBuyItem = price <= (balance.value?[goods?.price?.currencyId] ?? 0)
+    let timeInterval = itemShowCd?[name][canBuyItem ? "hasBalance" : "noBalance"] ?? 0
+    if (price <= 0)
+      continue
+    if (name in itemShowCd) {
+      let sBlk = get_local_custom_settings_blk()
+      let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
+      if (timeWndShowing - (blk?[name] ?? 0) <= timeInterval)
+        continue
+    }
+    res.append({ itemId = name, reqItems, hasItems, goods, hasUsing, limitItems, price, currencyId})
   }
   return res
 })
@@ -141,22 +163,32 @@ let function mkItemsRewards(goods) {
   }
 }
 
+let function saveTimeShowingWnd(itemId){
+  if (itemId in itemShowCd && isOnlineSettingsAvailable.value){
+    let sBlk = get_local_custom_settings_blk()
+    let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
+    blk[itemId] = serverTime.value
+    send("saveProfile", {})
+  }
+}
 
-let function mkPurchaseBtn(goods, toBattle) {
+let function mkPurchaseBtn(goods, itemId, toBattle) {
   let { currencyId, price } = goods.price
-  let balance = currencyId == "wp" ? balanceWp : balanceGold
+  let userBalance = currencyId == "wp" ? balanceWp : balanceGold
   let textColor = CS_GAMERCARD.__merge({
-    textColor = balance.value < price ? 0xFFFF0000 : 0xFFFFFFFF
+    textColor = userBalance.value < price ? 0xFFFF0000 : 0xFFFFFFFF
   })
   let stylePurchase = mergeStyles(PURCHASE,textColor)
   return [
-    textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
-      function() {
-        close()
-        toBattle()
-    })
+      textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
+        function() {
+          saveTimeShowingWnd(itemId)
+          close()
+          toBattle()
+      })
     mkCustomButton(mkCurrencyComp(price, currencyId),
       function() {
+        saveTimeShowingWnd(itemId)
         let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, goods.id)
         if (!showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, close))
           buy_goods(goods.id, currencyId, price)
@@ -164,9 +196,9 @@ let function mkPurchaseBtn(goods, toBattle) {
   ]
 }
 
-let mkMsButtons = @(goods, toBattle)
+let mkMsButtons = @(goods, itemId, toBattle)
   mkSpinnerHideBlock(Computed(@() shopPurchaseInProgress.value != null),
-    mkPurchaseBtn(goods, toBattle),
+    mkPurchaseBtn(goods, itemId, toBattle),
     {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       valign = ALIGN_CENTER
@@ -184,98 +216,133 @@ let countText = @(count){
   text = count
 }.__update(fontTiny)
 
-let mkItemPlate = @(itemId, count)
-  mkRewardPlate(getRewardsViewInfo({ items = { [itemId] = count } })[0], REWARD_STYLE_MEDIUM)
+let mkItemPlate = @(itemId, count, ovr = {})
+  mkRewardPlate(getRewardsViewInfo({ items = { [itemId] = count } })[0], REWARD_STYLE_MEDIUM, ovr)
 
-let function mkMsgContent(item, needSwitchAnim, toBattle, unit) {
-  return {
-    key = item.itemId
-    rendObj = ROBJ_9RECT
-    image = gradTranspDoubleSideX
-    padding = [ insideIndent, 0 ]
-    size = [ flex(), SIZE_TO_CONTENT ]
-    texOffs = [0 , gradDoubleTexOffset]
-    screenOffs = [ hdpx(200), hdpx(300)]
-    color = 0xCC000000
-    flow = FLOW_VERTICAL
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    vplace = ALIGN_CENTER
-    children = [
-      itemBuyingHeader(unit, item.itemId)
-      @(){
-        pos = [-hdpx(35), 0]
-        size = SIZE_TO_CONTENT
-        flow = FLOW_HORIZONTAL
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        padding = [ insideIndent*2, 0 ]
-        children = [
-          mkItemPlate(item.itemId, item.hasItems)
-          {
-            margin = [0, hdpx(25),0,hdpx(25)]
-            size = arrowSize
-            valign = ALIGN_CENTER
-            rendObj = ROBJ_IMAGE
-            image = Picture($"ui/gameuiskin#arrow_icon.svg:{arrowSize[0]}:{arrowSize[1]}:P")
-          }
-          {
-            size = [battleItemIconSize, battleItemIconSize]
-            rendObj = ROBJ_BOX
-            color = 0xFFFFFFFF
-            borderColor = 0xFFFFFFFF
-            borderWidth = 2
-            flow = FLOW_VERTICAL
-            children = [
-              {
-                rendObj = ROBJ_IMAGE
-                size = [battleItemIconSize, battleItemIconSize]
-                image = Picture($"{battleItemsIcons[item.itemId]}:{battleItemIconSize}:{battleItemIconSize}:P")
-              }
-              @() {
-                size = [flex(), hdpx(30)]
-                vplace = ALIGN_BOTTOM
-                valign = ALIGN_CENTER
-                halign = ALIGN_CENTER
-                rendObj = ROBJ_SOLID
-                color = 0x80000000
-                flow = FLOW_HORIZONTAL
-                gap = hdpx(5)
-                children = countText($"<color=@mark>{item.hasUsing}</color>/{item.limitItems}")
-              }
-            ]
-          }
-        ]
+
+let mkSimpleContent = @(item){
+  flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  children = [
+    mkItemPlate(item.itemId, item.hasItems, { margin = [insideIndent*2, 0]})
+    {
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      size = [hdpx(700), SIZE_TO_CONTENT]
+      halign = ALIGN_CENTER
+      colorTable = {
+        mark = 0xFFFF0000
       }
-      {
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        size = [hdpx(700), SIZE_TO_CONTENT]
-        halign = ALIGN_CENTER
-        colorTable = {
-          mark = 0xFFFF0000
+      text = loc(purchaseDesc?[item?.itemId] ?? defaultPurchaseDesc)
+    }.__update(fontTiny)
+    @() {
+      pos = [hdpx(250), 0]
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      children = mkItemsRewards(item.goods)
+    }
+  ]
+}
+
+let mkContWithTransfToSkill = @(item) {
+  flow = FLOW_VERTICAL
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  children = [
+    {
+      pos = [-hdpx(35), 0]
+      size = SIZE_TO_CONTENT
+      flow = FLOW_HORIZONTAL
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      padding = [ insideIndent*2, 0 ]
+      children = [
+        mkItemPlate(item.itemId, item.hasItems)
+        {
+          margin = [0, hdpx(25)]
+          size = arrowSize
+          valign = ALIGN_CENTER
+          rendObj = ROBJ_IMAGE
+          image = Picture($"ui/gameuiskin#arrow_icon.svg:{arrowSize[0]}:{arrowSize[1]}:P")
         }
-        text = loc(purchaseDesc?[item?.itemId] ?? defaultPurchaseDesc)
-      }.__update(fontTiny)
-      @() {
-        pos = [hdpx(250), 0]
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        flow = FLOW_HORIZONTAL
-        children = mkItemsRewards(item.goods)
+        {
+          size = [battleItemIconSize, battleItemIconSize]
+          rendObj = ROBJ_BOX
+          color = 0xFFFFFFFF
+          borderColor = 0xFFFFFFFF
+          borderWidth = 2
+          flow = FLOW_VERTICAL
+          children = [
+            {
+              rendObj = ROBJ_IMAGE
+              size = [battleItemIconSize, battleItemIconSize]
+              image = Picture($"{battleItemsIcons[item.itemId]}:{battleItemIconSize}:{battleItemIconSize}:P")
+            }
+            @() {
+              size = [flex(), hdpx(30)]
+              vplace = ALIGN_BOTTOM
+              valign = ALIGN_CENTER
+              halign = ALIGN_CENTER
+              rendObj = ROBJ_SOLID
+              color = 0x80000000
+              flow = FLOW_HORIZONTAL
+              gap = hdpx(5)
+              children = countText($"<color=@mark>{item.hasUsing}</color>/{item.limitItems}")
+            }
+          ]
+        }
+      ]
+    }
+    {
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      size = [hdpx(700), SIZE_TO_CONTENT]
+      halign = ALIGN_CENTER
+      colorTable = {
+        mark = 0xFFFF0000
       }
-      mkMsButtons(item.goods, toBattle)
-    ]
-    transform = {}
-    animations = [
-      { prop = AnimProp.translate, from = [0, 0], to = [hdpx(100), 0],
-        duration = 0.5, easing = CosineFull, playFadeOut = true}
-      { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.5
-         easing = OutQuad, play = needSwitchAnim}
-      { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3,
-        easing = OutQuad, playFadeOut = true}
-    ]
-  }
+      text = loc(purchaseDesc?[item?.itemId] ?? defaultPurchaseDesc)
+    }.__update(fontTiny)
+    @() {
+      pos = [hdpx(250), 0]
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      children = mkItemsRewards(item.goods)
+    }
+  ]
+}
+
+let mkMsgContent = @(item, needSwitchAnim, toBattle, unit) {
+  key = item.itemId
+  rendObj = ROBJ_9RECT
+  behavior = Behaviors.Button
+  image = gradTranspDoubleSideX
+  padding = [ insideIndent, 0 ]
+  size = [ flex(), SIZE_TO_CONTENT ]
+  texOffs = [0 , gradDoubleTexOffset]
+  screenOffs = [ hdpx(200), hdpx(300)]
+  color = 0xCC000000
+  flow = FLOW_VERTICAL
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  children = [
+    itemBuyingHeader(unit, item.itemId)
+    item.itemId in battleItemsIcons ? mkContWithTransfToSkill(item) : mkSimpleContent(item)
+    mkMsButtons(item.goods, item.itemId, toBattle)
+  ]
+  transform = {}
+  animations = [
+    { prop = AnimProp.translate, from = [0, 0], to = [hdpx(100), 0],
+      duration = 0.5, easing = CosineFull, playFadeOut = true}
+    { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.5
+       easing = OutQuad, play = needSwitchAnim}
+    { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3,
+      easing = OutQuad, playFadeOut = true}
+  ]
 }
 
 let isPurchNoNeedResultWindow = @(purch) purch?.source == "purchaseInternal"
@@ -284,8 +351,8 @@ let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchLis
 
 
 let function itemsPurchaseMessage(missItems, toBattle, unit) {
+  let itemToShow = Computed(@() missItems.value?[0])
   let function content(){
-    let itemToShow = Computed(@() missItems.value?[0])
     local needSwitchAnim = false
     return {
       watch = [itemToShow, missItems]
@@ -299,10 +366,14 @@ let function itemsPurchaseMessage(missItems, toBattle, unit) {
   }
   addModalWindow(bgShaded.__merge({
     key = WND_UID
+    function onClick(){
+      saveTimeShowingWnd(itemToShow.value.itemId)
+      close()
+    }
     onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
     size = flex()
-    children = @() {
+    children = {
       flow = FLOW_VERTICAL
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -320,21 +391,37 @@ let function itemsPurchaseMessage(missItems, toBattle, unit) {
   }))
 }
 
+debriefingData.subscribe(function(_data) {
+  let { itemsUsed = {} } = debriefingData.value
+  if (isOnlineSettingsAvailable.value){
+    let sBlk = get_local_custom_settings_blk()
+    let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
+    local hasChanges = false
+    foreach(item, _ in itemsUsed){
+      if ((blk?[item] ?? 0) != 0) {
+        blk[item] = 0
+        hasChanges = true
+      }
+    }
+    if (hasChanges)
+      send("saveProfile", {})
+  }
+})
 
 let function offerMissingUnitItemsMessage(unit, toBattle) {
   if (unit == null) {
     toBattle()
     return
   }
-  let missItems = mkMissingItemsComp(unit)
+
+  let missItems = mkMissingItemsComp(unit, serverTime.value)
   if (missItems.value.len() == 0) {
     toBattle()
     return
   }
-
   missItems.subscribe(@(v) v.len() == 0 ? close() : null)
   itemsPurchaseMessage(missItems, toBattle, unit)
-
 }
+
 
 return offerMissingUnitItemsMessage

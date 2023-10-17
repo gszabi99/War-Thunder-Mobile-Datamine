@@ -7,6 +7,7 @@ let { buyUnitsData, setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { requestOpenUnitPurchEffect } = require("unitPurchaseEffectScene.nut")
+let { playSound } = require("sound_wt")
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
@@ -59,6 +60,7 @@ let function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAft
     price,
     purchaseFunc,
     bqPurchaseInfo)
+  playSound("meta_new_technics_for_gold")
 }
 
 return purchaseUnit

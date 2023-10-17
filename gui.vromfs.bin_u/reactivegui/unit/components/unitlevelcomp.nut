@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round, sqrt } = require("math")
-let { mkLevelBg, mkProgressLevelBg, unitExpColor, levelProgressBorderWidth, levelProgressBarHeight
-} = require("%rGui/components/levelBlockPkg.nut")
-
+let { mkLevelBg, mkProgressLevelBg, unitExpColor, levelProgressBorderWidth,
+  levelProgressBarHeight, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
 let levelHolderSize = evenPx(84)
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 
@@ -21,14 +20,24 @@ let levelBg = mkLevelBg({
   childOvr = { borderColor = unitExpColor }
 })
 
+let mkUnitLevel = @(level){
+  size = [ levelHolderSize, levelHolderSize ]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    levelBg
+    textParams.__merge({ text = level, pos = [hdpx(1), 0] })
+  ]
+}
+
 let function mkUnitLevelBlock(unit, override = {}) {
-  let { level = 0, exp = 0, levels = [] } = unit
-  let needShowProgress = unit?.level != null && level < levels.len()
-  if (!needShowProgress)
-    return null
+  let { level = 0, exp = 0, levels = []} = unit
+  let isMaxLevel = level == levels.len() || unit?.isUpgraded || unit?.isPremium
   let nextLevelExp = levels?[level].exp ?? 0
-  let percent = nextLevelExp > 0
-    ? 1.0 * clamp(exp, 0, nextLevelExp) / nextLevelExp
+  let percent = isMaxLevel
+      ? 1.0
+    : nextLevelExp > 0
+      ? 1.0 * clamp(exp, 0, nextLevelExp) / nextLevelExp
     : 0.0
   return {
     size = [ flex(), SIZE_TO_CONTENT ]
@@ -44,20 +53,13 @@ let function mkUnitLevelBlock(unit, override = {}) {
           color = unitExpColor
         }
       })
-      {
-        size = [ levelHolderSize, levelHolderSize ]
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = [
-          levelBg
-          textParams.__merge({ text = level })
-        ]
-      }
+      mkUnitLevel(isMaxLevel ? maxLevelStarChar : level)
     ]
   }.__update(override)
 }
 
 return {
+  mkUnitLevel
   mkUnitLevelBlock
   levelHolderSize
 }

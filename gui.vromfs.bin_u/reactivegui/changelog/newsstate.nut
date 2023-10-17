@@ -26,17 +26,9 @@ const MSEC_BETWEEN_REQUESTS = 600000
 const MIN_SESSIONS_TO_FORCE_SHOW = 5
 const EMPTY_PAGE_ID = -1
 
-// Map from ISO 639-1 standard lang codes to news server lang codes
+// Please use lang codes from ISO 639-1 standard for current_lang
 // See https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-let langCodeRemap = {
-  zh = "cn"
-  ko = "kr"
-  ja = "en"
-  it = "en"
-}
-
-let iso639LangCode = loc("current_lang")
-let shortLang = langCodeRemap?[iso639LangCode] ?? iso639LangCode
+let shortLang = loc("current_lang")
 let newsPlatform = platformId == "android" ? "android" : "ios"
 let cfgId = get_cur_circuit_name().indexof("production") != null || get_cur_circuit_name().indexof("stable") != null
   ? "wtm_production" : "wtm_test"
@@ -147,7 +139,7 @@ let sortNewsfeed = @(a, b) b.isPinned <=> a.isPinned
   || b.id <=> a.id
 
 let function mkInfo(v) {
-  let { id = null, date = null, title = "", thumb = null, alwaysShowPopup = false } = v
+  let { id = null, date = null, title = "", thumb = null, pinned = false } = v
   if (type(id) != "integer") {
     logerr($"Bad newsfeed id type: {type(id)}  (id = {id})")
     return null
@@ -156,7 +148,7 @@ let function mkInfo(v) {
   local shortTitle = v?.titleshort ?? "undefined"
   if (shortTitle == "undefined" || utf8(shortTitle).charCount() > 50)
     shortTitle = null
-  return { id, iDate, date, title, shortTitle, thumb, isPinned = alwaysShowPopup }
+  return { id, iDate, date, title, shortTitle, thumb, isPinned = pinned }
 }
 
 subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {

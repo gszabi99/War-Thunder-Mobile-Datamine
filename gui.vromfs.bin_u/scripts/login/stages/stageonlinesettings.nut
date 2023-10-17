@@ -7,8 +7,6 @@ let { onlyActiveStageCb, export, finalizeStage
   LOGIN_STATE.AUTHORIZED,
   LOGIN_STATE.ONLINE_SETTINGS_AVAILABLE)
 
-const EATT_UNKNOWN = -1
-
 let finalize = onlyActiveStageCb(finalizeStage)
 subscribe("onUpdateProfile", @(_) finalize())
 

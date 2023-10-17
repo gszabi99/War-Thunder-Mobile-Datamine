@@ -3,19 +3,21 @@ let { registerScene } = require("%rGui/navState.nut")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { getUnitPresentation, getUnitClassFontIcon, getPlatoonName
-} = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { unitInfoPanelFull, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, unitPlatesGap,
+let { unitPlateWidth, unitPlateHeight, unitPlatesGap,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let backButton = require("%rGui/components/backButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
+let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let curSelectedUnitId = Watched("")
@@ -24,7 +26,6 @@ let function close() {
   curSelectedUnitId("")
   openUnitOvr(null)
 }
-let backBtn = backButton(close)
 
 let baseUnit = Computed(function() {
   let { name = null, canShowOwnUnit = true} = openUnitOvr.value
@@ -44,6 +45,17 @@ let platoonUnitsList = Computed(function() {
     ? [ { name, reqLevel = 0 } ].extend(platoonUnits)
     : []
 })
+
+let nextLevelToUnlockUnit = Computed(function() {
+  if ("level" not in baseUnit.value)
+    return null
+  local nextLevel
+  foreach (unlockLevel in platoonUnitsList.value.map(@(v) v.reqLevel))
+    if ((unlockLevel < nextLevel || !nextLevel) && unlockLevel > baseUnit.value.level)
+      nextLevel = unlockLevel
+  return nextLevel
+})
+
 platoonUnitsList.subscribe(function(pu) {
   if (null != pu.findvalue(@(p) p.name == curSelectedUnitId.value))
     return
@@ -68,33 +80,6 @@ unitToShow.subscribe(function(unit) {
     resetCustomHangarUnit()
 })
 
-let function platoonTitle(unit) {
-  let { name, isUpgraded = false, isPremium = false } = unit
-  let isElite = isUpgraded || isPremium
-  let text = "  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit))
-  return {
-    margin = [ 0, unitSelUnderlineFullHeight ]
-    valign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(20)
-    children = [
-      !isElite ? null : {
-        size = [hdpxi(50), hdpxi(50)]
-        rendObj = ROBJ_IMAGE
-        image = Picture("ui/gameuiskin#icon_premium.avif")
-      }
-      {
-        rendObj = ROBJ_TEXT
-        color = isElite ? premiumTextColor : textColor
-        fontFx = FFT_GLOW
-        fontFxColor = 0xFF000000
-        fontFxFactor = hdpx(64)
-        text
-      }.__update(fontMedium)
-    ]
-  }
-}
-
 let function mkUnitPlate(unit, platoonUnit, onClick) {
   let p = getUnitPresentation(platoonUnit)
   let { isPremium = false, isUpgraded = false } = unit
@@ -116,7 +101,13 @@ let function mkUnitPlate(unit, platoonUnit, onClick) {
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(unit.__merge(platoonUnit)).__update(imgOvr)
           mkUnitTexts(unit, loc(p.locId))
-          isLocked ? mkUnitSlotLockedLine(platoonUnit) : null
+          !isLocked
+            ? mkGradRank(unit.mRank, {
+              hplace = ALIGN_RIGHT
+              vplace = ALIGN_BOTTOM
+              padding = hdpx(10)
+            })
+            : mkUnitSlotLockedLine(platoonUnit)
         ]
       }
     ]
@@ -129,12 +120,10 @@ let function platoonUnitsBlock() {
     ? res
     : res.__update({
         size = SIZE_TO_CONTENT
-        vplace = ALIGN_BOTTOM
         flow = FLOW_VERTICAL
         gap = unitPlatesGap
-        children = [ platoonTitle(baseUnit.value) ]
-          .extend(platoonUnitsList.value
-            .map(@(pu) mkUnitPlate(baseUnit.value, pu, @() curSelectedUnitId(pu.name))))
+        children = platoonUnitsList.value
+          .map(@(pu) mkUnitPlate(baseUnit.value, pu, @() curSelectedUnitId(pu.name)))
       })
 }
 
@@ -152,11 +141,18 @@ let unitInfoPanelPlace = @() {
 
 let testDriveButton = @() {
   watch = can_debug_units
-  vplace = ALIGN_BOTTOM
   children = !can_debug_units.value ? null
     : textButtonPrimary("Test Drive",
         @() startTestFlight(unitToShow.value?.name),
         { hotkeys = ["^J:X | Enter"] })
+}
+
+let lvlUpButton = @() {
+  watch = [nextLevelToUnlockUnit, baseUnit]
+  children = nextLevelToUnlockUnit.value == null ? null
+    : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
+        nextLevelToUnlockUnit.value,
+        @() buyUnitLevelWnd(baseUnit.value?.name), { hotkeys = ["^J:Y"] })
 }
 
 let sceneRoot = {
@@ -170,19 +166,25 @@ let sceneRoot = {
     sendNewbieBqEvent("openUnitDetails", { status = unitToShow.value?.name ?? "" })
   }
   onDetach = @() isWindowAttached(false)
-
   children = {
     size = saSize
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
-      backBtn
+      @(){
+        watch = [baseUnit, curCampaign]
+        children = mkLeftBlockUnitCampaign(close, $"gamercard/levelUnitDetails/desc/{curCampaign.value}",
+          baseUnit.value)
+      }
       unitInfoPanelPlace
       {
         flow = FLOW_HORIZONTAL
+        gap = hdpx(30)
         vplace = ALIGN_BOTTOM
+        valign = ALIGN_BOTTOM
         children = [
           platoonUnitsBlock
+          lvlUpButton
           testDriveButton
         ]
       }

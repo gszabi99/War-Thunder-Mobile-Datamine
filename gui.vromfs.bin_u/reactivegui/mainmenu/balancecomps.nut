@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
+let { balance, WP, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
+let { SPARE } = require("%appGlobals/itemsState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
@@ -9,6 +10,7 @@ let { mkCurrencyComp, CS_GAMERCARD } = require("%rGui/components/currencyComp.nu
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
 let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("balanceAnimations.nut")
+let { GPT_PREMIUM } = require("%rGui/shop/goodsPreviewState.nut")
 
 let visibleBalance = hardPersistWatched("balance.visibleBalance", {})
 let changeOrders = hardPersistWatched("balance.changeOrders", {})
@@ -18,10 +20,18 @@ isAuthorized.subscribe(function(_) {
   changeOrders({})
 })
 
+let incomeSounds = {
+  [WP] = "meta_coins_income",
+  [GOLD] = "meta_buy_gold",
+  [WARBOND] = "meta_warbond_income",
+  [SPARE] = "meta_backup_income",
+  [GPT_PREMIUM] = "meta_premium_income"
+}
+
 let hoverBg = {
   size = [pw(120), flex()]
   color = 0x8052C4E4
-  opacity =  1
+  opacity = 1
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
   screenOffs = hdpx(100)
@@ -101,6 +111,12 @@ let diffStylePos = CS_GAMERCARD.__merge({
 })
 let diffStyleNeg = diffStylePos.__merge({ textColor = badTextColor2 })
 
+let function getSoundForChange (id, change){
+  if (change.diff > 0)
+    return incomeSounds?[id] ?? "meta_consumables_income"
+  return "meta_coins_outcome"
+}
+
 let mkChangeView = @(id, change) {
   key = change
   zOrder = Layers.Upper
@@ -110,6 +126,7 @@ let mkChangeView = @(id, change) {
     change.diff > 0 ? diffStylePos : diffStyleNeg)
   transform = {}
   animations = mkBalanceDiffAnims(@() onChangeAnimFinish(id, change))
+  sound = { attach = getSoundForChange(id, change) }
 }
 
 let plus = {
@@ -136,6 +153,7 @@ let function mkBalance(id, style, onClick, onAttach) {
       behavior = Behaviors.Button
       onClick
       onElemState = @(sf) stateFlags(sf)
+      sound = { click  = "meta_shop_buttons" }
     })
     imgChild = plus
   }

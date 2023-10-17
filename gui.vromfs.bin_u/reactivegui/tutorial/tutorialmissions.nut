@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setTimeout } = require("dagor.workcycle")
+let { resetTimeout } = require("dagor.workcycle")
 let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelected
 } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -74,7 +74,7 @@ let function startTutor(id) {
     })
   }
   send("startSingleMission", { id = tutorialMissions[id] })
-  setTimeout(0.1, @() isDebugMode(false))
+  resetTimeout(0.1, @() isDebugMode(false))
 }
 
 let function rewardTutorialMission(campaign) {

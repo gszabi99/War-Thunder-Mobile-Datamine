@@ -43,7 +43,7 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let btnOpenQuests = require("%rGui/quests/btnOpenQuests.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let eventBanner = require("%rGui/event/eventBanner.nut")
-
+let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -170,8 +170,9 @@ let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
 let toBattleButton = textButtonBattle(toBattleText,
   function() {
     sendNewbieBqEvent("pressToBattleButton", { status = "online_battle", params = randomBattleMode.value?.name ?? "" })
-    if (curUnit.value != null)
-      offerMissingUnitItemsMessage(curUnit.value, queueCurRandomBattleMode)
+    if (curUnit.value != null){
+      showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.value, queueCurRandomBattleMode))
+    }
     else if (!openLvlUpWndIfCan())
       logerr($"Unable to start battle because no units (unit in hangar = {hangarUnit.value?.name})")
   },
@@ -188,7 +189,7 @@ let startOfflineBattleButton = textButtonBattle(toBattleText,
 let startOfflineMissionButton = textButtonBattle(toBattleText,
   function() {
     sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.value) })
-    startCurNewbieMission()
+    showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.value, startCurNewbieMission))
   },
   battleBtnOvr)
 

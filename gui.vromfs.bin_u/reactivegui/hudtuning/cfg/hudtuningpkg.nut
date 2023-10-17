@@ -83,7 +83,7 @@ let function weaponryButtonsGroupCtor(ids, actionCtor, cfg) {
   }
   return cfg.__merge({
     function ctor() {
-      let id = Computed(@() ids.findvalue(@(id) id in visibleWeaponsMap.value))
+      let id = Computed(@() ids.findvalue(@(i) i in visibleWeaponsMap.value))
       let actionItem = Computed(@() visibleWeaponsMap.value?[id.value].actionItem)
       let buttonConfig = Computed(@() weaponsButtonsConfig?[id.value])
       return @() {

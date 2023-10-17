@@ -2,8 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
 let { getCurrentLanguage } = require("dagor.localize")
 let { getCountryCode } = require("auth_wt")
-let { can_use_internal_support_form } = require("%appGlobals/permissions.nut")
-let { openSupportWnd } = require("%rGui/feedback/supportWnd.nut")
+let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 
 let iconSize = hdpxi(120)
 let itemSize = [hdpx(200), hdpx(200)]
@@ -45,9 +44,7 @@ let feedBackList = [
   {
     text = loc("mainmenu/support")
     image = "ui/gameuiskin#icon_social_support.svg"
-    onClick = @() can_use_internal_support_form.value
-      ? openSupportWnd()
-      : send("openUrl", { baseUrl = loc("url/feedback/support") })
+    onClick = openSupportTicketWndOrUrl
   }
 ]
 

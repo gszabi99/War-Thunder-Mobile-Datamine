@@ -135,7 +135,7 @@ crewState.subscribe(@(data) activeTimers.mutate(function onCrewState(actTimers) 
     actTimers.healing_status <- mkTimerOffset(totalHealingTime, currentHealingTime)
 }))
 
-let onCrewMemberState = @(timerId, data) activeTimers.mutate(function onCrewMemberState(actTimers) {
+let onCrewMemberState = @(timerId, data) activeTimers.mutate(function onCrewMemberStateImpl(actTimers) {
   let { state, totalTakePlaceTime = 0, timeToTakePlace = 0 } = data
   if (state != "takingPlace" || totalTakePlaceTime <= 0)
     deleteF(actTimers, timerId)

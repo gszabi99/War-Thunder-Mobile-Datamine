@@ -8,8 +8,8 @@ let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { is_ios, is_pc, is_android } = require("%sqstd/platform.nut")
-let { has_additional_graphics_settings, has_additional_graphics_content } = require("%appGlobals/permissions.nut")
+let { is_pc, is_android } = require("%sqstd/platform.nut")
+let { has_additional_graphics_content } = require("%appGlobals/permissions.nut")
 
 let qualitiesListDev = ["movie"]
 let minMemory = 4096
@@ -51,8 +51,7 @@ let optRayTracing = {
   locId = "options/raytracing"
   ctrlType = OCT_LIST
   value = mkOptionValue(OPT_RAYTRACING, 0)
-  list = !is_ios ? rayTracingValues
-    : Computed(@() has_additional_graphics_settings.value ? rayTracingValues : [])
+  list = rayTracingValues
   valToString = @(v) loc(v == 0 ? "options/off"
     : v == 1 ? $"options/quality_medium"
     : $"options/quality_high")

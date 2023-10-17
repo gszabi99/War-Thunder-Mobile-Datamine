@@ -30,6 +30,7 @@ let aspectRatio = sw(100) / sh(100)
 let btnSize = [aspectRatio < 2 ? hdpx(230) : hdpx(300), hdpx(90)]
 let childOvr = aspectRatio < 2 ? fontSmallShaded : null
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
+let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, sound = { click  = "meta_get_unlock" } }, childOvr }
 
 let scrollHandler = ScrollHandler()
 curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
@@ -79,7 +80,7 @@ let function mkQuest(quest) {
         ? textButtonSecondary(
             utf8ToUpper(loc("btn/receive")),
             @() receiveReward(quest.name),
-            btnStyle)
+            btnStyleSound)
       : quest?.isFinished
         ? {
             size = btnSize

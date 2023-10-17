@@ -158,6 +158,7 @@ return {
   isLoadedHangarUnitUpgraded
   hangarUnitName //wanted hangar unit name
   hangarUnit //wanted hangar unit
+  hangarUnitDataBackup
 
   setHangarUnit  //unit will be used from own units or from allUnitsCfg
   setCustomHangarUnit  //will be forced cutsom unit params

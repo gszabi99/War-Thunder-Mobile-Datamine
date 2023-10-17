@@ -7,6 +7,7 @@ let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isAdsAvailable, canShowAds, showAdsForReward } = require("%rGui/ads/adsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { playSound } = require("sound_wt")
 
 
 let lastAppliedSchReward = Watched({})
@@ -116,8 +117,10 @@ let function onSchRewardReceive(schReward) {
 
   if (!schReward.needAdvert)
     applyScheduledReward(schReward.id)
-  else if (canShowAds.value)
+  else if (canShowAds.value) {
+    playSound("meta_ad_button")
     showAdsForReward({ schRewardId = schReward.id, bqId = $"scheduled_{schReward.id}" })
+  }
   else
     openMsgBox({ text = loc("msg/adsNotReadyYet") })
 }
