@@ -58,6 +58,13 @@ let loginTypes = {
   LT_FACEBOOK = "facebook"
 }
 
+let secondStepTypes = {
+  SST_MAIL = "Mail"
+  SST_GA = "GA"
+  SST_GP = "GP"
+  SST_UNKNOWN = "Unknown"
+}
+
 let isOnlyGuestLogin = get_settings_blk()?.onlyGuestLogin ?? false
 local availableLoginTypes = { [loginTypes.LT_GAIJIN] = true }
 if (is_ios) {
@@ -77,7 +84,7 @@ if (is_ios) {
 
 let isOnlineSettingsAvailable = Computed(@() (loginState.value & LOGIN_STATE.ONLINE_SETTINGS_AVAILABLE) != 0)
 
-return loginTypes.__merge({
+return loginTypes.__merge(secondStepTypes, {
   LOGIN_STATE
   LOGIN_UPDATER_EVENT_ID
   loginState

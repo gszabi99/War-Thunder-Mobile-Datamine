@@ -8,7 +8,6 @@ let { export, finalizeStage
 } = require("mkStageBase.nut")("initConfigs", LOGIN_STATE.READY_TO_FULL_LOAD, LOGIN_STATE.CONFIGS_INITED)
 
 let function start() {
-  ::load_scripts_after_login_once()
   //skip frame after the long scripts loading
   deferOnce(function() {
     initOptions()

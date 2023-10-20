@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { fabs, sin, cos, PI, acos, lerp } = require("%sqstd/math.nut")
 let rand = require("%sqstd/rand.nut")()
-let { mkRingGradient } = require("%rGui/style/gradients.nut")
+let { mkRingGradientLazy } = require("%rGui/style/gradients.nut")
 
-let sparkImage = mkRingGradient(30, 5, 50000)
+let sparkImage = mkRingGradientLazy(30, 5, 50000)
 let sparkMaxSize = [hdpx(5), hdpx(20)]
 let sparkMinSpeed = hdpx(20)
 let sparkMaxSpeed = hdpx(60)
@@ -37,7 +37,7 @@ let function fillRoundZoneSparkState(state, effectHalfSize, showTime = 100) {
 let mkRoundZoneSpark = @(state, effectHalfSize) {
   size = sparkMaxSize
   rendObj = ROBJ_IMAGE
-  image = sparkImage
+  image = sparkImage()
   color = 0xFFFDFFAC
   opacity = 0.0
   behavior = Behaviors.RtPropUpdate

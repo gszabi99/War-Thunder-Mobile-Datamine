@@ -23,6 +23,10 @@ let fontVeryTiny = {
   font = muller_regular
   fontSize = hdpxi(22)
 }
+let fontVeryTinyAccented = {
+  font = muller_medium
+  fontSize = hdpxi(23)
+}
 let fontTiny = {
   font = muller_regular
   fontSize = hdpxi(27)
@@ -94,6 +98,7 @@ let fontsSets = {
   common = {
     fontVeryVeryTiny
     fontVeryTiny
+    fontVeryTinyAccented
     fontTiny
     fontTinyAccented
     fontSmall

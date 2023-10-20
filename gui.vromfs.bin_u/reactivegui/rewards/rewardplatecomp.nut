@@ -10,23 +10,28 @@ let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { getLootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 
 // PREDEFINED STYLES ///////////////////////////////////////////////////////////
 
 let fontLabel = fontTiny
 let fontLabelSmaller = fontVeryTiny
+let fontLabelBig = fontSmall
 let labelHeight = round(fontLabel.fontSize * 1.3).tointeger()
-let labelInlineIcoSize = round(fontLabel.fontSize * 0.92).tointeger()
+let textPadding = [0, hdpx(5)]
 
 let mkRewardStyle = @(boxSize) {
   boxSize
-  boxGap = round(boxSize * 0.26).tointeger()
+  boxGap = 2 * round(boxSize * 0.13).tointeger()
   iconShiftY = round((labelHeight * -0.5) + (boxSize * 0.04)).tointeger()
   labelCurrencyNeedCompact = boxSize < fontLabel.fontSize * 5.5
+  markSize = max(round(boxSize / 4).tointeger(), evenPx(36))
 }
 
-let REWARD_SIZE_SMALL = hdpxi(114)
-let REWARD_SIZE_MEDIUM = hdpxi(160)
+let REWARD_SIZE_TINY = evenPx(104)
+let REWARD_SIZE_SMALL = evenPx(114)
+let REWARD_SIZE_MEDIUM = evenPx(160)
+let REWARD_STYLE_TINY = mkRewardStyle(REWARD_SIZE_TINY)
 let REWARD_STYLE_SMALL = mkRewardStyle(REWARD_SIZE_SMALL)
 let REWARD_STYLE_MEDIUM = mkRewardStyle(REWARD_SIZE_MEDIUM)
 
@@ -35,7 +40,7 @@ let REWARD_STYLE_MEDIUM = mkRewardStyle(REWARD_SIZE_MEDIUM)
 let function getRewardPlateSize(r, rStyle) {
   let { slots } = r
   let { boxSize, boxGap } = rStyle
-  return [ (r.slots * boxSize) + ((slots - 1) * boxGap), boxSize ]
+  return [ (slots * boxSize) + ((slots - 1) * boxGap), boxSize ]
 }
 
 let iconBase = {
@@ -49,7 +54,8 @@ let mkCommonLabelText = @(text, rStyle) {
   maxWidth = rStyle.boxSize
   rendObj = ROBJ_TEXT
   text
-}.__update(fontLabel)
+}.__update(getFontToFitWidth({ rendObj = ROBJ_TEXT, text }.__update(fontLabel),
+  rStyle.boxSize - textPadding[1] * 2, [fontLabelSmaller, fontLabel]))
 
 let mkCommonLabelTextMarquee = @(text, rStyle) {
   maxWidth = rStyle.boxSize
@@ -60,7 +66,7 @@ let mkCommonLabelTextMarquee = @(text, rStyle) {
 
 let mkRewardLabel = @(children, needPadding = true) {
   size = [flex(), labelHeight]
-  padding = needPadding ? [0, hdpx(5)] : null
+  padding = needPadding ? textPadding : null
   vplace = ALIGN_BOTTOM
   valign = ALIGN_CENTER
   halign = ALIGN_RIGHT
@@ -71,38 +77,80 @@ let mkRewardLabel = @(children, needPadding = true) {
   children
 }
 
-let mkRewardPlateCountText = @(r, rStyle) mkRewardLabel(mkCommonLabelText(decimalFormat(r.count), rStyle))
+let mkRewardPlateCountText = @(r, rStyle)
+  mkRewardLabel(mkCommonLabelText(
+    "countRange" in r
+        ? "".concat(decimalFormat(r.count), "-", decimalFormat(r.countRange))
+      : decimalFormat(r.count),
+    rStyle))
+
+
+let mkRewardFixedIcon = @(rStyle) {
+  size = [rStyle.markSize, rStyle.markSize]
+  pos = [hdpx(8), hdpx(4)]
+  rendObj = ROBJ_IMAGE
+  keepAspect = KEEP_ASPECT_FIT
+  image = Picture($"ui/gameuiskin#events_chest_icon.svg:{rStyle.markSize}:{rStyle.markSize}:P")
+}
+
+let mkRewardReceivedMark = @(rStyle, ovr = {}) {
+  size = [rStyle.markSize, rStyle.markSize]
+  halign = ALIGN_LEFT
+  valign = ALIGN_TOP
+  margin = hdpx(2)
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#check.svg:{rStyle.markSize}:{rStyle.markSize}:P")
+  keepAspect = KEEP_ASPECT_FIT
+  color = 0xFF00FF00
+}.__update(ovr)
 
 // CURRENCY ///////////////////////////////////////////////////////////////////
 
-let currencyImgPaths = {
-  gold = "ui/gameuiskin#shop_eagles_02.avif"
-  wp = "ui/gameuiskin#shop_lions_02.avif"
+let function mkGoldOrWpIcon(size, iconShiftY, imgName) {
+  let w = round(size[1] * 1.1).tointeger()
+  let h = round(w / 469.0 * 291).tointeger()
+  return {
+    size = [w, h]
+    pos = [w * 0.12, iconShiftY + (h * -0.07)]
+    image = Picture($"ui/gameuiskin#{imgName}:{w}:{h}:P")
+  }
+}
+
+let function mkOtherCurrencyIcon(size, iconShiftY, imgName, scale, aspectRatio = 1.0) {
+  let w = round(size[1] * scale).tointeger()
+  let h = round(w * 1.0 / aspectRatio).tointeger()
+  return {
+    size = [w, h]
+    pos = [0, iconShiftY]
+    image = Picture($"ui/gameuiskin#{imgName}:{w}:{h}:P")
+  }
+}
+
+let currencyImgCtors = {
+  gold = @(size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, "shop_eagles_02.avif")
+  wp = @(size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, "shop_lions_02.avif")
+  warbond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_goods_01.avif", 0.95)
+  eventKey = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "event_keys_01.avif", 0.8)
 }
 
 let function mkRewardPlateCurrencyImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r, rStyle)
-  let imgPath = currencyImgPaths[r.id]
-  let w = round(size[1] * 1.1)
-  let h = round(w / 469 * 291)
   return {
     size
     clipChildren = true
-    children = iconBase.__merge({
-      size = [w, h]
-      pos = [w * 0.12, iconShiftY + (h * -0.07)]
-      image = Picture($"{imgPath}:{w}:{h}:P")
-    })
+    children = iconBase.__merge(currencyImgCtors[r.id](size, iconShiftY))
   }
 }
 
 let function mkRewardPlateCurrencyTexts(r, rStyle) {
   let { labelCurrencyNeedCompact } = rStyle
-  let countText = labelCurrencyNeedCompact ? shortTextFromNum(r.count) : decimalFormat(r.count)
-  let icoMargin = labelInlineIcoSize * (labelCurrencyNeedCompact ? 0.1 : 0.3)
+  let countText = "countRange" in r
+      ? "".concat(shortTextFromNum(r.count), "-", shortTextFromNum(r.countRange))
+    : labelCurrencyNeedCompact
+      ? shortTextFromNum(r.count)
+    : decimalFormat(r.count)
   return mkRewardLabel([
-    mkCurrencyImage(r.id, labelInlineIcoSize, { margin = [ 0, icoMargin, 0, 0 ] })
     mkCommonLabelText(countText, rStyle)
   ])
 }
@@ -112,8 +160,8 @@ let function mkRewardPlateCurrencyTexts(r, rStyle) {
 let function mkRewardPlatePremiumImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r, rStyle)
-  let w = round(size[1] * 0.77)
-  let h = round(w / 286 * 197)
+  let w = round(size[1] * 0.77).tointeger()
+  let h = round(w / 286.0 * 197).tointeger()
   return {
     size
     children = iconBase.__merge({
@@ -132,7 +180,7 @@ let mkRewardPlatePremiumTexts = @(r, rStyle)
 let mkDecoratorIconAvatar = @(decoratorId, _rStyle, size) {
   size
   rendObj = ROBJ_IMAGE
-  image = Picture($"{getAvatarImage(decoratorId)}:O:P")
+  image = Picture($"{getAvatarImage(decoratorId)}:0:P")
 }
 
 let decoratorFontIconBase = {
@@ -141,17 +189,21 @@ let decoratorFontIconBase = {
   vplace = ALIGN_CENTER
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
-}.__merge(fontLabel)
+}
 
-let mkDecoratorIconTitle = @(decoratorId, rStyle, _size) decoratorFontIconBase.__merge({
-  pos = [ 0, rStyle.iconShiftY ]
-  behavior = Behaviors.Marquee
-  text = loc($"title/{decoratorId}")
-})
+let mkDecoratorIconTitle = @(decoratorId, rStyle, size) decoratorFontIconBase.__merge(
+  {
+    pos = [ 0, rStyle.iconShiftY ]
+    behavior = Behaviors.Marquee
+    text = loc($"title/{decoratorId}")
+  },
+  getFontToFitWidth({ rendObj = ROBJ_TEXT, text = loc($"title/{decoratorId}") }.__update(fontLabelBig),
+    size[0] - textPadding[1] * 2, [fontLabel, fontLabelBig]))
 
 let mkDecoratorIconNickFrame = @(decoratorId, rStyle, size) decoratorFontIconBase.__merge({
   pos = [ 0, rStyle.iconShiftY ]
   text = frameNick("", decoratorId)
+  font = fontLabel.font
   fontSize = round(size[0] / 2.75)
 })
 
@@ -185,7 +237,7 @@ let function mkRewardPlateDecoratorTexts(r, rStyle) {
 let function mkRewardPlateItemImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r, rStyle)
-  let iconSize = round(size[1] * 0.55)
+  let iconSize = round(size[1] * 0.55).tointeger()
   return {
     size
     clipChildren = true
@@ -198,7 +250,7 @@ let function mkRewardPlateItemImage(r, rStyle) {
 let function mkRewardPlateLootboxImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r, rStyle)
-  let iconSize = round(size[1] * 0.67)
+  let iconSize = round(size[1] * 0.67).tointeger()
   return {
     size
     children = iconBase.__merge({
@@ -223,6 +275,23 @@ let function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
   })
 }
 
+// STAT ///////////////////////////////////////////////////////////////////////
+
+let function mkRewardPlateStatImage(r, rStyle) {
+  let { iconShiftY } = rStyle
+  let size = getRewardPlateSize(r, rStyle)
+  let w = round(size[1] * 0.82).tointeger()
+  let h = round(w / 286.0 * 197).tointeger()
+  return {
+    size
+    children = iconBase.__merge({
+      size = [w, h]
+      pos = [ 0, iconShiftY ]
+      image = Picture($"ui/gameuiskin#quest_experience_icon.avif:{w}:{h}:P")
+    })
+  }
+}
+
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
 
@@ -233,7 +302,7 @@ let function mkUnitTextsImpl(r, rStyle, isUpgraded) {
   let comp = { watch = unit }
   return @() unit.value == null ? comp : comp.__update({
     size
-    padding = [0, hdpx(5)]
+    padding = textPadding
     clipChildren = true
     children = [
       {
@@ -273,7 +342,7 @@ let mkRewardPlateUnitUpgradeTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, true
 let function mkRewardPlateUnknownImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r, rStyle)
-  let iconSize = round(size[1] * 0.6)
+  let iconSize = round(size[1] * 0.6).tointeger()
   return {
     size
     children = iconBase.__merge({
@@ -328,6 +397,10 @@ let rewardPlateCtors = {
     image = mkRewardPlateUnitImage
     texts = mkRewardPlateUnitTexts
   }
+  stat = {
+    image = mkRewardPlateStatImage
+    texts = mkRewardPlateCountText
+  }
 }
 
 let mkRewardPlateImage = @(r, rStyle) (rewardPlateCtors?[r?.rType] ?? rewardPlateCtors.unknown).image(r, rStyle)
@@ -342,6 +415,8 @@ let mkRewardPlate = @(r, rStyle, ovr = {}) {
 }.__update(ovr)
 
 return {
+  REWARD_SIZE_TINY
+  REWARD_STYLE_TINY
   REWARD_SIZE_SMALL
   REWARD_STYLE_SMALL
   REWARD_SIZE_MEDIUM
@@ -352,4 +427,6 @@ return {
   mkRewardPlateBg
   mkRewardPlateImage
   mkRewardPlateTexts
+  mkRewardReceivedMark
+  mkRewardFixedIcon
 }

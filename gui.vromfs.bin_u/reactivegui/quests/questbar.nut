@@ -3,10 +3,11 @@ let { tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { progressBarRewardSize, rewardProgressBarCtor } = require("rewardsComps.nut")
 let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { receiveUnlockRewards, unlockRewardsInProgress } = require("%rGui/unlocks/unlocks.nut")
+
 
 let questBarHeight = hdpx(28)
 let progressBarHeight = hdpx(30)
-let progressBarMargin = hdpx(40)
 let starIconSize = hdpxi(60)
 let borderWidth = hdpx(3)
 let bgColor = 0x80000000
@@ -14,22 +15,20 @@ let questBarColor = 0xFF2EC181
 let progressBarColor = 0xFF5AA0E9
 let barBorderColor = 0xFF606060
 let subtleRedColor = 0xC8800000
-let questCompletedText = loc("quests/completed")
 let BAR_COLOR_SHOW = 0.4
 let BAR_COLOR_BLINK = 1.0
 
 let bgGradient = {
   size = flex()
   rendObj = ROBJ_IMAGE
-  image = Picture("ui/gameuiskin#gradient_button.svg:O:P")
+  image = Picture("ui/gameuiskin#gradient_button.svg:0:P")
   color = 0x00505050
 }
 
 let function mkQuestBar(quest) {
-  let isQuestCompleted = quest?.isCompleted ?? false
-  let stepsFinished = quest?.current ?? 0
-  let stepsTotal = quest?.required ?? 1
-  let questCompletion = stepsFinished.tofloat() / stepsTotal
+  let current = quest?.current ?? 0
+  let required = quest?.required ?? 1
+  let questCompletion = current.tofloat() / required
   let trigger = $"unfilledBarEffect_{quest.name}"
 
   return {
@@ -63,7 +62,7 @@ let function mkQuestBar(quest) {
         rendObj = ROBJ_TEXT
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
-        text = isQuestCompleted ? questCompletedText : $"{stepsFinished}/{stepsTotal}"
+        text = $"{current}/{required}"
         padding = [0, hdpx(15), 0, 0]
       }.__update(fontVeryTinyShaded)
     ]
@@ -71,11 +70,11 @@ let function mkQuestBar(quest) {
 }
 
 let function mkStages(progressUnlock) {
-  let stage = progressUnlock.stage
-  let stages = progressUnlock.stages
+  let { hasReward = false, stage, stages, current = 0, name } = progressUnlock
   let stagesTotal = stages.len()
-  let stepsFinished = progressUnlock.current ?? 0
-  let stepsToNext = progressUnlock.required ?? 1
+  let curStageIdx = stages.findindex(@(s) s.progress >= current)
+  let required = stages?[curStageIdx].progress
+  let isRewardInProgress = Computed(@() name in unlockRewardsInProgress.value)
 
   return {
     size = [flex(), progressBarRewardSize]
@@ -83,15 +82,18 @@ let function mkStages(progressUnlock) {
     flow = FLOW_HORIZONTAL
     children = array(stagesTotal).map(function(_, idx) {
       let prevProgress = stages?[idx - 1].progress ?? 0
-      let stageCompletion = clamp((stepsFinished.tofloat() - prevProgress) / (stages[idx].progress - prevProgress), 0.0, 1.0)
+      let stageCompletion = clamp((current.tofloat() - prevProgress) / (stages[idx].progress - prevProgress), 0.0, 1.0)
+      let isUnlocked = stageCompletion == 1.0
+      let claimReward = isUnlocked && hasReward && (idx + 1) >= stage
+          ? @() receiveUnlockRewards(name, stage, { stage, finalStage = idx + 1 })
+        : null
 
       let rewardPreview = Computed(function() {
         let rewardId = stages[idx].rewards.keys()?[0]
-        return !rewardId ? [] : getRewardsViewInfo(serverConfigs.value.userstatRewards?[rewardId])
+        return getRewardsViewInfo(serverConfigs.value.userstatRewards?[rewardId])?[0] ?? {}
       })
 
-      return @() {
-        watch = rewardPreview
+      return {
         size = [pw(100 / stagesTotal), flex()]
         flow = FLOW_HORIZONTAL
         children = [
@@ -106,18 +108,20 @@ let function mkStages(progressUnlock) {
                 fillColor = progressBarColor
                 children = bgGradient
               }
-              idx != stage ? null
+              idx != curStageIdx ? null
                 : {
                     rendObj = ROBJ_TEXT
                     vplace = ALIGN_CENTER
                     hplace = ALIGN_CENTER
-                    text = $"{stepsFinished}/{stepsToNext}"
+                    text = $"{current}/{required}"
                   }.__update(fontVeryTinyShaded)
             ]
           }
-
-          rewardPreview.value.len() == 0 ? null
-            : rewardProgressBarCtor(rewardPreview.value, stageCompletion == 1.0)
+          @() {
+            watch = [rewardPreview, isRewardInProgress]
+            children = rewardPreview.value.len() == 0 ? null
+              : rewardProgressBarCtor(rewardPreview.value, isUnlocked, claimReward, isRewardInProgress.value)
+          }
         ]
       }
     })
@@ -127,16 +131,15 @@ let function mkStages(progressUnlock) {
 let mkProgressBar = @(progressUnlock) {
   rendObj = ROBJ_BOX
   size = [flex(), progressBarHeight]
-  margin = [0, 0, progressBarMargin, 0]
   fillColor = bgColor
   children = [
     mkStages(progressUnlock)
     {
       size = [starIconSize, starIconSize]
       vplace = ALIGN_CENTER
-      pos = [-starIconSize * 0.6, hdpx(-7)]
+      pos = [hdpx(-40), hdpx(-7)]
       rendObj = ROBJ_IMAGE
-      image = Picture("ui/gameuiskin#quest_experience_icon.avif:O:P")
+      image = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
     }
   ]
 }
@@ -146,5 +149,4 @@ return {
   mkProgressBar
 
   progressBarHeight
-  progressBarMargin
 }

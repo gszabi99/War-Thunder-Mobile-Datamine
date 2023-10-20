@@ -32,6 +32,8 @@ let goodsCompareCfg = [
   @(g) g.units.len() > 0 || (g?.unitUpgrades.len() ?? 0) > 0 ? { canCompare = false } : null,
   @(g) positive("wp", g.wp),
   @(g) positive("gold", g.gold),
+  @(g) positive("warbond", g?.warbond ?? 0),
+  @(g) positive("eventKey", g?.eventKey ?? 0),
   @(g) positive("premiumDays", g.premiumDays),
   function(g) {
     if (g.items.len() > 1)
@@ -179,4 +181,7 @@ let mkShopPage = @(pageW, pageH) function() {
 
 return {
   mkShopPage
+  onGoodsClick
+  mkGoodsListWithBaseValue
+  mkGoodsState
 }

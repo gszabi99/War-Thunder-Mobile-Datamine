@@ -32,7 +32,6 @@ const CRUISE_CONTROL_UNDEF = -2
 const CRUISE_CONTROL_R = -1
 const CRUISE_CONTROL_N = 0
 const CRUISE_CONTROL_1 = 1
-const CRUISE_CONTROL_2 = 2
 const CRUISE_CONTROL_MAX = 3
 
 local holdingForStopShowCount = 2
@@ -112,7 +111,6 @@ let function steeringAxelerate(id, flipX) {
 let function mkSteerParams(isRight) {
   let function onTouchUpdate() {
     steeringAxelerate("gm_steering", isRight)
-    steeringAxelerate("wheel_steering", isRight)
     if (speed.value == 0)
       toNeutral()
   }
@@ -125,7 +123,6 @@ let function mkSteerParams(isRight) {
       if (cruiseControl.value == 0)
         curSteerValue = 1
       steeringAxelerate("gm_steering", isRight)
-      steeringAxelerate("wheel_steering", isRight)
       setInterval(0.3, onTouchUpdate)
       playSound("steer")
       if (!isTurnTypesCtrlShowed.value) {
@@ -136,7 +133,6 @@ let function mkSteerParams(isRight) {
     function onTouchEnd() {
       clearTimer(onTouchUpdate)
       setVirtualAxisValue("gm_steering", 0)
-      setVirtualAxisValue("wheel_steering", 0)
       steerWatch(0)
       curSteerValue = minSteer
     }

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
-let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
@@ -18,6 +18,8 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let curSelectedUnitId = Watched("")
@@ -29,7 +31,8 @@ let function close() {
 
 let baseUnit = Computed(function() {
   let { name = null, canShowOwnUnit = true} = openUnitOvr.value
-  local res = canShowOwnUnit ? myUnits.value?[name] ?? allUnitsCfg.value?[name] : allUnitsCfg.value?[name]
+  local res = canShowOwnUnit ? myUnits.value?[name] ?? serverConfigs.value?.allUnits[name]
+    : serverConfigs.value?.allUnits[name]
   if (res == null)
     return res
   res = res.__merge(openUnitOvr.value)
@@ -155,6 +158,24 @@ let lvlUpButton = @() {
         @() buyUnitLevelWnd(baseUnit.value?.name), { hotkeys = ["^J:Y"] })
 }
 
+let buttonsBlock = {
+  flow = FLOW_VERTICAL
+  gap = hdpx(30)
+  children = [
+    mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT })
+    {
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(30)
+      vplace = ALIGN_BOTTOM
+      valign = ALIGN_BOTTOM
+      children = [
+        lvlUpButton
+        testDriveButton
+      ]
+    }
+  ]
+}
+
 let sceneRoot = {
   key = isOpened
   size = [ sw(100), sh(100) ]
@@ -184,8 +205,7 @@ let sceneRoot = {
         valign = ALIGN_BOTTOM
         children = [
           platoonUnitsBlock
-          lvlUpButton
-          testDriveButton
+          buttonsBlock
         ]
       }
     ]

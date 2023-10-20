@@ -8,8 +8,8 @@ let btnGlareSize = (1.62 * touchButtonSize).tointeger()
 let actionGlareSize = (1.15 * touchButtonSize).tointeger()
 
 let consumableIconSize = hdpx(50)
-let consumableAnimationBottom = hdpx(80)
-let consumableAnimationTop = hdpx(130)
+let consumableAnimationBottom = hdpx(-80)
+let consumableAnimationTop = hdpx(-130)
 let FADE = 0.2
 let SHOW = 0.8
 
@@ -67,7 +67,7 @@ let function mkActionGlare(actionItem) {
   }
 }
 
-let function mkConsumableAnimation(nextAnimation) {
+let function mkConsumableAnimation(nextAnimation, start, finish, onFinish) {
   return {
     key = nextAnimation
     valign = ALIGN_CENTER
@@ -88,17 +88,18 @@ let function mkConsumableAnimation(nextAnimation) {
       { prop = AnimProp.opacity, from = 0.1, to = 1, duration = FADE,
         easing = InOutCubic, play = true }
       { prop = AnimProp.opacity, from = 1, to = 1, duration = SHOW,
-        easing = InOutCubic, delay = FADE, play = true }
+        easing = InOutCubic, delay = FADE, play = true, onFinish }
       { prop = AnimProp.opacity, from = 1, to = 0.1, duration = FADE,
         easing = InOutCubic, delay = FADE + SHOW, play = true }
 
-      { prop = AnimProp.translate, from = [0, - consumableAnimationBottom], to = [0, - consumableAnimationTop],
-        duration = FADE * 2 + SHOW, play = true, onFinish = @() removeSpendItem(nextAnimation) }
+      { prop = AnimProp.translate, from = [0, start], to = [0, finish],
+        duration = FADE * 2 + SHOW, play = true, onFinish = @() removeSpendItem(nextAnimation)
+        sound = { start = "meta_coins_outcome" }}
     ]
   }
 }
 
-let function mkConsumableSpend(itemId) {
+let function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = consumableAnimationTop, onFinish = null) {
   if (!itemId)
     return null
   let nextAnimation = Computed(@() spendItemsQueue.value.findvalue(@(i) i.itemId == itemId))
@@ -107,7 +108,7 @@ let function mkConsumableSpend(itemId) {
     hplace = ALIGN_LEFT
     children = @() {
       watch = nextAnimation
-      children = nextAnimation.value == null ? null : mkConsumableAnimation(nextAnimation.value)
+      children = nextAnimation.value == null ? null : mkConsumableAnimation(nextAnimation.value, start, finish, onFinish)
     }
   }
 }

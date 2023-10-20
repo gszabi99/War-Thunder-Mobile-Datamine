@@ -3,7 +3,7 @@ let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
 let { gradTranspDoubleSideX, gradRadial } = require("%rGui/style/gradients.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-
+let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
 
 let btnW  = hdpxi(225)
 let btnH = hdpxi(200)
@@ -81,13 +81,13 @@ let glare = {
 let function tryPremiumButton() {
   let stateFlags = Watched(0)
   return @() {
-    watch = stateFlags
+    watch = [stateFlags, isDebriefingAnimFinished]
     size = [btnW, btnH]
 
     behavior = Behaviors.Button
     onClick = @() openShopWnd(SC_PREMIUM)
-    onElemState = @(v) stateFlags(v)
-    transform = { scale = isActive(stateFlags.value) ? [0.95, 0.95] : [1, 1] }
+    onElemState = @(v) stateFlags.set(v)
+    transform = { scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
     sound = { click  = "click" }
 
@@ -100,7 +100,7 @@ let function tryPremiumButton() {
       btnGlow
       btnIcon
       btnText
-      glare
+      isDebriefingAnimFinished.get() ? glare : null
     ]
   }
 }

@@ -1,4 +1,3 @@
-
 from "%scripts/dagui_library.nut" import *
 let { subscribe, send } = require("eventbus")
 let { destroy_session } = require("multiplayer")
@@ -11,6 +10,7 @@ let { battleResult, debugBattleResult } = require("battleResult.nut")
 let loadRootScreen = require("%scripts/loadRootScreen.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let { stat_get_benchmark } = require("guiMission")
+let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 
 ::gui_start_debriefing <- function gui_start_debriefing() {
   if (needLogoutAfterSession.value) {
@@ -22,7 +22,7 @@ let { stat_get_benchmark } = require("guiMission")
 
   let gm = get_game_mode()
   if (is_benchmark_game_mode()) {
-    let title = ::loc_current_mission_name()
+    let title = locCurrentMissionName()
     let stats = stat_get_benchmark()
     loadRootScreen()
     send("showBenchmarkResult", { title, stats })

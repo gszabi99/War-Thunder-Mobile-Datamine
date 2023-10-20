@@ -49,6 +49,8 @@ let function calcUnlockProgress(progressData, unlockDesc) {
   if (stage > 0) {
     let isLastStageCompleted = (unlockDesc?.periodic != true) && (stage >= stageToShow)
     res.isCompleted = isLastStageCompleted || res.hasReward
+    if (res.isCompleted)
+      res.required = (unlockDesc?.stages[stageToShow - 1].progress || 1).tointeger()
     res.isFinished = isLastStageCompleted && !res.hasReward
     res.current = res.required
   }
@@ -83,15 +85,6 @@ let function getRelativeStageData(unlock) {
 }
 
 let unlockRewardsInProgress = Watched({})
-userstatRegisterHandler("GrantRewards", function(result, context) {
-  let { unlockName  = null } = context
-  if (unlockName in unlockRewardsInProgress.value)
-    unlockRewardsInProgress.mutate(@(v) delete v[unlockName])
-  if ("error" in result)
-    log("GrantRewards result: ", result)
-  else
-    log("GrantRewards result success: ", context)
-})
 
 let function receiveUnlockRewards(unlockName, stage, context = null) {
   if (unlockName in unlockRewardsInProgress.value)
@@ -102,6 +95,19 @@ let function receiveUnlockRewards(unlockName, stage, context = null) {
     { data = { unlock = unlockName, stage } },
     (context ?? {}).__merge({ unlockName }))
 }
+
+userstatRegisterHandler("GrantRewards", function(result, context) {
+  let { unlockName  = null, finalStage = null, stage = 0 } = context
+  if (unlockName in unlockRewardsInProgress.value)
+    unlockRewardsInProgress.mutate(@(v) delete v[unlockName])
+  if ("error" in result)
+    log("GrantRewards result: ", result)
+  else {
+    log("GrantRewards result success: ", context)
+    if (finalStage != null && finalStage > stage)
+      receiveUnlockRewards(unlockName, stage + 1, { stage = stage + 1, finalStage })
+  }
+})
 
 return {
   activeUnlocks

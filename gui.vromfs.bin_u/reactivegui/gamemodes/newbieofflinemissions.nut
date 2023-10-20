@@ -138,13 +138,15 @@ debriefingData.subscribe(function(data) {
   let unitName = data?.reward.unitName
   let kills = data?.players[myUserId.value.tostring()].kills ?? 0
   logO($"Queue offline reward {campaign}/{predefinedId} by battle result {unitName} (kills = {kills})")
-  delayedRewards.mutate(function(dRewards) {
-    if (userId not in dRewards)
-      dRewards[userId] <- {}
-    if (campaign not in dRewards[userId])
-      dRewards[userId][campaign] <- []
-    dRewards[userId][campaign].append({ rewardId = predefinedId, unitName, kills })
-  })
+  if (userId != null) {
+    delayedRewards.mutate(function(dRewards) {
+      if (userId not in dRewards)
+        dRewards[userId] <- {}
+      if (campaign not in dRewards[userId])
+        dRewards[userId][campaign] <- []
+      dRewards[userId][campaign].append({ rewardId = predefinedId, unitName, kills })
+    })
+  }
 })
 
 let function mkCurRewardBattleData(reward, predefinedId) {

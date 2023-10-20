@@ -55,11 +55,11 @@ let function mkBitmapPicture(w, h, fillcb, prefix="") {
 }
 
 let cache = {}
-let maxCachedSize = sw(15) * sh(15)
+local maxCachedSize = sw(15) * sh(15)
 //create picture cached by fillCb on call.
 let function mkBitmapPictureLazy(w, h, fillCb, prefix = "") {
   if (w * h > maxCachedSize)
-    logerr($"Queued mkBitmapPictureLazy has size = {w}*{h} = {w*h} bigger than sw(10) * sh(10) = {maxCachedSize}")
+    logerr($"Queued mkBitmapPictureLazy has size = {w}*{h} = {w*h} bigger than sw(15) * sh(15) = {maxCachedSize}")
   return function() {
     if (fillCb not in cache)
       cache[fillCb] <- mkBitmapPicture(w, h, fillCb, prefix)
@@ -70,4 +70,5 @@ let function mkBitmapPictureLazy(w, h, fillCb, prefix = "") {
 return {
   mkBitmapPicture
   mkBitmapPictureLazy
+  function setMaxCachedSize(size) { maxCachedSize = size }
 }

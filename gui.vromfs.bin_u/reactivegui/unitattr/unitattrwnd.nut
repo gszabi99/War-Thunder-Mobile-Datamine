@@ -281,4 +281,4 @@ let unitAttrWnd = {
   animations = wndSwitchAnim
 }
 
-registerScene("unitAttrWnd", unitAttrWnd, @() isUnitAttrOpened(false), isUnitAttrOpened)
+registerScene("unitAttrWnd", unitAttrWnd, @() isUnitAttrOpened(false), isUnitAttrOpened, false, @() selAttrSpCost.value <= 0)

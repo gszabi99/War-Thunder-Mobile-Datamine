@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { txt, tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { txt, tagRedColor, mkBgImg } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { onSectionChange, curSectionId, hasUnseenQuestsBySection, sectionsCfg } = require("questsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkLockedIcon } = require("rewardsComps.nut")
+let { mkLockedIcon, progressBarRewardSize } = require("rewardsComps.nut")
+let { eventSeason, openEventWnd } = require("%rGui/event/eventState.nut")
+let { getLootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 
 
 let SECTION_OPACITY = 0.3
@@ -16,6 +18,8 @@ let sectionBtnHeight = hdpx(70)
 let sectionBtnMaxWidth = hdpx(400)
 let lockedOpacity = 0.5
 let sectionBtnGap = hdpx(10)
+let lootboxSize = hdpx(130)
+let linkToEventWidth = hdpx(240)
 
 let newMark = {
   size  = [SIZE_TO_CONTENT, newMarkH]
@@ -79,11 +83,11 @@ let mkSectionBtn = @(id, width = sectionBtnMaxWidth, font = fontSmallShaded, isL
   ]
 }
 
-let timeUntilTheEnd = @(time, ovr = {}) {
-  hplace = ALIGN_LEFT
+let mkTimeUntil = @(time, locId = "quests/untilTheEnd", ovr = {}) {
+  hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
   rendObj = ROBJ_TEXT
-  text = "".concat(loc("quests/untilTheEnd"), " ", time)
+  text = loc(locId, { time })
 }.__update(fontSmall, ovr)
 
 let allQuestsCompleted = {
@@ -92,12 +96,44 @@ let allQuestsCompleted = {
   text = loc("quests/allCompleted")
 }.__update(fontMedium)
 
+let function linkToEventBtn() {
+  let stateFlags = Watched(0)
+
+  return @() {
+    watch = [eventSeason, stateFlags]
+    size = [linkToEventWidth, progressBarRewardSize]
+    behavior = Behaviors.Button
+    onClick = openEventWnd
+    onElemState = @(sf) stateFlags(sf)
+    children = [
+      mkBgImg($"ui/gameuiskin#banner_event_{eventSeason.value}.avif:0:P", "ui/gameuiskin#offer_bg_blue.avif:0:P")
+      {
+        size = [lootboxSize, lootboxSize]
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        rendObj = ROBJ_IMAGE
+        keepAspect = true
+        image = getLootboxImage("event_big", lootboxSize)
+      }
+      {
+        vplace = ALIGN_BOTTOM
+        rendObj = ROBJ_TEXT
+        padding = hdpx(10)
+        text = utf8ToUpper(loc("mainmenu/rewardsList"))
+      }.__update(fontTinyAccentedShaded)
+    ]
+    transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+  }
+}
+
 return {
   newMark
   mkSectionBtn
   sectionBtnHeight
   sectionBtnMaxWidth
   sectionBtnGap
-  timeUntilTheEnd
+  mkTimeUntil
   allQuestsCompleted
+  linkToEventBtn
 }

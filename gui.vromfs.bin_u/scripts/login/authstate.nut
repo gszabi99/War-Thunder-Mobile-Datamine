@@ -1,7 +1,7 @@
 
 from "%scripts/dagui_library.nut" import *
 let { send, subscribe } = require("eventbus")
-let { LT_GAIJIN } = require("%appGlobals/loginState.nut")
+let { LT_GAIJIN, SST_UNKNOWN } = require("%appGlobals/loginState.nut")
 let { getAutologinType } = require("autoLogin.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -12,7 +12,7 @@ let authState = hardPersistWatched("login.authState", {
   loginPas = ""
   twoStepAuthCode = ""
   check2StepAuthCode = false
-  email2step = false
+  secStepType = SST_UNKNOWN
 })
 
 let sendState = @(v) send("updateAuthStates", v)
@@ -28,7 +28,7 @@ let function resetAuthState() {
     s.loginName = lp.login
     s.loginPas = lp.password
     s.check2StepAuthCode = false
-    s.email2step = false
+    s.secStepType = SST_UNKNOWN
   })
 }
 

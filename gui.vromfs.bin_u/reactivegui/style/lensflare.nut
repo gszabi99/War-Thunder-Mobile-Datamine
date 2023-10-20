@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { sqrt, fabs } = require("math")
 
 let getDistance = @(x, y) sqrt(x * x + y * y)
@@ -27,7 +27,7 @@ let function mkLensFlareCutRadiusLeft(radius, outherWidth, innerWidth, cutRadius
         return cutWidth == 0 ? 1.0 : min(1.0, -distanceCut / cutWidth)
       }
 
-  return mkBitmapPicture(center, center * 2,
+  return mkBitmapPictureLazy(center, center * 2,
     function(params, bmp) {
       let { w, h } = params
       for (local y = 0; y < h; y++)
@@ -44,7 +44,7 @@ let function mkLensFlareCutRadiusLeft(radius, outherWidth, innerWidth, cutRadius
     })
 }
 
-let mkLensLine = @(width, height, middle = 0.4) mkBitmapPicture(width, height,
+let mkLensLine = @(width, height, middle = 0.4) mkBitmapPictureLazy(width, height,
   function(params, bmp) {
     let { w, h } = params
     let yMul = array(h).map(function(_, y) {

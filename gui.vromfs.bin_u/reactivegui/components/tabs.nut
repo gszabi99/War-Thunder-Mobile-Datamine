@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideY, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 
 let tabsGap = hdpx(10)
@@ -12,9 +12,9 @@ let activeBgColor = 0xFF52C4E4
 let lineColor = 0xFF75D0E7
 let transDuration = 0.3
 
-let bgGradient = mkBitmapPicture(gradTexSize, gradTexSize / 4,
+let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 4, gradTexSize * 6 / 16, gradTexSize * 3 / 16, gradTexSize * 3 / 8))
-let lineGradient = mkBitmapPicture(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColor, 0.25))
+let lineGradient = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColor, 0.25))
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
 
@@ -22,7 +22,7 @@ let selectedLine = @(isActive) @() {
   watch = isActive
   size = [selLineWidth, flex()]
   rendObj = ROBJ_IMAGE
-  image = lineGradient
+  image = lineGradient()
   opacity = isActive.value ? 1 : 0
   transitions = opacityTransition
 }
@@ -42,7 +42,7 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
       watch = [isActive, isHover]
       size = flex()
       rendObj = ROBJ_IMAGE
-      image = bgGradient
+      image = bgGradient()
       opacity = isActive.value ? 1
         : isHover.value ? 0.5
         : 0

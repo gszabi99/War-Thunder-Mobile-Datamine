@@ -15,7 +15,7 @@ let { forceSendBqQueue } = require("%scripts/bqQueue.nut")
 
 let DELETE_ACCOUNT_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
 
-let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
+let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
 let canLogout = @() !::disable_network()
 

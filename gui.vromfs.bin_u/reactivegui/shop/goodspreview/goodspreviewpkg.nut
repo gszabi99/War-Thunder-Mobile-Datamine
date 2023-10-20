@@ -18,7 +18,7 @@ let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTex
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 
 let activeItemId = Watched(null)

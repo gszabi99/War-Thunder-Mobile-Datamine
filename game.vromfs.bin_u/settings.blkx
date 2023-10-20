@@ -24,8 +24,6 @@
   "use_eac": false,
   "forcedLauncher": 0,
   "use_release_candidate": false,
-  "preallocTotalMb": 600,
-  "preallocChunkCount": 100,
   "unknownProximityMeansPanorama": true,
   "fastReturnToPanorama": true,
   "rendinstOcclusionByUnitType": true,
@@ -283,8 +281,7 @@
     "latency": 0,
     "vrStreamerMode": false,
     "vreye": "left",
-    "fpsLimitOnUpdater": 10,
-    "msgBoxAndQuitOnInitVideoFail": true
+    "fpsLimitOnUpdater": 10
   },
   "graphics": {
     "useHdr": true,
@@ -516,10 +513,6 @@
     "skipIntegratedGpuWarning": true,
     "netLogerr": true,
     "dynamicImpostorsPerFrame": 1,
-    "visualLogOffset": [
-      20.0,
-      60.0
-    ],
     "logerrOnSecLayer": true,
     "mobileStyleFpsString": true,
     "sendFullLogOnFatalIntervalHours": 4,
@@ -1061,7 +1054,6 @@
         "preRotation": false
       },
       "android": {
-        "lowPerfCores": 15,
         "highPerfCores": 240,
         "antiThrottlingSleepMs": 5,
         "antiThrottlingFpsLimit": 50
@@ -1073,7 +1065,6 @@
         "blackUnitWorkaround": true
       },
       "android": {
-        "lowPerfCores": 15,
         "highPerfCores": 240,
         "antiThrottlingSleepMs": 5,
         "antiThrottlingFpsLimit": 50
@@ -1122,6 +1113,16 @@
       ],
       "metal": {
         "allowRt": true
+      },
+      "video": {
+        "fpsLimit": 60
+      }
+    },
+    "apple_a8": {
+      "codename": "iPad5,",
+      "graphics": {
+        "shaderlod": "low",
+        "enableNearCloudsRendering": false
       }
     }
   },
@@ -1419,7 +1420,8 @@
         "treeAlphaToCoverage": true,
         "impostorAlphaToCoverage": true,
         "compatibilityRendinstDistMul": 0.8,
-        "enableGrassTrackMask": false
+        "enableGrassTrackMask": false,
+        "allowNonSkyReflections": false
       }
     },
     "medium": {
@@ -1445,7 +1447,8 @@
         "treeAlphaToCoverage": true,
         "impostorAlphaToCoverage": true,
         "compatibilityRendinstDistMul": 0.8,
-        "enableGrassTrackMask": false
+        "enableGrassTrackMask": false,
+        "allowNonSkyReflections": true
       }
     },
     "high": {
@@ -1471,7 +1474,8 @@
         "treeAlphaToCoverage": true,
         "impostorAlphaToCoverage": true,
         "compatibilityRendinstDistMul": 1.0,
-        "enableGrassTrackMask": true
+        "enableGrassTrackMask": true,
+        "allowNonSkyReflections": true
       }
     },
     "max": {
@@ -1497,7 +1501,8 @@
         "treeAlphaToCoverage": true,
         "impostorAlphaToCoverage": true,
         "compatibilityRendinstDistMul": 1.0,
-        "enableGrassTrackMask": true
+        "enableGrassTrackMask": true,
+        "allowNonSkyReflections": true
       }
     }
   },

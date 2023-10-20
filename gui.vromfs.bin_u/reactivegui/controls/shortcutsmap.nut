@@ -29,8 +29,6 @@ let allShortcuts = {
   ID_TRANS_GEAR_DOWN = "S | Down"
   gm_steering_right = "D | Right"
   gm_steering_left = "A | Left"
-  wheel_steering_right = "D | Right"
-  wheel_steering_left = "A | Left"
 
   //SHIP shortcuts:
   ship_main_engine_rangeMax = "J:LS.Up | W | Up"
@@ -77,7 +75,6 @@ let gamepadAxes = {
   gm_mouse_aim_y = JOY_XBOX_REAL_AXIS_R_THUMB_V
   gm_throttle = JOY_XBOX_REAL_AXIS_L_THUMB_V
   gm_steering = JOY_XBOX_REAL_AXIS_L_THUMB_H
-  wheel_steering = JOY_XBOX_REAL_AXIS_L_THUMB_H
 
   //SHIP
   ship_mouse_aim_x = JOY_XBOX_REAL_AXIS_R_THUMB_H

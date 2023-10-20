@@ -13,8 +13,14 @@ let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { SPARE } = require("%appGlobals/itemsState.nut")
+let { get_local_custom_settings_blk } = require("blkGetters")
+let { isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
+let { register_command } = require("console")
+let { isEqual } = require("%sqstd/underscore.nut")
 
-
+let sparesNum = mkWatched(persist, "sparesNum", servProfile.value?.items[SPARE].count ?? 0)
 let isRespawnAttached = Watched(false)
 let readySlotsMask = Watched(0)
 let spareSlotsMask = Watched(0)
@@ -23,11 +29,16 @@ let playerSelectedSlotIdx = mkWatched(persist, "playerSelectedSlotIdx", -1)
 let spawnUnitName = mkWatched(persist, "spawnUnitName", null)
 isRespawnStarted.subscribe(@(v) v ? null : spawnUnitName(null))
 
+const SEEN_SHELLS = "SeenShells"
+
+let seenShells = mkWatched(persist, SEEN_SHELLS, {})
+
 let getWeapon = @(weapons) weapons.findindex(@(v) v) ?? weapons.findindex(@(_) true)
-let mkSlot = @(id, info, readyMask = 0, spareMask = 0)
+let mkSlot =  @(id, info, readyMask = 0, spareMask = 0)
   { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}),
     canSpawn = is_bit_set(readyMask, id),
-    isSpawnBySpare = is_bit_set(spareMask, id)
+    isSpawnBySpare = is_bit_set(spareMask, id),
+    bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
   }
 
 let respawnSlots = Computed(function() {
@@ -45,6 +56,53 @@ let respawnSlots = Computed(function() {
   res.each(@(s) s.level <- level)
   return res
 })
+
+let hasUnseenShellsBySlot = Computed(@() respawnSlots.value.map(function (slot) {
+  if (slot.level >= (slot?.reqLevel ?? 0)) {
+    return slot.bullets.map(@(v, id) (id != "")
+      && ((v?.reqLevel ?? 0) != 0)
+      && (slot.level >= (v?.reqLevel ?? 0))
+      && !(seenShells.value?[slot.name][id] ?? false))
+  }
+  return {}
+}))
+
+let function saveSeenShells(unitName, ids) {
+  let filtered = ids.filter(@(id) hasUnseenShellsBySlot.value.findvalue(@(item) (item?[id] ?? false)))
+  let unitSeen = clone seenShells.value?[unitName] ?? {}
+  foreach (id in filtered)
+    unitSeen[id] <- true
+  if (isEqual(unitSeen, seenShells.value?[unitName]))
+    return
+  seenShells.mutate(@(v) v[unitName] <- unitSeen)
+
+  let globalBlk = get_local_custom_settings_blk()
+  let shellsBlk = globalBlk.addBlock(SEEN_SHELLS)
+
+  let unitBlk = shellsBlk.addBlock(unitName)
+  foreach (id, val in unitSeen)
+    unitBlk[id] = val
+  send("saveProfile", {})
+}
+
+let function loadSeenShells() {
+  let blk = get_local_custom_settings_blk()
+  let shellsBlk = blk?[SEEN_SHELLS]
+  if (!isDataBlock(shellsBlk)) {
+    seenShells({})
+    return
+  }
+  let res = {}
+  eachBlock(shellsBlk, function(unitBlk, name) {
+    let items = {}
+    eachParam(unitBlk, @(value, item) items[item] <- value)
+    res[name] <- items
+  })
+  seenShells(res)
+}
+
+if (seenShells.value.len() == 0)
+  loadSeenShells()
 
 let hasAvailableSlot = Computed(@() respawnsLeft.value != 0 && respawnSlots.value.findvalue(@(s) s.canSpawn) != null)
 let needAutospawn = keepref(Computed(@() isInRespawn.value && isRespawnAttached.value
@@ -85,8 +143,12 @@ isRespawnAttached.subscribe(function(v) {
   selectRespawnBase(curRespBase.value)
 })
 curRespBase.subscribe(@(v) isRespawnAttached.value ? selectRespawnBase(v) : null)
-isInBattle.subscribe(@(v) !v ? playerSelectedRespBase(-1) : null)
-
+isInBattle.subscribe( function (v) {
+  if (v)
+    sparesNum(servProfile.value?.items[SPARE].count ?? 0)
+  else
+    playerSelectedRespBase(-1)
+})
 let emptyBullets = { bullets0 = "", bulletCount0 = 10000 }
 let MAX_SLOTS = 6
 let function getDefaultBulletDataToSpawn(unitName, level, weaponName) {
@@ -181,6 +243,17 @@ isInRespawn.subscribe(function(v) {
     logR($"On init respawn screen slots not available. respawns_left = {respawnsLeft.value}, hasUnitToSpawn = {respawnUnitInfo.value != null}")
 })
 
+register_command(function() {
+  seenShells({})
+  get_local_custom_settings_blk().removeBlock(SEEN_SHELLS)
+  send("saveProfile", {})
+}, "debug.reset_seen_shells")
+
+register_command(function() {
+  loadSeenShells()
+}, "debug.load_seen_shells")
+
+
 return {
   isRespawnAttached
   respawnSlots
@@ -191,6 +264,9 @@ return {
   availRespBases
   playerSelectedRespBase
   curRespBase
+  sparesNum
+  saveSeenShells
+  hasUnseenShellsBySlot
 
   respawn
   cancelRespawn

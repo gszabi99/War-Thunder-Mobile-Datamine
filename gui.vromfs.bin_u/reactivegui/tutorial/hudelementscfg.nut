@@ -9,9 +9,9 @@ let rotated = @(objs) { objs, sizeInc = rotatedBtnSizeInc }
 let circle = @(objs) { objs, sizeInc = circleWithCountSizeInc }
 let elements = {
   btn_forward = ["ship_main_engine_rangeMax", "submarine_main_engine_rangeMax", "ID_TRANS_GEAR_UP"]
-  btn_left_right = ["ship_steering_rangeMax", "ship_steering_rangeMin", "gm_steering_right", "gm_steering_left",  "wheel_steering_right", "wheel_steering_left"]
-  btn_left = ["ship_steering_rangeMax", "gm_steering_left", "wheel_steering_left"]
-  btn_right = ["ship_steering_rangeMin", "gm_steering_right", "wheel_steering_right"]
+  btn_left_right = ["ship_steering_rangeMax", "ship_steering_rangeMin", "gm_steering_right", "gm_steering_left"]
+  btn_left = ["ship_steering_rangeMax", "gm_steering_left"]
+  btn_right = ["ship_steering_rangeMin", "gm_steering_right"]
   btn_backward = ["ship_main_engine_rangeMin", "submarine_main_engine_rangeMin", "ID_TRANS_GEAR_DOWN"]
   tank_move_stick_zone = ["tank_move_stick_zone"]
   btn_zoom = [rotated("btn_zoom"), "btn_zoom_circle"]

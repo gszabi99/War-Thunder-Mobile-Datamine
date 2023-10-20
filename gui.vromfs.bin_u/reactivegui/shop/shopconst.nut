@@ -14,6 +14,8 @@ let goodsTypes = [
   "SGT_PREMIUM"
   "SGT_UNIT"
   "SGT_CONSUMABLES"
+  "SGT_WARBONDS"
+  "SGT_EVENT_KEYS"
 ].map(@(v, i) [ v, 200 + i ]).totable()
 
 return shopCategories.__merge(goodsTypes,

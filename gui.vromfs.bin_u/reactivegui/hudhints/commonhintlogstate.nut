@@ -163,6 +163,16 @@ subscribe("hint:holding_for_stop:show", function(_) {
   addCommonHint(loc("hints/holding_for_stop"))
 })
 
+subscribe("hint:need_stop_for_fire", function(_) {
+  addCommonHint(loc("hints/need_stop_for_fire"))
+})
+
+subscribe("hint:hull_aiming_with_camera:show", function(_) {
+  if (!incHintCounter("hull_aiming_with_camera", 3))
+    return
+  addCommonHint(loc("hints/hull_aiming_with_camera"))
+})
+
 const REPAIR_MODULE_ID = "repair_module"
 subscribe("hint:repair_module:show", function(_) {
   if (!incHintCounter(REPAIR_MODULE_ID, 15))

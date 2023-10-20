@@ -1,9 +1,5 @@
-//-file:plus-string
-
-
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-
 let DataBlock  = require("DataBlock")
 let { split_by_chars } = require("string")
 let { get_current_mission_desc } = require("guiMission")
@@ -27,9 +23,8 @@ let isAvailableByMissionSettings = @(misBlk, unitType) (misBlk?[missionAvailabil
   && ((unitType not in isUsedInKillStreaks) || !(misBlk?.useKillStreaks ?? false))
 
 
-::is_mission_complete <- function is_mission_complete(chapterName, missionName) {
-//different by mp_modes
-  let progress = ::get_mission_progress(chapterName + "/" + missionName)
+let function isMissionComplete(chapterName, missionName) { //different by mp_modes
+  let progress = ::get_mission_progress($"{chapterName}/{missionName}")
   return progress >= 0 && progress < 3
 }
 
@@ -57,7 +52,31 @@ let getMissionLocName = @(config, key = "locId")
   "".join(getLocIdsArray(config, key)
       .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
 
-::loc_current_mission_name <- function loc_current_mission_name() {
+let function getCombineLocNameMission(missionInfo) {
+  let misInfoName = missionInfo?.name ?? ""
+  local locName = ""
+  if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
+    locName = getMissionLocName(missionInfo, "locNameTeamA")
+  else if ((missionInfo?.locName.len() ?? 0) > 0)
+    locName = getMissionLocName(missionInfo, "locName")
+  else
+    locName = loc($"missions/{misInfoName}", "")
+
+  if (locName == "") {
+    let misInfoPostfix = missionInfo?.postfix ?? ""
+    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
+      let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
+      locName = "".concat("[", loc($"missions/{misInfoPostfix}"), "] ", loc($"missions/{name}"))
+    }
+  }
+
+  //we dont have lang and postfix
+  if (locName == "")
+    locName = $"missions/{misInfoName}"
+  return locName
+}
+
+let function locCurrentMissionName() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
   let teamId = hudArmyToTeamId?[::get_player_army_for_hud()] ?? ""
@@ -69,37 +88,16 @@ let getMissionLocName = @(config, key = "locId")
   else if ((misBlk?.locName.len() ?? 0) > 0)
     ret = getMissionLocName(misBlk, "locName")
   else if ((misBlk?.loc_name ?? "") != "")
-    ret = loc("missions/" + misBlk.loc_name, "")
+    ret = loc($"missions/{misBlk.loc_name}", "")
   if (ret == "")
-    ret = ::get_combine_loc_name_mission(misBlk)
+    ret = getCombineLocNameMission(misBlk)
   return ret
-}
-
-::get_combine_loc_name_mission <- function get_combine_loc_name_mission(missionInfo) {
-  let misInfoName = missionInfo?.name ?? ""
-  local locName = ""
-  if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
-    locName = getMissionLocName(missionInfo, "locNameTeamA")
-  else if ((missionInfo?.locName.len() ?? 0) > 0)
-    locName = getMissionLocName(missionInfo, "locName")
-  else
-    locName = loc("missions/" + misInfoName, "")
-
-  if (locName == "") {
-    let misInfoPostfix = missionInfo?.postfix ?? ""
-    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
-      let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
-      locName = "[" + loc("missions/" + misInfoPostfix) + "] " + loc("missions/" + name)
-    }
-  }
-
-  //we dont have lang and postfix
-  if (locName == "")
-    locName = "missions/" + misInfoName
-  return locName
 }
 
 return {
   missionAvailabilityFlag
   isAvailableByMissionSettings
+  isMissionComplete
+  getCombineLocNameMission
+  locCurrentMissionName
 }

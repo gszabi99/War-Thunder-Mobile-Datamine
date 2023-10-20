@@ -59,11 +59,12 @@ let textArea = @(ovr) txtBase.__merge({
   size = [ flex(), SIZE_TO_CONTENT ]
 }, ovr)
 
-let mkBgImg = @(img) {
+let mkBgImg = @(img, defImg = "ui/gameuiskin/shop_bg_slot.avif") {
   size = flex()
   rendObj = ROBJ_IMAGE
   image = Picture(img)
-  keepAspect = KEEP_ASPECT_NONE
+  fallbackImage = Picture(defImg)
+  keepAspect = KEEP_ASPECT_FILL
 }
 
 let mkSlotBgImg = @() mkBgImg("ui/gameuiskin/shop_bg_slot.avif")
@@ -91,14 +92,14 @@ let mkFitCenterImg = @(img) {
   imageValign = ALIGN_CENTER
 }
 
-let mkGoodsImg = @(img) {
-    size = flex()
-    rendObj = ROBJ_IMAGE
-    image = Picture(img)
-    keepAspect = KEEP_ASPECT_FIT
-    imageHalign = ALIGN_LEFT
-    imageValign = ALIGN_BOTTOM
-  }
+let mkGoodsImg = @(img, ovr = {}) {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{img}:0:P")
+  keepAspect = KEEP_ASPECT_FIT
+  imageHalign = ALIGN_LEFT
+  imageValign = ALIGN_BOTTOM
+}.__update(ovr)
 
 let numberToTextForWtFont = @(str) str.tostring().replace("0", "O")
 
@@ -216,31 +217,30 @@ let firstPurchTxt = @(ovr) txtBase.__merge({
 let firstPurchLabel = firstPurchTxt({ text = utf8ToUpper(loc("shop/item/first_purchase/short")) })
 firstPurchLabel.fontSize = getFontSizeToFitWidth(firstPurchLabel, firstPurchLabelMaxWidth, fontVeryVeryTiny.fontSize)
 
-let mkFirstPurchBonusMark = function(goods, state) {
-  if ((goods?.firstPurchaseBonus ?? {}).len() == 0)
-    return null
-  let res = { watch = state }
-  if (state.value & HAS_PURCHASES)
-    return @() res
-  let { gold = 0 } = goods.firstPurchaseBonus
-  let bonusComp = gold <= 0
-    ? firstPurchTxt({ text = "????????" })
-    : {
-        valign = ALIGN_CENTER
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(6)
+let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus ?? {}).len() == 0 ? null
+  : function() {
+      let res = { watch = state }
+      if (state.value & HAS_PURCHASES)
+        return res
+      let { gold = 0 } = goods.firstPurchaseBonus
+      let bonusComp = gold <= 0
+        ? firstPurchTxt({ text = "????????" })
+        : {
+            valign = ALIGN_CENTER
+            flow = FLOW_HORIZONTAL
+            gap = hdpx(6)
+            children = [
+              firstPurchTxt({ text = numberToTextForWtFont("".concat("+", gold)) })
+              mkCurrencyImage("gold", firstPurchBonusCurrencyIcoSize)
+            ]
+          }
+      return res.__merge(firstPurchBonusBg, {
         children = [
-          firstPurchTxt({ text = numberToTextForWtFont("".concat("+", gold)) })
-          mkCurrencyImage("gold", firstPurchBonusCurrencyIcoSize)
+          bonusComp
+          firstPurchLabel
         ]
-      }
-  return @() res.__merge(firstPurchBonusBg, {
-    children = [
-      bonusComp
-      firstPurchLabel
-    ]
-  })
-}
+      })
+    }
 
 let function mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag = true) {
   let { discountInPercent, priceExt = null } = goods
@@ -328,7 +328,7 @@ let function mkPricePlate(goods, priceBgTex, state, animParams = null, needDisco
   }
 }
 
-let function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}) {
+let function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
   let stateFlags = Watched(0)
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]
@@ -347,8 +347,8 @@ let function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}) {
     children = [
       {
         size = [ flex(), goodsBgH ]
-        children = mkContent(stateFlags.value)
-      }
+        children = mkContent?(stateFlags.value)
+      }.__update(childOvr)
       pricePlate
     ]
   }).__update(ovr)
@@ -376,7 +376,7 @@ let function mkOfferWrap(onClick, mkContent, pricePlate = null) {
         children = [
           {
             size = [ flex(), offerBgH ]
-            children = mkContent(stateFlags.value)
+            children = mkContent?(stateFlags.value)
           }
           pricePlate
         ]

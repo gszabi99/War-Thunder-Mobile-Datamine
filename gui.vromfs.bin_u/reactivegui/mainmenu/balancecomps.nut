@@ -10,6 +10,7 @@ let { mkCurrencyComp, CS_GAMERCARD } = require("%rGui/components/currencyComp.nu
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
 let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("balanceAnimations.nut")
+let { isAdsVisible } = require("%rGui/ads/adsState.nut")
 let { GPT_PREMIUM } = require("%rGui/shop/goodsPreviewState.nut")
 
 let visibleBalance = hardPersistWatched("balance.visibleBalance", {})
@@ -140,7 +141,7 @@ let plus = {
 
 let function mkBalance(id, style, onClick, onAttach) {
   let visCount = Computed(@() visibleBalance.value?[id])
-  let nextChange = Computed(@() changeOrders.value?[id][0])
+  let nextChange = Computed(@() isAdsVisible.value ? null : changeOrders.value?[id][0])
   let stateFlags = Watched(0)
   let currencyOvr = {
     watch = [visCount, stateFlags]

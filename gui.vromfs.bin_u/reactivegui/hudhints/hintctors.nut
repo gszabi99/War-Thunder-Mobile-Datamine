@@ -145,4 +145,5 @@ return {
   mkGradientBlock
 
   failBgColor
+  defBgColor
 }

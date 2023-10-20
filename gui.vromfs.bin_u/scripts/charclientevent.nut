@@ -54,8 +54,8 @@ let function charClientEvent(name, client) {
       assert(handler in handlers, $"{func}: Unknown handler '{handler}'")
     debug($"{func} {shortValue(params)}{shortValue(context)}")
 
-    let sepIdx = handler.indexof(":")
-    params.action <- sepIdx == null ? handler : handler.slice(sepIdx)
+    let sepIdx = handler.indexof(":") //after ':' can push extra id for callback. Main action is before ':'
+    params.action <- sepIdx == null ? handler : handler.slice(0, sepIdx)
     if (sepIdx != null) {
       context = clone (context ?? {})
       context["$handlerId"] <- handler

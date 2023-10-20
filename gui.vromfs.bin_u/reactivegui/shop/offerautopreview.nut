@@ -52,7 +52,7 @@ isVisiblePreviewOpened.subscribe(function(v) {
   if (!v)
     return
   let { endTime, campaign } = visibleOffer.value
-  showedTime.mutate(@(v) v[campaign] <- endTime)
+  showedTime.mutate(@(val) val[campaign] <- endTime)
 })
 
 isLoggedIn.subscribe(function(v) {

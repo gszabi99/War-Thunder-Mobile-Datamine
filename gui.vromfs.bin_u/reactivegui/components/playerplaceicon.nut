@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let playerPlaceIconSize = evenPx(90)
 let playerPlaceIconBigSize = evenPx(130)
+let playerPlaceIconSmallSize = evenPx(55)
 let defaultBadge = "ui/gameuiskin#player_rank_badge_grey.avif"
 let placeBadges = {
   [1] = "ui/gameuiskin#player_rank_badge_gold.avif",
@@ -25,6 +26,8 @@ let mkPlaceIcon = @(place, size = playerPlaceIconSize, fontStyle = fontTiny) {
 return {
   playerPlaceIconSize
   playerPlaceIconBigSize
+  playerPlaceIconSmallSize
   mkPlaceIcon
   mkPlaceIconBig = @(place) mkPlaceIcon(place, playerPlaceIconBigSize, fontSmallAccented)
+  mkPlaceIconSmall = @(place) mkPlaceIcon(place, playerPlaceIconSmallSize, fontVeryTiny)
 }

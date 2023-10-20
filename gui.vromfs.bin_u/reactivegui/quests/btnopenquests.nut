@@ -2,13 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { openQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { hasUnseenQuestsBySection, questsBySection } = require("questsState.nut")
+let { hasUnseenQuestsBySection, questsBySection, progressUnlock } = require("questsState.nut")
 
 let statusMark = @(_) @() {
-  watch = hasUnseenQuestsBySection
+  watch = [hasUnseenQuestsBySection, progressUnlock]
   hplace = ALIGN_RIGHT
   margin = hdpx(4)
-  children = hasUnseenQuestsBySection.value.findindex(@(v) v) == null ? null
+  children = hasUnseenQuestsBySection.value.findindex(@(v) v) == null && !progressUnlock.value?.hasReward ? null
     : priorityUnseenMark
 }
 

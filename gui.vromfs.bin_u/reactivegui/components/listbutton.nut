@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 
 let btnH = hdpx(103)
@@ -14,14 +14,14 @@ let transDuration = 0.3
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
 
-let lineGradient = mkBitmapPicture(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColor))
-let btnGradient = mkBitmapPicture(gradTexSize, gradTexSize / 4,
+let lineGradient = mkBitmapPictureLazy(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColor))
+let btnGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 8, gradTexSize * 4 / 8, gradTexSize / 2, gradTexSize / 4))
 
 let btnLine = @(isActive) {
   size = [flex(), selLineH]
   rendObj = ROBJ_9RECT
-  image = lineGradient
+  image = lineGradient()
   texOffs = [0, 0.45 * gradTexSize]
   screenOffs = [0, hdpx(50)]
   opacity = isActive ? 1 : 0
@@ -41,7 +41,7 @@ let function btnBase(textOrCtor, sf, isSelected) {
       {
         size = flex()
         rendObj = ROBJ_IMAGE
-        image = btnGradient
+        image = btnGradient()
         keepAspect = KEEP_ASPECT_FILL
         opacity = isActive ? 1
           : sf & S_HOVER ? 0.5

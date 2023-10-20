@@ -18,9 +18,9 @@ let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 
 const SILENT_ACTUALIZE_DELAY = 60
 
-let battleUnitName = persist("battleDataUnit", @() Watched(null))
-let needRefresh = persist("needRefresh", @() Watched(false))
-let lastResult = persist("lastResult", @() Watched(null))
+let battleUnitName = mkWatched(persist, "battleDataUnit", null)
+let needRefresh = mkWatched(persist, "needRefresh", false)
+let lastResult = mkWatched(persist, "lastResult", null)
 let hasBattleUnit = Computed(@() battleUnitName.value in servProfile.value?.units)
 let isBattleDataActual = isOfflineMenu ? Computed(@() true)
   : Computed(@() battleUnitName.value != null

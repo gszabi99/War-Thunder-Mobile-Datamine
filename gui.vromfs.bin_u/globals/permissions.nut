@@ -20,6 +20,7 @@ let defaults = {
   can_write_replays = DBGLEVEL > 0
   can_link_to_gaijin_account = DBGLEVEL > 0
   has_additional_graphics_content = DBGLEVEL > 0
+  has_leaderboard = DBGLEVEL > 0
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

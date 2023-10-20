@@ -45,7 +45,7 @@ let shortcutsByUnitTypes = {
       "ID_CAMERA_NEUTRAL", "ID_TOGGLE_TARGET_TRACKING", "ID_NEXT_BULLET_TYPE",
       cLoc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11", "ID_ACTION_BAR_ITEM_11"),
     ]
-    axes = ["gm_throttle", "gm_steering", "wheel_steering"]
+    axes = ["gm_throttle", "gm_steering"]
       .extend(sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["gm_mouse_aim_x", "gm_mouse_aim_y"]))
   }
 }

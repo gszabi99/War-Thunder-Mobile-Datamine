@@ -193,8 +193,9 @@ let bgGradientComp = doubleSideGradBase.__merge({
   ]
 })
 
-let imagesPreloadComp = {
-  children = array(5).map(@(_, i) {
+let imagesPreloadComp = @() {
+  watch = isOpened
+  children = !isOpened.value ? null : array(5).map(@(_, i) {
     size = [1, 1]
     rendObj = ROBJ_IMAGE
     image = Picture($"!ui/images/review_cue_{i + 1}.avif")

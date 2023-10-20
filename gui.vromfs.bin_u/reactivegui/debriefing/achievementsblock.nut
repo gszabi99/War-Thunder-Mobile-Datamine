@@ -1,0 +1,154 @@
+from "%globalsDarg/darg_library.nut" import *
+let { mkStreakIcon, mkStreakWithMultiplier, getMultiStageUnlockId, getUnlockLocText, getUnlockDescLocText } = require("%rGui/streak/streakPkg.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { WP } = require("%appGlobals/currenciesState.nut")
+let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
+let { withTooltip, hideTooltip } = require("%rGui/tooltip.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
+let { ceil } = require("%sqstd/math.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+
+let gradientWidth = sw(100)
+let contentWidth = saSize[0]
+let gap = hdpx(20)
+let itemSize = hdpx(120)
+let hintSideGradWidth = hdpx(300)
+let bgColor = 0x60606060
+let columns = max(1, ((contentWidth + gap) / (itemSize + gap)).tointeger())
+
+let maxStreaksAnimTimeTotal = 1.0
+let streakAnimTime = 0.4
+let streakAppearTime = 0.2
+let streakBlinkTime = 0.3
+let streakBlinkDelayTime = streakAnimTime - streakBlinkTime
+
+let mkText = @(text) {
+  size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
+  rendObj = ROBJ_TEXT
+  text
+}.__update(fontTinyShaded)
+
+let mkTextArea = @(text) {
+  halign = ALIGN_CENTER
+  behavior = Behaviors.TextArea
+  rendObj = ROBJ_TEXTAREA
+  text
+  maxWidth = hdpx(600)
+}.__update(fontTinyShaded)
+
+let function mkAppearAnim(children, idx, startTime, delayPerItem) {
+  let appearDelay = startTime + idx * delayPerItem
+  let blinkDelay = appearDelay + streakBlinkDelayTime
+  return {
+    key = {}
+    transform = {}
+    animations = [
+      { prop = AnimProp.opacity, from = 0, to = 0, duration = appearDelay, play = true }
+      { prop = AnimProp.opacity, from = 0, to = 1, delay = appearDelay, duration = streakAppearTime,
+        easing = OutQuad, play = true }
+      { prop = AnimProp.scale, from = [1, 1], to = [1.3, 1.3], delay = blinkDelay, duration = streakBlinkTime,
+        easing = Blink, play = true }
+    ]
+    children
+  }
+}
+
+
+let function mkInfoButton(val) {
+  let { id, wp = 0, completed = 1 } = val
+  let unlockId = getMultiStageUnlockId(id, completed)
+  let stateFlags = Watched(0)
+  let key = {}
+
+  return @() {
+    watch = stateFlags
+    key
+    behavior = Behaviors.Button
+    size = [itemSize, itemSize]
+    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    children = mkStreakWithMultiplier(unlockId, completed, itemSize)
+    onDetach = @() hideTooltip()
+    onElemState = withTooltip(stateFlags, key, @() {
+      content = {
+        flow = FLOW_VERTICAL
+        sound = { attach = "click" }
+        gap
+        halign = ALIGN_CENTER
+        valign =  ALIGN_CENTER
+        children = [
+          {
+            flow = FLOW_HORIZONTAL
+            valign = ALIGN_CENTER
+            halign = ALIGN_CENTER
+            gap
+            children = [
+              mkStreakIcon(unlockId, itemSize)
+              mkText(getUnlockLocText(unlockId, completed))
+            ]
+          }
+          mkTextArea(getUnlockDescLocText(unlockId, completed))
+          mkCurrencyComp(wp, WP, CS_SMALL).__update({hplace = ALIGN_CENTER})
+        ]
+      }
+    })
+  }
+}
+
+let mkStreaksList = @(streaksArr, startAnimTime, delayPerItem) {
+  flow = FLOW_VERTICAL
+  gap
+  children = arrayByRows(streaksArr.map(@(val, idx) mkAppearAnim(mkInfoButton(val), idx, startAnimTime, delayPerItem)), columns)
+    .map(@(item) {
+      hplace = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      gap
+      children = item
+    })
+}
+
+let mkAchievementsComp = @(streaksArr, startAnimTime, delayPerItem) streaksArr.len() == 0 ? null : {
+  size = [flex(), SIZE_TO_CONTENT]
+  margin = [0, 0, hdpx(30), 0]
+  children = [
+    {
+      size = [gradientWidth, flex()]
+      hplace = ALIGN_CENTER
+      rendObj = ROBJ_9RECT
+      image = gradTranspDoubleSideX
+      texOffs = [0,  gradDoubleTexOffset]
+      screenOffs = [0, hintSideGradWidth]
+      color = bgColor
+    }
+    {
+      size = [flex(), SIZE_TO_CONTENT]
+      margin = hdpx(20)
+      halign = ALIGN_CENTER
+      children = {
+        size = [contentWidth, ((itemSize + gap) * ceil(streaksArr.len().tofloat() / columns)) - gap]
+        halign = ALIGN_CENTER
+        valign =  ALIGN_CENTER
+        children = mkStreaksList(streaksArr, startAnimTime, delayPerItem)
+      }
+    }
+  ]
+}
+
+let sortStreaks = @(a, b) (b?.wp ?? 0) <=> (a?.wp ?? 0)
+  || (b?.completed ?? 0) <=> (a?.completed ?? 0)
+  || a.id <=> b.id
+
+return function achievementsBlock(debrData, startAnimTime) {
+  let { streaks = {} } = debrData
+  let streaksArr = streaks.map(@(v, id) v.__merge({ id })).values().sort(sortStreaks)
+  let streaksArrSize = streaksArr.len()
+  let delayPerItem = min(streakAppearTime, (maxStreaksAnimTimeTotal - streakAnimTime) / max(1, streaksArrSize - 1))
+  return {
+    achievementsAnimTime = streaksArrSize > 0
+      ? ((streaksArrSize - 1) * delayPerItem) + streakAppearTime
+      : 0
+    achievementsComp = streaksArrSize > 0
+      ? mkAchievementsComp(streaksArr, startAnimTime, delayPerItem)
+      : null
+  }
+}

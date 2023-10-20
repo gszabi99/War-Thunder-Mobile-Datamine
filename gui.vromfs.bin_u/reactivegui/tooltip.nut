@@ -113,17 +113,24 @@ let function showDelayedTooltip(rectOrPos, params, repayTime = REPAY_TIME) {
   resetTimeout(repayTime, showDelayedTooltipImpl)
 }
 
-let withHoldTooltip = @(stateFlags, key, tooltipCtor) function(sf) {
+let withTooltipImpl = @(stateFlags, showFunc) function(sf) {
   let hasHint = (stateFlags.value & S_ACTIVE) != 0
   let needHint = (sf & S_ACTIVE) != 0
   stateFlags(sf)
   if (hasHint == needHint)
     return
   if (needHint)
-    showDelayedTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor())
+    showFunc()
   else
     hideTooltip()
 }
+
+let withHoldTooltip = @(stateFlags, key, tooltipCtor)
+  withTooltipImpl(stateFlags, @() showDelayedTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor()))
+
+let withTooltip = @(stateFlags, key, tooltipCtor)
+  withTooltipImpl(stateFlags, @() showTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor()))
+
 
 let translateAnimation = @(flow, halign, valign, duration)
   { prop = AnimProp.translate, duration = duration, play = true, easing = OutCubic
@@ -177,6 +184,7 @@ return {
   showDelayedTooltip
   hideTooltip
   withHoldTooltip
+  withTooltip
 
   tooltipBg
   mkTooltipText

@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkRingGradient } = require("%rGui/style/gradients.nut")
+let { mkRingGradientLazy } = require("%rGui/style/gradients.nut")
 
-let gradient = mkRingGradient(50, 10, 20)
+let gradient = mkRingGradientLazy(50, 10, 20)
 
 let damagePanelBacklight = @(stateFlags, size) @() !stateFlags || !(stateFlags.value & S_ACTIVE)
   ? { watch = stateFlags }
@@ -12,7 +12,7 @@ let damagePanelBacklight = @(stateFlags, size) @() !stateFlags || !(stateFlags.v
       vplace = ALIGN_CENTER
       size = [size, size]
       rendObj = ROBJ_IMAGE
-      image = gradient
+      image = gradient()
       color = btnBgColor.ready
     }
 

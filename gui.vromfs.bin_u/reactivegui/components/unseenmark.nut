@@ -98,9 +98,15 @@ let mkUnseenMark = @(priorirty, ovr = {}) @() {
   children = markByPriority?[priorirty.value]
 }.__update(ovr)
 
+let mkPriorityUnseenMarkWatch = @(watch, ovr = {}) @() {
+  watch
+  children = watch.value ? priorityUnseenMark : null
+}.__update(ovr)
+
 return {
   priorityUnseenMark
   unseenMark
   lowPriorityUnseenMark
   mkUnseenMark
+  mkPriorityUnseenMarkWatch
 }

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { GOLD, WP } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")

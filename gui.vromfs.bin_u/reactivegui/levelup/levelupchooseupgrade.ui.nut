@@ -40,8 +40,9 @@ let header = @() {
 
 registerHandler("onPurchaseUnitInLevelUp",
   function(res) {
+    let unitId = res?.units.findindex(@(v) v?.name)
     if (res?.error == null)
-      openUnitsWnd()
+      openUnitsWnd(unitId)
   })
 let function purchaseHandler(unitName, isUpgraded = false) {
   sendNewbieBqEvent("buyUnitInLevelUpWnd", { status = unitName, params = isUpgraded ? "upgraded" : "common" })

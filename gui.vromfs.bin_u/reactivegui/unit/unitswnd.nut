@@ -17,7 +17,7 @@ let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, rankToReqPlayerLvl,
 } = require("%appGlobals/unitsState.nut")
 let { unitInProgress, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPricePurchase, mkCustomButton } = require("%rGui/components/textButton.nut")
 let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
@@ -54,7 +54,7 @@ let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isUnitsWndAttached, isUnitsWndOpened } = require("%rGui/mainMenu/mainMenuState.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 const MIN_HOLD_MSEC = 700
@@ -269,21 +269,37 @@ let function unitActionButtons() {
     }
   }
   children.append(
-    infoBlueButton(
-      @() unitDetailsWnd({ name = hangarUnitName.value })
-      {
-        size = [defButtonHeight, defButtonHeight]
-        hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-      }
-      fontBig)
+    (availableUnitsList.value.findvalue(@(unit) unit.name == curSelectedUnit.value)?.platoonUnits.len() ?? 0) > 0
+      ? mkCustomButton(
+          {
+            rendObj = ROBJ_TEXT
+            text = loc("squadSize/platoon")
+          }.__update(fontSmall),
+          @() unitDetailsWnd({ name = hangarUnitName.value }),
+          {
+            ovr = {
+              size = [SIZE_TO_CONTENT,  defButtonHeight]
+              fillColor = Color(5, 147, 173)
+              borderColor = Color(35, 109, 181)
+            }
+            gradientOvr = {color = Color(22, 178, 233)}
+          }
+      )
+      : infoBlueButton(
+          @() unitDetailsWnd({ name = hangarUnitName.value })
+          {
+            size = [defButtonHeight, defButtonHeight]
+            hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+          }
+          fontBig
+      )
   )
-
   return {
     watch = [
       curSelectedUnit,curSelectedUnitPrice,
       canBuyUnits, canEquipSelectedUnit, havePremium,
       canBuyUnitsStatus, playerLevelInfo, curCampaign,
-      shopGoods, buyUnitsData]
+      shopGoods, buyUnitsData, availableUnitsList]
     size = SIZE_TO_CONTENT
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -684,4 +700,7 @@ let unitsWnd = {
 
 registerScene("unitsWnd", unitsWnd, close, isUnitsWndOpened)
 
-return @() isUnitsWndOpened(true)
+return function(value = null) {
+  curSelectedUnit(value)
+  isUnitsWndOpened(true)
+}

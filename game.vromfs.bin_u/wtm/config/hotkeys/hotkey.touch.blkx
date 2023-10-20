@@ -28,10 +28,6 @@
         "nonlinearity": 0.0,
         "kMul": 1.0
       },
-      "wheel_steering": {
-        "nonlinearity": 1.2,
-        "kMul": 0.85
-      },
       "cam_fwd": {
         "axisId": 1,
         "nonlinearity": 3.0,

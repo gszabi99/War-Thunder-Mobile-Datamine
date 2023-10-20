@@ -9,7 +9,7 @@ let { mkLevelLock, bgShade } = require("modsComps.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 
 let contentMargin = [hdpx(10), hdpx(30)]
-let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:O:P"
+let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 
 let tabH = hdpx(184)
 let tabW = hdpx(460)
@@ -49,7 +49,7 @@ let function tabData(tab, ovr = {}) {
           watch = tabModName
           size = flex()
           rendObj = ROBJ_IMAGE
-          image = Picture($"ui/gameuiskin#{tabModName.value}.avif:O:P")
+          image = Picture($"ui/gameuiskin#{tabModName.value}.avif:0:P")
           fallbackImage = Picture(defImage)
           keepAspect = KEEP_ASPECT_FILL
           imageHalign = ALIGN_LEFT

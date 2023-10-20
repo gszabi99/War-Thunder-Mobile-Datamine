@@ -12,7 +12,7 @@ let { myUserId, myUserName } = require("%appGlobals/profileStates.nut")
 let { battleData } = require("%scripts/battleData/battleData.nut")
 let { singleMissionResult } = require("singleMissionResult.nut")
 let { isInBattle, battleSessionId } = require("%appGlobals/clientState/clientState.nut")
-let { get_mp_session_id_int, destroy_session } = require("multiplayer")
+let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } = require("multiplayer")
 let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { get_local_mplayer, get_mplayers_list } = require("mission")
@@ -55,13 +55,15 @@ let needDestroySession = keepref(Computed(@() gotQuitToDebriefing.value
 
 let function doDestroySession() {
   gotQuitToDebriefing(false)
+  set_quit_to_debriefing_allowed(true)
   destroy_session("on needDestroySession by battleResult received")
 }
 needDestroySession.subscribe(@(v) v ? deferOnce(doDestroySession) : null)
 
-subscribe("onQuitToDebriefing", function(_) {
+subscribe("onSetQuitToDebriefing", function(_) {
   resetTimeout(destroySessionTimeout, doDestroySession)
   gotQuitToDebriefing(true)
+  set_quit_to_debriefing_allowed(false)
 })
 
 let function onBattleResult(evt, _eid, comp) {

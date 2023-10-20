@@ -40,11 +40,13 @@ playersDamageStats.subscribe(function(stats) {
   playerTeams(teams)
 })
 
-isInBattle.subscribe(function(_) {
-  localPlayerId(-1)
-  playerTeams({})
-  playersDamageStats({})
-  statsRaw({})
+isInBattle.subscribe(function(v) {
+  if (v) {
+    localPlayerId(-1)
+    playerTeams({})
+    playersDamageStats({})
+    statsRaw({})
+  }
 })
 
 register_es("players_damage_stats_es",

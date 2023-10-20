@@ -2,10 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { send, subscribe } = require("eventbus")
 let { INVALID_USER_ID } = require("matching.errors")
 let { register_command } = require("console")
-let { setTimeout } = require("dagor.workcycle")
 let logC = log_with_prefix("[CONTACTS] ")
 let { is_pc } = require("%sqstd/platform.nut")
-let charClientEventExt = require("%rGui/charClientEventExt.nut")
 let { contactsLists } = require("contactLists.nut")
 let { updateContact, updateContactNames } = require("contact.nut")
 let { myUserIdStr, myInfo } = require("%appGlobals/profileStates.nut")
@@ -15,12 +13,9 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isContactsLoggedIn, isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { contactsRequest, contactsRegisterHandler } = require("contactsClient.nut")
 
 
-const ADD_MODE = "add"
-const DEL_MODE = "del"
-const APPROVED_MAIL = "approved_mail"
-const REQUESTS_TO_ME_MAIL = "requests_to_me_mail"
 const GAME_GROUP_NAME = "warthunder"
 
 const FETCH_CB = "contacts.onFetch"
@@ -33,7 +28,6 @@ let searchedNick = mkWatched(persist, "searchedNick", null)
 let searchContactsResultRaw = mkWatched(persist, "searchContactsResultRaw", null)
 let isSearchInProgress = Watched(false)
 let contactsInProgress = Watched({})
-let debugDelay = hardPersistWatched("contacts.debugDelay", 0.0)
 let canFetchContacts = Computed(@() isContactsLoggedIn.value && isMatchingConnected.value && !isInBattle.value)
 let isFetchDelayed = hardPersistWatched("contacts.isFetchDelayed", false)
 
@@ -62,16 +56,6 @@ searchContactsResult.subscribe(updateContactNames)
 
 let getContactsInviteId = @(uid) $"contacts_invite_{uid}"
 let buildFullListName = @(name) $"#{GAME_GROUP_NAME}#{name}"
-
-
-let { request, registerHandler } = charClientEventExt("contacts")
-local requestExt = request
-let function updateDebugDelay() {
-  requestExt = (debugDelay.value <= 0) ? request
-    : @(a, p, c) setTimeout(debugDelay.value, @() request(a, p, c))
-}
-updateDebugDelay()
-debugDelay.subscribe(@(_) updateDebugDelay())
 
 myInfo.subscribe(function(info) {
   let { userId, realName } = info
@@ -153,7 +137,7 @@ send("matchingSubscribe", "mpresence.on_added_to_contact_list")
 subscribe("mpresence.notify_presence_update", @(r) onFetchContacts(r))
 subscribe("mpresence.on_added_to_contact_list", @(_) fetchContacts())
 
-registerHandler("cln_find_users_by_nick_prefix_json", function(result, context) {
+contactsRegisterHandler("cln_find_users_by_nick_prefix_json", function(result, context) {
   if (searchedNick.value != context?.nick)
     return
   isSearchInProgress(false)
@@ -171,7 +155,7 @@ let function searchContacts(nick) {
   searchedNick(nick)
   logC(params)
   isSearchInProgress(true)
-  requestExt("cln_find_users_by_nick_prefix_json",
+  contactsRequest("cln_find_users_by_nick_prefix_json",
     params,
     { nick })
 }
@@ -183,7 +167,7 @@ let function clearSearchData() {
 }
 
 let function mkSimpleContactAction(actionId, mkData, onSucces = null) {
-  registerHandler(actionId, function(answer, context) {
+  contactsRegisterHandler(actionId, function(answer, context) {
     let { userId = null } = context
     let { result = null } = answer
     let isSuccess = result?.success ?? true
@@ -214,7 +198,7 @@ let function mkSimpleContactAction(actionId, mkData, onSucces = null) {
     let data = mkData(userId)
     logC($"request {actionId}: ", data)
     contactsInProgress.mutate(@(v) v[userId] <- false)
-    requestExt(actionId, { data }, { userId, data })
+    contactsRequest(actionId, { data }, { userId, data })
   }
 }
 
@@ -288,7 +272,6 @@ if (is_pc) {
 
 register_command(fetchContacts, "contacts.fetch")
 register_command(@() isContactsOpened(!isContactsOpened.value), "contacts.open")
-register_command(@(delay) debugDelay(delay), "contacts.delay_requests")
 
 return {
   searchContactsResult
@@ -314,6 +297,6 @@ return {
   addToBlackList
   removeFromBlackList
 
-  contactsRequest = requestExt
-  contactsRegisterHandler = registerHandler
+  contactsRequest
+  contactsRegisterHandler
 }

@@ -2450,7 +2450,8 @@
     "damageLog:array": {},
     "captureLog:array": {},
     "damageLogPlayers:object": {},
-    "damageLogStats:object": {}
+    "damageLogStats:object": {},
+    "streakLog:object": {}
   },
   "statistic_players": {
     "statisticPlayers:object": {}

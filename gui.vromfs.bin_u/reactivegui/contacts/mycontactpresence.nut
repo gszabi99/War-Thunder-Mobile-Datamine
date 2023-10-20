@@ -11,7 +11,6 @@ let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
 
 
-const SET_CB_ID = "contacts.onMyContactPresenceChange"
 let presenceDefault = {
   battleUnit = null
   gameId = GAME_ID

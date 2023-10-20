@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { campaignsList, setCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
 let { needFirstBattleTutorForCampaign, rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")

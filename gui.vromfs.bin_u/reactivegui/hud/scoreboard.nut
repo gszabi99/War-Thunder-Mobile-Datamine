@@ -18,7 +18,7 @@ let scoreBarPadding = (0.15 * scoreBarPlateHeight).tointeger()
 let scoreBarGap = (-0.4 * scoreBarPlateHeight).tointeger()
 let scoreBarWidth = scoreBarGap * (SCORE_PLATES_TEAM_COUNT - 1) + SCORE_PLATES_TEAM_COUNT * scoreBarPlateWidth + 4 * scoreBarPadding
 let scoreBarHeight = scoreBarPlateHeight + 2 * scoreBarPadding
-let timerBgWidth   = (0.5 * scoreBarWidth).tointeger()
+let timerBgWidth   = (0.55 * scoreBarWidth).tointeger()
 let timerBgHeight  = (57.0 / 131 * timerBgWidth).tointeger()
 let localTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamB.value : ticketsTeamA.value)
 let enemyTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamA.value : ticketsTeamB.value)

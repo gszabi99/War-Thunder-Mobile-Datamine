@@ -45,12 +45,12 @@ let function removeScene(id) {
     scenesOrderSaved.mutate(@(v) v.remove(idx))
 }
 
-let function registerScene(id, scene, onClearScenes = null, isOpenedWatch = null, alwaysOnTop = false) {
+let function registerScene(id, scene, onClearScenes = null, isOpenedWatch = null, alwaysOnTop = false, canClear = null) {
   if (id in scenes) {
     logerr($"Already registered navState scene {id}")
     return
   }
-  scenes[id] <- { scene, onClearScenes, alwaysOnTop }
+  scenes[id] <- { scene, onClearScenes, alwaysOnTop, canClear }
   scenesVersion(scenesVersion.value + 1)
 
   if (isOpenedWatch == null)
@@ -83,6 +83,17 @@ let function clearScenes() {
 isInBattle.subscribe(@(_) clearScenes())
 isAuthorized.subscribe(@(v) v ? null : clearScenes())
 
+let function canResetToMainScene() {
+  return scenesOrderSaved.value.reduce(@(val, id) val && (scenes?[id].canClear() ?? true), true)
+}
+
+let function tryResetToMainScene() {
+  let res = canResetToMainScene()
+  if (res)
+    clearScenes()
+  return res
+}
+
 return {
   scenesOrder
   registerScene
@@ -90,4 +101,6 @@ return {
   getTopScene
   addScene
   removeScene
+  tryResetToMainScene
+  canResetToMainScene
 }

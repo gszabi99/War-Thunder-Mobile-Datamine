@@ -9,9 +9,6 @@ let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 
-const OPT_MULTISELECT = "multiselect"
-const OPT_EDITBOX = "editbox"
-
 let statusLoc = {
   [US_OWN] = "options/unitOwn",
   [US_CAN_BUY] = "options/unitCanBuy",

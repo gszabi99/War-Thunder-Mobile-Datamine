@@ -1,10 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+let { set_clipboard_text = null, copy_to_clipboard = null } = require("dagor.clipboard")
+let { json_to_string } = require("json")
+let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
 let { add_unit_exp, add_player_exp, add_wp, add_gold, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
-  apply_profile_mutation, add_lootbox, add_warbond, add_event_key
+  apply_profile_mutation, add_lootbox, add_warbond, add_event_key, debug_lootbox_chances,
+  reset_lootbox_counters
 } = pServerApi
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -12,10 +16,38 @@ let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { register_command } = require("console")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
+let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
+let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 
 registerHandler("consolePrintResult",
   @(res) console_print(res?.error == null ? "SUCCESS" : "FAILED")) //warning disable: -forbidden-function
 registerHandler("consolePrint", console_print) //warning disable: -forbidden-function
+
+let infoTextOvr = {
+  size = [flex(), SIZE_TO_CONTENT]
+  halign = ALIGN_LEFT,
+  preformatted = FMT_KEEP_SPACES | FMT_NO_WRAP
+}.__update(fontTiny)
+
+registerHandler("onDebugLootboxChances",
+  function(res) {
+    let data = clone res
+    if ("isCustom" in data)
+      delete data.isCustom
+    if ("percents" in data)
+      data.percents = data.percents.map(@(v)
+        $"{v > 0.1 ? round_by_value(v, 0.01) : roundToDigits(v, 2)}%")
+    let text = json_to_string(data)
+    openMsgBox({
+      uid = "debug_lootbox_chances"
+      text = makeSideScroll(msgBoxText(text, infoTextOvr))
+      wndOvr = { size = [hdpx(1100), hdpx(1000)] }
+      buttons = [
+        { text = "COPY", cb = @() (set_clipboard_text ?? copy_to_clipboard)?(text) }   //warning disable: -forbidden-function
+        { id = "ok", styleId = "PRIMARY", isDefault = true }   //warning disable: -forbidden-function
+      ]
+    })
+  })
 
 register_command(function(exp) {
   let name = hangarUnitName.value
@@ -51,6 +83,10 @@ register_command(@(name) unset_current_decorator(name, "consolePrintResult"), "m
 register_command(@(id) apply_profile_mutation(id, "consolePrintResult"), "meta.apply_profile_mutation")
 register_command(@(id) add_lootbox(id, 1, "consolePrintResult"), "meta.add_lootbox")
 register_command(@(id, count) add_lootbox(id, count, "consolePrintResult"), "meta.add_lootbox_several")
+
+register_command(@(id) debug_lootbox_chances(id, true, "onDebugLootboxChances"), "meta.debug_lootbox_chances_filtered")
+register_command(@(id) debug_lootbox_chances(id, false, "onDebugLootboxChances"), "meta.debug_lootbox_chances_full")
+register_command(@(id) reset_lootbox_counters(id, "consolePrintResult"), "meta.reset_lootbox_counters")
 
 register_command(function(count) {
   add_wp(count * 100)

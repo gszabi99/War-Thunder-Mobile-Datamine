@@ -59,6 +59,7 @@ let { isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityF
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
+let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
 let needAdsLoadExt = Computed(@() isInited.value && needAdsLoad.value && !isLoaded.value)
 let allProviders = keepref(Computed(@() !isLoggedIn.value ? {}
@@ -153,10 +154,13 @@ subscribe("android.ads.onLoad", function (params) {
 subscribe("android.ads.onShow", function (params) { //we got this event on start ads show, and on finish
   let { status, provider = "unknown" } = params
   logA($"onShow {getStatusName(status)}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
-  if (status == ADS_STATUS_SHOWN)
+  if (status == ADS_STATUS_SHOWN) {
     sendAdsBqEvent("show_start", provider)
+    isAdsVisible(true)
+  }
   else {
     isLoaded(false)
+    isAdsVisible(false)
     onFinishShowAds()
     sendAdsBqEvent("show_stop", provider)
   }
@@ -179,6 +183,7 @@ let function showAdsForReward(rInfo) {
 
 return {
   isAdsAvailable = isInited
+  isAdsVisible
   canShowAds = isLoaded
   showAdsForReward
 }

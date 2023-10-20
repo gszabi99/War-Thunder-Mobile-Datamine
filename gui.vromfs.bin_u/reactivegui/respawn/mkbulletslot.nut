@@ -1,16 +1,49 @@
 from "%globalsDarg/darg_library.nut" import *
 let getBulletImage = require("%appGlobals/config/bulletsPresentation.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
-let { getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
-let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { getAmmoTypeShortText, getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
+let { chosenBullets } = require("bulletsChoiceState.nut")
 
-let bgSlotColor = 0xFF51C1D1
-let slotBGImage = mkBitmapPicture(gradTexSize, gradTexSize,
-  mkGradientCtorRadial(bgSlotColor, 0 , 20, 55, 35, 0))
 let ICON_SIZE = hdpxi(80)
+let headerHeight = hdpxi(108)
+let bulletIconSize = [hdpxi(214), headerHeight]
 
-let function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovr = {}) {
+let function getSlotNumber(chosenBulletsList, id){
+  let slotNumber = chosenBulletsList.findvalue(@(bullet) bullet.name == id )?.idx
+  if(slotNumber == null)
+    return ""
+  return "".concat(loc("icon/mpstats/rowNo"), (slotNumber + 1))
+}
+
+let slotNumber = @(id) @(){
+  watch = chosenBullets
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_BOTTOM
+  rendObj = ROBJ_TEXT
+  padding = hdpx(5)
+  text = getSlotNumber(chosenBullets.value, id)
+}.__update(fontTiny)
+
+let nameBullet = @(bulletInfo) {
+  hplace = ALIGN_RIGHT
+  rendObj = ROBJ_TEXT
+  padding = hdpx(5)
+  text = getAmmoNameShortText(bulletInfo)
+  maxWidth = pw(100)
+  behavior = Behaviors.Marquee
+  delay = 0.5
+  speed = hdpx(20)
+}.__update(fontTiny)
+
+let imageBullet = @(imageBulletName) {
+  size = bulletIconSize
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{imageBulletName}:{bulletIconSize[0]}:{bulletIconSize[1]}:P")
+  keepAspect = KEEP_ASPECT_FIT
+}
+
+let function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovr = {}) {
   if (bulletInfo == null)
     return null
   local { icon = null } = bInfoFromUnitTags
@@ -22,29 +55,34 @@ let function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovr = {}) {
   let nameText = getAmmoTypeShortText(bulletInfo.bullets?[0] ?? "" )
   return {
     flow = FLOW_HORIZONTAL
-    rendObj = ROBJ_IMAGE
-    image = slotBGImage
     children = [
       {
-        size = [hdpxi(214), hdpxi(105)]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"{imageBulletName}:{hdpxi(214)}:{hdpxi(105)}:P")
-        keepAspect = KEEP_ASPECT_FIT
-      }
+        rendObj = ROBJ_SOLID
+        color = 0x402C2C2C
+        vplace = ALIGN_CENTER
+        hplace = ALIGN_CENTER
+        children = [
+          imageBullet(imageBulletName)
+          slotNumber(bulletInfo.id)
+          nameBullet(bulletInfo)
+        ]
+      }.__update(ovrBulletImage)
       {
-        size = [touchButtonSize, flex()]
+        rendObj = ROBJ_SOLID
+        color = 0x99000000
+        flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
+        size = [hdpx(130), headerHeight]
         children = [
           {
-            size = [ICON_SIZE, ICON_SIZE]
+            size = [ICON_SIZE,ICON_SIZE]
             rendObj = ROBJ_IMAGE
-            vplace = ALIGN_TOP
+            vplace = ALIGN_CENTER
             image = Picture($"ui/gameuiskin#{icon}:{ICON_SIZE}:{ICON_SIZE}:P")
             keepAspect = KEEP_ASPECT_FIT
           }
           {
             rendObj = ROBJ_TEXT
-            vplace = ALIGN_BOTTOM
             text = nameText
           }.__update(fontVeryTinyShaded)
         ]

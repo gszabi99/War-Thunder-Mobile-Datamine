@@ -262,6 +262,7 @@
   "shipSteamEmitterExtremeLifetime": 1.0,
   "canReloadMines": false,
   "enableNoFirstMoveCooldown": true,
+  "showStreaksForOwnerOnly": true,
   "shipAiTargetMaxDist": 25000.0,
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,

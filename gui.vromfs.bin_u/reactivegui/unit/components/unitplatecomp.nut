@@ -298,6 +298,7 @@ let mkUnitTexts = @(unit, unitLocName, justUnlockedDelay = null) {
       gap = hdpx(3)
       children = [
         {
+          size = [flex(), SIZE_TO_CONTENT]
           flow = FLOW_HORIZONTAL
           valign = ALIGN_CENTER
           gap = hdpx(8)
@@ -306,7 +307,13 @@ let mkUnitTexts = @(unit, unitLocName, justUnlockedDelay = null) {
               ? mkIcon("!ui/gameuiskin#icon_premium.svg", [hdpx(60), hdpx(30)], { pos = [ 0, hdpx(3) ] })
                 .__update({ animations = revealAnimation(justUnlockedDelay) })
               : null
-            mkPlateText(unitLocName)
+            mkPlateText(unitLocName, {
+              size = [flex(), SIZE_TO_CONTENT]
+              halign = ALIGN_RIGHT
+              behavior = [Behaviors.Marquee]
+              speed = hdpx(30)
+              delay = [1, 1]
+            })
           ]
         }
         mkPlateText(getUnitClassFontIcon(unit), fontSmall)

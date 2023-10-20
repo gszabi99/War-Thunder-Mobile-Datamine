@@ -1,8 +1,8 @@
-
 from "%scripts/dagui_library.nut" import *
 let eventbus = require("eventbus")
 let { isMpStatisticsActive } = require("%appGlobals/clientState/clientState.nut")
 let { get_mplayers_list, get_mplayer_by_id } = require("mission")
+let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 
 let function getTeamsList() {
   let mplayersList = get_mplayers_list(GET_MPLAYERS_LIST, true)
@@ -25,7 +25,7 @@ eventbus.subscribe("toggleMpstatscreen", @(_) !isMpStatisticsActive.value
   : isMpStatisticsActive(false))
 eventbus.subscribe("MpStatistics_CloseInDagui", @(_) isMpStatisticsActive(false))
 eventbus.subscribe("MpStatistics_GetInitialData",
-  @(_) eventbus.send("MpStatistics_InitialData", { missionName = ::loc_current_mission_name() }))
+  @(_) eventbus.send("MpStatistics_InitialData", { missionName = locCurrentMissionName() }))
 eventbus.subscribe("MpStatistics_GetTeamsList",
   @(_) eventbus.send("MpStatistics_TeamsList", { data = getTeamsList() }))
 

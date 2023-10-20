@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkBitmapPicture, mkBitmapPictureLazy, setMaxCachedSize } = require("%darg/helpers/bitmap.nut")
 let { sqrt } = require("math")
+
+setMaxCachedSize(max(sw(15) * sh(15), 128 * 128))
 
 let gradTexSize = 64
 let colorParts = @(color) {
@@ -198,10 +200,10 @@ let mkFontGradient = @(colorTop, colorBottom, height = 11, middle = 6, spread = 
       }
     })
 
-let function mkRingGradient(radius, outherWidth, innerWidth) {
+let function mkRingGradientLazy(radius, outherWidth, innerWidth) {
   let center = radius + outherWidth + 1
   let size = 2 * center
-  return mkBitmapPicture(size, size,
+  return mkBitmapPictureLazy(size, size,
     function(_, bmp) {
       for (local y = 0; y < size; y++)
         for (local x = 0; x < size; x++) {
@@ -234,5 +236,5 @@ return {
   mkGradientCtorRadial
   mkColoredGradientY
   mkFontGradient
-  mkRingGradient
+  mkRingGradientLazy
 }

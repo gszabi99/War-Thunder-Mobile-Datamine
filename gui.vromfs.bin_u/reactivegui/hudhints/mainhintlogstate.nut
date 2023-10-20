@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
-let { HUD_MSG_OBJECTIVE, HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
+let { HUD_MSG_OBJECTIVE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_STREAK_EX } = require("hudMessages")
 let { GO_WIN, GO_FAIL, GO_EARLY, GO_WAITING_FOR_RESULT, GO_NONE, MISSION_CAPTURING_ZONE
 } = require("guiMission")
 let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
@@ -76,6 +76,15 @@ let addHudMessage = {
         { name = $"{getPlayerName(victim?.name ?? data?.victimUnitNameLoc, myUserRealName.value, myUserName.value)} {classIcon}" })
     })))
   },
+
+  [HUD_MSG_STREAK_EX] = function(data) {
+    let { unlockId = "" } = data
+    addEvent(data.__merge({
+      id = $"streak_{unlockId}"
+      hType = "streak"
+      ttl = 5
+    }))
+  }
 }
 
 subscribe("HudMessage", @(data) addHudMessage?[data.type](data))

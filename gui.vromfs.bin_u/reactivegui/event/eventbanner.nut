@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkOfferWrap, mkOfferTexts, mkBgImg } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { openEventWnd } = require("eventState.nut")
-let { getLootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { openEventWnd, eventEndsAt, eventSeason, eventSeasonName, unseenLootboxes, unseenLootboxesShowOnce,
+  eventWndShowAnimation } = require("eventState.nut")
 let { isEventActive } = require("%rGui/quests/questsState.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
-let lootboxSize = hdpx(200)
 
 let bgHiglight = {
   size = flex()
@@ -12,25 +12,29 @@ let bgHiglight = {
   color = 0x01261E10
 }
 
-// TODO: add unseen mark, timer
+let function onClick() {
+  eventWndShowAnimation(true)
+  openEventWnd()
+}
 
 let eventBanner = @() {
-  watch = isEventActive
+  watch = [isEventActive, eventEndsAt, eventSeason, eventSeasonName]
   children = !isEventActive.value ? null
-    : mkOfferWrap(openEventWnd,
-        @(sf) [
-          mkBgImg("ui/gameuiskin#banner_event_01.avif:O:P")
-          sf & S_HOVER ? bgHiglight : null
-          {
-            size = [lootboxSize, lootboxSize]
-            hplace = ALIGN_CENTER
-            vplace = ALIGN_CENTER
-            rendObj = ROBJ_IMAGE
-            keepAspect = true
-            image = getLootboxImage("event_big", lootboxSize)
-          }
-          mkOfferTexts(loc("event/banner"), 0)
-        ])
+    : [
+        mkOfferWrap(onClick,
+          @(sf) [
+            mkBgImg($"ui/gameuiskin#banner_event_{eventSeason.value}.avif:0:P", "ui/gameuiskin#offer_bg_blue.avif:0:P")
+            sf & S_HOVER ? bgHiglight : null
+            mkOfferTexts(eventSeasonName.value, eventEndsAt.value)
+          ])
+        @() {
+          watch = [unseenLootboxes, unseenLootboxesShowOnce]
+          margin = hdpx(10)
+          children = unseenLootboxes.value.len() > 0 || unseenLootboxesShowOnce.value.findindex(@(v) v) != null
+              ? priorityUnseenMark
+            : null
+        }
+      ]
 }
 
 return eventBanner

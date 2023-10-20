@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
 let { rnd_int } = require("dagor.random")
 let { register_command } = require("console")
-let { HUD_MSG_MULTIPLAYER_DMG, UT_Unknown, UT_Ship } = require("hudMessages")
+let { HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_STREAK_EX, UT_Unknown, UT_Ship } = require("hudMessages")
 let { GO_WIN, GO_FAIL, GO_NONE } = require("guiMission")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { localMPlayerId, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
@@ -11,6 +11,7 @@ let { debugHudType, HT_CUTSCENE } = require("%appGlobals/clientState/hudState.nu
 let { playersCommonStats, dbgCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
+let { get_unlocks_blk} = require("blkGetters")
 
 //mission hints
 let hintsForTest = [
@@ -91,6 +92,16 @@ register_command(
     victimUnitNameLoc = "Victim Unit"
   }),
   "hud.debug.killMessage")
+
+register_command(
+  @() send("HudMessage", {
+    type = HUD_MSG_STREAK_EX
+    playerId = localMPlayerId.value
+    unlockId = ((get_unlocks_blk() % "unlockable")?.filter(@(blk) blk?.type == "streak") ?? [])[rnd_int(0, 40)].id
+    stage = rnd_int(1, 3)
+    wp = 100
+  }),
+  "hud.debug.streak")
 
 register_command(
   function() {

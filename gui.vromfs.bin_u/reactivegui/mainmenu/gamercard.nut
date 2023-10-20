@@ -5,7 +5,7 @@ let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD, WARBOND, EVENT_KEY } = require("%appGlobals/currenciesState.nut")
 let { SC_GOLD, SC_WP, SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/shop/shopState.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor,
@@ -22,6 +22,7 @@ let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { openBuyWarbondsWnd, openBuyEventKeysWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
@@ -39,12 +40,11 @@ let gamercardHeight  = avatarSize + levelHolderSize / 2
 let levelStateFlags = Watched(0)
 let profileStateFlags = Watched(0)
 
-// TODO: open buy warbond wnd
 let openBuyCurrencyWnd = {
   [WP] = @() openShopWnd(SC_WP),
   [GOLD] = @() openShopWnd(SC_GOLD),
-  [WARBOND] = @() null,
-  [EVENT_KEY] = null
+  [WARBOND] = openBuyWarbondsWnd,
+  [EVENT_KEY] = openBuyEventKeysWnd
 }
 
 let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@(category) category == true))
@@ -74,35 +74,34 @@ let name =  @() textParams.__merge({
 
 let levelUpReadyAnim = { prop = AnimProp.opacity, duration = 3.0, easing = CosineFull, play = true, loop = true }
 
-let function levelBlock(ovr = {}) {
+let function levelBlock(ovr = {}, needShowMexLevel = false) {
   let { exp, nextLevelExp, level, isReadyForLevelUp } = playerLevelInfo.value
-  let isMaxLevel = nextLevelExp == 0
+  let isMaxLevel = nextLevelExp == 0 || needShowMexLevel
   let levelNextText = isReadyForLevelUp ? (level + 1).tostring() : ""
   let needLevelUpBtn = isReadyForLevelUp
   return {
     watch = playerLevelInfo
-    size = [levelHolderSize, levelHolderSize]
-    halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     pos = [levelHolderPlace, levelHolderPlace]
     children = [
-        mkProgressLevelBg({
-            key = playerLevelInfo.value
-            pos = [levelHolderSize * rotateCompensate, 0]
-            opacity = 1.0,
-            animations = isReadyForLevelUp
-              ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
-              : null
-            children = {
-              size = isMaxLevel
-                ? flex()
-                : [((levelProgressBarWidth - levelProgressBorderWidth * 2) * clamp(exp, 0, nextLevelExp) / nextLevelExp).tointeger(),flex()]
-              rendObj = ROBJ_SOLID
-              color = playerExpColor
-            }
-          })
+      mkProgressLevelBg({
+        key = playerLevelInfo.value
+        pos = [levelHolderSize * rotateCompensate, 0]
+        opacity = 1.0,
+        animations = isReadyForLevelUp
+          ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
+          : null
+        children = {
+          size = isMaxLevel
+            ? flex()
+            : [((levelProgressBarWidth - levelProgressBorderWidth * 2) * clamp(exp, 0, nextLevelExp) / nextLevelExp).tointeger(),flex()]
+          rendObj = ROBJ_SOLID
+          color = playerExpColor
+        }
+      })
       @() mkLevelBg({
         ovr = {
+          size = [levelHolderSize, levelHolderSize]
           watch = levelStateFlags
           onElemState = @(sf) levelStateFlags(sf)
           behavior = isMaxLevel ? null : Behaviors.Button
@@ -113,27 +112,37 @@ let function levelBlock(ovr = {}) {
             scale = levelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
           }
         }
-      })
-      @() textParams.__merge({
-        watch = levelStateFlags
-        key = playerLevelInfo.value
-        text = level
-        pos = [0, isMaxLevel ? -hdpx(2) : 0]
-        animations = isReadyForLevelUp
-          ? [ levelUpReadyAnim.__merge({ from = 1.0, to = 0.0 }) ]
-          : null
-        transform = {
-          scale = levelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+        childOvr = {
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          children = [
+            @() textParams.__merge({
+              watch = levelStateFlags
+              key = playerLevelInfo.value
+              text = level
+              pos = [0, isMaxLevel ? -hdpx(2) : 0]
+              animations = isReadyForLevelUp
+                ? [ levelUpReadyAnim.__merge({ from = 1.0, to = 0.0 }) ]
+                : null
+              transform = {
+                rotate = -45
+                scale = levelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+              }
+            })
+            isReadyForLevelUp
+              ? textParams.__merge({
+                key = playerLevelInfo.value
+                text = levelNextText
+                opacity = 0.0
+                transform = {
+                  rotate = -45
+                }
+                animations = [ levelUpReadyAnim.__merge({ from = 0.0, to = 1.0 }) ]
+              })
+              : null
+          ]
         }
       })
-      isReadyForLevelUp
-        ? textParams.__merge({
-            key = playerLevelInfo.value
-            text = levelNextText
-            opacity = 0.0
-            animations = [ levelUpReadyAnim.__merge({ from = 0.0, to = 1.0 }) ]
-          })
-        : null
       needLevelUpBtn
         ? {
             size = [levelHolderSize + levelProgressBarWidth + 2 * levelProgressBorderWidth, flex()]

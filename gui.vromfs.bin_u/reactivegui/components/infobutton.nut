@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 let patternSize = hdpxi(110)
 let pattern = {
@@ -32,6 +33,8 @@ let iText = {
 }
 
 let defSize = [evenPx(70), evenPx(70)]
+let defSizeSmall = [evenPx(50), evenPx(50)]
+
 let mkInfoButtonCtor = @(bgColor, gradient) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
   let stateFlags = Watched(0)
@@ -80,8 +83,37 @@ let function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   }.__update(ovr)
 }
 
+let function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
+  let stateFlags = Watched(0)
+  let size = ovr?.size ?? defSizeSmall
+
+  return @() {
+    watch = stateFlags
+    size
+    behavior = Behaviors.Button
+    onClick
+    sound = { click  = "click" }
+    onElemState = @(sf) stateFlags(sf)
+    transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+    children = [
+      {
+        size = flex()
+        rendObj = ROBJ_BOX
+        fillColor = 0x70000000
+        borderWidth = hdpx(1)
+        borderColor = stateFlags.value & S_ACTIVE ? hoverColor : 0xFFFFFFFF
+        transform = { rotate = 45 }
+      }
+      iText.__merge(textOvr)
+    ]
+  }.__update(ovr)
+}
+
 return {
   infoBlueButton
   infoGreyButton
   infoCommonButton
+
+  infoRhombButton
 }

@@ -4,19 +4,23 @@ let { defer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bulletsInfo, chosenBullets, setOrSwapUnitBullet, visibleBullets } = require("bulletsChoiceState.nut")
-let { selSlot } = require("respawnState.nut")
+let { selSlot, hasUnseenShellsBySlot, saveSeenShells } = require("respawnState.nut")
 let { createHighlight } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 let { darkCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let mkBulletSlot = require("mkBulletSlot.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let getBulletStats = require("bulletStats.nut")
-let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
-let { getAmmoNameText, getAmmoNameShortText, getAmmoTypeText, getAmmoAdviceText
-} = require("%rGui/weaponry/weaponsVisual.nut")
+let { getAmmoNameText, getAmmoTypeText, getAmmoAdviceText } = require("%rGui/weaponry/weaponsVisual.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
+let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
+let { mkGradientCtorDoubleSideY, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 
+let bgSlotColor = 0xFF51C1D1
+let slotBGImage = mkBitmapPictureLazy(gradTexSize, gradTexSize,
+  mkGradientCtorRadial(bgSlotColor, 0 , 20, 55, 35, 0))
 
 let WND_UID = "respawn_choose_bullet_wnd"
 let bulletSlotSize = [hdpxi(350), hdpxi(105)]
@@ -25,31 +29,29 @@ let minBulletWidth = max(bulletSlotSize[0], hdpx(150))
 let bulletHeight = bulletSlotSize[1]
 let statRowHeight = hdpx(28)
 let lockedColor = 0xFFF04005
+let lineColor = 0xFF75D0E7
 let wndKey = {}
+let transDuration = 0.3
+let lineGradient = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColor, 0.25))
+let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
 
 let maxColumns = 2
 let slotsGap = hdpx(5)
 let bulletsColumnsCount = @(bSetsCount) min(maxColumns, bSetsCount)
 let bulletsListWidth = @(columns) max((minBulletWidth * columns) + slotsGap, minWndWidth)
 
+let openedSlot = Watched(-1)
 let openParams = mkWatched(persist, "openParams", null)
 let curSlotName = mkWatched(persist, "curSlotName", "")
 let savedSlotName = Computed(@() chosenBullets.value?[openParams.value?.slotIdx].name ?? "")
 let wndAABB = Watched(null)
-let usedBullets = Computed(function() {
-  let { slotIdx = null } = openParams.value
-  if (slotIdx == null)
-    return null
-  let res = {}
-  foreach (idx, slot in chosenBullets.value)
-    if (idx != slotIdx)
-      res[slot.name] <- true
-  return res
-})
 
 let hasBulletsVideo = Computed(@() hasAddons.value?.pkg_video ?? false)
 
-let close = @() openParams(null)
+let function close(){
+  openedSlot(-1)
+  openParams(null)
+}
 savedSlotName.subscribe(@(v) curSlotName(v))
 chosenBullets.subscribe(@(_) curSlotName(savedSlotName.value))
 openParams.subscribe(@(_) wndAABB(null))
@@ -59,38 +61,66 @@ curSlotName.subscribe(@(_) defer( function() {
     wndAABB(aabb)
 }))
 
-let function mkBulletButton(name, bSet, fromUnitTags, columns) {
+let function mkBulletButton(name, bSet, fromUnitTags, columns, id) {
   let isCurrent = Computed(@() name == curSlotName.value)
-  let color = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.value?.level ?? 0) ? lockedColor
-    : name in usedBullets.value ? 0xFF808080
-    : 0xFFFFFFFF)
+  let isLockedSlot = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.value?.level ?? 0))
+  let hasUnseenBullets = Computed(@() hasUnseenShellsBySlot.value?[selSlot.value?.id ?? 0][name])
   let children = [
-    @() mkBulletSlot(bSet, fromUnitTags,
-      {
-        watch = isCurrent
-        size = columns < 2 ? [minWndWidth, bulletHeight] : bulletSlotSize
-        halign = columns < 2 ? ALIGN_CENTER : null
-        vplace = ALIGN_BOTTOM
-        hplace = ALIGN_LEFT
-        color = isCurrent.value ? 0xFF51C1D1 : 0x80296169
-      })
-    @() {
-      watch = color
-      hplace = ALIGN_LEFT
-      rendObj = ROBJ_TEXT
-      color = color.value
-      padding = [0, 0, 0, hdpx(10)]
-      text = getAmmoNameShortText(bSet)
-      maxWidth = pw(100)
-      behavior = Behaviors.Marquee
-      delay = 0.5
-      speed = hdpx(20)
-    }.__update(fontTiny)
+    @(){
+      watch = isLockedSlot
+      valign = ALIGN_TOP
+      children = [
+        @() mkBulletSlot(bSet, fromUnitTags,
+          {
+            color = isCurrent.value ? 0xFF51C1D1 : 0x402C2C2C
+            opacity = isLockedSlot.value ? 0.5 : 1
+            rendObj = isCurrent.value ? ROBJ_IMAGE : ROBJ_SOLID
+            image = isCurrent.value ? slotBGImage() : null
+          }, {
+            watch = [ isCurrent, isLockedSlot]
+            size = columns < 2 ? [minWndWidth, bulletHeight] : bulletSlotSize
+            halign = columns < 2 ? ALIGN_CENTER : null
+          })
+        @() {
+          watch = isCurrent
+          size = [hdpx(9), flex()]
+          rendObj = ROBJ_IMAGE
+          image = lineGradient()
+          opacity = isCurrent.value ? 1 : 0
+          transitions = opacityTransition
+          hplace = id % 2 != 0 ? ALIGN_RIGHT : ALIGN_LEFT
+          pos = [id % 2 != 0 ? hdpx(15) : hdpx(-15), 0]
+        }
+        isLockedSlot.value
+          ? {
+            rendObj = ROBJ_IMAGE
+            pos = [0, -hdpx(5)]
+            size = [hdpxi(70), hdpxi(70)]
+            image = Picture("ui/gameuiskin#lock_unit.svg")
+            keepAspect = KEEP_ASPECT_FIT
+            vplace = ALIGN_BOTTOM
+            children = {
+              rendObj = ROBJ_TEXT
+              text = fromUnitTags.reqLevel
+              hplace = ALIGN_CENTER
+              vplace = ALIGN_CENTER
+              pos = [hdpx(1), hdpx(10)]
+            }.__update(fontVeryTiny)
+          }
+          : null
+        @(){
+          watch = isLockedSlot
+          size = [flex(), hdpx(108)]
+          rendObj = ROBJ_BOX
+          borderWidth = isLockedSlot.value ? 0 : hdpxi(4)
+        }
+      ]
+    }
+    mkPriorityUnseenMarkWatch(hasUnseenBullets, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, margin = [hdpx(7), hdpx(7)] })
   ]
   let onClick = @() curSlotName(name)
 
-  return @() {
-    watch = isCurrent
+  return {
     behavior = Behaviors.Button
     onClick
     children
@@ -111,14 +141,22 @@ let function bulletsList() {
     size = [bulletsListWidth(columns), bulletHeight * rows]
     flow = FLOW_VERTICAL
     gap = slotsGap
-    children = arrayByRows(
+    children = (arrayByRows(
       visibleBulletsList
-        .map(@(name) mkBulletButton(name, bulletSets[name], fromUnitTags?[name], columns)), columns)
+        .map(@(name, id) mkBulletButton(name, bulletSets[name], fromUnitTags?[name], columns, id)), columns)
       .map(@(item) {
         flow = FLOW_HORIZONTAL
         children = item
         gap = slotsGap
-      })
+      })).append(
+        {
+          key = "saveSection"
+          size = flex()
+          function onDetach() {
+            saveSeenShells(selSlot.value.name, visibleBulletsList.map(@(name) name))
+          }
+        }
+      )
   }
 }
 
@@ -229,8 +267,10 @@ let function applyButton() {
   let { fromUnitTags = null } = bulletsInfo.value
   let { reqLevel = 0 } = fromUnitTags?[curSlotName.value]
   let isEnoughLevel = reqLevel <= (selSlot.value?.level ?? 0)
-  let children = savedSlotName.value == curSlotName.value ? null
-    : !isEnoughLevel ? textButtonCommon(applyText, @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }))
+  let children = savedSlotName.value == curSlotName.value
+      ? textButtonCommon(utf8ToUpper(loc("mainmenu/btnClose")), close)
+    : !isEnoughLevel
+      ? textButtonCommon(applyText, @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }))
     : textButtonPrimary(applyText, applyBullet)
   return {
     watch = [savedSlotName, curSlotName, bulletsInfo, selSlot]
@@ -251,7 +291,7 @@ let window = {
   color = 0xA0000000
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  padding = [0, 0, hdpx(15), 0]
+  padding = hdpx(20)
   maxHeight = saSize[1]
   children = [
     bulletsList
@@ -267,68 +307,6 @@ let mkBg = @(box) box == null
       children = createHighlight([box], @(_) null, darkCtor)
     }
 
-let function animLines() {
-  let res = { watch = [wndAABB, openParams] }
-  if (openParams.value == null || wndAABB.value == null)
-    return res
-
-  let { bulletBox } = openParams.value
-  let { t, b, r, l } = bulletBox
-  let w = wndAABB.value
-  let midY = (t + b) / 2
-  let wMidY = (w.t + w.b) / 2
-  //bulletBox
-  let lines = [
-    [
-      [l, midY, l, t],
-      [l, midY, l, b],
-    ],
-    [
-      [l, t, r, t],
-      [l, b, r, b],
-    ],
-    [
-      [r, t, r, midY],
-      [r, b, r, midY],
-    ],
-  ]
-
-  //middleLine and left window line
-  if (midY >= w.t && midY <= w.b)
-    lines.append(
-      [[r, midY, w.l, midY]],
-      [
-        [w.l, midY, w.l, w.t],
-        [w.l, midY, w.l, w.b],
-      ])
-  else {
-    let midX = (r + w.l) / 2
-    lines.append(
-      [[r, midY, midX, midY]],
-      [[midX, midY, midX, wMidY]],
-      [[midX, wMidY, w.l, wMidY]],
-      [
-        [w.l, wMidY, w.l, w.t],
-        [w.l, wMidY, w.l, w.b],
-      ])
-  }
-
-  //finalize window
-  lines.append(
-    [
-      [w.l, w.t, w.r, w.t],
-      [w.l, w.b, w.r, w.b],
-    ],
-    [
-      [w.r, w.t, w.r, wMidY],
-      [w.r, w.b, w.r, wMidY],
-    ])
-
-  return res.__update({
-    size = flex()
-    children = mkAnimGrowLines(mkAGLinesCfgOrdered(lines, hdpx(5000)))
-  })
-}
 
 let function content() {
   if (openParams.value == null)
@@ -346,7 +324,6 @@ let function content() {
           : [wndBox.t, sw(100) - wndBox.r, sh(100) - wndBox.b, wndBox.l]
         children = window
       }
-      animLines
     ]
   }
 }
@@ -362,4 +339,11 @@ if (openParams.value != null)
   openImpl()
 openParams.subscribe(@(v) v != null ? openImpl() : removeModalWindow(WND_UID))
 
-return @(slotIdx, bulletBox, wndBox) openParams({ slotIdx, bulletBox, wndBox })
+let function showRespChooseWnd(slotIdx, bulletBox, wndBox) {
+  openParams({ slotIdx, bulletBox, wndBox })
+  openedSlot(slotIdx)
+}
+return {
+  showRespChooseWnd
+  openedSlot
+}

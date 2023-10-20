@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { contentOffset, minContentOffset, contentWidth, contentWidthFull, tabW } = require("optionsStyle.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 

@@ -517,6 +517,13 @@ return {
     progressValue = id
   }, cb)
 
+  open_lootbox_several = @(id, count, cb = null) request({
+    method = "open_lootbox_several"
+    params = { id, count }
+    progressId = PROGRESS_LOOTBOX
+    progressValue = id
+  }, cb)
+
   add_lootbox = @(id, count, cb = null) request({
     method = "add_lootbox"
     params = { id, count }
@@ -527,6 +534,16 @@ return {
     params = { id, currencyId, price, count }
     progressId = PROGRESS_LOOTBOX
     progressValue = id
+  }, cb)
+
+  debug_lootbox_chances = @(id, shouldFilter, cb = null) request({
+    method = "debug_lootbox_chances"
+    params = { id, shouldFilter }
+  }, cb)
+
+  reset_lootbox_counters = @(id, cb = null) request({
+    method = "reset_lootbox_counters"
+    params = { id }
   }, cb)
 
   reset_mutations_timestamp = @(cb = null) request({ method = "reset_mutations_timestamp" }, cb)

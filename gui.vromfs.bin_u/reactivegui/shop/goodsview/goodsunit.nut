@@ -207,7 +207,7 @@ let function mkGoodsUnit(goods, onClick, state, animParams) {
   }
 
   return mkGoodsWrap(onUnitClick,
-    unit == null ? [] : @(sf) [
+    unit == null ? null : @(sf) [
       mkPlatoonBgPlates(unit, unit?.platoonUnits)
       mkBgImg($"!ui/unitskin#flag_{unit.country}.avif")
       mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
@@ -237,7 +237,7 @@ let function mkOfferUnit(goods, onClick, state, needPrice) {
     ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   return mkOfferWrap(onClick,
-    unit == null ? [] : @(sf) [
+    unit == null ? null : @(sf) [
       mkBgImg(bgImg)
       sf & S_HOVER ? bgHiglight : null
       mkFitCenterImg(unit.isUpgraded ? p.upgradedImage : p.image)

@@ -3,7 +3,7 @@ let { register_command } = require("console")
 let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, mkRewardPlate
@@ -12,6 +12,8 @@ let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, mkRewardPlate
 let dbgRewardsTbl = {
   gold = 9999
   wp = 10000
+  warbond = 100
+  eventKey = 50
   premiumDays = 14
   items = {
     ship_tool_kit = 50

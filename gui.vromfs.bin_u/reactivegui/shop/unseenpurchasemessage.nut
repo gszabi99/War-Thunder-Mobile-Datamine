@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { frnd } = require("dagor.random")
-let { resetTimeout } = require("dagor.workcycle")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
+let { isInQueue } = require("%appGlobals/queueState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { unseenPurchasesExt, markPurchasesSeen, hasActiveCustomUnseenView
+let { unseenPurchasesExt, markPurchasesSeen, hasActiveCustomUnseenView, skipUnseenMessageAnimOnce
 } = require("unseenPurchasesState.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -29,6 +29,9 @@ let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { bgGradient } = require("unseenPurchaseComps.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
+let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let openUnitsWnd = require("%rGui/unit/unitsWnd.nut")
+let { tryResetToMainScene, canResetToMainScene } = require("%rGui/navState.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator" ]
 
@@ -120,22 +123,13 @@ let stackData = Computed(function() {
   }.filter(@(v) v.len() != 0))
 })
 
-let isJustUnlockedUnitsOutdated = Watched(false)
-let restartOutdateTimer = @() resetTimeout(15.0, @() isJustUnlockedUnitsOutdated(true))
-if (hasJustUnlockedUnitsAnimation.value)
-  restartOutdateTimer()
-hasJustUnlockedUnitsAnimation.subscribe(function(v) {
-  isJustUnlockedUnitsOutdated(false)
-  if (v)
-    restartOutdateTimer()
-})
-
 let needShow = keepref(Computed(@() !hasActiveCustomUnseenView.value
   && unseenPurchasesExt.value.len() != 0
   && isInMenu.value
   && isLoggedIn.value
   && !isTutorialActive.value
-  && (!hasJustUnlockedUnitsAnimation.value || isJustUnlockedUnitsOutdated.value)))
+  && !isInQueue.value
+  && !hasJustUnlockedUnitsAnimation.value))
 
 let WND_UID = "unseenPurchaseWindow"
 let close = @() removeModalWindow(WND_UID)
@@ -211,9 +205,9 @@ let function mkHighlight(startDelay, sizeMul) {
   }
 }
 
-let function mkRerwardIcon(startDelay, imgPath, sizeMulX = 1.0, sizeMulY = 1.0) {
-  let imgW = round(rewIconSize * sizeMulX)
-  let imgH = round(rewIconSize * sizeMulY)
+let function mkRerwardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
+  let imgW = round(rewIconSize * sizeMul).tointeger()
+  let imgH = round(imgW / aspectRatio).tointeger()
   return {
     size = [rewIconSize, rewIconSize]
     halign = ALIGN_CENTER
@@ -222,6 +216,7 @@ let function mkRerwardIcon(startDelay, imgPath, sizeMulX = 1.0, sizeMulY = 1.0) 
       mkHighlight(startDelay, aRewardIconFlareScale)
       {
         size = [imgW, imgH]
+        pos = [shiftX * imgW, shiftY * imgH]
         rendObj = ROBJ_IMAGE
         image = Picture($"{imgPath}:{imgW}:{imgH}:K:P")
         keepAspect = true
@@ -261,7 +256,14 @@ let function mkDecoratorRewardIcon(startDelay, decoratorId) {
   }
 }
 
-let mkCurrencyIcon = @(startDelay, id) {
+let customCurrencyIcons = {
+  gold = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#shop_eagles_02.avif", 1.61, 1.8, 0.12, -0.05)
+  wp = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#shop_lions_02.avif", 1.61, 1.8, 0.12, -0.05)
+  warbond = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#warbond_goods_01.avif", 1.0, 1.6)
+  eventKey = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#event_keys_01.avif", 1.0, 1.5)
+}
+
+let mkCurrencyIcon = @(startDelay, id)  customCurrencyIcons?[id](startDelay) ?? {
   size = [rewIconSize, rewIconSize]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -301,7 +303,7 @@ let rewardCtors = {
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
   }
   premium = {
-    mkIcon = @(rewardInfo) mkRerwardIcon(rewardInfo.startDelay, "ui/gameuiskin#premium_active.svg" , 1.43, 1.0)
+    mkIcon = @(rewardInfo) mkRerwardIcon(rewardInfo.startDelay, "ui/gameuiskin#premium_active_big.avif", 1.43, 1.4)
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay,
       "".concat(rewardInfo.count, loc("measureUnits/days")))
   }
@@ -444,19 +446,28 @@ let mkTapToContinueText = @(startDelay) {
   ]
 }.__update(fontMedium)
 
+let function skipAnims() {
+  isAnimFinished(true)
+  anim_skip(ANIM_SKIP)
+  anim_skip_delay(ANIM_SKIP_DELAY)
+}
+
 let function onCloseRequest() {
   if (!isAnimFinished.value) {
-    isAnimFinished(true)
-    anim_skip(ANIM_SKIP)
-    anim_skip_delay(ANIM_SKIP_DELAY)
+    skipAnims()
     return
   }
-  // Setting the received unit as current
-  let unitName = stackData.value?.unitPlates.findvalue(@(_) true)?.id
-  let unit = myUnits.value?[unitName]
-  if (unit != null) {
-    setCurrentUnit(unit.name)
-    requestOpenUnitPurchEffect(unit)
+  // Setting the received unit as current and show in units list
+  let unitId = stackData.value?.unitPlates.findvalue(@(_) true)?.id
+  let unit = myUnits.value?[unitId]
+  if (unit != null && canResetToMainScene()) {
+    let errString = setCurrentUnit(unitId)
+    if (errString == "") {
+      tryResetToMainScene()
+      setHangarUnit(unitId)
+      requestOpenUnitPurchEffect(unit)
+      openUnitsWnd()
+    }
   }
   // Marking purchases as seen
   markPurchasesSeen(unseenPurchasesExt.value.keys())
@@ -510,6 +521,12 @@ let messageWnd = {
 let showMessage = @() addModalWindow(bgShadedDark.__merge({
   key = WND_UID
   size = flex()
+  function onAttach() {
+    if (!skipUnseenMessageAnimOnce.value)
+      return
+    skipUnseenMessageAnimOnce(false)
+    skipAnims()
+  }
   onClick = onCloseRequest
   children = messageWnd
   animations = wndSwitchAnim

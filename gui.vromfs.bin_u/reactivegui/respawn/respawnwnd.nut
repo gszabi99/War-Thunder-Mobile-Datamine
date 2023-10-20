@@ -5,12 +5,13 @@ let { deferOnce } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlot, playerSelectedSlotIdx
+let { isRespawnAttached, respawnSlots, respawn, cancelRespawn,
+  selSlot, playerSelectedSlotIdx, sparesNum
 } = require("respawnState.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
 } = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
-let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn
+let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 } = require("%appGlobals/unitPresentation.nut")
@@ -33,6 +34,8 @@ let { bg, headerText, headerHeight, header, gap, headerMarquee } = require("resp
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullHeight
 let mapMaxSize = hdpx(650)
@@ -47,12 +50,25 @@ isRespawnStarted.subscribe(function(v) {
     startRespawnTime(::get_mission_time())
 })
 
-let topPanel = {
+let balanceBlock = @() {
+  watch = sparesNum
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_CENTER
+  size = [SIZE_TO_CONTENT, flex()]
+  children = [
+    mkCurrencyComp(sparesNum.value, SPARE)
+    mkConsumableSpend(SPARE, hdpx(20), hdpx(80), @() sparesNum(sparesNum.value - 1))
+  ]
+}
+
+let topPanel = @() {
   size = [flex(), SIZE_TO_CONTENT]
+  watch = respawnUnitItems
   children = [
     { size = [SIZE_TO_CONTENT, flex()], children = logerrHintsBlock }
     scoreBoard
     mkMenuButton({ onClick = @() send("openFlightMenuInRespawn", {}) })
+    respawnUnitItems.value?.spare ? balanceBlock : null
   ]
 }
 
@@ -187,7 +203,33 @@ let function cancelBtn() {
   }
 }
 
-let toBattleLoc = utf8ToUpper(loc("mainmenu/toBattle/short"))
+let mkText = @(text, override = {}) {
+  rendObj = ROBJ_TEXT
+  text
+}.__update(fontTiny, override)
+
+let function toBattleButton(onClick, styleOvr) {
+  let button = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")), onClick, styleOvr)
+  if (!(selSlot.value?.isSpawnBySpare ?? false))
+    return button
+  return {
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(30)
+    children = [
+      {
+        size = [SIZE_TO_CONTENT, flex()]
+        flow = FLOW_VERTICAL
+        halign = ALIGN_RIGHT
+        children = [
+          mkText(utf8ToUpper(loc("mainmenu/driveAgain")))
+          mkCurrencyComp(1, SPARE)
+        ]
+      }
+      button
+    ]
+  }
+}
+
 let function toBattle() {
   if (chosenBullets.value.len() == 0) //no need to validate bullets count when no bullets choice at all
     respawn(selSlot.value, bulletsToSpawn.value)
@@ -198,7 +240,7 @@ let function toBattle() {
       text = loc("respawn/low_ammo")
       buttons = [
         { id = "cancel", isCancel = true }
-        { text = toBattleLoc, styleId = "BATTLE",
+        { text = utf8ToUpper(loc("mainmenu/toBattle/short")), styleId = "BATTLE",
           cb = @() respawn(selSlot.value, bulletsToSpawn.value) }
       ]
     })
@@ -212,8 +254,7 @@ let buttons = @() {
   watch = [needCancel, isRespawnStarted, selSlot]
   vplace = ALIGN_BOTTOM
   children = !(selSlot.value?.canSpawn ?? false) ? null
-    : !isRespawnStarted.value ? textButtonBattle(toBattleLoc, toBattle,
-      { hotkeys = ["^J:X | Enter"] })
+    : !isRespawnStarted.value ? toBattleButton(toBattle, { hotkeys = ["^J:X | Enter"] })
     : needCancel.value ? cancelBtn
     : spinner
 }

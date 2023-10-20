@@ -115,7 +115,8 @@ let function onEnemyPartDamage(data) {
       let dmPart = (parts[partName]?[partDmName] ?? {}).__merge(data)
       if (prevPartKilled)
         dmPart.partKilled <- true
-      parts[partName][partDmName] <- dmPart
+      if (partDmName != null)
+        parts[partName][partDmName] <- dmPart
     })
 }
 

@@ -36,7 +36,6 @@ let { closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { needCursorForActiveInputDevice, isGamepad } = require("activeControls.nut")
 let hotkeysPanel = require("controlsMenu/hotkeysPanel.nut")
 let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
-let { getenv = @(...) null} = require_optional("system")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")
 let { tooltipComp } = require("tooltip.nut")
 let { waitboxes } = require("notifications/waitBox.nut")
@@ -58,21 +57,26 @@ register_command(@() forceHideCursor(!forceHideCursor.value), "ui.force_hide_mou
 
 
 let function loadAfterLoginImpl() {
+  if (sceneAfterLogin != null)
+    return
+  //let profiler = require("dagor.profiler")
+  //profiler.start()
+  let t = get_time_msec()
   log("LOAD RGUI SCRIPTS AFTER LOGIN")
   sceneAfterLogin = require("%rGui/sceneAfterLogin.nut")
   isAllScriptsLoaded(true)
+  log($"DaRg scripts load after login {get_time_msec() - t} msec")
+  //profiler.stop_and_save_to_file("../../profiler.csv")
 }
 
-if (isReadyToFullLoad.value || !isLoginRequired.value || getenv("QUIRREL_SCRIPTS_TESTS"))
+if (isReadyToFullLoad.value || !isLoginRequired.value)
   loadAfterLoginImpl() //when load from native code start_es_loading is already called
 let function loadAfterLogin() {
   if (sceneAfterLogin != null)
     return
-  let t = get_time_msec()
   start_es_loading()
   loadAfterLoginImpl()
   end_es_loading()
-  log($"DaRg scripts load after login {get_time_msec() - t} msec")
 }
 isReadyToFullLoad.subscribe(@(v) v ? loadAfterLogin() : null)
 isLoginRequired.subscribe(@(v) v ? null : loadAfterLogin())

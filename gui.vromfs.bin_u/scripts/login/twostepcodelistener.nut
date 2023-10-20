@@ -7,7 +7,7 @@ let { authState } = require("%scripts/login/authState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
-const TWO_STEP_SUSPEND_EVENT = "two_step_suspend_event"
+//const TWO_STEP_SUSPEND_EVENT = "two_step_suspend_event"
 
 let attemptsRequest2step = hardPersistWatched("login.attemptsRequest2step", MAX_GET_2STEP_CODE_ATTEMPTS)
 isLoginStarted.subscribe(function(_v) {

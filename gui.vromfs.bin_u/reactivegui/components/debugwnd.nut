@@ -11,7 +11,7 @@ let wndWidth = min(sw(95), sh(150))
 
 let gap = hdpx(5)
 let defaultColor = 0xFFA0A0A0
-let defFilterText = persist("filterText", @() Watched(""))
+let defFilterText = mkWatched(persist, "filterText", "")
 
 let closeButtonHeight = calc_str_box("A", fontVeryTiny)[1] + 2 * hdpx(5) //text padding
 let closeButton = function(close) {
@@ -130,7 +130,6 @@ let function filterData(data, curLevel, filterLevel, rowFilter, countLeft) {
       res[key] <- curData
     if (countLeft.value < 0)
       break
-    continue
   }
   return (curLevel == 0 || res.len() > 0) ? res : null
 }

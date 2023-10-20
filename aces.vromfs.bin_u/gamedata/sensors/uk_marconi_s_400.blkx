@@ -164,7 +164,6 @@
   },
   "scanPatternSets": {
     "search": {
-      "scanPattern2": "search60",
       "scanPattern1": "search360",
       "scanPattern3": "searchVertical"
     }

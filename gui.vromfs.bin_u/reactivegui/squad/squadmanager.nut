@@ -221,7 +221,7 @@ let function applyRemoteDataToSquadMember(uid, msquad_data) {
 
 subscribe("squad.onGetMemberData", function(msg) {
   let { result, context = null } = msg
-  if (!logSquadError(result))
+  if (!logSquadError(result) && context?.userId != null)
     applyRemoteDataToSquadMember(context.userId, result)
 })
 
@@ -348,7 +348,8 @@ subscribe("squad.onAcceptInvite", function(msg) {
     })
     return
   }
-  squadId(context.squadId)
+  if ("squadId" in context)
+    squadId(context.squadId)
   fetchSquadInfo()
 })
 

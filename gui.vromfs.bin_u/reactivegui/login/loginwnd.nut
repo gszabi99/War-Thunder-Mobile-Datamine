@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let eventbus = require("eventbus")
 let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
-let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, availableLoginTypes, isLoginByGajin
+let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -24,6 +24,7 @@ let loginPas = mkWatched(persist, "loginPas", "")
 let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
 let check2StepAuthCode = mkWatched(persist, "check2StepAuthCode", false)
 let hasEmail2step = mkWatched(persist, "hasEmail2step", false)
+let secStepType = mkWatched(persist, "secStepType", SST_UNKNOWN)
 let showPasswordIconSize = [hdpxi(50), hdpxi(40)]
 
 let isShowLanguagesList = Watched(false)
@@ -51,7 +52,8 @@ eventbus.subscribe("updateAuthStates", function(params) {
   loginPas(incomingPass)
   isCanViewPassword(loginPas.value == "" || (isCanViewPassword.value && isPassEqual))
   check2StepAuthCode(params?.check2StepAuthCode ?? check2StepAuthCode.value)
-  hasEmail2step(params?.email2step ?? false)
+  secStepType(params?.secStepType ?? SST_UNKNOWN)
+  hasEmail2step(secStepType.value == SST_MAIL)
 })
 
 let gaijinLogoWidth = (256.0 / 128.0 * defButtonHeight).tointeger()
@@ -225,7 +227,7 @@ let resendCodeBlock = @() {
 }
 
 let gaijinAuthorization = @() {
-  watch = [check2StepAuthCode, hasEmail2step]
+  watch = [check2StepAuthCode, hasEmail2step, secStepType]
   flow = FLOW_VERTICAL
   gap = hdpx(30)
   children = [
@@ -240,7 +242,7 @@ let gaijinAuthorization = @() {
     mkTextInputField(loginName, loc("mainmenu/login"), { inputType = "mail" })
     mkPasswordInputField
     check2StepAuthCode.value
-      ? mkTextInputField(twoStepAuthCode, loc("mainmenu/2stepVerifCode"), { inputType = "num" })
+      ? mkTextInputField(twoStepAuthCode, loc($"mainmenu/2step/code{secStepType.value}"), { inputType = "num" })
       : null
     hasEmail2step.value ? resendCodeBlock : recoveryPassword
     {

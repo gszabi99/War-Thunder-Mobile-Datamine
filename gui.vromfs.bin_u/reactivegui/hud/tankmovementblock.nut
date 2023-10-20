@@ -7,8 +7,7 @@ let { isStickActiveByStick, stickDelta } = require("stickState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { IsTracked } = require("%rGui/hud/tankState.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
-let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering, wheel_steering
-} = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
+let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
 let { setMoveControlByArrows } = require("hudState")
 
 let stickZoneSize = [shHud(40), shHud(40)]
@@ -114,11 +113,11 @@ let tankMoveStick  = @() {
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_LEFT
   touchStickAction = {
-    horizontal = IsTracked.value ? "gm_steering" : "wheel_steering"
+    horizontal = "gm_steering"
     vertical = "gm_throttle"
   }
-  deadZoneForStraightMove = 0
-  deadZoneForTurnAround = 90
+  deadZoneForStraightMove = 20
+  valueAfterDeadZone = 0.34
   steeringTable = [
     [12, 0],
     [13, 0.2],
@@ -173,12 +172,6 @@ let gamepadAxisListener = axisListener({
   [gm_steering] = function(v) {
     stickDelta(Point2(-v, stickDelta.value.y))
     setVirtualAxisValue("gm_steering", -v)
-    setVirtualAxisValue("wheel_steering", -v)
-  },
-  [wheel_steering] = function(v) {
-    stickDelta(Point2(-v, stickDelta.value.y))
-    setVirtualAxisValue("gm_steering", -v)
-    setVirtualAxisValue("wheel_steering", -v)
   },
   [gm_throttle] = function(v) {
     stickDelta(Point2(stickDelta.value.x, v))

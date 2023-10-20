@@ -1,36 +1,38 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curSectionId, questsBySection, seenQuests, saveSeenQuestsCurSection, sectionsCfg, inactiveEventUnlocks
-} = require("questsState.nut")
+let { curSectionId, curTabId, questsBySection, seenQuests, saveSeenQuestsCurSection, sectionsCfg,
+  inactiveEventUnlocks, isCurSectionInactive } = require("questsState.nut")
 let { textButtonSecondary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { receiveUnlockRewards, unlockRewardsInProgress, unlockTables } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
-let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, timeUntilTheEnd, allQuestsCompleted
-} = require("questsComps.nut")
+let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
+  allQuestsCompleted, linkToEventBtn } = require("questsComps.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize } = require("rewardsComps.nut")
-let { mkQuestBar, mkProgressBar, progressBarHeight, progressBarMargin } = require("questBar.nut")
+let { mkQuestBar, mkProgressBar, progressBarHeight } = require("questBar.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
-let { tabExtraWidth } = require("%rGui/components/tabs.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 
+
+let PROGRESS_STAT = "event_quests_progress"
 
 let bgColor = 0x80000000
-let questHeight = hdpx(150)
 let unseenMarkMargin = hdpx(20)
+let progressBarMargin = hdpx(30)
 
-let aspectRatio = sw(100) / sh(100)
-let btnSize = [aspectRatio < 2 ? hdpx(230) : hdpx(300), hdpx(90)]
-let childOvr = aspectRatio < 2 ? fontSmallShaded : null
+let btnSize = [saRatio < 2 ? hdpx(230) : hdpx(300), hdpx(90)]
+let childOvr = saRatio < 2 ? fontSmallShaded : null
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, sound = { click  = "meta_get_unlock" } }, childOvr }
+let contentWidth = saSize[0] - tabW - minContentOffset
 
 let scrollHandler = ScrollHandler()
 curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
@@ -52,6 +54,14 @@ let function mkQuest(quest) {
   let header = loc(quest.name)
   let text = loc($"{quest.name}/desc")
   let rewards = quest?.stages?[0].rewards ?? {}
+  let questProgress = quest.stages[0]?.updStats
+    .findvalue(@(v) v.name == PROGRESS_STAT).value.tointeger()
+  let progressReward = !questProgress ? [] : [{
+    count = questProgress
+    rType = "stat"
+    id = PROGRESS_STAT
+    slots = 1
+  }]
 
   let isUnseen = Computed(@() !quest.hasReward
     && quest.name not in seenQuests.value
@@ -63,19 +73,20 @@ let function mkQuest(quest) {
       let reward = serverConfigs.value.userstatRewards?[id]
       res.extend(getRewardsViewInfo(reward, count))
     }
-    return res.sort(sortRewardsViewInfo)
+    return progressReward.extend(res.sort(sortRewardsViewInfo))
   })
-  let isAwardInProgress = Computed(@() quest.name in unlockRewardsInProgress.value)
+
+  let isRewardInProgress = Computed(@() quest.name in unlockRewardsInProgress.value)
   let headerPadding = Computed(@() quest.hasReward ? unseenMarkMargin * 2
     : isUnseen.value ? newMarkSize[0]
     : 0)
 
   let mkBtn = @() {
-    watch = isAwardInProgress
+    watch = isRewardInProgress
     size = btnSize
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = isAwardInProgress.value ? spinner
+    children = isRewardInProgress.value ? spinner
       : quest?.hasReward
         ? textButtonSecondary(
             utf8ToUpper(loc("btn/receive")),
@@ -98,11 +109,11 @@ let function mkQuest(quest) {
   return {
     rendObj = ROBJ_SOLID
     color = bgColor
-    size = [flex(), questHeight]
+    size = [flex(), SIZE_TO_CONTENT]
     children = [
       @() {
         watch = isUnseen
-        size = flex()
+        size = [flex(), SIZE_TO_CONTENT]
         children = quest.hasReward
             ? {
                 margin = unseenMarkMargin
@@ -114,7 +125,7 @@ let function mkQuest(quest) {
 
       {
         size = [flex(), SIZE_TO_CONTENT]
-        padding = [0, hdpx(30)]
+        padding = [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
         flow = FLOW_HORIZONTAL
         gap = questItemsGap
         vplace = ALIGN_CENTER
@@ -135,8 +146,8 @@ let function mkQuest(quest) {
               }.__update(fontSmall)
 
               {
-                rendObj = ROBJ_TEXT
-                behavior = Behaviors.Marquee
+                rendObj = ROBJ_TEXTAREA
+                behavior = Behaviors.TextArea
                 maxWidth = pw(100)
                 text
               }.__update(fontTiny)
@@ -160,34 +171,52 @@ let function mkQuest(quest) {
   }
 }
 
-let sectionsWidth = saSize[0] - tabW - minContentOffset
 let sectionPart = 0.9
 let gapPart = 1 - sectionPart
 
 let function mkSectionTabs(sections) {
   let sLen = sections.len()
-  let btnWidth = min(sectionBtnMaxWidth, sectionsWidth / sLen * sectionPart)
+  let btnWidth = min(sectionBtnMaxWidth, contentWidth / sLen * sectionPart)
 
   let sectionsFont = Computed(function() {
     foreach (id in sections)
-      if (calc_str_box(sectionsCfg.value?[id].text, fontSmallShaded)[0] > btnWidth - statusIconSize - sectionBtnGap * 2)
+      if (calc_str_box(sectionsCfg.value?[id].text ?? "", fontSmallShaded)[0] > btnWidth - statusIconSize - sectionBtnGap * 2)
         return fontTinyShaded
     return fontSmallShaded
   })
 
   return @() {
     watch = [unlockTables, sectionsFont]
-    size = [sectionsWidth, SIZE_TO_CONTENT]
+    size = [contentWidth, SIZE_TO_CONTENT]
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = min(hdpx(100), sectionsWidth * gapPart * (sLen + 1) / (sLen * sLen))
+    gap = contentWidth * gapPart / (sLen - 1)
     children = sections.map(@(id) mkSectionBtn(id, btnWidth, sectionsFont.value, unlockTables.value?[id] == false))
   }
 }
 
-let function questsWndPage(sections, progressUnlock = Watched(null)) {
-  let endsAt = Computed(@() userstatStats.value?.stats[sectionsCfg.value?[curSectionId.value].timerId]["$endsAt"])
+let function questTimerUntilStart() {
+  let firstDayStartedAt = userstatStats.value?.stats.day1["$startedAt"]
+  let curSectionDay = inactiveEventUnlocks.value
+    .findvalue(@(u) u.table == curSectionId.value)?.meta.event_day
+    .tointeger()
 
+  local relativeStartTime = null
+  if (curSectionDay != null && firstDayStartedAt != null) {
+    local firstDayStartTime = firstDayStartedAt - serverTime.value
+    relativeStartTime = firstDayStartTime + (curSectionDay - 1) * TIME_DAY_IN_SECONDS
+  }
+
+  return {
+    watch = [serverTime, curSectionId, userstatStats, inactiveEventUnlocks]
+    size = flex()
+    margin = [hdpx(100), 0, 0, 0]
+    children = relativeStartTime <= 0 ? null
+      : mkTimeUntil(secondsToHoursLoc(relativeStartTime), "quests/untilTheStart", fontMedium)
+  }
+}
+
+let function questsWndPage(sections, progressUnlock = Watched(null)) {
   let questsSort = @(a, b) b.hasReward <=> a.hasReward
     || a.isFinished <=> b.isFinished
     || a.name in seenQuests.value <=> b.name in seenQuests.value
@@ -205,25 +234,45 @@ let function questsWndPage(sections, progressUnlock = Watched(null)) {
   return {
     key = sections
     size = flex()
+    onAttach = @() curSectionId(sections.value?[0])
+    function onDetach() {
+      curSectionId(null)
+      curTabId(null)
+    }
     children = [
       @() {
-        watch = [serverTime, endsAt]
-        size = flex()
-        children = !endsAt.value || (endsAt.value - serverTime.value < 0) ? null
-          : timeUntilTheEnd(secondsToHoursLoc(endsAt.value - serverTime.value),
-            { pos = [- tabW - minContentOffset, 0], margin = [0, 0, 0, tabExtraWidth] })
-      }
-      @() {
-        watch = [progressUnlock, blocksOnTop, sections, questsBySection]
+        watch = [blocksOnTop, sections, questsBySection]
         size = flex()
         flow = FLOW_VERTICAL
         children = [
           sections.value.findindex(@(s) questsBySection.value[s].len() > 0) == null ? allQuestsCompleted : null
-          progressUnlock.value ? mkProgressBar(progressUnlock.value) : null
+
+          @() !progressUnlock.value ? { watch = progressUnlock }
+            : {
+                watch = progressUnlock
+                size = [flex(), SIZE_TO_CONTENT]
+                margin = [0, 0, progressBarMargin, 0]
+                flow = FLOW_HORIZONTAL
+                gap = hdpx(60)
+                valign = ALIGN_CENTER
+                children = [
+                  linkToEventBtn()
+                  mkProgressBar(progressUnlock.value)
+                ]
+              }
+
           sections.value.len() > 1 ? mkSectionTabs(sections.value) : null
-          {
+
+          @() {
+            watch = isCurSectionInactive
+            size = [contentWidth, SIZE_TO_CONTENT]
+            children = isCurSectionInactive.value ? questTimerUntilStart : null
+          }
+
+          @() {
+            watch = isCurSectionInactive
             size = flex()
-            children = [
+            children = isCurSectionInactive.value ? null : [
               pannableCtors[blocksOnTop.value](@() {
                 watch = [curSectionId, seenQuests, questsBySection]
                 size = [flex(), SIZE_TO_CONTENT]
@@ -233,11 +282,7 @@ let function questsWndPage(sections, progressUnlock = Watched(null)) {
                   .values()
                   .sort(questsSort)
                   .map(@(quest) mkQuest(quest))
-                onAttach = @() curSectionId(sections.value?[0])
-                function onDetach() {
-                  saveSeenQuestsCurSection()
-                  curSectionId(null)
-                }
+                onDetach = @() saveSeenQuestsCurSection()
               }, { pos = [0, 0] }, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
               mkScrollArrow(scrollHandler, MR_B)
             ]

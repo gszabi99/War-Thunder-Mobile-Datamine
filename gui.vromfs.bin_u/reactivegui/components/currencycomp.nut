@@ -13,19 +13,21 @@ let iconsCoef = {
   tank_tool_kit_expendable = 1.5
   tank_extinguisher = 1.6
   spare = 1.8
+  warbond = 1.4
+  eventKey = 1.2
 }
 let maxIconsCoef = iconsCoef.reduce(@(a, b) max(a, b))
 
 let getSizeIcon = @(currencyId, size) (size * (iconsCoef?[currencyId] ?? defCoef) + 0.5).tointeger()
 
-// TODO: add eventKey icon
 let icons = {
   // Currencies
   wp   = "ui/gameuiskin#currency_lions.svg"
   gold = "ui/gameuiskin#currency_eagles.svg"
   unitExp = "ui/gameuiskin#experience_icon.svg"
   playerExp = "ui/gameuiskin#experience_icon.svg"
-  warbond = "ui/gameuiskin#warbonds_gamercard.avif"
+  warbond = "ui/gameuiskin#warbond_icon.avif"
+  eventKey = "ui/gameuiskin#key_icon.avif"
   // Consumables
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
@@ -56,23 +58,23 @@ let function mkCurrencyImage (id, size, ovr = {}){
   }.__update(ovr)
  }
 
-let function mkCurrencyComp(value, currencyId, style = CS_COMMON, imgChild = null) {
-  return {
-    flow = FLOW_HORIZONTAL
-    valign = ALIGN_CENTER
-    gap = style.iconGap
-    children = [
-      mkCurrencyImage(currencyId, style.iconSize, { key = style?.iconKey, children = imgChild })
-      {
-        rendObj = ROBJ_TEXT
-        text = type(value) == "integer" ? decimalFormat(value) : value
-        color = style.textColor
-        fontFxColor = style.fontFxColor
-        fontFxFactor = style.fontFxFactor
-        fontFx = style.fontFx
-      }.__update(style.fontStyle)
-    ]
-  }
+let mkCurrencyText = @(value, style) {
+  rendObj = ROBJ_TEXT
+  text = type(value) == "integer" ? decimalFormat(value) : value
+  color = style.textColor
+  fontFxColor = style.fontFxColor
+  fontFxFactor = style.fontFxFactor
+  fontFx = style.fontFx
+}.__update(style.fontStyle)
+
+let mkCurrencyComp = @(value, currencyId, style = CS_COMMON, imgChild = null) {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = style.iconGap
+  children = [
+    mkCurrencyImage(currencyId, style.iconSize, { key = style?.iconKey, children = imgChild })
+    mkCurrencyText(value, style)
+  ]
 }
 
 let mkFreeText = @(style = CS_COMMON) {
@@ -178,6 +180,7 @@ let function mkExp(value, color, style = CS_GAMERCARD) {
 
 return freeze(currencyStyles.__merge({
   mkCurrencyImage
+  mkCurrencyText
   currencyIconsColor
   maxIconsCoef
 

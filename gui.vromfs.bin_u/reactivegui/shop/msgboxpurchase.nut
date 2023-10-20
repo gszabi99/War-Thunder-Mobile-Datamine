@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { balance, WARBOND, WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { balance, WARBOND, EVENT_KEY, WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { openMsgBox, msgBoxText, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { openShopWndByCurrencyId } = require("%rGui/shop/shopState.nut")
+let { openBuyWarbondsWnd, openBuyEventKeysWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
 
 let NO_BALANCE_UID = "no_balance_msg"
 
 let openBuyWnd = {
   [WP] = @(bqPurchaseInfo) openShopWndByCurrencyId(WP, bqPurchaseInfo),
   [GOLD] = @(bqPurchaseInfo) openShopWndByCurrencyId(GOLD, bqPurchaseInfo),
-  [WARBOND] = @(_) null
+  [WARBOND] = @(_) openBuyWarbondsWnd(),
+  [EVENT_KEY] = @(_) openBuyEventKeysWnd()
 }
 
 let mkText = @(text) {

@@ -142,53 +142,54 @@ let map_class_to_str = {
   },
 }
 
+let function instance_to_str(v, max_cvstr_len, compValToString_){
+  let function objToStr(o){
+    local s = format("[%d]={", o.len())
+    foreach (val in o) {
+      let nexts = "{0}{{1}},".subst(s, compValToString_(val, max_cvstr_len))
+      if (max_cvstr_len > 0 && nexts.len() > max_cvstr_len) {
+        s = $"{s}..."
+        break
+      }
+      else
+        s = nexts
+    }
+    s = $"{s}\}"
+    return s
+  }
+
+  let function arrayToStr(o){
+    local s = ""
+    foreach (fieldName, fieldVal in o.getAll()) {
+      if (s.len()>0)
+        s = $"{s}|"
+      let nexts = $"{s}{fieldName} = {tostring_r(fieldVal)}"
+      if (max_cvstr_len > 0 && nexts.len() > max_cvstr_len) {
+        s = $"{s}..."
+        break
+      }
+      else
+        s = nexts
+    }
+    return s
+  }
+
+  local res =  map_class_to_str?[v?.getclass()]?(v)
+  if (res == null) {
+    if (v instanceof CompObject)
+      res = objToStr(v)
+    else if (v instanceof CompArray)
+      res = arrayToStr(v)
+    else
+      res = ""
+  }
+  return res
+}
+
 let function compValToString(v, max_cvstr_len = 80){
   let compValToString_ = callee()
-  let function instance_to_str(v){
-    let function objToStr(v){
-      local s = format("[%d]={", v.len())
-      foreach (val in v) {
-        let nexts = "{0}{{1}},".subst(s, compValToString_(val, max_cvstr_len))
-        if (max_cvstr_len > 0 && nexts.len() > max_cvstr_len) {
-          s = $"{s}..."
-          break
-        }
-        else
-          s = nexts
-      }
-      s = $"{s}\}"
-      return s
-    }
-
-    let function arrayToStr(v){
-      local s = ""
-      foreach (fieldName, fieldVal in v.getAll()) {
-        if (s.len()>0)
-          s = $"{s}|"
-        let nexts = $"{s}{fieldName} = {tostring_r(fieldVal)}"
-        if (max_cvstr_len > 0 && nexts.len() > max_cvstr_len) {
-          s = $"{s}..."
-          break
-        }
-        else
-          s = nexts
-      }
-      return s
-    }
-
-    local res =  map_class_to_str?[v?.getclass()]?(v)
-    if (res == null) {
-      if (v instanceof CompObject)
-        res = objToStr(v)
-      else if (v instanceof CompArray)
-        res = arrayToStr(v)
-      else
-        res = ""
-    }
-    return res
-  }
   return type(v) == "instance"
-    ? instance_to_str(v)
+    ? instance_to_str(v, max_cvstr_len, compValToString_)
     : (map_type_to_str?[type(v)]?(v) ?? v.tostring())
 }
 

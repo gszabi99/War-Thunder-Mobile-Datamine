@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp } = require("unitModsState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
@@ -18,7 +18,7 @@ let modW = hdpx(440)
 let equippedColor = 0xFF50C0FF
 let equippedFrameWidth = hdpx(4)
 let modTotalH = modH + selLineHeight + selLineGap
-let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:O:P"
+let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 
 let iconTankSize = [hdpxi(95), hdpxi(41)]
 let iconShipSize = [hdpxi(44), hdpxi(51)]
@@ -33,9 +33,9 @@ let iconsCfg = {
   }
 }
 
-let bgGradient = mkBitmapPicture(gradTexSize, gradTexSize / 4,
+let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
-let lineGradient = mkBitmapPicture(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColor))
+let lineGradient = mkBitmapPictureLazy(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColor))
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
 
@@ -43,7 +43,7 @@ let selectedLine = @(isActive) @() {
   watch = isActive
   size = [flex(), selLineHeight]
   rendObj = ROBJ_IMAGE
-  image = lineGradient
+  image = lineGradient()
   opacity = isActive.value ? 1 : 0
   transitions = opacityTransition
 }
@@ -63,7 +63,7 @@ let mkModContent = @(content, isActive, isHover) {
       watch = [isActive, isHover]
       size = flex()
       rendObj = ROBJ_IMAGE
-      image = bgGradient
+      image = bgGradient()
       opacity = isActive.value ? 1
         : isHover.value ? 0.5
         : 0
@@ -101,7 +101,7 @@ let function mkEquippedIcon(isEquipped) {
 let function modData(mod) {
   let id = mod?.name
   let locId = $"modification/{id}"
-  let image = $"ui/gameuiskin#{id}.avif:O:P"
+  let image = $"ui/gameuiskin#{id}.avif:0:P"
   let reqLevel = mod?.reqLevel ?? 0
   let currency = getModCurrency(mod)
   let cost = mkCurUnitModCostComp(mod)

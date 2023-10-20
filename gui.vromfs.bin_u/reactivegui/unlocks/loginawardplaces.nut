@@ -125,9 +125,9 @@ let rewardsPlaces = [
     [BEFORE_7_DAY] = defValue,
     [AFTER_7_DAY] = disappear,
     [AFTER_14_DAY] = disappear,
-  }.map(function(v, k) {
+  }.map(function(val, k) {
       if (k not in res.transformByState)
-        return v
+        return val
       return defValue.__merge(res.transformByState[k])
     })
   return res

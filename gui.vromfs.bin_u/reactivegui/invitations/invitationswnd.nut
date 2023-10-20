@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
 let { mkVerticalPannableArea, topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
 let { isInvitationsOpened, invitations, markReadAll, clearAll } = require("invitationsState.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let mkNotifyRow = require("mkNotifyRow.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")

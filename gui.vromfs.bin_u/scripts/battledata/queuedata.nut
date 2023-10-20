@@ -16,9 +16,9 @@ let { isInSquad, isSquadLeader, isReady, squadLeaderQueueDataCheckTime
 const SILENT_ACTUALIZE_DELAY = 60
 const SQUAD_ACTUALIZE_DELAY = 2
 
-let lastResult = persist("lastResult", @() Watched(null))
-let successResult = persist("lastSuccessResult", @() Watched(null))
-let needRefresh = persist("needRefresh", @() Watched(false))
+let lastResult = mkWatched(persist, "lastResult", null)
+let successResult = mkWatched(persist, "lastSuccessResult", null)
+let needRefresh = mkWatched(persist, "needRefresh", false)
 let isQueueDataActual = Computed(@() !needRefresh.value && successResult.value?.unitName == curUnit.value?.name)
 let queueDataError = Computed(@() lastResult.value?.error)
 let needActualize = Computed(@() !isQueueDataActual.value && isLoggedIn.value)

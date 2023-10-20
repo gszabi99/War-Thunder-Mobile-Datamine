@@ -49,7 +49,7 @@ let function animPoint(i) {
       return {
         transform = {
           rotate = 360.0 * angle
-          translate = [sin(angle), cos(angle)].map(@(v, i) 0.5 * v * blockSize[i] * radPart)
+          translate = [sin(angle), cos(angle)].map(@(val, idx) 0.5 * val * blockSize[idx] * radPart)
         }
       }
     }

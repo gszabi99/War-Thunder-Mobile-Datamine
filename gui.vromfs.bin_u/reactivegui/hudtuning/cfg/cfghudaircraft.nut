@@ -18,6 +18,7 @@ let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCam
 let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, myPlaceUi, mkMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
+let { doll, dollEditView } = require("%rGui/hud/aircraftStateModule.nut")
 
 let isMyScoresFitTop = saRatio >= 1.92
 
@@ -124,6 +125,13 @@ return cfgHudCommon.__merge({
     ctor = @() myScoresUi
     defTransform = isMyScoresFitTop ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
     editView = mkMyScores(22100)
+    hideForDelayed = false
+  }
+
+  doll = {
+    ctor = @() doll
+    defTransform = mkLBPos([hdpx(580), hdpx(30)])
+    editView = dollEditView
     hideForDelayed = false
   }
 

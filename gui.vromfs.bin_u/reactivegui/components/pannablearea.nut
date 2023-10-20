@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { isGamepad, isKeyboard } = require("%rGui/activeControls.nut")
 
@@ -29,7 +29,7 @@ let pannableBase = {
 let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
   let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
-  let pageMask = mkBitmapPicture(4, (height * scaleMul + 0.5).tointeger(),
+  let pageMask = mkBitmapPictureLazy(4, (height * scaleMul + 0.5).tointeger(),
     function(params, bmp) {
       let { w, h } = params
       let gradStart1 = (gradientOffset[1] * h / height + 0.5).tointeger()
@@ -51,7 +51,7 @@ let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = nul
       size = [flex(), height]
       pos = [0, -scrollOffset[0]]
       rendObj = ROBJ_MASK
-      image = pageMask
+      image = pageMask()
     }.__update(rootOvr)
 
     return @() isMoveByKeys.value
@@ -86,7 +86,7 @@ let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = nul
 let function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
   let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
-  let pageMask = mkBitmapPicture((width * scaleMul + 0.5).tointeger(), 4,
+  let pageMask = mkBitmapPictureLazy((width * scaleMul + 0.5).tointeger(), 4,
     function(params, bmp) {
       let { w, h } = params
       let gradStart1 = (gradientOffset[0] * w / width + 0.5).tointeger()
@@ -108,7 +108,7 @@ let function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = nu
       size = [width, flex()]
       pos = [-scrollOffset[0], 0]
       rendObj = ROBJ_MASK
-      image = pageMask
+      image = pageMask()
     }.__update(rootOvr)
 
     return @() isMoveByKeys.value

@@ -7,6 +7,7 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { register_command } = require("console")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { authState } = require("%scripts/login/authState.nut")
+let { SST_MAIL } = require("%appGlobals/loginState.nut")
 
 let curtomUrls = {
   [SERVER_ERROR_MAINTENANCE] = "https://www.wtmobile.com/news",
@@ -66,8 +67,8 @@ let function errorCodeToString(error_code) {
       return "80130184" // special error for this
 
     case YU2_WRONG_2STEP_CODE: {
-      let { email2step } = authState.value
-      return email2step ? "YU2_WRONG_2STEP_CODE_EMAIL" : "YU2_WRONG_2STEP_CODE"
+      let { secStepType } = authState.value
+      return secStepType == SST_MAIL ? "YU2_WRONG_2STEP_CODE_EMAIL" : "YU2_WRONG_2STEP_CODE"
     }
   }
 

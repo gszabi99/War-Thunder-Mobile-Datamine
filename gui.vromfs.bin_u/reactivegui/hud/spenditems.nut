@@ -25,6 +25,7 @@ register_command(@(amount) addSpendItem("ship_tool_kit", amount), "debug.spend_i
 register_command(@(amount) addSpendItem("tank_tool_kit_expendable", amount), "debug.spend_item_tank_toolkit")
 register_command(@(amount) addSpendItem("tank_extinguisher", amount), "debug.spend_item_extinguisher")
 register_command(@(amount) addSpendItem("ship_smoke_screen_system_mod", amount), "debug.spend_item_smoke_screen")
+register_command(@(amount) addSpendItem("spare", amount), "debug.spend_spare")
 
 return {
   spendItemsQueue

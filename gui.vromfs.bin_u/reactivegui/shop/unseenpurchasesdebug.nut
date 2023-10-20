@@ -11,6 +11,8 @@ let fakeUnseenPurchases = {
       { id = "alpha_tester", gType = "decorator", count = 0 },
       { id = "chevron", gType = "decorator", count = 0 },
       { id = "gold", gType = "currency", count = 1000 },
+      { id = "warbond", gType = "currency", count = 100 },
+      { id = "eventKey", gType = "currency", count = 50 },
       { id = "premium", gType = "premium", count = 30 },
       { id = "ship_tool_kit", gType = "item", count = 20 },
       { id = "ship_smoke_screen_system_mod", gType = "item", count = 15 },

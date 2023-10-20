@@ -1,6 +1,11 @@
 from "%scripts/dagui_library.nut" import *
-let { get_player_tags } = require("auth_wt")
-let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, curLoginType, authTags
+let { get_player_tags,
+  isExternalApp2StepAllowed = @() ::is_external_app_2step_allowed(),
+  isHasEmail2StepTypeSync = @() ::is_has_email_two_step_type_sync(),
+  isHasWTAssistant2StepTypeSync = @() ::is_has_wtassistant_two_step_type_sync(),
+  isHasGaijinPass2StepTypeSync = @() ::is_has_gaijin_pass_two_step_type_sync()
+} = require("auth_wt")
+let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
@@ -45,8 +50,12 @@ let proceedAuthByResult = {
   },
 
   [YU2_2STEP_AUTH] = function(_loginType) { //error, received if user not logged, because he have 2step authorization activated
-    let value = ::is_has_email_two_step_type_sync()
-    authState.mutate(@(a) a.__update({ check2StepAuthCode = true, email2step = value }))
+    let isExt2StepAllowed = isExternalApp2StepAllowed()
+    let value = !isExt2StepAllowed && isHasEmail2StepTypeSync() ? SST_MAIL
+      : isExt2StepAllowed && isHasWTAssistant2StepTypeSync() ? SST_GA
+      : isExt2StepAllowed && isHasGaijinPass2StepTypeSync() ? SST_GP
+      : SST_UNKNOWN
+    authState.mutate(@(a) a.__update({ check2StepAuthCode = true, secStepType = value }))
     interruptStage({ error = "Need 2step auth" })
     send("StartListenTwoStepCode", {})
   },

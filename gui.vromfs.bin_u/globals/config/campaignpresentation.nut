@@ -15,4 +15,5 @@ let getCampaignPresentation = @(campaign) presentations?[campaign] ?? ships
 
 return {
   getCampaignPresentation
+  campaignPresentations = presentations
 }

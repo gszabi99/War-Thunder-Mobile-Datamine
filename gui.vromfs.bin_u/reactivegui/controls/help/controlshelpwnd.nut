@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { shortcutsByUnitTypes, pages } = require("controlsCfg.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")

@@ -7,7 +7,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { textButtonBright, textButtonPrimary, textButtonCommon, buttonsHGap
 } = require("%rGui/components/textButton.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { devMenuContent, openDevMenuButton, needShowDevMenu } = require("%rGui/flightMenu/devFlightMenu.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkCustomMsgBoxWnd } = require("%rGui/components/msgBox.nut")

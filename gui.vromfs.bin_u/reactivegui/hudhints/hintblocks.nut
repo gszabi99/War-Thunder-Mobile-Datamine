@@ -4,6 +4,7 @@ let warningHintLogState = require("warningHintLogState.nut")
 let logerrLogState = require("logerrLogState.nut")
 let killLogState = require("killLogState.nut")
 let commonHintLogState = require("commonHintLogState.nut")
+let resultsHintLogState = require("resultsHintLogState.nut")
 let { hintCtors, defaultHintCtor } = require("hintCtors.nut")
 
 let hintsGap = hdpx(10)
@@ -51,6 +52,7 @@ return {
   mainHintsBlock = mkHintsBlock(mainHintLogState.curEvents)
   warningHintsBlock = mkHintsBlock(warningHintLogState.curEvents, {}, { minHeight = hdpx(33) })
   commonHintsBlock = mkHintsBlock(commonHintLogState.curEvents)
+  resultsHintsBlock = mkHintsBlock(resultsHintLogState.curEvents)
   logerrHintsBlock
   logerrAndKillLogPlace
 }

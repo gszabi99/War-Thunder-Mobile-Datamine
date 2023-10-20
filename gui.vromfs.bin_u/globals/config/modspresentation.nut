@@ -10,6 +10,6 @@ let catIcons = {
 
 let catIconDefault = "modify.svg"
 
-let getCatIcon = @(cat) $"ui/gameuiskin#{cat in catIcons ? catIcons?[cat] : catIconDefault}:O:P"
+let getCatIcon = @(cat) $"ui/gameuiskin#{cat in catIcons ? catIcons?[cat] : catIconDefault}:0:P"
 
 return getCatIcon

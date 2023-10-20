@@ -13,7 +13,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textColor, goodTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 

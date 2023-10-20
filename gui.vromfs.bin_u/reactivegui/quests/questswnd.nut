@@ -1,18 +1,44 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, isEventActive,
-  COMMON_TAB, EVENT_TAB, PROMO_TAB } = require("questsState.nut")
+let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, isEventActive, curTabId,
+  COMMON_TAB, EVENT_TAB, PROMO_TAB, progressUnlock } = require("questsState.nut")
 let questsWndPage = require("questsWndPage.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
-let { activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
+let { eventSeasonName, eventEndsAt } = require("%rGui/event/eventState.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+
 
 let function isUnseen(sections, hasUnseen) {
   foreach (section in sections)
     if (hasUnseen?[section])
       return UNSEEN_HIGH
   return SEEN
+}
+
+let eventTabContent = {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  children = [
+    @() {
+      watch = eventSeasonName
+      size = [flex(), SIZE_TO_CONTENT]
+      halign = ALIGN_RIGHT
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      text = eventSeasonName.value
+    }.__update(fontSmall)
+    @() {
+      watch = [eventEndsAt, serverTime]
+      size = [flex(), SIZE_TO_CONTENT]
+      halign = ALIGN_RIGHT
+      rendObj = ROBJ_TEXT
+      text = !eventEndsAt.value || (eventEndsAt.value - serverTime.value < 0) ? null
+        : secondsToHoursLoc(eventEndsAt.value - serverTime.value)
+    }.__update(fontSmall)
+  ]
 }
 
 let tabs = [
@@ -27,12 +53,13 @@ let tabs = [
   }
   {
     id = EVENT_TAB
-    locId = "mainmenu/events"
     image = "ui/gameuiskin#quest_events_icon.svg"
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]),
-      Computed(@() activeUnlocks.value.findvalue(@(unlock) "event_progress" in unlock?.meta)))
-    unseen = Computed(@() isUnseen(questsCfg.value[EVENT_TAB], hasUnseenQuestsBySection.value))
+    content = questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), progressUnlock)
+    tabContent = eventTabContent
+    tabHeight = hdpx(160)
+    unseen = Computed(@() progressUnlock.value?.hasReward ? UNSEEN_HIGH
+      : isUnseen(questsCfg.value[EVENT_TAB], hasUnseenQuestsBySection.value))
     isVisible = Computed(@() questsCfg.value[EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
   {
@@ -52,4 +79,4 @@ let gamercardQuestBtns = @() {
   children = mkCurrenciesBtns(isEventActive.value ? [WARBOND, WP, GOLD] : [WP, GOLD])
 }
 
-mkOptionsScene("questsWnd", tabs, isQuestsOpen, null, gamercardQuestBtns)
+mkOptionsScene("questsWnd", tabs, isQuestsOpen, curTabId, gamercardQuestBtns)

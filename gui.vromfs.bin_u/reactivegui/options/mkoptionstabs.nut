@@ -4,12 +4,12 @@ let { mkTabs } = require("%rGui/components/tabs.nut")
 let { mkUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { SEEN } = require("%rGui/unseenPriority.nut")
 
-let iconSize = hdpx(100).tointeger()
+let iconSize = hdpxi(100)
 
 let textColor = 0xFFFFFFFF
 
 let function tabData(tab, idx, curTabIdx) {
-  let { locId  = "", image = null, isVisible = null, unseen = null } = tab
+  let { locId  = "", image = null, isVisible = null, unseen = null, tabContent = null, tabHeight = tabH } = tab
   local unseenMark = null
   if (unseen != null) {
     let unseenExt = Computed(@() curTabIdx.value == idx ? SEEN : unseen.value)
@@ -20,7 +20,7 @@ let function tabData(tab, idx, curTabIdx) {
     id = idx
     isVisible
     content = {
-      size = [ flex(), tabH ]
+      size = [ flex(), tabHeight ]
       padding = [hdpx(10), hdpx(20)]
       children = [
         {
@@ -36,7 +36,7 @@ let function tabData(tab, idx, curTabIdx) {
                   color = textColor
                   keepAspect = KEEP_ASPECT_FIT
                 }
-            {
+            tabContent ?? {
               size = flex()
               rendObj = ROBJ_TEXTAREA
               behavior = Behaviors.TextArea

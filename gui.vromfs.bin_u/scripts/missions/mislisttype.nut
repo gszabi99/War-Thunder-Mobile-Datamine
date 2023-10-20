@@ -1,9 +1,6 @@
-from "%scripts/dagui_library.nut" import *
 //-file:plus-string
-
-
+from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-
 let u = require("%sqStdLibs/helpers/u.nut")
 let { is_user_mission } = require("%scripts/util.nut")
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -13,6 +10,7 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { get_meta_mission_info_by_name, get_meta_missions_info_by_chapters,
   get_mission_local_online_progress } = require("guiMission")
 let { get_game_mode, get_cur_game_mode_name } = require("mission")
+let { isMissionComplete, getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -125,7 +123,7 @@ let g_mislist_type = {
         if (this.showChapterHeaders) {
           local isChapterUnlocked = true
           if (lastMission && gm == GM_CAMPAIGN)
-            isChapterUnlocked = isChapterSpecial || ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
+            isChapterUnlocked = isChapterSpecial || ::is_debug_mode_enabled || isMissionComplete(lastMission?.chapter, lastMission?.id)
           let chapterHeader = this.getMissionConfig(chapterName, true, false, isChapterUnlocked)
           campMissions.append(chapterHeader)
         }
@@ -146,7 +144,7 @@ let g_mislist_type = {
       //add victory video for campaigns
       if (lastMission && gm == GM_CAMPAIGN
           && (campName == "usa_pacific_41_43" || campName == "jpn_pacific_41_43")) {
-        let isVideoUnlocked = ::is_debug_mode_enabled || ::is_mission_complete(lastMission?.chapter, lastMission?.id)
+        let isVideoUnlocked = ::is_debug_mode_enabled || isMissionComplete(lastMission?.chapter, lastMission?.id)
         res.append(this.getMissionConfig("victory", true, false, isVideoUnlocked))
       }
     }
@@ -167,7 +165,7 @@ let g_mislist_type = {
     if (mission?.isHeader)
       return loc((mission?.isCampaign ? "campaigns/" : "chapters/") + (mission?.id ?? ""))
     if ("blk" in mission)
-      return ::get_combine_loc_name_mission(mission.blk)
+      return getCombineLocNameMission(mission.blk)
     return loc("missions/" + (mission?.id ?? ""))
   }
 

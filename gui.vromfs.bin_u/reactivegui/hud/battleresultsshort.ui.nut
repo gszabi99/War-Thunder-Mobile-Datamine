@@ -4,13 +4,16 @@ let { get_local_mplayer } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { playSound } = require("sound_wt")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInDebriefing, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
 let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { mkPlaceIconBig, playerPlaceIconBigSize } = require("%rGui/components/playerPlaceIcon.nut")
+let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
 let { mkImageWithCount, myPlace, isPlaceVisible, icons, viewMuls } = require("%rGui/hud/myScores.nut")
-
+let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
+let resultsHintLogState = require("%rGui/hudHints/resultsHintLogState.nut")
+let { resultsHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
+let { mkStreakWithMultiplier } = require("%rGui/streak/streakPkg.nut")
 
 let changeTextBgColorDuration = 0.1
 let textBlockBounceDuration = 0.3
@@ -136,7 +139,7 @@ let mkUserScores = @(valueCtor, locId) {
       text = "".concat(loc(locId), colon)
     }.__update(fontSmall)
     {
-      size = [playerPlaceIconBigSize, playerPlaceIconBigSize]
+      size = [playerPlaceIconSize, playerPlaceIconSize]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = valueCtor
@@ -153,8 +156,35 @@ let mkUserScores = @(valueCtor, locId) {
   ]
 }
 
+let achievementsBlock = @() {
+  watch = [debriefingData]
+  children = 0 < (debriefingData.value?.streaks.len() ?? 0)
+    ? mkUserScores({
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        gap
+        children = debriefingData.value?.streaks.reduce(
+          function(acc, val, key) {
+            acc.append(mkStreakWithMultiplier(key, val?.completed ?? 0, hdpx(70)))
+            return acc
+          },
+          [])
+      }, loc("debriefing/Unlocks"))
+    : null
+}
+
 let function battleResultsShort() {
   let res = { watch = needShowResultScreen }
+  let children = !isPlaceVisible.value ? []
+                 : [ mkUserScores(mkPlaceIcon(myPlace.value), loc("debriefing/placeInMyTeam")) ]
+                   .extend(scoresByCampaign?[battleCampaign.value]
+                     .map(function(v) {
+                       let mul = viewMuls?[v.name] ?? 1.0
+                       let score = localPlayerDamageStats.value?[v.name] ?? get_local_mplayer()?[v.name] ?? 0
+                       return mkUserScores(mkImageWithCount(mul * score, icons?[v.name]), v.locId)
+                     }))
+  children.append(achievementsBlock)
 
   if (needShowResultScreen.value)
     res.__update({
@@ -166,19 +196,13 @@ let function battleResultsShort() {
       flow = FLOW_VERTICAL
       gap
       children = [
+        resultsHintsBlock
         resultTextBlock
         @() {
           watch = [battleCampaign, isPlaceVisible, localPlayerDamageStats, myPlace]
           flow = FLOW_VERTICAL
           gap
-          children = !isPlaceVisible.value ? null
-            : [mkUserScores(mkPlaceIconBig(myPlace.value), loc("debriefing/placeInMyTeam"))]
-                .extend(scoresByCampaign?[battleCampaign.value]
-                  .map(function(v) {
-                    let mul = viewMuls?[v.name] ?? 1.0
-                    let score = localPlayerDamageStats.value?[v.name] ?? get_local_mplayer()?[v.name] ?? 0
-                    return mkUserScores(mkImageWithCount(mul * score, icons?[v.name]), v.locId)
-                  }))
+          children
         }
       ]
     })
@@ -196,10 +220,8 @@ eventbus.subscribe("MissionResult", function(data) {
   missionResult(resultNum)
 })
 
-isInBattle.subscribe(function(v) {
-  if (!v)
-    return
-  missionResult(null)
-})
+isInBattle.subscribe(@(v) v ? missionResult(null) : null)
+isInDebriefing.subscribe(@(v) v ? missionResult(null) : null)
+needShowResultScreen.subscribe(@(v) !v ? resultsHintLogState.clearEvents() : null)
 
 return battleResultsShort

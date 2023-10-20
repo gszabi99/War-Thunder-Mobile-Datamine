@@ -14,9 +14,10 @@ let { getRelativeStageData } = require("unlocks.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let backButton = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { mkRewardImage, getRewardName } = require("rewardsView/rewardsPresentation.nut")
-let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset, gradCircularSqCorners, gradCircCornerOffset
+} = require("%rGui/style/gradients.nut")
 let { textButtonBattle, textButtonPrimary, textButtonCommon, buttonsHGap
 } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -26,6 +27,7 @@ let { playSound } = require("sound_wt")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
+let lootboxPreviewWnd = require("%rGui/shop/lootboxPreviewWnd.nut")
 
 let itemBlockSize = [ (itemWidth + itemGap) * 4 + itemBigWidth + backItemOffset, itemBigHeight ]
 let imageSize = hdpxi(210)
@@ -33,6 +35,7 @@ let bigImageSize = hdpxi(330)
 let highlightSize = hdpxi(550)
 let buttonHeight = evenPx(60)
 let checkSize = hdpxi(120)
+let dayTextHeight = hdpx(50)
 let debugAnimState = mkWatched(persist, "debugAnimState", null)
 
 local lastPeriodStartStage = null
@@ -167,7 +170,7 @@ let checkImgWithAnim = checkImg.__merge({
 })
 
 let mkDayText = @(text, isReceived) {
-  size = [flex(), hdpx(50)]
+  size = [flex(), dayTextHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_SOLID
@@ -235,6 +238,37 @@ let function activePlateHotkeyComp() {
   })
 }
 
+let smallBtnHeight = evenPx(50)
+let smallBtnShadowOffset = evenPx(3)
+let smallBtnMargin = hdpx(10)
+let function previewBtnBlock() {
+  let res = { watch = [loginAwardUnlock, isShowUnseenDelayed] }
+  return (isShowUnseenDelayed.value || loginAwardUnlock.value?.hasReward) ? res : res.__update({
+    size = [smallBtnHeight, smallBtnHeight]
+    hplace = ALIGN_RIGHT
+    margin = [dayTextHeight + smallBtnMargin, smallBtnMargin, 0, 0]
+    children = [
+      {
+        size = [smallBtnHeight + (smallBtnShadowOffset * 2), smallBtnHeight + (smallBtnShadowOffset * 2)]
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        rendObj = ROBJ_9RECT
+        image = gradCircularSqCorners
+        texOffs = [gradCircCornerOffset, gradCircCornerOffset]
+        screenOffs = smallBtnShadowOffset
+        color = 0x80000000
+      }
+      textButtonPrimary(
+        loc("ui/info"),
+        null,
+        btnStyle.__merge({ childOvr = fontSmall })
+      )
+    ]
+  })
+}
+
+let openPreview = @(reward) lootboxPreviewWnd(reward.lootboxes.findindex(@(_) true))
+
 let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, animState) {
   let place = rewardsPlaces?[periodIdx]
   if (place == null) {
@@ -258,6 +292,7 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
   let endTime = startTime + (1000 * animTime).tointeger()
   let afterAnimProps = { opacity, transform = { translate } }
   let isCurrentActivePlate = isNextReceive || (curStage == lastRewardedStage && stageIdx == curStage - 1)
+  let isPreviewable = stageIdx >= curStage
 
   local animData = afterAnimProps
   if (endTime > get_time_msec() && prevTransform != null) {
@@ -341,6 +376,7 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
     needReceiveAnim ? checkImgWithAnim
       : isReceived ? checkImg
       : null
+    isPreviewable ? previewBtnBlock : null
   ]
   let plateBase = {
     size
@@ -349,17 +385,23 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
     padding = hdpx(2)
     children = bg.__merge({ children })
   }
-  let stateFlags = !isCurrentActivePlate ? null : Watched(0)
-  let plateComp = !isCurrentActivePlate ? plateBase : @() plateBase.__update({
-    watch = stateFlags
-    behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
-    onClick = onActivePlateClick
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
-    sound = { click  = "click" }
-    hotkeys = activePlateHotkeys
-  })
+  let isNonInteractive = !isCurrentActivePlate && !isPreviewable
+  let stateFlags = isNonInteractive ? null : Watched(0)
+  let plateComp = isNonInteractive ? plateBase
+    : @() (isShowUnseenDelayed.value || (isPreviewable && loginAwardUnlock.value?.hasReward))
+      ? plateBase.__update({ watch = [ isShowUnseenDelayed, loginAwardUnlock ] })
+      : plateBase.__update({
+          watch = [ isShowUnseenDelayed, loginAwardUnlock, stateFlags ]
+          behavior = Behaviors.Button
+          onElemState = @(sf) stateFlags(sf)
+          onClick = isCurrentActivePlate
+            ? onActivePlateClick
+            : @() openPreview(reward.value)
+          transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+          transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
+          sound = { click  = "click" }
+          hotkeys = isCurrentActivePlate ? activePlateHotkeys : null
+        })
   return {
     key = stageIdx
     children = plateComp

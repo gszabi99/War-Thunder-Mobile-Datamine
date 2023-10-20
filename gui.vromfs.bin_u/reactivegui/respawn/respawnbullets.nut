@@ -7,75 +7,82 @@ let { bulletsAABB } = require("respawnAnimState.nut")
 let { bg, bulletsBlockWidth, bulletsBlockMargin, headerText, header, gap, bulletsLegend } = require("respawnComps.nut")
 let { slider, sliderValueSound, sliderBtn, mkSliderKnob } = require("%rGui/components/slider.nut")
 let mkBulletSlot = require("mkBulletSlot.nut")
-let respawnChooseBulletWnd = require("respawnChooseBulletWnd.nut")
-let { getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
+let { showRespChooseWnd, openedSlot } = require("respawnChooseBulletWnd.nut")
+let { mkCustomButton } = require("%rGui/components/textButton.nut")
+let { selSlot, hasUnseenShellsBySlot } = require("respawnState.nut")
+let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 
 let padding = hdpx(10)
-let headerHeight = hdpx(105)
+let headerHeight = hdpx(108)
 let choiceCount = Computed(@() chosenBullets.value.len())
 let btnSize = evenPx(80)
 let knobSize = evenPx(50)
 let sliderGap = knobSize / 2 + (0.1 * btnSize).tointeger()
 let sliderSize = [bulletsBlockWidth - 2 * (btnSize + sliderGap + padding), evenPx(80)]
 let hoverColor = 0x8052C4E4
-
-let curSlotName = Watched(-1)
+let arrowSize = [ hdpxi(50),hdpxi(50)]
 
 let function onHeaderClick(key, slotIdx) {
   if (slotIdx != null)
-    respawnChooseBulletWnd(slotIdx, gui_scene.getCompAABBbyKey(key), gui_scene.getCompAABBbyKey("respawnWndContent"))
+    showRespChooseWnd(slotIdx, gui_scene.getCompAABBbyKey(key), gui_scene.getCompAABBbyKey("respawnWndContent"))
 }
 
-let function bulletHeader(bSlot, bInfo, maxCount) {
+let arrowBtnImage = @(isOpened) {
+  rendObj = ROBJ_IMAGE
+  size = arrowSize
+  flipX = !isOpened
+  image = Picture($"ui/gameuiskin#arrow_icon.svg:{arrowSize[0]}:{arrowSize[1]}:P")
+}
+
+let function bulletHeader(bSlot, bInfo) {
   let fromUnitTags = Computed(@() bulletsInfo.value?.fromUnitTags[bSlot.value?.name])
-  let countText = Computed(@() $"{bSlot.value?.count ?? 0}/{bulletStep.value * maxCount.value}")
-  let nameText = Computed(@() getAmmoNameShortText(bInfo.value))
   let { idx = -1 } = bSlot.value
   let key = $"respBulletsHeader{idx}"
-  return @() bg.__merge({
+  return @() {
     watch = [bInfo, bulletsInfo]
-    key
     onAttach = @() deferOnce(function() {
       let aabb = gui_scene.getCompAABBbyKey(key)
       if (aabb != null)
         bulletsAABB.mutate(@(v) v.__update({ [idx] = aabb }))
     })
-    size = [flex(), headerHeight]
+    size = [bulletsBlockWidth, headerHeight]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
-    onClick = function(){
-      curSlotName(idx)
-      onHeaderClick(key, bSlot.value?.idx)
-    }
     children = [
-      @() mkBulletSlot(bInfo.value, fromUnitTags.value, {
-        watch = [fromUnitTags, bInfo]
-      })
       {
-        size = [flex(), SIZE_TO_CONTENT]
-        padding
-        flow = FLOW_VERTICAL
+        key
+        halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        halign = ALIGN_LEFT
-        gap = { size = flex() }
         children = [
-          @() {
-            watch = nameText
-            size = [flex(), SIZE_TO_CONTENT]
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            text = nameText.value
-          }.__update(fontTiny)
-          @() {
-            watch = countText
-            rendObj = ROBJ_TEXT
-            text = countText.value
-          }.__update(fontTiny)
+          @() mkBulletSlot(bInfo.value, fromUnitTags.value, {}, {
+            watch = [fromUnitTags, bInfo]})
+          @(){
+            watch = openedSlot
+            size = [flex(), headerHeight]
+            rendObj = ROBJ_BOX
+            borderWidth = openedSlot.value < 0 || idx != openedSlot.value ? 0 : hdpxi(4)
+          }
         ]
       }
+      @(){
+        size = flex()
+        watch = openedSlot
+        rendObj = ROBJ_SOLID
+        color = 0x99000000
+        children = mkCustomButton(arrowBtnImage(
+          openedSlot.value < 0 || idx != openedSlot.value), @() onHeaderClick(key, idx),
+        {
+          ovr = {
+            size = [flex(),  headerHeight]
+            fillColor = 0xFF0593AD
+            borderColor = 0xFF236DB5
+          }
+          gradientOvr = { color = 0xFF16B2E9 }
+        })
+      }
     ]
-  })
+  }
 }
 
 let btnBgOvr = { size = [btnSize, btnSize] }
@@ -110,8 +117,8 @@ let function bulletSlider(bSlot, maxCount) {
     setCurUnitBullets(idx, name, newVal)
   }
   return @() bg.__merge({
-    watch = [maxCount, bulletStep]
-    size = [flex(), headerHeight]
+    watch = [ maxCount, bulletStep ]
+    size = [ flex(), headerHeight ]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -141,13 +148,31 @@ let function mkBulletSliderSlot(idx) {
   let bInfo = Computed(@() bulletsInfo.value?.bulletSets[bSlot.value?.name])
   let maxCount = Computed(@() min(bulletTotalSteps.value,
     bulletsInfo.value?.fromUnitTags[bSlot.value?.name]?.maxCount ?? bulletTotalSteps.value))
+  let countText = Computed(@() $"{bSlot.value?.count ?? 0}/{bulletStep.value * maxCount.value}")
+  let hasUnseenBullets = Computed(@() (bSlot.value?.idx ?? 0) > 0 && hasUnseenShellsBySlot.value?[selSlot.value?.id ?? 0].findvalue(@(v) v) != null)
+  let isBelt = Computed(@() bInfo.value?.isBulletBelt ?? false)
   return @() {
-    watch = bulletTotalSteps
-    size = [flex(), SIZE_TO_CONTENT]
-    flow = FLOW_VERTICAL
+    watch = isBelt
     children = [
-      bulletHeader(bSlot, bInfo, maxCount)
-      bulletTotalSteps.value > 1 ? bulletSlider(bSlot, maxCount) : null
+      {
+        flow = FLOW_VERTICAL
+        children = [
+          bulletHeader(bSlot, bInfo)
+          !isBelt.value ? bulletSlider(bSlot, maxCount) : null
+          bg.__merge({
+            size = [flex(), isBelt.value ? SIZE_TO_CONTENT : hdpx(10)]
+            children = @(){
+              watch = countText
+              rendObj = ROBJ_TEXT
+              pos = [0, isBelt.value ? 0 : -hdpx(30)]
+              hplace = ALIGN_CENTER
+              text = countText.value
+              color = 0xFFFFFFFF
+            }.__update(fontTiny)
+          })
+        ]
+      }
+      mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = [hdpx(7), hdpx(7)] })
     ]
   }
 }
@@ -160,7 +185,6 @@ let function respawnBullets() {
     flow = FLOW_HORIZONTAL
     children = [
       {
-        size = [bulletsBlockWidth, SIZE_TO_CONTENT]
         margin = [0, hdpx(20), 0, bulletsBlockMargin]
         flow = FLOW_VERTICAL
         gap

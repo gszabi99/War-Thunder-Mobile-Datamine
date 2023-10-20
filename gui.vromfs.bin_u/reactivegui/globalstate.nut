@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let interopGen = require("interopGen.nut")
 
-let state = persist("globalState", @() {
-  isInFlight = Watched(false)
-})
+let state = {
+  isInFlight = false
+}.map(@(val, key) mkWatched(persist, key, val))
 
 
 interopGen({

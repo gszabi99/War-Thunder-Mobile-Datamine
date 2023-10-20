@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
+let { curUnit, playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
 let { unitInProgress, buy_unit, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
@@ -8,17 +8,22 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { requestOpenUnitPurchEffect } = require("unitPurchaseEffectScene.nut")
 let { playSound } = require("sound_wt")
+let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
     if (res?.error != null)
       return
     let { unitId } = context
-    let errString = setCurrentUnit(unitId)
-    if (errString != "") {
-      logerr($"On choose unit after purchase: {errString}")
-      return
+    if ((curUnit.value?.rank ?? 1) <= (myUnits.value?[unitId].rank ?? 1)) {
+      let errString = setCurrentUnit(unitId)
+      if (errString != "") {
+        logerr($"On choose unit after purchase: {errString}")
+        return
+      }
     }
+    else
+      setHangarUnit(unitId)
     requestOpenUnitPurchEffect(myUnits.value?[unitId])
   })
 

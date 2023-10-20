@@ -15,12 +15,6 @@ let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { SERVER_ERROR_INVALID_VERSION } = require("matching.errors")
 
-enum REASON_DOMAIN {
-  MATCHING = "matching"
-  CHAR = "char"
-  AUTH = "auth"
-}
-
 isMatchingOnline(::is_online_available())
 
 subscribeFMsgBtns({
@@ -61,7 +55,7 @@ let function destroyConnectProgressMessages() {
 }
 
 let customErrorHandlers = {
-  [SERVER_ERROR_INVALID_VERSION] = function onInvalidVersion(_, __, ___) {
+  [SERVER_ERROR_INVALID_VERSION] = function(_, __, ___) {
     sendErrorBqEvent("Downoad new version (required)")
     openFMsgBox({
       uid = "errorMessageBox"

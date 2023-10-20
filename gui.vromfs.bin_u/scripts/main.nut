@@ -5,6 +5,7 @@ let startLoadTime = get_time_msec()
 
 let { loadOnce, registerPersistentData, isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { set_rnd_seed } = require("dagor.random")
+let { subscribe } = require("eventbus")
 clear_vm_entity_systems()
 start_es_loading()
 
@@ -13,7 +14,6 @@ require("%appGlobals/sqevents.nut")
 require("%globalScripts/debugTools/matchingErrorDebug.nut")
 
 require("%globalScripts/version.nut")
-require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
 if (::disable_network())
@@ -127,16 +127,22 @@ if (!isInReloading())
 
 local isFullScriptsLoaded = false
 
-::load_scripts_after_login_once <- function load_scripts_after_login_once() {
+let function loadScriptsAfterLoginOnceImpl() {
   if (isFullScriptsLoaded)
     return
   isFullScriptsLoaded = true
   let t = get_time_msec()
-  start_es_loading()
   log("LOAD MAIN SCRIPTS AFTER LOGIN")
   require("%scripts/onScriptLoadAfterLogin.nut")
-  end_es_loading()
   log($"DaGui scripts load after login {get_time_msec() - t} msec")
+}
+
+let function loadScriptsAfterLoginOnce() {
+  if (isFullScriptsLoaded)
+    return
+  start_es_loading()
+  loadScriptsAfterLoginOnceImpl()
+  end_es_loading()
 }
 
 //------- ^^^ files after login ^^^ ----------
@@ -145,22 +151,24 @@ local isFullScriptsLoaded = false
 if (is_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug/netLogerr") == null)
   ::setSystemConfigOption("debug/netLogerr", true)
 
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
+let { isReadyToFullLoad, isLoginRequired } = require("%appGlobals/loginState.nut")
 
 log($"DaGui scripts load before login {get_time_msec() - startLoadTime} msec")
 
-if (isReadyToFullLoad.value || shouldDisableMenu || isOfflineMenu || !isFullScriptsLoaded ) //scripts reload
-  ::load_scripts_after_login_once()
+if (isReadyToFullLoad.value || !isLoginRequired.value)
+  loadScriptsAfterLoginOnce()
+isReadyToFullLoad.subscribe(@(v) v ? loadScriptsAfterLoginOnce() : null)
+isLoginRequired.subscribe(@(v) v ? null : loadScriptsAfterLoginOnce())
+
 
 let { defer } = require("dagor.workcycle")
 let { reloadDargUiScript } = require("reactiveGuiCommand")
-require("eventbus").subscribe("reloadDargVM", @(_) defer(@() reloadDargUiScript(false)))
+subscribe("reloadDargVM", @(_) defer(@() reloadDargUiScript(false)))
 
 let { registerMplayerCallbacks } = require("mplayer_callbacks")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-require("eventbus").subscribe("register_mplayer_callbacks",
+subscribe("register_mplayer_callbacks",
   @(_) registerMplayerCallbacks({ frameNick = @(nick, frameId) frameNick(getPlayerName(nick), frameId) }))
 
 /*use by client .cpp code*/

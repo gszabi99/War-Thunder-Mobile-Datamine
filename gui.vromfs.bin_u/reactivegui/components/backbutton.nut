@@ -3,11 +3,11 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { blinkAnimation, clearBlinkInterval } = require("backButtonBlink.nut")
 
-let height = hdpx(60)
-let width  = (78.0 / 59.0 * height).tointeger()
-let image  = Picture($"ui/gameuiskin#back_icon.svg:{width}:{height}")
+let backButtonHeight = hdpx(60)
+let backButtonWidth  = (78.0 / 59.0 * backButtonHeight).tointeger()
+let image  = Picture($"ui/gameuiskin#back_icon.svg:{backButtonWidth}:{backButtonHeight}")
 
-return function backButton(onClick, override = {}) {
+let function backButton(onClick, override = {}) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -15,7 +15,7 @@ return function backButton(onClick, override = {}) {
     onElemState = @(sf) stateFlags(sf)
     behavior = Behaviors.Button
     rendObj = ROBJ_IMAGE
-    size = [width, height]
+    size = [backButtonWidth, backButtonHeight]
     color  = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
     image
     clickableInfo = loc("mainmenu/btnBack")
@@ -26,4 +26,10 @@ return function backButton(onClick, override = {}) {
     animations = blinkAnimation
     onDetach = clearBlinkInterval
   }.__update(override)
+}
+
+return {
+  backButton
+  backButtonWidth
+  backButtonHeight
 }

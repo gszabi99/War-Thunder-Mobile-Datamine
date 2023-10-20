@@ -54,6 +54,10 @@ let function getGoodsType(goods) {
     return SGT_GOLD
   if (goods.wp > 0)
     return SGT_WP
+  if ((goods?.warbond ?? 0) > 0)
+    return SGT_WARBONDS
+  if ((goods?.eventKey ?? 0) > 0)
+    return SGT_EVENT_KEYS
   return SGT_UNKNOWN
 }
 

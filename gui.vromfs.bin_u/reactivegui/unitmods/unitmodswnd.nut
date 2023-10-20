@@ -18,7 +18,7 @@ let { tabsGap, bgColor, tabExtraWidth } = require("%rGui/components/tabs.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
 let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -33,7 +33,7 @@ let catsHeight = Computed(@() min((tabH + tabsGap) * modsCategories.value.len() 
 let emptyCatSlotHeight = Computed(@() catsBlockHeight - catsHeight.value - tabsGap)
 
 let pageWidth = saSize[0] + saBorders[0] - tabW
-let pageMask = mkBitmapPicture((pageWidth / 10).tointeger(), 2, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF, 0.05))
+let pageMask = mkBitmapPictureLazy((pageWidth / 10).tointeger(), 2, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF, 0.05))
 
 let modsScrollHandler = ScrollHandler()
 let catsScrollHandler = ScrollHandler()
@@ -63,7 +63,7 @@ let mkVerticalPannableArea = @(content) {
 
 let mkHorizontalPannableArea = @(content) {
   rendObj = ROBJ_MASK
-  image = pageMask
+  image = pageMask()
   clipChildren = true
   size = [flex(), modTotalH]
   flow = FLOW_HORIZONTAL
@@ -105,7 +105,7 @@ let mkModIcon = @() {
   watch = curMod
   size = [iconSize * 2.3, iconSize]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{curMod.value?.name}.avif:O:P")
+  image = Picture($"ui/gameuiskin#{curMod.value?.name}.avif:0:P")
   keepAspect = KEEP_ASPECT_FILL
 }
 
@@ -114,7 +114,7 @@ let mkModsInfo = @() {
   rendObj = ROBJ_IMAGE
   size = curMod.value ? [modW * 2, SIZE_TO_CONTENT] : [ 0, 0]
   pos = [saBorders[0], 0]
-  image = Picture("ui/gameuiskin#debriefing_bg_grad@@ss.avif:O:P")
+  image = Picture("ui/gameuiskin#debriefing_bg_grad@@ss.avif:0:P")
   color = 0x90090F16
   margin = [0, saBorders[0], 0, 0]
   padding = [hdpx(30), saBorders[0]]

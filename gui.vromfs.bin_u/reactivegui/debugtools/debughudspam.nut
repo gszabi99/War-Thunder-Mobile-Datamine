@@ -6,6 +6,7 @@ let { HIT_CAMERA_START, HIT_CAMERA_FINISH, DM_HIT_RESULT_NONE, DM_HIT_RESULT_KIL
 let { setInterval, clearTimer, defer } = require("dagor.workcycle")
 let { rnd_float } = require("dagor.random")
 let { chooseRandom } = require("%sqstd/rand.nut")
+let { HUD_MSG_STREAK_EX } = require("hudMessages")
 
 const DEFAULT_FREQUENCY = 10
 
@@ -90,6 +91,16 @@ let testsCfg = {
       { mode = HIT_CAMERA_FINISH, result = DM_HIT_RESULT_NONE, info = {} }
     ]))
     hide = @() send("hitCamera", { mode = HIT_CAMERA_FINISH, result = DM_HIT_RESULT_NONE, info = {} })
+  }
+  hintStreak = {
+    possibility = approximateIntervalSec(5.0)
+    show = @() send("HudMessage", {
+      type = HUD_MSG_STREAK_EX
+      unlockId = "first_blood"
+      stage = 1
+      wp = 100
+      exp = 200
+    })
   }
 }
 
