@@ -56,6 +56,8 @@ let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
+let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
+let { unseenUnits, markUnitSeen } = require("unseenUnits.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
@@ -386,6 +388,7 @@ let function mkPlatoonPlate(unit) {
 
   let function onClick() {
     curSelectedUnit(unit.name)
+    markUnitSeen(unit)
     if (isHold(unit.name))
       unitDetailsWnd({ name = hangarUnitName.value })
   }
@@ -397,6 +400,7 @@ let function mkPlatoonPlate(unit) {
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value) : null)
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let campaignLevel = Computed(@() rankToReqPlayerLvl.value?[unit.rank])
+  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
   return @() {
     watch = [isSelected, stateFlags, justUnlockedDelay, price]
     behavior = Behaviors.Button
@@ -424,6 +428,7 @@ let function mkPlatoonPlate(unit) {
           price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkPlatoonPlateFrame(isEquipped, isLocked, justUnlockedDelay.value)
           mkPlatoonEquippedIcon(unit, isEquipped, justUnlockedDelay.value)
+          mkPriorityUnseenMarkWatch(needShowUnseenMark)
         ]
       }
       mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)
@@ -438,6 +443,7 @@ let function mkUnitPlate(unit) {
 
   let function onClick() {
     curSelectedUnit(unit.name)
+    markUnitSeen(unit)
     if (isHold(unit.name))
       unitDetailsWnd({ name = hangarUnitName.value })
   }
@@ -449,6 +455,7 @@ let function mkUnitPlate(unit) {
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let campaignLevel = Computed(@() rankToReqPlayerLvl.value?[unit.rank])
+  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
   return @() {
     watch = [isSelected, stateFlags, justUnlockedDelay, price]
     size = [ unitPlateWidth, unitsPlateCombinedHeight ]
@@ -478,6 +485,7 @@ let function mkUnitPlate(unit) {
             : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value, campaignLevel.value)
           price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkUnitEquippedFrame(unit, isEquipped, justUnlockedDelay.value)
+          mkPriorityUnseenMarkWatch(needShowUnseenMark, {halign = ALIGN_RIGHT})
         ]
       }
       mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)

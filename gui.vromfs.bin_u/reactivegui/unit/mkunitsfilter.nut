@@ -24,6 +24,7 @@ let mkCheckIcon = @(isChecked, isActive, opacity) {
     hplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
     image = isChecked ? Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}") : null
+    keepAspect = KEEP_ASPECT_FIT
     color = textColor
     opacity
   }

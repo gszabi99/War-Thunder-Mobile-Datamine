@@ -14,6 +14,7 @@ let function makeType(params, id) {
   return {
     id
     locId = ""
+    hintLocId = ""
     relWidth = 1.0
     getText = @(rowData) dataType.getText(getValue(rowData))
   }.__update(
@@ -41,29 +42,32 @@ let categories = {
     field = "ships_rating"
     dataType = RATING
     locId = "lb/rating"
+    hintLocId = "lb/hint/ships/score"
   }
 
   TANKS_RATING = {
     field = "tanks_rating"
     dataType = RATING
     locId = "lb/rating"
+    hintLocId = "lb/hint/tanks/score"
   }
 
   WP_RATING = {
     field = "wp_rating"
     dataType = RATING
     locId = "lb/rating"
+    hintLocId = "lb/hint/overall/score"
   }
 
   WIN = {
     field = "win"
-    dataType = RATING
+    dataType = NUM
     locId = "lb/wins"
   }
 
   KILL = {
     field = "kill"
-    dataType = RATING
+    dataType = NUM
     locId = "debriefing/destroyed"
   }
 }.map(makeType)

@@ -404,6 +404,9 @@
     "XrayDmgIndicator": {
       "condition": ""
     },
+    "XrayCrewAircraft": {
+      "condition": ""
+    },
     "animatedRewardMessages": {
       "condition": ""
     },

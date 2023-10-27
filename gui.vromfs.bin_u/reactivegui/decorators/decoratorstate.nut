@@ -9,6 +9,7 @@ let { mark_decorators_seen, mark_decorators_unseen } = require("%appGlobals/pSer
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let isDecoratorsSceneOpened = mkWatched(persist, "isDecoratorsSceneOpened", false)
+let isShowAllDecorators = mkWatched(persist, "isShowAllDecorators", false)
 
 let allDecorators = Computed(@() campConfigs.value?.allDecorators ?? {})
 let myDecorators = Computed(@() decorators.value?.filter(@(d) d.name in allDecorators.value) ?? {})
@@ -63,10 +64,12 @@ register_command(@() mark_decorators_seen(allDecorators.value.keys(), "consolePr
   "meta.mark_all_decorators_seen")
 register_command(@() mark_decorators_unseen(allDecorators.value.keys(), "consolePrintResult")
   "meta.mark_all_decorators_unseen")
+register_command(@() isShowAllDecorators(!isShowAllDecorators.value), "meta.show_all_decorators")
 
 return {
   isDecoratorsSceneOpened
   openDecoratorsScene = @() isDecoratorsSceneOpened(true)
+  isShowAllDecorators
 
   allDecorators
   myDecorators

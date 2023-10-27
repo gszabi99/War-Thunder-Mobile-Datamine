@@ -38,6 +38,8 @@ let function bulletHeader(bSlot, bInfo) {
   let fromUnitTags = Computed(@() bulletsInfo.value?.fromUnitTags[bSlot.value?.name])
   let { idx = -1 } = bSlot.value
   let key = $"respBulletsHeader{idx}"
+  let hasUnseenBullets = Computed(@() (bSlot.value?.idx ?? 0) > 0
+    && hasUnseenShellsBySlot.value?[selSlot.value?.id ?? 0].findvalue(@(v) v) != null)
   return @() {
     watch = [bInfo, bulletsInfo]
     onAttach = @() deferOnce(function() {
@@ -70,16 +72,19 @@ let function bulletHeader(bSlot, bInfo) {
         watch = openedSlot
         rendObj = ROBJ_SOLID
         color = 0x99000000
-        children = mkCustomButton(arrowBtnImage(
-          openedSlot.value < 0 || idx != openedSlot.value), @() onHeaderClick(key, idx),
-        {
-          ovr = {
-            size = [flex(),  headerHeight]
-            fillColor = 0xFF0593AD
-            borderColor = 0xFF236DB5
-          }
-          gradientOvr = { color = 0xFF16B2E9 }
-        })
+        children =[
+          mkCustomButton(arrowBtnImage(
+            openedSlot.value < 0 || idx != openedSlot.value), @() onHeaderClick(key, idx),
+          {
+            ovr = {
+              size = [flex(),  headerHeight]
+              fillColor = 0xFF0593AD
+              borderColor = 0xFF236DB5
+            }
+            gradientOvr = { color = 0xFF16B2E9 }
+          })
+          mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = [hdpx(7), hdpx(7)] })
+        ]
       }
     ]
   }
@@ -149,22 +154,20 @@ let function mkBulletSliderSlot(idx) {
   let maxCount = Computed(@() min(bulletTotalSteps.value,
     bulletsInfo.value?.fromUnitTags[bSlot.value?.name]?.maxCount ?? bulletTotalSteps.value))
   let countText = Computed(@() $"{bSlot.value?.count ?? 0}/{bulletStep.value * maxCount.value}")
-  let hasUnseenBullets = Computed(@() (bSlot.value?.idx ?? 0) > 0 && hasUnseenShellsBySlot.value?[selSlot.value?.id ?? 0].findvalue(@(v) v) != null)
-  let isBelt = Computed(@() bInfo.value?.isBulletBelt ?? false)
   return @() {
-    watch = isBelt
+    watch = bulletTotalSteps
     children = [
       {
         flow = FLOW_VERTICAL
         children = [
           bulletHeader(bSlot, bInfo)
-          !isBelt.value ? bulletSlider(bSlot, maxCount) : null
+          bulletTotalSteps.value > 1 ? bulletSlider(bSlot, maxCount) : null
           bg.__merge({
-            size = [flex(), isBelt.value ? SIZE_TO_CONTENT : hdpx(10)]
+            size = [flex(), bulletTotalSteps.value <= 1 ? SIZE_TO_CONTENT : hdpx(10)]
             children = @(){
               watch = countText
               rendObj = ROBJ_TEXT
-              pos = [0, isBelt.value ? 0 : -hdpx(30)]
+              pos = [0, bulletTotalSteps.value <= 1 ? 0 : -hdpx(30)]
               hplace = ALIGN_CENTER
               text = countText.value
               color = 0xFFFFFFFF
@@ -172,7 +175,6 @@ let function mkBulletSliderSlot(idx) {
           })
         ]
       }
-      mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = [hdpx(7), hdpx(7)] })
     ]
   }
 }

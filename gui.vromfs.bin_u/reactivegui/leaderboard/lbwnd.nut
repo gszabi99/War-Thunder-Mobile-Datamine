@@ -15,6 +15,7 @@ let { mkPlaceIconSmall } = require("%rGui/components/playerPlaceIcon.nut")
 let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbTableBorderWidth, lbPageRows
 } = require("lbStyle.nut")
 let { RANK, NAME } = require("lbCategory.nut")
+let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 
 
 let tabIconSize = hdpxi(80)
@@ -149,13 +150,19 @@ let mkDotsRow = @(categories) categories.map(@(c) {
 
 let mkHeaderRow = @(categories) categories.map(@(c) {
   size = [flex(c.relWidth), SIZE_TO_CONTENT]
-  rendObj = ROBJ_TEXT
-  color = headerTxtColor
   halign = ALIGN_CENTER
-  text = "locId" in c ? loc(c.locId) : null
-}.__update(
-  fontTiny,
-  styleByCategory?[c] ?? {}))
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(10)
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      color = headerTxtColor
+      text = "locId" in c ? loc(c.locId) : null
+    }.__update(fontTiny)
+    c.hintLocId == "" ? null
+      : infoTooltipButton(@() loc(c.hintLocId))
+  ]
+}.__update(styleByCategory?[c] ?? {}))
 
 let function lbTableFull(categories, lbData, selfRow) {
   let selfIdx = selfRow?.idx ?? -1

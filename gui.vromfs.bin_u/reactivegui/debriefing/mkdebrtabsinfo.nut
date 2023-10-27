@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, DEBR_TAB_UNIT, DEBR_TAB_MPSTATS
 } = require("%rGui/debriefing/debriefingState.nut")
+let { tabFinalPauseTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let mkDebriefingWndTabScores = require("debriefingWndTabScores.nut")
 let mkDebriefingWndTabCampaign = require("debriefingWndTabCampaign.nut")
 let mkDebriefingWndTabUnit = require("debriefingWndTabUnit.nut")
@@ -39,15 +40,19 @@ let function mkDebrTabsInfo(debrData, rewardsInfo, params) {
     .map(@(v) {}
     .__update(v, v.dataCtor(debrData, rewardsInfo, params) ?? {}))
     .filter(@(v) v?.comp != null)
-  local timeSum = 0
+  let { needBtnCampaign, needBtnUnit } = params
+  let lastAnimTabId = needBtnCampaign && (DEBR_TAB_CAMPAIGN in res) ? DEBR_TAB_CAMPAIGN
+    : needBtnUnit && (DEBR_TAB_UNIT in res) ? DEBR_TAB_UNIT
+    : (res?[res.len() - 1].id ?? 0)
   foreach (idx, v in res) {
-    let { timeShow = 0 } = v
+    let nextId = res?[idx + 1].id
     v.__update({
-      timeStart = timeSum
-      timeEnd = timeSum + timeShow
-      nextTabId = res?[idx + 1].id
+      needAutoAnim = v.id <= lastAnimTabId
+      nextTabId = (nextId != null && nextId <= lastAnimTabId) ? nextId : null
+      timeShow = v.id < lastAnimTabId ? (v.timeShow + tabFinalPauseTime)
+        : v.id == lastAnimTabId ? v.timeShow
+        : 0
     })
-    timeSum += timeShow
   }
   return res
 }

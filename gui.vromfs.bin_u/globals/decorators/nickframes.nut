@@ -18,7 +18,7 @@ let nickFrames = {
   white_squall = @(n) $"◓{n}◔"
   jungle_leaf = @(n) $"◕{n}◖"
   viking_helmet = @(n) $"◗{n}◗"
-  iceberg = @(n) $"◘{n}◘"
+  iceberg = @(n) $"◘{n}◙"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

@@ -25,7 +25,7 @@ let lootboxesCfg = {
 
 let eventLootboxesRaw = Computed(@() serverConfigs.value?.lootboxesCfg
   .filter(@(v) v?.meta.event)
-  .map(@(v, key) v.__update({ name = key }, lootboxesCfg?[key] ?? {}))
+  .map(@(v, key) v.__merge({ name = key }, lootboxesCfg?[key] ?? {}))
   ?? {})
 
 let eventLootboxes = Computed(@() eventLootboxesRaw.value?.values().sort(sortLootboxes))
@@ -33,4 +33,5 @@ let eventLootboxes = Computed(@() eventLootboxesRaw.value?.values().sort(sortLoo
 return {
   eventLootboxesRaw
   eventLootboxes
+  lootboxesCfg
 }

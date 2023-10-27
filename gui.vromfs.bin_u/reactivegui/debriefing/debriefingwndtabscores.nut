@@ -4,7 +4,6 @@ let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { mkDebriefingStats } = require("mkDebriefingStats.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
-let { tabFinalPauseTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle, missionResultTitleAnimTime } = require("%rGui/debriefing/missionResultTitle.nut")
 let achievementsBlock = require("achievementsBlock.nut")
 let { mkTotalRewardCountsScores } = require("%rGui/debriefing/totalRewardCounts.nut")
@@ -30,7 +29,7 @@ let function mkDebriefingWndTabScores(debrData, rewardsInfo, _params) {
   let rewardsStartTime = statsAnimEndTime + deltaStartTimeLevelReward
 
   let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsScores(rewardsInfo, [], rewardsStartTime)
-  let timeShow = rewardsStartTime + totalRewardsShowTime + tabFinalPauseTime
+  let timeShow = rewardsStartTime + totalRewardsShowTime
 
   if (achievementsComp == null && totalRewardCountsComp == null && debriefingStats == null)
     return null

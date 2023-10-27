@@ -8,7 +8,7 @@ let { mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut"
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkMyPlace, myPlaceUi, mkMyDamage, myScoresUi } = require("%rGui/hud/myScores.nut")
 
-let isMyScoresFitTop = saRatio >= 1.92
+let dollPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
 
 return {
   hitCamera = {
@@ -27,14 +27,14 @@ return {
 
   myPlace = {
     ctor = @() myPlaceUi
-    defTransform = isMyScoresFitTop ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(260)])
+    defTransform = isWidescreen ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(260)])
     editView = mkMyPlace(1)
     hideForDelayed = false
   }
 
   myDamage = {
     ctor = @() myScoresUi
-    defTransform = isMyScoresFitTop ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
+    defTransform = isWidescreen ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
     editView = mkMyDamage(22100)
     hideForDelayed = false
   }
@@ -50,21 +50,21 @@ return {
 
   doll = {
     ctor = @() doll
-    defTransform = mkLBPos([hdpx(540), hdpx(-38)])
+    defTransform = mkLBPos([dollPosX, hdpx(-38)])
     editView = dollEditView
     hideForDelayed = false
   }
 
   debuffs = {
     ctor = @() shipDebuffs
-    defTransform = mkLBPos([hdpx(616), 0])
+    defTransform = mkLBPos([dollPosX + hdpx(76), 0])
     editView = shipDebuffsEditView
     hideForDelayed = false
   }
 
   crewHealth = {
     ctor = @() crewHealth
-    defTransform = mkLBPos([hdpx(670), hdpx(-115)])
+    defTransform = mkLBPos([dollPosX + hdpx(130), hdpx(-115)])
     editView = crewHealthEditView
     hideForDelayed = false
   }

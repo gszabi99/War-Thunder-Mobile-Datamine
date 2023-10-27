@@ -8,7 +8,7 @@ let ln = require("math").log
 let { registerScene, scenesOrder } = require("%rGui/navState.nut")
 let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJackpotInfo,
   rouletteRewardsList, receivedRewardsCur, receivedRewardsAll, rouletteOpenIdx, nextFixedReward,
-  isCurRewardFixed, requestOpenCurLootbox, closeRoulette, lastJackpotIdx
+  isCurRewardFixed, requestOpenCurLootbox, closeRoulette, lastJackpotIdx, logOpenConfig
 } = require("lootboxOpenRouletteState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
@@ -113,6 +113,7 @@ allowedResultIndexes.subscribe(function(v) {
   if (rouletteOpenId.value == null || v == null || v.len() > 0)
     return
   log($"Not found received reward to show in the roulette '{rouletteOpenId.value}': ", curRewardViewInfo.value)
+  logOpenConfig()
   logerr("Not found received reward to show in the roulette")
   defer(closeRoulette)
 })

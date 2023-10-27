@@ -10,16 +10,14 @@ let { translucentButton, translucentButtonsVGap } = require("%rGui/components/tr
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let unitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
-let { campaignsList, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let chooseCampaignWnd = require("chooseCampaignWnd.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { startTestFlight, startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
@@ -33,7 +31,7 @@ let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesCo
 let { allow_players_online_info } = require("%appGlobals/permissions.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
+let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut")
 let setReady = require("%rGui/squad/setReady.nut")
@@ -44,6 +42,7 @@ let btnOpenQuests = require("%rGui/quests/btnOpenQuests.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let eventBanner = require("%rGui/event/eventBanner.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
+let btnOpenUnitWnd = require("%rGui/unit/btnOpenUnitWnd.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -121,9 +120,7 @@ let gamercardPlace = {
   ]
 }
 
-let curCampPresentation = Computed(@() getCampaignPresentation(curCampaign.value))
-let leftBottomButtons = @() {
-  watch = curCampPresentation
+let leftBottomButtons = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = translucentButtonsVGap
@@ -131,11 +128,7 @@ let leftBottomButtons = @() {
     campaignsBtn
     btnOpenQuests
     btnOpenUnitAttr
-    translucentButton(curCampPresentation.value.icon, loc(curCampPresentation.value.unitsLocId),
-      function() {
-        unitsWnd()
-        openLvlUpWndIfCan()
-      })
+    btnOpenUnitWnd
   ]
 }
 
@@ -203,21 +196,6 @@ let notReadyButton = textButtonCommon(utf8ToUpper(loc("multiplayer/state/player_
 let readyCheckText = utf8ToUpper(loc("squad/readyCheckBtn"))
 let readyCheckButton = textButtonPrimary(readyCheckText, initiateReadyCheck, { hotkeys = hotkeyX })
 let readyCheckButtonInactive = textButtonCommon(readyCheckText, initiateReadyCheck, { hotkeys = hotkeyX })
-
-let mkMRankRange = @() curUnitMRankRange.value == null
-  ? { watch = curUnitMRankRange }
-  : {
-      watch = curUnitMRankRange
-      flow = FLOW_HORIZONTAL
-      valign = ALIGN_CENTER
-      gap = hdpx(12)
-      children = [
-        { rendObj = ROBJ_TEXT, text = loc("mainmenu/battleTiers") }.__update(fontTinyAccented)
-        mkGradRank(curUnitMRankRange.value.minMRank)
-        { rendObj = ROBJ_TEXT, text = "-" }.__update(fontTinyAccented)
-        mkGradRank(curUnitMRankRange.value.maxMRank)
-      ]
-    }
 
 let toBattleButtonPlace = @() {
   watch = [ needFirstBattleTutor, newbieOfflineMissions, isInSquad, isSquadLeader, isReady,

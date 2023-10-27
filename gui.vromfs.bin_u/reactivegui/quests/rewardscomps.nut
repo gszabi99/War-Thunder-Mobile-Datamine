@@ -24,6 +24,12 @@ let bgColor = 0x80000000
 let REWARD_INTERVAL = 0.1
 let REWARDS_PREVIEW_SLOTS = 3
 
+let aTimeStatsRotate = 1.0
+let statsAnimation = {
+  prop = AnimProp.rotate, from = 0, to = 10,
+  duration = aTimeStatsRotate, trigger = "eventProgressStats", easing = Shake6
+}
+
 let rewardsListIcon = {
   size = [rewardsListIconSize, rewardsListIconSize]
   rendObj = ROBJ_IMAGE
@@ -79,7 +85,7 @@ let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = fa
     : mkGlare(rewardsBtnSize, defGlareSize, 2.5, 0.6)
 ]
 
-let function mkProgressBarReward(children, claimReward) {
+let function mkProgressBarReward(children, onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -88,11 +94,11 @@ let function mkProgressBarReward(children, claimReward) {
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/images/offer_item_slot_bg.avif:{progressBarRewardSize}:{progressBarRewardSize}:P")
     behavior = Behaviors.Button
-    onClick = claimReward
+    onClick
     onElemState = @(sf) stateFlags(sf)
-    picSaturate = claimReward != null && (stateFlags.value & S_ACTIVE) ? 2.0 : 1.0
+    picSaturate = onClick != null && (stateFlags.value & S_ACTIVE) ? 2.0 : 1.0
     transitions = [{ prop = AnimProp.picSaturate, duration = 0.07, easing = Linear }]
-    sound = { click = claimReward != null ? "click" : null }
+    sound = { click = onClick != null ? "click" : null }
     children
   }
 }
@@ -100,7 +106,9 @@ let function mkProgressBarReward(children, claimReward) {
 let rewardProgressBarCtor = @(r, isUnlocked, claimReward, isRewardInProgress) {
   children = [
     mkProgressBarReward(currencyProgressBarRewardCtor(r, isUnlocked, claimReward != null),
-      isRewardInProgress ? null : claimReward)
+      isRewardInProgress ? null
+        : !isUnlocked ? @() anim_start("eventProgressStats")
+        : claimReward)
     {
       hplace = ALIGN_RIGHT
       margin = hdpx(7)
@@ -114,10 +122,13 @@ let rewardProgressBarCtor = @(r, isUnlocked, claimReward, isRewardInProgress) {
   ]
 }
 
-
 let mkQuestRewardPlate = @(r, startIdx, isReceived = false, rStyle = rStyleDefault) {
   children = [
-    mkRewardPlate(r, rStyle, { animations = opacityAnims(aTimeInfoItem, REWARD_INTERVAL * (startIdx + 1)) })
+    mkRewardPlate(r, rStyle, {
+      key = {}
+      animations = opacityAnims(aTimeInfoItem, REWARD_INTERVAL * (startIdx + 1))
+        .append(r.rType == "stat" && !isReceived ? statsAnimation : null)
+    })
     isReceived ? mkRewardReceivedMark(REWARD_STYLE_SMALL) : null
   ]
 }
@@ -146,4 +157,5 @@ return {
 
   mkLockedIcon
   statusIconSize
+  statsAnimation
 }

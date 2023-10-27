@@ -126,7 +126,7 @@ let function calcJackpotOpens(id, openCount, profile, configs) {
   if (fixedRewards.len() == 0)
     return []
 
-  let hasOpens = profile?.lootboxStats[rouletteOpenId.value].opened ?? 0
+  let hasOpens = profile?.lootboxStats[id].opened ?? 0
   let jackpotsById = {}
   foreach(idxStr, rewardId in fixedRewards) {
     let idx = idxStr.tointeger()
@@ -157,11 +157,13 @@ let function calcJackpotOpens(id, openCount, profile, configs) {
   return res
 }
 
-let function collectRewards(weights, rewardsCfg, profile) {
+let function collectRewards(weights, rewardsCfg, profile, lastReward) {
   let rewards = {}
   foreach(id, _ in weights)
     if (id in rewardsCfg && !isRewardEmpty(rewardsCfg[id], profile))
       rewards[id] <- getRewardsViewInfo(rewardsCfg[id])
+  if (rewards.len() == 0 && lastReward in rewardsCfg)
+    rewards[lastReward] <- getRewardsViewInfo(rewardsCfg[lastReward])
   return rewards
 }
 
@@ -169,7 +171,9 @@ let function multiplyRewardsCycle(weights, rewardsCfg) {
   let res = []
   if (weights.len() == 0 || rewardsCfg.len() == 0)
     return res
-  let counts = weights.filter(@(_, id) id in rewardsCfg).map(log10)
+  local counts = weights.filter(@(_, id) id in rewardsCfg).map(log10)
+  if (counts.len() == 0 && rewardsCfg.len() != 0) //last reward out of weights
+    counts = rewardsCfg.map(@(_) 1)
   let minCount = counts.reduce(@(a, b) min(a, b)) - 1 //start from 1
   let total = counts.reduce(@(r, b) r + b - minCount, 0.0)
   if (total == 0)
@@ -212,7 +216,7 @@ let function calcOpenInfo(id, profile, configs) {
   let res = { rewardsList = [], openType = "" }
   let { lootboxesCfg = null, rewardsCfg = null } = configs
   let weights = lootboxesCfg?[id].rewards ?? {}
-  let rewards = collectRewards(weights, rewardsCfg, profile)
+  let rewards = collectRewards(weights, rewardsCfg, profile, lootboxesCfg?[id].lastReward)
   if (rewards.len() < 1)
     return res //no need roulette
 
@@ -227,13 +231,15 @@ let openDelayed = @() deferOnce(function() {
 
   let id = nextOpenId.value
   let { openType, rewardsList } = calcOpenInfo(id, servProfile.value, serverConfigs.value)
-  if (rewardsList.len() <= 1) {
+  if (rewardsList.len() == 0 || rewardsList.findvalue(@(v) v != rewardsList[0]) == null) { //no rewards, or last reward
     open_lootbox_several(id, nextOpenCount.value)
     return
   }
 
   let jackpots = calcJackpotOpens(id, nextOpenCount.value, servProfile.value, serverConfigs.value)
     .map(@(j) j.__update(calcOpenInfo(j.jackpotId, servProfile.value, serverConfigs.value)))
+
+  log($"[ROULETTE] Open lootbox = {id} x{nextOpenCount.value}, jackpots count = {jackpots.len()}")
 
   openConfig({
     id
@@ -304,6 +310,11 @@ let function requestOpenCurLootbox() {
       { id = "onRouletteOpenLootbox", jackpotIdx = -1, mainId = rouletteOpenId.value })
 }
 
+let function logOpenConfig() {
+  log("lootbox open roulette config: ", openConfig.value)
+  log("jackpotIdxInfo: ", jackpotIdxInfo)
+}
+
 register_command(
   function(name) {
     let { lootboxesCfg = null, rewardsCfg = {} } = serverConfigs.value
@@ -313,7 +324,7 @@ register_command(
       return
     }
 
-    let rewards = collectRewards(weights, rewardsCfg, {})
+    let rewards = collectRewards(weights, rewardsCfg, {}, lootboxesCfg?[name].lastReward)
     let openType = lootboxesCfg?[name].openType
     let resOpenType = calcOpenType(openType, weights, rewards)
     if (openType == resOpenType)
@@ -347,4 +358,5 @@ return {
 
   closeRoulette
   requestOpenCurLootbox
+  logOpenConfig
 }

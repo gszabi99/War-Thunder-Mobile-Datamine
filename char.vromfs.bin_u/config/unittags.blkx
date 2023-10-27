@@ -16121,7 +16121,8 @@
           "icon": "hud_ammo_atgm_ap1_he1"
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap2_he2"
+          "icon": "hud_ammo_atgm_ap2_he2",
+          "reqLevel": 13
         }
       }
     },

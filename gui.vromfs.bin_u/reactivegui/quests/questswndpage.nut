@@ -20,6 +20,9 @@ let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
+let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
+} = require("%rGui/shop/unseenPurchasesState.nut")
+let { defer } = require("dagor.workcycle")
 
 
 let PROGRESS_STAT = "event_quests_progress"
@@ -36,6 +39,10 @@ let contentWidth = saSize[0] - tabW - minContentOffset
 
 let scrollHandler = ScrollHandler()
 curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
+
+let isPurchNoNeedResultWindow = @(purch) purch?.source == "userstatReward"
+  && null == purch.goods.findvalue(@(g) g.id != "warbond" || (g.id == "warbond" && g.count >= 100))
+let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
 
 let topBlockHeight = max(sectionBtnHeight, progressBarHeight + progressBarMargin)
 let mkVerticalPannableAreaNoBlocks = verticalPannableAreaCtor(sh(100) - topAreaSize,
@@ -234,10 +241,14 @@ let function questsWndPage(sections, progressUnlock = Watched(null)) {
   return {
     key = sections
     size = flex()
-    onAttach = @() curSectionId(sections.value?[0])
+    function onAttach() {
+      curSectionId(sections.value?[0])
+      addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
+    }
     function onDetach() {
       curSectionId(null)
       curTabId(null)
+      removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
     }
     children = [
       @() {
@@ -253,7 +264,7 @@ let function questsWndPage(sections, progressUnlock = Watched(null)) {
                 size = [flex(), SIZE_TO_CONTENT]
                 margin = [0, 0, progressBarMargin, 0]
                 flow = FLOW_HORIZONTAL
-                gap = hdpx(60)
+                gap = isWidescreen ? hdpx(60) : hdpx(45)
                 valign = ALIGN_CENTER
                 children = [
                   linkToEventBtn()

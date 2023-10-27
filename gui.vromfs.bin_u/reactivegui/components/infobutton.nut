@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hoverColor } = require("%rGui/style/stdColors.nut")
+let { showTooltip, hideTooltip } = require("%rGui/tooltip.nut")
 
 let patternSize = hdpxi(110)
 let pattern = {
@@ -110,10 +111,54 @@ let function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   }.__update(ovr)
 }
 
+let function infoTooltipButton(contentCtor, tooltipOvr = {}) {
+  let stateFlags = Watched(0)
+  let key = {}
+  return @() {
+    key
+    watch = stateFlags
+    behavior = Behaviors.Button
+    xmbNode = {}
+    function onElemState(sf) {
+      let hasHint = (stateFlags.value & S_ACTIVE) != 0
+      let needHint =  (sf & S_ACTIVE) != 0
+      stateFlags(sf)
+      if (hasHint == needHint)
+        return
+      if (needHint)
+        showTooltip(gui_scene.getCompAABBbyKey(key),
+          {
+            content = contentCtor(),
+            flow = FLOW_HORIZONTAL
+          }.__update(tooltipOvr))
+      else
+        hideTooltip()
+    }
+    fillColor = 0
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = [hdpx(40),hdpx(40)]
+    lineWidth = hdpx(2)
+    commands = [
+      [VECTOR_ELLIPSE, 50, 50, 50, 50],
+    ]
+    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    children = [
+      {
+        rendObj = ROBJ_TEXT
+        text = "?"
+        halign = ALIGN_CENTER
+      }.__update(fontTinyAccented)
+    ]
+  }
+}
+
 return {
   infoBlueButton
   infoGreyButton
   infoCommonButton
 
   infoRhombButton
+  infoTooltipButton
 }

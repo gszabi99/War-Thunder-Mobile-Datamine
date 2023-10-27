@@ -20,8 +20,7 @@ let helpTankControls = require("%rGui/loading/complexScreens/helpTankControls.nu
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
+let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
@@ -148,19 +147,6 @@ let function leaveQueue() {
   })
 }
 
-let mkMRankRange = @() {
-  watch = curUnitMRankRange
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(12)
-  children = curUnitMRankRange.value == null ? null
-    : [
-        { rendObj = ROBJ_TEXT, text = loc("mainmenu/battleTiers") }.__update(fontSmall)
-        mkGradRank(curUnitMRankRange.value.minMRank)
-        { rendObj = ROBJ_TEXT, text = "-" }.__update(fontSmall)
-        mkGradRank(curUnitMRankRange.value.maxMRank)
-      ]
-}
 let isCancelInProgress = Computed(@() curQueueState.value == QS_LEAVING)
 let cancelQueueButton = {
   hplace = ALIGN_RIGHT

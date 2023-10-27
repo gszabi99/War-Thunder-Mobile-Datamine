@@ -163,3 +163,4 @@ struct EventOnPlayerUnlockStreak
   unlockName : string
   statIdName : string
   amountWp : int
+  stage : int

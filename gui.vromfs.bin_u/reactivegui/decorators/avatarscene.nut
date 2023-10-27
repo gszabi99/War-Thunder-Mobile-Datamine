@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { chosenAvatar, allAvatars, availAvatars, getReceiveReason, unseenDecorators,
-markDecoratorSeen, markDecoratorsSeen } = require("decoratorState.nut")
+  markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
+} = require("decoratorState.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -14,22 +15,14 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { choosenMark } = require("decoratorsPkg.nut")
 
 let gap = hdpx(15)
-let checkIconSize = hdpxi(30)
 let avatarSize = hdpxi(200)
 
 let maxDecInRow = 9
 let columns = min(contentWidthFull / (gap + avatarSize), maxDecInRow)
 let selectedAvatar = Watched(chosenAvatar.value?.name)
-
-let choosenMark = {
-  size = [checkIconSize,checkIconSize]
-  margin = [hdpxi(10),hdpxi(15)]
-  rendObj = ROBJ_IMAGE
-  color = 0xFF00FF00
-  image = Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}:P")
-}
 
 let function applySelectedAvatar() {
   if (selectedAvatar.value == null) {
@@ -137,12 +130,12 @@ let footer = @() {
 }
 
 let avatarsList = @() {
-  watch = [availAvatars, allAvatars]
+  watch = [availAvatars, allAvatars, isShowAllDecorators]
   padding = [hdpx(30), 0, hdpx(30), 0]
   flow = FLOW_VERTICAL
   gap
   children = arrayByRows(
-    allAvatars.value.filter(@(frame, key) !frame.isHidden || (key in (availAvatars.value)))
+    allAvatars.value.filter(@(frame, key) isShowAllDecorators.value || !frame.isHidden || (key in (availAvatars.value)))
       .topairs()
       .sort(@(a,b) (b[0] in availAvatars.value)<=>(a[0] in availAvatars.value))
       .insert(0, [null])

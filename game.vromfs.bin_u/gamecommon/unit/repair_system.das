@@ -1,6 +1,7 @@
 require ecs
 require dm
 require app
+require net
 require DagorMath
 require DagorRandom
 require DagorDataBlock
@@ -455,7 +456,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   if was_repairing && repair_system_remaining_repair_time <= 0.0f
     sendEvent(eid, [[EventRepairSystemOnStopRepair notFinished=not_finished]])
 
-  if has_changed
+  if has_changed && is_server()
     sendEvent(eid, [[EventRepairSystemNetSync
                       toolkitCount=repair_system_toolkit_count,
                       delayToRepair=repair_system_delay_time_to_repair,
@@ -532,12 +533,13 @@ def repair_system_handle_restore_es(evt : Event;
     repair_system_toolkit_count = 0
   repair_system_scheduled_bot_repair_time = -1.0f;
 
-  sendEvent(eid, [[EventRepairSystemNetSync
-                    toolkitCount=repair_system_toolkit_count,
-                    delayToRepair=-1.0f,
-                    remainingRepiarTime=-1.0f,
-                    repairWithoutModsOnly=false
-                  ]])
+  if is_server()
+    sendEvent(eid, [[EventRepairSystemNetSync
+                      toolkitCount=repair_system_toolkit_count,
+                      delayToRepair=-1.0f,
+                      remainingRepiarTime=-1.0f,
+                      repairWithoutModsOnly=false
+                    ]])
 
 
 [es]
@@ -611,12 +613,13 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
       has_changed = true
 
   if has_changed
-    sendEvent(eid, [[EventRepairSystemNetSync
-                      toolkitCount=repair_system_toolkit_count,
-                      delayToRepair=repair_system_delay_time_to_repair,
-                      remainingRepiarTime=repair_system_remaining_repair_time,
-                      repairWithoutModsOnly=get_flag(repair_system_state, RepairState REPAIR_WITHOUT_MODS_ONLY)
-                    ]])
+    if is_server()
+      sendEvent(eid, [[EventRepairSystemNetSync
+                        toolkitCount=repair_system_toolkit_count,
+                        delayToRepair=repair_system_delay_time_to_repair,
+                        remainingRepiarTime=repair_system_remaining_repair_time,
+                        repairWithoutModsOnly=get_flag(repair_system_state, RepairState REPAIR_WITHOUT_MODS_ONLY)
+                      ]])
   elif evt.isButtonDown && evt.forceSpendToolkit
     sendEvent(eid, [[EventRepairSystemSpendToolkit]])
 

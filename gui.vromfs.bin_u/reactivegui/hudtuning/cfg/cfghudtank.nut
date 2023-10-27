@@ -35,12 +35,9 @@ let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
 let isTargetTracking = Computed(@() !currentTargetTrackingType.value)
 
-let aspectRatio = sw(100) / sh(100)
-let actionBarInterval = aspectRatio < 2 ? 130 : 150
+let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
   mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
-
-let isMyScoresFitTop = saRatio >= 1.92
 
 return {
   primaryGunRight = withActionButtonCtor(AB_PRIMARY_WEAPON, mkCircleTankPrimaryGun,
@@ -166,14 +163,14 @@ return {
 
   myPlace = {
     ctor = @() myPlaceUi
-    defTransform = isMyScoresFitTop ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(330)])
+    defTransform = isWidescreen ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(330)])
     editView = mkMyPlace(1)
     hideForDelayed = false
   }
 
   myScores = {
     ctor = @() myScoresUi
-    defTransform = isMyScoresFitTop ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(330)])
+    defTransform = isWidescreen ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(330)])
     editView = { children = mkTankMyScores(221) }
     hideForDelayed = false
   }

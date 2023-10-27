@@ -47,5 +47,3 @@ let lootboxPreviewWnd = {
 }
 
 registerScene("lootboxPreviewWnd", lootboxPreviewWnd, closeLootboxPreview, isLootboxPreviewOpen)
-
-return @(id) previewLootboxId(id)

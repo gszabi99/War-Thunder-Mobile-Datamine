@@ -1,25 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { abs } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
-let { isEventWndOpen, closeEventWnd, curLootbox, curLootboxIndex, closeLootboxWnd, eventRewards, eventEndsAt,
-  unseenLootboxes, unseenLootboxesShowOnce, openLootboxPreviewWnd, openLootboxWnd, eventSeasonName, eventSeason,
+let { isEventWndOpen, closeEventWnd, eventEndsAt,
+  unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen, eventSeasonName, eventSeason,
   eventWndShowAnimation, eventWndOpenCount } = require("eventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsComps.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { lootboxInfo, progressBar, mkLootboxWndBtn, mkLootboxImageWithTimer, mkClickable, mkPurchaseBtns, mkSmokeBg,
-  hideAnimation, revealAnimation, slideTransition, smallChestIcon, lootboxInfoSize
-} = require("eventPkg.nut")
+let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, mkSmokeBg, lootboxHeight,
+ smallChestIcon, lootboxInfoSize, leaderbordBtn, questsBtn } = require("eventPkg.nut")
 let { eventLootboxes } = require("eventLootboxes.nut")
-let { mkGoodsTimeTimeProgress } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD, WARBOND, EVENT_KEY } = require("%appGlobals/currenciesState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { buy_lootbox, lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { buy_lootbox } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCH_SRC_EVENT, PURCH_TYPE_LOOTBOX, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { isEmbeddedBuyCurrencyWndOpen } = require("buyEventCurrenciesState.nut")
 let { buyEventCurrenciesHeader, mkEventCurrenciesGoods, buyEventCurrenciesGamercard
 } = require("buyEventCurrenciesComps.nut")
@@ -32,11 +28,10 @@ let { backButton, backButtonWidth } = require("%rGui/components/backButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let { infoRhombButton } = require("%rGui/components/infoButton.nut")
 let { has_leaderboard } = require("%appGlobals/permissions.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
 let lootboxPreviewContent = require("%rGui/shop/lootboxPreviewContent.nut")
-let { isEmbeddedLootboxPreviewOpen, closeLootboxPreview, previewLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
+let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPreview, previewLootbox
+} = require("%rGui/shop/lootboxPreviewState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 
@@ -49,8 +44,6 @@ let opacityAnim = [
 ]
 
 isEmbeddedBuyCurrencyWndOpen.subscribe(@(_) anim_start("eventContentReveal"))
-
-let spinner = mkSpinner(hdpx(100))
 
 let function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
   let { rewardsCfg = null } = sConfigs
@@ -92,7 +85,9 @@ let mkRow = @(children) {
   children
 }
 
+let progressHeight = hdpx(80)
 let mkProgress = @(stepsToFixed) @() {
+  size = [SIZE_TO_CONTENT, progressHeight]
   watch = stepsToFixed
   flow = FLOW_VERTICAL
   children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [
@@ -140,97 +135,55 @@ let mkProgressFull = @(stepsToFixed) @() {
   ]
 }
 
-let function mkLootboxBlock(lootbox, idx, blockSize) {
-  let { name, adRewardId = null, sizeMul, timeRange = null } = lootbox
-  let isCurrent = Computed(@() curLootbox.value == name)
-  let isActive = Computed(@() isCurrent.value || !curLootbox.value)
-  let middleIdx = Computed(@() (eventLootboxes.value.len() - 1.0) / 2)
-  let translateX = Computed(@() blockSize * (
-    isActive.value && !isCurrent.value ? 0
-      : isCurrent.value ? (middleIdx.value - idx)
-      : 0.6 / (idx - curLootboxIndex.value) / max(abs(idx - middleIdx.value), 0.5)))
-  let needAdtimeProgress = Computed(@() !lootboxInProgress.value
-    && adRewardId != null
-    && curLootbox.value == name
-    && !eventRewards.value?[adRewardId].isReady)
+let function mkLootboxBlock(lootbox, blockSize) {
+  let { name, sizeMul, timeRange = null } = lootbox
+  let stateFlags = Watched(0)
   let lootboxImage = mkLootboxImageWithTimer(name, blockSize, timeRange, sizeMul)
-
   let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.value, servProfile.value))
 
-  isActive.subscribe(@(v) anim_start(v ? $"lootbox_reveal_{name}" : $"lootbox_hide_{name}"))
-
   return @() {
-    watch = [isCurrent, isActive, translateX]
-    size = [blockSize, flex()]
-    pos = [blockSize * idx, 0]
-    opacity = isActive.value ? 1.0 : 0.0
-    animations = [].extend(
-      hideAnimation($"lootbox_hide_{name}"),
-      revealAnimation($"lootbox_reveal_{name}"))
-    transform = { translate = [translateX.value, 0] }
-    transitions = slideTransition
+    watch = stateFlags
+    onElemState = @(sf) stateFlags(sf)
+    size = [blockSize, lootboxInfoSize[1] + lootboxHeight + progressHeight]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
+    behavior = Behaviors.Button
+    function onClick() {
+      openEmbeddedLootboxPreview(name)
+      markCurLootboxSeen(name)
+    }
+    sound = { click  = "click" }
     children = [
-      mkClickable(lootboxInfo(lootbox), @() openLootboxPreviewWnd(name))
-      {
-        children = [
-          @() {
-            watch = isActive
-            children = isActive.value
-                ? mkClickable(lootboxImage, @() openLootboxWnd(name))
-              : lootboxImage
-          }
+      lootboxInfo(lootbox, stateFlags.value)
 
-          @() {
-            watch = [needAdtimeProgress, eventRewards, lootboxInProgress]
-            hplace = ALIGN_CENTER
-            vplace = ALIGN_CENTER
-            children = [
-              lootboxInProgress.value ? spinner : null
-              !needAdtimeProgress.value ? null
-                : mkGoodsTimeTimeProgress(eventRewards.value?[adRewardId])
-            ]
-          }
-
-          @() {
-            watch = [unseenLootboxes, unseenLootboxesShowOnce]
-            size = [lootboxInfoSize[0], 0]
-            hplace = ALIGN_CENTER
-            children = name in unseenLootboxes.value || unseenLootboxesShowOnce.value?[name]
-                ? priorityUnseenMark
-              : null
-          }
-
-          {
-            size = [lootboxInfoSize[0], 0]
-            pos = [hdpx(15), hdpx(-10)]
-            hplace = ALIGN_CENTER
-            halign = ALIGN_RIGHT
-            children = infoRhombButton(@() openLootboxPreviewWnd(name), { size = [hdpx(65), hdpx(65)] })
-          }
-        ]
+      @() {
+        watch = [unseenLootboxes, unseenLootboxesShowOnce]
+        size = [lootboxInfoSize[0], 0]
+        hplace = ALIGN_CENTER
+        children = name in unseenLootboxes.value || unseenLootboxesShowOnce.value?[name]
+            ? priorityUnseenMark
+          : null
       }
-      { size = flex() }
-    ].extend(isCurrent.value
-        ? [mkPurchaseBtns(lootbox, onPurchase)]
-      : [
-          mkProgress(stepsToFixed)
-          mkLootboxWndBtn(@() isActive.value ? openLootboxWnd(name) : null, lootbox?.adRewardId != null, lootbox.currencyId)
-        ])
+
+      {
+        transform = { scale = (stateFlags.value & S_HOVER) != 0 ? [0.9, 0.9] : [1, 1] }
+        transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
+        children = lootboxImage
+      }
+
+      mkProgress(stepsToFixed)
+    ]
   }
 }
 
 let function onClose() {
   if (isEmbeddedLootboxPreviewOpen.value)
     closeLootboxPreview()
-  else if (!curLootbox.value) {
+  else {
     eventWndShowAnimation(true)
     closeEventWnd()
     unseenLootboxesShowOnce({})
   }
-  else
-    closeLootboxWnd()
 }
 
 let eventGamercard = {
@@ -287,12 +240,18 @@ let function eventWndContent() {
     size = flex()
     padding = saBordersRv
     flow = FLOW_VERTICAL
-    gap = hdpx(20)
     children = isEmbeddedBuyCurrencyWndOpen.value
         ? [
             buyEventCurrenciesGamercard
-            buyEventCurrenciesHeader
-            mkEventCurrenciesGoods
+            {
+              size = flex()
+              flow = FLOW_VERTICAL
+              valign = ALIGN_CENTER
+              children = [
+                buyEventCurrenciesHeader
+                mkEventCurrenciesGoods
+              ]
+            }
           ]
       : [eventGamercard].extend(isEmbeddedLootboxPreviewOpen.value
           ?
@@ -303,33 +262,54 @@ let function eventWndContent() {
                 halign = ALIGN_CENTER
                 children = [
                   {
+                    key = {}
                     size = flex()
                     children = [
                       mkProgressFull(stepsToFixed)
                       lootboxPreviewContent
                     ]
+                    animations = wndSwitchAnim
                   }
                   @() {
                     watch = previewLootbox
                     children = mkPurchaseBtns(previewLootbox.value, onPurchase)
                   }
                 ]
-                animations = wndSwitchAnim
               }
             ]
         : [
             @() {
-              watch = has_leaderboard
-              size = [SIZE_TO_CONTENT, defButtonHeight]
-              children = !has_leaderboard.value ? null
-                : textButtonCommon(loc("mainmenu/titleLeaderboards"), openLbWnd)
+              watch = [eventLootboxes, blockSize]
+              size = flex()
+              flow = FLOW_HORIZONTAL
+              hplace = ALIGN_CENTER
+              valign = ALIGN_CENTER
+              children = eventLootboxes.value.map(@(v) mkLootboxBlock(v, blockSize.value))
               animations = wndSwitchAnim
             }
-            @() {
-              watch = [eventLootboxes, blockSize]
-              size = [eventLootboxes.value.len() * blockSize.value, flex()]
-              hplace = ALIGN_CENTER
-              children = eventLootboxes.value.map(@(v, idx) mkLootboxBlock(v, idx, blockSize.value))
+
+            {
+              key = {}
+              size = [flex(), SIZE_TO_CONTENT]
+              valign = ALIGN_CENTER
+              flow = FLOW_HORIZONTAL
+              gap = headerGap
+              children = [
+                questsBtn
+
+                @() {
+                  watch = has_leaderboard
+                  size = [SIZE_TO_CONTENT, defButtonHeight]
+                  children = !has_leaderboard.value ? null : leaderbordBtn
+                }
+
+                { size = flex() }
+
+                {
+                  rendObj = ROBJ_TEXT
+                  text = loc("events/tapToSelect")
+                }.__update(fontMedium)
+              ]
               animations = wndSwitchAnim
             }
           ])
@@ -347,7 +327,6 @@ let eventWnd = @() {
   ]
   animations = eventWndShowAnimation.value ? wndSwitchAnim : null
   onAttach = @() eventWndShowAnimation(false)
-  onDetach = closeLootboxPreview
 }
 
 registerScene("eventWnd", eventWnd, closeEventWnd, isEventWndOpen)

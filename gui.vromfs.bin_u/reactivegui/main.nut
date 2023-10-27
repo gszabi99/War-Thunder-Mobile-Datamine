@@ -1,8 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 let { get_time_msec } = require("dagor.time")
+let isScriptsLoading = require("isScriptsLoading.nut")
+let setIsScriptsLoading = @(v) isScriptsLoading.set(v)
+isScriptsLoading.whiteListMutatorClosure(setIsScriptsLoading)
 
 log("LOAD RGUI SCRIPTS CORE")
+setIsScriptsLoading(true)
 let startLoadTime = get_time_msec()
 clear_vm_entity_systems()
 
@@ -43,6 +47,7 @@ let { bgShadedDark } = require("style/backgrounds.nut")
 let { spinnerOpacityAnim, spinner } = require("components/spinner.nut")
 
 log($"DaRg scripts load before login {get_time_msec() - startLoadTime} msec")
+setIsScriptsLoading(false)
 
 local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)
@@ -61,11 +66,13 @@ let function loadAfterLoginImpl() {
     return
   //let profiler = require("dagor.profiler")
   //profiler.start()
+  setIsScriptsLoading(true)
   let t = get_time_msec()
   log("LOAD RGUI SCRIPTS AFTER LOGIN")
   sceneAfterLogin = require("%rGui/sceneAfterLogin.nut")
   isAllScriptsLoaded(true)
   log($"DaRg scripts load after login {get_time_msec() - t} msec")
+  setIsScriptsLoading(false)
   //profiler.stop_and_save_to_file("../../profiler.csv")
 }
 

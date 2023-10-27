@@ -4,7 +4,7 @@ let { unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts,
   mkPlatoonBgPlates, platoonPlatesGap, mkPlatoonPlateFrame
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { buttonsShowTime, tabFinalPauseTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
+let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
 let { mkLevelProgressLine, maxLevelProgressAnimTime } = require("%rGui/debriefing/levelProgressLine.nut")
 let { mkTotalRewardCountsUnit } = require("%rGui/debriefing/totalRewardCounts.nut")
@@ -64,7 +64,7 @@ let function mkDebriefingWndTabUnit(debrData, rewardsInfo, params) {
   let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsUnit(rewardsInfo, [], rewardsStartTime)
 
   let { needBtnUnit = true } = params
-  let timeShow = rewardsStartTime + totalRewardsShowTime + (needBtnUnit ? buttonsShowTime : 0) + tabFinalPauseTime
+  let timeShow = rewardsStartTime + totalRewardsShowTime + (needBtnUnit ? buttonsShowTime : 0)
 
   let comp = {
     size = flex()

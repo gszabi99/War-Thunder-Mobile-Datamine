@@ -101,8 +101,16 @@ let mkRewardReceivedMark = @(rStyle, ovr = {}) {
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#check.svg:{rStyle.markSize}:{rStyle.markSize}:P")
   keepAspect = KEEP_ASPECT_FIT
-  color = 0xFF00FF00
+  color = 0xFF78FA78
 }.__update(ovr)
+
+let mkReceivedCounter = @(received, total) {
+  margin = [hdpx(4), hdpx(8)]
+  halign = ALIGN_LEFT
+  valign = ALIGN_TOP
+  rendObj = ROBJ_TEXT
+  text = $"{received}/{total}"
+}.__update(fontVeryTinyShaded)
 
 // CURRENCY ///////////////////////////////////////////////////////////////////
 
@@ -172,8 +180,12 @@ let function mkRewardPlatePremiumImage(r, rStyle) {
   }
 }
 
-let mkRewardPlatePremiumTexts = @(r, rStyle)
-  mkRewardLabel(mkCommonLabelText("".concat(decimalFormat(r.count), loc("measureUnits/days")), rStyle))
+let function mkRewardPlatePremiumTexts(r, rStyle) {
+  let days = r?.countRange && r.count != r?.countRange
+    ? $"{r.count}-{r.countRange}"
+    : $"{r.count}"
+  return mkRewardLabel(mkCommonLabelText("".concat(days, loc("measureUnits/days")), rStyle))
+}
 
 // DECORATOR //////////////////////////////////////////////////////////////////
 
@@ -407,6 +419,7 @@ let mkRewardPlateImage = @(r, rStyle) (rewardPlateCtors?[r?.rType] ?? rewardPlat
 let mkRewardPlateTexts = @(r, rStyle) (rewardPlateCtors?[r?.rType] ?? rewardPlateCtors.unknown).texts(r, rStyle)
 
 let mkRewardPlate = @(r, rStyle, ovr = {}) {
+  transform = {}
   children = [
     mkRewardPlateBg(r, rStyle)
     mkRewardPlateImage(r, rStyle)
@@ -429,4 +442,5 @@ return {
   mkRewardPlateTexts
   mkRewardReceivedMark
   mkRewardFixedIcon
+  mkReceivedCounter
 }

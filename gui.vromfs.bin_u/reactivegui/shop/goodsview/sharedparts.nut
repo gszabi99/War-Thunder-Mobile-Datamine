@@ -16,6 +16,7 @@ let { mkFireParticles, mkAshes, mkSparks } = require("%rGui/effects/mkFirePartic
 let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkGradText, mkGradGlowText } = require("%rGui/components/gradTexts.nut")
+let { mkGlare } = require("%rGui/components/glare.nut")
 
 let goodsW = hdpx(555)
 let goodsH = hdpx(378)
@@ -26,9 +27,6 @@ let timerSize = hdpxi(80)
 let advertSize = hdpxi(60)
 
 let glareWidth = sh(8)
-let startOfferGlareAnim = @() anim_start("offerGlareAnim")
-let offerGlareAnimDuration = 0.4
-let offerGlareRepeatDelay = 6.0
 let goodsGlareAnimDuration = 0.2
 
 let offerW = hdpx(420)
@@ -354,7 +352,7 @@ let function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}, childO
   }).__update(ovr)
 }
 
-let function mkOfferWrap(onClick, mkContent, pricePlate = null) {
+let function mkOfferWrap(onClick, mkContent, pricePlate = null, needGlare = true) {
   let stateFlags = Watched(0)
   return @() bgShaded.__merge({
     size = [ offerW,  pricePlate == null ? offerBgH : offerH ]
@@ -384,22 +382,7 @@ let function mkOfferWrap(onClick, mkContent, pricePlate = null) {
       {
         size = flex()
         clipChildren = true
-        children = {
-          key = "glare"
-          rendObj = ROBJ_IMAGE
-          size = [glareWidth, ph(140)]
-          image = gradTranspDoubleSideX
-          color = 0x00A0A0A0
-          transform = { translate = [-glareWidth * 2, 0], rotate = 25 }
-          vplace = ALIGN_CENTER
-          onAttach = @() clearTimer(startOfferGlareAnim)
-          animations = [{
-            prop = AnimProp.translate, duration = offerGlareAnimDuration, delay = 0.5, play = true,
-            to = [offerW + glareWidth * 0.75, 0],
-            trigger = "offerGlareAnim",
-            onFinish = @() resetTimeout(offerGlareRepeatDelay, startOfferGlareAnim),
-          }]
-        }
+        children = needGlare ? mkGlare(offerW, [glareWidth, ph(140)]) : null
       }
     ]
   })

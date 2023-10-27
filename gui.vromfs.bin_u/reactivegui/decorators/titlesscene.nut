@@ -4,7 +4,8 @@ let { ceil } = require("%sqstd/math.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { chosenTitle, allTitles, chosenNickFrame, availTitles, getReceiveReason,
-unseenDecorators, markDecoratorSeen, markDecoratorsSeen } = require("decoratorState.nut")
+  unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
+} = require("decoratorState.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
@@ -17,10 +18,10 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { choosenMark } = require("decoratorsPkg.nut")
 
 
 let gap = hdpx(15)
-let checkIconSize = hdpx(45)
 let rowHeight = hdpx(75)
 let minRows = 6
 let columns = 2
@@ -28,16 +29,8 @@ let columns = 2
 let bgColor = @(rowIdx) rowIdx % 2 == 0 ? 0x00000000 : 0x80323232
 
 let selectedTitle = Watched(chosenTitle.value?.name)
-let visibleTitles = Computed(@() allTitles.value.filter(@(dec, id) !dec.isHidden || (id in availTitles.value)))
+let visibleTitles = Computed(@() allTitles.value.filter(@(dec, id) !dec.isHidden || isShowAllDecorators.value || (id in availTitles.value)))
 let hasVisibleTitles = Computed(@() visibleTitles.value.len() > 0)
-
-let choosenMark = {
-  size = [checkIconSize,checkIconSize]
-  rendObj  =  ROBJ_IMAGE
-  color = 0xFF00FF00
-  hplace = ALIGN_CENTER
-  image =  Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}:P")
-}
 
 let function applySelectedTitle(){
   if (selectedTitle.value == "") {
@@ -115,7 +108,7 @@ let function titleRow(name, locName, rowIdx) {
               }
             : isChoosen.value || isSelected.value
               ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.value != null),
-                isChoosen.value ? choosenMark : null)
+                isChoosen.value ? choosenMark(hdpxi(45), { hplace = ALIGN_CENTER }) : null)
             : isUnseen.value
               ? {
                   margin = [hdpx(15), hdpx(20)]

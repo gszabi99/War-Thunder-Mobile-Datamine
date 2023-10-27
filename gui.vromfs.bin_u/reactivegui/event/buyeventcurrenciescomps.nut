@@ -96,7 +96,7 @@ let mkGoods = @(goods, onClick, state, animParams) @() {
 
 let mkEventCurrenciesGoods = @() {
   watch = [eventCurrenciesGoods, currencyId]
-  size = flex()
+  size = [flex(), SIZE_TO_CONTENT]
   padding = [hdpx(45), 0, 0, 0]
   flow = FLOW_HORIZONTAL
   gap

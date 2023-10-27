@@ -50,7 +50,7 @@
         "mulArcade": 1,
         "mulRealistic": 2,
         "mulHardcore": 2,
-        "maxVal": 6,
+        "maxVal": 5,
         "bestId": "trophy_near_tankman",
         "isShip": false,
         "condition": [
@@ -140,7 +140,7 @@
         "mulArcade": 1,
         "mulRealistic": 2,
         "mulHardcore": 3,
-        "maxVal": 3,
+        "maxVal": 2,
         "bestId": "trophy_near_ship",
         "isShip": true,
         "condition": [
@@ -157,6 +157,7 @@
     {
       "id": "heroic_tankman",
       "type": "streak",
+      "userstat_stat_id": "top_killer_hero",
       "amount_exp": 0,
       "amount_warpoints": 1250,
       "isAfterFlight": true,
@@ -165,7 +166,7 @@
         "mulArcade": 1,
         "mulRealistic": 2,
         "mulHardcore": 2,
-        "minVal": 7,
+        "minVal": 5,
         "bestId": "heroic_tankman",
         "isShip": false,
         "condition": [
@@ -185,12 +186,13 @@
       "amount_exp": 0,
       "amount_warpoints": 1250,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_killer_hero",
       "mode": {
         "type": "killedGroundBest",
         "mulArcade": 1,
         "mulRealistic": 2,
         "mulHardcore": 3,
-        "minVal": 4,
+        "minVal": 3,
         "bestId": "heroic_ship",
         "isShip": true,
         "condition": [
@@ -212,7 +214,7 @@
       "isAfterFlight": true,
       "mode": {
         "type": "killedPlayersBest",
-        "minVal": 4,
+        "minVal": 3,
         "bestId": "heroic_survivor",
         "includeBots": true,
         "noDeaths": true,
@@ -750,7 +752,7 @@
           30,
           30
         ],
-        "isShip": false,
+        "airOnly": true,
         "condition": {
           "type": "online"
         }
@@ -808,9 +810,9 @@
       "amount_warpoints": 100,
       "isMultiStage": true,
       "wpA": [
-        150.0,
-        150.0,
-        150.0
+        250.0,
+        250.0,
+        250.0
       ],
       "wpB": [
         0.0,
@@ -827,6 +829,7 @@
         0.0,
         0.0
       ],
+      "useStageWp": true,
       "stage": {
         "param": 2,
         "amount_exp": 0,
@@ -894,7 +897,8 @@
             "type": "online"
           },
           {
-            "type": "targetIsPlayer"
+            "type": "targetIsPlayer",
+            "includeBots": true
           }
         ]
       }
@@ -942,7 +946,8 @@
             "type": "online"
           },
           {
-            "type": "targetIsPlayer"
+            "type": "targetIsPlayer",
+            "includeBots": true
           }
         ]
       }
@@ -1050,6 +1055,11 @@
         100.0
       ],
       "wpB": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wpC": [
         0.0,
         0.0,
         0.0
@@ -1064,8 +1074,9 @@
         0.0,
         0.0
       ],
+      "useStageWp": true,
       "stage": {
-        "param": 3,
+        "param": 2,
         "amount_exp": 0,
         "amount_warpoints": 100
       },
@@ -1077,7 +1088,8 @@
             "type": "online"
           },
           {
-            "type": "targetIsPlayer"
+            "type": "targetIsPlayer",
+            "includeBots": true
           }
         ]
       }
@@ -1234,7 +1246,8 @@
             "unitType": "tank"
           },
           {
-            "type": "targetIsPlayer"
+            "type": "targetIsPlayer",
+            "includeBots": true
           },
           {
             "type": "targetType",
@@ -1294,7 +1307,8 @@
             "unitType": "tank"
           },
           {
-            "type": "targetIsPlayer"
+            "type": "targetIsPlayer",
+            "includeBots": true
           }
         ]
       }
@@ -1344,7 +1358,8 @@
             "type": "online"
           },
           {
-            "type": "targetIsPlayer"
+            "type": "targetIsPlayer",
+            "includeBots": true
           }
         ]
       }
@@ -1371,14 +1386,6 @@
           {
             "type": "targetType",
             "unitType": "aircraft"
-          },
-          {
-            "type": "missionType",
-            "missionType": [
-              3,
-              4,
-              5
-            ]
           }
         ]
       }

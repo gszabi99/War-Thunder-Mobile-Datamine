@@ -34,7 +34,6 @@ subscribeFMsgBtns({
       if (url != null)
         shell_execute({ cmd = "action", file = url })
     }
-    exitGame()
   }
 })
 

@@ -27,7 +27,7 @@ let { playSound } = require("sound_wt")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let lootboxPreviewWnd = require("%rGui/shop/lootboxPreviewWnd.nut")
+let { openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 
 let itemBlockSize = [ (itemWidth + itemGap) * 4 + itemBigWidth + backItemOffset, itemBigHeight ]
 let imageSize = hdpxi(210)
@@ -267,7 +267,7 @@ let function previewBtnBlock() {
   })
 }
 
-let openPreview = @(reward) lootboxPreviewWnd(reward.lootboxes.findindex(@(_) true))
+let openPreview = @(reward) openLootboxPreview(reward.lootboxes.findindex(@(_) true))
 
 let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, animState) {
   let place = rewardsPlaces?[periodIdx]

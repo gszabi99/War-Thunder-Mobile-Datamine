@@ -12,8 +12,7 @@ let pointSize = lineWidth + 2 * hdpxi(3)
 let offsetX = 40
 let bottomRowY = 846
 let topRowY = 260
-let aspectRatio = sw(100) / sh(100)
-let adaptiveFont = aspectRatio < 2 ? fontVeryTiny : fontTiny
+let adaptiveFont = isWidescreen ? fontTiny : fontVeryTiny
 let fillColor = 0x8015191C
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]

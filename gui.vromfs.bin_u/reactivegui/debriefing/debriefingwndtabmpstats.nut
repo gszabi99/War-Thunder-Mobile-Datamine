@@ -20,9 +20,10 @@ let function mkDebriefingWndTabMpStats(debrData, _rewardsInfo, _params) {
   let { campaign = "" } = debrData
   let playersByTeam = mkPlayersByTeam(debrData)
   let comp = {
-    size = flex()
+    size = [sw(100), flex()]
+    hplace = ALIGN_CENTER
     margin = [hdpx(20), 0, 0, 0]
-    children = mkMpStatsTable(getColumnsByCampaign(campaign), mkPlayersByTeamForMpStats(playersByTeam, campaign), null)
+    children = mkMpStatsTable(getColumnsByCampaign(campaign), mkPlayersByTeamForMpStats(playersByTeam, campaign))
   }
 
   return {

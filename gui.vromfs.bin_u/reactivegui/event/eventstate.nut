@@ -9,8 +9,8 @@ let { eventLootboxes, eventLootboxesRaw } = require("eventLootboxes.nut")
 let { onSchRewardReceive, schRewards, schRewardsStatus } = require("%rGui/shop/schRewardsState.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balanceWarbond, balanceEventKey, EVENT_KEY, WARBOND } = require("%appGlobals/currenciesState.nut")
-let lootboxPreviewWnd = require("%rGui/shop/lootboxPreviewWnd.nut")
 let { doesLocTextExist } = require("dagor.localize")
+let { unlockTables } = require("%rGui/unlocks/unlocks.nut")
 
 
 let SEEN_LOOTBOXES = "seenLootboxes"
@@ -20,8 +20,6 @@ let getSeasonPrefix = @(n) $"season_{n}"
 let isEventWndOpen = mkWatched(persist, "isEventWndOpen", false)
 let eventWndOpenCount = Watched(0)
 let eventWndShowAnimation = Watched(true)
-let curLootbox = Watched(null)
-let curLootboxIndex = Computed(@() eventLootboxes.value?.findindex(@(v) v.name == curLootbox.value) ?? -1)
 
 let eventRewards = Computed(@() schRewards.value
   .filter(@(v) v.lootboxes.findindex(@(_, key) key in eventLootboxesRaw.value))
@@ -37,6 +35,7 @@ let eventSeasonName = Computed(function() {
     locId = "events/name/default"
   return loc(locId)
 })
+let isEventActive = Computed(@() unlockTables.value?.season == true)
 
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
 let lootboxesAvailability = mkWatched(persist, LOOTBOXES_AVAILABILITY, {})
@@ -140,14 +139,7 @@ let function onCurrencyChange(currencyId, balance) {
 balanceEventKey.subscribe(@(balance) onCurrencyChange(EVENT_KEY, balance))
 balanceWarbond.subscribe(@(balance) onCurrencyChange(WARBOND, balance))
 
-let function openLootboxWnd(id) {
-  curLootbox(id)
-  saveSeenLootboxes([id])
-  updateUnseenLootboxesShowOnce({ [id] = false })
-}
-
-let function openLootboxPreviewWnd(id) {
-  lootboxPreviewWnd(id)
+let function markCurLootboxSeen(id) {
   saveSeenLootboxes([id])
   updateUnseenLootboxesShowOnce({ [id] = false })
 }
@@ -178,17 +170,14 @@ return {
   eventWndOpenCount
   openEventWnd
   closeEventWnd = @() isEventWndOpen(false)
-  closeLootboxWnd = @() curLootbox(null)
   eventWndShowAnimation
-  curLootbox
-  curLootboxIndex
-  openLootboxWnd
-  openLootboxPreviewWnd
+  markCurLootboxSeen
   showLootboxAds
   eventRewards
   eventEndsAt
   eventSeason
   eventSeasonName
+  isEventActive
 
   unseenLootboxes
   unseenLootboxesShowOnce

@@ -41,8 +41,6 @@ let eventUnlocksByDays = Computed(function() {
   return days
 })
 
-let isEventActive = Computed(@() eventUnlocksByDays.value.len() != 0)
-
 let eventDays = Computed(function(prev) {
   let res = eventUnlocksByDays.value.keys()
     .sort(@(a, b) a.tointeger() <=> b.tointeger())
@@ -177,7 +175,6 @@ return {
   sectionsCfg
   eventUnlocksByDays
   inactiveEventUnlocks
-  isEventActive
   progressUnlock
 
   COMMON_TAB

@@ -766,6 +766,7 @@
     "addons": {
       "disableFastVersionCheck": true,
       "shouldSaveGameVersionToCache": true,
+      "shouldReportIncompatibleVersion": true,
       "startMetric": "addons_update_start",
       "stopMetric": "addons_update_stop",
       "flag": "--onlypacks"
@@ -773,6 +774,7 @@
     "background_addons": {
       "disableFastVersionCheck": true,
       "shouldSaveGameVersionToCache": true,
+      "shouldReportIncompatibleVersion": true,
       "startMetric": "background_addons_update_start",
       "stopMetric": "background_addons_update_stop",
       "flag": "--onlypacks"

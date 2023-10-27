@@ -18,6 +18,11 @@ let mkStackImage = @(img, pxSize, pxOffset = [0, 0]) {
   img = $"ui/gameuiskin#{img}"
   params = mkImageParams(pxSize, pxOffset)
 }
+let mkNumberCtor = @(pxSize, pxOffset = [0, 0])
+  @(val) {
+    img = $"ui/gameuiskin#multi_kill_{min(9, val)}.avif"
+    params = mkImageParams(pxSize, pxOffset)
+  }
 
 let streaksPresentation = {
   unknown = {
@@ -336,8 +341,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_air.avif", [62, 62])
-      mkStackImage("multi_kill_xn.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
   double_kill_air = {
@@ -345,8 +351,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_air.avif", [62, 62])
-      mkStackImage("multi_kill_x2.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
   triple_kill_air = {
@@ -354,8 +361,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_air.avif", [62, 62])
-      mkStackImage("multi_kill_x3.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
   multi_kill_ship = {
@@ -363,8 +371,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_ship.avif", [62, 62])
-      mkStackImage("multi_kill_xn.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
   double_kill_ship = {
@@ -372,8 +381,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_ship.avif", [62, 62])
-      mkStackImage("multi_kill_x2.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
   triple_kill_ship = {
@@ -381,8 +391,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_ship.avif", [62, 62])
-      mkStackImage("multi_kill_x3.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
   multi_kill_ground = {
@@ -390,8 +401,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_ground.avif", [62, 62])
-      mkStackImage("multi_kill_xn.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
   double_kill_ground = {
@@ -399,8 +411,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_ground.avif", [62, 62])
-      mkStackImage("multi_kill_x2.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
   triple_kill_ground = {
@@ -408,8 +421,9 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_multi_kill_bg.avif"
     stackImages = [
       mkStackImage("multi_kill_ground.avif", [62, 62])
-      mkStackImage("multi_kill_x3.avif", [30, 20], [0, 20])
+      mkStackImage("multi_kill_x.avif", [12, 18], [-5, 20])
     ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 }
 function streakPresentation(unlockId) {

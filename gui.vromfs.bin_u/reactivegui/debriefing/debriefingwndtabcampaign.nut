@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { buttonsShowTime, tabFinalPauseTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
+let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
 let { mkLevelProgressLine, maxLevelProgressAnimTime } = require("%rGui/debriefing/levelProgressLine.nut")
 let { mkTotalRewardCountsCampaign } = require("%rGui/debriefing/totalRewardCounts.nut")
@@ -25,7 +25,7 @@ let function mkDebriefingWndTabCampaign(debrData, rewardsInfo, params) {
   let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsCampaign(rewardsInfo, [], rewardsStartTime)
 
   let { needBtnCampaign } = params
-  let timeShow = rewardsStartTime + totalRewardsShowTime + (needBtnCampaign ? buttonsShowTime : 0) + tabFinalPauseTime
+  let timeShow = rewardsStartTime + totalRewardsShowTime + (needBtnCampaign ? buttonsShowTime : 0)
 
   let comp = {
     size = flex()

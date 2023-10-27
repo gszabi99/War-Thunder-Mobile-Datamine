@@ -13,8 +13,8 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { commonGlare } = require("%rGui/components/glare.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { openUnitAttrWnd } = require("%rGui/unitAttr/unitAttrState.nut")
-let { debriefingData, curDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
-  DEBR_TAB_CAMPAIGN, DEBR_TAB_UNIT
+let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
+  DEBR_TAB_SCORES, debrTabsShowTime, stopDebriefingAnimation, needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final,
 } = require("debriefingState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
@@ -27,7 +27,6 @@ let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
-let { buttonsShowTime } = require("debriefingWndConsts.nut")
 let { getRewardsInfo } = require("totalRewardCounts.nut")
 let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
 let debriefingTabBar = require("debriefingTabBar.nut")
@@ -44,36 +43,37 @@ let minCountUpgradeButtonPushed = 3
 
 let updateHangarUnit = @(unitId) unitId == null ? null : setHangarUnit(unitId)
 
-let buttonDescText = @(delay, text) {
-  maxWidth = hdpx(400)
-  halign = ALIGN_CENTER
+let buttonDescText = @(needShowW, text) @() !needShowW.get() ? { watch = needShowW } : {
+  watch = needShowW
   vplace = ALIGN_CENTER
-  rendObj = ROBJ_TEXTAREA
-  behavior = Behaviors.TextArea
-  text
-  color = 0xFFFFFFFF
+  children = {
+    maxWidth = hdpx(400)
+    halign = ALIGN_CENTER
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    text
+    color = 0xFFFFFFFF
 
-  key = {}
-  transform = {}
-  animations = [
-    { prop = AnimProp.opacity, from = 0, to = 0, duration = delay, play = true }
-    { prop = AnimProp.opacity, from = 0, to = 1, delay, duration = 0.3, easing = OutQuad, play = true }
-  ]
-}.__update(fontSmall)
-
-let mkBtnAppearAnim = @(needBlink, delay, children) {
-  key = {}
-  transform = {}
-  animations = [
-    { prop = AnimProp.opacity, from = 0, to = 0, duration = delay, play = true }
-    { prop = AnimProp.opacity, from = 0, to = 1, delay, duration = 0.3, easing = OutQuad, play = true }
-  ].extend(!needBlink ? [] : [
-    { prop = AnimProp.scale, from = [1, 1], to = [1.3, 1.3], delay, duration = 0.5, easing = Blink, play = true }
-  ])
-  children
+    key = {}
+    transform = {}
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 1.0, easing = OutQuad, play = true }]
+  }.__update(fontSmall)
 }
 
-let mkBtnToHangar = @(delay, campaign) mkBtnAppearAnim(false, delay, textButtonPrimary(
+let mkBtnAppearAnim = @(needBlink, needShowW, children) @() !needShowW.get() ? { watch = needShowW } : {
+  watch = needShowW
+  children = {
+    key = {}
+    transform = {}
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.3, easing = OutQuad, play = true }]
+      .extend(needBlink
+        ? [{ prop = AnimProp.scale, from = [1, 1], to = [1.3, 1.3], duration = 0.5, easing = Blink, play = true }]
+        : [])
+    children
+  }
+}
+
+let mkBtnToHangar = @(needShow, campaign) mkBtnAppearAnim(false, needShow, textButtonPrimary(
   utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short" : "return_to_hangar/short")),
   function() {
     isNoExtraScenesAfterDebriefing.set(true)
@@ -83,7 +83,7 @@ let mkBtnToHangar = @(delay, campaign) mkBtnAppearAnim(false, delay, textButtonP
   },
   { hotkeys = [btnBEscUp] }))
 
-let mkBtnLevelUp = @(delay) mkBtnAppearAnim(true, delay, textButtonBattle(
+let mkBtnLevelUp = @(needShow) mkBtnAppearAnim(true, needShow, textButtonBattle(
   utf8ToUpper(loc("msgbox/btn_get")),
   function() {
     isNoExtraScenesAfterDebriefing.set(false)
@@ -115,7 +115,7 @@ let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBat
   },
   { hotkeys = ["^J:X | Enter"] })
 
-let mkBtnUpgradeUnit = @(delay, campaign) mkBtnAppearAnim(true, delay, textButtonPrimary(
+let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, textButtonPrimary(
   utf8ToUpper(loc(campaign == "tanks" ? "mainmenu/btnUpgradePlatoon" : "mainmenu/btnUpgradeShip")),
   function() {
     isNoExtraScenesAfterDebriefing.set(false)
@@ -137,14 +137,14 @@ let mkBtnUpgradeUnit = @(delay, campaign) mkBtnAppearAnim(true, delay, textButto
   }
 ))
 
-let mkBtnToBattlePlace = @(delay) mkBtnAppearAnim(false, delay, @() {
+let mkBtnToBattlePlace = @(needShow) mkBtnAppearAnim(false, needShow, @() {
   watch = [newbieOfflineMissions, isInSquad, isSquadLeader]
   children = !isInSquad.get() && newbieOfflineMissions.get() != null ? startOfflineMissionButton
     : !isInSquad.get() || isSquadLeader.get() ? toBattleButton
     : null
 })
 
-let mkBtnNewPlatoonUnit = @(delay, newPlatoonUnit) mkBtnAppearAnim(true, delay, textButtonBattle(
+let mkBtnNewPlatoonUnit = @(needShow, newPlatoonUnit) mkBtnAppearAnim(true, needShow, textButtonBattle(
   utf8ToUpper(loc("msgbox/btn_get")),
   function() {
     isNoExtraScenesAfterDebriefing.set(false)
@@ -155,6 +155,19 @@ let mkBtnNewPlatoonUnit = @(delay, newPlatoonUnit) mkBtnAppearAnim(true, delay, 
     requestOpenUnitPurchEffect(newPlatoonUnit)
   },
   { hotkeys = ["^J:X | Enter"] }))
+
+let btnSkip = function() {
+  let res = { watch = [ isDebriefingAnimFinished, nextDebrTabId ] }
+  return isDebriefingAnimFinished.get() || nextDebrTabId.get() == null ? res : res.__update({
+    children = textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")),
+      function() {
+        let nextTabId = nextDebrTabId.get()
+        if (nextTabId != null)
+          curDebrTabId.set(nextTabId)
+      },
+      { hotkeys = ["^J:X | Enter"] })
+  })
+}
 
 let function isPlayerReceiveLevel(debrData) {
   let { exp = 0, nextLevelExp = 0 } = debrData?.player
@@ -212,21 +225,18 @@ let function debriefingWnd() {
     needBtnUnit = newPlatoonUnit != null || (!hasPlayerLevelUp && hasUnitLevelUp)
   }
   let debrTabsInfo = mkDebrTabsInfo(debrData, rewardsInfo, tabsParams)
-  let debrTabsInfoMap = debrTabsInfo.map(@(v) [ v.id, v ]).totable()
-
-  let tabButtonsShowTime_Campaign = max(0, (debrTabsInfoMap?[DEBR_TAB_CAMPAIGN].timeEnd ?? 0) - buttonsShowTime)
-  let tabButtonsShowTime_Unit = max(0, (debrTabsInfoMap?[DEBR_TAB_UNIT].timeEnd ?? 0) - buttonsShowTime)
-  let tabButtonsShowTime_Final = debrTabsInfo?[debrTabsInfo.len() - 1].timeEnd ?? 0
+  let debrTabComps = debrTabsInfo.map(@(v) [ v.id, v.comp ]).totable()
+  let tabsShowTime = debrTabsInfo.filter(@(v) v.needAutoAnim).map(@(v)  { id = v.id, timeShow = v.timeShow })
+  let debrAnimTime = tabsShowTime.reduce(@(res, v) res + v.timeShow, 0)
 
   let function reinitScene() {
-    if (debrTabsInfo.len())
-      curDebrTabId.set(debrTabsInfo[0].id)
+    debrTabsShowTime.set(tabsShowTime)
+    curDebrTabId.set(debrTabsInfo?[0].id ?? DEBR_TAB_SCORES)
+    isDebriefingAnimFinished.set(debrAnimTime <= 0)
+    if (debrAnimTime > 0)
+      resetTimeout(debrAnimTime, stopDebriefingAnimation)
     updateHangarUnit(reward?.unitName)
     playSound(isWon ? "stats_winner_start" : "stats_looser_start")
-    if (tabButtonsShowTime_Final > 0) {
-      isDebriefingAnimFinished.set(false)
-      resetTimeout(tabButtonsShowTime_Final, @() isDebriefingAnimFinished.set(true))
-    }
     sendNewbieBqEvent("openDebriefing", { status = isWon ? "win" : "loose" })
   }
 
@@ -257,7 +267,7 @@ let function debriefingWnd() {
             watch = curDebrTabId
             size = flex()
             halign = ALIGN_CENTER
-            children = debrTabsInfoMap?[curDebrTabId.get()].comp ?? mkDebriefingEmpty(debrData)
+            children = debrTabComps?[curDebrTabId.get()] ?? mkDebriefingEmpty(debrData)
           }
           // Footer
           @() {
@@ -267,37 +277,36 @@ let function debriefingWnd() {
             valign = ALIGN_BOTTOM
             flow = FLOW_HORIZONTAL
             children = [
-              @() {
+              {
                 size = [flex(), SIZE_TO_CONTENT]
                 halign = ALIGN_LEFT
-                flow = FLOW_VERTICAL
-                gap = hdpx(60)
                 children = newPlatoonUnit != null || hasPlayerLevelUp ? null
-                  : hasUnitLevelUp ? mkBtnUpgradeUnit(tabButtonsShowTime_Unit, campaign)
-                  : mkBtnToHangar(tabButtonsShowTime_Final, campaign)
+                  : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
+                  : mkBtnToHangar(needShowBtns_Final, campaign)
               }
-              @() {
+              {
                 size = [flex(), SIZE_TO_CONTENT]
                 halign = ALIGN_RIGHT
-                flow = FLOW_VERTICAL
-                gap = hdpx(60)
                 children = {
                   flow = FLOW_HORIZONTAL
                   gap = buttonsHGap
-                  children = hasPlayerLevelUp ? [
-                        buttonDescText(tabButtonsShowTime_Campaign - 0.3, loc("levelUp/playerLevelUp"))
-                        mkBtnLevelUp(tabButtonsShowTime_Campaign)
+                  children = (hasPlayerLevelUp ? [   //warning disable: -unwanted-modification
+                        buttonDescText(needShowBtns_Campaign, loc("levelUp/playerLevelUp"))
+                        mkBtnLevelUp(needShowBtns_Campaign)
                       ]
                     : newPlatoonUnit != null ? [
-                        buttonDescText(tabButtonsShowTime_Unit - 0.3, loc("levelUp/receiveNewPlatoonUnit"))
-                        mkBtnNewPlatoonUnit(tabButtonsShowTime_Unit, newPlatoonUnit)
+                        buttonDescText(needShowBtns_Unit, loc("levelUp/receiveNewPlatoonUnit"))
+                        mkBtnNewPlatoonUnit(needShowBtns_Unit, newPlatoonUnit)
                       ]
                     : hasUnitLevelUp ? [
                         minCountUpgradeButtonPushed <= countUpgradeButtonPushed.get()
-                          ? mkBtnToBattlePlace(tabButtonsShowTime_Final)
+                          ? mkBtnToBattlePlace(needShowBtns_Final)
                           : null
                       ]
-                    : mkBtnToBattlePlace(tabButtonsShowTime_Final)
+                    : [
+                        mkBtnToBattlePlace(needShowBtns_Final)
+                      ]
+                  ).append(btnSkip)  //warning disable: -unwanted-modification
                 }
               }
             ]

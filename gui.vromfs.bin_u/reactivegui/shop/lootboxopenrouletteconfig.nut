@@ -37,6 +37,7 @@ return {
 
     multiOpenOvr = {
       SLOWDOWN_TIME = 1.5
+      SLOWEST_COUNT_MAX = 1
       MIN_SLOW_MOVE_SPEED = hdpx(600)
       MIN_FINAL_BORDER_SPEED = hdpx(300)
     }

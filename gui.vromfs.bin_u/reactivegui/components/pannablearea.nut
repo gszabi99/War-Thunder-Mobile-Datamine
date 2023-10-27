@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { isGamepad, isKeyboard } = require("%rGui/activeControls.nut")
+let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
 
 let isMoveByKeys = Computed(@() isGamepad.value || isKeyboard.value)
 
@@ -18,6 +19,14 @@ let pannableBase = {
   }
 }
 
+let function mkBitmapPictureLazyExt(w, h, errId, fillCb) {
+  if (!isScriptsLoading.value) {
+    logerr($"Try to create {errId} mask not on scripts load")
+    return @() null
+  }
+  return mkBitmapPictureLazy(w, h, fillCb)
+}
+
 /**
  * Creates a constructor function for creating a full-featured VERTICAL pannable area.
  * @param {integer} height - Height in pixels of the whole area with gradients included.
@@ -29,7 +38,8 @@ let pannableBase = {
 let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
   let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
-  let pageMask = mkBitmapPictureLazy(4, (height * scaleMul + 0.5).tointeger(),
+  let pageMask = mkBitmapPictureLazyExt(4, (height * scaleMul + 0.5).tointeger(),
+    "verticalPannableAreaCtor",
     function(params, bmp) {
       let { w, h } = params
       let gradStart1 = (gradientOffset[1] * h / height + 0.5).tointeger()
@@ -86,7 +96,8 @@ let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = nul
 let function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
   let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
-  let pageMask = mkBitmapPictureLazy((width * scaleMul + 0.5).tointeger(), 4,
+  let pageMask = mkBitmapPictureLazyExt((width * scaleMul + 0.5).tointeger(), 4,
+    "horizontalPannableAreaCtor",
     function(params, bmp) {
       let { w, h } = params
       let gradStart1 = (gradientOffset[0] * w / width + 0.5).tointeger()

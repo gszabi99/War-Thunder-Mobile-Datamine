@@ -122,7 +122,7 @@ let opacityTransition = [{ prop = AnimProp.opacity, duration = 0.3, easing = InO
 let function articleTabBase(info, sf, isSelected, isUnseen) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   let isHovered = sf & S_HOVER
-  let { shortTitle, title, thumb, isPinned } = info
+  let { shortTitle, title, thumb, pinned } = info
   return {
     size = [selectorBtnW, selectorBtnH]
     children = [
@@ -131,7 +131,7 @@ let function articleTabBase(info, sf, isSelected, isUnseen) {
         rendObj = ROBJ_SOLID
         color = contentBgColor
       }
-      isPinned ? pinIcon : null
+      pinned > 0 ? pinIcon : null
       {
         size = flex()
         valign = ALIGN_CENTER

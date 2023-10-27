@@ -69,7 +69,7 @@ let unseenArticleId = Computed(function() {
   foreach (idx, info in newsfeed.value) {
     if (idx >= articlesPerPage.value)
       break
-    if (info.isPinned && info.id > lastId)
+    if (info.pinned > 0 && info.id > lastId)
       return info.id
   }
   // Searching for the oldest unseen ordinary article on the first page.
@@ -134,12 +134,12 @@ let function markArticleSeenById(id) {
 
 let markCurArticleSeen = @() markArticleSeenById(curArticleId.value)
 
-let sortNewsfeed = @(a, b) b.isPinned <=> a.isPinned
+let sortNewsfeed = @(a, b) b.pinned <=> a.pinned
   || b.iDate <=> a.iDate
   || b.id <=> a.id
 
 let function mkInfo(v) {
-  let { id = null, date = null, title = "", thumb = null, pinned = false, tags = [] } = v
+  let { id = null, date = null, title = "", thumb = null, pinned = 0, tags = [] } = v
   if (type(id) != "integer") {
     logerr($"Bad newsfeed id type: {type(id)}  (id = {id})")
     return null
@@ -148,7 +148,7 @@ let function mkInfo(v) {
   local shortTitle = v?.titleshort ?? "undefined"
   if (shortTitle == "undefined" || utf8(shortTitle).charCount() > 50)
     shortTitle = null
-  return { id, iDate, date, title, shortTitle, thumb, isPinned = pinned, tags }
+  return { id, iDate, date, title, shortTitle, thumb, pinned, tags }
 }
 
 subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {

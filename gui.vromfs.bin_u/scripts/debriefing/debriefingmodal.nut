@@ -3,7 +3,7 @@ let { subscribe, send } = require("eventbus")
 let { destroy_session } = require("multiplayer")
 let { loadJson, saveJson } = require("%sqstd/json.nut")
 let { register_command } = require("console")
-let { setTimeout } = require("dagor.workcycle")
+let { resetTimeout } = require("dagor.workcycle")
 let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { battleResult, debugBattleResult } = require("battleResult.nut")
@@ -16,7 +16,7 @@ let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
   if (needLogoutAfterSession.value) {
     destroy_session("on needLogoutAfterSession from gui_start_debriefing")
     //need delay after destroy session before is_multiplayer become false
-    setTimeout(0.3, startLogout)
+    resetTimeout(0.3, startLogout)
     return
   }
 
@@ -51,7 +51,8 @@ let function loadDebriefing(fileName) {
     return console_print($"Can not load file {fileName}")
 
   debugBattleResult(data)
-  isInDebriefing(true)
+  //need delay here because sendBattleResult is delayed by 0.1 sec
+  resetTimeout(0.2, @() isInDebriefing(true))
   return true
 }
 

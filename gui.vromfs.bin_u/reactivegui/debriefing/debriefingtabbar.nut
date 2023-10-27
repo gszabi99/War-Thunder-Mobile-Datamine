@@ -13,7 +13,7 @@ let fadedColor = 0x80808080
 let function tabBase(info, debrData, sf, isSelected, isInAnim) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   let isHovered = sf & S_HOVER
-  let { timeShow, nextTabId, getIcon, iconScale } = info
+  let { id, timeShow, nextTabId, getIcon, iconScale } = info
   let iconSize = round(tabSize * iconScale).tointeger()
   return {
     size = [tabSize, tabSize + tabLineGap + tabLineH]
@@ -24,7 +24,7 @@ let function tabBase(info, debrData, sf, isSelected, isInAnim) {
         image = Picture($"ui/gameuiskin#hud_circle_animation.svg:{tabSize}:{tabSize}:P")
         color = activeColor
         opacity = 0
-        key = {}
+        key = $"splash_{id}"
         transform = {}
         animations = [
           { prop = AnimProp.scale, from = [0.5, 0.5], to = [2, 2], duration = 0.7, easing = OutQuad, play = true }
@@ -40,7 +40,7 @@ let function tabBase(info, debrData, sf, isSelected, isInAnim) {
         color = isActive || isHovered ? activeColor : fadedColor
         keepAspect = true
       }.__update((!isInAnim || !isSelected) ? {} : {
-          key = {}
+          key = $"icon_{id}"
           transform = {}
           animations = [{ prop = AnimProp.scale, from = [1, 1], to = [1.5, 1.5], easing = Blink, duration = 0.5, play = true }]
         })
@@ -51,7 +51,7 @@ let function tabBase(info, debrData, sf, isSelected, isInAnim) {
         rendObj = ROBJ_SOLID
         color = activeColor
       }.__update(!isInAnim ? {} : {
-          key = {}
+          key = $"progress_{id}"
           transform = { pivot = [0, 0] }
           animations = [{
             prop = AnimProp.scale, from = [0, 1], duration = timeShow, play = true,
@@ -68,15 +68,17 @@ let function mkTab(info, debrData) {
   let isSelected = Computed(@() curDebrTabId.get() == id)
   return @() {
     watch = [stateFlags, isSelected, isDebriefingAnimFinished]
+    behavior = Behaviors.Button
+    onElemState = @(sf) stateFlags.set(sf)
+    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
+    sound = { click  = "click" }
+    function onClick() {
+      isDebriefingAnimFinished.set(true)
+      curDebrTabId.set(id)
+    }
     children = tabBase(info, debrData, stateFlags.get(), isSelected.get(), !isDebriefingAnimFinished.get())
-  }.__update(!isDebriefingAnimFinished.get() ? {} : {
-      behavior = Behaviors.Button
-      onElemState = @(sf) stateFlags.set(sf)
-      transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-      transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
-      sound = { click  = "click" }
-      onClick = @() curDebrTabId.set(id)
-    })
+  }
 }
 
 let debriefingTabBar = @(debrData, debrTabsInfo) debrTabsInfo.len() == 0 ? null : {

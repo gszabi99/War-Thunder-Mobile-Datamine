@@ -41,31 +41,58 @@ let function mkStackImage(imgData, override = {}) {
   return mkImage(img, params.__update(override))
 }
 
-let function mkStreakIcon(unlockId, mSize) {
+let function mkStreakIcon(unlockId, mSize, numParam = null) {
   let streak = streakPresentation(unlockId)
-  let { bgImage = null, stackImages = [] } = streak
+  let { bgImage = null, stackImages = [], numberCtor = null } = streak
+  let children = []
+  if (bgImage)
+    children.append(mkImage(bgImage))
+  children.extend(stackImages.map(@(imgData) mkStackImage(imgData)))
+  if (numParam != null && numberCtor)
+    children.append(mkStackImage(numberCtor(numParam)))
   return @() {
     vplace = ALIGN_CENTER
     size = [mSize, mSize]
-    children = (bgImage == null ? [] : [mkImage(bgImage)])
-      .extend(stackImages.map(@(imgData) mkStackImage(imgData)))
+    children
   }
 }
 
-let mkStreakWithMultiplier = @(unlockId, mult, mSize) {
+let mkStreakWithMultiplier = @(unlockId, mult, mSize, numParam = null) {
   size = [mSize, mSize]
   children = [
-    mkStreakIcon(unlockId, mSize)
+    mkStreakIcon(unlockId, mSize, numParam)
     mult <= 1 ? null
       : {
           rendObj = ROBJ_TEXT
           text = mult
           halign = ALIGN_CENTER
           pos = [mSize * 0.8, mSize * 0.8]
-        }
+        }.__update(fontVeryTinyAccented)
   ]
 }
 
+let prepareStreaksArray = @(streaks) streaks.reduce(function(res, val, id) {
+    let { stages = {}, completed, wp } = val
+    let isMulti = id in multiStageUnlockIdConfig
+    let hasStages = stages.len() > 0
+    if (hasStages && isMulti) {
+      let perUnlock = wp / completed
+      stages.each(function(value, stageStr) {
+        let stage = stageStr.tointeger()
+        let unlockId = getMultiStageUnlockId(id, stage)
+        res.append({ id = unlockId, wp = perUnlock * value, stage, completed = value })
+      })
+    }
+    else if (hasStages && !isMulti){
+      local stage = stages.reduce(@(result, _value, stageStr) max(result, stageStr.tointeger()), 0)
+      res.append(val.__merge({ id, stage }))
+    }
+    else if (!hasStages && isMulti) //compatibiliy with 1.3.0.X
+      res.append({ id = getMultiStageUnlockId(id, completed + 1), stage = completed + 1, wp })
+    else
+      res.append(val.__merge({ id }))
+    return res
+  }, [])
 
 return {
   multiStageUnlockIdConfig
@@ -74,4 +101,5 @@ return {
   getMultiStageUnlockId
   getUnlockLocText
   getUnlockDescLocText
+  prepareStreaksArray
 }

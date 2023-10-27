@@ -36,7 +36,7 @@ let wndHeader = {
 
 function mkList() {
   let unlocks = (get_unlocks_blk() % "unlockable")?.filter(@(blk) blk?.type == "streak") ?? []
-  unlocks.extend(multiStageUnlockIdConfig.reduce(@(res, val) res.append({ id = val[2]}, {id = val[3]}), []))
+  unlocks.extend(multiStageUnlockIdConfig.reduce(@(res, val) res.append({ id = val[2], num = 2}, {id = val[3], num = 3}, {id = val.def, num = 9}), []))
   let rows = ceil(unlocks.len().tofloat() / columns)
   return {
     margin = [hdpx(20), hdpx(20), 0, 0]
@@ -54,7 +54,7 @@ function mkList() {
           size = [iconSize, SIZE_TO_CONTENT]
           flow = FLOW_VERTICAL
           children = [
-            mkStreakIcon(item.id, iconSize)
+            mkStreakIcon(item.id, iconSize, item?.num)
             {
               size = [SIZE_TO_CONTENT, hdpx(20)]
               hplace = ALIGN_CENTER

@@ -19,7 +19,7 @@ registerHintCreator(HINT_TYPE, function(data) {
     gap = hdpx(20)
     children = [
       mkCurrencyComp(wp, WP, CS_SMALL)
-      mkStreakIcon(id, hdpx(90))
+      mkStreakIcon(id, hdpx(90), stage)
       {
         halign = ALIGN_CENTER
         rendObj = ROBJ_TEXT

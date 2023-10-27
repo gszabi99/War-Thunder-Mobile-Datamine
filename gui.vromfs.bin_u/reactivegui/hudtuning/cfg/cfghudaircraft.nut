@@ -20,8 +20,6 @@ let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, myPlaceUi, mkMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
 let { doll, dollEditView } = require("%rGui/hud/aircraftStateModule.nut")
 
-let isMyScoresFitTop = saRatio >= 1.92
-
 return cfgHudCommon.__merge({
   bomb = weaponryButtonCtor("ID_BOMBS", mkWeaponryItemSelfAction,
     {
@@ -116,14 +114,14 @@ return cfgHudCommon.__merge({
 
   myPlace = {
     ctor = @() myPlaceUi
-    defTransform = isMyScoresFitTop ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(260)])
+    defTransform = isWidescreen ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(260)])
     editView = mkMyPlace(1)
     hideForDelayed = false
   }
 
   myScores = {
     ctor = @() myScoresUi
-    defTransform = isMyScoresFitTop ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
+    defTransform = isWidescreen ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
     editView = mkMyScores(22100)
     hideForDelayed = false
   }

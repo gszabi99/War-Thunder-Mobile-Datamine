@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+let { subscribe } = require("eventbus")
 let { SERVER_ERROR_INVALID_VERSION, OPERATION_COMPLETE,
 SERVER_ERROR_PROTOCOL_MISMATCH, CLIENT_ERROR_OFFLINE, SERVER_ERROR_REQUEST_TIMEOUT } = require("matching.errors")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -21,6 +22,21 @@ let function errorHandlerRetryMessage(code) {
   })
 }
 
+let function showIncompatibleVersionMsg() {
+  sendErrorBqEvent("Download new version (required)")
+  openFMsgBox({
+    uid = "errorMessageBox"
+    text = loc(isDownloadedFromGooglePlay() ? "updater/newVersion/desc/android"
+      : is_ios ? "updater/newVersion/desc/iOS"
+      : "updater/newVersion/desc")
+    buttons = [
+      { text = loc("updater/btnUpdate"), eventId = "exitGameForUpdate",
+        styleId = "PRIMARY", isDefault = true }
+    ]
+    isPersist = true
+  })
+}
+
 let customErrorHandlers = {
   [SERVER_ERROR_INVALID_VERSION] = function onInvalidVersion() {
     sendErrorBqEvent("Download new version (optional)")
@@ -37,20 +53,7 @@ let customErrorHandlers = {
       isPersist = true
     })
   },
-  [SERVER_ERROR_PROTOCOL_MISMATCH] = function onProtocolMismatch() {
-    sendErrorBqEvent("Download new version (required)")
-    openFMsgBox({
-      uid = "errorMessageBox"
-      text = loc(isDownloadedFromGooglePlay() ? "updater/newVersion/desc/android"
-        : is_ios ? "updater/newVersion/desc/iOS"
-        : "updater/newVersion/desc")
-      buttons = [
-        { text = loc("updater/btnUpdate"), eventId = "exitGameForUpdate",
-          styleId = "PRIMARY", isDefault = true }
-      ]
-      isPersist = true
-    })
-  },
+  [SERVER_ERROR_PROTOCOL_MISMATCH] = showIncompatibleVersionMsg,
   [CLIENT_ERROR_OFFLINE] = @() errorHandlerRetryMessage(CLIENT_ERROR_OFFLINE),
   [SERVER_ERROR_REQUEST_TIMEOUT] = @() errorHandlerRetryMessage(SERVER_ERROR_REQUEST_TIMEOUT)
 }
@@ -80,5 +83,7 @@ let function showMatchingError(response) {
   })
   return true
 }
+
+subscribe("showIncompatibleVersionMsg", @(_) showIncompatibleVersionMsg())
 
 return showMatchingError

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getUnitLocId, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
+let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
@@ -54,14 +54,14 @@ let premiumMark = {
   image = Picture($"ui/gameuiskin#premium_active.svg:{premIconSize}:{premIconSize}:K:P")
 }
 
-let function getUnitNameText(unitId, halign, unitCfg) {
+let function getUnitNameText(unitId, unitClass, halign) {
   let name = loc(getUnitLocId(unitId), unitId)
-  let icon = getUnitClassFontIcon(unitCfg)
+  let icon = unitClassFontIcons?[unitClass] ?? ""
   let ordered = halign != ALIGN_RIGHT ? [ icon, name ] : [ name, icon ]
   return " ".join(ordered, true)
 }
 
-let function mkNameContent(player, teamColor, halign, unitsCfg) {
+let function mkNameContent(player, teamColor, halign) {
   let unitName = player?.mainUnitName ?? player.aircraftName
   let nameCell = {
     valign = ALIGN_CENTER
@@ -99,7 +99,7 @@ let function mkNameContent(player, teamColor, halign, unitsCfg) {
             color = player.isDead ? unitDeadTextColor
               : !player?.isUnitPremium ?  cellTextColor
               : premiumTextColor
-            text = getUnitNameText(unitName, halign, unitsCfg?[unitName])
+            text = getUnitNameText(unitName, player.unitClass, halign)
           })
         ]
       }
@@ -112,7 +112,7 @@ let function mkNameContent(player, teamColor, halign, unitsCfg) {
   return res
 }
 
-let mkPlaceContent = @(player, _teamColor, _halign, _unitsCfg)
+let mkPlaceContent = @(player, _teamColor, _halign)
   (player?.place ?? 0) > 0 ? mkPlaceIcon(player.place) : null
 
 let cellDefaults = { width = rowHeight, halign = ALIGN_CENTER }
@@ -153,7 +153,7 @@ let columnsByCampaign = {
 
 let getColumnsByCampaign = @(campaign) columnsByCampaign?[campaign] ?? columnsByCampaign.tanks
 
-let function mkPlayerRow(columnCfg, player, teamColor, idx, unitsCfg) {
+let function mkPlayerRow(columnCfg, player, teamColor, idx) {
   let { columns, rowOvr = {} } = columnCfg
 
   let playerColor = player?.isInHeroSquad ? mySquadLightColor : teamColor
@@ -170,7 +170,7 @@ let function mkPlayerRow(columnCfg, player, teamColor, idx, unitsCfg) {
         size = [width, rowHeight]
         halign = halign
         valign = ALIGN_CENTER
-        children = contentCtor != null ? contentCtor(player, playerColor, halign, unitsCfg)
+        children = contentCtor != null ? contentCtor(player, playerColor, halign)
           : cellTextProps.__merge({ text = getText?(player) })
       }
     })
@@ -192,7 +192,7 @@ let function mkTeamHeaderRow(columnCfg) {
   }.__update(rowOvr)
 }
 
-let mkMpStatsTable = @(columnsCfg, teams, unitsCfg) {
+let mkMpStatsTable = @(columnsCfg, teams) {
   size = [ flex(), SIZE_TO_CONTENT ]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -205,7 +205,7 @@ let mkMpStatsTable = @(columnsCfg, teams, unitsCfg) {
       size = [ flex(), SIZE_TO_CONTENT ]
       flow = FLOW_VERTICAL
       children = [mkTeamHeaderRow(columnCfg)]
-        .extend(team.map(@(player, idx) @() mkPlayerRow(columnCfg, player, teamColor, idx, unitsCfg)))
+        .extend(team.map(@(player, idx) @() mkPlayerRow(columnCfg, player, teamColor, idx)))
     }
   })
 }

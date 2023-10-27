@@ -1,19 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { scenesOrder } = require("%rGui/navState.nut")
+let { lootboxesCfg } = require("%rGui/event/eventLootboxes.nut")
 
 
-let previewLootboxId = mkWatched(persist, "previewLootboxId", null)
-let previewLootbox = Computed(@() serverConfigs.value?.lootboxesCfg?[previewLootboxId.value].__merge({ name = previewLootboxId.value }) ?? {})
+let openConfig = mkWatched(persist, "openConfig", null)
+let previewLootboxId = Computed(@() openConfig.value?.id)
+let previewLootbox = Computed(@() serverConfigs.value?.lootboxesCfg?[previewLootboxId.value]
+  .__merge({ name = previewLootboxId.value }, lootboxesCfg?[previewLootboxId.value] ?? {}) ?? {})
 
-let isInsideEvent = Computed(@() scenesOrder.value.findindex(@(v) v == "eventWnd") == (scenesOrder.value.len() - 1))
-let isLootboxPreviewOpen = Computed(@() previewLootboxId.value != null && !isInsideEvent.value)
-let isEmbeddedLootboxPreviewOpen = Computed(@() previewLootboxId.value != null && isInsideEvent.value)
+let isLootboxPreviewOpen = Computed(@() previewLootboxId.value != null && !openConfig.value?.isEmbedded)
+let isEmbeddedLootboxPreviewOpen = Computed(@() previewLootboxId.value != null && !!openConfig.value?.isEmbedded)
 
 return {
+  openLootboxPreview = @(id) openConfig({ id })
+  openEmbeddedLootboxPreview = @(id) openConfig({ id, isEmbedded = true })
+  closeLootboxPreview = @() openConfig(null)
   previewLootboxId
   previewLootbox
   isLootboxPreviewOpen
   isEmbeddedLootboxPreviewOpen
-  closeLootboxPreview = @() previewLootboxId(null)
 }

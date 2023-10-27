@@ -5,8 +5,8 @@ let { contentWidth } = require("optionsStyle.nut")
 let { sliderWithButtons, sliderValueSound } = require("%rGui/components/slider.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { infoCommonButton } = require("%rGui/components/infoButton.nut")
-let { showTooltip, hideTooltip } = require("%rGui/tooltip.nut")
+let { infoCommonButton, infoTooltipButton } = require("%rGui/components/infoButton.nut")
+
 
 let listMinWidth = hdpx(200)
 let listMaxWidth = hdpx(600)
@@ -40,58 +40,14 @@ let function mkHeader(header, child) {
   }
 }
 
-let function mkInfoButton(desc, locId){
-  if(desc == "")
-    return null
-
-  let stateFlags = Watched(0)
-  let key = {}
-  return @(){
-    key
-    watch = stateFlags
-    behavior = Behaviors.Button
-    xmbNode = {}
-    function onElemState(sf) {
-      let hasHint = (stateFlags.value & S_ACTIVE) != 0
-      let needHint =  (sf & S_ACTIVE) != 0
-      stateFlags(sf)
-      if (hasHint == needHint)
-        return
-      if (needHint)
-        showTooltip(gui_scene.getCompAABBbyKey(key), {
-          content = "\n".concat(loc(locId), desc),
-          flow = FLOW_HORIZONTAL
-          halign = ALIGN_LEFT })
-      else
-        hideTooltip()
-    }
-    fillColor = 0
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = [hdpx(40),hdpx(40)]
-    lineWidth = hdpx(2)
-    commands = [
-      [VECTOR_ELLIPSE, 50, 50, 50, 50],
-    ]
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    children = [
-      {
-        rendObj = ROBJ_TEXT
-        text = "?"
-        halign = ALIGN_CENTER
-      }.__update(fontTinyAccented)
-    ]
-  }
-}
-
 let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
     mkHeader(header,
       openInfo != null ? infoCommonButton(openInfo)
-        : mkInfoButton(desc, locId))
+        : desc != "" ? infoTooltipButton(@() "\n".concat(loc(locId), desc), { halign = ALIGN_LEFT })
+        : null)
     content
   ]
 }.__update(ovr)

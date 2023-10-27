@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, isEventActive, curTabId,
+let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
   COMMON_TAB, EVENT_TAB, PROMO_TAB, progressUnlock } = require("questsState.nut")
 let questsWndPage = require("questsWndPage.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
-let { eventSeasonName, eventEndsAt } = require("%rGui/event/eventState.nut")
+let { eventSeasonName, eventEndsAt, isEventActive } = require("%rGui/event/eventState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 
@@ -60,7 +60,8 @@ let tabs = [
     tabHeight = hdpx(160)
     unseen = Computed(@() progressUnlock.value?.hasReward ? UNSEEN_HIGH
       : isUnseen(questsCfg.value[EVENT_TAB], hasUnseenQuestsBySection.value))
-    isVisible = Computed(@() questsCfg.value[EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
+    isVisible = Computed(@() isEventActive.value
+      && questsCfg.value[EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
   {
     id = PROMO_TAB

@@ -10,6 +10,9 @@ let { platformGoods, platformOffer, platformGoodsDebugInfo, buyPlatformGoods,
   : require("byPlatform/goodsGaijin.nut")
 let { isForbiddenPlatformPurchaseFromRussia, openMsgBoxInAppPurchasesFromRussia } = require("inAppPurchasesFromRussia.nut")
 
+if (is_android)
+  log("isDownloadedFromGooglePlay = ", isDownloadedFromGooglePlay())
+
 subscribeFMsgBtns({
   buyPlatformGoods = function(context) {
     let { goodsOrId } = context

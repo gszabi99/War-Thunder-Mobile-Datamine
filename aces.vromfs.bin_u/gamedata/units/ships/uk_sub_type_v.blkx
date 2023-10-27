@@ -565,7 +565,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/76mm_45_3in_20cwt_qf_mk1_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/76mm_45_3in_20cwt_qf_mk1_4_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -788,7 +788,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/navalModels_weapons/76mm_45_3in_20cwt_qf_mk1_naval_user_cannon.blk",
+              "blk": "gameData/Weapons/navalModels_weapons/76mm_45_3in_20cwt_qf_mk1_4_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,

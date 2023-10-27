@@ -28,9 +28,10 @@ let playersByTeam = Computed(function() {
         let { id, userId, name, isBot, aircraftName = "" } = p
         let nickname = getPlayerName(name, myUserRealName.value, myUserName.value)
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
-        let { level = 1, hasPremium = false, decorators = null } = !isBot
+        let { level = 1, hasPremium = false, decorators = null, unit = {} } = !isBot
           ? playersCommonStats.value?[userId.tointeger()]
           : genBotCommonStats(name, aircraftName, allUnitsCfgFlat.value?[aircraftName] ?? {}, playerLevelInfo.value.level)
+        let { unitClass = "" } = unit
         return p.__merge({
           nickname
           damage
@@ -38,6 +39,7 @@ let playersByTeam = Computed(function() {
           level
           hasPremium
           decorators
+          unitClass
         })
       })))
   let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)
@@ -92,7 +94,7 @@ return bgShaded.__merge({
       size = [flex(), SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.value), playersByTeam.value, allUnitsCfgFlat.value)
+      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.value), playersByTeam.value)
     }
     {
       size = saSize

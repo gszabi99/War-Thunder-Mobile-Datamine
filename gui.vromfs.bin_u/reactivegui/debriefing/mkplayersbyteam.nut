@@ -10,6 +10,7 @@ let function mkPlayersByTeam(dData) {
     let { level = 1, hasPremium = false } = playersCommonStats?[pUserIdStr]
     let pUnit = playersCommonStats?[pUserIdStr].unit
     let mainUnitName = pUnit?.name ?? (p.aircraftName ?? "")
+    let unitClass = pUnit?.unitClass ?? ""
     let isUnitPremium = pUnit?.isPremium ?? false
     let frameId = playersCommonStats?[p.userId.tostring()].decorators.nickFrame
     return p.__merge({
@@ -24,6 +25,7 @@ let function mkPlayersByTeam(dData) {
       hasPremium
       isUnitPremium
       mainUnitName
+      unitClass
     })
   })
   let teamsOrder = localTeam == 2 ? [ 2, 1 ] : [ 1, 2 ]

@@ -12,12 +12,20 @@ let buyEventCurrenciesWnd = {
   children = [
     mkSmokeBg(isBuyCurrencyWndOpen)
     {
+      size = flex()
       padding = saBordersRv
       flow = FLOW_VERTICAL
       children = [
         buyEventCurrenciesGamercard
-        buyEventCurrenciesHeader
-        mkEventCurrenciesGoods
+        {
+          size = flex()
+          flow = FLOW_VERTICAL
+          valign = ALIGN_CENTER
+          children = [
+            buyEventCurrenciesHeader
+            mkEventCurrenciesGoods
+          ]
+        }
       ]
     }
   ]

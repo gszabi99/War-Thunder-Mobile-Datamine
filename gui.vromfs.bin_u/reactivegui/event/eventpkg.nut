@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { REWARD_STYLE_TINY, REWARD_SIZE_TINY, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon
 } = require("%rGui/rewards/rewardPlateComp.nut")
-let { premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
+let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { getLootboxName, getLootboxImageOriginal } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
@@ -15,6 +15,8 @@ let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
+let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 
 
 let REWARDS = 3
@@ -24,6 +26,7 @@ let barHeight = hdpx(10)
 let btnSize = [hdpx(300), hdpx(90)]
 let borderWidth = hdpx(1)
 let fillColor = 0x70000000
+let hoverColor = 0xA0000000
 let iconStyle = CS_INCREASED_ICON
 let iconSize = iconStyle.iconSize
 let lootboxHeight = hdpxi(320)
@@ -36,43 +39,16 @@ let lootboxInfoSize = [REWARD_SIZE_TINY * REWARDS + rewardGap * (REWARDS + 1),
 let lootboxInfoSizeBig = [REWARD_SIZE_TINY * (REWARDS + 1) + rewardGap * (REWARDS + 2),
   (REWARD_SIZE_TINY + rewardGap * 2) / 0.8]
 
-let SLIDE = 0.3
-let OPACITY = 0.4
-
-let hideAnimation = @(trigger) [
-  {
-    prop = AnimProp.opacity, from = 1.0, to = 1.0, duration = SLIDE, trigger
-  }
-  {
-    prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = OPACITY,
-    trigger, easing = InOutQuad
-  }
-]
-
-let revealAnimation = @(trigger) [
-  {
-    prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = OPACITY,
-    trigger, easing = InOutQuad
-  }
-]
-
+let aTimeOpacity = 0.4
 let revealBtnsAnimation = [
   {
-    prop = AnimProp.opacity, from = 0.0, to = 0.0, duration = SLIDE, play = true
+    prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = aTimeOpacity,
+    play = true, easing = InOutQuad
   }
-  {
-    prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = OPACITY,
-    play = true, delay = SLIDE, easing = InOutQuad
-  }
-]
-
-let slideTransition = [
-  { prop = AnimProp.translate, duration = SLIDE, easing = InOutQuad }
 ]
 
 let infoCanvas = {
   rendObj = ROBJ_VECTOR_CANVAS
-  fillColor
   color = 0
   commands = [[VECTOR_POLY, 0, 0, 0, 80, 44, 80, 50, 100, 56, 80, 100, 80, 100, 0, 0, 0]]
   flow = FLOW_HORIZONTAL
@@ -84,12 +60,12 @@ let infoCanvas = {
 let infoCanvasSmall = infoCanvas.__merge({ size = lootboxInfoSize })
 let infoCanvasBig = infoCanvas.__merge({ size = lootboxInfoSizeBig })
 
-let function lootboxInfo(lootbox = {}) {
+let function lootboxInfo(lootbox, sf) {
   let rewardsPreview = Computed(function() {
     local rewards = []
     local slots = 0
     foreach (reward in getLootboxRewardsViewInfo(lootbox)) {
-      if (slots + (reward?.slots ?? 0) > REWARDS + 1)
+      if (reward?.isLastReward || slots + (reward?.slots ?? 0) > REWARDS + 1)
         continue
       slots += reward?.slots ?? 0
       rewards.append(reward)
@@ -101,6 +77,8 @@ let function lootboxInfo(lootbox = {}) {
 
   return @() {
     watch = [rewardsPreview, serverConfigs, servProfile]
+    fillColor = sf & S_HOVER ? hoverColor : fillColor
+    transitions = [{ prop = AnimProp.fillColor, duration = 0.15, easing = Linear }]
     children = rewardsPreview.value.rewards.map(function(r) {
       let { rewardsCfg = null } = serverConfigs.value
       let id = r?.rewardId
@@ -109,7 +87,7 @@ let function lootboxInfo(lootbox = {}) {
         children = [
           mkRewardPlate(r, REWARD_STYLE_TINY)
           showMark ? mkRewardReceivedMark(REWARD_STYLE_TINY) : null
-          !showMark && r?.isFixed ? mkRewardFixedIcon(REWARD_STYLE_TINY) : null
+          !showMark && (r?.isFixed || r?.isJackpot) ? mkRewardFixedIcon(REWARD_STYLE_TINY) : null
         ]
       }
     })
@@ -135,39 +113,6 @@ let function progressBar(stepsFinished, stepsToNext, ovr = {}) {
       }
     ]
   }.__update(ovr)
-}
-
-let function mkLootboxWndBtn(onClick, hasAdIcon, currencyId) {
-  let stateFlags = Watched(0)
-
-  return @() {
-    watch = stateFlags
-    size = btnSize
-    rendObj = ROBJ_BOX
-    sound = { click  = "meta_shop_buttons" }
-    behavior = Behaviors.Button
-    onClick
-    borderWidth
-    borderColor = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
-    fillColor
-    flow = FLOW_HORIZONTAL
-    gap = iconSize / 2
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    onElemState = @(sf) stateFlags(sf)
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-    children = [
-      !hasAdIcon ? null
-        : {
-            size = [iconSize, iconSize]
-            rendObj = ROBJ_IMAGE
-            keepAspect = true
-            image = Picture($"ui/gameuiskin#mp_spectator.avif:{iconSize}:{iconSize}:P")
-          }
-      mkCurrencyImage(currencyId, iconSize)
-    ]
-  }
 }
 
 let function mkLootboxImageWithTimer(name, blockSize, timeRange, sizeMul = 1.0) {
@@ -202,23 +147,8 @@ let function mkLootboxImageWithTimer(name, blockSize, timeRange, sizeMul = 1.0) 
   }
 }
 
-let function mkClickable(children, onClick) {
-  let stateFlags = Watched(0)
-  return @() {
-    watch = stateFlags
-    behavior = Behaviors.Button
-    onElemState = @(sf) stateFlags(sf)
-    onClick
-    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.9, 0.9]
-      : (stateFlags.value & S_HOVER) != 0 ? [1.1, 1.1]
-      : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
-    sound = { click  = "click" }
-    children
-  }
-}
-
-let adsBtnContent = {
+let mkBtnContent = @(img, text, ovr = {}) {
+  key = text
   size = flex()
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -229,25 +159,35 @@ let adsBtnContent = {
       size = [iconSize, iconSize]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FILL
-      image = Picture($"ui/gameuiskin#mp_spectator.avif:{iconSize}:{iconSize}:P")
+      image = Picture($"{img}:{iconSize}:{iconSize}:P")
     }
     {
-      maxWidth = hdpx(200)
+      maxWidth = hdpx(250)
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER
-      text = utf8ToUpper(loc("shop/watchAdvert/short"))
+      text = utf8ToUpper(text)
     }.__update(fontTinyAccentedShaded)
   ]
-}
+}.__update(ovr)
 
 let mkAdsBtn = @(id) @() {
   watch = eventRewards
   children = mkCustomButton(
-    adsBtnContent,
+    mkBtnContent("ui/gameuiskin#mp_spectator.avif", loc("shop/watchAdvert/short")),
     @() showLootboxAds(id),
     canShowAds.value && eventRewards.value?[id].isReady ? buttonStyles.SECONDARY : buttonStyles.COMMON)
 }
+
+let leaderbordBtn = mkCustomButton(
+  mkBtnContent("ui/gameuiskin#prizes_icon.svg", loc("mainmenu/titleLeaderboards")),
+  openLbWnd,
+  buttonStyles.PRIMARY)
+
+let questsBtn = mkCustomButton(
+  mkBtnContent("ui/gameuiskin#quests.svg", loc("mainmenu/btnQuests")),
+  openEventQuestsWnd,
+  buttonStyles.PRIMARY)
 
 let mkCurrencyComp = @(value, currencyId) {
   size = [SIZE_TO_CONTENT, iconSize]
@@ -306,17 +246,15 @@ return {
   lootboxInfo
   lootboxInfoSize
   progressBar
-  mkLootboxWndBtn
   mkLootboxImageWithTimer
-  mkClickable
+  lootboxHeight
   mkPurchaseBtns
   mkSmokeBg
+
+  leaderbordBtn
+  questsBtn
 
   smallChestIcon
   smallChestIconSize
   barHeight
-
-  hideAnimation
-  revealAnimation
-  slideTransition
 }

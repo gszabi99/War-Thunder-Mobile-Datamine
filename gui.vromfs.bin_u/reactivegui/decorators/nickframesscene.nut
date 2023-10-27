@@ -4,7 +4,8 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { chosenNickFrame, allFrames, availNickFrames, getReceiveReason,
-unseenDecorators, markDecoratorSeen, markDecoratorsSeen } = require("decoratorState.nut")
+  unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
+} = require("decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress
@@ -21,10 +22,10 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { choosenMark } = require("decoratorsPkg.nut")
 
 
 let gap = hdpx(15)
-let checkIconSize = hdpxi(30)
 let squareSize = [hdpx(163), hdpx(151)]
 let CS_DECORATORS = CS_SMALL.__merge({
   iconSize = hdpxi(30)
@@ -40,14 +41,6 @@ chosenNickFrame.subscribe(function(v){
   if (v && v.name)
     markDecoratorSeen(v.name)
 })
-
-let choosenMark = {
-  size = [checkIconSize,checkIconSize]
-  margin = [hdpxi(10),hdpxi(15)]
-  rendObj = ROBJ_IMAGE
-  color = 0xFF00FF00
-  image = Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}:P")
-}
 
 let buySelectedDecorator = @()
   purchaseDecorator(selectedDecorator.value, frameNick("", selectedDecorator.value),
@@ -197,12 +190,12 @@ let function footer() {
 }
 
 let framesList = @() {
-  watch = [availNickFrames, allFrames]
+  watch = [availNickFrames, allFrames, isShowAllDecorators]
   padding = [hdpx(30), 0, hdpx(30), 0]
   flow = FLOW_VERTICAL
   gap
   children = arrayByRows(
-    allFrames.value.filter(@(frame, key) !frame.isHidden || (key in (availNickFrames.value)))
+    allFrames.value.filter(@(frame, key) isShowAllDecorators.value || !frame.isHidden || (key in (availNickFrames.value)))
       .topairs()
       .sort(@(a,b) (b[0] in availNickFrames.value)<=>(a[0] in availNickFrames.value))
       .insert(0, [ "",

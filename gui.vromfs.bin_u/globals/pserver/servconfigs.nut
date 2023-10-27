@@ -7,7 +7,7 @@ let serverConfigs = Watched(ndbExists("pserver.config") ? ndbRead("pserver.confi
 let function updateAllConfigs(newValue) {
   let configs = newValue?.configs
   if (configs != null)
-    serverConfigs(configs)
+    serverConfigs(freeze(configs))
 }
 serverConfigs.whiteListMutatorClosure(updateAllConfigs)
 

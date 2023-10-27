@@ -13,7 +13,7 @@ let { mkImageWithCount, myPlace, isPlaceVisible, icons, viewMuls } = require("%r
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let resultsHintLogState = require("%rGui/hudHints/resultsHintLogState.nut")
 let { resultsHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
-let { mkStreakWithMultiplier } = require("%rGui/streak/streakPkg.nut")
+let { mkStreakWithMultiplier, prepareStreaksArray } = require("%rGui/streak/streakPkg.nut")
 
 let changeTextBgColorDuration = 0.1
 let textBlockBounceDuration = 0.3
@@ -162,14 +162,9 @@ let achievementsBlock = @() {
     ? mkUserScores({
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
-        halign = ALIGN_CENTER
-        gap
-        children = debriefingData.value?.streaks.reduce(
-          function(acc, val, key) {
-            acc.append(mkStreakWithMultiplier(key, val?.completed ?? 0, hdpx(70)))
-            return acc
-          },
-          [])
+        hplace = ALIGN_CENTER
+        children = prepareStreaksArray(debriefingData.value?.streaks)
+          .map( @(val) mkStreakWithMultiplier(val.id, val?.completed ?? 0, hdpx(70), val?.stage))
       }, loc("debriefing/Unlocks"))
     : null
 }

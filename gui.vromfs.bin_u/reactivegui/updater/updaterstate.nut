@@ -4,7 +4,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { download_addons_in_background, stop_updater, is_updater_running, get_addon_version,
   get_incomplete_addons, is_addon_exists_in_game_folder, UPDATER_RESULT_SUCCESS, UPDATER_ERROR,
   UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS, UPDATER_EVENT_ERROR,
-  UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING
+  UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = require("contentUpdater")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let logA = log_with_prefix("[ADDONS] ")
@@ -41,6 +41,7 @@ let totalSizeBytes = hardPersistWatched("updater.totalSizeBytes", 0)
 let toDownloadSizeBytes = hardPersistWatched("updater.toDownloadSizeBytes", 0)
 let downloadState = hardPersistWatched("updater.downloadState", null)
 let updaterError = hardPersistWatched("updater.updaterError", null)
+let isIncompatibleVersion = Watched(false)
 
 let firstPriorityAddons = mkWatched(persist, "firstPriorityAddons", {})
 let downloadWndParams = mkWatched(persist, "downloadWndParams", null)
@@ -81,7 +82,9 @@ let uhqAddonsToDownload = Computed(function(prev) {
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
 
 let wantStartDownloadAddons = Computed(function(prev) {
-  if (!isLoggedIn.value || (addonsToDownload.value.len() + uhqAddonsToDownload.value.len()) == 0)
+  if (!isLoggedIn.value
+      || isIncompatibleVersion.value
+      || (addonsToDownload.value.len() + uhqAddonsToDownload.value.len()) == 0)
     return prevIfEqual(prev, {})
 
   let addons = firstPriorityAddons.value.__merge(initialAddonsToDownload.value, squadAddons.value) //first priority on addons requested by download addons window
@@ -197,6 +200,10 @@ subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
     totalSizeBytes(evt?.total ?? 0)
   } else if (eventType == UPDATER_EVENT_PROGRESS)
     downloadState(evt)
+  else if (eventType == UPDATER_EVENT_INCOMPATIBLE_VERSION) {
+    isIncompatibleVersion(true)
+    send("showIncompatibleVersionMsg", null)
+  }
   else if (eventType == UPDATER_EVENT_ERROR) {
     let errText = evt?.error ?? UPDATER_ERROR
     let { isStopped = false } = evt
