@@ -26,7 +26,7 @@ let lbLastPage = Computed(function() {
     return -1
   let { total = 0 } = curLbData.value.findvalue(@(val) "$" in val)?["$"]
   let lastPage = total > 0 ? (min(total, MAX_PAGE_PLACE) - 1) / lbPageRows : lbPage.value
-  return max(lastPage, lbMyPage.value)
+  return lastPage
 })
 
 let requestDataInternal = keepref(Computed(function() {

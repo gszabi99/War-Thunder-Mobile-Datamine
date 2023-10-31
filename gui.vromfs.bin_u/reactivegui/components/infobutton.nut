@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { showTooltip, hideTooltip } = require("%rGui/tooltip.nut")
+let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
 let patternSize = hdpxi(110)
 let pattern = {
@@ -119,21 +119,11 @@ let function infoTooltipButton(contentCtor, tooltipOvr = {}) {
     watch = stateFlags
     behavior = Behaviors.Button
     xmbNode = {}
-    function onElemState(sf) {
-      let hasHint = (stateFlags.value & S_ACTIVE) != 0
-      let needHint =  (sf & S_ACTIVE) != 0
-      stateFlags(sf)
-      if (hasHint == needHint)
-        return
-      if (needHint)
-        showTooltip(gui_scene.getCompAABBbyKey(key),
-          {
-            content = contentCtor(),
-            flow = FLOW_HORIZONTAL
-          }.__update(tooltipOvr))
-      else
-        hideTooltip()
-    }
+    onElemState = withTooltip(stateFlags, key, @() {
+        content = contentCtor(),
+        flow = FLOW_HORIZONTAL
+      }.__update(tooltipOvr))
+    onDetach = tooltipDetach(stateFlags)
     fillColor = 0
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER

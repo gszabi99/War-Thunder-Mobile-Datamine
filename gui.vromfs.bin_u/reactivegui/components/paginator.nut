@@ -100,7 +100,8 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1)) function() {
 
   let cur = curPage.value
   let my = myPage.value
-  let last = lastPage.value >= 0 ? lastPage.value : max(cur, my, 1) + 1
+  let last = lastPage.value >= 0 ? lastPage.value : max(cur, 1) + 1
+  let isMyPageListed = my <= last
 
   let children = [cur > 0 ? prevBtn(@() curPage(cur - 1)) : emptyBtnPlace]
   for (local i = 0; i <= last; i++) {
@@ -115,7 +116,7 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1)) function() {
       children.append(mkPage(i + 1, onClick, my == i ? localPlayerColor : defPageColor))
     else {
       children.append(dots)
-      if (i < my && (my < cur || i > cur))
+      if (isMyPageListed && i < my && (my < cur || i > cur))
         i = my - 1
       else if (i < cur)
         i = cur - 2

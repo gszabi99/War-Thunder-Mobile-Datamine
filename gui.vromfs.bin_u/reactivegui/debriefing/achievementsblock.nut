@@ -3,7 +3,7 @@ let { mkStreakIcon, mkStreakWithMultiplier, prepareStreaksArray, getUnlockLocTex
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { WP } = require("%appGlobals/currenciesState.nut")
 let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
-let { withTooltip, hideTooltip } = require("%rGui/tooltip.nut")
+let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 
 let gradientWidth = sw(100)
@@ -64,7 +64,7 @@ let function mkInfoButton(val) {
     size = [itemSize, itemSize]
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     children = mkStreakWithMultiplier(id, completed, itemSize, val?.stage)
-    onDetach = @() hideTooltip()
+    onDetach = tooltipDetach(stateFlags)
     onElemState = withTooltip(stateFlags, key, @() {
       content = {
         flow = FLOW_VERTICAL

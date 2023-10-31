@@ -37,6 +37,10 @@ let eventSeasonName = Computed(function() {
 })
 let isEventActive = Computed(@() unlockTables.value?.season == true)
 
+let miniEventSeasonName = loc("events/name/special")
+let miniEventEndsAt = Computed(@() userstatStats.value?.stats.mini_event_season["$endsAt"] ?? 0)
+let isMiniEventActive = Computed(@() unlockTables.value?.mini_event_season == true)
+
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
 let lootboxesAvailability = mkWatched(persist, LOOTBOXES_AVAILABILITY, {})
 let unseenLootboxes = Computed(@() eventLootboxesRaw.value.filter(@(_, id) id not in seenLootboxes.value?[eventSeason.value]))
@@ -178,6 +182,10 @@ return {
   eventSeason
   eventSeasonName
   isEventActive
+  isMiniEventActive
+  miniEventSeasonName,
+  miniEventEndsAt,
+
 
   unseenLootboxes
   unseenLootboxesShowOnce

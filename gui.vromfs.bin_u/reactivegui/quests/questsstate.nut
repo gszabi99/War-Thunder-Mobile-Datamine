@@ -13,6 +13,7 @@ const SEEN_QUESTS = "seenQuests"
 const COMMON_TAB = "common"
 const EVENT_TAB = "event"
 const PROMO_TAB = "promo"
+const MINI_EVENT_TAB = "miniEvent"
 
 let seenQuests = mkWatched(persist, SEEN_QUESTS, {})
 let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
@@ -55,7 +56,8 @@ let eventSections = Computed(@() eventDays.value.map(@(v) {
 let questsCfg = Computed(@() {
   [COMMON_TAB] = ["daily_quest", "weekly_quest"],
   [PROMO_TAB] = ["promo_quest"],
-  [EVENT_TAB] = eventSections.value.map(@(v) v.name)
+  [EVENT_TAB] = eventSections.value.map(@(v) v.name),
+  [MINI_EVENT_TAB] = ["mini_event"]
 })
 
 let sectionsCfg = Computed(@() {
@@ -91,6 +93,7 @@ let isCurSectionInactive = Computed(@() !unlockTables.value?[curSectionId.value]
   && questsCfg.value?[EVENT_TAB].findindex(@(v) v == curSectionId.value) != null)
 
 let progressUnlock = Computed(@() activeUnlocks.value.findvalue(@(unlock) "event_progress" in unlock?.meta))
+let miniEventProgressUnlock = Computed(@() activeUnlocks.value.findvalue(@(unlock) "mini_event" in unlock?.meta))
 
 let function saveSeenQuests(ids) {
   seenQuests.mutate(function(v) {
@@ -176,8 +179,10 @@ return {
   eventUnlocksByDays
   inactiveEventUnlocks
   progressUnlock
+  miniEventProgressUnlock
 
   COMMON_TAB
   EVENT_TAB
+  MINI_EVENT_TAB
   PROMO_TAB
 }

@@ -125,6 +125,8 @@ let withTooltipImpl = @(stateFlags, showFunc) function(sf) {
     hideTooltip()
 }
 
+let tooltipDetach = @(stateFlags) @() (stateFlags.value & S_ACTIVE) != 0 ? hideTooltip() : null
+
 let withHoldTooltip = @(stateFlags, key, tooltipCtor)
   withTooltipImpl(stateFlags, @() showDelayedTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor()))
 
@@ -185,6 +187,7 @@ return {
   hideTooltip
   withHoldTooltip
   withTooltip
+  tooltipDetach
 
   tooltipBg
   mkTooltipText

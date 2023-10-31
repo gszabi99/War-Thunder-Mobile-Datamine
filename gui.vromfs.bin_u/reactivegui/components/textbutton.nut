@@ -5,7 +5,7 @@ let { isGamepad } = require("%rGui/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { btnA } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
-let { withHoldTooltip } = require("%rGui/tooltip.nut")
+let { withHoldTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
 
 let buttonsHGap = hdpx(64)
@@ -145,6 +145,7 @@ let function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
     behavior = Behaviors.Button
     onElemState = tooltipCtor == null ? @(v) stateFlags(v)
       : withHoldTooltip(stateFlags, key, tooltipCtor)
+    onDetach = tooltipDetach(stateFlags)
     xmbNode = {}
     hotkeys
     sound = {

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { withHoldTooltip } = require("%rGui/tooltip.nut")
+let { withHoldTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
 let size = evenPx(70)
 let imgSize = evenPx(54)
@@ -35,6 +35,7 @@ let function tuningBtn(image, onClick, description, ovr = {}) {
       flow = FLOW_VERTICAL
       valign = ALIGN_BOTTOM
     })
+    onDetach = tooltipDetach(stateFlags)
     behavior = Behaviors.Button
     onClick
     sound = { click  = "click" }

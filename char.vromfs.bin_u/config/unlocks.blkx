@@ -50,7 +50,7 @@
         "mulArcade": 1,
         "mulRealistic": 2,
         "mulHardcore": 2,
-        "maxVal": 5,
+        "maxVal": 6,
         "bestId": "trophy_near_tankman",
         "isShip": false,
         "condition": [
@@ -72,7 +72,7 @@
       "isAfterFlight": true,
       "mode": {
         "type": "killedPlayersBest",
-        "maxVal": 3,
+        "maxVal": 4,
         "bestId": "trophy_near_survivor",
         "includeBots": true,
         "noDeaths": true,
@@ -166,7 +166,7 @@
         "mulArcade": 1,
         "mulRealistic": 2,
         "mulHardcore": 2,
-        "minVal": 5,
+        "minVal": 7,
         "bestId": "heroic_tankman",
         "isShip": false,
         "condition": [
@@ -214,7 +214,7 @@
       "isAfterFlight": true,
       "mode": {
         "type": "killedPlayersBest",
-        "minVal": 3,
+        "minVal": 5,
         "bestId": "heroic_survivor",
         "includeBots": true,
         "noDeaths": true,

@@ -55,8 +55,8 @@
     0.1,
     3.0
   ],
-  "weather": "hangar_weather",
-  "hqWeather": "hangar_weather",
+  "weather": "hangar_halloween_weather",
+  "hqWeather": "hangar_halloween_weather",
   "level": "levels/avg_abandoned_factory.bin",
   "defCameraTime": [
     5.0,
@@ -107,7 +107,8 @@
   "verticalCameraShiftShip": 0.1,
   "verticalCameraShiftTank": 0.3,
   "countDecalsAtUnitInHangar": 4,
-  "hangarMission": "gameData/scenes/hangar_field_mission_wtm.blk",
+  "forceMusic": "helloween",
+  "hangarMission": "gameData/scenes/hangar_field_hallowen_mission_wtm.blk",
   "hangarSoundEngineMult": 0.4,
   "hangarSoundMult": 0.15,
   "buoyUnitName": "anchor_buoy",
@@ -263,7 +264,7 @@
     }
   ],
   "env": {
-    "env": "14.5",
+    "env": "00.01",
     "weight": 1.0,
     "compatibilityWeight": 1.0
   },
