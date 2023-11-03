@@ -58,10 +58,12 @@ let function sendAll() {
   }
 
   nextCanSendMsec(max(nextCanSendMsec.value, get_time_msec() + MIN_TIME_BETWEEN_MSEC))
+
+  let token = getPlayerToken()
   let headers = {
-    action = "cln_bq_put_batch_json"
+    action = token == "" ? "noa_bigquery_client_noauth" : "cln_bq_put_batch_json"
     appid  = APP_ID
-    token  = getPlayerToken()
+    token
     withAppid = true
     withCircuit = true
   }

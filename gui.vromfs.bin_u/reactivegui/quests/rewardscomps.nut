@@ -8,6 +8,8 @@ let { openRewardsList } = require("questsState.nut")
 let { mkGlare, defGlareSize } = require("%rGui/components/glare.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
+let { isSingleRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 
 let rStyleDefault = REWARD_STYLE_SMALL
@@ -122,25 +124,30 @@ let rewardProgressBarCtor = @(r, isUnlocked, claimReward, isRewardInProgress) {
   ]
 }
 
-let mkQuestRewardPlate = @(r, startIdx, isReceived = false, rStyle = rStyleDefault) {
+let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyleDefault) {
   children = [
     mkRewardPlate(r, rStyle, {
       key = {}
       animations = opacityAnims(aTimeInfoItem, REWARD_INTERVAL * (startIdx + 1))
-        .append(r.rType == "stat" && !isReceived ? statsAnimation : null)
+        .append(r.rType == "stat" && !isQuestFinished ? statsAnimation : null)
     })
-    isReceived ? mkRewardReceivedMark(REWARD_STYLE_SMALL) : null
+    @() {
+      watch = servProfile
+      children = isQuestFinished || isSingleRewardEmpty(r, servProfile.value)
+          ? mkRewardReceivedMark(REWARD_STYLE_SMALL)
+        : null
+    }
   ]
 }
 
-let function mkRewardsPreview(rewards, isReceived) {
+let function mkRewardsPreview(rewards, isQuestFinished) {
   local rewardsSize = 0
   local res = []
   foreach (idx, r in rewards) {
     rewardsSize += r.slots
     if (rewardsSize > REWARDS_PREVIEW_SLOTS || (rewardsSize == REWARDS_PREVIEW_SLOTS && rewards.len() > idx + 1))
       return res.append(mkRewardsListBtn(rewards))
-    res.append(mkQuestRewardPlate(r, idx, isReceived))
+    res.append(mkQuestRewardPlate(r, idx, isQuestFinished))
   }
   return res
 }

@@ -201,6 +201,12 @@ let isEmptyByField = {
   unitUpgrades = @(value, profile) value.findvalue(@(u) !profile?.units[u].isUpgraded) == null
 }
 
+let isEmptyByRType = {
+  decorator = @(value, profile) value in profile?.decorators
+  unit = @(value, profile) value in profile?.units
+  unitUpgrade = @(value, profile) profile?.units[value].isUpgraded
+}
+
 let isEmptyByType = {
   table = @(value) value.len() == 0
   array = @(value) value.len() == 0
@@ -223,6 +229,11 @@ let function isRewardEmpty(reward, profile) {
     }
   }
   return res
+}
+
+let function isSingleRewardEmpty(reward, profile) {
+  let { id, rType } = reward
+  return isEmptyByRType?[rType](id, profile) ?? false
 }
 
 let function isRewardReceived(lootbox, id, reward, profile) {
@@ -291,6 +302,7 @@ return {
   getLootboxRewardsViewInfo
   receivedGoodsToViewInfo
   isRewardEmpty
+  isSingleRewardEmpty
   isRewardReceived
   fillRewardsCounts
 }

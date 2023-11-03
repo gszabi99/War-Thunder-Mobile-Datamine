@@ -19,7 +19,7 @@ let { errorMsgBox } = require("%scripts/utils/errorMsgBox.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { openUrl } = require("%scripts/url.nut")
 let { send_counter } = require("statsd")
-let { sendErrorBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { sendErrorBqEvent, sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getLocTextForLang } = require("dagor.localize")
 
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage
@@ -44,6 +44,7 @@ let mkInterruptWithRecoveryMsg = @(errCode) function(_loginType) {
 let proceedAuthByResult = {
   [YU2_OK] = function(loginType) {
     send_counter("sq.app.stage", 1, { stage = "auth_done" })
+    sendLoadingStageBqEvent("auth_done")
     curLoginType(loginType)
     authTags(get_player_tags())
     finalizeStage()
@@ -212,6 +213,7 @@ let loginByType = {
 
 let function start() {
   send_counter("sq.app.stage", 1, { stage = "auth_start" })
+  sendLoadingStageBqEvent("auth_start")
 
   let { loginType } = authState.value
   let loginStart = loginByType?[loginType]

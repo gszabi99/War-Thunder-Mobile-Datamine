@@ -115,10 +115,15 @@ require("%sqstd/regScriptProfiler.nut")("dagui")
 require("bqQueue.nut")
   // end of Independent Modules
 
+let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+
 end_es_loading()
 
-if (!isInReloading())
+if (!isInReloading()) {
+  sendLoadingStageBqEvent("main_loaded")
+
   ::run_reactive_gui()
+}
 
 //------- ^^^ files before login ^^^ ----------
 

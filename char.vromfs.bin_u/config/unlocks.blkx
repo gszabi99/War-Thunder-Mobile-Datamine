@@ -1074,7 +1074,6 @@
         0.0,
         0.0
       ],
-      "useStageWp": true,
       "stage": {
         "param": 2,
         "amount_exp": 0,

@@ -8,7 +8,7 @@ let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonCommon, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -16,6 +16,11 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { choosenMark } = require("decoratorsPkg.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { CS_COMMON, CS_INCREASED_ICON } = require("%rGui/components/currencyStyles.nut")
+let purchaseDecorator = require("purchaseDecorator.nut")
+let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 
 let gap = hdpx(15)
 let avatarSize = hdpxi(200)
@@ -24,6 +29,10 @@ let maxDecInRow = 9
 let columns = min(contentWidthFull / (gap + avatarSize), maxDecInRow)
 let selectedAvatar = Watched(chosenAvatar.value?.name)
 
+let buySelectedAvatar = @()
+  purchaseDecorator(selectedAvatar.value, loc("decorator/avatar"),
+    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedAvatar.value))
+
 let function applySelectedAvatar() {
   if (selectedAvatar.value == null) {
     unset_current_decorator("avatar")
@@ -31,6 +40,10 @@ let function applySelectedAvatar() {
   }
   if (selectedAvatar.value in availAvatars.value) {
     set_current_decorator(selectedAvatar.value)
+    return
+  }
+  if ((allAvatars.value?[selectedAvatar.value]?.price.price ?? 0) > 0) {
+    buySelectedAvatar()
     return
   }
 
@@ -44,6 +57,10 @@ let header = {
 
 let function avatarBtn(item) {
   let name = item[0]
+  let price = item?[1].price ?? {
+    price = 0
+    currencyId = ""
+  }
   let stateFlags = Watched(0)
   let isChoosen = Computed(@() chosenAvatar.value?.name == name)
   let isSelected = Computed(@() selectedAvatar.value == name)
@@ -105,29 +122,47 @@ let function avatarBtn(item) {
               }
           : null
       }
+      price.price <= 0 || isAvailable.value ? null
+        : {
+            margin = hdpx(5)
+            hplace = ALIGN_LEFT
+            vplace = ALIGN_BOTTOM
+            children = mkCurrencyComp(price.price, price.currencyId, CS_COMMON)
+          }
     ]
   }
 }
 
-let footer = @() {
-  watch = [selectedAvatar, chosenAvatar]
-  size = [flex(), defButtonHeight]
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(50)
-  children = selectedAvatar.value == chosenAvatar.value?.name
-      ? null
-    : selectedAvatar.value in availAvatars.value || selectedAvatar.value == null
-      ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedAvatar,
-        { hotkeys = ["^J:X | Enter"] })
-    : [
-      textButtonCommon(loc("mainmenu/btnEquip"), applySelectedAvatar)
-      {
-        rendObj = ROBJ_TEXT
-        vplace = ALIGN_CENTER
-        text = getReceiveReason(selectedAvatar.value) ?? loc("decor/avatarIsNotOpen")
-      }.__update(fontSmallAccented)
-    ]
+let function footer() {
+  let { price = null } = allAvatars.value?[selectedAvatar.value]
+  let canBuy = (price?.price ?? 0) > 0
+  let canEquip = selectedAvatar.value in availAvatars.value || selectedAvatar.value == null
+  let isCurrent = selectedAvatar.value == chosenAvatar.value?.name
+
+  return {
+    watch = [selectedAvatar, chosenAvatar]
+    size = [flex(), defButtonHeight]
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(50)
+    children = isCurrent ? null
+      : canEquip
+        ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedAvatar,
+          { hotkeys = ["^J:X | Enter"] })
+      : canBuy
+        ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
+            mkCurrencyComp(price.price, price.currencyId, CS_INCREASED_ICON),
+            buySelectedAvatar)
+      : [
+          textButtonCommon(loc("mainmenu/btnEquip"), applySelectedAvatar)
+          {
+            rendObj = ROBJ_TEXT
+            vplace = ALIGN_CENTER
+            text = getReceiveReason(selectedAvatar.value) ?? loc("decor/avatarIsNotOpen")
+          }.__update(fontSmallAccented)
+        ]
+  }
 }
+
 
 let avatarsList = @() {
   watch = [availAvatars, allAvatars, isShowAllDecorators]
