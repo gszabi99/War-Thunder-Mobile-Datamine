@@ -65,7 +65,7 @@
     "ricochetEffect": "hit_106_132mm_metal_ap",
     "waterCollisionEffect": "hit_106_132mm_water",
     "explosionPatchRadius": 3.5,
-    "smokeEffect": "hydra_smoke",
+    "smokeEffect": "hydra_smoke_cruisemissile",
     "maxDistance": 10000.0,
     "minDistance": 3000.0,
     "spawnExplosionWreckage": false,

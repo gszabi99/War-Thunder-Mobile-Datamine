@@ -1183,8 +1183,8 @@
         }
       },
       {
-        "trigger": "gunner1",
-        "triggerGroup": "primary",
+        "trigger": "gunner2",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/305mm_54_b_50_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_51",
         "flash": "emtr_gun_flame_51",
@@ -1216,10 +1216,10 @@
         "turretLongSalvo": true,
         "salvoRndK": 0.15,
         "turret": {
-          "head": "main_caliber_turret_02",
-          "gun": "main_caliber_gun_02",
-          "barrel": "gun_barrel_02",
-          "gunnerDm": "main_caliber_turret_02_dm"
+          "head": "main_caliber_turret_03",
+          "gun": "main_caliber_gun_03",
+          "barrel": "gun_barrel_03",
+          "gunnerDm": "main_caliber_turret_03_dm"
         },
         "limits": {
           "yaw": [
@@ -3201,8 +3201,8 @@
               }
             },
             {
-              "trigger": "gunner1",
-              "triggerGroup": "primary",
+              "trigger": "gunner2",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/305mm_54_b_50_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_51",
               "flash": "emtr_gun_flame_51",
@@ -3234,10 +3234,10 @@
               "turretLongSalvo": true,
               "salvoRndK": 0.15,
               "turret": {
-                "head": "main_caliber_turret_02",
-                "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02",
-                "gunnerDm": "main_caliber_turret_02_dm"
+                "head": "main_caliber_turret_03",
+                "gun": "main_caliber_gun_03",
+                "barrel": "gun_barrel_03",
+                "gunnerDm": "main_caliber_turret_03_dm"
               },
               "limits": {
                 "yaw": [
@@ -5221,8 +5221,8 @@
               }
             },
             {
-              "trigger": "gunner1",
-              "triggerGroup": "primary",
+              "trigger": "gunner2",
+              "triggerGroup": "secondary",
               "blk": "gameData/Weapons/navalModels_weapons/305mm_54_b_50_naval_user_cannon.blk",
               "emitter": "emtr_gun_flame_51",
               "flash": "emtr_gun_flame_51",
@@ -5254,10 +5254,10 @@
               "turretLongSalvo": true,
               "salvoRndK": 0.15,
               "turret": {
-                "head": "main_caliber_turret_02",
-                "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02",
-                "gunnerDm": "main_caliber_turret_02_dm"
+                "head": "main_caliber_turret_03",
+                "gun": "main_caliber_gun_03",
+                "barrel": "gun_barrel_03",
+                "gunnerDm": "main_caliber_turret_03_dm"
               },
               "limits": {
                 "yaw": [

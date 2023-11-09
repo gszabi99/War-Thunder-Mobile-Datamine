@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
+let { round } =  require("math")
 let { doesLocTextExist } = require("dagor.localize")
-let { lerpClamped } = require("%sqstd/math.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
@@ -10,9 +9,12 @@ let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { gradRadial } = require("%rGui/style/gradients.nut")
 let { startSound, stopSound } = require("sound_wt")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
+let mkAnimatedCountText = require("mkAnimatedCountText.nut")
 
 let statIncreaseAnimTimeMsec = 500
 let iconSize = hdpxi(30)
+let iconInlineSize = fontTiny.fontSize
+let iconInlineGap = round(iconInlineSize * 0.4).tointeger()
 let endHeaderLineAnim = 1.0
 let offsetTime = 0.1
 
@@ -95,53 +97,29 @@ let function setCounterActive(uid, isActive) {
     })
 }
 
-let function mkAnimatedCount(uid, value, startTime, ovr = {}) {
-  let finalText = decimalFormat(value)
-  local needReset = false
-  local startTimeMs = 0
-  local endTimeMs = 0
-  let function reinitTime(nowMs) {
-    startTimeMs = nowMs + (1000 * startTime).tointeger()
-    endTimeMs = startTimeMs + statIncreaseAnimTimeMsec
-  }
-  reinitTime(get_time_msec())
-  return {
-    key = uid
+let animCountBaseComp = {
     size = flex()
     rendObj = ROBJ_TEXT
     halign = ALIGN_RIGHT
     color = 0xFFFFFFFF
-    text = 0
-    behavior = Behaviors.RtPropUpdate
-    function onAttach() {
-      let curTime = get_time_msec()
-      if (curTime >= endTimeMs) {
-        reinitTime(curTime)
-        needReset = true
-      }
-    }
-    onDetach = @() setCounterActive(uid, false)
-    function update() {
-      let curTime = get_time_msec()
-      if (curTime < startTimeMs) {
-        if (!needReset)
-          return null
-        needReset = false
-        return { text = 0 }
-      }
-      let text = curTime >= endTimeMs ? finalText
-        : decimalFormat(lerpClamped(startTimeMs, endTimeMs, 0, value, curTime).tointeger())
-      setCounterActive(uid, text != finalText)
-      return { text }
-    }
-  }.__update(fontTiny, ovr)
-}
+}.__update(fontTiny)
+
+let mkAnimatedCount = @(uid, value, startTime, baseComp = animCountBaseComp)
+  mkAnimatedCountText(uid, value, startTime, statIncreaseAnimTimeMsec, setCounterActive, baseComp)
 
 let mkText = @(text) {
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF
   text
 }.__update(fontTiny)
+
+let mkInlineIcon = @(children) {
+  size = [iconInlineSize, iconInlineSize]
+  margin = [0, 0, 0, iconInlineGap]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children
+}
 
 let mkStat = @(uid, text, value, startTime, valueCtor) {
   size = [flex(), SIZE_TO_CONTENT]
@@ -158,13 +136,13 @@ let mkStat = @(uid, text, value, startTime, valueCtor) {
   ]
 }
 
-let function mkItemsUsedRows(itemsUsed, startTime) {
+let function mkItemsUsedRows(itemsUsed, delay) {
   let items = []
   foreach (id, data in itemsUsed)
     items.append(data.__merge({ id, order = orderByItems?[id] ?? orderByItems.len() }))
   items.sort(@(a, b) a.order <=> b.order)
   return items.map(function(item, i) {
-    let start = startTime + (offsetTime * i)
+    let startTime = delay + (offsetTime * i)
     let { id, count = 0, used = 0 } = item
     local locId = $"debriefing/spent/{id}"
     if (!doesLocTextExist(locId))
@@ -172,19 +150,19 @@ let function mkItemsUsedRows(itemsUsed, startTime) {
     let usedWidth = max(calc_str_box(decimalFormat(used), fontTiny)[0],
                         calc_str_box(decimalFormat(0),    fontTiny)[0])
     return {
-      size = [hdpx(770), SIZE_TO_CONTENT]
+      size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       children =
         mkTextRow(loc(locId, { count = used }),
           mkText,
           {
-            ["{countAnim}"] = mkAnimatedCount(id, used, start,//warning disable: -forgot-subst
+            ["{countAnim}"] = mkAnimatedCount(id, used, startTime, //warning disable: -forgot-subst
               { size = [usedWidth, SIZE_TO_CONTENT], halign = ALIGN_CENTER })
           })
         .append(
-          mkAnimatedCount($"count_{id}", count, start)
-          mkCurrencyImage(id, iconSize, {margin = [0, 0, 0, hdpx(5)]})
+          mkAnimatedCount($"count_{id}", count, startTime)
+          mkInlineIcon(mkCurrencyImage(id, iconSize))
         )
     }
   })
@@ -222,7 +200,7 @@ let function mkDebriefingStats(data, startAnimTime) {
     return val == null ? null : mkStat(uid, loc(s.locId), val, startAnimTime + (offsetTime * idx++), s?.valueCtor)
   }).filter(@(v) v != null)
 
-  let children = statsContent.extend(mkItemsUsedRows(itemsUsed, startAnimTime + (statsContent.len() * idx)))
+  let children = statsContent.extend(mkItemsUsedRows(itemsUsed, startAnimTime + (statsContent.len() * offsetTime)))
 
   return children.len() == 0
     ? {

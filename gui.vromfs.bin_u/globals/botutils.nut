@@ -1,4 +1,3 @@
-
 let { abs } = require("%sqstd/math.nut")
 
 let genBotCommonStats = @(name, unitName, unitCfg, defLevel) {

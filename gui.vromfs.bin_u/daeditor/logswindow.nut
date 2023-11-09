@@ -10,7 +10,7 @@ let closeButton = require("components/closeButton.nut")
 let mkWindow = require("components/window.nut")
 let scrollbar = require("%daeditor/components/scrollbar.nut")
 let dagorDebug = require("dagor.debug")
-let {copy_to_clipboard} = require("dagor.clipboard")
+let {set_clipboard_text} = require("dagor.clipboard")
 
 let scrollHandler = ScrollHandler()
 let logExpandedTexScroll = ScrollHandler()
@@ -54,7 +54,7 @@ let function scrollBySelection() {
 let function selectedLogCopy() {
   if (selectedLogIndex.value == -1)
     return
-  copy_to_clipboard(logList.value[selectedLogIndex.value])
+  set_clipboard_text(logList.value[selectedLogIndex.value])
 }
 
 let function statusLine() {

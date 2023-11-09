@@ -620,15 +620,15 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 10700000.0,
+      "Empty": 11700000.0,
       "momentOfInertia": [
         159.0,
-        855.0,
-        900.0
+        755.0,
+        100.0
       ],
       "CenterOfGravity": [
-        -1.0,
-        -0.8,
+        0.0,
+        0.0,
         0.0
       ]
     },
@@ -755,7 +755,7 @@
         "shotFreq": 0.1,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
-        "bullets": 80,
+        "bullets": 320,
         "turretLongSalvo": [
           true,
           true
@@ -858,7 +858,7 @@
         "shotFreq": 0.1,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
-        "bullets": 80,
+        "bullets": 320,
         "turretLongSalvo": [
           true,
           true
@@ -961,7 +961,7 @@
         "shotFreq": 0.1,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
-        "bullets": 80,
+        "bullets": 320,
         "turretLongSalvo": [
           true,
           true
@@ -1064,7 +1064,7 @@
         "shotFreq": 0.1,
         "speedYaw": 30.0,
         "speedPitch": 40.0,
-        "bullets": 80,
+        "bullets": 320,
         "turretLongSalvo": [
           true,
           true
@@ -1167,7 +1167,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1252,7 +1252,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1337,7 +1337,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1422,7 +1422,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1507,7 +1507,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1572,7 +1572,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1637,7 +1637,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1702,7 +1702,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1767,7 +1767,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1852,7 +1852,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -1937,7 +1937,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -2022,7 +2022,7 @@
         "shotFreq": 0.5,
         "speedYaw": 80.0,
         "speedPitch": 80.0,
-        "bullets": 150,
+        "bullets": 600,
         "LongSalvo": true,
         "salvoRndK": [
           0.15,
@@ -2439,7 +2439,7 @@
               "shotFreq": 0.1,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
-              "bullets": 80,
+              "bullets": 320,
               "turretLongSalvo": [
                 true,
                 true
@@ -2542,7 +2542,7 @@
               "shotFreq": 0.1,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
-              "bullets": 80,
+              "bullets": 320,
               "turretLongSalvo": [
                 true,
                 true
@@ -2645,7 +2645,7 @@
               "shotFreq": 0.1,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
-              "bullets": 80,
+              "bullets": 320,
               "turretLongSalvo": [
                 true,
                 true
@@ -2748,7 +2748,7 @@
               "shotFreq": 0.1,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
-              "bullets": 80,
+              "bullets": 320,
               "turretLongSalvo": [
                 true,
                 true
@@ -2851,7 +2851,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -2936,7 +2936,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3021,7 +3021,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3106,7 +3106,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3191,7 +3191,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3256,7 +3256,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3321,7 +3321,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3386,7 +3386,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3451,7 +3451,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3536,7 +3536,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3621,7 +3621,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -3706,7 +3706,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -4124,7 +4124,7 @@
               "shotFreq": 0.1,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
-              "bullets": 80,
+              "bullets": 320,
               "turretLongSalvo": [
                 true,
                 true
@@ -4227,7 +4227,7 @@
               "shotFreq": 0.1,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
-              "bullets": 80,
+              "bullets": 320,
               "turretLongSalvo": [
                 true,
                 true
@@ -4330,7 +4330,7 @@
               "shotFreq": 0.1,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
-              "bullets": 80,
+              "bullets": 320,
               "turretLongSalvo": [
                 true,
                 true
@@ -4433,7 +4433,7 @@
               "shotFreq": 0.1,
               "speedYaw": 30.0,
               "speedPitch": 40.0,
-              "bullets": 80,
+              "bullets": 320,
               "turretLongSalvo": [
                 true,
                 true
@@ -4536,7 +4536,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -4621,7 +4621,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -4706,7 +4706,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -4791,7 +4791,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -4876,7 +4876,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -4941,7 +4941,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -5006,7 +5006,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -5071,7 +5071,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -5136,7 +5136,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -5221,7 +5221,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -5306,7 +5306,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,
@@ -5391,7 +5391,7 @@
               "shotFreq": 0.5,
               "speedYaw": 80.0,
               "speedPitch": 80.0,
-              "bullets": 150,
+              "bullets": 600,
               "LongSalvo": true,
               "salvoRndK": [
                 0.15,

@@ -1,3 +1,4 @@
+from "math" import min, max
 from "daRg" import *
 
 let function getTextCompFullWidthPx(textOrTextareaComp) {

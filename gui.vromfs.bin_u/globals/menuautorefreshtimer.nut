@@ -1,4 +1,4 @@
-
+from "math" import max
 let { get_time_msec } = require("dagor.time")
 let { setTimeout } = require("dagor.workcycle")
 let { kwarg } = require("%sqstd/functools.nut")

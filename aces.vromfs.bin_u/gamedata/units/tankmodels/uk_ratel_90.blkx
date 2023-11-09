@@ -70,7 +70,7 @@
         0.05
       ],
       [
-        60.0,
+        45.0,
         0.5
       ],
       [
@@ -814,6 +814,16 @@
           "ammo_body_58_dm",
           "ammo_body_59_dm",
           "ammo_body_60_dm",
+          "ammo_body_61_dm",
+          "ammo_body_62_dm",
+          "ammo_body_63_dm",
+          "ammo_body_64_dm",
+          "ammo_body_65_dm",
+          "ammo_body_66_dm",
+          "ammo_body_67_dm",
+          "ammo_body_68_dm",
+          "ammo_body_69_dm",
+          "ammo_body_70_dm",
           "ammo_body_l_01_dm",
           "ammo_body_l_02_dm",
           "ammo_body_l_03_dm",
@@ -834,6 +844,10 @@
           "ammo_body_l_18_dm",
           "ammo_body_l_19_dm",
           "ammo_body_l_20_dm",
+          "ammo_body_l_21_dm",
+          "ammo_body_l_22_dm",
+          "ammo_body_l_23_dm",
+          "ammo_body_l_24_dm",
           "ammo_body_r_01_dm",
           "ammo_body_r_02_dm",
           "ammo_body_r_03_dm",
@@ -854,6 +868,10 @@
           "ammo_body_r_18_dm",
           "ammo_body_r_19_dm",
           "ammo_body_r_20_dm",
+          "ammo_body_r_21_dm",
+          "ammo_body_r_22_dm",
+          "ammo_body_r_23_dm",
+          "ammo_body_r_24_dm",
           "ammo_turret_dm",
           "ammo_turret_01_dm",
           "ammo_turret_02_dm",
@@ -1059,7 +1077,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1960,9 +1982,7 @@
         "wheel_r_02": true,
         "wheel_l_02": true,
         "wheel_r_03": true,
-        "wheel_l_03": true,
-        "wheel_r_04": true,
-        "wheel_l_04": true
+        "wheel_l_03": true
       },
       "wheels": {
         "wheel_r_01": true,
@@ -1970,9 +1990,7 @@
         "wheel_r_02": true,
         "wheel_l_02": true,
         "wheel_r_03": true,
-        "wheel_l_03": true,
-        "wheel_r_04": true,
-        "wheel_l_04": true
+        "wheel_l_03": true
       },
       "wheelsDamageWeight": {
         "wheel_l_01": 0.2,
@@ -1980,9 +1998,7 @@
         "wheel_l_02": 0.2,
         "wheel_r_02": 0.2,
         "wheel_l_03": 0.2,
-        "wheel_r_03": 0.2,
-        "wheel_l_04": 0.2,
-        "wheel_r_04": 0.2
+        "wheel_r_03": 0.2
       }
     }
   },

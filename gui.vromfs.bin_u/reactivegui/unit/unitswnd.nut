@@ -12,8 +12,7 @@ let { playerLevelInfo, allUnitsCfg, myUnits, curUnit } = require("%appGlobals/pS
 let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { hangarUnitName, loadedHangarUnitName, setHangarUnit } = require("hangarUnit.nut")
 let { sortUnits, getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
-let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, rankToReqPlayerLvl,
-  setCurrentUnit, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
+let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, setCurrentUnit, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
 } = require("%appGlobals/unitsState.nut")
 let { unitInProgress, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
@@ -85,8 +84,8 @@ let availableUnitsList = Computed(@() allUnitsCfg.value
   .sort(sortUnits))
 
 let curSelectedUnit = Watched(null)
-let curSelectedUnitLevel = Computed(@() rankToReqPlayerLvl.value?[allUnitsCfg.value
-  .findvalue(@(u) u.name == curSelectedUnit.value)?.rank] ?? 0)
+let curSelectedUnitLevel = Computed(@()
+  allUnitsCfg.value.findvalue(@(u) u.name == curSelectedUnit.value)?.rank ?? 0)
 let curUnitName = Computed(@() curUnit.value?.name)
 
 curCampaign.subscribe(@(_) curSelectedUnit(curUnitName.value))
@@ -399,7 +398,6 @@ let function mkPlatoonPlate(unit) {
   let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value) : null)
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
-  let campaignLevel = Computed(@() rankToReqPlayerLvl.value?[unit.rank])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
   return @() {
     watch = [isSelected, stateFlags, justUnlockedDelay, price]
@@ -424,7 +422,7 @@ let function mkPlatoonPlate(unit) {
           mkUnitTexts(unit, loc(getUnitLocId(unit)), justUnlockedDelay.value)
           unit.mRank <= 0
             ? null
-            : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value, campaignLevel.value)
+            : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)
           price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkPlatoonPlateFrame(isEquipped, isLocked, justUnlockedDelay.value)
           mkPlatoonEquippedIcon(unit, isEquipped, justUnlockedDelay.value)
@@ -454,7 +452,6 @@ let function mkUnitPlate(unit) {
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value) : null)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
-  let campaignLevel = Computed(@() rankToReqPlayerLvl.value?[unit.rank])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
   return @() {
     watch = [isSelected, stateFlags, justUnlockedDelay, price]
@@ -482,7 +479,7 @@ let function mkUnitPlate(unit) {
           mkUnitTexts(unit, loc(getUnitLocId(unit)), justUnlockedDelay.value)
           unit.mRank <= 0
             ? null
-            : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value, campaignLevel.value)
+            : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)
           price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkUnitEquippedFrame(unit, isEquipped, justUnlockedDelay.value)
           mkPriorityUnseenMarkWatch(needShowUnseenMark, {halign = ALIGN_RIGHT})

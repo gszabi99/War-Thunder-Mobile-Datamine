@@ -44,7 +44,7 @@ ecs.register_es("maxHpToRepairTracker", {
 },
 {
   comps_track = [["meta_parts_hp_repair__maxHp", ecs.TYPE_FLOAT]],
-  comps_ro = [["meta_parts_hp_repair__speed"], ["meta_parts_hp_repair__duration"]],
+  comps_ro = [["meta_parts_hp_repair__speed", ecs.TYPE_FLOAT], ["meta_parts_hp_repair__duration", ecs.TYPE_FLOAT]],
   comps_rq = ["controlledHero"]
 })
 

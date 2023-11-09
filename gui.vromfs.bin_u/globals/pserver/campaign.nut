@@ -42,6 +42,7 @@ let campConfigs = Computed(function() {
   let campaign = curCampaign.value
   let res = clone (serverConfigs.value ?? {})
   chooseByCampaign(res, "playerLevels", campaign)
+  chooseByCampaign(res, "playerLevelsInfo", campaign)
   chooseByCampaign(res, "playerLevelRewards", campaign)
   filterByCampaign(res, "clientMissionRewards", campaign)
   filterByCampaign(res, "allUnits", campaign)

@@ -1094,6 +1094,86 @@
       "stopsBullets": false
     },
     {
+      "name": "vietnam_village_building_a",
+      "destroyedModelName": "vietnam_village_building_a_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_b",
+      "destroyedModelName": "vietnam_village_building_b_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_c",
+      "destroyedModelName": "vietnam_village_building_c_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_d",
+      "destroyedModelName": "vietnam_village_building_d_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_e",
+      "destroyedModelName": "vietnam_village_building_e_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_f_a",
+      "destroyedModelName": "vietnam_village_building_f_a_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_f_b",
+      "destroyedModelName": "vietnam_village_building_f_b_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_g",
+      "destroyedModelName": "vietnam_village_building_g_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_h",
+      "destroyedModelName": "vietnam_village_building_h_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
+      "name": "vietnam_village_building_i",
+      "destroyedModelName": "vietnam_village_building_i_destr_phobj",
+      "destructionImpulse": 100000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": true
+    },
+    {
       "name": "iceberg_chunk_1a",
       "destroyedModelName": "iceberg_chunk_1a_destr_phobj",
       "updateDist": 1000.0,
@@ -8967,6 +9047,62 @@
       "fxScale": 0.2,
       "stopsBullets": false,
       "material": "transparentBeton"
+    },
+    {
+      "name": "tree_palm_sea_a",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_palm_sea_b",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_palm_sea_c",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_palm_sea_d",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_date_palm_medium_a",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_date_palm_medium_b",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_date_palm_small_a",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
     }
   ],
   "default_building": {
@@ -21560,7 +21696,7 @@
   },
   "DamageParts": {
     "adobe_brick": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.0005,
       "armorThrough": 20.0,
@@ -21569,7 +21705,8 @@
       "cumulativeDamageMult": 0.03
     },
     "frame_house": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 1.0,
       "restrainDamage": 0.0005,
       "armorThrough": 20.0,
@@ -21578,7 +21715,7 @@
       "cumulativeDamageMult": 0.03
     },
     "frame_metal_house": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.0001,
       "armorThrough": 20.0,
@@ -21587,7 +21724,8 @@
       "cumulativeDamageMult": 0.001
     },
     "he_damaged_house": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.0001,
       "armorThrough": 100.0,
@@ -21596,7 +21734,7 @@
       "cumulativeDamageMult": 0.001
     },
     "conex_box": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
       "armorThickness": 300.0,
       "restrainDamage": 0.0001,
       "armorThrough": 20.0,
@@ -21605,7 +21743,8 @@
       "cumulativeDamageMult": 0.001
     },
     "korean_houses": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 3.0,
       "restrainDamage": 0.0005,
       "armorThrough": 20.0,
@@ -21614,7 +21753,8 @@
       "cumulativeDamageMult": 0.03
     },
     "log_house": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 10.0,
       "restrainDamage": 0.0001,
       "armorThrough": 30.0,
@@ -21623,7 +21763,7 @@
       "cumulativeDamageMult": 0.05
     },
     "stone_house": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
       "armorThickness": 10.0,
       "restrainDamage": 0.0005,
       "armorThrough": 300.0,
@@ -21632,7 +21772,7 @@
       "cumulativeDamageMult": 0.01
     },
     "wall_2_5_brick": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
       "armorThickness": 8.0,
       "restrainDamage": 0.0005,
       "armorThrough": 30.0,
@@ -21641,7 +21781,8 @@
       "cumulativeDamageMult": 0.025
     },
     "hard_shoot_objects": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 9.0,
       "restrainDamage": 0.0005,
       "armorThrough": 100.0,
@@ -21650,13 +21791,15 @@
       "cumulativeDamageMult": 0.01
     },
     "multistory_building": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 30.0,
       "restrainDamage": 0.05,
       "armorThrough": 200.0
     },
     "fabric_props": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 0.01,
       "restrainDamage": 0.02,
       "armorThrough": 5.0,
@@ -21665,7 +21808,8 @@
       "cumulativeDamageMult": 0.05
     },
     "hay_props": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 1.0,
       "restrainDamage": 0.0005,
       "armorThrough": 30.0,
@@ -21674,7 +21818,8 @@
       "cumulativeDamageMult": 0.03
     },
     "metal_explosive_props": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.005,
       "armorThrough": 30.0,
@@ -21683,7 +21828,8 @@
       "cumulativeDamageMult": 0.03
     },
     "metal_light_explosive_props": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.005,
       "armorThrough": 10.0,
@@ -21692,7 +21838,7 @@
       "cumulativeDamageMult": 0.1
     },
     "metal_props": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.0005,
       "armorThrough": 20.0,
@@ -21701,7 +21847,7 @@
       "cumulativeDamageMult": 0.02
     },
     "oil_tanks_full": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.005,
       "armorThrough": 100.0,
@@ -21710,7 +21856,7 @@
       "cumulativeDamageMult": 0.3
     },
     "tanks": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.0005,
       "armorThrough": 300.0,
@@ -21719,7 +21865,8 @@
       "cumulativeDamageMult": 0.04
     },
     "trees_large": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.0005,
       "armorThrough": 30.0,
@@ -21728,7 +21875,8 @@
       "cumulativeDamageMult": 0.4
     },
     "trees_medium": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.0005,
       "armorThrough": 15.0,
@@ -21737,7 +21885,8 @@
       "cumulativeDamageMult": 0.8
     },
     "trees_small": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.005,
       "armorThrough": 8.0,
@@ -21746,7 +21895,8 @@
       "cumulativeDamageMult": 1.0
     },
     "unshootable_objects": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 1.0,
       "restrainDamage": 0.0005,
       "armorThrough": 1.0,
@@ -21755,7 +21905,8 @@
       "cumulativeDamageMult": 1E-05
     },
     "wood_props": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.05,
       "armorThrough": 10.0,
@@ -21764,7 +21915,8 @@
       "cumulativeDamageMult": 0.05
     },
     "wood_small_props": {
-      "armorClass": "RHA_tank",
+      "riArmorClass": "RHA_tank",
+      "allowRicochet": false,
       "armorThickness": 1.0,
       "restrainDamage": 0.05,
       "armorThrough": 1.0,

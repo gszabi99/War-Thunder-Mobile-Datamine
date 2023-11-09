@@ -28,6 +28,8 @@ let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { starLevelSmall } = require("%rGui/components/starLevel.nut")
+
 
 let avatarSize       = hdpx(96)
 let profileGap       = hdpx(45)
@@ -73,11 +75,18 @@ let name =  @() textParams.__merge({
 })
 
 let levelUpReadyAnim = { prop = AnimProp.opacity, duration = 3.0, easing = CosineFull, play = true, loop = true }
+let levelUpReadyAnimsCur = [ levelUpReadyAnim.__merge({ from = 1.0, to = 0.0 }) ]
+let levelUpReadyAnimsNext = [ levelUpReadyAnim.__merge({ from = 0.0, to = 1.0 }) ]
+
+let starLevelOvr = {
+  pos = [pw(40), ph(40)]
+  transform = { rotate = -45 }
+}
 
 let function levelBlock(ovr = {}, needShowMexLevel = false) {
-  let { exp, nextLevelExp, level, isReadyForLevelUp } = playerLevelInfo.value
+  let { exp, nextLevelExp, level, isReadyForLevelUp, starLevel, isNextStarLevel, historyStarLevel
+  } = playerLevelInfo.value
   let isMaxLevel = nextLevelExp == 0 || needShowMexLevel
-  let levelNextText = isReadyForLevelUp ? (level + 1).tostring() : ""
   let needLevelUpBtn = isReadyForLevelUp
   return {
     watch = playerLevelInfo
@@ -119,26 +128,31 @@ let function levelBlock(ovr = {}, needShowMexLevel = false) {
             @() textParams.__merge({
               watch = levelStateFlags
               key = playerLevelInfo.value
-              text = level
+              text = level - starLevel
               pos = [0, isMaxLevel ? -hdpx(2) : 0]
-              animations = isReadyForLevelUp
-                ? [ levelUpReadyAnim.__merge({ from = 1.0, to = 0.0 }) ]
-                : null
+              animations = isReadyForLevelUp && !isNextStarLevel ? levelUpReadyAnimsCur : null
               transform = {
                 rotate = -45
                 scale = levelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
               }
             })
-            isReadyForLevelUp
+            isReadyForLevelUp && !isNextStarLevel
               ? textParams.__merge({
-                key = playerLevelInfo.value
-                text = levelNextText
-                opacity = 0.0
-                transform = {
-                  rotate = -45
-                }
-                animations = [ levelUpReadyAnim.__merge({ from = 0.0, to = 1.0 }) ]
-              })
+                  key = playerLevelInfo.value
+                  text = level + 1
+                  opacity = 0.0
+                  transform = {
+                    rotate = -45
+                  }
+                  animations = levelUpReadyAnimsNext
+                })
+              : null
+            starLevelSmall(max(starLevel, historyStarLevel),
+              isReadyForLevelUp && isNextStarLevel
+                ? starLevelOvr.__merge({ animations = levelUpReadyAnimsCur })
+                : starLevelOvr)
+            isReadyForLevelUp && isNextStarLevel
+              ? starLevelSmall(starLevel + 1, starLevelOvr.__merge({ animations = levelUpReadyAnimsNext }))
               : null
           ]
         }

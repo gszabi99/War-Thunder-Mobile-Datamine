@@ -7,7 +7,7 @@ let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
+let { isAuthorized, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
@@ -41,7 +41,8 @@ let { //defaults only to allow test this module on PC
   },
   startPurchaseAsync = @(_) setTimeout(1.0,
     @() send("ios.billing.onPurchaseCallback", { status = AS_OK, data = "receipt_or_error" })),
-  confirmPurchase = @(_) setTimeout(1.0, @() send("ios.billing.onConfirmPurchaseCallback",{status = true}))
+  confirmPurchase = @(_) setTimeout(1.0, @() send("ios.billing.onConfirmPurchaseCallback",{status = true})),
+  setSuspend = @(_) null
 } = !is_pc ? require("ios.billing.appstore") : {}
 
 const REPEAT_ON_ERROR_MSEC = 60000
@@ -94,6 +95,11 @@ subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
   purchaseInProgress(null)
   logG($"register_apple_purchase error={status}")
   openFMsgBox({ text = loc("msg/onApplePurchaseAuthError" {error = status}) })
+})
+
+isLoggedIn.subscribe(function(v) {
+  if (!v)
+    setSuspend(true)
 })
 
 let function sendLogPurchaseData(product_id,transaction_id) {

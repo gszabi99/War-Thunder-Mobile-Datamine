@@ -2634,7 +2634,7 @@
       "support_plane_group_attack": {
         "shortcutIdx": 31
       },
-      "support_plane_return": {
+      "support_plane_group_return": {
         "shortcutIdx": 32
       },
       "stealth_activate": {
@@ -2645,6 +2645,9 @@
       },
       "diving_lock": {
         "shortcutIdx": 35
+      },
+      "ircm": {
+        "shortcutIdx": 36
       }
     },
     "wheelActions": {

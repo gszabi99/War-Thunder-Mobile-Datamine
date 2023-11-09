@@ -1,6 +1,6 @@
 {
   "type": "radar",
-  "name": "1RL114",
+  "name": "1RL114 TT",
   "transivers": {
     "radarTrack": {
       "pulsePower": 100000.0,
@@ -8,8 +8,8 @@
       "prf": 3750.0,
       "band": 9,
       "rcs": 1.0,
-      "range": 10000.0,
-      "rangeMax": 15000.0,
+      "range": 13000.0,
+      "rangeMax": 16000.0,
       "antenna": {
         "angleHalfSens": 2.0,
         "sideLobesSensitivity": -30.0
@@ -18,12 +18,20 @@
     "irstTrack": {
       "power": 200.0,
       "band": -1,
-      "rcs": 1.0,
-      "range": 8000.0,
-      "rangeMax": 10000.0,
+      "rcs": 8000.0,
+      "range": 12000.0,
+      "rangeMax": 14000.0,
       "visibilityType": "infraRed",
+      "range0": 0.0,
+      "range1": 100000.0,
+      "range2": 0.0,
+      "range3": 0.0,
+      "range4": 0.0,
+      "range5": 0.0,
+      "range6": 0.0,
+      "range7": 0.0,
       "antenna": {
-        "angleHalfSens": 1.0,
+        "angleHalfSens": 0.4,
         "sideLobesSensitivity": -60.0
       }
     }
@@ -40,7 +48,7 @@
         87.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 87.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
       "width": 7.5,
@@ -60,7 +68,7 @@
         87.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 87.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
       "width": 1.0,
@@ -80,25 +88,25 @@
         87.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 87.0,
       "rollStabLimit": 10.0
     },
     "irstLosLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -20.0,
-        20.0
+        -137.0,
+        137.0
       ],
       "elevationLimits": [
-        -10.0,
-        80.0
+        -12.0,
+        84.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 84.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
-      "width": 2.0,
-      "barHeight": 2.0,
+      "width": 0.4,
+      "barHeight": 0.4,
       "barsCount": 2,
       "rowMajor": false,
       "indicate": true
@@ -106,23 +114,23 @@
     "irstTrack": {
       "type": "no",
       "azimuthLimits": [
-        -20.0,
-        20.0
+        -137.0,
+        137.0
       ],
       "elevationLimits": [
-        -10.0,
-        80.0
+        -12.0,
+        84.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
+      "pitchStabLimit": 80.0,
       "rollStabLimit": 10.0
     }
   },
   "signals": {
     "radarTrack": {
       "groundClutter": false,
-      "angularAccuracy": 0.06,
-      "distanceAccuracy": 5.0,
+      "angularAccuracy": 0.07,
+      "distanceAccuracy": 10.0,
       "absDopplerSpeed": true,
       "track": true,
       "distance": {
@@ -141,15 +149,27 @@
     },
     "irstTrack": {
       "groundClutter": false,
-      "angularAccuracy": 0.01,
+      "rangeFinder": false,
+      "angularAccuracy": 0.006,
       "distanceAccuracy": 2.0,
+      "targetRadiusMin": 0.2,
       "distance": {
         "presents": true,
         "minValue": 30.0,
-        "maxValue": 10000.0
+        "maxValue": 12000.0
       },
       "dopplerSpeed": {
         "presents": false
+      }
+    }
+  },
+  "transmitters": {
+    "rc": {
+      "power": 100.0,
+      "band": 9,
+      "antenna": {
+        "angleHalfSens": 10.0,
+        "sideLobesSensitivity": -20.0
       }
     }
   },
@@ -299,8 +319,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 4000.0,
-            "width": 8000.0
+            "pos": 6000.0,
+            "width": 12000.0
           }
         },
         "setVisualLockModeCommon": {
@@ -648,6 +668,22 @@
               "name": "track"
             },
             "setRadar": {}
+          }
+        },
+        "activateWeaponTracking": {
+          "event": "updateWeaponTracking",
+          "actions": {
+            "setWeaponRcTransmissionTimeOut": {
+              "timeOut": 2.0
+            }
+          }
+        },
+        "deactivateWeaponTracking": {
+          "event": "update",
+          "actions": {
+            "checkWeaponRcTransmissionTimeOut": {
+              "transmitter": "rc"
+            }
           }
         },
         "switchRadarOn": {

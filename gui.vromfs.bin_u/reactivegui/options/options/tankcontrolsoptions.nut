@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED,
-  OPT_AUTO_ZOOM, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_ROTATION_ASSIST,
+  OPT_AUTO_ZOOM_TANK, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_ROTATION_ASSIST,
   OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing_fixed, set_show_reticle,
@@ -92,11 +92,11 @@ let currentArmorPiercingType = {
 
 let autoZoomList = [false, true]
 let autoZoomDefault = Computed(@() (abTests.value?.tankAutoZoom ?? "false") == "true")
-let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM)
+let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM_TANK)
 let currentAutoZoom = Computed(@()
   validate(currentAutoZoomRaw.value ?? autoZoomDefault.value, autoZoomList))
-set_auto_zoom(currentAutoZoom.value)
-currentAutoZoom.subscribe(@(v) set_auto_zoom(v))
+set_auto_zoom(currentAutoZoom.value, false)
+currentAutoZoom.subscribe(@(v) set_auto_zoom(v, false))
 let currentAutoZoomType = {
   locId = "options/auto_zoom"
   ctrlType = OCT_LIST

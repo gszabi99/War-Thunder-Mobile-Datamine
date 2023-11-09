@@ -1,10 +1,8 @@
 {
   "bullet": {
     "mass": 0.1,
-    "sound_path": "sounds/guns",
-    "sound_pathStudio": "aircraft/weapon",
-    "sound": "chaff_launcher_outside",
-    "sound_inside": "chaff_launcher_inside",
+    "sound_pathStudio": "naval/weapon/countermeasures",
+    "sound": "chaff_launcher",
     "isBulletBelt": false,
     "bulletType": "chff",
     "helicopterGroup": 2,

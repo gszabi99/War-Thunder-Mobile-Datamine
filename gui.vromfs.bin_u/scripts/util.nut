@@ -3,50 +3,12 @@ from "%scripts/dagui_library.nut" import *
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 110
 let { is_mplayer_host, is_mplayer_peer } = require("multiplayer")
-let { hangar_enable_controls } = require("hangar")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 ::on_cannot_create_session <- @() openFMsgBox({ text = loc("NET_CANNOT_CREATE_SESSION") })
-
-local is_hangar_controls_enabled = false
-::enableHangarControls <- function enableHangarControls(value, save = true) {
-  hangar_enable_controls(value)
-  if (save)
-    is_hangar_controls_enabled = value
-}
-::restoreHangarControls <- function restoreHangarControls() {
-  hangar_enable_controls(is_hangar_controls_enabled)
-}
-
-::buildTableFromBlk <- function buildTableFromBlk(blk) {
-  if (!blk)
-    return {}
-  let res = {}
-  for (local i = 0; i < blk.paramCount(); i++)
-    ::buildTableFromBlk_AddElement(res, blk.getParamName(i) || "", blk.getParamValue(i))
-  for (local i = 0; i < blk.blockCount(); i++) {
-    let block = blk.getBlock(i)
-    let blockTable = ::buildTableFromBlk(block)
-    ::buildTableFromBlk_AddElement(res, block.getBlockName() || "", blockTable)
-  }
-  return res
-}
-
-/**
- * Adds value to table that may already
- * have some value with the same key.
- */
-::buildTableFromBlk_AddElement <- function buildTableFromBlk_AddElement(table, elementKey, elementValue) {
-  if (!(elementKey in table))
-    table[elementKey] <- elementValue
-  else if (type(table[elementKey]) == "array")
-    table[elementKey].append(elementValue)
-  else
-    table[elementKey] <- [table[elementKey], elementValue]
-}
 
 ::isProductionCircuit <- function isProductionCircuit() {
   return ::get_cur_circuit_name().indexof("production") != null

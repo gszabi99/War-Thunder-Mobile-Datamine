@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { copy_to_clipboard } = require("dagor.clipboard")
+let { set_clipboard_text } = require("dagor.clipboard")
 let { tostring_r, utf8ToLower } = require("%sqstd/string.nut")
 let { startswith, endswith } = require("string")
 let { makeVertScroll } = require("scrollbar.nut")
@@ -216,7 +216,7 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
           ovr = { padding = [hdpx(5), hdpx(10)] }
           onChange = @(value) filterText(value)
           onEscape = @() filterText.value == "" ? close() : filterText("")
-          hotkeys = [["L.Ctrl C", { action = @() copy_to_clipboard(textWatch.value) }]]
+          hotkeys = [["L.Ctrl C", { action = @() set_clipboard_text(textWatch.value) }]]
         }.__update(fontVeryTiny))
         closeButton(close)
       ]

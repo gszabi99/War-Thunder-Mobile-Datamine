@@ -8,7 +8,6 @@ def aircarft_carrier_unit_spawn_es(evt : CmdRequestSwitchOnSupportPlane; uid : i
   get_unit_for_edit(uid) <| $(var unit)
     *unit |> switchOnSupportPlane(evt.turnOn, evt.idx, -1 /* catapult_idx */, false)
 
-
 [es(tag=server)]
 def aircarft_carrier_unit_change_es(evt : CmdRequestSupportPlaneChange; uid : int)
   get_unit_for_edit(uid) <| $(var unit)
@@ -16,10 +15,12 @@ def aircarft_carrier_unit_change_es(evt : CmdRequestSupportPlaneChange; uid : in
 
 [es(tag=server)]
 def aircarft_carrier_unit_group_attack_es(evt : CmdRequestSupportPlaneGroupAttack; uid : int)
+  let point = float3(0.0, 0.0, 0.0)
   get_unit_for_edit(uid) <| $(var unit)
-    *unit |> supportPlaneAttackOrder(evt.idx, evt.targetId, evt.attack)
+    *unit |> supportPlaneAddCommand(evt.idx, true, 1, evt.targetId, point)
 
 [es(tag=server)]
 def aircarft_carrier_unit_return(evt : CmdReturnAircraftToShip; uid : int)
+  let point = float3(0.0, 0.0, 0.0)
   get_unit_for_edit(uid) <| $(var unit)
-    *unit |> supportPlaneReturnOrder(evt.idx, evt.rtb)
+    *unit |> supportPlaneAddCommand(evt.idx, true, 5, -1, point)

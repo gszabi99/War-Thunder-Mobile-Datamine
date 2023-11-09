@@ -27,7 +27,7 @@
     true,
     true
   ],
-  "rendinstPreloadDistance": 7000.0,
+  "rendinstPreloadDistance": 8500.0,
   "clipmap_tex_mips": 5,
   "mapCoord0": [
     -32768.0,

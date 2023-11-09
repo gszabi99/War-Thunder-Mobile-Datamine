@@ -17,12 +17,11 @@ let function mkPlayerLevelLine(debrData, animStartTime) {
   }
 }
 
-let function mkDebriefingWndTabCampaign(debrData, rewardsInfo, params) {
-  if (rewardsInfo.totalPlayerExp == 0)
-    return null
-
+let function mkDebriefingWndTabCampaign(debrData, params) {
   let rewardsStartTime = deltaStartTimeLevelReward
-  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsCampaign(rewardsInfo, [], rewardsStartTime)
+  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsCampaign(debrData, [], rewardsStartTime)
+  if (totalRewardCountsComp == null)
+    return null
 
   let { needBtnCampaign } = params
   let timeShow = rewardsStartTime + totalRewardsShowTime + (needBtnCampaign ? buttonsShowTime : 0)

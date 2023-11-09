@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let logUpdate = log_with_prefix("[UPDATE] androidSite: ")
 let { subscribe } = require("eventbus")
-let { request, HTTP_SUCCESS } = require("dagor.http")
+let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { parse_json } = require("json")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
@@ -33,7 +33,7 @@ needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
 
 let updateGameVersionImpl = proj == null ? @() null
-  : @() request({
+  : @() httpRequest({
       method = "GET"
       url = $"https://gdn.gaijin.net/apk/version?proj={proj}&tag={tag}"
       respEventId = ACTUAL_VERSION_ID

@@ -7,7 +7,7 @@ let { is_ios } = require("%sqstd/platform.nut")
 let { register_command  = @(_, __) null } = require_optional("console") //only in debug mode
 let { shell_execute } = require("dagor.shell")
 let { dgs_get_settings, exit } = require("dagor.system")
-let { send_counter } = require("statsd")
+let { send_counter = @(_, __, ___) null } = require_optional("statsd")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { needUpdateMsg } = require("updaterState.nut")
 let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")

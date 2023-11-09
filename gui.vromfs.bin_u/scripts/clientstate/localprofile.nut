@@ -7,6 +7,7 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { isOnlineSettingsAvailable, getLoginStateDebugStr } = require("%appGlobals/loginState.nut")
 let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
 
 //save/load settings by account. work only after local profile received from host.
 ::save_local_account_settings <- function save_local_account_settings(path, value) {
@@ -16,7 +17,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
     return
   }
 
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   if (set_blk_value_by_path(cdb, path, value))
     saveProfile()
 }
@@ -28,30 +29,30 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
     return defValue
   }
 
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   return get_blk_value_by_path(cdb, path, defValue)
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
 ::save_local_shared_settings <- function save_local_shared_settings(path, value) {
-  let blk = ::get_common_local_settings_blk()
+  let blk = get_common_local_settings_blk()
   if (set_blk_value_by_path(blk, path, value))
     saveProfile()
 }
 
 ::load_local_shared_settings <- function load_local_shared_settings(path, defValue = null) {
-  let blk = ::get_common_local_settings_blk()
+  let blk = get_common_local_settings_blk()
   return get_blk_value_by_path(blk, path, defValue)
 }
 
-let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
+let getRootSizeText = @() "{0}x{1}".subst(screen_width(), screen_height())
 
 //save/load settings by account and by screenSize
 ::loadLocalByScreenSize <- function loadLocalByScreenSize(name, defValue = null) {
   if (!isOnlineSettingsAvailable.value)
     return defValue
   let rootName = getRootSizeText()
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   if (cdb?[rootName][name])
     return cdb[rootName][name]
   return defValue
@@ -61,7 +62,7 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
   if (!isOnlineSettingsAvailable.value)
     return
   let rootName = getRootSizeText()
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   if (cdb?[rootName] != null && type(cdb[rootName]) != "instance")
     cdb[rootName] = null
   if (cdb?[rootName] == null)
@@ -80,7 +81,7 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 ::clear_local_by_screen_size <- function clear_local_by_screen_size(name) {
   if (!isOnlineSettingsAvailable.value)
     return
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   local hasChanges = false
   for (local idx = cdb.blockCount() - 1; idx >= 0; idx--) {
     let blk = cdb.getBlock(idx)

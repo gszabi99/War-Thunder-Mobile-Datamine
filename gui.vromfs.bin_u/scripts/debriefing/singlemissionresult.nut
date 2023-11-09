@@ -7,6 +7,7 @@ let { isInBattle, battleSessionId, battleUnitName } = require("%appGlobals/clien
 let { lastClientBattleData, wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
 let { offlineKills } = require("offlineMissionStats.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
+let { get_current_mission_info_cached } = require("blkGetters")
 
 
 let singleMissionResult = mkWatched(persist, "singleMissionResult", null)
@@ -30,7 +31,7 @@ let function getSingleMissionResult(rewardData) {
     isFinished = reason != GO_EARLY
     isWon = reason == GO_WIN
     isSingleMission = true
-    mission = ::get_current_mission_info_cached()?.name
+    mission = get_current_mission_info_cached()?.name
   })
   if (isTutorial)
     res.__update({

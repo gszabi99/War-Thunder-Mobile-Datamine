@@ -55,13 +55,15 @@ let function mkUnitPlate(unit) {
   }
 }
 
-let function mkDebriefingWndTabUnit(debrData, rewardsInfo, params) {
+let function mkDebriefingWndTabUnit(debrData, params) {
   let { unit = null } = debrData
-  if (unit == null || rewardsInfo.totalUnitExp == 0)
+  if (unit == null)
     return null
 
   let rewardsStartTime = deltaStartTimeLevelReward
-  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsUnit(rewardsInfo, [], rewardsStartTime)
+  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsUnit(debrData, [], rewardsStartTime)
+  if (totalRewardCountsComp == null)
+    return null
 
   let { needBtnUnit = true } = params
   let timeShow = rewardsStartTime + totalRewardsShowTime + (needBtnUnit ? buttonsShowTime : 0)

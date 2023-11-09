@@ -7,9 +7,7 @@ let { EventOnSetupFrameTimes } = require("gameEvents")
 let { get_mp_session_id_int } = require("multiplayer")
 let { get_current_mission_name } = require("mission")
 let { get_battery, get_battery_capacity_mah, is_charging, get_thermal_state, get_network_connection_type } = require("sysinfo")
-let { get_emulator_system_flags = @() 0, get_emulator_input_flags = @() 0, get_emulated_input_count = @() 0,
-      get_regular_input_count = @() 0, reset_emulator_counters = @() {},
-      get_is_emulator = null, get_is_emulated_input = null } = require_optional("emulatorDetection")
+let { get_is_emulator, get_is_emulated_input } = require("emulatorDetection")
 let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
@@ -80,10 +78,8 @@ let function startBatteryChargeDrainGather() {
 
 isInBattle.subscribe(function(v) {
   activatePingMeasurement(v, v)
-  if (v) {
+  if (v)
     startBatteryChargeDrainGather()
-    reset_emulator_counters()
-  }
 })
 
 if (isInBattle.value) {
@@ -122,12 +118,8 @@ let function onFrameTimes(evt, _eid, _comp) {
     tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
     battery = get_battery()
     isCharging = is_charging()
-    isEmulator = get_is_emulator?() ?? (get_emulator_system_flags() != 0)
-    isEmulatedInput = get_is_emulated_input?() ?? (get_emulator_input_flags() != 0)
-    emulatorSystemFlags = get_emulator_system_flags()
-    emulatorInputFlags = get_emulator_input_flags()
-    emulatedInputCount = get_emulated_input_count()
-    regularInputCount = get_regular_input_count()
+    isEmulator = get_is_emulator()
+    isEmulatedInput = get_is_emulated_input()
     batteryDrainPercentage = drainPercentage
     batteryDrainmAh = drainmAh
     thermalState = get_thermal_state()

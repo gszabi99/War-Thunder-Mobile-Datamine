@@ -3,6 +3,7 @@ from "%darg/laconic.nut" import *
 from "%sqstd/ecs.nut" import *
 
 let { Point2, Point3, Point4 } = require("dagor.math")
+let math = require("math")
 
 let {endswith} = require("string")
 let {getValFromObj, isCompReadOnly, updateComp} = require("components/attrUtil.nut")
@@ -50,10 +51,10 @@ let windowState = Watched({
 
 let function onMoveResize(dx, dy, dw, dh) {
   let w = windowState.value
-  w.pos[0] = clamp(w.pos[0]+dx, -(sw(100)-w.size[0]), 0)
-  w.pos[1] = max(w.pos[1]+dy, 0)
-  w.size[0] = clamp(w.size[0]+dw, sw(14), sw(80))
-  w.size[1] = clamp(w.size[1]+dh, sh(20), sh(95))
+  w.pos[0] = math.clamp(w.pos[0]+dx, -(sw(100)-w.size[0]), 0)
+  w.pos[1] = math.max(w.pos[1]+dy, 0)
+  w.size[0] = math.clamp(w.size[0]+dw, sw(14), sw(80))
+  w.size[1] = math.clamp(w.size[1]+dh, sh(20), sh(95))
   return w
 }
 
@@ -828,7 +829,7 @@ let collapsibleButtonsStyleDark = {
   }
 }
 
-local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tags = null, eid=null, rawComponentName=null, path=null){
+let function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tags = null, eid=null, rawComponentName=null, path=null){
   let empty = len==0
   tags = tags ?? []
   let isRoot = (path?.len()??0) < 1
@@ -842,7 +843,7 @@ local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tag
   let gap = hdpx(4)
   let isOdd = toggleBg()
   if (empty){
-    return {
+    return @() {
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       children = [

@@ -5,22 +5,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let n_errors = require("%sqStdLibs/helpers/net_errors.nut")
-let {script_net_assert_once, netAsserts} = n_errors
-
-::assertf_once <- function assertf_once(id, msg) {
-  if (id in netAsserts)
-    return log(msg)
-  netAsserts[id] <- id
-  return assert(false, msg)
-}
-
-::unreachable <- function unreachable() {
-  let info = ::getstackinfos(2) // get calling function
-  let id = "".concat((info?.src ?? "?"), ":", (info?.line ?? "?"), " (", (info?.func ?? "?"), ")")
-  let msg = $"Entered unreachable code: {id}"
-  script_net_assert_once(id, msg)
-}
+let {script_net_assert_once} = require("%sqStdLibs/helpers/net_errors.nut")
 
 callback.setContextDbgNameFunction(function(context) {
   if (!u.isTable(context))

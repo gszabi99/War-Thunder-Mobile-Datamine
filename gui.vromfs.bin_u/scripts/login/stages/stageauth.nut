@@ -1,10 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-let { get_player_tags,
-  isExternalApp2StepAllowed = @() ::is_external_app_2step_allowed(),
-  isHasEmail2StepTypeSync = @() ::is_has_email_two_step_type_sync(),
-  isHasWTAssistant2StepTypeSync = @() ::is_has_wtassistant_two_step_type_sync(),
-  isHasGaijinPass2StepTypeSync = @() ::is_has_gaijin_pass_two_step_type_sync()
-} = require("auth_wt")
+let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync } = require("auth_wt")
 let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")

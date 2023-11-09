@@ -16,10 +16,6 @@ require("%globalScripts/debugTools/matchingErrorDebug.nut")
 require("%globalScripts/version.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
-if (::disable_network())
-  ::get_charserver_time_sec = get_local_unixtime
-
-::TEXT_EULA <- 0
 
 let { is_pc } = require("%sqstd/platform.nut")
 

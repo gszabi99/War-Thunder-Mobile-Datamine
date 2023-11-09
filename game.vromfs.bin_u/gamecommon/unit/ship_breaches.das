@@ -14,6 +14,7 @@ require %game.unit.unit_events
 require %game.unit.repair_system_events
 require %game.unit.ship_events
 require %game.utils.component_bundle_macro
+require %dasGameLibs.math.base
 
 
 [with_bundle(v)]
@@ -22,12 +23,11 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
                      var loading_errors : array<string>&;
                      var v : tuple<
                        ship_cover_parts__partId : PartIdList;
-                       ship_cover_parts__water : Point3List;
+                       ship_cover_parts__water : Point4List;
                        ship_cover_parts__pos : Point3List;
                        ship_cover_parts__weight : FloatList;
                        ship_cover_parts__compartmentId : IntList;
                        ship_cover_parts__innerPartsRange : IPoint2List;
-                       ship_cover_parts__isDead : BoolList;
                        ship_compartments__coverPartsRange : IPoint2List;
                        ship_cover_parts__innerPartsId : PartIdList;
                        ship_cover_parts__innerPartsCriticalWater : FloatList
@@ -49,10 +49,9 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
 
     if dm_part_id_valid(cover_part_id)
       v.ship_cover_parts__partId |> push(cover_part_id)
-      v.ship_cover_parts__water |> push(float3(0.0f, 0.0f, max_water_alive))
+      v.ship_cover_parts__water |> push(float4(0.f, 0.f, 0.f, max_water_alive))
       v.ship_cover_parts__weight |> push(weight)
       v.ship_cover_parts__compartmentId |> push(compartment_id)
-      v.ship_cover_parts__isDead |> push(false)
 
       if cover |> datablock_param_exists("pos", -1)
         v.ship_cover_parts__pos |> push(cover |> datablock_getPoint3("pos", float3(0, 0, 0)))
@@ -91,8 +90,7 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
 
 [es(on_event=EventUnitRepair, on_event=EventUnitRespawn)]
 def ship_repair_handler_es(evt : Event;
-                           var ship_cover_parts__water : Point3List&;
-                           var ship_cover_parts__isDead : BoolList&;
+                           var ship_cover_parts__water : Point4List&;
                            var ship_breaches__id : IntList&;
                            var ship_breaches__pos : Point3List&;
                            var ship_breaches__normal : Point3List&;
@@ -110,9 +108,9 @@ def ship_repair_handler_es(evt : Event;
                            var ship_flooding__waterLeftSide : float&;
                            var ship_flooding__waterRightSide : float&;
                            var ship_flooding__floodStep : int&)
-  for water, is_dead in ship_cover_parts__water, ship_cover_parts__isDead
+  for water in ship_cover_parts__water
     water.x = 0.0f
-    is_dead = false
+    water.y = 0.0f
 
   ship_breaches__id |> clear()
   ship_breaches__pos |> clear()
@@ -140,11 +138,10 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
                                     var v : tuple<
                                       ship_cover_parts__disableDeadParts : bool;
                                       ship_cover_parts__partId : PartIdList;
-                                      ship_cover_parts__water : Point3List;
+                                      ship_cover_parts__water : Point4List;
                                       ship_cover_parts__pos : Point3List;
                                       ship_cover_parts__weight : FloatList;
                                       ship_cover_parts__compartmentId : IntList;
-                                      ship_cover_parts__isDead : BoolList;
                                       ship_cover_parts__innerPartsRange : IPoint2List;
                                       ship_compartments__coverPartsRange : IPoint2List;
                                       ship_cover_parts__innerPartsId : PartIdList;
@@ -159,14 +156,13 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
   v.ship_cover_parts__water |> clear()
   v.ship_cover_parts__pos |> clear()
   v.ship_cover_parts__weight |> clear()
-  v.ship_cover_parts__isDead |> clear()
   v.ship_cover_parts__compartmentId |> clear()
   v.ship_cover_parts__innerPartsRange |> clear()
   v.ship_compartments__coverPartsRange |> clear()
   v.ship_cover_parts__innerPartsId |> clear()
   v.ship_cover_parts__innerPartsCriticalWater |> clear()
 
-  v.ship_cover_parts__disableDeadParts = *evt.modelBlk |> datablock_getBool("disableDeadCoverParts", get_app().gameParams.shipsDisableDeadCoverParts)
+  v.ship_cover_parts__disableDeadParts = *evt.modelBlk |> datablock_getBool("shipsDisableDeadCoverParts", get_app().gameParams.shipsDisableDeadCoverParts)
 
   var loading_errors : array<string>
   *evt.modelBlk |> datablock_get_block("shipCover") <| $(blk)
@@ -179,9 +175,9 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
     let ship_props = ship.shipProps
     for weight, water, inner_parts in v.ship_cover_parts__weight, v.ship_cover_parts__water, v.ship_cover_parts__innerPartsRange
       weight = safediv(weight, weights_sum)
-      water.y = ship_props.additionalWaterCoverPartsThreshold * weight
+      water.z = ship_props.additionalWaterCoverPartsThreshold * weight
       for i in range(inner_parts.x, inner_parts.y)
-        v.ship_cover_parts__innerPartsCriticalWater[i] *= water.y
+        v.ship_cover_parts__innerPartsCriticalWater[i] *= water.z
 
   if !empty(loading_errors)
     var msg = "failed to load cover parts for {unit.props.fileName}:"
@@ -255,13 +251,25 @@ def ship_copy_from_handle_es(evt : EventShipCopyFrom;
 
 
 [with_bundle(v)]
-def has_any_repairable_breaches(v : tuple<
+def is_cover_part_dead(unit : Unit?; cover_id : int; v : tuple<ship_cover_parts__disableDeadParts : bool; ship_cover_parts__partId : PartIdList>) : bool
+  return v.ship_cover_parts__disableDeadParts && is_part_dead(unit.dmData, v.ship_cover_parts__partId[cover_id])
+
+
+[with_bundle(v)]
+def is_cover_part_dead(unit : Unit?; part_id : PartId; v : tuple<ship_cover_parts__disableDeadParts : bool>) : bool
+  return v.ship_cover_parts__disableDeadParts && is_part_dead(unit.dmData, part_id)
+
+
+[with_bundle(v)]
+def has_any_repairable_breaches(unit : Unit?; v : tuple<
+                                  ship_cover_parts__disableDeadParts : bool;
                                   ship_breaches__amountToRepair : FloatList;
                                   ship_breaches__coverId : IntList;
-                                  ship_cover_parts__isDead : BoolList
+                                  ship_cover_parts__partId : PartIdList
                                 >) : bool
+  assume dmData = unit.dmData
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-    if amount_to_repair > 0.0f && !v.ship_cover_parts__isDead[cover_id]
+    if amount_to_repair > 0.0f && !is_cover_part_dead(unit, cover_id) <| v
       return true
   return false
 
@@ -282,78 +290,18 @@ def calc_repair_speed_mult(unit : Unit?; v : tuple<
 
 
 [with_bundle(v)]
-def calc_time_to_repair_breaches(repair_speed_mult : float;
+def calc_time_to_repair_breaches(unit : Unit?; repair_speed_mult : float;
                                  v : tuple<
+                                   ship_cover_parts__disableDeadParts : bool;
                                    ship_breaches__amountToRepair : FloatList;
                                    ship_breaches__coverId : IntList;
-                                   ship_cover_parts__isDead : BoolList
+                                   ship_cover_parts__partId : PartIdList
                                  >) : float
   var time = 0.0f
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-    if !v.ship_cover_parts__isDead[cover_id]
+    if !is_cover_part_dead(unit, cover_id) <| v
       time = max(time, amount_to_repair / repair_speed_mult)
   return time
-
-
-[with_bundle(v)]
-def set_single_cover_part_dead(eid : EntityId; cover_id : int; is_dead : bool;
-                               v : tuple<
-                                 ship_cover_parts__isDead : BoolList- const;
-                                 ship_cover_parts__innerPartsRange : IPoint2List;
-                                 ship_cover_parts__innerPartsId : PartIdList
-                               >) : void
-  let was_dead = v.ship_cover_parts__isDead[cover_id]
-  v.ship_cover_parts__isDead[cover_id] = is_dead
-  if was_dead != is_dead
-    let parts_range = v.ship_cover_parts__innerPartsRange[cover_id]
-    for i in parts_range.x..parts_range.y
-      let part_id = v.ship_cover_parts__innerPartsId[i]
-      sendEvent(eid, [[EventRepairSystemAllowPartRepair packedPartId = part_id.packed, allow=!is_dead]])
-
-
-[with_bundle(v)]
-def set_cover_part_dead(eid : EntityId; part_id : PartId; is_dead : bool;
-                        v : tuple<
-                          ship_cover_parts__disableDeadParts : bool;
-                          ship_cover_parts__partId : PartIdList;
-                          ship_cover_parts__isDead : BoolList- const;
-                          ship_cover_parts__innerPartsRange : IPoint2List;
-                          ship_cover_parts__innerPartsId : PartIdList
-                        >) : bool
-  if !v.ship_cover_parts__disableDeadParts
-    return false
-  for cover_id, cover_part_id in iter_range(v.ship_cover_parts__partId), v.ship_cover_parts__partId
-    if cover_part_id.id == part_id.id
-      set_single_cover_part_dead(eid, cover_id, is_dead) <| v
-      return true
-  return false
-
-
-[es, with_bundle(v)]
-def ship_cover_parts_on_part_damaged_es(evt : EventUnitDamage;
-                                        eid : EntityId;
-                                        v : tuple<
-                                          ship_cover_parts__disableDeadParts : bool;
-                                          ship_cover_parts__partId : PartIdList;
-                                          ship_cover_parts__isDead : BoolList- const;
-                                          ship_cover_parts__innerPartsRange : IPoint2List;
-                                          ship_cover_parts__innerPartsId : PartIdList
-                                        >)
-  if evt.hpFixed == uint16(0)
-    set_cover_part_dead(eid, evt.partId, true) <| v
-
-
-[es, with_bundle(v)]
-def ship_cover_parts_on_part_restored_es(evt : EventDamagePartRestored;
-                                         eid : EntityId;
-                                         v : tuple<
-                                           ship_cover_parts__disableDeadParts : bool;
-                                           ship_cover_parts__partId : PartIdList;
-                                           ship_cover_parts__isDead : BoolList- const;
-                                           ship_cover_parts__innerPartsRange : IPoint2List;
-                                           ship_cover_parts__innerPartsId : PartIdList
-                                         >)
-  set_cover_part_dead(eid, PartId(evt.packedPartId), false) <| v
 
 
 [es(no_order), with_bundle(v)]
@@ -362,6 +310,7 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                    uid : int;
                                    v : tuple<
                                      ship__modernDamageControl : bool;
+                                     ship_cover_parts__disableDeadParts : bool;
                                      ship__repairBreachesRemainingTime : float-const;
                                      repair_system_remaining_repair_time : float;
                                      ship_damage_control__unwateringSpeedMult : float;
@@ -369,8 +318,8 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                      ship_breaches__id : IntList;
                                      ship_breaches__amountToRepair : FloatList- const;
                                      ship_breaches__coverId : IntList;
-                                     ship_cover_parts__water : Point3List;
-                                     ship_cover_parts__isDead : BoolList;
+                                     ship_cover_parts__water : Point4List;
+                                     ship_cover_parts__partId : PartIdList;
                                      ship__pumpsPartId : IntList;
                                      ship__waterMassVelMult : float;
                                      ship__unwateringRemainingTime : float-const
@@ -383,10 +332,10 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
   let was_repairing_breaches = v.ship__repairBreachesRemainingTime > 0.0f
   if v.ship__repairBreachesRemainingTime > 0.0f || v.repair_system_remaining_repair_time > 0.0f && v.ship__modernDamageControl
     let repair_speed_mult = calc_repair_speed_mult(unit) <| v
-    v.ship__repairBreachesRemainingTime = calc_time_to_repair_breaches(repair_speed_mult) <| v
+    v.ship__repairBreachesRemainingTime = calc_time_to_repair_breaches(unit, repair_speed_mult) <| v
 
     for breach_id, amount_to_repair, cover_id in v.ship_breaches__id, v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-      if v.ship_cover_parts__isDead[cover_id]
+      if is_cover_part_dead(unit, cover_id) <| v
         continue
       if amount_to_repair > 0.0f
         amount_to_repair -= repair_speed_mult * info.dt
@@ -441,7 +390,7 @@ def soa_safe_emplace(var arr; idx; item)
   if len == idx
     arr |> push(item)
   else
-    if len > idx
+    if len < idx
       arr |> resize(idx + 1)
     arr[idx] = item
 
@@ -533,7 +482,7 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
                                var ship_breaches__nextId : int&;
                                var ship_breaches__fatalPartId : PartId&;
                                ship_cover_parts__partId : PartIdList;
-                               ship_cover_parts__water : Point3List)
+                               ship_cover_parts__water : Point4List)
   if ship_breaches__fatalPartId.valid
     return
 
@@ -551,7 +500,7 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
         sendEvent(eid, [[EventShipAddBreach
           id=ship_breaches__nextId++,
           partId=part_id,
-          size=ship_cover_parts__water[i].y / (ship_props.fatalBreachDrownTime * 50.0f * ship_props.breachWaterMassMult),
+          size=ship_cover_parts__water[i].z / (ship_props.fatalBreachDrownTime * 50.0f * ship_props.breachWaterMassMult),
           localPos = evt.localPos,
           localNormal = evt.localNormal,
           offender = evt.offender
@@ -563,7 +512,7 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
 def calc_pump_mass_vel(unit : Unit?;
                        v : tuple<
                          ship__pumpsPartId : IntList;
-                         ship_cover_parts__water : Point3List;
+                         ship_cover_parts__water : Point4List;
                          ship_damage_control__unwateringSpeedMult : float;
                          ship__waterMassVelMult : float
                        >) : float
@@ -597,9 +546,10 @@ def calc_pump_mass_vel(unit : Unit?;
 [with_bundle(v)]
 def calc_time_to_unwater(unit : Unit?;
                          v : tuple<
+                           ship_cover_parts__disableDeadParts : bool;
                            ship__pumpsPartId : IntList;
-                           ship_cover_parts__water : Point3List;
-                           ship_cover_parts__isDead : BoolList;
+                           ship_cover_parts__water : Point4List;
+                           ship_cover_parts__partId : PartIdList;
                            ship_damage_control__unwateringSpeedMult : float;
                            ship__waterMassVelMult : float
                          >) : float
@@ -608,8 +558,8 @@ def calc_time_to_unwater(unit : Unit?;
   var res_time = 0.0f
   var count_parts = 0
   if pump_water_mass_vel > 0.0f
-    for water, is_dead in v.ship_cover_parts__water, v.ship_cover_parts__isDead
-      if water.x > 0.0f && !is_dead
+    for water, part_id in v.ship_cover_parts__water, v.ship_cover_parts__partId
+      if water.x > 0.0f && !is_cover_part_dead(unit, part_id) <| v
         res_time += water.x / pump_water_mass_vel
         count_parts++
     if count_parts > 0
@@ -623,21 +573,22 @@ def ship_unwatering_update_es(info : UpdateStageInfoAct;
                               eid : EntityId;
                               uid : int;
                               v : tuple<
+                                ship_cover_parts__disableDeadParts : bool;
                                 ship_breaches__amountToRepair : FloatList;
                                 ship_breaches__coverId : IntList;
                                 ship__pumpsPartId : IntList;
-                                ship_cover_parts__water : Point3List;
-                                ship_cover_parts__isDead : BoolList;
+                                ship_cover_parts__water : Point4List;
+                                ship_cover_parts__partId : PartIdList;
                                 ship_damage_control__unwateringSpeedMult : float;
                                 ship__waterMassVelMult : float;
                                 ship__unwateringRemainingTime : float-const
                               >)
   if v.ship__unwateringRemainingTime > 0.0f
+    let unit = get_unit(uid)
+    if unit == null || unit.isDelayed
+      return
     // update unwatering time, if has no breaches
-    if !has_any_repairable_breaches(v)
-      let unit = get_unit(uid)
-      if unit == null || unit.isDelayed
-        return
+    if !has_any_repairable_breaches(unit, v)
       v.ship__unwateringRemainingTime = calc_time_to_unwater(unit) <| v
     else
       v.ship__unwateringRemainingTime = -1.0f
@@ -649,6 +600,7 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
                                            eid : EntityId;
                                            uid : int;
                                            v : tuple<
+                                             ship_cover_parts__disableDeadParts : bool;
                                              ship__modernDamageControl : bool;
                                              ship__repairBreachesRemainingTime : float-const;
                                              ship_damage_control__repairSpeedMult : float;
@@ -657,8 +609,8 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
                                              ship_breaches__coverId : IntList;
                                              ship__unwateringRemainingTime : float-const;
                                              ship__pumpsPartId : IntList;
-                                             ship_cover_parts__water : Point3List;
-                                             ship_cover_parts__isDead : BoolList;
+                                             ship_cover_parts__water : Point4List;
+                                             ship_cover_parts__partId : PartIdList;
                                              ship__waterMassVelMult : float
                                            >)
   if evt.repair
@@ -667,7 +619,7 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
       let ship = unit |> as_ship()
       if ship != null && !unit.isDelayed && !ship.isVeryFewCrew
         let repair_speed_mult = calc_repair_speed_mult(unit) <| v
-        let time_to_repair = calc_time_to_repair_breaches(repair_speed_mult) <| v
+        let time_to_repair = calc_time_to_repair_breaches(unit, repair_speed_mult) <| v
         if time_to_repair > 0.0f
           v.ship__repairBreachesRemainingTime = time_to_repair
         elif v.ship__repairBreachesRemainingTime <= 0.0f
@@ -716,8 +668,6 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
                                       uid : int;
                                       ship_phys_proxy__velocitySq : float;
                                       ship_phys_proxy__groundCollision : bool;
-                                      var ship_flooding__waterLeftSide : float&;
-                                      var ship_flooding__waterRightSide : float&;
                                       ship_breaches__fatalPartId : PartId;
                                       ship_breaches__partId : PartIdList;
                                       ship_breaches__coverId : IntList;
@@ -728,7 +678,7 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
                                       var ship_breaches__depthScale : FloatList&;
                                       var ship_breaches__leakedAmount : FloatList&;
                                       ship_cover_parts__partId : PartIdList;
-                                      var ship_cover_parts__water : Point3List&;
+                                      var ship_cover_parts__water : Point4List&;
                                       ship_cover_parts__compartmentId : IntList;
                                       ship_cover_parts__innerPartsRange : IPoint2List;
                                       ship_cover_parts__innerPartsId : PartIdList;
@@ -769,19 +719,18 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
       // add water to cover parts
       for i in cover_parts_range.x..cover_parts_range.y
         // calculate max water in cover part
-        var max_water = ship_cover_parts__water[i].y
+        var max_water = ship_cover_parts__water[i].z
         if !is_part_dead(dmData, ship_cover_parts__partId[i]) // if part is not dead
-          max_water *= ship_cover_parts__water[i].z // *= maxWaterAlive
+          max_water *= ship_cover_parts__water[i].w // *= maxWaterAlive
 
         // add water to part
         let prev_water = ship_cover_parts__water[i].x
         ship_cover_parts__water[i].x = min(max(ship_cover_parts__water[i].x + water_delta, 0.0f), max_water);
+        let isWaterAdding = !is_equal_float(prev_water, ship_cover_parts__water[i].x)
+        if !ship_phys_proxy__groundCollision && isWaterAdding
+          let total_water = ship_cover_parts__water[i].x
+          ship_cover_parts__water[i].y = clamp(ship_cover_parts__water[i].y + sign(pos.z) * water_delta, -total_water, total_water);
         leaked_amount += water_delta
-        if !ship_phys_proxy__groundCollision
-          if pos.z > 0.0
-            ship_flooding__waterLeftSide = min(max(ship_flooding__waterLeftSide + water_delta, 0.0f), ship_props.additionalSideWaterThreshold);
-          else
-            ship_flooding__waterRightSide = min(max(ship_flooding__waterRightSide + water_delta, 0.0f), ship_props.additionalSideWaterThreshold);
 
         // sync, if water has maxed out
         if prev_water < max_water && ship_cover_parts__water[i].x == max_water
@@ -800,24 +749,30 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
                                        eid : EntityId;
                                        uid : int;
                                        v : tuple<
+                                         ship_cover_parts__disableDeadParts : bool;
                                          ship_phys_proxy__additionalWater : float-const;
                                          ship_phys_proxy__waterLeaking : bool- const;
                                          ship_phys_proxy__avgBreachPos : float3- const;
-                                         ship_cover_parts__water : Point3List- const;
+                                         ship_cover_parts__partId : PartIdList;
+                                         ship_cover_parts__water : Point4List- const;
                                          ship_cover_parts__pos : Point3List;
                                          ship_cover_parts__compartmentId : IntList;
                                          ship_cover_parts__innerPartsRange : IPoint2List;
                                          ship_cover_parts__innerPartsId : PartIdList;
                                          ship_cover_parts__innerPartsCriticalWater : FloatList;
-                                         ship_cover_parts__isDead : BoolList;
                                          ship__pumpsPartId : IntList;
                                          ship_damage_control__unwateringSpeedMult : float;
                                          ship__waterMassVelMult : float;
-                                         ship__unwateringRemainingTime : float
+                                         ship__unwateringRemainingTime : float;
+                                         ship_flooding__waterLeftSide : float-const;
+                                         ship_flooding__waterRightSide : float-const
                                        >)
   // we will not pump water if the process was stopped
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
+    return
+  let ship = as_ship(unit)
+  if ship == null
     return
 
   var additional_water = 0.0f
@@ -829,14 +784,34 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
   // Here we fix it by not pumping water, when unwatering is not in progress
   let pump_water_mass_vel = v.ship__unwateringRemainingTime > 0.0f ? calc_pump_mass_vel(unit) <| v : 0.0f
 
-  for part_water, part_pos, compartment_id, inner_parts_range, is_dead_cover in v.ship_cover_parts__water, v.ship_cover_parts__pos, v.ship_cover_parts__compartmentId, v.ship_cover_parts__innerPartsRange, v.ship_cover_parts__isDead
+  var totalWaterLeftSide = 0.0f
+  var totalWaterRightSide = 0.0f
+  for part_water, part_pos, compartment_id, inner_parts_range, part_id in v.ship_cover_parts__water, v.ship_cover_parts__pos, v.ship_cover_parts__compartmentId, v.ship_cover_parts__innerPartsRange, v.ship_cover_parts__partId
     if part_water.x <= 0.0f
       continue
 
-    if !is_dead_cover
+    assume dmData = unit.dmData
+    let is_dead_cover = is_cover_part_dead(unit, part_id) <| v
+
+    if is_dead_cover
+      let maxWater = part_water.z
+      let waterDir = sign(part_water.y)
+      let counter_flooding_level = ship == null ? 0.f : ship.shipProps.deadCoverCounterfloodingRel
+      let balance = safediv(v.ship_flooding__waterLeftSide - v.ship_flooding__waterRightSide, ship.shipProps.additionalSideWaterThreshold)
+      let threshold = (counter_flooding_level - 0.5f) * 2.f
+      let needCounterFlooding = waterDir > 0.f ? balance > -threshold : balance < threshold
+      ship.shipProps.additionalSideWaterThreshold
+      if counter_flooding_level > 0.f && is_equal_float(part_water.x, part_water.z) && needCounterFlooding
+        if is_equal_float(part_water.x, part_water.y)
+          *ship |> onStraighteningRoll()
+        let pumpedDelta = ship.shipProps.counterFloodingWaterMassVel * info.dt
+        part_water.y = clamp(part_water.y - waterDir * pumpedDelta, -maxWater, maxWater)
+    else
       // update water level
       let prev_water = part_water.x
+      let roll_ratio = part_water.y / part_water.x
       part_water.x = max(0.0f, part_water.x + pump_water_mass_vel * info.dt)
+      part_water.y = part_water.x * roll_ratio
 
       // restore pumped out parts
       for j in inner_parts_range.x..inner_parts_range.y
@@ -846,13 +821,18 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
 
     // calculate average breach position and total water amount
     additional_water += part_water.x
-    let water_scale = min(part_water.x / part_water.y, 1.0f)
+    let water_scale = min(part_water.x / part_water.z, 1.0f)
     avg_breach += part_pos * water_scale
     avg_breach_weight += water_scale
     if compartment_id >= 0
       avg_breach += float3(part_pos.x, part_pos.y, -part_pos.z) * water_scale
       avg_breach_weight += water_scale
 
+    totalWaterLeftSide += (part_water.x + part_water.y) / 2.0f
+    totalWaterRightSide += (part_water.x - part_water.y) / 2.0f
+
+  v.ship_flooding__waterLeftSide = clamp(totalWaterLeftSide, 0.0f, ship.shipProps.additionalSideWaterThreshold)
+  v.ship_flooding__waterRightSide = clamp(totalWaterRightSide, 0.0f, ship.shipProps.additionalSideWaterThreshold)
   v.ship_phys_proxy__additionalWater = additional_water
   v.ship_phys_proxy__waterLeaking = avg_breach_weight > 0.0f
   if avg_breach_weight > 0.0f
@@ -860,32 +840,47 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
 
 
 def send_water_net_sync_event(eid : EntityId;
-                              ship_flooding__waterLeftSide : float;
-                              ship_flooding__waterRightSide : float;
-                              ship_cover_parts__water : Point3List)
+                              uid : int;
+                              ship_cover_parts__water : Point4List)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
+
   using() <| $(var cover_parts_water : FloatList)
-    cover_parts_water |> reserve(length(ship_cover_parts__water))
-    for part_water in ship_cover_parts__water
-      cover_parts_water |> push(part_water.x)
+    let partsCount = length(ship_cover_parts__water)
+    cover_parts_water |> resize(partsCount * 2)
+    for i in 0..partsCount
+      cover_parts_water[i] = ship_cover_parts__water[i].x
+      cover_parts_water[partsCount + i] = ship_cover_parts__water[i].y
     send_net_event(eid, [[EventShipWaterNetSync
-      waterLeftSide = ship_flooding__waterLeftSide,
-      waterRightSide = ship_flooding__waterRightSide,
-      coverPartsWater = ecs_addr(cover_parts_water)
+      unitVersion=unit.authorityUnitVersion,
+      coverPartsWaterAndBalance = ecs_addr(cover_parts_water)
     ]])
 
 
 [es(tag=netClient)]
 def ship_handle_water_net_sync_es(evt : EventShipWaterNetSync;
-                                  var ship_flooding__waterLeftSide : float&;
-                                  var ship_flooding__waterRightSide : float&;
-                                  var ship_cover_parts__water : Point3List&)
-  ship_flooding__waterLeftSide = evt.waterLeftSide
-  ship_flooding__waterRightSide = evt.waterRightSide
-  for part_water, cur_water in ship_cover_parts__water, *evt.coverPartsWater
-    part_water.x = cur_water
+                                  eid : EntityId;
+                                  uid : int;
+                                  var ship_cover_parts__water : Point4List&)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed || unit.authorityUnitVersion != evt.unitVersion
+    return
+
+  assume cover_parts_water = *evt.coverPartsWaterAndBalance
+  let partsCount = length(ship_cover_parts__water)
+  let receivedPartsCount = length(cover_parts_water) / 2
+  if receivedPartsCount != partsCount
+    logerr("EventShipWaterNetSync: invalid cover parts count received from server for {unit.props.fileName} uid:{uid} eid:{eid}, while versions match {evt.unitVersion}, part count: {partsCount}/{receivedPartsCount}")
+    return
+
+  for i in 0..partsCount
+    ship_cover_parts__water[i].x = cover_parts_water[i]
+    ship_cover_parts__water[i].y = cover_parts_water[partsCount + i]
 
 
 def send_breaches_net_sync_event(eid : EntityId;
+                                 uid : int;
                                  ship_breaches__id : IntList;
                                  ship_breaches__pos : Point3List;
                                  ship_breaches__size : FloatList;
@@ -894,6 +889,10 @@ def send_breaches_net_sync_event(eid : EntityId;
                                  ship_breaches__partId : PartIdList;
                                  ship_breaches__coverId : IntList;
                                  ship_breaches__leakedAmount : FloatList)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
+
   let len = ship_breaches__id |> length()
   using() <| $(var breaches_ids : IntList)
     using() <| $(var breaches_pos_and_size : Point4List)
@@ -911,6 +910,7 @@ def send_breaches_net_sync_event(eid : EntityId;
           let pos = ship_breaches__pos[i]
           breaches_pos_and_size |> push(float4(pos.x, pos.y, pos.z, ship_breaches__size[i]))
         send_net_event(eid, [[EventShipBreachesNetSync
+          unitVersion = unit.authorityUnitVersion,
           breachesIds = ecs_addr(breaches_ids),
           breachesPosAndSize = ecs_addr(breaches_pos_and_size),
           breachesRepairProgress = ecs_addr(breaches_repair_progress)
@@ -919,6 +919,8 @@ def send_breaches_net_sync_event(eid : EntityId;
 
 [es(tag=netClient)]
 def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
+                                     uid : int;
+                                     ship_cover_parts__partId : PartIdList;
                                      var ship_breaches__id : IntList&;
                                      var ship_breaches__pos : Point3List&;
                                      var ship_breaches__normal : Point3List&;
@@ -930,6 +932,10 @@ def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
                                      var ship_breaches__coverId : IntList&;
                                      var ship_breaches__leakedAmount : FloatList&;
                                      var ship_breaches__offender : BreachOffenderDataList&)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed || unit.authorityUnitVersion != evt.unitVersion
+    return
+
   let len = *evt.breachesPosAndSize |> length()
   ship_breaches__id |> resize(len)
   ship_breaches__pos |> resize(len)
@@ -952,7 +958,7 @@ def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
     ship_breaches__size[i] = pos_and_size.w
     ship_breaches__id[i] = packed_ids[i * 3]
     ship_breaches__partId[i] := PartId(uint(packed_ids[i * 3 + 1]))
-    ship_breaches__coverId[i] = packed_ids[i * 3 + 2]
+    ship_breaches__coverId[i] = min(length(ship_cover_parts__partId) - 1, packed_ids[i * 3 + 2])
     ship_breaches__amountToRepair[i] = packed_repair_progress[i * 3]
     ship_breaches__leakedAmount[i] = packed_repair_progress[i * 3 + 1]
     ship_breaches__depthScale[i] = packed_repair_progress[i * 3 + 2]
@@ -968,19 +974,16 @@ def ship_handle_net_sync_request_es(evt : EventShipRequestNetSync; eid : EntityI
 
 [es(tag=server)]
 def ship_send_water_net_sync_es(evt : EventShipSyncWater;
+                                uid : int;
                                 eid : EntityId;
-                                ship_flooding__waterLeftSide : float;
-                                ship_flooding__waterRightSide : float;
-                                ship_cover_parts__water : Point3List)
-  send_water_net_sync_event(eid,
-    ship_flooding__waterLeftSide,
-    ship_flooding__waterRightSide,
-    ship_cover_parts__water)
+                                ship_cover_parts__water : Point4List)
+  send_water_net_sync_event(eid, uid, ship_cover_parts__water)
 
 
 [es(tag=server)]
 def ship_send_breaches_net_sync_es(evt : EventShipSyncBreaches;
                                    eid : EntityId;
+                                   uid : int;
                                    ship_breaches__id : IntList;
                                    ship_breaches__pos : Point3List;
                                    ship_breaches__size : FloatList;
@@ -989,7 +992,7 @@ def ship_send_breaches_net_sync_es(evt : EventShipSyncBreaches;
                                    ship_breaches__partId : PartIdList;
                                    ship_breaches__coverId : IntList;
                                    ship_breaches__leakedAmount : FloatList)
-  send_breaches_net_sync_event(eid,
+  send_breaches_net_sync_event(eid, uid,
     ship_breaches__id,
     ship_breaches__pos,
     ship_breaches__size,

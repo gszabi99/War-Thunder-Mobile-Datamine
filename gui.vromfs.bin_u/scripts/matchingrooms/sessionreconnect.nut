@@ -3,7 +3,7 @@ let { send, subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let logR = log_with_prefix("[SESSION_RECONNECT] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
+let { isInMenu, isOnline } = require("%appGlobals/clientState/clientState.nut")
 let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState.nut")
 let { joinRoom } = require("sessionLobby.nut")
 let { subscribeFMsgBtns, openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -103,6 +103,7 @@ isNeedReconnectMsg.subscribe(function(v) {
 
 let function onCheckReconnect(resp) {
   let hasRoomToJoin = resp?.roomId
+  logR($"onCheckReconnect resp?.roomId = {resp?.roomId}\n")
   if (hasRoomToJoin) {
     reconnectData(resp)
     return
@@ -112,6 +113,11 @@ let function onCheckReconnect(resp) {
 
 let checkReconnect = @()
   ::matching.rpc_call("match.check_reconnect", null, onCheckReconnect)
+
+subscribe("on_connection_changed", function(params) {
+  isOnline.set(params?.is_online ?? false)
+  checkReconnect()
+})
 
 isLoggedIn.subscribe(function(isConnected) {
   if (isConnected)

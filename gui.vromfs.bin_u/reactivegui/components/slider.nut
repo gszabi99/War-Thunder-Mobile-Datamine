@@ -168,7 +168,7 @@ let function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
     function onElemState(sf) {
       stateFlags(sf)
       let isActive = !!(sf & S_ACTIVE)
-      if (isActive == holdCount >= 0)
+      if (isActive == (holdCount >= 0))
         return
 
       if (isActive) {

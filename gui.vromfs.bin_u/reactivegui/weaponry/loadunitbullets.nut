@@ -20,7 +20,7 @@ let blkToWeaponId = {}
 let function getWeaponIdImpl(blkPath) {
   local start = 0
   local searchFrom = 0
-  while (searchFrom != null) {
+  while (searchFrom != null) { // -expr-cannot-be-null
     searchFrom = blkPath.indexof("/", searchFrom + 1) ?? blkPath.indexof("\\", searchFrom + 1)
     if (searchFrom != null)
       start = searchFrom + 1

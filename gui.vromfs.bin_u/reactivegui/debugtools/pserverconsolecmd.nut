@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { set_clipboard_text = null, copy_to_clipboard = null } = require("dagor.clipboard")
+let { set_clipboard_text } = require("dagor.clipboard")
 let { json_to_string } = require("json")
 let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
@@ -43,7 +43,7 @@ registerHandler("onDebugLootboxChances",
       text = makeSideScroll(msgBoxText(text, infoTextOvr))
       wndOvr = { size = [hdpx(1100), hdpx(1000)] }
       buttons = [
-        { text = "COPY", cb = @() (set_clipboard_text ?? copy_to_clipboard)?(text) }   //warning disable: -forbidden-function
+        { text = "COPY", cb = @() set_clipboard_text(text) }   //warning disable: -forbidden-function
         { id = "ok", styleId = "PRIMARY", isDefault = true }   //warning disable: -forbidden-function
       ]
     })
@@ -56,6 +56,7 @@ register_command(function(exp) {
   if (name not in myUnits.value)
     return $"Unit '{name}' not own"
   add_unit_exp(name, exp, "consolePrintResult")
+  return "OK"
 }, "meta.add_cur_unit_exp")
 
 register_command(@() resetCustomSettings(), "meta.reset_custom_settings")

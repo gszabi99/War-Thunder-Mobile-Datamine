@@ -1,3 +1,4 @@
+from "math" import max
 let { roundToDigits } = require("%sqstd/math.nut")
 
 let function roundPrice(value, digits = 2) {

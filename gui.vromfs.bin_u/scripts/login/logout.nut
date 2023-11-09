@@ -12,8 +12,10 @@ let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
 let { isAutologinUsed, setAutologinEnabled } = require("autoLogin.nut")
 let { resetLoginPass } = require("auth_wt")
 let { forceSendBqQueue } = require("%scripts/bqQueue.nut")
+let { isInFlight } = require("gameplayBinding")
 
-let DELETE_ACCOUNT_URL = "https://support.gaijin.net/hc/en-us/articles/200071071-Account-Deletion-Suspension-"
+// Here "return_enc" is Base64 encoded string: "/profile.php?profileSettings=profile-settings_delete&view=settings"
+let DELETE_ACCOUNT_URL = "auto_local auto_login https://store.gaijin.net/login.php?return_enc=L3Byb2ZpbGUucGhwP3Byb2ZpbGVTZXR0aW5ncz1wcm9maWxlLXNldHRpbmdzX2RlbGV0ZSZ2aWV3PXNldHRpbmdz"
 
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
@@ -27,7 +29,7 @@ let function startLogout() {
     return ::exit_game()
 
   if (is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
-    if (::is_in_flight()) {
+    if (isInFlight()) {
       needLogoutAfterSession(true)
       send("quitMission", null)
       return

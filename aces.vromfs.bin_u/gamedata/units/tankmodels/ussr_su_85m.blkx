@@ -1619,6 +1619,15 @@
           20.0
         ]
       }
+    },
+    "hideNodes": {
+      "node": [
+        "ex_armor_body_01",
+        "ex_armor_body_r_01",
+        "ex_armor_body_r_02",
+        "ex_armor_body_l_01",
+        "ex_armor_body_l_02"
+      ]
     }
   },
   "weapon_presets": {

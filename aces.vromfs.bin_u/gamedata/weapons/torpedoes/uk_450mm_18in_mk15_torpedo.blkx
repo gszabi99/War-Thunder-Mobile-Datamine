@@ -6,7 +6,7 @@
   "external": true,
   "reloadTime": 60.0,
   "allowHumanReload": true,
-  "mesh": "torpedo_g7a",
+  "mesh": "torpedo_18in_mk15",
   "tags": {
     "antiShipBomb": true
   },

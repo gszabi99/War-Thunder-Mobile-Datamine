@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { json_to_string } = require("json")
 let { command } = require("console")
-let { copy_to_clipboard } = require("dagor.clipboard")
+let { set_clipboard_text } = require("dagor.clipboard")
 let { screenlog } = require("dagor.debug")
 let { defer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -67,7 +67,7 @@ let commandsList = [
       close()
       if (debriefingData.value == null)
         return dlog("Debriefing data is empty") //warning disable: -forbidden-function
-      copy_to_clipboard(json_to_string(debriefingData.value, true))
+      set_clipboard_text(json_to_string(debriefingData.value, true))
       return dlog("Debriefing data copied to clipboard") //warning disable: -forbidden-function
     }
   }

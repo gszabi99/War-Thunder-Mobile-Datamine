@@ -106,7 +106,7 @@ let function errorMsgBox(errCode, buttons, ovr = {}) {
 
 register_command(
   function() {
-    ::LAST_SESSION_DEBUG_INFO <- "sid:12345678"
+    ::LAST_SESSION_DEBUG_INFO = "sid:12345678"
     errorMsgBox(SERVER_ERROR_FORCE_DISCONNECT,
       [{ id = "exit", eventId = "matchingExitGame", styleId = "PRIMARY", isDefault = true }],
       { isPersist = true })

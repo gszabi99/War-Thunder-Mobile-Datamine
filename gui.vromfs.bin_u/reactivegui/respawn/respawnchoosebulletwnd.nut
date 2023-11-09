@@ -153,7 +153,8 @@ let function bulletsList() {
           key = "saveSection"
           size = flex()
           function onDetach() {
-            saveSeenShells(selSlot.value.name, visibleBulletsList.map(@(name) name))
+            if (selSlot.value?.name != null)
+              saveSeenShells(selSlot.value.name, visibleBulletsList.map(@(name) name))
           }
         }
       )

@@ -16,7 +16,7 @@ let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, unitPlatesGap
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
-let { buyUnitsData, rankToReqPlayerLvl } = require("%appGlobals/unitsState.nut")
+let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
@@ -47,11 +47,9 @@ let needSkipBtn = Computed(@() buyUnitsData.value.canLevelUpWithoutBuy
 let nextFreeUnitLevel = Computed(function() {
   local res = 0
   let newLevel = playerLevelInfo.value.level + 1
-  foreach (u in allUnitsCfg.value) {
-    let reqLevel = rankToReqPlayerLvl.value?[u.rank] ?? 0
-    if (reqLevel > newLevel && (res == 0 || reqLevel < res) && getUnitAnyPrice(u, true)?.discount == 1.0)
-      res = reqLevel
-  }
+  foreach (u in allUnitsCfg.value)
+    if (u.rank > newLevel && (res == 0 || u.rank < res) && getUnitAnyPrice(u, true)?.discount == 1.0)
+      res = u.rank
   return res
 })
 

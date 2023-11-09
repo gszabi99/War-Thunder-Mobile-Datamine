@@ -1142,6 +1142,7 @@
     "ammo_stowages__replenishmentStartEnd:list<p2>": {},
     "ammo_stowages__replenishmentTime:list<p2>": {},
     "ammo_stowages__powderMassToSplash": {},
+    "ammo_stowages__floodedAmmoReloadMult:list<r>": {},
     "ammo_stowages__clustersRange:list<ip2>": {},
     "ammo_stowages__weaponTriggersRange:list<ip2>": {},
     "ammo_stowage__weaponTriggers:list<i>": {},
@@ -1257,11 +1258,10 @@
     "ship_cover_parts__disableDeadParts": true,
     "ship_cover_parts__partId": {},
     "ship_cover_parts__compartmentId:list<i>": {},
-    "ship_cover_parts__water:list<p3>": {},
+    "ship_cover_parts__water:list<p4>": {},
     "ship_cover_parts__weight:list<r>": {},
     "ship_cover_parts__pos:list<p3>": {},
     "ship_cover_parts__innerPartsRange:list<ip2>": {},
-    "ship_cover_parts__isDead:list<b>": {},
     "ship_cover_parts__innerPartsId": {},
     "ship_cover_parts__innerPartsCriticalWater:list<r>": {},
     "ship_compartments__coverPartsRange:list<ip2>": {}
@@ -1367,6 +1367,9 @@
   },
   "in_flight": {
     "inFlight:tag": {}
+  },
+  "render_debug": {
+    "renderDebug:tag": {}
   },
   "walker": {
     "_extends": "ground_unit"
@@ -1945,7 +1948,8 @@
     "music__curHangarCountry_id": -1,
     "music__curForcedEvtName": "",
     "music__lockedHangar": false,
-    "music__useHangarMusicForUnitType": false
+    "music__useHangarMusicForUnitType": false,
+    "music__operatorCountryId": -1
   },
   "base_area": {
     "_extends": "replicating",
@@ -2116,6 +2120,23 @@
   "sound_point_one_shot": {
     "_extends": "sound_point",
     "sound_point_one_shot_played": false
+  },
+  "sound_area": {
+    "_extends": "replicating",
+    "sound_area__grid_step": 15.0,
+    "sound_area__grid_stride": 0,
+    "sound_area__bounds": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sound_area__event_name": "",
+    "sound_area__area_names:list<t>": {},
+    "sound_area__grid:list<r>": {},
+    "sound_area__event:SoundEvent": {
+      "_tags": "sound"
+    }
   },
   "asset_manager": {
     "_tags": "render",

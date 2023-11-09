@@ -3,7 +3,7 @@ let DataBlock  = require("DataBlock")
 let { subscribe } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
-let { request, HTTP_SUCCESS } = require("dagor.http")
+let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { parse_json } = require("json")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isOnlineSettingsAvailable, legalListForApprove, isAuthorized } = require("%appGlobals/loginState.nut")
@@ -95,7 +95,7 @@ subscribe(VERSIONS_RESP_ID, function(response) {
 let function requestVersionsOnce() {
   if (requiredVersionsRaw.value != null)
     return
-  request({
+  httpRequest({
     method = "GET"
     url = VERSIONS_URL
     respEventId = VERSIONS_RESP_ID

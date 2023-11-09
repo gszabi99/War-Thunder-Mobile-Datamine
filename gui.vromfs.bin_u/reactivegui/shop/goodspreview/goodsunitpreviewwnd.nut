@@ -11,7 +11,8 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem,
   aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
 } = require("goodsPreviewPkg.nut")
-let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, SHIP_PRESET_TYPE, TANK_PRESET_TYPE } = require("hangar")
+let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE
+} = require("hangar")
 let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit, resetCustomHangarUnit, isHangarUnitLoaded,
   hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
@@ -97,12 +98,12 @@ unitForShow.subscribe(function(unit) {
   else
     resetCustomHangarUnit()
 })
-/*
+
 previewGoodsUnit.subscribe(function(unit) {
   if (unit != null)
     set_load_sounds_for_model(true)
 })
-*/
+
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
   && loadedHangarUnitName.value == unitForShow.value?.name
   && isLoadedHangarUnitUpgraded.value == (unitForShow.value?.isUpgraded ?? false)

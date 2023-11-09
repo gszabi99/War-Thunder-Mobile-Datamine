@@ -1142,87 +1142,245 @@
     {
       "name": "tankBot",
       "selectStrategy": "ordered",
-      "sequencer": [
-        {
-          "or": {
-            "checkTeamTickets": {
-              "op": "less",
-              "allyTeam": true,
-              "ticketsPercent": 0.3
+      "tankBotSetup": {},
+      "setupAngerParams": {
+        "baseRate": -1.0,
+        "visibilityRate": 20.0,
+        "damageValue": 100.0,
+        "outOfSightRate": -100.0,
+        "distanceMultiplierMax": 2.0,
+        "distanceBoundsMin": 5.0,
+        "distanceBoundsMax": 100.0
+      },
+      "parallel": {
+        "updateAnger": {},
+        "cycle": {
+          "selector": {
+            "selectStrategy": "ordered",
+            "selectOnSuccess": true,
+            "sequencer": {
+              "findEnemies": {
+                "outListName": "targets",
+                "maxDistance": 300.0
+              },
+              "selector": {
+                "selectStrategy": "ordered",
+                "selectOnSuccess": true,
+                "sequencer": [
+                  {
+                    "findTargetByAnger": {
+                      "inListName": "targets",
+                      "outVarName": "priorityTarget",
+                      "angerThreshold": 20.0
+                    },
+                    "setAsEnemyTarget": {
+                      "inVarName": "priorityTarget",
+                      "minTimeBetweenSwitch": 15.0,
+                      "resetIfAngerLessThen": 5.0,
+                      "angerDeltaThreshold": 40.0
+                    },
+                    "switchAutoShoot": {
+                      "isEnabledShooting": true
+                    }
+                  },
+                  {
+                    "resetEnemyTarget": {},
+                    "switchAutoShoot": {
+                      "isEnabledShooting": false
+                    }
+                  }
+                ]
+              }
             },
-            "checkCapturePoint": {
-              "dist": 100000.0,
-              "canCapture": true,
-              "timeCaptured": 90.0
-            }
-          },
-          "setCapturePointAsDest": {
-            "dist": 10.0,
-            "canCapture": true,
-            "stayOnPointTime": 60.0,
-            "canUseIndirectPath": false,
-            "includeSpawnPoints": false
-          },
-          "selectExplicitDestination": {
-            "minDist": 20.0
-          },
-          "driveToPos": {
-            "dist": 10.0
+            "success": {}
           }
         },
-        {
-          "checkCapturePoint": {
-            "dist": 100000.0,
-            "canCapture": true
-          },
-          "selector": {
-            "selectStrategy": "random",
-            "selectOnSuccess": true,
-            "setCapturePointAsDest": {
-              "dist": 20.0,
-              "canCapture": true,
-              "stayOnPointTime": 30.0,
-              "includeSpawnPoints": false
+        "selector": {
+          "selectStrategy": "ordered",
+          "selectOnSuccess": true,
+          "sequencer": [
+            {
+              "or": {
+                "checkTeamTickets": {
+                  "op": "less",
+                  "allyTeam": true,
+                  "ticketsPercent": 0.3
+                },
+                "checkCapturePoint": {
+                  "dist": 100000.0,
+                  "canCapture": true,
+                  "timeCaptured": 90.0
+                }
+              },
+              "setCapturePointAsDest": {
+                "dist": 10.0,
+                "canCapture": true,
+                "stayOnPointTime": 60.0,
+                "canUseIndirectPath": false,
+                "includeSpawnPoints": true
+              },
+              "driveToPos": {
+                "dist": 10.0,
+                "obstacleAvoidAngle": 7.0,
+                "obstacleAvoidDistMultiplier": 1.5,
+                "deflectPath": false,
+                "suspendIfTargetChanged": false
+              }
             },
-            "pursueTarget": {
-              "distanceMin": 20.0,
-              "distanceMax": 50.0
+            {
+              "selector": {
+                "selectStrategy": "ordered",
+                "selectOnSuccess": true,
+                "sequencer": [
+                  {
+                    "not": {
+                      "checkShoot": {}
+                    },
+                    "selectRandomPosition": {
+                      "radius": 250.0,
+                      "minRadius": 200.0
+                    },
+                    "driveToPos": {
+                      "dist": 10.0,
+                      "obstacleAvoidAngle": 7.0,
+                      "obstacleAvoidDistMultiplier": 1.5,
+                      "deflectPath": false,
+                      "deflectionRadius": 1000.0,
+                      "suspendIfTargetChanged": false
+                    }
+                  },
+                  {
+                    "checkEnemy": {},
+                    "parallel": [
+                      {
+                        "cycle": [
+                          {
+                            "or": {
+                              "not": [
+                                {
+                                  "checkDistanceToTarget": {
+                                    "distance": 40.0
+                                  }
+                                },
+                                {
+                                  "checkShoot": {}
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "pursueTarget": {
+                              "distanceMin": 40.0,
+                              "distanceMax": 200.0,
+                              "includeEnemySpawn": true
+                            }
+                          }
+                        ],
+                        "driveToPos": {
+                          "dist": 10.0,
+                          "obstacleAvoidAngle": 7.0,
+                          "obstacleAvoidDistMultiplier": 1.5,
+                          "deflectPath": false,
+                          "deflectionRadius": 1000.0,
+                          "suspendIfTargetChanged": false
+                        }
+                      },
+                      {
+                        "cycle": {
+                          "sequencer": {
+                            "checkEnemy": {},
+                            "checkDistanceToTarget": {
+                              "distance": 40.0
+                            }
+                          }
+                        },
+                        "parallel": {
+                          "cycle": [
+                            {
+                              "rotateToEnemy": {}
+                            },
+                            {
+                              "sequencer": {
+                                "delay": {
+                                  "range": [
+                                    90.0,
+                                    120.0
+                                  ],
+                                  "resetable": true
+                                },
+                                "resetEnemyTarget": {
+                                  "resetAnger": true
+                                },
+                                "selectRandomPosition": {
+                                  "radius": 150.0,
+                                  "minRadius": 100.0
+                                },
+                                "driveToPos": {
+                                  "dist": 10.0,
+                                  "obstacleAvoidAngle": 7.0,
+                                  "obstacleAvoidDistMultiplier": 1.5,
+                                  "deflectPath": false,
+                                  "deflectionRadius": 1000.0,
+                                  "suspendIfTargetChanged": false
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "selector": {
+                      "selectOnSuccess": true,
+                      "sequencer": [
+                        {
+                          "checkCapturePoint": {
+                            "dist": 100000.0,
+                            "canCapture": true
+                          },
+                          "setCapturePointAsDest": {
+                            "dist": 20.0,
+                            "canCapture": true,
+                            "stayOnPointTime": 30.0,
+                            "includeSpawnPoints": false
+                          }
+                        },
+                        {
+                          "not": {
+                            "checkEnemy": {}
+                          },
+                          "checkCapturePoint": {
+                            "dist": 100000.0,
+                            "canCapture": false
+                          },
+                          "setCapturePointAsDest": {
+                            "dist": 20.0,
+                            "canCapture": false,
+                            "stayOnPointTime": 5.0,
+                            "includeSpawnPoints": false
+                          }
+                        }
+                      ]
+                    },
+                    "selectExplicitDestination": {
+                      "minDist": 5.0
+                    },
+                    "driveToPos": {
+                      "dist": 10.0,
+                      "obstacleAvoidAngle": 7.0,
+                      "obstacleAvoidDistMultiplier": 1.5,
+                      "deflectPath": true,
+                      "deflectionRadius": 1000.0,
+                      "suspendIfTargetChanged": true
+                    }
+                  }
+                ]
+              }
             }
-          },
-          "selectExplicitDestination": {
-            "minDist": 20.0
-          },
-          "driveToPos": {
-            "dist": 10.0
-          }
-        },
-        {
-          "checkCapturePoint": {
-            "dist": 100000.0,
-            "canCapture": false
-          },
-          "selector": {
-            "selectStrategy": "random",
-            "selectOnSuccess": true,
-            "setCapturePointAsDest": {
-              "dist": 20.0,
-              "canCapture": false,
-              "stayOnPointTime": 5.0,
-              "includeSpawnPoints": false
-            },
-            "pursueTarget": {
-              "distanceMin": 15.0,
-              "distanceMax": 70.0
-            }
-          },
-          "selectExplicitDestination": {
-            "minDist": 20.0
-          },
-          "driveToPos": {
-            "dist": 10.0
-          }
+          ]
         }
-      ]
+      }
     },
     {
       "name": "shipMissionUnit",

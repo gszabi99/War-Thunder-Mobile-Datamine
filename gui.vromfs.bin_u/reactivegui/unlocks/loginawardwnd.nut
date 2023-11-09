@@ -393,11 +393,11 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
       : plateBase.__update({
           watch = [ isShowUnseenDelayed, loginAwardUnlock, stateFlags ]
           behavior = Behaviors.Button
-          onElemState = @(sf) stateFlags(sf)
+          onElemState = @(sf) stateFlags?(sf)
           onClick = isCurrentActivePlate
             ? onActivePlateClick
             : @() openPreview(reward.value)
-          transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+          transform = { scale = ((stateFlags?.value ?? 0) & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
           transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
           sound = { click  = "click" }
           hotkeys = isCurrentActivePlate ? activePlateHotkeys : null

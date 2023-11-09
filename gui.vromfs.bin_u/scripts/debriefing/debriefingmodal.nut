@@ -11,6 +11,7 @@ let loadRootScreen = require("%scripts/loadRootScreen.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let { stat_get_benchmark } = require("guiMission")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { hangar_enable_controls } = require("hangar")
 
 ::gui_start_debriefing <- function gui_start_debriefing() {
   if (needLogoutAfterSession.value) {
@@ -34,7 +35,7 @@ let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
   }
 
   ::set_presence_to_player("menu")
-  ::enableHangarControls(true)
+  hangar_enable_controls(true)
   isInDebriefing(true)
 }
 

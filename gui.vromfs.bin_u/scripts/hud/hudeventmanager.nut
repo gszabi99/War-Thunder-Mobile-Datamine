@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { subscribeHudEvents } = require("hudMessages")
 
 let u = require("%sqStdLibs/helpers/u.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
 let { send_foreign } = require("eventbus")
 let { DM_HIT_RESULT_NONE } = require("hitCamera")
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
@@ -59,7 +60,7 @@ local eventsStack = [] //for debug top event
 
   function handleData(data) {
     if (u.isDataBlock(data))
-      return ::buildTableFromBlk(data)
+      return convertBlk(data)
     return clone data
   }
 

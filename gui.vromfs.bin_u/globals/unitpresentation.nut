@@ -109,6 +109,13 @@ let overrides = {
   germ_pzkpfw_IV_ausf_F2_test = inProgress
   us_m4a1_1942_sherman_test = inProgress
   us_m42_duster_test = inProgress
+  ussr_pt_76b = inProgress
+  ussr_kv_122 = inProgress
+  ussr_su_122P = inProgress
+  ussr_btr_zd = inProgress
+  us_t29 = inProgress
+  us_m18_super_hellcat = inProgress
+  us_m6a2e1 = inProgress
 }
 
 let platoonNames = {

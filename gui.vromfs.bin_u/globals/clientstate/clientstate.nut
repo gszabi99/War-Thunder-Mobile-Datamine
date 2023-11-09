@@ -6,6 +6,7 @@ let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let isInBattle = sharedWatched("isInBattle", @() false)
+let isOnline = sharedWatched("isOnline", @() false)
 let battleSessionId = sharedWatched("battleSessionId", @() -1) //resets to -1 only when start new battle. To allow to get sessionId after session destroy.
 let battleUnitName = sharedWatched("battleUnitName", @() null) //To allow to get unit for single mission debriefing.
 let localMPlayerId = sharedWatched("localMPlayerId", @() 0)
@@ -31,6 +32,7 @@ subscribe("destroyMultiplayer", @(_) isInMpSession(get_mp_session_id_int() != -1
 
 return {
   isInBattle
+  isOnline
   battleSessionId
   isInMpSession
   isInMpBattle

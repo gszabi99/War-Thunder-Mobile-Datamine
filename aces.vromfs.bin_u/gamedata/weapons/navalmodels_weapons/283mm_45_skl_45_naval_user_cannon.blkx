@@ -494,6 +494,7 @@
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "283mm_psgr_l_3_2",
       "dynamicKv": true,
+      "hitPowerMult": 1200.0,
       "relativeVelHitShift": [
         300.0,
         1000.0

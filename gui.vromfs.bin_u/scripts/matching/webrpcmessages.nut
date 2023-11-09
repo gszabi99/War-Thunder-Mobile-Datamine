@@ -3,9 +3,11 @@ from "%scripts/dagui_library.nut" import *
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { openUrl } = require("%scripts/url.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { web_rpc } = require("%scripts/webRPC.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let function showMessageBox(params) {
-  if (::is_in_flight())
+  if (isInFlight())
     return { error = { message = "Can not be shown in battle" } }
 
   let title = params?.title ?? ""
@@ -24,7 +26,7 @@ let function showMessageBox(params) {
 }
 
 let function showUrl(params) {
-  if (::is_in_flight())
+  if (isInFlight())
     return { error = { message = "Can not be shown in battle" } }
 
   let url = params?.url ?? ""
@@ -40,5 +42,5 @@ let function showUrl(params) {
 }
 
 
-::web_rpc.register_handler("show_message_box", showMessageBox)
-::web_rpc.register_handler("open_url", showUrl)
+web_rpc.register_handler("show_message_box", showMessageBox)
+web_rpc.register_handler("open_url", showUrl)

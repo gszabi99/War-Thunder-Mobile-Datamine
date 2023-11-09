@@ -1,7 +1,7 @@
 {
   "PhysMats": {
     "__DefaultParams": {
-      "iak": 1.0,
+      "iak": 0.5,
       "damage_k": 1.0
     },
     "default": {
@@ -23,12 +23,13 @@
       "deformable_width": 0.05,
       "tankTracksTexId": 0,
       "arcadeBoostMult": 1.0,
-      "resistanceK": 0.00035,
+      "resistanceK": 2.5E-05,
       "hitFxScale": [
         0.05,
         0.2
       ],
       "explMat": "default",
+      "iak": 0.5,
       "shakePeriod": [
         0.35,
         0.7
@@ -78,7 +79,7 @@
       ],
       "explosionPatchHeightScale": 0.01,
       "explosionWreckage": "ground_expl",
-      "iak": 1.0,
+      "iak": 0.5,
       "damage_k": 0.3,
       "deformable_width": 0.15,
       "tankTracksTexId": 0,
@@ -199,7 +200,7 @@
       "isUnit": false,
       "shakeMultiplier": 3.0,
       "frictionMultiplier": 1.0,
-      "resistanceK": 0.00035,
+      "resistanceK": 2.5E-05,
       "fk": 0.65,
       "rollingFrictionK": 0.09,
       "trackDirtSpawnRateMult": 0.0,
@@ -262,7 +263,7 @@
       "isUnit": false,
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
-      "resistanceK": 0.00035,
+      "resistanceK": 2.5E-05,
       "fk": 0.65,
       "rollingFrictionK": 0.09,
       "trackDirtSpawnRateMult": 0.0,
@@ -303,7 +304,7 @@
       "isUnit": false,
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
-      "resistanceK": 0.00035,
+      "resistanceK": 2.5E-05,
       "fk": 0.65,
       "rollingFrictionK": 0.09,
       "trackDirtSpawnRateMult": 0.0,
@@ -344,7 +345,7 @@
       "isUnit": false,
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
-      "resistanceK": 0.00035,
+      "resistanceK": 2.5E-05,
       "fk": 0.65,
       "rollingFrictionK": 0.09,
       "trackDirtSpawnRateMult": 0.0,
@@ -385,7 +386,7 @@
       "isUnit": false,
       "shakeMultiplier": 3.0,
       "frictionMultiplier": 1.0,
-      "resistanceK": 0.00035,
+      "resistanceK": 2.5E-05,
       "fk": 0.65,
       "rollingFrictionK": 0.09,
       "trackDirtSpawnRateMult": 0.0,
@@ -426,7 +427,7 @@
       "isUnit": false,
       "shakeMultiplier": 3.0,
       "frictionMultiplier": 1.0,
-      "resistanceK": 0.00035,
+      "resistanceK": 2.5E-05,
       "fk": 0.65,
       "rollingFrictionK": 0.09,
       "trackDirtSpawnRateMult": 0.0,
@@ -503,7 +504,7 @@
       "isUnit": false,
       "shakeMultiplier": 3.0,
       "frictionMultiplier": 1.0,
-      "resistanceK": 0.00035,
+      "resistanceK": 2.5E-05,
       "fk": 0.65,
       "rollingFrictionK": 0.09,
       "trackDirtSpawnRateMult": 0.0,
@@ -653,7 +654,7 @@
       "deformable_width": 0.2,
       "trackEffectsPreset": "soil",
       "trackDirtSpawnRateMult": 1.0,
-      "resistanceK": 0.0008,
+      "resistanceK": 2.5E-05,
       "explMat": "default",
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
@@ -698,7 +699,7 @@
         ]
       },
       "arcadeProps": {
-        "boost": 0.5
+        "boost": 1.0
       }
     },
     "tankTrack": {
@@ -711,6 +712,7 @@
       "bf_class": "road",
       "trackDirtSpawnRateMult": 0.0,
       "explMat": "default",
+      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -727,8 +729,9 @@
       "bf_class": "dirt",
       "deformable_width": 0.3,
       "trackDirtSpawnRateMult": 1.0,
-      "resistanceK": 0.001,
+      "resistanceK": 2.5E-05,
       "explMat": "default",
+      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -768,7 +771,7 @@
         ]
       },
       "arcadeProps": {
-        "boost": 0.0
+        "boost": 1.0
       }
     },
     "visibilityRay": {
@@ -777,8 +780,9 @@
     "roadSoil": {
       "bf_class": "roadSoil",
       "deformable_width": 0.05,
-      "resistanceK": 0.00015,
+      "resistanceK": 2.5E-05,
       "explMat": "default",
+      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -792,7 +796,7 @@
       "dustFactor": 1.5,
       "mudFactor": 0.0,
       "arcadeProps": {
-        "boost": 0.8
+        "boost": 1.0
       }
     },
     "sand": {
@@ -814,6 +818,7 @@
         1.0
       ],
       "arcadeBoostMult": 0.8,
+      "resistanceK": 2.5E-05,
       "shakePeriod": [
         0.3,
         0.7
@@ -845,7 +850,7 @@
         ]
       },
       "arcadeProps": {
-        "boost": 0.8
+        "boost": 1.0
       }
     },
     "duneSand": {
@@ -862,6 +867,7 @@
         1.0
       ],
       "arcadeBoostMult": 0.8,
+      "resistanceK": 2.5E-05,
       "shakePeriod": [
         0.3,
         0.7
@@ -893,15 +899,16 @@
         ]
       },
       "arcadeProps": {
-        "boost": 0.8
+        "boost": 1.0
       }
     },
     "roadSand": {
       "bf_class": "roadSand",
       "deformable_width": 0.1,
-      "resistanceK": 0.00015,
+      "resistanceK": 2.5E-05,
       "trackEffectsPreset": "sand",
       "explMat": "default",
+      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -942,7 +949,7 @@
         ]
       },
       "arcadeProps": {
-        "boost": 0.8
+        "boost": 1.0
       }
     },
     "quickSand": {
@@ -990,7 +997,7 @@
         ]
       },
       "arcadeProps": {
-        "boost": 0.2
+        "boost": 1.0
       }
     },
     "snow": {
@@ -1007,6 +1014,7 @@
         1.0
       ],
       "arcadeBoostMult": 0.8,
+      "resistanceK": 2.5E-05,
       "shakePeriod": [
         0.5,
         1.2
@@ -1040,7 +1048,7 @@
         ]
       },
       "arcadeProps": {
-        "boost": 0.8
+        "boost": 1.0
       }
     },
     "ice": {
@@ -1111,6 +1119,7 @@
       "deformable_width": 0.05,
       "trackEffectsPreset": "snow",
       "explMat": "default",
+      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1149,7 +1158,7 @@
         ]
       },
       "arcadeProps": {
-        "boost": 0.8
+        "boost": 1.0
       }
     },
     "rocks": {
@@ -1243,7 +1252,7 @@
     "tankTrack": {
       "default": {
         "fk": 1.0,
-        "rollingFrictionK": 0.045
+        "rollingFrictionK": 0.055
       },
       "horLandMesh": {
         "fk": 1.0,
@@ -1251,55 +1260,55 @@
       },
       "soil": {
         "fk": 1.0,
-        "rollingFrictionK": 0.12
+        "rollingFrictionK": 0.055
       },
       "dirt": {
         "fk": 1.0,
-        "rollingFrictionK": 0.2
+        "rollingFrictionK": 0.055
       },
       "road": {
         "fk": 1.0,
-        "rollingFrictionK": 0.047
+        "rollingFrictionK": 0.05
       },
       "roadSoil": {
         "fk": 1.0,
-        "rollingFrictionK": 0.06
+        "rollingFrictionK": 0.05
       },
       "bricks_red": {
         "fk": 1.0,
-        "rollingFrictionK": 0.047
+        "rollingFrictionK": 0.05
       },
       "concrete": {
         "fk": 1.0,
-        "rollingFrictionK": 0.047
+        "rollingFrictionK": 0.055
       },
       "sand": {
         "fk": 1.0,
-        "rollingFrictionK": 0.08
+        "rollingFrictionK": 0.055
       },
       "duneSand": {
         "fk": 1.0,
-        "rollingFrictionK": 0.1
+        "rollingFrictionK": 0.055
       },
       "roadSand": {
         "fk": 1.0,
-        "rollingFrictionK": 0.047
+        "rollingFrictionK": 0.05
       },
       "snow": {
         "fk": 1.0,
-        "rollingFrictionK": 0.09
+        "rollingFrictionK": 0.055
       },
       "ice": {
         "fk": 0.3,
-        "rollingFrictionK": 0.2
+        "rollingFrictionK": 0.07
       },
       "roadSnow": {
         "fk": 1.0,
-        "rollingFrictionK": 0.1
+        "rollingFrictionK": 0.055
       },
       "rocks": {
         "fk": 1.0,
-        "rollingFrictionK": 0.047
+        "rollingFrictionK": 0.05
       },
       "rocksSlippery": {
         "fk": 0.7,
@@ -1315,7 +1324,7 @@
       },
       "stone_snow": {
         "fk": 1.0,
-        "rollingFrictionK": 0.047
+        "rollingFrictionK": 0.05
       },
       "metal": {
         "fk": 1.0,
@@ -1329,7 +1338,7 @@
     "wheel": {
       "default": {
         "fk": 1.0,
-        "rollingFrictionK": 0.03
+        "rollingFrictionK": 0.045
       },
       "horLandMesh": {
         "fk": 1.0,
@@ -1337,51 +1346,51 @@
       },
       "soil": {
         "fk": 1.0,
-        "rollingFrictionK": 0.15
+        "rollingFrictionK": 0.045
       },
       "dirt": {
-        "fk": 0.9,
-        "rollingFrictionK": 0.5
+        "fk": 1.0,
+        "rollingFrictionK": 0.045
       },
       "road": {
         "fk": 1.0,
-        "rollingFrictionK": 0.0166
+        "rollingFrictionK": 0.0177
       },
       "roadSoil": {
         "fk": 1.0,
-        "rollingFrictionK": 0.0166
+        "rollingFrictionK": 0.0177
       },
       "concrete": {
-        "fk": 0.9,
-        "rollingFrictionK": 0.0166
+        "fk": 1.0,
+        "rollingFrictionK": 0.045
       },
       "bricks_red": {
-        "fk": 0.9,
-        "rollingFrictionK": 0.0166
+        "fk": 1.0,
+        "rollingFrictionK": 0.045
       },
       "sand": {
-        "fk": 0.9,
-        "rollingFrictionK": 0.12
+        "fk": 1.0,
+        "rollingFrictionK": 0.045
       },
       "duneSand": {
         "fk": 1.0,
-        "rollingFrictionK": 0.047
+        "rollingFrictionK": 0.045
       },
       "roadSand": {
         "fk": 1.0,
-        "rollingFrictionK": 0.0166
+        "rollingFrictionK": 0.0177
       },
       "snow": {
-        "fk": 0.9,
-        "rollingFrictionK": 0.15
+        "fk": 1.0,
+        "rollingFrictionK": 0.045
       },
       "ice": {
         "fk": 0.35,
-        "rollingFrictionK": 0.25
+        "rollingFrictionK": 0.02
       },
       "roadSnow": {
-        "fk": 0.7,
-        "rollingFrictionK": 0.0166
+        "fk": 1.0,
+        "rollingFrictionK": 0.177
       },
       "rocks": {
         "fk": 0.7,

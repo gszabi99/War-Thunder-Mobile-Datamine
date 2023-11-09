@@ -4,6 +4,7 @@ let { regexp, strip, format } = require("string")
 let dagorMath = require("dagor.math")
 let {tostring_r} = require("%sqstd/string.nut")
 let {command} = require("console")
+let math = require("math")
 
 let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
 let rexInt = regexp(@"[\+\-]?[0-9]+")
@@ -70,7 +71,7 @@ let function convertTextToValForDagorClass(name, fields){
   if (fields.len()!=classFields?.len?())
     return null
   let res = dagorMath[name]()
-  classFields.each(@(key, idx) res[key] = fields[idx])
+  classFields?.each(@(key, idx) res[key] = fields[idx])
   return res
 }
 
@@ -104,7 +105,7 @@ let function convertTextToVal(cur_value, comp_type, text) {
   if (comp_type == "E3DCOLOR") {
     if (fields.len()!=4)
       return null
-    let f = fields.map(pipe(strip, tointeger, @(v) clamp(v, 0, 255)))
+    let f = fields.map(pipe(strip, tointeger, @(v) math.clamp(v, 0, 255)))
     let res = dagorMath.E3DCOLOR()
     foreach (idx, field in ["r","g","b","a"]) {
       res[field] = f[idx]

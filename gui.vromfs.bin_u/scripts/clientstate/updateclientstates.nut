@@ -7,14 +7,15 @@ let { isInBattle, isInLoadingScreen, localMPlayerId, localMPlayerTeam, battleSes
 } = require("%appGlobals/clientState/clientState.nut")
 let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
 let { get_local_mplayer } = require("mission")
+let { get_current_mission_info_cached } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
 
 let function updateStates() {
-  let isInFlight = ::is_in_flight()
-  isInBattle.update(isInFlight)
+  isInBattle.update(isInFlight())
   isInLoadingScreen.update(loading_is_in_progress())
   isInFlightMenu(false)
   isMpStatisticsActive(false)
-  let { id = -1, team = MP_TEAM_NEUTRAL } = isInFlight ? get_local_mplayer() : null
+  let { id = -1, team = MP_TEAM_NEUTRAL } = isInFlight() ? get_local_mplayer() : null
   localMPlayerId(id)
   localMPlayerTeam(team)
 }
@@ -31,7 +32,7 @@ wlog(isMpStatisticsActive, "[UI_STATES] isMpStatisticsActive")
 updateStates()
 
 let updateMissionState = @()
-  missionProgressType(::get_current_mission_info_cached()?.missionProgressType ?? "")
+  missionProgressType(get_current_mission_info_cached()?.missionProgressType ?? "")
 
 let shouldUpdateMisson = keepref(Computed(@() isInBattle.value && !isInLoadingScreen.value))
 if (shouldUpdateMisson.value)

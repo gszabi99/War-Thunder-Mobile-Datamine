@@ -171,10 +171,6 @@
     "useTamVoice": true,
     "vivoxServerURL": "https://not.used",
     "vivoxEcho": "tamvchn://echo123",
-    "charServer": [
-      "https://char-dev-wtm-mn-ru-01.warthunder.com:2443/char",
-      "https://char-dev-wtm-mn-ru-01.warthunder.com:12443/char"
-    ],
     "circuitPostfix": "-wtm-stable",
     "queryTimeoutMs": 180000,
     "disableScaleWPByPlayers": true,
@@ -366,9 +362,11 @@
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
     "disableAsserts": true,
+    "androidExitOnANR": {
+      "APP_CMD_TERM_WINDOW": true
+    },
     "contentUpdater": {
       "enabled": true,
-      "shouldLogToCrashlytics": true,
       "flag": "--force_check"
     },
     "webVromfs": {

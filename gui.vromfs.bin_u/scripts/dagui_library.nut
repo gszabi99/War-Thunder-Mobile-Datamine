@@ -1,3 +1,4 @@
+from "math" import max, min, clamp
 require("%sqstd/globalState.nut").setUniqueNestKey("dagui")
 let { kwarg } = require("%sqstd/functools.nut")
 let { Computed, Watched } = require("frp")
@@ -15,7 +16,15 @@ let function colorize(color, text) {
   return "".concat("<color=", color, ">", text, "</color>")
 }
 
+let screen_width = getroottable()?["screen_width"] ?? @() 1920
+let screen_height = getroottable()?["screen_height"] ?? @() 1080
+
 return log.__merge({
+  max
+  min
+  clamp
+  screen_width
+  screen_height
   debugTableData
   colorize
   toString

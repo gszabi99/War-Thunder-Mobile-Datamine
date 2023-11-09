@@ -4354,7 +4354,7 @@
       "shipCrewMin": 0,
       "shipCrewRating": 0.672121,
       "maxSpeed": 5.27,
-      "underwaterSpeed": 5.78646,
+      "underwaterSpeed": 8.67969,
       "turningTime": 30,
       "addTorpedoesCountPack": 16,
       "mainWeaponCaliber": 76.2,
@@ -4394,8 +4394,8 @@
     },
     "Shop": {
       "shipCrewMax": 1800,
-      "shipCrewMin": 350,
-      "shipCrewRating": 1.95303,
+      "shipCrewMin": 400,
+      "shipCrewRating": 1.68545,
       "maxSpeed": 16.98,
       "supportPlane": "os2u_1_naval",
       "supportPlaneCount": 3,
@@ -7634,9 +7634,9 @@
           "icon": "hud_ammo_he",
           "isHE": true
         },
-        "75mm_britain_APCBC": {
-          "icon": "hud_ammo_ap2_he0",
-          "reqLevel": 13
+        "75mm_usa_APCBC": {
+          "icon": "hud_ammo_ap2_he1",
+          "reqLevel": 8
         },
         "75mm_us_M89_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -8186,18 +8186,17 @@
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
-        "76mm_britain_17pdr_APC": {
-          "icon": "hud_ammo_ap2_he0",
-          "reqLevel": 9
-        },
         "76mm_britain_17pdr_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 12,
           "isHE": true
+        },
+        "76mm_britain_17pdr_APC": {
+          "icon": "hud_ammo_ap2_he0",
+          "reqLevel": 3
         },
         "76mm_britain_17pdr_APCBC": {
           "icon": "hud_ammo_ap3_he0",
-          "reqLevel": 15
+          "reqLevel": 6
         },
         "76mm_britain_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -8251,18 +8250,17 @@
         "default": {
           "icon": "hud_ammo_ap1_he0"
         },
-        "76mm_britain_17pdr_APC": {
-          "icon": "hud_ammo_ap2_he0",
-          "reqLevel": 11
-        },
         "76mm_britain_17pdr_HE": {
           "icon": "hud_ammo_he",
-          "reqLevel": 14,
           "isHE": true
+        },
+        "76mm_britain_17pdr_APC": {
+          "icon": "hud_ammo_ap2_he0",
+          "reqLevel": 13
         },
         "76mm_britain_17pdr_APCBC": {
           "icon": "hud_ammo_ap3_he0",
-          "reqLevel": 17
+          "reqLevel": 16
         }
       }
     },
@@ -8602,8 +8600,7 @@
         },
         "76mm_britain_17pdr_HE": {
           "icon": "hud_ammo_he",
-          "isHE": true,
-          "reqLevel": 3
+          "isHE": true
         }
       }
     },
@@ -8664,15 +8661,15 @@
         },
         "76mm_britain_17pdr_APC": {
           "icon": "hud_ammo_ap2_he0",
-          "reqLevel": 8
+          "reqLevel": 13
         },
         "76mm_britain_17pdr_APCBC": {
           "icon": "hud_ammo_ap3_he0",
-          "reqLevel": 11
+          "reqLevel": 16
         },
         "76mm_britain_17pdr_APDS": {
           "icon": "hud_ammo_apds",
-          "reqLevel": 14
+          "reqLevel": 19
         },
         "76mm_britain_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -9615,11 +9612,11 @@
         },
         "100mm_ussr_APHE": {
           "icon": "hud_ammo_ap2_he2",
-          "reqLevel": 8
+          "reqLevel": 14
         },
         "100mm_ussr_APCBC": {
           "icon": "hud_ammo_ap3_he1",
-          "reqLevel": 11
+          "reqLevel": 17
         },
         "100mm_ussr_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -9676,7 +9673,7 @@
         },
         "122mm_ussr_APHE": {
           "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 3
+          "reqLevel": 9
         }
       }
     },
@@ -10003,13 +10000,9 @@
           "icon": "hud_ammo_heat",
           "reqLevel": 3
         },
-        "90mm_us_M304_APCR": {
-          "icon": "hud_ammo_apcr",
-          "reqLevel": 6
-        },
         "90mm_us_M332_APCR": {
           "icon": "hud_ammo_apcr",
-          "reqLevel": 9
+          "reqLevel": 6
         },
         "90mm_us_M313_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -10083,13 +10076,9 @@
           "icon": "hud_ammo_he",
           "isHE": true
         },
-        "76mm_usa_M32_APCR": {
+        "76mm_usa_M32_APDS": {
           "icon": "hud_ammo_apcr",
           "reqLevel": 8
-        },
-        "76mm_usa_M32_APDS": {
-          "icon": "hud_ammo_apds",
-          "reqLevel": 11
         },
         "76mm_us_M361_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -10161,21 +10150,17 @@
           "icon": "hud_ammo_he",
           "isHE": true
         },
-        "90mm_us_T108_HEAT": {
-          "icon": "hud_ammo_heat",
-          "reqLevel": 13
-        },
-        "90mm_us_M304_APCR": {
-          "icon": "hud_ammo_apcr",
-          "reqLevel": 16
-        },
         "90mm_us_M82_APCBC": {
           "icon": "hud_ammo_ap2_he1",
-          "reqLevel": 19
+          "reqLevel": 13
+        },
+        "90mm_us_T108_HEAT": {
+          "icon": "hud_ammo_heat",
+          "reqLevel": 16
         },
         "90mm_us_M332_APCR": {
           "icon": "hud_ammo_apcr",
-          "reqLevel": 21
+          "reqLevel": 19
         },
         "90mm_us_M313_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -16537,21 +16522,21 @@
     },
     "bullets": {
       "128mm_KwK44_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he2"
+        "128mm_ger_TS": {
+          "icon": "hud_ammo_ap4_he1"
+        },
+        "128mm_ger_APCBC": {
+          "icon": "hud_ammo_ap3_he2"
         },
         "128mm_ger_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
         },
+        "default": {
+          "icon": "hud_ammo_ap1_he2"
+        },
         "128mm_ger_APC": {
           "icon": "hud_ammo_ap2_he2"
-        },
-        "128mm_ger_APCBC": {
-          "icon": "hud_ammo_ap3_he2"
-        },
-        "128mm_ger_TS": {
-          "icon": "hud_ammo_ap4_he1"
         }
       },
       "75mm_KwK44_L36_user_cannon": {
@@ -16562,7 +16547,7 @@
           "icon": "hud_ammo_he",
           "isHE": true
         },
-        "75mm_ger_kwk44_Hl_C_HEAT": {
+        "75mm_ger_kwk44_HEAT": {
           "icon": "hud_ammo_heat"
         }
       }
@@ -16911,6 +16896,71 @@
           "armorPower": 25.3637,
           "reloadTime": 0.240038,
           "gunnerTurretRotationSpeed": 35.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "uk_churchill_na75": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_britain": true,
+      "tank": true,
+      "type_heavy_tank": true
+    },
+    "bullets": {
+      "75mm_QQF_MkV_NA75_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_ap1_he0"
+        },
+        "75mm_britain_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "75mm_britain_APCBC": {
+          "icon": "hud_ammo_ap2_he1",
+          "reqLevel": 8
+        },
+        "75mm_us_M89_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 75.0,
+      "armorThicknessFront": [
+        0.8,
+        0.15,
+        0.05
+      ],
+      "armorThicknessSide": [
+        0.35,
+        0.5,
+        0.15
+      ],
+      "crew": 5,
+      "mass": 39000.0,
+      "maxSpeedForward": 27.9571,
+      "maxSpeedBackward": 2.49617,
+      "powerToWeightRatio": 8.97436,
+      "weapons": {
+        "75mm_QQF_MkV_NA75_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 75.0,
+          "armorPower": 90.9827,
+          "reloadTime": 5.0,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": false
+        },
+        "7_92mm_BESA_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.92,
+          "armorPower": 10.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
         }
       }

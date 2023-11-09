@@ -27,7 +27,6 @@ let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
-let { getRewardsInfo } = require("totalRewardCounts.nut")
 let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
 let debriefingTabBar = require("debriefingTabBar.nut")
 let mkDebriefingEmpty = require("mkDebriefingEmpty.nut")
@@ -214,8 +213,6 @@ let function debriefingWnd() {
   let debrData = debriefingData.get()
   let { campaign = "", isWon = false, reward = {} } = debrData
 
-  let rewardsInfo = getRewardsInfo(debrData)
-
   let hasPlayerLevelUp = isPlayerReceiveLevel(debrData)
   let hasUnitLevelUp = isUnitReceiveLevel(debrData)
   let newPlatoonUnit = getNewPlatoonUnit(debrData)
@@ -224,7 +221,7 @@ let function debriefingWnd() {
     needBtnCampaign = hasPlayerLevelUp
     needBtnUnit = newPlatoonUnit != null || (!hasPlayerLevelUp && hasUnitLevelUp)
   }
-  let debrTabsInfo = mkDebrTabsInfo(debrData, rewardsInfo, tabsParams)
+  let debrTabsInfo = mkDebrTabsInfo(debrData, tabsParams)
   let debrTabComps = debrTabsInfo.map(@(v) [ v.id, v.comp ]).totable()
   let tabsShowTime = debrTabsInfo.filter(@(v) v.needAutoAnim).map(@(v)  { id = v.id, timeShow = v.timeShow })
   let debrAnimTime = tabsShowTime.reduce(@(res, v) res + v.timeShow, 0)

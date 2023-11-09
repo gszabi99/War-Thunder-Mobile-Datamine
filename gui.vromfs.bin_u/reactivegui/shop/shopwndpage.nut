@@ -39,7 +39,7 @@ let goodsCompareCfg = [
     if (g.items.len() > 1)
       return { canCompare = false }
     foreach (itemId, count in g.items)
-      return positive(itemId, count)
+      return positive(itemId, count) // -unconditional-terminated-loop
     return null
   },
 ]

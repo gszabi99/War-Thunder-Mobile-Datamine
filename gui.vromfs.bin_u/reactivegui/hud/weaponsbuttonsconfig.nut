@@ -2,12 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_SUPPORT_PLANE_CHANGE,
-  AB_SUPPORT_PLANE_GROUP_ATTACK, AB_SUPPORT_PLANE_RETURN, AB_DIVING_LOCK,
-  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET
+  AB_SUPPORT_PLANE_GROUP_ATTACK, AB_SUPPORT_PLANE_GROUP_RETURN, AB_DIVING_LOCK,
+  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM
 } = require("actionBar/actionType.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE
-} = require("hudHaptic.nut")
+let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
 let aircraftWeaponsItems = require("%rGui/hud/aircraftWeaponsItems.nut")
 
 let function getActionBarShortcut(unitType, itemConfig) {
@@ -62,6 +61,13 @@ let actionBarItemsConfig = {
     sound = "smoke"
     getAnimationKey = @(_) "ship_smoke_screen_system_mod"
   },
+  EII_IRCM = {
+    getShortcut = @(_, __) "ID_IRCM_SWITCH_SHIP"
+    getImage = @(_) "!ui/gameuiskin#icon_ircm.svg"
+    actionType = AB_IRCM
+    mkButtonFunction = "mkActionItem"
+    haptPatternId = HAPT_IRCM
+  }
   EII_SMOKE_GRENADE = {
     getShortcut = @(unitType, __) unitType == TANK ? "ID_SMOKE_SCREEN" : "ID_SHIP_SMOKE_GRENADE"
     getImage = @(unitType) unitType == TANK
@@ -158,7 +164,7 @@ let actionBarItemsConfig = {
     getShortcut = @(_, __) "ID_WTM_AIRCRAFT_RETURN"
     image = "!ui/gameuiskin#hud_aircraft_fighter.svg"
     mkButtonFunction = "mkSimpleButton"
-    actionType = AB_SUPPORT_PLANE_RETURN
+    actionType = AB_SUPPORT_PLANE_GROUP_RETURN
   },
   EII_DIVING_LOCK = {
     getShortcut = @(_, __) "ID_DIVING_LOCK"

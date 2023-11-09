@@ -13,7 +13,7 @@ let function mkPlayersByTeamForMpStats(playersByTeam, campaign) {
   return res
 }
 
-let function mkDebriefingWndTabMpStats(debrData, _rewardsInfo, _params) {
+let function mkDebriefingWndTabMpStats(debrData, _params) {
   if ((debrData?.isSingleMission ?? false) || (debrData?.players ?? {}).len() == 0)
     return null
 

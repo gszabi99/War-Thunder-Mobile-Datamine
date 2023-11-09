@@ -10,6 +10,7 @@ let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnima
 let { deleteJustUnlockedUnit } = require("%rGui/unit/justUnlockedUnits.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 
 let unitPlateWidth = hdpx(414)
 let unitPlateHeight = hdpx(174)
@@ -18,7 +19,7 @@ let unitSelUnderlineFullHeight = hdpx(21)
 let unitSelUnderlineHeight = hdpx(9)
 let unitLevelBgSize = evenPx(46)
 let unitPlatesGap = hdpx(12)
-let lockIconSize = hdpxi(70)
+let lockIconSize = hdpxi(80)
 let lockIconOnLockedSlotSize = hdpxi(85)
 let lockIconRespWnd = hdpxi(45)
 
@@ -257,25 +258,31 @@ let mkAnimationUnitLock = @(unit, justUnlockedDelay, campaignLevel){
   ]
 }
 
-
-let function mkUnitLock(unit, isLocked, justUnlockedDelay = null, campaignLevel = null){
+let starRankOvr = {
+  pos = [0, ph(40)]
+}
+let function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
   let children = []
-  if(isLocked && unit?.costWp != 0)
+  let { rank, mRank, starRank = 0, costWp = 0 } = unit
+  if(isLocked && costWp != 0)
     children.append(
       mkIcon("ui/gameuiskin#lock_campaign.svg", [lockIconSize, lockIconSize],
         {
-          children = {
-            rendObj = ROBJ_TEXT
-            hplace = ALIGN_CENTER
-            vplace = ALIGN_CENTER
-            pos = [hdpx(2), hdpx(10)]
-            text = campaignLevel
-          }.__update(fontVeryTiny)
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          children = [
+            {
+              rendObj = ROBJ_TEXT
+              pos = [0, 0.15 * lockIconSize]
+              text = rank - starRank
+            }.__update(fontVeryTiny)
+            starLevelTiny(starRank, starRankOvr)
+          ]
         }))
   else if(justUnlockedDelay)
-    children.append(mkAnimationUnitLock(unit, justUnlockedDelay, campaignLevel))
+    children.append(mkAnimationUnitLock(unit, justUnlockedDelay, rank))
   else
-    children.append(mkGradRank(unit.mRank, {
+    children.append(mkGradRank(mRank, {
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
     }))

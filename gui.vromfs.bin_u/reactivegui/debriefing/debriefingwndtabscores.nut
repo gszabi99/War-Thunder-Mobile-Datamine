@@ -18,7 +18,7 @@ let btnSaveReplay = @() {
     : translucentButton("ui/gameuiskin#icon_save.svg", "", saveReplayWindow)
 }
 
-let function mkDebriefingWndTabScores(debrData, rewardsInfo, _params) {
+let function mkDebriefingWndTabScores(debrData, _params) {
   if (debrData == null)
     return null
 
@@ -28,7 +28,7 @@ let function mkDebriefingWndTabScores(debrData, rewardsInfo, _params) {
   let { statsAnimEndTime, debriefingStats } = mkDebriefingStats(debrData, statsAnimStartTime)
   let rewardsStartTime = statsAnimEndTime + deltaStartTimeLevelReward
 
-  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsScores(rewardsInfo, [], rewardsStartTime)
+  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsScores(debrData, [], rewardsStartTime)
   let timeShow = rewardsStartTime + totalRewardsShowTime
 
   if (achievementsComp == null && totalRewardCountsComp == null && debriefingStats == null)

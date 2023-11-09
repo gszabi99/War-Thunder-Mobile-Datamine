@@ -11,7 +11,7 @@ let { register_command } = require("console")
 let { myUserId, myUserName } = require("%appGlobals/profileStates.nut")
 let { battleData } = require("%scripts/battleData/battleData.nut")
 let { singleMissionResult } = require("singleMissionResult.nut")
-let { isInBattle, battleSessionId } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, battleSessionId, isOnline } = require("%appGlobals/clientState/clientState.nut")
 let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } = require("multiplayer")
 let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
@@ -135,7 +135,8 @@ isInBattle.subscribe(@(v) v ? playersCommonStats({}) : null)
 let function requestEarlyExitRewards() {
   logBD("Request early exit rewards")
   sendNetEvent(find_local_player_eid(), CmdApplyMyBattleResultOnExit())
-  send("matchingApiNotify", { name = "match.remove_from_session" }) //no need reconnect
+  if (isOnline.get())
+    send("matchingApiNotify", { name = "match.remove_from_session" }) //no need reconnect
 }
 
 subscribe("onBattleConnectionFailed", @(p) connectFailedData(p.__merge({ sessionId = battleSessionId.value })))

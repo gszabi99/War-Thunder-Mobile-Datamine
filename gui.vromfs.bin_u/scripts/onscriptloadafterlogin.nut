@@ -17,7 +17,6 @@ foreach (fn in [
 
   "%scripts/hud/hudEventManager.nut"
 
-  "%scripts/matchingRooms/mrooms.nut"
 ]) {
   loadOnce(fn)
 }
@@ -37,4 +36,3 @@ if (!(get_settings_blk()?.debug.skipPopups ?? false))
   require("%scripts/matchingRooms/sessionReconnect.nut")
 require("%scripts/hud/hud.nut")
 require("userstat.nut")
-require("leaderboard.nut")

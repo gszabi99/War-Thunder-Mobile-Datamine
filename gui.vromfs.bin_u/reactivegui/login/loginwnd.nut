@@ -316,7 +316,7 @@ let fbLoginButtonContent = {
   ]
 }
 
-let firebaseLoginButtonContent = {
+let firebaseLoginButtonContent = freeze({
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(15)
@@ -334,27 +334,9 @@ let firebaseLoginButtonContent = {
       color = Color(0, 0, 0)
     }.__update(fontSmallAccented)
   ]
-}
+})
 
-let guestLoginButtonContent = {
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(15)
-  children = [
-    {
-      size = [ googleLogoWidth, googleLogoHeight ]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#guest_login.svg:{googleLogoWidth}:{googleLogoHeight}")
-      keepAspect = KEEP_ASPECT_FIT
-      color = Color(0, 0, 0)
-    }
-    {
-      rendObj = ROBJ_TEXT
-      text = loc("authorization_method/guest")
-      color = Color(0, 0, 0)
-    }.__update(fontSmallAccented)
-  ]
-}
+let guestLoginButtonContent = firebaseLoginButtonContent
 
 let loginButtonCtors = {
   [LT_GAIJIN] = @() mkCustomButton(mkGaijinLogo(), @() isLoginByGajin.update(true), BRIGHT),

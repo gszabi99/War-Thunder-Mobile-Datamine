@@ -35,10 +35,10 @@ let tabsCfgOrdered = [
   }
 ]
 
-let function mkDebrTabsInfo(debrData, rewardsInfo, params) {
+let function mkDebrTabsInfo(debrData, params) {
   let res = tabsCfgOrdered
     .map(@(v) {}
-    .__update(v, v.dataCtor(debrData, rewardsInfo, params) ?? {}))
+    .__update(v, v.dataCtor(debrData, params) ?? {}))
     .filter(@(v) v?.comp != null)
   let { needBtnCampaign, needBtnUnit } = params
   let lastAnimTabId = needBtnCampaign && (DEBR_TAB_CAMPAIGN in res) ? DEBR_TAB_CAMPAIGN

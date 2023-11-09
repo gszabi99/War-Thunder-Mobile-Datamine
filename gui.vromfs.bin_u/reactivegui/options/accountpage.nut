@@ -136,7 +136,7 @@ let userInfoBlock = {
 
 let buttonsWidthStyle = {
   ovr = {
-    minWidth = hdpx(500)
+    minWidth = hdpx(550)
   }
 }
 

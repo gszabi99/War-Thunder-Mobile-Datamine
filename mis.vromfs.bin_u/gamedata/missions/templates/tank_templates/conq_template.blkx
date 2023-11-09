@@ -431,7 +431,6 @@
               "@t1_spawn_01_name",
               "@t1_spawn_02_name"
             ],
-            "areaNameForSortingByProximity": "@zone_name",
             "team": "A",
             "tags": {
               "tank": true
@@ -458,7 +457,6 @@
               "@t2_spawn_01_name",
               "@t2_spawn_02_name"
             ],
-            "areaNameForSortingByProximity": "@zone_name",
             "team": "B",
             "tags": {
               "tank": true
@@ -507,7 +505,6 @@
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
             "target": "@t1_spawn_01_name",
-            "areaNameForSortingByProximity": "@zone_name",
             "team": "A",
             "tags": {
               "tank": true
@@ -531,7 +528,6 @@
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
             "target": "@t2_spawn_01_name",
-            "areaNameForSortingByProximity": "@zone_name",
             "team": "B",
             "tags": {
               "tank": true
@@ -617,7 +613,6 @@
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
             "target": "@t1_spawn_02_name",
-            "areaNameForSortingByProximity": "@zone_name",
             "team": "A",
             "tags": {
               "tank": true
@@ -641,7 +636,6 @@
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
             "target": "@t2_spawn_02_name",
-            "areaNameForSortingByProximity": "@zone_name",
             "team": "B",
             "tags": {
               "tank": true
@@ -702,7 +696,6 @@
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
             "target": "@t1_spawn_03_name",
-            "areaNameForSortingByProximity": "@zone_name",
             "team": "A",
             "tags": {
               "tank": true
@@ -726,7 +719,6 @@
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
             "target": "@t2_spawn_03_name",
-            "areaNameForSortingByProximity": "@zone_name",
             "team": "B",
             "tags": {
               "tank": true

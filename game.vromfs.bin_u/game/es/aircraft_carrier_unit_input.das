@@ -69,7 +69,6 @@ def aircarft_carrier_plane_change_request(evt : EventOnKeyUp;
     return
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit.id, uid)
-  set_group_return(supportPlaneIdx, false)
   sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneChange idx=supportPlaneIdx]])
 
 [es(tag=input, REQUIRE=(controlledHero))]
@@ -78,7 +77,7 @@ def aircarft_carrier_plane_group_attack(evt : EventOnKeyUp;
   if evt.eventId != int(ShortcutEventId ID_WTM_AIRCRAFT_GROUP_ATTACK)
     return
 
-  toggle_group_attack()
+  set_player_command(1)
 
   let unit = get_unit(uid)
   if unit.isGroundModel
@@ -89,7 +88,7 @@ def aircarft_carrier_plane_group_attack(evt : EventOnKeyUp;
     return
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit.id, uid)
-  sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneGroupAttack idx=supportPlaneIdx, targetId=get_group_attack_target_id(supportPlaneIdx), attack=get_group_attack(supportPlaneIdx)]])
+  sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneGroupAttack idx=supportPlaneIdx, targetId=get_player_target_id(), attack=false]])
 
 [es(tag=input, REQUIRE=(controlledHero))]
 def aircarft_carrier_plane_return(evt : EventOnKeyUp;
@@ -97,7 +96,7 @@ def aircarft_carrier_plane_return(evt : EventOnKeyUp;
   if evt.eventId != int(ShortcutEventId ID_WTM_AIRCRAFT_RETURN)
     return
 
-  toggle_group_return()
+  set_player_command(5)
 
   let unit = get_unit(uid)
   if unit.isGroundModel
@@ -108,4 +107,4 @@ def aircarft_carrier_plane_return(evt : EventOnKeyUp;
     return
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit.id, uid)
-  sendEvent(ownedUnit.eid, [[CmdReturnAircraftToShip idx=supportPlaneIdx, rtb=get_group_return(supportPlaneIdx)]])
+  sendEvent(ownedUnit.eid, [[CmdReturnAircraftToShip idx=supportPlaneIdx, rtb=true]])

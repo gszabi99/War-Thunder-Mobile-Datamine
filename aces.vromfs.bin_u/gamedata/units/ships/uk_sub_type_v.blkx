@@ -370,8 +370,7 @@
         "compartment_03_dm",
         "compartment_04_dm",
         "bridge_dm",
-        "main_caliber_turret_01_dm",
-        "armor_cit_01_dm"
+        "main_caliber_turret_01_dm"
       ],
       "effect": [
         {
@@ -413,7 +412,7 @@
   },
   "ShipPhys": {
     "floodControl": 0.005,
-    "minBuoyancyMult": 0.1,
+    "minBuoyancyMult": 0.17,
     "helmLimit": 1.0,
     "helmVerticalLimit": 0.0,
     "maxPitch": 0.0,
@@ -437,7 +436,7 @@
     "engines": {
       "maxSpeed": 5.27,
       "maxReverseSpeed": 3.0,
-      "surfaceSlowMult": 1.098,
+      "surfaceSlowMult": 1.647,
       "speedToTime": {
         "row": [
           5.2,

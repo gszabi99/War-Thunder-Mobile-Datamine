@@ -48,7 +48,7 @@ let onRepair = @(data) activeTimers.mutate(function onRepairImpl(actTimers) {
   deleteF(actTimers, "repair_status")
   deleteF(actTimers, "repair_auto_status")
 
-  let { state, time = 0 } = data
+  let { state, time = 0, totalTime = 0 } = data
   let isPrepare = state == "prepareRepair"
   if (time <= 0
       || (time <= REPAIR_SHOW_TIME_THRESHOLD && !isPrepare)
@@ -56,7 +56,7 @@ let onRepair = @(data) activeTimers.mutate(function onRepairImpl(actTimers) {
     return
 
   let timerId = state == "repairingAuto" ? "repair_auto_status" : "repair_status"
-  actTimers[timerId] <- mkTimer(time, {
+  actTimers[timerId] <- mkTimerOffset(totalTime, totalTime - time, {
     needCountdown = !isPrepare
     isForward = !isPrepare
     winkPeriod = isPrepare ? winkFast : 0

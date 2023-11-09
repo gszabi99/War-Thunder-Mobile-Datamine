@@ -1,4 +1,6 @@
 from "daRg" import *
+from "math" import max, min, clamp
+
 require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let log = require("%globalScripts/logs.nut")
 let { loc } = require("dagor.localize")
@@ -43,6 +45,9 @@ return dargBaseLib.__merge(
   require("frp")
   require("%sqstd/functools.nut")
 {
+  max
+  min
+  clamp
   loc
   debugTableData
   toString

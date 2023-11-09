@@ -16,7 +16,7 @@ mirrorShrinkZNeg:r = 256
 lastClip:b = yes//optimization for hangar loading
 lastclip_horizon:b = yes
 
-rendinstPreloadDistance:r=7000
+rendinstPreloadDistance:r=8500
 
 render {
   lmesh:b = yes

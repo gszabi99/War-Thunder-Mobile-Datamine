@@ -1,7 +1,7 @@
 
 from "%scripts/dagui_library.nut" import *
 
-::web_rpc <- {
+let web_rpc = {
   handlers = {}
 
   function register_handler(func_name, handler) {
@@ -19,9 +19,10 @@ from "%scripts/dagui_library.nut" import *
   }
 }
 
+//used from native code
 ::handle_web_rpc <- function handle_web_rpc(call) {
   try {
-    return ::web_rpc.handle_web_rpc_unsafe(call)
+    return web_rpc.handle_web_rpc_unsafe(call)
   }
   catch (e) {
     log($"web rpc failed: {e}")
@@ -31,9 +32,11 @@ from "%scripts/dagui_library.nut" import *
 
 /*
  this is just example
-*/
-::rpc_add <- function rpc_add(params) {
+let function rpc_add(params) {
   return (params.a + params.b).tostring()
 }
 
-::web_rpc.register_handler("plus", ::rpc_add)
+web_rpc.register_handler("plus", rpc_add)
+*/
+
+return {web_rpc}
