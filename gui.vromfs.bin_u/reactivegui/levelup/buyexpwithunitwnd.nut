@@ -7,7 +7,7 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { premiumTextColor, userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts
+let { unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkPlayerLevel
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getPlatoonOrUnitName, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -29,6 +29,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
+let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 
 let fonticonPreview = "⌡"
@@ -52,15 +53,35 @@ let lvlUpCost = Computed(function() {
     : null
 })
 
-let lvlText = @(level) {
-  rendObj = ROBJ_TEXT
-  text = $"{loc("mainmenu/rank")} {level}"
-}.__update(fontMediumShaded)
+let lvlText = @(level, starLevel) {
+  size = [SIZE_TO_CONTENT, hdpx(50)]
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = loc("mainmenu/rank")
+    }.__update(fontMediumShaded)
+    mkPlayerLevel(level, starLevel)
+  ]
+}
 
-let upgradeAccelerationText = @(level) {
-  rendObj = ROBJ_TEXT
-  text = loc("buyUnitAndExp/desc", { buyLvl = level + 1 })
-}.__update(fontSmall)
+let function upgradeAccelerationText(info) {
+  let { level, starLevel, isStarProgress = false } = info
+  let levelIcon = mkPlayerLevel(level + 1, (isStarProgress ? starLevel + 1 : 0))
+  return {
+    size = [SIZE_TO_CONTENT, hdpx(40)]
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    children = mkTextRow(
+      loc("buyUnitAndExp/desc"),
+      @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmall),
+      {
+        ["{buyLvl}"] = levelIcon, //warning disable: -forgot-subst
+      }
+    )
+  }
+}
 
 let header = @() {
   watch = [playerLevelInfo, lvlUpCost]
@@ -68,8 +89,8 @@ let header = @() {
   halign = ALIGN_CENTER
   gap = hdpx(12)
   children = [
-    lvlText(playerLevelInfo.value.level)
-    upgradeAccelerationText(playerLevelInfo.value.level)
+    lvlText(playerLevelInfo.value.level, playerLevelInfo.value.starLevel)
+    upgradeAccelerationText(playerLevelInfo.value)
     mkCurrencyComp(lvlUpCost.value, GOLD)
   ]
 }
@@ -323,7 +344,7 @@ let function mkPurchaseFunc(unit, campaign, lvlCost, levelInfo) {
 let openConfirmationWnd = @(unit, campaign, lvlUpPrice, levelInfo) openMsgBoxPurchase(
     loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor
-        $"{loc(getUnitPresentation(unit).locId)}, {loc("mainmenu/rank")} {levelInfo.level + 1} ") })
+        $"{loc(getUnitPresentation(unit).locId)}") })
     mkPriceParameters(unit)
     mkPurchaseFunc(unit, campaign, lvlUpPrice, levelInfo)
     mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, (levelInfo.level + 1).tostring())
@@ -336,7 +357,6 @@ let function mkBuyBtn(unit) {
     valign = ALIGN_CENTER
     gap = hdpx(12)
     children = [
-      { rendObj = ROBJ_TEXT, text = utf8ToUpper(loc("units/btn_speed_explore")) }.__update(fontTiny)
       @() {
         watch = lvlUpCost
         flow = FLOW_HORIZONTAL

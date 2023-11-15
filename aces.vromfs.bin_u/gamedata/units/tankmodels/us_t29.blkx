@@ -45,6 +45,18 @@
   "destroysTrees": true,
   "type": "typeHeavyTank",
   "minRelativeTankCameraThreshold": 1.29,
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.7,
+      0.05,
+      0.25
+    ],
+    "armorThicknessSide": [
+      0.15,
+      0.0,
+      0.85
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -2693,105 +2705,161 @@
     "art_support_mortars": {},
     "art_support_highcaliber": {}
   },
-  "user_skin": {
-    "name": "t29",
+  "default_skin": {
     "replace_tex": {
-      "from": "us_camo_olive*"
+      "from": "us_camo_olive*",
+      "to": "us_camo_desert_pink_lines*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -0.59385,
+        0.0,
+        0.814897,
+        -0.840106
+      ],
+      "decal0Line1": [
+        0.814897,
+        0.0,
+        0.59385,
+        2.3266
+      ],
+      "decal0Line2": [
+        -0.59385,
+        0.0,
+        -0.814897,
+        -0.828372
+      ],
+      "decal0Line3": [
+        0.814897,
+        0.0,
+        -0.59385,
+        2.33515
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0,
+        1.0,
+        0.0,
+        -1.71778
+      ],
+      "decal0CPNormDepth1": [
+        -0.0,
+        -1.0,
+        -0.0,
+        1.67262
+      ],
+      "decal0RotScale": [
+        0.941039,
+        0.991746
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.226367,
+      "decal0Tex": "usa_tank_emblem_09",
+      "decal1Line0": [
+        2.74983,
+        -1.19617E-07,
+        0.484129,
+        -1.97595
+      ],
+      "decal1Line1": [
+        0.0301803,
+        -2.78669,
+        -0.171423,
+        6.86051
+      ],
+      "decal1Line2": [
+        -2.74983,
+        -1.22217E-07,
+        0.484129,
+        2.97595
+      ],
+      "decal1Line3": [
+        0.0301805,
+        -2.78669,
+        0.171423,
+        6.86051
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.173054,
+        0.0623395,
+        -0.982938,
+        -1.52763
+      ],
+      "decal1CPNormDepth1": [
+        0.173054,
+        0.0623395,
+        0.982938,
+        -1.52763
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.35815
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.228337,
+      "decal1Tex": "usa_tank_emblem_08",
+      "decal2Line0": [
+        -2.78775,
+        -1.21485E-07,
+        0.117562,
+        2.97165
+      ],
+      "decal2Line1": [
+        0.00739361,
+        -2.7847,
+        0.175321,
+        6.76923
+      ],
+      "decal2Line2": [
+        2.78775,
+        -1.22784E-07,
+        0.117562,
+        -1.97165
+      ],
+      "decal2Line3": [
+        0.00739337,
+        -2.7847,
+        -0.175321,
+        6.76923
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        0.0420502,
+        0.0628899,
+        0.997134,
+        -1.40984
+      ],
+      "decal2CPNormDepth1": [
+        0.0420502,
+        0.0628899,
+        -0.997134,
+        -1.40984
+      ],
+      "decal2RotScale": [
+        1.5708,
+        0.358394
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": false,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.221515,
+      "decal2Tex": "usa_tank_emblem_08"
     }
   },
   "battleHideNodes": {
     "n": "details"
-  },
-  "skin": [
-    {
-      "name": "us_camo_dark_green_dark_earth",
-      "nameLocId": "skin/us_camo_dark_green_dark_earth",
-      "descLocId": "skin/us_camo_dark_green_dark_earth/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_dark_green_dark_earth*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_dark_khaki",
-      "nameLocId": "skin/us_camo_desert_pink_dark_khaki",
-      "descLocId": "skin/us_camo_desert_pink_dark_khaki/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_dark_khaki*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_lines",
-      "nameLocId": "skin/us_camo_desert_pink_lines",
-      "descLocId": "skin/us_camo_desert_pink_lines/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_lines*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive",
-      "nameLocId": "skin/us_camo_desert_pink_olive",
-      "descLocId": "skin/us_camo_desert_pink_olive/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive_drab",
-      "nameLocId": "skin/us_camo_desert_pink_olive_drab",
-      "descLocId": "skin/us_camo_desert_pink_olive_drab/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive_drab*"
-      }
-    },
-    {
-      "name": "us_camo_desert_pink_olive_drab_dark_earth",
-      "nameLocId": "skin/us_camo_desert_pink_olive_drab_dark_earth",
-      "descLocId": "skin/us_camo_desert_pink_olive_drab_dark_earth/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_desert_pink_olive_drab_dark_earth*"
-      }
-    },
-    {
-      "name": "us_camo_olive_drab",
-      "nameLocId": "skin/us_camo_olive_drab",
-      "descLocId": "skin/us_camo_olive_drab/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_olive_drab*"
-      }
-    },
-    {
-      "name": "us_camo_winter_olive",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_winter_olive*"
-      }
-    },
-    {
-      "name": "us_camo_olive_drab_olive",
-      "nameLocId": "skin/us_camo_olive_drab_olive",
-      "descLocId": "skin/us_camo_olive_drab_olive/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_olive_drab_olive*"
-      }
-    },
-    {
-      "name": "us_camo_winter_grid",
-      "nameLocId": "skin/us_camo_winter_grid",
-      "descLocId": "skin/us_camo_winter_grid/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_winter_grid*"
-      }
-    }
-  ]
+  }
 }

@@ -11,7 +11,7 @@ let animKey = Watched(0)
 
 let flag = @() {
   watch = animKey
-  children = levelUpFlag(levelUpSizePx[1], 5, 0.5, { key = animKey.value })
+  children = levelUpFlag(levelUpSizePx[1], 16, 2, 0.5, { key = animKey.value })
 }
 
 let openImpl = @() addModalWindow({

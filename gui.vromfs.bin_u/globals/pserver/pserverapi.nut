@@ -424,9 +424,9 @@ return {
     params = { name, count }
   }, cb)
 
-  userstat_add_item = @(itemdef, count, cb = null) request({
+  userstat_add_item = @(itemdef, count, externalTag, cb = null) request({
     method = "userstat_add_item"
-    params = { itemdef, count }
+    params = { itemdef, count, externalTag }
   }, cb)
 
   add_wp = @(count, cb = null) request({

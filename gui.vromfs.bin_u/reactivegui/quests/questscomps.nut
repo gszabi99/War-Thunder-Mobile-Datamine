@@ -6,7 +6,8 @@ let { onSectionChange, curSectionId, hasUnseenQuestsBySection, sectionsCfg } = r
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkLockedIcon, progressBarRewardSize } = require("rewardsComps.nut")
 let { eventSeason, openEventWnd } = require("%rGui/event/eventState.nut")
-let { getLootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
+let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 
 
 let SECTION_OPACITY = 0.3
@@ -98,23 +99,20 @@ let allQuestsCompleted = {
 
 let function linkToEventBtn() {
   let stateFlags = Watched(0)
+  let bigLootbox = Computed(@() eventLootboxes.value?[eventLootboxes.value.len() - 1].name)
 
   return @() {
-    watch = [eventSeason, stateFlags]
+    watch = [eventSeason, bigLootbox, stateFlags]
     size = [linkToEventWidth, progressBarRewardSize]
     behavior = Behaviors.Button
     onClick = openEventWnd
     onElemState = @(sf) stateFlags(sf)
     children = [
       mkBgImg($"ui/gameuiskin#banner_event_{eventSeason.value}.avif:0:P", "ui/gameuiskin#offer_bg_blue.avif:0:P")
-      {
-        size = [lootboxSize, lootboxSize]
+      mkLoootboxImage(bigLootbox.value, lootboxSize, {
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
-        rendObj = ROBJ_IMAGE
-        keepAspect = true
-        image = getLootboxImage("event_big", lootboxSize)
-      }
+      })
       {
         vplace = ALIGN_BOTTOM
         rendObj = ROBJ_TEXT

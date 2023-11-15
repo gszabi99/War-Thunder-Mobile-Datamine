@@ -38,6 +38,15 @@ let buyUnitsData = Computed(function() {
   }
 })
 
+let unlockedPlatoonUnits = Computed(function() {
+  let res = []
+  foreach(unit in myUnits.value) {
+    let { level = 0, platoonUnits = [] } = unit
+    platoonUnits.each(@(pu) level >= pu.reqLevel ? res.append(pu.name) : null)
+  }
+  return res
+})
+
 let canBuyUnits = Computed(@() buyUnitsData.value.canBuy)
 let canBuyUnitsStatus = Computed(@() buyUnitsData.value.unitStatus)
 
@@ -77,6 +86,8 @@ return {
   canBuyUnitsStatus
 
   getUnitLockedShortText
+
+  unlockedPlatoonUnits
 
   setCurrentUnit
 }

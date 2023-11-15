@@ -255,7 +255,7 @@ let function fillRewardsCounts(rewards, profile, configs) {
         return r
       }
 
-      let { opened = 0 } = lootboxStats?[r?.source]
+      let { opened = 0 } = lootboxStats?[r?.parentSource]
       let { fixedRewards = {} } = configs.lootboxesCfg?[r?.parentSource]
       hideLastReward[true] <- null == fixedRewards.findindex(@(_, c) c.tointeger() > opened)
       return r

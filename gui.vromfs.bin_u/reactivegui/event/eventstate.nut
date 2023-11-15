@@ -11,6 +11,7 @@ let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balanceWarbond, balanceEventKey, EVENT_KEY, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { unlockTables } = require("%rGui/unlocks/unlocks.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 
 let SEEN_LOOTBOXES = "seenLootboxes"
@@ -43,8 +44,12 @@ let isMiniEventActive = Computed(@() unlockTables.value?.mini_event_season == tr
 
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
 let lootboxesAvailability = mkWatched(persist, LOOTBOXES_AVAILABILITY, {})
-let unseenLootboxes = Computed(@() eventLootboxesRaw.value.filter(@(_, id) id not in seenLootboxes.value?[eventSeason.value]))
+let unseenLootboxes = Computed(@() eventLootboxes.value
+  .filter(@(v) v.name not in seenLootboxes.value?[eventSeason.value])
+  .reduce(@(res, v) res.rawset(v.name, true), {}))
 let unseenLootboxesShowOnce = mkWatched(persist, "unseenLootboxesShowOnce", {})
+
+let bestCampLevel = Computed(@() servProfile.value?.levelInfo.reduce(@(a, b) max(a?.level ?? 0, b?.level ?? 0)) ?? 1)
 
 let function saveSeenLootboxes(ids) {
   let season = eventSeason.value
@@ -183,10 +188,11 @@ return {
   eventSeasonName
   isEventActive
   isMiniEventActive
-  miniEventSeasonName,
-  miniEventEndsAt,
-
+  miniEventSeasonName
+  miniEventEndsAt
 
   unseenLootboxes
   unseenLootboxesShowOnce
+
+  bestCampLevel
 }

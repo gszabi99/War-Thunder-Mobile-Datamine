@@ -237,6 +237,10 @@
       "content.hq/pkg_tier_3_naval_hq",
       "content/pkg_tier_4_naval",
       "content.hq/pkg_tier_4_naval_hq",
+      "content/pkg_germ_battlecruiser_von_der_tann",
+      "content.hq/pkg_germ_battlecruiser_von_der_tann_hq",
+      "content/pkg_jp_battleship_yamato",
+      "content.hq/pkg_jp_battleship_yamato_hq",
       "content/pkg_tier_1_ground",
       "content.hq/pkg_tier_1_ground_hq",
       "content/pkg_tier_2_ground",
@@ -245,19 +249,51 @@
       "content.hq/pkg_tier_3_ground_hq",
       "content/pkg_tier_4_ground",
       "content.hq/pkg_tier_4_ground_hq",
+      "content/pkg_ussr_kv_122",
+      "content.hq/pkg_ussr_kv_122_hq",
       "content/pkg_tier_5_ground",
       "content.hq/pkg_tier_5_ground_hq",
       "content/pkg_tier_6_ground",
       "content.hq/pkg_tier_6_ground_hq",
+      "content/pkg_us_t29",
+      "content.hq/pkg_us_t29_hq",
       "content/pkg_tier_7_ground",
       "content.hq/pkg_tier_7_ground_hq",
-      "content/pkg_tier_8_ground",
-      "content.hq/pkg_tier_8_ground_hq",
+      "content/pkg_cn_ztz_88a",
+      "content.hq/pkg_cn_ztz_88a_hq",
       "content/pkg_video",
       "content.hq/pkg_environment_uhq",
       "content.hq/pkg_ground_uhq",
-      "content.hq/pkg_naval_uhq"
+      "content.hq/pkg_naval_uhq",
+      "content/pkg_lvl_vietnam_hills",
+      "content.hq/pkg_lvl_vietnam_hills_hq"
     ]
+  },
+  "addonConditions": {
+    "pkg_lvl_vietnam_hills": {
+      "campaign": "tanks",
+      "mRank": 3
+    },
+    "pkg_ussr_kv_122": {
+      "campaign": "tanks",
+      "mRank": 4
+    },
+    "pkg_us_t29": {
+      "campaign": "tanks",
+      "mRank": 6
+    },
+    "pkg_cn_ztz_88a": {
+      "campaign": "tanks",
+      "mRank": 8
+    },
+    "pkg_germ_battlecruiser_von_der_tann": {
+      "campaign": "ships",
+      "mRank": 3
+    },
+    "pkg_jp_battleship_yamato": {
+      "campaign": "ships",
+      "mRank": 4
+    }
   },
   "addonToXboxChunk": {
     "content.hq/hq_tex": 1002,

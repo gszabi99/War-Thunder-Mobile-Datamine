@@ -20,6 +20,8 @@ let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWith
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
+let { scaleAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
+let { justUnlockedPlatoonUnits } = require("%rGui/unit/justUnlockedPlatoonUnits.nut")
 
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let curSelectedUnitId = Watched("")
@@ -83,14 +85,18 @@ unitToShow.subscribe(function(unit) {
     resetCustomHangarUnit()
 })
 
+let UNIT_DELAY = 1.5
+let UNIT_SCALE = 1.2
 let function mkUnitPlate(unit, platoonUnit, onClick) {
   let p = getUnitPresentation(platoonUnit)
   let { isPremium = false, isUpgraded = false } = unit
   let isSelected = Computed(@() curSelectedUnitId.value == platoonUnit.name)
-  let isLocked = !isPremium && !isUpgraded && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0)
-  let imgOvr = { picSaturate = isLocked ? 0.0 : 1.0 }
+  let isLocked = Computed(@() !isPremium && !isUpgraded && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
+  let imgOvr = { picSaturate = isLocked.value ? 0.0 : 1.0 }
+  let justUnlockedDelay = Computed(@() justUnlockedPlatoonUnits.value.indexof(platoonUnit.name) != null ? UNIT_DELAY : null)
 
-  return {
+  return @() {
+    watch = [isLocked, justUnlockedDelay]
     behavior = Behaviors.Button
     onClick
     sound = { click  = "choose" }
@@ -98,19 +104,22 @@ let function mkUnitPlate(unit, platoonUnit, onClick) {
     children = [
       mkUnitSelectedUnderlineVert(isSelected)
       {
+        key = {}
         size = [ unitPlateWidth, unitPlateHeight ]
+        transform = {}
+        animations = scaleAnimation(justUnlockedDelay.value, [UNIT_SCALE, UNIT_SCALE])
         children = [
-          mkUnitBg(unit, imgOvr)
-          mkUnitSelectedGlow(unit, isSelected)
+          mkUnitBg(unit, imgOvr, justUnlockedDelay.value)
+          mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(unit.__merge(platoonUnit)).__update(imgOvr)
           mkUnitTexts(unit, loc(p.locId))
-          !isLocked
+          !isLocked.value
             ? mkGradRank(unit.mRank, {
               hplace = ALIGN_RIGHT
               vplace = ALIGN_BOTTOM
               padding = hdpx(10)
-            })
-            : mkUnitSlotLockedLine(platoonUnit)
+            }): null
+          mkUnitSlotLockedLine(platoonUnit, isLocked.value, justUnlockedDelay.value)
         ]
       }
     ]

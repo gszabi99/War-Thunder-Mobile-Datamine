@@ -57,6 +57,8 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { unseenUnits, markUnitSeen } = require("unseenUnits.nut")
+let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
@@ -66,6 +68,9 @@ let activeFilters = Watched(0)
 let profileStateFlags = Watched(0)
 
 let gapFromUnitsBlockToBtns = hdpx(4)
+
+let premBGHoverColor = 0x01B28600
+let defaultBgHoverColor = 0xFF50C0FF
 
 isUnitsWndAttached.subscribe(function(v) {
   if (v)
@@ -83,9 +88,13 @@ let availableUnitsList = Computed(@() allUnitsCfg.value
   .values()
   .sort(sortUnits))
 
+let scrollHandler = ScrollHandler()
+let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))
+
+let sizePlatoon = Computed(@() (availableUnitsList.value?[0].platoonUnits ?? []).len())
+let gap = Computed(@() sizePlatoon.value > 0 ? (sizePlatoon.value + 0.8) * platoonSelPlatesGap : 0)
+
 let curSelectedUnit = Watched(null)
-let curSelectedUnitLevel = Computed(@()
-  allUnitsCfg.value.findvalue(@(u) u.name == curSelectedUnit.value)?.rank ?? 0)
 let curUnitName = Computed(@() curUnit.value?.name)
 
 curCampaign.subscribe(@(_) curSelectedUnit(curUnitName.value))
@@ -247,7 +256,8 @@ let function unitActionButtons() {
     }
   }
   else if (canBuyUnitsStatus.value?[curSelectedUnit.value] == US_TOO_LOW_LEVEL){
-    let deltaLevels = curSelectedUnitLevel.value - playerLevelInfo.value.level
+    let { rank = 0, starRank = 0 } = allUnitsCfg.value.findvalue(@(u) u.name == curSelectedUnit.value)
+    let deltaLevels = rank - playerLevelInfo.value.level
     if(deltaLevels >= 2)
       children.append(bgTextMessage.__merge({
         children = @(){
@@ -262,10 +272,10 @@ let function unitActionButtons() {
     else if(deltaLevels == 1 && canBuyUnitsStatus.value?[curSelectedUnit.value] != US_NOT_FOR_SALE) {
       let premId = findGoodsPrem(shopGoods.value)?.id
       children.append(
-        textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), curSelectedUnitLevel.value,
+        textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), rank, starRank,
           havePremium.value || premId == null
-          ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
-          : @() openGoodsPreview(premId), { hotkeys = ["^J:Y"] })
+            ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
+            : @() openGoodsPreview(premId), { hotkeys = ["^J:Y"] })
       )
     }
   }
@@ -297,10 +307,11 @@ let function unitActionButtons() {
   )
   return {
     watch = [
-      curSelectedUnit,curSelectedUnitPrice,
+      curSelectedUnit, curSelectedUnitPrice, allUnitsCfg,
       canBuyUnits, canEquipSelectedUnit, havePremium,
       canBuyUnitsStatus, playerLevelInfo, curCampaign,
-      shopGoods, buyUnitsData, availableUnitsList]
+      shopGoods, buyUnitsData, availableUnitsList
+    ]
     size = SIZE_TO_CONTENT
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -340,12 +351,6 @@ let function isHold(id) {
   return time >= MIN_HOLD_MSEC
 }
 
-let hoverBg = {
-  vplace = ALIGN_CENTER
-  size = [ flex(), hdpx(19) ]
-  rendObj = ROBJ_BOX
-}
-
 let function mkPlatoonPlates(unit) {
   let platoonUnits = unit.platoonUnits
   let platoonSize = platoonUnits?.len() ?? 0
@@ -380,6 +385,13 @@ let function mkPlatoonPlates(unit) {
   }
 }
 
+let hoverBG = @(color){
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
+  color
+}
+
 let function mkPlatoonPlate(unit) {
   let stateFlags = Watched(0)
   if (unit == null)
@@ -399,6 +411,7 @@ let function mkPlatoonPlate(unit) {
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value) : null)
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
+  let color = unit?.isUpgraded || unit?.isPremium ? premBGHoverColor : defaultBgHoverColor
   return @() {
     watch = [isSelected, stateFlags, justUnlockedDelay, price]
     behavior = Behaviors.Button
@@ -409,12 +422,14 @@ let function mkPlatoonPlate(unit) {
     xmbNode = XmbNode()
     flow = FLOW_VERTICAL
     children = [
-      stateFlags.value & S_HOVER ? hoverBg : null
       {
         size = [ unitPlateWidth, unitPlateHeight ]
         children = [
           mkPlatoonPlates(unit)
           mkUnitBg(unit, {}, justUnlockedDelay.value)
+          stateFlags.value & S_HOVER
+            ? hoverBG(color)
+            : null
           mkPlatoonSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(unit)
           mkUnitCanPurchaseShade(canPurchase)
@@ -453,6 +468,7 @@ let function mkUnitPlate(unit) {
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
+  let color = unit?.isUpgraded || unit?.isPremium ? premBGHoverColor : defaultBgHoverColor
   return @() {
     watch = [isSelected, stateFlags, justUnlockedDelay, price]
     size = [ unitPlateWidth, unitsPlateCombinedHeight ]
@@ -464,7 +480,6 @@ let function mkUnitPlate(unit) {
     xmbNode = XmbNode()
     flow = FLOW_VERTICAL
     children = [
-      stateFlags.value & S_HOVER ? hoverBg : null
       mkUnitEquippedTopLine(isEquipped, justUnlockedDelay.value)
       {
         size = [ unitPlateWidth, unitPlateHeight ]
@@ -472,6 +487,9 @@ let function mkUnitPlate(unit) {
         animations = scaleAnimation(justUnlockedDelay.value, [1.05, 1.05])
         children = [
           mkUnitBg(unit, {}, justUnlockedDelay.value)
+          stateFlags.value & S_HOVER
+            ? hoverBG(color)
+            : null
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(unit)
           mkUnitCanPurchaseShade(canPurchase)
@@ -482,7 +500,7 @@ let function mkUnitPlate(unit) {
             : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)
           price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkUnitEquippedFrame(unit, isEquipped, justUnlockedDelay.value)
-          mkPriorityUnseenMarkWatch(needShowUnseenMark, {halign = ALIGN_RIGHT})
+          mkPriorityUnseenMarkWatch(needShowUnseenMark)
         ]
       }
       mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)
@@ -490,21 +508,55 @@ let function mkUnitPlate(unit) {
   }
 }
 
-let scrollHandler = ScrollHandler()
-let mkHorizPannableArea = @(content) {
-  size = flex()
-  flow = FLOW_HORIZONTAL
-  children = {
-    size = flex()
-    behavior = Behaviors.Pannable
-    scrollHandler = scrollHandler
-    children = content
-    xmbNode = XmbContainer({
-      canFocus = false
-      scrollSpeed = 5.0
-      isViewport = true
-    })
+let unseenUnitsIndex = Computed(function(){
+  let res = {}
+  if (unseenUnits.value.len() == 0 || !isUnitsWndOpened.value)
+    return res
+  foreach(idx, unit in availableUnitsList.value){
+    if(unit.name in unseenUnits.value)
+      res[unit.name] <- idx
   }
+  return res
+})
+
+let needShowUnseenMarkArrowL = Computed(@()
+  null != unseenUnitsIndex.value.findvalue(
+    @(index) scrollPos.value > (index + 0.2) * (unitPlateWidth + gap.value)))
+
+let needShowUnseenMarkArrowR = Computed(@()
+  null != unseenUnitsIndex.value.findvalue(
+    @(index) scrollPos.value + sw(100) < (index + 0.5) * (unitPlateWidth + gap.value)))
+
+let scrollArrowsBlock = @(){
+  watch = availableUnitsList
+  size = [flex(),unitsPlateCombinedHeight]
+  pos = [0, (availableUnitsList.value?[0].platoonUnits ?? []).len() > 0 ? hdpx(-15) : 0]
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  children = [
+    {
+      size = flex()
+      children = [
+        {
+          hplace = ALIGN_LEFT
+          pos = [hdpx(50), hdpx(20)]
+          children = mkPriorityUnseenMarkWatch(needShowUnseenMarkArrowL)
+        }
+        mkScrollArrow(scrollHandler, MR_L)
+      ]
+    }
+    {
+      size = flex()
+      children = [
+        {
+          hplace = ALIGN_RIGHT
+          pos = [-hdpx(50), hdpx(20)]
+          children = mkPriorityUnseenMarkWatch(needShowUnseenMarkArrowR)
+        }
+        mkScrollArrow(scrollHandler, MR_R)
+      ]
+    }
+  ]
 }
 
 let unitsBarHorizPad = {
@@ -520,7 +572,7 @@ let noUnitsMsg = {
   color = 0xFFFFFFFF
 }.__update(fontSmall)
 
-local listWatches = [availableUnitsList]
+local listWatches = [availableUnitsList, gap, sizePlatoon]
 foreach (f in filters)
   listWatches.append(f?.value, f?.allValues)
 listWatches = listWatches.filter(@(w) w != null)
@@ -532,24 +584,22 @@ let function unitsBlock() {
     if (value != null)
       filtered = filtered.filter(@(u) f.isFit(u, value))
   }
-  let platoonSize = (filtered?[0].platoonUnits ?? []).len()
-  let gap = platoonSize > 0 ? (platoonSize + 0.8) * platoonSelPlatesGap : 0
   return {
     watch = listWatches
     key = "unitsWndList"
     size = [filtered.len() == 0 ? flex() : SIZE_TO_CONTENT, unitsPlateCombinedHeight]
     flow = FLOW_HORIZONTAL
-    gap
-    onAttach = function() {
+    gap = gap.value
+    function onAttach() {
       if (curSelectedUnit.value == null)
         curSelectedUnit(curUnitName.value)
       let selUnitIdx = filtered.findindex(@(u) u.name == curSelectedUnit.value) ?? 0
-      let scrollPosX = (unitPlateWidth + gap) * selUnitIdx - (0.5 * (saSize[0] - unitPlateWidth))
+      let scrollPosX = (unitPlateWidth + gap.value) * selUnitIdx - (0.5 * (saSize[0] - unitPlateWidth))
       scrollHandler.scrollToX(scrollPosX)
     }
     children = filtered.len() == 0 ? noUnitsMsg
       : [ unitsBarHorizPad ]
-          .extend(filtered.map(@(u) platoonSize > 0 ? mkPlatoonPlate(u) : mkUnitPlate(u)))
+          .extend(filtered.map(@(u) sizePlatoon.value > 0 ? mkPlatoonPlate(u) : mkUnitPlate(u)))
           .append(unitsBarHorizPad)
   }
 }
@@ -672,9 +722,20 @@ let unitsWnd = {
   children = [
     lqTexturesWarningHangar
     {
-      size = [ flex(), unitsPlateCombinedHeight ]
+      size = [ flex(), unitsPlateCombinedHeight]
       pos = [ 0, sh(100) - unitsPlateCombinedHeight - saBorders[1] ]
-      children = mkHorizPannableArea(unitsBlock)
+      valign = ALIGN_CENTER
+      children = [
+        horizontalPannableAreaCtor(sw(100),
+          [saBorders[0], saBorders[0]], [hdpx(10), hdpx(10)])(unitsBlock,
+            {},
+            {
+              behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
+              scrollHandler = scrollHandler
+            }
+          )
+        scrollArrowsBlock
+      ]
     }
     {
       size = [ saSize[0],

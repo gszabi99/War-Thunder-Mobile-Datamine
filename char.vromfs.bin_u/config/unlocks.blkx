@@ -18,6 +18,7 @@
       "type": "streak",
       "amount_warpoints": 250,
       "isAfterFlight": true,
+      "userstat_stat_id": "last_kill",
       "mode": {
         "type": "finalBlow",
         "condition": {
@@ -31,6 +32,7 @@
       "amount_exp": 0,
       "amount_warpoints": 1250,
       "isAfterFlight": true,
+      "userstat_stat_id": "first_and_last_kill",
       "mode": {
         "type": "unlocks",
         "unlock": [
@@ -45,6 +47,7 @@
       "amount_exp": 0,
       "amount_warpoints": 500,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_killer",
       "mode": {
         "type": "killedGroundBest",
         "mulArcade": 1,
@@ -53,6 +56,7 @@
         "maxVal": 6,
         "bestId": "trophy_near_tankman",
         "isShip": false,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -70,12 +74,14 @@
       "amount_exp": 0,
       "amount_warpoints": 500,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_survivor",
       "mode": {
         "type": "killedPlayersBest",
         "maxVal": 4,
         "bestId": "trophy_near_survivor",
         "includeBots": true,
         "noDeaths": true,
+        "useBestScoreWTM": true,
         "condition": {
           "type": "online"
         }
@@ -87,11 +93,13 @@
       "amount_exp": 0,
       "amount_warpoints": 500,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_uprank_killer",
       "mode": {
         "type": "killedPlayersBest",
         "maxVal": 2,
         "bestId": "trophy_near_punisher",
         "includeBots": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -113,6 +121,7 @@
       "amount_exp": 0,
       "amount_warpoints": 500,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_assists",
       "mode": {
         "type": "assistAirBest",
         "maxVal": 4,
@@ -135,6 +144,7 @@
       "amount_exp": 0,
       "amount_warpoints": 500,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_killer",
       "mode": {
         "type": "killedGroundBest",
         "mulArcade": 1,
@@ -143,6 +153,7 @@
         "maxVal": 2,
         "bestId": "trophy_near_ship",
         "isShip": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -157,7 +168,10 @@
     {
       "id": "heroic_tankman",
       "type": "streak",
-      "userstat_stat_id": "top_killer_hero",
+      "userstat_stat_id": [
+        "top_killer_hero",
+        ""
+      ],
       "amount_exp": 0,
       "amount_warpoints": 1250,
       "isAfterFlight": true,
@@ -212,6 +226,7 @@
       "amount_exp": 0,
       "amount_warpoints": 1250,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_survivor_hero",
       "mode": {
         "type": "killedPlayersBest",
         "minVal": 5,
@@ -229,6 +244,7 @@
       "amount_exp": 0,
       "amount_warpoints": 1250,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_uprank_killer_hero",
       "mode": {
         "type": "killedPlayersBest",
         "minVal": 3,
@@ -255,6 +271,7 @@
       "amount_exp": 0,
       "amount_warpoints": 1250,
       "isAfterFlight": true,
+      "userstat_stat_id": "top_assists_hero",
       "mode": {
         "type": "assistAirBest",
         "mulArcade": 1,
@@ -279,6 +296,7 @@
       "type": "streak",
       "amount_warpoints": 1250,
       "isAfterFlight": true,
+      "userstat_stat_id": "last_alive",
       "mode": {
         "type": "lastManStanding",
         "condition": {
@@ -312,6 +330,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "fighter_survived",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -358,6 +377,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "attacker_survived",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -404,6 +424,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "bomber_survived",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -450,6 +471,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "fighter_air_saver",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -495,6 +517,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "bomber_air_saver",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -540,6 +563,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "saver",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -589,6 +613,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "saver",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -638,6 +663,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "saver",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -687,6 +713,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "saver",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -739,6 +766,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "multi_kill_air",
       "stage": {
         "param": 2,
         "amount_exp": 0,
@@ -784,6 +812,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "multi_kill",
       "stage": {
         "param": 2,
         "amount_exp": 0,
@@ -830,6 +859,7 @@
         0.0
       ],
       "useStageWp": true,
+      "userstat_stat_id": "multi_kill",
       "stage": {
         "param": 2,
         "amount_exp": 0,
@@ -875,6 +905,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "squad_kill",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -929,6 +960,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "squad_assist",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -958,6 +990,7 @@
       "amount_exp": 0,
       "amount_warpoints": 500,
       "isAfterFlight": true,
+      "userstat_stat_id": "squad_best",
       "mode": {
         "type": "squadBest",
         "condition": {
@@ -991,6 +1024,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "capture_streak",
       "stage": {
         "param": 2,
         "amount_exp": 0,
@@ -1030,6 +1064,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "capture_defend_streak",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -1074,6 +1109,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "hitless_kill",
       "stage": {
         "param": 2,
         "amount_exp": 0,
@@ -1159,6 +1195,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "avenge",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -1184,6 +1221,7 @@
       "isAfterFlight": false,
       "amount_exp": 0,
       "amount_warpoints": 300,
+      "userstat_stat_id": "survive_hits",
       "mode": {
         "type": "hitWithoutDeath",
         "num": 10,
@@ -1224,6 +1262,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "sniper",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -1285,6 +1324,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "accurate_kill",
       "stage": {
         "param": 3,
         "amount_exp": 0,
@@ -1338,6 +1378,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "single_life_killstreak",
       "stage": {
         "param": 5,
         "amount_exp": 0,
@@ -1369,6 +1410,7 @@
       "amount_exp": 0,
       "amount_warpoints": 1250,
       "isAfterFlight": true,
+      "userstat_stat_id": "killed_air_best",
       "mode": {
         "type": "killedAirBest",
         "minVal": 3,
@@ -1415,6 +1457,7 @@
         0.0,
         0.0
       ],
+      "userstat_stat_id": "air_assist",
       "stage": {
         "param": 3,
         "amount_exp": 0,
@@ -1435,6 +1478,7 @@
       "amount_exp": 0,
       "amount_warpoints": 250,
       "isAfterFlight": false,
+      "userstat_stat_id": "uprank_kill",
       "mode": {
         "type": "killedPlayers",
         "num": 1,
@@ -1453,6 +1497,113 @@
             "controlled": true
           }
         ]
+      }
+    },
+    {
+      "id": "ship_anti_main_caliber",
+      "type": "streak",
+      "amount_warpoints": 250,
+      "isMultiStage": true,
+      "isAfterFlight": false,
+      "stage": {
+        "param": 20,
+        "amount_exp": 0,
+        "amount_warpoints": 250
+      },
+      "mode": {
+        "type": "criticalHitByType",
+        "num": 100500,
+        "critType": "gun",
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "targetType",
+            "unitType": "ship"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ship_anti_steering",
+      "type": "streak",
+      "amount_warpoints": 250,
+      "isMultiStage": true,
+      "isAfterFlight": false,
+      "stage": {
+        "param": 15,
+        "amount_exp": 0,
+        "amount_warpoints": 250
+      },
+      "mode": {
+        "type": "criticalHitByType",
+        "num": 100500,
+        "critType": "engine",
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "targetType",
+            "unitType": "ship"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ship_bomberman",
+      "type": "streak",
+      "amount_warpoints": 250,
+      "isMultiStage": true,
+      "isAfterFlight": false,
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 250
+      },
+      "mode": {
+        "type": "criticalHitAmmoStowage",
+        "maxStowagesToHit": -1,
+        "num": 100500,
+        "delay": [
+          3,
+          3,
+          3
+        ],
+        "critType": "explosion",
+        "isShip": true,
+        "condition": {
+          "type": "online"
+        }
+      }
+    },
+    {
+      "id": "ship_air_recon",
+      "type": "streak",
+      "amount_warpoints": 100,
+      "isAfterFlight": false,
+      "mode": {
+        "type": "detectUnits",
+        "condition": {
+          "type": "online"
+        }
       }
     },
     {

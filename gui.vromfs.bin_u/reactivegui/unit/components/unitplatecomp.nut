@@ -8,6 +8,7 @@ let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnima
   ANIMATION_STEP
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { deleteJustUnlockedUnit } = require("%rGui/unit/justUnlockedUnits.nut")
+let { deleteJustUnlockedPlatoonUnit } = require("%rGui/unit/justUnlockedPlatoonUnits.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
@@ -206,27 +207,28 @@ let mkUnitLevel = @(level, justUnlockedDelay = null) {
   ]
 }
 
-let mkPlayerLevel = @(level, justUnlockedDelay = null) {
-  vplace = ALIGN_BOTTOM
+let starLevelOvr = {
+  pos = [0, ph(60)]
+}
+let mkPlayerLevel = @(level, starLevel) {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   margin = plateTextsPad
-  transform = {}
-  animations = revealAnimation(justUnlockedDelay)?.extend(scaleAnimation(justUnlockedDelay))
   children = [
     mkLevelBg({
       ovr = { size = [ unitLevelBgSize, unitLevelBgSize ] }
       childOvr = { borderColor = playerExpColor }
     })
-    mkPlateText(level)
+    mkPlateText(level - starLevel)
+    starLevelTiny(starLevel, starLevelOvr)
   ]
 }
 
-let mkAnimationUnitLock = @(unit, justUnlockedDelay, campaignLevel){
+let mkAnimationUnitLock = @(justUnlockedDelay, level, callback = null){
   transform = {}
   opacity = 0
-  animations = shakeAnimation((justUnlockedDelay ?? 0) - 2.3 * ANIMATION_STEP)?.
-    extend(fadeAnimation(justUnlockedDelay - 0.5 * ANIMATION_STEP))
+  animations = shakeAnimation((justUnlockedDelay ?? 0) - 2.3 * ANIMATION_STEP)
+    ?.extend(fadeAnimation(justUnlockedDelay - 0.5 * ANIMATION_STEP))
   gap = - hdpx(21)
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -238,10 +240,7 @@ let mkAnimationUnitLock = @(unit, justUnlockedDelay, campaignLevel){
         animations = unlockAnimation(
           justUnlockedDelay - 0.8 * ANIMATION_STEP,
           lockIconSize,
-          function() {
-            deleteJustUnlockedUnit(unit.name)
-            backButtonBlink("UnitsWnd")
-          }
+          callback
         )
       })
     mkIcon("ui/gameuiskin#lock_campaign_bottom.svg", [(lockIconSize * 0.75).tointeger(), (lockIconSize * 0.75).tointeger()],
@@ -251,7 +250,7 @@ let mkAnimationUnitLock = @(unit, justUnlockedDelay, campaignLevel){
           rendObj = ROBJ_TEXT
           hplace = ALIGN_CENTER
           vplace = ALIGN_CENTER
-          text = campaignLevel
+          text = level
         }.__update(fontVeryTiny)
       }
       )
@@ -280,7 +279,11 @@ let function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
           ]
         }))
   else if(justUnlockedDelay)
-    children.append(mkAnimationUnitLock(unit, justUnlockedDelay, rank))
+    children.append(mkAnimationUnitLock(justUnlockedDelay, rank,
+      function() {
+        deleteJustUnlockedUnit(unit.name)
+        backButtonBlink("UnitsWnd")
+      }))
   else
     children.append(mkGradRank(mRank, {
       hplace = ALIGN_RIGHT
@@ -364,22 +367,30 @@ let mkUnitLockedFg = @(isLocked, justUnlockedDelay = null)
         flow = FLOW_HORIZONTAL
       }
 
-let mkUnitSlotLockedLine = @(slot){
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_BOTTOM
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  padding = hdpx(10)
-  children = (slot?.reqLevel ?? 0) > 0
-    ? [
-      mkIcon("ui/gameuiskin#lock_unit.svg", [lockIconOnLockedSlotSize, lockIconOnLockedSlotSize], { color = slotLockedTextColor })
+
+let function mkUnitSlotLockedLine(slot, isLocked = true, justUnlockedDelay = null){
+  let children = []
+  if (isLocked && (slot?.reqLevel ?? 0) > 0)
+    children.append(
+      mkIcon("ui/gameuiskin#lock_unit.svg", [lockIconOnLockedSlotSize, lockIconOnLockedSlotSize], { color = slotLockedTextColor }),
       {
         rendObj = ROBJ_TEXT
         text = slot.reqLevel
         pos = [hdpx(1), hdpx(13)]
       }.__update(fontVeryTiny)
-    ]
-    : mkIcon("ui/gameuiskin#lock_icon.svg", [lockIconRespWnd, lockIconRespWnd], { color = slotLockedTextColor })
+    )
+  else if (isLocked)
+    children.append(mkIcon("ui/gameuiskin#lock_icon.svg", [lockIconRespWnd, lockIconRespWnd], { color = slotLockedTextColor }))
+  else if(justUnlockedDelay)
+    children.append(mkAnimationUnitLock(justUnlockedDelay, slot.reqLevel, @() deleteJustUnlockedPlatoonUnit(slot.name)))
+  return {
+    hplace = ALIGN_RIGHT
+    vplace = ALIGN_BOTTOM
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    padding = hdpx(10)
+    children
+  }
 }
 
 let mkEquippedIcon = @(unit) {

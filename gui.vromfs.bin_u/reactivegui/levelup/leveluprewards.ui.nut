@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { rewardsToReceive, failedRewardsLevelStr, maxRewardLevel } = require("levelUpState.nut")
+let { rewardsToReceive, failedRewardsLevelStr, maxRewardLevelInfo } = require("levelUpState.nut")
 let { rewardInProgress, get_player_level_rewards, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -12,6 +12,8 @@ let { mkCurrencyImage, maxIconsCoef } = require("%rGui/components/currencyComp.n
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addCompToCompAnim } = require("%darg/helpers/compToCompAnim.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
+let mkTextRow = require("%darg/helpers/mkTextRow.nut")
+let { mkPlayerLevel } = require("%rGui/unit/components/unitPlateComp.nut")
 
 
 let sceneAppearDelay = 0.6
@@ -151,13 +153,18 @@ let function rewardsList() {
 }
 
 let levelUpText = @() {
-  watch = maxRewardLevel
-  size = [flex(), SIZE_TO_CONTENT]
-  rendObj = ROBJ_TEXTAREA
-  behavior = Behaviors.TextArea
-  halign = ALIGN_CENTER
-  text = loc("levelUp/newLevel", { level = maxRewardLevel.value })
-}.__update(fontMedium)
+  watch = maxRewardLevelInfo
+  hplace = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  children = mkTextRow(
+    loc("levelUp/newLevel"),
+    @(text) { rendObj = ROBJ_TEXT, text }.__update(fontMedium),
+    {
+      ["{level}"] = mkPlayerLevel(maxRewardLevelInfo.value.level, maxRewardLevelInfo.value.starLevel), //warning disable: -forgot-subst
+    }
+  )
+}
 
 return {
   size = flex()

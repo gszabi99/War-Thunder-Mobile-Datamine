@@ -8,7 +8,7 @@ let { mkMissionResultTitle, missionResultTitleAnimTime } = require("%rGui/debrie
 let achievementsBlock = require("achievementsBlock.nut")
 let { mkTotalRewardCountsScores } = require("%rGui/debriefing/totalRewardCounts.nut")
 
-let deltaStartTimeLevelReward = 1.0
+let rewardsAnimStartTime = 0.5
 
 let btnSaveReplay = @() {
   watch = [can_write_replays, hasUnsavedReplay]
@@ -26,10 +26,9 @@ let function mkDebriefingWndTabScores(debrData, _params) {
   let { achievementsAnimTime, achievementsComp } = achievementsBlock(debrData, achievementsAnimStartTime)
   let statsAnimStartTime = achievementsAnimStartTime + achievementsAnimTime
   let { statsAnimEndTime, debriefingStats } = mkDebriefingStats(debrData, statsAnimStartTime)
-  let rewardsStartTime = statsAnimEndTime + deltaStartTimeLevelReward
 
-  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsScores(debrData, [], rewardsStartTime)
-  let timeShow = rewardsStartTime + totalRewardsShowTime
+  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsScores(debrData, rewardsAnimStartTime)
+  let timeShow = max(statsAnimEndTime, rewardsAnimStartTime + totalRewardsShowTime)
 
   if (achievementsComp == null && totalRewardCountsComp == null && debriefingStats == null)
     return null

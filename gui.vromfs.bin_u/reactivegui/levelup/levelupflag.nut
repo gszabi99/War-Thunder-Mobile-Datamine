@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 
 let levelUpSizePx = [400, 220]
 
@@ -108,37 +109,48 @@ let mkElem = @(elem, height, delay) type(elem?.animations) == "function"
   ? elem.__merge({ animations = elem.animations(delay, height) })
   : elem
 
-let function mkStarText(height, text, baseDelay) {
+
+let function mkLevelAnimations(baseDelay) {
   let delay = baseDelay + textStartTime
-  return {
-    pos = mkSizeByParent([0, 12])
-    rendObj = ROBJ_TEXT
-    text
-    color = 0xFFFFFFFF
-    font = Fonts.muller_medium
-    fontSize = 0.25 * height
-    fontFxColor = 0xFF000000
-    fontFxFactor = (0.4 * height).tointeger()
-    fontFx = FFT_BLUR
-    transform = {}
-    animations = [
-      { prop = AnimProp.opacity, from = 0, to = 0, duration = delay, play = true,  sound = { start = "player_level_up" } }
-      { prop = AnimProp.opacity, from = 0, to = 1, delay, duration = textTime,
-        easing = OutQuad, play = true }
-      { prop = AnimProp.scale, from = [2, 2], to = [1, 1], delay, duration = textTime,
-        easing = OutQuad, play = true }
-      { prop = AnimProp.scale, from = [1, 1], to = [1.2, 1.2], delay = baseDelay + starStartTime, duration = starTime,
-        easing = CosineFull, play = true }
-    ]
-  }
+  return [
+    { prop = AnimProp.opacity, from = 0, to = 0, duration = delay, play = true,  sound = { start = "player_level_up" } }
+    { prop = AnimProp.opacity, from = 0, to = 1, delay, duration = textTime,
+      easing = OutQuad, play = true }
+    { prop = AnimProp.scale, from = [2, 2], to = [1, 1], delay, duration = textTime,
+      easing = OutQuad, play = true }
+    { prop = AnimProp.scale, from = [1, 1], to = [1.2, 1.2], delay = baseDelay + starStartTime, duration = starTime,
+      easing = CosineFull, play = true }
+  ]
 }
 
-let levelUpFlag = @(height, text, delay = 0, override = {}) {
+let mkLevelText = @(height, level, baseDelay) {
+  pos = mkSizeByParent([0, 12])
+  rendObj = ROBJ_TEXT
+  text = level
+  color = 0xFFFFFFFF
+  font = Fonts.muller_medium
+  fontSize = 0.25 * height
+  fontFxColor = 0xFF000000
+  fontFxFactor = (0.4 * height).tointeger()
+  fontFx = FFT_BLUR
+  transform = {}
+  animations = mkLevelAnimations(baseDelay)
+}
+
+let mkStarLevelText = @(starLevel, baseDelay) {
+  pos = mkSizeByParent([0, 100])
+  children = starLevelSmall(starLevel)
+  transform = {}
+  animations = mkLevelAnimations(baseDelay)
+}
+
+let levelUpFlag = @(height, level, starLevel, delay = 0, override = {}) {
   size = [levelUpSizePx[0].tofloat() / levelUpSizePx[1] * height, height]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = elems.map(@(e) mkElem(e, height, delay))
-    .append(mkStarText(height, text, delay))
+    .append(mkLevelText(height, level - starLevel, delay),
+      mkStarLevelText(starLevel, delay))
 }.__update(override)
 
 return {

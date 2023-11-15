@@ -22,18 +22,18 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
       defTransform = mkRBPos([hdpx(-108), hdpx(-330)])
       editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_aircraft_fighter.svg", 1, false)
     })
+//
 
-  plane2 = weaponryButtonCtor("EII_SUPPORT_PLANE_2", mkPlaneItem,
-    {
-      defTransform = mkRBPos([0, hdpx(-222)])
-      editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_aircraft_fighter.svg", 2, false)
-    })
 
-  plane3 = weaponryButtonCtor("EII_SUPPORT_PLANE_3", mkPlaneItem,
-    {
-      defTransform = mkRBPos([hdpx(0), hdpx(-5)])
-      editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_aircraft_fighter.svg", 3, false)
-    })
+
+
+
+
+
+
+
+
+
 
   weapon1 = weaponryButtonDynamicCtor(0,
     {
@@ -65,9 +65,9 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT, SHIP,
     { defTransform = mkRBPos([hdpx(-600), hdpx(43)]) })
+//
 
-  abIrcm = withActionBarButtonCtor(EII_IRCM, SHIP,
-     { defTransform = mkRBPos([hdpx(-750), hdpx(43)]) })
+
 
   moveArrows = {
     ctor = @() shipMovementBlock(SHIP)

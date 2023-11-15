@@ -14,6 +14,7 @@ let { mkSingleUnitPlate, unitPlateWidth } = require("%rGui/unit/components/unitP
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
 let unitFake = require("%rGui/unit/unitFake.nut")
+let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 
 let premIconSize = hdpxi(56)
 let gradPadding = hdpx(100)
@@ -47,6 +48,7 @@ let info = Computed(function() {
   return killData.value.__merge({
     killerHasPremium = cStats?.hasPremium ?? false
     killerLevel = cStats?.level ?? 1
+    killerAvatar = cStats?.decorators.avatar
     killerUnit = (unitCfg).__merge(cStats?.unit ?? {}, finalOverride)
   })
 })
@@ -95,7 +97,7 @@ let premiumMark = {
 }
 
 let function hintContent(infoV) {
-  let { killerUnit, killerHasPremium, killerLevel, killer } = infoV
+  let { killerUnit, killerHasPremium, killerLevel, killer, killerAvatar } = infoV
   let name = getPlayerName(killer.name)
   return {
     flow = FLOW_VERTICAL
@@ -116,6 +118,11 @@ let function hintContent(infoV) {
             ]
           }
           killerHasPremium ? premiumMark : null
+          {
+            size = [hdpxi(150), hdpxi(150)]
+            rendObj = ROBJ_IMAGE
+            image = Picture($"{getAvatarImage(killerAvatar)}:{hdpxi(150)}:{hdpxi(150)}:P")
+          }
         ]
       }
       { size = [0, hdpx(20)] }

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getLootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { getLootboxImage, getLootboxFallbackImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter
@@ -11,7 +11,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { eventRewards } = require("%rGui/event/eventState.nut")
+let { eventRewards, eventSeason, bestCampLevel } = require("%rGui/event/eventState.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkGoodsTimeTimeProgress } = require("%rGui/shop/goodsView/sharedParts.nut")
 
@@ -37,23 +37,26 @@ let function lootboxImageWithTimer() {
   if (previewLootbox.value == null)
     return { watch = previewLootbox }
 
-  let { name, timeRange = null, adRewardId = null } = previewLootbox.value
+  let { name, timeRange = null, adRewardId = null, reqPlayerLevel = 0 } = previewLootbox.value
   let { start = 0, end = 0 } = timeRange
 
   let needAdtimeProgress = Computed(@() !lootboxInProgress.value
     && adRewardId != null
     && !eventRewards.value?[adRewardId].isReady)
 
-  let timeText = Computed(@() start > serverTime.value
+  let timeText = Computed(@() bestCampLevel.value < reqPlayerLevel
+      ? loc("lootbox/reqCampaignLevel", { reqLevel = reqPlayerLevel })
+    : start > serverTime.value
       ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.value) })
     : end > 0 && end < serverTime.value ? loc("lootbox/noLongerAvailable")
     : null)
 
   return {
-    watch = [previewLootbox, timeText]
+    watch = [previewLootbox, timeText, eventSeason]
     size = [lootboxImageSize, lootboxImageSize]
     rendObj = ROBJ_IMAGE
-    image = getLootboxImage(name, lootboxImageSize)
+    image = getLootboxImage(name, eventSeason.value, lootboxImageSize)
+    fallbackImage = getLootboxFallbackImage(lootboxImageSize)
     keepAspect = true
     brightness = timeText.value == null ? 1.0 : 0.5
     picSaturate = timeText.value == null ? 1.0 : 0.2

@@ -32,6 +32,7 @@ let playersByTeam = Computed(function() {
           ? playersCommonStats.value?[userId.tointeger()]
           : genBotCommonStats(name, aircraftName, allUnitsCfgFlat.value?[aircraftName] ?? {}, playerLevelInfo.value.level)
         let { unitClass = "" } = unit
+        let mainUnitName = unit?.name ?? aircraftName
         return p.__merge({
           nickname
           damage
@@ -40,6 +41,7 @@ let playersByTeam = Computed(function() {
           hasPremium
           decorators
           unitClass
+          mainUnitName
         })
       })))
   let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)

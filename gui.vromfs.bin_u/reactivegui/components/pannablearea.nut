@@ -72,7 +72,6 @@ let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = nul
           }, pannableOvr)
         })
       : root.__merge({
-          clipChildren = true
           children = pannableBase.__merge({
             flow = FLOW_VERTICAL
             children = [
@@ -130,7 +129,6 @@ let function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = nu
           }, pannableOvr)
         })
       : root.__merge({
-          clipChildren = true
           children = pannableBase.__merge({
             flow = FLOW_HORIZONTAL
             children = [

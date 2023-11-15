@@ -1,30 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let { mkLevelProgressLine, maxLevelProgressAnimTime } = require("%rGui/debriefing/levelProgressLine.nut")
+let mkLevelProgressLine = require("%rGui/debriefing/levelProgressLine.nut")
 let { mkTotalRewardCountsCampaign } = require("%rGui/debriefing/totalRewardCounts.nut")
 
-let deltaStartTimeLevelReward = maxLevelProgressAnimTime / 2
+let levelProgressAnimStartTime = 0.0
+let rewardsAnimStartTime = 0.5
 
-let function mkPlayerLevelLine(debrData, animStartTime) {
-  let { reward = {}, player = {} } = debrData
-  let { playerExp = {} } = reward
-  return {
-    size = [flex(), SIZE_TO_CONTENT]
-    padding = [hdpx(22), 0, 0, 0]
-    halign = ALIGN_CENTER
-    children = mkLevelProgressLine(player, playerExp, loc("debriefing/playerExp"), animStartTime)
-  }
+let mkPlayerLevelLineHolder = @(children) children == null ? null : {
+  size = [flex(), SIZE_TO_CONTENT]
+  padding = [hdpx(22), 0, 0, 0]
+  halign = ALIGN_CENTER
+  children
 }
 
 let function mkDebriefingWndTabCampaign(debrData, params) {
-  let rewardsStartTime = deltaStartTimeLevelReward
-  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsCampaign(debrData, [], rewardsStartTime)
+  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsCampaign(debrData, rewardsAnimStartTime)
   if (totalRewardCountsComp == null)
     return null
 
+  let { reward = {}, player = {} } = debrData
+  let { playerExp = {} } = reward
+  let { levelProgressLineComp, levelProgressLineAnimTime } = mkLevelProgressLine(player, playerExp,
+    loc("debriefing/playerExp"), levelProgressAnimStartTime)
+
   let { needBtnCampaign } = params
-  let timeShow = rewardsStartTime + totalRewardsShowTime + (needBtnCampaign ? buttonsShowTime : 0)
+  let timeShow = max(levelProgressAnimStartTime + levelProgressLineAnimTime, rewardsAnimStartTime + totalRewardsShowTime)
+    + (needBtnCampaign ? buttonsShowTime : 0)
 
   let comp = {
     size = flex()
@@ -38,7 +40,7 @@ let function mkDebriefingWndTabCampaign(debrData, params) {
         gap = hdpx(100)
         children = [
           totalRewardCountsComp
-          mkPlayerLevelLine(debrData, 0)
+          mkPlayerLevelLineHolder(levelProgressLineComp)
         ]
       }
     ]

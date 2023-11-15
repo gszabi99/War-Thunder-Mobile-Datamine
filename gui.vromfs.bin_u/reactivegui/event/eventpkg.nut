@@ -3,13 +3,13 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { REWARD_STYLE_TINY, REWARD_SIZE_TINY, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { getLootboxName, getLootboxImageOriginal } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getLootboxRewardsViewInfo, isRewardReceived  } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
-let { showLootboxAds, eventRewards } = require("eventState.nut")
+let { showLootboxAds, eventRewards, bestCampLevel } = require("eventState.nut")
 let { canShowAds } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -17,6 +17,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
 let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 
 let REWARDS = 3
@@ -31,7 +32,6 @@ let iconStyle = CS_INCREASED_ICON
 let iconSize = iconStyle.iconSize
 let lootboxHeight = hdpxi(320)
 let rewardGap = REWARD_STYLE_TINY.boxGap
-let tenRewards = " x 10"
 let smallChestIconSize = hdpxi(40)
 
 let lootboxInfoSize = [REWARD_SIZE_TINY * REWARDS + rewardGap * (REWARDS + 1),
@@ -115,11 +115,16 @@ let function progressBar(stepsFinished, stepsToNext, ovr = {}) {
   }.__update(ovr)
 }
 
-let function mkLootboxImageWithTimer(name, blockSize, timeRange, sizeMul = 1.0) {
+let function mkLootboxImageWithTimer(name, blockSize, timeRange, reqPlayerLevel, sizeMul = 1.0) {
   let { start = 0, end = 0 } = timeRange
-  let isActive = Computed(@() start < serverTime.value && (end <= 0 || end > serverTime.value))
-  let timeText = Computed(@() start < serverTime.value ? ""
-    : loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.value) }))
+  let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
+    && start < serverTime.value
+    && (end <= 0 || end > serverTime.value))
+  let timeText = Computed(@() bestCampLevel.value < reqPlayerLevel
+      ? loc("lootbox/reqCampaignLevel", { reqLevel = reqPlayerLevel })
+    : start > serverTime.value
+      ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.value) })
+    : "")
 
   return @() {
     watch = isActive
@@ -127,14 +132,11 @@ let function mkLootboxImageWithTimer(name, blockSize, timeRange, sizeMul = 1.0) 
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      {
+      mkLoootboxImage(name, null, {
         size = [(blockSize * sizeMul).tointeger(), (lootboxHeight * sizeMul).tointeger()]
-        rendObj = ROBJ_IMAGE
-        keepAspect = true
-        image = getLootboxImageOriginal(name)
         picSaturate = isActive.value ? 1.0 : 0.2
         brightness = isActive.value ? 1.0 : 0.5
-      }
+      })
       @() {
         watch = timeText
         size = [flex(), SIZE_TO_CONTENT]
@@ -171,12 +173,16 @@ let mkBtnContent = @(img, text, ovr = {}) {
   ]
 }.__update(ovr)
 
-let mkAdsBtn = @(id) @() {
-  watch = eventRewards
+let mkAdsBtn = @(id, reqPlayerLevel) @() {
+  watch = [eventRewards, bestCampLevel, canShowAds]
   children = mkCustomButton(
     mkBtnContent("ui/gameuiskin#mp_spectator.avif", loc("shop/watchAdvert/short")),
-    @() showLootboxAds(id),
-    canShowAds.value && eventRewards.value?[id].isReady ? buttonStyles.SECONDARY : buttonStyles.COMMON)
+    @() bestCampLevel.value >= reqPlayerLevel
+        ? showLootboxAds(id)
+      : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
+    bestCampLevel.value >= reqPlayerLevel && canShowAds.value && eventRewards.value?[id].isReady
+        ? buttonStyles.SECONDARY
+      : buttonStyles.COMMON)
 }
 
 let leaderbordBtn = mkCustomButton(
@@ -201,9 +207,11 @@ let mkCurrencyComp = @(value, currencyId) {
 }
 
 let function mkPurchaseBtns(lootbox, onPurchase) {
-  let { name, price, currencyId, hasBulkPurchase = false, adRewardId = null, timeRange = 0 } = lootbox
+  let { name, price, currencyId, hasBulkPurchase = false, adRewardId = null, timeRange = 0, reqPlayerLevel = 0 } = lootbox
   let { start = 0, end = 0 } = timeRange
-  let isActive = Computed(@() start < serverTime.value && (end <= 0 || end > serverTime.value))
+  let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
+    && start < serverTime.value
+    && (end <= 0 || end > serverTime.value))
 
   return @() {
     watch = [isActive, balance]
@@ -212,15 +220,15 @@ let function mkPurchaseBtns(lootbox, onPurchase) {
     gap = hdpx(40)
     animations = revealBtnsAnimation
     children = [
-      adRewardId != null ? mkAdsBtn(adRewardId) : null
+      adRewardId != null ? mkAdsBtn(adRewardId, reqPlayerLevel) : null
       textButtonPricePurchase(hasBulkPurchase ? utf8ToUpper(loc("events/oneReward")) : null,
         mkCurrencyComp(price, currencyId),
-        @() onPurchase(lootbox, price, currencyId, loc(getLootboxName(name))),
+        @() onPurchase(lootbox, price, currencyId),
         !isActive.value || (balance.value?[currencyId] ?? 0) < price ? buttonStyles.COMMON : null)
       !hasBulkPurchase ? null
         : textButtonPricePurchase(utf8ToUpper(loc("events/tenRewards")),
             mkCurrencyComp(price * 10, currencyId),
-            @() onPurchase(lootbox, price * 10, currencyId, "".concat(loc(getLootboxName(name)), tenRewards), 10),
+            @() onPurchase(lootbox, price * 10, currencyId, 10),
             !isActive.value || (balance.value?[currencyId] ?? 0) < price * 10 ? buttonStyles.COMMON : null)
     ]
   }

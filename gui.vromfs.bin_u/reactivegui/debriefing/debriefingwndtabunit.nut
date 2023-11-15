@@ -6,22 +6,17 @@ let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let { mkLevelProgressLine, maxLevelProgressAnimTime } = require("%rGui/debriefing/levelProgressLine.nut")
+let mkLevelProgressLine = require("%rGui/debriefing/levelProgressLine.nut")
 let { mkTotalRewardCountsUnit } = require("%rGui/debriefing/totalRewardCounts.nut")
 
-let deltaStartTimeLevelReward = maxLevelProgressAnimTime / 2
+let levelProgressAnimStartTime = 0.0
+let rewardsAnimStartTime = 0.5
 
-let function mkUnitLevelLine(debrData, animStartTime) {
-  let { reward = {}, unit = null, campaign = "" } = debrData
-  let { unitExp = {} } = reward
-  return unitExp.len() == 0 ? null
-    : {
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = [hdpx(22), 0, 0, 0]
-        halign = ALIGN_CENTER
-        children = mkLevelProgressLine(unit, unitExp,
-          loc(campaign == "tanks" ? "debriefing/platoonExp" : "debriefing/shipExp"),animStartTime,  unitExpColor)
-      }
+let mkPlayerLevelLineHolder = @(children) children == null ? null : {
+  size = [flex(), SIZE_TO_CONTENT]
+  padding = [hdpx(22), 0, 0, 0]
+  halign = ALIGN_CENTER
+  children
 }
 
 let function mkUnitPlate(unit) {
@@ -56,17 +51,21 @@ let function mkUnitPlate(unit) {
 }
 
 let function mkDebriefingWndTabUnit(debrData, params) {
-  let { unit = null } = debrData
+  let { reward = {}, unit = null, campaign = "" } = debrData
   if (unit == null)
     return null
 
-  let rewardsStartTime = deltaStartTimeLevelReward
-  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsUnit(debrData, [], rewardsStartTime)
+  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsUnit(debrData, rewardsAnimStartTime)
   if (totalRewardCountsComp == null)
     return null
 
+  let { unitExp = {} } = reward
+  let { levelProgressLineComp, levelProgressLineAnimTime } = mkLevelProgressLine(unit, unitExp,
+    loc(campaign == "tanks" ? "debriefing/platoonExp" : "debriefing/shipExp"), levelProgressAnimStartTime,  unitExpColor)
+
   let { needBtnUnit = true } = params
-  let timeShow = rewardsStartTime + totalRewardsShowTime + (needBtnUnit ? buttonsShowTime : 0)
+  let timeShow = max(levelProgressAnimStartTime + levelProgressLineAnimTime, rewardsAnimStartTime + totalRewardsShowTime)
+    + (needBtnUnit ? buttonsShowTime : 0)
 
   let comp = {
     size = flex()
@@ -86,7 +85,7 @@ let function mkDebriefingWndTabUnit(debrData, params) {
             flow = FLOW_VERTICAL
             gap = hdpx(40)
             children = [
-              mkUnitLevelLine(debrData, 0)
+              mkPlayerLevelLineHolder(levelProgressLineComp)
               mkUnitPlate(unit)
             ]
           }

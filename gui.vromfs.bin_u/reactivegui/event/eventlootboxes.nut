@@ -1,25 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 
-let lootboxesPriority = [
-  "event_small"
-  "event_medium"
-  "event_big"
-].reduce(@(res, v, idx) res.__update({ [v] = idx + 1 }), {})
 
-let sortLootboxes = @(a, b) (lootboxesPriority?[a.name] ?? 0) <=> (lootboxesPriority?[b.name] ?? 0)
-  || a.name <=> b.name
+let sortLootboxes = @(a, b) (a?.meta.event ?? "") <=> (b?.meta.event ?? "") || a.name <=> b.name
 
 let lootboxesCfg = {
   event_small = {
     adRewardId = "advert_event"
-    sizeMul = 0.6
-  }
-  event_medium = {
-    sizeMul = 0.8
-  }
-  event_big = {
-    sizeMul = 0.9
   }
 }
 
@@ -28,7 +16,28 @@ let eventLootboxesRaw = Computed(@() serverConfigs.value?.lootboxesCfg
   .map(@(v, key) v.__merge({ name = key }, lootboxesCfg?[key] ?? {}))
   ?? {})
 
-let eventLootboxes = Computed(@() eventLootboxesRaw.value?.values().sort(sortLootboxes))
+let eventLootboxes = Computed(function() {
+  let res = []
+  let lootboxesBySlot = {}
+  foreach (lootbox in eventLootboxesRaw.value) {
+    let slot = lootbox?.meta.event ?? ""
+    if (slot == "" || slot == "true") { //event == "true" is compatibility with pServer config version at 2023.11.10
+      res.append(lootbox)
+      continue
+    }
+    if ((lootbox?.timeRange.start ?? 0) > (userstatStats.value?.stats.season["$endsAt"] ?? 0)
+        || (lootbox?.timeRange.end ?? 0) < (userstatStats.value?.stats.season["$startedAt"] ?? 0))
+      continue
+    if (slot not in lootboxesBySlot)
+      lootboxesBySlot[slot] <- []
+    lootboxesBySlot[slot].append(lootbox)
+  }
+  foreach (list in lootboxesBySlot) {
+    list.sort(@(a, b) (a?.timeRange.start ?? 0) <=> (b?.timeRange.start ?? 0))
+    res.append(list[0])
+  }
+  return res.sort(sortLootboxes)
+})
 
 return {
   eventLootboxesRaw

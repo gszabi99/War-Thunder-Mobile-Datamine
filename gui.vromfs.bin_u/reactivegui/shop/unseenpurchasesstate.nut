@@ -21,6 +21,25 @@ unseenPurchasesCount.subscribe(@(c) logR("unseenPurchasesCount = ", c))
 let unseenPurchasesCountExt = keepref(Computed(@() unseenPurchasesExt.value.len()))
 unseenPurchasesCountExt.subscribe(@(c) logR("unseenPurchasesCountExt = ", c))
 
+let unseenGroups = [
+  {
+    isFit = @(purch) purch?.source.startswith("userstatReward&[{") ?? false
+    sourcePrefix = "userstatReward&"
+    style = "leaderboard"
+  }
+]
+
+let activeUnseenPurchasesGroup = Computed(function() {
+  if (unseenPurchasesExt.value.len() != 0)
+    foreach(group in unseenGroups) {
+      let list = unseenPurchasesExt.value.filter(group.isFit)
+      if (list.len() > 0)
+        return group.filter(@(v) type(v) != "function")
+          .__update({ list })
+    }
+  return { list = unseenPurchasesExt.value }
+})
+
 let function markPurchasesSeen(seenIds) {
   if (unseenPurchasesDebug.value != null)
     return unseenPurchasesDebug(null)
@@ -91,9 +110,12 @@ let function delayShow(time) {
 }
 
 register_command(@() console_print("unseenPurchasesExt = ", unseenPurchasesExt.value) , "debug.currentUnseenPurchases") //warning disable: -forbidden-function
+register_command(@() console_print("activeUnseenPurchasesGroup = ", activeUnseenPurchasesGroup.value) , "debug.activeUnseenPurchasesGroup") //warning disable: -forbidden-function
+register_command(@() console_print("activeUnseenPurchasesGroup.list = ", activeUnseenPurchasesGroup.value.list) , "debug.activeUnseenPurchasesGroup.list") //warning disable: -forbidden-function
 
 return {
   unseenPurchasesExt
+  activeUnseenPurchasesGroup
   markPurchasesSeen
   customUnseenPurchVersion
   removeCustomUnseenPurchHandler

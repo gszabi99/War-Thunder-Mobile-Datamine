@@ -37,6 +37,7 @@ let curGroup = Computed(@() openConfig.value?.jackpots[jackpotIdxInfo.value.jIdx
 let rouletteOpenId = Computed(@() openConfig.value?.id)
 let rouletteOpenType = Computed(@() curGroup.value?.openType)
 let rouletteRewardsList = Computed(@() curGroup.value?.rewardsList ?? [])
+let rouletteLastReward = Computed(@() curGroup.value?.lastReward)
 let rouletteOpenResult = Computed(@() jackpotIdxInfo.value.jIdx == null
   ? rouletteOpenResultFull.value?.main
   : rouletteOpenResultFull.value?.jackpots[jackpotIdxInfo.value.jIdx])
@@ -213,10 +214,12 @@ let function calcOpenType(openType, weights, rewardsCfg) {
 }
 
 let function calcOpenInfo(id, profile, configs) {
-  let res = { rewardsList = [], openType = "" }
+  let res = { rewardsList = [], openType = "", lastReward = null }
   let { lootboxesCfg = null, rewardsCfg = null } = configs
+  let lastReward = lootboxesCfg?[id].lastReward
+  res.lastReward = lastReward in rewardsCfg ? getRewardsViewInfo(rewardsCfg[lastReward]) : null
   let weights = lootboxesCfg?[id].rewards ?? {}
-  let rewards = collectRewards(weights, rewardsCfg, profile, lootboxesCfg?[id].lastReward)
+  let rewards = collectRewards(weights, rewardsCfg, profile, lastReward)
   if (rewards.len() < 1)
     return res //no need roulette
 
@@ -230,7 +233,7 @@ let openDelayed = @() deferOnce(function() {
     return
 
   let id = nextOpenId.value
-  let { openType, rewardsList } = calcOpenInfo(id, servProfile.value, serverConfigs.value)
+  let { openType, rewardsList, lastReward } = calcOpenInfo(id, servProfile.value, serverConfigs.value)
   if (rewardsList.len() == 0 || rewardsList.findvalue(@(v) v != rewardsList[0]) == null) { //no rewards, or last reward
     open_lootbox_several(id, nextOpenCount.value)
     return
@@ -245,6 +248,7 @@ let openDelayed = @() deferOnce(function() {
     id
     openType
     rewardsList
+    lastReward
     jackpots
     finalOpenCount = (servProfile.value?.lootboxStats[id].opened ?? 0) + nextOpenCount.value
   })
@@ -311,8 +315,10 @@ let function requestOpenCurLootbox() {
 }
 
 let function logOpenConfig() {
-  log("lootbox open roulette config: ", openConfig.value)
   log("jackpotIdxInfo: ", jackpotIdxInfo)
+  log("lootbox cur open group info: ", curGroup.value)
+  if (curGroup.value != openConfig.value)
+    log("lootbox open roulette config: ", openConfig.value)
 }
 
 register_command(
@@ -345,6 +351,7 @@ return {
   rouletteOpenId
   rouletteOpenType
   rouletteRewardsList
+  rouletteLastReward
   rouletteOpenResult
   rouletteOpenIdx
   nextOpenId

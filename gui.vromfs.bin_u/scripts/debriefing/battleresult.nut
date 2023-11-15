@@ -31,7 +31,7 @@ let battleResult = Computed(function() {
   if (battleSessionId.value == -1)
     return singleMissionResult.value
   local res = baseBattleResult.value
-  if (res == null)
+  if (res?.sessionId != battleSessionId.value)
     return connectFailedData.value?.sessionId != battleSessionId.value ? null
       : connectFailedData.value.__merge({ isDisconnected = true })
   if (res?.sessionId == resultPlayers.value?.sessionId)

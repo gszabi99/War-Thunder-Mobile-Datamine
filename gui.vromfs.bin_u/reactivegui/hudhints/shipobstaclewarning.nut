@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { setInterval, clearTimer } = require("dagor.workcycle")
 let { obstacleIsNear, distanceToObstacle } = require("%rGui/hud/shipState.nut")
 let { abs } = require("%sqstd/math.nut")
 let { register_command } = require("console")
@@ -10,14 +11,30 @@ let HINT_TYPE = "obstacleWarning"
 let alertDMColor = Color(221, 17, 17)
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
+let isDebugDistance = mkWatched(persist, "debugDistance", false)
+let debugDistance = Watched(null)
 let needHint = keepref(Computed(@() obstacleIsNear.value != isDebugMode.value))
-let showCollideWarning = Computed(@() distanceToObstacle.value < 0)
+let distanceToObstacleExt = Computed(@() debugDistance.get() ?? distanceToObstacle.get())
+let showCollideWarning = Computed(@() distanceToObstacleExt.get() < 0)
 
 let textToShow = Computed(@() showCollideWarning.value ? loc("hud_ship_collide_warning")
   : loc("hud_ship_depth_on_course_warning"))
 
+let updateDebugDistance = @() debugDistance.set((((debugDistance.get() ?? 0) + 2) % 10) - 1)
+let function updateDebugDistanceTimer(isDebug) {
+  if (!isDebug) {
+    clearTimer(updateDebugDistance)
+    debugDistance.set(null)
+    return
+  }
+  setInterval(0.5, updateDebugDistance)
+  debugDistance.set(1)
+}
+updateDebugDistanceTimer(isDebugDistance.get())
+isDebugDistance.subscribe(updateDebugDistanceTimer)
+
 registerHintCreator(HINT_TYPE, @(_) @() {
-  watch = [textToShow, distanceToObstacle]
+  watch = [textToShow, distanceToObstacleExt]
   key = textToShow
   size = [saSize[0] - hdpx(1100), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
@@ -26,7 +43,7 @@ registerHintCreator(HINT_TYPE, @(_) @() {
   fontFxFactor = min(64, hdpx(64))
   fontFx = FFT_GLOW
   text = "".concat(textToShow.value, colon,
-    abs(distanceToObstacle.value),
+    abs(distanceToObstacleExt.get()),
     loc("measureUnits/meters_alt"))
   color = alertDMColor
   halign = ALIGN_CENTER
@@ -42,4 +59,5 @@ registerHintCreator(HINT_TYPE, @(_) @() {
 needHint.subscribe(@(v) !v ? removeEvent({ id = HINT_TYPE })
   : addEvent({ id = HINT_TYPE, hType = HINT_TYPE }))
 
-register_command(@() isDebugMode(!isDebugMode.value), "hud.debug.obstacleNearHint")
+register_command(@() isDebugMode.set(!isDebugMode.get()), "hud.debug.obstacleNearHint")
+register_command(@() isDebugDistance.set(!isDebugDistance.get()), "hud.debug.obstacleNearHintDistance")

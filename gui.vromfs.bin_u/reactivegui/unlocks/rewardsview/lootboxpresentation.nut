@@ -1,23 +1,49 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventSeason } = require("%rGui/event/eventState.nut")
 
 let defaultLootbox = "ui/gameuiskin#daily_box_small.avif"
-let lootboxImage = {
-  every_day_award_small_pack = "ui/gameuiskin#daily_box_small.avif"
-  every_day_award_big_pack_1 = "ui/gameuiskin#daily_box_big.avif"
-  every_day_award_big_pack_2 = "ui/gameuiskin#daily_box_very_big.avif"
-  event_small = "ui/gameuiskin#event_box_01.avif"
-  event_medium = "ui/gameuiskin#event_box_02.avif"
-  event_big = "ui/gameuiskin#event_box_03.avif"
-}.map(@(v) ":".concat(v, "{0}", "{0}", "P"))
 
-let lootboxCustomLocId = {
-  event_small = "lootbox/every_day_award_small_pack"
-  event_medium = "lootbox/every_day_award_medium_pack"
-  event_big = "lootbox/every_day_award_big_pack_1"
+let lootboxLocIdBySlot = {
+  ["0"] = "lootbox/every_day_award_small_pack",
+  ["1"] = "lootbox/every_day_award_medium_pack",
+  ["2"] = "lootbox/every_day_award_big_pack_1",
 }
 
+let sizeMulBySlot = {
+  ["0"] = 0.6,
+  ["1"] = 0.8,
+  ["2"] = 0.9,
+}
+
+let getImgBySeason = {
+  event_small = @(season) $"event_small_{season}",
+}
+
+let getLootboxName = @(id, slot = "") loc(lootboxLocIdBySlot?[slot] ?? $"lootbox/{id}")
+
+let getLootboxSizeMul = @(slot = "") sizeMulBySlot?[slot] ?? 1.0
+
+let function getLootboxImage(id, season, size = null) {
+  let img = id in getImgBySeason ? getImgBySeason[id](season) : id
+  return !size ? Picture($"ui/gameuiskin#{img}.avif:0:P") : Picture($"ui/gameuiskin#{img}.avif:{size}:{size}:P")
+}
+
+let getLootboxFallbackImage = @(size = null)
+  !size ? Picture($"{defaultLootbox}:0:P") : Picture($"{defaultLootbox}:{size}:{size}:P")
+
+let mkLoootboxImage = @(id, size = null, ovr = {}) @() {
+  watch = eventSeason
+  size = size ? [size, size] : SIZE_TO_CONTENT
+  rendObj = ROBJ_IMAGE
+  image = getLootboxImage(id, eventSeason.value, size)
+  fallbackImage = getLootboxFallbackImage(size)
+  keepAspect = true
+}.__update(ovr)
+
 return {
-  getLootboxImage = @(id, size) Picture((lootboxImage?[id] ?? defaultLootbox).subst(size))
-  getLootboxImageOriginal = @(id) Picture(lootboxImage?[id] ?? defaultLootbox)
-  getLootboxName = @(id) loc(lootboxCustomLocId?[id] ?? $"lootbox/{id}")
+  getLootboxImage
+  getLootboxFallbackImage
+  getLootboxName
+  getLootboxSizeMul
+  mkLoootboxImage
 }

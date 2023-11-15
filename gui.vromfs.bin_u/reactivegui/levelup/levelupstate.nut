@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { levelup_without_unit } = require("%appGlobals/pServer/pServerApi.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs, receivedLevelsRewards, curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -35,13 +36,19 @@ isInDebriefing.subscribe(function(v) {
 })
 isLvlUpOpened.subscribe(@(_) upgradeUnitName(null))
 
-let maxRewardLevel = Computed(function() {
-  let { level, isReadyForLevelUp } = playerLevelInfo.value
-  return level + (isReadyForLevelUp ? 1 : 0)
+let maxRewardLevelInfo = Computed(function(prev) {
+  let { level, starLevel, isReadyForLevelUp, isStarProgress = false } = playerLevelInfo.value
+  let res = {
+    level = level + (isReadyForLevelUp ? 1 : 0)
+    starLevel = !isReadyForLevelUp ? starLevel
+      : isStarProgress ? starLevel + 1
+      : 0
+  }
+  return isEqual(prev, res) ? prev : res
 })
 
 let rewardsToReceive = Computed(function() {
-  let level = maxRewardLevel.value
+  let level = maxRewardLevelInfo.value.level
   let received = receivedLevelsRewards.value
   let failed = failedRewardsLevelStr.value
   let res = {}
@@ -93,7 +100,7 @@ let function openLvlUpWndIfCan() {
 }
 
 return {
-  maxRewardLevel
+  maxRewardLevelInfo
   isLvlUpOpened
   rewardsToReceive
   failedRewardsLevelStr

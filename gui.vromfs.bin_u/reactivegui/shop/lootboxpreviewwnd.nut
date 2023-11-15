@@ -5,7 +5,7 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { getLootboxName } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let lootboxPreviewContent = require("lootboxPreviewContent.nut")
-let { previewLootboxId, isLootboxPreviewOpen, closeLootboxPreview } = require("lootboxPreviewState.nut")
+let { previewLootbox, isLootboxPreviewOpen, closeLootboxPreview } = require("lootboxPreviewState.nut")
 
 
 let wndHeaderGap = hdpx(30)
@@ -15,12 +15,12 @@ let wndHeader = {
   children = [
     backButton(closeLootboxPreview)
     @() {
-      watch = previewLootboxId
+      watch = previewLootbox
       rendObj = ROBJ_TEXT
       size = [flex(), SIZE_TO_CONTENT]
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
-      text = getLootboxName(previewLootboxId.value)
+      text = getLootboxName(previewLootbox.value?.name, previewLootbox.value?.meta.event)
       margin = [0, 0, 0, hdpx(15)]
     }.__update(fontBig)
   ]

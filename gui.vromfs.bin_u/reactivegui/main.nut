@@ -17,7 +17,7 @@ require("%appGlobals/pServer/pServerApi.nut")
 require("consoleCmd.nut")
 require("%sqstd/regScriptProfiler.nut")("darg")
 require("%rGui/notifications/foreignMsgBox.nut")
-require("%rGui/notifications/appsFlyerEvents.nut")
+require("%rGui/notifications/logEvents.nut")
 require("%rGui/options/guiOptions.nut") //need to register options before load profile
 require("debugTools/pServerConsoleCmd.nut")
 require("%appGlobals/clientState/initWindowState.nut")

@@ -67,7 +67,6 @@ register_command(@(gold) add_gold(gold, "consolePrintResult"), "meta.add_gold")
 register_command(@(warbond) add_warbond(warbond, "consolePrintResult"), "meta.add_warbond")
 register_command(@(event_key) add_event_key(event_key, "consolePrintResult"), "meta.add_event_key")
 register_command(@(name, count) change_item_count(name, count, "consolePrintResult"), "meta.change_item_count")
-register_command(@(id, count) userstat_add_item(id, count, "consolePrintResult"), "meta.userstat_add_item")
 register_command(@(seconds) seconds < 0
     ? remove_premium(-seconds, "consolePrintResult")
     : add_premium(seconds, "consolePrintResult"),
@@ -130,3 +129,16 @@ let pPlayerTypes = {
   whale = "whale"
 }
 pPlayerTypes.each(@(pType, id) register_command(@() set_purch_player_type(pType), $"meta.set_purch_player_type_{id}"))
+
+
+register_command(@(id, count) userstat_add_item(id, count, "userStat", "consolePrintResult"), "meta.userstat_add_item")
+register_command(function(id) {
+    let tags = [
+      { table = "ships_event_leaderboard", mode = "ships", tillPlaces = [10, 100], place = 8, tillPercent = [5, 10, 20], percent = 4 }
+      { table = "tanks_event_leaderboard", mode = "tanks", place = 50342, tillPercent = [50], percent = 44 }
+      { table = "wp_event_leaderboard", mode = "battle_common", tillPlaces = [100], place = 17 }
+    ]
+    userstat_add_item(id, 1, json_to_string(tags, false), "consolePrintResult")
+    return "Sent"
+  },
+  $"meta.add_lb_reward")

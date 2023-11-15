@@ -12,6 +12,7 @@ let starIconSize = hdpxi(60)
 let borderWidth = hdpx(3)
 let bgColor = 0x80000000
 let questBarColor = 0xFF2EC181
+let completedBarColor = 0xFF505050
 let progressBarColor = 0xFF5AA0E9
 let progressBarColorLight = 0xFFDEECFA
 let barBorderColor = 0xFF606060
@@ -57,13 +58,15 @@ let function mkQuestBar(quest) {
       {
         rendObj = ROBJ_BOX
         size = [pw(100 * questCompletion), questBarHeight]
-        fillColor = questBarColor
+        fillColor = quest?.isFinished
+          ? completedBarColor
+          : questBarColor
       }
       {
         rendObj = ROBJ_TEXT
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
-        text = $"{current}/{required}"
+        text = quest?.isFinished ? loc("ui/received") : $"{current}/{required}"
         padding = [0, hdpx(15), 0, 0]
       }.__update(fontVeryTinyShaded)
     ]

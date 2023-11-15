@@ -1,13 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getLootboxImage, getLootboxName } = require("lootboxPresentation.nut")
+let { mkLoootboxImage, getLootboxName } = require("lootboxPresentation.nut")
 let { mkCurrencyComp, CS_SMALL } = require("%rGui/components/currencyComp.nut")
-
-let mkLoootboxImage = @(id, size) {
-  size = [size, size]
-  rendObj = ROBJ_IMAGE
-  image = getLootboxImage(id, size)
-  keepAspect = true
-}
 
 let mkCurrencyImage = @(amount, size, currencyId) {
   size = [size, 2 * size]

@@ -9,7 +9,7 @@ let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { getLootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 
 // PREDEFINED STYLES ///////////////////////////////////////////////////////////
@@ -265,11 +265,9 @@ let function mkRewardPlateLootboxImage(r, rStyle) {
   let iconSize = round(size[1] * 0.67).tointeger()
   return {
     size
-    children = iconBase.__merge({
-      size = [iconSize, iconSize]
+    children = mkLoootboxImage(r.id, iconSize, {
       pos = [ 0, iconShiftY ]
-      image = getLootboxImage(r.id, iconSize)
-    })
+    }).__merge(iconBase)
   }
 }
 

@@ -21798,7 +21798,6 @@
       "armorThrough": 200.0
     },
     "fabric_props": {
-      "riArmorClass": "RHA_tank",
       "allowRicochet": false,
       "armorThickness": 0.01,
       "restrainDamage": 0.02,
@@ -21808,7 +21807,6 @@
       "cumulativeDamageMult": 0.05
     },
     "hay_props": {
-      "riArmorClass": "RHA_tank",
       "allowRicochet": false,
       "armorThickness": 1.0,
       "restrainDamage": 0.0005,
@@ -21835,7 +21833,13 @@
       "armorThrough": 10.0,
       "explosionDamageMult": 0.5,
       "genericDamageMult": 0.1,
-      "cumulativeDamageMult": 0.1
+      "cumulativeDamageMult": 0.1,
+      "defaultTracedWidth": 0.01,
+      "maxTracedWidth": 0.01,
+      "clampTracedWidth": [
+        0.0,
+        0.05
+      ]
     },
     "metal_props": {
       "riArmorClass": "RHA_tank",
@@ -21853,7 +21857,13 @@
       "armorThrough": 100.0,
       "explosionDamageMult": 0.5,
       "genericDamageMult": 0.3,
-      "cumulativeDamageMult": 0.3
+      "cumulativeDamageMult": 0.3,
+      "defaultTracedWidth": 0.01,
+      "maxTracedWidth": 0.01,
+      "clampTracedWidth": [
+        0.0,
+        0.05
+      ]
     },
     "tanks": {
       "riArmorClass": "RHA_tank",
@@ -21885,7 +21895,6 @@
       "cumulativeDamageMult": 0.8
     },
     "trees_small": {
-      "riArmorClass": "RHA_tank",
       "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.005,
@@ -21905,7 +21914,6 @@
       "cumulativeDamageMult": 1E-05
     },
     "wood_props": {
-      "riArmorClass": "RHA_tank",
       "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.05,
@@ -21915,7 +21923,6 @@
       "cumulativeDamageMult": 0.05
     },
     "wood_small_props": {
-      "riArmorClass": "RHA_tank",
       "allowRicochet": false,
       "armorThickness": 1.0,
       "restrainDamage": 0.05,

@@ -17,8 +17,8 @@ let receivedExpProgressColor = 0xFFFFFFFF
 let levelUpTextColor = 0xFF000000
 
 let rewardAnimTime = 0.5
-let levelProgressSingleAnimTime = 1.0
-let maxLevelProgressAnimTime = 2.0
+let levelProgressSingleAnimTime = 0.5
+let maxLevelProgressAnimTime = 1.5
 
 let mkLevelMark = @(override = {}) {
   size = array(2, levelBlockSize)
@@ -174,7 +174,10 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
 let function mkLevelProgressLine(curLevelConfig, reward, text, animStartTime , lineColor = playerExpColor, override = {}) {
   let { exp = 0, level = 1, nextLevelExp = 0, isLastLevel = false, levelsExp = [] } = curLevelConfig
   if (nextLevelExp == 0)
-    return null
+    return {
+      levelProgressLineComp = null
+      levelProgressLineAnimTime = 0
+    }
 
   let { totalExp = 0 } = reward
   let addExp = clamp(totalExp, 0, max(0, nextLevelExp - exp))
@@ -205,10 +208,10 @@ let function mkLevelProgressLine(curLevelConfig, reward, text, animStartTime , l
       leftReceivedExp = leftReceivedExp - levelExp
     }
   }
-  let fullLevelDelayAnimTime = animStartTime
-   + min(levelUpsArray.len() * levelProgressSingleAnimTime, maxLevelProgressAnimTime)
+  let levelProgressLineAnimTime = min(levelUpsArray.len() * levelProgressSingleAnimTime, maxLevelProgressAnimTime)
+  let fullLevelDelayAnimTime = animStartTime + levelProgressLineAnimTime
   let curLevelIdxWatch = Watched(0)
-  return {
+  let levelProgressLineComp = {
     size = [unitPlateWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
@@ -243,9 +246,11 @@ let function mkLevelProgressLine(curLevelConfig, reward, text, animStartTime , l
       }
     ]
   }.__update(override)
+
+  return {
+    levelProgressLineComp
+    levelProgressLineAnimTime
+  }
 }
 
-return {
-  maxLevelProgressAnimTime
-  mkLevelProgressLine
-}
+return mkLevelProgressLine

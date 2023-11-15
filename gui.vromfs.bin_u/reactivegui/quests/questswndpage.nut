@@ -57,11 +57,80 @@ let newMarkSize = calc_comp_size(newMark)
 
 let receiveReward = @(questName) receiveUnlockRewards(questName, 1, { stage = 1 })
 
-let function mkQuest(quest) {
-  let header = loc(quest.name)
-  let text = loc($"{quest.name}/desc")
-  let rewards = quest?.stages?[0].rewards ?? {}
-  let questProgress = quest.stages[0]?.updStats
+let function mkQuestText(item) {
+  let locId = item.meta?.lang_id ?? item.name
+  let header = loc(locId)
+  let text = loc($"{locId}/desc")
+  return {
+    size = [flex(), SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    gap = hdpx(8)
+    children = [
+      {
+        rendObj = ROBJ_TEXT
+        behavior = Behaviors.Marquee
+        maxWidth = pw(100)
+        text = header
+      }.__update(fontSmall)
+
+      {
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        maxWidth = pw(100)
+        text
+      }.__update(fontTiny)
+    ]
+  }
+}
+
+let function mkAchievementText(item) {
+  let locId = item.meta?.lang_id ?? item.name
+  let text = loc($"{locId}/desc")
+  return {
+    minHeight = hdpx(80)
+    size = [flex(), SIZE_TO_CONTENT]
+    children = {
+      size = [flex(), SIZE_TO_CONTENT]
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      maxWidth = pw(100)
+      vplace = ALIGN_CENTER
+      text
+    }.__update(fontTinyAccented)
+  }
+}
+
+let function mkBtn(item) {
+  let isRewardInProgress = Computed(@() item.name in unlockRewardsInProgress.value)
+  return @() {
+    watch = isRewardInProgress
+    size = btnSize
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = isRewardInProgress.value ? spinner
+      : item?.hasReward
+        ? textButtonSecondary(
+            utf8ToUpper(loc("btn/receive")),
+            @() receiveReward(item.name),
+            btnStyleSound)
+      : item?.isFinished
+        ? {
+            size = btnSize
+            rendObj = ROBJ_TEXT
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            text = utf8ToUpper(loc("ui/received"))
+          }.__update(fontSmallAccentedShaded)
+      : textButtonCommon(
+          utf8ToUpper(loc("btn/receive")),
+          @() anim_start($"unfilledBarEffect_{item.name}"),
+          btnStyle)
+  }
+}
+
+let function mkItem(item, textCtor) {
+  let rewards = item?.stages?[0].rewards ?? {}
+  let questProgress = item.stages[0]?.updStats
     .findvalue(@(v) v.name == PROGRESS_STAT).value.tointeger()
   let progressReward = !questProgress ? [] : [{
     count = questProgress
@@ -70,9 +139,9 @@ let function mkQuest(quest) {
     slots = 1
   }]
 
-  let isUnseen = Computed(@() !quest.hasReward
-    && quest.name not in seenQuests.value
-    && quest.name not in inactiveEventUnlocks.value)
+  let isUnseen = Computed(@() !item.hasReward
+    && item.name not in seenQuests.value
+    && item.name not in inactiveEventUnlocks.value)
 
   let rewardsPreview = Computed(function() {
     local res = []
@@ -83,35 +152,9 @@ let function mkQuest(quest) {
     return progressReward.extend(res.sort(sortRewardsViewInfo))
   })
 
-  let isRewardInProgress = Computed(@() quest.name in unlockRewardsInProgress.value)
-  let headerPadding = Computed(@() quest.hasReward ? unseenMarkMargin * 2
-    : isUnseen.value ? newMarkSize[0]
-    : 0)
-
-  let mkBtn = @() {
-    watch = isRewardInProgress
-    size = btnSize
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    children = isRewardInProgress.value ? spinner
-      : quest?.hasReward
-        ? textButtonSecondary(
-            utf8ToUpper(loc("btn/receive")),
-            @() receiveReward(quest.name),
-            btnStyleSound)
-      : quest?.isFinished
-        ? {
-            size = btnSize
-            rendObj = ROBJ_TEXT
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            text = utf8ToUpper(loc("ui/received"))
-          }.__update(fontSmallAccentedShaded)
-      : textButtonCommon(
-          utf8ToUpper(loc("btn/receive")),
-          @() anim_start($"unfilledBarEffect_{quest.name}"),
-          btnStyle)
-  }
+  let headerPadding = Computed(@() item.hasReward ? unseenMarkMargin * 2
+  : isUnseen.value ? newMarkSize[0]
+  : 0)
 
   return {
     rendObj = ROBJ_SOLID
@@ -121,7 +164,7 @@ let function mkQuest(quest) {
       @() {
         watch = isUnseen
         size = [flex(), SIZE_TO_CONTENT]
-        children = quest.hasReward
+        children = item.hasReward
             ? {
                 margin = unseenMarkMargin
                 children = priorityUnseenMark
@@ -138,28 +181,14 @@ let function mkQuest(quest) {
         vplace = ALIGN_CENTER
         valign = ALIGN_BOTTOM
         children = [
-          {
+          @() {
+            watch = headerPadding
             size = [flex(), SIZE_TO_CONTENT]
             flow = FLOW_VERTICAL
             gap = hdpx(8)
             children = [
-              @() {
-                watch = headerPadding
-                padding = [0, 0, 0, headerPadding.value]
-                rendObj = ROBJ_TEXT
-                behavior = Behaviors.Marquee
-                maxWidth = pw(100)
-                text = header
-              }.__update(fontSmall)
-
-              {
-                rendObj = ROBJ_TEXTAREA
-                behavior = Behaviors.TextArea
-                maxWidth = pw(100)
-                text
-              }.__update(fontTiny)
-
-              mkQuestBar(quest)
+              textCtor(item).__update({padding = [0, 0, 0, headerPadding.value] })
+              mkQuestBar(item)
             ]
           }
 
@@ -168,10 +197,10 @@ let function mkQuest(quest) {
             flow = FLOW_HORIZONTAL
             gap = questItemsGap
             halign = ALIGN_RIGHT
-            children = rewardsPreview.value.len() > 0 ? mkRewardsPreview(rewardsPreview.value, quest?.isFinished) : null
+            children = rewardsPreview.value.len() > 0 ? mkRewardsPreview(rewardsPreview.value, item?.isFinished) : null
           }
 
-          mkBtn
+          mkBtn(item)
         ]
       }
     ]
@@ -223,8 +252,8 @@ let function questTimerUntilStart() {
   }
 }
 
-let function questsWndPage(sections, progressUnlock = Watched(null)) {
-  let questsSort = @(a, b) b.hasReward <=> a.hasReward
+let function questsWndPage(sections, itemCtor, progressUnlock = Watched(null)) {
+  let itemsSort = @(a, b) b.hasReward <=> a.hasReward
     || a.isFinished <=> b.isFinished
     || a.name in seenQuests.value <=> b.name in seenQuests.value
     || a.name <=> b.name
@@ -291,8 +320,8 @@ let function questsWndPage(sections, progressUnlock = Watched(null)) {
                 gap = hdpx(20)
                 children = questsBySection.value?[curSectionId.value ?? sections.value?[0]]
                   .values()
-                  .sort(questsSort)
-                  .map(@(quest) mkQuest(quest))
+                  .sort(itemsSort)
+                  .map(itemCtor)
                 onDetach = @() saveSeenQuestsCurSection()
               }, { pos = [0, 0] }, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
               mkScrollArrow(scrollHandler, MR_B)
@@ -304,4 +333,8 @@ let function questsWndPage(sections, progressUnlock = Watched(null)) {
   }
 }
 
-return questsWndPage
+return {
+  questsWndPage
+  mkQuest = @(item) mkItem(item, mkQuestText)
+  mkAchievement = @(item) mkItem(item, mkAchievementText)
+}

@@ -14,14 +14,14 @@ let textBtnComp = @(text){
   text
 }.__update(fontTinyAccented)
 
-let mkPlayerLevelUpTextComp = @(text, level) {
+let mkPlayerLevelUpTextComp = @(text, level, starLevel) {
   flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   gap = hdpx(10)
   children = [
     textBtnComp(text)
-    mkPlayerLevel(level)
+    mkPlayerLevel(level, starLevel)
   ]
 }
 
@@ -37,8 +37,8 @@ let mkVehicleLevelUpTextComp = @(text, level) {
 }
 
 return {
-  textButtonPlayerLevelUp = @(text, level, onClick, styleOvr = null)
-    mkCustomButton(mkPlayerLevelUpTextComp(text, level), onClick, mergeStyles(PURCHASE, styleOvr)) // Gold with player level square
+  textButtonPlayerLevelUp = @(text, level, starLevel, onClick, styleOvr = null)
+    mkCustomButton(mkPlayerLevelUpTextComp(text, level, starLevel), onClick, mergeStyles(PURCHASE, styleOvr)) // Gold with player level square
   textButtonVehicleLevelUp = @(text, level, onClick, styleOvr = null)
     mkCustomButton(mkVehicleLevelUpTextComp(text, level), onClick, mergeStyles(PURCHASE, styleOvr)) // Gold with unit level square
 }

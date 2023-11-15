@@ -53,7 +53,7 @@ let msgBoxBg = {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_SOLID
-  color = 0xDC161B23
+  color = 0xFF161B23
   stopMouse = true
 }
 

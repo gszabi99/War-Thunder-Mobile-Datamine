@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
-  OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED,
+  OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED, OPT_AUTO_ZOOM,
   OPT_AUTO_ZOOM_TANK, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_ROTATION_ASSIST,
   OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
@@ -9,11 +9,13 @@ let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing
   set_auto_zoom
 } = require("controlsOptions")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { abTests } = require("%appGlobals/pServer/campaign.nut")
+let { abTests, sharedStats } = require("%appGlobals/pServer/campaign.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { openChooseMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
+
+let autoZoomDefaultTrueStart = 1699894800 //13.11.23
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 
@@ -91,10 +93,15 @@ let currentArmorPiercingType = {
 }
 
 let autoZoomList = [false, true]
-let autoZoomDefault = Computed(@() (abTests.value?.tankAutoZoom ?? "false") == "true")
+let autoZoomDefault = Computed(@() (abTests.value?.tankAutoZoom ?? "false") == "true"
+  || (sharedStats.value?.firstLoginTime ?? 0) > autoZoomDefaultTrueStart)
 let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM_TANK)
+let autoZoomCompatibility = mkOptionValue(OPT_AUTO_ZOOM)
 let currentAutoZoom = Computed(@()
-  validate(currentAutoZoomRaw.value ?? autoZoomDefault.value, autoZoomList))
+  validate(currentAutoZoomRaw.value
+      ?? autoZoomCompatibility.value
+      ?? autoZoomDefault.value,
+    autoZoomList))
 set_auto_zoom(currentAutoZoom.value, false)
 currentAutoZoom.subscribe(@(v) set_auto_zoom(v, false))
 let currentAutoZoomType = {

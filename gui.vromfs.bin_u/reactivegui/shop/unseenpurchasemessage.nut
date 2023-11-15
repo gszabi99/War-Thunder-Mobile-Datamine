@@ -1,19 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { frnd } = require("dagor.random")
+let { parse_json_rapid } = require("json")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { isInQueue } = require("%appGlobals/queueState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { unseenPurchasesExt, markPurchasesSeen, hasActiveCustomUnseenView, skipUnseenMessageAnimOnce
+let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView, skipUnseenMessageAnimOnce
 } = require("unseenPurchasesState.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
+let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -32,6 +34,7 @@ let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nu
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let openUnitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { tryResetToMainScene, canResetToMainScene } = require("%rGui/navState.nut")
+let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator" ]
 
@@ -45,7 +48,7 @@ let rewIconsPerRow = ((wndWidth + rewIconsGap) / (rewIconSize + rewIconsGap)).to
 let unitPlatesGap = hdpx(40)
 let unitsPerRow = ((wndWidth + unitPlatesGap) / (unitPlateWidth + unitPlatesGap)).tointeger()
 
-let fadedTextColor = 0xFFACACAC
+let textColor = 0xFFE0E0E0
 let ANIM_SKIP = {}
 let ANIM_SKIP_DELAY = {}
 
@@ -77,7 +80,7 @@ let aTitleScaleMax = 1.1
 
 let stackData = Computed(function() {
   let stackRaw = {}
-  foreach (purch in unseenPurchasesExt.value)
+  foreach (purch in activeUnseenPurchasesGroup.value.list)
     foreach (data in purch.goods) {
       let { id, gType, count } = data
       if (gType not in stackRaw)
@@ -124,7 +127,7 @@ let stackData = Computed(function() {
 })
 
 let needShow = keepref(Computed(@() !hasActiveCustomUnseenView.value
-  && unseenPurchasesExt.value.len() != 0
+  && activeUnseenPurchasesGroup.value.list.len() != 0
   && isInMenu.value
   && isLoggedIn.value
   && !isTutorialActive.value
@@ -404,35 +407,168 @@ let bgGradientComp = bgGradient.__merge({
     play = true, trigger = ANIM_SKIP } ]
 })
 
+let mkTitleAnimations = @(startDelay) [
+  { prop = AnimProp.opacity, from = 0, to = 0,
+    duration = startDelay,
+    play = true, trigger = ANIM_SKIP }
+  { prop = AnimProp.opacity, from = 0, to = 1,
+    delay = startDelay, duration = aTitleOpacityTime,
+    play = true, trigger = ANIM_SKIP_DELAY }
+  { prop = AnimProp.scale, from = [aTitleScaleMin, aTitleScaleMin], to = [aTitleScaleMin, aTitleScaleMin],
+    duration = startDelay + aTitleScaleDelayTime,
+    play = true, trigger = ANIM_SKIP }
+  { prop = AnimProp.scale, from = [aTitleScaleMin, aTitleScaleMin], to = [aTitleScaleMax, aTitleScaleMax], easing = OutCubic,
+    delay = startDelay + aTitleScaleDelayTime, duration = aTitleScaleUpTime,
+    play = true, trigger = ANIM_SKIP }
+  { prop = AnimProp.scale, from = [aTitleScaleMax, aTitleScaleMax], to = [1, 1], easing = InCubic,
+    delay = startDelay + aTitleScaleDelayTime + aTitleScaleUpTime, duration = aTitleScaleDownTime,
+    play = true, trigger = ANIM_SKIP, onFinish = @() isAnimFinished(true) }
+]
+
 let mkWndTitle = @(startDelay) {
   margin = [0, 0, hdpx(55), 0]
   rendObj = ROBJ_TEXT
-  color = fadedTextColor
+  color = textColor
   text = loc("mainmenu/you_received")
 
   transform = {}
-  animations = [
-    { prop = AnimProp.opacity, from = 0, to = 0,
-      duration = startDelay,
-      play = true, trigger = ANIM_SKIP }
-    { prop = AnimProp.opacity, from = 0, to = 1,
-      delay = startDelay, duration = aTitleOpacityTime,
-      play = true, trigger = ANIM_SKIP_DELAY }
-    { prop = AnimProp.scale, from = [aTitleScaleMin, aTitleScaleMin], to = [aTitleScaleMin, aTitleScaleMin],
-      duration = startDelay + aTitleScaleDelayTime,
-      play = true, trigger = ANIM_SKIP }
-    { prop = AnimProp.scale, from = [aTitleScaleMin, aTitleScaleMin], to = [aTitleScaleMax, aTitleScaleMax], easing = OutCubic,
-      delay = startDelay + aTitleScaleDelayTime, duration = aTitleScaleUpTime,
-      play = true, trigger = ANIM_SKIP }
-    { prop = AnimProp.scale, from = [aTitleScaleMax, aTitleScaleMax], to = [1, 1], easing = InCubic,
-      delay = startDelay + aTitleScaleDelayTime + aTitleScaleUpTime, duration = aTitleScaleDownTime,
-      play = true, trigger = ANIM_SKIP, onFinish = @() isAnimFinished(true) }
-  ]
+  animations = mkTitleAnimations(startDelay)
 }.__update(fontBig)
+
+let lbValueFields = ["tillPlaces", "place", "tillPercent", "percent"]
+let LB_BIG = 100000000
+function getLbRewardTexts(activeGroup) {
+  let { sourcePrefix = "", list } = activeGroup
+  let processed = {}
+  let best = {}
+  foreach(purch in list) {
+    if (purch.source in processed)
+      continue
+    processed[purch.source] <- true
+    let cfgList = parse_json_rapid(purch.source.slice(sourcePrefix.len()))
+    if (type(cfgList) != "array") {
+      logerr($"Wrong type of leaderboard reward source json (array required): {purch.source}")
+      continue
+    }
+
+    foreach(cfg in cfgList) {
+      let { mode = "" } = cfg
+      if (mode not in best)
+        best[mode] <- { mode }
+      let modeBest = best[mode]
+
+      foreach(key in lbValueFields) {
+        local value = cfg?[key]
+        if (type(value) == "array")
+          value = value.reduce(@(a, b) b <= 0 ? a
+            : a <= 0 ? b
+            : min(a, b))
+        if (type(value) != "float" && type(value) != "integer")
+          continue
+        if (key not in modeBest)
+          modeBest[key] <- value
+        else
+          modeBest[key] = min(modeBest[key], value)
+      }
+    }
+  }
+
+  let ordered = best.values()
+    .sort(@(a, b) (a?.tillPlaces ?? LB_BIG) <=> (b?.tillPlaces ?? LB_BIG)
+      || (a?.tillPercent ?? LB_BIG) <=> (b?.tillPercent ?? LB_BIG)
+      || (a?.place ?? LB_BIG) <=> (b?.place ?? LB_BIG))
+
+  return ordered.map(function(modeBest) {
+    let { mode, tillPlaces = -1, place = -1, tillPercent = -1 } = modeBest
+    let locParams = { place = colorize("@mark", place), tillPercent = colorize("@mark", $"{tillPercent.tointeger()}%") }
+    let hasPlaceReward = tillPlaces > 0 && place > 0
+    let text = hasPlaceReward && tillPercent > 0 ? loc("lb/rewardHeader/placeAndPercent", locParams)
+      : tillPercent > 0 && tillPercent < 100 ? loc("lb/rewardHeader/tillPercent", locParams)
+      : place > 0 ? loc("lb/rewardHeader/place", locParams)
+      : ""
+    let modeName = loc(lbCfgOrdered.findvalue(@(lb) lb.gameMode == mode)?.locId ?? $"lb/{mode}")
+    return { modeName, text }
+  })
+}
+
+let mkText = @(text, style = {}) {
+  rendObj = ROBJ_TEXT
+  color = textColor
+  text
+}.__update(fontTinyAccented, style)
+
+let mkTextArea = @(text, style = {}) {
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  color = textColor
+  colorTable = locColorTable
+  text
+}.__update(fontTinyAccented, style)
+
+function mkLbInfoTable(texts) {
+  let comps = texts.map(@(data) {
+    modeName = mkTextArea($"{data.modeName}{colon}", { color = locColorTable.mark })
+    text = mkTextArea(data.text)
+  })
+
+  let sizes = { modeName = 0, text = 0 }
+  foreach(data in comps)
+    foreach(key, comp in data)
+      sizes[key] = max(sizes[key], calc_comp_size(comp)[0])
+
+  return {
+    flow = FLOW_VERTICAL
+    children = comps.map(@(data) {
+      gap = hdpx(40)
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_CENTER
+      children = [
+        {
+          size = [sizes.modeName, SIZE_TO_CONTENT]
+          children = data.modeName
+        }
+        {
+          size = [sizes.text, SIZE_TO_CONTENT]
+          halign = ALIGN_RIGHT
+          children = data.text
+        }
+      ]
+    })
+  }
+}
+
+function mkLeaderboardRewardTitle(startDelay, activeGroup) {
+  let texts = getLbRewardTexts(activeGroup)
+  if (texts.len() == 0)
+    return mkWndTitle(startDelay)
+
+  return {
+    margin = [0, 0, hdpx(20), 0]
+    halign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    children = [
+      mkText(loc("lb/rewardHeader"), fontSmall)
+      { size = [0, hdpx(30)] }
+      mkLbInfoTable(texts)
+      { size = [0, hdpx(60)] }
+      mkText(loc("mainmenu/you_received"))
+    ]
+    transform = {}
+    animations = mkTitleAnimations(startDelay)
+  }
+}
+
+let titleCtors = {
+  leaderboard = mkLeaderboardRewardTitle
+}
+
+let wndOvr = {
+  leaderboard = { gap = hdpx(20) }
+}
 
 let mkTapToContinueText = @(startDelay) {
   rendObj = ROBJ_TEXT
-  color = fadedTextColor
+  color = textColor
   text = loc("TapAnyToContinue")
 
   transform = {}
@@ -470,11 +606,13 @@ let function onCloseRequest() {
     }
   }
   // Marking purchases as seen
-  markPurchasesSeen(unseenPurchasesExt.value.keys())
+  markPurchasesSeen(activeUnseenPurchasesGroup.value.list.keys())
 }
 
-let function mkMsgContent(stackDataV) {
+let function mkMsgContent(stackDataV, purchGroup) {
   let { rewardIcons = [], unitPlates = [], outroDelay } = stackDataV
+  let { style = null } = purchGroup
+  let title = titleCtors?[style](outroDelay, purchGroup) ?? mkWndTitle(outroDelay)
   let content = {
     size = [flex(), SIZE_TO_CONTENT]
     padding = [hdpx(28), 0, hdpx(38), 0]
@@ -486,7 +624,7 @@ let function mkMsgContent(stackDataV) {
     gap = hdpx(44)
     sound = { attach = (unitPlates.len() > 0 ? "meta_daily_reward" : "meta_unlock_unit") }
     children = [
-      mkWndTitle(outroDelay)
+      title
       {
         size = [flex(), SIZE_TO_CONTENT]
         flow = FLOW_VERTICAL
@@ -500,7 +638,7 @@ let function mkMsgContent(stackDataV) {
       }
       mkTapToContinueText(outroDelay)
     ]
-  }
+  }.__update(wndOvr?[style] ?? {})
   return makeVertScroll(content, { size = [flex(), SIZE_TO_CONTENT], maxHeight = maxWndHeight })
 }
 
@@ -511,9 +649,9 @@ let messageWnd = {
   children = [
     bgGradientComp
     @() {
-      watch = stackData
+      watch = [stackData, activeUnseenPurchasesGroup]
       size = [flex(), SIZE_TO_CONTENT]
-      children = mkMsgContent(stackData.value)
+      children = mkMsgContent(stackData.value, activeUnseenPurchasesGroup.value)
     }
   ]
 }

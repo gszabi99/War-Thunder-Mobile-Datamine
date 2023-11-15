@@ -16,6 +16,8 @@ let PKG_COMMON = "pkg_common"
 let PKG_COMMON_HQ = "pkg_common_hq"
 let PKG_DEV = "pkg_dev"
 
+let ADDON_VERSION_EMPTY = ""
+
 let MB = 1 << 20
 let nbsp = "\u00A0" // Non-breaking space char
 let comma = loc("ui/comma")
@@ -180,4 +182,6 @@ return freeze({
   localizeAddons
   localizeAddonsLimited
   getAddonsSizeStr
+
+  ADDON_VERSION_EMPTY
 })

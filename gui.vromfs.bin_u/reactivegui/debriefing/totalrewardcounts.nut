@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { defer, resetTimeout } = require("dagor.workcycle")
 let { playSound } = require("sound_wt")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { WP } = require("%appGlobals/currenciesState.nut")
@@ -124,38 +123,19 @@ let rewardRowsCfg = {
   ],
 }
 
-let function getRewardWatchData(rewardWatches, idx, val) {
-  if (idx >= rewardWatches.len())
-    rewardWatches.resize(idx + 1)
-  if (rewardWatches[idx] == null)
-    rewardWatches[idx] = { watched = Watched(0) }
-  rewardWatches[idx].val <- val
-  return rewardWatches[idx]
-}
-
-let function mkRewardWithAnimation(value, valueCtor, rewardWatches, idx, rewardsStartTime) {
-  let valueWatch = getRewardWatchData(rewardWatches, idx, value).watched
-  if (valueWatch.get() != 0 && valueWatch.get() != value) //data changed, but animation already finished
-    defer(@() valueWatch.set(value))
-  let size = calc_comp_size(valueCtor(value))
-  let delayRewardAnim = rewardsStartTime + idx * deltaStartTimeRewards
-
-  return @() {
-    watch = valueWatch
-    size
-    key = {}
-    transform = {}
-    animations = [
-      {
-        prop=AnimProp.scale, from =[1.0, 1.0], to = [1.3, 1.3], duration = rewardAnimTime,
-        easing = CosineFull, onEnter = @() resetTimeout(delayRewardAnim, @() valueWatch.set(rewardWatches?[idx].val ?? 0)),
-        delay = delayRewardAnim,
-        play = true,
-        onStart = @() playSound("prize"),
-      }
-    ]
-    children = valueCtor(valueWatch.get())
-  }
+let mkRewardWithAnimation = @(value, valueCtor, idx, rewardsStartTime) {
+  key = {}
+  transform = {}
+  animations = [
+    {
+      prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3], duration = rewardAnimTime,
+      easing = CosineFull,
+      delay = rewardsStartTime + idx * deltaStartTimeRewards,
+      play = true,
+      onStart = @() playSound("prize"),
+    }
+  ]
+  children = valueCtor(value)
 }
 
 let mkRewardLabel = @(text, cfg) {
@@ -174,17 +154,17 @@ let mkRewardLabel = @(text, cfg) {
   ]
 }
 
-let mkRewardRow = @(rewardLabelComp, value, valueCtor, rewardWatches, idx, rewardsStartTime) {
+let mkRewardRow = @(rewardLabelComp, value, valueCtor, idx, rewardsStartTime) {
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(32)
   children = [
     rewardLabelComp
-    mkRewardWithAnimation(value, valueCtor, rewardWatches, idx, rewardsStartTime)
+    mkRewardWithAnimation(value, valueCtor, idx, rewardsStartTime)
   ]
 }
 
-let function mkTotalRewardCounts(preset, debrData, rewardWatches, rewardsStartTime) {
+let function mkTotalRewardCounts(preset, debrData, rewardsStartTime) {
   let rewardsInfo = getRewardsInfo(preset, debrData)
   let rowsCfg = (rewardRowsCfg?[preset] ?? []).filter(@(c) c.needShow(rewardsInfo))
   if (rowsCfg.len() == 0)
@@ -197,7 +177,7 @@ let function mkTotalRewardCounts(preset, debrData, rewardWatches, rewardsStartTi
   let maxLabelWidth = labelComps.reduce(@(res, v) max(res, calc_comp_size(v)[0]), 0)
   labelComps.each(@(v) v.__update({ size = [maxLabelWidth, SIZE_TO_CONTENT] }))
   let rowComps = rowsCfg.map(@(cfg, idx)
-    mkRewardRow(labelComps[idx], cfg.getVal(rewardsInfo), cfg.valueCtor, rewardWatches, idx, rewardsStartTime))
+    mkRewardRow(labelComps[idx], cfg.getVal(rewardsInfo), cfg.valueCtor, idx, rewardsStartTime))
   let totalRewardsShowTime = rowComps.len() * deltaStartTimeRewards
 
   if (rewardsInfo.teaser != 0)
@@ -220,10 +200,10 @@ let function mkTotalRewardCounts(preset, debrData, rewardWatches, rewardsStartTi
 }
 
 return {
-  mkTotalRewardCountsScores = @(debrData, rewardWatches, rewardsStartTime)
-    mkTotalRewardCounts(REWARDS_SCORES, debrData, rewardWatches, rewardsStartTime)
-  mkTotalRewardCountsCampaign = @(debrData, rewardWatches, rewardsStartTime)
-    mkTotalRewardCounts(REWARDS_CAMPAIGN, debrData, rewardWatches, rewardsStartTime)
-  mkTotalRewardCountsUnit = @(debrData, rewardWatches, rewardsStartTime)
-    mkTotalRewardCounts(REWARDS_UNIT, debrData, rewardWatches, rewardsStartTime)
+  mkTotalRewardCountsScores = @(debrData, rewardsStartTime)
+    mkTotalRewardCounts(REWARDS_SCORES, debrData, rewardsStartTime)
+  mkTotalRewardCountsCampaign = @(debrData, rewardsStartTime)
+    mkTotalRewardCounts(REWARDS_CAMPAIGN, debrData, rewardsStartTime)
+  mkTotalRewardCountsUnit = @(debrData, rewardsStartTime)
+    mkTotalRewardCounts(REWARDS_UNIT, debrData, rewardsStartTime)
 }

@@ -20,6 +20,8 @@ let { isInSquad, isSquadLeader, squadMembers, squadId, isInvitedToSquad, squadOn
 } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
+let { isOnline, isDisconnected } = require("%appGlobals/clientState/clientState.nut")
+let { checkReconnect } = require("%scripts/matchingRooms/sessionReconnect.nut")
 
 let startBattleDelayed = persist("startBattleDelayed", @() { modeId = null })
 let maxSquadRankDiff = mkWatched(persist, "minSquadRankDiff", MAX_SQUAD_MRANK_DIFF)
@@ -187,7 +189,7 @@ let function queueModeOnRandomUnit(mode) {
   setTimeout(1.0, @() queueToGameModeImpl(mode)) //FIXME: why timer here instead of cb or subscribe?
 }
 
-let function queueToGameMode(modeId) {
+let function tryQueueToGameMode(modeId) {
   if (!isMatchingOnline.value) {
     showMatchingConnectProgress()
     startBattleDelayed.modeId = modeId
@@ -204,6 +206,14 @@ let function queueToGameMode(modeId) {
     queueModeOnRandomUnit(mode)
   else
     queueToGameModeImpl(mode)
+}
+
+let function queueToGameMode(modeId) {
+  if (isOnline.get() && isDisconnected.get()) {
+    checkReconnect(@() tryQueueToGameMode(modeId))
+    return
+  }
+  tryQueueToGameMode(modeId)
 }
 
 let function queueToGameModeAfterAddons(modeId) {

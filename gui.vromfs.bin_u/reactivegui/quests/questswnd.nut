@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
-  COMMON_TAB, EVENT_TAB, MINI_EVENT_TAB, PROMO_TAB, progressUnlock, miniEventProgressUnlock } = require("questsState.nut")
-let questsWndPage = require("questsWndPage.nut")
+  COMMON_TAB, EVENT_TAB, MINI_EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, progressUnlock } = require("questsState.nut")
+let { questsWndPage, mkQuest, mkAchievement } = require("questsWndPage.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
@@ -69,7 +69,7 @@ let tabs = [
     locId = "quests/common"
     image = "ui/gameuiskin#quest_common_icon.svg"
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[COMMON_TAB]))
+    content = questsWndPage(Computed(@() questsCfg.value[COMMON_TAB]), mkQuest)
     unseen = Computed(@() isUnseen(questsCfg.value[COMMON_TAB], hasUnseenQuestsBySection.value))
     isVisible = Computed(@() questsCfg.value[COMMON_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
@@ -77,7 +77,7 @@ let tabs = [
     id = EVENT_TAB
     image = "ui/gameuiskin#quest_events_icon.svg"
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), progressUnlock)
+    content = questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), mkQuest, progressUnlock)
     tabContent = eventTabContent
     tabHeight = hdpx(160)
     unseen = Computed(@() progressUnlock.value?.hasReward ? UNSEEN_HIGH
@@ -89,20 +89,28 @@ let tabs = [
     id = MINI_EVENT_TAB
     image = "ui/gameuiskin#quest_events_icon.svg"
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[MINI_EVENT_TAB]))
+    content = questsWndPage(Computed(@() questsCfg.value[MINI_EVENT_TAB]), mkQuest)
     tabContent = miniEventTabContent
     tabHeight = hdpx(160)
-    unseen = Computed(@() miniEventProgressUnlock.value?.hasReward ? UNSEEN_HIGH
-      : isUnseen(questsCfg.value[MINI_EVENT_TAB], hasUnseenQuestsBySection.value))
+    unseen = Computed(@() isUnseen(questsCfg.value[MINI_EVENT_TAB], hasUnseenQuestsBySection.value))
     isVisible = Computed(@() isMiniEventActive.value
       && questsCfg.value[MINI_EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
+  }
+  {
+    id = ACHIEVEMENTS_TAB
+    locId = "quests/achievements"
+    image = "ui/gameuiskin#prizes_icon.svg"
+    isFullWidth = true
+    content = questsWndPage(Computed(@() questsCfg.value[ACHIEVEMENTS_TAB]), mkAchievement)
+    unseen = Computed(@() isUnseen(questsCfg.value[ACHIEVEMENTS_TAB], hasUnseenQuestsBySection.value))
+    isVisible = Computed(@() questsCfg.value[ACHIEVEMENTS_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
   {
     id = PROMO_TAB
     locId = "quests/promo"
     image = "ui/gameuiskin#quest_promo_icon.svg"
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[PROMO_TAB]))
+    content = questsWndPage(Computed(@() questsCfg.value[PROMO_TAB]), mkQuest)
     unseen = Computed(@() isUnseen(questsCfg.value[PROMO_TAB], hasUnseenQuestsBySection.value))
     isVisible = Computed(@() questsCfg.value[PROMO_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }

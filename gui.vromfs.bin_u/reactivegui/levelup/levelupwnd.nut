@@ -18,7 +18,7 @@ let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let { maxRewardLevel } = require("%rGui/levelUp/levelUpState.nut")
+let { maxRewardLevelInfo } = require("%rGui/levelUp/levelUpState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
@@ -87,7 +87,7 @@ let function closeByBackButton() {
 let wpStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpWp" })
 let goldStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpGold" })
 let headerPanel = @() {
-  watch = maxRewardLevel
+  watch = maxRewardLevelInfo
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   children = [
@@ -112,7 +112,7 @@ let headerPanel = @() {
       animations = appearAnim(balanceAppearDelay, balanceAppearTime)
     }
     headerLine(animStartDelay)
-    levelUpFlag(flagHeight, maxRewardLevel.value, animStartDelay)
+    levelUpFlag(flagHeight, maxRewardLevelInfo.value.level, maxRewardLevelInfo.value.starLevel, animStartDelay)
   ]
 }
 

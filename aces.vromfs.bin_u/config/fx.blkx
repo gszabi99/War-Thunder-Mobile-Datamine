@@ -4374,6 +4374,15 @@
     "sfxEvent": "object_sink",
     "soundEnableDistance": 100.0
   },
+  "bomb_reflection_big": {
+    "fx": "water_explosion_drop_big_fx",
+    "numInstances": 10,
+    "numReserved": 10,
+    "onePointNumber": 10,
+    "sfxPathStudio": "naval/effects",
+    "sfxEvent": "object_sink",
+    "soundEnableDistance": 100.0
+  },
   "bomb_water_explosion_huge": {
     "fx": "water_under_explosion_massive_cmps_fx",
     "numInstances": 15,

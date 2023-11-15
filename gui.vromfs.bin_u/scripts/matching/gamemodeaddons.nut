@@ -7,7 +7,7 @@ let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
-let { gameModeAddonToAddonSetMap } = require("%appGlobals/updater/addons.nut")
+let { gameModeAddonToAddonSetMap, ADDON_VERSION_EMPTY } = require("%appGlobals/updater/addons.nut")
 
 let function getModeAddonsInfo(mode, unitNames) {
   let { reqPkg = {}, campaign = curCampaign.value, name = "" } = mode
@@ -21,7 +21,7 @@ let function getModeAddonsInfo(mode, unitNames) {
       continue
     }
     let version = get_addon_version(addon)
-    if (version != "" && check_version(reqVersion, version)) {
+    if (version != ADDON_VERSION_EMPTY && check_version(reqVersion, version)) {
       addons[addon] <- false
       continue
     }

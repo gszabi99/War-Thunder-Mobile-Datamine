@@ -7,7 +7,7 @@ let { hasUnseenQuestsBySection, questsBySection, progressUnlock } = require("que
 let statusMark = @(_) @() {
   watch = [hasUnseenQuestsBySection, progressUnlock]
   hplace = ALIGN_RIGHT
-  margin = hdpx(4)
+  pos = [hdpx(4), hdpx(-4)]
   children = hasUnseenQuestsBySection.value.findindex(@(v) v) == null && !progressUnlock.value?.hasReward ? null
     : priorityUnseenMark
 }
