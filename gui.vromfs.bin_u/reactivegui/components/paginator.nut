@@ -93,8 +93,8 @@ let nextBtn = @(onClick) arrowBtn(onClick, 90)
 
 
 //first page is 0
-let mkPaginator = @(curPage, lastPage, myPage = Watched(-1)) function() {
-  let res = { watch = [curPage, lastPage, myPage] }
+let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function() {
+  let res = { watch = [curPage, lastPage, myPage] }.__update(ovr)
   if (lastPage.value >= 0 && lastPage.value < 1)
     return res
 

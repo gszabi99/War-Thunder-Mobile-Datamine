@@ -7,7 +7,8 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { contentWidth } = require("optionsStyle.nut")
 let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
-let { mkLevelBg, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
+let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
+let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
@@ -33,21 +34,23 @@ let borderColor = 0xFF000000
 let borderWidth = hdpx(1)
 let gap = hdpx(20)
 
-let levelMark = {
+let starLevelOvr = { pos = [0, ph(40)] }
+let levelMark = @() {
+  watch = playerLevelInfo
   size = array(2, levelBlockSize)
   pos = array(2, (0.5 * levelBlockSize + 0.5).tointeger())
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
   children = [
     mkLevelBg()
-    @() {
-      watch = playerLevelInfo
+    {
       rendObj = ROBJ_TEXT
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
-      text = playerLevelInfo.value.isMaxLevel ? maxLevelStarChar : playerLevelInfo.value.level
+      text = playerLevelInfo.value.level - playerLevelInfo.value.starLevel
       pos = [0, -hdpx(2)]
     }.__update(fontSmall)
+    starLevelTiny(playerLevelInfo.value.starLevel, starLevelOvr)
   ]
 }
 

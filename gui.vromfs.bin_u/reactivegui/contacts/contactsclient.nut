@@ -18,6 +18,6 @@ debugDelay.subscribe(@(_) updateDebugDelay())
 register_command(@(delay) debugDelay(delay), "contacts.delay_requests")
 
 return {
-  contactsRequest = requestExt
+  contactsRequest = @(handler, params = {}, context = null) requestExt(handler, params, context)
   contactsRegisterHandler = registerHandler
 }

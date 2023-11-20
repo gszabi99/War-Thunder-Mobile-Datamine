@@ -8,8 +8,9 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, change_item_count, set_pur
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
   apply_profile_mutation, add_lootbox, add_warbond, add_event_key, debug_lootbox_chances,
-  reset_lootbox_counters
+  reset_lootbox_counters, reset_profile_with_stats
 } = pServerApi
+let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
@@ -115,13 +116,19 @@ foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade"]) {
     $"meta.generate_offer_{offerType}")
 }
 
-foreach (cmd in ["get_all_configs", "reset_profile", "reset_profile_with_stats",
+foreach (cmd in ["get_all_configs", "reset_profile",
   "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "check_purchases",
   "reset_mutations_timestamp"
 ]) {
   let action = pServerApi[cmd]
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")
 }
+
+register_command(function() {
+  reset_profile_with_stats("consolePrintResult")
+  resetUserstatAppData()
+},
+  $"meta.reset_profile_with_stats")
 
 let pPlayerTypes = {
   newbie = ""

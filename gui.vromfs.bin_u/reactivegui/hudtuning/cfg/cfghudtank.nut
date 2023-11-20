@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { DBGLEVEL } = require("dagor.system")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN
 } = require("%rGui/hud/actionBar/actionType.nut")
@@ -24,7 +23,8 @@ let { tacticalMap, tacticalMapEditView } = require("%rGui/hud/components/tactica
 let winchButton = require("%rGui/hud/buttons/winchButton.nut")
 let { doll, dollEditView, speedText, speedTextEditView, crewDebuffs, crewDebuffsEditView,
   techDebuffs, techDebuffsEditView } = require("%rGui/hud/tankStateModule.nut")
-let { moveIndicator, moveIndicatorTankEditView } = require("%rGui/hud/components/moveIndicator.nut")
+let { NEED_SHOW_POSE_INDICATOR, moveIndicator, moveIndicatorTankEditView
+} = require("%rGui/hud/components/moveIndicator.nut")
 let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
@@ -182,7 +182,7 @@ return {
     hideForDelayed = false
   }
 
-  moveIndicator = DBGLEVEL > 0
+  moveIndicator = NEED_SHOW_POSE_INDICATOR
     ? {
         ctor = @() moveIndicator
         defTransform = mkCBPos([0, -sh(20)])

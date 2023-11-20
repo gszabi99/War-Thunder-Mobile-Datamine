@@ -6,6 +6,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor,
   levelProgressBarWidth, levelProgressBarFillWidth, rotateCompensate
 } = require("%rGui/components/levelBlockPkg.nut")
+let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { unitPlateWidth } = require("%rGui/unit/components/unitPlateComp.nut")
 
 let levelBlockSize = hdpx(60)
@@ -20,18 +21,67 @@ let rewardAnimTime = 0.5
 let levelProgressSingleAnimTime = 0.5
 let maxLevelProgressAnimTime = 1.5
 
-let mkLevelMark = @(override = {}) {
+let starLevelOvr = { pos = [0, ph(40)] }
+
+let mkCurLevelMark = @(lineColor, level, starLevel) {
   size = array(2, levelBlockSize)
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
   children = [
-    mkLevelBg(override?.bgBlock ?? {})
+    mkLevelBg({ childOvr = { borderColor = lineColor } })
     {
       rendObj = ROBJ_TEXT
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
       pos = [0, -hdpx(2)]
-    }.__update(fontSmall, override?.textBlock ?? {})
+      text = level - starLevel
+    }.__update(fontSmall)
+    starLevelTiny(starLevel, starLevelOvr)
   ]
-}.__update(override?.ovr ?? {})
+}
+
+let mkNextLevelMark = @(nextStarLevel, textBlockOvr, bgBlockOvr) {
+  size = array(2, levelBlockSize)
+  hplace = ALIGN_RIGHT
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = [
+    mkLevelBg({ childOvr = bgBlockOvr })
+    {
+      rendObj = ROBJ_TEXT
+      pos = [0, -hdpx(2)]
+    }.__update(fontSmall, textBlockOvr)
+    starLevelTiny(nextStarLevel, starLevelOvr)
+  ]
+}
+
+let mkNextLevelTextAnimations = @(levelProgressDelay, levelProgressAnimTime, trigger) [
+  {
+    prop = AnimProp.color, from = nextLevelTextColor,
+    to = nextLevelTextColor, duration = levelProgressDelay + levelProgressAnimTime,
+    play = true
+  }
+  {
+    prop = AnimProp.color, from = nextLevelTextColor,
+    to = levelUpTextColor, duration = levelProgressAnimTime * 0.5,
+    easing = InQuad, trigger
+  }
+]
+
+let mkNextLevelBgAnimations = @(levelProgressDelay, levelProgressAnimTime, trigger) [
+  {
+    prop = AnimProp.fillColor, from = nextLevelBgColor,
+    to = nextLevelBgColor, duration = levelProgressDelay + levelProgressAnimTime,
+    play = true
+  }
+  {
+    prop = AnimProp.fillColor, from = nextLevelBgColor,
+    to = receivedExpProgressColor, duration = levelProgressAnimTime * 0.5,
+    easing = InQuad, trigger
+  }
+  {
+    prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3], easing = Blink,
+    duration = levelProgressAnimTime * 0.5, trigger
+  }
+]
 
 let mkTextUnderLevelLine = @(text, color, override = {}) {
   size = [flex(), SIZE_TO_CONTENT]
@@ -70,7 +120,8 @@ let function levelLineSound(soundEndTime) {
 }
 
 let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStartTime) function() {
-  let { curLevel, isLevelUpCurStep, isLastLevelCurStep, curExpWidth, receivedExpWidth
+  let { curLevel, curStarLevel, isLevelUpCurStep, isLastLevelCurStep, curExpWidth, receivedExpWidth,
+    isStarProgress
   } = levelUpsArray[curLevelIdxWatch.get()]
 
   let stepsCount = levelUpsArray.len()
@@ -78,6 +129,7 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
     : min((maxLevelProgressAnimTime - levelProgressSingleAnimTime) / (stepsCount - 1), levelProgressSingleAnimTime)
   let levelProgressDelay = curLevelIdxWatch.get() == 0 ? animStartTime : 0
   let animationTrigger = $"progressFillFinished_{lineColor}"
+  let nextStarLevel = isStarProgress ? curStarLevel + 1 : 0
   return {
     watch = curLevelIdxWatch
     size = [levelProgressBarWidth + 2 * rotateCompensate * levelBlockSize, SIZE_TO_CONTENT]
@@ -121,58 +173,28 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
           }
         ]
       })
-      mkLevelMark({
-        textBlock = { text = curLevel }
-        bgBlock = { childOvr = { borderColor = lineColor } }
-      })
-      mkLevelMark({
-        ovr = { hplace = ALIGN_RIGHT }
-        textBlock = {
-          text = isLastLevelCurStep ? maxLevelStarChar : curLevel + 1
+      mkCurLevelMark(lineColor, curLevel, curStarLevel)
+      mkNextLevelMark(
+        nextStarLevel,
+        {
+          text = isLastLevelCurStep ? maxLevelStarChar : curLevel + 1 - nextStarLevel
           color = isLevelUpCurStep ? levelUpTextColor : nextLevelTextColor
-          animations = [
-            {
-              prop = AnimProp.color, from = nextLevelTextColor,
-              to = nextLevelTextColor, duration = levelProgressDelay + levelProgressAnimTime,
-              play = true
-            }
-            {
-              prop = AnimProp.color, from = nextLevelTextColor,
-              to = levelUpTextColor, duration = levelProgressAnimTime * 0.5,
-              easing = InQuad, trigger = animationTrigger
-            }
-          ]
-        }
-        bgBlock = {
-          childOvr = {
-            fillColor = isLevelUpCurStep ? receivedExpProgressColor : nextLevelBgColor
-            borderColor = nextLevelBorderColor
-            transform = {}
-            animations = [
-              {
-                prop = AnimProp.fillColor, from = nextLevelBgColor,
-                to = nextLevelBgColor, duration = levelProgressDelay + levelProgressAnimTime,
-                play = true
-              }
-              {
-                prop = AnimProp.fillColor, from = nextLevelBgColor,
-                to = receivedExpProgressColor, duration = levelProgressAnimTime * 0.5,
-                easing = InQuad, trigger = animationTrigger
-              }
-              {
-                prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3], easing = Blink,
-                duration = levelProgressAnimTime * 0.5, trigger = animationTrigger
-              }
-            ]
-          }
-        }
-      })
+          animations = mkNextLevelTextAnimations(levelProgressDelay, levelProgressAnimTime, animationTrigger)
+        },
+        {
+          fillColor = isLevelUpCurStep ? receivedExpProgressColor : nextLevelBgColor
+          borderColor = nextLevelBorderColor
+          transform = {}
+          animations = mkNextLevelBgAnimations(levelProgressDelay, levelProgressAnimTime, animationTrigger)
+        })
     ]
   }
 }
 
 let function mkLevelProgressLine(curLevelConfig, reward, text, animStartTime , lineColor = playerExpColor, override = {}) {
-  let { exp = 0, level = 1, nextLevelExp = 0, isLastLevel = false, levelsExp = [] } = curLevelConfig
+  let { exp = 0, level = 1, starLevel = 0, isStarProgress = false,
+    nextLevelExp = 0, isLastLevel = false, levelsExp = []
+  } = curLevelConfig
   if (nextLevelExp == 0)
     return {
       levelProgressLineComp = null
@@ -184,8 +206,10 @@ let function mkLevelProgressLine(curLevelConfig, reward, text, animStartTime , l
   let isLevelUp = addExp > 0 && nextLevelExp <= (exp + totalExp)
   let levelUpsArray = [{
     curLevel = level
+    curStarLevel = starLevel
+    isStarProgress
     isLevelUpCurStep = isLevelUp
-    isLastLevelCurStep = isLastLevel
+    isLastLevelCurStep = "starLevel" not in curLevelConfig && isLastLevel //no need to show star for player level. But still has star for unit level
     curExpWidth = lerpClamped(0, nextLevelExp, 0, levelProgressBarFillWidth, exp)
     receivedExpWidth = lerpClamped(0, nextLevelExp, 0, levelProgressBarFillWidth, exp + totalExp)
   }]
@@ -200,6 +224,8 @@ let function mkLevelProgressLine(curLevelConfig, reward, text, animStartTime , l
 
       levelUpsArray.append({
         curLevel = idx
+        curStarLevel = isStarProgress ? starLevel + idx - level : 0
+        isStarProgress
         isLevelUpCurStep = levelExp <= leftReceivedExp
         isLastLevelCurStep = (idx + 1) not in levelsExp
         curExpWidth = lerpClamped(0, levelExp, 0, levelProgressBarFillWidth, 0)

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { DBGLEVEL } = require("dagor.system")
-let { moveIndicator, moveIndicatorShipEditView } = require("%rGui/hud/components/moveIndicator.nut")
+let { NEED_SHOW_POSE_INDICATOR, moveIndicator, moveIndicatorShipEditView
+} = require("%rGui/hud/components/moveIndicator.nut")
 let { doll, dollEditView, shipDebuffs, shipDebuffsEditView, crewHealth, crewHealthEditView
 } = require("%rGui/hud/shipStateModule.nut")
 let { tacticalMap, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
@@ -39,7 +39,7 @@ return {
     hideForDelayed = false
   }
 
-  moveIndicator = DBGLEVEL > 0
+  moveIndicator = NEED_SHOW_POSE_INDICATOR
     ? {
       ctor = @() moveIndicator
       defTransform = mkCBPos([0, -sh(13)])

@@ -12,6 +12,8 @@ let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis
 let { axisMinToHotkey, axisMaxToHotkey } = require("%rGui/controls/axisToHotkey.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
+let { playerUnitName, unitType } = require("%rGui/hudState.nut")
+let { AIR } = require("%appGlobals/unitConst.nut")
 
 let maxThrottle = 100.0
 let stepThrottle = 5.0
@@ -35,6 +37,8 @@ let throttleScaleHeight = height - knobSize
 let idleTimeForThrottleOpacity = 5
 let needOpacityThrottle = Watched(false)
 let makeOpacityThrottle = @() needOpacityThrottle(true)
+let showModelName = Watched(false)
+let SHOW_MODEL_NAME_TIMEOUT = 7.0
 
 let throttleAxisVal = Watched(0)
 let isThrottleAxisActive = keepref(Computed(@() fabs(throttleAxisVal.value) > throttleDeadZone))
@@ -235,10 +239,31 @@ let aircraftMovementEditView = {
   ]
 }
 
+let showModelNameOff = @() showModelName(false)
+
+playerUnitName.subscribe(function(_) {
+  if (unitType.value != AIR) {
+    showModelName(false)
+    return
+  }
+  showModelName(true)
+  resetTimeout(SHOW_MODEL_NAME_TIMEOUT, showModelNameOff)
+})
+resetTimeout(SHOW_MODEL_NAME_TIMEOUT, showModelNameOff)
+
 let aircraftIndicators = {
+  size = [hdpx(250), hdpx(150)]
+  valign = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = hdpx(5)
   children = [
+    @() !showModelName.value ? { watch = showModelName }
+    : {
+        watch = [showModelName, playerUnitName]
+        rendObj = ROBJ_TEXT
+        color = neutralColor
+        text = loc($"{playerUnitName.value}_0")
+      }.__update(fontSmallAccented)
     @() {
       watch = [Spd, IsSpdCritical]
       rendObj = ROBJ_TEXT
@@ -254,9 +279,16 @@ let aircraftIndicators = {
 }
 
 let aircraftIndicatorsEditView = {
+  size = [hdpx(250), hdpx(150)]
+  valign = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = hdpx(5)
   children = [
+    {
+      rendObj = ROBJ_TEXT
+      color = neutralColor
+      text = loc("hud/aircraft_name")
+    }.__update(fontSmallAccented)
     {
       rendObj = ROBJ_TEXT
       color = neutralColor

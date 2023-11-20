@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isEqual } = require("%sqstd/underscore.nut")
-let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler
+let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler,
+  forceRefreshUnlocks, forceRefreshStats
 } = require("userstat.nut")
 
 
@@ -109,6 +110,21 @@ userstatRegisterHandler("GrantRewards", function(result, context) {
   }
 })
 
+userstatRegisterHandler("ResetAppData", function(result, context) {
+  let logFunc = (context?.needScreenLog ?? false) ? dlog : console_print
+  if ("error" in result && result.error != "WRONG_JSON")  //WRONG_JSON is incorrect result in the native client, because this request does not have json answer
+    logFunc("Reset unlocks progress failed: ", result)
+  else
+    logFunc("Reset unlocks progress success.")
+  forceRefreshUnlocks()
+  forceRefreshStats()
+})
+
+let function resetUserstatAppData(needScreenLog = false) {
+  log("[userstat] ResetAppData")
+  userstatRequest("ResetAppData", {}, { needScreenLog })
+}
+
 return {
   activeUnlocks
   unlockProgress
@@ -119,4 +135,5 @@ return {
 
   unlockRewardsInProgress
   receiveUnlockRewards
+  resetUserstatAppData
 }

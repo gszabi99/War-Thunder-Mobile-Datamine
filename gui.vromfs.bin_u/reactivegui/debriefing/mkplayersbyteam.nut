@@ -7,7 +7,7 @@ let function mkPlayersByTeam(dData) {
   let mplayersList = players.values().map(function(p) {
     let isLocal = p.userId == userId
     let pUserIdStr = p.userId.tostring()
-    let { level = 1, hasPremium = false } = playersCommonStats?[pUserIdStr]
+    let { level = 1, starLevel = 0, hasPremium = false } = playersCommonStats?[pUserIdStr]
     let pUnit = playersCommonStats?[pUserIdStr].unit
     let mainUnitName = pUnit?.name ?? (p.aircraftName ?? "")
     let unitClass = pUnit?.unitClass ?? ""
@@ -22,6 +22,7 @@ let function mkPlayersByTeam(dData) {
         : frameNick(getPlayerName(p.name), frameId)
       score = p?.dmgScoreBonus ?? 0.0
       level
+      starLevel
       hasPremium
       isUnitPremium
       mainUnitName

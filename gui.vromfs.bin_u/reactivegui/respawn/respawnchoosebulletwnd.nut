@@ -173,6 +173,9 @@ let mkStatRow = @(nameText, valText, color = 0xFFC0C0C0) {
       rendObj = ROBJ_TEXT
       color
       text = nameText
+      behavior = Behaviors.Marquee
+      delay = 1
+      speed = hdpx(30)
     }.__update(fontVeryTiny)
     {
       rendObj = ROBJ_TEXT

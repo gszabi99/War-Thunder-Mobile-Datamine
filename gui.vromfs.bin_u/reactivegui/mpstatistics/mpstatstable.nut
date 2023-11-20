@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
+let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
@@ -31,18 +32,20 @@ let mkCellIcon = @(icon) {
   image = Picture($"{icon}:{rowHeadIconSize}:{rowHeadIconSize}")
 }
 
-let levelMark = @(text) {
+let starLevelOvr = { pos = [0, ph(40)] }
+let levelMark = @(level, starLevel) {
   size = array(2, hdpx(45))
   margin = hdpx(10)
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
   children = [
     mkLevelBg()
     {
       rendObj = ROBJ_TEXT
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
       pos = [0, -hdpx(2)]
-      text
+      text = level - starLevel
     }.__update(fontVeryTiny)
+    starLevelTiny(starLevel, starLevelOvr)
   ]
 }
 
@@ -77,6 +80,7 @@ let function mkNameContent(player, teamColor, halign) {
       player.hasPremium ? premiumMark : null
     ]
   }
+  let { level, starLevel = 0 } = player
   let res = {
     size = flex()
     halign
@@ -84,7 +88,7 @@ let function mkNameContent(player, teamColor, halign) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = [
-      levelMark(player.level.tostring())
+      levelMark(level, starLevel)
       {
         size = flex()
         halign

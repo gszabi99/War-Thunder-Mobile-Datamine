@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
+let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 
 let nameColor = 0xFF00FCFF
@@ -13,8 +14,9 @@ let avatarSize = hdpxi(90)
 let rowHeight = avatarSize + 2 * borderWidth
 let gap = hdpx(24)
 
-let function contactNameBlock(contact, info, addChildren = []) {
+let function contactNameBlock(contact, info, addChildren = [], styles = {}) {
   let { nickFrame = null, title = null } = info?.decorators
+  let { nameStyle = fontTiny, titleStyle = fontTiny } = styles
   return {
     size = flex()
     flow = FLOW_VERTICAL
@@ -25,7 +27,7 @@ let function contactNameBlock(contact, info, addChildren = []) {
         rendObj = ROBJ_TEXT
         color = nameColor
         text = frameNick(getPlayerName(contact.realnick), nickFrame)
-      }.__update(fontTiny)
+      }.__update(nameStyle)
       {
         size = [SIZE_TO_CONTENT, flex()]
         valign = ALIGN_CENTER
@@ -33,7 +35,7 @@ let function contactNameBlock(contact, info, addChildren = []) {
         color = titleColor
         text = title == null ? null
           : loc($"title/{title}")
-      }.__update(fontTiny)
+      }.__update(titleStyle)
     ].extend(addChildren)
   }
 }
@@ -48,29 +50,30 @@ let function contactAvatar(info, size = avatarSize) {
 }
 
 let levelBg = freeze(mkLevelBg())
-let levelMark = @(text) {
+let starLevelOvr = { pos = [0, ph(45)] }
+let levelMark = @(level, starLevel) {
   size = array(2, hdpx(60))
   margin = hdpx(10)
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
   children = [
     levelBg
     {
       rendObj = ROBJ_TEXT
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
       pos = [0, -hdpx(2)]
-      text
+      text = level - starLevel
     }.__update(fontSmall)
+    starLevelSmall(starLevel, starLevelOvr)
   ]
 }
 
 let function contactLevelBlock(info) {
-  let { playerLevel = null } = info
+  let { playerLevel = null, playerStarLevel = 0 } = info
   return {
     size = [1.5 * avatarSize, flex()]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    children = playerLevel == null ? null
-      : levelMark(playerLevel)
+    children = playerLevel == null ? null : levelMark(playerLevel, playerStarLevel)
   }
 }
 

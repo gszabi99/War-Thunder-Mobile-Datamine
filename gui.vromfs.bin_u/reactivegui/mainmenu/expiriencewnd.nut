@@ -144,7 +144,6 @@ let necessaryPoints = @(nextLevelExp, exp){
 
 let function expirienceWnd(){
   let { exp, nextLevelExp, level } = playerLevelInfo.value
-  let needShowMexLevel = true
   return{
     watch = playerLevelInfo
     minWidth = wndWidth
@@ -164,7 +163,7 @@ let function expirienceWnd(){
         flow = FLOW_VERTICAL
         children = [
           curLevel(level)
-          @() levelBlock({pos = [hdpx(-60), 0]}, needShowMexLevel)
+          levelBlock({pos = [hdpx(-60), 0]})
           necessaryPoints(nextLevelExp, exp)
         ]
       }

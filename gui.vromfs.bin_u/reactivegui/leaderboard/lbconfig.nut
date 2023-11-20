@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { RANK, NAME, SHIP_RATING, TANKS_RATING, WP_RATING, KILL, WIN
+let { RANK, NAME, SHIP_RATING, TANKS_RATING, WP_RATING, KILL, WIN, BATTLES
 } = require("lbCategory.nut")
 let { ships, tanks } = require("%appGlobals/config/campaignPresentation.nut").campaignPresentations
 
@@ -10,7 +10,7 @@ let lbCfgOrdered = [
     gameMode = "ships"
     campaign = "ships"
     categories = [
-      RANK, NAME, SHIP_RATING, KILL, WIN
+      RANK, NAME, SHIP_RATING, KILL, WIN, BATTLES
     ]
     sortBy = SHIP_RATING
     icon = ships.icon
@@ -22,7 +22,7 @@ let lbCfgOrdered = [
     gameMode = "tanks"
     campaign = "tanks"
     categories = [
-      RANK, NAME, TANKS_RATING, KILL, WIN
+      RANK, NAME, TANKS_RATING, KILL, WIN, BATTLES
     ]
     sortBy = TANKS_RATING
     icon = tanks.icon
@@ -33,7 +33,7 @@ let lbCfgOrdered = [
     gameMode = "battle_common"
     lbTable = "wp_event_leaderboard"
     categories = [
-      RANK, NAME, WP_RATING, KILL, WIN
+      RANK, NAME, WP_RATING, KILL, WIN, BATTLES
     ]
     sortBy = WP_RATING
     icon = "ui/gameuiskin#score_icon.svg"

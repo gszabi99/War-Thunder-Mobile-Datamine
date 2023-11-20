@@ -9,6 +9,7 @@ let { reset_profile, reset_profile_with_stats, unlock_all_units, add_gold, add_w
   reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
   royal_beta_units_unlock, add_warbond, add_event_key
 } = require("%appGlobals/pServer/pServerApi.nut")
+let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
@@ -45,13 +46,18 @@ let withClose = @(action) function() {
   action()
 }
 
+let function resetProfileWithStats() {
+  reset_profile_with_stats()
+  resetUserstatAppData(true)
+}
+
 let commandsList = [
   { label = "meta.add_gold 1000", func = @() add_gold(1000, "sceenlogResult") }
   { label = "meta.add_wp 100 000", func = @() add_wp(100000, "sceenlogResult") }
   { label = "meta.add_warbond 100", func = @() add_warbond(100, "sceenlogResult") }
   { label = "meta.add_event_key 10", func = @() add_event_key(10, "sceenlogResult") }
   { label = "meta.reset_profile", func = withClose(reset_profile) }
-  { label = "meta.reset_profile_with_stats", func = withClose(reset_profile_with_stats) }
+  { label = "meta.reset_profile_with_stats", func = withClose(resetProfileWithStats) }
   { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
   { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }
   { label = "meta.royal_beta_units_unlock", func = withClose(royal_beta_units_unlock) }

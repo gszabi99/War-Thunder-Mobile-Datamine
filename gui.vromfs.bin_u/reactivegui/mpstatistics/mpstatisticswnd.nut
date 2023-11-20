@@ -28,7 +28,7 @@ let playersByTeam = Computed(function() {
         let { id, userId, name, isBot, aircraftName = "" } = p
         let nickname = getPlayerName(name, myUserRealName.value, myUserName.value)
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
-        let { level = 1, hasPremium = false, decorators = null, unit = {} } = !isBot
+        let { level = 1, starLevel = 0, hasPremium = false, decorators = null, unit = {} } = !isBot
           ? playersCommonStats.value?[userId.tointeger()]
           : genBotCommonStats(name, aircraftName, allUnitsCfgFlat.value?[aircraftName] ?? {}, playerLevelInfo.value.level)
         let { unitClass = "" } = unit
@@ -38,6 +38,7 @@ let playersByTeam = Computed(function() {
           damage
           score
           level
+          starLevel
           hasPremium
           decorators
           unitClass

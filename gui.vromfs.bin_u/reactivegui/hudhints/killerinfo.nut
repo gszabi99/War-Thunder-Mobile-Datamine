@@ -12,6 +12,7 @@ let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.
 let { mkGradientBlock, failBgColor } = require("hintCtors.nut")
 let { mkSingleUnitPlate, unitPlateWidth } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
+let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
 let unitFake = require("%rGui/unit/unitFake.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -48,6 +49,7 @@ let info = Computed(function() {
   return killData.value.__merge({
     killerHasPremium = cStats?.hasPremium ?? false
     killerLevel = cStats?.level ?? 1
+    killerStarLevel = cStats?.starLevel ?? 1
     killerAvatar = cStats?.decorators.avatar
     killerUnit = (unitCfg).__merge(cStats?.unit ?? {}, finalOverride)
   })
@@ -74,18 +76,20 @@ let mkText = @(text, style = fontMedium, color = 0xFFFFFFFF) {
 let fontByPlateWidth = @(text) calc_str_box(text, fontSmall)[0] > unitPlateWidth
   ? fontSmall : fontMedium
 
-let levelMark = @(text) {
+let starLevelOvr = { pos = [0, ph(40)] }
+let levelMark = @(level, starLevel) {
   size = array(2, hdpx(60))
   margin = hdpx(10)
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
   children = [
     mkLevelBg()
     {
       rendObj = ROBJ_TEXT
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
       pos = [0, -hdpx(2)]
-      text
+      text = level - starLevel
     }.__update(fontSmall)
+    starLevelTiny(starLevel, starLevelOvr)
   ]
 }
 
@@ -97,7 +101,7 @@ let premiumMark = {
 }
 
 let function hintContent(infoV) {
-  let { killerUnit, killerHasPremium, killerLevel, killer, killerAvatar } = infoV
+  let { killerUnit, killerHasPremium, killerLevel, killerStarLevel, killer, killerAvatar } = infoV
   let name = getPlayerName(killer.name)
   return {
     flow = FLOW_VERTICAL
@@ -108,7 +112,7 @@ let function hintContent(infoV) {
         valign = ALIGN_CENTER
         gap = hdpx(20)
         children = [
-          levelMark(killerLevel)
+          levelMark(killerLevel, killerStarLevel)
           {
             flow = FLOW_VERTICAL
             gap = -hdpx(8)

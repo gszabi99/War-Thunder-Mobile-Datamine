@@ -12,11 +12,12 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { mkPaginator } = require("%rGui/components/paginator.nut")
 let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
 let { mkPlaceIconSmall } = require("%rGui/components/playerPlaceIcon.nut")
-let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbTableBorderWidth, lbPageRows
+let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbDotsRowHeight, lbTableBorderWidth, lbPageRows
 } = require("lbStyle.nut")
 let { RANK, NAME } = require("lbCategory.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-
+let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
+let { contactNameBlock, contactAvatar } = require("%rGui/contacts/contactInfoPkg.nut")
 
 let tabIconSize = hdpxi(80)
 let rankCellWidth = hdpx(150)
@@ -111,6 +112,7 @@ let mkLbCell = @(category, rowData) {
   rendObj = ROBJ_TEXT
   color = rowData?.self ? localPlayerColor : defTxtColor
   halign = ALIGN_CENTER
+  vplace = ALIGN_CENTER
   text = category.getText(rowData)
 }.__update(
   fontTiny,
@@ -128,8 +130,28 @@ let function mkRankCell(category, rowData) {
   }
 }
 
+let function mkNameCell(category, rowData) {
+  let userId = rowData._id.tostring()
+  let info = mkPublicInfo(userId)
+
+  return @() {
+    watch = info
+    key = userId
+    size = [flex(category.relWidth), lbRowHeight]
+    onAttach = @() refreshPublicInfo(userId)
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    valign = ALIGN_CENTER
+    children = [
+      contactAvatar(info.value, lbRowHeight - hdpx(2))
+      contactNameBlock({ realnick = rowData.name }, info.value, [], { nameStyle = fontTiny, titleStyle = fontVeryTiny })
+    ]
+  }
+}
+
 let cellCtorByCategory = {
-  [RANK] = mkRankCell
+  [RANK] = mkRankCell,
+  [NAME] = mkNameCell,
 }
 
 let mkRow = @(categories, row) categories.map(@(c) (cellCtorByCategory?[c] ?? mkLbCell)(c, row))
@@ -142,7 +164,7 @@ let dots = {
 }.__update(fontTiny)
 
 let mkDotsRow = @(categories) categories.map(@(c) {
-    size = [flex(c.relWidth), SIZE_TO_CONTENT]
+    size = [flex(c.relWidth), lbDotsRowHeight]
   }.__update(
     styleByCategory?[c] ?? {},
     c == RANK ? dots : {}
@@ -207,7 +229,7 @@ let function lbTableFull(categories, lbData, selfRow) {
          padding = [0, lbTableBorderWidth, lbTableBorderWidth, lbTableBorderWidth]
          flow = FLOW_VERTICAL
          children = rows.map(@(children, idx) {
-           size = [flex(), lbRowHeight]
+           size = [flex(), SIZE_TO_CONTENT]
            rendObj = ROBJ_SOLID
            color = (idx % 2) ? rowBgOddColor : rowBgEvenColor
            flow = FLOW_HORIZONTAL
@@ -262,6 +284,14 @@ let content = @() {
     : lbErrorMsg(loc(curLbErrName.value == null ? "leaderboard/noLbData" : $"error/{curLbErrName.value}"))
 }
 
+let needPaginator = Computed(@() (curLbData.value?.len() ?? 0) != 0)
+let paginator = @() {
+  watch = needPaginator
+  size = [flex(), SIZE_TO_CONTENT]
+  children = !needPaginator.value ? null
+    : mkPaginator(lbPage, lbLastPage, lbMyPage, { key = needPaginator, animations = wndSwitchAnim })
+}
+
 let scene = bgShaded.__merge({
   key = {}
   size = flex()
@@ -281,7 +311,7 @@ let scene = bgShaded.__merge({
   children = [
     header
     content
-    mkPaginator(lbPage, lbLastPage, lbMyPage)
+    paginator
   ]
   animations = wndSwitchAnim
 })

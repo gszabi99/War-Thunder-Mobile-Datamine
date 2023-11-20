@@ -8,8 +8,7 @@ let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/sho
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
-let { mkLevelBg, mkProgressLevelBg, playerExpColor,
-  levelProgressBarWidth, levelProgressBorderWidth, rotateCompensate
+let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate
 } = require("%rGui/components/levelBlockPkg.nut")
 let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
@@ -39,7 +38,14 @@ let levelHolderPlace         = avatarSize - levelHolderSize / 2
 
 let gamercardHeight  = avatarSize + levelHolderSize / 2
 
+let nextLevelBorderColor = 0xFFDADADA
+let nextLevelBgColor = 0xFF464646
+let nextLevelTextColor = 0xFFFFFFFF
+let receivedExpProgressColor = 0xFFFFFFFF
+let levelUpTextColor = 0xFF000000
+
 let levelStateFlags = Watched(0)
+let nextLevelStateFlags = Watched(0)
 let profileStateFlags = Watched(0)
 
 let openBuyCurrencyWnd = {
@@ -83,38 +89,39 @@ let starLevelOvr = {
   transform = { rotate = -45 }
 }
 
-let function levelBlock(ovr = {}, needShowMexLevel = false) {
-  let { exp, nextLevelExp, level, isReadyForLevelUp, starLevel, isNextStarLevel, historyStarLevel
+let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function() {
+  let { exp, nextLevelExp, level, isReadyForLevelUp, starLevel, isNextStarLevel, historyStarLevel,
+    isStarProgress
   } = playerLevelInfo.value
-  let isMaxLevel = nextLevelExp == 0 || needShowMexLevel
-  let needLevelUpBtn = isReadyForLevelUp
+  let isMaxLevel = nextLevelExp == 0
+  let progresOffset = levelHolderSize * rotateCompensate
+  let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan : openExpWnd
   return {
     watch = playerLevelInfo
     valign = ALIGN_CENTER
     pos = [levelHolderPlace, levelHolderPlace]
+    padding = [0, progresOffset]
     children = [
       mkProgressLevelBg({
         key = playerLevelInfo.value
-        pos = [levelHolderSize * rotateCompensate, 0]
         opacity = 1.0,
         animations = isReadyForLevelUp
           ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
           : null
         children = {
-          size = isMaxLevel
-            ? flex()
-            : [((levelProgressBarWidth - levelProgressBorderWidth * 2) * clamp(exp, 0, nextLevelExp) / nextLevelExp).tointeger(),flex()]
+          size = isMaxLevel ? flex() : [pw(clamp(100.0 * exp / nextLevelExp, 0, 100)), flex()]
           rendObj = ROBJ_SOLID
           color = playerExpColor
         }
-      })
+      }.__update(progressOvr))
       @() mkLevelBg({
         ovr = {
-          size = [levelHolderSize, levelHolderSize]
           watch = levelStateFlags
+          size = [levelHolderSize, levelHolderSize]
+          pos = [-progresOffset, 0]
           onElemState = @(sf) levelStateFlags(sf)
-          behavior = isMaxLevel ? null : Behaviors.Button
-          onClick = openExpWnd
+          behavior = Behaviors.Button
+          onClick = onLevelClick
           color = levelStateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
           transform = {
             rotate = 45
@@ -129,7 +136,6 @@ let function levelBlock(ovr = {}, needShowMexLevel = false) {
               watch = levelStateFlags
               key = playerLevelInfo.value
               text = level - starLevel
-              pos = [0, isMaxLevel ? -hdpx(2) : 0]
               animations = isReadyForLevelUp && !isNextStarLevel ? levelUpReadyAnimsCur : null
               transform = {
                 rotate = -45
@@ -157,14 +163,49 @@ let function levelBlock(ovr = {}, needShowMexLevel = false) {
           ]
         }
       })
-      needLevelUpBtn
-        ? {
-            size = [levelHolderSize + levelProgressBarWidth + 2 * levelProgressBorderWidth, flex()]
+      !needTargetLevel || isMaxLevel ? null
+        : @() mkLevelBg({
+            ovr = {
+              watch = nextLevelStateFlags
+              size = [levelHolderSize, levelHolderSize]
+              hplace = ALIGN_RIGHT
+              pos = [progresOffset, 0]
+              onElemState = @(sf) nextLevelStateFlags(sf)
+              behavior = Behaviors.Button
+              onClick = onLevelClick
+              color = nextLevelStateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
+              transform = {
+                rotate = 45
+                scale = nextLevelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+              }
+            }
+            childOvr = {
+              halign = ALIGN_CENTER
+              valign = ALIGN_CENTER
+              fillColor = isReadyForLevelUp ? receivedExpProgressColor : nextLevelBgColor
+              borderColor = nextLevelBorderColor
+              children = [
+                @() textParams.__merge({
+                  watch = nextLevelStateFlags
+                  key = playerLevelInfo.value
+                  text = level - starLevel + (isStarProgress ? 0 : 1)
+                  color = isReadyForLevelUp ? levelUpTextColor : nextLevelTextColor
+                  transform = {
+                    rotate = -45
+                    scale = nextLevelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
+                  }
+                })
+                starLevelSmall(max(starLevel + (isStarProgress ? 1 : 0), historyStarLevel), starLevelOvr)
+              ]
+            }
+          })
+      !isReadyForLevelUp ? null
+        : {
+            size = flex()
             hplace = ALIGN_LEFT
             behavior = Behaviors.Button
             onClick = openLvlUpWndIfCan
           }
-        : null
     ]
   }.__update(ovr)
 }
@@ -208,7 +249,7 @@ let gamercardProfile = {
         }
       ]
     }
-    levelBlock
+    levelBlock()
   ]
 }
 

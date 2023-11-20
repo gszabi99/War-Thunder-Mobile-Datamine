@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+let { get_game_params_blk = @() null } = require("blkGetters")
 let { isInZoom } = require("%rGui/hudState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+
+let NEED_SHOW_POSE_INDICATOR = get_game_params_blk()?.unitPoseIndicator.enableHud ?? false
 
 let posIndicatorSize = [shHud(25), shHud(15)]
 let iconSize = (posIndicatorSize[1] * 0.7).tointeger()
 
-let moveIndicator = @() {
+let moveIndicator = !NEED_SHOW_POSE_INDICATOR ? null : @() {
   watch = isInZoom
   size = posIndicatorSize
   rendObj = isInZoom.value ? ROBJ_UNIT_POSE_INDICATOR : null
@@ -34,10 +37,11 @@ let moveIndicatorEditView = @(image) {
   ]
 }
 
-let moveIndicatorTankEditView = moveIndicatorEditView("unit_tank.svg")
-let moveIndicatorShipEditView = moveIndicatorEditView("unit_ship.svg")
+let moveIndicatorTankEditView = !NEED_SHOW_POSE_INDICATOR ? null : moveIndicatorEditView("unit_tank.svg")
+let moveIndicatorShipEditView = !NEED_SHOW_POSE_INDICATOR ? null : moveIndicatorEditView("unit_ship.svg")
 
 return {
+  NEED_SHOW_POSE_INDICATOR
   moveIndicator
   moveIndicatorTankEditView
   moveIndicatorShipEditView

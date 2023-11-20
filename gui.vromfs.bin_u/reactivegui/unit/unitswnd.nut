@@ -59,6 +59,7 @@ let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { unseenUnits, markUnitSeen } = require("unseenUnits.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
+let { levelProgressBarHeight } = require("%rGui/components/levelBlockPkg.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
@@ -68,6 +69,7 @@ let activeFilters = Watched(0)
 let profileStateFlags = Watched(0)
 
 let gapFromUnitsBlockToBtns = hdpx(4)
+let levelProgressWidth = hdpx(600)
 
 let premBGHoverColor = 0x01B28600
 let defaultBgHoverColor = 0xFF50C0FF
@@ -627,8 +629,7 @@ let gamercardLevelBlock = {
         {
           padding = [hdpx(5), hdpx(50)]
           pos = [hdpx(20) hdpx(45)]
-          children =
-          @(){
+          children = @() {
             watch = playerLevelInfo
             halign = ALIGN_LEFT
             rendObj = ROBJ_TEXTAREA
@@ -640,7 +641,7 @@ let gamercardLevelBlock = {
           }.__update(fontVeryTiny)
         })
     }
-    @() levelBlock({pos = [0, 0]})
+    levelBlock({pos = [0, 0]}, { size = [levelProgressWidth, levelProgressBarHeight] }, true)
   ]
 }
 

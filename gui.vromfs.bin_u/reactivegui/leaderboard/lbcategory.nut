@@ -70,6 +70,12 @@ let categories = {
     dataType = NUM
     locId = "debriefing/destroyed"
   }
+
+  BATTLES = {
+    field = "battle_end"
+    dataType = NUM
+    locId = "lb/battles"
+  }
 }.map(makeType)
 
 return categories
