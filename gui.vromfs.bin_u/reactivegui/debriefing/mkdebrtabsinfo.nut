@@ -24,7 +24,7 @@ let tabsCfgOrdered = [
   {
     id = DEBR_TAB_UNIT
     getIcon = @(debrData) getCampaignPresentation(debrData?.campaign).icon
-    iconScale = 1.0
+    iconScale = 0.8
     dataCtor = mkDebriefingWndTabUnit
   }
   {

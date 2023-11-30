@@ -49,7 +49,7 @@ let logerrAndKillLogPlace = {
 }
 
 return {
-  mainHintsBlock = mkHintsBlock(mainHintLogState.curEvents)
+  mainHintsBlock = mkHintsBlock(mainHintLogState.curEvents, { valign = ALIGN_TOP })
   warningHintsBlock = mkHintsBlock(warningHintLogState.curEvents, {}, { minHeight = hdpx(33) })
   commonHintsBlock = mkHintsBlock(commonHintLogState.curEvents)
   resultsHintsBlock = mkHintsBlock(resultsHintLogState.curEvents)

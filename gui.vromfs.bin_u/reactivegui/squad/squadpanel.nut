@@ -26,7 +26,7 @@ let memberSize = evenPx(100)
 let borderWidth = hdpx(2)
 let statusSize = hdpxi(25)
 let avatarSize = memberSize - 2 * borderWidth
-let campIconSize = hdpxi(50)
+let campIconSize = hdpxi(40)
 
 let borderColor = 0xA0000000
 let myBorderColor = 0xFF52C7E4
@@ -153,6 +153,7 @@ let squadHeader = @() {
       size = [campIconSize, campIconSize]
       rendObj = ROBJ_IMAGE
       image = Picture($"{getCampaignPresentation(squadLeaderCampaign.value).icon}:{campIconSize}:{campIconSize}:P")
+      keepAspect = true
     }
     {
       rendObj = ROBJ_TEXT

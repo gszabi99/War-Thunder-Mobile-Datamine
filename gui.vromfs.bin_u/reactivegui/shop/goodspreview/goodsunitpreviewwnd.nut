@@ -28,7 +28,7 @@ let { unitSelUnderlineFullHeight, unitPlatesGap,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { REWARD_SIZE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
+let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
@@ -189,7 +189,7 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
   children = [
     {
       size = flex()
-      pos = [-saBorders[0], REWARD_SIZE_MEDIUM * 1.1 * hintOffsetMulY]
+      pos = [-saBorders[0], REWARD_STYLE_MEDIUM.boxSize * 1.1 * hintOffsetMulY]
       valign = hintOffsetMulY > 0 ? ALIGN_TOP : ALIGN_BOTTOM
       children = activeItemHint
     }

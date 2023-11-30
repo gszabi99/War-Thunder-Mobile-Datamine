@@ -22,7 +22,7 @@ let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnderlineFullHeight,
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitCanPurchaseShade, mkUnitTexts, mkUnitLock, mkUnitPrice,
+  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitCanPurchaseShade, mkUnitTexts, mkUnitLock, mkUnitShortPrice,
   mkUnitLockedFg, mkUnitEquippedFrame, mkUnitEquippedTopLine, mkUnitSelectedUnderline,
   mkPlatoonPlateFrame, platoonSelPlatesGap, mkPlatoonEquippedIcon, mkPlatoonSelectedGlow,
   mkUnitEmptyLockedFg, bgPlatesTranslate, mkPlateText, plateTextsPad
@@ -60,6 +60,8 @@ let { unseenUnits, markUnitSeen } = require("unseenUnits.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { levelProgressBarHeight } = require("%rGui/components/levelBlockPkg.nut")
+let { unitDiscounts } = require("unitsDiscountState.nut")
+let { discountTagUnitBig } = require("%rGui/components/discountTag.nut")
 
 const MIN_HOLD_MSEC = 700
 let premiumDays = 30
@@ -249,7 +251,7 @@ let function unitActionButtons() {
   else if (curSelectedUnit.value in canBuyUnits.value) {
     let unit = canBuyUnits.value[curSelectedUnit.value]
     let isForLevelUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
-    let price = getUnitAnyPrice(unit, isForLevelUp)
+    let price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.value)
     if (price != null) {
       let priceComp = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON)
       children.append(
@@ -312,7 +314,7 @@ let function unitActionButtons() {
       curSelectedUnit, curSelectedUnitPrice, allUnitsCfg,
       canBuyUnits, canEquipSelectedUnit, havePremium,
       canBuyUnitsStatus, playerLevelInfo, curCampaign,
-      shopGoods, buyUnitsData, availableUnitsList
+      shopGoods, buyUnitsData, availableUnitsList, unitDiscounts
     ]
     size = SIZE_TO_CONTENT
     valign = ALIGN_CENTER
@@ -410,12 +412,13 @@ let function mkPlatoonPlate(unit) {
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
   let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
-  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value) : null)
+  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
   let color = unit?.isUpgraded || unit?.isPremium ? premBGHoverColor : defaultBgHoverColor
+  let discount = Computed(@() unitDiscounts?.value[unit.name])
   return @() {
-    watch = [isSelected, stateFlags, justUnlockedDelay, price]
+    watch = [isSelected, stateFlags, justUnlockedDelay, price, discount]
     behavior = Behaviors.Button
     clickableInfo = isSelected.value ? { skipDescription = true } : loc("mainmenu/btnSelect")
     sound = { click  = "choose" }
@@ -440,10 +443,18 @@ let function mkPlatoonPlate(unit) {
           unit.mRank <= 0
             ? null
             : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)
-          price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkPlatoonPlateFrame(isEquipped, isLocked, justUnlockedDelay.value)
           mkPlatoonEquippedIcon(unit, isEquipped, justUnlockedDelay.value)
           mkPriorityUnseenMarkWatch(needShowUnseenMark)
+          {
+            flow = FLOW_HORIZONTAL
+            hplace = ALIGN_LEFT
+            vplace = ALIGN_BOTTOM
+            children = [
+              discount.value != null ? discountTagUnitBig(discount.value.discount) : null
+              price.value != null ? mkUnitShortPrice(price.value, justUnlockedDelay.value) : null
+            ]
+          }
         ]
       }
       mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)
@@ -466,13 +477,14 @@ let function mkUnitPlate(unit) {
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
-  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value) : null)
+  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
   let color = unit?.isUpgraded || unit?.isPremium ? premBGHoverColor : defaultBgHoverColor
+  let discount = Computed(@() unitDiscounts?.value[unit.name])
   return @() {
-    watch = [isSelected, stateFlags, justUnlockedDelay, price]
+    watch = [isSelected, stateFlags, justUnlockedDelay, price, discount]
     size = [ unitPlateWidth, unitsPlateCombinedHeight ]
     behavior = Behaviors.Button
     clickableInfo = isSelected.value ? { skipDescription = true } : loc("mainmenu/btnSelect")
@@ -500,9 +512,17 @@ let function mkUnitPlate(unit) {
           unit.mRank <= 0
             ? null
             : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)
-          price.value != null ? mkUnitPrice(price.value, justUnlockedDelay.value) : null
           mkUnitEquippedFrame(unit, isEquipped, justUnlockedDelay.value)
           mkPriorityUnseenMarkWatch(needShowUnseenMark)
+          {
+            flow = FLOW_HORIZONTAL
+            hplace = ALIGN_LEFT
+            vplace = ALIGN_BOTTOM
+            children = [
+              discount.value != null ? discountTagUnitBig(discount.value.discount) : null
+              price.value != null ? mkUnitShortPrice(price.value, justUnlockedDelay.value) : null
+            ]
+          }
         ]
       }
       mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)

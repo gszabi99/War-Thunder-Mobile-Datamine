@@ -8,6 +8,7 @@ let { curLbData, curLbSelfRow, setLbRequestData, curLbErrName,
 } = require("lbStateBase.nut")
 let { lbCfgById } = require("lbConfig.nut")
 let { lbPageRows } = require("lbStyle.nut")
+let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 
 
 const REFRESH_PERIOD = 10.0
@@ -21,10 +22,15 @@ let isRefreshLbEnabled = mkWatched(persist, "isRefreshLbEnabled", false)
 let curLbCfg = Computed(@() lbCfgById?[curLbId.value])
 let lbMyPlace = Computed(@() (curLbSelfRow.value?.idx ?? -2) + 1)
 let lbMyPage = Computed(@() lbMyPlace.value < 0 ? -1 : (lbMyPlace.value - 1) / lbPageRows)
+let lbTotalPlaces = Computed(function() {
+  if (curLbData.value == null)
+    return -1
+  return curLbData.value.findvalue(@(val) "$" in val)?["$"].total ?? 0
+})
 let lbLastPage = Computed(function() {
   if (curLbData.value == null)
     return -1
-  let { total = 0 } = curLbData.value.findvalue(@(val) "$" in val)?["$"]
+  let total = lbTotalPlaces.value
   let lastPage = total > 0 ? (min(total, MAX_PAGE_PLACE) - 1) / lbPageRows : lbPage.value
   return lastPage
 })
@@ -72,6 +78,13 @@ let function updateRefreshTimer() {
 updateRefreshTimer()
 isRefreshLbEnabled.subscribe(@(_) updateRefreshTimer())
 
+let ratingBattlesCount = Computed(@()
+  userstatStats.value?.stats[curLbCfg.value?.lbTable].ratingSessions ?? -1)
+let minRatingBattles = Watched(5) //todo: get it from leaderboard params from "$" as total.
+let bestBattles = Computed(@()
+  userstatStats.value?.stats[curLbCfg.value?.lbTable]["$sessions"])
+let bestBattlesCount = Computed(@() bestBattles.value?.len() ?? 0)
+
 register_command(@() lbPage(lbPage.value + 1), "lb.page_next")
 register_command(@() lbPage.value > 0 && lbPage(lbPage.value - 1), "lb.page_prev")
 register_command(@() isLbWndOpened(true), "lb.open")
@@ -88,6 +101,12 @@ return {
   lbMyPlace
   lbMyPage
   lbLastPage
+  lbTotalPlaces
+
+  ratingBattlesCount
+  minRatingBattles
+  bestBattlesCount
+  bestBattles
 
   isRefreshLbEnabled
   openLbWnd = @() isLbWndOpened(true)

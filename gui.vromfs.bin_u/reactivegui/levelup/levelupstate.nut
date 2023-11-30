@@ -11,6 +11,7 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { WP, balanceWp } = require("%appGlobals/currenciesState.nut")
 let { getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
+let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 
 let isSeen = hardPersistWatched("isLevelUpSeen", false) // To show it after login once.
 let isLvlUpOpened = mkWatched(persist, "isOpened", false)
@@ -25,7 +26,7 @@ isInDebriefing.subscribe(function(v) {
 
   local hasBalanceForLevelUpUnit = false
   foreach(unit in buyUnitsData.value.canBuyOnLvlUp) {
-    let { currencyId = null, price = 0 } = getUnitAnyPrice(unit, true)
+    let { currencyId = null, price = 0 } = getUnitAnyPrice(unit, true, unitDiscounts.value)
     if (currencyId != WP || price > balanceWp.value)
       continue
     hasBalanceForLevelUpUnit = true

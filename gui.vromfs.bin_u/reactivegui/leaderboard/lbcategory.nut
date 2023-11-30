@@ -15,6 +15,7 @@ let function makeType(params, id) {
     id
     locId = ""
     hintLocId = ""
+    icon = null
     relWidth = 1.0
     getText = @(rowData) dataType.getText(getValue(rowData))
   }.__update(
@@ -28,13 +29,13 @@ let categories = {
     field = "idx"
     dataType = PLACE
     locId = "multiplayer/place"
+    icon = "ui/gameuiskin#lb_place_icon.svg"
     relWidth = 0.8
   }
 
   NAME = {
     field = "name"
     dataType = NICKNAME
-    locId = "multiplayer/name"
     relWidth = 2.0
   }
 
@@ -43,6 +44,8 @@ let categories = {
     dataType = RATING
     locId = "lb/rating"
     hintLocId = "lb/hint/ships/score"
+    icon = "ui/gameuiskin#lb_rating_icon.svg"
+    relWidth = 1.5
   }
 
   TANKS_RATING = {
@@ -50,6 +53,8 @@ let categories = {
     dataType = RATING
     locId = "lb/rating"
     hintLocId = "lb/hint/tanks/score"
+    icon = "ui/gameuiskin#lb_rating_icon.svg"
+    relWidth = 1.5
   }
 
   WP_RATING = {
@@ -57,24 +62,51 @@ let categories = {
     dataType = RATING
     locId = "lb/rating"
     hintLocId = "lb/hint/overall/score"
+    icon = "ui/gameuiskin#lb_rating_icon.svg"
+    relWidth = 1.5
   }
 
   WIN = {
     field = "win"
     dataType = NUM
     locId = "lb/wins"
+    icon = "ui/gameuiskin#lb_victory_icon.svg"
   }
 
   KILL = {
     field = "kill"
     dataType = NUM
     locId = "debriefing/destroyed"
+    icon = "ui/gameuiskin#lb_kills_all_icon.svg"
+  }
+
+  KILL_SHIPS = {
+    field = "kill"
+    dataType = NUM
+    locId = "debriefing/destroyed"
+    icon = "ui/gameuiskin#ships_destroyed_icon.svg"
+  }
+
+  KILL_TANKS = {
+    field = "kill"
+    dataType = NUM
+    locId = "debriefing/destroyed"
+    icon = "ui/gameuiskin#tanks_destroyed_icon.svg"
   }
 
   BATTLES = {
     field = "battle_end"
     dataType = NUM
     locId = "lb/battles"
+    icon = "ui/gameuiskin#lb_battles_icon.svg"
+  }
+
+  PRIZE = {
+    field = "idx"
+    dataType = PLACE
+    locId = "lb/prize"
+    icon = "ui/gameuiskin#lb_prize_icon.svg"
+    relWidth = 0.8
   }
 }.map(makeType)
 

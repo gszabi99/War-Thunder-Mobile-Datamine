@@ -82,6 +82,7 @@ let function mkUnitPlate(unit, onClick) {
 
 let chooseShipBlock = @() {
   flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
   children = [
     {
       rendObj = ROBJ_TEXT

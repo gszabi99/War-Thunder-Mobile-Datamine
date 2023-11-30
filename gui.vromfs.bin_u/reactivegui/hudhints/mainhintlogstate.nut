@@ -12,6 +12,7 @@ let { rqPlayerAndDo } = require("rqPlayersAndDo.nut")
 let { startMissionHintSeria, captureHintSeria } = require("missionNewbiesHints.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
+let { teamRedColor } = require("%rGui/style/teamColors.nut")
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "mainHintLogState"
@@ -70,10 +71,10 @@ let addHudMessage = {
     let classIcon = getUnitClassFontIcon(allUnitsCfg.value?[victimUnitName])
     rqPlayerAndDo(victimPlayerId, @(victim) addEvent(data.__merge({
       id = $"kill_{victimPlayerId}"
-      hType = "fail"
+      hType = "mission"
       ttl = 5
       text = loc("multiplayer/playerUnitDestroyed",
-        { name = $"{getPlayerName(victim?.name ?? data?.victimUnitNameLoc, myUserRealName.value, myUserName.value)} {classIcon}" })
+        { name = $"{colorize(teamRedColor, getPlayerName(victim?.name ?? data?.victimUnitNameLoc, myUserRealName.value, myUserName.value))} {classIcon}" })
     })))
   },
 

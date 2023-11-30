@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { REWARD_STYLE_TINY, REWARD_SIZE_TINY, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon
+let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
@@ -34,10 +34,11 @@ let lootboxHeight = hdpxi(320)
 let rewardGap = REWARD_STYLE_TINY.boxGap
 let smallChestIconSize = hdpxi(40)
 
-let lootboxInfoSize = [REWARD_SIZE_TINY * REWARDS + rewardGap * (REWARDS + 1),
-  (REWARD_SIZE_TINY + rewardGap * 2) / 0.8]
-let lootboxInfoSizeBig = [REWARD_SIZE_TINY * (REWARDS + 1) + rewardGap * (REWARDS + 2),
-  (REWARD_SIZE_TINY + rewardGap * 2) / 0.8]
+let rewardsSize = REWARD_STYLE_TINY.boxSize
+let lootboxInfoSize = [rewardsSize * REWARDS + rewardGap * (REWARDS + 1),
+  (rewardsSize + rewardGap * 2) / 0.8]
+let lootboxInfoSizeBig = [rewardsSize * (REWARDS + 1) + rewardGap * (REWARDS + 2),
+  (rewardsSize + rewardGap * 2) / 0.8]
 
 let aTimeOpacity = 0.4
 let revealBtnsAnimation = [

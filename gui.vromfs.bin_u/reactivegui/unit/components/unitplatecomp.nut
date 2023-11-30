@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyComp, mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
 let { getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { mkLinearGradientImg, mkRadialGradientImg } = require("%darg/helpers/mkGradientImg.nut")
 let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
@@ -342,6 +342,17 @@ let mkUnitPrice = @(price, justUnlockedDelay = null) {
   children = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId)
 }
 
+let mkUnitShortPrice = @(price, justUnlockedDelay = null) {
+  vplace = ALIGN_BOTTOM
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  margin = [ 0, 0, plateTextsSmallPad, plateTextsSmallPad ]
+  transform = {}
+  animations = revealAnimation(justUnlockedDelay)?.extend(scaleAnimation(justUnlockedDelay))
+  children = mkCurrencyComp(price.price, price.currencyId)
+}
+
+
 let mkUnitEmptyLockedFg = @(isLocked, justUnlockedDelay = null)
   @() !isLocked.value && !justUnlockedDelay ? { watch = isLocked }
     : {
@@ -553,6 +564,7 @@ return {
   mkUnitLock
   mkUnitLevel
   mkUnitPrice
+  mkUnitShortPrice
   mkUnitLockedFg
   mkUnitEmptyLockedFg
   mkUnitSlotLockedLine

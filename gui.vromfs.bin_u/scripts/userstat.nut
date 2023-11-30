@@ -88,6 +88,7 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, custom
   register_command(@() forceRefresh({ needPrint = true }), $"userstat.get.{persistName}")
   register_command(@() debugTableData(data.value) ?? console_print("Done"), $"userstat.debug.{persistName}")
   subscribe($"userstat.{persistName}.forceRefresh", @(_) forceRefresh())
+  subscribe($"userstat.{persistName}.refresh", @(_) refresh())
 
   return {
     id = persistName

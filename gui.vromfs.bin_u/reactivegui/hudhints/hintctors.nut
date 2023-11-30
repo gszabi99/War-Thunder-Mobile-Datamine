@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let teamColors = require("%rGui/style/teamColors.nut")
 
-let defBgColor = 0x66125B5C
+let defBgColor = 0x66202020
 let winBgColor = 0x66663900
 let failBgColor = 0x66550101
 let warningBgColor = 0x66664102 //0xFFffa406

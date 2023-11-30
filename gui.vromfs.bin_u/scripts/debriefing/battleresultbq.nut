@@ -27,9 +27,10 @@ let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
 let OPT_FPS = addLocalUserOption("OPT_FPS")
 let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
 
-let curCluster = hardPersistWatched("curCluster", "")
-curQueue.subscribe(@(v) (v?.joinedClusters ?? {}).len() == 0 ? ""
-  : curCluster(",".join(v.joinedClusters.keys())))
+let lastCluster = hardPersistWatched("lastCluster", "")
+curQueue.subscribe(@(v) (v?.joinedClusters ?? {}).len() == 0
+  ? null
+  : lastCluster(",".join(v.joinedClusters.keys())))
 
 const MEASURE_PING_INTERVAL_SEC = 15
 const PING_SAMPLES_MAX = 50
@@ -106,7 +107,7 @@ let function onFrameTimes(evt, _eid, _comp) {
   data.__update({
     platform = get_platform_string_id()
     country = getCountryCode()
-    cluster = curCluster.value
+    cluster = lastCluster.value
     clusters_rtt = ",".join(clusterStats.value.map(@(c)
       ":".join([ c.clusterId, c.hostsRTT == null ? null : round(c.hostsRTT).tointeger()], true)))
     campaign = battleCampaign.value != "" ? battleCampaign.value

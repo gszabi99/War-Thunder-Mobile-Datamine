@@ -21,7 +21,7 @@ let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-
+let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 
 let contentAppearTime = 0.3
 let buttonsAppearDelay = contentAppearTime + 0.5
@@ -42,13 +42,13 @@ let curSelectedUnit = Computed(function() {
 })
 
 let needSkipBtn = Computed(@() buyUnitsData.value.canLevelUpWithoutBuy
-  && null == availableUnitsList.value.findvalue(@(u) getUnitAnyPrice(u, true)?.discount == 1))
+  && null == availableUnitsList.value.findvalue(@(u) getUnitAnyPrice(u, true, unitDiscounts.value)?.discount == 1))
 
 let nextFreeUnitLevel = Computed(function() {
   local res = 0
   let newLevel = playerLevelInfo.value.level + 1
   foreach (u in allUnitsCfg.value)
-    if (u.rank > newLevel && (res == 0 || u.rank < res) && getUnitAnyPrice(u, true)?.discount == 1.0)
+    if (u.rank > newLevel && (res == 0 || u.rank < res) && getUnitAnyPrice(u, true, unitDiscounts.value)?.discount == 1.0)
       res = u.rank
   return res
 })
@@ -96,12 +96,12 @@ let textarea = @(text, override = {}) {
 
 let unitActionButtons = function() {
   let unit = buyUnitsData.value.canBuyOnLvlUp?[curSelectedUnit.value]
-  let price = unit != null ? getUnitAnyPrice(unit, true) : null
+  let price = unit != null ? getUnitAnyPrice(unit, true, unitDiscounts.value) : null
   let isFree = price != null && price.price == 0
   let isPaid = price != null && !isFree
 
   return {
-    watch = [curSelectedUnit, needSkipBtn]
+    watch = [curSelectedUnit, needSkipBtn, unitDiscounts]
     size = SIZE_TO_CONTENT
     hplace = ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
@@ -160,7 +160,7 @@ let function mkUnitPlate(unit, onClick) {
     return null
 
   let isSelected = Computed(@() curSelectedUnit.value == unit.name)
-  let price = getUnitAnyPrice(unit, true)
+  let price = getUnitAnyPrice(unit, true, unitDiscounts.value)
 
   return {
     size = [ unitsPlateCombinedW, unitPlateHeight ]
@@ -198,7 +198,7 @@ let mkVerticalPannableArea = @(content, override = {}) {
 }.__update(override)
 
 let unitsBlock = @() {
-  watch = availableUnitsList
+  watch = [availableUnitsList, unitDiscounts]
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   gap = unitPlatesGap

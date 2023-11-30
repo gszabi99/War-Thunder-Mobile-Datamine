@@ -46,7 +46,7 @@ let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchLis
 
 let topBlockHeight = max(sectionBtnHeight, progressBarHeight + progressBarMargin)
 let mkVerticalPannableAreaNoBlocks = verticalPannableAreaCtor(sh(100) - topAreaSize,
-  [0, gradientHeightBottom])
+  [questItemsGap, gradientHeightBottom])
 let mkVerticalPannableAreaOneBlock = verticalPannableAreaCtor(sh(100) - topAreaSize - topBlockHeight,
   [questItemsGap, gradientHeightBottom])
 let mkVerticalPannableAreaTwoBlocks = verticalPannableAreaCtor(sh(100) - topAreaSize - topBlockHeight * 2,
@@ -281,7 +281,7 @@ let function questsWndPage(sections, itemCtor, progressUnlock = Watched(null)) {
     }
     children = [
       @() {
-        watch = [blocksOnTop, sections, questsBySection]
+        watch = [sections, questsBySection]
         size = flex()
         flow = FLOW_VERTICAL
         children = [
@@ -310,20 +310,23 @@ let function questsWndPage(sections, itemCtor, progressUnlock = Watched(null)) {
           }
 
           @() {
-            watch = isCurSectionInactive
+            watch = [isCurSectionInactive, blocksOnTop]
             size = flex()
             children = isCurSectionInactive.value ? null : [
-              pannableCtors[blocksOnTop.value](@() {
-                watch = [curSectionId, seenQuests, questsBySection]
-                size = [flex(), SIZE_TO_CONTENT]
-                flow = FLOW_VERTICAL
-                gap = hdpx(20)
-                children = questsBySection.value?[curSectionId.value ?? sections.value?[0]]
-                  .values()
-                  .sort(itemsSort)
-                  .map(itemCtor)
-                onDetach = @() saveSeenQuestsCurSection()
-              }, { pos = [0, 0] }, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+              pannableCtors[blocksOnTop.value](
+                @() {
+                  watch = [curSectionId, seenQuests, questsBySection]
+                  size = [flex(), SIZE_TO_CONTENT]
+                  flow = FLOW_VERTICAL
+                  gap = hdpx(20)
+                  children = questsBySection.value?[curSectionId.value ?? sections.value?[0]]
+                    .values()
+                    .sort(itemsSort)
+                    .map(itemCtor)
+                  onDetach = @() saveSeenQuestsCurSection()
+                },
+                { pos = [0, blocksOnTop.value == 0 ? -questItemsGap : 0] },
+                { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
               mkScrollArrow(scrollHandler, MR_B)
             ]
           }

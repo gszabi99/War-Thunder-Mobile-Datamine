@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
+let { fontLabel, labelHeight, REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM
+} = require("rewardStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitPresentation, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
+let { getUnitLocId, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { mkUnitBg, mkUnitImage, mkIcon, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
@@ -12,30 +14,10 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 
-// PREDEFINED STYLES ///////////////////////////////////////////////////////////
 
-let fontLabel = fontTiny
+let textPadding = [0, hdpx(5)]
 let fontLabelSmaller = fontVeryTiny
 let fontLabelBig = fontSmall
-let labelHeight = round(fontLabel.fontSize * 1.3).tointeger()
-let textPadding = [0, hdpx(5)]
-
-let mkRewardStyle = @(boxSize) {
-  boxSize
-  boxGap = 2 * round(boxSize * 0.13).tointeger()
-  iconShiftY = round((labelHeight * -0.5) + (boxSize * 0.04)).tointeger()
-  labelCurrencyNeedCompact = boxSize < fontLabel.fontSize * 5.5
-  markSize = max(round(boxSize / 4).tointeger(), evenPx(36))
-}
-
-let REWARD_SIZE_TINY = evenPx(104)
-let REWARD_SIZE_SMALL = evenPx(114)
-let REWARD_SIZE_MEDIUM = evenPx(160)
-let REWARD_STYLE_TINY = mkRewardStyle(REWARD_SIZE_TINY)
-let REWARD_STYLE_SMALL = mkRewardStyle(REWARD_SIZE_SMALL)
-let REWARD_STYLE_MEDIUM = mkRewardStyle(REWARD_SIZE_MEDIUM)
-
-// SHARED PARTS ///////////////////////////////////////////////////////////////
 
 let function getRewardPlateSize(r, rStyle) {
   let { slots } = r
@@ -305,43 +287,53 @@ let function mkRewardPlateStatImage(r, rStyle) {
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
 
+let mkUnitNameText = @(unit, font) {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = hdpx(8)
+  children = [
+    unit.isPremium || unit?.isUpgraded
+        ? mkIcon("ui/gameuiskin#icon_premium.svg", [font.fontSize * 2, font.fontSize], { pos = [ 0, hdpx(3) ] })
+      : null
+    mkPlateText(loc(getUnitLocId(unit)), font)
+  ]
+}
+
 let function mkUnitTextsImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
-  let unitLocName = loc(getUnitPresentation(unit.value).locId)
   let size = getRewardPlateSize(r, rStyle)
-  let comp = { watch = unit }
-  return @() unit.value == null ? comp : comp.__update({
-    size
-    padding = textPadding
-    clipChildren = true
-    children = [
-      {
-        size = [flex(), SIZE_TO_CONTENT]
-        pos = [0, hdpx(3)]
-        flow = FLOW_VERTICAL
-        halign = ALIGN_RIGHT
-        children = [
-          {
-            flow = FLOW_HORIZONTAL
-            valign = ALIGN_CENTER
-            gap = hdpx(8)
-            children = [
-              unit.value.isPremium || unit.value?.isUpgraded
-                  ? mkIcon("ui/gameuiskin#icon_premium.svg", [hdpxi(60), hdpxi(30)], { pos = [ 0, hdpx(3) ] })
-                : null
-              mkPlateText(unitLocName)
-            ]
-          }
-          mkPlateText(getUnitClassFontIcon(unit.value), fontLabel)
-        ]
-      }
-      {
-        hplace = ALIGN_RIGHT
-        vplace = ALIGN_BOTTOM
-        children = mkGradRank(unit.value.mRank)
-      }
-    ]
-  })
+  let maxTextWidth = size[0] - 2 * textPadding[1]
+  return function() {
+    let res = { watch = unit }
+    if (unit.value == null)
+      return res
+    local nameText = mkUnitNameText(unit.value, fontTiny)
+    if (calc_comp_size(nameText)[0] > maxTextWidth)
+      nameText = mkUnitNameText(unit.value, fontVeryTiny)
+        .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = [5, 2] })
+    return res.__update({
+      size
+      padding = textPadding
+      clipChildren = true
+      children = [
+        {
+          size = [flex(), SIZE_TO_CONTENT]
+          pos = [0, hdpx(3)]
+          flow = FLOW_VERTICAL
+          halign = ALIGN_RIGHT
+          children = [
+            nameText
+            mkPlateText(getUnitClassFontIcon(unit.value), fontLabel)
+          ]
+        }
+        {
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_BOTTOM
+          children = mkGradRank(unit.value.mRank)
+        }
+      ]
+    })
+  }
 }
 
 let mkRewardPlateUnitTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, false)
@@ -426,11 +418,8 @@ let mkRewardPlate = @(r, rStyle, ovr = {}) {
 }.__update(ovr)
 
 return {
-  REWARD_SIZE_TINY
   REWARD_STYLE_TINY
-  REWARD_SIZE_SMALL
   REWARD_STYLE_SMALL
-  REWARD_SIZE_MEDIUM
   REWARD_STYLE_MEDIUM
 
   getRewardPlateSize

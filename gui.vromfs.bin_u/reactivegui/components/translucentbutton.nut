@@ -2,8 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 let iconBgWidth  = hdpx(161)
-let iconBgHeight = hdpx(115)
-let iconSize  = hdpxi(108)
+let iconBgHeight = evenPx(114)
+let iconSize  = evenPx(90)
+
 let maxTextWidth = hdpx(450)
 
 

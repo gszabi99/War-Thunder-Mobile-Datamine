@@ -9,6 +9,7 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { requestOpenUnitPurchEffect } = require("unitPurchaseEffectScene.nut")
 let { playSound } = require("sound_wt")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { unitDiscounts } = require("unitsDiscountState.nut")
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
@@ -35,7 +36,7 @@ let function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAft
     return
 
   let isForLevelUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
-  local price = getUnitAnyPrice(unit, isForLevelUp)
+  local price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.value)
   if (isUpgraded) {
     if (!isForLevelUp) {
       logerr("Try to purchase upgraded unit not on level up")

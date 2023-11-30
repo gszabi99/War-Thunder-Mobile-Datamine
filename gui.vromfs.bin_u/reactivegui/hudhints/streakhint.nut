@@ -12,14 +12,14 @@ registerHintCreator(HINT_TYPE, function(data) {
   let id = getMultiStageUnlockId(unlockId, stage)
   let content = {
     key = HINT_TYPE
-    size = [flex(), hdpx(65)]
+    size = [flex(), hdpx(50)]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     gap = hdpx(20)
     children = [
       mkCurrencyComp(wp, WP, CS_SMALL)
-      mkStreakIcon(id, hdpx(90), stage)
+      mkStreakIcon(id, hdpx(85), stage)
       {
         halign = ALIGN_CENTER
         rendObj = ROBJ_TEXT

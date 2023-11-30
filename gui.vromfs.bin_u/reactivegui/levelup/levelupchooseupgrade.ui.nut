@@ -21,7 +21,7 @@ let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/curre
 let getUpgradeOldPrice = require("%rGui/levelUp/getUpgradeOldPrice.nut")
 let openUnitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { setCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-
+let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 
 let contentAppearTime = 0.3
 
@@ -52,8 +52,8 @@ let function purchaseHandler(unitName, isUpgraded = false) {
   purchaseUnit(unitName, bqPurchaseInfo, isUpgraded, "onPurchaseUnitInLevelUp")
 }
 
-let function buyButtonPrimary(unit) {
-  let price = unit != null ? getUnitAnyPrice(unit, true) : null
+let function buyButtonPrimary(unit, discounts) {
+  let price = unit != null ? getUnitAnyPrice(unit, true, discounts) : null
   return price == null ? null
     : textButtonPricePurchase(utf8ToUpper(loc(price.price == 0 ? "msgbox/btn_get" : "msgbox/btn_purchase")),
         mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON),
@@ -129,8 +129,8 @@ let unitBlock = @(unit) {
       color = 0xFFFFFFFF
     }.__update(fontMedium)
     @() {
-      watch = allUnitsCfg
-      children = buttonBlock(unit?.isUpgraded ? buyButtonUpgraded(unit, allUnitsCfg.value) : buyButtonPrimary(unit))
+      watch = [allUnitsCfg, unitDiscounts]
+      children = buttonBlock(unit?.isUpgraded ? buyButtonUpgraded(unit, allUnitsCfg.value) : buyButtonPrimary(unit, unitDiscounts.value))
     }
   ]
 }

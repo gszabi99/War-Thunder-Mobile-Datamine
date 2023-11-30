@@ -39,7 +39,31 @@ let discountTagBig = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >=
   }.__update(fontSmall)
 }.__update(ovr)
 
+function discountTagUnitCtor(discount, height, ovr) {
+  let markTexOffs = [ 0, height / 2, 0, 0 ]
+  let discountPrc = (discount * 100 + 0.5).tointeger()
+  return discountPrc <= 0 || discountPrc >= 100 ? null : {
+    size = [SIZE_TO_CONTENT, height]
+    rendObj = ROBJ_9RECT
+    image = Picture($"ui/gameuiskin#tag_popular.svg:{height}:{height}:P")
+    keepAspect = KEEP_ASPECT_NONE
+    screenOffs = markTexOffs
+    texOffs = markTexOffs
+    color = 0xFFD22A19
+    children = {
+      rendObj = ROBJ_TEXT
+      text = $"-{discountPrc}%"
+      color = 0xFFFFFFFF
+      fontFx = FFT_GLOW
+      fontFxFactor = hdpxi(64)
+      fontFxColor = 0xFF000000
+    }.__update(ovr)
+  }
+}
+
 return {
   discountTag
   discountTagBig
+  discountTagUnit    = @(discount) discountTagUnitCtor(discount, hdpxi(42), {margin = [0, hdpx(30), 0, hdpx(15)] pos = [0, hdpx(3)]}.__update(fontTiny))
+  discountTagUnitBig = @(discount) discountTagUnitCtor(discount, hdpxi(60), {margin = [0, hdpx(40), 0, hdpx(20)] pos = [0, hdpx(5)]}.__update(fontSmall))
 }
