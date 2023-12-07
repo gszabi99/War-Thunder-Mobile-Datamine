@@ -17,7 +17,7 @@
     "sound": "weapon.bomb_std",
     "explosionFx": "bomb_expl_200kg",
     "explosionPatchRadius": 8.0,
-    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "waterExplosionEffect": "bomb_water_explosion_big",
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,

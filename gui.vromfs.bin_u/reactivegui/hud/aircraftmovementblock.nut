@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
+let { AirThrottleMode } = require("wtSharedEnums")
 let { floor, fabs } = require("%sqstd/math.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue
 } = require("%globalScripts/controls/shortcutActions.nut")
@@ -262,7 +263,7 @@ let aircraftIndicators = {
         watch = [showModelName, playerUnitName]
         rendObj = ROBJ_TEXT
         color = neutralColor
-        text = loc($"{playerUnitName.value}_0")
+        text = loc($"{playerUnitName.value}_1")
       }.__update(fontSmallAccented)
     @() {
       watch = [Spd, IsSpdCritical]

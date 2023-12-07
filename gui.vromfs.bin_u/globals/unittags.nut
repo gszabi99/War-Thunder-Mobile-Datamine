@@ -39,7 +39,7 @@ let function gatherUnitTagsCfg(unitName) {
     res.bullets = res.bullets.filter(@(v) type(v) == "table")
     foreach (id, bList in res.bullets) {
       if ("default" in bList)
-        bList[""] <- delete bList["default"]
+        bList[""] <- bList.$rawdelete("default")
       let ordered = []
       eachBlock(bulletsBlk[id], @(b) ordered.append(remapBulletName(b.getBlockName())))
       res.bulletsOrder[id] <- ordered

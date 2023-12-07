@@ -129,7 +129,7 @@ if (isOnlineSettingsAvailable.value)
 
 let function markArticleSeenById(id) {
   if (unreadArticles.value?[id])
-    unreadArticles.mutate(@(v) delete v[id])
+    unreadArticles.mutate(@(v) v.$rawdelete(id))
 }
 
 let markCurArticleSeen = @() markArticleSeenById(curArticleId.value)
@@ -233,7 +233,7 @@ let function requestNewsArticle(id) {
     return
 
   if (id in receivedArticles.value)
-    receivedArticles.mutate(@(v) delete v[id])
+    receivedArticles.mutate(@(v) v.$rawdelete(id))
 
   httpRequest({
     method = "GET"

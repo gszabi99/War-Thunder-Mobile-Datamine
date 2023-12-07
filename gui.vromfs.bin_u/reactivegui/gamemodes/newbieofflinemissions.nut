@@ -12,7 +12,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let newbieModeStats = require("newbieModeStats.nut")
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { startOfflineBattle } = require("startOfflineMode.nut")
+let { startOfflineBattle, startLocalMPBattle } = require("startOfflineMode.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -185,6 +185,16 @@ let function startNewbieMission(missions, reward, predefinedId) {
   startOfflineBattle(curUnit.value?.name, missionName)
 }
 
+let function startLocalMPMission(missions, reward, predefinedId) {
+  if (missions == null)
+    return
+
+  let missionName = chooseRandom(missions)
+  logO($"Start local multiplayer battle. Unit = {curUnit.value?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
+  send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
+  startLocalMPBattle(curUnit.value?.name, missionName)
+}
+
 let startCurNewbieMission = @()
   startNewbieMission(newbieOfflineMissions.value, firstBattlesReward.value, firstBattlesRewardId.value)
 let dbgCurrentNewbieMission = Computed(function() {
@@ -200,8 +210,17 @@ let startDebugNewbieMission = @()
     serverConfigs.value?.firstBattlesRewards[0]
     null
   )
+let startLocalMultiplayerMission = function() {
+  local abandoned_factory = ["abandoned_factory_Conq1", "abandoned_factory_Conq2", "abandoned_factory_Conq3" ]
+  startLocalMPMission(
+    abandoned_factory
+    serverConfigs.value?.firstBattlesRewards[0]
+    null
+  )
+}
 
 register_command(startDebugNewbieMission, "ui.startFirstBattlesOfflineMission")
+register_command(startLocalMultiplayerMission, "ui.startLocalMultiplayerMission")
 register_command(function() {
   let presets = newbieGameModesConfig.tanks
     .findvalue(@(cfg) "offlineMissionsSets" in cfg)?.offlineMissionsSets
@@ -222,4 +241,5 @@ return {
   newbieOfflineMissions
   startCurNewbieMission
   startDebugNewbieMission
+  startLocalMultiplayerMission
 }

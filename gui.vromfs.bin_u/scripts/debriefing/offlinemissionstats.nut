@@ -7,8 +7,9 @@ let offlineKills = mkWatched(persist, "offlineKills", 0)
 isInBattle.subscribe(@(v) v ? offlineKills(0) : null)
 
 ecs.register_es("player_kill_counter_es", {
-  [EventOnPlayerKill] = function(_evt, _eid, _comp) {
-    if (battleSessionId.value == -1)
+  [EventOnPlayerKill] = function(evt, _eid, _comp) {
+    let offenderPlayerId = evt[0]
+    if (battleSessionId.value == -1 && offenderPlayerId == 0) // local player in offline mission
       offlineKills(offlineKills.value + 1)
   }
 })

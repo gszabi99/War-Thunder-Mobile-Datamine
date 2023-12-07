@@ -8,7 +8,7 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, change_item_count, set_pur
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
   apply_profile_mutation, add_lootbox, add_warbond, add_event_key, debug_lootbox_chances,
-  reset_lootbox_counters, reset_profile_with_stats
+  reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget
 } = pServerApi
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -33,8 +33,7 @@ let infoTextOvr = {
 registerHandler("onDebugLootboxChances",
   function(res) {
     let data = clone res
-    if ("isCustom" in data)
-      delete data.isCustom
+    data?.$rawdelete("isCustom")
     if ("percents" in data)
       data.percents = data.percents.map(@(v)
         $"{v > 0.1 ? round_by_value(v, 0.01) : roundToDigits(v, 2)}%")
@@ -88,6 +87,8 @@ register_command(@(id, count) add_lootbox(id, count, "consolePrintResult"), "met
 register_command(@(id) debug_lootbox_chances(id, true, "onDebugLootboxChances"), "meta.debug_lootbox_chances_filtered")
 register_command(@(id) debug_lootbox_chances(id, false, "onDebugLootboxChances"), "meta.debug_lootbox_chances_full")
 register_command(@(id) reset_lootbox_counters(id, "consolePrintResult"), "meta.reset_lootbox_counters")
+
+register_command(@() renew_ad_budget("consolePrintResult"), "meta.renew_ad_budget")
 
 register_command(function(count) {
   add_wp(count * 100)

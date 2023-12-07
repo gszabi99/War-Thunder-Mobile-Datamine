@@ -18,4 +18,5 @@ let function mkStarLevelCtor(starSize) {
 return {
   starLevelTiny = mkStarLevelCtor(evenPx(26))
   starLevelSmall = mkStarLevelCtor(evenPx(36))
+  starLevelMedium = mkStarLevelCtor(evenPx(42))
 }

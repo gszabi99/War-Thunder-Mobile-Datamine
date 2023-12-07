@@ -108,10 +108,13 @@ let optionCtors = {
 }
 
 let function mkOption(opt) {
-  let { ctrlType = null } = opt
+  let { ctrlType = null, comp = null } = opt
+  if (comp != null)
+    return comp
+
   let ctor = optionCtors?[ctrlType]
   if (ctor == null)
-    logerr($"Options: No creator for option ctrlType = {ctrlType}")
+    logerr($"Options: No creator for option ctrlType = {ctrlType}, comp = {comp}")
   return ctor?(opt)
 }
 

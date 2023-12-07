@@ -7,7 +7,7 @@ let { get_arg_value_by_name } = require("dagor.system")
 let io = require("io")
 let { json_to_string } = require("json")
 let { defer } = require("dagor.workcycle")
-let { get_mp_session_id_str } = require("multiplayer")
+let { get_mp_session_id_str, is_local_multiplayer } = require("multiplayer")
 let { splitStringBySize } = require("%sqstd/string.nut")
 let { battleData, isBattleDataActual, actualizeBattleData } = require("menuBattleData.nut")
 let getDefaultBattleData = require("%appGlobals/data/getDefaultBattleData.nut")
@@ -19,6 +19,8 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
+let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let curUnitName = mkWatched(persist, "battleDataUnit", null)
 
 enum ACTION {
   NOTHING = "nothing"
@@ -179,8 +181,20 @@ let function setBattleDataToClientEcs(bd) {
     })
 }
 
+let function createBattleDataForLocalMP() {
+  let unitName = curUnit.value?.name ?? curUnitName.value
+  logBD("createBattleDataForLocalMP ", unitName)
+  if (unitName != null)
+    actualizeBattleData(unitName)
+  if (isBattleDataActual.value)
+    setBattleDataToClientEcs(battleData.value?.payload)
+  else
+    logBD("Ignore set battle data to localMP because of not actual")
+}
+
 subscribe("CreateBattleDataForClient",
-  @(_) is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
+  @(_) is_local_multiplayer() ? createBattleDataForLocalMP()
+    : is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
     : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)
     : logBD("Ignore set battle data to client because of not actual"))
 

@@ -84,7 +84,7 @@ let function setOnlineBySquad(uid, online) {
   if (squadOnline.value?[uid] != online)
     squadOnline.mutate(function(v) {
       if (online == null)
-        delete v[uid]
+        v.$rawdelete(uid)
       else
         v[uid] <- online
     })
@@ -150,7 +150,7 @@ let function reset() {
 let function removeInvitedSquadmate(userId) {
   if (!(userId in isInvitedToSquad.value))
     return false
-  isInvitedToSquad.mutate(@(value) delete value[userId])
+  isInvitedToSquad.mutate(@(value) value.$rawdelete(userId))
   return true
 }
 
@@ -415,7 +415,7 @@ let function removeMember(member) {
     reset()
   }
   else if (userId in squadMembers.value) {
-    squadMembers.mutate(@(v) delete v[userId])
+    squadMembers.mutate(@(v) v.$rawdelete(userId))
     setOnlineBySquad(userId, null)
     checkDisbandEmptySquad()
   }

@@ -21,7 +21,7 @@ let { buy_player_level, buy_unit, registerHandler, levelInProgress
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { set_camera_shift_upper } = require("hangar")
-let { applyDiscount } = require("%appGlobals/unitUtils.nut")
+let { applyDiscount } = require("%rGui/unit/unitUtils.nut")
 let { ceil } = require("%sqstd/math.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_SMALL_INCREASED_ICON } = currencyStyles

@@ -32,11 +32,12 @@ def get_dm_effect_flag(flags, flag)
 def ammo_stowage_send_explosion_fatal(eid : EntityId; ammo_left : float; var seed : int; full_expl : bool;
                                       v : tuple<
                                         ammo_stowage__damagePropsId : int;
-                                        ammo_stowage__detonatePortion : float2
+                                        ammo_stowage__detonatePortion : float2;
+                                        ammo_stowage__splashProperties : SplashProps- const
                                       >) : void
   if v.ammo_stowage__damagePropsId < 0
     return
-  var splash_params = calc_splash_params(v.ammo_stowage__damagePropsId, false)
+  var splash_params = calc_splash_params(v.ammo_stowage__damagePropsId, v.ammo_stowage__splashProperties, false)
   if splash_params.outerRadius <= 0.0f
     return
   splash_params |> splash_params_scale(ammo_left *
@@ -72,11 +73,12 @@ struct ExplosionParams
 
 def add_to_explosion_params(var params : ExplosionParams&;
                             mass : float;
+                            kinetic_mass : float;
                             dmg_props_id : int;
                             bullet_count : int)
   let explosive_props = get_explosive_props(dmg_props_id)
   let explosive_mass = explosive_props != null ? explosive_props.mass * float(bullet_count) : 0.0f
-  let shell_mass = get_mass_prop_value(dmg_props_id, 0.0f) * float(bullet_count)
+  let shell_mass = kinetic_mass * float(bullet_count)
   let powder_props = get_powder_props(dmg_props_id)
   let powder_mass = powder_props != null ? powder_props.portion * mass * float(bullet_count) : 0.0f
 
@@ -118,10 +120,10 @@ def calc_explosion_params(unit : Unit?; stowage_id : int; cluster_id : int;
         for bullet_set in gun.properties.bulletSets
           for props in bullet_set.bullet
             num_ammo += bullet_set.bulletsCount
-            add_to_explosion_params(result, props.ballisticProps.mass, props.damagePropsId, bullet_set.bulletsCount)
+            add_to_explosion_params(result, get_proj_ballistics(*props).mass, get_kinetic_mass(*props), props.damagePropsId, bullet_set.bulletsCount)
       elif base_gun != null
         num_ammo += base_gun.countBullets
-        add_to_explosion_params(result, base_gun.prop.shellProps.ballisticProps.mass, base_gun.damagePropsId, base_gun.countBullets)
+        add_to_explosion_params(result, get_proj_ballistics(*base_gun.prop.shellProps).mass, get_kinetic_mass(*base_gun.prop.shellProps), base_gun.damagePropsId, base_gun.countBullets)
 
   if num_ammo > 0
     let k = float(v.ammo_clusters__exterminatedAmmo[cluster_id]) / float(num_ammo);
@@ -166,7 +168,6 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
     cluster_center_pos += calc_slot_pos(slot_id) <| v
   sendEventImmediate(eid, [[EventAmmoStowageSetup
     netSyncIfRequired=false,
-    canLoadToBreach=true,
     initNum=false,
     isRefill=false
   ]])
@@ -229,7 +230,6 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
     cluster_center_pos += calc_slot_pos(slot_id) <| v
   sendEventImmediate(eid, [[EventAmmoStowageSetup
     netSyncIfRequired=false,
-    canLoadToBreach=true,
     initNum=false,
     isRefill=false
   ]])
@@ -286,7 +286,8 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_slots__state : UInt32List- const;
                                       ammo_slots__partId : PartIdList;
                                       ammo_slots__numAmmo : IPoint2List- const;
-                                      ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
+                                      ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
+                                      ammo_stowage__splashProperties : SplashProps- const
                                     >)
   if get_flag(v.ammo_stowage__ammoState, AmmoState ON_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState ON_EXPLODE)
     set_flag(v.ammo_stowage__ammoState, AmmoState ON_FIRE, false)
@@ -354,7 +355,8 @@ def ammo_stowage_do_explosion_fatal(eid : EntityId; stowage_id : int; cluster_id
                                       ammo_stowage__ammoState : uint- const;
                                       ammo_stowage__damagePropsId : int;
                                       ammo_stowage__detonatePortion : float2;
-                                      ammo_slots__numAmmo : IPoint2List
+                                      ammo_slots__numAmmo : IPoint2List;
+                                      ammo_stowage__splashProperties : SplashProps- const
                                     >) : void
   if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION)
     return
@@ -429,7 +431,8 @@ def ammo_stowage_do_explosion(eid : EntityId; part_id : PartId; offender : Offen
                                 ammo_clusters__exterminatedAmmo : IntList- const;
                                 ammo_clusters__slotsRange : IPoint2List;
                                 ammo_slots__state : UInt32List- const;
-                                ammo_slots__numAmmo : IPoint2List
+                                ammo_slots__numAmmo : IPoint2List;
+                                ammo_stowage__splashProperties : SplashProps- const
                               >) : void
   let is_full_expl = get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FULL_EXPL)
   let remap = get_remap(v.ammo_stowage__partIdRemap, part_id)
@@ -472,7 +475,8 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
                                           ammo_clusters__exterminatedAmmo : IntList- const;
                                           ammo_clusters__slotsRange : IPoint2List;
                                           ammo_slots__state : UInt32List- const;
-                                          ammo_slots__numAmmo : IPoint2List
+                                          ammo_slots__numAmmo : IPoint2List;
+                                          ammo_stowage__splashProperties : SplashProps- const
                                         >)
   var unit = get_unit(uid)
   if !active || unit == null || unit.isDelayed || !unit.isAlive || unit.visual == null
@@ -509,7 +513,8 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
                                 ammo_clusters__damageEffectPresetId : IntList;
                                 ammo_clusters__slotsRange : IPoint2List;
                                 ammo_slots__state : UInt32List- const;
-                                ammo_slots__numAmmo : IPoint2List
+                                ammo_slots__numAmmo : IPoint2List;
+                                ammo_stowage__splashProperties : SplashProps- const
                               >)
   let unit = get_unit(uid)
   if !active || unit == null || unit.isDelayed || !unit.isAlive || (unit.isTank && !is_equal_float(unit.dmgScaleFromBot, 1.))
@@ -589,7 +594,8 @@ def ammo_stowage_send_explosion_fatal_es(evt : EventAmmoStowageSendExplosionFata
                                          eid : EntityId;
                                          v : tuple<
                                            ammo_stowage__damagePropsId : int;
-                                           ammo_stowage__detonatePortion : float2
+                                           ammo_stowage__detonatePortion : float2;
+                                           ammo_stowage__splashProperties : SplashProps- const
                                          >)
   ammo_stowage_send_explosion_fatal(eid, evt.ammoLeft, evt.seed, evt.fullExpl) <| v
 

@@ -13,7 +13,7 @@ let screenWeights = Watched(screensList.map(@(s) s.weight))
 let function chooseRandomScreen() {
   let weights = clone screenWeights.value
   if (curScreenId.value in weights)
-    delete weights[curScreenId.value]
+    weights.$rawdelete(curScreenId.value)
   if (weights.len() != 0)
     curScreenId(random_pick(weights))
 }

@@ -22,7 +22,7 @@
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 42240.0,
+  "multHpFromMetaparts": 34980.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -187,6 +187,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -201,6 +211,54 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
+        "absoluteValue": true
       }
     ]
   },
@@ -211,7 +269,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 42240.0,
+      "hp": 34980.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -237,7 +295,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 42240.0,
+      "hp": 34980.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -247,7 +305,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 42240.0,
+      "hp": 34980.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {},
@@ -257,7 +315,7 @@
     "fire_control": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 42240.0,
+      "hp": 34980.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.05,
       "fireParamsPreset": "ship_aux_fire",
@@ -301,7 +359,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 42240.0,
+      "hp": 34980.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {}
@@ -512,7 +570,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 42240.0,
+      "hp": 34980.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -665,7 +723,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.333,
+        "shotFreq": 0.417,
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -736,7 +794,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.333,
+        "shotFreq": 0.417,
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -796,7 +854,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.333,
+        "shotFreq": 0.417,
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -856,7 +914,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.333,
+        "shotFreq": 0.417,
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -916,7 +974,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.333,
+        "shotFreq": 0.417,
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -976,7 +1034,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.333,
+        "shotFreq": 0.417,
         "allowableDelta": 1.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -1162,7 +1220,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1233,7 +1291,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1293,7 +1351,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1353,7 +1411,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1413,7 +1471,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1473,7 +1531,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1660,7 +1718,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1731,7 +1789,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1791,7 +1849,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1851,7 +1909,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1911,7 +1969,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1971,7 +2029,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.333,
+              "shotFreq": 0.417,
               "allowableDelta": 1.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,

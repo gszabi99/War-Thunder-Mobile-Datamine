@@ -41,9 +41,9 @@ let function updateJustUnlockedUnits(unitsStatus) {
 }
 
 let deleteJustUnlockedUnit = @(name) name not in justUnlockedUnits.value ? null
-  : justUnlockedUnits.mutate(@(v) delete v[name])
+  : justUnlockedUnits.mutate(@(v) v.$rawdelete(name))
 let deleteJustBoughtUnit = @(name) name not in justBoughtUnits.value ? null
-  : justBoughtUnits.mutate(@(v) delete v[name])
+  : justBoughtUnits.mutate(@(v) v.$rawdelete(name))
 
 canBuyUnitsStatus.subscribe(@(v) updateJustUnlockedUnits(v))
 

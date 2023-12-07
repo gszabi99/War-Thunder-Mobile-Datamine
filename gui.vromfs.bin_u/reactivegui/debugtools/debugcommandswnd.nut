@@ -30,7 +30,7 @@ let debugOffersWnd = require("debugOffersWnd.nut")
 let { isDebugTouchesActive } = require("debugTouches.nut")
 let debugUnlocks = require("debugUnlocks.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { startDebugNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
+let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 
 let wndWidth = sh(130)
@@ -68,6 +68,8 @@ let commandsList = [
   { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug(!isTutorialMissionsDebug.value)) }
   { label = "startFirstBattlesOfflineMission",
     func = withClose(@() notAvailableForSquadMsg(startDebugNewbieMission)) }
+  { label = "startLocalMultiplayerMission",
+    func = withClose(@() notAvailableForSquadMsg(startLocalMultiplayerMission)) }
   { label = "copy_last_debriefing",
     function func() {
       close()

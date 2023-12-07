@@ -48,7 +48,7 @@ let debugTouchesUi = {
   function onPointerRelease(evt) {
     let { pointerId } = evt
     if (pointerId in activePointers.value)
-      activePointers.mutate(@(v) delete v[pointerId])
+      activePointers.mutate(@(v) v.$rawdelete(pointerId))
     return 0
   }
   function onPointerMove(evt) {

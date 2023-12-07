@@ -189,6 +189,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -203,6 +213,54 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
+        "absoluteValue": true
       }
     ]
   },
@@ -1464,6 +1522,7 @@
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm",
           "linkedAnimPart": {
             "horNode": "fire_director_03",
             "horLimits": [
@@ -1532,7 +1591,8 @@
         "salvoRndK": 0.15,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
-          "gun": "auxiliary_caliber_gun_01"
+          "gun": "auxiliary_caliber_gun_01",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm"
         },
         "limits": {
           "yaw": [
@@ -1591,6 +1651,7 @@
         "turret": {
           "head": "auxiliary_caliber_turret_02",
           "gun": "auxiliary_caliber_gun_03",
+          "gunnerDm": "auxiliary_caliber_turret_02_dm",
           "linkedAnimPart": {
             "horNode": "fire_director_04",
             "horLimits": [
@@ -1659,7 +1720,8 @@
         "salvoRndK": 0.15,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
-          "gun": "auxiliary_caliber_gun_03"
+          "gun": "auxiliary_caliber_gun_03",
+          "gunnerDm": "auxiliary_caliber_turret_02_dm"
         },
         "limits": {
           "yaw": [
@@ -1717,7 +1779,8 @@
         "salvoRndK": 0.15,
         "turret": {
           "head": "auxiliary_caliber_turret_03",
-          "gun": "auxiliary_caliber_gun_05"
+          "gun": "auxiliary_caliber_gun_05",
+          "gunnerDm": "auxiliary_caliber_turret_03_dm"
         },
         "limits": {
           "yaw": [
@@ -1775,7 +1838,8 @@
         "salvoRndK": 0.15,
         "turret": {
           "head": "auxiliary_caliber_turret_03",
-          "gun": "auxiliary_caliber_gun_05"
+          "gun": "auxiliary_caliber_gun_05",
+          "gunnerDm": "auxiliary_caliber_turret_03_dm"
         },
         "limits": {
           "yaw": [
@@ -1833,7 +1897,8 @@
         "salvoRndK": 0.15,
         "turret": {
           "head": "auxiliary_caliber_turret_04",
-          "gun": "auxiliary_caliber_gun_07"
+          "gun": "auxiliary_caliber_gun_07",
+          "gunnerDm": "auxiliary_caliber_turret_04_dm"
         },
         "limits": {
           "yaw": [
@@ -1891,7 +1956,8 @@
         "salvoRndK": 0.15,
         "turret": {
           "head": "auxiliary_caliber_turret_04",
-          "gun": "auxiliary_caliber_gun_07"
+          "gun": "auxiliary_caliber_gun_07",
+          "gunnerDm": "auxiliary_caliber_turret_04_dm"
         },
         "limits": {
           "yaw": [
@@ -3482,6 +3548,7 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_01",
                 "gun": "auxiliary_caliber_gun_01",
+                "gunnerDm": "auxiliary_caliber_turret_01_dm",
                 "linkedAnimPart": {
                   "horNode": "fire_director_03",
                   "horLimits": [
@@ -3550,7 +3617,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_01",
-                "gun": "auxiliary_caliber_gun_01"
+                "gun": "auxiliary_caliber_gun_01",
+                "gunnerDm": "auxiliary_caliber_turret_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -3609,6 +3677,7 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_gun_03",
+                "gunnerDm": "auxiliary_caliber_turret_02_dm",
                 "linkedAnimPart": {
                   "horNode": "fire_director_04",
                   "horLimits": [
@@ -3677,7 +3746,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
-                "gun": "auxiliary_caliber_gun_03"
+                "gun": "auxiliary_caliber_gun_03",
+                "gunnerDm": "auxiliary_caliber_turret_02_dm"
               },
               "limits": {
                 "yaw": [
@@ -3735,7 +3805,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_03",
-                "gun": "auxiliary_caliber_gun_05"
+                "gun": "auxiliary_caliber_gun_05",
+                "gunnerDm": "auxiliary_caliber_turret_03_dm"
               },
               "limits": {
                 "yaw": [
@@ -3793,7 +3864,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_03",
-                "gun": "auxiliary_caliber_gun_05"
+                "gun": "auxiliary_caliber_gun_05",
+                "gunnerDm": "auxiliary_caliber_turret_03_dm"
               },
               "limits": {
                 "yaw": [
@@ -3851,7 +3923,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_04",
-                "gun": "auxiliary_caliber_gun_07"
+                "gun": "auxiliary_caliber_gun_07",
+                "gunnerDm": "auxiliary_caliber_turret_04_dm"
               },
               "limits": {
                 "yaw": [
@@ -3909,7 +3982,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_04",
-                "gun": "auxiliary_caliber_gun_07"
+                "gun": "auxiliary_caliber_gun_07",
+                "gunnerDm": "auxiliary_caliber_turret_04_dm"
               },
               "limits": {
                 "yaw": [
@@ -5502,6 +5576,7 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_01",
                 "gun": "auxiliary_caliber_gun_01",
+                "gunnerDm": "auxiliary_caliber_turret_01_dm",
                 "linkedAnimPart": {
                   "horNode": "fire_director_03",
                   "horLimits": [
@@ -5570,7 +5645,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_01",
-                "gun": "auxiliary_caliber_gun_01"
+                "gun": "auxiliary_caliber_gun_01",
+                "gunnerDm": "auxiliary_caliber_turret_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -5629,6 +5705,7 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_gun_03",
+                "gunnerDm": "auxiliary_caliber_turret_02_dm",
                 "linkedAnimPart": {
                   "horNode": "fire_director_04",
                   "horLimits": [
@@ -5697,7 +5774,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_02",
-                "gun": "auxiliary_caliber_gun_03"
+                "gun": "auxiliary_caliber_gun_03",
+                "gunnerDm": "auxiliary_caliber_turret_02_dm"
               },
               "limits": {
                 "yaw": [
@@ -5755,7 +5833,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_03",
-                "gun": "auxiliary_caliber_gun_05"
+                "gun": "auxiliary_caliber_gun_05",
+                "gunnerDm": "auxiliary_caliber_turret_03_dm"
               },
               "limits": {
                 "yaw": [
@@ -5813,7 +5892,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_03",
-                "gun": "auxiliary_caliber_gun_05"
+                "gun": "auxiliary_caliber_gun_05",
+                "gunnerDm": "auxiliary_caliber_turret_03_dm"
               },
               "limits": {
                 "yaw": [
@@ -5871,7 +5951,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_04",
-                "gun": "auxiliary_caliber_gun_07"
+                "gun": "auxiliary_caliber_gun_07",
+                "gunnerDm": "auxiliary_caliber_turret_04_dm"
               },
               "limits": {
                 "yaw": [
@@ -5929,7 +6010,8 @@
               "salvoRndK": 0.15,
               "turret": {
                 "head": "auxiliary_caliber_turret_04",
-                "gun": "auxiliary_caliber_gun_07"
+                "gun": "auxiliary_caliber_gun_07",
+                "gunnerDm": "auxiliary_caliber_turret_04_dm"
               },
               "limits": {
                 "yaw": [
@@ -7299,7 +7381,7 @@
       600.0
     ],
     "additionalWaterDeathThreshold": 100000000.0,
-    "additionalWaterCoverPartsThreshold": 69000000.0,
+    "additionalWaterCoverPartsThreshold": 12000000.0,
     "additionalWaterShouldDiePercent": 0.15,
     "fatalBreachDrownTime": 30.0,
     "maxHeelingAngle": 36.0,

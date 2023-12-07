@@ -71,8 +71,7 @@ let function updateChangedModesImpl(added_list, removed_list, changed_list) {
       foreach (m in removed_list) {
         let { name = "", gameModeId = -1 } = m
         logGM($"matching game mode removed '{name}' [{gameModeId}]")
-        if (gameModeId in modes)
-          delete modes[gameModeId]
+        modes?.$rawdelete(gameModeId)
       }
 
       foreach (m in changed_list) {
@@ -83,8 +82,7 @@ let function updateChangedModesImpl(added_list, removed_list, changed_list) {
         logGM($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
 
         if (disabled && !visible && !active) {
-          if (gameModeId in modes)
-            delete modes[gameModeId]
+          modes?.$rawdelete(gameModeId)
           continue
         }
 

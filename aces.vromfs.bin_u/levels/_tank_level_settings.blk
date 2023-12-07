@@ -1,5 +1,6 @@
 mandatoryLandquality:i = 1
 z_far:r = 50000
+isTankLevel:b=yes
 
 gridSteps:p2 = 2048, 2048
 

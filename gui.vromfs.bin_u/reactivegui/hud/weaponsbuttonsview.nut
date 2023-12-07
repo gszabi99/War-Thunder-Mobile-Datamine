@@ -516,7 +516,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
     unmarkWeapKeyHold(key)
     setDrawWeaponAllowableAngles(false, -1)
     if (key in userHoldWeapInside.value)
-      userHoldWeapInside.mutate(@(v) delete v[key])
+      userHoldWeapInside.mutate(@(v) v.$rawdelete(key))
   }
 
   let function onButtonReleaseWhileActiveZone() {

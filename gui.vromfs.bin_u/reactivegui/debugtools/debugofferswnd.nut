@@ -43,8 +43,7 @@ let infoTextOvr = {
 registerHandler("onDebugOfferStats",
   function(res) {
     let data = clone res
-    if ("isCustom" in data)
-      delete data.isCustom
+    data?.$rawdelete("isCustom")
     openMsgBox({
       text = msgBoxText(tostring_r(data), infoTextOvr)
       wndOvr = { size = [hdpx(1100), hdpx(1000)] }

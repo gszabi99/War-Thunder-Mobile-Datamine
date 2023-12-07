@@ -5,7 +5,7 @@ let { isEventWndOpen, closeEventWnd, eventEndsAt,
   unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen, eventSeasonName, eventSeason,
   eventWndShowAnimation, eventWndOpenCount, bestCampLevel } = require("eventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkTimeUntil } = require("%rGui/quests/questsComps.nut")
+let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, mkSmokeBg, lootboxHeight,
  smallChestIcon, lootboxInfoSize, leaderbordBtn, questsBtn } = require("eventPkg.nut")
@@ -152,6 +152,7 @@ let function mkLootboxBlock(lootbox, blockSize) {
       markCurLootboxSeen(name)
     }
     sound = { click  = "click" }
+    clickableInfo = loc("mainmenu/btnSelect")
     children = [
       lootboxInfo(lootbox, stateFlags.value)
 

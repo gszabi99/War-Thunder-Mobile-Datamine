@@ -68,7 +68,7 @@ subscribe(NAME_CB_ID, function(msg) {
     if (name)
       changeList[userId] <- name
     if (uid in requestedUids)
-      delete requestedUids[uid]
+      requestedUids.$rawdelete(uid)
   }
 
   updateContactNames(changeList)

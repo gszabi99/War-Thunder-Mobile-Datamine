@@ -9,7 +9,7 @@ let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getLootboxRewardsViewInfo, isRewardReceived  } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
-let { showLootboxAds, eventRewards, bestCampLevel } = require("eventState.nut")
+let { bestCampLevel } = require("eventState.nut")
 let { canShowAds } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -18,6 +18,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
 let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
 
 
 let REWARDS = 3
@@ -152,13 +153,12 @@ let function mkLootboxImageWithTimer(name, blockSize, timeRange, reqPlayerLevel,
 
 let mkBtnContent = @(img, text, ovr = {}) {
   key = text
-  size = flex()
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
-    {
+    !img ? null : {
       size = [iconSize, iconSize]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FILL
@@ -174,27 +174,36 @@ let mkBtnContent = @(img, text, ovr = {}) {
   ]
 }.__update(ovr)
 
-let mkAdsBtn = @(id, reqPlayerLevel) @() {
-  watch = [eventRewards, bestCampLevel, canShowAds]
-  children = mkCustomButton(
-    mkBtnContent("ui/gameuiskin#mp_spectator.avif", loc("shop/watchAdvert/short")),
-    @() bestCampLevel.value >= reqPlayerLevel
-        ? showLootboxAds(id)
-      : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
-    bestCampLevel.value >= reqPlayerLevel && canShowAds.value && eventRewards.value?[id].isReady
-        ? buttonStyles.SECONDARY
-      : buttonStyles.COMMON)
+let function mkAdsBtn(reqPlayerLevel, adReward) {
+  let { cost = 0 } = adReward
+  return @() {
+    watch = [bestCampLevel, canShowAds, adBudget]
+    children = mkCustomButton(
+      cost > adBudget.value
+          ? mkBtnContent(null, loc("playBattles", { count = cost }))
+        : mkBtnContent("ui/gameuiskin#mp_spectator.avif", loc("shop/watchAdvert/short")),
+      @() bestCampLevel.value >= reqPlayerLevel
+          ? onSchRewardReceive(adReward)
+        : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
+      (bestCampLevel.value >= reqPlayerLevel
+        && canShowAds.value
+        && adReward?.isReady
+        && (cost < adBudget.value)
+            ? buttonStyles.SECONDARY
+          : buttonStyles.COMMON)
+        .__merge({ hotkeys = ["^J:Y"] }))
+  }
 }
 
 let leaderbordBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#prizes_icon.svg", loc("mainmenu/titleLeaderboards")),
   openLbWnd,
-  buttonStyles.PRIMARY)
+  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:B"] }))
 
 let questsBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#quests.svg", loc("mainmenu/btnQuests")),
   openEventQuestsWnd,
-  buttonStyles.PRIMARY)
+  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
 
 let mkCurrencyComp = @(value, currencyId) {
   size = [SIZE_TO_CONTENT, iconSize]
@@ -208,29 +217,32 @@ let mkCurrencyComp = @(value, currencyId) {
 }
 
 let function mkPurchaseBtns(lootbox, onPurchase) {
-  let { name, price, currencyId, hasBulkPurchase = false, adRewardId = null, timeRange = 0, reqPlayerLevel = 0 } = lootbox
+  let { name, price, currencyId, hasBulkPurchase = false, timeRange = 0, reqPlayerLevel = 0 } = lootbox
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
     && start < serverTime.value
     && (end <= 0 || end > serverTime.value))
+  let adReward = Computed(@() schRewards.value.findvalue(@(r) (r.lootboxes?[name] ?? 0) > 0))
 
   return @() {
-    watch = [isActive, balance]
+    watch = [isActive, balance, adReward]
     key = name
     flow = FLOW_HORIZONTAL
     gap = hdpx(40)
     animations = revealBtnsAnimation
     children = [
-      adRewardId != null ? mkAdsBtn(adRewardId, reqPlayerLevel) : null
+      adReward.value != null ? mkAdsBtn(reqPlayerLevel, adReward.value) : null
       textButtonPricePurchase(hasBulkPurchase ? utf8ToUpper(loc("events/oneReward")) : null,
         mkCurrencyComp(price, currencyId),
         @() onPurchase(lootbox, price, currencyId),
-        !isActive.value || (balance.value?[currencyId] ?? 0) < price ? buttonStyles.COMMON : null)
+        (!isActive.value || (balance.value?[currencyId] ?? 0) < price ? buttonStyles.COMMON : {})
+          .__merge({ hotkeys = ["^J:X"] }))
       !hasBulkPurchase ? null
         : textButtonPricePurchase(utf8ToUpper(loc("events/tenRewards")),
             mkCurrencyComp(price * 10, currencyId),
             @() onPurchase(lootbox, price * 10, currencyId, 10),
-            !isActive.value || (balance.value?[currencyId] ?? 0) < price * 10 ? buttonStyles.COMMON : null)
+            (!isActive.value || (balance.value?[currencyId] ?? 0) < price * 10 ? buttonStyles.COMMON : {})
+              .__merge({ hotkeys = ["^J:B"] }))
     ]
   }
 }

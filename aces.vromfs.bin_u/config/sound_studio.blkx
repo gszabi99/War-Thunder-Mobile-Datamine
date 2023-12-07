@@ -64,7 +64,7 @@
   "dialogsProjectName": "dialogs",
   "dialogsProjectPath": "dialogs",
   "radioClickName": "radio_click",
-  "radioClickPath": "aircraft/gui",
+  "radioClickPath": "naval/gui",
   "voiceMessageEventsPath": "dialogs_crew_aircraft",
   "versusEventsPath": "dialogs_crew_aircraft/",
   "banks": {
@@ -101,6 +101,10 @@
         "mobile_ships": {
           "async": true,
           "preload": false
+        },
+        "mobile_event": {
+          "async": true,
+          "preload": false
         }
       },
       "pkg_common": {
@@ -117,6 +121,12 @@
       },
       "pkg_ground": {
         "mobile_tanks.assets": {
+          "async": true,
+          "preload": false
+        }
+      },
+      "pkg_lvl_hangar_ny": {
+        "mobile_event.assets": {
           "async": true,
           "preload": false
         }
@@ -351,19 +361,8 @@
     "eventBulletHitWater": "bullethit_water",
     "eventBulletHitWaterDist": 200.0,
     "eventBulletPassBy": "bullet_passby",
-    "eventPropDead": "prop_dead",
-    "eventPropDeadDist": 100.0,
-    "eventPropDeadWater": "prop_dead_water",
-    "eventPropDeadWaterDist": 100.0,
-    "eventGunOverheat": "gun_overheat_final",
-    "eventGunOverheatLow": "gun_overheat_low",
-    "eventGunOverheatHigh": "gun_overheat_high",
     "eventBulletHitOutside": "bullethit_camera",
-    "eventBulletHitCockpit": "bullethit_cockpit",
     "eventBulletRicochetOutside": "bullet_rico_camera",
-    "eventBulletRicochetCockpit": "bullet_rico_cockpit",
-    "eventBulletHitCockpitMetal": "bullethit_cockpit_metal",
-    "eventBulletHitCockpitGlass": "bullethit_cockpit_glass",
     "eventBulletHitUnit": "bullethit_unit",
     "eventBulletHitPlane": "bullethit_plane",
     "eventBulletHitTankMgun": "hit_mgun",
@@ -480,15 +479,10 @@
     "eventTankMisfire": "gun_jammed",
     "eventTreeCollision": "tree_collision",
     "eventTreeCollisionDist": 400.0,
-    "eventWaterCollision": "water_collision",
-    "eventWaterCollisionDist": 400.0,
-    "eventGroundCollisionJump": "ground_collision",
     "eventGroundCollisionJumpDist": 400.0,
     "eventPartsExplosions": "parts_explosion",
     "eventWind": "plane_passby",
-    "eventWindJet": "jet_plane_passby",
     "eventWreck": "wreck_explosion",
-    "eventWreckCockpit": "wreck_explosion_cockpit",
     "eventPartsExplosion": "parts_explosion",
     "art_preparation_concrete": "art_preparation",
     "art_preparation_ground": "art_preparation",
@@ -500,13 +494,9 @@
       "no_explosive",
       "no_explosive"
     ],
-    "eventPlayerWind": "wind",
     "eventStuntPerformed": "bonus",
-    "eventToogleSwitch": "light_switch",
     "eventTorpedoLaunch": "torpedo_launch",
     "eventTorpedoSplash": "torpedo_splash",
-    "eventJumpOutParachute": "jump_out_parachute",
-    "lowGroundEffect": "low_ground",
     "eventCutDecor": "part_bounced",
     "eventBinocularsOn": "binoculars_on",
     "eventBinocularsOff": "binoculars_off",
@@ -520,7 +510,6 @@
     "eventAlarmBattle": "alarm_battle",
     "eventAlarmDepth": "alarm_depth",
     "eventPickupBonus": "pickup_bonus",
-    "eventWheelDrift": "wheel_drift",
     "eventShotThunder": "main_caliber_distant",
     "eventShotThunderDist": 10000.0,
     "eventUnderwaterExpl": "underwater_explosion",
@@ -532,18 +521,25 @@
     "eventCameraZoom": "cam_zoom",
     "eventEngineDive": "engine_dive",
     "eventFire": "fire",
-    "eventFlap": "flap",
     "eventHydroplane": "hydroplane",
     "eventPlaneBroken": "plane_broken",
-    "eventRedout": "redout",
     "eventShipExtinguish": "extinguish",
     "eventShipSink": "sink",
     "eventStukaSiren": "stuka_siren",
     "eventStukaSirenAi": "stuka_siren_ai",
     "eventTankStabilizer": "stabilizer",
-    "eventTireScreech": "tire_screech",
     "eventVibrationOverload": "vibration_overload",
     "eventWreckScrape": "wreck_scrape",
+    "eventShellsIncoming": "art_shells_incoming",
+    "eventArtShellsIncoming": "art_shells_incoming",
+    "eventWaveHitBoat": [
+      "collision_wave_boat",
+      "collision_wave_boat"
+    ],
+    "eventWaveHitShip": [
+      "collision_wave_ship",
+      "collision_wave_ship"
+    ],
     "bulletPassByRadius": 30.0,
     "eventBulletHitShipMgun": "hit_mgun",
     "eventBulletHitShipSmall": "hit_small",
@@ -570,10 +566,6 @@
       0.0,
       300.0
     ],
-    "tree_fall": "tree_fall",
-    "tree_creak": "tree_creak",
-    "tree_creakDist": 50.0,
-    "tree_fallDist": 50.0,
     "minMaxCaliber": [
       0.01,
       0.4
@@ -581,8 +573,6 @@
     "eventBoosterEngine": "engineBooster",
     "eventBoosterCockpitEngine": "",
     "eventBoosterAiEngine": "engineBooster_ai",
-    "eventWaveHitBoat": "collision_wave_boat",
-    "eventWaveHitShip": "collision_wave_ship",
     "shipSizeThreshold": 35.0,
     "eventNuclearStrike": "explosions_far",
     "shockImpulseThreshold": 1.0,
@@ -618,9 +608,7 @@
     "torpedo_explosion_unit": "torpedo_explosion_unit",
     "torpedo_explosion_ship": "torpedo_explosion_unit",
     "plane_explosion_air": "parts_explosion",
-    "plane_explosion_air_cockpit": "parts_explosion_cockpit",
     "plane_explosion_water": "plane_explosion_water",
-    "plane_explosion_water_cockpit": "plane_explosion_water_cockpit",
     "explosion_big_ship": "explosion_naval",
     "explosion_suit_destroyed": "suit_destroyed"
   },
@@ -667,14 +655,12 @@
     "obj_remind": "obj_remind",
     "obj_new": "obj_new",
     "level_load_complete": "level_load_complete",
-    "chat_spam": "chat_spam",
     "select_ammo_type": "select_ammo_type",
     "select_ammo_type_false": "select_ammo_type_false",
     "art_ready": "art_ready",
     "enemy_destr_by_plane": "enemy_destroyed",
     "enemy_destr_by_ship": "enemy_destroyed",
     "enemy_destr_by_tank": "enemy_tank_destroyed",
-    "alarm_rocket": "alarm_rocket",
     "session_start": "session_start"
   },
   "rocket_effects": {
@@ -708,32 +694,7 @@
     "eventOutside": "vibration_camera",
     "eventCockpitOpen": "vibration_cockpit_open",
     "eventOutsideLand": "vibration_land_camera",
-    "eventCockpitLand": "vibration_land_cockpit",
-    "eventOverheatCamera": "engine_overheat_camera",
-    "eventOverheatCockpit": "engine_overheat_cockpit",
-    "eventOverheatStart": "engine_overheat_start",
-    "eventEngineOverheat": "engine_overheat"
-  },
-  "ambient_engines": {
-    "path": "aircraft/engines",
-    "maxAlt": 100.0,
-    "event": [
-      {
-        "engineType": 5,
-        "event": "distant_engine_heli",
-        "maxDist": 4000.0
-      },
-      {
-        "engineType": 2,
-        "event": "distant_engine_jet",
-        "maxDist": 6000.0
-      },
-      {
-        "engineType": 1,
-        "event": "distant_engine_piston",
-        "maxDist": 4000.0
-      }
-    ]
+    "eventCockpitLand": "vibration_land_cockpit"
   },
   "cockpit_occlusion": {
     "directOcclusion": 1.0,
@@ -783,6 +744,23 @@
     "field": "field",
     "cockpit": "cockpit",
     "underwater": "underwater"
+  },
+  "dspPresets": {
+    "dpsPresetSky": "sky",
+    "dpsPresetSea": "sea",
+    "dpsPresetCockpit": "cockpit",
+    "dpsPresetOverload": "overload",
+    "dpsPresetTank": "tank",
+    "dpsPresetUnderwater": "underwater",
+    "dpsPresetBinoculars": "binoculars",
+    "dpsPresetPause": "pause",
+    "dpsPresetMute": "mute",
+    "dpsPresetMuteAll": "mute_all",
+    "dpsPresetRespawnScreen": "respawn_screen",
+    "dpsPresetKillScene": "killscene",
+    "dpsPresetHangar": "hangar",
+    "dpsPresetMuteHangar": "mute_hangar_sounds",
+    "dpsPresetMuteSpeech": "mute_speech"
   },
   "engines": {
     "lods": {
@@ -7902,17 +7880,17 @@
   },
   "reloads": {
     "fmw_gun_reload": {
-      "path": "aircraft/gui",
+      "path": "naval/gui",
       "event": "gunner_reload",
       "time": 1.5
     },
     "fmw_guns_reload": {
-      "path": "aircraft/gui",
+      "path": "naval/gui",
       "event": "gunner_reload_multiple",
       "time": 1.5
     },
     "fmw_bombs_reload": {
-      "path": "aircraft/gui",
+      "path": "naval/gui",
       "event": "bombs_reload",
       "time": 1.5
     },
@@ -7937,27 +7915,6 @@
     "grd_cannon_reload": {
       "path": "ground/effects",
       "event": "reload_cannon",
-      "time": 4.5,
-      "ship": {
-        "path": "naval/effects"
-      }
-    },
-    "grd_cannon_reload_heavy": {
-      "path": "ground/effects",
-      "event": "reload_cannon_heavy",
-      "time": 4.5
-    },
-    "grd_cannon_burning_reload": {
-      "path": "ground/effects",
-      "event": "reload_cannon_burning",
-      "time": 4.5,
-      "ship": {
-        "path": "naval/effects"
-      }
-    },
-    "grd_cannon_reload_manual": {
-      "path": "ground/effects",
-      "event": "reload_cannon_manual",
       "time": 4.5,
       "ship": {
         "path": "naval/effects"
@@ -7988,11 +7945,6 @@
       "ship": {
         "path": "naval/effects"
       }
-    },
-    "grd_howitzer_reload": {
-      "path": "ground/effects",
-      "event": "reload_howitzer",
-      "time": 4.5
     },
     "naval_cannon_reload": {
       "path": "naval/effects",
@@ -10928,11 +10880,6 @@
         "minSpeechInterval": 10.0
       }
     }
-  },
-  "airDefenceSiren": {
-    "path": "aircraft/ambient",
-    "sound": "city_01",
-    "maxDist": 1500.0
   },
   "compressorDSP": {
     "use": true,

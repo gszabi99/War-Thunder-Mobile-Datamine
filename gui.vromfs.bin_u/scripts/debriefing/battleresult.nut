@@ -17,6 +17,7 @@ let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { get_local_mplayer, get_mplayers_list } = require("mission")
 let { get_mp_tbl_teams } = require("guiMission")
+let mkCommonExtras = require("mkCommonExtras.nut")
 
 const destroySessionTimeout = 2.0
 const SAVE_FILE = "battleResult.json"
@@ -29,7 +30,9 @@ let battleResult = Computed(function() {
   if (debugBattleResult.value)
     return debugBattleResult.value
   if (battleSessionId.value == -1)
-    return singleMissionResult.value
+    return singleMissionResult.value != null
+      ? mkCommonExtras(singleMissionResult.value).__merge(singleMissionResult.value)
+      : null
   local res = baseBattleResult.value
   if (res?.sessionId != battleSessionId.value)
     return connectFailedData.value?.sessionId != battleSessionId.value ? null
@@ -38,6 +41,7 @@ let battleResult = Computed(function() {
     res = resultPlayers.value.__merge(res)
   if (playersCommonStats.value.len() != 0)
     res = { playersCommonStats = playersCommonStats.value }.__merge(res)
+  res = mkCommonExtras(baseBattleResult.value).__merge(res)
   return res
 })
 

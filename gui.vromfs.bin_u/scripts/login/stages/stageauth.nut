@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync } = require("auth_wt")
-let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
+let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
 let { subscribe, send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
@@ -16,10 +16,9 @@ let { openUrl } = require("%scripts/url.nut")
 let { send_counter } = require("statsd")
 let { sendErrorBqEvent, sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getLocTextForLang } = require("dagor.localize")
+let { login_nswitch} = require("subStageAuthNSwitch.nut")
 
-let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage
-} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
-
+let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 
 subscribeFMsgBtns({
   loginExitGame = @(_) exitGame()
@@ -168,6 +167,25 @@ subscribe("ios.account.apple.onAppleLoginToken",
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_APPLE))(result)
 }))
 
+subscribe("nswitch.account.login",
+  onlyActiveStageCb(function(msg) {
+    let { errorStr = null, player_id = null, token=null } = msg
+    if (errorStr) {
+      send_counter("auth.nswitch_login_error", 1, { error = errorStr })
+      sendErrorBqEvent(getLocTextForLang(errorStr, "English"))
+      interruptStage({ error = $"Nintendo Switch sign in failed: {errorStr}" })
+      openFMsgBox({ text = errorStr,
+        buttons = [
+          { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
+        ]
+      })
+      return
+    }
+    logStage("Nintendo Switch check_login_pass")
+    let result = ::check_login_pass(player_id, token, "nswitch", "nswitch", false, false)
+    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_NSWITCH))(result)
+}))
+
 let loginByType = {
   [LT_GOOGLE] = function(_as) {
     googlePlayAccount.signOut(false)
@@ -188,6 +206,10 @@ let loginByType = {
   [LT_GUEST] = function(_as) {
     let result = ::check_login_pass(getUUID(), "", "guest", "guest", false, false)
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GUEST))(result)
+  },
+
+  [LT_NSWITCH] = function(_as) {
+    login_nswitch()
   },
 
   [LT_APPLE] = function(_as) {

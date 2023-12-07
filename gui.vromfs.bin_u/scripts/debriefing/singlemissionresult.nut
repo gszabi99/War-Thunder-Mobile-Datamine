@@ -3,12 +3,12 @@ from "%scripts/dagui_library.nut" import *
 let { subscribe } = require("eventbus")
 let { get_game_mode } = require("mission")
 let { GO_WIN, GO_EARLY, get_game_over_reason } = require("guiMission")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isInBattle, battleSessionId, battleUnitName } = require("%appGlobals/clientState/clientState.nut")
 let { lastClientBattleData, wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
 let { offlineKills } = require("offlineMissionStats.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
-
 
 let singleMissionResult = mkWatched(persist, "singleMissionResult", null)
 let lastRewardData = persist("lastRewardData", @() { val = null })
@@ -32,6 +32,7 @@ let function getSingleMissionResult(rewardData) {
     isWon = reason == GO_WIN
     isSingleMission = true
     mission = get_current_mission_info_cached()?.name
+    campaign = curCampaign.get()
   })
   if (isTutorial)
     res.__update({

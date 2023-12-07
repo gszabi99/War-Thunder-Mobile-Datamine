@@ -7,7 +7,8 @@ let { EventOnSetupFrameTimes } = require("gameEvents")
 let { get_mp_session_id_int } = require("multiplayer")
 let { get_current_mission_name } = require("mission")
 let { get_battery, get_battery_capacity_mah, is_charging, get_thermal_state, get_network_connection_type } = require("sysinfo")
-let { get_is_emulator, get_is_emulated_input } = require("emulatorDetection")
+let { get_emulator_system_flags, get_emulator_input_flags, get_emulated_input_count,
+      get_regular_input_count, reset_emulator_counters} = require("emulatorDetection")
 let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
@@ -79,30 +80,32 @@ let function startBatteryChargeDrainGather() {
 
 isInBattle.subscribe(function(v) {
   activatePingMeasurement(v, v)
-  if (v)
+  if (v) {
     startBatteryChargeDrainGather()
+    reset_emulator_counters()
+  }
 })
 
 if (isInBattle.value) {
   activatePingMeasurement(true, false)
 }
 
+let connectionTypeMap = {
+  [-1] = "Unknown",
+  [0]  = "No connection" ,// Should be impossible (how do we send data then?)
+  [1] =  "Cellular",
+  [2] =  "Wi-Fi",
+}
+
 let function onFrameTimes(evt, _eid, _comp) {
   log("[BQ] send battle fps info to BQ")
   let data = blk2SquirrelObjNoArrays(evt[0])
-  if ("time" in data)
-    delete data.time
+  data?.$rawdelete("time")
 
   let drainPercentage = batteryOnBattleStart - get_battery()
   let drainmAh = drainPercentage * get_battery_capacity_mah()
 
-  local connectionType = "Unknown"
-  switch (get_network_connection_type()) {
-    case -1: connectionType = "Unknown"; break;
-    case 0:  connectionType = "No connection"; break; // Should be impossible (how do we send data then?)
-    case 1:  connectionType = "Cellular"; break;
-    case 2:  connectionType = "Wi-Fi"; break;
-  }
+  let connectionType = connectionTypeMap?[get_network_connection_type()] ?? "Unknown"
 
   data.__update({
     platform = get_platform_string_id()
@@ -119,8 +122,12 @@ let function onFrameTimes(evt, _eid, _comp) {
     tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
     battery = get_battery()
     isCharging = is_charging()
-    isEmulator = get_is_emulator()
-    isEmulatedInput = get_is_emulated_input()
+    isEmulator = (get_emulator_system_flags() != 0)
+    isEmulatedInput = (get_emulator_input_flags() != 0)
+    emulatorSystemFlags = get_emulator_system_flags()
+    emulatorInputFlags = get_emulator_input_flags()
+    emulatedInputCount = get_emulated_input_count()
+    regularInputCount = get_regular_input_count()
     batteryDrainPercentage = drainPercentage
     batteryDrainmAh = drainmAh
     thermalState = get_thermal_state()

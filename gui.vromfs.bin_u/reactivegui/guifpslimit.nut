@@ -8,7 +8,7 @@ let needFpsLimit = keepref(Computed(@() fpsLimits.value.len() > 0))
 let addFpsLimit = @(id) fpsLimits.mutate(@(v) v[id] <- true)
 let function removeFpsLimit(id) {
   if (id in fpsLimits.value)
-    fpsLimits.mutate(@(v) delete v[id])
+    fpsLimits.mutate(@(v) v.$rawdelete(id))
 }
 
 let needLoginFpsLimit = keepref(Computed(@() isLoginRequired.value && !isLoggedIn.value))

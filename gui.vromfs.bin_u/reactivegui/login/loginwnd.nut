@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let eventbus = require("eventbus")
 let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
-let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
+let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -17,6 +17,7 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getCurrentLanguage } = require("dagor.localize")
 let { openSuportWebsite } = require("%rGui/feedback/supportState.nut")
+let { is_nswitch } = require("%sqstd/platform.nut")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
 let loginName = mkWatched(persist, "loginName", "")
@@ -276,6 +277,19 @@ let appleLoginButtonContent = {
   ]
 }
 
+let nswitchLoginButtonContent = {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = hdpx(15)
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = loc("mainmenu/nswitch")
+      color = Color(0, 0, 0)
+    }.__update(fontSmallAccented)
+  ]
+}
+
 let googleLoginButtonContent = {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -346,6 +360,9 @@ let loginButtonCtors = {
   [LT_APPLE] = @() mkCustomButton(appleLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_APPLE }),
     BRIGHT),
+  [LT_NSWITCH] = @() mkCustomButton(nswitchLoginButtonContent,
+    @() eventbus.send("doLogin", { loginType = LT_NSWITCH }),
+    BRIGHT),
   [LT_FIREBASE] = @() mkCustomButton(firebaseLoginButtonContent,
     @() eventbus.send("doLogin", { loginType = LT_FIREBASE }),
     BRIGHT),
@@ -359,18 +376,19 @@ let loginButtonCtors = {
 }.filter(@(btnCtor) btnCtor != null)
 
 let function mkMainAuthorizationButtons() {
-  let res = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN]
+  let res = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN, LT_NSWITCH]
     .filter(@(lt) availableLoginTypes?[lt] ?? false)
     .map(@(lt) loginButtonCtors?[lt]())
-  res.insert(0, {
-    rendObj = ROBJ_TEXT
-    halign = ALIGN_CENTER
-    text = loc("choose_authorization_method")
-    color = Color(255, 255, 255)
-    fontFx = FFT_GLOW
-    fontFxFactor = 64
-    fontFxColor = Color(0, 0, 0)
-  }.__update(fontMedium))
+  if (!is_nswitch)
+    res.insert(0, {
+      rendObj = ROBJ_TEXT
+      halign = ALIGN_CENTER
+      text = loc("choose_authorization_method")
+      color = Color(255, 255, 255)
+      fontFx = FFT_GLOW
+      fontFxFactor = 64
+      fontFxColor = Color(0, 0, 0)
+    }.__update(fontMedium))
   return res
 }
 

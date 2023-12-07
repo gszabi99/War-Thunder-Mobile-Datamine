@@ -116,7 +116,7 @@ let function mkCurrencyReward(id, amount, countDelay) {
           let startTime = startTimes[id]
           let endTime = startTime + countTimeMsec
           if (curTime >= endTime)
-            delete startTimes[id]
+            startTimes.$rawdelete(id)
           return {
             text = curTime >= endTime ? decimalFormat(amount)
               : decimalFormat(lerpClamped(startTime, endTime, 0, amount, curTime).tointeger())

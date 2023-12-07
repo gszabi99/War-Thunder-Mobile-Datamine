@@ -190,6 +190,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -204,6 +214,54 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
+        "absoluteValue": true
       }
     ]
   },
@@ -873,8 +931,7 @@
     "TrackSoundPathStudio": "naval/engines",
     "TrackSoundName": "tracks_big",
     "TrackSoundNameCockpit": "tracks_mid_interior",
-    "TrackSoundNameAi": "tracks_ai_big",
-    "turret_turn": "turret_turn_big"
+    "TrackSoundNameAi": "tracks_ai_big"
   },
   "optics": {
     "binoculars": "navy_binoculars"
@@ -5253,23 +5310,23 @@
   "breaches": {
     "repairSpeed": 150.0,
     "waterMassVel": -1300000.0,
-    "waterMassMult": 350.0,
+    "waterMassMult": 75.0,
     "sizeToRepair": [
       0.01,
       5.0,
       25.0,
       600.0
     ],
-    "additionalWaterDeathThreshold": 45000000.0,
-    "additionalWaterCoverPartsThreshold": 50000000.0,
+    "additionalWaterDeathThreshold": 100000000.0,
+    "additionalWaterCoverPartsThreshold": 11500000.0,
     "additionalWaterShouldDiePercent": 0.15,
     "fatalBreachDrownTime": 30.0,
-    "maxHeelingAngle": 16.0,
+    "maxHeelingAngle": 36.0,
     "maxHeelingTime": 50.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.075,
+    "sideCenterOfMassOffsetPercent": 0.35,
     "additionalWaterInfluenceOnSpeed": 1.6
   },
   "shipCover": {

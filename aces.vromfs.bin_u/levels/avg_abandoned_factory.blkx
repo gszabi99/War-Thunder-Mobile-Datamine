@@ -1,6 +1,7 @@
 {
   "mandatoryLandquality": 1,
   "z_far": 50000.0,
+  "isTankLevel": true,
   "gridSteps": [
     2048.0,
     2048.0
@@ -38,8 +39,8 @@
     2905.0
   ],
   "tankGridSteps": [
-    350.0,
-    350.0
+    175.0,
+    175.0
   ],
   "tankGridSize": [
     2048.0,
@@ -49,6 +50,7 @@
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "water_level": 7.0,
+  "forceDisableRefraction": true,
   "soundAmbientPath": "sounds/ambient",
   "soundAmbientPathStudio": "aircraft/ambient",
   "soundAmbientEvent": "global_amb",
@@ -451,6 +453,14 @@
     "tree_sea_bush_f": {
       "lod0": 200.0,
       "lod1": 1500.0
+    }
+  },
+  "overloaded_sounds": {
+    "id": "new_year",
+    "hangar_ambient_tracks": {
+      "hangar_sound": "new_hangar/hangar_ships_xmas",
+      "hangar_sound_tanks": "new_hangar/hangar_tanks_xmas",
+      "hangar_sound_ships": "new_hangar/hangar_ships_xmas"
     }
   }
 }

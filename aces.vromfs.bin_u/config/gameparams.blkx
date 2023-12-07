@@ -1,4 +1,5 @@
 {
+  "lowResFxOverbright": 4.0,
   "enableRiExplosionDamage": true,
   "simpleSinking": true,
   "useJWTProfile": true,
@@ -94,8 +95,10 @@
     500.0
   ],
   "rocketIndicatorColdRocketTimeOut": 2.0,
+  "rocketIndicatorShowEnemy": false,
   "rocketIndicatorShowFriendly": false,
   "rocketIndicatorShowUnguided": false,
+  "rocketIndicatorShowSelf": true,
   "rocketIndicatorLosCheck": true,
   "forceShowDetectedOnce": true,
   "rearmSupportPlaneInAir": false,
@@ -123,6 +126,16 @@
   "timeBeforeEngineNoticeFire": 0.5,
   "enableImpostorPreshadowCompression": false,
   "forceDisableRadarsOnSpawnGm": true,
+  "defaultTankAimPointOffset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "defaultShipsAimPointOffset": [
+    0.0,
+    -10.0,
+    0.0
+  ],
   "teleScale": 0.03,
   "minSkyAmbientLighting": [
     0.00954,
@@ -272,6 +285,7 @@
     5.0,
     -1.0
   ],
+  "tankSteeringTau": 0.01,
   "batteryDischargeInactivityTime": 60.0,
   "batteryDischargeActivityTime": 30.0,
   "batteryChargingTime": 30.0,
@@ -330,6 +344,7 @@
   "useMedicalKitWithToolkit": true,
   "dumpActiveGMUnitsPosEveryTick": 100,
   "disableDamageForBombOwner": true,
+  "maxTimeWaitFirstSpawn": 60.0,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [

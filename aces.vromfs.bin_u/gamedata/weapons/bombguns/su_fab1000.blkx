@@ -21,7 +21,7 @@
     "length": 3.536,
     "distFromCmToStab": 1.3,
     "sound": "weapon.bomb_big",
-    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "waterExplosionEffect": "bomb_water_explosion_big",
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,

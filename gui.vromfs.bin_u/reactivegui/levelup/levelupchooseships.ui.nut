@@ -8,7 +8,7 @@ let { textButtonPrimary, textButtonPurchase, textButtonCommon, buttonsHGap } = r
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
-let { getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
+let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, unitPlatesGap,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitPrice, mkUnitSelectedUnderlineVert

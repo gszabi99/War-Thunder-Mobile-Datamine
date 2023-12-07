@@ -47,6 +47,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.4,
   "bladeAnimVar": "type_74e_dozer_blade_action",
   "digForwardOffset": 1.4,
   "rearmSmokeTimeOnField": 60.0,
@@ -2664,8 +2665,8 @@
     "sightName": "telescope_m105c",
     "headPos": [
       0.0,
-      3.4,
-      -13.0
+      4.0,
+      -13.1
     ],
     "headPosOnShooting": [
       0.1,

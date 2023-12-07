@@ -11,7 +11,7 @@ let { levelBlock, gamercardWithoutLevelBlock, gamercardHeight } = require("%rGui
 let { playerLevelInfo, allUnitsCfg, myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { hangarUnitName, loadedHangarUnitName, setHangarUnit } = require("hangarUnit.nut")
-let { sortUnits, getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
+let { sortUnits, getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, setCurrentUnit, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
 } = require("%appGlobals/unitsState.nut")
 let { unitInProgress, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")

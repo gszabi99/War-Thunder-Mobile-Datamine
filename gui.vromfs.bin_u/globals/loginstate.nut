@@ -1,6 +1,6 @@
 let { Computed } = require("frp")
 let { get_settings_blk } = require("blkGetters")
-let { is_ios, is_android } = require("%sqstd/platform.nut")
+let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -56,6 +56,7 @@ let loginTypes = {
   LT_FIREBASE = "firebase"
   LT_GUEST = "guest"
   LT_FACEBOOK = "facebook"
+  LT_NSWITCH = "nswitch"
 }
 
 let secondStepTypes = {
@@ -71,6 +72,8 @@ if (is_ios) {
   availableLoginTypes[loginTypes.LT_APPLE] <- true
   availableLoginTypes[loginTypes.LT_FACEBOOK] <- true
   availableLoginTypes[loginTypes.LT_GUEST] <- true
+} else if (is_nswitch) {
+  availableLoginTypes = { [loginTypes.LT_NSWITCH] = true }
 } else if (is_android) {
   if (isOnlyGuestLogin)
     availableLoginTypes = { [loginTypes.LT_FIREBASE] = true }

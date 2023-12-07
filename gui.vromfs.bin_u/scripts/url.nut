@@ -14,7 +14,7 @@ let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { is_android, is_ios } = require("%sqstd/platform.nut")
+let { is_android, is_ios, is_nswitch } = require("%sqstd/platform.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -46,6 +46,10 @@ let function openUrlImpl(url, onCloseUrl) {
     success = require("android.webview").show(url, true, onCloseUrl)
   if (is_ios)
     success = require("ios.webview").show(url)
+  if (is_nswitch) {
+    require("nswitch.network").openUrl(url)
+    success = true
+  }
   if (!success)
     openUrlExternalImpl(url)
 }
@@ -98,6 +102,9 @@ let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useE
     logUrl("Error: tried to open an empty url")
     return null
   }
+
+  if (useExternalBrowser && is_nswitch)
+    useExternalBrowser = false
 
   local url = clearBorderSymbols(baseUrl, [URL_TAGS_DELIMITER])
   let urlTags = split_by_chars(baseUrl, URL_TAGS_DELIMITER)

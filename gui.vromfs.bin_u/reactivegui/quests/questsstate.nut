@@ -2,11 +2,16 @@ from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { activeUnlocks, allUnlocksRaw, unlockTables, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
-let { send } = require("eventbus")
+let { send, subscribe } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { canShowAds, showAdsForReward } = require("%rGui/ads/adsState.nut")
+let { playSound } = require("sound_wt")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
+let adBudget = require("%rGui/ads/adBudget.nut")
 
 const EVENT_PREFIX = "day"
 const SEEN_QUESTS = "seenQuests"
@@ -15,6 +20,9 @@ const EVENT_TAB = "event"
 const PROMO_TAB = "promo"
 const MINI_EVENT_TAB = "miniEvent"
 const ACHIEVEMENTS_TAB = "achievements"
+
+let SPEED_UP_AD_COST = 1
+let PROGRESS_STAT = "event_quests_progress"
 
 let seenQuests = mkWatched(persist, SEEN_QUESTS, {})
 let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
@@ -149,6 +157,32 @@ let function openEventQuestsWnd() {
   openQuestsWnd()
 }
 
+let function onWatchQuestAd(unlock) {
+  let { name, progressCorrectionStep = 0, isCompleted = false } = unlock
+  if (adBudget.value == 0) {
+    openMsgBox({ text = loc("playBattlesToUnlockAds") })
+    return false
+  }
+  if (!canShowAds.value) {
+    openMsgBox({ text = loc("msg/adsNotReadyYet") })
+    return false
+  }
+
+  if (progressCorrectionStep > 0 && !isCompleted) {
+    playSound("meta_ad_button")
+    showAdsForReward({ speedUpUnlockId = name, bqId = $"unlock_{name}" })
+    return true
+  }
+
+  logerr($"Trying to show ads to speed up the unlock which is completed or does not support speed up")
+  return false
+}
+
+subscribe("adsRewardApply", function(data) {
+  if ("speedUpUnlockId" in data)
+    speed_up_unlock_progress(data.speedUpUnlockId)
+})
+
 register_command(function() {
   seenQuests({})
   get_local_custom_settings_blk().removeBlock(SEEN_QUESTS)
@@ -186,4 +220,8 @@ return {
   MINI_EVENT_TAB
   PROMO_TAB
   ACHIEVEMENTS_TAB
+
+  onWatchQuestAd
+  SPEED_UP_AD_COST
+  PROGRESS_STAT
 }

@@ -53,12 +53,10 @@ let canBuyUnitsStatus = Computed(@() buyUnitsData.value.unitStatus)
 let function getUnitLockedShortText(unit, status, reqPlayerLevel) {
   if (unit == null || status == null || reqPlayerLevel == null)
     return ""
-  switch (status) {
-    case US_TOO_LOW_LEVEL:
-      return " ".concat(loc("multiplayer/level"), reqPlayerLevel)
-    case US_NOT_FOR_SALE:
-      return loc("options/unavailable")
-  }
+  if (status == US_TOO_LOW_LEVEL)
+    return " ".concat(loc("multiplayer/level"), reqPlayerLevel)
+  else if (status == US_NOT_FOR_SALE)
+    return loc("options/unavailable")
   return ""
 }
 

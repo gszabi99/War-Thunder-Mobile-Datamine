@@ -29,7 +29,7 @@ let function sendEvent(id) {
 }
 
 let tutorialResultEvent = keepref(Computed(function() {
-  let mission = tutorialMissions?[firstBattleTutor.value]
+  let mission = tutorialMissions.value?[firstBattleTutor.value]
   let typeId = curCampaign.value == "ships" ? "ship" : "tank"
   return mission == null || debriefingData.value?.mission != mission ? null
     : (debriefingData.value?.isFinished ?? false) ? $"battle_tutorial_{typeId}_complete"

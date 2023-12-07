@@ -26,10 +26,12 @@ let naval     = [ PKG_COMMON, PKG_NAVAL, PKG_COMMON_HQ, PKG_NAVAL_HQ ]
 let ground    = [ PKG_COMMON, PKG_GROUND, PKG_COMMON_HQ, PKG_GROUND_HQ ]
 let dev       = [ PKG_DEV ]
 let initialAddons = [ "pkg_secondary_hq", "pkg_secondary" ]
-let latestDownloadAddons = { //addons to download after other required campaign addons is already downloaded
+let latestDownloadAddonsByCamp = { //addons to download after other required campaign addons is already downloaded
   tanks = ["pkg_video"]
 }
+let latestDownloadAddons = []
 let commonUhqAddons = ["pkg_environment_uhq"]
+local ovrHangarAddon = null //{ addons : array<string>, hangarPath : string }
 
 let gameModeAddonToAddonSetMap = {
   [PKG_NAVAL] = naval,
@@ -74,9 +76,21 @@ if (addonConditions != null)
       logerr($"Unknown addon {addon} in the addonConditions config")
       return
     }
-    let { campaign = null, mRank = null } = b
+    let addonHq = $"{addon}_hq"
+    let { campaign = null, mRank = null, hangarPath = "" } = b
+
+    if (hangarPath != "") {
+      ovrHangarAddon = { addons = [addon], hangarPath }
+      latestDownloadAddons.append(addon)
+      if (addonHq in knownAddons) {
+        latestDownloadAddons.append(addonHq)
+        ovrHangarAddon.addons.append(addonHq)
+      }
+    }
+
     if (type(campaign) != "string" || type(mRank) != "integer") {
-      logerr($"Invalid type of required field in addonConditions for 'addon': campaign = {campaign}, mRank = {mRank}")
+      if (hangarPath == "")
+        logerr($"Invalid type of required field in addonConditions for 'addon': campaign = {campaign}, mRank = {mRank}")
       return
     }
     if (campaign not in extAddonsByRank)
@@ -85,7 +99,6 @@ if (addonConditions != null)
       extAddonsByRank[campaign][mRank] <- []
     extAddonsByRank[campaign][mRank].append(addon)
 
-    let addonHq = $"{addon}_hq"
     if (addonHq in knownAddons)
       extAddonsByRank[campaign][mRank].append(addonHq)
 
@@ -174,8 +187,10 @@ return freeze({
   initialAddons
   commonUhqAddons
   latestDownloadAddons
+  latestDownloadAddonsByCamp
   extAddonsByRank
   knownAddons
+  ovrHangarAddon
 
   gameModeAddonToAddonSetMap
 

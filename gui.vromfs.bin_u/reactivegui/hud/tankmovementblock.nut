@@ -116,14 +116,15 @@ let tankMoveStick  = @() {
     horizontal = "gm_steering"
     vertical = "gm_throttle"
   }
+  deadZoneForTurnAround = 75
   deadZoneForStraightMove = 20
   valueAfterDeadZone = 0.34
   steeringTable = [
     [12, 0],
     [13, 0.2],
     [60, 0.5],
-    [80, 0.9],
-    [81, 1.0]
+    [74, 0.9],
+    [75, 1.0]
   ]
   maxValueRadius = bgRadius
   useCenteringOnTouchBegin = currentTankMoveCtrlType.value == "stick"

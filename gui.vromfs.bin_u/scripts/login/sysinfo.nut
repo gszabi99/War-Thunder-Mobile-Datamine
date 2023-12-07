@@ -24,8 +24,7 @@ let function getSysInfo() {
   tbl.location <- getCountryCode() // Overrides location from get_user_system_info()
 
   foreach (key in fieldsToClear)
-    if (key in tbl)
-      delete tbl[key]
+    tbl?.$rawdelete(key)
 
   if ("cpuFeatures" in tbl)
     if (type(tbl.cpuFeatures) == "table") {
@@ -35,7 +34,7 @@ let function getSysInfo() {
       tbl.cpuFeatures = $";{";".join(values)};"
     }
     else if (type(tbl.cpuFeatures) != "string")
-      delete tbl.cpuFeatures
+      tbl.$rawdelete("cpuFeatures")
 
   return tbl
 }

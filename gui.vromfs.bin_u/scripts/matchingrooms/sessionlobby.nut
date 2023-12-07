@@ -426,8 +426,7 @@ SessionLobby = {
     let newSet = clone this.settings
     foreach (k, v in set)
       if (v == null) {
-        if (k in newSet)
-          delete newSet[k]
+        newSet?.$rawdelete(k)
       }
       else
         newSet[k] <- v
@@ -592,7 +591,7 @@ SessionLobby = {
       if (value != null)
         tblBase[key] <- value
       else if (key in tblBase)
-        delete tblBase[key]
+        tblBase.$rawdelete(key)
     return tblBase
   }
 
@@ -1174,7 +1173,7 @@ local MRoomsHandlers = class {
     }
 
     if (user_id in this.roomOps)
-      delete this.roomOps[user_id]
+      this.roomOps.$rawdelete(user_id)
 
     if (is_my_userid(user_id))
       this.__cleanupRoomState()
@@ -1207,7 +1206,7 @@ local MRoomsHandlers = class {
     let updateAttribs = function(upd_data, attribs) {
       foreach (key, value in upd_data) {
         if (value == null && (key in attribs))
-          delete attribs[key]
+          attribs.$rawdelete(key)
         else
           attribs[key] <- value
       }

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { is_android, is_ios } = require("%sqstd/platform.nut")
+let { is_android, is_ios, is_nswitch } = require("%sqstd/platform.nut")
 let { isDownloadedFromGooglePlay = @() false } = require("android.platform")
 let { isGuestLogin, renewGuestRegistrationTags } = require("%rGui/account/emailRegistrationState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -7,6 +7,7 @@ let { platformGoods, platformOffer, platformGoodsDebugInfo, buyPlatformGoods,
   platformPurchaseInProgress = Watched(null)
 } = is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsAndroid.nut")
   : is_ios ? require("byPlatform/goodsIos.nut")
+  : is_nswitch ? require("byPlatform/goodsNSwitch.nut")
   : require("byPlatform/goodsGaijin.nut")
 let { isForbiddenPlatformPurchaseFromRussia, openMsgBoxInAppPurchasesFromRussia } = require("inAppPurchasesFromRussia.nut")
 

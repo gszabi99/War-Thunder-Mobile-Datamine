@@ -17,7 +17,7 @@
   },
   "imports": {
     "import_record": {
-      "file": "gameData/missions/cta/tanks/stalingrad_factory/template_stalingrad_factory_tank_spawns.blk",
+      "file": "gameData/missions/cta/tanks/stalingrad_factory/tank_spawns/template_stalingrad_factory_Conq1_tank_spawns.blk",
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,

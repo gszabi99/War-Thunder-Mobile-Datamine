@@ -46,30 +46,21 @@ let function defErrData(res) {
 }
 
 let function errorCodeToString(error_code) {
-  switch (error_code) {
-    case YU2_TIMEOUT:
-    case YU2_HOST_RESOLVE:
-    case YU2_SSL_ERROR:
-    case YU2_FAIL: // auth server is not available
-      return "80130182"
+  if ([YU2_TIMEOUT, YU2_HOST_RESOLVE, YU2_SSL_ERROR, YU2_FAIL].contains(error_code))
+    return "80130182"
+  else if ([YU2_WRONG_LOGIN,YU2_WRONG_PARAMETER].contains(error_code))
+    return "80130183"
+  else if (error_code == YU2_FROZEN) // account is frozen
+    return "8111000E"
+  else if (error_code == YU2_FROZEN_BRUTEFORCE)
+    return "8111000F" // ERRCODE_AUTH_ACCOUNT_FROZEN_BRUTEFORCE
 
-    case YU2_WRONG_LOGIN:
-    case YU2_WRONG_PARAMETER:
-      return "80130183"
+  else if (error_code == YU2_SSL_CACERT)
+    return "80130184" // special error for this
 
-    case YU2_FROZEN: // account is frozen
-      return "8111000E"
-
-    case YU2_FROZEN_BRUTEFORCE:
-      return "8111000F" // ERRCODE_AUTH_ACCOUNT_FROZEN_BRUTEFORCE
-
-    case YU2_SSL_CACERT:
-      return "80130184" // special error for this
-
-    case YU2_WRONG_2STEP_CODE: {
-      let { secStepType } = authState.value
-      return secStepType == SST_MAIL ? "YU2_WRONG_2STEP_CODE_EMAIL" : "YU2_WRONG_2STEP_CODE"
-    }
+  else if (error_code == YU2_WRONG_2STEP_CODE) {
+    let { secStepType } = authState.value
+    return secStepType == SST_MAIL ? "YU2_WRONG_2STEP_CODE_EMAIL" : "YU2_WRONG_2STEP_CODE"
   }
 
   return format("%X", error_code & 0xFFFFFFFF)

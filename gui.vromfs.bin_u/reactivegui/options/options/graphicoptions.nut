@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { send } = require("eventbus")
+let { send, subscribe } = require("eventbus")
 let { get_common_local_settings_blk } = require("blkGetters")
-let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported
+let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported, should_notify_about_restart
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, mkOptionValue
@@ -56,10 +56,21 @@ let optRayTracing = {
     : v == 1 ? $"options/quality_medium"
     : $"options/quality_high")
 }
-
 let isUhqSupported = is_texture_uhq_supported()
 let needUhqTexturesRaw = Watched(isUhqSupported
   && !!get_common_local_settings_blk()?.uhqTextures) //machine storage
+
+let needShowRestartNotify = Watched(should_notify_about_restart())
+subscribe("presets.scaleChanged", @(params) needShowRestartNotify(params?.status ?? false))
+
+let restartTxt = @() !needShowRestartNotify.get() ? { watch = needShowRestartNotify }
+: {
+    watch = needShowRestartNotify
+    hplace = ALIGN_CENTER
+    rendObj = ROBJ_TEXT
+    text = loc("msg/needRestartToApplySettings")
+}.__update(fontTiny)
+
 let needUhqTextures = Computed(@() needUhqTexturesRaw.value && has_additional_graphics_content.value)
 let function setNeedUhqTextures(v) {
   get_common_local_settings_blk().uhqTextures = v
@@ -80,6 +91,7 @@ let optUhqTextures = {
 return {
   graphicOptions = [
     optQuality
+    { comp = restartTxt }
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
     isUhqSupported ? optUhqTextures : null

@@ -70,8 +70,7 @@ registerHandler("onFullProfileGenerated",
       return
     }
     let profile = clone res
-    if ("isCustom" in profile)
-      delete profile.isCustom
+    profile?.$rawdelete("isCustom")
     saveResult(profile, PROFILE)
     saveResult(serverConfigs.value.__merge({
       adsCfg = {}

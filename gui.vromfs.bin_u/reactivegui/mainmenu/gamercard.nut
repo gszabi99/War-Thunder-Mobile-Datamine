@@ -4,10 +4,8 @@ let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD, WARBOND, EVENT_KEY } = require("%appGlobals/currenciesState.nut")
 let { SC_GOLD, SC_WP, SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd, hasUnseenGoodsByCategory, isShopOpened } = require("%rGui/shop/shopState.nut")
+let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
-let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate
 } = require("%rGui/components/levelBlockPkg.nut")
 let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
@@ -336,8 +334,6 @@ let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = null) @() {
   ]
 }
 
-let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
-
 let function mkImageBtn(image, onClick, children = null, ovr = {}) {
   let stateFlags = Watched(0)
   return @() {
@@ -363,28 +359,25 @@ let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", openBuyCurrencyWnd[GOLD]
   },
   { sound = { click  = "meta_shop_buttons" } } )
 
-let rightBlock = @(){
-  watch = isShopOpened
-  size = [ SIZE_TO_CONTENT, avatarSize ]
-  flow = FLOW_HORIZONTAL
-  hplace = ALIGN_RIGHT
-  valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = [
-    !isShopOpened.value ? shopBtn : null
-    premIconWithTimeOnChange
-    mkCurrencyBalance(WP, openBuyCurrencyWnd[WP])
-    mkCurrencyBalance(GOLD, openBuyCurrencyWnd[GOLD])
-    dropMenuBtn
-  ]
-}
-
-let mkGamercard = @(backCb = null) {
+let mkGamercard = @(menuBtn, backCb = null) {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
   children = [
     mkLeftBlock(backCb)
-    rightBlock
+    {
+      size = [ SIZE_TO_CONTENT, avatarSize ]
+      flow = FLOW_HORIZONTAL
+      hplace = ALIGN_RIGHT
+      valign = ALIGN_CENTER
+      gap = gamercardGap
+      children = [
+        shopBtn
+        premIconWithTimeOnChange
+        mkCurrencyBalance(WP, openBuyCurrencyWnd[WP])
+        mkCurrencyBalance(GOLD, openBuyCurrencyWnd[GOLD])
+        menuBtn
+      ]
+    }
   ]
 }
 
@@ -406,15 +399,14 @@ let gamercardWithoutLevelBlock = {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
   children =
-    @(){
-      watch = isShopOpened
+    {
       size = [ SIZE_TO_CONTENT, avatarSize ]
       flow = FLOW_HORIZONTAL
       hplace = ALIGN_RIGHT
       valign = ALIGN_CENTER
       gap = gamercardGap
       children = [
-        !isShopOpened.value ? shopBtn : null
+        shopBtn
         premIconWithTimeOnChange
         mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
         mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))

@@ -15,9 +15,11 @@ let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut"
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
+let { register_command } = require("console")
 
 const STATS_UPDATE_TIMEOUT = 1.0
 
+let showAircraftName = Watched(false)
 let isAttached = Watched(false)
 let playersByTeamBase = Watched([])
 let missionName = Watched("")
@@ -31,8 +33,10 @@ let playersByTeam = Computed(function() {
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, unit = {} } = !isBot
           ? playersCommonStats.value?[userId.tointeger()]
           : genBotCommonStats(name, aircraftName, allUnitsCfgFlat.value?[aircraftName] ?? {}, playerLevelInfo.value.level)
-        let { unitClass = "" } = unit
-        let mainUnitName = unit?.name ?? aircraftName
+        let { unitClass = "", platoonUnits = {} } = unit
+        let mainUnitName = ((aircraftName in platoonUnits) || showAircraftName.value)
+          ? aircraftName
+          : (unit?.name ?? aircraftName)
         return p.__merge({
           nickname
           damage
@@ -84,6 +88,8 @@ let wndTitle = @() {
 }.__update(fontMedium)
 
 let cornerBackBtn = backButton(onQuit)
+
+register_command(@() showAircraftName(!showAircraftName.value), "debug.showAircraftName")
 
 return bgShaded.__merge({
   key = {}

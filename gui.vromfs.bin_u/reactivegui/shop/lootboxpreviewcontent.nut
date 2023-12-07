@@ -11,9 +11,10 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { eventRewards, eventSeason, bestCampLevel } = require("%rGui/event/eventState.nut")
+let { eventSeason, bestCampLevel } = require("%rGui/event/eventState.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkGoodsTimeTimeProgress } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 
 
 let lootboxImageSize = hdpxi(270)
@@ -37,12 +38,12 @@ let function lootboxImageWithTimer() {
   if (previewLootbox.value == null)
     return { watch = previewLootbox }
 
-  let { name, timeRange = null, adRewardId = null, reqPlayerLevel = 0 } = previewLootbox.value
+  let { name, timeRange = null, reqPlayerLevel = 0 } = previewLootbox.value
   let { start = 0, end = 0 } = timeRange
 
+  let adReward = Computed(@() schRewards.value.findvalue(@(r) (r.lootboxes?[name] ?? 0) > 0))
   let needAdtimeProgress = Computed(@() !lootboxInProgress.value
-    && adRewardId != null
-    && !eventRewards.value?[adRewardId].isReady)
+    && !(adReward.value?.isReady ?? true))
 
   let timeText = Computed(@() bestCampLevel.value < reqPlayerLevel
       ? loc("lootbox/reqCampaignLevel", { reqLevel = reqPlayerLevel })
@@ -62,13 +63,13 @@ let function lootboxImageWithTimer() {
     picSaturate = timeText.value == null ? 1.0 : 0.2
     children = [
       @() {
-        watch = [needAdtimeProgress, eventRewards, lootboxInProgress]
+        watch = [needAdtimeProgress, adReward, lootboxInProgress]
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         children = [
           lootboxInProgress.value ? spinner : null
           !needAdtimeProgress.value ? null
-            : mkGoodsTimeTimeProgress(eventRewards.value?[adRewardId])
+            : mkGoodsTimeTimeProgress(adReward.value)
         ]
       }
 
@@ -107,6 +108,7 @@ let function itemsBlock() {
                 isUpgraded = rType == "unitUpgrade"
               })
               sound = { click  = "click" }
+              clickableInfo = loc("mainmenu/btnPreview")
             }
           let isAllReceived = dropLimit != NO_DROP_LIMIT && dropLimit <= received
           return {

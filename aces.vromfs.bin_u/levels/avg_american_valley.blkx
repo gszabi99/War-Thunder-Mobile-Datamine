@@ -1,6 +1,7 @@
 {
   "mandatoryLandquality": 1,
   "z_far": 50000.0,
+  "isTankLevel": true,
   "gridSteps": [
     [
       2048.0,

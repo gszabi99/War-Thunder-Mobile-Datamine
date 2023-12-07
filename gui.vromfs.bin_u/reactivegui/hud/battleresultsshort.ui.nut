@@ -36,10 +36,12 @@ let noBgColor = 0x00000000
 let blackBgColor = 0xFF000000
 
 let gap = hdpx(10)
-let scoresTextWidth = hdpx(580)
-
+let scoresGap = hdpx(100)
+let scoresTextWidth = (saSize[0] - scoresGap) / 2
+let scoresContentWidth = scoresTextWidth
 let missionResult = Watched(null)
 let needShowResultScreen = Computed(@() missionResult.value == GO_WIN || missionResult.value == GO_FAIL)
+let streakSize = hdpx(70)
 
 let scoresByCampaign = {
   ships = [
@@ -80,7 +82,7 @@ let animatedTextBlock = @() {
   transform = {}
   transitions = [{ prop = AnimProp.color, duration = changeTextBgColorDuration }]
   animations = [
-    { prop = AnimProp.scale, from = [0.3, 0.1], to = [0.8, 0.1], duration = textBlockBounceDuration / 3,
+    { prop = AnimProp.scale, from = [0.7, 0.1], to = [0.8, 0.1], duration = textBlockBounceDuration / 3,
       easing = InQuad, play = true }
     { prop = AnimProp.scale, from = [0.8, 0.1], to = [1.0, 1.0], duration = textBlockBounceDuration / 3,
       easing = InQuad, play = true, delay = textBlockBounceDuration / 3 }
@@ -128,19 +130,21 @@ let resultTextBlock = @() {
 }
 
 let mkUserScores = @(valueCtor, locId) {
+  size = [saSize[0], SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
+  gap = scoresGap
   animations = opacityAnims(earnedScoresOpacityDuration, earnedScoresOpacityDelay)
   children = [
     {
+      halign = ALIGN_RIGHT
       size = [scoresTextWidth, SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXT
       text = "".concat(loc(locId), colon)
     }.__update(fontSmall)
     {
-      size = [playerPlaceIconSize, playerPlaceIconSize]
-      halign = ALIGN_CENTER
+      size = [SIZE_TO_CONTENT, playerPlaceIconSize]
+      halign = ALIGN_LEFT
       valign = ALIGN_CENTER
       children = valueCtor
       transform = {}
@@ -156,16 +160,25 @@ let mkUserScores = @(valueCtor, locId) {
   ]
 }
 
+let achievements = function(streaks) {
+  let itemOffset = @(children, idx, offset) {
+    key = {}
+    transform = { translate = [idx * offset, 0] }
+    children
+  }
+  let streaksArr = prepareStreaksArray(streaks)
+  let streaksArrSize = streaksArr.len()
+  local offset = streakSize
+  if (offset * streaksArrSize > scoresContentWidth)
+    offset = scoresContentWidth / streaksArrSize;
+
+  return streaksArr.map(@(val, idx) itemOffset(mkStreakWithMultiplier(val.id, val?.completed ?? 0, streakSize, val?.stage), idx, offset))
+}
+
 let achievementsBlock = @() {
   watch = [debriefingData]
   children = 0 < (debriefingData.value?.streaks.len() ?? 0)
-    ? mkUserScores({
-        flow = FLOW_HORIZONTAL
-        valign = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        children = prepareStreaksArray(debriefingData.value?.streaks)
-          .map( @(val) mkStreakWithMultiplier(val.id, val?.completed ?? 0, hdpx(70), val?.stage))
-      }, loc("debriefing/Unlocks"))
+    ? mkUserScores(achievements(debriefingData.value?.streaks), loc("debriefing/Unlocks"))
     : null
 }
 

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { AirThrottleMode } = require("wtSharedEnums")
 let interopGen = require("%rGui/interopGen.nut")
 
 const NUM_ENGINES_MAX = 6

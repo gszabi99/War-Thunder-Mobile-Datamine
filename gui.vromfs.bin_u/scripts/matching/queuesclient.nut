@@ -227,7 +227,7 @@ let function joinQueue(params) {
   else
     curQueue.mutate(function(v) {
       let newClusters = clone joinedClusters
-      delete newClusters[cluster]
+      newClusters.$rawdelete(cluster)
       v.joinedClusters = newClusters
     })
 })

@@ -1152,233 +1152,260 @@
         "distanceBoundsMin": 5.0,
         "distanceBoundsMax": 100.0
       },
-      "parallel": {
-        "updateAnger": {},
-        "cycle": {
+      "sequencer": {
+        "parallel": {
+          "updateAnger": {},
+          "cycle": {
+            "selector": {
+              "selectStrategy": "ordered",
+              "selectOnSuccess": true,
+              "sequencer": {
+                "findEnemies": {
+                  "outListName": "targets",
+                  "maxDistance": 300.0
+                },
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "findTargetByAnger": {
+                        "inListName": "targets",
+                        "outVarName": "priorityTarget",
+                        "angerThreshold": 20.0
+                      },
+                      "setAsEnemyTarget": {
+                        "inVarName": "priorityTarget",
+                        "minTimeBetweenSwitch": 15.0,
+                        "resetIfAngerLessThen": 5.0,
+                        "angerDeltaThreshold": 40.0
+                      },
+                      "switchAutoShoot": {
+                        "isEnabledShooting": true
+                      }
+                    },
+                    {
+                      "resetEnemyTarget": {},
+                      "switchAutoShoot": {
+                        "isEnabledShooting": false
+                      }
+                    }
+                  ]
+                }
+              },
+              "success": {}
+            }
+          },
           "selector": {
             "selectStrategy": "ordered",
             "selectOnSuccess": true,
-            "sequencer": {
-              "findEnemies": {
-                "outListName": "targets",
-                "maxDistance": 300.0
-              },
-              "selector": {
-                "selectStrategy": "ordered",
-                "selectOnSuccess": true,
-                "sequencer": [
-                  {
-                    "findTargetByAnger": {
-                      "inListName": "targets",
-                      "outVarName": "priorityTarget",
-                      "angerThreshold": 20.0
-                    },
-                    "setAsEnemyTarget": {
-                      "inVarName": "priorityTarget",
-                      "minTimeBetweenSwitch": 15.0,
-                      "resetIfAngerLessThen": 5.0,
-                      "angerDeltaThreshold": 40.0
-                    },
-                    "switchAutoShoot": {
-                      "isEnabledShooting": true
-                    }
+            "sequencer": [
+              {
+                "or": {
+                  "checkTeamTickets": {
+                    "op": "less",
+                    "allyTeam": true,
+                    "ticketsPercent": 0.3
                   },
-                  {
-                    "resetEnemyTarget": {},
-                    "switchAutoShoot": {
-                      "isEnabledShooting": false
-                    }
+                  "checkCapturePoint": {
+                    "dist": 100000.0,
+                    "canCapture": true,
+                    "timeCaptured": 90.0
                   }
-                ]
-              }
-            },
-            "success": {}
-          }
-        },
-        "selector": {
-          "selectStrategy": "ordered",
-          "selectOnSuccess": true,
-          "sequencer": [
-            {
-              "or": {
-                "checkTeamTickets": {
-                  "op": "less",
-                  "allyTeam": true,
-                  "ticketsPercent": 0.3
                 },
-                "checkCapturePoint": {
-                  "dist": 100000.0,
+                "setCapturePointAsDest": {
+                  "dist": 10.0,
                   "canCapture": true,
-                  "timeCaptured": 90.0
+                  "stayOnPointTime": 60.0,
+                  "canUseIndirectPath": false,
+                  "includeSpawnPoints": true
+                },
+                "driveToPos": {
+                  "dist": 5.0,
+                  "cornersAngleFactorDist": [
+                    20.0,
+                    0.0
+                  ],
+                  "cornersSpeedMultiplier": 1.0,
+                  "cornersSteeringOffset": 4.0,
+                  "obstacleAvoidAngle": 4.0,
+                  "obstacleAvoidDistMultiplier": 1.0,
+                  "maxTimeIgnoreObstacle": 7.0,
+                  "obstacleAvoidDistMin": 10.0,
+                  "obstacleAvoidDistMax": 20.0,
+                  "deflectPath": true,
+                  "deflectionRadius": 1000.0,
+                  "suspendIfTargetChanged": true
                 }
               },
-              "setCapturePointAsDest": {
-                "dist": 10.0,
-                "canCapture": true,
-                "stayOnPointTime": 60.0,
-                "canUseIndirectPath": false,
-                "includeSpawnPoints": true
-              },
-              "driveToPos": {
-                "dist": 10.0,
-                "obstacleAvoidAngle": 7.0,
-                "obstacleAvoidDistMultiplier": 1.5,
-                "deflectPath": false,
-                "suspendIfTargetChanged": false
-              }
-            },
-            {
-              "selector": {
-                "selectStrategy": "ordered",
-                "selectOnSuccess": true,
-                "sequencer": [
-                  {
-                    "not": {
-                      "checkShoot": {}
-                    },
-                    "selectRandomPosition": {
-                      "radius": 250.0,
-                      "minRadius": 200.0
-                    },
-                    "driveToPos": {
-                      "dist": 10.0,
-                      "obstacleAvoidAngle": 7.0,
-                      "obstacleAvoidDistMultiplier": 1.5,
-                      "deflectPath": false,
-                      "deflectionRadius": 1000.0,
-                      "suspendIfTargetChanged": false
-                    }
-                  },
-                  {
-                    "checkEnemy": {},
-                    "parallel": [
-                      {
-                        "cycle": [
-                          {
-                            "or": {
-                              "not": [
-                                {
-                                  "checkDistanceToTarget": {
-                                    "distance": 40.0
-                                  }
-                                },
-                                {
-                                  "checkShoot": {}
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "pursueTarget": {
-                              "distanceMin": 40.0,
-                              "distanceMax": 200.0,
-                              "includeEnemySpawn": true
-                            }
-                          }
-                        ],
-                        "driveToPos": {
-                          "dist": 10.0,
-                          "obstacleAvoidAngle": 7.0,
-                          "obstacleAvoidDistMultiplier": 1.5,
-                          "deflectPath": false,
-                          "deflectionRadius": 1000.0,
-                          "suspendIfTargetChanged": false
-                        }
+              {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "not": {
+                        "checkShoot": {}
                       },
-                      {
-                        "cycle": {
-                          "sequencer": {
-                            "checkEnemy": {},
-                            "checkDistanceToTarget": {
-                              "distance": 40.0
-                            }
-                          }
-                        },
-                        "parallel": {
+                      "selectRandomPosition": {
+                        "radius": 250.0,
+                        "minRadius": 200.0
+                      },
+                      "driveToPos": {
+                        "dist": 5.0,
+                        "obstacleAvoidAngle": 7.0,
+                        "obstacleAvoidDistMultiplier": 1.0,
+                        "obstacleAvoidDistMin": 10.0,
+                        "obstacleAvoidDistMax": 30.0,
+                        "deflectPath": false,
+                        "deflectionRadius": 1000.0,
+                        "suspendIfTargetChanged": false
+                      }
+                    },
+                    {
+                      "checkEnemy": {},
+                      "parallel": [
+                        {
                           "cycle": [
                             {
-                              "rotateToEnemy": {}
+                              "or": {
+                                "not": [
+                                  {
+                                    "checkDistanceToTarget": {
+                                      "distance": 40.0
+                                    }
+                                  },
+                                  {
+                                    "checkShoot": {}
+                                  }
+                                ]
+                              }
                             },
                             {
-                              "sequencer": {
-                                "delay": {
-                                  "range": [
-                                    90.0,
-                                    120.0
-                                  ],
-                                  "resetable": true
-                                },
-                                "resetEnemyTarget": {
-                                  "resetAnger": true
-                                },
-                                "selectRandomPosition": {
-                                  "radius": 150.0,
-                                  "minRadius": 100.0
-                                },
-                                "driveToPos": {
-                                  "dist": 10.0,
-                                  "obstacleAvoidAngle": 7.0,
-                                  "obstacleAvoidDistMultiplier": 1.5,
-                                  "deflectPath": false,
-                                  "deflectionRadius": 1000.0,
-                                  "suspendIfTargetChanged": false
-                                }
+                              "pursueTarget": {
+                                "distanceMin": 40.0,
+                                "distanceMax": 200.0,
+                                "includeEnemySpawn": true
                               }
                             }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "selector": {
-                      "selectOnSuccess": true,
-                      "sequencer": [
-                        {
-                          "checkCapturePoint": {
-                            "dist": 100000.0,
-                            "canCapture": true
-                          },
-                          "setCapturePointAsDest": {
-                            "dist": 20.0,
-                            "canCapture": true,
-                            "stayOnPointTime": 30.0,
-                            "includeSpawnPoints": false
+                          ],
+                          "driveToPos": {
+                            "dist": 5.0,
+                            "obstacleAvoidAngle": 7.0,
+                            "obstacleAvoidDistMultiplier": 1.0,
+                            "obstacleAvoidDistMin": 10.0,
+                            "obstacleAvoidDistMax": 30.0,
+                            "deflectPath": false,
+                            "deflectionRadius": 1000.0,
+                            "suspendIfTargetChanged": false
                           }
                         },
                         {
-                          "not": {
-                            "checkEnemy": {}
+                          "cycle": {
+                            "sequencer": {
+                              "checkEnemy": {},
+                              "checkDistanceToTarget": {
+                                "distance": 40.0
+                              }
+                            }
                           },
-                          "checkCapturePoint": {
-                            "dist": 100000.0,
-                            "canCapture": false
-                          },
-                          "setCapturePointAsDest": {
-                            "dist": 20.0,
-                            "canCapture": false,
-                            "stayOnPointTime": 5.0,
-                            "includeSpawnPoints": false
+                          "parallel": {
+                            "cycle": [
+                              {
+                                "rotateToEnemy": {}
+                              },
+                              {
+                                "sequencer": {
+                                  "delay": {
+                                    "range": [
+                                      90.0,
+                                      120.0
+                                    ],
+                                    "resetable": true
+                                  },
+                                  "resetEnemyTarget": {
+                                    "resetAnger": true
+                                  },
+                                  "selectRandomPosition": {
+                                    "radius": 150.0,
+                                    "minRadius": 100.0
+                                  },
+                                  "driveToPos": {
+                                    "dist": 5.0,
+                                    "obstacleAvoidAngle": 7.0,
+                                    "obstacleAvoidDistMultiplier": 1.0,
+                                    "obstacleAvoidDistMin": 10.0,
+                                    "obstacleAvoidDistMax": 30.0,
+                                    "deflectPath": false,
+                                    "deflectionRadius": 1000.0,
+                                    "suspendIfTargetChanged": false
+                                  }
+                                }
+                              }
+                            ]
                           }
                         }
                       ]
                     },
-                    "selectExplicitDestination": {
-                      "minDist": 5.0
-                    },
-                    "driveToPos": {
-                      "dist": 10.0,
-                      "obstacleAvoidAngle": 7.0,
-                      "obstacleAvoidDistMultiplier": 1.5,
-                      "deflectPath": true,
-                      "deflectionRadius": 1000.0,
-                      "suspendIfTargetChanged": true
+                    {
+                      "selector": {
+                        "selectOnSuccess": true,
+                        "sequencer": [
+                          {
+                            "checkCapturePoint": {
+                              "dist": 100000.0,
+                              "canCapture": true
+                            },
+                            "setCapturePointAsDest": {
+                              "dist": 20.0,
+                              "canCapture": true,
+                              "stayOnPointTime": 30.0,
+                              "includeSpawnPoints": false
+                            }
+                          },
+                          {
+                            "not": {
+                              "checkEnemy": {}
+                            },
+                            "checkCapturePoint": {
+                              "dist": 100000.0,
+                              "canCapture": false
+                            },
+                            "setCapturePointAsDest": {
+                              "dist": 20.0,
+                              "canCapture": false,
+                              "stayOnPointTime": 5.0,
+                              "includeSpawnPoints": false
+                            }
+                          }
+                        ]
+                      },
+                      "selectExplicitDestination": {
+                        "minDist": 5.0
+                      },
+                      "driveToPos": {
+                        "dist": 5.0,
+                        "cornersAngleFactorDist": [
+                          20.0,
+                          0.0
+                        ],
+                        "cornersSpeedMultiplier": 0.8,
+                        "cornersSteeringOffset": 4.0,
+                        "obstacleAvoidAngle": 3.0,
+                        "obstacleAvoidDistMultiplier": 1.0,
+                        "maxTimeIgnoreObstacle": 7.0,
+                        "obstacleAvoidDistMin": 10.0,
+                        "obstacleAvoidDistMax": 20.0,
+                        "deflectPath": true,
+                        "deflectionRadius": 1000.0,
+                        "suspendIfTargetChanged": true
+                      }
                     }
-                  }
-                ]
+                  ]
+                }
               }
-            }
-          ]
+            ]
+          }
         }
       }
     },
@@ -1394,6 +1421,9 @@
             "followShipLeader": {}
           },
           {
+            "not": {
+              "isSubmarine": {}
+            },
             "doesntHaveLeader": {},
             "selector": {
               "selectStrategy": "ordered",
@@ -1404,25 +1434,9 @@
               "recalculatePathToTarget": {}
             },
             "shipSail": {}
-          }
-        ]
-      },
-      "stopShipEngine": {}
-    }
-  ],
-  "parallel": {
-    "name": "shipBot",
-    "selector": {
-      "selectStrategy": "ordered",
-      "selector": {
-        "selectStrategy": "ordered",
-        "selectOnSuccess": true,
-        "sequencer": [
-          {
-            "findShipLeader": {},
-            "followShipLeader": {}
           },
           {
+            "isSubmarine": {},
             "doesntHaveLeader": {},
             "selector": {
               "selectStrategy": "ordered",
@@ -1435,11 +1449,388 @@
                 "canCapture": true
               }
             },
-            "shipSail": {}
+            "parallel": {
+              "shipSail": {},
+              "cycle": [
+                {
+                  "selector": {
+                    "selectStrategy": "ordered",
+                    "selectOnSuccess": true,
+                    "sequencer": [
+                      {
+                        "hasEnemyTarget": {},
+                        "selector": [
+                          {
+                            "selectStrategy": "ordered",
+                            "selectOnSuccess": true,
+                            "sequencer": [
+                              {
+                                "and": {
+                                  "checkDistanceToEnemy": [
+                                    {
+                                      "distance": 1000.0,
+                                      "op": "greater"
+                                    },
+                                    {
+                                      "distance": 3000.0,
+                                      "op": "less"
+                                    }
+                                  ]
+                                },
+                                "setDepth": {
+                                  "usePeriscopeDepth": true
+                                }
+                              },
+                              {
+                                "checkDistanceToEnemy": {
+                                  "distance": 3000.0,
+                                  "op": "less"
+                                },
+                                "setDepth": {
+                                  "depth": -0.3
+                                }
+                              },
+                              {
+                                "checkDistanceToEnemy": {
+                                  "distance": 3000.0,
+                                  "op": "greater"
+                                },
+                                "setDepth": {
+                                  "depth": 0.0
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "selectStrategy": "ordered",
+                            "selectOnSuccess": true,
+                            "sequencer": [
+                              {
+                                "isEmptyTorpedoesAmmo": {},
+                                "setDepth": {
+                                  "depthPercent": -0.15
+                                }
+                              },
+                              {
+                                "and": {
+                                  "checkDistanceToEnemy": {
+                                    "distance": 1000.0,
+                                    "op": "less"
+                                  },
+                                  "not": {
+                                    "isEmptyTorpedoesAmmo": {}
+                                  }
+                                },
+                                "ifThenElse": {
+                                  "checkTargetDepth": {
+                                    "usePeriscopeDepth": true,
+                                    "op": "greater"
+                                  },
+                                  "setDepth": [
+                                    {
+                                      "depthPercent": 0.0
+                                    },
+                                    {
+                                      "usePeriscopeDepth": true,
+                                      "matchEnemyDepth": false
+                                    }
+                                  ]
+                                },
+                                "checkDepth": {
+                                  "usePeriscopeDepth": true,
+                                  "op": "greater"
+                                },
+                                "checkTargetDepth": {
+                                  "usePeriscopeDepth": true,
+                                  "op": "greater"
+                                },
+                                "shootTorpedoes": {
+                                  "triggerGroup": "torpedoes",
+                                  "shootSector": -1.0,
+                                  "delay": 10.0
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "not": {
+                          "hasEnemyTarget": {}
+                        },
+                        "setDepth": {
+                          "usePeriscopeDepth": true
+                        }
+                      }
+                    ],
+                    "success": {}
+                  }
+                },
+                {
+                  "selector": {
+                    "selectStrategy": "ordered",
+                    "selectOnSuccess": true,
+                    "sequencer": {
+                      "checkOxygenLevel": {
+                        "oxygenPercent": 0.02,
+                        "op": "less"
+                      },
+                      "cycle": {
+                        "sequencer": {
+                          "setDepth": {
+                            "usePeriscopeDepth": true
+                          },
+                          "checkOxygenLevel": {
+                            "oxygenPercent": 0.5,
+                            "op": "less"
+                          }
+                        }
+                      }
+                    },
+                    "success": {}
+                  }
+                },
+                {
+                  "selector": {
+                    "selectStrategy": "ordered",
+                    "selectOnSuccess": true,
+                    "shootMines": [
+                      {
+                        "delay": 10.0,
+                        "enemyDirSector": 0.7,
+                        "minEnemySpeed": 2.0,
+                        "radius": 200.0,
+                        "minEnemyDepth": -6.0
+                      },
+                      {
+                        "delay": 10.0,
+                        "enemyDirSector": -1.0,
+                        "minEnemySpeed": 0.0,
+                        "radius": 30.0,
+                        "minEnemyDepth": -6.0
+                      }
+                    ],
+                    "success": {}
+                  }
+                }
+              ]
+            }
           }
         ]
       },
       "stopShipEngine": {}
+    }
+  ],
+  "parallel": {
+    "name": "shipBot",
+    "selector": {
+      "selectStrategy": "ordered",
+      "selectOnSuccess": true,
+      "sequencer": [
+        {
+          "findShipLeader": {},
+          "followShipLeader": {}
+        },
+        {
+          "not": {
+            "isSubmarine": {}
+          },
+          "doesntHaveLeader": {},
+          "selector": {
+            "selectStrategy": "ordered",
+            "selectOnSuccess": true,
+            "transferLeader": {},
+            "findNextShipWaypoint": {},
+            "checkIfShipHasDestination": {},
+            "recalculatePathToTarget": {},
+            "findCapturePointToSail": {
+              "canCapture": true
+            }
+          },
+          "shipSail": {}
+        },
+        {
+          "isSubmarine": {},
+          "doesntHaveLeader": {},
+          "selector": {
+            "selectStrategy": "ordered",
+            "selectOnSuccess": true,
+            "transferLeader": {},
+            "findNextShipWaypoint": {},
+            "checkIfShipHasDestination": {},
+            "recalculatePathToTarget": {},
+            "findCapturePointToSail": {
+              "canCapture": true
+            }
+          },
+          "parallel": {
+            "shipSail": {},
+            "cycle": [
+              {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "hasEnemyTarget": {},
+                      "selector": [
+                        {
+                          "selectStrategy": "ordered",
+                          "selectOnSuccess": true,
+                          "sequencer": [
+                            {
+                              "and": {
+                                "checkDistanceToEnemy": [
+                                  {
+                                    "distance": 1000.0,
+                                    "op": "greater"
+                                  },
+                                  {
+                                    "distance": 3000.0,
+                                    "op": "less"
+                                  }
+                                ]
+                              },
+                              "setDepth": {
+                                "usePeriscopeDepth": true
+                              }
+                            },
+                            {
+                              "checkDistanceToEnemy": {
+                                "distance": 3000.0,
+                                "op": "less"
+                              },
+                              "setDepth": {
+                                "depth": -0.3
+                              }
+                            },
+                            {
+                              "checkDistanceToEnemy": {
+                                "distance": 3000.0,
+                                "op": "greater"
+                              },
+                              "setDepth": {
+                                "depth": 0.0
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "selectStrategy": "ordered",
+                          "selectOnSuccess": true,
+                          "sequencer": [
+                            {
+                              "isEmptyTorpedoesAmmo": {},
+                              "setDepth": {
+                                "depthPercent": -0.15
+                              }
+                            },
+                            {
+                              "and": {
+                                "checkDistanceToEnemy": {
+                                  "distance": 1000.0,
+                                  "op": "less"
+                                },
+                                "not": {
+                                  "isEmptyTorpedoesAmmo": {}
+                                }
+                              },
+                              "ifThenElse": {
+                                "checkTargetDepth": {
+                                  "usePeriscopeDepth": true,
+                                  "op": "greater"
+                                },
+                                "setDepth": [
+                                  {
+                                    "depthPercent": 0.0
+                                  },
+                                  {
+                                    "usePeriscopeDepth": true,
+                                    "matchEnemyDepth": false
+                                  }
+                                ]
+                              },
+                              "checkDepth": {
+                                "usePeriscopeDepth": true,
+                                "op": "greater"
+                              },
+                              "checkTargetDepth": {
+                                "usePeriscopeDepth": true,
+                                "op": "greater"
+                              },
+                              "shootTorpedoes": {
+                                "triggerGroup": "torpedoes",
+                                "shootSector": -1.0,
+                                "delay": 10.0
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "not": {
+                        "hasEnemyTarget": {}
+                      },
+                      "setDepth": {
+                        "usePeriscopeDepth": true
+                      }
+                    }
+                  ],
+                  "success": {}
+                }
+              },
+              {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": {
+                    "checkOxygenLevel": {
+                      "oxygenPercent": 0.02,
+                      "op": "less"
+                    },
+                    "cycle": {
+                      "sequencer": {
+                        "setDepth": {
+                          "usePeriscopeDepth": true
+                        },
+                        "checkOxygenLevel": {
+                          "oxygenPercent": 0.5,
+                          "op": "less"
+                        }
+                      }
+                    }
+                  },
+                  "success": {}
+                }
+              },
+              {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "shootMines": [
+                    {
+                      "delay": 10.0,
+                      "enemyDirSector": 0.7,
+                      "minEnemySpeed": 2.0,
+                      "radius": 200.0,
+                      "minEnemyDepth": -6.0
+                    },
+                    {
+                      "delay": 10.0,
+                      "enemyDirSector": -1.0,
+                      "minEnemySpeed": 0.0,
+                      "radius": 30.0,
+                      "minEnemyDepth": -6.0
+                    }
+                  ],
+                  "success": {}
+                }
+              }
+            ]
+          }
+        }
+      ]
     },
     "sendSupportAircraft": {
       "timeOutRange": [

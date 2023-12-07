@@ -4,7 +4,7 @@ let { loading_is_in_progress, loading_is_finished, loading_press_apply } = requi
 let { isInLoadingScreen, isMissionLoading } = require("%appGlobals/clientState/clientState.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let loadRootScreen = require("%scripts/loadRootScreen.nut")
-
+let { subscribe } = require("eventbus")
 
 let function checkFinishLoading() {
   if (loading_is_finished())
@@ -22,4 +22,4 @@ isInLoadingScreen.subscribe(@(v) v ? null : clearTimer(checkFinishLoading))
   loadRootScreen()
 }
 
-::gui_finish_loading <- checkFinishLoading
+subscribe("onGuiFinishLoading", @(_) checkFinishLoading())

@@ -1937,10 +1937,16 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "il_2m_1943_default",
-      "blk": "gameData/FlightModels/weaponPresets/il_2m_1943_4xfab100_8x_rbs132.blk"
-    }
+    "preset": [
+      {
+        "name": "il_2m_1943_default",
+        "blk": "gameData/FlightModels/weaponPresets/il_2m_1943_4xfab100_8x_rbs132.blk"
+      },
+      {
+        "name": "il_2m_1943_tutorial",
+        "blk": "gameData/FlightModels/weaponPresets/il_2m_1943_1xfab100_tutorial.blk"
+      }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,

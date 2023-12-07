@@ -92,7 +92,7 @@ let function unmarkSeenGoods(unmarkSeen, unmarkCounters = {}) {
     let seenBlk = sBlk.addBlock(SEEN_GOODS)
     shopSeenGoods.mutate(function(v) {
       foreach(id in toRemove) {
-        delete v[id]
+        v.$rawdelete(id)
         seenBlk[id] = null
       }
     })

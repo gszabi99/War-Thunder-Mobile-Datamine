@@ -27,6 +27,7 @@ let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
+let { isPlayerReceiveLevel, isUnitReceiveLevel, getNewPlatoonUnit } = require("debrUtils.nut")
 let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
 let debriefingTabBar = require("debriefingTabBar.nut")
 let mkDebriefingEmpty = require("mkDebriefingEmpty.nut")
@@ -166,47 +167,6 @@ let btnSkip = function() {
       },
       { hotkeys = ["^J:X | Enter"] })
   })
-}
-
-let function isPlayerReceiveLevel(debrData) {
-  let { exp = 0, nextLevelExp = 0 } = debrData?.player
-  return nextLevelExp != 0
-    && nextLevelExp != exp
-    && (nextLevelExp <= (exp + (debrData?.reward.playerExp.totalExp ?? 0)))
-}
-
-let function isUnitReceiveLevel(debrData) {
-  let { totalExp = 0 } = debrData?.reward.unitExp
-  let { exp = 0, nextLevelExp = 0 } = debrData?.unit
-  if (nextLevelExp <= 0 || totalExp <= 0)
-    return false
-  return exp + totalExp >= nextLevelExp
-}
-
-let function getNewPlatoonUnit(debrData) {
-  let { unit = null, reward = null } = debrData
-  if (unit == null)
-    return null
-  let { level = 0, exp = 0, levelsExp = [], lockedUnits = [] } = unit
-  let { totalExp = 0 } = reward?.unitExp
-  if (totalExp == 0 || lockedUnits.len() == 0)
-    return null
-  local pReqLevel = -1
-  local pUnitName = null
-  foreach(pUnit in lockedUnits) {
-    let { reqLevel = 0, name } = pUnit
-    if (reqLevel > level && (pUnitName == null || reqLevel < pReqLevel)) {
-      pReqLevel = reqLevel
-      pUnitName = name
-    }
-  }
-  if (pUnitName == null || levelsExp.len() < pReqLevel)
-    return null
-
-  local leftExp = totalExp + exp
-  for (local l = level; l < pReqLevel; l++)
-    leftExp -= levelsExp[l]
-  return leftExp >= 0 ? unit.__merge({ name = pUnitName }) : null
 }
 
 let function debriefingWnd() {

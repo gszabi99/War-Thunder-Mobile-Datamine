@@ -9,7 +9,7 @@ subscribe("get_mplayer_by_id_result", function(msg) {
   if (id not in delayedPlayerActions)
     return
   delayedPlayerActions[id](player)
-  delete delayedPlayerActions[id]
+  delayedPlayerActions.$rawdelete(id)
 })
 let function rqPlayerAndDo(playerId, action) {
   delayedPlayerActions[playerId] <- action
@@ -25,7 +25,7 @@ subscribe("get_mplayers_by_ids_result", function(msg) {
   if (uid not in delayedListActions)
     return
   delayedListActions[uid](players)
-  delete delayedListActions[uid]
+  delayedListActions.$rawdelete(uid)
 })
 let function rqPlayersAndDo(players, action) {
   delayedListActions[++delayedIdx] <- action

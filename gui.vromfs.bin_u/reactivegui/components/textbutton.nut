@@ -132,7 +132,7 @@ let function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let addChild = ovr?.children
   if (addChild != null) {
     ovrExt = clone ovr
-    delete ovrExt.children
+    ovrExt.$rawdelete("children")
   }
 
   let key = ovr?.key ?? {}

@@ -1,0 +1,47 @@
+from "%globalsDarg/darg_library.nut" import *
+let { pointsCurStage, pointsPerStage, curStage } = require("battlePassState.nut")
+let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
+
+let bpLevelLabel = @(ovr = {}){
+  watch = curStage
+  rendObj = ROBJ_TEXT
+  text = $"{loc("mainmenu/rank")} {curStage.value}"
+}.__update(fontSmall, ovr)
+
+let function mkLevelLine(points, stagePoints, ovr = {}) {
+  let percent =  1.0 * clamp(points, 0, stagePoints ) / stagePoints
+  return {
+    size = flex()
+    valign = ALIGN_CENTER
+    children = mkProgressLevelBg({
+      size = flex()
+      fillColor = 0xFF191919
+      borderColor = 0xFF7C7C7C
+      children = {
+        size = [ pw(100 * percent), flex() ]
+        rendObj = ROBJ_SOLID
+        color = 0xFF36C574
+      }
+    }.__update(ovr))
+  }
+}
+
+let bpCurProgressbar = @(ovr = {}){
+  watch = [pointsCurStage, pointsPerStage]
+  size = [flex(), hdpx(33)]
+  children = mkLevelLine(pointsCurStage.value, pointsPerStage.value, ovr)
+}
+
+let bpProgressText  = @(ovr = {}){
+  watch = [pointsCurStage, pointsPerStage]
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  rendObj = ROBJ_TEXT
+  text = "/".concat(pointsCurStage.value, pointsPerStage.value)
+}.__update(fontVeryTiny, ovr)
+
+return {
+  bpCurProgressbar
+  bpProgressText
+  bpLevelLabel
+}

@@ -1,7 +1,7 @@
 
 from "%scripts/dagui_library.nut" import *
-let { is_ios, is_android } = require("%sqstd/platform.nut")
-let { LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, availableLoginTypes
+let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
+let { LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_NSWITCH, availableLoginTypes
 } = require("%appGlobals/loginState.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -16,6 +16,8 @@ if (is_ios) {
   availableBase[LT_APPLE] <- true
   availableBase[LT_FACEBOOK] <- true
   availableBase[LT_GUEST] <- true
+} else if (is_nswitch) {
+  availableBase[LT_NSWITCH] <- true
 } else if (is_android)
   availableBase.__update({
     [LT_GOOGLE] = true,
@@ -27,6 +29,7 @@ let available = availableBase.filter(@(_, lt) availableLoginTypes?[lt] ?? false)
 let validateLoginType = @(lt) lt in available ? lt : available.findvalue(@(_) true)
 local defType = validateLoginType(is_ios ? LT_APPLE
   : is_android ? LT_GOOGLE
+  : is_nswitch ? LT_NSWITCH
   : LT_GAIJIN)
 
 let validateType = @(t) t in available ? t : defType
@@ -38,7 +41,9 @@ let function setAutologinType(autologinType) {
   saveProfile()
 }
 
-let isAutologinEnabled = @() ::load_local_shared_settings(AUTOLOGIN_SAVE_ID) ?? false
+let isAutoLoginOnFirstStart = is_nswitch
+let isAutologinEnabled = @() ::load_local_shared_settings(AUTOLOGIN_SAVE_ID) ?? isAutoLoginOnFirstStart
+
 let function setAutologinEnabled(isEnabled) {
   if (isAutologinEnabled() == isEnabled)
     return

@@ -33,9 +33,9 @@ let function charClientEventExt(name) {
   local function process(r) {
     local result = clone r
     assert("$action" in result, $"{name} process: No '$action' in result")
-    let action  = delete result["$action"]
-    let context = ("$context" in result) ? delete result["$context"] : null
-    let handler = ("$handlerId" in context) ? delete context["$handlerId"] : action
+    let action  = result.$rawdelete("$action")
+    let context = result?.$rawdelete("$context")
+    let handler = ("$handlerId" in context) ? context.$rawdelete("$handlerId") : action
     let label   = $"{name}.{handler}"
 
     // check any error answer from server

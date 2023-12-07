@@ -74,8 +74,6 @@ require("%scripts/matching/rpcCall.nut")
 
 
 foreach (fn in [
-  "%globalScripts/sharedEnums.nut"
-
   "%sqstd/math.nut"
 
   "%scripts/urlType.nut"

@@ -1,5 +1,6 @@
 require ecs
 require Unit
+require MPlayer
 require IGroundModel
 require dm
 require Mission
@@ -39,14 +40,23 @@ def repair_meta_parts_init_es(evt : Event;
 
 [es(tag=server, on_event = EventRepairMetaPart)]
 def start_meta_parts_repair_es(evt : Event;
+                               uid : int;
                                var meta_parts_hp_repair__progress : float&;
                                meta_parts_hp_repair__duration : float;
                                meta_parts_hp_repair__boost : float;
+                               meta_parts_hp_repair__speed : float;
+                               meta_parts_hp_repair__maxHp : float;
                                var meta_parts_hp_repair__startBoost : float&;
                                var meta_parts_hp_repair__nextAtTime : float&)
   meta_parts_hp_repair__nextAtTime = float(get_total_time())
   meta_parts_hp_repair__progress = meta_parts_hp_repair__duration / meta_parts_hp_repair__boost
   meta_parts_hp_repair__startBoost = meta_parts_hp_repair__boost
+  let unit = get_unit(uid)
+  if unit != null
+    let hpWillBeRepaired = int(100. * min((meta_parts_hp_repair__maxHp - unit.relativeHealth), meta_parts_hp_repair__duration * meta_parts_hp_repair__speed))
+    let player = unit.myPlayer
+    if player != null
+      broadcastEvent([[EventOnPlayerRepair userId = player.id, hpRepaired = hpWillBeRepaired]])
 
 def repair_meta_parts(var unit_dm : DamageableVisualModel?;
                       repair_speed : float;

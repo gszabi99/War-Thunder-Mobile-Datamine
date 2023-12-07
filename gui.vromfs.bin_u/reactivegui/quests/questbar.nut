@@ -4,6 +4,7 @@ let { progressBarRewardSize, rewardProgressBarCtor, statsAnimation } = require("
 let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { receiveUnlockRewards, unlockRewardsInProgress } = require("%rGui/unlocks/unlocks.nut")
+let { sendBqQuestsStage } = require("bqQuests.nut")
 
 
 let questBarHeight = hdpx(28)
@@ -88,14 +89,18 @@ let function mkStages(progressUnlock) {
       let prevProgress = stages?[idx - 1].progress ?? 0
       let stageCompletion = clamp((current.tofloat() - prevProgress) / (stages[idx].progress - prevProgress), 0.0, 1.0)
       let isUnlocked = stageCompletion == 1.0
-      let claimReward = isUnlocked && hasReward && (idx + 1) >= stage
-          ? @() receiveUnlockRewards(name, stage, { stage, finalStage = idx + 1 })
-        : null
 
       let rewardPreview = Computed(function() {
         let rewardId = stages[idx].rewards.keys()?[0]
         return getRewardsViewInfo(serverConfigs.value.userstatRewards?[rewardId])?[0] ?? {}
       })
+
+      let claimReward = isUnlocked && hasReward && (idx + 1) >= stage
+          ? function() {
+              receiveUnlockRewards(name, stage, { stage, finalStage = idx + 1 })
+              sendBqQuestsStage(progressUnlock, rewardPreview.value?.count ?? 0)
+            }
+        : null
 
       return {
         size = [pw(100 / stagesTotal), flex()]

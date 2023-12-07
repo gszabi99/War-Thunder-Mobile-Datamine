@@ -188,6 +188,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -202,6 +212,54 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
+        "absoluteValue": true
       }
     ]
   },
@@ -785,7 +843,8 @@
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
-          "barrel": "gun_barrel_01"
+          "barrel": "gun_barrel_01",
+          "gunnerDm": "main_caliber_turret_01_dm"
         },
         "limits": {
           "yaw": [
@@ -888,7 +947,8 @@
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
-          "barrel": "gun_barrel_01"
+          "barrel": "gun_barrel_01",
+          "gunnerDm": "main_caliber_turret_01_dm"
         },
         "limits": {
           "yaw": [
@@ -991,7 +1051,8 @@
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
-          "barrel": "gun_barrel_02"
+          "barrel": "gun_barrel_02",
+          "gunnerDm": "main_caliber_turret_02_dm"
         },
         "limits": {
           "yaw": [
@@ -1094,7 +1155,8 @@
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
-          "barrel": "gun_barrel_02"
+          "barrel": "gun_barrel_02",
+          "gunnerDm": "main_caliber_turret_02_dm"
         },
         "limits": {
           "yaw": [
@@ -1196,7 +1258,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_05",
           "gun": "auxiliary_caliber_gun_05",
-          "barrel": "gun_barrel_07",
           "gunnerDm": "auxiliary_caliber_turret_05_dm"
         },
         "limits": {
@@ -1281,7 +1342,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_06",
           "gun": "auxiliary_caliber_gun_06",
-          "barrel": "gun_barrel_08",
           "gunnerDm": "auxiliary_caliber_turret_06_dm"
         },
         "limits": {
@@ -1366,7 +1426,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_07",
           "gun": "auxiliary_caliber_gun_07",
-          "barrel": "gun_barrel_09",
           "gunnerDm": "auxiliary_caliber_turret_07_dm"
         },
         "limits": {
@@ -1451,7 +1510,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_08",
           "gun": "auxiliary_caliber_gun_08",
-          "barrel": "gun_barrel_10",
           "gunnerDm": "auxiliary_caliber_turret_08_dm"
         },
         "limits": {
@@ -1536,7 +1594,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_09",
           "gun": "auxiliary_caliber_gun_09",
-          "barrel": "gun_barrel_13",
           "gunnerDm": "auxiliary_caliber_turret_09_dm"
         },
         "limits": {
@@ -1601,7 +1658,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_10",
           "gun": "auxiliary_caliber_gun_10",
-          "barrel": "gun_barrel_14",
           "gunnerDm": "auxiliary_caliber_turret_10_dm"
         },
         "limits": {
@@ -1666,7 +1722,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_15",
           "gun": "auxiliary_caliber_gun_15",
-          "barrel": "gun_barrel_19",
           "gunnerDm": "auxiliary_caliber_turret_15_dm"
         },
         "limits": {
@@ -1731,7 +1786,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_16",
           "gun": "auxiliary_caliber_gun_16",
-          "barrel": "gun_barrel_20",
           "gunnerDm": "auxiliary_caliber_turret_16_dm"
         },
         "limits": {
@@ -1796,7 +1850,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_19",
           "gun": "auxiliary_caliber_gun_19",
-          "barrel": "gun_barrel_23",
           "gunnerDm": "auxiliary_caliber_turret_19_dm"
         },
         "limits": {
@@ -1881,7 +1934,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_20",
           "gun": "auxiliary_caliber_gun_20",
-          "barrel": "gun_barrel_24",
           "gunnerDm": "auxiliary_caliber_turret_20_dm"
         },
         "limits": {
@@ -1966,7 +2018,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_21",
           "gun": "auxiliary_caliber_gun_21",
-          "barrel": "gun_barrel_25",
           "gunnerDm": "auxiliary_caliber_turret_21_dm"
         },
         "limits": {
@@ -2051,7 +2102,6 @@
         "turret": {
           "head": "auxiliary_caliber_turret_22",
           "gun": "auxiliary_caliber_gun_22",
-          "barrel": "gun_barrel_26",
           "gunnerDm": "auxiliary_caliber_turret_22_dm"
         },
         "limits": {
@@ -2469,7 +2519,8 @@
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01"
+                "barrel": "gun_barrel_01",
+                "gunnerDm": "main_caliber_turret_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -2572,7 +2623,8 @@
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01"
+                "barrel": "gun_barrel_01",
+                "gunnerDm": "main_caliber_turret_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -2675,7 +2727,8 @@
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02"
+                "barrel": "gun_barrel_02",
+                "gunnerDm": "main_caliber_turret_02_dm"
               },
               "limits": {
                 "yaw": [
@@ -2778,7 +2831,8 @@
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02"
+                "barrel": "gun_barrel_02",
+                "gunnerDm": "main_caliber_turret_02_dm"
               },
               "limits": {
                 "yaw": [
@@ -2880,7 +2934,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_gun_05",
-                "barrel": "gun_barrel_07",
                 "gunnerDm": "auxiliary_caliber_turret_05_dm"
               },
               "limits": {
@@ -2965,7 +3018,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_06",
                 "gun": "auxiliary_caliber_gun_06",
-                "barrel": "gun_barrel_08",
                 "gunnerDm": "auxiliary_caliber_turret_06_dm"
               },
               "limits": {
@@ -3050,7 +3102,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_07",
                 "gun": "auxiliary_caliber_gun_07",
-                "barrel": "gun_barrel_09",
                 "gunnerDm": "auxiliary_caliber_turret_07_dm"
               },
               "limits": {
@@ -3135,7 +3186,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_08",
                 "gun": "auxiliary_caliber_gun_08",
-                "barrel": "gun_barrel_10",
                 "gunnerDm": "auxiliary_caliber_turret_08_dm"
               },
               "limits": {
@@ -3220,7 +3270,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_09",
                 "gun": "auxiliary_caliber_gun_09",
-                "barrel": "gun_barrel_13",
                 "gunnerDm": "auxiliary_caliber_turret_09_dm"
               },
               "limits": {
@@ -3285,7 +3334,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_10",
                 "gun": "auxiliary_caliber_gun_10",
-                "barrel": "gun_barrel_14",
                 "gunnerDm": "auxiliary_caliber_turret_10_dm"
               },
               "limits": {
@@ -3350,7 +3398,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_15",
                 "gun": "auxiliary_caliber_gun_15",
-                "barrel": "gun_barrel_19",
                 "gunnerDm": "auxiliary_caliber_turret_15_dm"
               },
               "limits": {
@@ -3415,7 +3462,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_16",
                 "gun": "auxiliary_caliber_gun_16",
-                "barrel": "gun_barrel_20",
                 "gunnerDm": "auxiliary_caliber_turret_16_dm"
               },
               "limits": {
@@ -3480,7 +3526,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_19",
                 "gun": "auxiliary_caliber_gun_19",
-                "barrel": "gun_barrel_23",
                 "gunnerDm": "auxiliary_caliber_turret_19_dm"
               },
               "limits": {
@@ -3565,7 +3610,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_20",
                 "gun": "auxiliary_caliber_gun_20",
-                "barrel": "gun_barrel_24",
                 "gunnerDm": "auxiliary_caliber_turret_20_dm"
               },
               "limits": {
@@ -3650,7 +3694,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_21",
                 "gun": "auxiliary_caliber_gun_21",
-                "barrel": "gun_barrel_25",
                 "gunnerDm": "auxiliary_caliber_turret_21_dm"
               },
               "limits": {
@@ -3735,7 +3778,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_22",
                 "gun": "auxiliary_caliber_gun_22",
-                "barrel": "gun_barrel_26",
                 "gunnerDm": "auxiliary_caliber_turret_22_dm"
               },
               "limits": {
@@ -4154,7 +4196,8 @@
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01"
+                "barrel": "gun_barrel_01",
+                "gunnerDm": "main_caliber_turret_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -4257,7 +4300,8 @@
               "turret": {
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01"
+                "barrel": "gun_barrel_01",
+                "gunnerDm": "main_caliber_turret_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -4360,7 +4404,8 @@
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02"
+                "barrel": "gun_barrel_02",
+                "gunnerDm": "main_caliber_turret_02_dm"
               },
               "limits": {
                 "yaw": [
@@ -4463,7 +4508,8 @@
               "turret": {
                 "head": "main_caliber_turret_02",
                 "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02"
+                "barrel": "gun_barrel_02",
+                "gunnerDm": "main_caliber_turret_02_dm"
               },
               "limits": {
                 "yaw": [
@@ -4565,7 +4611,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_05",
                 "gun": "auxiliary_caliber_gun_05",
-                "barrel": "gun_barrel_07",
                 "gunnerDm": "auxiliary_caliber_turret_05_dm"
               },
               "limits": {
@@ -4650,7 +4695,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_06",
                 "gun": "auxiliary_caliber_gun_06",
-                "barrel": "gun_barrel_08",
                 "gunnerDm": "auxiliary_caliber_turret_06_dm"
               },
               "limits": {
@@ -4735,7 +4779,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_07",
                 "gun": "auxiliary_caliber_gun_07",
-                "barrel": "gun_barrel_09",
                 "gunnerDm": "auxiliary_caliber_turret_07_dm"
               },
               "limits": {
@@ -4820,7 +4863,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_08",
                 "gun": "auxiliary_caliber_gun_08",
-                "barrel": "gun_barrel_10",
                 "gunnerDm": "auxiliary_caliber_turret_08_dm"
               },
               "limits": {
@@ -4905,7 +4947,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_09",
                 "gun": "auxiliary_caliber_gun_09",
-                "barrel": "gun_barrel_13",
                 "gunnerDm": "auxiliary_caliber_turret_09_dm"
               },
               "limits": {
@@ -4970,7 +5011,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_10",
                 "gun": "auxiliary_caliber_gun_10",
-                "barrel": "gun_barrel_14",
                 "gunnerDm": "auxiliary_caliber_turret_10_dm"
               },
               "limits": {
@@ -5035,7 +5075,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_15",
                 "gun": "auxiliary_caliber_gun_15",
-                "barrel": "gun_barrel_19",
                 "gunnerDm": "auxiliary_caliber_turret_15_dm"
               },
               "limits": {
@@ -5100,7 +5139,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_16",
                 "gun": "auxiliary_caliber_gun_16",
-                "barrel": "gun_barrel_20",
                 "gunnerDm": "auxiliary_caliber_turret_16_dm"
               },
               "limits": {
@@ -5165,7 +5203,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_19",
                 "gun": "auxiliary_caliber_gun_19",
-                "barrel": "gun_barrel_23",
                 "gunnerDm": "auxiliary_caliber_turret_19_dm"
               },
               "limits": {
@@ -5250,7 +5287,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_20",
                 "gun": "auxiliary_caliber_gun_20",
-                "barrel": "gun_barrel_24",
                 "gunnerDm": "auxiliary_caliber_turret_20_dm"
               },
               "limits": {
@@ -5335,7 +5371,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_21",
                 "gun": "auxiliary_caliber_gun_21",
-                "barrel": "gun_barrel_25",
                 "gunnerDm": "auxiliary_caliber_turret_21_dm"
               },
               "limits": {
@@ -5420,7 +5455,6 @@
               "turret": {
                 "head": "auxiliary_caliber_turret_22",
                 "gun": "auxiliary_caliber_gun_22",
-                "barrel": "gun_barrel_26",
                 "gunnerDm": "auxiliary_caliber_turret_22_dm"
               },
               "limits": {

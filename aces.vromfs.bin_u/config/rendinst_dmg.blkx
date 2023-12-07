@@ -1318,6 +1318,96 @@
       "volumesCount": 1
     },
     {
+      "name": "tentacle_plywood_a_floating",
+      "destroyedModelName": "tentacle_plywood_a_floating_destr_phobj",
+      "updateDist": 1000.0,
+      "destructionImpulse": 1600.0,
+      "fx": "dust_construction_collapse_local_big",
+      "fxScale": 1.0,
+      "material": "wood",
+      "stopsBullets": true,
+      "floatable": true,
+      "mass": 1200.0,
+      "inertiaMult": [
+        2.0,
+        1.0,
+        2.0
+      ],
+      "volumesCount": 1
+    },
+    {
+      "name": "tentacle_plywood_b_floating",
+      "destroyedModelName": "tentacle_plywood_b_floating_destr_phobj",
+      "updateDist": 1000.0,
+      "destructionImpulse": 1600.0,
+      "fx": "dust_construction_collapse_local_big",
+      "fxScale": 1.0,
+      "material": "wood",
+      "stopsBullets": true,
+      "floatable": true,
+      "mass": 1200.0,
+      "inertiaMult": [
+        2.0,
+        1.0,
+        2.0
+      ],
+      "volumesCount": 1
+    },
+    {
+      "name": "tentacle_plywood_c_floating",
+      "destroyedModelName": "tentacle_plywood_c_floating_destr_phobj",
+      "updateDist": 1000.0,
+      "destructionImpulse": 1600.0,
+      "fx": "dust_construction_collapse_local_big",
+      "fxScale": 1.0,
+      "material": "wood",
+      "stopsBullets": true,
+      "floatable": true,
+      "mass": 1500.0,
+      "inertiaMult": [
+        2.0,
+        1.0,
+        2.0
+      ],
+      "volumesCount": 1
+    },
+    {
+      "name": "tentacle_plywood_d_floating",
+      "destroyedModelName": "tentacle_plywood_d_floating_destr_phobj",
+      "updateDist": 1000.0,
+      "destructionImpulse": 1600.0,
+      "fx": "dust_construction_collapse_local_big",
+      "fxScale": 1.0,
+      "material": "wood",
+      "stopsBullets": true,
+      "floatable": true,
+      "mass": 1500.0,
+      "inertiaMult": [
+        2.0,
+        1.0,
+        2.0
+      ],
+      "volumesCount": 1
+    },
+    {
+      "name": "tentacle_plywood_e_floating",
+      "destroyedModelName": "tentacle_plywood_e_floating_destr_phobj",
+      "updateDist": 1000.0,
+      "destructionImpulse": 1600.0,
+      "fx": "dust_construction_collapse_local_big",
+      "fxScale": 1.0,
+      "material": "wood",
+      "stopsBullets": true,
+      "floatable": true,
+      "mass": 1500.0,
+      "inertiaMult": [
+        2.0,
+        1.0,
+        2.0
+      ],
+      "volumesCount": 1
+    },
+    {
       "name": "log_ramp_a",
       "destroyedModelName": "log_ramp_a_destr_phobj",
       "destructionImpulse": 10000.0,

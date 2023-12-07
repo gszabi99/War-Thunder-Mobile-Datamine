@@ -11,7 +11,7 @@ return @() openDebugWnd(Computed(@() [
         if ("matchmaking" not in v)
           return v
         let m = clone v
-        delete m.matchmaking
+        m.$rawdelete("matchmaking")
         return m
       })
   }

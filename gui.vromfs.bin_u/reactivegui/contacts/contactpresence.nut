@@ -21,7 +21,7 @@ let mkUpdatePresences = @(watch) function(newPresences) {
     //it much faster than filter when update few presences of 2000 friends
     foreach (userId, presence in newPresences)
       if (presence == null)
-        delete v[userId]
+        v.$rawdelete(userId)
   })
 }
 

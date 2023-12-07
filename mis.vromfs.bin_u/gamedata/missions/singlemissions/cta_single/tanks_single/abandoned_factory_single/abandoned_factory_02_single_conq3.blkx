@@ -352,67 +352,6 @@
     },
     "area_squad": [
       {
-        "name": "bttl_t2_spawn_01_arcade",
-        "tm": [
-          [
-            -1.04308E-07,
-            0.0,
-            -1.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            1.0,
-            0.0,
-            -1.04308E-07
-          ],
-          [
-            1626.05,
-            9.4,
-            1887.9
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_tankSpawn01_zone_01",
-            "t2_tankSpawn01_zone_02",
-            "t2_tankSpawn01_zone_03",
-            "t2_tankSpawn01_zone_04",
-            "t2_tankSpawn01_zone_05",
-            "t2_tankSpawn01_zone_06",
-            "t2_tankSpawn01_zone_07",
-            "t2_tankSpawn01_zone_08",
-            "t2_tankSpawn01_zone_09",
-            "t2_tankSpawn01_zone_10",
-            "t2_tankSpawn01_zone_11",
-            "t2_tankSpawn01_zone_12",
-            "t2_tankSpawn01_zone_13",
-            "t2_tankSpawn01_zone_14",
-            "t2_tankSpawn01_zone_15",
-            "t2_tankSpawn01_zone_16",
-            "t2_tankSpawn01_zone_17",
-            "t2_tankSpawn01_zone_18",
-            "t2_tankSpawn01_zone_19",
-            "t2_tankSpawn01_zone_20",
-            "t2_tankSpawn01_zone_21",
-            "t2_tankSpawn01_zone_22",
-            "t2_tankSpawn01_zone_23",
-            "t2_tankSpawn01_zone_24",
-            "t2_tankSpawn01_zone_25",
-            "t2_tankSpawn01_zone_26",
-            "t2_tankSpawn01_zone_27",
-            "t2_tankSpawn01_zone_28",
-            "t2_tankSpawn01_zone_29",
-            "t2_tankSpawn01_zone_30",
-            "t2_tankSpawn01_zone_31",
-            "t2_tankSpawn01_zone_32"
-          ]
-        }
-      },
-      {
         "name": "conq_t1_tank_spawn_01_arcade",
         "tm": [
           [
@@ -438,38 +377,38 @@
         ],
         "props": {
           "squad_members": [
-            "t1_tankSpawn02_zone_01",
-            "t1_tankSpawn02_zone_02",
-            "t1_tankSpawn02_zone_03",
-            "t1_tankSpawn02_zone_04",
-            "t1_tankSpawn02_zone_05",
-            "t1_tankSpawn02_zone_06",
-            "t1_tankSpawn02_zone_07",
-            "t1_tankSpawn02_zone_08",
-            "t1_tankSpawn02_zone_09",
-            "t1_tankSpawn02_zone_10",
-            "t1_tankSpawn02_zone_11",
-            "t1_tankSpawn02_zone_12",
-            "t1_tankSpawn02_zone_13",
-            "t1_tankSpawn02_zone_14",
-            "t1_tankSpawn02_zone_15",
-            "t1_tankSpawn02_zone_16",
-            "t1_tankSpawn02_zone_17",
-            "t1_tankSpawn02_zone_18",
-            "t1_tankSpawn02_zone_19",
-            "t1_tankSpawn02_zone_20",
-            "t1_tankSpawn02_zone_21",
-            "t1_tankSpawn02_zone_22",
-            "t1_tankSpawn02_zone_23",
-            "t1_tankSpawn02_zone_24",
-            "t1_tankSpawn02_zone_25",
-            "t1_tankSpawn02_zone_26",
-            "t1_tankSpawn02_zone_27",
-            "t1_tankSpawn02_zone_28",
-            "t1_tankSpawn02_zone_29",
-            "t1_tankSpawn02_zone_30",
-            "t1_tankSpawn02_zone_31",
-            "t1_tankSpawn02_zone_32"
+            "t1_tankSpawn03_zone_01",
+            "t1_tankSpawn03_zone_02",
+            "t1_tankSpawn03_zone_03",
+            "t1_tankSpawn03_zone_04",
+            "t1_tankSpawn03_zone_05",
+            "t1_tankSpawn03_zone_06",
+            "t1_tankSpawn03_zone_07",
+            "t1_tankSpawn03_zone_08",
+            "t1_tankSpawn03_zone_09",
+            "t1_tankSpawn03_zone_10",
+            "t1_tankSpawn03_zone_11",
+            "t1_tankSpawn03_zone_12",
+            "t1_tankSpawn03_zone_13",
+            "t1_tankSpawn03_zone_14",
+            "t1_tankSpawn03_zone_15",
+            "t1_tankSpawn03_zone_16",
+            "t1_tankSpawn03_zone_17",
+            "t1_tankSpawn03_zone_18",
+            "t1_tankSpawn03_zone_19",
+            "t1_tankSpawn03_zone_20",
+            "t1_tankSpawn03_zone_21",
+            "t1_tankSpawn03_zone_22",
+            "t1_tankSpawn03_zone_23",
+            "t1_tankSpawn03_zone_24",
+            "t1_tankSpawn03_zone_25",
+            "t1_tankSpawn03_zone_26",
+            "t1_tankSpawn03_zone_27",
+            "t1_tankSpawn03_zone_28",
+            "t1_tankSpawn03_zone_29",
+            "t1_tankSpawn03_zone_30",
+            "t1_tankSpawn03_zone_31",
+            "t1_tankSpawn03_zone_32"
           ]
         }
       },
@@ -499,38 +438,38 @@
         ],
         "props": {
           "squad_members": [
-            "t2_tankSpawn02_zone_01",
-            "t2_tankSpawn02_zone_02",
-            "t2_tankSpawn02_zone_03",
-            "t2_tankSpawn02_zone_04",
-            "t2_tankSpawn02_zone_05",
-            "t2_tankSpawn02_zone_06",
-            "t2_tankSpawn02_zone_07",
-            "t2_tankSpawn02_zone_08",
-            "t2_tankSpawn02_zone_09",
-            "t2_tankSpawn02_zone_10",
-            "t2_tankSpawn02_zone_11",
-            "t2_tankSpawn02_zone_12",
-            "t2_tankSpawn02_zone_13",
-            "t2_tankSpawn02_zone_14",
-            "t2_tankSpawn02_zone_15",
-            "t2_tankSpawn02_zone_16",
-            "t2_tankSpawn02_zone_17",
-            "t2_tankSpawn02_zone_18",
-            "t2_tankSpawn02_zone_19",
-            "t2_tankSpawn02_zone_20",
-            "t2_tankSpawn02_zone_21",
-            "t2_tankSpawn02_zone_22",
-            "t2_tankSpawn02_zone_23",
-            "t2_tankSpawn02_zone_24",
-            "t2_tankSpawn02_zone_25",
-            "t2_tankSpawn02_zone_26",
-            "t2_tankSpawn02_zone_27",
-            "t2_tankSpawn02_zone_28",
-            "t2_tankSpawn02_zone_29",
-            "t2_tankSpawn02_zone_30",
-            "t2_tankSpawn02_zone_31",
-            "t2_tankSpawn02_zone_32"
+            "t2_tankSpawn03_zone_01",
+            "t2_tankSpawn03_zone_02",
+            "t2_tankSpawn03_zone_03",
+            "t2_tankSpawn03_zone_04",
+            "t2_tankSpawn03_zone_05",
+            "t2_tankSpawn03_zone_06",
+            "t2_tankSpawn03_zone_07",
+            "t2_tankSpawn03_zone_08",
+            "t2_tankSpawn03_zone_09",
+            "t2_tankSpawn03_zone_10",
+            "t2_tankSpawn03_zone_11",
+            "t2_tankSpawn03_zone_12",
+            "t2_tankSpawn03_zone_13",
+            "t2_tankSpawn03_zone_14",
+            "t2_tankSpawn03_zone_15",
+            "t2_tankSpawn03_zone_16",
+            "t2_tankSpawn03_zone_17",
+            "t2_tankSpawn03_zone_18",
+            "t2_tankSpawn03_zone_19",
+            "t2_tankSpawn03_zone_20",
+            "t2_tankSpawn03_zone_21",
+            "t2_tankSpawn03_zone_22",
+            "t2_tankSpawn03_zone_23",
+            "t2_tankSpawn03_zone_24",
+            "t2_tankSpawn03_zone_25",
+            "t2_tankSpawn03_zone_26",
+            "t2_tankSpawn03_zone_27",
+            "t2_tankSpawn03_zone_28",
+            "t2_tankSpawn03_zone_29",
+            "t2_tankSpawn03_zone_30",
+            "t2_tankSpawn03_zone_31",
+            "t2_tankSpawn03_zone_32"
           ]
         }
       },
@@ -784,6 +723,33 @@
     ]
   },
   "areas": {
+    "conq_battle_area_arcade": {
+      "type": "Box",
+      "tm": [
+        [
+          0.000116983,
+          0.0,
+          1150.0
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          -1150.0,
+          0.0,
+          0.000116983
+        ],
+        [
+          2184.11,
+          6.28784,
+          2116.82
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
     "conq_capture_area_03_arcade": {
       "type": "Cylinder",
       "tm": [
@@ -977,9 +943,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -6.04657,
+          -9.68488,
           0.0,
-          7.96486
+          -2.4906
         ],
         [
           0.0,
@@ -987,14 +953,14 @@
           0.0
         ],
         [
-          -7.96486,
+          2.4906,
           0.0,
-          -6.04657
+          -9.68488
         ],
         [
-          2611.85,
+          2610.62,
           9.30897,
-          2232.7
+          2234.68
         ]
       ],
       "objLayer": 0,
@@ -1004,9 +970,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -9.5883,
+          -9.68226,
           0.0,
-          2.83982
+          -2.5008
         ],
         [
           0.0,
@@ -1014,14 +980,14 @@
           0.0
         ],
         [
-          -2.83982,
+          2.5008,
           0.0,
-          -9.5883
+          -9.68226
         ],
         [
-          2623.45,
+          2610.88,
           9.36019,
-          2189.3
+          2245.19
         ]
       ],
       "objLayer": 0,
@@ -1031,9 +997,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -9.84411,
+          -9.56232,
           0.0,
-          1.75882
+          -2.92609
         ],
         [
           0.0,
@@ -1041,14 +1007,14 @@
           0.0
         ],
         [
-          -1.75882,
+          2.92609,
           0.0,
-          -9.84411
+          -9.56232
         ],
         [
-          2610.25,
+          2601.05,
           8.91827,
-          2219.05
+          2248.24
         ]
       ],
       "objLayer": 0,
@@ -1058,9 +1024,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -6.95076,
+          -9.96789,
           0.0,
-          7.18936
+          -0.800684
         ],
         [
           0.0,
@@ -1068,14 +1034,14 @@
           0.0
         ],
         [
-          -7.18936,
+          0.800684,
           0.0,
-          -6.95076
+          -9.96789
         ],
         [
-          2623.2,
+          2604.55,
           8.58249,
-          2241.3
+          2226.21
         ]
       ],
       "objLayer": 0,
@@ -1100,9 +1066,9 @@
           -0.0194532
         ],
         [
-          2609.65,
+          2600.2,
           9.23016,
-          2197.05
+          2236.45
         ]
       ],
       "objLayer": 0,
@@ -1112,9 +1078,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -9.63987,
+          -9.93288,
           0.0,
-          2.6595
+          -1.1567
         ],
         [
           0.0,
@@ -1122,14 +1088,14 @@
           0.0
         ],
         [
-          -2.6595,
+          1.1567,
           0.0,
-          -9.63987
+          -9.93288
         ],
         [
-          2622.8,
+          2620.33,
           9.2136,
-          2204.75
+          2240.42
         ]
       ],
       "objLayer": 0,
@@ -1139,9 +1105,9 @@
       "type": "Sphere",
       "tm": [
         [
-          7.13264,
+          8.77702,
           0.0,
-          7.00896
+          4.79207
         ],
         [
           0.0,
@@ -1149,14 +1115,14 @@
           0.0
         ],
         [
-          -7.00896,
+          -4.79207,
           0.0,
-          7.13264
+          8.77702
         ],
         [
-          1681.25,
+          1705.32,
           9.44656,
-          2284.65
+          2307.9
         ]
       ],
       "objLayer": 0,
@@ -1166,9 +1132,9 @@
       "type": "Sphere",
       "tm": [
         [
-          8.14685,
+          8.95732,
           0.0,
-          5.79904
+          4.44595
         ],
         [
           0.0,
@@ -1176,14 +1142,14 @@
           0.0
         ],
         [
-          -5.79904,
+          -4.44595,
           0.0,
-          8.14685
+          8.95732
         ],
         [
-          1673.35,
-          9.86161,
-          2276.55
+          1713.81,
+          9.86155,
+          2294.3
         ]
       ],
       "objLayer": 0,
@@ -1193,9 +1159,9 @@
       "type": "Sphere",
       "tm": [
         [
-          6.52022,
+          7.98034,
           0.0,
-          7.582
+          6.02612
         ],
         [
           0.0,
@@ -1203,14 +1169,14 @@
           0.0
         ],
         [
-          -7.582,
+          -6.02612,
           0.0,
-          6.52022
+          7.98034
         ],
         [
-          1694.65,
-          9.07502,
-          2265.9
+          1714.94,
+          9.0751,
+          2314.94
         ]
       ],
       "objLayer": 0,
@@ -1220,9 +1186,9 @@
       "type": "Sphere",
       "tm": [
         [
-          4.80518,
+          8.6788,
           0.0,
-          8.76985
+          4.96774
         ],
         [
           0.0,
@@ -1230,14 +1196,14 @@
           0.0
         ],
         [
-          -8.76985,
+          -4.96774,
           0.0,
-          4.80518
+          8.6788
         ],
         [
-          1684.15,
+          1703.94,
           9.72692,
-          2246.3
+          2297.29
         ]
       ],
       "objLayer": 0,
@@ -1247,9 +1213,9 @@
       "type": "Sphere",
       "tm": [
         [
-          6.84455,
+          8.75343,
           0.0,
-          7.29055
+          4.83502
         ],
         [
           0.0,
@@ -1257,14 +1223,14 @@
           0.0
         ],
         [
-          -7.29055,
+          -4.83502,
           0.0,
-          6.84455
+          8.75343
         ],
         [
-          1685.8,
-          9.59461,
-          2259.35
+          1714.73,
+          9.59463,
+          2304.34
         ]
       ],
       "objLayer": 0,
@@ -1274,9 +1240,9 @@
       "type": "Sphere",
       "tm": [
         [
-          8.29014,
+          9.23811,
           0.0,
-          5.59228
+          3.8285
         ],
         [
           0.0,
@@ -1284,14 +1250,14 @@
           0.0
         ],
         [
-          -5.59228,
+          -3.8285,
           0.0,
-          8.29014
+          9.23811
         ],
         [
-          1674.8,
+          1694.68,
           10.2529,
-          2263.55
+          2303.8
         ]
       ],
       "objLayer": 0,
@@ -1316,9 +1282,9 @@
           100.0
         ],
         [
-          1680.05,
-          8.35,
-          2242.15
+          1739.85,
+          8.35001,
+          2298.29
         ]
       ],
       "objLayer": 0,
@@ -1343,9 +1309,9 @@
           100.0
         ],
         [
-          2652.95,
-          8.35,
-          2218.45
+          2575.01,
+          8.35001,
+          2236.07
         ]
       ],
       "objLayer": 0,
@@ -1370,9 +1336,9 @@
           84.1549
         ],
         [
-          1679.87,
+          1737.47,
           8.05005,
-          2241.43
+          2297.73
         ]
       ],
       "objLayer": 0,
@@ -1397,9 +1363,9 @@
           150.0
         ],
         [
-          2652.93,
+          2575.92,
           8.05005,
-          2218.51
+          2234.84
         ]
       ],
       "objLayer": 0,

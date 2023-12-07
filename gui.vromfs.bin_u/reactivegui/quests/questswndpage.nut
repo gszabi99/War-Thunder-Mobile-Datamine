@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { curSectionId, curTabId, questsBySection, seenQuests, saveSeenQuestsCurSection, sectionsCfg,
-  inactiveEventUnlocks, isCurSectionInactive } = require("questsState.nut")
+  inactiveEventUnlocks, isCurSectionInactive, PROGRESS_STAT } = require("questsState.nut")
 let { textButtonSecondary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { receiveUnlockRewards, unlockRewardsInProgress, unlockTables } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
-  allQuestsCompleted, linkToEventBtn } = require("questsComps.nut")
+  allQuestsCompleted, linkToEventBtn, mkAdsBtn } = require("questsPkg.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize } = require("rewardsComps.nut")
 let { mkQuestBar, mkProgressBar, progressBarHeight } = require("questBar.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -23,9 +23,9 @@ let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { defer } = require("dagor.workcycle")
+let { sendBqQuestsTask } = require("bqQuests.nut")
+let { WARBOND } = require("%appGlobals/currenciesState.nut")
 
-
-let PROGRESS_STAT = "event_quests_progress"
 
 let bgColor = 0x80000000
 let unseenMarkMargin = hdpx(20)
@@ -55,7 +55,10 @@ let pannableCtors = [mkVerticalPannableAreaNoBlocks, mkVerticalPannableAreaOneBl
 
 let newMarkSize = calc_comp_size(newMark)
 
-let receiveReward = @(questName) receiveUnlockRewards(questName, 1, { stage = 1 })
+let function receiveReward(item, warbondDelta) {
+  receiveUnlockRewards(item.name, 1, { stage = 1 })
+  sendBqQuestsTask(item, warbondDelta)
+}
 
 let function mkQuestText(item) {
   let locId = item.meta?.lang_id ?? item.name
@@ -100,8 +103,10 @@ let function mkAchievementText(item) {
   }
 }
 
-let function mkBtn(item) {
-  let isRewardInProgress = Computed(@() item.name in unlockRewardsInProgress.value)
+let function mkBtn(item, warbondDelta) {
+  let { name, progressCorrectionStep = 0 } = item
+  let isRewardInProgress = Computed(@() name in unlockRewardsInProgress.value)
+
   return @() {
     watch = isRewardInProgress
     size = btnSize
@@ -111,7 +116,7 @@ let function mkBtn(item) {
       : item?.hasReward
         ? textButtonSecondary(
             utf8ToUpper(loc("btn/receive")),
-            @() receiveReward(item.name),
+            @() receiveReward(item, warbondDelta),
             btnStyleSound)
       : item?.isFinished
         ? {
@@ -121,9 +126,10 @@ let function mkBtn(item) {
             valign = ALIGN_CENTER
             text = utf8ToUpper(loc("ui/received"))
           }.__update(fontSmallAccentedShaded)
+      : progressCorrectionStep > 0 ? mkAdsBtn(item)
       : textButtonCommon(
           utf8ToUpper(loc("btn/receive")),
-          @() anim_start($"unfilledBarEffect_{item.name}"),
+          @() anim_start($"unfilledBarEffect_{name}"),
           btnStyle)
   }
 }
@@ -200,7 +206,10 @@ let function mkItem(item, textCtor) {
             children = rewardsPreview.value.len() > 0 ? mkRewardsPreview(rewardsPreview.value, item?.isFinished) : null
           }
 
-          mkBtn(item)
+          @() {
+            watch = rewardsPreview
+            children = mkBtn(item, rewardsPreview.value.findvalue(@(r) r.id == WARBOND)?.count ?? 0)
+          }
         ]
       }
     ]
@@ -252,7 +261,7 @@ let function questTimerUntilStart() {
   }
 }
 
-let function questsWndPage(sections, itemCtor, progressUnlock = Watched(null)) {
+let function questsWndPage(sections, itemCtor, tabId, progressUnlock = Watched(null)) {
   let itemsSort = @(a, b) b.hasReward <=> a.hasReward
     || a.isFinished <=> b.isFinished
     || a.name in seenQuests.value <=> b.name in seenQuests.value
@@ -297,7 +306,7 @@ let function questsWndPage(sections, itemCtor, progressUnlock = Watched(null)) {
                 valign = ALIGN_CENTER
                 children = [
                   linkToEventBtn()
-                  mkProgressBar(progressUnlock.value)
+                  mkProgressBar(progressUnlock.value?.__merge({ tabId }))
                 ]
               }
 
@@ -322,7 +331,7 @@ let function questsWndPage(sections, itemCtor, progressUnlock = Watched(null)) {
                   children = questsBySection.value?[curSectionId.value ?? sections.value?[0]]
                     .values()
                     .sort(itemsSort)
-                    .map(itemCtor)
+                    .map(@(item) itemCtor(item, tabId))
                   onDetach = @() saveSeenQuestsCurSection()
                 },
                 { pos = [0, blocksOnTop.value == 0 ? -questItemsGap : 0] },
@@ -338,6 +347,6 @@ let function questsWndPage(sections, itemCtor, progressUnlock = Watched(null)) {
 
 return {
   questsWndPage
-  mkQuest = @(item) mkItem(item, mkQuestText)
-  mkAchievement = @(item) mkItem(item, mkAchievementText)
+  mkQuest = @(item, tabId) mkItem(item.__merge({ tabId }), mkQuestText)
+  mkAchievement = @(item, tabId) mkItem(item.__merge({ tabId }), mkAchievementText)
 }

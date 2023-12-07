@@ -1,17 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
+let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
+let { sortUnits } = require("%rGui/unit/unitUtils.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
 let mkLevelProgressLine = require("%rGui/debriefing/levelProgressLine.nut")
 let { mkTotalRewardCountsCampaign } = require("%rGui/debriefing/totalRewardCounts.nut")
+let { getLevelProgress } = require("%rGui/debriefing/debrUtils.nut")
+let { getLevelUnlockPlateAnimTime, mkLevelUnlockPlatesContainer, mkDebrPlateUnit
+} = require("%rGui/debriefing/debrLevelUnlockPlates.nut")
 
 let levelProgressAnimStartTime = 0.0
+let levelUnlocksAnimStartTime = 1.0
 let rewardsAnimStartTime = 0.5
 
-let mkPlayerLevelLineHolder = @(children) children == null ? null : {
-  size = [flex(), SIZE_TO_CONTENT]
-  padding = [hdpx(22), 0, 0, 0]
-  halign = ALIGN_CENTER
-  children
+let function mkPlayerLevelUnlockPlates(debrData, delay) {
+  let { reward = {}, player = {}, nextLevelUnits = {} } = debrData
+  let { playerExp = {} } = reward
+
+  let { prevLevel, unlockedLevel } = getLevelProgress(player, playerExp)
+
+  let nextLevel = prevLevel + 1
+  let isUnlocked = nextLevel == unlockedLevel
+  let units = nextLevelUnits.values()
+  units.sort(sortUnits)
+  let total = units.len()
+  let itemTime = getLevelUnlockPlateAnimTime(total)
+  return {
+    levelUnlocksAnimTime = total * itemTime
+    levelUnlocksComps = units.len() == 0 ? null : units.map(function(unit, idx) {
+      let unlockDelay = delay + (itemTime * idx)
+      return mkDebrPlateUnit(unit, isUnlocked, unlockDelay, true)
+    })
+  }
 }
 
 let function mkDebriefingWndTabCampaign(debrData, params) {
@@ -19,14 +39,19 @@ let function mkDebriefingWndTabCampaign(debrData, params) {
   if (totalRewardCountsComp == null)
     return null
 
-  let { reward = {}, player = {} } = debrData
+  let { reward = {}, player = {}, campaign = "" } = debrData
   let { playerExp = {} } = reward
   let { levelProgressLineComp, levelProgressLineAnimTime } = mkLevelProgressLine(player, playerExp,
-    loc("debriefing/playerExp"), levelProgressAnimStartTime)
+    loc($"gamercard/levelCamp/header/{campaign}"), loc("gamercard/levelCamp/desc"),
+    levelProgressAnimStartTime, playerExpColor)
+  let { levelUnlocksComps, levelUnlocksAnimTime } = mkPlayerLevelUnlockPlates(debrData, levelUnlocksAnimStartTime)
 
   let { needBtnCampaign } = params
-  let timeShow = max(levelProgressAnimStartTime + levelProgressLineAnimTime, rewardsAnimStartTime + totalRewardsShowTime)
-    + (needBtnCampaign ? buttonsShowTime : 0)
+  let timeShow = max(
+      levelProgressAnimStartTime + levelProgressLineAnimTime,
+      levelUnlocksAnimStartTime + levelUnlocksAnimTime,
+      rewardsAnimStartTime + totalRewardsShowTime
+    ) + (needBtnCampaign ? buttonsShowTime : 0)
 
   let comp = {
     size = flex()
@@ -35,12 +60,20 @@ let function mkDebriefingWndTabCampaign(debrData, params) {
     children = [
       mkMissionResultTitle(debrData, false)
       {
-        size = [hdpx(1600), SIZE_TO_CONTENT]
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(100)
+        size = [hdpx(1600), flex()]
+        halign = ALIGN_CENTER
+        flow = FLOW_VERTICAL
         children = [
-          totalRewardCountsComp
-          mkPlayerLevelLineHolder(levelProgressLineComp)
+          levelProgressLineComp
+          {
+            size = flex()
+            flow = FLOW_HORIZONTAL
+            gap = hdpx(100)
+            children = [
+              totalRewardCountsComp.__update({ pos = [0, hdpx(145)] })
+              mkLevelUnlockPlatesContainer(levelUnlocksComps)
+            ]
+          }
         ]
       }
     ]

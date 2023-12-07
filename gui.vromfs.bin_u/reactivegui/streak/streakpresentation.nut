@@ -169,6 +169,70 @@ let streaksPresentation = {
     ]
   }
 
+  ship_healer = {
+    name = "streaks/ship_healer"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("thirst_for_life.avif", [62, 62])
+    ]
+  }
+
+  ship_sniper_shot = {
+    name = "streaks/ship_sniper_shot"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("naval_sniper.avif", [62, 62])
+    ]
+  }
+
+  ship_artillery_master = {
+    name = "streaks/ship_artillery_master"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("large_caliber.avif", [62, 62])
+    ]
+  }
+
+  ship_torpedo_master = {
+    name = "streaks/ship_torpedo_master"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("torpedo_master.avif", [62, 62])
+    ]
+  }
+
+  ship_bomberman = {
+    name = "streaks/ship_bomberman"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("demolition.avif", [62, 62])
+    ]
+  }
+
+  ship_anti_main_caliber = {
+    name = "streaks/ship_anti_main_caliber"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("disarm.avif", [62, 62])
+    ]
+  }
+
+  ship_anti_steering = {
+    name = "streaks/ship_anti_steering"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("lost_control.avif", [62, 62])
+    ]
+  }
+
+  ship_air_recon = {
+    name = "streaks/ship_air_recon"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("air_reconnaissance.avif", [62, 62])
+    ]
+  }
+
   trophy_near_survivor = {
     name = "streaks/trophy_near_survivor"
     bgImage = "ui/gameuiskin#streaks_event_bg2.avif"

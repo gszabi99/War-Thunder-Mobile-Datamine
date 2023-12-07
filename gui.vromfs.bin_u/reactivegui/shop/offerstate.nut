@@ -79,5 +79,5 @@ return {
 
   onOfferSceneAttach = @(key) attachedOfferScenes.mutate(@(v) v.__update({ [key]  = true }))
   onOfferSceneDetach = @(key) key not in attachedOfferScenes.value ? null
-    : attachedOfferScenes.mutate(@(v) delete v[key])
+    : attachedOfferScenes.mutate(@(v) v.$rawdelete(key))
 }

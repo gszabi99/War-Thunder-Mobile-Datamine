@@ -1,10 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
+let { subscribe } = require("eventbus")
+let { get_time_msec } = require("dagor.time")
 let { check_purchases } = require("%appGlobals/pServer/pServerApi.nut")
 let menuAutoRefreshTimer = require("%appGlobals/menuAutoRefreshTimer.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let { refreshOnWindowActivate, refreshIfWindowActive } = menuAutoRefreshTimer({
   refresh = check_purchases
   refreshDelaySec = 30.0
+})
+
+local loginTime = 0
+isLoggedIn.subscribe(function(v) {
+  loginTime = v ? get_time_msec() : 0
+})
+subscribe("onMatchingOnlineAvailable", function(_) {
+  if (isLoggedIn.get() && loginTime + 1000 < get_time_msec()) //purchases already checked on login
+    check_purchases()
 })
 
 return {

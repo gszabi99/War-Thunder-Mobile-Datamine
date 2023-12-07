@@ -55,7 +55,7 @@ let secondaryAction = keepref(Computed(@() actionBarItems.value?[AB_SECONDARY_WE
 let startActionBarUpdate = @(id) id in actionBarUpdaters.value ? null
   : actionBarUpdaters.mutate(@(v) v[id] <- true)
 let stopActionBarUpdate = @(id) id not in actionBarUpdaters.value ? null
-  : actionBarUpdaters.mutate(@(v) delete v[id])
+  : actionBarUpdaters.mutate(@(v) v.$rawdelete(id))
 
 needUpdate.subscribe(function(v) {
   if (v) {

@@ -22,7 +22,7 @@ let function getTimerCountdownSec(id) {
   return countdowns[id]
 }
 
-let deleteF = @(tbl, field) field in tbl ? delete tbl[field] : null
+let deleteF = @(tbl, field) tbl?.$rawdelete(field)
 let mkTimer = @(time, ovr = {}) {
   startTime = get_time_msec()
   endTime = get_time_msec() + (1000 * time).tointeger()
@@ -35,7 +35,7 @@ let mkTimerOffset = @(totalTime, currentTime, ovr = {}) {
 
 let clearTimers = @(_) activeTimers({})
 let removeTimer = @(timerId) timerId not in activeTimers.value ? null
-  : activeTimers.mutate(@(t) delete t[timerId])
+  : activeTimers.mutate(@(t) t.$rawdelete(timerId))
 
 let onCancelAction = @(timerId, time) activeTimers.mutate(function onCancelActionImpl(actTimers) {
   if (time <= 0)

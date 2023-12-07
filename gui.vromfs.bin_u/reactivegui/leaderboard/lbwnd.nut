@@ -353,7 +353,7 @@ let function lbTableFull(categories, lbData, selfRow) {
 
   let rows = lbData.map(@(row) mkRow(categories, row))
   let dotsRow = mkDotsRow(categories)
-  local myRowIdx = selfIdx - max(startIdx, 0)
+  local myRowIdx = selfIdx - startIdx
   local needRequirementsRow = false
   if (rows.len() < lbPageRows)
     rows.resize(lbPageRows, null)
@@ -445,7 +445,7 @@ let waitLeaderBoard = {
 
 let lbErrorMsg = @(text) {
   key = text
-  size = [hdpx(1100), SIZE_TO_CONTENT]
+  size = [hdpx(1200), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   vplace = ALIGN_CENTER
@@ -456,23 +456,13 @@ let lbErrorMsg = @(text) {
   animations = [spinnerOpacityAnim]
 }.__update(fontSmall)
 
-function lbNoDataMsg() {
-  let textsList = [loc("leaderboard/noLbData")]
-  let count = minRatingBattles.value - bestBattlesCount.value
-  if (count > 0)
-    textsList.append(loc("lb/needMoreBattlesForLeaderboad", { count, countText = colorize(0xFFFFFFFF, count) }))
-  return lbErrorMsg("\n\n".join(textsList))
-    .__update({ watch = [minRatingBattles, bestBattlesCount] })
-}
-
 let content = @() {
   watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
   size = flex()
   children = curLbCfg.value != null && (curLbData.value?.len() ?? 0) > 0
       ? lbTableFull(curLbCfg.value.categories, curLbData.value, curLbSelfRow.value)
     : isLbRequestInProgress.value ? waitLeaderBoard
-    : curLbErrName.value == null ? lbNoDataMsg
-    : lbErrorMsg(loc($"error/{curLbErrName.value}"))
+    : lbErrorMsg(loc(curLbErrName.value == null ? "leaderboard/noLbData" : $"error/{curLbErrName.value}"))
 }
 
 let needPaginator = Computed(@() (curLbData.value?.len() ?? 0) != 0)

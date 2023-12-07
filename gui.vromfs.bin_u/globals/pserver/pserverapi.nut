@@ -53,7 +53,7 @@ let function callAll(execData, result) {
 
 let function popCallback(uid, result) {
   if (uid in requestData.callbacks)
-    callAll(delete requestData.callbacks[uid], result)
+    callAll(requestData.callbacks.$rawdelete(uid), result)
 }
 
 let function handleMessages(msg) {
@@ -550,6 +550,16 @@ return {
 
   apply_profile_mutation = @(id, cb = null) request({
     method = "apply_profile_mutation"
+    params = { id }
+  }, cb)
+
+  renew_ad_budget = @(cb = null) request({
+    method = "renew_ad_budget"
+    params = {}
+  }, cb)
+
+  speed_up_unlock_progress = @(id, cb = null) request({
+    method = "speed_up_unlock_progress"
     params = { id }
   }, cb)
 }

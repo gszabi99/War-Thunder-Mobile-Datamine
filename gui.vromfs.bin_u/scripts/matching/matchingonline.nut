@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { register_command } = require("console")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
-let { subscribe } = require("eventbus")
+let { subscribe, send } = require("eventbus")
 let { dgs_get_settings } = require("dagor.system")
 let { isDownloadedFromGooglePlay, getPackageName } = require("android.platform")
 let { shell_execute } = require("dagor.shell")
@@ -13,7 +13,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { SERVER_ERROR_INVALID_VERSION } = require("matching.errors")
+let { SERVER_ERROR_INVALID_VERSION, CLIENT_ERROR_CONNECTION_CLOSED } = require("matching.errors")
 
 isMatchingOnline(::is_online_available())
 
@@ -53,6 +53,8 @@ let function destroyConnectProgressMessages() {
   closeFMsgBox("matching_connect_progressbox")
 }
 
+let leaveQueueImpl = @() send("leaveQueue", {})
+
 let customErrorHandlers = {
   [SERVER_ERROR_INVALID_VERSION] = function(_, __, ___) {
     sendErrorBqEvent("Downoad new version (required)")
@@ -66,6 +68,9 @@ let customErrorHandlers = {
       ]
       isPersist = true
     })
+  },
+  [CLIENT_ERROR_CONNECTION_CLOSED] = function(_, __, ___) {
+    leaveQueueImpl()
   }
 }
 
@@ -109,9 +114,13 @@ subscribe("on_online_unavailable", function(_) {
   logMC("on_online_available")
   isMatchingOnline(true)
   destroyConnectProgressMessages()
+  send("onMatchingOnlineAvailable", null)
 }
 
 ::logout_with_msgbox <- @(params)
+  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false)
+
+::exit_queue_with_msgbox <- @(params)
   logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false)
 
 ::exit_with_msgbox <- @(params)

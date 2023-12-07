@@ -17,7 +17,7 @@
   },
   "imports": {
     "import_record": {
-      "file": "gameData/missions/cta/tanks/poland/template_poland_tank_spawns.blk",
+      "file": "gameData/missions/cta/tanks/poland/tank_spawns/template_poland_Conq2_tank_spawns.blk",
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,

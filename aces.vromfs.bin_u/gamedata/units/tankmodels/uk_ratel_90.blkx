@@ -44,6 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "deadZoneForTurnAround": 90.0,
   "minRelativeTankCameraThreshold": 1.32,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,

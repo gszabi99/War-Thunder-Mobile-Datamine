@@ -17,7 +17,7 @@
   },
   "imports": {
     "import_record": {
-      "file": "gameData/missions/cta/tanks/american_valley/template_american_valley_tank_spawns.blk",
+      "file": "gameData/missions/cta/tanks/american_valley/tank_spawns/template_american_valley_Dom_tank_spawns.blk",
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,

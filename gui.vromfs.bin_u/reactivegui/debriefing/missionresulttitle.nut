@@ -34,6 +34,11 @@ let missionResultParamsByType = {
     color = 0xFFFB5F28
     animTextColor = 0xFFFFA07F
   }
+  inactivity = {
+    text = @(_) loc("debriefing/inactivity")
+    color =  0xFFFB5F28
+    animTextColor =  0xFFFFA07F
+  }
   disconnect = {
     text = @(_) loc("matching/CLIENT_ERROR_CONNECTION_CLOSED")
     color = 0XFFFFA406
@@ -99,8 +104,9 @@ let mkMissionResultLine = @(needAnim, missionResult) {
 }
 
 let function mkMissionResultTitle(debrData, needAnim) {
-  let { isWon = false, isFinished = false, isDeserter = false, isDisconnected = false, campaign = "" } = debrData
+  let { isWon = false, isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false, campaign = "" } = debrData
   let missionResult = debrData == null ? missionResultParamsByType.unknown
+    : kickInactivity ? missionResultParamsByType.inactivity
     : isDisconnected ? missionResultParamsByType.disconnect
     : isDeserter ? missionResultParamsByType.deserter
     : !isFinished ? missionResultParamsByType.inProgress

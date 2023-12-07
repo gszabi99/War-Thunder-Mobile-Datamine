@@ -77,14 +77,20 @@
       "userstat_stat_id": "top_survivor",
       "mode": {
         "type": "killedPlayersBest",
-        "maxVal": 4,
+        "maxVal": 100500,
         "bestId": "trophy_near_survivor",
         "includeBots": true,
         "noDeaths": true,
         "useBestScoreWTM": true,
-        "condition": {
-          "type": "online"
-        }
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          }
+        ]
       }
     },
     {
@@ -146,11 +152,8 @@
       "isAfterFlight": true,
       "userstat_stat_id": "top_killer",
       "mode": {
-        "type": "killedGroundBest",
-        "mulArcade": 1,
-        "mulRealistic": 2,
-        "mulHardcore": 3,
-        "maxVal": 2,
+        "type": "bestDmgShips",
+        "maxVal": 400,
         "bestId": "trophy_near_ship",
         "isShip": true,
         "useBestScoreWTM": true,
@@ -161,6 +164,10 @@
           {
             "type": "targetIsPlayer",
             "includeBots": true
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
           }
         ]
       }
@@ -183,6 +190,7 @@
         "minVal": 7,
         "bestId": "heroic_tankman",
         "isShip": false,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -202,13 +210,11 @@
       "isAfterFlight": true,
       "userstat_stat_id": "top_killer_hero",
       "mode": {
-        "type": "killedGroundBest",
-        "mulArcade": 1,
-        "mulRealistic": 2,
-        "mulHardcore": 3,
-        "minVal": 3,
+        "type": "bestDmgShips",
+        "minVal": 400,
         "bestId": "heroic_ship",
         "isShip": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -216,6 +222,10 @@
           {
             "type": "targetIsPlayer",
             "includeBots": true
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
           }
         ]
       }
@@ -233,9 +243,15 @@
         "bestId": "heroic_survivor",
         "includeBots": true,
         "noDeaths": true,
-        "condition": {
-          "type": "online"
-        }
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          }
+        ]
       }
     },
     {
@@ -678,7 +694,8 @@
           },
           {
             "type": "enemyOffender",
-            "oflag": "typeTank"
+            "oflag": "typeTank",
+            "exceptMe": true
           },
           {
             "type": "offenderType",
@@ -1380,7 +1397,7 @@
       ],
       "userstat_stat_id": "single_life_killstreak",
       "stage": {
-        "param": 5,
+        "param": 3,
         "amount_exp": 0,
         "amount_warpoints": [
           150,
@@ -1413,9 +1430,11 @@
       "userstat_stat_id": "killed_air_best",
       "mode": {
         "type": "killedAirBest",
+        "maxVal": 100500,
         "minVal": 3,
         "bestId": "tank_best_antiAircraft",
         "includeBots": true,
+        "useBestScoreWTM": true,
         "condition": [
           {
             "type": "online"
@@ -1604,6 +1623,140 @@
         "condition": {
           "type": "online"
         }
+      }
+    },
+    {
+      "id": "ship_healer",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 250,
+      "isAfterFlight": true,
+      "mode": {
+        "type": "bestHealer",
+        "minHp": 100,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ship_sniper_shot",
+      "type": "streak",
+      "amount_warpoints": 250,
+      "isMultiStage": true,
+      "isAfterFlight": false,
+      "wpA": [
+        250.0,
+        250.0,
+        250.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 250
+      },
+      "mode": {
+        "type": "killedPlayers",
+        "num": 100500,
+        "includeBots": true,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetDistance",
+            "distance": 8000.0
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "targetType",
+            "unitType": "ship"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ship_artillery_master",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 300,
+      "isAfterFlight": false,
+      "mode": {
+        "type": "damageUnits",
+        "maxVal": 300,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "weaponType",
+            "weapon": "generic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ship_torpedo_master",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 300,
+      "isAfterFlight": false,
+      "mode": {
+        "type": "damageUnits",
+        "maxVal": 300,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "weaponType",
+            "weapon": "torpedo"
+          }
+        ]
       }
     },
     {

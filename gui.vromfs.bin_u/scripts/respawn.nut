@@ -11,12 +11,12 @@ let { quit_to_debriefing, get_respawns_left,
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curBattleUnit, curBattleItems, isBattleDataReceived } = require("%scripts/battleData/battleData.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, isLocalMultiplayer } = require("%appGlobals/clientState/clientState.nut")
 let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRespawn, isRespawnInProgress,
   isRespawnDataInProgress, isBatleDataRequired, respawnsLeft
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 
-let unitToSpawn = Computed(@() !isBatleDataRequired.value || isBattleDataReceived.value
+let unitToSpawn = Computed(@() !isBatleDataRequired.value || isBattleDataReceived.value || isLocalMultiplayer.value
   ? curBattleUnit.value : null)
 let respawnData = mkWatched(persist, "respawnData", null)
 let wantedRespawnData = mkWatched(persist, "wantedRespawnData", null)
@@ -37,6 +37,8 @@ isInRespawn.subscribe(function(v) {
   respawnUnitItems(curBattleItems.value)
 })
 unitToSpawn.subscribe(@(v) isInRespawn.value ? respawnUnitInfo(v) : null)
+if (isInRespawn.value && unitToSpawn.value != null)
+  respawnUnitInfo(unitToSpawn.value)
 
 subscribe("getLocalPlayerSpawnInfo",
   @(_) send("localPlayerSpawnInfo",
@@ -112,8 +114,11 @@ let function updateRespawnStep() {
   if (isRespawnDataInProgress.value)
     return
   if (!isRespawnDataActual.value) {
-    if (canRequestAircraftNow())
+    if (canRequestAircraftNow()) {
       applyRespawnData()
+      if (isLocalMultiplayer.value)
+        setInterval(2.0, onCountdownTimer) // hack!!! direct call onSpawn
+    }
     else
       resetTimeout(1.0,  updateRespawnStep) //try again in 1 sec. Need for correct auto spawn after jip
     return

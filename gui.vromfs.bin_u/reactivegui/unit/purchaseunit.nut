@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { curUnit, playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
+let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { unitInProgress, buy_unit, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { buyUnitsData, setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")

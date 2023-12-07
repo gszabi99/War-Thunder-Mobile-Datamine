@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_game_params_blk = @() null } = require("blkGetters")
+let { get_game_params_blk } = require("blkGetters")
 let { isInZoom } = require("%rGui/hudState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 

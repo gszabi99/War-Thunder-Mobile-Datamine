@@ -97,6 +97,7 @@ let function mkProgressBarReward(children, onClick) {
     image = Picture($"ui/images/offer_item_slot_bg.avif:{progressBarRewardSize}:{progressBarRewardSize}:P")
     behavior = Behaviors.Button
     onClick
+    clickableInfo = loc("btn/receive")
     onElemState = @(sf) stateFlags(sf)
     picSaturate = onClick != null && (stateFlags.value & S_ACTIVE) ? 2.0 : 1.0
     transitions = [{ prop = AnimProp.picSaturate, duration = 0.07, easing = Linear }]

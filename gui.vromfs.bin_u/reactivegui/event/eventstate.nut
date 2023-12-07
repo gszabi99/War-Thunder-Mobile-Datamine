@@ -5,8 +5,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { eventLootboxes, eventLootboxesRaw } = require("eventLootboxes.nut")
-let { onSchRewardReceive, schRewards, schRewardsStatus } = require("%rGui/shop/schRewardsState.nut")
+let { eventLootboxes } = require("eventLootboxes.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balanceWarbond, balanceEventKey, EVENT_KEY, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
@@ -21,12 +20,6 @@ let getSeasonPrefix = @(n) $"season_{n}"
 let isEventWndOpen = mkWatched(persist, "isEventWndOpen", false)
 let eventWndOpenCount = Watched(0)
 let eventWndShowAnimation = Watched(true)
-
-let eventRewards = Computed(@() schRewards.value
-  .filter(@(v) v.lootboxes.findindex(@(_, key) key in eventLootboxesRaw.value))
-  .map(@(v, key) v.__merge(schRewardsStatus.value?[key] ?? {})))
-
-let showLootboxAds = @(id) onSchRewardReceive(eventRewards.value?[id])
 
 let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
 let eventSeason = Computed(@() getSeasonPrefix(userstatStats.value?.stats.season["$index"] ?? 1))
@@ -181,8 +174,6 @@ return {
   closeEventWnd = @() isEventWndOpen(false)
   eventWndShowAnimation
   markCurLootboxSeen
-  showLootboxAds
-  eventRewards
   eventEndsAt
   eventSeason
   eventSeasonName

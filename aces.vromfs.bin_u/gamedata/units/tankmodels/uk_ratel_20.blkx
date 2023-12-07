@@ -49,6 +49,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "deadZoneForTurnAround": 90.0,
   "minRelativeTankCameraThreshold": 1.34,
   "rearmSmokeTimeOnField": 60.0,
   "dm_for_shop": {

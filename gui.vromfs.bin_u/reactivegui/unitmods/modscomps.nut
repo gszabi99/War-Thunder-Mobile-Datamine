@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let lockIconSize = hdpxi(85)
 let bgShadeColor = 0x80000000
+let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 
 let bgShade = {
   size = flex()
@@ -33,8 +34,19 @@ let mkLevelLock = @(isLocked, reqLevel) @() !isLocked.value ? { watch = isLocked
 let mkNotPurchasedShade = @(isPurchased) @() isPurchased.value ? { watch = isPurchased }
   : bgShade.__merge({ watch = isPurchased })
 
+let mkModImage = @(mod) mod?.name == null ? null : {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#{mod.name}.avif:0:P")
+  fallbackImage = Picture(defImage)
+  keepAspect = KEEP_ASPECT_FILL
+  imageHalign = ALIGN_LEFT
+  imageValign = ALIGN_BOTTOM
+}
+
 return {
   mkLevelLock
   mkNotPurchasedShade
   bgShade
+  mkModImage
 }

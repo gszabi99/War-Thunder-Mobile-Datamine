@@ -85,7 +85,21 @@ let function startOfflineBattle(unitName, missionName) {
     })
 }
 
+let function startLocalMPBattle(unitName, missionName) {
+  if (unitName == null) {
+    openMsgBox({ text = loc("No selected unit") })
+    return
+  }
+  donloadUnitPacksAndSend(unitName, [], "startLocalMP",
+    {
+      unitName
+      missionName
+      bullets = getBulletsForTestFlight(unitName)
+    })
+}
+
 return {
   startTestFlight
   startOfflineBattle
+  startLocalMPBattle
 }

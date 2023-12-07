@@ -75,7 +75,7 @@ let questsLink = mkGoodsWrap(function() {
     mkGoodsImg("ui/gameuiskin/warbond_goods_03.avif", imgStyle)
   ],
   questsLinkPlate,
-  { size = goodsSize },
+  { size = goodsSize, clickableInfo = loc("item/open") },
   { size = goodsBgSize })
 
 

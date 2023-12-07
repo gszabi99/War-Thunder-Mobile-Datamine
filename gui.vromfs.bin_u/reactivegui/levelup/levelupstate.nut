@@ -10,7 +10,7 @@ let { isInMenu, isInDebriefing, isInBattle } = require("%appGlobals/clientState/
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { WP, balanceWp } = require("%appGlobals/currenciesState.nut")
-let { getUnitAnyPrice } = require("%appGlobals/unitUtils.nut")
+let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 
 let isSeen = hardPersistWatched("isLevelUpSeen", false) // To show it after login once.

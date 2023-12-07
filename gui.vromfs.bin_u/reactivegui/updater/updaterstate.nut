@@ -12,7 +12,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { localizeAddonsLimited, initialAddons, latestDownloadAddons, commonUhqAddons
+let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDownloadAddons, commonUhqAddons
 } = require("%appGlobals/updater/addons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
@@ -63,8 +63,9 @@ let function mkAddonsToDownload(list, hasAddonsV, prev) {
 }
 
 let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(initialAddons, hasAddons.value, prev))
-let latestAddonsToDownload = Computed(@(prev)
-  mkAddonsToDownload(latestDownloadAddons?[curCampaign.value] ?? [], hasAddons.value, prev))
+let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
+  (clone latestDownloadAddons).extend(latestDownloadAddonsByCamp?[curCampaign.value] ?? []),
+  hasAddons.value, prev))
 
 let uhqAddonsToDownload = Computed(function(prev) {
   if (!needUhqTextures.value)
@@ -131,8 +132,7 @@ let function cleanAddonsToDownload() {
     return
   let res = clone addonsToDownload.value
   foreach(a, _ in needStartDownloadAddons.value)
-    if (a in res)
-      delete res[a]
+    res?.$rawdelete(a)
   if (res.len() != addonsToDownload.value.len())
     addonsToDownload(res)
 }

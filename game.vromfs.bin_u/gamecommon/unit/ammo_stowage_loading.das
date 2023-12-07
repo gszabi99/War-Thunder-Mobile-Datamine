@@ -165,6 +165,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
                         add_elevator_part : block<(id : PartId) : void>) : void
   blk |> read_flag(ammo_clusters__state, AmmoClusterState AUTO_LOAD, "autoLoad")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState FIRST_STAGE, "firstStage")
+  blk |> read_flag(ammo_clusters__state, AmmoClusterState AMMO_LOADED_IN_GUN, "ammoLoadedInGun")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState REVERSE_FILL, "reverseFill")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState FIRE_FATAL, "fatalFire")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState EXPLOSION_FATAL, "fatalExplosion")
@@ -452,7 +453,9 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
                            ammo_slots__state : UInt32List;
                            ammo_slots__partId : PartIdList;
                            ammo_slots__numAmmo : IPoint2List;
-                           ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
+                           ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
+
+                           ammo_stowage__splashProperties : SplashProps
                          >)
   var unit = get_unit(uid)
   assert(unit != null)
@@ -460,7 +463,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
     return
 
   let model_name = "{unit.props.fileName}"
-  let can_load_to_breech = !get_app().isInHangar
   assume blk = *evt.modelBlk
 
   v.ammo_stowage__dpAmmo = dm_find_part_kind("ammo")
@@ -477,6 +479,7 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
     v.ammo_stowage__detonatePortion = ammo_blk |> datablock_getPoint2("detonatePortion", v.ammo_stowage__detonatePortion)
     v.ammo_stowage__detonateMinCaliber = ammo_blk |> datablock_getReal("ammoMinCaliberForDetonate", v.ammo_stowage__detonateMinCaliber)
     v.ammo_stowage__damagePropsId = dm_register_props_ex(model_name + "^ammo", ammo_blk, "damage")
+    v.ammo_stowage__splashProperties |> splash_props_load(ammo_blk)
 
   if !unit.isHumanPlayer && !unit_change_data_has_any_bullets(unit)
     return
@@ -606,7 +609,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
 
     sendEventImmediate(eid, [[EventAmmoStowageSetup
       netSyncIfRequired=false,
-      canLoadToBreach=can_load_to_breech,
       initNum=true,
       isRefill=true]])
     load_successful = true
@@ -681,7 +683,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
 
     sendEventImmediate(eid, [[EventAmmoStowageSetup
       netSyncIfRequired=false,
-      canLoadToBreach=can_load_to_breech,
       initNum=true,
       isRefill=true]])
     load_successful = true
@@ -732,7 +733,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
 
     sendEventImmediate(eid, [[EventAmmoStowageSetup
       netSyncIfRequired=false,
-      canLoadToBreach=can_load_to_breech,
       initNum=true,
       isRefill=true]])
     load_successful = true

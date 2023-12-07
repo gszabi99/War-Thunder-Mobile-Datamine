@@ -39,7 +39,7 @@ let function stopProgress(id) {
   if (id not in progressTimeouts.value)
     return
   let { value } = progressTimeouts.value[id]
-  progressTimeouts.mutate(@(v) delete v[id])
+  progressTimeouts.mutate(@(v) v.$rawdelete(id))
   sendProgress(id, value, false)
 }
 

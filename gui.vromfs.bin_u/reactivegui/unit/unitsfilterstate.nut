@@ -35,7 +35,7 @@ let mkListToggleValue = @(id, allValuesW) function toggleValue(value, isChecked)
   if (isChecked)
     res[value] <- true
   else
-    delete res[value]
+    res.$rawdelete(value)
   saveValue(id, res)
 }
 

@@ -93,7 +93,7 @@ let function setCounterActive(uid, isActive) {
       if (isActive)
         v[uid] <- true
       else
-        delete v[uid]
+        v.$rawdelete(uid)
     })
 }
 

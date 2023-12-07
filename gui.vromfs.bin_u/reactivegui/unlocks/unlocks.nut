@@ -100,7 +100,7 @@ let function receiveUnlockRewards(unlockName, stage, context = null) {
 userstatRegisterHandler("GrantRewards", function(result, context) {
   let { unlockName  = null, finalStage = null, stage = 0 } = context
   if (unlockName in unlockRewardsInProgress.value)
-    unlockRewardsInProgress.mutate(@(v) delete v[unlockName])
+    unlockRewardsInProgress.mutate(@(v) v.$rawdelete(unlockName))
   if ("error" in result)
     log("GrantRewards result: ", result)
   else {

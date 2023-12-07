@@ -17,7 +17,7 @@
   },
   "imports": {
     "import_record": {
-      "file": "gameData/missions/cta/tanks/japan/template_japan_tank_spawns.blk",
+      "file": "gameData/missions/cta/tanks/japan/tank_spawns/template_japan_Conq1_tank_spawns.blk",
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,

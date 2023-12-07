@@ -133,3 +133,8 @@ struct EventOnPlayerCritHit
 struct EventSpendItems
   itemId : string
   count : int
+
+[event(broadcast)]
+struct EventOnPlayerRepair
+  userId : uint8
+  hpRepaired : int

@@ -130,14 +130,13 @@ let function addHudElementPointer(id, time) {
 
 let function removeHudElementPointer(id) {
   if (id in activeIds.value ) {
-    activeIds.mutate(@(v) delete v[id])
+    activeIds.mutate(@(v) v.$rawdelete(id))
     return
   }
   else if (type(id) == "array") {
     activeIds.mutate(function(v) {
       foreach(localId in id){
-        if (localId in v)
-          delete v[localId]
+        v?.$rawdelete(localId)
       }
     })
   }

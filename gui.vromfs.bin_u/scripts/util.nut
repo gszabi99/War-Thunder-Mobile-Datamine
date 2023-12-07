@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 110
-let { is_mplayer_host, is_mplayer_peer } = require("multiplayer")
+let { is_mplayer_host, is_mplayer_peer, is_local_multiplayer } = require("multiplayer")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
@@ -44,7 +44,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
   return u.extend(u.copy(parent_table), child_table)
 }
 
-let is_multiplayer = @() is_mplayer_host() || is_mplayer_peer()
+let is_multiplayer = @() (is_mplayer_host() || is_mplayer_peer()) && !is_local_multiplayer()
 
 let function is_user_mission(missionBlk) {
   return missionBlk?.userMission == true //can be null

@@ -1871,7 +1871,7 @@
       "cls_turret_02": 0.1
     },
     "tracks": {
-      "animationMultiplier": 0.68,
+      "animationMultiplier": -0.68,
       "width": 0.457,
       "height": 0.04
     },

@@ -61,7 +61,7 @@ register_es("players_damage_stats_es",
     [["onDestroy"]] = function trackDamageStats(_, comp) {
       let { player_id } = comp
       if (player_id.tostring() in statsRaw.value)
-        statsRaw.mutate(@(v) delete v[player_id])
+        statsRaw.mutate(@(v) v.$rawdelete(player_id))
     },
   },
   {

@@ -3,7 +3,7 @@ let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp } = require("unitModsState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkLevelLock, mkNotPurchasedShade } = require("modsComps.nut")
+let { mkLevelLock, mkNotPurchasedShade, mkModImage } = require("modsComps.nut")
 
 let modsGap = hdpx(10)
 let selLineGap = hdpx(14)
@@ -18,7 +18,6 @@ let modW = hdpx(440)
 let equippedColor = 0xFF50C0FF
 let equippedFrameWidth = hdpx(4)
 let modTotalH = modH + selLineHeight + selLineGap
-let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 
 let iconTankSize = [hdpxi(95), hdpxi(41)]
 let iconShipSize = [hdpxi(44), hdpxi(51)]
@@ -101,7 +100,6 @@ let function mkEquippedIcon(isEquipped) {
 let function modData(mod) {
   let id = mod?.name
   let locId = $"modification/{id}"
-  let image = $"ui/gameuiskin#{id}.avif:0:P"
   let reqLevel = mod?.reqLevel ?? 0
   let currency = getModCurrency(mod)
   let cost = mkCurUnitModCostComp(mod)
@@ -117,16 +115,7 @@ let function modData(mod) {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = [
-        {
-          size = flex()
-          rendObj = ROBJ_IMAGE
-          image = Picture(image)
-          fallbackImage = Picture(defImage)
-          keepAspect = KEEP_ASPECT_FILL
-          imageHalign = ALIGN_LEFT
-          imageValign = ALIGN_BOTTOM
-        }
-
+        mkModImage(mod)
         {
           maxWidth = textSize > modW ? modW - contentMargin[1] * 2 : null
           vplace = ALIGN_TOP

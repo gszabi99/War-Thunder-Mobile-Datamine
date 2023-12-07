@@ -5,16 +5,7 @@ let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 
 let sortLootboxes = @(a, b) (a?.meta.event ?? "") <=> (b?.meta.event ?? "") || a.name <=> b.name
 
-let lootboxesCfg = {
-  event_small = {
-    adRewardId = "advert_event"
-  }
-}
-
-let eventLootboxesRaw = Computed(@() serverConfigs.value?.lootboxesCfg
-  .filter(@(v) v?.meta.event)
-  .map(@(v, key) v.__merge({ name = key }, lootboxesCfg?[key] ?? {}))
-  ?? {})
+let eventLootboxesRaw = Computed(@() serverConfigs.value?.lootboxesCfg.filter(@(v) v?.meta.event) ?? {})
 
 let eventLootboxes = Computed(function() {
   let res = []
@@ -42,5 +33,4 @@ let eventLootboxes = Computed(function() {
 return {
   eventLootboxesRaw
   eventLootboxes
-  lootboxesCfg
 }

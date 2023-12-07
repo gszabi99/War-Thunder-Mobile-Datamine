@@ -13,10 +13,13 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { setTimeout } = require("dagor.workcycle")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
+let { register_command } = require("console")
 
 
 let IDFA_SCENE_ID = "iosIdentifierForAdvertisers"
 
+let forceInGameAdTrackingMessage = mkWatched(persist, "forceInGameAdTrackingMessage", null)
 let currentSettingForIDFA = hardPersistWatched("currentSettingForIDFA", getTrackingPermission())
 let isForceClosed = mkWatched(persist, "isForceClosed", false)
 let needShow = Computed(@() !isForceClosed.value
@@ -124,12 +127,24 @@ let IDFAwnd = {
 }
 
 needOpen.subscribe(function(v) {
-  if (v)
-    isOpened(true)
+  if (v) {
+    if (forceInGameAdTrackingMessage.value ?? abTests.value?.inGameAdTrackingMessage ?? false)
+      isOpened(true)
+    else
+      requestTrackingPermission()
+  }
 })
 needShow.subscribe(function(v) {
   if (!v)
     isOpened(false)
 })
+
+register_command(function() {
+  forceInGameAdTrackingMessage.set(forceInGameAdTrackingMessage.get() != null
+    ? null
+    : !(abTests.value?.inGameAdTrackingMessage ?? false))
+  dlog("inGameAdTrackingMessage", forceInGameAdTrackingMessage.value ?? abTests.value?.inGameAdTrackingMessage ?? false) // warning disable: -forbidden-function
+}, "debug.abTests.inGameAdTrackingMessage")
+
 
 registerScene(IDFA_SCENE_ID, IDFAwnd, null, isOpened)

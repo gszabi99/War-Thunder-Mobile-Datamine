@@ -302,14 +302,13 @@
   "video": {
     "safeArea": false,
     "drawDebug": false,
-    "disable_backbuffer_aa": true,
     "maxTexCount": 65535,
     "enableHmdSupport": true,
     "allowDx10Fallback": false,
     "adaptive_vsync": false,
     "compatibilityMode": true,
     "useTiledRender": true,
-    "postfx_antialiasing": "high_fxaa",
+    "postfx_antialiasing": "fxaa",
     "alpha_to_coverage": false,
     "instancing": "auto",
     "fonts": "medium",
@@ -337,6 +336,7 @@
     "fadeInSeconds": 2.0,
     "fadeInPreloadTimelimitSeconds": 1.0,
     "beforeFadeInD3dPipelineCompileTimeBudgetSeconds": 0.25,
+    "gameplayD3dPipelineCompileTimeBudgetSeconds": 0.0,
     "sharpen": 0.2,
     "enableSuspensionAnimation": false,
     "cloudsQuality": 2,
@@ -404,6 +404,8 @@
     "allowDepthResolvePath": true,
     "resetManagedTexturesOnSettingsChanged": true,
     "allow_uhq_textures": false,
+    "shoreHeightmapRange": 200.0,
+    "msaaQuality": 4,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }
@@ -514,13 +516,10 @@
       400.0,
       0.5
     ],
-    "enableNvHighlights": [
-      "auto",
-      "auto"
-    ],
     "skipIntegratedGpuWarning": true,
     "netLogerr": true,
     "dynamicImpostorsPerFrame": 1,
+    "enableNvHighlights": "auto",
     "logerrOnSecLayer": true,
     "mobileStyleFpsString": true,
     "sendFullLogOnFatalIntervalHours": 4,
@@ -726,16 +725,6 @@
       "IB": 4096,
       "VB1": 16384,
       "VB2": 0
-    }
-  },
-  "xr": {
-    "depthBlacklist": {
-      "vendorid": [
-        10462,
-        1118,
-        10291,
-        -11714
-      ]
     }
   },
   "contentUpdater": {
@@ -1032,7 +1021,7 @@
   },
   "shadersWarmup": {
     "android": true,
-    "pc": true,
+    "win64": true,
     "graphics": {
       "dafx_modfx_bboard_render": true,
       "sparks_ps": true,
@@ -1091,16 +1080,14 @@
     },
     "ipad_pro": {
       "codename": [
-        "iPad8",
-        "iPad13,4",
-        "iPad13,5",
-        "iPad13,6",
-        "iPad13,7",
-        "iPad13,8",
-        "iPad13,9",
-        "iPad13,10",
-        "iPad13,11",
-        "iPad14"
+        "iPad Pro 3 11 inch",
+        "iPad Pro 3 12.9 inch",
+        "iPad Pro 4 11 inch",
+        "iPad Pro 4 12.9 inch",
+        "iPad Pro 5 11 inch",
+        "iPad Pro 5 12.9 inch",
+        "iPad Pro 6 11 inch",
+        "iPad Pro 6 12.9 inch"
       ],
       "video": {
         "fpsLimit": 60
@@ -1108,8 +1095,11 @@
     },
     "texture_uhq": {
       "codename": [
-        "iPhone16,",
-        "iPad14,",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPad Mini 6",
+        "iPad Pro 6 11 inch",
+        "iPad Pro 6 12.9 inch",
         "iPad15,"
       ],
       "graphics": {
@@ -1121,7 +1111,8 @@
     },
     "rt_shadows": {
       "codename": [
-        "iPhone16,",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
         "iPad15,"
       ],
       "metal": {
@@ -1132,7 +1123,10 @@
       }
     },
     "apple_a8": {
-      "codename": "iPad5,",
+      "codename": [
+        "iPad Mini 4",
+        "iPad Air 2"
+      ],
       "graphics": {
         "shaderlod": "low",
         "enableNearCloudsRendering": false
@@ -1141,9 +1135,6 @@
   },
   "android_presets": {
     "low": {
-      "video": {
-        "resolution": "x0.633"
-      },
       "graphics": {
         "backgroundScale": 0.75,
         "limitPlayerAirplaneUnitsLod": 1,
@@ -1187,7 +1178,9 @@
         "allowNonSkyReflections": false,
         "enableWakeDisplacement": false,
         "enableWaterProjFx": false,
-        "enableGrassTrackMask": false
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": false,
+        "customRefractionScale": 0.25
       },
       "render": {
         "grassInCompatibility": false
@@ -1213,9 +1206,6 @@
       }
     },
     "medium": {
-      "video": {
-        "resolution": "x0.633"
-      },
       "graphics": {
         "backgroundScale": 0.75,
         "limitPlayerAirplaneUnitsLod": 1,
@@ -1259,7 +1249,9 @@
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
-        "enableGrassTrackMask": false
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": false,
+        "customRefractionScale": 0.25
       },
       "render": {
         "grassInCompatibility": true
@@ -1285,9 +1277,6 @@
       }
     },
     "high": {
-      "video": {
-        "resolution": "x0.633"
-      },
       "graphics": {
         "backgroundScale": 1.0,
         "limitPlayerAirplaneUnitsLod": -1,
@@ -1331,7 +1320,9 @@
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
-        "enableGrassTrackMask": false
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": true,
+        "customRefractionScale": 0.25
       },
       "render": {
         "grassInCompatibility": true
@@ -1357,9 +1348,6 @@
       }
     },
     "max": {
-      "video": {
-        "resolution": "x0.633"
-      },
       "graphics": {
         "backgroundScale": 1.0,
         "limitPlayerAirplaneUnitsLod": -1,
@@ -1403,7 +1391,9 @@
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
-        "enableGrassTrackMask": true
+        "enableGrassTrackMask": true,
+        "allowRefractionForTankLevels": true,
+        "customRefractionScale": 0.5
       },
       "render": {
         "grassInCompatibility": true
@@ -1429,9 +1419,6 @@
       }
     },
     "movie": {
-      "video": {
-        "resolution": "x0.633"
-      },
       "graphics": {
         "backgroundScale": 1.0,
         "limitPlayerAirplaneUnitsLod": -1,
@@ -1475,7 +1462,9 @@
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
-        "enableGrassTrackMask": true
+        "enableGrassTrackMask": true,
+        "allowRefractionForTankLevels": true,
+        "customRefractionScale": 1.0
       },
       "render": {
         "grassInCompatibility": true
@@ -1505,7 +1494,6 @@
     "low": {
       "graphics": {
         "backgroundScale": 0.5,
-        "backgroundScaleAt120": 0.5,
         "fxDensityMul": 0.8,
         "compatibilityShadowQuality": "low",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -1526,13 +1514,14 @@
         "impostorAlphaToCoverage": true,
         "compatibilityRendinstDistMul": 0.8,
         "enableGrassTrackMask": false,
-        "allowNonSkyReflections": false
+        "allowNonSkyReflections": false,
+        "allowRefractionForTankLevels": false,
+        "customRefractionScale": 0.25
       }
     },
     "medium": {
       "graphics": {
         "backgroundScale": 0.5,
-        "backgroundScaleAt120": 0.5,
         "fxDensityMul": 0.8,
         "compatibilityShadowQuality": "medium",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -1553,13 +1542,14 @@
         "impostorAlphaToCoverage": true,
         "compatibilityRendinstDistMul": 0.8,
         "enableGrassTrackMask": false,
-        "allowNonSkyReflections": true
+        "allowNonSkyReflections": true,
+        "allowRefractionForTankLevels": false,
+        "customRefractionScale": 0.25
       }
     },
     "high": {
       "graphics": {
         "backgroundScale": 0.633,
-        "backgroundScaleAt120": 0.5,
         "fxDensityMul": 1.0,
         "compatibilityShadowQuality": "medium",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -1580,13 +1570,14 @@
         "impostorAlphaToCoverage": true,
         "compatibilityRendinstDistMul": 1.0,
         "enableGrassTrackMask": true,
-        "allowNonSkyReflections": true
+        "allowNonSkyReflections": true,
+        "allowRefractionForTankLevels": true,
+        "customRefractionScale": 0.25
       }
     },
     "max": {
       "graphics": {
         "backgroundScale": 0.75,
-        "backgroundScaleAt120": 0.5,
         "fxDensityMul": 1.0,
         "compatibilityShadowQuality": "high",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -1607,7 +1598,9 @@
         "impostorAlphaToCoverage": true,
         "compatibilityRendinstDistMul": 1.0,
         "enableGrassTrackMask": true,
-        "allowNonSkyReflections": true
+        "allowNonSkyReflections": true,
+        "allowRefractionForTankLevels": true,
+        "customRefractionScale": 0.5
       }
     }
   },
@@ -1616,6 +1609,15 @@
     "vendor": {
       "Qualcomm": {
         "driverProps": {
+          "reuseSwapchainHandle": {
+            "entry": {
+              "driverMinVer0": 512,
+              "driverMinVer1": 502,
+              "data": {
+                "allow": false
+              }
+            }
+          },
           "adrenoClearStoreRace": {
             "entry": [
               {
@@ -1652,18 +1654,6 @@
               }
             }
           },
-          "msaaAndBlendingHang": {
-            "entry": {
-              "gpu": [
-                "725",
-                "730",
-                "740"
-              ],
-              "data": {
-                "affected": true
-              }
-            }
-          },
           "brokenShadersAfterAppSwitch": {
             "entry": {
               "gpu": [
@@ -1677,6 +1667,15 @@
                 "620",
                 "630"
               ],
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "disableShaderFloat16": {
+            "entry": {
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 420,
               "data": {
                 "affected": true
               }

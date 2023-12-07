@@ -11,7 +11,7 @@ subscribe("hudElementShow", function(p) {
   if (show)
     hudTutorElemsState.mutate(@(v) v[element] <- p)
   else if (element in hudTutorElemsState.value)
-    hudTutorElemsState.mutate(@(v) delete v[element])
+    hudTutorElemsState.mutate(@(v) v.$rawdelete(element))
 })
 
 isInBattle.subscribe(@(_) hudTutorElemsState({}))

@@ -19,7 +19,7 @@
     "sound": "weapon.bomb_std",
     "explosionFx": "bomb_expl_200kg",
     "explosionPatchRadius": 8.0,
-    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "waterExplosionEffect": "bomb_water_explosion_big",
     "explodeTreshold": 0.01,
     "explodeRadius": [
       6.0,

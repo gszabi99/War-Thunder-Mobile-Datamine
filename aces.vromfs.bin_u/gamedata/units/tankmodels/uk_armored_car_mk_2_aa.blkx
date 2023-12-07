@@ -44,6 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
+  "deadZoneForTurnAround": 90.0,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.4,

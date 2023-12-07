@@ -90,7 +90,7 @@ let function genNewTip(unitTypeWeights, prevTipInfo) {
   unitTypeWeights = unitTypeWeights.filter(@(_, bit) (tipsLocId?[bit].len() ?? 0) != 0)
   let prevBit = prevTipInfo.unitTypeBit
   if (unitTypeWeights.len() > 1 && (prevBit in unitTypeWeights) && tipsLocId[prevBit].len() == 1)
-    delete unitTypeWeights[prevBit]
+    unitTypeWeights.$rawdelete(prevBit)
   if (unitTypeWeights.len() == 0)
     return res
 

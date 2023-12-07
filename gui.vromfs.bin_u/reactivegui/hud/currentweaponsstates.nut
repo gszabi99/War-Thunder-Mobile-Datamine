@@ -186,8 +186,7 @@ let function markWeapKeyHold(key) {
     return
   userHoldWeapKeys.mutate(@(v) v[key] <- false)
   let function onTimer() {
-    if (key in holdTimers)
-      delete holdTimers[key]
+    holdTimers?.$rawdelete(key)
     userHoldWeapKeys.mutate(@(v) v[key] <- true)
   }
   holdTimers[key] <- onTimer
@@ -197,10 +196,10 @@ let function markWeapKeyHold(key) {
 let function unmarkWeapKeyHold(key) {
   if (key in holdTimers) {
     clearTimer(holdTimers[key])
-    delete holdTimers[key]
+    holdTimers.$rawdelete(key)
   }
   if (key in userHoldWeapKeys.value)
-    userHoldWeapKeys.mutate(@(v) delete v[key])
+    userHoldWeapKeys.mutate(@(v) v.$rawdelete(key))
   selectActionBarAction("")
 }
 

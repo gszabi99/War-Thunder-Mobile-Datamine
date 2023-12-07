@@ -43,6 +43,8 @@ let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let eventBanner = require("%rGui/event/eventBanner.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let btnOpenUnitWnd = require("%rGui/unit/btnOpenUnitWnd.nut")
+let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
+let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -91,11 +93,13 @@ let onlineInfo = @() {
   color = 0xD0D0D0D0
 }.__update(fontVeryTinyShaded)
 
+let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
+
 let gamercardPlace = {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
-    mkGamercard
+    mkGamercard(dropMenuBtn)
     {
       size = [flex(), SIZE_TO_CONTENT]
       children = [

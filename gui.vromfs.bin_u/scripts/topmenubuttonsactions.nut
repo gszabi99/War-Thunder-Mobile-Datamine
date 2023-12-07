@@ -23,7 +23,7 @@ let USEROPT_AIRCRAFT = addUserOption("USEROPT_AIRCRAFT")
 let USEROPT_WEAPONS = addUserOption("USEROPT_WEAPONS")
 let USEROPT_SKIN = addUserOption("USEROPT_SKIN")
 
-let function startOfflineMission(unitName, missionId, bullets, gameMode = GM_TEST_FLIGHT
+let function startOfflineMission(unitName, missionId, bullets, localMP = false, gameMode = GM_TEST_FLIGHT
 ) {
   let misBlk = get_meta_mission_info_by_name(missionId)
   if (misBlk == null) {
@@ -44,6 +44,7 @@ let function startOfflineMission(unitName, missionId, bullets, gameMode = GM_TES
   if (gameMode != null)
     misBlk["_gameMode"] = gameMode
   misBlk["difficulty"] = "arcade"
+  misBlk["localMP"] = localMP
 
   setGuiOptionsMode(optModeTraining)
   set_gui_option(USEROPT_AIRCRAFT, unitName)
@@ -87,6 +88,8 @@ let function sendBenchmarksList(_) {
 subscribe("startTestFlight", @(p)
   startOfflineMission(p.unitName, p?.missionName ?? TESTFLIGHT_MISSION, p?.bullets))
 subscribe("startTraining", @(p)
-  startOfflineMission(p.unitName, p.missionName, p?.bullets, GM_TRAINING))
+  startOfflineMission(p.unitName, p.missionName, p?.bullets, false, GM_TRAINING))
+subscribe("startLocalMP", @(p)
+  startOfflineMission(p.unitName, p.missionName, p?.bullets, true, GM_DOMINATION))
 subscribe("startBenchmark", @(v) openBenchmarkWnd(v.id))
 subscribe("getBenchmarksList", sendBenchmarksList)

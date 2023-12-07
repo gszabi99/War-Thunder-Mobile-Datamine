@@ -3,25 +3,52 @@ let { resetTimeout } = require("dagor.workcycle")
 let { playSound, startSound, stopSound } = require("sound_wt")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkLevelBg, mkProgressLevelBg, maxLevelStarChar, playerExpColor,
-  levelProgressBarWidth, levelProgressBarFillWidth, rotateCompensate
-} = require("%rGui/components/levelBlockPkg.nut")
-let { starLevelTiny } = require("%rGui/components/starLevel.nut")
-let { unitPlateWidth } = require("%rGui/unit/components/unitPlateComp.nut")
+let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
+let { maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
+let { starLevelMedium } = require("%rGui/components/starLevel.nut")
+let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 
-let levelBlockSize = hdpx(60)
+let levelBlockSize = hdpx(78)
+let lightBorderWidth = hdpx(4)
+let levelProgressBarHeight = hdpx(20)
+let levelProgressBarWidth = hdpx(850)
+let levelProgressBarFillWidth = levelProgressBarWidth
+let rotateCompensate = 1.1
 
-let nextLevelBorderColor = 0xFFDADADA
-let nextLevelBgColor = 0xFF464646
-let nextLevelTextColor = 0xFFFFFFFF
-let receivedExpProgressColor = 0xFFFFFFFF
 let levelUpTextColor = 0xFF000000
+let levelBgColor = 0xFF000000
+let levelProgressBgColor = 0xFF808080
+let receivedExpProgressColor = 0xFFFFFFFF
+let nextLevelBgColor = levelProgressBgColor
+let nextLevelTextColor = levelBgColor
 
 let rewardAnimTime = 0.5
 let levelProgressSingleAnimTime = 0.5
 let maxLevelProgressAnimTime = 1.5
 
-let starLevelOvr = { pos = [0, ph(40)] }
+let mkLevelBg = @(override = {}) {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  color = 0xFF000000
+  transform = { rotate = 45 }
+  children = {
+    size = flex()
+    rendObj = ROBJ_BOX
+    fillColor = levelBgColor
+    borderWidth = lightBorderWidth
+  }.__update(override?.childOvr ?? {})
+}
+
+let mkProgressLevelBg = @(override = {}) {
+  size = [levelProgressBarWidth, levelProgressBarHeight]
+  rendObj = ROBJ_SOLID
+  hplace = ALIGN_LEFT
+  color = levelProgressBgColor
+}.__update(override)
+
+let starLevelOvr = { pos = [0, ph(56)] }
 
 let mkCurLevelMark = @(lineColor, level, starLevel) {
   size = array(2, levelBlockSize)
@@ -33,8 +60,8 @@ let mkCurLevelMark = @(lineColor, level, starLevel) {
       rendObj = ROBJ_TEXT
       pos = [0, -hdpx(2)]
       text = level - starLevel
-    }.__update(fontSmall)
-    starLevelTiny(starLevel, starLevelOvr)
+    }.__update(fontMedium)
+    starLevelMedium(starLevel, starLevelOvr)
   ]
 }
 
@@ -48,8 +75,8 @@ let mkNextLevelMark = @(nextStarLevel, textBlockOvr, bgBlockOvr) {
     {
       rendObj = ROBJ_TEXT
       pos = [0, -hdpx(2)]
-    }.__update(fontSmall, textBlockOvr)
-    starLevelTiny(nextStarLevel, starLevelOvr)
+    }.__update(fontMedium, textBlockOvr)
+    starLevelMedium(nextStarLevel, starLevelOvr)
   ]
 }
 
@@ -93,6 +120,7 @@ let mkTextUnderLevelLine = @(text, color, override = {}) {
 }.__update(fontVeryTiny, override)
 
 let expTextStarSize = hdpx(35)
+
 let mkExpText = @(exp, color) {
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_RIGHT
@@ -132,9 +160,11 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
   let nextStarLevel = isStarProgress ? curStarLevel + 1 : 0
   return {
     watch = curLevelIdxWatch
+    key = $"line_{lineColor}"
     size = [levelProgressBarWidth + 2 * rotateCompensate * levelBlockSize, SIZE_TO_CONTENT]
     hplace = ALIGN_CENTER
     valign = ALIGN_CENTER
+    onAttach = @() curLevelIdxWatch.set(0)
     onDetach = stopLevelLineSound
     children = [
       mkProgressLevelBg({
@@ -183,7 +213,7 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
         },
         {
           fillColor = isLevelUpCurStep ? receivedExpProgressColor : nextLevelBgColor
-          borderColor = nextLevelBorderColor
+          borderWidth = 0
           transform = {}
           animations = mkNextLevelBgAnimations(levelProgressDelay, levelProgressAnimTime, animationTrigger)
         })
@@ -191,7 +221,71 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
   }
 }
 
-let function mkLevelProgressLine(curLevelConfig, reward, text, animStartTime , lineColor = playerExpColor, override = {}) {
+let mkLevelTitle = @(text) {
+  pos = [hdpx(85), hdpx(-15)]
+  rendObj = ROBJ_TEXT
+  text
+}.__update(fontMedium)
+
+let mkLevelDesc = @(text) doubleSideGradient.__merge({
+  pos = [hdpx(39), hdpx(100)]
+  padding = [hdpx(5), hdpx(50)]
+  children = {
+    halign = ALIGN_LEFT
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    maxWidth = hdpx(500)
+    text
+  }.__update(fontVeryTiny)
+})
+
+let levelUnlocksBarW = hdpx(400)
+let levelUnlocksBarH = hdpx(64)
+
+local levelUnlocksText = null
+let function mkLevelUnlocksText() {
+  if (levelUnlocksText == null) {
+    levelUnlocksText = {
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_TEXT
+      text = utf8ToUpper(loc("debriefing/levelUnlocks"))
+      color = nextLevelTextColor
+    }.__update(fontSmall)
+    let textWidthMax = levelUnlocksBarW - levelUnlocksBarH - hdpx(10)
+    let textScale = getTextScaleToFitWidth(levelUnlocksText, textWidthMax)
+    levelUnlocksText.__update({ transform = { pivot = [0.5, 0.5], scale = [textScale, textScale] } })
+  }
+  return levelUnlocksText
+}
+
+let mkLevelUnlocksBar = @(lineColor, isLevelUp) {
+  size = [levelUnlocksBarW, levelUnlocksBarH]
+  rendObj = ROBJ_MASK
+  image = Picture($"ui/gameuiskin#debr_level_unlocks_bar_mask.svg:{levelUnlocksBarW}:{levelUnlocksBarH}")
+  children = [
+    {
+      size = flex()
+      rendObj = ROBJ_SOLID
+      color = levelProgressBgColor
+    }
+    !isLevelUp ? null : {
+      size = flex()
+      rendObj = ROBJ_SOLID
+      color = receivedExpProgressColor
+
+      key = $"level_unlocks_bar_{lineColor}"
+      transform = { pivot = [0, 0] }
+      animations = [
+        { prop = AnimProp.scale, from = [0, 1], to = [0, 1], duration = 0.5, play = true }
+        { prop = AnimProp.scale, from = [0, 1], to = [1, 1], delay = 0.5, duration = 0.25, easing = Linear, play = true }
+      ]
+    }
+    mkLevelUnlocksText()
+  ]
+}
+
+let function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime, lineColor) {
   let { exp = 0, level = 1, starLevel = 0, isStarProgress = false,
     nextLevelExp = 0, isLastLevel = false, levelsExp = []
   } = curLevelConfig
@@ -235,43 +329,48 @@ let function mkLevelProgressLine(curLevelConfig, reward, text, animStartTime , l
     }
   }
   let levelProgressLineAnimTime = min(levelUpsArray.len() * levelProgressSingleAnimTime, maxLevelProgressAnimTime)
-  let fullLevelDelayAnimTime = animStartTime + levelProgressLineAnimTime
+  let fullLevelDelayAnimTime = animStartTime + 0.5
   let curLevelIdxWatch = Watched(0)
   let levelProgressLineComp = {
-    size = [unitPlateWidth, SIZE_TO_CONTENT]
-    flow = FLOW_VERTICAL
+    size = [SIZE_TO_CONTENT, hdpx(100)]
     children = [
+      mkLevelTitle(title)
       {
-        rendObj = ROBJ_TEXT
-        text = text
-      }.__update(fontTiny)
-      mkLevelLineProgress(curLevelIdxWatch, levelUpsArray, lineColor, animStartTime)
+        pos = [0, hdpx(30)]
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        children = [
+          mkLevelLineProgress(curLevelIdxWatch, levelUpsArray, lineColor, animStartTime)
+          mkLevelUnlocksBar(lineColor, isLevelUp)
+        ]
+      }
+      mkLevelDesc(desc)
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = [levelProgressBarWidth + hdpx(75), SIZE_TO_CONTENT]
+        pos = [0, hdpx(100)]
         minHeight = expTextStarSize
         valign = ALIGN_CENTER
+        key = $"level_status_{lineColor}"
         transform = {}
         animations = [
           { prop = AnimProp.opacity, from = 0.0, to = 0.0, play = true duration = fullLevelDelayAnimTime }
-          {
-            prop = AnimProp.opacity, from = 0.0, to = 1.0, play = true, easing = InQuad
-            duration = rewardAnimTime / 2, delay = fullLevelDelayAnimTime
-          }
+          { prop = AnimProp.opacity, from = 0.0, to = 1.0, play = true, easing = InQuad,
+            duration = rewardAnimTime / 2, delay = fullLevelDelayAnimTime }
         ]
         children = isLevelUp ? mkTextUnderLevelLine(utf8ToUpper(loc("debriefing/newLevel")), lineColor,
-            { animations = [
-                {
-                  prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3], duration = rewardAnimTime,
-                  delay = fullLevelDelayAnimTime, easing = CosineFull, play = true, onStart = @() playSound("unit_level_up")
-                }
+            {
+              transform = { pivot = [1.0, 1.0] }
+              animations = [
+                { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3], duration = rewardAnimTime,
+                  delay = fullLevelDelayAnimTime, easing = CosineFull, play = true, onStart = @() playSound("unit_level_up") }
               ]
-              transform = { pivot = [1.0, 1.0] } })
+            })
           : addExp > 0 ? mkExpText(addExp, lineColor)
           : totalExp > 0 ? mkTextUnderLevelLine(loc("debriefing/lostExp"), lineColor)
           : null
       }
     ]
-  }.__update(override)
+  }
 
   return {
     levelProgressLineComp

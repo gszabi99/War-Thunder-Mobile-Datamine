@@ -178,7 +178,7 @@ let function mkSimpleContactAction(actionId, mkData, onSucces = null) {
         if (isSuccess)
           v[userId] = true
         else
-          delete v[userId]
+          v.$rawdelete(userId)
       })
 
     if (isSuccess) {

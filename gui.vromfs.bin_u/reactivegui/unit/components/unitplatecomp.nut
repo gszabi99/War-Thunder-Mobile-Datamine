@@ -224,7 +224,7 @@ let mkPlayerLevel = @(level, starLevel) {
   ]
 }
 
-let mkAnimationUnitLock = @(justUnlockedDelay, level, callback = null){
+let mkAnimationUnitLock = @(justUnlockedDelay, level, lockBottomImg, callback = null){
   transform = {}
   opacity = 0
   animations = shakeAnimation((justUnlockedDelay ?? 0) - 2.3 * ANIMATION_STEP)
@@ -243,7 +243,7 @@ let mkAnimationUnitLock = @(justUnlockedDelay, level, callback = null){
           callback
         )
       })
-    mkIcon("ui/gameuiskin#lock_campaign_bottom.svg", [(lockIconSize * 0.75).tointeger(), (lockIconSize * 0.75).tointeger()],
+    mkIcon(lockBottomImg, [(lockIconSize * 0.75).tointeger(), (lockIconSize * 0.75).tointeger()],
       {
         color = levelTextColor
         children = {
@@ -279,7 +279,7 @@ let function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
           ]
         }))
   else if(justUnlockedDelay)
-    children.append(mkAnimationUnitLock(justUnlockedDelay, rank,
+    children.append(mkAnimationUnitLock(justUnlockedDelay, rank, "ui/gameuiskin#lock_campaign_bottom.svg",
       function() {
         deleteJustUnlockedUnit(unit.name)
         backButtonBlink("UnitsWnd")
@@ -393,7 +393,8 @@ let function mkUnitSlotLockedLine(slot, isLocked = true, justUnlockedDelay = nul
   else if (isLocked)
     children.append(mkIcon("ui/gameuiskin#lock_icon.svg", [lockIconRespWnd, lockIconRespWnd], { color = slotLockedTextColor }))
   else if(justUnlockedDelay)
-    children.append(mkAnimationUnitLock(justUnlockedDelay, slot.reqLevel, @() deleteJustUnlockedPlatoonUnit(slot.name)))
+    children.append(mkAnimationUnitLock(justUnlockedDelay, slot.reqLevel, "ui/gameuiskin#lock_unit_bottom.svg",
+      @() deleteJustUnlockedPlatoonUnit(slot.name)))
   return {
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM

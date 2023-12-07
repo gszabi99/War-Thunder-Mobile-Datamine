@@ -1,7 +1,7 @@
 
 let { Computed, Watched } = require("frp")
 let { subscribe } = require("eventbus")
-let { get_mp_session_id_int } = require("multiplayer")
+let { get_mp_session_id_int, is_local_multiplayer } = require("multiplayer")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
@@ -21,12 +21,18 @@ let isInMenu = Computed(@() isLoggedIn.value && !isInBattle.value && !isInLoadin
 let isOutOfBattleAndResults = Computed(@() !isInBattle.value && !isInDebriefing.value && !isInLoadingScreen.value)
 let isHudVisible = sharedWatched("isHudVisible", @() false)
 let isInMpSession = Watched(get_mp_session_id_int() != -1)
+let isLocalMultiplayer = Watched(is_local_multiplayer())
 let isInMpBattle = Computed(@() isInBattle.value && isInMpSession.value)
 
 subscribe("onJoinMatch", function(_) {
   let sessionId = get_mp_session_id_int()
   battleSessionId(sessionId)
   isInMpSession(sessionId != -1)
+})
+
+isInBattle.subscribe(function(v) {
+  if (v)
+    isLocalMultiplayer(is_local_multiplayer())
 })
 
 subscribe("destroyMultiplayer", @(_) isInMpSession(get_mp_session_id_int() != -1))
@@ -38,6 +44,7 @@ return {
   battleSessionId
   isInMpSession
   isInMpBattle
+  isLocalMultiplayer
   battleUnitName
   isInLoadingScreen
   isMissionLoading
