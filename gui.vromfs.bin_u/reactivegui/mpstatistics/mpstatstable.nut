@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
+let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
+let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 
 
 let cellTextColor = Color(255, 255, 255)
@@ -16,6 +16,7 @@ let rowBgEvenColor = Color(0, 0, 0, 0)
 
 let rowHeight = hdpx(76)
 let rowHeadIconSize = hdpx(44)
+let avatarHeight = rowHeight - hdpx(2)
 
 let cellTextProps = {
   rendObj = ROBJ_TEXT
@@ -32,22 +33,6 @@ let mkCellIcon = @(icon) {
   image = Picture($"{icon}:{rowHeadIconSize}:{rowHeadIconSize}")
 }
 
-let starLevelOvr = { pos = [0, ph(40)] }
-let levelMark = @(level, starLevel) {
-  size = array(2, hdpx(45))
-  margin = hdpx(10)
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = [
-    mkLevelBg()
-    {
-      rendObj = ROBJ_TEXT
-      pos = [0, -hdpx(2)]
-      text = level - starLevel
-    }.__update(fontVeryTiny)
-    starLevelTiny(starLevel, starLevelOvr)
-  ]
-}
 
 let premIconSize = fontSmall.fontSize
 let premiumMark = {
@@ -80,7 +65,25 @@ let function mkNameContent(player, teamColor, halign) {
       player.hasPremium ? premiumMark : null
     ]
   }
-  let { level, starLevel = 0 } = player
+  let unitCell = {
+    size = flex()
+    halign
+    valign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    children = [
+      mkGradRankSmall(player.mRank)
+      cellTextProps.__merge({
+        maxWidth = pw(100)
+        halign
+        color = player.isDead ? unitDeadTextColor
+          : !player?.isUnitPremium ?  cellTextColor
+          : premiumTextColor
+        text = getUnitNameText(unitName, player.unitClass, halign)
+      })
+    ]
+  }
+
   let res = {
     size = flex()
     halign
@@ -88,7 +91,11 @@ let function mkNameContent(player, teamColor, halign) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = [
-      levelMark(level, starLevel)
+      {
+        size = [avatarHeight, avatarHeight]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{getAvatarImage(player?.decorators.avatar)}:{avatarHeight}:{avatarHeight}:P")
+      }
       {
         size = flex()
         halign
@@ -97,14 +104,7 @@ let function mkNameContent(player, teamColor, halign) {
         flow = FLOW_VERTICAL
         children = [
           nameCell
-          cellTextProps.__merge({
-            maxWidth = pw(100)
-            halign
-            color = player.isDead ? unitDeadTextColor
-              : !player?.isUnitPremium ?  cellTextColor
-              : premiumTextColor
-            text = getUnitNameText(unitName, player.unitClass, halign)
-          })
+          unitCell
         ]
       }
     ]
@@ -112,6 +112,7 @@ let function mkNameContent(player, teamColor, halign) {
   if (halign == ALIGN_RIGHT) {
     nameCell.children.reverse()
     res.children.reverse()
+    unitCell.children.reverse()
   }
   return res
 }

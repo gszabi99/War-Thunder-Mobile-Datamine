@@ -22,6 +22,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { scaleAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { justUnlockedPlatoonUnits } = require("%rGui/unit/justUnlockedPlatoonUnits.nut")
+let { btnOpenUnitAttrBig } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let curSelectedUnitId = Watched("")
@@ -30,6 +31,7 @@ let function close() {
   curSelectedUnitId("")
   openUnitOvr(null)
 }
+let buttonsGap = hdpx(40)
 
 let baseUnit = Computed(function() {
   let { name = null, canShowOwnUnit = true} = openUnitOvr.value
@@ -43,6 +45,8 @@ let baseUnit = Computed(function() {
   return res
 })
 let isOpened = Computed(@() baseUnit.value != null)
+
+let isShowedUnitOwned = Computed(@() baseUnit.value?.name in myUnits.value)
 
 let platoonUnitsList = Computed(function() {
   let { name = "", platoonUnits = [] } = baseUnit.value
@@ -167,17 +171,19 @@ let lvlUpButton = @() {
         @() buyUnitLevelWnd(baseUnit.value?.name), { hotkeys = ["^J:Y"] })
 }
 
-let buttonsBlock = {
+let buttonsBlock = @() {
   flow = FLOW_VERTICAL
+  watch = isShowedUnitOwned
   gap = hdpx(30)
   children = [
     mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT })
     {
       flow = FLOW_HORIZONTAL
-      gap = hdpx(30)
+      gap = buttonsGap
       vplace = ALIGN_BOTTOM
       valign = ALIGN_BOTTOM
       children = [
+        isShowedUnitOwned.value ? btnOpenUnitAttrBig : null
         lvlUpButton
         testDriveButton
       ]
@@ -209,7 +215,7 @@ let sceneRoot = {
       unitInfoPanelPlace
       {
         flow = FLOW_HORIZONTAL
-        gap = hdpx(30)
+        gap = buttonsGap
         vplace = ALIGN_BOTTOM
         valign = ALIGN_BOTTOM
         children = [

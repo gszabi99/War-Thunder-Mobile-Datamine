@@ -152,7 +152,7 @@ let function articleTabBase(info, sf, isSelected, isUnseen) {
             // For marquee:
             orientation = O_VERTICAL
             speed = hdpx(30)
-            delay = [5, 2]
+            delay = defMarqueeDelay
           }.__update(fontTiny)
         ]
       }

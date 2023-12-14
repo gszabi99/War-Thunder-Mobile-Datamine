@@ -9,6 +9,7 @@ let { IsTracked } = require("%rGui/hud/tankState.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
 let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
 let { setMoveControlByArrows } = require("hudState")
+let disabledControls = require("%rGui/controls/disabledControls.nut")
 
 let stickZoneSize = [shHud(40), shHud(40)]
 let bgRadius = shHud(15)
@@ -22,6 +23,8 @@ let imgArrowSmallH = (23.0 / 35 * imgArrowW).tointeger()
 let imgArrowSmallPosX = 0.35 * imgBgSize + 0.5 * imgArrowSmallW
 let imgArrowSmallPosY = 0.35 * imgBgSize + 0.5 * imgArrowSmallH
 let stickSize = shHud(11)
+
+let isTankMoveEnabled = Computed(@() !disabledControls.value?.gm_throttle || !disabledControls.value?.gm_steering)
 
 let imgRotaion = {
   size = [imgRotationSize, imgRotationSize]
@@ -105,13 +108,11 @@ let imgStick = {
   transform = {}
 }
 
-let tankMoveStick  = @() {
+let tankMoveStickBase  = @() {
   watch = [IsTracked, currentTankMoveCtrlType]
   key = currentTankMoveCtrlType
   behavior = Behaviors.TouchScreenStick
   size = stickZoneSize
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_LEFT
   touchStickAction = {
     horizontal = "gm_steering"
     vertical = "gm_throttle"
@@ -153,6 +154,14 @@ let tankMoveStick  = @() {
     imgBgComp
     imgStick
   ]
+}
+
+let tankMoveStick = @() {
+  watch = isTankMoveEnabled
+  size = stickZoneSize
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_LEFT
+  children = isTankMoveEnabled.value ? tankMoveStickBase : imgBg
 }
 
 let function gamepadStick() {
@@ -206,11 +215,12 @@ let tankGamepadStick = {
   ]
 }
 
-let tankGamepadMoveBlock = {
+let tankGamepadMoveBlock = @() {
+  watch = isTankMoveEnabled
   size = stickZoneSize
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = tankGamepadStick
+  children = isTankMoveEnabled.value ? tankGamepadStick : null
 }
 
 let tankMoveStickView = {

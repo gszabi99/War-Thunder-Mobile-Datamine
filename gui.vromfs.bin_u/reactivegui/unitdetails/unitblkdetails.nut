@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { getUnitFileName } = require("vehicleModel")
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
 
 let detailsCache = persist("detailsCache", @() {})
 

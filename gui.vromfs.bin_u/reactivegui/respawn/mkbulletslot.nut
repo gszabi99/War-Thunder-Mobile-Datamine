@@ -30,7 +30,7 @@ let nameBullet = @(bulletInfo) {
   text = getAmmoNameShortText(bulletInfo)
   maxWidth = pw(100)
   behavior = Behaviors.Marquee
-  delay = 0.5
+  delay = defMarqueeDelay
   speed = hdpx(20)
 }.__update(fontTiny)
 
@@ -58,7 +58,7 @@ let function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ov
     children = [
       {
         rendObj = ROBJ_SOLID
-        color = 0x402C2C2C
+        color = 0xA02C2C2C
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         children = [

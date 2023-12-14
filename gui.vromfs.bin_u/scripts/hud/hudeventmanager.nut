@@ -1,8 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { subscribeHudEvents } = require("hudMessages")
-
-let u = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
+let { convertBlk, isDataBlock } = require("%sqstd/datablock.nut")
 let { send_foreign } = require("eventbus")
 let { DM_HIT_RESULT_NONE } = require("hitCamera")
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
@@ -25,7 +23,7 @@ local eventsStack = [] //for debug top event
 
   function subscribe(event_name, callback_fn, context = null) {
     let cb = Callback(callback_fn, context)
-    if (u.isArray(event_name))
+    if (type(event_name) == "array")
       foreach (evName in event_name)
         this.pushCallback(evName, cb)
     else
@@ -59,7 +57,7 @@ local eventsStack = [] //for debug top event
   }
 
   function handleData(data) {
-    if (u.isDataBlock(data))
+    if (isDataBlock(data))
       return convertBlk(data)
     return clone data
   }

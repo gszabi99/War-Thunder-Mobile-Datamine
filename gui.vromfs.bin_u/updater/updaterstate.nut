@@ -57,7 +57,7 @@ foreach(id, val in contentUpdater)
     continue
   else if (id.startswith("UPDATER_EVENT_"))
     eventNames[val] <- id
-  else if (id.startswith("UPDATER_"))
+  else if (id.startswith("UPDATER_") && !id.startswith("UPDATER_ERROR_"))
     stageNames[val] <- id
 
 updaterStage.subscribe(@(v) logU($"Stage change to {stageNames?[v] ?? v}"))

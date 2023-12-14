@@ -1,9 +1,9 @@
 
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribe, send } = require("eventbus")
 let { setTimeout } = require("dagor.workcycle")
 let { get_addon_version } = require("contentUpdater")
+let { chooseRandom } = require("%sqstd/rand.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isMatchingOnline, showMatchingConnectProgress } = require("matchingOnline.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
@@ -181,7 +181,7 @@ let function queueModeOnRandomUnit(mode) {
         break
       }
 
-  let unitName = u.chooseRandom(unitsList)?.name ?? ""
+  let unitName = chooseRandom(unitsList)?.name ?? ""
   let errString = setCurrentUnit(unitName)
   if (errString != "")
     logerr($"On choose unit {unitName}: {errString}")

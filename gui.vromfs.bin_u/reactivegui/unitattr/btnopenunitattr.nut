@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { translucentButton } = require("%rGui/components/translucentButton.nut")
+let { translucentButton, translucentIconButton } = require("%rGui/components/translucentButton.nut")
 let { openUnitAttrWnd, availableAttributes } = require("unitAttrState.nut")
 let mkAvailAttrMark = require("mkAvailAttrMark.nut")
 let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
@@ -20,7 +20,7 @@ let statusMark = @(sf) @() {
     children = mkAvailAttrMark(status.value, hdpx(62), sf)
 }
 
-return translucentButton("ui/gameuiskin#modify.svg",
-  loc("mainmenu/btnUpgrades"),
-  openUnitAttrWnd,
-  statusMark)
+return {
+  btnOpenUnitAttr = translucentButton("ui/gameuiskin#modify.svg", "", openUnitAttrWnd, statusMark)
+  btnOpenUnitAttrBig = translucentIconButton("ui/gameuiskin#modify.svg", openUnitAttrWnd, hdpxi(75), [hdpx(150), hdpx(110)], statusMark)
+}

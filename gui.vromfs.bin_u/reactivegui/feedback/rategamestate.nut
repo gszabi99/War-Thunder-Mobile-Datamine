@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { send, subscribe } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDownloadedFromGooglePlay } = require("android.platform")
+let { get_base_game_version_str } = require("app")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
-let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { check_version } = require("%sqstd/version_compare.nut")
 let { allow_review_cue } = require("%appGlobals/permissions.nut")
 let { sendCustomBqEvent, sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
@@ -17,11 +19,25 @@ let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { battlesMin, killsMin, placeMax, reqVictory, reqMultiplayer, reqNoExtraScenes, isTestingBattlesMin
 } = require("%rGui/feedback/rateGameTests.nut")
 
-let { storeId, showAppReview } = is_ios ? { storeId = "apple", showAppReview = require("ios.platform").showAppReview }
-  : is_android && isDownloadedFromGooglePlay() ? { storeId = "google", showAppReview = require("android.platform").showAppReview }
-  : { storeId = "", showAppReview = @() null }
-let IS_PLATFORM_STORE_AVAILABLE = storeId != ""
+local appStoreProdVersion = mkWatched(persist, "appStoreProdVersion", "")
+let {
+  storeId = "",
+  showAppReview = @() null,
+  needShowAppReview = @(isRatedExcellent) isRatedExcellent
+} = is_ios
+    ? { storeId = "apple"
+        showAppReview = require("ios.platform").showAppReview
+        needShowAppReview = @(isRatedExcellent) isRatedExcellent
+          || appStoreProdVersion == ""
+          || check_version($">={appStoreProdVersion.get()}", get_base_game_version_str())
+      }
+  : is_android && isDownloadedFromGooglePlay()
+    ? { storeId = "google"
+        showAppReview = require("android.platform").showAppReview
+      }
+  : null
 
+let IS_PLATFORM_STORE_AVAILABLE = storeId != ""
 const SKIP_BATTLES_WHEN_REJECTED = 10
 const SKIP_HOURS_WHEN_REJECTED = 24
 
@@ -44,14 +60,21 @@ let savedRating = Watched(0)
 let lastSeenDate = Watched(0)
 let lastSeenBattles = Watched(0)
 
+if (is_ios && appStoreProdVersion.get() == "") {
+  subscribe("ios.platform.onGetAppStoreProdVersion",
+    @(v) type(v) == "string" ? appStoreProdVersion.set(v)
+      : logerr($"Wrong event ios.platform.onGetAppStoreProdVersion result type = {type(v)}: {v}"))
+  require("ios.platform")?.getAppStoreProdVersion() //compatibility with 1.4.1.X
+}
+
 let function initSavedData() {
   if (!isOnlineSettingsAvailable.value)
     return
   let blk = get_local_custom_settings_blk()
-  isRatedOnStore(get_blk_value_by_path(blk, SAVE_ID_STORE, false))
-  savedRating(get_blk_value_by_path(blk, SAVE_ID_RATED, 0))
-  lastSeenDate(get_blk_value_by_path(blk, SAVE_ID_SEEN, 0))
-  lastSeenBattles(get_blk_value_by_path(blk, SAVE_ID_BATTLES, 0))
+  isRatedOnStore(getBlkValueByPath(blk, SAVE_ID_STORE, false))
+  savedRating(getBlkValueByPath(blk, SAVE_ID_RATED, 0))
+  lastSeenDate(getBlkValueByPath(blk, SAVE_ID_SEEN, 0))
+  lastSeenBattles(getBlkValueByPath(blk, SAVE_ID_BATTLES, 0))
 }
 isOnlineSettingsAvailable.subscribe(@(_) initSavedData())
 initSavedData()
@@ -129,7 +152,7 @@ let function sendGameRating(rating, comment) {
   savedRating(rating)
   if (isOnlineSettingsAvailable.value) {
     let blk = get_local_custom_settings_blk()
-    set_blk_value_by_path(blk, SAVE_ID_RATED, savedRating.value)
+    setBlkValueByPath(blk, SAVE_ID_RATED, savedRating.value)
     send("saveProfile", {})
   }
 }
@@ -140,10 +163,10 @@ let function platformAppReview(isRatedExcellent) {
   isRatedOnStore(true)
   if (isOnlineSettingsAvailable.value) {
     let blk = get_local_custom_settings_blk()
-    set_blk_value_by_path(blk, SAVE_ID_STORE, isRatedOnStore.value)
+    setBlkValueByPath(blk, SAVE_ID_STORE, isRatedOnStore.value)
     send("saveProfile", {})
   }
-  if (isRatedExcellent)
+  if (needShowAppReview(isRatedExcellent))
     showAppReview()
 }
 
@@ -154,8 +177,8 @@ isRateGameSeen.subscribe(function(val) {
   lastSeenBattles(lastBattles.value.len())
   if (isOnlineSettingsAvailable.value) {
     let blk = get_local_custom_settings_blk()
-    set_blk_value_by_path(blk, SAVE_ID_SEEN, lastSeenDate.value)
-    set_blk_value_by_path(blk, SAVE_ID_BATTLES, lastSeenBattles.value)
+    setBlkValueByPath(blk, SAVE_ID_SEEN, lastSeenDate.value)
+    setBlkValueByPath(blk, SAVE_ID_BATTLES, lastSeenBattles.value)
     send("saveProfile", {})
   }
 })

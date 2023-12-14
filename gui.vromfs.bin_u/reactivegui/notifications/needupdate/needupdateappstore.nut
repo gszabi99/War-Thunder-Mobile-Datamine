@@ -7,6 +7,7 @@ let { checkAppStoreUpdateWithVersion } = require("ios.platform")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { get_base_game_version_str } = require("app")
+let { DBGLEVEL } = require("dagor.system")
 
 const REQUEST_PERIOD_MSEC = 1800000
 let needSuggestToUpdate = hardPersistWatched("appStore.needSuggestToUpdate")
@@ -18,7 +19,7 @@ needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
 
 let function requestNeedUpdate() {
-  if (!allowRequest.value)
+  if (!allowRequest.value || DBGLEVEL>0)
     return
   needRequest(false)
   logUpdate("request")

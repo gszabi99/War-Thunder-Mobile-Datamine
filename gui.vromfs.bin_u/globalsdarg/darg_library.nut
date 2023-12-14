@@ -8,7 +8,6 @@ let dargBaseLib = require("%darg/darg_library.nut")
 let screenUnits = require("screenUnits.nut")
 let { safeArea } = require("%appGlobals/safeArea.nut")
 let fontsStyle = require("fontsStyle.nut")
-let { debugTableData, toString } = require("%sqStdLibs/helpers/toString.nut")
 
 let colorArr = @(color) [(color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, (color >> 24) & 0xFF]
 
@@ -16,7 +15,7 @@ let saBorders = [
   (sw((1.0 - safeArea) * 100) / 2).tointeger(),
   (sh((1.0 - safeArea) * 100) / 2).tointeger()
 ]
-let saSize = [sw(100), sh(100)].map(@(v, i) v - 2 * saBorders[i])
+let saSize = [sw(100), sh(100)].map(@(v, i) v.tointeger() - 2 * saBorders[i])
 let saBordersRv = [saBorders[1], saBorders[0]]
 
 let appearAnim = @(delay, duration) [
@@ -49,13 +48,12 @@ return dargBaseLib.__merge(
   min
   clamp
   loc
-  debugTableData
-  toString
   //darg helpers
   colorArr
   appearAnim
   fontGlowBlack
   Layers
+  defMarqueeDelay = [5, 1]
 
   //safeArea
   safeArea

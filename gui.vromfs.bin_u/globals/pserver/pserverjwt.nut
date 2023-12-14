@@ -4,7 +4,6 @@ let { json_to_string } = require("json")
 let io = require("io")
 let { decode } = require("jwt")
 let profilePublicKey = require("%appGlobals/profilePublicKey.nut")
-let { debugTableData } = require("%sqStdLibs/helpers/toString.nut")
 
 let function decodeJwtAndHandleErrors(data) {
   let jwt = type(data) == "string" ? data : data?.jwt ?? ""

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { send } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler,
   forceRefreshUnlocks, forceRefreshStats
@@ -86,6 +87,11 @@ let function getRelativeStageData(unlock) {
 }
 
 let unlockRewardsInProgress = Watched({})
+let function callExtCb(context) {
+  let { id = null } = context
+  if (id != null)
+    send(id, context)
+}
 
 let function receiveUnlockRewards(unlockName, stage, context = null) {
   if (unlockName in unlockRewardsInProgress.value)
@@ -94,20 +100,22 @@ let function receiveUnlockRewards(unlockName, stage, context = null) {
   unlockRewardsInProgress.mutate(@(u) u[unlockName] <- true)
   userstatRequest("GrantRewards",
     { data = { unlock = unlockName, stage } },
-    (context ?? {}).__merge({ unlockName }))
+    (context ?? {}).__merge({ unlockName, stage }))
 }
 
 userstatRegisterHandler("GrantRewards", function(result, context) {
-  let { unlockName  = null, finalStage = null, stage = 0 } = context
+  let { unlockName  = null, finalStage = null, stage = 0, onSuccessCb = null } = context
   if (unlockName in unlockRewardsInProgress.value)
     unlockRewardsInProgress.mutate(@(v) v.$rawdelete(unlockName))
-  if ("error" in result)
+  if ("error" in result) {
     log("GrantRewards result: ", result)
-  else {
-    log("GrantRewards result success: ", context)
-    if (finalStage != null && finalStage > stage)
-      receiveUnlockRewards(unlockName, stage + 1, { stage = stage + 1, finalStage })
+    return
   }
+  log("GrantRewards result success: ", context)
+  if (finalStage != null && finalStage > stage)
+    receiveUnlockRewards(unlockName, stage + 1, { finalStage, onSuccessCb })
+  else
+    callExtCb(onSuccessCb)
 })
 
 userstatRegisterHandler("ResetAppData", function(result, context) {

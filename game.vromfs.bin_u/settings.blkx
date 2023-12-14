@@ -266,7 +266,21 @@
       "content.hq/pkg_ground_uhq",
       "content.hq/pkg_naval_uhq",
       "content/pkg_lvl_vietnam_hills",
-      "content.hq/pkg_lvl_vietnam_hills_hq"
+      "content.hq/pkg_lvl_vietnam_hills_hq",
+      "content/pkg_lvl_white_rocks",
+      "content.hq/pkg_lvl_white_rocks_hq",
+      "content/pkg_lvl_hangar_ny",
+      "content.hq/pkg_lvl_hangar_ny_hq",
+      "content/pkg_germ_battleship_bismarck",
+      "content.hq/pkg_germ_battleship_bismarck_hq",
+      "content/pkg_us_battleship_arkansas",
+      "content.hq/pkg_us_battleship_arkansas_hq",
+      "content/pkg_jp_st_b1",
+      "content.hq/pkg_jp_st_b1_hq",
+      "content/pkg_ussr_object_120",
+      "content.hq/pkg_ussr_object_120_hq",
+      "content/pkg_ussr_t_34_1941_57",
+      "content.hq/pkg_ussr_t_34_1941_57_hq"
     ]
   },
   "addonConditions": {
@@ -293,6 +307,33 @@
     "pkg_jp_battleship_yamato": {
       "campaign": "ships",
       "mRank": 4
+    },
+    "pkg_lvl_white_rocks": {
+      "campaign": "ships",
+      "mRank": 3
+    },
+    "pkg_lvl_hangar_ny": {
+      "hangarPath": "config/hangar_field_ny.blk"
+    },
+    "pkg_germ_battleship_bismarck": {
+      "campaign": "ships",
+      "mRank": 4
+    },
+    "pkg_us_battleship_arkansas": {
+      "campaign": "ships",
+      "mRank": 3
+    },
+    "pkg_jp_st_b1": {
+      "campaign": "tanks",
+      "mRank": 8
+    },
+    "pkg_ussr_object_120": {
+      "campaign": "tanks",
+      "mRank": 8
+    },
+    "pkg_ussr_t_34_1941_57": {
+      "campaign": "tanks",
+      "mRank": 3
     }
   },
   "addonToXboxChunk": {
@@ -406,6 +447,7 @@
     "allow_uhq_textures": false,
     "shoreHeightmapRange": 200.0,
     "msaaQuality": 4,
+    "wfxHeightLimit": 1.0,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }

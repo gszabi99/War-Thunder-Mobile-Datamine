@@ -73,8 +73,6 @@ let premIcon = {
 
 let btnTryPremium = @() havePremium.get() ? { watch = havePremium } : {
   watch = havePremium
-  hplace = ALIGN_CENTER
-  margin = [hdpx(20), 0, 0, 0]
   children = tryPremiumButton()
 }
 
@@ -171,6 +169,7 @@ let function mkTotalRewardCounts(preset, debrData, rewardsStartTime) {
     return {
       totalRewardsShowTime = 0
       totalRewardCountsComp = null
+      btnTryPremium = null
     }
 
   let labelComps = rowsCfg.map(@(cfg) mkRewardLabel(cfg.getLabelText(rewardsInfo), cfg))
@@ -179,9 +178,6 @@ let function mkTotalRewardCounts(preset, debrData, rewardsStartTime) {
   let rowComps = rowsCfg.map(@(cfg, idx)
     mkRewardRow(labelComps[idx], cfg.getVal(rewardsInfo), cfg.valueCtor, idx, rewardsStartTime))
   let totalRewardsShowTime = rowComps.len() * deltaStartTimeRewards
-
-  if (rewardsInfo.teaser != 0)
-    rowComps.append(btnTryPremium)
 
   let totalRewardCountsComp = {
     size = [hdpx(750), SIZE_TO_CONTENT]
@@ -196,6 +192,7 @@ let function mkTotalRewardCounts(preset, debrData, rewardsStartTime) {
   return {
     totalRewardsShowTime
     totalRewardCountsComp
+    btnTryPremium = rewardsInfo.teaser != 0 ? btnTryPremium : null
   }
 }
 

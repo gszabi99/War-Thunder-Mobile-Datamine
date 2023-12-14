@@ -29,7 +29,7 @@ let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnde
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInfoPanel, unitInfoPanelDefPos, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
+let { btnOpenUnitAttr } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let { curFilters, optName, optCountry, optUnitClass, optMRank, optStatus
 } = require("%rGui/unit/unitsFilterState.nut")
 let mkUnitsFilter = require("%rGui/unit/mkUnitsFilter.nut")

@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { wantStartDownloadAddons, openDownloadAddonsWnd, downloadAddonsStr, isDownloadPaused,
   updaterError, progressPercent, isDownloadPausedByConnection, isStageDownloading
 } = require("updaterState.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 
-let blockSize = [hdpx(400), evenPx(150)]
-let padding = hdpxi(15)
+let blockSize = [hdpx(500), evenPx(150)]
+let padding = hdpx(10)
 let progressSize = blockSize[1] - 2 * padding
 let checkingColor = 0x80808080
 
@@ -55,7 +55,7 @@ let function statusBlock() {
 
         orientation = O_VERTICAL
         speed = hdpx(30)
-        delay = [5, 2]
+        delay = defMarqueeDelay
       }.__update(fontTiny)
     ]
   }
@@ -66,12 +66,13 @@ let group = ElemGroup()
 let downloadInfoBlock = @() {
   watch = stateFlags
   size = blockSize
-  padding
-  gap = padding
-  rendObj = ROBJ_BOX
-  fillColor = 0x90000000
-  borderColor = hoverColor
-  borderWidth = stateFlags.value & S_HOVER ? hdpx(1) : 0
+  rendObj = ROBJ_9RECT
+  image = gradTranspDoubleSideX
+  texOffs = [0, gradDoubleTexOffset]
+  screenOffs = [0, hdpx(300)]
+  color = 0x90000000
+  padding = [hdpx(10), hdpx(20), hdpx(10), hdpx(20) ]
+  gap = hdpx(20)
 
   behavior = Behaviors.Button
   group

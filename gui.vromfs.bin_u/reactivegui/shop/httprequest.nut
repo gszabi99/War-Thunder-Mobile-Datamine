@@ -45,7 +45,7 @@ let function requestData(url, params, onSuccess, onFailure = null) {
 
 let createGuidsRequestParams = @(guids) "&".join(
   guids.map(@(guid) $"guids[]={guid}")
-    .append($"token={getPlayerToken() ?? ""}&special=1"))
+    .append($"jwt={getPlayerToken() ?? ""}&special=1"))
 
 return {
   requestData

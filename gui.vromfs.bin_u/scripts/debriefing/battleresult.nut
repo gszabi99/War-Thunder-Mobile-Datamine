@@ -26,6 +26,7 @@ let baseBattleResult = mkWatched(persist, "battleResult", null)
 let resultPlayers = mkWatched(persist, "resultPlayers", null)
 let playersCommonStats = mkWatched(persist, "playersCommonStats", {})
 let connectFailedData = mkWatched(persist, "connectFailedData", null)
+let questProgressDiff = mkWatched(persist, "questProgressDiff", null)
 let battleResult = Computed(function() {
   if (debugBattleResult.value)
     return debugBattleResult.value
@@ -41,6 +42,8 @@ let battleResult = Computed(function() {
     res = resultPlayers.value.__merge(res)
   if (playersCommonStats.value.len() != 0)
     res = { playersCommonStats = playersCommonStats.value }.__merge(res)
+  if (questProgressDiff.value != null)
+    res = { quests = questProgressDiff.value }.__merge(res)
   res = mkCommonExtras(baseBattleResult.value).__merge(res)
   return res
 })
@@ -50,6 +53,9 @@ battleResult.subscribe(@(_) resetTimeout(0.1, sendBattleResult))
 subscribe("RequestBattleResult", @(_) sendBattleResult())
 
 singleMissionResult.subscribe(@(_) debugBattleResult(null))
+
+isInBattle.subscribe(@(v) v ? questProgressDiff.set(null) : null)
+subscribe("BattleResultQuestProgressDiff", @(v) questProgressDiff.set(v))
 
 let gotQuitToDebriefing = mkWatched(persist, "gotQuitToDebriefing", false)
 isInBattle.subscribe(@(v)  v ? gotQuitToDebriefing(false) : null)

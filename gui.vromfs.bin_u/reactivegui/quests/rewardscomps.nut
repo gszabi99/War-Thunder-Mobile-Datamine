@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { opacityAnims, aTimeInfoItem } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { REWARD_STYLE_SMALL, mkRewardPlate, mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkIcon } = require("%rGui/unit/components/unitPlateComp.nut")
 let { openRewardsList } = require("questsState.nut")
@@ -17,10 +15,6 @@ let questItemsGap = rStyleDefault.boxGap
 let rewardsBtnSize = rStyleDefault.boxSize
 let progressBarRewardSize = rewardsBtnSize
 let rewardsListIconSize = hdpxi(14)
-let rewardLabelHeight = hdpx(35)
-let progressBarRewardLabelHeight = hdpx(25)
-let rewardIconMargin = hdpx(15)
-let rewardIconSize = (rewardsBtnSize * 0.5).tointeger()
 let statusIconSize = hdpxi(30)
 let bgColor = 0x80000000
 let REWARD_INTERVAL = 0.1
@@ -51,16 +45,6 @@ let mkRewardsListBtn = @(rewards) {
   children = array(3).map(@(_) rewardsListIcon)
 }
 
-let mkRewardLabel = @(children, height = rewardLabelHeight) {
-  size = [flex(), height]
-  vplace = ALIGN_BOTTOM
-  valign = ALIGN_CENTER
-  halign = ALIGN_RIGHT
-  rendObj = ROBJ_SOLID
-  color = bgColor
-  children
-}
-
 let mkLockedIcon = @(ovr = {}) mkIcon("ui/gameuiskin#lock_icon.svg", [statusIconSize, statusIconSize], ovr)
 
 let lockedReward = {
@@ -76,12 +60,7 @@ let lockedReward = {
 }
 
 let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = false) [
-  mkCurrencyImage(r.id, rewardIconSize, { margin = rewardIconMargin })
-  mkRewardLabel({
-    rendObj = ROBJ_TEXT
-    text = decimalFormat(r.count)
-  }.__update(fontVeryTiny),
-  progressBarRewardLabelHeight)
+  mkRewardPlate(r, rStyleDefault)
   !isUnlocked ? lockedReward
     : !canClaimReward ? mkRewardReceivedMark(REWARD_STYLE_SMALL, { hplace = ALIGN_RIGHT })
     : mkGlare(rewardsBtnSize, defGlareSize, 2.5, 0.6)

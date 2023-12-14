@@ -1,32 +1,47 @@
 from "%globalsDarg/darg_library.nut" import *
-let { registerScene } = require("%rGui/navState.nut")
+let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isBattlePassWndOpened, openBattlePassWnd, closeBattlePassWnd, listStages,
-  isActiveBP } = require("battlePassState.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
+let { isBattlePassWndOpened, openBattlePassWnd, closeBattlePassWnd, isBpActive, mkBpStagesList,
+  openBPPurchaseWnd, selectedStage
+} = require("battlePassState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let btnOpenQuests = require("%rGui/quests/btnOpenQuests.nut")
-let { textButtonPurchase } = require("%rGui/components/textButton.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkRewardsPreview } = require("%rGui/quests/rewardsComps.nut")
-let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
+let { textButtonMultiline } = require("%rGui/components/textButton.nut")
+let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let battlePassSeason = require("battlePassSeason.nut")
 let { bpCurProgressbar, bpProgressText, bpLevelLabel } = require("battlePassPkg.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
+let bpProgressBar = require("bpProgressBar.nut")
+let battlePassRewardsList = require("battlePassRewardsList.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
+let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let bpRewardDesc = require("bpRewardDesc.nut")
+let { bpCardStyle, bpCardPadding, bpCardMargin } = require("bpCardsStyle.nut")
+let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
+let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 
-let bpIconSize = [hdpx(150), hdpx(130)]
+let bpIconSize = [hdpx(298), hdpx(181)]
+let scrollHandler = ScrollHandler()
 
-let backBtn = {
-  size = [flex(), SIZE_TO_CONTENT]
-  vplace = ALIGN_TOP
+let rewardPannable = horizontalPannableAreaCtor(sw(100),
+  [saBorders[0], saBorders[0]])
+
+let header = {
+  size = [flex(), gamercardHeight]
   valign = ALIGN_CENTER
   children = [
     {
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       children =[
-        backButton(closeBattlePassWnd, { hplace = ALIGN_LEFT })
+        backButton(closeBattlePassWnd)
         battlePassSeason
       ]
     }
@@ -43,121 +58,185 @@ let backBtn = {
   ]
 }
 
-let function mkCard(rewards){
-  let rewardsPreview = Computed(function() {
-    local res = []
-    foreach (id, count in rewards) {
-      let reward = serverConfigs.value.userstatRewards?[id]
-      res.extend(getRewardsViewInfo(reward, count))
-    }
-    return res
-  })
-
-  return @(){
-    watch = rewardsPreview
-    flow = FLOW_VERTICAL
-    size = [hdpx(100), SIZE_TO_CONTENT ]
-    children = mkRewardsPreview(rewardsPreview.value, false)
-  }
+let scrollArrowsBlock = {
+  size = [flex(),hdpx(363)]
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  children = [
+    mkScrollArrow(scrollHandler, MR_L)
+    mkScrollArrow(scrollHandler, MR_R)
+  ]
 }
 
-let progressLine = @(){
-  watch = listStages
-  gap = hdpx(50)
-  flow = FLOW_HORIZONTAL
-  children = listStages.value.map(@(stage) mkCard(stage.rewards))
+let function rewardsList(stages) {
+  let rewardsStages = []
+  foreach (idx, s in stages) {
+    let rewInfo = []
+    foreach(key, count in s.rewards){
+      let reward = serverConfigs.value.userstatRewards?[key]
+      rewInfo.extend(getRewardsViewInfo(reward, count))
+    }
+    let viewInfo = rewInfo.sort(sortRewardsViewInfo)?[0]
+    rewardsStages.append(s.__merge({
+      viewInfo
+      nextSlots = 0
+    }))
+    if (idx > 0)
+      rewardsStages[idx - 1].nextSlots = viewInfo?.slots ?? 1
+  }
+  return {
+    key = "bpRewardsList"
+    flow = FLOW_VERTICAL
+    gap = hdpx(20)
+    function onAttach() {
+      local scrollX = -bpCardMargin
+      local selProgress = null
+      foreach(s in rewardsStages) {
+        if (s.canReceive
+            || (!s.isReceived && (!s.isPaid || isBpActive.value))) {
+          selProgress = s.progress
+          scrollX += bpCardMargin + bpCardPadding[1]
+            + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0] / 2
+          break
+        }
+        scrollX += bpCardMargin + 2 * bpCardPadding[1]
+          + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0]
+      }
+      selectedStage(selProgress ?? rewardsStages?[rewardsStages.len() - 1].progress ?? 0)
+      if (scrollX > saSize[0] / 2)
+        scrollHandler.scrollToX(scrollX - saSize[0] / 2)
+    }
+    children = [
+      bpProgressBar(rewardsStages)
+      battlePassRewardsList(rewardsStages)
+    ]
+  }
 }
 
 let taskDesc = {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  maxWidth = hdpx(265)
+  maxWidth = hdpx(300)
   text = loc("battlepass/tasksDesc")
 }.__update(fontTinyAccented)
 
 let leftMiddle = {
-  flow = FLOW_VERTICAL
-  gap = hdpx(15)
-  hplace = ALIGN_LEFT
-  children = [
-    bpLevelLabel
-    {
-      size = [hdpx(300), SIZE_TO_CONTENT]
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      children = [
-        bpCurProgressbar
-        bpProgressText
-      ]
-    }
-    taskDesc
-    btnOpenQuests
-  ]
-}
-
-let rightMiddle = {
   size = [SIZE_TO_CONTENT, flex()]
-  hplace = ALIGN_RIGHT
   children = [
     {
-      flow = FLOW_HORIZONTAL
+      vplace = ALIGN_TOP
+      flow = FLOW_VERTICAL
       gap = hdpx(15)
       children =[
-        @(){
-          watch = isActiveBP
-          size = bpIconSize
-          rendObj = ROBJ_IMAGE
-          image = isActiveBP.value
-            ? Picture($"ui/gameuiskin#bp_icon_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
-            : Picture($"ui/gameuiskin#bp_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
-          opacity = isActiveBP.value ? 1 : 0.5
+        bpLevelLabel
+        {
+          size = [hdpx(300), SIZE_TO_CONTENT]
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          children = [
+            bpCurProgressbar
+            bpProgressText
+          ]
         }
-        @(){
-          watch = isActiveBP
-          rendObj = ROBJ_TEXT
-          padding = [hdpx(20), 0]
-          text = isActiveBP.value ? loc("battlepass/active") : null
-        }.__update(fontTinyAccented)
       ]
     }
     {
       vplace = ALIGN_BOTTOM
-      children = textButtonPurchase(loc("battlepass/buyBattlepass"), @() null)
+      flow = FLOW_VERTICAL
+      gap = hdpx(15)
+      children = [
+        taskDesc
+        mkBtnOpenTabQuests(COMMON_TAB, {
+          sizeBtn = [hdpx(109), hdpx(109)],
+          iconSize = hdpx(85)
+          size = [hdpx(109), hdpx(109)]
+        })
+      ]
     }
   ]
 }
 
-let middlePart = {
-  size = [flex(), SIZE_TO_CONTENT]
+let rightMiddle = @() {
+  watch = isBpActive
+  size = [defButtonMinWidth, flex()]
+  flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  valign = ALIGN_BOTTOM
+  gap = hdpx(35)
+  children = [
+    {
+      size = bpIconSize
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = isBpActive.value
+        ? Picture($"ui/gameuiskin#bp_icon_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
+        : Picture($"ui/gameuiskin#bp_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
+      opacity = isBpActive.value ? 1 : 0.5
+    }
+    isBpActive.get()
+      ? {
+          size = [flex(), defButtonHeight]
+          halign = ALIGN_CENTER
+          valign = ALIGN_BOTTOM
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          text = utf8ToUpper(loc("battlepass/active"))
+        }.__update(fontTinyAccented)
+      : textButtonMultiline(utf8ToUpper(loc("battlePass/btn_buy")), openBPPurchaseWnd, PURCHASE)
+  ]
+}
+
+let middlePart = @(stagesList) @(){
+  watch = selectedStage
+  size = flex()
+  padding = [hdpx(10), 0, hdpx(20), 0]
+  rendObj = ROBJ_9RECT
+  image = gradTranspDoubleSideX
+  texOffs = [0, gradDoubleTexOffset]
+  screenOffs = [0, hdpx(300)]
+  color = 0x90000000
   flow = FLOW_HORIZONTAL
   children = [
     leftMiddle
-    { size = flex() }
+    bpRewardDesc(stagesList[selectedStage.value])
     rightMiddle
   ]
 }
 
-let bottomPart = {
-  size = [flex(), SIZE_TO_CONTENT]
-  vplace = ALIGN_BOTTOM
-  gap = hdpx(15)
+let content = @(stagesList) @() {
+  watch = stagesList
+  size = flex()
   flow = FLOW_VERTICAL
+  gap = hdpx(15)
   children = [
-    middlePart
-    progressLine
+    middlePart(stagesList.value)
+    {
+      size = [sw(100), SIZE_TO_CONTENT]
+      hplace = ALIGN_CENTER
+      children = [
+        rewardPannable(rewardsList(stagesList.value),
+          { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT] },
+          {
+            size = [flex(), SIZE_TO_CONTENT]
+            behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
+            scrollHandler = scrollHandler
+          })
+        scrollArrowsBlock
+      ]
+    }
   ]
 }
 
-let battlePassWnd = {
-  key = {}
+let wndKey = {}
+let battlePassWnd = @() {
+  key = wndKey
   size = flex()
-  rendObj = ROBJ_IMAGE
   padding = saBordersRv
-  image = Picture("ui/gameuiskin#offer_bg_blue.avif")
   gap = hdpx(10)
+  flow = FLOW_VERTICAL
   children = [
-    backBtn
-    bottomPart
+    header
+    content(mkBpStagesList())
   ]
   animations = wndSwitchAnim
 }
@@ -166,3 +245,4 @@ register_command(openBattlePassWnd, "ui.battle_pass_open")
 register_command(closeBattlePassWnd, "ui.battle_pass_close")
 
 registerScene("battlePassWnd", battlePassWnd, closeBattlePassWnd, isBattlePassWndOpened)
+setSceneBg("battlePassWnd", "ui/images/bp_bg_01.avif")

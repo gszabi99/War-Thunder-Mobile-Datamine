@@ -35,7 +35,8 @@ let function mkPlayerLevelUnlockPlates(debrData, delay) {
 }
 
 let function mkDebriefingWndTabCampaign(debrData, params) {
-  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsCampaign(debrData, rewardsAnimStartTime)
+  let { totalRewardCountsComp, totalRewardsShowTime, btnTryPremium
+  } = mkTotalRewardCountsCampaign(debrData, rewardsAnimStartTime)
   if (totalRewardCountsComp == null)
     return null
 
@@ -55,26 +56,35 @@ let function mkDebriefingWndTabCampaign(debrData, params) {
 
   let comp = {
     size = flex()
-    flow = FLOW_VERTICAL
-    halign = ALIGN_CENTER
     children = [
-      mkMissionResultTitle(debrData, false)
       {
-        size = [hdpx(1600), flex()]
-        halign = ALIGN_CENTER
+        size = flex()
         flow = FLOW_VERTICAL
+        halign = ALIGN_CENTER
         children = [
-          levelProgressLineComp
+          mkMissionResultTitle(debrData, false)
           {
-            size = flex()
-            flow = FLOW_HORIZONTAL
-            gap = hdpx(100)
+            size = [hdpx(1600), flex()]
+            halign = ALIGN_CENTER
+            flow = FLOW_VERTICAL
             children = [
-              totalRewardCountsComp.__update({ pos = [0, hdpx(145)] })
-              mkLevelUnlockPlatesContainer(levelUnlocksComps)
+              levelProgressLineComp
+              {
+                size = flex()
+                flow = FLOW_HORIZONTAL
+                gap = hdpx(100)
+                children = [
+                  totalRewardCountsComp.__update({ pos = [0, hdpx(145)] })
+                  mkLevelUnlockPlatesContainer(levelUnlocksComps)
+                ]
+              }
             ]
           }
         ]
+      }
+      {
+        vplace = ALIGN_BOTTOM
+        children = btnTryPremium
       }
     ]
   }

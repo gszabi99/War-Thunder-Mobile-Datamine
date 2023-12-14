@@ -2295,7 +2295,8 @@
   "tank_wtm_toolkit_ecs": {
     "_use": "toolkit_ecs",
     "mod__auto_extinguisher_with_toolkit": false,
-    "mod__count_for_bots": 2
+    "mod__count_for_bots": 2,
+    "mod__check_count_item_used": true
   },
   "tank_wtm_extinguisher_ecs": {
     "_use": "extinguisher_ecs",
@@ -2303,7 +2304,8 @@
     "mod__enabled_without_mod": true,
     "mod__count_effects_mod": false,
     "mod__count_for_players": 0,
-    "mod__count_for_bots": 2
+    "mod__count_for_bots": 2,
+    "mod__check_count_item_used": true
   },
   "tank_wtm_medicalkit_ecs": {
     "_use": "medicalkit_ecs",

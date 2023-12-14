@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getUnitFileName } = require("vehicleModel")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { eachBlock, isDataBlock } = require("%sqstd/datablock.nut")
+let { eachBlock, isDataBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
 
 let WT_GUNS = "guns"
 let WT_SMOKE = "smoke"

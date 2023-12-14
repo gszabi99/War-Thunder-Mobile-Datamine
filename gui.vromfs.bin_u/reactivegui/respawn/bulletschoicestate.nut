@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let DataBlock = require("DataBlock")
-let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { ceil } = require("%sqstd/math.nut")
 let { eachBlock, isDataBlock } = require("%sqstd/datablock.nut")
 let { selSlot, cancelRespawn } = require("respawnState.nut")
@@ -31,7 +31,7 @@ let function loadSavedBullets(name) {
   if (name == null)
     return null
   let sBlk = get_local_custom_settings_blk()
-  let res = get_blk_value_by_path(sBlk, $"{SAVE_ID}/{name}")
+  let res = getBlkValueByPath(sBlk, $"{SAVE_ID}/{name}")
   return isDataBlock(res) ? res : null
 }
 let applySavedBullets = @(name) savedBullets(loadSavedBullets(name))
@@ -137,7 +137,7 @@ let hasLowBullets = Computed(@() chosenBulletsAmount.value < BULLETS_LOW_AMOUNT
 let function saveBullets(name, blk) {
   hasChangedCurSlotBullets(true)
   let sBlk = get_local_custom_settings_blk()
-  set_blk_value_by_path(sBlk, $"{SAVE_ID}/{name}", blk)//-param-pos
+  setBlkValueByPath(sBlk, $"{SAVE_ID}/{name}", blk)//-param-pos
   send("saveProfile", {})
 }
 

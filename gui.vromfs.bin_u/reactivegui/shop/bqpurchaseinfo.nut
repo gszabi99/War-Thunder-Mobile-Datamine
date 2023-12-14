@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_WARBONDS, SGT_EVENT_KEYS } = require("%rGui/shop/shopConst.nut")
+let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_WARBONDS, SGT_EVENT_KEYS } = require("%rGui/shop/shopConst.nut")
 
 /*
 UI BQ event "open_currency_shop" format:
@@ -30,6 +30,7 @@ let PURCH_TYPE_CURRENCY = "currency"
 let PURCH_TYPE_LOOTBOX = "lootbox"
 
 let goodsTypeToPurchTypeMap = {
+  [SGT_UNKNOWN] = "unknown",
   [SGT_UNIT] = PURCH_TYPE_UNIT,
   [SGT_CONSUMABLES] = PURCH_TYPE_CONSUMABLES,
   [SGT_PREMIUM] = PURCH_TYPE_PREMIUM,
@@ -40,7 +41,7 @@ let goodsTypeToPurchTypeMap = {
 
 let function getPurchaseTypeByGoodsType(gtype) {
   if (gtype not in goodsTypeToPurchTypeMap)
-    assert(false, $"bqPurchaseInfo: Unknown goods type {gtype}")
+    logerr($"bqPurchaseInfo: Unknown goods type {gtype}")
   return goodsTypeToPurchTypeMap?[gtype] ?? ""
 }
 
@@ -51,7 +52,7 @@ let function sendBqEventOnOpenCurrencyShop(bqPurchaseInfo) {
     return
   foreach (v in [ "id", "from", "status", "params" ])
     if (type(bqPurchaseInfo?[v]) != "string") {
-      assert(false, $"bqPurchaseInfo: Key \"{v}\" must be string")
+      logerr($"bqPurchaseInfo: Key \"{v}\" must be string")
       return
     }
   sendUiBqEvent("open_currency_shop", bqPurchaseInfo)

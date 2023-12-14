@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let isExpirienceWndOpen = Watched(false)
+let isExperienceWndOpen = Watched(false)
 
 let function openExpWnd() {
-  isExpirienceWndOpen(true)
+  isExperienceWndOpen(true)
 }
 
 return {
   openExpWnd
-  isExpirienceWndOpen
+  isExperienceWndOpen
 }

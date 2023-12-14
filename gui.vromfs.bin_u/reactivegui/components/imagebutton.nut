@@ -10,7 +10,7 @@ let borderColor = 0xFFA0A0A0
 let function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
   let stateFlags = Watched(0)
   let size = ovr?.size ?? framedBtnSize
-  let imageSize = size.map(@(v) (v - imageSizeDecrease).tointeger())
+  let imageSize = ovr?.imageSize ?? size.map(@(v) (v - imageSizeDecrease).tointeger())
   return @() {
     watch = stateFlags
     size

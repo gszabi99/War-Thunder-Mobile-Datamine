@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/style/gamercardStyle.nut" import *
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
@@ -27,14 +28,6 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 
-
-let avatarSize       = hdpx(96)
-let profileGap       = hdpx(45)
-
-let levelHolderSize          = hdpx(60)
-let levelHolderPlace         = avatarSize - levelHolderSize / 2
-
-let gamercardHeight  = avatarSize + levelHolderSize / 2
 
 let nextLevelBorderColor = 0xFFDADADA
 let nextLevelBgColor = 0xFF464646
@@ -120,6 +113,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
           onElemState = @(sf) levelStateFlags(sf)
           behavior = Behaviors.Button
           onClick = onLevelClick
+          sound = { click  = "meta_profile_button" }
           color = levelStateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
           transform = {
             rotate = 45

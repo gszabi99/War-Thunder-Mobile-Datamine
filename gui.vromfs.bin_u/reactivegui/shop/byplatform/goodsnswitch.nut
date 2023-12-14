@@ -21,7 +21,7 @@ let {
   getItemRawPrice = @(_) "0",
   getItemGroupNsUid = @(_) "111",
   getItemCurrency = @(_) "USD",
-  getItemsCount = @(_) 1,
+  getItemsCount = @() 1,
   getItemName = @(_) "dummy",
   getRequestConsumableGroupErrorCode = @() {group = 0, code = 0},
   updateGroupAndItemsAsync = @() setTimeout(0.1,  @() send("nswitch.eshop.onItemsRequested", { status = 0 })),

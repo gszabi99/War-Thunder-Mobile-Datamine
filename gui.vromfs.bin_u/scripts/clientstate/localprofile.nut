@@ -1,8 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock  = require("DataBlock")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { set_blk_value_by_path, get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath, getBlkValueByPath, isDataBlock } = require("%globalScripts/dataBlockExt.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { isOnlineSettingsAvailable, getLoginStateDebugStr } = require("%appGlobals/loginState.nut")
 let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -18,7 +17,7 @@ let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("
   }
 
   let cdb = get_local_custom_settings_blk()
-  if (set_blk_value_by_path(cdb, path, value))
+  if (setBlkValueByPath(cdb, path, value))
     saveProfile()
 }
 
@@ -30,19 +29,19 @@ let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("
   }
 
   let cdb = get_local_custom_settings_blk()
-  return get_blk_value_by_path(cdb, path, defValue)
+  return getBlkValueByPath(cdb, path, defValue)
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
 ::save_local_shared_settings <- function save_local_shared_settings(path, value) {
   let blk = get_common_local_settings_blk()
-  if (set_blk_value_by_path(blk, path, value))
+  if (setBlkValueByPath(blk, path, value))
     saveProfile()
 }
 
 ::load_local_shared_settings <- function load_local_shared_settings(path, defValue = null) {
   let blk = get_common_local_settings_blk()
-  return get_blk_value_by_path(blk, path, defValue)
+  return getBlkValueByPath(blk, path, defValue)
 }
 
 let getRootSizeText = @() "{0}x{1}".subst(screen_width(), screen_height())
@@ -89,7 +88,7 @@ let getRootSizeText = @() "{0}x{1}".subst(screen_width(), screen_height())
       continue
 
     hasChanges = true
-    if (u.isDataBlock(blk?[name]))
+    if (isDataBlock(blk?[name]))
       blk.removeBlock(name)
     else
       blk.removeParam(name)

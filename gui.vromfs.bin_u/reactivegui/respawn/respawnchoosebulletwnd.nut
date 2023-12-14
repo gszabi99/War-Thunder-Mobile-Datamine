@@ -174,7 +174,7 @@ let mkStatRow = @(nameText, valText, color = 0xFFC0C0C0) {
       color
       text = nameText
       behavior = Behaviors.Marquee
-      delay = 1
+      delay = defMarqueeDelay
       speed = hdpx(30)
     }.__update(fontVeryTiny)
     {

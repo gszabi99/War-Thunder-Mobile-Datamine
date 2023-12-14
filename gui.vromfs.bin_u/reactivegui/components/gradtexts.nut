@@ -30,8 +30,16 @@ let mkGradGlowText = @(text, fontStyle, fontTex, ovr = {})
 let mkGradRank = @(rank, ovr = {})
   mkGradText(getRomanNumeral(rank), fontWtMedium, rankTextGradient, ovr)
 
+let mkGradRankSmall = @(rank, ovr = {})
+  mkGradText(getRomanNumeral(rank), fontWtSmall, rankTextGradient, ovr)
+
+let mkGradRankLarge = @(rank, ovr = {})
+  mkGradText(getRomanNumeral(rank), fontWtLarge, rankTextGradient, ovr)
+
 return {
   mkGradText
   mkGradGlowText
   mkGradRank
+  mkGradRankSmall
+  mkGradRankLarge
 }

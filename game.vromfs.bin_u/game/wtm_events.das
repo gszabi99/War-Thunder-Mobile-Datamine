@@ -106,11 +106,21 @@ struct EventOnPlayerWeaponUse
   weaponId : int
 
 [cpp_event(broadcast)]
+struct EventOnPlayerGenericWeaponUse
+  userId : uint64
+  unitId : int
+  unitVersion : uint8
+  unitType : int
+  triggerGroupMask : int
+/*
+[cpp_event(broadcast)]
 struct EventOnPlayerWeaponDamage
   offenderUserId : uint64
   offenderUnitId : int
   offenderUnitVersion : uint8
   offenderUnitType : int
+  offenderTriggerGroup : int
+  offenderBulletsBorn : int
   victimUserId : uint64
   victimUnitId : int
   victimUnitVersion : uint8
@@ -118,7 +128,7 @@ struct EventOnPlayerWeaponDamage
   fire : bool
   weaponId : int
   dmg : float
-
+*/
 [cpp_event(broadcast)]
 struct EventOnPlayerCritHit
   offenderUserId : uint64
@@ -138,3 +148,10 @@ struct EventSpendItems
 struct EventOnPlayerRepair
   userId : uint8
   hpRepaired : int
+
+[cpp_event(broadcast)]
+struct EventOnPlayerRicochetStat
+  victimUserId : uint64
+  victimUnitId : int
+  victimUnitVersion : uint8
+  victimUnitType : int

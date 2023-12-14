@@ -6,7 +6,7 @@ let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut"
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { onGoodsClick, mkGoodsListWithBaseValue, mkGoodsState } = require("%rGui/shop/shopWndPage.nut")
-let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { WARBOND, EVENT_KEY } = require("%appGlobals/currenciesState.nut")
 let { eventSeasonName } = require("eventState.nut")
@@ -118,9 +118,7 @@ let buyEventCurrenciesHeader = @() {
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
-  text = utf8ToUpper(currencyId.value == WARBOND
-      ? loc("events/buyWarbonds")
-    : loc("events/buyEventKeys", { name = eventSeasonName.value }))
+  text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.value}", { name = eventSeasonName.value }))
 }.__update(fontLarge)
 
 let buyEventCurrenciesGamercard = @() {

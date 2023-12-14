@@ -8,6 +8,9 @@ let bpLevelLabel = @(ovr = {}){
   text = $"{loc("mainmenu/rank")} {curStage.value}"
 }.__update(fontSmall, ovr)
 
+let bpLineFillColor = 0xFF191919
+let bpBorderColor = 0xFF7C7C7C
+
 let function mkLevelLine(points, stagePoints, ovr = {}) {
   let percent =  1.0 * clamp(points, 0, stagePoints ) / stagePoints
   return {
@@ -15,8 +18,8 @@ let function mkLevelLine(points, stagePoints, ovr = {}) {
     valign = ALIGN_CENTER
     children = mkProgressLevelBg({
       size = flex()
-      fillColor = 0xFF191919
-      borderColor = 0xFF7C7C7C
+      fillColor = bpLineFillColor
+      borderColor = bpBorderColor
       children = {
         size = [ pw(100 * percent), flex() ]
         rendObj = ROBJ_SOLID
@@ -28,9 +31,23 @@ let function mkLevelLine(points, stagePoints, ovr = {}) {
 
 let bpCurProgressbar = @(ovr = {}){
   watch = [pointsCurStage, pointsPerStage]
-  size = [flex(), hdpx(33)]
+  size = flex()
   children = mkLevelLine(pointsCurStage.value, pointsPerStage.value, ovr)
 }
+
+let fullLineBP = {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = 0xFF36C574
+}
+
+let bpProgress = @(children) mkProgressLevelBg({
+  size = flex()
+  fillColor = bpLineFillColor
+  borderColor = bpBorderColor
+  children
+})
+
 
 let bpProgressText  = @(ovr = {}){
   watch = [pointsCurStage, pointsPerStage]
@@ -44,4 +61,7 @@ return {
   bpCurProgressbar
   bpProgressText
   bpLevelLabel
+
+  bpProgressbarEmpty = bpProgress(null)
+  bpProgressbarFull = bpProgress(fullLineBP)
 }

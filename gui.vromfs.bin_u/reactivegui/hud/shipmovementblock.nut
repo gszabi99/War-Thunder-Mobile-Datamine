@@ -20,6 +20,7 @@ let axisListener = require("%rGui/controls/axisListener.nut")
 let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { send } = require("eventbus")
+let disabledControls = require("%rGui/controls/disabledControls.nut")
 
 let HAPT_FORWARD = registerHapticPattern("Forward", { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
 let HAPT_BACKWARD = registerHapticPattern("Backward", { time = 0.0, intensity = 0.5, sharpness = 0.8, duration = 0.0, attack = 0.0, release = 0.0 })
@@ -57,7 +58,7 @@ let fillColor = Computed(@()
   : hasDebuffEngines.value || currentMaxThrottle.value < 1.0 ? btnBgColor.broken
   : fillMoveColorDef)
 
-let mkSteerParams = @(id) {
+let mkSteerParams = @(id, disableId) {
   ovr = { key = id }
   shortcutId = id
   outlineColor
@@ -68,6 +69,7 @@ let mkSteerParams = @(id) {
     }
   }
   onTouchEnd = @() setShortcutOff(id)
+  isDisabled = Computed(@() disabledControls.value?[disableId] ?? false)
 }
 
 let function calcBackSpeedPart() {
@@ -76,7 +78,7 @@ let function calcBackSpeedPart() {
   let maxSpeed = maxSpeedBySteps.value?[ - 1] ?? 0
   return maxSpeed < 0 ? clamp(speed.value / maxSpeed, 0.0, 1.0) : 0
 }
-let mkBackwardArrow = @(id) mkMoveVertBtn(
+let mkBackwardArrow = @(id, isEngineDisabled) mkMoveVertBtn(
   function onTouchBegin() {
     if (!isControlsBlocked.value) {
       setShortcutOn(id)
@@ -89,13 +91,18 @@ let mkBackwardArrow = @(id) mkMoveVertBtn(
   {
     key = id
     flipY = true
-    children = [
-      mkMoveVertBtnAnimBg(true, calcBackSpeedPart, fillColor)
-      mkMoveVertBtnOutline(true, outlineColor)
-      mkMoveVertBtnCorner(true,
-        Computed(@() averageSpeedDirection.value == "back" ? fillColor.value : 0xFFFFFFFF))
-      mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] })
-    ]
+    children = @() {
+      watch = isEngineDisabled
+      size = flex()
+      children = isEngineDisabled.value ? null
+        : [
+            mkMoveVertBtnAnimBg(true, calcBackSpeedPart, fillColor)
+            mkMoveVertBtnOutline(true, outlineColor)
+            mkMoveVertBtnCorner(true,
+              Computed(@() averageSpeedDirection.value == "back" ? fillColor.value : 0xFFFFFFFF))
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] })
+          ]
+    }
   })
 
 let function calcForwSpeedPart() {
@@ -113,7 +120,7 @@ let function calcForwSpeedPart2() {
 }
 
 let fwdDirections = { forward = true, forward2 = true }
-let mkForwardArrow = @(id) mkMoveVertBtn(
+let mkForwardArrow = @(id, isEngineDisabled) mkMoveVertBtn(
   function onTouchBegin() {
     if (!isControlsBlocked.value) {
       setShortcutOn(id)
@@ -125,16 +132,21 @@ let mkForwardArrow = @(id) mkMoveVertBtn(
   id,
   {
     key = id
-    children = [
-      mkMoveVertBtnAnimBg(false, calcForwSpeedPart, fillColor)
-      mkMoveVertBtnOutline(false, outlineColor)
-      mkMoveVertBtnCorner(false,
-        Computed(@() averageSpeedDirection.value in fwdDirections ? fillColor.value : 0xFFFFFFFF))
-      mkMoveVertBtn2step(calcForwSpeedPart2,
-        Computed(@() averageSpeedDirection.value == "forward2" ? fillColor.value : 0x00000000),
-        fillColor)
-      mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] })
-    ]
+    children = @() {
+      watch = isEngineDisabled
+      size = flex()
+      children = isEngineDisabled.value ? null
+        : [
+            mkMoveVertBtnAnimBg(false, calcForwSpeedPart, fillColor)
+            mkMoveVertBtnOutline(false, outlineColor)
+            mkMoveVertBtnCorner(false,
+              Computed(@() averageSpeedDirection.value in fwdDirections ? fillColor.value : 0xFFFFFFFF))
+            mkMoveVertBtn2step(calcForwSpeedPart2,
+              Computed(@() averageSpeedDirection.value == "forward2" ? fillColor.value : 0x00000000),
+              fillColor)
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] })
+          ]
+    }
   })
 
 let mkStopImage = @(ovr = {}) @() !isStoppedSpeedStep.value ? { watch = isStoppedSpeedStep }
@@ -173,8 +185,7 @@ let speedComp = {
 
 let shortcutsByType = {
   [SUBMARINE] = {
-    engine_max = "submarine_main_engine_rangeMax"
-    engine_min = "submarine_main_engine_rangeMin"
+    engineAxis = "submarine_main_engine"
     aim_x = "submarine_mouse_aim_x"
     aim_y = "submarine_mouse_aim_y"
   },
@@ -182,21 +193,23 @@ let shortcutsByType = {
 
 let function movementBlock(unitType) {
   let {
-    engine_max = "ship_main_engine_rangeMax",
-    engine_min = "ship_main_engine_rangeMin",
-    steering_max = "ship_steering_rangeMax",
-    steering_min = "ship_steering_rangeMin",
+    engineAxis = "ship_main_engine",
+    steeringAxis = "ship_steering",
     aim_x = "ship_mouse_aim_x",
     aim_y = "ship_mouse_aim_y"
   } = shortcutsByType?[unitType]
+
+  let engine_max = $"{engineAxis}_rangeMax"
+  let engine_min = $"{engineAxis}_rangeMin"
 
   let gamepadShipAxisListener = axisListener({
     [gamepadAxes[aim_x]] = @(v) setVirtualAxisValue(aim_x, v),
     [gamepadAxes[aim_y]] = @(v) setVirtualAxisValue(aim_y, v),
   })
 
-  let leftArrow = mkMoveLeftBtn(mkSteerParams(steering_max))
-  let rightArrow = mkMoveRightBtn(mkSteerParams(steering_min))
+  let leftArrow = mkMoveLeftBtn(mkSteerParams($"{steeringAxis}_rangeMax", steeringAxis))
+  let rightArrow = mkMoveRightBtn(mkSteerParams($"{steeringAxis}_rangeMin", steeringAxis))
+  let isEngineDisabled = Computed(@() disabledControls.value?[engineAxis] ?? false)
 
   return @() {
     watch = [isUnitDelayed, isGamepad]
@@ -210,9 +223,9 @@ let function movementBlock(unitType) {
             flow = FLOW_VERTICAL
             halign = ALIGN_CENTER
             children = [
-              mkForwardArrow(engine_max)
+              mkForwardArrow(engine_max, isEngineDisabled)
               machineSpeed
-              mkBackwardArrow(engine_min)
+              mkBackwardArrow(engine_min, isEngineDisabled)
             ]
           }
           {

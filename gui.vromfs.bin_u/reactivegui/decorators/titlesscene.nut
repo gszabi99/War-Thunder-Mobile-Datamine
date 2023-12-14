@@ -104,7 +104,7 @@ let function titleRow(name, locName, rowIdx) {
                 size =[hdpx(35),hdpx(45)]
                 rendObj = ROBJ_IMAGE
                 color = 0xFFFFB70B
-                image =  Picture($"!ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
+                image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
               }
             : isChoosen.value || isSelected.value
               ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.value != null),
@@ -140,21 +140,21 @@ let footer = @() {
   size = [flex(), defButtonHeight]
   flow = FLOW_HORIZONTAL
   gap = hdpx(50)
-  children = [
-    selectedTitle.value == chosenTitle.value?.name
-        ? null
-      : selectedTitle.value in availTitles.value || selectedTitle.value == ""
-        ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedTitle,
-          { hotkeys = ["^J:X | Enter"] })
-      : textButtonCommon(loc("mainmenu/btnEquip"), applySelectedTitle)
-    {
-      size = flex()
-      rendObj = ROBJ_TEXTAREA
-      behavior = Behaviors.TextArea
-      valign = ALIGN_CENTER
-      text = getReceiveReason(selectedTitle.value)
-    }.__update(fontSmallAccented)
-  ]
+  children = selectedTitle.value == chosenTitle.value?.name
+      ? null
+    : selectedTitle.value in availTitles.value || selectedTitle.value == ""
+      ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedTitle,
+        { hotkeys = ["^J:X | Enter"] })
+    : [
+        textButtonCommon(loc("mainmenu/btnEquip"), applySelectedTitle)
+        {
+          size = flex()
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          valign = ALIGN_CENTER
+          text = getReceiveReason(selectedTitle.value)
+        }.__update(fontSmallAccented)
+      ]
 }
 
 let function titlesList() {
@@ -194,7 +194,7 @@ let titleContent = {
     header
     {
       rendObj = ROBJ_TEXT
-      text = loc("decorators/chooseDecoratorName")
+      text = loc("decorator/title/choose")
       padding = [hdpx(40), 0,hdpx(40),0]
     }.__update(fontMedium)
     makeVertScroll(titlesList)

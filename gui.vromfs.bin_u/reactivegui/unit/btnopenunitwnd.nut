@@ -17,7 +17,7 @@ return @(){
   watch = [curCampPresentation, hasUnseen, discount]
   children = [
     translucentButton(curCampPresentation.value.icon,
-      loc(curCampPresentation.value.unitsLocId),
+      "",
       function() {
         unitsWnd()
         openLvlUpWndIfCan()

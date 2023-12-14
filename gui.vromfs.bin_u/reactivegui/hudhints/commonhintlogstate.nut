@@ -6,7 +6,7 @@ let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientSt
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { bulletsInfo, currentBulletName } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { addHudElementPointer, removeHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
 
@@ -84,11 +84,11 @@ subscribe("hint:missionHint:remove", @(data) data?.hintType != "bottom" ? null
 let function incHintCounter(id, showCount) {
   let sBlk = get_local_custom_settings_blk()
   let saveId = $"{COUNTER_SAVE_ID}/{id}"
-  let count = get_blk_value_by_path(sBlk, saveId) ?? 0
+  let count = getBlkValueByPath(sBlk, saveId) ?? 0
   if (count >= showCount)
     return false
 
-  set_blk_value_by_path(sBlk, saveId, count + 1)
+  setBlkValueByPath(sBlk, saveId, count + 1)
   send("saveProfile", {})
   return true
 }

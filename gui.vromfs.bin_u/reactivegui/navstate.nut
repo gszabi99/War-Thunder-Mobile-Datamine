@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { deferOnce } = require("dagor.workcycle")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -7,6 +8,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let scenes = {} //id = { scene, onClearScenes, alwaysOnTop }
 let scenesVersion = Watched(0)
 let scenesOrderSaved = hardPersistWatched("navState.scenesOrder", [])
+let sceneBgList = Watched({})
 let scenesOrder = Computed(function(prev) {
   let ver = scenesVersion //warning disable: -declared-never-used
   let top = []
@@ -22,6 +24,10 @@ let scenesOrder = Computed(function(prev) {
   res.extend(top)
   return isEqual(prev, res) ? prev : res
 })
+
+let curSceneBgRaw = keepref(Computed(@() sceneBgList.value?[scenesOrder.value?[scenesOrder.value.len() - 1]]))
+let curSceneBg = Watched(curSceneBgRaw.get())
+curSceneBgRaw.subscribe(@(_) deferOnce(@() curSceneBg.set(curSceneBgRaw.get())))
 
 let getTopScene = @(order) order.len() == 0 ? null : scenes[order.top()]?.scene
 
@@ -50,7 +56,7 @@ let function registerScene(id, scene, onClearScenes = null, isOpenedWatch = null
     logerr($"Already registered navState scene {id}")
     return
   }
-  scenes[id] <- { scene, onClearScenes, alwaysOnTop, canClear }
+  scenes[id] <- { id, scene, onClearScenes, alwaysOnTop, canClear }
   scenesVersion(scenesVersion.value + 1)
 
   if (isOpenedWatch == null)
@@ -94,13 +100,18 @@ let function tryResetToMainScene() {
   return res
 }
 
+let setSceneBg = @(id, bg) sceneBgList.mutate(@(v) v.rawset(id, bg))
+
 return {
   scenesOrder
   registerScene
-  moveSceneToTop
   getTopScene
+  curSceneBg
+
   addScene
   removeScene
+  moveSceneToTop
   tryResetToMainScene
   canResetToMainScene
+  setSceneBg
 }

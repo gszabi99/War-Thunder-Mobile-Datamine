@@ -801,7 +801,8 @@
     "TrackSoundPathStudio": "naval/engines",
     "TrackSoundName": "tracks_big",
     "TrackSoundNameCockpit": "tracks_mid_interior",
-    "TrackSoundNameAi": "tracks_ai_big"
+    "TrackSoundNameAi": "tracks_ai_big",
+    "turret_turn": "turret_turn_big"
   },
   "optics": {
     "binoculars": "navy_binoculars"

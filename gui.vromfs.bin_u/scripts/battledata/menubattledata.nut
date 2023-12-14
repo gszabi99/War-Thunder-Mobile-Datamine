@@ -131,7 +131,7 @@ if (shouldDisableMenu) {
 
 registerHandler("saveMenuBattleDataToJwt", function(result) {
   if ("error" in result)
-    console_print(toString(result))
+    console_print(result)
   else
     saveJwtResultToJson(result.jwt, result.payload, "wtmBattleData")
 })

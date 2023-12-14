@@ -12,6 +12,11 @@ let mkRewardStyle = @(boxSize) {
   markSize = max(round(boxSize / 4).tointeger(), evenPx(36))
 }
 
+let function getRewardPlateSize(slots, rStyle) {
+  let { boxSize, boxGap } = rStyle
+  return [ (slots * boxSize) + ((slots - 1) * boxGap), boxSize ]
+}
+
 return {
   fontLabel
   labelHeight
@@ -19,4 +24,8 @@ return {
   REWARD_STYLE_TINY = mkRewardStyle(evenPx(104))
   REWARD_STYLE_SMALL = mkRewardStyle(evenPx(114))
   REWARD_STYLE_MEDIUM = mkRewardStyle(evenPx(160))
+  REWARD_STYLE_BIG = mkRewardStyle(evenPx(240))
+  REWARD_STYLE_LARGE = mkRewardStyle(evenPx(300))
+
+  getRewardPlateSize
 }

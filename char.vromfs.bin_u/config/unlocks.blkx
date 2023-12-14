@@ -1524,14 +1524,26 @@
       "amount_warpoints": 250,
       "isMultiStage": true,
       "isAfterFlight": false,
-      "stage": {
-        "param": 20,
-        "amount_exp": 0,
-        "amount_warpoints": 250
-      },
+      "stage": [
+        {
+          "param": 20,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
+        {
+          "param": 40,
+          "amount_exp": 0,
+          "amount_warpoints": 500
+        },
+        {
+          "param": 60,
+          "amount_exp": 0,
+          "amount_warpoints": 1000
+        }
+      ],
       "mode": {
         "type": "criticalHitByType",
-        "num": 100500,
+        "num": 60,
         "critType": "gun",
         "condition": [
           {
@@ -1558,14 +1570,26 @@
       "amount_warpoints": 250,
       "isMultiStage": true,
       "isAfterFlight": false,
-      "stage": {
-        "param": 15,
-        "amount_exp": 0,
-        "amount_warpoints": 250
-      },
+      "stage": [
+        {
+          "param": 15,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
+        {
+          "param": 30,
+          "amount_exp": 0,
+          "amount_warpoints": 500
+        },
+        {
+          "param": 45,
+          "amount_exp": 0,
+          "amount_warpoints": 1000
+        }
+      ],
       "mode": {
         "type": "criticalHitByType",
-        "num": 100500,
+        "num": 45,
         "critType": "engine",
         "condition": [
           {

@@ -20,13 +20,16 @@ let fillMoveColorBlocked = 0xFFFF4338
 let outlineColorDef = Watched(0xFFFFFFFF)
 let fillColorDef = Watched(fillMoveColorDef)
 
-let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = null, ovr = {}, outlineColor = outlineColorDef) {
+let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = null,
+  ovr = {}, outlineColor = outlineColorDef, isDisabled = Watched(false)
+) {
   let stateFlags = Watched(0)
   let { size = horSize } = ovr
   let horAnimSize = horAnimSizeMul.map(@(v, i) (v * size[i]).tointeger())
   let cornerOffset = (0.72 * horAnimSize[0]).tointeger()
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
-  return res.__update({
+  return @() res.__update({
+    watch = isDisabled
     size
     vplace = ALIGN_CENTER
     behavior = Behaviors.Button
@@ -39,42 +42,44 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
         color = (stateFlags.value & S_ACTIVE) != 0 ? bgColorPushed : bgColor
         flipX
       }
-      @() {
-        watch = stateFlags
-        size = horAnimSize
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#hud_movement_left_animated_marker.svg:{horAnimSize[0]}:{horAnimSize[1]}")
-        vplace = ALIGN_CENTER
-        opacity = (stateFlags.value & S_ACTIVE) != 0 ? 100 : 0
-        transform = {
-          translate = (stateFlags.value & S_ACTIVE) != 0
-            ? [flipX ? 0.6 * size[0] : 0.4 * size[0] - horAnimSize[0], 0]
-            : [flipX ? 0.5 * size[0] : 0.5 * size[0] - horAnimSize[0], 0]
-        }
-        transitions = [{ prop = AnimProp.translate, duration = animTime, easing = Linear }]
-        flipX
-      }
-      @() {
-        watch = outlineColor
-        rendObj = ROBJ_IMAGE
-        size
-        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_outline.svg:{size[0]}:{size[1]}")
-        color = outlineColor.value
-        flipX
-      }
-      {
-        rendObj = ROBJ_IMAGE
-        size = horAnimSize
-        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_corner.svg:{horAnimSize[0]}:{horAnimSize[1]}")
-        hplace = flipX ? ALIGN_RIGHT : ALIGN_LEFT
-        vplace = ALIGN_CENTER
-        margin = [0, cornerOffset]
-        flipX
-      }
-      mkGamepadShortcutImage(shortcutId,
-        flipX ? { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(-20), 0] }
-          : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(20), 0] })
-    ]
+    ].extend(isDisabled.value ? []
+      : [
+          @() {
+            watch = stateFlags
+            size = horAnimSize
+            rendObj = ROBJ_IMAGE
+            image = Picture($"ui/gameuiskin#hud_movement_left_animated_marker.svg:{horAnimSize[0]}:{horAnimSize[1]}")
+            vplace = ALIGN_CENTER
+            opacity = (stateFlags.value & S_ACTIVE) != 0 ? 100 : 0
+            transform = {
+              translate = (stateFlags.value & S_ACTIVE) != 0
+                ? [flipX ? 0.6 * size[0] : 0.4 * size[0] - horAnimSize[0], 0]
+                : [flipX ? 0.5 * size[0] : 0.5 * size[0] - horAnimSize[0], 0]
+            }
+            transitions = [{ prop = AnimProp.translate, duration = animTime, easing = Linear }]
+            flipX
+          }
+          @() {
+            watch = outlineColor
+            rendObj = ROBJ_IMAGE
+            size
+            image = Picture($"ui/gameuiskin#hud_movement_arrow_left_outline.svg:{size[0]}:{size[1]}")
+            color = outlineColor.value
+            flipX
+          }
+          {
+            rendObj = ROBJ_IMAGE
+            size = horAnimSize
+            image = Picture($"ui/gameuiskin#hud_movement_arrow_left_corner.svg:{horAnimSize[0]}:{horAnimSize[1]}")
+            hplace = flipX ? ALIGN_RIGHT : ALIGN_LEFT
+            vplace = ALIGN_CENTER
+            margin = [0, cornerOffset]
+            flipX
+          }
+          mkGamepadShortcutImage(shortcutId,
+            flipX ? { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(-20), 0] }
+              : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(20), 0] })
+        ])
   }, ovr)
 })
 

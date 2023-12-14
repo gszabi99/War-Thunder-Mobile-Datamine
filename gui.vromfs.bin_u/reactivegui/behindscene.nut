@@ -1,15 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
+let { curSceneBg } = require("%rGui/navState.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let scenesList = []
 let sceneListGeneration = mkWatched(persist, "sceneListGeneration", 0)
 
-let behindScene = @() {
-  watch = sceneListGeneration
-  key = sceneListGeneration
+let behindScene = {
   size = flex()
-  children = scenesList.map(@(v) v.scene)
+  children = [
+    @() {
+      watch = curSceneBg
+      size = flex()
+      children = {
+        key = curSceneBg.value
+        size = flex()
+        rendObj = ROBJ_IMAGE
+        image = Picture(curSceneBg.value)
+        animations = wndSwitchAnim
+      }
+    }
+    @() {
+      watch = sceneListGeneration
+      key = sceneListGeneration
+      size = flex()
+      children = scenesList.map(@(v) v.scene)
+    }
+  ]
 }
 
 let getIdx = @(componentOrId) type(componentOrId) == "string"

@@ -9,7 +9,7 @@ let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getLootboxRewardsViewInfo, isRewardReceived  } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
-let { bestCampLevel } = require("eventState.nut")
+let { bestCampLevel, eventSeason } = require("eventState.nut")
 let { canShowAds } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -191,14 +191,14 @@ let function mkAdsBtn(reqPlayerLevel, adReward) {
         && (cost < adBudget.value)
             ? buttonStyles.SECONDARY
           : buttonStyles.COMMON)
-        .__merge({ hotkeys = ["^J:Y"] }))
+        .__merge({ hotkeys = ["^J:RB"] }))
   }
 }
 
 let leaderbordBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#prizes_icon.svg", loc("mainmenu/titleLeaderboards")),
   openLbWnd,
-  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:B"] }))
+  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:Y"] }))
 
 let questsBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#quests.svg", loc("mainmenu/btnQuests")),
@@ -242,16 +242,17 @@ let function mkPurchaseBtns(lootbox, onPurchase) {
             mkCurrencyComp(price * 10, currencyId),
             @() onPurchase(lootbox, price * 10, currencyId, 10),
             (!isActive.value || (balance.value?[currencyId] ?? 0) < price * 10 ? buttonStyles.COMMON : {})
-              .__merge({ hotkeys = ["^J:B"] }))
+              .__merge({ hotkeys = ["^J:Y"] }))
     ]
   }
 }
 
-let mkSmokeBg = @(isVisible) @() !isVisible.value ? { watch = isVisible } : {
-  watch = isVisible
+let mkEventBg = @(isVisible) @() !isVisible.value ? { watch = isVisible } : {
+  watch = [isVisible, eventSeason]
   size = flex()
   rendObj = ROBJ_IMAGE
-  image = Picture("ui/images/event_bg.avif")
+  image = Picture($"ui/images/event_bg_{eventSeason.value}.avif")
+  fallbackImage = Picture("ui/images/event_bg.avif")
   keepAspect = KEEP_ASPECT_FILL
 }
 
@@ -270,7 +271,7 @@ return {
   mkLootboxImageWithTimer
   lootboxHeight
   mkPurchaseBtns
-  mkSmokeBg
+  mkEventBg
 
   leaderbordBtn
   questsBtn

@@ -9,8 +9,9 @@ let unseenPurchasesDebug = require("unseenPurchasesDebug.nut")
 let ignoreUnseen = Watched({}) //no need to persist them if has errors with pServer, better to show window again after reload scripts.
 let isShowDelayed = Watched(false)
 let skipUnseenMessageAnimOnce = Watched(false)
+let isGoodsVisible = @(goods) goods.gType != "lootbox" && goods.gType != "stat"
 let seenPurchasesNoNeedToShow = Computed(@() unseenPurchases.value
-  .filter(@(data) data.goods.findvalue(@(g) g.gType != "lootbox") == null))
+  .filter(@(data) data.goods.findvalue(isGoodsVisible) == null))
 let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.value
   ?? (isShowDelayed.value ? {}
     : unseenPurchases.value.filter(@(_, id) id not in ignoreUnseen.value

@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { Point2 } = require("dagor.math")
-let { isDataBlock, blk2SquirrelObjNoArrays, getBlkByPathArray } = require("%sqstd/datablock.nut")
+let { isDataBlock, blk2SquirrelObjNoArrays, getBlkByPathArray, blkOptFromPath
+} = require("%sqstd/datablock.nut")
 let { round, round_by_value } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
 let { get_modifications_blk } = require("blkGetters")
 

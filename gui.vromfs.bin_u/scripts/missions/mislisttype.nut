@@ -1,9 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 let { is_user_mission } = require("%scripts/util.nut")
-let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%appGlobals/clientState/platform.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
@@ -58,7 +57,7 @@ let g_mislist_type = {
         // Can be removed after http://cvs1.gaijin.lan:8080/#/c/57465/ reach all PC platforms.
         if (!misBlk?.player_class) {
           let missionBlk = blkOptFromPath(misBlk?.mis_file)
-          let wing = get_blk_value_by_path(missionBlk, "mission_settings/player/wing")
+          let wing = getBlkValueByPath(missionBlk, "mission_settings/player/wing")
           let unitsBlk = missionBlk?.units
           if (unitsBlk && wing)
             for (local i = 0; i < unitsBlk.blockCount(); i++) {
@@ -171,7 +170,7 @@ let g_mislist_type = {
 
   function getTypeByName(typeName) {
     let res = getTblValue(typeName, this)
-    return u.isTable(res) ? res : this.BASE
+    return type(res) == "table" ? res : this.BASE
   }
 }
 

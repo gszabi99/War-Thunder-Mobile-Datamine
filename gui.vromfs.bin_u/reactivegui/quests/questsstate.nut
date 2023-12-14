@@ -22,13 +22,11 @@ const MINI_EVENT_TAB = "miniEvent"
 const ACHIEVEMENTS_TAB = "achievements"
 
 let SPEED_UP_AD_COST = 1
-let PROGRESS_STAT = "event_quests_progress"
 
 let seenQuests = mkWatched(persist, SEEN_QUESTS, {})
 let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
 let rewardsList = Watched(null)
 let isRewardsListOpen = Computed(@() rewardsList.value != null)
-let curSectionId = Watched(null)
 let curTabId = Watched(null)
 
 let openRewardsList = @(rewards) rewardsList(rewards)
@@ -99,10 +97,14 @@ let questsBySection = Computed(function() {
   return res
 })
 
-let isCurSectionInactive = Computed(@() !unlockTables.value?[curSectionId.value]
-  && questsCfg.value?[EVENT_TAB].findindex(@(v) v == curSectionId.value) != null)
+let progressUnlockByTab = Computed(@() {
+  [EVENT_TAB] = activeUnlocks.get().findvalue(@(unlock) "event_progress" in unlock?.meta),
+})
 
-let progressUnlock = Computed(@() activeUnlocks.value.findvalue(@(unlock) "event_progress" in unlock?.meta))
+let progressUnlockBySection = Computed(@() {
+  daily_quest = activeUnlocks.get()?.daily_quest_global_progress
+  weekly_quest = activeUnlocks.get()?.weekly_quest_global_progress
+})
 
 let function saveSeenQuests(ids) {
   seenQuests.mutate(function(v) {
@@ -135,13 +137,8 @@ if (seenQuests.value.len() == 0)
 let hasUnseenQuestsBySection = Computed(@() questsBySection.value.map(@(quests)
   null != quests.findindex(@(v, id) (id not in seenQuests.value && id not in inactiveEventUnlocks.value) || v.hasReward)))
 
-let saveSeenQuestsCurSection = @() !hasUnseenQuestsBySection.value?[curSectionId.value] ? null
-  : saveSeenQuests(questsBySection.value?[curSectionId.value].filter(@(v) !v.hasReward).keys())
-
-let function onSectionChange(id) {
-  saveSeenQuestsCurSection()
-  curSectionId(id)
-}
+let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.value?[sectionId] ? null
+  : saveSeenQuests(questsBySection.value?[sectionId].filter(@(v) !v.hasReward).keys())
 
 let function openQuestsWnd() {
   if (isOfflineMenu) {
@@ -151,9 +148,9 @@ let function openQuestsWnd() {
   isQuestsOpen(true)
 }
 
-let function openEventQuestsWnd() {
+let function openQuestsWndOnTab(tabId) {
   isQuestsOpen(false)
-  curTabId(EVENT_TAB)
+  curTabId(tabId)
   openQuestsWnd()
 }
 
@@ -191,7 +188,8 @@ register_command(function() {
 
 return {
   openQuestsWnd
-  openEventQuestsWnd
+  openQuestsWndOnTab
+  openEventQuestsWnd = @() openQuestsWndOnTab(EVENT_TAB)
   isQuestsOpen
 
   rewardsList
@@ -199,21 +197,19 @@ return {
   openRewardsList
   closeRewardsList
 
-  curSectionId
   curTabId
   questsBySection
-  onSectionChange
-  isCurSectionInactive
 
   seenQuests
   hasUnseenQuestsBySection
-  saveSeenQuestsCurSection
+  saveSeenQuestsForSection
 
   questsCfg
   sectionsCfg
   eventUnlocksByDays
   inactiveEventUnlocks
-  progressUnlock
+  progressUnlockByTab
+  progressUnlockBySection
 
   COMMON_TAB
   EVENT_TAB
@@ -223,5 +219,4 @@ return {
 
   onWatchQuestAd
   SPEED_UP_AD_COST
-  PROGRESS_STAT
 }

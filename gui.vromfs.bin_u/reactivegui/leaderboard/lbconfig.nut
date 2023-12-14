@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { RANK, NAME, SHIP_RATING, TANKS_RATING, WP_RATING, KILL, KILL_SHIPS, KILL_TANKS,
-  WIN, BATTLES, PRIZE
+  WIN, BATTLES, PRIZE, INDEX, LOG_TIME, WIN_SINGLE
 } = require("lbCategory.nut")
 let { ships, tanks } = require("%appGlobals/config/campaignPresentation.nut").campaignPresentations
 
@@ -10,9 +10,8 @@ let lbCfgOrdered = [
     lbTable = "ships_event_leaderboard"
     gameMode = "ships"
     campaign = "ships"
-    categories = [
-      RANK, NAME, SHIP_RATING, PRIZE, KILL_SHIPS, WIN, BATTLES
-    ]
+    categories = [ RANK, NAME, SHIP_RATING, PRIZE, KILL_SHIPS, WIN, BATTLES ]
+    battleCategories = [ INDEX, SHIP_RATING, KILL_SHIPS, WIN_SINGLE, LOG_TIME ]
     sortBy = SHIP_RATING
     icon = ships.icon
     locId = ships.unitsLocId
@@ -22,9 +21,8 @@ let lbCfgOrdered = [
     lbTable = "tanks_event_leaderboard"
     gameMode = "tanks"
     campaign = "tanks"
-    categories = [
-      RANK, NAME, TANKS_RATING, PRIZE, KILL_TANKS, WIN, BATTLES
-    ]
+    categories = [ RANK, NAME, TANKS_RATING, PRIZE, KILL_TANKS, WIN, BATTLES ]
+    battleCategories = [ INDEX, TANKS_RATING, KILL_TANKS, WIN_SINGLE, LOG_TIME ]
     sortBy = TANKS_RATING
     icon = tanks.icon
     locId = tanks.unitsLocId
@@ -33,9 +31,8 @@ let lbCfgOrdered = [
     id = "wp"
     gameMode = "battle_common"
     lbTable = "wp_event_leaderboard"
-    categories = [
-      RANK, NAME, WP_RATING, PRIZE, KILL, WIN, BATTLES
-    ]
+    categories = [ RANK, NAME, WP_RATING, PRIZE, KILL, WIN, BATTLES ]
+    battleCategories = [ INDEX, WP_RATING, KILL, WIN_SINGLE, LOG_TIME ]
     sortBy = WP_RATING
     icon = "ui/gameuiskin#score_icon.svg"
     locId = "lb/overall_rating"

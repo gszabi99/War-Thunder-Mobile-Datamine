@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let logR = log_with_prefix("[Roulette] ")
 let { resetTimeout, defer, deferOnce, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { rnd_int } = require("dagor.random")
@@ -9,7 +10,7 @@ let { registerScene, scenesOrder } = require("%rGui/navState.nut")
 let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJackpotInfo,
   rouletteRewardsList, receivedRewardsCur, receivedRewardsAll, rouletteOpenIdx, nextFixedReward,
   isCurRewardFixed, requestOpenCurLootbox, closeRoulette, lastJackpotIdx, logOpenConfig,
-  rouletteLastReward
+  rouletteLastReward, isRouletteDebugMode
 } = require("lootboxOpenRouletteState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
@@ -29,14 +30,14 @@ let progressbarWidth = hdpx(550)
 let progressbarHeight = hdpx(14)
 let openCountIconSize = hdpxi(30)
 
-let RS_IDLE_ROLL = 0
-let RS_ROLL = 1 //roll to start slowdown
-let RS_SLOWDOWN = 2
-let RS_SLOW = 3
-let RS_PRECISE_REVERSE = 4 //only for move back for presize
-let RS_PRECISE = 5
-let RS_STOP = 6
-let RS_REWARD_NO_ROLL = 7
+let RS_IDLE_ROLL = "RS_IDLE_ROLL"
+let RS_ROLL = "RS_ROLL" //roll to start slowdown
+let RS_SLOWDOWN = "RS_SLOWDOWN"
+let RS_SLOW = "RS_SLOW"
+let RS_PRECISE_REVERSE = "RS_PRECISE_REVERSE" //only for move back for presize
+let RS_PRECISE = "RS_PRECISE"
+let RS_STOP = "RS_STOP"
+let RS_REWARD_NO_ROLL = "RS_REWARD_NO_ROLL"
 
 let aTimeRewardScale = 0.6
 let aTimeRewardMove = 0.3
@@ -338,6 +339,8 @@ let updAnimByStatus = {
 
     state.status <- RS_ROLL
     fillSlowdownPoints(state, allowedResultIndexes.value)
+    if (isRouletteDebugMode.get())
+      logR("State after fillSlowdownPoints: ", state)
   },
 
   [RS_ROLL] = function(_, state) {
@@ -486,9 +489,17 @@ let function updateAnimState(state) {
     state.startTime <- curTime
     return
   }
+
   let dtLeft = updAnimByStatus?[status](dt, state)
-  if ((dtLeft ?? 0) > 0)
-    updAnimByStatus?[state.status](dtLeft, state)
+  if ((dtLeft ?? 0) > 0) {
+    if (isRouletteDebugMode.get())
+      logR($"dtLeft = {dtLeft} on status {state.status} (curTime = {curTime}, dt = {dt})")
+    let dtLeft2 = updAnimByStatus?[state.status](dtLeft, state)
+    if ((dtLeft2 ?? 0) > 0 && isRouletteDebugMode.get())
+      logR($"dtLeft2 = {dtLeft2} on status {state.status} (curTime = {curTime}, dt = {dt})")
+  }
+  else if (isRouletteDebugMode.get() && status != (state?.status ?? RS_IDLE_ROLL))
+    logR($"status changed to {state.status} without dtLeft (curTime = {curTime}, dt = {dt})")
 
   if ("slotSize" in state)
     updateArrowDeviation(dt, state)
@@ -616,7 +627,11 @@ let function rouletteRewardsBlock() {
     watch = rouletteRewardsList
     key = rouletteRewardsList
     size = [sw(100), rewardBoxSize + 2 * slotPadding + 2 * slotsGap]
-    onAttach = @() startSound("meta_roulette_spin")
+    function onAttach() {
+      if (isRouletteDebugMode.get())
+        logR($"Roulette attached")
+      startSound("meta_roulette_spin")
+    }
     onDetach = @() stopSound("meta_roulette_spin")
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER

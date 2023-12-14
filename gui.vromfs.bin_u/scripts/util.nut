@@ -3,10 +3,9 @@ from "%scripts/dagui_library.nut" import *
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 110
 let { is_mplayer_host, is_mplayer_peer, is_local_multiplayer } = require("multiplayer")
-let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 
 ::on_cannot_create_session <- @() openFMsgBox({ text = loc("NET_CANNOT_CREATE_SESSION") })
 
@@ -27,7 +26,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
   if (!filename)
     return defVal
   let blk = blkOptFromPath(filename)
-  let val = get_blk_value_by_path(blk, path)
+  let val = getBlkValueByPath(blk, path)
   return (val != null) ? val : defVal
 }
 
@@ -36,12 +35,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
   if (!filename)
     return
   let blk = blkOptFromPath(filename)
-  if (set_blk_value_by_path(blk, path, val))
+  if (setBlkValueByPath(blk, path, val))
     blk.saveToTextFile(filename)
-}
-
-::inherit_table <- function inherit_table(parent_table, child_table) {
-  return u.extend(u.copy(parent_table), child_table)
 }
 
 let is_multiplayer = @() (is_mplayer_host() || is_mplayer_peer()) && !is_local_multiplayer()

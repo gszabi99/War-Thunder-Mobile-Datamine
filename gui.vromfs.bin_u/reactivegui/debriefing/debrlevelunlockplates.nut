@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
+let { round, ceil } = require("math")
 let { getUnitPresentation, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitSlotLockedLine,
-  mkPlatoonBgPlates, platoonPlatesGap, mkPlatoonPlateFrame
+  bgPlatesTranslate, platoonPlatesGap, mkPlatoonPlateFrame
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkModImage, bgShade } = require("%rGui/unitMods/modsComps.nut")
 let { getSpCostText } = require("%rGui/unitAttr/unitAttrState.nut")
@@ -14,7 +14,7 @@ let plateBlinkTime = 0.5
 
 let plateW = hdpx(350)
 let plateH = hdpx(147)
-let platesGap = hdpx(16)
+let platesGap = hdpx(20)
 let plateBlinkScale = 1.25
 
 let getLevelUnlockPlateAnimTime = @(count) count == 0 ? 0
@@ -22,10 +22,12 @@ let getLevelUnlockPlateAnimTime = @(count) count == 0 ? 0
 
 // CONTAINER ///////////////////////////////////////////////////////////////////
 
+let platoonFramesGapMul = 0.7
+let platoonPlatesCustomGap = round(platoonPlatesGap * platoonFramesGapMul)
 let maxPlatoonExtraPlatesCount = 3
 let scrollBoxMarginR = ceil(plateW * (plateBlinkScale - 1) / 2) + hdpx(2)
 let scrollBoxMarginV = ceil(plateH * (plateBlinkScale - 1) / 2) + hdpx(2)
-let scrollBoxMarginL = scrollBoxMarginR + (platoonPlatesGap * maxPlatoonExtraPlatesCount)
+let scrollBoxMarginL = scrollBoxMarginR + (platoonPlatesCustomGap * maxPlatoonExtraPlatesCount)
 
 let mkLevelUnlockPlatesContainer = @(children) {
   margin = [0, 0, 0, hdpx(212)]
@@ -83,13 +85,29 @@ let mkPlateBlinkAnimProps = @(isUnlocked, delay) !isUnlocked ? {} : {
 
 // UNIT PLATE //////////////////////////////////////////////////////////////////
 
+let platoonPlateFrame = mkPlatoonPlateFrame(Watched(false), Watched(true))
+
+let mkPlatoonPlates = @(unit, platoonUnits, isUnlocked, unlockDelay) {
+  size = flex()
+  children = platoonUnits?.map(@(_, idx) {
+    size = flex()
+    transform = { translate = bgPlatesTranslate(platoonUnits.len(), idx, false, platoonFramesGapMul) }
+    transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+    children = [
+      mkUnitBg(unit)
+      mkLockedShade(isUnlocked, unlockDelay)
+      platoonPlateFrame
+    ]
+  })
+}
+
 let function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = false) {
   let p = getUnitPresentation(unit)
   let platoonUnits = (unit?.platoonUnits ?? []).map(@(u) u.name)
     .extend((unit?.lockedUnits ?? []).map(@(u) u.name))
   let platoonSize = platoonUnits.len()
   let fullH = platoonSize == 0 ? plateH
-    : plateH + platoonPlatesGap * platoonSize
+    : plateH + platoonPlatesCustomGap * platoonSize
   return {
     size = [ plateW, fullH ]
     children = {
@@ -97,7 +115,7 @@ let function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = f
       vplace = ALIGN_BOTTOM
       children = platoonSize > 0
         ? [
-            mkPlatoonBgPlates(unit, platoonUnits)
+            mkPlatoonPlates(unit, platoonUnits, isUnlocked, unlockDelay)
             mkUnitBg(unit)
             mkUnitImage(unit)
             mkUnitTexts(unit, getPlatoonName(unit.name, loc))
@@ -105,7 +123,9 @@ let function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = f
             isPlayerProgress
               ? mkUnitLock(unit, !isUnlocked, unlockDelay)
               : mkUnitSlotLockedLine(unit, !isUnlocked, unlockDelay)
-            mkPlatoonPlateFrame()
+            isPlayerProgress
+              ? platoonPlateFrame
+              : null
           ]
         : [
             mkUnitBg(unit)
@@ -115,6 +135,9 @@ let function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = f
             isPlayerProgress
               ? mkUnitLock(unit, !isUnlocked, unlockDelay)
               : mkUnitSlotLockedLine(unit, !isUnlocked, unlockDelay)
+            isPlayerProgress
+              ? platoonPlateFrame
+              : null
           ]
     }
   }.__update(mkPlateBlinkAnimProps(isUnlocked, unlockDelay))

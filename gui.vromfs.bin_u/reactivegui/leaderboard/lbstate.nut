@@ -17,6 +17,7 @@ const MAX_PAGE_PLACE = 1000
 let curLbId = mkWatched(persist, "curLbId", null)
 let lbPage = mkWatched(persist, "lbPage", 0)
 let isLbWndOpened = mkWatched(persist, "isLbWndOpened", false)
+let isLbBestBattlesOpened = mkWatched(persist, "isLbBestBattlesOpened", false)
 let isRefreshLbEnabled = mkWatched(persist, "isRefreshLbEnabled", false)
 
 let curLbCfg = Computed(@() lbCfgById?[curLbId.value])
@@ -84,6 +85,7 @@ let minRatingBattles = Watched(5) //todo: get it from leaderboard params from "$
 let bestBattles = Computed(@()
   userstatStats.value?.stats[curLbCfg.value?.lbTable]["$sessions"])
 let bestBattlesCount = Computed(@() bestBattles.value?.len() ?? 0)
+let hasBestBattles = Computed(@() ratingBattlesCount.value > 0 && bestBattlesCount.value > 0)
 
 register_command(@() lbPage(lbPage.value + 1), "lb.page_next")
 register_command(@() lbPage.value > 0 && lbPage(lbPage.value - 1), "lb.page_prev")
@@ -91,6 +93,7 @@ register_command(@() isLbWndOpened(true), "lb.open")
 
 return {
   isLbWndOpened
+  isLbBestBattlesOpened
   isLbRequestInProgress
   curLbId
   curLbCfg
@@ -107,6 +110,7 @@ return {
   minRatingBattles
   bestBattlesCount
   bestBattles
+  hasBestBattles
 
   isRefreshLbEnabled
   openLbWnd = @() isLbWndOpened(true)

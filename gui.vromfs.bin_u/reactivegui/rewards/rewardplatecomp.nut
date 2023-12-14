@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
-let { fontLabel, labelHeight, REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM
+let { fontLabel, labelHeight, REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
+  getRewardPlateSize
 } = require("rewardStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitPresentation, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
+let { getUnitLocId, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { mkUnitBg, mkUnitImage, mkIcon, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
@@ -13,17 +14,12 @@ let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
+let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 
 
 let textPadding = [0, hdpx(5)]
 let fontLabelSmaller = fontVeryTiny
 let fontLabelBig = fontSmall
-
-let function getRewardPlateSize(r, rStyle) {
-  let { slots } = r
-  let { boxSize, boxGap } = rStyle
-  return [ (slots * boxSize) + ((slots - 1) * boxGap), boxSize ]
-}
 
 let iconBase = {
   hplace = ALIGN_CENTER
@@ -43,6 +39,8 @@ let mkCommonLabelTextMarquee = @(text, rStyle) {
   maxWidth = rStyle.boxSize
   rendObj = ROBJ_TEXT
   behavior = Behaviors.Marquee
+  speed = hdpx(30)
+  delay = defMarqueeDelay
   text
 }.__update(fontLabelSmaller)
 
@@ -125,7 +123,7 @@ let currencyImgCtors = {
 
 let function mkRewardPlateCurrencyImage(r, rStyle) {
   let { iconShiftY } = rStyle
-  let size = getRewardPlateSize(r, rStyle)
+  let size = getRewardPlateSize(r.slots, rStyle)
   return {
     size
     clipChildren = true
@@ -149,7 +147,7 @@ let function mkRewardPlateCurrencyTexts(r, rStyle) {
 
 let function mkRewardPlatePremiumImage(r, rStyle) {
   let { iconShiftY } = rStyle
-  let size = getRewardPlateSize(r, rStyle)
+  let size = getRewardPlateSize(r.slots, rStyle)
   let w = round(size[1] * 0.77).tointeger()
   let h = round(w / 286.0 * 197).tointeger()
   return {
@@ -189,6 +187,8 @@ let mkDecoratorIconTitle = @(decoratorId, rStyle, size) decoratorFontIconBase.__
   {
     pos = [ 0, rStyle.iconShiftY ]
     behavior = Behaviors.Marquee
+    speed = hdpx(30)
+    delay = defMarqueeDelay
     text = loc($"title/{decoratorId}")
   },
   getFontToFitWidth({ rendObj = ROBJ_TEXT, text = loc($"title/{decoratorId}") }.__update(fontLabelBig),
@@ -209,7 +209,7 @@ let decoratorIconContentCtors = {
 
 let function mkRewardPlateDecoratorImage(r, rStyle) {
   let { id } = r
-  let size = getRewardPlateSize(r, rStyle)
+  let size = getRewardPlateSize(r.slots, rStyle)
   let decoratorType = Computed(@() (allDecorators.value?[id].dType))
   let comp = { watch = decoratorType }
   return @() decoratorType.value == null ? comp : comp.__update({
@@ -230,7 +230,7 @@ let function mkRewardPlateDecoratorTexts(r, rStyle) {
 
 let function mkRewardPlateItemImage(r, rStyle) {
   let { iconShiftY } = rStyle
-  let size = getRewardPlateSize(r, rStyle)
+  let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = round(size[1] * 0.55).tointeger()
   return {
     size
@@ -243,13 +243,12 @@ let function mkRewardPlateItemImage(r, rStyle) {
 
 let function mkRewardPlateLootboxImage(r, rStyle) {
   let { iconShiftY } = rStyle
-  let size = getRewardPlateSize(r, rStyle)
+  let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = round(size[1] * 0.67).tointeger()
   return {
     size
-    children = mkLoootboxImage(r.id, iconSize, {
-      pos = [ 0, iconShiftY ]
-    }).__merge(iconBase)
+    children = mkLoootboxImage(r.id, iconSize,
+      { pos = [ 0, iconShiftY ] }.__merge(iconBase))
   }
 }
 
@@ -259,7 +258,7 @@ let function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
   let comp = { watch = unit }
   return @() unit.value == null ? comp : comp.__update({
-    size = getRewardPlateSize(r, rStyle)
+    size = getRewardPlateSize(r.slots, rStyle)
     children = [
       mkUnitBg(unit.value)
       mkUnitImage(unit.value)
@@ -271,7 +270,7 @@ let function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
 
 let function mkRewardPlateStatImage(r, rStyle) {
   let { iconShiftY } = rStyle
-  let size = getRewardPlateSize(r, rStyle)
+  let size = getRewardPlateSize(r.slots, rStyle)
   let w = round(size[1] * 0.82).tointeger()
   let h = round(w / 286.0 * 197).tointeger()
   return {
@@ -279,7 +278,7 @@ let function mkRewardPlateStatImage(r, rStyle) {
     children = iconBase.__merge({
       size = [w, h]
       pos = [ 0, iconShiftY ]
-      image = Picture($"ui/gameuiskin#quest_experience_icon.avif:{w}:{h}:P")
+      image = Picture($"{getStatsImage(r.id)}:{w}:{h}:P")
     })
   }
 }
@@ -287,43 +286,53 @@ let function mkRewardPlateStatImage(r, rStyle) {
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
 
+let mkUnitNameText = @(unit, font) {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = hdpx(8)
+  children = [
+    unit.isPremium || unit?.isUpgraded
+        ? mkIcon("ui/gameuiskin#icon_premium.svg", [font.fontSize * 2, font.fontSize], { pos = [ 0, hdpx(3) ] })
+      : null
+    mkPlateText(loc(getUnitLocId(unit)), font)
+  ]
+}
+
 let function mkUnitTextsImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
-  let unitLocName = loc(getUnitPresentation(unit.value).locId)
-  let size = getRewardPlateSize(r, rStyle)
-  let comp = { watch = unit }
-  return @() unit.value == null ? comp : comp.__update({
-    size
-    padding = textPadding
-    clipChildren = true
-    children = [
-      {
-        size = [flex(), SIZE_TO_CONTENT]
-        pos = [0, hdpx(3)]
-        flow = FLOW_VERTICAL
-        halign = ALIGN_RIGHT
-        children = [
-          {
-            flow = FLOW_HORIZONTAL
-            valign = ALIGN_CENTER
-            gap = hdpx(8)
-            children = [
-              unit.value.isPremium || unit.value?.isUpgraded
-                  ? mkIcon("ui/gameuiskin#icon_premium.svg", [hdpxi(60), hdpxi(30)], { pos = [ 0, hdpx(3) ] })
-                : null
-              mkPlateText(unitLocName)
-            ]
-          }
-          mkPlateText(getUnitClassFontIcon(unit.value), fontLabel)
-        ]
-      }
-      {
-        hplace = ALIGN_RIGHT
-        vplace = ALIGN_BOTTOM
-        children = mkGradRank(unit.value.mRank)
-      }
-    ]
-  })
+  let size = getRewardPlateSize(r.slots, rStyle)
+  let maxTextWidth = size[0] - 2 * textPadding[1]
+  return function() {
+    let res = { watch = unit }
+    if (unit.value == null)
+      return res
+    local nameText = mkUnitNameText(unit.value, fontTiny)
+    if (calc_comp_size(nameText)[0] > maxTextWidth)
+      nameText = mkUnitNameText(unit.value, fontVeryTiny)
+        .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
+    return res.__update({
+      size
+      padding = textPadding
+      clipChildren = true
+      children = [
+        {
+          size = [flex(), SIZE_TO_CONTENT]
+          pos = [0, hdpx(3)]
+          flow = FLOW_VERTICAL
+          halign = ALIGN_RIGHT
+          children = [
+            nameText
+            mkPlateText(getUnitClassFontIcon(unit.value), fontLabel)
+          ]
+        }
+        {
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_BOTTOM
+          children = mkGradRank(unit.value.mRank)
+        }
+      ]
+    })
+  }
 }
 
 let mkRewardPlateUnitTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, false)
@@ -333,7 +342,7 @@ let mkRewardPlateUnitUpgradeTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, true
 
 let function mkRewardPlateUnknownImage(r, rStyle) {
   let { iconShiftY } = rStyle
-  let size = getRewardPlateSize(r, rStyle)
+  let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = round(size[1] * 0.6).tointeger()
   return {
     size
@@ -348,7 +357,7 @@ let function mkRewardPlateUnknownImage(r, rStyle) {
 // LAYER CONSTRUCTORS /////////////////////////////////////////////////////////
 
 let function mkRewardPlateBg(r, rStyle) {
-  let size = getRewardPlateSize(r, rStyle)
+  let size = getRewardPlateSize(r.slots, rStyle)
   return {
     size
     rendObj = ROBJ_IMAGE
@@ -420,4 +429,6 @@ return {
   mkRewardReceivedMark
   mkRewardFixedIcon
   mkReceivedCounter
+
+  decoratorIconContentCtors
 }

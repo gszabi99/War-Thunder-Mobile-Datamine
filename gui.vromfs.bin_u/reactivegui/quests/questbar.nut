@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { progressBarRewardSize, rewardProgressBarCtor, statsAnimation } = require("rewardsComps.nut")
-let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { receiveUnlockRewards, unlockRewardsInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { sendBqQuestsStage } = require("bqQuests.nut")
@@ -10,6 +10,7 @@ let { sendBqQuestsStage } = require("bqQuests.nut")
 let questBarHeight = hdpx(28)
 let progressBarHeight = hdpx(30)
 let starIconSize = hdpxi(60)
+let starIconOffset = hdpx(40)
 let borderWidth = hdpx(3)
 let bgColor = 0x80000000
 let questBarColor = 0xFF2EC181
@@ -90,10 +91,9 @@ let function mkStages(progressUnlock) {
       let stageCompletion = clamp((current.tofloat() - prevProgress) / (stages[idx].progress - prevProgress), 0.0, 1.0)
       let isUnlocked = stageCompletion == 1.0
 
-      let rewardPreview = Computed(function() {
-        let rewardId = stages[idx].rewards.keys()?[0]
-        return getRewardsViewInfo(serverConfigs.value.userstatRewards?[rewardId])?[0] ?? {}
-      })
+      let rewardPreview = Computed(@()
+        getUnlockRewardsViewInfo(stages[idx], serverConfigs.value)
+          .sort(sortRewardsViewInfo)?[0])
 
       let claimReward = isUnlocked && hasReward && (idx + 1) >= stage
           ? function() {
@@ -114,6 +114,7 @@ let function mkStages(progressUnlock) {
                 size = [flex(), progressBarHeight]
                 children = [
                   {
+                    key = progressUnlock?.sectionId
                     rendObj = ROBJ_SOLID
                     size = flex()
                     color = progressBarColorLight
@@ -124,6 +125,7 @@ let function mkStages(progressUnlock) {
                     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
                   }
                   {
+                    key = progressUnlock?.sectionId
                     rendObj = ROBJ_SOLID
                     size = flex()
                     color = progressBarColor
@@ -157,15 +159,20 @@ let function mkStages(progressUnlock) {
 }
 
 let mkProgressBar = @(progressUnlock) {
-  rendObj = ROBJ_BOX
   size = [flex(), progressBarHeight]
-  fillColor = bgColor
+  padding = [0, 0, 0, starIconOffset]
   children = [
+    {
+      size = flex()
+      rendObj = ROBJ_BOX
+      fillColor = bgColor
+    }
     mkStages(progressUnlock)
     {
+      key = progressUnlock?.sectionId
       size = [starIconSize, starIconSize]
       vplace = ALIGN_CENTER
-      pos = [hdpx(-40), hdpx(-7)]
+      pos = [-starIconOffset, hdpx(-7)]
       rendObj = ROBJ_IMAGE
       image = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
       transform = {}

@@ -1,21 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
-let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
+let { statsImages } = require("%appGlobals/config/rewardStatsPresentation.nut")
 
 let NO_DROP_LIMIT = 1000000
 
-let rTypesPriority = [
-  "unknown"
-  "unitUpgrade"
-  "unit"
-  "currency"
-  "premium"
-  "decorator"
-  "item"
-  "lootbox"
-].reduce(@(res, v, idx) res.__update({ [v] = idx + 1 }), {})
+let rTypesPriority = {
+  stat            = 1000000
+  lootbox         = 100000
+  unitUpgrade     = 20000
+  unit            = 10000
+  decorator       = 1000
+  currency        = 100
+  premium         = 50
+  item            = 1
+}
+
+let customPriority = {
+  decorator = {
+    nickFrame     = 1010
+    avatar        = 1009
+    title         = 1008
+  }
+  currency = {
+    gold          = 110
+    eventKey      = 109
+    warbond       = 108
+    wp            = 30
+  }
+  item = {
+    spare         = 40
+  }
+}
 
 let slotsByType = {
   unitUpgrade = 2
@@ -29,9 +45,10 @@ let slotsByDType = {
 let dropLimitByType = ["unit", "unitUpgrade", "decorator"]
   .reduce(@(res, id) res.rawset(id, 1), {})
 
-let sortRewardsViewInfo = @(a, b) (rTypesPriority?[a.rType] ?? 0) <=> (rTypesPriority?[b.rType] ?? 0)
-  || (a.rType != "currency" ? 0 : ((orderByCurrency?[a.id] ?? 0) <=> (orderByCurrency?[b.id] ?? 0)))
-  || (a.rType != "item" ? 0 : ((orderByItems?[a.id] ?? 0) <=> (orderByItems?[b.id] ?? 0)))
+let getPriorirty = @(info)
+  customPriority?[info.rType]?[info.id] ?? rTypesPriority?[info.rType] ?? 0
+
+let sortRewardsViewInfo = @(a, b) getPriorirty(b) <=> getPriorirty(a)
   || b.count <=> a.count
   || a.id <=> b.id
 
@@ -72,6 +89,60 @@ let function getRewardsViewInfo(data, multiply = 1) {
     foreach (id, count in lootboxes)
       res.append(mkViewInfo(id, "lootbox", count * multiply))
   return res
+}
+
+let function getStatsRewardsViewInfo(unlockStage) {
+  let res = []
+  foreach(stat in unlockStage?.updStats ?? {})
+    if (stat.name in statsImages && stat.value.tointeger() > 0)
+      res.append({
+        rType = "stat"
+        count = stat.value.tointeger()
+        id = stat.name
+        slots = 1
+      })
+  return res
+}
+
+let function getUnlockRewardsViewInfo(unlockStage, servConfigs) {
+  let res = getStatsRewardsViewInfo(unlockStage)
+  foreach (id, count in unlockStage?.rewards ?? {}) {
+    let reward = servConfigs?.userstatRewards[id]
+    res.extend(getRewardsViewInfo(reward, count))
+  }
+  return res
+}
+
+let customJoin = {
+  unit = {
+    function unitUpgrade(resV, _) {
+      resV.rType = "unitUpgrade"
+      return true
+    }
+  }
+  unitUpgrade = { unit = @(_, __) true }
+}
+
+let function joinSingleViewInfo(resV, joiningV) {
+  if (resV.id != joiningV.id)
+    return false
+  let customRes = customJoin?[resV.rType][joiningV.rType](resV, joiningV)
+  if (customRes != null)
+    return customRes
+
+  if (resV.rType != joiningV.rType)
+    return false
+  resV.count += joiningV.count
+  return true
+}
+
+let function joinViewInfo(resViewInfo, joiningViewInfo) {
+  foreach(new in joiningViewInfo) {
+    let found = resViewInfo.findvalue(@(v) joinSingleViewInfo(v, new))
+    if (found == null)
+      resViewInfo.append(clone new)
+  }
+  return resViewInfo
 }
 
 let function groupRewards(rewards) {
@@ -298,7 +369,10 @@ let function fillRewardsCounts(rewards, profile, configs) {
 return {
   NO_DROP_LIMIT
   getRewardsViewInfo
+  getStatsRewardsViewInfo
+  getUnlockRewardsViewInfo
   sortRewardsViewInfo
+  joinViewInfo
   getLootboxRewardsViewInfo
   receivedGoodsToViewInfo
   isRewardEmpty

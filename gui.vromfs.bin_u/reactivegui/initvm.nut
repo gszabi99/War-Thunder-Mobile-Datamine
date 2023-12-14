@@ -1,7 +1,6 @@
+from "%globalsDarg/darg_library.nut" import *
 // configure scene when hosted in game
-let { gui_scene } = require("daRg")
 let { DBGLEVEL } = require("dagor.system")
-let { debugTableData } = require("%sqStdLibs/helpers/toString.nut")
 
 gui_scene.setConfigProps({
   clickRumbleEnabled = false

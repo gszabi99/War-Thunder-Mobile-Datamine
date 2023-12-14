@@ -5,8 +5,8 @@ let { send } = require("eventbus")
 let { json_to_string } = require("json")
 let io = require("io")
 let { get_common_local_settings_blk } = require("blkGetters")
-let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { setBlkValueByPath, getBlkValueByPath, isDataBlock, eachParam
+} = require("%globalScripts/dataBlockExt.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { generate_full_offline_profile, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
@@ -28,12 +28,12 @@ let function initOfflineMenuProfile() {
   let profile = clone require($"%appGlobals/data/{PROFILE}")
   let saveBlk = get_common_local_settings_blk()
 
-  let campaign = get_blk_value_by_path(saveBlk, CAMPAIGN_SAVE_ID)
+  let campaign = getBlkValueByPath(saveBlk, CAMPAIGN_SAVE_ID)
   if (campaign in profile.levelInfo)
     profile.levelInfo = profile.levelInfo.__merge({
       [campaign] = profile.levelInfo[campaign].__merge({ isCurrent = true })
     })
-  let unitsBlk = get_blk_value_by_path(saveBlk, UNITS_SAVE_ID)
+  let unitsBlk = getBlkValueByPath(saveBlk, UNITS_SAVE_ID)
   if (isDataBlock(unitsBlk)) {
     let unitsUpd = {}
     eachParam(unitsBlk, function(unitName, _) {
@@ -92,7 +92,7 @@ let offlineActions = {
 
   function set_current_campaign(p) {
     let saveBlk = get_common_local_settings_blk()
-    set_blk_value_by_path(saveBlk, CAMPAIGN_SAVE_ID, p.campaign)
+    setBlkValueByPath(saveBlk, CAMPAIGN_SAVE_ID, p.campaign)
     send("saveProfile", {})
   }
 
@@ -109,7 +109,7 @@ let offlineActions = {
 
     let saveBlk = get_common_local_settings_blk()
     let campaign = serverConfigs.value?.allUnits[newUnit.name].campaign ?? ""
-    set_blk_value_by_path(saveBlk, $"{UNITS_SAVE_ID}/{campaign}", newUnit.name)
+    setBlkValueByPath(saveBlk, $"{UNITS_SAVE_ID}/{campaign}", newUnit.name)
     send("saveProfile", {})
 
     return res

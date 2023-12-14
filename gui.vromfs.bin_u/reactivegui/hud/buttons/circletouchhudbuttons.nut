@@ -12,6 +12,7 @@ let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 let { weaponTouchIcons } = require("%appGlobals/weaponPresentation.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { allowShoot, primaryRocketGun } = require("%rGui/hud/tankState.nut")
+let disabledControls = require("%rGui/controls/disabledControls.nut")
 
 let bigButtonSize = hdpxi(150)
 let bigButtonImgSize = (0.65 * bigButtonSize + 0.5).tointeger()
@@ -182,7 +183,7 @@ let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, p
 let primStateFlags = Watched(0) //same state flags for all primary buttons on the screen
 let primGroup = ElemGroup()
 let mkCircleTankPrimaryGun = @(actionItem, key = "btn_weapon_primary", countCtor = mkCountTextLeft) function() {
-  let isAvailable = isActionAvailable(actionItem)
+  let isAvailable = isActionAvailable(actionItem) && !disabledControls.value?.ID_FIRE_GM
   let { count, countEx, isBulletBelt = false } = actionItem
   let isWaitForAim = !(actionItem?.aimReady ?? true)
   let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
@@ -211,7 +212,7 @@ let mkCircleTankPrimaryGun = @(actionItem, key = "btn_weapon_primary", countCtor
       }
 
   return res.__update({ //warning disable: -unwanted-modification
-    watch = [allowShoot, primaryRocketGun]
+    watch = [allowShoot, primaryRocketGun, disabledControls]
     key
     size = [bigButtonSize, bigButtonSize]
     group = primGroup
@@ -229,7 +230,7 @@ let mkCircleTankPrimaryGun = @(actionItem, key = "btn_weapon_primary", countCtor
 }
 
 let mkCircleTankMachineGun = @(actionItem) function() {
-  let isAvailable = isActionAvailable(actionItem)
+  let isAvailable = isActionAvailable(actionItem) && !disabledControls.value?.ID_FIRE_GM_MACHINE_GUN
   let isWaitForAim = !(actionItem?.aimReady ?? true)
   let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
   let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
@@ -247,7 +248,7 @@ let mkCircleTankMachineGun = @(actionItem) function() {
   )
 
   return res.__update({
-    watch = [allowShoot, primaryRocketGun]
+    watch = [allowShoot, primaryRocketGun, disabledControls]
     key = "btn_machinegun"
     size = [buttonSize, buttonSize]
     behavior = Behaviors.TouchAreaOutButton
@@ -300,15 +301,18 @@ let mkCircleTankSecondaryGun = @(shortcutId, img = null) @(actionItem) function(
 
 let function mkCircleZoom() {
   let stateFlags = Watched(0)
+  let isDisabled = Computed(@() disabledControls.value?.ID_ZOOM_TOGGLE ?? false)
   let imgSize = (0.8 * buttonSize).tointeger()
   return @() {
-    watch = [canZoom, isInZoom]
+    watch = [canZoom, isInZoom, isDisabled]
     key = "btn_zoom_circle"
     size = [buttonSize, buttonSize]
     behavior = Behaviors.Button
     eventPassThrough = true
     hotkeys = mkGamepadHotkey("ID_ZOOM_TOGGLE")
     function onClick() {
+      if (isDisabled.value)
+        return
       if (canZoom.value)
         toggleShortcut("ID_ZOOM_TOGGLE")
       else
@@ -317,10 +321,12 @@ let function mkCircleZoom() {
     onElemState = @(v) stateFlags(v)
     children = [
       mkBtnBg(buttonSize, btnBgColor.empty)
-      mkBtnBorder(buttonSize, canZoom.value, stateFlags)
+      mkBtnBorder(buttonSize, canZoom.value && !isDisabled.value, stateFlags)
       mkBtnImage(imgSize,
-        isInZoom.value ? "ui/gameuiskin#hud_tank_binoculars_zoom.svg" : "ui/gameuiskin#hud_tank_binoculars.svg")
-      mkGamepadShortcutImage("ID_ZOOM_TOGGLE", defShortcutOvr)
+        isInZoom.value ? "ui/gameuiskin#hud_tank_binoculars_zoom.svg" : "ui/gameuiskin#hud_tank_binoculars.svg",
+        isDisabled.value ? disabledColor : 0xFFFFFFFF)
+      isDisabled.value ? null
+        : mkGamepadShortcutImage("ID_ZOOM_TOGGLE", defShortcutOvr)
     ]
   }
 }

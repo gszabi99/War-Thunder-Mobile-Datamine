@@ -7,10 +7,11 @@ let function mkPlayersByTeam(dData) {
   let mplayersList = players.values().map(function(p) {
     let isLocal = p.userId == userId
     let pUserIdStr = p.userId.tostring()
-    let { level = 1, starLevel = 0, hasPremium = false } = playersCommonStats?[pUserIdStr]
+    let { level = 1, starLevel = 0, hasPremium = false, decorators = {} } = playersCommonStats?[pUserIdStr]
     let pUnit = playersCommonStats?[pUserIdStr].unit
     let mainUnitName = pUnit?.name ?? (p.aircraftName ?? "")
     let unitClass = pUnit?.unitClass ?? ""
+    let mRank = pUnit?.mRank
     let isUnitPremium = pUnit?.isPremium ?? false
     let frameId = playersCommonStats?[p.userId.tostring()].decorators.nickFrame
     return p.__merge({
@@ -27,6 +28,8 @@ let function mkPlayersByTeam(dData) {
       isUnitPremium
       mainUnitName
       unitClass
+      mRank
+      decorators
     })
   })
   let teamsOrder = localTeam == 2 ? [ 2, 1 ] : [ 1, 2 ]

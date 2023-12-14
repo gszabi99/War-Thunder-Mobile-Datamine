@@ -489,6 +489,12 @@ let streaksPresentation = {
     ]
     numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
+
+  streak_firework_new_year = {
+    name = "streaks/streak_firework_new_year"
+    bgImage = "ui/gameuiskin#streak_christmas.avif"
+  }
+
 }
 function streakPresentation(unlockId) {
   return streaksPresentation?[unlockId] ?? streaksPresentation.unknown

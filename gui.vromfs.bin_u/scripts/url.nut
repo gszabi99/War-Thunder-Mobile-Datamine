@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { register_command } = require("console")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { getShortName } = require("%scripts/language.nut")
 let { subscribe } = require("eventbus")
 let { split_by_chars } = require("string")
@@ -138,8 +137,8 @@ local function validateLink(link) {
   if (link == null)
     return null
 
-  if (!u.isString(link)) {
-    log("CHECK LINK result: " + toString(link))
+  if (type(link) != "string") {
+    log("CHECK LINK result: ", link)
     assert(false, "CHECK LINK: Link received not as text")
     return null
   }
@@ -165,7 +164,7 @@ local function validateLink(link) {
 
 let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCloseUrl = "", useExternalBrowser = true) {
   let bigQueryInfoObject = { url = baseUrl }
-  if (! u.isEmpty(biqQueryKey))
+  if ((biqQueryKey ?? "") != "")
     bigQueryInfoObject["from"] <- biqQueryKey
 
   sendUiBqEvent("player_opens_external_browser", bigQueryInfoObject)

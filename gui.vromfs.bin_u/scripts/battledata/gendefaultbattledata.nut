@@ -19,7 +19,7 @@ let function saveResult(res, fileName) {
 
 registerHandler("saveDefaultBattleData", function(res) {
   if ("error" in res)
-    console_print(toString(res))
+    console_print(res)
   else
     saveResult(res, DEF_BATTLE_DATA)
 })

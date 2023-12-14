@@ -12,7 +12,7 @@ let DataBlock = require("DataBlock")
 let { subscribe }  = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { convertBlk } = require("%sqstd/datablock.nut")
-let { isEqual, isEmpty, isInteger, isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isEqual, isDataBlock } = require("%sqstd/underscore.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { missionAvailabilityFlag, isAvailableByMissionSettings } = require("%scripts/missions/missionsUtils.nut")
 let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState.nut")
@@ -32,6 +32,7 @@ let { set_game_mode, get_game_mode, get_game_type } = require("mission")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { isInFlight } = require("gameplayBinding")
 let { format } = require("string")
+let { tostring_r } = require("%sqstd/string.nut")
 
 function is_my_userid(user_id) {
   if (type(user_id) == "string")
@@ -350,9 +351,9 @@ SessionLobby = {
     if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
       _settings.mranks <- { min = mrankMin, max = mrankMax }
 
-    if (!isEmpty(this.settings?.externalSessionId))
+    if ((this.settings?.externalSessionId ?? "") != "")
       _settings.externalSessionId <- this.settings.externalSessionId
-    if (!isEmpty(this.settings?.psnMatchId))
+    if ((this.settings?.psnMatchId ?? "") != "")
       _settings.psnMatchId <- this.settings.psnMatchId
 
     this.checkDynamicSettings(true, _settings)
@@ -468,7 +469,7 @@ SessionLobby = {
 
   function getGameType(room = null) {
     let res = getTblValue("_gameType", this.getMissionData(room), 0)
-    return isInteger(res) ? res : 0
+    return type(res) == "integer" ? res : 0
   }
 
   function getMGameModeId(room = null) {
@@ -817,7 +818,7 @@ SessionLobby = {
     this.members = getTblValue("members", params, [])
 
     let public = getTblValue("public", params, this.settings)
-    if (!this.isRoomOwner || isEmpty(this.settings)) {
+    if (!this.isRoomOwner || this.settings.len() == 0) {
       this.setSettings(public)
 
       if (this.isRoomByQueue && !this.isSessionStartedInRoom())
@@ -1255,11 +1256,11 @@ local MRoomsHandlers = class {
     let roomPub = this.room.public
 
     if (!("room_key" in roomPub)) {
-      let mePub = toString(me?.public, 3)          // warning disable: -declared-never-used
-      let mePrivate = toString(me?.private, 3)     // warning disable: -declared-never-used
-      let meStr = toString(me, 3)                  // warning disable: -declared-never-used
-      let roomStr = toString(roomPub, 3)           // warning disable: -declared-never-used
-      let roomMission = toString(roomPub?.mission) // warning disable: -declared-never-used
+      let mePub = tostring_r(me?.public, 3)          // warning disable: -declared-never-used
+      let mePrivate = tostring_r(me?.private, 3)     // warning disable: -declared-never-used
+      let meStr = tostring_r(me, 3)                  // warning disable: -declared-never-used
+      let roomStr = tostring_r(roomPub, 3)           // warning disable: -declared-never-used
+      let roomMission = tostring_r(roomPub?.mission) // warning disable: -declared-never-used
       ::script_net_assert("missing room_key in room")
 
       ::send_error_log("missing room_key in room", false, "log")

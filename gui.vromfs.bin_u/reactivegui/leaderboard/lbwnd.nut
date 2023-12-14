@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
 let { curLbId, curLbData, curLbSelfRow, curLbErrName, curLbCfg, isLbWndOpened,
   isRefreshLbEnabled, lbPage, lbMyPage, lbLastPage, lbTotalPlaces, isLbRequestInProgress,
-  minRatingBattles, bestBattlesCount
+  minRatingBattles, bestBattlesCount, hasBestBattles, isLbBestBattlesOpened
 } = require("lbState.nut")
 let { hasCurLbRewards, curLbRewards, curLbTimeRange } = require("lbRewardsState.nut")
 let { lbCfgOrdered } = require("lbConfig.nut")
@@ -17,6 +17,8 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { mkPaginator } = require("%rGui/components/paginator.nut")
 let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
 let { mkPlaceIconSmall } = require("%rGui/components/playerPlaceIcon.nut")
+let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
+let { PRIMARY, defButtonHeight } = buttonStyles
 let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbDotsRowHeight,
   lbTableBorderWidth, lbPageRows, rowBgHeaderColor, rowBgOddColor, rowBgEvenColor,
   prizeIcons, getRowBgColor, lbRewardsBlockWidth
@@ -24,12 +26,10 @@ let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbD
 let { RANK, NAME, PRIZE } = require("lbCategory.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
 let { contactNameBlock, contactAvatar } = require("%rGui/contacts/contactInfoPkg.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { mkLbHeaderRow, headerIconHeight } = require("mkLbHeaderRow.nut")
 let lbRewardsBlock = require("lbRewardsBlock.nut")
 
 let tabIconSize = hdpxi(60)
-let headerIconHeight = evenPx(36)
-let headerIconWidth = (1.5 * headerIconHeight).tointeger()
 let rankCellWidth = lbHeaderRowHeight * (isWidescreen ? 2.5 : 2.0)
 let nameWidth = calc_str_box("WWWWWWWWWWWWWWWWWW", isWidescreen ? fontTiny : fontVeryTiny)[0]
 let nameGap = hdpx(10)
@@ -135,7 +135,8 @@ let function rewardsTimer() {
   }.__update(fontTiny)
 }
 
-let header = {
+let header = @() {
+  watch = hasBestBattles
   size = [flex(), lbHeaderHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -144,8 +145,21 @@ let header = {
     backButton(close)
     lbTabs
     { size = flex() }
-
     rewardsTimer
+    !hasBestBattles.value ? null
+      : mkCustomButton(
+          {
+            size = [tabIconSize, tabIconSize]
+            rendObj = ROBJ_IMAGE
+            image = Picture($"ui/gameuiskin#menu_stats.svg:{tabIconSize}:{tabIconSize}:P")
+            keepAspect = true
+          },
+          @() isLbBestBattlesOpened(true),
+          mergeStyles(PRIMARY,
+          {
+            ovr = { minWidth = defButtonHeight }
+            hotkeys = ["^J:X | Enter"]
+          }))
   ]
 }
 
@@ -246,70 +260,6 @@ let mkDotsRow = @(categories) categories.map(@(c) {
     c == RANK ? dots : {}
   ))
 
-let function headerIconButton(icon, contentCtor, hasHint) {
-  if (!hasHint && icon == null)
-    return null
-
-  let stateFlags = Watched(0)
-  let key = {}
-  return @() {
-    key
-    watch = stateFlags
-    behavior = Behaviors.Button
-    xmbNode = {}
-    onElemState = withTooltip(stateFlags, key, contentCtor)
-    onDetach = tooltipDetach(stateFlags)
-
-    flow = FLOW_HORIZONTAL
-    valign = ALIGN_CENTER
-    children = [
-      icon == null ? null
-        : {
-            size = [headerIconWidth, headerIconHeight]
-            rendObj = ROBJ_IMAGE
-            image = Picture($"{icon}:{headerIconWidth}:{headerIconHeight}:P")
-            color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
-            keepAspect = true
-          }
-      !hasHint ? null
-        : {
-            rendObj = ROBJ_VECTOR_CANVAS
-            size = [hdpx(40), hdpx(40)]
-            lineWidth = hdpx(2)
-            fillColor = 0
-            color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
-            commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            children = {
-              rendObj = ROBJ_TEXT
-              text = "?"
-              color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
-            }.__update(fontTinyAccented)
-          }
-    ]
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-  }
-}
-
-let mkHeaderRow = @(categories) categories.map(function(c) {
-  let { locId, hintLocId, relWidth, icon } = c
-  let hintCtor = @() {
-    flow = FLOW_HORIZONTAL
-    halign = ALIGN_RIGHT
-    content = "\n".join([
-        loc(locId)
-        hintLocId == "" ? null : loc(hintLocId)
-      ], true)
-  }
-  return {
-    size = [flex(relWidth), SIZE_TO_CONTENT]
-    halign = ALIGN_CENTER
-    children = headerIconButton(icon, hintCtor, hintLocId != "")
-  }.__update(styleByCategory?[c] ?? {})
-})
-
 let flexGap = { size = flex() }
 let myRequirementsRow = @(emptyColor) function() {
   let res = {
@@ -353,7 +303,7 @@ let function lbTableFull(categories, lbData, selfRow) {
 
   let rows = lbData.map(@(row) mkRow(categories, row))
   let dotsRow = mkDotsRow(categories)
-  local myRowIdx = selfIdx - startIdx
+  local myRowIdx = selfIdx - max(startIdx, 0)
   local needRequirementsRow = false
   if (rows.len() < lbPageRows)
     rows.resize(lbPageRows, null)
@@ -406,7 +356,7 @@ let function lbTableFull(categories, lbData, selfRow) {
          padding = lbTableBorderWidth
          flow = FLOW_HORIZONTAL
          valign = ALIGN_CENTER
-         children = mkHeaderRow(categories)
+         children = mkLbHeaderRow(categories, styleByCategory)
        }
        {
          size = flex()
@@ -445,7 +395,7 @@ let waitLeaderBoard = {
 
 let lbErrorMsg = @(text) {
   key = text
-  size = [hdpx(1200), SIZE_TO_CONTENT]
+  size = [hdpx(1100), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   vplace = ALIGN_CENTER
@@ -456,13 +406,23 @@ let lbErrorMsg = @(text) {
   animations = [spinnerOpacityAnim]
 }.__update(fontSmall)
 
+function lbNoDataMsg() {
+  let textsList = [loc("leaderboard/noLbData")]
+  let count = minRatingBattles.value - bestBattlesCount.value
+  if (count > 0)
+    textsList.append(loc("lb/needMoreBattlesForLeaderboad", { count, countText = colorize(0xFFFFFFFF, count) }))
+  return lbErrorMsg("\n\n".join(textsList))
+    .__update({ watch = [minRatingBattles, bestBattlesCount] })
+}
+
 let content = @() {
   watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
   size = flex()
   children = curLbCfg.value != null && (curLbData.value?.len() ?? 0) > 0
       ? lbTableFull(curLbCfg.value.categories, curLbData.value, curLbSelfRow.value)
     : isLbRequestInProgress.value ? waitLeaderBoard
-    : lbErrorMsg(loc(curLbErrName.value == null ? "leaderboard/noLbData" : $"error/{curLbErrName.value}"))
+    : curLbErrName.value == null ? lbNoDataMsg
+    : lbErrorMsg(loc($"error/{curLbErrName.value}"))
 }
 
 let needPaginator = Computed(@() (curLbData.value?.len() ?? 0) != 0)

@@ -8,6 +8,15 @@ let iconSize = hdpxi(100)
 
 let textColor = 0xFFFFFFFF
 
+let mkTabImage = @(image) {
+  size = [iconSize, iconSize]
+  vplace = ALIGN_CENTER
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{image}:{iconSize}:{iconSize}:P")
+  color = textColor
+  keepAspect = KEEP_ASPECT_FIT
+}
+
 let function tabData(tab, idx, curTabIdx) {
   let { locId  = "", image = null, isVisible = null, unseen = null, tabContent = null, tabHeight = tabH } = tab
   local unseenMark = null
@@ -28,14 +37,8 @@ let function tabData(tab, idx, curTabIdx) {
           flow = FLOW_HORIZONTAL
           children = [
             image == null ? null
-              : {
-                  size = [iconSize, iconSize]
-                  vplace = ALIGN_CENTER
-                  rendObj = ROBJ_IMAGE
-                  image = Picture($"{image}:{iconSize}:{iconSize}:P")
-                  color = textColor
-                  keepAspect = KEEP_ASPECT_FIT
-                }
+              : image instanceof Watched ? @() mkTabImage(image.get()).__update({ watch = image })
+              : mkTabImage(image)
             tabContent ?? {
               size = flex()
               rendObj = ROBJ_TEXTAREA

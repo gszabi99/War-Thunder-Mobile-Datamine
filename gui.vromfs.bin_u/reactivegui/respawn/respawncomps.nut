@@ -28,7 +28,7 @@ let header = @(children, ovr = {}) bg.__merge({
 let headerMarquee = @(width) {
   size = [width, SIZE_TO_CONTENT]
   behavior = Behaviors.Marquee
-  delay = 1
+  delay = defMarqueeDelay
   speed = hdpx(50)
 }
 

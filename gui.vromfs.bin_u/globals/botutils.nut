@@ -9,6 +9,7 @@ function genBotCommonStats(name, unitName, unitCfg, defLevel) {
     unit = {
       level = abs((hashVal) % 25) + 1
       unitClass = unitCfg?.unitClass ?? ""
+      mRank = unitCfg?.mRank
     }
     decorators = {
       avatar = avatars?.keys()[(hashVal) % (avatars?.len() ?? 1)]

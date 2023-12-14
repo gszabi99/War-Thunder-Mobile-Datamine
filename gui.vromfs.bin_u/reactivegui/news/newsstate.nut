@@ -14,7 +14,7 @@ let { platformId } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn, isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { get_blk_value_by_path, set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let logN = log_with_prefix("[NEWSFEED] ")
@@ -113,14 +113,14 @@ isNewsWndOpened.subscribe(function (v) {
   else {
     lastSeenId(newsfeed.value.reduce(@(res, val) max(res, val.id), lastSeenId.value))
     let sBlk = get_local_custom_settings_blk()
-    set_blk_value_by_path(sBlk, SEEN_SAVE_ID, lastSeenId.value)
+    setBlkValueByPath(sBlk, SEEN_SAVE_ID, lastSeenId.value)
     send("saveProfile", {})
   }
 })
 
 let function loadLastSeenArticleId() {
   let sBlk = get_local_custom_settings_blk()
-  lastSeenId(get_blk_value_by_path(sBlk, SEEN_SAVE_ID) ?? 0)
+  lastSeenId(getBlkValueByPath(sBlk, SEEN_SAVE_ID) ?? 0)
   updateUnreadArticles()
 }
 isOnlineSettingsAvailable.subscribe(@(v) v ? loadLastSeenArticleId() : null)
@@ -276,7 +276,7 @@ if (isLoggedIn.value && isFeedReceived.value && (isNewsWndOpened.value || haveUn
 register_command(function() {
   lastSeenId(0)
   let sBlk = get_local_custom_settings_blk()
-  set_blk_value_by_path(sBlk, SEEN_SAVE_ID, 0)
+  setBlkValueByPath(sBlk, SEEN_SAVE_ID, 0)
   send("forceSaveProfile", {})
 }, "ui.resetNewsSeen")
 

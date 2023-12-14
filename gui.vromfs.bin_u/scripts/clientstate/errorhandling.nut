@@ -1,15 +1,14 @@
 from "%scripts/dagui_library.nut" import *
-
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let {script_net_assert_once} = require("%sqStdLibs/helpers/net_errors.nut")
+let { tostring_r } = require("%sqstd/string.nut")
 
 callback.setContextDbgNameFunction(function(context) {
-  if (!u.isTable(context))
-    return toString(context, 0)
+  if (type(context) != "table")
+    return tostring_r(context, 0)
 
   foreach (key, value in getroottable())
     if (value == context)

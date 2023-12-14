@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")

@@ -20,7 +20,7 @@ let style = {
   getSvgImage = @(id, sizeX, sizeY = null) Picture($"ui/gameuiskin#{id}.svg:{sizeX}:{sizeY ?? sizeX}")
 
   imageColor             = Color(255, 255, 255)
-  imageDisabledColor     = Color(255, 255, 255, 77)
+  imageDisabledColor     = Color(77, 77, 77, 77)
 
   textColor              = Color(255, 255, 255)
   textDisabledColor      = Color(77, 77, 77, 77)

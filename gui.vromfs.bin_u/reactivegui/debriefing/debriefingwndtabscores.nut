@@ -1,19 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
 let { can_write_replays } = require("%appGlobals/permissions.nut")
+let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
+let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { mkDebriefingStats } = require("mkDebriefingStats.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let { mkMissionResultTitle, missionResultTitleAnimTime } = require("%rGui/debriefing/missionResultTitle.nut")
 let achievementsBlock = require("achievementsBlock.nut")
+let mkDebrQuestsProgress = require("mkDebrQuestsProgress.nut")
 let { mkTotalRewardCountsScores } = require("%rGui/debriefing/totalRewardCounts.nut")
 
 let rewardsAnimStartTime = 0.5
+let questsAnimStartTime = 0.5
 
 let btnSaveReplay = @() {
   watch = [can_write_replays, hasUnsavedReplay]
-  hplace = ALIGN_LEFT
-  vplace = ALIGN_BOTTOM
   children = !can_write_replays.get() || !hasUnsavedReplay.get() ? null
     : translucentButton("ui/gameuiskin#icon_save.svg", "", saveReplayWindow)
 }
@@ -27,10 +29,18 @@ let function mkDebriefingWndTabScores(debrData, _params) {
   let statsAnimStartTime = achievementsAnimStartTime + achievementsAnimTime
   let { statsAnimEndTime, debriefingStats } = mkDebriefingStats(debrData, statsAnimStartTime)
 
-  let { totalRewardCountsComp, totalRewardsShowTime } = mkTotalRewardCountsScores(debrData, rewardsAnimStartTime)
-  let timeShow = max(statsAnimEndTime, rewardsAnimStartTime + totalRewardsShowTime)
+  let { totalRewardCountsComp, totalRewardsShowTime, btnTryPremium
+  } = mkTotalRewardCountsScores(debrData, rewardsAnimStartTime)
 
-  if (achievementsComp == null && totalRewardCountsComp == null && debriefingStats == null)
+  let { questsProgressComps, questsProgressShowTime } = mkDebrQuestsProgress(debrData, questsAnimStartTime)
+
+  let timeShow = max(
+    statsAnimEndTime,
+    rewardsAnimStartTime + totalRewardsShowTime,
+    questsAnimStartTime + questsProgressShowTime
+  )
+
+  if (achievementsComp == null && totalRewardCountsComp == null && debriefingStats == null && questsProgressComps == null)
     return null
 
   let comp = {
@@ -52,9 +62,25 @@ let function mkDebriefingWndTabScores(debrData, _params) {
               debriefingStats
             ]
           }
+          questsProgressComps == null ? null : makeSideScroll({
+            size = [flex(), SIZE_TO_CONTENT]
+            halign = ALIGN_CENTER
+            flow = FLOW_VERTICAL
+            gap = hdpx(8)
+            children = questsProgressComps
+          })
         ]
       }
-      btnSaveReplay
+      {
+        vplace = ALIGN_BOTTOM
+        valign = ALIGN_BOTTOM
+        flow = FLOW_HORIZONTAL
+        gap = buttonsHGap
+        children = [
+          btnTryPremium
+          btnSaveReplay
+        ]
+      }
     ]
   }
 

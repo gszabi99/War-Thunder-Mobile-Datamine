@@ -6,17 +6,17 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkGamercard, gamercardItemsBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
 let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
+let { translucentButtonsVGap, translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
-let btnOpenUnitAttr = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
+let { btnOpenUnitAttr } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
-let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let chooseCampaignWnd = require("chooseCampaignWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
@@ -38,13 +38,15 @@ let setReady = require("%rGui/squad/setReady.nut")
 let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = require("%rGui/squad/readyCheck.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let btnOpenQuests = require("%rGui/quests/btnOpenQuests.nut")
+let { btnOpenQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let eventBanner = require("%rGui/event/eventBanner.nut")
+let bpBanner = require("%rGui/battlePass/bpBanner.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let btnOpenUnitWnd = require("%rGui/unit/btnOpenUnitWnd.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
+let { framedImageBtn } = require("%rGui/components/imageButton.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -72,14 +74,29 @@ let unitName = @() hangarUnit.value == null ? { watch = hangarUnit }
     ]
   }
 
-let campaignsBtnComp = translucentButton("ui/gameuiskin#campaign.svg",
-  loc("changeCampaign"), chooseCampaignWnd)
-
 let campaignsBtn = @() {
-  watch = campaignsList
-  margin = [hdpx(20), 0]
-  children = campaignsList.value.len() <= 1 ? null
-    : campaignsBtnComp
+  watch = [campaignsList, curCampaign]
+  children = campaignsList.value.len() <= 1 || curCampaign.value == null  ? null
+    : framedImageBtn(getCampaignPresentation(curCampaign.value).icon, chooseCampaignWnd,
+        {
+          padding = [hdpx(0), hdpx(20), hdpx(0), hdpx(20) ]
+          size = [SIZE_TO_CONTENT, translucentButtonsHeight]
+          sound = { click = "click" }
+          imageSize = [hdpx(80) , hdpx(80)]
+          flow = FLOW_HORIZONTAL
+          gap = hdpx(20)
+        },
+        {
+          size = [SIZE_TO_CONTENT, flex()]
+          rendObj = ROBJ_TEXT
+          valign = ALIGN_CENTER
+          color = 0xFFFFFFFF
+          text = utf8ToUpper(loc("changeCampaignShort"))
+          fontFx = FFT_GLOW
+          fontFxFactor = 64
+          fontFxColor = Color(0, 0, 0)
+        }.__update(fontSmallAccented)
+      )
 }
 
 let onlineInfo = @() {
@@ -104,19 +121,11 @@ let gamercardPlace = {
       size = [flex(), SIZE_TO_CONTENT]
       children = [
         {
-          pos = [0, hdpx(45)]
-          children = [
-            onlineInfo
-            downloadInfoBlock
-          ]
-        }
-        {
           flow = FLOW_VERTICAL
           gap = translucentButtonsVGap / 2
           hplace = ALIGN_RIGHT
           children = [
             offerPromo
-            eventBanner
           ]
         }
       ]
@@ -124,17 +133,37 @@ let gamercardPlace = {
   ]
 }
 
-let leftBottomButtons = {
+let btnHorRow = @(children) {
+  flow = FLOW_HORIZONTAL
+  gap = translucentButtonsVGap
+  children
+}
+
+let btnVerRow = @(children) {
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = translucentButtonsVGap
-  children = [
-    campaignsBtn
-    btnOpenQuests
-    btnOpenUnitAttr
-    btnOpenUnitWnd
-  ]
+  children
 }
+
+let leftBottomButtons = btnVerRow([
+  campaignsBtn
+  bpBanner
+  btnHorRow([
+    btnOpenQuests
+    //todo: other events
+  ])
+  btnHorRow([
+    btnVerRow([
+      btnOpenUnitAttr
+      btnOpenUnitWnd
+    ])
+    btnVerRow([
+      onlineInfo
+      downloadInfoBlock
+    ])
+  ])
+])
 
 
 let queueCurRandomBattleMode = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
@@ -162,7 +191,13 @@ let function startCurUnitOfflineBattle() {
 }
 
 let hotkeyX = ["^J:X | Enter"]
-let battleBtnOvr = { ovr = { key = "toBattleButton" }, hotkeys = hotkeyX }
+let battleBtnOvr = {
+  ovr = {
+    key = "toBattleButton"
+    animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = 0.4, easing = CosineFull, play = true, delay = 2 }]
+  }
+  hotkeys = hotkeyX
+}
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
 let toBattleButton = textButtonBattle(toBattleText,
   function() {
@@ -248,10 +283,10 @@ let bottomCenterBlock = {
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_CENTER
   halign = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  gap = hdpx(24)
+  valign = ALIGN_BOTTOM
   children = [
-    mkUnitPkgDownloadInfo(curUnit, false)
+    mkUnitPkgDownloadInfo(curUnit, false,
+      { pos = [0, -evenPx(150) - translucentButtonsVGap] })
     squadPanel
   ]
 }

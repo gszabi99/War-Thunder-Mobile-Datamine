@@ -124,7 +124,7 @@ let function modData(mod) {
           rendObj = ROBJ_TEXT
           text = loc(locId)
           behavior = Behaviors.Marquee
-          delay = 1
+          delay = defMarqueeDelay
           speed = hdpx(50)
         }.__update(fontSmallShaded)
 

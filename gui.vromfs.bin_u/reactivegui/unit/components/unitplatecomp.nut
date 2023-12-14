@@ -45,9 +45,10 @@ let gradientColor = 0x80FFFFFF
 
 let gradientTexSizeMul = 0.5
 
-let bgPlatesTranslate = @(platoonSize, idx, isSelected = false) isSelected
-    ? [(idx - platoonSize) * platoonSelPlatesGap, (idx - platoonSize) * platoonSelPlatesGap]
-    : [(idx - platoonSize) * platoonPlatesGap, (idx - platoonSize) * platoonPlatesGap]
+let function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
+  let gap = isSelected ? platoonSelPlatesGap : platoonPlatesGap
+  return [(idx - platoonSize) * gap, (idx - platoonSize) * gap].map(@(v) (v * sizeMul).tointeger())
+}
 
 let lineGradTexW = (unitPlateWidth * gradientTexSizeMul).tointeger()
 let lineGradImg = mkLinearGradientImg({
@@ -320,9 +321,9 @@ let mkUnitTexts = @(unit, unitLocName, justUnlockedDelay = null) {
             mkPlateText(unitLocName, {
               size = [flex(), SIZE_TO_CONTENT]
               halign = ALIGN_RIGHT
-              behavior = [Behaviors.Marquee]
+              behavior = Behaviors.Marquee
               speed = hdpx(30)
-              delay = [1, 1]
+              delay = defMarqueeDelay
             })
           ]
         }

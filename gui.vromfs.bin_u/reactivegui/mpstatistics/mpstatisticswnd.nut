@@ -37,6 +37,7 @@ let playersByTeam = Computed(function() {
         let mainUnitName = ((aircraftName in platoonUnits) || showAircraftName.value)
           ? aircraftName
           : (unit?.name ?? aircraftName)
+        let mRank = unit?.mRank
         return p.__merge({
           nickname
           damage
@@ -47,6 +48,7 @@ let playersByTeam = Computed(function() {
           decorators
           unitClass
           mainUnitName
+          mRank
         })
       })))
   let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)

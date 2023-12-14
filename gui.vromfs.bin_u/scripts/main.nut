@@ -14,7 +14,6 @@ require("%appGlobals/sqevents.nut")
 require("%globalScripts/debugTools/matchingErrorDebug.nut")
 
 require("%globalScripts/version.nut")
-require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
 
 let { is_pc } = require("%sqstd/platform.nut")
@@ -78,8 +77,6 @@ foreach (fn in [
 
   "%scripts/urlType.nut"
   "%scripts/url.nut"
-
-  "%sqStdLibs/helpers/datablockUtils.nut"
 
   "%scripts/clientState/localProfile.nut"
 

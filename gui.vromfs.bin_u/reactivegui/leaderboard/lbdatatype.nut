@@ -19,6 +19,7 @@ let types = {
   NUM               = { getTextImpl = @(v) v.tointeger().tostring() }
   PLACE             = { getTextImpl = @(v) (v + 1).tostring() }
   RATING            = { getTextImpl = @(v) (0.01 * v + 0.5).tointeger() }
+  WIN_TEXT          = { getTextImpl = @(v) v > 0 ? loc("debriefing/victory") : loc("debriefing/defeat") }
 
   NICKNAME = {
     getNotAvailableText = @(value) value ? null : "-"

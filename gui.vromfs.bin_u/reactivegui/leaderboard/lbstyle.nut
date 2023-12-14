@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
 
 let lbHeaderHeight = gamercardHeight

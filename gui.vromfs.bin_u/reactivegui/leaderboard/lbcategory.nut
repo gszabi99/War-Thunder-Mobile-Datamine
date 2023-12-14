@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { NUM, PLACE, NICKNAME, RATING } = require("lbDataType.nut")
+let { NUM, PLACE, NICKNAME, RATING, WIN_TEXT } = require("lbDataType.nut")
 
 let function makeType(params, id) {
   let { dataType = NUM, field = id.tolower()
@@ -73,6 +73,13 @@ let categories = {
     icon = "ui/gameuiskin#lb_victory_icon.svg"
   }
 
+  WIN_SINGLE = {
+    field = "win"
+    dataType = WIN_TEXT
+    locId = "lb/wins"
+    icon = "ui/gameuiskin#lb_victory_icon.svg"
+  }
+
   KILL = {
     field = "kill"
     dataType = NUM
@@ -107,6 +114,18 @@ let categories = {
     locId = "lb/prize"
     icon = "ui/gameuiskin#lb_prize_icon.svg"
     relWidth = 0.8
+  }
+
+  INDEX = {
+    field = "idx",
+    dataType = PLACE,
+    relWidth = 0.4
+  }
+
+  LOG_TIME = {
+    icon = "ui/gameuiskin#lb_log_time.svg"
+    locId = "lb/log_time"
+    relWidth = 1.2
   }
 }.map(makeType)
 

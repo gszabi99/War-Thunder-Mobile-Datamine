@@ -7,7 +7,7 @@ let { isEventWndOpen, closeEventWnd, eventEndsAt,
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, mkSmokeBg, lootboxHeight,
+let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, mkEventBg, lootboxHeight,
  smallChestIcon, lootboxInfoSize, leaderbordBtn, questsBtn } = require("eventPkg.nut")
 let { eventLootboxes } = require("eventLootboxes.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
@@ -222,6 +222,8 @@ let eventGamercard = {
 
         @() {
           watch = [serverTime, eventEndsAt]
+          halign = ALIGN_CENTER
+          valign = ALIGN_BOTTOM
           children = !eventEndsAt.value || (eventEndsAt.value - serverTime.value < 0) ? null
             : mkTimeUntil(secondsToHoursLoc(eventEndsAt.value - serverTime.value),
                 "quests/untilTheEnd",
@@ -326,7 +328,7 @@ let eventWnd = @() {
   key = {}
   size = flex()
   children = [
-    mkSmokeBg(isEventWndOpen)
+    mkEventBg(isEventWndOpen)
     eventWndContent()
   ]
   animations = eventWndShowAnimation.value ? wndSwitchAnim : null

@@ -23,7 +23,7 @@ let function getActionBarShortcut(unitType, itemConfig) {
 let actionBarItemsConfig = {
   EII_TORPEDO = {
     getShortcut = @(unitType, __) unitType == SUBMARINE ? "ID_SUBMARINE_WEAPON_TORPEDOES" : "ID_SHIP_WEAPON_TORPEDOES"
-    getImage = @(_) "!ui/gameuiskin#hud_torpedo.svg"
+    getImage = @(_) "ui/gameuiskin#hud_torpedo.svg"
     relImageSize = 0.85
     actionType = AB_TORPEDO
     mkButtonFunction = "mkSubmarineWeaponryItem"
@@ -34,7 +34,7 @@ let actionBarItemsConfig = {
   },
   EII_TOOLKIT = {
     getShortcut = getActionBarShortcut
-    getImage = @(_) "!ui/gameuiskin#hud_consumable_repair.svg"
+    getImage = @(_) "ui/gameuiskin#hud_consumable_repair.svg"
     actionType = AB_TOOLKIT
     mkButtonFunction = "mkRepairActionItem"
     haptPatternId = HAPT_REPAIR
@@ -42,7 +42,7 @@ let actionBarItemsConfig = {
   },
   EII_EXTINGUISHER = {
     getShortcut = getActionBarShortcut
-    getImage = @(_) "!ui/gameuiskin#fire_indicator.svg"
+    getImage = @(_) "ui/gameuiskin#fire_indicator.svg"
     actionType = AB_EXTINGUISHER
     mkButtonFunction = "mkRepairActionItem"
     haptPatternId = HAPT_REPAIR
@@ -64,7 +64,7 @@ let actionBarItemsConfig = {
   },
   EII_IRCM = {
     getShortcut = @(_, __) "ID_IRCM_SWITCH_SHIP"
-    getImage = @(_) "!ui/gameuiskin#icon_ircm.svg"
+    getImage = @(_) "ui/gameuiskin#icon_ircm.svg"
     actionType = AB_IRCM
     mkButtonFunction = "mkActionItem"
     haptPatternId = HAPT_IRCM
@@ -80,13 +80,13 @@ let actionBarItemsConfig = {
   }
   EII_MEDICALKIT = {
     getShortcut = getActionBarShortcut
-    getImage = @(_) "!ui/gameuiskin#hud_consumable_repair.svg"
+    getImage = @(_) "ui/gameuiskin#hud_consumable_repair.svg"
     actionType = AB_MEDICALKIT
     mkButtonFunction = "mkRepairActionItem"
   },
   EII_DEPTH_CHARGE = {
     getShortcut = @(unitType, __) unitType == SUBMARINE ? "ID_SUBMARINE_WEAPON_DEPTH_CHARGE" : "ID_SHIP_WEAPON_DEPTH_CHARGE"
-    getImage = @(_) "!ui/gameuiskin#hud_depth_charge.svg"
+    getImage = @(_) "ui/gameuiskin#hud_depth_charge.svg"
     actionType = AB_DEPTH_CHARGE
     mkButtonFunction = "mkWeaponryItem"
     hasAimingMode = false
@@ -94,7 +94,7 @@ let actionBarItemsConfig = {
   },
   EII_MINE = {
     getShortcut = @(_, __) "ID_SHIP_WEAPON_MINE"
-    getImage = @(_) "!ui/gameuiskin#hud_naval_mine.svg"
+    getImage = @(_) "ui/gameuiskin#hud_naval_mine.svg"
     actionType = AB_MINE
     mkButtonFunction = "mkWeaponryItem"
     hasAimingMode = false
@@ -103,14 +103,14 @@ let actionBarItemsConfig = {
   },
   EII_MORTAR = {
     getShortcut = @(_, __) "ID_SHIP_WEAPON_MORTAR"
-    getImage = @(_) "!ui/gameuiskin#hud_depth_charge.svg"
+    getImage = @(_) "ui/gameuiskin#hud_depth_charge.svg"
     actionType = AB_MORTAR
     mkButtonFunction = "mkWeaponryItem"
     canShipLowerCamera = true
   },
   EII_ROCKET = {
     getShortcut = @(unitType, __) unitType == SUBMARINE ? "ID_SUBMARINE_WEAPON_ROCKETS" : "ID_SHIP_WEAPON_ROCKETS"
-    getImage = @(_) "!ui/gameuiskin#hud_missile_anti_ship.svg"
+    getImage = @(_) "ui/gameuiskin#hud_missile_anti_ship.svg"
     actionType = AB_ROCKET
     mkButtonFunction = "mkWeaponryItem"
   },
@@ -209,7 +209,7 @@ let actionBarItemsConfig = {
   ID_FIRE_CANNONS = {
     flag = AirParamsMain.CANNON_1
     getShortcut = @(_, __) "ID_FIRE_CANNONS"
-    getImage = @(_) "!ui/gameuiskin#hud_aircraft_canons.svg"
+    getImage = @(_) "ui/gameuiskin#hud_aircraft_canons.svg"
     mkButtonFunction = "mkWeaponryContinuousSelfAction"
     itemComputed = aircraftWeaponsItems.cannon
     additionalShortcutId = "ID_FIRE_MGUNS"
@@ -217,7 +217,7 @@ let actionBarItemsConfig = {
   ID_FIRE_MGUNS = {
     flag = AirParamsMain.MACHINE_GUNS_1
     getShortcut = @(_, __) "ID_FIRE_MGUNS"
-    getImage = @(_) "!ui/gameuiskin#hud_aircraft_machine_gun.svg"
+    getImage = @(_) "ui/gameuiskin#hud_aircraft_machine_gun.svg"
     mkButtonFunction = "mkWeaponryContinuousSelfAction"
     hasAim = true
     itemComputed = aircraftWeaponsItems.mGun
@@ -228,7 +228,7 @@ let actionBarItemsConfig = {
   ID_BOMBS = {
     flag = AirParamsMain.BOMBS
     getShortcut = @(_, __) "ID_BOMBS"
-    getImage = @(_) "!ui/gameuiskin#hud_bomb.svg"
+    getImage = @(_) "ui/gameuiskin#hud_bomb.svg"
     mkButtonFunction = "mkWeaponryItemSelfAction"
     itemComputed = aircraftWeaponsItems.bomb
     canLowerCamera = true
@@ -236,7 +236,7 @@ let actionBarItemsConfig = {
   ID_TORPEDOES = {
     flag = AirParamsMain.TORPEDO
     getShortcut = @(_, __) "ID_BOMBS"
-    getImage = @(_) "!ui/gameuiskin#hud_torpedo.svg"
+    getImage = @(_) "ui/gameuiskin#hud_torpedo.svg"
     mkButtonFunction = "mkWeaponryItemSelfAction"
     itemComputed = aircraftWeaponsItems.torpedo
     canLowerCamera = true
@@ -244,7 +244,7 @@ let actionBarItemsConfig = {
   ID_ROCKETS = {
     flag = AirParamsMain.ROCKET
     getShortcut = @(_, __) "ID_ROCKETS"
-    getImage = @(_) "!ui/gameuiskin#hud_rb_rocket.svg"
+    getImage = @(_) "ui/gameuiskin#hud_rb_rocket.svg"
     relImageSize = 0.8
     mkButtonFunction = "mkWeaponryItemSelfAction"
     hasAim = true
@@ -253,19 +253,19 @@ let actionBarItemsConfig = {
   },
   EII_SPECIAL_UNIT = {
     getShortcut = getActionBarShortcut
-    getImage = @(_) "!ui/gameuiskin#hud_aircraft_fighter.svg"
+    getImage = @(_) "ui/gameuiskin#hud_aircraft_fighter.svg"
     actionType = AB_SPECIAL_FIGHTER
     mkButtonFunction = "mkActionItem"
   },
   EII_SPECIAL_UNIT_2 = {
     getShortcut = getActionBarShortcut
-    getImage = @(_) "!ui/gameuiskin#hud_aircraft_bomber.svg"
+    getImage = @(_) "ui/gameuiskin#hud_aircraft_bomber.svg"
     actionType = AB_SPECIAL_BOMBER
     mkButtonFunction = "mkActionItem"
   }
   EII_ARTILLERY_TARGET = {
     getShortcut = getActionBarShortcut
-    getImage = @(_) "!ui/gameuiskin#hud_artillery_fire.svg"
+    getImage = @(_) "ui/gameuiskin#hud_artillery_fire.svg"
     actionType = AB_ARTILLERY_TARGET
     mkButtonFunction = "mkActionItem"
   }

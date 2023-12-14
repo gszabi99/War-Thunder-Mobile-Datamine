@@ -1,20 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { txt, tagRedColor, mkBgImg } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { txt, tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
-let { onSectionChange, curSectionId, hasUnseenQuestsBySection, sectionsCfg,
-  onWatchQuestAd, SPEED_UP_AD_COST } = require("questsState.nut")
+let { onWatchQuestAd, SPEED_UP_AD_COST } = require("questsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkLockedIcon, progressBarRewardSize } = require("rewardsComps.nut")
-let { eventSeason, openEventWnd } = require("%rGui/event/eventState.nut")
-let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
-let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { progressBarRewardSize } = require("rewardsComps.nut")
 let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { canShowAds } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { sendBqQuestsSpeedUp } = require("bqQuests.nut")
+let { mkGlare } = require("%rGui/components/glare.nut")
 
 
 let SECTION_OPACITY = 0.3
@@ -24,9 +21,7 @@ let newMarkH = hdpxi(50)
 let newMarkTexOffs = [0, newMarkH / 2, 0, newMarkH / 10]
 let sectionBtnHeight = hdpx(70)
 let sectionBtnMaxWidth = hdpx(400)
-let lockedOpacity = 0.5
 let sectionBtnGap = hdpx(10)
-let lootboxSize = hdpx(130)
 let linkToEventWidth = hdpx(240)
 let iconSize = CS_INCREASED_ICON.iconSize
 let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
@@ -50,10 +45,11 @@ let newMark = {
   })
 }
 
-let mkSectionBtn = @(id, width = sectionBtnMaxWidth, font = fontSmallShaded, isLocked = false) {
-  size = [width, sectionBtnHeight]
+let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
+  size = [flex(), sectionBtnHeight]
+  maxWidth = sectionBtnMaxWidth
   behavior = Behaviors.Button
-  onClick = @() onSectionChange(id)
+  onClick
   clickableInfo = loc("mainmenu/btnSelect")
   children = [
     {
@@ -63,44 +59,33 @@ let mkSectionBtn = @(id, width = sectionBtnMaxWidth, font = fontSmallShaded, isL
     }
 
     @() {
-      watch = curSectionId
+      watch = isSelected
       size = flex()
       rendObj = ROBJ_IMAGE
       image = gradTranspDoubleSideX
       color = gradColor
-      opacity = curSectionId.value == id ? 1 : 0
+      opacity = isSelected.get() ? 1 : 0
       transitions = [{ prop = AnimProp.opacity, duration = SECTION_OPACITY, easing = InOutQuad }]
     }
 
     {
-      size = [width - sectionBtnGap, flex()]
-      flow = FLOW_HORIZONTAL
-      gap = sectionBtnGap
+      size = flex()
+      margin = [0, sectionBtnGap / 2]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
-      children = [
-        isLocked ? mkLockedIcon({ opacity = lockedOpacity }) : null
-        @() {
-          watch = sectionsCfg
-          rendObj = ROBJ_TEXT
-          opacity = isLocked ? lockedOpacity : 1.0
-          text = sectionsCfg.value?[id].text
-        }.__update(font)
-      ]
+      children = content
     }
 
     @() {
-      watch = [hasUnseenQuestsBySection, curSectionId]
+      watch = [hasUnseen, isSelected]
       hplace = ALIGN_RIGHT
       margin = sectionBtnGap / 2
-      children = hasUnseenQuestsBySection.value?[id] && id != curSectionId.value ? priorityUnseenMark : null
+      children = !isSelected.get() && hasUnseen.get() ? priorityUnseenMark : null
     }
   ]
 }
 
 let mkTimeUntil = @(time, locId = "quests/untilTheEnd", ovr = {}) {
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_BOTTOM
   rendObj = ROBJ_TEXT
   text = loc(locId, { time })
 }.__update(fontSmall, ovr)
@@ -111,29 +96,41 @@ let allQuestsCompleted = {
   text = loc("quests/allCompleted")
 }.__update(fontMedium)
 
-let function linkToEventBtn() {
+let function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null) {
   let stateFlags = Watched(0)
-  let bigLootbox = Computed(@() eventLootboxes.value?[eventLootboxes.value.len() - 1].name)
-
   return @() {
-    watch = [eventSeason, bigLootbox, stateFlags]
+    watch = stateFlags
     size = [linkToEventWidth, progressBarRewardSize]
+    padding = hdpx(2)
+    rendObj = ROBJ_BOX
+    fillColor = bgGradColor
+    borderWidth = hdpx(2)
     behavior = Behaviors.Button
-    onClick = openEventWnd
+    onClick
     clickableInfo = loc("item/open")
     onElemState = @(sf) stateFlags(sf)
+    clipChildren = true
     children = [
-      mkBgImg($"ui/gameuiskin#banner_event_{eventSeason.value}.avif:0:P", "ui/gameuiskin#offer_bg_blue.avif:0:P")
-      mkLoootboxImage(bigLootbox.value, lootboxSize, {
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_CENTER
-      })
       {
-        vplace = ALIGN_BOTTOM
-        rendObj = ROBJ_TEXT
-        padding = hdpx(10)
-        text = utf8ToUpper(loc("mainmenu/rewardsList"))
-      }.__update(fontTinyAccentedShaded)
+        size = flex()
+        flow = FLOW_VERTICAL
+        halign = ALIGN_CENTER
+        children = [
+          @() {
+            watch = iconWatch
+            size = flex()
+            rendObj = ROBJ_IMAGE
+            image = Picture($"{iconWatch.get()}:0:P")
+            keepAspect = KEEP_ASPECT_FIT
+          }
+          {
+            rendObj = ROBJ_TEXT
+            text = utf8ToUpper(text)
+          }.__update(fontTinyAccented)
+        ]
+      }
+      mkGlare(linkToEventWidth)
+      addChild
     ]
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
@@ -186,7 +183,7 @@ return {
   sectionBtnGap
   mkTimeUntil
   allQuestsCompleted
-  linkToEventBtn
+  mkQuestsHeaderBtn
 
   btnSize
   btnStyle

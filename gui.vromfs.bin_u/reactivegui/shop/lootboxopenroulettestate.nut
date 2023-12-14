@@ -20,6 +20,7 @@ let MAX_MULTIREWARD_OPEN = 10
 let openConfig = mkWatched(persist, "openConfig", null)
 let rouletteOpenResultFull = mkWatched(persist, "rouletteOpenResultFull", null)
 let rouletteOpenIdx = Watched(0)
+let isRouletteDebugMode = mkWatched(persist, "isRouletteDebugMode", false)
 
 let jackpotIdxInfo = Computed(function() {
   let { jackpots = [] } = openConfig.value
@@ -347,6 +348,11 @@ register_command(
   },
   "debug.lootboxRouletteCounts")
 
+register_command(function() {
+  isRouletteDebugMode.set(!isRouletteDebugMode.get())
+  dlog("Roulette debug mode is switched ", isRouletteDebugMode.get() ? "on" : "off")   //warning disable: -forbidden-function
+}, "debug.lootboxRoulettDebugMode")
+
 return {
   rouletteOpenId
   rouletteOpenType
@@ -362,6 +368,7 @@ return {
   receivedRewardsCur
   curJackpotInfo
   lastJackpotIdx
+  isRouletteDebugMode
 
   closeRoulette
   requestOpenCurLootbox

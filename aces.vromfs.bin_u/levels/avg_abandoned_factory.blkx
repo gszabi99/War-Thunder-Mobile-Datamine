@@ -63,7 +63,7 @@
     "grass": true,
     "water3d": true,
     "staticScene": true,
-    "riExtraMinSizeForReflection": 5.0
+    "riExtraMinSizeForReflection": 8.0
   },
   "clipmap": {
     "texelSize": 0.03125,

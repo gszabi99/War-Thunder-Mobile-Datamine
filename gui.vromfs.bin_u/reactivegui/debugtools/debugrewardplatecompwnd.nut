@@ -77,7 +77,8 @@ let mkRewardPlateCompsByStyle = @(rStyle) {
     { flow = FLOW_HORIZONTAL, width = wndContentWidth, hGap = rStyle.boxGap, vGap = rStyle.boxGap })
 }
 
-let mkWndContent = @() verticalPannableAreaCtor(wndContentHeight, [opacityGradientSize, opacityGradientSize])({
+let pannableArea = verticalPannableAreaCtor(wndContentHeight, [opacityGradientSize, opacityGradientSize])
+let mkWndContent = @() pannableArea({
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER

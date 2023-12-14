@@ -1,20 +1,22 @@
 from "daRg" import *
 from "frp" import *
 
+let scrollbarWidth = sh(1)
+
 let defStyling = {
   Bar = function(has_scroll) {
     if (has_scroll) {
       return {
         rendObj = ROBJ_SOLID
         color = Color(40, 40, 40, 160)
-        _width = sh(1)
-        _height = sh(1)
+        _width = scrollbarWidth
+        _height = scrollbarWidth
       }
     }
     else
       return {
-        _width = sh(1)
-        _height = sh(1)
+        _width = scrollbarWidth
+        _height = scrollbarWidth
     }
   }
   Knob = {
@@ -259,7 +261,9 @@ let function makeHorizScroll(content, options = {}) {
 
 return {
   styling = defStyling
-  scrollbar = scrollbar
+  scrollbarWidth
+
+  scrollbar
   makeHorizScroll
   makeVertScroll
   makeHVScrolls

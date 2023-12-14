@@ -4,7 +4,6 @@ let { kwarg } = require("%sqstd/functools.nut")
 let { Computed, Watched } = require("frp")
 let log = require("%globalScripts/logs.nut")
 let mkWatched = require("%globalScripts/mkWatched.nut")
-let { debugTableData, toString } = require("%sqStdLibs/helpers/toString.nut")
 let { loc } = require("dagor.localize")
 let getTblValue = @(key, tbl, defValue = null) key in tbl ? tbl[key] : defValue
 let isInArray = @(v, arr) arr.contains(v)
@@ -25,9 +24,7 @@ return log.__merge({
   clamp
   screen_width
   screen_height
-  debugTableData
   colorize
-  toString
   loc
   getTblValue
   isInArray
