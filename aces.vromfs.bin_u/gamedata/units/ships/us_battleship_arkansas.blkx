@@ -28,7 +28,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_big",
+  "exhaustFx": "ship_exhaust_large",
   "allowSupportPlane": true,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
@@ -697,7 +697,7 @@
     },
     "engines": {
       "maxSpeed": 10.8,
-      "maxReverseSpeed": 3.0,
+      "maxReverseSpeed": 5.0,
       "speedToTime": {
         "row": [
           10.8,
@@ -706,8 +706,8 @@
       },
       "reverseSpeedToTime": {
         "row": [
-          3.0,
-          25.0
+          5.0,
+          24.0
         ]
       },
       "engine": [
@@ -766,14 +766,14 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 1.4,
+      "mulReaction": 2.0,
       "rudder": {
         "pos": [
           -74.9,
           -2.9,
           0.0
         ],
-        "area": 45.0,
+        "area": 65.0,
         "deflection": 35.0,
         "dmPart": "steering_gear_01_dm"
       }
@@ -803,9 +803,7 @@
     "TrackSoundPath": "ships/engines_ships",
     "TrackSoundPathStudio": "naval/engines",
     "TrackSoundName": "tracks_mid",
-    "TrackSoundNameCockpit": "tracks_mid_interior",
-    "TrackSoundNameAi": "tracks_ai_mid",
-    "turret_turn": "turret_turn_big"
+    "TrackSoundNameAi": "tracks_ai_mid"
   },
   "optics": {
     "binoculars": "navy_binoculars"
@@ -8660,24 +8658,24 @@
   },
   "breaches": {
     "repairSpeed": 150.0,
-    "waterMassVel": -160000.0,
-    "waterMassMult": 300.0,
+    "waterMassVel": -1300000.0,
+    "waterMassMult": 75.0,
     "sizeToRepair": [
       0.01,
       5.0,
       25.0,
       600.0
     ],
-    "additionalWaterDeathThreshold": 38000000.0,
-    "additionalWaterCoverPartsThreshold": 50000000.0,
-    "additionalWaterShouldDiePercent": 0.3,
+    "additionalWaterDeathThreshold": 100000000.0,
+    "additionalWaterCoverPartsThreshold": 13000000.0,
+    "additionalWaterShouldDiePercent": 0.15,
     "fatalBreachDrownTime": 30.0,
-    "maxHeelingAngle": 17.0,
+    "maxHeelingAngle": 36.0,
     "maxHeelingTime": 50.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.08,
+    "sideCenterOfMassOffsetPercent": 0.35,
     "additionalWaterInfluenceOnSpeed": 1.6
   },
   "shipCover": {

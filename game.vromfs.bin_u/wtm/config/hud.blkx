@@ -2648,6 +2648,9 @@
       },
       "ircm": {
         "shortcutIdx": 36
+      },
+      "firework": {
+        "shortcutIdx": 37
       }
     },
     "wheelActions": {

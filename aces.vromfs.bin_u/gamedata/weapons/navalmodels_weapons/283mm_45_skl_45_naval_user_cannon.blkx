@@ -24,33 +24,34 @@
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
   "bullet": {
-    "bulletCount": 40,
+    "bulletCount": 25,
     "mass": 302.0,
-    "explosiveType": "tnt",
-    "explosiveMass": 17.0,
     "caliber": 0.283,
+    "explosiveType": "tnt",
+    "explosiveMass": 8.95,
     "speed": 855.0,
     "maxDistance": 100000.0,
-    "Cx": 0.6,
-    "normalizationPreset": "ap",
-    "ricochetPreset": "ap",
-    "secondaryShattersPreset": "ap_large_caliber",
+    "Cx": 0.55,
+    "normalizationPreset": "apbc",
+    "ricochetPreset": "apbc",
+    "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.0,
     "stucking": 0.7,
     "stuckingAngle": 45.0,
-    "bulletType": "sap_tank",
-    "slopeEffectPreset": "ap",
+    "bulletType": "apc_tank",
+    "slopeEffectPreset": "apc",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/sap.ivf",
-    "bulletName": "283mm_spgr_l_3_6_he_bdz",
+    "shellAnimation": "video/shells_animations/aphe.ivf",
+    "bulletName": "283mm_psgr_l_3_2",
     "dynamicKv": true,
+    "hitPowerMult": 1200.0,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -59,8 +60,8 @@
       200.0,
       1000.0
     ],
-    "explodeTreshold": 9.0,
-    "fuseDelayDist": 12.0,
+    "explodeTreshold": 11.0,
+    "fuseDelayDist": 16.0,
     "hpThresholdForFuse": 1E-06,
     "fuseOnWater": true,
     "explosionEffect": "hit_206_290mm_metal_ap",
@@ -97,14 +98,14 @@
     "damage": {
       "kinetic": {
         "damageType": "generic",
-        "demarrePenetrationK": 0.87,
+        "demarrePenetrationK": 1.0,
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
       },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.03,
+        "countPortion": 0.01,
         "segment": [
           {
             "radiusScale": 0.4,
@@ -115,7 +116,7 @@
               180.0
             ],
             "countPortion": 0.5,
-            "onHitChanceMultFire": 100.0
+            "onHitChanceMultFire": 150.0
           },
           {
             "radiusScale": 0.4,
@@ -126,7 +127,7 @@
               359.0
             ],
             "countPortion": 0.5,
-            "onHitChanceMultFire": 100.0
+            "onHitChanceMultFire": 150.0
           }
         ]
       }
@@ -159,7 +160,7 @@
         0.0
       ],
       "traceFreq": 1,
-      "tracer": "200mmGreenShip",
+      "tracer": "200mmWhiteShip",
       "trail": "black"
     },
     "collisions": {

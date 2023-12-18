@@ -1563,6 +1563,30 @@
     "numReserved": 15,
     "onePointNumber": 5
   },
+  "misc_firework_tank": {
+    "fx": "misc_firework_tank_cmps_fx",
+    "numInstances": 100,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "misc_firework_ship": {
+    "fx": "misc_firework_ship_cmps_fx",
+    "numInstances": 100,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
+  "misc_firework_hangar": {
+    "fx": "misc_firework_multiple_cmps_fx",
+    "numInstances": 100,
+    "numReserved": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
+  },
   "flare_fire": {
     "fx": "fires_flare_tail_cmps_fx",
     "lifeTime": 20.0,

@@ -85,9 +85,9 @@
       "_template": "backmodel_spawn_point",
       "transform": [
         [
-          0.397959,
+          -0.957659,
           0.0,
-          -0.917403
+          -0.287905
         ],
         [
           0.0,
@@ -95,14 +95,14 @@
           0.0
         ],
         [
-          0.917403,
+          0.287905,
           0.0,
-          0.397959
+          -0.957659
         ],
         [
-          9236.1,
-          20.2,
-          5197.7
+          9263.12,
+          20.516,
+          5196.41
         ]
       ],
       "spawnPointType": "tank",
@@ -112,9 +112,9 @@
       "_template": "backmodel_spawn_point",
       "transform": [
         [
-          0.312475,
+          -0.996969,
           0.0,
-          -0.949926
+          0.0778041
         ],
         [
           0.0,
@@ -122,14 +122,14 @@
           0.0
         ],
         [
-          0.949926,
+          -0.0778041,
           0.0,
-          0.312475
+          -0.996969
         ],
         [
-          9246.2,
-          20.2058,
-          5201.1
+          9267.17,
+          20.516,
+          5175.62
         ]
       ],
       "spawnPointType": "tank",
@@ -139,9 +139,9 @@
       "_template": "backmodel_spawn_point",
       "transform": [
         [
-          0.151681,
+          -0.992705,
           0.0,
-          -0.98843
+          -0.120567
         ],
         [
           0.0,
@@ -149,14 +149,14 @@
           0.0
         ],
         [
-          0.98843,
+          0.120567,
           0.0,
-          0.151681
+          -0.992705
         ],
         [
-          9256.9,
-          20.2973,
-          5201.2
+          9266.79,
+          20.516,
+          5186.32
         ]
       ],
       "spawnPointType": "tank",
@@ -274,76 +274,6 @@
           9250.5,
           20.2,
           5182.8
-        ]
-      ]
-    },
-    {
-      "_template": "unit_loader",
-      "setting__unitType": "objectGroups",
-      "setting__playerNo": -1,
-      "setting__unit_class": "hangar_ny_forest_objects",
-      "setting__name": "test_bridge",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 2,
-      "setting__count": 1,
-      "setting__active": true,
-      "setting__loadSound": false,
-      "setting__tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          9250.5,
-          19.2,
-          5182.8
-        ]
-      ]
-    },
-    {
-      "_template": "unit_loader",
-      "setting__unitType": "objectGroups",
-      "setting__playerNo": -1,
-      "setting__unit_class": "hangar_water_ny_objects",
-      "setting__name": "test_bridge",
-      "setting__weapons": "",
-      "setting__skin": "",
-      "setting__army": 2,
-      "setting__count": 1,
-      "setting__active": true,
-      "setting__loadSound": false,
-      "setting__tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1675.2,
-          7.0,
-          -2355.9
         ]
       ]
     },

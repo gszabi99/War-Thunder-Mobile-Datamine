@@ -217,7 +217,7 @@ let mkCurrencyComp = @(value, currencyId) {
 }
 
 let function mkPurchaseBtns(lootbox, onPurchase) {
-  let { name, price, currencyId, hasBulkPurchase = false, timeRange = 0, reqPlayerLevel = 0 } = lootbox
+  let { name, price, currencyId, hasBulkPurchase = false, timeRange = null, reqPlayerLevel = 0 } = lootbox
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
     && start < serverTime.value

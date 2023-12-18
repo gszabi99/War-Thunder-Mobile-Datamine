@@ -2273,6 +2273,12 @@
     "mod__name": "ship_smoke_screen_system_mod",
     "mod__send_economic_spend": true
   },
+  "firework_wtm_ecs": {
+    "_use": "expendable_mod",
+    "mod__name": "firework_kit",
+    "mod__type_name": "firework",
+    "mod__send_economic_spend": true
+  },
   "base_ship_wtm": {
     "_use": [
       "ship",
@@ -2288,7 +2294,8 @@
     "mods:list<t>": {
       "mod": [
         "ship_wtm_toolkit_ecs",
-        "ship_wtm_smokescreen_ecs"
+        "ship_wtm_smokescreen_ecs",
+        "firework_wtm_ecs"
       ]
     }
   },
@@ -2321,7 +2328,8 @@
         "tank_wtm_toolkit_ecs",
         "tank_wtm_extinguisher_ecs",
         "tank_wtm_medicalkit_ecs",
-        "tank_smokescreen_ecs"
+        "tank_smokescreen_ecs",
+        "firework_wtm_ecs"
       ]
     }
   },
@@ -2483,7 +2491,8 @@
     "streakLog:object": {}
   },
   "statistic_players": {
-    "statisticPlayers:object": {}
+    "statisticPlayers:object": {},
+    "playerStats:object": {}
   },
   "simple_ship_wtm": {
     "_use": "simple_ship"

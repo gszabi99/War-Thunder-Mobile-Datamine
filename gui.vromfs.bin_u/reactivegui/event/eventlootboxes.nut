@@ -18,9 +18,10 @@ let eventLootboxes = Computed(function() {
       res.append(lootbox)
       continue
     }
+    let { start = 0, end = 0 } = lootbox?.timeRange
     if ((campaign != null && curCampaign.value != campaign)
-        || (lootbox?.timeRange.start ?? 0) > (userstatStats.value?.stats.season["$endsAt"] ?? 0)
-        || (lootbox?.timeRange.end ?? 0) < (userstatStats.value?.stats.season["$startedAt"] ?? 0))
+        || start > (userstatStats.value?.stats.season["$endsAt"] ?? 0)
+        || (end > 0 && end < (userstatStats.value?.stats.season["$startedAt"] ?? 0)))
       continue
     if (slot not in lootboxesBySlot)
       lootboxesBySlot[slot] <- []

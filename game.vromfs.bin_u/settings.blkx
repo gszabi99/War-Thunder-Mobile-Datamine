@@ -277,6 +277,8 @@
       "content.hq/pkg_us_battleship_arkansas_hq",
       "content/pkg_jp_st_b1",
       "content.hq/pkg_jp_st_b1_hq",
+      "content/pkg_uk_centurion_action_x",
+      "content.hq/pkg_uk_centurion_action_x_hq",
       "content/pkg_ussr_object_120",
       "content.hq/pkg_ussr_object_120_hq",
       "content/pkg_ussr_t_34_1941_57",
@@ -310,7 +312,7 @@
     },
     "pkg_lvl_white_rocks": {
       "campaign": "ships",
-      "mRank": 3
+      "mRank": 2
     },
     "pkg_lvl_hangar_ny": {
       "hangarPath": "config/hangar_field_ny.blk"
@@ -327,9 +329,13 @@
       "campaign": "tanks",
       "mRank": 8
     },
+    "pkg_uk_centurion_action_x": {
+      "campaign": "tanks",
+      "mRank": 6
+    },
     "pkg_ussr_object_120": {
       "campaign": "tanks",
-      "mRank": 8
+      "mRank": 7
     },
     "pkg_ussr_t_34_1941_57": {
       "campaign": "tanks",

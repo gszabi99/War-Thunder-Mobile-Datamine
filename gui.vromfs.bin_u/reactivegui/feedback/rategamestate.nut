@@ -28,8 +28,8 @@ let {
     ? { storeId = "apple"
         showAppReview = require("ios.platform").showAppReview
         needShowAppReview = @(isRatedExcellent) isRatedExcellent
-          || appStoreProdVersion == ""
-          || check_version($">={appStoreProdVersion.get()}", get_base_game_version_str())
+          || appStoreProdVersion.get() == ""
+          || check_version($">{appStoreProdVersion.get()}", get_base_game_version_str())
       }
   : is_android && isDownloadedFromGooglePlay()
     ? { storeId = "google"
@@ -61,9 +61,10 @@ let lastSeenDate = Watched(0)
 let lastSeenBattles = Watched(0)
 
 if (is_ios && appStoreProdVersion.get() == "") {
+  appStoreProdVersion.subscribe(@(v) log($"appStoreProdVersion: {v}"))
   subscribe("ios.platform.onGetAppStoreProdVersion",
-    @(v) type(v) == "string" ? appStoreProdVersion.set(v)
-      : logerr($"Wrong event ios.platform.onGetAppStoreProdVersion result type = {type(v)}: {v}"))
+    @(v) type(v.value) == "string" ? appStoreProdVersion.set(v.value)
+      : logerr($"Wrong event ios.platform.onGetAppStoreProdVersion result type = {type(v.value)}: {v.value}"))
   require("ios.platform")?.getAppStoreProdVersion() //compatibility with 1.4.1.X
 }
 

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { SHIP } = require("%appGlobals/unitConst.nut")
-let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
+let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_IRCM, EII_FIREWORK } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
 let { mkZoomButton, mkPlaneItem } = require("%rGui/hud/weaponsButtonsView.nut")
@@ -66,6 +66,9 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT, SHIP,
     { defTransform = mkRBPos([hdpx(-600), hdpx(43)]) })
 //
+
+
+
 
 
 

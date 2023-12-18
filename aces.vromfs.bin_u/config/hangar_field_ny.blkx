@@ -57,7 +57,7 @@
   ],
   "weather": "hangar_weather",
   "hqWeather": "hangar_weather",
-  "level": "levels/avg_abandoned_factory.bin",
+  "level": "levels/avg_hangar_new_year.bin",
   "defCameraTime": [
     5.0,
     10.0
@@ -198,11 +198,11 @@
     {
       "hangarPlace": "tank",
       "modelPos": [
-        9250.9,
+        9250.5,
         20.2517,
-        5180.9
+        5182.9
       ],
-      "modelRotation": -78.8,
+      "modelRotation": 180.0,
       "unitOffset": [
         0.0,
         0.0,

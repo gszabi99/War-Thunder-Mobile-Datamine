@@ -182,3 +182,8 @@ struct EventOnPlayerUnlockStreak
 [event(broadcast)]
 struct EventSoundAreaInit
 {}
+
+[cpp_event(broadcast)]
+struct EventOnPlayerStat
+  userId : uint64
+  statIdName : string

@@ -3,7 +3,7 @@ let { TANK } = require("%appGlobals/unitConst.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { EII_EXTINGUISHER, EII_TOOLKIT, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
-  EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT
+  EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_FIREWORK
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, mkCircleZoom,
@@ -111,6 +111,9 @@ return {
     { defTransform = actionBarTransform(4) })
   abSpecialUnit = withActionBarButtonCtor(EII_SPECIAL_UNIT, TANK,
     { defTransform = actionBarTransform(5) })
+//
+
+
 
   bulletMain = {
     ctor = @() bulletMainButton

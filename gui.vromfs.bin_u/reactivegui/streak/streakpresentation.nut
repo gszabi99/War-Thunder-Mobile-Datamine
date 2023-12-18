@@ -388,7 +388,7 @@ let streaksPresentation = {
     name = "streaks/squad_assist"
     bgImage = "ui/gameuiskin#streaks_global_bg.avif"
     stackImages = [
-      mkStackImage("squad_kill.avif", [62, 62])
+      mkStackImage("top_assists_hero.avif", [62, 62])
     ]
   }
 

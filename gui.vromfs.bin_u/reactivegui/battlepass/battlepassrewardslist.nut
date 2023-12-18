@@ -154,6 +154,7 @@ let function mkCard(stageInfo) {
     onElemState = @(v) stateFlags(v)
     onClick
     xmbNode = {}
+    sound = { click  = "click" }
 
     children = [
       hoverCard(stateFlags)

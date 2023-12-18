@@ -198,7 +198,8 @@ let middlePart = @(stagesList) @(){
   flow = FLOW_HORIZONTAL
   children = [
     leftMiddle
-    bpRewardDesc(stagesList[selectedStage.value])
+    selectedStage.value in stagesList ? bpRewardDesc(stagesList[selectedStage.value])
+      : { size = flex() }
     rightMiddle
   ]
 }
