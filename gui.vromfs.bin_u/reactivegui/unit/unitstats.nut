@@ -100,17 +100,21 @@ let statsShip = {
   shipCrewAll = {
     isAvailable = @(s) "shipCrewMax" in s
     getValue = @(s) s?.shipCrewRating ?? 0.0
-    valueToText = @(_, s) "shipCrewMin" in s ? $"{s.shipCrewMin}-{s.shipCrewMax}" : s.shipCrewMax.tostring()
+    valueToText = @(_, s) "shipCrewMin" not in s ? round(s.shipCrewMax).tostring()
+      : $"{round(s.shipCrewMin)}-{round(s.shipCrewMax)}"
     getProgress = mkGetProgress(SHIP, "shipCrewRating")
   }
 
   shipCrewMax = {
     getValue = @(s) s?.shipCrewRating ?? 0.0
-    valueToText = @(_, s) s.shipCrewMax.tostring()
+    valueToText = @(_, s) round(s.shipCrewMax).tostring()
     getProgress = mkGetProgress(SHIP, "shipCrewRating")
   }
 
-  shipCrewMin = { getProgress = null }
+  shipCrewMin = {
+    valueToText = @(_, s) round(s.shipCrewMin).tostring()
+    getProgress = null
+  }
 
   maxSpeed = {
     valueToText = @(v, _) "".concat(round(v * 3.6), loc("measureUnits/kmh"))

@@ -34,6 +34,7 @@ let goodsCompareCfg = [
   @(g) positive("gold", g.gold),
   @(g) positive("warbond", g?.warbond ?? 0),
   @(g) positive("eventKey", g?.eventKey ?? 0),
+  @(g) positive("nybond", g?.nybond ?? 0),
   @(g) positive("premiumDays", g.premiumDays),
   function(g) {
     if (g.items.len() > 1)

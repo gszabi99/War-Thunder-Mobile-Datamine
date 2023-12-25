@@ -377,6 +377,30 @@ let function mkSimpleCircleTouchBtn(image, shortcutId, ovr = {}) {
   }.__update(ovr)
 }
 
+let fwStateFlags = Watched(0)
+let mkCircleFireworkBtn = @(actionItem) function() {
+  let isAvailable = isActionAvailable(actionItem) && !disabledControls.value?.ID_FIREWORK
+  let { count } = actionItem
+  let color = !isAvailable ? disabledColor : 0xFFFFFFFF
+  return {
+    watch = disabledControls
+    key = fwStateFlags
+    size = [buttonSize, buttonSize]
+    behavior = Behaviors.Button
+    onElemState = @(v) fwStateFlags(v)
+    hotkeys = mkGamepadHotkey("ID_FIREWORK")
+    onClick = @() useShortcut("ID_FIREWORK")
+    children = [
+      mkCircleProgressBg(buttonSize, actionItem)
+      mkBtnBorder(buttonSize, isAvailable, fwStateFlags)
+      mkBtnImage(buttonImgSize, "ui/gameuiskin#hud_ammo_fireworks.svg", color)
+      count < 0 ? null : mkCountTextLeft(count, color)
+      mkCircleGlare(buttonSize, actionItem)
+      mkGamepadShortcutImage("ID_FIREWORK", defShortcutOvr)
+    ]
+  }
+}
+
 return {
   mkCircleTankPrimaryGun
   mkCircleTankMachineGun
@@ -385,6 +409,7 @@ return {
   mkSimpleCircleTouchBtn
   mkCountTextRight
   mkCircleTargetTrackingBtn
+  mkCircleFireworkBtn
 
   mkCircleBtnEditView
   mkBigCircleBtnEditView

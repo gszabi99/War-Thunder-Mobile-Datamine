@@ -8,8 +8,6 @@ let fakeUnseenPurchases = {
     source = "lootbox"
     goods = [
       { id = "wp", gType = "currency", count = 2000 },
-      { id = "alpha_tester", gType = "decorator", count = 0 },
-      { id = "chevron", gType = "decorator", count = 0 },
       { id = "gold", gType = "currency", count = 1000 },
       { id = "warbond", gType = "currency", count = 100 },
       { id = "eventKey", gType = "currency", count = 50 },
@@ -18,11 +16,17 @@ let fakeUnseenPurchases = {
       { id = "ship_smoke_screen_system_mod", gType = "item", count = 15 },
       { id = "tank_tool_kit_expendable", gType = "item", count = 50 },
       { id = "tank_extinguisher", gType = "item", count = 30 },
+      { id = "firework_kit", gType = "item", count = 3 },
+      { id = "cardicon_crosspromo", gType = "decorator", count = 0 },
+      { id = "captain-lieutenant", gType = "decorator", count = 0 },
+      { id = "pilot", gType = "decorator", count = 0 },
+      { id = "cannon", gType = "decorator", count = 0 },
+      { id = "bullet", gType = "decorator", count = 0 },
       { id = "spare", gType = "item", count = 100 },
       { id = "ussr_sub_pr641", gType = "unit", count = 1 },
-      { id = "ussr_t_34_85_zis_53", gType = "unit", count = 1 },
+      { id = "ussr_t_34_85_d_5t", gType = "unit", count = 1 },
       { id = "uk_destroyer_tribal", gType = "unitUpgrade", count = 1 },
-      { id = "ussr_t_34_85_zis_53", gType = "unitUpgrade", count = 1 },
+      { id = "ussr_t_34_85_d_5t", gType = "unitUpgrade", count = 1 },
     ]
   }
 }

@@ -13,6 +13,9 @@ let itemsOrderFull = [
   "tank_tool_kit_expendable"
   "tank_extinguisher"
   SPARE
+
+  //event
+  "firework_kit"
 ]
 
 let orderByItems = {}

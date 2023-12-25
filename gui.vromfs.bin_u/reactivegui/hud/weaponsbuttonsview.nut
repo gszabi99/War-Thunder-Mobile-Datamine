@@ -21,11 +21,13 @@ let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { lowerAircraftCamera } = require("camera_control")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { mkBtnGlare, mkActionGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
+let { mkBtnGlare, mkActionGlare, mkConsumableSpend, mkActionBtnGlare
+} = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { isNotOnTheSurface, isDeeperThanPeriscopeDepth } = require("%rGui/hud/submarineDepthBlock.nut")
 let { TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { set_can_lower_camera } = require("controlsOptions")
 let disabledControls = require("%rGui/controls/disabledControls.nut")
+let { mkRhombBtnBg, mkRhombBtnBorder, mkAmmoCount } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 let zoomImgSize = touchButtonSize
@@ -33,7 +35,6 @@ let weaponNumberSize = (0.3 * touchButtonSize).tointeger()
 let wNumberColor = 0xFF1C9496
 
 let cooldownImgSize = (1.42 * touchButtonSize).tointeger()
-let cooldownImg = getSvgImage("hud_weapon_bg", cooldownImgSize)
 let actionBarCooldownImg = getSvgImage("controls_help_point", cooldownImgSize)
 
 let aimImgWidth = (0.8 * touchButtonSize).tointeger()
@@ -358,58 +359,6 @@ let function mkRepairActionItem(buttonConfig, actionItem) {
   }
 }
 
-let function mkBtnBg(isAvailable, itemV, onFinishExt = null) {
-  let misTime = ::get_mission_time()
-  let { available = true, cooldownEndTime = 0, cooldownTime = 1, id = null } = itemV
-  let hasCooldown = available && cooldownEndTime > misTime
-  let cooldownLeft = hasCooldown ? (cooldownEndTime - misTime) : 0
-  let cooldown = hasCooldown ? (1 - (cooldownLeft / max(cooldownTime, 1))) : 1
-  let { empty, ready, broken, noAmmo } = btnBgColor
-  let trigger = $"action_cd_finish_{id}"
-  return {
-    size = [cooldownImgSize, cooldownImgSize]
-    rendObj = ROBJ_PROGRESS_CIRCULAR
-    image = cooldownImg
-    fgColor = !isAvailable ? noAmmo
-      : (itemV?.broken ?? false) ? broken
-      : ready
-    bgColor = empty
-    fValue = 1.0
-    key = $"action_bg_{id}_{cooldownEndTime}"
-    transform = {}
-    animations = [
-      { prop = AnimProp.fValue, from = cooldown, to = 1.0, duration = cooldownLeft, play = true,
-        function onFinish() {
-          onFinishExt?()
-          if (available)
-            anim_start(trigger)
-        }
-      }
-      {
-        prop = AnimProp.scale, duration = 0.2,
-        from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull, trigger
-      }
-    ]
-  }
-}
-
-let mkBtnBorder = @(stateFlags, isAvailable) {
-  size = flex()
-  clipChildren = true
-  transform = { rotate = weaponryButtonRotate }
-  children = @() {
-    watch = stateFlags
-    size = flex()
-    rendObj = ROBJ_BOX
-    borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
-      : !isAvailable ? borderNoAmmoColor
-      : borderColor
-    borderWidth
-  }
-}
-
-let mkActionBtnGlare = @(actionItem) mkBtnGlare($"action_cd_finish_{actionItem?.id}")
-
 let isActionAvailable = @(actionItem) (actionItem?.available ?? true)
   && (actionItem.count != 0 || actionItem?.control
     || (actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
@@ -424,17 +373,6 @@ let mkWaitForAimImage = @(isWaitForAim) {
   opacity = isWaitForAim ? 1.0 : 0.0
   transitions = [{ prop = AnimProp.opacity, duration = 0.3, easing = Linear }]
 }
-
-let mkAmmoCount = @(count, isAvailable) count < 0 ? null
-  : {
-      rendObj = ROBJ_TEXT
-      vplace = ALIGN_BOTTOM
-      fontFxColor = 0xFF000000
-      fontFxFactor = 50
-      fontFx = FFT_GLOW
-      color = isAvailable ? textDisabledColor : textColor
-      text = count
-    }.__update(fontVeryTiny)
 
 let function mkBtnZone(key) {
   let isVisible = Computed(@() !isGamepad.value && (userHoldWeapKeys.value?[key] ?? false))
@@ -599,9 +537,9 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
-      mkBtnBg(isAvailable && !isDisabled.value, actionItem,
+      mkRhombBtnBg(isAvailable && !isDisabled.value, actionItem,
         @() playSound(key == TRIGGER_GROUP_PRIMARY ? "weapon_primary_ready" : "weapon_secondary_ready"))
-      mkBtnBorder(stateFlags, isAvailable && !isDisabled.value)
+      mkRhombBtnBorder(stateFlags, isAvailable && !isDisabled.value)
       mkBtnZone(key)
       @() {
         watch = [canShoot, unitType, isBlocked]
@@ -614,7 +552,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
           ? imageDisabledColor
           : imageColor
       }
-      mkAmmoCount(actionItem.count, hasAim && !(actionItem?.aimReady ?? true))
+      mkAmmoCount(actionItem.count, !hasAim || (actionItem?.aimReady ?? true))
       hasAim ? mkWaitForAimImage(isWaitForAim) : null
       mkActionBtnGlare(actionItem)
       isDisabled.value ? null
@@ -647,8 +585,8 @@ let function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
     onClick = @() toggleShortcut(shortcutId)
     onElemState = @(v) stateFlags(v)
     children = [
-      mkBtnBg(isAvailable, actionItem, @() playSound("weapon_secondary_ready"))
-      mkBtnBorder(stateFlags, isAvailable)
+      mkRhombBtnBg(isAvailable, actionItem, @() playSound("weapon_secondary_ready"))
+      mkRhombBtnBorder(stateFlags, isAvailable)
       isGroupInAir.value ? null : mkBtnZone(key)
       {
         rendObj = ROBJ_IMAGE
@@ -658,7 +596,7 @@ let function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
         keepAspect = KEEP_ASPECT_FIT
         color = !isAvailable ? imageDisabledColor : imageColor
       }
-      isGroupInAir.value ? null : mkAmmoCount(actionItem.count, false)
+      isGroupInAir.value ? null : mkAmmoCount(actionItem.count)
       mkActionBtnGlare(actionItem)
       mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr)
     ]
@@ -693,9 +631,9 @@ let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
     halign = ALIGN_CENTER
     eventPassThrough = true
     children = [
-      mkBtnBg(isAvailable, actionItem,
+      mkRhombBtnBg(isAvailable, actionItem,
         @() playSound(key == TRIGGER_GROUP_PRIMARY ? "weapon_primary_ready" : "weapon_secondary_ready"))
-      mkBtnBorder(stateFlags, isAvailable)
+      mkRhombBtnBorder(stateFlags, isAvailable)
       @() {
         watch = [ unitType, isBlocked ]
         rendObj = ROBJ_IMAGE
@@ -707,7 +645,7 @@ let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
           ? imageDisabledColor
           : imageColor
       }
-      mkAmmoCount(actionItem.count, hasAim && !(actionItem?.aimReady ?? true))
+      mkAmmoCount(actionItem.count, !hasAim || (actionItem?.aimReady ?? true))
       hasAim ? mkWaitForAimImage(!(actionItem?.aimReady ?? true)) : null
       mkActionBtnGlare(actionItem)
       mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr)
@@ -974,8 +912,8 @@ let function mkDivingLockButton(buttonConfig, actionItem, ovr = {}) {
     hotkeys = mkGamepadHotkey(shortcutId)
     onElemState = @(v) stateFlags(v)
     children = [
-      mkBtnBg(true, actionItem)
-      mkBtnBorder(stateFlags, !isInCooldown)
+      mkRhombBtnBg(true, actionItem)
+      mkRhombBtnBorder(stateFlags, !isInCooldown)
       @() {
         rendObj = ROBJ_IMAGE
         size = [zoomImgSize, zoomImgSize]

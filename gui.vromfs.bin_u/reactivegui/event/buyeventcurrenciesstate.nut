@@ -2,35 +2,38 @@ from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { scenesOrder } = require("%rGui/navState.nut")
-let { WARBOND, EVENT_KEY } = require("%appGlobals/currenciesState.nut")
+let { getEventBg, getEventLoc, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
 
 
-let openParams = mkWatched(persist, "openParams", null)
-let currencyId = Computed(@() openParams.value?.currencyId)
-let isBuyCurrencyWndOpen = Computed(@() openParams.value?.isEmbedded == false)
-let isEmbeddedBuyCurrencyWndOpen = Computed(@() openParams.value?.isEmbedded == true)
+let currencyId = mkWatched(persist, "currencyId", null)
+let parentEventId = mkWatched(persist, "parentEventId", null)
+let isBuyCurrencyWndOpen = Computed(@() currencyId.value != null)
 
 let eventCurrenciesGoods = Computed(@() shopGoods.value?.filter(@(v) (v?[currencyId.value] ?? 0) > 0) ?? {})
 
-let function openBuyEventCurrenciesWnd(id) {
-  if (isOfflineMenu) {
+let bgFallback = "ui/images/event_bg.avif"
+let bgImage = Computed(@() getEventBg(parentEventId.get(), eventSeason.get(), specialEvents.get(), bgFallback))
+let parentEventLoc = Computed(@() getEventLoc(parentEventId.get(), eventSeason.get(), specialEvents.get()))
+
+let function openBuyEventCurrenciesWnd(id, eventId) {
+  if (isOfflineMenu)
     openFMsgBox({ text = "Not supported in the offline mode" })
-    return
+  else {
+    currencyId.set(id)
+    parentEventId.set(eventId)
   }
-  openParams({
-    currencyId = id,
-    isEmbedded = scenesOrder.value.findindex(@(v) v == "eventWnd") == (scenesOrder.value.len() - 1)
-  })
 }
 
 return {
   isBuyCurrencyWndOpen
-  isEmbeddedBuyCurrencyWndOpen
-  closeBuyEventCurrenciesWnd = @() openParams(null)
-  openBuyWarbondsWnd = @() openBuyEventCurrenciesWnd(WARBOND)
-  openBuyEventKeysWnd = @() openBuyEventCurrenciesWnd(EVENT_KEY)
+  closeBuyEventCurrenciesWnd = @() currencyId(null)
+  openBuyEventCurrenciesWnd
   currencyId
+  parentEventId
 
   eventCurrenciesGoods
+
+  bgFallback
+  bgImage
+  parentEventLoc
 }

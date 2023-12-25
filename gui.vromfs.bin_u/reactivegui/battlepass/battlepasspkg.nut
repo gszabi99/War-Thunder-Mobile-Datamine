@@ -1,12 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { pointsCurStage, pointsPerStage, curStage } = require("battlePassState.nut")
+let { pointsCurStage, pointsPerStage } = require("battlePassState.nut")
 let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-
-let bpLevelLabel = @(ovr = {}){
-  watch = curStage
-  rendObj = ROBJ_TEXT
-  text = $"{loc("mainmenu/rank")} {curStage.value}"
-}.__update(fontSmall, ovr)
 
 let bpLineFillColor = 0xFF191919
 let bpBorderColor = 0xFF7C7C7C
@@ -60,7 +54,6 @@ let bpProgressText  = @(ovr = {}){
 return {
   bpCurProgressbar
   bpProgressText
-  bpLevelLabel
 
   bpProgressbarEmpty = bpProgress(null)
   bpProgressbarFull = bpProgress(fullLineBP)

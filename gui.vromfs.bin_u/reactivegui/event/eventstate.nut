@@ -5,30 +5,31 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { eventLootboxes } = require("eventLootboxes.nut")
+let { eventLootboxesRaw, orderLootboxesBySlot } = require("eventLootboxes.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
-let { balanceWarbond, balanceEventKey, EVENT_KEY, WARBOND } = require("%appGlobals/currenciesState.nut")
+let { balance } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
-let { unlockTables } = require("%rGui/unlocks/unlocks.nut")
+let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-
+let { closeLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 
 let SEEN_LOOTBOXES = "seenLootboxes"
 let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
+let MAIN_EVENT_ID = "main"
 let getSeasonPrefix = @(n) $"season_{n}"
+let getSpecialEventName = @(n) $"special_event_{n}"
 
-let isEventWndOpen = mkWatched(persist, "isEventWndOpen", false)
-let eventWndOpenCount = Watched(0)
-let eventWndShowAnimation = Watched(true)
+let openEventInfo = mkWatched(persist, "openEventInfo")
+let curEvent = Computed(@() openEventInfo.get()?.eventName)
+let eventWndOpenCounter = Computed(@() openEventInfo.get()?.counter ?? 0)
+
+eventWndOpenCounter.subscribe(function(v) {
+  if (v == 0)
+    closeLootboxPreview()
+})
 
 let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
 let eventSeason = Computed(@() getSeasonPrefix(userstatStats.value?.stats.season["$index"] ?? 1))
-let eventSeasonName = Computed(function() {
-  local locId = $"events/name/{eventSeason.value}"
-  if (!doesLocTextExist(locId))
-    locId = "events/name/default"
-  return loc(locId)
-})
 let isEventActive = Computed(@() unlockTables.value?.season == true)
 
 let miniEventSeasonName = loc("events/name/special")
@@ -37,27 +38,101 @@ let isMiniEventActive = Computed(@() unlockTables.value?.mini_event_season == tr
 
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
 let lootboxesAvailability = mkWatched(persist, LOOTBOXES_AVAILABILITY, {})
-let unseenLootboxes = Computed(@() eventLootboxes.value
-  .filter(@(v) v.name not in seenLootboxes.value?[eventSeason.value])
-  .reduce(@(res, v) res.rawset(v.name, true), {}))
+let unseenLootboxes = Computed(function() {
+  let res = {}
+  let lootboxes = eventLootboxesRaw.get()
+    .filter(@(v) v.name not in seenLootboxes.value?[v.meta.event_id])
+  foreach (lootbox in lootboxes) {
+    let eventId = lootbox.meta.event_id
+    if (eventId not in res)
+      res[eventId] <- {}
+    res[eventId].rawset(lootbox.name, true)
+  }
+  return res
+})
 let unseenLootboxesShowOnce = mkWatched(persist, "unseenLootboxesShowOnce", {})
 
 let bestCampLevel = Computed(@() servProfile.value?.levelInfo.reduce(@(a, b) max(a?.level ?? 0, b?.level ?? 0)) ?? 1)
 
-let function saveSeenLootboxes(ids) {
-  let season = eventSeason.value
-  ids = ids.filter(@(id) id not in seenLootboxes.value?[season])
+let specialEvents = Computed(function() {
+  let res = {}
+  let specialEventsList = eventLootboxesRaw.value.reduce(function(acc, e) {
+    let id = e?.meta.event_id
+    if (id != null && acc.findindex(@(v) v == id) == null && id != MAIN_EVENT_ID)
+      acc.append(id)
+    return acc
+  }, [])
+
+  foreach (idx, eventName in specialEventsList) {
+    let tableId = activeUnlocks.value
+      .filter(@(u) u?.meta.event_id == eventName)
+      .findvalue(@(v) v.table != "")?.table
+    if (!unlockTables.value?[tableId])
+      continue
+    let endsAt = userstatStats.value?.stats[tableId]["$endsAt"] ?? 0
+    let season = userstatStats.value?.stats[tableId]["$index"] ?? 1
+    let eventId = getSpecialEventName(idx + 1)
+
+    res[eventId] <- {
+      eventName
+      eventId
+      endsAt
+      season
+    }
+  }
+  return res
+})
+
+let getEventBg = @(eventId, eSeason, sEvents, bgFallback) !eventId ? bgFallback
+  : $"ui/images/event_bg_{eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName}.avif"
+let eventBgFallback = "ui/images/event_bg.avif"
+let curEventBg = Computed(@() getEventBg(curEvent.get(), eventSeason.get(), specialEvents.get(), eventBgFallback))
+
+let function getEventLoc(eventId, eSeason, sEvents) {
+  local locId = eventId == MAIN_EVENT_ID
+      ? $"events/name/{eSeason}"
+    : "".concat("events/name/", sEvents?[eventId].eventName)
+  if (!doesLocTextExist(locId))
+    locId = "events/name/default"
+  return loc(locId)
+}
+let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), specialEvents.get()))
+
+let curEventSeason = Computed(@() curEvent.value == MAIN_EVENT_ID
+    ? (userstatStats.value?.stats.season["$index"] ?? 1)
+  : specialEvents.value?[curEvent.value].season)
+
+let curEventEndsAt = Computed(@() curEvent.value == MAIN_EVENT_ID
+    ? eventEndsAt.value
+  : (specialEvents.value?[curEvent.value].endsAt ?? 0))
+
+let curEventName = Computed(@() curEvent.value == MAIN_EVENT_ID
+    ? curEvent.value
+  : specialEvents.value?[curEvent.value].eventName)
+
+let curEventLootboxes = Computed(@()
+  orderLootboxesBySlot(eventLootboxesRaw.value.filter(@(v) v?.meta.event_id == curEventName.value)))
+
+let curEventCurrencies = Computed(@() curEventLootboxes.value.reduce(function(res, l) {
+  let currencyId = l?.currencyId
+  if (currencyId != null && res.findindex(@(v) v == currencyId) == null)
+    res.append(currencyId)
+  return res
+}, []))
+
+let function saveSeenLootboxes(ids, eventName) {
+  ids = ids.filter(@(id) id not in seenLootboxes.value?[eventName])
   if (ids.len() == 0)
     return
   seenLootboxes.mutate(function(v) {
-    if (season not in v)
-      v[season] <- {}
+    if (eventName not in v)
+      v[eventName] <- {}
     foreach (id in ids)
-      v[season][id] <- true
+      v[eventName][id] <- true
   })
   let sBlk = get_local_custom_settings_blk().addBlock(SEEN_LOOTBOXES)
-  let blk = sBlk.addBlock(season)
-  foreach (id, isSeen in seenLootboxes.value?[season] ?? {})
+  let blk = sBlk.addBlock(eventName)
+  foreach (id, isSeen in seenLootboxes.value?[eventName] ?? {})
     if (isSeen)
       blk[id] = true
   send("saveProfile", {})
@@ -117,43 +192,55 @@ let function updateUnseenLootboxesShowOnce(lootboxes) {
   })
 }
 
-
 if (seenLootboxes.value.len() == 0)
   loadSeenLootboxes()
 if (lootboxesAvailability.value.len() == 0)
   loadLootboxesAvailability()
 
-let function onCurrencyChange(currencyId, balance) {
+balance.subscribe(function(v) {
   let showOnce = {}
   let availability = {}
-  foreach (lootbox in eventLootboxes.value) {
-    if (lootbox.currencyId != currencyId)
-      continue
-    let canBuy = balance >= lootbox.price
+  foreach (lootbox in eventLootboxesRaw.value) {
+    let canBuy = (v?[lootbox.currencyId] ?? 0) >= lootbox.price
     if (canBuy && lootboxesAvailability.value?[lootbox.name] == false)
-      showOnce[lootbox.name] <- true
+      showOnce[lootbox.name] <- lootbox?.meta.event_id ?? MAIN_EVENT_ID
     availability[lootbox.name] <- canBuy
   }
   updateUnseenLootboxesShowOnce(showOnce)
   updateLootboxAvailability(availability)
-}
-
-balanceEventKey.subscribe(@(balance) onCurrencyChange(EVENT_KEY, balance))
-balanceWarbond.subscribe(@(balance) onCurrencyChange(WARBOND, balance))
+})
 
 let function markCurLootboxSeen(id) {
-  saveSeenLootboxes([id])
+  saveSeenLootboxes([id], curEventName.get())
   updateUnseenLootboxesShowOnce({ [id] = false })
 }
 
-let function openEventWnd() {
+let function openEventWnd(eventName = MAIN_EVENT_ID) {
+  eventName = specialEvents.get().findvalue(@(v) v.eventName == eventName)?.eventId ?? eventName
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return
   }
-  eventWndOpenCount(eventWndOpenCount.value + 1)
-  isEventWndOpen(true)
+  openEventInfo({
+    eventName
+    counter = curEvent.get() == eventName ? eventWndOpenCounter.get() + 1 : 1
+  })
 }
+
+let gamercardItemsBySpecialEvent = {
+  christmas = [ "firework_kit" ]
+}
+let specialEventGamercardItems = Computed(function() {
+  let specialEventsList = specialEvents.get().reduce(function(acc, e) {
+    acc.append(e.eventName)
+    return acc
+  }, [])
+  let res = []
+  foreach (eventName, items in gamercardItemsBySpecialEvent)
+    if (specialEventsList.indexof(eventName) != null)
+      res.extend(items.map(@(itemId) { itemId, eventName }))
+  return res
+})
 
 register_command(function() {
   seenLootboxes({})
@@ -168,15 +255,19 @@ register_command(function() {
 }, "debug.reset_lootboxes_availability")
 
 return {
-  isEventWndOpen
-  eventWndOpenCount
+  curEvent
+  curEventName
+  curEventLoc
+  getEventLoc
+  curEventSeason
+  curEventEndsAt
+
+  eventWndOpenCounter
   openEventWnd
-  closeEventWnd = @() isEventWndOpen(false)
-  eventWndShowAnimation
+  closeEventWnd = @() openEventInfo.set(null)
   markCurLootboxSeen
   eventEndsAt
   eventSeason
-  eventSeasonName
   isEventActive
   isMiniEventActive
   miniEventSeasonName
@@ -186,4 +277,15 @@ return {
   unseenLootboxesShowOnce
 
   bestCampLevel
+
+  MAIN_EVENT_ID
+  specialEvents
+  getSpecialEventName
+  curEventLootboxes
+  curEventCurrencies
+  specialEventGamercardItems
+
+  eventBgFallback
+  curEventBg
+  getEventBg
 }

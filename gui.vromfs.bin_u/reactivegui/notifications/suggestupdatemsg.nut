@@ -5,6 +5,7 @@ let { isDownloadedFromGooglePlay } = require("android.platform")
 let { is_ios } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
+let { can_view_update_suggestion } = require("%appGlobals/permissions.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -24,6 +25,7 @@ let needShowExitToUpdate = keepref(Computed(@() needExitToUpdate.value && isOutO
 
 let isSuggested = hardPersistWatched("suggestUpdate.isSuggested", false)
 let needShowSuggestToUpdate = keepref(Computed(@() needSuggestToUpdate.value
+  && can_view_update_suggestion.get()
   && !isSuggested.value
   && !needExitToUpdate.value
   && isOutOfBattleAndResults.value))

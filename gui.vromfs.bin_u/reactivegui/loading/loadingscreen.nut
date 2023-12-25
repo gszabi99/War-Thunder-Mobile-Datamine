@@ -9,10 +9,16 @@ let { register_command } = require("console")
 let { isInLoadingScreen, isMissionLoading } = require("%appGlobals/clientState/clientState.nut")
 let { gradientLoadingTip } = require("mkLoadingTip.nut")
 let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
-let missionLoadingScreen = require("missionLoadingScreen.nut")
 let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
 
 let lastLoadingBgShow = Watched(get_time_msec())
+let missionScreenIdx = Watched(0)
+
+local missionScreen = null
+let function setMissionLoadingScreen(screen) {
+  missionScreen = screen
+  missionScreenIdx.set(missionScreenIdx.get() + 1)
+}
 
 let updateWeights = @(campaign) screenWeights(screensList
   .filter(@(v) campaign == null || (v?.camp.contains(campaign) ?? true))
@@ -22,17 +28,17 @@ curCampaign.subscribe(updateWeights)
 
 let lsKey = {}
 let loadingScreen = @() {
-  watch = isMissionLoading
+  watch = [isMissionLoading, missionScreenIdx]
   key = lsKey
   onAttach = @() addFpsLimit(lsKey)
   onDetach = @() removeFpsLimit(lsKey)
   size = flex()
-  children = isMissionLoading.value ? missionLoadingScreen
-    : [
-        loadingAnimBg
-        mkTitleLogo({ margin = saBordersRv })
-        gradientLoadingTip
-      ]
+  children = (isMissionLoading.value ? missionScreen : null)
+    ?? [
+         loadingAnimBg
+         mkTitleLogo({ margin = saBordersRv })
+         gradientLoadingTip
+       ]
   animations = wndSwitchAnim
 }
 
@@ -66,4 +72,5 @@ return {
   loadingScreen
   loadingAnimBg
   gradientLoadingTip
+  setMissionLoadingScreen
 }

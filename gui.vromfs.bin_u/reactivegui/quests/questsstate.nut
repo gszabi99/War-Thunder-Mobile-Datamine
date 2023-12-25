@@ -12,14 +12,18 @@ let { playSound } = require("sound_wt")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
+let { specialEvents, MAIN_EVENT_ID, curEvent, getSpecialEventName } = require("%rGui/event/eventState.nut")
+let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
-const EVENT_PREFIX = "day"
-const SEEN_QUESTS = "seenQuests"
-const COMMON_TAB = "common"
-const EVENT_TAB = "event"
-const PROMO_TAB = "promo"
-const MINI_EVENT_TAB = "miniEvent"
-const ACHIEVEMENTS_TAB = "achievements"
+
+let EVENT_PREFIX = "day"
+let SEEN_QUESTS = "seenQuests"
+let COMMON_TAB = "common"
+let EVENT_TAB = MAIN_EVENT_ID
+let PROMO_TAB = "promo"
+let MINI_EVENT_TAB = "miniEvent"
+let ACHIEVEMENTS_TAB = "achievements"
+let SPECIAL_EVENT_1_TAB = getSpecialEventName(1)
 
 let SPEED_UP_AD_COST = 1
 
@@ -28,6 +32,7 @@ let isQuestsOpen = mkWatched(persist, "isQuestsOpen", false)
 let rewardsList = Watched(null)
 let isRewardsListOpen = Computed(@() rewardsList.value != null)
 let curTabId = Watched(null)
+let curTabParams = Watched({})
 
 let openRewardsList = @(rewards) rewardsList(rewards)
 let closeRewardsList = @() rewardsList(null)
@@ -65,8 +70,9 @@ let questsCfg = Computed(@() {
   [PROMO_TAB] = ["promo_quest"],
   [EVENT_TAB] = eventSections.value.map(@(v) v.name),
   [MINI_EVENT_TAB] = ["mini_event"],
-  [ACHIEVEMENTS_TAB] = ["achievement"]
-})
+  [ACHIEVEMENTS_TAB] = ["achievement"],
+}.__merge(specialEvents.value.reduce(@(res, v)
+  res.__update({ [v.eventId] = [v.eventName] }), {})))
 
 let sectionsCfg = Computed(@() {
   daily_quest = {
@@ -89,7 +95,7 @@ let questsBySection = Computed(function() {
   let res = {}
   foreach (sections in questsCfg.value)
     foreach (section in sections)
-      res[section] <- activeUnlocks.value.filter(@(u) section in u?.meta) ?? {}
+      res[section] <- activeUnlocks.value.filter(@(u) section in u?.meta || u?.meta.event_id == section) ?? {}
   res.__update(eventUnlocksByDays.value.reduce(function(acc, v, key) {
     acc[mkEventSectionName(key)] <- v
     return acc
@@ -105,6 +111,21 @@ let progressUnlockBySection = Computed(@() {
   daily_quest = activeUnlocks.get()?.daily_quest_global_progress
   weekly_quest = activeUnlocks.get()?.weekly_quest_global_progress
 })
+
+let function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
+  let res = []
+  foreach (idx, s in qCfg?[tabId] ?? []) {
+    foreach (quest in qBySection[s].values().append(
+      pUnlockBySection?[s],
+      idx == 0 ? pUnlockByTab?[tabId] : null
+    ).filter(@(v) v))
+      foreach (stage in quest.stages)
+        foreach (reward in getUnlockRewardsViewInfo(stage, sConfigs))
+          if (reward.rType == "currency" && res.findindex(@(v) v == reward.id) == null)
+            res.append(reward.id)
+  }
+  return res
+}
 
 let function saveSeenQuests(ids) {
   seenQuests.mutate(function(v) {
@@ -189,7 +210,7 @@ register_command(function() {
 return {
   openQuestsWnd
   openQuestsWndOnTab
-  openEventQuestsWnd = @() openQuestsWndOnTab(EVENT_TAB)
+  openEventQuestsWnd = @() openQuestsWndOnTab(curEvent.value)
   isQuestsOpen
 
   rewardsList
@@ -198,6 +219,7 @@ return {
   closeRewardsList
 
   curTabId
+  curTabParams
   questsBySection
 
   seenQuests
@@ -210,12 +232,14 @@ return {
   inactiveEventUnlocks
   progressUnlockByTab
   progressUnlockBySection
+  getQuestCurrenciesInTab
 
   COMMON_TAB
   EVENT_TAB
   MINI_EVENT_TAB
   PROMO_TAB
   ACHIEVEMENTS_TAB
+  SPECIAL_EVENT_1_TAB
 
   onWatchQuestAd
   SPEED_UP_AD_COST

@@ -1,35 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isBuyCurrencyWndOpen, closeBuyEventCurrenciesWnd } = require("buyEventCurrenciesState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { mkEventBg } = require("eventPkg.nut")
+let { isBuyCurrencyWndOpen, closeBuyEventCurrenciesWnd, bgImage, bgFallback
+} = require("buyEventCurrenciesState.nut")
+let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { buyEventCurrenciesHeader, mkEventCurrenciesGoods, buyEventCurrenciesGamercard } = require("buyEventCurrenciesComps.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 
 let buyEventCurrenciesWnd = {
   key = {}
   size = flex()
+  padding = saBordersRv
+  flow = FLOW_VERTICAL
   children = [
-    mkEventBg(isBuyCurrencyWndOpen)
+    buyEventCurrenciesGamercard
     {
       size = flex()
-      padding = saBordersRv
       flow = FLOW_VERTICAL
+      valign = ALIGN_CENTER
       children = [
-        buyEventCurrenciesGamercard
-        {
-          size = flex()
-          flow = FLOW_VERTICAL
-          valign = ALIGN_CENTER
-          children = [
-            buyEventCurrenciesHeader
-            mkEventCurrenciesGoods
-          ]
-        }
+        buyEventCurrenciesHeader
+        mkEventCurrenciesGoods
       ]
     }
   ]
   animations = wndSwitchAnim
 }
 
+let sceneId = "buyEventCurrenciesWnd"
 registerScene("buyEventCurrenciesWnd", buyEventCurrenciesWnd, closeBuyEventCurrenciesWnd, isBuyCurrencyWndOpen)
+setSceneBgFallback(sceneId, bgFallback)
+setSceneBg(sceneId, bgImage.get())
+bgImage.subscribe(@(v) setSceneBg(sceneId, v))

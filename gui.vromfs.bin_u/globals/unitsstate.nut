@@ -17,7 +17,7 @@ let buyUnitsData = Computed(function() {
   local hasOwnUnitForCurrentLevelUp = false
   let unitStatus = allUnitsCfg.value.map(function(unit) {
     if (unit.name in myUnits.value) {
-      if (unit.costWp > 0 && !unit.isPremium && unit.rank == level + 1)
+      if (unit.rank == level + 1)
         hasOwnUnitForCurrentLevelUp = true
       return US_OWN
     }

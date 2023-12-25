@@ -4,7 +4,7 @@ let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkColoredGradientY, mkFontGradient,
   gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, txt,borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles
+  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let icons = {
@@ -58,11 +58,12 @@ let function getLocNameConsumables(goods) {
 
 let function mkGoodsConsumables(goods, onClick, state, animParams) {
   let { itemId, amount } = getConsumablesInfo(goods)
-  let { viewBaseValue = 0 } = goods
+  let { viewBaseValue = 0, isShowDebugOnly = false } = goods
   let nameConsumable =  loc($"item/{itemId}")
   return mkGoodsWrap(onClick,
     @(sf) [
       mkSlotBgImg()
+      isShowDebugOnly ? underConstructionBg : null
       mkBgParticles([goodsSmallSize[0], goodsBgH])
       borderBg
       sf & S_HOVER ? bgHiglight : null

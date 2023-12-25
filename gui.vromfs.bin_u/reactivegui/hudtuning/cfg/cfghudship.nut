@@ -1,14 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
 let { SHIP } = require("%appGlobals/unitConst.nut")
-let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_IRCM, EII_FIREWORK } = require("%rGui/hud/weaponsButtonsConfig.nut")
+let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
+let { AB_FIREWORK } = require("%rGui/hud/actionBar/actionType.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
 let { mkZoomButton, mkPlaneItem } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView, mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { mkRBPos, mkLBPos, weaponryButtonCtor, weaponryButtonDynamicCtor, withActionBarButtonCtor
+let { mkRBPos, mkLBPos, weaponryButtonCtor, weaponryButtonDynamicCtor, withActionBarButtonCtor,
+  withActionButtonCtor
 } = require("hudTuningPkg.nut")
 let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
 let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
+let { mkRhombFireworkBtn } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
+let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
   zoom = weaponryButtonCtor("ID_ZOOM", mkZoomButton,
@@ -65,12 +69,19 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT, SHIP,
     { defTransform = mkRBPos([hdpx(-600), hdpx(43)]) })
+
 //
 
 
 
 
-
+  firework = withActionButtonCtor(AB_FIREWORK, mkRhombFireworkBtn,
+    {
+      defTransform = mkRBPos([hdpx(-216), hdpx(-436)])
+      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_ammo_fireworks.svg", 1.0)
+      isVisibleInEditor = fwVisibleInEditor
+      isVisibleInBattle = fwVisibleInBattle
+    })
 
   moveArrows = {
     ctor = @() shipMovementBlock(SHIP)

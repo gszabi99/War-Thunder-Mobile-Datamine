@@ -150,6 +150,7 @@ let mkBigSlotImage = @(ovr) {
 let checkImg = {
   key = {}
   size = [checkSize, checkSize]
+  pos = [0.1 * checkSize, -0.2 * checkSize]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE

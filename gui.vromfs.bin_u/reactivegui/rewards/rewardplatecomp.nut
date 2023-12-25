@@ -119,6 +119,7 @@ let currencyImgCtors = {
   wp = @(size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, "shop_lions_02.avif")
   warbond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_goods_01.avif", 0.95)
   eventKey = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "event_keys_01.avif", 0.8)
+  nybond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_goods_christmas_01.avif", 0.8)
 }
 
 let function mkRewardPlateCurrencyImage(r, rStyle) {
@@ -127,7 +128,7 @@ let function mkRewardPlateCurrencyImage(r, rStyle) {
   return {
     size
     clipChildren = true
-    children = iconBase.__merge(currencyImgCtors[r.id](size, iconShiftY))
+    children = iconBase.__merge(currencyImgCtors?[r.id](size, iconShiftY) ?? {})
   }
 }
 

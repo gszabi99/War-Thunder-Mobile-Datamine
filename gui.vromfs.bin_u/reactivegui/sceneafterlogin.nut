@@ -65,6 +65,8 @@ require("event/buyEventCurrenciesWnd.nut")
 require("leaderboard/lbWnd.nut")
 require("leaderboard/lbBestBattlesWnd.nut")
 require("debriefing/debrQuestsMgr.nut")
+require("%rGui/loading/loadingScreen.nut")
+  .setMissionLoadingScreen(require("%rGui/loading/missionLoadingScreen.nut"))
 
 let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")
 let { scenesOrder, getTopScene } = require("navState.nut")

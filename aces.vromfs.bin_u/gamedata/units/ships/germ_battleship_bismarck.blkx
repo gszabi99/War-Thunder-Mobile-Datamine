@@ -10824,7 +10824,7 @@
               }
             },
             {
-              "trigger": "gunner14",
+              "trigger": "gunner28",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -10850,7 +10850,7 @@
               }
             },
             {
-              "trigger": "gunner15",
+              "trigger": "gunner29",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",

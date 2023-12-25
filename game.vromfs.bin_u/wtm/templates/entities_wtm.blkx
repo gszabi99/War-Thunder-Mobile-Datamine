@@ -2277,7 +2277,8 @@
     "_use": "expendable_mod",
     "mod__name": "firework_kit",
     "mod__type_name": "firework",
-    "mod__send_economic_spend": true
+    "mod__send_economic_spend": true,
+    "mod__check_count_item_used": true
   },
   "base_ship_wtm": {
     "_use": [

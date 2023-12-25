@@ -6,6 +6,7 @@ let borderWidth = hdpx(2)
 let imageSizeDecrease = borderWidth * 6
 let bgColor = 0x60000000
 let borderColor = 0xFFA0A0A0
+let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 
 let function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
   let stateFlags = Watched(0)
@@ -42,7 +43,45 @@ let function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
   }.__update(ovr)
 }
 
+let hoverBg = {
+  vplace = ALIGN_CENTER
+  size = flex()
+  color = 0x8052C4E4
+  opacity =  0.5
+  rendObj = ROBJ_9RECT
+  image = gradCircularSmallHorCorners
+  screenOffs = hdpx(100)
+  texOffs = gradCircCornerOffset
+}
+
+let function imageBtn(image, onClick, ovr = {}, addChild = null) {
+  let stateFlags = Watched(0)
+  let size = ovr?.size ?? framedBtnSize
+  return @() {
+    watch = stateFlags
+    size
+    onElemState = @(sf) stateFlags(sf)
+    behavior = Behaviors.Button
+    onClick
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    children = [
+      stateFlags.value & S_HOVER ? hoverBg : null
+      {
+        size = flex()
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{image}:{size[0]}:{size[1]}:P")
+        keepAspect = true
+        transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+        transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
+      }
+      addChild
+    ]
+  }.__update(ovr)
+}
+
 return {
   framedImageBtn
   framedBtnSize
+  imageBtn
 }

@@ -10,11 +10,11 @@ let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let BP_GOODS_ID = "battle_pass"
 
-let isBattlePassWndOpened = mkWatched(persist, "isBattlePassWndOpened", false)
+let battlePassOpenCounter = mkWatched(persist, "battlePassOpenCounter", 0)
 let isBPPurchaseWndOpened = mkWatched(persist, "isBPPurchaseWndOpened", false)
 let isDebugBp = mkWatched(persist, "isDebugBp", false)
-let openBattlePassWnd = @() isBattlePassWndOpened(true)
-let closeBattlePassWnd = @() isBattlePassWndOpened(false)
+let openBattlePassWnd = @() battlePassOpenCounter.set(battlePassOpenCounter.get() + 1)
+let closeBattlePassWnd = @() battlePassOpenCounter.set(0)
 
 let seasonNumber = Computed(@() userstatStats.value?.stats.season["$index"] ?? 0)
 let seasonName = Computed(@() loc($"events/name/season_{seasonNumber.value}"))
@@ -23,7 +23,7 @@ let seasonEndTime = Computed(@() userstatStats.value?.stats.season["$endsAt"] ??
 let bpProgressUnlock = Computed(@() activeUnlocks.value?["battlepass_points_to_progress"])
 let pointsPerStage   = Computed(@() bpProgressUnlock.value?.stages[0].progress ?? 1)
 
-let bfFreeRewardsUnlock = Computed(@()
+let bpFreeRewardsUnlock = Computed(@()
   activeUnlocks.value.findvalue(@(unlock) "battle_pass_free" in unlock?.meta))
 let bpPaidRewardsUnlock = Computed(@()
   activeUnlocks.value.findvalue(@(unlock) "battle_pass_paid" in unlock?.meta))
@@ -31,7 +31,7 @@ let bpPurchasedUnlock = Computed(@()
   activeUnlocks.value.findvalue(@(unlock) "battlepas_purchased" in unlock?.meta))
 
 let isBpRewardsInProgress = Computed(@()
-  bfFreeRewardsUnlock.value?.name in unlockRewardsInProgress.value
+  bpFreeRewardsUnlock.value?.name in unlockRewardsInProgress.value
     || bpPaidRewardsUnlock.value?.name in unlockRewardsInProgress.value
     || bpPurchasedUnlock.value?.name in unlockRewardsInProgress.value)
 
@@ -47,13 +47,15 @@ let isBpActive = Computed(@()
 
 isBpActive.subscribe(@(v) v ? isBPPurchaseWndOpened.set(false) : null)
 
-let hasBpRewardsToReceive = Computed(@() !!bfFreeRewardsUnlock.get()?.hasReward
+let hasBpRewardsToReceive = Computed(@() !!bpFreeRewardsUnlock.get()?.hasReward
   || !!bpPurchasedUnlock.get()?.hasReward
   || (isBpActive.get() && !!bpPaidRewardsUnlock.get()?.hasReward))
 
 let pointsCurStage = Computed(@() (bpProgressUnlock.value?.current ?? 0)
   % pointsPerStage.value )
 let curStage = Computed(@() bpProgressUnlock.value?.stage ?? 0)
+let maxStage = Computed(@() max(bpFreeRewardsUnlock.get()?.stages.top().progress ?? 0,
+  bpPaidRewardsUnlock.get()?.stages.top().progress ?? 0))
 
 let function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV) {
   let { name = "", stages = [], lastRewardedStage = -1, hasReward = false } = unlock
@@ -73,7 +75,7 @@ let function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV) {
 
 let mkBpStagesList = @() Computed(function() {
   let listPaidStages = gatherUnlockStageInfo(bpPaidRewardsUnlock.value, true, isBpActive.value, curStage.value)
-  let listFreeStages = gatherUnlockStageInfo(bfFreeRewardsUnlock.value, false, true, curStage.value)
+  let listFreeStages = gatherUnlockStageInfo(bpFreeRewardsUnlock.value, false, true, curStage.value)
 
   let res = listPaidStages.extend(listFreeStages)
   let purchaseStages = gatherUnlockStageInfo(bpPurchasedUnlock.value, true, true, curStage.value)
@@ -132,7 +134,7 @@ let function receiveBpRewards(progress) {
   let fullList = [
     !bpPurchasedUnlock.value?.hasReward ? null
       : { unlockName = bpPurchasedUnlock.value.name, stage = bpPurchasedUnlock.value.stage }
-    getNotReceivedInfo(bfFreeRewardsUnlock.value, progress)
+    getNotReceivedInfo(bpFreeRewardsUnlock.value, progress)
     isBpActive.value ? getNotReceivedInfo(bpPaidRewardsUnlock.value, progress) : null
   ].filter(@(v) v != null)
 
@@ -152,7 +154,7 @@ isBPPurchaseWndOpened.subscribe(@(v) v ? sendBpBqEvent("bp_purchase_open") : nul
 register_command(@() isDebugBp.set(!isDebugBp.get()), "ui.debug.battlePass")
 
 return {
-  isBattlePassWndOpened
+  battlePassOpenCounter
   openBattlePassWnd
   closeBattlePassWnd
   isBPPurchaseWndOpened
@@ -161,14 +163,15 @@ return {
   receiveBpRewards
   sendBpBqEvent
 
-  bfFreeRewardsUnlock
   bpPaidRewardsUnlock
   bpPurchasedUnlock
   battlePassGoods
   isBpRewardsInProgress
+  isBpSeasonActive = Computed(@() bpFreeRewardsUnlock.get() != null)
 
   mkBpStagesList
   curStage
+  maxStage
   selectedStage
   isBpActive
   isBpPurchased

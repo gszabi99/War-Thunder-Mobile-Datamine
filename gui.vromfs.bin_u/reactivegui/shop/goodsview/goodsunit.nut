@@ -6,7 +6,7 @@ let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = requir
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkOfferWrap, txt, textArea, mkBgImg, mkFitCenterImg, mkPricePlate,
-  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, goodsH, goodsW
+  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsW
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -197,6 +197,7 @@ let function mkGoodsUnit(goods, onClick, state, animParams) {
   let p = getUnitPresentation(unit)
   let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
   let platoonOffset = platoonPlatesGap * (unit?.platoonUnits.len() ?? 0)
+  let { isShowDebugOnly = false } = goods
 
   let function onUnitClick() {
     if (isPurchased)
@@ -211,6 +212,7 @@ let function mkGoodsUnit(goods, onClick, state, animParams) {
       mkPlatoonBgPlates(unit, unit?.platoonUnits)
       mkBgImg($"!ui/unitskin#flag_{unit.country}.avif")
       mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
+      isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
       mkUnitImg(p.image)
       mkUnitTexts(goods, unit)
@@ -231,7 +233,7 @@ let function mkGoodsUnit(goods, onClick, state, animParams) {
 
 let function mkOfferUnit(goods, onClick, state, needPrice) {
   let unit = getUnit(goods)
-  let { endTime = 0, discountInPercent = 0 } = goods
+  let { endTime = 0, discountInPercent = 0, isShowDebugOnly = false } = goods
   let p = getUnitPresentation(unit)
   let bgImg = unit?.unitType == "tank"
     ? "ui/gameuiskin#offer_bg_yellow.avif"
@@ -239,6 +241,7 @@ let function mkOfferUnit(goods, onClick, state, needPrice) {
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)
+      isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
       mkFitCenterImg(unit.isUpgraded ? p.upgradedImage : p.image)
       mkOfferTexts(getPlatoonOrUnitName(unit, loc), endTime)

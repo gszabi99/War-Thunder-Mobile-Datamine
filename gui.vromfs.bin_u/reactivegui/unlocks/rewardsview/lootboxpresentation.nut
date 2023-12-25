@@ -31,11 +31,11 @@ let function getLootboxImage(id, season, size = null) {
 let getLootboxFallbackImage = @(size = null)
   !size ? Picture($"{defaultLootbox}:0:P") : Picture($"{defaultLootbox}:{size}:{size}:P")
 
-let mkLoootboxImage = @(id, size = null, ovr = {}) @() {
+let mkLoootboxImage = @(id, size = null, ovr = {}, customImage = null) @() {
   watch = eventSeason
   size = size ? [size, size] : SIZE_TO_CONTENT
   rendObj = ROBJ_IMAGE
-  image = getLootboxImage(id, eventSeason.value, size)
+  image = customImage ? Picture(customImage) : getLootboxImage(id, eventSeason.value, size)
   fallbackImage = getLootboxFallbackImage(size)
   keepAspect = true
 }.__update(ovr)

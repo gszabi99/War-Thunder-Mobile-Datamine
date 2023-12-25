@@ -7,7 +7,7 @@ let { defer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { reset_profile, reset_profile_with_stats, unlock_all_units, add_gold, add_wp,
   reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
-  royal_beta_units_unlock, add_warbond, add_event_key
+  royal_beta_units_unlock, add_warbond, add_event_key, add_nybond
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -56,6 +56,7 @@ let commandsList = [
   { label = "meta.add_wp 100 000", func = @() add_wp(100000, "sceenlogResult") }
   { label = "meta.add_warbond 100", func = @() add_warbond(100, "sceenlogResult") }
   { label = "meta.add_event_key 10", func = @() add_event_key(10, "sceenlogResult") }
+  { label = "meta.add_nybond 100", func = @() add_nybond(100, "sceenlogResult") }
   { label = "meta.reset_profile", func = withClose(reset_profile) }
   { label = "meta.reset_profile_with_stats", func = withClose(resetProfileWithStats) }
   { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }

@@ -113,8 +113,11 @@ let function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish
   }
 }
 
+let mkActionBtnGlare = @(actionItem) mkBtnGlare($"action_cd_finish_{actionItem?.id}")
+
 return {
   mkBtnGlare
   mkActionGlare
   mkConsumableSpend
+  mkActionBtnGlare
 }

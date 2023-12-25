@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkBgImg, borderBg, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, mkSlotBgImg,
-  oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles
+  oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let openPremiumDescription = require("%rGui/shop/premiumDescription.nut")
 let { infoGreyButton } = require("%rGui/components/infoButton.nut")
@@ -69,7 +69,7 @@ let infoBtn = infoGreyButton(
 )
 
 let function mkGoodsPremium(goods, onClick, state, animParams) {
-  let { premiumDays, viewBaseValue = 0 } = goods
+  let { premiumDays, viewBaseValue = 0, isShowDebugOnly = false } = goods
   let premIconAndDaysTitleWrapper = {
     margin = [ sh(1), 0, 0, 0 ]
     size = flex()
@@ -81,6 +81,7 @@ let function mkGoodsPremium(goods, onClick, state, animParams) {
   return mkGoodsWrap(onClick,
     @(sf) [
       mkSlotBgImg()
+      isShowDebugOnly ? underConstructionBg : null
       mkBgParticles([goodsSmallSize[0], goodsBgH])
       borderBg
       sf & S_HOVER ? bgHiglight : null

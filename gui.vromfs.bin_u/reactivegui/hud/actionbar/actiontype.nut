@@ -1,5 +1,5 @@
 from "%appGlobals/unitConst.nut" import *
-let hudActionBarConst = require("hudActionBarConst")
+let hudActionBarConst = { EII_FIREWORK = 72 }.__update(require("hudActionBarConst"))
 let { EII_SPECIAL_UNIT } = hudActionBarConst
 
 let actions = [

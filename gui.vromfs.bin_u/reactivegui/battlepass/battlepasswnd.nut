@@ -3,15 +3,15 @@ let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { isBattlePassWndOpened, openBattlePassWnd, closeBattlePassWnd, isBpActive, mkBpStagesList,
-  openBPPurchaseWnd, selectedStage
+let { battlePassOpenCounter, openBattlePassWnd, closeBattlePassWnd, isBpActive, mkBpStagesList,
+  openBPPurchaseWnd, selectedStage, curStage, maxStage
 } = require("battlePassState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let battlePassSeason = require("battlePassSeason.nut")
-let { bpCurProgressbar, bpProgressText, bpLevelLabel } = require("battlePassPkg.nut")
+let { bpCurProgressbar, bpProgressText } = require("battlePassPkg.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -25,7 +25,7 @@ let bpRewardDesc = require("bpRewardDesc.nut")
 let { bpCardStyle, bpCardPadding, bpCardMargin } = require("bpCardsStyle.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+
 
 let bpIconSize = [hdpx(298), hdpx(181)]
 let scrollHandler = ScrollHandler()
@@ -120,15 +120,16 @@ let taskDesc = {
   text = loc("battlepass/tasksDesc")
 }.__update(fontTinyAccented)
 
-let leftMiddle = {
-  size = [SIZE_TO_CONTENT, flex()]
-  children = [
-    {
-      vplace = ALIGN_TOP
-      flow = FLOW_VERTICAL
-      gap = hdpx(15)
-      children =[
-        bpLevelLabel
+let bpLevelLabel = @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmall)
+
+let levelBlock = @() {
+  watch = [curStage, maxStage]
+  vplace = ALIGN_TOP
+  flow = FLOW_VERTICAL
+  gap = hdpx(15)
+  children = curStage.get() >= maxStage.get() ? bpLevelLabel(loc("battlepass/maxLevel"))
+    : [
+        bpLevelLabel($"{loc("mainmenu/rank")} {curStage.get()}")
         {
           size = [hdpx(300), SIZE_TO_CONTENT]
           halign = ALIGN_CENTER
@@ -139,7 +140,13 @@ let leftMiddle = {
           ]
         }
       ]
-    }
+}
+
+let leftMiddle = {
+  size = [SIZE_TO_CONTENT, flex()]
+  padding = [hdpx(10), 0, hdpx(20), 0]
+  children = [
+    levelBlock
     {
       vplace = ALIGN_BOTTOM
       flow = FLOW_VERTICAL
@@ -159,6 +166,7 @@ let leftMiddle = {
 let rightMiddle = @() {
   watch = isBpActive
   size = [defButtonMinWidth, flex()]
+  padding = [hdpx(10), 0, hdpx(20), 0]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   valign = ALIGN_BOTTOM
@@ -189,17 +197,14 @@ let rightMiddle = @() {
 let middlePart = @(stagesList) @(){
   watch = selectedStage
   size = flex()
-  padding = [hdpx(10), 0, hdpx(20), 0]
-  rendObj = ROBJ_9RECT
-  image = gradTranspDoubleSideX
-  texOffs = [0, gradDoubleTexOffset]
-  screenOffs = [0, hdpx(300)]
-  color = 0x90000000
   flow = FLOW_HORIZONTAL
   children = [
     leftMiddle
-    selectedStage.value in stagesList ? bpRewardDesc(stagesList[selectedStage.value])
-      : { size = flex() }
+    {
+      size = flex()
+      children = selectedStage.value not in stagesList ? null
+        : bpRewardDesc(stagesList[selectedStage.value])
+    }
     rightMiddle
   ]
 }
@@ -245,5 +250,5 @@ let battlePassWnd = @() {
 register_command(openBattlePassWnd, "ui.battle_pass_open")
 register_command(closeBattlePassWnd, "ui.battle_pass_close")
 
-registerScene("battlePassWnd", battlePassWnd, closeBattlePassWnd, isBattlePassWndOpened)
+registerScene("battlePassWnd", battlePassWnd, closeBattlePassWnd, battlePassOpenCounter)
 setSceneBg("battlePassWnd", "ui/images/bp_bg_01.avif")

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { curSceneBg } = require("%rGui/navState.nut")
+let { curSceneBg, curSceneBgFallback } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let scenesList = []
@@ -11,13 +11,15 @@ let behindScene = {
   size = flex()
   children = [
     @() {
-      watch = curSceneBg
+      watch = [curSceneBg, curSceneBgFallback]
       size = flex()
       children = {
         key = curSceneBg.value
         size = flex()
         rendObj = ROBJ_IMAGE
-        image = Picture(curSceneBg.value)
+        image = Picture(curSceneBg.get())
+        fallbackImage = Picture(curSceneBgFallback.get())
+        keepAspect = KEEP_ASPECT_FILL
         animations = wndSwitchAnim
       }
     }

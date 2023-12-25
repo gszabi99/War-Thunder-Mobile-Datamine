@@ -15,6 +15,7 @@ let { receiveBpRewards, isBpRewardsInProgress, curStage } = require("battlePassS
 let { textButtonBattle, buttonStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = buttonStyles
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
+let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 
 
 let unitPlateWidth = hdpx(480)
@@ -131,9 +132,11 @@ let bpRewardDesc = @(reward) function() {
     rewInfo.extend(getRewardsViewInfo(rew, count))
   }
   let viewInfo = rewInfo.sort(sortRewardsViewInfo)?[0]
-  return {
+  return doubleSideGradient.__merge({
     watch = serverConfigs
-    size = flex()
+    size = [hdpx(600) + 4 * doubleSideGradientPaddingX, flex()]
+    padding = [hdpx(10), doubleSideGradientPaddingX, hdpx(20), doubleSideGradientPaddingX]
+    hplace = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(5)
     halign = ALIGN_CENTER
@@ -149,7 +152,7 @@ let bpRewardDesc = @(reward) function() {
       }
       reward.canReceive ? receiveBtn(reward) : rewardDesc(reward)
     ]
-  }
+  })
 }
 
 return bpRewardDesc

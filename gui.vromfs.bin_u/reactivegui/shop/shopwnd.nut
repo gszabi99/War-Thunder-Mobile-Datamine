@@ -3,9 +3,10 @@ let { defer } = require("dagor.workcycle")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns, gamercardItemsBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { shopCategoriesCfg } = require("shopCommon.nut")
-let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent } = require("%rGui/shop/shopState.nut")
+let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { shopCategoriesCfg, SC_CONSUMABLES } = require("shopCommon.nut")
+let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent, openShopWnd
+} = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory } = require("schRewardsState.nut")
 let { mkShopTabs, tabW } = require("%rGui/shop/shopWndTabs.nut")
 let { mkShopPage } = require("%rGui/shop/shopWndPage.nut")
@@ -16,9 +17,10 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-
+let { itemsOrder } = require("%appGlobals/itemsState.nut")
 
 let gapFromGamercard = hdpx(40)
 let opacityGradWidth = saBorders[0]
@@ -59,6 +61,14 @@ let function onClose() {
   close()
 }
 
+let gamercardShopItemsBalanceBtns = @(){
+  watch = itemsOrder
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
+}
+
 let mkShopGamercard = {
   size = [ saSize[0], gamercardHeight ]
   flow = FLOW_HORIZONTAL
@@ -68,8 +78,8 @@ let mkShopGamercard = {
     mkLeftBlock(onClose)
     {size = flex()}
     premIconWithTimeOnChange
-    gamercardItemsBalanceBtns
-    mkCurrenciesBtns([WP, GOLD], { size = SIZE_TO_CONTENT, hplace = ALIGN_RIGHT})
+    gamercardShopItemsBalanceBtns
+    mkCurrenciesBtns([WP, GOLD], null, { size = SIZE_TO_CONTENT, hplace = ALIGN_RIGHT})
   ]
 }
 

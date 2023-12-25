@@ -13,8 +13,10 @@ let iconsCoef = {
   tank_tool_kit_expendable = 1.5
   tank_extinguisher = 1.6
   spare = 1.8
+  firework_kit = 1.4
   warbond = 1.4
   eventKey = 1.2
+  nybond = 1.4
 }
 let maxIconsCoef = iconsCoef.reduce(@(a, b) max(a, b))
 
@@ -28,12 +30,14 @@ let icons = {
   playerExp = "ui/gameuiskin#experience_icon.svg"
   warbond = "ui/gameuiskin#warbond_icon.avif"
   eventKey = "ui/gameuiskin#key_icon.avif"
+  nybond = "ui/gameuiskin#warbond_christmas_icon.avif"
   // Consumables
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
   tank_tool_kit_expendable = "ui/gameuiskin#shop_consumables_tank_repair_gamercard.avif"
   tank_extinguisher = "ui/gameuiskin#shop_consumables_tank_extinguisher_gamercard.avif"
   spare = "ui/gameuiskin#shop_consumables_tank_cards_gamercard.avif"
+  firework_kit = "ui/gameuiskin#icon_fireworks.avif"
   // Placeholder
   placeholder = "ui/gameuiskin#icon_primary_attention.svg"
 }

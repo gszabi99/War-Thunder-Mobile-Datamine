@@ -4,10 +4,10 @@ let { AirParamsMain } = require("wtSharedEnums")
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_SUPPORT_PLANE_CHANGE,
   AB_SUPPORT_PLANE_GROUP_ATTACK, AB_SUPPORT_PLANE_GROUP_RETURN, AB_DIVING_LOCK,
-  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_FIREWORK
+  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM
 } = require("actionBar/actionType.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM, HAPT_FIREWORK } = require("hudHaptic.nut")
+let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
 let aircraftWeaponsItems = require("%rGui/hud/aircraftWeaponsItems.nut")
 
 let function getActionBarShortcut(unitType, itemConfig) {
@@ -68,13 +68,6 @@ let actionBarItemsConfig = {
     actionType = AB_IRCM
     mkButtonFunction = "mkActionItem"
     haptPatternId = HAPT_IRCM
-  }
-  EII_FIREWORK = {
-    getShortcut = @(_, __) "ID_FIREWORK"
-    getImage = @(_) "!ui/gameuiskin#firework.svg"
-    actionType = AB_FIREWORK
-    mkButtonFunction = "mkActionItem"
-    haptPatternId = HAPT_FIREWORK
   }
   EII_SMOKE_GRENADE = {
     getShortcut = @(unitType, __) unitType == TANK ? "ID_SMOKE_SCREEN" : "ID_SHIP_SMOKE_GRENADE"

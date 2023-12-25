@@ -1784,6 +1784,45 @@
       }
     },
     {
+      "id": "streak_firework_new_year",
+      "type": "streak",
+      "amount_warpoints": 10000,
+      "isMultiStage": true,
+      "isAfterFlight": false,
+      "wpA": [
+        10000.0,
+        10000.0,
+        10000.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 10000
+      },
+      "mode": {
+        "type": "firework",
+        "num": 1005000,
+        "condition": {
+          "type": "online"
+        }
+      }
+    },
+    {
       "id": "chosen_unit_type_ship_without_boat",
       "type": "achievement",
       "hidden": true,

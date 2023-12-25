@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { TANK } = require("%appGlobals/unitConst.nut")
-let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN
+let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { EII_EXTINGUISHER, EII_TOOLKIT, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
-  EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_FIREWORK
+  EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, mkCircleZoom,
-  mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight, mkCircleTargetTrackingBtn
+  mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight, mkCircleTargetTrackingBtn,
+  mkCircleFireworkBtn
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { withActionButtonCtor, withActionBarButtonCtor, withAnyActionBarButtonCtor,
   mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut")
@@ -30,6 +31,7 @@ let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
 let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkMyPlace, myPlaceUi, mkTankMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
+let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
@@ -111,9 +113,14 @@ return {
     { defTransform = actionBarTransform(4) })
   abSpecialUnit = withActionBarButtonCtor(EII_SPECIAL_UNIT, TANK,
     { defTransform = actionBarTransform(5) })
-//
 
-
+  firework = withActionButtonCtor(AB_FIREWORK, mkCircleFireworkBtn,
+    {
+      defTransform = mkRBPos([hdpx(-240), hdpx(-490)])
+      editView = mkCircleBtnEditView("ui/gameuiskin#hud_ammo_fireworks.svg")
+      isVisibleInEditor = fwVisibleInEditor
+      isVisibleInBattle = fwVisibleInBattle
+    })
 
   bulletMain = {
     ctor = @() bulletMainButton

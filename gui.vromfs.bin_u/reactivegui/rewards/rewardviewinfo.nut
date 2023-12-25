@@ -60,7 +60,7 @@ let function getRewardsViewInfo(data, multiply = 1) {
   let res = []
   if (!data)
     return res
-  let { gold = 0, wp = 0, warbond = 0, eventKey = 0, premiumDays = 0, items = {}, lootboxes = {},
+  let { gold = 0, wp = 0, warbond = 0, eventKey = 0, nybond = 0, premiumDays = 0, items = {}, lootboxes = {},
     decorators = [], unitUpgrades = [], units = [] } = data
   if (unitUpgrades.len() != 0)
     foreach (id in unitUpgrades)
@@ -77,6 +77,8 @@ let function getRewardsViewInfo(data, multiply = 1) {
     res.append(mkViewInfo("warbond", "currency", warbond * multiply))
   if (eventKey > 0)
     res.append(mkViewInfo("eventKey", "currency", eventKey * multiply))
+  if (nybond > 0)
+    res.append(mkViewInfo("nybond", "currency", nybond * multiply))
   if (premiumDays > 0)
     res.append(mkViewInfo("", "premium", premiumDays * multiply))
   if (decorators.len() != 0)
@@ -123,22 +125,26 @@ let customJoin = {
   unitUpgrade = { unit = @(_, __) true }
 }
 
-let function joinSingleViewInfo(resV, joiningV) {
+let function joinSingleViewInfo(resV, joiningV, onJoin) {
   if (resV.id != joiningV.id)
     return false
   let customRes = customJoin?[resV.rType][joiningV.rType](resV, joiningV)
-  if (customRes != null)
+  if (customRes != null) {
+    if (customRes)
+      onJoin?(resV, joiningV)
     return customRes
+  }
 
   if (resV.rType != joiningV.rType)
     return false
   resV.count += joiningV.count
+  onJoin?(resV, joiningV)
   return true
 }
 
-let function joinViewInfo(resViewInfo, joiningViewInfo) {
+let function joinViewInfo(resViewInfo, joiningViewInfo, onJoin = null) {
   foreach(new in joiningViewInfo) {
-    let found = resViewInfo.findvalue(@(v) joinSingleViewInfo(v, new))
+    let found = resViewInfo.findvalue(@(v) joinSingleViewInfo(v, new, onJoin))
     if (found == null)
       resViewInfo.append(clone new)
   }

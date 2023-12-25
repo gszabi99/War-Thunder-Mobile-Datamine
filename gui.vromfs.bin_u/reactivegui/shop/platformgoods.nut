@@ -14,6 +14,17 @@ let { isForbiddenPlatformPurchaseFromRussia, openMsgBoxInAppPurchasesFromRussia 
 if (is_android)
   log("isDownloadedFromGooglePlay = ", isDownloadedFromGooglePlay())
 
+let wasGoodsLogged = mkWatched(persist, "wasGoodsLogged", false)
+platformGoods.subscribe(function(list) {
+  if (wasGoodsLogged.get())
+    return
+  let goods = list.findvalue(@(g) (g?.priceExt.price ?? 0) > 0)
+  if (goods == null)
+    return
+  log("[GOODS] platform goods example: ", goods)
+  wasGoodsLogged.set(true)
+})
+
 subscribeFMsgBtns({
   buyPlatformGoods = function(context) {
     let { goodsOrId } = context

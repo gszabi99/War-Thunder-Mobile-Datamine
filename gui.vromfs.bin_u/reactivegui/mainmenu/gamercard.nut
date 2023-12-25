@@ -3,8 +3,8 @@ from "%rGui/style/gamercardStyle.nut" import *
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { WP, GOLD, WARBOND, EVENT_KEY } = require("%appGlobals/currenciesState.nut")
-let { SC_GOLD, SC_WP, SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
+let { WP, GOLD, orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let { SC_GOLD, SC_WP } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate
@@ -20,7 +20,7 @@ let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { openBuyWarbondsWnd, openBuyEventKeysWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
+let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
@@ -39,12 +39,13 @@ let levelStateFlags = Watched(0)
 let nextLevelStateFlags = Watched(0)
 let profileStateFlags = Watched(0)
 
-let openBuyCurrencyWnd = {
+
+let openCfg = {
   [WP] = @() openShopWnd(SC_WP),
   [GOLD] = @() openShopWnd(SC_GOLD),
-  [WARBOND] = openBuyWarbondsWnd,
-  [EVENT_KEY] = openBuyEventKeysWnd
 }
+
+let openBuyCurrencyWnd = @(curId, eventId = null) openCfg?[curId] ?? @() openBuyEventCurrenciesWnd(curId, eventId)
 
 let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@(category) category == true))
 
@@ -85,6 +86,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
     isStarProgress
   } = playerLevelInfo.value
   let isMaxLevel = nextLevelExp == 0
+  let isAtLevelUp = !isMaxLevel && exp == nextLevelExp
   let progresOffset = levelHolderSize * rotateCompensate
   let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan : openExpWnd
   return {
@@ -100,7 +102,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
           ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
           : null
         children = {
-          size = isMaxLevel ? flex() : [pw(clamp(100.0 * exp / nextLevelExp, 0, 100)), flex()]
+          size = isMaxLevel || isAtLevelUp ? flex() : [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), flex()]
           rendObj = ROBJ_SOLID
           color = playerExpColor
         }
@@ -344,7 +346,7 @@ let function mkImageBtn(image, onClick, children = null, ovr = {}) {
   }.__update(ovr)
 }
 
-let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", openBuyCurrencyWnd[GOLD],
+let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", openBuyCurrencyWnd(GOLD),
   @() {
     watch = needShopUnseenMark
     pos = [hdpx(5), -hdpx(5)]
@@ -367,8 +369,8 @@ let mkGamercard = @(menuBtn, backCb = null) {
       children = [
         shopBtn
         premIconWithTimeOnChange
-        mkCurrencyBalance(WP, openBuyCurrencyWnd[WP])
-        mkCurrencyBalance(GOLD, openBuyCurrencyWnd[GOLD])
+        mkCurrencyBalance(WP, openBuyCurrencyWnd(WP))
+        mkCurrencyBalance(GOLD, openBuyCurrencyWnd(GOLD))
         menuBtn
       ]
     }
@@ -417,21 +419,16 @@ let mkGamercardUnitCampaign = @(backCb, keyHintText){
   ]
 }
 
-let gamercardItemsBalanceBtns = @(){
-  watch = itemsOrder
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
-}
-
-let mkCurrenciesBtns = @(currencies, ovr = {}) {
+let mkCurrenciesBtns = @(currencies, eventId = null, ovr = {}) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
   valign = ALIGN_CENTER
   gap = gamercardGap
-  children = currencies.map(@(c) mkCurrencyBalance(c, openBuyCurrencyWnd[c]))
+  children = !currencies ? null
+    : [].extend(currencies)
+        .sort(@(a, b) (orderByCurrency?[b] ?? 0) <=> (orderByCurrency?[a] ?? 0))
+        .map(@(c) mkCurrencyBalance(c, openBuyCurrencyWnd(c, eventId)))
 }.__update(ovr)
 
 let gamercardBalanceBtns = mkCurrenciesBtns([WP, GOLD])
@@ -443,7 +440,6 @@ return {
   gamercardWithoutLevelBlock
   mkGamercard
   mkGamercardUnitCampaign
-  gamercardItemsBalanceBtns
   gamercardHeight
   gamercardBalanceNotButtons
   gamercardBalanceBtns

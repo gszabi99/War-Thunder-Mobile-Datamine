@@ -21,10 +21,11 @@ let dbgRewardsTbl = {
     tank_tool_kit_expendable = 50
     tank_extinguisher = 50
     spare = 50
+    firework_kit = 3
   }
   lootboxes = {
     every_day_award_big_pack_1 = 3
-    every_day_award_small_pack = 3
+    every_day_award_first = 3
   }
   decorators = [
     "cardicon_crosspromo"
@@ -35,11 +36,11 @@ let dbgRewardsTbl = {
   ]
   units = [
     "ussr_sub_pr641"
-    "ussr_t_34_85_zis_53"
+    "ussr_t_34_85_d_5t"
   ]
   unitUpgrades = [
     "uk_destroyer_tribal"
-    "ussr_t_34_85_zis_53"
+    "ussr_t_34_85_d_5t"
   ]
 }
 

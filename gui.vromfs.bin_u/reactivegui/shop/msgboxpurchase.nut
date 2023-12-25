@@ -1,18 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { balance, WARBOND, EVENT_KEY, WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { balance, WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { openMsgBox, msgBoxText, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { openShopWndByCurrencyId } = require("%rGui/shop/shopState.nut")
-let { openBuyWarbondsWnd, openBuyEventKeysWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
+let { curEvent } = require("%rGui/event/eventState.nut")
+let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
 
 let NO_BALANCE_UID = "no_balance_msg"
 
 let openBuyWnd = {
   [WP] = @(bqPurchaseInfo) openShopWndByCurrencyId(WP, bqPurchaseInfo),
   [GOLD] = @(bqPurchaseInfo) openShopWndByCurrencyId(GOLD, bqPurchaseInfo),
-  [WARBOND] = @(_) openBuyWarbondsWnd(),
-  [EVENT_KEY] = @(_) openBuyEventKeysWnd()
 }
 
 let mkText = @(text) {
@@ -22,7 +21,6 @@ let mkText = @(text) {
 }.__update(fontSmall)
 
 let function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
-  let canReplenish = currencyId in openBuyWnd
   let notEnough = Computed(@() price - (balance.value?[currencyId] ?? 0))
   notEnough.subscribe(@(v) v <= 0 ? closeMsgBox(NO_BALANCE_UID) : null)
   let replaceTable = {
@@ -39,26 +37,27 @@ let function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      children = !canReplenish ? mkText(loc("insufficientFunds"))
-        : loc("shop/askRefillOnNotEnoughMoney")
-            .split("\n")
-            .map(@(text) {
-              flow = FLOW_HORIZONTAL
-              minHeight = hdpx(30)
-              valign = ALIGN_CENTER
-              children = mkTextRow(text.replace("\r", ""), mkText, replaceTable)
-            })
+      children = loc("shop/askRefillOnNotEnoughMoney")
+        .split("\n")
+        .map(@(text) {
+          flow = FLOW_HORIZONTAL
+          minHeight = hdpx(30)
+          valign = ALIGN_CENTER
+          children = mkTextRow(text.replace("\r", ""), mkText, replaceTable)
+        })
     }
-    buttons = !canReplenish ? [ { id = "ok", styleId = "PRIMARY", isDefault = true } ]
-      : [
-          { id = "cancel", isCancel = true }
-          { id = "replenish", styleId = "PRIMARY", isDefault = true,
-            function cb() {
-              openBuyWnd[currencyId](bqPurchaseInfo)
-              onGoToShop?()
-            }
-          }
-        ]
+    buttons = [
+      { id = "cancel", isCancel = true }
+      { id = "replenish", styleId = "PRIMARY", isDefault = true,
+        function cb() {
+          if (currencyId in openBuyWnd)
+            openBuyWnd[currencyId](bqPurchaseInfo)
+          else
+            openBuyEventCurrenciesWnd(currencyId, curEvent.get())
+          onGoToShop?()
+        }
+      }
+    ]
   })
 }
 

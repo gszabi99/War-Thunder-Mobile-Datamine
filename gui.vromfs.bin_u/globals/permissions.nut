@@ -21,6 +21,7 @@ let defaults = {
   can_link_to_gaijin_account = DBGLEVEL > 0
   has_additional_graphics_content = DBGLEVEL > 0
   has_leaderboard = DBGLEVEL > 0
+  can_view_update_suggestion = false
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

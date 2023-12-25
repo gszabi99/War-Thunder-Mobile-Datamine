@@ -3,7 +3,7 @@ from "%rGui/shop/shopCommon.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkColoredGradientY, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, gradTranspDoubleSideX, simpleVerGradInv } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
@@ -480,6 +480,28 @@ let function mkOfferTexts(title, endTime) {
   }
 }
 
+let ucTileSize =  hdpxi(92).tointeger()
+let underConstructionTile = {
+  size = [ucTileSize, ucTileSize]
+  rendObj = ROBJ_SOLID
+  color = 0xFFFFCC00
+  children = {
+    size = flex()
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#under_construction.svg:{ucTileSize}:{ucTileSize}")
+    color = 0xFF000000
+  }
+}
+let underConstructionBg = {
+  size = [flex(), ucTileSize]
+  rendObj = ROBJ_MASK
+  image = simpleVerGradInv
+  vplace = ALIGN_BOTTOM
+  flow = FLOW_HORIZONTAL
+  clipChildren = true
+  children = array(7, underConstructionTile)
+}
+
 return {
   goodsW
   goodsSmallSize
@@ -505,6 +527,7 @@ return {
   oldAmountStrikeThrough
   mkOfferTexts
   mkGoodsTimeTimeProgress
+  underConstructionBg
 
   goodsGlareAnimDuration
   mkBgParticles

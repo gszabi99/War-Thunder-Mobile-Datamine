@@ -1,23 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
-let { isEventWndOpen, closeEventWnd, eventEndsAt,
-  unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen, eventSeasonName, eventSeason,
-  eventWndShowAnimation, eventWndOpenCount, bestCampLevel } = require("eventState.nut")
+let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
+let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
+  unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
+  bestCampLevel, curEventLootboxes, curEventLoc,
+  curEvent, MAIN_EVENT_ID, curEventCurrencies, curEventSeason,
+  eventBgFallback, curEventBg, curEventName
+} = require("eventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, mkEventBg, lootboxHeight,
- smallChestIcon, lootboxInfoSize, leaderbordBtn, questsBtn } = require("eventPkg.nut")
-let { eventLootboxes } = require("eventLootboxes.nut")
+let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, lootboxHeight,
+ smallChestIcon, leaderbordBtn, questsBtn } = require("eventPkg.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { WP, GOLD, WARBOND, EVENT_KEY } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { buy_lootbox } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCH_SRC_EVENT, PURCH_TYPE_LOOTBOX, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { isEmbeddedBuyCurrencyWndOpen } = require("buyEventCurrenciesState.nut")
-let { buyEventCurrenciesHeader, mkEventCurrenciesGoods, buyEventCurrenciesGamercard
-} = require("buyEventCurrenciesComps.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -37,13 +36,6 @@ let { getLootboxSizeMul } = require("%rGui/unlocks/rewardsView/lootboxPresentati
 
 let MAX_LOOTBOXES_AMOUNT = 3
 let headerGap = hdpx(30)
-
-let aTimeOpacity = 0.8
-let opacityAnim = [
-  { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = aTimeOpacity, easing = OutQuad, trigger = "eventContentReveal" }
-]
-
-isEmbeddedBuyCurrencyWndOpen.subscribe(@(_) anim_start("eventContentReveal"))
 
 let function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
   let { rewardsCfg = null } = sConfigs
@@ -95,11 +87,11 @@ let mkProgress = @(stepsToFixed) @() {
       {
         rendObj = ROBJ_TEXT
         text = loc("events/jackpot")
-      }.__update(fontTiny)
+      }.__update(fontTinyShaded)
       {
         rendObj = ROBJ_TEXT
         text = stepsToFixed.value[1] - stepsToFixed.value[0]
-      }.__update(fontTiny)
+      }.__update(fontTinyShaded)
     ])
     progressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = [hdpx(20), 0, hdpx(10), 0] })
   ]
@@ -143,7 +135,7 @@ let function mkLootboxBlock(lootbox, blockSize) {
   return @() {
     watch = stateFlags
     onElemState = @(sf) stateFlags(sf)
-    size = [blockSize, lootboxInfoSize[1] + lootboxHeight + progressHeight]
+    size = [blockSize, SIZE_TO_CONTENT]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     behavior = Behaviors.Button
@@ -157,13 +149,13 @@ let function mkLootboxBlock(lootbox, blockSize) {
       lootboxInfo(lootbox, stateFlags.value)
 
       @() {
-        watch = [unseenLootboxes, unseenLootboxesShowOnce]
+        watch = [unseenLootboxes, unseenLootboxesShowOnce, curEventName]
         size = [0, 0]
         transform = { translate = [-0.8 * lootboxHeight * sizeMul, max(0, lootboxHeight * (1.0 - sizeMul) / 2)] }
         hplace = ALIGN_CENTER
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        children = name in unseenLootboxes.value || unseenLootboxesShowOnce.value?[name]
+        children = name in unseenLootboxes.value?[curEventName.value] || unseenLootboxesShowOnce.value?[name]
             ? priorityUnseenMark
           : null
       }
@@ -183,9 +175,17 @@ let function onClose() {
   if (isEmbeddedLootboxPreviewOpen.value)
     closeLootboxPreview()
   else {
-    eventWndShowAnimation(true)
+    unseenLootboxesShowOnce.set(unseenLootboxesShowOnce.get().filter(@(event) event != curEventName.get()))
     closeEventWnd()
-    unseenLootboxesShowOnce({})
+  }
+}
+
+let function mkCurrencies() {
+  let baseCurrencies = [WP, GOLD].filter(@(v) curEventCurrencies.value.findindex(@(c) c == v) == null)
+  let res = [].extend(curEventCurrencies.value, baseCurrencies)
+  return {
+    watch = [curEventCurrencies, curEvent]
+    children = mkCurrenciesBtns(res, curEvent.get())
   }
 }
 
@@ -208,89 +208,73 @@ let eventGamercard = {
           valign = ALIGN_BOTTOM
           children = [
             @() {
-              watch = eventSeasonName
+              watch = curEventLoc
               rendObj = ROBJ_TEXT
-              text = eventSeasonName.value
+              text = curEventLoc.value
             }.__update(fontBig)
 
-            infoRhombButton(function() {
-              eventWndShowAnimation(true)
-              openNewsWndTagged(eventSeason.value)
-            })
+            infoRhombButton(@() openNewsWndTagged($"event_{curEventName.value}_{curEventSeason.value}"))
           ]
         }
 
         @() {
-          watch = [serverTime, eventEndsAt]
+          watch = [serverTime, curEventEndsAt]
           halign = ALIGN_CENTER
           valign = ALIGN_BOTTOM
-          children = !eventEndsAt.value || (eventEndsAt.value - serverTime.value < 0) ? null
-            : mkTimeUntil(secondsToHoursLoc(eventEndsAt.value - serverTime.value),
+          children = !curEventEndsAt.value || (curEventEndsAt.value - serverTime.value < 0) ? null
+            : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.value - serverTime.value),
                 "quests/untilTheEnd",
                 { margin = [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
         }
       ]
     }
     { size = flex() }
-    mkCurrenciesBtns([WARBOND, EVENT_KEY, WP, GOLD])
+    mkCurrencies
   ]
 }
 
 let function eventWndContent() {
-  let blockSize = Computed(@() min(saSize[0] / clamp(eventLootboxes.value.len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
+  let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.value.len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
   let stepsToFixed = Computed(@() getStepsToNextFixed(previewLootbox.value, serverConfigs.value, servProfile.value))
 
   return @() {
-    watch = [isEmbeddedBuyCurrencyWndOpen, isEmbeddedLootboxPreviewOpen]
+    watch = isEmbeddedLootboxPreviewOpen
     size = flex()
     padding = saBordersRv
     flow = FLOW_VERTICAL
-    children = isEmbeddedBuyCurrencyWndOpen.value
+    children = [eventGamercard]
+      .extend(isEmbeddedLootboxPreviewOpen.value
         ? [
-            buyEventCurrenciesGamercard
             {
               size = flex()
               flow = FLOW_VERTICAL
-              valign = ALIGN_CENTER
+              halign = ALIGN_CENTER
               children = [
-                buyEventCurrenciesHeader
-                mkEventCurrenciesGoods
+                {
+                  key = {}
+                  size = flex()
+                  children = [
+                    mkProgressFull(stepsToFixed)
+                    lootboxPreviewContent
+                  ]
+                  animations = wndSwitchAnim
+                }
+                @() {
+                  watch = previewLootbox
+                  children = mkPurchaseBtns(previewLootbox.value, onPurchase)
+                }
               ]
             }
           ]
-      : [eventGamercard].extend(isEmbeddedLootboxPreviewOpen.value
-          ?
-            [
-              {
-                size = flex()
-                flow = FLOW_VERTICAL
-                halign = ALIGN_CENTER
-                children = [
-                  {
-                    key = {}
-                    size = flex()
-                    children = [
-                      mkProgressFull(stepsToFixed)
-                      lootboxPreviewContent
-                    ]
-                    animations = wndSwitchAnim
-                  }
-                  @() {
-                    watch = previewLootbox
-                    children = mkPurchaseBtns(previewLootbox.value, onPurchase)
-                  }
-                ]
-              }
-            ]
         : [
             @() {
-              watch = [eventLootboxes, blockSize]
+              watch = [curEventLootboxes, blockSize]
               size = flex()
               flow = FLOW_HORIZONTAL
               hplace = ALIGN_CENTER
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
-              children = eventLootboxes.value.map(@(v) mkLootboxBlock(v, blockSize.value))
+              children = curEventLootboxes.value.map(@(v) mkLootboxBlock(v, blockSize.value))
               animations = wndSwitchAnim
             }
 
@@ -304,9 +288,9 @@ let function eventWndContent() {
                 questsBtn
 
                 @() {
-                  watch = has_leaderboard
+                  watch = [has_leaderboard, curEvent]
                   size = [SIZE_TO_CONTENT, defButtonHeight]
-                  children = !has_leaderboard.value ? null : leaderbordBtn
+                  children = !has_leaderboard.value || curEvent.value != MAIN_EVENT_ID ? null : leaderbordBtn
                 }
 
                 { size = flex() }
@@ -314,26 +298,24 @@ let function eventWndContent() {
                 {
                   rendObj = ROBJ_TEXT
                   text = loc("events/tapToSelect")
-                }.__update(fontMedium)
+                }.__update(fontMediumShaded)
               ]
               animations = wndSwitchAnim
             }
           ])
-    animations = opacityAnim
   }
 }
 
+let wndKey = {}
 let eventWnd = @() {
-  watch = eventWndShowAnimation
-  key = {}
+  key = wndKey
   size = flex()
-  children = [
-    mkEventBg(isEventWndOpen)
-    eventWndContent()
-  ]
-  animations = eventWndShowAnimation.value ? wndSwitchAnim : null
-  onAttach = @() eventWndShowAnimation(false)
+  children = eventWndContent()
+  animations = wndSwitchAnim
 }
 
-registerScene("eventWnd", eventWnd, closeEventWnd, isEventWndOpen)
-eventWndOpenCount.subscribe(@(_) moveSceneToTop("eventWnd"))
+let sceneId = "eventWnd"
+registerScene(sceneId, eventWnd, closeEventWnd, eventWndOpenCounter)
+setSceneBgFallback(sceneId, eventBgFallback)
+setSceneBg(sceneId, curEventBg.get())
+curEventBg.subscribe(@(v) setSceneBg(sceneId, v))

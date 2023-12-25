@@ -3,11 +3,13 @@ let { send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkGamercard, gamercardItemsBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
 let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { translucentButtonsVGap, translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
+let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
+let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
@@ -39,12 +41,18 @@ let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = requir
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { btnOpenQuests } = require("%rGui/quests/btnOpenQuests.nut")
+let { specialEventGamercardItems, openEventWnd } = require("%rGui/event/eventState.nut")
+let btnsOpenSpecialEvents = require("%rGui/event/btnsOpenSpecialEvents.nut")
+let eventGift = require("%rGui/event/eventGift.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let bpBanner = require("%rGui/battlePass/bpBanner.nut")
+let { openShopWnd } = require("%rGui/shop/shopState.nut")
+let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let btnOpenUnitWnd = require("%rGui/unit/btnOpenUnitWnd.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
+let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 
@@ -80,9 +88,9 @@ let campaignsBtn = @() {
     : framedImageBtn(getCampaignPresentation(curCampaign.value).icon, chooseCampaignWnd,
         {
           padding = [hdpx(0), hdpx(20), hdpx(0), hdpx(20) ]
-          size = [SIZE_TO_CONTENT, translucentButtonsHeight]
+          size = SIZE_TO_CONTENT
           sound = { click = "click" }
-          imageSize = [hdpx(80) , hdpx(80)]
+          imageSize = [hdpx(70) , hdpx(70)]
           flow = FLOW_HORIZONTAL
           gap = hdpx(20)
         },
@@ -91,11 +99,11 @@ let campaignsBtn = @() {
           rendObj = ROBJ_TEXT
           valign = ALIGN_CENTER
           color = 0xFFFFFFFF
-          text = utf8ToUpper(loc("changeCampaignShort"))
+          text = loc("changeCampaignShort")
           fontFx = FFT_GLOW
           fontFxFactor = 64
           fontFxColor = Color(0, 0, 0)
-        }.__update(fontSmallAccented)
+        }.__update(fontTinyAccented)
       )
 }
 
@@ -126,6 +134,7 @@ let gamercardPlace = {
           hplace = ALIGN_RIGHT
           children = [
             offerPromo
+            eventGift
           ]
         }
       ]
@@ -151,7 +160,7 @@ let leftBottomButtons = btnVerRow([
   bpBanner
   btnHorRow([
     btnOpenQuests
-    //todo: other events
+    btnsOpenSpecialEvents
   ])
   btnHorRow([
     btnVerRow([
@@ -165,6 +174,14 @@ let leftBottomButtons = btnVerRow([
   ])
 ])
 
+let gamercardBattleItemsBalanceBtns = @(){
+  watch = [itemsOrder, specialEventGamercardItems]
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName)))
+    .extend(itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES))))
+}
 
 let queueCurRandomBattleMode = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
 
@@ -255,7 +272,7 @@ let toBattleButtonPlace = @() {
       halign = ALIGN_RIGHT
       children = [
         unitName
-        gamercardItemsBalanceBtns
+        gamercardBattleItemsBalanceBtns
         mkMRankRange
       ]
     }

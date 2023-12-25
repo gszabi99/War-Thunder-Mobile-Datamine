@@ -9,6 +9,7 @@ let scenes = {} //id = { scene, onClearScenes, alwaysOnTop }
 let scenesVersion = Watched(0)
 let scenesOrderSaved = hardPersistWatched("navState.scenesOrder", [])
 let sceneBgList = Watched({})
+let sceneBgListFallback = Watched({})
 let scenesOrder = Computed(function(prev) {
   let ver = scenesVersion //warning disable: -declared-never-used
   let top = []
@@ -28,6 +29,9 @@ let scenesOrder = Computed(function(prev) {
 let curSceneBgRaw = keepref(Computed(@() sceneBgList.value?[scenesOrder.value?[scenesOrder.value.len() - 1]]))
 let curSceneBg = Watched(curSceneBgRaw.get())
 curSceneBgRaw.subscribe(@(_) deferOnce(@() curSceneBg.set(curSceneBgRaw.get())))
+let curSceneBgFallbackRaw = keepref(Computed(@() sceneBgListFallback.value?[scenesOrder.value?[scenesOrder.value.len() - 1]]))
+let curSceneBgFallback = Watched(curSceneBgFallbackRaw.get())
+curSceneBgFallbackRaw.subscribe(@(_) deferOnce(@() curSceneBgFallback.set(curSceneBgFallbackRaw.get())))
 
 let getTopScene = @(order) order.len() == 0 ? null : scenes[order.top()]?.scene
 
@@ -51,7 +55,18 @@ let function removeScene(id) {
     scenesOrderSaved.mutate(@(v) v.remove(idx))
 }
 
-let function registerScene(id, scene, onClearScenes = null, isOpenedWatch = null, alwaysOnTop = false, canClear = null) {
+let function moveSceneToTop(id) {
+  let idx = scenesOrderSaved.value.indexof(id)
+  if (idx == null)
+    return false
+  scenesOrderSaved.mutate(function(v) {
+    v.remove(idx)
+    v.append(id)
+  })
+  return true
+}
+
+let function registerScene(id, scene, onClearScenes = null, openedCounterWatch = null, alwaysOnTop = false, canClear = null) {
   if (id in scenes) {
     logerr($"Already registered navState scene {id}")
     return
@@ -59,24 +74,22 @@ let function registerScene(id, scene, onClearScenes = null, isOpenedWatch = null
   scenes[id] <- { id, scene, onClearScenes, alwaysOnTop, canClear }
   scenesVersion(scenesVersion.value + 1)
 
-  if (isOpenedWatch == null)
+  if (openedCounterWatch == null)
     return
 
-  let show = @(v) v ? addScene(id) : removeScene(id)
+  let isOpenedWatch = Computed(@() type(openedCounterWatch.get()) == "bool" ? openedCounterWatch.get()
+    : openedCounterWatch.get() > 0)
   let isOpened = scenesOrderSaved.value.indexof(id) != null
-  if (isOpenedWatch.value != isOpened)
-    show(isOpenedWatch.value)
-  isOpenedWatch.subscribe(show)
-}
 
-let function moveSceneToTop(id) {
-  let idx = scenesOrderSaved.value.indexof(id)
-  if (idx == null)
-    return
-  scenesOrderSaved.mutate(function(v) {
-    v.remove(idx)
-    v.append(id)
-  })
+  let function show(_) {
+    if (!isOpenedWatch.get())
+      removeScene(id)
+    else if (!moveSceneToTop(id))
+      addScene(id)
+  }
+  openedCounterWatch.subscribe(show)
+  if (isOpenedWatch.value != isOpened)
+    show(null)
 }
 
 let function clearScenes() {
@@ -101,12 +114,14 @@ let function tryResetToMainScene() {
 }
 
 let setSceneBg = @(id, bg) sceneBgList.mutate(@(v) v.rawset(id, bg))
+let setSceneBgFallback = @(id, bg) sceneBgListFallback.mutate(@(v) v.rawset(id, bg))
 
 return {
   scenesOrder
   registerScene
   getTopScene
   curSceneBg
+  curSceneBgFallback
 
   addScene
   removeScene
@@ -114,4 +129,5 @@ return {
   tryResetToMainScene
   canResetToMainScene
   setSceneBg
+  setSceneBgFallback
 }

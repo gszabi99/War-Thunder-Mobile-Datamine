@@ -14917,6 +14917,21 @@
       }
     }
   },
+  "firework": {
+    "cooldown": 5.0,
+    "tankFxName": "misc_firework_tank",
+    "tankFxOffset": [
+      13.0,
+      10.0,
+      0.0
+    ],
+    "shipFxName": "misc_firework_ship",
+    "shipFxOffset": [
+      150.0,
+      60.0,
+      0.0
+    ]
+  },
   "depthAO": {
     "tanksDistanceAround": 256.0,
     "shipsDistanceAround": 400.0

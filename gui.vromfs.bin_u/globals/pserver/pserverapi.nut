@@ -449,6 +449,11 @@ return {
     params = { count }
   }, cb)
 
+  add_nybond = @(count, cb = null) request({
+    method = "add_nybond"
+    params = { count }
+  }, cb)
+
   apply_client_mission_reward = @(campaign, missionId, cb = null) request({
     method = "apply_client_mission_reward"
     params = { campaign, missionId }

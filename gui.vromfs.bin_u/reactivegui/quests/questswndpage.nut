@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { questsBySection, seenQuests, saveSeenQuestsForSection, sectionsCfg, questsCfg,
-  inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection
+  inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection,
+  getQuestCurrenciesInTab, curTabParams
 } = require("questsState.nut")
 let { textButtonSecondary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { receiveUnlockRewards, unlockRewardsInProgress, unlockTables } = require("%rGui/unlocks/unlocks.nut")
+let { receiveUnlockRewards, unlockRewardsInProgress, unlockTables, unlockProgress
+} = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
@@ -26,7 +28,7 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { defer } = require("dagor.workcycle")
 let { sendBqQuestsTask } = require("bqQuests.nut")
-let { WARBOND } = require("%appGlobals/currenciesState.nut")
+let { WARBOND, NYBOND } = require("%appGlobals/currenciesState.nut")
 
 
 let bgColor = 0x80000000
@@ -58,9 +60,9 @@ let pannableCtors = [mkVerticalPannableAreaNoBlocks, mkVerticalPannableAreaOneBl
 
 let newMarkSize = calc_comp_size(newMark)
 
-let function receiveReward(item, warbondDelta) {
+let function receiveReward(item, currencyReward) {
   receiveUnlockRewards(item.name, 1, { stage = 1 })
-  sendBqQuestsTask(item, warbondDelta)
+  sendBqQuestsTask(item, currencyReward?.count ?? 0, currencyReward?.id)
 }
 
 let function mkQuestText(item) {
@@ -108,7 +110,7 @@ let function mkAchievementText(item) {
   }
 }
 
-let function mkBtn(item, warbondDelta) {
+let function mkBtn(item, currencyReward) {
   let { name, progressCorrectionStep = 0 } = item
   let isRewardInProgress = Computed(@() name in unlockRewardsInProgress.value)
 
@@ -121,7 +123,7 @@ let function mkBtn(item, warbondDelta) {
       : item?.hasReward
         ? textButtonSecondary(
             utf8ToUpper(loc("btn/receive")),
-            @() receiveReward(item, warbondDelta),
+            @() receiveReward(item, currencyReward),
             btnStyleSound)
       : item?.isFinished
         ? {
@@ -148,6 +150,8 @@ let function mkItem(item, textCtor) {
   let rewardsPreview = Computed(@() getUnlockRewardsViewInfo(item?.stages[0], serverConfigs.value)
     .sort(sortRewardsViewInfo))
 
+  let eventCurrencyReward = Computed(@() rewardsPreview.value.findvalue(@(r) r.id == WARBOND || r.id == NYBOND))
+
   let headerPadding = Computed(@() item.hasReward ? unseenMarkMargin * 2
   : isUnseen.value ? newMarkSize[0]
   : 0)
@@ -156,6 +160,7 @@ let function mkItem(item, textCtor) {
     rendObj = ROBJ_SOLID
     color = bgColor
     size = [flex(), SIZE_TO_CONTENT]
+    xmbNode = {}
     children = [
       @() {
         watch = isUnseen
@@ -197,8 +202,8 @@ let function mkItem(item, textCtor) {
           }
 
           @() {
-            watch = rewardsPreview
-            children = mkBtn(item, rewardsPreview.value.findvalue(@(r) r.id == WARBOND)?.count ?? 0)
+            watch = eventCurrencyReward
+            children = mkBtn(item, eventCurrencyReward.get())
           }
         ]
       }
@@ -320,6 +325,9 @@ let function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
     return n
   })
 
+  let tabCurrencies = Computed(@() getQuestCurrenciesInTab(tabId, questsCfg.value, questsBySection.value,
+    progressUnlockBySection.value, progressUnlockByTab.value, serverConfigs.value))
+
   let scrollHandler = ScrollHandler()
   curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
 
@@ -337,11 +345,18 @@ let function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
         ]
       }
 
-  return {
+  return @() {
+    watch = tabCurrencies
     key = sections
     size = flex()
-    onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
-    onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
+    function onAttach() {
+      curTabParams.set({ tabId, currencies = tabCurrencies.get() })
+      addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
+    }
+    function onDetach() {
+      curTabParams.set({})
+      removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
+    }
     children = [
       @() {
         watch = [sections, questsBySection, isProgressBySection, isCurSectionActive]
@@ -366,17 +381,18 @@ let function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
                   : [
                       pannableCtors[blocksOnTop.value](
                         @() {
-                          watch = [curSectionId, seenQuests, questsBySection]
+                          watch = [curSectionId, seenQuests, questsBySection, unlockProgress]
                           size = [flex(), SIZE_TO_CONTENT]
                           flow = FLOW_VERTICAL
                           gap = hdpx(20)
                           children = questsBySection.value?[curSectionId.value ?? sections.value?[0]]
                             .values()
+                            .filter(@(item) !item?.meta.chain_quest || unlockProgress.get()?[item.requirement].isCompleted)
                             .sort(itemsSort)
                             .map(@(item) itemCtor(item.__merge({ tabId, sectionId = curSectionId.get() })))
                           onDetach = @() saveSeenQuestsForSection(curSectionId.value)
                         },
-                        {},
+                        { clipChildren = true },
                         { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                       mkScrollArrow(scrollHandler, MR_B)
                     ]

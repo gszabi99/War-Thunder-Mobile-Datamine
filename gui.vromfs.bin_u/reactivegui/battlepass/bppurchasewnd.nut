@@ -25,6 +25,7 @@ let { boxSize, boxGap } = bpCardStyle
 let rewardsListGap = 1.5 * boxGap
 let bigGap = 2 * boxGap
 let bpIconSize = hdpxi(400)
+let blocksGap = isWidescreen ? 3 * boxGap : boxGap
 //allow rewards a bit go out of safeArea
 let rewardSlotsInRow = (saSize[0] - bpIconSize + boxGap + boxSize / 2) / (boxSize + boxGap)
 
@@ -38,7 +39,35 @@ let header = {
   ]
 }
 
-function rewardsBlock(text, viewInfo) {
+let mkRewardInstant = @(vInfo) mkRewardPlate(vInfo, bpCardStyle)
+
+let rangeText = @(range) range[0] == range[1] ? range[0].tostring()
+  : $"{range[0]}-{range[1]}"
+
+let mkRewardWithProgress = @(vInfo) {
+  flow = FLOW_VERTICAL
+  gap = hdpx(5)
+  children = [
+    {
+      size = [flex(), SIZE_TO_CONTENT]
+      valign = ALIGN_BOTTOM
+      children = [
+        {
+          rendObj = ROBJ_TEXT
+          text = loc("mainmenu/rank/short")
+        }.__update(fontVeryTiny)
+        {
+          hplace = ALIGN_RIGHT
+          rendObj = ROBJ_TEXT
+          text = rangeText(vInfo.sRange)
+        }.__update(fontTiny)
+      ]
+    }
+    mkRewardPlate(vInfo, bpCardStyle)
+  ]
+}
+
+function rewardsBlock(text, viewInfo, rewardCtor) {
   if (viewInfo.len() == 0)
     return null
 
@@ -66,17 +95,23 @@ function rewardsBlock(text, viewInfo) {
         flow = FLOW_HORIZONTAL
         gap = boxGap
         halign = ALIGN_CENTER
-        children = row.list.map(@(v) mkRewardPlate(v, bpCardStyle))
+        children = row.list.map(rewardCtor)
       }))
   }
 }
 
 let function rewardsToViewInfo(rewards, servConfigs) {
   let res = []
-  foreach(id, count in rewards) {
+  foreach(id, data in rewards) {
     let reward = servConfigs?.userstatRewards[id]
-    if (reward)
-      joinViewInfo(res, getRewardsViewInfo(reward, count))
+    if (!reward)
+      continue
+    let viewInfo = getRewardsViewInfo(reward, data.count)
+      .map(@(vi) vi.__update({ sRange = data.sRange }))
+    joinViewInfo(res, viewInfo,
+      function(to, from) {
+        to.sRange = [min(to.sRange[0], from.sRange[0]), max(to.sRange[1], from.sRange[1])]
+      })
   }
   return res
 }
@@ -87,14 +122,20 @@ let function rewardsList() {
     return res
   let { lastRewardedStage = 0, stages = [] } = bpPaidRewardsUnlock.value
 
-  let rewardsOnPurchase = clone (bpPurchasedUnlock.value?.stages[0].rewards ?? {})
+  let rewardsOnPurchase = (bpPurchasedUnlock.value?.stages[0].rewards ?? {})
+    .map(@(count) { count, sRange = [0, 0] })
   let rewardsOnProgress = {}
   foreach (idx, s in stages) {
     if (idx < lastRewardedStage)
       continue
     let list = s.progress <= curStage.value ? rewardsOnPurchase : rewardsOnProgress
     foreach(key, count in s.rewards)
-      list[key] <- (list?[key] ?? 0) + count
+      if (key not in list)
+        list[key] <- { count, sRange = [idx, idx] }
+      else {
+        list[key].count += count
+        list[key].sRange[1] = idx
+      }
   }
 
   let viewInfoOnPurchase = rewardsToViewInfo(rewardsOnPurchase, serverConfigs.value)
@@ -108,8 +149,8 @@ let function rewardsList() {
     halign = ALIGN_CENTER
     gap = rewardsListGap
     children = [
-      rewardsBlock(loc("battlePass/receiveOnPurchase"), viewInfoOnPurchase)
-      rewardsBlock(loc("battlePass/receiveOnProgress"), viewInfoOnProgress)
+      rewardsBlock(loc("battlePass/receiveOnPurchase"), viewInfoOnPurchase, mkRewardInstant)
+      rewardsBlock(loc("battlePass/receiveOnProgress"), viewInfoOnProgress, mkRewardWithProgress)
     ]
   })
 }
@@ -144,14 +185,16 @@ let function buyBlock() {
           function() {
             sendBpBqEvent("purchase_pass_press")
             buyPlatformGoods(battlePassGoods.value)
-          })
+          },
+          { ovr = { minWidth = bpIconSize }})
       : (price?.price ?? 0) > 0
         ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
           mkCurrencyComp(price.price, price.currencyId)
           function() {
             sendBpBqEvent("purchase_pass_press")
             purchaseGoods(battlePassGoods.value?.id)
-          })
+          },
+          { ovr = { minWidth = bpIconSize }})
       : {
           size = [flex(), SIZE_TO_CONTENT]
           rendObj = ROBJ_TEXTAREA
@@ -184,7 +227,7 @@ let content = doubleSideGradient.__merge({
     {
       minHeight = bpIconSize + defButtonHeight
       flow = FLOW_HORIZONTAL
-      gap = boxGap
+      gap = blocksGap
       valign = ALIGN_CENTER
       children = [
         rewardsList
@@ -199,12 +242,10 @@ let bpPurchaseWnd = {
   size = flex()
   padding = saBordersRv
   flow = FLOW_VERTICAL
+  gap = hdpx(10)
   children = [
     header
-    {
-      size = flex()
-      children = content
-    }
+    content
   ]
   animations = wndSwitchAnim
 }

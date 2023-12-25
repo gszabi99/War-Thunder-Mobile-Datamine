@@ -16,6 +16,7 @@ let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
+let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -36,15 +37,16 @@ let openUnitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { tryResetToMainScene, canResetToMainScene } = require("%rGui/navState.nut")
 let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
 
-let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator" ]
+let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator", "medal" ]
 
 let wndWidth = saSize[0]
 let maxWndHeight = saSize[1]
+let rewBlockWidth = hdpx(340)
+let rewBlocksVGap = hdpx(60)
+let rewIconsPerRow = (wndWidth / rewBlockWidth).tointeger()
 let rewIconSize = hdpxi(200)
 let rewIconToTextGap = hdpx(29)
-let rewIconsGap = hdpx(150)
-let rewIconsRowToUnitPlatesGap = hdpx(60)
-let rewIconsPerRow = ((wndWidth + rewIconsGap) / (rewIconSize + rewIconsGap)).tointeger()
+let rewTextMaxWidth = rewBlockWidth - hdpx(10)
 let unitPlatesGap = hdpx(40)
 let unitsPerRow = ((wndWidth + unitPlatesGap) / (unitPlateWidth + unitPlatesGap)).tointeger()
 
@@ -229,33 +231,42 @@ let function mkRerwardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0
   }
 }
 
-let mkTextDecoratorCtor = @(getText) @(decoratorId) {
-  size = [SIZE_TO_CONTENT, flex()]
-  rendObj = ROBJ_TEXT
-  text = getText(decoratorId)
+let mkTextDecoratorCtor = @(getText, font) function(decoratorId) {
+  let textComp = {
+    rendObj = ROBJ_TEXT
+    halign = ALIGN_CENTER
+    text = getText(decoratorId)
+  }.__update(font)
+  let txtScale = getTextScaleToFitWidth(textComp, rewTextMaxWidth)
+  if (txtScale < 1.0)
+    textComp.__update({ transform = { scale = [txtScale, txtScale] } })
+  return {
+    children = textComp
+  }
 }
 
+let avatarIconSize = round(rewIconSize * 0.75).tointeger()
 let mkImageDecoratorCtor = @(decoratorId) {
-  size = [hdpxi(150), hdpxi(150)]
+  size = [avatarIconSize, avatarIconSize]
   rendObj = ROBJ_IMAGE
-  image = Picture($"{getAvatarImage(decoratorId)}:{hdpxi(150)}:{hdpxi(150)}:P")
+  image = Picture($"{getAvatarImage(decoratorId)}:{avatarIconSize}:{avatarIconSize}:P")
 }
 
 let decoratorCompByType = {
-  nickFrame =  mkTextDecoratorCtor(@(id) frameNick(" ", id))
-  title     =  mkTextDecoratorCtor(@(id) loc($"title/{id}"))
+  nickFrame =  mkTextDecoratorCtor(@(id) frameNick("", id), fontVeryLarge)
+  title     =  mkTextDecoratorCtor(@(id) loc($"title/{id}"), fontBig)
   avatar    =  mkImageDecoratorCtor
 }
 
 let function mkDecoratorRewardIcon(startDelay, decoratorId) {
   let decoratorType = Computed(@() allDecorators.value?[decoratorId].dType)
-  return @(){
+  return @() {
     watch = decoratorType
     size = [SIZE_TO_CONTENT, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = decoratorCompByType[decoratorType.value](decoratorId)
-      .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale), fontBig)
+      .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
   }
 }
 
@@ -264,6 +275,7 @@ let customCurrencyIcons = {
   wp = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#shop_lions_02.avif", 1.61, 1.8, 0.12, -0.05)
   warbond = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#warbond_goods_01.avif", 1.0, 1.6)
   eventKey = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#event_keys_01.avif", 1.0, 1.5)
+  nybond = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#warbond_goods_christmas_01.avif", 1.0, 1.6)
 }
 
 let mkCurrencyIcon = @(startDelay, id)  customCurrencyIcons?[id](startDelay) ?? {
@@ -277,7 +289,7 @@ let mkCurrencyIcon = @(startDelay, id)  customCurrencyIcons?[id](startDelay) ?? 
 }
 
 let function mkRewardLabel(startDelay, text) {
-  return {
+  let res = {
     rendObj = ROBJ_TEXT
     color = 0xFFFFFFFF
     text
@@ -292,6 +304,10 @@ let function mkRewardLabel(startDelay, text) {
         play = true, trigger = ANIM_SKIP_DELAY }
     ]
   }.__update(fontMediumShaded)
+  let txtScale = getTextScaleToFitWidth(res, rewTextMaxWidth)
+  if (txtScale < 1.0)
+    res.__update({ transform = { scale = [txtScale, txtScale] } })
+  return res
 }
 
 let mkDecoratorRewardLabel = @(startDelay, decoratorId)
@@ -324,6 +340,7 @@ let function mkRewardIconComp(rewardInfo) {
   let { mkIcon, mkText } = rewardCtors[rewardInfo.gType]
 
   return {
+    size = [rewBlockWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     gap = rewIconToTextGap
@@ -335,12 +352,12 @@ let function mkRewardIconComp(rewardInfo) {
 }
 
 let mkRewardIconsBlock = @(rewards) rewards.len() == 0 ? null : {
+  halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
-  gap = rewIconsGap
+  gap = rewBlocksVGap
   children = arrayByRows(rewards, rewIconsPerRow)
     .map(@(row) {
         flow = FLOW_HORIZONTAL
-        gap = rewIconsGap
         children = row.map(mkRewardIconComp)
     })
 }
@@ -630,7 +647,7 @@ let function mkMsgContent(stackDataV, purchGroup) {
         flow = FLOW_VERTICAL
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
-        gap = rewIconsRowToUnitPlatesGap
+        gap = rewBlocksVGap
         children = [
           mkRewardIconsBlock(rewardIcons)
           mkUnitRewards(unitPlates)

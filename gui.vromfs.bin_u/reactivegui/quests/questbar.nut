@@ -98,7 +98,7 @@ let function mkStages(progressUnlock) {
       let claimReward = isUnlocked && hasReward && (idx + 1) >= stage
           ? function() {
               receiveUnlockRewards(name, stage, { stage, finalStage = idx + 1 })
-              sendBqQuestsStage(progressUnlock, rewardPreview.value?.count ?? 0)
+              sendBqQuestsStage(progressUnlock, rewardPreview.value?.count ?? 0, rewardPreview.value?.id)
             }
         : null
 

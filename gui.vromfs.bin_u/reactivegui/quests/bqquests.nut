@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { EVENT_TAB, progressUnlockByTab, progressUnlockBySection } = require("questsState.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
-let { balanceWarbond } = require("%appGlobals/currenciesState.nut")
+let { balance } = require("%appGlobals/currenciesState.nut")
 let { statsImages } = require("%appGlobals/config/rewardStatsPresentation.nut")
 
 /*
@@ -22,25 +22,26 @@ let getCommonData = @(unlock) {
   starsTotal = (progressUnlockByTab.get()?[unlock.tabId]
       ?? progressUnlockBySection.get()?[unlock?.sectionId]
     )?.current ?? 0
-  warbondTotal  = balanceWarbond.value
 }.__merge(unlock.tabId == EVENT_TAB ? { season = userstatStats.value?.stats.season["$index"] ?? 1 } : {})
 
-let function sendBqQuestsTask(unlock, warbondDelta) {
+let function sendBqQuestsTask(unlock, warbondDelta, currencyId) {
   let data = getCommonData(unlock).__merge({
     action = "complete_task"
     taskId = unlock.name
     stage = unlock?.sectionId ?? ""
     starsDelta = unlock.stages[0]?.updStats.findvalue(@(v) v.name in statsImages).value.tointeger() ?? 0
     warbondDelta
+    warbondTotal = balance.get()?[currencyId]
   })
   sendCustomBqEvent("event_progress_1", data)
 }
 
-let function sendBqQuestsStage(unlock, warbondDelta) {
+let function sendBqQuestsStage(unlock, warbondDelta, currencyId) {
   let data = getCommonData(unlock).__merge({
     action = "compete_stage"
     stage = "".concat("stage_", unlock.stage)
     warbondDelta
+    warbondTotal = balance.get()?[currencyId]
   })
   sendCustomBqEvent("event_progress_1", data)
 }

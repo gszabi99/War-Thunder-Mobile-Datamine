@@ -4,21 +4,31 @@ let { mkTabs } = require("%rGui/components/tabs.nut")
 let { mkUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { SEEN } = require("%rGui/unseenPriority.nut")
 
-let iconSize = hdpxi(100)
+let iconSizeDef = hdpxi(100)
 
 let textColor = 0xFFFFFFFF
 
-let mkTabImage = @(image) {
-  size = [iconSize, iconSize]
-  vplace = ALIGN_CENTER
-  rendObj = ROBJ_IMAGE
-  image = Picture($"{image}:{iconSize}:{iconSize}:P")
-  color = textColor
-  keepAspect = KEEP_ASPECT_FIT
+let function mkTabImage(image, imageSizeMul) {
+  let size = (iconSizeDef * imageSizeMul + 0.5).tointeger()
+  let blockSize = max(iconSizeDef, size)
+  return {
+    size = [blockSize, blockSize]
+    vplace = ALIGN_CENTER
+    children = {
+      size = [size, size]
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = Picture($"{image}:{size}:{size}:P")
+      color = textColor
+      keepAspect = KEEP_ASPECT_FIT
+    }
+  }
 }
 
 let function tabData(tab, idx, curTabIdx) {
-  let { locId  = "", image = null, isVisible = null, unseen = null, tabContent = null, tabHeight = tabH } = tab
+  let { locId  = "", image = null, isVisible = null, unseen = null, tabContent = null, tabHeight = tabH,
+    imageSizeMul = 1.0 } = tab
   local unseenMark = null
   if (unseen != null) {
     let unseenExt = Computed(@() curTabIdx.value == idx ? SEEN : unseen.value)
@@ -37,8 +47,8 @@ let function tabData(tab, idx, curTabIdx) {
           flow = FLOW_HORIZONTAL
           children = [
             image == null ? null
-              : image instanceof Watched ? @() mkTabImage(image.get()).__update({ watch = image })
-              : mkTabImage(image)
+              : image instanceof Watched ? @() mkTabImage(image.get(), imageSizeMul).__update({ watch = image })
+              : mkTabImage(image, imageSizeMul)
             tabContent ?? {
               size = flex()
               rendObj = ROBJ_TEXTAREA
