@@ -13,7 +13,7 @@
     "mass": 14.6,
     "massEnd": 10.2,
     "statType": "hydra",
-    "explodeTreshold": 1E-05,
+    "explodeTreshold": 0.00001,
     "rendinstDamageRadius": 6.0,
     "maxDistance": 8000.0,
     "minDistance": 30.0,

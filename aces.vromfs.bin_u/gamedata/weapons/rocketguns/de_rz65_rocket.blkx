@@ -12,7 +12,7 @@
     "mass": 2.766,
     "massEnd": 2.376,
     "statType": "hydra",
-    "explodeTreshold": 1E-05,
+    "explodeTreshold": 0.00001,
     "explodeHitPower": 50.0,
     "explodeArmorPower": 10.0,
     "explodeRadius": [

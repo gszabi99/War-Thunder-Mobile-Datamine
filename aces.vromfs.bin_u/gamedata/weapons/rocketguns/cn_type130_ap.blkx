@@ -15,7 +15,7 @@
     "distFromCmToStab": 0.01,
     "distanceFuse": false,
     "statType": "hydra",
-    "explodeTreshold": 1E-05,
+    "explodeTreshold": 0.00001,
     "rendinstDamageRadius": 6.0,
     "maxDistance": 8000.0,
     "minDistance": 30.0,

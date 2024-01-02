@@ -23,7 +23,7 @@
     "explosionFx": "bomb_expl_500kg",
     "explosionPatchRadius": 12.0,
     "waterExplosionEffect": "bomb_water_explosion_big",
-    "explodeTreshold": 1E-05,
+    "explodeTreshold": 0.00001,
     "explosionPatchHeightScale": 0.15,
     "rendinstDamageRadius": 50.0,
     "DamageParts": {

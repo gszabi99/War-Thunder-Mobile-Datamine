@@ -124,9 +124,24 @@
   "schemeDeathMovieShipShardSpeed": 16.0,
   "waterLineEnabled": true,
   "waterLineWidth": 1,
-  "waterLineColor": "oMjclg==",
-  "waterGradientStartColor": "ZK/IZA==",
-  "waterGradientEndColor": "ZK/IAA==",
+  "waterLineColor": [
+    220,
+    200,
+    160,
+    150
+  ],
+  "waterGradientStartColor": [
+    200,
+    175,
+    100,
+    100
+  ],
+  "waterGradientEndColor": [
+    200,
+    175,
+    100,
+    0
+  ],
   "waterGradientMinWidth": 60,
   "waterGradientBottomPadding": 6,
   "maxAngleDifferentShip": 7.0,

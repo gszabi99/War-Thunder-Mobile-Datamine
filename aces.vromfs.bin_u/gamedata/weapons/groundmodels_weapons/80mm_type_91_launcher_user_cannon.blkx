@@ -428,7 +428,7 @@
           "accelControlProp": 0.008,
           "accelControlIntg": 0.003,
           "accelControlIntgLim": 0.7,
-          "accelControlDiff": 5E-05
+          "accelControlDiff": 0.00005
         }
       },
       "proximityFuse": {
@@ -857,7 +857,7 @@
             "accelControlProp": 0.008,
             "accelControlIntg": 0.003,
             "accelControlIntgLim": 0.7,
-            "accelControlDiff": 5E-05
+            "accelControlDiff": 0.00005
           }
         },
         "proximityFuse": {

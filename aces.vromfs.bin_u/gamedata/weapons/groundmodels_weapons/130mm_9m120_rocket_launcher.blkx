@@ -113,7 +113,7 @@
       1000.0
     ],
     "explodeTreshold": [
-      1E-05,
+      0.00001,
       0.1
     ],
     "rendinstDamageRadius": 2.0,

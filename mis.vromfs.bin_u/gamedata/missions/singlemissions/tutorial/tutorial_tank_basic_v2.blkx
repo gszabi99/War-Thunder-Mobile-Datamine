@@ -2622,7 +2622,12 @@
         },
         "unitBlinkPart": {
           "blink": true,
-          "color": "AP8A/w==",
+          "color": [
+            0,
+            255,
+            0,
+            255
+          ],
           "target": "target_tank02",
           "part": "engine",
           "freq": 5.0
@@ -2770,7 +2775,12 @@
         },
         "unitBlinkPart": {
           "blink": false,
-          "color": "AP8A/w==",
+          "color": [
+            0,
+            255,
+            0,
+            255
+          ],
           "target": "target_tank02",
           "part": "engine",
           "freq": 5.0
@@ -2942,7 +2952,12 @@
         ],
         "unitBlinkPart": {
           "blink": false,
-          "color": "AP8A/w==",
+          "color": [
+            0,
+            255,
+            0,
+            255
+          ],
           "target": "target_tank02",
           "part": "engine",
           "freq": 5.0
@@ -3511,7 +3526,12 @@
         },
         "__unitBlinkPart": {
           "blink": true,
-          "color": "AP8h/w==",
+          "color": [
+            33,
+            255,
+            0,
+            255
+          ],
           "target": "target_tank01",
           "part": [
             "commander",
@@ -3599,7 +3619,12 @@
         "__unitBlinkPart": [
           {
             "blink": true,
-            "color": "AP8A/w==",
+            "color": [
+              0,
+              255,
+              0,
+              255
+            ],
             "target": "target_tank02",
             "part": [
               "ammo_body_01",
@@ -3617,7 +3642,12 @@
           },
           {
             "blink": true,
-            "color": "AP8A/w==",
+            "color": [
+              0,
+              255,
+              0,
+              255
+            ],
             "target": "target_tank02",
             "part": [
               "ammo_body_01",
@@ -3707,7 +3737,12 @@
       "actions": {
         "__unitBlinkPart": {
           "blink": true,
-          "color": "AP8A/w==",
+          "color": [
+            0,
+            255,
+            0,
+            255
+          ],
           "target": "target_tank03",
           "part": "turret_front",
           "freq": 3.0
@@ -3796,7 +3831,12 @@
         },
         "__unitBlinkPart": {
           "blink": false,
-          "color": "/wAA/w==",
+          "color": [
+            0,
+            0,
+            255,
+            255
+          ],
           "target": "@targeted_tank"
         },
         "triggerDisable": [
@@ -4822,7 +4862,12 @@
         },
         "__unitBlinkPart": {
           "blink": true,
-          "color": "AP8A/w==",
+          "color": [
+            0,
+            255,
+            0,
+            255
+          ],
           "target": "target_tank03",
           "part": "turret_front",
           "freq": 3.0

@@ -12,7 +12,7 @@
     "mass": 84.0,
     "massEnd": 74.0,
     "statType": "tp_91",
-    "explodeTreshold": 1E-05,
+    "explodeTreshold": 0.00001,
     "explodeHitPower": 500.0,
     "explodeArmorPower": 80.0,
     "explodeRadius": [

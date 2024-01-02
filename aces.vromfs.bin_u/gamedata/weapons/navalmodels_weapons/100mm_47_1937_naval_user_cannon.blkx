@@ -539,7 +539,7 @@
       ],
       "explodeTreshold": 6.0,
       "fuseDelayDist": 5.0,
-      "hpThresholdForFuse": 1E-06,
+      "hpThresholdForFuse": 1e-6,
       "fuseOnWater": true,
       "explosionEffect": "hit_81_105mm_metal_ap",
       "groundCollisionEffect": "hit_81_105mm_dirt_ap",

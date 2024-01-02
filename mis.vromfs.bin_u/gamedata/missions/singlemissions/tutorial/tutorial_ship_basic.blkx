@@ -1729,7 +1729,12 @@
           "unitShowXray": {
             "show": true,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": "bridge_dm"
@@ -1930,7 +1935,12 @@
           "__unitShowXray": {
             "show": false,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": "bridge_dm"
@@ -2000,7 +2010,12 @@
           "unitShowXray": {
             "show": true,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": "engine_room_01_dm"
@@ -2201,7 +2216,12 @@
           "__unitShowXray": {
             "show": false,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": "engine_room_01_dm"
@@ -2271,7 +2291,12 @@
           "unitShowXray": {
             "show": true,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": [
@@ -2568,7 +2593,12 @@
           "__unitShowXray": {
             "show": false,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": [
@@ -2642,7 +2672,12 @@
           "unitShowXray": {
             "show": true,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": [
@@ -2896,7 +2931,12 @@
           "__unitShowXray": {
             "show": false,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": [
@@ -2974,7 +3014,12 @@
           "unitShowXray": {
             "show": true,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": [
@@ -3347,7 +3392,12 @@
             {
               "show": false,
               "blink": true,
-              "color": "/wAA/w==",
+              "color": [
+                0,
+                0,
+                255,
+                255
+              ],
               "target": "",
               "object": "ai",
               "part": [
@@ -3363,7 +3413,12 @@
             {
               "show": false,
               "blink": true,
-              "color": "/wAA/w==",
+              "color": [
+                0,
+                0,
+                255,
+                255
+              ],
               "target": "",
               "object": "ai",
               "part": [
@@ -3375,7 +3430,12 @@
           "__unitShowXray": {
             "show": false,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai",
             "part": [
@@ -3458,7 +3518,12 @@
           "unitShowXray": {
             "show": false,
             "blink": true,
-            "color": "/wAA/w==",
+            "color": [
+              0,
+              0,
+              255,
+              255
+            ],
             "target": "",
             "object": "ai"
           },
@@ -4152,7 +4217,7 @@
         [
           -20.0,
           0.0,
-          -4.29153E-06
+          -4.29153e-6
         ],
         [
           0.0,
@@ -4160,7 +4225,7 @@
           0.0
         ],
         [
-          4.29153E-06,
+          4.29153e-6,
           0.0,
           -20.0
         ],
