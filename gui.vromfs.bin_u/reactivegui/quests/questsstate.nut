@@ -7,7 +7,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { canShowAds, showAdsForReward } = require("%rGui/ads/adsState.nut")
+let { canShowAds, showAdsForReward, showNotAvailableAdsMsg } = require("%rGui/ads/adsState.nut")
 let { playSound } = require("sound_wt")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -182,7 +182,7 @@ let function onWatchQuestAd(unlock) {
     return false
   }
   if (!canShowAds.value) {
-    openMsgBox({ text = loc("msg/adsNotReadyYet") })
+    showNotAvailableAdsMsg()
     return false
   }
 

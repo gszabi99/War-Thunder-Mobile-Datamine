@@ -190,7 +190,7 @@ let rightMiddle = @() {
           behavior = Behaviors.TextArea
           text = utf8ToUpper(loc("battlepass/active"))
         }.__update(fontTinyAccented)
-      : textButtonMultiline(utf8ToUpper(loc("battlePass/btn_buy")), openBPPurchaseWnd, PURCHASE)
+      : textButtonMultiline(utf8ToUpper(loc("battlePass/btn_buy")), openBPPurchaseWnd, PURCHASE.__merge({ hotkeys = ["^J:Y"] }))
   ]
 }
 

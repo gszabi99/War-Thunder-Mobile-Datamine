@@ -7,6 +7,7 @@ let { mkColoredGradientY, gradTranspDoubleSideX, simpleVerGradInv } = require("%
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
+let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -263,12 +264,13 @@ let function mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag = true
 }
 
 let advertMark = {
+  key = {}
   size = [advertSize, advertSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#mp_spectator.avif:{advertSize}:{advertSize}:P")
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
-}
+}.__update(adsButtonCounter)
 
 
 let function mkFreePricePlate(goods, state) {

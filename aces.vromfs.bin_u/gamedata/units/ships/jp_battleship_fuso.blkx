@@ -739,7 +739,7 @@
       ],
       "CenterOfGravity": [
         -3.0,
-        0.0,
+        -0.6,
         0.0
       ]
     },
@@ -7275,8 +7275,8 @@
       600.0
     ],
     "additionalWaterDeathThreshold": 100000000.0,
-    "additionalWaterCoverPartsThreshold": 50000000.0,
-    "additionalWaterShouldDiePercent": 0.13,
+    "additionalWaterCoverPartsThreshold": 7000000.0,
+    "additionalWaterShouldDiePercent": 0.15,
     "fatalBreachDrownTime": 30.0,
     "maxHeelingAngle": 36.0,
     "maxHeelingTime": 50.0,

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { subscribe } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { activeUnlocks, receiveUnlockRewards, unlockRewardsInProgress, getRelativeStageData
+let { activeUnlocks, receiveUnlockRewards, unlockInProgress, getRelativeStageData
 } = require("%rGui/unlocks/unlocks.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { deferOnce } = require("dagor.workcycle")
@@ -119,8 +119,8 @@ return {
   isLoginAwardOpened
   canShowLoginAwards = Computed(@() loginAwardUnlock.value != null)
   receiveLoginAward
-  isLoginAwardInProgress = Computed(@() LOGIN_UNLOCK_ID in unlockRewardsInProgress.value
-    || loginAwardUnlockByAds.value?.name in unlockRewardsInProgress.value)
+  isLoginAwardInProgress = Computed(@() LOGIN_UNLOCK_ID in unlockInProgress.value
+    || loginAwardUnlockByAds.value?.name in unlockInProgress.value)
   hasLoginAwardByAds = Computed(@() loginAwardUnlockByAds.value != null)
   showLoginAwardAds
 }

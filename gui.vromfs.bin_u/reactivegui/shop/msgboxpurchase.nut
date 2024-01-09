@@ -76,7 +76,7 @@ let msgContent = @(text, priceComp) {
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
-    msgBoxText(text, { size = [flex(), SIZE_TO_CONTENT] })
+    type(text) == "string" ? msgBoxText(text, { size = [flex(), SIZE_TO_CONTENT] }) : text
     {
       flow = FLOW_HORIZONTAL
       gap = hdpx(32)

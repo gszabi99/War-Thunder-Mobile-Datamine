@@ -18,6 +18,7 @@ let emptyProgress = {
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
 
+
 let unlockTables = Computed(function(prev) {
   let stats = userstatStats.value
   let res = {}
@@ -37,6 +38,11 @@ let function calcUnlockProgress(progressData, unlockDesc) {
   let res = clone emptyProgress
   let stage = progressData?.stage ?? 0
   res.stage = stage
+  if (progressData?.price) {
+    res["price"] <- progressData.price
+    if (progressData?.currencyCode)
+      res["currencyCode"] <- progressData.currencyCode
+  }
   res.lastRewardedStage = progressData?.lastRewardedStage ?? 0
   res.hasReward = stage > res.lastRewardedStage
 
@@ -70,6 +76,16 @@ let activeUnlocks = Computed(@() allUnlocksRaw.value
   .filter(@(u) (unlockTables.value?[u?.table] ?? false) || u?.type == "INDEPENDENT")
   .map(@(u, id) u.__merge(unlockProgress.value?[id] ?? {})))
 
+let mkPrice = @(price = 0, currency = "") { currency, price }
+function getUnlockPrice(unlock) {
+  if (unlock) {
+    let price = unlock?.price ?? 0
+    if (price > 0)
+      return mkPrice(price, unlock?.currencyCode ?? "")
+  }
+  return mkPrice()
+}
+
 //return stages info relative to cureent period. for not preiodic unlock return usual unlock params
 let function getRelativeStageData(unlock) {
   let { stages = [], lastRewardedStage = 0, stage = 0, periodic = false, startStageLoop = 1 } = unlock
@@ -86,7 +102,8 @@ let function getRelativeStageData(unlock) {
   }
 }
 
-let unlockRewardsInProgress = Watched({})
+let unlockInProgress = Watched({})
+
 let function callExtCb(context) {
   let { id = null } = context
   if (id != null)
@@ -94,19 +111,44 @@ let function callExtCb(context) {
 }
 
 let function receiveUnlockRewards(unlockName, stage, context = null) {
-  if (unlockName in unlockRewardsInProgress.value)
+  if (unlockName in unlockInProgress.value)
     return
   log($"receiveRewards {unlockName}={stage}", context)
-  unlockRewardsInProgress.mutate(@(u) u[unlockName] <- true)
+  unlockInProgress.mutate(@(u) u[unlockName] <- true)
   userstatRequest("GrantRewards",
     { data = { unlock = unlockName, stage } },
     (context ?? {}).__merge({ unlockName, stage }))
 }
 
+let function buyUnlock(unlockName, stage, currency, price, context) {
+  if (!unlockName || unlockName in unlockInProgress.value) {
+    log($"buyUnlock ignore {unlockName} because already in progress")
+    return
+  }
+  let unlock = activeUnlocks.get()?[unlockName]
+  if ((unlock?.periodic == true || !unlock?.isCompleted ) && price > 0) {
+    log($"buyUnlock {unlockName}={stage}")
+    unlockInProgress.mutate(@(v) v[unlockName] <- stage)
+    userstatRequest("BuyUnlock",
+      { data = { name = unlockName, stage, price, currency} },
+      (context ?? {}).__merge({ item = unlockName }))
+  }
+}
+userstatRegisterHandler("BuyUnlock", function(result, context) {
+  let { item = "", onSuccessCb = null } = context
+  unlockInProgress.mutate(@(v) v.$rawdelete(item))
+  if ("error" in result) {
+    log("BuyUnlock result: ", result)
+    return
+  }
+  log("BuyUnlock result success: ", context)
+  callExtCb(onSuccessCb)
+})
+
 userstatRegisterHandler("GrantRewards", function(result, context) {
   let { unlockName  = null, finalStage = null, stage = 0, onSuccessCb = null } = context
-  if (unlockName in unlockRewardsInProgress.value)
-    unlockRewardsInProgress.mutate(@(v) v.$rawdelete(unlockName))
+  if (unlockName in unlockInProgress.value)
+    unlockInProgress.mutate(@(v) v.$rawdelete(unlockName))
   if ("error" in result) {
     log("GrantRewards result: ", result)
     return
@@ -140,8 +182,10 @@ return {
   getRelativeStageData
   unlockTables
   allUnlocksRaw
+  buyUnlock
+  getUnlockPrice
 
-  unlockRewardsInProgress
+  unlockInProgress
   receiveUnlockRewards
   resetUserstatAppData
 }

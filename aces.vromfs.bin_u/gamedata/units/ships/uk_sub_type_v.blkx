@@ -416,6 +416,27 @@
             }
           }
         }
+      },
+      {
+        "name": "steering_gear_01_dm",
+        "onHit": [
+          {
+            "damageType": "generic",
+            "damage": 100.0,
+            "moduleStatusEffect": {
+              "name": "moveControl",
+              "prob": 1.0
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 300.0,
+            "moduleStatusEffect": {
+              "name": "moveControl",
+              "prob": 1.0
+            }
+          }
+        ]
       }
     ]
   },
@@ -1764,7 +1785,7 @@
     }
   },
   "breaches": {
-    "additionalWaterDeathThreshold": 440000.0,
+    "additionalWaterDeathThreshold": 500000.0,
     "additionalWaterCoverPartsThreshold": 180000.0,
     "repairSpeed": 80.0,
     "waterMassVel": -37000.0,

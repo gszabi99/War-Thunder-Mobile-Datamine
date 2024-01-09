@@ -15,7 +15,7 @@ let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, lootbox
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
-let { buy_lootbox } = require("%appGlobals/pServer/pServerApi.nut")
+let { buy_lootbox, lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCH_SRC_EVENT, PURCH_TYPE_LOOTBOX, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
@@ -51,6 +51,8 @@ let function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
 }
 
 let function onPurchase(lootbox, price, currencyId, count = 1) {
+  if (lootboxInProgress.get())
+    return
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
   let { start = 0, end = 0 } = timeRange
   let errMsg = bestCampLevel.value < reqPlayerLevel
@@ -260,8 +262,9 @@ let function eventWndContent() {
                   animations = wndSwitchAnim
                 }
                 @() {
-                  watch = previewLootbox
-                  children = mkPurchaseBtns(previewLootbox.value, onPurchase)
+                  watch = [previewLootbox, lootboxInProgress]
+                  size = [SIZE_TO_CONTENT, defButtonHeight]
+                  children = lootboxInProgress.get() ? null : mkPurchaseBtns(previewLootbox.get(), onPurchase)
                 }
               ]
             }

@@ -10,7 +10,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getLootboxRewardsViewInfo, isRewardReceived  } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
 let { bestCampLevel } = require("eventState.nut")
-let { canShowAds } = require("%rGui/ads/adsState.nut")
+let { canShowAds, adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -193,8 +193,8 @@ let function mkAdsBtn(reqPlayerLevel, adReward) {
     watch = [bestCampLevel, canShowAds, adBudget]
     children = mkCustomButton(
       cost > adBudget.value
-          ? mkBtnContent(null, loc("playBattles", { count = cost }))
-        : mkBtnContent("ui/gameuiskin#mp_spectator.avif", loc("shop/watchAdvert/short")),
+          ? mkBtnContent(null, cost <= 1 ? loc("playOneBattle") : loc("playBattles", { count = cost }))
+        : mkBtnContent("ui/gameuiskin#mp_spectator.avif", loc("shop/watchAdvert/short"), adsButtonCounter),
       @() bestCampLevel.value >= reqPlayerLevel
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),

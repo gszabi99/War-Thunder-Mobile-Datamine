@@ -1,5 +1,6 @@
-
 let regexp2 = require("regexp2")
+let { crc32 } =  require("hash")
+let { isPhrasePassing } = require("%appGlobals/dirtyWordsFilter.nut")
 
 let rePlatfomPostfixes = [
   regexp2("@googleplay$") // Google Play
@@ -9,17 +10,31 @@ let rePlatfomPostfixes = [
   regexp2("@steam$") // Steam
 ]
 
-let function getPlayerName(name, myUsernameReal = "", myUsername = "") {
-  if (type(name) != "string" || name == "")
+let NAMES_CACHE_MAX_LEN = 1000
+let namesCache = {}
+
+let mkCensoredName = @(uncensoredName) $"Player_{crc32(uncensoredName)}"
+
+let function getPlayerName(nameReal, myUsernameReal = "", myUsername = "") {
+  if (type(nameReal) != "string" || nameReal == "")
     return ""
 
-  if (name == myUsernameReal && myUsername != "")
+  if (nameReal == myUsernameReal && myUsername != "")
     return myUsername
 
-  foreach (re in rePlatfomPostfixes)
-    name = re.replace("", name)
+  if (nameReal not in namesCache) {
+    local name = nameReal
+    foreach (re in rePlatfomPostfixes)
+      name = re.replace("", name)
+    if (!isPhrasePassing(name))
+      name = mkCensoredName(name)
 
-  return name
+    if (namesCache.len() >= NAMES_CACHE_MAX_LEN)
+      namesCache.clear()
+    namesCache[nameReal] <- name
+  }
+
+  return namesCache[nameReal]
 }
 
 return {

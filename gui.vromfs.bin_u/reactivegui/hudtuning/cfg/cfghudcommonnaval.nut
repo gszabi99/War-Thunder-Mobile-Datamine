@@ -7,6 +7,7 @@ let { tacticalMap, tacticalMapEditView } = require("%rGui/hud/components/tactica
 let { mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkMyPlace, myPlaceUi, mkMyDamage, myScoresUi } = require("%rGui/hud/myScores.nut")
+let { simpleThreatRocketsIndicator, simpleThreatRocketsIndicatorEditView } = require("%rGui/hud/hudThreatRocketsBlock.nut")
 
 let dollPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
 
@@ -66,6 +67,14 @@ return {
     ctor = @() crewHealth
     defTransform = mkLBPos([dollPosX + hdpx(130), hdpx(-115)])
     editView = crewHealthEditView
+    hideForDelayed = false
+  }
+
+  rocketThreatIndicator =
+  {
+    ctor = @() simpleThreatRocketsIndicator
+    defTransform = mkLBPos([dollPosX + hdpx(-55), hdpx(-55)])
+    editView = simpleThreatRocketsIndicatorEditView
     hideForDelayed = false
   }
 }.filter(@(v) v != null)

@@ -6608,16 +6608,16 @@
       25.0,
       600.0
     ],
-    "additionalWaterDeathThreshold": 40000000.0,
-    "additionalWaterCoverPartsThreshold": 50000000.0,
+    "additionalWaterDeathThreshold": 100000000.0,
+    "additionalWaterCoverPartsThreshold": 12000000.0,
     "additionalWaterShouldDiePercent": 0.15,
     "fatalBreachDrownTime": 30.0,
-    "maxHeelingAngle": 16.0,
+    "maxHeelingAngle": 36.0,
     "maxHeelingTime": 50.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.18,
+    "sideCenterOfMassOffsetPercent": 0.35,
     "additionalWaterInfluenceOnSpeed": 1.6
   },
   "shipCover": {

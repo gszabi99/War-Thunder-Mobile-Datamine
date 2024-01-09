@@ -18,10 +18,12 @@ let PURCH_SRC_UNIT_MODS = "unit_mods"
 let PURCH_SRC_PROFILE = "profile"
 let PURCH_SRC_SHOP = "shop"
 let PURCH_SRC_EVENT = "event"
+let PURCH_SRC_BATTLE_PASS = "battle_pass"
 
 let PURCH_TYPE_UNIT = "unit"
 let PURCH_TYPE_UNIT_MOD = "unit_mod"
 let PURCH_TYPE_UNIT_LEVEL = "unit_level"
+let PURCH_TYPE_BP_LEVEL = "bp_level"
 let PURCH_TYPE_CONSUMABLES = "consumables"
 let PURCH_TYPE_PLAYER_LEVEL = "player_level"
 let PURCH_TYPE_DECORATOR = "player_decorator"
@@ -67,6 +69,7 @@ return {
   PURCH_SRC_PROFILE
   PURCH_SRC_SHOP
   PURCH_SRC_EVENT
+  PURCH_SRC_BATTLE_PASS
 
   PURCH_TYPE_UNIT
   PURCH_TYPE_UNIT_MOD
@@ -77,6 +80,7 @@ return {
   PURCH_TYPE_PREMIUM
   PURCH_TYPE_CURRENCY
   PURCH_TYPE_LOOTBOX
+  PURCH_TYPE_BP_LEVEL
 
   getPurchaseTypeByGoodsType
   mkBqPurchaseInfo

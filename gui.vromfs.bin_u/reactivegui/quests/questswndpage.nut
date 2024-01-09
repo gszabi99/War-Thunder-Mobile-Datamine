@@ -5,7 +5,7 @@ let { questsBySection, seenQuests, saveSeenQuestsForSection, sectionsCfg, quests
 } = require("questsState.nut")
 let { textButtonSecondary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { receiveUnlockRewards, unlockRewardsInProgress, unlockTables, unlockProgress
+let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress
 } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
@@ -112,7 +112,7 @@ let function mkAchievementText(item) {
 
 let function mkBtn(item, currencyReward) {
   let { name, progressCorrectionStep = 0 } = item
-  let isRewardInProgress = Computed(@() name in unlockRewardsInProgress.value)
+  let isRewardInProgress = Computed(@() name in unlockInProgress.value)
 
   return @() {
     watch = isRewardInProgress

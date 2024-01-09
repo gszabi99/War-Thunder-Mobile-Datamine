@@ -3038,28 +3038,6 @@
         }
       },
       {
-        "dummy": true,
-        "trigger": "gunner18",
-        "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "catapult_01",
-        "allowableDelta": 360.0,
-        "turret": {
-          "head": "catapult_01",
-          "gun": "catapult_01"
-        },
-        "limits": {
-          "yaw": [
-            0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
         "trigger": "gunner16",
         "triggerGroup": "torpedoes",
         "external": true,
@@ -3195,6 +3173,28 @@
             ]
           }
         ]
+      },
+      {
+        "dummy": true,
+        "trigger": "gunner18",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "catapult_01",
+        "allowableDelta": 360.0,
+        "turret": {
+          "head": "catapult_01",
+          "gun": "catapult_01"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
       }
     ]
   },
@@ -4929,28 +4929,6 @@
               }
             },
             {
-              "dummy": true,
-              "trigger": "gunner18",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "catapult_01",
-              "allowableDelta": 360.0,
-              "turret": {
-                "head": "catapult_01",
-                "gun": "catapult_01"
-              },
-              "limits": {
-                "yaw": [
-                  0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
-            },
-            {
               "trigger": "gunner16",
               "triggerGroup": "torpedoes",
               "external": true,
@@ -5086,6 +5064,28 @@
                   ]
                 }
               ]
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner18",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "catapult_01",
+              "allowableDelta": 360.0,
+              "turret": {
+                "head": "catapult_01",
+                "gun": "catapult_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
             },
             {
               "trigger": "mines",
@@ -6190,28 +6190,6 @@
               }
             },
             {
-              "dummy": true,
-              "trigger": "gunner18",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "catapult_01",
-              "allowableDelta": 360.0,
-              "turret": {
-                "head": "catapult_01",
-                "gun": "catapult_01"
-              },
-              "limits": {
-                "yaw": [
-                  0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
-            },
-            {
               "trigger": "gunner16",
               "triggerGroup": "torpedoes",
               "external": true,
@@ -6349,7 +6327,29 @@
               ]
             },
             {
+              "dummy": true,
               "trigger": "gunner18",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "catapult_01",
+              "allowableDelta": 360.0,
+              "turret": {
+                "head": "catapult_01",
+                "gun": "catapult_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner19",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",

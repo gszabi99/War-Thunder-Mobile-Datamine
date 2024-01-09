@@ -56,6 +56,7 @@
   "minRelativeTankCameraThreshold": 1.33,
   "tank_smoke_screen_system_mod": true,
   "drowningCheckHeightMultiplier": 0.7,
+  "rearmTimeOnField": 45.0,
   "rearmSmokeTimeOnField": 60.0,
   "dm_for_shop": {
     "armorThicknessFront": [

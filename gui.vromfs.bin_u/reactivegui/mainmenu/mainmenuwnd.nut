@@ -262,9 +262,10 @@ let toBattleButtonPlace = @() {
   flow = FLOW_VERTICAL
   children = [
     {
+      pos = [saBorders[0] * 0.5, 0]
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
-      padding = [ hdpx(24), 0, hdpx(12), 0 ]
+      padding = [ hdpx(24), saBorders[0] * 0.5, hdpx(12), saBorders[0] * 0.5 ]
       texOffs = [0 , gradDoubleTexOffset]
       screenOffs = [0, hdpx(70)]
       color = 0x50000000

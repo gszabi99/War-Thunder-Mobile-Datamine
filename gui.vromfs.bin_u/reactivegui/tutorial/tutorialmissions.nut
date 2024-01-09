@@ -18,7 +18,7 @@ let firstBattleTutor = Computed(@() getFirstBattleTutor(curCampaign.value))
 let forceTutorTankMissionV2 = mkWatched(persist, "forceTutorTankMissionV2", null)
 let tutorialMissions = Computed(@() {
   tutorial_ships_1 = "tutorial_ship_basic"
-  tutorial_tanks_1 = (forceTutorTankMissionV2.value ?? abTests.value?.tutorialTankMissionV2 ?? false) ? "tutorial_tank_basic_v2" : "tutorial_tank_basic"
+  tutorial_tanks_1 = (forceTutorTankMissionV2.value ?? abTests.value?.tutorialTankMissionV2) == "true" ? "tutorial_tank_basic_v2" : "tutorial_tank_basic"
 })
 let started = mkWatched(persist, "started", null)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
@@ -87,8 +87,10 @@ needForceStartTutorial.subscribe(@(v) v ? startTutor(firstBattleTutor.value) : n
 
 register_command(@() isDebugMode(!isDebugMode.value), "debug.first_battle_tutorial")
 register_command(function() {
-  forceTutorTankMissionV2.set(forceTutorTankMissionV2.get() != null ? null
-  : !abTests.value?.tutorialTankMissionV2)
+  forceTutorTankMissionV2.set(forceTutorTankMissionV2.get() != null
+    ? null
+    : (abTests.value?.tutorialTankMissionV2 == "true" ? "false" : "true")
+  )
   dlog("tutorialMissions", tutorialMissions.value) // warning disable: -forbidden-function
 }, "debug.abTests.tutorialTankMission")
 

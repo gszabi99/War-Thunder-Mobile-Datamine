@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { subscribe } = require("eventbus")
-let { activeUnlocks, unlockRewardsInProgress, receiveUnlockRewards
+let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
@@ -9,6 +9,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let BP_GOODS_ID = "battle_pass"
+let BP_PROGRESS_UNLOCK_ID = "battlepass_points_to_progress"
 
 let battlePassOpenCounter = mkWatched(persist, "battlePassOpenCounter", 0)
 let isBPPurchaseWndOpened = mkWatched(persist, "isBPPurchaseWndOpened", false)
@@ -20,8 +21,9 @@ let seasonNumber = Computed(@() userstatStats.value?.stats.season["$index"] ?? 0
 let seasonName = Computed(@() loc($"events/name/season_{seasonNumber.value}"))
 let seasonEndTime = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
 
-let bpProgressUnlock = Computed(@() activeUnlocks.value?["battlepass_points_to_progress"])
+let bpProgressUnlock = Computed(@() activeUnlocks.value?[BP_PROGRESS_UNLOCK_ID])
 let pointsPerStage   = Computed(@() bpProgressUnlock.value?.stages[0].progress ?? 1)
+let bpLevelPrice = Computed(@() getUnlockPrice(bpProgressUnlock.get()))
 
 let bpFreeRewardsUnlock = Computed(@()
   activeUnlocks.value.findvalue(@(unlock) "battle_pass_free" in unlock?.meta))
@@ -31,9 +33,9 @@ let bpPurchasedUnlock = Computed(@()
   activeUnlocks.value.findvalue(@(unlock) "battlepas_purchased" in unlock?.meta))
 
 let isBpRewardsInProgress = Computed(@()
-  bpFreeRewardsUnlock.value?.name in unlockRewardsInProgress.value
-    || bpPaidRewardsUnlock.value?.name in unlockRewardsInProgress.value
-    || bpPurchasedUnlock.value?.name in unlockRewardsInProgress.value)
+  bpFreeRewardsUnlock.value?.name in unlockInProgress.value
+    || bpPaidRewardsUnlock.value?.name in unlockInProgress.value
+    || bpPurchasedUnlock.value?.name in unlockInProgress.value)
 
 let battlePassGoods = Computed(@() shopGoods.value?[BP_GOODS_ID])
 
@@ -62,12 +64,14 @@ let function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV) {
   return stages.map(function(stage, idx) {
     let { progress = 0 } = stage
     let isReceived = idx < lastRewardedStage
+    let canBuyLevel = (curStageV + 1) == progress
     return {
       progress
       rewards = stage?.rewards ?? {}
       unlockName = name
       isPaid
       isReceived
+      canBuyLevel
       canReceive = !isReceived && isActive && hasReward && curStageV > progress - 1
     }
   })
@@ -83,6 +87,7 @@ let mkBpStagesList = @() Computed(function() {
     let { isReceived, canReceive } = purchaseStages[0]
     res.insert(0, purchaseStages[0].__merge({
       progress = 0
+      canBuyLevel = false
       canReceive = !isDebugBp.value ? canReceive
         : (!isReceived && !canReceive)
     }))
@@ -149,6 +154,19 @@ let function receiveBpRewards(progress) {
   receiveBpRewardsImpl(fullList)
 }
 
+let function buyBPLevel() {
+  let price = bpLevelPrice.get()
+  if ((bpProgressUnlock.get()?.periodic == true || !bpProgressUnlock.get()?.isCompleted ) && price.price > 0) {
+    buyUnlock(BP_PROGRESS_UNLOCK_ID, curStage.get() + 1, price.currency, price.price,
+      { onSuccessCb = { id = "battlePass.buyUnlock" }})
+  }
+}
+
+subscribe("battlePass.buyUnlock", function(_) {
+  receiveBpRewards(curStage.get() + 1)
+})
+
+
 isBPPurchaseWndOpened.subscribe(@(v) v ? sendBpBqEvent("bp_purchase_open") : null)
 
 register_command(@() isDebugBp.set(!isDebugBp.get()), "ui.debug.battlePass")
@@ -162,6 +180,7 @@ return {
   closeBPPurchaseWnd = @() isBPPurchaseWndOpened(false)
   receiveBpRewards
   sendBpBqEvent
+  buyBPLevel
 
   bpPaidRewardsUnlock
   bpPurchasedUnlock
@@ -178,6 +197,9 @@ return {
   pointsCurStage
   bpProgressUnlock
   pointsPerStage
+  bpLevelPrice
+  isBPLevelPurchaseInProgress = Computed(@() unlockInProgress.get().len() > 0)
+  BP_PROGRESS_UNLOCK_ID
 
   seasonNumber
   seasonName

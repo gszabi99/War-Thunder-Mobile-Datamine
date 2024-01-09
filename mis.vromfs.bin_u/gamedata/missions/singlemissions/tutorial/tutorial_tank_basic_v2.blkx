@@ -153,7 +153,7 @@
         "triggerEnable": {
           "target": [
             "camera_hint",
-            "player_respawn"
+            "player_respawn_1"
           ]
         },
         "hudElementEnlarge": {
@@ -492,10 +492,10 @@
           "oriented": false,
           "ignoreDifficulty": false,
           "scale": 0.0,
-          "target": "waypoint01_underground"
+          "target": "waypoint01"
         },
         "wait": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "else_actions": {}
@@ -526,37 +526,6 @@
         }
       },
       "actions": {
-        "bigQueryAddRecord": {
-          "params": "",
-          "event": "task 3/9: first waypoint",
-          "name": ""
-        },
-        "triggerDisable": [
-          {
-            "target": "timing_rec_driving_01"
-          },
-          {
-            "target": [
-              "driving_player_moved",
-              "driving_hint_check_for_arrows",
-              "driving_hint_check_for_stick"
-            ]
-          }
-        ],
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "",
-          "action": "hideCur",
-          "shouldFadeOut": false,
-          "time": -1.0,
-          "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false
-        },
         "unitPlayEffect": [
           {
             "effect_type": "specify",
@@ -610,7 +579,7 @@
             "oriented": false,
             "ignoreDifficulty": false,
             "scale": 0.0,
-            "target": "waypoint01_underground"
+            "target": "waypoint01"
           },
           {
             "visible": true,
@@ -621,8 +590,39 @@
             "target": "waypoint02"
           }
         ],
+        "bigQueryAddRecord": {
+          "params": "",
+          "event": "task 3/9: first waypoint",
+          "name": ""
+        },
+        "triggerDisable": [
+          {
+            "target": "timing_rec_driving_01"
+          },
+          {
+            "target": [
+              "driving_player_moved",
+              "driving_hint_check_for_arrows",
+              "driving_hint_check_for_stick"
+            ]
+          }
+        ],
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "",
+          "action": "hideCur",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "shouldBlink": false
+        },
         "wait": {
-          "time": 0.5
+          "time": 0.25
         },
         "triggerEnable": {
           "target": "driving_reach_waypoint2"
@@ -721,10 +721,16 @@
           }
         ],
         "wait": {
-          "time": 0.5
+          "time": 0.25
         },
         "triggerEnable": {
-          "target": "driving_reach_waypoint3"
+          "target": [
+            "driving_reach_waypoint3",
+            "player_respawn_2"
+          ]
+        },
+        "triggerDisable": {
+          "target": "player_respawn_1"
         }
       },
       "else_actions": {}
@@ -786,10 +792,16 @@
           "target": "waypoint03"
         },
         "wait": {
-          "time": 0.5
+          "time": 0.25
         },
         "triggerEnable": {
-          "target": "driving_proceed_to_fire_range"
+          "target": [
+            "driving_proceed_to_fire_range",
+            "player_respawn_3"
+          ]
+        },
+        "triggerDisable": {
+          "target": "player_respawn_2"
         }
       },
       "else_actions": {}
@@ -819,10 +831,10 @@
         ],
         "wait": [
           {
-            "time": 0.5
+            "time": 0.25
           },
           {
-            "time": 0.5
+            "time": 0.1
           }
         ],
         "unitPlayEffect": {
@@ -969,30 +981,6 @@
           "object_var_value": 0,
           "object": "player",
           "speed": 10.0
-        },
-        "__unitMoveTo": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "waypoint04",
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "follow_target": false,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": false,
-          "object": "player",
-          "move_type": "teleport",
-          "lookat": "target_tank02"
         },
         "triggerEnable": [
           {
@@ -3133,7 +3121,7 @@
       },
       "else_actions": {}
     },
-    "player_respawn": {
+    "player_respawn_1": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -3181,7 +3169,17 @@
             "object_var_value": 0,
             "object": "player"
           }
-        ]
+        ],
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "player",
+          "target": "battle_area_player"
+        }
       },
       "actions": {
         "missionSetFade": [
@@ -3220,10 +3218,262 @@
             0.0
           ],
           "object": "player",
-          "target": "player_respawn"
+          "target": "player_respawn_1"
         },
         "unitMoveTo": {
-          "target": "player_respawn",
+          "target": "player_respawn_1",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": true,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "player",
+          "move_type": "teleport",
+          "lookat": "waypoint01"
+        }
+      },
+      "else_actions": {}
+    },
+    "player_respawn_2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": [
+          {
+            "object_type": "isKilled",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player"
+          },
+          {
+            "object_type": "isUseless",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player"
+          },
+          {
+            "object_type": "isInAir",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player"
+          }
+        ],
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "player",
+          "target": "battle_area_player"
+        }
+      },
+      "actions": {
+        "missionSetFade": [
+          {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.5
+          },
+          {
+            "mode": "fadeIn",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.5
+          }
+        ],
+        "wait": [
+          {
+            "time": 0.6
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "player",
+          "target": "player_respawn_2"
+        },
+        "unitMoveTo": {
+          "target": "player_respawn_2",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": true,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "player",
+          "move_type": "teleport",
+          "lookat": "waypoint01"
+        }
+      },
+      "else_actions": {}
+    },
+    "player_respawn_3": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": [
+          {
+            "object_type": "isKilled",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player"
+          },
+          {
+            "object_type": "isUseless",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player"
+          },
+          {
+            "object_type": "isInAir",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player"
+          }
+        ],
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "player",
+          "target": "battle_area_player"
+        }
+      },
+      "actions": {
+        "missionSetFade": [
+          {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.5
+          },
+          {
+            "mode": "fadeIn",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.5
+          }
+        ],
+        "wait": [
+          {
+            "time": 0.6
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "player",
+          "target": "player_respawn_3"
+        },
+        "unitMoveTo": {
+          "target": "player_respawn_3",
           "follow_target": false,
           "teleportHeightType": "target",
           "useUnitHeightForTele": false,
@@ -3319,7 +3569,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "player",
-          "target": "battle_area"
+          "target": "battle_area_player"
         }
       },
       "actions": {
@@ -3359,7 +3609,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "player",
-          "target": "battle_area"
+          "target": "battle_area_player"
         }
       },
       "actions": {
@@ -6413,7 +6663,7 @@
             "speed": 50.0
           },
           "wait": {
-            "time": 2.0
+            "time": 1.0
           },
           "unitAttackTarget": {
             "playerAttracted": false,
@@ -6452,7 +6702,7 @@
         "actions": {
           "wait": [
             {
-              "time": 0.3
+              "time": 0.1
             },
             {
               "time": 2.0
@@ -6531,7 +6781,7 @@
               "time": 0.1
             },
             {
-              "time": 1.5
+              "time": 1.2
             }
           ],
           "unitDamage": {
@@ -6599,6 +6849,9 @@
           }
         },
         "actions": {
+          "wait": {
+            "time": 1.0
+          },
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "t2_ai_decor_02",
@@ -6642,7 +6895,7 @@
           },
           "wait": [
             {
-              "time": 0.2
+              "time": 0.1
             },
             {
               "time": 2.0
@@ -6667,7 +6920,7 @@
                 15.0
               ],
               "target": "t1_ai_decor_02",
-              "explodeAmmo": true,
+              "explodeAmmo": false,
               "doExplosion": true
             },
             {
@@ -7168,9 +7421,9 @@
         "name": "player",
         "tm": [
           [
-            0.986013,
+            0.983904,
             0.0,
-            -0.166673
+            -0.178699
           ],
           [
             0.0,
@@ -7178,14 +7431,14 @@
             0.0
           ],
           [
-            0.166673,
+            0.178699,
             0.0,
-            0.986013
+            0.983904
           ],
           [
-            1930.32,
+            1966.41,
             9.90897,
-            2574.49
+            2560.11
           ]
         ],
         "unit_class": "us_m4_sherman_tutorial",
@@ -7802,9 +8055,9 @@
             -0.767805
           ],
           [
-            2212.5,
+            2214.94,
             13.0,
-            2488.93
+            2492.43
           ]
         ],
         "unit_class": "germ_pzkpfw_IV_ausf_F2_tutorial",
@@ -8589,18 +8842,18 @@
         ],
         [
           0.0,
-          30.0,
-          0.0
+          1.91484,
+          29.9388
         ],
         [
           0.0,
-          0.0,
-          30.0
+          -29.9388,
+          1.91484
         ],
         [
-          2143.36,
-          12.6771,
-          2531.55
+          2064.01,
+          11.2706,
+          2540.33
         ]
       ],
       "objLayer": 0,
@@ -8637,35 +8890,6 @@
         "forceReplication": true
       }
     },
-    "waypoint01_underground": {
-      "type": "Sphere",
-      "tm": [
-        [
-          10.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          10.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          10.0
-        ],
-        [
-          2206.1,
-          2.13104,
-          2472.77
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
     "waypoint04_underground": {
       "type": "Sphere",
       "tm": [
@@ -8695,13 +8919,13 @@
         "forceReplication": true
       }
     },
-    "player_respawn": {
+    "player_respawn_1": {
       "type": "Sphere",
       "tm": [
         [
-          7.2175,
+          9.73168,
           0.0,
-          -6.92154
+          -2.30096
         ],
         [
           0.0,
@@ -8709,14 +8933,14 @@
           0.0
         ],
         [
-          6.92154,
+          2.30096,
           0.0,
-          7.2175
+          9.73168
         ],
         [
-          2145.57,
+          2063.58,
           12.751,
-          2532.56
+          2540.13
         ]
       ],
       "objLayer": 0,
@@ -8724,13 +8948,13 @@
         "forceReplication": true
       }
     },
-    "battle_area": {
+    "battle_area_player": {
       "type": "Box",
       "tm": [
         [
-          -470.012,
+          -212.109,
           0.0,
-          0.0
+          188.242
         ],
         [
           0.0,
@@ -8738,14 +8962,14 @@
           0.0
         ],
         [
+          -99.2968,
           0.0,
-          0.0,
-          -470.012
+          -111.886
         ],
         [
-          2154.37,
-          2.46143,
-          2442.4
+          2096.37,
+          10.5154,
+          2533.63
         ]
       ],
       "objLayer": 0,
@@ -9104,33 +9328,6 @@
       "objLayer": 0,
       "props": {}
     },
-    "decor_target_area_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          6.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          6.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          6.0
-        ],
-        [
-          2182.62,
-          13.3611,
-          2474.53
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
     "target_03_out": {
       "type": "Sphere",
       "tm": [
@@ -9258,9 +9455,9 @@
           20.0
         ],
         [
-          2177.89,
-          12.9447,
-          2503.92
+          2161.47,
+          12.8562,
+          2515.8
         ]
       ],
       "objLayer": 0,
@@ -9287,9 +9484,9 @@
           20.0
         ],
         [
-          2188.28,
+          2190.05,
           13.25,
-          2479.61
+          2484.3
         ]
       ],
       "objLayer": 0,
@@ -9301,19 +9498,19 @@
       "type": "Sphere",
       "tm": [
         [
-          173.603,
+          141.309,
           0.0,
           0.0
         ],
         [
           0.0,
-          173.603,
+          141.309,
           0.0
         ],
         [
           0.0,
           0.0,
-          173.603
+          141.309
         ],
         [
           2119.34,
@@ -9346,6 +9543,87 @@
           2177.82,
           12.6628,
           2514.44
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -350.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          70.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -350.0
+        ],
+        [
+          2099.69,
+          15.3019,
+          2506.02
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "player_respawn_2": {
+      "type": "Sphere",
+      "tm": [
+        [
+          7.50836,
+          0.0,
+          -9.10299
+        ],
+        [
+          0.0,
+          11.8,
+          0.0
+        ],
+        [
+          9.10299,
+          0.0,
+          7.50836
+        ],
+        [
+          2161.6,
+          12.8,
+          2515.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "player_respawn_3": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.712922,
+          0.0,
+          -9.47321
+        ],
+        [
+          0.0,
+          9.5,
+          0.0
+        ],
+        [
+          9.47321,
+          0.0,
+          -0.712922
+        ],
+        [
+          2187.0,
+          12.85,
+          2486.35
         ]
       ],
       "objLayer": 0,

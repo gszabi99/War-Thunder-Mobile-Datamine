@@ -1,71 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
-let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
+let { subscribe } = require("eventbus")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { getCountryCode } = require("auth_wt")
-let ads = require("android.ads")
-let { json_to_string, parse_json } = require("json")
+let { parse_json } = require("json")
 let logA = log_with_prefix("[ADS] ")
 let { is_android } = require("%sqstd/platform.nut")
-let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT, debugAdsWndParams
+let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
+  isAnyAdsButtonAttached
 } = require("%rGui/ads/adsInternalState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let sendAdsBqEvent = require("%rGui/ads/sendAdsBqEvent.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let isDebug = !is_android
-let DBG_PROVIDER = "pc_debug"
-let debugAdsInited = persist("debugAdsInited", @() {})
-local isDebugAdsLoaded = false
-let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK
+let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
+let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
+  isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
+  isAdsLoaded, loadAds, showAds, requestConsent, showConsent
 } = ads
-let { isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
-  isAdsLoaded, loadAds, showAds
-} = !isDebug ? ads
-  : {
-      isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
-      getProvidersStatus = @() json_to_string(
-        debugAdsInited.map(@(isInited, provider) { provider, isInited })
-          .values())
-      setPriorityForProvider = @(_, __) null
-      function addProviderInitWithPriority(provider, _, __) {
-        debugAdsInited[provider] <- true
-        setTimeout(0.1, @() send("android.ads.onInit", { status = ADS_STATUS_OK, provider }))
-      }
-      isAdsLoaded = @() isDebugAdsLoaded
-      function loadAds() {
-        isDebugAdsLoaded = false
-        setTimeout(2.0, function() {
-          isDebugAdsLoaded = false
-          send("android.ads.onLoad",  //simulate fail ads
-            { status = ADS_STATUS_DISMISS, provider = "pc_debug_fail" })
-          setTimeout(3.0, function() {
-            isDebugAdsLoaded = debugAdsInited.findvalue(@(v) v) ?? false
-            send("android.ads.onLoad",
-              { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED, provider = DBG_PROVIDER })
-          }, {})
-        }, {})
-      }
-      function showAds() {
-        send("android.ads.onShow", { status = ADS_STATUS_SHOWN, provider = DBG_PROVIDER })
-        debugAdsWndParams({
-          rewardEvent = "android.ads.onReward"
-          rewardData = { amount = 1, type = "debug", provider = DBG_PROVIDER }
-          finishEvent = "android.ads.onShow"
-          finishData = { status = ADS_STATUS_DISMISS, provider = DBG_PROVIDER }
-        })
-      }
-    }
+
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
-let needAdsLoadExt = Computed(@() isInited.value && needAdsLoad.value && !isLoaded.value)
 let allProviders = keepref(Computed(@() !isLoggedIn.value ? {}
   : (serverConfigs.value?.adsCfg.android ?? {})))
 
-let function initProviders(providers) {
+let consent = hardPersistWatched("adsAndroid.consent", null)
+let isConsentShowed = hardPersistWatched("adsAndroid.isConsentShowed", false)
+let canLoad = Computed(@() consent.get()?.canRequest ?? false)
+let needAdsLoadExt = Computed(@() canLoad.get() && isInited.get() && needAdsLoad.get() && !isLoaded.get())
+let needOpenContest = keepref(Computed(@() !isConsentShowed.get()
+  && isAnyAdsButtonAttached.get()))
+
+let function initProviders() {
+  if (!canLoad.get())
+    return
+  let providers = allProviders.get()
   if (providers.len() == 0)
     return
   let countryCode = getCountryCode()
@@ -88,15 +60,21 @@ let function initProviders(providers) {
       addProviderInitWithPriority(id, p.key, priority)
   }
 }
-initProviders(allProviders.value)
-allProviders.subscribe(initProviders)
-
+initProviders()
+allProviders.subscribe(@(_) initProviders())
+canLoad.subscribe(@(_) initProviders())
 
 let statusNames = {}
+let contestNames = {}
 foreach(id, val in ads)
-  if (type(val) == "integer" && id.startswith("ADS_STATUS_"))
+  if (type(val) != "integer")
+    continue
+  else if (id.startswith("ADS_STATUS_"))
     statusNames[val] <- id
+  else if (id.startswith("CONSENT_"))
+    contestNames[val] <- id
 let getStatusName = @(v) statusNames?[v] ?? v
+let getContestName = @(v) contestNames?[v] ?? v
 
 subscribe("android.ads.onInit", function(msg) {
   let { status, provider } = msg
@@ -105,6 +83,19 @@ subscribe("android.ads.onInit", function(msg) {
   logA($"Provider {provider} inited")
   isInited(true)
 })
+
+subscribe("android.ads.onConsentRequest", function(msg) {
+  logA("Request consent result = ", msg.__merge({ status = getContestName(msg?.status) }))
+  consent.set(msg)
+})
+subscribe("android.ads.onShowConsent", function(msg) {
+  logA("Show consent result = ", msg.__merge({ status = getContestName(msg?.status) }))
+  consent.set(msg)
+})
+
+if (consent.get() == null)
+  requestConsent(false)
+needOpenContest.subscribe(@(v) v ? requestConsent(true) : null)
 
 local isLoadStarted = false
 let function startLoading() {
@@ -181,9 +172,17 @@ let function showAdsForReward(rInfo) {
   showAds()
 }
 
+let function onTryShowNotAvailableAds() {
+  if (canLoad.get())
+    return false
+  showConsent()
+  return true
+}
+
 return {
-  isAdsAvailable = isInited
+  isAdsAvailable = Computed(@() true)
   isAdsVisible
   canShowAds = isLoaded
   showAdsForReward
+  onTryShowNotAvailableAds
 }

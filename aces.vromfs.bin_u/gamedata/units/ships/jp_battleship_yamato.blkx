@@ -760,7 +760,7 @@
           0.0
         ],
         "area": 70.0,
-        "deflection": 38.0,
+        "deflection": 35.0,
         "dmPart": "steering_gear_01_dm"
       }
     }
@@ -781,7 +781,7 @@
       40.0,
       -140.0
     ],
-    "detectionHeight": 44.0
+    "detectionHeight": 42.0
   },
   "sound": {
     "EngineName": "engine_shipmid01",
@@ -7993,8 +7993,8 @@
       600.0
     ],
     "additionalWaterDeathThreshold": 100000000.0,
-    "additionalWaterCoverPartsThreshold": 50000000.0,
-    "additionalWaterShouldDiePercent": 0.19,
+    "additionalWaterCoverPartsThreshold": 15000000.0,
+    "additionalWaterShouldDiePercent": 0.15,
     "fatalBreachDrownTime": 30.0,
     "maxHeelingAngle": 36.0,
     "maxHeelingTime": 50.0,

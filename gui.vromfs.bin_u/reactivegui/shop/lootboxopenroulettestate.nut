@@ -17,6 +17,7 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let MIN_REWARDS_LEN = 100
 let MIN_REWARDS_CYCLE = 15
 let MAX_MULTIREWARD_OPEN = 10
+let MAX_ROULETTE_OPEN = 50
 let openConfig = mkWatched(persist, "openConfig", null)
 let rouletteOpenResultFull = mkWatched(persist, "rouletteOpenResultFull", null)
 let rouletteOpenIdx = Watched(0)
@@ -46,7 +47,12 @@ let curJackpotInfo = Computed(@() openConfig.value?.jackpots[jackpotIdxInfo.valu
 let lastJackpotIdx = Computed(@() openConfig.value?.jackpots.reduce(@(res, j) max(res, j.lastOpenIdx), 0) ?? 0)
 
 let nextOpenId = Computed(@() lootboxes.value.roulette.findindex(@(_) true))
-let nextOpenCount = Computed(@() min(lootboxes.value.roulette?[nextOpenId.value] ?? 0, MAX_MULTIREWARD_OPEN))
+let nextOpenCount = Computed(function() {
+  let count = lootboxes.value.roulette?[nextOpenId.value] ?? 0
+  if (count > MAX_ROULETTE_OPEN)
+    return count //open all at once without roulette
+  return min(count, MAX_MULTIREWARD_OPEN)
+})
 let needOpen = Computed(@() !rouletteOpenId.value
   && !!nextOpenId.value
   && canOpenWithWindow.value
@@ -278,6 +284,11 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
   if (openConfig.value == null || context?.mainId != rouletteOpenId.value)
     return
 
+  if ((context?.openCount ?? 0) > MAX_ROULETTE_OPEN) {
+    closeRoulette()
+    return
+  }
+
   let { jackpots = [] } = openConfig.value
 
   let { jackpotIdx = -1 } = context
@@ -312,7 +323,7 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
 let function requestOpenCurLootbox() {
   if (nextOpenId.value == rouletteOpenId.value)
     open_lootbox_several(rouletteOpenId.value, nextOpenCount.value,
-      { id = "onRouletteOpenLootbox", jackpotIdx = -1, mainId = rouletteOpenId.value })
+      { id = "onRouletteOpenLootbox", jackpotIdx = -1, mainId = rouletteOpenId.get(), openCount = nextOpenCount.get() })
 }
 
 let function logOpenConfig() {

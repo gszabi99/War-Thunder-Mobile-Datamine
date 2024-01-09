@@ -63,16 +63,14 @@ def repair_meta_parts(var unit_dm : DamageableVisualModel?;
                       max_hp : float;
                       repair_interval : float) : bool
   let metaPartsSize = length(unit_dm.metaParts)
-  var anyMetapartNeedRepair = true
+  var anyMetapartNeedRepair = false
   for i in range(0, metaPartsSize)
     assume props = unit_dm.metaPartProps[i]
     assume metaPart = unit_dm.metaParts[i]
 
     if rel_hp_fixed_to_float(metaPart.hp) >= max_hp
-      anyMetapartNeedRepair = false
       continue
-    else
-      anyMetapartNeedRepair = true
+    anyMetapartNeedRepair = true
 
     let relHpAfterRepair = min(rel_hp_fixed_to_float(metaPart.hp) + repair_speed * repair_interval, max_hp)
     metaPart |> setHp(rel_hp_float_to_fixed_ceil(relHpAfterRepair))

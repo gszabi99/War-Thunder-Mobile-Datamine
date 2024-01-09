@@ -20,6 +20,8 @@ let advertRewardsTimes = keepref(Computed(function() {
 }))
 let rewardInfo = mkWatched(persist, "rewardInfo", null)
 let debugAdsWndParams = Watched(null)
+let attachedAdsButtons = Watched(0)
+let isAnyAdsButtonAttached = Computed(@() attachedAdsButtons.get() > 0)
 
 needAdsLoad.subscribe(@(v) logA(v ? "Need to prepare ads load" : "no more need to load ads now"))
 
@@ -55,4 +57,6 @@ return {
   onFinishShowAds
   cancelReward
   debugAdsWndParams
+  attachedAdsButtons
+  isAnyAdsButtonAttached
 }

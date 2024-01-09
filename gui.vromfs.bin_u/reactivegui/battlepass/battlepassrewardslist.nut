@@ -3,10 +3,12 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bpCardStyle, bpCardPadding, bpCardGap, bpCardFooterHeight, bpCardHeight, bpCardMargin
 } = require("bpCardsStyle.nut")
 let { mkRewardPlate, getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
-let { textButtonBattle } = require("%rGui/components/textButton.nut")
-let { receiveBpRewards, isBpRewardsInProgress, selectedStage } = require("battlePassState.nut")
+let { textButtonBattle, textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
+let { receiveBpRewards, isBpRewardsInProgress, selectedStage, bpLevelPrice, isBPLevelPurchaseInProgress } = require("battlePassState.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let buyBPLevelMsg = require("buyBPLevelMsg.nut")
 
 let rewardBoxSize = bpCardStyle.boxSize
 let emptySlot = { size = array(2, rewardBoxSize) }
@@ -137,7 +139,7 @@ let hoverCard = @(stateFlags) @() {
 
 let function mkCard(stageInfo) {
   let stateFlags = Watched(0)
-  let { canReceive, viewInfo, progress } = stageInfo
+  let { canReceive, viewInfo, progress, canBuyLevel } = stageInfo
   let function onClick(){
     selectedStage(progress)
     if(canReceive)
@@ -145,21 +147,42 @@ let function mkCard(stageInfo) {
   }
   let cardWidth = getRewardPlateSize(viewInfo?.slots ?? 1, bpCardStyle)[0] + 2 * bpCardPadding[1]
   return @(){
-    watch = selectedStage
-    size = [cardWidth, bpCardHeight]
-    rendObj = ROBJ_IMAGE
-    image = bgCard
-
-    behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
-    onClick
-    xmbNode = {}
-    sound = { click  = "click" }
-
+    size = [cardWidth, SIZE_TO_CONTENT]
+    watch = [selectedStage, bpLevelPrice]
+    flow = FLOW_VERTICAL
+    gap = hdpx(10)
+    vplace = ALIGN_TOP
     children = [
-      hoverCard(stateFlags)
-      cardBorder(cardWidth, selectedStage, progress)
-      cardContent(stageInfo, stateFlags)
+      {
+        size = [cardWidth, bpCardHeight]
+        rendObj = ROBJ_IMAGE
+        image = bgCard
+
+        behavior = Behaviors.Button
+        onElemState = @(v) stateFlags(v)
+        onClick
+        xmbNode = {}
+        sound = { click  = "click" }
+
+        children = [
+          hoverCard(stateFlags)
+          cardBorder(cardWidth, selectedStage, progress)
+          cardContent(stageInfo, stateFlags)
+        ]
+      }
+      canBuyLevel && bpLevelPrice.get() != null
+        ? mkSpinnerHideBlock(isBPLevelPurchaseInProgress,
+            textButtonPricePurchaseLow(loc("battlepass/buyLevel"),
+              mkCurrencyComp(bpLevelPrice.get().price, bpLevelPrice.get().currency),
+              @() buyBPLevelMsg(bpLevelPrice.get(), stageInfo),
+              { hotkeys = ["^J:X"]
+                ovr = { size = [SIZE_TO_CONTENT, hdpx(60)]
+                        minWidth = cardWidth
+                        contentPadding = [0, hdpx(20)]
+                      }
+              }),
+            { hplace = ALIGN_CENTER })
+        : null
     ]
   }
 }

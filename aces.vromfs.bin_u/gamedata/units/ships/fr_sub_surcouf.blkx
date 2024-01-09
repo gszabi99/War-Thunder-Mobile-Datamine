@@ -498,6 +498,27 @@
             }
           }
         }
+      },
+      {
+        "name": "steering_gear_01_dm",
+        "onHit": [
+          {
+            "damageType": "generic",
+            "damage": 100.0,
+            "moduleStatusEffect": {
+              "name": "moveControl",
+              "prob": 1.0
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 300.0,
+            "moduleStatusEffect": {
+              "name": "moveControl",
+              "prob": 1.0
+            }
+          }
+        ]
       }
     ]
   },

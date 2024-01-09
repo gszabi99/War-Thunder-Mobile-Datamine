@@ -12,8 +12,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkPlatoonPlateFrame, bgPlatesTranslate
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkGradRankLarge } = require("%rGui/components/gradTexts.nut")
 let { receiveBpRewards, isBpRewardsInProgress, curStage } = require("battlePassState.nut")
-let { textButtonBattle, buttonStyles } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = buttonStyles
+let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 
@@ -105,7 +104,7 @@ let receiveBtn = @(reward) mkSpinnerHideBlock(isBpRewardsInProgress,
 
 let rewardDesc = @(reward) @() {
   watch = curStage
-  size = [hdpx(600), defButtonHeight]
+  size = [flex(), hdpx(40)]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER

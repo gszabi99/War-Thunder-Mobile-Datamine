@@ -5,7 +5,7 @@ let { shopCategoriesCfg, getGoodsType, isGoodsFitToCampaign } = require("shopCom
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isAdsAvailable, canShowAds, showAdsForReward } = require("%rGui/ads/adsState.nut")
+let { isAdsAvailable, canShowAds, showAdsForReward, showNotAvailableAdsMsg } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { playSound } = require("sound_wt")
@@ -29,7 +29,7 @@ let schRewardsByCategory = Computed(function() {
     foreach (gt in c.gtypes)
       listByType[gt] <- list
   }
-  let hasAds = isAdsAvailable
+  let hasAds = isAdsAvailable.get()
   foreach (goods in schRewardsBase.value) {
     if (goods?.isHidden) { // Hidden for shop
       hiddenList.append(goods)
@@ -139,7 +139,7 @@ let function onSchRewardReceive(schReward) {
     showAdsForReward({ schRewardId = schReward.id, cost = schReward?.cost ?? 0, bqId = $"scheduled_{schReward.id}" })
   }
   else
-    openMsgBox({ text = loc("msg/adsNotReadyYet") })
+    showNotAvailableAdsMsg()
 }
 
 subscribe("adsRewardApply", function(data) {

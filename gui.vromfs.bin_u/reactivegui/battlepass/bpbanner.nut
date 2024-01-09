@@ -8,7 +8,7 @@ let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
 let { translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
-let bannerIconSize = [hdpx(216), hdpx(127)]
+let bannerIconSize = [hdpxi(216), hdpxi(127)]
 let buttonSize = [translucentButtonsHeight * 1.5, translucentButtonsHeight]
 let horPadding = hdpx(80)
 
@@ -36,8 +36,8 @@ return @() {
           rendObj = ROBJ_9RECT
           image = gradTranspDoubleSideX
           texOffs = [0, gradDoubleTexOffset]
-          screenOffs = [0, hdpx(300)]
-          color = 0xA5000000
+          screenOffs = [0, hdpx(130)]
+          color = 0x90000000
           padding = [hdpx(20), horPadding, hdpx(20), horPadding ]
           flow = FLOW_VERTICAL
           gap = hdpx(20)
@@ -54,7 +54,7 @@ return @() {
                   rendObj = ROBJ_9RECT
                   image = gradTranspDoubleSideX
                   texOffs = [0, gradDoubleTexOffset]
-                  screenOffs = [0, hdpx(300)]
+                  screenOffs = [0, hdpx(130)]
                   color = 0xA5FF2B00
                   pos = [0,  hdpx(-6)]
                 }

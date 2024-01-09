@@ -1524,6 +1524,7 @@
       "amount_warpoints": 250,
       "isMultiStage": true,
       "isAfterFlight": false,
+      "userstat_stat_id": "ship_anti_main_caliber",
       "stage": [
         {
           "param": 20,
@@ -1570,6 +1571,7 @@
       "amount_warpoints": 250,
       "isMultiStage": true,
       "isAfterFlight": false,
+      "userstat_stat_id": "ship_anti_steering",
       "stage": [
         {
           "param": 15,
@@ -1616,6 +1618,7 @@
       "amount_warpoints": 250,
       "isMultiStage": true,
       "isAfterFlight": false,
+      "userstat_stat_id": "ship_bomberman",
       "stage": {
         "param": 1,
         "amount_exp": 0,
@@ -1642,6 +1645,7 @@
       "type": "streak",
       "amount_warpoints": 100,
       "isAfterFlight": false,
+      "userstat_stat_id": "ship_air_recon",
       "mode": {
         "type": "detectUnits",
         "condition": {
@@ -1655,6 +1659,7 @@
       "amount_exp": 0,
       "amount_warpoints": 250,
       "isAfterFlight": true,
+      "userstat_stat_id": "ship_healer",
       "mode": {
         "type": "bestHealer",
         "minHp": 100,
@@ -1675,6 +1680,7 @@
       "amount_warpoints": 250,
       "isMultiStage": true,
       "isAfterFlight": false,
+      "userstat_stat_id": "ship_sniper_shot",
       "wpA": [
         250.0,
         250.0,
@@ -1733,6 +1739,7 @@
       "amount_exp": 0,
       "amount_warpoints": 300,
       "isAfterFlight": false,
+      "userstat_stat_id": "ship_artillery_master",
       "mode": {
         "type": "damageUnits",
         "maxVal": 300,
@@ -1761,6 +1768,7 @@
       "amount_exp": 0,
       "amount_warpoints": 300,
       "isAfterFlight": false,
+      "userstat_stat_id": "ship_torpedo_master",
       "mode": {
         "type": "damageUnits",
         "maxVal": 300,

@@ -801,8 +801,7 @@
     "TrackSoundPathStudio": "naval/engines",
     "TrackSoundName": "tracks_big",
     "TrackSoundNameCockpit": "tracks_mid_interior",
-    "TrackSoundNameAi": "tracks_ai_big",
-    "turret_turn": "turret_turn_big"
+    "TrackSoundNameAi": "tracks_ai_big"
   },
   "optics": {
     "binoculars": "navy_binoculars"
@@ -12813,8 +12812,8 @@
       10.0
     ],
     "additionalWaterDeathThreshold": 50000000.0,
-    "additionalWaterCoverPartsThreshold": 25000000.0,
-    "additionalWaterShouldDiePercent": 0.16,
+    "additionalWaterCoverPartsThreshold": 13000000.0,
+    "additionalWaterShouldDiePercent": 0.2,
     "fatalBreachDrownTime": 30.0,
     "maxHeelingAngle": 35.0,
     "maxHeelingTime": 40.0,

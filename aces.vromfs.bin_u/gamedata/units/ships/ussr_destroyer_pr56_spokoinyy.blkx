@@ -3633,7 +3633,7 @@
       10.0
     ],
     "additionalWaterDeathThreshold": 9600000.0,
-    "additionalWaterCoverPartsThreshold": 8600000.0,
+    "additionalWaterCoverPartsThreshold": 3000000.0,
     "additionalWaterShouldDiePercent": 0.525,
     "fatalBreachDrownTime": 20.0,
     "maxHeelingAngle": 35.0,

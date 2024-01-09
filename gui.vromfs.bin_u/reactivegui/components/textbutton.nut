@@ -50,8 +50,8 @@ let mkButtonTextMultiline = @(text, override = {}) {
   halign = ALIGN_CENTER
 }.__update(fontTinyAccentedShaded, override)
 
-let mkPriceTextsComp = @(text, priceComp) {
-  flow = FLOW_VERTICAL
+let mkPriceTextsComp = @(text, priceComp, flow = FLOW_VERTICAL) {
+  flow
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   gap = hdpx(3)
@@ -194,4 +194,6 @@ return {
     textButton(text, onClick, mergeStyles(buttonStyles.SECONDARY, styleOvr)) // Green
   textButtonPricePurchase = @(text, priceComp, onClick, styleOvr = null)
     mkCustomButton(mkPriceTextsComp(text, priceComp), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden + Price
-}
+  textButtonPricePurchaseLow = @(text, priceComp, onClick, styleOvr = null)
+    mkCustomButton(mkPriceTextsComp(text, priceComp, FLOW_HORIZONTAL), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden + Price + narrow
+  }

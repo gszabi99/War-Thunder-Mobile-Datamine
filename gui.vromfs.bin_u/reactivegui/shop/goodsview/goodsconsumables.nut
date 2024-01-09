@@ -38,7 +38,7 @@ let mkImg = @(itemId) {
   size = [ imgSize, imgSize ]
   pos = [ 0, -hdpx(91) ]
   rendObj = ROBJ_IMAGE
-  image = Picture(icons[itemId])
+  image = Picture(icons?[itemId] ?? "")
   keepAspect = KEEP_ASPECT_FIT
 }
 

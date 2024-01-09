@@ -8,7 +8,7 @@ let { progressBarRewardSize } = require("rewardsComps.nut")
 let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { canShowAds } = require("%rGui/ads/adsState.nut")
+let { canShowAds, adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { sendBqQuestsSpeedUp } = require("bqQuests.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
@@ -24,11 +24,11 @@ let sectionBtnMaxWidth = hdpx(400)
 let sectionBtnGap = hdpx(10)
 let linkToEventWidth = hdpx(240)
 let iconSize = CS_INCREASED_ICON.iconSize
-let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
+let btnSize = [isWidescreen ? hdpx(300) : hdpx(260), hdpx(90)]
 let childOvr = isWidescreen ? {} : fontSmallShaded
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0], sound = { click  = "meta_get_unlock" } }, childOvr }
-let btnGap = hdpx(20)
+let btnGap = hdpx(10)
 
 let newMark = {
   size  = [SIZE_TO_CONTENT, newMarkH]
@@ -138,7 +138,7 @@ let function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null) {
 }
 
 let function mkAdsBtn(unlock) {
-  let hasAdBudget = Computed(@() adBudget.value > SPEED_UP_AD_COST)
+  let hasAdBudget = Computed(@() adBudget.value >= SPEED_UP_AD_COST)
   let function onClick() {
     if (onWatchQuestAd(unlock))
       sendBqQuestsSpeedUp(unlock)
@@ -165,8 +165,9 @@ let function mkAdsBtn(unlock) {
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_CENTER
-            text = utf8ToUpper(hasAdBudget.value ? loc("quests/addProgress") : loc("playBattles", { count = SPEED_UP_AD_COST }))
-          }.__update(fontTinyAccentedShaded)
+            text = utf8ToUpper(hasAdBudget.value ? loc("quests/addProgress")
+              : SPEED_UP_AD_COST <= 1 ? loc("playOneBattle") : loc("playBattles", { count = SPEED_UP_AD_COST }))
+          }.__update(hasAdBudget.value ? fontTinyShaded : fontTinyAccentedShaded, adsButtonCounter)
         ]
       },
       onClick,

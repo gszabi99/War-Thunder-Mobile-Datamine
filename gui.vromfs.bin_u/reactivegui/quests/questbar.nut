@@ -3,7 +3,7 @@ let { tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { progressBarRewardSize, rewardProgressBarCtor, statsAnimation } = require("rewardsComps.nut")
 let { getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { receiveUnlockRewards, unlockRewardsInProgress } = require("%rGui/unlocks/unlocks.nut")
+let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { sendBqQuestsStage } = require("bqQuests.nut")
 
 
@@ -80,7 +80,7 @@ let function mkStages(progressUnlock) {
   let stagesTotal = stages.len()
   let curStageIdx = stages.findindex(@(s) s.progress >= current)
   let required = stages?[curStageIdx].progress
-  let isRewardInProgress = Computed(@() name in unlockRewardsInProgress.value)
+  let isRewardInProgress = Computed(@() name in unlockInProgress.value)
 
   return {
     size = [flex(), progressBarRewardSize]

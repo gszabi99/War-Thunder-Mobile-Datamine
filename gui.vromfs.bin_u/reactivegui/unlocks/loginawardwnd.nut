@@ -21,7 +21,7 @@ let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset, gradCircularSqCo
 let { textButtonBattle, textButtonPrimary, textButtonCommon, buttonsHGap
 } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { canShowAds } = require("%rGui/ads/adsState.nut")
+let { canShowAds, adsButtonCounter, showNotAvailableAdsMsg } = require("%rGui/ads/adsState.nut")
 let { isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
 let { playSound } = require("sound_wt")
 let { isGamepad } = require("%rGui/activeControls.nut")
@@ -197,13 +197,13 @@ let receiveBtn = textButtonBattle(
 let watchAdsBtn = textButtonPrimary(
   utf8ToUpper(loc("shop/watchAdvert/short")),
   null,
-  btnStyle.__merge({ childOvr = fontVeryTiny })
+  btnStyle.__merge({ childOvr = adsButtonCounter.__merge(fontVeryTiny) })
 )
 
 let watchAdsNotReadyBtn = textButtonCommon(
   utf8ToUpper(loc("shop/watchAdvert/short")),
   null,
-  btnStyle.__merge({ childOvr = fontVeryTiny })
+  btnStyle.__merge({ childOvr = adsButtonCounter.__merge(fontVeryTiny) })
 )
 
 let activePlateButtonBlock = function() {
@@ -229,7 +229,7 @@ let onActivePlateClick = @() isShowUnseenDelayed.value ? null
   : loginAwardUnlock.value?.hasReward ? receiveLoginAward()
   : !hasLoginAwardByAds.value ? null
   : canShowAds.value ? showLoginAwardAds()
-  : null
+  : showNotAvailableAdsMsg()
 
 let function activePlateHotkeyComp() {
   let res = { watch = isGamepad }
