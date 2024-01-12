@@ -170,7 +170,7 @@ let function mkCard(stageInfo) {
           cardContent(stageInfo, stateFlags)
         ]
       }
-      canBuyLevel && bpLevelPrice.get() != null
+      canBuyLevel && bpLevelPrice.get() != null && bpLevelPrice.get().price > 0
         ? mkSpinnerHideBlock(isBPLevelPurchaseInProgress,
             textButtonPricePurchaseLow(loc("battlepass/buyLevel"),
               mkCurrencyComp(bpLevelPrice.get().price, bpLevelPrice.get().currency),

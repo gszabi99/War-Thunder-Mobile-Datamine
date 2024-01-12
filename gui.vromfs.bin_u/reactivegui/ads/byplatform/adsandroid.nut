@@ -1,22 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { getCountryCode } = require("auth_wt")
 let { parse_json } = require("json")
 let logA = log_with_prefix("[ADS] ")
 let { is_android } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
-  isAnyAdsButtonAttached
+  isAnyAdsButtonAttached, providerPriorities, onShowAds
 } = require("%rGui/ads/adsInternalState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let sendAdsBqEvent = require("%rGui/ads/sendAdsBqEvent.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { can_request_ads_consent } = require("%appGlobals/permissions.nut")
 
 let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
-  isAdsLoaded, loadAds, showAds, requestConsent, showConsent
+  isAdsLoaded, loadAds, showAds, requestConsent = null, showConsent = null
 } = ads
 
 
@@ -24,23 +22,22 @@ let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
-let allProviders = keepref(Computed(@() !isLoggedIn.value ? {}
-  : (serverConfigs.value?.adsCfg.android ?? {})))
 
-let consent = hardPersistWatched("adsAndroid.consent", null)
-let isConsentShowed = hardPersistWatched("adsAndroid.isConsentShowed", false)
-let canLoad = Computed(@() consent.get()?.canRequest ?? false)
+let consent = hardPersistWatched("adsAndroid.consent", requestConsent != null ? null
+  : { canRequest = true })
+let isConsentShowed = hardPersistWatched("adsAndroid.isConsentShowed", requestConsent == null)
+let canLoad = Computed(@() (consent.get()?.canRequest ?? false) || !can_request_ads_consent.get())
 let needAdsLoadExt = Computed(@() canLoad.get() && isInited.get() && needAdsLoad.get() && !isLoaded.get())
-let needOpenContest = keepref(Computed(@() !isConsentShowed.get()
+let needOpenConsent = keepref(Computed(@() can_request_ads_consent.get() && !isConsentShowed.get()
   && isAnyAdsButtonAttached.get()))
 
-let function initProviders() {
+function initProviders() {
   if (!canLoad.get())
     return
-  let providers = allProviders.get()
+  let { providers, countryCode } = providerPriorities.get()
   if (providers.len() == 0)
     return
-  let countryCode = getCountryCode()
+
   logA($"Init providers for {countryCode}")
   let pStatus = parse_json(getProvidersStatus())
   let initedProviders = {}
@@ -52,29 +49,27 @@ let function initProviders() {
     if (id not in providers)
       setPriorityForProvider(id, -1) //switch of provider missing in config
 
-  foreach (id, p in providers) {
-    let priority = p?.priorityByRegion[countryCode] ?? p.priority
+  foreach (id, p in providers)
     if (id in initedProviders)
-      setPriorityForProvider(id, priority)
-    else if (priority >= 0)
-      addProviderInitWithPriority(id, p.key, priority)
-  }
+      setPriorityForProvider(id, p.priority)
+    else
+      addProviderInitWithPriority(id, p.key, p.priority)
 }
 initProviders()
-allProviders.subscribe(@(_) initProviders())
+providerPriorities.subscribe(@(_) initProviders())
 canLoad.subscribe(@(_) initProviders())
 
 let statusNames = {}
-let contestNames = {}
+let consentNames = {}
 foreach(id, val in ads)
   if (type(val) != "integer")
     continue
   else if (id.startswith("ADS_STATUS_"))
     statusNames[val] <- id
   else if (id.startswith("CONSENT_"))
-    contestNames[val] <- id
+    consentNames[val] <- id
 let getStatusName = @(v) statusNames?[v] ?? v
-let getContestName = @(v) contestNames?[v] ?? v
+let getConsentName = @(v) consentNames?[v] ?? v
 
 subscribe("android.ads.onInit", function(msg) {
   let { status, provider } = msg
@@ -85,17 +80,17 @@ subscribe("android.ads.onInit", function(msg) {
 })
 
 subscribe("android.ads.onConsentRequest", function(msg) {
-  logA("Request consent result = ", msg.__merge({ status = getContestName(msg?.status) }))
+  logA("Request consent result = ", msg.__merge({ status = getConsentName(msg?.status) }))
   consent.set(msg)
 })
 subscribe("android.ads.onShowConsent", function(msg) {
-  logA("Show consent result = ", msg.__merge({ status = getContestName(msg?.status) }))
+  logA("Show consent result = ", msg.__merge({ status = getConsentName(msg?.status) }))
   consent.set(msg)
 })
 
-if (consent.get() == null)
-  requestConsent(false)
-needOpenContest.subscribe(@(v) v ? requestConsent(true) : null)
+if (consent.get() == null && can_request_ads_consent.get())
+  requestConsent?(false)
+needOpenConsent.subscribe(@(v) v ? requestConsent?(true) : null)
 
 local isLoadStarted = false
 let function startLoading() {
@@ -169,13 +164,14 @@ let function showAdsForReward(rInfo) {
   if (!isLoaded.value)
     return
   rewardInfo(rInfo)
+  onShowAds()
   showAds()
 }
 
 let function onTryShowNotAvailableAds() {
   if (canLoad.get())
     return false
-  showConsent()
+  showConsent?()
   return true
 }
 

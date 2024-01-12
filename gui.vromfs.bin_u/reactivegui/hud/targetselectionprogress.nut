@@ -3,12 +3,15 @@ let { subscribe } = require("eventbus")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { targetUnitName } = require("%rGui/hudState.nut")
 
-let color = Color(255, 255, 255, 255)
+let color = 0xFFFFFFFF
 
 let defTransform = {}
 let cooldownEndTime = Watched(0.0)
 let cooldownTime = Watched(0.0)
 let showTargetName = Watched(false)
+
+let asmCaptureEndTime = Watched(0.0)
+let asmCaptureTime = Watched(0.0)
 
 let TARGET_UPSCALE = 0.3
 let targetSize = hdpx(16)
@@ -17,14 +20,21 @@ let targetOffset = [0, - hdpx(20)]
 
 subscribe("on_delayed_target_select:show", function(data) {
   let { lockTime = 0.0, endTime = 0.0 } = data
-  cooldownEndTime(endTime)
-  cooldownTime(lockTime)
-  showTargetName(true)
+  cooldownEndTime.set(endTime)
+  cooldownTime.set(lockTime)
+  showTargetName.set(true)
+})
+
+subscribe("on_asm_capture:show", function(data) {
+  let { lockTime = 0.0, endTime = 0.0 } = data
+  asmCaptureEndTime.set(endTime)
+  asmCaptureTime.set(lockTime)
 })
 
 subscribe("on_delayed_target_select:hide", function(_) {
-  cooldownEndTime(0.0)
-  showTargetName(false)
+  cooldownEndTime.set(0.0)
+  asmCaptureEndTime.set(0.0)
+  showTargetName.set(false)
 })
 
 let mkTargetCorner = @(cdLeft, delay, ovr) {
@@ -120,8 +130,74 @@ let targetSelectionProgress = @() {
   ]
 }
 
+let cornerSize = [hdpx(60), hdpx(30)]
+let travel = hdpx(30)
+let mkItem = @(key, hplace, vplace, from, duration, commands) {
+  key
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = hdpx(2)
+  fillColor = 0
+  color
+  size = cornerSize
+  transform = {}
+  hplace
+  vplace
+  commands
+  animations = [
+    {
+      prop = AnimProp.translate, play = true,
+      duration, easing = Linear,
+      from, to = [0, 0]
+    }
+  ]
+}
+
+function mkAsmCaptureData(endTime, cooldown) {
+  if (endTime <= 0 || cooldown <= 0)
+    return null
+  let cdLeft = (endTime - ::get_mission_time())
+  return {
+    size = [hdpx(150), hdpx(70)]
+    transform = { pivot = [0.5, 0.5] }
+    children = [
+      mkItem("rightTop", ALIGN_RIGHT, ALIGN_TOP, [travel, -travel], cdLeft,
+        [ [VECTOR_LINE, 0, 50, 50, 50], [VECTOR_LINE, 50, 50, 50, 100] ])
+      mkItem("rightDown", ALIGN_RIGHT, ALIGN_BOTTOM, [travel, travel], cdLeft,
+        [ [VECTOR_LINE, 0, 50, 50, 50], [VECTOR_LINE, 50, 50, 50, 0] ])
+      mkItem("leftTop", ALIGN_LEFT, ALIGN_TOP, [-travel, -travel], cdLeft,
+        [ [VECTOR_LINE, 50, 100, 50, 50], [VECTOR_LINE, 50, 50, 100, 50] ])
+      mkItem("leftDown", ALIGN_LEFT, ALIGN_BOTTOM, [-travel, travel], cdLeft,
+        [ [VECTOR_LINE, 50, 0, 50, 50], [VECTOR_LINE, 50, 50, 100, 50] ])
+      mkItem("Top", ALIGN_CENTER, ALIGN_TOP, [0, -travel * 2], cdLeft,
+        [ [VECTOR_LINE, 50, 0, 50, 50] ])
+      mkItem("Bottom", ALIGN_CENTER, ALIGN_BOTTOM, [0, travel * 2], cdLeft,
+        [ [VECTOR_LINE, 50, 100, 50, 50] ])
+      mkItem("Left", ALIGN_LEFT, ALIGN_CENTER, [-travel * 2, 0], cdLeft,
+        [ [VECTOR_LINE, 0, 50, 50, 50] ])
+      mkItem("Right", ALIGN_RIGHT, ALIGN_CENTER, [travel * 2, 0], cdLeft,
+        [ [VECTOR_LINE, 100, 50, 50, 50] ])
+    ]
+    animations = [ { prop=AnimProp.opacity, from=1, to=0, play = true, duration=0.3, easing=DoubleBlink, delay = cdLeft } ]
+  }
+}
+
+let asmCaptureProgress = @() {
+  watch = [asmCaptureTime, asmCaptureEndTime]
+  transform = defTransform
+  size = [0, 0]
+  behavior = Behaviors.Indicator
+  useTargetCenterPos = true
+  offsetY = 10
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    mkAsmCaptureData(asmCaptureEndTime.get(), asmCaptureTime.get())
+  ]
+}
+
 return {
   targetSelectionProgress
   targetName
   mkTargetSelectionData
+  asmCaptureProgress
 }

@@ -3,7 +3,7 @@ let { send } = require("eventbus")
 let { setTimeout } = require("dagor.workcycle")
 let ads = require("android.ads")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK,
-  CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN
+  CONSENT_REQUEST_NOT_REQUIRED = 1, CONSENT_REQUEST_OBTAINED = 3, CONSENT_REQUEST_REQUIRED = 2, CONSENT_REQUEST_UNKNOWN = 0
 } = ads
 let { json_to_string } = require("json")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")

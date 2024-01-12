@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
 let { subscribe, unsubscribe } = require("eventbus")
 let { register_command } = require("console")
 let { get_battery, is_charging } = require("sysinfo")
@@ -11,8 +12,7 @@ const BATTERY_UPDATE_TIMEOUT_SEC = 10.0
 const UPDATE_STATUS_STRING_EVENT_ID = "updateStatusString"
 const PING_LEVEL_MEDIUM = 100
 const PING_LEVEL_SLOW = 300
-const BATTERY_LEVEL_HIGH = 0.7
-const BATTERY_LEVEL_MEDIUM = 0.3
+const BATTERY_LEVEL_ACCEPTABLE = 0.3
 const FPS_LEVEL_ACCEPTABLE = 25
 const PL_LEVEL_ACCEPTABLE = 20
 
@@ -24,7 +24,10 @@ let defaultColor = 0xFFFFFFFF
 let badQualityColor = 0xFFFF5D5D
 
 let pingIconSize = [ ((saBorders[1] - hdpxi(16)) / 0.9).tointeger(), (saBorders[1] - hdpxi(16)).tointeger()]
-let batteryIconSize = [ hdpxi(44), hdpxi(22) ]
+let batteryIconW = hdpxi(44)
+let batteryIconH = hdpxi(22)
+let batteryFillOffset = hdpxi(6)
+let batteryFillMaxW = hdpxi(28)
 
 let textFps = "".concat(loc("options/perfMetrics_fps"), colon)
 let textPing = "".concat(loc("mainmenu/ping"), colon)
@@ -108,17 +111,30 @@ let function updateBatteryState() {
 
 let batteryIconFn = Computed(@() batteryCharge.value < 0 ? ""
   : isCharging.value > 0 ? "icon_battery_charging"
-  : batteryCharge.value >= BATTERY_LEVEL_HIGH ? "icon_battery_high"
-  : batteryCharge.value >= BATTERY_LEVEL_MEDIUM ? "icon_battery_med"
-  : "icon_battery_low"
+  : "icon_battery"
 )
-let batteryComp = @() batteryIconFn.value == "" ? { watch = batteryIconFn } : {
-  watch = batteryIconFn
-  size = batteryIconSize
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{batteryIconFn.value}.svg:{batteryIconSize[0]}:{batteryIconSize[1]}:P")
-  color = batteryIconFn.value != "icon_battery_low" ? defaultColor : badQualityColor
-  keepAspect = true
+
+let batteryColor = Computed(
+  @() batteryCharge.get() < 0 || batteryCharge.get() >= BATTERY_LEVEL_ACCEPTABLE ? defaultColor : badQualityColor)
+
+let batteryFillWidth = Computed(@() round(clamp(batteryCharge.get(), 0.0, 1.0) * batteryFillMaxW))
+
+let function batteryComp() {
+  let res = { watch = [ batteryIconFn, batteryColor ] }
+  return batteryIconFn.get() == "" ? res : res.__update({
+    size = [batteryIconW, batteryIconH]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#{batteryIconFn.get()}.svg:{batteryIconW}:{batteryIconH}:P")
+    color = batteryColor.get()
+    keepAspect = true
+    children = @() {
+      watch = batteryFillWidth
+      size = [batteryFillWidth.get(), batteryIconH - (2 * batteryFillOffset)]
+      pos = [batteryFillOffset, batteryFillOffset]
+      rendObj = ROBJ_SOLID
+      color = defaultColor
+    }
+  })
 }
 
 let deviceStateArea = {

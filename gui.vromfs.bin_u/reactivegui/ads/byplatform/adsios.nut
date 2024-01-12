@@ -1,16 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { send, subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
-let { getCountryCode } = require("auth_wt")
 let ads = require("ios.ads")
 let { json_to_string, parse_json } = require("json")
 let logA = log_with_prefix("[ADS] ")
 let { is_ios } = require("%sqstd/platform.nut")
-let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT, debugAdsWndParams
+let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
+  debugAdsWndParams, providerPriorities, onShowAds
 } = require("%rGui/ads/adsInternalState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let sendAdsBqEvent = require("%rGui/ads/sendAdsBqEvent.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let isDebug = !is_ios
@@ -64,37 +62,31 @@ let isLoaded = Watched(isAdsLoaded())
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
 let needAdsLoadExt = Computed(@() isInited.value && needAdsLoad.value && !isLoaded.value)
-let allProviders = keepref(Computed(@() !isLoggedIn.value ? {}
-  : serverConfigs.value?.adsCfg.iOS ?? {}))
 
-let function initProviders(providers) {
-  if (providers.len() == 0) {
-    logA("Empty ad provider list received")
+function initProviders() {
+  let { providers, countryCode } = providerPriorities.get()
+  if (providers.len() == 0)
     return
-  }
   setTestingMode(DBGLEVEL > 0)
-  let countryCode = getCountryCode()
   logA($"Init providers for {countryCode}")
   let pStatus = parse_json(getProvidersStatus())
   let initedProviders = {}
-  foreach(info in pStatus)
+  foreach (info in pStatus)
     if (info.isInited)
       initedProviders[info.provider] <- true
 
-  foreach(id, _ in initedProviders)
+  foreach (id, _ in initedProviders)
     if (id not in providers)
       setPriorityForProvider(id, -1) //switch of provider missing in config
 
-  foreach(id, p in providers) {
-    let priority = p?.priorityByRegion[countryCode] ?? p.priority
+  foreach (id, p in providers)
     if (id in initedProviders)
-      setPriorityForProvider(id, priority)
-    else if (priority >= 0)
-      addProviderInitWithPriority(id, p.key, priority)
-  }
+      setPriorityForProvider(id, p.priority)
+    else
+      addProviderInitWithPriority(id, p.key, p.priority)
 }
-initProviders(allProviders.value)
-allProviders.subscribe(initProviders)
+initProviders()
+providerPriorities.subscribe(@(_) initProviders())
 
 let statusNames = {}
 foreach(id, val in ads)
@@ -182,6 +174,7 @@ let function showAdsForReward(rInfo) {
   if (!isLoaded.value)
     return
   rewardInfo(rInfo)
+  onShowAds()
   showAds()
 }
 

@@ -856,10 +856,9 @@
   },
   "supportPlane": {
     "supportPlaneClass": "arado_196a_3",
-    "behTreeName": "carrierDiveBomber",
-    "canAssignTarget": true,
+    "behTreeName": "supportPlaneBot",
     "planeStartThrottle": 1.0,
-    "needDespawnOnReturn": false,
+    "needDespawnOnReturn": true,
     "count": 3,
     "catapult": {
       "visualNode": "",

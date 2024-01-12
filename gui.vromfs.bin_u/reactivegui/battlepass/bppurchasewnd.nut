@@ -131,10 +131,10 @@ let function rewardsList() {
     let list = s.progress <= curStage.value ? rewardsOnPurchase : rewardsOnProgress
     foreach(key, count in s.rewards)
       if (key not in list)
-        list[key] <- { count, sRange = [idx, idx] }
+        list[key] <- { count, sRange = [s.progress, s.progress] }
       else {
         list[key].count += count
-        list[key].sRange[1] = idx
+        list[key].sRange[1] = s.progress
       }
   }
 

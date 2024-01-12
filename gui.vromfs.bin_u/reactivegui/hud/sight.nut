@@ -6,7 +6,7 @@ let { primaryAction, secondaryAction } = require("actionBar/actionBarState.nut")
 let { isSecondaryBulletsSame } = require("bullets/hudUnitBulletsState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
-let { targetSelectionProgress } = require("%rGui/hud/targetSelectionProgress.nut")
+let { targetSelectionProgress, asmCaptureProgress } = require("%rGui/hud/targetSelectionProgress.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
 
 let crosshairColorFire = Color(70, 70, 70)
@@ -198,6 +198,7 @@ let shipSight = @() {
   valign = ALIGN_CENTER
   children = [
     targetSelectionProgress
+    asmCaptureProgress
     isCurHoldWeaponInCancelZone.value ? cancelShootMark
       : !hasCrosshairForWeapon.value ? sightFrame
       : circleCrosshair

@@ -122,6 +122,17 @@ let buyEventCurrenciesHeader = @() {
   text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.value}", { name = parentEventLoc.value }))
 }.__update(fontLarge)
 
+let buyEventCurrenciesDesc = @(){
+  watch = eventCurrenciesGoods
+  size = [(goodsW + gap) * (eventCurrenciesGoods.value.len() + 1), SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  text = loc("events/buyCurrency/desc")
+}.__update(fontMedium)
+
 let buyEventCurrenciesGamercard = @() {
   watch = currencyId
   size = [saSize[0], gamercardHeight]
@@ -138,4 +149,5 @@ return {
   buyEventCurrenciesHeader
   buyEventCurrenciesGamercard
   mkEventCurrenciesGoods
+  buyEventCurrenciesDesc
 }
