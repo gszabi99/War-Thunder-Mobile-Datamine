@@ -47,6 +47,7 @@
   "waterBreakerToggleTime": 4.0,
   "type": "typeLightTank",
   "minRelativeTankCameraThreshold": 1.6,
+  "drowningCheckHeightMultiplier": 0.8,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,

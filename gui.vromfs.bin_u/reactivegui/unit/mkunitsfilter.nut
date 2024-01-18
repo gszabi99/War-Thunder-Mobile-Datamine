@@ -2,52 +2,91 @@ from "%globalsDarg/darg_library.nut" import *
 let { OCT_TEXTINPUT, OCT_MULTISELECT } = require("%rGui/options/optCtrlType.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 
-let textColor = 0xFFE1E1E1
+let textColor = 0xFFFFFFFF
 let inactiveTextColor = 0xFF808080
 let checkBorderColor = 0xFF9FA7AF
-let ctrlHeight = hdpx(40)
-let valueGap = hdpx(20)
+let ctrlHeight = hdpx(80)
+let vGap = hdpx(20)
+let hGap = hdpx(15)
 let inputFullHeight = hdpx(60)
 let inputPadding = [hdpx(10), hdpx(20)]
-let checkIconSize = hdpx(60)
+let checkIconSize = hdpxi(60)
+let closeIconSize = hdpxi(80)
+let clearIconSize = hdpxi(50)
+let leftColWidth = hdpx(1000)
 
-let mkCheckIcon = @(isChecked, isActive, opacity) {
+let mkCheckIcon = @(isChecked, isActive, opacity, inBoxValue) {
   size = array(2, ctrlHeight)
   rendObj = ROBJ_BOX
-  opacity = isActive ? 1.0 : 0.5
+  opacity = isActive && isChecked ? 1.0 : 0.5
   borderColor = checkBorderColor
   borderWidth = hdpx(3)
-  children = {
-    size = array(2, checkIconSize)
-    pos = [0.1 * checkIconSize, 0.05 * checkIconSize]
-    vplace = ALIGN_BOTTOM
-    hplace = ALIGN_CENTER
-    rendObj = ROBJ_IMAGE
-    image = isChecked ? Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}") : null
-    keepAspect = KEEP_ASPECT_FIT
-    color = textColor
-    opacity
-  }
+  children = !inBoxValue
+    ? {
+        size = array(2, checkIconSize)
+        vplace = ALIGN_CENTER
+        hplace = ALIGN_CENTER
+        rendObj = ROBJ_IMAGE
+        image = isChecked ? Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}") : null
+        keepAspect = KEEP_ASPECT_FIT
+        color = textColor
+        opacity
+      }
+  : {
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      children = inBoxValue
+    }
 }
 
-let function mkCheckBtn(text, isChecked, hasValues, onClick) {
+let mkCustomCheck = @(isChecked, isActive, customValue) {
+  opacity = isActive && isChecked ? 1.0 : 0.4
+  children = customValue
+}
+
+let function mkFilterIcon(onClick, iconSize, img) {
   let stateFlags = Watched(0)
+  let size = max(closeIconSize, clearIconSize)
   return @() {
     watch = stateFlags
-    size = [SIZE_TO_CONTENT, ctrlHeight]
+    size = [size, size]
+    rendObj = ROBJ_SOLID
+    color = 0xFF303030
     behavior = Behaviors.Button
     onClick
     onElemState = @(s) stateFlags(s)
-    valign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
+    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    children = {
+      size = [iconSize, iconSize]
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#{img}:{iconSize}:{iconSize}")
+    }
+  }
+}
+
+let function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inBoxValue = null) {
+  let stateFlags = Watched(0)
+  return @() {
+    watch = stateFlags
+    behavior = Behaviors.Button
+    onClick
+    onElemState = @(s) stateFlags(s)
+    halign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
     gap = hdpx(10)
     children = [
-      mkCheckIcon(isChecked, hasValues, stateFlags.value & S_ACTIVE ? 0.5 : 1.0)
-      {
+      (customValue || inBoxValue) ? null : {
+        minWidth = ctrlHeight * 1.5
+        halign = ALIGN_CENTER
         rendObj = ROBJ_TEXT
         color = hasValues ? textColor : inactiveTextColor
         text
-      }.__update(fontSmall)
+      }.__update(fontTiny)
+      customValue
+          ? mkCustomCheck(isChecked, hasValues, customValue)
+        : mkCheckIcon(isChecked, hasValues, stateFlags.value & S_ACTIVE ? 0.5 : 1.0, inBoxValue)
     ]
   }
 }
@@ -55,8 +94,9 @@ let function mkCheckBtn(text, isChecked, hasValues, onClick) {
 let filterCtors = {
   [OCT_TEXTINPUT] = @(filter, _) textInput(filter.value, {
     ovr = {
-      size = [flex(), inputFullHeight]
+      size = [leftColWidth, inputFullHeight]
       padding = inputPadding
+      fillColor = 0xFF606060
     }
     setValue = filter.setValue
     onAttach = @() set_kb_focus(filter.value) //hack for keyboard, and work only because single
@@ -65,24 +105,28 @@ let filterCtors = {
   [OCT_MULTISELECT] = @(filter, width) wrap(
     filter.allValuesV.map(function(v) {
       let isChecked = filter.valueV == null || v in filter.valueV
-      return mkCheckBtn(filter?.valToString(v) ?? v, isChecked, v in filter.hasValues,
-        @() filter.toggleValue(v, !isChecked))
+      return mkCheckBtn(filter?.valToString(v) ?? v,
+        isChecked,
+        v in filter.hasValues,
+        @() filter.toggleValue(v, !isChecked),
+        filter?.customValue(v),
+        filter?.inBoxValue(v))
     }),
-    { width, hGap = valueGap, vGap = valueGap }),
+    { width, hGap, vGap }),
 }
 
-let mkFilter = @(filter, width) {
+let mkFilter = @(filter) {
   key = filter?.id
-  size = [width, SIZE_TO_CONTENT]
+  size = [leftColWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   gap = hdpx(10)
   children = [
-    {
+    !filter.locId ? null : {
       rendObj = ROBJ_TEXT
-      color = inactiveTextColor
+      color = textColor
       text = loc(filter.locId)
     }.__update(fontTiny)
-    filterCtors?[filter.ctrlType](filter, width)
+    filterCtors?[filter.ctrlType](filter, leftColWidth)
   ]
 }
 
@@ -91,7 +135,7 @@ let arrToTbl = @(list) list.reduce(function(res, v) {
   return res
 }, {})
 
-let function mkUnitsFilter(options, allUnits, width) {
+let function mkUnitsFilter(options, allUnits, closeFilters, clearFilters) {
   local watch = [allUnits]
   foreach (o in options)
     watch.append(o?.value, o?.allValues)
@@ -120,9 +164,38 @@ let function mkUnitsFilter(options, allUnits, width) {
     return {
       watch
       stopMouse = true
-      flow = FLOW_VERTICAL
-      gap = valueGap
-      children = filters.map(@(f) mkFilter(f, width))
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(50)
+      children = [
+        {
+          flow = FLOW_VERTICAL
+          gap = vGap
+          children = [{
+            hplace = ALIGN_CENTER
+            rendObj = ROBJ_TEXT
+            text = loc("filters")
+          }.__update(fontSmall)]
+            .extend(filters.map(@(f) mkFilter(f)))
+        }
+        {
+          size = [SIZE_TO_CONTENT, flex()]
+          flow = FLOW_VERTICAL
+          gap = hdpx(10)
+          halign = ALIGN_CENTER
+          children = [
+            mkFilterIcon(closeFilters, closeIconSize, "btn_close.svg")
+
+            { size = flex() }
+
+            {
+              rendObj = ROBJ_TEXT
+              text = loc("options/clearIt")
+            }.__update(fontTiny)
+
+            mkFilterIcon(clearFilters, clearIconSize, "btn_trash.svg")
+          ]
+        }
+      ]
     }
   }
 }

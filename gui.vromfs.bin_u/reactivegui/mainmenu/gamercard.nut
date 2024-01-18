@@ -83,12 +83,12 @@ let starLevelOvr = {
 
 let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function() {
   let { exp, nextLevelExp, level, isReadyForLevelUp, starLevel, isNextStarLevel, historyStarLevel,
-    isStarProgress
+    isStarProgress, isMaxLevel
   } = playerLevelInfo.value
-  let isMaxLevel = nextLevelExp == 0
-  let isAtLevelUp = !isMaxLevel && exp == nextLevelExp
   let progresOffset = levelHolderSize * rotateCompensate
-  let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan : openExpWnd
+  let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan
+    : !isMaxLevel ? openExpWnd
+    : null
   return {
     watch = playerLevelInfo
     valign = ALIGN_CENTER
@@ -102,7 +102,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
           ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
           : null
         children = {
-          size = isMaxLevel || isAtLevelUp ? flex() : [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), flex()]
+          size = isMaxLevel || isReadyForLevelUp ? flex() : [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), flex()]
           rendObj = ROBJ_SOLID
           color = playerExpColor
         }
@@ -113,7 +113,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
           size = [levelHolderSize, levelHolderSize]
           pos = [-progresOffset, 0]
           onElemState = @(sf) levelStateFlags(sf)
-          behavior = Behaviors.Button
+          behavior = onLevelClick != null ? Behaviors.Button : null
           onClick = onLevelClick
           sound = { click  = "meta_profile_button" }
           color = levelStateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
@@ -165,7 +165,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
               hplace = ALIGN_RIGHT
               pos = [progresOffset, 0]
               onElemState = @(sf) nextLevelStateFlags(sf)
-              behavior = Behaviors.Button
+              behavior = onLevelClick != null ? Behaviors.Button : null
               onClick = onLevelClick
               color = nextLevelStateFlags.value & S_HOVER ? 0xDD52C4E4 : 0xFF000000
               transform = {

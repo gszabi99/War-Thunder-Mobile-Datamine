@@ -15,7 +15,7 @@
     "massEnd": 0.014,
     "timeFire": 30.0,
     "force": 0.001,
-    "timeLife": 30.0,
+    "timeLife": 2.0,
     "thrustDeviation": 0.01,
     "useStartSpeed": false,
     "startSpeed": 0.0,
@@ -47,7 +47,7 @@
     "smokeTime": 20.0,
     "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
-    "explosionOffset": 0.05,
+    "explosionOffset": 0.025,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,

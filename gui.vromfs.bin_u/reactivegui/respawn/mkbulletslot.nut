@@ -24,6 +24,7 @@ let slotNumber = @(id) @(){
 }.__update(fontTiny)
 
 let nameBullet = @(bulletInfo) {
+  size = flex()
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   padding = hdpx(5)

@@ -4,6 +4,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let currencyStyles = require("currencyStyles.nut")
 let { CS_COMMON, CS_GAMERCARD } = currencyStyles
+let { eventSeason } = require("%rGui/event/eventState.nut")
 
 let defCoef = 1
 
@@ -17,6 +18,7 @@ let iconsCoef = {
   warbond = 1.4
   eventKey = 1.2
   nybond = 1.4
+  ircm_kit = 1.4
 }
 let maxIconsCoef = iconsCoef.reduce(@(a, b) max(a, b))
 
@@ -38,8 +40,14 @@ let icons = {
   tank_extinguisher = "ui/gameuiskin#shop_consumables_tank_extinguisher_gamercard.avif"
   spare = "ui/gameuiskin#shop_consumables_tank_cards_gamercard.avif"
   firework_kit = "ui/gameuiskin#icon_fireworks.avif"
+  ircm_kit = "ui/gameuiskin#icon_ircm.avif"
   // Placeholder
   placeholder = "ui/gameuiskin#icon_primary_attention.svg"
+}
+
+let dynamicIcons = {
+  warbond = @(season) $"ui/gameuiskin#warbond_icon_{season}.avif"
+  eventKey = @(season) $"ui/gameuiskin#key_icon_{season}.avif"
 }
 
 let currencyIconsColor = {
@@ -49,16 +57,21 @@ let currencyIconsColor = {
 
 let getCurrencyImage = @(id) icons?[id] ?? icons.placeholder
 let getCurrencyPicture = @(id, iconSize) Picture($"{getCurrencyImage(id)}:{iconSize}:{iconSize}:P")
+let getDynamicPicture = @(id, iconSize, season) Picture($"{dynamicIcons?[id](season)}:{iconSize}:{iconSize}:P")
 
 let function mkCurrencyImage (id, size, ovr = {}){
   let iconSize = getSizeIcon(id, size)
-  return {
+  return @() {
+    watch = eventSeason
     rendObj = ROBJ_IMAGE
     size = [iconSize, iconSize]
     vplace = ALIGN_CENTER
     color = currencyIconsColor?[id] ?? 0xFFFFFFFF
     keepAspect = KEEP_ASPECT_FIT
-    image = getCurrencyPicture(id, iconSize)
+    image = id in dynamicIcons
+        ? getDynamicPicture(id, iconSize, eventSeason.get())
+      : getCurrencyPicture(id, iconSize)
+    fallbackImage = id not in dynamicIcons ? null : getCurrencyPicture(id, iconSize)
   }.__update(ovr)
  }
 

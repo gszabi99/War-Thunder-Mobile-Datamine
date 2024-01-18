@@ -4,6 +4,7 @@ let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { targetUnitName } = require("%rGui/hudState.nut")
 
 let color = 0xFFFFFFFF
+let cooldownColor = 0xFFB0B0B0
 
 let defTransform = {}
 let cooldownEndTime = Watched(0.0)
@@ -130,7 +131,7 @@ let targetSelectionProgress = @() {
   ]
 }
 
-let cornerSize = [hdpx(60), hdpx(30)]
+let cornerSize = [hdpx(75), hdpx(35)]
 let travel = hdpx(30)
 let mkItem = @(key, hplace, vplace, from, duration, commands) {
   key
@@ -149,6 +150,11 @@ let mkItem = @(key, hplace, vplace, from, duration, commands) {
       duration, easing = Linear,
       from, to = [0, 0]
     }
+    {
+      prop = AnimProp.color, play = true,
+      duration
+      from = cooldownColor, to = cooldownColor
+    }
   ]
 }
 
@@ -157,7 +163,7 @@ function mkAsmCaptureData(endTime, cooldown) {
     return null
   let cdLeft = (endTime - ::get_mission_time())
   return {
-    size = [hdpx(150), hdpx(70)]
+    size = [cornerSize[0] * 2, cornerSize[1] * 2]
     transform = { pivot = [0.5, 0.5] }
     children = [
       mkItem("rightTop", ALIGN_RIGHT, ALIGN_TOP, [travel, -travel], cdLeft,

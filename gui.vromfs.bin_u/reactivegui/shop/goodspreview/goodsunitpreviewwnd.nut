@@ -23,10 +23,9 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP } = require("%appGlobals/unitConst.nut")
 let { getPlatoonOrUnitName, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { unitSelUnderlineFullHeight, unitPlatesGap,
+let { unitSelUnderlineFullSize, unitPlatesGap, unitPlateSmall, mkUnitRank,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 
@@ -34,8 +33,7 @@ let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
 
-let unitPlateWidth = hdpx(320)
-let unitPlateSize = [unitPlateWidth, unitPlateWidth * 0.45]
+let unitPlateSize = unitPlateSmall
 let unitPlateSizeMain = unitPlateSize.map(@(v) v * 1.16)
 let unitPlateSizeSingle = unitPlateSize.map(@(v) v * 1.3)
 let verticalGap = hdpx(20)
@@ -149,19 +147,15 @@ let function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
     sound = { click  = "choose" }
     flow = FLOW_HORIZONTAL
     children = [
-      onSelectUnit == null ? null : mkUnitSelectedUnderlineVert(isSelected)
+      onSelectUnit == null ? null : mkUnitSelectedUnderlineVert(unit, isSelected)
       {
         size
         children = [
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(unit.__merge(platoonUnit))
+          mkUnitRank(unit)
           mkUnitTexts(unit, loc(p.locId))
-          mkGradRank(unit.mRank, {
-            hplace = ALIGN_RIGHT
-            vplace = ALIGN_BOTTOM
-            padding = [0, hdpx(5)]
-          })
         ]
       }
     ]
@@ -242,7 +236,7 @@ let leftBlock = {
   children = [
     platoonUnitsBlock
     { size = flex() }
-    packInfo(-1, { pos = [unitSelUnderlineFullHeight, 0] })
+    packInfo(-1, { pos = [unitSelUnderlineFullSize, 0] })
   ]
 }
 

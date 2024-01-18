@@ -3,7 +3,7 @@ let { ceil } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isBPPurchaseWndOpened, closeBPPurchaseWnd, curStage, sendBpBqEvent,
-  isBpPurchased, bpPurchasedUnlock, bpPaidRewardsUnlock, battlePassGoods
+  isBpPurchased, bpPurchasedUnlock, bpPaidRewardsUnlock, battlePassGoods, bpIconActive
 } = require("battlePassState.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
 let purchaseGoods = require("%rGui/shop/purchaseGoods.nut")
@@ -160,10 +160,12 @@ let battlePassHeader = {
   text = loc("battlePass")
 }.__update(fontBig)
 
-let battlePassIcon = {
+let battlePassIcon = @() {
+  watch = bpIconActive
   size = [bpIconSize, bpIconSize]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#bp_icon_active.avif:{0}:P")
+  image = Picture($"{bpIconActive.get()}:{0}:P")
+  fallbackImage = Picture($"ui/gameuiskin#bp_icon_not_active.avif:{0}:P")
   keepAspect = true
 }
 

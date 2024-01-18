@@ -147,9 +147,10 @@ let function mkStopParams() {
     function onTouchBegin() {
       setGmBrakeAxis(1)
       toNeutral()
-      setTimeout(fullStopOnTouchButton.value ? 0 : delayReverse, toReverse)
-      if (fullStopOnTouchButton.value)
+      if (fullStopOnTouchButton.get())
         isStopButtonVisible(false)
+      else
+        setTimeout(delayReverse, toReverse)
     }
     function onTouchEnd() {
       if (!fullStopOnTouchButton.value)

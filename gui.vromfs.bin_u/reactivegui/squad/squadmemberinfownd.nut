@@ -9,17 +9,15 @@ let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicI
 let { mkContactOnlineStatus } = require("%rGui/contacts/contactPresence.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-
 let { createHighlight } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 let { darkCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { gap, contactNameBlock, contactAvatar, contactLevelBlock
 } = require("%rGui/contacts/contactInfoPkg.nut")
 let { offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts,
-  mkPlatoonBgPlates, platoonPlatesGap, mkPlatoonPlateFrame
+let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getUnitPresentation, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
 let { REVOKE_INVITE, REMOVE_FROM_SQUAD, PROMOTE_TO_LEADER, LEAVE_SQUAD } = require("%rGui/contacts/contactActions.nut")
@@ -117,37 +115,21 @@ let function inBattleBlock(uid) {
 }
 
 let unitInfo = @(unitW) function() {
-  let res = { watch = unitW}
+  let res = { watch = unitW }
   let unit = unitW.value
   if (unit == null)
     return res
 
   let p = getUnitPresentation(unit)
-  let { platoonUnits = [] } = unit
-  let platoonSize = platoonUnits.len()
-  if (platoonSize == 0)
-    return res.__update({
-      size = [ unitPlateWidth, unitPlateHeight ]
-      children = [
-        mkUnitBg(unit)
-        mkUnitImage(unit)
-        mkUnitTexts(unit, loc(p.locId))
-      ]
-    })
 
   return res.__update({
-    size = [ unitPlateWidth, unitPlateHeight + platoonPlatesGap * platoonSize ]
-    valign = ALIGN_BOTTOM
-    children = {
-      size = [ unitPlateWidth, unitPlateHeight ]
-      children = [
-        mkPlatoonBgPlates(unit, platoonUnits)
-        mkUnitBg(unit)
-        mkUnitImage(unit)
-        mkUnitTexts(unit, getPlatoonName(unit.name, loc))
-        mkPlatoonPlateFrame()
-      ]
-    }
+    size = [ unitPlateWidth, unitPlateHeight ]
+    children = [
+      mkUnitBg(unit)
+      mkUnitImage(unit)
+      mkUnitRank(unit)
+      mkUnitTexts(unit, loc(p.locId))
+    ]
   })
 }
 

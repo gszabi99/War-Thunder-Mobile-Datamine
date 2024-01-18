@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round, ceil } = require("math")
-let { getUnitPresentation, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitSlotLockedLine,
-  bgPlatesTranslate, platoonPlatesGap, mkPlatoonPlateFrame
+  platoonPlatesGap, unitPlateRatio, mkUnitRank
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkModImage, bgShade } = require("%rGui/unitMods/modsComps.nut")
 let { getSpCostText } = require("%rGui/unitAttr/unitAttrState.nut")
@@ -13,7 +13,7 @@ let levelUnlockPlatesTotalTimeMax = 1.0
 let plateBlinkTime = 0.5
 
 let plateW = hdpx(350)
-let plateH = hdpx(147)
+let plateH = plateW * unitPlateRatio
 let platesGap = hdpx(20)
 let plateBlinkScale = 1.25
 
@@ -85,60 +85,23 @@ let mkPlateBlinkAnimProps = @(isUnlocked, delay) !isUnlocked ? {} : {
 
 // UNIT PLATE //////////////////////////////////////////////////////////////////
 
-let platoonPlateFrame = mkPlatoonPlateFrame(Watched(false), Watched(true))
-
-let mkPlatoonPlates = @(unit, platoonUnits, isUnlocked, unlockDelay) {
-  size = flex()
-  children = platoonUnits?.map(@(_, idx) {
-    size = flex()
-    transform = { translate = bgPlatesTranslate(platoonUnits.len(), idx, false, platoonFramesGapMul) }
-    transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
-    children = [
-      mkUnitBg(unit)
-      mkLockedShade(isUnlocked, unlockDelay)
-      platoonPlateFrame
-    ]
-  })
-}
-
 let function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = false) {
   let p = getUnitPresentation(unit)
-  let platoonUnits = (unit?.platoonUnits ?? []).map(@(u) u.name)
-    .extend((unit?.lockedUnits ?? []).map(@(u) u.name))
-  let platoonSize = platoonUnits.len()
-  let fullH = platoonSize == 0 ? plateH
-    : plateH + platoonPlatesCustomGap * platoonSize
   return {
-    size = [ plateW, fullH ]
+    size = [ plateW, plateH ]
     children = {
       size = [ plateW, plateH ]
       vplace = ALIGN_BOTTOM
-      children = platoonSize > 0
-        ? [
-            mkPlatoonPlates(unit, platoonUnits, isUnlocked, unlockDelay)
-            mkUnitBg(unit)
-            mkUnitImage(unit)
-            mkUnitTexts(unit, getPlatoonName(unit.name, loc))
-            mkLockedShade(isUnlocked, unlockDelay)
-            isPlayerProgress
-              ? mkUnitLock(unit, !isUnlocked, unlockDelay)
-              : mkUnitSlotLockedLine(unit, !isUnlocked, unlockDelay)
-            isPlayerProgress
-              ? platoonPlateFrame
-              : null
-          ]
-        : [
-            mkUnitBg(unit)
-            mkUnitImage(unit)
-            mkUnitTexts(unit, loc(p.locId))
-            mkLockedShade(isUnlocked, unlockDelay)
-            isPlayerProgress
-              ? mkUnitLock(unit, !isUnlocked, unlockDelay)
-              : mkUnitSlotLockedLine(unit, !isUnlocked, unlockDelay)
-            isPlayerProgress
-              ? platoonPlateFrame
-              : null
-          ]
+      children = [
+        mkUnitBg(unit)
+        mkUnitImage(unit)
+        mkUnitRank(unit)
+        mkUnitTexts(unit, loc(p.locId))
+        mkLockedShade(isUnlocked, unlockDelay)
+        isPlayerProgress
+          ? mkUnitLock(unit, !isUnlocked, unlockDelay)
+          : mkUnitSlotLockedLine(unit, !isUnlocked, unlockDelay)
+      ]
     }
   }.__update(mkPlateBlinkAnimProps(isUnlocked, unlockDelay))
 }

@@ -7,7 +7,7 @@ let { fontLabel, labelHeight, REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYL
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitLocId, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
-let { mkUnitBg, mkUnitImage, mkIcon, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkUnitBg, mkUnitImage, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -15,6 +15,8 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
+let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
+let { eventSeason } = require("%rGui/event/eventState.nut")
 
 
 let textPadding = [0, hdpx(5)]
@@ -101,7 +103,7 @@ let function mkGoldOrWpIcon(size, iconShiftY, imgName) {
     size = [w, h]
     pos = [w * 0.12, iconShiftY + (h * -0.07)]
     image = Picture($"ui/gameuiskin#{imgName}:{w}:{h}:P")
-  }
+  }.__update(iconBase)
 }
 
 let function mkOtherCurrencyIcon(size, iconShiftY, imgName, scale, aspectRatio = 1.0) {
@@ -111,14 +113,27 @@ let function mkOtherCurrencyIcon(size, iconShiftY, imgName, scale, aspectRatio =
     size = [w, h]
     pos = [0, iconShiftY]
     image = Picture($"ui/gameuiskin#{imgName}:{w}:{h}:P")
-  }
+  }.__update(iconBase)
+}
+
+let function mkDynamicCurrencyIcon(curId, size, iconShiftY, scale, aspectRatio = 1.0) {
+  let w = round(size[1] * scale).tointeger()
+  let h = round(w * 1.0 / aspectRatio).tointeger()
+  let cfg = Computed(@() getCurrencyGoodsPresentation(curId, eventSeason.get())?[0])
+  return @() {
+    watch = cfg
+    size = [w, h]
+    pos = [0, iconShiftY]
+    image = Picture($"ui/gameuiskin#{cfg.get()?.img}:{w}:{h}:P")
+    fallbackImage = cfg.get()?.fallbackImg ? Picture($"ui/gameuiskin#{cfg.get()?.fallbackImg}:{w}:{h}:P") : null
+  }.__update(iconBase)
 }
 
 let currencyImgCtors = {
   gold = @(size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, "shop_eagles_02.avif")
   wp = @(size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, "shop_lions_02.avif")
-  warbond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_goods_01.avif", 0.95)
-  eventKey = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "event_keys_01.avif", 0.8)
+  warbond = @(size, iconShiftY) mkDynamicCurrencyIcon("warbond", size, iconShiftY, 0.85)
+  eventKey = @(size, iconShiftY) mkDynamicCurrencyIcon("eventKey", size, iconShiftY, 0.65)
   nybond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_goods_christmas_01.avif", 0.8)
 }
 
@@ -128,7 +143,7 @@ let function mkRewardPlateCurrencyImage(r, rStyle) {
   return {
     size
     clipChildren = true
-    children = iconBase.__merge(currencyImgCtors?[r.id](size, iconShiftY) ?? {})
+    children = currencyImgCtors?[r.id](size, iconShiftY)
   }
 }
 
@@ -287,18 +302,6 @@ let function mkRewardPlateStatImage(r, rStyle) {
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
 
-let mkUnitNameText = @(unit, font) {
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(8)
-  children = [
-    unit.isPremium || unit?.isUpgraded
-        ? mkIcon("ui/gameuiskin#icon_premium.svg", [font.fontSize * 2, font.fontSize], { pos = [ 0, hdpx(3) ] })
-      : null
-    mkPlateText(loc(getUnitLocId(unit)), font)
-  ]
-}
-
 let function mkUnitTextsImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
   let size = getRewardPlateSize(r.slots, rStyle)
@@ -307,9 +310,9 @@ let function mkUnitTextsImpl(r, rStyle, isUpgraded) {
     let res = { watch = unit }
     if (unit.value == null)
       return res
-    local nameText = mkUnitNameText(unit.value, fontTiny)
+    local nameText = mkPlateText(loc(getUnitLocId(unit.value)), fontTiny)
     if (calc_comp_size(nameText)[0] > maxTextWidth)
-      nameText = mkUnitNameText(unit.value, fontVeryTiny)
+      nameText = mkPlateText(loc(getUnitLocId(unit.value)), fontVeryTiny)
         .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
     return res.__update({
       size

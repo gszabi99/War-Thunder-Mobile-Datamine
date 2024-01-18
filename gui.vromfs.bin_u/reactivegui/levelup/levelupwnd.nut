@@ -1,15 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { isLvlUpOpened, rewardsToReceive, upgradeUnitName, closeLvlUpWnd } = require("levelUpState.nut")
+let { isLvlUpOpened, upgradeUnitName, closeLvlUpWnd } = require("levelUpState.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
-let { levelUpFlag, flagAnimFullTime } = require("levelUpFlag.nut")
+let { levelUpFlag, flagAnimFullTime, flagHeight } = require("levelUpFlag.nut")
 let { mkLinearGradientImg } = require("%darg/helpers/mkGradientImg.nut")
-let levelUpChooseShips = require("levelUpChooseShips.ui.nut")
-let levelUpRewards = require("levelUpRewards.ui.nut")
+let levelUpChooseUnits = require("levelUpChooseUnits.nut")
 let levelUpChooseUpgrade = require("levelUpChooseUpgrade.ui.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -22,7 +21,6 @@ let { maxRewardLevelInfo } = require("%rGui/levelUp/levelUpState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
-let flagHeight = hdpx(180)
 let headerLineColor = 0xFFFFB70B
 let lineTexW = hdpx(100)
 let lineSize = [hdpx(800) * 2, hdpx(4)]
@@ -92,10 +90,9 @@ let headerPanel = @() {
   halign = ALIGN_CENTER
   children = [
     @() {
-      watch = [upgradeUnitName, rewardsToReceive, hasLvlUpPkgs]
+      watch = [upgradeUnitName, hasLvlUpPkgs]
       hplace = ALIGN_LEFT
-      children = rewardsToReceive.value.len() > 0 ? null
-        : upgradeUnitName.value != null ? backButton(@() upgradeUnitName(null))
+      children = upgradeUnitName.value != null ? backButton(@() upgradeUnitName(null))
         : !hasLvlUpPkgs.value ? backButton(closeByBackButton)
         : null
     }
@@ -142,25 +139,21 @@ let levelUpRequirePkgDownload = {
   ]
 }
 
-let function levelUpWnd() {
-  let shouldShowRewards = rewardsToReceive.value.len() > 0
-  return {
-    watch = [rewardsToReceive, upgradeUnitName, hasLvlUpPkgs]
-    key = isLvlUpOpened
-    onAttach = @() sendNewbieBqEvent("openLevelUpWnd")
-    onDetach = @() sendNewbieBqEvent("closeLevelUpWnd")
-    size = flex()
-    padding = saBordersRv
-    behavior = shouldShowRewards ? null : Behaviors.HangarCameraControl
-    flow = FLOW_VERTICAL
-    children = [
-      headerPanel
-      shouldShowRewards ? levelUpRewards
-        : upgradeUnitName.value != null ? levelUpChooseUpgrade
-        : hasLvlUpPkgs.value ? levelUpChooseShips
-        : levelUpRequirePkgDownload
-    ]
-  }.__update(shouldShowRewards || upgradeUnitName.value != null ? bgShaded : {})
-}
+let levelUpWnd = @() {
+  watch = [upgradeUnitName, hasLvlUpPkgs]
+  key = isLvlUpOpened
+  onAttach = @() sendNewbieBqEvent("openLevelUpWnd")
+  onDetach = @() sendNewbieBqEvent("closeLevelUpWnd")
+  size = flex()
+  padding = saBordersRv
+  behavior = Behaviors.HangarCameraControl
+  flow = FLOW_VERTICAL
+  children = [
+    headerPanel
+    upgradeUnitName.value != null ? levelUpChooseUpgrade
+      : hasLvlUpPkgs.value ? levelUpChooseUnits
+      : levelUpRequirePkgDownload
+  ]
+}.__update(upgradeUnitName.value != null ? bgShaded : {})
 
 registerScene("levelUpWnd", levelUpWnd, closeLvlUpWnd, isLvlUpOpened)

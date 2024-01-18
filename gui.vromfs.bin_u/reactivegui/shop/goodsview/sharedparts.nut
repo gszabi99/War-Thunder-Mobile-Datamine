@@ -91,10 +91,11 @@ let mkFitCenterImg = @(img) {
   imageValign = ALIGN_CENTER
 }
 
-let mkGoodsImg = @(img, ovr = {}) {
+let mkGoodsImg = @(img, fallbackImg = null, ovr = {}) {
   size = flex()
   rendObj = ROBJ_IMAGE
-  image = Picture($"{img}:0:P")
+  image = Picture($"ui/gameuiskin#{img}:0:P")
+  fallbackImage = fallbackImg ? Picture($"ui/gameuiskin#{fallbackImg}:0:P") : null
   keepAspect = KEEP_ASPECT_FIT
   imageHalign = ALIGN_LEFT
   imageValign = ALIGN_BOTTOM

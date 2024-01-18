@@ -37,18 +37,14 @@ let linkToEventBtnCtor = @() mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
   iconSeason,
   @() openEventWnd())
 
-let linkToBattlePassBtnCtor = @() @() {
-  watch = isBpSeasonActive
-  children = !isBpSeasonActive.get() ? null
-    : mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
-        iconSeason,
-        openBattlePassWnd,
-        @() {
-          watch = hasBpRewardsToReceive
-          margin = unseenMarkMargin
-          children = hasBpRewardsToReceive.get() ? priorityUnseenMark : null
-        })
-}
+let linkToBattlePassBtnCtor = @() mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
+  iconSeason,
+  openBattlePassWnd,
+  @() {
+    watch = hasBpRewardsToReceive
+    margin = unseenMarkMargin
+    children = hasBpRewardsToReceive.get() ? priorityUnseenMark : null
+  })
 
 let function eventTabContent(){
   let eventSeasonName = Computed(function() {
@@ -155,7 +151,8 @@ let tabs = [
     imageSizeMul = 1.2
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
-    isVisible = Computed(@() questsCfg.value[COMMON_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
+    isVisible = Computed(@() questsCfg.value[COMMON_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null
+      && isBpSeasonActive.get())
   }
   {
     id = EVENT_TAB

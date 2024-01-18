@@ -8,7 +8,7 @@ let { getPlatoonName, getPlatoonOrUnitName } = require("%appGlobals/unitPresenta
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkPlatoonPlateFrame, bgPlatesTranslate
+let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateRatio, mkUnitRank
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkGradRankLarge } = require("%rGui/components/gradTexts.nut")
 let { receiveBpRewards, isBpRewardsInProgress, curStage } = require("battlePassState.nut")
@@ -18,21 +18,7 @@ let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/componen
 
 
 let unitPlateWidth = hdpx(480)
-let unitPlateHeight = hdpx(200)
-
-let function mkPlatoonPlates(unit) {
-  return {
-    size = [ unitPlateWidth, unitPlateHeight ]
-    children = unit.platoonUnits?.map(@(_, idx) {
-      size = flex()
-      transform = { translate = bgPlatesTranslate(3, idx, true) }
-      children = [
-        mkUnitBg(unit)
-        mkPlatoonPlateFrame()
-      ]
-    })
-  }
-}
+let unitPlateHeight = unitPlateWidth * unitPlateRatio
 
 let mkUnitPlate = @(unitId) function() {
   let res = { watch = serverConfigs }
@@ -45,16 +31,15 @@ let mkUnitPlate = @(unitId) function() {
     children = {
       size = [ unitPlateWidth, unitPlateHeight ]
       children = [
-        mkPlatoonPlates(unit)
         mkUnitBg(unit)
         mkUnitImage(unit)
+        mkUnitRank(unit)
         mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
         mkGradRankLarge(unit.mRank, {
          padding = hdpx(10)
          hplace = ALIGN_RIGHT
          vplace = ALIGN_BOTTOM
         })
-        mkPlatoonPlateFrame()
         {
           hplace = ALIGN_LEFT
           vplace = ALIGN_BOTTOM

@@ -9,6 +9,7 @@ let optionsScene = require("%rGui/options/optionsScene.nut")
 let debugGameModes = require("%rGui/gameModes/debugGameModes.nut")
 let chooseBenchmarkWnd = require("chooseBenchmarkWnd.nut")
 let replaysWnd = require("%rGui/replay/replaysWnd.nut")
+let unitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
@@ -113,9 +114,13 @@ let TUTORIAL = {
   name = loc("mainmenu/btnTutorial")
   cb = openConfirmationTutorialMsg
 }
+let UNITS = {
+  name = loc("mainmenu/btnUnits")
+  cb = unitsWnd
+}
 
 let function getPublicButtons() {
-  let res = [OPTIONS, STORE]
+  let res = [OPTIONS, STORE, UNITS]
   if (isGamepad.value)
     res.append(GAMEPAD_HELP)
   if (isFeedReceived.value)

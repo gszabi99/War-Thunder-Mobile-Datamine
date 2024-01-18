@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { send } = require("eventbus")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { secondsToTimeSimpleString, millisecondsToSecondsInt } = require("%sqstd/time.nut")
@@ -17,6 +17,8 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isInJoiningGame } = require("%appGlobals/sessionLobbyState.nut")
 let helpShipParts = require("%rGui/loading/complexScreens/helpShipParts.nut")
 let helpTankControls = require("%rGui/loading/complexScreens/helpTankControls.nut")
+let helpTankCaptureZone = require("%rGui/loading/complexScreens/helpTankCaptureZone.nut")
+let helpTankParts = require("%rGui/loading/complexScreens/helpTankParts.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -28,6 +30,7 @@ let { leaveSquad } = require("%rGui/squad/squadManager.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
+let { get_mp_session_id_int } = require("multiplayer")
 
 let textColor = 0xFFF0F0F0
 let timeToShowCancelJoining = 30
@@ -221,9 +224,12 @@ let aimingHint = {
   ]
 }
 
+let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankCaptureZone ]
+//no need to subscribe on sharedStatsByCampaign because we do not want to switch loading screen during loading
 let mkBgImagesByCampaign = {
   ships = @() helpShipParts
-  tanks = @() helpTankControls
+  tanks = @() get_mp_session_id_int() == -1 ? helpTankControls()
+    : tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
 }
 
 let bgImage = @() {

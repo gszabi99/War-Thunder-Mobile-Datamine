@@ -44,6 +44,15 @@
       "addSupportPlaneLaunchCount": 1.0
     },
     "attrib_surface_detection_dist": {},
-    "attrib_underwater_detection_dist": {}
+    "attrib_underwater_detection_dist": {},
+    "attrib_rckt_damage": {
+      "explosiveMassMul": 1.15
+    },
+    "attrib_rckt_capture_time": {
+      "asmCaptureDurationMul": 0.8
+    },
+    "attrib_rckt_cm_lifetime": {
+      "cloudTimeLifeMul": 1.25
+    }
   }
 }

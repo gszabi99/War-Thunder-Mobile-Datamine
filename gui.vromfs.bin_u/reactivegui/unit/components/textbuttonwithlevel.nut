@@ -4,6 +4,7 @@ let { mkCustomButton, paddingX, mergeStyles } = require("%rGui/components/textBu
 let { PURCHASE, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { mkPlayerLevel } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkUnitLevel } = require("%rGui/unit/components/unitLevelComp.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 
 let textBtnComp = @(text){
   size = [defButtonMinWidth - 2 * paddingX, SIZE_TO_CONTENT]
@@ -14,7 +15,14 @@ let textBtnComp = @(text){
   text
 }.__update(fontTinyAccented)
 
-let mkPlayerLevelUpTextComp = @(text, level, starLevel) {
+let function mkCostComp(cost) {
+  let { price = 0, currencyId = "" } = cost
+  return price > 0 && currencyId != ""
+   ? mkCurrencyComp(price, currencyId)
+   : null
+}
+
+let mkPlayerLevelUpTextComp = @(text, level, starLevel, cost) {
   flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -22,6 +30,7 @@ let mkPlayerLevelUpTextComp = @(text, level, starLevel) {
   children = [
     textBtnComp(text)
     mkPlayerLevel(level, starLevel)
+    mkCostComp(cost)
   ]
 }
 
@@ -37,8 +46,8 @@ let mkVehicleLevelUpTextComp = @(text, level) {
 }
 
 return {
-  textButtonPlayerLevelUp = @(text, level, starLevel, onClick, styleOvr = null)
-    mkCustomButton(mkPlayerLevelUpTextComp(text, level, starLevel), onClick, mergeStyles(PURCHASE, styleOvr)) // Gold with player level square
+  textButtonPlayerLevelUp = @(text, level, starLevel, onClick, styleOvr = null, cost = null)
+    mkCustomButton(mkPlayerLevelUpTextComp(text, level, starLevel, cost), onClick, mergeStyles(PURCHASE, styleOvr)) // Gold with player level square
   textButtonVehicleLevelUp = @(text, level, onClick, styleOvr = null)
     mkCustomButton(mkVehicleLevelUpTextComp(text, level), onClick, mergeStyles(PURCHASE, styleOvr)) // Gold with unit level square
 }

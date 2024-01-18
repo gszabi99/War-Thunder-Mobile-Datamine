@@ -35,6 +35,7 @@ let valueRangeShip = {
   mainCannonDps = [0, 5000]
   auxCannonDps = [0, 5000]
   aaaDps = [0, 5000]
+  rocketsDps = [0, 6750]
   torpedoDps = [0, 5000]
   mineDps = [0, 5000]
   bombDps = [0, 5000]
@@ -284,11 +285,13 @@ let weaponsCfgShip = {
     mkGunStat("mainCannon")
     mkGunStat("auxCannon")
     mkGunStat("aaa")
+    mkWeapStat("rockets")
     mkWeapStat("torpedo")
     mkWeapStat("mine")
     mkWeapStat("bomb")
   ]
   short = [
+    mkWeapStat("rockets", { valueToText = @(_, s) dpsText((s?.damage ?? 0) * (s?.shotFreq ?? 0)) })
     mkWeapStat("torpedo", { valueToText = @(_, s) dpsText((s?.damage ?? 0) * (s?.shotFreq ?? 0)) })
   ]
 }

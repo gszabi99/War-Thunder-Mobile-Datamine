@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getRomanNumeral } = require("%sqstd/math.nut")
+let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
+let { getRomanNumeral, ceil } = require("%sqstd/math.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let { touchButtonSize, borderWidth, btnBgColor, getSvgImage, imageColor, imageDisabledColor,
@@ -20,7 +21,6 @@ let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { lowerAircraftCamera } = require("camera_control")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkBtnGlare, mkActionGlare, mkConsumableSpend, mkActionBtnGlare
 } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { isNotOnTheSurface, isDeeperThanPeriscopeDepth } = require("%rGui/hud/submarineDepthBlock.nut")
@@ -178,6 +178,92 @@ let function mkActionItem(buttonConfig, actionItem) {
             rendObj = ROBJ_BOX
             size = flex()
             borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
+              : (!isAvailable || isDisabled.value) ? borderNoAmmoColor
+              : borderColor
+            borderWidth
+          }
+          mkActionItemImage(getImage, isAvailable && !isDisabled.value)
+          mkActionGlare(actionItem)
+          isDisabled.value ? null
+            : mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
+          mkConsumableSpend(animationKey)
+        ]
+      }
+      mkActionItemCount(actionItem.count)
+    ]
+  }
+}
+
+let progress = Watched(null)
+let progressEndTime = Watched(null)
+function progressUpdate() {
+  let toEndTime = (progressEndTime.get() ?? 0) - ::get_mission_time()
+  if (toEndTime > 0.0) {
+    local progressV = ceil(toEndTime).tointeger()
+    local nextTick = toEndTime % 1.0
+    if (nextTick < 0.01) {
+      nextTick += 1
+      progressV--
+    }
+    progress.set( progressV )
+    resetTimeout(nextTick, progressUpdate)
+  } else {
+    defer(@() progressEndTime.set(null))
+    progress.set(null)
+  }
+}
+
+progressEndTime.subscribe(@(v) v != null ? progressUpdate() : null)
+
+let mkProgressText = @() {
+  watch = progress
+  rendObj = ROBJ_TEXT
+  pos = [0, -hdpx(20)]
+  vplace = ALIGN_TOP
+  halign = ALIGN_CENTER
+  text = progress.get() ? progress.get() : ""
+}.__update(fontVeryTiny)
+
+let function mkIRCMActionItem(buttonConfig, actionItem) {
+  if (actionItem == null)
+    return null
+  let { getShortcut, getImage, haptPatternId = -1, key = null, sound = "", getAnimationKey = null } = buttonConfig
+  let stateFlags = Watched(0)
+  let isAvailable = isAvailableActionItem(actionItem)
+  let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
+  let isDisabled = Computed(@() disabledControls.value?[shortcutId] ?? false)
+  let animationKey = getAnimationKey ? getAnimationKey(unitType.value) : null
+  defer(@() progressEndTime.set(actionItem?.inProgressEndTime ?? 0))
+
+  return {
+    size = [touchButtonSize, touchButtonSize + countHeightUnderActionItem]
+    flow = FLOW_VERTICAL
+    children = [
+      @() {
+        watch = [isDisabled, progressEndTime]
+        key = key ?? shortcutId
+        behavior = Behaviors.Button
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        size = [touchButtonSize, touchButtonSize]
+        function onClick() {
+          if ((actionItem?.cooldownEndTime ?? 0) > ::get_mission_time() || isDisabled.value)
+            return
+          if (actionItem?.available)
+            playSound(sound)
+          useShortcut(shortcutId)
+          playHapticPattern(haptPatternId)
+        }
+        hotkeys = mkGamepadHotkey(shortcutId)
+        onElemState = @(v) stateFlags(v)
+        children = [
+          progressEndTime.get() ? mkProgressText : mkActionItemProgress(actionItem, isAvailable && !isDisabled.value)
+          @() {
+            watch = [stateFlags]
+            rendObj = ROBJ_BOX
+            size = flex()
+            borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
+              : progressEndTime.get() ? borderColorPushed
               : (!isAvailable || isDisabled.value) ? borderNoAmmoColor
               : borderColor
             borderWidth
@@ -433,7 +519,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let { key, getShortcut, getImage, getAlternativeImage = @() null, selShortcut = null,
     hasAim = false, fireAnimKey = "fire", canShootWithoutTarget = true,
     needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canLowerCamera = false, canShipLowerCamera = false,
-    addChild = null } = buttonConfig
+    addChild = null, needCheckTargetRocket = false } = buttonConfig
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
   let altImage = getAlternativeImage()
   let stateFlags = getWeapStateFlags(key)
@@ -467,6 +553,15 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
 
   let function onButtonReleaseWhileActiveZone() {
     onStopTouch()
+    if (needCheckTargetRocket) {
+      if (!hasTarget.value) {
+        addCommonHint(loc("hints/select_enemy_to_shoot"))
+        return
+      } else if (isWaitForAim) {
+        addCommonHint(loc("hints/select_cooldown_rocket"))
+        return
+      }
+    }
     if (!canShoot.value) {
       if (targetState.value < 3) {
         addCommonHint(!needCheckTargetReachable || targetState.value == 0 ? loc("hints/select_enemy_to_shoot")
@@ -993,6 +1088,7 @@ return {
   mkSubmarineWeaponryItem
   mkActionItem
   mkRepairActionItem
+  mkIRCMActionItem
   mkSimpleButton
   mkDivingLockButton
   mkLockButton

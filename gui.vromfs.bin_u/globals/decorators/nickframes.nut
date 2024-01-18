@@ -24,6 +24,11 @@ let nickFrames = {
   hammer_and_caliper = @(n) $"◞{n}◟"
   christmas_bauble = @(n) $"◠{n}◡"
   christmas_tree = @(n) $"◢{n}◢"
+  impact_direction = @(n) $"◥{n}◤"
+  flying_missile = @(n) $"◦{n}◧"
+  gun_sight = @(n) $"◨{n}◨"
+  clenched_fist = @(n) $"◩{n}◩"
+  decor_wtm_helper = @(n) $"◣{n}◣"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

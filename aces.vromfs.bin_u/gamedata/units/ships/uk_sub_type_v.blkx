@@ -75,6 +75,9 @@
   "hideNodesInDmg": {
     "node": "flag"
   },
+  "aimNodesNames": {
+    "node": "bridge_dm"
+  },
   "default_skin_tomoe": {
     "replace_tex": [
       {

@@ -175,6 +175,21 @@ let shipAttrs = {
     valueToText = @(v) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
     relatedStat = "turningTime"
   }
+  attrib_rckt_damage = {
+    getBaseVal = @(shopCfg) (getTopWeaponByTypes(shopCfg?.weapons, ["rockets"])?.damage ?? 0)
+    getMulMax = @(attrId) attrMaxMulsShip?[attrId].explosiveMassMul ?? 1.0
+    valueToText = @(v) "".concat(round(v), iconDamage)
+  }
+  attrib_rckt_capture_time = {
+    getBaseVal = @(shopCfg) shopCfg?.asmCaptureDuration ?? 0
+    getMulMax = @(attrId) attrMaxMulsShip?[attrId].asmCaptureDurationMul ?? 1.0
+    valueToText = @(v) "".concat(round_by_value(v, 0.1), iconCooldown)
+  }
+  attrib_rckt_cm_lifetime = {
+    getBaseVal = @(shopCfg) (getTopWeaponByTypes(shopCfg?.weapons, ["ircm"])?.cmLiveTime ?? 0)
+    getMulMax = @(attrId) attrMaxMulsShip?[attrId].cloudTimeLifeMul ?? 1.0
+    valueToText = @(v) "".concat(round_by_value(v, 0.1), iconCooldown)
+  }
 }.map(@(c) mkValCfg(c))
 
 let function mkAttrFrom100prcUp(attrId, roundBy = 0.1) {

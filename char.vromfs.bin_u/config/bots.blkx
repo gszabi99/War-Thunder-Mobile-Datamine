@@ -557,6 +557,26 @@
             "name": "jp_cruiser_tone",
             "weight": 1.0,
             "country": "germany"
+          },
+          {
+            "name": "germ_sub_type_7",
+            "weight": 5.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_sub_balao",
+            "weight": 5.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_sub_type_k",
+            "weight": 5.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_sub_pr641",
+            "weight": 5.0,
+            "country": "germany"
           }
         ]
       },

@@ -8,7 +8,7 @@ let imgSize = hdpx(40)
 let textColor = Color(255, 255, 255, 255)
 let warnColor = Color(255, 109, 108, 255)
 let rocketsPosX = hdpx(650)
-let blinkingTime = 3.5
+let blinkingTime = 4.0
 
 
 let blinking = [{

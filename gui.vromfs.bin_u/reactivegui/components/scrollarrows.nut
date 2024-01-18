@@ -15,6 +15,7 @@ let function mkArrowImageComp(lengthPx) {
 }
 
 let scrollArrowImageBig = mkArrowImageComp(evenPx(88))
+let scrollArrowImageSmall = mkArrowImageComp(evenPx(50))
 
 let mkIsShow = {
   [MR_T] = @(scrollHandler) Computed(@() (scrollHandler.elem?.getScrollOffsY() ?? 0) > 0),
@@ -59,4 +60,5 @@ let function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowIma
 
 return {
   mkScrollArrow
+  scrollArrowImageSmall
 }

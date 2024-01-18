@@ -12,8 +12,7 @@ let RAISE_PLATE = 0.4
 let RAISE_PLATE_STEP = 0.2
 let RAISE_PLATE_DELAY = 0.5
 let RAISE_PLATE_TOTAL = RAISE_PLATE_DELAY + RAISE_PLATE_STEP * 4 + RAISE_PLATE * 2
-let raiseBase = hdpx(5)
-let raiseStep = hdpx(45)
+let raiseStep = hdpx(35)
 
 let shakeAnimation = @(delay) delay
   ? [
@@ -110,7 +109,7 @@ let function raisePlatesAnimation(delay, translateFrom, idx, platoonSize, onFini
   if (!delay)
     return null
 
-  let translateTo = [translateFrom[0], translateFrom[1] - raiseBase + (idx - platoonSize) * raiseStep]
+  let translateTo = [translateFrom[0], translateFrom[1] + (idx - platoonSize) * raiseStep]
 
   return [
     {

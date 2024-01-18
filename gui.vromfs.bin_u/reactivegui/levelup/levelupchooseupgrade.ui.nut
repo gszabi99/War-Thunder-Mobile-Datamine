@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getPlatoonOrUnitName, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
+let { getPlatoonOrUnitName, getUnitLocId, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { upgradeUnitName } = require("levelUpState.nut")
@@ -9,19 +9,19 @@ let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPricePurchase, buttonStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts
+let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let getUpgradeOldPrice = require("%rGui/levelUp/getUpgradeOldPrice.nut")
-let openUnitsWnd = require("%rGui/unit/unitsWnd.nut")
+let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
+let { isUnitsWndOpened } = require("%rGui/mainMenu/mainMenuState.nut")
 
 let contentAppearTime = 0.3
 
@@ -40,9 +40,8 @@ let header = @() {
 
 registerHandler("onPurchaseUnitInLevelUp",
   function(res) {
-    let unitId = res?.units.findindex(@(v) v?.name)
-    if (res?.error == null)
-      openUnitsWnd(unitId)
+    if (res?.error == null && !isUnitsWndOpened.get())
+      openUnitsTreeWnd()
   })
 let function purchaseHandler(unitName, isUpgraded = false) {
   sendNewbieBqEvent("buyUnitInLevelUpWnd", { status = unitName, params = isUpgraded ? "upgraded" : "common" })
@@ -108,7 +107,8 @@ let mkUnitPlate = @(unit) {
     children = [
       mkUnitBg(unit)
       mkUnitImage(unit)
-      mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
+      mkUnitRank(unit)
+      mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
     ]
   }
 

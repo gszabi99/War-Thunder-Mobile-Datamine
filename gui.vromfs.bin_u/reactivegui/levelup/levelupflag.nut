@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 
 let levelUpSizePx = [400, 220]
+let flagHeight = hdpx(180)
 
 let wingTime1 = 0.3
 let wingTime2 = 0.05
@@ -155,6 +156,7 @@ let levelUpFlag = @(height, level, starLevel, delay = 0, override = {}) {
 
 return {
   flagAnimFullTime
+  flagHeight
   levelUpSizePx
   levelUpFlag
 }

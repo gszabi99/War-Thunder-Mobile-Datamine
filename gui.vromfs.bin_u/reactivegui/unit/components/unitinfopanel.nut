@@ -17,6 +17,7 @@ let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -329,14 +330,14 @@ let function unitMRankBlock(mRank) {
   }
 }
 
-let unitRewardsBlock = @(unit) {
+let unitRewardsBlock = @(unit, title) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   size = [ statsWidth, hdpx(40) ]
   children = [
     {
       rendObj = ROBJ_TEXT
-      text = loc("attrib_section/battleRewards")
+      text = title
       size = [ flex(), SIZE_TO_CONTENT ]
     }.__update(fontTiny)
     mkUnitBonuses(unit, {}, mkBonusTiny)
@@ -380,7 +381,11 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
       children = [
         unitHeaderBlock(unit.value, headerCtor)
         unitMRankBlock(unit.value?.mRank)
-        unitRewardsBlock(unit.value)
+        unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
+        unit.value?.isUpgraded || unit.value?.isPremium
+          ? null
+          : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
+            { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
         unitStatsBlock(unitStats, prevStats)
         unitArmorBlock(unit.value, false)
       ]
@@ -402,7 +407,11 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
     children = unit.value == null ? null
       : [
           unitMRankBlock(unit.value?.mRank)
-          unitRewardsBlock(unit.value)
+          unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
+          unit.value?.isUpgraded || unit.value?.isPremium
+            ? null
+            : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
+              { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
           unitStatsBlock(unitStats, prevStats)
           unitArmorBlock(unit.value, false)
           unitConsumablesBlock(unit.value, itemsCfgOrdered.value)

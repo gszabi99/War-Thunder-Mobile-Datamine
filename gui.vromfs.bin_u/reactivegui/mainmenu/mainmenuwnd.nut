@@ -10,6 +10,7 @@ let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
+let { unitSpecificItems } = require("%appGlobals/unitSpecificItems.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
@@ -49,7 +50,7 @@ let bpBanner = require("%rGui/battlePass/bpBanner.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
-let btnOpenUnitWnd = require("%rGui/unit/btnOpenUnitWnd.nut")
+let btnOpenUnitsTree = require("%rGui/unitsTree/btnOpenUnitsTree.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
@@ -165,7 +166,7 @@ let leftBottomButtons = btnVerRow([
   btnHorRow([
     btnVerRow([
       btnOpenUnitAttr
-      btnOpenUnitWnd
+      btnOpenUnitsTree
     ])
     btnVerRow([
       onlineInfo
@@ -175,12 +176,13 @@ let leftBottomButtons = btnVerRow([
 ])
 
 let gamercardBattleItemsBalanceBtns = @(){
-  watch = [itemsOrder, specialEventGamercardItems]
+  watch = [itemsOrder, specialEventGamercardItems, unitSpecificItems]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
   children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName)))
-    .extend(itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES))))
+    .extend(itemsOrder.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES))))
+    .extend(unitSpecificItems.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES))))
 }
 
 let queueCurRandomBattleMode = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })

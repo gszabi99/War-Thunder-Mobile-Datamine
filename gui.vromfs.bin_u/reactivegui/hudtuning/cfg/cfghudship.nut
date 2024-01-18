@@ -70,10 +70,8 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT, SHIP,
     { defTransform = mkRBPos([hdpx(-600), hdpx(43)]) })
 
-//
-
-
-
+  abIrcm = withActionBarButtonCtor(EII_IRCM, SHIP,
+     { defTransform = mkRBPos([hdpx(-750), hdpx(43)]) })
 
   firework = withActionButtonCtor(AB_FIREWORK, mkRhombFireworkBtn,
     {

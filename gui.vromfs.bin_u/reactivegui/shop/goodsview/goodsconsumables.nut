@@ -13,6 +13,7 @@ let icons = {
   tank_tool_kit_expendable = "ui/gameuiskin#shop_consumables_tank_repair.avif"
   tank_extinguisher = "ui/gameuiskin#shop_consumables_tank_extinguisher.avif"
   spare = "ui/gameuiskin#shop_consumables_tank_cards.avif"
+  ircm_kit = "ui/gameuiskin#shop_consumables_ircm.avif"
 }
 
 let priceBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
@@ -44,7 +45,7 @@ let mkImg = @(itemId) {
 
 let function getConsumablesInfo(goods) {
   let { items } = goods
-  let itemId = orderByItems.findindex(@(_, id) items?[id] != null) ?? ""
+  let itemId = orderByItems.findindex(@(_, id) items?[id] != null)  ?? items.findindex(@(_) true) ?? ""
   let amount = items?[itemId] ?? 0
   return { itemId, amount }
 }

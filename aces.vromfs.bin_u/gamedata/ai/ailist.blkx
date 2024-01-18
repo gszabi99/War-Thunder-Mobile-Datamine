@@ -5245,7 +5245,9 @@
         "selector": {
           "selectStrategy": "ordered",
           "ifThenElse": {
-            "isPlayerOrbitActive": {},
+            "isPlayerOrderActive": {
+              "type": "orbit"
+            },
             "orbitHere": {
               "speed": 250.0,
               "rollFactor": 0.13,
@@ -5306,7 +5308,9 @@
         "selector": {
           "selectStrategy": "ordered",
           "ifThenElse": {
-            "isPlayerOrbitActive": {},
+            "isPlayerOrderActive": {
+              "type": "orbit"
+            },
             "orbitHere": {
               "speed": 100.0,
               "rollFactor": 0.13,
@@ -5846,7 +5850,9 @@
                           "hasDependentAttackers": {},
                           "parallel": {
                             "cycle": {
-                              "hasGroupWeaponForTarget": {}
+                              "hasGroupWeaponTypes": {
+                                "weaponType": "bombs"
+                              }
                             },
                             "attackGroundFake": {}
                           }
@@ -5872,7 +5878,13 @@
                           "hasDependentAttackers": {},
                           "parallel": {
                             "cycle": {
-                              "hasGroupWeaponForTarget": {}
+                              "hasGroupWeaponTypes": {
+                                "weaponType": [
+                                  "bombs",
+                                  "rockets",
+                                  "guns"
+                                ]
+                              }
                             },
                             "attackGroundFake": {}
                           }
@@ -6223,7 +6235,9 @@
                           "hasDependentAttackers": {},
                           "parallel": {
                             "cycle": {
-                              "hasGroupWeaponForTarget": {}
+                              "hasGroupWeaponTypes": {
+                                "weaponType": "bombs"
+                              }
                             },
                             "attackGroundFake": {}
                           }
@@ -6248,7 +6262,13 @@
                           "hasDependentAttackers": {},
                           "parallel": {
                             "cycle": {
-                              "hasGroupWeaponForTarget": {}
+                              "hasGroupWeaponTypes": {
+                                "weaponType": [
+                                  "bombs",
+                                  "rockets",
+                                  "guns"
+                                ]
+                              }
                             },
                             "attackGroundFake": {}
                           }

@@ -98,7 +98,7 @@
   "rocketIndicatorShowEnemy": false,
   "rocketIndicatorShowFriendly": false,
   "rocketIndicatorShowUnguided": false,
-  "rocketIndicatorShowSelf": true,
+  "rocketIndicatorShowSelf": false,
   "rocketIndicatorLosCheck": true,
   "forceShowDetectedOnce": true,
   "rearmSupportPlaneInAir": false,
@@ -241,7 +241,7 @@
   "enableHeicopterTargetLock3dPerson": true,
   "aimCorrectionAngleMax": 5.0,
   "artilleryFriendlyFireDamage": false,
-  "rocketShakeCamera": 1.0,
+  "rocketShakeCamera": 0.2,
   "gunShakeCamera": 0.02,
   "cannonShakeCamera": 0.4,
   "autostartTime": 60.0,
@@ -343,6 +343,7 @@
   "additionalAllowableDeltaForServer": 0.5,
   "useYawDeadzone": true,
   "showStreaksForOwnerOnly": true,
+  "physObjUseMovementDamping": true,
   "needCreateWreckedPartShip": false,
   "dayTimeSpeed": 0.0,
   "syncWeatherPeriod": 1000000.0,
@@ -13552,6 +13553,30 @@
         },
         {
           "name": "wheel_r_01_",
+          "modelNames": "type_87_rcv"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "type_87_rcv"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "type_87_rcv"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "type_87_rcv"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "type_87_rcv"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "type_87_rcv"
+        },
+        {
+          "name": "wheel_r_01_",
           "modelNames": "armored_car_mk_2_aa"
         },
         {
@@ -13621,6 +13646,30 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "btr_152a"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "zis_152d"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "zis_152d"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "zis_152d"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "zis_152d"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "zis_152d"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "zis_152d"
         },
         {
           "name": "wheel_r_01_",
@@ -16134,6 +16183,12 @@
         "wr_formation_c",
         "wr_sand_island_a",
         "wr_sand_island_b",
+        "wr_sandstone_rock_a",
+        "wr_sandstone_rock_b",
+        "wr_sandstone_rock_c",
+        "wr_sandstone_rock_d",
+        "normandy_bunker_b",
+        "normandy_bunker_c",
         "vietnam_mountain_base_a",
         "vietnam_mountain_base_b",
         "vietnam_mountain_large_straight_a",

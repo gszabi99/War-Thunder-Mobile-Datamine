@@ -52,8 +52,8 @@
       "gt_training": true,
       "checkFriendlyFireAlsoFromAircrafts": true,
       "preventBotsLeavingBattleArea": true,
-      "locName": "pacific_island/name",
-      "locDesc": "pacific_island/desc",
+      "locName": "missions/_NTdm_WTM;pacific_island/name",
+      "locDesc": "pacific_island/desc;missions/_NTdm_WTM/desc",
       "gt_mp_tickets": true,
       "gt_mp_capture": true,
       "scoreLimit": 10000,
@@ -90,36 +90,59 @@
           "showAirMap": false,
           "icon": [
             {
-              "icontype": "ship",
+              "icontype": "destroyer",
               "side": "ally",
-              "target": "briefing_t1_fleet"
+              "target": "briefing_t1_collective_spawn_01"
             },
             {
-              "icontype": "ship",
-              "side": "enemy",
-              "target": "briefing_t2_fleet"
-            },
-            {
-              "icontype": "ship",
+              "icontype": "destroyer",
               "side": "ally",
-              "target": "briefing_t1_spawn01"
+              "target": "briefing_t1_collective_spawn_02"
             },
             {
-              "icontype": "ship",
+              "icontype": "destroyer",
               "side": "ally",
-              "target": "briefing_t1_spawn02"
+              "target": "briefing_t1_collective_spawn_03"
             },
             {
-              "icontype": "ship",
-              "side": "enemy",
-              "target": "briefing_t2_spawn01"
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_04"
             },
             {
-              "icontype": "ship",
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_05"
+            },
+            {
+              "icontype": "destroyer",
               "side": "enemy",
-              "target": "briefing_t2_spawn02"
+              "target": "briefing_t2_collective_spawn_01"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_02"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_03"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_04"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_05"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "ntdm_battle_area"
+          }
         }
       }
     }
@@ -257,13 +280,13 @@
     }
   },
   "areas": {
-    "briefing_t1_fleet": {
+    "briefing_t1_collective_spawn_01": {
       "type": "Point",
       "tm": [
         [
-          1.0,
+          0.707107,
           0.0,
-          0.0
+          -0.707107
         ],
         [
           0.0,
@@ -271,20 +294,20 @@
           0.0
         ],
         [
+          0.707107,
           0.0,
-          0.0,
-          1.0
+          0.707107
         ],
         [
-          -420.1,
-          27.85,
-          -2184.7
+          1732.06,
+          0.0,
+          2932.52
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_spawn01": {
+    "briefing_t1_collective_spawn_02": {
       "type": "Point",
       "tm": [
         [
@@ -303,15 +326,15 @@
           1.0
         ],
         [
-          -1371.6,
-          -36.05,
-          -2207.35
+          847.536,
+          0.0,
+          2941.62
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_spawn02": {
+    "briefing_t1_collective_spawn_03": {
       "type": "Point",
       "tm": [
         [
@@ -330,15 +353,15 @@
           1.0
         ],
         [
-          1114.3,
-          -37.55,
-          -2165.8
+          -44.8773,
+          0.0,
+          2975.86
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_spawn01": {
+    "briefing_t1_collective_spawn_04": {
       "type": "Point",
       "tm": [
         [
@@ -357,15 +380,15 @@
           1.0
         ],
         [
-          -846.75,
-          -38.85,
-          2170.9
+          -874.959,
+          0.0,
+          2974.58
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_spawn02": {
+    "briefing_t1_collective_spawn_05": {
       "type": "Point",
       "tm": [
         [
@@ -384,15 +407,42 @@
           1.0
         ],
         [
-          1632.25,
-          -45.0,
-          2054.55
+          -1699.01,
+          0.0,
+          2970.55
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_fleet": {
+    "briefing_t2_collective_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.707107,
+          0.0,
+          -0.707107
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.707107,
+          0.0,
+          0.707107
+        ],
+        [
+          1787.3,
+          0.0,
+          -2968.49
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_02": {
       "type": "Point",
       "tm": [
         [
@@ -411,9 +461,90 @@
           1.0
         ],
         [
-          61.05,
-          -41.2,
-          2226.2
+          980.394,
+          0.0,
+          -2983.04
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -2.42509,
+          0.0,
+          -3017.23
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -831.184,
+          0.0,
+          -3001.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_05": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1651.64,
+          0.0,
+          -3001.84
         ]
       ],
       "objLayer": 0,

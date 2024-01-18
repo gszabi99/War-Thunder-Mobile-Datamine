@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkTabs } = require("%rGui/components/tabs.nut")
 let mkAvailAttrMark = require("mkAvailAttrMark.nut")
 
-let tabH = hdpx(184)
+let tabH = hdpx(165)
 let contentMargin = hdpx(20)
 
 let textColor = 0xFFFFFFFF
@@ -27,7 +27,7 @@ let function tabData(tab) {
               size = flex()
               rendObj = ROBJ_IMAGE
               image = Picture(image)
-              keepAspect = KEEP_ASPECT_FILL
+              keepAspect = KEEP_ASPECT_FIT
               imageHalign = ALIGN_LEFT
               imageValign = ALIGN_BOTTOM
               color = textColor

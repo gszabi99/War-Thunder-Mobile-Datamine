@@ -70,13 +70,23 @@
     0.1,
     0.5
   ],
+  "botTankPenetrationMultNewbRange": [
+    [
+      0.5,
+      0.75
+    ],
+    [
+      0.5,
+      0.75
+    ]
+  ],
   "newbMultsShipMissionCount": 5,
   "botShipDamageMultNewbRange": [
-    0.05,
-    0.5
+    0.025,
+    0.25
   ],
   "shipDamageToBotMultNewbRange": [
-    1.2,
+    1.4,
     1.0
   ],
   "genericDamageType": "generic",
@@ -109,10 +119,6 @@
   "defaultFirePresetDamageType": "fire",
   "useBlkPreprocessor": true,
   "stopChanceOnDeadPart": 1.0,
-  "botTankPenetrationMultNewbRange": [
-    0.5,
-    0.75
-  ],
   "explodeRestrainArmorPower": 0.33,
   "ammoExplosionProb": [
     1.0,
@@ -3082,48 +3088,6 @@
           "onHitChanceMultFire": 2.0
         }
       }
-    }
-  },
-  "abGroupsBoostParams": {
-    "group_0": {
-      "newbMultsTankMissionCount": 5,
-      "botTankDamageMultNewbRange": [
-        0.1,
-        0.5
-      ],
-      "botTankPenetrationMultNewbRange": [
-        0.5,
-        0.75
-      ],
-      "newbMultsShipMissionCount": 5,
-      "botShipDamageMultNewbRange": [
-        0.05,
-        0.5
-      ],
-      "shipDamageToBotMultNewbRange": [
-        1.2,
-        1.0
-      ]
-    },
-    "group_1": {
-      "newbMultsTankMissionCount": 5,
-      "botTankDamageMultNewbRange": [
-        0.1,
-        0.5
-      ],
-      "botTankPenetrationMultNewbRange": [
-        0.5,
-        0.75
-      ],
-      "newbMultsShipMissionCount": 5,
-      "botShipDamageMultNewbRange": [
-        0.025,
-        0.25
-      ],
-      "shipDamageToBotMultNewbRange": [
-        1.4,
-        1.0
-      ]
     }
   },
   "damageTypesProps": {

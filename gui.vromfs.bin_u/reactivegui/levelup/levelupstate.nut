@@ -12,11 +12,19 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { WP, balanceWp } = require("%appGlobals/currenciesState.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
+let { openUnitsTreeAtCurRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
+
+let LVL_UP_ANIM = 2.2
 
 let isSeen = hardPersistWatched("isLevelUpSeen", false) // To show it after login once.
 let isLvlUpOpened = mkWatched(persist, "isOpened", false)
+let isRewardsModalOpen = mkWatched(persist, "isRewardsModalOpen", false)
 let failedRewardsLevelStr = mkWatched(persist, "failedRewardsLevelStr", {})
 let upgradeUnitName = mkWatched(persist, "upgradeUnitName", null)
+
+let openLvlUpWnd = @() isLvlUpOpened.set(true)
+let openLvlUpAfterDelay = @() resetTimeout(LVL_UP_ANIM, openLvlUpWnd)
+let openRewardsModal = @() isRewardsModalOpen.set(true)
 
 isLvlUpOpened.subscribe(@(v) v ? isSeen(true) : null)
 isInDebriefing.subscribe(function(v) {
@@ -64,20 +72,40 @@ hasDataForLevelWnd.subscribe(function(v) {
   if (v)
     return
   isSeen(false)
-  isLvlUpOpened(false)
+  isRewardsModalOpen.set(false)
+  isLvlUpOpened.set(false)
 })
 
 let needOpenLevelUpWnd = keepref(Computed(@() hasDataForLevelWnd.value
   && !isSeen.value
-  && isLoggedIn.value && isInMenu.value && !isInDebriefing.value && !hasModalWindows.value))
+  && isLoggedIn.value
+  && isInMenu.value
+  && !isInDebriefing.value
+  && !hasModalWindows.value))
+
+let function openLvlUpWndIfCan() {
+  if (hasDataForLevelWnd.value) {
+    if (!isUnitsTreeOpen.get())
+      openUnitsTreeAtCurRank()
+    if (rewardsToReceive.get().len() > 0)
+      openRewardsModal()
+    else
+      openLvlUpWnd()
+  }
+  return hasDataForLevelWnd.value
+}
 
 needOpenLevelUpWnd.subscribe(function(val) {
-  if (!val)
+  if (!val || isUnitsTreeOpen.get())
     return
-  resetTimeout(0.1, function() {
-    if (needOpenLevelUpWnd.value)
-      isLvlUpOpened(true)
-  })
+
+  if (needOpenLevelUpWnd.value) {
+    openUnitsTreeAtCurRank()
+    if (rewardsToReceive.get().len() > 0)
+      openRewardsModal()
+    else
+      openLvlUpWndIfCan()
+  }
 })
 
 let needAutoLevelUp = keepref(Computed(@() hasDataForLevelWnd.value
@@ -94,19 +122,39 @@ let function onNeedAutoLevelUp(need) {
 onNeedAutoLevelUp(needAutoLevelUp.value)
 needAutoLevelUp.subscribe(onNeedAutoLevelUp)
 
-let function openLvlUpWndIfCan() {
-  if (hasDataForLevelWnd.value)
-    isLvlUpOpened(true)
-  return hasDataForLevelWnd.value
+let lvlUpCost = Computed(function() {
+  let { costGold, nextLevelExp, exp } = playerLevelInfo.value
+  let expLeft = nextLevelExp - exp
+  return nextLevelExp
+    ? max(1, (min(1.0, expLeft.tofloat() / nextLevelExp) * costGold + 0.5).tointeger())
+    : null
+})
+
+let isLvlUpAnimated = Watched(false)
+let function startLvlUpAnimation() {
+  isLvlUpAnimated.set(true)
+  resetTimeout(LVL_UP_ANIM, @() isLvlUpAnimated.set(false))
 }
 
 return {
-  maxRewardLevelInfo
   isLvlUpOpened
+  openLvlUpWndIfCan
+  openLvlUpAfterDelay
+  closeLvlUpWnd = @() isLvlUpOpened.set(false)
+
+  isRewardsModalOpen
+  openRewardsModal
+  closeRewardsModal = @() isRewardsModalOpen.set(false)
+
+  maxRewardLevelInfo
   rewardsToReceive
   failedRewardsLevelStr
   upgradeUnitName
-  closeLvlUpWnd = @() isLvlUpOpened(false)
-  openLvlUpWndIfCan
   skipLevelUpUnitPurchase
+  lvlUpCost
+  hasDataForLevelWnd
+  isSeen
+
+  isLvlUpAnimated
+  startLvlUpAnimation
 }

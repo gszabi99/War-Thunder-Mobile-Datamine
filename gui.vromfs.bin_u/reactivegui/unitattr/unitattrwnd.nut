@@ -49,6 +49,7 @@ let categoryImages = {
   ship_engine_room = "ui/gameuiskin#upgrades_mechanic_icon.avif"
   ship_artillery = "ui/gameuiskin#upgrades_artillery_icon.avif"
   ship_damage_control = "ui/gameuiskin#upgrades_torpedoes_icon.avif"
+  ship_missiles = "ui/gameuiskin#upgrades_ship_rckt_weaponry_icon.avif"
   tank_fire_power = "ui/gameuiskin#upgrades_tank_firepower_icon.avif"
   tank_crew = "ui/gameuiskin#upgrades_tank_crew_icon.avif"
   tank_protection = "ui/gameuiskin#upgrades_tools_icon.avif"
@@ -200,7 +201,10 @@ let actionButtons = @() {
         (attrUnitData.value?.unit.level ?? 0) + 1,
         @() buyUnitLevelWnd(attrUnitName.value), { hotkeys = ["^J:Y"] })
     selAttrSpCost.value <= 0 ? null
-      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, { hotkeys = ["^J:X"] })
+      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
+          ovr = { sound = { click  = "characteristics_apply" } }
+          hotkeys = ["^J:X"]
+        })
   ]
 }
 

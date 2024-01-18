@@ -20,9 +20,9 @@ let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
 let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
-let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullHeight, mkUnitPrice,
+let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullSize, mkUnitPrice,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine,
-  mkUnitSelectedUnderlineVert
+  mkUnitSelectedUnderlineVert, mkUnitRank, unitPlatesGap
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
@@ -33,11 +33,10 @@ let respawnBullets = require("respawnBullets.nut")
 let { bg, headerText, headerHeight, header, gap, headerMarquee } = require("respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 
-let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullHeight
+let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullSize
 let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
@@ -95,8 +94,8 @@ let function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
+  let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let { canSpawn, isSpawnBySpare } = slot
-  let imgOvr = { picSaturate = canSpawn ? 1.0 : 0.0 }
   return {
     size = [slotPlateWidth, unitPlateHeight]
     behavior = Behaviors.Button
@@ -104,22 +103,16 @@ let function mkSlotPlate(slot, baseUnit) {
     sound = { click  = "choose" }
     flow = FLOW_HORIZONTAL
     children = [
-      mkUnitSelectedUnderlineVert(isSelected)
+      mkUnitSelectedUnderlineVert(unit, isSelected)
       {
         key = slot
         size = [unitPlateWidth, unitPlateHeight]
         children = [
-          mkUnitBg(unit, imgOvr)
+          mkUnitBg(unit, !canSpawn)
           canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
-          mkUnitImage(unit).__update(imgOvr)
-          mkUnitTexts(unit, loc(p.locId))
-          canSpawn
-            ? mkGradRank(unit.mRank, {
-              hplace = ALIGN_RIGHT
-              vplace = ALIGN_BOTTOM
-              padding = hdpx(10)
-            })
-            : mkUnitSlotLockedLine(slot)
+          mkUnitImage(unit)
+          mkUnitTexts(unit, loc(p.locId), Computed(@() !canSpawn))
+          canSpawn ? mkUnitRank(unit, isPremium ? {} : { pos = [-hdpx(30), 0] }) : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null
         ]
       }
@@ -167,7 +160,7 @@ let slotsBlock = @() {
   watch = [respawnSlots, respawnUnitInfo]
   size = [slotPlateWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
-  gap
+  gap = unitPlatesGap
   children = respawnUnitInfo.value == null ? null
     : [
         platoonTitle(respawnUnitInfo.value)

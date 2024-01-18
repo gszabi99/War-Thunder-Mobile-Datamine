@@ -31,6 +31,10 @@
   "vsmAngleThreshold": 0.0,
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
+  "shore_waves_dist": [
+    50.0,
+    200.0
+  ],
   "wind_scale": 1.2,
   "max_wind_strength": 6.5,
   "water_level": 0.0,
@@ -79,7 +83,8 @@
       0.24,
       0.0
     ],
-    "water_color_noise_size": 1737.0
+    "water_color_noise_size": 1737.0,
+    "shore_depth_scale": 0.05
   },
   "technicsSkins": {
     "groundSkin": "urban"
@@ -94,7 +99,7 @@
   "render": {
     "lmesh": true,
     "onlyUnderwaterLmesh": true,
-    "riExtraMinSizeForReflection": 100.0,
-    "riExToHeightmap": true
+    "riExToHeightmap": true,
+    "riExtraMinSizeForReflection": 100.0
   }
 }

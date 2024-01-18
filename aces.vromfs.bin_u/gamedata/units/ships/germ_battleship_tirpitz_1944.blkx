@@ -57,6 +57,9 @@
   "hideNodesInDmg": {
     "node": "flag"
   },
+  "aimNodesNames": {
+    "node": "compartment_05_dm"
+  },
   "default_skin_tomoe": {
     "replace_tex": [
       {

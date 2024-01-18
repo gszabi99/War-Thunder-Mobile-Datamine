@@ -23,6 +23,10 @@ let textsFont = fontTinyAccentedShaded
 let defaultColor = 0xFFFFFFFF
 let badQualityColor = 0xFFFF5D5D
 
+let BATTERY_BG_NORMAL = "icon_battery"
+let BATTERY_BG_CHARGING = "icon_battery_charging"
+let BATTERY_BG_NONE = ""
+
 let pingIconSize = [ ((saBorders[1] - hdpxi(16)) / 0.9).tointeger(), (saBorders[1] - hdpxi(16)).tointeger()]
 let batteryIconW = hdpxi(44)
 let batteryIconH = hdpxi(22)
@@ -109,9 +113,9 @@ let function updateBatteryState() {
   isCharging(is_charging())
 }
 
-let batteryIconFn = Computed(@() batteryCharge.value < 0 ? ""
-  : isCharging.value > 0 ? "icon_battery_charging"
-  : "icon_battery"
+let batteryIconFn = Computed(@() batteryCharge.value < 0 ? BATTERY_BG_NONE
+  : isCharging.value > 0 ? BATTERY_BG_CHARGING
+  : BATTERY_BG_NORMAL
 )
 
 let batteryColor = Computed(
@@ -121,13 +125,13 @@ let batteryFillWidth = Computed(@() round(clamp(batteryCharge.get(), 0.0, 1.0) *
 
 let function batteryComp() {
   let res = { watch = [ batteryIconFn, batteryColor ] }
-  return batteryIconFn.get() == "" ? res : res.__update({
+  return batteryIconFn.get() == BATTERY_BG_NONE ? res : res.__update({
     size = [batteryIconW, batteryIconH]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#{batteryIconFn.get()}.svg:{batteryIconW}:{batteryIconH}:P")
     color = batteryColor.get()
     keepAspect = true
-    children = @() {
+    children = batteryIconFn.get() != BATTERY_BG_NORMAL ? null : @() {
       watch = batteryFillWidth
       size = [batteryFillWidth.get(), batteryIconH - (2 * batteryFillOffset)]
       pos = [batteryFillOffset, batteryFillOffset]

@@ -28,7 +28,7 @@ let pattern = {
   size = flex()
   clipChildren = true
   flow = FLOW_HORIZONTAL
-  children = array(7, patternImage)
+  children = array(10, patternImage)
 }
 
 let mkGradient = @(override) {

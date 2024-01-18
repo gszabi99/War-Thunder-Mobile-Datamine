@@ -1,50 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
 let { set_camera_shift_centered, set_camera_shift_upper } = require("hangar")
 let { get_time_msec } = require("dagor.time")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { wndSwitchAnim, WND_REVEAL } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { levelBlock, gamercardWithoutLevelBlock, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
-let { playerLevelInfo, allUnitsCfg, myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { hangarUnitName, loadedHangarUnitName, setHangarUnit } = require("hangarUnit.nut")
-let { sortUnits, getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
-let { buyUnitsData, canBuyUnits, canBuyUnitsStatus, setCurrentUnit, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
-} = require("%appGlobals/unitsState.nut")
-let { unitInProgress, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { hangarUnitName, loadedHangarUnitName } = require("hangarUnit.nut")
+let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
+let { buyUnitsData, canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { textButtonPrimary, textButtonPricePurchase, mkCustomButton } = require("%rGui/components/textButton.nut")
-let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let { infoBlueButton } = require("%rGui/components/infoButton.nut")
-let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
-let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnderlineFullHeight,
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitCanPurchaseShade, mkUnitTexts, mkUnitLock, mkUnitShortPrice,
-  mkUnitLockedFg, mkUnitEquippedFrame, mkUnitEquippedTopLine, mkUnitSelectedUnderline,
-  mkPlatoonPlateFrame, platoonSelPlatesGap, mkPlatoonEquippedIcon, mkPlatoonSelectedGlow,
-  mkUnitEmptyLockedFg, bgPlatesTranslate, mkPlateText, plateTextsPad
+let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnderlineFullSize,
+  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitShortPrice,
+  mkUnitEquippedFrame, mkUnitEquippedTopLine, mkUnitSelectedUnderline,
+  mkPlatoonPlateFrame, platoonSelPlatesGap, mkPlatoonEquippedIcon,
+  bgPlatesTranslate, mkPlateText, plateTextsSmallPad
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInfoPanel, unitInfoPanelDefPos, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { btnOpenUnitAttr } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
-let { curFilters, optName, optCountry, optUnitClass, optMRank, optStatus
-} = require("%rGui/unit/unitsFilterState.nut")
-let mkUnitsFilter = require("%rGui/unit/mkUnitsFilter.nut")
-let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
+let { curFilters } = require("%rGui/unit/unitsFilterState.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let mkUnitPkgDownloadInfo = require("mkUnitPkgDownloadInfo.nut")
 let { isPurchEffectVisible } = require("unitPurchaseEffectScene.nut")
-let { gradTranspDoubleSideX, gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
-let { havePremium } = require("%rGui/state/profilePremium.nut")
+let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { abs } = require("%sqstd/math.nut")
 let { justUnlockedUnits, justBoughtUnits, deleteJustBoughtUnit, UNLOCK_DELAY } = require("%rGui/unit/justUnlockedUnits.nut")
 let { scaleAnimation, revealAnimation, raisePlatesAnimation, RAISE_PLATE_TOTAL
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
@@ -62,19 +42,16 @@ let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { levelProgressBarHeight } = require("%rGui/components/levelBlockPkg.nut")
 let { unitDiscounts } = require("unitsDiscountState.nut")
 let { discountTagUnitBig } = require("%rGui/components/discountTag.nut")
+let { curSelectedUnit, availableUnitsList, sizePlatoon, curUnitName } = require("%rGui/unit/unitsWndState.nut")
+let { unitActions } = require("%rGui/unit/unitsWndActions.nut")
+let { isFiltersVisible, filterStateFlags, activeFilters, getFiltersText, openFilters, filters
+} = require("%rGui/unit/unitsFilterPkg.nut")
 
 const MIN_HOLD_MSEC = 700
-let premiumDays = 30
-let isFiltersVisible = Watched(false)
-let filters = [optName, optCountry, optUnitClass, optMRank, optStatus]
-let activeFilters = Watched(0)
 let profileStateFlags = Watched(0)
 
 let gapFromUnitsBlockToBtns = hdpx(4)
 let levelProgressWidth = hdpx(600)
-
-let premBGHoverColor = 0x01B28600
-let defaultBgHoverColor = 0xFF50C0FF
 
 isUnitsWndAttached.subscribe(function(v) {
   if (v)
@@ -86,49 +63,17 @@ loadedHangarUnitName.subscribe(@(_) isUnitsWndAttached.value ? set_camera_shift_
 
 let holdInfo = {} //unitName = { press = int, release = int }
 
-let availableUnitsList = Computed(@() allUnitsCfg.value
-  .filter(@(u) !u?.isHidden || u.name in myUnits.value)
-  .map(@(u, id) myUnits.value?[id] ?? u)
-  .values()
-  .sort(sortUnits))
-
 let scrollHandler = ScrollHandler()
 let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))
 
-let sizePlatoon = Computed(@() (availableUnitsList.value?[0].platoonUnits ?? []).len())
 let gap = Computed(@() sizePlatoon.value > 0 ? (sizePlatoon.value + 0.8) * platoonSelPlatesGap : 0)
 
-let curSelectedUnit = Watched(null)
-let curUnitName = Computed(@() curUnit.value?.name)
-
-curCampaign.subscribe(@(_) curSelectedUnit(curUnitName.value))
-
-let curSelectedUnitPrice = Computed(@()
-  (allUnitsCfg.value?[curSelectedUnit.value]?.costGold ?? 0) + (allUnitsCfg.value?[curSelectedUnit.value]?.costWp ?? 0))
-
-let canEquipSelectedUnit = Computed(@() (curSelectedUnit.value in myUnits.value) && (curSelectedUnit.value != curUnit.value?.name))
 let isShowedUnitOwned = Computed(@() hangarUnitName.value in myUnits.value)
 
-curUnitName.subscribe(function(v) {
-  if (v != null && !isUnitsWndAttached.value && curSelectedUnit.value != null)
-    curSelectedUnit(v)
-})
-
-let countActiveFilters = @() activeFilters(filters.reduce(function(res, f) {
-  let { value } = f.value
-  if (value != null && value != ""
-      && (type(value) != "table" || value.len() < f.allValues.value.len()))
-    res++
-  return res
-}, 0))
-countActiveFilters()
-foreach (f in filters) {
-  f.value.subscribe(@(_) countActiveFilters())
-  f?.allValues.subscribe(@(_) countActiveFilters())
-}
-
 let isFitAllFilters = @(unit) filters.findvalue(@(f) f.value.value != null && !f.isFit(unit, f.value.value)) == null
-curFilters.subscribe(function(_) {
+curFilters.subscribe(function(v) {
+  if (v.len() == 0 || !isUnitsWndOpened.get())
+    return
   let unit = allUnitsCfg.value?[curSelectedUnit.value]
   if (unit != null && isFitAllFilters(unit))
     return
@@ -141,44 +86,8 @@ let function close() {
   isUnitsWndOpened(false)
 }
 
-let function onSetCurrentUnit() {
-  if (curSelectedUnit.value == null || curUnitInProgress.value != null)
-    return
-  setCurrentUnit(curSelectedUnit.value)
-  isUnitsWndOpened(false)
-}
+let unitsPlateCombinedHeight = unutEquppedTopLineFullHeight + unitPlateHeight + unitSelUnderlineFullSize
 
-let function onBuyUnit() {
-  if (curSelectedUnit.value == null || unitInProgress.value != null)
-    return
-  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, curSelectedUnit.value)
-  purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)
-}
-
-curSelectedUnit.subscribe(function(unitId) {
-  if (unitId != null)
-    setHangarUnit(unitId)
-})
-
-let unitsPlateCombinedHeight = unutEquppedTopLineFullHeight + unitPlateHeight + unitSelUnderlineFullHeight
-
-const FILTER_UID = "units_filter"
-let closeFilters = @() modalPopupWnd.remove(FILTER_UID)
-let openFilters = @(event)
-  modalPopupWnd.add(event.targetRect, {
-    uid = FILTER_UID
-    children = mkUnitsFilter(filters, availableUnitsList, hdpx(1000))
-    padding = hdpx(20)
-    popupValign = ALIGN_BOTTOM
-    popupHalign = ALIGN_LEFT
-    popupOffset = unitsPlateCombinedHeight + hdpx(20)
-    hotkeys = [[btnBEscUp, closeFilters]]
-    onAttach = @() isFiltersVisible(true)
-    onDetach = @() isFiltersVisible(false)
-  })
-
-let filterStateFlags = Watched(0)
-let getFiltersText = @(count) count <= 0 ? loc("showFilters") : loc("activeFilters", { count })
 let unitFilterButton = @() {
   watch = [isFiltersVisible, isGamepad]
   vplace = ALIGN_TOP
@@ -186,7 +95,7 @@ let unitFilterButton = @() {
 }.__update(isGamepad.value
   ? {
       key = filterStateFlags
-      children = { hotkeys = [["^J:LT", getFiltersText(activeFilters.value), openFilters]] }
+      children = { hotkeys = [["^J:LT", getFiltersText(activeFilters.value), @(e) openFilters(e)]] }
     }
   : {
       padding = hdpx(10)
@@ -195,7 +104,7 @@ let unitFilterButton = @() {
 
       behavior = Behaviors.Button
       onElemState = @(s) filterStateFlags(s)
-      onClick = openFilters
+      onClick = @(e) openFilters(e)
       children = @() {
         watch = [filterStateFlags, activeFilters]
         rendObj = ROBJ_TEXT
@@ -205,133 +114,14 @@ let unitFilterButton = @() {
       transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
     })
 
-let unitTweakingButtons = @() isShowedUnitOwned.value
+let unitTweakingButtons = @() isShowedUnitOwned.value && !isFiltersVisible.value
   ? {
-      watch = isShowedUnitOwned
+      watch = [isShowedUnitOwned, isFiltersVisible]
       size = SIZE_TO_CONTENT
       vplace = ALIGN_BOTTOM
       children = btnOpenUnitAttr
     }
   : { watch = isShowedUnitOwned }
-
-let bgTextMessage = {
-  size = [SIZE_TO_CONTENT, hdpx(50)]
-  color = 0x8F000000
-  valign = ALIGN_CENTER
-  rendObj = ROBJ_9RECT
-  image = gradCircularSmallHorCorners
-  screenOffs = hdpx(50)
-  texOffs = gradCircCornerOffset
-}
-
-let function findGoodsPrem(shopGoodsList){
-  local res = null
-  local delta = 0
-  foreach (g in shopGoodsList) {
-    if ((g?.premiumDays ?? 0) <= 0
-      || (g?.gold ?? 0) > 0 || (g?.wp ?? 0) > 0 || (g?.items.len() ?? 0) > 0
-      || (g?.units.len() ?? 0) > 0 || (g?.unitUpgrades.len() ?? 0) > 0)
-      continue
-    let d = abs(g.premiumDays - premiumDays)
-    if (d == 0)
-      return g
-    if (res != null && d >= delta)
-      continue
-    delta = d
-    res = g
-  }
-  return res
-}
-
-let function unitActionButtons() {
-  let children = []
-  if (canEquipSelectedUnit.value)
-    children.append(
-      textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
-  else if (curSelectedUnit.value in canBuyUnits.value) {
-    let unit = canBuyUnits.value[curSelectedUnit.value]
-    let isForLevelUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
-    let price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.value)
-    if (price != null) {
-      let priceComp = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON)
-      children.append(
-        textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")), priceComp,
-          onBuyUnit, { hotkeys = ["^J:X"] }))
-    }
-  }
-  else if (canBuyUnitsStatus.value?[curSelectedUnit.value] == US_TOO_LOW_LEVEL){
-    let { rank = 0, starRank = 0 } = allUnitsCfg.value.findvalue(@(u) u.name == curSelectedUnit.value)
-    let deltaLevels = rank - playerLevelInfo.value.level
-    if(deltaLevels >= 2)
-      children.append(bgTextMessage.__merge({
-        children = @(){
-          size = SIZE_TO_CONTENT
-          rendObj = ROBJ_TEXT
-          color = 0xFFFFFF
-          text = curSelectedUnitPrice.value == 0
-            ? loc("unitWnd/coming_soon")
-            : loc("unitWnd/explore_request")
-        }.__update(fontTiny)
-      }))
-    else if(deltaLevels == 1 && canBuyUnitsStatus.value?[curSelectedUnit.value] != US_NOT_FOR_SALE) {
-      let premId = findGoodsPrem(shopGoods.value)?.id
-      children.append(
-        textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), rank, starRank,
-          havePremium.value || premId == null
-            ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
-            : @() openGoodsPreview(premId), { hotkeys = ["^J:Y"] })
-      )
-    }
-  }
-  children.append(
-    (availableUnitsList.value.findvalue(@(unit) unit.name == curSelectedUnit.value)?.platoonUnits.len() ?? 0) > 0
-      ? mkCustomButton(
-          {
-            rendObj = ROBJ_TEXT
-            text = loc("squadSize/platoon")
-          }.__update(fontSmall),
-          @() unitDetailsWnd({ name = hangarUnitName.value }),
-          {
-            ovr = {
-              size = [SIZE_TO_CONTENT,  defButtonHeight]
-              fillColor = Color(5, 147, 173)
-              borderColor = Color(35, 109, 181)
-            }
-            gradientOvr = {color = Color(22, 178, 233)}
-          }
-      )
-      : infoBlueButton(
-          @() unitDetailsWnd({ name = hangarUnitName.value })
-          {
-            size = [defButtonHeight, defButtonHeight]
-            hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-          }
-          fontBig
-      )
-  )
-  return {
-    watch = [
-      curSelectedUnit, curSelectedUnitPrice, allUnitsCfg,
-      canBuyUnits, canEquipSelectedUnit, havePremium,
-      canBuyUnitsStatus, playerLevelInfo, curCampaign,
-      shopGoods, buyUnitsData, availableUnitsList, unitDiscounts
-    ]
-    size = SIZE_TO_CONTENT
-    valign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(24)
-    children
-  }
-}
-
-let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null || curUnitInProgress.value != null),
-  unitActionButtons,
-  {
-    size = [flex(), defButtonHeight]
-    halign = ALIGN_RIGHT
-    valign = ALIGN_CENTER
-    vplace = ALIGN_BOTTOM
-  })
 
 let mkOnElemState = @(holdId, stateFlags = Watched(0)) function(sf) {
   local { release = 0, press = 0 } = holdInfo?[holdId]
@@ -358,7 +148,6 @@ let function isHold(id) {
 let function mkPlatoonPlates(unit) {
   let platoonUnits = unit.platoonUnits
   let platoonSize = platoonUnits?.len() ?? 0
-  let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
   let isSelected = Computed(@() curSelectedUnit.value == unit.name)
   let isEquipped = Computed(@() unit.name == curUnitName.value)
@@ -368,7 +157,7 @@ let function mkPlatoonPlates(unit) {
     : WND_REVEAL)
 
   return @() {
-    watch = [isSelected, justUnlockedDelay, justBoughtDelay]
+    watch = [isSelected, justUnlockedDelay, justBoughtDelay, isLocked]
     size = flex()
     children = platoonUnits?.map(@(_, idx) {
       size = flex()
@@ -378,22 +167,13 @@ let function mkPlatoonPlates(unit) {
         bgPlatesTranslate(platoonSize, idx, isSelected.value || justBoughtDelay.value), idx, platoonSize,
           @() deleteJustBoughtUnit(unit.name))
       children = [
-        mkUnitBg(unit, {}, justUnlockedDelay.value)
-        mkUnitCanPurchaseShade(canPurchase)
-        mkUnitEmptyLockedFg(isLocked, justUnlockedDelay.value)
-        mkPlatoonPlateFrame(isEquipped, isLocked, justUnlockedDelay.value)
+        mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
+        mkPlatoonPlateFrame(unit, isEquipped, isSelected, justUnlockedDelay.value)
         !justBoughtDelay.value ? null : mkPlateText(loc(getUnitPresentation(platoonUnits?[platoonSize - idx - 1]).locId),
-          { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, padding = plateTextsPad, animations = revealAnimation() })
+          { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, padding = plateTextsSmallPad, animations = revealAnimation() })
       ]
     })
   }
-}
-
-let hoverBG = @(color){
-  size = flex()
-  rendObj = ROBJ_IMAGE
-  image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
-  color
 }
 
 let function mkPlatoonPlate(unit) {
@@ -407,7 +187,7 @@ let function mkPlatoonPlate(unit) {
     if (isHold(unit.name))
       unitDetailsWnd({ name = hangarUnitName.value })
   }
-  let isSelected = Computed(@() curSelectedUnit.value == unit.name)
+  let isSelected = Computed(@() curSelectedUnit.value == unit.name || (stateFlags.value & S_HOVER))
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
@@ -415,10 +195,9 @@ let function mkPlatoonPlate(unit) {
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
-  let color = unit?.isUpgraded || unit?.isPremium ? premBGHoverColor : defaultBgHoverColor
   let discount = Computed(@() unitDiscounts?.value[unit.name])
   return @() {
-    watch = [isSelected, stateFlags, justUnlockedDelay, price, discount]
+    watch = [isSelected, justUnlockedDelay, price, discount, isLocked, canPurchase]
     behavior = Behaviors.Button
     clickableInfo = isSelected.value ? { skipDescription = true } : loc("mainmenu/btnSelect")
     sound = { click  = "choose" }
@@ -431,19 +210,14 @@ let function mkPlatoonPlate(unit) {
         size = [ unitPlateWidth, unitPlateHeight ]
         children = [
           mkPlatoonPlates(unit)
-          mkUnitBg(unit, {}, justUnlockedDelay.value)
-          stateFlags.value & S_HOVER
-            ? hoverBG(color)
-            : null
-          mkPlatoonSelectedGlow(unit, isSelected, justUnlockedDelay.value)
-          mkUnitImage(unit)
-          mkUnitCanPurchaseShade(canPurchase)
-          mkUnitLockedFg(isLocked, justUnlockedDelay.value)
-          mkUnitTexts(unit, loc(getUnitLocId(unit)), justUnlockedDelay.value)
+          mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
+          mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
+          mkUnitImage(unit, canPurchase.get() || isLocked.get())
+          mkUnitTexts(unit, loc(getUnitLocId(unit)), isLocked)
           unit.mRank <= 0
             ? null
             : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)
-          mkPlatoonPlateFrame(isEquipped, isLocked, justUnlockedDelay.value)
+          mkPlatoonPlateFrame(unit, isEquipped, isSelected, justUnlockedDelay.value)
           mkPlatoonEquippedIcon(unit, isEquipped, justUnlockedDelay.value)
           mkPriorityUnseenMarkWatch(needShowUnseenMark)
           {
@@ -457,7 +231,7 @@ let function mkPlatoonPlate(unit) {
           }
         ]
       }
-      mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)
+      mkUnitSelectedUnderline(unit, isSelected, justUnlockedDelay.value)
     ]
   }
 }
@@ -473,7 +247,7 @@ let function mkUnitPlate(unit) {
     if (isHold(unit.name))
       unitDetailsWnd({ name = hangarUnitName.value })
   }
-  let isSelected = Computed(@() curSelectedUnit.value == unit.name)
+  let isSelected = Computed(@() curSelectedUnit.value == unit.name || (stateFlags.value & S_HOVER))
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
@@ -481,10 +255,9 @@ let function mkUnitPlate(unit) {
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
-  let color = unit?.isUpgraded || unit?.isPremium ? premBGHoverColor : defaultBgHoverColor
   let discount = Computed(@() unitDiscounts?.value[unit.name])
   return @() {
-    watch = [isSelected, stateFlags, justUnlockedDelay, price, discount]
+    watch = [isSelected, stateFlags, justUnlockedDelay, price, discount, isLocked, canPurchase]
     size = [ unitPlateWidth, unitsPlateCombinedHeight ]
     behavior = Behaviors.Button
     clickableInfo = isSelected.value ? { skipDescription = true } : loc("mainmenu/btnSelect")
@@ -494,21 +267,16 @@ let function mkUnitPlate(unit) {
     xmbNode = XmbNode()
     flow = FLOW_VERTICAL
     children = [
-      mkUnitEquippedTopLine(isEquipped, justUnlockedDelay.value)
+      mkUnitEquippedTopLine(unit, isEquipped, justUnlockedDelay.value)
       {
         size = [ unitPlateWidth, unitPlateHeight ]
         transform = {}
         animations = scaleAnimation(justUnlockedDelay.value, [1.05, 1.05])
         children = [
-          mkUnitBg(unit, {}, justUnlockedDelay.value)
-          stateFlags.value & S_HOVER
-            ? hoverBG(color)
-            : null
-          mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
-          mkUnitImage(unit)
-          mkUnitCanPurchaseShade(canPurchase)
-          mkUnitLockedFg(isLocked, justUnlockedDelay.value)
-          mkUnitTexts(unit, loc(getUnitLocId(unit)), justUnlockedDelay.value)
+          mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
+          mkUnitSelectedGlow(unit, isSelected)
+          mkUnitImage(unit, canPurchase.get() || isLocked.get())
+          mkUnitTexts(unit, loc(getUnitLocId(unit)), isLocked)
           unit.mRank <= 0
             ? null
             : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)
@@ -525,7 +293,7 @@ let function mkUnitPlate(unit) {
           }
         ]
       }
-      mkUnitSelectedUnderline(isSelected, justUnlockedDelay.value)
+      mkUnitSelectedUnderline(unit, isSelected, justUnlockedDelay.value)
     ]
   }
 }

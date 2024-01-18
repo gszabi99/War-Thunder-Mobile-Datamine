@@ -23,6 +23,8 @@
       "gt_training": false,
       "environment": "Day",
       "weather": "cloudy",
+      "locName": "missions/tutorial_tank_basic",
+      "locDesc": "missions/tutorial_tank_basic/desc",
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 12,
       "gt_mp_tickets": true,
@@ -69,15 +71,33 @@
             },
             {
               "icontype": "tank",
-              "side": "neutral",
-              "target": "target_tank01"
+              "side": "ally",
+              "target": "t1_ai_decor_01"
             },
             {
               "icontype": "tank",
-              "side": "neutral",
-              "target": "target_tank02"
+              "side": "ally",
+              "target": "t1_ai_decor_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "t2_ai_decor_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "t2_ai_decor_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_tank_range_targets"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "battle_area"
+          }
         }
       }
     }
@@ -9624,6 +9644,33 @@
           2187.0,
           12.85,
           2486.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_tank_range_targets": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2126.21,
+          12.9746,
+          2400.35
         ]
       ],
       "objLayer": 0,

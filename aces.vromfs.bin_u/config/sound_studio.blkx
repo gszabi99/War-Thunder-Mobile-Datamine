@@ -17,7 +17,7 @@
   "soundSpeed": 400.0,
   "acquireSndThresholdPercent": 95.0,
   "preloadSndThresholdPercent": 95.0,
-  "simpleSound": true,
+  "simpleSound": false,
   "allwaysLoadCockpitSounds": false,
   "forceGameLanguage": true,
   "noCockpitSounds": true,
@@ -361,6 +361,7 @@
     "eventBulletHitWater": "bullethit_water",
     "eventBulletHitWaterDist": 200.0,
     "eventBulletPassBy": "bullet_passby",
+    "eventRocketPassBy": "rocket_passby",
     "eventBulletHitOutside": "bullethit_camera",
     "eventBulletRicochetOutside": "bullet_rico_camera",
     "eventBulletHitUnit": "bullethit_unit",
@@ -541,6 +542,7 @@
       "collision_wave_ship"
     ],
     "bulletPassByRadius": 30.0,
+    "rocketPassByRadius": 50.0,
     "eventBulletHitShipMgun": "hit_mgun",
     "eventBulletHitShipSmall": "hit_small",
     "eventBulletHitShipMid": "hit_mid",
@@ -579,7 +581,8 @@
     "eventSleeveHullMed": "shell_fall_hull_med",
     "eventSleeveHullSmall": "shell_fall_hull_small",
     "eventSleeveHullBig": "shell_fall_hull_big",
-    "eventSonar": "sonar"
+    "eventSonar": "sonar",
+    "eventTargetingProgress": "target_locking"
   },
   "explosions": {
     "path": "aircraft/explosions",
@@ -661,7 +664,8 @@
     "enemy_destr_by_plane": "enemy_destroyed",
     "enemy_destr_by_ship": "enemy_destroyed",
     "enemy_destr_by_tank": "enemy_tank_destroyed",
-    "session_start": "session_start"
+    "session_start": "session_start",
+    "target_lock": "target_lock"
   },
   "rocket_effects": {
     "hellfire": {

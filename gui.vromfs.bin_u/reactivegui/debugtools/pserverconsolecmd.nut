@@ -19,6 +19,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
+let { unitSpecificItems } = require("%appGlobals/unitSpecificItems.nut")
 
 registerHandler("consolePrintResult",
   @(res) console_print(res?.error == null ? "SUCCESS" : "FAILED")) //warning disable: -forbidden-function
@@ -98,6 +99,8 @@ register_command(function(count) {
   add_event_key(count * 1)
   add_nybond(count * 10)
   foreach (item in itemsOrderFull)
+    change_item_count(item, count)
+  foreach (item in unitSpecificItems.get())
     change_item_count(item, count)
 
   let seconds = count * 60

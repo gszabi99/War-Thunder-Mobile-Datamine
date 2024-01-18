@@ -21,6 +21,7 @@ require("%rGui/options/guiOptions.nut") //need to register options before load p
 require("debugTools/pServerConsoleCmd.nut")
 require("%appGlobals/clientState/initWindowState.nut")
 require("account/legalAcceptWnd.nut")
+require("levelUp/levelUpRewards.nut")
 require("%globalScripts/windowStateEs.nut")
 require("%globalScripts/windowState.nut").allowDebug(true)
 require("contacts/contactsState.nut") //need to catch notifications before login finish

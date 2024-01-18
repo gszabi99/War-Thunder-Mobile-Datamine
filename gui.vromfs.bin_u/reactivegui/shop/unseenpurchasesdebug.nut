@@ -17,6 +17,7 @@ let fakeUnseenPurchases = {
       { id = "tank_tool_kit_expendable", gType = "item", count = 50 },
       { id = "tank_extinguisher", gType = "item", count = 30 },
       { id = "firework_kit", gType = "item", count = 3 },
+      { id = "ircm_kit", gType = "item", count = 3 },
       { id = "cardicon_crosspromo", gType = "decorator", count = 0 },
       { id = "captain-lieutenant", gType = "decorator", count = 0 },
       { id = "pilot", gType = "decorator", count = 0 },

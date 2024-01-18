@@ -108,8 +108,8 @@ let progressUnlockByTab = Computed(@() {
 })
 
 let progressUnlockBySection = Computed(@() {
-  daily_quest = activeUnlocks.get()?.daily_quest_global_progress
-  weekly_quest = activeUnlocks.get()?.weekly_quest_global_progress
+  daily_quest = activeUnlocks.get().findvalue(@(unlock) "daily_progress" in unlock?.meta)
+  weekly_quest = activeUnlocks.get().findvalue(@(unlock) "weekly_progress" in unlock?.meta)
 })
 
 let function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {

@@ -7,9 +7,9 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { premiumTextColor, userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkPlayerLevel
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { getPlatoonOrUnitName, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { unitPlateHeight, unitPlateWidth, mkUnitBg, mkUnitImage, mkUnitTexts, mkPlayerLevel,
+  mkUnitRank } = require("%rGui/unit/components/unitPlateComp.nut")
+let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCustomButton } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
@@ -28,7 +28,7 @@ let { CS_SMALL_INCREASED_ICON } = currencyStyles
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
+let { openRewardsModal, lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 
@@ -36,7 +36,6 @@ let fonticonPreview = "⌡"
 
 let offerCardWidth = hdpx(480)
 let offerCardHeight = sh(70)
-let plateWidth = offerCardWidth - 30
 
 let wpCardPatternSize = [hdpx(140), hdpx(140)]
 let premCardPatternSize = [hdpx(200), hdpx(200)]
@@ -44,14 +43,6 @@ let premCardPatternSize = [hdpx(200), hdpx(200)]
 let curUnit = mkWatched(persist, "curUnit", null)
 
 let close = @() curUnit(null)
-
-let lvlUpCost = Computed(function() {
-  let { costGold, nextLevelExp, exp } = playerLevelInfo.value
-  let expLeft = nextLevelExp - exp
-  return nextLevelExp
-    ? max(1, (min(1.0, expLeft.tofloat() / nextLevelExp) * costGold + 0.5).tointeger())
-    : null
-})
 
 let lvlText = @(level, starLevel) {
   size = [SIZE_TO_CONTENT, hdpx(50)]
@@ -188,16 +179,12 @@ let mkCardTitle = @(unit)
     }.__update(fontMediumShaded)
 
 let mkUnitPlate = @(unit) {
-  rendObj = ROBJ_FRAME
-  borderWidth = hdpx(2)
-  color = unit?.isUpgraded ? premiumTextColor : 0xFFFFFFFF
-  padding = 2
-  size = [plateWidth, unitPlateHeight]
-  margin = [0, 0, hdpx(6), 0]
+  size = [unitPlateWidth, unitPlateHeight]
   children = [
     mkUnitBg(unit)
     mkUnitImage(unit)
-    mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
+    mkUnitRank(unit)
+    mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
   ]
 }
 
@@ -299,7 +286,7 @@ registerHandler("onUnitPurchaseWithLevel",
       logerr($"On choose unit after purchase: {errString}")
       return
     }
-    openLvlUpWndIfCan()
+    openRewardsModal()
     requestOpenUnitPurchEffect(myUnits.value?[unitId])
   }
 )

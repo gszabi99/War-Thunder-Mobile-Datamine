@@ -6,7 +6,9 @@ let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnloc
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { eventSeason } = require("%rGui/event/eventState.nut")
 
 let BP_GOODS_ID = "battle_pass"
 let BP_PROGRESS_UNLOCK_ID = "battlepass_points_to_progress"
@@ -24,11 +26,14 @@ let seasonEndTime = Computed(@() userstatStats.value?.stats.season["$endsAt"] ??
 let bpProgressUnlock = Computed(@() activeUnlocks.value?[BP_PROGRESS_UNLOCK_ID])
 let pointsPerStage   = Computed(@() bpProgressUnlock.value?.stages[0].progress ?? 1)
 let bpLevelPrice = Computed(@() getUnlockPrice(bpProgressUnlock.get()))
+let bpIconActive = Computed(@() $"ui/gameuiskin#bp_icon_active_{eventSeason.get()}.avif")
 
 let bpFreeRewardsUnlock = Computed(@()
-  activeUnlocks.value.findvalue(@(unlock) "battle_pass_free" in unlock?.meta))
+  activeUnlocks.value.findvalue(@(unlock) "battle_pass_free" in unlock?.meta
+    && unlock?.activity.start_index == seasonNumber.value))
 let bpPaidRewardsUnlock = Computed(@()
-  activeUnlocks.value.findvalue(@(unlock) "battle_pass_paid" in unlock?.meta))
+  activeUnlocks.value.findvalue(@(unlock) "battle_pass_paid" in unlock?.meta
+    && unlock?.activity.start_index == seasonNumber.value))
 let bpPurchasedUnlock = Computed(@()
   activeUnlocks.value.findvalue(@(unlock) "battlepas_purchased" in unlock?.meta))
 
@@ -39,10 +44,22 @@ let isBpRewardsInProgress = Computed(@()
 
 let battlePassGoods = Computed(@() shopGoods.value?[BP_GOODS_ID])
 
-let isBpPurchased = Computed(@()
-  (battlePassGoods.value != null
-    && (servProfile.value?.purchasesCount[BP_GOODS_ID].count ?? 0) > 0)
-  != isDebugBp.value)
+let isBpPurchasedRaw = Computed(function() {
+  let goods = battlePassGoods.get()
+  if (goods == null)
+    return false
+
+  let { oncePerSeason = "" } = goods
+  let { count = 0, lastTime = 0 } = servProfile.value?.purchasesCount[BP_GOODS_ID]
+  if (oncePerSeason == "" || count <= 0)
+    return count > 0
+
+  let { start = 0, end = 0 } = curSeasons.get()?[oncePerSeason]
+  return lastTime != 0 && start != 0 && lastTime >= start && lastTime <= end
+})
+
+let isBpPurchased = Computed(@() isBpPurchasedRaw.get() != isDebugBp.value)
+
 let isBpActive = Computed(@()
   (activeUnlocks.value?[bpPaidRewardsUnlock.value?.requirement].isCompleted ?? false)
     != isDebugBp.value)
@@ -198,6 +215,7 @@ return {
   bpProgressUnlock
   pointsPerStage
   bpLevelPrice
+  bpIconActive
   isBPLevelPurchaseInProgress = Computed(@() unlockInProgress.get().len() > 0)
   BP_PROGRESS_UNLOCK_ID
 

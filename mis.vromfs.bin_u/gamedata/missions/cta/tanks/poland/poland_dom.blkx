@@ -149,6 +149,21 @@
           "showAirMap": false,
           "icon": [
             {
+              "icontype": "basezone_A",
+              "side": "neutral",
+              "target": "briefing_capture_area_01"
+            },
+            {
+              "icontype": "basezone_B",
+              "side": "neutral",
+              "target": "briefing_capture_area_02"
+            },
+            {
+              "icontype": "basezone_C",
+              "side": "neutral",
+              "target": "briefing_capture_area_03"
+            },
+            {
               "icontype": "tank",
               "side": "ally",
               "target": "briefing_t1_tank_spawn_01"
@@ -160,6 +175,11 @@
             },
             {
               "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_tank_spawn_03"
+            },
+            {
+              "icontype": "tank",
               "side": "enemy",
               "target": "briefing_t2_tank_spawn_01"
             },
@@ -167,8 +187,16 @@
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_t2_tank_spawn_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_tank_spawn_03"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "dom_battle_area"
+          }
         }
       }
     }
@@ -628,9 +656,9 @@
           1.0
         ],
         [
-          2734.7,
-          0.0,
-          1886.94
+          2318.78,
+          3.49554,
+          1951.6
         ]
       ],
       "objLayer": 0,
@@ -655,9 +683,36 @@
           1.0
         ],
         [
-          2715.62,
+          2323.44,
+          3.88751,
+          2088.81
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_tank_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
           0.0,
-          2223.98
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2339.43,
+          4.13471,
+          2198.1
         ]
       ],
       "objLayer": 0,
@@ -682,9 +737,9 @@
           1.0
         ],
         [
-          1637.3,
-          0.0,
-          1860.22
+          1713.04,
+          3.77164,
+          1904.76
         ]
       ],
       "objLayer": 0,
@@ -709,9 +764,117 @@
           1.0
         ],
         [
-          1630.35,
+          1715.62,
+          3.85149,
+          2056.17
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_tank_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
           0.0,
-          2260.55
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1726.86,
+          6.19784,
+          2234.83
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_capture_area_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2012.54,
+          3.77878,
+          1909.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_capture_area_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2008.42,
+          3.78199,
+          2041.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_capture_area_03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2026.47,
+          3.91311,
+          2200.14
         ]
       ],
       "objLayer": 0,

@@ -75,6 +75,9 @@
   "hideNodesInDmg": {
     "node": "flag"
   },
+  "aimNodesNames": {
+    "node": "bridge_dm"
+  },
   "default_skin_tomoe": {
     "replace_tex": [
       {
@@ -1123,7 +1126,8 @@
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_01",
-          "gun": "bone_torpedo_05"
+          "gun": "bone_torpedo_05",
+          "gunnerDm": "tt_01_dm"
         },
         "limits": {
           "yaw": [
@@ -1170,7 +1174,8 @@
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_01",
-          "gun": "bone_torpedo_06"
+          "gun": "bone_torpedo_06",
+          "gunnerDm": "tt_01_dm"
         },
         "limits": {
           "yaw": [
@@ -1217,7 +1222,8 @@
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_01",
-          "gun": "bone_torpedo_07"
+          "gun": "bone_torpedo_07",
+          "gunnerDm": "tt_01_dm"
         },
         "limits": {
           "yaw": [
@@ -1264,7 +1270,8 @@
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_02",
-          "gun": "bone_torpedo_08"
+          "gun": "bone_torpedo_08",
+          "gunnerDm": "tt_02_dm"
         },
         "limits": {
           "yaw": [
@@ -1311,7 +1318,8 @@
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_02",
-          "gun": "bone_torpedo_09"
+          "gun": "bone_torpedo_09",
+          "gunnerDm": "tt_02_dm"
         },
         "limits": {
           "yaw": [
@@ -1358,7 +1366,8 @@
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_02",
-          "gun": "bone_torpedo_10"
+          "gun": "bone_torpedo_10",
+          "gunnerDm": "tt_02_dm"
         },
         "limits": {
           "yaw": [
@@ -1795,7 +1804,8 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_01",
-                "gun": "bone_torpedo_05"
+                "gun": "bone_torpedo_05",
+                "gunnerDm": "tt_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -1842,7 +1852,8 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_01",
-                "gun": "bone_torpedo_06"
+                "gun": "bone_torpedo_06",
+                "gunnerDm": "tt_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -1889,7 +1900,8 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_01",
-                "gun": "bone_torpedo_07"
+                "gun": "bone_torpedo_07",
+                "gunnerDm": "tt_01_dm"
               },
               "limits": {
                 "yaw": [
@@ -1936,7 +1948,8 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_02",
-                "gun": "bone_torpedo_08"
+                "gun": "bone_torpedo_08",
+                "gunnerDm": "tt_02_dm"
               },
               "limits": {
                 "yaw": [
@@ -1983,7 +1996,8 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_02",
-                "gun": "bone_torpedo_09"
+                "gun": "bone_torpedo_09",
+                "gunnerDm": "tt_02_dm"
               },
               "limits": {
                 "yaw": [
@@ -2030,7 +2044,8 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_02",
-                "gun": "bone_torpedo_10"
+                "gun": "bone_torpedo_10",
+                "gunnerDm": "tt_02_dm"
               },
               "limits": {
                 "yaw": [

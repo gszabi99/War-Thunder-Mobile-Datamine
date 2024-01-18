@@ -33,6 +33,7 @@ let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { unitSpecificItemsCfg } = require("%appGlobals/unitSpecificItems.nut")
 
 let itemsGap = hdpx(50)
 
@@ -61,6 +62,7 @@ let battleItemsIcons = {
   ship_smoke_screen_system_mod = $"ui/gameuiskin#hud_consumable_smoke.svg"
   tank_tool_kit_expendable = $"ui/gameuiskin#hud_consumable_repair.svg"
   tank_extinguisher = $"ui/gameuiskin#fire_indicator.svg"
+  ircm_kit = "ui/gameuiskin#icon_ircm.avif"
 }
 
 let purchaseDesc = {
@@ -69,6 +71,7 @@ let purchaseDesc = {
   tank_extinguisher = "msg/purchaseDesc/extinguisher"
   ship_smoke_screen_system_mod = "msg/purchaseDesc/smoke"
   spare = "item/spare/desc"
+  ircm_kit = "msg/purchaseDesc/ircmKit"
 }
 
 let decorativeLine = @(){
@@ -108,30 +111,30 @@ let function getCheapestGoods(allGoods, isFit) {
 let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
   let res = []
   let unitItemsPerUse = unit?.itemsPerUse ?? 0
-  foreach (cfg in itemsCfgOrdered.value) {
+  foreach (cfg in [].extend(itemsCfgOrdered.get(), unitSpecificItemsCfg.get())) {
     let { battleLimit = 0, itemsPerUse = 0, name = "" } = cfg
-    let { itemsByAttributes = [], itemsByModifications = [] } = serverConfigs.value
+    let { itemsByAttributes = [], itemsByModifications = [] } = serverConfigs.get()
     if (battleLimit <= 0)
       continue
     let attributes = itemsByAttributes.filter(@(item) item.item == name)
     let attrByModifications = itemsByModifications.filter(@(item) item.item == name)
     local limitItems = battleLimit
     foreach(attr in attributes){
-      let curLevel = unitAttributes.value?[attr?.category][attr?.attribute] ?? 0
+      let curLevel = unitAttributes.get()?[attr?.category][attr?.attribute] ?? 0
       limitItems += attr?.battleLimitAdd?[curLevel - 1] ?? 0
     }
     foreach(attr in attrByModifications)
-      if (unitMods.value?[attr?.mod])
+      if (unitMods.get()?[attr?.mod])
         limitItems *= attr?.battleLimitMul ?? 1
     let perUse = itemsPerUse <= 0 ? unitItemsPerUse : itemsPerUse
     let reqItems = perUse * limitItems
-    let hasItems = items.value?[name].count ?? 0
+    let hasItems = items.get()?[name].count ?? 0
     if (reqItems <= hasItems)
       continue
     let hasUsing = ceil(hasItems/(perUse == 0 ? 1 : perUse))
-    let goods = getCheapestGoods(shopGoods.value, @(g) (g?.items[name] ?? 0) > 0)
+    let goods = getCheapestGoods(shopGoods.get(), @(g) (g?.items[name] ?? 0) > 0)
     let { price = 0, currencyId = ""} = goods?.price
-    let canBuyItem = price <= (balance.value?[goods?.price?.currencyId] ?? 0)
+    let canBuyItem = price <= (balance.get()?[goods?.price?.currencyId] ?? 0)
     let timeInterval = itemShowCd?[name][canBuyItem ? "hasBalance" : "noBalance"] ?? 0
     if (price <= 0)
       continue
@@ -277,6 +280,7 @@ let mkContWithTransfToSkill = @(item) {
           children = [
             {
               rendObj = ROBJ_IMAGE
+              keepAspect = true
               size = [battleItemIconSize, battleItemIconSize]
               image = Picture($"{battleItemsIcons[item.itemId]}:{battleItemIconSize}:{battleItemIconSize}:P")
             }

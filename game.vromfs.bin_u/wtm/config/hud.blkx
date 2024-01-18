@@ -97,6 +97,7 @@
   ],
   "allowableAnglesSectorRadius": 2000.0,
   "drawNativeTankSpeedInSpectator": false,
+  "drawNativeRespawnIndicators": false,
   "maxShipRelativeHpRepairHint": 0.12,
   "skins": {
     "defSkin": "ui/gameuiskin"

@@ -67,18 +67,18 @@ return cfgHudCommon.__merge({
       defTransform = mkLBPos([hdpx(216), hdpx(-330)])
       editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
     })
+//
 
-  change = weaponryButtonCtor("ID_WTM_AIRCRAFT_CHANGE", mkSimpleButton,
-    {
-      defTransform = mkLBPos([hdpx(541), hdpx(-5)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_aircraft_fighter.svg")
-    })
 
-  groupAttack = weaponryButtonCtor("ID_WTM_AIRCRAFT_GROUP_ATTACK", mkGroupAttackButton,
-    {
-      defTransform = mkLBPos([hdpx(541), hdpx(-225)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_aircraft_fighter.svg")
-    })
+
+
+
+
+
+
+
+
+
 
   groupReturn = weaponryButtonCtor("ID_WTM_AIRCRAFT_RETURN", mkSimpleButton,
     {

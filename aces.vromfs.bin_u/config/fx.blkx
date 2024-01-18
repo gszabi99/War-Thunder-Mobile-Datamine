@@ -425,7 +425,8 @@
     "farPlane": 6000.0,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "fire",
-    "soundEnableDistance": 400.0
+    "soundEnableDistance": 400.0,
+    "pauseWhenFarAway": true
   },
   "major_fuel_fire_ground": {
     "fx": "fire_fuel_cmps_fx",
@@ -435,7 +436,8 @@
     "farPlane": 6000.0,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "fire",
-    "soundEnableDistance": 400.0
+    "soundEnableDistance": 400.0,
+    "pauseWhenFarAway": true
   },
   "explosion_plane": {
     "fx": "explosion_midair_fuel_massive_cmps_fx",
@@ -509,7 +511,7 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "aircraft_wheels_ground_dust": {
+  "aircraft_wheels_ground_concrete": {
     "fx": "dust_ground_collision_cmps_fx",
     "lifeTime": 20.0,
     "numInstances": 30,
@@ -568,10 +570,10 @@
     "numInstances": 70,
     "numReserved": 20,
     "onePointNumber": 2,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "explosion_flares"
   },
-  "aircraft_propellers_ground_dust": {
+  "aircraft_propellers_concrete": {
     "fx": "dust_ground_propeller_cmps_fx",
     "lifeTime": 10.0,
     "softnessDepth": 5.0,
@@ -705,7 +707,8 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 1000.0,
+    "pauseWhenFarAway": true
   },
   "fire_ground_fx": {
     "fx": "fire_ground_cmps_fx",
@@ -716,7 +719,8 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 1000.0,
+    "pauseWhenFarAway": true
   },
   "fire_ground_medium_fx": {
     "fx": "fire_ground_medium_cmps_fx",
@@ -727,7 +731,8 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 1000.0,
+    "pauseWhenFarAway": true
   },
   "fire_ground_large_fx": {
     "fx": "fire_ground_large_cmps_fx",
@@ -738,7 +743,8 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 1000.0
+    "soundEnableDistance": 1000.0,
+    "pauseWhenFarAway": true
   },
   "smoke_ground_black_fx": {
     "fx": "smoke_ground_black_cmps_fx",
@@ -922,7 +928,8 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 5000.0
+    "soundEnableDistance": 5000.0,
+    "pauseWhenFarAway": true
   },
   "tank_fire_small": {
     "fx": "fire_tank_small_cmps_fx",
@@ -933,7 +940,8 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "fire_destroyed",
-    "soundEnableDistance": 5000.0
+    "soundEnableDistance": 5000.0,
+    "pauseWhenFarAway": true
   },
   "tank_ammo_fire": {
     "fx": "fire_tank_ammo_cmps_fx",
@@ -944,7 +952,8 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ammo_explode",
-    "soundEnableDistance": 5000.0
+    "soundEnableDistance": 5000.0,
+    "pauseWhenFarAway": true
   },
   "tank_explosion": {
     "fx": "explosion_tank_base_cmps_fx",

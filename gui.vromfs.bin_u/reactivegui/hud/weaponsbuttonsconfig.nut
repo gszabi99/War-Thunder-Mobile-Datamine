@@ -66,7 +66,7 @@ let actionBarItemsConfig = {
     getShortcut = @(_, __) "ID_IRCM_SWITCH_SHIP"
     getImage = @(_) "ui/gameuiskin#icon_ircm.svg"
     actionType = AB_IRCM
-    mkButtonFunction = "mkActionItem"
+    mkButtonFunction = "mkIRCMActionItem"
     haptPatternId = HAPT_IRCM
   }
   EII_SMOKE_GRENADE = {
@@ -113,6 +113,9 @@ let actionBarItemsConfig = {
     getImage = @(_) "ui/gameuiskin#hud_missile_anti_ship.svg"
     actionType = AB_ROCKET
     mkButtonFunction = "mkWeaponryItem"
+    hasAim = true
+    needCheckTargetRocket = true
+    relImageSize = 0.85
   },
   EII_SUPPORT_PLANE = {
     getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT"

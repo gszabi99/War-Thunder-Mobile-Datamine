@@ -49,8 +49,10 @@
       "level": "levels/white_rocks.bin",
       "environment": "Day",
       "weather": "clear",
-      "locName": "white_rocks/name",
-      "locDesc": "white_rocks/desc",
+      "checkFriendlyFireAlsoFromAircrafts": true,
+      "preventBotsLeavingBattleArea": true,
+      "locName": "missions/_NTdm_WTM;white_rocks/name",
+      "locDesc": "white_rocks/desc;missions/_NTdm_WTM/desc",
       "scoreLimit": 10000,
       "timeLimit": 10,
       "deathPenaltyMul": 0.0,
@@ -60,8 +62,6 @@
       "country_allies": "germany",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "checkFriendlyFireAlsoFromAircrafts": true,
-      "preventBotsLeavingBattleArea": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": false,
         "isTanksAllowed": false,
@@ -74,6 +74,7 @@
       "place_loc": "",
       "date_loc": "",
       "objective_loc": "",
+      "music": "action_01",
       "part": {
         "event": "",
         "minTime": 0,
@@ -84,36 +85,59 @@
           "showAirMap": false,
           "icon": [
             {
-              "icontype": "transport",
+              "icontype": "destroyer",
               "side": "ally",
-              "target": "briefing_t1_fleet"
+              "target": "briefing_t1_collective_spawn_01"
             },
             {
-              "icontype": "transport",
-              "side": "enemy",
-              "target": "briefing_t2_fleet"
-            },
-            {
-              "icontype": "ship",
+              "icontype": "destroyer",
               "side": "ally",
-              "target": "briefing_t1_spawn01"
+              "target": "briefing_t1_collective_spawn_02"
             },
             {
-              "icontype": "ship",
+              "icontype": "destroyer",
               "side": "ally",
-              "target": "briefing_t1_spawn02"
+              "target": "briefing_t1_collective_spawn_03"
             },
             {
-              "icontype": "ship",
-              "side": "enemy",
-              "target": "briefing_t2_spawn01"
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_04"
             },
             {
-              "icontype": "ship",
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_05"
+            },
+            {
+              "icontype": "destroyer",
               "side": "enemy",
-              "target": "briefing_t2_spawn02"
+              "target": "briefing_t2_collective_spawn_01"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_02"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_03"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_04"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_05"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "ntdm_battle_area"
+          }
         }
       }
     }
@@ -237,13 +261,13 @@
     }
   },
   "areas": {
-    "briefing_t1_fleet": {
+    "briefing_t1_collective_spawn_01": {
       "type": "Point",
       "tm": [
         [
-          1.0,
+          0.707107,
           0.0,
-          0.0
+          -0.707107
         ],
         [
           0.0,
@@ -251,20 +275,20 @@
           0.0
         ],
         [
+          0.707107,
           0.0,
-          0.0,
-          1.0
+          0.707107
         ],
         [
-          -2740.96,
-          27.8447,
-          -2759.1
+          2770.36,
+          0.0,
+          3441.39
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_spawn01": {
+    "briefing_t1_collective_spawn_02": {
       "type": "Point",
       "tm": [
         [
@@ -283,15 +307,15 @@
           1.0
         ],
         [
-          -2891.99,
-          -36.0742,
-          -1981.77
+          1975.92,
+          0.0,
+          3450.35
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_spawn02": {
+    "briefing_t1_collective_spawn_03": {
       "type": "Point",
       "tm": [
         [
@@ -310,15 +334,15 @@
           1.0
         ],
         [
-          -2047.26,
-          -37.5317,
-          -2797.38
+          -1383.55,
+          0.0,
+          3484.75
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_spawn01": {
+    "briefing_t1_collective_spawn_04": {
       "type": "Point",
       "tm": [
         [
@@ -337,15 +361,15 @@
           1.0
         ],
         [
-          1638.48,
-          -38.8721,
-          3040.13
+          -2073.99,
+          0.0,
+          3484.07
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_spawn02": {
+    "briefing_t1_collective_spawn_05": {
       "type": "Point",
       "tm": [
         [
@@ -364,15 +388,42 @@
           1.0
         ],
         [
-          2739.09,
-          -45.0029,
-          2022.85
+          -2771.75,
+          0.0,
+          3479.42
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_fleet": {
+    "briefing_t2_collective_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.707107,
+          0.0,
+          -0.707107
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.707107,
+          0.0,
+          0.707107
+        ],
+        [
+          2738.92,
+          0.0,
+          -3486.27
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_02": {
       "type": "Point",
       "tm": [
         [
@@ -391,9 +442,90 @@
           1.0
         ],
         [
-          2737.31,
-          -41.2119,
-          2898.47
+          1932.95,
+          0.0,
+          -3500.09
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1431.98,
+          0.0,
+          -3534.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -2259.77,
+          0.0,
+          -3519.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_05": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -3083.42,
+          0.0,
+          -3517.32
         ]
       ],
       "objLayer": 0,

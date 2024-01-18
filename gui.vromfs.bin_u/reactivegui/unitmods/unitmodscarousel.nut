@@ -1,23 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideX, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp } = require("unitModsState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkLevelLock, mkNotPurchasedShade, mkModImage } = require("modsComps.nut")
+let { selectedLineHor, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
 
 let modsGap = hdpx(10)
 let selLineGap = hdpx(14)
-let selLineHeight = hdpx(7)
-let lineColor = 0xFF75D0E7
 let bgColor = 0x990C1113
 let activeBgColor = 0xFF52C4E4
-let transDuration = 0.3
 let contentMargin = [hdpx(10), hdpx(15)]
 let modH = hdpx(170)
 let modW = hdpx(440)
 let equippedColor = 0xFF50C0FF
 let equippedFrameWidth = hdpx(4)
-let modTotalH = modH + selLineHeight + selLineGap
+let modTotalH = modH + selLineSize + selLineGap
 
 let iconTankSize = [hdpxi(95), hdpxi(41)]
 let iconShipSize = [hdpxi(44), hdpxi(51)]
@@ -34,18 +32,6 @@ let iconsCfg = {
 
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
-let lineGradient = mkBitmapPictureLazy(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColor))
-
-let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
-
-let selectedLine = @(isActive) @() {
-  watch = isActive
-  size = [flex(), selLineHeight]
-  rendObj = ROBJ_IMAGE
-  image = lineGradient()
-  opacity = isActive.value ? 1 : 0
-  transitions = opacityTransition
-}
 
 let mkModContent = @(content, isActive, isHover) {
   size = [SIZE_TO_CONTENT, modH]
@@ -146,7 +132,8 @@ let function modData(mod) {
   }
 }
 
-let function mkMod(id, content) {
+let function mkMod(id, content, scrollToMod) {
+  let xmbNode = XmbNode()
   let stateFlags = Watched(0)
   let isActive = Computed (@() curModId.value == id || (stateFlags.value & S_ACTIVE) != 0)
   let isHover = Computed (@() stateFlags.value & S_HOVER)
@@ -156,25 +143,30 @@ let function mkMod(id, content) {
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
     clickableInfo = loc("mainmenu/btnSelect")
-    onClick = @() curModId(id)
+    xmbNode
+    function onClick() {
+      curModId(id)
+      gui_scene.setXmbFocus(xmbNode)
+    }
+    onAttach = @() isActive.get() ? scrollToMod() : null
     sound = { click = "choose" }
     flow = FLOW_VERTICAL
     gap = selLineGap
 
     children = [
       mkModContent(content, isActive, isHover)
-      selectedLine(isActive)
+      selectedLineHor(isActive)
     ]
   }
 }
 
-let mkMods = @(modsSorted) {
+let mkMods = @(modsSorted, scrollToMod) {
   size = [SIZE_TO_CONTENT, flex()]
   flow = FLOW_HORIZONTAL
   gap = modsGap
   children = modsSorted
     .map(@(v) modData(v))
-    .map(@(mod) mkMod(mod.id, mod.content))
+    .map(@(mod) mkMod(mod.id, mod.content, scrollToMod))
 }
 
 return {

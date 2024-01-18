@@ -5,18 +5,17 @@ let { decorativeLineBgMW, bgMW } = require("%rGui/style/stdColors.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let Rand = require("%sqstd/rand.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkPlatoonPlateFrame, bgPlatesTranslate
+let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitRank, mkUnitSelectedGlow
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { isExperienceWndOpen } = require("expWndState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { levelBlock } = require("%rGui/mainMenu/gamercard.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
+let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
-let unitPlateWidth = hdpx(310)
-let unitPlateHeight = hdpx(130)
 
 let wndWidth = hdpx(1400)
 let expStarIconSize = hdpx(35)
@@ -26,20 +25,6 @@ let expBuyWndUid = "exp_buy_wnd_uid"
 let closeExperienceWnd = @() isExperienceWndOpen(false)
 
 let availableUnitsList = Computed(@() Rand.shuffle(buyUnitsData.value.canBuyOnLvlUp.values()))
-
-let function mkPlatoonPlates(unit) {
-  return {
-    size = [ unitPlateWidth, unitPlateHeight ]
-    children = unit.platoonUnits?.map(@(_, idx) {
-      size = flex()
-      transform = { translate = bgPlatesTranslate(3, idx, true) }
-      children = [
-        mkUnitBg(unit)
-        mkPlatoonPlateFrame()
-      ]
-    })
-  }
-}
 
 let function mkUnitPlate(unit, onClick) {
   if (unit == null)
@@ -55,32 +40,19 @@ let function mkUnitPlate(unit, onClick) {
     }
     flow = FLOW_HORIZONTAL
     children = {
-        size = [ unitPlateWidth, unitPlateHeight ]
+        size = unitPlateSmall
         children = [
-          mkPlatoonPlates(unit)
           mkUnitBg(unit)
-          stateFlags.value & S_HOVER
-            ? @() {
-              size = flex()
-              rendObj = ROBJ_IMAGE
-              image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
-              color = 0xFF50C0FF
-            }
-            : null
+          mkUnitSelectedGlow(unit, Computed(@() stateFlags.get() & S_HOVER))
           mkUnitImage(unit)
-          mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
-          mkGradRank(unit.mRank, {
-           padding = hdpx(10)
-           hplace = ALIGN_RIGHT
-           vplace = ALIGN_BOTTOM
-          })
-          mkPlatoonPlateFrame()
+          mkUnitRank(unit)
+          mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
         ]
       }
   }
 }
 
-let chooseShipBlock = @() {
+let chooseUnitBlock = @() {
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
@@ -98,6 +70,7 @@ let chooseShipBlock = @() {
       flow = FLOW_HORIZONTAL
       children = availableUnitsList.value.map(@(u) mkUnitPlate(u, function(){
         openBuyExpWithUnitWnd(u.name)
+        setHangarUnit(u.name)
         closeExperienceWnd()
       }))
     }
@@ -117,34 +90,42 @@ let experienceWndHeader = {
     padding = [ hdpx(24), 0 ]
 }.__update(fontMedium)
 
-let curLevel = @(level) {
-  rendObj = ROBJ_TEXT
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_TOP
-  text = " ".concat(loc("mainmenu/rank"),level)
-}.__update(fontSmall)
+let mkLevelBlock = @(exp, nextLevelExp) levelBlock({ pos = [0, 0] }, {
+  children = [
+    {
+      size = flex()
+      rendObj = ROBJ_SOLID
+      color = 0xFFFFFFFF
+    }
+    {
+      size = [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), flex()]
+      rendObj = ROBJ_SOLID
+      color = playerExpColor
+    }
+  ]
+}, true)
 
-let necessaryPoints = @(nextLevelExp, exp){
+let necessaryPoints = @(needExp){
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_RIGHT
-  vplace = ALIGN_BOTTOM
+  margin = [0, hdpx(60), 0, 0]
   children = [
     {
       rendObj = ROBJ_TEXT
-      text = "".concat("+",(nextLevelExp - exp))
-      color = 0xFFFFB70B
+      text = $"+{needExp}"
+      color = playerExpColor
     }.__merge(fontTinyAccented)
     {
       rendObj = ROBJ_IMAGE
       size = [expStarIconSize, expStarIconSize]
-      color = 0xFFFFB70B
+      color = playerExpColor
       image = Picture($"ui/gameuiskin#experience_icon.svg:{expStarIconSize}:{expStarIconSize}:P")
     }
   ]
 }
 
 let function experienceWnd(){
-  let { exp, nextLevelExp, level } = playerLevelInfo.value
+  let { exp, nextLevelExp } = playerLevelInfo.value
   return{
     watch = playerLevelInfo
     minWidth = wndWidth
@@ -162,14 +143,15 @@ let function experienceWnd(){
       decorativeLine
       experienceWndHeader
       {
+        margin = [hdpx(43), 0, 0, 0]
+        halign = ALIGN_CENTER
         flow = FLOW_VERTICAL
         children = [
-          curLevel(level)
-          levelBlock({pos = [hdpx(-60), 0]})
-          necessaryPoints(nextLevelExp, exp)
+          mkLevelBlock(exp, nextLevelExp)
+          necessaryPoints(nextLevelExp - exp)
         ]
       }
-      chooseShipBlock
+      chooseUnitBlock
       decorativeLine
     ]
   }

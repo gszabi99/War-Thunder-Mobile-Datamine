@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkCurrencyComp, mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
-let { getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { mkLinearGradientImg, mkRadialGradientImg } = require("%darg/helpers/mkGradientImg.nut")
+let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnimation, unlockAnimation,
   ANIMATION_STEP
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
@@ -12,75 +11,60 @@ let { deleteJustUnlockedPlatoonUnit } = require("%rGui/unit/justUnlockedPlatoonU
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
+let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
+let { selectedLineVert, selectedLineHor, selLineSize } = require("%rGui/components/selectedLine.nut")
 
-let unitPlateWidth = hdpx(414)
-let unitPlateHeight = hdpx(174)
+let unitPlateWidth = hdpx(406)
+let unitPlateHeight = hdpx(158)
+let unitPlateRatio = unitPlateHeight / unitPlateWidth
+let unitPlateSmallWidth = hdpx(320)
+let unitPlateSmallHeight = (unitPlateSmallWidth * unitPlateRatio).tointeger()
+let unitPlateSmall = [unitPlateSmallWidth, unitPlateSmallHeight]
+
 let unutEquppedTopLineFullHeight = hdpx(15)
-let unitSelUnderlineFullHeight = hdpx(21)
-let unitSelUnderlineHeight = hdpx(9)
+let unitSelUnderlineFullSize = hdpx(20)
 let unitLevelBgSize = evenPx(46)
-let unitPlatesGap = hdpx(12)
+let unitPlatesGap = hdpx(20)
 let lockIconSize = hdpxi(80)
 let lockIconOnLockedSlotSize = hdpxi(85)
 let lockIconRespWnd = hdpxi(45)
+let flagIconSize = pw(14)
+let premiumIconSize = [pw(34), pw(14)]
 
-let platoonPlatesGap = hdpx(9)
-let platoonSelPlatesGap = hdpx(12)
+let platoonPlatesGap = 0
+let platoonSelPlatesGap = hdpx(9)
 
-let plateBorderThickness = hdpx(4)
-let plateFrameTopLineThickness = hdpx(10)
+let plateBorderThickness = hdpx(2)
+let plateFrameTopLineThickness = hdpx(4)
 let plateTextsPad = hdpx(15)
-let plateTextsSmallPad = hdpx(12)
+let plateTextsSmallPad = hdpx(10)
 
 let plateTextColor = 0xFFFFFFFF
 let levelTextColor = 0xFF9C9EA0
-let plateSelectedBgColor = 0xFF50C0FF
-let plateEquippedFrameColor = 0xFF50C0FF
-let plateLockedColor = 0x80000000
+let equippedFrameColor = 0xFF50C0FF
+let equippedFrameColorPremium = 0xA0E9D3A7
 let slotLockedTextColor = 0xFFC0C0C0
-let premiumHighlightColor = 0x01B28600
+let highlightColor = 0xFF50C0FF
+let premiumHighlightColor = 0x00F4E9D3
 
-let gradientBgColor = 0x00000000
-let gradientColor = 0x80FFFFFF
+let getFrameColor = @(unit) unit?.isUpgraded || unit?.isPremium
+    ? equippedFrameColorPremium
+  : equippedFrameColor
 
-let gradientTexSizeMul = 0.5
+let bgUnit = mkColoredGradientY(0xFF383B3E, 0xFF191616, 2)
+let bgUnitPremium = mkColoredGradientY(0xFFC89123, 0xFF644012, 2)
+let bgUnitLocked = mkColoredGradientY(0xFF303234, 0xFF000000, 2)
+let bgUnitPremiumLocked = mkColoredGradientY(0xFF8E6617, 0xFF3E2505, 2)
+
+let COUNTRY_FLAG_UNKNOWN = "menu_lang.svg"
+let getFlagByCountry = memoize(@(country) country?.startswith("country_")
+  ? $"flag_{country.slice(8)}_small.avif"
+  : COUNTRY_FLAG_UNKNOWN)
 
 let function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
   let gap = isSelected ? platoonSelPlatesGap : platoonPlatesGap
   return [(idx - platoonSize) * gap, (idx - platoonSize) * gap].map(@(v) (v * sizeMul).tointeger())
 }
-
-let lineGradTexW = (unitPlateWidth * gradientTexSizeMul).tointeger()
-let lineGradImg = mkLinearGradientImg({
-  points = [
-    { offset = 0, color = colorArr(0) },
-    { offset = 33, color = colorArr(0xFFFFFFFF) },
-    { offset = 67, color = colorArr(0xFFFFFFFF) },
-    { offset = 100, color = colorArr(0) }
-  ]
-  width = lineGradTexW
-  height = 4
-  x1 = 0
-  y1 = 0
-  x2 = lineGradTexW
-  y2 = 0
-})
-
-let lineGradTexV = (unitPlateHeight * gradientTexSizeMul).tointeger()
-let lineGradImgVert = mkLinearGradientImg({
-  points = [
-    { offset = 0, color = colorArr(0) },
-    { offset = 33, color = colorArr(0xFFFFFFFF) },
-    { offset = 67, color = colorArr(0xFFFFFFFF) },
-    { offset = 100, color = colorArr(0) }
-  ]
-  width = 4
-  height = lineGradTexV
-  x1 = 0
-  y1 = 0
-  x2 = 0
-  y2 = lineGradTexV
-})
 
 let levelBg = mkLevelBg({
   ovr = { size = [ unitLevelBgSize, unitLevelBgSize ] }
@@ -94,44 +78,35 @@ let mkIcon = @(icon, iconSize, override = {}) {
   keepAspect = KEEP_ASPECT_FIT
 }.__update(override)
 
-let premiumUnitHiglight = {
-  size = flex()
-  rendObj = ROBJ_IMAGE
-  image = gradTranspDoubleSideX
-  color = premiumHighlightColor
+let function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null) {
+  let isPremium = unit.isPremium || unit?.isUpgraded
+  return {
+    size = flex()
+    animations = scaleAnimation(justUnlockedDelay, [1.04, 1.04])
+    children = [
+      {
+        size = flex()
+        rendObj = ROBJ_IMAGE
+        image = isPremium
+            ? (isLocked ? bgUnitPremiumLocked : bgUnitPremium)
+          : (isLocked ? bgUnitLocked : bgUnit)
+        keepAspect = KEEP_ASPECT_FILL
+        imageValign = ALIGN_TOP
+      }
+      !isPremium ? null : {
+        size = premiumIconSize
+        pos = [-plateTextsSmallPad, 0]
+        hplace = ALIGN_RIGHT
+        vplace = ALIGN_CENTER
+        opacity = 0.15
+        rendObj = ROBJ_IMAGE
+        keepAspect = KEEP_ASPECT_FIT
+        imageValign = ALIGN_BOTTOM
+        image = Picture("ui/gameuiskin#icon_premium.svg")
+      }
+    ]
+  }
 }
-
-let mkUnitBg = @(unit, imgOvr = {}, justUnlockedDelay = null) {
-  size = flex()
-  rendObj = ROBJ_IMAGE
-  image = Picture($"!ui/unitskin#flag_{unit.country}.avif")
-  keepAspect = KEEP_ASPECT_FILL
-  imageValign = ALIGN_TOP
-  animations = scaleAnimation(justUnlockedDelay, [1.04, 1.04])
-  children = [
-    {
-      size = flex()
-      rendObj = ROBJ_IMAGE
-      image = Picture($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
-      keepAspect = KEEP_ASPECT_FILL
-      imageValign = ALIGN_TOP
-    }.__update(imgOvr)
-    unit.isPremium || (unit?.isUpgraded ?? false)
-      ? premiumUnitHiglight.__update({ animations = revealAnimation(justUnlockedDelay) })
-      : null
-  ]
-}.__update(imgOvr)
-
-let mkUnitSelectedGlow = @(unit, isSelected, justUnlockedDelay = null) @() isSelected.value
-  ? {
-      watch = isSelected
-      size = flex()
-      rendObj = ROBJ_IMAGE
-      image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
-      color = unit?.isUpgraded || unit?.isPremium ? premiumHighlightColor : plateSelectedBgColor
-      animations = revealAnimation(justUnlockedDelay)
-    }
-  : { watch = isSelected }
 
 let componentsByUnitType = {
   air = {
@@ -149,42 +124,36 @@ let componentsByUnitType = {
       keepAspect = KEEP_ASPECT_FILL
       imageValign = ALIGN_TOP
     }
-    equippedIcons = [
-      mkIcon("ui/gameuiskin#selected_icon_outline.svg", [hdpx(44), hdpx(51)], { color = plateEquippedFrameColor })
+    equippedIcons = @(unit) [
+      mkIcon("ui/gameuiskin#selected_icon_outline.svg", [hdpx(44), hdpx(51)], { color = getFrameColor(unit) })
       mkIcon("ui/gameuiskin#selected_icon.svg", [hdpx(44), hdpx(51)], { color = 0xFF000000 })
     ]
   }
   tank = {
     unitImage = {
       size = flex()
+      pos = [pw(6), 0]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FIT
-      imageHalign = ALIGN_RIGHT
+      imageHalign = ALIGN_LEFT
     }
-    equippedIcons = [
-      mkIcon("ui/gameuiskin#selected_icon_tank_outline.svg", [hdpx(95), hdpx(41)], { color = plateEquippedFrameColor })
+    equippedIcons = @(unit) [
+      mkIcon("ui/gameuiskin#selected_icon_tank_outline.svg", [hdpx(95), hdpx(41)], { color = getFrameColor(unit) })
       mkIcon("ui/gameuiskin#selected_icon_tank.svg", [hdpx(95), hdpx(41)], { color = 0xFF000000 })
     ]
   }
 }
 
-let function mkUnitImage(unit) {
+let function mkUnitImage(unit, isDesaturated = false) {
   let p = getUnitPresentation(unit)
 
   return componentsByUnitType?[unit.unitType].unitImage.__merge({
     image = unit?.isUpgraded ? Picture(p.upgradedImage) : Picture(p.image)
     fallbackImage = Picture(p.image)
+    picSaturate = isDesaturated ? 0.6 : 1.0
+    brightness = isDesaturated ? 0.6 : 1.0
 })
 }
-
-let mkUnitCanPurchaseShade = @(isUnpurchased) @() isUnpurchased.value
-  ? {
-      watch = isUnpurchased
-      size = flex()
-      rendObj = ROBJ_SOLID
-      color = plateLockedColor
-    }
-  : { watch = isUnpurchased }
 
 let mkPlateText = @(text, override = {}) {
   rendObj = ROBJ_TEXT
@@ -193,7 +162,7 @@ let mkPlateText = @(text, override = {}) {
   fontFx = FFT_GLOW
   fontFxColor = 0xFF000000
   fontFxFactor = hdpx(32)
-}.__update(fontTiny, override)
+}.__update(fontTinyAccented, override)
 
 let mkUnitLevel = @(level, justUnlockedDelay = null) {
   vplace = ALIGN_BOTTOM
@@ -258,12 +227,18 @@ let mkAnimationUnitLock = @(justUnlockedDelay, level, lockBottomImg, callback = 
   ]
 }
 
+let mkUnitRank = @(unit, ovr = {}) mkGradRank(unit.mRank, {
+  padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad]
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_BOTTOM
+}.__update(ovr))
+
 let starRankOvr = {
   pos = [0, ph(40)]
 }
 let function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
   let children = []
-  let { rank, mRank, starRank = 0, costWp = 0 } = unit
+  let { rank, starRank = 0, costWp = 0 } = unit
   if(isLocked && costWp != 0)
     children.append(
       mkIcon("ui/gameuiskin#lock_campaign.svg", [lockIconSize, lockIconSize],
@@ -286,50 +261,41 @@ let function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
         backButtonBlink("UnitsWnd")
       }))
   else
-    children.append(mkGradRank(mRank, {
-      hplace = ALIGN_RIGHT
-      vplace = ALIGN_BOTTOM
-    }))
-  return{
+    children.append(mkUnitRank(unit, { pos = [-hdpx(10), hdpx(5)] }))
+  return {
+    key = {}
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
-    padding = hdpx(10)
+    padding = [hdpx(5), 0]
     children
   }
 }
 
-let mkUnitTexts = @(unit, unitLocName, justUnlockedDelay = null) {
+let mkUnitFlag = @(unit, isLocked = Watched(false)) @() {
+  watch = isLocked
+  margin = plateTextsSmallPad
+  size = [flagIconSize, flagIconSize]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#{getFlagByCountry(unit.country)}:0:P")
+  fallbackImage = Picture($"ui/gameuiskin#{COUNTRY_FLAG_UNKNOWN}:0:P")
+  keepAspect = KEEP_ASPECT_FIT
+  imageValign = ALIGN_TOP
+  brightness = isLocked.get() ? 0.4 : 1.0
+}
+
+let mkUnitTexts = @(unit, unitLocName, isLocked = Watched(false)) {
   size = flex()
-  padding = plateTextsPad
+  flow = FLOW_HORIZONTAL
   children = [
-    {
-      size = flex()
-      flow = FLOW_VERTICAL
+    mkUnitFlag(unit, isLocked)
+    mkPlateText(unitLocName, {
+      size = [flex(), SIZE_TO_CONTENT]
+      padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad, 0, 0]
       halign = ALIGN_RIGHT
-      gap = hdpx(3)
-      children = [
-        {
-          size = [flex(), SIZE_TO_CONTENT]
-          flow = FLOW_HORIZONTAL
-          valign = ALIGN_CENTER
-          gap = hdpx(8)
-          children = [
-            unit.isPremium || (unit?.isUpgraded ?? false)
-              ? mkIcon("!ui/gameuiskin#icon_premium.svg", [hdpx(60), hdpx(30)], { pos = [ 0, hdpx(3) ] })
-                .__update({ animations = revealAnimation(justUnlockedDelay) })
-              : null
-            mkPlateText(unitLocName, {
-              size = [flex(), SIZE_TO_CONTENT]
-              halign = ALIGN_RIGHT
-              behavior = Behaviors.Marquee
-              speed = hdpx(30)
-              delay = defMarqueeDelay
-            })
-          ]
-        }
-        mkPlateText(getUnitClassFontIcon(unit), fontSmall)
-      ]
-    }
+      behavior = Behaviors.Marquee
+      speed = hdpx(30)
+      delay = defMarqueeDelay
+    })
   ]
 }
 
@@ -353,32 +319,20 @@ let mkUnitShortPrice = @(price, justUnlockedDelay = null) {
   children = mkCurrencyComp(price.price, price.currencyId)
 }
 
-
-let mkUnitEmptyLockedFg = @(isLocked, justUnlockedDelay = null)
-  @() !isLocked.value && !justUnlockedDelay ? { watch = isLocked }
-    : {
-        watch = isLocked
-        size = flex()
-        rendObj = ROBJ_SOLID
-        color = plateLockedColor
-        opacity = isLocked.value ? 1 : 0
-        animations = fadeAnimation(justUnlockedDelay)
-      }
-
-let mkUnitLockedFg = @(isLocked, justUnlockedDelay = null)
-  @() !isLocked.value && !justUnlockedDelay ? { watch = isLocked }
-    : {
-        watch = isLocked
-        size = flex()
-        rendObj = ROBJ_SOLID
-        color = plateLockedColor
-        opacity = isLocked.value ? 1 : 0
-        padding = [ plateTextsSmallPad, plateTextsSmallPad - hdpx(3) ]
-        valign = ALIGN_BOTTOM
-        halign = ALIGN_RIGHT
-        flow = FLOW_HORIZONTAL
-      }
-
+let mkUnitsTreePrice = @(price, justUnlockedDelay = null) {
+  key = {}
+  vplace = ALIGN_BOTTOM
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  margin = [0, 0, plateTextsSmallPad, plateTextsSmallPad]
+  transform = {}
+  animations = revealAnimation(justUnlockedDelay)?.extend(scaleAnimation(justUnlockedDelay))
+  children = mkCurrencyComp(price.price, price.currencyId, CS_COMMON.__merge({
+    iconSize = hdpxi(35)
+    fontStyle = fontTinyAccented
+    iconGap = hdpx(6)
+  }))
+}
 
 let function mkUnitSlotLockedLine(slot, isLocked = true, justUnlockedDelay = null){
   let children = []
@@ -412,7 +366,7 @@ let mkEquippedIcon = @(unit) {
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = componentsByUnitType?[unit.unitType].equippedIcons
+  children = componentsByUnitType?[unit.unitType].equippedIcons(unit)
 }
 
 let mkUnitEquippedFrame = @(unit, isEquipped, justUnlockedDelay = null) @() isEquipped.value
@@ -421,52 +375,45 @@ let mkUnitEquippedFrame = @(unit, isEquipped, justUnlockedDelay = null) @() isEq
       size = flex()
       rendObj = ROBJ_FRAME
       borderWidth = plateBorderThickness
-      color = plateEquippedFrameColor
+      color = getFrameColor(unit)
       animations = revealAnimation(justUnlockedDelay)
       children = mkEquippedIcon(unit)
     }
   : { watch = isEquipped }
 
+let mkUnitEquippedIcon = @(unit, isEquipped, justUnlockedDelay = null) @() isEquipped.get()
+    ? {
+        watch = isEquipped
+        size = flex()
+        animations = revealAnimation(justUnlockedDelay)
+        children = mkEquippedIcon(unit)
+      }
+  : { watch = isEquipped }
 
-let mkUnitEquippedTopLine = @(isEquipped, justUnlockedDelay = null) {
+let mkUnitEquippedTopLine = @(unit, isEquipped, justUnlockedDelay = null) {
   size = [ flex(), unutEquppedTopLineFullHeight ]
   children = @() isEquipped.value
     ? {
         watch = isEquipped
         size = [ flex(), plateFrameTopLineThickness ]
         rendObj = ROBJ_SOLID
-        color = plateEquippedFrameColor
+        color = getFrameColor(unit)
         animations = revealAnimation(justUnlockedDelay)
       }
     : { watch = isEquipped }
 }
 
-let mkUnitSelectedUnderline = @(isSelected, justUnlockedDelay = null) {
-  size = [ flex(), unitSelUnderlineFullHeight ]
-  children = @() isSelected.value
-    ? {
-        watch = isSelected
-        size = [ flex(), unitSelUnderlineHeight ]
-        pos = [ 0, unitSelUnderlineFullHeight - unitSelUnderlineHeight ]
-        rendObj = ROBJ_IMAGE
-        image = lineGradImg
-        color = plateSelectedBgColor
-        animations = revealAnimation(justUnlockedDelay)
-      }
-    : { watch = isSelected }
+let mkUnitSelectedUnderline = @(unit, isSelected, justUnlockedDelay = null) {
+  size = [flex(), unitSelUnderlineFullSize]
+  margin = [unitSelUnderlineFullSize - selLineSize, 0, 0, 0]
+  children = selectedLineHor(isSelected, !!(unit?.isUpgraded || unit?.isPremium))
+  animations = revealAnimation(justUnlockedDelay)
 }
 
-let mkUnitSelectedUnderlineVert = @(isSelected) {
-  size = [ unitSelUnderlineFullHeight, flex() ]
-  children = @() isSelected.value
-    ? {
-        watch = isSelected
-        size = [ unitSelUnderlineHeight, flex() ]
-        rendObj = ROBJ_IMAGE
-        image = lineGradImgVert
-        color = plateSelectedBgColor
-      }
-    : { watch = isSelected }
+let mkUnitSelectedUnderlineVert = @(unit, isSelected) {
+  size = [unitSelUnderlineFullSize, flex()]
+  pos = [- unitSelUnderlineFullSize + selLineSize, 0]
+  children = selectedLineVert(isSelected, !!(unit?.isUpgraded || unit?.isPremium))
 }
 
 let mkPlatoonEquippedIcon = @(unit, isEquipped, justUnlockedDelay = null) @() isEquipped.value
@@ -478,36 +425,26 @@ let mkPlatoonEquippedIcon = @(unit, isEquipped, justUnlockedDelay = null) @() is
     }
   : { watch = isEquipped }
 
-let platoonSelectedGlowGradient = mkRadialGradientImg({
-  points = [
-    { offset = 0, color = colorArr(gradientColor) },
-    { offset = 100, color = colorArr(gradientBgColor) }]
-  width = unitPlateWidth
-  height = unitPlateHeight
-  cx = 0.5 * unitPlateWidth
-  cy = 0.5 * unitPlateHeight
-  r = 0.5 * unitPlateWidth
-})
-
-let mkPlatoonSelectedGlow = @(unit, isSelected, justUnlockedDelay = null) @() isSelected.value
+let mkUnitSelectedGlow = @(unit, isSelected, justUnlockedDelay = null) @() isSelected.value
   ? {
       watch = isSelected
       size = flex()
       rendObj = ROBJ_IMAGE
-      image = platoonSelectedGlowGradient
-      color = unit?.isUpgraded || unit?.isPremium ? premiumHighlightColor : plateSelectedBgColor
+      image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
+      color = unit?.isUpgraded || unit?.isPremium ? premiumHighlightColor : highlightColor
       animations = revealAnimation(justUnlockedDelay)
+      transform = { rotate = 180 }
     }
   : { watch = isSelected }
 
-let mkPlatoonPlateFrame = @(isEquipped = Watched(false), isLocked = Watched(false), justUnlockedDelay = null) @() {
-  watch = [isEquipped, isLocked]
+let mkPlatoonPlateFrame = @(unit, isEquipped = Watched(false), isSelected = Watched(false), justUnlockedDelay = null) @() {
+  watch = [isSelected, isEquipped]
   size = flex()
   rendObj = ROBJ_FRAME
-  borderWidth = hdpx(3)
-  color = isLocked.value ? 0x666666
-    : isEquipped.value ? plateEquippedFrameColor
-    : 0xFFFFFF
+  borderWidth = plateBorderThickness
+  color = isEquipped.get() ? getFrameColor(unit)
+    : isSelected.get() ? 0xBBBBBB
+    : 0
   transform = {}
   animations = scaleAnimation(justUnlockedDelay, [1.04, 1.04])?.extend(colorAnimation(justUnlockedDelay, 0x666666, 0xFFFFFF))
 }
@@ -519,7 +456,7 @@ let function mkPlatoonBgPlates(unit, platoonUnits) {
     transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
     children = [
       mkUnitBg(unit)
-      mkPlatoonPlateFrame()
+      mkPlatoonPlateFrame(unit)
     ]
   }
   return {
@@ -541,6 +478,7 @@ let function mkSingleUnitPlate(unit) {
     children = [
       mkUnitBg(unit)
       mkUnitImage(unit)
+      mkUnitFlag(unit)
       mkUnitTexts(unit, loc(p.locId))
       level >= 0 ? mkUnitLevel(level) : null
     ]
@@ -550,30 +488,33 @@ let function mkSingleUnitPlate(unit) {
 return {
   unitPlateWidth
   unitPlateHeight
+  unitPlateRatio
+  unitPlateSmall
   unutEquppedTopLineFullHeight
-  unitSelUnderlineFullHeight
+  unitSelUnderlineFullSize
   unitPlatesGap
   platoonPlatesGap
   platoonSelPlatesGap
   bgPlatesTranslate
   plateTextsPad
+  plateTextsSmallPad
 
   mkUnitBg
   mkUnitSelectedGlow
   mkUnitImage
-  mkUnitCanPurchaseShade
   mkUnitTexts
   mkUnitLock
   mkUnitLevel
   mkUnitPrice
+  mkUnitRank
   mkUnitShortPrice
-  mkUnitLockedFg
-  mkUnitEmptyLockedFg
+  mkUnitsTreePrice
   mkUnitSlotLockedLine
   mkUnitEquippedFrame
   mkUnitEquippedTopLine
   mkUnitSelectedUnderline
   mkUnitSelectedUnderlineVert
+  mkUnitEquippedIcon
   mkSingleUnitPlate
   mkPlateText
   mkIcon
@@ -582,5 +523,7 @@ return {
   mkPlatoonPlateFrame
   mkPlatoonBgPlates
   mkPlatoonEquippedIcon
-  mkPlatoonSelectedGlow
+
+  getFlagByCountry
+  COUNTRY_FLAG_UNKNOWN
 }

@@ -295,6 +295,7 @@
         "mulHardcore": 3,
         "minVal": 5,
         "bestId": "heroic_wingman",
+        "useBestScoreWTM": true,
         "includeBots": true,
         "condition": [
           {

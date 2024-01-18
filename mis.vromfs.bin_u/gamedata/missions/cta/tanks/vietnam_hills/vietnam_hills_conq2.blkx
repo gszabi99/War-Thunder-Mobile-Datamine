@@ -139,110 +139,53 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "difficulty": "arcade",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_02"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_02"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_capture_zone"
-              }
-            ]
-          },
-          {
-            "difficulty": "realistic",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_02"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_02"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_capture_zone"
-              }
-            ]
-          },
-          {
-            "difficulty": "hardcore",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_t1_tank_spawn_02"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_01"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_t2_tank_spawn_02"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_capture_zone"
-              }
-            ]
+        "slide": {
+          "difficulty": "arcade",
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "basezone_A",
+              "side": "neutral",
+              "target": "briefing_capture_area_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_tank_spawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_tank_spawn_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_tank_spawn_03"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_tank_spawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_tank_spawn_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_tank_spawn_03"
+            }
+          ],
+          "battleArea": {
+            "target": "conq_battle_area_arcade"
           }
-        ]
+        }
       }
     }
   },
@@ -628,249 +571,6 @@
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_tank_spawn_01": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          863.639,
-          0.000585556,
-          -327.26
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t1_tank_spawn_02": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          849.999,
-          -0.0000247955,
-          0.839966
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t2_tank_spawn_01": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          -233.871,
-          0.000585556,
-          -355.58
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t2_tank_spawn_02": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          -236.191,
-          0.000585556,
-          39.44
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_capture_zone": {
-      "type": "Point",
-      "tm": [
-        [
-          -0.649548,
-          0.0,
-          4.93384
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -3.60547,
-          0.0,
-          -0.474672
-        ],
-        [
-          287.019,
-          8.05064,
-          -120.89
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t1_tank_spawn_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1156.22,
-          -0.0000247955,
-          -528.49
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t1_tank_spawn_02_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1166.97,
-          -0.0000247955,
-          -96.8403
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t2_tank_spawn_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          -625.981,
-          -0.0000247955,
-          -534.24
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t2_tank_spawn_02_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          -609.831,
-          -0.0000247955,
-          -80.4399
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
     "conq_capture_area_02_arcade": {
       "type": "Cylinder",
       "tm": [
@@ -893,6 +593,249 @@
           244.55,
           0.35,
           -181.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_tank_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          -204.049,
+          10.3704,
+          138.723
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_tank_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          -205.916,
+          2.2596,
+          -179.168
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_tank_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          -201.716,
+          3.01353,
+          -469.597
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_tank_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          689.729,
+          7.6704,
+          143.223
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_tank_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          691.174,
+          6.82936,
+          -176.026
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_tank_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          697.984,
+          4.39201,
+          -468.884
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_capture_area_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          244.2,
+          1.33226,
+          177.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_capture_area_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          244.55,
+          -0.232616,
+          -181.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_capture_area_03": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.999473,
+          0.0,
+          0.0324552
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0324552,
+          0.0,
+          -0.999473
+        ],
+        [
+          249.15,
+          0.01548,
+          -514.9
         ]
       ],
       "objLayer": 0,

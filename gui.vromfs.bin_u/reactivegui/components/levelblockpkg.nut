@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let darkBorderWidth = hdpx(2)
 let lightBorderWidth = hdpx(3)
+let levelBorder = darkBorderWidth + lightBorderWidth
 let levelBgColor = Color(51, 54, 58)
 let playerExpColor = Color(255, 183, 11)
 let unitExpColor = Color(126, 226, 255)
@@ -45,6 +46,8 @@ let mkProgressLevelBg = @(override = {}) {
 return {
   darkBorderWidth
   lightBorderWidth
+  levelBorder
+  levelBgColor
   levelProgressBarHeight
   levelProgressBarWidth
   levelProgressBorderWidth

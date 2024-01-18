@@ -6,7 +6,8 @@ let { get_time_msec } = require("dagor.time")
 let { register_command } = require("console")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { isMainMenuAttached, isUnitsWndAttached, isUnitsWndOpened } = require("%rGui/mainMenu/mainMenuState.nut")
+let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
+let { isUnitsTreeOpen, isUnitsTreeAttached } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId
 } = require("tutorialWnd/tutorialWndState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
@@ -26,7 +27,7 @@ let hasBattles = Computed(@()
 let needShowTutorial = Computed(@() !isInSquad.value
   && !isSkipped.value
   && !hasBattles.value)
-let canStartTutorial = Computed(@() isUnitsWndAttached.value
+let canStartTutorial = Computed(@() isUnitsTreeAttached.value
   && !hasModalWindows.value
   && !isTutorialActive.value)
 let showTutorial = keepref(Computed(@() canStartTutorial.value
@@ -34,7 +35,7 @@ let showTutorial = keepref(Computed(@() canStartTutorial.value
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.value == TUTORIAL_ID
   && !isMainMenuAttached.value
-  && !isUnitsWndAttached.value))
+  && !isUnitsTreeAttached.value))
 let finishEarly = @() shouldEarlyCloseTutorial.value ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
@@ -71,7 +72,7 @@ let function startTutorial() {
           keys = "backButton"
           sizeIncAdd = hdpx(20)
           needArrow = true
-          onClick = @() isUnitsWndOpened(false)
+          onClick = @() isUnitsTreeOpen(false)
         }]
       }
       //main menu

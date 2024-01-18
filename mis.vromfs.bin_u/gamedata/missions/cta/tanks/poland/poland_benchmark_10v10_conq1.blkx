@@ -808,7 +808,7 @@
             1923.78
           ]
         ],
-        "unit_class": "ussr_kv_1_L_11",
+        "unit_class": "ussr_kv_1_zis_5",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1032,7 +1032,7 @@
             1933.15
           ]
         ],
-        "unit_class": "us_m3_lee",
+        "unit_class": "germ_pzkpfw_Maus",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1480,7 +1480,7 @@
             1933.67
           ]
         ],
-        "unit_class": "ussr_kv_1_L_11",
+        "unit_class": "ussr_kv_1_zis_5",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1536,7 +1536,7 @@
             1910.88
           ]
         ],
-        "unit_class": "ussr_kv_1_L_11",
+        "unit_class": "ussr_kv_1_zis_5",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1592,7 +1592,7 @@
             1900.66
           ]
         ],
-        "unit_class": "ussr_kv_1_L_11",
+        "unit_class": "ussr_kv_1_zis_5",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1648,7 +1648,7 @@
             1895.7
           ]
         ],
-        "unit_class": "ussr_kv_1_L_11",
+        "unit_class": "ussr_kv_1_zis_5",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1704,7 +1704,7 @@
             1878.21
           ]
         ],
-        "unit_class": "ussr_kv_1_L_11",
+        "unit_class": "ussr_kv_1_zis_5",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1760,7 +1760,7 @@
             1890.96
           ]
         ],
-        "unit_class": "ussr_kv_1_L_11",
+        "unit_class": "ussr_kv_1_zis_5",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,

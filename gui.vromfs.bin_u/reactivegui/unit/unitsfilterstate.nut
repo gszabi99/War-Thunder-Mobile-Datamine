@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { OCT_TEXTINPUT, OCT_MULTISELECT } = require("%rGui/options/optCtrlType.nut")
-let { getUnitPresentation, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let { getRomanNumeral } = require("%sqstd/math.nut")
+let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL
 } = require("%appGlobals/unitsState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { mkFlagImage } = require("%rGui/unitsTree/unitsTreeComps.nut")
 
 
 let statusLoc = {
@@ -20,8 +21,9 @@ let curFilters = mkWatched(persist, "curFilters", {})
 let mkValue = @(id, defValue = null) Computed(@() curFilters.value?[id] ?? defValue)
 let saveValue = @(id, value) curFilters.mutate(@(f) f[id] <- value)
 let mkSetValue = @(id) @(value) saveValue(id, value)
+let clearFilters = @() curFilters.set({})
 
-curCampaign.subscribe(@(_) curFilters({}))
+curCampaign.subscribe(@(_) clearFilters())
 
 let mkListToggleValue = @(id, allValuesW) function toggleValue(value, isChecked) {
   local res = curFilters.value?[id]
@@ -97,17 +99,8 @@ let function mkOptMultiselect(id, override = {}) {
   }.__update(override)
 }
 
-
-let optCountry = mkOptMultiselect("country", { valToString = loc })
-let optUnitClass = mkOptMultiselect("unitClass", {
-  function getUnitValue(unit) {
-    let { unitClass = "" } = unit
-    let text = loc($"mainmenu/type_{unitClass}")
-    return $"{unitClassFontIcons?[unit?.unitClass] ?? "?"} {text}"
-  }
-})
-let optMRank = mkOptMultiselect("mRank", { valToString = @(v) getRomanNumeral(v) })
-
+let optCountry = mkOptMultiselect("country", { customValue = @(v) mkFlagImage(v, hdpxi(90)) })
+let optMRank = mkOptMultiselect("mRank", { inBoxValue = @(v) mkGradRank(v) })
 
 let allStatuses = Computed(@() canBuyUnitsStatus.value
   .reduce(function(res, status) {
@@ -120,14 +113,15 @@ let optStatus = mkOptMultiselect("unitStatus", {
   allValues = allStatuses
   getUnitValue = @(unit) canBuyUnitsStatus.value?[unit.name] ?? US_UNKNOWN
   valToString = @(st) loc(statusLoc?[st] ?? "???")
+  locId = null
 })
 
 return {
   curFilters
+  clearFilters
 
   optName
   optCountry
-  optUnitClass
   optMRank
   optStatus
 }

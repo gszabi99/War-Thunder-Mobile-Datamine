@@ -57,6 +57,9 @@
   "hideNodesInDmg": {
     "node": "flag"
   },
+  "aimNodesNames": {
+    "node": "armor_cit_01_dm"
+  },
   "default_skin_tomoe": {
     "replace_tex": [
       {

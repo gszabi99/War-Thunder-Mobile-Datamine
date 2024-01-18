@@ -8,6 +8,12 @@ let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
 let { translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
+
+let eventColors = {
+  season_3 = 0xA5FF2B00
+  season_4 = 0xA5FFBB10
+  def = 0xA5FF2B00
+}
 let bannerIconSize = [hdpxi(216), hdpxi(127)]
 let buttonSize = [translucentButtonsHeight * 1.5, translucentButtonsHeight]
 let horPadding = hdpx(80)
@@ -29,7 +35,7 @@ let mainEventBtn = framedImageBtn($"ui/gameuiskin#icon_events.svg",
   })
 
 return @() {
-  watch = [isBpSeasonActive, hasBpRewardsToReceive, isEventActive]
+  watch = [isBpSeasonActive, hasBpRewardsToReceive, isEventActive, eventSeason]
   size = [bannerIconSize[0] * 2, SIZE_TO_CONTENT]
   children = isBpSeasonActive.get()
       ? {
@@ -55,7 +61,7 @@ return @() {
                   image = gradTranspDoubleSideX
                   texOffs = [0, gradDoubleTexOffset]
                   screenOffs = [0, hdpx(130)]
-                  color = 0xA5FF2B00
+                  color = eventColors?[eventSeason.get()] ?? eventColors.def
                   pos = [0,  hdpx(-6)]
                 }
                 {

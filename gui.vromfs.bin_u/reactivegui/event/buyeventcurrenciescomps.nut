@@ -13,6 +13,7 @@ let { openEventQuestsWnd, getQuestCurrenciesInTab, questsCfg, questsBySection, p
   progressUnlockByTab } = require("%rGui/quests/questsState.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { eventSeason } = require("%rGui/event/eventState.nut")
 
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let tasksBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
@@ -30,12 +31,14 @@ let goodsBgSize = [goodsW, goodsH - pricePlateH]
 let imgStyle = {
   imageHalign = ALIGN_CENTER
   imageValign = ALIGN_BOTTOM
+  margin = hdpx(25)
 }
 
-let function getImgByAmount(amount, curId) {
-  let imgCfg = getCurrencyGoodsPresentation(curId)
+let function getImgByAmount(amount, curId, season) {
+  let imgCfg = getCurrencyGoodsPresentation(curId, season)
   let idxByAmount = imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()
-  return mkGoodsImg(imgCfg?[max(0, idxByAmount - 1)].img, imgStyle)
+  let cfg = imgCfg?[max(0, idxByAmount - 1)]
+  return mkGoodsImg(cfg?.img, cfg?.fallbackImg, imgStyle)
 }
 
 let bgHiglight = {
@@ -53,8 +56,9 @@ let questsLinkPlate = {
   children = txt({ text = utf8ToUpper(loc("mainmenu/btnQuests")) }.__update(fontSmall))
 }
 
-let function mkQuestsLink(curId) {
-  let imgCfg = getCurrencyGoodsPresentation(curId)
+let function mkQuestsLink(curId, season) {
+  let imgCfg = getCurrencyGoodsPresentation(curId, season)
+  let cfg = imgCfg?[imgCfg.len() - 1]
 
   return mkGoodsWrap(function() {
       openEventQuestsWnd()
@@ -64,7 +68,7 @@ let function mkQuestsLink(curId) {
       mkSlotBgImg()
       mkBgParticles(goodsBgSize)
       sf & S_HOVER ? bgHiglight : null
-      mkGoodsImg(imgCfg?[imgCfg.len() - 1].img, imgStyle)
+      mkGoodsImg(cfg?.img, cfg?.fallbackImg, imgStyle)
     ],
     questsLinkPlate,
     { size = goodsSize, clickableInfo = loc("item/open") },
@@ -73,13 +77,13 @@ let function mkQuestsLink(curId) {
 
 
 let mkGoods = @(goods, onClick, state, animParams) @() {
-  watch = currencyId
+  watch = [currencyId, eventSeason]
   children = mkGoodsWrap(onClick,
     @(sf) [
       mkSlotBgImg()
       mkBgParticles(goodsBgSize)
       sf & S_HOVER ? bgHiglight : null
-      getImgByAmount(goods?[currencyId.value] ?? 0, currencyId.value)
+      getImgByAmount(goods?[currencyId.value] ?? 0, currencyId.value, eventSeason.get())
       mkCurrencyAmountTitle(goods?[currencyId.value] ?? 0, goods?.viewBaseValue ?? 0, titleFontGrad)
     ].extend(mkGoodsCommonParts(goods, state)),
     mkPricePlate(goods, priceBgGrad, state, animParams),
@@ -94,13 +98,13 @@ let function mkEventCurrenciesGoods() {
         .findindex(@(v) v == currencyId.get()) != null)
 
   return {
-    watch = [eventCurrenciesGoods, currencyId, showQuestsLink]
+    watch = [eventCurrenciesGoods, currencyId, showQuestsLink, eventSeason]
     size = [flex(), SIZE_TO_CONTENT]
     padding = [hdpx(45), 0, 0, 0]
     flow = FLOW_HORIZONTAL
     gap
     halign = ALIGN_CENTER
-    children = [showQuestsLink.value ? mkQuestsLink(currencyId.value) : null]
+    children = [showQuestsLink.value ? mkQuestsLink(currencyId.value, eventSeason.get()) : null]
       .extend(mkGoodsListWithBaseValue(eventCurrenciesGoods.value.values())
         .sort(@(a, b) (a?[currencyId.value] ?? 0) <=> (b?[currencyId.value] ?? 0))
         .map(@(good, idx) mkGoods(good,

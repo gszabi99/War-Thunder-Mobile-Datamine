@@ -22,6 +22,7 @@ let dbgRewardsTbl = {
     tank_extinguisher = 50
     spare = 50
     firework_kit = 3
+    ircm_kit = 3
   }
   lootboxes = {
     every_day_award_big_pack_1 = 3

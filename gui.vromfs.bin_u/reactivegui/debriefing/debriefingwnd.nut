@@ -4,8 +4,9 @@ let { playSound } = require("sound_wt")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { curUnit, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { textButtonPrimary, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
@@ -20,12 +21,15 @@ let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
+let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { needRateGame } = require("%rGui/feedback/rateGameState.nut")
 let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
+let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let { isPlayerReceiveLevel, isUnitReceiveLevel, getNewPlatoonUnit } = require("debrUtils.nut")
 let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
@@ -92,6 +96,20 @@ let mkBtnLevelUp = @(needShow) mkBtnAppearAnim(true, needShow, textButtonBattle(
     closeDebriefing()
   },
   { hotkeys = ["^J:X | Enter"] }))
+
+let mkBtnBuyNextPlayerLevel = @(needShow, curPlayerLevel) function() {
+  let res = {
+    watch = [playerLevelInfo, lvlUpCost]
+  }
+  let { level, starLevel, isMaxLevel, isReadyForLevelUp } = playerLevelInfo.get()
+  if (level > curPlayerLevel || isMaxLevel || isReadyForLevelUp)
+    return res
+
+  let cost = { price = lvlUpCost.get(), currencyId = GOLD }
+  let btnComp = mkBtnAppearAnim(false, needShow,
+    textButtonPlayerLevelUp(utf8ToUpper(loc("getCampaignLevel")), level, starLevel, openExpWnd, null, cost))
+  return res.__update({ children = btnComp })
+}
 
 let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
@@ -255,12 +273,10 @@ let function debriefingWnd() {
                         buttonDescText(needShowBtns_Unit, loc("levelUp/receiveNewPlatoonUnit"))
                         mkBtnNewPlatoonUnit(needShowBtns_Unit, newPlatoonUnit)
                       ]
-                    : hasUnitLevelUp ? [
-                        minCountUpgradeButtonPushed <= countUpgradeButtonPushed.get()
-                          ? mkBtnToBattlePlace(needShowBtns_Final)
-                          : null
+                    : hasUnitLevelUp && countUpgradeButtonPushed.get() < minCountUpgradeButtonPushed ? [
                       ]
                     : [
+                        mkBtnBuyNextPlayerLevel(needShowBtns_Final, debrData?.player.level ?? -1)
                         mkBtnToBattlePlace(needShowBtns_Final)
                       ]
                   ).append(btnSkip)  //warning disable: -unwanted-modification

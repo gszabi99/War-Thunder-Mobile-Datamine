@@ -15,6 +15,8 @@
       "gt_training": false,
       "environment": "Day",
       "weather": "cloudy",
+      "locName": "missions/tutorial_ship_basic",
+      "locDesc": "missions/tutorial_ship_basic/desc",
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 12,
       "reqFeature": "ShipsFirstChoice",
@@ -32,6 +34,38 @@
       "optionalTakeOff": false,
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 5
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "destroyer",
+              "side": "player",
+              "target": "player"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "ai"
+            }
+          ],
+          "battleArea": {
+            "target": "battle_area"
+          }
+        }
+      }
     }
   },
   "imports": {},

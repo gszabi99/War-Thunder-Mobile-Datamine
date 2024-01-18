@@ -38,8 +38,8 @@ let pageMask = mkBitmapPictureLazy((pageWidth / 10).tointeger(), 2, mkGradientCt
 let modsScrollHandler = ScrollHandler()
 let catsScrollHandler = ScrollHandler()
 
-curModIndex.subscribe(@(v) v == null ? null
-  : modsScrollHandler.scrollToX(v * (modW + modsGap) - (modsWidth - modW) / 2))
+let scrollToMod = @() curModIndex.get() == null ? null
+  : modsScrollHandler.scrollToX(curModIndex.get() * (modW + modsGap) - (modsWidth - modW) / 2)
 
 curCategoryId.subscribe(@(v) v == null ? null
   : catsScrollHandler.scrollToY((modsCategories.value.findindex(@(cat) cat == v) ?? 0)
@@ -77,8 +77,9 @@ let mkHorizontalPannableArea = @(content) {
       children = content
       xmbNode = {
         canFocus = false
-        scrollSpeed = 5.0
+        scrollSpeed = 2.0
         isViewport = true
+        scrollToEdge = false
       }
     }
   ]
@@ -98,7 +99,7 @@ let categoriesBlock = @() {
 let modsBlock = @() {
   watch = modsSorted
   size = [SIZE_TO_CONTENT, flex()]
-  children = mkMods(modsSorted.value)
+  children = mkMods(modsSorted.value, scrollToMod)
 }
 
 let mkModIcon = @() {

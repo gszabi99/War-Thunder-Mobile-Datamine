@@ -59,6 +59,7 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_medium",
+  "drowningCheckHeightMultiplier": 0.9,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,

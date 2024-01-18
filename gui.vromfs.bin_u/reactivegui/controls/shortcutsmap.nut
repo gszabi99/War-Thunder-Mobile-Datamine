@@ -41,12 +41,15 @@ let allShortcuts = {
   ID_SHIP_WEAPON_EXTRA_GUN_2 = "J:LB | T"
   ID_SHIP_WEAPON_TORPEDOES = "J:A | X"
   ID_SHIP_WEAPON_MINE = "J:B | C"
+  ID_SHIP_WEAPON_MORTAR = "J:B | C"
+  ID_SHIP_WEAPON_ROCKETS = "J:Y | E"
   ID_WTM_LAUNCH_AIRCRAFT = "J:D.Down | Q" //also used for aircraft return to ship
 
 
   ID_SHIP_ACTION_BAR_ITEM_11 = "J:D.Left | 1" //toolkit
   ID_SHIP_ACTION_BAR_ITEM_14 = "J:D.Right | 2" //smoke screen
   ID_SHIP_SMOKE_SCREEN_GENERATOR = "J:D.Right | 2"
+  ID_IRCM_SWITCH_SHIP = "J:D.Up | 3"
 
 
   //SUBMARINE shortcuts:

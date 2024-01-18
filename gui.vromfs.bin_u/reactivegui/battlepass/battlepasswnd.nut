@@ -4,7 +4,7 @@ let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { battlePassOpenCounter, openBattlePassWnd, closeBattlePassWnd, isBpActive, mkBpStagesList,
-  openBPPurchaseWnd, selectedStage, curStage, maxStage
+  openBPPurchaseWnd, selectedStage, curStage, maxStage, bpIconActive
 } = require("battlePassState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
@@ -172,13 +172,15 @@ let rightMiddle = @() {
   valign = ALIGN_BOTTOM
   gap = hdpx(35)
   children = [
-    {
+    @() {
+      watch = bpIconActive
       size = bpIconSize
       vplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
       image = isBpActive.value
-        ? Picture($"ui/gameuiskin#bp_icon_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
+        ? Picture($"{bpIconActive.get()}:{bpIconSize[0]}:{bpIconSize[1]}:P")
         : Picture($"ui/gameuiskin#bp_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
+      fallbackImage = Picture($"ui/gameuiskin#bp_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
       opacity = isBpActive.value ? 1 : 0.5
     }
     isBpActive.get()

@@ -11,8 +11,11 @@ let shortcutsByUnitTypes = {
       cLoc("hotkeys/secondaryGun", "ID_SHIP_WEAPON_SECONDARY"),
       cLoc("hotkeys/extraGun", "ID_SHIP_WEAPON_EXTRA_GUN_1"),
       cLoc("hotkeys/extraGun", "ID_SHIP_WEAPON_EXTRA_GUN_2"),
+      cLoc("HUD/TXT_IRCM", "ID_IRCM_SWITCH_SHIP"),
+      cLoc("hotkeys/ID_SHIP_WEAPON_DEPTH_CHARGE", "ID_SHIP_WEAPON_MORTAR"),
       "ID_SHIP_WEAPON_TORPEDOES", "ID_SHIP_SMOKE_SCREEN_GENERATOR", "ID_WTM_LAUNCH_AIRCRAFT",
-      "ID_SHIP_WEAPON_MINE", "ID_NEXT_BULLET_TYPE", "ID_SHIP_ACTION_BAR_ITEM_11", "ID_SHOW_HERO_MODULES",
+      "ID_SHIP_WEAPON_MINE", "ID_SHIP_ACTION_BAR_ITEM_11", "ID_SHOW_HERO_MODULES",
+      "ID_SHIP_WEAPON_ROCKETS"
     ]
       .extend(sameLoc("hotkeys/steering", ["ship_steering_rangeMin", "ship_steering_rangeMax"]))
     axes = sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["ship_mouse_aim_x", "ship_mouse_aim_y"])

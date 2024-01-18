@@ -20,9 +20,8 @@ let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { getUnitPresentation, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts,
-  mkPlatoonBgPlates, platoonPlatesGap, mkPlatoonPlateFrame
+let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
@@ -33,9 +32,10 @@ let { bgGradient } = require("unseenPurchaseComps.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let openUnitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { tryResetToMainScene, canResetToMainScene } = require("%rGui/navState.nut")
 let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
+let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
+let { eventSeason } = require("%rGui/event/eventState.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator", "medal" ]
 
@@ -61,13 +61,14 @@ let aRewardScaleUpTime = 0.05
 let aRewardScaleDownTime = 0.23
 let aRewardAnimTotalTime = aRewardScaleDelay + aRewardScaleUpTime + aRewardScaleDownTime
 let aFlareDelay = 0.3
-let aFlareUpTime = 0.3
-let aFlareStayTime = 0.4
-let aFlareDownTime = 0.5
-let aFlareScaleMin = 0.5
-let aFlareRotationSpeed = 600
+let aFlareUpTime = 0.2
+let aFlareStayTime = 0.25
+let aFlareDownTime = 0.2
+let aFlareScaleMin = 0.1
+let aFlareRotationSpeed = 500
+let aFlareOpacityMax = 0.9
 let aRewardIconSelfScale = 1.4
-let aRewardIconFlareScale = 4.0
+let aRewardIconFlareScale = 5.0
 let aUnitPlateFlareScale = 6.0
 let aUnitPlateSelfScale = 1.1
 let aRewardLabelDelay = aFlareDelay + aFlareUpTime + aFlareStayTime + 0.5 * aFlareDownTime
@@ -172,7 +173,7 @@ let function mkHighlight(startDelay, sizeMul) {
       {
         size = flex()
         rendObj = ROBJ_IMAGE
-        image = Picture("ui/images/effects/open_flash.avif")
+        image = Picture("ui/images/effects/searchlight_earth_flare.avif:0:P")
         opacity = 0
 
         transform = {}
@@ -180,19 +181,19 @@ let function mkHighlight(startDelay, sizeMul) {
           { prop = AnimProp.opacity, from = 0, to = 0,
             duration = startDelay + aFlareDelay
             play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.opacity, from = 0, to = 1, easing = OutCubic,
+          { prop = AnimProp.opacity, from = 0, to = aFlareOpacityMax,
             delay = startDelay + aFlareDelay, duration = aFlareUpTime,
             play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.opacity, from = 1, to = 1,
+          { prop = AnimProp.opacity, from = aFlareOpacityMax, to = aFlareOpacityMax,
             delay = startDelay + aFlareDelay + aFlareUpTime, duration = aFlareStayTime,
             play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.opacity, from = 1, to = 0, easing = InCubic,
+          { prop = AnimProp.opacity, from = aFlareOpacityMax, to = 0, easing = InCubic,
             delay = startDelay + aFlareDelay + aFlareUpTime + aFlareStayTime, duration = aFlareDownTime,
             play = true, trigger = ANIM_SKIP }
           { prop = AnimProp.scale, from = [aFlareScaleMin, aFlareScaleMin], to = [aFlareScaleMin, aFlareScaleMin],
             duration = startDelay + aFlareDelay,
             play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.scale, from = [aFlareScaleMin, aFlareScaleMin], to = [1, 1], easing = OutCubic,
+          { prop = AnimProp.scale, from = [aFlareScaleMin, aFlareScaleMin], to = [1, 1],
             delay = startDelay + aFlareDelay, duration = aFlareUpTime,
             play = true, trigger = ANIM_SKIP }
           { prop = AnimProp.scale, from = [1, 1], to = [1, 1], easing = InCubic,
@@ -210,7 +211,7 @@ let function mkHighlight(startDelay, sizeMul) {
   }
 }
 
-let function mkRerwardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
+let function mkRewardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
   let imgW = round(rewIconSize * sizeMul).tointeger()
   let imgH = round(imgW / aspectRatio).tointeger()
   return {
@@ -224,6 +225,32 @@ let function mkRerwardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0
         pos = [shiftX * imgW, shiftY * imgH]
         rendObj = ROBJ_IMAGE
         image = Picture($"{imgPath}:{imgW}:{imgH}:K:P")
+        keepAspect = true
+        color = 0xFFFFFFFF
+      }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+    ]
+  }
+}
+
+let function mkDynamicRewardIcon(startDelay, curId, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
+  let imgW = round(rewIconSize * sizeMul).tointeger()
+  let imgH = round(imgW / aspectRatio).tointeger()
+  let cfg = Computed(@() getCurrencyGoodsPresentation(curId, eventSeason.get())?[0])
+  return @() {
+    watch = cfg
+    size = [rewIconSize, rewIconSize]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = [
+      mkHighlight(startDelay, aRewardIconFlareScale)
+      {
+        size = [imgW, imgH]
+        pos = [shiftX * imgW, shiftY * imgH]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#{cfg.get()?.img}:{imgW}:{imgH}:K:P")
+        fallbackImage = cfg.get()?.fallbackImg
+            ? Picture($"ui/gameuiskin#{cfg.get()?.fallbackImg}:{imgW}:{imgH}:K:P")
+          : null
         keepAspect = true
         color = 0xFFFFFFFF
       }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
@@ -271,11 +298,11 @@ let function mkDecoratorRewardIcon(startDelay, decoratorId) {
 }
 
 let customCurrencyIcons = {
-  gold = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#shop_eagles_02.avif", 1.61, 1.8, 0.12, -0.05)
-  wp = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#shop_lions_02.avif", 1.61, 1.8, 0.12, -0.05)
-  warbond = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#warbond_goods_01.avif", 1.0, 1.6)
-  eventKey = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#event_keys_01.avif", 1.0, 1.5)
-  nybond = @(startDelay) mkRerwardIcon(startDelay, "ui/gameuiskin#warbond_goods_christmas_01.avif", 1.0, 1.6)
+  gold = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#shop_eagles_02.avif", 1.61, 1.8, 0.12, -0.05)
+  wp = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#shop_lions_02.avif", 1.61, 1.8, 0.12, -0.05)
+  warbond = @(startDelay) mkDynamicRewardIcon(startDelay, "warbond", 1.0, 1.2)
+  eventKey = @(startDelay) mkDynamicRewardIcon(startDelay, "eventKey", 1.0, 1.0)
+  nybond = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#warbond_goods_christmas_01.avif", 1.0, 1.6)
 }
 
 let mkCurrencyIcon = @(startDelay, id)  customCurrencyIcons?[id](startDelay) ?? {
@@ -322,7 +349,7 @@ let rewardCtors = {
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
   }
   premium = {
-    mkIcon = @(rewardInfo) mkRerwardIcon(rewardInfo.startDelay, "ui/gameuiskin#premium_active_big.avif", 1.43, 1.4)
+    mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, "ui/gameuiskin#premium_active_big.avif", 1.43, 1.4)
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay,
       "".concat(rewardInfo.count, loc("measureUnits/days")))
   }
@@ -367,34 +394,23 @@ let function mkUnitPlate(unitInfo) {
   if (unit == null)
     return null
   let p = getUnitPresentation(unit)
-  let { platoonUnits = [] } = unit
-  let platoonSize = platoonUnits.len()
-  let height = platoonSize == 0 ? unitPlateHeight
-    : unitPlateHeight + platoonPlatesGap * platoonSize
   return {
-    size = [ unitPlateWidth, height ]
+    size = [ unitPlateWidth, unitPlateHeight ]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
       mkHighlight(startDelay, aUnitPlateFlareScale)
       {
-        size = [ unitPlateWidth, height ]
+        size = [ unitPlateWidth, unitPlateHeight ]
         children = {
           size = [ unitPlateWidth, unitPlateHeight ]
           vplace = ALIGN_BOTTOM
-          children = platoonSize > 0
-            ? [
-                mkPlatoonBgPlates(unit, platoonUnits)
-                mkUnitBg(unit)
-                mkUnitImage(unit)
-                mkUnitTexts(unit, getPlatoonName(unit.name, loc))
-                mkPlatoonPlateFrame()
-              ]
-            : [
-                mkUnitBg(unit)
-                mkUnitImage(unit)
-                mkUnitTexts(unit, loc(p.locId))
-              ]
+          children = [
+            mkUnitBg(unit)
+            mkUnitImage(unit)
+            mkUnitRank(unit)
+            mkUnitTexts(unit, loc(p.locId))
+          ]
         }
       }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))
     ]
@@ -610,7 +626,7 @@ let function onCloseRequest() {
     skipAnims()
     return
   }
-  // Setting the received unit as current and show in units list
+  // Setting the received unit as current
   let unitId = stackData.value?.unitPlates.findvalue(@(_) true)?.id
   let unit = myUnits.value?[unitId]
   if (unit != null && canResetToMainScene()) {
@@ -619,7 +635,6 @@ let function onCloseRequest() {
       tryResetToMainScene()
       setHangarUnit(unitId)
       requestOpenUnitPurchEffect(unit)
-      openUnitsWnd()
     }
   }
   // Marking purchases as seen

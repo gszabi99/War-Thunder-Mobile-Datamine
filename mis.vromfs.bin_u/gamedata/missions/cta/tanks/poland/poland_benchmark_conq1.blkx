@@ -758,7 +758,7 @@
             1923.78
           ]
         ],
-        "unit_class": "ussr_kv_1_L_11",
+        "unit_class": "ussr_kv_1_zis_5",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -982,7 +982,7 @@
             1933.15
           ]
         ],
-        "unit_class": "us_m3_lee",
+        "unit_class": "germ_pzkpfw_Maus",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,

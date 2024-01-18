@@ -5,7 +5,7 @@ let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { unitInfoPanelFull, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { unitPlateWidth, unitPlateHeight, unitPlatesGap,
+let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitRank
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -14,7 +14,6 @@ let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -93,10 +92,9 @@ let UNIT_DELAY = 1.5
 let UNIT_SCALE = 1.2
 let function mkUnitPlate(unit, platoonUnit, onClick) {
   let p = getUnitPresentation(platoonUnit)
-  let { isPremium = false, isUpgraded = false } = unit
+  let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let isSelected = Computed(@() curSelectedUnitId.value == platoonUnit.name)
-  let isLocked = Computed(@() !isPremium && !isUpgraded && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
-  let imgOvr = { picSaturate = isLocked.value ? 0.0 : 1.0 }
+  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
   let justUnlockedDelay = Computed(@() justUnlockedPlatoonUnits.value.indexof(platoonUnit.name) != null ? UNIT_DELAY : null)
 
   return @() {
@@ -106,23 +104,18 @@ let function mkUnitPlate(unit, platoonUnit, onClick) {
     sound = { click  = "choose" }
     flow = FLOW_HORIZONTAL
     children = [
-      mkUnitSelectedUnderlineVert(isSelected)
+      mkUnitSelectedUnderlineVert(unit, isSelected)
       {
         key = {}
         size = [ unitPlateWidth, unitPlateHeight ]
         transform = {}
         animations = scaleAnimation(justUnlockedDelay.value, [UNIT_SCALE, UNIT_SCALE])
         children = [
-          mkUnitBg(unit, imgOvr, justUnlockedDelay.value)
+          mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
-          mkUnitImage(unit.__merge(platoonUnit)).__update(imgOvr)
-          mkUnitTexts(unit, loc(p.locId))
-          !isLocked.value
-            ? mkGradRank(unit.mRank, {
-              hplace = ALIGN_RIGHT
-              vplace = ALIGN_BOTTOM
-              padding = hdpx(10)
-            }): null
+          mkUnitImage(unit.__merge(platoonUnit))
+          mkUnitTexts(unit, loc(p.locId), isLocked)
+          !isLocked.value ? mkUnitRank(unit, { pos = [-hdpx(30), 0] }) : null
           mkUnitSlotLockedLine(platoonUnit, isLocked.value, justUnlockedDelay.value)
         ]
       }

@@ -18,11 +18,14 @@ let emptyProgress = {
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
 
+let battlePassTables = ["battle_pass_daily", "battle_pass_weekly"]
 
 let unlockTables = Computed(function(prev) {
   let stats = userstatStats.value
   let res = {}
   foreach (name, _value in stats?.stats ?? {})
+    res[name] <- true
+  foreach (name in battlePassTables)
     res[name] <- true
   foreach (name, _value in stats?.inactiveTables ?? {})
     res[name] <- false

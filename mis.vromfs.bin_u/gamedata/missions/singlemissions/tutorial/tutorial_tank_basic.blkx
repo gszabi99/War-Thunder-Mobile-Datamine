@@ -23,6 +23,8 @@
       "gt_training": false,
       "environment": "Day",
       "weather": "cloudy",
+      "locName": "missions/tutorial_tank_basic",
+      "locDesc": "missions/tutorial_tank_basic/desc",
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 12,
       "gt_mp_tickets": true,
@@ -69,15 +71,23 @@
             },
             {
               "icontype": "tank",
-              "side": "neutral",
+              "side": "enemy",
               "target": "target_tank01"
             },
             {
               "icontype": "tank",
-              "side": "neutral",
+              "side": "enemy",
               "target": "target_tank02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "target_tank03"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "battle_area"
+          }
         }
       }
     }
