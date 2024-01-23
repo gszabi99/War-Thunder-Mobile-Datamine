@@ -40,8 +40,15 @@ let function gatherUnitTagsCfg(unitName) {
     foreach (id, bList in res.bullets) {
       if ("default" in bList)
         bList[""] <- bList.$rawdelete("default")
-      let ordered = []
-      eachBlock(bulletsBlk[id], @(b) ordered.append(remapBulletName(b.getBlockName())))
+      local ordered = []
+      if (id in bulletsBlk)
+        eachBlock(bulletsBlk[id], @(b) ordered.append(remapBulletName(b.getBlockName())))
+      else {  //we got strange logerr from production here, so this is just more logs about it.
+        log("bulletsBlk = ", bulletsBlk)
+        log("res.bullets = ", res.bullets)
+        logerr("Failed to get bullets order from unittags")
+        ordered = bList.keys()
+      }
       res.bulletsOrder[id] <- ordered
     }
   }

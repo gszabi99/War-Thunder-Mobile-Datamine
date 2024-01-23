@@ -114,6 +114,7 @@ let function scoreBoard() {
     flow = FLOW_HORIZONTAL
     gap = -0.15 * timerBgWidth
     onClick = @() eventbus.send("toggleMpstatscreen", {})
+    sound = { click  = "click" }
     children = [
       barCtor("localTeam")
       {

@@ -70,14 +70,14 @@ let unitsMapped = Computed(function() {
 })
 
 let columnsCfg = Computed(function() {
-  let res = { total = 0 }
+  let res = { "0" : 0 }
   for (local i = 1; i <= unitsMaxRank.value + 1; i++){
     let unitsInRank = unitsMapped.value.units
       .map(@(unitsByCountry) unitsByCountry?[i].len() ?? 0)
       .reduce(@(a, b) max(a, b))
         ?? 0
-    res[i] <- res.total
-    res.total += unitsInRank
+    res[i] <- res["0"]
+    res["0"] += unitsInRank // total columns amount
   }
   return res
 })

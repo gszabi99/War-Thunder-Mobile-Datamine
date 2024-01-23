@@ -181,6 +181,7 @@ let function tooltipComp() {
 }
 
 return {
+  calcPosition
   tooltipComp
   showTooltip
   showDelayedTooltip

@@ -192,17 +192,17 @@ let actionButtons = @() {
   watch = [selAttrSpCost, attrUnitLevelsToMax, attrUnitName, attrUnitData]
   size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL
-  gap = buttonsHGap
+  gap = buttonsHGap * 0.5
   children = [
     textButtonPrimary(utf8ToUpper(loc("terms_wnd/more_detailed")), @() null,
-      { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags })
+      { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags, ovr = isWidescreen ? {} : { maxWidth = hdpx(510) } })
     attrUnitLevelsToMax.value <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
         (attrUnitData.value?.unit.level ?? 0) + 1,
         @() buyUnitLevelWnd(attrUnitName.value), { hotkeys = ["^J:Y"] })
     selAttrSpCost.value <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
-          ovr = { sound = { click  = "characteristics_apply" } }
+          ovr = { sound = { click  = "characteristics_apply" } }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
           hotkeys = ["^J:X"]
         })
   ]
@@ -263,7 +263,10 @@ let unitAttrWnd = {
             })
             btnOpenUnitMods({
               hotkeys = ["^J:X"],
-              ovr = { margin = [0, 0, 0, contentMargin], size = [tabW - contentMargin, defButtonHeight] },
+              ovr = {
+                margin = [0, 0, 0, contentMargin]
+                size = [isWidescreen ? (tabW - contentMargin) : SIZE_TO_CONTENT, defButtonHeight]
+              },
             })
           ]
         }

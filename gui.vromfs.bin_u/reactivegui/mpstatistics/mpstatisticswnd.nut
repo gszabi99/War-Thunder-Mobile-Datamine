@@ -49,6 +49,7 @@ let playersByTeam = Computed(function() {
           unitClass
           mainUnitName
           mRank
+          userId
         })
       })))
   let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)

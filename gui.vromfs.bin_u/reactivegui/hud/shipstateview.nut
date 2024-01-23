@@ -12,7 +12,7 @@ let machineSpeedLoc = [
   loc("HUD/ENGINE_REV_TWO_THIRDS_SHORT")
   loc("HUD/ENGINE_REV_STANDARD_SHORT")
   loc("HUD/ENGINE_REV_FULL_SHORT")
-  loc("HUD/ENGINE_REV_FLANK_SHORT")
+  "1"
   "1"
   "2"
   "R"

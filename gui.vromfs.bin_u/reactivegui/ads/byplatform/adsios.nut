@@ -8,7 +8,6 @@ let { is_ios } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
   debugAdsWndParams, providerPriorities, onShowAds
 } = require("%rGui/ads/adsInternalState.nut")
-let sendAdsBqEvent = require("%rGui/ads/sendAdsBqEvent.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let isDebug = !is_ios
@@ -16,6 +15,7 @@ let DBG_PROVIDER = "pc_debug"
 let { DBGLEVEL } = require("dagor.system")
 let { ADS_STATUS_LOADED = 6, ADS_STATUS_SHOWN = 5, ADS_STATUS_NOT_INITED = 1, ADS_STATUS_DISMISS = 4, ADS_STATUS_OK = 8
 } = ads
+let sendAdsBqEvent = !isDebug ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
 let debugAdsInited = persist("debugAdsInited", @() {})
 local isDebugAdsLoaded = false
 let { setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
@@ -59,6 +59,7 @@ let { setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriori
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
+let loadedProvider = hardPersistWatched("adsAndroid.loadedProvider", "")
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
 let needAdsLoadExt = Computed(@() isInited.value && needAdsLoad.value && !isLoaded.value)
@@ -129,8 +130,9 @@ let function retryLoad() {
 
 subscribe("ios.ads.onLoad",function (params) {
   let { status, provider = "unknown" } = params
-  logA($"onLoad {getStatusName(status)}")
+  logA($"onLoad {getStatusName(status)} ({provider})")
   isLoadStarted = false
+  loadedProvider.set(provider)
   isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())
   if (isLoaded.value) {
     failInARow(0)
@@ -174,7 +176,7 @@ let function showAdsForReward(rInfo) {
   if (!isLoaded.value)
     return
   rewardInfo(rInfo)
-  onShowAds()
+  onShowAds(loadedProvider.get())
   showAds()
 }
 

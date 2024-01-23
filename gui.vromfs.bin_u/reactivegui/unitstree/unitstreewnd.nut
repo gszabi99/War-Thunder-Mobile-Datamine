@@ -16,11 +16,11 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
 let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { canBuyUnits, buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkProgressBar,
-  progressBarHeight, bgLight, noUnitsMsg, btnSize
+  progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap
 } = require("unitsTreeComps.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { discountTagUnit } = require("%rGui/components/discountTag.nut")
-let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { unitInfoPanel, mkUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { curSelectedUnit, availableUnitsList, sizePlatoon, curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { unitActions } = require("%rGui/unit/unitsWndActions.nut")
 let { abs } = require("%sqstd/math.nut")
@@ -51,7 +51,6 @@ let selLineGap = hdpx(10)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
 let infoPanelBgColor = 0xE0000000
-let platesGap = [hdpx(28), hdpx(56)]
 let unitPlateSize = unitPlateSmall
 let blockSize = [unitPlateSize[0] + platesGap[0], unitPlateSize[1] + platesGap[1]]
 let scrollBlocks = ceil((saSize[0] - saBorders[0] - flagsWidth) / blockSize[0] / 2)
@@ -108,6 +107,11 @@ let openFiltersPopup = @(e) openFilters(e, {
   popupValign = ALIGN_TOP
   popupHalign = ALIGN_CENTER
 })
+
+let function onBackButtonClick() {
+  closeUnitsTreeWnd()
+  curSelectedUnit.set(null)
+}
 
 let unselectBtn = {
   behavior = Behaviors.Button
@@ -307,14 +311,22 @@ let function mkUnitsBlock(listByCountry, rowIdx) {
 }
 
 let function mkLevelProgress(_, idx) {
-  let { level, exp, nextLevelExp } = playerLevelInfo.value
   let slots = columnsCfg.value[idx + 2] - columnsCfg.value[idx + 1]
+  if (slots <= 0)
+    return null
+
+  let { level, exp, nextLevelExp } = playerLevelInfo.value
+  let hasLevelGap = columnsCfg.get()?[idx + 3] == columnsCfg.get()[idx + 2]
+  let hasNextLevel = level >=
+    (columnsCfg.get().findindex(@(v, key) v > columnsCfg.get()[idx + 1] && columnsCfg.get()?[key + 1] != v) ?? 0)
   let barWidth = slots * blockSize[0] - levelMarkSize + progressBarHeight + levelBorder
   let levelCompleted = level >= idx + 2
   let current = levelCompleted ? 1
     : level == idx + 1 ? exp
     : 0
   let required = levelCompleted ? 1 : nextLevelExp
+  let levelCompletion = current >= required || required == 0 ? 1.0
+    : clamp(current.tofloat() / required * 0.97, 0.0, 0.97)
 
   return @() {
     watch = [columnsCfg, playerLevelInfo, sizePlatoon, unitsMaxRank, unitsMaxStarRank]
@@ -324,7 +336,7 @@ let function mkLevelProgress(_, idx) {
         size = [SIZE_TO_CONTENT, levelMarkSize]
         valign = ALIGN_CENTER
         children = unitsMaxRank.value == idx + 1 ? null
-          : mkProgressBar(current, required, barWidth,
+          : mkProgressBar(levelCompletion, barWidth, slots, hasLevelGap, hasNextLevel,
               { pos = [levelMarkSize - progressBarHeight * 0.5, hdpx(1)] })
       }
       levelMark(
@@ -343,7 +355,9 @@ listWatches = listWatches.filter(@(w) w != null)
 
 let unitsTree = @() {
   watch = listWatches
-  size = [columnsCfg.value.total * blockSize[0], countriesRows * blockSize[1]]
+  size = [
+    columnsCfg.value["0"] * blockSize[0] + (!curSelectedUnit.get() ? 0 : (statsWidth + platesGap[0])),
+    countriesRows * blockSize[1]]
   onAttach = @() defer(@() unitsTreeOpenRank.get() != null
       ? scrollToRank(unitsTreeOpenRank.get())
     : scrollToUnit(curSelectedUnit.value ?? curUnitName.value))
@@ -433,7 +447,7 @@ let unitsTreeGamercard = {
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
-    backButton(closeUnitsTreeWnd, { vplace = ALIGN_CENTER })
+    backButton(onBackButtonClick, { vplace = ALIGN_CENTER })
 
     {
       pos = [0, hdpx(5)]

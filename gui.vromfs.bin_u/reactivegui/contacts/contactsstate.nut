@@ -29,6 +29,7 @@ let searchContactsResultRaw = mkWatched(persist, "searchContactsResultRaw", null
 let isSearchInProgress = Watched(false)
 let contactsInProgress = Watched({})
 let canFetchContacts = Computed(@() isContactsLoggedIn.value && isMatchingConnected.value && !isInBattle.value)
+let canRequestToContacts = Computed(@() isContactsLoggedIn.value && isMatchingConnected.value)
 let isFetchDelayed = hardPersistWatched("contacts.isFetchDelayed", false)
 
 let searchContactsResult = Computed(function() {
@@ -287,6 +288,7 @@ return {
   isContactsOpened
   getContactsInviteId
   canFetchContacts
+  canRequestToContacts
 
   contactsInProgress
   addToFriendList

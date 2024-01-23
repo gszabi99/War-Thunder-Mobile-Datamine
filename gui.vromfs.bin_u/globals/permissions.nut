@@ -23,6 +23,7 @@ let defaults = {
   has_leaderboard = DBGLEVEL > 0
   can_view_update_suggestion = false
   can_request_ads_consent = DBGLEVEL > 0
+  can_view_player_stats = DBGLEVEL > 0
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

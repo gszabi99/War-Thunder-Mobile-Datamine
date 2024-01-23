@@ -195,9 +195,16 @@ let function mkActionItem(buttonConfig, actionItem) {
 }
 
 let progress = Watched(null)
-let progressEndTime = Watched(null)
+let progressTime = Watched(null)
 function progressUpdate() {
-  let toEndTime = (progressEndTime.get() ?? 0) - ::get_mission_time()
+  let timing = progressTime.get() ?? [0, 0]
+  let currTime = ::get_mission_time()
+  if (currTime < timing[0]) {//just wait for begin
+    progress.set(null)
+    resetTimeout(timing[0] - currTime, progressUpdate)
+    return
+  }
+  let toEndTime = timing[1] - ::get_mission_time()
   if (toEndTime > 0.0) {
     local progressV = ceil(toEndTime).tointeger()
     local nextTick = toEndTime % 1.0
@@ -208,12 +215,12 @@ function progressUpdate() {
     progress.set( progressV )
     resetTimeout(nextTick, progressUpdate)
   } else {
-    defer(@() progressEndTime.set(null))
+    defer(@() progressTime.set(null))
     progress.set(null)
   }
 }
 
-progressEndTime.subscribe(@(v) v != null ? progressUpdate() : null)
+progressTime.subscribe(@(v) v != null ? progressUpdate() : null)
 
 let mkProgressText = @() {
   watch = progress
@@ -233,14 +240,16 @@ let function mkIRCMActionItem(buttonConfig, actionItem) {
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   let isDisabled = Computed(@() disabledControls.value?[shortcutId] ?? false)
   let animationKey = getAnimationKey ? getAnimationKey(unitType.value) : null
-  defer(@() progressEndTime.set(actionItem?.inProgressEndTime ?? 0))
+  let endTime = actionItem?.inProgressEndTime ?? 0.0
+  let beginTime = endTime - (actionItem?.inProgressTime ?? 0.0)
+  defer(@() progressTime.set([beginTime, endTime]))
 
   return {
     size = [touchButtonSize, touchButtonSize + countHeightUnderActionItem]
     flow = FLOW_VERTICAL
     children = [
       @() {
-        watch = [isDisabled, progressEndTime]
+        watch = [isDisabled, progressTime]
         key = key ?? shortcutId
         behavior = Behaviors.Button
         valign = ALIGN_CENTER
@@ -257,13 +266,13 @@ let function mkIRCMActionItem(buttonConfig, actionItem) {
         hotkeys = mkGamepadHotkey(shortcutId)
         onElemState = @(v) stateFlags(v)
         children = [
-          progressEndTime.get() ? mkProgressText : mkActionItemProgress(actionItem, isAvailable && !isDisabled.value)
+          progressTime.get() ? mkProgressText : mkActionItemProgress(actionItem, isAvailable && !isDisabled.value)
           @() {
             watch = [stateFlags]
             rendObj = ROBJ_BOX
             size = flex()
             borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
-              : progressEndTime.get() ? borderColorPushed
+              : progressTime.get() ? borderColorPushed
               : (!isAvailable || isDisabled.value) ? borderNoAmmoColor
               : borderColor
             borderWidth

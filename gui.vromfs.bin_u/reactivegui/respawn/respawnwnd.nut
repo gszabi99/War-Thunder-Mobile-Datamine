@@ -110,7 +110,7 @@ let function mkSlotPlate(slot, baseUnit) {
         children = [
           mkUnitBg(unit, !canSpawn)
           canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
-          mkUnitImage(unit)
+          mkUnitImage(unit, !canSpawn)
           mkUnitTexts(unit, loc(p.locId), Computed(@() !canSpawn))
           canSpawn ? mkUnitRank(unit, isPremium ? {} : { pos = [-hdpx(30), 0] }) : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null

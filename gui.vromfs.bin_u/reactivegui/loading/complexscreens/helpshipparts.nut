@@ -9,11 +9,12 @@ let lineWidth = evenPx(4)
 let borderWidth = hdpx(2)
 let blockPadding = hdpx(10)
 let pointSize = lineWidth + 2 * hdpxi(3)
-let offsetX = 40
+let offsetX = 30
 let bottomRowY = 846
 let topRowY = 260
 let adaptiveFont = isWidescreen ? fontTiny : fontVeryTiny
 let fillColor = 0x8015191C
+let maxWidth = hdpx(430)
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
 let mkLines = @(lines) lines.map(@(v, i) 100.0 * v / bgSize[i % 2])
@@ -27,7 +28,9 @@ let mkIcon = @(img) {
 }
 
 let mkText = @(text) {
-  rendObj = ROBJ_TEXT
+  maxWidth
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
   text
   color = 0xFFFFFFFF
 }.__update(adaptiveFont)
@@ -56,7 +59,7 @@ let turretHint = {
 }
 
 let ammoY1 = 740
-let ammoY2 = 590
+let ammoY2 = 605
 let ammoHint = {
   header = "help/ship/ammo_storage"
   color = 0xFFC958CD
@@ -64,7 +67,7 @@ let ammoHint = {
 }
 
 let elevatorY1 = 665
-let elevatorY2 = 425
+let elevatorY2 = 415
 let elevatorHint = {
   header = "dmg_msg_short/ship_elevator"
   color = 0xFFF94984
@@ -73,33 +76,33 @@ let elevatorHint = {
 
 let hints = [
   turretHint.__merge({
-    lines = mkLines([900, turretY1, 900, turretY2])
-    pos = mkSizeByParent([900 + offsetX, turretY2])
+    lines = mkLines([875, turretY1, 875, turretY2])
+    pos = mkSizeByParent([875 + offsetX, turretY2])
     blockOvr = { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM }
   })
   turretHint.__merge({
-    lines = mkLines([2350, turretY1, 2350, turretY2])
-    pos = mkSizeByParent([2350 - offsetX, turretY2])
+    lines = mkLines([2370, turretY1, 2370, turretY2])
+    pos = mkSizeByParent([2370 - offsetX, turretY2])
     blockOvr = { vplace = ALIGN_BOTTOM }
   })
   elevatorHint.__merge({
-    lines = mkLines([830, elevatorY1, 830, elevatorY2])
-    pos = mkSizeByParent([830 + offsetX, elevatorY2])
+    lines = mkLines([820, elevatorY1, 820, elevatorY2])
+    pos = mkSizeByParent([820 + offsetX, elevatorY2])
     blockOvr = { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM }
   })
   elevatorHint.__merge({
-    lines = mkLines([2420, elevatorY1, 2420, elevatorY2])
-    pos = mkSizeByParent([2420 - offsetX, elevatorY2])
+    lines = mkLines([2425, elevatorY1, 2425, elevatorY2])
+    pos = mkSizeByParent([2425 - offsetX, elevatorY2])
     blockOvr = { vplace = ALIGN_BOTTOM }
   })
   ammoHint.__merge({
     lines = mkLines([925, ammoY1, 680, ammoY1, 680, ammoY2])
-    pos = mkSizeByParent([680 + offsetX, ammoY2])
+    pos = mkSizeByParent([700 + offsetX, ammoY2])
     blockOvr = { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, fillColor }
   })
   ammoHint.__merge({
     lines = mkLines([2335, ammoY1, 2565, ammoY1, 2565, ammoY2])
-    pos = mkSizeByParent([2565 - offsetX, ammoY2])
+    pos = mkSizeByParent([2545 - offsetX, ammoY2])
     blockOvr = { vplace = ALIGN_BOTTOM, fillColor }
   })
   {
@@ -118,7 +121,7 @@ let hints = [
       mkRow([mkText($"{loc("fire_chance")}{colon}5%"), mkIcon("ui/gameuiskin#hud_debuff_fire.svg")])
       mkRow([mkText(loc("help/loss_of_control")), mkIcon("ui/gameuiskin#hud_debuff_control.svg")])
     ])
-    lines = mkLines([1940, 420, 1940, topRowY])
+    lines = mkLines([1980, 420, 1980, topRowY])
     blockOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM, fillColor }
   }
   {
@@ -153,8 +156,9 @@ let hints = [
     color = 0xFF4AD5E2
     content = mkRow([mkText(loc("flooding")), mkIcon("ui/gameuiskin#dmg_ship_breach.svg")])
     lines = mkLines([2717, 746, 2717, bottomRowY])
-    pos = mkSizeByParent([2600, bottomRowY])
+    pos = mkSizeByParent([2700, bottomRowY])
     blockOvr = { hplace = ALIGN_CENTER }
+    headerOvr = { maxWidth = null }
   }
   {
     header = "help/ship/auxTurrets"
@@ -164,7 +168,7 @@ let hints = [
       mkRow([mkText($"{loc("shop/shotFreq")}{colon}-50%"), mkIcon("ui/gameuiskin#hud_debuff_weapon.svg")])
     ])
     lines = mkLines([1250, 590, 1100, 460, 1100, topRowY])
-    pos = mkSizeByParent([1290, topRowY])
+    pos = mkSizeByParent([1270, topRowY])
     blockOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM, fillColor }
   }
 ]
@@ -183,18 +187,18 @@ let allLines = {
   }, [])
 }
 
-let mkHeader = @(header, color) {
+let mkHeader = @(header, color, ovr = {}) {
   margin = hdpx(5)
-  maxWidth = hdpx(430)
+  maxWidth
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = utf8ToUpper(loc(header))
   color = color
   halign = ALIGN_CENTER
-}.__update(adaptiveFont)
+}.__update(adaptiveFont, ovr)
 
 let function mkHintBlock(hint) {
-  let { lines = null, color = 0xFFFFFFFF, header = null, content = null, blockOvr = {} } = hint
+  let { lines = null, color = 0xFFFFFFFF, header = null, content = null, blockOvr = {}, headerOvr = {} } = hint
   local pos = hint?.pos
   if (pos == null && lines != null) {
     pos = lines.slice(lines.len() - 2)
@@ -211,7 +215,7 @@ let function mkHintBlock(hint) {
       padding = blockPadding
       flow = FLOW_VERTICAL
       children = [
-        header != null ? mkHeader(header, color) : null
+        header != null ? mkHeader(header, color, headerOvr) : null
         content
       ]
     }.__update(blockOvr)

@@ -42,8 +42,9 @@ let mkImage = @(path, size, ovr = null) {
 let textBlock = @() {
   watch = isMissionLoading
   size = [hdpx(800), flex()]
-  margin = [hdpx(140), 0, hdpx(30), 0]
+  margin = [hdpx(160), 0, hdpx(30), 0]
   flow = FLOW_VERTICAL
+  gap = hdpx(40)
   children = isMissionLoading.value
     ? [
         {

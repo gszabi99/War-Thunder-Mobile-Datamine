@@ -29,6 +29,7 @@ let { tryResetToMainScene } = require("%rGui/navState.nut")
 
 
 let premiumDays = 30
+let fontIconPreview = "⌡"
 
 let curSelectedUnitPrice = Computed(@()
   (allUnitsCfg.value?[curSelectedUnit.value]?.costGold ?? 0) + (allUnitsCfg.value?[curSelectedUnit.value]?.costWp ?? 0))
@@ -79,9 +80,20 @@ let bgTextMessage = {
 
 let platoonBtn = mkCustomButton(
   {
-    rendObj = ROBJ_TEXT
-    text = loc("squadSize/platoon")
-  }.__update(fontSmall),
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(20)
+    valign = ALIGN_CENTER
+    children = [
+      {
+        rendObj = ROBJ_TEXT
+        text = fontIconPreview
+      }.__update(fontBigShaded)
+      {
+        rendObj = ROBJ_TEXT
+        text = loc("squadSize/platoon")
+      }.__update(fontSmallShaded)
+    ]
+  },
   @() unitDetailsWnd({ name = hangarUnitName.value }),
   {
     ovr = {
@@ -99,7 +111,7 @@ let infoBtn = infoBlueButton(
     size = [defButtonHeight, defButtonHeight]
     hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
   }
-  fontBig
+  { text = fontIconPreview }.__merge(fontBigShaded)
 )
 
 let function unitActionButtons() {

@@ -17,6 +17,7 @@ let flagsWidth = flagSize * 2 + flagGap
 let levelMarkSize = hdpx(60)
 let levelBlockSize = round(levelMarkSize / sqrt(2) / 2) * 2
 let progressBarHeight = hdpx(10)
+let platesGap = [hdpx(28), hdpx(56)]
 let btnSize = [SIZE_TO_CONTENT, hdpxi(70)]
 let btnStyle = { ovr = { size = btnSize } }
 
@@ -87,28 +88,36 @@ let levelUpBtn = @(onClick) textButtonSecondary(
   onClick,
   btnStyle)
 
-let function mkProgressBar(current, required, width, ovr = {}) {
-  let levelCompletion = current >= required || required == 0 ? 1.0
-    : clamp(current.tofloat() / required * 0.97, 0.0, 0.97)
-
-  return {
-    size = [width, progressBarHeight]
-    rendObj = ROBJ_SOLID
-    color = levelBgColor
-    children = [
-      {
-        rendObj = ROBJ_SOLID
-        size = flex()
-        color = playerExpColor
-        transform = {
-          scale = [levelCompletion, 1.0]
-          pivot = [0, 0]
+let mkProgressBar = @(levelCompletion, width, slots, hasLevelGap, hasNextLevel, ovr = {}) {
+  flow = FLOW_HORIZONTAL
+  gap = platesGap[0]
+  children = [
+    {
+      size = [
+        !hasLevelGap ? width : ((width - platesGap[0]) * (slots * 2 - 1) / (slots * 2)),
+        progressBarHeight]
+      rendObj = ROBJ_SOLID
+      color = levelBgColor
+      children = [
+        {
+          rendObj = ROBJ_SOLID
+          size = flex()
+          color = playerExpColor
+          transform = {
+            scale = [levelCompletion, 1.0]
+            pivot = [0, 0]
+          }
+          transitions = [{ prop = AnimProp.scale, duration = aTimeBarFill, easing = InOutQuad }]
         }
-        transitions = [{ prop = AnimProp.scale, duration = aTimeBarFill, easing = InOutQuad }]
-      }
-    ]
-  }.__update(ovr)
-}
+      ]
+    }
+    !hasLevelGap ? null : {
+      size = [((width - platesGap[0]) / (slots * 2)), progressBarHeight]
+      rendObj = ROBJ_SOLID
+      color = hasNextLevel ? playerExpColor : levelBgColor
+    }
+  ]
+}.__update(ovr)
 
 let bgLight = {
   rendObj = ROBJ_SOLID
@@ -137,4 +146,5 @@ return {
   progressBarHeight
   bgLight
   noUnitsMsg
+  platesGap
 }

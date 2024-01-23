@@ -7,11 +7,11 @@ let { is_android } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
   isAnyAdsButtonAttached, providerPriorities, onShowAds
 } = require("%rGui/ads/adsInternalState.nut")
-let sendAdsBqEvent = require("%rGui/ads/sendAdsBqEvent.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { can_request_ads_consent } = require("%appGlobals/permissions.nut")
 
 let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
+let sendAdsBqEvent = is_android ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
   isAdsLoaded, loadAds, showAds, requestConsent = null, showConsent = null
@@ -20,6 +20,7 @@ let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
+let loadedProvider = hardPersistWatched("adsAndroid.loadedProvider", "")
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
 
@@ -88,7 +89,7 @@ subscribe("android.ads.onShowConsent", function(msg) {
   consent.set(msg)
 })
 
-if (consent.get() == null && can_request_ads_consent.get())
+if (consent.get() == null)
   requestConsent?(false)
 needOpenConsent.subscribe(@(v) v ? requestConsent?(true) : null)
 
@@ -119,8 +120,9 @@ let function retryLoad() {
 
 subscribe("android.ads.onLoad", function (params) {
   let { status, provider = "unknown" } = params
-  logA($"onLoad {getStatusName(status)}")
+  logA($"onLoad {getStatusName(status)} ({provider})")
   isLoadStarted = false
+  loadedProvider.set(provider)
   isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())
   if (isLoaded.value) {
     failInARow(0)
@@ -164,7 +166,7 @@ let function showAdsForReward(rInfo) {
   if (!isLoaded.value)
     return
   rewardInfo(rInfo)
-  onShowAds()
+  onShowAds(loadedProvider.get())
   showAds()
 }
 

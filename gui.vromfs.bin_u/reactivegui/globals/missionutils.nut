@@ -41,7 +41,7 @@ let function locMissionDesc() {
   get_current_mission_desc(misBlk)
   local ret = ""
   if ((misBlk?.locDesc.len() ?? 0) > 0)
-    ret = getMissionLocName(misBlk, "locDesc")
+    ret = getMissionLocName(misBlk, "locDesc").strip()
   return ret
 }
 

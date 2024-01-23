@@ -113,7 +113,7 @@ let function mkUnitPlate(unit, platoonUnit, onClick) {
         children = [
           mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
-          mkUnitImage(unit.__merge(platoonUnit))
+          mkUnitImage(unit.__merge(platoonUnit), isLocked.get())
           mkUnitTexts(unit, loc(p.locId), isLocked)
           !isLocked.value ? mkUnitRank(unit, { pos = [-hdpx(30), 0] }) : null
           mkUnitSlotLockedLine(platoonUnit, isLocked.value, justUnlockedDelay.value)

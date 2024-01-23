@@ -9,12 +9,14 @@ let { json_to_string } = require("json")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
+let { chooseRandom } = require("%sqstd/rand.nut")
 
 
-let DBG_PROVIDER = "pc_debug"
 let debugAdsInited = persist("debugAdsInited", @() {})
 let debugConsentRequired = hardPersistWatched("adsAndroid.debugConsentRequired", false)
 let debugConsentApprove = hardPersistWatched("adsAndroid.debugConsentRequested", null)
+let priorities = hardPersistWatched("adsAndroid.debug.priorities", {})
+let loadedProvider = hardPersistWatched("adsAndroid.debug.loadedProvider", "")
 local isDebugAdsLoaded = false
 
 let showConsent = @(eventId) setTimeout(0.01, @() openFMsgBox({
@@ -55,14 +57,31 @@ subscribeFMsgBtns({
   }
 })
 
+let function calcLoadedProvider(list) {
+  local priority = -1
+  local allowed = []
+  foreach(id, value in list) {
+    if (value < 0 || value < priority)
+      continue
+    if (value == priority)
+      allowed.append(id)
+    else {
+      allowed = [id]
+      priority = value
+    }
+  }
+  return allowed.len() == 0 ? null : chooseRandom(allowed)
+}
+
 return ads.__merge({
   isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
   getProvidersStatus = @() json_to_string(
     debugAdsInited.map(@(isInited, provider) { provider, isInited })
       .values())
-  setPriorityForProvider = @(_, __) null
-  function addProviderInitWithPriority(provider, _, __) {
+  setPriorityForProvider = @(provider, priority) priorities.mutate(@(v) v[provider] <- priority)
+  function addProviderInitWithPriority(provider, _, priority) {
     debugAdsInited[provider] <- true
+    priorities.mutate(@(v) v[provider] <- priority)
     setTimeout(0.1, @() send("android.ads.onInit", { status = ADS_STATUS_OK, provider }))
   }
   isAdsLoaded = @() isDebugAdsLoaded
@@ -72,20 +91,26 @@ return ads.__merge({
       isDebugAdsLoaded = false
       send("android.ads.onLoad",  //simulate fail ads
         { status = ADS_STATUS_DISMISS, provider = "pc_debug_fail" })
+      if (priorities.get().findvalue(@(v) v >= 0) == null)
+        return
       setTimeout(3.0, function() {
+        let provider = calcLoadedProvider(priorities.get())
+        if (provider == null)
+          return
         isDebugAdsLoaded = debugAdsInited.findvalue(@(v) v) ?? false
+        loadedProvider.set(provider)
         send("android.ads.onLoad",
-          { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED, provider = DBG_PROVIDER })
+          { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED, provider = loadedProvider.get() })
       }, {})
     }, {})
   }
   function showAds() {
-    send("android.ads.onShow", { status = ADS_STATUS_SHOWN, provider = DBG_PROVIDER })
+    send("android.ads.onShow", { status = ADS_STATUS_SHOWN, provider = loadedProvider.get() })
     debugAdsWndParams({
       rewardEvent = "android.ads.onReward"
-      rewardData = { amount = 1, type = "debug", provider = DBG_PROVIDER }
+      rewardData = { amount = 1, type = "debug", provider = loadedProvider.get() }
       finishEvent = "android.ads.onShow"
-      finishData = { status = ADS_STATUS_DISMISS, provider = DBG_PROVIDER }
+      finishData = { status = ADS_STATUS_DISMISS, provider = loadedProvider.get() }
     })
   }
   requestConsent

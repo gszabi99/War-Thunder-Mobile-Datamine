@@ -1,5 +1,6 @@
 from "dagor.workcycle" import setTimeout, clearTimer
 from "dagor.random" import frnd
+from "dagor.debug" import debug
 let math = require("math")
 
 /*
@@ -14,7 +15,11 @@ For example: rendering a preview of a Markdown comment, recalculating a layout a
 
 let function debounce(func, delay_s, delay_s_max = null){
   let storage = { func = @() null }
-  let action = @() storage.func()
+  function action() {
+    let info = func.getfuncinfos()
+    debug($"debounce action: '{info?.name ?? "unknown"}' ({info?.src ?? "unknown"}:{info?.line ?? -1})")
+    storage.func()
+  }
   let function debounced(...) {
     storage.func <- @() func.acall([null].extend(vargv))
     clearTimer(action)
@@ -65,6 +70,9 @@ let function throttle(func, delay_s, options=defThrottleOptions){
       return
     }
     let function clearThrottled(){
+      let info = func.getfuncinfos()
+      debug($"clearThrottled: '{info?.name ?? "unknown"}' ({info?.src ?? "unknown"}:{info?.line ?? -1})")
+
       if (trailing)
         curAction()
       else if (needCallByTimer) {

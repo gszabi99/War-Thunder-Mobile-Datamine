@@ -15,7 +15,8 @@ let { commonGlare } = require("%rGui/components/glare.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { openUnitAttrWnd } = require("%rGui/unitAttr/unitAttrState.nut")
 let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
-  DEBR_TAB_SCORES, debrTabsShowTime, stopDebriefingAnimation, needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final,
+  DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, debrTabsShowTime, stopDebriefingAnimation,
+  needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final,
 } = require("debriefingState.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
@@ -276,7 +277,8 @@ let function debriefingWnd() {
                     : hasUnitLevelUp && countUpgradeButtonPushed.get() < minCountUpgradeButtonPushed ? [
                       ]
                     : [
-                        mkBtnBuyNextPlayerLevel(needShowBtns_Final, debrData?.player.level ?? -1)
+                        mkBtnBuyNextPlayerLevel(Computed(@() curDebrTabId.get() == DEBR_TAB_CAMPAIGN),
+                          debrData?.player.level ?? -1)
                         mkBtnToBattlePlace(needShowBtns_Final)
                       ]
                   ).append(btnSkip)  //warning disable: -unwanted-modification

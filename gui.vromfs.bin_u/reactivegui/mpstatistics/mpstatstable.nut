@@ -6,6 +6,8 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
+let { selectedPlayerForInfo } = require("%rGui/mpStatistics/playerInfo.nut")
+let { can_view_player_stats } = require("%appGlobals/permissions.nut")
 
 
 let cellTextColor = Color(255, 255, 255)
@@ -163,9 +165,19 @@ let function mkPlayerRow(columnCfg, player, teamColor, idx) {
 
   let playerColor = player?.isInHeroSquad ? mySquadLightColor : teamColor
   return {
+    key = player?.userId
+    behavior = Behaviors.Button
+    onClick = function() {
+      if (selectedPlayerForInfo.value == player)
+        selectedPlayerForInfo(null)
+      else if (can_view_player_stats.value)
+        selectedPlayerForInfo(player)
+    }
+    sound = { click  = "click" }
     size = [ flex(), rowHeight ]
     rendObj = ROBJ_SOLID
-    color = (player?.isLocal ?? false) ? rowBgLocalPlayerColor
+    color = player == selectedPlayerForInfo.value ? 0xA0000000
+      : (player?.isLocal ?? false) ? rowBgLocalPlayerColor
       : idx % 2 != 0 ? rowBgOddColor
       : rowBgEvenColor
     flow = FLOW_HORIZONTAL
@@ -203,6 +215,7 @@ let mkMpStatsTable = @(columnsCfg, teams) {
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(30)
+  onDetach = @() selectedPlayerForInfo(null)
   children = teams.map(function(team, teamIdx) {
     let teamColor = teamIdx == 0 ? teamBlueLightColor : teamRedLightColor
     let columnCfg = columnsCfg[teamIdx % columnsCfg.len()]

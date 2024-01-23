@@ -3,13 +3,13 @@ let logP = log_with_prefix("[PUBLIC_INFO] ")
 let { get_time_msec } = require("dagor.time")
 let { deferOnce } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { contactsRequest, contactsRegisterHandler, canFetchContacts } = require("contactsState.nut")
+let { contactsRequest, contactsRegisterHandler, canRequestToContacts } = require("contactsState.nut")
 
 let AGEING_TIME_MSEC = 600000
 let allPublicInfo = hardPersistWatched("allPublicInfo", {})
 let delayedUids = mkWatched(persist, "delayedUids", {})
 let inProgressUids = Watched({})
-let needRequest = Computed(@() canFetchContacts.value && delayedUids.value.len() > 0 && inProgressUids.value.len() == 0)
+let needRequest = Computed(@() canRequestToContacts.value && delayedUids.value.len() > 0 && inProgressUids.value.len() == 0)
 
 contactsRegisterHandler("get_public_users_info", function(result, context) {
   let { uids } = context
