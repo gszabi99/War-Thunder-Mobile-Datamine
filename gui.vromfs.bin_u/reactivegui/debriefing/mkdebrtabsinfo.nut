@@ -10,10 +10,10 @@ let mkDebriefingWndTabMpStats = require("debriefingWndTabMpStats.nut")
 
 let tabsCfgOrdered = [
   {
-    id = DEBR_TAB_SCORES
-    getIcon = @(_debrData) "ui/gameuiskin#prizes_icon.svg"
-    iconScale = 0.67
-    dataCtor = mkDebriefingWndTabScores
+    id = DEBR_TAB_MPSTATS
+    getIcon = @(_debrData) "ui/gameuiskin#menu_stats.svg"
+    iconScale = 0.85
+    dataCtor = mkDebriefingWndTabMpStats
   }
   {
     id = DEBR_TAB_CAMPAIGN
@@ -28,22 +28,19 @@ let tabsCfgOrdered = [
     dataCtor = mkDebriefingWndTabUnit
   }
   {
-    id = DEBR_TAB_MPSTATS
-    getIcon = @(_debrData) "ui/gameuiskin#menu_stats.svg"
-    iconScale = 0.85
-    dataCtor = mkDebriefingWndTabMpStats
+    id = DEBR_TAB_SCORES
+    getIcon = @(_debrData) "ui/gameuiskin#prizes_icon.svg"
+    iconScale = 0.67
+    dataCtor = mkDebriefingWndTabScores
   }
 ]
 
-let function mkDebrTabsInfo(debrData, params) {
+function mkDebrTabsInfo(debrData, params) {
   let res = tabsCfgOrdered
     .map(@(v) {}
     .__update(v, v.dataCtor(debrData, params) ?? {}))
     .filter(@(v) v?.comp != null)
-  let { needBtnCampaign, needBtnUnit } = params
-  let lastAnimTabId = needBtnCampaign && (DEBR_TAB_CAMPAIGN in res) ? DEBR_TAB_CAMPAIGN
-    : needBtnUnit && (DEBR_TAB_UNIT in res) ? DEBR_TAB_UNIT
-    : (res?[res.len() - 1].id ?? 0)
+  let lastAnimTabId = res?[res.len() - 1].id ?? 0
   foreach (idx, v in res) {
     let nextId = res?[idx + 1].id
     v.__update({

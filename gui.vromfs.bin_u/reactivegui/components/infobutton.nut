@@ -64,7 +64,7 @@ let mkInfoButtonCtor = @(bgColor, gradient) function(onClick, ovr = {}, textOvr 
 let infoBlueButton = mkInfoButtonCtor(0xFF0593AD, gradientPrimary)
 let infoCommonButton = mkInfoButtonCtor(0xFF646464, gradientCommon)
 
-let function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
+function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
   return @() {
     size
@@ -84,7 +84,7 @@ let function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   }.__update(ovr)
 }
 
-let function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
+function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let stateFlags = Watched(0)
   let size = ovr?.size ?? defSizeSmall
 
@@ -111,7 +111,7 @@ let function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   }.__update(ovr)
 }
 
-let function infoTooltipButton(contentCtor, tooltipOvr = {}) {
+function infoTooltipButton(contentCtor, tooltipOvr = {}) {
   let stateFlags = Watched(0)
   let key = {}
   return @() {

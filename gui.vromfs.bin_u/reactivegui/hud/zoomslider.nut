@@ -34,12 +34,12 @@ let zoomScale = {
 
 let zoomBgrImage = Picture("!ui/gameuiskin#hud_plane_slider.avif")
 
-let function changeZoomValue(val) {
+function changeZoomValue(val) {
   val = clamp(val, 0, 1.0)
   setZoomMult(1.0 - val)
 }
 
-let function mkZoomSlider(isDynamic = false) {
+function mkZoomSlider(isDynamic = false) {
   let knob = {
     size  = [knobSize + 2 * knobPadding, knobSize + 2 * knobPadding]
     pos = [0, ((1.0 - zoomMult.value) * zoomScaleHeight).tointeger() - knobPadding]

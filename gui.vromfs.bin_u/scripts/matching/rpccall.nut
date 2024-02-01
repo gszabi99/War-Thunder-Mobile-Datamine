@@ -1,24 +1,25 @@
 from "%scripts/dagui_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let matching = require("%scripts/matching_api.nut")
 
-subscribe("matchingCall", function(msg) {
+eventbus_subscribe("matchingCall", function(msg) {
   let { action, params, cb = null } = msg
-  ::matching.rpc_call(action, params,
+  matching.rpc_call(action, params,
     function(result) {
       if (type(cb) == "string")
-        send(cb, { result })
+        eventbus_send(cb, { result })
       else if (type(cb) == "table")
-        send(cb.id, { result, context = cb })
+        eventbus_send(cb.id, { result, context = cb })
     })
 })
 
 let subscriptions = hardPersistWatched("matching.rpcSubscriptions", {})
-let rpcSubscribe = @(name) ::matching.subscribe(name, @(msg) send(name, msg))
+let rpcSubscribe = @(name) matching.subscribe(name, @(msg) eventbus_send(name, msg))
 foreach(name, _ in subscriptions.value)
   rpcSubscribe(name)
 
-subscribe("matchingSubscribe", function(name) {
+eventbus_subscribe("matchingSubscribe", function(name) {
   if (type(name) != "string") {
     logerr($"try to matching subscribe not by string, {name}")
     return
@@ -30,7 +31,7 @@ subscribe("matchingSubscribe", function(name) {
 })
 
 
-let function translateMatchingParams(params) {
+function translateMatchingParams(params) {
   if (params == null)
     return params
   let res = clone params
@@ -40,8 +41,8 @@ let function translateMatchingParams(params) {
   return res
 }
 
-subscribe("matchingApiNotify", function(msg) {
+eventbus_subscribe("matchingApiNotify", function(msg) {
   let { name, params = null } = msg
   log($"matchingApiNotify: {name}")
-  ::matching.notify(name, translateMatchingParams(params))
+  matching.notify(name, translateMatchingParams(params))
 })

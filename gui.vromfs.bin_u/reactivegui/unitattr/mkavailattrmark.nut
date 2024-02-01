@@ -36,7 +36,7 @@ let cfgByStatus = [
   }
 ].map(@(v) defCfg.__merge(v))
 
-let function mkAvailAttrMark(status, size = hdpx(60), sf = 0) {
+function mkAvailAttrMark(status, size = hdpx(60), sf = 0) {
   let cfg = cfgByStatus?[status]
   if (cfg == null)
     return null

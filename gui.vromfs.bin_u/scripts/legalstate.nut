@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let DataBlock  = require("DataBlock")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
@@ -32,7 +32,7 @@ let needApprove = Computed(@() !isOnlineSettingsAvailable.value ? {}
   : legalToApprove.map(@(_, id) id in requiredVersions.value
       && (id not in acceptedVersions.value || requiredVersions.value[id] > acceptedVersions.value[id])))
 
-let function loadAcceptedVersions() {
+function loadAcceptedVersions() {
   let blk = get_local_custom_settings_blk()
   let versionsBlk = blk?[VERSIONS_ID]
   let res = {}
@@ -41,7 +41,7 @@ let function loadAcceptedVersions() {
   acceptedVersions(res)
 }
 
-let function saveAcceptedVersions() {
+function saveAcceptedVersions() {
   if (acceptedVersions.value == null) //not inited
     return
   let blk = get_local_custom_settings_blk()
@@ -60,7 +60,7 @@ if (!isEqual(needApprove.value, legalListForApprove.value))
   legalListForApprove(needApprove.value)
 needApprove.subscribe(@(v) legalListForApprove(v))
 
-subscribe("acceptAllLegals", function(_) {
+eventbus_subscribe("acceptAllLegals", function(_) {
   if (!isOnlineSettingsAvailable.value || acceptedVersions.value == null)
     return
   let versions = clone acceptedVersions.value
@@ -71,7 +71,7 @@ subscribe("acceptAllLegals", function(_) {
   saveAcceptedVersions()
 })
 
-subscribe(VERSIONS_RESP_ID, function(response) {
+eventbus_subscribe(VERSIONS_RESP_ID, function(response) {
   let { status = -1, http_code = -1, body = null } = response
   let hasError = status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code
   if (hasError || body == null) {
@@ -92,7 +92,7 @@ subscribe(VERSIONS_RESP_ID, function(response) {
     lastVersionsError({ status = result?.status, isParsingError = true })
 })
 
-let function requestVersionsOnce() {
+function requestVersionsOnce() {
   if (requiredVersionsRaw.value != null)
     return
   httpRequest({

@@ -41,7 +41,7 @@ let activeUnseenPurchasesGroup = Computed(function() {
   return { list = unseenPurchasesExt.value }
 })
 
-let function markPurchasesSeen(seenIds) {
+function markPurchasesSeen(seenIds) {
   if (unseenPurchasesDebug.value != null)
     return unseenPurchasesDebug(null)
 
@@ -78,7 +78,7 @@ customUnseenData.subscribe(function(data) {
     customUnseenPurchHandlers?[data.idx].show(data.list)
 })
 
-let function removeCustomUnseenPurchHandler(showUnseen) {
+function removeCustomUnseenPurchHandler(showUnseen) {
   let idx = customUnseenPurchHandlers.findindex(@(h) h.show == showUnseen)
   if (idx == null)
     return
@@ -86,7 +86,7 @@ let function removeCustomUnseenPurchHandler(showUnseen) {
   incCustomVersion()
 }
 
-let function addCustomUnseenPurchHandler(isUnseenFit, showUnseen) {
+function addCustomUnseenPurchHandler(isUnseenFit, showUnseen) {
   let idx = customUnseenPurchHandlers.findindex(@(h) h.show == showUnseen)
   if (idx != null)
     customUnseenPurchHandlers.remove(idx)
@@ -94,11 +94,11 @@ let function addCustomUnseenPurchHandler(isUnseenFit, showUnseen) {
   incCustomVersion()
 }
 
-let function undelayShow() {
+function undelayShow() {
   logR("undelayShow unseen")
   isShowDelayed(false)
 }
-let function delayShow(time) {
+function delayShow(time) {
   if (time > 0) {
     logR("delayShow unseen for ", time)
     isShowDelayed(true)

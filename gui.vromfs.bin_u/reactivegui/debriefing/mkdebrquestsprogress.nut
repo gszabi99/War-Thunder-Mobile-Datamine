@@ -15,7 +15,7 @@ let progressBarFillOldColor = 0xFF2EC181
 let progressBarFillNewColor = 0xFFBAEBD5
 let progressBarBorderColor = 0xFF606060
 
-let function mkQuestTitle(quest) {
+function mkQuestTitle(quest) {
   let isAchievement = quest.meta?.achievement ?? false
   let locId = quest.meta?.lang_id ?? quest.name
   let text = loc(isAchievement ? $"{locId}/desc" : locId)
@@ -29,7 +29,7 @@ let function mkQuestTitle(quest) {
   }.__update(fontTinyAccented)
 }
 
-let function mkQuestProgressBar(quest, delay) {
+function mkQuestProgressBar(quest, delay) {
   let { name = "", required = 1, current = 0, _previous = 0 } = quest
   let percentOld = _previous.tofloat() / required
   let percentNew = current.tofloat() / required
@@ -95,7 +95,7 @@ let mkCompletedTxt = @(quest, delay) !(quest?.isCompleted ?? false) ? null : {
   ]
 }.__update(fontSmall)
 
-let function mkQuestComp(quest, delay) {
+function mkQuestComp(quest, delay) {
   let { current = 0, _previous = 0 } = quest
   let diff = current - _previous
   return {
@@ -127,7 +127,7 @@ let function mkQuestComp(quest, delay) {
   }
 }
 
-let function mkQuestSortingInfo(quest) {
+function mkQuestSortingInfo(quest) {
   let { isCompleted = false, current = 0, _previous = 0, required = 1, name = "" } = quest
   let completion = current.tofloat() / required
   let growthPerMission = (current.tofloat() - _previous) / required
@@ -151,7 +151,7 @@ let sortQuests = @(a, b)
   || b.required <=> a.required
   || a.name <=> b.name
 
-let function mkDebrQuestsProgress(debrData, delay) {
+function mkDebrQuestsProgress(debrData, delay) {
   let { quests = {} } = debrData
   let hasContent = quests.len() != 0
   return {

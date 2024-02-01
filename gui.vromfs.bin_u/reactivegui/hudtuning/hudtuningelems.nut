@@ -11,7 +11,7 @@ let anims = {
   [ALIGN_LB] = dfAnimBottomLeft,
 }
 
-let function mkHudTuningElem(cfg, id, transform) {
+function mkHudTuningElem(cfg, id, transform) {
   let { ctor, defTransform = {}, hideForDelayed = true, isVisibleInBattle = null } = cfg
   let { align = 0, pos = null } = transform ?? defTransform
   let children = isVisibleInBattle == null ? ctor()

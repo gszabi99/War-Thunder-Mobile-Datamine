@@ -35,26 +35,28 @@ let curSelectedUnitPrice = Computed(@()
   (allUnitsCfg.value?[curSelectedUnit.value]?.costGold ?? 0) + (allUnitsCfg.value?[curSelectedUnit.value]?.costWp ?? 0))
 let canEquipSelectedUnit = Computed(@() (curSelectedUnit.value in myUnits.value) && (curSelectedUnit.value != curUnit.value?.name))
 
-let function onSetCurrentUnit() {
+function onSetCurrentUnit() {
   if (curSelectedUnit.value == null || curUnitInProgress.value != null)
     return
   setCurrentUnit(curSelectedUnit.value)
   tryResetToMainScene()
 }
 
-let function onBuyUnit() {
+function onBuyUnit() {
   if (curSelectedUnit.value == null || unitInProgress.value != null)
     return
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, curSelectedUnit.value)
   purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)
 }
 
-let function findGoodsPrem(shopGoodsList) {
+function findGoodsPrem(shopGoodsList) {
   local res = null
   local delta = 0
   foreach (g in shopGoodsList) {
     if ((g?.premiumDays ?? 0) <= 0
-      || (g?.gold ?? 0) > 0 || (g?.wp ?? 0) > 0 || (g?.items.len() ?? 0) > 0
+      || (g?.gold ?? 0) > 0 || (g?.wp ?? 0) > 0 //compatibility with format before 2024.01.23
+      || (g?.currencies.len() ?? 0) > 0
+      || (g?.items.len() ?? 0) > 0
       || (g?.units.len() ?? 0) > 0 || (g?.unitUpgrades.len() ?? 0) > 0)
       continue
     let d = abs(g.premiumDays - premiumDays)
@@ -114,7 +116,7 @@ let infoBtn = infoBlueButton(
   { text = fontIconPreview }.__merge(fontBigShaded)
 )
 
-let function unitActionButtons() {
+function unitActionButtons() {
   let children = []
   if (canEquipSelectedUnit.value)
     children.append(

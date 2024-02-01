@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { SC_GOLD } = require("%rGui/shop/shopCommon.nut")
@@ -7,7 +7,7 @@ let { openShopWnd } = require("%rGui/shop/shopState.nut")
 
 let MSG_ID = "negativeBalanceWarning"
 
-let function showNegativeBalanceWarning() {
+function showNegativeBalanceWarning() {
   if (!isLoggedIn.value)
     return
 
@@ -23,4 +23,4 @@ let function showNegativeBalanceWarning() {
   })
 }
 
-subscribe("showNegativeBalanceWarning", @(_) showNegativeBalanceWarning())
+eventbus_subscribe("showNegativeBalanceWarning", @(_) showNegativeBalanceWarning())

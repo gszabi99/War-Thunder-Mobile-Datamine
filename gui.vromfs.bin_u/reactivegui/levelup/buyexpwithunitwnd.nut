@@ -57,7 +57,7 @@ let lvlText = @(level, starLevel) {
   ]
 }
 
-let function upgradeAccelerationText(info) {
+function upgradeAccelerationText(info) {
   let { level, starLevel, isStarProgress = false } = info
   let levelIcon = mkPlayerLevel(level + 1, (isStarProgress ? starLevel + 1 : 0))
   return {
@@ -105,7 +105,7 @@ let mkOfferCardBgPatternChunk = @(patternSize) {
   color = 0x23000000
 }
 
-let function mkOfferCardBgPattern(isUpgraded) {
+function mkOfferCardBgPattern(isUpgraded) {
   let patternSize = isUpgraded ? premCardPatternSize : wpCardPatternSize
   let patternChunk = mkOfferCardBgPatternChunk(patternSize)
   return {
@@ -188,7 +188,7 @@ let mkUnitPlate = @(unit) {
   ]
 }
 
-let function mkTapPreviewText(unit) {
+function mkTapPreviewText(unit) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -252,7 +252,7 @@ let mkPriceTexts = @(unit) {
   ]
 }
 
-let function mkPriceParameters(unit) {
+function mkPriceParameters(unit) {
   let unitCurrency = unit?.isUpgraded ? GOLD : WP
   if (unitCurrency == GOLD) {
     let unitPriceParameters = {}
@@ -308,7 +308,7 @@ registerHandler("onLvlPurchase",
   }
 )
 
-let function mkPriceComp(unit, lvlCost) {
+function mkPriceComp(unit, lvlCost) {
   if (unit?.isUpgraded)
     return mkCurrencyComp(unit.upgradeCostGold + lvlCost, GOLD)
   let wpPrice = applyDiscount(unit.costWp, unit.levelUpDiscount)
@@ -317,7 +317,7 @@ let function mkPriceComp(unit, lvlCost) {
     : mkCurrencyComp(lvlCost, GOLD)
 }
 
-let function mkPurchaseFunc(unit, campaign, lvlCost, levelInfo) {
+function mkPurchaseFunc(unit, campaign, lvlCost, levelInfo) {
   let { level, nextLevelExp, exp } = levelInfo
   return @() buy_player_level(
       campaign
@@ -337,7 +337,7 @@ let openConfirmationWnd = @(unit, campaign, lvlUpPrice, levelInfo) openMsgBoxPur
     mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, (levelInfo.level + 1).tostring())
   )
 
-let function mkBuyBtn(unit) {
+function mkBuyBtn(unit) {
   let content = {
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
@@ -395,7 +395,7 @@ let premOfferCard = @(unit) {
   ]
 }.__merge(offerCardBaseStyle)
 
-let function offerCards() {
+function offerCards() {
   let watch = [allUnitsCfg, campConfigs]
   let unit = allUnitsCfg.value?[curUnit.value]
   if (unit == null)

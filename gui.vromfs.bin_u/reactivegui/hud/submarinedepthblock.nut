@@ -29,7 +29,7 @@ let depthChangeDir = Computed(@() isDepthIncPushed.value == isDepthDecPushed.val
   : -1)
 
 local updateCount = 0
-let function depthValueUpdate() {
+function depthValueUpdate() {
   if (depthChangeDir.value == 0 || periscopeDepthCtrl.value == 0) {
     updateCount = 0
     return
@@ -95,7 +95,7 @@ let isControlDepthAllowed = Computed(function(prev) {
   return prev == FRP_INITIAL ? false : prev
 })
 
-let function mkGamepadShortcutImg(shortcutId, isPushed, isVisible, ovr) {
+function mkGamepadShortcutImg(shortcutId, isPushed, isVisible, ovr) {
   let imageComp = mkGamepadShortcutImage(shortcutId)
   let stateFlags = Watched(0)
   let res = mkContinuousButtonParams(@() isPushed(true), @() isPushed(false), shortcutId, stateFlags)
@@ -121,7 +121,7 @@ let btnImageDepthDec = mkGamepadShortcutImg("submarine_depth_dec",
   Computed(@() fabs(wishDist.value * maxControlDepth.value - periscopeDepthCtrl.value) > 0.01),
   { hplace = ALIGN_RIGHT, pos = [pw(-100), ph(-50)] })
 
-let function depthSlider() {
+function depthSlider() {
   let minVal = maxControlDepth.value > 0 ? periscopeDepthCtrl.value / maxControlDepth.value : 0.0
   let deadZoneVal = maxControlDepth.value > 0 ? deadZoneDepth.value / maxControlDepth.value : 0.0
   let countOfMarks = max((maxControlDepth.value - periscopeDepthCtrl.value) / markStep + 1, 2).tointeger()

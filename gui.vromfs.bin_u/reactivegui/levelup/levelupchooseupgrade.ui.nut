@@ -43,7 +43,7 @@ registerHandler("onPurchaseUnitInLevelUp",
     if (res?.error == null && !isUnitsWndOpened.get())
       openUnitsTreeWnd()
   })
-let function purchaseHandler(unitName, isUpgraded = false) {
+function purchaseHandler(unitName, isUpgraded = false) {
   sendNewbieBqEvent("buyUnitInLevelUpWnd", { status = unitName, params = isUpgraded ? "upgraded" : "common" })
   if (isUpgraded)
     setCustomHangarUnit(allUnitsCfg.value[unitName].__merge({ isUpgraded = true }))
@@ -51,7 +51,7 @@ let function purchaseHandler(unitName, isUpgraded = false) {
   purchaseUnit(unitName, bqPurchaseInfo, isUpgraded, "onPurchaseUnitInLevelUp")
 }
 
-let function buyButtonPrimary(unit, discounts) {
+function buyButtonPrimary(unit, discounts) {
   let price = unit != null ? getUnitAnyPrice(unit, true, discounts) : null
   return price == null ? null
     : textButtonPricePurchase(utf8ToUpper(loc(price.price == 0 ? "msgbox/btn_get" : "msgbox/btn_purchase")),
@@ -60,7 +60,7 @@ let function buyButtonPrimary(unit, discounts) {
         buttonStyles.PRIMARY)
 }
 
-let function buyButtonUpgraded(unit, allUnits) {
+function buyButtonUpgraded(unit, allUnits) {
   let { upgradeCostGold = 0, rank } = unit
   return upgradeCostGold == 0 ? null
     : textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
@@ -79,7 +79,7 @@ let buttonBlock = @(content) mkSpinnerHideBlock(shouldHideButtons,
     valign = ALIGN_CENTER
   })
 
-let function mkUnitTitle(unit) {
+function mkUnitTitle(unit) {
   let { isUpgraded = false } = unit
   let title = {
     rendObj = ROBJ_TEXT
@@ -135,7 +135,7 @@ let unitBlock = @(unit) {
   ]
 }
 
-let function unitsList() {
+function unitsList() {
   let res = { watch = [allUnitsCfg, upgradeUnitName, campConfigs] }
   let unit = allUnitsCfg.value?[upgradeUnitName.value]
   if (unit == null)

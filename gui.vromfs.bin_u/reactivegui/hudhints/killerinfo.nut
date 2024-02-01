@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
+let { get_mplayer_by_id } = require("mission")
 let { HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 let { get_unittags_blk } = require("blkGetters")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { rqPlayerAndDo } = require("rqPlayersAndDo.nut")
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
@@ -55,13 +55,15 @@ let info = Computed(function() {
   })
 })
 
-subscribe("HudMessage", function(data) {
+eventbus_subscribe("HudMessage", function(data) {
   if (data.type != HUD_MSG_MULTIPLAYER_DMG)
     return
   let { isKill = false, playerId = null, victimPlayerId = null } = data
-  if (isKill && localMPlayerId.value == victimPlayerId)
-    rqPlayerAndDo(playerId, @(killer) killer == null ? null
-      : killData(data.__merge({ killer })))
+  if (isKill && localMPlayerId.value == victimPlayerId) {
+    let killer = get_mplayer_by_id(playerId)
+    if (killer != null)
+      killData.set(data.__merge({ killer }))
+  }
 })
 
 let mkText = @(text, style = fontMedium, color = 0xFFFFFFFF) {
@@ -100,9 +102,9 @@ let premiumMark = {
   image = Picture($"ui/gameuiskin#premium_active.svg:{premIconSize}:{premIconSize}:K:P")
 }
 
-let function hintContent(infoV) {
+function hintContent(infoV) {
   let { killerUnit, killerHasPremium, killerLevel, killerStarLevel, killer, killerAvatar } = infoV
-  let name = getPlayerName(killer.name)
+  let name = killer.name
   return {
     flow = FLOW_VERTICAL
     halign = ALIGN_RIGHT
@@ -136,7 +138,7 @@ let function hintContent(infoV) {
 }
 
 let key = {}
-let function killerInfo() {
+function killerInfo() {
   if (info.value == null)
     return { watch = info }
 

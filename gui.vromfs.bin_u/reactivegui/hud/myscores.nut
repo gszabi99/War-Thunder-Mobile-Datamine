@@ -103,12 +103,12 @@ let myPlaceUi = @() {
       })
 }
 
-let function updateLocalMPlayerForScore() {
+function updateLocalMPlayerForScore() {
   if (viewScoreKey.value != "score" && viewScoreKey.value != "damage")
     localMPlayer(get_local_mplayer())
 }
 
-let function myScoresUi() {
+function myScoresUi() {
   let res = { watch = [viewScoreKey, isPlaceVisible] }
   if (!isPlaceVisible.value)
     return res

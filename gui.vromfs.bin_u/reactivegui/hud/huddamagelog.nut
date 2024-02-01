@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 
+let { registerInteropFunc } = require("%globalsDarg/interop.nut")
+
 let visibleLog = Watched({})
 
-let function clearLog() {
+function clearLog() {
   visibleLog({})
 }
 
@@ -22,14 +24,14 @@ let visibleAnimTime = delayAnimTime + scaleAnimTime + showAnimTime
 let opacityAnimTime = 0.3
 let fullAnimTime = visibleAnimTime + opacityAnimTime
 
-::interop.hudDmgInfoUpdate <- function (dmg, dmgType) {
+registerInteropFunc("hudDmgInfoUpdate", function(dmg, dmgType) {
   gui_scene.resetTimeout(fullAnimTime, clearLog)
   let dmgLog = dmgType in visibleLog.value ? clone visibleLog.value[dmgType] : []
   if (dmgLog.len() > 0 && dmgLog.top() == dmg)  // !!!FIX ME need remove this when will the duplicate damage stop received from native code.
     return
   dmgLog.append(dmg)
   visibleLog.mutate(@(v) v[dmgType] <- dmgLog)
-}
+})
 
 let textStyle = {
   rendObj = ROBJ_TEXT
@@ -38,7 +40,7 @@ let textStyle = {
   fontFx = FFT_GLOW
 }.__update(fontTiny)
 
-let function damageLogUi() {
+function damageLogUi() {
   let resObj = { watch = visibleLog, size = [shHud(50), hdpx(50)] }
   if (visibleLog.value.len() == 0)
     return resObj

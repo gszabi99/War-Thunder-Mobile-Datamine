@@ -8,7 +8,7 @@ let bgColor = 0x60000000
 let borderColor = 0xFFA0A0A0
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 
-let function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
+function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
   let stateFlags = Watched(0)
   let size = ovr?.size ?? framedBtnSize
   let imageSize = ovr?.imageSize ?? size.map(@(v) (v - imageSizeDecrease).tointeger())
@@ -54,7 +54,7 @@ let hoverBg = {
   texOffs = gradCircCornerOffset
 }
 
-let function imageBtn(image, onClick, ovr = {}, addChild = null) {
+function imageBtn(image, onClick, ovr = {}, addChild = null) {
   let stateFlags = Watched(0)
   let size = ovr?.size ?? framedBtnSize
   return @() {

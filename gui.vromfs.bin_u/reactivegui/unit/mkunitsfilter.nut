@@ -44,7 +44,7 @@ let mkCustomCheck = @(isChecked, isActive, customValue) {
   children = customValue
 }
 
-let function mkFilterIcon(onClick, iconSize, img) {
+function mkFilterIcon(onClick, iconSize, img) {
   let stateFlags = Watched(0)
   let size = max(closeIconSize, clearIconSize)
   return @() {
@@ -66,7 +66,7 @@ let function mkFilterIcon(onClick, iconSize, img) {
   }
 }
 
-let function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inBoxValue = null) {
+function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inBoxValue = null) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -135,7 +135,7 @@ let arrToTbl = @(list) list.reduce(function(res, v) {
   return res
 }, {})
 
-let function mkUnitsFilter(options, allUnits, closeFilters, clearFilters) {
+function mkUnitsFilter(options, allUnits, closeFilters, clearFilters) {
   local watch = [allUnits]
   foreach (o in options)
     watch.append(o?.value, o?.allValues)

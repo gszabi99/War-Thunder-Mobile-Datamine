@@ -4,7 +4,7 @@ let { SHOULD_USE_REVIEW_CUE, needRateGame, onRateGameOpen } = require("%rGui/fee
 let openReviewCueWnd = require("%rGui/feedback/reviewCueWnd.nut")
 let openFeedbackWnd = require("%rGui/feedback/feedbackWnd.nut")
 
-let function tryShowRateGame() {
+function tryShowRateGame() {
   if (!needRateGame.value)
     return
 

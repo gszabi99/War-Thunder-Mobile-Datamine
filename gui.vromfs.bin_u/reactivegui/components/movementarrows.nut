@@ -146,7 +146,7 @@ let mkMoveVertBtnOutline = @(flipY, outlineColor = outlineColorDef, size = verSi
   flipY
 }
 
-let function mkMoveVertBtnCorner(flipY, cornerColor = Watched(0xFFFFFFFF), btnSize = verSize) {
+function mkMoveVertBtnCorner(flipY, cornerColor = Watched(0xFFFFFFFF), btnSize = verSize) {
   let verCornerSize = verCornerSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
   let cornerOffset = (0.3 * verCornerSize[1]).tointeger()
   return @() {
@@ -163,7 +163,7 @@ let function mkMoveVertBtnCorner(flipY, cornerColor = Watched(0xFFFFFFFF), btnSi
   }
 }
 
-let function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
+function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
   let stateFlags = Watched(0)
   let { size = verSize } = ovr
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
@@ -176,7 +176,7 @@ let function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
   }, ovr)
 }
 
-let function mkMoveVertBtnNoHotkey(ovr = {}) {
+function mkMoveVertBtnNoHotkey(ovr = {}) {
   let stateFlags = Watched(0)
   let { size = verSize } = ovr
   return @() {
@@ -190,7 +190,7 @@ let function mkMoveVertBtnNoHotkey(ovr = {}) {
   }.__update(ovr)
 }
 
-let function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFFFFFF),
+function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFFFFFF),
   fillColor = fillColorDef, btnSize = verSize
 ) {
   let size = ver2stepSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
@@ -230,7 +230,7 @@ let function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFF
   }
 }
 
-let function mkMoveHorView(flipX) {
+function mkMoveHorView(flipX) {
   let horAnimSize = horAnimSizeMul.map(@(v, i) (v * horSize[i]).tointeger())
   let cornerOffset = (0.72 * horAnimSize[0]).tointeger()
   return {
@@ -262,7 +262,7 @@ let function mkMoveHorView(flipX) {
   }
 }
 
-let function mkMoveVertView(flipY) {
+function mkMoveVertView(flipY) {
   let verCornerSize = verCornerSizeMul.map(@(v, i) (v * verSize[i]).tointeger())
   let cornerOffset = (0.3 * verCornerSize[1]).tointeger()
   return {

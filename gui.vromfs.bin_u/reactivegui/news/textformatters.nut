@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { platformId, aliases } = require("%sqstd/platform.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
 let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
@@ -23,7 +23,7 @@ let h3Style = { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(fontSm
 let emphasisStyle = { color = activeTextColor, margin = [headerMargin, 0] }
 let noteStyle = { color = 0xFF808080 }.__update(fontTiny)
 
-let openUrl = @(url) send("openUrl", { baseUrl = urlAliases?[url] ?? url })
+let openUrl = @(url) eventbus_send("openUrl", { baseUrl = urlAliases?[url] ?? url })
 
 let textArea = @(params) {
   size = [flex(), SIZE_TO_CONTENT]
@@ -33,7 +33,7 @@ let textArea = @(params) {
   color = commonTextColor
 }.__update(fontSmall, params)
 
-let function url(data, _, __) {
+function url(data, _, __) {
   if (data?.url == null)
     return textArea(data)
   let stateFlags = Watched(0)
@@ -121,7 +121,7 @@ let accent = @(obj, formatTextFunc, _) obj.__merge({
 
 let getColWeightByPresetAndIdx = @(idx, preset) toIntegerSafe(preset?[idx + 1], 100, false)
 
-let function columns(obj, formatTextFunc, _) {
+function columns(obj, formatTextFunc, _) {
   local preset = obj?.preset ?? "single"
   preset = preset.split("_")
   local cols = obj.v.filter(@(v) v?.t == "column")
@@ -150,7 +150,7 @@ let mkWatchVideo = @(caption) {
   }
 }
 
-let function video(obj, _, __) {
+function video(obj, _, __) {
   let stateFlags = Watched(0)
   let width = hdpx(obj?.imageWidth ?? 300)
   let height = hdpx(obj?.imageHeight ?? 80)

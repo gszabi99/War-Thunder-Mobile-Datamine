@@ -29,7 +29,7 @@ let bgGradient = {
   color = 0x00505050
 }
 
-let function mkQuestBar(quest) {
+function mkQuestBar(quest) {
   let current = quest?.current ?? 0
   let required = quest?.required ?? 1
   let questCompletion = current.tofloat() / required
@@ -75,7 +75,7 @@ let function mkQuestBar(quest) {
   }
 }
 
-let function mkStages(progressUnlock) {
+function mkStages(progressUnlock) {
   let { hasReward = false, stage, stages, current = 0, name } = progressUnlock
   let stagesTotal = stages.len()
   let curStageIdx = stages.findindex(@(s) s.progress >= current)

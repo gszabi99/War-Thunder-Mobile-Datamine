@@ -77,6 +77,10 @@ struct EventOnShortcutEnable
   enable : bool
 
 [cpp_event(broadcast)]
+struct EventOnAllShortcutsEnable
+  enable : bool
+
+[cpp_event(broadcast)]
 struct EventOnAxisEnable
   axis : string
   enable : bool

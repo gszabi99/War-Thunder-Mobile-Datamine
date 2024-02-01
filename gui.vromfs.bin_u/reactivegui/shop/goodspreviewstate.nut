@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { activeOffer } = require("offerState.nut")
 let { shopGoods } = require("shopState.nut")
@@ -18,14 +19,14 @@ let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
 let openPreviewCount = Watched(0)
 
-let function getAddonsToShowGoods(goods) {
+function getAddonsToShowGoods(goods) {
   let unit = serverConfigs.value?.allUnits[goods?.unitUpgrades[0] ?? goods?.units[0]]
   if (unit == null)
     return []
   return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.value?[a])
 }
 
-let function openGoodsPreview(id) {
+function openGoodsPreview(id) {
   let addons = getAddonsToShowGoods(shopGoods.value?[id])
   if (addons.len() != 0) {
     openDownloadAddonsWnd(addons, "openGoodsPreview", { id })
@@ -50,7 +51,8 @@ let previewGoodsUnit = Computed(function() {
 })
 
 let previewType = Computed(@() previewGoodsUnit.value != null ? GPT_UNIT
-  : (previewGoods.value?.wp ?? 0) > 0 || (previewGoods.value?.gold ?? 0) > 0 ? GPT_CURRENCY
+  : (previewGoods.value?.wp ?? 0) > 0 || (previewGoods.value?.gold ?? 0) > 0 ? GPT_CURRENCY //compatibility with format before 2024.01.23
+  : (previewGoods.get()?.currencies.len() ?? 0) > 0 ? GPT_CURRENCY
   : (previewGoods.value?.premiumDays ?? 0) > 0  ? GPT_PREMIUM
   : null)
 
@@ -60,7 +62,7 @@ let isPreviewGoodsPurchasing = Computed(@() previewGoods.value?.id != null
 
 isPreviewGoodsPurchasing.subscribe(@(v) v ? null : closeGoodsPreview())
 
-subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
+eventbus_subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
 
 let offerUnitName = keepref(Computed(@() activeOffer.value?.id == openedGoodsId.value ? previewGoodsUnit.value?.name
   : null))

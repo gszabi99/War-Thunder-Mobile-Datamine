@@ -15,7 +15,7 @@ let btnSize = [evenPx(120), evenPx(55)]
 
 let unreadMark = priorityUnseenMark.__merge({ margin  = 2 * borderWidth })
 
-let function mkTimeMark(notify) {
+function mkTimeMark(notify) {
   let { time } = notify
   let timeText = Computed(function() {
     local showTime = serverTime.value - time
@@ -81,7 +81,7 @@ let mkTextNotify = @(notify, rowIdx) mkNotifyBg(notify, rowIdx,
     btnRemove(notify)
   ])
 
-let function mkPlayerNotify(notify, rowIdx, addChild = null) {
+function mkPlayerNotify(notify, rowIdx, addChild = null) {
   let { playerUid } = notify
   let userId = playerUid.tostring()
   let contact = Contact(userId)
@@ -120,7 +120,7 @@ let ctors = {
   PLAYER_INVITE = mkInviteFromPlayer
 }
 
-let function mkNotifyRow(notify, rowIdx) {
+function mkNotifyRow(notify, rowIdx) {
   let { styleId, playerUid } = notify
   let ctor = ctors?[styleId]
     ?? (playerUid != null ? mkPlayerNotify : mkTextNotify)

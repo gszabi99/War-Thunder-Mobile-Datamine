@@ -100,7 +100,7 @@ let diffProgress = @(width, posX, pivotX, color) {
   ]
 }
 
-let function mkStatRow(data, prevProgress) {
+function mkStatRow(data, prevProgress) {
   let { header = null, value = null, progress = null,
     progressColor = null, uid = null } = data
   return {
@@ -185,7 +185,7 @@ let mkArmorText = @(needLabels, id) {
     ]
   }
 
-let function mkArmorRow(id, percentValsP3, avgShellPenetration, width) {
+function mkArmorRow(id, percentValsP3, avgShellPenetration, width) {
   if (percentValsP3 == null)
     return null
   let { x, y, z } = percentValsP3
@@ -263,7 +263,7 @@ let function mkArmorRow(id, percentValsP3, avgShellPenetration, width) {
   }
 }
 
-let function unitArmorBlock(unit, needLabels) {
+function unitArmorBlock(unit, needLabels) {
   if (unit.unitType != TANK)
     return null
   let shopCfg = getUnitTagsShop(unit.name)
@@ -310,7 +310,7 @@ let unitConsumablesBlock = @(unit, itemsList) {
       mkConsumableRow(itemCfg.name, (itemCfg?.itemsPerUse ?? 0) > 0 ? itemCfg.itemsPerUse : unit.itemsPerUse))
 }
 
-let function unitMRankBlock(mRank) {
+function unitMRankBlock(mRank) {
   if (!mRank || mRank <= 0)
     return null
 

@@ -3,7 +3,7 @@ from "%globalScripts/ecs.nut" import *
 let logBD = log_with_prefix("[BATTLE_RESULT] ")
 let { json_to_string } = require("json")
 let io = require("io")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { sendNetEvent, CmdApplyMyBattleResultOnExit } = require("dasevents")
 let { EventBattleResult, EventResultMPlayers } = require("%appGlobals/sqevents.nut")
@@ -15,7 +15,7 @@ let { isInBattle, battleSessionId, isOnline } = require("%appGlobals/clientState
 let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } = require("multiplayer")
 let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { get_local_mplayer, get_mplayers_list } = require("mission")
+let { get_mp_local_team, get_mplayers_list } = require("mission")
 let { get_mp_tbl_teams } = require("guiMission")
 let mkCommonExtras = require("mkCommonExtras.nut")
 
@@ -48,14 +48,14 @@ let battleResult = Computed(function() {
   return res
 })
 
-let sendBattleResult = @() send("BattleResult", battleResult.value)
+let sendBattleResult = @() eventbus_send("BattleResult", battleResult.value)
 battleResult.subscribe(@(_) resetTimeout(0.1, sendBattleResult))
-subscribe("RequestBattleResult", @(_) sendBattleResult())
+eventbus_subscribe("RequestBattleResult", @(_) sendBattleResult())
 
 singleMissionResult.subscribe(@(_) debugBattleResult(null))
 
 isInBattle.subscribe(@(v) v ? questProgressDiff.set(null) : null)
-subscribe("BattleResultQuestProgressDiff", @(v) questProgressDiff.set(v))
+eventbus_subscribe("BattleResultQuestProgressDiff", @(v) questProgressDiff.set(v))
 
 let gotQuitToDebriefing = mkWatched(persist, "gotQuitToDebriefing", false)
 isInBattle.subscribe(@(v)  v ? gotQuitToDebriefing(false) : null)
@@ -63,27 +63,27 @@ let needDestroySession = keepref(Computed(@() gotQuitToDebriefing.value
   && baseBattleResult.value?.sessionId == get_mp_session_id_int()
   && resultPlayers.value?.sessionId == get_mp_session_id_int()))
 
-let function doDestroySession() {
+function doDestroySession() {
   gotQuitToDebriefing(false)
   set_quit_to_debriefing_allowed(true)
   destroy_session("on needDestroySession by battleResult received")
 }
 needDestroySession.subscribe(@(v) v ? deferOnce(doDestroySession) : null)
 
-subscribe("onSetQuitToDebriefing", function(_) {
+eventbus_subscribe("onSetQuitToDebriefing", function(_) {
   resetTimeout(destroySessionTimeout, doDestroySession)
   gotQuitToDebriefing(true)
   set_quit_to_debriefing_allowed(false)
 })
 
-let function onBattleResult(evt, _eid, comp) {
+function onBattleResult(evt, _eid, comp) {
   let userId = comp.server_player__userId
   if (userId != myUserId.value)
     return
   baseBattleResult(evt.data.__merge(
     battleData.value ?? {}
     {
-      localTeam = get_local_mplayer()?.team
+      localTeam = get_mp_local_team()
       teams = get_mp_tbl_teams()
       userName = myUserName.value
     }))
@@ -123,7 +123,7 @@ let playersCommonStatsQuery = SqQuery("playersCommonStatsQuery",
     ]
   })
 
-let function getPlayersCommonStats(players) {
+function getPlayersCommonStats(players) {
   let res = {}
   playersCommonStatsQuery(function(_, c) {
     if (c.isBattleDataReceived)
@@ -142,14 +142,14 @@ let function getPlayersCommonStats(players) {
 resultPlayers.subscribe(@(v) playersCommonStats(getPlayersCommonStats(v?.players ?? {})))
 isInBattle.subscribe(@(v) v ? playersCommonStats({}) : null)
 
-let function requestEarlyExitRewards() {
+function requestEarlyExitRewards() {
   logBD("Request early exit rewards")
   sendNetEvent(find_local_player_eid(), CmdApplyMyBattleResultOnExit())
   if (isOnline.get())
-    send("matchingApiNotify", { name = "match.remove_from_session" }) //no need reconnect
+    eventbus_send("matchingApiNotify", { name = "match.remove_from_session" }) //no need reconnect
 }
 
-subscribe("onBattleConnectionFailed", @(p) connectFailedData(p.__merge({ sessionId = battleSessionId.value })))
+eventbus_subscribe("onBattleConnectionFailed", @(p) connectFailedData(p.__merge({ sessionId = battleSessionId.value })))
 
 register_command(requestEarlyExitRewards, "debriefing.request_early_exit_rewards")
 register_command(function() {

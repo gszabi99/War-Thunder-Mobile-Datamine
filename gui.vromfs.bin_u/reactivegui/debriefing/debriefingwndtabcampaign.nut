@@ -13,7 +13,7 @@ let levelProgressAnimStartTime = 0.0
 let levelUnlocksAnimStartTime = 1.0
 let rewardsAnimStartTime = 0.5
 
-let function mkPlayerLevelUnlockPlates(debrData, delay) {
+function mkPlayerLevelUnlockPlates(debrData, delay) {
   let { reward = {}, player = {}, nextLevelUnits = {} } = debrData
   let { playerExp = {} } = reward
 
@@ -34,7 +34,7 @@ let function mkPlayerLevelUnlockPlates(debrData, delay) {
   }
 }
 
-let function mkDebriefingWndTabCampaign(debrData, params) {
+function mkDebriefingWndTabCampaign(debrData, params) {
   let { totalRewardCountsComp, totalRewardsShowTime, btnTryPremium
   } = mkTotalRewardCountsCampaign(debrData, rewardsAnimStartTime)
   if (totalRewardCountsComp == null)

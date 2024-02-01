@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { resetTimeout } = require("dagor.workcycle")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
@@ -41,13 +41,13 @@ let needSuggest = Computed(@() isUhqAllowed.value
 )
 let needShow = keepref(Computed(@() needSuggest.value && isInMenuNoModals.value))
 
-let function setSuggested(suggested) {
+function setSuggested(suggested) {
   isSuggested(suggested)
   get_common_local_settings_blk().uhqTexturesSuggested = suggested
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
-let function openMsg() {
+function openMsg() {
   if (!needShow.value)
     return
 

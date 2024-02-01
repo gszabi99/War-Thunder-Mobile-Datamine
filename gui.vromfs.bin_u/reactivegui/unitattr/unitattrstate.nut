@@ -40,7 +40,7 @@ let unitAttributes = Computed(@() attrUnitData.value.unit?.attrLevels)
 let attrUnitPreset = Computed(@() attrUnitData.value.unit?.preset)
 let attrUnitLevelsToMax = Computed(@() (attrUnitData.value.unit?.levels.len() ?? 0) - (attrUnitData.value.unit?.level ?? 0))
 
-let function resetAttrState() {
+function resetAttrState() {
   selAttributes({})
   curCategoryId(attrUnitData.value.preset?[0].id)
 }
@@ -49,7 +49,7 @@ attrUnitName.subscribe(@(_) resetAttrState())
 
 let curCategory = Computed(@() attrUnitData.value.preset.findvalue(@(p) p.id == curCategoryId.value))
 
-let function sumCost(costTbl, curLvl, finalLvl) {
+function sumCost(costTbl, curLvl, finalLvl) {
   local res = 0
   for (local i = curLvl; i < finalLvl; i++)
     res += costTbl?[i] ?? 0
@@ -77,7 +77,7 @@ let isUnitMaxSkills = Computed(function() {
     null != cat.attrList.findvalue(@(attr) attr.levelCost.len() > (unit.attrLevels?[cat.id][attr.id] ?? 0)))
 })
 
-let function calcStatus(avail) {
+function calcStatus(avail) {
   let minCount = AVAIL_PART_FOR_GROUP * avail[0]
   if (minCount == 0 || avail[1] == 0)
     return -1 //nothing
@@ -125,13 +125,13 @@ let availableAttributes = Computed(function() {
 
 let getSpCostText = @(val) $"⋥{val}"
 
-let function applyAttributes() {
+function applyAttributes() {
   if (selAttrSpCost.value <= 0)
     return
   add_unit_attributes(attrUnitName.value, selAttributes.value, selAttrSpCost.value)
 }
 
-let function getMaxAttrLevelData(attr, fromLevel, availSp) {
+function getMaxAttrLevelData(attr, fromLevel, availSp) {
   local maxLevel = fromLevel
   local maxLevelSp = 0
   for (maxLevel; maxLevel < attr.levelCost.len(); maxLevel++) {
@@ -144,7 +144,7 @@ let function getMaxAttrLevelData(attr, fromLevel, availSp) {
   return { maxLevel, maxLevelSp }
 }
 
-let function setAttribute(catId, attrId, value) {
+function setAttribute(catId, attrId, value) {
   selAttributes(selAttributes.value.__merge({
     [catId] = (selAttributes.value?[catId] ?? {}).__merge({
       [attrId] = value

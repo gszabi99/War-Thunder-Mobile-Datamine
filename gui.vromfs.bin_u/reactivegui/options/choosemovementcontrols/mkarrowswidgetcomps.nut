@@ -9,12 +9,12 @@ let highlightColor = 0x60606060
 let horAnimSizeMul = [0.175, 0.17]
 let verCornerSizeMul = [0.61, 0.24]
 
-let function mkSize(mul, szRel) {
+function mkSize(mul, szRel) {
   let w = szRel[0] * mul
   return [round(w), round(w * szRel[1] / szRel[0])]
 }
 
-let function mkArrowsWidgetComps(fullSize) {
+function mkArrowsWidgetComps(fullSize) {
   let horSizeRel = [12.5, 17.0]
   let verSizeRel = [16.0, 12.8]
   let stopSizeRel = [9.3, 9.3]
@@ -25,7 +25,7 @@ let function mkArrowsWidgetComps(fullSize) {
   let stopSize = mkSize(resizeMul, stopSizeRel)
   let btnsVGap = mkSize(resizeMul, vGapSizeRel)[0]
 
-  let function mkSteeringArrow(flipX) {
+  function mkSteeringArrow(flipX) {
     let size = horSize
     let horAnimSize = horAnimSizeMul.map(@(v, i) (v * size[i]).tointeger())
     let cornerOffset = (0.72 * horAnimSize[0]).tointeger()
@@ -72,7 +72,7 @@ let function mkArrowsWidgetComps(fullSize) {
   let arrowLeft = mkSteeringArrow(false)
   let arrowRight = mkSteeringArrow(true)
 
-  let function mkGearboxArrow(flipY) {
+  function mkGearboxArrow(flipY) {
     let size = verSize
     let verCornerSize = verCornerSizeMul.map(@(v, i) (v * size[i]).tointeger())
     let cornerOffset = (0.3 * verCornerSize[1]).tointeger()

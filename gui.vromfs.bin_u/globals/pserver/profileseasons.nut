@@ -9,7 +9,7 @@ let nextUpdateTime = Watched({ value = 0 })
 
 let mkSeason = @(idx, isActive, start, end) { idx, isActive, start, end }
 
-let function updateSeasons() {
+function updateSeasons() {
   let seasons = seasonsCfg.get()
   if (seasons.len() == 0)
     return

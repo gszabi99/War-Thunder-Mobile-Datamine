@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
@@ -27,7 +27,7 @@ let hasChangedCurSlotBullets = Watched(false)
 selSlot.subscribe(@(_) hasChangedCurSlotBullets(false))
 
 let savedBullets = Watched(null)
-let function loadSavedBullets(name) {
+function loadSavedBullets(name) {
   if (name == null)
     return null
   let sBlk = get_local_custom_settings_blk()
@@ -134,14 +134,14 @@ let hasZeroBullets = Computed(@() chosenBulletsAmount.value == 0)
 let hasLowBullets = Computed(@() chosenBulletsAmount.value < BULLETS_LOW_AMOUNT
   || chosenBulletsAmount.value < bulletsInfo.value.total * BULLETS_LOW_PERCENT / 100)
 
-let function saveBullets(name, blk) {
+function saveBullets(name, blk) {
   hasChangedCurSlotBullets(true)
   let sBlk = get_local_custom_settings_blk()
   setBlkValueByPath(sBlk, $"{SAVE_ID}/{name}", blk)//-param-pos
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
-let function setCurUnitBullets(slotIdx, bName, bCount) {
+function setCurUnitBullets(slotIdx, bName, bCount) {
   if (unitName.value == null)
     return
 
@@ -157,7 +157,7 @@ let function setCurUnitBullets(slotIdx, bName, bCount) {
   saveBullets(unitName.value, blk)
 }
 
-let function setOrSwapUnitBullet(slotIdx, bName) {
+function setOrSwapUnitBullet(slotIdx, bName) {
   if (unitName.value == null || slotIdx not in chosenBullets.value)
     return
   let prevIdx = chosenBullets.value.findindex(@(s) s.name == bName)

@@ -16,19 +16,20 @@ let bgHiglight = {
   color = 0x0114181E
 }
 
-let function getImgByAmount(amount) {
+function getImgByAmount(amount) {
   let imgCfg = getCurrencyGoodsPresentation(WP)
   let idxByAmount = imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()
   return mkGoodsImg(imgCfg?[max(0, idxByAmount - 1)].img)
 }
 
-let function getLocNameWp(goods) {
-  let amount = goods?.wp ?? 0
+function getLocNameWp(goods) {
+  let amount = goods?.currencies.wp ?? goods?.wp ?? 0 //compatibility with format before 2024.01.23
   return loc("shop/item/wp/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
-let function mkGoodsWp(goods, onClick, state, animParams) {
-  let { wp = 0, viewBaseValue = 0, isShowDebugOnly = false } = goods
+function mkGoodsWp(goods, onClick, state, animParams) {
+  let { viewBaseValue = 0, isShowDebugOnly = false } = goods
+  let wp = goods?.currencies.wp ?? goods?.wp ?? 0 //compatibility with format before 2024.01.23
   return mkGoodsWrap(onClick,
     @(sf) [
       mkSlotBgImg()

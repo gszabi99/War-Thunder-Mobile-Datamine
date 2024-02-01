@@ -1,6 +1,5 @@
 from "dagor.workcycle" import setTimeout, clearTimer
 from "dagor.random" import frnd
-from "dagor.debug" import debug
 let math = require("math")
 
 /*
@@ -13,14 +12,10 @@ For example: rendering a preview of a Markdown comment, recalculating a layout a
 */
 
 
-let function debounce(func, delay_s, delay_s_max = null){
+function debounce(func, delay_s, delay_s_max = null){
   let storage = { func = @() null }
-  function action() {
-    let info = func.getfuncinfos()
-    debug($"debounce action: '{info?.name ?? "unknown"}' ({info?.src ?? "unknown"}:{info?.line ?? -1})")
-    storage.func()
-  }
-  let function debounced(...) {
+  let action = @() storage.func()
+  function debounced(...) {
     storage.func <- @() func.acall([null].extend(vargv))
     clearTimer(action)
     let time = delay_s_max == null
@@ -35,10 +30,10 @@ let function debounce(func, delay_s, delay_s_max = null){
 Same as debounce but trigger the function on the leading instead of the trailing edge of the wait interval.
 Useful in circumstances like preventing accidental double-clicks on a "submit" button from firing a second time.
 */
-let function debounceImmediate(func, delay_s){
+function debounceImmediate(func, delay_s){
   local isActionAllowed = true
-  let function allowAction() { isActionAllowed = true }
-  let function debounced(...) {
+  function allowAction() { isActionAllowed = true }
+  function debounced(...) {
     if (!isActionAllowed)
       return
     isActionAllowed = false
@@ -56,23 +51,20 @@ let function debounceImmediate(func, delay_s){
   If you'd like to disable the leading-edge call, pass {leading: false}, and if you'd like to disable the execution on the trailing-edge, pass {trailing: false}.
 */
 let defThrottleOptions = {leading = true, trailing=false}
-let function throttle(func, delay_s, options=defThrottleOptions){
+function throttle(func, delay_s, options=defThrottleOptions){
   let leading = options?.leading ?? defThrottleOptions.leading
   let trailing = options?.trailing ?? defThrottleOptions.trailing
   local needCallByTimer = false //only for !trailing version
   assert(leading || trailing, "throttle should be called with at least one front call leading or trailing")
   local curAction = null
-  let function throttled(...){
+  function throttled(...){
     let doWait = curAction != null
     curAction = @() func.acall([null].extend(vargv))
     if (doWait) {
       needCallByTimer = !trailing
       return
     }
-    let function clearThrottled(){
-      let info = func.getfuncinfos()
-      debug($"clearThrottled: '{info?.name ?? "unknown"}' ({info?.src ?? "unknown"}:{info?.line ?? -1})")
-
+    function clearThrottled(){
       if (trailing)
         curAction()
       else if (needCallByTimer) {

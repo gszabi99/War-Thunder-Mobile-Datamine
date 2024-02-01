@@ -37,7 +37,7 @@ let notifications = {
   }
 }
 
-let function processNotification(ev) {
+function processNotification(ev) {
   let handler = notifications?[ev?.func]
   if (handler)
     handler(ev)

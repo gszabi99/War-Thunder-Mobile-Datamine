@@ -53,8 +53,8 @@ let mkCampaignName = @(name, sf) {
   }.__update(fontSmall)
 }
 
-let function onCampaignButtonClick(campaign) {
-  let function applyCampaign() {
+function onCampaignButtonClick(campaign) {
+  function applyCampaign() {
     close()
     setCampaign(campaign)
   }
@@ -90,7 +90,7 @@ let function onCampaignButtonClick(campaign) {
   })
 }
 
-let function mkCampaignButton(campaign, campaignW) {
+function mkCampaignButton(campaign, campaignW) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -112,7 +112,7 @@ let function mkCampaignButton(campaign, campaignW) {
   }
 }
 
-let function campaignsListUi() {
+function campaignsListUi() {
   let campaignCount = campaignsList.value.len()
   let campaignW = min(
     campaignCount <= 1 ? 0.5 * saSize[0]

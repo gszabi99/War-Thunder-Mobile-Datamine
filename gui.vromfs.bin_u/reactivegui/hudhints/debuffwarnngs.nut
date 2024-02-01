@@ -5,7 +5,7 @@ let { hasDebuffFire, hasDebuffFlooding, hasDebuffGuns, hasDebuffEngines, hasDebu
 let tankState = require("%rGui/hud/tankState.nut")
 let { isUnitDelayed } = require("%rGui/hudState.nut")
 
-let function subscribeDebuffWarning(watch, iconId, text) {
+function subscribeDebuffWarning(watch, iconId, text) {
   let icon = $"ui/gameuiskin#{iconId}.svg"
   watch.subscribe(@(v) !v ? removeEvent({ id = iconId })
     : isUnitDelayed.value ? null

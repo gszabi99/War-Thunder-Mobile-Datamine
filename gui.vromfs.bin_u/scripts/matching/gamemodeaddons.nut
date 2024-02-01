@@ -9,7 +9,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { gameModeAddonToAddonSetMap, ADDON_VERSION_EMPTY } = require("%appGlobals/updater/addons.nut")
 
-let function getModeAddonsInfo(mode, unitNames) {
+function getModeAddonsInfo(mode, unitNames) {
   let { reqPkg = {}, campaign = curCampaign.value, name = "" } = mode
   local addons = {}  //addon = needDownload
   local allReqAddons = {}

@@ -27,7 +27,7 @@ let selectedUserId = Computed(@() playerSelectedUserId.value in searchContactsRe
 let hasResult = Computed(@() searchContactsResult.value.len() > 0)
 let isNotFound = Computed(@() !hasResult.value && searchedNick.value != null)
 
-let function startSearch() {
+function startSearch() {
   if (searchName.value != "" && searchName.value != searchedNick.value)
     searchContacts(searchName.value)
 }

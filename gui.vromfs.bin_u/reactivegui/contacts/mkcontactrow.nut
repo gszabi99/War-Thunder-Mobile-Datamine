@@ -10,7 +10,7 @@ let { isInSquad, squadId, isInvitedToSquad, squadMembers } = require("%appGlobal
 let { onlineColor, offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
 
 
-let function onlineBlock(uid, onlineStatus, battleUnit) {
+function onlineBlock(uid, onlineStatus, battleUnit) {
   let onlineText = Computed(@() onlineStatus.value == null ? ""
     : !onlineStatus.value ? colorize(offlineColor, loc("contacts/offline"))
     : battleUnit.value != null ? "\n".concat(loc("status/in_battle"), loc($"campaign/{battleUnit.value?.campaign ?? ""}"))
@@ -32,7 +32,7 @@ let function onlineBlock(uid, onlineStatus, battleUnit) {
   }.__update(fontVeryTiny)
 }
 
-let function mkContactRow(uid, rowIdx, isSelected, onClick) {
+function mkContactRow(uid, rowIdx, isSelected, onClick) {
   let userId = uid.tostring()
   let contact = Contact(userId)
   let info = mkPublicInfo(userId)

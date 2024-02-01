@@ -22,7 +22,7 @@ let sliderSize = [bulletsBlockWidth - 2 * (btnSize + sliderGap + padding), evenP
 let hoverColor = 0x8052C4E4
 let arrowSize = [ hdpxi(50),hdpxi(50)]
 
-let function onHeaderClick(key, slotIdx) {
+function onHeaderClick(key, slotIdx) {
   if (slotIdx != null)
     showRespChooseWnd(slotIdx, gui_scene.getCompAABBbyKey(key), gui_scene.getCompAABBbyKey("respawnWndContent"))
 }
@@ -34,7 +34,7 @@ let arrowBtnImage = @(isOpened) {
   image = Picture($"ui/gameuiskin#arrow_icon.svg:{arrowSize[0]}:{arrowSize[1]}:P")
 }
 
-let function bulletHeader(bSlot, bInfo) {
+function bulletHeader(bSlot, bInfo) {
   let fromUnitTags = Computed(@() bulletsInfo.value?.fromUnitTags[bSlot.value?.name])
   let { idx = -1 } = bSlot.value
   let key = $"respBulletsHeader{idx}"
@@ -104,14 +104,14 @@ let btnTextInc = mkBtnTextCtor({ text = "+" })
 let knobCtor = @(relValue, stateFlags, fullW)
   mkSliderKnob(relValue, stateFlags, fullW, { size = [knobSize, knobSize] })
 
-let function bulletSlider(bSlot, maxCount) {
+function bulletSlider(bSlot, maxCount) {
   let count = Computed(@() bSlot.value?.count ?? 0)
   let minOvr = Computed(@() count.value == 0 ? inactiveBtnOvr : {})
   let maxOvr = Computed(@() (bulletLeftSteps.value == 0
     || count.value >= maxCount.value * bulletStep.value)
       ? inactiveBtnOvr
       : {})
-  let function onChange(value) {
+  function onChange(value) {
     if (bSlot.value == null)
       return
     let newVal = clamp(value, 0, count.value + bulletLeftSteps.value * bulletStep.value)
@@ -148,7 +148,7 @@ let function bulletSlider(bSlot, maxCount) {
   })
 }
 
-let function mkBulletSliderSlot(idx) {
+function mkBulletSliderSlot(idx) {
   let bSlot = Computed(@() chosenBullets.value?[idx])
   let bInfo = Computed(@() bulletsInfo.value?.bulletSets[bSlot.value?.name])
   let maxCount = Computed(@() min(bulletTotalSteps.value,
@@ -179,7 +179,7 @@ let function mkBulletSliderSlot(idx) {
   }
 }
 
-let function respawnBullets() {
+function respawnBullets() {
   let res = { watch = [bulletsInfo, choiceCount], animations = wndSwitchAnim }
   if (bulletsInfo.value == null)
     return res

@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 
-let function makeType(params, id) {
+function makeType(params, id) {
   let {
     getNotAvailableText = @(value) value == null || value < 0 ? loc("leaderboards/notAvailable") : null,
     getTextImpl = @(value) value.tostring()
@@ -23,7 +22,6 @@ let types = {
 
   NICKNAME = {
     getNotAvailableText = @(value) value ? null : "-"
-    getTextImpl = @(value) getPlayerName(value.tostring())
   }
 }.map(makeType)
 

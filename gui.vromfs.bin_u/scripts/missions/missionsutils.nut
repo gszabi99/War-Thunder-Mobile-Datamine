@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_mission_progress, get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let DataBlock  = require("DataBlock")
@@ -23,12 +24,12 @@ let isAvailableByMissionSettings = @(misBlk, unitType) (misBlk?[missionAvailabil
   && ((unitType not in isUsedInKillStreaks) || !(misBlk?.useKillStreaks ?? false))
 
 
-let function isMissionComplete(chapterName, missionName) { //different by mp_modes
-  let progress = ::get_mission_progress($"{chapterName}/{missionName}")
+function isMissionComplete(chapterName, missionName) { //different by mp_modes
+  let progress = get_mission_progress($"{chapterName}/{missionName}")
   return progress >= 0 && progress < 3
 }
 
-let function getLocIdsArray(config, key = "locId") {
+function getLocIdsArray(config, key = "locId") {
   let keyValue = config?[key] ?? ""
   let parsedString = split_by_chars(keyValue, "; ")
   if (parsedString.len() <= 1)
@@ -52,7 +53,7 @@ let getMissionLocName = @(config, key = "locId")
   "".join(getLocIdsArray(config, key)
       .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
 
-let function getCombineLocNameMission(missionInfo) {
+function getCombineLocNameMission(missionInfo) {
   let misInfoName = missionInfo?.name ?? ""
   local locName = ""
   if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
@@ -76,10 +77,10 @@ let function getCombineLocNameMission(missionInfo) {
   return locName
 }
 
-let function locCurrentMissionName() {
+function locCurrentMissionName() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  let teamId = hudArmyToTeamId?[::get_player_army_for_hud()] ?? ""
+  let teamId = hudArmyToTeamId?[get_player_army_for_hud()] ?? ""
   let locNameByTeamParamName = $"locNameTeam{teamId}"
   local ret = ""
 

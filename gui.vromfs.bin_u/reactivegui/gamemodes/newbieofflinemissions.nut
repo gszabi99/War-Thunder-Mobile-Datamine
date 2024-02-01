@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
@@ -85,7 +85,7 @@ registerHandler("onNewbieOfflineMissionReward",
     lastErrorTime(get_time_msec())
   })
 
-let function tryApplyFirstBattleReward() {
+function tryApplyFirstBattleReward() {
   if (isRewardRequested.value
       || lastErrorTime.value + ERROR_REPEAT_TIME_MSEC / 2 > get_time_msec())
     return
@@ -112,7 +112,7 @@ let function tryApplyFirstBattleReward() {
 }
 delayedRewards.subscribe(@(_) tryApplyFirstBattleReward())
 
-let function restartErrorTimer(lastTime) {
+function restartErrorTimer(lastTime) {
   clearTimer(tryApplyFirstBattleReward)
   if (lastTime <= 0)
     return false
@@ -149,7 +149,7 @@ debriefingData.subscribe(function(data) {
   }
 })
 
-let function mkCurRewardBattleData(reward, predefinedId) {
+function mkCurRewardBattleData(reward, predefinedId) {
   let { level, exp, nextLevelExp } = playerLevelInfo.value
   let { levelForExp = 1, levelExpPart = 0.35, wp = 0 } = reward
   let premiumBonusesCfg = serverConfigs.value?.gameProfile.premiumBonuses
@@ -175,23 +175,23 @@ let function mkCurRewardBattleData(reward, predefinedId) {
   }
 }
 
-let function startNewbieMission(missions, reward, predefinedId) {
+function startNewbieMission(missions, reward, predefinedId) {
   if (missions == null)
     return
 
   let missionName = chooseRandom(missions)
   logO($"Start newbie battle. Unit = {curUnit.value?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
-  send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
+  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
   startOfflineBattle(curUnit.value?.name, missionName)
 }
 
-let function startLocalMPMission(missions, reward, predefinedId) {
+function startLocalMPMission(missions, reward, predefinedId) {
   if (missions == null)
     return
 
   let missionName = chooseRandom(missions)
   logO($"Start local multiplayer battle. Unit = {curUnit.value?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
-  send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
+  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
   startLocalMPBattle(curUnit.value?.name, missionName)
 }
 

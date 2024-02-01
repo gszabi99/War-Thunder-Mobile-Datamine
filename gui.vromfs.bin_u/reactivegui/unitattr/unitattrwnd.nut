@@ -108,7 +108,7 @@ let mkAttrDetailsText = @(attrId) {
   valign = ALIGN_CENTER
 }.__update(fontTiny)
 
-let function mkAttrDetailsRow(attrId, lastModifiedAttrId) {
+function mkAttrDetailsRow(attrId, lastModifiedAttrId) {
   let isLastModified = attrId == lastModifiedAttrId
   return {
     rendObj = ROBJ_9RECT
@@ -215,7 +215,7 @@ let navBar = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
     halign = ALIGN_RIGHT
   })
 
-let function onClose() {
+function onClose() {
   if (selAttrSpCost.value == 0 || unitInProgress.value != null) //no need this message when apply unit stats is already in progress
     isUnitAttrOpened(false)
   else

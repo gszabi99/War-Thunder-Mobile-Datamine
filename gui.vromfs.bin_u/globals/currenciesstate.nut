@@ -7,14 +7,16 @@ let GOLD = "gold"
 let WARBOND = "warbond"
 let EVENT_KEY = "eventKey"
 let NYBOND = "nybond"
+let PLATINUM = "platinum"
 
 let balance = sharedWatched("balance", @() {})
 let isValidBalance = Computed(@() balance.value.findindex(@(val) val < 0) == null)
 
-let orderByCurrency = { [GOLD] = 1, [WP] = 2, [WARBOND] = 3, [EVENT_KEY] = 4, [NYBOND] = 5 }
+let orderByCurrency = { [PLATINUM] = 1, [GOLD] = 2, [WP] = 3, [WARBOND] = 4, [EVENT_KEY] = 5, [NYBOND] = 6 }
 
 return {
   WP
+  PLATINUM
   GOLD
   WARBOND
   EVENT_KEY

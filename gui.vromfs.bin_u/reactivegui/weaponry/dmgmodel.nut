@@ -15,20 +15,20 @@ let resetData = @() ricochetDataByPreset = null
 
 let isPoint2 = @(p) type(p) == "instance" && p instanceof Point2
 
-let function getDmgModelBlk() {
+function getDmgModelBlk() {
   let blk = DataBlock()
   blk.load("config/damageModel.blk")
   return blk
 }
 
-let function getExplosiveBlk() {
+function getExplosiveBlk() {
   let blk = DataBlock()
   blk.load("gameData/damage_model/explosive.blk")
   return blk
 }
 
 /** Returns -1 if no such angle found. */
-let function getAngleByProbabilityFromP2blk(blk, x) {
+function getAngleByProbabilityFromP2blk(blk, x) {
   for (local i = 0; i < blk.paramCount() - 1; ++i) {
     let p1 = blk.getParamValue(i)
     let p2 = blk.getParamValue(i + 1)
@@ -54,7 +54,7 @@ let function getAngleByProbabilityFromP2blk(blk, x) {
 }
 
 /** Returns -1 if nothing found. */
-let function getMaxProbabilityFromP2blk(blk) {
+function getMaxProbabilityFromP2blk(blk) {
   local result = -1
   for (local i = 0; i < blk.paramCount(); ++i) {
     let p = blk.getParamValue(i)
@@ -64,7 +64,7 @@ let function getMaxProbabilityFromP2blk(blk) {
   return result
 }
 
-let function getRichochetPresetBlk(presetData) {
+function getRichochetPresetBlk(presetData) {
   if (presetData == null)
     return null
   // First cycle through all preset blocks searching
@@ -86,7 +86,7 @@ let function getRichochetPresetBlk(presetData) {
   return presetData
 }
 
-let function getRicochetDataByPreset(presetDataBlk) {
+function getRicochetDataByPreset(presetDataBlk) {
   let res = {
     angleProbabilityMap = []
   }
@@ -122,7 +122,7 @@ let function getRicochetDataByPreset(presetDataBlk) {
   return res
 }
 
-let function initRicochetDataOnce() {
+function initRicochetDataOnce() {
   if (ricochetDataByPreset)
     return
 
@@ -144,7 +144,7 @@ let function initRicochetDataOnce() {
   }
 }
 
-let function getRicochetData(presetName) {
+function getRicochetData(presetName) {
   initRicochetDataOnce()
   return ricochetDataByPreset?[presetName]
 }
@@ -162,7 +162,7 @@ let calcArmorPiercingData = memoize(function getAnglePenetrationData(unitName, w
   return { armorPiercing, armorPiercingDist }
 })
 
-let function getArmorPiercingByDistance(unitName, weaponBlkName, modName, distance) {
+function getArmorPiercingByDistance(unitName, weaponBlkName, modName, distance) {
   let { armorPiercing, armorPiercingDist } = calcArmorPiercingData(unitName, weaponBlkName, modName)
   let idx = armorPiercingDist.findindex(@(d) d == distance)
   local res = armorPiercing?[idx][0]
@@ -191,7 +191,7 @@ let function getArmorPiercingByDistance(unitName, weaponBlkName, modName, distan
 }
 
 local tntStrengthEquivalent = null
-let function getTntStrengthEquivalent(explosiveType) {
+function getTntStrengthEquivalent(explosiveType) {
   if (tntStrengthEquivalent == null) {
     tntStrengthEquivalent = {}
     let blk = getExplosiveBlk()

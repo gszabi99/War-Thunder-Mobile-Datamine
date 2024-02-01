@@ -3,7 +3,7 @@ let { round } = require("math")
 let { crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { register_command } = require("console")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 
 let swipeImgW = hdpx(200).tointeger()
 let swipeImgH = round(swipeImgW / (41.0 / 43)).tointeger()
@@ -70,7 +70,7 @@ let fakeCrosshairElem = @(penetration) {
   ]
 }
 
-let function fake_crosshair(p) {
+function fake_crosshair(p) {
   let { penetration = true, offsetX = 0, offsetY = 0, offsetZ = 0} = p
   return {
     transform = {}
@@ -84,7 +84,7 @@ let function fake_crosshair(p) {
 }
 
 register_command(function(offsetX, offsetY, offsetZ, penetration, show) {
-  send("hudElementShow",{element = "fake_crosshair", offsetX, offsetY, offsetZ, penetration, show })
+  eventbus_send("hudElementShow",{element = "fake_crosshair", offsetX, offsetY, offsetZ, penetration, show })
 }, "hud.show_fake_crosshair")
 
 return {

@@ -7,7 +7,7 @@ let backButtonHeight = hdpx(60)
 let backButtonWidth  = (78.0 / 59.0 * backButtonHeight).tointeger()
 let image  = Picture($"ui/gameuiskin#back_icon.svg:{backButtonWidth}:{backButtonHeight}")
 
-let function backButton(onClick, override = {}) {
+function backButton(onClick, override = {}) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags

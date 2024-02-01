@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInSquad, isSquadLeader, isReady, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
 let { curCampaign, campaignsList, setCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -26,7 +26,7 @@ subscribeFMsgBtns({
   }
 })
 
-let function showChangeCampaignMsg() {
+function showChangeCampaignMsg() {
   if (!campaignsList.value.contains(squadLeaderCampaign.value)) {
     openFMsgBox({ text = loc("squad/cant_ready/leader_campaign_invalid") })
     return
@@ -42,7 +42,7 @@ let function showChangeCampaignMsg() {
   })
 }
 
-let function setReady(ready) {
+function setReady(ready) {
   if (ready == isReady.value || !isInSquad.value || isSquadLeader.value)
     return
   if (!ready) {
@@ -82,10 +82,10 @@ let function setReady(ready) {
 
 subscribeFMsgBtns({
   downloadAddonsForSquadReady = @(addons)
-    send("openDownloadAddonsWnd", { addons, successEventId = "squadSetReady" })
+    eventbus_send("openDownloadAddonsWnd", { addons, successEventId = "squadSetReady" })
 })
 
-subscribe("squadSetReady", @(_) setReady(true))
+eventbus_subscribe("squadSetReady", @(_) setReady(true))
 
 squadAddons.subscribe(function(v) {
   if (v.len() > 0)

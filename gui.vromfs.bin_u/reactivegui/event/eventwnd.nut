@@ -37,7 +37,7 @@ let { getLootboxSizeMul } = require("%rGui/unlocks/rewardsView/lootboxPresentati
 let MAX_LOOTBOXES_AMOUNT = 3
 let headerGap = hdpx(30)
 
-let function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
+function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
   let { rewardsCfg = null } = sConfigs
   let stepsFinished = sProfile?.lootboxStats[lootbox?.name].opened ?? 0
   local stepsToNext = 0
@@ -50,7 +50,7 @@ let function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
   return [stepsFinished, stepsToNext]
 }
 
-let function onPurchase(lootbox, price, currencyId, count = 1) {
+function onPurchase(lootbox, price, currencyId, count = 1) {
   if (lootboxInProgress.get())
     return
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
@@ -127,7 +127,7 @@ let mkProgressFull = @(stepsToFixed) @() {
   ]
 }
 
-let function mkLootboxBlock(lootbox, blockSize) {
+function mkLootboxBlock(lootbox, blockSize) {
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
   let sizeMul = getLootboxSizeMul(lootbox.meta?.event)
   let stateFlags = Watched(0)
@@ -173,7 +173,7 @@ let function mkLootboxBlock(lootbox, blockSize) {
   }
 }
 
-let function onClose() {
+function onClose() {
   if (isEmbeddedLootboxPreviewOpen.value)
     closeLootboxPreview()
   else {
@@ -182,7 +182,7 @@ let function onClose() {
   }
 }
 
-let function mkCurrencies() {
+function mkCurrencies() {
   let baseCurrencies = [WP, GOLD].filter(@(v) curEventCurrencies.value.findindex(@(c) c == v) == null)
   let res = [].extend(curEventCurrencies.value, baseCurrencies)
   return {
@@ -235,7 +235,7 @@ let eventGamercard = {
   ]
 }
 
-let function eventWndContent() {
+function eventWndContent() {
   let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.value.len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
   let stepsToFixed = Computed(@() getStepsToNextFixed(previewLootbox.value, serverConfigs.value, servProfile.value))
 

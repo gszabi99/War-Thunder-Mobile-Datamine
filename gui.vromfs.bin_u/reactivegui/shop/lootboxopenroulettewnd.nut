@@ -65,7 +65,7 @@ let needHighlight = Watched(receiveRewardsAnimViewInfo.value != null)
 let openConfig = Computed(@() lootboxOpenRouletteConfig?[rouletteOpenType.value]
   ?? lootboxOpenRouletteConfig.roulette_short)
 
-let function isReceivedSame(received, rewardInfo) {
+function isReceivedSame(received, rewardInfo) {
   foreach(rec in received)
     foreach(info in rewardInfo)
       if (info.id == rec.id && info.rType == rec.rType && info.count == rec.count)
@@ -139,7 +139,7 @@ rouletteOpenResult.subscribe(function(v) {
 
 let calcSlowdown = @(t, a, b) a - a * pow(2.71828, b * t)
 
-let function fillSlowdownPoints(state, allowedIndexes) {
+function fillSlowdownPoints(state, allowedIndexes) {
   if (allowedIndexes.len() == 0) {
     if (!isResultLastReward.value)
       state.status <- RS_STOP
@@ -251,7 +251,7 @@ let function fillSlowdownPoints(state, allowedIndexes) {
   })
 }
 
-let function updateCurIndex(state) {
+function updateCurIndex(state) {
   let { curIndex, offset, sizesSum } = state
   local idx = curIndex
   for(local i = curIndex; i < sizesSum.len(); i++) {
@@ -268,13 +268,13 @@ let function updateCurIndex(state) {
   return { slotOffset, slotSize }
 }
 
-let function getSlotAddOffset(slotOffset, slotSize, state) {
+function getSlotAddOffset(slotOffset, slotSize, state) {
   let a = 2.0 * PI / slotSize
   let { MIN_FINAL_BORDER_SPEED, MIN_SLOW_MOVE_SPEED } = state
   return (MIN_FINAL_BORDER_SPEED - MIN_SLOW_MOVE_SPEED) / MIN_SLOW_MOVE_SPEED / a * sin(a * slotOffset)
 }
 
-let function switchStatusToPrecise(state, precizeStartTime, slotSize) {
+function switchStatusToPrecise(state, precizeStartTime, slotSize) {
   let { isLastReward } = state
   state.status <- RS_PRECISE
   state.slotPrecisePeriod <- slotSize / state.MIN_SLOW_MOVE_SPEED
@@ -284,7 +284,7 @@ let function switchStatusToPrecise(state, precizeStartTime, slotSize) {
   state.nextRewardTime <- isLastReward ? -1 : 0.5 * state.slotPrecisePeriod
 }
 
-let function switchStatusToPreciseReverse(state, precizeRevStartTime, slotOffset, slotSize) {
+function switchStatusToPreciseReverse(state, precizeRevStartTime, slotOffset, slotSize) {
   let a = 2.0 * PI / slotSize
   let { MIN_FINAL_BORDER_SPEED, MIN_SLOW_MOVE_SPEED } = state
   let speed = (MIN_FINAL_BORDER_SPEED - MIN_SLOW_MOVE_SPEED) / MIN_SLOW_MOVE_SPEED * cos(a * slotOffset)
@@ -457,7 +457,7 @@ let updAnimByStatus = {
   },
 }
 
-let function updateArrowDeviation(dt, state) {
+function updateArrowDeviation(dt, state) {
   let { slotSize, slotOffset = 0.0, offset = 0.0, curIndex = 0, prevIndex = 0, arrowDev = 1.0,
     ARROW_DROP_SPEED
   } = state
@@ -480,7 +480,7 @@ let function updateArrowDeviation(dt, state) {
     : max(dev, arrowDev - ARROW_DROP_SPEED * dt * (state.arrowDev - dev))
 }
 
-let function updateAnimState(state) {
+function updateAnimState(state) {
   let curTime = get_time_msec()
   local { time = curTime, status = RS_IDLE_ROLL } = state
   state.time <- curTime
@@ -546,7 +546,7 @@ let highlight = @() {
   ]
 }
 
-let function onRewardScaleFinish(viewInfo, rewardIdx) {
+function onRewardScaleFinish(viewInfo, rewardIdx) {
   addCompToCompAnim({
     component = mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM)
     from = isReceivedAnimFixed.value ? FIXED_REWARD_ANIM_KEY : REWARD_RESULT_ANIM_KEY
@@ -574,7 +574,7 @@ let receiveRewardAnimBlock = @(viewInfo, rewardIdx, key, duration)
       }]
     })
 
-let function rouletteRewardsBlock() {
+function rouletteRewardsBlock() {
   if (rouletteRewardsList.value.len() < 2)
     return { watch = rouletteRewardsList }
 
@@ -701,7 +701,7 @@ let function rouletteRewardsBlock() {
   }
 }
 
-let function receivedRewardsBlock() {
+function receivedRewardsBlock() {
   let viewInfos = receivedRewardsAll.value.map(@(r) r.viewInfo[0])
   let widthSum = []
   local visibleWidth = 0
@@ -809,7 +809,7 @@ let fixedRewardCurrent = Computed(@()
 let fixedRewardTotal = Computed(@() (nextFixedReward.value?.total ?? 1))
 
 local lastFixedRewardCurrent = fixedRewardCurrent.value
-let function startOpenCountAnim() {
+function startOpenCountAnim() {
   if (lastFixedRewardCurrent == fixedRewardCurrent.value)
     return
   if (lastFixedRewardCurrent >= 0)
@@ -831,7 +831,7 @@ let fixedProgressInfo = @() {
 
 let isJackpotFinalProgress = Watched(false)
 let showJackpotFinalProgress = @() isJackpotFinalProgress(true)
-let function onJackpotInfoChange(v) {
+function onJackpotInfoChange(v) {
   isJackpotFinalProgress(false)
   if (v != null)
     resetTimeout(aTimeDelayJackpotProgress, showJackpotFinalProgress)

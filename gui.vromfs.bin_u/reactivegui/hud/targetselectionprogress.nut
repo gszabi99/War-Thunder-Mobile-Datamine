@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { targetUnitName } = require("%rGui/hudState.nut")
 
@@ -19,20 +21,20 @@ let targetSize = hdpx(16)
 let targetImage = getSvgImage("target_lock_corner", targetSize)
 let targetOffset = [0, - hdpx(20)]
 
-subscribe("on_delayed_target_select:show", function(data) {
+eventbus_subscribe("on_delayed_target_select:show", function(data) {
   let { lockTime = 0.0, endTime = 0.0 } = data
   cooldownEndTime.set(endTime)
   cooldownTime.set(lockTime)
   showTargetName.set(true)
 })
 
-subscribe("on_asm_capture:show", function(data) {
+eventbus_subscribe("on_asm_capture:show", function(data) {
   let { lockTime = 0.0, endTime = 0.0 } = data
   asmCaptureEndTime.set(endTime)
   asmCaptureTime.set(lockTime)
 })
 
-subscribe("on_delayed_target_select:hide", function(_) {
+eventbus_subscribe("on_delayed_target_select:hide", function(_) {
   cooldownEndTime.set(0.0)
   asmCaptureEndTime.set(0.0)
   showTargetName.set(false)
@@ -57,11 +59,11 @@ let mkTargetCorner = @(cdLeft, delay, ovr) {
   ]
 }.__update(ovr)
 
-let function mkTargetSelectionData(endTime, cooldown, textSize) {
+function mkTargetSelectionData(endTime, cooldown, textSize) {
   if (endTime <= 0 || cooldown <= 0)
     return null
 
-  let cdLeft = (endTime - ::get_mission_time())
+  let cdLeft = (endTime - get_mission_time())
   let iconSize = [targetSize, targetSize]
   let delay = - cdLeft * (1 - cdLeft / cooldown)
   let upscaleX = textSize[0] ? (hdpx(15) / textSize[0] + 1.0) : 1.1
@@ -161,7 +163,7 @@ let mkItem = @(key, hplace, vplace, from, duration, commands) {
 function mkAsmCaptureData(endTime, cooldown) {
   if (endTime <= 0 || cooldown <= 0)
     return null
-  let cdLeft = (endTime - ::get_mission_time())
+  let cdLeft = (endTime - get_mission_time())
   return {
     size = [cornerSize[0] * 2, cornerSize[1] * 2]
     transform = { pivot = [0.5, 0.5] }

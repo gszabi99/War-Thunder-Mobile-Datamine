@@ -66,26 +66,26 @@ let allCannons = {
 let roundCaliber = @(caliber) caliber > 15 ? caliber.tointeger() : caliber //round cannon caliber, but not minigun
 let dpsText = @(dps) $"{(dps + 0.5).tointeger()}{loc("measureUnits/damagePerSecond")}"
 
-let function mkGetProgress(unitType, id) {
+function mkGetProgress(unitType, id) {
   let range = valueRange?[unitType][id]
   return range == null ? null
     : @(v) lerpClamped(range[0], range[1], 0.0, 1.0, v)
 }
 
-let function mkGetProgressInv(unitType, id) {
+function mkGetProgressInv(unitType, id) {
   let range = valueRange?[unitType][id]
   return range == null ? null
     : @(v) v == 0 ? 0.0 : (1.0 - lerpClamped(range[0], range[1], 0.0, 1.0, v))
 }
 
-let function getArmorPenetrationColor(unit, v) {
+function getArmorPenetrationColor(unit, v) {
   let avgShellPenetration = avgShellPenetrationMmByRank?[unit.mRank - 1] ?? []
   let idxPenetration = avgShellPenetration.findindex(@(p) v > p)
     ?? (armorProtectionPercentageColors.len() - 1)
   return armorProtectionPercentageColors[idxPenetration]
 }
 
-let function mkStat(id, cfg, unitType) {
+function mkStat(id, cfg, unitType) {
   return {
     id
     isAvailable = @(s) id in s
@@ -318,7 +318,7 @@ let weaponsCfgTank = {
     }
     {
       id = "gunnerTurretRotationSpeed"
-      getProgress = mkGetProgressInv(TANK, "gunnerTurretRotationSpeed")
+      getProgress = mkGetProgress(TANK, "gunnerTurretRotationSpeed")
       getHeader = @(_) loc("stats/gunnerTurretRotationSpeed")
       valueToText = @(v, _) "".concat(round(v), loc("measureUnits/deg_per_sec"))
       getValue = @(wCfg) wCfg.gunnerTurretRotationSpeed
@@ -345,7 +345,7 @@ let weaponsCfg = {
   [TANK] = weaponsCfgTank
 }
 
-let function mkUnitStat(unit, stat, shopCfg, uid) {
+function mkUnitStat(unit, stat, shopCfg, uid) {
   if (!stat.isAvailable(shopCfg))
     return null
   let header = stat.getHeader(shopCfg)
@@ -361,7 +361,7 @@ let function mkUnitStat(unit, stat, shopCfg, uid) {
   }
 }
 
-let function getUnitStats(unit, shopCfg, statsList, weapStatsList) {
+function getUnitStats(unit, shopCfg, statsList, weapStatsList) {
   if (shopCfg == null)
     return []
   let unitStats = statsList.map(@(stat) mkUnitStat(unit, stat, shopCfg, stat.id))
@@ -400,21 +400,21 @@ let setMaxAttrs = @(attrPreset) attrPresets.value?[attrPreset]
     return res
   }, {})
 
-let function mkUnitStatsCompFull(unit, attrLevels, attrPreset, mods) {
+function mkUnitStatsCompFull(unit, attrLevels, attrPreset, mods) {
   attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
   let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, statsCfg?[unitType].full ?? [], weaponsCfg?[unitType].full ?? [])
 }
 
-let function mkUnitStatsCompShort(unit, attrLevels, attrPreset, mods) {
+function mkUnitStatsCompShort(unit, attrLevels, attrPreset, mods) {
   attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
   let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])
 }
 
-let function appendStatValue(res, stat, shopCfg) {
+function appendStatValue(res, stat, shopCfg) {
   if (!stat.isAvailable(shopCfg))
     return null
   let value = stat.getValue(shopCfg)
@@ -429,7 +429,7 @@ let mkRange = @(values) [
   values.reduce(@(a, b) max(a, b))
 ]
 
-let function gatherUnitStatsLimits(unitsList) {
+function gatherUnitStatsLimits(unitsList) {
   let values = {}
   foreach (unitName in unitsList) {
     let unitType = getUnitType(unitName)

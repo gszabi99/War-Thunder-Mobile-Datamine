@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { activeUnlocks, receiveUnlockRewards, unlockInProgress, getRelativeStageData
 } = require("%rGui/unlocks/unlocks.nut")
@@ -21,7 +21,7 @@ let isLoginAwardOpened = mkWatched(persist, "isLoginAwardOpened", false)
 let needShowLoginAwardWnd = keepref(Computed(@() (loginAwardUnlock.value?.hasReward ?? false)
   && isInMenuNoModals.value))
 
-let function getStageReward(unlock) {
+function getStageReward(unlock) {
   let { stages, stage } = getRelativeStageData(unlock)
   let total = stages.len()
   return stages?[(total + stage - 1) % total].rewards
@@ -42,7 +42,7 @@ let loginAwardUnlockByAds = Computed(function() {
 let openWnd = @() needShowLoginAwardWnd.value ? isLoginAwardOpened(true) : null
 needShowLoginAwardWnd.subscribe(@(v) v ? deferOnce(openWnd) : null)
 
-let function delayUnseenAfterReward(stage) {
+function delayUnseenAfterReward(stage) {
   local time = completeAnimDelay + showUnseenAfterAnimDelay
   if ((stage % FULL_DAYS) == 0)
     time += isAdsAvailable.value && !loginAwardUnlock.value?.hasReward ? 0 : moveCardsFullTime
@@ -51,7 +51,7 @@ let function delayUnseenAfterReward(stage) {
   delayUnseedPurchaseShow(time)
 }
 
-let function delayUnseenAfterAds(stage) {
+function delayUnseenAfterAds(stage) {
   if ((stage % FULL_DAYS) == 0)
     delayUnseedPurchaseShow(moveCardsFullTime + showUnseenAfterAnimDelay)
 }
@@ -62,7 +62,7 @@ userstatRegisterExecutor("lAward.onReceiveRewardCb", function(result, context) {
     delayUnseenAfterReward(stage)
 })
 
-let function receiveLoginAward() {
+function receiveLoginAward() {
   if (!loginAwardUnlock.value?.hasReward)
     return
   let stage = loginAwardUnlock.value.lastRewardedStage + 1
@@ -70,7 +70,7 @@ let function receiveLoginAward() {
   receiveUnlockRewards(LOGIN_UNLOCK_ID, stage, { executeBefore = "lAward.onReceiveRewardCb", stage })
 }
 
-let function showLoginAwardAds() {
+function showLoginAwardAds() {
   if (!loginAwardUnlockByAds.value)
     return
   if (!canShowAds.value) {
@@ -96,7 +96,7 @@ userstatRegisterExecutor("lAward.onReceiveAdsRewardCb", function(result, context
     delayUnseenAfterAds(mainUnlockStage)
 })
 
-subscribe("adsRewardApply", function(data) {
+eventbus_subscribe("adsRewardApply", function(data) {
   let { loginUnlockId = null } = data
   let { name = null } = loginAwardUnlockByAds.value
   if (loginUnlockId == null || loginUnlockId != name)
@@ -107,7 +107,7 @@ subscribe("adsRewardApply", function(data) {
   receiveUnlockRewards(name, stage, { executeBefore = "lAward.onReceiveAdsRewardCb", mainUnlockStage })
 })
 
-subscribe("adsShowFinish", function(data) {
+eventbus_subscribe("adsShowFinish", function(data) {
   if (data?.loginUnlockId != null)
     delayUnseenAfterAds(loginAwardUnlock.value?.lastRewardedStage ?? 1)
 })

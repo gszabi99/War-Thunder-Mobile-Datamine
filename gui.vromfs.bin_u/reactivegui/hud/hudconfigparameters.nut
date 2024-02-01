@@ -10,7 +10,7 @@ let configParameters = {
 
 local isInited = false
 
-let function initOnce() {
+function initOnce() {
   let blk = DataBlock()
   if (!blk.tryLoad("wtm/config/hud.blk"))
     return
@@ -20,7 +20,7 @@ let function initOnce() {
     configParameters[key] = blk?[key] ?? value
 }
 
-let function getHudConfigParameter(id) {
+function getHudConfigParameter(id) {
   if (!isInited)
     initOnce()
 

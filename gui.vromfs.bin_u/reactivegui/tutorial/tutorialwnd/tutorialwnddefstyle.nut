@@ -5,7 +5,7 @@ let { sizePosToBox, getLinkArrowMiddleCfg } = require("tutorialUtils.nut")
 let borderWidth = hdpx(1)
 let defMsgPadding = [hdpx(20), hdpx(40)] //to not be too close to highlighted objects.
 
-let function mkSizeTable(box, content) {
+function mkSizeTable(box, content) {
   let { l, r, t, b } = box
   return {
     size = [r - l, b - t]
@@ -126,7 +126,7 @@ let mkPointerArrow = @(ovrW) {
   children = @() pointerArrowContent.__merge({ watch = ovrW }, ovrW.value)
 }
 
-let function mkLinkArrow(boxFrom, boxTo) {
+function mkLinkArrow(boxFrom, boxTo) {
   local { pos, rotate } = getLinkArrowMiddleCfg(boxFrom, boxTo)
   let size = pointerSize + 2 * pointerAnimOffset
   pos = pos.map(@(v) v - 0.5 * size)

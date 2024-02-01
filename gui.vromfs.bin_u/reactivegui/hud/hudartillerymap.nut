@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { round } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { getMapRelativePlayerPos, getArtilleryRange, getArtilleryDispersion,
@@ -28,9 +30,9 @@ let mapSizePx = min(saSize[1], saSize[0] * 0.5625)
 let crosshairSizePx = round(sh(25) / 2) * 2
 let crosshairLineWidth = round(hdpx(8) / 2) * 2
 
-subscribe("artilleryMapClose", @(_) onArtilleryClose())
-subscribe("MissionResult", @(_) artilleryCancel())
-subscribe("LocalPlayerDead", @(_) artilleryCancel())
+eventbus_subscribe("artilleryMapClose", @(_) onArtilleryClose())
+eventbus_subscribe("MissionResult", @(_) artilleryCancel())
+eventbus_subscribe("LocalPlayerDead", @(_) artilleryCancel())
 unitType.subscribe(@(_) artilleryCancel())
 
 let mapCoords = mkWatched(persist, "mapCoords", [ 0.5, 0.5 ])
@@ -40,11 +42,11 @@ let isArtilleryReady = Watched(false)
 let avatarPos = Watched([ 0.5, 0.5 ])
 let artilleryRange = Watched(0.0)
 
-let function updateData() {
+function updateData() {
   let { available = false, cooldownEndTime = 0
   } = getActionBarItems().findvalue(@(i) i.type == EII_ARTILLERY_TARGET)
   isArtilleryEnabled(available)
-  isArtilleryReady(available && cooldownEndTime <= ::get_mission_time())
+  isArtilleryReady(available && cooldownEndTime <= get_mission_time())
   let ap = getMapRelativePlayerPos()
   if (ap.len() >= 2 && (avatarPos.value[0] != ap[0] || avatarPos.value[1] != ap[1]))
     avatarPos(ap)
@@ -105,7 +107,7 @@ let statusText = @() txtAreaBase.__merge({
     : "artillery_strike/not_allowed")
 })
 
-let function atrilleryFire() {
+function atrilleryFire() {
   updateData()
   if (!canCallArtillery.value)
     return
@@ -121,7 +123,7 @@ let btnFire = @() {
     : null
 }
 
-let function mapShading() {
+function mapShading() {
   let spaceT = rangeCirclePosY.value
   let spaceR = mapSizePx - rangeCirclePosX.value - rangeCircleSize.value
   let spaceB = mapSizePx - rangeCirclePosY.value - rangeCircleSize.value
@@ -174,7 +176,7 @@ let mkInvalidTargetDrawCommands = @(color, width, _) [
   [VECTOR_LINE, 50, 0, 50, 100],
 ]
 
-let function crosshairDrawing() {
+function crosshairDrawing() {
   let color = canCallArtillery.value ? goodTextColor : badTextColor
   let mkCommandsFunc = canCallArtillery.value ? mkValidTargetDrawCommands : mkInvalidTargetDrawCommands
   let circleRadPrc = 100.0 * crosshairCircleRadPx.value / crosshairSizePx
@@ -213,7 +215,7 @@ let defProcessorState = {
 }
 let processorState = Watched(clone defProcessorState)
 
-let function onPointerPress(evt) {
+function onPointerPress(evt) {
   if (evt.accumRes & R_PROCESSED)
     return 0
   if (!evt.hit)
@@ -238,7 +240,7 @@ let function onPointerPress(evt) {
   return R_PROCESSED
 }
 
-let function onPointerRelease(evt) {
+function onPointerRelease(evt) {
   let { devId, pointerId, btnId, pressTime, x, y, targetW, targetH } = processorState.value
   if (evt.devId != devId || evt.pointerId != pointerId || evt.btnId != btnId)
     return 0
@@ -251,7 +253,7 @@ let function onPointerRelease(evt) {
   return R_PROCESSED
 }
 
-let function onPointerMove(evt) {
+function onPointerMove(evt) {
   let { devId, pointerId, btnId } = processorState.value
   let { target, x, y } = evt
   if (evt.devId == DEV_GAMEPAD) {

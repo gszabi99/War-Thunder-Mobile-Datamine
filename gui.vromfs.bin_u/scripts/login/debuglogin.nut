@@ -12,7 +12,7 @@ let debugState = @(shouldShowNotSetBits = false) console_print(
 register_command(@() debugState(false),  "login.debugCurState")
 register_command(@() debugState(true), "login.debugNotSetState")
 
-let function logChanges(state, prev) {
+function logChanges(state, prev) {
   if (state == LOGIN_STATE.NOT_LOGGED_IN) {
     logL("changed state to NOT_LOGGED_IN")
     return

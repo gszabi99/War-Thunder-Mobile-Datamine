@@ -16,7 +16,7 @@ let fullCache = persist("fullCache", @() {})
 let choiceCache = {}
 let blkToWeaponId = {}
 
-let function getWeaponIdImpl(blkPath) {
+function getWeaponIdImpl(blkPath) {
   local start = 0
   local searchFrom = 0
   while (searchFrom != null) { // -expr-cannot-be-null
@@ -28,13 +28,13 @@ let function getWeaponIdImpl(blkPath) {
   return blkPath.slice(start, end)
 }
 
-let function getWeaponId(blkPath) {
+function getWeaponId(blkPath) {
   if (blkPath not in blkToWeaponId)
     blkToWeaponId[blkPath] <- getWeaponIdImpl(blkPath)
   return blkToWeaponId[blkPath]
 }
 
-let function gatherWeaponsFromBlk(weaponsBlk) {
+function gatherWeaponsFromBlk(weaponsBlk) {
   let res = {}
   foreach (wBlk in (weaponsBlk % "Weapon")) {
     let { dummy = false, blk = null, triggerGroup = "primary", bullets = 0 } = wBlk
@@ -50,12 +50,12 @@ let function gatherWeaponsFromBlk(weaponsBlk) {
   return res
 }
 
-let function appendOnce(arr, v) {
+function appendOnce(arr, v) {
   if (!arr.contains(v))
     arr.append(v)
 }
 
-let function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
+function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
   if (bulletsBlk.paramCount() == 0 && bulletsBlk.blockCount() == 0)
     return null
 
@@ -153,7 +153,7 @@ let function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
   return res
 }
 
-let function loadAllBullets(weaponBlkName) {
+function loadAllBullets(weaponBlkName) {
   let weaponBlk = blkOptFromPath(weaponBlkName)
   let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false } = weaponBlk
   let isBulletBelt = !useSingleIconForBullet
@@ -176,13 +176,13 @@ let function loadAllBullets(weaponBlkName) {
   return res
 }
 
-let function loadBulletsCached(weaponBlkName, cache) {
+function loadBulletsCached(weaponBlkName, cache) {
   if (weaponBlkName not in cache)
     cache[weaponBlkName] <- loadAllBullets(weaponBlkName)
   return cache[weaponBlkName]
 }
 
-let function loadUnitBulletsFullImpl(unitName) {
+function loadUnitBulletsFullImpl(unitName) {
   let triggersData = {}
   let unitBlk = blkOptFromPath(getUnitFileName(unitName))
   let { commonWeapons = null, weapon_presets = null } = unitBlk
@@ -219,13 +219,13 @@ let function loadUnitBulletsFullImpl(unitName) {
   return res
 }
 
-let function loadUnitBulletsFull(unitName) {
+function loadUnitBulletsFull(unitName) {
   if (unitName not in fullCache)
     fullCache[unitName] <- freeze(loadUnitBulletsFullImpl(unitName))
   return fullCache[unitName]
 }
 
-let function loadUnitBulletsChoiceImpl(unitName) {
+function loadUnitBulletsChoiceImpl(unitName) {
   let { bullets = {}, bulletsOrder = [] } = getUnitTagsCfg(unitName)
   if (bullets.len() == 0)
     return {}
@@ -251,7 +251,7 @@ let function loadUnitBulletsChoiceImpl(unitName) {
       .filter(@(d) d != null))
 }
 
-let function loadUnitBulletsChoice(unitName) {
+function loadUnitBulletsChoice(unitName) {
   if (unitName not in choiceCache)
     choiceCache[unitName] <- freeze(loadUnitBulletsChoiceImpl(unitName))
   return choiceCache[unitName]

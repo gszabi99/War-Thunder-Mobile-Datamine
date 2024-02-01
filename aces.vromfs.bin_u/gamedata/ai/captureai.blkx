@@ -1290,8 +1290,8 @@
                             }
                           ],
                           "driveToPos": {
-                            "dist": 5.0,
-                            "obstacleAvoidAngle": 7.0,
+                            "dist": 7.0,
+                            "obstacleAvoidAngle": 10.0,
                             "obstacleAvoidDistMultiplier": 1.0,
                             "obstacleAvoidDistMin": 10.0,
                             "obstacleAvoidDistMax": 30.0,
@@ -1386,16 +1386,16 @@
                       "driveToPos": {
                         "dist": 5.0,
                         "cornersAngleFactorDist": [
-                          20.0,
+                          30.0,
                           0.0
                         ],
-                        "cornersSpeedMultiplier": 0.8,
+                        "cornersSpeedMultiplier": 0.4,
                         "cornersSteeringOffset": 4.0,
-                        "obstacleAvoidAngle": 3.0,
+                        "obstacleAvoidAngle": 7.0,
                         "obstacleAvoidDistMultiplier": 1.0,
-                        "maxTimeIgnoreObstacle": 7.0,
-                        "obstacleAvoidDistMin": 10.0,
-                        "obstacleAvoidDistMax": 20.0,
+                        "maxTimeIgnoreObstacle": 10.0,
+                        "obstacleAvoidDistMin": 5.0,
+                        "obstacleAvoidDistMax": 30.0,
                         "deflectPath": true,
                         "deflectionRadius": 1000.0,
                         "suspendIfTargetChanged": true
@@ -1433,7 +1433,13 @@
               "checkIfShipHasDestination": {},
               "recalculatePathToTarget": {}
             },
-            "shipSail": {}
+            "parallel": {
+              "shipSail": {},
+              "UseCountermeasures": {
+                "delay": 2.0,
+                "radius": 400.0
+              }
+            }
           },
           {
             "isSubmarine": {},
@@ -1647,7 +1653,13 @@
               "canCapture": true
             }
           },
-          "shipSail": {}
+          "parallel": {
+            "shipSail": {},
+            "UseCountermeasures": {
+              "delay": 2.0,
+              "radius": 400.0
+            }
+          }
         },
         {
           "isSubmarine": {},

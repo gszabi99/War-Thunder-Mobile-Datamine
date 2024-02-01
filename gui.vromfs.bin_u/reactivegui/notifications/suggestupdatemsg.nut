@@ -1,6 +1,6 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
 let { get_base_game_version_str } = require("app")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { isDownloadedFromGooglePlay } = require("android.platform")
 let { is_ios } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
@@ -34,7 +34,7 @@ needShowExitToUpdate.subscribe(function(v) {
   if (!v)
     return
 
-  send("logOut", {})
+  eventbus_send("logOut", {})
   openFMsgBox({
     text = loc("msg/updateAvailable/mandatory")
     isPersist = true
@@ -46,7 +46,7 @@ subscribeFMsgBtns({
   markSuggestUpdateSeen = @(_) isSuggested(true)
 })
 
-let function updateSuggestState(isActive) {
+function updateSuggestState(isActive) {
   if (isActive)
     openFMsgBox({
       uid = SUGGEST_UPDATE

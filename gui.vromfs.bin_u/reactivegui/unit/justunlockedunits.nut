@@ -14,7 +14,7 @@ let hasJustUnlockedUnitsAnimation = Computed(@() !isJustUnlockedUnitsOutdated.va
 
 let prevCanBuyUnitsStatus = Watched(canBuyUnitsStatus.value)
 
-let function updateJustUnlockedUnits(unitsStatus) {
+function updateJustUnlockedUnits(unitsStatus) {
   let unlockedUnits = {}
   let boughtUnits = {}
 

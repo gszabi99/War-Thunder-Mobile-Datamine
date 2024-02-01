@@ -5,7 +5,7 @@ let { blkOptFromPath } = require("%sqstd/datablock.nut")
 
 let detailsCache = persist("detailsCache", @() {})
 
-let function loadUnitBlkDetails(unitName) {
+function loadUnitBlkDetails(unitName) {
   let unitBlk = blkOptFromPath(getUnitFileName(unitName))
   let { modifications = null } = unitBlk
   return {
@@ -13,7 +13,7 @@ let function loadUnitBlkDetails(unitName) {
   }
 }
 
-let function getUnitBlkDetails(unitName) {
+function getUnitBlkDetails(unitName) {
   if (unitName not in detailsCache)
     detailsCache[unitName] <- loadUnitBlkDetails(unitName)
   return detailsCache[unitName]

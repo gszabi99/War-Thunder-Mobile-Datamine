@@ -4,9 +4,9 @@ let { loading_is_in_progress, loading_is_finished, loading_press_apply } = requi
 let { isInLoadingScreen, isMissionLoading } = require("%appGlobals/clientState/clientState.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let loadRootScreen = require("%scripts/loadRootScreen.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 
-let function checkFinishLoading() {
+function checkFinishLoading() {
   if (loading_is_finished())
     loading_press_apply()
   isInLoadingScreen.update(loading_is_in_progress())
@@ -14,12 +14,13 @@ let function checkFinishLoading() {
 
 isInLoadingScreen.subscribe(@(v) v ? null : clearTimer(checkFinishLoading))
 
-::gui_start_loading <- function gui_start_loading(isMission = false) {
+eventbus_subscribe("gui_start_loading", function gui_start_loading(payload) {
+  let isMission = payload?["showBriefing"] ?? false
   isMissionLoading.update(isMission)
   isInLoadingScreen.update(true)
   clearTimer(checkFinishLoading)
   setInterval(0.05, checkFinishLoading)
   loadRootScreen()
-}
+})
 
-subscribe("onGuiFinishLoading", @(_) checkFinishLoading())
+eventbus_subscribe("onGuiFinishLoading", @(_) checkFinishLoading())

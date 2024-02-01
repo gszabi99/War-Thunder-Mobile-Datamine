@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
@@ -17,10 +17,10 @@ let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 
 let spawnInfo = Watched(null)
 let aliveOrHasSpawn = Computed(@() (spawnInfo.value?.isAlive ?? false) || (spawnInfo.value?.hasSpawns ?? false))
-subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
+eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
 
-let battleResume = @() send("FlightMenu_doButtonAction", { buttonName = "Resume" })
-let quitMission = @() send("quitMission", {})
+let battleResume = @() eventbus_send("FlightMenu_doButtonAction", { buttonName = "Resume" })
+let quitMission = @() eventbus_send("quitMission", {})
 
 let backBtn = backButton(battleResume,
   { hotkeys = [["^J:Start", loc("btn/continueBattle")]], clickableInfo = loc("btn/continueBattle") })
@@ -55,7 +55,7 @@ let customButtons = @() {
   ]
 }
 
-let refreshSpawnInfo = @() send("getLocalPlayerSpawnInfo", {})
+let refreshSpawnInfo = @() eventbus_send("getLocalPlayerSpawnInfo", {})
 
 let flightMenu = @() bgShaded.__merge({
   watch = [needShowDevMenu, aliveOrHasSpawn, battleCampaign]

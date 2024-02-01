@@ -7,6 +7,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
 let { primaryAction, secondaryAction } = require("%rGui/hud/actionBar/actionBarState.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 let nextBulletIdx = Watched(getNextBulletType(TRIGGER_GROUP_PRIMARY))
 let currentBulletIdxPrim = Watched(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
@@ -49,12 +50,16 @@ let extraBulletInfo = Computed(function() {
 let mainBulletCount = Watched(getBulletCountByType(TRIGGER_GROUP_PRIMARY, 0))
 let extraBulletCount = Watched(getBulletCountByType(TRIGGER_GROUP_PRIMARY, 1))
 
-let function updateBulletsCount() {
+function updateBulletsCount() {
   mainBulletCount(getBulletCountByType(TRIGGER_GROUP_PRIMARY, 0))
   extraBulletCount(getBulletCountByType(TRIGGER_GROUP_PRIMARY, 1))
 }
 playerUnitName.subscribe(@(_) updateBulletsCount())
 isUnitDelayed.subscribe(@(_) updateBulletsCount())
+
+eventbus_subscribe("onBulletsAmountChanged", function(_) {
+  updateBulletsCount()
+})
 
 primaryAction.subscribe(function(_) {
   currentBulletIdxPrim(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
@@ -64,7 +69,7 @@ primaryAction.subscribe(function(_) {
 secondaryAction.subscribe(@(_) currentBulletIdxSec(getCurrentBulletType(TRIGGER_GROUP_SECONDARY)))
 
 let MAX_BULLETS = 2
-let function toggleNextBullet() {
+function toggleNextBullet() {
   for (local offset = 1; offset < MAX_BULLETS; offset++) {
     let idx = (nextBulletIdx.value + offset) % MAX_BULLETS
     if (getBulletCountByType(TRIGGER_GROUP_PRIMARY, idx) <= 0)

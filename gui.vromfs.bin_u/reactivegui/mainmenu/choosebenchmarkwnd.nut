@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe, send } = require("eventbus")
+
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { benchmarkGameModes } = require("%rGui/gameModes/gameModeState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -13,9 +14,9 @@ let close = @() removeModalWindow(wndUid)
 let gap = hdpx(10)
 
 let benchmarksList = Watched([])
-subscribe("benchmarksList", @(msg) benchmarksList(msg.benchmarks))
+eventbus_subscribe("benchmarksList", @(msg) benchmarksList(msg.benchmarks))
 
-let function byRows(list) {
+function byRows(list) {
   if (list.len() == 0)
     return null
   let rows = arrayByRows(list, 2)
@@ -35,13 +36,13 @@ let function byRows(list) {
 }
 
 let btnStyle = { ovr = { size = [flex(), hdpx(100)] } }
-let function missionsListUi() {
+function missionsListUi() {
   let children = [byRows(benchmarksList.value.map(@(b)
     textButtonCommon(
       b.name,
       function() {
         close()
-        send("startBenchmark", { id = b.id })
+        eventbus_send("startBenchmark", { id = b.id })
       },
       btnStyle)))
   ]
@@ -58,7 +59,7 @@ let function missionsListUi() {
           loc($"gameMode/{gm.name}", gm.name),
           function() {
             close()
-            send("queueToGameMode", { modeId = gm?.gameModeId })
+            eventbus_send("queueToGameMode", { modeId = gm?.gameModeId })
           },
           btnStyle)))
     )
@@ -76,7 +77,7 @@ return @() addModalWindow({
   key = wndUid
   hotkeys = [[btnBEscUp, { action = close }]]
   size = flex()
-  onAttach = @() send("getBenchmarksList", {})
+  onAttach = @() eventbus_send("getBenchmarksList", {})
   children = {
     size = [hdpx(1300), SIZE_TO_CONTENT]
     vplace = ALIGN_CENTER

@@ -16,7 +16,7 @@ let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardV
 let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
@@ -27,7 +27,7 @@ let currencyStyle = CS_BIG
 let purchGap = hdpx(20)
 let horGap = hdpx(60)
 let oldPriceTranslate = [0,
-  purchGap + 0.5 * buttonStyles.defButtonHeight + 0.5 * calc_str_box("2", currencyStyle.fontStyle)[1]]
+  purchGap + 0.5 * defButtonHeight + 0.5 * calc_str_box("2", currencyStyle.fontStyle)[1]]
 
 //animation preview header
 let aTimePackNameFull = 0.5
@@ -50,7 +50,7 @@ let aTimeInfoLight = 0.2
 let ANIM_SKIP = {}
 let ANIM_SKIP_DELAY = {}
 
-let function opacityAnims(duration, delay, soundName = "", skipTrigger = ANIM_SKIP_DELAY) {
+function opacityAnims(duration, delay, soundName = "", skipTrigger = ANIM_SKIP_DELAY) {
   let res = [
     { prop = AnimProp.opacity, from = 0.0, to = 1.0, easing = InQuad, play = true, duration, delay,
       trigger = skipTrigger }
@@ -63,7 +63,7 @@ let function opacityAnims(duration, delay, soundName = "", skipTrigger = ANIM_SK
   return res
 }
 
-let function colorAnims(duration, delay, skipTrigger = ANIM_SKIP_DELAY) {
+function colorAnims(duration, delay, skipTrigger = ANIM_SKIP_DELAY) {
   let res = [
     { prop = AnimProp.color, from = 0, easing = InQuad, play = true, duration, delay, trigger = skipTrigger }
   ]
@@ -80,7 +80,7 @@ let withBqEvent = @(goods, action) function() {
 }
 
 let needPriceBlockZOrder = Watched(false)
-let function oldPriceBlock(child, animStartTime) {
+function oldPriceBlock(child, animStartTime) {
   local start = get_time_msec() + (1000 * (animStartTime + aTimePriceMove)).tointeger()
   local end = start + (1000 * aTimePriceStrike).tointeger()
   local isFinished = false
@@ -158,8 +158,15 @@ let mkHighlight = @(duration, start, appear) {
     )
 }
 
+let spinnerBlockOvr = {
+  size = [SIZE_TO_CONTENT, defButtonHeight]
+  minWidth = defButtonMinWidth
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+}
+
 let purchStyle = buttonStyles.PURCHASE.__merge({ hotkeys = ["^J:X"] })
-let function mkPurchButton(content, onClick, animStartTime) {
+function mkPurchButton(content, onClick, animStartTime) {
   let start = animStartTime + aTimePriceMove + aTimePriceStrike
   let animations = opacityAnims(aTimeFinalPriceShow, start)
     .append(
@@ -179,23 +186,24 @@ let function mkPurchButton(content, onClick, animStartTime) {
         mkHighlight(aTimeFinalPriceGlow, start, 0.1)
       ]
     },
-    { size = [SIZE_TO_CONTENT, defButtonHeight] })
+    spinnerBlockOvr)
 }
 
-let function unifyBasePrice(basePrice, finalPrice) {
+function unifyBasePrice(basePrice, finalPrice) {
   if ((100 * finalPrice).tointeger() % 100 == 0)
     return basePrice
   return (100 * basePrice).tointeger() % 100 == 0 ? basePrice - 0.01 : basePrice
 }
 
-let function getPriceInfo(goods) {
+function getPriceInfo(goods) {
   let { price = null, priceExt = null, discountInPercent = 0 } = goods
   if ((price?.price ?? 0) > 0) {
-    let finalPrice = discountInPercent <= 0 ? price.price : round(price.price * (1.0 - (discountInPercent / 100.0)))
+    local basePrice = discountInPercent <= 0 ? price.price
+      : unifyBasePrice(round(price.price / (1.0 - (discountInPercent / 100.0))), price.price)
     return {
       priceCtor = mkCurrencyComp
-      basePrice = price.price
-      finalPrice = finalPrice
+      basePrice
+      finalPrice = price.price
       currencyId = price.currencyId
       buy = @() purchaseGoods(goods?.id)
     }
@@ -205,7 +213,7 @@ let function getPriceInfo(goods) {
       : unifyBasePrice(round(priceExt.price / (1.0 - (discountInPercent / 100.0))), priceExt.price)
     return {
       priceCtor = mkPriceExtText
-      basePrice = basePrice
+      basePrice
       finalPrice = priceExt.price
       currencyId = priceExt.currencyId
       buy = @() buyPlatformGoods(goods)
@@ -253,7 +261,7 @@ let purchaseButtonNoOldPrice = function() {
         priceCtor(finalPrice, currencyId, currencyStyle),
         withBqEvent(goods, buy),
         purchStyle),
-      { size = [SIZE_TO_CONTENT, defButtonHeight] })
+      spinnerBlockOvr)
   })
 }
 
@@ -272,7 +280,7 @@ let mkTimeLeftText = @(endTime) function() {
   }, fontBig)
 }
 
-let function previewGoodsTimeLeft() {
+function previewGoodsTimeLeft() {
   let { endTime = 0 } = previewGoods.value
   if (endTime <= 0)
     return { watch = previewGoods }
@@ -353,7 +361,7 @@ let mkItemBlink = @(start) {
     )
 }
 
-let function mkItemImpl(r, rStyle, start) {
+function mkItemImpl(r, rStyle, start) {
   let itemId = r.id
   let stateFlags = Watched(0)
   return @() {
@@ -381,7 +389,7 @@ let function mkItemImpl(r, rStyle, start) {
   }
 }
 
-let function mkItem(r, rStyle, idx, animStartTime) {
+function mkItem(r, rStyle, idx, animStartTime) {
   let start = animStartTime + aTimeInfoItemOffset * idx
   return {
     children = [
@@ -391,7 +399,7 @@ let function mkItem(r, rStyle, idx, animStartTime) {
   }
 }
 
-let function mkPreviewItems(goods, animStartTime) {
+function mkPreviewItems(goods, animStartTime) {
   let info = getRewardsViewInfo(goods.__merge({ units = [], unitUpgrades = [] }))
     .sort(sortRewardsViewInfo)
   return info.len() == 0 ? null : {
@@ -401,7 +409,7 @@ let function mkPreviewItems(goods, animStartTime) {
   }
 }
 
-let function doubleClickListener(onDoubleClick) {
+function doubleClickListener(onDoubleClick) {
   local lastClickMsec = 0
   return {
     size = flex()

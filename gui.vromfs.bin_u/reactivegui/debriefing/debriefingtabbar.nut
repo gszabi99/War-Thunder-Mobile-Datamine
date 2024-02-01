@@ -10,7 +10,7 @@ let tabLineH = hdpx(10)
 let activeColor = 0xFFFFFFFF
 let fadedColor = 0x80808080
 
-let function tabBase(info, debrData, sf, isSelected, isInAnim) {
+function tabBase(info, debrData, sf, isSelected, isInAnim) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   let isHovered = sf & S_HOVER
   let { id, timeShow, nextTabId, getIcon, iconScale } = info
@@ -62,7 +62,7 @@ let function tabBase(info, debrData, sf, isSelected, isInAnim) {
   }
 }
 
-let function mkTab(info, debrData) {
+function mkTab(info, debrData) {
   let stateFlags = Watched(0)
   let { id } = info
   let isSelected = Computed(@() curDebrTabId.get() == id)

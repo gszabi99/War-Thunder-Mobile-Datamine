@@ -61,7 +61,7 @@ let getFlagByCountry = memoize(@(country) country?.startswith("country_")
   ? $"flag_{country.slice(8)}_small.avif"
   : COUNTRY_FLAG_UNKNOWN)
 
-let function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
+function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
   let gap = isSelected ? platoonSelPlatesGap : platoonPlatesGap
   return [(idx - platoonSize) * gap, (idx - platoonSize) * gap].map(@(v) (v * sizeMul).tointeger())
 }
@@ -78,7 +78,7 @@ let mkIcon = @(icon, iconSize, override = {}) {
   keepAspect = KEEP_ASPECT_FIT
 }.__update(override)
 
-let function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null) {
+function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null) {
   let isPremium = unit.isPremium || unit?.isUpgraded
   return {
     size = flex()
@@ -144,7 +144,7 @@ let componentsByUnitType = {
   }
 }
 
-let function mkUnitImage(unit, isDesaturated = false) {
+function mkUnitImage(unit, isDesaturated = false) {
   let p = getUnitPresentation(unit)
 
   return componentsByUnitType?[unit.unitType].unitImage.__merge({
@@ -236,7 +236,7 @@ let mkUnitRank = @(unit, ovr = {}) mkGradRank(unit.mRank, {
 let starRankOvr = {
   pos = [0, ph(40)]
 }
-let function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
+function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
   let children = []
   let { rank, starRank = 0, costWp = 0 } = unit
   if(isLocked && costWp != 0)
@@ -334,7 +334,7 @@ let mkUnitsTreePrice = @(price, justUnlockedDelay = null) {
   }))
 }
 
-let function mkUnitSlotLockedLine(slot, isLocked = true, justUnlockedDelay = null){
+function mkUnitSlotLockedLine(slot, isLocked = true, justUnlockedDelay = null){
   let children = []
   if (isLocked && (slot?.reqLevel ?? 0) > 0)
     children.append(
@@ -449,7 +449,7 @@ let mkPlatoonPlateFrame = @(unit, isEquipped = Watched(false), isSelected = Watc
   animations = scaleAnimation(justUnlockedDelay, [1.04, 1.04])?.extend(colorAnimation(justUnlockedDelay, 0x666666, 0xFFFFFF))
 }
 
-let function mkPlatoonBgPlates(unit, platoonUnits) {
+function mkPlatoonBgPlates(unit, platoonUnits) {
   let platoonSize = platoonUnits.len()
   let bgPlatesComp = {
     size = flex()
@@ -467,7 +467,7 @@ let function mkPlatoonBgPlates(unit, platoonUnits) {
   }
 }
 
-let function mkSingleUnitPlate(unit) {
+function mkSingleUnitPlate(unit) {
   if (unit == null)
     return null
   let p = getUnitPresentation(unit)

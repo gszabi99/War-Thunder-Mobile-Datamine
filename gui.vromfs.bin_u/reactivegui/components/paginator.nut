@@ -45,7 +45,7 @@ let mkCurPage = @(page) pageContainer(
   ],
   { key = page })
 
-let function mkPage(page, onClick, color) {
+function mkPage(page, onClick, color) {
   let stateFlags = Watched(0)
   return @() pageContainer(
     [
@@ -66,7 +66,7 @@ let function mkPage(page, onClick, color) {
 
 let emptyBtnPlace = { size = [pageHeight, pageHeight] }
 
-let function arrowBtn(onClick, rotate) {
+function arrowBtn(onClick, rotate) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags

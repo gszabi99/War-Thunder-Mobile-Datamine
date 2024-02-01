@@ -41,7 +41,7 @@ let goodsTypeToPurchTypeMap = {
   [SGT_EVENT_KEYS] = PURCH_TYPE_CURRENCY,
 }
 
-let function getPurchaseTypeByGoodsType(gtype) {
+function getPurchaseTypeByGoodsType(gtype) {
   if (gtype not in goodsTypeToPurchTypeMap)
     logerr($"bqPurchaseInfo: Unknown goods type {gtype}")
   return goodsTypeToPurchTypeMap?[gtype] ?? ""
@@ -49,7 +49,7 @@ let function getPurchaseTypeByGoodsType(gtype) {
 
 let mkBqPurchaseInfo = @(src, purchaseType, details) { from = src, status = purchaseType, params = details }
 
-let function sendBqEventOnOpenCurrencyShop(bqPurchaseInfo) {
+function sendBqEventOnOpenCurrencyShop(bqPurchaseInfo) {
   if (bqPurchaseInfo == null)
     return
   foreach (v in [ "id", "from", "status", "params" ])

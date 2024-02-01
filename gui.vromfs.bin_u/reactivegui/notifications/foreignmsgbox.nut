@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { openMsgBox, closeMsgBox, defaultBtnsCfg, msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
 let msgBoxError = require("%rGui/components/msgBoxError.nut")
@@ -9,7 +9,7 @@ let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 
 let persistMsgBoxes = hardPersistWatched("persistMsgBoxes", [])
 
-let function removeMsg(msg) {
+function removeMsg(msg) {
   let idx = persistMsgBoxes.value.indexof(msg)
   if (idx != null)
     persistMsgBoxes.mutate(@(v) v.remove(idx))
@@ -21,7 +21,7 @@ let getButtons = @(msg)
         let { eventId = null, context = {} } = btn
         removeMsg(msg)
         if (eventId != null)
-          send($"fMsgBox.onClick.{eventId}", context)
+          eventbus_send($"fMsgBox.onClick.{eventId}", context)
       }
     }))
 
@@ -45,7 +45,7 @@ let ctors = {
   }
 }
 
-let function open(msg) {
+function open(msg) {
   let { isPersist = false, viewType = "", canShowOverHud = false } = msg
   let canShowNow = canShowOverHud || !isHudAttached.value
   if (isPersist || !canShowNow)
@@ -59,12 +59,12 @@ let function open(msg) {
     openMsgBox(msg.__merge({ buttons = getButtons(msg) }), KWARG_NON_STRICT)
 }
 
-let function close(msg) {
+function close(msg) {
   removeMsg(msg)
   closeMsgBox(msg.uid)
 }
 
-let function restorePersist() {
+function restorePersist() {
   if (persistMsgBoxes.value.len() == 0)
     return
   let msgs = persistMsgBoxes.value
@@ -88,5 +88,5 @@ isHudAttached.subscribe(function(v) {
     })
 })
 
-subscribe("fMsgBox.open", open)
-subscribe("fMsgBox.close", close)
+eventbus_subscribe("fMsgBox.open", open)
+eventbus_subscribe("fMsgBox.close", close)

@@ -10,7 +10,7 @@ let lastAttachedTime = mkWatched(persist, "lastAttachedTime", -1000000)
 let isBgAttached = Watched(false)
 let screenWeights = Watched(screensList.map(@(s) s.weight))
 
-let function chooseRandomScreen() {
+function chooseRandomScreen() {
   let weights = clone screenWeights.value
   if (curScreenId.value in weights)
     weights.$rawdelete(curScreenId.value)

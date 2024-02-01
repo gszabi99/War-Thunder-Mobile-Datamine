@@ -16,7 +16,7 @@ let chainImageOn = Picture($"ui/gameuiskin#hud_chain_on.svg:{chainImgSize}:{chai
 let chainImageOff = Picture($"ui/gameuiskin#hud_chain_off.svg:{chainImgSize}:{chainImgSize}:P")
 let chainImageBg = Picture($"ui/gameuiskin#hud_chain_bg.svg:{chainBgImgSize[0]}:{chainBgImgSize[1]}:P")
 
-let function mkChainedWeapons(actionCtor, visibleIds) {
+function mkChainedWeapons(actionCtor, visibleIds) {
   let actionItems = []
   let buttonsConfig = []
 

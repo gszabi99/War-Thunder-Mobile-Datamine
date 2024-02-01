@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getBox, incBoxSize, createHighlight, findGoodArrowPos, sizePosToBox
@@ -14,7 +14,7 @@ let isHudShadeAtached = Watched(false)
 let lastShadeEvent = mkWatched(persist, "lastShadeEvent", null)
 let isHudShadeActive = Computed(@() isHudShadeAtached.value && (lastShadeEvent.value?.enabled ?? false))
 
-subscribe("hudElementSelectionShade", @(ev) lastShadeEvent(ev))
+eventbus_subscribe("hudElementSelectionShade", @(ev) lastShadeEvent(ev))
 isInBattle.subscribe(@(_) lastShadeEvent(null))
 
 let staticUpdateInterval = 0.5
@@ -36,7 +36,7 @@ let curBoxes = Watched([])
 let pushedBoxes = Watched({})
 isHudShadeAtached.subscribe(@(_) pushedBoxes({}))
 
-let function updateCurBoxes() {
+function updateCurBoxes() {
   let boxes = []
   foreach (idx, cfg in curElements.value ?? []) {
     local { sizeInc = sizeIncDef, objs = null } = cfg

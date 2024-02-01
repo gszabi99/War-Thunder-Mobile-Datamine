@@ -1,16 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { get_mplayer_by_id } = require("mission")
 let { register_command } = require("console")
 let { rnd_int } = require("dagor.random")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { localPlayerColor } = require("%rGui/style/stdColors.nut")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { modifyOrAddEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
 let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
-let { rqPlayersAndDo } = require("rqPlayersAndDo.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 
 
@@ -27,9 +25,9 @@ let getPlayerColor = @(player) player.isLocal ? localPlayerColor
   : player.team == localMPlayerTeam.value ? teamBlueLightColor
   : teamRedLightColor
 
-let function getColoredName(player) {
+function getColoredName(player) {
   let color = getPlayerColor(player)
-  let text = getPlayerName(player.name, myUserRealName.value, myUserName.value)
+  let text = player.name
   return color == null ? text : colorize(color, text)
 }
 
@@ -45,7 +43,7 @@ let unknownIcon = {
   }
 }
 
-let function mkParticipantIcon(info, idx) {
+function mkParticipantIcon(info, idx) {
   let { image, participant } = info
   return participant == null ? unknownIcon
     : {
@@ -121,35 +119,30 @@ registerHintCreator(HINT_TYPE, function(data) {
   }
 })
 
-subscribe("hint:event_start_time:show", function(data) {
+eventbus_subscribe("hint:event_start_time:show", function(data) {
   let { playerId = null, participant = [] }  = data
-  let participants = type(participant) == "array" ? participant : [participant] //event data convert from blk, so when single participants it will be not array
-  let rqPlayers = {}
-  if (playerId != null)
-    rqPlayers.player <- playerId
-  participants.each(@(p, i) rqPlayers[i] <- p.participantId)
-  rqPlayersAndDo(rqPlayers,
-    function(answer) {
-      let players = dbgTimeLeft <= 0 ? answer
-        : answer.map(@(p, key) p ?? { name = "somebodyName", isLocal = rqPlayers[key] == 0, team = 2 - (rqPlayers[key] % 2) })
-      let { player = null } = players
-      let evt = data.__merge({
-        id = HINT_TYPE,
-        hType = HINT_TYPE,
-        player
-        participants = participants.map(@(p, i) p.__merge({ participant = players[i] }))
-      })
-    modifyOrAddEvent(evt, @(ev) ev?.id == HINT_TYPE)
+  let player = playerId != null ? get_mplayer_by_id(playerId) : null
+  let participants = (type(participant) == "array" ? participant : [participant]) //event data convert from blk, so when single participants it will be not array
+    .map(@(v) v.__merge({ participant = get_mplayer_by_id(v.participantId) }))
+  if (dbgTimeLeft > 0)
+    participants.each(@(v, i) v.participant = v.participant ??
+      { name = "somebodyName", isLocal = i == 0, team = 2 - (i % 2) })
+  let evt = data.__merge({
+    id = HINT_TYPE,
+    hType = HINT_TYPE,
+    player
+    participants
   })
+  modifyOrAddEvent(evt, @(ev) ev?.id == HINT_TYPE)
 })
-subscribe("hint:event_start_time:hide", @(_) removeEvent({ id = HINT_TYPE }))
+eventbus_subscribe("hint:event_start_time:hide", @(_) removeEvent({ id = HINT_TYPE }))
 
 let dbgIconsList = ["aircraft_fighter", "aircraft_attacker", "aircraft_bomber"]
 let dbgTextsList = ["hints/event_start_time", "hints/event_can_join_ally", "hints/event_can_join_enemy", "hints/event_player_start_on"]
-let function onDbgTimer() {
+function onDbgTimer() {
   if (dbgTimeLeft <= 0) {
     clearTimer(callee())
-    send("hint:event_start_time:hide", {})
+    eventbus_send("hint:event_start_time:hide", {})
     return
   }
 
@@ -162,10 +155,10 @@ let function onDbgTimer() {
     participant = array(total)
       .map(@(_, i) { image = chooseRandom(dbgIconsList), participantId = i })
   }
-  send("hint:event_start_time:show", eventData)
+  eventbus_send("hint:event_start_time:show", eventData)
 }
 
-let function startDebug() {
+function startDebug() {
   if (dbgTimeLeft > 0) {
     dbgTimeLeft = 0
     clearTimer(onDbgTimer)

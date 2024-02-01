@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { NUM, PLACE, NICKNAME, RATING, WIN_TEXT } = require("lbDataType.nut")
 
-let function makeType(params, id) {
+function makeType(params, id) {
   let { dataType = NUM, field = id.tolower()
   } = params
   let getValue = params?.getValue

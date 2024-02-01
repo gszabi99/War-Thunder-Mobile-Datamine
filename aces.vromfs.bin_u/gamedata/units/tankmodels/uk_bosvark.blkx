@@ -2956,5 +2956,11 @@
       "from": "uk_camo_very_dark_drab*",
       "to": "uk_camo_light_mud_blue_black*"
     }
+  },
+  "battleHideNodes": {
+    "n": [
+      "details_01",
+      "details_02"
+    ]
   }
 }

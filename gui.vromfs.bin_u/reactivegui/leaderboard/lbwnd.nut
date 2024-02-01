@@ -8,9 +8,11 @@ let { hasCurLbRewards, curLbRewards, curLbTimeRange } = require("lbRewardsState.
 let { lbCfgOrdered } = require("lbConfig.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
+let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
 let { secondsToHoursLoc, parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
 let { hoverColor, localPlayerColor } = require("%rGui/style/stdColors.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -20,7 +22,7 @@ let { mkPlaceIconSmall } = require("%rGui/components/playerPlaceIcon.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { PRIMARY, defButtonHeight } = buttonStyles
 let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbDotsRowHeight,
-  lbTableBorderWidth, lbPageRows, rowBgHeaderColor, rowBgOddColor, rowBgEvenColor,
+  lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor,
   prizeIcons, getRowBgColor, lbRewardsBlockWidth
 } = require("lbStyle.nut")
 let { RANK, NAME, PRIZE } = require("lbCategory.nut")
@@ -38,7 +40,7 @@ let defTxtColor = 0xFFD8D8D8
 
 let close = @() isLbWndOpened(false)
 
-let function mkLbTab(cfg, isSelected) {
+function mkLbTab(cfg, isSelected) {
   let { id, icon, locId } = cfg
   let stateFlags = Watched(0)
   let color = Computed(@() isSelected ? 0xFFFFFFFF
@@ -103,7 +105,7 @@ let lbTabs = @() {
   children = lbCfgOrdered.map(@(cfg) mkLbTab(cfg, curLbId.value == cfg.id))
 }
 
-let function rewardsTimer() {
+function rewardsTimer() {
   let { start = null, end = null } = curLbTimeRange.value
   if (start == null && end == null)
     return { watch = curLbTimeRange }
@@ -179,7 +181,7 @@ let mkLbCell = @(category, rowData) {
   fontTiny,
   styleByCategory?[category] ?? {})
 
-let function mkRankCell(category, rowData) {
+function mkRankCell(category, rowData) {
   let value = category.getValue(rowData)
   if (value == null || value < 0 || value > 2)
     return mkLbCell(category, rowData)
@@ -191,15 +193,16 @@ let function mkRankCell(category, rowData) {
   }
 }
 
-let function mkNameCell(category, rowData) {
+function mkNameCell(category, rowData) {
   let userId = rowData._id.tostring()
   let info = mkPublicInfo(userId)
   let realnick = category.getText(rowData)
-  let nameFont = isWidescreen || calc_str_box(realnick, fontTiny)[0] <= nameWidth
+  let visualName = getPlayerName(realnick, myUserRealName.get(), myUserName.get())
+  let nameFont = isWidescreen || calc_str_box(visualName, fontTiny)[0] <= nameWidth
     ? fontTiny
     : fontVeryTiny
   return @() {
-    watch = info
+    watch = [info, myUserRealName, myUserName]
     key = userId
     size = [nameCellWidth, lbRowHeight]
     onAttach = @() refreshPublicInfo(userId)
@@ -213,7 +216,7 @@ let function mkNameCell(category, rowData) {
   }
 }
 
-let function mkPrizeCell(category, rowData) {
+function mkPrizeCell(category, rowData) {
   let place = rowData?.idx ?? -1
   let rewardIdx = Computed(function() {
     if (place < 0)
@@ -296,7 +299,7 @@ let myRequirementsRow = @(emptyColor) function() {
   })
 }
 
-let function lbTableFull(categories, lbData, selfRow) {
+function lbTableFull(categories, lbData, selfRow) {
   let selfIdx = selfRow?.idx ?? -1
   let startIdx = lbData?[0].idx ?? -1
   let endIdx = lbData.reduce(@(res, row) max(res, row.idx), startIdx)
@@ -344,32 +347,26 @@ let function lbTableFull(categories, lbData, selfRow) {
       color = (rowsChildren.len() % 2) ? rowBgOddColor : rowBgEvenColor
     })
 
-  return {
+  return bgMessage.__merge({
     key = categories
     size = [flex(), lbTableHeight]
     flow = FLOW_VERTICAL
     children = [
-       {
+       bgHeader.__merge({
          size = [flex(), lbHeaderRowHeight]
-         rendObj = ROBJ_SOLID
-         color = rowBgHeaderColor
          padding = lbTableBorderWidth
          flow = FLOW_HORIZONTAL
          valign = ALIGN_CENTER
          children = mkLbHeaderRow(categories, styleByCategory)
-       }
+       })
        {
          size = flex()
-         rendObj = ROBJ_BOX
-         borderColor = rowBgOddColor
-         borderWidth = [0, lbTableBorderWidth, lbTableBorderWidth, lbTableBorderWidth]
-         padding = [0, lbTableBorderWidth, lbTableBorderWidth, lbTableBorderWidth]
          flow = FLOW_VERTICAL
          children = rowsChildren
        }
     ]
     animations = wndSwitchAnim
-  }
+  })
 }
 
 let waitLeaderBoard = {

@@ -21,6 +21,12 @@ let shopCategoriesCfg = [
     gtypes = [ SGT_WP ]
   },
   {
+    id = SC_PLATINUM
+    title = loc("shop/category/platinum")
+    image = "!ui/gameuiskin#shop_wolves.svg"
+    gtypes = [ SGT_PLATINUM ]
+  },
+  {
     id = SC_PREMIUM
     title = loc("shop/category/premium")
     image = "!ui/gameuiskin#shop_premium.svg"
@@ -43,25 +49,31 @@ let shopCategoriesCfg = [
 ]
 
 
-let function getGoodsType(goods) {
+function getGoodsType(goods) {
   if (goods.units.len() > 0 || (goods?.unitUpgrades.len() ?? 0) > 0)
     return SGT_UNIT
   if (goods.items.len() > 0)
     return SGT_CONSUMABLES
   if (goods.premiumDays > 0)
     return SGT_PREMIUM
-  if (goods.gold > 0)
-    return SGT_GOLD
-  if (goods.wp > 0)
-    return SGT_WP
-  if ((goods?.warbond ?? 0) > 0)
-    return SGT_WARBONDS
-  if ((goods?.eventKey ?? 0) > 0)
-    return SGT_EVENT_KEYS
+  if ("currencies" not in goods) { //compatibility with format before 2024.01.23
+    if (goods.gold > 0)
+      return SGT_GOLD
+    if (goods.wp > 0)
+      return SGT_WP
+    if ((goods?.platinum ?? 0) > 0)
+      return SGT_PLATINUM
+    if ((goods?.warbond ?? 0) > 0)
+      return SGT_WARBONDS
+    if ((goods?.eventKey ?? 0) > 0)
+      return SGT_EVENT_KEYS
+  }
+  else if (goods.currencies.len() == 1)
+    return currencyToGoodsType?[goods.currencies.findindex(@(_) true)] ?? SGT_UNKNOWN
   return SGT_UNKNOWN
 }
 
-let function isGoodsFitToCampaign(goods, cConfigs) {
+function isGoodsFitToCampaign(goods, cConfigs) {
   let { units = [], unitUpgrades = [], items = {} } = goods
   if (units.len() > 0)
     return null != units.findvalue(@(u) u in cConfigs?.allUnits)

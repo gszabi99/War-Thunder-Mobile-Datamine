@@ -111,7 +111,7 @@ let timers = [
   },
 ]
 
-let function progressCircle(timer) {
+function progressCircle(timer) {
   let { startTime = 0, endTime = 0, isForward = true } = timer
   let timeLeft = endTime - get_time_msec()
   local startValue = startTime >= endTime ? 1.0
@@ -159,7 +159,7 @@ let timerTextStyle = {
   fontFx = FFT_GLOW
 }.__update(fontTiny)
 
-let function timerText(id, timer) {
+function timerText(id, timer) {
   let { needCountdown = false, text = null } = timer
   if (!needCountdown)
     return timerTextStyle.__merge({ key = id, text })
@@ -184,7 +184,7 @@ let timerVisual = @(timerCfg, timer) {
   ]
 }
 
-let function timerPlace(timerCfg, idx, total) {
+function timerPlace(timerCfg, idx, total) {
   let timer = Computed(@() activeTimers.value?[timerCfg.id])
   return @() {
     watch = timer
@@ -201,7 +201,7 @@ let function timerPlace(timerCfg, idx, total) {
   }
 }
 
-let function hudTimers() {
+function hudTimers() {
   let filtered = timers.filter(@(t) t.id in timersVisibility.value)
   let total = filtered.len()
   return {
@@ -212,7 +212,7 @@ let function hudTimers() {
   }
 }
 
-let function randomTimer() {
+function randomTimer() {
   let id = chooseRandom(timers).id
   if (id in activeTimers.value) {
     removeTimer(id)

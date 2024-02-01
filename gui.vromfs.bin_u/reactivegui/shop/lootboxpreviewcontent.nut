@@ -34,7 +34,7 @@ let mkText = @(text, style) {
   fontFxColor = 0xFF000000
 }.__update(style)
 
-let function lootboxImageWithTimer() {
+function lootboxImageWithTimer() {
   if (previewLootbox.value == null)
     return { watch = previewLootbox }
 
@@ -86,7 +86,7 @@ let function lootboxImageWithTimer() {
   }
 }
 
-let function itemsBlock() {
+function itemsBlock() {
   let rewards = fillRewardsCounts(getLootboxRewardsViewInfo(previewLootbox.value, true),
     servProfile.value, serverConfigs.value)
   return {

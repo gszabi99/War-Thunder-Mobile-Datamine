@@ -1,6 +1,6 @@
 
 from "%scripts/dagui_library.nut" import *
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { setTimeout } = require("dagor.workcycle")
 let { get_addon_version } = require("contentUpdater")
 let { chooseRandom } = require("%sqstd/rand.nut")
@@ -28,12 +28,12 @@ let maxSquadRankDiff = mkWatched(persist, "minSquadRankDiff", MAX_SQUAD_MRANK_DI
 
 isInSquad.subscribe(@(_) maxSquadRankDiff(MAX_SQUAD_MRANK_DIFF))
 
-let function msgBoxWithFalse(params) {
+function msgBoxWithFalse(params) {
   openFMsgBox(params)
   return false
 }
 
-let function isSquadReadyWithMsgbox(mode, allReqAddons) {
+function isSquadReadyWithMsgbox(mode, allReqAddons) {
   let { minSquadSize = 1 } = mode
   if (!isInSquad.value) {
     if (minSquadSize > 1)
@@ -108,7 +108,7 @@ let function isSquadReadyWithMsgbox(mode, allReqAddons) {
   return true
 }
 
-let function getAllBattleUnits() {
+function getAllBattleUnits() {
   let res = {}
   if (curUnit.value != null)
     res[curUnit.value.name] <- true
@@ -120,11 +120,11 @@ let function getAllBattleUnits() {
   return res.keys()
 }
 
-let function queueToGameModeImpl(mode) {
+function queueToGameModeImpl(mode) {
   if (isInQueue.value)
     return
   if (balanceGold.value < 0) {
-    send("showNegativeBalanceWarning", {})
+    eventbus_send("showNegativeBalanceWarning", {})
     return
   }
 
@@ -166,7 +166,7 @@ let function queueToGameModeImpl(mode) {
   joinQueue({ mode = mode.name })
 }
 
-let function queueModeOnRandomUnit(mode) {
+function queueModeOnRandomUnit(mode) {
   let mmRanges = mode.matchmaking?.mmRanges
   if (!mmRanges) {
     openFMsgBox({ text = "could not get current mode mRank ranges" })
@@ -189,7 +189,7 @@ let function queueModeOnRandomUnit(mode) {
   setTimeout(1.0, @() queueToGameModeImpl(mode)) //FIXME: why timer here instead of cb or subscribe?
 }
 
-let function tryQueueToGameMode(modeId) {
+function tryQueueToGameMode(modeId) {
   if (!isMatchingOnline.value) {
     showMatchingConnectProgress()
     startBattleDelayed.modeId = modeId
@@ -208,7 +208,7 @@ let function tryQueueToGameMode(modeId) {
     queueToGameModeImpl(mode)
 }
 
-let function queueToGameMode(modeId) {
+function queueToGameMode(modeId) {
   if (isOnline.get() && isDisconnected.get()) {
     checkReconnect(@() tryQueueToGameMode(modeId))
     return
@@ -216,7 +216,7 @@ let function queueToGameMode(modeId) {
   tryQueueToGameMode(modeId)
 }
 
-let function queueToGameModeAfterAddons(modeId) {
+function queueToGameModeAfterAddons(modeId) {
   let mode = allGameModes.value?[modeId]
   if (mode == null)
     return //mode missing while downloading, no need error here
@@ -227,7 +227,7 @@ let function queueToGameModeAfterAddons(modeId) {
     openFMsgBox({ text = loc("msg/unableToUpadateAddons") })
 }
 
-let function requeueToDelayedMode() {
+function requeueToDelayedMode() {
   let { modeId } = startBattleDelayed
   if (modeId == null)
     return
@@ -240,10 +240,10 @@ isMatchingOnline.subscribe(function(v) {
     requeueToDelayedMode()
 })
 
-subscribe("queueToGameMode", @(msg) queueToGameMode(msg.modeId))
-subscribe("queueToGameModeAfterAddons", @(msg) queueToGameModeAfterAddons(msg.modeId))
+eventbus_subscribe("queueToGameMode", @(msg) queueToGameMode(msg.modeId))
+eventbus_subscribe("queueToGameModeAfterAddons", @(msg) queueToGameModeAfterAddons(msg.modeId))
 
-let function sendBqIfNeed(p) {
+function sendBqIfNeed(p) {
   let { bqEvent = null, bqData = {} } = p
   if (bqEvent != null)
     sendUiBqEvent(bqEvent, bqData)
@@ -252,7 +252,7 @@ let function sendBqIfNeed(p) {
 subscribeFMsgBtns({
   function downloadAddonsForQueue(p) {
     sendBqIfNeed(p)
-    send("openDownloadAddonsWnd",
+    eventbus_send("openDownloadAddonsWnd",
       { addons = p.addons, successEventId = "queueToGameModeAfterAddons", context = { modeId = p.modeId } })
   }
   function queueToGameModeRetry(p) {

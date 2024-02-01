@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addUserOption, addLocalUserOption, get_gui_option, set_gui_option } = require("guiOptions")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 //options should have full list on get profile for correct load
@@ -10,6 +10,7 @@ let optListNative = [
   "OPT_FREE_CAMERA_TANK"
   "OPT_FREE_CAMERA_PLANE"
   "OPT_SHOW_MOVE_DIRECTION"
+  "OPT_SHOW_GRASS_IN_TANK_VISION"
   "OPT_TARGET_TRACKING"
   "OPT_SHOW_RETICLE"
 ]
@@ -49,14 +50,14 @@ foreach (id in optListLocalNative) {
 foreach (id in optListScriptOnly)
   export[id] <- addUserOption(id)
 
-let function mkOptionValueNative(id, defValue, validate) {
+function mkOptionValueNative(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
   let value = Watched(isSettingsAvailable.value ? getSaved() : validate(defValue))
-  let function updateSaved() {
+  function updateSaved() {
     if (!isSettingsAvailable.value || get_gui_option(id) == value.value)
       return
     set_gui_option(id, value.value)
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   }
   updateSaved()
   isSettingsAvailable.subscribe(function(_) {
@@ -67,7 +68,7 @@ let function mkOptionValueNative(id, defValue, validate) {
   return value
 }
 
-let function mkOptionValueScriptOnly(id, defValue, validate) {
+function mkOptionValueScriptOnly(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
   let value = Watched(isSettingsAvailable.value ? getSaved() : validate(defValue))
   local isInit = false
@@ -84,13 +85,13 @@ let function mkOptionValueScriptOnly(id, defValue, validate) {
       return
     }
     set_gui_option(id, v)
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   })
   return value
 }
 
 let optionValues = {}
-let function mkOptionValue(id, defValue = null, validate = @(v) v) {
+function mkOptionValue(id, defValue = null, validate = @(v) v) {
   if (id in optionValues) {
     logerr($"Try to init option value twice")
     return optionValues[id]

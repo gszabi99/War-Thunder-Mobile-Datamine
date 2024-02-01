@@ -8,7 +8,7 @@ let multiStageUnlockIdConfig = {
   multi_kill_ground = { [2] = "double_kill_ground", [3] = "triple_kill_ground", def = "multi_kill_ground" }
 }
 
-let function getMultiStageUnlockId(unlockId, repeatInARow) {
+function getMultiStageUnlockId(unlockId, repeatInARow) {
   if (unlockId not in multiStageUnlockIdConfig)
     return unlockId
 
@@ -16,14 +16,14 @@ let function getMultiStageUnlockId(unlockId, repeatInARow) {
   return config?[repeatInARow] ?? config?.def ?? unlockId
 }
 
-let function getUnlockLocText(unlockId, repeatInARow) {
+function getUnlockLocText(unlockId, repeatInARow) {
   local text = loc($"streaks/{unlockId}")
   if (repeatInARow != null)
     text = format(text, repeatInARow)
   return text
 }
 
-let function getUnlockDescLocText(unlockId, repeatInARow) {
+function getUnlockDescLocText(unlockId, repeatInARow) {
   local text = loc($"streaks/{unlockId}/desc")
   if (repeatInARow != null)
     text = format(text, repeatInARow)
@@ -36,12 +36,12 @@ let mkImage = @(path, override = {}) {
   image = Picture(path)
 }.__update(override)
 
-let function mkStackImage(imgData, override = {}) {
+function mkStackImage(imgData, override = {}) {
   let { img, params = {} } = imgData
   return mkImage(img, params.__update(override))
 }
 
-let function mkStreakIcon(unlockId, mSize, numParam = null) {
+function mkStreakIcon(unlockId, mSize, numParam = null) {
   let streak = streakPresentation(unlockId)
   let { bgImage = null, stackImages = [], numberCtor = null } = streak
   let children = []

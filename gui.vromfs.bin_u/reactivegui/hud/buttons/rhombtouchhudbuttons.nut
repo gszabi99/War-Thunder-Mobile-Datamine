@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+
+let { get_mission_time } = require("%globalsDarg/mission.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let disabledControls = require("%rGui/controls/disabledControls.nut")
+let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { touchButtonSize, imageColor, imageDisabledColor, borderWidth, btnBgColor,
   borderColorPushed, borderColor, borderNoAmmoColor, textColor, textDisabledColor
@@ -13,7 +15,7 @@ let cooldownImgSize = (1.42 * touchButtonSize).tointeger()
 let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-70)] }
 let fwImageSize = (0.75 * touchButtonSize).tointeger()
 
-let function useShortcut(shortcutId) {
+function useShortcut(shortcutId) {
   toggleShortcut(shortcutId)
   updateActionBarDelayed()
 }
@@ -29,8 +31,8 @@ let mkAmmoCount = @(count, isAvailable = true) count < 0 ? null
       text = count
     }.__update(fontVeryTiny)
 
-let function mkRhombBtnBg(isAvailable, actionItem, onFinishExt = null) {
-  let misTime = ::get_mission_time()
+function mkRhombBtnBg(isAvailable, actionItem, onFinishExt = null) {
+  let misTime = get_mission_time()
   let { available = true, cooldownEndTime = 0, cooldownTime = 1, id = null } = actionItem
   let hasCooldown = available && cooldownEndTime > misTime
   let cooldownLeft = hasCooldown ? (cooldownEndTime - misTime) : 0
@@ -79,9 +81,9 @@ let mkRhombBtnBorder = @(stateFlags, isAvailable) {
   transform = { rotate = 45 }
 }
 
-let function mkRhombFireworkBtn(actionItem) {
+function mkRhombFireworkBtn(actionItem) {
   let stateFlags = Watched(0)
-  let isDisabled = Computed(@() disabledControls.value?.ID_FIREWORK ?? false)
+  let isDisabled = mkIsControlDisabled("ID_FIREWORK")
   return @() {
     watch = isDisabled
     key = "btn_firework"

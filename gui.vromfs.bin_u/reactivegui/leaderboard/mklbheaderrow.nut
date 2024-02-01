@@ -5,7 +5,7 @@ let { hoverColor } = require("%rGui/style/stdColors.nut")
 let headerIconHeight = evenPx(36)
 let headerIconWidth = (1.5 * headerIconHeight).tointeger()
 
-let function headerIconButton(icon, contentCtor, hasHint) {
+function headerIconButton(icon, contentCtor, hasHint) {
   if (!hasHint && icon == null)
     return null
 

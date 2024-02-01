@@ -26,7 +26,7 @@ let { btnOpenUnitAttrBig } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let curSelectedUnitId = Watched("")
 let isWindowAttached = Watched(false)
-let function close() {
+function close() {
   curSelectedUnitId("")
   openUnitOvr(null)
 }
@@ -90,7 +90,7 @@ unitToShow.subscribe(function(unit) {
 
 let UNIT_DELAY = 1.5
 let UNIT_SCALE = 1.2
-let function mkUnitPlate(unit, platoonUnit, onClick) {
+function mkUnitPlate(unit, platoonUnit, onClick) {
   let p = getUnitPresentation(platoonUnit)
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let isSelected = Computed(@() curSelectedUnitId.value == platoonUnit.name)
@@ -123,7 +123,7 @@ let function mkUnitPlate(unit, platoonUnit, onClick) {
   }
 }
 
-let function platoonUnitsBlock() {
+function platoonUnitsBlock() {
   let res = { watch = [ baseUnit, platoonUnitsList ] }
   return platoonUnitsList.value.len() == 0
     ? res

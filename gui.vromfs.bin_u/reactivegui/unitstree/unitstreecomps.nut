@@ -23,7 +23,7 @@ let btnStyle = { ovr = { size = btnSize } }
 
 let aTimeBarFill = 0.8
 
-let function mkFlagImage(country, imageSize) {
+function mkFlagImage(country, imageSize) {
   let w = round(imageSize).tointeger()
   let h = round(w * 0.79).tointeger()
   return {

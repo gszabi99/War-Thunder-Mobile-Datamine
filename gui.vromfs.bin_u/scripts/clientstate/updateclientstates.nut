@@ -10,7 +10,7 @@ let { get_local_mplayer } = require("mission")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 
-let function updateStates() {
+function updateStates() {
   isInBattle.update(isInFlight())
   isInLoadingScreen.update(loading_is_in_progress())
   isInFlightMenu(false)

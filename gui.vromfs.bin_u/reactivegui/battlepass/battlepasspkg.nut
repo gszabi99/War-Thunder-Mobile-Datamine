@@ -5,7 +5,7 @@ let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let bpLineFillColor = 0xFF191919
 let bpBorderColor = 0xFF7C7C7C
 
-let function mkLevelLine(points, stagePoints, ovr = {}) {
+function mkLevelLine(points, stagePoints, ovr = {}) {
   let percent =  1.0 * clamp(points, 0, stagePoints ) / stagePoints
   return {
     size = flex()

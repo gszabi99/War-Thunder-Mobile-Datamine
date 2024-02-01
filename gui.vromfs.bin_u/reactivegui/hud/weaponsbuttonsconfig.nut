@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { AirParamsMain } = require("wtSharedEnums")
+let { AirParamsMain } = require("%globalScripts/sharedEnums.nut")
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
-  AB_MINE, AB_MORTAR, AB_ROCKET, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_SUPPORT_PLANE_CHANGE,
-  AB_SUPPORT_PLANE_GROUP_ATTACK, AB_SUPPORT_PLANE_GROUP_RETURN, AB_DIVING_LOCK,
+  AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_SUPPORT_PLANE_CHANGE,
+  AB_SUPPORT_PLANE_GROUP_ATTACK, AB_SUPPORT_PLANE_GROUP_RETURN, AB_DIVING_LOCK, AB_STRATEGY_MODE,
   AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM
 } = require("actionBar/actionType.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
 let aircraftWeaponsItems = require("%rGui/hud/aircraftWeaponsItems.nut")
+let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
 
-let function getActionBarShortcut(unitType, itemConfig) {
+function getActionBarShortcut(unitType, itemConfig) {
   let shortcutIdx = itemConfig.shortcutIdx
   if (shortcutIdx < 0)
     return ""
@@ -117,41 +118,50 @@ let actionBarItemsConfig = {
     needCheckTargetRocket = true
     relImageSize = 0.85
   },
+  EII_ROCKET_SECONDARY = {
+    getShortcut = @(_, __) "ID_SHIP_WEAPON_ROCKETS_SECONDARY"
+    getImage = @(_) "ui/gameuiskin#hud_missile_ship_secondary.svg"
+    actionType = AB_ROCKET_SECONDARY
+    mkButtonFunction = "mkWeaponryItem"
+    hasAim = true
+    needCheckTargetRocket = true
+    relImageSize = 0.85
+  },
   EII_SUPPORT_PLANE = {
     getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT"
-    getPlaneImage = @(inAir) inAir ? "!ui/gameuiskin#hud_aircraft_torpedo_switch.svg"
-      : "!ui/gameuiskin#hud_aircraft_torpedo.svg"
+    getPlaneImage = @(inAir) inAir ? supportPlaneConfig["EII_SUPPORT_PLANE"].imageSwitch
+      : supportPlaneConfig["EII_SUPPORT_PLANE"].image
     actionType = AB_SUPPORT_PLANE
     mkButtonFunction = "mkPlaneItem"
     getWeaponLocText = @(weaponName) $"{loc("mainmenu/type_air")} {loc(getUnitLocId(weaponName))}"
-    groupInAirIdx = 0
+    groupInAirIdx = supportPlaneConfig["EII_SUPPORT_PLANE"].groupIdx
   },
   EII_SUPPORT_PLANE_2 = {
     getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_2"
-    getPlaneImage = @(inAir) inAir ? "!ui/gameuiskin#hud_aircraft_bomber_switch.svg"
-      : "!ui/gameuiskin#hud_aircraft_bomber.svg"
+    getPlaneImage = @(inAir) inAir ? supportPlaneConfig["EII_SUPPORT_PLANE_2"].imageSwitch
+      : supportPlaneConfig["EII_SUPPORT_PLANE_2"].image
     actionType = AB_SUPPORT_PLANE_2
     mkButtonFunction = "mkPlaneItem"
     getWeaponLocText = @(weaponName) $"{loc("mainmenu/type_air")} {loc(getUnitLocId(weaponName))}"
-    groupInAirIdx = 1
+    groupInAirIdx = supportPlaneConfig["EII_SUPPORT_PLANE_2"].groupIdx
   },
   EII_SUPPORT_PLANE_3 = {
     getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_3"
-    getPlaneImage = @(inAir) inAir ? "!ui/gameuiskin#hud_aircraft_fighter_switch.svg"
-      : "!ui/gameuiskin#hud_aircraft_fighter.svg"
+    getPlaneImage = @(inAir) inAir ? supportPlaneConfig["EII_SUPPORT_PLANE_3"].imageSwitch
+      : supportPlaneConfig["EII_SUPPORT_PLANE_3"].image
     actionType = AB_SUPPORT_PLANE_3
     mkButtonFunction = "mkPlaneItem"
     getWeaponLocText = @(weaponName) $"{loc("mainmenu/type_air")} {loc(getUnitLocId(weaponName))}"
-    groupInAirIdx = 2
+    groupInAirIdx = supportPlaneConfig["EII_SUPPORT_PLANE_3"].groupIdx
   },
   EII_SUPPORT_PLANE_4 = {
     getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_4"
-    getPlaneImage = @(inAir) inAir ? "!ui/gameuiskin#hud_aircraft_fighter_switch.svg"
-      : "!ui/gameuiskin#hud_aircraft_fighter.svg"
+    getPlaneImage = @(inAir) inAir ? supportPlaneConfig["EII_SUPPORT_PLANE_4"].imageSwitch
+      : supportPlaneConfig["EII_SUPPORT_PLANE_4"].image
     actionType = AB_SUPPORT_PLANE_4
     mkButtonFunction = "mkPlaneItem"
     getWeaponLocText = @(weaponName) $"{loc("mainmenu/type_air")} {loc(getUnitLocId(weaponName))}"
-    groupInAirIdx = 3
+    groupInAirIdx = supportPlaneConfig["EII_SUPPORT_PLANE_4"].groupIdx
   },
   ID_WTM_AIRCRAFT_CHANGE = {
     getShortcut = @(_, __) "ID_WTM_AIRCRAFT_CHANGE"
@@ -169,6 +179,12 @@ let actionBarItemsConfig = {
     image = "!ui/gameuiskin#hud_aircraft_fighter.svg"
     mkButtonFunction = "mkSimpleButton"
     actionType = AB_SUPPORT_PLANE_GROUP_RETURN
+  },
+  EII_STRATEGY_MODE = {
+    getShortcut = @(_, __) "ID_SHIP_STRATEGY_MODE_TOGGLE"
+    image = "!ui/gameuiskin#menu_lang.svg"
+    mkButtonFunction = "mkSimpleButton"
+    actionType = AB_STRATEGY_MODE
   },
   EII_DIVING_LOCK = {
     getShortcut = @(_, __) "ID_DIVING_LOCK"
@@ -194,6 +210,12 @@ let actionBarItemsConfig = {
     actionType = AB_SUPPORT_PLANE_3
   },
   ID_WTM_RETURN_TO_SHIP_4 = {
+    getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_4"
+    image = "!ui/gameuiskin#hud_ship_selection.svg"
+    mkButtonFunction = "mkSimpleButton"
+    actionType = AB_SUPPORT_PLANE_4
+  },
+  ID_WTM_RETURN_TO_SHIP_ARCADE = {
     getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_4"
     image = "!ui/gameuiskin#hud_ship_selection.svg"
     mkButtonFunction = "mkSimpleButton"

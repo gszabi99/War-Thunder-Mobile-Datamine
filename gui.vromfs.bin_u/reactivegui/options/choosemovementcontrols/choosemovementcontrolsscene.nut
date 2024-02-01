@@ -18,7 +18,7 @@ let bgGradWidth = contentWidth + hdpx(400)
 
 let selectedValue = Watched("")
 
-let function apply() {
+function apply() {
   currentTankMoveCtrlType(selectedValue.value)
   onControlsApply()
 }
@@ -29,7 +29,7 @@ let orderByFirstVal = {
   arrows        = [ "arrows", "stick", "stick_static" ]
 }
 
-let function reorderList(list, valToPlaceFirst) {
+function reorderList(list, valToPlaceFirst) {
   return (orderByFirstVal?[valToPlaceFirst] ?? orderByFirstVal.stick)
     .filter(@(v) list.contains(v))
 }

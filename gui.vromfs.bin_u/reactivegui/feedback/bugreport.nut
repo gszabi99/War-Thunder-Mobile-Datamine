@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { get_cur_circuit_name, get_game_version_str } = require("app")
 let { platformId } = require("%sqstd/platform.nut")
 
@@ -11,5 +11,5 @@ local bugReportUrl = "{url}?f.platform={platform}&f.version={version}&f.circuit=
 })
 
 return {
-  openBugReport = @() send("openUrl", { baseUrl = bugReportUrl })
+  openBugReport = @() eventbus_send("openUrl", { baseUrl = bugReportUrl })
 }

@@ -7,7 +7,7 @@ let secondsToTimeAbbrString = @(t) secondsToTimeFormatString(t < 3600 ? t : (t /
 let secondsToHoursLoc = @(time) secondsToTimeFormatString(roundTime(time)).subst(timeSubst)
 
 let parseCache = {}
-let function parseUnixTimeCached(timeStr) {
+function parseUnixTimeCached(timeStr) {
   if (timeStr not in parseCache)
     parseCache[timeStr] <- parse_unix_time(timeStr)
   return parseCache[timeStr]

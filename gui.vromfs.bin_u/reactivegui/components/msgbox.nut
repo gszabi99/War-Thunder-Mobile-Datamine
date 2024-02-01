@@ -5,7 +5,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
 let { textButton, buttonsHGap, mergeStyles } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
 let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
 let { btnAUp, btnBEscUp, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
@@ -16,7 +16,7 @@ let wndWidthWide = hdpx(1500) // 3 buttons
 let wndHeight = hdpx(652)
 let wndHeaderHeight = hdpx(105)
 
-let function mkBtn(b, wndUid) {
+function mkBtn(b, wndUid) {
   let { id = "", text = null, cb = null, hotkeys = null, isCancel = false, isDefault = false,
     styleId = "COMMON" } = b
   let style = buttonStyles?[styleId]
@@ -49,21 +49,17 @@ let msgBoxText = @(text, ovr = {}) {
   colorTable = locColorTable
 }.__update(fontSmall, ovr)
 
-let msgBoxBg = {
+let msgBoxBg = bgMessage.__merge({
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  rendObj = ROBJ_SOLID
-  color = 0xFF161B23
   stopMouse = true
-}
+})
 
-let headerBg = {
+let headerBg = bgHeader.__merge({
   size = [ flex(), wndHeaderHeight ]
-  rendObj = ROBJ_SOLID
-  color = 0xFF1C2026
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-}
+})
 
 let msgBoxHeader = @(text, ovr = {}) headerBg.__merge({
   children = {
@@ -110,12 +106,12 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) msgBoxBg.__mer
   ovr)
 
 let defaultBtnsCfg = freeze([ { id = "ok", styleId = "PRIMARY", isDefault = true } ])
-let function closeMsgBox(uid) {
+function closeMsgBox(uid) {
   if (removeModalWindow(uid))
     logM($"close '{uid}'")
 }
 
-let function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wndOvr = {}) {
+function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wndOvr = {}) {
   uid = uid ?? $"msgbox_{text}"
   closeMsgBox(uid)
   logM($"open '{uid}'")

@@ -96,7 +96,7 @@ let allQuestsCompleted = {
   text = loc("quests/allCompleted")
 }.__update(fontMedium)
 
-let function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null) {
+function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -137,9 +137,9 @@ let function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null) {
   }
 }
 
-let function mkAdsBtn(unlock) {
+function mkAdsBtn(unlock) {
   let hasAdBudget = Computed(@() adBudget.value >= SPEED_UP_AD_COST)
-  let function onClick() {
+  function onClick() {
     if (onWatchQuestAd(unlock))
       sendBqQuestsSpeedUp(unlock)
   }
@@ -158,7 +158,7 @@ let function mkAdsBtn(unlock) {
             size = [iconSize, iconSize]
             rendObj = ROBJ_IMAGE
             keepAspect = KEEP_ASPECT_FILL
-            image = Picture($"ui/gameuiskin#mp_spectator.avif:{iconSize}:{iconSize}:P")
+            image = Picture($"ui/gameuiskin#watch_ads.svg:{iconSize}:{iconSize}:P")
           }
           {
             maxWidth = hasAdBudget.value ? (btnSize[0] - iconSize - btnGap) : btnSize[0]

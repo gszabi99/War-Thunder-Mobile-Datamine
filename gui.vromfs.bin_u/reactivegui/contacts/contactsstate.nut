@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { INVALID_USER_ID } = require("matching.errors")
 let { register_command } = require("console")
 let logC = log_with_prefix("[CONTACTS] ")
@@ -64,21 +64,21 @@ myInfo.subscribe(function(info) {
     updateContact(userId.tostring(), realName)
 })
 
-let fetchContactsImpl = @() send("matchingCall",
+let fetchContactsImpl = @() eventbus_send("matchingCall",
   {
     action = "mpresence.reload_contact_list"
     params = {}
     cb = FETCH_CB
   })
 
-let function fetchContacts() {
+function fetchContacts() {
   if (canFetchContacts.value)
     fetchContactsImpl()
   else
     isFetchDelayed(true)
 }
 
-let function fetchIfNeed() {
+function fetchIfNeed() {
   if (!canFetchContacts.value || !isFetchDelayed.value)
     return
   isFetchDelayed(false)
@@ -87,7 +87,7 @@ let function fetchIfNeed() {
 fetchIfNeed()
 canFetchContacts.subscribe(@(_) fetchIfNeed())
 
-let function updatePresencesByList(newPresences) {
+function updatePresencesByList(newPresences) {
   logC("Update presences: ", newPresences.len() > 5 ? newPresences.len() : newPresences)
   let curPresences = presences.value
   let updPresences = {}
@@ -98,7 +98,7 @@ let function updatePresencesByList(newPresences) {
   updatePresences(updPresences)
 }
 
-let function updateGroup(new_contacts, uids, groupName, contactNames) {
+function updateGroup(new_contacts, uids, groupName, contactNames) {
   let members = new_contacts?[buildFullListName(groupName)] ?? []
   local hasChanges = false
   let newUids = {}
@@ -114,14 +114,14 @@ let function updateGroup(new_contacts, uids, groupName, contactNames) {
     uids(newUids)
 }
 
-let function updateAllLists(new_contacts) {
+function updateAllLists(new_contacts) {
   let contactNames = {}
   foreach (name, uids in contactsLists)
     updateGroup(new_contacts, uids, name, contactNames)
   updateContactNames(contactNames)
 }
 
-let function onFetchContacts(result) {
+function onFetchContacts(result) {
   if ("groups" in result)
     updateAllLists(result.groups)
   if ("presences" in result)
@@ -130,13 +130,13 @@ let function onFetchContacts(result) {
     contactsInProgress(contactsInProgress.value.filter(@(v) !v))
 }
 
-subscribe(FETCH_CB, @(msg) onFetchContacts(msg.result))
+eventbus_subscribe(FETCH_CB, @(msg) onFetchContacts(msg.result))
 
-send("matchingSubscribe", "mpresence.notify_presence_update")
-send("matchingSubscribe", "mpresence.on_added_to_contact_list")
+eventbus_send("matchingSubscribe", "mpresence.notify_presence_update")
+eventbus_send("matchingSubscribe", "mpresence.on_added_to_contact_list")
 
-subscribe("mpresence.notify_presence_update", @(r) onFetchContacts(r))
-subscribe("mpresence.on_added_to_contact_list", @(_) fetchContacts())
+eventbus_subscribe("mpresence.notify_presence_update", @(r) onFetchContacts(r))
+eventbus_subscribe("mpresence.on_added_to_contact_list", @(_) fetchContacts())
 
 contactsRegisterHandler("cln_find_users_by_nick_prefix_json", function(result, context) {
   if (searchedNick.value != context?.nick)
@@ -145,7 +145,7 @@ contactsRegisterHandler("cln_find_users_by_nick_prefix_json", function(result, c
   searchContactsResultRaw(result)
 })
 
-let function searchContacts(nick) {
+function searchContacts(nick) {
   let params = {
     data = {
       nick
@@ -161,13 +161,13 @@ let function searchContacts(nick) {
     { nick })
 }
 
-let function clearSearchData() {
+function clearSearchData() {
   searchedNick(null)
   searchContactsResultRaw(null)
   isSearchInProgress(false)
 }
 
-let function mkSimpleContactAction(actionId, mkData, onSucces = null) {
+function mkSimpleContactAction(actionId, mkData, onSucces = null) {
   contactsRegisterHandler(actionId, function(answer, context) {
     let { userId = null } = context
     let { result = null } = answer
@@ -204,7 +204,7 @@ let function mkSimpleContactAction(actionId, mkData, onSucces = null) {
 }
 
 let notifyFriendAdded = @(userId)
-  send("matchingApiNotify", { name = "mpresence.notify_friend_added", params = { friendId = userId.tointeger() }})
+  eventbus_send("matchingApiNotify", { name = "mpresence.notify_friend_added", params = { friendId = userId.tointeger() }})
 
 let notifyFriendCb = @(context) notifyFriendAdded(context.userId)
 
@@ -227,7 +227,7 @@ let addToBlackList = mkSimpleContactAction("cln_blacklist_request_for_contact",
 let removeFromBlackList = mkSimpleContactAction("cln_remove_from_blacklist_for_contact",
   @(userId) { requestorUid = userId, groupName = GAME_GROUP_NAME })
 
-let function openContacts(tabId = null) {
+function openContacts(tabId = null) {
   contactsOpenTabId(tabId)
   isContactsOpened(true)
 }
@@ -242,7 +242,7 @@ if (is_pc) {
     updatePresencesByList(f)
     updateAllLists({ [$"#{GAME_GROUP_NAME}#approved"] = f })
   })
-  let function genFake(count) {
+  function genFake(count) {
     let fake = array(count)
       .map(@(_, i) {
         nick = $"stranger{i}",
@@ -255,7 +255,7 @@ if (is_pc) {
   }
   register_command(genFake, "contacts.generate_fake")
 
-  let function changeFakePresence(count) {
+  function changeFakePresence(count) {
     if (fakeList.value.len() == 0) {
       logC("No fake contacts yet. Generate them first")
       return

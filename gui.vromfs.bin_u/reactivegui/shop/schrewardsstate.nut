@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { shopCategoriesCfg, getGoodsType, isGoodsFitToCampaign } = require("shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
@@ -60,7 +61,7 @@ let getRewardPriority = @(rew) - rew.readyTime
     : rew.needAdvert ? READY_ADVERT
     : READY_NOT_ADVERT)
 
-let function updateActualSchRewards() {
+function updateActualSchRewards() {
   let received = receivedSchRewards.value
   let curTime = serverTime.value
   local nextTime = 0
@@ -97,7 +98,7 @@ updateActualSchRewards()
 schRewardsByCategory.subscribe(@(_) updateActualSchRewards())
 receivedSchRewards.subscribe(@(_) updateActualSchRewards())
 
-let function resetUpdateTimer() {
+function resetUpdateTimer() {
   let { time } = nextUpdate.value
   let left = time - serverTime.value
   if (left <= 0)
@@ -118,7 +119,7 @@ registerHandler("onSchRewardApplied", function(res, context) {
 let applyScheduledReward = @(rewardId)
   apply_scheduled_reward(rewardId, { id = "onSchRewardApplied", rewardId })
 
-let function onSchRewardReceive(schReward) {
+function onSchRewardReceive(schReward) {
   if (schRewardInProgress.value == schReward.id)
     return
   if (!schReward.isReady) {
@@ -142,7 +143,7 @@ let function onSchRewardReceive(schReward) {
     showNotAvailableAdsMsg()
 }
 
-subscribe("adsRewardApply", function(data) {
+eventbus_subscribe("adsRewardApply", function(data) {
   let { schRewardId = null } = data
   let reward = schRewards.value?[schRewardId]
   if (reward == null)

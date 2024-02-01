@@ -1,21 +1,23 @@
-
 // warning disable: -file:forbidden-function
 
+from "%scripts/dagui_natives.nut" import get_cur_gui_scene, update_objects_under_windows_state, reload_main_script_module
 from "%scripts/dagui_library.nut" import *
+
+
 let { reload } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/language.nut")
 let { register_command } = require("console")
 let { getCurrentLanguage } = require("dagor.localize")
 
-let function reload_dagui() {
-  ::get_cur_gui_scene()?.resetGamepadMouseTarget()
-  let res = reload(::reload_main_script_module)
-  ::update_objects_under_windows_state(::get_cur_gui_scene())
+function reload_dagui() {
+  get_cur_gui_scene()?.resetGamepadMouseTarget()
+  let res = reload(reload_main_script_module)
+  update_objects_under_windows_state(get_cur_gui_scene())
   dlog("Dagui reloaded")
   return res
 }
 
-let function debug_change_language(isNext = true) {
+function debug_change_language(isNext = true) {
   let list = getGameLocalizationInfo()
   let curLang = getCurrentLanguage()
   let curIdx = list.findindex(@(l) l.id == curLang) ?? 0

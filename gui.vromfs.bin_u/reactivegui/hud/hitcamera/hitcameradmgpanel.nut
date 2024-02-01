@@ -45,7 +45,7 @@ let isDmPartKilled = @(dmPart) dmPart?.partKilled ?? false
 let isDmPartBroken = @(dmPart) (dmPart?.partKilled ?? false) || (dmPart?.partDead ?? false)
   || (dmPart?.partHp ?? 1.0) <= 0
 
-let function getStateByBrokenDmAll(isUnitKilled, partsInfo, partsArray) {
+function getStateByBrokenDmAll(isUnitKilled, partsInfo, partsArray) {
   local isFound = false
   local isKilled = false
   foreach (partId in partsArray) {
@@ -67,7 +67,7 @@ let function getStateByBrokenDmAll(isUnitKilled, partsInfo, partsArray) {
     : BROKEN
 }
 
-let function getStateByBrokenDmAny(isUnitKilled, partsInfo, partsArray) {
+function getStateByBrokenDmAny(isUnitKilled, partsInfo, partsArray) {
   local isFound = false
   foreach (partId in partsArray) {
     let dmParts = partsInfo?[partId]
@@ -86,7 +86,7 @@ let function getStateByBrokenDmAny(isUnitKilled, partsInfo, partsArray) {
   return isFound ? NONE : HIDDEN
 }
 
-let function getStateByBrokenDmMain(isUnitKilled, partsInfo, partsArray, mainDmArray) {
+function getStateByBrokenDmMain(isUnitKilled, partsInfo, partsArray, mainDmArray) {
   local isFound = false
   foreach (partId in partsArray) {
     let dmParts = partsInfo?[partId]
@@ -148,7 +148,7 @@ let mkTextPart = @(icon, iconRepair, textW, colorW, isRepairW) @() {
   ]
 }
 
-let function mkDmgPart(icon, status) {
+function mkDmgPart(icon, status) {
   let picture = Picture($"{icon}:{iconSize}:{iconSize}")
   return function() {
     let res = { watch = status }

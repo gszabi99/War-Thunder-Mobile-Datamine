@@ -19,6 +19,9 @@ const REPAY_TIME = 0.3
 let shipWeaponsList = [
   "ID_ZOOM"
   "EII_ROCKET"
+//
+
+
   "EII_TORPEDO"
   "EII_MINE"
   "EII_DEPTH_CHARGE"
@@ -28,6 +31,7 @@ let shipWeaponsList = [
   "EII_SUPPORT_PLANE_3"
   "EII_SUPPORT_PLANE_4"
   "EII_DIVING_LOCK"
+  "EII_STRATEGY_MODE"
 ]
 
 let shipGunInsertIdx = 1
@@ -72,7 +76,8 @@ let fixedPositionWeapons = [
   "EII_SUPPORT_PLANE",
   "EII_SUPPORT_PLANE_2",
   "EII_SUPPORT_PLANE_3",
-  "EII_DIVING_LOCK"
+  "EII_DIVING_LOCK",
+  "EII_STRATEGY_MODE"
 ].reduce(@(res, v) res.__update({ [v] = true }), {})
 
 let weaponsList = Computed(@() unitType.value == AIR ? aircraftWeaponsList
@@ -181,11 +186,11 @@ let userHoldWeapKeys = Watched({})
 let userHoldWeapInside = Watched({})
 let holdTimers = {}
 
-let function markWeapKeyHold(key) {
+function markWeapKeyHold(key) {
   if (key in userHoldWeapKeys.value)
     return
   userHoldWeapKeys.mutate(@(v) v[key] <- false)
-  let function onTimer() {
+  function onTimer() {
     holdTimers?.$rawdelete(key)
     userHoldWeapKeys.mutate(@(v) v[key] <- true)
   }
@@ -193,7 +198,7 @@ let function markWeapKeyHold(key) {
   setTimeout(REPAY_TIME, onTimer)
 }
 
-let function unmarkWeapKeyHold(key) {
+function unmarkWeapKeyHold(key) {
   if (key in holdTimers) {
     clearTimer(holdTimers[key])
     holdTimers.$rawdelete(key)
@@ -213,7 +218,7 @@ let currentWeaponInfo = Computed(function() {
 let currentWeaponKey = keepref(Computed(@() currentWeaponInfo.value?.id))
 let getViewCfg = @(curWeaponInfoVal) curWeaponInfoVal?.viewCfg ?? weaponsButtonsConfig?[currentWeaponInfo.value?.id]
 
-let function selectActionByViewCfg(viewCfg) {
+function selectActionByViewCfg(viewCfg) {
   let { shortcut = null, getShortcut = null, actionType = null } = viewCfg
   let sc = shortcut ?? getShortcut?(unitType.value, actionBarItems.value?[actionType])
   if (sc != null)

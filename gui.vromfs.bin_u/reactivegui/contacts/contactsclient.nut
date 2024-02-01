@@ -8,7 +8,7 @@ let debugDelay = keepref(hardPersistWatched("contacts.debugDelay", 0.0))
 
 let { request, registerHandler } = charClientEventExt("contacts")
 local requestExt = request
-let function updateDebugDelay() {
+function updateDebugDelay() {
   requestExt = (debugDelay.value <= 0) ? request
     : @(a, p, c) setTimeout(debugDelay.value, @() request(a, p, c))
 }

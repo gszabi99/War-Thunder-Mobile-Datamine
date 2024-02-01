@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let logA = log_with_prefix("[ADS] ")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
 let { is_ios } = require("%sqstd/platform.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -32,7 +32,7 @@ let isAnyAdsButtonAttached = Computed(@() attachedAdsButtons.get() > 0)
 
 needAdsLoad.subscribe(@(v) logA(v ? "Need to prepare ads load" : "no more need to load ads now"))
 
-let function updateNeedAdsLoad() {
+function updateNeedAdsLoad() {
   local nextTime = advertRewardsTimes.value.reduce(@(a, b) min(a, b))
   needAdsLoadByTime(nextTime != null && nextTime - LOAD_ADS_BEFORE_TIME <= serverTime.value)
   if (!needAdsLoadByTime.value && nextTime != null)
@@ -43,14 +43,14 @@ let function updateNeedAdsLoad() {
 advertRewardsTimes.subscribe(@(_) updateNeedAdsLoad())
 updateNeedAdsLoad()
 
-let function giveReward() {
+function giveReward() {
   if (rewardInfo.value != null)
-    send("adsRewardApply", rewardInfo.value)
+    eventbus_send("adsRewardApply", rewardInfo.value)
 }
 
-let function onFinishShowAds() {
+function onFinishShowAds() {
   if (rewardInfo.value != null)
-    send("adsShowFinish", rewardInfo.value)
+    eventbus_send("adsShowFinish", rewardInfo.value)
 }
 
 let cancelReward = @() rewardInfo(null)

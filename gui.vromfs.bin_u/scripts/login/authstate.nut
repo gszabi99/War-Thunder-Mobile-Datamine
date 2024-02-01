@@ -1,6 +1,7 @@
+from "%scripts/dagui_natives.nut" import get_login_pass
 
 from "%scripts/dagui_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { LT_GAIJIN, SST_UNKNOWN } = require("%appGlobals/loginState.nut")
 let { getAutologinType } = require("autoLogin.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
@@ -15,14 +16,14 @@ let authState = hardPersistWatched("login.authState", {
   secStepType = SST_UNKNOWN
 })
 
-let sendState = @(v) send("updateAuthStates", v)
-authState.subscribe(@(v) send("updateAuthStates", v))
+let sendState = @(v) eventbus_send("updateAuthStates", v)
+authState.subscribe(@(v) eventbus_send("updateAuthStates", v))
 
-let function resetAuthState() {
+function resetAuthState() {
   if (isInLoadingScreen.value) //app may be not inited
     return
 
-  let lp = ::get_login_pass()
+  let lp = get_login_pass()
   authState.mutate(function(s) {
     s.loginType = getAutologinType()
     s.loginName = lp.login
@@ -32,8 +33,8 @@ let function resetAuthState() {
   })
 }
 
-subscribe("authState.reset", @(_) resetAuthState())
-subscribe("authState.request", function(_) {
+eventbus_subscribe("authState.reset", @(_) resetAuthState())
+eventbus_subscribe("authState.request", function(_) {
   let { loginName, loginPas } = authState.value
   if (loginName == "" && loginPas == "")
     resetAuthState()

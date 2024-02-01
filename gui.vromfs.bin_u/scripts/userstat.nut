@@ -1,11 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 let { split_by_chars, startswith } = require("string")
+let { frnd } = require("dagor.random")
 let { getCurrentSteamLanguage } = require("%scripts/language.nut")
 let userstat = require("userstat")
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
-let { setInterval, clearTimer } = require("dagor.workcycle")
+let { setInterval, clearTimer, resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { isProfileReceived, isMatchingConnected } = require("%appGlobals/loginState.nut")
@@ -16,13 +17,15 @@ let { mnSubscribe } = require("%appGlobals/matchingNotifications.nut")
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
+const MAX_CONFIGS_UPDATE_DELAY = 10 //to prevent all users update configs at once.
 
 //profile increase days for daily rewards, and matching need to receive notifications
 let isReadyToConnect = Computed(@() isProfileReceived.value && isMatchingConnected.value)
+let needConfigsUpdate = mkWatched(persist, "needConfigsUpdate", false)
 
 let { request, registerHandler } = charClientEvent("userStats", userstat)
 
-let function mkDataWatched(key, defValue = null, evtName = null) {
+function mkDataWatched(key, defValue = null, evtName = null) {
   local val = defValue
   if (ndbExists(key))
     val = ndbRead(key)
@@ -32,12 +35,12 @@ let function mkDataWatched(key, defValue = null, evtName = null) {
   res.subscribe(function(v) {
     ndbWrite(key, v)
     if (evtName != null)
-      send(evtName, {})
+      eventbus_send(evtName, {})
   })
   return res
 }
 
-let function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefreshRequests = []) {
+function makeUpdatable(persistName, refreshAction, getHeaders = null, customRefreshRequests = []) {
   let defValue = {}
   let data = mkDataWatched($"userstat.{persistName}", defValue, $"userstat.update.{persistName}")
   let lastTime = mkDataWatched($"userstat.{persistName}_lastTime", { request = 0, update = 0 })
@@ -46,7 +49,7 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, custom
   let canRefresh = @() !isRequestInProgress()
     && (!lastTime.value.update || (lastTime.value.update + STATS_UPDATE_INTERVAL < get_time_msec()))
 
-  let function onRefresh(result, context) {
+  function onRefresh(result, context) {
     data(result?.error ? defValue : (result?.response ?? defValue))
     lastTime.mutate(@(v) v.update = get_time_msec())
     if (context?.needPrint)
@@ -63,7 +66,7 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, custom
     })
 
   let prepareToRequest = @() lastTime.mutate(@(v) v.request = get_time_msec())
-  let function refresh(context = null) {
+  function refresh(context = null) {
     if (!isReadyToConnect.value) {
       onRefresh({ error = "not logged in" }, context)
       return
@@ -75,7 +78,7 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, custom
     request(refreshAction, { headers = getHeaders?() ?? {} }, context)
   }
 
-  let function forceRefresh(context = null) {
+  function forceRefresh(context = null) {
     lastTime.mutate(@(v) v.__update({ request = 0, update = 0 }))
     refresh(context)
   }
@@ -87,8 +90,8 @@ let function makeUpdatable(persistName, refreshAction, getHeaders = null, custom
 
   register_command(@() forceRefresh({ needPrint = true }), $"userstat.get.{persistName}")
   register_command(@() debugTableData(data.value) ?? console_print("Done"), $"userstat.debug.{persistName}")
-  subscribe($"userstat.{persistName}.forceRefresh", @(_) forceRefresh())
-  subscribe($"userstat.{persistName}.refresh", @(_) refresh())
+  eventbus_subscribe($"userstat.{persistName}.forceRefresh", @(_) forceRefresh())
+  eventbus_subscribe($"userstat.{persistName}.refresh", @(_) refresh())
 
   return {
     id = persistName
@@ -108,7 +111,7 @@ let userstatUnlocks = unlocksUpdatable.data
 let userstatDescList = descListUpdatable.data
 let userstatStats = statsUpdatable.data
 
-let function validateUserstatData() {
+function validateUserstatData() {
   if (unlocksUpdatable.data.value.len() == 0)
     unlocksUpdatable.refresh()
   if (descListUpdatable.data.value.len() == 0)
@@ -123,7 +126,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
 let needValidateMissingData = keepref(Computed(@()
   isUserstatMissingData.value && isReadyToConnect.value && !isInBattle.value))
 
-let function updateValidationTimer(needValidate) {
+function updateValidationTimer(needValidate) {
   if (!needValidate) {
     clearTimer(validateUserstatData)
     return
@@ -142,7 +145,7 @@ registerHandler("ChangeStats", function(result) {
   }
 })
 
-let function getDebugSimilarStatsText(stat) {
+function getDebugSimilarStatsText(stat) {
   let similar = []
   let parts = split_by_chars(stat, "_", true)
   foreach (s, _v in userstatDescList.value?.stats ?? {})
@@ -154,7 +157,7 @@ let function getDebugSimilarStatsText(stat) {
   return "\n      ".join(["  Similar stats:"].extend(arrayByRows(similar, 8).map(@(v) ", ".join(v))))
 }
 
-let function changeStat(stat, mode, amount, shouldSet) {
+function changeStat(stat, mode, amount, shouldSet) {
   local errorText = null
   if (type(amount) != "integer" && type(amount) != "float")
     errorText = $"Amount must be numeric (current = {amount})"
@@ -181,9 +184,24 @@ let setStat = @(stat, mode, amount)
 mnSubscribe("userStat", function(ev) {
   if (ev?.func == "changed")
     unlocksUpdatable.forceRefresh()
+  else if (ev?.func == "updateConfig")
+    needConfigsUpdate.set(true)
 })
 
-let function debugStatValues(stat) {
+function updateConfigsIfNeed() {
+  if (!needConfigsUpdate.get() || isInBattle.get())
+    return
+  needConfigsUpdate.set(false)
+  descListUpdatable.forceRefresh()
+  unlocksUpdatable.forceRefresh()
+}
+updateConfigsIfNeed()
+needConfigsUpdate.subscribe(@(_) isInBattle.get() ? null
+  : resetTimeout(frnd() * MAX_CONFIGS_UPDATE_DELAY, updateConfigsIfNeed))
+isInBattle.subscribe(@(v) v ? updateConfigsIfNeed() : null)
+
+
+function debugStatValues(stat) {
   if (userstatDescList.value?.stats[stat] == null)
     return console_print($"Stat {stat} does not exist.\n  {getDebugSimilarStatsText(stat)}")
 
@@ -199,14 +217,14 @@ let function debugStatValues(stat) {
 register_command(debugStatValues, $"userstat.debugStatValues")
 
 let registered = {}
-let function registerOnce(func, id) {
+function registerOnce(func, id) {
   if (id in registered)
     return
   register_command(func, id)
   registered[id] <- true
 }
 
-let function registerStatsCommands(uStats) {
+function registerStatsCommands(uStats) {
   let { stats = null } = uStats
   if (stats == null)
     return

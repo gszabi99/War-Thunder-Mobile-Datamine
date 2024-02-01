@@ -14,7 +14,7 @@ let { isStickActiveByArrows, stickDelta } = require("stickState.nut")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { currentGearDownOnStopButtonTouch } = require("%rGui/options/options/tankControlsOptions.nut")
 let { Point2 } = require("dagor.math")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 
 let HAPT_FORWARD = registerHapticPattern("Forward",
   { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
@@ -43,7 +43,7 @@ let isStopButtonVisible = Watched(false)
 
 let maxSpeedBySteps = Computed(@() playerUnitName.value == "" ? {} : getHeroTankMaxSpeedBySteps())
 
-let function axelerate(flipY) {
+function axelerate(flipY) {
   if ((prevCruiseControl == CRUISE_CONTROL_1 && cruiseControl.value == CRUISE_CONTROL_N) ||
       (cruiseControl.value == CRUISE_CONTROL_R && flipY))
     return false
@@ -60,7 +60,7 @@ let function axelerate(flipY) {
   return true
 }
 
-let function updateStickDelta(_) {
+function updateStickDelta(_) {
   let deltaY = cruiseControl.value == CRUISE_CONTROL_N ? 0
              : cruiseControl.value == CRUISE_CONTROL_R ? -1
              : 1
@@ -74,27 +74,27 @@ steerWatch.subscribe(updateStickDelta)
 
 let fullStopOnTouchButton = Computed(@() currentTankMoveCtrlType.value == "arrows" && currentGearDownOnStopButtonTouch.value)
 
-let function toNeutral() {
+function toNeutral() {
   if (holdingForStopShowCount > 0 && !fullStopOnTouchButton.value) {
-    send("hint:holding_for_stop:show", {})
+    eventbus_send("hint:holding_for_stop:show", {})
     --holdingForStopShowCount
   }
   prevCruiseControl = CRUISE_CONTROL_UNDEF
   changeCruiseControl(-cruiseControl.value)
 }
 
-let function toReverse() {
+function toReverse() {
   prevCruiseControl = CRUISE_CONTROL_N
   changeCruiseControl(CRUISE_CONTROL_R)
   isStopButtonVisible(false)
 }
 
-let function setGmBrakeAxis(v) {
+function setGmBrakeAxis(v) {
   setVirtualAxisValue("gm_brake_left", v)
   setVirtualAxisValue("gm_brake_right", v)
 }
 
-let function updateAxeleration(flipY) {
+function updateAxeleration(flipY) {
   if (prevCruiseControl == CRUISE_CONTROL_UNDEF || !axelerate(flipY))
     return
   let updateAxelerationImpl = callee()
@@ -102,14 +102,14 @@ let function updateAxeleration(flipY) {
   resetTimeout(delay, @() updateAxelerationImpl (flipY))
 }
 
-let function steeringAxelerate(id, flipX) {
+function steeringAxelerate(id, flipX) {
   curSteerValue = min(curSteerValue + deltaSteer, 1)
   steerWatch(flipX ? -curSteerValue : curSteerValue)
   setVirtualAxisValue(id, steerWatch.value)
 }
 
-let function mkSteerParams(isRight) {
-  let function onTouchUpdate() {
+function mkSteerParams(isRight) {
+  function onTouchUpdate() {
     steeringAxelerate("gm_steering", isRight)
     if (speed.value == 0)
       toNeutral()
@@ -126,7 +126,7 @@ let function mkSteerParams(isRight) {
       setInterval(0.3, onTouchUpdate)
       playSound("steer")
       if (!isTurnTypesCtrlShowed.value) {
-        send("hint:turn_types_ctrl:show", {})
+        eventbus_send("hint:turn_types_ctrl:show", {})
         isTurnTypesCtrlShowed(true)
       }
     }
@@ -139,7 +139,7 @@ let function mkSteerParams(isRight) {
   }
 }
 
-let function mkStopParams() {
+function mkStopParams() {
   let shortcutId = "ID_TRANS_GEAR_DOWN"
    return {
     ovr = { key = "gm_brake" }
@@ -166,7 +166,7 @@ let rightArrow = mkMoveRightBtn(mkSteerParams(true))
 let stopBtn = mkStopBtn(mkStopParams())
 let isMoveCtrlHitShowed = Watched(false)
 
-let function mkEngineBtn(isBackward, id, children) {
+function mkEngineBtn(isBackward, id, children) {
   let onTouchUpdate = @() updateAxeleration(isBackward)
   return mkMoveVertBtn(
     function onTouchBegin() {
@@ -175,7 +175,7 @@ let function mkEngineBtn(isBackward, id, children) {
       if (axelerate(isBackward))
         setTimeout(delayLow, onTouchUpdate)
       if (!isMoveCtrlHitShowed.value) {
-        send("hint:dont_hold_ctrl_to_move_tank:show", {})
+        eventbus_send("hint:dont_hold_ctrl_to_move_tank:show", {})
         isMoveCtrlHitShowed(true)
       }
     },
@@ -191,7 +191,7 @@ let function mkEngineBtn(isBackward, id, children) {
     })
 }
 
-let function calcBackSpeedPart() {
+function calcBackSpeedPart() {
   if (speed.value >= 0)
     return 0
   let maxSpeed = maxSpeedBySteps.value?[ - 1] ?? 0
@@ -206,14 +206,14 @@ let backwardArrow = mkEngineBtn(true, "ID_TRANS_GEAR_DOWN",
       Computed(@() cruiseControl.value == CRUISE_CONTROL_R ? fillMoveColorDef : 0xFFFFFFFF))
   ])
 
-let function calcForwSpeedPart() {
+function calcForwSpeedPart() {
   if (speed.value <= 0)
     return 0
   let maxSpeed = maxSpeedBySteps.value?[1] ?? 0
   return maxSpeed > 0 ? clamp(speed.value / maxSpeed.tofloat(), 0.0, 1.0) : 0
 }
 
-let function calcForwSpeedPart2() {
+function calcForwSpeedPart2() {
   let minSpeed = maxSpeedBySteps.value?[1] ?? 0
   if (speed.value <= minSpeed)
     return 0.0

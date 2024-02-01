@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+require("%rGui/onlyAfterLogin.nut")
 let { register_command } = require("console")
 let { json_to_string, parse_json } = require("json")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { eachParam, isDataBlock } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
@@ -34,7 +35,7 @@ let isCurPresetChanged = Computed(function() {
   return !isEqual(tuningTransform.value, transformsByUnitType.value?[ut] ?? {})
 })
 
-let function loadPresets() {
+function loadPresets() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SAVE_ID]
   if (!isDataBlock(htBlk)) {
@@ -57,12 +58,12 @@ if (isOnlineSettingsAvailable.value && presetsSaved.value.len() == 0)
   loadPresets()
 isOnlineSettingsAvailable.subscribe(@(_) loadPresets())
 
-let function savePreset(unitType, preset) {
+function savePreset(unitType, preset) {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk.addBlock(SAVE_ID)
   htBlk[unitType] = json_to_string(preset)
   presetsSaved.mutate(@(v) v[unitType] <- preset)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
 local lastHistoryIdx = curHistoryIdx.value
@@ -94,7 +95,7 @@ let saveCurrentTransform = @() tuningUnitType.value == null ? null
             transforms = tuningTransform.value
           })
 
-let function applyTransformProgress() {
+function applyTransformProgress() {
   if (selectedId.value == null || transformInProgress.value == null)
     return
   tuningTransform(tuningTransform.value.__merge({
@@ -103,7 +104,7 @@ let function applyTransformProgress() {
   transformInProgress(null)
 }
 
-let function openTuningRecommended() {
+function openTuningRecommended() {
   let uType = isInBattle.value ? hudUnitType.value
     : hangarUnitName.value != "" ? getUnitType(hangarUnitName.value)
     : null

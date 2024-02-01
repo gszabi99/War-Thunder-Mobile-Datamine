@@ -8,6 +8,7 @@ let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 
 
 let textArea = @(text, ovr = {}) {
@@ -22,8 +23,8 @@ let textArea = @(text, ovr = {}) {
   fontFx = FFT_GLOW
 }.__update(fontTiny, ovr)
 
-let function mkUnitPkgDownloadInfo(unitW, needProgress = true, ovr = {}) {
-  let reqPkgList = Computed(@() unitW.value == null ? []
+function mkUnitPkgDownloadInfo(unitW, needProgress = true, ovr = {}) {
+  let reqPkgList = Computed(@() unitW.get() == null || !isReadyToFullLoad.get() ? []
     : getUnitPkgs(unitW.value.name, unitW.value.mRank).filter(@(a) !hasAddons.value?[a]))
   let isCurrentUnit = Computed(@() curUnit.value?.name == unitW.value?.name)
   let { halign = ALIGN_CENTER } = ovr

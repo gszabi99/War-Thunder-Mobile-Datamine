@@ -8,7 +8,7 @@ let actionBar = Watched([])
 let actionBarUpdaters = Watched({})
 let needUpdate = keepref(Computed(@() actionBarUpdaters.value.len() > 0))
 
-let function actionIsEqual(a, b) {
+function actionIsEqual(a, b) {
   if (type(a) != type(b))
     return false
   if (type(a) != "table")

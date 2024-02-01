@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let iOsPlaform = require("ios.platform")
 let { requestTrackingPermission, getTrackingPermission, ATT_NOT_DETERMINED } = iOsPlaform
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
@@ -33,7 +33,7 @@ let isPending = Watched(false)
 
 let bagImgWidth = hdpxi(850)
 
-subscribe("ios.platform.onPermissionTrackCallback", function(p) {
+eventbus_subscribe("ios.platform.onPermissionTrackCallback", function(p) {
   let { value } = p
   local result = value
   foreach(id, val in iOsPlaform)

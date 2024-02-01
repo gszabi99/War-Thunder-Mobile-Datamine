@@ -3,24 +3,19 @@ let { defer } = require("dagor.workcycle")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { shopCategoriesCfg, SC_CONSUMABLES } = require("shopCommon.nut")
-let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent, openShopWnd
+let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
+let { shopCategoriesCfg } = require("shopCommon.nut")
+let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent
 } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory } = require("schRewardsState.nut")
 let { mkShopTabs, tabW } = require("%rGui/shop/shopWndTabs.nut")
-let { mkShopPage } = require("%rGui/shop/shopWndPage.nut")
+let { mkShopPage, mkShopGamercard } = require("%rGui/shop/shopWndPage.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("unseenPurchasesState.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
-let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
-let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { itemsOrder } = require("%appGlobals/itemsState.nut")
 
 let gapFromGamercard = hdpx(40)
 let opacityGradWidth = saBorders[0]
@@ -56,31 +51,9 @@ let isPurchNoNeedResultWindow = @(purch) purch?.source == "purchaseInternal"
   && null == purch.goods.findvalue(@(g) g.gType != "item" && g.gType != "currency" && g.gType != "premium")
 let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
 
-let function onClose() {
+function onClose() {
   saveSeenGoodsCurrent()
   close()
-}
-
-let gamercardShopItemsBalanceBtns = @(){
-  watch = itemsOrder
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = itemsOrder.value.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
-}
-
-let mkShopGamercard = {
-  size = [ saSize[0], gamercardHeight ]
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = [
-    mkLeftBlock(onClose)
-    {size = flex()}
-    premIconWithTimeOnChange
-    gamercardShopItemsBalanceBtns
-    mkCurrenciesBtns([WP, GOLD], null, { size = SIZE_TO_CONTENT, hplace = ALIGN_RIGHT})
-  ]
 }
 
 let scrollArrowsBlock = {
@@ -102,7 +75,7 @@ let shopScene = bgShaded.__merge({
   onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
   onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
   children = [
-    mkShopGamercard
+    mkShopGamercard(onClose)
     {
       size = [saSize[0] + opacityGradWidth, flex()]
       flow = FLOW_HORIZONTAL

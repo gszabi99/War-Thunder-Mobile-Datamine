@@ -8,7 +8,7 @@ let iconSizeDef = hdpxi(100)
 
 let textColor = 0xFFFFFFFF
 
-let function mkTabImage(image, imageSizeMul) {
+function mkTabImage(image, imageSizeMul) {
   let size = (iconSizeDef * imageSizeMul + 0.5).tointeger()
   let blockSize = max(iconSizeDef, size)
   return {
@@ -26,7 +26,7 @@ let function mkTabImage(image, imageSizeMul) {
   }
 }
 
-let function tabData(tab, idx, curTabIdx) {
+function tabData(tab, idx, curTabIdx) {
   let { locId  = "", image = null, isVisible = null, unseen = null, tabContent = null, tabHeight = tabH,
     imageSizeMul = 1.0 } = tab
   local unseenMark = null

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { parse_json } = require("json")
 let logA = log_with_prefix("[ADS] ")
@@ -14,7 +15,7 @@ let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
 let sendAdsBqEvent = is_android ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
-  isAdsLoaded, loadAds, showAds, requestConsent = null, showConsent = null
+  isAdsLoaded, loadAds, showAds, requestConsent, showConsent
 } = ads
 
 
@@ -24,9 +25,8 @@ let loadedProvider = hardPersistWatched("adsAndroid.loadedProvider", "")
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
 
-let consent = hardPersistWatched("adsAndroid.consent", requestConsent != null ? null
-  : { canRequest = true })
-let isConsentShowed = hardPersistWatched("adsAndroid.isConsentShowed", requestConsent == null)
+let consent = hardPersistWatched("adsAndroid.consent", null)
+let isConsentShowed = hardPersistWatched("adsAndroid.isConsentShowed", false)
 let canLoad = Computed(@() (consent.get()?.canRequest ?? false) || !can_request_ads_consent.get())
 let needAdsLoadExt = Computed(@() canLoad.get() && isInited.get() && needAdsLoad.get() && !isLoaded.get())
 let needOpenConsent = keepref(Computed(@() can_request_ads_consent.get() && !isConsentShowed.get()
@@ -72,7 +72,7 @@ foreach(id, val in ads)
 let getStatusName = @(v) statusNames?[v] ?? v
 let getConsentName = @(v) consentNames?[v] ?? v
 
-subscribe("android.ads.onInit", function(msg) {
+eventbus_subscribe("android.ads.onInit", function(msg) {
   let { status, provider } = msg
   if (status != ADS_STATUS_OK)
     return
@@ -80,21 +80,21 @@ subscribe("android.ads.onInit", function(msg) {
   isInited(true)
 })
 
-subscribe("android.ads.onConsentRequest", function(msg) {
+eventbus_subscribe("android.ads.onConsentRequest", function(msg) {
   logA("Request consent result = ", msg.__merge({ status = getConsentName(msg?.status) }))
   consent.set(msg)
 })
-subscribe("android.ads.onShowConsent", function(msg) {
+eventbus_subscribe("android.ads.onShowConsent", function(msg) {
   logA("Show consent result = ", msg.__merge({ status = getConsentName(msg?.status) }))
   consent.set(msg)
 })
 
 if (consent.get() == null)
-  requestConsent?(false)
-needOpenConsent.subscribe(@(v) v ? requestConsent?(true) : null)
+  requestConsent(false)
+needOpenConsent.subscribe(@(v) v ? requestConsent(true) : null)
 
 local isLoadStarted = false
-let function startLoading() {
+function startLoading() {
   logA($"Start loading")
   isLoadStarted = true
   loadAds()
@@ -108,7 +108,7 @@ needAdsLoadExt.subscribe(function(v) {
 })
 
 local isRetryQueued = false
-let function retryLoad() {
+function retryLoad() {
   isRetryQueued = false
   if (!needAdsLoadExt.value || isLoadStarted)
     return
@@ -118,7 +118,7 @@ let function retryLoad() {
   sendAdsBqEvent("load_retry", "", false)
 }
 
-subscribe("android.ads.onLoad", function (params) {
+eventbus_subscribe("android.ads.onLoad", function (params) {
   let { status, provider = "unknown" } = params
   logA($"onLoad {getStatusName(status)} ({provider})")
   isLoadStarted = false
@@ -139,7 +139,7 @@ subscribe("android.ads.onLoad", function (params) {
   sendAdsBqEvent("load_failed", provider, false)
 })
 
-subscribe("android.ads.onShow", function (params) { //we got this event on start ads show, and on finish
+eventbus_subscribe("android.ads.onShow", function (params) { //we got this event on start ads show, and on finish
   let { status, provider = "unknown" } = params
   logA($"onShow {getStatusName(status)}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   if (status == ADS_STATUS_SHOWN) {
@@ -154,7 +154,7 @@ subscribe("android.ads.onShow", function (params) { //we got this event on start
   }
 })
 
-subscribe("android.ads.onReward", function (params) {
+eventbus_subscribe("android.ads.onReward", function (params) {
   let { provider = "unknown" } = params
   logA($"onReward {params.amount} {params.type}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   giveReward()
@@ -162,7 +162,7 @@ subscribe("android.ads.onReward", function (params) {
 })
 
 
-let function showAdsForReward(rInfo) {
+function showAdsForReward(rInfo) {
   if (!isLoaded.value)
     return
   rewardInfo(rInfo)
@@ -170,10 +170,10 @@ let function showAdsForReward(rInfo) {
   showAds()
 }
 
-let function onTryShowNotAvailableAds() {
+function onTryShowNotAvailableAds() {
   if (canLoad.get())
     return false
-  showConsent?()
+  showConsent()
   return true
 }
 

@@ -34,7 +34,7 @@ let scrollArrowsBlock = {
   ]
 }
 
-let function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHeaderComp = null) {
+function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHeaderComp = null) {
   isOpened = isOpened ?? mkWatched(persist, $"{sceneId}_isOpened", false)
   curTabId = curTabId ?? Watched(null)
   let findTabIdxById = @(pageId) pageId == null ? null
@@ -59,7 +59,7 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, add
       resetCurTabIdx()
   }
 
-  let function setTabById(id) {
+  function setTabById(id) {
     let idx = findTabIdxById(id)
     if (idx != null && (tabs[idx]?.isVisible.value ?? true))
       curTabIdx(idx)
@@ -67,7 +67,7 @@ let function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, add
   curTabId.subscribe(setTabById)
   curTabIdx.subscribe(@(_) scrollHandler.scrollToY(0))
 
-  let function curOptionsContent() {
+  function curOptionsContent() {
     let tab = tabs?[curTabIdx.value]
     let { isFullWidth = false } = tab
     return tab?.content

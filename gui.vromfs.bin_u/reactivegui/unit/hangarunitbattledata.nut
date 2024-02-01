@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let io = require("io")
 let { json_to_string } = require("json")
 let { register_command } = require("console")
@@ -17,7 +17,7 @@ let battleDataQuery = ecs.SqQuery("hangarBattleDataQuery",
   })
 
 
-let function setBattleDataToClientEcs(bd) {
+function setBattleDataToClientEcs(bd) {
   if (bd == null)
     return
   local isFound = false
@@ -39,7 +39,7 @@ let function setBattleDataToClientEcs(bd) {
     }, @(_e) logBD("Created wtm_server_player with battle data."))
 }
 
-let function mkHangarBattleData() {
+function mkHangarBattleData() {
   if (hangarUnit.value == null)
     return null
   let { name, country = "", unitType = "", mods = null, modPreset = "",
@@ -69,7 +69,7 @@ let function mkHangarBattleData() {
   }
 }
 
-subscribe("CreateBattleDataForHangar",
+eventbus_subscribe("CreateBattleDataForHangar",
   @(_) setBattleDataToClientEcs(mkHangarBattleData()))
 
 register_command(

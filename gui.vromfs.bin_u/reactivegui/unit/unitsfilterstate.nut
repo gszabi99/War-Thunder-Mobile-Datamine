@@ -42,14 +42,14 @@ let mkListToggleValue = @(id, allValuesW) function toggleValue(value, isChecked)
 }
 
 let nameLocCache = {}
-let function getLocName(name) {
+function getLocName(name) {
   if (name not in nameLocCache)
     nameLocCache[name] <- utf8ToLower(loc(getUnitPresentation(name).locId))
   return nameLocCache[name]
 }
 
 let idLowercaseCache = {}
-let function getIdLowercase(name) {
+function getIdLowercase(name) {
   if (name not in idLowercaseCache)
     idLowercaseCache[name] <- name.tolower()
   return idLowercaseCache[name]
@@ -76,7 +76,7 @@ let optName = {
   }
 }
 
-let function mkOptMultiselect(id, override = {}) {
+function mkOptMultiselect(id, override = {}) {
   let { getUnitValue = @(unit) unit?[id] } = override
   let allValues = override?.allValues
     ?? Computed(@() allUnitsCfg.value

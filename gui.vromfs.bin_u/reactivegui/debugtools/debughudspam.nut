@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+
+let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { eventbus_send } = require("eventbus")
 let { register_command, command } = require("console")
 let { MISSION_CAPTURING_ZONE } = require("guiMission")
 let { HIT_CAMERA_START, HIT_CAMERA_FINISH, DM_HIT_RESULT_NONE, DM_HIT_RESULT_KILL } = require("hitCamera")
@@ -34,28 +36,28 @@ let approximateIntervalSec = @(t) 1.0 / DEFAULT_FREQUENCY / t
 let testsCfg = {
   hintsMission = {
     possibility = approximateIntervalSec(2.5)
-    show = @() send("hint:missionHint:set", { locId = chooseRandom(samplesHintMission), time = 3.0 })
+    show = @() eventbus_send("hint:missionHint:set", { locId = chooseRandom(samplesHintMission), time = 3.0 })
   }
   hintsMissionBottom = {
     possibility = approximateIntervalSec(5.0)
-    show = @() send("hint:missionHint:set",
+    show = @() eventbus_send("hint:missionHint:set",
       { locId = chooseRandom(samplesHintMission), time = 3.0, hintType = "bottom" })
   }
   hintsObjective = {
     possibility = approximateIntervalSec(2.0)
-    show = @() send("HudMessage", { id = 0, type = 0, show = true, text = loc(chooseRandom(samplesHintObjective)) })
+    show = @() eventbus_send("HudMessage", { id = 0, type = 0, show = true, text = loc(chooseRandom(samplesHintObjective)) })
   }
   hintsCommon = {
     possibility = approximateIntervalSec(2.5)
-    show = @() send(chooseRandom(samplesHintCommon), {})
+    show = @() eventbus_send(chooseRandom(samplesHintCommon), {})
   }
   hintWarning = {
     possibility = approximateIntervalSec(2.5)
-    show = @() send("onShowReturnToMapMessage", chooseRandom([
-      { showMessage = true, endTime = ::get_mission_time() }
+    show = @() eventbus_send("onShowReturnToMapMessage", chooseRandom([
+      { showMessage = true, endTime = get_mission_time() }
       { showMessage = false }
     ]))
-    hide = @() send("onShowReturnToMapMessage", { showMessage = false })
+    hide = @() eventbus_send("onShowReturnToMapMessage", { showMessage = false })
   }
   hintObstacle = {
     possibility = approximateIntervalSec(3.0)
@@ -63,7 +65,7 @@ let testsCfg = {
   }
   hintCapturingZone = {
     possibility = approximateIntervalSec(5.0)
-    show = @() send("zoneCapturingEvent", {
+    show = @() eventbus_send("zoneCapturingEvent", {
       text = loc("NET_YOU_CAPTURING_LA")
       eventId = MISSION_CAPTURING_ZONE
       isMyTeam = true
@@ -86,15 +88,15 @@ let testsCfg = {
   }
   hitCam = {
     possibility = approximateIntervalSec(5.0)
-    show = @() send("hitCamera", chooseRandom([
+    show = @() eventbus_send("hitCamera", chooseRandom([
       { mode = HIT_CAMERA_START, result = DM_HIT_RESULT_KILL, info = {} }
       { mode = HIT_CAMERA_FINISH, result = DM_HIT_RESULT_NONE, info = {} }
     ]))
-    hide = @() send("hitCamera", { mode = HIT_CAMERA_FINISH, result = DM_HIT_RESULT_NONE, info = {} })
+    hide = @() eventbus_send("hitCamera", { mode = HIT_CAMERA_FINISH, result = DM_HIT_RESULT_NONE, info = {} })
   }
   hintStreak = {
     possibility = approximateIntervalSec(5.0)
-    show = @() send("HudMessage", {
+    show = @() eventbus_send("HudMessage", {
       type = HUD_MSG_STREAK_EX
       unlockId = "first_blood"
       stage = 1
@@ -104,7 +106,7 @@ let testsCfg = {
   }
 }
 
-let function act() {
+function act() {
   foreach (test in testsCfg) {
     let { show, possibility } = test
     let rnd = rnd_float(0.0, 1.0)
@@ -113,12 +115,12 @@ let function act() {
   }
 }
 
-let function spamStart() {
+function spamStart() {
   setInterval(1.0 / frequency.value, act)
   defer(act)
 }
 
-let function spamStop() {
+function spamStop() {
   clearTimer(act)
   foreach (test in testsCfg)
     if (test?.hide != null)

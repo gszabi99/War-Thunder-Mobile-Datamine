@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { eventSeason } = require("eventState.nut")
 let { SEND_GIFT_URL } = require("%appGlobals/commonUrl.nut")
 let { imageBtn } = require("%rGui/components/imageButton.nut")
@@ -9,7 +9,7 @@ return @() {
   hplace = ALIGN_RIGHT
   children = eventSeason.value == "season_3"
              ? imageBtn("ui/gameuiskin#icon_gift.avif",
-                        @() send("openUrl", { baseUrl = SEND_GIFT_URL }),
+                        @() eventbus_send("openUrl", { baseUrl = SEND_GIFT_URL }),
                         { size = [hdpx(193), hdpx(190)] },
                         {
                           size = [flex(), SIZE_TO_CONTENT]

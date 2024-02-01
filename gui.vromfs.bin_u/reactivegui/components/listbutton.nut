@@ -28,7 +28,7 @@ let btnLine = @(isActive) {
   transitions = opacityTransition
 }
 
-let function btnBase(textOrCtor, sf, isSelected) {
+function btnBase(textOrCtor, sf, isSelected) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   return {
     size = [flex(), SIZE_TO_CONTENT]
@@ -61,7 +61,7 @@ let function btnBase(textOrCtor, sf, isSelected) {
   }
 }
 
-let function listButton(textOrCtor, isSelected, onClick, override = {}) {
+function listButton(textOrCtor, isSelected, onClick, override = {}) {
   let stateFlags = Watched(0)
   return @() {
     watch = [isSelected, stateFlags]

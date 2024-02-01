@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { rnd_int } = require("dagor.random")
 let { register_command } = require("console")
 let { HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_STREAK_EX, UT_Unknown, UT_Ship } = require("hudMessages")
@@ -20,22 +20,22 @@ let hintsForTest = [
   "avg_Bttl_objective_01" //with red team color
 ]
 register_command(
-  @() send("hint:missionHint:set", { locId = chooseRandom(hintsForTest), time = 5.0 }),
+  @() eventbus_send("hint:missionHint:set", { locId = chooseRandom(hintsForTest), time = 5.0 }),
   "hud.debug.missionHintSet")
 register_command(
-  @() send("hint:missionHint:remove", {}),
+  @() eventbus_send("hint:missionHint:remove", {}),
   "hud.debug.missionHintRemove")
 register_command(
-  @() send("hint:missionHint:set", { locId = "hints/enemy_base_destroyed_no_respawn", time = 5.0, hintType = "bottom" }),
+  @() eventbus_send("hint:missionHint:set", { locId = "hints/enemy_base_destroyed_no_respawn", time = 5.0, hintType = "bottom" }),
   "hud.debug.missionBottomHintSet")
 register_command(
-  @() send("hint:missionHint:remove", { hintType = "bottom" }),
+  @() eventbus_send("hint:missionHint:remove", { hintType = "bottom" }),
   "hud.debug.missionBottomHintRemove")
 
 
 //mission objectives
 register_command(
-  @() send("HudMessage",
+  @() eventbus_send("HudMessage",
     {
       id = 0
       type = 0
@@ -44,7 +44,7 @@ register_command(
     }),
   "hud.debug.objectiveHintShow")
 register_command(
-  @() send("HudMessage",
+  @() eventbus_send("HudMessage",
     {
       id = 0
       type = 0
@@ -63,16 +63,16 @@ register_command(
   function() {
     let { id, dbg } = results[++prevIdx % results.len()]
     if (id == GO_NONE)
-      send("MissionContinue", {})
+      eventbus_send("MissionContinue", {})
     else
-      send("MissionResult", { resultNum = id })
+      eventbus_send("MissionResult", { resultNum = id })
     log(dbg)
   },
   "hud.debug.battleResultHint")
 
 
 register_command(
-  @() send("HudMessage", {
+  @() eventbus_send("HudMessage", {
     type = HUD_MSG_MULTIPLAYER_DMG
     isKill = true
     action = "kill"
@@ -94,7 +94,7 @@ register_command(
   "hud.debug.killMessage")
 
 register_command(
-  @() send("HudMessage", {
+  @() eventbus_send("HudMessage", {
     type = HUD_MSG_STREAK_EX
     playerId = localMPlayerId.value
     unlockId = ((get_unlocks_blk() % "unlockable")?.filter(@(blk) blk?.type == "streak") ?? [])[rnd_int(0, 40)].id
@@ -111,7 +111,7 @@ register_command(
     }
     let unit = allUnitsCfg.value.findvalue(@(_) true)
     let unitType = hudMessagesUnitTypesMap.findindex(@(v) v == unit?.unitType) ?? UT_Unknown
-    send("HudMessage", {
+    eventbus_send("HudMessage", {
       type = HUD_MSG_MULTIPLAYER_DMG
       isKill = true
       action = "kill"

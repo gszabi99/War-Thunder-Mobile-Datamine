@@ -42,7 +42,7 @@ lastProfileKeysUpdated.subscribe(function(list) {
     needRefresh(true)
 })
 
-let function actualizeQueueData(executeAfter = null) {
+function actualizeQueueData(executeAfter = null) {
   let unitName = curUnit.value?.name
   if (unitName == null) {
     callHandler(executeAfter, { error = "No current unit" })
@@ -72,12 +72,12 @@ registerHandler("onGetQueueData", function(res, context) {
   callHandler(extExecuteAfter, result)
 })
 
-let function actualizeIfNeed() {
+function actualizeIfNeed() {
   if (needActualize.value)
     actualizeQueueData()
 }
 
-let function delayedActualize() {
+function delayedActualize() {
   if (needActualize.value)
     resetTimeout(actualizeDelay.value, actualizeIfNeed)
 }
@@ -97,7 +97,7 @@ squadLeaderQueueDataCheckTime.subscribe(function(_) {
     actualizeIfNeed()
 })
 
-let function printQueueDataResult() {
+function printQueueDataResult() {
   if ("jwt" in successResult.value)
     saveJwtResultToJson(successResult.value.jwt, successResult.value.payload, "wtmQueueData")
   console_print(successResult.value)

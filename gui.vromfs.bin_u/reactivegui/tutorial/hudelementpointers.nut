@@ -22,7 +22,7 @@ let curBoxes = Watched([])
 
 isInBattle.subscribe(@(_) activeIds({}))
 
-let function updateExpires() {
+function updateExpires() {
   if (activeIds.value.len() == 0)
     return
   let time = get_time_msec()
@@ -32,14 +32,14 @@ let function updateExpires() {
 }
 updateExpires()
 
-let function startExpireTimer(next) {
+function startExpireTimer(next) {
   if (next > 0)
     resetTimeout(0.001 * (next - get_time_msec()), updateExpires)
 }
 nextExpire.subscribe(startExpireTimer)
 startExpireTimer(nextExpire.value)
 
-let function updateCurBoxes() {
+function updateCurBoxes() {
   let boxes = []
   foreach (key, configs in curElements.value)
     foreach (cfg in configs) {
@@ -60,7 +60,7 @@ let function updateCurBoxes() {
 }
 curElements.subscribe(@(_) updateCurBoxes())
 
-let function updateBoxesTimers(interval) {
+function updateBoxesTimers(interval) {
   clearTimer(updateCurBoxes)
   if (interval <= 0)
     return
@@ -116,7 +116,7 @@ let hudElementPointers = @() {
   children = mkArrows(curBoxes.value)
 }
 
-let function addHudElementPointer(id, time) {
+function addHudElementPointer(id, time) {
   if (type(id) == "array") {
     activeIds.mutate(function(v) {
       foreach(localId in id){
@@ -128,7 +128,7 @@ let function addHudElementPointer(id, time) {
     activeIds.mutate(@(v) v[id] <- get_time_msec() + (1000 * time).tointeger())
 }
 
-let function removeHudElementPointer(id) {
+function removeHudElementPointer(id) {
   if (id in activeIds.value ) {
     activeIds.mutate(@(v) v.$rawdelete(id))
     return

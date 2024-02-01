@@ -45,7 +45,7 @@ let initItemBalance = @(itemId) itemId in visibleBalance.value ? null
   : visibleBalance.mutate(@(v) v[itemId] <- items.value?[itemId].count
       ?? (isProfileReceived.value ? 0 : null))
 
-let function applyChanges(changes) {
+function applyChanges(changes) {
   if (changes.len() != 0)
     changeOrders.mutate(function(list) {
       foreach (id, info in changes) {
@@ -96,7 +96,7 @@ items.subscribe(function(it) {
     visibleBalance(visibleBalance.value.__merge(visBalanceApply))
 })
 
-let function onChangeAnimFinish(id, change) {
+function onChangeAnimFinish(id, change) {
   if (change != changeOrders.value?[id][0] || id not in visibleBalance.value)
     return
   visibleBalance.mutate(@(v) v[id] = change.cur)
@@ -112,7 +112,7 @@ let diffStylePos = CS_GAMERCARD.__merge({
 })
 let diffStyleNeg = diffStylePos.__merge({ textColor = badTextColor2 })
 
-let function getSoundForChange (id, change){
+function getSoundForChange (id, change){
   if (change.diff > 0)
     return incomeSounds?[id] ?? "meta_consumables_income"
   return "meta_coins_outcome"
@@ -139,7 +139,7 @@ let plus = {
   text = "+"
 }.__update(fontBigShaded)
 
-let function mkBalance(id, style, onClick, onAttach) {
+function mkBalance(id, style, onClick, onAttach) {
   let visCount = Computed(@() visibleBalance.value?[id])
   let nextChange = Computed(@() isAdsVisible.value ? null : changeOrders.value?[id][0])
   let stateFlags = Watched(0)
@@ -190,11 +190,11 @@ let function mkBalance(id, style, onClick, onAttach) {
   }
 }
 
-let function mkCurrencyBalance(currencyId, onClick = null, style = CS_GAMERCARD) {
+function mkCurrencyBalance(currencyId, onClick = null, style = CS_GAMERCARD) {
   return mkBalance(currencyId, style, onClick, @() initCurrencyBalance(currencyId))
 }
 
-let function mkItemsBalance(itemId, onClick = null, style = CS_GAMERCARD) {
+function mkItemsBalance(itemId, onClick = null, style = CS_GAMERCARD) {
   return mkBalance(itemId, style, onClick, @() initItemBalance(itemId))
 }
 

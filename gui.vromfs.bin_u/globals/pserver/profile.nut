@@ -14,6 +14,7 @@ let defaultProfileLevelInfo = {
   isReadyForLevelUp = false
   isMaxLevel = false
   isNextStarLevel = false
+  isStarProgress = false
 }
 
 let allUnitsCfg = Computed(function() {

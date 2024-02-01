@@ -66,7 +66,7 @@ let mkEquippedFrame = @(isEquipped) @() !isEquipped.value ? { watch = isEquipped
       color = equippedColor
     }
 
-let function mkEquippedIcon(isEquipped) {
+function mkEquippedIcon(isEquipped) {
   let icon = Computed(@() iconsCfg?[unit.value?.unitType] ?? iconsCfg.tank)
 
   return @() !isEquipped.value ? { watch = [unit, isEquipped] }
@@ -83,7 +83,7 @@ let function mkEquippedIcon(isEquipped) {
       }
 }
 
-let function modData(mod) {
+function modData(mod) {
   let id = mod?.name
   let locId = $"modification/{id}"
   let reqLevel = mod?.reqLevel ?? 0
@@ -132,7 +132,7 @@ let function modData(mod) {
   }
 }
 
-let function mkMod(id, content, scrollToMod) {
+function mkMod(id, content, scrollToMod) {
   let xmbNode = XmbNode()
   let stateFlags = Watched(0)
   let isActive = Computed (@() curModId.value == id || (stateFlags.value & S_ACTIVE) != 0)

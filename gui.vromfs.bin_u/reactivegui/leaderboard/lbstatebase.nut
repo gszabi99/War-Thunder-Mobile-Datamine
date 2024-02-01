@@ -27,7 +27,7 @@ isLbRequestInProgress.subscribe(function(v) {
     resetTimeout(0.001 * LB_REQUEST_TIMEOUT, @() isRequestTimeout(true))
 })
 
-let function mkSelfRequest(requestData) {
+function mkSelfRequest(requestData) {
   if (requestData == null)
     return null
   let res = clone requestData
@@ -36,7 +36,7 @@ let function mkSelfRequest(requestData) {
   return res
 }
 
-let function setLbRequestData(requestData) {
+function setLbRequestData(requestData) {
   if (isEqual(requestData, curLbRequestData.value))
     return
 
@@ -47,7 +47,7 @@ let function setLbRequestData(requestData) {
   curLbRequestData(requestData)
 }
 
-let function requestSelfRow() {
+function requestSelfRow() {
   let requestData = curLbRequestData.value
   if (requestData == null)
     return
@@ -69,7 +69,7 @@ let canRefresh = @() !isLbRequestInProgress.value
   && isLoggedIn.value
   && (!curLbData.value || (lastUpdateTime.value + LB_UPDATE_INTERVAL < get_time_msec()))
 
-let function refreshLbData() {
+function refreshLbData() {
   if (!canRefresh())
     return
   let requestData = curLbRequestData.value

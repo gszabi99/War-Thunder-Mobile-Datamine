@@ -13,7 +13,7 @@ registerHandler("onDecoratorPurchaseResult",
     set_current_decorator(decId)
   })
 
-let function purchaseDecorator(decId, localizedName, bqPurchaseInfo) {
+function purchaseDecorator(decId, localizedName, bqPurchaseInfo) {
   if (decoratorInProgress.value != null)
     return
   if (decId in myDecorators.value) {

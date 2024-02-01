@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -85,7 +85,7 @@ let waitCircle = {
   }
 }
 
-let function waitTime() {
+function waitTime() {
   let now = get_time_msec()
   let msec = now - (curQueue.value?.activateTime ?? now)
   return textParams.__merge({
@@ -127,10 +127,10 @@ let joiningHeader = {
   ]
 }
 
-let leaveQueueImpl = @() send("leaveQueue", {})
+let leaveQueueImpl = @() eventbus_send("leaveQueue", {})
 let cancelOvr = { hotkeys = [[btnBEscUp, loc("mainmenu/btnCancel")]] }
 
-let function leaveQueue() {
+function leaveQueue() {
   if (!isInSquad.value || isSquadLeader.value) {
     leaveQueueImpl()
     return
@@ -187,7 +187,7 @@ let cancelJoiningButton = @() {
         gap = hdpx(12)
         children = [
           mkMRankRange
-          textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), @() send("cancelJoiningSession", {}), cancelOvr)
+          textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), @() eventbus_send("cancelJoiningSession", {}), cancelOvr)
         ]
       }
 }

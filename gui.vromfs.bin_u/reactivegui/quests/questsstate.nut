@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { activeUnlocks, allUnlocksRaw, unlockTables, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -112,7 +112,7 @@ let progressUnlockBySection = Computed(@() {
   weekly_quest = activeUnlocks.get().findvalue(@(unlock) "weekly_progress" in unlock?.meta)
 })
 
-let function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
+function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
   let res = []
   foreach (idx, s in qCfg?[tabId] ?? []) {
     foreach (quest in qBySection[s].values().append(
@@ -127,7 +127,7 @@ let function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, 
   return res
 }
 
-let function saveSeenQuests(ids) {
+function saveSeenQuests(ids) {
   seenQuests.mutate(function(v) {
     foreach (id in ids)
       v[id] <- true
@@ -137,10 +137,10 @@ let function saveSeenQuests(ids) {
   foreach (id, isSeen in seenQuests.value)
     if (isSeen)
       blk[id] = true
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
-let function loadSeenQuests() {
+function loadSeenQuests() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_QUESTS]
   if (!isDataBlock(htBlk)) {
@@ -161,7 +161,7 @@ let hasUnseenQuestsBySection = Computed(@() questsBySection.value.map(@(quests)
 let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.value?[sectionId] ? null
   : saveSeenQuests(questsBySection.value?[sectionId].filter(@(v) !v.hasReward).keys())
 
-let function openQuestsWnd() {
+function openQuestsWnd() {
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return
@@ -169,13 +169,13 @@ let function openQuestsWnd() {
   isQuestsOpen(true)
 }
 
-let function openQuestsWndOnTab(tabId) {
+function openQuestsWndOnTab(tabId) {
   isQuestsOpen(false)
   curTabId(tabId)
   openQuestsWnd()
 }
 
-let function onWatchQuestAd(unlock) {
+function onWatchQuestAd(unlock) {
   let { name, progressCorrectionStep = 0, isCompleted = false } = unlock
   if (adBudget.value == 0) {
     openMsgBox({ text = loc("playBattlesToUnlockAds") })
@@ -196,7 +196,7 @@ let function onWatchQuestAd(unlock) {
   return false
 }
 
-subscribe("adsRewardApply", function(data) {
+eventbus_subscribe("adsRewardApply", function(data) {
   if ("speedUpUnlockId" in data)
     speed_up_unlock_progress(data.speedUpUnlockId)
 })
@@ -204,7 +204,7 @@ subscribe("adsRewardApply", function(data) {
 register_command(function() {
   seenQuests({})
   get_local_custom_settings_blk().removeBlock(SEEN_QUESTS)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }, "debug.reset_seen_quests")
 
 return {

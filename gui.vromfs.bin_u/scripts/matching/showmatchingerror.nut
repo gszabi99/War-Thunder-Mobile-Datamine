@@ -1,5 +1,8 @@
+from "%scripts/dagui_natives.nut" import disable_network
 from "%scripts/dagui_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { SERVER_ERROR_INVALID_VERSION, OPERATION_COMPLETE,
 SERVER_ERROR_PROTOCOL_MISMATCH, CLIENT_ERROR_OFFLINE, SERVER_ERROR_REQUEST_TIMEOUT } = require("matching.errors")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -7,9 +10,10 @@ let { replace } = require("%sqstd/string.nut")
 let { isDownloadedFromGooglePlay } = require("android.platform")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { is_ios } = require("%sqstd/platform.nut")
+let matching = require("%scripts/matching_api.nut")
 
-let function errorHandlerRetryMessage(code) {
-  let errorId = ::matching.error_string(code)
+function errorHandlerRetryMessage(code) {
+  let errorId = matching.error_string(code)
   let locId = $"matching/{errorId}"
   sendErrorLocIdBqEvent(locId)
   openFMsgBox({
@@ -22,7 +26,7 @@ let function errorHandlerRetryMessage(code) {
   })
 }
 
-let function showIncompatibleVersionMsg() {
+function showIncompatibleVersionMsg() {
   sendErrorBqEvent("Download new version (required)")
   openFMsgBox({
     uid = "errorMessageBox"
@@ -58,17 +62,17 @@ let customErrorHandlers = {
   [SERVER_ERROR_REQUEST_TIMEOUT] = @() errorHandlerRetryMessage(SERVER_ERROR_REQUEST_TIMEOUT)
 }
 
-let function showMatchingError(response) {
+function showMatchingError(response) {
   if (response.error == OPERATION_COMPLETE)
     return false
-  if (::disable_network())
+  if (disable_network())
     return true
   if (response.error in customErrorHandlers) {
     customErrorHandlers[response.error]()
     return true
   }
 
-  let errorId = response?.error_id ?? ::matching.error_string(response.error)
+  let errorId = response?.error_id ?? matching.error_string(response.error)
   let locId = "".concat("matching/", replace(errorId, ".", "_"))
   local text = loc(locId)
   if ("error_message" in response)
@@ -79,11 +83,11 @@ let function showMatchingError(response) {
     uid = "sessionLobby_error",
     isPersist = true,
     viewType = "errorMsg",
-    debugString = getroottable()?["LAST_SESSION_DEBUG_INFO"]
+    debugString = get_last_session_debug_info()
   })
   return true
 }
 
-subscribe("showIncompatibleVersionMsg", @(_) showIncompatibleVersionMsg())
+eventbus_subscribe("showIncompatibleVersionMsg", @(_) showIncompatibleVersionMsg())
 
 return showMatchingError

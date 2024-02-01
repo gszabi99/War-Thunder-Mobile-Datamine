@@ -46,7 +46,7 @@ let withClose = @(action) function() {
   action()
 }
 
-let function resetProfileWithStats() {
+function resetProfileWithStats() {
   reset_profile_with_stats()
   resetUserstatAppData(true)
 }
@@ -108,7 +108,7 @@ let commandsList = [
   { label = "download_dev_addons", func = withClose(@() openDownloadAddonsWnd(addons.dev)) }
 ]
 
-let function mkCommandsList() {
+function mkCommandsList() {
   let list = commandsList.map(@(c) c?.customBtn ?? mkBtn(c.label, c.func))
   let rows = arrayByRows(list, 2)
   if (rows.top().len() < 2)
@@ -130,7 +130,7 @@ let function mkCommandsList() {
 
 let consoleText = Watched("")
 let consoleClear = @() consoleText("")
-let function consoleExecute() {
+function consoleExecute() {
   let cmd = consoleText.value.strip()
   if (cmd == "")
     return

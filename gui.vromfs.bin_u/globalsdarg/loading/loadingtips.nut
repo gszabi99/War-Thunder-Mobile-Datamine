@@ -26,7 +26,7 @@ let unitTypeRemap = {
 }
 
 //for global tips unitType = null
-let function getKeyFormat(unitType, isNewbie) {
+function getKeyFormat(unitType, isNewbie) {
   let path = ["loading"]
   if (unitType != null)
     path.append(unitTypeRemap?[unitType] ?? unitType)
@@ -37,7 +37,7 @@ let function getKeyFormat(unitType, isNewbie) {
 }
 
 //for global tips unitType = null
-let function loadTipsKeysByUnitType(unitType) {
+function loadTipsKeysByUnitType(unitType) {
   let res = []
 
   let configs = []
@@ -66,7 +66,7 @@ let function loadTipsKeysByUnitType(unitType) {
   return res
 }
 
-let function loadTipsOnce() {
+function loadTipsOnce() {
   if (isInited)
     return
 
@@ -83,7 +83,7 @@ let function loadTipsOnce() {
   }
 }
 
-let function genNewTip(unitTypeWeights, prevTipInfo) {
+function genNewTip(unitTypeWeights, prevTipInfo) {
   loadTipsOnce()
   let res = { locId = "", unitType = "", unitTypeBit = 0 }
 
@@ -108,7 +108,7 @@ let function genNewTip(unitTypeWeights, prevTipInfo) {
   return res
 }
 
-let function updateCurTip() {
+function updateCurTip() {
   let tip = genNewTip(curUnitTypeWeights.value, curTipInfo.value)
   curTipInfo(tip)
   lastTipTimeMsec(get_time_msec())
@@ -117,7 +117,7 @@ let function updateCurTip() {
 nextTipTimeMsec.subscribe(@(v) v > 0 ? resetTimeout(max(0.01, 0.001 * (v - get_time_msec())), updateCurTip)
   : clearTimer(updateCurTip))
 
-let function enableTipsUpdate(unitTypeWeights = null) {
+function enableTipsUpdate(unitTypeWeights = null) {
   loadTipsOnce()
   unitTypeWeights = unitTypeWeights ?? tipsLocId.map(@(_) 1.0)
   if (!isEqual(curUnitTypeWeights.value, unitTypeWeights) || curTipInfo.value.locId == "") {
@@ -131,7 +131,7 @@ let function enableTipsUpdate(unitTypeWeights = null) {
 
 let disableTipsUpdate = @() isUpdatesEnabled(false)
 
-let function getAllTips() {
+function getAllTips() {
   loadTipsOnce()
   return tipsLocId
 }

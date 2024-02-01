@@ -68,7 +68,7 @@ curLbData.subscribe(function(v) {
     requestSelfRow()
 })
 
-let function updateRefreshTimer() {
+function updateRefreshTimer() {
   if (isRefreshLbEnabled.value) {
     refreshLbData()
     setInterval(REFRESH_PERIOD, refreshLbData)

@@ -69,12 +69,12 @@ let sendCurStepBq = @(status) "id" not in tutorialConfig ? null
       status = status
     })
 
-let function onStepStatus(status) {
+function onStepStatus(status) {
   sendCurStepBq(status)
   tutorialConfig?.onStepStatus(tutorialConfig?.steps[stepIdx.value].id ?? stepIdx.value, status)
 }
 
-let function setTutorialConfig(config) {
+function setTutorialConfig(config) {
   if (config != null && tutorialConfig != null) {
     logerr($"Try to start tutorial '{config?.id}' while other tutorial in progress '{tutorialConfig?.id}'")
     return
@@ -93,7 +93,7 @@ let function setTutorialConfig(config) {
 
 let finishTutorial = @() setTutorialConfig(null)
 
-let function goToStep(idxOrId) {
+function goToStep(idxOrId) {
   if (tutorialConfig == null)
     return
   let { steps = [] } = tutorialConfig
@@ -114,19 +114,19 @@ let function goToStep(idxOrId) {
 
 let nextStep = @() goToStep(stepIdx.value + 1)
 
-let function skipStepImpl() {
+function skipStepImpl() {
   let step = tutorialConfig?.steps[stepIdx.value]
   let onNextKey = step?.onNextKey ?? step?.objects[0].onClick
   if (!onNextKey?())
     nextStep()
 }
 
-let function nextStepByDefaultHotkey() {
+function nextStepByDefaultHotkey() {
   onStepStatus("step_success")
   skipStepImpl()
 }
 
-let function skipStep() {
+function skipStep() {
   onStepStatus("skip_step")
   let step = tutorialConfig?.steps[stepIdx.value]
   let onSkip = step?.onSkip ?? step?.onNextKey ?? step?.objects[0].onClick
@@ -139,7 +139,7 @@ let calcNextDelayByText = @(text)
 
 let allowNextKey = @() nextKeyAllowed(true)
 let allowSkipKey = @() skipKeyAllowed(true)
-let function updateNextKeyTimer() {
+function updateNextKeyTimer() {
   local { nextKeyDelay = null, skipKeyDelay = null, text = "" } = tutorialConfig?.steps[stepIdx.value]
   gui_scene.clearTimer(allowNextKey)
   gui_scene.clearTimer(allowSkipKey)

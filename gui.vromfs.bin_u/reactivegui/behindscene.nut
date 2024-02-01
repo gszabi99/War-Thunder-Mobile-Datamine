@@ -36,7 +36,7 @@ let getIdx = @(componentOrId) type(componentOrId) == "string"
   ? scenesList.findindex(@(v) v.id == componentOrId)
   : scenesList.findindex(@(v) v.scene == componentOrId)
 
-let function addBehindScene(component, onClearScenes = null, uid = null) {
+function addBehindScene(component, onClearScenes = null, uid = null) {
   local id = type(uid) == "string" ? uid : null
   let idx = getIdx(id ?? component)
   if (idx != null)
@@ -47,7 +47,7 @@ let function addBehindScene(component, onClearScenes = null, uid = null) {
   return id
 }
 
-let function removeBehindScene(componentOrId) {
+function removeBehindScene(componentOrId) {
   let idx = getIdx(componentOrId)
   if (idx == null)
     return
@@ -55,7 +55,7 @@ let function removeBehindScene(componentOrId) {
   sceneListGeneration(sceneListGeneration.value + 1)
 }
 
-let function clearScenes() {
+function clearScenes() {
   let prev = clone scenesList //in case of open new scene by onClearScenes
   scenesList.clear()
   sceneListGeneration(sceneListGeneration.value + 1)

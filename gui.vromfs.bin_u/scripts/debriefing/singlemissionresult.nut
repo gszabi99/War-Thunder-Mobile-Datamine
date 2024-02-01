@@ -1,6 +1,6 @@
-
 from "%scripts/dagui_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { get_game_mode } = require("mission")
 let { GO_WIN, GO_EARLY, get_game_over_reason } = require("guiMission")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -13,7 +13,7 @@ let { get_current_mission_info_cached } = require("blkGetters")
 let singleMissionResult = mkWatched(persist, "singleMissionResult", null)
 let lastRewardData = persist("lastRewardData", @() { val = null })
 
-let function getSingleMissionResult(rewardData) {
+function getSingleMissionResult(rewardData) {
   if (battleSessionId.value != -1) //we can leave battle whe session is already destroyed
     return null
 
@@ -55,7 +55,7 @@ let function getSingleMissionResult(rewardData) {
   return res
 }
 
-subscribe("lastSingleMissionRewardData", @(msg) lastRewardData.val = msg)
+eventbus_subscribe("lastSingleMissionRewardData", @(msg) lastRewardData.val = msg)
 
 isInBattle.subscribe(function(val) {
   singleMissionResult(val ? null : getSingleMissionResult(lastRewardData.val))

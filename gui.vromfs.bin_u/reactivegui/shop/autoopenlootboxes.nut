@@ -41,7 +41,7 @@ let idToSilentOpen = keepref(Computed(@() canOpenSilent.value ? lootboxes.value.
 
 registerHandler("onAutoOpenLootbox", @(res) res?.error == null ? null : wasErrorSoon(true))
 
-let function tryOpen() {
+function tryOpen() {
   if (idToSilentOpen.value != null)
     open_lootbox_several(idToSilentOpen.value, lootboxes.value.silent?[idToSilentOpen.value] ?? 1, "onAutoOpenLootbox")
 }

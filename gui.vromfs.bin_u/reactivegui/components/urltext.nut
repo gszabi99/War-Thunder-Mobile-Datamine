@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let eventbus = require("eventbus")
 
-let function urlLikeButton(text, action, style = {}) {
+let { eventbus_send } = require("eventbus")
+
+function urlLikeButton(text, action, style = {}) {
   let { ovr = {}, childOvr = {} } = style
   let stateFlags = Watched(0)
   return @() {
@@ -32,8 +33,8 @@ let function urlLikeButton(text, action, style = {}) {
   }.__update(fontSmall, ovr)
 }
 
-let function urlText(text, baseUrl, style = {}) {
-  return text != "" ? urlLikeButton(text, @() eventbus.send("openUrl", { baseUrl }), style) : null
+function urlText(text, baseUrl, style = {}) {
+  return text != "" ? urlLikeButton(text, @() eventbus_send("openUrl", { baseUrl }), style) : null
 }
 
 return {

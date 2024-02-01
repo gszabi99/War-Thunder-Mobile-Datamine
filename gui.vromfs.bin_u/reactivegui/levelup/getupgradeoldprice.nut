@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round_by_value } = require("%sqstd/math.nut")
 
-let function getUpgradeOldPrice(unitRank, allUnits) {
+function getUpgradeOldPrice(unitRank, allUnits) {
   let avgUpgradePrice = {}
 
   foreach (unit in allUnits) {

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { sqrt, lerp } = require("%sqstd/math.nut")
 
-let function mkAnimGrowLines(cfg, ovr = {}) {
+function mkAnimGrowLines(cfg, ovr = {}) {
   let { start, end, drawers } = cfg
   local initTime = -1
   local isFinished = false
@@ -41,7 +41,7 @@ let lerpVectorLine = @(vLine, start, end, cur)
     lerp(start, end, vLine[2], vLine[4], cur),
   ]
 
-let function mkAGLinesCfgOrdered(lines, speed, delay = 0, size = [sw(100), sh(100)]) {
+function mkAGLinesCfgOrdered(lines, speed, delay = 0, size = [sw(100), sh(100)]) {
   let drawers = []
   local totalTime = 1000.0 * delay
   foreach (stepList in lines) {

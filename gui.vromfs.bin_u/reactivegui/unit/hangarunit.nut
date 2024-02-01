@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { subscribe } = require("eventbus")
-let { hangar_load_model, hangar_load_upgraded_model,
+let { eventbus_subscribe } = require("eventbus")
+let { hangar_load_model_with_skin,
   hangar_get_current_unit_name, hangar_get_loaded_unit_name, is_hangar_model_upgraded,
-  change_background_models_list, change_one_background_model
+  change_one_background_model, change_background_models_list_with_skin,
+  change_one_background_model_with_skin, hangar_get_current_unit_skin
 } = require("hangar")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -13,9 +14,11 @@ let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
 let loadedInfo = Watched({
   name = hangar_get_current_unit_name()
   isUpgraded = is_hangar_model_upgraded()
+  skin = hangar_get_current_unit_skin()
 })
 let loadedHangarUnitName = Computed(@() loadedInfo.value.name)
 let isLoadedHangarUnitUpgraded = Computed(@() loadedInfo.value.isUpgraded)
+let currentLoadedUnitSkin = Computed(@() loadedInfo.value.skin)
 let hangarUnitData = mkWatched(persist, "hangarUnitData", null)
 let hangarUnitDataBackup = mkWatched(persist, "hangarUnitDataBackup", null)
 let hangarUnitName = Computed(@() hangarUnitData.value?.name ?? loadedHangarUnitName.value ?? "")
@@ -37,20 +40,18 @@ let hangarUnit = Computed(function() {
   return null
 })
 let isHangarUnitUpgraded = Computed(@() hangarUnit.value?.isUpgraded ?? false)
+let hangarUnitSkin = Computed(@() isHangarUnitUpgraded.get() ? "upgraded" : "")
+local skinChanged = false
 
-let function loadModel(unitName, isUpgraded) {
+function loadModel(unitName, isUpgraded) {
   if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "")
     //fallback to any unit from config units
     unitName = (myUnits.value.findvalue(@(_) true) ?? allUnitsCfg.value.findvalue(@(_) true))?.name
 
-  if ((unitName ?? "") == ""
-      || (unitName == hangar_get_current_unit_name() && isUpgraded == is_hangar_model_upgraded()))
+  if ((unitName ?? "") == "")
     return
 
-  if (isUpgraded)
-    hangar_load_upgraded_model(unitName)
-  else
-    hangar_load_model(unitName)
+  hangar_load_model_with_skin(unitName, hangarUnitSkin.value, isUpgraded)
 }
 
 let loadCurrentHangarUnitModel = @() loadModel(hangarUnitName.value, isHangarUnitUpgraded.value)
@@ -77,61 +78,73 @@ isInMpSession.subscribe(function(v) {
   loadedInfo({
     name = hangar_get_current_unit_name()
     isUpgraded = is_hangar_model_upgraded()
+    skin = hangar_get_current_unit_skin()
   })
   loadCurrentHangarUnitModel()
 })
 
-let function reloadBGModels() {
+function reloadBGModels() {
   let unitName = hangarUnitName.value
   if (unitName == "")
     return
-  let platoonUnits = (allUnitsCfg.value?[unitName].platoonUnits ?? []).map(@(pu) pu.name)
+  let platoonUnits = (allUnitsCfg.value?[unitName].platoonUnits ?? []).map(@(pu) {name=pu.name skin=hangarUnitSkin.value})
   if (platoonUnits.len() == 0) {
     hangarPlatoonMainUnit = null
     return
   }
 
-  hangarPlatoonMainUnit = unitName
+  hangarPlatoonMainUnit = {name=unitName skin=hangarUnitSkin.value}
   isHangarPlatoonUpgraded = isHangarUnitUpgraded.value
   hangarPlatoonUnits = platoonUnits
-  change_background_models_list(unitName, platoonUnits)
+
+  change_background_models_list_with_skin(unitName, platoonUnits)
 }
 reloadBGModels()
 
 loadedInfo.subscribe(function(lInfo) {
   let unitName = lInfo?.name
   let { isUpgraded = false } = lInfo
-  if (unitName == null || unitName != hangarUnitName.value || isUpgraded != isHangarUnitUpgraded.value)
+
+  skinChanged = unitName != null && unitName == hangarUnitName.value && currentLoadedUnitSkin.value != hangarUnitSkin.value
+
+  if (unitName == null || unitName != hangarUnitName.value || (isUpgraded != isHangarUnitUpgraded.value && !skinChanged))
     return //wait for load finalization
 
-  let idx = hangarPlatoonUnits.findindex(@(v) v == unitName)
-  if (idx == null || hangarPlatoonMainUnit == null || isHangarPlatoonUpgraded != isHangarUnitUpgraded.value)
+  let idx = hangarPlatoonUnits.findindex(@(v) v.name == unitName)
+  if (idx == null || hangarPlatoonMainUnit == null || isHangarPlatoonUpgraded != isHangarUnitUpgraded.value || skinChanged)
     reloadBGModels()
   else {
     hangarPlatoonUnits[idx] = hangarPlatoonMainUnit
-    change_one_background_model(unitName, hangarPlatoonMainUnit)
-    hangarPlatoonMainUnit = unitName
+
+    if (skinChanged)
+      change_one_background_model_with_skin(unitName, hangarPlatoonMainUnit.name, currentLoadedUnitSkin.value)
+    else
+      change_one_background_model(unitName, hangarPlatoonMainUnit.name)
+
+    hangarPlatoonMainUnit = {name=unitName skin=hangarUnitSkin.value}
     isHangarPlatoonUpgraded = isHangarUnitUpgraded.value
   }
+
+  skinChanged = false
 })
 
 let setHangarUnit = @(unitName, isFullChange = true)
   hangarUnitData({ name = unitName ?? "", isFullChange })
 
-let function setCustomHangarUnit(customUnit, isFullChange = true) {
+function setCustomHangarUnit(customUnit, isFullChange = true) {
   if (hangarUnitDataBackup.value == null)
     hangarUnitDataBackup(hangarUnitData.value)
   hangarUnitData({ name = customUnit.name, custom = customUnit, isFullChange })
 }
 
-let function resetCustomHangarUnit() {
+function resetCustomHangarUnit() {
   if (hangarUnitDataBackup.value) {
     hangarUnitData(hangarUnitDataBackup.value)
     hangarUnitDataBackup(null)
   }
 }
 
-subscribe("downloadAddonsFinished", function(_) {
+eventbus_subscribe("downloadAddonsFinished", function(_) {
   if (isInBattle.value || isInLoadingScreen.value)
     return
   hangarPlatoonUnits = []
@@ -139,15 +152,16 @@ subscribe("downloadAddonsFinished", function(_) {
   reloadBGModels()
 })
 
-subscribe("onHangarModelStartLoad", @(_) isHangarUnitLoaded(false))
+eventbus_subscribe("onHangarModelStartLoad", @(_) isHangarUnitLoaded(false))
 
-subscribe("onHangarModelLoaded", function(_) {
+eventbus_subscribe("onHangarModelLoaded", function(_) {
   isHangarUnitLoaded(true)
   if (hangar_get_loaded_unit_name() != hangar_get_current_unit_name())
     return
   let lInfo = {
     name = hangar_get_current_unit_name()
     isUpgraded = is_hangar_model_upgraded()
+    skin = hangar_get_current_unit_skin()
   }
  if (!isEqual(loadedInfo.value, lInfo))
    loadedInfo(lInfo)

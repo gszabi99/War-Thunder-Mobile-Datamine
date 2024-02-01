@@ -14,6 +14,7 @@ let { openEventQuestsWnd, getQuestCurrenciesInTab, questsCfg, questsBySection, p
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
+let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let tasksBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
@@ -34,7 +35,7 @@ let imgStyle = {
   margin = hdpx(25)
 }
 
-let function getImgByAmount(amount, curId, season) {
+function getImgByAmount(amount, curId, season) {
   let imgCfg = getCurrencyGoodsPresentation(curId, season)
   let idxByAmount = imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()
   let cfg = imgCfg?[max(0, idxByAmount - 1)]
@@ -56,7 +57,7 @@ let questsLinkPlate = {
   children = txt({ text = utf8ToUpper(loc("mainmenu/btnQuests")) }.__update(fontSmall))
 }
 
-let function mkQuestsLink(curId, season) {
+function mkQuestsLink(curId, season) {
   let imgCfg = getCurrencyGoodsPresentation(curId, season)
   let cfg = imgCfg?[imgCfg.len() - 1]
 
@@ -76,37 +77,60 @@ let function mkQuestsLink(curId, season) {
 }
 
 
-let mkGoods = @(goods, onClick, state, animParams) @() {
-  watch = [currencyId, eventSeason]
-  children = mkGoodsWrap(onClick,
-    @(sf) [
-      mkSlotBgImg()
-      mkBgParticles(goodsBgSize)
-      sf & S_HOVER ? bgHiglight : null
-      getImgByAmount(goods?[currencyId.value] ?? 0, currencyId.value, eventSeason.get())
-      mkCurrencyAmountTitle(goods?[currencyId.value] ?? 0, goods?.viewBaseValue ?? 0, titleFontGrad)
-    ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGrad, state, animParams),
-    { size = goodsSize },
-    { size = goodsBgSize })
+let function mkGoods(goods, onClick, state, animParams) {
+  local cId = ""
+  local amount = 0
+  if ("currencies" not in goods) { //compatibility with format before 2024.01.23
+    foreach(c, _ in orderByCurrency) {
+      amount = goods?[c] ?? 0
+      if (amount != 0) {
+        cId = c
+        break
+      }
+    }
+  }
+  else {
+    cId = goods.currencies.findindex(@(v) v > 0) ?? ""
+    amount = goods.currencies?[cId] ?? 0
+  }
+
+  return @() {
+    watch = eventSeason
+    children = mkGoodsWrap(onClick,
+      @(sf) [
+        mkSlotBgImg()
+        mkBgParticles(goodsBgSize)
+        sf & S_HOVER ? bgHiglight : null
+        getImgByAmount(amount, cId, eventSeason.get())
+        mkCurrencyAmountTitle(amount, goods?.viewBaseValue ?? 0, titleFontGrad)
+      ].extend(mkGoodsCommonParts(goods, state)),
+      mkPricePlate(goods, priceBgGrad, state, animParams),
+      { size = goodsSize },
+      { size = goodsBgSize })
+  }
 }
 
-let function mkEventCurrenciesGoods() {
+function mkEventCurrenciesGoods() {
+  let cId = currencyId.get()
   let showQuestsLink = Computed(@()
     getQuestCurrenciesInTab(parentEventId.get(), questsCfg.get(), questsBySection.get(),
       progressUnlockBySection.get(), progressUnlockByTab.get(), serverConfigs.get())
-        .findindex(@(v) v == currencyId.get()) != null)
-
+        .findindex(@(v) v == cId) != null)
   return {
-    watch = [eventCurrenciesGoods, currencyId, showQuestsLink, eventSeason]
+    watch = [eventCurrenciesGoods, currencyId, eventSeason]
     size = [flex(), SIZE_TO_CONTENT]
     padding = [hdpx(45), 0, 0, 0]
     flow = FLOW_HORIZONTAL
     gap
     halign = ALIGN_CENTER
-    children = [showQuestsLink.value ? mkQuestsLink(currencyId.value, eventSeason.get()) : null]
+    children = [
+      @() {
+        watch = [showQuestsLink, eventSeason]
+        children = showQuestsLink.get() ? mkQuestsLink(cId, eventSeason.get()) : null
+      }
+    ]
       .extend(mkGoodsListWithBaseValue(eventCurrenciesGoods.value.values())
-        .sort(@(a, b) (a?[currencyId.value] ?? 0) <=> (b?[currencyId.value] ?? 0))
+        .sort(@(a, b) (a?.currencies[cId] ?? a?[cId] ?? 0) <=> (b?.currencies[cId] ?? b?[cId] ?? 0)) //compatibility with format before 2024.01.23
         .map(@(good, idx) mkGoods(good,
           @() onGoodsClick(good),
           mkGoodsState(good),

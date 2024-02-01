@@ -1,8 +1,8 @@
 
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 
-let openFMsgBox = @(cfg) send("fMsgBox.open", cfg)
-let closeFMsgBox = @(uid) send("fMsgBox.close", { uid })
+let openFMsgBox = @(cfg) eventbus_send("fMsgBox.open", cfg)
+let closeFMsgBox = @(uid) eventbus_send("fMsgBox.close", { uid })
 
 let allBtns = {}
 let subscribeFMsgBtns = @(buttons)
@@ -12,7 +12,7 @@ let subscribeFMsgBtns = @(buttons)
       return
     }
     allBtns[id] <- true
-    subscribe($"fMsgBox.onClick.{id}", action)
+    eventbus_subscribe($"fMsgBox.onClick.{id}", action)
   })
 
 return {

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let eventbus = require("eventbus")
+
+let { eventbus_send } = require("eventbus")
 let { ceil } = require("%sqstd/math.nut")
 let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit
 } = require("%rGui/missionState.nut")
@@ -40,7 +41,7 @@ let scoreParamsByTeam = {
   }
 }
 
-let function mkBar(image, width, height) {
+function mkBar(image, width, height) {
   let ofs = (1.4 * height).tointeger()
   let texOffs = [0, ofs, 0, ofs]
   return {
@@ -59,7 +60,7 @@ let mkScoreBarBg = @(image) mkBar(image, scoreBarWidth, scoreBarHeight).__update
   valign = ALIGN_CENTER
 })
 
-let function mkSplitScoreBar(teamName) {
+function mkSplitScoreBar(teamName) {
   let { score, fillColor, image, halign } = scoreParamsByTeam[teamName]
   let remainingPlatesCount = Computed(@() scoresForOneKill.value == 0 ? 0
     : ceil(score.value.tofloat() / scoresForOneKill.value).tointeger())
@@ -82,7 +83,7 @@ let function mkSplitScoreBar(teamName) {
 
 let ofs = 3.8
 let full = 100.0 - ofs
-let function mkLinearScoreBar(teamName) {
+function mkLinearScoreBar(teamName) {
   let { score, fillColor, image, halign } = scoreParamsByTeam[teamName]
   let progress = Computed(@() scoreLimit.value == 0 ? 0 : clamp(score.value.tofloat() / scoreLimit.value, 0.0, 1.0))
   return mkScoreBarBg(image).__update({
@@ -104,7 +105,7 @@ let function mkLinearScoreBar(teamName) {
   })
 }
 
-let function scoreBoard() {
+function scoreBoard() {
   let barCtor = missionProgressType.value == "split" ? mkSplitScoreBar : mkLinearScoreBar
   return {
     key = "score_board"
@@ -113,7 +114,7 @@ let function scoreBoard() {
     behavior = Behaviors.Button
     flow = FLOW_HORIZONTAL
     gap = -0.15 * timerBgWidth
-    onClick = @() eventbus.send("toggleMpstatscreen", {})
+    onClick = @() eventbus_send("toggleMpstatscreen", {})
     sound = { click  = "click" }
     children = [
       barCtor("localTeam")

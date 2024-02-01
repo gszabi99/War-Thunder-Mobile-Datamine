@@ -71,7 +71,7 @@ let customLootboxCfg = {
   event_special_tanks_christmas_2023 = christmas2023
 }
 
-let function lootboxInfo(lootbox, sf) {
+function lootboxInfo(lootbox, sf) {
   let rewardsPreview = Computed(function() {
     local rewards = []
     local slots = 0
@@ -105,7 +105,7 @@ let function lootboxInfo(lootbox, sf) {
   }.__update(rewardsPreview.value.slots > REWARDS ? infoCanvasBig : infoCanvasSmall)
 }
 
-let function progressBar(stepsFinished, stepsToNext, ovr = {}) {
+function progressBar(stepsFinished, stepsToNext, ovr = {}) {
   if (stepsToNext - stepsFinished <= 0)
     return { size = [btnSize[0], barHeight] }
   let questCompletion = stepsFinished.tofloat() / stepsToNext
@@ -126,7 +126,7 @@ let function progressBar(stepsFinished, stepsToNext, ovr = {}) {
   }.__update(ovr)
 }
 
-let function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul = 1.0) {
+function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul = 1.0) {
   let imageSize = [width, lootboxHeight].map(@(v) (v * (customLootboxCfg?[name].sizeMul ?? sizeMul)).tointeger())
   let blockSize = !customLootboxCfg?[name].sizeMul ? [width, lootboxHeight] : [width, min(imageSize[1], hdpx(400))]
   let { start = 0, end = 0 } = timeRange
@@ -187,14 +187,14 @@ let mkBtnContent = @(img, text, ovr = {}) {
   ]
 }.__update(ovr)
 
-let function mkAdsBtn(reqPlayerLevel, adReward) {
+function mkAdsBtn(reqPlayerLevel, adReward) {
   let { cost = 0 } = adReward
   return @() {
     watch = [bestCampLevel, canShowAds, adBudget]
     children = mkCustomButton(
       cost > adBudget.value
           ? mkBtnContent(null, cost <= 1 ? loc("playOneBattle") : loc("playBattles", { count = cost }))
-        : mkBtnContent("ui/gameuiskin#mp_spectator.avif", loc("shop/watchAdvert/short"), adsButtonCounter),
+        : mkBtnContent("ui/gameuiskin#watch_ads.svg", loc("shop/watchAdvert/short"), adsButtonCounter),
       @() bestCampLevel.value >= reqPlayerLevel
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
@@ -229,7 +229,7 @@ let mkCurrencyComp = @(value, currencyId) {
   ]
 }
 
-let function mkPurchaseBtns(lootbox, onPurchase) {
+function mkPurchaseBtns(lootbox, onPurchase) {
   let { name, price, currencyId, hasBulkPurchase = false, timeRange = null, reqPlayerLevel = 0 } = lootbox
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel

@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let logQ = log_with_prefix("[QUEUE] ")
 let { get_time_msec } = require("dagor.time")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { SERVER_ERROR_REQUEST_REJECTED, SERVER_ERROR_NOT_IN_QUEUE } = require("matching.errors")
 let queueState = require("%appGlobals/queueState.nut")
@@ -22,6 +22,7 @@ let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign, queueDataChec
 let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
 let { curUnitName } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let matching = require("%scripts/matching_api.nut")
 
 let isSquadActualizeSend = mkWatched(persist, "isSquadActualizeSend", false)
 
@@ -43,14 +44,14 @@ let writeJwtData = @() curQueue.mutate(function(q) {
   logQ($"Queue {q.unitName} params by token: ", payload)
 })
 
-let function actualizeSquadQueueOnce() {
+function actualizeSquadQueueOnce() {
   if (isSquadActualizeSend.value)
     return
   isSquadActualizeSend(true)
   queueDataCheckTime(serverTime.value)
 }
 
-let function tryWriteMembersData() {
+function tryWriteMembersData() {
   let playersUpd = {}
   foreach(uid, m in squadMembers.value) {
     if (uid == myUserId.value)
@@ -105,7 +106,7 @@ let queueSteps = {
       tryWriteMembersData()
   },
 
-  [QS_JOINING] = @() ::matching.rpc_call("match.enqueue",
+  [QS_JOINING] = @() matching.rpc_call("match.enqueue",
     curQueue.value.params,
     function(response) {
       if (!isInQueue.value)
@@ -121,14 +122,14 @@ let queueSteps = {
     actualizeBattleData(curQueue.value?.unitName)
   },
 
-  [QS_LEAVING] = @() ::matching.rpc_call("match.leave_queue",
+  [QS_LEAVING] = @() matching.rpc_call("match.leave_queue",
     {},
     function(response) {
       if (!isInQueue.value)
         return
       let errorId = response?.error
       if (errorId == SERVER_ERROR_REQUEST_REJECTED)
-        send("setWaitForQueueRoom", true)
+        eventbus_send("setWaitForQueueRoom", true)
       else if (errorId != SERVER_ERROR_NOT_IN_QUEUE)
         showMatchingError(response)
       destroyQueue()
@@ -174,7 +175,7 @@ squadMembers.subscribe(function(v) {
     tryWriteMembersData()
 })
 
-let function joinQueue(params) {
+function joinQueue(params) {
   if (isInQueue.value) {
     logerr("Try to join new queue while in queue")
     return
@@ -188,7 +189,7 @@ let function joinQueue(params) {
   curQueue({ state = QS_ACTUALIZE, params = paramsExt })
 }
 
-::matching.subscribe("match.notify_queue_join", function(params) {
+matching.subscribe("match.notify_queue_join", function(params) {
   logQ("match.notify_queue_join ", params)
   if (!isInQueue.value) {
     curQueue({ state = QS_IN_QUEUE, params })
@@ -202,7 +203,7 @@ let function joinQueue(params) {
   }))
 })
 
-::matching.subscribe("match.notify_queue_leave", function(params) {
+matching.subscribe("match.notify_queue_leave", function(params) {
   logQ("match.notify_queue_leave ", params)
   if (!isInQueue.value)
     return
@@ -232,7 +233,7 @@ let function joinQueue(params) {
     })
 })
 
-subscribe("leaveQueue", @(_) leaveQueue())
+eventbus_subscribe("leaveQueue", @(_) leaveQueue())
 
 isMatchingConnected.subscribe(@(_) destroyQueue())
 

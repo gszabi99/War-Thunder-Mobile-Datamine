@@ -5,7 +5,7 @@ let selBorderColor = 0xFFFFFFFF
 let hovBorderColor = 0xFF666666
 let selBorderWidth = hdpx(4)
 
-let function btnBase(content, sf, isSelected) {
+function btnBase(content, sf, isSelected) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   let isHovered = (sf & S_HOVER) != 0
   return {
@@ -27,7 +27,7 @@ let function btnBase(content, sf, isSelected) {
   }
 }
 
-let function controlsTypesButton(content, isSelectedW, onClick) {
+function controlsTypesButton(content, isSelectedW, onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = [isSelectedW, stateFlags]

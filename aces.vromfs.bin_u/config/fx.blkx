@@ -5880,5 +5880,15 @@
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "building_big",
     "soundEnableDistance": 1000.0
+  },
+  "misc_open_tank": {
+    "fx": "misc_open_tank_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 8,
+    "farPlane": 500.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "naval/gui",
+    "sfxEvent": "misc_open_tank"
   }
 }

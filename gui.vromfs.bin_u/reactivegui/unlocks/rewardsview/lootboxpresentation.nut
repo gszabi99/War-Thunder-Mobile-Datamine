@@ -23,7 +23,7 @@ let getLootboxName = @(id, slot = "") loc(lootboxLocIdBySlot?[slot] ?? $"lootbox
 
 let getLootboxSizeMul = @(slot = "") sizeMulBySlot?[slot] ?? 1.0
 
-let function getLootboxImage(id, season, size = null) {
+function getLootboxImage(id, season, size = null) {
   let img = id in getImgBySeason ? getImgBySeason[id](season) : id
   return !size ? Picture($"ui/gameuiskin#{img}.avif:0:P") : Picture($"ui/gameuiskin#{img}.avif:{size}:{size}:P")
 }

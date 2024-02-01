@@ -1,6 +1,7 @@
-
+from "%scripts/dagui_natives.nut" import get_two_step_code_async2
 from "%scripts/dagui_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { isLoginStarted, isLoggedIn, loginState, LOGIN_STATE } = require("%appGlobals/loginState.nut")
 let { authState } = require("%scripts/login/authState.nut")
@@ -16,15 +17,15 @@ isLoginStarted.subscribe(function(_v) {
     attemptsRequest2step(MAX_GET_2STEP_CODE_ATTEMPTS)
 })
 
-subscribe("StartListenTwoStepCode",
+eventbus_subscribe("StartListenTwoStepCode",
   function(_) {
     if (attemptsRequest2step.value > 0)
-      ::get_two_step_code_async2("ProceedGetTwoStepCode")
+      get_two_step_code_async2("ProceedGetTwoStepCode")
   })
 
 let doLogin = @() loginState(loginState.value | LOGIN_STATE.LOGIN_STARTED)
 
-subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
+eventbus_subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
   if (isLoginStarted.value || isLoggedIn.value)
     return
   let { status, code } = p

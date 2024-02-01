@@ -109,7 +109,7 @@ let hints = [
   }
 ]
 
-let function getHintText(hint, texts) {
+function getHintText(hint, texts) {
   if (type(hint.key) == "string")
     return texts?[hint.key]
   let list = []

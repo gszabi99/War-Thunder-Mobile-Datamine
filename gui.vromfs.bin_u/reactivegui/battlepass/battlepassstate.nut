@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+
 let { register_command } = require("console")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
@@ -76,7 +77,7 @@ let curStage = Computed(@() bpProgressUnlock.value?.stage ?? 0)
 let maxStage = Computed(@() max(bpFreeRewardsUnlock.get()?.stages.top().progress ?? 0,
   bpPaidRewardsUnlock.get()?.stages.top().progress ?? 0))
 
-let function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV) {
+function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV) {
   let { name = "", stages = [], lastRewardedStage = -1, hasReward = false } = unlock
   return stages.map(function(stage, idx) {
     let { progress = 0 } = stage
@@ -115,7 +116,7 @@ let mkBpStagesList = @() Computed(function() {
 
 let selectedStage = mkWatched(persist, "bpSelectedStage", 0)
 
-let function getNotReceivedInfo(unlock, maxProgress) {
+function getNotReceivedInfo(unlock, maxProgress) {
   let { stages = [], name = "", lastRewardedStage = 0 } = unlock
   local stage = null
   local finalStage = null
@@ -131,7 +132,7 @@ let function getNotReceivedInfo(unlock, maxProgress) {
   return { unlockName = name, stage, finalStage }
 }
 
-let function receiveBpRewardsImpl(toReceive) {
+function receiveBpRewardsImpl(toReceive) {
   if (toReceive.len() == 0)
     return
   let { unlockName, stage, finalStage = null } = toReceive[0]
@@ -139,7 +140,7 @@ let function receiveBpRewardsImpl(toReceive) {
     { finalStage, onSuccessCb = { id = "battlePass.grantMultiRewards", nextReceive = toReceive.slice(1) } })
 }
 
-subscribe("battlePass.grantMultiRewards", @(msg) receiveBpRewardsImpl(msg.nextReceive))
+eventbus_subscribe("battlePass.grantMultiRewards", @(msg) receiveBpRewardsImpl(msg.nextReceive))
 
 let sendBpBqEvent = @(action, params = {}) sendCustomBqEvent("battlepass_1", params.__merge({
   action
@@ -149,7 +150,7 @@ let sendBpBqEvent = @(action, params = {}) sendCustomBqEvent("battlepass_1", par
   isPassPurchased = isBpActive.get()
 }))
 
-let function receiveBpRewards(progress) {
+function receiveBpRewards(progress) {
   if (isBpRewardsInProgress.value)
     return
 
@@ -171,7 +172,7 @@ let function receiveBpRewards(progress) {
   receiveBpRewardsImpl(fullList)
 }
 
-let function buyBPLevel() {
+function buyBPLevel() {
   let price = bpLevelPrice.get()
   if ((bpProgressUnlock.get()?.periodic == true || !bpProgressUnlock.get()?.isCompleted ) && price.price > 0) {
     buyUnlock(BP_PROGRESS_UNLOCK_ID, curStage.get() + 1, price.currency, price.price,
@@ -179,7 +180,10 @@ let function buyBPLevel() {
   }
 }
 
-subscribe("battlePass.buyUnlock", function(_) {
+eventbus_subscribe("battlePass.buyUnlock", function(_) {
+  sendBpBqEvent("buy_level", {
+    paramInt1 = curStage.get() + 1
+  })
   receiveBpRewards(curStage.get() + 1)
 })
 

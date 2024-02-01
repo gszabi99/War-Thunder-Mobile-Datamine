@@ -11,7 +11,7 @@ let { authState } = require("authState.nut")
 let fieldsToClear = ["MAC", "uuid0", "uuid1", "uuid2", "uuid3"]
 let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
 
-let function getSysInfo() {
+function getSysInfo() {
   let tbl = get_user_system_info()
   tbl.userName <- myUserName.value
   tbl.appsflyer_id <- getAppsFlyerUID()

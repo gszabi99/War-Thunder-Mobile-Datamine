@@ -2,26 +2,27 @@ from "%globalsDarg/darg_library.nut" import *
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 
-let function mkPlayersByTeam(dData) {
-  let { userId = 0, userName = "", localTeam = 0, players = {}, playersCommonStats = {} } = dData
+function mkPlayersByTeam(debrData) {
+  let { localTeam = 0, players = {}, playersCommonStats = {} } = debrData
+  let localUserName = debrData?.userName ?? ""
   let mplayersList = players.values().map(function(p) {
-    let isLocal = p.userId == userId
-    let pUserIdStr = p.userId.tostring()
-    let { level = 1, starLevel = 0, hasPremium = false, decorators = {} } = playersCommonStats?[pUserIdStr]
-    let pUnit = playersCommonStats?[pUserIdStr].unit
-    let mainUnitName = pUnit?.name ?? (p.aircraftName ?? "")
-    let unitClass = pUnit?.unitClass ?? ""
-    let mRank = pUnit?.mRank
-    let isUnitPremium = pUnit?.isPremium ?? false
-    let frameId = playersCommonStats?[p.userId.tostring()].decorators.nickFrame
+    let { userId, name, isLocal = 0, isBot, aircraftName, dmgScoreBonus = 0.0 } = p
+    let userIdStr = userId.tostring()
+    let { level = 1, starLevel = 0, hasPremium = false, decorators = {}, unit = null } = playersCommonStats?[userIdStr]
+    let frameId = decorators?.nickFrame ?? ""
+    let namePrepared = isBot ? loc(name) // For bots, p.name is a localization key.
+      : isLocal ? localUserName // debrData.userName is a local player's myUserName value.
+      : getPlayerName(name) // For players, p.name is a realName (with platform suffix).
+    let visualName = frameNick(namePrepared, frameId)
+    let { unitClass = "", mRank = null } = unit
+    let mainUnitName = unit?.name ?? aircraftName ?? ""
+    let isUnitPremium = unit?.isPremium ?? false
     return p.__merge({
-      userId = pUserIdStr
+      userId = userIdStr
       isLocal
       isDead = false
-      name = isLocal ? frameNick(userName, frameId)
-        : p.isBot ? loc(p.name)
-        : frameNick(getPlayerName(p.name), frameId)
-      score = p?.dmgScoreBonus ?? 0.0
+      name = visualName
+      score = dmgScoreBonus
       level
       starLevel
       hasPremium

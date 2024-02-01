@@ -1,6 +1,7 @@
+let {APP_ID} = require("app")
 
 return freeze({
-  APP_ID = 1180 //WTM appid.
+  APP_ID
   CONTACTS_GAME_ID = "wtm"
   GAME_ID = "WTM"
 })

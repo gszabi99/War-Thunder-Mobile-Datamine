@@ -103,7 +103,7 @@ let mkMissionResultLine = @(needAnim, missionResult) {
   }
 }
 
-let function mkMissionResultTitle(debrData, needAnim) {
+function mkMissionResultTitle(debrData, needAnim) {
   let { isWon = false, isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false, campaign = "" } = debrData
   let missionResult = debrData == null ? missionResultParamsByType.unknown
     : kickInactivity ? missionResultParamsByType.inactivity

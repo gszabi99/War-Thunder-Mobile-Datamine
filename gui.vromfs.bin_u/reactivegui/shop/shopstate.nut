@@ -4,9 +4,9 @@ let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { platformGoods } = require("platformGoods.nut")
-let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
@@ -28,12 +28,20 @@ let unmarkSeenCounters = mkWatched(persist, "unmarkSeenCounters", {})
 let categoryByCurrency = {
   [WP] = SC_WP,
   [GOLD] = SC_GOLD,
+  [PLATINUM] = SC_PLATINUM
 }
+
+let sortCurrency = @(a, b) "currencies" not in a //compatibility with format before 2024.01.23
+  ? a.platinum <=> b.platinum
+    || a.gold <=> b.gold
+    || a.wp <=> b.wp
+  : (a.currencies?.platinum ?? 0) <=> (b.currencies?.platinum ?? 0)
+    || (a.currencies?.gold ?? 0) <=> (b.currencies?.gold ?? 0)
+    || (a.currencies?.wp ?? 0) <=> (b.currencies?.wp ?? 0)
 
 let sortGoods = @(a, b)
   a.gtype <=> b.gtype
-  || a.gold <=> b.gold
-  || a.wp <=> b.wp
+  || sortCurrency(a, b)
   || a.premiumDays <=> b.premiumDays
   || a.price.currencyId <=> b.price.currencyId
   || a.price.price <=> b.price.price
@@ -80,7 +88,7 @@ let goodsIdsByCategory = Computed(function() {
   return goods
 })
 
-let function unmarkSeenGoods(unmarkSeen, unmarkCounters = {}) {
+function unmarkSeenGoods(unmarkSeen, unmarkCounters = {}) {
   let toRemove = unmarkSeen.filter(@(id) id in shopSeenGoods.value)
   let counters = unmarkCounters.filter(@(id, count) unmarkSeenCounters.value?[id] != count)
   if (toRemove.len() == 0 && counters.len() == 0)
@@ -105,7 +113,7 @@ let function unmarkSeenGoods(unmarkSeen, unmarkCounters = {}) {
       blk[id] = v
   }
 
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 lastAppliedSchReward.subscribe(function(v) {
   let { rewardId } = v
@@ -128,7 +136,7 @@ isInDebriefing.subscribe(function(v) {
     unmarkSeenGoods(unmarkSeenCounters.value.filter(@(c) c == 0).keys())
 })
 
-let function saveSeenGoods(ids) {
+function saveSeenGoods(ids) {
   let upd = {}
   let cUpd = {}
   foreach(id in ids) {
@@ -156,10 +164,10 @@ let function saveSeenGoods(ids) {
     foreach (id, v in cUpd)
       cBlk[id] = v
   }
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
-let function loadSeenGoods() {
+function loadSeenGoods() {
   let blk = get_local_custom_settings_blk()
   let seenBlk = blk?[SEEN_GOODS]
   let seen = {}
@@ -199,12 +207,12 @@ let hasUnseenGoodsByCategory = Computed(function() {
 let saveSeenGoodsCurrent = @() !hasUnseenGoodsByCategory.value?[curCategoryId.value] ? null
   : saveSeenGoods(goodsIdsByCategory.value[curCategoryId.value])
 
-let function onTabChange(id) {
+function onTabChange(id) {
   saveSeenGoodsCurrent()
   curCategoryId(id)
 }
 
-let function openShopWnd(catId = null, bqPurchaseInfo = null) {
+function openShopWnd(catId = null, bqPurchaseInfo = null) {
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return
@@ -224,7 +232,7 @@ register_command(function() {
   shopSeenGoods({})
   get_local_custom_settings_blk().removeBlock(SEEN_GOODS)
   get_local_custom_settings_blk().removeBlock(UNMARK_SEEN_COUNTERS)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
   log("Success")
 }, "debug.reset_seen_goods")
 

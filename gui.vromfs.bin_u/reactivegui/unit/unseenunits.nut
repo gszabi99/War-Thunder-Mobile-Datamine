@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
@@ -14,7 +14,7 @@ let maxTimeShowingUnseenMark = TIME_DAY_IN_SECONDS * 14
 let availableUnitsList = Computed(@() allUnitsCfg.value
   .filter(@(u) !u?.isHidden))
 
-let function loadUnseenUnits() {
+function loadUnseenUnits() {
   let res = {}
   let seenBlk = get_local_custom_settings_blk()?[SEEN_UNIT]
   foreach(unit in availableUnitsList.value){
@@ -29,7 +29,7 @@ availableUnitsList.subscribe(@(_) loadUnseenUnits())
 isOnlineSettingsAvailable.subscribe(@(_) loadUnseenUnits())
 loadUnseenUnits()
 
-let function markUnitSeen(unit){
+function markUnitSeen(unit){
   if (unit.name not in unseenUnits.value)
     return
 
@@ -37,14 +37,14 @@ let function markUnitSeen(unit){
     let sBlk = get_local_custom_settings_blk()
     let blk = sBlk.addBlock(SEEN_UNIT)
     blk[unit.name] = true
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   }
   loadUnseenUnits()
 }
 
 register_command(function() {
   get_local_custom_settings_blk().removeBlock(SEEN_UNIT)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
   loadUnseenUnits()
 }, "debug.reset_seen_units")
 

@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let logR = log_with_prefix("[SESSION_RECONNECT] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -13,6 +13,7 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let matching = require("%scripts/matching_api.nut")
 
 
 const MSG_UID = "reconnect_msg"
@@ -25,12 +26,12 @@ let isNeedReconnectMsg = Computed(@()
     && isInMenu.value
     && sessionLobbyStatus.value == lobbyStates.NOT_IN_ROOM)
 
-subscribe("reconnectAfterAddons", @(c) joinRoom(c.roomId))
+eventbus_subscribe("reconnectAfterAddons", @(c) joinRoom(c.roomId))
 
 let getAttribUnitName = @(attribs)
   attribs?[$"pinfo_{myUserId.value}"].crafts_info[0].name
 
-let function getMaxRankUnitName() {
+function getMaxRankUnitName() {
   let { allUnits = {} } = serverConfigs.value
   let { units } = servProfile.value
   local resUnit = null
@@ -40,7 +41,7 @@ let function getMaxRankUnitName() {
   return resUnit?.name
 }
 
-let function getAddonsToDownload(attribs) {
+function getAddonsToDownload(attribs) {
   let { game_mode_id = null } = attribs
   let mode = allGameModes.value?[game_mode_id]
   let unitName = getAttribUnitName(attribs) ?? getMaxRankUnitName()
@@ -48,7 +49,7 @@ let function getAddonsToDownload(attribs) {
   return getModeAddonsInfo(mode, [unitName]).addonsToDownload
 }
 
-let function reconnect(roomId, attribs) {
+function reconnect(roomId, attribs) {
   let addonsToDownload = getAddonsToDownload(attribs)
   if (addonsToDownload.len() == 0) {
     joinRoom(roomId)
@@ -56,7 +57,7 @@ let function reconnect(roomId, attribs) {
   }
 
   log("[ADDONS] Required addons for reconnect = ", addonsToDownload)
-  send("openDownloadAddonsWnd",
+  eventbus_send("openDownloadAddonsWnd",
     { addons = addonsToDownload, successEventId = "reconnectAfterAddons", context = { roomId } })
 }
 
@@ -78,7 +79,7 @@ subscribeFMsgBtns({
   }
 })
 
-let function showReconnectMsg() {
+function showReconnectMsg() {
   if (!isNeedReconnectMsg.value)
     return
 
@@ -101,7 +102,7 @@ isNeedReconnectMsg.subscribe(function(v) {
     closeFMsgBox(MSG_UID)
 })
 
-let function onCheckReconnect(resp, cb) {
+function onCheckReconnect(resp, cb) {
   let hasRoomToJoin = resp?.roomId
   logR($"onCheckReconnect resp?.roomId = {resp?.roomId}\n")
   if (hasRoomToJoin) {
@@ -114,9 +115,9 @@ let function onCheckReconnect(resp, cb) {
 }
 
 let checkReconnect = @(cb = @() null)
-  ::matching.rpc_call("match.check_reconnect", null, @(resp) onCheckReconnect(resp, cb))
+  matching.rpc_call("match.check_reconnect", null, @(resp) onCheckReconnect(resp, cb))
 
-subscribe("on_connection_changed", function(params) {
+eventbus_subscribe("on_connection_changed", function(params) {
   let onlineValue = params?.is_online ?? false
   isOnline.set(onlineValue)
   if (!onlineValue)

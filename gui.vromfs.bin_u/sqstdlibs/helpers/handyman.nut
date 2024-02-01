@@ -610,7 +610,7 @@ handyman = {
   }
 
   function checkCacheReset() {//only for easier development
-    if (!(getroottable()?["always_reload_scenes"] ?? false) || get_time_msec() - this.lastCacheReset < 1000)
+    if (get_time_msec() - this.lastCacheReset < 1000)
       return
 
     this.lastCacheReset = get_time_msec()

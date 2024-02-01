@@ -81,7 +81,7 @@ curFilters.subscribe(function(v) {
   curSelectedUnit(first?.name)
 })
 
-let function close() {
+function close() {
   curSelectedUnit(null)
   isUnitsWndOpened(false)
 }
@@ -137,7 +137,7 @@ let mkOnElemState = @(holdId, stateFlags = Watched(0)) function(sf) {
   holdInfo[holdId] <- { release, press }
 }
 
-let function isHold(id) {
+function isHold(id) {
   local { release = 0, press = 0 } = holdInfo?[id]
   let time = release < press ? get_time_msec() - press
     : get_time_msec() - release < 50 ? release - press
@@ -145,7 +145,7 @@ let function isHold(id) {
   return time >= MIN_HOLD_MSEC
 }
 
-let function mkPlatoonPlates(unit) {
+function mkPlatoonPlates(unit) {
   let platoonUnits = unit.platoonUnits
   let platoonSize = platoonUnits?.len() ?? 0
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
@@ -176,12 +176,12 @@ let function mkPlatoonPlates(unit) {
   }
 }
 
-let function mkPlatoonPlate(unit) {
+function mkPlatoonPlate(unit) {
   let stateFlags = Watched(0)
   if (unit == null)
     return null
 
-  let function onClick() {
+  function onClick() {
     curSelectedUnit(unit.name)
     markUnitSeen(unit)
     if (isHold(unit.name))
@@ -236,12 +236,12 @@ let function mkPlatoonPlate(unit) {
   }
 }
 
-let function mkUnitPlate(unit) {
+function mkUnitPlate(unit) {
   let stateFlags = Watched(0)
   if (unit == null)
     return null
 
-  let function onClick() {
+  function onClick() {
     curSelectedUnit(unit.name)
     markUnitSeen(unit)
     if (isHold(unit.name))
@@ -367,7 +367,7 @@ foreach (f in filters)
   listWatches.append(f?.value, f?.allValues)
 listWatches = listWatches.filter(@(w) w != null)
 
-let function unitsBlock() {
+function unitsBlock() {
   local filtered = availableUnitsList.value
   foreach (f in filters) {
     let { value } = f.value
@@ -394,7 +394,7 @@ let function unitsBlock() {
   }
 }
 
-let function closeByBackBtn() {
+function closeByBackBtn() {
   close()
   sendNewbieBqEvent("leaveUnitsListWndByBackBtn")
 }
@@ -468,7 +468,7 @@ let gamercardPlace = {
   ]
 }
 
-let function platoonsHeader() {
+function platoonsHeader() {
   let revealDelay = Computed(@() !justBoughtUnits.value ? null
     : !justUnlockedUnits.value ? RAISE_PLATE_TOTAL + 1.0
     : UNLOCK_DELAY + RAISE_PLATE_TOTAL + 1.0)

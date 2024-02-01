@@ -24,7 +24,7 @@ contactsRegisterHandler("get_public_users_info", function(result, context) {
     allPublicInfo(allPublicInfo.value.__merge(upd))
 })
 
-let function requestPublicInfo() {
+function requestPublicInfo() {
   if (!needRequest.value)
     return
 
@@ -44,7 +44,7 @@ if (needRequest.value)
 let isNeedUpdate = @(info) info == null
   || info.receiveTime + AGEING_TIME_MSEC <= get_time_msec()
 
-let function refreshPublicInfo(uid) {
+function refreshPublicInfo(uid) {
   if (isNeedUpdate(allPublicInfo.value?[uid])
       && uid not in inProgressUids.value
       && uid not in delayedUids.value)

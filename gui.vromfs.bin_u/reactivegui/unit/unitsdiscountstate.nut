@@ -6,7 +6,7 @@ let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 
 let unitDiscounts = Watched({})
 
-let function isTimeInRange(timeRange, time) {
+function isTimeInRange(timeRange, time) {
   let {start = 0, end = 0} = timeRange
   return (start <= time && (end <= 0 || end >= time))
 }
@@ -14,7 +14,7 @@ let function isTimeInRange(timeRange, time) {
 let nextUpdate = Watched({ time = 0 }) //even when value changed to the same, better to restart timer.
 let maxTime = 0x7FFFFFFFFFFFFFFF
 
-let function updateActualDiscounts() {
+function updateActualDiscounts() {
   let curTime = serverTime.value
   let allDiscounts = serverConfigs.value?.allDiscounts.unit ?? {}
   local nextTime = allDiscounts.reduce(
@@ -37,7 +37,7 @@ updateActualDiscounts()
 serverConfigs.subscribe(@(_) updateActualDiscounts())
 canBuyUnits.subscribe(@(_) updateActualDiscounts())
 
-let function resetUpdateTimer() {
+function resetUpdateTimer() {
   let { time } = nextUpdate.value
   let left = time - serverTime.value
   if (left <= 0)

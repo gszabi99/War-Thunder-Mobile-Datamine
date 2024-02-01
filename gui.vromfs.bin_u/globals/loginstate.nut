@@ -43,7 +43,7 @@ let isLoginByGajin = sharedWatched("isLoginByGajin", @() false)
 let legalListForApprove = sharedWatched("legalsToApprove", @() {})
 let isMatchingOnline = sharedWatched("isMatchingOnline", @() false)
 
-let function getLoginStateDebugStr(state = null) {
+function getLoginStateDebugStr(state = null) {
   state = state ?? loginState.value
   return ", ".join(
     (clone LOGIN_STATE).filter(@(bit) number_of_set_bits(bit) == 1 && (state & bit) != 0).keys())

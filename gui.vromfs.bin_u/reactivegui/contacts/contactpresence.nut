@@ -28,13 +28,13 @@ let mkUpdatePresences = @(watch) function(newPresences) {
 let updatePresencesImpl = mkUpdatePresences(presences)
 let updateSquadPresences = mkUpdatePresences(squadStatus)
 
-let function updatePresences(newPresences) {
+function updatePresences(newPresences) {
   updatePresencesImpl(newPresences)
   onlineStatusBase.mutate(@(v) v.__update(newPresences.map(calcStatus)))
 }
 onlineStatusBase.whiteListMutatorClosure(updatePresences)
 
-let function isContactOnline(userId, onlineStatusVal) {
+function isContactOnline(userId, onlineStatusVal) {
   let uid = type(userId) == "integer" ? userId.tostring() : userId
   return onlineStatusVal?[uid] == true
 }

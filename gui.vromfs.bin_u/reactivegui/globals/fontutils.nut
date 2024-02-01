@@ -1,7 +1,7 @@
 from "math" import min, max
 from "daRg" import *
 
-let function getTextCompFullWidthPx(textOrTextareaComp) {
+function getTextCompFullWidthPx(textOrTextareaComp) {
   let textComp = textOrTextareaComp.__merge({ size = SIZE_TO_CONTENT })
   return calc_comp_size(textComp)[0]
 }
@@ -26,7 +26,7 @@ let getTextScaleToFitWidth = @(textOrTextareaComp, maxWidthPx)
  * @param {integer} minFontSize - Minimum fontSize value to return.
  * @return {integer} - fontSize.
  */
-let function getFontSizeToFitWidth(textOrTextareaComp, maxWidthPx, minFontSize) {
+function getFontSizeToFitWidth(textOrTextareaComp, maxWidthPx, minFontSize) {
   let w = getTextCompFullWidthPx(textOrTextareaComp)
   return w <= maxWidthPx
     ? textOrTextareaComp.fontSize
@@ -42,7 +42,7 @@ let function getFontSizeToFitWidth(textOrTextareaComp, maxWidthPx, minFontSize) 
  * from lesser to bigger (like fontsLists.common from fontsStyle.nut).
  * @return {table} - font style (font props table).
  */
-let function getFontToFitWidth(textOrTextareaComp, maxWidthPx, orderedFontsList) {
+function getFontToFitWidth(textOrTextareaComp, maxWidthPx, orderedFontsList) {
   let preciseFontSize = getFontSizeToFitWidth(textOrTextareaComp, maxWidthPx, orderedFontsList[0].fontSize)
   for (local i = orderedFontsList.len() - 1; i >= 0; i--)
     if (i == 0 || orderedFontsList[i].fontSize <= preciseFontSize)
@@ -58,7 +58,7 @@ let function getFontToFitWidth(textOrTextareaComp, maxWidthPx, orderedFontsList)
  * from lesser to bigger (like fontsLists.common from fontsStyle.nut).
  * @return {table} - font style (font props table).
  */
-let function getFontToFitHeight(maxHeightPx, orderedFontsList) {
+function getFontToFitHeight(maxHeightPx, orderedFontsList) {
   let listLen = orderedFontsList.len()
   local res = orderedFontsList[listLen - 1]
   for (local i = 0; i < listLen; i++)

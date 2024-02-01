@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let eventbus = require("eventbus")
+
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { can_debug_missions } = require("%appGlobals/permissions.nut")
@@ -13,7 +14,7 @@ let buttonsList = mkWatched(persist, "buttonsList", [])
 
 let needShowDevMenu = Computed(@() isShowDevMenu.value && can_debug_missions.value)
 
-eventbus.subscribe("FlightMenu_UpdateButtonsList", @(res) buttonsList(res.buttons))
+eventbus_subscribe("FlightMenu_UpdateButtonsList", @(res) buttonsList(res.buttons))
 
 let switchShowDevMenu = @() isShowDevMenu(!isShowDevMenu.value)
 
@@ -22,9 +23,9 @@ let flightMenuButtonsAction = { //for buttons action in darg
 }
 
 let getFlightMenuButtonAction = @(buttonName)
- @() eventbus.send("FlightMenu_doButtonAction", { buttonName })
+ @() eventbus_send("FlightMenu_doButtonAction", { buttonName })
 
-let function getFlightButtonText(buttonName) {
+function getFlightButtonText(buttonName) {
   let locId = $"flightmenu/btn{buttonName}"
   return doesLocTextExist(locId) ? loc(locId) : buttonName
 }

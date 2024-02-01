@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 
@@ -11,7 +11,7 @@ let isValidContactNick = @(c) c.value.realnick != invalidNickName
 let isValidUserIdNick = @(userId)
   (allContacts.value?[userId.tostring()].realnick ?? invalidNickName) != invalidNickName
 
-let function Contact(userId) {
+function Contact(userId) {
   if (type(userId) != "string")
     userId = userId.tostring()
   return Computed(@() allContacts.value?[userId])
@@ -23,7 +23,7 @@ let mkContactTbl = @(userIdStr, name)
 let initContact = @(userIdStr, name)
   allContacts.mutate(@(v) v[userIdStr] <- mkContactTbl(userIdStr, name))
 
-let function updateContact(userId, name = invalidNickName) {
+function updateContact(userId, name = invalidNickName) {
   let userIdStr = userId.tostring()
   if (userIdStr not in allContacts.value) {
     initContact(userIdStr, name)
@@ -35,7 +35,7 @@ let function updateContact(userId, name = invalidNickName) {
   return Contact(userIdStr)
 }
 
-let function updateContactNames(names) {
+function updateContactNames(names) {
   let filtered = names.filter(@(userId, name) type(userId) == "string" && allContacts.value?[userId].realnick != name)
   if (filtered.len() == 0)
     return
@@ -52,13 +52,13 @@ allContacts.whiteListMutatorClosure(updateContactNames)
 
 let getContactNick = @(contact) getPlayerName(contact?.realnick ?? invalidNickName)
 
-let callCb = @(cb, result) type(cb) == "string" ? send(cb, result)
-  : "id" in cb ? send(cb.id, { context = cb, result })
+let callCb = @(cb, result) type(cb) == "string" ? eventbus_send(cb, result)
+  : "id" in cb ? eventbus_send(cb.id, { context = cb, result })
   : null
 
 let requestedUids = {}
 
-subscribe(NAME_CB_ID, function(msg) {
+eventbus_subscribe(NAME_CB_ID, function(msg) {
   let { result, context } = msg
   let { uids, onFinish } = context
   let changeList = {} //uid = name
@@ -76,7 +76,7 @@ subscribe(NAME_CB_ID, function(msg) {
 })
 
 //contactsContainer - array or table of contacts
-let function validateNickNames(allUids, onFinish = null) {
+function validateNickNames(allUids, onFinish = null) {
   let uids = []
   foreach(u in allUids) {
     let uid = u.tostring()
@@ -91,7 +91,7 @@ let function validateNickNames(allUids, onFinish = null) {
     return
   }
 
-  send("matchingCall",
+  eventbus_send("matchingCall",
     {
       action = "mproxy.nick_server_request"
       params = { ids = uids.map(@(u) u.tointeger()) }

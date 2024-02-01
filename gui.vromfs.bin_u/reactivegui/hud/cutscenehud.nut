@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let killerInfo = require("%rGui/hudHints/killerInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let eventbus = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
@@ -11,7 +12,7 @@ let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, ph(-20)] }
 
 let showSkipHint = mkWatched(persist, "showSkipHint", false)
-eventbus.subscribe("hint:xrayCamera:showSkipHint", @(_) showSkipHint(true))
+eventbus_subscribe("hint:xrayCamera:showSkipHint", @(_) showSkipHint(true))
 
 let mkText = @(text) {
   rendObj = ROBJ_TEXT

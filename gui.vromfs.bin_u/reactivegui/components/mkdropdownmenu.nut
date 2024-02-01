@@ -6,7 +6,7 @@ let { hoverColor } = require("%rGui/style/stdColors.nut")
 let menuButtonSize = hdpx(60)
 let separatorWidth = hdpx(2)
 
-let function makeMenuBtn(onClick) {
+function makeMenuBtn(onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -26,12 +26,12 @@ let function makeMenuBtn(onClick) {
 const WND_UID = "main_menu_header_buttons"
 let close = @() modalPopupWnd.remove(WND_UID)
 
-let function closeWithCb(cb) {
+function closeWithCb(cb) {
   cb()
   modalPopupWnd.remove("main_menu_header_buttons")
 }
 
-let function textButton(text, onClick) {
+function textButton(text, onClick) {
   let stateFlags = Watched(0)
   return function() {
     let sf = stateFlags.value
@@ -99,7 +99,7 @@ let mkDropMenuBtn = @(getButtons, buttonsGeneration) function() {
   }
 
   let menuUi = mkDropMenu(columnsList)
-  let function openMenu(event) {
+  function openMenu(event) {
     let { targetRect } = event
     modalPopupWnd.add([targetRect.r, targetRect.b], {
       uid = WND_UID

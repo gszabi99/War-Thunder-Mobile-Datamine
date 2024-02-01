@@ -4,7 +4,7 @@ let DataBlock  = require("DataBlock")
 let { split_by_chars } = require("string")
 let { get_current_mission_desc } = require("guiMission")
 
-let function getLocIdsArray(config, key = "locId") {
+function getLocIdsArray(config, key = "locId") {
   let keyValue = config?[key] ?? ""
   let parsedString = split_by_chars(keyValue, "; ")
   if (parsedString.len() <= 1)
@@ -27,7 +27,7 @@ let getMissionLocName = @(config, key = "locId")
   "".join(getLocIdsArray(config, key)
       .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
 
-let function locMissionName() {
+function locMissionName() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
   local ret = ""
@@ -36,7 +36,7 @@ let function locMissionName() {
   return ret
 }
 
-let function locMissionDesc() {
+function locMissionDesc() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
   local ret = ""

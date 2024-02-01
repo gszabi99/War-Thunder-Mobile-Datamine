@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logR = log_with_prefix("[RESPAWN] ")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { setSelectedUnitInfo, getAvailableRespawnBases, getFullRespawnBasesList,
   getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask, selectRespawnBase
@@ -35,7 +35,7 @@ let seenShells = mkWatched(persist, SEEN_SHELLS, {})
 
 let getWeapon = @(weapons) weapons.findindex(@(v) v) ?? weapons.findindex(@(_) true)
 let mkSlot =  @(id, info, readyMask = 0, spareMask = 0)
-  { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}),
+  { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}), skin = info?.skin ?? {},
     canSpawn = is_bit_set(readyMask, id),
     isSpawnBySpare = is_bit_set(spareMask, id),
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
@@ -67,7 +67,7 @@ let hasUnseenShellsBySlot = Computed(@() respawnSlots.value.map(function (slot) 
   return {}
 }))
 
-let function saveSeenShells(unitName, ids) {
+function saveSeenShells(unitName, ids) {
   let filtered = ids.filter(@(id) hasUnseenShellsBySlot.value.findvalue(@(item) (item?[id] ?? false)))
   let unitSeen = clone seenShells.value?[unitName] ?? {}
   foreach (id in filtered)
@@ -82,10 +82,10 @@ let function saveSeenShells(unitName, ids) {
   let unitBlk = shellsBlk.addBlock(unitName)
   foreach (id, val in unitSeen)
     unitBlk[id] = val
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
-let function loadSeenShells() {
+function loadSeenShells() {
   let blk = get_local_custom_settings_blk()
   let shellsBlk = blk?[SEEN_SHELLS]
   if (!isDataBlock(shellsBlk)) {
@@ -125,9 +125,11 @@ let availRespBases = Computed(function() {
     return {}
   setSelectedUnitInfo(name, 0) //need to get respawnBase
   let visible = respawnBases.value
-  return getAvailableRespawnBases(getUnitTags(name).keys())
+  let ret = getAvailableRespawnBases(getUnitTags(name).keys())
     .reduce(@(res, id) res.__update({ [id] = visible.findvalue(@(b) b.id == id) }), {})
     .filter(@(b) b != null)
+  logR($"got {ret.len()} available respawns, filtered out from {visible.len()}")
+  return ret;
 })
 let playerSelectedRespBase = Watched(-1)
 let curRespBase = Computed(@() playerSelectedRespBase.value in availRespBases.value
@@ -135,7 +137,7 @@ let curRespBase = Computed(@() playerSelectedRespBase.value in availRespBases.va
 
 let updateRespawnBases = @() respawnBases(getFullRespawnBasesList())
 
-subscribe("ChangedMissionRespawnBasesStatus", @(_) updateRespawnBases())
+eventbus_subscribe("on_mission_changed", @(...) updateRespawnBases())
 isRespawnAttached.subscribe(function(v) {
   if (!v)
     return
@@ -151,7 +153,7 @@ isInBattle.subscribe( function (v) {
 })
 let emptyBullets = { bullets0 = "", bulletCount0 = 10000 }
 let MAX_SLOTS = 6
-let function getDefaultBulletDataToSpawn(unitName, level, weaponName) {
+function getDefaultBulletDataToSpawn(unitName, level, weaponName) {
   let choice = loadUnitBulletsChoice(unitName)
   let primary = choice?[weaponName].primary ?? choice?.commonWeapons.primary
   if (primary == null)
@@ -172,10 +174,10 @@ let function getDefaultBulletDataToSpawn(unitName, level, weaponName) {
   })
 }
 
-let function respawn(slot, bullets) {
+function respawn(slot, bullets) {
   if (isRespawnStarted.value)
     return
-  let { id, name, weapon } = slot
+  let { id, name, weapon, skin } = slot
   spawnUnitName(name)
   local respBaseId = curRespBase.value
   if (respBaseId == -1)
@@ -187,17 +189,22 @@ let function respawn(slot, bullets) {
     bulletsData[$"bulletCount{idx}"] <- bullet.count
   }
 
-  send("requestRespawn", {
+  local current_skin = skin
+  if (skin == "upgraded")
+    current_skin = ""
+
+  eventbus_send("requestRespawn", {
     name
     weapon
     respBaseId
     idInCountry = id
+    skin=current_skin
   }.__update(bulletsData))
 }
 
-let cancelRespawn = @() send("cancelRespawn", {})
+let cancelRespawn = @() eventbus_send("cancelRespawn", {})
 
-let function tryAutospawn() {
+function tryAutospawn() {
   let slot = respawnSlots.value?[0]
   if (slot == null) {
     logR("Skip auto spawn because respawnUnitInfo.value is null")
@@ -209,7 +216,7 @@ let function tryAutospawn() {
   respawn(slot, getDefaultBulletDataToSpawn(name, level, weapon))
 }
 
-let function updateAutospawnTimer(v) {
+function updateAutospawnTimer(v) {
   if (v) {
     tryAutospawn()
     setInterval(5.0, tryAutospawn)
@@ -220,12 +227,12 @@ let function updateAutospawnTimer(v) {
 updateAutospawnTimer(needAutospawn.value)
 needAutospawn.subscribe(updateAutospawnTimer)
 
-let function updateMasks() {
+function updateMasks() {
   readySlotsMask(getWasReadySlotsMask())
   spareSlotsMask(getSpareSlotsMask())
   disabledSlotsMask(getDisabledSlotsMask())
 }
-let function onEnterRespawn() {
+function onEnterRespawn() {
   updateMasks()
   setInterval(1.0, updateMasks)
 }
@@ -246,7 +253,7 @@ isInRespawn.subscribe(function(v) {
 register_command(function() {
   seenShells({})
   get_local_custom_settings_blk().removeBlock(SEEN_SHELLS)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }, "debug.reset_seen_shells")
 
 register_command(function() {

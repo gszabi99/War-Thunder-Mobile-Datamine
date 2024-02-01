@@ -24,7 +24,7 @@ let isNameValid = Computed(function() {
 
 let editbox = textInput(replayName)
 
-let function save() {
+function save() {
   if (!isNameValid.value) {
     openMsgBox({ text = loc("msgbox/invalidReplayFileName") })
     return

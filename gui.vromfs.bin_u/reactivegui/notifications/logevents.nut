@@ -11,7 +11,7 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let { INVALID_USER_ID } = require("matching.errors")
 let { json_to_string } = require("json")
 let { get_common_local_settings_blk } = require("blkGetters")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let {
   logFirebaseEvent = @(_) null ,
   logFirebaseEventWithJson = @(_,__) null ,
@@ -20,7 +20,7 @@ let {
 
 const FIRST_LOGIN_EVENT = "first_login_event"
 
-let function sendEvent(id) {
+function sendEvent(id) {
   log($"[telemetry] send event {id}")
   logEvent($"af_{id}", "")
   //do not use event names from this list https://firebase.google.com/docs/reference/ios/firebaseanalytics/api/reference/Classes/FIRAnalytics#/c:objc(cs)FIRAnalytics(cm)logEventWithName:parameters:
@@ -43,7 +43,7 @@ tutorialResultEvent.subscribe(function(name) {
   }
 })
 
-let function sendEventByValue(eventId, watch, valueToSend, notInitedValue = null) {
+function sendEventByValue(eventId, watch, valueToSend, notInitedValue = null) {
   local prev = watch.value
   watch.subscribe(function(v) {
     if (prev != notInitedValue && v == valueToSend)
@@ -77,7 +77,7 @@ myUserId.subscribe(function(v) {
       logEvent("af_first_login",json_to_string({cuid = uid}, false))
       logFirebaseEventWithJson("first_login",json_to_string({cuid = uid}, false))
       blk[FIRST_LOGIN_EVENT] = true
-      send("saveProfile", {})
+      eventbus_send("saveProfile", {})
     }
   }
 })

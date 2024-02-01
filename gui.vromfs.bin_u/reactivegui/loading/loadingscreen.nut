@@ -15,7 +15,7 @@ let lastLoadingBgShow = Watched(get_time_msec())
 let missionScreenIdx = Watched(0)
 
 local missionScreen = null
-let function setMissionLoadingScreen(screen) {
+function setMissionLoadingScreen(screen) {
   missionScreen = screen
   missionScreenIdx.set(missionScreenIdx.get() + 1)
 }

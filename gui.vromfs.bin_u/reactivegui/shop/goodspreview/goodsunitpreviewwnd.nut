@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { GPT_UNIT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount
@@ -76,7 +77,7 @@ isPurchEffectVisible.subscribe(function(v) {
     closeGoodsPreview()
 })
 
-subscribe("onCutsceneUnitShoot", @(_) resetTimeout(TIME_TO_SHOW_UI_AFTER_SHOT, showUi))
+eventbus_subscribe("onCutsceneUnitShoot", @(_) resetTimeout(TIME_TO_SHOW_UI_AFTER_SHOT, showUi))
 
 let curSelectedUnitId = Watched("")
 previewGoodsUnit.subscribe(@(v) curSelectedUnitId(v?.name ?? ""))
@@ -107,7 +108,7 @@ let needShowCutscene = keepref(Computed(@() unitForShow.value != null
   && isLoadedHangarUnitUpgraded.value == (unitForShow.value?.isUpgraded ?? false)
   && isHangarUnitLoaded.value ))
 
-let function showCutscene(v) {
+function showCutscene(v) {
   if (!v)
     stop_prem_cutscene()
   else if (!needShowUi.value && !skipAnimsOnce.value) {
@@ -120,7 +121,7 @@ let function showCutscene(v) {
 showCutscene(needShowCutscene.value)
 needShowCutscene.subscribe(showCutscene)
 
-let function openDetailsWnd() {
+function openDetailsWnd() {
   hangarUnitDataBackup({
     name = unitForShow.value.name,
     custom = unitForShow.value,
@@ -134,7 +135,7 @@ let function openDetailsWnd() {
   skipAnimsOnce(true)
 }
 
-let function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
+function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
   let p = getUnitPresentation(platoonUnit)
   let isSelected = Computed(@() onSelectUnit != null && curSelectedUnitId.value == platoonUnit.name)
   let size = idx != 0 ? unitPlateSize

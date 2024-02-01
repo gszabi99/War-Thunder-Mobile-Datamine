@@ -13,7 +13,7 @@ let gap = hdpx(30)
 
 let isOpen = mkWatched(persist, "isOpen", true)
 
-let function askSaveAndClose() {
+function askSaveAndClose() {
   if (!isCurPresetChanged.value) {
     closeTuning()
     return
@@ -71,12 +71,12 @@ let resetBtn = @() {
         { color = btnBgColorNegative })
 }
 
-let function historyBack() {
+function historyBack() {
   if ((curHistoryIdx.value ?? 0) != 0 && history.value.len() != 0)
     tuningTransform(history.value[min(curHistoryIdx.value - 1, history.value.len() - 1)])
 }
 
-let function historyFwd() {
+function historyFwd() {
   if (curHistoryIdx.value != null && curHistoryIdx.value < history.value.len() - 1)
     tuningTransform(history.value[curHistoryIdx.value + 1])
 }
@@ -85,7 +85,7 @@ let historyBackBtn = tuningBtnWithActivity(Computed(@() (curHistoryIdx.value ?? 
   "ui/gameuiskin#icon_cancel.svg",
   historyBack, "hudTuning/back/desc")
 
-let function historyFwdBtn() {
+function historyFwdBtn() {
   let isAvailable = curHistoryIdx.value != null && curHistoryIdx.value < history.value.len() - 1
   return {
     watch = [curHistoryIdx, history]

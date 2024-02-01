@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -185,9 +185,9 @@ let gamercardBattleItemsBalanceBtns = @(){
     .extend(unitSpecificItems.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES))))
 }
 
-let queueCurRandomBattleMode = @() send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
+let queueCurRandomBattleMode = @() eventbus_send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
 
-let function startCurUnitOfflineBattle() {
+function startCurUnitOfflineBattle() {
   if (curUnit.value == null) {
     sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = "no unit!!!" })
     return
@@ -295,7 +295,7 @@ let exitMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionQuitGame")
   buttons = [
     { id = "cancel", isCancel = true }
-    { text = loc("mainmenu/btnQuit"), styleId = "PRIMARY", cb = @() send("exitGame", {}) }
+    { text = loc("mainmenu/btnQuit"), styleId = "PRIMARY", cb = @() eventbus_send("exitGame", {}) }
   ]
 })
 

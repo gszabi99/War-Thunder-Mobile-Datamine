@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let function axisListener(updateByAxis) {
+function axisListener(updateByAxis) {
   let watches = updateByAxis.map(@(_, axis) gui_scene.getJoystickAxis(axis))
     .filter(@(w) w != null)
   return {

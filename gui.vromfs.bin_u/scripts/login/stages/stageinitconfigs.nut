@@ -7,7 +7,7 @@ let initOptions = require("%scripts/options/initOptions.nut")
 let { export, finalizeStage
 } = require("mkStageBase.nut")("initConfigs", LOGIN_STATE.READY_TO_FULL_LOAD, LOGIN_STATE.CONFIGS_INITED)
 
-let function start() {
+function start() {
   //skip frame after the long scripts loading
   deferOnce(function() {
     initOptions()

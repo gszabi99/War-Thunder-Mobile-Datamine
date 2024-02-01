@@ -13,20 +13,20 @@ let borderWidth = hdpxi(1)
 let borderWidthCurrent = hdpxi(3)
 let imgSize = (touchButtonSize * 0.75).tointeger()
 
-let function onToggleBullet(isNext, isCurrent) {
+function onToggleBullet(isNext, isCurrent) {
   if (!isGamepad.value && (isNext || (isCurrent && !nextBulletName.value)))
     return
   toggleNextBullet()
 }
 
-let function getBulletIcon(id, isBulletBelt) {
+function getBulletIcon(id, isBulletBelt) {
   let icon = bulletsInfo.value?.fromUnitTags[id]?.icon
   if (icon != null)
     return $"{icon}.svg"
   return (isBulletBelt ?? false) ? "hud_ammo_bullet_ap.svg" : "hud_ammo_ap1_he1.svg"
 }
 
-let function bulletIcon(id, isNext, isCurrent, isBulletBelt) {
+function bulletIcon(id, isNext, isCurrent, isBulletBelt) {
   let stateFlags = Watched(0)
   let icon = getBulletIcon(id, isBulletBelt)
 
@@ -54,7 +54,7 @@ let function bulletIcon(id, isNext, isCurrent, isBulletBelt) {
   }
 }
 
-let function bulletName(name) {
+function bulletName(name) {
   let text = getAmmoTypeShortText(name)
   return {
     rendObj = ROBJ_TEXT
@@ -81,7 +81,7 @@ let bulletStatus = @(isNext, isCurrent) {
     : null
 }.__update(bulletStatusFont)
 
-let function bulletButton(isMain) {
+function bulletButton(isMain) {
   let bulletInfo = Computed(@() isMain ? mainBulletInfo.value : extraBulletInfo.value)
   let bulletCount = Computed(@() isMain ? mainBulletCount.value : extraBulletCount.value)
   let name = Computed(@() bulletInfo.value?.bullets[0])
@@ -90,7 +90,7 @@ let function bulletButton(isMain) {
   let isCurrent = Computed(@() id.value == currentBulletName.value)
   let isBulletBelt = Computed(@() bulletInfo.value?.isBulletBelt)
 
-  return @() bulletCount.value == 0 ? null : {
+  return @() bulletCount.get() == 0 ? { watch = bulletCount } : {
     watch = [name, id, isNext, isCurrent, isBulletBelt, bulletCount]
     size = [touchButtonSize, touchButtonSize]
     children = [

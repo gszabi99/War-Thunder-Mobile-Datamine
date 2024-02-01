@@ -50,7 +50,7 @@ let mkFingerComp = @() {
   rendObj = ROBJ_IMAGE
 }
 
-let function buildAnimSteps(name, comps, buildAnimStepFunc, steps) {
+function buildAnimSteps(name, comps, buildAnimStepFunc, steps) {
   let metaCfg = comps.map(@(_) {})
   let restartTrigger = $"trigger{name}"
   foreach (comp in comps)
@@ -67,7 +67,7 @@ let function buildAnimSteps(name, comps, buildAnimStepFunc, steps) {
     }
 }
 
-let function mkAnimSequence(prop, trigger, meta, partialAnims) {
+function mkAnimSequence(prop, trigger, meta, partialAnims) {
   let res = []
 
   if (prop not in meta)
@@ -94,7 +94,7 @@ let function mkAnimSequence(prop, trigger, meta, partialAnims) {
 
 let mkPos = @(x, y) [x * canvasHalfSize, y * canvasHalfSize]
 
-let function buildStickAnimStep(comps, trigger, data, metaCfg) {
+function buildStickAnimStep(comps, trigger, data, metaCfg) {
   let { t, x, y, x2 = 0, y2 = 0 } = data
   let posInit = [0, 0]
   let pos = mkPos(x, y)
@@ -176,7 +176,7 @@ let function buildStickAnimStep(comps, trigger, data, metaCfg) {
   )
 }
 
-let function buildArrowsAnimStep(comps, trigger, data, metaCfg) {
+function buildArrowsAnimStep(comps, trigger, data, metaCfg) {
   let { t, x, y, btnId } = data
   let pos = mkPos(x, y)
   let timeHold = timeHoldByGeature[t]
@@ -233,7 +233,7 @@ let mkStickAnimComp = @(stickBg, stickHead, finger) animCompBase.__merge({
   ]
 })
 
-let function mkStaticStickAnim() {
+function mkStaticStickAnim() {
   let staticStickComps = {
     finger = mkFingerComp()
     head = clone stickHeadComp
@@ -246,7 +246,7 @@ let function mkStaticStickAnim() {
   return mkStickAnimComp(stickBgComp, staticStickComps.head, staticStickComps.finger)
 }
 
-let function mkDynamicStickAnim() {
+function mkDynamicStickAnim() {
   let dynamicStickComps = {
     finger = mkFingerComp()
     head = clone stickHeadComp
@@ -260,7 +260,7 @@ let function mkDynamicStickAnim() {
   return mkStickAnimComp(dynamicStickComps.bg, dynamicStickComps.head, dynamicStickComps.finger)
 }
 
-let function mkArrowsAnim() {
+function mkArrowsAnim() {
   let arrowsComps = {
     finger = mkFingerComp()
     down = arrowsWidgetParts.arrowDown

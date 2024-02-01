@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
+let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
@@ -14,19 +15,21 @@ let avatarSize = hdpxi(90)
 let rowHeight = avatarSize + 2 * borderWidth
 let gap = hdpx(24)
 
-let function contactNameBlock(contact, info, addChildren = [], styles = {}) {
+function contactNameBlock(contact, info, addChildren = [], styles = {}) {
+  let { realnick } = contact
   let { nickFrame = null, title = null } = info?.decorators
   let { nameStyle = fontTiny, titleStyle = fontTiny } = styles
   return {
     size = flex()
     flow = FLOW_VERTICAL
     children = [
-      {
+      @() {
+        watch = [myUserRealName, myUserName]
         size = [SIZE_TO_CONTENT, flex()]
         valign = ALIGN_CENTER
         rendObj = ROBJ_TEXT
         color = nameColor
-        text = frameNick(getPlayerName(contact.realnick), nickFrame)
+        text = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
       }.__update(nameStyle)
       {
         size = [SIZE_TO_CONTENT, flex()]
@@ -40,7 +43,7 @@ let function contactNameBlock(contact, info, addChildren = [], styles = {}) {
   }
 }
 
-let function contactAvatar(info, size = avatarSize) {
+function contactAvatar(info, size = avatarSize) {
   let { avatar = null } = info?.decorators
   return {
     size = [size, size]
@@ -67,7 +70,7 @@ let levelMark = @(level, starLevel) {
   ]
 }
 
-let function contactLevelBlock(info) {
+function contactLevelBlock(info) {
   let { playerLevel = null, playerStarLevel = 0 } = info
   return {
     size = [1.5 * avatarSize, flex()]

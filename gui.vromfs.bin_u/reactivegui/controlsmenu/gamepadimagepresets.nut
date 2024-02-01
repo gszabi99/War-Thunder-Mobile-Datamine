@@ -221,7 +221,7 @@ let nintendo = {
   })
 }
 
-let function validatePresets(presets) {
+function validatePresets(presets) {
   local basePreset = null
   local basePresetId = null
   foreach(pId, p in presets)

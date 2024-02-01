@@ -100,7 +100,7 @@ function rewardsBlock(text, viewInfo, rewardCtor) {
   }
 }
 
-let function rewardsToViewInfo(rewards, servConfigs) {
+function rewardsToViewInfo(rewards, servConfigs) {
   let res = []
   foreach(id, data in rewards) {
     let reward = servConfigs?.userstatRewards[id]
@@ -116,7 +116,7 @@ let function rewardsToViewInfo(rewards, servConfigs) {
   return res
 }
 
-let function rewardsList() {
+function rewardsList() {
   let res = { watch = [bpPurchasedUnlock, bpPaidRewardsUnlock, curStage, serverConfigs] }
   if (bpPaidRewardsUnlock.value == null)
     return res
@@ -169,7 +169,7 @@ let battlePassIcon = @() {
   keepAspect = true
 }
 
-let function buyBlock() {
+function buyBlock() {
   let { price = null, priceExt = null } = battlePassGoods.value
   return {
     watch = [isBpPurchased, battlePassGoods]
@@ -181,20 +181,20 @@ let function buyBlock() {
             rendObj = ROBJ_TEXT
             text = loc("battlePass/alreadyBought")
           }.__update(fontSmall)
-      : (priceExt?.price ?? 0) > 0
-        ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-          mkPriceExtText(priceExt.price, priceExt.currencyId)
-          function() {
-            sendBpBqEvent("purchase_pass_press")
-            buyPlatformGoods(battlePassGoods.value)
-          },
-          { ovr = { minWidth = bpIconSize }})
       : (price?.price ?? 0) > 0
         ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
           mkCurrencyComp(price.price, price.currencyId)
           function() {
             sendBpBqEvent("purchase_pass_press")
             purchaseGoods(battlePassGoods.value?.id)
+          },
+          { ovr = { minWidth = bpIconSize }})
+      : (priceExt?.price ?? 0) > 0
+        ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
+          mkPriceExtText(priceExt.price, priceExt.currencyId)
+          function() {
+            sendBpBqEvent("purchase_pass_press")
+            buyPlatformGoods(battlePassGoods.value)
           },
           { ovr = { minWidth = bpIconSize }})
       : {

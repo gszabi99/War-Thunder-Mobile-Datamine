@@ -197,7 +197,7 @@ let mkHeader = @(header, color, ovr = {}) {
   halign = ALIGN_CENTER
 }.__update(adaptiveFont, ovr)
 
-let function mkHintBlock(hint) {
+function mkHintBlock(hint) {
   let { lines = null, color = 0xFFFFFFFF, header = null, content = null, blockOvr = {}, headerOvr = {} } = hint
   local pos = hint?.pos
   if (pos == null && lines != null) {
@@ -222,7 +222,7 @@ let function mkHintBlock(hint) {
   }
 }
 
-let function mkTgtPoint(hint) {
+function mkTgtPoint(hint) {
   let { lines = null, color = 0xFFFFFFFF } = hint
   if (lines == null)
     return null

@@ -35,7 +35,7 @@ curSceneBgFallbackRaw.subscribe(@(_) deferOnce(@() curSceneBgFallback.set(curSce
 
 let getTopScene = @(order) order.len() == 0 ? null : scenes[order.top()]?.scene
 
-let function addScene(id) {
+function addScene(id) {
   if (id not in scenes) {
     logerr($"Try to open not registerd navState scene {id}")
     return
@@ -49,13 +49,13 @@ let function addScene(id) {
   })
 }
 
-let function removeScene(id) {
+function removeScene(id) {
   let idx = scenesOrderSaved.value.indexof(id)
   if (idx != null)
     scenesOrderSaved.mutate(@(v) v.remove(idx))
 }
 
-let function moveSceneToTop(id) {
+function moveSceneToTop(id) {
   let idx = scenesOrderSaved.value.indexof(id)
   if (idx == null)
     return false
@@ -66,7 +66,7 @@ let function moveSceneToTop(id) {
   return true
 }
 
-let function registerScene(id, scene, onClearScenes = null, openedCounterWatch = null, alwaysOnTop = false, canClear = null) {
+function registerScene(id, scene, onClearScenes = null, openedCounterWatch = null, alwaysOnTop = false, canClear = null) {
   if (id in scenes) {
     logerr($"Already registered navState scene {id}")
     return
@@ -81,7 +81,7 @@ let function registerScene(id, scene, onClearScenes = null, openedCounterWatch =
     : openedCounterWatch.get() > 0)
   let isOpened = scenesOrderSaved.value.indexof(id) != null
 
-  let function show(_) {
+  function show(_) {
     if (!isOpenedWatch.get())
       removeScene(id)
     else if (!moveSceneToTop(id))
@@ -92,7 +92,7 @@ let function registerScene(id, scene, onClearScenes = null, openedCounterWatch =
     show(null)
 }
 
-let function clearScenes() {
+function clearScenes() {
   let prev = clone scenesOrder.value //in case of open new scene by onClearScenes
   scenesOrderSaved([])
   foreach (id in prev)
@@ -102,11 +102,11 @@ let function clearScenes() {
 isInBattle.subscribe(@(_) clearScenes())
 isAuthorized.subscribe(@(v) v ? null : clearScenes())
 
-let function canResetToMainScene() {
+function canResetToMainScene() {
   return scenesOrderSaved.value.reduce(@(val, id) val && (scenes?[id].canClear() ?? true), true)
 }
 
-let function tryResetToMainScene() {
+function tryResetToMainScene() {
   let res = canResetToMainScene()
   if (res)
     clearScenes()

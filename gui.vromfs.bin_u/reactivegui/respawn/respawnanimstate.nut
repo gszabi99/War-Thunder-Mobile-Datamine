@@ -11,7 +11,7 @@ slotAABB.subscribe(function(_) {
   selSlotLinesSteps(null)
 })
 
-let function calcSelSlotLines() {
+function calcSelSlotLines() {
   if (slotAABB.value == null || bulletsAABB.value.len() == 0)
     return null
   let list = bulletsAABB.value.values()

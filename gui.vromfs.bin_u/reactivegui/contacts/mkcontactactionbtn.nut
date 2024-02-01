@@ -13,7 +13,7 @@ let progressWait = {
   children = spinner
 }
 
-let function mkContactActionBtn(actionCfg, userId, btnStyle = {}) {
+function mkContactActionBtn(actionCfg, userId, btnStyle = {}) {
   let { locId, mkIsVisible, action, mkIsInProgress = null } = actionCfg
   let isVisible = mkIsVisible(userId)
   let isInProgress = mkIsInProgress?(userId) ?? neverInProgress

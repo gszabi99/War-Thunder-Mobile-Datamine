@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { ceil } = require("%sqstd/math.nut")
 let { SHIP, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -18,7 +18,7 @@ let testFlightExtPacks = { //for bots
   naval = getCampaignPkgsForOnlineBattle("ships", 1) //cruiser_admiral_hipper
 }
 
-let function getBulletsForTestFlight(unitName) {
+function getBulletsForTestFlight(unitName) {
   let { primary = null, secondary = null } = loadUnitBulletsChoice(unitName)?.commonWeapons
   if (primary == null)
     return [{ name = "", count = 10000 }]
@@ -41,17 +41,17 @@ let function getBulletsForTestFlight(unitName) {
   return res
 }
 
-let function donloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
+function donloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
   let pkgs = getUnitPkgs(unitName, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
     .extend(extAddons)
     .filter(@(v) !hasAddons.value?[v])
   if (pkgs.len() == 0)
-    send(eventId, params)
+    eventbus_send(eventId, params)
   else
     openDownloadAddonsWnd(pkgs, eventId, params)
 }
 
-let function startTestFlightImpl(unitName, missionName = null) {
+function startTestFlightImpl(unitName, missionName = null) {
   if (unitName == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
@@ -72,7 +72,7 @@ let function startTestFlightImpl(unitName, missionName = null) {
 let startTestFlight = @(unitName, missionName = null)
   notAvailableForSquadMsg(@() startTestFlightImpl(unitName, missionName))
 
-let function startOfflineBattle(unitName, missionName) {
+function startOfflineBattle(unitName, missionName) {
   if (unitName == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
@@ -85,7 +85,7 @@ let function startOfflineBattle(unitName, missionName) {
     })
 }
 
-let function startLocalMPBattle(unitName, missionName) {
+function startLocalMPBattle(unitName, missionName) {
   if (unitName == null) {
     openMsgBox({ text = loc("No selected unit") })
     return

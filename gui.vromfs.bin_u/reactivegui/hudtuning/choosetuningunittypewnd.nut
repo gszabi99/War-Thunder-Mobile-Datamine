@@ -15,7 +15,7 @@ let unitTypes = unitTypeOrder.filter(@(ut) ut in cfgByUnitType)
 
 let gap = hdpx(10)
 
-let function changeUnitType(unitType) {
+function changeUnitType(unitType) {
   close()
   if (unitType == tuningUnitType.value)
     return

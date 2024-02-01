@@ -58,7 +58,7 @@ let needOpen = Computed(@() !rouletteOpenId.value
   && canOpenWithWindow.value
   && !isAdsVisible.value)
 
-let function getOpenResultViewInfos(result) {
+function getOpenResultViewInfos(result) {
   let { unseenPurchases = null } = result
   if (unseenPurchases == null)
     return []
@@ -129,7 +129,7 @@ let nextFixedReward = Computed(function() {
 let isCurRewardFixed = Computed(@() nextFixedReward.value != null
   && nextFixedReward.value?.total == nextFixedReward.value?.current)
 
-let function calcJackpotOpens(id, openCount, profile, configs) {
+function calcJackpotOpens(id, openCount, profile, configs) {
   let { fixedRewards = {} } = configs?.lootboxesCfg[id]
   if (fixedRewards.len() == 0)
     return []
@@ -165,7 +165,7 @@ let function calcJackpotOpens(id, openCount, profile, configs) {
   return res
 }
 
-let function collectRewards(weights, rewardsCfg, profile, lastReward) {
+function collectRewards(weights, rewardsCfg, profile, lastReward) {
   let rewards = {}
   foreach(id, _ in weights)
     if (id in rewardsCfg && !isRewardEmpty(rewardsCfg[id], profile))
@@ -175,7 +175,7 @@ let function collectRewards(weights, rewardsCfg, profile, lastReward) {
   return rewards
 }
 
-let function multiplyRewardsCycle(weights, rewardsCfg) {
+function multiplyRewardsCycle(weights, rewardsCfg) {
   let res = []
   if (weights.len() == 0 || rewardsCfg.len() == 0)
     return res
@@ -193,7 +193,7 @@ let function multiplyRewardsCycle(weights, rewardsCfg) {
   return Rand.shuffle(res)
 }
 
-let function multiplyRewardsFull(weights, rewardsCfg) {
+function multiplyRewardsFull(weights, rewardsCfg) {
   let cycle = multiplyRewardsCycle(weights, rewardsCfg)
   if (cycle.len() >= MIN_REWARDS_LEN)
     return cycle
@@ -204,7 +204,7 @@ let function multiplyRewardsFull(weights, rewardsCfg) {
   return res
 }
 
-let function calcOpenType(openType, weights, rewardsCfg) {
+function calcOpenType(openType, weights, rewardsCfg) {
   if (openType != "roulette")
     return openType
 
@@ -220,7 +220,7 @@ let function calcOpenType(openType, weights, rewardsCfg) {
   return minW / total <= 0.01 ? "roulette_long" : "roulette_short"
 }
 
-let function calcOpenInfo(id, profile, configs) {
+function calcOpenInfo(id, profile, configs) {
   let res = { rewardsList = [], openType = "", lastReward = null }
   let { lootboxesCfg = null, rewardsCfg = null } = configs
   let lastReward = lootboxesCfg?[id].lastReward
@@ -266,7 +266,7 @@ needOpen.subscribe(@(v) v ? openDelayed() : null)
 
 openConfig.subscribe(@(_) rouletteOpenIdx(0))
 
-let function closeRoulette() {
+function closeRoulette() {
   openConfig(null)
   rouletteOpenResultFull(null)
 }
@@ -320,13 +320,13 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
     { id = "onRouletteOpenLootbox", jackpotIdx = jackpotIdx + 1, mainId = rouletteOpenId.value })
 })
 
-let function requestOpenCurLootbox() {
+function requestOpenCurLootbox() {
   if (nextOpenId.value == rouletteOpenId.value)
     open_lootbox_several(rouletteOpenId.value, nextOpenCount.value,
       { id = "onRouletteOpenLootbox", jackpotIdx = -1, mainId = rouletteOpenId.get(), openCount = nextOpenCount.get() })
 }
 
-let function logOpenConfig() {
+function logOpenConfig() {
   log("jackpotIdxInfo: ", jackpotIdxInfo)
   log("lootbox cur open group info: ", curGroup.value)
   if (curGroup.value != openConfig.value)

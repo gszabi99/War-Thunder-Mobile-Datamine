@@ -34,7 +34,7 @@ let gradTranspDobuleSideX = mkBitmapPictureLazy(gradTexSize, 4, function(params,
 })
 
 let key = {}
-let function loadingTip() {
+function loadingTip() {
   let { locId, unitType } = curTipInfo.value
   let iconColor = unitTypeColors?[unitType] ?? iconColorDefault
   let icon = colorize(iconColor, unitTypeFontIcons?[unitType] ?? "")

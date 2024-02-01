@@ -1,7 +1,9 @@
-
+from "%scripts/dagui_natives.nut" import toggle_freecam, in_flight_menu, is_freecam_enabled, pause_game, is_game_paused, do_player_bailout, close_ingame_gui, is_player_can_bailout, is_camera_not_flight
+from "app" import is_dev_version, is_offline_version
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let eventbus = require("eventbus")
+
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { is_mplayer_host } = require("multiplayer")
 let { requestEarlyExitRewards } = require("%scripts/debriefing/battleResult.nut")
@@ -14,40 +16,40 @@ let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
   quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status
 } = require("guiMission")
 
-let function canRestart() {
+function canRestart() {
   return !is_multiplayer()
     && !is_benchmark_game_mode()
     && (get_game_type() & GT_COOPERATIVE) == 0
     && get_mission_status() != MISSION_STATUS_SUCCESS
 }
 
-let function canBailout() {
+function canBailout() {
   let gm = get_game_mode()
   return (get_mission_restore_type() != ERT_MANUAL || gm == GM_TEST_FLIGHT)
     && !is_benchmark_game_mode()
-    && !::is_camera_not_flight()
-    && ::is_player_can_bailout()
+    && !is_camera_not_flight()
+    && is_player_can_bailout()
     && get_mission_status() == MISSION_STATUS_RUNNING
 }
 
 let isMissionFailed = @() get_mission_status() == MISSION_STATUS_FAIL
 
-let function closeFlightMenu() {
+function closeFlightMenu() {
   if (isMissionFailed())
     return
-  ::in_flight_menu(false) //in_flight_menu will call closeScene which call stat chat
-  if (::is_game_paused())
-    ::pause_game(false)
+  in_flight_menu(false) //in_flight_menu will call closeScene which call stat chat
+  if (is_game_paused())
+    pause_game(false)
   isInFlightMenu(false)
 }
 
-let function quitToDebriefing() {
+function quitToDebriefing() {
   quit_to_debriefing()
   interrupt_multiplayer(true)
   closeFlightMenu()
 }
 
-let function sendDisconnectMessage() {
+function sendDisconnectMessage() {
   requestEarlyExitRewards() //todo: Wait data received before interrupt  multiplayer or quit to debriefing
   if (is_multiplayer()) {
     leave_mp_session()
@@ -57,9 +59,9 @@ let function sendDisconnectMessage() {
     quitToDebriefing()
 }
 
-let function doBailout() {
+function doBailout() {
   if (canBailout())
-    ::do_player_bailout()
+    do_player_bailout()
 
   closeFlightMenu()
 }
@@ -71,9 +73,9 @@ subscribeFMsgBtns({
   function fMenuQuitFailedMission(_) {
     quit_to_debriefing()
     interrupt_multiplayer(true)
-    ::in_flight_menu(false)
-    if (::is_game_paused())
-      ::pause_game(false)
+    in_flight_menu(false)
+    if (is_game_paused())
+      pause_game(false)
   }
 
   fMenuBailout = @(_) doBailout()
@@ -86,7 +88,7 @@ let openConfirmMsg = @(text, confirmBtnText, eventId) openFMsgBox({ text,
   ]
 })
 
-let function restartMission() {
+function restartMission() {
   if (!canRestart())
     return
 
@@ -96,8 +98,8 @@ let function restartMission() {
     openConfirmMsg(loc("flightmenu/questionRestartMission"), loc("flightmenu/btnRestart"), "fMenuRestart")
 }
 
-let function quitMission() {
-  if (("is_offline_version" in getroottable()) && ::is_offline_version)
+function quitMission() {
+  if (is_offline_version())
     return restart_mission()
 
   let quitBtnText = loc("return_to_hangar/short")
@@ -120,25 +122,25 @@ let function quitMission() {
   }
 }
 
-let function bailout() {
+function bailout() {
   if (canBailout())
     openConfirmMsg(loc("flightmenu/questionLeaveTheTank"), loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")
   else
     closeFlightMenu()
 }
 
-let function startFreecam() {
+function startFreecam() {
   closeFlightMenu()
-  ::toggle_freecam()
+  toggle_freecam?()
 }
 
 isInBattle.subscribe(function(_) {
-  if (::is_freecam_enabled())
-    ::toggle_freecam()
+  if (is_freecam_enabled())
+    toggle_freecam?()
 })
 
 local isHitCamShowFixedEnabled = false
-let function toggleHitCamShowFixed() {
+function toggleHitCamShowFixed() {
   closeFlightMenu()
   isHitCamShowFixedEnabled = !isHitCamShowFixedEnabled
   command(isHitCamShowFixedEnabled ? "unit.hcam show_fixed" : "unit.hcam stop_fixed")
@@ -167,43 +169,43 @@ let flightMenuButtons = [
   }
   {
     name = "(DEV) FREE CAMERA"
-    isVisible = @() ::is_dev_version
+    isVisible = @() is_dev_version()
     action = startFreecam
   }
   {
     name = "(DEV) HITCAM FIXED"
-    isVisible = @() ::is_dev_version
+    isVisible = @() is_dev_version()
     action = toggleHitCamShowFixed
   }
 ]
 
-::gui_start_flight_menu <- function gui_start_flight_menu() {
-  ::in_flight_menu(true)
-  if (!::is_game_paused())
-   ::pause_game(true)
+function gui_start_flight_menu(...) {
+  in_flight_menu(true)
+  if (!is_game_paused())
+   pause_game(true)
 
-  eventbus.send("FlightMenu_UpdateButtonsList", {
+  eventbus_send("FlightMenu_UpdateButtonsList", {
     buttons = flightMenuButtons.filter(@(b) b.isVisible()).map(@(b) b.name)
   })
   isInFlightMenu(true)
 }
+eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
 
-::gui_start_flight_menu_failed <- ::gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
-::gui_start_flight_menu_psn <- function gui_start_flight_menu_psn() {} //unused atm, but still have a case in code
+eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) //it checks MISSION_STATUS_FAIL status itself
+eventbus_subscribe("gui_start_flight_menu_psn", function gui_start_flight_menu_psn(...) {}) //unused atm, but still have a case in code
 
-eventbus.subscribe("gui_start_flight_menu", @(_) ::gui_start_flight_menu())
-
-::gui_start_flight_menu_help <- function gui_start_flight_menu_help() { //!!!FIX ME Need remove this function. This function call from native code and paused game before call.
+eventbus_subscribe("gui_start_flight_menu_help", function gui_start_flight_menu_help() {
+  //!!!FIX ME Need remove this function. This function call from native code and paused game before call.
   deferOnce(function() {
-    ::close_ingame_gui()
-    if (::is_game_paused())
-      ::pause_game(false)
+    close_ingame_gui()
+    if (is_game_paused())
+      pause_game(false)
   })
-}
+})
 
-::quit_mission <- function quit_mission() {
-  ::in_flight_menu(false)
-  ::pause_game(false)
+function quit_mission() {
+  in_flight_menu(false)
+  pause_game(false)
   requestEarlyExitRewards()
 
   if (is_multiplayer())
@@ -213,9 +215,9 @@ eventbus.subscribe("gui_start_flight_menu", @(_) ::gui_start_flight_menu())
   interrupt_multiplayer(true)
 }
 
-eventbus.subscribe("quitMission", @(_) ::quit_mission())
+eventbus_subscribe("quitMission", @(_) quit_mission())
 
-eventbus.subscribe("FlightMenu_doButtonAction", function(params) {
+eventbus_subscribe("FlightMenu_doButtonAction", function(params) {
   let { buttonName } = params
   flightMenuButtons.findvalue(@(b) b.name == buttonName)?.action()
 })

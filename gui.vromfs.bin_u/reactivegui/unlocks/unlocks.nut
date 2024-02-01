@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler,
   forceRefreshUnlocks, forceRefreshStats
@@ -37,7 +37,7 @@ let allUnlocksRaw = Computed(@() (userstatDescList.value?.unlocks ?? {})
     stages = (u?.stages ?? []).map(@(stage) stage.__merge({ progress = (stage?.progress ?? 1).tointeger() }))
   })))
 
-let function calcUnlockProgress(progressData, unlockDesc) {
+function calcUnlockProgress(progressData, unlockDesc) {
   let res = clone emptyProgress
   let stage = progressData?.stage ?? 0
   res.stage = stage
@@ -90,7 +90,7 @@ function getUnlockPrice(unlock) {
 }
 
 //return stages info relative to cureent period. for not preiodic unlock return usual unlock params
-let function getRelativeStageData(unlock) {
+function getRelativeStageData(unlock) {
   let { stages = [], lastRewardedStage = 0, stage = 0, periodic = false, startStageLoop = 1 } = unlock
   if (!periodic || stages.len() == 0 || lastRewardedStage < stages.len())
     return { stages, lastRewardedStage, stage }
@@ -107,13 +107,13 @@ let function getRelativeStageData(unlock) {
 
 let unlockInProgress = Watched({})
 
-let function callExtCb(context) {
+function callExtCb(context) {
   let { id = null } = context
   if (id != null)
-    send(id, context)
+    eventbus_send(id, context)
 }
 
-let function receiveUnlockRewards(unlockName, stage, context = null) {
+function receiveUnlockRewards(unlockName, stage, context = null) {
   if (unlockName in unlockInProgress.value)
     return
   log($"receiveRewards {unlockName}={stage}", context)
@@ -123,7 +123,7 @@ let function receiveUnlockRewards(unlockName, stage, context = null) {
     (context ?? {}).__merge({ unlockName, stage }))
 }
 
-let function buyUnlock(unlockName, stage, currency, price, context) {
+function buyUnlock(unlockName, stage, currency, price, context) {
   if (!unlockName || unlockName in unlockInProgress.value) {
     log($"buyUnlock ignore {unlockName} because already in progress")
     return
@@ -173,7 +173,7 @@ userstatRegisterHandler("ResetAppData", function(result, context) {
   forceRefreshStats()
 })
 
-let function resetUserstatAppData(needScreenLog = false) {
+function resetUserstatAppData(needScreenLog = false) {
   log("[userstat] ResetAppData")
   userstatRequest("ResetAppData", {}, { needScreenLog })
 }

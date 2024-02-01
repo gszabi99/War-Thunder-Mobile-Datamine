@@ -27,7 +27,7 @@ let canShowReadyCheck = Computed(@() !isInBattle.value
 
 let shouldShowMsg = keepref(Computed(@() needReadyCheckMsg.value && canShowReadyCheck.value))
 
-let function initiateReadyCheck() {
+function initiateReadyCheck() {
   if (!isSquadLeader.value)
     return
   if (isReadyCheckSuspended.value) {
@@ -39,12 +39,12 @@ let function initiateReadyCheck() {
   resetTimeout(CAN_REPEAT_SEC, @() isReadyCheckSuspended(false))
 }
 
-let function applyReadyCheckResult(newReady) {
+function applyReadyCheckResult(newReady) {
   setReady(newReady)
   readyCheckTime(max(serverTime.value, squadLeaderReadyCheckTime.value))
 }
 
-let function showReadyCheck() {
+function showReadyCheck() {
   if (!shouldShowMsg.value)
     return
   openMsgBox({

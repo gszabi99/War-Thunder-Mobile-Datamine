@@ -60,12 +60,12 @@ let pannableCtors = [mkVerticalPannableAreaNoBlocks, mkVerticalPannableAreaOneBl
 
 let newMarkSize = calc_comp_size(newMark)
 
-let function receiveReward(item, currencyReward) {
+function receiveReward(item, currencyReward) {
   receiveUnlockRewards(item.name, 1, { stage = 1 })
   sendBqQuestsTask(item, currencyReward?.count ?? 0, currencyReward?.id)
 }
 
-let function mkQuestText(item) {
+function mkQuestText(item) {
   let locId = item.meta?.lang_id ?? item.name
   let header = loc(locId)
   let text = loc($"{locId}/desc")
@@ -93,7 +93,7 @@ let function mkQuestText(item) {
   }
 }
 
-let function mkAchievementText(item) {
+function mkAchievementText(item) {
   let locId = item.meta?.lang_id ?? item.name
   let text = loc($"{locId}/desc")
   return {
@@ -110,7 +110,7 @@ let function mkAchievementText(item) {
   }
 }
 
-let function mkBtn(item, currencyReward) {
+function mkBtn(item, currencyReward) {
   let { name, progressCorrectionStep = 0 } = item
   let isRewardInProgress = Computed(@() name in unlockInProgress.value)
 
@@ -142,7 +142,7 @@ let function mkBtn(item, currencyReward) {
   }
 }
 
-let function mkItem(item, textCtor) {
+function mkItem(item, textCtor) {
   let isUnseen = Computed(@() !item.hasReward
     && item.name not in seenQuests.value
     && item.name not in inactiveEventUnlocks.value)
@@ -214,12 +214,12 @@ let function mkItem(item, textCtor) {
 let sectionPart = 0.9
 let gapPart = 1 - sectionPart
 
-let function isSectionActive(sectionId, questsBySectionV, unlockTablesV) {
+function isSectionActive(sectionId, questsBySectionV, unlockTablesV) {
   let u = questsBySectionV?[sectionId].findvalue(@(_) true)
   return u?.type == "INDEPENDENT" || (unlockTablesV?[u?.table] ?? false)
 }
 
-let function mkSectionTabs(sections, curSectionId, onSectionChange) {
+function mkSectionTabs(sections, curSectionId, onSectionChange) {
   let sLen = sections.len()
   let btnWidth = min(sectionBtnMaxWidth, contentWidth / sLen * sectionPart)
 
@@ -282,7 +282,7 @@ let questTimerUntilStart = @(curSectionId) function() {
   }
 }
 
-let function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
+function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   let itemsSort = @(a, b) b.hasReward <=> a.hasReward
     || a.isFinished <=> b.isFinished
     || a.name in seenQuests.value <=> b.name in seenQuests.value
@@ -307,7 +307,7 @@ let function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   let isCurSectionActive = Computed(@()
     isSectionActive(curSectionId.get(), questsBySection.get(), unlockTables.get()))
 
-  let function onSectionChange(id) {
+  function onSectionChange(id) {
     saveSeenQuestsForSection(curSectionId.value)
     selSectionId(id)
   }

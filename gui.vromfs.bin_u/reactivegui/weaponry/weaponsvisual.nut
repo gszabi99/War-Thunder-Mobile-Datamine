@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { doesLocTextExist } = require("dagor.localize")
 let { getWeaponId } = require("%rGui/weaponry/loadUnitBullets.nut")
 
-let function getAmmoNameForLoc(bSet) {
+function getAmmoNameForLoc(bSet) {
   let { isBulletBelt = false } = bSet
   if (isBulletBelt)
     return bSet?.id == "" ? "default" : (bSet?.id ?? "")
@@ -10,7 +10,7 @@ let function getAmmoNameForLoc(bSet) {
 }
 
 // Returns the full name for a shell or machinegun belt
-let function getAmmoNameText(bSet) {
+function getAmmoNameText(bSet) {
   let { isBulletBelt = false, weaponBlkName = "" } = bSet
   let name = getAmmoNameForLoc(bSet)
   if (isBulletBelt && name == "default") {
@@ -22,7 +22,7 @@ let function getAmmoNameText(bSet) {
 }
 
 // Returns the short name for a shell or machinegun belt
-let function getAmmoNameShortText(bSet) {
+function getAmmoNameShortText(bSet) {
   let { isBulletBelt = false } = bSet
   let name = getAmmoNameForLoc(bSet)
   if (isBulletBelt && name == "default")
@@ -36,7 +36,7 @@ let function getAmmoNameShortText(bSet) {
 let getBulletTypeForLoc = @(bTypeFull) bTypeFull.split("@")[0]
 
 // Returns bullet type(s) desc string for a shell or machinegun belt
-let function getAmmoTypeText(bSet) {
+function getAmmoTypeText(bSet) {
   let { isBulletBelt = false, bullets = [] } = bSet
   if (isBulletBelt) {
     let list = ndash.join(bullets.map(@(v) loc($"{getBulletTypeForLoc(v)}/name/short")))
@@ -47,7 +47,7 @@ let function getAmmoTypeText(bSet) {
     : " ".concat(loc($"{btype}/name/short"), loc("ui/mdash"), loc($"{btype}/name"))
 }
 
-let function getAmmoTypeShortText(name) {
+function getAmmoTypeShortText(name) {
   local locId = $"{name}/short"
   if (!doesLocTextExist(locId))
     locId = $"{name}/name/short"
@@ -55,7 +55,7 @@ let function getAmmoTypeShortText(name) {
 }
 
 // Returns usage advice for a shell or machinegun belt
-let function getAmmoAdviceText(bSet) {
+function getAmmoAdviceText(bSet) {
   let { isBulletBelt = false, bullets = [] } = bSet
   let id = isBulletBelt
     ? getAmmoNameForLoc(bSet)

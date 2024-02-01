@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
-let function mkStickWidgetComps(fullSize) {
+function mkStickWidgetComps(fullSize) {
   let bgRadius = round(0.375 * fullSize)
   let imgBgSize = 2 * bgRadius
   let imgRotationSize = (0.1 * imgBgSize).tointeger()

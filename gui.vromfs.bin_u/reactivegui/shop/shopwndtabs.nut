@@ -4,12 +4,12 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { hasUnseenGoodsByCategory, curCategoryId, onTabChange } = require("shopState.nut")
 
 let tabW = hdpx(450)
-let tabH = hdpx(153)
+let tabH = hdpx(123)
 
 let textColor = 0xFFFFFFFF
-let iconSize = hdpxi(130)
+let iconSize = hdpxi(104)
 
-let function tabData(tab, campaign) {
+function tabData(tab, campaign) {
   let { id = "", image = null, title = "", getImage = null, getTitle = null } = tab
   return {
     id
@@ -26,8 +26,9 @@ let function tabData(tab, campaign) {
               image = Picture($"{getImage?(campaign) ?? image}:{iconSize}:{iconSize}")
               keepAspect = KEEP_ASPECT_FIT
               imageHalign = ALIGN_LEFT
-              imageValign = ALIGN_BOTTOM
+              imageValign = ALIGN_CENTER
               color = textColor
+              vplace = ALIGN_CENTER
               margin = [0, hdpx(10)]
             }
             {

@@ -28,7 +28,7 @@ let hasLastBattleReward = Computed(@() (battleResult.value?.reward.playerExp.tot
 let isWaitProfile = keepref(Computed(@()
   !isInBattle.value && hasLastBattleReward.value && !isProfileReceivedAfterBattle.value))
 
-let function checkUpdateProfile() {
+function checkUpdateProfile() {
   if (isInBattle.value) {
     logPR("Delay update profile because in the battle")
     isProfileChanged(true)
@@ -85,7 +85,7 @@ isInDebriefing.subscribe(function(v) {
   }
 })
 
-let function sendBqNotReceivedProfile() {
+function sendBqNotReceivedProfile() {
   if (!isWaitProfile.value)
     return
   if (isInDebriefing.value) {
@@ -106,7 +106,7 @@ isWaitProfile.subscribe(function(v) {
     resetTimeout(SEND_BQ_NOT_RECEIVED_TIME, sendBqNotReceivedProfile)
 })
 
-let function updateConfigsTimer() {
+function updateConfigsTimer() {
   if (isConfigsChanged.value)
     resetTimeout(frnd() * MAX_CONFIGS_UPDATE_DELAY, checkUpdateProfile)
   else

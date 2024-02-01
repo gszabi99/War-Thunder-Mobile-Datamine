@@ -3,12 +3,12 @@ let { get_time_msec } = require("dagor.time")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 
-let function mkAnimatedCountText(uid, value, delay, time, onCounterActive, baseComp) {
+function mkAnimatedCountText(uid, value, delay, time, onCounterActive, baseComp) {
   let finalText = decimalFormat(value)
   local needReset = false
   local startTimeMs = 0
   local endTimeMs = 0
-  let function reinitTime(nowMs) {
+  function reinitTime(nowMs) {
     startTimeMs = nowMs + (1000 * delay).tointeger()
     endTimeMs = startTimeMs + time
   }

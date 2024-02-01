@@ -5,7 +5,7 @@ let { round_by_value } = require("%sqstd/math.nut")
 
 let zoneSize = evenPx(45)
 
-let function mkCapZoneIndicator(idx) {
+function mkCapZoneIndicator(idx) {
   let zone = Computed(@() capZones.value?[idx])
   return function() {
     local res = { watch = zone }

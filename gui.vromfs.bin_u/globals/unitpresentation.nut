@@ -96,6 +96,14 @@ let overrides = {
   germ_pzkpfw_IV_ausf_F2_test = inProgress
   us_m4a1_1942_sherman_test = inProgress
   us_m42_duster_test = inProgress
+  germ_ru251 = inProgress
+  germ_pzkpfw_VI_ausf_b_tiger_IIh_reskin = inProgress
+  germ_kanonenjagdpanzer = inProgress
+  germ_flakpanzer_IV_Kugelblitz_reskin2 = inProgress
+  cn_t_34_85_d_5t = inProgress
+  cn_pt_76 = inProgress
+  cn_isu_122 = inProgress
+  cn_zsd63_pg87 = inProgress
 }
 
 let platoonNames = {
@@ -110,7 +118,7 @@ let genParams = {
   locIdFull = @(name) $"{name}_0"
 }
 
-let function mkUnitPresentation(unitName) {
+function mkUnitPresentation(unitName) {
   let res = defaults.__merge(overrides?[unitName] ?? {}, { name = unitName })
   foreach (id, gen in genParams)
     if (res[id] == defaults[id])
@@ -119,7 +127,7 @@ let function mkUnitPresentation(unitName) {
 }
 
 let cache = {}
-let function getUnitPresentationByName(unitName) {
+function getUnitPresentationByName(unitName) {
   if (unitName not in cache)
     cache[unitName ?? ""] <- mkUnitPresentation(unitName)
   return cache[unitName ?? ""]

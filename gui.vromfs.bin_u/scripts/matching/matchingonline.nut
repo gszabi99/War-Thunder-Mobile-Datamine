@@ -1,8 +1,10 @@
+from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
+
 let { format } = require("string")
 let { register_command } = require("console")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { dgs_get_settings } = require("dagor.system")
 let { isDownloadedFromGooglePlay, getPackageName } = require("android.platform")
 let { shell_execute } = require("dagor.shell")
@@ -15,7 +17,7 @@ let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { SERVER_ERROR_INVALID_VERSION, CLIENT_ERROR_CONNECTION_CLOSED } = require("matching.errors")
 
-isMatchingOnline(::is_online_available())
+isMatchingOnline(is_online_available())
 
 subscribeFMsgBtns({
   matchingConnectCancel = @(_) openFMsgBox({
@@ -37,7 +39,7 @@ subscribeFMsgBtns({
   }
 })
 
-let function showMatchingConnectProgress() {
+function showMatchingConnectProgress() {
   if (isMatchingOnline.value)
     return
   openFMsgBox({
@@ -48,12 +50,12 @@ let function showMatchingConnectProgress() {
   })
 }
 
-let function destroyConnectProgressMessages() {
+function destroyConnectProgressMessages() {
   closeFMsgBox("no_online_warning")
   closeFMsgBox("matching_connect_progressbox")
 }
 
-let leaveQueueImpl = @() send("leaveQueue", {})
+let leaveQueueImpl = @() eventbus_send("leaveQueue", {})
 
 let customErrorHandlers = {
   [SERVER_ERROR_INVALID_VERSION] = function(_, __, ___) {
@@ -74,7 +76,7 @@ let customErrorHandlers = {
   }
 }
 
-let function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
+function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
   logMC($"{forceExit ? "exit" : "logout"}WithMsgBox: reason = {format("0x%X", reason)}, message = {message}, domain = {reasonDomain}")
   destroyConnectProgressMessages()
   let handler = customErrorHandlers?[reason]
@@ -104,27 +106,26 @@ let function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) 
     }))
 }
 
-subscribe("on_online_unavailable", function(_) {
+eventbus_subscribe("on_online_unavailable", function(_) {
   logMC("on_online_unavailable")
   isMatchingOnline(false)
 })
 
-//methods called from the native code
-::on_online_available <- function on_online_available() {
+eventbus_subscribe("on_online_available", function on_online_available(...) {
   logMC("on_online_available")
   isMatchingOnline(true)
   destroyConnectProgressMessages()
-  send("onMatchingOnlineAvailable", null)
-}
+  eventbus_send("onMatchingOnlineAvailable", null)
+})
 
-::logout_with_msgbox <- @(params)
-  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false)
+eventbus_subscribe("logout_with_msgbox", @(params)
+  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false))
 
-::exit_queue_with_msgbox <- @(params)
-  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false)
+eventbus_subscribe("exit_queue_with_msgbox", @(params)
+  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false))
 
-::exit_with_msgbox <- @(params)
-  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true)
+eventbus_subscribe("exit_with_msgbox", @(params)
+  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true))
 
 register_command(
   @() logoutWithMsgBox(SERVER_ERROR_INVALID_VERSION, "Test invalid version", null, false),

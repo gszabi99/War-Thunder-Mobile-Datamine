@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { VendorId, getJoystickVendor } = require("controls")
 let { UNKNOWN, MICROSOFT, SONY, NINTENDO } = VendorId
 let { register_command } = require("console")
@@ -27,21 +27,21 @@ presetId.subscribe(@(v) log("[GAMEPAD] presetId = ", v))
 let vendorIdToShow = lastVendorId.value //we will hot reload darg scripts on change gamepad vendor
 let presetIdToShow = presetId.value //we will hot reload darg scripts on change gamepad vendor
 
-let function updateVendor(_) {
+function updateVendor(_) {
   let id = getJoystickVendor()
   if (id != UNKNOWN)
     lastVendorId(id)
 }
-subscribe("controls.joystickConnected", updateVendor)
-subscribe("controls.joystickDisconnected", updateVendor)
+eventbus_subscribe("controls.joystickConnected", updateVendor)
+eventbus_subscribe("controls.joystickDisconnected", updateVendor)
 
-let function reloadVmIfNeed() {
+function reloadVmIfNeed() {
   if (presetId.value != presetIdToShow)
-    send("reloadDargVM", null)
+    eventbus_send("reloadDargVM", null)
 }
 presetId.subscribe(@(_) resetTimeout(0.1, reloadVmIfNeed))
 
-let function setDbgVendor(id) {
+function setDbgVendor(id) {
   debugVendorId(id == UNKNOWN ? null : id)
   console_print("gamepad preset id = ", presetId.value) //warning disable: -forbidden-function
 }

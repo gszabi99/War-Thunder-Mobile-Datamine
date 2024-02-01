@@ -15,7 +15,7 @@ let textBtnComp = @(text){
   text
 }.__update(fontTinyAccented)
 
-let function mkCostComp(cost) {
+function mkCostComp(cost) {
   let { price = 0, currencyId = "" } = cost
   return price > 0 && currencyId != ""
    ? mkCurrencyComp(price, currencyId)

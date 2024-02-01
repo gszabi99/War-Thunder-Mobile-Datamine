@@ -17,7 +17,7 @@ let lockedMarkIconSize = [hdpxi(25), hdpxi(32)]
 
 let bgCard = mkColoredGradientY(0xFFC59E49, 0xFFCA7119)
 
-let function markAvailableReward(slot){
+function markAvailableReward(slot){
   let defaulScale = 1.25
   let widthScale = (defaulScale - 1) / slot
   return{
@@ -89,7 +89,7 @@ let freeMark = {
   }.__update(fontVeryTinyAccented)
 }
 
-let function cardContent(stageInfo, stateFlags) {
+function cardContent(stageInfo, stateFlags) {
   let { canReceive, viewInfo, isPaid, isReceived } = stageInfo
   return @() {
     watch = stateFlags
@@ -137,10 +137,10 @@ let hoverCard = @(stateFlags) @() {
     : null
 }
 
-let function mkCard(stageInfo) {
+function mkCard(stageInfo) {
   let stateFlags = Watched(0)
   let { canReceive, viewInfo, progress, canBuyLevel } = stageInfo
-  let function onClick(){
+  function onClick(){
     selectedStage(progress)
     if(canReceive)
       receiveBpRewards(progress)

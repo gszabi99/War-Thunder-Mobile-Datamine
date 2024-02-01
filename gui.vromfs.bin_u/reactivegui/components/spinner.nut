@@ -8,7 +8,7 @@ let animations = freeze([
 ])
 
 let defSpinnerKey = {}
-let function mkSpinner(height = defHeight, override = {}) {
+function mkSpinner(height = defHeight, override = {}) {
   let htInt = height.tointeger()
   return {
     key = defSpinnerKey
@@ -21,7 +21,7 @@ let function mkSpinner(height = defHeight, override = {}) {
   }.__update(override)
 }
 
-let function mkSpinnerHideBlock(watch, content, blockOvr = {}, spinner = null) {
+function mkSpinnerHideBlock(watch, content, blockOvr = {}, spinner = null) {
   if (spinner == null)
     spinner = mkSpinner()
   return @() {

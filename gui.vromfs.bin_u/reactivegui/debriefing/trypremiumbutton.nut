@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
+let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
 let { gradTranspDoubleSideX, gradRadial } = require("%rGui/style/gradients.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
 
-let btnW  = hdpxi(225)
-let btnH = hdpxi(200)
-let premIconW = hdpxi(140)
-let premIconH = hdpxi(97)
+let btnW = hdpxi(340)
+let btnH = hdpxi(210)
+let premIconW = hdpxi(160)
+let premIconH = hdpxi(110)
 
 let glareAnimDuration = 0.4
 let glareRepeatDelay = 2
@@ -39,9 +40,6 @@ let btnGlow = {
 
 let btnIcon = {
   size = [premIconW, premIconH]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  pos = [0, ph(-7)]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#premium_active_big.avif:{premIconW}:{premIconH}:K:P")
   keepAspect = KEEP_ASPECT_FIT
@@ -49,9 +47,10 @@ let btnIcon = {
 
 let btnText = {
   size = [flex(), SIZE_TO_CONTENT]
+  margin = [0, hdpx(10)]
   halign = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  pos = [0, ph(26)]
+  pos = [0, ph(29)]
   behavior = Behaviors.TextArea
   rendObj = ROBJ_TEXTAREA
   text = loc("debriefing/tryPremium")
@@ -61,7 +60,8 @@ let btnText = {
   fontFxColor = 0xFF000000
 }.__update(fontTiny)
 
-let glare = {
+let glare = @() !isDebriefingAnimFinished.get() ? { watch = isDebriefingAnimFinished } : {
+  watch = isDebriefingAnimFinished
   key = "glare"
   rendObj = ROBJ_IMAGE
   size = [glareWidth, glareHeight]
@@ -78,10 +78,10 @@ let glare = {
   }]
 }
 
-let function tryPremiumButton() {
+function mkTryPremiumButton(mulComps) {
   let stateFlags = Watched(0)
-  return @() {
-    watch = [stateFlags, isDebriefingAnimFinished]
+  return @() havePremium.get() ? { watch = havePremium } : {
+    watch = [havePremium, stateFlags]
     size = [btnW, btnH]
 
     behavior = Behaviors.Button
@@ -98,11 +98,25 @@ let function tryPremiumButton() {
     children = [
       btnBg
       btnGlow
-      btnIcon
+      {
+        pos = [0, ph(-10)]
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(20)
+        children = [
+          btnIcon
+          {
+            flow = FLOW_VERTICAL
+            children = mulComps
+          }
+        ]
+      }
       btnText
-      isDebriefingAnimFinished.get() ? glare : null
+      glare
     ]
   }
 }
 
-return tryPremiumButton
+return mkTryPremiumButton

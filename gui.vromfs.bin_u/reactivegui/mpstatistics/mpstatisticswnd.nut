@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let eventbus = require("eventbus")
+
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { gameOverReason } = require("%rGui/missionState.nut")
 let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
@@ -8,8 +10,6 @@ let { sortAndFillPlayerPlaces } = require("%rGui/mpStatistics/playersSortFunc.nu
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
-let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { playersDamageStats } = require("playersDamageStats.nut")
 let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
@@ -27,8 +27,8 @@ let playersByTeam = Computed(function() {
   let res = playersByTeamBase.value
     .map(@(list) sortAndFillPlayerPlaces(battleCampaign.value,
       list.map(function(p) {
+        // Important: Mplayer "name" value is already prepared by getPlayerName() and frameNick(), see registerMplayerCallbacks.
         let { id, userId, name, isBot, aircraftName = "" } = p
-        let nickname = getPlayerName(name, myUserRealName.value, myUserName.value)
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, unit = {} } = !isBot
           ? playersCommonStats.value?[userId.tointeger()]
@@ -39,7 +39,6 @@ let playersByTeam = Computed(function() {
           : (unit?.name ?? aircraftName)
         let mRank = unit?.mRank
         return p.__merge({
-          nickname
           damage
           score
           level
@@ -57,28 +56,35 @@ let playersByTeam = Computed(function() {
   return res
 })
 
-eventbus.subscribe("MpStatistics_InitialData", @(p) missionName(p.missionName))
-eventbus.subscribe("MpStatistics_TeamsList", @(p) playersByTeamBase(p.data))
+eventbus_subscribe("MpStatistics_InitialData", @(p) missionName(p.missionName))
 
-let onQuit = @() eventbus.send("MpStatistics_CloseInDagui", {})
+let onQuit = @() eventbus_send("MpStatistics_CloseInDagui", {})
 
 gameOverReason.subscribe(function(val) {
   if (isAttached.value && (val == GO_WIN || val == GO_FAIL))
     onQuit()
 })
 
-let requestPlayersByTeams = @() eventbus.send("MpStatistics_GetTeamsList", {})
-
-let function onAttach() {
-  isAttached(true)
-  eventbus.send("MpStatistics_GetInitialData", {})
-  requestPlayersByTeams()
-  gui_scene.setInterval(STATS_UPDATE_TIMEOUT, requestPlayersByTeams)
+function getTeamsList() {
+  let mplayersList = get_mplayers_list(GET_MPLAYERS_LIST, true)
+  let teamsOrder = get_mp_local_team() == 2 ? [ 2, 1 ] : [ 1, 2 ]
+  return teamsOrder.map(@(team) mplayersList.filter(@(v) v.team == team))
 }
 
-let function onDetach() {
+let updatePlayersByTeams = @() playersByTeamBase(getTeamsList())
+
+eventbus_subscribe("MissionResult", @(_) updatePlayersByTeams())
+
+function onAttach() {
+  isAttached(true)
+  eventbus_send("MpStatistics_GetInitialData", {})
+  updatePlayersByTeams()
+  gui_scene.setInterval(STATS_UPDATE_TIMEOUT, updatePlayersByTeams)
+}
+
+function onDetach() {
   isAttached(false)
-  gui_scene.clearTimer(requestPlayersByTeams)
+  gui_scene.clearTimer(updatePlayersByTeams)
 }
 
 let wndTitle = @() {

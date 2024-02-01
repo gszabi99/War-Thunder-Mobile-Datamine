@@ -68,7 +68,7 @@ let infoBtn = infoGreyButton(
   }
 )
 
-let function mkGoodsPremium(goods, onClick, state, animParams) {
+function mkGoodsPremium(goods, onClick, state, animParams) {
   let { premiumDays, viewBaseValue = 0, isShowDebugOnly = false } = goods
   let premIconAndDaysTitleWrapper = {
     margin = [ sh(1), 0, 0, 0 ]

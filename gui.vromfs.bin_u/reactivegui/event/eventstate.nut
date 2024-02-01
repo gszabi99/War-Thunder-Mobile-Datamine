@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -88,7 +88,7 @@ let getEventBg = @(eventId, eSeason, sEvents, bgFallback) !eventId ? bgFallback
 let eventBgFallback = "ui/images/event_bg.avif"
 let curEventBg = Computed(@() getEventBg(curEvent.get(), eventSeason.get(), specialEvents.get(), eventBgFallback))
 
-let function getEventLoc(eventId, eSeason, sEvents) {
+function getEventLoc(eventId, eSeason, sEvents) {
   local locId = eventId == MAIN_EVENT_ID
       ? $"events/name/{eSeason}"
     : "".concat("events/name/", sEvents?[eventId].eventName)
@@ -120,7 +120,7 @@ let curEventCurrencies = Computed(@() curEventLootboxes.value.reduce(function(re
   return res
 }, []))
 
-let function saveSeenLootboxes(ids, eventName) {
+function saveSeenLootboxes(ids, eventName) {
   ids = ids.filter(@(id) id not in seenLootboxes.value?[eventName])
   if (ids.len() == 0)
     return
@@ -135,10 +135,10 @@ let function saveSeenLootboxes(ids, eventName) {
   foreach (id, isSeen in seenLootboxes.value?[eventName] ?? {})
     if (isSeen)
       blk[id] = true
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
-let function loadSeenLootboxes() {
+function loadSeenLootboxes() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_LOOTBOXES]
   if (!isDataBlock(htBlk)) {
@@ -155,7 +155,7 @@ let function loadSeenLootboxes() {
   seenLootboxes(res)
 }
 
-let function loadLootboxesAvailability() {
+function loadLootboxesAvailability() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[LOOTBOXES_AVAILABILITY]
   if (!isDataBlock(htBlk)) {
@@ -167,7 +167,7 @@ let function loadLootboxesAvailability() {
   lootboxesAvailability(res)
 }
 
-let function updateLootboxAvailability(lootboxes) {
+function updateLootboxAvailability(lootboxes) {
   lootboxes = lootboxes.filter(@(canBuy, id) lootboxesAvailability.value?[id] != canBuy)
   if (lootboxes.len() == 0)
     return
@@ -179,10 +179,10 @@ let function updateLootboxAvailability(lootboxes) {
   let blk = sBlk.addBlock(LOOTBOXES_AVAILABILITY)
   foreach (id, canBuy in lootboxesAvailability.value ?? {})
     blk[id] = canBuy
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
-let function updateUnseenLootboxesShowOnce(lootboxes) {
+function updateUnseenLootboxesShowOnce(lootboxes) {
   lootboxes = lootboxes.filter(@(showMark, id) unseenLootboxesShowOnce.value?[id] != showMark)
   if (lootboxes.len() == 0)
     return
@@ -210,12 +210,12 @@ balance.subscribe(function(v) {
   updateLootboxAvailability(availability)
 })
 
-let function markCurLootboxSeen(id) {
+function markCurLootboxSeen(id) {
   saveSeenLootboxes([id], curEventName.get())
   updateUnseenLootboxesShowOnce({ [id] = false })
 }
 
-let function openEventWnd(eventName = MAIN_EVENT_ID) {
+function openEventWnd(eventName = MAIN_EVENT_ID) {
   eventName = specialEvents.get().findvalue(@(v) v.eventName == eventName)?.eventId ?? eventName
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
@@ -245,13 +245,13 @@ let specialEventGamercardItems = Computed(function() {
 register_command(function() {
   seenLootboxes({})
   get_local_custom_settings_blk().removeBlock(SEEN_LOOTBOXES)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }, "debug.reset_seen_lootboxes")
 
 register_command(function() {
   lootboxesAvailability({})
   get_local_custom_settings_blk().removeBlock(LOOTBOXES_AVAILABILITY)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }, "debug.reset_lootboxes_availability")
 
 return {

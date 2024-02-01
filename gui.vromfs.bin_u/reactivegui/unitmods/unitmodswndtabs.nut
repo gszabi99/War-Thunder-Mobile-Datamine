@@ -26,7 +26,7 @@ let mkCatIcon = @(cat) {
   keepAspect = KEEP_ASPECT_FILL
 }
 
-let function tabData(tab, ovr = {}) {
+function tabData(tab, ovr = {}) {
   let { id = "", locId  = "" } = tab
   let modsSorted = Computed(@() modsByCategory.value?[id].values().sort(modsSort) ?? [])
   let purchasedModName = Computed(@() modsSorted.value.findvalue(@(v) unitMods.value?[v.name] == false)?.name)

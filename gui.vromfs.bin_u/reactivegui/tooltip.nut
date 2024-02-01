@@ -33,7 +33,7 @@ let mkTooltipText = @(text, ovr = {}) {
   text
 }.__update(fontSmall, ovr)
 
-let function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
+function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
   let isArray = type(rectOrPos) == "array"
   assert(isArray || (("l" in rectOrPos) && ("b" in rectOrPos)))
   let res = {
@@ -70,13 +70,13 @@ let function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
   return res
 }
 
-let function hideTooltip() {
+function hideTooltip() {
   state(null)
   curContent = null
   delayedTooltip = null
 }
 
-let function showTooltip(rectOrPos, params) {
+function showTooltip(rectOrPos, params) {
   delayedTooltip = null
   if (params == null) {
     hideTooltip()
@@ -100,14 +100,14 @@ let function showTooltip(rectOrPos, params) {
   state(newState)
 }
 
-let function showDelayedTooltipImpl() {
+function showDelayedTooltipImpl() {
   if (delayedTooltip == null)
     return
   let { rectOrPos, params } = delayedTooltip
   showTooltip(rectOrPos, params)
 }
 
-let function showDelayedTooltip(rectOrPos, params, repayTime = REPAY_TIME) {
+function showDelayedTooltip(rectOrPos, params, repayTime = REPAY_TIME) {
   hideTooltip()
   delayedTooltip = { rectOrPos, params }
   resetTimeout(repayTime, showDelayedTooltipImpl)
@@ -146,7 +146,7 @@ let translateAnimation = @(flow, halign, valign, duration)
 let fadeOutAnim = { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.15,
   easing = OutQuad, playFadeOut = true }
 
-let function tooltipComp() {
+function tooltipComp() {
   if (state.value == null)
     return { watch = state }
 

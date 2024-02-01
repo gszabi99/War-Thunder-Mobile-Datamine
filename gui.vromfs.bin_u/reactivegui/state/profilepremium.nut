@@ -8,7 +8,7 @@ let premiumEndsAt = Computed(@() (premium.value?.premium_data.endsAtMs ?? 0) / 1
 
 let nextUpdate = Watched({ time = 0 }) // Even when value changed to the same, it is better to restart the timer.
 
-let function updateState() {
+function updateState() {
   let now = serverTime.value
   let endsAt = premiumEndsAt.value
   nextUpdate({ time = endsAt })
@@ -17,7 +17,7 @@ let function updateState() {
 updateState()
 premiumEndsAt.subscribe(@(_) updateState())
 
-let function resetUpdateTimer() {
+function resetUpdateTimer() {
   let { time } = nextUpdate.value
   let left = time - serverTime.value
   if (left <= 0)

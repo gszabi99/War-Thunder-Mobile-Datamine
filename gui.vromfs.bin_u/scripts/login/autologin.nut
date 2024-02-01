@@ -1,5 +1,6 @@
-
 from "%scripts/dagui_library.nut" import *
+
+let { load_local_shared_settings, save_local_shared_settings} = require("%scripts/clientState/localProfile.nut")
 let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
 let { LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_NSWITCH, availableLoginTypes
 } = require("%appGlobals/loginState.nut")
@@ -33,21 +34,21 @@ local defType = validateLoginType(is_ios ? LT_APPLE
   : LT_GAIJIN)
 
 let validateType = @(t) t in available ? t : defType
-let getAutologinType = @() validateType(::load_local_shared_settings(AUTOLOGIN_TYPE_SAVE_ID))
-let function setAutologinType(autologinType) {
+let getAutologinType = @() validateType(load_local_shared_settings(AUTOLOGIN_TYPE_SAVE_ID))
+function setAutologinType(autologinType) {
   if (getAutologinType() == autologinType)
     return
-  ::save_local_shared_settings(AUTOLOGIN_TYPE_SAVE_ID, autologinType)
+  save_local_shared_settings(AUTOLOGIN_TYPE_SAVE_ID, autologinType)
   saveProfile()
 }
 
 let isAutoLoginOnFirstStart = is_nswitch
-let isAutologinEnabled = @() ::load_local_shared_settings(AUTOLOGIN_SAVE_ID) ?? isAutoLoginOnFirstStart
+let isAutologinEnabled = @() load_local_shared_settings(AUTOLOGIN_SAVE_ID) ?? isAutoLoginOnFirstStart
 
-let function setAutologinEnabled(isEnabled) {
+function setAutologinEnabled(isEnabled) {
   if (isAutologinEnabled() == isEnabled)
     return
-  ::save_local_shared_settings(AUTOLOGIN_SAVE_ID, isEnabled)
+  save_local_shared_settings(AUTOLOGIN_SAVE_ID, isEnabled)
   saveProfile()
 }
 

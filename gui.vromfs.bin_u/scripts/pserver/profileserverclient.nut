@@ -1,8 +1,8 @@
-
 from "%scripts/dagui_library.nut" import *
+
 let logPSC = log_with_prefix("[profileServerClient] ")
 let { json_to_string } = require("json")
-let eventbus = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let profile = require("profile_server")
 let { isAuthAndUpdated } = require("%appGlobals/loginState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -22,10 +22,10 @@ let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) //progressId
 let nextTimeout = keepref(Computed(@() progressTimeouts.value
   .reduce(@(res, v) res <= 0 ? v.timeout : min(res, v.timeout), 0)))
 
-let sendProgress = @(id, value, isInProgress) eventbus.send($"profile_srv.progressStart.{id}", { value, isInProgress })
+let sendProgress = @(id, value, isInProgress) eventbus_send($"profile_srv.progressStart.{id}", { value, isInProgress })
 let get_time_sec = @() (get_time_msec() * 0.001).tointeger()
 
-let function startProgress(id, value) {
+function startProgress(id, value) {
   if (id == null)
     return
   progressTimeouts.mutate(@(v) v[id] <- {
@@ -35,7 +35,7 @@ let function startProgress(id, value) {
   sendProgress(id, value, true)
 }
 
-let function stopProgress(id) {
+function stopProgress(id) {
   if (id not in progressTimeouts.value)
     return
   let { value } = progressTimeouts.value[id]
@@ -43,7 +43,7 @@ let function stopProgress(id) {
   sendProgress(id, value, false)
 }
 
-let function collectLastRequestResult(id, data) {
+function collectLastRequestResult(id, data) {
   local reqTime = 0
   lastRequests.mutate(function(v) {
     local req = v.findvalue(@(d) d.id == id)
@@ -62,7 +62,7 @@ let function collectLastRequestResult(id, data) {
   return reqTime
 }
 
-let function collectLastRequest(id, action, params) {
+function collectLastRequest(id, action, params) {
   lastRequests.mutate(function(v) {
     if (v.len() >= MAX_REQUESTS_HISTORY)
       v.remove(0)
@@ -70,7 +70,7 @@ let function collectLastRequest(id, action, params) {
   })
 }
 
-let function checkAndLogError(id, action, cb, data) {
+function checkAndLogError(id, action, cb, data) {
   local err = data?.error
   if (err == null && !(data?.response?.success ?? true))
     err = data?.response?.error ?? "unknown error"
@@ -99,7 +99,7 @@ let function checkAndLogError(id, action, cb, data) {
   cb?({ error = err })
 }
 
-let function doRequestOnline(action, params, id, cb) {
+function doRequestOnline(action, params, id, cb) {
   if (!isAuthAndUpdated.value) {
     logPSC($"Skip action {action}, no token")
     if (cb)
@@ -129,7 +129,7 @@ let function doRequestOnline(action, params, id, cb) {
   profile.request(requestData, @(r) checkAndLogError(id, action, cb, r))
 }
 
-let function doRequestOffline(action, params, id, cb) {
+function doRequestOffline(action, params, id, cb) {
   logPSC($"Offline request {id}, method: {action}")
   defer(function() {
     let actionHandler = offlineActions?[action]
@@ -141,20 +141,20 @@ let function doRequestOffline(action, params, id, cb) {
 
 let doRequest = isOfflineMenu ? doRequestOffline : doRequestOnline
 
-let function sendResult(data, id, progressId) {
+function sendResult(data, id, progressId, method) {
   stopProgress(progressId)
-  eventbus.send("profile_srv.response", { data, id })
+  eventbus_send("profile_srv.response", { data, id, method })
 }
 
-let function requestImpl(msg) {
+function requestImpl(msg) {
   let { id, data } = msg
   let { progressId = null, progressValue = null } = data
   startProgress(progressId, progressValue)
-  doRequest(data.method, data?.params, id, @(resData) sendResult(resData, id, progressId))
+  doRequest(data.method, data?.params, id, @(resData) sendResult(resData, id, progressId, data.method))
 }
 
 local request = requestImpl
-let function updateDebugDelay() {
+function updateDebugDelay() {
   request = (debugDelay.value <= 0) ? requestImpl
     : function(msg) {
         startProgress(msg.data?.progressId, msg.data?.progressValue)
@@ -164,12 +164,12 @@ let function updateDebugDelay() {
 updateDebugDelay()
 debugDelay.subscribe(@(_) updateDebugDelay())
 
-let function debugLastRequests() {
+function debugLastRequests() {
   log("lastRequests: ")
   debugTableData(lastRequests.value, { recursionLevel = 7 })
 }
 
-let function checkTimeouts() {
+function checkTimeouts() {
   let time = get_time_sec()
   let finished = progressTimeouts.value.filter(@(v) v.timeout <= time)
   if (finished.len() == 0)
@@ -182,8 +182,8 @@ let startNextTimer = @(t) t <= 0 ? null : resetTimeout(t - get_time_sec(), check
 startNextTimer(nextTimeout.value)
 nextTimeout.subscribe(startNextTimer)
 
-eventbus.subscribe("profile_srv.request", @(msg) request(msg))
-eventbus.subscribe("profile_srv.debugLastRequests", debugLastRequests)
+eventbus_subscribe("profile_srv.request", @(msg) request(msg))
+eventbus_subscribe("profile_srv.debugLastRequests", debugLastRequests)
 
 //console commands&
 register_command(@(delay) debugDelay(delay), "pserver.delay_requests")

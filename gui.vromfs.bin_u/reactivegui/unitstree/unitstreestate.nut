@@ -88,11 +88,11 @@ let unitsTreeBg = Computed(function() {
 })
 
 let closeUnitsTreeWnd = @() isUnitsTreeOpen.set(false)
-let function openUnitsTreeWnd() {
+function openUnitsTreeWnd() {
   clearFilters()
   isUnitsTreeOpen.set(true)
 }
-let function openUnitsTreeAtCurRank() {
+function openUnitsTreeAtCurRank() {
   openUnitsTreeWnd()
   unitsTreeOpenRank.set(playerLevelInfo.get().level + 1)
 }

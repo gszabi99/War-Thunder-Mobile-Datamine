@@ -9,18 +9,19 @@ let { isMatchingOnline } = require("matchingOnline.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { optimalClusters } = require("%scripts/matching/optimalClusters.nut")
+let matching = require("%scripts/matching_api.nut")
 
 const MAX_FETCH_RETRIES = 5
 let clusters = hardPersistWatched("matching.clusters", [])
 local isFetching = false
 local failedFetches = 0
 
-let function getValidClusters(clustersList) {
+function getValidClusters(clustersList) {
   let forbiddenClusters = getForbiddenClustersByCountry(getCountryCode())
   return clustersList.filter(@(cluster) !forbiddenClusters.contains(cluster))
 }
 
-let function applyClusters(res) {
+function applyClusters(res) {
   logC("clusters received", res)
   if (type(res?.clusters) != "array")
     return false
@@ -29,13 +30,13 @@ let function applyClusters(res) {
   return clusters.value.len() > 0
 }
 
-let function fetchClusters() {
+function fetchClusters() {
   if (isFetching)
     return
 
   isFetching = true
   let again = callee()
-  ::matching.rpc_call("wtmm_static.fetch_clusters_list", null,
+  matching.rpc_call("wtmm_static.fetch_clusters_list", null,
     function(res) {
       isFetching = false
       if (res.error == OPERATION_COMPLETE && applyClusters(res)) {
@@ -54,13 +55,13 @@ let function fetchClusters() {
     })
 }
 
-let function restartFetchClusters() {
+function restartFetchClusters() {
   isFetching = false
   failedFetches = 0
   fetchClusters()
 }
 
-let function onClustersChanged(params) {
+function onClustersChanged(params) {
   logC("notify_clusters_changed")
   let list = clone clusters.value
 
@@ -85,7 +86,7 @@ let function onClustersChanged(params) {
 let getClusterLocName = @(name) name.indexof("wthost") != null ? name
   : loc($"cluster/{name}")
 
-::matching.subscribe("match.notify_clusters_changed", onClustersChanged)
+matching.subscribe("match.notify_clusters_changed", onClustersChanged)
 
 if (isMatchingOnline.value && clusters.value.len() == 0)
   restartFetchClusters()

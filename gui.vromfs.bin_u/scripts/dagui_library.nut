@@ -9,7 +9,7 @@ let getTblValue = @(key, tbl, defValue = null) key in tbl ? tbl[key] : defValue
 let isInArray = @(v, arr) arr.contains(v)
 let utf8 = require("utf8")
 
-let function colorize(color, text) {
+function colorize(color, text) {
   if (color == "" || text == "")
     return text
   return "".concat("<color=", color, ">", text, "</color>")

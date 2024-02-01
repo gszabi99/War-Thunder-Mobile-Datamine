@@ -6,7 +6,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 let sortLootboxes = @(a, b) (a?.meta.event ?? "") <=> (b?.meta.event ?? "") || a.name <=> b.name
 
-let function orderLootboxesBySlot(lList) {
+function orderLootboxesBySlot(lList) {
   let res = []
   let lootboxesBySlot = {}
   foreach (lootbox in lList) {

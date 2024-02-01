@@ -4,7 +4,7 @@ let { readPermissions, readPenalties } = require("%appGlobals/permissions/permis
 let { rights } = require("%appGlobals/permissions/userRights.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 
-let function applyRights(result) {
+function applyRights(result) {
   let { clientPermJwt = null, dedicatedPermJwt = null, penaltiesJwt = null } = result
   let curP = rights.value
   if (clientPermJwt == null && dedicatedPermJwt == null && penaltiesJwt == null

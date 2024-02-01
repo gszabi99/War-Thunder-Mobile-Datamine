@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { getCurrentLanguage } = require("dagor.localize")
 let { getCountryCode } = require("auth_wt")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
+let { is_nswitch } = require("%sqstd/platform.nut")
 
 let iconSize = hdpxi(120)
 let itemSize = [hdpx(200), hdpx(200)]
 
 let userCountryRU = getCountryCode() == "RU"
+let canShowSocialNetworks = !is_nswitch
 
 let socNetList = [
   userCountryRU ? null
@@ -53,7 +55,7 @@ let header = {
   text = loc("community/header")
 }.__update(fontSmall)
 
-let function mkNetworkItem(item){
+function mkNetworkItem(item){
   let { text = "", image = null, url = ""} = item
   let stateFlags = Watched(0)
   return @() {
@@ -62,7 +64,7 @@ let function mkNetworkItem(item){
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
-    onClick = @() send("openUrl", { baseUrl = url })
+    onClick = @() eventbus_send("openUrl", { baseUrl = url })
     onElemState = @(v) stateFlags(v)
     transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
@@ -84,7 +86,7 @@ let function mkNetworkItem(item){
   }
 }
 
-let function mkFeedBackButtons(item){
+function mkFeedBackButtons(item){
   let { text = "", image = null, onClick = @() null } = item
   let stateFlags = Watched(0)
   return @() {
@@ -136,8 +138,8 @@ return @() {
   halign = ALIGN_CENTER
   gap = hdpx(170)
   children = [
-    header
-    socNetworks
+    canShowSocialNetworks ? header : null
+    canShowSocialNetworks ? socNetworks : null
     feedBack
   ]
 }

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 
 let { myNameWithFrame } = require("%rGui/decorators/decoratorState.nut")
 
@@ -23,7 +23,7 @@ let changeNameScene = {
       halign = ALIGN_CENTER
       text = loc("mainmenu/questionChangeName")
     }.__update(fontMedium)
-    textButtonPrimary(loc("mainmenu/btnChangeName"), @() send("changeName", {}))
+    textButtonPrimary(loc("mainmenu/btnChangeName"), @() eventbus_send("changeName", {}))
   ]
 }
 

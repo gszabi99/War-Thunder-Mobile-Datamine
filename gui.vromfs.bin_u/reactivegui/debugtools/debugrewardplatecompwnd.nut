@@ -10,10 +10,12 @@ let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, mkRewardPlate
 } = require("%rGui/rewards/rewardPlateComp.nut")
 
 let dbgRewardsTbl = {
-  gold = 9999
-  wp = 10000
-  warbond = 100
-  eventKey = 50
+  currencies = {
+    gold = 9999
+    wp = 10000
+    warbond = 100
+    eventKey = 50
+  }
   premiumDays = 14
   items = {
     ship_tool_kit = 50

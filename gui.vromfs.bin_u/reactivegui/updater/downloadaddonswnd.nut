@@ -79,7 +79,7 @@ let openLimitConnectionMsgBox = @() openMsgBox({
   ]
 })
 
-let function pauseButton() {
+function pauseButton() {
   let res = { watch = [isDownloadPaused, isDownloadPausedByConnection, wantStartDownloadAddons] }
   if (wantStartDownloadAddons.value.len() == 0)
     return res

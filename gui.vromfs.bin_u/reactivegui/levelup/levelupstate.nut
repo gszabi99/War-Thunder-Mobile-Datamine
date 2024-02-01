@@ -83,7 +83,7 @@ let needOpenLevelUpWnd = keepref(Computed(@() hasDataForLevelWnd.value
   && !isInDebriefing.value
   && !hasModalWindows.value))
 
-let function openLvlUpWndIfCan() {
+function openLvlUpWndIfCan() {
   if (hasDataForLevelWnd.value) {
     if (!isUnitsTreeOpen.get())
       openUnitsTreeAtCurRank()
@@ -115,7 +115,7 @@ let needAutoLevelUp = keepref(Computed(@() hasDataForLevelWnd.value
 
 let skipLevelUpUnitPurchase = @() levelup_without_unit(curCampaign.value)
 
-let function onNeedAutoLevelUp(need) {
+function onNeedAutoLevelUp(need) {
   if (need)
     skipLevelUpUnitPurchase()
 }
@@ -131,7 +131,7 @@ let lvlUpCost = Computed(function() {
 })
 
 let isLvlUpAnimated = Watched(false)
-let function startLvlUpAnimation() {
+function startLvlUpAnimation() {
   isLvlUpAnimated.set(true)
   resetTimeout(LVL_UP_ANIM, @() isLvlUpAnimated.set(false))
 }

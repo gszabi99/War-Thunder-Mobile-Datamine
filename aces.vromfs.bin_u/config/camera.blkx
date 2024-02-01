@@ -3686,6 +3686,18 @@
       "dist": 20.0
     }
   },
+  "strategy": {
+    "type": "StrategyViewCamera",
+    "fov": 120.0,
+    "fovMin": 90.0,
+    "targetingCameraDistanceMin": 500.0,
+    "targetingCameraDistanceMax": 2000.0,
+    "transitionFadeInTime": 1.0,
+    "transitionFadeOutTime": 1.0,
+    "verticalSpeed": 50.0,
+    "horizontalSpeed": 50.0,
+    "viscosity": 0.5
+  },
   "follow_object_camera": {
     "type": "FollowObjectCamera",
     "bombDistance": 25.0,
@@ -3932,7 +3944,8 @@
         "camera_binoculars",
         "driver_ground",
         "camera_binoculars_targeting",
-        "fixed"
+        "fixed",
+        "strategy"
       ]
     },
     "spectator": {

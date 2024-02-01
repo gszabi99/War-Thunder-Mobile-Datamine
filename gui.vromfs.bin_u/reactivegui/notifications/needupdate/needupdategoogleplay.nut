@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logUpdate = log_with_prefix("[UPDATE] googlePlay: ")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { checkGooglePlayUpdate } = require("android.platform")
@@ -17,7 +17,7 @@ let allowRequest = Computed(@() needRequest.value && !isInBattle.value && !isInL
 needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
 
-let function requestNeedUpdate() {
+function requestNeedUpdate() {
   if (!allowRequest.value)
     return
   needRequest(false)
@@ -25,7 +25,7 @@ let function requestNeedUpdate() {
   checkGooglePlayUpdate()
 }
 
-subscribe("android.platform.onUpdateCheck", function(response) {
+eventbus_subscribe("android.platform.onUpdateCheck", function(response) {
   let { status = false } = response
   logUpdate($"status = {status}")
   needSuggestToUpdate.update(status)
@@ -36,7 +36,7 @@ if (allowRequest.value)
 allowRequest.subscribe(@(v) v ? deferOnce(requestNeedUpdate) : null)
 
 let needRequestOn = @() needRequest(true)
-let function startTimer() {
+function startTimer() {
   if (!needRequest.value)
     resetTimeout(max(0.1, 0.001 * (nextRequestTime.value - get_time_msec())), needRequestOn)
 }

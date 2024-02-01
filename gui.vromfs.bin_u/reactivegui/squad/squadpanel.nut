@@ -90,7 +90,7 @@ let mkRank = @(rank) @() {
   children = (rank.value ?? 0) <= 0 ? null : mkGradRank(rank.value)
 }
 
-let function mkMember(uid) {
+function mkMember(uid) {
   let userId = uid.tostring()
   let info = mkPublicInfo(userId)
   let state = Computed(@() squadMembers.value?[uid])
@@ -130,7 +130,7 @@ let function mkMember(uid) {
   }
 }
 
-let function squadMembersList() {
+function squadMembersList() {
   let children = squadMembersOrder.value.map(mkMember)
   for(local i = children.len(); i < maxSquadSize.value; i++)
     children.append(squadInviteButton)

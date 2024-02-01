@@ -3,8 +3,8 @@ from "%rGui/style/gamercardStyle.nut" import *
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { WP, GOLD, orderByCurrency } = require("%appGlobals/currenciesState.nut")
-let { SC_GOLD, SC_WP } = require("%rGui/shop/shopCommon.nut")
+let { WP, GOLD, PLATINUM, orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let { SC_GOLD, SC_WP, SC_PLATINUM } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate
@@ -43,6 +43,7 @@ let profileStateFlags = Watched(0)
 let openCfg = {
   [WP] = @() openShopWnd(SC_WP),
   [GOLD] = @() openShopWnd(SC_GOLD),
+  [PLATINUM] = @() openShopWnd(SC_PLATINUM),
 }
 
 let openBuyCurrencyWnd = @(curId, eventId = null) openCfg?[curId] ?? @() openBuyEventCurrenciesWnd(curId, eventId)
@@ -247,7 +248,7 @@ let gamercardProfile = {
   ]
 }
 
-let function platoonOrUnitTitle(unit) {
+function platoonOrUnitTitle(unit) {
   let { isUpgraded = false, isPremium = false } = unit
   let isElite = isUpgraded || isPremium
   let text = getPlatoonOrUnitName(unit, loc)
@@ -330,7 +331,7 @@ let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = null) @() {
   ]
 }
 
-let function mkImageBtn(image, onClick, children = null, ovr = {}) {
+function mkImageBtn(image, onClick, children = null, ovr = {}) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -371,6 +372,7 @@ let mkGamercard = @(menuBtn, backCb = null) {
         premIconWithTimeOnChange
         mkCurrencyBalance(WP, openBuyCurrencyWnd(WP))
         mkCurrencyBalance(GOLD, openBuyCurrencyWnd(GOLD))
+        mkCurrencyBalance(PLATINUM, openBuyCurrencyWnd(PLATINUM))
         menuBtn
       ]
     }

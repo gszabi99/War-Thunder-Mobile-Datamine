@@ -11,7 +11,7 @@ let START_MOVE_TIME_MSEC = 300
 let MOVE_MIN_THRESHOLD = sh(1) //ignore threshold after START_MOVE_TIME
 let pointer = Watched(null)
 
-let function findElemInScene(x, y) {
+function findElemInScene(x, y) {
   let list = cfgByUnitType?[tuningUnitType.value]
   if (list == null)
     return null

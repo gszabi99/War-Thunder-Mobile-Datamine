@@ -1,12 +1,12 @@
 
 from "%scripts/dagui_library.nut" import *
 let { loginState } = require("%appGlobals/loginState.nut")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 
-let function mkStageBase(id, reqState, finishState) {
+function mkStageBase(id, reqState, finishState) {
   let logStage = log_with_prefix($"[LOGIN][{id}] ")
 
-  let function canContinueWithLog(prefix) {
+  function canContinueWithLog(prefix) {
     if ((loginState.value & reqState) != reqState)
       logStage($"{prefix}, because of not ready (login interrupted?)")
     else if ((loginState.value & finishState) == finishState)
@@ -16,13 +16,13 @@ let function mkStageBase(id, reqState, finishState) {
     return false
   }
 
-  let function interruptStage(errData) {
+  function interruptStage(errData) {
     if (!canContinueWithLog("Ignore interrupt stage"))
       return
     logStage("Failed. errData: ", errData)
-    send("login.interrupt", errData.__merge({ stage = id }))
+    eventbus_send("login.interrupt", errData.__merge({ stage = id }))
   }
-  let function finalizeStage() {
+  function finalizeStage() {
     if (!canContinueWithLog("Ignore finalize stage"))
       return
     logStage("Success")

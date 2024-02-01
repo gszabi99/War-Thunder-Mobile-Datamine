@@ -1,4 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+
+let { get_mission_time } = require("%globalsDarg/mission.nut")
 let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { getRomanNumeral, ceil } = require("%sqstd/math.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
@@ -26,7 +28,7 @@ let { mkBtnGlare, mkActionGlare, mkConsumableSpend, mkActionBtnGlare
 let { isNotOnTheSurface, isDeeperThanPeriscopeDepth } = require("%rGui/hud/submarineDepthBlock.nut")
 let { TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { set_can_lower_camera } = require("controlsOptions")
-let disabledControls = require("%rGui/controls/disabledControls.nut")
+let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkRhombBtnBg, mkRhombBtnBorder, mkAmmoCount } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
@@ -70,25 +72,25 @@ let zoneRadiusY = touchButtonSize
 let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(-50)] }
 let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-70)] }
 
-let function useShortcut(shortcutId) {
+function useShortcut(shortcutId) {
   toggleShortcut(shortcutId)
   updateActionBarDelayed()
 }
 
-let function useShortcutOn(shortcutId) {
+function useShortcutOn(shortcutId) {
   setShortcutOn(shortcutId)
   updateActionBarDelayed()
 }
 
 let isAvailableActionItem = @(itemValue) itemValue.count != 0 && (itemValue?.available ?? true)
 
-let function mkActionItemProgress(itemValue, isAvailable) {
+function mkActionItemProgress(itemValue, isAvailable) {
   let { cooldownEndTime = 0, cooldownTime = 1, blockedCooldownEndTime = 0, blockedCooldownTime = 1, id = null
   } = itemValue
   let isBlocked = blockedCooldownEndTime > 0 && cooldownEndTime == 0
   let endTime = isBlocked ? blockedCooldownEndTime : cooldownEndTime
   let time = isBlocked ? blockedCooldownTime : cooldownTime
-  let cooldownDuration = endTime - ::get_mission_time()
+  let cooldownDuration = endTime - get_mission_time()
   let hasCooldown = isAvailable && cooldownDuration > 0
   let cooldown = hasCooldown ? (1 - (cooldownDuration / max(time, 1))) : 1
   let trigger = $"action_cd_finish_{id}"
@@ -141,14 +143,14 @@ let mkActionItemImage = @(getImage, isAvailable) @() {
   color = !isAvailable ? imageDisabledColor : imageColor
 }
 
-let function mkActionItem(buttonConfig, actionItem) {
+function mkActionItem(buttonConfig, actionItem) {
   if (actionItem == null)
     return null
   let { getShortcut, getImage, haptPatternId = -1, key = null, sound = "", getAnimationKey = null } = buttonConfig
   let stateFlags = Watched(0)
   let isAvailable = isAvailableActionItem(actionItem)
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
-  let isDisabled = Computed(@() disabledControls.value?[shortcutId] ?? false)
+  let isDisabled = mkIsControlDisabled(shortcutId)
   let animationKey = getAnimationKey ? getAnimationKey(unitType.value) : null
   return {
     size = [touchButtonSize, touchButtonSize + countHeightUnderActionItem]
@@ -162,7 +164,7 @@ let function mkActionItem(buttonConfig, actionItem) {
         halign = ALIGN_CENTER
         size = [touchButtonSize, touchButtonSize]
         function onClick() {
-          if ((actionItem?.cooldownEndTime ?? 0) > ::get_mission_time() || isDisabled.value)
+          if ((actionItem?.cooldownEndTime ?? 0) > get_mission_time() || isDisabled.value)
             return
           if (actionItem?.available)
             playSound(sound)
@@ -198,13 +200,13 @@ let progress = Watched(null)
 let progressTime = Watched(null)
 function progressUpdate() {
   let timing = progressTime.get() ?? [0, 0]
-  let currTime = ::get_mission_time()
+  let currTime = get_mission_time()
   if (currTime < timing[0]) {//just wait for begin
     progress.set(null)
     resetTimeout(timing[0] - currTime, progressUpdate)
     return
   }
-  let toEndTime = timing[1] - ::get_mission_time()
+  let toEndTime = timing[1] - get_mission_time()
   if (toEndTime > 0.0) {
     local progressV = ceil(toEndTime).tointeger()
     local nextTick = toEndTime % 1.0
@@ -231,14 +233,14 @@ let mkProgressText = @() {
   text = progress.get() ? progress.get() : ""
 }.__update(fontVeryTiny)
 
-let function mkIRCMActionItem(buttonConfig, actionItem) {
+function mkIRCMActionItem(buttonConfig, actionItem) {
   if (actionItem == null)
     return null
   let { getShortcut, getImage, haptPatternId = -1, key = null, sound = "", getAnimationKey = null } = buttonConfig
   let stateFlags = Watched(0)
   let isAvailable = isAvailableActionItem(actionItem)
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
-  let isDisabled = Computed(@() disabledControls.value?[shortcutId] ?? false)
+  let isDisabled = mkIsControlDisabled(shortcutId)
   let animationKey = getAnimationKey ? getAnimationKey(unitType.value) : null
   let endTime = actionItem?.inProgressEndTime ?? 0.0
   let beginTime = endTime - (actionItem?.inProgressTime ?? 0.0)
@@ -256,7 +258,7 @@ let function mkIRCMActionItem(buttonConfig, actionItem) {
         halign = ALIGN_CENTER
         size = [touchButtonSize, touchButtonSize]
         function onClick() {
-          if ((actionItem?.cooldownEndTime ?? 0) > ::get_mission_time() || isDisabled.value)
+          if ((actionItem?.cooldownEndTime ?? 0) > get_mission_time() || isDisabled.value)
             return
           if (actionItem?.available)
             playSound(sound)
@@ -352,7 +354,7 @@ let debuffImages = Computed(function() {
 let curRepairImageIdx = Watched(-1) //-1 for show repair image
 unitType.subscribe(@(_) curRepairImageIdx(-1))
 
-let function setNextRepairImage() {
+function setNextRepairImage() {
   let nextIdx = curRepairImageIdx.value + 1
   if (nextIdx in debuffImages.value)
     curRepairImageIdx(nextIdx)
@@ -360,14 +362,14 @@ let function setNextRepairImage() {
     curRepairImageIdx(-1)
 }
 
-let function mkRepairActionItem(buttonConfig, actionItem) {
+function mkRepairActionItem(buttonConfig, actionItem) {
   let { getShortcut, getImage, haptPatternId = -1, actionKey = "btn_repair", getAnimationKey = null } = buttonConfig
   let stateFlags = Watched(0)
   let isAvailable = actionItem != null && isAvailableActionItem(actionItem)
-  let isInCooldown = (actionItem?.cooldownEndTime ?? 0) > ::get_mission_time()
+  let isInCooldown = (actionItem?.cooldownEndTime ?? 0) > get_mission_time()
   let shortcutId = actionItem == null ? null
     : getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
-  let isDisabled = Computed(@() disabledControls.value?[shortcutId] ?? false)
+  let isDisabled = mkIsControlDisabled(shortcutId)
   let animationKey = getAnimationKey ? getAnimationKey(unitType.value) : null
   let hotkey = (unitType.value != TANK || isAvailable) ? shortcutId : null
   return {
@@ -386,7 +388,7 @@ let function mkRepairActionItem(buttonConfig, actionItem) {
             addCommonHint(loc("hint/noItemsForRepair"))
             return
           }
-          if ((actionItem?.cooldownEndTime ?? 0) > ::get_mission_time() || isDisabled.value)
+          if ((actionItem?.cooldownEndTime ?? 0) > get_mission_time() || isDisabled.value)
             return
           if (actionItem?.available)
             playSound("repair")
@@ -456,7 +458,7 @@ let function mkRepairActionItem(buttonConfig, actionItem) {
 
 let isActionAvailable = @(actionItem) (actionItem?.available ?? true)
   && (actionItem.count != 0 || actionItem?.control
-    || (actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
+    || (actionItem?.cooldownEndTime ?? 0) > get_mission_time())
 
 let mkWaitForAimImage = @(isWaitForAim) {
   rendObj = ROBJ_IMAGE
@@ -469,7 +471,7 @@ let mkWaitForAimImage = @(isWaitForAim) {
   transitions = [{ prop = AnimProp.opacity, duration = 0.3, easing = Linear }]
 }
 
-let function mkBtnZone(key) {
+function mkBtnZone(key) {
   let isVisible = Computed(@() !isGamepad.value && (userHoldWeapKeys.value?[key] ?? false))
   let isInside = Computed(@() userHoldWeapInside.value?[key] ?? true)
   return @() !isVisible.value ? { watch = isVisible }
@@ -493,7 +495,7 @@ let function mkBtnZone(key) {
 }
 
 let weaponryItemStateFlags = {}
-let function getWeapStateFlags(key) {
+function getWeapStateFlags(key) {
   if (key not in weaponryItemStateFlags)
     weaponryItemStateFlags[key] <- Watched(0)
   return weaponryItemStateFlags[key]
@@ -522,7 +524,7 @@ let mkWeaponBlockReasonIcon = @(isAvailable, iconComponent) @() {
     : null
 }
 
-let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
+function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   if (actionItem == null)
     return null
   let { key, getShortcut, getImage, getAlternativeImage = @() null, selShortcut = null,
@@ -543,11 +545,11 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let isInDeadZone = hasAim && (actionItem?.inDeadzone ?? false)
   let mainShortcut = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   let hotkeyShortcut = selShortcut ?? mainShortcut
-  let isDisabled = Computed(@() disabledControls.value?[mainShortcut] ?? false)
+  let isDisabled = mkIsControlDisabled(mainShortcut)
 
   local isTouchPushed = false
   local isHotkeyPushed = false
-  let function onStopTouch() {
+  function onStopTouch() {
     isTouchPushed = false
     if (canLowerCamera) {
       clearTimer(lowerCamera)
@@ -560,7 +562,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
       userHoldWeapInside.mutate(@(v) v.$rawdelete(key))
   }
 
-  let function onButtonReleaseWhileActiveZone() {
+  function onButtonReleaseWhileActiveZone() {
     onStopTouch()
     if (needCheckTargetRocket) {
       if (!hasTarget.value) {
@@ -587,7 +589,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
         addCommonHint(loc("hints/wait_for_aiming"))
       return
     }
-    if (!isAvailable || isBlocked.value || (actionItem?.cooldownEndTime ?? 0) > ::get_mission_time())
+    if (!isAvailable || isBlocked.value || (actionItem?.cooldownEndTime ?? 0) > get_mission_time())
       return
     anim_start(fireAnimKey)
     if (selShortcut != null)
@@ -596,14 +598,14 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
     playHapticPattern(haptPatternId)
   }
 
-  let function onButtonPush() {
+  function onButtonPush() {
     if (canLowerCamera)
       resetTimeout(0.3, lowerCamera)
     markWeapKeyHold(key)
     userHoldWeapInside.mutate(@(v) v[key] <- true)
   }
 
-  let function onTouchBegin() {
+  function onTouchBegin() {
     isTouchPushed = true
     onButtonPush()
     if (canShipLowerCamera)
@@ -612,13 +614,13 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
       setDrawWeaponAllowableAngles(true, actionItem?.triggerGroupNo ?? -1)
   }
 
-  let function onStatePush() {
+  function onStatePush() {
     if (isTouchPushed)
       return
     isHotkeyPushed = true
     onButtonPush()
   }
-  let function onStateRelease() {
+  function onStateRelease() {
     if (!isHotkeyPushed)
       return
     isHotkeyPushed = false
@@ -668,7 +670,7 @@ let function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
 
 let groupsInAirByIdx = [groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir]
 
-let function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
+function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
   if (actionItem == null)
     return null
   let { key, getShortcut, getPlaneImage, groupInAirIdx = -1 } = buttonConfig
@@ -707,7 +709,7 @@ let function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
   }.__update(ovr)
 }
 
-let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
+function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
   if (actionItem == null)
     return null
   let { key, getShortcut, getImage, hasAim = false, haptPatternId = -1, relImageSize = 1.0, additionalShortcutId = {}
@@ -757,7 +759,7 @@ let function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
   }, ovr)
 }
 
-let function mkWeaponryItemSelfAction(buttonConfig, _actionItem, ovr = {}) {
+function mkWeaponryItemSelfAction(buttonConfig, _actionItem, ovr = {}) {
   let { itemComputed } = buttonConfig
   return @() {
     watch = itemComputed
@@ -765,7 +767,7 @@ let function mkWeaponryItemSelfAction(buttonConfig, _actionItem, ovr = {}) {
   }.__update(ovr)
 }
 
-let function mkWeaponryContinuousSelfAction(buttonConfig, _actionItem, ovr = {}) {
+function mkWeaponryContinuousSelfAction(buttonConfig, _actionItem, ovr = {}) {
   let { itemComputed } = buttonConfig
   return @() { watch = itemComputed }
     .__update(mkWeaponryContinuous(buttonConfig, itemComputed.value, ovr) ?? {})
@@ -805,7 +807,7 @@ let weaponChangeMark = mkWeaponRightBlock({
   keepAspect = true
 })
 
-let function weaponRightBlockPrimary(number, curBulletIdxW) {
+function weaponRightBlockPrimary(number, curBulletIdxW) {
   if (curBulletIdxW == null)
     return weaponNumber(number)
   let isNeedChange = Computed(@() curBulletIdxW.value != nextBulletIdx.value)
@@ -828,7 +830,7 @@ let periscopIcon = {
   size = [ periscopIconWidth, periscopIconHeight ]
 }
 
-let function mkSubmarineWeaponryItem(buttonConfig, actionItem, ovr = {}) {
+function mkSubmarineWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   local btnCfg = {
     addChild = mkWeaponBlockReasonIcon(Computed(@()
       unitType.value == SUBMARINE && isDeeperThanPeriscopeDepth.value), periscopIcon)
@@ -843,7 +845,7 @@ let surfacingIcon = {
   size = [ surfacingIconSize, surfacingIconSize ]
 }
 
-let function mkWeaponryItemByTrigger(buttonConfig, actionItem, ovr = {}) {
+function mkWeaponryItemByTrigger(buttonConfig, actionItem, ovr = {}) {
   let { trigger, sizeOrder, number, shortcut, selShortcut = null } = buttonConfig
   let { image, relImageSize = 1.0 } = gunImageBySizeOrder?[sizeOrder] ?? gunImageBySizeOrder.top()
   local btnCfg = {
@@ -873,7 +875,7 @@ let function mkWeaponryItemByTrigger(buttonConfig, actionItem, ovr = {}) {
       }.__update(ovr)
 }
 
-let function mkSimpleButton(buttonConfig, actionItem, ovr = {}) {
+function mkSimpleButton(buttonConfig, actionItem, ovr = {}) {
   let stateFlags = Watched(0)
   let { image, getShortcut, relImageSize = 1.0 } = buttonConfig
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
@@ -911,7 +913,7 @@ let function mkSimpleButton(buttonConfig, actionItem, ovr = {}) {
 let hasTargetCandidateTrigger = {}
 hasTargetCandidate.subscribe(@(v) v && !hasTarget.value ? anim_start(hasTargetCandidateTrigger) : null)
 
-let function mkFlagButton(getShortcut, iconComp, ovr) {
+function mkFlagButton(getShortcut, iconComp, ovr) {
   let shortcutId = getShortcut(unitType.value, null) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   let stateFlags = Watched(0)
   return {
@@ -956,7 +958,7 @@ let lockButtonIcon = @(){
   color = canLock.value ? imageColor : textDisabledColor
 }
 
-let function mkLockButtonImpl(getShortcut, ovr) {
+function mkLockButtonImpl(getShortcut, ovr) {
   let shortcutId = getShortcut(unitType.value, null) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   let stateFlags = Watched(0)
   return {
@@ -1000,11 +1002,11 @@ let mkLockButton = @(buttonConfig, _, ovr = {}) mkLockButtonImpl(buttonConfig.ge
 let groupAttackIconComp = mkFlagImage(groupAttack, zoomImage, zoomImgSize, binocularsImage, zoomImgSize)
 let mkGroupAttackButton = @(buttonConfig, _, ovr = {}) mkFlagButton(buttonConfig.getShortcut, groupAttackIconComp, ovr)
 
-let function mkDivingLockButton(buttonConfig, actionItem, ovr = {}) {
+function mkDivingLockButton(buttonConfig, actionItem, ovr = {}) {
   let { getShortcut } = buttonConfig
   let stateFlags = Watched(0)
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
-  let isInCooldown = (actionItem?.cooldownEndTime ?? 0) > ::get_mission_time()
+  let isInCooldown = (actionItem?.cooldownEndTime ?? 0) > get_mission_time()
   return {
     key = shortcutId
     behavior = Behaviors.Button
@@ -1031,11 +1033,11 @@ let function mkDivingLockButton(buttonConfig, actionItem, ovr = {}) {
   }.__update(ovr)
 }
 
-let function mkZoomButton(buttonConfig, actionItem, ovr = {}) {
+function mkZoomButton(buttonConfig, actionItem, ovr = {}) {
   let { getShortcut } = buttonConfig
   let stateFlags = Watched(0)
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
-  let isDisabled = Computed(@() disabledControls.value?[shortcutId] ?? false)
+  let isDisabled = mkIsControlDisabled(shortcutId)
   return @() {
     watch = [ canZoom, isDisabled, hasAimingModeForWeapon, isInZoom, unitType ]
     key = "btn_zoom"

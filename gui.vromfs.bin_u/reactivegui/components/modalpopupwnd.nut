@@ -19,7 +19,7 @@ let POPUP_PARAMS = {
 
 let remove = @(uid) removeModalWindow(uid)
 
-let function calcOffsets(rectOrPos, popupFlow, popupOffset, popupHalign, popupValign) {
+function calcOffsets(rectOrPos, popupFlow, popupOffset, popupHalign, popupValign) {
   let isArray = type(rectOrPos) == "array"
   assert(isArray || (("l" in rectOrPos) && ("b" in rectOrPos)))
   let res = {

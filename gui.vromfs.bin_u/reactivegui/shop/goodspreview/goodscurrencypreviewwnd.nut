@@ -38,8 +38,9 @@ let currencyOldStyle = currencyStyle.__merge({ iconSize = hdpxi(60), fontStyle =
 let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTimeHeaderStart)
 let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart)
 
-let function goldInfo() {
-  let { gold = 0, discountInPercent = 0 } = previewGoods.value
+function goldInfo() {
+  let { discountInPercent = 0 } = previewGoods.value
+  let gold = previewGoods.get()?.currencies.gold ?? previewGoods.get()?.gold ?? 0 //compatibility with format before 2024.01.23
   let oldGold = gold * (1.0 - (discountInPercent / 100.0))
   return doubleSideGradient.__merge({
     watch = previewGoods

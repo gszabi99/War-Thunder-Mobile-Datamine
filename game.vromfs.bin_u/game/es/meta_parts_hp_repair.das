@@ -131,7 +131,8 @@ def repair_meta_parts_hp_es(info : UpdateStageInfoAct;
         var gm = unit |> as_gm()
         if gm != null && gm.autoExtinguisherWithToolkit
           sendEvent(eid, [[CmdStopBurn]])
-  sendEvent(eid, [[CmdUpdateRelativeUnitHealth]])
+  if reparing
+    sendEvent(eid, [[CmdUpdateRelativeUnitHealth]])
 
 [es(tag=netClient, REQUIRE=(controlledHero), no_order)]
 def repair_meta_parts_hp_client_es(info : UpdateStageInfoAct;

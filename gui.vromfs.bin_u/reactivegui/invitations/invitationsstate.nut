@@ -10,7 +10,7 @@ let hasUnread = Computed(@() invitations.value.findvalue(@(i) !i.isRead) != null
 let hasImportantUnread = Computed(@() invitations.value.findvalue(@(i) !i.isRead && i.isImportant) != null)
 
 let subscriptions = {}
-let function subscribeGroup(actionsGroup, actions) {
+function subscribeGroup(actionsGroup, actions) {
   if (actionsGroup in subscriptions || actionsGroup == "") {
     logerr($"Invitations already has subscriptions on actionsGroup {actionsGroup}")
     return
@@ -18,26 +18,26 @@ let function subscribeGroup(actionsGroup, actions) {
   subscriptions[actionsGroup] <- actions
 }
 
-let function removeNotifyById(id) {
+function removeNotifyById(id) {
   let idx = invitations.value.findindex(@(n) n.id == id)
   if (idx != null)
     invitations.mutate(@(value) value.remove(idx))
 }
 
-let function removeNotify(notify) {
+function removeNotify(notify) {
   let idx = invitations.value.indexof(notify)
   if (idx != null)
     invitations.mutate(@(value) value.remove(idx))
 }
 
-let function onNotifyApply(notify) {
+function onNotifyApply(notify) {
   if (!invitations.value.contains(notify))
     return
   let onApply = subscriptions?[notify.actionsGroup].onApply ?? removeNotify
   onApply(notify)
 }
 
-let function onNotifyRemove(notify) {
+function onNotifyRemove(notify) {
   if (!invitations.value.contains(notify))
     return
 
@@ -46,7 +46,7 @@ let function onNotifyRemove(notify) {
   removeNotify(notify)
 }
 
-let function clearAll() {
+function clearAll() {
   let list = clone invitations.value
   foreach (notify in list) {
     let onRemove = subscriptions?[notify.actionsGroup].onRemove
@@ -78,12 +78,12 @@ local function pushNotification(notify = NOTIFICATION_PARAMS) {
   invitations.mutate(@(v) v.append(notify))
 }
 
-let function markReadAll() {
+function markReadAll() {
   if (hasUnread.value)
     invitations.mutate(@(v) v.each(@(notify) notify.isRead = true))
 }
 
-let function markRead(id) {
+function markRead(id) {
   let idx = invitations.value.findindex(@(n) n.id == id)
   if (idx != null && !invitations.value[idx].isRead)
     invitations.mutate(@(v) v[idx] = v[idx].__merge({ isRead = true }))

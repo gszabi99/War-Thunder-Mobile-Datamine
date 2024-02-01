@@ -56,7 +56,7 @@ let nextFreeUnitLevel = Computed(function() {
   return res
 })
 
-let function onBuyUnit() {
+function onBuyUnit() {
   if (curSelectedUnit.value == null || unitInProgress.value != null)
     return
   let unit = allUnitsCfg.value?[curSelectedUnit.value]
@@ -71,7 +71,7 @@ let function onBuyUnit() {
   }
 }
 
-let function onSkipUnitPurchase() {
+function onSkipUnitPurchase() {
   sendNewbieBqEvent("skipChooseUnitInLevelUpWnd", { status = playerLevelInfo.value.level.tostring() })
   skipLevelUpUnitPurchase()
 }
@@ -158,7 +158,7 @@ let navBarPlace = {
 
 let unitsPlateCombinedW = unitPlateWidth + unitSelUnderlineFullSize
 
-let function mkUnitPlate(unit, onClick) {
+function mkUnitPlate(unit, onClick) {
   if (unit == null)
     return null
 

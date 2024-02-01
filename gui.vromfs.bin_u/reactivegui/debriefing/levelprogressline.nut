@@ -142,7 +142,7 @@ let mkExpText = @(exp, color) {
 
 let stopLevelLineSound = @() stopSound("exp_bar")
 
-let function levelLineSound(soundEndTime) {
+function levelLineSound(soundEndTime) {
   startSound("exp_bar")
   resetTimeout(soundEndTime, stopLevelLineSound)
 }
@@ -243,7 +243,7 @@ let levelUnlocksBarW = hdpx(400)
 let levelUnlocksBarH = hdpx(64)
 
 local levelUnlocksText = null
-let function mkLevelUnlocksText() {
+function mkLevelUnlocksText() {
   if (levelUnlocksText == null) {
     levelUnlocksText = {
       hplace = ALIGN_CENTER
@@ -285,7 +285,7 @@ let mkLevelUnlocksBar = @(lineColor, isLevelUp) {
   ]
 }
 
-let function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime, lineColor) {
+function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime, lineColor) {
   let { exp = 0, level = 1, starLevel = 0, isStarProgress = false,
     nextLevelExp = 0, isLastLevel = false, levelsExp = []
   } = curLevelConfig

@@ -59,7 +59,7 @@ let hpToRepairColor = 0xFFFF5D5D
 let isVisibleHpToRepair = Computed(@() maxHpToRepair.value > curRelativeHealth.value)
 let hpToRepairPercent = Computed(@() ((maxHpToRepair.value - curRelativeHealth.value + 0.005) * 100).tointeger())
 
-let function mkDebuff(watch, imageId) {
+function mkDebuff(watch, imageId) {
   let icon = mkDebuffIcon($"ui/gameuiskin#{imageId}:{iconSize}:{iconSize}", iconSize)
   return @() {
     watch
@@ -96,7 +96,7 @@ let xrayDoll = @(stateFlags) {
   ]
 }
 
-let function useShortcutOn(shortcutId) {
+function useShortcutOn(shortcutId) {
   setShortcutOn(shortcutId)
   updateActionBarDelayed()
 }

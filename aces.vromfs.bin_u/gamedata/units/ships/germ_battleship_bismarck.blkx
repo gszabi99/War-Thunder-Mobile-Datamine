@@ -562,7 +562,7 @@
         "name": "steering_gear_01_dm",
         "onHit": [
           {
-            "damageType": "generic",
+            "damageType": "explosionTorpedo",
             "damage": 500.0,
             "moduleStatusEffect": {
               "name": "moveControl",
@@ -570,7 +570,7 @@
             }
           },
           {
-            "damageType": "explosion",
+            "damageType": "explosionTorpedo",
             "damage": 2000.0,
             "moduleStatusEffect": {
               "name": "moveControl",

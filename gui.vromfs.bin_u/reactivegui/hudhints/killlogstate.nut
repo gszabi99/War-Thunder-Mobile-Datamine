@@ -1,13 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "hudMessages" import *
 from "%appGlobals/unitConst.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
+let { get_mplayer_by_id } = require("mission")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let { rqPlayersAndDo } = require("rqPlayersAndDo.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
 
 let state = require("%sqstd/mkEventLogState.nut")({
@@ -41,16 +40,16 @@ let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
  : team == localMPlayerTeam.value ? teamBlueLightColor
  : teamRedLightColor
 
-let function getTargetName(player, unitNameLoc, team) {
+function getTargetName(player, unitNameLoc, team) {
   let color = (player?.isLocal ?? false) ? localPlayerColor
     : player?.isInHeroSquad ? mySquadLightColor
     : getTeamColor(team)
   let text = player == null ? unitNameLoc // AI
-    : getPlayerName(player.name, myUserRealName.value, myUserName.value) //real player or bot
+    : player.name //real player or bot
   return color == null ? text : colorize(color, text)
 }
 
-let function getActionTextIconic(msg) {
+function getActionTextIconic(msg) {
   let { action } = msg
   local iconId = action == "kill"
       ? "".concat(action, getUnitTypeSuffix(getKillerUnitType(msg)), getUnitTypeSuffix(getVictimUnitType(msg)))
@@ -59,24 +58,20 @@ let function getActionTextIconic(msg) {
   return loc($"icon/hud_msg_mp_dmg/{iconId}")
 }
 
-subscribe("HudMessage", function(data) {
+eventbus_subscribe("HudMessage", function(data) {
   if (data.type != HUD_MSG_MULTIPLAYER_DMG || !data.isKill)
     return
 
-  let { playerId, victimPlayerId } = data
-  rqPlayersAndDo({ killer = playerId, victim = victimPlayerId },
-    function(players) {
-      let { action, unitNameLoc, victimUnitNameLoc, team, victimTeam } = data
-      let { killer, victim } = players
+  let { action, playerId, victimPlayerId, unitNameLoc, victimUnitNameLoc, team, victimTeam } = data
+  let killer = get_mplayer_by_id(playerId)
+  let victim = get_mplayer_by_id(victimPlayerId)
+  let what = getActionTextIconic(data)
+  let whom = getTargetName(victim, victimUnitNameLoc, victimTeam)
+  let text = action == "crash" || action == "exit"
+    ? " ".concat(whom, what)
+    : " ".concat(getTargetName(killer, unitNameLoc, team), what, whom)
 
-      let what = getActionTextIconic(data)
-      let whom = getTargetName(victim, victimUnitNameLoc, victimTeam)
-      let text = action == "crash" || action == "exit"
-        ? " ".concat(whom, what)
-        : " ".concat(getTargetName(killer, unitNameLoc, team), what, whom)
-
-      addEvent({ hType = "simpleText", text })
-    })
+  addEvent({ hType = "simpleText", text })
 })
 
 return state

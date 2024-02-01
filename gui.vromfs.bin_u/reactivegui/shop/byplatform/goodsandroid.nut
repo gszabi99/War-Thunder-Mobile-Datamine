@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { is_pc } = require("%sqstd/platform.nut")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { doesLocTextExist } = require("dagor.localize")
@@ -46,18 +46,18 @@ let { //defaults only to allow test this module on PC
           iconUrl = $"https://example.com/{v.google_id}"
         }))
     }
-    setTimeout(0.1, @() send("android.billing.googleplay.onInitAndDataRequested", result))
+    setTimeout(0.1, @() eventbus_send("android.billing.googleplay.onInitAndDataRequested", result))
   },
   startPurchaseAsync = @(_) setTimeout(1.0,
-    @() send("android.billing.googleplay.onGooglePurchaseCallback", {
+    @() eventbus_send("android.billing.googleplay.onGooglePurchaseCallback", {
       status = dbgStatuses[dbgStatusIdx++ % dbgStatuses.len()],
       value = "{ \"orderId\" : -1, \"productId\" : \"debug\" }"
     })),
-  confirmPurchase = @(_) setTimeout(1.0, @() send("android.billing.googleplay.onConfirmPurchaseCallback", { status = 0, value = "{}" })),
+  confirmPurchase = @(_) setTimeout(1.0, @() eventbus_send("android.billing.googleplay.onConfirmPurchaseCallback", { status = 0, value = "{}" })),
   checkPurchases = @() null
 } = !is_pc ? billingModule : {}
 let register_googleplay_purchase = !is_pc ? registerGoogleplayPurchase
-  : @(_, __, eventId) setTimeout(0.1, @() send(eventId, { status = 0, item_id = "id", purch_token = "token" })) //for debug on pc
+  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = 0, item_id = "id", purch_token = "token" })) //for debug on pc
 
 
 const REPEAT_ON_ERROR_MSEC = 60000
@@ -101,7 +101,7 @@ isAuthorized.subscribe(function(v) {
   skusInfo({})
 })
 
-subscribe("android.billing.googleplay.onInitAndDataRequested", function(result) {
+eventbus_subscribe("android.billing.googleplay.onInitAndDataRequested", function(result) {
   let { status, value = null } = result
   lastInitStatus(status)
   if (status != GP_OK)
@@ -149,7 +149,7 @@ let skusForRequest = keepref(Computed(function() {
     list[v] <- { google_id = k }
   return json_to_string(list)
 }))
-let function refreshAvailableSkus() {
+function refreshAvailableSkus() {
   if (skusForRequest.value.len() == 0)
     return
   if (lastInitStatus.value != GP_OK)
@@ -167,7 +167,7 @@ let updateNextRefreshTime = @(status)
 updateNextRefreshTime(lastInitStatus.value)
 lastInitStatus.subscribe(updateNextRefreshTime)
 
-let function startRefreshTimer() {
+function startRefreshTimer() {
   if (isInBattle.value || nextRefreshTime.value <= 0)
     clearTimer(refreshAvailableSkus)
   else
@@ -196,7 +196,7 @@ let platformOffer = Computed(function() {
     : activeOffers.value.__merge({ priceExt })
 })
 
-let function buyPlatformGoods(goodsOrId) {
+function buyPlatformGoods(goodsOrId) {
   let sku = getSku(platformGoods.value?[goodsOrId] ?? goodsOrId)
   if (sku == null)
     return
@@ -208,7 +208,7 @@ let function buyPlatformGoods(goodsOrId) {
 
 let noNeedLogerr = [ GP_SERVICE_TIMEOUT, GP_USER_CANCELED, GP_DEVELOPER_ERROR ]
 
-let function sendLogPurchaseData(json_value) {
+function sendLogPurchaseData(json_value) {
   //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081
   local googleResp = parse_json(json_value)
   let { orderId = null, productId = null } = googleResp
@@ -222,7 +222,7 @@ let function sendLogPurchaseData(json_value) {
   logEvent("af_purchase", json_to_string(af, true))
 }
 
-subscribe("android.billing.googleplay.onGooglePurchaseCallback", function(result) {
+eventbus_subscribe("android.billing.googleplay.onGooglePurchaseCallback", function(result) {
   let { status, value = "" } = result
   let statusName = getStatusName(status)
   logG("onGooglePurchaseCallback status = ", statusName)
@@ -239,7 +239,7 @@ subscribe("android.billing.googleplay.onGooglePurchaseCallback", function(result
     openFMsgBox({ text = loc(msgLocId) })
 })
 
-subscribe("android.billing.googleplay.onConfirmPurchaseCallback", function(result) {
+eventbus_subscribe("android.billing.googleplay.onConfirmPurchaseCallback", function(result) {
   let { status } = result
   purchaseInProgress(null)
   if (status == GP_OK) {
@@ -251,7 +251,7 @@ subscribe("android.billing.googleplay.onConfirmPurchaseCallback", function(resul
   }
 })
 
-subscribe("auth.onRegisterGooglePurchase", function(result) {
+eventbus_subscribe("auth.onRegisterGooglePurchase", function(result) {
   let {status, item_id = null, purch_token = null } = result
 
   if (status == YU2_OK && item_id && purch_token) {
@@ -275,8 +275,9 @@ subscribe("auth.onRegisterGooglePurchase", function(result) {
 })
 
 
-let platformPurchaseInProgress = Computed(@() offerSku.value == purchaseInProgress.value ? activeOffers.value?.id
-  : goodsIdBySku.value?[purchaseInProgress.value])
+let platformPurchaseInProgress = Computed(@() offerSku.get() == null ? null
+  : offerSku.get() == purchaseInProgress.get() ? activeOffers.get()?.id
+  : goodsIdBySku.get()?[purchaseInProgress.get()])
 
 return {
   platformGoodsDebugInfo = skusInfo

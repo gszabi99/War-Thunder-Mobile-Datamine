@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
+
 let { getLocalLanguage, getSpeechLanguage, setSpeechLanguage } = require("language")
-let eventbus = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { ndbRead, ndbExists } = require("nestdb")
 
 const NDB_ID = "language.localizationInfo"
@@ -27,7 +28,7 @@ let optLangVoice = {
   valToString = getLangTitle
 }
 
-let function applyListToOptions() {
+function applyListToOptions() {
   let langList = ndbExists(NDB_ID) ? ndbRead(NDB_ID) : []
   foreach (l in langList)
     langById[l.id] <- l
@@ -39,8 +40,8 @@ let function applyListToOptions() {
 }
 
 applyListToOptions()
-eventbus.subscribe("localizationInfoUpdate", @(_) applyListToOptions())
-language.subscribe(@(value) eventbus.send("language.setWithReloadScene", { value }))
+eventbus_subscribe("localizationInfoUpdate", @(_) applyListToOptions())
+language.subscribe(@(value) eventbus_send("language.setWithReloadScene", { value }))
 languageVoice.subscribe(@(value) setSpeechLanguage(value))
 
 return {

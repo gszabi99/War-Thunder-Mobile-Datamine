@@ -1,16 +1,16 @@
 from "%scripts/dagui_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { windowActive } = require("%globalScripts/windowState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let cbs = hardPersistWatched("callbackWhenAppWillActive", [])
 
-let function popCbs() {
+function popCbs() {
   let list = cbs.value
   cbs([])
   foreach(eventId in list)
-    send(eventId, {})
+   eventbus_send(eventId, {})
 }
 
 windowActive.subscribe(function(v) {

@@ -21,7 +21,7 @@ let btnBg = {
   commands = [[VECTOR_POLY, 0, 0, 82, 0, 100, 26, 100, 100, 0, 100, 0, 0]]
 }
 
-let function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
+function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
   let stateFlags = Watched(0)
   let iconSize = ovr?.iconSize ?? iconSizeDefault
   return @() {
@@ -73,7 +73,7 @@ let function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
   }
 }
 
-let function translucentIconButton(image, onClick, imageSize = iconSizeDefault, bgSize = [ iconBgWidth, translucentButtonsHeight ], mkChild = null) {
+function translucentIconButton(image, onClick, imageSize = iconSizeDefault, bgSize = [ iconBgWidth, translucentButtonsHeight ], mkChild = null) {
   let stateFlags = Watched(0)
   return @() btnBg.__merge({
     watch = stateFlags

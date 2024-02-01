@@ -1,4 +1,4 @@
-let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM } = require("%appGlobals/currenciesState.nut")
 
 let imgCfgByCurrency = {
   [WP] = {
@@ -20,6 +20,15 @@ let imgCfgByCurrency = {
       { img = "shop_eagles_04.avif", amountAtLeast = 2400 }
       { img = "shop_eagles_05.avif", amountAtLeast = 4000 }
       { img = "shop_eagles_06.avif", amountAtLeast = 8000 }
+    ]
+  },
+  [PLATINUM] = {
+    def = [
+      { img = "shop_wolves_01.avif", amountAtLeast = 200 }
+      { img = "shop_wolves_02.avif", amountAtLeast = 500 }
+      { img = "shop_wolves_03.avif", amountAtLeast = 1000 }
+      { img = "shop_wolves_04.avif", amountAtLeast = 5000 }
+      { img = "shop_wolves_05.avif", amountAtLeast = 10000 }
     ]
   },
   [NYBOND] = {
@@ -92,7 +101,7 @@ foreach(id, _ in cfgCtors)
   if (id not in imgCfgByCurrency)
     imgCfgByCurrency[id] <- {}
 
-let function getCurrencyGoodsPresentation(curId, season = "season_0") {
+function getCurrencyGoodsPresentation(curId, season = "season_0") {
   if (curId not in cfgCtors) {
     if (curId not in imgCfgByCurrency)
       imgCfgByCurrency[curId] <- { def = unknownCurrencyCtor(curId) }

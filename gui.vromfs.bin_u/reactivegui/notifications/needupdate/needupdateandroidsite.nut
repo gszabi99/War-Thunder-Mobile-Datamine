@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logUpdate = log_with_prefix("[UPDATE] androidSite: ")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { parse_json } = require("json")
 let { get_time_msec } = require("dagor.time")
@@ -39,7 +39,7 @@ let updateGameVersionImpl = proj == null ? @() null
       respEventId = ACTUAL_VERSION_ID
     })
 
-let function updateGameVersion() {
+function updateGameVersion() {
   if (!allowRequest.value)
     return
   needRequest(false)
@@ -47,7 +47,7 @@ let function updateGameVersion() {
   updateGameVersionImpl()
 }
 
-subscribe(ACTUAL_VERSION_ID, function(response) {
+eventbus_subscribe(ACTUAL_VERSION_ID, function(response) {
   let { status = -1, http_code = -1, body = null } = response
   let hasError = status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code
   if (hasError)
@@ -67,7 +67,7 @@ if (allowRequest.value)
 allowRequest.subscribe(@(v) v ? deferOnce(updateGameVersion) : null)
 
 let needRequestOn = @() needRequest(true)
-let function startTimer() {
+function startTimer() {
   if (!needRequest.value)
     resetTimeout(max(0.1, 0.001 * (nextRequestTime.value - get_time_msec())), needRequestOn)
 }

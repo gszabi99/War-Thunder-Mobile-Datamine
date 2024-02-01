@@ -39,7 +39,7 @@ let mkBtnGlare = @(trigger) {
   animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.0, 1.0], duration = 0.5, trigger }]
 }
 
-let function mkActionGlare(actionItem) {
+function mkActionGlare(actionItem) {
   let trigger = $"action_cd_finish_{actionItem?.id}"
   return {
     size = [actionGlareSize, actionGlareSize]
@@ -67,7 +67,7 @@ let function mkActionGlare(actionItem) {
   }
 }
 
-let function mkConsumableAnimation(nextAnimation, start, finish, onFinish) {
+function mkConsumableAnimation(nextAnimation, start, finish, onFinish) {
   return {
     key = nextAnimation
     valign = ALIGN_CENTER
@@ -99,7 +99,7 @@ let function mkConsumableAnimation(nextAnimation, start, finish, onFinish) {
   }
 }
 
-let function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = consumableAnimationTop, onFinish = null) {
+function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = consumableAnimationTop, onFinish = null) {
   if (!itemId)
     return null
   let nextAnimation = Computed(@() spendItemsQueue.value.findvalue(@(i) i.itemId == itemId))

@@ -6,7 +6,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let capZones = Watched([])
 
-let function prevIfEqualList(cur, prev) {
+function prevIfEqualList(cur, prev) {
   let total = min(cur.len(), prev.len())
   local hasChanges = cur.len() != prev.len()
   for (local i = 0; i < total; i++)
@@ -20,7 +20,7 @@ let function prevIfEqualList(cur, prev) {
 let updateCapZones = @() capZones(
   prevIfEqualList(getCaptureZones().filter(@(c) (c.flags & CZ_IS_HIDDEN) == 0), capZones.value))
 
-let function checkRestartZoneUpdater(inBattle) {
+function checkRestartZoneUpdater(inBattle) {
   if (!inBattle) {
     clearTimer(updateCapZones)
     return

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe, send } = require("eventbus")
+
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { ceil } = require("math")
 let utf8 = require("utf8")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
@@ -114,11 +115,11 @@ isNewsWndOpened.subscribe(function (v) {
     lastSeenId(newsfeed.value.reduce(@(res, val) max(res, val.id), lastSeenId.value))
     let sBlk = get_local_custom_settings_blk()
     setBlkValueByPath(sBlk, SEEN_SAVE_ID, lastSeenId.value)
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   }
 })
 
-let function loadLastSeenArticleId() {
+function loadLastSeenArticleId() {
   let sBlk = get_local_custom_settings_blk()
   lastSeenId(getBlkValueByPath(sBlk, SEEN_SAVE_ID) ?? 0)
   updateUnreadArticles()
@@ -127,7 +128,7 @@ isOnlineSettingsAvailable.subscribe(@(v) v ? loadLastSeenArticleId() : null)
 if (isOnlineSettingsAvailable.value)
   loadLastSeenArticleId()
 
-let function markArticleSeenById(id) {
+function markArticleSeenById(id) {
   if (unreadArticles.value?[id])
     unreadArticles.mutate(@(v) v.$rawdelete(id))
 }
@@ -138,7 +139,7 @@ let sortNewsfeed = @(a, b) b.pinned <=> a.pinned
   || b.iDate <=> a.iDate
   || b.id <=> a.id
 
-let function mkInfo(v) {
+function mkInfo(v) {
   let { id = null, date = null, title = "", thumb = null, pinned = 0, tags = [] } = v
   if (type(id) != "integer") {
     logerr($"Bad newsfeed id type: {type(id)}  (id = {id})")
@@ -151,7 +152,7 @@ let function mkInfo(v) {
   return { id, iDate, date, title, shortTitle, thumb, pinned, tags }
 }
 
-subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {
+eventbus_subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {
   let { status = -1, http_code = -1, context = "" } = response
   if (context != shortLang)
     return // Ingnore request result for wrong lang
@@ -178,7 +179,7 @@ subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {
   receivedNewsFeedLang.value = shortLang
 })
 
-let function requestNewsFeed() {
+function requestNewsFeed() {
   let currTimeMsec = get_time_msec()
   if (requestMadeTime.value > 0
       && (currTimeMsec - requestMadeTime.value < MSEC_BETWEEN_REQUESTS))
@@ -201,7 +202,7 @@ let ERROR_PAGE = {
   content = [ { v = loc("yn1/error/80022B30") } ] // Please try again later
 }
 
-subscribe(ARTICLE_RECEIVED, function onArticleReceived(response) {
+eventbus_subscribe(ARTICLE_RECEIVED, function onArticleReceived(response) {
   let { status = -1, http_code = -1, context = null } = response
   let { id = null, lang = null } = context
   if (lang != shortLang)
@@ -228,7 +229,7 @@ subscribe(ARTICLE_RECEIVED, function onArticleReceived(response) {
   receivedArticles.mutate(@(v) v[id] <- result)
 })
 
-let function requestNewsArticle(id) {
+function requestNewsArticle(id) {
   if (id == null || (receivedArticles.value?[id].id ?? EMPTY_PAGE_ID) != EMPTY_PAGE_ID)
     return
 
@@ -243,7 +244,7 @@ let function requestNewsArticle(id) {
   })
 }
 
-let function changeArticle(delta = 1) {
+function changeArticle(delta = 1) {
   if (newsfeed.value.len() == 0)
     return
   let nextIdx = clamp(curArticleIdx.value - delta, 0, newsfeed.value.len() - 1)
@@ -277,7 +278,7 @@ register_command(function() {
   lastSeenId(0)
   let sBlk = get_local_custom_settings_blk()
   setBlkValueByPath(sBlk, SEEN_SAVE_ID, 0)
-  send("forceSaveProfile", {})
+  eventbus_send("forceSaveProfile", {})
 }, "ui.resetNewsSeen")
 
 return {

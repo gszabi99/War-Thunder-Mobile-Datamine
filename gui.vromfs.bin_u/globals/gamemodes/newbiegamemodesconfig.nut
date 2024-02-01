@@ -48,7 +48,7 @@ foreach(c in newbieGameModesConfig)
   foreach(m in c)
     newbieModes[m.gmName] <- m
 
-let function prepareStatsForNewbieConfig(stats) {
+function prepareStatsForNewbieConfig(stats) {
   let res = { kills = 0, offlineKills = 0, battles = 0, offlineBattles = 0, hasPkg = false }.__update(stats)
   res.anyBattles <- res.battles + res.offlineBattles
   res.anyKills <- res.kills + res.offlineKills

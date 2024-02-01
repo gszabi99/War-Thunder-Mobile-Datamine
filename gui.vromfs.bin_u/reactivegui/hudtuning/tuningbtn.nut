@@ -20,7 +20,7 @@ let tuningBtnImg = @(image, ovr = {}) {
   color = btnImgColor
 }.__update(ovr)
 
-let function tuningBtn(image, onClick, description, ovr = {}) {
+function tuningBtn(image, onClick, description, ovr = {}) {
   let stateFlags = Watched(0)
   let children = type(image) == "string" ? tuningBtnImg(image) : image
   let key = {}

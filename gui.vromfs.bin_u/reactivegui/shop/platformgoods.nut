@@ -32,7 +32,7 @@ subscribeFMsgBtns({
   }
 })
 
-let function buyPlatformGoodsExt(goodsOrId) {
+function buyPlatformGoodsExt(goodsOrId) {
   if (isGuestLogin.value) {
     renewGuestRegistrationTags()
     openFMsgBox({

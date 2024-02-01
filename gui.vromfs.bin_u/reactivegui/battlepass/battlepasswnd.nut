@@ -68,7 +68,7 @@ let scrollArrowsBlock = {
   ]
 }
 
-let function rewardsList(stages) {
+function rewardsList(stages) {
   let rewardsStages = []
   foreach (idx, s in stages) {
     let rewInfo = []

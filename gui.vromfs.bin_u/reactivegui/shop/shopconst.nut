@@ -5,6 +5,7 @@ let shopCategories = [
   "SC_PREMIUM"
   "SC_UNIT"
   "SC_CONSUMABLES"
+  "SC_PLATINUM"
 ].map(@(v, i) [ v, 100 + i ]).totable()
 
 let goodsTypes = [
@@ -16,10 +17,20 @@ let goodsTypes = [
   "SGT_CONSUMABLES"
   "SGT_WARBONDS"
   "SGT_EVENT_KEYS"
+  "SGT_PLATINUM"
 ].map(@(v, i) [ v, 200 + i ]).totable()
+
+let currencyToGoodsType = {
+  gold = goodsTypes.SGT_GOLD
+  wp = goodsTypes.SGT_WP
+  warbond = goodsTypes.SGT_WARBONDS
+  eventKey = goodsTypes.SGT_EVENT_KEYS
+  platinum = goodsTypes.SGT_PLATINUM
+}
 
 return shopCategories.__merge(goodsTypes,
   {
     shopCategories
     goodsTypes
+    currencyToGoodsType
   })

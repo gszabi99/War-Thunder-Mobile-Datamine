@@ -1,10 +1,11 @@
+from "%scripts/dagui_natives.nut" import set_login_pass
 from "%scripts/dagui_library.nut" import *
 
 let { LOGIN_STATE, LOGIN_UPDATER_EVENT_ID } = require("%appGlobals/loginState.nut")
 let { setAutologinType, setAutologinEnabled } = require("%scripts/login/autoLogin.nut")
 let { authState } = require("%scripts/login/authState.nut")
 let { send_counter } = require("statsd")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { start_updater_addons, stop_updater, UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH,
   UPDATER_RESULT_SUCCESS, UPDATER_RESULT_TERMINATED
 } = require("contentUpdater")
@@ -17,14 +18,14 @@ let finish = onlyActiveStageCb(function() {
   send_counter("sq.updater.done", 1)
 
   let as = authState.value
-  ::set_login_pass(as.loginName.tostring(), as.loginPas, AUTO_SAVE_FLG_LOGIN | AUTO_SAVE_FLG_PASS)
+  set_login_pass(as.loginName.tostring(), as.loginPas, AUTO_SAVE_FLG_LOGIN | AUTO_SAVE_FLG_PASS)
   setAutologinType(as.loginType)
   setAutologinEnabled(true)
   finalizeStage()
 })
 
 local hasError = false
-subscribe(LOGIN_UPDATER_EVENT_ID,
+eventbus_subscribe(LOGIN_UPDATER_EVENT_ID,
   onlyActiveStageCb(function(evt) {
     let { eventType } = evt
     if (eventType == UPDATER_EVENT_ERROR) {
@@ -56,7 +57,7 @@ subscribe(LOGIN_UPDATER_EVENT_ID,
     }
   }))
 
-let function start() {
+function start() {
   hasError = false
   if (start_updater_addons(LOGIN_UPDATER_EVENT_ID))
     send_counter("sq.updater.started", 1)
@@ -64,7 +65,7 @@ let function start() {
     finish()
 }
 
-let function interrupt() {
+function interrupt() {
   stop_updater()
   send_counter("sq.updater.signedout", 1)
 }

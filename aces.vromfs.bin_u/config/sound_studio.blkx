@@ -125,7 +125,7 @@
           "preload": false
         }
       },
-      "pkg_lvl_hangar_ny": {
+      "pkg_lvl_lunar_ny": {
         "mobile_event.assets": {
           "async": true,
           "preload": false

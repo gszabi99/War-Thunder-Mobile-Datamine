@@ -23,7 +23,7 @@ let floatingOptions = {
   textStyle = fontSmall
 }
 
-let function mergeInputOptions(o1, o2) {
+function mergeInputOptions(o1, o2) {
   let res = o1.__merge(o2)
   foreach(key in ["ovr", "textStyle"])
     if ((key in o2) && (key in o1))

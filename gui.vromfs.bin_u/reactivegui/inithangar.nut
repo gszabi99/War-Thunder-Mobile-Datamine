@@ -4,7 +4,7 @@ let { ovrHangarAddon } = require("%appGlobals/updater/addons.nut")
 let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
-let function activateAddonIfNeed(_) {
+function activateAddonIfNeed(_) {
   if (ovrHangarAddon == null || !isAppLoaded.value)
     return
   let { addons, hangarPath } = ovrHangarAddon

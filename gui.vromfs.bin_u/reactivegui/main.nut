@@ -62,7 +62,7 @@ let needShowCursor  = Computed(@() !forceHideCursor.value
 register_command(@() forceHideCursor(!forceHideCursor.value), "ui.force_hide_mouse_pointer")
 
 
-let function loadAfterLoginImpl() {
+function loadAfterLoginImpl() {
   if (sceneAfterLogin != null)
     return
   //let profiler = require("dagor.profiler")
@@ -79,7 +79,7 @@ let function loadAfterLoginImpl() {
 
 if (isReadyToFullLoad.value || !isLoginRequired.value)
   loadAfterLoginImpl() //when load from native code start_es_loading is already called
-let function loadAfterLogin() {
+function loadAfterLogin() {
   if (sceneAfterLogin != null)
     return
   start_es_loading()

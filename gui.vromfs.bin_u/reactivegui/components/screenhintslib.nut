@@ -21,7 +21,7 @@ let mkLines = @(hints) {
   }, [])
 }
 
-let function mkHintBlock(hint) {
+function mkHintBlock(hint) {
   let { lines = null, color = defLineColor, content = null, blockOvr = {} } = hint
   if (content == null)
     return null
@@ -44,7 +44,7 @@ let function mkHintBlock(hint) {
   }
 }
 
-let function mkTgtPoint(hint) {
+function mkTgtPoint(hint) {
   let { lines = null, color = defLineColor, needTgtPoint = true } = hint
   if (lines == null || !needTgtPoint)
     return null

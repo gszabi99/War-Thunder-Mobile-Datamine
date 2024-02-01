@@ -43,7 +43,7 @@ let bpProgressIcon = @(progress) @() {
   ]
 }
 
-let function bpLineBetweenLevelIcons(stage) {
+function bpLineBetweenLevelIcons(stage) {
   let curSlotWidth = getRewardPlateSize(stage?.viewInfo.slots ?? 1, bpCardStyle)[0]
   let nextSlotWidth = getRewardPlateSize(stage.nextSlots, bpCardStyle)[0]
   let widthLine = (curSlotWidth + nextSlotWidth) / 2 + 2 * bpCardPadding[1] - progressIconSize[0] + bpCardMargin
@@ -57,7 +57,7 @@ let function bpLineBetweenLevelIcons(stage) {
   }
 }
 
-let function bpProgressBar(rewardsStages) {
+function bpProgressBar(rewardsStages) {
   let halfWidthFirstSlot = getRewardPlateSize(rewardsStages?[0].viewInfo.slots ?? 1, bpCardStyle)[0] / 2
   let posFirstElem = halfWidthFirstSlot + bpCardPadding[1] - halfWidthProgressIcon
   let lastIdx = rewardsStages.len() - 1

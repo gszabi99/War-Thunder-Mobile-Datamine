@@ -19,7 +19,7 @@ let curCampaign = Computed(@()
     : campaignsList.value.contains(savedCampaign.value) ? savedCampaign.value
     : campaignsList.value?[0])
 
-let function setCampaign(campaign) {
+function setCampaign(campaign) {
   selectedCampaign(campaign)
   if (campaign != savedCampaign.value)
     set_current_campaign(campaign)
@@ -28,12 +28,12 @@ let function setCampaign(campaign) {
 savedCampaign.subscribe(@(_)
   setTimeout(0.1, @() savedCampaign.value == selectedCampaign.value ? selectedCampaign(null) : null))
 
-let function chooseByCampaign(res, key, campaign) {
+function chooseByCampaign(res, key, campaign) {
   if (key in res)
     res[key] = res[key]?[campaign]
 }
 
-let function filterByCampaign(res, key, campaign) {
+function filterByCampaign(res, key, campaign) {
   if (key in res)
     res[key] = res[key].filter(@(o) o?.campaign == campaign)
 }
@@ -50,7 +50,7 @@ let campConfigs = Computed(function() {
   return res
 })
 
-let function newIfHasChanges(newList, prevList) {
+function newIfHasChanges(newList, prevList) {
   if (newList.len() != prevList.len())
     return newList
 
@@ -60,7 +60,7 @@ let function newIfHasChanges(newList, prevList) {
   return prevList
 }
 
-let function filterByCampaignTbl(res, prev, key, campaign, compareList) {
+function filterByCampaignTbl(res, prev, key, campaign, compareList) {
   if (key not in res)
     return
   let newList = res[key].filter(@(_, id) compareList?[id].campaign == campaign)
@@ -68,7 +68,7 @@ let function filterByCampaignTbl(res, prev, key, campaign, compareList) {
   res[key] = newIfHasChanges(newList, prevList)
 }
 
-let function chooseListByCampaignTbl(res, prev, key, campaign) {
+function chooseListByCampaignTbl(res, prev, key, campaign) {
   if (key not in res)
     return
   let newList = res[key]?[campaign] ?? {}
@@ -76,7 +76,7 @@ let function chooseListByCampaignTbl(res, prev, key, campaign) {
   res[key] = newIfHasChanges(newList, prevList)
 }
 
-let function chooseOneByCampaignTbl(res, prev, key, campaign) {
+function chooseOneByCampaignTbl(res, prev, key, campaign) {
   if (key not in res)
     return
   let newV = res[key]?[campaign]

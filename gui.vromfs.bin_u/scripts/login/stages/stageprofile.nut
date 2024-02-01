@@ -7,7 +7,7 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let { onlyActiveStageCb, export, finalizeStage, interruptStage
-} = require("mkStageBase.nut")("profile", LOGIN_STATE.AUTH_AND_UPDATED, LOGIN_STATE.PROFILE_RECEIVED)
+} = require("mkStageBase.nut")("profile", LOGIN_STATE.READY_TO_FULL_LOAD, LOGIN_STATE.PROFILE_RECEIVED)
 
 registerHandler("onLoginGetProfile", onlyActiveStageCb(function(res, _) {
   if (res?.error != null) {

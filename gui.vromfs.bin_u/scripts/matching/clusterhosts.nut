@@ -8,6 +8,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getForbiddenClustersByCountry } = require("%appGlobals/defaultClusters.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
+let matching = require("%scripts/matching_api.nut")
 
 const MAX_FETCH_RETRIES = 5
 const MAX_FETCH_DELAY_SEC = 60
@@ -31,14 +32,14 @@ let getValidHosts = @(serverAnswer) serverAnswer.filter(function(clusters, ip) {
   return true
 })
 
-let function fetchClusterHosts() {
+function fetchClusterHosts() {
   if (!canFetchHosts.value || isFetching)
     return
 
   isFetching = true
   logCH($"fetchClusterHosts (try {failedFetches})")
   let again = callee()
-  ::matching.rpc_call("hmanager.fetch_hosts_list",
+  matching.rpc_call("hmanager.fetch_hosts_list",
     { timeout = MAX_FETCH_DELAY_SEC },
     function (result) {
       isFetching = false
@@ -60,7 +61,7 @@ let function fetchClusterHosts() {
     })
 }
 
-let function tryFetchHosts() {
+function tryFetchHosts() {
   isFetching = false
   failedFetches = 0
   if (canFetchHosts.value && clusterHosts.value.len() == 0)
@@ -69,7 +70,7 @@ let function tryFetchHosts() {
 
 canFetchHosts.subscribe(@(_) tryFetchHosts())
 
-let function tryApplyChangedHosts() {
+function tryApplyChangedHosts() {
   if (isInBattle.value || clusterHostsChangePending.value.len() == 0)
     return
   logCH($"Applying changed hosts")
@@ -79,7 +80,7 @@ let function tryApplyChangedHosts() {
 
 isInBattle.subscribe(@(_) tryApplyChangedHosts())
 
-::matching.subscribe("hmanager.notify_hosts_list_changed", function(result) {
+matching.subscribe("hmanager.notify_hosts_list_changed", function(result) {
   logCH($"Changed hosts:", result)
   clusterHostsChangePending(getValidHosts(result))
   tryApplyChangedHosts()

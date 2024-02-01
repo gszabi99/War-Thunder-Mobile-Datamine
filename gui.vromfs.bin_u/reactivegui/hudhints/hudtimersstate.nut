@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { crewState, crewDriverState, crewGunnerState, crewLoaderState } = require("%rGui/hud/crewState.nut")
@@ -16,7 +17,7 @@ let timersVisibility = Computed(function(prev) {
 })
 
 let countdowns = {}
-let function getTimerCountdownSec(id) {
+function getTimerCountdownSec(id) {
   if (id not in countdowns)
     countdowns[id] <- mkCountdownTimerSec(Computed(@() activeTimers.value?[id].endTime ?? 0))
   return countdowns[id]
@@ -62,10 +63,10 @@ let onRepair = @(data) activeTimers.mutate(function onRepairImpl(actTimers) {
     winkPeriod = isPrepare ? winkFast : 0
   })
 })
-subscribe("TankDebuffs:Repair", onRepair)
-subscribe("ShipDebuffs:Repair", onRepair)
+eventbus_subscribe("TankDebuffs:Repair", onRepair)
+eventbus_subscribe("ShipDebuffs:Repair", onRepair)
 
-subscribe("ShipDebuffs:Extinguish", @(data) activeTimers.mutate(function onExtinguish(actTimers) {
+eventbus_subscribe("ShipDebuffs:Extinguish", @(data) activeTimers.mutate(function onExtinguish(actTimers) {
   let { state, time = 0 } = data
   if (state == "notInExtinguish" || time <= 0)
     deleteF(actTimers, "extinguish_status")
@@ -73,7 +74,7 @@ subscribe("ShipDebuffs:Extinguish", @(data) activeTimers.mutate(function onExtin
     actTimers.extinguish_status <- mkTimer(time, { needCountdown = true })
 }))
 
-subscribe("ShipDebuffs:CancelExtinguish", @(data) onCancelAction("extinguish_status", data?.time ?? 0))
+eventbus_subscribe("ShipDebuffs:CancelExtinguish", @(data) onCancelAction("extinguish_status", data?.time ?? 0))
 
 let onMoveCooldown = @(data) activeTimers.mutate(function onMoveCooldownImpl(actTimers) {
   let { time = 0 } = data
@@ -82,10 +83,10 @@ let onMoveCooldown = @(data) activeTimers.mutate(function onMoveCooldownImpl(act
   else
     actTimers.move_cooldown_status <- mkTimer(time, { isForward = false })
 })
-subscribe("TankDebuffs:MoveCooldown", onMoveCooldown)
-subscribe("ShipDebuffs:Cooldown", onMoveCooldown)
+eventbus_subscribe("TankDebuffs:MoveCooldown", onMoveCooldown)
+eventbus_subscribe("ShipDebuffs:Cooldown", onMoveCooldown)
 
-subscribe("ShipDebuffs:RepairBreaches", @(data) activeTimers.mutate(function onRepairBreaches(actTimers) {
+eventbus_subscribe("ShipDebuffs:RepairBreaches", @(data) activeTimers.mutate(function onRepairBreaches(actTimers) {
   let { state, time = 0 } = data
   if (time <= 0 || state == "notInRepair") {
     deleteF(actTimers, "unwatering_status")
@@ -97,7 +98,7 @@ subscribe("ShipDebuffs:RepairBreaches", @(data) activeTimers.mutate(function onR
   actTimers[timerId] <- mkTimer(time, { needCountdown = true })
 }))
 
-subscribe("ShipDebuffs:CancelRepairBreaches", @(data) onCancelAction(
+eventbus_subscribe("ShipDebuffs:CancelRepairBreaches", @(data) onCancelAction(
   "unwatering_status" in activeTimers.value ? "unwatering_status" : "repair_breaches_status",
   data?.time ?? 0))
 
@@ -108,10 +109,10 @@ let onRearm = @(data) activeTimers.mutate(function onRearmImpl(actTimers) {
   else
     actTimers[object_name] <- mkTimerOffset(timeToLoadOne, currentLoadTime)
 })
-subscribe("TankDebuffs:Rearm", onRearm)
-subscribe("ShipDebuffs:Rearm", onRearm)
+eventbus_subscribe("TankDebuffs:Rearm", onRearm)
+eventbus_subscribe("ShipDebuffs:Rearm", onRearm)
 
-subscribe("TankDebuffs:Replenish", @(data) activeTimers.mutate(function onReplenish(actTimers) {
+eventbus_subscribe("TankDebuffs:Replenish", @(data) activeTimers.mutate(function onReplenish(actTimers) {
   let { isReplenishActive = false, periodTime = 0, currentLoadTime = 0 } = data
   if (!isReplenishActive || periodTime <= 0)
     deleteF(actTimers, "replenish_status")
@@ -119,7 +120,7 @@ subscribe("TankDebuffs:Replenish", @(data) activeTimers.mutate(function onReplen
     actTimers.replenish_status <- mkTimerOffset(periodTime, currentLoadTime, { isForward = false })
 }))
 
-subscribe("TankDebuffs:Battery", @(data) activeTimers.mutate(function onBattery(actTimers) {
+eventbus_subscribe("TankDebuffs:Battery", @(data) activeTimers.mutate(function onBattery(actTimers) {
   let { charge } = data
   if (charge >= 100)
     deleteF(actTimers, "battery_status")
@@ -146,8 +147,8 @@ crewDriverState.subscribe(@(data) onCrewMemberState("driver_status", data))
 crewGunnerState.subscribe(@(data) onCrewMemberState("gunner_status", data))
 crewLoaderState.subscribe(@(data) onCrewMemberState("loader_status", data))
 
-subscribe("LocalPlayerDead", clearTimers)
-subscribe("MissionResult", clearTimers)
+eventbus_subscribe("LocalPlayerDead", clearTimers)
+eventbus_subscribe("MissionResult", clearTimers)
 isInBattle.subscribe(@(_) clearTimers(null))
 
 return {

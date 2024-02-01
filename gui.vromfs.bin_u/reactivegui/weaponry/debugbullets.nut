@@ -19,7 +19,7 @@ register_command(@(unitName) log($"Unit {unitName} choice common bullets: ", loa
 register_command(@(unitName) log($"Unit {unitName} choice common primary bulletsSets: ", loadUnitBulletsChoice(unitName)?.commonWeapons.primary.bulletSets),
   "debug.get_unit_bullets_choice_common_primary_bulletSets")
 
-let function printAllBulletNames() {
+function printAllBulletNames() {
   let res = {}
   let tagsBlk = get_unittags_blk()
   eachBlock(tagsBlk, function(blk) {
@@ -36,7 +36,7 @@ let function printAllBulletNames() {
 register_command(printAllBulletNames, "debug.print_all_bullet_names")
 
 
-let function countBulletsStats(loadBullets) {
+function countBulletsStats(loadBullets) {
   let tagsBlk = get_unittags_blk()
   let bullets = {}
   let beltBullets = {}

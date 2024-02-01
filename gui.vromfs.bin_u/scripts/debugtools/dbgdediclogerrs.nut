@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 import "%globalScripts/ecs.nut" as ecs
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { is_multiplayer } = require("%scripts/util.nut")
 let { can_receive_dedic_logerr } = require("%appGlobals/permissions.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
@@ -11,7 +11,7 @@ let { setTimeout } = require("dagor.workcycle")
 
 subscribeDedicLogerr(function(text) {
   log("Received dedicated logerr: ", text)
-  send("dedicatedLogerr", { text })
+  eventbus_send("dedicatedLogerr", { text })
 })
 
 ecs.register_es("debug_dedic_logerrs_es",

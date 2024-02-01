@@ -15,7 +15,6 @@ let missionState = {
   scoreLimit = Watched(0)
   deathPenaltyMul = Watched(1.0)
   ctaDeathTicketPenalty = Watched(1)
-  useDeathmatchHUD = Watched(false)
 }
 
 interopGet({

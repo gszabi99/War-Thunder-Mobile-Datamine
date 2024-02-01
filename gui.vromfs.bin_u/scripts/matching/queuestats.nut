@@ -1,11 +1,12 @@
-
 from "%scripts/dagui_library.nut" import *
+
 let { queueInfo, isInQueue } = require("%appGlobals/queueState.nut")
+let matching = require("%scripts/matching_api.nut")
 
 isInQueue.subscribe(@(v) v ? null : queueInfo(null))
 
 //gather only playerCount atm, because not use other
-let function gatherStats(info) {
+function gatherStats(info) {
   let { byTeams = null } = info
   if (byTeams == null)
     return null
@@ -17,7 +18,7 @@ let function gatherStats(info) {
   return res
 }
 
-::matching.subscribe("match.update_queue_info", function(info) {
+matching.subscribe("match.update_queue_info", function(info) {
   let stats = gatherStats(info)
   if (stats == null)
     return

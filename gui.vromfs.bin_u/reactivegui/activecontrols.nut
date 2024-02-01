@@ -1,21 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { DEV_MOUSE, DEV_KBD, DEV_GAMEPAD, DEV_TOUCH, get_last_used_device_mask
 } = require("lastInputMonitor")
 let { get_settings_blk } = require("blkGetters")
-let { is_pc, is_mobile } = require("%sqstd/platform.nut")
+let { is_pc, is_mobile, is_nswitch } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let defControlsType = is_pc ? DEV_MOUSE : DEV_TOUCH
+let defControlsType = is_nswitch ? DEV_GAMEPAD
+  : is_pc ? DEV_MOUSE
+  : DEV_TOUCH
 let isEmuTouch = get_settings_blk()?.debug.emuTouchScreen ?? false
 let NEED_CURSOR_MASK =
     DEV_MOUSE
   | (is_mobile ? 0 : DEV_KBD)
   | DEV_GAMEPAD
   | (is_pc && isEmuTouch ? DEV_TOUCH : 0)
-let ALLOWED_MASK = DEV_GAMEPAD | DEV_TOUCH
-  | (is_pc ? DEV_MOUSE | DEV_KBD : 0)
+let ALLOWED_MASK = is_nswitch ? DEV_GAMEPAD
+  : is_pc ? DEV_GAMEPAD | DEV_TOUCH | DEV_MOUSE | DEV_KBD
+  : DEV_GAMEPAD | DEV_TOUCH
 
 let forcedControlsType = hardPersistWatched("forcedControlsType")
 let lastActiveControlsTypeRaw = Watched(get_last_used_device_mask())
@@ -24,7 +27,7 @@ let lastActiveControlsType = Computed(@(prev) (lastActiveControlsTypeRaw.value &
 
 let activeControlsType = Computed(@() forcedControlsType.value || lastActiveControlsType.value || defControlsType)
 
-subscribe("input_dev_used", @(ev) lastActiveControlsTypeRaw(ev.mask))
+eventbus_subscribe("input_dev_used", @(ev) lastActiveControlsTypeRaw(ev.mask))
 
 let dbgNames = {
   DEV_MOUSE = DEV_MOUSE
@@ -32,7 +35,7 @@ let dbgNames = {
   DEV_GAMEPAD = DEV_GAMEPAD
   DEV_TOUCH = DEV_TOUCH
 }
-let function maskToText(mask) {
+function maskToText(mask) {
   let list = []
   foreach (name, bit in dbgNames)
     if (bit & mask)

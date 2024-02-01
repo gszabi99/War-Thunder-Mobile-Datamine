@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let logOC = log_with_prefix("[CLUSTERS_RTT] ")
-let { subscribe, unsubscribe } = require("eventbus")
+let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { format } =  require("string")
 let { blob } = require("iostream")
 let { get_time_msec } = require("dagor.time")
@@ -40,20 +40,20 @@ let hostsCfg = persist("hostsCfg", @() {})
 let isProbingActive = Computed(@() isInMenu.value && isMatchingOnline.value)
 
 // Writes to stream a 64-bit integer as Network Endian
-let function writeInt64NetBytes(stream, i) {
+function writeInt64NetBytes(stream, i) {
   for (local n = 56; n >= 0; n -= 8)
     stream.writen((i >> n) & 0xFF, 'c')
 }
 
 // Reads from stream a 64-bit integer as Network Endian
-let function readInt64NetBytes(stream) {
+function readInt64NetBytes(stream) {
   local i = 0
   for (local n = 56; n >= 0; n -= 8)
     i = i | (stream.readn('c') << n)
   return i
 }
 
-let function toHexStr(str) {
+function toHexStr(str) {
   let arr = []
   foreach (i, c in str) {
     let delim = (i != 0 && i % 8 == 0) ? " " : ""
@@ -62,19 +62,19 @@ let function toHexStr(str) {
   return "".join(arr)
 }
 
-let function getPacketSign(id, timestamp, delayMs) {
+function getPacketSign(id, timestamp, delayMs) {
   let bits = number_of_set_bits(id) + number_of_set_bits(timestamp) + number_of_set_bits(delayMs)
   let bitsSign = REQUEST_BITS_SET_MUL - (bits % REQUEST_BITS_SET_MUL)
   return ((-1) << bitsSign) ^ (-1)
 }
 
-let function checkPacketSign(id, timestamp, sign, delayMs) {
+function checkPacketSign(id, timestamp, sign, delayMs) {
   let bits = number_of_set_bits(id) + number_of_set_bits(timestamp)
     + number_of_set_bits(sign) + number_of_set_bits(delayMs)
   return bits != 0 && bits % REQUEST_BITS_SET_MUL == 0
 }
 
-let function mkRequestData(requestNum) {
+function mkRequestData(requestNum) {
   let id = requestNum
   let timestamp = gameStartServerTimeMsec.value + get_time_msec()
   let delayMs = 0
@@ -100,7 +100,7 @@ let mkHost = @(ip, port, clustersList) {
   lastAnswerTimeMs = 0
 }
 
-let function isHostNeedRegularUpdate(hostInfo, nowMs) {
+function isHostNeedRegularUpdate(hostInfo, nowMs) {
   let { lastRequestTimeMs, lastAnswerTimeMs, avgRTT } = hostInfo
   let probingIntervalMs = (avgRTT != null ? REGULAR_PROBE_INTERVAL_SEC : FAILED_PROBE_INTERVAL_SEC) * 1000
   let timeExpiredMs = (nowMs - probingIntervalMs
@@ -109,7 +109,7 @@ let function isHostNeedRegularUpdate(hostInfo, nowMs) {
     && (lastAnswerTimeMs == 0 || lastAnswerTimeMs <= timeExpiredMs)
 }
 
-let function isHostNeedRetry(hostInfo, nowMs) {
+function isHostNeedRetry(hostInfo, nowMs) {
   let timeNextTryMs = nowMs - (RETRY_PROBE_DELAY_SEC * 1000) + MINOR_MS
   let { errors, lastRequestTimeMs } = hostInfo
   return errors < MAX_ERRORS && lastRequestTimeMs != 0 && lastRequestTimeMs <= timeNextTryMs
@@ -118,7 +118,7 @@ let function isHostNeedRetry(hostInfo, nowMs) {
 let isNeedProbeHost = @(hostInfo, nowMs)
   hostInfo.isActive && (isHostNeedRegularUpdate(hostInfo, nowMs) || isHostNeedRetry(hostInfo, nowMs))
 
-let function scheduleNextProbeTime(func) {
+function scheduleNextProbeTime(func) {
   if (!isProbingActive.value)
     return
   let nowMs = get_time_msec()
@@ -150,7 +150,7 @@ let function scheduleNextProbeTime(func) {
   resetTimeout(timeLeftSec, func)
 }
 
-let function tryProbeHosts() {
+function tryProbeHosts() {
   if (!isProbingActive.value)
     return
   let nowMs = get_time_msec()
@@ -182,7 +182,7 @@ let function tryProbeHosts() {
   scheduleNextProbeTime(callee())
 }
 
-let function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
+function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
   let { rttSamples } = hostInfo
   if (rttSamples.len() == SAMPLES_COUNT_MAX)
     rttSamples.remove(0)
@@ -196,7 +196,7 @@ let function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
   })
 }
 
-let function getClusterStats() {
+function getClusterStats() {
   // Usually multiple hosts relates to every cluster (like 5 hosts has "EU" in clustersList),
   // but also, a host can participate in multiple clusters, this is why clustersList is an array.
 
@@ -224,7 +224,7 @@ let function getClusterStats() {
   return res
 }
 
-let function getOptimalClusters(stats) {
+function getOptimalClusters(stats) {
   stats = stats.filter(@(c) c.hostsRTT != null)
   if (stats.len() == 0)
     return []
@@ -240,7 +240,7 @@ let function getOptimalClusters(stats) {
     .map(@(c) c.clusterId)
 }
 
-let function getOptimalClustersForSquad(squadMembersVal) {
+function getOptimalClustersForSquad(squadMembersVal) {
   let squadSize = squadMembersVal.len()
   if (squadSize == 0)
     return null
@@ -280,7 +280,7 @@ let function getOptimalClustersForSquad(squadMembersVal) {
   return null
 }
 
-let function onClustersRecalc() {
+function onClustersRecalc() {
   let newClusterStats = getClusterStats()
   if (!isEqual(newClusterStats, clusterStats.value))
     clusterStats(newClusterStats)
@@ -302,7 +302,7 @@ clusterStats.subscribe(function(val) {
 
 let logIgnoredMsg = @(evt) logOC($"Ignored packet from {evt.host}: \"{toHexStr(evt.data.as_string())}\"")
 
-let function onUdpPacket(evt) {
+function onUdpPacket(evt) {
   let { socketId, recvTime, data, host } = evt
   let hostInfo = hostsCfg?[host]
   let { lastRequestId = 0, lastRequestTimeMs = 0 } = hostInfo
@@ -340,17 +340,17 @@ isMatchingOnline.subscribe(function(_) {
   scheduleNextProbeTime(tryProbeHosts)
 })
 
-let function startProbe() {
+function startProbe() {
   close_socket(CLIENT_SOCKET_ID)
-  subscribe("udp.on_packet", onUdpPacket)
+  eventbus_subscribe("udp.on_packet", onUdpPacket)
   scheduleNextProbeTime(tryProbeHosts)
 }
 
-let function stopProbe() {
+function stopProbe() {
   close_socket(CLIENT_SOCKET_ID)
   clearTimer(tryProbeHosts)
   clearTimer(onClustersRecalc)
-  unsubscribe("udp.on_packet", onUdpPacket)
+  eventbus_unsubscribe("udp.on_packet", onUdpPacket)
 }
 
 isProbingActive.subscribe(@(v) v? startProbe() : stopProbe())

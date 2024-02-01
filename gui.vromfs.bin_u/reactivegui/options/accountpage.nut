@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
+let { ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK } = require("%appGlobals/loginState.nut")
 let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -15,17 +16,18 @@ let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
-let { is_ios } = require("%sqstd/platform.nut")
+let { is_ios, is_nswitch } = require("%sqstd/platform.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { openSuportWebsite } = require("%rGui/feedback/supportState.nut")
 
-let LINK_TO_GAIJIN_ACCOUNT_URL = "auto_local auto_login https://wtmobile.com/connect"
-let ACTIVATE_PROMO_CODE_URL = "auto_local auto_login https://store.gaijin.net/activate.php"
-
-let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.value
+let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.value && !is_nswitch
   && [ LT_GOOGLE, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.value))
+
+let canChangeAccount = Computed(@() isInMenu.value && !is_nswitch)
+
+let canUsePromoCodes = !is_ios && !is_nswitch
 
 let avatarSize = hdpx(200)
 let levelBlockSize = hdpx(60)
@@ -147,7 +149,7 @@ let logoutMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionChangePlayer")
   buttons = [
     { id = "cancel", isCancel = true }
-    { id = "logout", styleId = "PRIMARY", isDefault = true, cb = @() send("logOutManually", {}) }
+    { id = "logout", styleId = "PRIMARY", isDefault = true, cb = @() eventbus_send("logOutManually", {}) }
   ]
 })
 
@@ -155,7 +157,7 @@ let logoutToDeleteAccountMsgBox = @() openMsgBox({
   text = loc("mainmenu/questionDeleteAcount")
   buttons = [
     { id = "cancel", isCancel = true }
-    { id = "delete", text = loc("mainmenu/btnAccountDelete"), styleId = "PRIMARY", isDefault = true, cb = @() send("deleteAccount", {}) }
+    { id = "delete", text = loc("mainmenu/btnAccountDelete"), styleId = "PRIMARY", isDefault = true, cb = @() eventbus_send("deleteAccount", {}) }
   ]
 })
 
@@ -167,11 +169,11 @@ let mkButtonRow = @(children) !children.findvalue(@(v) v != null) ? null
     }
 
 let buttons = @() {
-  watch = [canLinkToGaijinAccount, isInMenu]
+  watch = [canLinkToGaijinAccount, canChangeAccount]
   flow = FLOW_VERTICAL
   gap = buttonsHGap
   children = [
-    !isInMenu.value ? null
+    !canChangeAccount.value ? null
       : mkButtonRow([
           textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
           textButtonCommon(loc("mainmenu/btnAccountDelete"), logoutToDeleteAccountMsgBox, buttonsWidthStyle)
@@ -179,18 +181,18 @@ let buttons = @() {
     mkButtonRow([
       !canLinkToGaijinAccount.value ? null
         : textButtonPrimary(loc("msgbox/btn_linkEmail"),
-            @() send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL }),
+            @() eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL }),
             buttonsWidthStyle)
-      is_ios ? null
+      !canUsePromoCodes ? null
         : textButtonPrimary(loc("mainmenu/btnActivateCode"),
-            @() send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
+            @() eventbus_send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
             buttonsWidthStyle)
     ])
     mkButtonRow([
       textButtonPrimary(loc("mainmenu/support"),
         openSuportWebsite,
         buttonsWidthStyle)
-      textButtonPrimary(loc("options/personalData"), @() send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
+      textButtonPrimary(loc("options/personalData"), @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
     ])
   ]
 }

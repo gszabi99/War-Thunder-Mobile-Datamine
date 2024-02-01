@@ -7,7 +7,7 @@ let ICON_SIZE = hdpxi(80)
 let headerHeight = hdpxi(108)
 let bulletIconSize = [hdpxi(214), headerHeight]
 
-let function getSlotNumber(chosenBulletsList, id){
+function getSlotNumber(chosenBulletsList, id){
   let slotNumber = chosenBulletsList.findvalue(@(bullet) bullet.name == id )?.idx
   if(slotNumber == null)
     return ""
@@ -44,7 +44,7 @@ let imageBullet = @(imageBulletName) {
   keepAspect = KEEP_ASPECT_FIT
 }
 
-let function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovr = {}) {
+function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovr = {}) {
   if (bulletInfo == null)
     return null
   local { icon = null } = bInfoFromUnitTags

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
-let { AirThrottleMode } = require("wtSharedEnums")
+let { AirThrottleMode } = require("%globalScripts/sharedEnums.nut")
 let { floor, fabs } = require("%sqstd/math.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue
 } = require("%globalScripts/controls/shortcutActions.nut")
@@ -70,7 +70,7 @@ let percentText = loc("measureUnits/percent")
 
 let HAPT_THROTTLE = registerHapticPattern("ThrottleChange", { time = 0.0, intensity = 0.5, sharpness = 0.4, duration = 0.2, attack = 0.08, release = 1.0 })
 
-let function changeThrottleValue(val) {
+function changeThrottleValue(val) {
   val = clamp(val, 0, maxThrottle)
   needOpacityThrottle(false)
   resetTimeout(idleTimeForThrottleOpacity, makeOpacityThrottle)
@@ -85,7 +85,7 @@ let function changeThrottleValue(val) {
   playHapticPattern(HAPT_THROTTLE)
 }
 
-let function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
+function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
   let imageComp = mkBtnImageComp(hotkey, hdpxi(50))
   return @() {
     watch = [isVisible, isGamepad, isActive]
@@ -105,7 +105,7 @@ let btnImageThrottleDec = mkGamepadHotkey(axisMaxToHotkey(throttle_axis),
   Computed(@() isThrottleAxisActive.value && throttleAxisVal.value < 0),
   { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [pw(-100), 0] })
 
-let function throttleSlider() {
+function throttleSlider() {
   let knob = {
     size  = [knobSize + 2 * knobPadding, knobSize + 2 * knobPadding]
     pos = [0, (userTrottle.value.tofloat() / maxThrottle * throttleScaleHeight).tointeger() - knobPadding]

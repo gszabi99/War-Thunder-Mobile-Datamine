@@ -43,21 +43,21 @@ let mkImg = @(itemId) {
   keepAspect = KEEP_ASPECT_FIT
 }
 
-let function getConsumablesInfo(goods) {
+function getConsumablesInfo(goods) {
   let { items } = goods
   let itemId = orderByItems.findindex(@(_, id) items?[id] != null)  ?? items.findindex(@(_) true) ?? ""
   let amount = items?[itemId] ?? 0
   return { itemId, amount }
 }
 
-let function getLocNameConsumables(goods) {
+function getLocNameConsumables(goods) {
   let { itemId, amount } = getConsumablesInfo(goods)
   return itemId != ""
     ? loc($"consumable/amount/{itemId}", { amountTxt = decimalFormat(amount), amount })
     : goods.id
 }
 
-let function mkGoodsConsumables(goods, onClick, state, animParams) {
+function mkGoodsConsumables(goods, onClick, state, animParams) {
   let { itemId, amount } = getConsumablesInfo(goods)
   let { viewBaseValue = 0, isShowDebugOnly = false } = goods
   let nameConsumable =  loc($"item/{itemId}")

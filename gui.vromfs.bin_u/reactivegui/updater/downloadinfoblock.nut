@@ -27,7 +27,7 @@ let progress = @() {
   }.__update(fontTiny)
 }
 
-let function statusBlock() {
+function statusBlock() {
   let statusText = isDownloadPaused.value ? loc("updater/status/paused/short")
     : isDownloadPausedByConnection.value ? loc("updater/status/pausedByConnection/short")
     : updaterError.value != null ? loc($"updater/error/{updaterError.value}")

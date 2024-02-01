@@ -1,4 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+
+let { get_mission_time } = require("%globalsDarg/mission.nut")
 let { tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera } = require("%rGui/hudState.nut")
 let { hasCrosshairForWeapon, isCurHoldWeaponInCancelZone
 } = require("%rGui/hud/currentWeaponsStates.nut")
@@ -46,9 +48,9 @@ let fireAnimationNormalizeSize = { prop = AnimProp.scale, from = [0.7, 0.7], to 
 let fireAnimationsInZomm = [ fireColorAnimations, fireAnimationIncreaseSize,
   fireAnimationDecreaseSize, fireAnimationNormalizeSize ]
 
-let function mkReloadPartData(action, color) {
+function mkReloadPartData(action, color) {
   let { cooldownEndTime = 0, cooldownTime = 0 } = action
-  let cdLeft = cooldownEndTime - ::get_mission_time()
+  let cdLeft = cooldownEndTime - get_mission_time()
   if (cdLeft <= 0)
     return null
   return {

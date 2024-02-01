@@ -21,7 +21,7 @@ let winchImages = {
 let winchAction = Computed(@() actionBarItems.value?[winchImages.findindex(@(_, aType) aType in actionBarItems.value)])
 
 let stateFlags = Watched(0)
-let function winchButton() {
+function winchButton() {
   let res = { watch = [winchAction, stateFlags], key = winchAction }
   if (winchAction.value == null)
     return res

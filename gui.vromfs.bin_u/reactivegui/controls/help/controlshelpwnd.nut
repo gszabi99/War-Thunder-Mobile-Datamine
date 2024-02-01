@@ -37,14 +37,14 @@ isOpened.subscribe(function(v) {
   curUnitType(pages.contains(uType) ? uType : pages[0])
 })
 
-let function appendScText(textLists, key, value) {
+function appendScText(textLists, key, value) {
   if (key not in textLists)
     textLists[key] <- [value]
   else if (!textLists[key].contains(value))
     textLists[key].append(value)
 }
 
-let function content() {
+function content() {
   let { shortcuts = [], axes = [] } = shortcutsByUnitTypes?[curUnitType.value]
   let textLists = {}
   foreach (a in axes) {

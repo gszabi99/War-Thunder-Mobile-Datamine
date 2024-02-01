@@ -28,7 +28,7 @@ let sizes = [
   evenPx(70)
 ]
 
-let function mkRow(size, presetId, preset) {
+function mkRow(size, presetId, preset) {
   let { heightMuls, defHeightMul } = preset
   let gap = 0.3 * size
   let cols = max(1, ((saSize[0] + gap).tofloat() / (size + gap)).tointeger())
@@ -63,7 +63,7 @@ let function mkRow(size, presetId, preset) {
   }
 }
 
-let function mkContent() { //no point to create it n scripts load
+function mkContent() { //no point to create it n scripts load
   let children = []
   foreach(size in sizes)
     foreach(presetId in presetsOrder)

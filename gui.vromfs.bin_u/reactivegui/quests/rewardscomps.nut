@@ -66,7 +66,7 @@ let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = fa
     : mkGlare(rewardsBtnSize, defGlareSize, 2.5, 0.6)
 ]
 
-let function mkProgressBarReward(children, onClick) {
+function mkProgressBarReward(children, onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -120,7 +120,7 @@ let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyle
   ]
 }
 
-let function mkRewardsPreview(rewards, isQuestFinished) {
+function mkRewardsPreview(rewards, isQuestFinished) {
   local rewardsSize = 0
   local res = []
   foreach (idx, r in rewards) {

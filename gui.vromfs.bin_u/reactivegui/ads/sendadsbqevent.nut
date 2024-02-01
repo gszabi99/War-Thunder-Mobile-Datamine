@@ -7,7 +7,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { rewardInfo } = require("adsInternalState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
-let function sendAdsBqEvent(status, provider, withReward = true) {
+function sendAdsBqEvent(status, provider, withReward = true) {
   let { platform = "" } = get_user_system_info()
   let { levelInfo = {}, adBudget = {} } = servProfile.value
   local playerLevel = 0

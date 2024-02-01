@@ -7,7 +7,7 @@ let { setDebugLoggingParams, debugLoggingEnable
 } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 
-let function initEventBroadcastLogging() {
+function initEventBroadcastLogging() {
   setDebugLoggingParams(log, get_time_msec, tostring_r)
   console.register_command(debugLoggingEnable, "debug.subscriptions_logging_enable")
 }

@@ -79,7 +79,7 @@ let needShowArrowR = Computed(@()
   null != unseenUnitsIndex.value.findvalue(
     @(index) scrollPos.value + sw(100) < (index + 1.85) * blockSize[0]))
 
-let function scrollToUnit(name, xmbNode = null) {
+function scrollToUnit(name, xmbNode = null) {
   if (!name)
     return
   let selUnitIdx = availableUnitsList.value.findvalue(@(u) u.name == name)?.rank ?? 1
@@ -91,12 +91,12 @@ let function scrollToUnit(name, xmbNode = null) {
       gui_scene.setXmbFocus(xmbNode)
 }
 
-let function scrollToRank(rank) {
+function scrollToRank(rank) {
   let scrollPosX = blockSize[0] * ((columnsCfg.value?[rank] ?? 0) + 1) - 0.5 * (saSize[0] - flagsWidth)
   scrollHandler.scrollToX(scrollPosX)
 }
 
-let function scrollForward() {
+function scrollForward() {
   if (nodeToScroll.get() != null)
     resetTimeout(SCROLL_DELAY, @() gui_scene.setXmbFocus(nodeToScroll.get()))
 }
@@ -108,7 +108,7 @@ let openFiltersPopup = @(e) openFilters(e, {
   popupHalign = ALIGN_CENTER
 })
 
-let function onBackButtonClick() {
+function onBackButtonClick() {
   closeUnitsTreeWnd()
   curSelectedUnit.set(null)
 }
@@ -182,7 +182,7 @@ let mkTreeBg = @(isVisible) @() !isVisible.value ? { watch = isVisible } : {
   image = Picture($"ui/images/{unitsTreeBg.get()}:0:P")
 }.__merge(unselectBtn)
 
-let function mkPlatoonPlates(unit) {
+function mkPlatoonPlates(unit) {
   let { platoonUnits = [] } = unit
   let platoonSize = platoonUnits.len()
   let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
@@ -218,7 +218,7 @@ let function mkPlatoonPlates(unit) {
   }
 }
 
-let function mkUnitPlate(unit, ovr = {}) {
+function mkUnitPlate(unit, ovr = {}) {
   if (unit == null)
     return null
 
@@ -290,7 +290,7 @@ let function mkUnitPlate(unit, ovr = {}) {
   }.__update(ovr)
 }
 
-let function mkUnitsBlock(listByCountry, rowIdx) {
+function mkUnitsBlock(listByCountry, rowIdx) {
   let mkPos = @(idx, slot) [
     blockSize[0] * (columnsCfg.value[idx + 1] + slot)
       + platoonPlatesGap * framesGapMul * sizePlatoon.value
@@ -310,7 +310,7 @@ let function mkUnitsBlock(listByCountry, rowIdx) {
   }
 }
 
-let function mkLevelProgress(_, idx) {
+function mkLevelProgress(_, idx) {
   let slots = columnsCfg.value[idx + 2] - columnsCfg.value[idx + 1]
   if (slots <= 0)
     return null

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { removeHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
@@ -49,7 +49,7 @@ let clearHintStage = @() seriaState({cfgId = -1, idx = -1, nextStageTime = 0})
 
 isInBattle.subscribe(@(_) clearHintStage())
 
-let function nextStage() {
+function nextStage() {
   local { idx, cfgId } = seriaState.value
   let cfg = seriesCfg?[cfgId]
   if (cfg == null)
@@ -65,7 +65,7 @@ let function nextStage() {
     return
   }
   let {hintId, elementId , duration = 0. } = hintCfg
-  send($"hint:{hintId}", { elementId , duration })
+  eventbus_send($"hint:{hintId}", { elementId , duration })
   seriaState.mutate(@(v) v.__update({ idx, nextStageTime = duration + get_time_msec() * 0.001}))
 }
 
@@ -73,7 +73,7 @@ nextStageTimeSec.subscribe(@(time) time <= 0
   ? clearTimer(nextStage)
   : resetTimeout(max(0.01, time - get_time_msec() * 0.001), nextStage))
 
-let function addHintSeria(seriaCfgId) {
+function addHintSeria(seriaCfgId) {
   seriaState.mutate(@(v) v.__update({cfgId = seriaCfgId, idx = -1}))
   nextStage()
 }

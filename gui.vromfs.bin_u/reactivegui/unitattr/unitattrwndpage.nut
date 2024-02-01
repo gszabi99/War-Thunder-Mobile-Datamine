@@ -91,7 +91,7 @@ let mkProgressBtnContentInc = @(isAvailable) @(sf)
     ]
   })
 
-let function mkProgressBtn(childrenCtor, onClick) {
+function mkProgressBtn(childrenCtor, onClick) {
   let stateFlags = Watched(0)
   return @() progressBtnBase.__merge({
     watch = stateFlags
@@ -162,7 +162,7 @@ let mkNextIncCost = @(nextIncCost, canInc, totalSp) {
     : { watch = [ totalSp, nextIncCost, canInc ] }
 }
 
-let function mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive) {
+function mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive) {
   local stateFlags = Watched(0)
   let needHover = Computed(@() isInteractive.value && hoveredLevel.value >= level)
   return @() {
@@ -207,7 +207,7 @@ let function mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive) {
 
 local  lastClickTime = 0
 
-let function applyAttrRowChange(catId, attrId, tryValue, selLevel, minLevel, maxLevel) {
+function applyAttrRowChange(catId, attrId, tryValue, selLevel, minLevel, maxLevel) {
   local val = clamp(tryValue, minLevel.value, maxLevel.value)
   if (val == selLevel.value && tryValue <= maxLevel.value)
     val = max(val - 1, minLevel.value)
@@ -219,7 +219,7 @@ let function applyAttrRowChange(catId, attrId, tryValue, selLevel, minLevel, max
   return true
 }
 
-let function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {
+function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {
   if (!applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
     let currTime = get_time_msec()
     if (lastClickTime + boost_cooldown < currTime) { //cooldown check
@@ -230,7 +230,7 @@ let function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel
   }
 }
 
-let function mkRowProgressBar(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
+function mkRowProgressBar(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
   let hoveredLevel = Watched(-1)
   return {
     size = [ flex(), SIZE_TO_CONTENT ]
@@ -248,7 +248,7 @@ let function mkRowProgressBar(minLevel, selLevel, maxLevel, totalLevels, mkCellO
   }
 }
 
-let function mkAttrRow(attr) {
+function mkAttrRow(attr) {
   let shopCfg = getUnitTagsShop(attrUnitName.value)
   let catId = curCategoryId.value
   let minLevel = Computed(@() unitAttributes.value?[catId][attr.id] ?? 0) // Current applied level

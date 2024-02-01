@@ -33,7 +33,7 @@ gui_scene.setHotkeysNavHandler(function(state) {
 
 let btnAnimataions = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.15, easing = InQuad, play = true }]
 
-let function mkNavBtn(hotkey) {
+function mkNavBtn(hotkey) {
   let { description = null, btnName = [] } = hotkey
   if (description == null)
     return null
@@ -56,7 +56,7 @@ let function mkNavBtn(hotkey) {
 let isActivateKey = @(key) btnA == key.btnName
 let isHotkeyVisible = @(hotkey) hotkey?.description != null && hotkey.devId == DEVID_JOYSTICK && hotkey?.action != EMPTY_ACTION
 
-let function combineHotkeys(data) {
+function combineHotkeys(data) {
   let hotkeys = []
   foreach (k in data) {
     if (isActivateKey(k) || !isHotkeyVisible(k))
@@ -99,7 +99,7 @@ let joyAHint = Computed(function() {
   return hotkeyAText
 })
 
-let function manualHint(images, text = "", ovr = {}) {
+function manualHint(images, text = "", ovr = {}) {
   let children = images.map(@(image) mkBtnImageComp(image, height))
   if (text != "")
     children.append(mkText(text))

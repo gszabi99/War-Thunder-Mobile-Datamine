@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+
+let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { eventbus_send } = require("eventbus")
 let { round, sqrt } = require("math")
 let { deferOnce } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -46,7 +48,7 @@ let showLowBulletsWarning = Watched(true)
 let startRespawnTime = mkWatched(persist, "startRespawnTime", -1)
 isRespawnStarted.subscribe(function(v) {
   if (v)
-    startRespawnTime(::get_mission_time())
+    startRespawnTime(get_mission_time())
 })
 
 let balanceBlock = @() {
@@ -66,12 +68,12 @@ let topPanel = @() {
   children = [
     { size = [SIZE_TO_CONTENT, flex()], children = logerrHintsBlock }
     scoreBoard
-    mkMenuButton({ onClick = @() send("openFlightMenuInRespawn", {}) })
+    mkMenuButton({ onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
     respawnUnitItems.value?.spare ? balanceBlock : null
   ]
 }
 
-let function onSlotClick(slot) {
+function onSlotClick(slot) {
   //todo: validate spawn here
   if (slot.canSpawn) {
     playerSelectedSlotIdx(slot.id)
@@ -90,7 +92,7 @@ let sparePrice = {
   })
 }
 
-let function mkSlotPlate(slot, baseUnit) {
+function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
@@ -125,7 +127,7 @@ let levelBg = mkLevelBg({
   childOvr = { borderColor = unitExpColor }
 })
 
-let function platoonTitle(unit) {
+function platoonTitle(unit) {
   let { name, level = 0, isUpgraded = false, isPremium = false } = unit
   let isElite = isUpgraded || isPremium
   let text = "  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit))
@@ -184,7 +186,7 @@ let map = {
 }
 
 let cancelText = utf8ToUpper(loc("Cancel"))
-let function cancelBtn() {
+function cancelBtn() {
   local btnText = cancelText
   if (timeToRespawn.value > 0)
     btnText = "".concat(btnText,
@@ -201,7 +203,7 @@ let mkText = @(text, override = {}) {
   text
 }.__update(fontTiny, override)
 
-let function toBattleButton(onClick, styleOvr) {
+function toBattleButton(onClick, styleOvr) {
   let button = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")), onClick, styleOvr)
   if (!(selSlot.value?.isSpawnBySpare ?? false))
     return button
@@ -223,7 +225,7 @@ let function toBattleButton(onClick, styleOvr) {
   }
 }
 
-let function toBattle() {
+function toBattle() {
   if (chosenBullets.value.len() == 0) //no need to validate bullets count when no bullets choice at all
     respawn(selSlot.value, bulletsToSpawn.value)
   else if (hasZeroBullets.value)
@@ -266,7 +268,7 @@ let updateSlotAABB = @() slotAABB(selSlot.value == null ? null
   : gui_scene.getCompAABBbyKey(selSlot.value))
 selSlot.subscribe(@(_) deferOnce(updateSlotAABB))
 
-let function respawnBulletsPlace() {
+function respawnBulletsPlace() {
   let res = { watch = slotAABB, onAttach = @() deferOnce(updateSlotAABB) }
   if (slotAABB.value == null)
     return res

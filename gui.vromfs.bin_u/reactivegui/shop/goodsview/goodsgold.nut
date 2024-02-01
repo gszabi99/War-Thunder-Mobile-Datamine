@@ -17,19 +17,20 @@ let bgHiglight = {
   color = 0x01261E10
 }
 
-let function getImgByAmount(amount) {
+function getImgByAmount(amount) {
   let imgCfg = getCurrencyGoodsPresentation(GOLD)
   let idxByAmount = imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()
   return mkGoodsImg(imgCfg?[max(0, idxByAmount - 1)].img)
 }
 
-let function getLocNameGold(goods) {
-  let amount = goods?.gold ?? 0
+function getLocNameGold(goods) {
+  let amount = goods?.currencies.gold ?? goods?.gold ?? 0 //compatibility with format before 2024.01.23
   return loc("shop/item/gold/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
-let function mkGoodsGold(goods, onClick, state, animParams) {
-  let { gold = 0, viewBaseValue = 0, isShowDebugOnly = false } = goods
+function mkGoodsGold(goods, onClick, state, animParams) {
+  let { viewBaseValue = 0, isShowDebugOnly = false } = goods
+  let gold = goods?.currencies.gold ?? goods?.gold ?? 0 //compatibility with format before 2024.01.23
   return mkGoodsWrap(onClick,
     @(sf) [
       mkSlotBgImg()
@@ -43,7 +44,7 @@ let function mkGoodsGold(goods, onClick, state, animParams) {
     mkPricePlate(goods, priceBgGrad, state, animParams), {size = goodsSmallSize})
 }
 
-let function mkOfferGold(goods, onClick, state, needPrice) {
+function mkOfferGold(goods, onClick, state, needPrice) {
   let { endTime = 0, discountInPercent = 0, isShowDebugOnly = false } = goods
   return mkOfferWrap(onClick,
     @(sf) [

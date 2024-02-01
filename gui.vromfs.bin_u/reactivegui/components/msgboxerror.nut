@@ -20,7 +20,7 @@ let msgContent = @(text, moreInfoLink) {
   ]
 }
 
-let function openMsgBoxError(text, uid = null, title = null, buttons = defaultBtnsCfg,
+function openMsgBoxError(text, uid = null, title = null, buttons = defaultBtnsCfg,
   moreInfoLink = "", debugString = ""
 ) {
   uid = uid ?? $"msgbox_{text}"

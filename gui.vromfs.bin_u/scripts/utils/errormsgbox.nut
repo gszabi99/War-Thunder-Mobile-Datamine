@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
-//-file:plus-string
+
+let { set_last_session_debug_info, get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 let { format } = require("string")
 let { doesLocTextExist } = require("dagor.localize")
 let { SERVER_ERROR_MAINTENANCE, SERVER_ERROR_FORCE_DISCONNECT } = require("matching.errors")
@@ -8,6 +9,7 @@ let { register_command } = require("console")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { authState } = require("%scripts/login/authState.nut")
 let { SST_MAIL } = require("%appGlobals/loginState.nut")
+let matching = require("%scripts/matching_api.nut")
 
 let curtomUrls = {
   [SERVER_ERROR_MAINTENANCE] = "https://www.wtmobile.com/news",
@@ -16,7 +18,7 @@ let curtomUrls = {
   [YU2_PROFILE_DELETED] = loc($"url/feedback/support"),
 }
 
-let function matchingErrData(error_text) {
+function matchingErrData(error_text) {
   let bqLocId = $"matching/{error_text}"
   return {
     bqLocId
@@ -29,7 +31,7 @@ let function matchingErrData(error_text) {
   }
 }
 
-let function defErrData(res) {
+function defErrData(res) {
   let errCode = res == "0" ? "" : res
   let bqLocId = $"yn1/error/{errCode}"
   if (doesLocTextExist(bqLocId))
@@ -45,7 +47,7 @@ let function defErrData(res) {
   }
 }
 
-let function errorCodeToString(error_code) {
+function errorCodeToString(error_code) {
   if ([YU2_TIMEOUT, YU2_HOST_RESOLVE, YU2_SSL_ERROR, YU2_FAIL].contains(error_code))
     return "80130182"
   else if ([YU2_WRONG_LOGIN,YU2_WRONG_PARAMETER].contains(error_code))
@@ -66,17 +68,17 @@ let function errorCodeToString(error_code) {
   return format("%X", error_code & 0xFFFFFFFF)
 }
 
-let function getErrorData(error_code) {
+function getErrorData(error_code) {
   local errCode = error_code
   if (type(error_code) != "string") {
     errCode = errorCodeToString(error_code)
-    if (::matching.is_matching_error(error_code))
-      return matchingErrData(::matching.error_string(error_code)).__update({ errCode })
+    if (matching.is_matching_error(error_code))
+      return matchingErrData(matching.error_string(error_code)).__update({ errCode })
   }
   return defErrData(errCode).__update({ errCode })
 }
 
-let function getErrorMsgParams(errCodeBase) {
+function getErrorMsgParams(errCodeBase) {
   local { text, errCode, bqLocId } = getErrorData(errCodeBase)
   return {
     uid = "errorMessageBox"
@@ -84,11 +86,11 @@ let function getErrorMsgParams(errCodeBase) {
     text
     bqLocId
     moreInfoLink = curtomUrls?[errCodeBase] ?? "".concat(loc($"url/knowledgebase"), errCode)
-    debugString = ("LAST_SESSION_DEBUG_INFO" in getroottable()) ? ::LAST_SESSION_DEBUG_INFO : null
+    debugString = get_last_session_debug_info()
   }
 }
 
-let function errorMsgBox(errCode, buttons, ovr = {}) {
+function errorMsgBox(errCode, buttons, ovr = {}) {
   let params = getErrorMsgParams(errCode)
   sendErrorLocIdBqEvent(params.bqLocId)
   openFMsgBox(params.__update(ovr, { buttons }))
@@ -97,7 +99,7 @@ let function errorMsgBox(errCode, buttons, ovr = {}) {
 
 register_command(
   function() {
-    ::LAST_SESSION_DEBUG_INFO = "sid:12345678"
+    set_last_session_debug_info("sid:12345678")
     errorMsgBox(SERVER_ERROR_FORCE_DISCONNECT,
       [{ id = "exit", eventId = "matchingExitGame", styleId = "PRIMARY", isDefault = true }],
       { isPersist = true })

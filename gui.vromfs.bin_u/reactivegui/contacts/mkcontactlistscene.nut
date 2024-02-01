@@ -6,7 +6,7 @@ let mkContactsOrder = require("mkContactsOrder.nut")
 
 let gap = hdpx(24)
 
-let function contactsList(uidsList, playerSelectedUserId) {
+function contactsList(uidsList, playerSelectedUserId) {
   let ordered = mkContactsOrder(uidsList)
   return mkVerticalPannableArea(
     @() {
@@ -26,7 +26,7 @@ let noContactsMsg = {
   text = loc("contacts/list_empty")
 }.__update(fontSmall)
 
-let function contactsBlock(uidsList, playerSelectedUserId) {
+function contactsBlock(uidsList, playerSelectedUserId) {
   let hasContacts = Computed(@() uidsList.value.len() != 0)
   return @() {
     watch = hasContacts
@@ -46,7 +46,7 @@ let buttons = @(selectedUserId, mkContactActions) @() {
     : mkContactActions(selectedUserId.value)
 }
 
-let function mkContactListScene(uidsList, mkContactActions, selectedId = "selectedUserId") {
+function mkContactListScene(uidsList, mkContactActions, selectedId = "selectedUserId") {
   let playerSelectedUserId = mkWatched(persist, selectedId, null)
   let selectedUserId = Computed(@() playerSelectedUserId.value in uidsList.value
     ? playerSelectedUserId.value

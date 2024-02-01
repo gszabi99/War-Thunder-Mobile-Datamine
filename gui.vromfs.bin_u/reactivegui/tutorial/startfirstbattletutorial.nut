@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logFB = log_with_prefix("[FIRST_BATTLE_TUTOR] ")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { register_command } = require("console")
@@ -41,7 +41,7 @@ shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 hasBattles.subscribe(@(v) v ? null : isSkipped(false))
 
-let function startTutorial() {
+function startTutorial() {
   let unitsListShowEnough = Watched(false)
   local animationStartTime = 0
   setTutorialConfig({
@@ -89,7 +89,7 @@ let function startTutorial() {
             }
             else {
               sendNewbieBqEvent("pressToBattleFromUITutor", { status = "online_battle", params = randomBattleMode.value?.name ?? "" })
-              send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
+              eventbus_send("queueToGameMode", { modeId = randomBattleMode.value?.gameModeId })
             }
           }
           needArrow = true

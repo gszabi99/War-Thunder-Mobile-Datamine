@@ -14,7 +14,7 @@ let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
+let { bgShadedDark, bgHeader, bgMessage } = require("%rGui/style/backgrounds.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
@@ -28,7 +28,6 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { bgGradient } = require("unseenPurchaseComps.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
@@ -39,6 +38,7 @@ let { eventSeason } = require("%rGui/event/eventState.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator", "medal" ]
 
+let bgGradient = bgMessage.__merge({size = flex()})
 let wndWidth = saSize[0]
 let maxWndHeight = saSize[1]
 let rewBlockWidth = hdpx(340)
@@ -164,7 +164,7 @@ let mkRewardAnimProps = @(startDelay, scaleTo) {
   ]
 }
 
-let function mkHighlight(startDelay, sizeMul) {
+function mkHighlight(startDelay, sizeMul) {
   let highlightSize = (sizeMul * rewIconSize + 0.5).tointeger()
   let startRotation = frnd() * 360
   return {
@@ -211,7 +211,7 @@ let function mkHighlight(startDelay, sizeMul) {
   }
 }
 
-let function mkRewardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
+function mkRewardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
   let imgW = round(rewIconSize * sizeMul).tointeger()
   let imgH = round(imgW / aspectRatio).tointeger()
   return {
@@ -232,7 +232,7 @@ let function mkRewardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0,
   }
 }
 
-let function mkDynamicRewardIcon(startDelay, curId, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
+function mkDynamicRewardIcon(startDelay, curId, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
   let imgW = round(rewIconSize * sizeMul).tointeger()
   let imgH = round(imgW / aspectRatio).tointeger()
   let cfg = Computed(@() getCurrencyGoodsPresentation(curId, eventSeason.get())?[0])
@@ -285,7 +285,7 @@ let decoratorCompByType = {
   avatar    =  mkImageDecoratorCtor
 }
 
-let function mkDecoratorRewardIcon(startDelay, decoratorId) {
+function mkDecoratorRewardIcon(startDelay, decoratorId) {
   let decoratorType = Computed(@() allDecorators.value?[decoratorId].dType)
   return @() {
     watch = decoratorType
@@ -315,7 +315,7 @@ let mkCurrencyIcon = @(startDelay, id)  customCurrencyIcons?[id](startDelay) ?? 
   ]
 }
 
-let function mkRewardLabel(startDelay, text) {
+function mkRewardLabel(startDelay, text) {
   let res = {
     rendObj = ROBJ_TEXT
     color = 0xFFFFFFFF
@@ -363,7 +363,7 @@ let rewardCtors = {
   }
 }
 
-let function mkRewardIconComp(rewardInfo) {
+function mkRewardIconComp(rewardInfo) {
   let { mkIcon, mkText } = rewardCtors[rewardInfo.gType]
 
   return {
@@ -389,7 +389,7 @@ let mkRewardIconsBlock = @(rewards) rewards.len() == 0 ? null : {
     })
 }
 
-let function mkUnitPlate(unitInfo) {
+function mkUnitPlate(unitInfo) {
   let { unit, startDelay } = unitInfo
   if (unit == null)
     return null
@@ -458,15 +458,18 @@ let mkTitleAnimations = @(startDelay) [
     play = true, trigger = ANIM_SKIP, onFinish = @() isAnimFinished(true) }
 ]
 
-let mkWndTitle = @(startDelay) {
+let wndTitle = bgHeader.__merge({
+  size = [flex(), SIZE_TO_CONTENT]
   margin = [0, 0, hdpx(55), 0]
-  rendObj = ROBJ_TEXT
-  color = textColor
-  text = loc("mainmenu/you_received")
-
-  transform = {}
-  animations = mkTitleAnimations(startDelay)
-}.__update(fontBig)
+  padding = hdpx(15)
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = {
+    color = textColor
+    rendObj = ROBJ_TEXT
+    text = loc("mainmenu/you_received")
+  }.__update(fontBig)
+})
 
 let lbValueFields = ["tillPlaces", "place", "tillPercent", "percent"]
 let LB_BIG = 100000000
@@ -550,6 +553,7 @@ function mkLbInfoTable(texts) {
       sizes[key] = max(sizes[key], calc_comp_size(comp)[0])
 
   return {
+    margin = [0, hdpx(150), 0, hdpx(150)]
     flow = FLOW_VERTICAL
     children = comps.map(@(data) {
       gap = hdpx(40)
@@ -573,14 +577,19 @@ function mkLbInfoTable(texts) {
 function mkLeaderboardRewardTitle(startDelay, activeGroup) {
   let texts = getLbRewardTexts(activeGroup)
   if (texts.len() == 0)
-    return mkWndTitle(startDelay)
+    return wndTitle
 
   return {
     margin = [0, 0, hdpx(20), 0]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [
-      mkText(loc("lb/rewardHeader"), fontSmall)
+      bgHeader.__merge({
+        padding = [hdpx(15), hdpx(100)]
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        children = mkText(loc("lb/rewardHeader"), fontSmall)
+      })
       { size = [0, hdpx(30)] }
       mkLbInfoTable(texts)
       { size = [0, hdpx(60)] }
@@ -615,13 +624,13 @@ let mkTapToContinueText = @(startDelay) {
   ]
 }.__update(fontMedium)
 
-let function skipAnims() {
+function skipAnims() {
   isAnimFinished(true)
   anim_skip(ANIM_SKIP)
   anim_skip_delay(ANIM_SKIP_DELAY)
 }
 
-let function onCloseRequest() {
+function onCloseRequest() {
   if (!isAnimFinished.value) {
     skipAnims()
     return
@@ -641,13 +650,13 @@ let function onCloseRequest() {
   markPurchasesSeen(activeUnseenPurchasesGroup.value.list.keys())
 }
 
-let function mkMsgContent(stackDataV, purchGroup) {
+function mkMsgContent(stackDataV, purchGroup) {
   let { rewardIcons = [], unitPlates = [], outroDelay } = stackDataV
   let { style = null } = purchGroup
-  let title = titleCtors?[style](outroDelay, purchGroup) ?? mkWndTitle(outroDelay)
+  let title = titleCtors?[style](outroDelay, purchGroup) ?? wndTitle
+  let size = [max(unitPlates.len() * unitPlateWidth, min(rewardIcons.len(), rewIconsPerRow) * rewBlockWidth) + hdpx(300), SIZE_TO_CONTENT]
   let content = {
-    size = [flex(), SIZE_TO_CONTENT]
-    padding = [hdpx(28), 0, hdpx(38), 0]
+    padding = [0, 0, hdpx(38), 0]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
@@ -658,7 +667,7 @@ let function mkMsgContent(stackDataV, purchGroup) {
     children = [
       title
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size
         flow = FLOW_VERTICAL
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
@@ -671,18 +680,16 @@ let function mkMsgContent(stackDataV, purchGroup) {
       mkTapToContinueText(outroDelay)
     ]
   }.__update(wndOvr?[style] ?? {})
-  return makeVertScroll(content, { size = [flex(), SIZE_TO_CONTENT], maxHeight = maxWndHeight })
+  return makeVertScroll(content, { size = SIZE_TO_CONTENT maxHeight = maxWndHeight })
 }
 
 let messageWnd = {
-  size = [wndWidth, SIZE_TO_CONTENT]
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = [
     bgGradientComp
     @() {
       watch = [stackData, activeUnseenPurchasesGroup]
-      size = [flex(), SIZE_TO_CONTENT]
       children = mkMsgContent(stackData.value, activeUnseenPurchasesGroup.value)
     }
   ]

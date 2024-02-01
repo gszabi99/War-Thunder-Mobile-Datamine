@@ -37,7 +37,7 @@ let mkTabContent = @(content, isActive, tabOverride, isHover) {
   ].append(content)
 }.__merge(tabOverride)
 
-let function mkTab(id, content, curTabId, tabOverride, onClick = null) {
+function mkTab(id, content, curTabId, tabOverride, onClick = null) {
   let stateFlags = Watched(0)
   let isActive = Computed (@() curTabId.value == id || (stateFlags.value & S_ACTIVE) != 0)
   let isHover = Computed (@() stateFlags.value & S_HOVER)
@@ -65,7 +65,7 @@ let tabsRoot = {
   gap = tabsGap
 }
 
-let function mkTabs(tabsData, curTabId, ovr = {}, onClick = null) {
+function mkTabs(tabsData, curTabId, ovr = {}, onClick = null) {
   let watch = tabsData.map(@(t) t?.isVisible).filter(@(v) v != null)
   if (watch.len() == 0)
     return tabsRoot.__merge(

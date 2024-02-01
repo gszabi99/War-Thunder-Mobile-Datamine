@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setTimeout } = require("dagor.workcycle")
 let logG = log_with_prefix("[GOODS] eshop:")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -13,7 +13,7 @@ let {
   REQUEST_FINISHED = 0,
   REQUEST_TIMEOUT = -1,
   REQUEST_NETWORK_ERROR = 2,
-  initialize = @() setTimeout(0.1,  @() send("nswitch.eshop.onItemsRequested", { status = 0 })),
+  initialize = @() setTimeout(0.1,  @() eventbus_send("nswitch.eshop.onItemsRequested", { status = 0 })),
   getIncTaxMessage = @() "",
   getItemId = @(_) "WTM000",
   getItemNsUid = @(_) "000",
@@ -24,7 +24,7 @@ let {
   getItemsCount = @() 1,
   getItemName = @(_) "dummy",
   getRequestConsumableGroupErrorCode = @() {group = 0, code = 0},
-  updateGroupAndItemsAsync = @() setTimeout(0.1,  @() send("nswitch.eshop.onItemsRequested", { status = 0 })),
+  updateGroupAndItemsAsync = @() setTimeout(0.1,  @() eventbus_send("nswitch.eshop.onItemsRequested", { status = 0 })),
   showShopConsumableItemDetail = @(_,__) null,
   showErrorWithCode = @(_) null
 } = require("nswitch.eshop")
@@ -40,7 +40,7 @@ local request_number = 0;
 
 let vatMsg = Watched("")
 
-let function extractEshopError() {
+function extractEshopError() {
   let r = {}
   let result = get_user_info()
   r.eshop_error <- result?.eshop_error
@@ -49,16 +49,16 @@ let function extractEshopError() {
 }
 
 
-let function requestEshopState(event_callback) {
+function requestEshopState(event_callback) {
   login_nswitch_async(getNickname(), getNsaToken(), event_callback)
 }
 
-let function canOpenEshop() {
+function canOpenEshop() {
   let r = extractEshopError()
   return ((r?.eshop_error ?? 0) == 0)
 }
 
-let function showErrorWithSystemDialog() {
+function showErrorWithSystemDialog() {
   let r = extractEshopError()
   let eshop_error = r?.eshop_error ?? 0
 
@@ -66,7 +66,7 @@ let function showErrorWithSystemDialog() {
     showErrorWithCode(eshop_error)
 }
 
-subscribe("goodsNSwitch_checkPurchasesState",function(_result) {
+eventbus_subscribe("goodsNSwitch_checkPurchasesState",function(_result) {
   if (!canOpenEshop()) {
     showErrorWithSystemDialog()
   }
@@ -74,7 +74,7 @@ subscribe("goodsNSwitch_checkPurchasesState",function(_result) {
   purchaseInProgress(null)
 })
 
-let function handlePurchase(product_id) {
+function handlePurchase(product_id) {
   let nintendoId = getItemNsUid(product_id)
   let groupId = getItemGroupNsUid(product_id)
 
@@ -146,7 +146,7 @@ let platformOffer = Computed(function() {
     : activeOffers.value.__merge({ priceExt })
 })
 
-subscribe("goodsNSwitch_buyPlatformGoods",function(_result) {
+eventbus_subscribe("goodsNSwitch_buyPlatformGoods",function(_result) {
   if (!canOpenEshop()) {
     purchaseInProgress(null)
     showErrorWithSystemDialog()
@@ -156,7 +156,7 @@ subscribe("goodsNSwitch_buyPlatformGoods",function(_result) {
     handlePurchase(purchaseInProgress.value)
 })
 
-let function buyPlatformGoods(goodsOrId) {
+function buyPlatformGoods(goodsOrId) {
   let productId = getProductId(platformGoods.value?[goodsOrId] ?? goodsOrId)
   if (productId == null)
     return
@@ -164,10 +164,11 @@ let function buyPlatformGoods(goodsOrId) {
   requestEshopState("goodsNSwitch_buyPlatformGoods")
 }
 
-let platformPurchaseInProgress = Computed(@() offerProductId.value == purchaseInProgress.value ? activeOffers.value?.id
-  : goodsIdByProductId.value?[purchaseInProgress.value])
+let platformPurchaseInProgress = Computed(@() offerProductId.get() == null ? null
+  : offerProductId.get() == purchaseInProgress.get() ? activeOffers.get()?.id
+  : goodsIdByProductId.get()?[purchaseInProgress.get()])
 
-let function fillItems() {
+function fillItems() {
   let count = getItemsCount()
   let items = {}
   for (local i=0; i < count; i++) {
@@ -193,7 +194,7 @@ let function fillItems() {
   products(items)
 }
 
-subscribe("nswitch.eshop.onItemsRequested", function(val) {
+eventbus_subscribe("nswitch.eshop.onItemsRequested", function(val) {
   let status = val.status
   log($"onItemsRequested {status}")
   log(status)

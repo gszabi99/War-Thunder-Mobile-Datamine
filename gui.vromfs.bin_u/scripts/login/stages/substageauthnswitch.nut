@@ -4,11 +4,11 @@ let logN = require("%sqstd/log.nut")().with_prefix("[NSWITCH_LOGIN]")
 let nswitchAccount = require("nswitch.account")
 let { subscribe_onehit, send } = require("eventbus")
 
-let function login_send_callback(params) {
+function login_send_callback(params) {
   send("nswitch.account.login",params)
 }
 
-let function login_nso_cb(result) {
+function login_nso_cb(result) {
   local nsa_error = null
   let {status} = result
   if (status == nswitchAccount.OK)
@@ -38,7 +38,7 @@ let function login_nso_cb(result) {
   login_send_callback({player_id, token })
 }
 
-let function login_nswitch() {
+function login_nswitch() {
   let user_id = nswitchAccount.getUserId()
   logN($"login NSO for user {user_id}")
 

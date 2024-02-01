@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
@@ -25,7 +25,7 @@ let TIME_RESHOWING_WND = 7 * TIME_DAY_IN_SECONDS
 let WND_UID = "notPremWnd"
 let SAVE_TIME_LAST_PREM_WND_SHOW = "timeLastPremWndShow"
 
-let function close(){
+function close(){
   removeModalWindow(WND_UID)
   get_local_custom_settings_blk()[SAVE_TIME_LAST_PREM_WND_SHOW] = serverTime.value
 }
@@ -133,7 +133,7 @@ let showNoPremWnd = @(toBattle) addModalWindow(bgShaded.__merge({
   animations = wndSwitchAnim
 }))
 
-let function showNoPremMessageIfNeed(toBattle){
+function showNoPremMessageIfNeed(toBattle){
   if (havePremium.value){
     toBattle()
     return
@@ -150,7 +150,7 @@ let function showNoPremMessageIfNeed(toBattle){
 register_command(
   function(){
     get_local_custom_settings_blk()[SAVE_TIME_LAST_PREM_WND_SHOW] = 0
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   },
   "ui.resetPremiumSuggestShow"
 )

@@ -27,19 +27,19 @@ let hasSelectedRating = Computed(@() fieldRating.value > 0)
 let hasAppliedRating = Watched(false)
 let isRatedExcellent = Computed(@() hasAppliedRating.value && fieldRating.value == RATE_STARS_TOTAL)
 
-let function close() {
+function close() {
   isOpened(false)
   isRateGameSeen(true)
 }
 
-let function resetForm() {
+function resetForm() {
   fieldRating(0)
   fieldComment("")
   hasAppliedRating(false)
 }
 isOpened.subscribe(@(v) v ? resetForm() : null)
 
-let function onBtnApply(isApply = true) {
+function onBtnApply(isApply = true) {
   if (isApply) {
     if (!hasSelectedRating.value)
       return
@@ -83,7 +83,7 @@ let mkTitle = @(text) textarea.__merge({
   text
 }, fontMedium)
 
-let function mkRateStarsRow(valueWatch, needInteractive, needBig) {
+function mkRateStarsRow(valueWatch, needInteractive, needBig) {
   let iconSize = needBig ? starIconSize : starIconSizeSmall
   let iconGap = needBig ? starIconGap : starIconGapSmall
   return {

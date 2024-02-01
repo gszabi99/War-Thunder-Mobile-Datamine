@@ -10,13 +10,13 @@ let sparkColor = 0x80F95927
 let upstreamAcc = hdpx(20)
 let viscosity = 0.1
 
-let function fillNewForce(state, time, speedY) {
+function fillNewForce(state, time, speedY) {
   state.accChangeTime <- time + (hdpx(50) / speedY * rand.rfloat(100, 1000)).tointeger()
   let randomAcc = rand.rfloat(- speedY * speedY / hdpx(100), speedY * speedY / hdpx(100))
   state.acc <- [randomAcc, randomAcc + upstreamAcc]
 }
 
-let function initSparkState(state, halfSize, time, speedY, fill = false) {
+function initSparkState(state, halfSize, time, speedY, fill = false) {
   state.lastTime <- time
   state.isActive <- true
   let startY = fill ? rand.rfloat( - halfSize[1], halfSize[1]) : halfSize[1]
@@ -25,7 +25,7 @@ let function initSparkState(state, halfSize, time, speedY, fill = false) {
   fillNewForce(state, time, speedY)
 }
 
-let function updateSparkState(state, time) {
+function updateSparkState(state, time) {
   let { pos, speed, lastTime, accChangeTime, acc } = state
   let dt = 0.001 * (time - lastTime)
   state.pos = pos.map(@(v, i) v - speed[i] * dt)
@@ -50,7 +50,7 @@ let mkGlow = @(size, color, opacity) {
   }
 }
 
-let function updateParticles(state, halfSize, particleSize, speedY, scaleBySpeed, opacity) {
+function updateParticles(state, halfSize, particleSize, speedY, scaleBySpeed, opacity) {
   let { isActive = false, startTime = -1 } = state
   let time = get_time_msec()
 
@@ -84,7 +84,7 @@ let function updateParticles(state, halfSize, particleSize, speedY, scaleBySpeed
   }
 }
 
-let function mkSparks(state, halfSize) {
+function mkSparks(state, halfSize) {
   let particleSize = rand.rfloat(hdpx(4), hdpx(5))
   let speedY = rand.rfloat(hdpx(300), hdpx(350))
   let opacity = rand.rfloat(0.5, 0.9)
@@ -105,7 +105,7 @@ let function mkSparks(state, halfSize) {
   }
 }
 
-let function mkAshes(state, halfSize) {
+function mkAshes(state, halfSize) {
   let particleSize = rand.rfloat(hdpx(8), hdpx(12))
   let speedY = rand.rfloat(hdpx(60), hdpx(80))
   let opacity = rand.rfloat(0.1, 0.7)
@@ -125,7 +125,7 @@ let function mkAshes(state, halfSize) {
   }
 }
 
-let function mkFireParticles(amount, effectSize, ctor) {
+function mkFireParticles(amount, effectSize, ctor) {
   let halfSize = effectSize.map(@(v) 0.5 * v)
   local list = array(amount)
 

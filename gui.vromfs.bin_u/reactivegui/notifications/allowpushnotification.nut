@@ -14,14 +14,14 @@ let needAskPermissions = getApiVersion() >= 33
 let MIN_SESSIONS_TO_SHOW_ON_LOGIN = 3
 let isShowed = hardPersistWatched("allowPushNotificationsShowed", false)
 
-let function show() {
+function show() {
   if (!needAskPermissions || isShowed.value)
     return
   isShowed(true)
   checkAndRequestPermission("","","", "android.permission.POST_NOTIFICATIONS")
 }
 
-let function openAfterDebriefing() {
+function openAfterDebriefing() {
   if (!isInQueue.value
       && isNoExtraScenesAfterDebriefing.value
       && !needRateGame.value)

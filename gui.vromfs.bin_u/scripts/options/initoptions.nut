@@ -1,5 +1,7 @@
+from "%scripts/dagui_natives.nut" import set_show_attachables, set_hue
 from "%scripts/dagui_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY } = require("colorCorrector")
 let { loadAsCurrentPreset, getDefaultPresetPath } = require("controls")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
@@ -7,13 +9,13 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let failedLoadPreset = hardPersistWatched("options.failedLoadPreset", null)
 
-let function initOptions() {
+function initOptions() {
   //not default hues was saved before 26.08.2022. So reset its value to default.
-  ::set_hue(TARGET_HUE_ALLY, -1)
-  ::set_hue(TARGET_HUE_ENEMY, -1)
+  set_hue(TARGET_HUE_ALLY, -1)
+  set_hue(TARGET_HUE_ENEMY, -1)
 
   // unlike WT, attachables are part of look prepared by designers, should always be visible
-  ::set_show_attachables(true)
+  set_show_attachables(true)
 
   if (failedLoadPreset.value != null) {
     let preset = failedLoadPreset.value
@@ -29,6 +31,6 @@ let function initOptions() {
   }
 }
 
-subscribe("controls.presetLoadFailed", @(p) failedLoadPreset(p.basePresetPath))
+eventbus_subscribe("controls.presetLoadFailed", @(p) failedLoadPreset(p.basePresetPath))
 
 return initOptions

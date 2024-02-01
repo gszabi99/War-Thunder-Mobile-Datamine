@@ -28,7 +28,7 @@ registerHandler("onUnitPurchaseResult",
     requestOpenUnitPurchEffect(myUnits.value?[unitId])
   })
 
-let function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter = null) {
+function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter = null) {
   if (unitInProgress.value != null)
     return
   let unit = allUnitsCfg.value?[unitId]

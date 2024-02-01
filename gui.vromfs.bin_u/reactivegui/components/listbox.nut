@@ -6,7 +6,7 @@ let gapH = hdpx(20)
 let gapV = hdpx(10)
 
 
-let function listbox(value, list, columns = null, valToString = @(v) v, setValue = null) {
+function listbox(value, list, columns = null, valToString = @(v) v, setValue = null) {
   setValue = setValue ?? @(v) value(v)
   let colCount = columns ?? list.len()
   let rows = arrayByRows(

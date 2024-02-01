@@ -21,7 +21,7 @@ let sortMods = @(a, b) (a?.reqLevel ?? 0) <=> (b?.reqLevel ?? 0)
   || (a?.costWpWeight ?? 0) <=> (b?.costWpWeight ?? 0)
   || (a?.name ?? "") <=> (b?.name ?? "")
 
-let function mkUnitLevelUnlockPlates(debrData, delay) {
+function mkUnitLevelUnlockPlates(debrData, delay) {
   let { reward = {}, items = {}, unit = null } = debrData
   let { unitExp = {} } = reward
   let res = {
@@ -71,7 +71,7 @@ let function mkUnitLevelUnlockPlates(debrData, delay) {
   return res
 }
 
-let function mkDebriefingWndTabUnit(debrData, params) {
+function mkDebriefingWndTabUnit(debrData, params) {
   let { reward = {}, unit = null, campaign = "" } = debrData
   if (unit == null)
     return null

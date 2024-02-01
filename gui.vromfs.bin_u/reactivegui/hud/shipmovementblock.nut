@@ -19,8 +19,8 @@ let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut
 let axisListener = require("%rGui/controls/axisListener.nut")
 let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
-let { send } = require("eventbus")
-let disabledControls = require("%rGui/controls/disabledControls.nut")
+let { eventbus_send } = require("eventbus")
+let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 
 let HAPT_FORWARD = registerHapticPattern("Forward", { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
 let HAPT_BACKWARD = registerHapticPattern("Backward", { time = 0.0, intensity = 0.5, sharpness = 0.8, duration = 0.0, attack = 0.0, release = 0.0 })
@@ -31,9 +31,9 @@ let speedImageWidth = (0.73 * speedImageHeight).tointeger()
 let speedImagePadding = shHud(1.6).tointeger()
 
 let isMoveCtrlHitShowed = Watched(false)
-let function showCtrlHint() {
+function showCtrlHint() {
   if (!isMoveCtrlHitShowed.value) {
-    send("hint:dont_hold_ctrl_to_move_ship:show", {})
+    eventbus_send("hint:dont_hold_ctrl_to_move_ship:show", {})
     isMoveCtrlHitShowed(true)
   }
 }
@@ -69,10 +69,10 @@ let mkSteerParams = @(id, disableId) {
     }
   }
   onTouchEnd = @() setShortcutOff(id)
-  isDisabled = Computed(@() disabledControls.value?[disableId] ?? false)
+  isDisabled = mkIsControlDisabled(disableId)
 }
 
-let function calcBackSpeedPart() {
+function calcBackSpeedPart() {
   if (speed.value >= 0)
     return 0
   let maxSpeed = maxSpeedBySteps.value?[ - 1] ?? 0
@@ -105,14 +105,14 @@ let mkBackwardArrow = @(id, isEngineDisabled) mkMoveVertBtn(
     }
   })
 
-let function calcForwSpeedPart() {
+function calcForwSpeedPart() {
   if (speed.value <= 0)
     return 0
   let maxSpeed = maxSpeedBySteps.value?[1] ?? 0
   return maxSpeed > 0 ? clamp(speed.value / maxSpeed, 0.0, 1.0) : 0
 }
 
-let function calcForwSpeedPart2() {
+function calcForwSpeedPart2() {
   let minSpeed = maxSpeedBySteps.value?[1] ?? 0
   if (speed.value <= minSpeed)
     return 0
@@ -191,7 +191,7 @@ let shortcutsByType = {
   },
 }
 
-let function movementBlock(unitType) {
+function movementBlock(unitType) {
   let {
     engineAxis = "ship_main_engine",
     steeringAxis = "ship_steering",
@@ -209,7 +209,7 @@ let function movementBlock(unitType) {
 
   let leftArrow = mkMoveLeftBtn(mkSteerParams($"{steeringAxis}_rangeMax", steeringAxis))
   let rightArrow = mkMoveRightBtn(mkSteerParams($"{steeringAxis}_rangeMin", steeringAxis))
-  let isEngineDisabled = Computed(@() disabledControls.value?[engineAxis] ?? false)
+  let isEngineDisabled = mkIsControlDisabled(engineAxis)
 
   return @() {
     watch = [isUnitDelayed, isGamepad]

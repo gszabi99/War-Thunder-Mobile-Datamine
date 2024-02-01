@@ -8,7 +8,7 @@ let { buyPlatformGoods } = require("platformGoods.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 
-let function previewOffer() {
+function previewOffer() {
   if (visibleOffer.value == null)
     return
 

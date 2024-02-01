@@ -19,7 +19,7 @@ let mkGamepadHotkey = @(shortcutId, action = null) shortcutId not in allShortcut
 
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 
-let function mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags = null) {
+function mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags = null) {
   stateFlags = stateFlags ?? Watched(0)
 
   return {

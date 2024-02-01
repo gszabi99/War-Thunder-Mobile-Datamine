@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { fabs } = require("math")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -19,7 +19,7 @@ let presenceDefault = {
 let serverPresence = Computed(@() presences.value?[myUserIdStr.value])
 let localPresence = hardPersistWatched("myLocalPresence", presenceDefault)
 
-let function isFloatEqual(a, b, eps = 1e-6) {
+function isFloatEqual(a, b, eps = 1e-6) {
   let absSum = fabs(a) + fabs(b)
   return absSum < eps ? true : fabs(a - b) < eps * absSum
 }
@@ -32,10 +32,10 @@ let presenceDiff = keepref(Computed(function(prev) {
   return isEqualWithFloat(prev, res) ? prev : res
 }))
 
-let function sendPresenceDiff() {
+function sendPresenceDiff() {
   if ((presenceDiff.value?.len() ?? 0) == 0)
     return
-  send("matchingCall",
+  eventbus_send("matchingCall",
     {
       action = "mpresence.set_presence"
       params = presenceDiff.value
@@ -44,7 +44,7 @@ let function sendPresenceDiff() {
 deferOnce(sendPresenceDiff)
 presenceDiff.subscribe(@(_) deferOnce(sendPresenceDiff))
 
-let function setMyPresence(diff) {
+function setMyPresence(diff) {
   let badIndex = diff.findindex(@(_, id) id not in presenceDefault)
   if (badIndex != null)
     logerr($"Try to change presence field {badIndex}")
@@ -56,7 +56,7 @@ let setBattleUnit = @(battleUnit) setMyPresence({ battleUnit })
 setBattleUnit(mainBattleUnitName.value)
 mainBattleUnitName.subscribe(setBattleUnit)
 
-subscribe("setMyPresence", setMyPresence)
+eventbus_subscribe("setMyPresence", setMyPresence)
 
 return {
   setMyPresence

@@ -34,7 +34,7 @@ let chosenAvatar = Computed(@() availAvatars.value.findvalue(@(v) v.isCurrent))
 let myNameWithFrame = Computed(@() frameNick(myUserName.value, chosenNickFrame.value?.name))
 let myAvatarImage = Computed(@() getAvatarImage(chosenAvatar.value?.name))
 
-let function getReceiveReason(decName){
+function getReceiveReason(decName){
   if(decName == null)
     return null
   let locId = $"decor/{decName}/receiveReason"
@@ -43,7 +43,7 @@ let function getReceiveReason(decName){
   return loc("decor/decorNotAvailable")
 }
 
-let function markDecoratorsSeen(names) {
+function markDecoratorsSeen(names) {
   let unseenNames = names.filter(@(name) name in unseenDecorators.value)
   if (unseenNames.len() == 0)
     return
@@ -51,7 +51,7 @@ let function markDecoratorsSeen(names) {
   mark_decorators_seen(unseenNames)
 }
 
-let function markDecoratorSeen(name) {
+function markDecoratorSeen(name) {
   if (!name)
     return
   if (name in unseenDecorators.value) {

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { floor, ceil } = require("%sqstd/math.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { SGT_UNIT } = require("%rGui/shop/shopConst.nut")
-let { curCategoryId, goodsByCategory, sortGoods } = require("%rGui/shop/shopState.nut")
+let { curCategoryId, goodsByCategory, sortGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
 let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress
@@ -15,6 +15,13 @@ let { mkGoods } = require("%rGui/shop/goodsView/goods.nut")
 let { goodsW, goodsH, goodsGap, goodsGlareAnimDuration  } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { canShowAds } = require("%rGui/ads/adsState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
+let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
+let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
+let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
+let { SC_CONSUMABLES } = require("shopCommon.nut")
+let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 
 
 let tabTranslateWithOpacitySwitchAnim = [
@@ -28,13 +35,9 @@ let tabTranslateWithOpacitySwitchAnim = [
 let goodsGlareRepeatDelay = 3
 
 let positive = @(id, value) value > 0 ? { id, value } : null
+let compatibilityCurrencies = ["wp", "gold", "warbond", "eventKey", "nybond"]
 let goodsCompareCfg = [
   @(g) g.units.len() > 0 || (g?.unitUpgrades.len() ?? 0) > 0 ? { canCompare = false } : null,
-  @(g) positive("wp", g.wp),
-  @(g) positive("gold", g.gold),
-  @(g) positive("warbond", g?.warbond ?? 0),
-  @(g) positive("eventKey", g?.eventKey ?? 0),
-  @(g) positive("nybond", g?.nybond ?? 0),
   @(g) positive("premiumDays", g.premiumDays),
   function(g) {
     if (g.items.len() > 1)
@@ -43,6 +46,19 @@ let goodsCompareCfg = [
       return positive(itemId, count) // -unconditional-terminated-loop
     return null
   },
+  function(g) {
+    if ("currencies" not in g) { //compatibility with format before 2024.01.23
+      foreach (id in compatibilityCurrencies)
+        if ((g?[id] ?? 0) > 0)
+          return { id, value = g[id] }
+      return null
+    }
+    if (g.currencies.len() > 1)
+      return { canCompare = false }
+    foreach (id, count in g.currencies)
+      return positive(id, count) // -unconditional-terminated-loop
+    return null
+  }
 ]
 
 let purchaseFunc = @(goods) goods.price.price > 0 && goods.price.currencyId != ""
@@ -70,7 +86,7 @@ let mkSchRewardState = @(schReward) Computed(function() {
   return res
 })
 
-let function getGoodsCompareData(goods) {
+function getGoodsCompareData(goods) {
   local res = null
   foreach (calc in goodsCompareCfg) {
     let data = calc(goods)
@@ -83,7 +99,7 @@ let function getGoodsCompareData(goods) {
   return res
 }
 
-let function mkGoodsListWithBaseValue(goodsListBase) {
+function mkGoodsListWithBaseValue(goodsListBase) {
   let goodsList = []
   let goodsCompares = {}
   foreach (g in goodsListBase) {
@@ -126,11 +142,59 @@ let function mkGoodsListWithBaseValue(goodsListBase) {
   return goodsList
 }
 
-let function onGoodsClick(goods) {
+function onGoodsClick(goods) {
   if (goods.gtype == SGT_UNIT)
     openGoodsPreview(goods.id)
   else
     purchaseFunc(goods)
+}
+
+let gamercardShopItemsBalanceBtns = @(items) {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = items.map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES)))
+}
+
+let mkShopGamercard = @(onClose) function(){
+  let currencies = {}
+  let items = {}
+  local premiumDays = 0
+  foreach(goods in goodsByCategory.value[curCategoryId.value]){
+    if(goods.price.currencyId != "")
+      currencies[goods.price.currencyId] <- true
+
+    if("currencies" in goods)
+      currencies.__update(goods.currencies)
+    else {
+      //compatibility with format before 2024.01.23
+      if ((goods?.wp ?? 0) > 0)
+        currencies.__update({wp = true})
+      if ((goods?.gold ?? 0) > 0)
+        currencies.__update({gold = true})
+    }
+
+    items.__update(goods.items)
+    premiumDays += goods.premiumDays
+  }
+  let orderItems = items.keys().sort(@(a,b)
+    itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
+  return {
+    watch = [ goodsByCategory, curCategoryId ]
+    size = [ saSize[0], gamercardHeight ]
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    gap = gamercardGap
+    children = [
+      mkLeftBlock(onClose)
+      {size = flex()}
+      premiumDays > 0 ? premIconWithTimeOnChange : null
+      gamercardShopItemsBalanceBtns(orderItems)
+      mkCurrenciesBtns(currencies.keys().sort(@(a, b) orderByCurrency[a] <=> orderByCurrency[b]),
+        null,
+        {size = SIZE_TO_CONTENT} )
+    ]
+  }
 }
 
 let mkShopPage = @(pageW, pageH) function() {
@@ -185,4 +249,5 @@ return {
   onGoodsClick
   mkGoodsListWithBaseValue
   mkGoodsState
+  mkShopGamercard
 }

@@ -24,7 +24,7 @@ let getCommonData = @(unlock) {
     )?.current ?? 0
 }.__merge(unlock.tabId == EVENT_TAB ? { season = userstatStats.value?.stats.season["$index"] ?? 1 } : {})
 
-let function sendBqQuestsTask(unlock, warbondDelta, currencyId) {
+function sendBqQuestsTask(unlock, warbondDelta, currencyId) {
   let data = getCommonData(unlock).__merge({
     action = "complete_task"
     taskId = unlock.name
@@ -36,7 +36,7 @@ let function sendBqQuestsTask(unlock, warbondDelta, currencyId) {
   sendCustomBqEvent("event_progress_1", data)
 }
 
-let function sendBqQuestsStage(unlock, warbondDelta, currencyId) {
+function sendBqQuestsStage(unlock, warbondDelta, currencyId) {
   let data = getCommonData(unlock).__merge({
     action = "compete_stage"
     stage = "".concat("stage_", unlock.stage)
@@ -46,7 +46,7 @@ let function sendBqQuestsStage(unlock, warbondDelta, currencyId) {
   sendCustomBqEvent("event_progress_1", data)
 }
 
-let function sendBqQuestsSpeedUp(unlock) {
+function sendBqQuestsSpeedUp(unlock) {
   let data = getCommonData(unlock).__merge({
     action = "progress_by_ads"
     taskId = unlock.name

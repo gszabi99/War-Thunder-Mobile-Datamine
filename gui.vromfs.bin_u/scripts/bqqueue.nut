@@ -1,27 +1,43 @@
 from "%scripts/dagui_library.nut" import *
+let logBQ = log_with_prefix("[BQ] ")
 let { APP_ID } = require("app")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer } = require("dagor.workcycle")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { json_to_string } = require("json")
 let { getPlayerToken } = require("auth_wt")
 let { get_cur_circuit_block } = require("blkGetters")
-let logBQ = log_with_prefix("[BQ] ")
+let DataBlock = require("DataBlock")
+let { shuffle } = require("%sqStdLibs/helpers/u.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { disableNetwork } = require("%appGlobals/clientState/initialState.nut")
 
+
 const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
 const RETRY_MSEC = 300000 //retry send on error
+const RETRY_ON_URL_ERROR_MSEC = 3000
 const MAX_COUNT_MSG_IN_ONE_SEND = 150
 const RESPONSE_EVENT = "bq.requestResponse"
 let queueByUserId = hardPersistWatched("bqQueue.queueByUserId", {})
 let queue = Computed(@() queueByUserId.value?[myUserId.value] ?? [])
 let nextCanSendMsec = hardPersistWatched("bqQueue.nextCanSendMsec", -1)
-let errorsInARow = hardPersistWatched("bqQueue.errorsInARow", 0)
+let currentUrlIndex = hardPersistWatched("bqQueue.currentUrlIndex", 0)
 
-let function sendAll() {
+let urls = Watched([])
+let url = Computed(@() urls.get()?[currentUrlIndex.get()] ?? urls.get()?[0])
+
+function initUrl() {
+  urls(shuffle((get_cur_circuit_block()?.cloud_server.servers ?? DataBlock()) % "url"))
+  currentUrlIndex(0)
+}
+
+initUrl()
+
+let changeUrl = @() currentUrlIndex((currentUrlIndex.get() + 1) % max(urls.get().len(), 1))
+
+function sendAll() {
   if (queue.value.len() == 0)
     return
 
@@ -50,10 +66,10 @@ let function sendAll() {
   if (count == 0)
     return
 
-  let url = get_cur_circuit_block()?.cloud_server.servers.url ?? ""
-  if (url == "") {
+  if (url.get() == null) {
     nextCanSendMsec(get_time_msec() + RETRY_MSEC)
     logerr("[BQ] Miss bqServer url")
+    initUrl()
     return
   }
 
@@ -74,7 +90,7 @@ let function sendAll() {
     logerr($"[BQ] Too many events piled up to send to BQ. More then {MAX_COUNT_MSG_IN_ONE_SEND}.")
 
   httpRequest({
-    url
+    url = url.get()
     headers
     waitable = true
     data = json_to_string(list)
@@ -87,7 +103,7 @@ let function sendAll() {
   })
 }
 
-let function startSendTimer() {
+function startSendTimer() {
   if (queue.value.len() == 0)
     return
   let timeLeft = nextCanSendMsec.value - get_time_msec()
@@ -98,25 +114,31 @@ let function startSendTimer() {
 }
 startSendTimer()
 
-subscribe(RESPONSE_EVENT, function(res) {
+eventbus_subscribe(RESPONSE_EVENT, function(res) {
   let { status = -1, http_code = -1, context = null } = res
   if (status == HTTP_SUCCESS && http_code >= 200 && http_code < 300) {
     logBQ($"Success send {context?.list.len()} events")
-    errorsInARow(0)
     if (!(context?.isAllSent ?? true))
       startSendTimer()
     return
   }
 
-  logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_MSEC} sec")
+  changeUrl()
+
+  if(currentUrlIndex.value == 0) {
+    logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
+    nextCanSendMsec(get_time_msec() + RETRY_MSEC)
+    initUrl()
+  }
+  else {
+    logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
+    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
+  }
+
   if (context != null) {
     let { userId, list } = context
     queueByUserId.mutate(@(v) v[userId] <- (clone list).extend(v?[userId] ?? []))
   }
-  nextCanSendMsec(get_time_msec() + RETRY_MSEC)
-  errorsInARow(errorsInARow.value + 1)
-  if (errorsInARow.value == 3)
-    logerr("[BQ] Failed to send data 3 times in a row.")
 })
 
 local wasQueueLen = queue.value.len()
@@ -127,10 +149,10 @@ queue.subscribe(function(v) {
 })
 
 if (!disableNetwork) {
-  subscribe("sendBqEvent", @(msg) queueByUserId.mutate(
+  eventbus_subscribe("sendBqEvent", @(msg) queueByUserId.mutate(
     @(v) v[myUserId.value] <- (clone (v?[myUserId.value] ?? [])).append(msg)))
 
-  subscribe("app.shutdown", @(_) sendAll())
+  eventbus_subscribe("app.shutdown", @(_) sendAll())
 }
 
 return {

@@ -43,7 +43,7 @@ let bulletsImages = {
   shell_bullet_belt_tank              = "shell_bullet_belt_tank"
 }
 
-let function getBulletImage(bullets){
+function getBulletImage(bullets){
   if(bullets.len() > 1)
     return "ui/gameuiskin#shell_bullet_belt_tank.avif"
   return bulletsImages?[bullets[0]] ? $"ui/gameuiskin#{bulletsImages?[bullets[0]]}.avif"

@@ -105,7 +105,7 @@ let scaleAnimation = @(delay, scale = [1.15, 1.15], duration = REVEAL / 2) delay
     ]
   : null
 
-let function raisePlatesAnimation(delay, translateFrom, idx, platoonSize, onFinish = null) {
+function raisePlatesAnimation(delay, translateFrom, idx, platoonSize, onFinish = null) {
   if (!delay)
     return null
 

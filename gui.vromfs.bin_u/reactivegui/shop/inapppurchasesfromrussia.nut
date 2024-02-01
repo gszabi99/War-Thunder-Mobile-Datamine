@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { register_command } = require("console")
 let { isDownloadedFromGooglePlay = @() false } = require("android.platform")
 let { toIntegerSafe } = require("%sqstd/string.nut")
@@ -25,7 +26,7 @@ let isDisabledCurrency = @(goods) getPlatformGoodsRealCurrencyId(goods) in payme
 let isForbiddenPlatformPurchaseFromRussia = isDownloadedFromGooglePlay() ? isDisabledCurrency
   : @(goods) isDebugDisabledCurrency.value && isDisabledCurrency(goods)
 
-let function getGoodsWebId(guid) {
+function getGoodsWebId(guid) {
   let { url = "" } = goodsInfo.value?[guid]
   if (url == "")
     return null
@@ -37,7 +38,7 @@ let function getGoodsWebId(guid) {
   return toIntegerSafe(strId, null)
 }
 
-let function openPurchaseByGuids(guids) {
+function openPurchaseByGuids(guids) {
   local id = null
   foreach(guid in guids) {
     id = getGoodsWebId(guid)
@@ -47,13 +48,13 @@ let function openPurchaseByGuids(guids) {
   if (id == null)
     return false
 
-  send("openUrl", { baseUrl = INGAME_PURCHASES_IN_RUSSIA_URL_GOODS_ID.subst({ id }) })
+  eventbus_send("openUrl", { baseUrl = INGAME_PURCHASES_IN_RUSSIA_URL_GOODS_ID.subst({ id }) })
   severalCheckPurchasesOnActivate()
   return true
 }
 
-let function openDefaultPurchase() {
-  send("openUrl", { baseUrl = INGAME_PURCHASES_IN_RUSSIA_URL })
+function openDefaultPurchase() {
+  eventbus_send("openUrl", { baseUrl = INGAME_PURCHASES_IN_RUSSIA_URL })
   severalCheckPurchasesOnActivate()
 }
 
@@ -70,7 +71,7 @@ subscribeFMsgBtns({
   }
 })
 
-subscribe("openRussiaInAppPurchase.timeout", function(guids) {
+eventbus_subscribe("openRussiaInAppPurchase.timeout", function(guids) {
   if (!openPurchaseByGuids(guids))
     openDefaultPurchase()
 })
@@ -83,7 +84,7 @@ goodsInfo.subscribe(function(_) {
     removeWaitbox(WND_UID)
 })
 
-let function openMsgBoxInAppPurchasesFromRussia(goods) {
+function openMsgBoxInAppPurchasesFromRussia(goods) {
   let { purchaseGuids = {}, relatedGaijinId = "" } = goods
   let relatedGoodsGuid = campConfigs.value?.allGoods[relatedGaijinId].purchaseGuids.gaijin.guid
   let guids = [

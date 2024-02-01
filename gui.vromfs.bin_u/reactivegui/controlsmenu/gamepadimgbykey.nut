@@ -87,7 +87,7 @@ local dargJKeysToImageId = {
 let btnsNum = [ "D.Up", "D.Down", "D.Left", "D.Right", "Start", "Select", "L3", "R3", "L1", "R1", "0x0400", "0x0800", "CROSS", "CIRCLE", "SQUARE", "TRIANGLE", "L2", "R2", "LS.Right", "LS.Left", "LS.Up", "LS.Down", "RS.Right", "RS.Left", "RS.Up", "RS.Down", "L3.Centered", "R3.Centered"]
 let axisNum = ["L.Thumb.h", "L.Thumb.v", "R.Thumb.h", "R.Thumb.v", "L.Trigger", "R.Trigger", "R+L.Trigger", "J:SensorX", "J:SensorZ", "J:SensorY"]
 
-let function keyAndImg(table, list, prefix, offs) {
+function keyAndImg(table, list, prefix, offs) {
   foreach (i, k in list) {
     let key = prefix + (i + offs) //for unknow reasons all indexes are incremented
     let img = dargJKeysToImageId?[$"J:{k}"]

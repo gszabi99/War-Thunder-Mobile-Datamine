@@ -1290,8 +1290,8 @@
                             }
                           ],
                           "driveToPos": {
-                            "dist": 5.0,
-                            "obstacleAvoidAngle": 7.0,
+                            "dist": 7.0,
+                            "obstacleAvoidAngle": 10.0,
                             "obstacleAvoidDistMultiplier": 1.0,
                             "obstacleAvoidDistMin": 10.0,
                             "obstacleAvoidDistMax": 30.0,
@@ -1386,16 +1386,16 @@
                       "driveToPos": {
                         "dist": 5.0,
                         "cornersAngleFactorDist": [
-                          20.0,
+                          30.0,
                           0.0
                         ],
-                        "cornersSpeedMultiplier": 0.8,
+                        "cornersSpeedMultiplier": 0.4,
                         "cornersSteeringOffset": 4.0,
-                        "obstacleAvoidAngle": 3.0,
+                        "obstacleAvoidAngle": 7.0,
                         "obstacleAvoidDistMultiplier": 1.0,
-                        "maxTimeIgnoreObstacle": 7.0,
-                        "obstacleAvoidDistMin": 10.0,
-                        "obstacleAvoidDistMax": 20.0,
+                        "maxTimeIgnoreObstacle": 10.0,
+                        "obstacleAvoidDistMin": 5.0,
+                        "obstacleAvoidDistMax": 30.0,
                         "deflectPath": true,
                         "deflectionRadius": 1000.0,
                         "suspendIfTargetChanged": true
@@ -1433,7 +1433,13 @@
               "checkIfShipHasDestination": {},
               "recalculatePathToTarget": {}
             },
-            "shipSail": {}
+            "parallel": {
+              "shipSail": {},
+              "UseCountermeasures": {
+                "delay": 2.0,
+                "radius": 400.0
+              }
+            }
           },
           {
             "isSubmarine": {},
@@ -5465,8 +5471,8 @@
                         "vipVarName": "defendable",
                         "targetType": "airplane",
                         "targetToAnchorDist": [
-                          5000.0,
-                          8000.0
+                          1000.0,
+                          2000.0
                         ],
                         "targetToAnchorMeetDist": [
                           0.0,
@@ -5589,10 +5595,12 @@
                 "isPlayerOrderActive": {
                   "type": "hunt"
                 },
-                "orbitHere": {
-                  "speed": 250.0,
-                  "alt": 600.0
-                }
+                "flyToPos": {
+                  "speed": 350.0,
+                  "dist": 600.0,
+                  "minAlt": 200.0
+                },
+                "removeGroupCurrentPlayerOrder": {}
               }
             ],
             "parallel": {
@@ -5787,8 +5795,8 @@
                                 "vipVarName": "defendable",
                                 "targetType": "ship",
                                 "targetToAnchorDist": [
-                                  5000.0,
-                                  8000.0
+                                  1000.0,
+                                  2000.0
                                 ],
                                 "targetToAnchorMeetDist": [
                                   0.0,
@@ -5810,8 +5818,8 @@
                                 "vipVarName": "defendable",
                                 "targetType": "boat",
                                 "targetToAnchorDist": [
-                                  5000.0,
-                                  8000.0
+                                  1000.0,
+                                  2000.0
                                 ],
                                 "targetToAnchorMeetDist": [
                                   0.0,
@@ -5979,10 +5987,12 @@
                 "isPlayerOrderActive": {
                   "type": "hunt"
                 },
-                "orbitHere": {
-                  "speed": 250.0,
-                  "alt": 600.0
-                }
+                "flyToPos": {
+                  "speed": 350.0,
+                  "dist": 600.0,
+                  "minAlt": 200.0
+                },
+                "removeGroupCurrentPlayerOrder": {}
               }
             ],
             "parallel": {
@@ -6177,8 +6187,8 @@
                                 "vipVarName": "defendable",
                                 "targetType": "ship",
                                 "targetToAnchorDist": [
-                                  5000.0,
-                                  8000.0
+                                  1000.0,
+                                  2000.0
                                 ],
                                 "targetToAnchorMeetDist": [
                                   0.0,
@@ -6200,8 +6210,8 @@
                                 "vipVarName": "defendable",
                                 "targetType": "boat",
                                 "targetToAnchorDist": [
-                                  5000.0,
-                                  8000.0
+                                  1000.0,
+                                  2000.0
                                 ],
                                 "targetToAnchorMeetDist": [
                                   0.0,
@@ -6363,10 +6373,12 @@
                 "isPlayerOrderActive": {
                   "type": "hunt"
                 },
-                "orbitHere": {
-                  "speed": 250.0,
-                  "alt": 600.0
-                }
+                "flyToPos": {
+                  "speed": 350.0,
+                  "dist": 600.0,
+                  "minAlt": 200.0
+                },
+                "removeGroupCurrentPlayerOrder": {}
               }
             ],
             "parallel": {
@@ -6477,7 +6489,13 @@
               "canCapture": true
             }
           },
-          "shipSail": {}
+          "parallel": {
+            "shipSail": {},
+            "UseCountermeasures": {
+              "delay": 2.0,
+              "radius": 400.0
+            }
+          }
         },
         {
           "isSubmarine": {},

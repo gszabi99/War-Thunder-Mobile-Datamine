@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { setTimeout } = require("dagor.workcycle")
 let ads = require("android.ads")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK,
-  CONSENT_REQUEST_NOT_REQUIRED = 1, CONSENT_REQUEST_OBTAINED = 3, CONSENT_REQUEST_REQUIRED = 2, CONSENT_REQUEST_UNKNOWN = 0
+  CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN
 } = ads
 let { json_to_string } = require("json")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -39,7 +39,7 @@ let mkConsentResult = @() {
 }
 
 let sendConsentResult = @(eventId)
-  setTimeout(0.01, @() send(eventId, mkConsentResult()))
+  setTimeout(0.01, @() eventbus_send(eventId, mkConsentResult()))
 
 let requestConsent = @(showIfRequire)
   showIfRequire && debugConsentRequired.get() && debugConsentApprove.get() == null
@@ -57,7 +57,7 @@ subscribeFMsgBtns({
   }
 })
 
-let function calcLoadedProvider(list) {
+function calcLoadedProvider(list) {
   local priority = -1
   local allowed = []
   foreach(id, value in list) {
@@ -82,14 +82,14 @@ return ads.__merge({
   function addProviderInitWithPriority(provider, _, priority) {
     debugAdsInited[provider] <- true
     priorities.mutate(@(v) v[provider] <- priority)
-    setTimeout(0.1, @() send("android.ads.onInit", { status = ADS_STATUS_OK, provider }))
+    setTimeout(0.1, @() eventbus_send("android.ads.onInit", { status = ADS_STATUS_OK, provider }))
   }
   isAdsLoaded = @() isDebugAdsLoaded
   function loadAds() {
     isDebugAdsLoaded = false
     setTimeout(2.0, function() {
       isDebugAdsLoaded = false
-      send("android.ads.onLoad",  //simulate fail ads
+      eventbus_send("android.ads.onLoad",  //simulate fail ads
         { status = ADS_STATUS_DISMISS, provider = "pc_debug_fail" })
       if (priorities.get().findvalue(@(v) v >= 0) == null)
         return
@@ -99,13 +99,13 @@ return ads.__merge({
           return
         isDebugAdsLoaded = debugAdsInited.findvalue(@(v) v) ?? false
         loadedProvider.set(provider)
-        send("android.ads.onLoad",
+        eventbus_send("android.ads.onLoad",
           { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED, provider = loadedProvider.get() })
       }, {})
     }, {})
   }
   function showAds() {
-    send("android.ads.onShow", { status = ADS_STATUS_SHOWN, provider = loadedProvider.get() })
+    eventbus_send("android.ads.onShow", { status = ADS_STATUS_SHOWN, provider = loadedProvider.get() })
     debugAdsWndParams({
       rewardEvent = "android.ads.onReward"
       rewardData = { amount = 1, type = "debug", provider = loadedProvider.get() }

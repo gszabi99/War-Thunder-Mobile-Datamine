@@ -94,7 +94,7 @@ let header = {
   ]
 }
 
-let function mkFirstRewardComp(stageData) {
+function mkFirstRewardComp(stageData) {
   let { rewards = {} } = stageData
   let rewardId = rewards.findindex(@(_) true)
   if (rewardId == null)
@@ -231,7 +231,7 @@ let onActivePlateClick = @() isShowUnseenDelayed.value ? null
   : canShowAds.value ? showLoginAwardAds()
   : showNotAvailableAdsMsg()
 
-let function activePlateHotkeyComp() {
+function activePlateHotkeyComp() {
   let res = { watch = isGamepad }
   return !isGamepad.value ? res : res.__update({
     margin = hdpx(8)
@@ -242,7 +242,7 @@ let function activePlateHotkeyComp() {
 let smallBtnHeight = evenPx(50)
 let smallBtnShadowOffset = evenPx(3)
 let smallBtnMargin = hdpx(10)
-let function previewBtnBlock() {
+function previewBtnBlock() {
   let res = { watch = [loginAwardUnlock, isShowUnseenDelayed] }
   return (isShowUnseenDelayed.value || loginAwardUnlock.value?.hasReward) ? res : res.__update({
     size = [smallBtnHeight, smallBtnHeight]
@@ -270,7 +270,7 @@ let function previewBtnBlock() {
 
 let openPreview = @(reward) openLootboxPreview(reward.lootboxes.findindex(@(_) true))
 
-let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, animState) {
+function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, animState) {
   let place = rewardsPlaces?[periodIdx]
   if (place == null) {
     logerr($"Missing place for periodIdx = {periodIdx}")
@@ -409,7 +409,7 @@ let function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStag
   }.__update(animData)
 }
 
-let function itemsBlock() {
+function itemsBlock() {
   let stageOffsetByAds = hasLoginAwardByAds.value ? -1 : 0
   let { lastRewardedStage = 0 } = loginAwardUnlock.value
   let { stages = [], stage = 0 } = getRelativeStageData(
@@ -464,7 +464,7 @@ let function itemsBlock() {
   }
 }
 
-let function rewardText() {
+function rewardText() {
   let { wtm_skip_days_streak = 0, wt_skip_days_streak = 0 } = userstatStats.value?.stats.daily.meta_common
   let skipDays = min(wtm_skip_days_streak, wt_skip_days_streak)
   return mkText(loc(skipDays == 1 ? "EveryDayLoginAward/resetPeriod1"

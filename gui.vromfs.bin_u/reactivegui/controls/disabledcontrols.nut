@@ -1,18 +1,39 @@
 from "%globalsDarg/darg_library.nut" import *
 from  "%sqstd/ecs.nut" import *
-let { EventOnShortcutEnable = null, EventOnAxisEnable = null } = require("controls")
+let { EventOnShortcutEnable, EventOnAxisEnable, EventOnAllShortcutsEnable } = require("controls")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
-let disabledControls = mkWatched(persist, "disabledControls", {})
+let enabledControls = mkWatched(persist, "enabledControls", {})
+let isAllControlsEnabled = mkWatched(persist, "isAllControlsEnabled", true)
 
-isInBattle.subscribe(@(v) v ? null : disabledControls.set({}))
+isInBattle.subscribe(function(v) {
+  if (v)
+    return
+  enabledControls.set({})
+  isAllControlsEnabled.set(true)
+})
 
-if (EventOnShortcutEnable != null && EventOnAxisEnable != null)
-  register_es("disabled_shortcuts_monitor_es", {
-    [EventOnShortcutEnable] = @(evt, _eid, _comp)
-      disabledControls.mutate(@(v) v[evt[0]] <- !evt[1]),
-    [EventOnAxisEnable] = @(evt, _eid, _comp)
-      disabledControls.mutate(@(v) v[evt[0]] <- !evt[1]),
-  })
+register_es("disabled_shortcuts_monitor_es", {
+  [EventOnShortcutEnable] = @(evt, _eid, _comp)
+    enabledControls.mutate(@(v) v[evt[0]] <- evt[1]),
+  [EventOnAxisEnable] = @(evt, _eid, _comp)
+    enabledControls.mutate(@(v) v[evt[0]] <- evt[1]),
+  [EventOnAllShortcutsEnable] = function(evt, _eid, _comp) {
+    isAllControlsEnabled.set(evt[0])
+    if (enabledControls.get().len() != 0)
+      enabledControls.set({})
+  },
+})
 
-return disabledControls
+let isControlEnabled = @(id, enabledControlsV, isAllControlsEnabledV)
+  enabledControlsV?[id] ?? isAllControlsEnabledV
+
+let mkIsControlDisabled = @(id)
+  Computed(@() !(enabledControls.get()?[id] ?? isAllControlsEnabled.get()))
+
+return {
+  enabledControls
+  isAllControlsEnabled
+  isControlEnabled
+  mkIsControlDisabled
+}

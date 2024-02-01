@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
-let { subscribe, unsubscribe } = require("eventbus")
+let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { register_command } = require("console")
 let { get_battery, is_charging } = require("sysinfo")
 let { DBGLEVEL } = require("dagor.system")
@@ -53,11 +53,11 @@ let ping = Computed(@() min(maxPingVal, deviceState.value?.ping.tointeger() ?? -
 let pl = Computed(@() min(maxPlVal, deviceState.value?.pl.tointeger() ?? -1))
 
 let updateDeviceState = @(state) deviceState(state)
-let function enableDeviceState(isEnable) {
+function enableDeviceState(isEnable) {
   if (isEnable)
-    subscribe(UPDATE_STATUS_STRING_EVENT_ID, updateDeviceState)
+    eventbus_subscribe(UPDATE_STATUS_STRING_EVENT_ID, updateDeviceState)
   else {
-    unsubscribe(UPDATE_STATUS_STRING_EVENT_ID, updateDeviceState)
+    eventbus_unsubscribe(UPDATE_STATUS_STRING_EVENT_ID, updateDeviceState)
     deviceState(null)
   }
 }
@@ -108,7 +108,7 @@ let pingIconComp = @() pingIconFn.value == "" ? { watch = pingIconFn } : {
   keepAspect = true
 }
 
-let function updateBatteryState() {
+function updateBatteryState() {
   batteryCharge(getBattery())
   isCharging(is_charging())
 }
@@ -123,7 +123,7 @@ let batteryColor = Computed(
 
 let batteryFillWidth = Computed(@() round(clamp(batteryCharge.get(), 0.0, 1.0) * batteryFillMaxW))
 
-let function batteryComp() {
+function batteryComp() {
   let res = { watch = [ batteryIconFn, batteryColor ] }
   return batteryIconFn.get() == BATTERY_BG_NONE ? res : res.__update({
     size = [batteryIconW, batteryIconH]

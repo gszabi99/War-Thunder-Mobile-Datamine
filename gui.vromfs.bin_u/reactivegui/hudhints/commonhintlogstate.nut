@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { format } =  require("string")
 let { register_command } = require("console")
 let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -31,7 +31,7 @@ let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
 let addCommonHint = @(text, evId = "", evType = "simpleTextTiny") addEvent({ id = evId, hType = evType, text })
 let addCommonHintWithTtl = @(text, ttl, evId = "") addEvent({ id = evId, hType = "simpleTextTiny", text, ttl })
 
-subscribe("hint:ui_message:show", function(data) {
+eventbus_subscribe("hint:ui_message:show", function(data) {
   let { locId, param = null, paramTeamId = MP_TEAM_NEUTRAL, teamId = MP_TEAM_NEUTRAL } = data
   local text = loc(locId)
   if (param != null)
@@ -39,7 +39,7 @@ subscribe("hint:ui_message:show", function(data) {
   addCommonHint(colorize(getTeamColor(teamId), text))
 })
 
-subscribe("hint:action_not_available", function(data) {
+eventbus_subscribe("hint:action_not_available", function(data) {
   let { hintId, param = null, paramTeamId = MP_TEAM_NEUTRAL, teamId = MP_TEAM_NEUTRAL } = data
   local text = loc("".concat("hints/", hintId))
   if (param != null)
@@ -48,26 +48,26 @@ subscribe("hint:action_not_available", function(data) {
 })
 
 const ART_SUPPORT_ID = "have_art_support"
-subscribe("hint:have_art_support:show",
+eventbus_subscribe("hint:have_art_support:show",
   @(_) addEvent({ id = ART_SUPPORT_ID, hType = "simpleTextTiny", text = loc("hints/have_art_support") }))
 
-subscribe("hint:have_art_support:hide",
+eventbus_subscribe("hint:have_art_support:hide",
   @(_) removeEvent({ id = ART_SUPPORT_ID }))
 
-subscribe("repairBlocked",
+eventbus_subscribe("repairBlocked",
   @(p) addEvent({ id = "repair_blocked", hType = "simpleTextTiny", text = loc(p.hintId) }))
 
-subscribe("hint:target_deeper_than_periscope::show",
+eventbus_subscribe("hint:target_deeper_than_periscope:show",
   @(_) addEvent({ hType = "simpleTextTiny", text = loc("hints/target_deeper_than_periscope") }))
 
-subscribe("hint:drowning:show", function(data) {
+eventbus_subscribe("hint:drowning:show", function(data) {
   let timeTo = data?.timeTo ?? 0
   let text = " ".concat(loc("hints/drowning_in"), secondsToTimeSimpleString(timeTo))
   addEvent({ hType = "simpleTextTiny", text, ttl = timeTo > 4 ? 0.5 : 1.0 })
 })
 
 const MISSION_HINT = "mission_hint_bottom"
-subscribe("hint:missionHint:set", @(data) data?.hintType != "bottom" ? null
+eventbus_subscribe("hint:missionHint:set", @(data) data?.hintType != "bottom" ? null
   : modifyOrAddEvent(
       data.__merge({
         id = MISSION_HINT
@@ -78,10 +78,10 @@ subscribe("hint:missionHint:set", @(data) data?.hintType != "bottom" ? null
       }),
       @(ev) ev?.id == MISSION_HINT && ev?.locId == data?.locId))
 
-subscribe("hint:missionHint:remove", @(data) data?.hintType != "bottom" ? null
+eventbus_subscribe("hint:missionHint:remove", @(data) data?.hintType != "bottom" ? null
   : removeEvent({ id = MISSION_HINT }))
 
-let function incHintCounter(id, showCount) {
+function incHintCounter(id, showCount) {
   let sBlk = get_local_custom_settings_blk()
   let saveId = $"{COUNTER_SAVE_ID}/{id}"
   let count = getBlkValueByPath(sBlk, saveId) ?? 0
@@ -89,21 +89,21 @@ let function incHintCounter(id, showCount) {
     return false
 
   setBlkValueByPath(sBlk, saveId, count + 1)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
   return true
 }
 
-subscribe("hint:ineffective_hit_tank:show", function(_) {
+eventbus_subscribe("hint:ineffective_hit_tank:show", function(_) {
   if (incHintCounter("ineffective_hit_tank", 15))
     addCommonHint(loc("hints/ineffective_hit_tank"))
 })
 
-subscribe("hint:shoot_when_tank_stop:show", function(_) {
+eventbus_subscribe("hint:shoot_when_tank_stop:show", function(_) {
   if (incHintCounter("shoot_when_tank_stop", 15))
     addCommonHint(loc("hints/shoot_when_tank_stop"))
 })
 
-subscribe("hint:change_shell_type:show", function(_) {
+eventbus_subscribe("hint:change_shell_type:show", function(_) {
   if (bulletsInfo.value == null)
     return
   let isHE = bulletsInfo.value?.fromUnitTags[currentBulletName.value ?? "default"]?.isHE ?? false
@@ -111,170 +111,170 @@ subscribe("hint:change_shell_type:show", function(_) {
     addCommonHint(loc("hints/change_shell_type"))
 })
 
-subscribe("hint:miss_shot_tank:show", function(_) {
+eventbus_subscribe("hint:miss_shot_tank:show", function(_) {
   if (incHintCounter("miss_shot_tank", 5))
     addCommonHint(loc("hints/miss_shot_tank"))
 })
 
-subscribe("hint:kill_tank_back:show", function(_) {
+eventbus_subscribe("hint:kill_tank_back:show", function(_) {
   if (incHintCounter("kill_tank_back", 5))
     addCommonHint(loc("hints/kill_tank_back"))
 })
 
-subscribe("hint:dont_hold_ctrl_to_move_tank:show", function(_) {
+eventbus_subscribe("hint:dont_hold_ctrl_to_move_tank:show", function(_) {
   if (incHintCounter("dont_hold_ctrl_to_move_tank", 3))
     addCommonHint(loc("hints/dont_hold_ctrl_to_move"))
 })
 
-subscribe("hint:dont_hold_ctrl_to_move_ship:show", function(_) {
+eventbus_subscribe("hint:dont_hold_ctrl_to_move_ship:show", function(_) {
   if (incHintCounter("dont_hold_ctrl_to_move_ship", 3))
     addCommonHint(loc("hints/dont_hold_ctrl_to_move"))
 })
 
-subscribe("hint:turn_types_ctrl:show", function(_) {
+eventbus_subscribe("hint:turn_types_ctrl:show", function(_) {
   if (incHintCounter("turn_types_ctrl", 3))
     addCommonHint(loc("hints/turn_types_ctrl"))
 })
 
-subscribe("hint:need_target_for_lock", function(_) {
+eventbus_subscribe("hint:need_target_for_lock", function(_) {
   addCommonHint(loc("hints/need_target_for_lock"))
 })
 
-subscribe("hint:kill_streak_fighter_reverted", function(_) {
+eventbus_subscribe("hint:kill_streak_fighter_reverted", function(_) {
   addCommonHint(loc("hints/kill_streak_fighter_reverted"))
 })
 
 const GUT_OVERHEAT_WARNING = "gun_overheat_warning"
-subscribe("hint:gun_overheat_warning", function(_) {
+eventbus_subscribe("hint:gun_overheat_warning", function(_) {
   if (!incHintCounter(GUT_OVERHEAT_WARNING, 5))
     return
   addCommonHint(loc("hints/gun_overheat_warning"))
 })
 
-subscribe("hint:use_gun_for_spaa:show", function(_) {
+eventbus_subscribe("hint:use_gun_for_spaa:show", function(_) {
   if (incHintCounter("use_gun_for_spaa", 3)){
     addCommonHint(loc("hints/use_gun_for_spaa"))
   }
 })
 
-subscribe("hint:holding_for_stop:show", function(_) {
+eventbus_subscribe("hint:holding_for_stop:show", function(_) {
   if (!incHintCounter("holding_for_stop", 5))
     return
   addCommonHint(loc("hints/holding_for_stop"))
 })
 
-subscribe("hint:need_stop_for_fire", function(_) {
+eventbus_subscribe("hint:need_stop_for_fire", function(_) {
   addCommonHint(loc("hints/need_stop_for_fire"))
 })
 
-subscribe("hint:hull_aiming_with_camera:show", function(_) {
+eventbus_subscribe("hint:hull_aiming_with_camera:show", function(_) {
   if (!incHintCounter("hull_aiming_with_camera", 3))
     return
   addCommonHint(loc("hints/hull_aiming_with_camera"))
 })
 
 const REPAIR_MODULE_ID = "repair_module"
-subscribe("hint:repair_module:show", function(_) {
+eventbus_subscribe("hint:repair_module:show", function(_) {
   if (!incHintCounter(REPAIR_MODULE_ID, 15))
     return
   addCommonHintWithTtl(loc("hints/for_newbies/repair_module"), 30, REPAIR_MODULE_ID)
   addHudElementPointer("btn_repair", 30)
 })
-subscribe("hint:repair_module:hide", function(_) {
+eventbus_subscribe("hint:repair_module:hide", function(_) {
   removeEvent({ id = REPAIR_MODULE_ID })
   removeHudElementPointer("btn_repair")
 })
 
 const SHIP_REPAIR_OFFER_ID = "ship_offer_repair"
-subscribe("hint:ship_offer_repair::show", function(_) {
+eventbus_subscribe("hint:ship_offer_repair:show", function(_) {
   // if (!incHintCounter(SHIP_REPAIR_OFFER_ID, 15))
   //   return
   addCommonHintWithTtl(loc("hints/ship_offer_repair"), 30, SHIP_REPAIR_OFFER_ID)
   addHudElementPointer("btn_repair", 30)
 })
-subscribe("hint:ship_offer_repair::hide", function(_) {
+eventbus_subscribe("hint:ship_offer_repair:hide", function(_) {
   removeEvent({ id = SHIP_REPAIR_OFFER_ID })
   removeHudElementPointer("btn_repair")
 })
 
 
 const EXTINGUISH_FIRE_ID = "can_extinguish_fire"
-subscribe("hint:can_extinguish_fire:show", function(_) {
+eventbus_subscribe("hint:can_extinguish_fire:show", function(_) {
   if (!incHintCounter(EXTINGUISH_FIRE_ID, 15))
     return
   addCommonHintWithTtl(loc("hints/for_newbies/can_extinguish_fire"), 30, EXTINGUISH_FIRE_ID)
   addHudElementPointer("btn_extinguisher", 30)
 })
-subscribe("hint:can_extinguish_fire:hide", function(_) {
+eventbus_subscribe("hint:can_extinguish_fire:hide", function(_) {
   removeEvent({ id = EXTINGUISH_FIRE_ID })
   removeHudElementPointer("btn_extinguisher")
 })
 
 const WAIT_FOR_FIRE_STOP_ID = "wait_for_fire_stop"
-subscribe("hint:wait_for_fire_stop:show", function(_) {
+eventbus_subscribe("hint:wait_for_fire_stop:show", function(_) {
   if (incHintCounter(WAIT_FOR_FIRE_STOP_ID, 15))
     addCommonHintWithTtl(loc("hints/for_newbies/wait_for_fire_stop"), 30, WAIT_FOR_FIRE_STOP_ID)
 })
-subscribe("hint:wait_for_fire_stop:hide",
+eventbus_subscribe("hint:wait_for_fire_stop:hide",
   @(_) removeEvent({ id = WAIT_FOR_FIRE_STOP_ID }))
 
 const CAN_USE_AIR_SUPPORT_ID = "can_use_air_support"
-subscribe("hint:can_use_air_support:show", function(_) {
+eventbus_subscribe("hint:can_use_air_support:show", function(_) {
   if (!incHintCounter(CAN_USE_AIR_SUPPORT_ID, 15))
     return
   addCommonHintWithTtl(loc("hints/for_newbies/can_use_air_support"), 30, CAN_USE_AIR_SUPPORT_ID)
   addHudElementPointer("btn_special_unit", 30)
   addHudElementPointer("btn_special_unit2", 30)
 })
-subscribe("hint:can_use_air_support:hide", function(_) {
+eventbus_subscribe("hint:can_use_air_support:hide", function(_) {
   removeEvent({ id = CAN_USE_AIR_SUPPORT_ID })
   removeHudElementPointer("btn_special_unit")
   removeHudElementPointer("btn_special_unit2")
 })
 
-subscribe("hint:mission_goal", function(p) {
+eventbus_subscribe("hint:mission_goal", function(p) {
   if (incHintCounter("mission_goal", 3)) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/mission_goal"), p.duration)
     addHudElementPointer(p.elementId, p.duration)
   }
 })
 
-subscribe("hint:this_is_minimap", function(p) {
+eventbus_subscribe("hint:this_is_minimap", function(p) {
   if (incHintCounter("this_is_minimap", 3)) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/this_is_minimap"), p.duration)
     addHudElementPointer(p.elementId, p.duration)
   }
 })
 
-subscribe("hint:this_is_capture_point", function(p) {
+eventbus_subscribe("hint:this_is_capture_point", function(p) {
   if (incHintCounter("this_is_capture_point", 3)) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/this_is_capture_point"), p.duration)
     addHudElementPointer(p.elementId, p.duration)
   }
 })
 
-subscribe("hint:you_are_capturing", function(p) {
+eventbus_subscribe("hint:you_are_capturing", function(p) {
   if (incHintCounter("you_are_capturing", 3)) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/you_are_capturing"), p.duration)
     addHudElementPointer(p.elementId, p.duration)
   }
 })
 
-subscribe("hint:capture_zones", function(p) {
+eventbus_subscribe("hint:capture_zones", function(p) {
   if (incHintCounter("capture_zones", 3)) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/capture_zones"), p.duration)
     addHudElementPointer(p.elementId, p.duration)
   }
 })
 
-subscribe("hint:this_is_score_board", function(p) {
+eventbus_subscribe("hint:this_is_score_board", function(p) {
   if (incHintCounter("this_is_score_board", 3)) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/this_is_score_board"), p.duration)
     addHudElementPointer(p.elementId, p.duration)
   }
 })
 
-subscribe("hint:ticket_loose", function(p) {
+eventbus_subscribe("hint:ticket_loose", function(p) {
   if (incHintCounter("ticket_loose", 3)) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/ticket_loose"), p.duration)
     addHudElementPointer(p.elementId, p.duration)
@@ -287,7 +287,7 @@ register_command(function() {
     if (COUNTER_SAVE_ID not in sBlk)
       return
     sBlk.removeBlock(COUNTER_SAVE_ID)
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   },
   "reset_hint_counters")
 

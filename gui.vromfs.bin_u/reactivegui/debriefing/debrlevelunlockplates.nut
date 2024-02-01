@@ -85,7 +85,7 @@ let mkPlateBlinkAnimProps = @(isUnlocked, delay) !isUnlocked ? {} : {
 
 // UNIT PLATE //////////////////////////////////////////////////////////////////
 
-let function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = false) {
+function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = false) {
   let p = getUnitPresentation(unit)
   return {
     size = [ plateW, plateH ]

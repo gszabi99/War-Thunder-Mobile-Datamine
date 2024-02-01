@@ -170,7 +170,7 @@ let spinner = {
   children = mkSpinner
 }
 
-let function onPurchase() {
+function onPurchase() {
   let unitName = unit.value.name
   let modName = curMod.value.name
   let price = getModCost(curMod.value, curUnitAllModsCost.value)
@@ -183,7 +183,7 @@ let function onPurchase() {
     mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}"))
 }
 
-let function onClose() {
+function onClose() {
   setCurUnitSeenModsCurrent()
   closeUnitModsWnd()
 }

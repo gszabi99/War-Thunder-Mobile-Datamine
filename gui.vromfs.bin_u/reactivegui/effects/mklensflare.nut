@@ -50,7 +50,7 @@ let flareTranslateXAnim = @(offsetStart, offsetEnd) [
 let scalesCount = 3
 let scalesMul = 0.4
 let scalesColorMul = 0.35
-let function lensScaleCircles(size1, size2, x1, xFinal) {
+function lensScaleCircles(size1, size2, x1, xFinal) {
   let res = []
   local colorMul = 1.0
   local sizeMul = 1.0
@@ -240,11 +240,11 @@ let lensFlare = @(moveAnim, hasCircles) {
   ].extend(hasCircles ? lensScaleCircles(hdpx(2000), hdpx(200), -hdpx(800), 0) : [])
 }
 
-let function mkFlareMoveAnim(multiply) {
+function mkFlareMoveAnim(multiply) {
   return @(offset) (clone flareOpacityAnims())
     .extend(flareTranslateXAnim(offset * multiply, -offset * multiply))
 }
-let function mkFlareMoveAnimLootbox(multiply) {
+function mkFlareMoveAnimLootbox(multiply) {
   return @(offset) (clone flareOpacityAnims(0.0, 1.0, 0.65, 0.5))
     .extend(flareTranslateXAnim(offset * multiply, -offset / 0.4 * multiply))
 }

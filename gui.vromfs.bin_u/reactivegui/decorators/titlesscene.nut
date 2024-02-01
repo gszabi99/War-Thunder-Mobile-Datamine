@@ -32,7 +32,7 @@ let selectedTitle = Watched(chosenTitle.value?.name)
 let visibleTitles = Computed(@() allTitles.value.filter(@(dec, id) !dec.isHidden || isShowAllDecorators.value || (id in availTitles.value)))
 let hasVisibleTitles = Computed(@() visibleTitles.value.len() > 0)
 
-let function applySelectedTitle(){
+function applySelectedTitle(){
   if (selectedTitle.value == "") {
     unset_current_decorator("title")
     return
@@ -60,7 +60,7 @@ let header = {
   ]
 }
 
-let function titleRow(name, locName, rowIdx) {
+function titleRow(name, locName, rowIdx) {
   let stateFlags = Watched(0)
   let isChoosen = Computed(@() chosenTitle.value?.name == name ||
     (chosenTitle.value == null && name == ""))
@@ -157,7 +157,7 @@ let footer = @() {
       ]
 }
 
-let function titlesList() {
+function titlesList() {
   local total = max(visibleTitles.value.len() + 1, columns * minRows)
   let rows = ceil(total.tofloat() / columns).tointeger()
   total = rows * columns

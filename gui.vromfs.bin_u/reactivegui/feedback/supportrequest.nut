@@ -56,7 +56,7 @@ let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
     onSuccess(answer)
 }
 
-let function onAttachmentUploadSuccess(answer, cb) {
+function onAttachmentUploadSuccess(answer, cb) {
   let { token, attachment } = answer.upload
   let { file_name, content_url } = attachment
   let data = {
@@ -72,12 +72,12 @@ let function onAttachmentUploadSuccess(answer, cb) {
   cb()
 }
 
-let function onAttachmentUploadFailure(errInfo, cb) {
+function onAttachmentUploadFailure(errInfo, cb) {
   logZ($"Attachment upload failed: {errInfo.errId}")
   cb()
 }
 
-let function uploadAttachment(fileData, cb) {
+function uploadAttachment(fileData, cb) {
   if (fileData == null)
     return cb()
   let { filename, mimeType, content } = fileData
@@ -96,7 +96,7 @@ let function uploadAttachment(fileData, cb) {
   })
 }
 
-let function onSendFormSuccess(answer) {
+function onSendFormSuccess(answer) {
   let { id, requester_id } = answer.request
   logZ($"Request created successfully: id {id}, requester_id {requester_id}")
   requestState.mutate(@(v) v.__update({
@@ -105,7 +105,7 @@ let function onSendFormSuccess(answer) {
   }))
 }
 
-let function onSendFormFailure(errInfo) {
+function onSendFormFailure(errInfo) {
   logZ($"Request sending failed")
   requestState.mutate(@(v) v.__update({
     isProcessing = false
@@ -113,7 +113,7 @@ let function onSendFormFailure(errInfo) {
   }))
 }
 
-let function sendFormData() {
+function sendFormData() {
   let { email, name, category, subject, message, locale, lang } = requestState.value.formData
   let { attachments } = requestState.value
   logZ($"Sending request from user {email}")
@@ -143,7 +143,7 @@ let function sendFormData() {
   })
 }
 
-let function submitSupportRequest(formData) {
+function submitSupportRequest(formData) {
   if (requestState.value.isProcessing)
     return
   requestState.mutate(@(v) v.__update({

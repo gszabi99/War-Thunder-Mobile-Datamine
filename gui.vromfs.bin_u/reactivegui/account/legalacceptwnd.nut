@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { legalListForApprove } = require("%appGlobals/loginState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -20,12 +20,12 @@ let wndWidthDefault = hdpx(1300)
 let wndHeight = hdpx(650)
 
 let urlStyle = { ovr = { color = urlColor }, childOvr = { color = urlColor } }
-let function legalInfoUrl(legalCfg) {
+function legalInfoUrl(legalCfg) {
   let { url, locId } = legalCfg
   return urlText(loc($"{locId}"), url, urlStyle)
 }
 
-let function replaceExtremeSpacesToNbsp(text) {
+function replaceExtremeSpacesToNbsp(text) {
   local result = text
   if (result.startswith(" "))
     result = "".concat(nbsp, result.slice(1))
@@ -74,9 +74,8 @@ let acceptText = {
 
 let acceptButton = mkCustomButton(
   acceptText,
-  @() send("acceptAllLegals", {}),
-  buttonStyles.PRIMARY
-)
+  @() eventbus_send("acceptAllLegals", {}),
+  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
 
 let wndContent = {
   size = flex()

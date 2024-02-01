@@ -33,7 +33,7 @@ let pagesStripW = hdpx(11)
 let pagesStripGap = hdpx(30)
 let pageH = hdpx(100)
 
-let function mkPage(startArticleIdx, isSelected) {
+function mkPage(startArticleIdx, isSelected) {
   let stateFlags = Watched(0)
   return @() {
     watch = [isSelected, stateFlags]
@@ -52,7 +52,7 @@ let function mkPage(startArticleIdx, isSelected) {
   }
 }
 
-let function pagesStrip() {
+function pagesStrip() {
   let children = []
   for (local i = 0; i < pagesCount.value; i++) {
     let startArticleIdx = i * articlesPerPage.value
@@ -119,7 +119,7 @@ let mkThumbnailImg = @(thumb) {
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
 
-let function articleTabBase(info, sf, isSelected, isUnseen) {
+function articleTabBase(info, sf, isSelected, isUnseen) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   let isHovered = sf & S_HOVER
   let { shortTitle, title, thumb, pinned } = info
@@ -172,7 +172,7 @@ let function articleTabBase(info, sf, isSelected, isUnseen) {
   }
 }
 
-let function articleTab(info) {
+function articleTab(info) {
   let stateFlags = Watched(0)
   let { id } = info
   let isSelected = Computed(@() curArticleId.value == id)
@@ -224,7 +224,7 @@ let seeMoreUrl = {
   margin = [hdpx(50), 0, 0, 0]
 }
 
-let function scrollArticle() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
+function scrollArticle() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
   let element = scrollHandler.elem
   if (element != null)
     scrollHandler.scrollToY(element.getScrollOffsY() + scrollWatch.value * scrollStep)
@@ -310,7 +310,7 @@ let wndHeader = {
   ]
 }
 
-let function calcLayoutParams() {
+function calcLayoutParams() {
   let selectorHeightPx = saSize[1] - calc_comp_size(wndHeader)[1] - wndHeaderGap
   articlesPerPage(max(1, ((selectorHeightPx + selectorBtnMinGap) / (selectorBtnH + selectorBtnMinGap)).tointeger()))
   let gapsCount = articlesPerPage.value - 1

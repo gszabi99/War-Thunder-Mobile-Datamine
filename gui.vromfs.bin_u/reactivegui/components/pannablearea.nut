@@ -19,7 +19,7 @@ let pannableBase = {
   }
 }
 
-let function mkBitmapPictureLazyExt(w, h, errId, fillCb) {
+function mkBitmapPictureLazyExt(w, h, errId, fillCb) {
   if (!isScriptsLoading.value) {
     logerr($"Try to create {errId} mask not on scripts load")
     return @() null
@@ -35,7 +35,7 @@ let function mkBitmapPictureLazyExt(w, h, errId, fillCb) {
                                    Pass null to make it equal gradientOffset (usually it should be equal).
  * @return {function} - Pannable area constructor function.
  */
-let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
+function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
   let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
   let pageMask = mkBitmapPictureLazyExt(4, (height * scaleMul + 0.5).tointeger(),
@@ -92,7 +92,7 @@ let function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = nul
                                    Pass null to make it equal gradientOffset (usually it should be equal).
  * @return {function} - Pannable area constructor function.
  */
-let function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) {
+function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
   let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
   let pageMask = mkBitmapPictureLazyExt((width * scaleMul + 0.5).tointeger(), 4,

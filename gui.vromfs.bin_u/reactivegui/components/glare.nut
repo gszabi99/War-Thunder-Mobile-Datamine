@@ -6,7 +6,7 @@ let defGlareSize = [hdpx(64), ph(140)]
 let glareAnimDuration = 0.4
 let glareRepeatDelay = 6
 
-let function mkGlare(parentWidth, size = defGlareSize, delay = glareRepeatDelay, duration = glareAnimDuration) {
+function mkGlare(parentWidth, size = defGlareSize, delay = glareRepeatDelay, duration = glareAnimDuration) {
   let trigger = {}
   let startGlareAnim = @() anim_start(trigger)
   return {

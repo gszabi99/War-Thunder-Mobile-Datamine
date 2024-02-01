@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { LOGIN_UPDATER_EVENT_ID, isAuthAndUpdated, isLoginStarted
 } = require("%appGlobals/loginState.nut")
 let { UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS, UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH,
@@ -14,7 +14,7 @@ let updaterState = Watched(null)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 isAuthAndUpdated.subscribe(@(_) updaterState(null))
 
-subscribe(LOGIN_UPDATER_EVENT_ID,
+eventbus_subscribe(LOGIN_UPDATER_EVENT_ID,
   function(evt) {
     if (!isDebugMode.value && (!isLoginStarted.value || isAuthAndUpdated.value))
       return
@@ -43,9 +43,9 @@ subscribe(LOGIN_UPDATER_EVENT_ID,
 let rndStages = [
   UPDATER_CHECKING, UPDATER_PURIFYING //other stages look same
 ]
-let function debugUpdate() {
+function debugUpdate() {
   let { stage = null, toDownload = null, percent = 0.0, dspeed = 0.0, etaSec = 0.0 } = updaterState.value
-  send(LOGIN_UPDATER_EVENT_ID, {
+  eventbus_send(LOGIN_UPDATER_EVENT_ID, {
     eventType = UPDATER_EVENT_PROGRESS
     percent = (percent + (0.01 * rnd_int(0, 100))) % 100.0
     dspeed = (rnd_int(0, 10) != 0) ? dspeed
@@ -54,13 +54,13 @@ let function debugUpdate() {
       : 0.1 * rnd_int(0, 10000)
   })
   if (stage == null || rnd_int(0, 10) == 0)
-    send(LOGIN_UPDATER_EVENT_ID, {
+    eventbus_send(LOGIN_UPDATER_EVENT_ID, {
       eventType = UPDATER_EVENT_STAGE
       stage = rnd_int(0, 2) != 0 ? UPDATER_DOWNLOADING
         : chooseRandom(rndStages)
     })
   if (toDownload == null || rnd_int(0, 20) == 0)
-    send(LOGIN_UPDATER_EVENT_ID, {
+    eventbus_send(LOGIN_UPDATER_EVENT_ID, {
       eventType = UPDATER_EVENT_DOWNLOAD_SIZE
       toDownload = rnd_int(0, 2000) * (1 << 20)
     })
@@ -74,7 +74,7 @@ register_command(
   function() {
     isDebugMode(!isDebugMode.value)
     if (isDebugMode.value)
-      send("logOut", {})
+      eventbus_send("logOut", {})
   },
   "debug.loginUpdater")
 

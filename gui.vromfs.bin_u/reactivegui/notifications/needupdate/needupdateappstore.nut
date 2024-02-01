@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logUpdate = log_with_prefix("[UPDATE] appStore: ")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { checkAppStoreUpdateWithVersion } = require("ios.platform")
@@ -18,7 +18,7 @@ let allowRequest = Computed(@() needRequest.value && !isInBattle.value && !isInL
 needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
 
-let function requestNeedUpdate() {
+function requestNeedUpdate() {
   if (!allowRequest.value || DBGLEVEL>0)
     return
   needRequest(false)
@@ -26,7 +26,7 @@ let function requestNeedUpdate() {
   checkAppStoreUpdateWithVersion(get_base_game_version_str())
 }
 
-subscribe("ios.platform.onUpdateCheck", function(response) {
+eventbus_subscribe("ios.platform.onUpdateCheck", function(response) {
   let { status = false } = response
   logUpdate($"status = {status}")
   needSuggestToUpdate.update(status)
@@ -37,7 +37,7 @@ if (allowRequest.value)
 allowRequest.subscribe(@(v) v ? deferOnce(requestNeedUpdate) : null)
 
 let needRequestOn = @() needRequest(true)
-let function startTimer() {
+function startTimer() {
   if (!needRequest.value)
     resetTimeout(max(0.1, 0.001 * (nextRequestTime.value - get_time_msec())), needRequestOn)
 }

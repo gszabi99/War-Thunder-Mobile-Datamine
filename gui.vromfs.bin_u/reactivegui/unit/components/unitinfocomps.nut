@@ -25,7 +25,7 @@ let mkBonusCtor = @(fontStyle, iconSize) function bonusCtor(bonus, currencyId, i
 let mkBonusTiny = mkBonusCtor(fontTiny, hdpxi(28))
 let mkBonus = mkBonusCtor(fontSmall, hdpxi(50))
 
-let function mkUnitBonuses(unit, override = {}, bonusCtor = mkBonus) {
+function mkUnitBonuses(unit, override = {}, bonusCtor = mkBonus) {
   let { rewardWpMul = 1.0, rewardExpMul = 1.0, expMul = 1.0, wpMul = 1.0 } = unit
   return {
     flow = FLOW_HORIZONTAL

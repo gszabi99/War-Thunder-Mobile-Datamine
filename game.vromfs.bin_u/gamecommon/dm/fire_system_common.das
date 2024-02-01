@@ -55,12 +55,14 @@ def check_is_burning(fd : FireData_SOA)
 
 [soa_def]
 def can_be_extinguished_with_extinguisher(fd : FireData_SOA&)
+  var any_fires = false
   for fire_data in fd
     if fire_data.fire_data__startTime > 0.0f
       let fire_params = get_fire_params(fire_data.fire_data__fireParamsId)
-      if fire_params.extinguisherEffective
-        return true
-  return false
+      any_fires = true
+      if !fire_params.extinguisherEffective
+        return false
+  return any_fires
 
 
 [soa_def]

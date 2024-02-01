@@ -90,7 +90,7 @@ let simpleText = @(text, ovr = {}) {
   colorTable = teamColors
 }.__update(fontSmall, fontShade, ovr)
 
-let function mkTextWithIcon(text, icon, iconSize, width) {
+function mkTextWithIcon(text, icon, iconSize, width) {
   let imgSize = (iconSize ?? array(2, hdpx(30))).map(@(v) v.tointeger())
   return {
     size = [width, SIZE_TO_CONTENT]
@@ -110,7 +110,7 @@ let function mkTextWithIcon(text, icon, iconSize, width) {
   }
 }
 
-let function defaultHintCtor(hint) {
+function defaultHintCtor(hint) {
   let res = mkGradientBlock(defBgColor, mkTextByWidth(hint?.text ?? loc(hint?.locId ?? "")))
   return hint?.key == null ? res : res.__update({ key = hint.key })
 }
@@ -130,7 +130,7 @@ let hintCtors = {
     { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
 }
 
-let function registerHintCreator(id, ctor) {
+function registerHintCreator(id, ctor) {
   if (id in hintCtors) {
     assert(false, $"try to register duplicate hint creator {id}")
     return

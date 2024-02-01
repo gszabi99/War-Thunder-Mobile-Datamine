@@ -78,7 +78,7 @@ let textResultBlock = @(id, style) {
   ]
 }
 
-let function textsList() {
+function textsList() {
   let fontBoxes = fontsLists.common
     .reduce(@(res, style, idx) res.append({ id = fontStyleAll.findindex(@(v) v == style) ?? idx, style }), [])
     .sort(@(a, b)  (a.style?.fontSize ?? 0) <=> (b.style?.fontSize ?? 0))

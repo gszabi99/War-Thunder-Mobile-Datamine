@@ -1,7 +1,7 @@
 
 from "%globalScripts/logs.nut" import *
 let { Watched } = require("frp")
-let eventbus = require("eventbus")
+let { eventbus_send,eventbus_subscribe } = require("eventbus")
 let { rnd_int } = require("dagor.random")
 let { loc } = require("dagor.localize")
 let servProfile = require("servProfile.nut")
@@ -22,7 +22,7 @@ let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
 let lastProfileKeysUpdated = Watched({})
 
-let function call(id, result, context) {
+function call(id, result, context) {
   if (id not in handlers)
     return
   let handler = handlers[id]
@@ -32,7 +32,7 @@ let function call(id, result, context) {
     handler(result, context)
 }
 
-let function callAll(execData, result) {
+function callAll(execData, result) {
   if (type(execData) == "string") {
     call(execData, result, null)
     return
@@ -51,12 +51,12 @@ let function callAll(execData, result) {
     callAll(executeAfter, result)
 }
 
-let function popCallback(uid, result) {
+function popCallback(uid, result) {
   if (uid in requestData.callbacks)
     callAll(requestData.callbacks.$rawdelete(uid), result)
 }
 
-let function handleMessages(msg) {
+function handleMessages(msg) {
   let result = msg.data?.result
   if (!result) {
     popCallback(msg.id, { error = "unknown error" }.__update(type(msg.data) == "table" ? msg.data : { data = msg.data }))
@@ -68,6 +68,8 @@ let function handleMessages(msg) {
   if (!(result?.isCustom ?? false))
     if (result?.full ?? false) {
       log("Full servProfile received")
+      if ("removed" in result)
+        logerr($"Not empty removed field on full profile update on '{msg?.method}'")
       servProfile(result)
       lastProfileKeysUpdated(result
         .map(@(v, k) type(v) == "table" && k != "configs")
@@ -77,7 +79,7 @@ let function handleMessages(msg) {
       let newProfile = clone servProfile.value
       let updatedKeys = {}
       foreach (k, v in result)
-        if (type(v) != "table" || k == "configs")
+        if (type(v) != "table" || k == "configs" || k == "removed")
           continue
         else {
           if (k == "receivedLevelsRewards") {
@@ -88,6 +90,14 @@ let function handleMessages(msg) {
           }
           else
             newProfile[k] <- (k in newProfile) ? newProfile[k].__merge(v) : v
+          updatedKeys[k] <- true
+        }
+      foreach(k, list in result?.removed ?? {})
+        if (k in newProfile) {
+          newProfile[k] = clone newProfile[k]
+          foreach(id in list)
+            if (id in newProfile[k])
+              newProfile[k].$rawdelete(id)
           updatedKeys[k] <- true
         }
       if (updatedKeys.len() != 0) {
@@ -101,14 +111,14 @@ let function handleMessages(msg) {
 
 lastProfileKeysUpdated.whiteListMutatorClosure(handleMessages)
 
-eventbus.subscribe("profile_srv.response", handleMessages)
+eventbus_subscribe("profile_srv.response", handleMessages)
 
-let function checkHandlerId(id) {
+function checkHandlerId(id) {
   if (id not in handlers)
     logerr($"Not registered pServerApi callbakc id: {id}")
 }
 
-let function addCallback(idStr, cb) {
+function addCallback(idStr, cb) {
   if (type(cb) == "string") {
     requestData.callbacks[idStr] <- cb
     checkHandlerId(cb)
@@ -126,24 +136,24 @@ let function addCallback(idStr, cb) {
     logerr($"Bad type of pServerApi callback data: {type(cb)}. String, table or array required")
 }
 
-let function request(data, cb = null) {
+function request(data, cb = null) {
   requestData.id = requestData.id + 1
   let idStr = requestData.id.tostring()
   if (cb != null)
     addCallback(idStr, cb)
 
-  eventbus.send("profile_srv.request", { id = idStr, data })
+  eventbus_send("profile_srv.request", { id = idStr, data })
 }
 
-let function mkProgress(id) {
+function mkProgress(id) {
   let res = Watched(null)
   let upd = @(msg) res(msg.isInProgress ? msg.value : null)
-  eventbus.subscribe($"profile_srv.progressStart.{id}", upd)
+  eventbus_subscribe($"profile_srv.progressStart.{id}", upd)
   res.whiteListMutatorClosure(upd)
   return res
 }
 
-let function registerHandler(id, handler) {
+function registerHandler(id, handler) {
   if (id in handlers) {
     logerr($"pServerApi handler {id} is already registered")
     return
@@ -155,7 +165,7 @@ let function registerHandler(id, handler) {
     logerr($"pServerApi handler {id} has wrong number of parameters. Should be 1 or 2")
 }
 
-let function localizePServerError(err) {
+function localizePServerError(err) {
   if (type(err) == "table" && "message" in err) {
     let msg = loc($"error/{err.message}", err.message)
     let code = "code" in err ? $"(code: {err.code})" : ""
@@ -439,6 +449,11 @@ return {
     params = { count }
   }, cb)
 
+  add_platinum = @(count, cb = null) request({
+    method = "add_platinum"
+    params = { count }
+  }, cb)
+
   add_warbond = @(count, cb = null) request({
     method = "add_warbond"
     params = { count }
@@ -493,6 +508,18 @@ return {
   check_new_offer = @(campaign, cb = null) request({
     method = "check_new_offer"
     params = { campaign }
+  }, cb)
+
+  buy_offer = @(campaign, offerId, currencyId, price, cb = null) request({
+    method = "buy_offer"
+    params = { campaign, offerId, currencyId, price }
+    progressId = PROGRESS_SHOP
+    progressValue = offerId
+  }, cb)
+
+  halt_offer_purchase = @(offerId, cb = null) request({
+    method = "halt_offer_purchase"
+    params = { offerId }
   }, cb)
 
   debug_offer_generation_stats = @(campaign, cb = null) request({

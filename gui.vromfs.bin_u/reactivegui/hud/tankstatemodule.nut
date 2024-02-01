@@ -166,7 +166,7 @@ let dollEditView = {
   }.__update(fontSmall)
 }
 
-let function useShortcutOn(shortcutId) {
+function useShortcutOn(shortcutId) {
   setShortcutOn(shortcutId)
   updateActionBarDelayed()
 }

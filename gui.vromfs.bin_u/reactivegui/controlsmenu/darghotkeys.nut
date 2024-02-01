@@ -7,7 +7,7 @@ let parseDargHotkeysImpl = @(hotkey) hotkey.replace("^", "")
   .filter(@(v) startswith(v, "J:"))
 
 let parsed = {}
-let function parseDargHotkeys(hotkey) {
+function parseDargHotkeys(hotkey) {
   if (hotkey not in parsed)
     parsed[hotkey] <- parseDargHotkeysImpl(hotkey)
   return parsed[hotkey]

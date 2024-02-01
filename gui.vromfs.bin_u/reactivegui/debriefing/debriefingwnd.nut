@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { playSound } = require("sound_wt")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { curUnit, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { curUnit, playerLevelInfo, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { textButtonPrimary, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
@@ -39,8 +39,8 @@ let mkDebriefingEmpty = require("mkDebriefingEmpty.nut")
 
 local isAttached = false
 
-let closeDebriefing = @() send("Debriefing_CloseInDagui", {})
-let startBattle = @() send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId }) //FIXME: Should to use game mode from debriefing
+let closeDebriefing = @() eventbus_send("Debriefing_CloseInDagui", {})
+let startBattle = @() eventbus_send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId }) //FIXME: Should to use game mode from debriefing
 
 const SAVE_ID_UPGRADE_BUTTON_PUSHED = "debriefingUpgradeButtonPushed"
 let countUpgradeButtonPushed = Watched(get_local_custom_settings_blk()?[SAVE_ID_UPGRADE_BUTTON_PUSHED] ?? 0)
@@ -142,9 +142,12 @@ let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, tex
       return requestShowRateGame()
     countUpgradeButtonPushed.set(countUpgradeButtonPushed.get() + 1)
     get_local_custom_settings_blk()[SAVE_ID_UPGRADE_BUTTON_PUSHED] = countUpgradeButtonPushed.get()
-    send("saveProfile", {})
-    updateHangarUnit(debriefingData.get()?.unit.name)
-    openUnitAttrWnd()
+    eventbus_send("saveProfile", {})
+    let unit = allUnitsCfg.get()?[debriefingData.get()?.unit.name]
+    if (unit != null) {
+      updateHangarUnit(unit.name)
+      openUnitAttrWnd()
+    }
     closeDebriefing()
   },
   {
@@ -170,8 +173,11 @@ let mkBtnNewPlatoonUnit = @(needShow, newPlatoonUnit) mkBtnAppearAnim(true, need
     if (needRateGame.get())
       return requestShowRateGame()
     closeDebriefing()
-    unitDetailsWnd({ name = debriefingData.get()?.unit.name, selUnitName = newPlatoonUnit.name })
-    requestOpenUnitPurchEffect(newPlatoonUnit)
+    let unit = allUnitsCfg.get()?[debriefingData.get()?.unit.name]
+    if (unit != null) {
+      unitDetailsWnd({ name = unit.name, selUnitName = newPlatoonUnit.name })
+      requestOpenUnitPurchEffect(newPlatoonUnit)
+    }
   },
   { hotkeys = ["^J:X | Enter"] }))
 
@@ -188,7 +194,7 @@ let btnSkip = function() {
   })
 }
 
-let function debriefingWnd() {
+function debriefingWnd() {
   let debrData = debriefingData.get()
   let { campaign = "", isWon = false, reward = {} } = debrData
 
@@ -205,7 +211,7 @@ let function debriefingWnd() {
   let tabsShowTime = debrTabsInfo.filter(@(v) v.needAutoAnim).map(@(v)  { id = v.id, timeShow = v.timeShow })
   let debrAnimTime = tabsShowTime.reduce(@(res, v) res + v.timeShow, 0)
 
-  let function reinitScene() {
+  function reinitScene() {
     debrTabsShowTime.set(tabsShowTime)
     curDebrTabId.set(debrTabsInfo?[0].id ?? DEBR_TAB_SCORES)
     isDebriefingAnimFinished.set(debrAnimTime <= 0)

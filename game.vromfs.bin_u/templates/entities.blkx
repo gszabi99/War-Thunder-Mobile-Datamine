@@ -1304,9 +1304,9 @@
       0.6
     ],
     "ammo_stowage__detonateMinCaliber": 0.035,
-    "ammo_stowage__damagePropsId": -1,
     "ammo_stowage__fxEvAmmoFireId": -1,
     "ammo_stowage__ammoState:u32": {},
+    "ammo_stowage__explosiveProperties": {},
     "ammo_stowage__splashProperties": {},
     "ammo_stowage__delayedOffender": {},
     "ammo_stowage__partIdRemap:list<ip4>": {},
@@ -2234,11 +2234,11 @@
   },
   "projectile": {
     "_use": "ecs_no_debug",
-    "active": false
+    "active": false,
+    "proj_trace_handle": -1
   },
   "bullet": {
     "_use": "projectile",
-    "bullet_trace_handle": -1,
     "bullet_component": {}
   },
   "shell_delayed": {

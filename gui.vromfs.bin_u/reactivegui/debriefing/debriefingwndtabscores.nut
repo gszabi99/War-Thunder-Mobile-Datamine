@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { can_write_replays } = require("%appGlobals/permissions.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
-let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { mkDebriefingStats } = require("mkDebriefingStats.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
@@ -20,7 +19,7 @@ let btnSaveReplay = @() {
     : translucentButton("ui/gameuiskin#icon_save.svg", "", saveReplayWindow)
 }
 
-let function mkDebriefingWndTabScores(debrData, _params) {
+function mkDebriefingWndTabScores(debrData, _params) {
   if (debrData == null)
     return null
 
@@ -75,7 +74,7 @@ let function mkDebriefingWndTabScores(debrData, _params) {
         vplace = ALIGN_BOTTOM
         valign = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL
-        gap = buttonsHGap
+        gap = hdpx(40)
         children = [
           btnTryPremium
           btnSaveReplay

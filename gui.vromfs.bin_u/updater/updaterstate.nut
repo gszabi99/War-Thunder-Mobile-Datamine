@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let logU = log_with_prefix("[UPDATER] ")
 let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
 let { is_android, is_ios } = require("%sqstd/platform.nut")
@@ -63,7 +63,7 @@ foreach(id, val in contentUpdater)
 updaterStage.subscribe(@(v) logU($"Stage change to {stageNames?[v] ?? v}"))
 updaterError.subscribe(@(v) logU($"Error: {v?.error}"))
 
-subscribe("android.embedded.updater.event", function (evt) {
+eventbus_subscribe("android.embedded.updater.event", function (evt) {
   let { eventType } = evt
   logU($"event: {eventNames?[eventType] ?? eventType}")
   updaterEvents?[eventType](evt)

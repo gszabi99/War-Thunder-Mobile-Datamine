@@ -56,11 +56,11 @@ let sortRewardsViewInfo = @(a, b) getPriorirty(b) <=> getPriorirty(a)
 let mkViewInfo = @(id, rType, count = 0)
   { id, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[allDecorators.value?[id].dType] ?? 1 }
 
-let function getRewardsViewInfo(data, multiply = 1) {
+function getRewardsViewInfo(data, multiply = 1) {
   let res = []
   if (!data)
     return res
-  let { gold = 0, wp = 0, warbond = 0, eventKey = 0, nybond = 0, premiumDays = 0, items = {}, lootboxes = {},
+  let { currencies = null, gold = 0, wp = 0, warbond = 0, eventKey = 0, nybond = 0, premiumDays = 0, items = {}, lootboxes = {},
     decorators = [], unitUpgrades = [], units = [] } = data
   if (unitUpgrades.len() != 0)
     foreach (id in unitUpgrades)
@@ -69,16 +69,24 @@ let function getRewardsViewInfo(data, multiply = 1) {
     foreach (id in units)
       if (!unitUpgrades.contains(id))
         res.append(mkViewInfo(id, "unit"))
-  if (gold > 0)
-    res.append(mkViewInfo("gold", "currency", gold * multiply))
-  if (wp > 0)
-    res.append(mkViewInfo("wp", "currency", wp * multiply))
-  if (warbond > 0)
-    res.append(mkViewInfo("warbond", "currency", warbond * multiply))
-  if (eventKey > 0)
-    res.append(mkViewInfo("eventKey", "currency", eventKey * multiply))
-  if (nybond > 0)
-    res.append(mkViewInfo("nybond", "currency", nybond * multiply))
+
+  if (currencies == null) {//compatibility with format before 2024.01.23
+    if (gold > 0)
+      res.append(mkViewInfo("gold", "currency", gold * multiply))
+    if (wp > 0)
+      res.append(mkViewInfo("wp", "currency", wp * multiply))
+    if (warbond > 0)
+      res.append(mkViewInfo("warbond", "currency", warbond * multiply))
+    if (eventKey > 0)
+      res.append(mkViewInfo("eventKey", "currency", eventKey * multiply))
+    if (nybond > 0)
+      res.append(mkViewInfo("nybond", "currency", nybond * multiply))
+  }
+  else
+    foreach(id, value in currencies)
+      if (value > 0)
+        res.append(mkViewInfo(id, "currency", value * multiply))
+
   if (premiumDays > 0)
     res.append(mkViewInfo("", "premium", premiumDays * multiply))
   if (decorators.len() != 0)
@@ -93,7 +101,7 @@ let function getRewardsViewInfo(data, multiply = 1) {
   return res
 }
 
-let function getStatsRewardsViewInfo(unlockStage) {
+function getStatsRewardsViewInfo(unlockStage) {
   let res = []
   foreach(stat in unlockStage?.updStats ?? {})
     if (stat.name in statsImages && stat.value.tointeger() > 0)
@@ -106,7 +114,7 @@ let function getStatsRewardsViewInfo(unlockStage) {
   return res
 }
 
-let function getUnlockRewardsViewInfo(unlockStage, servConfigs) {
+function getUnlockRewardsViewInfo(unlockStage, servConfigs) {
   let res = getStatsRewardsViewInfo(unlockStage)
   foreach (id, count in unlockStage?.rewards ?? {}) {
     let reward = servConfigs?.userstatRewards[id]
@@ -125,7 +133,7 @@ let customJoin = {
   unitUpgrade = { unit = @(_, __) true }
 }
 
-let function joinSingleViewInfo(resV, joiningV, onJoin) {
+function joinSingleViewInfo(resV, joiningV, onJoin) {
   if (resV.id != joiningV.id)
     return false
   let customRes = customJoin?[resV.rType][joiningV.rType](resV, joiningV)
@@ -142,7 +150,7 @@ let function joinSingleViewInfo(resV, joiningV, onJoin) {
   return true
 }
 
-let function joinViewInfo(resViewInfo, joiningViewInfo, onJoin = null) {
+function joinViewInfo(resViewInfo, joiningViewInfo, onJoin = null) {
   foreach(new in joiningViewInfo) {
     let found = resViewInfo.findvalue(@(v) joinSingleViewInfo(v, new, onJoin))
     if (found == null)
@@ -151,7 +159,7 @@ let function joinViewInfo(resViewInfo, joiningViewInfo, onJoin = null) {
   return resViewInfo
 }
 
-let function groupRewards(rewards) {
+function groupRewards(rewards) {
   let nonGroupableRewards = []
   let groupableRewards = []
   foreach(r in rewards) {
@@ -188,7 +196,7 @@ let function groupRewards(rewards) {
   return nonGroupableRewards.extend(groupedRewards.values())
 }
 
-let function getLootboxCommonRewardsViewInfo(lootbox) {
+function getLootboxCommonRewardsViewInfo(lootbox) {
   let { name = "", lastReward = "" } = lootbox
   let rewards = lootbox.rewards.map(function(chance, id) {
     let rewardCfg = serverConfigs.value?.rewardsCfg[id]
@@ -235,7 +243,7 @@ let function getLootboxCommonRewardsViewInfo(lootbox) {
       }))
 }
 
-let function getLootboxFixedRewardsViewInfo(lootbox) {
+function getLootboxFixedRewardsViewInfo(lootbox) {
   let fixedRewards = []
   let added = {}
   foreach (_value, id in lootbox.fixedRewards) {
@@ -262,7 +270,7 @@ let function getLootboxFixedRewardsViewInfo(lootbox) {
   return fixedRewards
 }
 
-let function getLootboxRewardsViewInfo(lootbox, needToGroup = false) {
+function getLootboxRewardsViewInfo(lootbox, needToGroup = false) {
   let fixedRewards = getLootboxFixedRewardsViewInfo(lootbox)
   let commonRewards = getLootboxCommonRewardsViewInfo(lootbox)
     .filter(@(cR) fixedRewards.findindex(@(fR) fR.rewardId == cR.rewardId) == null)
@@ -291,7 +299,7 @@ let isEmptyByType = {
   float = @(value) value == 0
 }
 
-let function isRewardEmpty(reward, profile) {
+function isRewardEmpty(reward, profile) {
   local res = true
   foreach(id, value in reward) {
     let empty = isEmptyByField?[id](value, profile)
@@ -308,19 +316,19 @@ let function isRewardEmpty(reward, profile) {
   return res
 }
 
-let function isSingleRewardEmpty(reward, profile) {
+function isSingleRewardEmpty(reward, profile) {
   let { id, rType } = reward
   return isEmptyByRType?[rType](id, profile) ?? false
 }
 
-let function isRewardReceived(lootbox, id, reward, profile) {
+function isRewardReceived(lootbox, id, reward, profile) {
   let { name, fixedRewards } = lootbox
   let openCount = profile?.lootboxStats[name].opened ?? 0
   let rollsToReceive = fixedRewards.findindex(@(r) r == id)?.tointeger()
   return isRewardEmpty(reward, profile) || (rollsToReceive != null && rollsToReceive <= openCount)
 }
 
-let function fillRewardsCounts(rewards, profile, configs) {
+function fillRewardsCounts(rewards, profile, configs) {
   let hasRewards = {}
   let hideLastReward = {}
   let { lootboxStats = null } = profile

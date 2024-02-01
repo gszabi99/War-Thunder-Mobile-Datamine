@@ -1,5 +1,6 @@
-
 from "%scripts/dagui_library.nut" import *
+
+let { registerRespondent } = require("%appGlobals/scriptRespondents.nut")
 
 let web_rpc = {
   handlers = {}
@@ -19,8 +20,7 @@ let web_rpc = {
   }
 }
 
-//used from native code
-::handle_web_rpc <- function handle_web_rpc(call) {
+registerRespondent("handle_web_rpc", function handle_web_rpc(call) {
   try {
     return web_rpc.handle_web_rpc_unsafe(call)
   }
@@ -28,11 +28,11 @@ let web_rpc = {
     log($"web rpc failed: {e}")
     return e
   }
-}
+})
 
 /*
  this is just example
-let function rpc_add(params) {
+function rpc_add(params) {
   return (params.a + params.b).tostring()
 }
 

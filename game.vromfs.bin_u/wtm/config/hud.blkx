@@ -4003,6 +4003,9 @@
       },
       "firework": {
         "shortcutIdx": 37
+      },
+      "strategy_mode": {
+        "shortcutIdx": 38
       }
     },
     "wheelActions": {
@@ -4648,12 +4651,6 @@
         1.0,
         -0.15,
         -0.42
-      ],
-      [
-        0.24,
-        0.25,
-        0.1,
-        0.4
       ]
     ]
   },
@@ -4676,12 +4673,6 @@
   "touchAreaLimitsSubmarines": {
     "area": [
       [
-        0.24,
-        0.25,
-        0.1,
-        0.4
-      ],
-      [
         0.9,
         1.0,
         0.2,
@@ -4693,14 +4684,6 @@
         -0.1,
         -0.43
       ]
-    ]
-  },
-  "touchAreaLimitsTanks": {
-    "area": [
-      0.24,
-      0.25,
-      0.1,
-      0.4
     ]
   },
   "move_direction_arrow": {

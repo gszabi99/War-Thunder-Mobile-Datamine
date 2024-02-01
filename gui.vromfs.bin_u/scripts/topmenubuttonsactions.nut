@@ -1,6 +1,7 @@
-
+from "%scripts/dagui_natives.nut" import hud_request_hud_ship_debuffs_state, hud_request_hud_tank_debuffs_state, hud_request_hud_crew_state
 from "%scripts/dagui_library.nut" import *
-let { subscribe, send } = require("eventbus")
+
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let g_mislist_type = require("%scripts/missions/misListType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addOptionMode, setGuiOptionsMode, addUserOption, set_gui_option } = require("guiOptions")
@@ -23,7 +24,7 @@ let USEROPT_AIRCRAFT = addUserOption("USEROPT_AIRCRAFT")
 let USEROPT_WEAPONS = addUserOption("USEROPT_WEAPONS")
 let USEROPT_SKIN = addUserOption("USEROPT_SKIN")
 
-let function startOfflineMission(unitName, missionId, bullets, localMP = false, gameMode = GM_TEST_FLIGHT
+function startOfflineMission(unitName, missionId, bullets, localMP = false, gameMode = GM_TEST_FLIGHT
 ) {
   let misBlk = get_meta_mission_info_by_name(missionId)
   if (misBlk == null) {
@@ -37,9 +38,9 @@ let function startOfflineMission(unitName, missionId, bullets, localMP = false, 
   }
   actualizeBattleData(unitName)
 
-  ::hud_request_hud_tank_debuffs_state()
-  ::hud_request_hud_crew_state()
-  ::hud_request_hud_ship_debuffs_state()
+  hud_request_hud_tank_debuffs_state()
+  hud_request_hud_crew_state()
+  hud_request_hud_ship_debuffs_state()
 
   if (gameMode != null)
     misBlk["_gameMode"] = gameMode
@@ -64,7 +65,7 @@ let function startOfflineMission(unitName, missionId, bullets, localMP = false, 
   select_training_mission(misBlk)
 }
 
-let function openBenchmarkWnd(id) {
+function openBenchmarkWnd(id) {
   set_game_mode(GM_BENCHMARK)
   g_mislist_type.BASE.requestMissionsList(function(list) {
     let mission = list.findvalue(@(m) m.id == id)
@@ -77,19 +78,19 @@ let function openBenchmarkWnd(id) {
   })
 }
 
-let function sendBenchmarksList(_) {
+function sendBenchmarksList(_) {
   set_game_mode(GM_BENCHMARK)
-  g_mislist_type.BASE.requestMissionsList(@(list) send("benchmarksList", {
-        benchmarks = list.filter(@(m) !m.isHeader)
+  g_mislist_type.BASE.requestMissionsList(@(list) eventbus_send("benchmarksList", {
+        benchmarks = list.filter(@(m) !m?.isHeader)
           .map(@(m) { name = m.getNameText(), id = m.id })
       }))
 }
 
-subscribe("startTestFlight", @(p)
+eventbus_subscribe("startTestFlight", @(p)
   startOfflineMission(p.unitName, p?.missionName ?? TESTFLIGHT_MISSION, p?.bullets))
-subscribe("startTraining", @(p)
+eventbus_subscribe("startTraining", @(p)
   startOfflineMission(p.unitName, p.missionName, p?.bullets, false, GM_TRAINING))
-subscribe("startLocalMP", @(p)
+eventbus_subscribe("startLocalMP", @(p)
   startOfflineMission(p.unitName, p.missionName, p?.bullets, true, GM_DOMINATION))
-subscribe("startBenchmark", @(v) openBenchmarkWnd(v.id))
-subscribe("getBenchmarksList", sendBenchmarksList)
+eventbus_subscribe("startBenchmark", @(v) openBenchmarkWnd(v.id))
+eventbus_subscribe("getBenchmarksList", sendBenchmarksList)

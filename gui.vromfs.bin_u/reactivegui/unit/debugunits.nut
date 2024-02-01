@@ -9,7 +9,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitTags, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 
-let function debugUnitStats() {
+function debugUnitStats() {
   let { allUnits = {} } = serverConfigs.value
   let unitsByCamp = {}
   foreach(name, unit in allUnits) {
@@ -32,13 +32,13 @@ let function debugUnitStats() {
 let isFilledString = @(unitName) type(unitName) == "string" && unitName.len() != 0
 let invalidStrParamMsg = "ERROR: Param {0} should be a non empty string in double quotes."
 
-let function debug_show_unit(unitName) {
+function debug_show_unit(unitName) {
   if (!isFilledString(unitName))
     return console_print(invalidStrParamMsg.subst("unitName"))
   hangar_load_model(unitName)
 }
 
-let function debug_start_testflight(unitName, missionName) {
+function debug_start_testflight(unitName, missionName) {
   if (!isFilledString(unitName))
     return console_print(invalidStrParamMsg.subst("unitName"))
   if (!isFilledString(missionName))

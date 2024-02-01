@@ -34,7 +34,7 @@ let guidsForRequest = keepref(Computed(function(prev) {
   return isEqual(prev, res) ? prev : res
 }))
 
-let function refreshAvailableGuids() {
+function refreshAvailableGuids() {
   if (guidsForRequest.value.len() == 0)
     return
   logG("requestData: ", guidsForRequest.value)
@@ -66,7 +66,7 @@ else if (goodsInfo.value.len() == 0)
   refreshAvailableGuids()
 
 let forceUpdateAllGuids = @() needForceUpdate(true)
-let function startAutoUpdateTimer() {
+function startAutoUpdateTimer() {
   needForceUpdate(false)
   if (isInBattle.value || lastUpdateTime.value <= 0)
     clearTimer(forceUpdateAllGuids)
@@ -77,7 +77,7 @@ startAutoUpdateTimer()
 lastUpdateTime.subscribe(@(_) startAutoUpdateTimer())
 isInBattle.subscribe(@(_) startAutoUpdateTimer())
 
-let function addGoodsInfoGuids(guids) {
+function addGoodsInfoGuids(guids) {
   let newGuids = clone allGuids.value
   foreach(guid in guids)
     newGuids[guid] <- true

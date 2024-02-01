@@ -25,7 +25,7 @@ let hitCamBgColor = {
 }
 
 let resultBgHeight = evenPx(36)
-let function resultText() {
+function resultText() {
   let res = { watch = hcResult }
   let { locId = "", styleId = ""  } = hcResult.value
   let style = hitResultStyle?[styleId]
@@ -63,7 +63,7 @@ let mkHealthGrad = @(isLeft, color, part) {
   hplace = isLeft ? ALIGN_LEFT : ALIGN_RIGHT
 }
 
-let function healthHiglight() {
+function healthHiglight() {
   let color = hcRelativeHealth.value >= 0.8 ? 0
     : hcRelativeHealth.value >= 0.3 ? 0x80806000
     : 0XA0A03030

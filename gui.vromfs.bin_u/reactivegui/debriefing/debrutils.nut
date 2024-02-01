@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let function getLevelProgress(curLevelConfig, reward) {
+function getLevelProgress(curLevelConfig, reward) {
   let { exp = 0, level = 1, nextLevelExp = 0, isLastLevel = false, levelsExp = [] } = curLevelConfig
   let res = {
     prevLevel = level
@@ -31,7 +31,7 @@ let function getLevelProgress(curLevelConfig, reward) {
   return res
 }
 
-let function isPlayerReceiveLevel(debrData) {
+function isPlayerReceiveLevel(debrData) {
   let { exp = 0, nextLevelExp = 0 } = debrData?.player
   let { totalExp = 0 } = debrData?.reward.playerExp
   return nextLevelExp != 0
@@ -39,14 +39,14 @@ let function isPlayerReceiveLevel(debrData) {
     && exp + totalExp >= nextLevelExp
 }
 
-let function isUnitReceiveLevel(debrData) {
+function isUnitReceiveLevel(debrData) {
   let { exp = 0, nextLevelExp = 0 } = debrData?.unit
   let { totalExp = 0 } = debrData?.reward.unitExp
   return nextLevelExp != 0
     && exp + totalExp >= nextLevelExp
 }
 
-let function getNewPlatoonUnit(debrData) {
+function getNewPlatoonUnit(debrData) {
   let { unit = null, reward = null } = debrData
   if (unit == null)
     return null

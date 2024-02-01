@@ -26,7 +26,7 @@ userstatDescList.subscribe(function(v) {
     updateSeasonRewards()
 })
 
-let function getSubArray(tbl, id) {
+function getSubArray(tbl, id) {
   if (id not in tbl)
     tbl[id] <- []
   return tbl[id]

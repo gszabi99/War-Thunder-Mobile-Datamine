@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { register_command } = require("console")
 
 let waitboxes = mkWatched(persist, "waitboxes", [])
 
-let function removeWaitbox(uid) {
+function removeWaitbox(uid) {
   let idx = waitboxes.value.findindex(@(v) v.uid == uid)
   if (idx == null)
     return
@@ -14,14 +14,14 @@ let function removeWaitbox(uid) {
   waitboxes.mutate(@(v) v.remove(idx))
 }
 
-let function removeWaitboxByTimeout(wbox) {
+function removeWaitboxByTimeout(wbox) {
   let { uid, eventId, context } = wbox
   removeWaitbox(uid)
   if (eventId != null)
-    send(eventId, context)
+    eventbus_send(eventId, context)
 }
 
-let function addWaitbox(text, time = 0, uid = null, eventId = null, context = null) {
+function addWaitbox(text, time = 0, uid = null, eventId = null, context = null) {
   uid = uid ?? text
   removeWaitbox(uid)
   let wbox = { uid, text, eventId, context,

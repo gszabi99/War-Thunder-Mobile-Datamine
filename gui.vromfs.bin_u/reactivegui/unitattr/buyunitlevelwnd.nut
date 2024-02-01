@@ -43,7 +43,7 @@ let close = @() unitName(null)
 
 registerHandler("closeBuyUnitLevelWnd", @(_) close())
 
-let function onClickPurchase(unitNameV, curLevel, tgtLevel, nextLevelExp, costGold) {
+function onClickPurchase(unitNameV, curLevel, tgtLevel, nextLevelExp, costGold) {
   if (unitInProgress.value != null)
     return
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, $"{unitNameV} {curLevel} +{tgtLevel - curLevel}")
@@ -178,7 +178,7 @@ let mkLevelPrice = @(fullCostGold, costGold, costMul) @() {
       ]
 }
 
-let function mkLevelBlock(levels, costMul, unitV, levelsSp) {
+function mkLevelBlock(levels, costMul, unitV, levelsSp) {
   let { level, exp } = unitV
   let expTotal = unitV.levels?[level].exp ?? 1
   let expLeft = expTotal - exp
@@ -214,7 +214,7 @@ let function mkLevelBlock(levels, costMul, unitV, levelsSp) {
   }
 }
 
-let function wndContent() {
+function wndContent() {
   let res = { watch = [unit, levelsToMax, campConfigs] }
   let levelsSp = campConfigs.value?.unitLevelsSp?[unit.value?.attrPreset].levels
   if (levelsSp == null)

@@ -114,6 +114,9 @@
       "forest"
     ]
   },
+  "ussr_camo_winter": {
+    "camoType": "winter"
+  },
   "ussr_t_26_1940_1st_GvTBr/default": {
     "camoType": "winter"
   },
@@ -1112,6 +1115,9 @@
     "camoType": "desert"
   },
   "uk_t17e2_race_raceskin": {
+    "camoType": "fiction"
+  },
+  "tl_camo_blue_white_cubes": {
     "camoType": "fiction"
   }
 }

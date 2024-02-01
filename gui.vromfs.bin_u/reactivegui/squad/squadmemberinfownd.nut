@@ -95,7 +95,7 @@ let mkStatusRow = @(icon, iconColor, text, ovr = {}) {
   ]
 }.__update(ovr)
 
-let function statusBlock(uid) {
+function statusBlock(uid) {
   let onlineStatus = mkContactOnlineStatus(uid.tostring())
   let view = Computed(@() squadId.value == uid ? statusView.leader
     : squadMembers.value?[uid].ready ? statusView.memberReady
@@ -108,7 +108,7 @@ let function statusBlock(uid) {
     { watch = view })
 }
 
-let function inBattleBlock(uid) {
+function inBattleBlock(uid) {
   let isInBattle = Computed(@() squadMembers.value?[uid].inBattle ?? false)
   return @() !isInBattle.value ? { watch = isInBattle }
     : mkStatusRow("in_battle.svg", 0xFFFFFFFF, loc("status/in_battle"), { watch = isInBattle })
@@ -133,7 +133,7 @@ let unitInfo = @(unitW) function() {
   })
 }
 
-let function memberInfo(uid) {
+function memberInfo(uid) {
   let userId = uid.tostring()
   let contact = Contact(userId)
   let info = mkPublicInfo(userId)
@@ -155,7 +155,7 @@ let function memberInfo(uid) {
   }
 }
 
-let function buttons(uid) {
+function buttons(uid) {
   let userId = uid.tostring()
   let needButtonsPlace = Computed(@() isSquadLeader.value || uid == myUserId.value)
   return @() !needButtonsPlace.value ? { watch = needButtonsPlace }
@@ -248,7 +248,7 @@ let animLines = @(rect) function() {
   })
 }
 
-let function content() {
+function content() {
   if (openParams.value == null)
     return { watch = openParams }
 

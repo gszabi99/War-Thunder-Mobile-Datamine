@@ -24,7 +24,7 @@ let xrayDoll = @(stateFlags) {
   ]
 }
 
-let function useShortcutOn(shortcutId) {
+function useShortcutOn(shortcutId) {
   setShortcutOn(shortcutId)
   updateActionBarDelayed()
 }

@@ -1,11 +1,14 @@
+from "%scripts/dagui_natives.nut" import run_reactive_gui, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+
 let { get_time_msec, get_local_unixtime } = require("dagor.time")
 let startLoadTime = get_time_msec()
-
-let { loadOnce, registerPersistentData, isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_listener_priority } = require("%scripts/g_listener_priority.nut")
+let { loadOnce, isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { set_rnd_seed } = require("dagor.random")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
+let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 clear_vm_entity_systems()
 start_es_loading()
 
@@ -18,18 +21,6 @@ require("%scripts/clientState/errorHandling.nut")
 
 let { is_pc } = require("%sqstd/platform.nut")
 
-::is_dev_version <- false // WARNING : this is unsecure
-
-::INVALID_USER_ID <- ::make_invalid_user_id()
-::RESPAWNS_UNLIMITED <- -1
-
-::is_debug_mode_enabled <- false
-
-::cross_call_api <- {}
-
-registerPersistentData("MainGlobals", getroottable(),
-  [ "is_debug_mode_enabled", "is_dev_version" ])
-
 //------- vvv enums vvv ----------
 
 set_rnd_seed(get_local_unixtime())
@@ -37,24 +28,7 @@ set_rnd_seed(get_local_unixtime())
 //------- vvv files before login vvv ----------
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-::g_listener_priority <- {
-  DEFAULT = 0
-  DEFAULT_HANDLER = 1
-  UNIT_CREW_CACHE_UPDATE = 2
-  USER_PRESENCE_UPDATE = 2
-  CONFIG_VALIDATION = 2
-  LOGIN_PROCESS = 3
-  MEMOIZE_VALIDATION = 4
-}
-subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
-
-let guiOptions = require("guiOptions")
-foreach (name in [
-  "get_gui_option", "set_gui_option", "get_unit_option", "set_unit_option",
-  "get_cd_preset", "set_cd_preset"
-])
-  if (name not in getroottable())
-    getroottable()[name] <- guiOptions[name]
+subscriptions.setDefaultPriority(g_listener_priority.DEFAULT)
 
 foreach (fn in [
   "%scripts/debugTools/dbgToString.nut"
@@ -88,8 +62,6 @@ foreach (fn in [
   //used in loading screen
   "%scripts/loading.nut"
 
-  "%scripts/hangarLights.nut"
-
   "%scripts/webRPC.nut"
 
   "%scripts/debugTools/dbgUtils.nut"
@@ -113,7 +85,7 @@ end_es_loading()
 if (!isInReloading()) {
   sendLoadingStageBqEvent("main_loaded")
 
-  ::run_reactive_gui()
+  run_reactive_gui()
 }
 
 //------- ^^^ files before login ^^^ ----------
@@ -123,7 +95,7 @@ if (!isInReloading()) {
 
 local isFullScriptsLoaded = false
 
-let function loadScriptsAfterLoginOnceImpl() {
+function loadScriptsAfterLoginOnceImpl() {
   if (isFullScriptsLoaded)
     return
   isFullScriptsLoaded = true
@@ -133,7 +105,7 @@ let function loadScriptsAfterLoginOnceImpl() {
   log($"DaGui scripts load after login {get_time_msec() - t} msec")
 }
 
-let function loadScriptsAfterLoginOnce() {
+function loadScriptsAfterLoginOnce() {
   if (isFullScriptsLoaded)
     return
   start_es_loading()
@@ -144,8 +116,9 @@ let function loadScriptsAfterLoginOnce() {
 //------- ^^^ files after login ^^^ ----------
 
 
-if (is_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug/netLogerr") == null)
-  ::setSystemConfigOption("debug/netLogerr", true)
+if (is_pc && get_cur_circuit_name().indexof("production") == null
+  && getSystemConfigOption("debug/netLogerr") == null)
+    setSystemConfigOption("debug/netLogerr", true)
 
 let { isReadyToFullLoad, isLoginRequired } = require("%appGlobals/loginState.nut")
 
@@ -159,14 +132,17 @@ isLoginRequired.subscribe(@(v) v ? null : loadScriptsAfterLoginOnce())
 
 let { defer } = require("dagor.workcycle")
 let { reloadDargUiScript } = require("reactiveGuiCommand")
-subscribe("reloadDargVM", @(_) defer(@() reloadDargUiScript(false)))
+eventbus_subscribe("reloadDargVM", @(_) defer(@() reloadDargUiScript(false)))
 
 let { registerMplayerCallbacks } = require("mplayer_callbacks")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-subscribe("register_mplayer_callbacks",
-  @(_) registerMplayerCallbacks({ frameNick = @(nick, frameId) frameNick(getPlayerName(nick), frameId) }))
+let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
+eventbus_subscribe("register_mplayer_callbacks",
+  @(_) registerMplayerCallbacks({
+    frameNick = @(nick, frameId) frameNick(getPlayerName(nick, myUserRealName.get(), myUserName.get()), frameId)
+  }))
 
-/*use by client .cpp code*/
 let { squadMembers } = require("%appGlobals/squadState.nut")
-::is_in_my_squad <- @(userId, _checkAutosquad = true) userId in squadMembers.value
+let { registerRespondent } = require("%appGlobals/scriptRespondents.nut")
+registerRespondent("is_in_my_squad", @(userId, _checkAutosquad = true) userId in squadMembers.value)

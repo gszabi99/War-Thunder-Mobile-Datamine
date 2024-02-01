@@ -15,7 +15,7 @@ let mkStatus = @(statusW) @() {
   children = mkAvailAttrMark(statusW.value)
 }
 
-let function tabData(tab) {
+function tabData(tab) {
   let { id = "", locId  = "", image = null, statusW = null } = tab
   return {
     id

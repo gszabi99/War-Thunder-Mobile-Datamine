@@ -1,8 +1,9 @@
+from "%scripts/dagui_natives.nut" import check_login_pass
 from "%scripts/dagui_library.nut" import *
 let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync } = require("auth_wt")
 let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let googlePlayAccount = require("android.account.googleplay")
@@ -52,7 +53,7 @@ let proceedAuthByResult = {
       : SST_UNKNOWN
     authState.mutate(@(a) a.__update({ check2StepAuthCode = true, secStepType = value }))
     interruptStage({ error = "Need 2step auth" })
-    send("StartListenTwoStepCode", {})
+    eventbus_send("StartListenTwoStepCode", {})
   },
 
   [YU2_WRONG_LOGIN] = mkInterruptWithRecoveryMsg(YU2_WRONG_LOGIN),
@@ -64,7 +65,7 @@ let proceedAuthByResult = {
   },
 }
 
-let function proceedAuthorizationResult(result, loginType) {
+function proceedAuthorizationResult(result, loginType) {
   let action = proceedAuthByResult?[result]
   if (action != null) {
     action(loginType)
@@ -79,7 +80,7 @@ let function proceedAuthorizationResult(result, loginType) {
   interruptStage({ errCode = result })
 }
 
-subscribe("android.account.googleplay.onSignInCallback",
+eventbus_subscribe("android.account.googleplay.onSignInCallback",
   onlyActiveStageCb(function(msg) {
     let { player_id, server_auth, error_code = null } = msg
     let errStr = msg.error
@@ -100,12 +101,12 @@ subscribe("android.account.googleplay.onSignInCallback",
       return
     }
     logStage("Google check_login_pass")
-    let result = ::check_login_pass(player_id, server_auth, "google", "google", false, false)
+    let result = check_login_pass(player_id, server_auth, "google", "google", false, false)
     //check_login_pass is not instant
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GOOGLE))(result)
   }))
 
-subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.facebook.onSignInCallback",
+eventbus_subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.facebook.onSignInCallback",
   onlyActiveStageCb(function(msg) {
     let { token, status } = msg
     if (status != fbAccount.FB_RESULT_OK) {
@@ -121,11 +122,11 @@ subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.face
       return
     }
     logStage("Facebook check_login_pass")
-    let result = ::check_login_pass(token, "", "facebook", "facebook", false, false)
+    let result = check_login_pass(token, "", "facebook", "facebook", false, false)
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_FACEBOOK))(result)
   }))
 
-subscribe("android.account.onGuestFIDReciveCallback",
+eventbus_subscribe("android.account.onGuestFIDReciveCallback",
   onlyActiveStageCb(function(msg) {
     let { guest_FID } = msg
     if (guest_FID == "") {
@@ -140,12 +141,12 @@ subscribe("android.account.onGuestFIDReciveCallback",
     }
 
     logStage("Firebase check_login_pass")
-    let result = ::check_login_pass(guest_FID, "", "firebase", "firebase", false, false)
+    let result = check_login_pass(guest_FID, "", "firebase", "firebase", false, false)
     //check_login_pass is not instant
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_FIREBASE))(result)
   }))
 
-subscribe("ios.account.apple.onAppleLoginToken",
+eventbus_subscribe("ios.account.apple.onAppleLoginToken",
   onlyActiveStageCb(function(msg) {
     let { status, token=null } = msg
     if (status != appleAccount.APPLE_LOGIN_SUCCESS) {
@@ -163,11 +164,11 @@ subscribe("ios.account.apple.onAppleLoginToken",
       return
     }
     logStage("Apple check_login_pass")
-    let result = ::check_login_pass("", token, "apple", "apple", false, false)
+    let result = check_login_pass("", token, "apple", "apple", false, false)
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_APPLE))(result)
 }))
 
-subscribe("nswitch.account.login",
+eventbus_subscribe("nswitch.account.login",
   onlyActiveStageCb(function(msg) {
     let { errorStr = null, player_id = null, token=null } = msg
     if (errorStr) {
@@ -182,7 +183,7 @@ subscribe("nswitch.account.login",
       return
     }
     logStage("Nintendo Switch check_login_pass")
-    let result = ::check_login_pass(player_id, token, "nswitch", "nswitch", false, false)
+    let result = check_login_pass(player_id, token, "nswitch", "nswitch", false, false)
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_NSWITCH))(result)
 }))
 
@@ -200,11 +201,11 @@ let loginByType = {
 
   [LT_FIREBASE] = function(_as) {
     googlePlayAccount.signOut(false)
-    googlePlayAccount.prepareGuestFID() //will be event android.account.onGuestFIDReciveCallback
+    googlePlayAccount.loadGuestFID() //will be event android.account.onGuestFIDReciveCallback
   },
 
   [LT_GUEST] = function(_as) {
-    let result = ::check_login_pass(getUUID(), "", "guest", "guest", false, false)
+    let result = check_login_pass(getUUID(), "", "guest", "guest", false, false)
     onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GUEST))(result)
   },
 
@@ -217,7 +218,7 @@ let loginByType = {
   },
 
   [LT_GAIJIN] = function(as) {
-    let result = ::check_login_pass(as.loginName,
+    let result = check_login_pass(as.loginName,
       as.loginPas,
       "", //We not use stoken in WTM
       as.check2StepAuthCode ? as.twoStepAuthCode : "",
@@ -228,7 +229,7 @@ let loginByType = {
   },
 }
 
-let function start() {
+function start() {
   send_counter("sq.app.stage", 1, { stage = "auth_start" })
   sendLoadingStageBqEvent("auth_start")
 

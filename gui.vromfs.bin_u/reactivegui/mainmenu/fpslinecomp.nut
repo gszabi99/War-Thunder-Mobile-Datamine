@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { isShowDebugInterface, is_app_loaded } = require("app")
 let { format } = require("string")
 let { toUpper } = require("%sqstd/string.nut")
@@ -16,10 +17,10 @@ let state = Watched({
 })
 
 let initSubscription = @() isShowDebugInterface() ? null
-  : subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
+  : eventbus_subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
 if (is_app_loaded())
   initSubscription()
-subscribe("onAcesInitComplete", @(_) initSubscription())
+eventbus_subscribe("onAcesInitComplete", @(_) initSubscription())
 
 let comps = {}
 foreach (key in [ "gpu", "preset", "sessionId", "latency", "latencyA", "latencyR" ]) {

@@ -2,15 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
+let { can_view_player_uids } = require("%appGlobals/permissions.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { calcPosition } = require("%rGui/tooltip.nut")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY } = require("%rGui/style/gradients.nut")
-
-let bgCard = mkColoredGradientY(0xFF304453, 0xFF030C13)
+let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
 
 let selectedPlayerForInfo = Watched(null)
 
@@ -42,7 +40,7 @@ let levelMark = @(level, starLevel) {
   ]
 }
 
-let function mkNameContent(player) {
+function mkNameContent(player) {
   let title = player?.decorators.title
   let { level, starLevel = 0 } = player
   let res = {
@@ -61,7 +59,7 @@ let function mkNameContent(player) {
         flow = FLOW_VERTICAL
         children = [
           textProps.__merge({
-            text = getPlayerName(player.nickname)
+            text = player.name
           })
           mkTitle(title, fontTinyAccented)
         ]
@@ -77,20 +75,12 @@ let mkText = @(text) {
   text
 }.__update(fontTinyAccented)
 
-let mkHeader = @() {
-  rendObj = ROBJ_9RECT
-  image = gradTranspDoubleSideX
-  texOffs = [0, gradDoubleTexOffset]
-  screenOffs = [0, hdpx(300)]
-  color = 0xFF4D88A4
-  size = [flex(), SIZE_TO_CONTENT]
-  padding = hdpx(15)
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text = loc("mainmenu/titlePlayerProfile")
-  }.__update(fontSmallAccented)
+let mkPlayerUidInfo = @(player) function() {
+  let res = { watch = can_view_player_uids }
+  if (!can_view_player_uids.get())
+    return res
+  let text = player?.isBot ? loc("multiplayer/state/bot_ready") : $"UID: {player?.userId} | {player?.realName}"
+  return mkText(text).__update(res, { color = 0x80808080 })
 }
 
 function mkPlayerInfo(player) {
@@ -101,13 +91,17 @@ function mkPlayerInfo(player) {
     let curr = info.get()?.campaigns?[curCampaign.get()] ?? {}
     return curr?.starLevelHistory ?? []
   })
-  return {
-    rendObj = ROBJ_IMAGE
-    image = bgCard
+  return bgMessage.__merge({
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     children = [
-      mkHeader
+      bgHeader.__merge({
+        size = [flex(), SIZE_TO_CONTENT]
+        padding = hdpx(15)
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        children = {rendObj = ROBJ_TEXT text = loc("mainmenu/titlePlayerProfile")}.__update(fontSmallAccented)
+      })
       {
         flow = FLOW_VERTICAL
         valign = ALIGN_TOP
@@ -132,10 +126,11 @@ function mkPlayerInfo(player) {
                 ]
               : mkText(loc("mainmenu/noMedal"))
           }
+          mkPlayerUidInfo(player)
         ]
       }
     ]
-  }
+  })
 }
 
 let key = "playerInfo"

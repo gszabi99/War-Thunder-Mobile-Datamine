@@ -1,6 +1,6 @@
 
 let { Computed, Watched } = require("frp")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { get_mp_session_id_int, is_local_multiplayer } = require("multiplayer")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -24,7 +24,7 @@ let isInMpSession = Watched(get_mp_session_id_int() != -1)
 let isLocalMultiplayer = Watched(is_local_multiplayer())
 let isInMpBattle = Computed(@() isInBattle.value && isInMpSession.value)
 
-subscribe("onJoinMatch", function(_) {
+eventbus_subscribe("onJoinMatch", function(_) {
   let sessionId = get_mp_session_id_int()
   battleSessionId(sessionId)
   isInMpSession(sessionId != -1)
@@ -35,7 +35,7 @@ isInBattle.subscribe(function(v) {
     isLocalMultiplayer(is_local_multiplayer())
 })
 
-subscribe("destroyMultiplayer", @(_) isInMpSession(get_mp_session_id_int() != -1))
+eventbus_subscribe("destroyMultiplayer", @(_) isInMpSession(get_mp_session_id_int() != -1))
 
 return {
   isInBattle

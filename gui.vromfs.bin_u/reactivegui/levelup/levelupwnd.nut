@@ -77,7 +77,7 @@ let headerLine = @(delay) {
   ]
 }
 
-let function closeByBackButton() {
+function closeByBackButton() {
   sendNewbieBqEvent("pressBackInLevelUpWnd")
   closeLvlUpWnd()
 }

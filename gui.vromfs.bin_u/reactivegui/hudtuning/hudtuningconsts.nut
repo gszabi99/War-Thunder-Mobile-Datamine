@@ -6,7 +6,7 @@ let ALIGN_R = 0x02
 let ALIGN_T = 0x04
 let ALIGN_B = 0x08
 
-let function alignToDargPlaceImpl(align) {
+function alignToDargPlaceImpl(align) {
   let hplace = (align & ALIGN_L) ? ALIGN_LEFT
     : (align & ALIGN_R) ? ALIGN_RIGHT
     : ALIGN_CENTER
@@ -22,7 +22,7 @@ let function alignToDargPlaceImpl(align) {
 }
 
 let places = {}
-let function alignToDargPlace(align) {
+function alignToDargPlace(align) {
   if (align not in places)
     places[align] <- alignToDargPlaceImpl(align)
   return places[align]

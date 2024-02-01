@@ -9,7 +9,7 @@ let { onlyActiveStageCb, export, finalizeStage
 let finalize = onlyActiveStageCb(finalizeStage)
 isMatchingOnline.subscribe(@(v) v ? finalize() : null)
 
-let function start() {
+function start() {
   if (isMatchingOnline.value)
     finalize()
 }

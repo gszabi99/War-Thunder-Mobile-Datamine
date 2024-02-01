@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+require("%rGui/onlyAfterLogin.nut")
 let { register_command } = require("console")
 let interopGet = require("interopGen.nut")
 let { isDmgIndicatorVisible } = require("gameplayBinding")
@@ -14,6 +15,7 @@ let hudStateNative = {
   isPlayingReplay = false
   isInSpectatorMode = false
   isInArtilleryMap = false
+  isInStrategyMode = false
   isVisibleDmgIndicator = isDmgIndicatorVisible()
   hasTarget = false
   hasTargetCandidate = false

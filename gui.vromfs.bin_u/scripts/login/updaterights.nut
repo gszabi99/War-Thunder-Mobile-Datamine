@@ -10,7 +10,7 @@ let { applyRights } = require("%scripts/login/applyRights.nut")
 
 const UPDATE_TIMEOUT = 300 //5min
 
-let function updateRightsImpl() {
+function updateRightsImpl() {
   if (!isContactsLoggedIn.value)
     return
 

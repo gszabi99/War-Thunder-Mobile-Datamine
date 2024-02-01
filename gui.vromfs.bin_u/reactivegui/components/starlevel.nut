@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let function mkStarLevelCtor(starSize) {
+function mkStarLevelCtor(starSize) {
   let star = {
     size = [starSize, starSize]
     rendObj = ROBJ_IMAGE

@@ -119,7 +119,7 @@ let UNITS = {
   cb = unitsWnd
 }
 
-let function getPublicButtons() {
+function getPublicButtons() {
   let res = [OPTIONS, STORE, UNITS]
   if (isGamepad.value)
     res.append(GAMEPAD_HELP)
@@ -137,7 +137,7 @@ let function getPublicButtons() {
   return res
 }
 
-let function getDevButtons() {
+function getDevButtons() {
   let res = []
   if (!can_debug_configs.value && !can_debug_missions.value)
     return res

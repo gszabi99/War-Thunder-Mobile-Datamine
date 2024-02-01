@@ -1,7 +1,8 @@
+from "%scripts/dagui_natives.nut" import disable_flight_menu, hud_request_hud_crew_state, is_player_unit_alive, is_respawn_screen, hud_request_hud_ship_debuffs_state, hud_request_hud_tank_debuffs_state, request_aircraft_and_weapon, set_aircraft_accepted_cb
 
 from "%scripts/dagui_library.nut" import *
 let logR = log_with_prefix("[RESPAWN] ")
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let { canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer
 } = require("guiRespawn")
@@ -32,7 +33,7 @@ isInRespawn.subscribe(function(v) {
   respawnData(null)
   if (!v)
     return
-  ::disable_flight_menu(true)
+  disable_flight_menu(true)
   respawnUnitInfo(unitToSpawn.value)
   respawnUnitItems(curBattleItems.value)
 })
@@ -40,14 +41,14 @@ unitToSpawn.subscribe(@(v) isInRespawn.value ? respawnUnitInfo(v) : null)
 if (isInRespawn.value && unitToSpawn.value != null)
   respawnUnitInfo(unitToSpawn.value)
 
-subscribe("getLocalPlayerSpawnInfo",
-  @(_) send("localPlayerSpawnInfo",
+eventbus_subscribe("getLocalPlayerSpawnInfo",
+  @(_) eventbus_send("localPlayerSpawnInfo",
     {
-      isAlive = ::is_player_unit_alive()
+      isAlive = is_player_unit_alive()
       hasSpawns = get_respawns_left() != 0
     }))
 
-let function applyRespawnDataCb(result) {
+function applyRespawnDataCb(result) {
   if (!isRespawnDataInProgress.value)
     return
   isRespawnDataInProgress(false)
@@ -65,13 +66,13 @@ let function applyRespawnDataCb(result) {
   debugTableData(rd)
   openFMsgBox({ text = loc($"changeAircraftResult/{result}"), uid = "char_connecting_error" })
 }
-::set_aircraft_accepted_cb({}, applyRespawnDataCb)
+set_aircraft_accepted_cb({}, applyRespawnDataCb)
 
-let function applyRespawnData() {
+function applyRespawnData() {
   if (isRespawnDataInProgress.value)
     return
   let { idInCountry, respBaseId } = wantedRespawnData.value
-  if (::request_aircraft_and_weapon(wantedRespawnData.value, idInCountry, respBaseId) < 0) {
+  if (request_aircraft_and_weapon(wantedRespawnData.value, idInCountry, respBaseId) < 0) {
     isRespawnStarted(false)
     return
   }
@@ -80,14 +81,14 @@ let function applyRespawnData() {
   respawnData(wantedRespawnData.value)
 }
 
-let function tryRespawn() {
+function tryRespawn() {
   if (isRespawnInProgress.value || !canRespawnCaNow() || timeToRespawn.value >= -100)
     return
 
-  ::disable_flight_menu(false)
-  ::hud_request_hud_tank_debuffs_state()
-  ::hud_request_hud_crew_state()
-  ::hud_request_hud_ship_debuffs_state()
+  disable_flight_menu(false)
+  hud_request_hud_tank_debuffs_state()
+  hud_request_hud_crew_state()
+  hud_request_hud_ship_debuffs_state()
   logR("Call doRespawnPlayer")
   isRespawnInProgress(doRespawnPlayer())
   if (!isRespawnInProgress.value) {
@@ -96,7 +97,7 @@ let function tryRespawn() {
   }
 }
 
-let function onCountdownTimer() {
+function onCountdownTimer() {
   timeToRespawn(get_mp_respawn_countdown())
   if (!isRespawnStarted.value)
     clearTimer(onCountdownTimer)
@@ -104,7 +105,7 @@ let function onCountdownTimer() {
     tryRespawn()
 }
 
-let function updateRespawnStep() {
+function updateRespawnStep() {
   if (!isRespawnStarted.value || isRespawnInProgress.value) //respawnInProgress can't be interrupted
     return
 
@@ -132,12 +133,12 @@ updateRespawnStep()
 foreach (w in [isRespawnStarted, isRespawnDataActual, isRespawnDataInProgress, isRespawnInProgress])
   w.subscribe(@(_) deferOnce(updateRespawnStep))
 
-subscribe("openFlightMenuInRespawn", function(_) {
-  ::disable_flight_menu(false)
-  ::gui_start_flight_menu()
+eventbus_subscribe("openFlightMenuInRespawn", function(_) {
+  disable_flight_menu(false)
+  eventbus_send("gui_start_flight_menu")
 })
 
-subscribe("requestRespawn", function(data) {
+eventbus_subscribe("requestRespawn", function(data) {
   if (isRespawnInProgress.value || !isInRespawn.value)
     return
   logR("requestRespawn: ", data)
@@ -145,19 +146,15 @@ subscribe("requestRespawn", function(data) {
   isRespawnStarted(true)
 })
 
-subscribe("cancelRespawn", function(_) {
+eventbus_subscribe("cancelRespawn", function(_) {
   if (!isRespawnInProgress.value)
     isRespawnStarted(false)
 })
 
-::gui_start_respawn <- function gui_start_respawn(_ = false) {
-  logR($"gui_start_respawn {::is_respawn_screen()}")
+eventbus_subscribe("gui_start_respawn", function gui_start_respawn(...) {
+  logR($"gui_start_respawn {is_respawn_screen()}")
   respawnsLeft(get_respawns_left())
   isBatleDataRequired((get_game_type() & (GT_VERSUS | GT_COOPERATIVE)) != 0
     && get_game_mode() != GM_SINGLE_MISSION)
-  isInRespawn(::is_respawn_screen()) //is it possible to call gui_start_respawn without is_respawn_screen ?
-}
-
-//calls from c++ code. Signals that something is changed in mission
-//for now it's only state of respawn bases
-::on_mission_changed <- @() send("ChangedMissionRespawnBasesStatus", {})
+  isInRespawn(is_respawn_screen()) //is it possible to call gui_start_respawn without is_respawn_screen ?
+})

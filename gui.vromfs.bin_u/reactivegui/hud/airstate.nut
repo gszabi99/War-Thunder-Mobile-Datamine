@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { AirThrottleMode } = require("wtSharedEnums")
+let { AirThrottleMode } = require("%globalScripts/sharedEnums.nut")
 let interopGen = require("%rGui/interopGen.nut")
+let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 
 const NUM_ENGINES_MAX = 6
 const NUM_CANNONS_MAX = 3
@@ -64,32 +65,32 @@ interopGen({
   postfix = "Update"
 })
 
-::interop.updateCannonsArray <- @(index, count, _seconds, _selected, time, endTime, _mode)
-  CannonState[index]({ count, time, endTime })
+registerInteropFunc("updateCannonsArray", @(index, count, _seconds, _selected, time, endTime, _mode)
+  CannonState[index]({ count, time, endTime }))
 
-::interop.updateMachineGunsArray <- @(index, count, _seconds, _selected, time, endTime, _mode)
-  MachineGunState[index]({ count, time, endTime })
+registerInteropFunc("updateMachineGunsArray", @(index, count, _seconds, _selected, time, endTime, _mode)
+  MachineGunState[index]({ count, time, endTime }))
 
-::interop.updateBombs <- @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  BombsState({ count, time, endTime })
+registerInteropFunc("updateBombs", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
+  BombsState({ count, time, endTime }))
 
-::interop.updateRockets <- @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  RocketsState({ count, time, endTime })
+registerInteropFunc("updateRockets", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
+  RocketsState({ count, time, endTime }))
 
-::interop.updateTorpedoes <- @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
-  TorpedoesState({ count, time, endTime })
+registerInteropFunc("updateTorpedoes", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
+  TorpedoesState({ count, time, endTime }))
 
 for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
   TrtMode.append(Watched(0))
   Trt.append(Watched(0))
 }
 
-::interop.updateEnginesThrottle <- function(mode, trt, _state, index) {
+registerInteropFunc("updateEnginesThrottle", function(mode, trt, _state, index) {
   TrtMode[index](mode)
   if (mode == AirThrottleMode.AIRCRAFT_WEP)
     Trt[index](100)
   else
     Trt[index](trt)
-}
+})
 
 return airState

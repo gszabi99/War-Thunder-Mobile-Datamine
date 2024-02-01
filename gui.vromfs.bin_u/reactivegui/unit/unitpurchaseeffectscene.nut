@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { hide_unit, show_unit, enable_scene_camera, disable_scene_camera, reset_camera_pos_dir, set_camera_shift_upper
+let { hide_unit, show_unit, start_fx_on_unit,
+  enable_scene_camera, disable_scene_camera, reset_camera_pos_dir,
 } = require("hangar")
-let { resetTimeout } = require("dagor.workcycle")
+let { setTimeout, resetTimeout } = require("dagor.workcycle")
 let { sin, cos, asin, PI, ceil } = require("math")
 let { registerScene, scenesOrder } = require("%rGui/navState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -12,6 +13,9 @@ let { gradRadial, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let mkBehindSceneEmitter = require("%rGui/effects/mkBehindSceneEmitter.nut")
 let mkSparkStarMoveOut = require("%rGui/effects/mkSparkStarMoveOut.nut")
 let { playSound } = require("sound_wt")
+let { Point3 } = require("dagor.math")
+let { TANK } = require("%appGlobals/unitConst.nut")
+let { getUnitType } = require("%appGlobals/unitTags.nut")
 
 
 let unitToShow = mkWatched(persist, "unit", null)
@@ -66,7 +70,7 @@ let angleToFill = sw(100) >= horizonRadius * 2 ? PI : 2.0 * asin(0.5 * sw(100) /
 let count = 2 * ceil((angleToFill / horizonAngle) / 2).tointeger()
 let angleStart = horizonAngle * (0.5 - count / 2)
 
-let function mkHorizonLine(idx, color, halfColor) {
+function mkHorizonLine(idx, color, halfColor) {
   let a = angleStart + idx * horizonAngle
   return {
     size = horizonLineSize
@@ -98,7 +102,7 @@ let function mkHorizonLine(idx, color, halfColor) {
   }
 }
 
-let function horizonLines(color) {
+function horizonLines(color) {
   let halfColor = mul_color(color, 0.5)
   return {
     size = flex()
@@ -194,6 +198,27 @@ let sideFlareExplosion = @(color, scaleTo, ovr = {}) {
   animations = opacityAnims(aTimeIncStart, aTimeSideGlowAppear, aTimeInc + aTimeDec - aTimeSideGlowAppear, aTimeHide)
 }
 
+let tankOpening = {
+  //needed to pass validation tests
+  rendObj = ROBJ_SOLID
+  color = 0
+  key = {}
+
+  function onAttach() {
+    hide_unit()
+    disable_scene_camera()
+    reset_camera_pos_dir()
+    start_fx_on_unit("misc_open_tank", Point3(0.25, 0.0, 0.0))
+    setTimeout(aTimeShow, show_unit)
+    setTimeout(aTimeFullEffect, close)
+  }
+
+  function onDetach() {
+    enable_scene_camera()
+    show_unit()
+  }
+}
+
 let mkUnitEffectScene = @(color) {
   key = fxColors
   size = flex()
@@ -202,7 +227,6 @@ let mkUnitEffectScene = @(color) {
     hide_unit()
     disable_scene_camera()
     reset_camera_pos_dir()
-    set_camera_shift_upper()
   }
   function onDetach() {
     show_unit()
@@ -221,7 +245,8 @@ let mkUnitEffectScene = @(color) {
 }
 
 //no need to subscribe and try change color on the go, but need correct color on creation.
-let unitEffectScene = @() mkUnitEffectScene(getFxColor(unitToShow.value))
+let unitEffectScene = @() getUnitType(unitToShow.get()?.name) == TANK ? tankOpening
+  : mkUnitEffectScene(getFxColor(unitToShow.value))
 
 registerScene("unitPurchaseEffectScene", unitEffectScene, close, isOpened, true)
 

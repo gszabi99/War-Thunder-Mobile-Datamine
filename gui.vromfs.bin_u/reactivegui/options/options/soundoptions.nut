@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 from "soundOptions" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 const SOUND_MAX = 100 //in the native code they are fixed, and get_volume_limits return always the same values
@@ -15,17 +15,17 @@ let setVolumes = @(sndTypes, val) sndTypes.reduce(function(res, v) {
   return true
 }, false)
 
-let function mkSoundSlider(sndTypes, locId) {
-  let function getSaved() {
+function mkSoundSlider(sndTypes, locId) {
+  function getSaved() {
     let volumes = sndTypes.map(getVolumeInt)
     return volumes.reduce(@(res, v) max(res, v), 0)
   }
   let value = Watched(getSaved())
-  let function updateSaved() {
+  function updateSaved() {
     if (!isSettingsAvailable.value)
       return
     if (setVolumes(sndTypes, value.value))
-      send("saveProfile", {})
+      eventbus_send("saveProfile", {})
   }
   updateSaved()
   isSettingsAvailable.subscribe(function(_) {

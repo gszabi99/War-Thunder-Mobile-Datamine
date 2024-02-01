@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -71,7 +71,7 @@ let unseenModsByCategory = Computed(function() {
   return res.filter(@(v) v.len() > 0)
 })
 
-let function openUnitModsWnd() {
+function openUnitModsWnd() {
   curCategoryId(modsCategories.value?[0])
   isUnitModsOpen(true)
 }
@@ -86,7 +86,7 @@ let curUnitAllModsCost = Computed(function() {
 
 //costWp - compatibility with PServer at 24.07.2023 (0.0.11.X)
 let getModCurrency = @(mod) (mod?.costWp ?? 0) > 0 || (mod?.costWpWeight ?? 0) > 0 ? "wp" : "gold"
-let function getModCost(mod, allModsCost) {
+function getModCost(mod, allModsCost) {
   let { costWp = 0, costWpWeight = 0, costGold = 0 } = mod
   if (costWp > 0) //compatibility with PServer at 24.07.2023 (0.0.11.X)
     return costWp
@@ -103,7 +103,7 @@ curCategoryId.subscribe(@(_)
 let enableCurUnitMod = @() enable_unit_mod(unitName.value, curModId.value, true)
 let disableCurUnitMod = @() enable_unit_mod(unitName.value, curModId.value, false)
 
-let function setCurUnitSeenMods(ids) {
+function setCurUnitSeenMods(ids) {
   if (!unitName.value)
     return
   seenMods.mutate(function(v) {
@@ -118,11 +118,11 @@ let function setCurUnitSeenMods(ids) {
   foreach (id, isSeen in seenMods.value?[unitName.value] ?? {})
     if (isSeen)
       blk[id] = true
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
 
-let function loadSeenMods() {
+function loadSeenMods() {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_MODS]
   if (!isDataBlock(htBlk)) {
@@ -145,7 +145,7 @@ if (seenMods.value.len() == 0)
 let setCurUnitSeenModsCurrent = @() curCategoryId.value not in unseenModsByCategory.value ? null
   : setCurUnitSeenMods(unseenModsByCategory.value?[curCategoryId.value].keys())
 
-let function onTabChange(id) {
+function onTabChange(id) {
   setCurUnitSeenModsCurrent()
   curCategoryId(id)
 }
@@ -153,7 +153,7 @@ let function onTabChange(id) {
 register_command(function() {
   seenMods({})
   get_local_custom_settings_blk().removeBlock(SEEN_MODS)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }, "debug.reset_seen_mods")
 
 return {

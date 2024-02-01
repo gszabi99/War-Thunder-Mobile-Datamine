@@ -1,12 +1,14 @@
+from "%scripts/dagui_natives.nut" import get_online_client_cur_state
 from "%scripts/dagui_library.nut" import *
 
 let { LOGIN_STATE } = require("%appGlobals/loginState.nut")
 let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let mkStageBase = require("mkStageBase.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 let actions = {}
 
-::online_init_stage_finished <- @(stage, ...) actions?[stage]() //from native code
+eventbus_subscribe("online_init_stage_finished",  @(evt) actions?[evt?.stage]())
 
 let finalize = @(stage, finalizeStage) function() {
   if (stage != null)
@@ -15,14 +17,14 @@ let finalize = @(stage, finalizeStage) function() {
   finalizeStage()
 }
 
-let function mkStage(id, nativeState, finalState, bqEvent = null) {
+function mkStage(id, nativeState, finalState, bqEvent = null) {
   let { onlyActiveStageCb, export, finalizeStage
   } = mkStageBase(id, LOGIN_STATE.AUTHORIZED, finalState)
 
   actions[nativeState] <- onlyActiveStageCb(finalize(bqEvent, finalizeStage))
 
-  let function checkReceived() {
-    if (nativeState & ::get_online_client_cur_state())
+  function checkReceived() {
+    if (nativeState & get_online_client_cur_state())
       finalizeStage()
   }
 

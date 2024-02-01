@@ -8,7 +8,7 @@ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDq1fQVfvjjJaxYIGzYZ/SI89kY
 ZrWrbasCa6rnb+Qki2o6XLaHylMEPYlOOpY8dvI9DZNtGs4en7B++9usmI7nSkBV
 mvmpcecs1xe0mKtwlQIDAQAB"
 
-let function readValueFromJwt(jwt, userId, valueName) {
+function readValueFromJwt(jwt, userId, valueName) {
   if (!jwt)
     return null
 

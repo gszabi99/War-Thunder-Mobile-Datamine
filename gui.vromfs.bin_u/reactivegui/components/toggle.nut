@@ -61,7 +61,7 @@ let toggle = @(valueW, sf) @() {
   ]
 }
 
-let function toggleWithLabel(valueW, label) {
+function toggleWithLabel(valueW, label) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags

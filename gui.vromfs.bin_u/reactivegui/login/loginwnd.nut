@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let eventbus = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
 let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
@@ -46,7 +46,7 @@ loginPas.subscribe(function(v) {
 
 check2StepAuthCode.subscribe(@(v) v ? isLoginByGajin(true) : null)
 
-eventbus.subscribe("updateAuthStates", function(params) {
+eventbus_subscribe("updateAuthStates", function(params) {
   let incomingPass = params?.loginPas ?? loginPas.value
   let isPassEqual = (loginPas.value == incomingPass)
   loginName(params?.loginName ?? loginName.value)
@@ -74,7 +74,7 @@ let languageTitleEn = loc("profile/language/en")
 languageTitle = languageTitle == languageTitleEn ? languageTitle
   : "".concat(languageTitle, loc("ui/parentheses/space", { text = languageTitleEn }))
 
-let function doLoginGaijin() {
+function doLoginGaijin() {
   if (loginName.value == "") {
     anim_start(loginName)
     return
@@ -90,7 +90,7 @@ let function doLoginGaijin() {
     return
   }
 
-  eventbus.send("doLogin", {
+  eventbus_send("doLogin", {
     loginType = LT_GAIJIN
     loginName = loginName.value
     loginPas = loginPas.value
@@ -100,7 +100,7 @@ let function doLoginGaijin() {
 }
 
 let transparentButtonIconWidth = (0.5 * defButtonHeight).tointeger()
-let function transparentButton(text, icon, onClick, override = {}) {
+function transparentButton(text, icon, onClick, override = {}) {
   let stateFlags = Watched(0)
   return @() {
     behavior = Behaviors.Button
@@ -184,7 +184,7 @@ let recoveryPassword = urlText(loc("msgbox/btn_recovery"), loc("url/recovery"))
 
 let resendTimer = Watched(resendTimeout)
 local timerMult = 1;
-let function updateResendTimer() {
+function updateResendTimer() {
   let v = resendTimer.value - 1
   if ( v >= 0 )
     resendTimer(v)
@@ -192,9 +192,9 @@ let function updateResendTimer() {
 
 check2StepAuthCode.subscribe( function (v) { if (v) resendTimer(resendTimeout * timerMult) } )
 
-let function doResendCode() {
+function doResendCode() {
   timerMult++
-  eventbus.send("doLogin", {
+  eventbus_send("doLogin", {
     loginType = LT_GAIJIN
     loginName = loginName.value
     loginPas = loginPas.value
@@ -355,27 +355,27 @@ let guestLoginButtonContent = firebaseLoginButtonContent
 let loginButtonCtors = {
   [LT_GAIJIN] = @() mkCustomButton(mkGaijinLogo(), @() isLoginByGajin.update(true), BRIGHT),
   [LT_GOOGLE] = @() mkCustomButton(googleLoginButtonContent,
-    @() eventbus.send("doLogin", { loginType = LT_GOOGLE }),
+    @() eventbus_send("doLogin", { loginType = LT_GOOGLE }),
     BRIGHT),
   [LT_APPLE] = @() mkCustomButton(appleLoginButtonContent,
-    @() eventbus.send("doLogin", { loginType = LT_APPLE }),
+    @() eventbus_send("doLogin", { loginType = LT_APPLE }),
     BRIGHT),
   [LT_NSWITCH] = @() mkCustomButton(nswitchLoginButtonContent,
-    @() eventbus.send("doLogin", { loginType = LT_NSWITCH }),
+    @() eventbus_send("doLogin", { loginType = LT_NSWITCH }),
     BRIGHT),
   [LT_FIREBASE] = @() mkCustomButton(firebaseLoginButtonContent,
-    @() eventbus.send("doLogin", { loginType = LT_FIREBASE }),
+    @() eventbus_send("doLogin", { loginType = LT_FIREBASE }),
     BRIGHT),
   [LT_GUEST] = @() mkCustomButton(guestLoginButtonContent,
-    @() eventbus.send("doLogin", { loginType = LT_GUEST }),
+    @() eventbus_send("doLogin", { loginType = LT_GUEST }),
     BRIGHT),
   [LT_FACEBOOK] = !fbButtonVisible ? null
     : @() mkCustomButton(fbLoginButtonContent,
-        @() eventbus.send("doLogin", { loginType = LT_FACEBOOK }),
+        @() eventbus_send("doLogin", { loginType = LT_FACEBOOK }),
          BRIGHT),
 }.filter(@(btnCtor) btnCtor != null)
 
-let function mkMainAuthorizationButtons() {
+function mkMainAuthorizationButtons() {
   let res = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN, LT_NSWITCH]
     .filter(@(lt) availableLoginTypes?[lt] ?? false)
     .map(@(lt) loginButtonCtors?[lt]())
@@ -428,7 +428,7 @@ let supportBlock = {
 let urlOvr = { ovr = { color = urlColor }, childOvr  = { color = urlColor } }
 let termsOfServiceUrl = urlText(loc("termsOfService"), TERMS_OF_SERVICE_URL, urlOvr)
 let privacyPolicyUrl = urlText(loc("privacyPolicy"), PRIVACY_POLICY_URL, urlOvr)
-let checkAutoLogin = @() eventbus.send("login.checkAutoStart", {})
+let checkAutoLogin = @() eventbus_send("login.checkAutoStart", {})
 
 let mkLoginWnd = @() {
   key = {}
@@ -438,7 +438,7 @@ let mkLoginWnd = @() {
   color = Color(17, 20, 26, 210)
 
   function onAttach() {
-    eventbus.send("authState.request", {})
+    eventbus_send("authState.request", {})
     deferOnce(checkAutoLogin)
     setInterval(1.0, updateResendTimer)
   }

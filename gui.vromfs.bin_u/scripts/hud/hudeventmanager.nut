@@ -1,14 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 let { subscribeHudEvents } = require("hudMessages")
 let { convertBlk, isDataBlock } = require("%sqstd/datablock.nut")
-let { send_foreign } = require("eventbus")
+let { eventbus_send_foreign, eventbus_subscribe } = require("eventbus")
 let { DM_HIT_RESULT_NONE } = require("hitCamera")
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 
 local subscribers = {}
 local eventsStack = [] //for debug top event
 
-::g_hud_event_manager <- {
+let g_hud_event_manager = {
   subscribers
   eventsStack
 
@@ -39,7 +39,7 @@ local eventsStack = [] //for debug top event
 
   function onHudEvent(event_name, event_data = {}) {
     let data = this.handleData(event_data) //todo: better to send direct event from native code to eventbus instead of this conversion
-    send_foreign(event_name, data)
+    eventbus_send_foreign(event_name, data)
     if (!(event_name in subscribers))
       return
 
@@ -67,5 +67,10 @@ local eventsStack = [] //for debug top event
   }
 }
 
-::on_hit_camera_event <- @(mode, result = DM_HIT_RESULT_NONE, info = {}) // called from client
-  send_foreign("hitCamera", { mode, result, info })
+eventbus_subscribe("on_hit_camera_event", @(event)
+  eventbus_send_foreign("hitCamera", { mode=event.mode, result = event.result ?? DM_HIT_RESULT_NONE , info = event?.info ?? {}})
+)
+
+return {
+  g_hud_event_manager
+}

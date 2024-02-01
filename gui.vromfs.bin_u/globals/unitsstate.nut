@@ -50,7 +50,7 @@ let unlockedPlatoonUnits = Computed(function() {
 let canBuyUnits = Computed(@() buyUnitsData.value.canBuy)
 let canBuyUnitsStatus = Computed(@() buyUnitsData.value.unitStatus)
 
-let function getUnitLockedShortText(unit, status, reqPlayerLevel) {
+function getUnitLockedShortText(unit, status, reqPlayerLevel) {
   if (unit == null || status == null || reqPlayerLevel == null)
     return ""
   if (status == US_TOO_LOW_LEVEL)
@@ -60,7 +60,7 @@ let function getUnitLockedShortText(unit, status, reqPlayerLevel) {
   return ""
 }
 
-let function setCurrentUnit(unitName) {
+function setCurrentUnit(unitName) {
   if (curUnitInProgress.value != null)
     return "unitInProgress"
   if (unitName not in myUnits.value)

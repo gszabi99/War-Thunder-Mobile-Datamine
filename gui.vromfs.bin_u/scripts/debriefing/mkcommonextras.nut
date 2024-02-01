@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 
-let function mkCommonExtras(battleResult) {
+function mkCommonExtras(battleResult) {
   let res = {}
   if ((battleResult?.reward.playerExp.totalExp ?? 0) > 0) {
     let nextLevel = (battleResult?.player.level ?? 0) + 1

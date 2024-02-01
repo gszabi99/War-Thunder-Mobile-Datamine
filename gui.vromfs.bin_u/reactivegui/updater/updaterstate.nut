@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe, send } = require("eventbus")
+
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { download_addons_in_background, stop_updater, is_updater_running, get_addon_version,
   get_incomplete_addons, is_addon_exists_in_game_folder, UPDATER_RESULT_SUCCESS, UPDATER_ERROR,
@@ -54,7 +55,7 @@ let progressPercent = Computed(function() {
 
 let isStageDownloading = Computed(@() currentStage.value == UPDATER_DOWNLOADING)
 
-let function mkAddonsToDownload(list, hasAddonsV, prev) {
+function mkAddonsToDownload(list, hasAddonsV, prev) {
   let res = {}
   foreach(a in list)
     if (!(hasAddonsV?[a] ?? true))
@@ -127,10 +128,10 @@ let needStartDownloadAddons = keepref(Computed(@()
     ? {}
     : wantStartDownloadAddons.value))
 
-let function cleanAddonsToDownload() {
+function cleanAddonsToDownload() {
   if (needStartDownloadAddons.value.len() == 0)
     return
-  let res = clone addonsToDownload.value
+  let res = addonsToDownload.get().filter(@(_, a) !hasAddons.get()?[a])
   foreach(a, _ in needStartDownloadAddons.value)
     res?.$rawdelete(a)
   if (res.len() != addonsToDownload.value.len())
@@ -140,7 +141,7 @@ let function cleanAddonsToDownload() {
 let closeDownloadAddonsWnd = @() downloadWndParams(null)
 curCampaign.subscribe(@(_) downloadWndParams.value == null ? firstPriorityAddons({}) : null)
 
-let function updateStartDownload() {
+function updateStartDownload() {
   let needDownload = needStartDownloadAddons.value.len() != 0
   if (needDownload == is_updater_running()
       && (!needDownload || isEqual(needStartDownloadAddons.value, downloadInProgress.value)))
@@ -191,7 +192,7 @@ wantStartDownloadAddons.subscribe(function(_) {
   downloadState(null)
 })
 
-subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
+eventbus_subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
   let { eventType } = evt
   if (eventType == UPDATER_EVENT_STAGE)
     currentStage(evt?.stage)
@@ -202,7 +203,7 @@ subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
     downloadState(evt)
   else if (eventType == UPDATER_EVENT_INCOMPATIBLE_VERSION) {
     isIncompatibleVersion(true)
-    send("showIncompatibleVersionMsg", null)
+    eventbus_send("showIncompatibleVersionMsg", null)
   }
   else if (eventType == UPDATER_EVENT_ERROR) {
     let errText = evt?.error ?? UPDATER_ERROR
@@ -215,7 +216,7 @@ subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
     let isSuccess = evt?.result == UPDATER_RESULT_SUCCESS
     logA($"download finish. isSuccess = {isSuccess}, isStopped = {evt?.isStopped}")
     downloadInProgress({})
-    send("downloadAddonsFinished", {})
+    eventbus_send("downloadAddonsFinished", {})
     if (!isSuccess) {
       updateStartDownload()
       return
@@ -225,12 +226,12 @@ subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
     cleanAddonsToDownload()
     closeDownloadAddonsWnd()
     if (successEventId != null)
-      send(successEventId, context)
+      eventbus_send(successEventId, context)
     downloadState(null)
   }
 })
 
-let function getAddonPriority(addon) {
+function getAddonPriority(addon) {
   let campaign = getAddonCampaign(addon)
   return campaign == curCampaign.value ? 2
     : campaign == null ? 1
@@ -263,7 +264,7 @@ let addonsToAutoDownload = keepref(Computed(function() {
   return list.keys()
 }))
 
-let function startDownloadAddons(addons) {
+function startDownloadAddons(addons) {
   if (addons.len() == 0)
     return
   let fullAddons = clone addonsToDownload.value
@@ -282,11 +283,11 @@ allowLimitedDownload.subscribe(function(allow) {
   logA("Allow limited connection download cahnged to: ", allow)
 })
 
-let function openDownloadAddonsWnd(addons = [], successEventId = null, context = {}) {
+function openDownloadAddonsWnd(addons = [], successEventId = null, context = {}) {
   let rqAddons = addons.filter(@(a) !hasAddons.value?[a])
   if (addons.len() != 0 && rqAddons.len() == 0) {  //already all downloaded
     if (successEventId != null)
-      send(successEventId, context)
+      eventbus_send(successEventId, context)
     return
   }
 
@@ -305,7 +306,7 @@ let function openDownloadAddonsWnd(addons = [], successEventId = null, context =
     isDownloadPaused(false)
 }
 
-subscribe("openDownloadAddonsWnd", function(msg) {
+eventbus_subscribe("openDownloadAddonsWnd", function(msg) {
   let { addons = [], successEventId = null, context = {} } = msg
   openDownloadAddonsWnd(addons, successEventId, context)
 })

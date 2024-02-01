@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { round_by_value } = require("%sqstd/math.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -10,7 +11,7 @@ let statColor = 0xFFA0A0A0
 
 let result = mkWatched(persist, "result", null)
 let close = @() result(null)
-subscribe("showBenchmarkResult", @(msg) result(msg))
+eventbus_subscribe("showBenchmarkResult", @(msg) result(msg))
 
 let statsCfg = [
   {

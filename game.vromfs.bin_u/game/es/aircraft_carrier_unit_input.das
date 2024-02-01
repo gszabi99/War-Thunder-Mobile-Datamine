@@ -32,7 +32,7 @@ def aircarft_carrier_input_spawn_requiest(evt : EventOnKeyUp;
   aircraft_carrier__lastAircraftSpawnRequestAtTime[aircraftIndex] = curTime
 
   let aimAngles = get_turret_aim_angles()
-  sendEvent(eid, [[CmdRequestSwitchOnSupportPlane turnOn=true, idx=aircraftIndex, startAngles=float2(aimAngles.x, 0.f)]])
+  sendEvent(eid, [[CmdRequestSwitchOnSupportPlane turnOn=true, idx=aircraftIndex, startAngles=float2(aimAngles.x, 0.f), switchOn=true]])
 
 
 [es(tag=input, REQUIRE=(controlledHero))]
@@ -51,7 +51,7 @@ def aircarft_carrier_return_from_plane_requiest(evt : EventOnKeyUp;
     return
 
   let aimAngles = get_turret_aim_angles()
-  sendEvent(ownedUnit.eid, [[CmdRequestSwitchOnSupportPlane turnOn=false, idx=aircraftIndex, startAngles=float2(aimAngles.x, 0.f)]])
+  sendEvent(ownedUnit.eid, [[CmdRequestSwitchOnSupportPlane turnOn=false, idx=aircraftIndex, startAngles=float2(aimAngles.x, 0.f), switchOn=true]])
 
 
 [es(tag=input, REQUIRE=(controlledHero))]

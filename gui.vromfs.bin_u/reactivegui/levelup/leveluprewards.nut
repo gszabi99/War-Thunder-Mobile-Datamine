@@ -42,8 +42,8 @@ let hideCurrencyTrigger = {}
 let rewardsSum = Computed(@() rewardsToReceive.value.reduce(
   function(res, rew) {
     let result = {
-      wp = (res?.wp ?? 0) + (rew?.wp ?? 0)
-      gold = (res?.gold ?? 0) + (rew?.gold ?? 0)
+      wp = (res?.wp ?? 0) + (rew?.currencies.wp ?? 0) + (rew?.wp ?? 0)
+      gold = (res?.gold ?? 0) + (rew?.currencies.gold ?? 0) + (rew?.gold ?? 0)
     }
     foreach (id, count in (rew?.items ?? {}))
       result[id] <- (res?[id] ?? 0) + count
@@ -51,7 +51,7 @@ let rewardsSum = Computed(@() rewardsToReceive.value.reduce(
   },
   {}))
 
-let function receiveRewards() {
+function receiveRewards() {
   if (rewardInProgress.value)
     return
   let level = rewardsToReceive.value.findindex(@(_) true)
@@ -86,7 +86,7 @@ let receiveBtn = mkSpinnerHideBlock(Computed(@() rewardInProgress.value != null)
 
 let startTimes = {} //outside to not break after parent recalc.
 let countTextStyle = { halign = ALIGN_CENTER, monoWidth = "0" }.__merge(fontMedium)
-let function mkCurrencyReward(id, amount, countDelay) {
+function mkCurrencyReward(id, amount, countDelay) {
   let countTimeMsec = (1000 * min(amount.tofloat() / (rewardCountPerSec?[id] ?? amount), maxRewardCountTime)).tointeger()
   return {
     key = id
@@ -135,7 +135,7 @@ let function mkCurrencyReward(id, amount, countDelay) {
 }
 
 let allRewardsOrder = ["wp", "gold"].extend(itemsOrderFull)
-let function rewardsList() {
+function rewardsList() {
   let rewards = rewardsSum.value
   let children = []
   foreach (id in allRewardsOrder)

@@ -8,8 +8,12 @@
   "version-specific": "",
   "compatibilityHangarBlk": "config/hangar_airfield.blk",
   "nvidia_app_id": 10839111,
-  "gameId": "wt",
+  "gameId": "wtm",
   "enableEmbeddedBrowser": false,
+  "pc_app_id": 1180,
+  "iOS_app_id": 1180,
+  "android_app_id": 1180,
+  "nswitch_app_id": 1280,
   "entitiesBlk": "%wtmGameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
   "game_das_loading_threads": 1,
@@ -217,156 +221,171 @@
     ]
   },
   "addons": {
-    "folder": [
-      "content.hq/hq_tex",
-      "content/pkg_secondary",
-      "content.hq/pkg_secondary_hq",
-      "content/pkg_dev",
-      "content.hq/pkg_dev_hq",
-      "content/pkg_common",
-      "content.hq/pkg_common_hq",
-      "content/pkg_naval",
-      "content.hq/pkg_naval_hq",
-      "content/pkg_ground",
-      "content.hq/pkg_ground_hq",
-      "content/pkg_tier_1_naval",
-      "content.hq/pkg_tier_1_naval_hq",
-      "content/pkg_tier_2_naval",
-      "content.hq/pkg_tier_2_naval_hq",
-      "content/pkg_tier_3_naval",
-      "content.hq/pkg_tier_3_naval_hq",
-      "content/pkg_tier_4_naval",
-      "content.hq/pkg_tier_4_naval_hq",
-      "content/pkg_tier_5_naval",
-      "content.hq/pkg_tier_5_naval_hq",
-      "content/pkg_germ_battlecruiser_von_der_tann",
-      "content.hq/pkg_germ_battlecruiser_von_der_tann_hq",
-      "content/pkg_jp_battleship_yamato",
-      "content.hq/pkg_jp_battleship_yamato_hq",
-      "content/pkg_tier_1_ground",
-      "content.hq/pkg_tier_1_ground_hq",
-      "content/pkg_tier_2_ground",
-      "content.hq/pkg_tier_2_ground_hq",
-      "content/pkg_tier_3_ground",
-      "content.hq/pkg_tier_3_ground_hq",
-      "content/pkg_tier_4_ground",
-      "content.hq/pkg_tier_4_ground_hq",
-      "content/pkg_ussr_kv_122",
-      "content.hq/pkg_ussr_kv_122_hq",
-      "content/pkg_tier_5_ground",
-      "content.hq/pkg_tier_5_ground_hq",
-      "content/pkg_tier_6_ground",
-      "content.hq/pkg_tier_6_ground_hq",
-      "content/pkg_us_t29",
-      "content.hq/pkg_us_t29_hq",
-      "content/pkg_tier_7_ground",
-      "content.hq/pkg_tier_7_ground_hq",
-      "content/pkg_cn_ztz_88a",
-      "content.hq/pkg_cn_ztz_88a_hq",
-      "content/pkg_video",
-      "content.hq/pkg_environment_uhq",
-      "content.hq/pkg_ground_uhq",
-      "content.hq/pkg_naval_uhq",
-      "content/pkg_lvl_vietnam_hills",
-      "content.hq/pkg_lvl_vietnam_hills_hq",
-      "content/pkg_lvl_white_rocks",
-      "content.hq/pkg_lvl_white_rocks_hq",
-      "content/pkg_germ_battleship_bismarck",
-      "content.hq/pkg_germ_battleship_bismarck_hq",
-      "content/pkg_us_battleship_arkansas",
-      "content.hq/pkg_us_battleship_arkansas_hq",
-      "content/pkg_germ_battleship_westfalen",
-      "content.hq/pkg_germ_battleship_westfalen_hq",
-      "content/pkg_germ_destroyer_rckt_hamburg",
-      "content.hq/pkg_germ_destroyer_rckt_hamburg_hq",
-      "content/pkg_jp_st_b1",
-      "content.hq/pkg_jp_st_b1_hq",
-      "content/pkg_uk_centurion_action_x",
-      "content.hq/pkg_uk_centurion_action_x_hq",
-      "content/pkg_ussr_object_120",
-      "content.hq/pkg_ussr_object_120_hq",
-      "content/pkg_ussr_t_34_1941_57",
-      "content.hq/pkg_ussr_t_34_1941_57_hq",
-      "content/pkg_fr_amx_30_b2_brenus",
-      "content.hq/pkg_fr_amx_30_b2_brenus_hq",
-      "content/pkg_us_m46_patton_73_armor_bat",
-      "content.hq/pkg_us_m46_patton_73_armor_bat_hq",
-      "content/pkg_it_oto_r3_t20_fa",
-      "content.hq/pkg_it_oto_r3_t20_fa_hq"
-    ]
-  },
-  "addonConditions": {
+    "hq_tex": {
+      "folder": "content.hq/hq_tex",
+      "disableReload": true,
+      "hq": false
+    },
+    "pkg_video": {
+      "hq": false
+    },
+    "pkg_secondary": {
+      "base": true,
+      "hq": false
+    },
+    "pkg_secondary_hq": {
+      "folder": "content.hq/pkg_secondary_hq",
+      "hq": false
+    },
+    "pkg_dev": {},
+    "pkg_common": {},
+    "pkg_ground": [
+      {},
+      {
+        "base": false,
+        "hq": false,
+        "uhq": true
+      }
+    ],
+    "pkg_naval": [
+      {},
+      {
+        "base": false,
+        "hq": false,
+        "uhq": true
+      }
+    ],
+    "pkg_tier_1_naval": {},
+    "pkg_tier_2_naval": {},
+    "pkg_tier_3_naval": {},
+    "pkg_tier_4_naval": {},
+    "pkg_tier_5_naval": {},
+    "pkg_tier_1_ground": {},
+    "pkg_tier_2_ground": {},
+    "pkg_tier_3_ground": {},
+    "pkg_tier_4_ground": {},
+    "pkg_tier_5_ground": {},
+    "pkg_tier_6_ground": {},
+    "pkg_tier_7_ground": {},
     "pkg_lvl_vietnam_hills": {
-      "campaign": "tanks",
-      "mRank": 3
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
     },
-    "pkg_ussr_kv_122": {
-      "campaign": "tanks",
-      "mRank": 4
-    },
-    "pkg_us_t29": {
-      "campaign": "tanks",
-      "mRank": 6
-    },
-    "pkg_cn_ztz_88a": {
-      "campaign": "tanks",
-      "mRank": 8
-    },
-    "pkg_germ_battlecruiser_von_der_tann": {
-      "campaign": "ships",
-      "mRank": 3
-    },
-    "pkg_jp_battleship_yamato": {
-      "campaign": "ships",
-      "mRank": 4
+    "pkg_lvl_rheinland": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
     },
     "pkg_lvl_white_rocks": {
-      "campaign": "ships",
-      "mRank": 2
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_lvl_lunar_ny": {},
+    "pkg_germ_battlecruiser_von_der_tann": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_jp_battleship_yamato": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
     },
     "pkg_germ_battleship_bismarck": {
-      "campaign": "ships",
-      "mRank": 4
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
     },
     "pkg_us_battleship_arkansas": {
-      "campaign": "ships",
-      "mRank": 3
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
     },
     "pkg_germ_battleship_westfalen": {
-      "campaign": "ships",
-      "mRank": 3
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
     },
     "pkg_germ_destroyer_rckt_hamburg": {
-      "campaign": "ships",
-      "mRank": 5
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_ussr_kv_122": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
+      }
+    },
+    "pkg_us_t29": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_cn_ztz_88a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
     },
     "pkg_jp_st_b1": {
-      "campaign": "tanks",
-      "mRank": 8
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
     },
     "pkg_uk_centurion_action_x": {
-      "campaign": "tanks",
-      "mRank": 6
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
     },
     "pkg_ussr_object_120": {
-      "campaign": "tanks",
-      "mRank": 7
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
     },
     "pkg_ussr_t_34_1941_57": {
-      "campaign": "tanks",
-      "mRank": 3
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
     },
     "pkg_fr_amx_30_b2_brenus": {
-      "campaign": "tanks",
-      "mRank": 8
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
     },
     "pkg_us_m46_patton_73_armor_bat": {
-      "campaign": "tanks",
-      "mRank": 6
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
     },
     "pkg_it_oto_r3_t20_fa": {
-      "campaign": "tanks",
-      "mRank": 4
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
+      }
+    },
+    "pkg_environment": {
+      "base": false,
+      "hq": false,
+      "uhq": true
     }
   },
   "addonToXboxChunk": {
@@ -481,6 +500,11 @@
     "shoreHeightmapRange": 200.0,
     "msaaQuality": 4,
     "wfxHeightLimit": 1.0,
+    "waterVisibilityUseLegacy": false,
+    "waterVisibilityLegacyThreshold": 10,
+    "allowHighresFxDepthReprojection": true,
+    "csmReflectionSampleBias": -0.0075,
+    "dynDecalsInitialAtlasSizeIndex": 1,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }
@@ -891,6 +915,7 @@
       "disableFastVersionCheck": true,
       "shouldSaveGameVersionToCache": true,
       "shouldReportIncompatibleVersion": true,
+      "requireSameGameVersion": true,
       "startMetric": "background_addons_update_start",
       "stopMetric": "background_addons_update_stop",
       "flag": "--onlypacks"
@@ -1147,7 +1172,8 @@
       "sparks_ps": true,
       "gen_weather": true,
       "render_full_tonemap": true,
-      "skies_render_screeen": true,
+      "skies_render_screen": true,
+      "skyPanorama": true,
       "strata_clouds": true
     },
     "compute": {
@@ -1159,6 +1185,16 @@
       "trace_clouds_cs": true,
       "skies_view_lut_tex_prepare_cs": true,
       "clouds2_temporal_cs": true
+    },
+    "000backgroundWarmup": {
+      "graphics": {
+        "rendinst_baked_impostor": true,
+        "rendinst_simple": true,
+        "rendinst_tree_colored": true,
+        "rendinst_perlin_layered": true,
+        "dynamic_masked_chrome_bump": true,
+        "dynamic_perlin_layered": true
+      }
     }
   },
   "level": {
@@ -1217,7 +1253,6 @@
       "codename": [
         "iPhone 15 Pro",
         "iPhone 15 Pro Max",
-        "iPad Mini 6",
         "iPad Pro 6 11 inch",
         "iPad Pro 6 12.9 inch",
         "iPad15,"
@@ -1253,7 +1288,7 @@
       }
     }
   },
-  "android_presets": {
+  "nswitch_presets": {
     "low": {
       "graphics": {
         "backgroundScale": 0.75,
@@ -1300,7 +1335,8 @@
         "enableWaterProjFx": false,
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": false,
-        "customRefractionScale": 0.25
+        "customRefractionScale": 0.25,
+        "refractionShadows": false
       },
       "render": {
         "grassInCompatibility": false
@@ -1354,7 +1390,7 @@
         "renderImpostorsToDraftDepth": true,
         "includeAtesUnitstInDepthPrepass": false,
         "grassQuality": "high",
-        "grassAlphaToCoverage": true,
+        "grassAlphaToCoverage": false,
         "treeAlphaToCoverage": false,
         "impostorAlphaToCoverage": false,
         "shaderlod": "high",
@@ -1371,7 +1407,8 @@
         "enableWaterProjFx": true,
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": false,
-        "customRefractionScale": 0.25
+        "customRefractionScale": 0.25,
+        "refractionShadows": false
       },
       "render": {
         "grassInCompatibility": true
@@ -1442,7 +1479,8 @@
         "enableWaterProjFx": true,
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.25
+        "customRefractionScale": 0.25,
+        "refractionShadows": true
       },
       "render": {
         "grassInCompatibility": true
@@ -1513,7 +1551,8 @@
         "enableWaterProjFx": true,
         "enableGrassTrackMask": true,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.5
+        "customRefractionScale": 0.5,
+        "refractionShadows": true
       },
       "render": {
         "grassInCompatibility": true
@@ -1584,7 +1623,370 @@
         "enableWaterProjFx": true,
         "enableGrassTrackMask": true,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 1.0
+        "customRefractionScale": 1.0,
+        "refractionShadows": true
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          4096,
+          8192
+        ],
+        "texTileSize": 256,
+        "swFeedbackMipTiles0": 12,
+        "swFeedbackMipTiles1": 10,
+        "swFeedbackMipTiles2": 6,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 6,
+        "virtualTextureAnisotropy": -1,
+        "texelSizeMul": 0.5,
+        "minTexTileBorder": 1,
+        "hwfeedback": true
+      },
+      "debug": {
+        "lodDistanceScale": 0.5
+      }
+    }
+  },
+  "android_presets": {
+    "low": {
+      "graphics": {
+        "backgroundScale": 0.75,
+        "limitPlayerAirplaneUnitsLod": 1,
+        "limitPlayerTankUnitsLod": 2,
+        "limitPlayerShipUnitsLod": 1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 2,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 1,
+        "hangarShipLod": 1,
+        "compatibilityShadowQuality": "low",
+        "grassRadiusMul": 0.5,
+        "grassDensityMul": 0.5,
+        "fxDensityMul": 0.2,
+        "rendinstDistMul": 0.5,
+        "compatibilityRendinstDistMul": 0.5,
+        "tireTracksQuality": 0,
+        "anisotropy": 1,
+        "compatibilityAnisotropy": 1,
+        "xrayUpdateFrames": 2,
+        "force8bitRT": true,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 0,
+        "renderImmDecals": false,
+        "renderImpostorsToDraftDepth": false,
+        "includeAtesUnitstInDepthPrepass": false,
+        "grassQuality": "low",
+        "grassAlphaToCoverage": false,
+        "treeAlphaToCoverage": false,
+        "impostorAlphaToCoverage": false,
+        "shaderlod": "low",
+        "riExtraMinSizeForDraftDepth": 15.0,
+        "underwaterFogUseShadows": 0,
+        "underwaterFogUseSimple": true,
+        "underwaterFogUseTAA": false,
+        "texquality": "low",
+        "fxTarget": "high",
+        "fftWaterRenderResolution": 7,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": false,
+        "enableWakeDisplacement": false,
+        "enableWaterProjFx": false,
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": false,
+        "customRefractionScale": 0.25,
+        "refractionShadows": false
+      },
+      "render": {
+        "grassInCompatibility": false
+      },
+      "clipmap": {
+        "texSize": [
+          1024,
+          1024
+        ],
+        "texTileSize": 64,
+        "swFeedbackMipTiles0": 2,
+        "swFeedbackMipTiles1": 2,
+        "swFeedbackMipTiles2": 2,
+        "swFeedbackInnerMipTiles": 2,
+        "swFeedbackOuterMipTiles": 4,
+        "virtualTextureAnisotropy": 1,
+        "texelSizeMul": 2.0,
+        "minTexTileBorder": 4,
+        "hwfeedback": false
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    },
+    "medium": {
+      "graphics": {
+        "backgroundScale": 0.75,
+        "limitPlayerAirplaneUnitsLod": 1,
+        "limitPlayerTankUnitsLod": 1,
+        "limitPlayerShipUnitsLod": 1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 1,
+        "hangarShipLod": 0,
+        "compatibilityShadowQuality": "low",
+        "grassRadiusMul": 0.45,
+        "grassDensityMul": 0.15,
+        "fxDensityMul": 0.5,
+        "rendinstDistMul": 0.5,
+        "compatibilityRendinstDistMul": 0.5,
+        "tireTracksQuality": 0,
+        "anisotropy": 1,
+        "compatibilityAnisotropy": 1,
+        "xrayUpdateFrames": 2,
+        "force8bitRT": true,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": false,
+        "renderImpostorsToDraftDepth": true,
+        "includeAtesUnitstInDepthPrepass": false,
+        "grassQuality": "high",
+        "grassAlphaToCoverage": false,
+        "treeAlphaToCoverage": false,
+        "impostorAlphaToCoverage": false,
+        "shaderlod": "high",
+        "riExtraMinSizeForDraftDepth": 0.0,
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": false,
+        "texquality": "high",
+        "fxTarget": "high",
+        "fftWaterRenderResolution": 7,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": false,
+        "customRefractionScale": 0.25,
+        "refractionShadows": false
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          2048,
+          3072
+        ],
+        "texTileSize": 128,
+        "swFeedbackMipTiles0": 6,
+        "swFeedbackMipTiles1": 6,
+        "swFeedbackMipTiles2": 4,
+        "swFeedbackInnerMipTiles": 2,
+        "swFeedbackOuterMipTiles": 4,
+        "virtualTextureAnisotropy": 2,
+        "texelSizeMul": 1.0,
+        "minTexTileBorder": 1,
+        "hwfeedback": false
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    },
+    "high": {
+      "graphics": {
+        "backgroundScale": 1.0,
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": -1,
+        "limitNonPlayerTankUnitsLod": -1,
+        "limitNonPlayerShipUnitsLod": -1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "compatibilityShadowQuality": "medium",
+        "grassRadiusMul": 0.8,
+        "grassDensityMul": 0.87,
+        "fxDensityMul": 0.8,
+        "rendinstDistMul": 0.8,
+        "compatibilityRendinstDistMul": 0.8,
+        "tireTracksQuality": 1,
+        "anisotropy": 4,
+        "compatibilityAnisotropy": 4,
+        "xrayUpdateFrames": 1,
+        "force8bitRT": false,
+        "usePostfxGlow": true,
+        "lenseFlares": true,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": true,
+        "renderImpostorsToDraftDepth": true,
+        "includeAtesUnitstInDepthPrepass": false,
+        "grassQuality": "low",
+        "grassAlphaToCoverage": false,
+        "treeAlphaToCoverage": false,
+        "impostorAlphaToCoverage": false,
+        "shaderlod": "high",
+        "riExtraMinSizeForDraftDepth": 0.0,
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": false,
+        "texquality": "high",
+        "fxTarget": "high",
+        "fftWaterRenderResolution": 8,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": true,
+        "customRefractionScale": 0.25,
+        "refractionShadows": true
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          3072,
+          4096
+        ],
+        "texTileSize": 128,
+        "swFeedbackMipTiles0": 10,
+        "swFeedbackMipTiles1": 8,
+        "swFeedbackMipTiles2": 4,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 4,
+        "virtualTextureAnisotropy": 4,
+        "texelSizeMul": 1.0,
+        "minTexTileBorder": 1,
+        "hwfeedback": false
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    },
+    "max": {
+      "graphics": {
+        "backgroundScale": 0.633,
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": -1,
+        "limitNonPlayerTankUnitsLod": -1,
+        "limitNonPlayerShipUnitsLod": -1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "compatibilityShadowQuality": "high",
+        "grassRadiusMul": 1.0,
+        "grassDensityMul": 1.0,
+        "fxDensityMul": 1.0,
+        "rendinstDistMul": 1.0,
+        "compatibilityRendinstDistMul": 1.0,
+        "tireTracksQuality": 2,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "xrayUpdateFrames": 1,
+        "force8bitRT": false,
+        "usePostfxGlow": true,
+        "lenseFlares": true,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": true,
+        "renderImpostorsToDraftDepth": true,
+        "includeAtesUnitstInDepthPrepass": true,
+        "grassQuality": "high",
+        "grassAlphaToCoverage": true,
+        "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
+        "shaderlod": "high",
+        "riExtraMinSizeForDraftDepth": 0.0,
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": true,
+        "texquality": "high",
+        "fxTarget": "ultrahigh",
+        "fftWaterRenderResolution": 8,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": true,
+        "allowRefractionForTankLevels": true,
+        "customRefractionScale": 0.5,
+        "refractionShadows": true
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          4096,
+          4096
+        ],
+        "texTileSize": 128,
+        "swFeedbackMipTiles0": 12,
+        "swFeedbackMipTiles1": 10,
+        "swFeedbackMipTiles2": 6,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 6,
+        "virtualTextureAnisotropy": 8,
+        "texelSizeMul": 1.0,
+        "minTexTileBorder": 1,
+        "hwfeedback": false
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    },
+    "movie": {
+      "graphics": {
+        "backgroundScale": 1.0,
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": -1,
+        "limitNonPlayerTankUnitsLod": -1,
+        "limitNonPlayerShipUnitsLod": -1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "compatibilityShadowQuality": "gfn",
+        "grassRadiusMul": 2.0,
+        "grassDensityMul": 2.0,
+        "fxDensityMul": 1.0,
+        "rendinstDistMul": 2.0,
+        "compatibilityRendinstDistMul": 2.0,
+        "tireTracksQuality": 2,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "xrayUpdateFrames": 1,
+        "force8bitRT": false,
+        "usePostfxGlow": true,
+        "lenseFlares": true,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": true,
+        "renderImpostorsToDraftDepth": true,
+        "includeAtesUnitstInDepthPrepass": true,
+        "grassQuality": "high",
+        "grassAlphaToCoverage": true,
+        "treeAlphaToCoverage": true,
+        "impostorAlphaToCoverage": true,
+        "shaderlod": "high",
+        "riExtraMinSizeForDraftDepth": 0.0,
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": true,
+        "texquality": "high",
+        "fxTarget": "ultrahigh",
+        "fftWaterRenderResolution": 8,
+        "fftWaterRenderResolutionPlane": 7,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": true,
+        "allowRefractionForTankLevels": true,
+        "customRefractionScale": 1.0,
+        "refractionShadows": true
       },
       "render": {
         "grassInCompatibility": true
@@ -1636,7 +2038,8 @@
         "enableGrassTrackMask": false,
         "allowNonSkyReflections": false,
         "allowRefractionForTankLevels": false,
-        "customRefractionScale": 0.25
+        "customRefractionScale": 0.25,
+        "refractionShadows": false
       }
     },
     "medium": {
@@ -1664,7 +2067,8 @@
         "enableGrassTrackMask": false,
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": false,
-        "customRefractionScale": 0.25
+        "customRefractionScale": 0.25,
+        "refractionShadows": false
       }
     },
     "high": {
@@ -1692,7 +2096,8 @@
         "enableGrassTrackMask": true,
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.25
+        "customRefractionScale": 0.25,
+        "refractionShadows": true
       }
     },
     "max": {
@@ -1720,7 +2125,8 @@
         "enableGrassTrackMask": true,
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.5
+        "customRefractionScale": 0.5,
+        "refractionShadows": true
       }
     }
   },
@@ -1823,6 +2229,17 @@
           "brokenShadersAfterAppSwitch": {
             "entry": {
               "gpu": "G76",
+              "data": {
+                "affected": true
+              }
+            }
+          }
+        }
+      },
+      "AMD": {
+        "driverProps": {
+          "clearColorBug": {
+            "entry": {
               "data": {
                 "affected": true
               }

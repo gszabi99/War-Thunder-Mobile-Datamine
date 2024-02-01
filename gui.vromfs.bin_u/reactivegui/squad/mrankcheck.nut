@@ -31,7 +31,7 @@ let canShowMRankCheck = Computed(@() !isInBattle.value
 
 let shouldShowMsg = keepref(Computed(@() needMRankCheckMsg.value && canShowMRankCheck.value))
 
-let function initiateMRankCheck() {
+function initiateMRankCheck() {
   if (!isSquadLeader.value)
     return
   if (isMRankCheckSuspended.value) {
@@ -43,7 +43,7 @@ let function initiateMRankCheck() {
   resetTimeout(CAN_REPEAT_SEC, @() isMRankCheckSuspended(false))
 }
 
-let function showMRankCheck() {
+function showMRankCheck() {
   if (!shouldShowMsg.value)
     return
 

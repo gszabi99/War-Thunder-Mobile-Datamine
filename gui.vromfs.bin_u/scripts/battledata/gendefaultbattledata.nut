@@ -8,7 +8,7 @@ let { register_command } = require("console")
 const WTM_PATH = "../../skyquake/prog/scripts/wtm/"
 const DEF_BATTLE_DATA = "globals/data/defaultBattleData"
 
-let function saveResult(res, fileName) {
+function saveResult(res, fileName) {
   let fullName = $"{WTM_PATH}{fileName}.nut"
   let file = io.file(fullName, "wt+")
   file.writestring("return ");

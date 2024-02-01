@@ -1,15 +1,17 @@
-//-file:plus-string
+from "%scripts/dagui_natives.nut" import in_flight_menu, set_host_cb, is_online_available, send_error_log, script_net_assert, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+
+let { g_listener_priority } = require("%scripts/g_listener_priority.nut")
+let { set_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 let { OPERATION_COMPLETE, SERVER_ERROR_ROOM_PASSWORD_MISMATCH, INVALID_ROOM_ID } = require("matching.errors")
-let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { is_user_mission } = require("%scripts/util.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { get_mp_session_id_str, destroy_session } = require("multiplayer")
 let base64 = require("base64")
 let DataBlock = require("DataBlock")
-let { subscribe }  = require("eventbus")
+let { eventbus_subscribe }  = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { isEqual, isDataBlock } = require("%sqstd/underscore.nut")
@@ -33,6 +35,7 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { isInFlight } = require("gameplayBinding")
 let { format } = require("string")
 let { tostring_r } = require("%sqstd/string.nut")
+let matching = require("%scripts/matching_api.nut")
 
 function is_my_userid(user_id) {
   if (type(user_id) == "string")
@@ -57,8 +60,6 @@ SessionLobby API
 
 const NET_SERVER_LOST = 0x82220002  //for hostCb
 const NET_SERVER_QUIT_FROM_GAME = 0x82220003
-
-::LAST_SESSION_DEBUG_INFO <- ""
 
 local last_round = true
 local SessionLobby
@@ -128,6 +129,39 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 let matchingUnitTypes = [SHIP, AIR, HELICOPTER, TANK]
 
+let SessionLobbyState = persist("SessionLobbyState", @(){
+  roomId = INVALID_ROOM_ID
+  settings = {}
+  uploadedMissionId = ""
+  status = lobbyStates.NOT_IN_ROOM
+  isRoomInSession = false
+  isRoomOwner = false
+  isRoomByQueue = false
+  roomUpdated = false
+  password = ""
+
+  members = []
+  memberHostId = -1
+
+  isReady = false
+  myState = PLAYER_IN_LOBBY_NOT_READY
+
+  needJoinSessionAfterMyInfoApply = false
+})
+
+let MRoomsHandlersState  = persist("MRoomsHandlersState", @() {
+  hostId = null  //user host id
+  roomId = INVALID_ROOM_ID
+  room   = null
+  roomMembers = []
+  isConnectAllowed = false
+  roomOps = {}
+  isHostReady = false
+  isSelfReady = false
+  isLeaving = false
+})
+
+
 // rooms notifications
 function notify_room_invite(params) {
   log("notify_room_invite")
@@ -135,7 +169,7 @@ function notify_room_invite(params) {
 
   if (!isInMenu.value && isLoggedIn.value) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
-    return false;
+    return false
   }
 
   let senderId = ("senderId" in params) ? params.senderId : null
@@ -180,95 +214,68 @@ function notify_room_attribs_changed(params) {
   SessionLobby.onSettingsChanged(params)
 }
 
-::notify_session_start <- function notify_session_start() {
+local g_mrooms_handlers
+
+function join_room(params, cb) {
+  matching.rpc_call("mrooms.join_room",
+    params,
+    function(resp) {
+      if (resp.error == OPERATION_COMPLETE)
+        g_mrooms_handlers.onRoomJoinCb(resp)
+      else {
+        resp.roomId <- params?.roomId
+        resp.password <- params?.password
+      }
+      cb(resp)
+    })
+}
+
+function leave_room(params, cb) {
+  let oldRoomId = g_mrooms_handlers.getRoomId()
+  MRoomsHandlersState.isLeaving = true
+
+  matching.rpc_call("mrooms.leave_room",
+    params,
+    function(resp) {
+      if (g_mrooms_handlers.getRoomId() == oldRoomId)
+        g_mrooms_handlers.onRoomLeaveCb()
+      cb(resp)
+    })
+}
+
+eventbus_subscribe("notify_session_start", function notify_session_start(...) {
   let sessionId = get_mp_session_id_str()
   if (sessionId != "")
-    ::LAST_SESSION_DEBUG_INFO = $"sid:{sessionId}"
+    set_last_session_debug_info($"sid:{sessionId}")
 
   log("notify_session_start")
   SessionLobby.switchStatus(lobbyStates.JOINING_SESSION)
-}
+})
 
-let function setRoomAttributes(params, cb) {
+function setRoomAttributes(params, cb) {
   log($"[PSMT] setting room attributes: {params?.public.psnMatchId}")
-  ::matching.rpc_call("mrooms.set_attributes", params, cb)
+  matching.rpc_call("mrooms.set_attributes", params, cb)
 }
 
 local delayedJoinRoomFunc = null
 
 let getMaxEconomicRank = @() 30 //it used only for create room. So better to remove this code at all, but not in this commit.
 
-
 SessionLobby = {
-  [PERSISTENT_DATA_PARAMS] = [
-    "roomId", "settings", "uploadedMissionId", "status",
-    "isRoomInSession", "isRoomOwner", "isRoomByQueue",
-    "roomUpdated", "password", "members", "memberHostId",
-    "isReady", "myState", "needJoinSessionAfterMyInfoApply",
-  ]
-
-  settings = {}
-  uploadedMissionId = ""
-  status = lobbyStates.NOT_IN_ROOM
-  isRoomInSession = false
-  isRoomOwner = false
-  isRoomByQueue = false
-  roomId = INVALID_ROOM_ID
-  roomUpdated = false
-  password = ""
-
-  members = []
-  memberDefaults = {
-    country = "country_0"
-    ready = false
-    is_in_session = false
-    clanTag = ""
-    title = ""
-    pilotId = 0
-    state = PLAYER_IN_LOBBY_NOT_READY
-  }
-  memberHostId = -1
-
-  //my room attributes
-  isReady = false
-  myState = PLAYER_IN_LOBBY_NOT_READY
-
-  needJoinSessionAfterMyInfoApply = false
-
-  roomTimers = [
-    {
-      publicKey = "timeToCloseByDisbalance"
-      color = "@warningTextColor"
-      function getLocText(public, locParams) {
-        local res = loc("multiplayer/closeByDisbalance", locParams)
-        if ("disbalanceType" in public)
-          res += "\n" + loc("multiplayer/reason") + loc("ui/colon")
-            + loc("roomCloseReason/" + public.disbalanceType)
-        return res
-      }
-    }
-    {
-      publicKey = "matchStartTime"
-      color = "@inQueueTextColor"
-      function getLocText(_public, locParams) {
-        return loc("multiplayer/battleStartsIn", locParams)
-      }
-    }
-  ]
 
   function isInRoom() {
-    return this.status != lobbyStates.NOT_IN_ROOM
-      && this.status != lobbyStates.WAIT_FOR_QUEUE_ROOM
-      && this.status != lobbyStates.CREATING_ROOM
-      && this.status != lobbyStates.JOINING_ROOM
+    return SessionLobbyState.status != lobbyStates.NOT_IN_ROOM
+      && SessionLobbyState.status != lobbyStates.WAIT_FOR_QUEUE_ROOM
+      && SessionLobbyState.status != lobbyStates.CREATING_ROOM
+      && SessionLobbyState.status != lobbyStates.JOINING_ROOM
   }
 
   function isWaitForQueueRoom() {
-    return this.status == lobbyStates.WAIT_FOR_QUEUE_ROOM
+    return SessionLobbyState.status == lobbyStates.WAIT_FOR_QUEUE_ROOM
   }
 
   function setWaitForQueueRoom(set) {
-    if (this.status == lobbyStates.NOT_IN_ROOM || this.status == lobbyStates.WAIT_FOR_QUEUE_ROOM)
+    if (SessionLobbyState.status == lobbyStates.NOT_IN_ROOM || SessionLobbyState.status == lobbyStates.WAIT_FOR_QUEUE_ROOM)
       this.switchStatus(set ? lobbyStates.WAIT_FOR_QUEUE_ROOM : lobbyStates.NOT_IN_ROOM)
   }
 
@@ -319,11 +326,11 @@ SessionLobby = {
       local nameNoTm = _settings.mission.name
       if (nameNoTm.len() > ending.len() && nameNoTm.slice(nameNoTm.len() - ending.len()) == ending)
         nameNoTm = nameNoTm.slice(0, nameNoTm.len() - ending.len())
-      _settings.mission.loc_name = nameNoTm + _settings.mission.postfix
-      _settings.mission.name += _settings.mission.postfix
+      _settings.mission.loc_name = "".concat(nameNoTm, _settings.mission.postfix)
+      _settings.mission.name = "".concat(_settings.mission.name, _settings.mission.postfix)
     }
     if (is_user_mission(mission))
-      _settings.userMissionName <- loc("missions/" + mission.name)
+      _settings.userMissionName <- loc($"missions/{mission.name}")
     if (!("_gameMode" in _settings.mission))
       _settings.mission._gameMode <- get_game_mode()
     if (!("_gameType" in _settings.mission))
@@ -351,10 +358,10 @@ SessionLobby = {
     if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
       _settings.mranks <- { min = mrankMin, max = mrankMax }
 
-    if ((this.settings?.externalSessionId ?? "") != "")
-      _settings.externalSessionId <- this.settings.externalSessionId
-    if ((this.settings?.psnMatchId ?? "") != "")
-      _settings.psnMatchId <- this.settings.psnMatchId
+    if ((SessionLobbyState.settings?.externalSessionId ?? "") != "")
+      _settings.externalSessionId <- SessionLobbyState.settings.externalSessionId
+    if ((SessionLobbyState.settings?.psnMatchId ?? "") != "")
+      _settings.psnMatchId <- SessionLobbyState.settings.psnMatchId
 
     this.checkDynamicSettings(true, _settings)
     this.setSettings(_settings)
@@ -367,17 +374,18 @@ SessionLobby = {
       return
     }
 
-    if (checkEqual && isEqual(this.settings, v_settings))
+    if (checkEqual && isEqual(SessionLobbyState.settings, v_settings))
       return
 
     //v_settings can be public date of room, and it does not need to be updated settings somewhere else
-    this.settings = clone v_settings
+    SessionLobbyState.settings.clear()
+    SessionLobbyState.__merge(v_settings)
     //not mission room settings
-    this.settings.connect_on_join <- true
+    SessionLobbyState.settings.connect_on_join <- true
 
-    this.roomUpdated = notify || !this.isRoomOwner || !this.isInRoom()
-    if (!this.roomUpdated)
-      setRoomAttributes({ roomId = this.roomId, public = this.settings }, function(p) { SessionLobby.afterRoomUpdate(p) })
+    SessionLobbyState.roomUpdated = notify || !SessionLobbyState.isRoomOwner || !this.isInRoom()
+    if (!SessionLobbyState.roomUpdated)
+      setRoomAttributes({ roomId = SessionLobbyState.roomId, public = SessionLobbyState.settings }, function(p) { SessionLobby.afterRoomUpdate(p) })
 
     let newGm = this.getGameMode()
     if (newGm >= 0)
@@ -387,13 +395,13 @@ SessionLobby = {
   }
 
   function checkDynamicSettings(silent = false, v_settings = null) {
-    if (!this.isRoomOwner && this.isInRoom())
+    if (!SessionLobbyState.isRoomOwner && this.isInRoom())
       return
 
     if (!v_settings) {
-      if (!this.settings || !this.settings.len())
+      if (!SessionLobbyState.settings || !SessionLobbyState.settings.len())
         return //owner have joined back to the room, and not receive settings yet
-      v_settings = this.settings
+      v_settings = SessionLobbyState.settings
     }
     else
       silent = true //no need to update when custom settings checked
@@ -401,19 +409,19 @@ SessionLobby = {
     local changed = false
     let wasHidden = getTblValue("hidden", v_settings, false)
     v_settings.hidden <- getTblValue("coop", v_settings, false)
-                        || (this.isRoomInSession && !getTblValue("allowJIP", v_settings, true))
+                        || (SessionLobbyState.isRoomInSession && !getTblValue("allowJIP", v_settings, true))
     changed = changed || (wasHidden != v_settings.hidden) // warning disable: -const-in-bool-expr
 
     let wasPassword = getTblValue("hasPassword", v_settings, false)
-    v_settings.hasPassword <- this.password != ""
+    v_settings.hasPassword <- SessionLobbyState.password != ""
     changed = changed || (wasPassword != v_settings.hasPassword)
 
     if (changed && !silent)
-      this.setSettings(this.settings, false, false)
+      this.setSettings(SessionLobbyState.settings, false, false)
   }
 
   function onSettingsChanged(p) {
-    if (this.roomId != p.roomId)
+    if (SessionLobbyState.roomId != p.roomId)
       return
     let set = getTblValue("public", p)
     if (!set)
@@ -424,7 +432,7 @@ SessionLobby = {
       log($"last round {last_round}")
     }
 
-    let newSet = clone this.settings
+    let newSet = clone SessionLobbyState.settings
     foreach (k, v in set)
       if (v == null) {
         newSet?.$rawdelete(k)
@@ -438,15 +446,15 @@ SessionLobby = {
   }
 
   function setRoomInSession(newIsInSession) {
-    if (newIsInSession == this.isRoomInSession)
+    if (newIsInSession == SessionLobbyState.isRoomInSession)
       return
 
-    this.isRoomInSession = newIsInSession
+    SessionLobbyState.isRoomInSession = newIsInSession
     if (!this.isInRoom())
       return
 
     broadcastEvent("LobbyRoomInSession")
-    if (this.isRoomOwner)
+    if (SessionLobbyState.isRoomOwner)
       this.checkDynamicSettings()
   }
 
@@ -456,7 +464,7 @@ SessionLobby = {
   }
 
   function getPublicData(room = null) {
-    return room ? (("public" in room) ? room.public : room) : this.settings
+    return room ? (("public" in room) ? room.public : room) : SessionLobbyState.settings
   }
 
   function getMissionData(room = null) {
@@ -477,22 +485,22 @@ SessionLobby = {
   }
 
   function getPublicParam(name, defValue = "") {
-    if (name in this.settings)
-      return this.settings[name]
+    if (name in SessionLobbyState.settings)
+      return SessionLobbyState.settings[name]
     return defValue
   }
 
   function switchStatus(v_status) {
-    if (this.status == v_status)
+    if (SessionLobbyState.status == v_status)
       return
 
-    let wasStatus = this.status
-    this.status = v_status  //for easy notify other handlers about change status
+    let wasStatus = SessionLobbyState.status
+    SessionLobbyState.status = v_status  //for easy notify other handlers about change status
     sessionLobbyStatus(v_status)
 
-    if (this.status == lobbyStates.NOT_IN_ROOM || this.status == lobbyStates.IN_DEBRIEFING)
+    if (SessionLobbyState.status == lobbyStates.NOT_IN_ROOM || SessionLobbyState.status == lobbyStates.IN_DEBRIEFING)
       this.setReady(false, true)
-    if (this.status == lobbyStates.NOT_IN_ROOM) {
+    if (SessionLobbyState.status == lobbyStates.NOT_IN_ROOM) {
       this.resetParams()
       if (wasStatus == lobbyStates.JOINING_SESSION)
         destroy_session("on leave room while joining session")
@@ -504,51 +512,51 @@ SessionLobby = {
   }
 
   function resetParams() {
-    this.settings.clear()
+    SessionLobbyState.settings.clear()
     this.changePassword("") //reset password after leave room
     this.updateMemberHostParams(null)
-    this.isRoomByQueue = false
-    this.myState = PLAYER_IN_LOBBY_NOT_READY
-    this.roomUpdated = false
-    this.needJoinSessionAfterMyInfoApply = false
+    SessionLobbyState.isRoomByQueue = false
+    SessionLobbyState.myState = PLAYER_IN_LOBBY_NOT_READY
+    SessionLobbyState.roomUpdated = false
+    SessionLobbyState.needJoinSessionAfterMyInfoApply = false
   }
 
   function switchStatusChecked(oldStatusList, newStatus) {
-    if (isInArray(this.status, oldStatusList))
+    if (isInArray(SessionLobbyState.status, oldStatusList))
       this.switchStatus(newStatus)
   }
 
   function changePassword(v_password) {
-    if (type(v_password) != "string" || this.password == v_password)
+    if (type(v_password) != "string" || SessionLobbyState.password == v_password)
       return
 
-    if (this.isRoomOwner && this.status != lobbyStates.NOT_IN_ROOM && this.status != lobbyStates.CREATING_ROOM) {
-      let prevPass = this.password
-      ::matching.rpc_call("mrooms.set_password",
-        { roomId = this.roomId, password = v_password },
+    if (SessionLobbyState.isRoomOwner && SessionLobbyState.status != lobbyStates.NOT_IN_ROOM && SessionLobbyState.status != lobbyStates.CREATING_ROOM) {
+      let prevPass = SessionLobbyState.password
+      matching.rpc_call("mrooms.set_password",
+        { roomId = SessionLobbyState.roomId, password = v_password },
         function(p) {
           if (showMatchingError(p)) {
-            SessionLobby.password = prevPass
+            SessionLobbyState.password = prevPass
             SessionLobby.checkDynamicSettings()
           }
         })
     }
-    this.password = v_password
+    SessionLobbyState.password = v_password
   }
 
   function isUserMission(v_settings = null) {
-    return getTblValue("userMissionName", v_settings || this.settings) != null
+    return getTblValue("userMissionName", v_settings || SessionLobbyState.settings) != null
   }
 
   function isMissionReady() {
     return !this.isUserMission() ||
-           (this.status != lobbyStates.UPLOAD_CONTENT && this.uploadedMissionId == this.getMissionName())
+           (SessionLobbyState.status != lobbyStates.UPLOAD_CONTENT && SessionLobbyState.uploadedMissionId == this.getMissionName())
   }
 
   function uploadUserMission(afterDoneFunc = null) {
-    if (!this.isInRoom() || !this.isUserMission() || this.status == lobbyStates.UPLOAD_CONTENT)
+    if (!this.isInRoom() || !this.isUserMission() || SessionLobbyState.status == lobbyStates.UPLOAD_CONTENT)
       return
-    if (this.uploadedMissionId == this.getMissionName()) {
+    if (SessionLobbyState.uploadedMissionId == this.getMissionName()) {
       afterDoneFunc?()
       return
     }
@@ -563,7 +571,7 @@ SessionLobby = {
     //debugTableData(missionBlk)
 
     let blkData = base64.encodeBlk(missionBlk)
-    //dlog("GP: data = " + blkData)
+    //dlog("GP: data = ", blkData)
     //debugTableData(blkData)
     if (!blkData || !("result" in blkData) || !blkData.result.len()) {
       openFMsgBox({ text = loc("msg/cant_load_user_mission") })
@@ -571,13 +579,13 @@ SessionLobby = {
     }
 
     this.switchStatus(lobbyStates.UPLOAD_CONTENT)
-    setRoomAttributes({ roomId = this.roomId, private = { userMission = blkData.result } },
+    setRoomAttributes({ roomId = SessionLobbyState.roomId, private = { userMission = blkData.result } },
                           function(p) {
                             if (showMatchingError(p)) {
                               SessionLobby.returnStatusToRoom()
                               return
                             }
-                            SessionLobby.uploadedMissionId = missionId
+                            SessionLobbyState.uploadedMissionId = missionId
                             SessionLobby.returnStatusToRoom()
                             if (afterDoneFunc)
                               afterDoneFunc()
@@ -597,23 +605,23 @@ SessionLobby = {
   }
 
   function updateMemberHostParams(member = null) { //null = host leave
-    this.memberHostId = member ? member.memberId : -1
+    SessionLobbyState.memberHostId = member ? member.memberId : -1
   }
 
 
   function updateReady(ready) {
-    this.isReady = ready
+    SessionLobbyState.isReady = ready
     broadcastEvent("LobbyReadyChanged")
   }
 
   function onMemberInfoUpdate(params) {
-    if (params.roomId != this.roomId)
+    if (params.roomId != SessionLobbyState.roomId)
       return
     if (this.isMemberHost(params))
       return this.updateMemberHostParams(params)
 
     local member = null
-    foreach (m in this.members)
+    foreach (m in SessionLobbyState.members)
       if (m.memberId == params.memberId) {
         member = m
         break
@@ -629,57 +637,57 @@ SessionLobby = {
           member[tblName] <- params[tblName]
 
     if (is_my_userid(member.userId)) {
-      this.isRoomOwner = this.isMemberOperator(member)
+      SessionLobbyState.isRoomOwner = this.isMemberOperator(member)
       let ready = getTblValue("ready", getTblValue("public", member, {}), null)
-      if (ready != null && ready != this.isReady)
+      if (ready != null && ready != SessionLobbyState.isReady)
         this.updateReady(ready)
-      else if (this.needJoinSessionAfterMyInfoApply)
+      else if (SessionLobbyState.needJoinSessionAfterMyInfoApply)
         this.tryJoinSession()
-      this.needJoinSessionAfterMyInfoApply = false
+      SessionLobbyState.needJoinSessionAfterMyInfoApply = false
     }
     broadcastEvent("LobbyMemberInfoChanged")
   }
 
   function updateMyState(_silent = false) {
     local newState = PLAYER_IN_LOBBY_NOT_READY
-    if (this.status == lobbyStates.IN_LOBBY || this.status == lobbyStates.START_SESSION)
-      newState = this.isReady ? PLAYER_IN_LOBBY_READY : PLAYER_IN_LOBBY_NOT_READY
-    else if (this.status == lobbyStates.IN_LOBBY_HIDDEN)
+    if (SessionLobbyState.status == lobbyStates.IN_LOBBY || SessionLobbyState.status == lobbyStates.START_SESSION)
+      newState = SessionLobbyState.isReady ? PLAYER_IN_LOBBY_READY : PLAYER_IN_LOBBY_NOT_READY
+    else if (SessionLobbyState.status == lobbyStates.IN_LOBBY_HIDDEN)
       newState = PLAYER_IN_LOBBY_READY
-    else if (this.status == lobbyStates.IN_SESSION)
+    else if (SessionLobbyState.status == lobbyStates.IN_SESSION)
       newState = PLAYER_IN_FLIGHT
-    else if (this.status == lobbyStates.IN_DEBRIEFING)
+    else if (SessionLobbyState.status == lobbyStates.IN_DEBRIEFING)
       newState = PLAYER_IN_STATISTICS_BEFORE_LOBBY
 
-    this.myState = newState
-    return this.myState
+    SessionLobbyState.myState = newState
+    return SessionLobbyState.myState
   }
 
   function setReady(ready, _silent = false, forceRequest = false) { //return is my info changed
-    if (!forceRequest && this.isReady == ready)
+    if (!forceRequest && SessionLobbyState.isReady == ready)
       return false
 
     if (!this.isInRoom()) {
-      this.isReady = false
+      SessionLobbyState.isReady = false
       return ready
     }
 
-    ::matching.rpc_call("mrooms.set_ready_state",
-      { state = ready, roomId = this.roomId },
+    matching.rpc_call("mrooms.set_ready_state",
+      { state = ready, roomId = SessionLobbyState.roomId },
       function(p) {
         if (!this.isInRoom()) {
-          this.isReady = false
+          SessionLobbyState.isReady = false
           return
         }
 
-        let wasReady = this.isReady
-        this.isReady = ready
+        let wasReady = SessionLobbyState.isReady
+        SessionLobbyState.isReady = ready
 
         //if we receive error on set ready, result is ready == false always.
         if (showMatchingError(p))
-          this.isReady = false
+          SessionLobbyState.isReady = false
 
-        if (this.isReady == wasReady)
+        if (SessionLobbyState.isReady == wasReady)
           return
 
         broadcastEvent("LobbyReadyChanged")
@@ -691,26 +699,26 @@ SessionLobby = {
     if (showMatchingError(params))
       return this.switchStatus(lobbyStates.NOT_IN_ROOM)
 
-    this.isRoomOwner = true
-    this.isRoomByQueue = false
+    SessionLobbyState.isRoomOwner = true
+    SessionLobbyState.isRoomByQueue = false
     this.afterRoomJoining(params)
   }
 
   function destroyRoom() {
-    if (!this.isRoomOwner)
+    if (!SessionLobbyState.isRoomOwner)
       return
 
-    ::matching.rpc_call("mrooms.destroy_room", { roomId = this.roomId })
+    matching.rpc_call("mrooms.destroy_room", { roomId = SessionLobbyState.roomId })
     SessionLobby.afterLeaveRoom({})
   }
 
   function leaveRoom() {
-    if (this.status == lobbyStates.NOT_IN_ROOM || this.status == lobbyStates.WAIT_FOR_QUEUE_ROOM) {
+    if (SessionLobbyState.status == lobbyStates.NOT_IN_ROOM || SessionLobbyState.status == lobbyStates.WAIT_FOR_QUEUE_ROOM) {
       this.setWaitForQueueRoom(false)
       return
     }
 
-    ::leave_room({}, function(_p) {
+    leave_room({}, function(_p) {
         SessionLobby.afterLeaveRoom({})
      })
   }
@@ -731,7 +739,7 @@ SessionLobby = {
       delayedJoinRoomFunc = null
     }
 
-    this.roomId = INVALID_ROOM_ID
+    SessionLobbyState.roomId = INVALID_ROOM_ID
     this.switchStatus(lobbyStates.NOT_IN_ROOM)
   }
 
@@ -741,30 +749,31 @@ SessionLobby = {
 
     leave_mp_session()
 
-    if (!this.isRoomOwner) {
+    if (!SessionLobbyState.isRoomOwner) {
       this.setSettings({})
-      this.members = []
+      SessionLobbyState.members.clear()
     }
 
-    ::LAST_SESSION_DEBUG_INFO =
-      ("roomId" in join_params) ? ("room:" + join_params.roomId) :
-      ("battleId" in join_params) ? ("battle:" + join_params.battleId) :
+    set_last_session_debug_info(
+      ("roomId" in join_params) ? ($"room: { join_params.roomId }") :
+      ("battleId" in join_params) ? ($"battle: { join_params.battleId }") :
       ""
+    )
 
     this.switchStatus(lobbyStates.JOINING_ROOM)
-    ::join_room(join_params, this.afterRoomJoining.bindenv(this))
+    join_room(join_params, this.afterRoomJoining.bindenv(this))
   }
 
   function joinBattle(battleId) {
     destroyQueue()
-    this.isRoomOwner = false
-    this.isRoomByQueue = false
+    SessionLobbyState.isRoomOwner = false
+    SessionLobbyState.isRoomByQueue = false
     this.sendJoinRoomRequest({ battleId = battleId })
   }
 
   function joinRoom(v_roomId, senderId = "", v_password = null,
                                   cb = function(...) {}) { //by default not a queue, but no id too
-    if (this.roomId == v_roomId && this.isInRoom())
+    if (SessionLobbyState.roomId == v_roomId && this.isInRoom())
       return
 
     if (!isLoggedIn.value || this.isInRoom()) {
@@ -775,10 +784,10 @@ SessionLobby = {
       return
     }
 
-    this.isRoomOwner = is_my_userid(senderId)
-    this.isRoomByQueue = senderId == null
+    SessionLobbyState.isRoomOwner = is_my_userid(senderId)
+    SessionLobbyState.isRoomByQueue = senderId == null
 
-    if (this.isRoomByQueue)
+    if (SessionLobbyState.isRoomByQueue)
       destroyQueue()
     else
       leaveQueue()
@@ -787,8 +796,8 @@ SessionLobby = {
       this.changePassword(v_password)
 
     let joinParams = { roomId = v_roomId }
-    if (this.password != "")
-      joinParams.password <- this.password
+    if (SessionLobbyState.password != "")
+      joinParams.password <- SessionLobbyState.password
 
     this.sendJoinRoomRequest(joinParams, cb)
   }
@@ -813,25 +822,25 @@ SessionLobby = {
     if (showMatchingError(params))
       return this.switchStatus(lobbyStates.NOT_IN_ROOM)
 
-    this.roomId = params.roomId
-    this.roomUpdated = true
-    this.members = getTblValue("members", params, [])
+    SessionLobbyState.roomId = params.roomId
+    SessionLobbyState.roomUpdated = true
+    SessionLobbyState.members.replace(getTblValue("members", params, []))
 
-    let public = getTblValue("public", params, this.settings)
-    if (!this.isRoomOwner || this.settings.len() == 0) {
+    let public = getTblValue("public", params, SessionLobbyState.settings)
+    if (!SessionLobbyState.isRoomOwner || SessionLobbyState.settings.len() == 0) {
       this.setSettings(public)
 
-      if (this.isRoomByQueue && !this.isSessionStartedInRoom())
-        this.isRoomByQueue = false
+      if (SessionLobbyState.isRoomByQueue && !this.isSessionStartedInRoom())
+        SessionLobbyState.isRoomByQueue = false
     }
 
-    for (local i = this.members.len() - 1; i >= 0; i--)
-      if (this.isMemberHost(this.members[i])) {
-        this.updateMemberHostParams(this.members[i])
-        this.members.remove(i)
+    for (local i = SessionLobbyState.members.len() - 1; i >= 0; i--)
+      if (this.isMemberHost(SessionLobbyState.members[i])) {
+        this.updateMemberHostParams(SessionLobbyState.members[i])
+        SessionLobbyState.members.remove(i)
       }
-      else if (is_my_userid(this.members[i].userId))
-          this.isRoomOwner = this.isMemberOperator(this.members[i])
+      else if (is_my_userid(SessionLobbyState.members[i].userId))
+          SessionLobbyState.isRoomOwner = this.isMemberOperator(SessionLobbyState.members[i])
 
     this.returnStatusToRoom()
 
@@ -859,12 +868,12 @@ SessionLobby = {
     if (showMatchingError(params))
       return this.destroyRoom()
 
-    this.roomUpdated = true
+    SessionLobbyState.roomUpdated = true
     this.checkAutoStart()
   }
 
   function isMemberHost(m) {
-    return (m.memberId == this.memberHostId || (("public" in m) && ("host" in m.public) && m.public.host))
+    return (m.memberId == SessionLobbyState.memberHostId || (("public" in m) && ("host" in m.public) && m.public.host))
   }
 
   function isSessionStartedInRoom(room = null) {
@@ -872,12 +881,12 @@ SessionLobby = {
   }
 
   function checkAutoStart() {
-    if (this.isRoomOwner && !this.isRoomByQueue && this.roomUpdated)
+    if (SessionLobbyState.isRoomOwner && !SessionLobbyState.isRoomByQueue && SessionLobbyState.roomUpdated)
       this.startSession()
   }
 
   function startSession() {
-    if (this.status != lobbyStates.IN_ROOM && this.status != lobbyStates.IN_LOBBY && this.status != lobbyStates.IN_LOBBY_HIDDEN)
+    if (SessionLobbyState.status != lobbyStates.IN_ROOM && SessionLobbyState.status != lobbyStates.IN_LOBBY && SessionLobbyState.status != lobbyStates.IN_LOBBY_HIDDEN)
       return
     if (!this.isMissionReady()) {
       this.uploadUserMission(function() { SessionLobby.startSession() })
@@ -885,8 +894,8 @@ SessionLobby = {
     }
     log("start session")
 
-    ::matching.rpc_call("mrooms.start_session",
-      { roomId = this.roomId, cluster = this.getPublicParam("cluster", "EU") },
+    matching.rpc_call("mrooms.start_session",
+      { roomId = SessionLobbyState.roomId, cluster = this.getPublicParam("cluster", "EU") },
       function(p) {
         if (!SessionLobby.isInRoom())
           return
@@ -919,12 +928,12 @@ SessionLobby = {
     if (this.isMemberHost(params))
       return this.updateMemberHostParams(params)
 
-    foreach (m in this.members)
+    foreach (m in SessionLobbyState.members)
       if (m.memberId == params.memberId) {
         this.onMemberInfoUpdate(params)
         return
       }
-    this.members.append(params)
+    SessionLobbyState.members.append(params)
     broadcastEvent("LobbyMembersChanged")
     this.checkAutoStart()
   }
@@ -933,16 +942,16 @@ SessionLobby = {
     if (this.isMemberHost(params))
       return this.updateMemberHostParams(null)
 
-    foreach (idx, m in this.members)
+    foreach (idx, m in SessionLobbyState.members)
       if (params.memberId == m.memberId) {
-        this.members.remove(idx)
+        SessionLobbyState.members.remove(idx)
         if (is_my_userid(m.userId)) {
           this.afterLeaveRoom({})
           if (kicked) {
             if (!isInMenu.value) {
               quit_to_debriefing()
               interrupt_multiplayer(true)
-              ::in_flight_menu(false)
+              in_flight_menu(false)
             }
             openFMsgBox({ text = loc("matching/msg_kicked"), isPersist = true })
           }
@@ -953,7 +962,7 @@ SessionLobby = {
   }
 
   function rpcJoinBattle(params) {
-    if (!::is_online_available())
+    if (!is_online_available())
       return "client not ready"
     let battleId = params.battleId
     if (type(battleId) != "string")
@@ -974,14 +983,14 @@ SessionLobby = {
   getRoomEvent = @(room = null) this.getMGameMode(room)
 
   function canJoinSession() {
-    return this.isRoomInSession
+    return SessionLobbyState.isRoomInSession
   }
 
   function tryJoinSession() {
      if (!this.canJoinSession())
        return false
 
-     if (this.isRoomInSession) {
+     if (SessionLobbyState.isRoomInSession) {
        this.setReady(true)
        return true
      }
@@ -1013,14 +1022,13 @@ isInLoadingScreen.subscribe(function(v) {
 
 web_rpc.register_handler("join_battle", SessionLobby.rpcJoinBattle)
 
-registerPersistentData("SessionLobby", SessionLobby, SessionLobby[PERSISTENT_DATA_PARAMS])
-subscribe_handler(SessionLobby, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(SessionLobby, g_listener_priority.DEFAULT_HANDLER)
 
 isMatchingOnline.subscribe(@(_) SessionLobby.leaveRoom())
 
 isInDebriefing.subscribe(@(v) v ? SessionLobby.checkLeaveRoomInDebriefing() : null)
 
-let setHostCb = @() ::set_host_cb(null, @(p) SessionLobby.hostCb(p))
+let setHostCb = @() set_host_cb(null, @(p) SessionLobby.hostCb(p))
 if (isLoggedIn.value)
   setHostCb()
 isLoggedIn.subscribe(function(v) {
@@ -1036,43 +1044,29 @@ foreach (notificationName, callback in
     ["match.notify_join_session_aborted"] = @(_params) SessionLobby.leaveWaitForQueueRoom()
   }
 )
-  ::matching.subscribe(notificationName, callback)
+  matching.subscribe(notificationName, callback)
 
-subscribe("cancelJoiningSession", function(_) {
+eventbus_subscribe("cancelJoiningSession", function(_) {
   destroy_session("on cancel joining session")
   SessionLobby.leaveRoom()
 })
 
-::on_connection_failed <- function on_connection_failed(text) {
+eventbus_subscribe("on_connection_failed", function on_connection_failed(evt) {
+  let text = evt.reason
   if (!SessionLobby.isInRoom())
     return
   destroy_session("on connection failed while in the room")
   SessionLobby.leaveRoom()
   openFMsgBox({ text })
-}
+})
 
-subscribe("setWaitForQueueRoom", @(v) SessionLobby.setWaitForQueueRoom(v))
+eventbus_subscribe("setWaitForQueueRoom", @(v) SessionLobby.setWaitForQueueRoom(v))
 
-local MRoomsHandlers = class {
-  [PERSISTENT_DATA_PARAMS] = [
-    "hostId", "roomId", "room", "roomMembers", "isConnectAllowed", "roomOps", "isHostReady", "isSelfReady", "isLeaving"
-  ]
-
-  hostId = null //user host id
-  roomId = INVALID_ROOM_ID
-  room   = null
-  roomMembers = null //[]
-  isConnectAllowed = false
-  roomOps = null //{}
-  isHostReady = false
-  isSelfReady = false
-  isLeaving = false
+let MRoomsHandlers = class {
 
   constructor() {
-    this.roomMembers = []
-    this.roomOps = {}
-
-    registerPersistentData("MRoomsHandlers", this, this[PERSISTENT_DATA_PARAMS])
+    MRoomsHandlersState.roomMembers.clear()
+    MRoomsHandlersState.roomOps.clear()
 
     foreach (notificationName, callback in
               {
@@ -1086,95 +1080,95 @@ local MRoomsHandlers = class {
                 ["mrooms.on_room_member_kicked"] = this.onRoomMemberKicked.bindenv(this)
               }
             )
-      ::matching.subscribe(notificationName, callback)
+      matching.subscribe(notificationName, callback)
   }
 
   function getRoomId() {
-    return this.roomId
+    return MRoomsHandlersState.roomId
   }
 
   function hasSession() {
-    return this.hostId != null
+    return MRoomsHandlersState.hostId != null
   }
 
   function isPlayerRoomOperator(user_id) {
-    return (user_id in this.roomOps)
+    return (user_id in MRoomsHandlersState.roomOps)
   }
 
   function __cleanupRoomState() {
-    if (this.room == null)
+    if (MRoomsHandlersState.room == null)
       return
 
-    this.hostId = null
-    this.roomId = INVALID_ROOM_ID
-    this.room   = null
-    this.roomMembers = []
-    this.roomOps = {}
-    this.isConnectAllowed = false
-    this.isHostReady = false
-    this.isSelfReady = false
-    this.isLeaving = false
+    MRoomsHandlersState.hostId = null
+    MRoomsHandlersState.roomId = INVALID_ROOM_ID
+    MRoomsHandlersState.room   = null
+    MRoomsHandlersState.roomMembers.clear()
+    MRoomsHandlersState.roomOps.clear()
+    MRoomsHandlersState.isConnectAllowed = false
+    MRoomsHandlersState.isHostReady = false
+    MRoomsHandlersState.isSelfReady = false
+    MRoomsHandlersState.isLeaving = false
 
     notify_room_destroyed({})
   }
 
   function __onHostConnectReady() {
-    this.isHostReady = true
-    if (this.isSelfReady)
+    MRoomsHandlersState.isHostReady = true
+    if (MRoomsHandlersState.isSelfReady)
       this.__connectToHost()
   }
 
   function __onSelfReady() {
-    this.isSelfReady = true
-    if (this.isHostReady)
+    MRoomsHandlersState.isSelfReady = true
+    if (MRoomsHandlersState.isHostReady)
       this.__connectToHost()
   }
 
   function __addRoomMember(member) {
     if (getTblValue("operator", member.public))
-      this.roomOps[member.userId] <- true
+      MRoomsHandlersState.roomOps[member.userId] <- true
 
     if (getTblValue("host", member.public)) {
       log(format("found host %s (%s)", member.name, member.userId.tostring()))
-      this.hostId = member.userId
+      MRoomsHandlersState.hostId = member.userId
     }
 
     let curMember = this.__getRoomMember(member.userId)
     if (curMember == null)
-      this.roomMembers.append(member)
+      MRoomsHandlersState.roomMembers.append(member)
     this.__updateMemberAttributes(member, curMember)
   }
 
   function __getRoomMember(user_id) {
-    foreach (_idx, member in this.roomMembers)
+    foreach (_idx, member in MRoomsHandlersState.roomMembers)
       if (member.userId == user_id)
         return member
     return null
   }
 
   function __getMyRoomMember() {
-    foreach (_idx, member in this.roomMembers)
+    foreach (_idx, member in MRoomsHandlersState.roomMembers)
       if (is_my_userid(member.userId))
         return member
     return null
   }
 
   function __removeRoomMember(user_id) {
-    foreach (idx, member in this.roomMembers) {
+    foreach (idx, member in MRoomsHandlersState.roomMembers) {
       if (member.userId == user_id) {
-        this.roomMembers.remove(idx)
+        MRoomsHandlersState.roomMembers.remove(idx)
         break
       }
     }
 
-    if (user_id == this.hostId) {
-      this.hostId = null
-      this.isConnectAllowed = false
-      this.isHostReady = false
+    if (user_id == MRoomsHandlersState.hostId) {
+      MRoomsHandlersState.hostId = null
+      MRoomsHandlersState.isConnectAllowed = false
+      MRoomsHandlersState.isHostReady = false
     }
 
-    if (user_id in this.roomOps)
-      this.roomOps.$rawdelete(user_id)
+    if (user_id in MRoomsHandlersState.roomOps)
+      MRoomsHandlersState.roomOps.$rawdelete(user_id)
 
     if (is_my_userid(user_id))
       this.__cleanupRoomState()
@@ -1190,7 +1184,7 @@ local MRoomsHandlers = class {
     }
     this.__mergeAttribs(member, cur_member)
 
-    if (member.userId == this.hostId) {
+    if (member.userId == MRoomsHandlersState.hostId) {
       if (member?.public.connect_ready ?? false)
         this.__onHostConnectReady()
     }
@@ -1199,7 +1193,7 @@ local MRoomsHandlers = class {
       if (readyStatus == true)
         this.__onSelfReady()
       else if (readyStatus == false)
-        this.isSelfReady = false
+        MRoomsHandlersState.isSelfReady = false
     }
   }
 
@@ -1232,7 +1226,7 @@ local MRoomsHandlers = class {
 
   function __isNotifyForCurrentRoom(notify) {
     // ignore all room notifcations after leave has been called
-    return !this.isLeaving && this.roomId != INVALID_ROOM_ID && this.roomId == notify.roomId
+    return !MRoomsHandlersState.isLeaving && MRoomsHandlersState.roomId != INVALID_ROOM_ID && MRoomsHandlersState.roomId == notify.roomId
   }
 
   function __connectToHost() {
@@ -1240,7 +1234,7 @@ local MRoomsHandlers = class {
     if (!this.hasSession())
       return
 
-    let host = this.__getRoomMember(this.hostId)
+    let host = this.__getRoomMember(MRoomsHandlersState.hostId)
     if (!host) {
       log("__connectToHost failed: host is not in the room")
       return
@@ -1253,7 +1247,7 @@ local MRoomsHandlers = class {
     }
 
     let hostPub = host.public
-    let roomPub = this.room.public
+    let roomPub = MRoomsHandlersState.room.public
 
     if (!("room_key" in roomPub)) {
       let mePub = tostring_r(me?.public, 3)          // warning disable: -declared-never-used
@@ -1261,9 +1255,9 @@ local MRoomsHandlers = class {
       let meStr = tostring_r(me, 3)                  // warning disable: -declared-never-used
       let roomStr = tostring_r(roomPub, 3)           // warning disable: -declared-never-used
       let roomMission = tostring_r(roomPub?.mission) // warning disable: -declared-never-used
-      ::script_net_assert("missing room_key in room")
+      script_net_assert("missing room_key in room")
 
-      ::send_error_log("missing room_key in room", false, "log")
+      send_error_log("missing room_key in room", false, "log")
       return
     }
 
@@ -1276,9 +1270,9 @@ local MRoomsHandlers = class {
       serverUrls.append(ipStr)
     }
 
-    ::connect_to_host_list(serverUrls,
+    connect_to_host_list(serverUrls,
                       roomPub.room_key, me.private.auth_key,
-                      getTblValue("sessionId", roomPub, this.roomId))
+                      getTblValue("sessionId", roomPub, MRoomsHandlersState.roomId))
   }
 
   // notifications
@@ -1326,7 +1320,7 @@ local MRoomsHandlers = class {
     if (!this.__isNotifyForCurrentRoom(notify))
       return
 
-    this.__mergeAttribs(notify, this.room)
+    this.__mergeAttribs(notify, MRoomsHandlersState.room)
     notify_room_attribs_changed(notify)
   }
 
@@ -1349,7 +1343,7 @@ local MRoomsHandlers = class {
     if (!this.__isNotifyForCurrentRoom(notify))
       return
 
-    if (notify.hostId != this.hostId) {
+    if (notify.hostId != MRoomsHandlersState.hostId) {
       log("warning: got host notify from host that is not in current room")
       return
     }
@@ -1360,7 +1354,7 @@ local MRoomsHandlers = class {
     }
 
     if (notify.message == "connect-allowed") {
-      this.isConnectAllowed = true
+      MRoomsHandlersState.isConnectAllowed = true
       this.__connectToHost()
     }
   }
@@ -1368,14 +1362,14 @@ local MRoomsHandlers = class {
   function onRoomJoinCb(resp) {
     this.__cleanupRoomState()
 
-    this.room = resp
-    this.roomId = this.room.roomId
-    foreach (member in this.room.members)
+    MRoomsHandlersState.room = resp
+    MRoomsHandlersState.roomId = MRoomsHandlersState.room.roomId
+    foreach (member in MRoomsHandlersState.room.members)
       this.__addRoomMember(member)
 
-    if (getTblValue("connect_on_join", this.room.public)) {
+    if (getTblValue("connect_on_join", MRoomsHandlersState.room.public)) {
       log("room with auto-connect feature")
-      this.isSelfReady = true
+      MRoomsHandlersState.isSelfReady = true
       this.__onSelfReady()
     }
   }
@@ -1385,46 +1379,7 @@ local MRoomsHandlers = class {
   }
 }
 
-let g_mrooms_handlers = MRoomsHandlers()
-
-// mrooms API
-
-::create_room <- function create_room(params, cb) {
-  ::matching.rpc_call("mrooms.create_room",
-    params,
-    function(resp) {
-      if (resp.error == OPERATION_COMPLETE)
-        g_mrooms_handlers.onRoomJoinCb(resp)
-      cb(resp)
-    })
-}
-
-::join_room <- function join_room(params, cb) {
-  ::matching.rpc_call("mrooms.join_room",
-    params,
-    function(resp) {
-      if (resp.error == OPERATION_COMPLETE)
-        g_mrooms_handlers.onRoomJoinCb(resp)
-      else {
-        resp.roomId <- params?.roomId
-        resp.password <- params?.password
-      }
-      cb(resp)
-    })
-}
-
-::leave_room <- function leave_room(params, cb) {
-  let oldRoomId = g_mrooms_handlers.getRoomId()
-  g_mrooms_handlers.isLeaving = true
-
-  ::matching.rpc_call("mrooms.leave_room",
-    params,
-    function(resp) {
-      if (g_mrooms_handlers.getRoomId() == oldRoomId)
-        g_mrooms_handlers.onRoomLeaveCb()
-      cb(resp)
-    })
-}
+g_mrooms_handlers = MRoomsHandlers()
 
 return {
   joinRoom = @(roomId) SessionLobby.joinRoom(roomId)

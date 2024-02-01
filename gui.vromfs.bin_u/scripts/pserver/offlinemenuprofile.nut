@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { register_command } = require("console")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { json_to_string } = require("json")
 let io = require("io")
 let { get_common_local_settings_blk } = require("blkGetters")
@@ -20,9 +20,9 @@ const PROFILE = "offlineProfile.nut"
 const CAMPAIGN_SAVE_ID = "offlineMenu/campaign"
 const UNITS_SAVE_ID = "offlineMenu/units"
 
-let function initOfflineMenuProfile() {
+function initOfflineMenuProfile() {
   log("Init offline menu profile")
-  send("profile_srv.response",
+  eventbus_send("profile_srv.response",
     { id = -2, data = { result = { configs = require($"%appGlobals/data/{CONFIGS}") } } })
 
   let profile = clone require($"%appGlobals/data/{PROFILE}")
@@ -44,7 +44,7 @@ let function initOfflineMenuProfile() {
       profile.units = profile.units.__merge(unitsUpd)
   }
 
-  send("profile_srv.response",
+  eventbus_send("profile_srv.response",
     { id = -1, data = { result = profile } })
 }
 
@@ -54,7 +54,7 @@ if (isOfflineMenu) {
   isInLoadingScreen.subscribe(@(v) v || serverConfigs.value.len() != 0 ? null : initOfflineMenuProfile())
 }
 
-let function saveResult(res, fileName) {
+function saveResult(res, fileName) {
   let fullName = $"{WTM_DATA_PATH}{fileName}"
   let file = io.file(fullName, "wt+")
   file.writestring("return ");
@@ -93,7 +93,7 @@ let offlineActions = {
   function set_current_campaign(p) {
     let saveBlk = get_common_local_settings_blk()
     setBlkValueByPath(saveBlk, CAMPAIGN_SAVE_ID, p.campaign)
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   }
 
   function set_current_unit(p) {
@@ -110,7 +110,7 @@ let offlineActions = {
     let saveBlk = get_common_local_settings_blk()
     let campaign = serverConfigs.value?.allUnits[newUnit.name].campaign ?? ""
     setBlkValueByPath(saveBlk, $"{UNITS_SAVE_ID}/{campaign}", newUnit.name)
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
 
     return res
   }

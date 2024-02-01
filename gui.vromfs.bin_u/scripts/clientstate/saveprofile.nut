@@ -1,9 +1,10 @@
-
+from "%scripts/dagui_natives.nut" import save_common_local_settings, save_profile
 from "%scripts/dagui_library.nut" import *
+
 let logP = log_with_prefix("[SAVE_PROFILE] ")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 
@@ -11,16 +12,16 @@ let SAVE_TIMEOUT = 1000
 let saveRequired = persist("saveRequired", @() { time = 0 })
 local isSaveDelayed = false
 
-let function saveProfileImpl(isLogged) {
+function saveProfileImpl(isLogged) {
   logP($"Save profile (isLogged = {isLogged})")
   saveRequired.time = 0
   if (isLogged)
-    ::save_profile(false)
+    save_profile(false)
   else
-    ::save_common_local_settings()
+    save_common_local_settings()
 }
 
-let function onSaveProfileTimer() {
+function onSaveProfileTimer() {
   if (isInLoadingScreen.value) {
     logP($"Delay profile save because of in loading")
     isSaveDelayed = true
@@ -30,7 +31,7 @@ let function onSaveProfileTimer() {
   saveProfileImpl(isOnlineSettingsAvailable.value)
 }
 
-let function startTimer() {
+function startTimer() {
   let timeout = 0.001 * (saveRequired.time - get_time_msec())
   logP($"Schedule profile save after {(timeout + 0.5).tointeger()} sec (isOnlineSettingsAvailable = {isOnlineSettingsAvailable.value})")
   resetTimeout(timeout, onSaveProfileTimer)
@@ -49,7 +50,7 @@ isOnlineSettingsAvailable.subscribe(function(v) {
   saveProfileImpl(!v)
 })
 
-let function startSaveTimer(timeout) {
+function startSaveTimer(timeout) {
   let timeToUpdate = get_time_msec() + timeout
   if (saveRequired.time > 0 && saveRequired.time < timeToUpdate)
     return
@@ -57,7 +58,7 @@ let function startSaveTimer(timeout) {
   startTimer()
 }
 
-let function forceSaveProfile() {
+function forceSaveProfile() {
   clearTimer(onSaveProfileTimer)
   saveProfileImpl(isOnlineSettingsAvailable.value)
 }
@@ -71,8 +72,8 @@ isInLoadingScreen.subscribe(function(v) {
   isSaveDelayed = false
 })
 
-subscribe("saveProfile", @(_) saveProfile())
-subscribe("forceSaveProfile", @(_) forceSaveProfile())
+eventbus_subscribe("saveProfile", @(_) saveProfile())
+eventbus_subscribe("forceSaveProfile", @(_) forceSaveProfile())
 
 return {
   saveProfile

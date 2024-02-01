@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported, should_notify_about_restart
 } = require("graphicsOptions")
@@ -61,7 +61,7 @@ let needUhqTexturesRaw = Watched(isUhqSupported
   && !!get_common_local_settings_blk()?.uhqTextures) //machine storage
 
 let needShowRestartNotify = Watched(should_notify_about_restart())
-subscribe("presets.scaleChanged", @(params) needShowRestartNotify(params?.status ?? false))
+eventbus_subscribe("presets.scaleChanged", @(params) needShowRestartNotify(params?.status ?? false))
 
 let restartTxt = @() !needShowRestartNotify.get() ? { watch = needShowRestartNotify }
 : {
@@ -72,10 +72,10 @@ let restartTxt = @() !needShowRestartNotify.get() ? { watch = needShowRestartNot
 }.__update(fontTiny)
 
 let needUhqTextures = Computed(@() needUhqTexturesRaw.value && has_additional_graphics_content.value)
-let function setNeedUhqTextures(v) {
+function setNeedUhqTextures(v) {
   get_common_local_settings_blk().uhqTextures = v
   needUhqTexturesRaw(v)
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
   if (v)
     openFMsgBox({ text = loc("msg/needRestartToApplyTextures") })
 }

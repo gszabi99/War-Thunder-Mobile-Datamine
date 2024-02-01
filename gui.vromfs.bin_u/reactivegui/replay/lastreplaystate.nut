@@ -13,7 +13,7 @@ isInBattle.subscribe(function(_) {
 })
 isInLoadingScreen.subscribe(@(_) isReplayPresent(is_replay_present()))
 
-let function saveLastReplay(name) {
+function saveLastReplay(name) {
   let isSuccess = on_save_replay(name)
   openFMsgBox({
     text = isSuccess ? loc("replay/save_success") : loc("replays/save_error")

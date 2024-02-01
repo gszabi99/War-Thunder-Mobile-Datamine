@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { DBGLEVEL } = require("dagor.system")
 let { OPT_CAMERA_SENSE_IN_ZOOM, OPT_FREE_CAMERA_TANK, OPT_FREE_CAMERA_PLANE,
   OPT_CAMERA_SENSE, OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
@@ -12,7 +12,7 @@ let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA }
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
 
-let function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxVal = 3.0) {
+function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxVal = 3.0) {
   let value = mkOptionValue(optId, cur)
   set_camera_sens(camType, value.value)
   value.subscribe(@(v) set_camera_sens(camType, v))
@@ -29,7 +29,7 @@ let function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, 
   }
 }
 
-let function hapticIntensitySlider(locId, optId, intensityType = -1) {
+function hapticIntensitySlider(locId, optId, intensityType = -1) {
   let value = mkOptionValue(optId, 1.0)
   setHapticIntensity(value.value, intensityType)
   value.subscribe(@(v) setHapticIntensity(v, intensityType))
@@ -54,7 +54,7 @@ let optFreeCameraInertia = {
   function setValue(v) {
     freeCameraInertia(v)
     set_option_multiplier(OPTION_FREE_CAMERA_INERTIA, v)
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   }
   ctrlType = OCT_SLIDER
   valToString = @(v) $"{(100 * v + 0.5).tointeger()}%"

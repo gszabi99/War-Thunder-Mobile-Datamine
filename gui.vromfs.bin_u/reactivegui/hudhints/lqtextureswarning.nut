@@ -27,8 +27,8 @@ let blinkAnimation = [
   }
 ]
 
-let function lqTexturesWarning(wasShown, showWarning) {
-  let function hideWarning() {
+function lqTexturesWarning(wasShown, showWarning) {
+  function hideWarning() {
     showWarning(false)
     wasShown(true)
   }

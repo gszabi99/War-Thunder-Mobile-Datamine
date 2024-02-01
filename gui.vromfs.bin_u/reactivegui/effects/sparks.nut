@@ -9,13 +9,13 @@ let sparkMaxSize = [hdpx(5), hdpx(20)]
 let sparkMinSpeed = hdpx(20)
 let sparkMaxSpeed = hdpx(60)
 
-let function roundZoneInitPos(halfSize) {
+function roundZoneInitPos(halfSize) {
   let x = rand.rfloat(-halfSize[0], halfSize[0])
   let y = halfSize[1] * sin(acos(x / halfSize[0]))
   return [ x, rand.rfloat(-y, y) ]
 }
 
-let function roundZoneStartPos(halfSize) {
+function roundZoneStartPos(halfSize) {
   let angle = rand.rfloat(0.0, PI)
   let radius = rand.rfloat(0.8, 1.0)
   return [ radius * halfSize[0] * cos(angle), radius * halfSize[1] * sin(angle) ]
@@ -23,7 +23,7 @@ let function roundZoneStartPos(halfSize) {
 
 let roundZoneMaxEndPosY = @(startPos, halfSize) - halfSize[1] * sin(acos(startPos[0] / halfSize[0]))
 
-let function fillRoundZoneSparkState(state, effectHalfSize, showTime = 100) {
+function fillRoundZoneSparkState(state, effectHalfSize, showTime = 100) {
   let minY = roundZoneMaxEndPosY(state.startPos, effectHalfSize)
   let distance = effectHalfSize[1] * rand.rfloat(0.2, 3)
   state.endPos <- [state.startPos[0], max(state.startPos[1] - distance, minY)]

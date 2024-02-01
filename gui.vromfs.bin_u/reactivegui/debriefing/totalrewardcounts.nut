@@ -1,16 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { WP } = require("%appGlobals/currenciesState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerExpColor, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let { mkCurrencyComp, mkExp, CS_COMMON } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL } = require("%rGui/components/currencyComp.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let tryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
+let mkTryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
 
 let REWARDS_SCORES = "wp"
-let REWARDS_CAMPAIGN = "campcaign"
+let REWARDS_CAMPAIGN = "campaign"
 let REWARDS_UNIT = "unit"
 
 let fontCommon = fontTinyAccented
@@ -28,22 +26,25 @@ let rewardsInfoCfg = {
     getExtras = @(debrData) {
       streaksWp = max(0, debrData?.reward.streaksWp ?? 0)
     }
+    mkCurrComp = @(val, style) mkCurrencyComp(val, WP, style)
   },
   [REWARDS_CAMPAIGN] = {
     getHasProgress = @(debrData) (debrData?.player.nextLevelExp ?? 0) > 0
     getTotal = @(debrData) max(0, debrData?.reward.playerExp.totalExp ?? 0)
     getIsPremiumIncluded = @(debrData) (debrData?.premiumBonus?.expMul ?? 1.0) > 1.0
     getPremMul = @(premiumBonusesCfg) max(1.0, premiumBonusesCfg?.expMul ?? 1.0)
+    mkCurrComp = @(val, style) mkExp(val, playerExpColor, style)
   },
   [REWARDS_UNIT] = {
     getHasProgress = @(debrData) (debrData?.unit.nextLevelExp ?? 0) > 0
     getTotal = @(debrData) max(0, debrData?.reward.unitExp.totalExp ?? 0)
     getIsPremiumIncluded = @(debrData) (debrData?.premiumBonus?.expMul ?? 1.0) > 1.0
     getPremMul = @(premiumBonusesCfg) max(1.0, premiumBonusesCfg?.expMul ?? 1.0)
+    mkCurrComp = @(val, style) mkExp(val, unitExpColor, style)
   },
 }
 
-let function getRewardsInfo(preset, debrData) {
+function getRewardsInfo(preset, debrData) {
   let { getHasProgress, getTotal, getIsPremiumIncluded, getPremMul, getExtras = @(_) {} } = rewardsInfoCfg[preset]
   let hasProgress = getHasProgress(debrData)
   let total = hasProgress ? getTotal(debrData) : 0
@@ -51,7 +52,7 @@ let function getRewardsInfo(preset, debrData) {
   let isMultiplayerMission = debrData?.sessionId != null
   local teaser = 0
   if (!isPremiumIncluded && isMultiplayerMission) {
-    let premMul = getPremMul(serverConfigs.get()?.gameProfile.premiumBonuses)
+    let premMul = getPremMul(debrData?.premiumBonusNotApplied)
     let teaserRaw = max(0, total * premMul).tointeger()
     teaser = (teaserRaw > total) ? teaserRaw : 0
   }
@@ -69,11 +70,6 @@ let premIcon = {
   rendObj = ROBJ_IMAGE
   keepAspect = true
   image = Picture($"ui/gameuiskin#premium_active.svg:{premIconW}:{premIconH}:P")
-}
-
-let btnTryPremium = @() havePremium.get() ? { watch = havePremium } : {
-  watch = havePremium
-  children = tryPremiumButton()
 }
 
 let CS_DEBR_REWARD = CS_COMMON.__merge({ fontStyle = fontCommon })
@@ -162,7 +158,13 @@ let mkRewardRow = @(rewardLabelComp, value, valueCtor, idx, rewardsStartTime) {
   ]
 }
 
-let function mkTotalRewardCounts(preset, debrData, rewardsStartTime) {
+let mkPremBonusMulComps = @(debrData) [ REWARDS_CAMPAIGN, REWARDS_UNIT, REWARDS_SCORES ].map(function(p) {
+  let { getPremMul, mkCurrComp } = rewardsInfoCfg[p]
+  let premMul = getPremMul(debrData?.premiumBonusNotApplied)
+  return mkCurrComp($"x{premMul}", CS_SMALL)
+})
+
+function mkTotalRewardCounts(preset, debrData, rewardsStartTime) {
   let rewardsInfo = getRewardsInfo(preset, debrData)
   let rowsCfg = (rewardRowsCfg?[preset] ?? []).filter(@(c) c.needShow(rewardsInfo))
   if (rowsCfg.len() == 0)
@@ -189,10 +191,14 @@ let function mkTotalRewardCounts(preset, debrData, rewardsStartTime) {
     }
   }
 
+  local btnTryPremium = rewardsInfo.teaser != 0
+    ? mkTryPremiumButton(mkPremBonusMulComps(debrData))
+    : null
+
   return {
     totalRewardsShowTime
     totalRewardCountsComp
-    btnTryPremium = rewardsInfo.teaser != 0 ? btnTryPremium : null
+    btnTryPremium
   }
 }
 

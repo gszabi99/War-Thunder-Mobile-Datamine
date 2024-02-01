@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { buttonsShowTime } = require("debriefingWndConsts.nut")
@@ -8,15 +8,15 @@ let debriefingData = mkWatched(persist, "debriefingData", null)
 let isDebriefingAnimFinished = Watched(true)
 let isNoExtraScenesAfterDebriefing = mkWatched(persist, "isNoExtraScenesAfterDebriefing", false)
 
-subscribe("BattleResult", @(res) debriefingData.set(res))
-send("RequestBattleResult", {})
+eventbus_subscribe("BattleResult", @(res) debriefingData.set(res))
+eventbus_send("RequestBattleResult", {})
 
-let DEBR_TAB_SCORES   = 1
+let DEBR_TAB_MPSTATS  = 1
 let DEBR_TAB_CAMPAIGN = 2
 let DEBR_TAB_UNIT     = 3
-let DEBR_TAB_MPSTATS  = 4
+let DEBR_TAB_SCORES   = 4
 
-let curDebrTabId = mkWatched(persist, "curDebrTabId", DEBR_TAB_SCORES)
+let curDebrTabId = mkWatched(persist, "curDebrTabId", DEBR_TAB_MPSTATS)
 
 let debrTabsShowTime = Watched([])
 

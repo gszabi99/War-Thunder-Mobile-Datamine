@@ -5,7 +5,7 @@ let io = require("io")
 let { decode } = require("jwt")
 let profilePublicKey = require("%appGlobals/profilePublicKey.nut")
 
-let function decodeJwtAndHandleErrors(data) {
+function decodeJwtAndHandleErrors(data) {
   let jwt = type(data) == "string" ? data : data?.jwt ?? ""
   let jwtDecoded = decode(jwt, profilePublicKey)
 

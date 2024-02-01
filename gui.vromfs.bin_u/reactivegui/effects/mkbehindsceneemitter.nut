@@ -8,13 +8,13 @@ let mkBehindSceneEmitter = kwarg(function(lifeTime, count = 50, sparkCtor = defS
   local uid = null
   let halfSize = [sw(50), sh(50)]
   let list = array(count).map(@(_) {})
-  let function removeSceneIfParticlesFinish() {
+  function removeSceneIfParticlesFinish() {
     if (null != list.findvalue(@(c) (c?.isActive ?? false)))
       return
     clearTimer(removeSceneIfParticlesFinish)
     removeBehindScene(uid)
   }
-  let function onLifeTimeFinish() {
+  function onLifeTimeFinish() {
     list.each(@(c) c.shouldFinish <- true)
     setInterval(1.0, removeSceneIfParticlesFinish)
   }

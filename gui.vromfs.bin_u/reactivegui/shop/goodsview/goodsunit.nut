@@ -26,14 +26,14 @@ let bgHiglight = {
   color = 0x3F3F3F
 }
 
-let function getUnit(goods) {
+function getUnit(goods) {
   let unit = serverConfigs.value?.allUnits[goods?.unitUpgrades[0]]
   if (unit != null)
     return unit.__merge({ isUpgraded = true })
   return serverConfigs.value?.allUnits?[goods.units?[0]]
 }
 
-let function isUnitOrUnitUpgradePurchased(myUnitsValue, unit) {
+function isUnitOrUnitUpgradePurchased(myUnitsValue, unit) {
   let { name = "", isUpgraded = false } = unit
   let ownUnit = myUnitsValue?[name]
   return ownUnit != null && (!isUpgraded || ownUnit.isUpgraded)
@@ -55,7 +55,7 @@ let mkUnitImg = @(img) {
   imageValign = ALIGN_BOTTOM
 }
 
-let function mkSquareIconBtn(text, onClick, ovr) {
+function mkSquareIconBtn(text, onClick, ovr) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -88,7 +88,7 @@ let eliteMark = {
   image = Picture($"ui/gameuiskin#icon_premium.svg")
 }
 
-let function mkUnitTexts(goods, unit) {
+function mkUnitTexts(goods, unit) {
   let { isUpgraded = false, isPremium = false } = unit
   let isElite = isUpgraded || isPremium
   let color = isElite ? premiumTextColor : 0xFFFFFFFF
@@ -148,7 +148,7 @@ let platoonPlatesGap = hdpx(6)
 let bgPlatesTranslate = @(platoonSize, idx)
   [(idx - platoonSize) * platoonPlatesGap, (idx - platoonSize) * platoonPlatesGap]
 
-let function mkPlatoonBgPlates(unit, platoonUnits) {
+function mkPlatoonBgPlates(unit, platoonUnits) {
   if (!platoonUnits)
     return null
   let platoonSize = platoonUnits.len()
@@ -192,14 +192,14 @@ let mkMRank = @(mRank) !mRank ? null : {
   children = mkGradRank(mRank)
 }
 
-let function mkGoodsUnit(goods, onClick, state, animParams) {
+function mkGoodsUnit(goods, onClick, state, animParams) {
   let unit = getUnit(goods)
   let p = getUnitPresentation(unit)
   let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
   let platoonOffset = platoonPlatesGap * (unit?.platoonUnits.len() ?? 0)
   let { isShowDebugOnly = false } = goods
 
-  let function onUnitClick() {
+  function onUnitClick() {
     if (isPurchased)
       unitDetailsWnd(unit)
     else
@@ -231,7 +231,7 @@ let function mkGoodsUnit(goods, onClick, state, animParams) {
   )
 }
 
-let function mkOfferUnit(goods, onClick, state, needPrice) {
+function mkOfferUnit(goods, onClick, state, needPrice) {
   let unit = getUnit(goods)
   let { endTime = 0, discountInPercent = 0, isShowDebugOnly = false } = goods
   let p = getUnitPresentation(unit)

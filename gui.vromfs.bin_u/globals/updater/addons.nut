@@ -64,53 +64,55 @@ let extAddonsByRank = {}
 let setBlk = get_settings_blk()
 let addonsBlk = setBlk?.addons
 if (addonsBlk != null)
-  foreach (folder in addonsBlk % "folder")
-    if (type(folder) == "string")
-      knownAddons[folder.split("/").top()] <- true
-
-let { addonConditions = null } = setBlk
-if (addonConditions != null)
-  eachBlock(addonConditions, function(b) {
+  eachBlock(addonsBlk, function(b) {
     let addon = b.getBlockName()
-    if (addon not in knownAddons) {
-      logerr($"Unknown addon {addon} in the addonConditions config")
-      return
-    }
     let addonHq = $"{addon}_hq"
-    let { campaign = null, mRank = null, hangarPath = "" } = b
+    let addonUhq = $"{addon}_uhq"
 
+    knownAddons[addon] <- true
+
+    let { hq = true, uhq = false } = b
+    if (hq)
+      knownAddons[addonHq] <- true
+    if (uhq)
+      knownAddons[addonUhq] <- true
+
+    let { hangarPath = "" } = b
     if (hangarPath != "") {
       ovrHangarAddon = { addons = [addon], hangarPath }
       latestDownloadAddons.append(addon)
-      if (addonHq in knownAddons) {
+      if (hq) {
         latestDownloadAddons.append(addonHq)
         ovrHangarAddon.addons.append(addonHq)
       }
     }
 
-    if (type(campaign) != "string" || type(mRank) != "integer") {
-      if (hangarPath == "")
-        logerr($"Invalid type of required field in addonConditions for 'addon': campaign = {campaign}, mRank = {mRank}")
-      return
-    }
-    if (campaign not in extAddonsByRank)
-      extAddonsByRank[campaign] <- {}
-    if (mRank not in extAddonsByRank[campaign])
-      extAddonsByRank[campaign][mRank] <- []
-    extAddonsByRank[campaign][mRank].append(addon)
+    let conditions = b.getBlockByName("conditions")
+    if (conditions != null) {
+      let { campaign = null, mRank = null } = conditions
+      if (type(campaign) != "string" || type(mRank) != "integer") {
+        logerr($"Invalid type of required field in addon/conditions for '{addon}': campaign = {campaign}, mRank = {mRank}")
+        return
+      }
+      if (campaign not in extAddonsByRank)
+        extAddonsByRank[campaign] <- {}
+      if (mRank not in extAddonsByRank[campaign])
+        extAddonsByRank[campaign][mRank] <- []
+      extAddonsByRank[campaign][mRank].append(addon)
 
-    if (addonHq in knownAddons)
-      extAddonsByRank[campaign][mRank].append(addonHq)
+      if (hq)
+        extAddonsByRank[campaign][mRank].append(addonHq)
 
-    if (campaign in campaignPostfix) {
-      let cfg = { locId = $"addon/{campaignPostfix[campaign]}_tier", mRank }
-      addonLocIdWithMRank[addon] <- cfg
-      addonLocIdWithMRank[addonHq] <- cfg
+      if (campaign in campaignPostfix) {
+        let cfg = { locId = $"addon/{campaignPostfix[campaign]}_tier", mRank }
+        addonLocIdWithMRank[addon] <- cfg
+        addonLocIdWithMRank[addonHq] <- cfg
+      }
     }
   })
 
 
-let function calcCommonAddonName(addon) {
+function calcCommonAddonName(addon) {
   if (addon in addonLocIdWithMRank) {
     let { locId, mRank } = addonLocIdWithMRank[addon]
     return loc(locId, { tier = getRomanNumeral(mRank) }).replace(" ", nbsp)
@@ -120,7 +122,7 @@ let function calcCommonAddonName(addon) {
   return doesLocTextExist(locId) ? loc(locId) : null
 }
 
-let function getAddonNameImpl(addon) {
+function getAddonNameImpl(addon) {
   local locId = addonLocId?[addon]
   if (locId != null)
     return locId == "" ? "" : loc(locId)
@@ -142,13 +144,13 @@ let function getAddonNameImpl(addon) {
 }
 
 let addonNames = {}
-let function getAddonName(addon) {
+function getAddonName(addon) {
   if (addon not in addonNames)
     addonNames[addon] <- getAddonNameImpl(addon)
   return addonNames[addon]
 }
 
-let function localizeAddons(addons) {
+function localizeAddons(addons) {
   let res = []
   let locs = {}
   foreach (addon in addons) {
@@ -161,7 +163,7 @@ let function localizeAddons(addons) {
   return res
 }
 
-let function localizeAddonsLimited(list, maxNumber) {
+function localizeAddonsLimited(list, maxNumber) {
   let localized = localizeAddons(list)
   let total = localized.len()
   if (total <= maxNumber)
@@ -173,7 +175,7 @@ let function localizeAddonsLimited(list, maxNumber) {
   })
 }
 
-let function getAddonsSizeStr(addons) {
+function getAddonsSizeStr(addons) {
   let bytes = unique(addons).reduce(@(res, addon) res + get_addon_size(addon), 0)
   let mb = (bytes + (MB / 2)) / MB
   return "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))

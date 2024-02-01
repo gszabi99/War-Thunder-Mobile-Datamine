@@ -58,7 +58,7 @@ let premImageMain = @() premImage.__merge({
   }.__update(fontBigShaded)
 })
 
-let function premiumTime() {
+function premiumTime() {
   local timeLeft = max(0, visibleEndsAt.value - serverTime.value)
   if (timeLeft >= 3 * TIME_DAY_IN_SECONDS)  //we do not show hours in such case
     timeLeft = round_by_value(timeLeft, TIME_HOUR_IN_SECONDS).tointeger()
@@ -86,7 +86,7 @@ let function premiumTime() {
   }.__update(fontSmall, fontGlowBlack)
 }
 
-let function onChangeAnimFinish(change) {
+function onChangeAnimFinish(change) {
   if (change != changeOrders.value?[0])
     return
   visibleEndsAt(change.cur)
@@ -94,7 +94,7 @@ let function onChangeAnimFinish(change) {
   anim_start(highlightTrigger)
 }
 
-let function mkChangeView(change) {
+function mkChangeView(change) {
   let { diff } = change
   return {
     key = change
@@ -138,7 +138,7 @@ let withHoveredBg = @(content, stateFlags) {
   ]
 }
 
-let function premIconWithTimeOnChange() {
+function premIconWithTimeOnChange() {
   let stateFlags = Watched(0)
   return {
     onAttach = @() anim_skip("premiumAnimSkip")

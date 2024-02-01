@@ -3,12 +3,13 @@ let { set_clipboard_text } = require("dagor.clipboard")
 let { json_to_string } = require("json")
 let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
-let { add_unit_exp, add_player_exp, add_wp, add_gold, change_item_count, set_purch_player_type,
+let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
   apply_profile_mutation, add_lootbox, add_warbond, add_event_key, debug_lootbox_chances,
-  reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond
+  reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
+  halt_offer_purchase
 } = pServerApi
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -19,7 +20,6 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { unitSpecificItems } = require("%appGlobals/unitSpecificItems.nut")
 
 registerHandler("consolePrintResult",
   @(res) console_print(res?.error == null ? "SUCCESS" : "FAILED")) //warning disable: -forbidden-function
@@ -64,6 +64,7 @@ register_command(@() resetCustomSettings(), "meta.reset_custom_settings")
 
 register_command(@(exp) add_player_exp(curCampaign.value, exp, "consolePrintResult"), "meta.add_player_exp")
 register_command(@(wp) add_wp(wp, "consolePrintResult"), "meta.add_wp")
+register_command(@(platinum) add_platinum(platinum, "consolePrintResult"), "meta.add_platinum")
 register_command(@(gold) add_gold(gold, "consolePrintResult"), "meta.add_gold")
 register_command(@(warbond) add_warbond(warbond, "consolePrintResult"), "meta.add_warbond")
 register_command(@(event_key) add_event_key(event_key, "consolePrintResult"), "meta.add_event_key")
@@ -85,6 +86,8 @@ register_command(@(name) unset_current_decorator(name, "consolePrintResult"), "m
 register_command(@(id) apply_profile_mutation(id, "consolePrintResult"), "meta.apply_profile_mutation")
 register_command(@(id) add_lootbox(id, 1, "consolePrintResult"), "meta.add_lootbox")
 register_command(@(id, count) add_lootbox(id, count, "consolePrintResult"), "meta.add_lootbox_several")
+register_command(@(id) halt_goods_purchase(id, "consolePrintResult"), "meta.halt_goods_purchase")
+register_command(@(id) halt_offer_purchase(id, "consolePrintResult"), "meta.halt_offer_purchase")
 
 register_command(@(id) debug_lootbox_chances(id, true, "onDebugLootboxChances"), "meta.debug_lootbox_chances_filtered")
 register_command(@(id) debug_lootbox_chances(id, false, "onDebugLootboxChances"), "meta.debug_lootbox_chances_full")
@@ -100,8 +103,7 @@ register_command(function(count) {
   add_nybond(count * 10)
   foreach (item in itemsOrderFull)
     change_item_count(item, count)
-  foreach (item in unitSpecificItems.get())
-    change_item_count(item, count)
+  change_item_count("ircm_kit", count)
 
   let seconds = count * 60
   if (seconds < 0)

@@ -14,7 +14,7 @@ let getPenetrationDistance = @(tags, isMaxDistance) isMaxDistance
   ? (tags?.armorPenetrationDistanceMax ?? ARMOR_PENETRATION_DIST_MAX)
   : (tags?.armorPenetrationDistanceMin ?? ARMOR_PENETRATION_DIST_MIN)
 
-let function mkPenetrationStat(isMaxDistance) {
+function mkPenetrationStat(isMaxDistance) {
   return {
     function getName(tags) {
       let distance = getPenetrationDistance(tags, isMaxDistance)

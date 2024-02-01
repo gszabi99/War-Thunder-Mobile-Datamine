@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { questsBySection } = require("%rGui/quests/questsState.nut")
@@ -16,7 +16,7 @@ let savePrevProgress = function() {
 
 let resetPrevProgress = @() prevProgress.set(null)
 
-let function calcQuestProgressDiffAndSend(questsBySectionV) {
+function calcQuestProgressDiffAndSend(questsBySectionV) {
   let prevValues = prevProgress.get()
   if (prevValues == null)
     return
@@ -29,7 +29,7 @@ let function calcQuestProgressDiffAndSend(questsBySectionV) {
       if (previous != null && quest.current > previous)
         res[id] <- quest.__merge({ _previous = previous })
     }
-  send("BattleResultQuestProgressDiff", res.len() ? res : null)
+  eventbus_send("BattleResultQuestProgressDiff", res.len() ? res : null)
 }
 
 isInBattle.subscribe(@(v) v ? savePrevProgress() : null)

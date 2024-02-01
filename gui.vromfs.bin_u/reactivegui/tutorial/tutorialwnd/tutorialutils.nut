@@ -14,7 +14,7 @@ let incBoxSize = @(box, inc) inc == 0 ? box
       b = min(sh(100), box.b + inc)
     }
 
-let function cutBlock(block, cutter) {
+function cutBlock(block, cutter) {
   if (!isIntersect(block, cutter))
     return [block]
 
@@ -34,7 +34,7 @@ let function cutBlock(block, cutter) {
   return res
 }
 
-let function createHighlight(boxes, lightCtor, darkCtor) {
+function createHighlight(boxes, lightCtor, darkCtor) {
   local darkBlocks = [{ l = 0, t = 0, r = sw(100), b = sh(100) }]
   let lightBlocks = []
 
@@ -51,7 +51,7 @@ let function createHighlight(boxes, lightCtor, darkCtor) {
     .extend(lightBlocks.map(@(b) lightCtor(b)))
 }
 
-let function getBox(keys) {
+function getBox(keys) {
   let kType = type(keys)
   if (kType == "function")
     return getBox(keys())
@@ -77,7 +77,7 @@ let function getBox(keys) {
   return gui_scene.getCompAABBbyKey(keys)
 }
 
-let function findDiapason(allowedBox, allowedRange, obstacles) {
+function findDiapason(allowedBox, allowedRange, obstacles) {
   let diapason = [allowedRange]
   foreach (oData in obstacles) {
     let { obst, start, end } = oData
@@ -113,7 +113,7 @@ let findDiapasonY = @(box, obstacles)
 let findDiapasonX = @(box, obstacles)
   findDiapason(box, [box.l, box.r], obstacles.map(@(o) { obst = o, start = o.l, end = o.r }))
 
-let function getBestPos(diapason, range) { //return null -> not found
+function getBestPos(diapason, range) { //return null -> not found
   let size = range[1] - range[0]
   local found = false
   local pos = 0
@@ -138,7 +138,7 @@ let getBestPosByX = @(diapasonX, box) getBestPos(diapasonX, [box.l, box.r])
 let sizePosToBox = @(size, pos) { l = pos[0], r = pos[0] + size[0], t = pos[1], b = pos[1] + size[1] }
 let hasInteractions = @(box, boxes) null != boxes.findvalue(@(b) isIntersect(b, box))
 
-let function findGoodPos(size, pos, boxes) { //move only by single axis. For tutorial it must be enough.
+function findGoodPos(size, pos, boxes) { //move only by single axis. For tutorial it must be enough.
   let box = sizePosToBox(size, pos)
   if (!hasInteractions(box, boxes))
     return pos
@@ -161,7 +161,7 @@ let topArrowPos = @(box, size) { pos = [(box.r + box.l - size[0]) / 2, box.t - s
 let leftArrowPos = @(box, size) { pos = [box.l - size[0], (box.t + box.b - size[1]) / 2], rotate = -90 }
 let rightArrowPos = @(box, size) { pos = [box.r, (box.t + box.b - size[1]) / 2], rotate = 90 }
 
-let function isInScreenAndNotIntersect(pos, size, obstacles) {
+function isInScreenAndNotIntersect(pos, size, obstacles) {
   if (!isInScreen(pos, size))
     return false
   let box = sizePosToBox(size, pos)
@@ -198,7 +198,7 @@ let arrowPosCalcList = [
   mkSimplePosInScreen(rightArrowPos, @(_) 105)
 ]
 
-let function findGoodArrowPos(box, size, obstacles) {
+function findGoodArrowPos(box, size, obstacles) {
   let calcSorted = arrowPosCalcList.map(@(c) { order = c.orderCalc(box), posCalc = c.posCalc })
     .sort(@(a, b) a.order <=> b.order)
   foreach (calcData in calcSorted) {
@@ -210,7 +210,7 @@ let function findGoodArrowPos(box, size, obstacles) {
 }
 
 let getBoxCenter = @(box) [0.5 * (box.l + box.r), 0.5 * (box.t + box.b)]
-let function getLinkArrowMiddleCfg(boxFrom, boxTo) {
+function getLinkArrowMiddleCfg(boxFrom, boxTo) {
   let boxFromC = getBoxCenter(boxFrom)
   let boxToC = getBoxCenter(boxTo)
   return {

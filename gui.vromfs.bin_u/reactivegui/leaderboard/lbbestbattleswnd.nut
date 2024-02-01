@@ -6,15 +6,14 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
 let { LOG_TIME } = require("lbCategory.nut")
 
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { lbHeaderHeight, lbVGap, lbHeaderRowHeight, lbTableBorderWidth,
-  rowBgHeaderColor, rowBgOddColor, rowBgEvenColor, getRowBgColor
+  rowBgOddColor, rowBgEvenColor, getRowBgColor
 } = require("lbStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLbHeaderRow } = require("mkLbHeaderRow.nut")
 let { makeVertScroll, scrollbarWidth } = require("%rGui/components/scrollbar.nut")
-
 
 let tableWidth = hdpx(1200)
 let rowHeight = evenPx(40)
@@ -78,7 +77,7 @@ let mkTextCell = @(category, text, isRated) {
 
 let mkCell = @(category, rowData, isRated) mkTextCell(category, category.getText(rowData), isRated)
 
-let function mkLogTimeCell(category, rowData, isRated) {
+function mkLogTimeCell(category, rowData, isRated) {
   let timeLeft = Computed(@() rowData.timestamp <= 0 ? ""
     : secondsToHoursLoc(serverTime.value - rowData.timestamp))
   return @() mkTextCell(category, timeLeft.value, isRated)
@@ -105,7 +104,7 @@ function getLasBattleIdx(battles) {
   return res
 }
 
-let function content() {
+function content() {
   let categories = curLbCfg.value?.battleCategories ?? curLbCfg.value?.categories
   if (categories == null)
     return { watch = curLbCfg }
@@ -141,28 +140,22 @@ let function content() {
       color = (rowsChildren.len() % 2) ? rowBgOddColor : rowBgEvenColor
     })
 
-  return {
+  return bgMessage.__merge({
     watch = [curLbCfg, bestBattles, ratingBattlesCount]
     size = [tableWidth, flex()]
     hplace = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [
-       {
+       bgHeader.__merge({
          size = [flex(), lbHeaderRowHeight]
-         rendObj = ROBJ_SOLID
-         color = rowBgHeaderColor
          padding = !hasScroll ? lbTableBorderWidth
            : [lbTableBorderWidth, lbTableBorderWidth + scrollbarWidth, lbTableBorderWidth, lbTableBorderWidth]
          flow = FLOW_HORIZONTAL
          valign = ALIGN_CENTER
          children = mkLbHeaderRow(categories)
-       }
+       })
        {
          size = flex()
-         rendObj = ROBJ_BOX
-         borderColor = rowBgOddColor
-         borderWidth = [0, lbTableBorderWidth, lbTableBorderWidth, lbTableBorderWidth]
-         padding = [0, lbTableBorderWidth, lbTableBorderWidth, lbTableBorderWidth]
          flow = FLOW_VERTICAL
          children = !hasScroll ? rowsChildren
            : makeVertScroll({
@@ -173,7 +166,7 @@ let function content() {
        }
     ]
     animations = wndSwitchAnim
-  }
+  })
 }
 
 let scene = bgShaded.__merge({

@@ -44,14 +44,14 @@ let premiumMark = {
   image = Picture($"ui/gameuiskin#premium_active.svg:{premIconSize}:{premIconSize}:K:P")
 }
 
-let function getUnitNameText(unitId, unitClass, halign) {
+function getUnitNameText(unitId, unitClass, halign) {
   let name = loc(getUnitLocId(unitId), unitId)
   let icon = unitClassFontIcons?[unitClass] ?? ""
   let ordered = halign != ALIGN_RIGHT ? [ icon, name ] : [ name, icon ]
   return " ".join(ordered, true)
 }
 
-let function mkNameContent(player, teamColor, halign) {
+function mkNameContent(player, teamColor, halign) {
   let unitName = player?.mainUnitName ?? player.aircraftName
   let nameCell = {
     valign = ALIGN_CENTER
@@ -62,7 +62,7 @@ let function mkNameContent(player, teamColor, halign) {
         maxWidth = pw(100)
         halign
         color = player.isLocal ? cellTextColor : teamColor
-        text = player.nickname
+        text = player.name
       })
       player.hasPremium ? premiumMark : null
     ]
@@ -123,7 +123,7 @@ let mkPlaceContent = @(player, _teamColor, _halign)
   (player?.place ?? 0) > 0 ? mkPlaceIcon(player.place) : null
 
 let cellDefaults = { width = rowHeight, halign = ALIGN_CENTER }
-let function mirrorColumn(column) {
+function mirrorColumn(column) {
   if (column.halign != ALIGN_CENTER)
     column.halign = column.halign == ALIGN_LEFT ? ALIGN_RIGHT : ALIGN_LEFT
   return column
@@ -160,7 +160,7 @@ let columnsByCampaign = {
 
 let getColumnsByCampaign = @(campaign) columnsByCampaign?[campaign] ?? columnsByCampaign.tanks
 
-let function mkPlayerRow(columnCfg, player, teamColor, idx) {
+function mkPlayerRow(columnCfg, player, teamColor, idx) {
   let { columns, rowOvr = {} } = columnCfg
 
   let playerColor = player?.isInHeroSquad ? mySquadLightColor : teamColor
@@ -194,7 +194,7 @@ let function mkPlayerRow(columnCfg, player, teamColor, idx) {
   }.__update(rowOvr)
 }
 
-let function mkTeamHeaderRow(columnCfg) {
+function mkTeamHeaderRow(columnCfg) {
   let { columns, rowOvr = {} } = columnCfg
   return {
     size = [ flex(), rowHeight ]

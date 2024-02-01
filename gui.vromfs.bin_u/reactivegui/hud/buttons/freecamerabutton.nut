@@ -11,7 +11,7 @@ let imgSize = (touchButtonSize * 0.8  + 0.5).tointeger()
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 let shortcutId = "ID_CAMERA_NEUTRAL"
 
-let function mkFreeCameraButton(ovr = {}) {
+function mkFreeCameraButton(ovr = {}) {
   let stateFlags = Watched(0)
   let picture = Picture($"ui/gameuiskin#hud_free_camera.svg:{imgSize}:{imgSize}")
 

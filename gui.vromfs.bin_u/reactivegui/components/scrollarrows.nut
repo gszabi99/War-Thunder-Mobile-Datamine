@@ -8,7 +8,7 @@ let mkImage = @(path, w, h) {
   color = 0xFFFFFFFF
 }
 
-let function mkArrowImageComp(lengthPx) {
+function mkArrowImageComp(lengthPx) {
   let h = round(lengthPx).tointeger()
   let w = round(h / 2.0 / 24 * 40).tointeger() * 2
   return mkImage("ui/gameuiskin#scroll_arrow.svg", w, h)
@@ -49,7 +49,7 @@ let posParams = {
 }
 
 // IMPORTANT: Pannable MUST have Behaviors.ScrollEvent behavior, and scrollHandler attached.
-let function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageBig) {
+function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageBig) {
   let isShow = mkIsShow[align](scrollHandler)
   return @() arrowImageComp.__merge(posParams[align], {
     watch = isShow

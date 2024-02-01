@@ -58,7 +58,7 @@ let btnBg = freeze({
   transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
 })
 
-let function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
+function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
   let onChange = override?.onChange
     ?? function onChange(value) {
          sliderValueSound()
@@ -141,12 +141,12 @@ let mkBtnText = @(override) {
 let btnTextDec = mkBtnText({ text = "–", pos = [0, -hdpx(6)] })
 let btnTextInc = mkBtnText({ text = "+" })
 
-let function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
+function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
   let stateFlags = Watched(0)
   local holdCount = -1
   local lastTime = 0
 
-  let function onHoldTimer() {
+  function onHoldTimer() {
     let delay = btnRepeatTime?[holdCount]
     if (delay != null && delay * 1000 > get_time_msec() - lastTime)
       return
@@ -155,7 +155,7 @@ let function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
     holdCount++
   }
 
-  let function resetTimer() {
+  function resetTimer() {
     holdCount = -1
     clearTimer(onHoldTimer)
   }
@@ -186,7 +186,7 @@ let function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
   })
 }
 
-let function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString = null) {
+function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString = null) {
   let valueTextWatch = valToString == null ? valueWatch : Computed(@() valToString(valueWatch.value))
   let { unit = 1,
     onChange = function(v) {

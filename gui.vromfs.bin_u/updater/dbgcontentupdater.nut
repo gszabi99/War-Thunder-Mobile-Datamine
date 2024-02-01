@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { rnd_int, rnd_float } = require("dagor.random")
 let { get_time_msec } = require("dagor.time")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { setInterval } = require("dagor.workcycle")
 
@@ -16,7 +16,7 @@ let UPDATER_CHECKING = 1
 let UPDATER_DOWNLOADING = 4
 let UPDATER_COPYING = 6
 
-let function mkInitialState() {
+function mkInitialState() {
   let total = rnd_int(10, 10000) * chooseRandom([1, 1 << 10, 1 << 20, 1 << 30])
   return {
     stageStartMsec = get_time_msec()
@@ -31,10 +31,10 @@ let state = persist("state", mkInitialState)
 let tick = 0.5
 let dbgDownloadTime = 5.0
 
-let sendEvent = @(data) send("android.embedded.updater.event", data)
+let sendEvent = @(data) eventbus_send("android.embedded.updater.event", data)
 let sendStageEvent = @() sendEvent({ eventType = UPDATER_EVENT_STAGE, stage = state.stage })
 
-let function setStage(stage) {
+function setStage(stage) {
   state.stage = stage
   state.stageStartMsec = get_time_msec()
   sendStageEvent()

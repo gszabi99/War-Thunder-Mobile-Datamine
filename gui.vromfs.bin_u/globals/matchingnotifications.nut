@@ -1,18 +1,18 @@
 
 from "%globalScripts/logs.nut" import *
-let eventbus = require("eventbus")
+let {eventbus_subscribe} = require("eventbus")
 
 let subscriptions = {}
-eventbus.subscribe("mrpc.generic_notify",
+eventbus_subscribe("mrpc.generic_notify",
   @(ev) subscriptions?[ev?.from].each(@(handler) handler(ev)))
 
-let function mnSubscribe(from, handler) {
+function mnSubscribe(from, handler) {
   if (from not in subscriptions)
     subscriptions[from] <- []
   subscriptions[from].append(handler)
 }
 
-let function mnUnsubscribe(from, handler) {
+function mnUnsubscribe(from, handler) {
   if (from not in subscriptions)
     return
   let idx = subscriptions[from].indexof(handler)

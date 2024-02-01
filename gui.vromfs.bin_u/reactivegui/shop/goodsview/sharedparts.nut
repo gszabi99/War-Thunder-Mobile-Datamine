@@ -172,7 +172,7 @@ let popularMark = {
   })
 }
 
-let function mkGoodsNewPopularMark(goods) {
+function mkGoodsNewPopularMark(goods) {
   let isPopular = goods?.isPopular
   let isNew = Computed(@() goods.id in shopUnseenGoods.value)
 
@@ -217,21 +217,24 @@ let firstPurchTxt = @(ovr) txtBase.__merge({
 let firstPurchLabel = firstPurchTxt({ text = utf8ToUpper(loc("shop/item/first_purchase/short")) })
 firstPurchLabel.fontSize = getFontSizeToFitWidth(firstPurchLabel, firstPurchLabelMaxWidth, fontVeryVeryTiny.fontSize)
 
-let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus ?? {}).len() == 0 ? null
+let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus?.len() ?? 0) == 0 || "premiumDays" in goods?.firstPurchaseBonus
+  ? null
   : function() {
       let res = { watch = state }
       if (state.value & HAS_PURCHASES)
         return res
-      let { gold = 0 } = goods.firstPurchaseBonus
-      let bonusComp = gold <= 0
+      let { gold = 0, currencies = null } = goods.firstPurchaseBonus
+      local currencyId = currencies?.findindex(@(_) true) ?? "gold" //compatibility with format before 2024.01.23
+      local value = currencies?[currencyId] ?? gold
+      let bonusComp = value <= 0
         ? firstPurchTxt({ text = "????????" })
         : {
             valign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL
             gap = hdpx(6)
             children = [
-              firstPurchTxt({ text = numberToTextForWtFont("".concat("+", gold)) })
-              mkCurrencyImage("gold", firstPurchBonusCurrencyIcoSize)
+              firstPurchTxt({ text = numberToTextForWtFont("".concat("+", value)) })
+              mkCurrencyImage(currencyId, firstPurchBonusCurrencyIcoSize)
             ]
           }
       return res.__merge(firstPurchBonusBg, {
@@ -242,10 +245,10 @@ let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus ?? {}).le
       })
     }
 
-let function mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag = true) {
+function mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag = true) {
   let { discountInPercent, priceExt = null } = goods
   let { price, currencyId } = goods.price
-  let finalPrice = discountInPercent <= 0 ? price : round(price * (1.0 - (discountInPercent / 100.0)))
+  let basePrice = discountInPercent <= 0 ? price : round(price / (1.0 - (discountInPercent / 100.0)))
   return @() {
     watch = state
     size = flex()
@@ -255,7 +258,7 @@ let function mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag = true
     image = priceBgTex
     picSaturate = state.value & DELAYED ? 0 : 1.0
     children = [
-      price > 0 && currencyId != "" ? mkDiscountPriceComp(price, finalPrice, currencyId, CS_COMMON.__merge({fontStyle = fontMedium}))
+      price > 0 && currencyId != "" ? mkDiscountPriceComp(basePrice, price, currencyId, CS_COMMON.__merge({fontStyle = fontMedium}))
         : "priceText" in priceExt ? txt({ text = priceExt.priceText }.__update(fontMedium))
         : null
       needDiscountTag ? mkDiscountCorner(discountInPercent) : null
@@ -268,13 +271,13 @@ let advertMark = {
   key = {}
   size = [advertSize, advertSize]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#mp_spectator.avif:{advertSize}:{advertSize}:P")
+  image = Picture($"ui/gameuiskin#watch_ads.svg:{advertSize}:{advertSize}:P")
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
 }.__update(adsButtonCounter)
 
 
-let function mkFreePricePlate(goods, state) {
+function mkFreePricePlate(goods, state) {
   let { isReady = false, needAdvert = false } = goods
   return @() {
     watch = state
@@ -295,7 +298,7 @@ let function mkFreePricePlate(goods, state) {
   }
 }
 
-let function mkPricePlate(goods, priceBgTex, state, animParams = null, needDiscountTag = true) {
+function mkPricePlate(goods, priceBgTex, state, animParams = null, needDiscountTag = true) {
   let trigger = {}
   let startGlareAnim = @() anim_start(trigger)
   let { isReady = true } = goods
@@ -329,7 +332,7 @@ let function mkPricePlate(goods, priceBgTex, state, animParams = null, needDisco
   }
 }
 
-let function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
+function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
   let stateFlags = Watched(0)
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]
@@ -355,7 +358,7 @@ let function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}, childO
   }).__update(ovr)
 }
 
-let function mkOfferWrap(onClick, mkContent, pricePlate = null, needGlare = true) {
+function mkOfferWrap(onClick, mkContent, pricePlate = null, needGlare = true) {
   let stateFlags = Watched(0)
   return @() bgShaded.__merge({
     size = [ offerW,  pricePlate == null ? offerBgH : offerH ]
@@ -415,7 +418,7 @@ let mkGoodsWaitSpinner = @(state) @() (state.value & PURCHASING) == 0 ? { watch 
 let fadeAnims = [
   { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = InQuad, playFadeOut = true }
 ]
-let function mkGoodsTimeTimeProgress(goods) {
+function mkGoodsTimeTimeProgress(goods) {
   let { readyTime = 0, interval = 0 } = goods
   if (readyTime <= serverTime.value)
     return null
@@ -458,7 +461,7 @@ let mkOfferCommonParts = @(goods, state) [
   mkGoodsTimeTimeProgress(goods)
 ]
 
-let function mkOfferTexts(title, endTime) {
+function mkOfferTexts(title, endTime) {
   let countdownText = Computed(function() {
     let leftTime = endTime - serverTime.value
     return leftTime > 0 ? secondsToHoursLoc(leftTime) : loc("icon/hourglass")

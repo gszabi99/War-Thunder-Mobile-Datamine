@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { resetTimeout } = require("dagor.workcycle")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isGuestLogin, openGuestEmailRegistration, renewGuestRegistrationTags, needVerifyEmail, openVerifyEmail
@@ -33,14 +33,14 @@ let isVerifyMsgShowed = hardPersistWatched("isVerifyMsgShowed", false)
 
 let isVerifyMsgTimerPassed = hardPersistWatched("isVerifyMsgTimerPassed", false)
 let lastVerifyMsgTime = Watched(0)
-let function setVerifyMsgTimerPassed() {isVerifyMsgTimerPassed(true)}
+function setVerifyMsgTimerPassed() {isVerifyMsgTimerPassed(true)}
 lastVerifyMsgTime.subscribe(function(value) {
   if (serverTime.value > value + NOTIFY_PERIOD)
     setVerifyMsgTimerPassed()
   else
     resetTimeout(value + NOTIFY_PERIOD - serverTime.value, setVerifyMsgTimerPassed)
 })
-let function loadVerifyMsgTime() { lastVerifyMsgTime(get_local_custom_settings_blk()?[VERIFY_MSG_UID] ?? 0) }
+function loadVerifyMsgTime() { lastVerifyMsgTime(get_local_custom_settings_blk()?[VERIFY_MSG_UID] ?? 0) }
 if (isLoggedIn.value)
   loadVerifyMsgTime()
 isLoggedIn.subscribe(@(v) v ? loadVerifyMsgTime(): null)
@@ -52,7 +52,7 @@ let needShowVerifyMsg = keepref(Computed(@() !isVerifyMsgShowed.value
   && isVerifyMsgTimerPassed.value
   ))
 
-let function openGuestMsg() {
+function openGuestMsg() {
   if (!needShowGuestMsg.value)
     return
   renewGuestRegistrationTags()
@@ -78,14 +78,14 @@ needShowGuestMsg.subscribe(@(_) openGuestMsgDelayed())
 
 isGuestLogin.subscribe(@(v) v ? null : closeMsgBox(GUEST_MSG_UID))
 
-let function saveVerifyMsgTime() {
+function saveVerifyMsgTime() {
   isVerifyMsgTimerPassed(false)
   lastVerifyMsgTime(serverTime.value)
   get_local_custom_settings_blk()[VERIFY_MSG_UID] = lastVerifyMsgTime.value
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 }
 
-let function openVerifyMsg() {
+function openVerifyMsg() {
   if (!needShowVerifyMsg.value)
     return
   openMsgBox({
@@ -120,7 +120,7 @@ register_command(@() isGuestMsgShowed(false), "debug.reset_guest_msg_showed")
 register_command(function() {
   lastVerifyMsgTime(0)
   get_local_custom_settings_blk()[VERIFY_MSG_UID] = lastVerifyMsgTime.value
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
   isVerifyMsgShowed(false)
 }, "debug.reset_verify_msg_timer")
 

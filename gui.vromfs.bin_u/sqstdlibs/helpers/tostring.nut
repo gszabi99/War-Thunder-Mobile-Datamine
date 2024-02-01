@@ -1,6 +1,6 @@
 //-file:plus-string
 let { isDataBlock } = require("%sqstd/underscore.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let u = require("u.nut")
 let g_string = require("%sqstd/string.nut")
 let {format} = require("string")
 let math = require("math")
@@ -208,7 +208,7 @@ toString = function (val, recursion = 1, addStr = "") {
   return isArray ? ("[ " + str + " ]") : ("{ " + str + " }")
 }
 
-local function intToHexString(number) {
+function intToHexString(number) {
   if (number == 0)
     return "0"
   local res = ""

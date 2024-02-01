@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe } = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
@@ -84,9 +85,9 @@ let secondarySightPositionUpdate = @() {
     }
   }
 
-subscribe("onControlledBulletStart", @(d) anim_start(triggers?[d.triggerGroup]))
+eventbus_subscribe("onControlledBulletStart", @(d) anim_start(triggers?[d.triggerGroup]))
 
-let function mkCrosshairLine(from, to, ovr) {
+function mkCrosshairLine(from, to, ovr) {
   return {
       key = hasNoPenetrationState.value
       rendObj = ROBJ_SOLID
@@ -147,7 +148,7 @@ let circle = @(color, width) {
     ]
 }
 
-let function mkCircleGunPosition(for_secondary) {
+function mkCircleGunPosition(for_secondary) {
   let color = for_secondary ? Color(150, 150, 150, 150) : Color(200, 200, 200, 200)
   return {
     behavior = Behaviors.RtPropUpdate

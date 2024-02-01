@@ -1,10 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
+let { get_mplayer_by_id } = require("mission")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { rqPlayerAndDo } = require("%rGui/hudHints/rqPlayersAndDo.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { switchSpectatorTarget, getSpectatorTargetId } = require("guiSpectator")
@@ -26,23 +24,16 @@ let gap = hdpx(40)
 let isAttached = Watched(false)
 
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
-subscribe("WatchedHeroChanged", @(_) watchedHeroId(getSpectatorTargetId()))
+eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId(getSpectatorTargetId()))
 
-let watchedHero = Watched(null)
-let updateWatchedHero = @() isAttached.value
-  ? rqPlayerAndDo(watchedHeroId.value, @(player) watchedHero(player))
-  : watchedHero(null)
-isAttached.subscribe(@(_) updateWatchedHero())
-watchedHeroId.subscribe(@(_) updateWatchedHero())
-
-let watchedHeroName = Computed(@() watchedHero.value == null ? ""
-  : getPlayerName(watchedHero.value.name, myUserRealName.value, myUserName.value))
+let watchedHero = Computed(@() isAttached.get() ? get_mplayer_by_id(watchedHeroId.get()) : null)
+let watchedHeroName = Computed(@() watchedHero.value == null ? "" : watchedHero.value.name)
 let watchedHeroColor = Computed(@() watchedHero.value == null ? 0xFFFFFFFF
   : watchedHero.value.team == localMPlayerTeam.value ? teamBlueColor : teamRedColor)
 
 let switchTargetImage = Picture($"!ui/gameuiskin#spinnerListBox_arrow_up.svg:{buttonImageSize}:{buttonImageSize}")
 
-let menuButton = mkMenuButton({ onClick = @() send("openFlightMenuInRespawn", {}) })
+let menuButton = mkMenuButton({ onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
 
 let topLeft = {
   flow = FLOW_HORIZONTAL
@@ -55,7 +46,7 @@ let topLeft = {
 
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 
-let function mkTargetButton(isNext = false) {
+function mkTargetButton(isNext = false) {
   let stateFlags = Watched(0)
   return @() {
     behavior = Behaviors.Button
@@ -96,7 +87,7 @@ let returnToHangarButton = @() {
   borderColor = isActive(returnBtnSf.value) ? borderColorPushed
     : borderColor
   onElemState = @(v) returnBtnSf(v)
-  onClick = @() send("quitMission", {})
+  onClick = @() eventbus_send("quitMission", {})
   children = @() {
     watch = battleCampaign
     rendObj = ROBJ_TEXT

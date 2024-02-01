@@ -48,7 +48,7 @@ let wndAABB = Watched(null)
 
 let hasBulletsVideo = Computed(@() hasAddons.value?.pkg_video ?? false)
 
-let function close(){
+function close(){
   openedSlot(-1)
   openParams(null)
 }
@@ -61,7 +61,7 @@ curSlotName.subscribe(@(_) defer( function() {
     wndAABB(aabb)
 }))
 
-let function mkBulletButton(name, bSet, fromUnitTags, columns, id) {
+function mkBulletButton(name, bSet, fromUnitTags, columns, id) {
   let isCurrent = Computed(@() name == curSlotName.value)
   let isLockedSlot = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.value?.level ?? 0))
   let hasUnseenBullets = Computed(@() hasUnseenShellsBySlot.value?[selSlot.value?.id ?? 0][name])
@@ -128,7 +128,7 @@ let function mkBulletButton(name, bSet, fromUnitTags, columns, id) {
   }
 }
 
-let function bulletsList() {
+function bulletsList() {
   if (bulletsInfo.value == null)
     return { watch = bulletsInfo }
   let { bulletSets, bulletsOrder, fromUnitTags } = bulletsInfo.value
@@ -193,7 +193,7 @@ let mkStatTextarea = @(text, color = 0xFFC0C0C0) {
   color
 }.__update(fontVeryTiny)
 
-let function mkShellVideo(videos, width) {
+function mkShellVideo(videos, width) {
   if (videos.len() == 0)
     return null
   let idx = Watched(0)
@@ -218,7 +218,7 @@ let function mkShellVideo(videos, width) {
       }
 }
 
-let function curBulletInfo() {
+function curBulletInfo() {
   if (bulletsInfo.value == null)
     return { watch = bulletsInfo }
 
@@ -261,13 +261,13 @@ let function curBulletInfo() {
   }
 }
 
-let function applyBullet() {
+function applyBullet() {
   setOrSwapUnitBullet(openParams.value?.slotIdx, curSlotName.value)
   close()
 }
 
 let applyText = utf8ToUpper(loc("msgbox/btn_choose"))
-let function applyButton() {
+function applyButton() {
   let { fromUnitTags = null } = bulletsInfo.value
   let { reqLevel = 0 } = fromUnitTags?[curSlotName.value]
   let isEnoughLevel = reqLevel <= (selSlot.value?.level ?? 0)
@@ -312,7 +312,7 @@ let mkBg = @(box) box == null
     }
 
 
-let function content() {
+function content() {
   if (openParams.value == null)
     return { watch = openParams }
 
@@ -343,7 +343,7 @@ if (openParams.value != null)
   openImpl()
 openParams.subscribe(@(v) v != null ? openImpl() : removeModalWindow(WND_UID))
 
-let function showRespChooseWnd(slotIdx, bulletBox, wndBox) {
+function showRespChooseWnd(slotIdx, bulletBox, wndBox) {
   openParams({ slotIdx, bulletBox, wndBox })
   openedSlot(slotIdx)
 }

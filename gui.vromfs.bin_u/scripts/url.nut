@@ -1,8 +1,10 @@
-//-file:plus-string
+from "%scripts/dagui_natives.nut" import send_error_log
 from "%scripts/dagui_library.nut" import *
+
+let { g_url_type } = require("urlType.nut")
 let { register_command } = require("console")
 let { getShortName } = require("%scripts/language.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { split_by_chars } = require("string")
 let { shell_launch } = require("url")
 let { get_authenticated_url_sso } = require("auth_wt")
@@ -28,7 +30,7 @@ const QR_REDIRECT_URL = "https://login.gaijin.net/{0}/qr/{1}"
 
 let isDebugSsoLogin = mkWatched(persist, "isDebugSsoLogin", false)
 
-let function getUrlWithQrRedirect(url) {
+function getUrlWithQrRedirect(url) {
   local lang = getShortName()
   if (!isInArray(lang, qrRedirectSupportedLangs))
     lang = "en"
@@ -39,7 +41,7 @@ let openUrlExternalImpl = @(url)
   shell_launch(!isDebugSsoLogin.value ? url
     : url.replace("login.gaijin.net", "login-sso-test.gaijin.net"))
 
-let function openUrlImpl(url, onCloseUrl) {
+function openUrlImpl(url, onCloseUrl) {
   local success = false
   if (is_android)
     success = require("android.webview").show(url, true, onCloseUrl)
@@ -53,7 +55,7 @@ let function openUrlImpl(url, onCloseUrl) {
     openUrlExternalImpl(url)
 }
 
-subscribe("onAuthenticatedUrlResult", function(msg) {
+eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
   let { status, contextStr = "", url = null } = msg
   let { onCloseUrl = "", useExternalBrowser = true, notAuthUrl = "", shouldEncode = false
   } = contextStr != "" ? parse_json(contextStr) : null
@@ -66,7 +68,7 @@ subscribe("onAuthenticatedUrlResult", function(msg) {
   else {
     urlToOpen = notAuthUrl
     logPrefix = "request open after fail authenticate"
-    ::send_error_log("Authorize url: failed to get authenticated url with error " + status,
+    send_error_log($"Authorize url: failed to get authenticated url with error {status}",
       false, AUTH_ERROR_LOG_COLLECTION)
     if (urlToOpen == "")
       return
@@ -84,7 +86,7 @@ subscribe("onAuthenticatedUrlResult", function(msg) {
   })
 })
 
-let function openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser) {
+function openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser) {
   let shouldEncode = !isInArray(URL_TAG_NO_ENCODING, urlTags)
   local autoLoginUrl = url
   if (shouldEncode)
@@ -96,7 +98,7 @@ let function openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser) 
     json_to_string({ onCloseUrl, useExternalBrowser, notAuthUrl = url, shouldEncode }))
 }
 
-let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExternalBrowser=true) {
+function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExternalBrowser=true) {
   if (baseUrl == null || baseUrl == "") {
     logUrl("Error: tried to open an empty url")
     return null
@@ -114,7 +116,7 @@ let function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useE
   let urlWithoutTags = urlTags.remove(urlTags.len() - 1)
   url = urlWithoutTags
 
-  let urlType = ::g_url_type.getByUrl(url)
+  let urlType = g_url_type.getByUrl(url)
   if (isInArray(URL_TAG_AUTO_LOCALIZE, urlTags))
     url = urlType.applyCurLang(url)
 
@@ -158,11 +160,11 @@ local function validateLink(link) {
   if (localizedLink != "")
     return localizedLink
 
-  log("CHECK LINK: Not found any localization string for link: " + link)
+  log("CHECK LINK: Not found any localization string for link:", link)
   return null
 }
 
-let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCloseUrl = "", useExternalBrowser = true) {
+function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", onCloseUrl = "", useExternalBrowser = true) {
   let bigQueryInfoObject = { url = baseUrl }
   if ((biqQueryKey ?? "") != "")
     bigQueryInfoObject["from"] <- biqQueryKey
@@ -172,8 +174,7 @@ let function openUrl(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "", 
   open(baseUrl, isAlreadyAuthenticated, onCloseUrl, useExternalBrowser)
 }
 
-subscribe("openUrl", kwarg(openUrl))
-::open_url <- openUrl //use in native code
+eventbus_subscribe("openUrl", kwarg(openUrl))
 
 register_command(function() {
   isDebugSsoLogin(!isDebugSsoLogin.value)

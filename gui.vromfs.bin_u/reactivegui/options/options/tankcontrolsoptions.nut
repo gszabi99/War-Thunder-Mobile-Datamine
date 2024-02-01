@@ -3,7 +3,7 @@ from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED, OPT_AUTO_ZOOM,
   OPT_AUTO_ZOOM_TANK, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_ROTATION_ASSIST,
-  OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, mkOptionValue
+  OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing_fixed, set_show_reticle,
   set_auto_zoom
@@ -128,6 +128,16 @@ let showMoveDirection = {
   description = loc("options/desc/show_move_direction")
 }
 
+let grassInTankVisionList = [false, true]
+let currentGrassInTankVision = mkOptionValue(OPT_SHOW_GRASS_IN_TANK_VISION, true, @(v) validate(v, grassInTankVisionList))
+let showGrassInTankVision = {
+  locId = "options/grass_in_tank_vision"
+  ctrlType = OCT_LIST
+  value = currentGrassInTankVision
+  list = grassInTankVisionList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/grass_in_tank_vision")
+}
 
 let cameraRotationAssistList = [false, true]
 let cameraRotationAssistDefault = Computed(@() (abTests.value?.tankCameraRotationAssist ?? "true") == "true")
@@ -179,6 +189,7 @@ return {
     // tankTargetControlType
     cameraRotationAssist
     showMoveDirection
+    showGrassInTankVision
     currentArmorPiercingType
     showReticleButtonTouch
     currentAutoZoomType

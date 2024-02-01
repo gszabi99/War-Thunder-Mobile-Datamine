@@ -17,7 +17,7 @@ let withActionButtonCtor = @(aType, actionCtor, cfg) cfg.__update({
   }
 })
 
-let function withActionBarButtonCtor(config, unitType, cfg) {
+function withActionBarButtonCtor(config, unitType, cfg) {
   let { actionType, mkButtonFunction, getImage } = config
   let ctor = weaponsButtonsView[mkButtonFunction]
   return withActionButtonCtor(actionType, @(v) ctor(config, v), cfg.__update({ // warning disable: -unwanted-modification
@@ -25,7 +25,7 @@ let function withActionBarButtonCtor(config, unitType, cfg) {
   }))
 }
 
-let function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
+function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
   let aTypesList = configsList.map(@(c) c.actionType)
   return cfg.__update({ // warning disable: -unwanted-modification
     function ctor() {
@@ -42,7 +42,7 @@ let function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
   })
 }
 
-let function weaponryButtonCtor(id, actionCtor, cfg) {
+function weaponryButtonCtor(id, actionCtor, cfg) {
   if (id not in weaponsButtonsConfig) {
     logerr($"Error using weaponryButtonCtor: {id} is not in weaponsButtonsConfig")
     return cfg
@@ -76,7 +76,7 @@ let weaponryButtonDynamicCtor = @(idx, cfg) cfg.__update({
 },
 { editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_ship_calibre_main_3_left.svg", idx + 1) })
 
-let function weaponryButtonsGroupCtor(ids, actionCtor, cfg) {
+function weaponryButtonsGroupCtor(ids, actionCtor, cfg) {
   if (ids.findindex(@(id) id not in weaponsButtonsConfig) != null) {
     logerr("Error using weaponryButtonsGroupCtor: id is not in weaponsButtonsConfig")
     return cfg
@@ -93,7 +93,7 @@ let function weaponryButtonsGroupCtor(ids, actionCtor, cfg) {
     }
   })}
 
-let function weaponryButtonsChainedCtor(ids, actionCtor, cfg) {
+function weaponryButtonsChainedCtor(ids, actionCtor, cfg) {
   if (ids.findindex(@(id) id not in weaponsButtonsConfig) != null) {
     logerr("Error using weaponryButtonsChainedCtor: id is not in weaponsButtonsConfig")
     return cfg

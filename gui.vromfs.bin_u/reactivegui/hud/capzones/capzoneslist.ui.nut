@@ -17,7 +17,7 @@ let zoneColor = @(team, localTeam) team == MP_TEAM_NEUTRAL ? neutralColor
   : team == localTeam ? teamBlueColor
   : teamRedColor
 
-let function capZoneCtr(zone) {
+function capZoneCtr(zone) {
   let res = {}
   let { mpTimeX100 } = zone
   let progress = fabs(0.01 * mpTimeX100)
@@ -37,7 +37,7 @@ let function capZoneCtr(zone) {
   })
 }
 
-let function mkCapZone(idx) {
+function mkCapZone(idx) {
   let zone = Computed(@() capZones.value?[idx])
   return function() {
     local res = { watch = [zone, localMPlayerTeam] }

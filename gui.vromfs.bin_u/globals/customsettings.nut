@@ -7,12 +7,12 @@
  * This storage can contain any custom data.
  */
 
-let eventbus = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 
-let function resetCustomSettings() {
+function resetCustomSettings() {
   get_local_custom_settings_blk().clearData()
-  eventbus.send("forceSaveProfile", {})
+  eventbus_send("forceSaveProfile", {})
 }
 
 return {

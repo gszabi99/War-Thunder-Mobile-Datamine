@@ -1,12 +1,15 @@
-
+from "%scripts/dagui_natives.nut" import pause_game, sign_out
 from "%scripts/dagui_library.nut" import *
-let logerrL = @(text) logerr($"[LOGIN] {text}")
-let { subscribe } = require("eventbus")
+
+let { registerRespondent } = require("%appGlobals/scriptRespondents.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { loginState, isLoginStarted, LOGIN_STATE, getLoginStateDebugStr, isLoggedIn, isAuthAndUpdated, isAuthorized
 } = require("%appGlobals/loginState.nut")
 let updateClientStates = require("%scripts/clientState/updateClientStates.nut")
+
+let logerrL = @(text) logerr($"[LOGIN] {text}")
 
 local curStages = []
 
@@ -17,7 +20,7 @@ let isStageCompleted = @(state, stage) (state & stage.finishState) == stage.fini
 let isStageAllowed = @(state, stage) (state & stage.reqState) == stage.reqState
 
 local prevState = loginState.value
-let function startNextLoginStages() {
+function startNextLoginStages() {
   let state = loginState.value
   let wasState = prevState
   prevState = state
@@ -42,7 +45,7 @@ loginState.subscribe(function(s) {
   deferOnce(startNextLoginStages)
 })
 
-let function restartLoginStages() { //restart after hotreload scripts
+function restartLoginStages() { //restart after hotreload scripts
   let state = loginState.value
   if (!isNeedUpdateStages(state))
     return
@@ -56,7 +59,7 @@ let function restartLoginStages() { //restart after hotreload scripts
     }
 }
 
-subscribe("login.interrupt", function(_errData) {
+eventbus_subscribe("login.interrupt", function(_errData) {
   let state = loginState.value
   foreach (stage in curStages)
     if ("interrupt" in stage
@@ -69,10 +72,10 @@ subscribe("login.interrupt", function(_errData) {
   let wasAuthorized = isAuthorized.value
   loginState(LOGIN_STATE.NOT_LOGGED_IN)
   if (wasAuthorized)
-    ::sign_out()
+    sign_out()
 })
 
-let function getStagesErrors(stages) {
+function getStagesErrors(stages) {
   let errors = []
   let ids = {}
   foreach (s in stages) {
@@ -109,7 +112,7 @@ let function getStagesErrors(stages) {
   return errors
 }
 
-let function initStages(stages) {
+function initStages(stages) {
   if (curStages.len() > 0 && isLoginStarted.value) {
     logerrL("Try to change login stages while in the active login process!")
     return
@@ -133,13 +136,12 @@ isLoggedIn.subscribe(function(v) {
     broadcastEvent("LoginComplete")  //todo: subscribe on direct watch instead of this event
 })
 
-//called from the native code
-::is_logged_in <- @() isLoggedIn.value //used from code
+registerRespondent("is_logged_in", @() isLoggedIn.get())
 
-::gui_start_startscreen <- function gui_start_startscreen() {
-  ::pause_game(false) //Is it need?
+eventbus_subscribe("gui_start_startscreen", function gui_start_startscreen(...) {
+  pause_game(false) //Is it need?
   deferOnce(updateClientStates)
-}
+})
 
 return {
   initStages

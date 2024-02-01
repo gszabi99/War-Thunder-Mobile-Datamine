@@ -3,6 +3,7 @@ let { round } =  require("math")
 let { doesLocTextExist } = require("dagor.localize")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
+let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
@@ -23,7 +24,7 @@ let isCounterActive = keepref(Computed(@() activeCounters.get().len() > 0))
 
 let placeGlowColor = [0x40bbbbbb, 0x40ffdb7b, 0x407be1ff, 0x40ffb67b]
 
-let function playerPlaceCtor(_uid, place, startTime) {
+function playerPlaceCtor(_uid, place, startTime) {
   return {
     size = [flex(), playerPlaceIconSize]
     halign = ALIGN_RIGHT
@@ -59,35 +60,44 @@ let function playerPlaceCtor(_uid, place, startTime) {
   }
 }
 
+let labelLbCommon = colon.concat(loc("lb/bestBattles"), loc("lb/overall_rating"))
+let labelLbShips = colon.concat(loc("lb/bestBattles"), loc(campaignPresentations.ships.unitsLocId))
+let labelLbTanks = colon.concat(loc("lb/bestBattles"), loc(campaignPresentations.tanks.unitsLocId))
+let toLbRating = @(v) (0.01 * v + 0.5).tointeger()
+
+let getValIfPositive = @(val, convertFunc = @(v) v) (val ?? 0) > 0 ? convertFunc(val) : null
+
 let statsByCamp = {
   ships = [
-    { locId = "debriefing/damageDealt", getVal = @(reward, _) reward?.damage.tointeger() ?? 0 }
+    { locId = "debriefing/damageDealt", getVal = @(debrData, _) debrData?.reward.damage.tointeger() ?? 0 }
     { locId = "debriefing/NavalKills", getVal = @(_, player) player?.navalKills ?? 0 }
-    { locId = "debriefing/PlayerPlace", getVal = @(_,player) player?.place , valueCtor = playerPlaceCtor}
+    { getLoc = @() labelLbShips,  getVal = @(debrData, _) getValIfPositive(debrData?.userstat.ships_rating, toLbRating) }
+    { getLoc = @() labelLbCommon, getVal = @(debrData, _) getValIfPositive(debrData?.userstat.wp_rating, toLbRating) }
+    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
   ],
-
   tanks = [
-    { locId = "debriefing/totalscore", getVal = @(reward, _) (100 * (reward?.dmgScoreBonus ?? 0)).tointeger() }
+    { locId = "debriefing/totalscore", getVal = @(debrData, _) (100 * (debrData?.reward.dmgScoreBonus ?? 0)).tointeger() }
     { locId = "debriefing/GroundKills", getVal = @(_, player) player?.groundKills ?? 0 }
-    { locId = "debriefing/AirKills", getVal = @(_, player) (player?.kills ?? 0) <= 0 ? null : player.kills }
+    { locId = "debriefing/AirKills", getVal = @(_, player) getValIfPositive(player?.kills) }
     { locId = "debriefing/Captures", getVal = @(_, player) player?.captures ?? 0 }
-    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place,  valueCtor = playerPlaceCtor}
+    { getLoc = @() labelLbTanks,  getVal = @(debrData, _) getValIfPositive(debrData?.userstat.tanks_rating, toLbRating) }
+    { getLoc = @() labelLbCommon, getVal = @(debrData, _) getValIfPositive(debrData?.userstat.wp_rating, toLbRating) }
+    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
   ],
 }
 
 let statsByCampSingle = {
   ships = [
-    { locId = "debriefing/NavalKills", getVal = @(_, player) (player?.kills ?? 0) <= 0 ? null : player.kills }
+    { locId = "debriefing/NavalKills", getVal = @(_, player) getValIfPositive(player?.kills) }
   ],
-
   tanks = [
-    { locId = "debriefing/GroundKills", getVal = @(_, player) (player?.kills ?? 0) <= 0 ? null : player.kills }
+    { locId = "debriefing/GroundKills", getVal = @(_, player) getValIfPositive(player?.kills) }
   ],
 }
 
 isCounterActive.subscribe(@(v) v ? startSound("coin_counter") : stopSound("coin_counter"))
 
-let function setCounterActive(uid, isActive) {
+function setCounterActive(uid, isActive) {
   if (isActive != (uid in activeCounters.get()))
     activeCounters.mutate(function(v) {
       if (isActive)
@@ -136,7 +146,7 @@ let mkStat = @(uid, text, value, startTime, valueCtor) {
   ]
 }
 
-let function mkItemsUsedRows(itemsUsed, delay) {
+function mkItemsUsedRows(itemsUsed, delay) {
   let items = []
   foreach (id, data in itemsUsed)
     items.append(data.__merge({ id, order = orderByItems?[id] ?? orderByItems.len() }))
@@ -168,7 +178,7 @@ let function mkItemsUsedRows(itemsUsed, delay) {
   })
 }
 
-let function getPlayerPlace(campaign, player, allPlayers) {
+function getPlayerPlace(campaign, player, allPlayers) {
   let key = getScoreKeyRaw(campaign)
   let score = player?[key] ?? 0
   let { team = null } = player
@@ -182,9 +192,8 @@ let function getPlayerPlace(campaign, player, allPlayers) {
   return place
 }
 
-let function mkDebriefingStats(data, startAnimTime) {
-  let { isSingleMission = false, reward = {}, players = {}, userId = -1, campaign = "",
-    itemsUsed = {} } = data
+function mkDebriefingStats(debrData, startAnimTime) {
+  let { isSingleMission = false, players = {}, userId = -1, campaign = "", itemsUsed = {} } = debrData
   let stats = (isSingleMission ? statsByCampSingle : statsByCamp)?[campaign] ?? []
   local player = players?[userId.tostring()]
 
@@ -196,8 +205,10 @@ let function mkDebriefingStats(data, startAnimTime) {
 
   local idx = 0
   let statsContent = stats.map(function(s, uid) {
-    let val = s.getVal(reward, player)
-    return val == null ? null : mkStat(uid, loc(s.locId), val, startAnimTime + (offsetTime * idx++), s?.valueCtor)
+    let val = s.getVal(debrData, player)
+    return val == null
+      ? null
+      : mkStat(uid, s?.getLoc() ?? loc(s.locId), val, startAnimTime + (offsetTime * idx++), s?.valueCtor)
   }).filter(@(v) v != null)
 
   let children = statsContent.extend(mkItemsUsedRows(itemsUsed, startAnimTime + (statsContent.len() * offsetTime)))

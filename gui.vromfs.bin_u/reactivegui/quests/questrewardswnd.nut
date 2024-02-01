@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { isRewardsListOpen, closeRewardsList, rewardsList } = require("questsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
-let { bgGradient, fadedTextColor } = require("%rGui/shop/unseenPurchaseComps.nut")
+let { bgShadedDark, bgMessage } = require("%rGui/style/backgrounds.nut")
+let { fadedTextColor } = require("%rGui/shop/unseenPurchaseComps.nut")
 let { mkQuestRewardPlate } = require("rewardsComps.nut")
 
 let wndWidth = saSize[0]
@@ -47,7 +47,7 @@ let questRewardsWnd = {
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = [
-    bgGradient
+    bgMessage.__merge({size = flex()})
     @() {
       watch = rewardsList
       size = [flex(), SIZE_TO_CONTENT]

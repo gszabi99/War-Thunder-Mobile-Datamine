@@ -12,7 +12,7 @@ let wndUid = "debugLoadingTips"
 let iconColorDefault = 0xFF808080
 let textColor = 0xFFE0E0E0
 
-let function getTipsList() {
+function getTipsList() {
   let tipsLocId = getAllTips()
 
   let res = (tipsLocId?[GLOBAL_LOADING_TIP_BIT] ?? []).map(@(v) loc(v))

@@ -25,7 +25,7 @@ let btnOpenQuests = @() {
         statusMark)
 }
 
-let function mkBtnOpenTabQuests(tabId, ovr = {}) {
+function mkBtnOpenTabQuests(tabId, ovr = {}) {
   let sections = Computed(@() questsCfg.get()?[tabId] ?? [])
   let status = @() {
     watch = [sections, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection]

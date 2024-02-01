@@ -15,6 +15,14 @@ excludesdata =
     ]
   },
   {
+    key = "b",
+    arr =
+    [
+      "blade",
+      "blados",
+    ]
+  },
+  {
     key = "d",
     arr =
     [

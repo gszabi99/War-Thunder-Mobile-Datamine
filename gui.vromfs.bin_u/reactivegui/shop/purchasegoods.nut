@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let logShop = log_with_prefix("[SHOP] ")
-let { round } = require("math")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
-let { shopPurchaseInProgress, buy_goods, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
+let { activeOffer } = require("offerState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -13,7 +13,7 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { playSound } = require("sound_wt")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 
-let function getCantPurchaseReason(goods) {
+function getCantPurchaseReason(goods) {
   let hasUnits = goods.units.filter(@(unitId) myUnits.value?[unitId] != null)
   if (hasUnits.len())
     return {
@@ -43,18 +43,26 @@ registerHandler("onShopGoodsPurchase",
       openMsgBox({ text = loc("msgbox/internal_error_header") })
   })
 
-let function purchaseGoodsImpl(goodsId, currencyId, price) {
+function purchaseGoodsImpl(goodsId, currencyId, price) {
   if (shopPurchaseInProgress.value != null)
     return "shopPurchaseInProgress"
   buy_goods(goodsId, currencyId, price, "onShopGoodsPurchase")
   return ""
 }
 
-let function purchaseGoods(goodsId) {
+function purchaseOfferImpl(offer, currencyId, price) {
+  if (shopPurchaseInProgress.get() != null)
+    return "shopPurchaseInProgress"
+  buy_offer(offer.campaign, offer.id, currencyId, price, "onShopGoodsPurchase")
+  return ""
+}
+
+function purchaseGoods(goodsId) {
   logShop($"User tries to purchase: {goodsId}")
   if (shopPurchaseInProgress.value != null)
     return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.value}")
-  let goods = shopGoods.value?[goodsId]
+  let isOffer = activeOffer.get()?.id == goodsId
+  let goods = isOffer ? activeOffer.get() : shopGoods.get()?[goodsId]
   if (goods == null)
     return logShop($"ERROR: Goods not found: {goodsId}")
   let { price, currencyId } = goods.price
@@ -70,17 +78,16 @@ let function purchaseGoods(goodsId) {
   if (!canPurchase)
     return
 
-  let { discountInPercent = 0 } = goods
-  let finalPrice = discountInPercent <= 0 ? price : round(price * (1.0 - (discountInPercent / 100.0)))
-  let function purchaseFunc() {
-    let errString = purchaseGoodsImpl(goodsId, currencyId, finalPrice)
+  function purchaseFunc() {
+    let errString = isOffer ? purchaseOfferImpl(goods, currencyId, price)
+      : purchaseGoodsImpl(goodsId, currencyId, price)
     if (errString != "")
       logShop($"ERROR: {errString}")
   }
 
   openMsgBoxPurchase(
     loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp)) }),
-    { price = finalPrice, currencyId },
+    { price = price, currencyId },
     purchaseFunc,
     mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}"))
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )

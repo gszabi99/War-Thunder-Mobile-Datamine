@@ -20,7 +20,7 @@ let commonAddons = { ground, naval }
 let getAddonPostfix = @(unitName) getUnitType(unitName) == TANK ? "ground" : "naval"
 let getCampaignByPostfix = @(postfix) campaignPostfix.findindex(@(v) v == postfix)
 
-let function appendRankAddon(addons, postfix, mRank) {
+function appendRankAddon(addons, postfix, mRank) {
   let addon = $"pkg_tier_{mRank}_{postfix}"
   if (addon in knownAddons)
     addons.append(addon)
@@ -30,14 +30,14 @@ let function appendRankAddon(addons, postfix, mRank) {
   return addons
 }
 
-let function appendCampaignExtAddons(addons, campaign, mRank) {
+function appendCampaignExtAddons(addons, campaign, mRank) {
   let ext = extAddonsByRank?[campaign][mRank]
   if (ext != null)
     addons.extend(ext)
   return addons
 }
 
-let function getUnitPkgs(unitName, mRank) {
+function getUnitPkgs(unitName, mRank) {
   if (unitName in customUnitPkg)
     return customUnitPkg[unitName] ?? []
   let postfix = getAddonPostfix(unitName)
@@ -52,7 +52,7 @@ let function getUnitPkgs(unitName, mRank) {
 
 let getCampaignAddonPostfix = @(campaign) campaignPostfix?[campaign] ?? "naval"
 
-let function getCampaignPkgsForOnlineBattle(campaign, mRank) {
+function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   let postfix = getCampaignAddonPostfix(campaign)
   let res = clone (commonAddons?[postfix] ?? [])
   for (local i = mRank + 1; i >= 1 ; i--) {
@@ -62,7 +62,7 @@ let function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   return res
 }
 
-let function getCampaignPkgsForNewbieBattle(campaign, mRank, isSingle) {
+function getCampaignPkgsForNewbieBattle(campaign, mRank, isSingle) {
   let postfix = getCampaignAddonPostfix(campaign)
   let res = clone (commonAddons?[postfix] ?? [])
   let maxRank = max(mRank, isSingle ? 0 : 2)
@@ -73,7 +73,7 @@ let function getCampaignPkgsForNewbieBattle(campaign, mRank, isSingle) {
   return res
 }
 
-let function getAddonCampaignImpl(addon) {
+function getAddonCampaignImpl(addon) {
   let list = addon.split("_")
   let postfixIdx = list.len() - (list.top() == "hq" ? 2 : 1)
   let postfix = list[postfixIdx]
@@ -81,7 +81,7 @@ let function getAddonCampaignImpl(addon) {
 }
 
 let addonCampaigns = {}
-let function getAddonCampaign(addon) {
+function getAddonCampaign(addon) {
   if (addon not in addonCampaigns)
     addonCampaigns[addon] <- getAddonCampaignImpl(addon)
   return addonCampaigns[addon]

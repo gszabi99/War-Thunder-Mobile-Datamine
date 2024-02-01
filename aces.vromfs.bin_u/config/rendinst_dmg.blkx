@@ -310,6 +310,154 @@
       "material": "wood"
     },
     {
+      "name": "debris_trash_concrete_a",
+      "destroyedModelName": "debris_trash_concrete_a_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "debris_trash_concrete_b",
+      "destroyedModelName": "debris_trash_concrete_b_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "debris_trash_concrete_c",
+      "destroyedModelName": "debris_trash_concrete_c_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "debris_trash_concrete_d",
+      "destroyedModelName": "debris_trash_concrete_d_destr_phobj",
+      "destructionImpulse": 60000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "debris_trash_concrete_e",
+      "destroyedModelName": "debris_trash_concrete_e_destr_phobj",
+      "destructionImpulse": 60000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "debris_trash_wood_a",
+      "destroyedModelName": "debris_trash_wood_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "debris_trash_wood_b",
+      "destroyedModelName": "debris_trash_wood_b_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "debris_trash_wood_c",
+      "destroyedModelName": "debris_trash_wood_c_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "debris_trash_wood_d",
+      "destroyedModelName": "debris_trash_wood_d_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "debris_trash_wood_d_snow",
+      "destroyedModelName": "debris_trash_wood_d_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_snow_big",
+      "fxScale": 1.5
+    },
+    {
+      "name": "debris_trash_metal_a",
+      "destroyedModelName": "debris_trash_metal_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "debris_trash_metal_b",
+      "destroyedModelName": "debris_trash_metal_b_destr_phobj",
+      "destructionImpulse": 22000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 2.0,
+      "material": "metal"
+    },
+    {
+      "name": "debris_trash_metal_c",
+      "destroyedModelName": "debris_trash_metal_c_destr_phobj",
+      "destructionImpulse": 22000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 2.0,
+      "material": "metal"
+    },
+    {
+      "name": "debris_trash_metal_d",
+      "destroyedModelName": "debris_trash_metal_d_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_statue_horse_a_dp_01",
+      "destroyedModelName": "european_statue_horse_a_dp_01_destr_phobj",
+      "destructionImpulse": 70000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "european_statue_lion_a_dp_01",
+      "destroyedModelName": "european_statue_lion_a_dp_01_destr_phobj",
+      "destructionImpulse": 70000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "european_statue_lion_b_dp_01",
+      "destroyedModelName": "european_statue_lion_b_dp_01_destr_phobj",
+      "destructionImpulse": 70000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "european_statue_woman_a",
+      "destroyedModelName": "european_statue_woman_a_destr_phobj",
+      "destructionImpulse": 55000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "european_statue_woman_b",
+      "destroyedModelName": "european_statue_woman_b_destr_phobj",
+      "destructionImpulse": 55000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
+      "name": "european_statue_woman_c",
+      "destroyedModelName": "european_statue_woman_c_destr_phobj",
+      "destructionImpulse": 55000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0
+    },
+    {
       "name": "asian_pagoda_foundation_lamp_00",
       "destructionImpulse": 30.0,
       "fx": "ad_fence_wood_small",
@@ -1172,6 +1320,22 @@
       "fx": "ad_wood_big",
       "fxScale": 1.0,
       "stopsBullets": true
+    },
+    {
+      "name": "88mm_flak_36_canon_a",
+      "destroyedModelName": "88mm_flak_36_canon_a_destr_phobj",
+      "destructionImpulse": 70000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.5,
+      "material": "metal"
+    },
+    {
+      "name": "88mm_flak_36_canon_b",
+      "destroyedModelName": "88mm_flak_36_canon_b_destr_phobj",
+      "destructionImpulse": 70000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.5,
+      "material": "metal"
     },
     {
       "name": "iceberg_chunk_1a",
@@ -11713,438 +11877,6 @@
       "fx": "ad_metal_buildings_destructions_part",
       "impulseThreshold": 0.0
     },
-    "germ_town_building_3_floors_a_dp_01": {
-      "nextRes": "germ_town_building_3_floors_a_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_a_dp_02": {
-      "nextRes": "germ_town_building_3_floors_a_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_a_dp_03": {
-      "nextRes": "germ_town_building_3_floors_a_dp_03_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_a_dp_04": {
-      "nextRes": "germ_town_building_3_floors_a_dp_04_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_b_dp_01": {
-      "nextRes": "germ_town_building_3_floors_b_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_b_dp_02": {
-      "nextRes": "germ_town_building_3_floors_b_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_c_dp_01": {
-      "nextRes": "germ_town_building_3_floors_c_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_c_dp_02": {
-      "nextRes": "germ_town_building_3_floors_c_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_d_dp_01": {
-      "nextRes": "germ_town_building_3_floors_d_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_3_floors_d_dp_02": {
-      "nextRes": "germ_town_building_3_floors_d_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_4_floors_a_dp_01": {
-      "nextRes": "germ_town_building_4_floors_a_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_4_floors_a_dp_02": {
-      "nextRes": "germ_town_building_4_floors_a_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_4_floors_b_dp_01": {
-      "nextRes": "germ_town_building_4_floors_b_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_4_floors_b_dp_02": {
-      "nextRes": "germ_town_building_4_floors_b_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_4_floors_b_dp_03": {
-      "nextRes": "germ_town_building_4_floors_b_dp_03_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.5,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_4_floors_b_dp_04": {
-      "nextRes": "germ_town_building_4_floors_b_dp_04_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_a_dp_01": {
-      "nextRes": "germ_town_building_5_floors_a_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_a_dp_02": {
-      "nextRes": "germ_town_building_5_floors_a_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_b_dp_01": {
-      "nextRes": "germ_town_building_5_floors_b_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_b_dp_02": {
-      "nextRes": "germ_town_building_5_floors_b_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.0,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_d_angle_center_dp_01": {
-      "nextRes": "germ_town_building_5_floors_d_angle_center_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_d_angle_left_dp_01": {
-      "nextRes": "germ_town_building_5_floors_d_angle_left_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.2,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_d_angle_right_dp_01": {
-      "nextRes": "germ_town_building_5_floors_d_angle_right_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.2,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_d_angle_left_dmg_dp_01": {
-      "nextRes": "germ_town_building_5_floors_d_angle_left_dmg_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.2,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_e_left_dp_01": {
-      "nextRes": "germ_town_building_5_floors_e_left_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_e_left_dp_02": {
-      "nextRes": "germ_town_building_5_floors_e_left_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_e_center_dp_01": {
-      "nextRes": "germ_town_building_5_floors_e_center_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_e_center_dp_02": {
-      "nextRes": "germ_town_building_5_floors_e_center_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_e_right_dp_01": {
-      "nextRes": "germ_town_building_5_floors_e_right_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.2,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_e_right_dp_02": {
-      "nextRes": "germ_town_building_5_floors_e_right_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.2,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_f_left_dp_01": {
-      "nextRes": "germ_town_building_5_floors_f_left_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_f_left_dp_02": {
-      "nextRes": "germ_town_building_5_floors_f_left_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_f_center_dp_01": {
-      "nextRes": "germ_town_building_5_floors_f_center_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_f_center_dp_02": {
-      "nextRes": "germ_town_building_5_floors_f_center_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 0.8,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_f_right_dp_01": {
-      "nextRes": "germ_town_building_5_floors_f_right_dp_01_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.2,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
-    "germ_town_building_5_floors_f_right_dp_02": {
-      "nextRes": "germ_town_building_5_floors_f_right_dp_02_debris",
-      "hp": 666.0,
-      "impulseThreshold": 1.0,
-      "destructionImpulse": 20000000.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 1.2,
-      "apexDestructible": true,
-      "dmPreset": "stone_house",
-      "hpFullRegenTime": 480.0,
-      "isParent": true
-    },
     "ventilation_pipe_a": {
       "nextRes": "ventilation_pipe_a_dmg",
       "physRes": "ventilation_pipe_a_destr_phobj",
@@ -17859,22 +17591,6 @@
       "physRes": "horton_sphere_r10_metal_a_stair_destr_phobj",
       "hp": 20.0,
       "impulseThreshold": 5.0
-    },
-    "rheinland_obelisk_a_statue_a": {
-      "nextRes": "rheinland_obelisk_a_statue_a_dmg",
-      "physRes": "rheinland_obelisk_a_statue_a_destr_phobj",
-      "hp": 60.0,
-      "impulseThreshold": 10.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 2.0
-    },
-    "rheinland_obelisk_a_statue_b": {
-      "nextRes": "rheinland_obelisk_a_statue_b_dmg",
-      "physRes": "rheinland_obelisk_a_statue_b_destr_phobj",
-      "hp": 60.0,
-      "impulseThreshold": 10.0,
-      "fx": "ad_buildings_destructions_big",
-      "fxScale": 2.0
     },
     "baroque_fountain_large_a": {
       "nextRes": "baroque_fountain_large_a_dmg",

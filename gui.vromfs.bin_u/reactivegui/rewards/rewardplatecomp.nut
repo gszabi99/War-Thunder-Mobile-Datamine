@@ -96,7 +96,7 @@ let mkReceivedCounter = @(received, total) {
 
 // CURRENCY ///////////////////////////////////////////////////////////////////
 
-let function mkGoldOrWpIcon(size, iconShiftY, imgName) {
+function mkGoldOrWpIcon(size, iconShiftY, imgName) {
   let w = round(size[1] * 1.1).tointeger()
   let h = round(w / 469.0 * 291).tointeger()
   return {
@@ -106,7 +106,7 @@ let function mkGoldOrWpIcon(size, iconShiftY, imgName) {
   }.__update(iconBase)
 }
 
-let function mkOtherCurrencyIcon(size, iconShiftY, imgName, scale, aspectRatio = 1.0) {
+function mkOtherCurrencyIcon(size, iconShiftY, imgName, scale, aspectRatio = 1.0) {
   let w = round(size[1] * scale).tointeger()
   let h = round(w * 1.0 / aspectRatio).tointeger()
   return {
@@ -116,7 +116,7 @@ let function mkOtherCurrencyIcon(size, iconShiftY, imgName, scale, aspectRatio =
   }.__update(iconBase)
 }
 
-let function mkDynamicCurrencyIcon(curId, size, iconShiftY, scale, aspectRatio = 1.0) {
+function mkDynamicCurrencyIcon(curId, size, iconShiftY, scale, aspectRatio = 1.0) {
   let w = round(size[1] * scale).tointeger()
   let h = round(w * 1.0 / aspectRatio).tointeger()
   let cfg = Computed(@() getCurrencyGoodsPresentation(curId, eventSeason.get())?[0])
@@ -137,7 +137,7 @@ let currencyImgCtors = {
   nybond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_goods_christmas_01.avif", 0.8)
 }
 
-let function mkRewardPlateCurrencyImage(r, rStyle) {
+function mkRewardPlateCurrencyImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   return {
@@ -147,7 +147,7 @@ let function mkRewardPlateCurrencyImage(r, rStyle) {
   }
 }
 
-let function mkRewardPlateCurrencyTexts(r, rStyle) {
+function mkRewardPlateCurrencyTexts(r, rStyle) {
   let { labelCurrencyNeedCompact } = rStyle
   let countText = "countRange" in r
       ? "".concat(shortTextFromNum(r.count), "-", shortTextFromNum(r.countRange))
@@ -161,7 +161,7 @@ let function mkRewardPlateCurrencyTexts(r, rStyle) {
 
 // PREMIUM ////////////////////////////////////////////////////////////////////
 
-let function mkRewardPlatePremiumImage(r, rStyle) {
+function mkRewardPlatePremiumImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   let w = round(size[1] * 0.77).tointeger()
@@ -176,7 +176,7 @@ let function mkRewardPlatePremiumImage(r, rStyle) {
   }
 }
 
-let function mkRewardPlatePremiumTexts(r, rStyle) {
+function mkRewardPlatePremiumTexts(r, rStyle) {
   let days = r?.countRange && r.count != r?.countRange
     ? $"{r.count}-{r.countRange}"
     : $"{r.count}"
@@ -223,7 +223,7 @@ let decoratorIconContentCtors = {
   nickFrame = mkDecoratorIconNickFrame
 }
 
-let function mkRewardPlateDecoratorImage(r, rStyle) {
+function mkRewardPlateDecoratorImage(r, rStyle) {
   let { id } = r
   let size = getRewardPlateSize(r.slots, rStyle)
   let decoratorType = Computed(@() (allDecorators.value?[id].dType))
@@ -234,7 +234,7 @@ let function mkRewardPlateDecoratorImage(r, rStyle) {
   })
 }
 
-let function mkRewardPlateDecoratorTexts(r, rStyle) {
+function mkRewardPlateDecoratorTexts(r, rStyle) {
   let { id } = r
   let decoratorType = Computed(@() (allDecorators.value?[id].dType))
   let comp = { watch = decoratorType }
@@ -244,7 +244,7 @@ let function mkRewardPlateDecoratorTexts(r, rStyle) {
 
 // ITEM ///////////////////////////////////////////////////////////////////////
 
-let function mkRewardPlateItemImage(r, rStyle) {
+function mkRewardPlateItemImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = round(size[1] * 0.55).tointeger()
@@ -257,7 +257,7 @@ let function mkRewardPlateItemImage(r, rStyle) {
 
 // LOOTBOX ////////////////////////////////////////////////////////////////////
 
-let function mkRewardPlateLootboxImage(r, rStyle) {
+function mkRewardPlateLootboxImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = round(size[1] * 0.67).tointeger()
@@ -270,7 +270,7 @@ let function mkRewardPlateLootboxImage(r, rStyle) {
 
 // UNIT ///////////////////////////////////////////////////////////////////////
 
-let function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
+function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
   let comp = { watch = unit }
   return @() unit.value == null ? comp : comp.__update({
@@ -284,7 +284,7 @@ let function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
 
 // STAT ///////////////////////////////////////////////////////////////////////
 
-let function mkRewardPlateStatImage(r, rStyle) {
+function mkRewardPlateStatImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   let w = round(size[1] * 0.82).tointeger()
@@ -302,7 +302,7 @@ let function mkRewardPlateStatImage(r, rStyle) {
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
 
-let function mkUnitTextsImpl(r, rStyle, isUpgraded) {
+function mkUnitTextsImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
   let size = getRewardPlateSize(r.slots, rStyle)
   let maxTextWidth = size[0] - 2 * textPadding[1]
@@ -344,7 +344,7 @@ let mkRewardPlateUnitUpgradeTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, true
 
 // UNKNOWN ////////////////////////////////////////////////////////////////////
 
-let function mkRewardPlateUnknownImage(r, rStyle) {
+function mkRewardPlateUnknownImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = round(size[1] * 0.6).tointeger()
@@ -360,7 +360,7 @@ let function mkRewardPlateUnknownImage(r, rStyle) {
 
 // LAYER CONSTRUCTORS /////////////////////////////////////////////////////////
 
-let function mkRewardPlateBg(r, rStyle) {
+function mkRewardPlateBg(r, rStyle) {
   let size = getRewardPlateSize(r.slots, rStyle)
   return {
     size

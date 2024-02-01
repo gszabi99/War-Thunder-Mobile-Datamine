@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { shortKeyValue } = require("%appGlobals/charClientUtils.nut")
 
 let mkRegister = @(list, listName) function(id, action) {
@@ -12,12 +12,12 @@ let mkRegister = @(list, listName) function(id, action) {
   list[id] <- action
 }
 
-let function charClientEventExt(name) {
+function charClientEventExt(name) {
   let event = $"charclient.{name}"
   let handlers = {} //main action callback
   let executors = {} //external callback
 
-  let function call(table, key, result, context, label, msg) {
+  function call(table, key, result, context, label, msg) {
     let callback = table?[key]
     if (callback == null)
       return
@@ -64,13 +64,13 @@ let function charClientEventExt(name) {
   }
 
   let rqEvent = $"charClientEvent.{name}.request"
-  let function request(handler, params = {}, context = null) {
+  function request(handler, params = {}, context = null) {
     assert(handler in handlers, $"{name}.{handler}: Unknown handler '{handler}'")
-    send(rqEvent, { handler, params, context })
+    eventbus_send(rqEvent, { handler, params, context })
   }
 
   log($"Init CharClientEventExt {name}")
-  subscribe(event, process)
+  eventbus_subscribe(event, process)
 
   return {
     request

@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { lbRewardsBlockWidth, lbRewardRowHeight, lbTableHeight, lbHeaderRowHeight, lbTableBorderWidth,
-  rowBgHeaderColor, rowBgOddColor, prizeIcons, rewardStyle, lbRewardsPerRow,
+let { lbRewardsBlockWidth, lbRewardRowHeight, lbTableHeight, lbHeaderRowHeight,
+  prizeIcons, rewardStyle, lbRewardsPerRow,
   lbRewardRowPadding, lbRewardsGap, getRowBgColor
 } = require("lbStyle.nut")
 let { localPlayerColor } = require("%rGui/style/stdColors.nut")
@@ -12,7 +12,7 @@ let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardV
 let { mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-
+let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
 let { boxSize } = rewardStyle
 let prizeTextSlots = 2
 let defTxtColor = 0xFFD8D8D8
@@ -43,7 +43,7 @@ let mkPrizeInfo = @(rType, progress, idx, isReady) {
   ]
 }
 
-let function mkIsReady(rewardInfo) {
+function mkIsReady(rewardInfo) {
   let { rType, progress } = rewardInfo
   return Computed(@() lbMyPlace.value < 0 ? false
     : progress == -1 ? true
@@ -52,7 +52,7 @@ let function mkIsReady(rewardInfo) {
     : false)
 }
 
-let function mkRewardRow(rewardInfo, idx) {
+function mkRewardRow(rewardInfo, idx) {
   let { rType, progress, rewards } = rewardInfo
   let rewardsViewInfo = []
   foreach (id, count in rewards) {
@@ -111,7 +111,7 @@ let function mkRewardRow(rewardInfo, idx) {
   }
 }
 
-let function mkEmptyLastRow(rewards) {
+function mkEmptyLastRow(rewards) {
   let isReady = rewards.len() == 0 ? Watched(false) : mkIsReady(rewards.top())
   return @() {
     watch = isReady
@@ -129,15 +129,13 @@ let rewardsList = @() {
     .append(mkEmptyLastRow(curLbRewards.value))
 }
 
-return {
+return bgMessage.__merge({
   size = [lbRewardsBlockWidth, lbTableHeight]
   key = {}
   flow = FLOW_VERTICAL
   children = [
-    {
+    bgHeader.__merge({
       size = [flex(), lbHeaderRowHeight]
-      rendObj = ROBJ_SOLID
-      color = rowBgHeaderColor
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
@@ -150,15 +148,11 @@ return {
         }.__update(fontTiny)
         infoTooltipButton(@() loc("lb/seasonRewards/desc"), { halign = ALIGN_LEFT })
       ]
-    }
+    })
     {
       size = flex()
-      rendObj = ROBJ_BOX
-      borderColor = rowBgOddColor
-      borderWidth = [0, lbTableBorderWidth, lbTableBorderWidth, lbTableBorderWidth]
-      padding = [0, lbTableBorderWidth, lbTableBorderWidth, lbTableBorderWidth]
       children = rewardsList
     }
   ]
   animations = wndSwitchAnim
-}
+})

@@ -17,7 +17,7 @@ let mkBgImageByPx = @(image, sizePx = flex(), posPx = null, ovr = {}) {
   color = 0xFFFFFFFF
 }.__update(ovr)
 
-let function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
+function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
   let { moveX = 0, children = null } = layerCfg
   if (moveX == 0 || children == null || animTime <= 0)
     return children

@@ -6,7 +6,6 @@ require("topMenuButtonsActions.nut")
 
 foreach (fn in [
   "%scripts/missions/missionsUtils.nut"
-  "%scripts/missions/misListType.nut"
 
   "%scripts/matchingRooms/sessionLobby.nut"
 

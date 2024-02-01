@@ -19,7 +19,7 @@ let LOG_XOR_BLOCK_SIZE = xorMask.len()
 let LOG_START_BLOCKS = 8192
 let LOG_END_BLOCKS = 16384
 
-let function applyXorMask(contentBlob) {
+function applyXorMask(contentBlob) {
   local maskIdx = 0
   for (local i = 0; i < contentBlob.len(); i++) {
     contentBlob[i] = contentBlob[i] ^ xorMask[maskIdx]
@@ -29,7 +29,7 @@ let function applyXorMask(contentBlob) {
 
 let hasLogFile = @() get_log_filename() != ""
 
-let function getLogFileData() {
+function getLogFileData() {
   local content = null
   try {
     let fn = get_log_filename()

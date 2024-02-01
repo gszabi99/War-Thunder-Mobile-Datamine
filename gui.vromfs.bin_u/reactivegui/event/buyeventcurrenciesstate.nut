@@ -9,13 +9,25 @@ let currencyId = mkWatched(persist, "currencyId", null)
 let parentEventId = mkWatched(persist, "parentEventId", null)
 let isBuyCurrencyWndOpen = Computed(@() currencyId.value != null)
 
-let eventCurrenciesGoods = Computed(@() shopGoods.value?.filter(@(v) (v?[currencyId.value] ?? 0) > 0) ?? {})
+let isGoodsFit = @(goods, cId) (goods.currencies?[cId] ?? 0) > 0
+  && goods.currencies.len() == 1
+  && goods.units.len() == 0
+  && goods.unitUpgrades.len() == 0
+  && goods.items.len() == 0
+
+let isGoodsFitOld = @(goods, cId) (goods?[cId] ?? 0) > 0
+
+let eventCurrenciesGoods = Computed(function() {
+  let c = currencyId.get()
+  return shopGoods.get().filter(
+    @(g) "currencies" in g ? isGoodsFit(g, c) : isGoodsFitOld(g, c)) //compatibility with format before 2024.01.23
+})
 
 let bgFallback = "ui/images/event_bg.avif"
 let bgImage = Computed(@() getEventBg(parentEventId.get(), eventSeason.get(), specialEvents.get(), bgFallback))
 let parentEventLoc = Computed(@() getEventLoc(parentEventId.get(), eventSeason.get(), specialEvents.get()))
 
-let function openBuyEventCurrenciesWnd(id, eventId) {
+function openBuyEventCurrenciesWnd(id, eventId) {
   if (isOfflineMenu)
     openFMsgBox({ text = "Not supported in the offline mode" })
   else {

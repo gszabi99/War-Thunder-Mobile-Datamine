@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { getLocalLanguage } = require("language")
 let { utf8ToUpper, validateEmail } = require("%sqstd/string.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -38,12 +38,12 @@ let fieldCategory = hardPersistWatched("fieldCategory", "")
 let fieldSubject = hardPersistWatched("fieldSubject", "")
 let fieldMessage = hardPersistWatched("fieldMessage", "")
 
-let function resetForm() {
+function resetForm() {
   foreach (field in [ fieldEmail, fieldName, fieldCategory, fieldSubject, fieldMessage ])
     field("")
 }
 
-let function getFormValidationError() {
+function getFormValidationError() {
   let err = []
   if (fieldCategory.value == "")
     err.append(loc("support/form/hint/select_a_category"))
@@ -57,7 +57,7 @@ let function getFormValidationError() {
   return "\n".join(err)
 }
 
-let function submitImpl() {
+function submitImpl() {
   let { locale, lang } = langCfg?[getLocalLanguage()] ?? langCfg.English
   submitSupportRequest({
     email = fieldEmail.value
@@ -70,7 +70,7 @@ let function submitImpl() {
   })
 }
 
-let function onSubmit() {
+function onSubmit() {
   let errorText = getFormValidationError()
   if (errorText != "")
     return openMsgBox({ text = errorText })
@@ -161,7 +161,7 @@ let waitBlock = {
   ]
 }
 
-let function mkFinishedMsg(reqStateVal) {
+function mkFinishedMsg(reqStateVal) {
   let emailAddress = reqStateVal.formData.email
   let requestId = reqStateVal.id
   return txtArea({
@@ -231,7 +231,7 @@ requestState.subscribe(function(v) {
 registerScene("supportWnd", supportWnd, onClose, isOpened)
 
 let openSupportTicketWnd = @() isOpened(true)
-let openSupportTicketUrl = @() send("openUrl", { baseUrl = loc("url/feedback/support") })
+let openSupportTicketUrl = @() eventbus_send("openUrl", { baseUrl = loc("url/feedback/support") })
 let openSupportTicketWndOrUrl = @() canUseZendesk.value ? openSupportTicketWnd() : openSupportTicketUrl()
 
 return {

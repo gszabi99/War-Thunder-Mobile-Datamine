@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { HIT_CAMERA_FINISH, HIT_CAMERA_START, HIT_CAMERA_FADE_IN, DM_HIT_RESULT_NONE, DM_HIT_RESULT_HIT, DM_HIT_RESULT_KILL
 } = require("hitCamera")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { setTimeout, clearTimer, resetTimeout } = require("dagor.workcycle")
 let cameraEventUnitType = require("cameraEventUnitType.nut")
@@ -98,7 +98,7 @@ isHcRender.subscribe(@(v) v ? null : unitsInfo.mutate(function(list) {
   }
 }))
 
-let function onEnemyPartDamage(data) {
+function onEnemyPartDamage(data) {
   let { unitId = -1, unitVersion = -1, unitKilled = false, partName = null, partDmName = null
   } = data
   modifyUnitInfo(unitId, unitVersion,
@@ -145,7 +145,7 @@ if (hcResultByState.value != null) {
 }
 
 
-let function getImportantEventInfo(event) {
+function getImportantEventInfo(event) {
   local priority = -1
   local result = null
   let { unitId, unitVersion, partEvent } = event
@@ -172,7 +172,7 @@ let function getImportantEventInfo(event) {
   return { priority, result }
 }
 
-let function updateCurImportantResult() {
+function updateCurImportantResult() {
   if (hcImportantEvents.value.len() == 0) {
     let { time } = curImportantResult.value
     let timeLeft = time + MAX_SHOW_HIT_MSEC - get_time_msec()
@@ -208,7 +208,7 @@ if (curImportantResult.value != null) {
     updateCurImportantResult()
 }
 
-let function updateCurImportantResultOnUnitChange() {
+function updateCurImportantResultOnUnitChange() {
   let id = hcUnitId.value
   let version = hcUnitVersion.value
   if (null != hcImportantEvents.value.findvalue(@(ev) ev.unitId == id && ev.unitVersion == version)) {
@@ -219,7 +219,7 @@ let function updateCurImportantResultOnUnitChange() {
 hcUnitId.subscribe(@(_) updateCurImportantResultOnUnitChange())
 hcUnitVersion.subscribe(@(_) updateCurImportantResultOnUnitChange())
 
-let function onHitCameraImportantEvents(data) {
+function onHitCameraImportantEvents(data) {
   let { unitId, unitVersion, partEvent = null } = data
   if (partEvent == null || !isHcRender.value
       || unitId != hcUnitId.value || unitVersion != hcUnitVersion.value)
@@ -232,11 +232,11 @@ let function onHitCameraImportantEvents(data) {
   }
 }
 
-subscribe("hitCamera", @(ev) state(ev))
-subscribe("EnemyPartDamage", onEnemyPartDamage)
-subscribe("EnemyDamageState", @(ev) ev.unitId != hcUnitId.value ? null
+eventbus_subscribe("hitCamera", @(ev) state(ev))
+eventbus_subscribe("EnemyPartDamage", onEnemyPartDamage)
+eventbus_subscribe("EnemyDamageState", @(ev) ev.unitId != hcUnitId.value ? null
   : hcDamageStatus(ev.updateDebuffsOnly ? hcDamageStatus.value.__merge(ev) : ev))
-subscribe("HitCameraImportanEvents", onHitCameraImportantEvents)
+eventbus_subscribe("HitCameraImportanEvents", onHitCameraImportantEvents)
 
 
 let partsBrokenInfo = @(unitInfo) unitInfo.parts.map(@(dmList)

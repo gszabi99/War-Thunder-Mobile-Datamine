@@ -34,7 +34,7 @@ let mkTextArea = @(text) {
   maxWidth = hdpx(600)
 }.__update(fontTinyShaded)
 
-let function mkAppearAnim(children, idx, startTime, delayPerItem, offset) {
+function mkAppearAnim(children, idx, startTime, delayPerItem, offset) {
   let appearDelay = startTime + idx * delayPerItem
   let blinkDelay = appearDelay + streakBlinkDelayTime
   return {
@@ -52,7 +52,7 @@ let function mkAppearAnim(children, idx, startTime, delayPerItem, offset) {
 }
 
 
-let function mkInfoButton(val) {
+function mkInfoButton(val) {
   let { id, wp = 0, completed = 1 } = val
   let stateFlags = Watched(0)
   let key = {}

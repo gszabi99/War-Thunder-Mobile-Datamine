@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { ndbTryRead } = require("nestdb")
 let { resetTimeout } = require("dagor.workcycle")
 let charClientEventExt = require("%rGui/charClientEventExt.nut")
@@ -11,10 +11,10 @@ let { request, registerHandler, registerExecutor } = charClientEventExt("userSta
 
 let STATS_ACTUAL_TIMEOUT = 900
 
-let function mkUserstatWatch(id, defValue = {}) {
+function mkUserstatWatch(id, defValue = {}) {
   let key = $"userstat.{id}"
   let data = Watched(ndbTryRead(key) ?? defValue) //no need to write to ndb, it will be saved by daguiVm
-  subscribe($"userstat.update.{id}", @(_) data(ndbTryRead(key) ?? defValue))
+  eventbus_subscribe($"userstat.update.{id}", @(_) data(ndbTryRead(key) ?? defValue))
   return data
 }
 
@@ -40,9 +40,9 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
   || userstatStats.value.len() == 0)
 
-let function actualizeStats() {
+function actualizeStats() {
   if (!isStatsActual.value)
-    send($"userstat.stats.refresh", {})
+    eventbus_send($"userstat.stats.refresh", {})
 }
 
 return {
@@ -52,9 +52,9 @@ return {
   userstatStats
   isStatsActual
   actualizeStats
-  forceRefreshDescList = @() send($"userstat.descList.forceRefresh", {})
-  forceRefreshUnlocks = @() send($"userstat.unlocks.forceRefresh", {})
-  forceRefreshStats = @() send($"userstat.stats.forceRefresh", {})
+  forceRefreshDescList = @() eventbus_send($"userstat.descList.forceRefresh", {})
+  forceRefreshUnlocks = @() eventbus_send($"userstat.unlocks.forceRefresh", {})
+  forceRefreshStats = @() eventbus_send($"userstat.stats.forceRefresh", {})
 
   userstatRequest = request
   userstatRegisterHandler = registerHandler //main handler for actions

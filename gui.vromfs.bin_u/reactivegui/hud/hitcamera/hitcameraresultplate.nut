@@ -49,7 +49,7 @@ let mkHitResultTextAnimProps = @(finalScale) {
   ]
 }
 
-let function mkhitCameraResultPlate(styleId, textVal) {
+function mkhitCameraResultPlate(styleId, textVal) {
   let res = {}
   let style = hitResultStyle?[styleId]
   if (style == null)

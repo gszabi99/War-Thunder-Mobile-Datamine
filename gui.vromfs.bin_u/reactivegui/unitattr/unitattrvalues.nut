@@ -20,7 +20,7 @@ let tankAttrToTankCrewParamsMap = {
   field_repair = [ "driver", "fieldRepairSpeedMultiplier" ]
 }
 
-let function modsMul(attrId, mods) {
+function modsMul(attrId, mods) {
   if (attrId == "attrib_ship_max_speed" && !mods?.maintanance_new_engines)
     return get_modifications_blk()?.modifications.maintanance_new_engines.effects.mulMaxSpeed ?? 1.0
   return 1.0
@@ -28,14 +28,14 @@ let function modsMul(attrId, mods) {
 
 let isPoint2 = @(p) type(p) == "instance" && p instanceof Point2
 
-let function getAttrMaxMulsCfgShip() {
+function getAttrMaxMulsCfgShip() {
   let attributesBlk = blkOptFromPath("config/attributes.blk")
   return isDataBlock(attributesBlk?.ship_attributes)
     ? blk2SquirrelObjNoArrays(attributesBlk.ship_attributes)
     : {}
 }
 
-let function getAttrRangesCfgTank() {
+function getAttrRangesCfgTank() {
   let crewSkillsBlk = blkOptFromPath("config/crew_skills.blk")
   let tankCrewBlk = crewSkillsBlk?.crew_parameters.tank_crew
   let rangeDefault = Point2(0.0, 0.0)
@@ -54,7 +54,7 @@ let function getAttrRangesCfgTank() {
 let attrMaxMulsShip = getAttrMaxMulsCfgShip()
 let attrRangesTank = getAttrRangesCfgTank()
 
-let function getTopWeaponByTypes(shopCfgWeapons, wTypes) {
+function getTopWeaponByTypes(shopCfgWeapons, wTypes) {
   let weapons = (shopCfgWeapons ?? {})
     .filter(@(v) wTypes.contains(v?.wtype))
     .values()
@@ -62,12 +62,12 @@ let function getTopWeaponByTypes(shopCfgWeapons, wTypes) {
   return weapons?[0]
 }
 
-let function mulStat(stats, k, mul) {
+function mulStat(stats, k, mul) {
   if (k in stats)
     stats[k] = stats[k] * mul
 }
 
-let function mulWeap(stats, k, mul, wTypes) {
+function mulWeap(stats, k, mul, wTypes) {
   foreach (weapon in (stats?.weapons ?? {}))
     if (wTypes.contains(weapon?.wtype) && (k in weapon))
       weapon[k] = weapon[k] * mul
@@ -86,7 +86,7 @@ let attrValCfgDefault = {
   relatedWeapTypes = []
 }
 
-let function mkValCfg(cfg) {
+function mkValCfg(cfg) {
   local res = cfg
   let { relatedStat = null, relatedWeapStat = null, relatedWeapTypes = [] } = res
   if (relatedStat)
@@ -192,7 +192,7 @@ let shipAttrs = {
   }
 }.map(@(c) mkValCfg(c))
 
-let function mkAttrFrom100prcUp(attrId, roundBy = 0.1) {
+function mkAttrFrom100prcUp(attrId, roundBy = 0.1) {
   let { begin, end } = attrRangesTank[attrId]
   let rMin = begin < end ? begin : end
   let rMax = begin < end ? end : begin
@@ -204,7 +204,7 @@ let function mkAttrFrom100prcUp(attrId, roundBy = 0.1) {
   }
 }
 
-let function mkAttrUpTo100prc(attrId, roundBy = 0.1) {
+function mkAttrUpTo100prc(attrId, roundBy = 0.1) {
   let { begin, end } = attrRangesTank[attrId]
   let rMin = begin < end ? begin : end
   let rMax = begin < end ? end : begin
@@ -217,7 +217,7 @@ let function mkAttrUpTo100prc(attrId, roundBy = 0.1) {
   }
 }
 
-let function mkAttrFromPlus0prcUp(attrId, roundBy = 0.1) {
+function mkAttrFromPlus0prcUp(attrId, roundBy = 0.1) {
   let { begin, end } = attrRangesTank[attrId]
   let rMin = begin < end ? begin : end
   let rMax = begin < end ? end : begin
@@ -275,7 +275,7 @@ let getAttrMul = @(cfg, attrId, step, stepsTotal) stepsTotal != 0
   ? ((cfg.getMulMax(attrId) - cfg.getMulMin(attrId)) / stepsTotal * step) + cfg.getMulMin(attrId)
   : 1.0
 
-let function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
+function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
   let attrId = attr.id
   let stepsTotal = attr.levelCost.len() // Total level progress steps
   let cfg = attrValCfg?[unitType][attrId] ?? attrValCfgDefault
@@ -290,7 +290,7 @@ let function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
   return textVal == "" ? [] : [{ ctor = ROBJ_TEXT, value = textVal }]
 }
 
-let function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
+function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
   let stats = shopCfg != null ? deep_clone(shopCfg) : null
   if (attrLevels == null || stats == null)
     return stats

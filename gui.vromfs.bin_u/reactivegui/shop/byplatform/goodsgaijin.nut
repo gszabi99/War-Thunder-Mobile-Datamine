@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
@@ -28,7 +28,7 @@ let addGoodsInfoTbl = @(tbl) addGoodsInfoGuids(tbl.keys())
 addGoodsInfoTbl(goodsIdByGuid.value)
 goodsIdByGuid.subscribe(addGoodsInfoTbl)
 
-let function addOfferGuid(offer) {
+function addOfferGuid(offer) {
   let offerGuid = getGaijinGuid(offer)
   if (offerGuid != "")
     addGoodsInfoGuid(offerGuid)
@@ -36,7 +36,7 @@ let function addOfferGuid(offer) {
 addOfferGuid(activeOffers.value)
 activeOffers.subscribe(addOfferGuid)
 
-let function buildPurchaseUrl(info) {
+function buildPurchaseUrl(info) {
   let { url = "" } = info
   let parts = url.split("?")
   let path = parts[0]
@@ -46,7 +46,7 @@ let function buildPurchaseUrl(info) {
   return "?".join([ path, query ], true)
 }
 
-let function mkGoods(baseGoods, info) {
+function mkGoods(baseGoods, info) {
   if (baseGoods == null || info == null)
     return null
   let { shop_price = 0, shop_price_curr = "" } = info
@@ -79,12 +79,12 @@ let platformGoods = Computed(function() {
 let platformOffer = Computed(@()
   mkGoods(activeOffers.value, goodsInfo.value?[getGaijinGuid(activeOffers.value)]))
 
-let function buyPlatformGoods(goodsOrId) {
+function buyPlatformGoods(goodsOrId) {
   local baseUrl = goodsOrId?.purchaseUrl ?? platformGoods.value?[goodsOrId].purchaseUrl
   if (baseUrl == null)
     return
   baseUrl = " ".concat("auto_local", "auto_login", baseUrl)
-  send("openUrl", { baseUrl, onCloseUrl = successPaymentUrl })
+  eventbus_send("openUrl", { baseUrl, onCloseUrl = successPaymentUrl })
   severalCheckPurchasesOnActivate()
 }
 

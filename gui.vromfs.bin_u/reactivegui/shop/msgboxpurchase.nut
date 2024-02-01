@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { balance, WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { balance, WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { openMsgBox, msgBoxText, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
@@ -12,6 +12,7 @@ let NO_BALANCE_UID = "no_balance_msg"
 let openBuyWnd = {
   [WP] = @(bqPurchaseInfo) openShopWndByCurrencyId(WP, bqPurchaseInfo),
   [GOLD] = @(bqPurchaseInfo) openShopWndByCurrencyId(GOLD, bqPurchaseInfo),
+  [PLATINUM] = @(bqPurchaseInfo) openShopWndByCurrencyId(PLATINUM, bqPurchaseInfo),
 }
 
 let mkText = @(text) {
@@ -20,7 +21,7 @@ let mkText = @(text) {
   text
 }.__update(fontSmall)
 
-let function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
+function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
   let notEnough = Computed(@() price - (balance.value?[currencyId] ?? 0))
   notEnough.subscribe(@(v) v <= 0 ? closeMsgBox(NO_BALANCE_UID) : null)
   let replaceTable = {
@@ -61,7 +62,7 @@ let function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
   })
 }
 
-let function showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, onGoToShop = null) {
+function showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, onGoToShop = null) {
   let hasBalance = (balance.value?[currencyId] ?? 0) >= price
   if (hasBalance)
     return false
@@ -85,7 +86,7 @@ let msgContent = @(text, priceComp) {
   ]
 }
 
-let function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo) {
+function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo) {
   let priceComp = []
   let priceList = type(prices) == "array" ? prices : [prices]
 

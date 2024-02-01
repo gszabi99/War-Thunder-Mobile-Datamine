@@ -28,6 +28,7 @@ let icons = {
   // Currencies
   wp   = "ui/gameuiskin#currency_lions.svg"
   gold = "ui/gameuiskin#currency_eagles.svg"
+  platinum = "ui/gameuiskin#currency_wolves.svg"
   unitExp = "ui/gameuiskin#experience_icon.svg"
   playerExp = "ui/gameuiskin#experience_icon.svg"
   warbond = "ui/gameuiskin#warbond_icon.avif"
@@ -59,7 +60,7 @@ let getCurrencyImage = @(id) icons?[id] ?? icons.placeholder
 let getCurrencyPicture = @(id, iconSize) Picture($"{getCurrencyImage(id)}:{iconSize}:{iconSize}:P")
 let getDynamicPicture = @(id, iconSize, season) Picture($"{dynamicIcons?[id](season)}:{iconSize}:{iconSize}:P")
 
-let function mkCurrencyImage (id, size, ovr = {}){
+function mkCurrencyImage (id, size, ovr = {}){
   let iconSize = getSizeIcon(id, size)
   return @() {
     watch = eventSeason
@@ -112,7 +113,7 @@ let mkPriceExtText = @(price, currencyId, style = CS_COMMON) {
   fontFx = style.fontFx
 }.__update(style.fontStyle)
 
-let function strikeThrough(content, style = CS_COMMON) {
+function strikeThrough(content, style = CS_COMMON) {
   return {
     children = [
       content
@@ -134,7 +135,7 @@ let function strikeThrough(content, style = CS_COMMON) {
   }
 }
 
-let function mkDiscountPriceComp(fullValue, value, currencyId, style = CS_COMMON) {
+function mkDiscountPriceComp(fullValue, value, currencyId, style = CS_COMMON) {
   let price = value > 0
     ? mkCurrencyComp(value, currencyId, style)
     : mkFreeText(style)
@@ -152,7 +153,7 @@ let function mkDiscountPriceComp(fullValue, value, currencyId, style = CS_COMMON
   }
 }
 
-let function mkDiscountPriceExtComp(basePrice, discountedPrice, currencyId, style = CS_COMMON) {
+function mkDiscountPriceExtComp(basePrice, discountedPrice, currencyId, style = CS_COMMON) {
   let price = discountedPrice > 0
     ? mkPriceExtText(discountedPrice, currencyId, style)
     : mkFreeText(style)
@@ -170,7 +171,7 @@ let function mkDiscountPriceExtComp(basePrice, discountedPrice, currencyId, styl
   }
 }
 
-let function mkExp(value, color, style = CS_GAMERCARD) {
+function mkExp(value, color, style = CS_GAMERCARD) {
   return {
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
@@ -185,7 +186,7 @@ let function mkExp(value, color, style = CS_GAMERCARD) {
       }
       {
         rendObj = ROBJ_TEXT
-        text = decimalFormat(value)
+        text = type(value) == "integer" ? decimalFormat(value) : value
         color
         fontFxColor = style.fontFxColor
         fontFxFactor = style.fontFxFactor

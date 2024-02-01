@@ -15,7 +15,7 @@ let close = @() removeModalWindow(wndUid)
 let gap = hdpx(10)
 let wndWidth = hdpx(1300)
 
-let function byRows(list) {
+function byRows(list) {
   if (list.len() == 0)
     return null
   let rows = arrayByRows(list, 2)
@@ -52,13 +52,13 @@ let invalidReplaysList = @(replays) {
   text = ", ".join(replays.map(@(r) r.name))
 }.__update(fontTiny)
 
-let function getReplayDescription(r) {
+function getReplayDescription(r) {
   let { year, month, day, hour, sec } = r.dateTime
   let minute = r.dateTime.min
   return format("%d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, sec)
 }
 
-let function replaysList() {
+function replaysList() {
   let replays = get_replays_list()
   let children = []
 

@@ -143,7 +143,7 @@ pPlayerTypes.each(@(pType, id) commandsList.append({
   func = @() set_purch_player_type(pType, "sceenlogResult")
 }))
 
-let function mkCommandsList() {
+function mkCommandsList() {
   let list = commandsList.map(@(c) mkBtn(c.label, c.func))
   let rows = arrayByRows(list, 2)
   if (rows.top().len() < 2)

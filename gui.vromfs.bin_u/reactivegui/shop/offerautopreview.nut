@@ -39,7 +39,7 @@ isMainMenuAttached.subscribe(function(v) {
     enteredMenuTime.mutate(@(list) list[campaign] <- endTime)
 })
 
-let function openOfferPreview() {
+function openOfferPreview() {
   if (!needShow.value)
     return
   openGoodsPreview(visibleOffer.value?.id)

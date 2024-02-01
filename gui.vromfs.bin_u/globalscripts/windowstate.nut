@@ -1,6 +1,6 @@
 let { Computed } = require("frp")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let logW = require("logs.nut").log_with_prefix("[WINDOW] ")
 let { is_mobile } = require("%appGlobals/clientState/platform.nut")
 
@@ -26,11 +26,11 @@ let function unblockWindow(flag) {
 }
 
 if (is_mobile)
-  subscribe("mobile.onAppFocus",
+  eventbus_subscribe("mobile.onAppFocus",
     @(params) params.focus ? unblockWindow("mobileAppFocus") : blockWindow("mobileAppFocus"))
 
-subscribe("onWindowActivated", @(_) unblockWindow("EventWindowActivated"))
-subscribe("onWindowDeactivated", @(_) blockWindow("EventWindowActivated"))
+eventbus_subscribe("onWindowActivated", @(_) unblockWindow("EventWindowActivated"))
+eventbus_subscribe("onWindowDeactivated", @(_) blockWindow("EventWindowActivated"))
 
 return {
   windowActive

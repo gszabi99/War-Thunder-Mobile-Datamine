@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -30,13 +30,13 @@ let starIconGap = hdpx(60)
 
 let isOpened = mkWatched(persist, "isOpened", false)
 
-let function close() {
+function close() {
   isOpened(false)
   isRateGameSeen(true)
 }
 
 let questionAnswered = Watched(questions.len())
-let function updateAnswersCount() {
+function updateAnswersCount() {
   if (isOnlineSettingsAvailable.value)
     questionAnswered(get_local_custom_settings_blk()?[SAVE_ID_FEEDBACK_ANSWERS_COUNT] ?? 0)
 }
@@ -50,7 +50,7 @@ let isCurQuestionRating = Computed(@() type(questions?[questionAnswered.value].v
 haveQuestionsLeft.subscribe(@(v) isOldFeedbackCompleted(!v))
 
 let hasAnswerForCurQuestion = Watched(false)
-let function updateHasAnswer() {
+function updateHasAnswer() {
   let q = questions?[questionAnswered.value]
   hasAnswerForCurQuestion(q != null && q.val.value != q.defVal)
 }
@@ -74,7 +74,7 @@ let btnClose = {
   onClick = close
 }
 
-let function onBtnApply() {
+function onBtnApply() {
   let q = questions?[questionAnswered.value]
   if (q != null && q.val.value != q.defVal)
     sendCustomBqEvent(feedbackTube, {
@@ -85,7 +85,7 @@ let function onBtnApply() {
 
   questionAnswered(questionAnswered.value + 1)
   get_local_custom_settings_blk()[SAVE_ID_FEEDBACK_ANSWERS_COUNT] = questionAnswered.value
-  send("saveProfile", {})
+  eventbus_send("saveProfile", {})
 
   if (!haveQuestionsLeft.value)
     close()
@@ -131,7 +131,7 @@ let mkTextInputField = @(valueWatch) @() {
   })
 }
 
-let function mkQuestionComp(question) {
+function mkQuestionComp(question) {
   if (question == null)
     return null
   let { title, val } = question

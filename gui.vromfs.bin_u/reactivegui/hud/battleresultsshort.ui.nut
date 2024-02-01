@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let eventbus = require("eventbus")
+
+let { eventbus_subscribe } = require("eventbus")
 let { get_local_mplayer } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { playSound } = require("sound_wt")
@@ -182,7 +183,7 @@ let achievementsBlock = @() {
     : null
 }
 
-let function battleResultsShort() {
+function battleResultsShort() {
   let res = { watch = needShowResultScreen }
   let children = !isPlaceVisible.value ? []
                  : [ mkUserScores(mkPlaceIcon(myPlace.value), loc("debriefing/placeInMyTeam")) ]
@@ -218,13 +219,12 @@ let function battleResultsShort() {
   return res
 }
 
-eventbus.subscribe("MissionResult", function(data) {
+eventbus_subscribe("MissionResult", function(data) {
   let { resultNum } = data
   if (resultNum != GO_WIN && resultNum != GO_FAIL)
     return
   let soundName = resultNum == GO_WIN ? "message_win" : "message_loose"
   playSound(soundName)
-  eventbus.send("MpStatistics_GetTeamsList", {})
   missionResult(resultNum)
 })
 

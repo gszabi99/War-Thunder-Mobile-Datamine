@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import disable_network, exit_game, sign_out
 from "%scripts/dagui_library.nut" import *
 let { subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_multiplayer } = require("%scripts/util.nut")
@@ -5,7 +6,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { destroy_session } = require("multiplayer")
 let { isOnlineSettingsAvailable, loginState, LOGIN_STATE, isLoggedIn, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
-let { subscribe, send } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { openUrl } = require("%scripts/url.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
@@ -23,20 +24,20 @@ let DELETE_ACCOUNT_URL = "auto_local auto_login https://store.gaijin.net/login.p
 
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
-let canLogout = @() !::disable_network()
+let canLogout = @() !disable_network()
 
-let function startLogout() {
+function startLogout() {
   logoutFB()
   if (loginState.value == LOGIN_STATE.NOT_LOGGED_IN)
     return
   forceSendBqQueue()
   if (!canLogout())
-    return ::exit_game()
+    return exit_game()
 
   if (is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
     if (isInFlight()) {
       needLogoutAfterSession(true)
-      send("quitMission", null)
+      eventbus_send("quitMission", null)
       return
     }
     else
@@ -53,31 +54,31 @@ let function startLogout() {
     loginState(LOGIN_STATE.NOT_LOGGED_IN)
     curLoginType("")
     authTags([])
-    ::sign_out()
+    sign_out()
   }
   else
-    send("login.interrupt", {})
-  ::gui_start_startscreen()
+    eventbus_send("login.interrupt", {})
+  eventbus_send("gui_start_startscreen")
 }
 
-subscribe("logOutManually", function(_) {
+eventbus_subscribe("logOutManually", function(_) {
   resetLoginPass()
-  send("authState.reset", {})
+  eventbus_send("authState.reset", {})
   setAutologinEnabled(false)
   startLogout()
 })
-subscribe("logOut", @(_) startLogout())
-subscribe("relogin", function(_) {
+eventbus_subscribe("logOut", @(_) startLogout())
+eventbus_subscribe("relogin", function(_) {
   isAutologinUsed(false)
   startLogout()
 })
 
-subscribe("changeName", function(_) {
+eventbus_subscribe("changeName", function(_) {
   openUrl(loc("url/changeName"))
   callbackWhenAppWillActive("logOut")
 })
 
-subscribe("deleteAccount", function(_) {
+eventbus_subscribe("deleteAccount", function(_) {
   openUrl(DELETE_ACCOUNT_URL)
   callbackWhenAppWillActive("logOut")
 })

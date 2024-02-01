@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { shopGoods } = require("shopState.nut")
@@ -93,7 +93,7 @@ let itemBuyingHeader = @(unit, itemId){
   text = loc($"header/notEnough/{itemId}", {unitName = getPlatoonOrUnitName(unit, loc)?? ""})
   }.__update(fontMedium)
 
-let function getCheapestGoods(allGoods, isFit) {
+function getCheapestGoods(allGoods, isFit) {
   let byCurrency = {}
   foreach(goods in allGoods) {
     if (!isFit(goods))
@@ -149,7 +149,7 @@ let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
   return res
 })
 
-let function mkItemsRewards(goods) {
+function mkItemsRewards(goods) {
   if (goods.items.len() == 0)
     return null
   let list = []
@@ -166,16 +166,16 @@ let function mkItemsRewards(goods) {
   }
 }
 
-let function saveTimeShowingWnd(itemId){
+function saveTimeShowingWnd(itemId){
   if (itemId in itemShowCd && isOnlineSettingsAvailable.value){
     let sBlk = get_local_custom_settings_blk()
     let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
     blk[itemId] = serverTime.value
-    send("saveProfile", {})
+    eventbus_send("saveProfile", {})
   }
 }
 
-let function mkPurchaseBtn(goods, itemId, toBattle) {
+function mkPurchaseBtn(goods, itemId, toBattle) {
   let { currencyId, price } = goods.price
   let userBalance = currencyId == "wp" ? balanceWp : balanceGold
   let textColor = CS_GAMERCARD.__merge({
@@ -354,9 +354,9 @@ let isPurchNoNeedResultWindow = @(purch) purch?.source == "purchaseInternal"
 let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
 
 
-let function itemsPurchaseMessage(missItems, toBattle, unit) {
+function itemsPurchaseMessage(missItems, toBattle, unit) {
   let itemToShow = Computed(@() missItems.value?[0])
-  let function content(){
+  function content(){
     local needSwitchAnim = false
     return {
       watch = [itemToShow, missItems]
@@ -408,11 +408,11 @@ debriefingData.subscribe(function(_data) {
       }
     }
     if (hasChanges)
-      send("saveProfile", {})
+      eventbus_send("saveProfile", {})
   }
 })
 
-let function offerMissingUnitItemsMessage(unit, toBattle) {
+function offerMissingUnitItemsMessage(unit, toBattle) {
   if (unit == null) {
     toBattle()
     return

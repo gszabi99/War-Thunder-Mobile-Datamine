@@ -33,7 +33,7 @@ let buySelectedAvatar = @()
   purchaseDecorator(selectedAvatar.value, loc("decorator/avatar"),
     mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedAvatar.value))
 
-let function applySelectedAvatar() {
+function applySelectedAvatar() {
   if (selectedAvatar.value == null) {
     unset_current_decorator("avatar")
     return
@@ -55,7 +55,7 @@ let header = {
   text = loc("decorator/avatar/header")
 }.__update(fontMedium)
 
-let function avatarBtn(item) {
+function avatarBtn(item) {
   let name = item[0]
   let price = item?[1].price ?? {
     price = 0
@@ -133,7 +133,7 @@ let function avatarBtn(item) {
   }
 }
 
-let function footer() {
+function footer() {
   let { price = null } = allAvatars.value?[selectedAvatar.value]
   let canBuy = (price?.price ?? 0) > 0
   let canEquip = selectedAvatar.value in availAvatars.value || selectedAvatar.value == null

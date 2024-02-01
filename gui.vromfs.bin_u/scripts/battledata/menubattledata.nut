@@ -61,7 +61,7 @@ isInMpSession.subscribe(function(v) {
 })
 curUnitName.subscribe(@(v) v ? battleUnitName(v) : null)
 
-let function actualizeBattleData(unitName, executeAfterExt = null) {
+function actualizeBattleData(unitName, executeAfterExt = null) {
   if (unitName == null) {
     callHandler(executeAfterExt, { error = "No current unit" })
     return
@@ -95,12 +95,12 @@ registerHandler("onGetMenuBattleData", function(res, context) {
     needRefresh(false)
 })
 
-let function actualizeIfNeed() {
+function actualizeIfNeed() {
   if (needActualize.value)
     actualizeBattleData(battleUnitName.value)
 }
 
-let function delayedActualize() {
+function delayedActualize() {
   if (needActualize.value)
     resetTimeout(max(1.0, 0.001 * (lastActTime.value - get_time_msec()) + SILENT_ACTUALIZE_DELAY), actualizeIfNeed)
 }

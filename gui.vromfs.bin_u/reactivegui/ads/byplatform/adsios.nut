@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let ads = require("ios.ads")
 let { json_to_string, parse_json } = require("json")
@@ -30,24 +30,24 @@ let { setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriori
       setPriorityForProvider = @(_, __) null
       function addProviderInitWithPriority(provider, _, __) {
         debugAdsInited[provider] <- true
-        setTimeout(0.1, @() send("ios.ads.onInit", { status = ADS_STATUS_OK, provider }))
+        setTimeout(0.1, @() eventbus_send("ios.ads.onInit", { status = ADS_STATUS_OK, provider }))
       }
       isAdsLoaded = @() isDebugAdsLoaded
       function loadAds() {
         isDebugAdsLoaded = false
         setTimeout(2.0, function() {
           isDebugAdsLoaded = false
-          send("ios.ads.onLoad",  //simulate fail ads
+          eventbus_send("ios.ads.onLoad",  //simulate fail ads
             { status = ADS_STATUS_DISMISS, provider = "pc_debug_fail" })
           setTimeout(3.0, function() {
             isDebugAdsLoaded = debugAdsInited.findvalue(@(v) v) ?? false
-            send("ios.ads.onLoad",
+            eventbus_send("ios.ads.onLoad",
               { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED, provider = DBG_PROVIDER })
           }, {})
         }, {})
       }
       function showAds() {
-        send("ios.ads.onShow", { status = ADS_STATUS_SHOWN, provider = DBG_PROVIDER })
+        eventbus_send("ios.ads.onShow", { status = ADS_STATUS_SHOWN, provider = DBG_PROVIDER })
         debugAdsWndParams({
           rewardEvent = "ios.ads.onReward"
           rewardData = { amount = 1, type = "debug", provider = DBG_PROVIDER }
@@ -95,7 +95,7 @@ foreach(id, val in ads)
     statusNames[val] <- id
 let getStatusName = @(v) statusNames?[v] ?? v
 
-subscribe("ios.ads.onInit", function(msg) {
+eventbus_subscribe("ios.ads.onInit", function(msg) {
   let { status, provider } = msg
   if (status != ADS_STATUS_OK)
     return
@@ -104,7 +104,7 @@ subscribe("ios.ads.onInit", function(msg) {
 })
 
 local isLoadStarted = false
-let function startLoading() {
+function startLoading() {
   logA($"Start loading")
   isLoadStarted = true
   loadAds()
@@ -118,7 +118,7 @@ needAdsLoadExt.subscribe(function(v) {
 })
 
 local isRetryQueued = false
-let function retryLoad() {
+function retryLoad() {
   isRetryQueued = false
   if (!needAdsLoadExt.value || isLoadStarted)
     return
@@ -128,7 +128,7 @@ let function retryLoad() {
   sendAdsBqEvent("load_retry", "", false)
 }
 
-subscribe("ios.ads.onLoad",function (params) {
+eventbus_subscribe("ios.ads.onLoad",function (params) {
   let { status, provider = "unknown" } = params
   logA($"onLoad {getStatusName(status)} ({provider})")
   isLoadStarted = false
@@ -149,7 +149,7 @@ subscribe("ios.ads.onLoad",function (params) {
   sendAdsBqEvent("load_failed", provider, false)
 })
 
-subscribe("ios.ads.onShow",function (params) { //we got this event on start ads show, and on finish
+eventbus_subscribe("ios.ads.onShow",function (params) { //we got this event on start ads show, and on finish
   let { status, provider = "unknown" } = params
   logA($"onShow {getStatusName(status)}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   if (status == ADS_STATUS_SHOWN) {
@@ -164,7 +164,7 @@ subscribe("ios.ads.onShow",function (params) { //we got this event on start ads 
   }
 })
 
-subscribe("ios.ads.onReward", function (params) {
+eventbus_subscribe("ios.ads.onReward", function (params) {
   let { provider = "unknown" } = params
   logA($"onReward {params.amount} {params.type}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   giveReward()
@@ -172,7 +172,7 @@ subscribe("ios.ads.onReward", function (params) {
 })
 
 
-let function showAdsForReward(rInfo) {
+function showAdsForReward(rInfo) {
   if (!isLoaded.value)
     return
   rewardInfo(rInfo)

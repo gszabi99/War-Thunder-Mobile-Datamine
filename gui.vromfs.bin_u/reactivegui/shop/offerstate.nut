@@ -20,7 +20,7 @@ let nextOfferRequestInfo = keepref(Computed(@() {
 }))
 
 let markOfferOutdated = @() isOfferOutdated(true)
-let function updateOutdatedTimer(offer) {
+function updateOutdatedTimer(offer) {
   let leftTime = (offer?.endTime ?? 0) - serverTime.value
   isOfferOutdated(leftTime <= 0)
   if (leftTime <= 0)
@@ -38,7 +38,7 @@ let activeOffer = Computed(@() activeOffers.value == null ? null
 let visibleOffer = Computed(@() isOfferOutdated.value ? null : activeOffer.value)
 
 let checkNewOffer = @() check_new_offer(curCampaign.value)
-let function updateRequestTimer(info) {
+function updateRequestTimer(info) {
   let { time, needRequestNow } = info
   let timeLeft = needRequestNow ? 0.01 : time - serverTime.value + 1
   if (timeLeft > 0)

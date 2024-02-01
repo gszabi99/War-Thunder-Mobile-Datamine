@@ -4,7 +4,7 @@ let { unlockedPlatoonUnits } = require("%appGlobals/unitsState.nut")
 let justUnlockedPlatoonUnits = Watched([])
 let prevUnlockedPlatoonUnits = Watched(unlockedPlatoonUnits.value)
 
-let function deleteJustUnlockedPlatoonUnit(name) {
+function deleteJustUnlockedPlatoonUnit(name) {
   let idx = justUnlockedPlatoonUnits.value.indexof(name)
   if (idx != null)
     justUnlockedPlatoonUnits.mutate(@(value) value.remove(idx))

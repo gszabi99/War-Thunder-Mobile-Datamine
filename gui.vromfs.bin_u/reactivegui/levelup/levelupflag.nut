@@ -37,7 +37,7 @@ let wingAnims = @(dir) @(delay, _) [
     easing = OutQuad, play = true }
 ]
 
-let function flagAnims(dir, baseDelay) {
+function flagAnims(dir, baseDelay) {
   let mkPos = @(v) [v * dir * 0.33, v]
   return function(addDelay, height) {
     let delay = baseDelay + addDelay
@@ -111,7 +111,7 @@ let mkElem = @(elem, height, delay) type(elem?.animations) == "function"
   : elem
 
 
-let function mkLevelAnimations(baseDelay) {
+function mkLevelAnimations(baseDelay) {
   let delay = baseDelay + textStartTime
   return [
     { prop = AnimProp.opacity, from = 0, to = 0, duration = delay, play = true,  sound = { start = "player_level_up" } }

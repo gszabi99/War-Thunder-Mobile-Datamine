@@ -46,7 +46,7 @@ let buySelectedDecorator = @()
   purchaseDecorator(selectedDecorator.value, frameNick("", selectedDecorator.value),
     mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedDecorator.value))
 
-let function applySelectedDecorator() {
+function applySelectedDecorator() {
   if (selectedDecorator.value == "") {
     unset_current_decorator("nickFrame")
     return
@@ -80,7 +80,7 @@ let header = {
   ]
 }
 
-let function tagBtn(item) {
+function tagBtn(item) {
   let name = item[0]
   let price = item[1].price
   let stateFlags = Watched(0)
@@ -158,7 +158,7 @@ let function tagBtn(item) {
   }
 }
 
-let function footer() {
+function footer() {
   let { price = null } = allFrames.value?[selectedDecorator.value]
   let canBuy = (price?.price ?? 0) > 0
   let canEquip = selectedDecorator.value in availNickFrames.value || selectedDecorator.value == ""

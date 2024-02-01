@@ -26,7 +26,7 @@ let closeExperienceWnd = @() isExperienceWndOpen(false)
 
 let availableUnitsList = Computed(@() Rand.shuffle(buyUnitsData.value.canBuyOnLvlUp.values()))
 
-let function mkUnitPlate(unit, onClick) {
+function mkUnitPlate(unit, onClick) {
   if (unit == null)
     return null
   let stateFlags = Watched(0)
@@ -124,7 +124,7 @@ let necessaryPoints = @(needExp){
   ]
 }
 
-let function experienceWnd(){
+function experienceWnd(){
   let { exp, nextLevelExp } = playerLevelInfo.value
   return{
     watch = playerLevelInfo

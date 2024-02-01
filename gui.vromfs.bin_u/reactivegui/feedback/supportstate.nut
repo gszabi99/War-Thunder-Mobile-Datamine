@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
@@ -11,5 +11,5 @@ let supportUrl = Computed(@() loc(canUseZendesk.value ? "url/support" : "url/sup
 
 return {
   canUseZendesk
-  openSuportWebsite = @() send("openUrl", { baseUrl = supportUrl.value })
+  openSuportWebsite = @() eventbus_send("openUrl", { baseUrl = supportUrl.value })
 }

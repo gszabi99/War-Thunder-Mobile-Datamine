@@ -13,7 +13,7 @@ let listMaxWidth = hdpx(600)
 let columnsMin = max(1, ceil(contentWidth / listMaxWidth).tointeger())
 let columnsMax = max((contentWidth / listMinWidth).tointeger(), columnsMin)
 
-let function mkHeader(header, child) {
+function mkHeader(header, child) {
   if (header == "")
     return null
 
@@ -107,7 +107,7 @@ let optionCtors = {
   }
 }
 
-let function mkOption(opt) {
+function mkOption(opt) {
   let { ctrlType = null, comp = null } = opt
   if (comp != null)
     return comp

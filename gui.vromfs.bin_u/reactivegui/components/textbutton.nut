@@ -76,7 +76,7 @@ let mergeStyles = @(s1, s2) (s2?.len() ?? 0) == 0 ? s1
     }
 
 let btnImgCache = {}
-let function mkBtnImg(btnId) {
+function mkBtnImg(btnId) {
   if (btnId not in btnImgCache) {
     let res = mkBtnImageComp(btnId, hotkeySize)
     btnImgCache[btnId] <- res == null ? res : freeze(res)
@@ -86,7 +86,7 @@ let function mkBtnImg(btnId) {
 
 let alwaysFalse = Watched(false)
 
-let function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
+function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
   let hotkeyBase = getGamepadHotkey(hotkeys)
   let isHovered = Computed(@() (stateFlags.value & S_HOVER) != 0)
   let isHotkeyDisabled = hotkeyBase != btnA ? alwaysFalse : cursorOverClickable
@@ -118,7 +118,7 @@ let function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
   }
 }
 
-let function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
+function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let { ovr = {}, childOvr = {}, gradientOvr = {}, hotkeyBlockOvr = {}, hotkeys = null,
     tooltipCtor = null
   } = style

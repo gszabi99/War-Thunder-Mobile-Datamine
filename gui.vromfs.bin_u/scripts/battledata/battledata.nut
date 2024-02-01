@@ -1,6 +1,6 @@
-
 from "%scripts/dagui_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
+
 let logBD = log_with_prefix("[BATTLE_DATA] ")
 let { is_multiplayer } = require("%scripts/util.nut")
 let { get_arg_value_by_name } = require("dagor.system")
@@ -14,7 +14,7 @@ let getDefaultBattleData = require("%appGlobals/data/getDefaultBattleData.nut")
 let { mkCmdSetBattleJwtData, mkCmdGetMyBattleData,
   mkCmdSetDefaultBattleData, CmdSetMyBattleData } = require("%appGlobals/sqevents.nut")
 let { register_command } = require("console")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
@@ -63,14 +63,14 @@ let actions = {
   },
   [ACTION.SET_AND_SEND_DEFAULT] = function() {
     let unitName = state.value.slots?[0] ?? ""
-    state.mutate(@(v) v.data <- getDefaultBattleData(unitName))
+    state.mutate(@(v) v.data <- getDefaultBattleData(unitName, myUserId.get()))
     ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdSetDefaultBattleData({ dataId = unitName }))
   },
   [ACTION.REQUEST] = @()
     ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdGetMyBattleData({ a = "" })),  // Non empty event payload table as otherwise 'fromconnid' won't be added
 }
 
-let function onChangeSlots(eid, comp) {
+function onChangeSlots(eid, comp) {
   let userId = comp.server_player__userId
   if (userId != myUserId.value || !is_multiplayer())
     return
@@ -88,7 +88,7 @@ let function onChangeSlots(eid, comp) {
   state({ eid, sessionId = get_mp_session_id_str(), slots, isBattleDataReceived = comp.isBattleDataReceived })
 }
 
-let function onDestroySlots(_eid, comp) {
+function onDestroySlots(_eid, comp) {
   let userId = comp.server_player__userId
   if (userId != myUserId.value)
     return
@@ -98,7 +98,7 @@ let function onDestroySlots(_eid, comp) {
 }
 
 local isDebugMyBattleData = false
-let function onSetMyBattleData(evt, _eid, comp) {
+function onSetMyBattleData(evt, _eid, comp) {
   let userId = comp.server_player__userId
   if (userId != myUserId.value || state.value == null)
     return
@@ -127,7 +127,7 @@ ecs.register_es("player_battle_data_es",
     ]
   })
 
-let function applyAction(actionId) {
+function applyAction(actionId) {
   if (actionId not in actions)
     return
   logBD($"Apply action {actionId}")
@@ -147,7 +147,7 @@ let battleDataQuery = ecs.SqQuery("battleDataQuery",
     comps_rw = [["battleData", ecs.TYPE_OBJECT]]
   })
 
-let function setBattleDataToClientEcs(bd) {
+function setBattleDataToClientEcs(bd) {
   if (bd == null)
     return
   local isFound = false
@@ -181,7 +181,7 @@ let function setBattleDataToClientEcs(bd) {
     })
 }
 
-let function createBattleDataForLocalMP() {
+function createBattleDataForLocalMP() {
   let unitName = curUnit.value?.name ?? curUnitName.value
   logBD("createBattleDataForLocalMP ", unitName)
   if (unitName != null)
@@ -192,7 +192,7 @@ let function createBattleDataForLocalMP() {
     logBD("Ignore set battle data to localMP because of not actual")
 }
 
-subscribe("CreateBattleDataForClient",
+eventbus_subscribe("CreateBattleDataForClient",
   @(_) is_local_multiplayer() ? createBattleDataForLocalMP()
     : is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
     : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)

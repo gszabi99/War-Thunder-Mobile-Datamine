@@ -1,7 +1,7 @@
-
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/ecs.nut" import *
-let { subscribe, unsubscribe } = require("eventbus")
+
+let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { round } =  require("math")
 let { EventOnSetupFrameTimes } = require("gameEvents")
 let { get_mp_session_id_int } = require("multiplayer")
@@ -47,7 +47,7 @@ deviceState.subscribe(function(v) {
   pingMin = pingMin == -1 ? ping : min(pingMin, ping)
   pingMax = max(pingMax, ping)
 })
-let function onCollectPing() {
+function onCollectPing() {
   let { ping = -1 } = deviceState.value
   if (ping == -1)
     return
@@ -55,26 +55,26 @@ let function onCollectPing() {
     pingSamples.remove(0)
   pingSamples.append(ping)
 }
-let function activatePingMeasurement(isActivate, needReset) {
+function activatePingMeasurement(isActivate, needReset) {
   if (needReset) {
     pingMin = -1
     pingMax = -1
     pingSamples.clear()
   }
   if (isActivate) {
-    subscribe("updateStatusString", updateDeviceState)
+    eventbus_subscribe("updateStatusString", updateDeviceState)
     setInterval(MEASURE_PING_INTERVAL_SEC, onCollectPing)
     onCollectPing()
   }
   else {
-    unsubscribe("updateStatusString", updateDeviceState)
+    eventbus_unsubscribe("updateStatusString", updateDeviceState)
     clearTimer(onCollectPing)
   }
 }
 
 local batteryOnBattleStart = 0
 
-let function startBatteryChargeDrainGather() {
+function startBatteryChargeDrainGather() {
   batteryOnBattleStart = get_battery()
 }
 
@@ -97,7 +97,7 @@ let connectionTypeMap = {
   [2] =  "Wi-Fi",
 }
 
-let function onFrameTimes(evt, _eid, _comp) {
+function onFrameTimes(evt, _eid, _comp) {
   log("[BQ] send battle fps info to BQ")
   let data = blk2SquirrelObjNoArrays(evt[0])
   data?.$rawdelete("time")

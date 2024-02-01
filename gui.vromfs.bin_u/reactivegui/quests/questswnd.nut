@@ -46,13 +46,14 @@ let linkToBattlePassBtnCtor = @() mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
     children = hasBpRewardsToReceive.get() ? priorityUnseenMark : null
   })
 
-let function eventTabContent(){
+function eventTabContent(){
   let eventSeasonName = Computed(function() {
     local locId = $"events/name/{eventSeason.value}"
     if (!doesLocTextExist(locId))
       locId = "events/name/default"
     return loc(locId)
   })
+
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
@@ -99,7 +100,7 @@ let miniEventTabContent = {
   ]
 }
 
-let function mkSpecialEventTabContent(idx) {
+function mkSpecialEventTabContent(idx) {
   let endsAt = Computed(@() specialEvents.value?[idx].endsAt)
   let locId = Computed(@() $"events/name/{specialEvents.value?[idx].eventName}")
   let image = Computed(@() $"ui/gameuiskin#icon_event_{specialEvents.value?[idx].eventName}_quests_wnd.svg")

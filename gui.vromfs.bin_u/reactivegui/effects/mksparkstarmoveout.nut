@@ -16,7 +16,7 @@ let maxAngleDiff = 30.0 / 180.0 * PI
 let getNextGlareTime = @(count) rand.rfloat(0.2, 0.5) * (count + 1) * (count + 1)
   + (count > 0 ? glareTime : 0)
 
-let function zoneStartPos(halfSize) {
+function zoneStartPos(halfSize) {
   local pos = null
   let minRadius = 0.9 * min(halfSize[1], halfSize[0] * 9 / 16)
   let minRadiusSq = minRadius * minRadius
@@ -28,7 +28,7 @@ let function zoneStartPos(halfSize) {
   return pos
 }
 
-let function getVisiblePart(startPos, moveDir, effectHalfSize) {
+function getVisiblePart(startPos, moveDir, effectHalfSize) {
   local res = 1.0
   foreach (i, dir in moveDir) {
     if (dir == 0)
@@ -43,7 +43,7 @@ let function getVisiblePart(startPos, moveDir, effectHalfSize) {
   return res
 }
 
-let function fillSparkState(state, effectHalfSize, showTime = 300) {
+function fillSparkState(state, effectHalfSize, showTime = 300) {
   let startPos = zoneStartPos(effectHalfSize)
   state.startPos <- startPos
   let angle = atan2(startPos[0], startPos[1]) + rand.rfloat(-maxAngleDiff, maxAngleDiff)

@@ -4,14 +4,14 @@ let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { getPlayerToken } = require("auth_wt")
 
 let hasLog = {}
-let function logByUrlOnce(url, text) {
+function logByUrlOnce(url, text) {
   if (url in hasLog)
     return
   hasLog[url] <- true
   log(text)
 }
 
-let function requestData(url, params, onSuccess, onFailure = null) {
+function requestData(url, params, onSuccess, onFailure = null) {
   httpRequest({
     method = "POST"
     url

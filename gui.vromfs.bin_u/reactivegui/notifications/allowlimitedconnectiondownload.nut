@@ -18,7 +18,7 @@ let needShowMessage = keepref(Computed(@() !isAsked.value
   && !isDownloadPaused.value
   && isDownloadPausedByConnection.value))
 
-let function openMessageIfNeed() {
+function openMessageIfNeed() {
   if (!needShowMessage.value)
     return
   openMsgBox({

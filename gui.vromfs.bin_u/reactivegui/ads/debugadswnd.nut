@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { sin, cos, PI } = require("math")
@@ -9,12 +9,12 @@ let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 
 
 let isOpened = Computed(@() debugAdsWndParams.value != null)
-let function sendEnvet(evt) {
+function sendEnvet(evt) {
   let evtId = debugAdsWndParams.value?[$"{evt}Event"]
   if (evtId != null)
-    send(evtId, debugAdsWndParams.value?[$"{evt}Data"] ?? {})
+    eventbus_send(evtId, debugAdsWndParams.value?[$"{evt}Data"] ?? {})
 }
-let function close() {
+function close() {
   sendEnvet("finish")
   debugAdsWndParams(null)
 }
@@ -29,12 +29,12 @@ let rotatePeriodMsec = 2500
 let movePeriodMsec = 11000
 let blockSize = [hdpx(900), hdpx(600)]
 
-let function applyRewards() {
+function applyRewards() {
   isRewardReceived(true)
   sendEnvet("reward")
 }
 
-let function animPoint(i) {
+function animPoint(i) {
   let rotateOffset = rotatePeriodMsec * i / totalAnim
   let radOffset = (i % 2) * 2000 + 50 * i
   return {

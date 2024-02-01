@@ -35,7 +35,7 @@ let filterStateFlags = Watched(0)
 let getFiltersText = @(count) count <= 0 ? loc("showFilters") : loc("activeFilters", { count })
 
 
-let function countActiveFilters() {
+function countActiveFilters() {
   filterCount.set(filterCount.get() + 1)
   return activeFilters(filters.reduce(function(res, f) {
     let { value } = f.value

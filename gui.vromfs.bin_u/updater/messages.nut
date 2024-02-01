@@ -81,7 +81,7 @@ let pattern = {
   children = array(7, patternImage)
 }
 
-let function mkButton(text, onClick) {
+function mkButton(text, onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
@@ -117,7 +117,7 @@ let function mkButton(text, onClick) {
   }
 }
 
-let function openUpdateUrl() {
+function openUpdateUrl() {
   send_counter("sq.app.stage", 1, { stage = "open_update_from_store_url" })
   sendLoadingStageBqEvent("open_update_from_store_url")
 

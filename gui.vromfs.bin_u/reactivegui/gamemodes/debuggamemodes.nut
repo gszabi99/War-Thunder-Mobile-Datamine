@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { debugModes } = require("gameModeState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
@@ -22,7 +22,7 @@ let noGameModes = {
   text = "No debug game modes at this moment"
 }.__update(fontMedium)
 
-let function gameModesList() {
+function gameModesList() {
   let res = {
     watch = debugModes
     size = [flex(), SIZE_TO_CONTENT]
@@ -37,7 +37,7 @@ let function gameModesList() {
     .sort(@(a, b) (a?.name ?? "") <=> (b?.name ?? ""))
     .map(@(m) textButtonCommon(m?.name ?? m?.gameModeId ?? "!!!ERROR!!!",
       function() {
-        send("queueToGameMode", { modeId = m?.gameModeId })
+        eventbus_send("queueToGameMode", { modeId = m?.gameModeId })
         close()
       },
       { ovr = { size = [flex(), hdpx(100)] } }))
