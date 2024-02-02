@@ -30,22 +30,28 @@ local dictAsian = {
   badsegments     = null
 }
 
+let toRegexpFunc = {
+  default = @(str) regexp2(str)
+  badcombination = @(str) regexp2("".concat("(", "\\s".join(str.split(" ").filter(@(w) w != "")), ")"))
+}
+
 // Collect language tables
 local function init(langSources) {
   foreach (varName, _val in dict) {
     dict[varName] = []
+    let mkRegexp = toRegexpFunc?[varName] ?? toRegexpFunc.default
     foreach (source in langSources) {
       foreach (_i, vSrc in (source?[varName] ?? [])) {
         local v
         let tVSrc = type(vSrc)
         if (tVSrc == "string")
-          v = regexp2(vSrc)
+          v = mkRegexp(vSrc)
         else if (tVSrc == "table") {
           v = clone vSrc
           if ("value" in v)
-            v.value = regexp2(v.value)
+            v.value = mkRegexp(v.value)
           if ("arr" in v)
-            v.arr = v.arr.map(@(av) regexp2(av))
+            v.arr = v.arr.map(@(av) mkRegexp(av))
          }
         else
           assert(false, "Wrong var type in DirtyWordsFilter config")
@@ -286,8 +292,11 @@ local function checkPhrase(text) {
   local lowerPhrase = phrase.tolower()
   //To match a whole combination of words
   foreach (pattern in dict.badcombination)
-    if (pattern.match(lowerPhrase))
-      phrase = pattern.replace(getMaskedWord(lowerPhrase), lowerPhrase)
+    if (pattern.match(lowerPhrase)) {
+      let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
+      phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
+      lowerPhrase = phrase.tolower()
+    }
 
   local words = preparePhrase(phrase)
 

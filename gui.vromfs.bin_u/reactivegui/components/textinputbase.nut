@@ -149,7 +149,7 @@ function textInput(text_state, options = {}) {
   let inputObj = @() {
     watch = [text_state, stateFlags]
     rendObj = ROBJ_TEXT
-    behavior = [Behaviors.TextInput, Behaviors.Button]
+    behavior = Behaviors.TextInput
 
     size = [flex(), fontH(100)]
     color = textColor

@@ -5,7 +5,7 @@ let logR = log_with_prefix("[SESSION_RECONNECT] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInMenu, isOnline, isDisconnected } = require("%appGlobals/clientState/clientState.nut")
 let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState.nut")
-let { joinRoom } = require("sessionLobby.nut")
+let { joinRoom, lastRoomId } = require("sessionLobby.nut")
 let { subscribeFMsgBtns, openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { getModeAddonsInfo } = require("%scripts/matching/gameModeAddons.nut")
@@ -51,7 +51,7 @@ function getAddonsToDownload(attribs) {
 
 function reconnect(roomId, attribs) {
   let addonsToDownload = getAddonsToDownload(attribs)
-  if (addonsToDownload.len() == 0) {
+  if (addonsToDownload.len() == 0 || lastRoomId.get() == roomId) {
     joinRoom(roomId)
     return
   }
