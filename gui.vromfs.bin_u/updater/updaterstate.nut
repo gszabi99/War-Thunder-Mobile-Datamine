@@ -21,7 +21,6 @@ let progress = Watched({
 let progressPercent = Computed(@() progress.value.percent)
 let updaterError = Watched(null)
 let needUpdateMsg = mkWatched(persist, "needUpdateMsg", false)
-let needRestartMsg = mkWatched(persist, "needRestartMsg", false)
 
 let statusText = Computed(@() updaterError.value != null ? loc($"updater/error/{updaterError.value}")
   : updaterStage.value != UPDATER_DOWNLOADING ? loc("pl1/check_profile")
@@ -38,7 +37,7 @@ let updaterEvents = {
     dspeed = evt.dspeed
   }),
   [UPDATER_EVENT_ERROR]         = @(evt) updaterError(evt.error),
-  [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(p) (p?.needExeUpdate ?? true) ? needUpdateMsg(true) : needRestartMsg(true),
+  [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(_) needUpdateMsg(true),
 }
 
 let updaterBqEvents = {
@@ -76,5 +75,4 @@ return {
   statusText
   progressPercent
   needUpdateMsg
-  needRestartMsg
 }

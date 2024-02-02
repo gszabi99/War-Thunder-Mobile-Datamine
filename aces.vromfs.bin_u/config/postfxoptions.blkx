@@ -1,0 +1,42 @@
+{
+  "lut_list": {
+    "lut": [
+      {
+        "id": "hudDefault",
+        "texture": ""
+      },
+      {
+        "id": "nothing",
+        "texture": "none"
+      },
+      {
+        "id": "lut/contrast",
+        "texture": "contrast"
+      },
+      {
+        "id": "lut/fall_colors",
+        "texture": "fall_colors"
+      },
+      {
+        "id": "lut/filmstock",
+        "texture": "filmstock"
+      },
+      {
+        "id": "lut/greyscale",
+        "texture": "greyscale"
+      },
+      {
+        "id": "lut/night_from_day",
+        "texture": "night_from_day"
+      },
+      {
+        "id": "lut/sepia",
+        "texture": "sepia"
+      },
+      {
+        "id": "lut/telecontrol",
+        "texture": "telecontrol"
+      }
+    ]
+  }
+}

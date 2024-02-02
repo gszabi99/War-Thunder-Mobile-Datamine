@@ -1,0 +1,8 @@
+{
+  "hideNodes": {
+    "node": [
+      "aero_14a_pylon",
+      "mk_51_bomb_pylon"
+    ]
+  }
+}

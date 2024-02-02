@@ -1,0 +1,4306 @@
+{
+  "tires": {
+    "205/45ZR16,2,2500_PAC2002": {
+      "fullPacejka": true,
+      "laFz0": 1.0,
+      "laMux": 1.35,
+      "laMuy": 1.2,
+      "laMuV": 0.0,
+      "laKxk": 0.6,
+      "laKya": 1.3,
+      "laCx": 0.9,
+      "laEx": 1.4,
+      "laHx": 1.0,
+      "laVx": 1.0,
+      "laCy": 0.85,
+      "laEy": 1.0,
+      "laHy": 1.0,
+      "laVy": 1.0,
+      "laKyg": 1.0,
+      "laKzg": 1.0,
+      "lat": 1.0,
+      "laMr": 1.0,
+      "laxa": 0.4,
+      "layk": 0.7,
+      "laVyk": 1.0,
+      "las": 1.0,
+      "laCz": 1.0,
+      "laMx": 1.0,
+      "laMy": 1.0,
+      "rEx1": 0.8,
+      "rEx2": -0.4,
+      "rEy1": -0.3,
+      "rEy2": 0.2
+    },
+    "225/45 ZR 17 on 7 rim, 2.4 bar_PAC2002": {
+      "fullPacejka": true,
+      "laFz0": 1.0,
+      "laMux": 1.1,
+      "laMuy": 1.03,
+      "laMuV": 0.0,
+      "laKxk": 1.85,
+      "laKya": 1.5,
+      "laCx": 1.01,
+      "laEx": 0.65,
+      "laHx": 1.0,
+      "laVx": 1.0,
+      "laCy": 1.285,
+      "laEy": 0.5,
+      "laHy": 1.0,
+      "laVy": 1.0,
+      "laKyg": 1.0,
+      "laKzg": 1.0,
+      "lat": 1.0,
+      "laMr": 1.0,
+      "laxa": 0.8,
+      "layk": 0.8,
+      "laVyk": 1.0,
+      "las": 1.0,
+      "laCz": 1.0,
+      "laMx": 1.0,
+      "laMy": 1.0,
+      "rEx1": 0.5,
+      "rEx2": -0.3,
+      "rEy1": -0.3,
+      "rEy2": 0.4
+    },
+    "195/60 HR 15 on 6 1/2 rim at 2.1 bar_PAC2002": {
+      "fullPacejka": true,
+      "laFz0": 1.0,
+      "laMux": 1.0,
+      "laMuy": 1.0,
+      "laMuV": 0.0,
+      "laKxk": 2.0,
+      "laKya": 1.0,
+      "laCx": 0.9,
+      "laEx": 1.0,
+      "laHx": 1.0,
+      "laVx": 1.0,
+      "laCy": 1.0,
+      "laEy": 1.0,
+      "laHy": 1.0,
+      "laVy": 1.0,
+      "laKyg": 1.0,
+      "laKzg": 1.0,
+      "lat": 1.0,
+      "laMr": 1.0,
+      "laxa": 0.8,
+      "layk": 0.8,
+      "laVyk": 1.0,
+      "las": 1.0,
+      "laCz": 1.0,
+      "laMx": 1.0,
+      "laMy": 1.0,
+      "rEx1": 0.5,
+      "rEx2": -0.4,
+      "rEy1": -0.2,
+      "rEy2": 0.4
+    },
+    "225/60 HR 16_PAC2002": {
+      "fullPacejka": true,
+      "laFz0": 1.0,
+      "laMux": 0.97,
+      "laMuy": 1.0,
+      "laMuV": 0.0,
+      "laKxk": 1.3,
+      "laKya": 1.68,
+      "laCx": 0.88,
+      "laEx": 1.0,
+      "laHx": 1.0,
+      "laVx": 1.0,
+      "laCy": 1.29,
+      "laEy": 0.65,
+      "laHy": 1.0,
+      "laVy": 1.0,
+      "laKyg": 1.0,
+      "laKzg": 1.0,
+      "lat": 1.0,
+      "laMr": 1.0,
+      "laxa": 0.8,
+      "layk": 0.8,
+      "laVyk": 1.0,
+      "las": 1.0,
+      "laCz": 1.0,
+      "laMx": 1.0,
+      "laMy": 1.0,
+      "rEx1": 0.4,
+      "rEx2": -0.4,
+      "rEy1": -0.1,
+      "rEy2": 0.5
+    },
+    "205/45ZR16,2,2500": {
+      "fullPacejka": false,
+      "a0": 1.0,
+      "a1": -106.0,
+      "a2": 1629.0,
+      "a3": 1843.0,
+      "a4": 9.4,
+      "a5": 0.013,
+      "a6": -0.336,
+      "a7": 1.14,
+      "a8": 0.019,
+      "a9": -0.019,
+      "a10": -0.18,
+      "a111": -20.7,
+      "a112": -0.021,
+      "a12": 0.48,
+      "a13": 12.2,
+      "b0": 1.55,
+      "b1": -7.6118,
+      "b2": 1680.0,
+      "b3": -0.00736,
+      "b4": 80.82,
+      "b5": -0.076614,
+      "b6": -0.00386,
+      "b7": 0.085055,
+      "b8": 0.075719,
+      "b9": 0.023655,
+      "b10": 0.023655,
+      "c0": 3.0,
+      "c1": -2.9,
+      "c2": -0.7,
+      "c3": 0.24,
+      "c4": -2.52,
+      "c5": -0.36,
+      "c6": 0.0037,
+      "c7": -0.026,
+      "c8": 0.19,
+      "c9": -0.043,
+      "c10": 0.14,
+      "c11": 0.027,
+      "c12": 0.038,
+      "c13": -0.66,
+      "c14": 0.12,
+      "c15": -1.22,
+      "c16": -0.9,
+      "c17": -0.8
+    },
+    "225/45 ZR 17 on 7 rim, 2.4 bar": {
+      "fullPacejka": false,
+      "a0": 1.6,
+      "a1": -38.0,
+      "a2": 1201.0,
+      "a3": 1914.0,
+      "a4": 8.7,
+      "a5": 0.014,
+      "a6": -0.24,
+      "a7": 1.0,
+      "a8": -0.03,
+      "a9": -0.0013,
+      "a10": -0.15,
+      "a111": -8.5,
+      "a112": -0.29,
+      "a12": 17.8,
+      "a13": -2.4,
+      "b0": 1.7,
+      "b1": -80.0,
+      "b2": 1571.0,
+      "b3": 23.3,
+      "b4": 300.0,
+      "b5": 0.0,
+      "b6": 0.0068,
+      "b7": 0.055,
+      "b8": -0.024,
+      "b9": 0.014,
+      "b10": 0.26,
+      "c0": 2.3,
+      "c1": -3.8,
+      "c2": -3.14,
+      "c3": -1.16,
+      "c4": -7.2,
+      "c5": 0.0,
+      "c6": 0.0,
+      "c7": 0.044,
+      "c8": -0.58,
+      "c9": 0.18,
+      "c10": 0.043,
+      "c11": 0.048,
+      "c12": -0.0035,
+      "c13": -0.18,
+      "c14": 0.14,
+      "c15": -1.029,
+      "c16": 0.27,
+      "c17": -1.1
+    },
+    "195/60 HR 15 on 6 1/2 rim at 2.1 bar": {
+      "fullPacejka": false,
+      "a0": 1.3,
+      "a1": -49.0,
+      "a2": 1216.0,
+      "a3": 1632.0,
+      "a4": 11.0,
+      "a5": 0.006,
+      "a6": -0.04,
+      "a7": -0.4,
+      "a8": 0.003,
+      "a9": -0.002,
+      "a10": 0.16,
+      "a111": -11.0,
+      "a112": 0.045,
+      "a12": 0.17,
+      "a13": -23.5,
+      "b0": 1.57,
+      "b1": -48.0,
+      "b2": 1338.0,
+      "b3": 6.8,
+      "b4": 444.0,
+      "b5": 0.0,
+      "b6": 0.0034,
+      "b7": -0.008,
+      "b8": 0.66,
+      "b9": 0.0,
+      "b10": 0.0,
+      "c0": 2.46,
+      "c1": -2.77,
+      "c2": -2.9,
+      "c3": 0.0,
+      "c4": -3.6,
+      "c5": -0.1,
+      "c6": 0.0004,
+      "c7": 0.22,
+      "c8": -2.31,
+      "c9": 3.87,
+      "c10": 0.0007,
+      "c11": -0.05,
+      "c12": -0.006,
+      "c13": 0.33,
+      "c14": -0.04,
+      "c15": -0.4,
+      "c16": 0.092,
+      "c17": 0.0114
+    },
+    "225/60 HR 16": {
+      "fullPacejka": false,
+      "a0": 1.9,
+      "a1": -41.0,
+      "a2": 1210.0,
+      "a3": 2180.0,
+      "a4": 10.0,
+      "a5": 0.014,
+      "a6": -0.023,
+      "a7": 0.67,
+      "a8": -0.051,
+      "a9": -0.018,
+      "a10": -0.06,
+      "a111": -2.35,
+      "a112": -0.37,
+      "a12": 4.3,
+      "a13": -14.9,
+      "b0": 1.5,
+      "b1": -5.2,
+      "b2": 1190.0,
+      "b3": 26.7,
+      "b4": 255.0,
+      "b5": 0.0,
+      "b6": -0.000093,
+      "b7": 0.05,
+      "b8": 0.49,
+      "b9": -0.007,
+      "b10": -0.23,
+      "c0": 2.53,
+      "c1": -3.0,
+      "c2": -6.6,
+      "c3": -0.56,
+      "c4": -8.9,
+      "c5": 0.0,
+      "c6": 0.0,
+      "c7": 0.016,
+      "c8": -0.39,
+      "c9": 0.35,
+      "c10": 0.014,
+      "c11": -0.014,
+      "c12": -0.006,
+      "c13": -0.15,
+      "c14": 0.023,
+      "c15": -0.89,
+      "c16": 0.025,
+      "c17": -0.4
+    },
+    "standard": {
+      "fullPacejka": true,
+      "laFz0": 1.0,
+      "laMux": 1.0,
+      "laMuy": 1.0,
+      "laMuV": 0.0,
+      "laKxk": 1.0,
+      "laKya": 1.0,
+      "laCx": 1.0,
+      "laEx": 1.0,
+      "laHx": 1.0,
+      "laVx": 1.0,
+      "laCy": 1.0,
+      "laEy": 1.0,
+      "laHy": 1.0,
+      "laVy": 1.0,
+      "laKyg": 1.0,
+      "laKzg": 1.0,
+      "lat": 1.0,
+      "laMr": 1.0,
+      "laxa": 1.0,
+      "layk": 1.0,
+      "laVyk": 1.0,
+      "las": 1.0,
+      "laCz": 1.0,
+      "laMx": 1.0,
+      "laMy": 1.0,
+      "rEx1": 0.65225,
+      "rEx2": -0.24948,
+      "rEy1": -0.27572,
+      "rEy2": 0.32802
+    },
+    "205/60R15_91V": {
+      "fullPacejka": true,
+      "laFz0": 1.0,
+      "laMux": 1.0,
+      "laMuy": 1.0,
+      "laMuV": 0.0,
+      "laKxk": 1.0,
+      "laKya": 1.0,
+      "laCx": 1.0,
+      "laEx": 1.0,
+      "laHx": 1.0,
+      "laVx": 1.0,
+      "laCy": 1.0,
+      "laEy": 1.0,
+      "laHy": 1.0,
+      "laVy": 1.0,
+      "laKyg": 1.0,
+      "laKzg": 1.0,
+      "lat": 1.0,
+      "laMr": 1.0,
+      "laxa": 1.0,
+      "layk": 1.0,
+      "laVyk": 1.0,
+      "las": 1.0,
+      "laCz": 1.0,
+      "laMx": 1.0,
+      "laMy": 1.0,
+      "rEx1": 0.65225,
+      "rEx2": -0.24948,
+      "rEy1": -0.27572,
+      "rEy2": 0.32802
+    },
+    "paceika_FWD": {
+      "fullPacejka": true,
+      "laFz0": 1.0,
+      "laMux": 1.05,
+      "laMuy": 1.0,
+      "laMuV": 0.0,
+      "laKxk": 1.0,
+      "laKya": 0.82,
+      "laCx": 1.0,
+      "laEx": 1.0,
+      "laHx": 1.0,
+      "laVx": 1.0,
+      "laCy": 1.0,
+      "laEy": 1.0,
+      "laHy": 1.0,
+      "laVy": 1.0,
+      "laKyg": 1.0,
+      "laKzg": 1.0,
+      "lat": 1.0,
+      "laMr": 1.0,
+      "laxa": 0.2,
+      "layk": 0.4,
+      "laVyk": 1.0,
+      "las": 1.0,
+      "laCz": 1.0,
+      "laMx": 1.0,
+      "laMy": 1.0,
+      "rEx1": 0.5,
+      "rEx2": -0.5,
+      "rEy1": -0.6,
+      "rEy2": 0.4
+    },
+    "paceika_RWD": {
+      "fullPacejka": true,
+      "laFz0": 1.0,
+      "laMux": 1.0,
+      "laMuy": 1.0,
+      "laMuV": 0.0,
+      "laKxk": 1.0,
+      "laKya": 1.0,
+      "laCx": 1.0,
+      "laEx": 1.0,
+      "laHx": 1.0,
+      "laVx": 1.0,
+      "laCy": 1.0,
+      "laEy": 1.0,
+      "laHy": 1.0,
+      "laVy": 1.0,
+      "laKyg": 1.0,
+      "laKzg": 1.0,
+      "lat": 1.0,
+      "laMr": 1.0,
+      "laxa": 1.0,
+      "layk": 0.6,
+      "laVyk": 1.0,
+      "las": 1.0,
+      "laCz": 1.0,
+      "laMx": 1.0,
+      "laMy": 1.0,
+      "rEx1": 0.8,
+      "rEx2": -0.3,
+      "rEy1": -0.27,
+      "rEy2": -0.32
+    }
+  },
+  "gearboxes": {
+    "standard": {
+      "numGears": 6,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -7.09,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.96,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 8.38,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 6.73333,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 5.86667,
+        "inertia": 0.02,
+        "minSpeed": 120.0
+      },
+      "gear5": {
+        "ratio": 4.8,
+        "inertia": 0.01,
+        "minSpeed": 150.0
+      },
+      "gear6": {
+        "ratio": 3.84,
+        "inertia": 0.01,
+        "minSpeed": 180.0
+      }
+    },
+    "avalanche_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -8.54,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.4,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.0,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 3.73,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 2.6,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "belair_car": {
+      "numGears": 3,
+      "maxTargetRPM": 4500.0,
+      "minTimeToSwitch": 600.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -9.34,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 13.56,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 5.14,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 3.55,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "camaro69_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -7.58,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 8.3,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.22,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 4.83,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.31,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "chevelle64_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -7.58,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 8.47,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.32,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.9,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 3.31,
+        "inertia": 0.02,
+        "minSpeed": 120.0
+      }
+    },
+    "caprice_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -7.83,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 9.61,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 5.13,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 3.29,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 2.3,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "cobalt_car": {
+      "numGears": 5,
+      "maxTargetRPM": 5800.0,
+      "minTimeToSwitch": 400.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -12.1094,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 12.9116,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear2": {
+        "ratio": 6.7232,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 4.5076,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.3998,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear5": {
+        "ratio": 2.674,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "colorado_car": {
+      "numGears": 5,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -13.7,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 14.0,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 8.43,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 5.11,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.73,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear5": {
+        "ratio": 2.72,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "corvettec5_car": {
+      "numGears": 6,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -10.0,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 9.1,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.1,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 4.44,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.42,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear5": {
+        "ratio": 2.53,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear6": {
+        "ratio": 1.71,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "corvettec6_car": {
+      "numGears": 6,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -10.0,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 10.2,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 7.08,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 4.9,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.42,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear5": {
+        "ratio": 2.43,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear6": {
+        "ratio": 1.95,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "malibu_sedan_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -6.53,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 9.0,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 4.94,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 3.05,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 2.07,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "malibu_maxx_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -6.53,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 9.0,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 4.94,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 3.05,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 2.07,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "montecarlo_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -7.29,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 8.91,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 4.79,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 3.05,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 2.17,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "silverado_car": {
+      "numGears": 6,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -16.75,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.56,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.75,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 5.26,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.73,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear5": {
+        "ratio": 2.65,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear6": {
+        "ratio": 2.28,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "ssr_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -8.54,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.41,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.04,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 3.73,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 2.61,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "aveo_car": {
+      "numGears": 5,
+      "maxTargetRPM": 5800.0,
+      "minTimeToSwitch": 400.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -13.1454,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 13.981,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear2": {
+        "ratio": 7.69869,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 5.04832,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.82962,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear5": {
+        "ratio": 3.00927,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "tahoe2003_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -8.5417,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.41,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.0799,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 3.73,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 2.59608,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "trailblazer_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -8.5417,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.41,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.0799,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 3.73,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 2.59608,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "camaro_z28_car": {
+      "numGears": 6,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -11.6964,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 9.0972,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.0876,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 4.446,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.42,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear5": {
+        "ratio": 2.5308,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear6": {
+        "ratio": 1.71,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "camaro76_car": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 100.0,
+      "gearRev": {
+        "ratio": -10.6305,
+        "inertia": 0.32,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 10.6305,
+        "inertia": 0.12,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 7.5346,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear3": {
+        "ratio": 5.0355,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      },
+      "gear4": {
+        "ratio": 3.73,
+        "inertia": 0.12,
+        "minSpeed": 20.0
+      }
+    },
+    "azlk_400": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -22.8,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 18.3333,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 8.93333,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 5.13333,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "azlk_407": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -19.88,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 16.1,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 10.21,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 6.12,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 4.22,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "azlk_408": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -19.88,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 16.1,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 10.21,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 6.12,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 4.22,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "azlk_412": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -15.96,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.83,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.91,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.5,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 3.39,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "azlk_412_rally": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -15.96,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.83,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.91,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.5,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 3.39,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "azlk_427": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -15.96,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.83,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.91,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.5,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 3.39,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "azlk_434": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -15.96,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.83,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.91,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.5,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 3.39,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "izh_412": {
+      "numGears": 4,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -15.96,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 11.83,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.91,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.5,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      },
+      "gear4": {
+        "ratio": 3.39,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_12": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -17.01,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 14.19,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 8.05,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.55,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_13": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -6.26,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 10.16,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 6.02,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 3.58,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_14": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -7.16,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 9.45,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 5.55,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 3.58,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_20": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -17.01,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 14.19,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 8.05,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.55,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_21": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -17.01,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 14.19,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 8.05,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.55,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_22": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -17.01,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 14.19,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 8.05,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.55,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_69": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -19.18,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 16.41,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 9.08,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 5.13,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_m1": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -15.01,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 12.52,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 7.1,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.44,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    },
+    "gaz_11_73": {
+      "numGears": 3,
+      "maxTargetRPM": 4000.0,
+      "minTimeToSwitch": 1.0,
+      "timeToClutch": 100.0,
+      "timeToDeclutch": 300.0,
+      "gearRev": {
+        "ratio": -15.01,
+        "inertia": 0.13,
+        "minSpeed": 0.0
+      },
+      "gear1": {
+        "ratio": 12.52,
+        "inertia": 0.06,
+        "minSpeed": 0.0
+      },
+      "gear2": {
+        "ratio": 7.1,
+        "inertia": 0.05,
+        "minSpeed": 50.0
+      },
+      "gear3": {
+        "ratio": 4.44,
+        "inertia": 0.04,
+        "minSpeed": 90.0
+      }
+    }
+  },
+  "engines": {
+    "standard": {
+      "maxRPM": 7500.0,
+      "idleRPM": 1200.0,
+      "autoClutchRPM": 1750.0,
+      "inertia": 0.3,
+      "brakingCoeff": 4.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 1500.0,
+      "torqueMul": 300.0,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            0.848126
+          ],
+          [
+            367.347,
+            0.848126
+          ],
+          [
+            951.763,
+            0.863905
+          ],
+          [
+            2187.38,
+            0.954635
+          ],
+          [
+            2838.59,
+            0.990702
+          ],
+          [
+            3606.68,
+            1.01775
+          ],
+          [
+            4291.28,
+            1.03804
+          ],
+          [
+            5426.72,
+            1.03466
+          ],
+          [
+            6345.08,
+            1.00085
+          ],
+          [
+            7146.57,
+            0.919132
+          ],
+          [
+            7697.59,
+            0.710059
+          ],
+          [
+            8265.31,
+            0.0
+          ]
+        ]
+      }
+    },
+    "cobaltSS": {
+      "maxRPM": 6300.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1000.0,
+      "inertia": 0.3,
+      "brakingCoeff": 1.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 135.43,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            800.0,
+            1.19
+          ],
+          [
+            1200.0,
+            1.4
+          ],
+          [
+            2350.0,
+            1.75
+          ],
+          [
+            2800.0,
+            1.81
+          ],
+          [
+            3200.0,
+            1.89
+          ],
+          [
+            3600.0,
+            1.95
+          ],
+          [
+            4400.0,
+            2.0
+          ],
+          [
+            5600.0,
+            1.92
+          ],
+          [
+            6400.0,
+            1.68
+          ],
+          [
+            7000.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    "caprice_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            168.047
+          ],
+          [
+            985.158,
+            179.882
+          ],
+          [
+            1970.32,
+            202.367
+          ],
+          [
+            2988.87,
+            247.337
+          ],
+          [
+            3523.19,
+            247.337
+          ],
+          [
+            4024.12,
+            249.704
+          ],
+          [
+            4992.58,
+            241.42
+          ],
+          [
+            5994.43,
+            202.367
+          ],
+          [
+            6478.66,
+            164.497
+          ],
+          [
+            7012.99,
+            86.3905
+          ],
+          [
+            7547.31,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "malibu_sedan_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            164.497
+          ],
+          [
+            450.835,
+            173.964
+          ],
+          [
+            985.158,
+            184.615
+          ],
+          [
+            2003.71,
+            179.882
+          ],
+          [
+            3005.57,
+            213.018
+          ],
+          [
+            3990.72,
+            217.401
+          ],
+          [
+            4975.88,
+            214.201
+          ],
+          [
+            6011.13,
+            189.349
+          ],
+          [
+            6996.29,
+            134.911
+          ],
+          [
+            7497.22,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "malibu_maxx_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            164.497
+          ],
+          [
+            450.835,
+            173.964
+          ],
+          [
+            985.158,
+            184.615
+          ],
+          [
+            2003.71,
+            179.882
+          ],
+          [
+            3005.57,
+            213.018
+          ],
+          [
+            3990.72,
+            217.401
+          ],
+          [
+            4975.88,
+            214.201
+          ],
+          [
+            6011.13,
+            189.349
+          ],
+          [
+            6996.29,
+            134.911
+          ],
+          [
+            7497.22,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "avalanche_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            249.704
+          ],
+          [
+            985.158,
+            265.089
+          ],
+          [
+            2003.71,
+            300.592
+          ],
+          [
+            3005.57,
+            307.692
+          ],
+          [
+            4007.42,
+            324.26
+          ],
+          [
+            4441.56,
+            328.994
+          ],
+          [
+            4975.88,
+            319.527
+          ],
+          [
+            5994.43,
+            254.438
+          ],
+          [
+            6695.73,
+            198.817
+          ],
+          [
+            7163.27,
+            95.858
+          ],
+          [
+            7547.31,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "colorado_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            79.2899
+          ],
+          [
+            1001.86,
+            100.592
+          ],
+          [
+            2003.71,
+            173.964
+          ],
+          [
+            2838.59,
+            192.899
+          ],
+          [
+            3322.82,
+            181.065
+          ],
+          [
+            4007.42,
+            176.331
+          ],
+          [
+            4608.53,
+            177.515
+          ],
+          [
+            5025.97,
+            183.432
+          ],
+          [
+            6027.83,
+            146.746
+          ],
+          [
+            6595.55,
+            67.4556
+          ],
+          [
+            6879.41,
+            0.0
+          ]
+        ]
+      }
+    },
+    "silverado_car": {
+      "maxRPM": 4000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            79.2899
+          ],
+          [
+            868.275,
+            394.083
+          ],
+          [
+            1118.74,
+            501.775
+          ],
+          [
+            1519.48,
+            653.254
+          ],
+          [
+            1987.01,
+            636.686
+          ],
+          [
+            3005.57,
+            609.467
+          ],
+          [
+            3990.72,
+            583.432
+          ],
+          [
+            4675.32,
+            433.136
+          ],
+          [
+            5326.53,
+            223.669
+          ],
+          [
+            6027.83,
+            146.746
+          ],
+          [
+            6595.55,
+            67.4556
+          ],
+          [
+            6879.41,
+            0.0
+          ]
+        ]
+      }
+    },
+    "montecarlo_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            139.645
+          ],
+          [
+            1001.86,
+            155.03
+          ],
+          [
+            1987.01,
+            173.964
+          ],
+          [
+            2204.08,
+            200.0
+          ],
+          [
+            3005.57,
+            214.201
+          ],
+          [
+            3473.1,
+            208.284
+          ],
+          [
+            3990.72,
+            211.834
+          ],
+          [
+            5025.97,
+            210.651
+          ],
+          [
+            6027.83,
+            182.249
+          ],
+          [
+            6478.66,
+            143.195
+          ],
+          [
+            7012.99,
+            86.3905
+          ],
+          [
+            7547.31,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "ssr_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            249.704
+          ],
+          [
+            935.065,
+            343.195
+          ],
+          [
+            2003.71,
+            379.882
+          ],
+          [
+            2922.08,
+            391.716
+          ],
+          [
+            3306.12,
+            385.799
+          ],
+          [
+            4007.42,
+            389.349
+          ],
+          [
+            4391.47,
+            404.734
+          ],
+          [
+            4742.12,
+            396.45
+          ],
+          [
+            6011.13,
+            362.13
+          ],
+          [
+            6762.52,
+            196.45
+          ],
+          [
+            7330.24,
+            60.355
+          ],
+          [
+            7497.22,
+            0.0
+          ]
+        ]
+      }
+    },
+    "corvettec5_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 3000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            168.047
+          ],
+          [
+            567.718,
+            254.438
+          ],
+          [
+            985.158,
+            284.024
+          ],
+          [
+            1703.15,
+            302.959
+          ],
+          [
+            2571.43,
+            324.348
+          ],
+          [
+            3322.82,
+            347.14
+          ],
+          [
+            3957.33,
+            362.919
+          ],
+          [
+            4474.95,
+            376.068
+          ],
+          [
+            5009.28,
+            370.809
+          ],
+          [
+            5543.6,
+            337.497
+          ],
+          [
+            5994.43,
+            300.592
+          ],
+          [
+            6745.83,
+            196.45
+          ],
+          [
+            7146.57,
+            92.3077
+          ],
+          [
+            7547.31,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "corvettec6_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 3000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            168.047
+          ],
+          [
+            567.718,
+            254.438
+          ],
+          [
+            985.158,
+            298.225
+          ],
+          [
+            1619.67,
+            321.893
+          ],
+          [
+            2554.73,
+            347.929
+          ],
+          [
+            3339.52,
+            364.497
+          ],
+          [
+            3974.03,
+            389.349
+          ],
+          [
+            4441.56,
+            400.0
+          ],
+          [
+            4992.58,
+            390.533
+          ],
+          [
+            5994.43,
+            352.663
+          ],
+          [
+            6745.83,
+            196.45
+          ],
+          [
+            7146.57,
+            92.3077
+          ],
+          [
+            7547.31,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "belair_car": {
+      "maxRPM": 5000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1000.0,
+      "inertia": 0.5,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 1500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            152.663
+          ],
+          [
+            450.835,
+            153.846
+          ],
+          [
+            968.46,
+            179.882
+          ],
+          [
+            1419.3,
+            195.266
+          ],
+          [
+            1886.83,
+            210.651
+          ],
+          [
+            2471.24,
+            215.385
+          ],
+          [
+            3105.75,
+            207.101
+          ],
+          [
+            3623.38,
+            201.183
+          ],
+          [
+            3957.33,
+            188.166
+          ],
+          [
+            4558.44,
+            166.864
+          ],
+          [
+            5109.46,
+            93.4911
+          ],
+          [
+            5677.18,
+            0.0
+          ]
+        ]
+      }
+    },
+    "camaro69_car": {
+      "maxRPM": 7000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1000.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            331.361
+          ],
+          [
+            667.904,
+            336.095
+          ],
+          [
+            1168.83,
+            340.828
+          ],
+          [
+            1886.83,
+            362.13
+          ],
+          [
+            2671.61,
+            378.698
+          ],
+          [
+            3189.24,
+            383.432
+          ],
+          [
+            3606.68,
+            379.882
+          ],
+          [
+            3990.72,
+            371.598
+          ],
+          [
+            4925.79,
+            363.314
+          ],
+          [
+            6027.83,
+            342.757
+          ],
+          [
+            6745.83,
+            319.088
+          ],
+          [
+            7280.15,
+            269.121
+          ],
+          [
+            7847.87,
+            140.259
+          ],
+          [
+            8215.21,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "chevelle64_car": {
+      "maxRPM": 7000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1000.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 1500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            331.361
+          ],
+          [
+            400.742,
+            343.195
+          ],
+          [
+            1118.74,
+            364.497
+          ],
+          [
+            1820.04,
+            378.698
+          ],
+          [
+            2521.34,
+            396.45
+          ],
+          [
+            3055.66,
+            407.101
+          ],
+          [
+            3423.01,
+            410.651
+          ],
+          [
+            3907.24,
+            405.917
+          ],
+          [
+            4474.95,
+            397.633
+          ],
+          [
+            5176.25,
+            383.432
+          ],
+          [
+            6077.92,
+            376.331
+          ],
+          [
+            6879.41,
+            344.379
+          ],
+          [
+            7280.15,
+            301.775
+          ],
+          [
+            7680.89,
+            220.118
+          ],
+          [
+            7847.87,
+            140.259
+          ],
+          [
+            8215.21,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "aveo_car": {
+      "maxRPM": 6300.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1000.0,
+      "inertia": 0.3,
+      "brakingCoeff": 1.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 1500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            551.02,
+            0.0
+          ],
+          [
+            1519.48,
+            82.8402
+          ],
+          [
+            2471.24,
+            98.2248
+          ],
+          [
+            3606.68,
+            110.059
+          ],
+          [
+            4992.58,
+            100.592
+          ],
+          [
+            5994.43,
+            82.8402
+          ],
+          [
+            6628.94,
+            30.7692
+          ],
+          [
+            6979.59,
+            0.0
+          ]
+        ]
+      }
+    },
+    "tahoe2003_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            249.704
+          ],
+          [
+            985.158,
+            265.089
+          ],
+          [
+            2020.41,
+            278.107
+          ],
+          [
+            3005.57,
+            281.657
+          ],
+          [
+            3974.03,
+            301.775
+          ],
+          [
+            4424.86,
+            310.059
+          ],
+          [
+            5025.97,
+            301.775
+          ],
+          [
+            5994.43,
+            274.556
+          ],
+          [
+            6695.73,
+            198.817
+          ],
+          [
+            7163.27,
+            95.858
+          ],
+          [
+            7547.31,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "trailblazer_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            249.704
+          ],
+          [
+            985.158,
+            265.089
+          ],
+          [
+            1987.01,
+            300.592
+          ],
+          [
+            3005.57,
+            306.509
+          ],
+          [
+            4007.42,
+            323.077
+          ],
+          [
+            4992.58,
+            307.692
+          ],
+          [
+            5977.74,
+            289.941
+          ],
+          [
+            6695.73,
+            198.817
+          ],
+          [
+            7163.27,
+            95.858
+          ],
+          [
+            7547.31,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "camaro_z28_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 3000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            168.047
+          ],
+          [
+            567.718,
+            254.438
+          ],
+          [
+            985.158,
+            298.225
+          ],
+          [
+            1619.67,
+            321.893
+          ],
+          [
+            2437.85,
+            335.744
+          ],
+          [
+            3322.82,
+            331.361
+          ],
+          [
+            4057.51,
+            312.075
+          ],
+          [
+            4925.79,
+            285.777
+          ],
+          [
+            5710.58,
+            242.823
+          ],
+          [
+            6495.36,
+            184.966
+          ],
+          [
+            7146.57,
+            92.3077
+          ],
+          [
+            7547.31,
+            1.18343
+          ]
+        ]
+      }
+    },
+    "camaro76_car": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2500.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            147.929
+          ],
+          [
+            617.811,
+            233.136
+          ],
+          [
+            1269.02,
+            255.621
+          ],
+          [
+            2020.41,
+            272.189
+          ],
+          [
+            3055.66,
+            275.74
+          ],
+          [
+            4007.42,
+            286.391
+          ],
+          [
+            4775.51,
+            266.272
+          ],
+          [
+            5526.9,
+            243.787
+          ],
+          [
+            6211.5,
+            188.166
+          ],
+          [
+            6729.13,
+            98.2248
+          ],
+          [
+            7363.64,
+            0.0
+          ]
+        ]
+      }
+    },
+    "azlk_400": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            23.6686
+          ],
+          [
+            1018.55,
+            28.9283
+          ],
+          [
+            2037.11,
+            38.5711
+          ],
+          [
+            3038.96,
+            40.3243
+          ],
+          [
+            4024.12,
+            42.9542
+          ],
+          [
+            4959.18,
+            40.3243
+          ],
+          [
+            5994.43,
+            29.805
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "azlk_407": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            23.6686
+          ],
+          [
+            1018.55,
+            44.7074
+          ],
+          [
+            2020.41,
+            49.0905
+          ],
+          [
+            3022.26,
+            52.597
+          ],
+          [
+            3974.03,
+            57.8567
+          ],
+          [
+            4458.26,
+            62.2397
+          ],
+          [
+            4992.58,
+            56.1034
+          ],
+          [
+            5994.43,
+            41.201
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "azlk_408": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            23.6686
+          ],
+          [
+            1018.55,
+            44.7074
+          ],
+          [
+            2003.71,
+            54.3502
+          ],
+          [
+            3022.26,
+            56.9801
+          ],
+          [
+            3974.03,
+            62.2397
+          ],
+          [
+            4441.56,
+            65.7462
+          ],
+          [
+            5025.97,
+            61.3631
+          ],
+          [
+            5994.43,
+            41.201
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "azlk_412": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            33.3114
+          ],
+          [
+            1001.86,
+            57.8567
+          ],
+          [
+            2003.71,
+            71.0059
+          ],
+          [
+            2988.87,
+            78.8955
+          ],
+          [
+            3489.8,
+            87.6616
+          ],
+          [
+            4007.42,
+            85.0318
+          ],
+          [
+            4742.12,
+            75.389
+          ],
+          [
+            5493.51,
+            63.993
+          ],
+          [
+            5994.43,
+            41.201
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "azlk_412_rally": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            45.584
+          ],
+          [
+            985.158,
+            73.6358
+          ],
+          [
+            2003.71,
+            85.0318
+          ],
+          [
+            2938.78,
+            93.7979
+          ],
+          [
+            3489.8,
+            100.811
+          ],
+          [
+            3974.03,
+            96.4278
+          ],
+          [
+            4792.21,
+            87.6616
+          ],
+          [
+            6011.13,
+            58.7333
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "azlk_427": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            45.584
+          ],
+          [
+            968.46,
+            61.3631
+          ],
+          [
+            1987.01,
+            77.1422
+          ],
+          [
+            2988.87,
+            86.785
+          ],
+          [
+            3256.03,
+            92.0447
+          ],
+          [
+            3690.17,
+            87.6616
+          ],
+          [
+            4441.56,
+            78.0188
+          ],
+          [
+            5293.14,
+            67.4995
+          ],
+          [
+            5994.43,
+            46.4607
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "azlk_434": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            45.584
+          ],
+          [
+            968.46,
+            61.3631
+          ],
+          [
+            1987.01,
+            77.1422
+          ],
+          [
+            2988.87,
+            86.785
+          ],
+          [
+            3256.03,
+            92.0447
+          ],
+          [
+            3690.17,
+            87.6616
+          ],
+          [
+            4441.56,
+            78.0188
+          ],
+          [
+            5293.14,
+            67.4995
+          ],
+          [
+            5994.43,
+            46.4607
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "izh_412": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            39.4477
+          ],
+          [
+            1001.86,
+            57.8567
+          ],
+          [
+            2003.71,
+            71.0059
+          ],
+          [
+            2988.87,
+            78.8955
+          ],
+          [
+            3489.8,
+            87.6616
+          ],
+          [
+            4007.42,
+            85.0318
+          ],
+          [
+            4742.12,
+            75.389
+          ],
+          [
+            5493.51,
+            63.993
+          ],
+          [
+            5994.43,
+            41.201
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "gaz_11_73": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            45.584
+          ],
+          [
+            918.367,
+            73.6358
+          ],
+          [
+            1987.01,
+            91.1681
+          ],
+          [
+            2955.47,
+            97.3044
+          ],
+          [
+            3539.89,
+            101.687
+          ],
+          [
+            4024.12,
+            92.9213
+          ],
+          [
+            4625.23,
+            89.4148
+          ],
+          [
+            5293.14,
+            67.4995
+          ],
+          [
+            5994.43,
+            46.4607
+          ],
+          [
+            6729.13,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "gaz_12": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            33.3952,
+            74.5124
+          ],
+          [
+            534.323,
+            85.0318
+          ],
+          [
+            1018.55,
+            104.317
+          ],
+          [
+            1970.32,
+            114.837
+          ],
+          [
+            3005.57,
+            120.973
+          ],
+          [
+            3623.38,
+            126.233
+          ],
+          [
+            4307.98,
+            117.467
+          ],
+          [
+            5092.76,
+            110.454
+          ],
+          [
+            5944.34,
+            85.0318
+          ],
+          [
+            6345.08,
+            66.6228
+          ],
+          [
+            7614.1,
+            0.0
+          ]
+        ]
+      }
+    },
+    "gaz_13": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            195.485
+          ],
+          [
+            751.391,
+            212.141
+          ],
+          [
+            1452.69,
+            233.18
+          ],
+          [
+            2721.71,
+            255.972
+          ],
+          [
+            3740.26,
+            271.751
+          ],
+          [
+            4859.0,
+            262.985
+          ],
+          [
+            5443.41,
+            240.193
+          ],
+          [
+            6228.2,
+            188.472
+          ],
+          [
+            7614.1,
+            0.0
+          ]
+        ]
+      }
+    },
+    "gaz_14": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            309.446
+          ],
+          [
+            1051.95,
+            312.952
+          ],
+          [
+            2020.41,
+            324.348
+          ],
+          [
+            3005.57,
+            339.25
+          ],
+          [
+            3807.05,
+            333.991
+          ],
+          [
+            4808.91,
+            330.484
+          ],
+          [
+            5627.09,
+            312.952
+          ],
+          [
+            6077.92,
+            286.654
+          ],
+          [
+            7614.1,
+            0.0
+          ]
+        ]
+      }
+    },
+    "gaz_20": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            46.4607
+          ],
+          [
+            768.089,
+            49.0905
+          ],
+          [
+            1920.22,
+            60.4865
+          ],
+          [
+            2738.4,
+            74.5124
+          ],
+          [
+            3606.68,
+            78.8955
+          ],
+          [
+            4541.74,
+            68.3761
+          ],
+          [
+            5142.86,
+            52.597
+          ],
+          [
+            5961.04,
+            41.201
+          ],
+          [
+            6545.45,
+            0.0
+          ]
+        ]
+      }
+    },
+    "gaz_21": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            55.2268
+          ],
+          [
+            1068.65,
+            67.4995
+          ],
+          [
+            2103.9,
+            81.5253
+          ],
+          [
+            2838.59,
+            86.785
+          ],
+          [
+            3606.68,
+            91.1681
+          ],
+          [
+            4291.28,
+            80.6487
+          ],
+          [
+            4925.79,
+            72.7591
+          ],
+          [
+            5810.76,
+            56.9801
+          ],
+          [
+            6061.22,
+            42.0776
+          ],
+          [
+            6545.45,
+            0.0
+          ]
+        ]
+      }
+    },
+    "gaz_22": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            98.181
+          ],
+          [
+            651.206,
+            106.947
+          ],
+          [
+            1586.27,
+            120.096
+          ],
+          [
+            2320.96,
+            131.492
+          ],
+          [
+            3222.63,
+            121.85
+          ],
+          [
+            4107.61,
+            103.441
+          ],
+          [
+            4775.51,
+            88.5382
+          ],
+          [
+            5526.9,
+            80.6487
+          ],
+          [
+            6545.45,
+            0.0
+          ]
+        ]
+      }
+    },
+    "gaz_69": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            33.3952,
+            54.3502
+          ],
+          [
+            384.045,
+            55.2268
+          ],
+          [
+            1118.74,
+            59.6099
+          ],
+          [
+            1936.92,
+            69.2527
+          ],
+          [
+            2972.17,
+            76.2656
+          ],
+          [
+            3690.17,
+            79.7721
+          ],
+          [
+            4307.98,
+            75.389
+          ],
+          [
+            4892.39,
+            65.7462
+          ],
+          [
+            5510.2,
+            55.2268
+          ],
+          [
+            6011.13,
+            33.3114
+          ],
+          [
+            6545.45,
+            0.0
+          ]
+        ]
+      }
+    },
+    "gaz_m1": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            16.6976,
+            68.3761
+          ],
+          [
+            1085.34,
+            76.2656
+          ],
+          [
+            1936.92,
+            80.6487
+          ],
+          [
+            2972.17,
+            90.2915
+          ],
+          [
+            3823.75,
+            85.0318
+          ],
+          [
+            4825.6,
+            78.0188
+          ],
+          [
+            5359.93,
+            73.6358
+          ],
+          [
+            5977.74,
+            59.6099
+          ],
+          [
+            6946.2,
+            0.0
+          ]
+        ]
+      }
+    },
+    "S3A_M": {
+      "maxRPM": 4000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            2.62985
+          ],
+          [
+            317.254,
+            5.2597
+          ],
+          [
+            918.367,
+            13.1492
+          ],
+          [
+            1519.48,
+            16.6557
+          ],
+          [
+            2003.71,
+            18.4089
+          ],
+          [
+            2354.36,
+            16.6557
+          ],
+          [
+            3105.75,
+            13.1492
+          ],
+          [
+            3723.56,
+            7.88955
+          ],
+          [
+            4207.79,
+            1.75323
+          ]
+        ]
+      }
+    },
+    "start": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            98.181
+          ],
+          [
+            651.206,
+            106.947
+          ],
+          [
+            1586.27,
+            120.096
+          ],
+          [
+            2320.96,
+            131.492
+          ],
+          [
+            3222.63,
+            121.85
+          ],
+          [
+            4107.61,
+            103.441
+          ],
+          [
+            4775.51,
+            88.5382
+          ],
+          [
+            5526.9,
+            80.6487
+          ],
+          [
+            6545.45,
+            0.0
+          ]
+        ]
+      }
+    },
+    "zaz_965": {
+      "maxRPM": 4000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            10.5194
+          ],
+          [
+            851.577,
+            28.0517
+          ],
+          [
+            1619.67,
+            29.805
+          ],
+          [
+            2337.66,
+            35.9413
+          ],
+          [
+            2972.17,
+            32.4348
+          ],
+          [
+            3656.77,
+            14.0259
+          ],
+          [
+            5092.76,
+            0.0
+          ]
+        ]
+      }
+    },
+    "zaz_968": {
+      "maxRPM": 4000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            10.5194
+          ],
+          [
+            617.811,
+            35.9413
+          ],
+          [
+            1335.81,
+            43.8308
+          ],
+          [
+            2120.59,
+            46.4607
+          ],
+          [
+            2705.01,
+            53.4736
+          ],
+          [
+            3322.82,
+            43.8308
+          ],
+          [
+            3990.72,
+            27.1751
+          ],
+          [
+            4525.05,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "zaz_968m": {
+      "maxRPM": 4000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            0.0,
+            10.5194
+          ],
+          [
+            617.811,
+            35.9413
+          ],
+          [
+            1335.81,
+            43.8308
+          ],
+          [
+            2120.59,
+            46.4607
+          ],
+          [
+            2705.01,
+            53.4736
+          ],
+          [
+            3322.82,
+            43.8308
+          ],
+          [
+            3990.72,
+            27.1751
+          ],
+          [
+            4525.05,
+            0.876616
+          ]
+        ]
+      }
+    },
+    "zil_41041": {
+      "maxRPM": 6000.0,
+      "idleRPM": 800.0,
+      "autoClutchRPM": 1200.0,
+      "inertia": 0.3,
+      "brakingCoeff": 2.0,
+      "nitroChangeSpeed": 2.0,
+      "clutchMaxTorque": 2000.0,
+      "torqueMul": 1.35,
+      "torque": {
+        "p": [
+          [
+            50.0928,
+            403.243
+          ],
+          [
+            701.299,
+            421.652
+          ],
+          [
+            1769.94,
+            440.061
+          ],
+          [
+            2554.73,
+            448.827
+          ],
+          [
+            3523.19,
+            446.198
+          ],
+          [
+            4808.91,
+            434.802
+          ],
+          [
+            5844.16,
+            425.159
+          ],
+          [
+            6829.31,
+            376.068
+          ],
+          [
+            7246.75,
+            324.348
+          ],
+          [
+            8415.58,
+            0.0
+          ]
+        ]
+      }
+    }
+  },
+  "brakes": {
+    "standard": {
+      "frontBrakesTorque": 2000.0,
+      "rearBrakesTorque": 600.0,
+      "handBrakesTorque": 1200.0,
+      "brakeForceAdjustK": 0.0,
+      "minWheelSelfBrakeTorque": 0.2,
+      "minFreeWheelSelfBrakeTorque": 25.0
+    }
+  },
+  "cobalt_car": {
+    "engine": "cobaltSS",
+    "gearbox": "cobalt_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 5.0,
+    "airDragQuality": 1.0,
+    "diffFront": {
+      "type": 1,
+      "locking_coeff": 10.0
+    }
+  },
+  "caprice_car": {
+    "engine": "caprice_car",
+    "gearbox": "caprice_car",
+    "tire": "paceika_RWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 8.0
+  },
+  "malibu_sedan_car": {
+    "engine": "malibu_sedan_car",
+    "gearbox": "malibu_sedan_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 8.0
+  },
+  "malibu_maxx_car": {
+    "engine": "malibu_maxx_car",
+    "gearbox": "malibu_maxx_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0
+  },
+  "avalanche_car": {
+    "engine": "avalanche_car",
+    "gearbox": "avalanche_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0,
+    "diffCenter": {
+      "typeStr": "eLSD",
+      "fixedRatio": 0.4
+    }
+  },
+  "colorado_car": {
+    "engine": "colorado_car",
+    "gearbox": "colorado_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0,
+    "diffCenter": {
+      "typeStr": "eLSD",
+      "fixedRatio": 0.4
+    }
+  },
+  "silverado_car": {
+    "engine": "silverado_car",
+    "gearbox": "silverado_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0,
+    "diffCenter": {
+      "typeStr": "eLSD",
+      "fixedRatio": 0.4
+    }
+  },
+  "montecarlo_car": {
+    "engine": "montecarlo_car",
+    "gearbox": "montecarlo_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0
+  },
+  "ssr_car": {
+    "engine": "ssr_car",
+    "gearbox": "ssr_car",
+    "tire": "paceika_RWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0,
+    "diffCenter": {
+      "typeStr": "eLSD",
+      "fixedRatio": 0.4
+    }
+  },
+  "corvettec5_car": {
+    "engine": "corvettec5_car",
+    "gearbox": "corvettec5_car",
+    "tire": "paceika_RWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0,
+    "diffRear": {
+      "typeStr": "salisbury",
+      "powerRatio": 3.0,
+      "coastRatio": 2.0
+    }
+  },
+  "corvettec6_car": {
+    "engine": "corvettec6_car",
+    "gearbox": "corvettec6_car",
+    "tire": "paceika_RWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 3.0,
+    "diffRear": {
+      "typeStr": "salisbury",
+      "powerRatio": 3.0,
+      "coastRatio": 2.0
+    }
+  },
+  "belair_car": {
+    "engine": "belair_car",
+    "gearbox": "belair_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 6.0,
+    "diffRear": {
+      "typeStr": "salisbury",
+      "powerRatio": 3.0,
+      "coastRatio": 2.0
+    }
+  },
+  "camaro69_car": {
+    "engine": "camaro69_car",
+    "gearbox": "camaro69_car",
+    "tire": "paceika_RWD",
+    "brakes": "standard",
+    "maxWheelAng": 8.0,
+    "ackermanAng": 5.0,
+    "diffRear": {
+      "typeStr": "salisbury",
+      "powerRatio": 3.0,
+      "coastRatio": 2.0
+    }
+  },
+  "chevelle64_car": {
+    "engine": "chevelle64_car",
+    "gearbox": "chevelle64_car",
+    "tire": "paceika_RWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 5.0,
+    "diffRear": {
+      "typeStr": "salisbury",
+      "powerRatio": 3.0,
+      "coastRatio": 2.0
+    }
+  },
+  "camaro76_car": {
+    "engine": "camaro76_car",
+    "gearbox": "camaro76_car",
+    "tire": "paceika_RWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 5.0,
+    "diffRear": {
+      "typeStr": "salisbury",
+      "powerRatio": 3.0,
+      "coastRatio": 2.0
+    }
+  },
+  "tahoe2003_car": {
+    "engine": "tahoe2003_car",
+    "gearbox": "tahoe2003_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0,
+    "diffCenter": {
+      "typeStr": "eLSD",
+      "fixedRatio": 0.4
+    }
+  },
+  "trailblazer_car": {
+    "engine": "trailblazer_car",
+    "gearbox": "trailblazer_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0,
+    "diffCenter": {
+      "typeStr": "eLSD",
+      "fixedRatio": 0.4
+    }
+  },
+  "camaro_z28_car": {
+    "engine": "camaro_z28_car",
+    "gearbox": "camaro_z28_car",
+    "tire": "paceika_RWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0,
+    "diffRear": {
+      "typeStr": "salisbury",
+      "powerRatio": 3.0,
+      "coastRatio": 2.0
+    }
+  },
+  "aveo_car": {
+    "engine": "aveo_car",
+    "gearbox": "aveo_car",
+    "tire": "paceika_FWD",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 10.0
+  },
+  "default": {
+    "engine": "standard",
+    "gearbox": "standard",
+    "tire": "standard",
+    "brakes": "standard",
+    "maxWheelAng": 20.0
+  },
+  "gaz12": {
+    "engine": "gaz_12",
+    "gearbox": "gaz_12",
+    "tire": "standard",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 6.0
+  },
+  "gaz20": {
+    "engine": "gaz_20",
+    "gearbox": "gaz_20",
+    "tire": "standard",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 6.0
+  },
+  "azlk408": {
+    "engine": "azlk_408",
+    "gearbox": "azlk_408",
+    "tire": "standard",
+    "brakes": "standard",
+    "maxWheelAng": 30.0,
+    "ackermanAng": 6.0
+  },
+  "params_default": {
+    "damping": {
+      "crashDampingFactor": 0.3,
+      "crashDampingModifStatic": 2.0,
+      "crashDampingMinKmh": 15.0,
+      "maxTimeSinceCrash": 0.05,
+      "minCrashNormImp": 20.0
+    }
+  }
+}

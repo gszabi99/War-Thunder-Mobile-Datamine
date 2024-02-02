@@ -1,0 +1,22 @@
+{
+  "gridSize": 128,
+  "ineffectiveColor": [
+    64,
+    64,
+    64,
+    64
+  ],
+  "chanceColor": [
+    0,
+    255,
+    255,
+    255
+  ],
+  "effectiveColor": [
+    0,
+    255,
+    0,
+    255
+  ],
+  "yNulling": false
+}

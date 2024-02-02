@@ -1,0 +1,107 @@
+{
+  "selector": [
+    {
+      "name": "testFighterVsFighter",
+      "selectStrategy": "ordered",
+      "reaction": [
+        {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": {},
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        },
+        {
+          "event": "collisionAhead",
+          "parallel": {
+            "turnToEvasiveDir": {},
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        },
+        {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      ],
+      "sequencer": {
+        "findUnit": {
+          "searchForAir": true,
+          "onlyMissionTargets": false,
+          "radius": 100000.0
+        },
+        "energyAttack": {
+          "allowSpeedCheat": false
+        }
+      }
+    },
+    {
+      "name": "testFighterVsFighterDM",
+      "selectStrategy": "ordered",
+      "reaction": [
+        {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": {},
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        },
+        {
+          "event": "collisionAhead",
+          "parallel": {
+            "turnToEvasiveDir": {},
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        },
+        {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      ],
+      "sequencer": {
+        "findUnit": {
+          "searchForAir": true,
+          "onlyMissionTargets": false,
+          "radius": 100000.0
+        },
+        "fighterAttackFighter": {
+          "allowSpeedCheat": false,
+          "avoidCollisions": false,
+          "ignoreDistance": true
+        }
+      }
+    },
+    {
+      "name": "wtmBenchmark",
+      "selectStrategy": "ordered",
+      "sequencer": {
+        "getFromListBTB": {
+          "listName": "targets",
+          "varName": "currentTarget",
+          "indexType": "first"
+        },
+        "setAsTarget": {
+          "varName": "currentTarget"
+        },
+        "fighterAttackFighter": {}
+      }
+    }
+  ]
+}

@@ -41,19 +41,6 @@ function showIncompatibleVersionMsg() {
   })
 }
 
-function showRestartForUpdateMsg() {
-  sendErrorBqEvent("Restart to apply update (required)")
-  openFMsgBox({
-    uid = "errorMessageBox"
-    text = loc("updater/restartForUpdate/desc")
-    buttons = [
-      { text = loc("msgbox/btn_restart"), eventId = "matchingExitGame",
-        styleId = "PRIMARY", isDefault = true }
-    ]
-    isPersist = true
-  })
-}
-
 let customErrorHandlers = {
   [SERVER_ERROR_INVALID_VERSION] = function onInvalidVersion() {
     sendErrorBqEvent("Download new version (optional)")
@@ -102,6 +89,5 @@ function showMatchingError(response) {
 }
 
 eventbus_subscribe("showIncompatibleVersionMsg", @(_) showIncompatibleVersionMsg())
-eventbus_subscribe("showRestartForUpdateMsg", @(_) showRestartForUpdateMsg())
 
 return showMatchingError

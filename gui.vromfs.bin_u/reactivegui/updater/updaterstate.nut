@@ -203,7 +203,7 @@ eventbus_subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
     downloadState(evt)
   else if (eventType == UPDATER_EVENT_INCOMPATIBLE_VERSION) {
     isIncompatibleVersion(true)
-    eventbus_send((evt?.needExeUpdate ?? true) ? "showIncompatibleVersionMsg" : "showRestartForUpdateMsg", null)
+    eventbus_send("showIncompatibleVersionMsg", null)
   }
   else if (eventType == UPDATER_EVENT_ERROR) {
     let errText = evt?.error ?? UPDATER_ERROR

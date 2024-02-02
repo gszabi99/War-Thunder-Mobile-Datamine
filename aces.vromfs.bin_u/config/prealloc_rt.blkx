@@ -1,0 +1,608 @@
+{
+  "rt": [
+    {
+      "backBufSz": true,
+      "count": 1,
+      "msaa": false,
+      "fmt": "A16B16G16R16F",
+      "tile": true,
+      "name": "targetTex"
+    },
+    {
+      "backBufSz": true,
+      "count": 1,
+      "msaa": false,
+      "fmt": "R32F",
+      "tile": true,
+      "name": "targetZTex"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        2,
+        2
+      ],
+      "fmt": "R32F",
+      "tile": true,
+      "name": "targetLowZTex"
+    },
+    {
+      "size": [
+        32,
+        64
+      ],
+      "count": 1,
+      "fmt": "G16R16F",
+      "tile": false,
+      "name": "SimulInscatterTex"
+    },
+    {
+      "size": [
+        32,
+        64
+      ],
+      "count": 1,
+      "fmt": "G16R16F",
+      "tile": false,
+      "name": "SimulInscatterTexZW"
+    },
+    {
+      "size": [
+        16,
+        64
+      ],
+      "count": 1,
+      "fmt": "A16B16G16R16F",
+      "tile": false,
+      "alias": "SimulInscatterTex",
+      "name": "SimulInscatterTexRT"
+    },
+    {
+      "size": [
+        16,
+        64
+      ],
+      "count": 1,
+      "fmt": "A16B16G16R16F",
+      "tile": false,
+      "alias": "SimulInscatterTexZW",
+      "name": "SimulInscatterTexZWRT"
+    },
+    {
+      "size": [
+        1024,
+        1024
+      ],
+      "fmt": "R32F",
+      "tile": true,
+      "name": "dest_vsm_tex"
+    },
+    {
+      "size": [
+        1024,
+        1024
+      ],
+      "fmt": "G16R16F",
+      "tile": true,
+      "name": "temp_vsm_tex"
+    },
+    {
+      "size": [
+        1024,
+        1024
+      ],
+      "fmt": "G16R16F",
+      "levels": 1,
+      "tile": true,
+      "name": "targ_vsm_tex"
+    },
+    {
+      "size": [
+        512,
+        1024
+      ],
+      "fmt": "A16B16G16R16F",
+      "tile": true,
+      "alias": "temp_vsm_tex",
+      "name": "temp_vsm_wrtex"
+    },
+    {
+      "size": [
+        512,
+        1024
+      ],
+      "fmt": "A16B16G16R16F",
+      "levels": 1,
+      "tile": true,
+      "alias": "targ_vsm_tex",
+      "name": "targ_vsm_wrtex"
+    },
+    {
+      "size": [
+        1280,
+        1024
+      ],
+      "count": 1,
+      "tile": true,
+      "name": "localmem_area"
+    },
+    {
+      "backBufSz": true,
+      "count": 1,
+      "tile": true,
+      "alias": "localmem_area",
+      "name": "lowResolutionFxTex"
+    },
+    {
+      "size": [
+        1280,
+        1024
+      ],
+      "count": 1,
+      "tile": false,
+      "cpuread": true,
+      "name": "mainmem_area"
+    },
+    {
+      "backBufSz": true,
+      "count": 1,
+      "tile": false,
+      "cpuread": true,
+      "alias": "mainmem_area",
+      "name": "mlaaTex"
+    },
+    {
+      "size": [
+        256,
+        256
+      ],
+      "count": 2,
+      "tile": true
+    },
+    {
+      "size": [
+        256,
+        256
+      ],
+      "count": 1,
+      "fmt": "R8",
+      "tile": true
+    },
+    {
+      "backBufSz": true,
+      "count": 1,
+      "tile": true,
+      "name": "DemonPostFx LDR RT"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        4,
+        4
+      ],
+      "count": 2,
+      "fmt": "R8",
+      "tile": false,
+      "cpuread": true,
+      "name": "DemonPostFx luminance RT"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        4,
+        4
+      ],
+      "count": 1,
+      "tile": true,
+      "alias": "localmem_area",
+      "offset": [
+        0,
+        0
+      ],
+      "name": "DemonPostFx lowresA RT"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        4,
+        4
+      ],
+      "count": 1,
+      "tile": true,
+      "alias": "localmem_area",
+      "offset": [
+        512,
+        0
+      ],
+      "name": "DemonPostFx lowResTexB RT"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        4,
+        4
+      ],
+      "count": 1,
+      "tile": true,
+      "alias": "localmem_area",
+      "offset": [
+        0,
+        256
+      ],
+      "name": "DemonPostFx glowTex RT"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        4,
+        4
+      ],
+      "count": 1,
+      "tile": true,
+      "alias": "localmem_area",
+      "offset": [
+        512,
+        256
+      ],
+      "name": "DemonPostFx low-res previous frame RT"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        4,
+        4
+      ],
+      "count": 1,
+      "tile": true,
+      "cpuread": true,
+      "name": "DemonPostFx skyTex RT"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        4,
+        4
+      ],
+      "count": 1,
+      "fmt": "R8",
+      "tile": false,
+      "name": "DemonPostFx lowresA lum RT"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        4,
+        4
+      ],
+      "count": 1,
+      "fmt": "R8",
+      "tile": false,
+      "name": "DemonPostFx lowResTexB lum RT"
+    },
+    {
+      "size": [
+        128,
+        128
+      ],
+      "tile": false,
+      "levels": 4,
+      "fmt": "A8R8G8B8",
+      "name": "commonImpostorTex"
+    },
+    {
+      "size": [
+        128,
+        128
+      ],
+      "tile": false,
+      "levels": 4,
+      "fmt": "A8R8G8B8",
+      "name": "commonNormalImpostorTex"
+    },
+    {
+      "size": [
+        512,
+        512
+      ],
+      "swizzle": true,
+      "levels": 6,
+      "fmt": "A8R8G8B8",
+      "name": "water_near_normal_map"
+    },
+    {
+      "size": [
+        512,
+        512
+      ],
+      "swizzle": true,
+      "levels": 8,
+      "fmt": "A8R8G8B8",
+      "name": "water_far_normal_map"
+    },
+    {
+      "size": [
+        1024,
+        1024
+      ],
+      "levels": 1,
+      "fmt": "A8R8G8B8",
+      "name": "clipmapLocal",
+      "alias": "localmem_area"
+    },
+    {
+      "size": [
+        1024,
+        1024
+      ],
+      "cpuread": true,
+      "levels": 1,
+      "fmt": "A8R8G8B8",
+      "name": "clipmapMain",
+      "alias": "mainmem_area"
+    },
+    {
+      "size": [
+        3072,
+        2048
+      ],
+      "cpuread": false,
+      "levels": 1,
+      "fmt": "DXT5",
+      "name": "clipmap"
+    },
+    {
+      "size": [
+        512,
+        512
+      ],
+      "count": 1,
+      "fmt": "R5G6B5",
+      "swizzle": true
+    },
+    {
+      "size": [
+        512,
+        512
+      ],
+      "count": 1,
+      "fmt": "D16",
+      "swizzle": true
+    },
+    {
+      "size": [
+        1024,
+        1024
+      ],
+      "count": 1,
+      "fmt": "NVD16",
+      "swizzle": false,
+      "tile": true,
+      "name": "FlightModelWrap shadowDepthTex RT"
+    },
+    {
+      "size": [
+        128,
+        128
+      ],
+      "count": 1,
+      "fmt": "D16",
+      "swizzle": true,
+      "name": "cubeMapDepthTex"
+    },
+    {
+      "size": [
+        128,
+        128
+      ],
+      "count": 1,
+      "fmt": "D16",
+      "swizzle": true,
+      "name": "dynamicCubeDepthTex"
+    },
+    {
+      "size": [
+        128,
+        128
+      ],
+      "count": 3,
+      "fmt": "R5G6B5",
+      "cube": true,
+      "swizzle": true
+    },
+    {
+      "size": [
+        128,
+        128
+      ],
+      "count": 1,
+      "fmt": "R5G6B5",
+      "cube": true,
+      "swizzle": true,
+      "name": "waterCubeTex"
+    },
+    {
+      "size": [
+        320,
+        180
+      ],
+      "count": 1,
+      "tile": true,
+      "alias": "localmem_area",
+      "offset": [
+        0,
+        512
+      ],
+      "name": "waterReflectionTex"
+    },
+    {
+      "size": [
+        320,
+        180
+      ],
+      "count": 1,
+      "tile": true,
+      "name": "waterReflectionBlurredTex"
+    },
+    {
+      "backBufSz": true,
+      "count": 1,
+      "fmt": "R8",
+      "tile": true,
+      "name": "mblurMaskTex"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        2,
+        2
+      ],
+      "count": 1,
+      "fmt": "R32F",
+      "cpuread": true,
+      "tile": false,
+      "pitch_align": 256,
+      "name": "blurDepthTex",
+      "alias": "mainmem_area",
+      "offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        2,
+        2
+      ],
+      "count": 1,
+      "cpuread": true,
+      "tile": false,
+      "pitch_align": 256,
+      "name": "mblurVectors",
+      "alias": "mainmem_area",
+      "offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        2,
+        2
+      ],
+      "count": 1,
+      "cpuread": false,
+      "tile": true,
+      "pitch_align": 256,
+      "name": "mblurInputColorMaskTex"
+    },
+    {
+      "backBufSz": true,
+      "szDiv": [
+        2,
+        2
+      ],
+      "count": 1,
+      "cpuread": false,
+      "tile": true,
+      "pitch_align": 256,
+      "name": "mblurOutputColorTex",
+      "alias": "localmem_area",
+      "offset": [
+        640,
+        360
+      ]
+    },
+    {
+      "size": [
+        512,
+        512
+      ],
+      "count": 1,
+      "tile": true,
+      "name": "hazeOffsetTex"
+    },
+    {
+      "size": [
+        512,
+        512
+      ],
+      "count": 1,
+      "tile": true,
+      "alias": "localmem_area",
+      "offset": [
+        0,
+        0
+      ],
+      "name": "landColorTex"
+    },
+    {
+      "size": [
+        512,
+        512
+      ],
+      "count": 1,
+      "tile": false,
+      "cpuread": true,
+      "name": "landColorTexXdr"
+    },
+    {
+      "size": [
+        512,
+        512
+      ],
+      "count": 1,
+      "fmt": "R32F",
+      "tile": false,
+      "cpuread": true,
+      "name": "landHeightTex"
+    },
+    {
+      "size": [
+        32,
+        256
+      ],
+      "fmt": "A8R8G8B8",
+      "name": "cloudVolume2DTex"
+    },
+    {
+      "volume": true,
+      "alias": "cloudVolume2DTex",
+      "size": [
+        32,
+        16,
+        16
+      ],
+      "fmt": "A8R8G8B8",
+      "name": "cloudVolume3DTex"
+    },
+    {
+      "size": [
+        1024,
+        512
+      ],
+      "fmt": "A8R8G8B8",
+      "tile": true,
+      "name": "waterFoamTexTex"
+    },
+    {
+      "size": [
+        1024,
+        512
+      ],
+      "fmt": "NVD24",
+      "tile": true,
+      "name": "Global shadow depth"
+    },
+    {
+      "size": [
+        1024,
+        512
+      ],
+      "fmt": "R8",
+      "tile": true,
+      "name": "Land shadow"
+    }
+  ]
+}

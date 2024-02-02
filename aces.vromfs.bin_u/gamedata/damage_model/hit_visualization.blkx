@@ -1,0 +1,11 @@
+{
+  "genericDmgTypes": {
+    "type": [
+      "generic",
+      "cumulative"
+    ]
+  },
+  "fireDmgTypes": {
+    "type": "fire"
+  }
+}

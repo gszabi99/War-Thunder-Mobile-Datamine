@@ -1,0 +1,308 @@
+{
+  "fireFramerate": 20.0,
+  "speedMultiplier": 1.0,
+  "transitionThrottle": [
+    0.8,
+    0.95
+  ],
+  "transitionMixture": [
+    0.4,
+    0.8,
+    1.0
+  ],
+  "startingTransitionTime": 4.0,
+  "rpmToFxSpeed": 0.01,
+  "slowdownEffectProbability": [
+    0.001,
+    0.1
+  ],
+  "slowdownEffectFadeInRate": 5.0,
+  "slowdownEffectFadeOutTime": 0.5,
+  "engine0": {
+    "node": [
+      "fire1_1",
+      "fire1_12",
+      "fire1_8",
+      "fire1_11",
+      "fire1_7",
+      "fire1_14",
+      "fire1_5",
+      "fire1_16",
+      "fire1_4",
+      "fire1_15",
+      "fire1_3",
+      "fire1_10",
+      "fire1_6",
+      "fire1_9",
+      "fire1_2",
+      "fire1_13",
+      "fire1_17",
+      "fire1_18",
+      "fire1_19",
+      "fire1_20",
+      "fire1_21",
+      "fire1_22",
+      "fire1_23",
+      "fire1_24"
+    ],
+    "fxNode": "prop03_1"
+  },
+  "engine1": {
+    "node": [
+      "fire2_1",
+      "fire2_12",
+      "fire2_8",
+      "fire2_11",
+      "fire2_7",
+      "fire2_14",
+      "fire2_5",
+      "fire2_16",
+      "fire2_4",
+      "fire2_15",
+      "fire2_3",
+      "fire2_10",
+      "fire2_6",
+      "fire2_9",
+      "fire2_2",
+      "fire2_13",
+      "fire2_17",
+      "fire2_18",
+      "fire2_19",
+      "fire2_20",
+      "fire2_21",
+      "fire2_22",
+      "fire2_23",
+      "fire2_24"
+    ],
+    "fxNode": "prop03_2"
+  },
+  "engine2": {
+    "node": [
+      "fire3_1",
+      "fire3_12",
+      "fire3_8",
+      "fire3_11",
+      "fire3_7",
+      "fire3_14",
+      "fire3_5",
+      "fire3_16",
+      "fire3_4",
+      "fire3_15",
+      "fire3_3",
+      "fire3_10",
+      "fire3_6",
+      "fire3_9",
+      "fire3_2",
+      "fire3_13",
+      "fire3_17",
+      "fire3_18",
+      "fire3_19",
+      "fire3_20"
+    ],
+    "fxNode": "prop03_3"
+  },
+  "engine3": {
+    "node": [
+      "fire4_1",
+      "fire4_12",
+      "fire4_8",
+      "fire4_11",
+      "fire4_7",
+      "fire4_14",
+      "fire4_5",
+      "fire4_16",
+      "fire4_4",
+      "fire4_15",
+      "fire4_3",
+      "fire4_10",
+      "fire4_6",
+      "fire4_9",
+      "fire4_2",
+      "fire4_13",
+      "fire4_17",
+      "fire4_18",
+      "fire4_19",
+      "fire4_20"
+    ],
+    "fxNode": "prop03_4"
+  },
+  "engine4": {
+    "node": [
+      "fire5_1",
+      "fire5_12",
+      "fire5_8",
+      "fire5_11",
+      "fire5_7",
+      "fire5_14",
+      "fire5_5",
+      "fire5_16",
+      "fire5_4",
+      "fire5_15",
+      "fire5_3",
+      "fire5_10",
+      "fire5_6",
+      "fire5_9",
+      "fire5_2",
+      "fire5_13",
+      "fire5_17",
+      "fire5_18",
+      "fire5_19",
+      "fire5_20"
+    ],
+    "fxNode": "prop03_5"
+  },
+  "engine5": {
+    "node": [
+      "fire6_1",
+      "fire6_12",
+      "fire6_8",
+      "fire6_11",
+      "fire6_7",
+      "fire6_14",
+      "fire6_5",
+      "fire6_16",
+      "fire6_4",
+      "fire6_15",
+      "fire6_3",
+      "fire6_10",
+      "fire6_6",
+      "fire6_9",
+      "fire6_2",
+      "fire6_13",
+      "fire6_17",
+      "fire6_18",
+      "fire6_19",
+      "fire6_20"
+    ],
+    "fxNode": "prop03_6"
+  },
+  "slowdownMode": {
+    "effect": {
+      "probability": 0.7,
+      "colorAlpha": [
+        0.95,
+        0.55,
+        0.2,
+        0.25
+      ],
+      "fireTimeRange": [
+        0.01,
+        0.02
+      ],
+      "scaleRange": [
+        0.6,
+        1.0
+      ]
+    }
+  },
+  "startingMode": {
+    "effect": [
+      {
+        "fxName": "part_damage",
+        "colorAlpha": [
+          0.95,
+          0.55,
+          0.2,
+          0.05
+        ],
+        "colorVariation": 0.02,
+        "alphaVariation": 0.02,
+        "probability": 0.5,
+        "fireTimeRange": [
+          0.09,
+          0.12
+        ],
+        "scaleRange": [
+          0.5,
+          1.3
+        ],
+        "maxFxRpm": 70.0
+      },
+      {
+        "fxName": "motor_exhaust_wep",
+        "colorAlpha": [
+          0.95,
+          0.55,
+          0.2,
+          0.05
+        ],
+        "colorVariation": 0.02,
+        "alphaVariation": 0.02,
+        "fireTimeRange": [
+          0.09,
+          0.12
+        ],
+        "scaleRange": [
+          0.5,
+          1.3
+        ],
+        "probability": 1.0,
+        "maxFxRpm": 20.0
+      }
+    ]
+  },
+  "normalMode": {
+    "effect": {
+      "colorAlpha": [
+        0.23,
+        0.6,
+        0.8,
+        0.03
+      ],
+      "probability": 0.2,
+      "fireTimeRange": [
+        0.02,
+        0.02
+      ],
+      "scaleRange": [
+        0.35,
+        0.4
+      ],
+      "alphaVariation": 0.01
+    }
+  },
+  "battleMode": {
+    "effect": {
+      "colorAlpha": [
+        0.7,
+        0.55,
+        0.2,
+        0.06
+      ],
+      "probability": 0.2,
+      "fireTimeRange": [
+        0.02,
+        0.02
+      ],
+      "scaleRange": [
+        0.5,
+        0.7
+      ],
+      "colorVariation": 0.02,
+      "alphaVariation": 0.02
+    }
+  },
+  "wepMode": {
+    "exhaustFx": "smoke_exhaust_air",
+    "effect": {
+      "fxName": "smoke_exhaust_air",
+      "colorAlpha": [
+        0.95,
+        0.4,
+        0.15,
+        0.08
+      ],
+      "colorVariation": 0.01,
+      "probability": 0.5,
+      "fireTimeRange": [
+        0.01,
+        0.01
+      ],
+      "scaleRange": [
+        0.6,
+        1.0
+      ],
+      "alphaVariation": 0.01
+    }
+  }
+}
