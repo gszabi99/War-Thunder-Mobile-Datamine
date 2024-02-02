@@ -693,8 +693,8 @@ badcombination =
   "deez nuts",
   "dio bestia",
   "durka durka",
-  "f u c k",
   "f u c k e r",
+  "f u c k",
   "flipping the bird",
   "figlio di putana",
   "fudge packer",
@@ -702,9 +702,9 @@ badcombination =
   "jack off",
   "jungle bunny",
   "k k k",
-  "klu klux",
-  "klu klux klan",
   "ku klux klan",
+  "klu klux klan",
+  "klu klux",
   "koon hunt",
   "koon kill",
   "madonna puttana",
@@ -721,7 +721,8 @@ badcombination =
   "testa di cazzo",
   "white power",
   "xbl pet",
-  "8=d",
+  "8(=)+[d@]",
+  "[d@](=)+8",
 ]
 
 }

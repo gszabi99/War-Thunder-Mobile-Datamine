@@ -230,6 +230,8 @@ function join_room(params, cb) {
     })
 }
 
+let lastRoomId = mkWatched(persist, "lastRoomId", -1)
+
 function leave_room(params, cb) {
   let oldRoomId = g_mrooms_handlers.getRoomId()
   MRoomsHandlersState.isLeaving = true
@@ -822,6 +824,8 @@ SessionLobby = {
     if (showMatchingError(params))
       return this.switchStatus(lobbyStates.NOT_IN_ROOM)
 
+    lastRoomId.set(params.roomId)
+
     SessionLobbyState.roomId = params.roomId
     SessionLobbyState.roomUpdated = true
     SessionLobbyState.members.replace(getTblValue("members", params, []))
@@ -1383,4 +1387,5 @@ g_mrooms_handlers = MRoomsHandlers()
 
 return {
   joinRoom = @(roomId) SessionLobby.joinRoom(roomId)
+  lastRoomId
 }

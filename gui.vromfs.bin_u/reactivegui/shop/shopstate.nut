@@ -32,8 +32,7 @@ let categoryByCurrency = {
 }
 
 let sortCurrency = @(a, b) "currencies" not in a //compatibility with format before 2024.01.23
-  ? a.platinum <=> b.platinum
-    || a.gold <=> b.gold
+  ? a.gold <=> b.gold
     || a.wp <=> b.wp
   : (a.currencies?.platinum ?? 0) <=> (b.currencies?.platinum ?? 0)
     || (a.currencies?.gold ?? 0) <=> (b.currencies?.gold ?? 0)

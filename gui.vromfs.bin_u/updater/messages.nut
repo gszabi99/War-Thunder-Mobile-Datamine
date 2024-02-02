@@ -9,7 +9,7 @@ let { shell_execute } = require("dagor.shell")
 let { dgs_get_settings, exit } = require("dagor.system")
 let { send_counter = @(_, __, ___) null } = require_optional("statsd")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { needUpdateMsg } = require("updaterState.nut")
+let { needUpdateMsg, needRestartMsg } = require("updaterState.nut")
 let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let wndWidth = hdpx(1100)
@@ -136,13 +136,19 @@ local updateLocId = isDownloadedFromGooglePlay() ? "updater/newVersion/desc/andr
 let updateMsg = mkMsgBox(loc("updater/newVersion/header"),
   loc(updateLocId),
   mkButton(utf8ToUpper(loc("updater/btnUpdate")), openUpdateUrl))
+let restartMsg = mkMsgBox(loc("updater/newVersion/header"),
+  loc("updater/restartForUpdate/desc"),
+    mkButton(utf8ToUpper(loc("msgbox/btn_restart")), @() exit(0)))
 
 register_command(@() needUpdateMsg(!needUpdateMsg.value), "debug.updateMessage")
+register_command(@() needRestartMsg(!needRestartMsg.value), "debug.restartMessage")
 
 return @() {
-  watch = needUpdateMsg
+  watch = [needUpdateMsg, needRestartMsg]
   pos = [0, -hdpx(100)]
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
-  children = needUpdateMsg.value ? updateMsg : null
+  children = needUpdateMsg.get() ? updateMsg
+    : needRestartMsg.get() ? restartMsg
+    : null
 }

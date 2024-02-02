@@ -20,9 +20,6 @@ function mkHeader(header, child) {
   let textComp = {
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
-    colorTable = {
-      darken = 0xFFFFFFFF
-    }
     text = header
   }.__update(fontSmall)
 
@@ -46,7 +43,7 @@ let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
   children = [
     mkHeader(header,
       openInfo != null ? infoCommonButton(openInfo)
-        : desc != "" ? infoTooltipButton(@() "\n".concat(loc(locId), desc), { halign = ALIGN_LEFT })
+        : desc != "" ? infoTooltipButton(@() "\n".concat(colorize("@darken", loc(locId)), desc), { halign = ALIGN_LEFT })
         : null)
     content
   ]
