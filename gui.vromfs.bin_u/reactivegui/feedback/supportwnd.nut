@@ -15,7 +15,7 @@ let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nu
 let { textInput } = require("%rGui/components/textInput.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { canUseZendesk } = require("%rGui/feedback/supportState.nut")
+let { canUseZendeskApi } = require("%rGui/feedback/supportState.nut")
 let { hasLogFile } = require("logFileAttachment.nut")
 let { requestState, submitSupportRequest, onRequestResultSeen } = require("supportRequest.nut")
 
@@ -232,7 +232,7 @@ registerScene("supportWnd", supportWnd, onClose, isOpened)
 
 let openSupportTicketWnd = @() isOpened(true)
 let openSupportTicketUrl = @() eventbus_send("openUrl", { baseUrl = loc("url/feedback/support") })
-let openSupportTicketWndOrUrl = @() canUseZendesk.value ? openSupportTicketWnd() : openSupportTicketUrl()
+let openSupportTicketWndOrUrl = @() canUseZendeskApi.value ? openSupportTicketWnd() : openSupportTicketUrl()
 
 return {
   openSupportTicketWndOrUrl

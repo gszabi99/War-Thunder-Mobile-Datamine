@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logZ = log_with_prefix("[ZENDESK] ")
 let { parse_json } = require("json")
 let { httpRequest, HTTP_SUCCESS, HTTP_FAILED, HTTP_ABORTED } = require("dagor.http")
+let { zendeskApiUploadsUrl, zendeskApiRequestsUrl } = require("supportState.nut")
 let { getLogFileData } = require("logFileAttachment.nut")
 
 /*
@@ -83,7 +84,7 @@ function uploadAttachment(fileData, cb) {
   let { filename, mimeType, content } = fileData
   logZ($"Uploading attachment: {filename} ({content.len()} bytes)")
   httpRequest({
-    url = $"https://gaijin.zendesk.com/api/v2/uploads.json?filename={filename}"
+    url = zendeskApiUploadsUrl.get().subst(filename)
     method = "POST"
     headers = {
       ["Content-Type"] = mimeType,
@@ -133,7 +134,7 @@ function sendFormData() {
   if (attachments.len())
     data.request.comment.__update({ uploads = attachments.map(@(v) v.token) })
   httpRequest({
-    url = "https://gaijin.zendesk.com/api/v2/requests"
+    url = zendeskApiRequestsUrl.get()
     method = "POST"
     json = data
     callback = mkZendeskHttpRequestCb(

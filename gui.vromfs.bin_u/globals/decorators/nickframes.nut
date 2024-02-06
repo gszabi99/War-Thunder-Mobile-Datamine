@@ -12,7 +12,6 @@ let nickFrames = {
   horseshoe = @(n) $"○{n}○"
   winged_diamond = @(n) $"◉{n}◉"
   blazing_sunrise = @(n) $"◌{n}◌"
-  desert_barchan = @(n) $"◍{n}◎"
   palm = @(n) $"●{n}◐"
   machete = @(n) $"◑{n}◒"
   white_squall = @(n) $"◓{n}◔"
@@ -29,6 +28,7 @@ let nickFrames = {
   gun_sight = @(n) $"◨{n}◨"
   clenched_fist = @(n) $"◩{n}◩"
   decor_wtm_helper = @(n) $"◣{n}◣"
+  crossed_swords = @(n) $"♠{n}♠"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

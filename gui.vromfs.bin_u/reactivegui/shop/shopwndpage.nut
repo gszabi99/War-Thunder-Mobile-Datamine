@@ -160,7 +160,7 @@ let mkShopGamercard = @(onClose) function(){
   let currencies = {}
   let items = {}
   local premiumDays = 0
-  foreach(goods in goodsByCategory.value[curCategoryId.value]){
+  foreach (goods in goodsByCategory.get()?[curCategoryId.get()] ?? []) {
     if(goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
 

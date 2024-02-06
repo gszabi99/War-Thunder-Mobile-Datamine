@@ -15754,7 +15754,7 @@
           "wtype": "mainCannon",
           "caliber": 90.0,
           "armorPower": 192.413,
-          "reloadTime": 7.49625,
+          "reloadTime": 5.9988,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
         },

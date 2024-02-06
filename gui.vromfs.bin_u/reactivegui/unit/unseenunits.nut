@@ -5,7 +5,7 @@ let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { register_command } = require("console")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let SEEN_UNIT = "seenUnit"
 let unseenUnits = Watched({})
@@ -15,6 +15,8 @@ let availableUnitsList = Computed(@() allUnitsCfg.value
   .filter(@(u) !u?.isHidden))
 
 function loadUnseenUnits() {
+  if (!isLoggedIn.get())
+    return
   let res = {}
   let seenBlk = get_local_custom_settings_blk()?[SEEN_UNIT]
   foreach(unit in availableUnitsList.value){
@@ -26,7 +28,7 @@ function loadUnseenUnits() {
 }
 
 availableUnitsList.subscribe(@(_) loadUnseenUnits())
-isOnlineSettingsAvailable.subscribe(@(_) loadUnseenUnits())
+isLoggedIn.subscribe(@(_) loadUnseenUnits())
 loadUnseenUnits()
 
 function markUnitSeen(unit){

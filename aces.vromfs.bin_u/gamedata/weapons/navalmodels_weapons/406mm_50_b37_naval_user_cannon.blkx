@@ -54,7 +54,7 @@
     "hitPowerMult": 3000.0,
     "explodeTreshold": 12.0,
     "fuseDelayDist": 15.0,
-    "hpThresholdForFuse": 1e-6,
+    "hpThresholdForFuse": 0.000001,
     "fuseOnWater": true,
     "relativeVelArmorShift": [
       200.0,
@@ -260,7 +260,7 @@
       "hitPowerMult": 3000.0,
       "explodeTreshold": 12.0,
       "fuseDelayDist": 15.0,
-      "hpThresholdForFuse": 1e-6,
+      "hpThresholdForFuse": 0.000001,
       "fuseOnWater": true,
       "relativeVelArmorShift": [
         200.0,
@@ -468,7 +468,7 @@
       ],
       "explodeTreshold": 12.0,
       "fuseDelayDist": 15.0,
-      "hpThresholdForFuse": 1e-6,
+      "hpThresholdForFuse": 0.000001,
       "fuseOnWater": true,
       "explosionEffect": "hit_391_480mm_metal_ap",
       "groundCollisionEffect": "hit_391_480mm_dirt_ap",

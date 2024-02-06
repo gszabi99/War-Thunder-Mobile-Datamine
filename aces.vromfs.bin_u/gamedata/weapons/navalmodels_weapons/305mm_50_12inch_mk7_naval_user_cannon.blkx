@@ -54,7 +54,7 @@
     "hitPowerMult": 1800.0,
     "explodeTreshold": 12.0,
     "fuseDelayDist": 15.0,
-    "hpThresholdForFuse": 1e-6,
+    "hpThresholdForFuse": 0.000001,
     "fuseOnWater": true,
     "relativeVelArmorShift": [
       200.0,
@@ -260,7 +260,7 @@
       "hitPowerMult": 1800.0,
       "explodeTreshold": 12.0,
       "fuseDelayDist": 15.0,
-      "hpThresholdForFuse": 1e-6,
+      "hpThresholdForFuse": 0.000001,
       "fuseOnWater": true,
       "relativeVelArmorShift": [
         200.0,

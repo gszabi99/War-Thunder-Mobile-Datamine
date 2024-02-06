@@ -2258,8 +2258,14 @@
       }
     },
     "secondaryShells": {
+      "ammo_body_03_dm": {
+        "count": 14
+      },
       "ammo_body_02_dm": {
         "count": 14
+      },
+      "ammo_body_04_dm": {
+        "count": 15
       },
       "ammo_body_01_dm": {
         "count": 15
@@ -2413,7 +2419,7 @@
         "speedYaw": 15.0,
         "speedPitch": 3.0,
         "fireConeAngle": 1.0,
-        "bullets": 29,
+        "bullets": 58,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2673,7 +2679,7 @@
               "speedYaw": 15.0,
               "speedPitch": 3.0,
               "fireConeAngle": 1.0,
-              "bullets": 29,
+              "bullets": 58,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,

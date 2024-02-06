@@ -1654,6 +1654,7 @@
     "low": {
       "graphics": {
         "backgroundScale": 0.75,
+        "androidSceneResolution": 516,
         "limitPlayerAirplaneUnitsLod": 1,
         "limitPlayerTankUnitsLod": 2,
         "limitPlayerShipUnitsLod": 1,
@@ -1726,6 +1727,7 @@
     "medium": {
       "graphics": {
         "backgroundScale": 0.75,
+        "androidSceneResolution": 516,
         "limitPlayerAirplaneUnitsLod": 1,
         "limitPlayerTankUnitsLod": 1,
         "limitPlayerShipUnitsLod": 1,
@@ -1798,6 +1800,7 @@
     "high": {
       "graphics": {
         "backgroundScale": 1.0,
+        "androidSceneResolution": 688,
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -1869,7 +1872,8 @@
     },
     "max": {
       "graphics": {
-        "backgroundScale": 0.633,
+        "backgroundScale": 1.0,
+        "androidSceneResolution": 688,
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -1942,6 +1946,7 @@
     "movie": {
       "graphics": {
         "backgroundScale": 1.0,
+        "androidSceneResolution": 1080,
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,

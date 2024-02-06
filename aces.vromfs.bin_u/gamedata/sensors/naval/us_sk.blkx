@@ -3,7 +3,7 @@
   "transivers": {
     "search": {
       "pulsePower": 200000.0,
-      "pulseWidth": 5e-6,
+      "pulseWidth": 0.000005,
       "prf": 60.0,
       "band": 1,
       "rcs": 3.0,
