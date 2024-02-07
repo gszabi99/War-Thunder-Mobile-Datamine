@@ -168,7 +168,7 @@ let tabs = [
   }
   {
     id = MINI_EVENT_TAB
-    image = "ui/gameuiskin#quest_events_icon.svg"
+    image = "ui/gameuiskin#icon_event_sonnenblume_quests_wnd.svg"
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[MINI_EVENT_TAB]), mkQuest, MINI_EVENT_TAB)
     tabContent = miniEventTabContent

@@ -502,9 +502,11 @@
     "wfxHeightLimit": 1.0,
     "waterVisibilityUseLegacy": false,
     "waterVisibilityLegacyThreshold": 10,
+    "waterVisibilityOffDelaySeconds": 4.0,
     "allowHighresFxDepthReprojection": true,
     "csmReflectionSampleBias": -0.0075,
     "dynDecalsInitialAtlasSizeIndex": 1,
+    "enableWaterReflections": true,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }
@@ -1284,7 +1286,8 @@
       ],
       "graphics": {
         "shaderlod": "low",
-        "enableNearCloudsRendering": false
+        "enableNearCloudsRendering": false,
+        "enableWaterReflections": false
       }
     }
   },
@@ -2234,6 +2237,17 @@
           "brokenShadersAfterAppSwitch": {
             "entry": {
               "gpu": "G76",
+              "data": {
+                "affected": true
+              }
+            }
+          }
+        }
+      },
+      "Samsung": {
+        "driverProps": {
+          "msaaIsBuggy": {
+            "entry": {
               "data": {
                 "affected": true
               }

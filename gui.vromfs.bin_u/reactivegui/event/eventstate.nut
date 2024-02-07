@@ -32,7 +32,7 @@ let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0
 let eventSeason = Computed(@() getSeasonPrefix(userstatStats.value?.stats.season["$index"] ?? 1))
 let isEventActive = Computed(@() unlockTables.value?.season == true)
 
-let miniEventSeasonName = loc("events/name/special")
+let miniEventSeasonName = loc("mini_event_quest_2024_operation_sonnenblume_germany_win")
 let miniEventEndsAt = Computed(@() userstatStats.value?.stats.mini_event_season["$endsAt"] ?? 0)
 let isMiniEventActive = Computed(@() unlockTables.value?.mini_event_season == true)
 
