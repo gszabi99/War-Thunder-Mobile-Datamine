@@ -11,7 +11,7 @@ let constructors = {
 
 return {
   getOfferLocName = getGoodsLocName
-  mkOffer = @(offer, onClick, state, needPrice)
-    constructors?[offer.gtype](offer, onClick, state, needPrice)
+  mkOffer = @(offer, onClick, state)
+    constructors?[offer.gtype](offer, onClick, state)
     ?? mkGoods(offer, onClick, state, null)
 }

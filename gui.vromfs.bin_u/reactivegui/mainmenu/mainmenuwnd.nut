@@ -44,7 +44,6 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { btnOpenQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { specialEventGamercardItems, openEventWnd } = require("%rGui/event/eventState.nut")
 let btnsOpenSpecialEvents = require("%rGui/event/btnsOpenSpecialEvents.nut")
-let eventGift = require("%rGui/event/eventGift.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let bpBanner = require("%rGui/battlePass/bpBanner.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
@@ -128,17 +127,8 @@ let gamercardPlace = {
     mkGamercard(dropMenuBtn)
     {
       size = [flex(), SIZE_TO_CONTENT]
-      children = [
-        {
-          flow = FLOW_VERTICAL
-          gap = translucentButtonsVGap / 2
-          hplace = ALIGN_RIGHT
-          children = [
-            offerPromo
-            eventGift
-          ]
-        }
-      ]
+      halign = ALIGN_RIGHT
+      children = offerPromo
     }
   ]
 }

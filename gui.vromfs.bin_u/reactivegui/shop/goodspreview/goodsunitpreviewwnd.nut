@@ -178,7 +178,12 @@ let singleUnitBlock = @() {
   children = mkUnitPlate(0, previewGoodsUnit.value, { name = previewGoodsUnit.value.name, reqLevel = 0 })
 }
 
-let header = mkPreviewHeader(Computed(@() previewGoodsUnit.value ? getPlatoonOrUnitName(previewGoodsUnit.value, loc) : ""), closeGoodsPreview, 0)
+let mkHeader = @() mkPreviewHeader(
+  Computed(@() previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
+    : previewGoodsUnit.get() ? getPlatoonOrUnitName(previewGoodsUnit.get(), loc)
+    : ""),
+  closeGoodsPreview,
+  0)
 
 let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
   children = [
@@ -310,7 +315,7 @@ let previewWnd = @() {
           size = [flex(), SIZE_TO_CONTENT]
           valign = ALIGN_CENTER
           children = [
-            header
+            mkHeader
             balanceBlock
           ]
         }

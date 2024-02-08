@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
-let { isShowDebugInterface, is_app_loaded } = require("app")
+let { isShowDebugInterface, is_app_loaded, get_game_version_str } = require("app")
 let { format } = require("string")
 let { toUpper } = require("%sqstd/string.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
 let state = Watched({
@@ -16,8 +16,14 @@ let state = Watched({
   latencyR = -1
 })
 
-let initSubscription = @() isShowDebugInterface() ? null
-  : eventbus_subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
+let gameVersion = Watched("")
+
+function initSubscription() {
+  if (isShowDebugInterface())
+    return
+  eventbus_subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
+  gameVersion.set(get_game_version_str())
+}
 if (is_app_loaded())
   initSubscription()
 eventbus_subscribe("onAcesInitComplete", @(_) initSubscription())
@@ -67,26 +73,38 @@ let sessionComp = @() textStyle.__merge({
   text = sessionId.value
 })
 
+let versionComp = @() textStyle.__merge({
+  watch = gameVersion
+  text = gameVersion.get()
+})
+
 let latencyComp = @() textStyle.__merge({
   watch = latencyText
   text = latencyText.value
 })
 
-let fpsLineCompChildren = [
+let presetBattle = [
   graphicsComp
   gpuComp
+  versionComp
   sessionComp
   latencyComp
 ]
 
+let presetMenu = [
+  versionComp
+]
+
 let fpsLineComp = @() {
-  watch = isInBattle
+  watch = [isInBattle, isInMenu]
   flow = FLOW_HORIZONTAL
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM
   pos = [saBorders[0], 0]
   gap
-  children = isInBattle.value ? fpsLineCompChildren : null
+  children = isInBattle.get() ? presetBattle
+    : isInMenu.get() ? presetMenu
+    : null
 }
 
 return fpsLineComp

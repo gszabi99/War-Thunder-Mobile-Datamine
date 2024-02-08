@@ -8,7 +8,8 @@ let { previewGoods, isPreviewGoodsPurchasing } = require("%rGui/shop/goodsPrevie
 let purchaseGoods = require("%rGui/shop/purchaseGoods.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
+let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { mkCurrencyComp, mkPriceExtText, CS_BIG } = require("%rGui/components/currencyComp.nut")
@@ -199,7 +200,7 @@ function getPriceInfo(goods) {
   let { price = null, priceExt = null, discountInPercent = 0 } = goods
   if ((price?.price ?? 0) > 0) {
     local basePrice = discountInPercent <= 0 ? price.price
-      : unifyBasePrice(round(price.price / (1.0 - (discountInPercent / 100.0))), price.price)
+      : unifyBasePrice(round(price.price / (1.0 - (discountInPercent / 100.0))), price.price).tointeger()
     return {
       priceCtor = mkCurrencyComp
       basePrice
@@ -210,7 +211,7 @@ function getPriceInfo(goods) {
   }
   if ((priceExt?.price ?? 0) > 0) {
     local basePrice = discountInPercent <= 0 ? priceExt.price
-      : unifyBasePrice(round(priceExt.price / (1.0 - (discountInPercent / 100.0))), priceExt.price)
+      : unifyBasePrice(round(priceExt.price / (1.0 - (discountInPercent / 100.0))), priceExt.price).tointeger()
     return {
       priceCtor = mkPriceExtText
       basePrice
@@ -273,15 +274,16 @@ let mkTimeLeftText = @(endTime) function() {
       text = utf8ToUpper(loc("lastChance"))
       color = 0xFFFFA406
     }, fontSmall)
+  if (timeLeft >= TIME_DAY_IN_SECONDS)
+    return res.__update({ text = secondsToHoursLoc(timeLeft) }, fontMedium)
   return res.__update({
     text = secondsToTimeSimpleString(timeLeft)
-    color = 0xFFFFFFFF
     monoWidth = hdpx(38)
   }, fontBig)
 }
 
 function previewGoodsTimeLeft() {
-  let { endTime = 0 } = previewGoods.value
+  let endTime = previewGoods.get()?.endTime ?? previewGoods.get()?.timeRange.end ?? 0
   if (endTime <= 0)
     return { watch = previewGoods }
   return {

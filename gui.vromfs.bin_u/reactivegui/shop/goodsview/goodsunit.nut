@@ -4,21 +4,25 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { EVENT_KEY, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkOfferWrap, txt, textArea, mkBgImg, mkFitCenterImg, mkPricePlate,
-  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsW
+  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsW, offerPad
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 
 
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let fonticonPreview = "⌡"
 let consumableSize = hdpx(120)
 let eliteMarkSize = hdpxi(70)
+
+let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY ]
 
 let bgHiglight = {
   size = flex()
@@ -231,23 +235,37 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
   )
 }
 
-function mkOfferUnit(goods, onClick, state, needPrice) {
+let mkCurrencyIcon = @(currencyId) {
+  margin = offerPad
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_CENTER
+  children = mkRewardCurrencyImage(currencyId, hdpxi(170))
+}
+
+function mkOfferUnit(goods, onClick, state) {
   let unit = getUnit(goods)
-  let { endTime = 0, discountInPercent = 0, isShowDebugOnly = false } = goods
+  let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
+    currencies = null, offerClass = null
+  } = goods
   let p = getUnitPresentation(unit)
-  let bgImg = unit?.unitType == "tank"
-    ? "ui/gameuiskin#offer_bg_yellow.avif"
+  let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
+    : unit?.unitType == "tank" ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
+  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
+  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image)
+  let imageOffset = currencyId == null || unit?.unitType == "tank" ? 0
+    : hdpx(40)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      mkFitCenterImg(unit.isUpgraded ? p.upgradedImage : p.image)
-      mkOfferTexts(getPlatoonOrUnitName(unit, loc), endTime)
+      currencyId == null ? null : mkCurrencyIcon(currencyId)
+      imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
+      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
+        endTime ?? timeRange?.end)
       discountTagBig(discountInPercent)
-    ].extend(mkOfferCommonParts(goods, state)),
-    needPrice ? mkPricePlate(goods, priceBgGrad, state, null, false) : null)
+    ].extend(mkOfferCommonParts(goods, state)))
 }
 
 return {

@@ -44,18 +44,17 @@ function mkGoodsGold(goods, onClick, state, animParams) {
     mkPricePlate(goods, priceBgGrad, state, animParams), {size = goodsSmallSize})
 }
 
-function mkOfferGold(goods, onClick, state, needPrice) {
-  let { endTime = 0, discountInPercent = 0, isShowDebugOnly = false } = goods
+function mkOfferGold(goods, onClick, state) {
+  let { endTime = 0, discountInPercent = 0, isShowDebugOnly = false, timeRange = null } = goods
   return mkOfferWrap(onClick,
     @(sf) [
       mkBgImg("ui/gameuiskin#offer_bg_blue.avif")
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
       mkFitCenterImg("!ui/images/offer_art_gold.avif")
-      mkOfferTexts(loc("offer/gold"), endTime)
+      mkOfferTexts(loc("offer/gold"), endTime ?? timeRange?.end)
       discountTagBig(discountInPercent)
-    ].extend(mkOfferCommonParts(goods, state)),
-    needPrice ? mkPricePlate(goods, priceBgGrad, state, null, false) : null)
+    ].extend(mkOfferCommonParts(goods, state)))
 }
 
 return {

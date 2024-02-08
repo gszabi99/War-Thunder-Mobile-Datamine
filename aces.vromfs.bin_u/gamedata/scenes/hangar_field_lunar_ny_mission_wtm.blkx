@@ -246,7 +246,7 @@
       "_template": "unit_loader",
       "setting__unitType": "objectGroups",
       "setting__playerNo": -1,
-      "setting__unit_class": "hangar_ny_objects",
+      "setting__unit_class": "hangar_lunar_ny_objects",
       "setting__name": "test_bridge",
       "setting__weapons": "",
       "setting__skin": "",

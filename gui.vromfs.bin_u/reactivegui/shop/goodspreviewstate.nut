@@ -3,6 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { activeOffer } = require("offerState.nut")
+let { activeOfferByGoods } = require("offerByGoodsState.nut")
 let { shopGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -38,7 +39,9 @@ function openGoodsPreview(id) {
 }
 
 let previewGoods = Computed(@()
-  activeOffer.value?.id == openedGoodsId.value ? activeOffer.value : shopGoods.value?[openedGoodsId.value])
+  activeOffer.get()?.id == openedGoodsId.value ? activeOffer.get()
+    : activeOfferByGoods.get()?.id == openedGoodsId.value ? activeOfferByGoods.get()
+    : shopGoods.get()?[openedGoodsId.get()])
 
 let previewGoodsUnit = Computed(function() {
   let unit = serverConfigs.value?.allUnits[previewGoods.value?.unitUpgrades[0]]

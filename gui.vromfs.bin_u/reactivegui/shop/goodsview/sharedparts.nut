@@ -31,10 +31,8 @@ let glareWidth = sh(8)
 let goodsGlareAnimDuration = 0.2
 
 let offerW = hdpx(420)
-let offerH = hdpx(240)
-let offerBgH = hdpx(180)
-let offerTxtPadX = hdpx(15)
-let offerTxtPadY = hdpx(10)
+let offerH = hdpx(180)
+let offerPad = [hdpx(10), hdpx(15)]
 
 let pricePlateH = goodsH - goodsBgH
 
@@ -358,10 +356,10 @@ function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}, childOvr =
   }).__update(ovr)
 }
 
-function mkOfferWrap(onClick, mkContent, pricePlate = null, needGlare = true) {
+function mkOfferWrap(onClick, mkContent) {
   let stateFlags = Watched(0)
   return @() bgShaded.__merge({
-    size = [ offerW,  pricePlate == null ? offerBgH : offerH ]
+    size = [ offerW,  offerH ]
     watch = stateFlags
     behavior = Behaviors.Button
     clickableInfo = loc("mainmenu/btnPreview")
@@ -376,19 +374,12 @@ function mkOfferWrap(onClick, mkContent, pricePlate = null, needGlare = true) {
     children = [
       {
         size = flex()
-        flow = FLOW_VERTICAL
-        children = [
-          {
-            size = [ flex(), offerBgH ]
-            children = mkContent?(stateFlags.value)
-          }
-          pricePlate
-        ]
+        children = mkContent?(stateFlags.value)
       }
       {
         size = flex()
         clipChildren = true
-        children = needGlare ? mkGlare(offerW, [glareWidth, ph(140)]) : null
+        children = mkGlare(offerW, [glareWidth, ph(140)])
       }
     ]
   })
@@ -471,10 +462,10 @@ function mkOfferTexts(title, endTime) {
     vplace = ALIGN_BOTTOM
     text = utf8ToUpper(title)
   }.__update(fontSmall))
-  titleComp.fontSize = getFontSizeToFitWidth(titleComp, offerW - (2 * offerTxtPadX), fontVeryTiny.fontSize)
+  titleComp.fontSize = getFontSizeToFitWidth(titleComp, offerW - (2 * offerPad[1]), fontVeryTiny.fontSize)
   return {
     size = flex()
-    margin = [offerTxtPadY, offerTxtPadX]
+    margin = offerPad
     children = [
       @() textArea({
         watch = countdownText
@@ -514,6 +505,7 @@ return {
   goodsH
   goodsBgH
   goodsGap
+  offerPad
 
   mkGoodsWrap
   mkOfferWrap

@@ -2,22 +2,30 @@ from "%globalsDarg/darg_library.nut" import *
 let mkContactRow = require("mkContactRow.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { mkVerticalPannableArea } = require("%rGui/options/mkOptionsScene.nut")
+let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let mkContactsOrder = require("mkContactsOrder.nut")
 
 let gap = hdpx(24)
 
 function contactsList(uidsList, playerSelectedUserId) {
   let ordered = mkContactsOrder(uidsList)
-  return mkVerticalPannableArea(
-    @() {
-      watch = ordered
-      size = [flex(), SIZE_TO_CONTENT]
-      flow = FLOW_VERTICAL
-      children = ordered.value
-        .map(@(uid, idx) mkContactRow(uid, idx,
-          Computed(@() playerSelectedUserId.value == uid),
-          @() playerSelectedUserId(uid)))
-    })
+  let scrollHandler = ScrollHandler()
+  return {
+    size = flex()
+    children = [
+      mkVerticalPannableArea(
+        @() {
+          watch = ordered
+          size = [flex(), SIZE_TO_CONTENT]
+          flow = FLOW_VERTICAL
+          children = ordered.value
+            .map(@(uid, idx) mkContactRow(uid, idx,
+              Computed(@() playerSelectedUserId.value == uid),
+              @() playerSelectedUserId(uid)))
+        }, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+      mkScrollArrow(scrollHandler, MR_B)
+    ]
+  }
 }
 
 let noContactsMsg = {

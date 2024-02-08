@@ -1,8 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { OT_ONLY_LOGIN, OT_ENTER_MAINMENU, OT_NEW_OFFER, offerOpenType
-} = require("offerTests.nut")
 let { openGoodsPreview, previewGoods } = require("%rGui/shop/goodsPreviewState.nut")
 let { visibleOffer, reqAddonsToShowOffer } = require("offerState.nut")
 let { isInMenuNoModals, isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
@@ -20,13 +18,7 @@ let canShow = Computed(@() visibleOffer.value != null
   && (visibleOffer.value?.endTime ?? 0) > (showedTime.value?[visibleOffer.value?.campaign] ?? 0))
 
 let needShow = keepref(Computed(@() canShow.value
-  && (offerOpenType.value == OT_ONLY_LOGIN ? (showedTime.value?[visibleOffer.value?.campaign] ?? 0) == 0
-    : offerOpenType.value == OT_NEW_OFFER ? true
-    : offerOpenType.value == OT_ENTER_MAINMENU
-      ? ((enteredMenuTime.value?[visibleOffer.value?.campaign] ?? 0) == (visibleOffer.value?.endTime ?? 0)
-        || (enteredMenuTime.value?[visibleOffer.value?.campaign] ?? 0) == 0)
-    : false)
-))
+  && (showedTime.value?[visibleOffer.value?.campaign] ?? 0) == 0))
 
 let isVisiblePreviewOpened = keepref(Computed(@() visibleOffer.value != null
   && previewGoods.value?.id == visibleOffer.value?.id))

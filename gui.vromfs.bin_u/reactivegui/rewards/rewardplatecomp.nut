@@ -147,6 +147,8 @@ function mkRewardPlateCurrencyImage(r, rStyle) {
   }
 }
 
+let mkRewardCurrencyImage = @(id, size) currencyImgCtors?[id]([size, size], 0)
+
 function mkRewardPlateCurrencyTexts(r, rStyle) {
   let { labelCurrencyNeedCompact } = rStyle
   let countText = "countRange" in r
@@ -429,6 +431,7 @@ return {
   mkRewardPlate
   mkRewardPlateBg
   mkRewardPlateImage
+  mkRewardCurrencyImage
   mkRewardPlateTexts
   mkRewardReceivedMark
   mkRewardFixedIcon

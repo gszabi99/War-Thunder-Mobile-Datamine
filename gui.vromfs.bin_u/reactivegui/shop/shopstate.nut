@@ -1,5 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
@@ -46,6 +49,45 @@ let sortGoods = @(a, b)
   || a.price.price <=> b.price.price
   || a.id <=> b.id
 
+let goodsWithTimers = Computed(@() (campConfigs.value?.allGoods ?? {})
+  .filter(@(g) (g?.timeRange.start ?? 0) > 0 || (g?.timeRange.end ?? 0) > 0))
+let inactiveGoodsByTime = Watched({})
+let nextUpdateTime = Watched({ time = 0 })
+
+function updateGoodsTimers() {
+  let inactive = {}
+  local nextTime = 0
+  let curTime = serverTime.get()
+  foreach(id, goods in goodsWithTimers.get()) {
+    let { start, end } = goods.timeRange
+    if (start > curTime) {
+      inactive[id] <- true
+      nextTime = nextTime == 0 ? start : min(start, nextTime)
+    }
+    else if (end <= 0)
+      continue
+    else if (end <= curTime)
+      inactive[id] <- true
+    else
+      nextTime = nextTime == 0 ? end : min(end, nextTime)
+  }
+
+  if (!isEqual(inactive, inactiveGoodsByTime.get()))
+    inactiveGoodsByTime.set(inactive)
+  nextUpdateTime({ time = nextTime })
+}
+
+nextUpdateTime.subscribe(function(v) {
+  let { time } = v
+  if (time == 0)
+    clearTimer(updateGoodsTimers)
+  else
+    resetTimeout(max(0.5, time - serverTime.get()), updateGoodsTimers)
+})
+
+updateGoodsTimers()
+goodsWithTimers.subscribe(@(_) updateGoodsTimers())
+
 let shopGoodsInternal = Computed(@() (campConfigs.value?.allGoods ?? {})
   .filter(@(g) (can_debug_shop.value || !g.isShowDebugOnly)
     && (g?.price.price ?? 0) > 0
@@ -53,11 +95,16 @@ let shopGoodsInternal = Computed(@() (campConfigs.value?.allGoods ?? {})
   .map(@(g) g.__merge({ gtype = getGoodsType(g) }))
 )
 
-let shopGoods = Computed(@() shopGoodsInternal.value
+let allShopGoods = Computed(@() shopGoodsInternal.value
   .__merge(
     platformGoods.value.filter(@(g) isGoodsFitToCampaign(g, campConfigs.value))
       .map(@(g) g.__merge({ gtype = getGoodsType(g) })))
 )
+
+let shopGoods = Computed(function() {
+  let exclude = inactiveGoodsByTime.get()
+  return allShopGoods.get().filter(@(_, id) id not in exclude)
+})
 
 let goodsByCategory = Computed(function() {
   let res = {}
