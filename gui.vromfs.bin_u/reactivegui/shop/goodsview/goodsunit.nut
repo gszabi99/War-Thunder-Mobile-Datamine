@@ -4,7 +4,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { EVENT_KEY, PLATINUM } = require("%appGlobals/currenciesState.nut")
+let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkOfferWrap, txt, textArea, mkBgImg, mkFitCenterImg, mkPricePlate,
   mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsW, offerPad
@@ -22,7 +22,7 @@ let fonticonPreview = "⌡"
 let consumableSize = hdpx(120)
 let eliteMarkSize = hdpxi(70)
 
-let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY ]
+let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY, GOLD, WARBOND ]
 
 let bgHiglight = {
   size = flex()
@@ -240,6 +240,7 @@ let mkCurrencyIcon = @(currencyId) {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_CENTER
   children = mkRewardCurrencyImage(currencyId, hdpxi(170))
+  keepAspect = true
 }
 
 function mkOfferUnit(goods, onClick, state) {

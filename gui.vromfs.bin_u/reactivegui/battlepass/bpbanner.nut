@@ -12,6 +12,7 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let eventColors = {
   season_3 = 0xA5FF2B00
   season_4 = 0xA5FFBB10
+  season_5 = 0xA500A556
   def = 0xA5FF2B00
 }
 let bannerIconSize = [hdpxi(216), hdpxi(127)]

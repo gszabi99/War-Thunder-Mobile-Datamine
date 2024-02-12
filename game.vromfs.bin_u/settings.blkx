@@ -627,6 +627,7 @@
     "mobileStyleFpsString": true,
     "sendFullLogOnFatalIntervalHours": 4,
     "useANRWatcherThreadProbability": 0.1,
+    "logSignificantChangesAsWarnings": true,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",
@@ -2214,6 +2215,16 @@
               "driverMaxVer1": 420,
               "data": {
                 "affected": true
+              }
+            }
+          },
+          "pipelineCompiler": {
+            "entry": {
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 444,
+              "data": {
+                "maxSecondaryThreads": 0,
+                "usePipelineCacheMutex": true
               }
             }
           }

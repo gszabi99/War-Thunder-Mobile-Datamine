@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
-let { isShowDebugInterface, is_app_loaded, get_game_version_str } = require("app")
+let { isShowDebugInterface, is_app_loaded, get_base_game_version_str } = require("app")
 let { format } = require("string")
 let { toUpper } = require("%sqstd/string.nut")
 let { isInBattle, isInMenu } = require("%appGlobals/clientState/clientState.nut")
@@ -22,7 +22,7 @@ function initSubscription() {
   if (isShowDebugInterface())
     return
   eventbus_subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
-  gameVersion.set(get_game_version_str())
+  gameVersion.set(get_base_game_version_str())
 }
 if (is_app_loaded())
   initSubscription()
