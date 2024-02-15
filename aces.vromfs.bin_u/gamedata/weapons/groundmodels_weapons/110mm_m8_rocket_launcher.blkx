@@ -37,7 +37,7 @@
     "force": 23000.0,
     "thrustDeviation": 0.01,
     "useStartSpeed": true,
-    "startSpeed": 0.0,
+    "startSpeed": 50.0,
     "endSpeed": 260.0,
     "maxDistance": 4500.0,
     "minDistance": 30.0,
