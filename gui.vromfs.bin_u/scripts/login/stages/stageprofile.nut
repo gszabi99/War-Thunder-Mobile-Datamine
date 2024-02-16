@@ -17,7 +17,7 @@ registerHandler("onLoginGetProfile", onlyActiveStageCb(function(res, _) {
     openFMsgBox({ text })
   }
   else
-    finalizeStage()
+    defer(finalizeStage) //need sync profile to other VM before finalize stage
 }))
 
 let start = @() get_profile(getSysInfo(), "onLoginGetProfile")

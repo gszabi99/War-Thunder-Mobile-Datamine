@@ -19,9 +19,7 @@ const REPAY_TIME = 0.3
 let shipWeaponsList = [
   "ID_ZOOM"
   "EII_ROCKET"
-//
-
-
+  "EII_ROCKET_SECONDARY"
   "EII_TORPEDO"
   "EII_MINE"
   "EII_DEPTH_CHARGE"

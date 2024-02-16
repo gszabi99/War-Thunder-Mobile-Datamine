@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { floor, ceil } = require("%sqstd/math.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
-let { SGT_UNIT } = require("%rGui/shop/shopConst.nut")
+let { SGT_UNIT, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
 let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
@@ -22,6 +22,9 @@ let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { SC_CONSUMABLES } = require("shopCommon.nut")
 let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 
 
 let tabTranslateWithOpacitySwitchAnim = [
@@ -61,9 +64,32 @@ let goodsCompareCfg = [
   }
 ]
 
-let purchaseFunc = @(goods) goods.price.price > 0 && goods.price.currencyId != ""
-  ? purchaseGoods(goods.id)
-  : buyPlatformGoods(goods.id)
+let function goodsNotAvailToPurch(goods){
+  if ("ircm_kit" in goods.items && goods.items.len() == 1 && goods.gtype == SGT_CONSUMABLES){
+    local canBuyCountermeasure = false
+    foreach(unit in myUnits.get()){
+      if (getUnitTagsCfg(unit.name ?? "")?.Shop.weapons.countermeasure_launcher_ship != null){
+        canBuyCountermeasure = true
+        break
+      }
+    }
+    if (!canBuyCountermeasure){
+      openMsgBox({
+        text = msgBoxText(loc("shop/cantBuyCountermeasure"))
+      })
+      return true
+    }
+  }
+  return false
+}
+
+let function purchaseFunc(goods) {
+  if (goodsNotAvailToPurch(goods))
+    return
+  if (goods.price.price > 0 && goods.price.currencyId != "")
+    return purchaseGoods(goods.id)
+  buyPlatformGoods(goods.id)
+}
 
 let mkGoodsState = @(goods) Computed(function() {
   local res = 0

@@ -38,6 +38,7 @@
   "bullet": {
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
+    "groundRicochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -86,6 +87,7 @@
       "massEnd": 13.2,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat",
+      "groundRicochetPreset": "heat",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -398,6 +400,7 @@
     "bullet": {
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -447,6 +450,7 @@
         "massEnd": 19.7,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,

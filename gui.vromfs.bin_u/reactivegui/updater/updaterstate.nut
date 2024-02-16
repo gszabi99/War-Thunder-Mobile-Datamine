@@ -20,7 +20,7 @@ let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbie
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { myUnits, curUnitMRank } = require("%appGlobals/pServer/profile.nut")
-let { isConnectionLimited, hasConnection } = require("connectionStatus/connectionStatus.nut")
+let { isConnectionLimited, hasConnection } = require("%appGlobals/clientState/connectionStatus.nut")
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 let { needUhqTextures } = require("%rGui/options/options/graphicOptions.nut")

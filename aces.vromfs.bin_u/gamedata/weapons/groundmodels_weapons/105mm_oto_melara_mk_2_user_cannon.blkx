@@ -31,13 +31,16 @@
   "bullet": {
     "bulletCount": 40,
     "mass": 4.0,
+    "damageMass": 2.7,
     "caliber": 0.105,
-    "damageCaliber": 0.044,
-    "ballisticCaliber": 0.08,
-    "speed": 1478.0,
+    "damageCaliber": 0.06,
+    "ballisticCaliber": 0.06,
+    "speed": 1478.3,
+    "Cx": 0.15718,
     "maxDistance": 10000.0,
     "normalizationPreset": "apcr",
     "ricochetPreset": "apds",
+    "groundRicochetPreset": "apds",
     "secondaryShattersPreset": "apds",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -56,12 +59,11 @@
     "bulletName": "105mm_m392a2",
     "breakingArmorThicknessEffective": true,
     "breakingArmorThickness": [
-      30.0,
-      150.0
+      20.0,
+      300.0
     ],
-    "breakingCriticalSpeed": 1405.0,
-    "breakingDistance": 0.1,
-    "Cx": 0.119,
+    "breakingCriticalSpeed": 1200.0,
+    "breakingDistance": 0.05,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -104,55 +106,14 @@
         10000.0
       ]
     },
-    "armorpower": {
-      "ArmorPower0m": [
-        303.0,
-        10.0
-      ],
-      "ArmorPower100m": [
-        302.0,
-        100.0
-      ],
-      "ArmorPower500m": [
-        296.0,
-        500.0
-      ],
-      "ArmorPower1000m": [
-        277.0,
-        1000.0
-      ],
-      "ArmorPower1500m": [
-        257.0,
-        1500.0
-      ],
-      "ArmorPower2000m": [
-        252.0,
-        2000.0
-      ],
-      "ArmorPower2500m": [
-        245.0,
-        2500.0
-      ],
-      "ArmorPower3000m": [
-        227.0,
-        3000.0
-      ],
-      "ArmorPower3500m": [
-        213.0,
-        3500.0
-      ],
-      "ArmorPower4000m": [
-        164.0,
-        4000.0
-      ],
-      "ArmorPower4500m": [
-        145.0,
-        4500.0
-      ],
-      "ArmorPower10000m": [
-        0.0,
-        10000.0
-      ]
+    "damage": {
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 1.12,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      }
     },
     "visual": {
       "range_percent_of_ammo": [
@@ -160,7 +121,7 @@
         0.0
       ],
       "traceFreq": 1,
-      "tracer": "30mmRed",
+      "tracer": "50mmRed",
       "trail": "black"
     },
     "collisions": {
@@ -255,6 +216,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "hesh",
+      "groundRicochetPreset": "hesh",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -544,6 +506,7 @@
       "maxDistance": 7000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
+      "groundRicochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -834,6 +797,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -957,6 +921,7 @@
       "maxDistance": 20000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
+      "groundRicochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1148,6 +1113,7 @@
       "maxDistance": 20000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
+      "groundRicochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,

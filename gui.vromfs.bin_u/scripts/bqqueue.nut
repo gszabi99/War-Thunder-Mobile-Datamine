@@ -13,6 +13,7 @@ let { shuffle } = require("%sqStdLibs/helpers/u.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { disableNetwork } = require("%appGlobals/clientState/initialState.nut")
+let { hasConnection } = require("%appGlobals/clientState/connectionStatus.nut")
 
 
 const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
@@ -38,7 +39,7 @@ initUrl()
 let changeUrl = @() currentUrlIndex((currentUrlIndex.get() + 1) % max(urls.get().len(), 1))
 
 function sendAll() {
-  if (queue.value.len() == 0)
+  if (queue.get().len() == 0 || !hasConnection.get())
     return
 
   let list = {}
@@ -104,7 +105,7 @@ function sendAll() {
 }
 
 function startSendTimer() {
-  if (queue.value.len() == 0)
+  if (queue.get().len() == 0 || !hasConnection.get())
     return
   let timeLeft = nextCanSendMsec.value - get_time_msec()
   if (timeLeft > 0)
@@ -113,6 +114,14 @@ function startSendTimer() {
     defer(sendAll)
 }
 startSendTimer()
+hasConnection.subscribe(@(_) startSendTimer())
+
+local wasQueueLen = queue.value.len()
+queue.subscribe(function(v) {
+  if (wasQueueLen == 0 && v.len() != 0)
+    startSendTimer()
+  wasQueueLen = v.len()
+})
 
 eventbus_subscribe(RESPONSE_EVENT, function(res) {
   let { status = -1, http_code = -1, context = null } = res
@@ -123,9 +132,14 @@ eventbus_subscribe(RESPONSE_EVENT, function(res) {
     return
   }
 
-  changeUrl()
+  if (hasConnection.get())
+    changeUrl()
 
-  if(currentUrlIndex.value == 0) {
+  if (!hasConnection.get()) {
+    logBQ($"(No connection) Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
+    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
+  }
+  else if (currentUrlIndex.value == 0) {
     logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
     nextCanSendMsec(get_time_msec() + RETRY_MSEC)
     initUrl()
@@ -139,13 +153,6 @@ eventbus_subscribe(RESPONSE_EVENT, function(res) {
     let { userId, list } = context
     queueByUserId.mutate(@(v) v[userId] <- (clone list).extend(v?[userId] ?? []))
   }
-})
-
-local wasQueueLen = queue.value.len()
-queue.subscribe(function(v) {
-  if (wasQueueLen == 0 && v.len() != 0)
-    startSendTimer()
-  wasQueueLen = v.len()
 })
 
 if (!disableNetwork) {

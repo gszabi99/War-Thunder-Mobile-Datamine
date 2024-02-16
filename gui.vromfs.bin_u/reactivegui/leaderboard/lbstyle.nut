@@ -12,6 +12,7 @@ let lbDotsRowHeight = lbRowHeight / 2
 let lbTableHeightBase = saSize[1] - lbHeaderHeight - lbFooterHeight - 2 * lbVGap
 let lbPageRows = (lbTableHeightBase - lbHeaderRowHeight - lbTableBorderWidth - lbDotsRowHeight).tointeger() / lbRowHeight -1
 let lbTableHeight = lbHeaderRowHeight + lbTableBorderWidth + lbDotsRowHeight + (lbPageRows + 1) * lbRowHeight
+let lbTabIconSize = hdpxi(60)
 
 let rewardStyle = clone REWARD_STYLE_TINY
 let lbRewardsPerRow = isWidescreen ? 6 : 5
@@ -56,6 +57,7 @@ return {
   lbDotsRowHeight
   lbTableBorderWidth
   lbPageRows
+  lbTabIconSize
 
   rewardStyle
   lbRewardsPerRow

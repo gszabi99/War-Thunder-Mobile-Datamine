@@ -470,7 +470,8 @@
         "compartment_02_dm",
         "compartment_03_dm",
         "compartment_04_dm",
-        "bridge_dm"
+        "bridge_dm",
+        "steering_gear_01_dm"
       ],
       "effect": [
         {

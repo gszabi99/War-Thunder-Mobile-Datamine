@@ -24,7 +24,7 @@ let USEROPT_AIRCRAFT = addUserOption("USEROPT_AIRCRAFT")
 let USEROPT_WEAPONS = addUserOption("USEROPT_WEAPONS")
 let USEROPT_SKIN = addUserOption("USEROPT_SKIN")
 
-function startOfflineMission(unitName, missionId, bullets, localMP = false, gameMode = GM_TEST_FLIGHT
+function startOfflineMission(unitName, skin, missionId, bullets, localMP = false, gameMode = GM_TEST_FLIGHT
 ) {
   let misBlk = get_meta_mission_info_by_name(missionId)
   if (misBlk == null) {
@@ -50,7 +50,7 @@ function startOfflineMission(unitName, missionId, bullets, localMP = false, game
   setGuiOptionsMode(optModeTraining)
   set_gui_option(USEROPT_AIRCRAFT, unitName)
   set_gui_option(USEROPT_WEAPONS, $"{unitName}_default")
-  set_gui_option(USEROPT_SKIN, "default")
+  set_gui_option(USEROPT_SKIN, skin)
   foreach (idx, opts in bulletOptions) {
     set_gui_option(opts.bulletOption, bullets?[idx].name ?? "")
     set_gui_option(opts.bulletCountOption, bullets?[idx].count ?? 0)
@@ -87,10 +87,10 @@ function sendBenchmarksList(_) {
 }
 
 eventbus_subscribe("startTestFlight", @(p)
-  startOfflineMission(p.unitName, p?.missionName ?? TESTFLIGHT_MISSION, p?.bullets))
+  startOfflineMission(p.unitName, p.skin, p?.missionName ?? TESTFLIGHT_MISSION, p?.bullets))
 eventbus_subscribe("startTraining", @(p)
-  startOfflineMission(p.unitName, p.missionName, p?.bullets, false, GM_TRAINING))
+  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, false, GM_TRAINING))
 eventbus_subscribe("startLocalMP", @(p)
-  startOfflineMission(p.unitName, p.missionName, p?.bullets, true, GM_DOMINATION))
+  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, true, GM_DOMINATION))
 eventbus_subscribe("startBenchmark", @(v) openBenchmarkWnd(v.id))
 eventbus_subscribe("getBenchmarksList", sendBenchmarksList)

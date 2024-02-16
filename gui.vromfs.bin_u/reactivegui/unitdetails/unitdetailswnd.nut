@@ -83,7 +83,7 @@ let unitToShow = keepref(Computed(function() {
 }))
 unitToShow.subscribe(function(unit) {
   if (unit != null)
-    setCustomHangarUnit(unit, false)
+    setCustomHangarUnit(unit)
   else
     resetCustomHangarUnit()
 })
@@ -92,6 +92,7 @@ let UNIT_DELAY = 1.5
 let UNIT_SCALE = 1.2
 function mkUnitPlate(unit, platoonUnit, onClick) {
   let p = getUnitPresentation(platoonUnit)
+  let platoonUnitFull = unit.__merge(platoonUnit)
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let isSelected = Computed(@() curSelectedUnitId.value == platoonUnit.name)
   let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
@@ -113,8 +114,8 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
         children = [
           mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
-          mkUnitImage(unit.__merge(platoonUnit), isLocked.get())
-          mkUnitTexts(unit, loc(p.locId), isLocked)
+          mkUnitImage(platoonUnitFull, isLocked.get())
+          mkUnitTexts(platoonUnitFull, loc(p.locId), isLocked)
           !isLocked.value ? mkUnitRank(unit, { pos = [-hdpx(30), 0] }) : null
           mkUnitSlotLockedLine(platoonUnit, isLocked.value, justUnlockedDelay.value)
         ]
@@ -152,7 +153,7 @@ let testDriveButton = @() {
   watch = can_debug_units
   children = !can_debug_units.value ? null
     : textButtonPrimary("Test Drive",
-        @() startTestFlight(unitToShow.value?.name),
+        @() startTestFlight(unitToShow.get()),
         { hotkeys = ["^J:X | Enter"] })
 }
 

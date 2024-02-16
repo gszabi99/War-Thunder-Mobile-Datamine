@@ -127,8 +127,8 @@ let unitInfo = @(unitW) function() {
     children = [
       mkUnitBg(unit)
       mkUnitImage(unit)
-      mkUnitRank(unit)
       mkUnitTexts(unit, loc(p.locId))
+      mkUnitRank(unit)
     ]
   })
 }

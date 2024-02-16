@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkCurrencyComp, mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnimation, unlockAnimation,
@@ -276,7 +277,7 @@ let mkUnitFlag = @(unit, isLocked = Watched(false)) @() {
   margin = plateTextsSmallPad
   size = [flagIconSize, flagIconSize]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{getFlagByCountry(unit.country)}:0:P")
+  image = Picture($"ui/gameuiskin#{getFlagByCountry(getUnitTagsCfg(unit.name)?.operatorCountry ?? unit.country)}:0:P")
   fallbackImage = Picture($"ui/gameuiskin#{COUNTRY_FLAG_UNKNOWN}:0:P")
   keepAspect = KEEP_ASPECT_FIT
   imageValign = ALIGN_TOP
@@ -478,7 +479,6 @@ function mkSingleUnitPlate(unit) {
     children = [
       mkUnitBg(unit)
       mkUnitImage(unit)
-      mkUnitFlag(unit)
       mkUnitTexts(unit, loc(p.locId))
       level >= 0 ? mkUnitLevel(level) : null
     ]

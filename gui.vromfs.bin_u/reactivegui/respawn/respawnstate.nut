@@ -52,7 +52,7 @@ let respawnSlots = Computed(function() {
     res.append(mkSlot(idx + 1, sUnit, rMask, sMask))
   foreach (sUnit in respawnUnitInfo.value?.lockedUnits ?? [])
     res.append(mkSlot(res.len(), sUnit).__update({ reqLevel = sUnit.reqLevel }))
-  let { level } = respawnUnitInfo.value
+  let { level = -1 } = respawnUnitInfo.value
   res.each(@(s) s.level <- level)
   return res
 })
@@ -189,16 +189,12 @@ function respawn(slot, bullets) {
     bulletsData[$"bulletCount{idx}"] <- bullet.count
   }
 
-  local current_skin = skin
-  if (skin == "upgraded")
-    current_skin = ""
-
   eventbus_send("requestRespawn", {
     name
     weapon
     respBaseId
     idInCountry = id
-    skin=current_skin
+    skin
   }.__update(bulletsData))
 }
 

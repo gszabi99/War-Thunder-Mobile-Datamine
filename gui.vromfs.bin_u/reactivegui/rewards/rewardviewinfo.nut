@@ -10,6 +10,7 @@ let rTypesPriority = {
   lootbox         = 100000
   unitUpgrade     = 20000
   unit            = 10000
+  skin            = 5000
   decorator       = 1000
   currency        = 100
   premium         = 50
@@ -42,7 +43,7 @@ let slotsByDType = {
   title = 2
 }
 
-let dropLimitByType = ["unit", "unitUpgrade", "decorator"]
+let dropLimitByType = ["unit", "unitUpgrade", "decorator", "skin"]
   .reduce(@(res, id) res.rawset(id, 1), {})
 
 let getPriorirty = @(info)
@@ -51,24 +52,24 @@ let getPriorirty = @(info)
 let sortRewardsViewInfo = @(a, b) getPriorirty(b) <=> getPriorirty(a)
   || b.count <=> a.count
   || a.id <=> b.id
+  || (a?.subId ?? 0) <=> (b?.subId ?? 0)
 
 // No need to subscribe to allDecorators because it is loaded on game start
-let mkViewInfo = @(id, rType, count = 0)
-  { id, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[allDecorators.value?[id].dType] ?? 1 }
+let mkViewInfo = @(id, rType, count = 0, subId = "")
+  { id, subId, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[allDecorators.value?[id].dType] ?? 1 }
 
 function getRewardsViewInfo(data, multiply = 1) {
   let res = []
   if (!data)
     return res
   let { currencies = null, gold = 0, wp = 0, warbond = 0, eventKey = 0, nybond = 0, premiumDays = 0, items = {}, lootboxes = {},
-    decorators = [], unitUpgrades = [], units = [] } = data
-  if (unitUpgrades.len() != 0)
-    foreach (id in unitUpgrades)
-      res.append(mkViewInfo(id, "unitUpgrade"))
-  if (units.len() != 0)
-    foreach (id in units)
-      if (!unitUpgrades.contains(id))
-        res.append(mkViewInfo(id, "unit"))
+    decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {} } = data
+
+  foreach (id in unitUpgrades)
+    res.append(mkViewInfo(id, "unitUpgrade"))
+  foreach (id in units)
+    if (!unitUpgrades.contains(id))
+      res.append(mkViewInfo(id, "unit"))
 
   if (currencies == null) {//compatibility with format before 2024.01.23
     if (gold > 0)
@@ -89,15 +90,17 @@ function getRewardsViewInfo(data, multiply = 1) {
 
   if (premiumDays > 0)
     res.append(mkViewInfo("", "premium", premiumDays * multiply))
-  if (decorators.len() != 0)
-    foreach (id in decorators)
-      res.append(mkViewInfo(id, "decorator"))
-  if (items.len() != 0)
-    foreach (id, count in items)
-      res.append(mkViewInfo(id, "item", count * multiply))
-  if (lootboxes.len() != 0)
-    foreach (id, count in lootboxes)
-      res.append(mkViewInfo(id, "lootbox", count * multiply))
+
+  foreach (id in decorators)
+    res.append(mkViewInfo(id, "decorator"))
+  foreach (id, count in items)
+    res.append(mkViewInfo(id, "item", count * multiply))
+  foreach (id, count in lootboxes)
+    res.append(mkViewInfo(id, "lootbox", count * multiply))
+  foreach (id, count in boosters)
+    res.append(mkViewInfo(id, "booster", count * multiply))
+  foreach (unitName, skinName in skins)
+    res.append(mkViewInfo(unitName, "skin", 0, skinName))
   return res
 }
 
@@ -131,6 +134,7 @@ let customJoin = {
     }
   }
   unitUpgrade = { unit = @(_, __) true }
+  skin = { skin = @(a, b) a.subId == b.subId }
 }
 
 function joinSingleViewInfo(resV, joiningV, onJoin) {
@@ -159,41 +163,51 @@ function joinViewInfo(resViewInfo, joiningViewInfo, onJoin = null) {
   return resViewInfo
 }
 
+let function addTbl(res, id) {
+  if (id not in res)
+    res[id] <- {}
+  return res[id]
+}
+
+let function addArray(res, id) {
+  if (id not in res)
+    res[id] <- []
+  return res[id]
+}
+
 function groupRewards(rewards) {
-  let nonGroupableRewards = []
-  let groupableRewards = []
-  foreach(r in rewards) {
-    let list = r.dropLimit == NO_DROP_LIMIT && !r?.isLastReward
-      ? groupableRewards  //warning disable: -operator-returns-same-val
-      : nonGroupableRewards
-    list.append(r)
-  }
+  let res = []
+  let groupedRewards = {}
+  foreach(r in rewards)
+    if (r.dropLimit != NO_DROP_LIMIT || !!r?.isLastReward)
+      res.append(r)
+    else
+      addArray(addTbl(groupedRewards, r.rType), r.id)
+        .append(r)
 
-  local groupedRewards = {}
-  foreach (r in groupableRewards) {
-    if (r.id not in groupedRewards)
-      groupedRewards[r.id] <- []
-    groupedRewards[r.id].append(r)
-  }
+  foreach(groupList in groupedRewards)
+    foreach(group in groupList) {
+      if (group.len() == 1) {
+        res.append(group[0])
+        continue
+      }
 
-  foreach (group in groupedRewards)
-    group.sort(@(a, b) a.count <=> b.count)
+      group.sort(@(a, b) a.count <=> b.count)
+      res.append({
+        dropLimit = NO_DROP_LIMIT
+        dropLimitRaw = NO_DROP_LIMIT
+        id = group[0].id
+        subId = group[0].subId
+        source = group[0].source //can be different, but no need to differentiate them unless they have no drop limit
+        rewardCfg = group[0].rewardCfg //can be different, but no need to differentiate them unless they have no drop limit
+        rType = group[0].rType
+        slots = group[0].slots
+        count = group[0].count
+        countRange = group[group.len() - 1].count
+      })
+    }
 
-  groupedRewards = groupedRewards.map(function(group) {
-    let countRange = group.len() > 1 ? group[group.len() - 1].count : null
-    return {
-      dropLimit = NO_DROP_LIMIT
-      dropLimitRaw = NO_DROP_LIMIT
-      id = group[0].id
-      source = group[0].source //can be different, but no need to differentiate them unless they have no drop limit
-      rewardCfg = group[0].rewardCfg //can be different, but no need to differentiate them unless they have no drop limit
-      rType = group[0].rType
-      slots = group[0].slots
-      count = group[0].count
-    }.__update(countRange ? { countRange } : {})
-  })
-
-  return nonGroupableRewards.extend(groupedRewards.values())
+  return res
 }
 
 function getLootboxCommonRewardsViewInfo(lootbox) {
@@ -284,12 +298,14 @@ let isEmptyByField = {
   decorators = @(value, profile) value.findvalue(@(d) d not in profile?.decorators) == null
   units = @(value, profile) value.findvalue(@(u) u not in profile?.units) == null
   unitUpgrades = @(value, profile) value.findvalue(@(u) !profile?.units[u].isUpgraded) == null
+  skins = @(value, profile) value.findvalue(@(skinName, unitName) skinName not in profile?.skins[unitName]) == null
 }
 
 let isEmptyByRType = {
-  decorator = @(value, profile) value in profile?.decorators
-  unit = @(value, profile) value in profile?.units
-  unitUpgrade = @(value, profile) profile?.units[value].isUpgraded
+  decorator = @(value, _, profile) value in profile?.decorators
+  unit = @(value, _, profile) value in profile?.units
+  unitUpgrade = @(value, _, profile) profile?.units[value].isUpgraded
+  skin = @(unitName, skinName, profile) skinName in profile?.skins[unitName]
 }
 
 let isEmptyByType = {
@@ -317,8 +333,8 @@ function isRewardEmpty(reward, profile) {
 }
 
 function isSingleRewardEmpty(reward, profile) {
-  let { id, rType } = reward
-  return isEmptyByRType?[rType](id, profile) ?? false
+  let { id, rType, subId = "" } = reward
+  return isEmptyByRType?[rType](id, subId, profile) ?? false
 }
 
 function isRewardReceived(lootbox, id, reward, profile) {

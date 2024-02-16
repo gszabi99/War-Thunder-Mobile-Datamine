@@ -14,7 +14,7 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
 } = require("goodsPreviewPkg.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE
 } = require("hangar")
-let { loadedHangarUnitName, isLoadedHangarUnitUpgraded, setCustomHangarUnit, resetCustomHangarUnit, isHangarUnitLoaded,
+let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit, isHangarUnitLoaded,
   hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { gradCircularSqCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
@@ -105,7 +105,6 @@ previewGoodsUnit.subscribe(function(unit) {
 
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
   && loadedHangarUnitName.value == unitForShow.value?.name
-  && isLoadedHangarUnitUpgraded.value == (unitForShow.value?.isUpgraded ?? false)
   && isHangarUnitLoaded.value ))
 
 function showCutscene(v) {
@@ -125,7 +124,6 @@ function openDetailsWnd() {
   hangarUnitDataBackup({
     name = unitForShow.value.name,
     custom = unitForShow.value,
-    isFullChange = true
   })
   unitDetailsWnd({
     name = previewGoodsUnit.value?.name
@@ -137,6 +135,7 @@ function openDetailsWnd() {
 
 function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
   let p = getUnitPresentation(platoonUnit)
+  let platoonUnitFull = unit.__merge(platoonUnit)
   let isSelected = Computed(@() onSelectUnit != null && curSelectedUnitId.value == platoonUnit.name)
   let size = idx != 0 ? unitPlateSize
     : onSelectUnit == null ? unitPlateSizeSingle
@@ -154,9 +153,9 @@ function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
         children = [
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, isSelected)
-          mkUnitImage(unit.__merge(platoonUnit))
+          mkUnitImage(platoonUnitFull)
+          mkUnitTexts(platoonUnitFull, loc(p.locId))
           mkUnitRank(unit)
-          mkUnitTexts(unit, loc(p.locId))
         ]
       }
     ]

@@ -7,7 +7,7 @@ let { hangar_load_model } = require("hangar")
 let { gatherUnitStatsLimits } = require("unitStats.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitTags, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
+let { startTestFlightByName } = require("%rGui/gameModes/startOfflineMode.nut")
 
 function debugUnitStats() {
   let { allUnits = {} } = serverConfigs.value
@@ -44,7 +44,7 @@ function debug_start_testflight(unitName, missionName) {
   if (!isFilledString(missionName))
     return console_print(invalidStrParamMsg.subst("missionName"))
   console_print($"Starting testflight, unit \"{unitName}\", mission \"{missionName}\"")
-  startTestFlight(unitName, missionName)
+  startTestFlightByName(unitName, missionName)
 }
 
 register_command(debugUnitStats, "debug.unitStats")

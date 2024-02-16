@@ -46,6 +46,7 @@
     "maxDistance": 10000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
+    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -295,6 +296,7 @@
     "bullet": {
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -337,6 +339,7 @@
       "rocket": {
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap_rocket",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,

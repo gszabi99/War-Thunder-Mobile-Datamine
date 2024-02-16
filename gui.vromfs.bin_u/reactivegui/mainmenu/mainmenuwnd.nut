@@ -55,6 +55,8 @@ let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenu
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
+let boostersListActive = require("%rGui/boosters/boostersListActive.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -189,13 +191,13 @@ function startCurUnitOfflineBattle() {
   if (missions.len() == 0) {
     log($"OflineStartBattle: test flight, because no mission for campaign {campaign} ({name})")
     sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = "testflight" })
-    startTestFlight(curUnit.value?.name)
+    startTestFlight(curUnit.get())
   }
   else {
     let mission = chooseRandom(missions)
     log($"OflineStartBattle: start mission {mission} for {name}")
     sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = mission })
-    startOfflineBattle(name, mission)
+    startOfflineBattle(curUnit.get(), mission)
   }
 }
 
@@ -269,15 +271,23 @@ let toBattleButtonPlace = @() {
         mkMRankRange
       ]
     }
-    needReadyCheckButton.value && isReadyCheckSuspended.value ? readyCheckButtonInactive
-      : needReadyCheckButton.value ? readyCheckButton
-      : isSquadLeader.value ? toSquadBattleButton
-      : isInSquad.value && !isReady.value ? readyButton
-      : isInSquad.value && isReady.value ? notReadyButton
-      : isOfflineMenu ? startOfflineBattleButton
-      : needFirstBattleTutor.value ? startTutorButton
-      : newbieOfflineMissions.value != null ? startOfflineMissionButton
-      : toBattleButton
+    @(){
+      watch = serverConfigs
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(20)
+      children = [
+        (serverConfigs.get()?.allBoosters.len() ?? 0) > 0 ? boostersListActive : null
+        needReadyCheckButton.value && isReadyCheckSuspended.value ? readyCheckButtonInactive
+          : needReadyCheckButton.value ? readyCheckButton
+          : isSquadLeader.value ? toSquadBattleButton
+          : isInSquad.value && !isReady.value ? readyButton
+          : isInSquad.value && isReady.value ? notReadyButton
+          : isOfflineMenu ? startOfflineBattleButton
+          : needFirstBattleTutor.value ? startTutorButton
+          : newbieOfflineMissions.value != null ? startOfflineMissionButton
+          : toBattleButton
+      ]
+    }
   ]
 }
 

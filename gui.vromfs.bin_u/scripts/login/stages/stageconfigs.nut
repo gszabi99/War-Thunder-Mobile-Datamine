@@ -17,7 +17,7 @@ registerHandler("onLoginGetConfigs", onlyActiveStageCb(function(res, _) {
     openFMsgBox({ text })
   }
   else
-    finalizeStage()
+    defer(finalizeStage) //need sync configs to other VM before finalize stage
 }))
 
 let start = @() get_all_configs("onLoginGetConfigs")

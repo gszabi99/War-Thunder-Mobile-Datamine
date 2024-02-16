@@ -27,6 +27,7 @@ require("%globalScripts/windowState.nut").allowDebug(true)
 require("contacts/contactsState.nut") //need to catch notifications before login finish
 require("squad/squadManager.nut") //need to catch notifications before login finish
 require("initHangar.nut")
+require("updater/connectionStatus/initConnectionStatus.nut")
 
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { modalWindowsComponent, hideAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")

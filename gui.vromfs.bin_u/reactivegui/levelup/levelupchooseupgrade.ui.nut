@@ -107,8 +107,8 @@ let mkUnitPlate = @(unit) {
     children = [
       mkUnitBg(unit)
       mkUnitImage(unit)
-      mkUnitRank(unit)
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+      mkUnitRank(unit)
     ]
   }
 

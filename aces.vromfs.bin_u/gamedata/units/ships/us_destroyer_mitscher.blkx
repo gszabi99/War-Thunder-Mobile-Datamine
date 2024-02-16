@@ -616,6 +616,7 @@
         "tt_01_dm",
         "tt_02_dm",
         "bridge_dm",
+        "steering_gear_01_dm",
         "engine_room_01_dm",
         "engine_room_02_dm",
         "main_caliber_turret_01_dm",

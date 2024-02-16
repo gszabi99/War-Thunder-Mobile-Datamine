@@ -17,6 +17,8 @@ const PROGRESS_SCH_REWARD = "SchRewardInProgress"
 const PROGRESS_LOOTBOX = "LootboxInProgress"
 const PROGRESS_LEVEL = "LevelInProgress"
 const PROGRESS_MODS = "ModsInProgress"
+const PROGRESS_SKINS = "SkinsInProgress"
+const PROGRESS_BOOSTER = "BoosterInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -191,6 +193,8 @@ return {
   lootboxInProgress = mkProgress(PROGRESS_LOOTBOX)
   levelInProgress = mkProgress(PROGRESS_LEVEL)
   modsInProgress = mkProgress(PROGRESS_MODS)
+  skinsInProgress = mkProgress(PROGRESS_SKINS)
+  boosterInProgress = mkProgress(PROGRESS_BOOSTER)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -593,5 +597,36 @@ return {
   speed_up_unlock_progress = @(id, cb = null) request({
     method = "speed_up_unlock_progress"
     params = { id }
+  }, cb)
+
+  enable_unit_skin = @(unitName, vehicleName, skinName, cb = null) request({
+    method = "enable_unit_skin"
+    params = { unitName, vehicleName, skinName }
+    progressId = PROGRESS_SKINS
+    progressValue = unitName
+  }, cb)
+
+  buy_unit_skin = @(unitName, skinName, currencyId, price, cb = null) request({
+    method = "buy_unit_skin"
+    params = { unitName, skinName, currencyId, price }
+    progressId = PROGRESS_SKINS
+    progressValue = unitName
+  }, cb)
+
+  add_boosters = @(list, cb = null) request({
+    method = "add_boosters"
+    params = { list }
+  }, cb)
+
+  debug_apply_boosters_in_battle = @(boosters, cb = null) request({
+    method = "debug_apply_boosters_in_battle"
+    params = { boosters }
+  }, cb)
+
+  buy_booster = @(name, currencyId, price, cb = null) request({
+    method = "buy_booster"
+    params = { name, currencyId, price }
+    progressId = PROGRESS_BOOSTER
+    progressValue = name
   }, cb)
 }

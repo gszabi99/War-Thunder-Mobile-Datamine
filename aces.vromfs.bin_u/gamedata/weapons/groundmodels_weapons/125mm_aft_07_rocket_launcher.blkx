@@ -37,6 +37,7 @@
     "explosionPatchRadius": 3.5,
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
+    "groundRicochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,

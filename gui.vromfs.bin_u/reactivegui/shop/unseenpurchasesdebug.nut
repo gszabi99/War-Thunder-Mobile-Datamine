@@ -28,6 +28,9 @@ let fakeUnseenPurchases = {
       { id = "ussr_t_34_85_d_5t", gType = "unit", count = 1 },
       { id = "uk_destroyer_tribal", gType = "unitUpgrade", count = 1 },
       { id = "ussr_t_34_85_d_5t", gType = "unitUpgrade", count = 1 },
+      { id = "playerExp", gType = "booster", count = 2 },
+      { id = "germ_ru251", subId = "fiction", gType = "skin", count = 0 },
+      { id = "uk_destroyer_tribal", subId = "upgraded", gType = "skin", count = 0 },
     ]
   }
 }

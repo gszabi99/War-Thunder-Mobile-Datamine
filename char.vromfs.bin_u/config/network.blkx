@@ -126,7 +126,6 @@
       "enabled": true,
       "strictVersionCheck": false,
       "flag": [
-        "--force_check",
         "--http_peers http://seeder.gaijin.lan/content/",
         "--p2p_peers seeder.gaijin.lan:27032"
       ]
@@ -183,7 +182,6 @@
       "enabled": true,
       "shouldLogToCrashlytics": true,
       "flag": [
-        "--force_check",
         "--http_peers http://seeder.gaijin.lan/content/",
         "--p2p_peers seeder.gaijin.lan:27032"
       ]
@@ -253,8 +251,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
       "enabled": true,
-      "shouldLogToCrashlytics": true,
-      "flag": "--force_check"
+      "shouldLogToCrashlytics": true
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -306,8 +303,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
       "enabled": true,
-      "shouldLogToCrashlytics": true,
-      "flag": "--force_check"
+      "shouldLogToCrashlytics": true
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -366,8 +362,7 @@
       "APP_CMD_TERM_WINDOW": true
     },
     "contentUpdater": {
-      "enabled": true,
-      "flag": "--force_check"
+      "enabled": true
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"

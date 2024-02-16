@@ -11,13 +11,13 @@ let chooseBenchmarkWnd = require("chooseBenchmarkWnd.nut")
 let replaysWnd = require("%rGui/replay/replaysWnd.nut")
 let unitsWnd = require("%rGui/unit/unitsWnd.nut")
 let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { isGamepad } = require("%rGui/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { openNewsWnd, isFeedReceived } = require("%rGui/news/newsState.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
+let { startTestFlight, startTestFlightByName } = require("%rGui/gameModes/startOfflineMode.nut")
 let { isLoginAwardOpened, canShowLoginAwards } = require("%rGui/unlocks/loginAwardState.nut")
 let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 let { startTutor, firstBattleTutor } = require("%rGui/tutorial/tutorialMissions.nut")
@@ -47,15 +47,15 @@ let OPTIONS = {
 }
 let TEST_FLIGHT = {
   name = "Test Drive"
-  cb = @() startTestFlight(hangarUnitName.value)
+  cb = @() startTestFlight(hangarUnit.get())
 }
 let TF_SHIP_TUNE = {
   name = "Ship Tuning"
-  cb = @() startTestFlight(hangarUnitName.value, TF_SHIP_TUNE_MISSION)
+  cb = @() startTestFlight(hangarUnit.get(), TF_SHIP_TUNE_MISSION)
 }
 let TEST_AIR_BATTLE = {
   name = "Test Air Battle"
-  cb = @() startTestFlight(TEST_AIR_BATTLE_UNIT, TEST_AIR_BATTLE_MISSION)
+  cb = @() startTestFlightByName(TEST_AIR_BATTLE_UNIT, TEST_AIR_BATTLE_MISSION)
 }
 let BENCHMARK = {
   name = loc("mainmenu/btnBenchmark")

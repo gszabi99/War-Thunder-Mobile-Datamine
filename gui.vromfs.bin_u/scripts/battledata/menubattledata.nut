@@ -40,6 +40,7 @@ serverConfigs.subscribe(@(_) needRefresh(true))
 let profileKeysAffectData = {
   units = true
   items = true
+  boosters = true
   decorators = true
   levelInfo = true
   lastBattles = true

@@ -1872,7 +1872,7 @@
         "speedYaw": 18.0,
         "speedPitch": 4.0,
         "fireConeAngle": 1.0,
-        "bullets": 202,
+        "bullets": 80,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2274,6 +2274,171 @@
       "deviation": 0.5,
       "rotation": 0.5,
       "collisionNode": "cls_turret_01"
+    }
+  },
+  "ammoLoadDistribution": {
+    "primaryShells": {
+      "ammo_body_l_01_dm": {
+        "count": 4
+      },
+      "ammo_body_l_02_dm": {
+        "count": 4
+      },
+      "ammo_body_l_03_dm": {
+        "count": 4
+      },
+      "ammo_body_l_04_dm": {
+        "count": 4
+      },
+      "ammo_body_l_05_dm": {
+        "count": 4
+      },
+      "ammo_body_l_06_dm": {
+        "count": 4
+      },
+      "ammo_body_l_07_dm": {
+        "count": 4
+      },
+      "ammo_body_l_08_dm": {
+        "count": 4
+      },
+      "ammo_body_l_09_dm": {
+        "count": 4
+      },
+      "ammo_body_r_01_dm": {
+        "count": 4
+      },
+      "ammo_body_r_02_dm": {
+        "count": 4
+      },
+      "ammo_body_r_03_dm": {
+        "count": 4
+      },
+      "ammo_body_r_04_dm": {
+        "count": 4
+      },
+      "ammo_body_r_05_dm": {
+        "count": 4
+      },
+      "ammo_body_r_06_dm": {
+        "count": 4
+      },
+      "ammo_body_r_07_dm": {
+        "count": 4
+      },
+      "ammo_body_r_08_dm": {
+        "count": 4
+      },
+      "ammo_body_r_09_dm": {
+        "count": 4
+      },
+      "ammo_turret_dm": {
+        "count": 3
+      }
+    },
+    "secondaryShells": {
+      "ammo_turret_03_dm": {
+        "count": 40
+      },
+      "ammo_turret_01_dm": {
+        "count": 40
+      }
+    }
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": true,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_l_01_dm": {
+          "count": 4
+        },
+        "ammo_body_l_02_dm": {
+          "count": 4
+        },
+        "ammo_body_l_03_dm": {
+          "count": 4
+        },
+        "ammo_body_l_04_dm": {
+          "count": 4
+        },
+        "ammo_body_l_05_dm": {
+          "count": 4
+        },
+        "ammo_body_l_06_dm": {
+          "count": 4
+        },
+        "ammo_body_l_07_dm": {
+          "count": 4
+        },
+        "ammo_body_l_08_dm": {
+          "count": 4
+        },
+        "ammo_body_l_09_dm": {
+          "count": 4
+        },
+        "ammo_body_r_01_dm": {
+          "count": 4
+        },
+        "ammo_body_r_02_dm": {
+          "count": 4
+        },
+        "ammo_body_r_03_dm": {
+          "count": 4
+        },
+        "ammo_body_r_04_dm": {
+          "count": 4
+        },
+        "ammo_body_r_05_dm": {
+          "count": 4
+        },
+        "ammo_body_r_06_dm": {
+          "count": 4
+        },
+        "ammo_body_r_07_dm": {
+          "count": 4
+        },
+        "ammo_body_r_08_dm": {
+          "count": 4
+        },
+        "ammo_body_r_09_dm": {
+          "count": 4
+        },
+        "ammo_turret_dm": {
+          "count": 3
+        }
+      }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner1",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_05_dm": {
+          "count": 42
+        },
+        "ammo_turret_04_dm": {
+          "count": 40
+        },
+        "ammo_turret_02_dm": {
+          "count": 40
+        },
+        "ammo_turret_03_dm": {
+          "count": 40
+        },
+        "ammo_turret_01_dm": {
+          "count": 40
+        }
+      }
     }
   },
   "unitFx": {

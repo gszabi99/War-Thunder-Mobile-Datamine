@@ -2955,7 +2955,7 @@
     }
   },
   "upgradedDecals": {
-    "default": {
+    "upgraded": {
       "skin_condition": 96.0,
       "camo_scale": 0.0,
       "camo_rotation": 70.0,

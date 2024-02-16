@@ -51,7 +51,7 @@ function donloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
     openDownloadAddonsWnd(pkgs, eventId, params)
 }
 
-function startTestFlightImpl(unitName, missionName = null) {
+function startTestFlightImpl(unitName, missionName, skin) {
   if (unitName == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
@@ -60,6 +60,7 @@ function startTestFlightImpl(unitName, missionName = null) {
   let unitType = getUnitType(unitName)
   let params = {
     unitName
+    skin
     missionName = missionName ?? (unitType == SHIP || unitType == SUBMARINE
       ? "testFlight_destroyer_usa_tfs"
       : "testFlight_ussr_tft")
@@ -69,37 +70,45 @@ function startTestFlightImpl(unitName, missionName = null) {
     "startTestFlight", params)
 }
 
-let startTestFlight = @(unitName, missionName = null)
-  notAvailableForSquadMsg(@() startTestFlightImpl(unitName, missionName))
+let getUnitSkin = @(unit) unit?.currentSkins[unit.name] ?? ""
 
-function startOfflineBattle(unitName, missionName) {
-  if (unitName == null) {
+let startTestFlightByName = @(unitName, missionName = null, skin = "")
+  notAvailableForSquadMsg(@() startTestFlightImpl(unitName, missionName, skin))
+
+let startTestFlight = @(unit, missionName = null)
+  startTestFlightByName(unit.name, missionName, getUnitSkin(unit))
+
+function startOfflineBattle(unit, missionName) {
+  if (unit == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  donloadUnitPacksAndSend(unitName, [], "startTraining",
+  donloadUnitPacksAndSend(unit.name, [], "startTraining",
     {
-      unitName
+      unitName = unit.name
+      skin = getUnitSkin(unit)
       missionName
-      bullets = getBulletsForTestFlight(unitName)
+      bullets = getBulletsForTestFlight(unit.name)
     })
 }
 
-function startLocalMPBattle(unitName, missionName) {
-  if (unitName == null) {
+function startLocalMPBattle(unit, missionName) {
+  if (unit == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  donloadUnitPacksAndSend(unitName, [], "startLocalMP",
+  donloadUnitPacksAndSend(unit.name, [], "startLocalMP",
     {
-      unitName
+      unitName = unit.name
+      skin = getUnitSkin(unit)
       missionName
-      bullets = getBulletsForTestFlight(unitName)
+      bullets = getBulletsForTestFlight(unit.name)
     })
 }
 
 return {
   startTestFlight
+  startTestFlightByName
   startOfflineBattle
   startLocalMPBattle
 }

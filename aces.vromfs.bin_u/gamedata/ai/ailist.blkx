@@ -5413,7 +5413,8 @@
               "flyToPos": {
                 "speed": 350.0,
                 "dist": 600.0,
-                "minAlt": 200.0
+                "minAlt": 200.0,
+                "unreachableMaxTime": 60.0
               },
               "removeGroupCurrentPlayerOrder": {}
             },
@@ -5718,7 +5719,8 @@
               "flyToPos": {
                 "speed": 350.0,
                 "dist": 600.0,
-                "minAlt": 200.0
+                "minAlt": 200.0,
+                "unreachableMaxTime": 60.0
               },
               "removeGroupCurrentPlayerOrder": {}
             },
@@ -5728,7 +5730,8 @@
                   "weaponType": [
                     "bombs",
                     "cannons",
-                    "rockets"
+                    "rockets",
+                    "torpedoes"
                   ]
                 },
                 "hasDependentAttackers": {}
@@ -5859,7 +5862,10 @@
                           "parallel": {
                             "cycle": {
                               "hasGroupWeaponTypes": {
-                                "weaponType": "bombs"
+                                "weaponType": [
+                                  "bombs",
+                                  "torpedoes"
+                                ]
                               }
                             },
                             "attackGroundFake": {}
@@ -6110,7 +6116,8 @@
               "flyToPos": {
                 "speed": 350.0,
                 "dist": 600.0,
-                "minAlt": 200.0
+                "minAlt": 200.0,
+                "unreachableMaxTime": 60.0
               },
               "removeGroupCurrentPlayerOrder": {}
             },
@@ -6120,7 +6127,8 @@
                   "weaponType": [
                     "bombs",
                     "cannons",
-                    "rockets"
+                    "rockets",
+                    "torpedoes"
                   ]
                 },
                 "hasDependentAttackers": {}
@@ -6241,12 +6249,19 @@
                           "instantAttack": true,
                           "fireMode": "salvo"
                         },
+                        "torpedoTarget": {
+                          "instantAttack": true,
+                          "fireMode": "salvo"
+                        },
                         "sequencer": {
                           "hasDependentAttackers": {},
                           "parallel": {
                             "cycle": {
                               "hasGroupWeaponTypes": {
-                                "weaponType": "bombs"
+                                "weaponType": [
+                                  "bombs",
+                                  "torpedoes"
+                                ]
                               }
                             },
                             "attackGroundFake": {}

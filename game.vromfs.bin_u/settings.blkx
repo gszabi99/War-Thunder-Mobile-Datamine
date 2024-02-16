@@ -324,6 +324,24 @@
         "mRank": 5
       }
     },
+    "pkg_ussr_cruiser_chapayev": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_us_cruiser_rckt_belknap": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_us_battleship_texas": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -379,6 +397,24 @@
       }
     },
     "pkg_it_oto_r3_t20_fa": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
+      }
+    },
+    "pkg_it_of_40_mk_2a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_ru251": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_cn_t_34_85_d_5t": {
       "conditions": {
         "campaign": "tanks",
         "mRank": 4

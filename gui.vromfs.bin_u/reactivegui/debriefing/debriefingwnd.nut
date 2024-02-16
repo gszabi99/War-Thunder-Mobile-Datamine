@@ -36,6 +36,7 @@ let { isPlayerReceiveLevel, isUnitReceiveLevel, getNewPlatoonUnit } = require("d
 let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
 let debriefingTabBar = require("debriefingTabBar.nut")
 let mkDebriefingEmpty = require("mkDebriefingEmpty.nut")
+let boostersListActive = require("%rGui/boosters/boostersListActive.nut")
 
 local isAttached = false
 
@@ -161,8 +162,10 @@ let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, tex
 
 let mkBtnToBattlePlace = @(needShow) mkBtnAppearAnim(false, needShow, @() {
   watch = [newbieOfflineMissions, isInSquad, isSquadLeader]
-  children = !isInSquad.get() && newbieOfflineMissions.get() != null ? startOfflineMissionButton
-    : !isInSquad.get() || isSquadLeader.get() ? toBattleButton
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(20)
+  children = !isInSquad.get() && newbieOfflineMissions.get() != null ? [ boostersListActive, startOfflineMissionButton ]
+    : !isInSquad.get() || isSquadLeader.get() ? [ boostersListActive, toBattleButton ]
     : null
 })
 

@@ -452,6 +452,7 @@
         "compartment_03_dm",
         "compartment_04_dm",
         "bridge_dm",
+        "steering_gear_01_dm",
         "main_caliber_turret_01_dm"
       ],
       "effect": [

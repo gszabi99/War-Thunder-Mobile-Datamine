@@ -15,6 +15,9 @@ gui_scene.setConfigProps({
   gamepadCursorHoverMaxTime = 1.0
 })
 
+if ("defTextColor" in gui_scene.config)
+  gui_scene.setConfigProps({ defTextColor = 0xFFFFFFFF })
+
 require("frp").set_nested_observable_debug(DBGLEVEL > 0)
 require("%sqstd/regScriptDebugger.nut")(debugTableData)
 require("console").setObjPrintFunc(debugTableData)

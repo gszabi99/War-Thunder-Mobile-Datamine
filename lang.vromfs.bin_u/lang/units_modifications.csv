@@ -2309,8 +2309,15 @@ Yeniden doğma noktalarının olduğu modlarda, uçağın doğma maliyetini bir 
 "37mm_ussr_61K_HE/name";"UO-167";"UO-167";"UO-167";"UO-167";"UO-167";"УО-167";"УО-167";"UO-167";"UO-167";"UO-167";"UO-167";"UO-167";"UO-167";"UO-167"
 "37mm_ussr_61K_AP/name";"BR-167";"BR-167";"BR-167";"BR-167";"BR-167";"БР-167";"БР-167";"BR-167";"BR-167";"BR-167";"BR-167";"BR-167";"BR-167";"BR-167"
 "37mm_ussr_61K_APCR/name";"BR-167P";"BR-167P";"BR-167P";"BR-167P";"BR-167P";"БР-167П";"БР-167П";"BR-167P";"BR-167P";"BR-167P";"BR-167P";"BR-167P";"BR-167P";"BR-167P"
+"30mm_2a42_HE/name";"30 mm HEI";"HEI de 30 mm";"HEI da 30mm";"30 mm HEI";"30 mm HEI";"30-мм ОФЗ";"30-мм HEI";"30 mm HEI";"HEI de 30 mm";"30 mm HEI";"30 mm HEI";"HEI";"30 mm HEI";"HEI"
+"30mm_2a42_AP/name";"30 mm APT";"Obus APT de 30 mm";"APT da 30mm";"30 mm APT";"30 mm APT";"30-мм БТ";"30-мм APT";"30 mm APT";"APT de 30 mm";"30 mm APT";"30 mm APT";"AP-T";"30 mm APT";"AP-T"
+"30mm_2a42_APDS/name";"30 mm APDS";"APDS de 30 mm";"APDS da 30mm";"30 mm APDS";"30 mm APDS";"30-мм БП";"30-мм БПС";"30 mm APDS";"APDS de 30 mm";"30 mm APDS";"30 mm APDS";"APDS";"30 mm APDS";"APDS"
 "40mm_L70_AP/name";"40 mm AP-T";"40 mm AP-T";"AP-T da 40 mm";"40mm AP-T";"40 mm AP-T";"40-мм БТ";"40-мм БТ";"40 mm AP-T";"40 mm AP-T";"40 mm AP-T";"40 mm AP-T";"穿\t甲\t曳\t光\t弹";"40 mm AP-T";"穿\t甲\t曳\t光\t彈"
 "40mm_L70_HE/name";"40 mm HE-T";"40mm HE-T";"HE-T da 40mm";"40 mm HE-T";"40 mm HE-T";"40-мм ОФТ";"40-мм ОФТ";"40 mm HE-T";"40 mm HE-T";"40 mm HE-T";"40 mm HE-T";"高\t爆\t曳\t光\t弹";"40 mm HE-T";"高\t爆\t曳\t光\t彈"
+"25mm_cn_AP/name";"Type 87 AP";"Type 87 AP";"AP Tipo 87";"Typ 87 AP";"Tipo 87 AP";"Type 87 AP";"ББ (тип 87)";"Typ 87 AP";"Type 87 AP";"Type 87 AP";"87식 AP";"87 式\t穿\t甲\t弹";"Type 87 AP";"Type 87\t穿\t甲\t彈"
+"25mm_cn_HE/name";"Type 87 HE";"Type 87 HE";"HE Tipo 87";"Typ 87 HE";"Tipo 87 HE";"Type 87 HE";"ОФ (тип 87)";"Typ 87 HE";"Type 87 HE";"Type 87 HE";"87식 HE";"87 式\t杀\t爆\t弹";"Type 87 HE";"Type 87\t高\t爆\t彈"
+"25mm_kba_HE/name";"M792";"M792";"M792";"M792";"M792";"M792";"M792";"M792";"M792";"M792";"M792";"M792";"M792";"M792"
+"25mm_kba_APDS/name";"M791";"M791";"M791";"M791";"M791";"M791";"M791";"M791";"M791";"M791";"M791";"M791";"M791";"M791"
 "modification/76mm_usa_AA_radio_fuze_ammo_pack";"76 mm HE-RF";"76mm HE-RF";"HE-RF da 76mm";"76 mm HE (FZ)";"76mm HE-RF";"76-мм ОФ-РВ";"76мм ОФ-РВ";"76mm HE-RF";"76 mm HE-RF";"76 mm HE-RF";"76 mm 고폭탄 (근접신관)";"HE-RF";"76 mm HE-RF";"HE-RF"
 "modification/76mm_usa_navy_AP_ammo_pack";"76 mm AP";"76mm AP";"AP da 76mm";"76 mm AP";"76mm AP";"76-мм ББ";"76мм ББ";"76 mm AP";"76 mm AP";"76 mm AP";"76 mm 철갑탄";"AP";"76 mm AP";"AP"
 "76mm_usa_navy_AP/name";"76 mm AP";"AP de 76 mm";"AP da 76mm";"76 mm AP";"76 mm AP";"76-мм ББ";"76-мм ББ";"76 mm AP";"76 mm AP";"76 mm AP";"76 mm 철갑탄";"AP";"76 mm AP";"AP"
@@ -2756,7 +2763,7 @@ Yeniden doğma noktalarının olduğu modlarda, uçağın doğma maliyetini bir 
 "engine_model/r-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84";"R-1820-84"
 "20mm_jm61_rfs_naval_hei/name";"20 mm HEI belts";"Munitions HEI pour canon de 20 mm";"Munizioni HEI da 20mm";"20 mm HEI-Munition";"Cinturones HEI 20 mm";"20-мм ОФЗ ленты";"20-мм ОФЗ стрічки";"Taśma amunicyjna 20 mm z pociskami HEI";"20 mm HEI belts";"20 mm HEI kemerleri";"20 mm 고폭소이탄 탄띠";"HEI";"20 mm HEI ベルト";"HEI"
 "20mm_jm61_rfs_naval_apit/name";"20 mm APIT belts";"Munitions APIT pour canon de 20mm";"Munizioni APIT da 20mm";"20 mm APIT-Munition";"Cinturones APIT 20 mm";"20-мм БЗТ ленты";"20-мм БЗТ стрічки";"Taśma amunicyjna 20 mm z pociskami APIT";"20 mm APIT belts";"20 mm APIT kemerleri";"20 mm 철갑소이예광탄 탄띠";"API-T";"20 mm APIT ベルト";"API-T"
-"20mm_jm61_rfs_naval_apds/name";"20 mm APDS belts";"Munitions APDS pour canon de 20mm";"Munizioni APDS da 20mm";"20 mm APDS-Munition";"Cinturones APDS 20 mm";"20-мм БПС ленты";"20-мм БПС стрічки";"Taśma amunicyjna 20 mm z pociskami APDS";"20 mm APDS belts";"20 mm APDS kemerleri";"20 mm 분리철갑탄 탄띠";"APDS";"20 mm APDS ベルト";"APDS"
+"20mm_jm61_rfs_naval_apds/name";"20 mm APDS belts";"Munitions APDS pour canon de 20mm";"Munizioni APDS da 20mm";"20 mm APDS-Munition";"Cinturones APDS 20 mm";"20-мм БПС ленты";"20-мм БПС стрічки";"Taśma amunicyjna 20 mm z pociskami APDS";"20 mm APDS belts";"20 mm APDS kemerleri";"20 mm APDS 탄띠";"APDS";"20 mm APDS ベルト";"APDS"
 "12mm_breda_safat_he/name";"12,7 mm HE belts";"Munitions HE pour mitrailleuse de 12,7 mm";"Munizioni HE da 12,7mm";"12,7 mm HE-Gurte";"Cinturones HE 12,7 mm";"12,7-мм ОФ ленты";"12,7-мм ОФ стрічки";"Taśma amunicyjna 12,7 mm z pociskami HE";"12,7 mm HE belts";"12,7 mm HE belts";"12,7 mm HE 탄띠";"HE";"12.7 mm HE ベルト";"12.7 毫\t米 HE"
 "12mm_breda_safat_incendiary/name";"12,7 mm Incendiary belts";"Munitions incendiaires pour mitrailleuse de 12,7 mm";"Munizioni Incendiarie da 12,7mm";"12,7 mm Brandmunition";"Cinturones 12,7 mm Incendiarias";"12,7-мм зажигательные ленты";"12,7-мм запальні стрічки";"Taśma amunicyjna 12,7 mm z pociskami zapalającymi";"12,7 mm Incendiary belts";"12,7 mm Incendiary belts";"12,7 mm 소이탄 탄띠";"I";"12.7 mm 焼夷弾\tベルト";"12.7 毫\t米 I"
 "12mm_breda_safat_ap/name";"12,7 mm AP belts";"Munitions AP pour mitrailleuse de 12,7 mm";"Munizioni AP da 12,7mm";"12,7 mm AP-Munition";"Cinturones AP 12,7 mm";"12,7-мм ББ ленты";"12,7-мм ББ стрічки";"Taśma amunicyjna 12,7 mm z pociskami AP";"12,7 mm AP belts";"12,7 mm AP belts";"12,7 mm AP 탄띠";"AP";"12.7 mm AP ベルト";"12.7 毫\t米 AP"
@@ -3089,3 +3096,7 @@ Muharebede yapabileceğiniz en fazla tamir sayısı 3 azalır";"수리도구를 
 战\t斗\t中\t可\t用\t维\t修\t套\t件\t数\t量\t减\t少\t至 3 次";"工具\tセットの\tダメージ\t回復量が\t15%増加する
 バトルで\t修理できる\t回数が\t3回少なくなる";"使\t用\t修\t理\t套\t件\t能\t夠\t額\t外\t恢\t復 15% 耐\t久\t值
 戰\t鬥\t中\t可\t用\t維\t修\t套\t件\t數\t量\t減\t少\t至 3 次"
+"CLIPPED_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;
+"30mm_2a72_BTR_HE/name";"30 mm HEI";"30 mm HEI";"30 mm HEI";"30 mm HEI";"30 mm HEI";"30-мм ОФЗ";"30 mm HEI";"30 mm HEI";"30 mm HEI";"30 mm HEI";"30 mm HEI";"30 mm HEI";"30 mm HEI";"30 mm HEI"
+"30mm_2a72_BTR_AP/name";"30 mm APT";"30 mm APT";"30 mm APT";"30 mm APT";"30 mm APT";"30-мм БТ";"30 mm APT";"30 mm APT";"30 mm APT";"30 mm APT";"30 mm APT";"30 mm APT";"30 mm APT";"30 mm APT"
+"CLIPPED_LANG_KEEP_IT_ALWAYS_LAST";;;;;;;;;;;;;;

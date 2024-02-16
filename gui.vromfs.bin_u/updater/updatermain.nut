@@ -10,6 +10,9 @@ gui_scene.setConfigProps({
   clickRumbleEnabled = false
 })
 
+if ("defTextColor" in gui_scene.config)
+  gui_scene.setConfigProps({ defTextColor = 0xFFFFFFFF })
+
 return {
   size = flex()
   children = [

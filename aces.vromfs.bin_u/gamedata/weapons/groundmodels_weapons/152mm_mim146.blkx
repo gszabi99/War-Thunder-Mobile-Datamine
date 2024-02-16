@@ -54,6 +54,7 @@
     ],
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
+    "groundRicochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -87,6 +88,7 @@
     "rocket": {
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
+      "groundRicochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,

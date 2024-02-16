@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "connectionStatusConsts.nut" import *
+from "%appGlobals/clientState/connectionStatus.nut" import *
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { register_command } = require("console")
@@ -25,7 +25,9 @@ let connectionStatusMap = {
 }
 
 let connectionStatusAnd = Watched(get_connection_status())
-let connectionStatus = Computed(@() connectionStatusMap?[connectionStatusAnd.value] ?? CON_UNKNOWN)
+let updateStatus = @() connectionStatus.set(connectionStatusMap?[connectionStatusAnd.get()] ?? CON_UNKNOWN)
+updateStatus()
+connectionStatusAnd.subscribe(@(_) updateStatus())
 
 eventbus_subscribe("android.network.onConnectionStatusChange", @(msg) connectionStatusAnd(msg.status))
 
@@ -37,7 +39,3 @@ register_command(function() {
   eventbus_send("android.network.onConnectionStatusChange", { status })
   console_print($"Connection status changed to {connectionStatusMap[status]}") //warning disable: -forbidden-function
 }, "debug.ui.connectionStatusToggle")
-
-return {
-  connectionStatus
-}

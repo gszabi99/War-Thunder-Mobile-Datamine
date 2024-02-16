@@ -17,6 +17,8 @@ let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
+let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
+let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 
 
 let textPadding = [0, hdpx(5)]
@@ -270,6 +272,22 @@ function mkRewardPlateLootboxImage(r, rStyle) {
   }
 }
 
+// BOOSTER ////////////////////////////////////////////////////////////////////
+
+function mkRewardPlateBoosterImage(r, rStyle) {
+  let { iconShiftY } = rStyle
+  let size = getRewardPlateSize(r.slots, rStyle)
+  let iconSize = round(size[1] * 0.67).tointeger()
+  return {
+    size
+    children = iconBase.__merge({
+      size = [iconSize, iconSize]
+      pos = [ 0, iconShiftY ]
+      image = Picture($"{getBoosterIcon(r.id)}:{iconSize}:{iconSize}:P")
+    })
+  }
+}
+
 // UNIT ///////////////////////////////////////////////////////////////////////
 
 function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
@@ -301,6 +319,38 @@ function mkRewardPlateStatImage(r, rStyle) {
   }
 }
 
+// SKIN ///////////////////////////////////////////////////////////////////////
+
+function mkRewardPlateSkinImage(r, rStyle) {
+  let { id, subId = "" } = r
+  let { iconShiftY } = rStyle
+  let size = getRewardPlateSize(r.slots, rStyle)
+  let iconSize = size.map(@(v) (v * 0.55).tointeger())
+  let skinPresentation = getSkinPresentation(id, subId)
+
+  return {
+    size
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = {
+      size = iconSize
+      pos = [0, iconShiftY * 1.2]
+      rendObj = ROBJ_MASK
+      image = Picture($"ui/gameuiskin#slot_mask.svg:{iconSize[0]}:{iconSize[1]}:P")
+      children = iconBase.__merge({
+        size = iconSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#{skinPresentation.image}:{iconSize[0]}:{iconSize[1]}:P")
+      })
+    }
+  }
+}
+
+function mkRewardPlateSkinTexts(r, rStyle) {
+  let { id } = r
+  return mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(id)), rStyle), false)
+}
+
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
 
@@ -312,9 +362,10 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
     let res = { watch = unit }
     if (unit.value == null)
       return res
-    local nameText = mkPlateText(loc(getUnitLocId(unit.value)), fontTiny)
+    let unitNameLoc = loc(getUnitLocId(unit.value))
+    local nameText = mkPlateText(unitNameLoc, fontTiny)
     if (calc_comp_size(nameText)[0] > maxTextWidth)
-      nameText = mkPlateText(loc(getUnitLocId(unit.value)), fontVeryTiny)
+      nameText = mkPlateText(unitNameLoc, fontVeryTiny)
         .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
     return res.__update({
       size
@@ -407,6 +458,14 @@ let rewardPlateCtors = {
   stat = {
     image = mkRewardPlateStatImage
     texts = mkRewardPlateCountText
+  }
+  booster = {
+    image = mkRewardPlateBoosterImage
+    texts = mkRewardPlateCountText
+  }
+  skin = {
+    image = mkRewardPlateSkinImage
+    texts = mkRewardPlateSkinTexts
   }
 }
 

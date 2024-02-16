@@ -95,8 +95,8 @@ function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = false
       children = [
         mkUnitBg(unit)
         mkUnitImage(unit)
-        mkUnitRank(unit)
         mkUnitTexts(unit, loc(p.locId))
+        mkUnitRank(unit)
         mkLockedShade(isUnlocked, unlockDelay)
         isPlayerProgress
           ? mkUnitLock(unit, !isUnlocked, unlockDelay)

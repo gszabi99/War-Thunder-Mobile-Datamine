@@ -45,8 +45,8 @@ function mkUnitPlate(unit, onClick) {
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, Computed(@() stateFlags.get() & S_HOVER))
           mkUnitImage(unit)
-          mkUnitRank(unit)
           mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+          mkUnitRank(unit)
         ]
       }
   }

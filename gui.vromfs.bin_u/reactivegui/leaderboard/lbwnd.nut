@@ -13,7 +13,7 @@ let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
 let { secondsToHoursLoc, parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
 let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
-let { hoverColor, localPlayerColor } = require("%rGui/style/stdColors.nut")
+let { localPlayerColor } = require("%rGui/style/stdColors.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkPaginator } = require("%rGui/components/paginator.nut")
@@ -23,15 +23,18 @@ let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/te
 let { PRIMARY, defButtonHeight } = buttonStyles
 let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbDotsRowHeight,
   lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor,
-  prizeIcons, getRowBgColor, lbRewardsBlockWidth
+  prizeIcons, getRowBgColor, lbRewardsBlockWidth, lbTabIconSize
 } = require("lbStyle.nut")
 let { RANK, NAME, PRIZE } = require("lbCategory.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
 let { contactNameBlock, contactAvatar } = require("%rGui/contacts/contactInfoPkg.nut")
 let { mkLbHeaderRow, headerIconHeight } = require("mkLbHeaderRow.nut")
 let lbRewardsBlock = require("lbRewardsBlock.nut")
+let { selectedPlayerForInfo } = require("%rGui/mpStatistics/playerInfo.nut")
+let { can_view_player_stats } = require("%appGlobals/permissions.nut")
+let { mkTab } = require("%rGui/controls/tabs.nut")
+let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 
-let tabIconSize = hdpxi(60)
 let rankCellWidth = lbHeaderRowHeight * (isWidescreen ? 2.5 : 2.0)
 let nameWidth = calc_str_box("WWWWWWWWWWWWWWWWWW", isWidescreen ? fontTiny : fontVeryTiny)[0]
 let nameGap = hdpx(10)
@@ -40,69 +43,11 @@ let defTxtColor = 0xFFD8D8D8
 
 let close = @() isLbWndOpened(false)
 
-function mkLbTab(cfg, isSelected) {
-  let { id, icon, locId } = cfg
-  let stateFlags = Watched(0)
-  let color = Computed(@() isSelected ? 0xFFFFFFFF
-    : stateFlags.value & S_HOVER ? hoverColor
-    : 0xFFC0C0C0)
-  let isPushed = Computed(@() !isSelected && (stateFlags.value & S_ACTIVE) != 0)
-
-  let content = @() {
-    watch = color
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(10)
-    valign = ALIGN_BOTTOM
-    children = [
-      {
-        size = [tabIconSize, tabIconSize]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"{icon}:{tabIconSize}:{tabIconSize}:P")
-        color = color.value
-        keepAspect = true
-        imageValign = ALIGN_BOTTOM
-      }
-      {
-        rendObj = ROBJ_TEXT
-        text = loc(locId)
-        color = color.value
-      }.__update(fontSmall)
-    ]
-  }
-
-  let underline = @() {
-    watch = stateFlags
-    size = [flex(), hdpx(5)]
-    rendObj = ROBJ_SOLID
-    color = isSelected ? 0xFFFFFFFF
-      : stateFlags.value & S_HOVER ? hoverColor
-      : 0
-  }
-
-  return @() {
-    watch = isPushed
-
-    behavior = Behaviors.Button
-    sound = { click  = "click" }
-    onElemState = @(sf) stateFlags(sf)
-    onClick = @() curLbId(id)
-
-    flow = FLOW_VERTICAL
-    gap = hdpx(10)
-    children = [
-      content
-      underline
-    ]
-    transform = { scale = isPushed.value ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-  }
-}
-
 let lbTabs = @() {
   watch = curLbId
   flow = FLOW_HORIZONTAL
   gap = hdpx(40)
-  children = lbCfgOrdered.map(@(cfg) mkLbTab(cfg, curLbId.value == cfg.id))
+  children = lbCfgOrdered.map(@(cfg) mkTab(cfg, curLbId.value == cfg.id, @() curLbId(cfg.id)))
 }
 
 function rewardsTimer() {
@@ -151,9 +96,9 @@ let header = @() {
     !hasBestBattles.value ? null
       : mkCustomButton(
           {
-            size = [tabIconSize, tabIconSize]
+            size = [lbTabIconSize, lbTabIconSize]
             rendObj = ROBJ_IMAGE
-            image = Picture($"ui/gameuiskin#menu_stats.svg:{tabIconSize}:{tabIconSize}:P")
+            image = Picture($"ui/gameuiskin#menu_stats.svg:{lbTabIconSize}:{lbTabIconSize}:P")
             keepAspect = true
           },
           @() isLbBestBattlesOpened(true),
@@ -197,22 +142,35 @@ function mkNameCell(category, rowData) {
   let userId = rowData._id.tostring()
   let info = mkPublicInfo(userId)
   let realnick = category.getText(rowData)
-  let visualName = getPlayerName(realnick, myUserRealName.get(), myUserName.get())
-  let nameFont = isWidescreen || calc_str_box(visualName, fontTiny)[0] <= nameWidth
-    ? fontTiny
-    : fontVeryTiny
-  return @() {
-    watch = [info, myUserRealName, myUserName]
-    key = userId
-    size = [nameCellWidth, lbRowHeight]
-    onAttach = @() refreshPublicInfo(userId)
-    flow = FLOW_HORIZONTAL
-    gap = nameGap
-    valign = ALIGN_CENTER
-    children = [
-      contactAvatar(info.value, lbRowHeight - hdpx(2))
-      contactNameBlock({ realnick }, info.value, [], { nameStyle = nameFont, titleStyle = fontVeryTiny })
-    ]
+  return function() {
+    let { nickFrame = null } = info.get()?.decorators
+    let visualName = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
+    let nameFont = isWidescreen || calc_str_box(visualName, fontTiny)[0] <= nameWidth
+      ? fontTiny
+      : fontVeryTiny
+    return {
+      watch = [info, myUserRealName, myUserName]
+      key = userId
+      size = [nameCellWidth, lbRowHeight]
+      onAttach = @() refreshPublicInfo(userId)
+      flow = FLOW_HORIZONTAL
+      gap = nameGap
+      valign = ALIGN_CENTER
+      behavior = Behaviors.Button
+      function onClick() {
+        if (!can_view_player_stats.get())
+          return
+        local campaign = curLbId.get()
+        if (campaign == "wp")
+          campaign = "tanks"
+        selectedPlayerForInfo({ player = { userId isBot = false name = visualName realName = realnick }, campaign })
+      }
+
+      children = [
+        contactAvatar(info.get(), lbRowHeight - hdpx(2))
+        contactNameBlock({ realnick }, info.get(), [], { nameStyle = nameFont, titleStyle = fontVeryTiny })
+      ]
+    }
   }
 }
 

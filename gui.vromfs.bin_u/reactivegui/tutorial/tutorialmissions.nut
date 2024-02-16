@@ -51,7 +51,7 @@ function mkRewardBattleData(rewards) {
   let { playerExp = 0 } = rewards
   return {
     player = { exp, level, nextLevelExp }
-    reward = { playerExp = { totalExp = playerExp }}
+    reward = { playerExp = { baseExp = playerExp, totalExp = playerExp }}
   }
 }
 

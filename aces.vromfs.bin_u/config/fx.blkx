@@ -5890,5 +5890,25 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "naval/gui",
     "sfxEvent": "misc_open_tank"
+  },
+  "misc_open_ship": {
+    "fx": "misc_open_ship_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 8,
+    "farPlane": 500.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "naval/gui",
+    "sfxEvent": "misc_open_tank"
+  },
+  "misc_open_large_ship": {
+    "fx": "misc_open_large_ship_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 8,
+    "farPlane": 500.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "naval/gui",
+    "sfxEvent": "misc_open_tank"
   }
 }

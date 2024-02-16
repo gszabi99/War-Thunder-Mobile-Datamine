@@ -1618,7 +1618,6 @@
       ]
     ],
     "background_model__canOutline": false,
-    "background_model__upgraded": false,
     "background_model_res": {},
     "background_model__bullets:list<t>": {},
     "background_model__spawnEid:eid": {}

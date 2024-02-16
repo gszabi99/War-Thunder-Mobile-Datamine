@@ -54,9 +54,13 @@ function refreshPublicInfo(uid) {
 let mkPublicInfo = @(userId)
   Computed(@() allPublicInfo.value?[userId].general)
 
+let mkIsPublicInfoWait = @(userId)
+  Computed(@() userId in inProgressUids.get() )
+
 return {
   allPublicInfo
   inProgressPublicInfo = inProgressUids
+  mkIsPublicInfoWait
   refreshPublicInfo
   mkPublicInfo
 }

@@ -1624,7 +1624,6 @@
       ]
     ],
     "background_model__canOutline": false,
-    "background_model__upgraded": false,
     "background_model_res": {},
     "background_model__bullets:list<t>": {},
     "background_model__spawnEid:eid": {}
@@ -2627,6 +2626,7 @@
       "_replicate": true,
       "isBattleDataReceived": false,
       "isUnitsOverrided": false,
+      "isBoostersApplied": false,
       "unitSlots:list<t>": {},
       "commonStats:object": {}
     },

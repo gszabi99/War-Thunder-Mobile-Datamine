@@ -9,8 +9,10 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
   apply_profile_mutation, add_lootbox, add_warbond, add_event_key, debug_lootbox_chances,
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
-  halt_offer_purchase
+  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle
 } = pServerApi
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -94,6 +96,14 @@ register_command(@(id) debug_lootbox_chances(id, false, "onDebugLootboxChances")
 register_command(@(id) reset_lootbox_counters(id, "consolePrintResult"), "meta.reset_lootbox_counters")
 
 register_command(@() renew_ad_budget("consolePrintResult"), "meta.renew_ad_budget")
+
+register_command(@(name, count) add_boosters({ [name] = count }, "consolePrintResult"), "meta.add_booster")
+register_command(
+  @(count) add_boosters(serverConfigs.get()?.allBoosters.map(@(_) count) ?? {}, "consolePrintResult"),
+  "meta.add_all_boosters")
+register_command(
+  @() debug_apply_boosters_in_battle(servProfile.get()?.boosters.filter(@(v) v.battlesLeft > 0).keys() ?? [], "consolePrintResult"),
+  "meta.debug_apply_boosters_in_battle")
 
 register_command(function(count) {
   add_wp(count * 100)

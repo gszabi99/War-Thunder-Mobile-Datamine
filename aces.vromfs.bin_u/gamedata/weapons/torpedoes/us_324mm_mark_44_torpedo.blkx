@@ -2,7 +2,7 @@
   "torpedoGun": true,
   "preset_cost": 15,
   "bullets": 1,
-  "shotFreq": 1.5,
+  "shotFreq": 0.125,
   "external": true,
   "reloadTime": 60.0,
   "allowHumanReload": true,
@@ -11,7 +11,7 @@
     "antiShipBomb": true
   },
   "torpedo": {
-    "armDistance": 50.0,
+    "armDistance": 10.0,
     "dropSpeedRange": [
       -10.0,
       78.0
@@ -25,13 +25,13 @@
       90.0
     ],
     "bulletType": "torpedo",
-    "distToLive": 2500.0,
-    "maxSpeedInWater": 15.43,
-    "diveDepth": 1.0,
+    "distToLive": 2750.0,
+    "maxSpeedInWater": 22.63,
+    "diveDepth": 5.0,
     "detonationRadius": 0.1,
-    "detonationDepth": 4.0,
+    "detonationDepth": 6.0,
     "caliber": 0.324,
-    "mass": 235.0,
+    "mass": 400.0,
     "explosiveType": "torpex",
     "explosiveMass": 34.0,
     "explosionFx": "bomb_expl_100kg",
@@ -58,7 +58,7 @@
     ],
     "splash": {
       "innerRadius": 9.0,
-      "penetration": 110.0,
+      "penetration": 125.0,
       "damage": 3000.0,
       "damageType": "explosionTorpedo"
     },

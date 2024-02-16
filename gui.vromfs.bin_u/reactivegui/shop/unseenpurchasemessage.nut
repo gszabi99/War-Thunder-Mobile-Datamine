@@ -16,11 +16,12 @@ let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { bgShadedDark, bgHeader, bgMessage } = require("%rGui/style/backgrounds.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
-let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
+let { getTextScaleToFitWidth, getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
+let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
@@ -35,8 +36,10 @@ let { tryResetToMainScene, canResetToMainScene } = require("%rGui/navState.nut")
 let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
+let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 
-let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel", "decorator", "medal" ]
+let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
+  "decorator", "medal", "booster", "skin" ]
 
 let bgGradient = bgMessage.__merge({size = flex()})
 let wndWidth = saSize[0]
@@ -85,13 +88,14 @@ let stackData = Computed(function() {
   let stackRaw = {}
   foreach (purch in activeUnseenPurchasesGroup.value.list)
     foreach (data in purch.goods) {
-      let { id, gType, count } = data
+      let { id, gType, count, subId = "" } = data
+      let rewId = "".concat(id, subId)
       if (gType not in stackRaw)
         stackRaw[gType] <- {}
       if (id not in stackRaw[gType])
-        stackRaw[gType][id] <- { id, gType, count, order = -1 }
+        stackRaw[gType][rewId] <- { id, gType, count, subId, order = -1 }
       else
-        stackRaw[gType][id].count += count
+        stackRaw[gType][rewId].count += count
     }
 
   if (stackRaw?.unit != null && stackRaw?.unitUpgrade != null)
@@ -107,8 +111,8 @@ let stackData = Computed(function() {
   foreach (arr in stacksSorted)
     arr.sort(@(a, b) a.order <=> b.order)
 
-  let { currency = [], premium = [], item = [], unitUpgrade = [], unit = [], decorator = [] } = stacksSorted
-  let rewardIcons = [].extend(currency, premium, item, decorator)
+  let { currency = [], premium = [], item = [], unitUpgrade = [], unit = [], decorator = [], booster = [], skin = [] } = stacksSorted
+  let rewardIcons = [].extend(currency, premium, item, decorator, booster, skin)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   let idxOffsetPlates = rewardIcons.len()
@@ -337,11 +341,51 @@ function mkRewardLabel(startDelay, text) {
   return res
 }
 
+function mkRewardLabelMultiline(startDelay, text) {
+  let res = {
+    size = [rewTextMaxWidth, SIZE_TO_CONTENT]
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    halign = ALIGN_CENTER
+    text
+    transform = { translate = [0, - rewIconToTextGap * 0.5] }
+    animations = [
+      { prop = AnimProp.opacity, from = 0, to = 0,
+        duration = startDelay + aRewardLabelDelay,
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.opacity, from = 0, to = 1,
+        delay = startDelay + aRewardLabelDelay, duration = aRewardLabelOpacityTime,
+        play = true, trigger = ANIM_SKIP_DELAY }
+    ]
+  }.__update(fontMediumShaded)
+  return res.__update(getFontToFitWidth(res, rewTextMaxWidth * 2, [fontVeryTinyShaded, fontTinyShaded, fontMediumShaded]))
+}
+
 let mkDecoratorRewardLabel = @(startDelay, decoratorId)
   @() {
     watch = allDecorators
     children = mkRewardLabel(startDelay, loc($"decorator/{allDecorators.value?[decoratorId].dType}"))
   }
+
+let skinIconSize = round(rewIconSize * 0.75).tointeger()
+function mkSkinRewardIcon(startDelay, unitName, skinName) {
+  let skinPresentation = getSkinPresentation(unitName, skinName)
+  return {
+    size = [SIZE_TO_CONTENT, rewIconSize]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = {
+      size = [skinIconSize, skinIconSize]
+      rendObj = ROBJ_MASK
+      image = Picture($"ui/gameuiskin#slot_mask.svg:{skinIconSize}:{skinIconSize}:P")
+      children = {
+        size = [skinIconSize, skinIconSize]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#{skinPresentation.image}:{skinIconSize}:{skinIconSize}:P")
+      }
+    }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+  }
+}
 
 let rewardCtors = {
   currency = {
@@ -360,6 +404,15 @@ let rewardCtors = {
   decorator = {
     mkIcon = @(rewardInfo) mkDecoratorRewardIcon(rewardInfo.startDelay, rewardInfo.id)
     mkText = @(rewardInfo) mkDecoratorRewardLabel(rewardInfo.startDelay, rewardInfo.id)
+  }
+  booster = {
+    mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, getBoosterIcon(rewardInfo.id))
+    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
+  }
+  skin = {
+    mkIcon = @(rewardInfo) mkSkinRewardIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.subId)
+    mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
+      loc("skins/title", { unitName = loc(getUnitLocId(rewardInfo.id)) }))
   }
 }
 
@@ -408,8 +461,8 @@ function mkUnitPlate(unitInfo) {
           children = [
             mkUnitBg(unit)
             mkUnitImage(unit)
-            mkUnitRank(unit)
             mkUnitTexts(unit, loc(p.locId))
+            mkUnitRank(unit)
           ]
         }
       }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))
@@ -656,6 +709,7 @@ function mkMsgContent(stackDataV, purchGroup) {
   let title = titleCtors?[style](outroDelay, purchGroup) ?? wndTitle
   let size = [max(unitPlates.len() * unitPlateWidth, min(rewardIcons.len(), rewIconsPerRow) * rewBlockWidth) + hdpx(300), SIZE_TO_CONTENT]
   let content = {
+    minWidth = hdpx(900)
     padding = [0, 0, hdpx(38), 0]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER

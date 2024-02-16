@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "connectionStatusConsts.nut" import *
+from "%appGlobals/clientState/connectionStatus.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { getConnectionStatus, CONN_LIMITED, CONN_WIFI, CONN_NO_CONNECTION, CONN_UNKNOWN } = require("ios.platform")
 
@@ -11,10 +11,8 @@ let connectionStatusMap = {
 }
 
 let connectionStatusIos = Watched(getConnectionStatus())
-let connectionStatus = Computed(@() connectionStatusMap?[connectionStatusIos.value] ?? CON_UNKNOWN)
+let updateStatus = @() connectionStatus.set(connectionStatusMap?[connectionStatusIos.value] ?? CON_UNKNOWN)
+updateStatus()
+connectionStatusIos.subscribe(@(_) updateStatus())
 
 eventbus_subscribe("ios.network.onConnectionStatusChange", @(msg) connectionStatusIos(msg.status))
-
-return {
-  connectionStatus
-}

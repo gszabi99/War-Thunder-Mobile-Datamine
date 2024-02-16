@@ -34,6 +34,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { unitSpecificItemsCfg } = require("%appGlobals/unitSpecificItems.nut")
+let { SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 
 let itemsGap = hdpx(50)
 
@@ -132,7 +133,8 @@ let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
     if (reqItems <= hasItems)
       continue
     let hasUsing = ceil(hasItems/(perUse == 0 ? 1 : perUse))
-    let goods = getCheapestGoods(shopGoods.get(), @(g) (g?.items[name] ?? 0) > 0)
+    let goods = getCheapestGoods(shopGoods.get(),
+      @(g) (g?.items[name] ?? 0) > 0 && g?.gtype == SGT_CONSUMABLES && (g?.items.len() ?? 0) > 0)
     let { price = 0, currencyId = ""} = goods?.price
     let canBuyItem = price <= (balance.get()?[goods?.price?.currencyId] ?? 0)
     let timeInterval = itemShowCd?[name][canBuyItem ? "hasBalance" : "noBalance"] ?? 0

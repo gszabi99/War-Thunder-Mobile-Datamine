@@ -19,10 +19,10 @@
     "bulletName": "mm38",
     "mass": 735.0,
     "rocket": {
-      "bulletName": "mm38",
       "mesh": "rocket_mm38_exocet",
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,

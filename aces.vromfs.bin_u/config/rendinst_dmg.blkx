@@ -416,6 +416,174 @@
       "material": "metal"
     },
     {
+      "name": "european_lamp_a",
+      "destroyedModelName": "european_lamp_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_b",
+      "destroyedModelName": "european_lamp_b_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_big_a",
+      "destroyedModelName": "european_lamp_big_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_big_b",
+      "destroyedModelName": "european_lamp_big_b_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_big_c",
+      "destroyedModelName": "european_lamp_big_c_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_big_d",
+      "destroyedModelName": "european_lamp_big_d_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_big_e",
+      "destroyedModelName": "european_lamp_big_e_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_c",
+      "destroyedModelName": "european_lamp_c_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_d",
+      "destroyedModelName": "european_lamp_d_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "transparentCamera"
+    },
+    {
+      "name": "european_lamp_e",
+      "destroyedModelName": "european_lamp_e_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_small_a",
+      "destroyedModelName": "european_lamp_small_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_small_b",
+      "destroyedModelName": "european_lamp_small_b_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_small_c",
+      "destroyedModelName": "european_lamp_small_c_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_small_d",
+      "destroyedModelName": "european_lamp_small_d_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_small_e",
+      "destroyedModelName": "european_lamp_small_e_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_small_f",
+      "destroyedModelName": "european_lamp_small_f_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_lamp_small_f_snow",
+      "destroyedModelName": "european_lamp_small_f_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_metal_snow",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "berlin_lamp_a",
+      "destroyedModelName": "berlin_lamp_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "berlin_lamp_a_on",
+      "destroyedModelName": "berlin_lamp_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "berlin_lamp_b",
+      "destroyedModelName": "berlin_lamp_b_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "berlin_power_pole_a",
+      "destroyedModelName": "berlin_power_pole_a_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
       "name": "european_statue_horse_a_dp_01",
       "destroyedModelName": "european_statue_horse_a_dp_01_destr_phobj",
       "destructionImpulse": 70000.0,

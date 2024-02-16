@@ -64,6 +64,7 @@
     "endSmokeViscosity": 0.05,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
+    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,

@@ -58,6 +58,7 @@
     "maxDistance": 9000.0,
     "normalizationPreset": "apcr",
     "ricochetPreset": "apds",
+    "groundRicochetPreset": "apcr",
     "secondaryShattersPreset": "apds",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,

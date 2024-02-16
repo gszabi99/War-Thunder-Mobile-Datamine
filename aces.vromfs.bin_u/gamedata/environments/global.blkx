@@ -5,7 +5,33 @@
     0.8
   ],
   "shader_vars": {
-    "use_water_fresnel_reflections": true,
+    "tonemapContrast": 1.24,
+    "tonemapShoulder": 0.87,
+    "tonemapMidIn": 0.24,
+    "tonemapMidOut": 0.26,
+    "tonemapHdrMax": 4.0,
+    "colorCorrectionShadowsMax": 0.1,
+    "colorCorrectionHighlightsMin": 0.8,
+    "hueToSaturationKey": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "hueToSaturationKeyFalloff": 0.001,
+    "hueToSaturationValueMul": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "hueToSaturationValueAdd": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "baseWhiteTemp": 6500.0,
     "contact_shadow_len": 0.05,
     "ssao_on_sun": 0.0,
     "ao_point_lights_effect": [

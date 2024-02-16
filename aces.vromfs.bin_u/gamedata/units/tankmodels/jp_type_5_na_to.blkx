@@ -3007,7 +3007,7 @@
     }
   },
   "upgradedDecals": {
-    "default": {
+    "upgraded": {
       "decal0Line0": [
         2.40025,
         -0.000639325,

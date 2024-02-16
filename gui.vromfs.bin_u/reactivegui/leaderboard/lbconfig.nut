@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { RANK, NAME, SHIP_RATING, TANKS_RATING, WP_RATING, KILL, KILL_SHIPS, KILL_TANKS,
   WIN, BATTLES, PRIZE, INDEX, LOG_TIME, WIN_SINGLE
 } = require("lbCategory.nut")
+let { lbTabIconSize } = require("lbStyle.nut")
 let { ships, tanks } = require("%appGlobals/config/campaignPresentation.nut").campaignPresentations
 
 let lbCfgOrdered = [
@@ -14,6 +15,7 @@ let lbCfgOrdered = [
     battleCategories = [ INDEX, SHIP_RATING, KILL_SHIPS, WIN_SINGLE, LOG_TIME ]
     sortBy = SHIP_RATING
     icon = ships.icon
+    iconSize = lbTabIconSize
     locId = ships.unitsLocId
   }
   {
@@ -25,6 +27,7 @@ let lbCfgOrdered = [
     battleCategories = [ INDEX, TANKS_RATING, KILL_TANKS, WIN_SINGLE, LOG_TIME ]
     sortBy = TANKS_RATING
     icon = tanks.icon
+    iconSize = lbTabIconSize
     locId = tanks.unitsLocId
   }
   {
@@ -35,6 +38,7 @@ let lbCfgOrdered = [
     battleCategories = [ INDEX, WP_RATING, KILL, WIN_SINGLE, LOG_TIME ]
     sortBy = WP_RATING
     icon = "ui/gameuiskin#score_icon.svg"
+    iconSize = lbTabIconSize
     locId = "lb/overall_rating"
   }
 ]

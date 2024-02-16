@@ -468,7 +468,8 @@
       "maxDamageMode": true,
       "part": [
         "compartment_04_dm",
-        "bridge_dm"
+        "bridge_dm",
+        "steering_gear_01_dm"
       ],
       "effect": [
         {

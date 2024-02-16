@@ -70,6 +70,7 @@
   "smoothGuidedMissilesResyncRelativeTargetTimeConst": 0.5,
   "resyncRemotelyControlleMissileGuidance": false,
   "seekerPostArretTimeOut": 0.5,
+  "airTargetAiPriority": true,
   "minFreeCrewIntegrity": -1.0,
   "avionicsDamageTreshold": 0.7,
   "maxShipCalcDistanceTimeout": 1.5,

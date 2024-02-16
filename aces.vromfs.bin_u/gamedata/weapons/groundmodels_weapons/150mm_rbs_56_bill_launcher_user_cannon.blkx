@@ -42,6 +42,7 @@
   "bullet": {
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
+    "groundRicochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -89,6 +90,7 @@
       "massEnd": 9.8,
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
+      "groundRicochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -423,6 +425,7 @@
     "bullet": {
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
+      "groundRicochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -470,6 +473,7 @@
         "massEnd": 9.8,
         "normalizationPreset": "heat",
         "ricochetPreset": "atgm",
+        "groundRicochetPreset": "atgm",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,

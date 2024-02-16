@@ -1,6 +1,7 @@
 {
   "normalizationPreset": "apcr",
   "ricochetPreset": "apds_fs",
+  "groundRicochetPreset": "apds",
   "secondaryShattersPreset": "apds_fs",
   "stabilityThreshold": 0.05,
   "stabilityCaliberToArmorThreshold": 5.0,

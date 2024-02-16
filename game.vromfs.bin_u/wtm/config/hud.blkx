@@ -3892,6 +3892,10 @@
         "shortcutIdx": -1,
         "showLoadedCount": true
       },
+      "rocket_secondary_activate": {
+        "shortcutIdx": -1,
+        "showLoadedCount": true
+      },
       "torpedo_sight_activate": {
         "shortcutIdx": -1
       },

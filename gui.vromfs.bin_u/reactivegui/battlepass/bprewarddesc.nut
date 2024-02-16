@@ -33,8 +33,8 @@ let mkUnitPlate = @(unitId) function() {
       children = [
         mkUnitBg(unit)
         mkUnitImage(unit)
-        mkUnitRank(unit)
         mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
+        mkUnitRank(unit)
         mkGradRankLarge(unit.mRank, {
          padding = hdpx(10)
          hplace = ALIGN_RIGHT

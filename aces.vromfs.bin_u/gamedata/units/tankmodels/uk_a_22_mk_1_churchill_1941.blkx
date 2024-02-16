@@ -2258,17 +2258,77 @@
       }
     },
     "secondaryShells": {
-      "ammo_body_03_dm": {
+      "ammo_body_01_dm": {
         "count": 14
       },
       "ammo_body_02_dm": {
-        "count": 14
-      },
-      "ammo_body_04_dm": {
         "count": 15
-      },
-      "ammo_body_01_dm": {
-        "count": 15
+      }
+    }
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_01_dm": {
+          "count": 14
+        },
+        "ammo_turret_02_dm": {
+          "count": 14
+        },
+        "ammo_turret_03_dm": {
+          "count": 13
+        },
+        "ammo_turret_09_dm": {
+          "count": 15
+        },
+        "ammo_turret_10_dm": {
+          "count": 15
+        },
+        "ammo_turret_04_dm": {
+          "count": 22
+        },
+        "ammo_turret_05_dm": {
+          "count": 22
+        },
+        "ammo_turret_08_dm": {
+          "count": 10
+        },
+        "ammo_turret_07_dm": {
+          "count": 10
+        },
+        "ammo_turret_06_dm": {
+          "count": 15
+        }
+      }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner1",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_04_dm": {
+          "count": 15
+        },
+        "ammo_body_03_dm": {
+          "count": 14
+        },
+        "ammo_body_02_dm": {
+          "count": 14
+        },
+        "ammo_body_01_dm": {
+          "count": 15
+        }
       }
     }
   },
@@ -2419,7 +2479,7 @@
         "speedYaw": 15.0,
         "speedPitch": 3.0,
         "fireConeAngle": 1.0,
-        "bullets": 58,
+        "bullets": 29,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2679,7 +2739,7 @@
               "speedYaw": 15.0,
               "speedPitch": 3.0,
               "fireConeAngle": 1.0,
-              "bullets": 58,
+              "bullets": 29,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,

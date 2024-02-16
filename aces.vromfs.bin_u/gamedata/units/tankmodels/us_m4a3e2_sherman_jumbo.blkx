@@ -2835,9 +2835,16 @@
     "detectionHeight": 2.97
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
     "art_support": {},
-    "tank_extinguisher": {}
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {}
   },
   "user_skin": {
     "name": "us_m4a3e2_sherman_jumbo",

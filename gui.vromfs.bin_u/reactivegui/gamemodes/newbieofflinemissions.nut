@@ -182,7 +182,7 @@ function startNewbieMission(missions, reward, predefinedId) {
   let missionName = chooseRandom(missions)
   logO($"Start newbie battle. Unit = {curUnit.value?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
   eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
-  startOfflineBattle(curUnit.value?.name, missionName)
+  startOfflineBattle(curUnit.get(), missionName)
 }
 
 function startLocalMPMission(missions, reward, predefinedId) {
@@ -192,7 +192,7 @@ function startLocalMPMission(missions, reward, predefinedId) {
   let missionName = chooseRandom(missions)
   logO($"Start local multiplayer battle. Unit = {curUnit.value?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
   eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
-  startLocalMPBattle(curUnit.value?.name, missionName)
+  startLocalMPBattle(curUnit.get(), missionName)
 }
 
 let startCurNewbieMission = @()

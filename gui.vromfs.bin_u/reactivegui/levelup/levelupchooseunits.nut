@@ -181,8 +181,8 @@ function mkUnitPlate(unit, onClick) {
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(unit)
-          mkUnitRank(unit)
           mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
+          mkUnitRank(unit)
           price != null ? mkUnitPrice(price) : null
         ]
       }
