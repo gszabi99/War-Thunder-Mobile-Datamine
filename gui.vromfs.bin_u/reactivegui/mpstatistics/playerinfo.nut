@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
-let { can_view_player_uids } = require("%appGlobals/permissions.nut")
+let { can_view_player_uids, can_view_player_rate } = require("%appGlobals/permissions.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { mkPublicInfo, refreshPublicInfo, mkIsPublicInfoWait } = require("%rGui/contacts/contactPublicInfo.nut")
@@ -116,6 +116,39 @@ let tabs = @() {
       @()selectedPlayerForInfo.mutate(@(v) v.campaign = camp)))
 }
 
+let mkMedals = @(info, selCampaign) function() {
+  let children = []
+
+  let curr = info.get()?.campaigns?[selCampaign] ?? {}
+  foreach(v in curr?.starLevelHistory ?? [])
+    children.append(levelMark(v.level, v.starLevel + 1))
+  if ((curr?.starLevel ?? 0) > 0)
+    children.append(levelMark(curr.level - curr.starLevel, curr.starLevel - 1))
+
+  foreach(medal in info.get()?.medals ?? {}) {
+    let { campaign = selCampaign, ctor } = getMedalPresentation(medal)
+    if (campaign == selCampaign)
+      children.append(ctor(medal))
+  }
+  return {
+    watch = info
+    valign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(30)
+    children = children.len() > 0
+      ? [
+          mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
+          {
+            valign = ALIGN_CENTER
+            flow = FLOW_HORIZONTAL
+            gap = hdpx(30)
+            children
+          }
+        ]
+      : mkText(loc("mainmenu/noMedal"))
+  }
+}
+
 function mkPlayerInfo(player, globalStats, campaign) {
   let { userId = 0, isBot = false } = player
   if (!isBot) {
@@ -126,16 +159,6 @@ function mkPlayerInfo(player, globalStats, campaign) {
   let isWaitInfo = mkIsPublicInfoWait(userId)
   let publicStats = isBot ? mkBotStats(player) : mkStatsInfo(userId)
   let isWaitStats = mkIsStatsWait(userId)
-  let medals = Computed(@() info.get()?.medals ?? {})
-
-  let starLevelHistory = Computed(function() {
-    let curr = info.get()?.campaigns?[campaign] ?? {}
-    return curr?.starLevelHistory ?? []
-  })
-  let medalItems = starLevelHistory.get().map(@(v) levelMark(v.level, v.starLevel + 1))
-  medalItems.extend(medals.get().values()
-                  .filter(@(medal) (getMedalPresentation(medal)?.campaign ?? campaign) == campaign)
-                  .map(@(medal) getMedalPresentation(medal).ctor(medal)))
   return bgMessage.__merge({
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
@@ -158,23 +181,7 @@ function mkPlayerInfo(player, globalStats, campaign) {
         children = [
           mkNameContent(player, info)
           tabs
-          @() {
-            watch = [starLevelHistory, medals]
-            valign = ALIGN_CENTER
-            flow = FLOW_HORIZONTAL
-            gap = hdpx(30)
-            children = medalItems.len() > 0
-              ? [
-                  mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
-                  {
-                    valign = ALIGN_CENTER
-                    flow = FLOW_HORIZONTAL
-                    gap = hdpx(30)
-                    children = medalItems
-                  }
-                ]
-              : mkText(loc("mainmenu/noMedal"))
-          }
+          mkMedals(info, campaign)
           {
             size = [flex(), SIZE_TO_CONTENT]
             flow = FLOW_HORIZONTAL
@@ -234,7 +241,9 @@ function mkPlayerInfo(player, globalStats, campaign) {
                   children = [
                     mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)
                     mkRow(loc("lb/battles"), $"{stats.battle_end}")
-                    mkRow(loc("stats/missions_wins"), $"{percent}%")
+                    can_view_player_rate.get() ?
+                      mkRow(loc("stats/missions_wins"), $"{percent}%")
+                      : null
                   ]
                 }
               }

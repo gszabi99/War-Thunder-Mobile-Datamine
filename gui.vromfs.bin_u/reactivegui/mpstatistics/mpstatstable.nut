@@ -7,7 +7,6 @@ let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlace
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { selectedPlayerForInfo } = require("%rGui/mpStatistics/playerInfo.nut")
-let { can_view_player_stats } = require("%appGlobals/permissions.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 let cellTextColor = Color(255, 255, 255)
@@ -170,7 +169,7 @@ function mkPlayerRow(columnCfg, player, teamColor, idx) {
     onClick = function() {
       if (selectedPlayerForInfo.value == player)
         selectedPlayerForInfo(null)
-      else if (can_view_player_stats.value)
+      else
         selectedPlayerForInfo({player, campaign = curCampaign.get()})
     }
     sound = { click  = "click" }

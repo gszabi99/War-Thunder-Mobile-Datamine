@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { hide_unit, show_unit, play_fx_on_unit,
+let { hide_unit, show_unit, play_fx_on_unit = @(...) null,
   enable_scene_camera, disable_scene_camera, reset_camera_pos_dir,
 } = require("hangar")
-let { setTimeout } = require("dagor.workcycle")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { registerScene, scenesOrder } = require("%rGui/navState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
@@ -36,6 +36,7 @@ let effectsCfg = {
 
 let getPurchaseSound = @() unitToShow.value?.isUpgraded || unitToShow.value?.isPremium ? "unit_buy_prem" : "unit_buy"
 
+let playPurchSound = @() playSound(getPurchaseSound())
 let unitOpening = @(play, timeToShowUnit, timeTotal) {
   //needed to pass validation tests
   rendObj = ROBJ_SOLID
@@ -47,14 +48,17 @@ let unitOpening = @(play, timeToShowUnit, timeTotal) {
     disable_scene_camera()
     reset_camera_pos_dir()
     play()
-    setTimeout(timeToShowUnit, show_unit)
-    setTimeout(timeToShowUnit, @() playSound(getPurchaseSound()))
-    setTimeout(timeTotal, close)
+    resetTimeout(timeToShowUnit, show_unit)
+    resetTimeout(timeToShowUnit, playPurchSound)
+    resetTimeout(timeTotal, close)
   }
 
   function onDetach() {
     enable_scene_camera()
     show_unit()
+    clearTimer(show_unit)
+    clearTimer(playPurchSound)
+    clearTimer(close)
   }
 }
 

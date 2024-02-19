@@ -247,9 +247,7 @@ let readyCheckText = utf8ToUpper(loc("squad/readyCheckBtn"))
 let readyCheckButton = textButtonPrimary(readyCheckText, initiateReadyCheck, { hotkeys = hotkeyX })
 let readyCheckButtonInactive = textButtonCommon(readyCheckText, initiateReadyCheck, { hotkeys = hotkeyX })
 
-let toBattleButtonPlace = @() {
-  watch = [ needFirstBattleTutor, newbieOfflineMissions, isInSquad, isSquadLeader, isReady,
-    needReadyCheckButton, isReadyCheckSuspended ]
+let toBattleButtonPlace = {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
@@ -271,8 +269,9 @@ let toBattleButtonPlace = @() {
         mkMRankRange
       ]
     }
-    @(){
-      watch = serverConfigs
+    @() {
+      watch = [ needFirstBattleTutor, newbieOfflineMissions, isInSquad, isSquadLeader, isReady,
+        needReadyCheckButton, isReadyCheckSuspended, serverConfigs ]
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
       children = [

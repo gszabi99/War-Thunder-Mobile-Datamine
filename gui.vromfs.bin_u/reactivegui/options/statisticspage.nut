@@ -1,21 +1,50 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campaignsList, levelInfo } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
 let { levelMark, defColor, hlColor, iconSize, mkText, mkRow} = require("%rGui/mpStatistics/playerInfo.nut")
 let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
 let { actualizeStats, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { can_view_player_rate } = require("%appGlobals/permissions.nut")
 
 let playerStats = Computed( @() userstatStats.get()?.stats["global"])
 
+let mkMedals = @(selCampaign) function() {
+  let children = []
+  let curr = servProfile.get()?.levelInfo[selCampaign] ?? {}
+  foreach(v in curr?.starLevelHistory ?? [])
+    children.append(levelMark(v.baseLevel, v.starLevel + 1))
+  if ((curr?.starLevel ?? 0) > 0)
+    children.append(levelMark(curr.level - curr.starLevel, curr.starLevel))
 
-function mkInfo(campaign, unitsStats, medals) {
-  let levelMedals = Computed(@() levelInfo.get()?.campaigns[campaign].starLevelHistory ?? [])
-  let medalItems = levelMedals.get().map(@(v) levelMark(v.level, v.starLevel + 1))
-  medalItems.extend(medals.get().values()
-                    .filter(@(medal) (getMedalPresentation(medal)?.campaign ?? campaign) == campaign)
-                    .map(@(medal) getMedalPresentation(medal).ctor(medal)))
+  foreach(medal in servProfile.get()?.medals ?? {}) {
+    let { campaign = selCampaign, ctor } = getMedalPresentation(medal)
+    if (campaign == selCampaign)
+      children.append(ctor(medal))
+  }
+  return {
+    watch = servProfile
+    size = [flex(), SIZE_TO_CONTENT]
+    valign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    gap = hdpx(30)
+    children = children.len() > 0
+      ? [
+          mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
+          {
+            valign = ALIGN_CENTER
+            flow = FLOW_HORIZONTAL
+            gap = hdpx(30)
+            children
+          }
+        ]
+      : mkText(loc("mainmenu/noMedal"))
+  }
+}
+
+function mkInfo(campaign, unitsStats) {
+
   return bgMessage.__merge({
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
@@ -38,24 +67,7 @@ function mkInfo(campaign, unitsStats, medals) {
         margin = [hdpx(20), hdpx(50)]
         gap = hdpx(50)
         children = [
-          @() {
-              watch = [levelMedals, medals]
-              size = [flex(), SIZE_TO_CONTENT]
-              valign = ALIGN_CENTER
-              flow = FLOW_VERTICAL
-              gap = hdpx(30)
-              children = medalItems.len() > 0
-                ? [
-                    mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
-                    {
-                      valign = ALIGN_CENTER
-                      flow = FLOW_HORIZONTAL
-                      gap = hdpx(30)
-                      children = medalItems
-                    }
-                  ]
-                : mkText(loc("mainmenu/noMedal"))
-            }
+          mkMedals(campaign)
           function() {
             let my = unitsStats.get().my[campaign]
             let all = unitsStats.get().all[campaign]
@@ -94,7 +106,9 @@ function mkInfo(campaign, unitsStats, medals) {
               children = [
                 mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)
                 mkRow(loc("lb/battles"), $"{battle_end}")
-                mkRow(loc("stats/missions_wins"), $"{percent}%")
+                can_view_player_rate.get() ?
+                  mkRow(loc("stats/missions_wins"), $"{percent}%")
+                  : null
               ]
             }
           }
@@ -136,7 +150,6 @@ return function() {
     }
     return {all my}
   })
-  let medals = Computed(@() servProfile.get()?.medals ?? {})
 
   return {
     onAttach = actualizeStats
@@ -145,6 +158,6 @@ return function() {
     padding = [0, 0, hdpx(40), 0]
     flow = FLOW_VERTICAL
     gap = hdpx(20)
-    children = campaignsList.value.map(@(v) mkInfo(v, unitsStats, medals))
+    children = campaignsList.value.map(@(v) mkInfo(v, unitsStats))
   }
 }

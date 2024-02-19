@@ -184,7 +184,7 @@
   "criticalBuoyancy": 0.5,
   "useSyncBulletTrace": true,
   "useParallelBulletQuery": false,
-  "useSyncRocketTrace": true,
+  "useSyncRocketTrace": false,
   "useSyncTorpedoTrace": false,
   "ricochetPenetrationModifier": {
     "mod1": [

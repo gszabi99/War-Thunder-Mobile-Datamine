@@ -31,7 +31,6 @@ let { contactNameBlock, contactAvatar } = require("%rGui/contacts/contactInfoPkg
 let { mkLbHeaderRow, headerIconHeight } = require("mkLbHeaderRow.nut")
 let lbRewardsBlock = require("lbRewardsBlock.nut")
 let { selectedPlayerForInfo } = require("%rGui/mpStatistics/playerInfo.nut")
-let { can_view_player_stats } = require("%appGlobals/permissions.nut")
 let { mkTab } = require("%rGui/controls/tabs.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 
@@ -158,8 +157,6 @@ function mkNameCell(category, rowData) {
       valign = ALIGN_CENTER
       behavior = Behaviors.Button
       function onClick() {
-        if (!can_view_player_stats.get())
-          return
         local campaign = curLbId.get()
         if (campaign == "wp")
           campaign = "tanks"

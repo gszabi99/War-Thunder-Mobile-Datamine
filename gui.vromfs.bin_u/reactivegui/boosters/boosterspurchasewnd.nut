@@ -77,22 +77,26 @@ let infoBtn = @(id) infoGreyButton(
 )
 
 let cardTitle = @(id) {
-  size = flex()
+  size = [flex(), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_LEFT
-  valign = ALIGN_CENTER
   padding = hdpx(30)
   text = utf8ToUpper(loc($"boosters/{id}"))
 }.__update(fontVeryTinyAccented)
 
 let cardHeader = @(id) {
   size = [flex(), SIZE_TO_CONTENT]
-  flow = FLOW_HORIZONTAL
   padding = hdpx(10)
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
   children = [
     infoBtn(id)
-    cardTitle(id)
+    {
+      size = [flex(), SIZE_TO_CONTENT]
+      maxHeight = evenPx(60)
+      children = cardTitle(id)
+    }
   ]
 }
 
@@ -106,22 +110,35 @@ let boosterSlot = @(bst, sf) {
       size = bgSize
       image = Picture($"ui/gameuiskin/shop_bg_slot.avif:{bgSize[0]}:{bgSize[1]}:P")
     }
-    cardHeader(bst.id)
     {
-      rendObj = ROBJ_IMAGE
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      size = [boosterSize, boosterSize]
-      image = Picture($"{getBoosterIcon(bst.id)}:{boosterSize}:{boosterSize}:P")
+      size = flex()
+      padding = [0, 0, hdpx(20), 0]
+      flow = FLOW_VERTICAL
+      children = [
+        cardHeader(bst.id)
+        {
+          size = flex()
+          valign = ALIGN_CENTER
+          gap = hdpx(20)
+          children = [
+            {
+              size = [boosterSize, boosterSize]
+              rendObj = ROBJ_IMAGE
+              hplace = ALIGN_CENTER
+              image = Picture($"{getBoosterIcon(bst.id)}:{boosterSize}:{boosterSize}:P")
+            }
+            {
+              size = [SIZE_TO_CONTENT, boosterSize]
+              hplace = ALIGN_RIGHT
+              pos = [-hdpx(20), -hdpx(12)]
+              rendObj = ROBJ_TEXT
+              text = bst.battles.tostring().replace("0", "O")
+              color = 0xFFC0C0C0
+            }.__update(fontWtBig)
+          ]
+        }
+      ]
     }
-    {
-      hplace = ALIGN_RIGHT
-      padding = hdpx(20)
-      pos = [0, hdpx(60)]
-      rendObj = ROBJ_TEXT
-      text = bst.battles.tostring().replace("0", "O")
-      color = 0xFFC0C0C0
-    }.__update(fontWtBig)
   ]
 }
 let battlesLeftTitle = @(bst) {
@@ -159,7 +176,7 @@ let function boosterCard(bst) {
     flow = FLOW_VERTICAL
     keepWatch = battlesLeft
     onClick = @() purchaseBooster(bst.id, loc($"boosters/{bst.id}"),
-      mkBqPurchaseInfo(PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, bst))
+      mkBqPurchaseInfo(PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, bst.id))
     onElemState = @(v) stateFlags(v)
     behavior = Behaviors.Button
     sound = { click  = "click" }
