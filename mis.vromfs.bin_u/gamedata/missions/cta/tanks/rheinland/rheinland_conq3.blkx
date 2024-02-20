@@ -362,16 +362,16 @@
         ],
         "props": {
           "squad_members": [
-            "t1_tankSpawn01_zone_01",
-            "t1_tankSpawn01_zone_02",
-            "t1_tankSpawn01_zone_03",
-            "t1_tankSpawn01_zone_04",
-            "t1_tankSpawn01_zone_05",
-            "t1_tankSpawn01_zone_06",
-            "t1_tankSpawn01_zone_07",
-            "t1_tankSpawn01_zone_08",
-            "t1_tankSpawn01_zone_09",
-            "t1_tankSpawn01_zone_10"
+            "t1_tankSpawn03_zone_01",
+            "t1_tankSpawn03_zone_02",
+            "t1_tankSpawn03_zone_03",
+            "t1_tankSpawn03_zone_04",
+            "t1_tankSpawn03_zone_05",
+            "t1_tankSpawn03_zone_06",
+            "t1_tankSpawn03_zone_07",
+            "t1_tankSpawn03_zone_08",
+            "t1_tankSpawn03_zone_09",
+            "t1_tankSpawn03_zone_10"
           ]
         }
       },

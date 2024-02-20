@@ -42,14 +42,14 @@ let isProbingActive = Computed(@() isInMenu.value && isMatchingOnline.value)
 // Writes to stream a 64-bit integer as Network Endian
 function writeInt64NetBytes(stream, i) {
   for (local n = 56; n >= 0; n -= 8)
-    stream.writen((i >> n) & 0xFF, 'c')
+    stream.writen((i >> n) & 0xFF, 'b')
 }
 
 // Reads from stream a 64-bit integer as Network Endian
 function readInt64NetBytes(stream) {
   local i = 0
   for (local n = 56; n >= 0; n -= 8)
-    i = i | (stream.readn('c') << n)
+    i = i | (stream.readn('b') << n)
   return i
 }
 
@@ -57,7 +57,7 @@ function toHexStr(str) {
   let arr = []
   foreach (i, c in str) {
     let delim = (i != 0 && i % 8 == 0) ? " " : ""
-    arr.append(format("%s%02X", delim, c))
+    arr.append(format("%s%02X", delim, c & 0xFF))
   }
   return "".join(arr)
 }

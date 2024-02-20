@@ -285,9 +285,6 @@
         "mRank": 2
       }
     },
-    "pkg_lvl_lunar_ny": {
-      "hangarPath": "config/hangar_field_lunar_ny.blk"
-    },
     "pkg_germ_battlecruiser_von_der_tann": {
       "conditions": {
         "campaign": "ships",
@@ -545,6 +542,7 @@
     "csmReflectionSampleBias": -0.0075,
     "dynDecalsInitialAtlasSizeIndex": 1,
     "enableWaterReflections": true,
+    "riexCanIncreaseRenderBuffer": false,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }

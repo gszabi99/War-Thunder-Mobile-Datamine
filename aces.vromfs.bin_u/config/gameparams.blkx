@@ -14942,6 +14942,14 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "panhard_ebr_1951"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "ystervark_spaa"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "ystervark_spaa"
         }
       ]
     },
