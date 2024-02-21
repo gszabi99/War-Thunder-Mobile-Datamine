@@ -188,6 +188,7 @@
         "mulRealistic": 2,
         "mulHardcore": 2,
         "minVal": 7,
+        "maxVal": 100500,
         "bestId": "heroic_tankman",
         "isShip": false,
         "useBestScoreWTM": true,

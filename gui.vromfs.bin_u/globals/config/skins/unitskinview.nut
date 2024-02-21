@@ -1,12 +1,14 @@
 return {
   "byUnit": {
     "cn_cm_25": {
+      "": "us_camo_olive",
       "upgraded": "usa_modern_summer_verdant"
     },
     "cn_isu_122": {
       "": "cn_camo_green_yellow_black"
     },
     "cn_pgz_09": {
+      "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
     },
     "cn_pt_76": {
@@ -16,51 +18,66 @@ return {
       "": "cn_camo_green_yellow_black"
     },
     "cn_type_59d": {
+      "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
     },
     "cn_zsd63_pg87": {
       "": "cn_camo_green_yellow_black"
     },
     "cn_ztz_88a": {
+      "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
     },
     "fr_amx_13_75": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_desert_storm"
     },
     "fr_amx_13_dca_40": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_green_sand_brown"
     },
     "fr_amx_13_dca_40_reskin": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_desert_storm"
     },
     "fr_amx_30_b2_brenus": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
     },
     "fr_amx_30_dca": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
     },
     "fr_amx_32_105": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
     },
     "fr_amx_m4": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_desert_storm"
     },
     "fr_arl_44": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_green_sand_brown"
     },
     "fr_bat_chat_25t": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_desert_storm"
     },
     "fr_m4a1_sherman_fl_10": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_green_sand_brown"
     },
     "fr_m4a4_sherman_reskin": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_dark_green_dark_earth"
     },
     "fr_mars_15": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
     },
     "fr_panhard_ebr_1951": {
+      "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_green_sand_brown"
     },
     "fr_sub_surcouf": {
@@ -108,6 +125,7 @@ return {
       "upgraded": "camo_3gray_colors_geometry"
     },
     "germ_flakpanzer_IV_Kugelblitz": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_hinterhalt_man"
     },
     "germ_flakpanzer_IV_Kugelblitz_reskin2": {
@@ -117,18 +135,23 @@ return {
       "winter": "ger_camo_winter_dunkelgelb"
     },
     "germ_flakpanzer_IV_Ostwind": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green"
     },
     "germ_flakpanzer_IV_Ostwind_2": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green_braun_lines_mhn"
     },
     "germ_flakpanzer_IV_Wirbelwind": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_winter_lines"
     },
     "germ_flakpz_I_Gepard": {
+      "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_modern_threecolor"
     },
     "germ_jgdpz_38t": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green"
     },
     "germ_kanonenjagdpanzer": {
@@ -138,48 +161,62 @@ return {
       "winter": "ussr_camo_winter"
     },
     "germ_leopard_I": {
+      "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_carc"
     },
     "germ_leopard_I_a1": {
+      "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_modern_threecolor"
     },
     "germ_leopard_I_reskin": {
       "": "ger_camo_carc"
     },
     "germ_marder_1a1": {
+      "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_carc"
     },
     "germ_mkpz_m47": {
+      "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_carc"
     },
     "germ_mkpz_m48a2c": {
+      "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_carc"
     },
     "germ_mkpz_m48a2ga2": {
+      "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_modern_threecolor"
     },
     "germ_panzerjager_tiger": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_hinterhalt_man"
     },
     "germ_pz_IV_L70": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green_braun"
     },
     "germ_pzkpfw_III_ausf_L": {
+      "": "ger_camo_grey",
       "upgraded": "ger_camo_dunkelgelb_africa"
     },
     "germ_pzkpfw_IV_ausf_F": {
+      "": "ger_camo_grey",
       "upgraded": "ger_camo_dunkelgelb_africa"
     },
     "germ_pzkpfw_IV_ausf_F2": {
+      "": "ger_camo_grey",
       "upgraded": "ger_camo_dunkelgelb_africa"
     },
     "germ_pzkpfw_IV_ausf_G": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_winter_lines"
     },
     "germ_pzkpfw_IV_ausf_H": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_winter_lines"
     },
     "germ_pzkpfw_VI_ausf_b_tiger_IIh": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_hinterhalt_man"
     },
     "germ_pzkpfw_VI_ausf_b_tiger_IIh_reskin": {
@@ -192,16 +229,23 @@ return {
       "": "ger_camo_hinterhalt_man"
     },
     "germ_pzkpfw_VI_ausf_b_tiger_IIp": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green_braun_lines_mhn"
     },
     "germ_pzkpfw_VI_ausf_h1_tiger": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green"
     },
     "germ_pzkpfw_V_ausf_d_panther": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green_braun_lines_mhn"
     },
     "germ_pzkpfw_V_ausf_f_panther": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_hinterhalt_man"
+    },
+    "germ_raketenjagdpanzer_2_hot": {
+      "": "ger_camo_bronzegruen"
     },
     "germ_ru251": {
       "": "ger_camo_bronzegruen",
@@ -210,9 +254,11 @@ return {
       "winter": "ussr_camo_winter"
     },
     "germ_sdkfz_251_21": {
+      "": "ger_camo_grey",
       "upgraded": "ger_camo_dunkelgelb_africa"
     },
     "germ_stug_III_ausf_G": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_winter_lines"
     },
     "germ_sub_type_21": {
@@ -222,12 +268,15 @@ return {
       "upgraded": "camo_greyblack_geometry"
     },
     "germ_vk_3002m": {
+      "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green"
     },
     "it_leopard_1a5": {
+      "": "it_camo_olive_green",
       "upgraded": "it_camo_threecolor_modern"
     },
     "it_m113a1_tow": {
+      "": "it_camo_olive_green",
       "upgraded": "it_camo_threecolor_modern"
     },
     "it_m18_hellcat": {
@@ -237,12 +286,14 @@ return {
       "": "it_camo_desert_modern"
     },
     "it_of_40_mk_2a": {
+      "": "it_camo_olive_green",
       "upgraded": "it_camo_threecolor_modern"
     },
     "it_oto_r3_t20_fa": {
       "": "it_camo_desert_modern"
     },
     "it_otobreda_sidam_25": {
+      "": "it_camo_olive_green",
       "upgraded": "it_camo_threecolor_modern"
     },
     "it_sherman_vc_firefly": {
@@ -286,24 +337,30 @@ return {
       "upgraded": "camo_redgreen_spots"
     },
     "jp_m19": {
+      "": "jp_camo_olive_kusairo",
       "upgraded": "jp_camo_late_green_brown_yellow_blots"
     },
     "jp_m36b2_jgsdf": {
+      "": "jp_camo_post_green",
       "upgraded": "jp_camo_post_multicolor"
     },
     "jp_m41_walker_bulldog": {
+      "": "jp_camo_post_green",
       "upgraded": "jp_camo_post_multicolor"
     },
     "jp_m42_duster": {
+      "": "jp_camo_post_green",
       "upgraded": "jp_camo_post_multicolor"
     },
     "jp_m42_duster_reskin": {
       "": "jp_camo_post_multicolor"
     },
     "jp_st_a1": {
+      "": "jp_camo_post_green",
       "upgraded": "jp_camo_post_multicolor"
     },
     "jp_st_b1": {
+      "": "jp_camo_sdf_green",
       "upgraded": "jp_camo_post_winter"
     },
     "jp_type_3_chi_nu_75cm_type_5": {
@@ -322,42 +379,55 @@ return {
       "upgraded": "jp_camo_late_green_brown_yellow_blots"
     },
     "jp_type_74_c": {
+      "": "jp_camo_sdf_green",
       "upgraded": "jp_camo_post_winter"
     },
     "jp_type_87": {
+      "": "jp_camo_sdf_green",
       "upgraded": "jp_camo_post_winter"
     },
     "jp_type_87_rcv": {
+      "": "jp_camo_sdf_green",
       "upgraded": "jp_camo_post_winter"
     },
     "sw_pvrbv_551": {
+      "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
     },
     "sw_strv_103c": {
+      "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
     },
     "sw_strv_104": {
+      "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
     },
     "sw_veak_40": {
+      "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
     },
     "uk_a30_challenger": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_middle_deep_bronze_greens"
     },
     "uk_a30_sp_avenger": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_light_mud_blue_black"
     },
     "uk_a39_tortoise": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_middle_deep_bronze_greens"
     },
     "uk_a_22f_mk_7_churchill_1944": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"
     },
     "uk_a_34_comet": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"
     },
     "uk_a_43_black_prince": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
     },
     "uk_battlecruiser_invincible": {
@@ -376,12 +446,15 @@ return {
       "upgraded": "camo_darkblue_waves"
     },
     "uk_centurion_mk_1": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
     },
     "uk_churchill_na75": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_light_mud_blue_black"
     },
     "uk_concept3_ngac": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_light_mud_blue_black"
     },
     "uk_cruiser_belfast": {
@@ -397,9 +470,11 @@ return {
       "upgraded": "camo_mediterranean_geometry"
     },
     "uk_crusader_aa_mk_1": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_bicolor"
     },
     "uk_crusader_aa_mk_2": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_light_mud_blue_black"
     },
     "uk_destroyer_hunt_4series": {
@@ -409,21 +484,26 @@ return {
       "upgraded": "camo_polish_bluegeometry"
     },
     "uk_fv4005": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_middle_deep_bronze_greens"
     },
     "uk_fv4202": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_middle_deep_bronze_greens"
     },
     "uk_ratel_20": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_middle_deep_bronze_greens"
     },
     "uk_ratel_90": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
     },
     "uk_sub_type_v": {
       "upgraded": "camo_polish_bluegeometry"
     },
     "uk_ystervark_spaa": {
+      "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
     },
     "us_aircraftcarrier_essex": {
@@ -482,75 +562,112 @@ return {
       "": "camo_designpt328"
     },
     "us_halftrack_m16": {
+      "": "jp_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth_black"
     },
+    "us_halftrack_m16_reward": {
+      "": "camo_crosspromo"
+    },
     "us_m10": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth_black"
     },
     "us_m103": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive"
     },
+    "us_m10_reward": {
+      "": "camo_crosspromo"
+    },
     "us_m163_vulcan": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_lines"
     },
     "us_m18_hellcat": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_dark_khaki"
     },
     "us_m19": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_dark_green_dark_earth"
     },
     "us_m19_reskin": {
       "": "us_camo_dark_green_dark_earth"
     },
     "us_m247": {
+      "": "us_camo_olive",
       "upgraded": "usa_modern_tropical"
     },
     "us_m24_chaffee": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth_black"
     },
+    "us_m24_chaffee_reward": {
+      "": "camo_crosspromo"
+    },
     "us_m26e1_pershing": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_lines"
     },
+    "us_m36": {
+      "": "us_camo_olive"
+    },
     "us_m3_bradley": {
+      "": "us_camo_olive",
       "upgraded": "usa_modern_tropical"
     },
     "us_m41_walker_bulldog": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth"
     },
     "us_m42_duster": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_dark_khaki"
     },
     "us_m42_duster_reskin1": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth"
     },
     "us_m42_duster_reskin2": {
       "": "us_camo_desert_pink_dark_khaki"
     },
     "us_m42_duster_reskin3": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_lines"
     },
     "us_m47_patton_II": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive"
     },
+    "us_m4_sherman_reward": {
+      "": "camo_crosspromo"
+    },
     "us_m4a1_1942_sherman": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth_black"
     },
     "us_m4a1_76w_sherman": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_dark_khaki"
     },
     "us_m4a2_sherman": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_dark_green_dark_earth"
     },
     "us_m4a3e8_76w_sherman": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth"
     },
     "us_m60a1": {
+      "": "us_camo_olive",
       "upgraded": "usa_modern_tropical"
     },
     "us_m60a2": {
+      "": "us_camo_olive",
       "upgraded": "usa_modern_tropical"
     },
     "us_m6a1": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_dark_khaki"
     },
     "us_sub_balao": {
@@ -560,9 +677,11 @@ return {
       "upgraded": "camo_modern_nordgeometry"
     },
     "us_t114": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive"
     },
     "us_t14": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_dark_green_dark_earth"
     },
     "us_t1e1": {
@@ -572,12 +691,15 @@ return {
       "": "us_camo_desert_pink_dark_khaki"
     },
     "us_t26e5": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth"
     },
     "us_t34": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_lines"
     },
     "us_t95": {
+      "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_lines"
     },
     "ussr_battlecruiser_kronshtadt": {
@@ -619,19 +741,30 @@ return {
     "ussr_destroyer_pr56_svetlyy": {
       "": "camo_arctic_minesweeper_block"
     },
+    "ussr_is_1": {
+      "": "ussr_camo_green"
+      "upgraded": "ussr_camo_forest_01"
+    },
     "ussr_is_1_reskin": {
       "": "tl_camo_red_grey_chopped"
     },
     "ussr_is_2_1943": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown_ver_2"
     },
     "ussr_is_2_1944": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_desert_yellow_brown"
     },
+    "ussr_is_2_1944_revenge": {
+      "": "ussr_camo_green"
+    },
     "ussr_it_1": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_lines"
     },
     "ussr_kv_1_zis_5": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_green_ltbrown_lines"
     },
     "ussr_kv_2_1940": {
@@ -641,15 +774,18 @@ return {
       "": "tl_camo_red_grey_chopped"
     },
     "ussr_object_906": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown"
     },
     "ussr_su_100_1945": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown_ver_2"
     },
     "ussr_su_122P_reskin": {
       "": "tl_camo_red_grey_chopped"
     },
     "ussr_su_152": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_forest_01"
     },
     "ussr_sub_pr613": {
@@ -663,78 +799,101 @@ return {
       "upgraded": "camo_violetgray_geometry"
     },
     "ussr_t_10a": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown"
     },
     "ussr_t_28E": {
+      "": "ussr_camo_green",
       "upgraded": "us_camo_winter_grid"
     },
     "ussr_t_34E": {
       "": "ussr_camo_winter_net"
     },
     "ussr_t_34E_STZ": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_green_ltbrown_lines"
     },
     "ussr_t_34_100": {
       "": "ussr_camo_desert_yellow_brown"
     },
     "ussr_t_34_1941": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_net"
     },
     "ussr_t_34_1941_cast_turret": {
       "": "ussr_camo_winter_net"
     },
     "ussr_t_34_1941_l_11": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_net"
     },
     "ussr_t_34_1942": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_green_ltbrown_lines"
     },
     "ussr_t_34_85_d_5t": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_forest_01"
     },
     "ussr_t_34_85_zis_53": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown_ver_2"
     },
     "ussr_t_44": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_desert_yellow_brown"
     },
     "ussr_t_44_100": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_desert_yellow_brown"
+    },
+    "ussr_t_44_100_reskin": {
+      "": "ussr_camo_green"
     },
     "ussr_t_44_122": {
       "": "ussr_camo_desert_yellow_brown"
     },
     "ussr_t_54_1949": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown"
     },
     "ussr_t_55a": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_lines"
     },
     "ussr_t_62": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_lines"
     },
     "ussr_type_65_aa_reskin": {
       "": "tl_camo_red_grey_chopped"
     },
     "ussr_zis_12_94KM_1945": {
+      "": "ussr_camo_green",
       "upgraded": "us_camo_winter_grid"
     },
     "ussr_zis_43": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_green_ltbrown_lines"
     },
     "ussr_zsu_23_4": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown"
     },
     "ussr_zsu_37": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_forest_01"
     },
     "ussr_zsu_37_2": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_lines"
     },
     "ussr_zsu_37_reskin": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown_ver_2"
     },
     "ussr_zsu_57_2": {
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_desert_yellow_brown"
     }
   },

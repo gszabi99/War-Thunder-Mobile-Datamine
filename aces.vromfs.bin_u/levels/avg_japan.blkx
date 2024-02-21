@@ -325,10 +325,7 @@
     ]
   },
   "technicsSkins": {
-    "groundSkin": [
-      "forest",
-      "default"
-    ]
+    "groundSkin": "forest"
   },
   "overrideRiLodRange": {
     "tree_sakura_bush_a": {

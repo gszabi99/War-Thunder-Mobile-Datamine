@@ -33,7 +33,7 @@ let unitToShowCommon = Computed(function() {
   if (baseUnit.value == null)
     return null
   let unitName = curSelectedUnitId.value
-  if (unitName == baseUnit.value.name || unitName == null)
+  if (unitName == baseUnit.value.name || unitName == null || unitName == "")
     return baseUnit.value
   return baseUnit.value.__merge({ name = unitName })
 })

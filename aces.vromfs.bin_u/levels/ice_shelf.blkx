@@ -82,9 +82,7 @@
     ],
     "water_color_noise_size": 1737.0
   },
-  "technicsSkins": {
-    "groundSkin": "urban"
-  },
+  "technicsSkins": {},
   "render": {
     "lmesh": true,
     "onlyUnderwaterLmesh": true,

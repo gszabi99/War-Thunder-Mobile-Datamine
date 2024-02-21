@@ -921,9 +921,6 @@
     "tex": "decal_asphalt_road_b_tex_d*"
   },
   "technicsSkins": {
-    "groundSkin": [
-      "desert",
-      "default"
-    ]
+    "groundSkin": "desert"
   }
 }

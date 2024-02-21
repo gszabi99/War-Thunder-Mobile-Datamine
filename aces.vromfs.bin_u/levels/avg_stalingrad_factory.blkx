@@ -134,9 +134,6 @@
     "enable": true
   },
   "technicsSkins": {
-    "groundSkin": [
-      "winter",
-      "default"
-    ]
+    "groundSkin": "winter"
   }
 }

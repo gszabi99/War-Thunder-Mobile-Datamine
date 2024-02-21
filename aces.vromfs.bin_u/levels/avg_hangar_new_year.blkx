@@ -177,12 +177,7 @@
       3.0
     ]
   },
-  "technicsSkins": {
-    "groundSkin": [
-      "winter",
-      "default"
-    ]
-  },
+  "technicsSkins": {},
   "overloaded_sounds": {
     "id": "new_year",
     "hangar_ambient_tracks": {

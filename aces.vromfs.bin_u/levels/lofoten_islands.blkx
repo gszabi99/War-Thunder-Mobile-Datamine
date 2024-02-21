@@ -86,9 +86,7 @@
     "water_color_noise_size": 1737.0,
     "shore_depth_scale": 0.07
   },
-  "technicsSkins": {
-    "groundSkin": "urban"
-  },
+  "technicsSkins": {},
   "render": {
     "lmesh": true,
     "onlyUnderwaterLmesh": false,

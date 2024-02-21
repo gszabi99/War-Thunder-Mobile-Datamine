@@ -194,11 +194,7 @@
     "min_land_height": 0.15
   },
   "technicsSkins": {
-    "groundSkin": [
-      "urban",
-      "forest",
-      "default"
-    ]
+    "groundSkin": "forest"
   },
   "overrideRiLodRange": {},
   "forceTexMQ": {},

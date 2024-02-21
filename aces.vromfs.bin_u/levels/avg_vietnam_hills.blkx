@@ -729,9 +729,6 @@
     ]
   },
   "technicsSkins": {
-    "groundSkin": [
-      "forest",
-      "default"
-    ]
+    "groundSkin": "forest"
   }
 }

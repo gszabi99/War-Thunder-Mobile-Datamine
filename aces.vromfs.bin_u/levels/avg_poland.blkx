@@ -744,11 +744,7 @@
     ]
   },
   "technicsSkins": {
-    "groundSkin": [
-      "urban",
-      "forest",
-      "default"
-    ]
+    "groundSkin": "forest"
   },
   "overrideRiLodRange": {
     "tree_sea_bush_a": {
