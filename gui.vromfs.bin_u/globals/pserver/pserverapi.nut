@@ -613,6 +613,20 @@ return {
     progressValue = unitName
   }, cb)
 
+  add_all_skins_for_unit = @(unitName, cb = null) request({
+    method = "add_all_skins_for_unit"
+    params = { unitName }
+    progressId = PROGRESS_SKINS
+    progressValue = unitName
+  }, cb)
+
+  remove_all_skins_for_unit = @(unitName, cb = null) request({
+    method = "remove_all_skins_for_unit"
+    params = { unitName }
+    progressId = PROGRESS_SKINS
+    progressValue = unitName
+  }, cb)
+
   add_boosters = @(list, cb = null) request({
     method = "add_boosters"
     params = { list }

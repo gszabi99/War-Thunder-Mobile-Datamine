@@ -542,6 +542,7 @@
     "csmReflectionSampleBias": -0.0075,
     "dynDecalsInitialAtlasSizeIndex": 1,
     "enableWaterReflections": true,
+    "riUseStructuredBuffer": true,
     "riexCanIncreaseRenderBuffer": false,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
@@ -954,7 +955,7 @@
       "disableFastVersionCheck": true,
       "shouldSaveGameVersionToCache": true,
       "shouldReportIncompatibleVersion": true,
-      "requireSameGameVersion": true,
+      "requireSameGameVersion": false,
       "startMetric": "background_addons_update_start",
       "stopMetric": "background_addons_update_stop",
       "flag": "--onlypacks"

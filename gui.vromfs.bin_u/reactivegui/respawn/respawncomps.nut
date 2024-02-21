@@ -5,17 +5,18 @@ let headerHeight = hdpx(60)
 let gap = hdpx(10)
 let bulletsBlockWidth = hdpx(520)
 let bulletsBlockMargin = hdpx(40)
+let bulletsLegendWidth = hdpx(220)
 
 let bg = {
   rendObj = ROBJ_SOLID
   color = 0x99000000
 }
 
-let headerText = @(text) {
+let headerText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXT
   text
   color = textColor
-}.__update(fontTinyAccented)
+}.__update(fontTinyAccented, ovr)
 
 let header = @(children, ovr = {}) bg.__merge({
   size = [flex(), headerHeight]
@@ -62,7 +63,7 @@ let bulletsLegendBlock = @(text, bulletIcon, width, height) {
 
 let bulletsLegend = {
   rendObj = ROBJ_BOX
-  size = [ hdpx(220), hdpx(300) + gap ]
+  size = [ bulletsLegendWidth, hdpx(300) + gap ]
   pos = [ 0, headerHeight + gap ]
   fillColor = 0x99000000
   borderWidth = hdpx(2)
@@ -86,4 +87,5 @@ return {
   bulletsBlockWidth
   bulletsBlockMargin
   bulletsLegend
+  bulletsLegendWidth
 }

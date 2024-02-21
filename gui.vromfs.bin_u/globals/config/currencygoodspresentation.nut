@@ -1,5 +1,7 @@
 let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM } = require("%appGlobals/currenciesState.nut")
 
+let SEASON_EMPTY = "season_0"
+
 let imgCfgByCurrency = {
   [WP] = {
     def = [
@@ -57,34 +59,46 @@ let imgCfgByCurrency = {
 let cfgCtors = {
   [WARBOND] = @(season) [
     {
-      img = $"warbond_goods_{season}_01.avif"
+      img = season != SEASON_EMPTY
+        ? $"warbond_goods_{season}_01.avif"
+        : "warbond_goods_01.avif"
       fallbackImg = "warbond_goods_01.avif"
       amountAtLeast = 0
     }
     {
-      img = $"warbond_goods_{season}_02.avif"
+      img = season != SEASON_EMPTY
+        ? $"warbond_goods_{season}_02.avif"
+        : "warbond_goods_02.avif"
       fallbackImg = "warbond_goods_02.avif"
       amountAtLeast = 2000
     }
     {
-      img = $"warbond_goods_{season}_03.avif"
+      img = season != SEASON_EMPTY
+        ? $"warbond_goods_{season}_03.avif"
+        : "warbond_goods_03.avif"
       fallbackImg = "warbond_goods_03.avif"
       amountAtLeast = 10000
     }
   ],
   [EVENT_KEY] = @(season) [
     {
-      img = $"event_keys_{season}_01.avif"
+      img = season != SEASON_EMPTY
+        ? $"event_keys_{season}_01.avif"
+        : "event_keys_01.avif"
       fallbackImg = "event_keys_01.avif"
       amountAtLeast = 0
     }
     {
-      img = $"event_keys_{season}_02.avif"
+      img = season != SEASON_EMPTY
+        ? $"event_keys_{season}_02.avif"
+        : "event_keys_02.avif"
       fallbackImg = "event_keys_02.avif"
       amountAtLeast = 2
     }
     {
-      img = $"event_keys_{season}_03.avif"
+      img = season != SEASON_EMPTY
+        ? $"event_keys_{season}_03.avif"
+        : "event_keys_03.avif"
       fallbackImg = "event_keys_03.avif"
       amountAtLeast = 10
     }
@@ -101,7 +115,7 @@ foreach(id, _ in cfgCtors)
   if (id not in imgCfgByCurrency)
     imgCfgByCurrency[id] <- {}
 
-function getCurrencyGoodsPresentation(curId, season = "season_0") {
+function getCurrencyGoodsPresentation(curId, season = SEASON_EMPTY) {
   if (curId not in cfgCtors) {
     if (curId not in imgCfgByCurrency)
       imgCfgByCurrency[curId] <- { def = unknownCurrencyCtor(curId) }

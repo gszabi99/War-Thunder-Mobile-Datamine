@@ -13,7 +13,7 @@ let { isRespawnAttached, respawnSlots, respawn, cancelRespawn,
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
 } = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
-let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems
+let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems, respawnUnitSkins
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 } = require("%appGlobals/unitPresentation.nut")
@@ -32,16 +32,20 @@ let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let respawnMap = require("respawnMap.ui.nut")
 let respawnBullets = require("respawnBullets.nut")
-let { bg, headerText, headerHeight, header, gap, headerMarquee } = require("respawnComps.nut")
+let { bg, headerText, headerHeight, header, gap, headerMarquee, bulletsBlockMargin, bulletsBlockWidth
+} = require("respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
+let { respawnSkins, skinSize } = require("respawnSkins.nut")
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullSize
 let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
+let skinTextHeight = hdpx(45)
+let skinPadding = hdpx(10)
 
 let needCancel = Computed(@() isRespawnStarted.value && !isRespawnInProgress.value && respawnSlots.value.len() > 1)
 let showLowBulletsWarning = Watched(true)
@@ -269,7 +273,7 @@ let updateSlotAABB = @() slotAABB(selSlot.value == null ? null
 selSlot.subscribe(@(_) deferOnce(updateSlotAABB))
 
 function respawnBulletsPlace() {
-  let res = { watch = slotAABB, onAttach = @() deferOnce(updateSlotAABB) }
+  let res = { watch = [slotAABB, respawnUnitSkins], onAttach = @() deferOnce(updateSlotAABB) }
   if (slotAABB.value == null)
     return res
   let contentAABB = gui_scene.getCompAABBbyKey("respawnWndContent")
@@ -278,11 +282,12 @@ function respawnBulletsPlace() {
   let size = calc_comp_size(respawnBullets)
   let posY = (slotAABB.value.t + slotAABB.value.b - size[1]) / 2  - contentAABB.t
   let maxY = max(0, contentAABB.b - contentAABB.t - size[1])
+  let maxYWithSkins = max(0, contentAABB.b - contentAABB.t - size[1] - skinSize - skinTextHeight - skinPadding * 2 - hdpx(15))
   return res.__update({
     size = [SIZE_TO_CONTENT, flex()]
     children = {
       key = slotAABB.value
-      pos = [0, clamp(posY, 0, maxY)]
+      pos = [0, clamp(posY, 0, !respawnUnitSkins.get() ? maxY : maxYWithSkins)]
       children = respawnBullets
     }
   })
@@ -296,7 +301,44 @@ let content = @() {
   children = respawnSlots.value.len() <= 1 ? null
     : [
         slotsBlock
-        respawnBulletsPlace
+        {
+          size = flex()
+          children = [
+            respawnBulletsPlace
+            @() {
+              watch = respawnUnitSkins
+              size = flex()
+              valign = ALIGN_BOTTOM
+              children = !respawnUnitSkins.get() ? null : {
+                rendObj = ROBJ_SOLID
+                color = 0x99000000
+                pos = [bulletsBlockMargin, 0]
+                padding = skinPadding
+                flow = FLOW_VERTICAL
+                children = [
+                  headerText(loc("skins/select"), { size = [SIZE_TO_CONTENT, skinTextHeight] })
+                  {
+                    size = [bulletsBlockWidth - skinPadding * 2, skinSize]
+                    clipChildren = true
+                    children = {
+                      size = flex()
+                      behavior = Behaviors.Pannable
+                      skipDirPadNav = true
+                      xmbNode = {
+                        canFocus = @() false
+                        scrollSpeed = 5.0
+                        isViewport = true
+                        scrollToEdge = true
+                        screenSpaceNav = true
+                      }
+                      children = respawnSkins
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
         rightBlock
       ]
 }

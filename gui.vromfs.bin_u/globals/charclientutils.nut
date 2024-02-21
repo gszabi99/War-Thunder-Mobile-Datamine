@@ -24,7 +24,7 @@ shortKeyValue(t, 32) == "{success- data{count:1 flags[+,+*"
 function Comma(char = ',') {
   let ch = char
   local i  = 0
-  return function(stream) { if (i++ > 0) stream.writen(ch, 'c') }
+  return function(stream) { if (i++ > 0) stream.writen(ch, 'b') }
 }
 
 let dumpValWrite = {
@@ -42,13 +42,13 @@ function dumpValue(value) {
   let stream = blob()
 
   function fEach(val, decor) {
-    stream.writen(decor[0], 'c')
+    stream.writen(decor[0], 'b')
     let comma = Comma(decor[1])
     foreach (v in val) {
       comma(stream)
       dumpValWrite?[type(v)](v, stream, fEach)
     }
-    stream.writen(decor[2], 'c')
+    stream.writen(decor[2], 'b')
   }
 
   dumpValWrite?[type(value)](value, stream, fEach)
@@ -79,13 +79,13 @@ function dumpKeyValue(value) {
 
   function writeList(key, val, decor, short = false) {
     stream.writestring(key)
-    stream.writen(decor[0], 'c')
+    stream.writen(decor[0], 'b')
     let comma = Comma(decor[1])
     foreach (k, v in val) {
       comma(stream)
       dumpKeyValWrite?[type(v)](short ? "" : k, v, stream, writeList)
     }
-    stream.writen(decor[2], 'c')
+    stream.writen(decor[2], 'b')
   }
 
   dumpKeyValWrite?[type(value)]("", value, stream, writeList)

@@ -203,6 +203,7 @@ return {
   sendBpBqEvent
   buyBPLevel
 
+  bpFreeRewardsUnlock
   bpPaidRewardsUnlock
   bpPurchasedUnlock
   battlePassGoods

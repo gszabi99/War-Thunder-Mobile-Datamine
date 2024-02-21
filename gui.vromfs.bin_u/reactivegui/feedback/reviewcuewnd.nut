@@ -27,9 +27,12 @@ let hasSelectedRating = Computed(@() fieldRating.value > 0)
 let hasAppliedRating = Watched(false)
 let isRatedExcellent = Computed(@() hasAppliedRating.value && fieldRating.value == RATE_STARS_TOTAL)
 
+local onCloseCb = null
+
 function close() {
   isOpened(false)
   isRateGameSeen(true)
+  onCloseCb?()
 }
 
 function resetForm() {
@@ -251,4 +254,9 @@ register_command(function() {
 
 registerScene("reviewCueWnd", reviewCueWnd, close, isOpened)
 
-return @() isOpened(true)
+function openReviewCueWnd(cb) {
+  onCloseCb = cb
+  isOpened(true)
+}
+
+return openReviewCueWnd

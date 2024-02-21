@@ -22,7 +22,7 @@ let getCommonData = @(unlock) {
   starsTotal = (progressUnlockByTab.get()?[unlock.tabId]
       ?? progressUnlockBySection.get()?[unlock?.sectionId]
     )?.current ?? 0
-}.__merge(unlock.tabId == EVENT_TAB ? { season = userstatStats.value?.stats.season["$index"] ?? 1 } : {})
+}.__merge(unlock.tabId == EVENT_TAB ? { season = userstatStats.value?.stats.season["$index"] ?? 0 } : {})
 
 function sendBqQuestsTask(unlock, warbondDelta, currencyId) {
   let data = getCommonData(unlock).__merge({

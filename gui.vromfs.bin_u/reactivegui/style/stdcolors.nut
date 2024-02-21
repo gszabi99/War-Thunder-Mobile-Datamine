@@ -1,3 +1,6 @@
+let markTextColor = 0xFFFFB70B
+let darkenTextColor = 0xFF8898CC
+
 return {
   textColor = 0xFFFFFFFF
   premiumTextColor = 0xFFFFC000
@@ -22,8 +25,11 @@ return {
   memberNotReadyColor = 0xFFFF4020
   memberReadyColor = 0xFF20E040
 
+  markTextColor = 0xFFFFB70B
+  darkenTextColor = 0xFF8898CC
+
   locColorTable = {
-    mark = 0xFFFFB70B
-    darken = 0xFF8898CC
+    mark = markTextColor
+    darken = darkenTextColor
   }
 }

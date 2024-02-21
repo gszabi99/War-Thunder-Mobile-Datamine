@@ -4,6 +4,8 @@ let { SHOULD_USE_REVIEW_CUE, needRateGame, onRateGameOpen } = require("%rGui/fee
 let openReviewCueWnd = require("%rGui/feedback/reviewCueWnd.nut")
 let openFeedbackWnd = require("%rGui/feedback/feedbackWnd.nut")
 
+local onCloseCb = null
+
 function tryShowRateGame() {
   if (!needRateGame.value)
     return
@@ -11,12 +13,15 @@ function tryShowRateGame() {
   onRateGameOpen()
 
   if (SHOULD_USE_REVIEW_CUE)
-    openReviewCueWnd()
+    openReviewCueWnd(onCloseCb)
   else
-    openFeedbackWnd()
+    openFeedbackWnd() // TODO: This wnd is deprecated, need to remove it from scripts.
 }
 
-let requestShowRateGame = @() resetTimeout(0.1, tryShowRateGame)
+let requestShowRateGame = function(cb = null) {
+  onCloseCb = cb
+  resetTimeout(0.1, tryShowRateGame)
+}
 
 return {
   requestShowRateGame

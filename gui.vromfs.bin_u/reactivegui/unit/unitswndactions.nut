@@ -26,6 +26,8 @@ let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { curSelectedUnit, availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
 let { tryResetToMainScene } = require("%rGui/navState.nut")
+let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 
 let premiumDays = 30
@@ -116,6 +118,18 @@ let infoBtn = infoBlueButton(
   { text = fontIconPreview }.__merge(fontBigShaded)
 )
 
+let withSkinUnseen = @(unitName, button) {
+  children = [
+    button
+    @() {
+      watch = unseenSkins
+      margin = hdpx(10)
+      hplace = ALIGN_RIGHT
+      children = unitName in unseenSkins.get() ? priorityUnseenMark : null
+    }
+  ]
+}
+
 function unitActionButtons() {
   let children = []
   if (canEquipSelectedUnit.value)
@@ -158,8 +172,8 @@ function unitActionButtons() {
   }
   children.append(
     (availableUnitsList.value.findvalue(@(unit) unit.name == curSelectedUnit.value)?.platoonUnits.len() ?? 0) > 0
-        ? platoonBtn
-      : infoBtn
+        ? withSkinUnseen(curSelectedUnit.get(), platoonBtn)
+      : withSkinUnseen(curSelectedUnit.get(), infoBtn)
   )
   return {
     watch = [

@@ -223,6 +223,7 @@ return {
   lastClientBattleData
   curBattleUnit = Computed(@() realBattleData.value?.unit)
   curBattleItems = Computed(@() realBattleData.value?.items)
+  curBattleSkins = Computed(@() realBattleData.value?.skins)
   isBattleDataReceived = Computed(@() state.value?.isBattleDataReceived)
   wasBattleDataApplied
 }

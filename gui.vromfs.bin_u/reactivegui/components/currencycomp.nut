@@ -4,7 +4,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let currencyStyles = require("currencyStyles.nut")
 let { CS_COMMON, CS_GAMERCARD } = currencyStyles
-let { eventSeason } = require("%rGui/event/eventState.nut")
+let { eventSeason, SEASON_EMPTY } = require("%rGui/event/eventState.nut")
 
 let defCoef = 1
 
@@ -69,7 +69,7 @@ function mkCurrencyImage (id, size, ovr = {}){
     vplace = ALIGN_CENTER
     color = currencyIconsColor?[id] ?? 0xFFFFFFFF
     keepAspect = KEEP_ASPECT_FIT
-    image = id in dynamicIcons
+    image = (id in dynamicIcons) && eventSeason.get() != SEASON_EMPTY
         ? getDynamicPicture(id, iconSize, eventSeason.get())
       : getCurrencyPicture(id, iconSize)
     fallbackImage = id not in dynamicIcons ? null : getCurrencyPicture(id, iconSize)

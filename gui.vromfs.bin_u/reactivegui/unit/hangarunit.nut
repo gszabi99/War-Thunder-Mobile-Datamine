@@ -236,4 +236,7 @@ return {
   setCustomHangarUnit  //will be forced cutsom unit params
   resetCustomHangarUnit //restore previous unit after custom one
   isHangarUnitLoaded
+
+  mainHangarUnit
+  mainHangarUnitName = Computed(@() mainHangarUnit.get()?.name)
 }

@@ -84,7 +84,7 @@ let mkBtnToHangar = @(needShow, campaign) mkBtnAppearAnim(false, needShow, textB
   function() {
     isNoExtraScenesAfterDebriefing.set(true)
     if (needRateGame.get())
-      return requestShowRateGame()
+      requestShowRateGame()
     closeDebriefing()
   },
   { hotkeys = [btnBEscUp] }))
@@ -94,7 +94,7 @@ let mkBtnLevelUp = @(needShow) mkBtnAppearAnim(true, needShow, textButtonBattle(
   function() {
     isNoExtraScenesAfterDebriefing.set(false)
     if (needRateGame.get())
-      return requestShowRateGame()
+      requestShowRateGame()
     closeDebriefing()
   },
   { hotkeys = ["^J:X | Enter"] }))
@@ -117,9 +117,11 @@ let toBattleButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")
   function() {
     sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "online_battle" })
     isNoExtraScenesAfterDebriefing.set(true)
+    let nextAction = @() showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), startBattle))
     if (needRateGame.get())
-      return requestShowRateGame()
-    showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), startBattle))
+      requestShowRateGame(nextAction)
+    else
+      nextAction()
     closeDebriefing()
   },
   { hotkeys = ["^J:X | Enter"] })
@@ -128,9 +130,11 @@ let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBat
   function() {
     sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "offline_battle" })
     isNoExtraScenesAfterDebriefing.set(true)
+    let nextAction = startCurNewbieMission
     if (needRateGame.get())
-      return requestShowRateGame()
-    startCurNewbieMission()
+      requestShowRateGame(nextAction)
+    else
+      nextAction()
     closeDebriefing()
   },
   { hotkeys = ["^J:X | Enter"] })
@@ -139,16 +143,20 @@ let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, tex
   utf8ToUpper(loc(campaign == "tanks" ? "mainmenu/btnUpgradePlatoon" : "mainmenu/btnUpgradeShip")),
   function() {
     isNoExtraScenesAfterDebriefing.set(false)
-    if (needRateGame.get())
-      return requestShowRateGame()
-    countUpgradeButtonPushed.set(countUpgradeButtonPushed.get() + 1)
-    get_local_custom_settings_blk()[SAVE_ID_UPGRADE_BUTTON_PUSHED] = countUpgradeButtonPushed.get()
-    eventbus_send("saveProfile", {})
-    let unit = allUnitsCfg.get()?[debriefingData.get()?.unit.name]
-    if (unit != null) {
-      updateHangarUnit(unit.name)
-      openUnitAttrWnd()
+    function nextAction() {
+      countUpgradeButtonPushed.set(countUpgradeButtonPushed.get() + 1)
+      get_local_custom_settings_blk()[SAVE_ID_UPGRADE_BUTTON_PUSHED] = countUpgradeButtonPushed.get()
+      eventbus_send("saveProfile", {})
+      let unit = allUnitsCfg.get()?[debriefingData.get()?.unit.name]
+      if (unit != null) {
+        updateHangarUnit(unit.name)
+        openUnitAttrWnd()
+      }
     }
+    if (needRateGame.get())
+      requestShowRateGame(nextAction)
+    else
+      nextAction()
     closeDebriefing()
   },
   {
@@ -173,14 +181,18 @@ let mkBtnNewPlatoonUnit = @(needShow, newPlatoonUnit) mkBtnAppearAnim(true, need
   utf8ToUpper(loc("msgbox/btn_get")),
   function() {
     isNoExtraScenesAfterDebriefing.set(false)
-    if (needRateGame.get())
-      return requestShowRateGame()
-    closeDebriefing()
-    let unit = allUnitsCfg.get()?[debriefingData.get()?.unit.name]
-    if (unit != null) {
-      unitDetailsWnd({ name = unit.name, selUnitName = newPlatoonUnit.name })
-      requestOpenUnitPurchEffect(newPlatoonUnit)
+    function nextAction() {
+      let unit = allUnitsCfg.get()?[debriefingData.get()?.unit.name]
+      if (unit != null) {
+        unitDetailsWnd({ name = unit.name, selUnitName = newPlatoonUnit.name })
+        requestOpenUnitPurchEffect(newPlatoonUnit)
+      }
     }
+    if (needRateGame.get())
+      requestShowRateGame(nextAction)
+    else
+      nextAction()
+    closeDebriefing()
   },
   { hotkeys = ["^J:X | Enter"] }))
 

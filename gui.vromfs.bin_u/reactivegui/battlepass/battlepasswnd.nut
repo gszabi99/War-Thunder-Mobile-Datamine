@@ -3,8 +3,8 @@ let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { battlePassOpenCounter, openBattlePassWnd, closeBattlePassWnd, isBpActive, mkBpStagesList,
-  openBPPurchaseWnd, selectedStage, curStage, maxStage, bpIconActive
+let { battlePassOpenCounter, openBattlePassWnd, closeBattlePassWnd, isBpSeasonActive, isBpActive,
+  mkBpStagesList, openBPPurchaseWnd, selectedStage, curStage, maxStage, bpIconActive
 } = require("battlePassState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
@@ -26,6 +26,8 @@ let { bpCardStyle, bpCardPadding, bpCardMargin } = require("bpCardsStyle.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { COMMON_TAB } = require("%rGui/quests/questsState.nut")
 
+
+isBpSeasonActive.subscribe(@(isActive) isActive ? null : closeBattlePassWnd())
 
 let bpIconSize = [hdpx(298), hdpx(181)]
 let scrollHandler = ScrollHandler()
@@ -68,12 +70,12 @@ let scrollArrowsBlock = {
   ]
 }
 
-function rewardsList(stages) {
+let rewardsList = @(stages) function() {
   let rewardsStages = []
   foreach (idx, s in stages) {
     let rewInfo = []
-    foreach(key, count in s.rewards){
-      let reward = serverConfigs.value.userstatRewards?[key]
+    foreach(key, count in s.rewards) {
+      let reward = serverConfigs.get().userstatRewards?[key]
       rewInfo.extend(getRewardsViewInfo(reward, count))
     }
     let viewInfo = rewInfo.sort(sortRewardsViewInfo)?[0]
@@ -86,6 +88,7 @@ function rewardsList(stages) {
   }
   return {
     key = "bpRewardsList"
+    watch = serverConfigs
     flow = FLOW_VERTICAL
     gap = hdpx(20)
     function onAttach() {
@@ -217,13 +220,13 @@ let content = @(stagesList) @() {
   flow = FLOW_VERTICAL
   gap = hdpx(15)
   children = [
-    middlePart(stagesList.value)
+    middlePart(stagesList.get())
     {
       size = [sw(100), SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
       children = [
-        rewardPannable(rewardsList(stagesList.value),
-          { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT] },
+        rewardPannable(rewardsList(stagesList.get()),
+          { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], clipChilden = false },
           {
             size = [flex(), SIZE_TO_CONTENT]
             behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],

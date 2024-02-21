@@ -4,7 +4,7 @@ let { REWARD_STYLE_BIG, REWARD_STYLE_LARGE } = require("%rGui/rewards/rewardStyl
 let { mkRewardPlateImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getPlatoonName, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getPlatoonName, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
@@ -15,6 +15,7 @@ let { receiveBpRewards, isBpRewardsInProgress, curStage } = require("battlePassS
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
+let { markTextColor } = require("%rGui/style/stdColors.nut")
 
 
 let unitPlateWidth = hdpx(480)
@@ -61,9 +62,11 @@ let locByTypesReward = {
   premium =  @(_) loc($"battlepass/premium/header")
   unit = @(id) getPlatoonName(id, loc)
   unitUpgrade = @(id) getPlatoonName(id, loc)
+  skin = @(id) loc("reward/skin_for",
+    { unitName = colorize(markTextColor, loc(getUnitLocId(id))) })
 }
 
-let mkDecoratorHeader = @(viewInfo) @(){
+let mkDecoratorHeader = @(viewInfo) @() {
   watch = allDecorators
   rendObj = ROBJ_TEXT
   vplace = ALIGN_TOP
@@ -71,11 +74,12 @@ let mkDecoratorHeader = @(viewInfo) @(){
   text = loc($"decorator/{allDecorators.value?[viewInfo.id].dType}")
 }.__update(fontSmallAccented)
 
-let mkDefaultRewardHeader = @(viewInfo){
-  rendObj = ROBJ_TEXT
+let mkDefaultRewardHeader = @(viewInfo) {
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
   vplace = ALIGN_TOP
   halign = ALIGN_CENTER
-  text = locByTypesReward[viewInfo.rType](viewInfo.id)
+  text = locByTypesReward?[viewInfo.rType](viewInfo.id) ?? viewInfo.rType
 }.__update(fontSmallAccented)
 
 let specialHeadCtors = {

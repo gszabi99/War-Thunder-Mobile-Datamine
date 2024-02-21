@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
-let { isBPPurchaseWndOpened, closeBPPurchaseWnd, curStage, sendBpBqEvent,
+let { isBPPurchaseWndOpened, closeBPPurchaseWnd, isBpSeasonActive, curStage, sendBpBqEvent,
   isBpPurchased, bpPurchasedUnlock, bpPaidRewardsUnlock, battlePassGoods, bpIconActive
 } = require("battlePassState.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
@@ -20,6 +20,8 @@ let { textButtonPricePurchase, buttonStyles } = require("%rGui/components/textBu
 let { defButtonHeight } = buttonStyles
 let { mkPriceExtText, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
+
+isBpSeasonActive.subscribe(@(isActive) isActive ? null : closeBPPurchaseWnd())
 
 let { boxSize, boxGap } = bpCardStyle
 let rewardsListGap = 1.5 * boxGap

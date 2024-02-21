@@ -517,7 +517,7 @@ let unitsWnd = {
       children = [
         horizontalPannableAreaCtor(sw(100),
           [saBorders[0], saBorders[0]], [hdpx(10), hdpx(10)])(unitsBlock,
-            {},
+            { clipChildren = false },
             {
               behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
               scrollHandler = scrollHandler

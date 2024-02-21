@@ -68,7 +68,7 @@ let openConfig = Computed(@() lootboxOpenRouletteConfig?[rouletteOpenType.value]
 function isReceivedSame(received, rewardInfo) {
   foreach(rec in received)
     foreach(info in rewardInfo)
-      if (info.id == rec.id && info.rType == rec.rType && info.count == rec.count)
+      if (info.id == rec.id && info.rType == rec.rType && info.subId == rec.subId && info.count == rec.count)
         return true //support only single reward drop from lootboxes atm.
   return false
 }

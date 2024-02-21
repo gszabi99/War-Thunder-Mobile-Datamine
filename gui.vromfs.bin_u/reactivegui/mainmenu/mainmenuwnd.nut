@@ -57,6 +57,9 @@ let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let boostersListActive = require("%rGui/boosters/boostersListActive.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+
 
 let unitNameStateFlags = Watched(0)
 
@@ -69,20 +72,29 @@ let mainMenuUnitToShow = keepref(Computed(function() {
 
 mainMenuUnitToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(unitId))
 
-let unitName = @() hangarUnit.value == null ? { watch = hangarUnit }
+let mkUnitName = @(unit) @() {
+  watch = unitNameStateFlags
+  onElemState = @(sf) unitNameStateFlags(sf)
+  behavior = Behaviors.Button
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(24)
+  onClick = @() unitDetailsWnd({ name = unit.name })
+  children = [
+    mkPlatoonOrUnitTitle(
+      unit, {}, unitNameStateFlags.value & S_HOVER ? { color = hoverColor } : {})
+    mkGradRank(unit.mRank)
+  ]
+}
+
+let unitNameBlock = @() hangarUnit.get() == null ? { watch = hangarUnit }
   : {
-    watch = [hangarUnit, unitNameStateFlags]
-    onElemState = @(sf) unitNameStateFlags(sf)
-    behavior = Behaviors.Button
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(24)
-    onClick = @() unitDetailsWnd({ name = hangarUnit.value.name })
-    children = [
-      mkPlatoonOrUnitTitle(
-        hangarUnit.value, {}, unitNameStateFlags.value & S_HOVER ? { color = hoverColor } : {})
-      mkGradRank(hangarUnit.value.mRank)
-    ]
-  }
+      watch = [hangarUnit, unseenSkins]
+      children = [
+        mkUnitName(hangarUnit.get())
+        hangarUnit.get().name not in unseenSkins.get() ? null
+          : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(20), hdpx(-20)] })
+      ]
+    }
 
 let campaignsBtn = @() {
   watch = [campaignsList, curCampaign]
@@ -264,7 +276,7 @@ let toBattleButtonPlace = {
       flow = FLOW_VERTICAL
       halign = ALIGN_RIGHT
       children = [
-        unitName
+        unitNameBlock
         gamercardBattleItemsBalanceBtns
         mkMRankRange
       ]

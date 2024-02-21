@@ -392,7 +392,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
                             .map(@(item) itemCtor(item.__merge({ tabId, sectionId = curSectionId.get() })))
                           onDetach = @() saveSeenQuestsForSection(curSectionId.value)
                         },
-                        { clipChildren = true },
+                        {},
                         { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                       mkScrollArrow(scrollHandler, MR_B)
                     ]

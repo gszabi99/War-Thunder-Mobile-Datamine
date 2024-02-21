@@ -4,7 +4,7 @@ let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.
 let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
   unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
   bestCampLevel, curEventLootboxes, curEventLoc,
-  curEvent, MAIN_EVENT_ID, curEventCurrencies, curEventSeason,
+  curEvent, MAIN_EVENT_ID, curEventCurrencies, curEventSeason, isCurEventActive,
   eventBgFallback, curEventBg, curEventName
 } = require("eventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -181,6 +181,14 @@ function onClose() {
     closeEventWnd()
   }
 }
+
+isCurEventActive.subscribe(function(isActive) {
+  if (isActive)
+    return
+  if (isEmbeddedLootboxPreviewOpen.value)
+    closeLootboxPreview()
+  closeEventWnd()
+})
 
 function mkCurrencies() {
   let baseCurrencies = [WP, GOLD].filter(@(v) curEventCurrencies.value.findindex(@(c) c == v) == null)

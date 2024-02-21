@@ -19,6 +19,10 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { register_command } = require("console")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
+let { getSkinCustomTags } = require("%rGui/unitSkins/skinTuning.nut")
+let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
+
 
 let sparesNum = mkWatched(persist, "sparesNum", servProfile.value?.items[SPARE].count ?? 0)
 let isRespawnAttached = Watched(false)
@@ -33,9 +37,11 @@ const SEEN_SHELLS = "SeenShells"
 
 let seenShells = mkWatched(persist, SEEN_SHELLS, {})
 
+let selectedSkins = Watched({})
+
 let getWeapon = @(weapons) weapons.findindex(@(v) v) ?? weapons.findindex(@(_) true)
 let mkSlot =  @(id, info, readyMask = 0, spareMask = 0)
-  { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}), skin = info?.skin ?? {},
+  { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}), skin = info?.skin ?? "",
     canSpawn = is_bit_set(readyMask, id),
     isSpawnBySpare = is_bit_set(spareMask, id),
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
@@ -174,6 +180,16 @@ function getDefaultBulletDataToSpawn(unitName, level, weaponName) {
   })
 }
 
+function chooseAutoSkin(unitName, skins, defSkin) {
+  if ((skins?.len() ?? 0) == 0)
+    return defSkin
+  let tags = curLevelTags.get()
+  let customTags = getSkinCustomTags(respawnUnitInfo.get()?.name ?? unitName)
+  let allowedSkins = skins.__merge({ [""] = true })
+    .filter(@(_, s) (customTags?[s] ?? getSkinPresentation(unitName, s).tag) in tags)
+  return allowedSkins.len() == 0 ? defSkin : chooseRandom(allowedSkins.keys())
+}
+
 function respawn(slot, bullets) {
   if (isRespawnStarted.value)
     return
@@ -189,12 +205,14 @@ function respawn(slot, bullets) {
     bulletsData[$"bulletCount{idx}"] <- bullet.count
   }
 
+  let spawnSkin = selectedSkins.get()?[name] ?? skin
+
   eventbus_send("requestRespawn", {
     name
     weapon
     respBaseId
     idInCountry = id
-    skin
+    skin = spawnSkin
   }.__update(bulletsData))
 }
 
@@ -273,4 +291,7 @@ return {
 
   respawn
   cancelRespawn
+
+  chooseAutoSkin
+  selectedSkins
 }

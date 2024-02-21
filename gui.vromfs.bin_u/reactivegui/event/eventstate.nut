@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let logE = log_with_prefix("[EVENTS] ")
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
@@ -17,6 +18,7 @@ let SEEN_LOOTBOXES = "seenLootboxes"
 let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
 let MAIN_EVENT_ID = "main"
 let getSeasonPrefix = @(n) $"season_{n}"
+let SEASON_EMPTY = getSeasonPrefix(0)
 let getSpecialEventName = @(n) $"special_event_{n}"
 
 let openEventInfo = mkWatched(persist, "openEventInfo")
@@ -29,7 +31,7 @@ eventWndOpenCounter.subscribe(function(v) {
 })
 
 let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
-let eventSeason = Computed(@() getSeasonPrefix(userstatStats.value?.stats.season["$index"] ?? 1))
+let eventSeason = Computed(@() getSeasonPrefix(userstatStats.value?.stats.season["$index"] ?? 0))
 let isEventActive = Computed(@() unlockTables.value?.season == true)
 
 let miniEventSeasonName = loc("mini_event_quest_2024_battle_of_iwo_jima_usa_kill")
@@ -99,7 +101,7 @@ function getEventLoc(eventId, eSeason, sEvents) {
 let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), specialEvents.get()))
 
 let curEventSeason = Computed(@() curEvent.value == MAIN_EVENT_ID
-    ? (userstatStats.value?.stats.season["$index"] ?? 1)
+    ? (userstatStats.value?.stats.season["$index"] ?? 0)
   : specialEvents.value?[curEvent.value].season)
 
 let curEventEndsAt = Computed(@() curEvent.value == MAIN_EVENT_ID
@@ -109,6 +111,10 @@ let curEventEndsAt = Computed(@() curEvent.value == MAIN_EVENT_ID
 let curEventName = Computed(@() curEvent.value == MAIN_EVENT_ID
     ? curEvent.value
   : specialEvents.value?[curEvent.value].eventName)
+
+let isCurEventActive = Computed(@() curEvent.get() == MAIN_EVENT_ID
+    ? isEventActive.get()
+  : isMiniEventActive.get())
 
 let curEventLootboxes = Computed(@()
   orderLootboxesBySlot(eventLootboxesRaw.value.filter(@(v) v?.meta.event_id == curEventName.value)))
@@ -254,6 +260,9 @@ register_command(function() {
   eventbus_send("saveProfile", {})
 }, "debug.reset_lootboxes_availability")
 
+isEventActive.subscribe(@(v) v ? null : logE($"Primary game event finished!"))
+isMiniEventActive.subscribe(@(v) v ? null : logE($"Mini game event finished!"))
+
 return {
   curEvent
   curEventName
@@ -261,6 +270,7 @@ return {
   getEventLoc
   curEventSeason
   curEventEndsAt
+  isCurEventActive
 
   eventWndOpenCounter
   openEventWnd
@@ -279,6 +289,7 @@ return {
   bestCampLevel
 
   MAIN_EVENT_ID
+  SEASON_EMPTY
   specialEvents
   getSpecialEventName
   curEventLootboxes

@@ -9,14 +9,15 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
   apply_profile_mutation, add_lootbox, add_warbond, add_event_key, debug_lootbox_chances,
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
-  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle
+  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle,
+  add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+let { mainHangarUnitName, mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { register_command } = require("console")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
@@ -52,8 +53,15 @@ registerHandler("onDebugLootboxChances",
     })
   })
 
+registerHandler("upgradeUnit",
+  @(res, context) res?.error != null ? console_print("FAILED") //warning disable: -forbidden-function
+    : upgrade_unit(context.name, "consolePrintResult"))
+registerHandler("downgradeUnit",
+  @(res, context) res?.error != null ? console_print("FAILED") //warning disable: -forbidden-function
+    : downgrade_unit(context.name, "consolePrintResult"))
+
 register_command(function(exp) {
-  let name = hangarUnitName.value
+  let name = mainHangarUnitName.get()
   if (name not in allUnitsCfg.value)
     return $"Unit '{name}' not exists"
   if (name not in myUnits.value)
@@ -78,8 +86,8 @@ register_command(@(seconds) seconds < 0
   "meta.add_premium")
 register_command(@(unitName) add_unit(unitName, "consolePrintResult"), "meta.add_unit")
 register_command(@(unitName) remove_unit(unitName, "consolePrintResult"), "meta.remove_unit")
-register_command(@() add_unit(hangarUnitName.value, "consolePrintResult"), "meta.add_hangar_unit")
-register_command(@() remove_unit(hangarUnitName.value, "consolePrintResult"), "meta.remove_hangar_unit")
+register_command(@() add_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.add_hangar_unit")
+register_command(@() remove_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.remove_hangar_unit")
 
 register_command(@(name) set_current_decorator(name, "consolePrintResult"), "meta.set_current_decorator")
 register_command(@(name) add_decorator(name, "consolePrintResult"), "meta.add_decorator")
@@ -104,6 +112,19 @@ register_command(
 register_command(
   @() debug_apply_boosters_in_battle(servProfile.get()?.boosters.filter(@(v) v.battlesLeft > 0).keys() ?? [], "consolePrintResult"),
   "meta.debug_apply_boosters_in_battle")
+
+register_command(@() upgrade_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.upgrade_hangar_unit")
+register_command(@() downgrade_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.downgrade_hangar_unit")
+register_command(@()
+  add_all_skins_for_unit(mainHangarUnitName.get(),
+    mainHangarUnit.get()?.isUpgraded || mainHangarUnit.get()?.isPremium ? "consolePrintResult"
+      : { id = "upgradeUnit", name = mainHangarUnitName.get() })
+  "meta.add_all_skins_for_hangar_unit")
+register_command(@()
+  remove_all_skins_for_unit(mainHangarUnitName.get(),
+    !mainHangarUnit.get()?.isUpgraded ? "consolePrintResult"
+      : { id = "downgradeUnit", name = mainHangarUnitName.get() })
+  "meta.remove_all_skins_for_hangar_unit")
 
 register_command(function(count) {
   add_wp(count * 100)

@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { unitInfoPanelFull, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitRank
@@ -17,42 +16,18 @@ let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { scaleAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { justUnlockedPlatoonUnits } = require("%rGui/unit/justUnlockedPlatoonUnits.nut")
 let { btnOpenUnitAttrBig } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
+let btnOpenUnitSkins = require("%rGui/unitSkins/btnOpenUnitSkins.nut")
+let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
+  platoonUnitsList, unitToShow, isWindowAttached } = require("unitDetailsState.nut")
 
-let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
-let curSelectedUnitId = Watched("")
-let isWindowAttached = Watched(false)
-function close() {
-  curSelectedUnitId("")
-  openUnitOvr(null)
-}
 let buttonsGap = hdpx(40)
 
-let baseUnit = Computed(function() {
-  let { name = null, canShowOwnUnit = true} = openUnitOvr.value
-  local res = canShowOwnUnit ? myUnits.value?[name] ?? serverConfigs.value?.allUnits[name]
-    : serverConfigs.value?.allUnits[name]
-  if (res == null)
-    return res
-  res = res.__merge(openUnitOvr.value)
-  if (res?.isUpgraded ?? false)
-    res.__update(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {})
-  return res
-})
-let isOpened = Computed(@() baseUnit.value != null)
-
+let isUnitDetailsOpen = Computed(@() baseUnit.value != null)
 let isShowedUnitOwned = Computed(@() baseUnit.value?.name in myUnits.value)
-
-let platoonUnitsList = Computed(function() {
-  let { name = "", platoonUnits = [] } = baseUnit.value
-  return platoonUnits.len() != 0
-    ? [ { name, reqLevel = 0 } ].extend(platoonUnits)
-    : []
-})
 
 let nextLevelToUnlockUnit = Computed(function() {
   if ("level" not in baseUnit.value)
@@ -69,23 +44,8 @@ platoonUnitsList.subscribe(function(pu) {
     return
   local name = openUnitOvr.value?.selUnitName
   if (name == null || null == pu.findvalue(@(p) p.name == name))
-    name = pu?[0].name ?? ""
+    name = pu?[0].name
   curSelectedUnitId(name)
-})
-
-let unitToShow = keepref(Computed(function() {
-  if (!isWindowAttached.value || baseUnit.value == null)
-    return null
-  let unitName = curSelectedUnitId.value
-  if (unitName == baseUnit.value.name || unitName == "")
-    return baseUnit.value
-  return baseUnit.value.__merge({ name = unitName })
-}))
-unitToShow.subscribe(function(unit) {
-  if (unit != null)
-    setCustomHangarUnit(unit)
-  else
-    resetCustomHangarUnit()
 })
 
 let UNIT_DELAY = 1.5
@@ -94,7 +54,7 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
   let p = getUnitPresentation(platoonUnit)
   let platoonUnitFull = unit.__merge(platoonUnit)
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
-  let isSelected = Computed(@() curSelectedUnitId.value == platoonUnit.name)
+  let isSelected = Computed(@() unitToShow.get()?.name == platoonUnit.name)
   let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
   let justUnlockedDelay = Computed(@() justUnlockedPlatoonUnits.value.indexof(platoonUnit.name) != null ? UNIT_DELAY : null)
 
@@ -145,7 +105,7 @@ let unitInfoPanelPlace = @() {
     hplace = ALIGN_RIGHT
     behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
     eventPassThrough = true
-    onClick = close
+    onClick = closeUnitDetailsWnd
   }, unitToShow)
 }
 
@@ -166,27 +126,33 @@ let lvlUpButton = @() {
 }
 
 let buttonsBlock = @() {
+  size = flex()
   flow = FLOW_VERTICAL
   watch = isShowedUnitOwned
   gap = hdpx(30)
   children = [
-    mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT })
-    {
-      flow = FLOW_HORIZONTAL
-      gap = buttonsGap
-      vplace = ALIGN_BOTTOM
-      valign = ALIGN_BOTTOM
-      children = [
-        isShowedUnitOwned.value ? btnOpenUnitAttrBig : null
-        lvlUpButton
-        testDriveButton
-      ]
-    }
+    { size = flex() }
+    mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
+    testDriveButton
+    !isShowedUnitOwned.get() ? null
+      : {
+          size = [flex(), SIZE_TO_CONTENT]
+          flow = FLOW_HORIZONTAL
+          gap = buttonsGap
+          vplace = ALIGN_BOTTOM
+          valign = ALIGN_BOTTOM
+          children = [
+            btnOpenUnitAttrBig
+            lvlUpButton
+            { size = flex() }
+            btnOpenUnitSkins
+          ]
+        }
   ]
 }
 
 let sceneRoot = {
-  key = isOpened
+  key = isUnitDetailsOpen
   size = [ sw(100), sh(100) ]
   behavior = Behaviors.HangarCameraControl
   animations = wndSwitchAnim
@@ -203,11 +169,17 @@ let sceneRoot = {
     children = [
       @(){
         watch = [baseUnit, curCampaign]
-        children = mkLeftBlockUnitCampaign(close, $"gamercard/levelUnitDetails/desc/{curCampaign.value}",
+        children = mkLeftBlockUnitCampaign(
+          function() {
+            curSelectedUnitId.set(null)
+            closeUnitDetailsWnd()
+          },
+          $"gamercard/levelUnitDetails/desc/{curCampaign.get()}",
           baseUnit.value)
       }
       unitInfoPanelPlace
       {
+        size = flex()
         flow = FLOW_HORIZONTAL
         gap = buttonsGap
         vplace = ALIGN_BOTTOM
@@ -221,6 +193,6 @@ let sceneRoot = {
   }
 }
 
-registerScene("unitDetailWnd", sceneRoot, close, isOpened)
+registerScene("unitDetailWnd", sceneRoot, closeUnitDetailsWnd, isUnitDetailsOpen)
 
 return @(unitOvr = {}) openUnitOvr(unitOvr)

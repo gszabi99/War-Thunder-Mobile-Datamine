@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isBuyCurrencyWndOpen, closeBuyEventCurrenciesWnd, bgImage, bgFallback
+let { isBuyCurrencyWndOpen, closeBuyEventCurrenciesWnd, isParentEventActive, bgImage, bgFallback
 } = require("buyEventCurrenciesState.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { buyEventCurrenciesHeader, mkEventCurrenciesGoods, buyEventCurrenciesGamercard,
   buyEventCurrenciesDesc } = require("buyEventCurrenciesComps.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
+
+isParentEventActive.subscribe(@(isActive) isActive ? null : closeBuyEventCurrenciesWnd())
 
 let buyEventCurrenciesWnd = {
   key = {}

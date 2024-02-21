@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
 let { mkCurrencyComp, mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
@@ -29,7 +30,7 @@ let unitPlatesGap = hdpx(20)
 let lockIconSize = hdpxi(80)
 let lockIconOnLockedSlotSize = hdpxi(85)
 let lockIconRespWnd = hdpxi(45)
-let flagIconSize = pw(14)
+let flagIconSize = hdpxi(42).tointeger()
 let premiumIconSize = [pw(34), pw(14)]
 
 let platoonPlatesGap = 0
@@ -56,11 +57,6 @@ let bgUnit = mkColoredGradientY(0xFF383B3E, 0xFF191616, 2)
 let bgUnitPremium = mkColoredGradientY(0xFFC89123, 0xFF644012, 2)
 let bgUnitLocked = mkColoredGradientY(0xFF303234, 0xFF000000, 2)
 let bgUnitPremiumLocked = mkColoredGradientY(0xFF8E6617, 0xFF3E2505, 2)
-
-let COUNTRY_FLAG_UNKNOWN = "menu_lang.svg"
-let getFlagByCountry = memoize(@(country) country?.startswith("country_")
-  ? $"flag_{country.slice(8)}_small.avif"
-  : COUNTRY_FLAG_UNKNOWN)
 
 function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
   let gap = isSelected ? platoonSelPlatesGap : platoonPlatesGap
@@ -272,16 +268,25 @@ function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
   }
 }
 
-let mkUnitFlag = @(unit, isLocked = Watched(false)) @() {
-  watch = isLocked
-  margin = plateTextsSmallPad
-  size = [flagIconSize, flagIconSize]
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{getFlagByCountry(getUnitTagsCfg(unit.name)?.operatorCountry ?? unit.country)}:0:P")
-  fallbackImage = Picture($"ui/gameuiskin#{COUNTRY_FLAG_UNKNOWN}:0:P")
-  keepAspect = KEEP_ASPECT_FIT
-  imageValign = ALIGN_TOP
-  brightness = isLocked.get() ? 0.4 : 1.0
+let function mkFlagImage(countryId, width) {
+  let w = round(width).tointeger()
+  let h = round(w * (66.0 / 84)).tointeger()
+  return {
+    size = [w, h]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#{countryId}.avif:{w}:{h}")
+    fallbackImage = Picture($"ui/gameuiskin#menu_lang.svg:{w}:{h}:P")
+    keepAspect = true
+  }
+}
+
+let function mkUnitFlag(unit, isLocked = Watched(false)) {
+  let countryId = getUnitTagsCfg(unit.name)?.operatorCountry ?? unit.country
+  return @() mkFlagImage(countryId, flagIconSize).__update({
+    watch = isLocked
+    margin = plateTextsSmallPad
+    brightness = isLocked.get() ? 0.4 : 1.0
+  })
 }
 
 let mkUnitTexts = @(unit, unitLocName, isLocked = Watched(false)) {
@@ -524,6 +529,5 @@ return {
   mkPlatoonBgPlates
   mkPlatoonEquippedIcon
 
-  getFlagByCountry
-  COUNTRY_FLAG_UNKNOWN
+  mkFlagImage
 }

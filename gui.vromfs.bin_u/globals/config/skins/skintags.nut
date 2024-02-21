@@ -1,7 +1,22 @@
+let { loc } = require("dagor.localize")
+
+let NO_TAG = ""
+let WINTER = "winter"
+let DESERT = "desert"
+let FOREST = "forest"
+
+let tagsLocId = {
+  [NO_TAG] = "skins/noTag"
+}
+
 return {
-  DEFAULT = ""
-  FOREST = "forest"
-  WINTER = "winter"
-  DESERT = "desert"
+  NO_TAG
+  FOREST
+  WINTER
+  DESERT
   NAVAL = "naval"
+
+  tankTagsOrder = [WINTER, DESERT, FOREST, NO_TAG]
+
+  getTagName = @(tag) loc(tagsLocId?[tag] ?? $"camoType/{tag}")
 }

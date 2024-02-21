@@ -28,6 +28,7 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { levelBorder } = require("%rGui/components/levelBlockPkg.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
+let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { defer, resetTimeout } = require("dagor.workcycle")
@@ -55,6 +56,7 @@ let unitPlateSize = unitPlateSmall
 let blockSize = [unitPlateSize[0] + platesGap[0], unitPlateSize[1] + platesGap[1]]
 let scrollBlocks = ceil((saSize[0] - saBorders[0] - flagsWidth) / blockSize[0] / 2)
 let SCROLL_DELAY = 1.5
+let flagTreeOffset = hdpx(60)
 
 let scrollHandler = ScrollHandler()
 let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))
@@ -62,22 +64,25 @@ let nodeToScroll = Watched(null)
 
 let unseenUnitsIndex = Computed(function() {
   let res = {}
-  if (unseenUnits.value.len() == 0 || !isUnitsTreeOpen.value)
+  if (!isUnitsTreeOpen.get() || (unseenUnits.get().len() == 0 && unseenSkins.get().len() == 0))
     return res
   foreach(unit in availableUnitsList.value) {
-    if(unit.name in unseenUnits.value)
+    if(unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
       res[unit.name] <- columnsCfg.value[unit.rank]
   }
   return res
 })
 
-let needShowArrowL = Computed(@()
-  null != unseenUnitsIndex.value.findvalue(
-    @(index) scrollPos.value > (index + 0.65) * blockSize[0]))
+let needShowArrowL = Computed(function() {
+  let offsetIdx = (scrollPos.get() - flagTreeOffset).tofloat() / blockSize[0] - 1
+  return null != unseenUnitsIndex.get().findvalue(@(index) offsetIdx > index)
+})
 
-let needShowArrowR = Computed(@()
-  null != unseenUnitsIndex.value.findvalue(
-    @(index) scrollPos.value + sw(100) < (index + 1.85) * blockSize[0]))
+let needShowArrowR = Computed(function() {
+  let offsetIdx = (scrollPos.get() + sw(100) - 2 * saBorders[0] - flagsWidth - flagTreeOffset).tofloat() / blockSize[0]
+    - 1
+  return null != unseenUnitsIndex.get().findvalue(@(index) offsetIdx < index)
+})
 
 function scrollToUnit(name, xmbNode = null) {
   if (!name)
@@ -232,7 +237,7 @@ function mkUnitPlate(unit, ovr = {}) {
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
   let discount = Computed(@() unitDiscounts?.value[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
-  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
+  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
   let justUnlockedDelay = Computed(@() hasModalWindows.get() && canBuyForLvlUp.get() ? 1000000.0
     : canBuyForLvlUp.get()
         && hasDataForLevelWnd.get()
@@ -369,11 +374,12 @@ let unitsTree = @() {
 
 let unseenArrowsBlock = {
   size = [flex(), SIZE_TO_CONTENT]
-  pos = [-saBorders[0], hdpx(25)]
+  pos = [0, hdpx(25)]
   children = [
     @() {
       watch = needShowArrowL
       size = [flex(), SIZE_TO_CONTENT]
+      pos = [-flagTreeOffset, 0]
       children = !needShowArrowL.value ? null : [
         {
           hplace = ALIGN_LEFT
@@ -386,7 +392,7 @@ let unseenArrowsBlock = {
     @() {
       watch = needShowArrowR
       size = [flex(), SIZE_TO_CONTENT]
-      pos = [-saBorders[0] * 0.5, 0]
+      pos = [saBorders[0] * 0.5, 0]
       children = !needShowArrowR.value ? null : [
         {
           hplace = ALIGN_RIGHT
@@ -399,9 +405,9 @@ let unseenArrowsBlock = {
   ]
 }
 
-let pannableArea = horizontalPannableAreaCtor(sw(100) - flagsWidth - saBorders[0], array(2, saBorders[0]))(
+let pannableArea = horizontalPannableAreaCtor(sw(100) - flagsWidth - saBorders[0], [flagTreeOffset, saBorders[0]])(
   unitsTree,
-  { clipChildren = true },
+  {},
   {
     behavior = [Behaviors.Pannable, Behaviors.ScrollEvent],
     scrollHandler
@@ -424,8 +430,8 @@ let unitsTreeContent = @() {
         { size = [sw(100), blockSize[1]] }.__merge(unselectBtn, rowIdx % 2 == 1 ? {} : bgLight))
     }
     {
-      pos = [saBorders[0] * 2 + flagsWidth, 0]
-      size = [sw(100) - flagsWidth - saBorders[0], blockSize[1] * countriesRows + levelMarkSize]
+      pos = [saBorders[0] + flagsWidth + flagTreeOffset, 0]
+      size = [sw(100) - flagsWidth - 2* saBorders[0] - flagTreeOffset, blockSize[1] * countriesRows + levelMarkSize]
       children = [
         pannableArea
         unseenArrowsBlock

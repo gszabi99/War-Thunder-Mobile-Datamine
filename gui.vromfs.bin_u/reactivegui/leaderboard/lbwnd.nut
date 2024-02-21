@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
+let { isEventActive } = require("%rGui/event/eventState.nut")
 let { curLbId, curLbData, curLbSelfRow, curLbErrName, curLbCfg, isLbWndOpened,
   isRefreshLbEnabled, lbPage, lbMyPage, lbLastPage, lbTotalPlaces, isLbRequestInProgress,
   minRatingBattles, bestBattlesCount, hasBestBattles, isLbBestBattlesOpened
@@ -41,6 +42,13 @@ let nameCellWidth = lbRowHeight + nameGap + nameWidth
 let defTxtColor = 0xFFD8D8D8
 
 let close = @() isLbWndOpened(false)
+
+isEventActive.subscribe(function(isActive) {
+  if (isActive)
+    return
+  isLbBestBattlesOpened(false)
+  close()
+})
 
 let lbTabs = @() {
   watch = curLbId

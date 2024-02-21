@@ -243,7 +243,7 @@ function mkRewardPlateDecoratorTexts(r, rStyle) {
   let decoratorType = Computed(@() (allDecorators.value?[id].dType))
   let comp = { watch = decoratorType }
   return @() decoratorType.value == null ? comp : comp.__update(mkRewardLabel(
-    mkCommonLabelTextMarquee(loc($"decorator/{allDecorators.value?[id].dType}"), rStyle), false))
+    mkCommonLabelTextMarquee(loc($"decorator/{allDecorators.value?[id].dType}"), rStyle)))
 }
 
 // ITEM ///////////////////////////////////////////////////////////////////////
@@ -348,7 +348,7 @@ function mkRewardPlateSkinImage(r, rStyle) {
 
 function mkRewardPlateSkinTexts(r, rStyle) {
   let { id } = r
-  return mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(id)), rStyle), false)
+  return mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(id)), rStyle))
 }
 
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)

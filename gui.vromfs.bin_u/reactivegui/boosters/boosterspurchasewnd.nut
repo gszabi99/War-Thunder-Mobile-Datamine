@@ -17,6 +17,7 @@ let { PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, mkBqPurchaseInfo } = require("%rG
 let purchaseBooster = require("purchaseBooster.nut")
 let { boosterInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let close = @() isOpenedBoosterWnd(false)
 
@@ -204,7 +205,7 @@ let goods = @() {
     .map(@(bst) boosterCard(bst))
 }
 
-let cotent = {
+let content = {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
@@ -221,8 +222,9 @@ let window = bgShaded.__merge({
   padding = saBordersRv
   children = [
     gamercardPannel
-    cotent
+    content
   ]
+  animations = wndSwitchAnim
 })
 
 registerScene("bstWnd", window, close, isOpenedBoosterWnd)

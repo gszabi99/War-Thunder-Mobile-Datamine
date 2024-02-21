@@ -292,7 +292,7 @@ function getLootboxRewardsViewInfo(lootbox, needToGroup = false) {
 }
 
 let receivedGoodsToViewInfo = @(rGoods)
-  mkViewInfo(rGoods?.id ?? "", rGoods?.gType ?? "", rGoods.count ?? 0)
+  mkViewInfo(rGoods?.id ?? "", rGoods?.gType ?? "", rGoods.count ?? 0, rGoods?.subId ?? "")
 
 let isEmptyByField = {
   decorators = @(value, profile) value.findvalue(@(d) d not in profile?.decorators) == null

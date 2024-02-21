@@ -5,7 +5,7 @@ let { mkCustomButton, mergeStyles, textButtonSecondary } = require("%rGui/compon
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { round, sqrt } = require("math")
 let { arrayByRows } = require("%sqstd/underscore.nut")
-let { getFlagByCountry, COUNTRY_FLAG_UNKNOWN, mkPlayerLevel, unitPlateSmall } = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkFlagImage, mkPlayerLevel, unitPlateSmall } = require("%rGui/unit/components/unitPlateComp.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
@@ -22,18 +22,6 @@ let btnSize = [SIZE_TO_CONTENT, hdpxi(70)]
 let btnStyle = { ovr = { size = btnSize } }
 
 let aTimeBarFill = 0.8
-
-function mkFlagImage(country, imageSize) {
-  let w = round(imageSize).tointeger()
-  let h = round(w * 0.79).tointeger()
-  return {
-    size = [w, h]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#{getFlagByCountry(country)}:{w}:{h}:P")
-    fallbackImage = Picture($"ui/gameuiskin#{COUNTRY_FLAG_UNKNOWN}:{w}:{h}:P")
-    keepAspect = KEEP_ASPECT_FIT
-  }
-}
 
 let mkFlags = @(countries, blockSize) {
   size = [flagsWidth, blockSize]

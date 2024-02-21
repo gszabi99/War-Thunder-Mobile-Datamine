@@ -62,24 +62,33 @@ function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
       pos = [0, -scrollOffset[0]]
       rendObj = ROBJ_MASK
       image = pageMask()
+      clipChildren = true
     }.__update(rootOvr)
-
+    let key = {}
     return @() isMoveByKeys.value
       ? root.__merge({
-          padding = [scrollOffset[0], 0, scrollOffset[1], 0]
-          children = pannableBase.__merge({
-            children = content
-          }, pannableOvr)
+          children = {
+            key
+            size = root.size
+            padding = [scrollOffset[0], 0, scrollOffset[1], 0]
+            children = pannableBase.__merge({
+              children = content
+            }, pannableOvr)
+          }
         })
       : root.__merge({
-          children = pannableBase.__merge({
-            flow = FLOW_VERTICAL
-            children = [
-              { size = [flex(), scrollOffset[0]] }
-              content
-              { size = [flex(), scrollOffset[1]] }
-            ]
-          }, pannableOvr)
+          children = { //need the same nesting with isMoveByKeys to not reset scroll on change
+            key
+            size = root.size
+            children = pannableBase.__merge({
+              flow = FLOW_VERTICAL
+              children = [
+                { size = [flex(), scrollOffset[0]] }
+                content
+                { size = [flex(), scrollOffset[1]] }
+              ]
+            }, pannableOvr)
+          }
         })
   }
 }
@@ -119,24 +128,33 @@ function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) 
       pos = [-scrollOffset[0], 0]
       rendObj = ROBJ_MASK
       image = pageMask()
+      clipChildren = true
     }.__update(rootOvr)
-
+    let key = {}
     return @() isMoveByKeys.value
       ? root.__merge({
-          padding = [0, scrollOffset[1], 0, scrollOffset[0]]
-          children = pannableBase.__merge({
-            children = content
-          }, pannableOvr)
+          children = {
+            key
+            size = root.size
+            padding = [0, scrollOffset[1], 0, scrollOffset[0]] //padding here to correct clipObject by parent
+            children = pannableBase.__merge({
+              children = content
+            }, pannableOvr)
+          }
         })
       : root.__merge({
-          children = pannableBase.__merge({
-            flow = FLOW_HORIZONTAL
-            children = [
-              { size = [scrollOffset[0], flex()] }
-              content
-              { size = [scrollOffset[1], flex()] }
-            ]
-          }, pannableOvr)
+          children = { //need the same nesting with isMoveByKeys to not reset scroll on change
+            key
+            size = root.size
+            children = pannableBase.__merge({
+              flow = FLOW_HORIZONTAL
+              children = [
+                { size = [scrollOffset[0], flex()] }
+                content
+                { size = [scrollOffset[1], flex()] }
+              ]
+            }, pannableOvr)
+          }
         })
   }
 }

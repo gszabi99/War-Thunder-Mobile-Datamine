@@ -93,7 +93,7 @@ let shopScene = bgShaded.__merge({
           children = [
             horizontalPannableAreaCtor(shopPageW, [opacityGradWidth, opacityGradWidth])(
               mkShopPage(shopPageW, shopPageH),
-              { pos = [0, 0], clipChildren = true },
+              { pos = [0, 0] },
               { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler = pageScrollHandler })
             scrollArrowsBlock
           ]

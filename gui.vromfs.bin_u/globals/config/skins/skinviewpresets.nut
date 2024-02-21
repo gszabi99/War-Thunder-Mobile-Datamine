@@ -10,6 +10,7 @@ let skinsByTag = {
     "fin_camo_black_green_dark"
     "fr_camo_green_brown"
     "fr_camo_vert_olive_arme"
+    "ger_camo_bronzegruen"
     "ger_camo_grey"
     "ger_camo_carc"
     "ger_camo_dunkelgelb_green"

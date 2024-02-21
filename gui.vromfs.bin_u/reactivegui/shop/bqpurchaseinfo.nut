@@ -19,6 +19,7 @@ let PURCH_SRC_PROFILE = "profile"
 let PURCH_SRC_SHOP = "shop"
 let PURCH_SRC_EVENT = "event"
 let PURCH_SRC_BATTLE_PASS = "battle_pass"
+let PURCH_SRC_SKINS = "skins"
 let PURCH_SRC_BOOSTERS = "boosters"
 
 let PURCH_TYPE_UNIT = "unit"
@@ -31,6 +32,7 @@ let PURCH_TYPE_DECORATOR = "player_decorator"
 let PURCH_TYPE_PREMIUM = "premium"
 let PURCH_TYPE_CURRENCY = "currency"
 let PURCH_TYPE_LOOTBOX = "lootbox"
+let PURCH_TYPE_SKIN = "skin"
 let PURCH_TYPE_BOOSTERS = "boosters"
 
 let goodsTypeToPurchTypeMap = {
@@ -72,6 +74,7 @@ return {
   PURCH_SRC_SHOP
   PURCH_SRC_EVENT
   PURCH_SRC_BATTLE_PASS
+  PURCH_SRC_SKINS
   PURCH_SRC_BOOSTERS
 
   PURCH_TYPE_UNIT
@@ -84,6 +87,7 @@ return {
   PURCH_TYPE_CURRENCY
   PURCH_TYPE_LOOTBOX
   PURCH_TYPE_BP_LEVEL
+  PURCH_TYPE_SKIN
   PURCH_TYPE_BOOSTERS
 
   getPurchaseTypeByGoodsType
