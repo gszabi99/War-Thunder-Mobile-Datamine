@@ -6,8 +6,10 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
 let isUnitSkinsOpen = mkWatched(persist, "isUnitSkinsOpen", false)
-let unitSkins = Computed(@() { "" : "true" }.__merge(allUnitsCfg.get()?[baseUnit.get()?.name].skins ?? {}))
-let availableSkins = Computed(@() { "" : "true" }.__merge(servProfile.get()?.skins[baseUnit.get()?.name] ?? {}))
+let unitSkins = Computed(@() {}.__merge(baseUnit.get()?.isUpgraded ? {} : { "" : "true" },
+  allUnitsCfg.get()?[baseUnit.get()?.name].skins ?? {}))
+let availableSkins = Computed(@() {}.__merge(baseUnit.get()?.isUpgraded ? {} : { "" : "true" },
+  servProfile.get()?.skins[baseUnit.get()?.name] ?? {}))
 let currentSkin = Computed(@() baseUnit.get()?.currentSkins[curSelectedUnitId.get() ?? baseUnit.get()?.name] ?? "")
 let selectedSkinCfg = Computed(@() serverConfigs.get()?.skins[curSelectedUnitSkin.get()][baseUnit.get()?.name])
 

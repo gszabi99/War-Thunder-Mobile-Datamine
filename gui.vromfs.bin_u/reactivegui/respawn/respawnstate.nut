@@ -41,7 +41,7 @@ let selectedSkins = Watched({})
 
 let getWeapon = @(weapons) weapons.findindex(@(v) v) ?? weapons.findindex(@(_) true)
 let mkSlot =  @(id, info, readyMask = 0, spareMask = 0)
-  { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}), skin = info?.skin ?? "",
+  { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}), skin = info?.skin ?? (info?.isUpgraded ? "upgraded" : ""),
     canSpawn = is_bit_set(readyMask, id),
     isSpawnBySpare = is_bit_set(spareMask, id),
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
@@ -154,8 +154,10 @@ curRespBase.subscribe(@(v) isRespawnAttached.value ? selectRespawnBase(v) : null
 isInBattle.subscribe( function (v) {
   if (v)
     sparesNum(servProfile.value?.items[SPARE].count ?? 0)
-  else
+  else {
     playerSelectedRespBase(-1)
+    selectedSkins.set({})
+  }
 })
 let emptyBullets = { bullets0 = "", bulletCount0 = 10000 }
 let MAX_SLOTS = 6
