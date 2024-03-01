@@ -59,12 +59,21 @@ let rowBgOddColor = 0x70000000
 
 let hasTagsChoice = Computed(@() curCampaign.get() == "tanks")
 
+let function applyToPlatoon(unit, skinName) {
+  if ((unit?.currentSkins[unit.name] ?? "") != skinName)
+    enable_unit_skin(unit.name, unit.name, skinName)
+  foreach (pu in unit.platoonUnits)
+    if ((unit?.currentSkins[pu.name] ?? "") != skinName)
+      enable_unit_skin(unit.name, pu.name, skinName)
+}
+
 let skinsPannable = horizontalPannableAreaCtor(skinsRowWidth + skinSize + saBorders[0], [skinSize, saBorders[0]])
 let skinsPannableWithTags = horizontalPannableAreaCtor(
   (skinSize + skinGap) * SKINS_IN_ROW_TAGS + skinGap + saBorders[0], [2 * skinGap, saBorders[0]])
 
 function mkUnitPlate(unit, platoonUnit, onClick) {
   let p = getUnitPresentation(platoonUnit)
+  let platoonUnitFull = unit.__merge(platoonUnit)
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let isSelected = Computed(@() unitToShow.get()?.name == platoonUnit.name)
   let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.get()?[unit.name].level ?? 0))
@@ -82,8 +91,8 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
         children = [
           mkUnitBg(unit, isLocked.get())
           mkUnitSelectedGlow(unit, isSelected)
-          mkUnitImage(unit.__merge(platoonUnit), isLocked.get())
-          mkUnitTexts(unit, loc(p.locId), isLocked)
+          mkUnitImage(platoonUnitFull, isLocked.get())
+          mkUnitTexts(platoonUnitFull, loc(p.locId), isLocked.get())
           !isLocked.get() ? mkUnitRank(unit, { pos = [-hdpx(30), 0] }) : null
           mkUnitSlotLockedLine(platoonUnit, isLocked.get())
         ]
@@ -178,8 +187,32 @@ let receiveSkinInfo = @(unitName, skinName) function() {
   return res
 }
 
+let function selectBtns(unit, vehicleName, skinName, cSkin) {
+  let showApplyToPlatoon = unit.platoonUnits.len() > 0
+    && ((unit.currentSkins?[unit.name] ?? "") != skinName
+      || unit.platoonUnits.findvalue(@(v) (unit.currentSkins?[v.name] ?? "") != skinName) != null)
+
+  return {
+    hplace = ALIGN_RIGHT
+    padding = [0, saBorders[0], 0, 0]
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(20)
+    children = [
+      !showApplyToPlatoon ? null
+        : textButtonPrimary(
+            utf8ToUpper(loc("skins/applyToPlatoon")),
+            @() applyToPlatoon(unit, skinName))
+      cSkin == skinName ? mkGradText(loc("skins/applied"))
+        : textButtonPrimary(
+            utf8ToUpper(loc("mainmenu/btnApply")),
+            @() enable_unit_skin(unit.name, vehicleName, skinName),
+            { hplace = ALIGN_CENTER })
+    ]
+  }
+}
+
 let actionBtn = @() {
-  watch = [selectedSkin, availableSkins, currentSkin, selectedSkinCfg, myUnits, unitToShow, skinsInProgress]
+  watch = [selectedSkin, availableSkins, currentSkin, selectedSkinCfg, myUnits, unitToShow, skinsInProgress, baseUnit]
   size = [flex(), defButtonHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -189,13 +222,8 @@ let actionBtn = @() {
     : skinsInProgress.get() ? spinner
     : selectedSkin.get() == "upgraded" && !baseUnit.get()?.isUpgraded
       ? mkGradText(loc("attrib_section/upgradeBattleRewards"))
-    : currentSkin.get() == selectedSkin.get()
-      ? mkGradText(loc("skins/selected"))
-    : selectedSkin.get() in availableSkins.get()
-      ? textButtonPrimary(
-          utf8ToUpper(loc("mainmenu/btnSelect")),
-          @() enable_unit_skin(baseUnit.get().name, unitToShow.get().name, selectedSkin.get()),
-          { hplace = ALIGN_CENTER })
+    : currentSkin.get() == selectedSkin.get() || selectedSkin.get() in availableSkins.get()
+      ? selectBtns(baseUnit.get(), unitToShow.get().name, selectedSkin.get(), currentSkin.get())
     : selectedSkinCfg.get()?.currencyId != null
       ? textButtonPricePurchase(
           utf8ToUpper(loc("mainmenu/btnBuy")),

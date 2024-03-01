@@ -5,7 +5,7 @@ let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let killerInfo = require("%rGui/hudHints/killerInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { eventbus_subscribe } = require("eventbus")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 

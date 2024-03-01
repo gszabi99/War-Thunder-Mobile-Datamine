@@ -40,6 +40,9 @@ return {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_desert_storm"
     },
+    "fr_amx_13_fl_11_reward": {
+      "": "tl_camo_grey_yellow_lines"
+    },
     "fr_amx_30_b2_brenus": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
@@ -60,9 +63,15 @@ return {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_green_sand_brown"
     },
+    "fr_arl_44_acl1_reward": {
+      "": "tl_camo_grey_yellow_lines"
+    },
     "fr_bat_chat_25t": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_desert_storm"
+    },
+    "fr_cckw_353_bofors_reward": {
+      "": "tl_camo_grey_yellow_lines"
     },
     "fr_m4a1_sherman_fl_10": {
       "": "fr_camo_vert_olive_arme",
@@ -71,6 +80,9 @@ return {
     "fr_m4a4_sherman_reskin": {
       "": "us_camo_olive",
       "upgraded": "us_camo_dark_green_dark_earth"
+    },
+    "fr_m4a4_sherman_reward": {
+      "": "tl_camo_grey_yellow_lines"
     },
     "fr_mars_15": {
       "": "fr_camo_vert_olive_arme",
@@ -742,7 +754,7 @@ return {
       "": "camo_arctic_minesweeper_block"
     },
     "ussr_is_1": {
-      "": "ussr_camo_green"
+      "": "ussr_camo_green",
       "upgraded": "ussr_camo_forest_01"
     },
     "ussr_is_1_reskin": {

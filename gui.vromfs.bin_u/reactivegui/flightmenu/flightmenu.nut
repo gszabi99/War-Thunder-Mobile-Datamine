@@ -12,7 +12,7 @@ let { devMenuContent, openDevMenuButton, needShowDevMenu } = require("%rGui/flig
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkCustomMsgBoxWnd } = require("%rGui/components/msgBox.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 
 let spawnInfo = Watched(null)

@@ -1,20 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
+let {eventbus_subscribe} = require("eventbus")
 let { questsBySection, seenQuests, saveSeenQuestsForSection, sectionsCfg, questsCfg,
   inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection,
   getQuestCurrenciesInTab, curTabParams
 } = require("questsState.nut")
-let { textButtonSecondary, textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonSecondary, textButtonCommon, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress
-} = require("%rGui/unlocks/unlocks.nut")
+let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress,
+  getUnlockPrice, buyUnlock } = require("%rGui/unlocks/unlocks.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
+let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
-  allQuestsCompleted, mkAdsBtn } = require("questsPkg.nut")
+  allQuestsCompleted, mkAdsBtn, btnSize } = require("questsPkg.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize
 } = require("rewardsComps.nut")
 let { mkQuestBar, mkProgressBar } = require("questBar.nut")
-let { getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getUnlockRewardsViewInfo, sortRewardsViewInfo, isSingleRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
@@ -29,7 +30,11 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 let { defer } = require("dagor.workcycle")
 let { sendBqQuestsTask } = require("bqQuests.nut")
 let { WARBOND, NYBOND } = require("%appGlobals/currenciesState.nut")
-
+let { PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { msgBoxText } = require("%rGui/components/msgBox.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 let bgColor = 0x80000000
 let unseenMarkMargin = hdpx(20)
@@ -37,7 +42,6 @@ let pageBlocksGap = hdpx(30)
 let lockedOpacity = 0.5
 let gradientHeightBottom = saBorders[1]
 
-let btnSize = [saRatio < 2 ? hdpx(230) : hdpx(300), hdpx(90)]
 let childOvr = saRatio < 2 ? fontSmallShaded : null
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, sound = { click  = "meta_get_unlock" } }, childOvr }
@@ -110,35 +114,92 @@ function mkAchievementText(item) {
   }
 }
 
-function mkBtn(item, currencyReward) {
+let purchaseContent = @(rewardsPreview, item){
+  flow = FLOW_VERTICAL
+  size = [flex(), SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  gap = hdpx(30)
+  children = [
+    msgBoxText(loc("shop/orderQuestion"), { size = SIZE_TO_CONTENT })
+    {
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(10)
+      children = mkRewardsPreview(rewardsPreview, item?.isFinished)
+    }
+    msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
+  ]
+}
+
+eventbus_subscribe("quests.buyUnlock", function(data) {
+  receiveReward(data.item, data.currencyReward)
+})
+
+let buyRewardMsgBox = @(item, rewardsPreview, price, currency, currencyReward) openMsgBoxPurchase(
+  purchaseContent(rewardsPreview, item),
+  { price
+    currencyId = currency},
+  function(){
+    buyUnlock(item.name, 1, currency, price,
+      { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
+  }
+  mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name))
+
+function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
   let { name, progressCorrectionStep = 0 } = item
   let isRewardInProgress = Computed(@() name in unlockInProgress.value)
+  let price = getUnlockPrice(item)
 
-  return @() {
-    watch = isRewardInProgress
-    size = btnSize
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    children = isRewardInProgress.value ? spinner
-      : item?.hasReward
-        ? textButtonSecondary(
-            utf8ToUpper(loc("btn/receive")),
-            @() receiveReward(item, currencyReward),
-            btnStyleSound)
-      : item?.isFinished
-        ? {
-            size = btnSize
-            rendObj = ROBJ_TEXT
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            text = utf8ToUpper(loc("ui/received"))
-            behavior = Behaviors.Button //for gamepad navigation only
-          }.__update(fontSmallAccentedShaded)
-      : progressCorrectionStep > 0 ? mkAdsBtn(item)
-      : textButtonCommon(
+  local size = btnSize
+  local children = []
+
+  local countReceivedR = 0
+  foreach(r in rewardsPreview)
+    countReceivedR += isSingleRewardEmpty(r, sProfile) ?  1 : 0
+  if(countReceivedR == rewardsPreview.len() || item?.isFinished)
+    children = {
+      size = btnSize
+      rendObj = ROBJ_TEXT
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      text = utf8ToUpper(loc("ui/received"))
+      behavior = Behaviors.Button //for gamepad navigation only
+    }.__update(fontSmallAccentedShaded)
+  else if (item?.hasReward)
+    children = textButtonSecondary(
+      utf8ToUpper(loc("btn/receive")),
+      @() receiveReward(item, currencyReward),
+      btnStyleSound)
+  else if (progressCorrectionStep > 0)
+    children = mkAdsBtn(item)
+  else if ((price.price ?? 0) > 0 ) {
+    size = [btnSize[0], btnSize[1]*2]
+    children = {
+      flow = FLOW_VERTICAL
+      gap = hdpx(10)
+      children =[
+        textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
+          mkCurrencyComp(price.price , price.currency),
+          @() buyRewardMsgBox(item, rewardsPreview, price.price , price.currency, currencyReward),
+          btnStyle)
+        textButtonCommon(
           utf8ToUpper(loc("btn/receive")),
           @() anim_start($"unfilledBarEffect_{name}"),
           btnStyle)
+        ]
+    }
+  }
+  else {
+    children = textButtonCommon(
+      utf8ToUpper(loc("btn/receive")),
+      @() anim_start($"unfilledBarEffect_{name}"),
+      btnStyle)
+  }
+  return {
+    size
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = mkSpinnerHideBlock(isRewardInProgress, children)
   }
 }
 
@@ -180,7 +241,7 @@ function mkItem(item, textCtor) {
         flow = FLOW_HORIZONTAL
         gap = questItemsGap
         vplace = ALIGN_CENTER
-        valign = ALIGN_BOTTOM
+        valign = ALIGN_CENTER
         children = [
           @() {
             watch = headerPadding
@@ -202,8 +263,8 @@ function mkItem(item, textCtor) {
           }
 
           @() {
-            watch = eventCurrencyReward
-            children = mkBtn(item, eventCurrencyReward.get())
+            watch = [eventCurrencyReward, rewardsPreview, servProfile]
+            children = mkBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), servProfile.get())
           }
         ]
       }

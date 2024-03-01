@@ -168,7 +168,7 @@ let tabs = [
   }
   {
     id = MINI_EVENT_TAB
-    image = "ui/gameuiskin#icon_event_iwojima_quests_wnd.svg"
+    image = "ui/gameuiskin#icon_event_grenade_quests_wnd.svg"
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[MINI_EVENT_TAB]), mkQuest, MINI_EVENT_TAB)
     tabContent = miniEventTabContent

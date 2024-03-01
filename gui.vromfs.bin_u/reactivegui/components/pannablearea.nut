@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { lerpClamped } = require("%sqstd/math.nut")
-let { isGamepad, isKeyboard } = require("%rGui/activeControls.nut")
+let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
 let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
 
 let isMoveByKeys = Computed(@() isGamepad.value || isKeyboard.value)

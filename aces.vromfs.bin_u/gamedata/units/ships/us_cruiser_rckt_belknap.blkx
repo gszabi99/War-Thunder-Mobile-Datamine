@@ -31,7 +31,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_large",
-  "asmCaptureDuration": 8.0,
+  "asmCaptureDuration": 5.0,
   "addTorpedoesCountPack": 3,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
@@ -729,8 +729,8 @@
           -1.5,
           0.0
         ],
-        "area": 15.0,
-        "deflection": 31.0,
+        "area": 30.0,
+        "deflection": 35.0,
         "dmPart": "steering_gear_01_dm"
       }
     }

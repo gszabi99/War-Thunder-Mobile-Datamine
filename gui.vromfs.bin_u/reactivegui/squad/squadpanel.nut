@@ -19,6 +19,7 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let squadMemberInfoWnd = require("squadMemberInfoWnd.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { myAvatarImage } = require("%rGui/decorators/decoratorState.nut")
 
 
 let gap = hdpx(24)
@@ -44,13 +45,13 @@ let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts
     children = requestsToMeUids.value.len() > 0 ? priorityUnseenMark : null
   })
 
-let mkAvatar = @(info, onlineStatus, isInviteeV) function() {
-  let { avatar = null } = info.value?.decorators
+let mkAvatar = @(info, onlineStatus, isInviteeV, isMe) function() {
+  let { avatar = null } = info.get()?.decorators
   return {
-    watch = [info, onlineStatus]
+    watch = [info, onlineStatus, myAvatarImage]
     size = [avatarSize, avatarSize]
     rendObj = ROBJ_IMAGE
-    image = Picture($"{getAvatarImage(avatar)}:{avatarSize}:{avatarSize}:P")
+    image = Picture($"{isMe ? myAvatarImage.get() : getAvatarImage(avatar)}:{avatarSize}:{avatarSize}:P")
     picSaturate = isInviteeV ? 0.3 : 1.0
     brightness = isInviteeV ? 0.5
       : !onlineStatus.value ? 0.6
@@ -122,7 +123,7 @@ function mkMember(uid) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
-      mkAvatar(info, onlineStatus, isInvitee.value)
+      mkAvatar(info, onlineStatus, isInvitee.get(), isMe.get())
       memberStatus(isLeader, state, onlineStatus)
       mkRank(rank)
       isInvitee.value ? spinner : null

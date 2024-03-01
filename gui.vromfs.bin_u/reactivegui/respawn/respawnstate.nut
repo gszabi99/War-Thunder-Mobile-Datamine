@@ -41,7 +41,7 @@ let selectedSkins = Watched({})
 
 let getWeapon = @(weapons) weapons.findindex(@(v) v) ?? weapons.findindex(@(_) true)
 let mkSlot =  @(id, info, readyMask = 0, spareMask = 0)
-  { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}), skin = info?.skin ?? (info?.isUpgraded ? "upgraded" : ""),
+  { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}), skin = info?.skin ?? "",
     canSpawn = is_bit_set(readyMask, id),
     isSpawnBySpare = is_bit_set(spareMask, id),
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}

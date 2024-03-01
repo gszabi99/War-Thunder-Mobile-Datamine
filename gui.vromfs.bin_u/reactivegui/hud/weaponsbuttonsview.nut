@@ -21,7 +21,7 @@ let { nextBulletIdx, currentBulletIdxPrim, currentBulletIdxSec
 let { AB_TORPEDO } = require("actionBar/actionType.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { lowerAircraftCamera } = require("camera_control")
 let { mkBtnGlare, mkActionGlare, mkConsumableSpend, mkActionBtnGlare
 } = require("%rGui/hud/weaponsButtonsAnimations.nut")

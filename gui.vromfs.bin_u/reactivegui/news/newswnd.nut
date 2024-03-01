@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { clearTimer, setInterval } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let scrollbar = require("%rGui/components/scrollbar.nut")
 let { spinner } = require("%rGui/components/spinner.nut")

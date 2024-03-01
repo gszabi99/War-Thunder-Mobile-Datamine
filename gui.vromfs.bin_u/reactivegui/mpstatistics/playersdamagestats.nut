@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let { get_mplayer_by_id } = require("mission")
 let { resetTimeout } = require("dagor.workcycle")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 
 let playersDamageStats = Watched({})
 let statsRaw = Watched({})
@@ -40,8 +40,8 @@ playersDamageStats.subscribe(function(stats) {
   playerTeams(teams)
 })
 
-isInBattle.subscribe(function(v) {
-  if (v) {
+isInLoadingScreen.subscribe(function(v) {
+  if (v && !isInBattle.get()) {
     localPlayerId(-1)
     playerTeams({})
     playersDamageStats({})

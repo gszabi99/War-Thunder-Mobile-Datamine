@@ -28,6 +28,7 @@ require("contacts/contactsState.nut") //need to catch notifications before login
 require("squad/squadManager.nut") //need to catch notifications before login finish
 require("initHangar.nut")
 require("updater/connectionStatus/initConnectionStatus.nut")
+require("activeControls.nut")
 
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { modalWindowsComponent, hideAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -39,7 +40,7 @@ let sceneBeforeLogin = require("%rGui/login/sceneBeforeLogin.nut")
 let { register_command } = require("console")
 let fpsLineComp = require("%rGui/mainMenu/fpsLineComp.nut")
 let { closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { needCursorForActiveInputDevice, isGamepad } = require("activeControls.nut")
+let { needCursorForActiveInputDevice, isGamepad } = require("%appGlobals/activeControls.nut")
 let hotkeysPanel = require("controlsMenu/hotkeysPanel.nut")
 let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")

@@ -18,7 +18,7 @@ let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnAnimBg, mkMoveV
 let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
 let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { eventbus_send } = require("eventbus")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 

@@ -34,6 +34,7 @@ let PURCH_TYPE_CURRENCY = "currency"
 let PURCH_TYPE_LOOTBOX = "lootbox"
 let PURCH_TYPE_SKIN = "skin"
 let PURCH_TYPE_BOOSTERS = "boosters"
+let PURCH_TYPE_MINI_EVENT = "mini_event"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -89,6 +90,7 @@ return {
   PURCH_TYPE_BP_LEVEL
   PURCH_TYPE_SKIN
   PURCH_TYPE_BOOSTERS
+  PURCH_TYPE_MINI_EVENT
 
   getPurchaseTypeByGoodsType
   mkBqPurchaseInfo

@@ -17,7 +17,7 @@ let { tankMoveStick, tankMoveStickView, tankGamepadMoveBlock
 let tankArrowsMovementBlock = require("%rGui/hud/tankArrowsMovementBlock.nut")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { currentTargetTrackingType } = require("%rGui/options/options/tankControlsOptions.nut")
-let { isGamepad, isKeyboard } = require("%rGui/activeControls.nut")
+let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
 let { moveArrowsView } = require("%rGui/components/movementArrows.nut")
 let { hitCamera, hitCameraTankEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { tacticalMap, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { cursorOverClickable } = gui_scene
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { btnA } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")

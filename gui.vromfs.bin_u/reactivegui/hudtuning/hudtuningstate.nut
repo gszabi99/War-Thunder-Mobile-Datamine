@@ -5,6 +5,7 @@ let { register_command } = require("console")
 let { json_to_string, parse_json } = require("json")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { eventbus_send } = require("eventbus")
+let { round } =  require("math")
 let { eachParam, isDataBlock } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
@@ -21,7 +22,14 @@ let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE]
 let tuningUnitType = mkWatched(persist, "tuningUnitType", null)
 let isTuningOpened = Computed(@() tuningUnitType.value != null)
 let presetsSaved = mkWatched(persist, "presetsSaved", {})
-let transformsByUnitType = Computed(@() presetsSaved.value.map(@(p) p?.transforms ?? {}))
+let transformsByUnitType = Computed(@() presetsSaved.value.map(
+  function(p) {
+    let { transforms = {}, resolution = [] } = p
+    if (resolution?[1] == sh(100).tointeger() || (resolution?[1] ?? 0) <= 0)
+      return transforms
+    let mul = sh(100) / resolution[1]
+    return transforms.map(@(t) "pos" not in t ? t : t.__merge({ pos = t.pos.map(@(v) round(v * mul).tointeger()) }))
+  }))
 let tuningTransform = mkWatched(persist, "tuningTransform", null)
 let selectedId = mkWatched(persist, "selectedId", null)
 let transformInProgress = Watched(null)

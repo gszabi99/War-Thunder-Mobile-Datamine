@@ -118,11 +118,17 @@ function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnl
     foreach (quest in qBySection[s].values().append(
       pUnlockBySection?[s],
       idx == 0 ? pUnlockByTab?[tabId] : null
-    ).filter(@(v) v))
-      foreach (stage in quest.stages)
-        foreach (reward in getUnlockRewardsViewInfo(stage, sConfigs))
-          if (reward.rType == "currency" && res.findindex(@(v) v == reward.id) == null)
+    ).filter(@(v) v)) {
+      let stage = quest.stages?[quest.stage]
+      if (stage != null){
+        if ((stage?.price ?? 0) > 0 && !res.contains(stage?.currencyCode) && !quest?.isCompleted)
+          res.append(stage?.currencyCode)
+        foreach (reward in getUnlockRewardsViewInfo(stage, sConfigs)){
+          if (reward.rType == "currency" && !res.contains(reward.id))
             res.append(reward.id)
+        }
+      }
+    }
   }
   return res
 }

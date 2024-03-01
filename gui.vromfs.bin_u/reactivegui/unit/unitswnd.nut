@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { set_camera_shift_centered, set_camera_shift_upper } = require("hangar")
 let { get_time_msec } = require("dagor.time")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { wndSwitchAnim, WND_REVEAL } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { levelBlock, gamercardWithoutLevelBlock, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
@@ -213,7 +213,7 @@ function mkPlatoonPlate(unit) {
           mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(unit, canPurchase.get() || isLocked.get())
-          mkUnitTexts(unit, loc(getUnitLocId(unit)), isLocked)
+          mkUnitTexts(unit, loc(getUnitLocId(unit)), isLocked.get())
           unit.mRank <= 0
             ? null
             : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)
@@ -276,7 +276,7 @@ function mkUnitPlate(unit) {
           mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(unit, canPurchase.get() || isLocked.get())
-          mkUnitTexts(unit, loc(getUnitLocId(unit)), isLocked)
+          mkUnitTexts(unit, loc(getUnitLocId(unit)), isLocked.get())
           unit.mRank <= 0
             ? null
             : mkUnitLock(unit, isLocked.value, justUnlockedDelay.value)

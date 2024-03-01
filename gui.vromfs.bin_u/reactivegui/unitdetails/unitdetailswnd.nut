@@ -75,7 +75,7 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
           mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(platoonUnitFull, isLocked.get())
-          mkUnitTexts(platoonUnitFull, loc(p.locId), isLocked)
+          mkUnitTexts(platoonUnitFull, loc(p.locId), isLocked.get())
           !isLocked.value ? mkUnitRank(unit, { pos = [-hdpx(30), 0] }) : null
           mkUnitSlotLockedLine(platoonUnit, isLocked.value, justUnlockedDelay.value)
         ]

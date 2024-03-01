@@ -12,11 +12,11 @@ register_es("players_common_stats_es",
     },
   },
   {
-    comps_track = [["commonStats", TYPE_OBJECT]],
-    comps_ro = [
+    comps_track = [
+      ["commonStats", TYPE_OBJECT],
       ["isBattleDataReceived", TYPE_BOOL],
-      ["server_player__userId", TYPE_UINT64],
     ],
+    comps_ro = [["server_player__userId", TYPE_UINT64]],
   })
 
 return {

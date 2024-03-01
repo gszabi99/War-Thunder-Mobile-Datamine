@@ -33,6 +33,7 @@ let goodsGlareAnimDuration = 0.2
 let offerW = hdpx(420)
 let offerH = hdpx(180)
 let offerPad = [hdpx(10), hdpx(15)]
+let titlePadding = hdpx(33)
 
 let pricePlateH = goodsH - goodsBgH
 
@@ -110,13 +111,16 @@ let oldAmountStrikeThrough = {
 }
 
 let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
+  padding = [0, titlePadding]
   halign = ALIGN_RIGHT
   flow = FLOW_VERTICAL
   hplace = ALIGN_RIGHT
+  clipChildren = true
   children = [
     slotName
       ? mkGradGlowText(slotName, fontWtSmall, fontTex, {
-          margin = [ 0, hdpx(33), 0, 0 ]
+          behavior = Behaviors.Marquee
+          maxWidth = goodsSmallSize[0] - titlePadding * 2
         })
       : null
     {
@@ -125,11 +129,10 @@ let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
       children = [
         oldAmount <= 0 ? null
           : mkGradText(numberToTextForWtFont(decimalFormat(oldAmount)), fontWtBig, fontTex, {
-              margin = [ hdpx(0), hdpx(33), 0, 0 ]
               children = oldAmountStrikeThrough
             })
         mkGradGlowText(numberToTextForWtFont(decimalFormat(amount)), fontWtLarge, fontTex, {
-          margin = [oldAmount > 0  ? hdpx(40) : 0, hdpx(33), 0, 0]
+          margin = [oldAmount > 0 ? hdpx(40) : 0, 0, 0, 0]
         })
       ]
     }

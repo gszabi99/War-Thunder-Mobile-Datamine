@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { fabs } = require("math")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { dfAnimBottomRight } = require("%rGui/style/unitDelayAnims.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { setAxisValue } = require("%globalScripts/controls/shortcutActions.nut")

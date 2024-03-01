@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-
+let logA = log_with_prefix("[ADS] ")
 let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { parse_json } = require("json")
-let logA = log_with_prefix("[ADS] ")
 let { is_android } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
   isAnyAdsButtonAttached, providerPriorities, onShowAds
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { can_request_ads_consent } = require("%appGlobals/permissions.nut")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
 let sendAdsBqEvent = is_android ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
@@ -82,16 +82,23 @@ eventbus_subscribe("android.ads.onInit", function(msg) {
 
 eventbus_subscribe("android.ads.onConsentRequest", function(msg) {
   logA("Request consent result = ", msg.__merge({ status = getConsentName(msg?.status) }))
+  sendUiBqEvent("ads_consent", { id = "request_result", status = getConsentName(msg?.status) })
   consent.set(msg)
 })
 eventbus_subscribe("android.ads.onShowConsent", function(msg) {
   logA("Show consent result = ", msg.__merge({ status = getConsentName(msg?.status) }))
+  sendUiBqEvent("ads_consent", { id = "show_result", status = getConsentName(msg?.status) })
   consent.set(msg)
 })
 
 if (consent.get() == null)
   requestConsent(false)
-needOpenConsent.subscribe(@(v) v ? requestConsent(true) : null)
+needOpenConsent.subscribe(function(v) {
+  if (!v)
+    return
+  sendUiBqEvent("ads_consent", { id = "request_on_enter_window_with_ads" })
+  requestConsent(true)
+})
 
 local isLoadStarted = false
 function startLoading() {
@@ -173,6 +180,7 @@ function showAdsForReward(rInfo) {
 function onTryShowNotAvailableAds() {
   if (canLoad.get())
     return false
+  sendUiBqEvent("ads_consent", { id = "show_on_try_watch_ads" })
   showConsent()
   return true
 }

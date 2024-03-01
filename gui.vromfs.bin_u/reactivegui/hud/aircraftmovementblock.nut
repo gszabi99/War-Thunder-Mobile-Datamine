@@ -11,7 +11,7 @@ let axisListener = require("%rGui/controls/axisListener.nut")
 let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis
 } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
 let { axisMinToHotkey, axisMaxToHotkey } = require("%rGui/controls/axisToHotkey.nut")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { playerUnitName, unitType } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")

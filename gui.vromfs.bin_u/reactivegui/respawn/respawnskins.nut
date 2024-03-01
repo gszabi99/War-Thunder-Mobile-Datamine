@@ -15,11 +15,7 @@ let aTimeSelected = 0.2
 let unitName = Computed(@() selSlot.get()?.name)
 
 unitName.subscribe(function(v) {
-  if (v != null
-      && isAutoSkin(respawnUnitInfo.get()?.name)
-      && !selectedSkins.get()?[v]
-      && (respawnUnitSkins.get()?.len() ?? 0) > 0
-      && !respawnUnitInfo.get()?.isUpgraded) {
+  if (v != null && isAutoSkin(respawnUnitInfo.get()?.name) && !selectedSkins.get()?[v] && (respawnUnitSkins.get()?.len() ?? 0) > 0) {
     let skin = chooseAutoSkin(v, respawnUnitSkins.get(), respawnSlots.get()?.findvalue(@(s) s.name == v).skin)
     selectedSkins.mutate(@(skins) skins[v] <- skin)
   }
@@ -27,10 +23,7 @@ unitName.subscribe(function(v) {
 
 let function skinBtn(skin) {
   let stateFlags = Watched(0)
-  let isSelected = Computed(@() (selectedSkins.get()?[unitName.get()]
-    ?? selSlot.get()?.skin
-    ?? (respawnUnitInfo.get()?.isUpgraded ? "upgraded" : ""))
-      == skin)
+  let isSelected = Computed(@() (selectedSkins.get()?[unitName.get()] ?? selSlot.get()?.skin ?? "") == skin)
 
   return @() {
     watch = [stateFlags, unitName]
@@ -77,10 +70,10 @@ let function skinBtn(skin) {
 }
 
 let respawnSkins = @() {
-  watch = [respawnUnitSkins, selSlot, curLevelTags, unitName, respawnUnitInfo]
+  watch = [respawnUnitSkins, selSlot, curLevelTags, unitName]
   flow = FLOW_HORIZONTAL
   gap = skinGap
-  children = respawnUnitSkins.get().keys().extend(respawnUnitInfo.get()?.isUpgraded ? [] : [""])
+  children = respawnUnitSkins.get().keys().append("")
     .sort(@(a, b) (b == (selSlot.get()?.skin ?? "")) <=> (a == (selSlot.get()?.skin ?? ""))
       || curLevelTags.get()?[getSkinPresentation(unitName.get(), b).tag]
         <=> curLevelTags.get()?[getSkinPresentation(unitName.get(), a).tag]

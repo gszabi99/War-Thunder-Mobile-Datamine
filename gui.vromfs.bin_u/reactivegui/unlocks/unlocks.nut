@@ -80,14 +80,13 @@ let activeUnlocks = Computed(@() allUnlocksRaw.value
   .map(@(u, id) u.__merge(unlockProgress.value?[id] ?? {})))
 
 let mkPrice = @(price = 0, currency = "") { currency, price }
-function getUnlockPrice(unlock) {
-  if (unlock) {
-    let price = unlock?.price ?? 0
-    if (price > 0)
-      return mkPrice(price, unlock?.currencyCode ?? "")
-  }
-  return mkPrice()
+function getStagePrice(stage) {
+  let { price = 0, currencyCode = "" } = stage
+  return price > 0 && currencyCode != "" ? mkPrice(price, currencyCode) : null
 }
+
+let getUnlockPrice = @(unlock)
+  getStagePrice(unlock) ?? getStagePrice(unlock?.stages[unlock?.stage]) ?? mkPrice()
 
 //return stages info relative to cureent period. for not preiodic unlock return usual unlock params
 function getRelativeStageData(unlock) {

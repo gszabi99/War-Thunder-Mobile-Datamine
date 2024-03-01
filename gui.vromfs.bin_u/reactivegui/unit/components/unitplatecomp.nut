@@ -280,16 +280,15 @@ let function mkFlagImage(countryId, width) {
   }
 }
 
-let function mkUnitFlag(unit, isLocked = Watched(false)) {
+let function mkUnitFlag(unit, isLocked = false) {
   let countryId = getUnitTagsCfg(unit.name)?.operatorCountry ?? unit.country
-  return @() mkFlagImage(countryId, flagIconSize).__update({
-    watch = isLocked
+  return mkFlagImage(countryId, flagIconSize).__update({
     margin = plateTextsSmallPad
-    brightness = isLocked.get() ? 0.4 : 1.0
+    brightness = isLocked ? 0.4 : 1.0
   })
 }
 
-let mkUnitTexts = @(unit, unitLocName, isLocked = Watched(false)) {
+let mkUnitTexts = @(unit, unitLocName, isLocked = false) {
   size = flex()
   flow = FLOW_HORIZONTAL
   children = [

@@ -5153,7 +5153,7 @@
       "maxSpeed": 17.49,
       "turningTime": 25,
       "addTorpedoesCountPack": 3,
-      "asmCaptureDuration": 8.0,
+      "asmCaptureDuration": 5.0,
       "mainWeaponCaliber": 127.0,
       "weapons": {
         "127mm_54_mk18_turret_mk42_single_naval_user_cannon": {
@@ -5177,7 +5177,7 @@
         },
         "340mm_rgm_84_alike_rocket_naval_bullet": {
           "wtype": "rockets",
-          "damage": 8600.0,
+          "damage": 9500.0,
           "shotFreq": 4.2,
           "distToLive": 10000.0,
           "gunsCount": 1,

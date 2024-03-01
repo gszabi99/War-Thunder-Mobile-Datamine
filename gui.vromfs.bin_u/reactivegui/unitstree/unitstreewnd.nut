@@ -41,7 +41,7 @@ let { revealAnimation, raisePlatesAnimation } = require("%rGui/unit/components/u
 let { ceil } = require("math")
 let { isFiltersVisible, filterStateFlags, openFilters, filters, activeFilters
 } = require("%rGui/unit/unitsFilterPkg.nut")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 
 
@@ -270,7 +270,7 @@ function mkUnitPlate(unit, ovr = {}) {
       mkUnitBg(unit, isLocked.get(), justUnlockedDelay.get())
       mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.value & S_HOVER)), justUnlockedDelay.get())
       mkUnitImage(unit, canPurchase.get() || isLocked.get())
-      mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked)
+      mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
       mkUnitLock(unit, isLocked.value, justUnlockedDelay.get())
       mkPriorityUnseenMarkWatch(needShowUnseenMark)
       @() {

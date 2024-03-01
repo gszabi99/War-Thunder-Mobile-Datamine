@@ -24,7 +24,7 @@ let sectionBtnMaxWidth = hdpx(400)
 let sectionBtnGap = hdpx(10)
 let linkToEventWidth = hdpx(240)
 let iconSize = CS_INCREASED_ICON.iconSize
-let btnSize = [isWidescreen ? hdpx(300) : hdpx(260), hdpx(90)]
+let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
 let childOvr = isWidescreen ? {} : fontSmallShaded
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0], sound = { click  = "meta_get_unlock" } }, childOvr }

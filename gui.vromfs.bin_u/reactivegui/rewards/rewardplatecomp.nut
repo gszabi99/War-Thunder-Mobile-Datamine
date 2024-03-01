@@ -40,7 +40,7 @@ let mkCommonLabelText = @(text, rStyle) {
   rStyle.boxSize - textPadding[1] * 2, [fontLabelSmaller, fontLabel]))
 
 let mkCommonLabelTextMarquee = @(text, rStyle) {
-  maxWidth = rStyle.boxSize
+  maxWidth = rStyle.boxSize - textPadding[1] * 2
   rendObj = ROBJ_TEXT
   behavior = Behaviors.Marquee
   speed = hdpx(30)

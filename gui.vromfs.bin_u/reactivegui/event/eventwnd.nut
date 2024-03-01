@@ -82,6 +82,7 @@ let mkProgress = @(stepsToFixed) @() {
   size = [SIZE_TO_CONTENT, progressHeight]
   watch = stepsToFixed
   flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
   children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [
     mkRow([
       smallChestIcon

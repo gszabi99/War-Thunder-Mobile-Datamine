@@ -3,7 +3,7 @@ let { touchButtonSize, btnBgColor, borderColorPushed } = require("%rGui/hud/hudT
 let { currentBulletName, toggleNextBullet, bulletsInfo, nextBulletName, mainBulletInfo, extraBulletInfo,
   mainBulletCount, extraBulletCount } = require("hudUnitBulletsState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
 

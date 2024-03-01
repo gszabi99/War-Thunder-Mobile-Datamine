@@ -1,7 +1,7 @@
 {
   "PhysMats": {
     "__DefaultParams": {
-      "iak": 0.5,
+      "iak": 1.0,
       "damage_k": 1.0
     },
     "default": {
@@ -29,12 +29,7 @@
       "tankTracksTexId": 0,
       "arcadeBoostMult": 1.0,
       "resistanceK": 0.000025,
-      "hitFxScale": [
-        0.05,
-        0.2
-      ],
       "explMat": "default",
-      "iak": 0.5,
       "shakePeriod": [
         0.35,
         0.7
@@ -89,7 +84,7 @@
       ],
       "explosionPatchHeightScale": 0.01,
       "explosionWreckage": "ground_expl",
-      "iak": 0.5,
+      "iak": 1.0,
       "damage_k": 0.3,
       "deformable_width": 0.15,
       "tankTracksTexId": 0,
@@ -195,10 +190,6 @@
       ],
       "explosionWreckage": "wall_expl",
       "arcadeBoostMult": 1.0,
-      "hitFxScale": [
-        1.3,
-        2.0
-      ],
       "damage_k": 0.3,
       "trackDirtSpawnRateMult": 0.0,
       "tankTracksTexId": 3,
@@ -247,10 +238,6 @@
       "explMat": "bricks_red",
       "explosionWreckage": "rocks_expl",
       "breachMat": "stone",
-      "hitFxScale": [
-        0.3,
-        0.5
-      ],
       "shakeProps": {
         "period": [
           0.35,
@@ -288,10 +275,6 @@
         1.0
       ],
       "explosionWreckage": "bricks_expl",
-      "hitFxScale": [
-        1.3,
-        2.5
-      ],
       "damage_k": 0.3,
       "tankTracksTexId": 3,
       "explMat": "stone"
@@ -320,10 +303,6 @@
       "explMat": "default",
       "explosionWreckage": "rocks_expl",
       "breachMat": "fabric",
-      "hitFxScale": [
-        0.1,
-        0.3
-      ],
       "shakeProps": {
         "period": [
           0.35,
@@ -366,10 +345,6 @@
       "explMat": "glass",
       "explosionWreckage": "rocks_expl",
       "breachMat": "glass",
-      "hitFxScale": [
-        0.15,
-        0.3
-      ],
       "shakeProps": {
         "period": [
           0.35,
@@ -412,10 +387,6 @@
       "explMat": "glass_small",
       "explosionWreckage": "rocks_expl",
       "breachMat": "glass",
-      "hitFxScale": [
-        0.15,
-        0.3
-      ],
       "shakeProps": {
         "period": [
           0.35,
@@ -458,10 +429,6 @@
       "explMat": "steel",
       "explosionWreckage": "rocks_expl",
       "breachMat": "metal",
-      "hitFxScale": [
-        1.3,
-        1.7
-      ],
       "shakeProps": {
         "period": [
           0.35,
@@ -504,10 +471,6 @@
       "explMat": "stone",
       "explosionWreckage": "rocks_expl",
       "breachMat": "stone",
-      "hitFxScale": [
-        0.1,
-        0.3
-      ],
       "shakeProps": {
         "period": [
           0.35,
@@ -596,10 +559,6 @@
       "explMat": "wood",
       "explosionWreckage": "rocks_expl",
       "breachMat": "wood",
-      "hitFxScale": [
-        0.5,
-        1.0
-      ],
       "shakeProps": {
         "period": [
           0.35,
@@ -795,10 +754,6 @@
       "tankTracksTexId": 0,
       "dustFactor": 0.8,
       "mudFactor": 0.5,
-      "hitFxScale": [
-        0.3,
-        0.5
-      ],
       "shakeProps": {
         "period": [
           0.8,
@@ -827,7 +782,6 @@
       "bf_class": "road",
       "trackDirtSpawnRateMult": 0.0,
       "explMat": "default",
-      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -846,7 +800,6 @@
       "trackDirtSpawnRateMult": 1.0,
       "resistanceK": 0.000025,
       "explMat": "default",
-      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -897,7 +850,6 @@
       "deformable_width": 0.05,
       "resistanceK": 0.000025,
       "explMat": "default",
-      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -925,10 +877,6 @@
       "deformable_width": 0.2,
       "trackEffectsPreset": "sand",
       "explMat": "default",
-      "hitFxScale": [
-        0.3,
-        0.5
-      ],
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1028,7 +976,6 @@
       "resistanceK": 0.000025,
       "trackEffectsPreset": "sand",
       "explMat": "default",
-      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1149,10 +1096,6 @@
       ],
       "tankTracksTexId": 2,
       "apexGroundCollisionFx": "",
-      "hitFxScale": [
-        0.3,
-        0.5
-      ],
       "shakeProps": {
         "period": [
           0.5,
@@ -1239,7 +1182,6 @@
       "deformable_width": 0.05,
       "trackEffectsPreset": "snow",
       "explMat": "default",
-      "iak": 0.5,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [

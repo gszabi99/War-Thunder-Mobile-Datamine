@@ -72,25 +72,22 @@ let customLootboxCfg = {
 }
 
 function lootboxInfo(lootbox, sf) {
-  let rewardsPreview = Computed(function() {
-    local rewards = []
-    local slots = 0
-    foreach (reward in getLootboxRewardsViewInfo(lootbox)) {
-      if (reward?.isLastReward || slots + (reward?.slots ?? 0) > REWARDS + 1)
-        continue
-      slots += reward?.slots ?? 0
-      rewards.append(reward)
-      if (slots >= REWARDS)
-        break
-    }
-    return { rewards, slots }
-  })
+  local rewards = []
+  local slots = 0
+  foreach (reward in getLootboxRewardsViewInfo(lootbox)) {
+    if (reward?.isLastReward || slots + (reward?.slots ?? 0) > REWARDS + 1)
+      continue
+    slots += reward?.slots ?? 0
+    rewards.append(reward)
+    if (slots >= REWARDS)
+      break
+  }
 
   return @() {
-    watch = [rewardsPreview, serverConfigs, servProfile]
+    watch = [serverConfigs, servProfile]
     fillColor = sf & S_HOVER ? hoverColor : fillColor
     transitions = [{ prop = AnimProp.fillColor, duration = 0.15, easing = Linear }]
-    children = rewardsPreview.value.rewards.map(function(r) {
+    children = rewards.map(function(r) {
       let { rewardsCfg = null } = serverConfigs.value
       let id = r?.rewardId
       let showMark = id in rewardsCfg && isRewardReceived(lootbox, id, rewardsCfg[id], servProfile.value)
@@ -102,7 +99,7 @@ function lootboxInfo(lootbox, sf) {
         ]
       }
     })
-  }.__update(rewardsPreview.value.slots > REWARDS ? infoCanvasBig : infoCanvasSmall)
+  }.__update(slots > REWARDS ? infoCanvasBig : infoCanvasSmall)
 }
 
 function progressBar(stepsFinished, stepsToNext, ovr = {}) {

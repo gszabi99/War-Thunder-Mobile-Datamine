@@ -3,7 +3,8 @@ let logA = log_with_prefix("[ADS] ")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
-let { is_ios } = require("%sqstd/platform.nut")
+let { isDownloadedFromGooglePlay } = require("android.platform")
+let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -55,9 +56,12 @@ function onFinishShowAds() {
 
 let cancelReward = @() rewardInfo(null)
 
-let providersId = is_ios ? "iOS" : "android"
-let allProviders = keepref(Computed(@() !isLoggedIn.value ? {}
-  : (serverConfigs.value?.adsCfg[providersId] ?? {})))
+let providersId = is_ios ? "iOS"
+  : isDownloadedFromGooglePlay() ? "android_gp"
+  : "android_apk"
+let fbProvidersId = is_android ? "android" : providersId
+let allProviders = keepref(Computed(@() !isLoggedIn.get() ? {}
+  : (serverConfigs.get()?.adsCfg[providersId] ?? serverConfigs.get()?.adsCfg[fbProvidersId] ?? {})))
 let providerShows = hardPersistWatched("ads.providerShows", {})
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur

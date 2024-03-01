@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { startswith } = require("string")
-let { isGamepad } = require("%rGui/activeControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("gamepadImgByKey.nut")
 let { btnA, clickButtons, EMPTY_ACTION } = require("gpActBtn.nut")
 let { cursorPresent, cursorOverStickScroll, cursorOverClickable, hoveredClickableInfo } = gui_scene
