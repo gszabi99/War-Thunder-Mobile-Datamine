@@ -7,8 +7,8 @@ let { questsWndPage, mkQuest, mkAchievement, unseenMarkMargin } = require("quest
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { eventSeason, miniEventSeasonName, eventEndsAt, miniEventEndsAt, isEventActive, isMiniEventActive,
-  specialEvents, openEventWnd
+let { eventSeason, getMiniEventLoc, eventEndsAt, miniEventEndsAt, isEventActive, isMiniEventActive,
+  specialEvents, openEventWnd, miniEventSeason
 } = require("%rGui/event/eventState.nut")
 let { openBattlePassWnd, hasBpRewardsToReceive, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
@@ -79,24 +79,41 @@ function eventTabContent(){
 }
 
 let miniEventTabContent = {
-  size = [flex(), SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
+  size = flex()
+  flow = FLOW_HORIZONTAL
   children = [
     @() {
+      watch = miniEventSeason
+      size = [iconSize, iconSize]
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#icon_mini_event_{miniEventSeason.get()}.svg:{iconSize}:{iconSize}:P")
+      fallbackImage = Picture($"ui/gameuiskin#quest_events_icon.svg:{iconSize}:{iconSize}:P")
+      color = iconColor
+      keepAspect = KEEP_ASPECT_FIT
+    }
+    {
       size = [flex(), SIZE_TO_CONTENT]
-      halign = ALIGN_RIGHT
-      rendObj = ROBJ_TEXTAREA
-      behavior = Behaviors.TextArea
-      text = miniEventSeasonName
-    }.__update(fontSmall)
-    @() {
-      watch = [miniEventEndsAt, serverTime]
-      size = [flex(), SIZE_TO_CONTENT]
-      halign = ALIGN_RIGHT
-      rendObj = ROBJ_TEXT
-      text = !miniEventEndsAt.value || (miniEventEndsAt.value - serverTime.value < 0) ? null
-        : secondsToHoursLoc(miniEventEndsAt.value - serverTime.value)
-    }.__update(fontSmall)
+      flow = FLOW_VERTICAL
+      children = [
+        @() {
+          watch = miniEventSeason
+          size = [flex(), SIZE_TO_CONTENT]
+          halign = ALIGN_RIGHT
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          text = getMiniEventLoc(miniEventSeason.get())
+        }.__update(fontSmall)
+        @() {
+          watch = [miniEventEndsAt, serverTime]
+          size = [flex(), SIZE_TO_CONTENT]
+          halign = ALIGN_RIGHT
+          rendObj = ROBJ_TEXT
+          text = !miniEventEndsAt.get() || (miniEventEndsAt.get() - serverTime.get() < 0) ? null
+            : secondsToHoursLoc(miniEventEndsAt.get() - serverTime.get())
+        }.__update(fontSmall)
+      ]
+    }
   ]
 }
 
@@ -168,7 +185,6 @@ let tabs = [
   }
   {
     id = MINI_EVENT_TAB
-    image = "ui/gameuiskin#icon_event_grenade_quests_wnd.svg"
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[MINI_EVENT_TAB]), mkQuest, MINI_EVENT_TAB)
     tabContent = miniEventTabContent

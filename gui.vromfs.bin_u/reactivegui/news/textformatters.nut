@@ -4,6 +4,7 @@ let { platformId, aliases } = require("%sqstd/platform.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
 let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
 let urlAliases = require("urlAliases.nut")
+let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 
 let commonTextColor = 0xFFC0C0C0
 let activeTextColor = 0xFFFFFFFF
@@ -28,7 +29,7 @@ let openUrl = @(url) eventbus_send("openUrl", { baseUrl = urlAliases?[url] ?? ur
 let textArea = @(params) {
   size = [flex(), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
-  text = params?.v
+  text = wordHyphenation(params?.v ?? "")
   behavior = Behaviors.TextArea
   color = commonTextColor
 }.__update(fontSmall, params)

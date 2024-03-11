@@ -90,6 +90,8 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
   let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan
     : !isMaxLevel ? openExpWnd
     : null
+  let showStarLevel = max(starLevel, historyStarLevel)
+  let nextStarLevel = isNextStarLevel ? starLevel + 1 : 0
   return {
     watch = playerLevelInfo
     valign = ALIGN_CENTER
@@ -148,12 +150,12 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
                   animations = levelUpReadyAnimsNext
                 })
               : null
-            starLevelSmall(max(starLevel, historyStarLevel),
-              isReadyForLevelUp && isNextStarLevel
+            starLevelSmall(showStarLevel,
+              isReadyForLevelUp && nextStarLevel != showStarLevel
                 ? starLevelOvr.__merge({ animations = levelUpReadyAnimsCur })
                 : starLevelOvr)
-            isReadyForLevelUp && isNextStarLevel
-              ? starLevelSmall(starLevel + 1, starLevelOvr.__merge({ animations = levelUpReadyAnimsNext }))
+            isReadyForLevelUp && nextStarLevel != showStarLevel
+              ? starLevelSmall(nextStarLevel, starLevelOvr.__merge({ animations = levelUpReadyAnimsNext }))
               : null
           ]
         }
@@ -190,7 +192,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
                     scale = nextLevelStateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1]
                   }
                 })
-                starLevelSmall(max(starLevel + (isStarProgress ? 1 : 0), historyStarLevel), starLevelOvr)
+                starLevelSmall(nextStarLevel, starLevelOvr)
               ]
             }
           })

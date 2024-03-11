@@ -19,6 +19,7 @@ let optListLocalNative = [
   "OPT_GRAPHICS_QUALITY"
   "OPT_FPS"
   "OPT_RAYTRACING"
+  "OPT_GRAPHICS_SCENE_RESOLUTION"
 ]
 
 let optListScriptOnly = [

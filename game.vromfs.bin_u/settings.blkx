@@ -542,6 +542,8 @@
     "csmReflectionSampleBias": -0.0075,
     "dynDecalsInitialAtlasSizeIndex": 1,
     "enableWaterReflections": true,
+    "forceLowPreset": false,
+    "sceneResolutionPreset": "medium",
     "riUseStructuredBuffer": true,
     "riexCanIncreaseRenderBuffer": false,
     "cellsVBcfg": {
@@ -1010,6 +1012,7 @@
       "staticCascadeDepthBias": 0.05,
       "staticCascadeRiExLod0InCascade0": true,
       "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeMinSizeForRiextraCascade1": 10.0,
       "tank": {
         "staticCascadeCount": 2,
         "staticCascadeTexWidth": 1024,
@@ -1023,7 +1026,8 @@
         "staticCascadeDualPass": false,
         "staticCascadeDepthBias": 0.005,
         "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005
+        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
       }
     },
     "medium": {
@@ -1065,6 +1069,7 @@
       "staticCascadeDepthBias": 0.05,
       "staticCascadeRiExLod0InCascade0": true,
       "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeMinSizeForRiextraCascade1": 10.0,
       "tank": {
         "staticCascadeCount": 2,
         "staticCascadeTexWidth": 2048,
@@ -1078,7 +1083,8 @@
         "staticCascadeDualPass": false,
         "staticCascadeDepthBias": 0.005,
         "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005
+        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
       }
     },
     "high": {
@@ -1120,6 +1126,7 @@
       "staticCascadeDepthBias": 0.05,
       "staticCascadeRiExLod0InCascade0": true,
       "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeMinSizeForRiextraCascade1": 10.0,
       "tank": {
         "staticCascadeCount": 2,
         "staticCascadeTexWidth": 2048,
@@ -1133,7 +1140,8 @@
         "staticCascadeDualPass": false,
         "staticCascadeDepthBias": 0.005,
         "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005
+        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
       }
     },
     "gfn": {
@@ -1175,6 +1183,7 @@
       "staticCascadeDepthBias": 0.05,
       "staticCascadeRiExLod0InCascade0": true,
       "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeMinSizeForRiextraCascade1": -1.0,
       "tank": {
         "staticCascadeCount": 2,
         "staticCascadeTexWidth": 8192,
@@ -1188,7 +1197,8 @@
         "staticCascadeDualPass": false,
         "staticCascadeDepthBias": 0.005,
         "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005
+        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeMinSizeForRiextraCascade1": -1.0
       }
     }
   },
@@ -1325,7 +1335,8 @@
       "graphics": {
         "shaderlod": "low",
         "enableNearCloudsRendering": false,
-        "enableWaterReflections": false
+        "enableWaterReflections": false,
+        "forceLowPreset": true
       }
     }
   },
@@ -1691,11 +1702,28 @@
       }
     }
   },
+  "pc_background_scales": {
+    "low": 0.5,
+    "medium": 0.75,
+    "high": 1.0,
+    "movie": 1.0
+  },
+  "ios_background_scales": {
+    "low": 0.5,
+    "medium": 0.633,
+    "high": 0.75,
+    "movie": 1.0
+  },
+  "android_scene_resolutions": {
+    "low": 448,
+    "medium": 512,
+    "high": 688,
+    "movie": 1080
+  },
   "android_presets": {
     "low": {
       "graphics": {
-        "backgroundScale": 0.75,
-        "androidSceneResolution": 516,
+        "sceneResolutionPreset": "medium",
         "limitPlayerAirplaneUnitsLod": 1,
         "limitPlayerTankUnitsLod": 2,
         "limitPlayerShipUnitsLod": 1,
@@ -1767,8 +1795,7 @@
     },
     "medium": {
       "graphics": {
-        "backgroundScale": 0.75,
-        "androidSceneResolution": 516,
+        "sceneResolutionPreset": "medium",
         "limitPlayerAirplaneUnitsLod": 1,
         "limitPlayerTankUnitsLod": 1,
         "limitPlayerShipUnitsLod": 1,
@@ -1840,8 +1867,7 @@
     },
     "high": {
       "graphics": {
-        "backgroundScale": 1.0,
-        "androidSceneResolution": 688,
+        "sceneResolutionPreset": "high",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -1913,8 +1939,7 @@
     },
     "max": {
       "graphics": {
-        "backgroundScale": 1.0,
-        "androidSceneResolution": 688,
+        "sceneResolutionPreset": "high",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -1986,8 +2011,7 @@
     },
     "movie": {
       "graphics": {
-        "backgroundScale": 1.0,
-        "androidSceneResolution": 1080,
+        "sceneResolutionPreset": "high",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -2061,7 +2085,7 @@
   "ios_presets": {
     "low": {
       "graphics": {
-        "backgroundScale": 0.5,
+        "sceneResolutionPreset": "low",
         "fxDensityMul": 0.8,
         "compatibilityShadowQuality": "low",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -2090,7 +2114,7 @@
     },
     "medium": {
       "graphics": {
-        "backgroundScale": 0.5,
+        "sceneResolutionPreset": "low",
         "fxDensityMul": 0.8,
         "compatibilityShadowQuality": "medium",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -2119,7 +2143,7 @@
     },
     "high": {
       "graphics": {
-        "backgroundScale": 0.633,
+        "sceneResolutionPreset": "medium",
         "fxDensityMul": 1.0,
         "compatibilityShadowQuality": "medium",
         "limitPlayerAirplaneUnitsLod": -1,
@@ -2148,7 +2172,7 @@
     },
     "max": {
       "graphics": {
-        "backgroundScale": 0.75,
+        "sceneResolutionPreset": "high",
         "fxDensityMul": 1.0,
         "compatibilityShadowQuality": "high",
         "limitPlayerAirplaneUnitsLod": -1,

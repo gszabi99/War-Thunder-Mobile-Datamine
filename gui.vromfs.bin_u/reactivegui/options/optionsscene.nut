@@ -13,6 +13,7 @@ let tabs = [ // id, locId, image, options, content
     options = soundOptions
   }
   {
+    id = "graphic"
     locId = "options/graphicsParameters"
     image = "ui/gameuiskin#menu_graph.svg"
     options = graphicOptions

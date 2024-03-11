@@ -35,6 +35,7 @@ let nickFrames = {
   snake = @(n) $"♣{n}♥"
   flag_on_mountain = @(n) $"♀{n}♂"
   hand_grenade = @(n) $"☻{n}☼"
+  bear_head = @(n) $"⋍{n}⋍"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

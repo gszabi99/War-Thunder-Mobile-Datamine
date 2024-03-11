@@ -34,7 +34,7 @@ let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0
 let eventSeason = Computed(@() getSeasonPrefix(userstatStats.value?.stats.season["$index"] ?? 0))
 let isEventActive = Computed(@() unlockTables.value?.season == true)
 
-let miniEventSeasonName = loc("mini_event_quest_2024_operation_grenade_germany_kill")
+let miniEventSeason = Computed(@() userstatStats.value?.stats.mini_event_season["$index"] ?? 0)
 let miniEventEndsAt = Computed(@() userstatStats.value?.stats.mini_event_season["$endsAt"] ?? 0)
 let isMiniEventActive = Computed(@() unlockTables.value?.mini_event_season == true)
 
@@ -99,6 +99,13 @@ function getEventLoc(eventId, eSeason, sEvents) {
   return loc(locId)
 }
 let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), specialEvents.get()))
+
+function getMiniEventLoc(eSeason) {
+  local locId = $"events/name/mini_event_{eSeason}"
+  if (!doesLocTextExist(locId))
+    locId = "events/name/special"
+  return loc(locId)
+}
 
 let curEventSeason = Computed(@() curEvent.value == MAIN_EVENT_ID
     ? (userstatStats.value?.stats.season["$index"] ?? 0)
@@ -280,8 +287,9 @@ return {
   eventSeason
   isEventActive
   isMiniEventActive
-  miniEventSeasonName
   miniEventEndsAt
+  miniEventSeason
+  getMiniEventLoc
 
   unseenLootboxes
   unseenLootboxesShowOnce

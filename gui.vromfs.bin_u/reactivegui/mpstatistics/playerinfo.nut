@@ -67,10 +67,13 @@ let levelMark = @(level, starLevel) {
   ]
 }
 
-function mkNameContent(player, info) {
-  let level = info.get()?.playerLevel ?? (player?.level ?? 1)
-  let starLevel = info.get()?.playerStarLevel ?? (player?.starLevel ?? 0)
-  return @() {
+let mkNameContent = @(player, info) function() {
+  let {
+    playerLevel = player?.level ?? 1,
+    playerStarLevel = (player?.starLevel ?? 0),
+    playerStarHistoryLevel = 0
+  } = info.get()
+  return {
     watch = info
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -92,7 +95,7 @@ function mkNameContent(player, info) {
           mkTitle(info.get()?.decorators.title, fontTinyAccented)
         ]
       }
-      levelMark(level - starLevel, starLevel)
+      levelMark(playerLevel - playerStarLevel, max(playerStarLevel, playerStarHistoryLevel))
     ]
   }
 }

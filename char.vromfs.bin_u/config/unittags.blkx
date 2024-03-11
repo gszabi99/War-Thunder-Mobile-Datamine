@@ -1397,9 +1397,11 @@
         },
         "127mm_38_mk12_turret_mk28_twin_naval_user_cannon": {
           "wtype": "auxCannon",
-          "damage": 600.0,
+          "damage": 450.0,
           "shotFreq": 0.333,
-          "gunsCount": 12,
+          "gunsCount": 8,
+          "gunsTotalCount": 12,
+          "gunsMult": 0.67,
           "caliber": 127.0,
           "ammoCount": 5400,
           "isBeltAmmo": false
@@ -1451,7 +1453,9 @@
           "wtype": "auxCannon",
           "damage": 600.0,
           "shotFreq": 0.345,
-          "gunsCount": 12,
+          "gunsCount": 8,
+          "gunsTotalCount": 12,
+          "gunsMult": 0.5,
           "caliber": 127.0,
           "ammoCount": 4320,
           "isBeltAmmo": false
@@ -1608,7 +1612,9 @@
           "wtype": "auxCannon",
           "damage": 250.0,
           "shotFreq": 0.5,
-          "gunsCount": 6,
+          "gunsCount": 3,
+          "gunsTotalCount": 6,
+          "gunsMult": 0.5,
           "caliber": 100.0,
           "ammoCount": 1800,
           "isBeltAmmo": false
@@ -1902,7 +1908,7 @@
           "wtype": "mainCannon",
           "damage": 50.0,
           "shotFreq": 3.33,
-          "gunsCount": 1,
+          "gunsCount": 2,
           "caliber": 57.0,
           "ammoCount": 1100,
           "isBeltAmmo": true
@@ -2273,7 +2279,9 @@
           "wtype": "mainCannon",
           "damage": 1800.0,
           "shotFreq": 0.091,
-          "gunsCount": 10,
+          "gunsCount": 8,
+          "gunsTotalCount": 10,
+          "gunsMult": 0.8,
           "caliber": 305.0,
           "ammoCount": 1100,
           "isBeltAmmo": false
@@ -2330,9 +2338,11 @@
         },
         "102mm_40_4in_qf_mark3_naval_user_cannon": {
           "wtype": "auxCannon",
-          "damage": 250.0,
+          "damage": 300.0,
           "shotFreq": 0.5,
-          "gunsCount": 12,
+          "gunsCount": 6,
+          "gunsTotalCount": 12,
+          "gunsMult": 0.5,
           "caliber": 102.0,
           "ammoCount": 1200,
           "isBeltAmmo": false
@@ -2487,7 +2497,7 @@
       "weapons": {
         "305mm_50_12inch_mk7_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 1800.0,
+          "damage": 2000.0,
           "shotFreq": 0.058,
           "gunsCount": 12,
           "caliber": 305.0,
@@ -2911,9 +2921,11 @@
         },
         "127mm_25_5inch_mk13_naval_user_cannon": {
           "wtype": "auxCannon",
-          "damage": 600.0,
+          "damage": 450.0,
           "shotFreq": 0.2,
-          "gunsCount": 8,
+          "gunsCount": 4,
+          "gunsTotalCount": 8,
+          "gunsMult": 0.5,
           "caliber": 127.0,
           "ammoCount": 1600,
           "isBeltAmmo": false
@@ -3006,9 +3018,11 @@
         },
         "127mm_5_40_type_89_naval_user_cannon": {
           "wtype": "auxCannon",
-          "damage": 300.0,
+          "damage": 400.0,
           "shotFreq": 0.333,
-          "gunsCount": 8,
+          "gunsCount": 4,
+          "gunsTotalCount": 8,
+          "gunsMult": 0.5,
           "caliber": 127.0,
           "ammoCount": 1600,
           "isBeltAmmo": false
@@ -3059,7 +3073,9 @@
           "wtype": "mainCannon",
           "damage": 1800.0,
           "shotFreq": 0.077,
-          "gunsCount": 12,
+          "gunsCount": 8,
+          "gunsTotalCount": 12,
+          "gunsMult": 0.67,
           "caliber": 305.0,
           "ammoCount": 1020,
           "isBeltAmmo": false
@@ -3133,8 +3149,8 @@
     },
     "Shop": {
       "shipCrewMax": 1910,
-      "shipCrewMin": 420,
-      "shipCrewRating": 2.66182,
+      "shipCrewMin": 360,
+      "shipCrewRating": 3.07333,
       "maxSpeed": 16.3,
       "turningTime": 26,
       "supportPlane": "arado_196a_3",
@@ -3145,7 +3161,7 @@
         "283mm_54_5_skc_34_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1200.0,
-          "shotFreq": 0.077,
+          "shotFreq": 0.1,
           "gunsCount": 9,
           "caliber": 283.0,
           "ammoCount": 1350,
@@ -3154,8 +3170,10 @@
         "150mm_55_skc_28_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 650.0,
-          "shotFreq": 0.286,
-          "gunsCount": 12,
+          "shotFreq": 0.4,
+          "gunsCount": 6,
+          "gunsTotalCount": 12,
+          "gunsMult": 0.5,
           "caliber": 150.0,
           "ammoCount": 2400,
           "isBeltAmmo": false
@@ -3435,7 +3453,9 @@
           "wtype": "auxCannon",
           "damage": 650.0,
           "shotFreq": 0.333,
-          "gunsCount": 12,
+          "gunsCount": 8,
+          "gunsTotalCount": 12,
+          "gunsMult": 0.67,
           "caliber": 130.0,
           "ammoCount": 3000,
           "isBeltAmmo": false
@@ -3487,7 +3507,9 @@
           "wtype": "auxCannon",
           "damage": 400.0,
           "shotFreq": 0.333,
-          "gunsCount": 16,
+          "gunsCount": 8,
+          "gunsTotalCount": 16,
+          "gunsMult": 0.5,
           "caliber": 133.0,
           "ammoCount": 5600,
           "isBeltAmmo": false
@@ -3641,7 +3663,9 @@
           "wtype": "auxCannon",
           "damage": 600.0,
           "shotFreq": 0.204,
-          "gunsCount": 20,
+          "gunsCount": 10,
+          "gunsTotalCount": 20,
+          "gunsMult": 0.5,
           "caliber": 127.0,
           "ammoCount": 9000,
           "isBeltAmmo": false
@@ -3682,7 +3706,7 @@
       "weapons": {
         "380mm_52_skc_34_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 2750.0,
+          "damage": 2800.0,
           "shotFreq": 0.071,
           "gunsCount": 8,
           "caliber": 380.0,
@@ -3902,8 +3926,8 @@
     },
     "Shop": {
       "shipCrewMax": 960,
-      "shipCrewMin": 270,
-      "shipCrewRating": 1.31606,
+      "shipCrewMin": 220,
+      "shipCrewRating": 1.61,
       "maxSpeed": 16.71,
       "turningTime": 22,
       "mainWeaponCaliber": 152.0,
@@ -3921,7 +3945,9 @@
           "wtype": "auxCannon",
           "damage": 400.0,
           "shotFreq": 0.25,
-          "gunsCount": 8,
+          "gunsCount": 4,
+          "gunsTotalCount": 8,
+          "gunsMult": 0.5,
           "caliber": 102.0,
           "ammoCount": 1600,
           "isBeltAmmo": false
@@ -4030,7 +4056,7 @@
       "weapons": {
         "356mm_45_14inch_mk8_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 2700.0,
+          "damage": 2500.0,
           "shotFreq": 0.056,
           "gunsCount": 12,
           "caliber": 356.0,
@@ -4283,7 +4309,9 @@
           "wtype": "auxCannon",
           "damage": 400.0,
           "shotFreq": 0.333,
-          "gunsCount": 16,
+          "gunsCount": 8,
+          "gunsTotalCount": 16,
+          "gunsMult": 0.5,
           "caliber": 133.0,
           "ammoCount": 5600,
           "isBeltAmmo": false
@@ -4531,7 +4559,7 @@
       "shipCrewMin": 210,
       "shipCrewRating": 2.01879,
       "maxSpeed": 14.28,
-      "turningTime": 46,
+      "turningTime": 29,
       "mainWeaponCaliber": 283.0,
       "weapons": {
         "283mm_45_skl_45_naval_user_cannon": {
@@ -4546,7 +4574,7 @@
         "150mm_45_skl_45_naval_user_cannon": {
           "wtype": "auxCannon",
           "damage": 600.0,
-          "shotFreq": 0.18,
+          "shotFreq": 0.33,
           "gunsCount": 7,
           "gunsTotalCount": 14,
           "gunsMult": 0.5,
@@ -4642,7 +4670,7 @@
       "weapons": {
         "380mm_52_skc_34_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 2750.0,
+          "damage": 2800.0,
           "shotFreq": 0.077,
           "gunsCount": 8,
           "caliber": 380.0,
@@ -5052,7 +5080,7 @@
       "weapons": {
         "356mm_45_14inch_mk8_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 2700.0,
+          "damage": 2500.0,
           "shotFreq": 0.056,
           "gunsCount": 10,
           "caliber": 356.0,

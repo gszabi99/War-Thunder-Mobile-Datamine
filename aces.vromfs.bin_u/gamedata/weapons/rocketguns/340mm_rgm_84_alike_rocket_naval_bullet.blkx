@@ -172,7 +172,7 @@
           "loftTargetElevation": -5.0,
           "loftAngleToAccelMult": 2.0,
           "loftTargetOmegaMax": 5.0,
-          "altitudeHoldEnabled": true,
+          "altitudeHoldEnabled": false,
           "timeToHitToAltitude0": [
             10.0,
             5.0

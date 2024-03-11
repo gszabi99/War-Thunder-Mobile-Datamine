@@ -74,14 +74,20 @@ function upgradeAccelerationText(info) {
   }
 }
 
+function curLevelMark(info) {
+  let { level, starLevel, historyStarLevel } = info
+  let starAdd = max(0, historyStarLevel - starLevel) - starLevel
+  return lvlText(level + starAdd, starLevel + starAdd)
+}
+
 let header = @() {
   watch = [playerLevelInfo, lvlUpCost]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(12)
   children = [
-    lvlText(playerLevelInfo.value.level, playerLevelInfo.value.starLevel)
-    upgradeAccelerationText(playerLevelInfo.value)
+    curLevelMark(playerLevelInfo.get())
+    upgradeAccelerationText(playerLevelInfo.get())
     mkCurrencyComp(lvlUpCost.value, GOLD)
   ]
 }

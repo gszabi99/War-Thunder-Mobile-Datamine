@@ -25,6 +25,10 @@ let nextTimeout = keepref(Computed(@() progressTimeouts.value
 let sendProgress = @(id, value, isInProgress) eventbus_send($"profile_srv.progressStart.{id}", { value, isInProgress })
 let get_time_sec = @() (get_time_msec() * 0.001).tointeger()
 
+let noNeedLogerrOnErrors = {
+  ["Couldn't connect to server"] = true,
+}
+
 function startProgress(id, value) {
   if (id == null)
     return
@@ -95,7 +99,8 @@ function checkAndLogError(id, action, cb, data) {
     let dumpStr = json_to_string(data)
     logErr = " ".concat("(full answer dump)", dumpStr)
   }
-  logerr($"[profileServerClient] {action} returned error: {logErr}")
+  if (logErr not in noNeedLogerrOnErrors)
+    logerr($"[profileServerClient] {action} returned error: {logErr}")
   cb?({ error = err })
 }
 

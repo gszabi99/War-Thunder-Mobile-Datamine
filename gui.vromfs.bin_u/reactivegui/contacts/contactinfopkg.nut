@@ -71,12 +71,13 @@ let levelMark = @(level, starLevel) {
 }
 
 function contactLevelBlock(info) {
-  let { playerLevel = null, playerStarLevel = 0 } = info
+  let { playerLevel = null, playerStarLevel = 0, playerStarHistoryLevel = 0 } = info
+  let starAdd = max(0, playerStarHistoryLevel - playerStarLevel)
   return {
     size = [1.5 * avatarSize, flex()]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    children = playerLevel == null ? null : levelMark(playerLevel, playerStarLevel)
+    children = playerLevel == null ? null : levelMark(playerLevel + starAdd, playerStarLevel + starAdd)
   }
 }
 

@@ -15747,6 +15747,12 @@
       "city_highway_overpass_b_high_skew"
     ]
   },
+  "rendinstExtraForceDisableShadow": {
+    "ri": [
+      "heap_debris_brick_small_10x10_b",
+      "heap_debris_brick_small_40x10"
+    ]
+  },
   "rendinstOpt": {
     "minLodForMode0": 3,
     "maxLodForMode0": 15,

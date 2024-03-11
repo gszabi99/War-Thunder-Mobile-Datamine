@@ -20,10 +20,12 @@ let activeOfferByGoods = Computed(function() {
   if (res == null)
     return null
 
-  foreach (key in ["units", "unitUpgrades"])
-    foreach (unitName in res[key])
-      if (unitName in servProfile.get()?.units)
-        return null
+  foreach (unitName in res.units)
+    if (unitName in servProfile.get()?.units)
+      return null
+  foreach (unitName in res.unitUpgrades)
+    if (servProfile.get()?.units[unitName].isUpgraded)
+      return null
 
   return res.__merge({ campaign, offerClass = "seasonal" })
 })
