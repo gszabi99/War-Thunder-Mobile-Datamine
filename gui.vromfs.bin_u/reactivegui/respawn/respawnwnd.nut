@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { get_mission_time = @() ::get_mission_time() } = require("mission")
 let { eventbus_send } = require("eventbus")
 let { round, sqrt } = require("math")
 let { deferOnce } = require("dagor.workcycle")
@@ -21,7 +21,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
-let { scoreBoard } = require("%rGui/hud/scoreBoard.nut")
+let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullSize, mkUnitPrice,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine,
   mkUnitSelectedUnderlineVert, mkUnitRank, unitPlatesGap
@@ -39,10 +39,16 @@ let { SPARE } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { respawnSkins, skinSize } = require("respawnSkins.nut")
+let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
+
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullSize
 let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
+let contentOffset = hdpx(40)
+let unitListHeight = saSize[1] - scoreBoardHeight - contentOffset - headerHeight - unitPlatesGap
+let unitListGradientSize = [unitPlatesGap, saBorders[1]]
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 let skinTextHeight = hdpx(45)
 let skinPadding = hdpx(10)
@@ -67,7 +73,7 @@ let balanceBlock = @() {
 }
 
 let topPanel = @() {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = [flex(), scoreBoardHeight]
   watch = respawnUnitItems
   children = [
     { size = [SIZE_TO_CONTENT, flex()], children = logerrHintsBlock }
@@ -162,15 +168,39 @@ function platoonTitle(unit) {
   })
 }
 
-let slotsBlock = @() {
-  watch = [respawnSlots, respawnUnitInfo]
-  size = [slotPlateWidth, SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
-  gap = unitPlatesGap
-  children = respawnUnitInfo.value == null ? null
-    : [
-        platoonTitle(respawnUnitInfo.value)
-      ].extend(respawnSlots.value.map(@(slot) mkSlotPlate(slot, respawnUnitInfo.value)))
+let pannableArea = verticalPannableAreaCtor(unitListHeight + unitListGradientSize[0] + unitListGradientSize[1],
+  unitListGradientSize)
+let scrollHandler = ScrollHandler()
+
+function slotsBlock() {
+  let title = platoonTitle(respawnUnitInfo.value)
+  let list = respawnSlots.value.map(@(slot) mkSlotPlate(slot, respawnUnitInfo.value))
+  return {
+    watch = [respawnSlots, respawnUnitInfo]
+    size = [slotPlateWidth, SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    gap = unitPlatesGap
+    children = respawnUnitInfo.value == null ? null
+      : list.len() <= 4 ? [ title ].extend(list)
+      : [
+          title
+          {
+            size = [flex(), unitListHeight]
+            children = [
+              pannableArea(
+                {
+                  size = [flex(), SIZE_TO_CONTENT]
+                  flow = FLOW_VERTICAL
+                  gap = unitPlatesGap
+                  children = list
+                },
+                {},
+                { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+              mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall, { vplace = ALIGN_TOP, pos = [0, unitListHeight] })
+            ]
+          }
+        ]
+  }
 }
 
 let map = {
@@ -360,7 +390,7 @@ return bgShaded.__merge({
       size = flex()
       padding = saBordersRv
       flow = FLOW_VERTICAL
-      gap = hdpx(40)
+      gap = contentOffset
       children = [
         topPanel
         content

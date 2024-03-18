@@ -8,7 +8,7 @@ let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("goodsStates.nut")
-let purchaseGoods = require("purchaseGoods.nut")
+let { purchaseGoods } = require("purchaseGoods.nut")
 let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
 } = require("platformGoods.nut")
 let { mkGoods } = require("%rGui/shop/goodsView/goods.nut")
@@ -38,7 +38,6 @@ let tabTranslateWithOpacitySwitchAnim = [
 let goodsGlareRepeatDelay = 3
 
 let positive = @(id, value) value > 0 ? { id, value } : null
-let compatibilityCurrencies = ["wp", "gold", "warbond", "eventKey", "nybond"]
 let goodsCompareCfg = [
   @(g) g.units.len() > 0 || (g?.unitUpgrades.len() ?? 0) > 0 ? { canCompare = false } : null,
   @(g) positive("premiumDays", g.premiumDays),
@@ -50,12 +49,6 @@ let goodsCompareCfg = [
     return null
   },
   function(g) {
-    if ("currencies" not in g) { //compatibility with format before 2024.01.23
-      foreach (id in compatibilityCurrencies)
-        if ((g?[id] ?? 0) > 0)
-          return { id, value = g[id] }
-      return null
-    }
     if (g.currencies.len() > 1)
       return { canCompare = false }
     foreach (id, count in g.currencies)
@@ -189,17 +182,7 @@ let mkShopGamercard = @(onClose) function(){
   foreach (goods in goodsByCategory.get()?[curCategoryId.get()] ?? []) {
     if(goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
-
-    if("currencies" in goods)
-      currencies.__update(goods.currencies)
-    else {
-      //compatibility with format before 2024.01.23
-      if ((goods?.wp ?? 0) > 0)
-        currencies.__update({wp = true})
-      if ((goods?.gold ?? 0) > 0)
-        currencies.__update({gold = true})
-    }
-
+    currencies.__update(goods.currencies)
     items.__update(goods.items)
     premiumDays += goods.premiumDays
   }

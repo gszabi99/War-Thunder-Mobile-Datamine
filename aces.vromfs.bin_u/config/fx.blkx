@@ -1497,6 +1497,13 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "muzzle_smoke_screen": {
+    "fx": "muzzle_smoke_screen_system_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 8,
+    "farPlane": 500.0
+  },
   "sparks_ground_friction_dirt": {
     "fx": "sparks_ground_firction_dirt_cmps_fx",
     "lifeTime": 5.0,

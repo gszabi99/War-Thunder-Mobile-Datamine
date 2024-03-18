@@ -5,18 +5,40 @@ let { eventbus_subscribe } = require("eventbus")
 let { activeUnlocks, unlockInProgress, receiveUnlockRewards, buyUnlock, getUnlockPrice
 } = require("%rGui/unlocks/unlocks.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { eventSeason } = require("%rGui/event/eventState.nut")
+let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+
 
 let BP_GOODS_ID = "battle_pass"
 let BP_PROGRESS_UNLOCK_ID = "battlepass_points_to_progress"
 
+let BP_NONE = "none"
+let BP_COMMON = "common"
+let BP_VIP = "vip"
+
+let bpPresentation = {
+  [BP_NONE] = {
+    name = @() ""
+    icon = @(_) $"ui/gameuiskin#bp_icon_not_active.avif"
+  },
+  [BP_COMMON] = {
+    name = @() loc("battlePass")
+    icon = @(season) $"ui/gameuiskin#bp_icon_active_{season}.avif"
+  },
+  [BP_VIP] = {
+    name = @() loc("battlePassVIP")
+    icon = @(season) $"ui/gameuiskin#bp_icon_active_{season}_vip.avif"
+  },
+}
+let getBpPresentation = @(bpType) bpPresentation?[bpType] ?? bpPresentation[BP_NONE]
+
 let battlePassOpenCounter = mkWatched(persist, "battlePassOpenCounter", 0)
 let isBPPurchaseWndOpened = mkWatched(persist, "isBPPurchaseWndOpened", false)
-let isDebugBp = mkWatched(persist, "isDebugBp", false)
+let debugBp = mkWatched(persist, "debugBp", null)
 let openBattlePassWnd = @() battlePassOpenCounter.set(battlePassOpenCounter.get() + 1)
 let closeBattlePassWnd = @() battlePassOpenCounter.set(0)
 
@@ -27,7 +49,6 @@ let seasonEndTime = Computed(@() userstatStats.value?.stats.season["$endsAt"] ??
 let bpProgressUnlock = Computed(@() activeUnlocks.value?[BP_PROGRESS_UNLOCK_ID])
 let pointsPerStage   = Computed(@() bpProgressUnlock.value?.stages[0].progress ?? 1)
 let bpLevelPrice = Computed(@() getUnlockPrice(bpProgressUnlock.get()))
-let bpIconActive = Computed(@() $"ui/gameuiskin#bp_icon_active_{eventSeason.get()}.avif")
 
 let bpFreeRewardsUnlock = Computed(@()
   activeUnlocks.value.findvalue(@(unlock) "battle_pass_free" in unlock?.meta
@@ -43,29 +64,38 @@ let isBpRewardsInProgress = Computed(@()
     || bpPaidRewardsUnlock.value?.name in unlockInProgress.value
     || bpPurchasedUnlock.value?.name in unlockInProgress.value)
 
-let battlePassGoods = Computed(@() shopGoods.value?[BP_GOODS_ID])
-
-let isBpPurchasedRaw = Computed(function() {
-  let goods = battlePassGoods.get()
-  if (goods == null)
-    return false
-
-  let { oncePerSeason = "" } = goods
-  let { count = 0, lastTime = 0 } = servProfile.value?.purchasesCount[BP_GOODS_ID]
-  if (oncePerSeason == "" || count <= 0)
-    return count > 0
-
-  let { start = 0, end = 0 } = curSeasons.get()?[oncePerSeason]
-  return lastTime != 0 && start != 0 && lastTime >= start && lastTime <= end
+let battlePassGoods = Computed(@() {
+  [BP_COMMON] = shopGoods.get()?[BP_GOODS_ID],
+  [BP_VIP] = shopGoods.get().findvalue(@(s) "battle_pass_vip" in s?.meta)
 })
 
-let isBpPurchased = Computed(@() isBpPurchasedRaw.get() != isDebugBp.value)
+let isBpPurchasedByType = Computed(function() {
+  let { purchasesCount = null } = servProfile.get()
+  let seasons = curSeasons.get()
+  return battlePassGoods.get().map(function(goods) {
+    if (goods == null)
+      return null
 
-let isBpActive = Computed(@()
-  (activeUnlocks.value?[bpPaidRewardsUnlock.value?.requirement].isCompleted ?? false)
-    != isDebugBp.value)
+    let { oncePerSeason = "", id } = goods
+    let { count = 0, lastTime = 0 } = purchasesCount?[id]
+    if (oncePerSeason == "" || count <= 0)
+      return count > 0
 
-isBpActive.subscribe(@(v) v ? isBPPurchaseWndOpened.set(false) : null)
+    let { start = 0, end = 0 } = seasons?[oncePerSeason]
+    return lastTime != 0 && start != 0 && lastTime >= start && lastTime <= end
+  })
+})
+
+let purchasedBpRaw = Computed(@() !isBpPurchasedByType.get()[BP_COMMON] ? BP_NONE
+  : !isBpPurchasedByType.get()[BP_VIP] ? BP_COMMON
+  : BP_VIP)
+let purchasedBp = Computed(@() debugBp.get() ?? purchasedBpRaw.get())
+
+let isBpActive = Computed(@() debugBp.get() == null
+  ? (activeUnlocks.value?[bpPaidRewardsUnlock.value?.requirement].isCompleted ?? false)
+  : debugBp.get() != BP_NONE)
+
+purchasedBp.subscribe(@(_) isBPPurchaseWndOpened.set(false))
 
 let hasBpRewardsToReceive = Computed(@() !!bpFreeRewardsUnlock.get()?.hasReward
   || !!bpPurchasedUnlock.get()?.hasReward
@@ -95,6 +125,22 @@ function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV) {
   })
 }
 
+function fillViewInfo(res, servConfigs) {
+  foreach(idx, s in res) {
+    if ("viewInfo" not in s) {
+      let rewInfo = []
+      foreach(key, count in s.rewards) {
+        let reward = servConfigs.userstatRewards?[key]
+        rewInfo.extend(getRewardsViewInfo(reward, count))
+      }
+      s.viewInfo <- rewInfo.sort(sortRewardsViewInfo)?[0]
+    }
+    s.nextSlots <- 0
+    if (idx > 0)
+      res[idx - 1].nextSlots = s.viewInfo?.slots ?? 1
+  }
+}
+
 let mkBpStagesList = @() Computed(function() {
   let listPaidStages = gatherUnlockStageInfo(bpPaidRewardsUnlock.value, true, isBpActive.value, curStage.value)
   let listFreeStages = gatherUnlockStageInfo(bpFreeRewardsUnlock.value, false, true, curStage.value)
@@ -106,12 +152,31 @@ let mkBpStagesList = @() Computed(function() {
     res.insert(0, purchaseStages[0].__merge({
       progress = 0
       canBuyLevel = false
-      canReceive = !isDebugBp.value ? canReceive
+      canReceive = (debugBp.get() ?? BP_NONE) == BP_NONE ? canReceive
         : (!isReceived && !canReceive)
     }))
   }
 
-  return res.sort(@(a,b) (a?.progress ?? 0) <=> (b?.progress ?? 0))
+  local addIdx = -1
+  foreach(bpType in [BP_COMMON, BP_VIP]) {
+    let goods = battlePassGoods.get()[bpType]
+    if (goods == null)
+      continue
+    foreach(viewInfo in getRewardsViewInfo(goods))
+      res.insert(0, {
+        progress = addIdx--
+        viewInfo
+        isVip = bpType == BP_VIP
+        isPaid = true
+        isReceived = isBpPurchasedByType.get()[bpType]
+        canBuyLevel = 0
+        canReceive = false
+      })
+  }
+
+  res.sort(@(a,b) (a?.progress ?? 0) <=> (b?.progress ?? 0))
+  fillViewInfo(res, serverConfigs.get())
+  return res
 })
 
 let selectedStage = mkWatched(persist, "bpSelectedStage", 0)
@@ -190,7 +255,16 @@ eventbus_subscribe("battlePass.buyUnlock", function(_) {
 
 isBPPurchaseWndOpened.subscribe(@(v) v ? sendBpBqEvent("bp_purchase_open") : null)
 
-register_command(@() isDebugBp.set(!isDebugBp.get()), "ui.debug.battlePass")
+let dbgOrder = [BP_NONE, BP_COMMON, BP_VIP]
+register_command(
+  function() {
+    let cur = debugBp.get() ?? purchasedBpRaw.get()
+    let idx = (dbgOrder.indexof(cur) ?? -1) + 1
+    let new = dbgOrder[idx % dbgOrder.len()]
+    debugBp(new == purchasedBpRaw.get() ? null : new)
+    log($"New purchased BP = {purchasedBp.get()}. (isReal = {purchasedBp.get() == purchasedBpRaw.get()})")
+  },
+  "ui.debug.battlePass")
 
 return {
   battlePassOpenCounter
@@ -215,12 +289,11 @@ return {
   maxStage
   selectedStage
   isBpActive
-  isBpPurchased
+  purchasedBp
   pointsCurStage
   bpProgressUnlock
   pointsPerStage
   bpLevelPrice
-  bpIconActive
   isBPLevelPurchaseInProgress = Computed(@() unlockInProgress.get().len() > 0)
   BP_PROGRESS_UNLOCK_ID
 
@@ -228,4 +301,11 @@ return {
   seasonName
   seasonEndTime
   hasBpRewardsToReceive
+
+  getBpIcon = @(bpType, season) getBpPresentation(bpType).icon(season)
+  getBpName = @(bpType) getBpPresentation(bpType).name()
+
+  BP_NONE
+  BP_COMMON
+  BP_VIP
 }

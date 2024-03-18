@@ -18,8 +18,10 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getCurrentLanguage } = require("dagor.localize")
 let { openSuportWebsite } = require("%rGui/feedback/supportState.nut")
 let { is_nswitch } = require("%sqstd/platform.nut")
+let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
+let gpButtonVisible = getGPStatus() == GP_SUCCESS
 let loginName = mkWatched(persist, "loginName", "")
 let loginPas = mkWatched(persist, "loginPas", "")
 let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
@@ -354,9 +356,10 @@ let guestLoginButtonContent = firebaseLoginButtonContent
 
 let loginButtonCtors = {
   [LT_GAIJIN] = @() mkCustomButton(mkGaijinLogo(), @() isLoginByGajin.update(true), BRIGHT),
-  [LT_GOOGLE] = @() mkCustomButton(googleLoginButtonContent,
-    @() eventbus_send("doLogin", { loginType = LT_GOOGLE }),
-    BRIGHT),
+  [LT_GOOGLE] =  !gpButtonVisible ? null
+    : @() mkCustomButton(googleLoginButtonContent,
+      @() eventbus_send("doLogin", { loginType = LT_GOOGLE }),
+        BRIGHT),
   [LT_APPLE] = @() mkCustomButton(appleLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_APPLE }),
     BRIGHT),

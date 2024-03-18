@@ -49,13 +49,15 @@ let posParams = {
 }
 
 // IMPORTANT: Pannable MUST have Behaviors.ScrollEvent behavior, and scrollHandler attached.
-function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageBig) {
+function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageBig, ovr = {}) {
   let isShow = mkIsShow[align](scrollHandler)
-  return @() arrowImageComp.__merge(posParams[align], {
-    watch = isShow
-    opacity = isShow.value ? 0.7 : 0
-    transitions = [{ prop = AnimProp.opacity, duration = 0.5, easing = OutCubic }]
-  })
+  return @() arrowImageComp.__merge(posParams[align],
+    {
+      watch = isShow
+      opacity = isShow.value ? 0.7 : 0
+      transitions = [{ prop = AnimProp.opacity, duration = 0.5, easing = OutCubic }]
+    },
+    ovr)
 }
 
 return {

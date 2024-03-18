@@ -42,10 +42,10 @@ let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
 let lootboxesAvailability = mkWatched(persist, LOOTBOXES_AVAILABILITY, {})
 let unseenLootboxes = Computed(function() {
   let res = {}
-  let lootboxes = eventLootboxesRaw.get()
-    .filter(@(v) v.name not in seenLootboxes.value?[v.meta.event_id])
-  foreach (lootbox in lootboxes) {
-    let eventId = lootbox.meta.event_id
+  foreach (lootbox in eventLootboxesRaw.get()) {
+    let eventId = lootbox?.meta.event_id ?? MAIN_EVENT_ID
+    if (lootbox.name in seenLootboxes.value?[eventId])
+      continue
     if (eventId not in res)
       res[eventId] <- {}
     res[eventId].rawset(lootbox.name, true)
@@ -54,7 +54,7 @@ let unseenLootboxes = Computed(function() {
 })
 let unseenLootboxesShowOnce = mkWatched(persist, "unseenLootboxesShowOnce", {})
 
-let bestCampLevel = Computed(@() servProfile.value?.levelInfo.reduce(@(a, b) max(a?.level ?? 0, b?.level ?? 0)) ?? 1)
+let bestCampLevel = Computed(@() servProfile.value?.levelInfo.reduce(@(res, li) max(res, li?.level ?? 0), 0) ?? 1)
 
 let specialEvents = Computed(function() {
   let res = {}
@@ -124,7 +124,7 @@ let isCurEventActive = Computed(@() curEvent.get() == MAIN_EVENT_ID
   : isMiniEventActive.get())
 
 let curEventLootboxes = Computed(@()
-  orderLootboxesBySlot(eventLootboxesRaw.value.filter(@(v) v?.meta.event_id == curEventName.value)))
+  orderLootboxesBySlot(eventLootboxesRaw.value.filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == curEventName.value)))
 
 let curEventCurrencies = Computed(@() curEventLootboxes.value.reduce(function(res, l) {
   let currencyId = l?.currencyId

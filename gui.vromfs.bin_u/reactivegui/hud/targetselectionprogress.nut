@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { get_mission_time = @() ::get_mission_time() } = require("mission")
 let { eventbus_subscribe } = require("eventbus")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { targetUnitName } = require("%rGui/hudState.nut")

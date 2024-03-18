@@ -2848,5 +2848,18 @@
       "decal2WidthBox": 0.231941,
       "decal2Tex": "jp_5th_sensha_rentai_1_company"
     }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_sdf_green*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
   }
 }

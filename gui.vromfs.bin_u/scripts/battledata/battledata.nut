@@ -224,6 +224,6 @@ return {
   curBattleUnit = Computed(@() realBattleData.value?.unit)
   curBattleItems = Computed(@() realBattleData.value?.items)
   curBattleSkins = Computed(@() realBattleData.value?.skins)
-  isBattleDataReceived = Computed(@() state.value?.isBattleDataReceived)
+  isBattleDataReceived = Computed(@() curAction.get() != ACTION.REQUEST && (state.value?.isBattleDataReceived ?? false))
   wasBattleDataApplied
 }

@@ -4,7 +4,7 @@ let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD, PLATINUM, orderByCurrency } = require("%appGlobals/currenciesState.nut")
-let { SC_GOLD, SC_WP, SC_PLATINUM } = require("%rGui/shop/shopCommon.nut")
+let { SC_GOLD, SC_WP, SC_PLATINUM, SC_FEATURED } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate
@@ -91,7 +91,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
     : !isMaxLevel ? openExpWnd
     : null
   let showStarLevel = max(starLevel, historyStarLevel)
-  let nextStarLevel = isNextStarLevel ? starLevel + 1 : 0
+  let nextStarLevel = isStarProgress ? starLevel + 1 : 0
   return {
     watch = playerLevelInfo
     valign = ALIGN_CENTER
@@ -349,7 +349,7 @@ function mkImageBtn(image, onClick, children = null, ovr = {}) {
   }.__update(ovr)
 }
 
-let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", openBuyCurrencyWnd(GOLD),
+let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", @() openShopWnd(SC_FEATURED),
   @() {
     watch = needShopUnseenMark
     pos = [hdpx(5), -hdpx(5)]

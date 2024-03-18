@@ -1286,7 +1286,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -2386,6 +2390,24 @@
       "from": "is_2_1944_turret_c*",
       "to": "is_2_1944_skin_turret_c*",
       "param": "camo_skin_tex"
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_green*"
+      },
+      "set_tex": {
+        "from": "is_2_1944_turret_c*",
+        "to": "is_2_1944_noskin_turret_c*",
+        "param": "camo_skin_tex"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
     }
   }
 }

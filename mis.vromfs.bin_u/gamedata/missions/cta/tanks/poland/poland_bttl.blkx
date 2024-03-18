@@ -158,12 +158,12 @@
             {
               "icontype": "tank",
               "side": "ally",
-              "target": "briefing_t1_tank_spawn_01"
+              "target": "briefing_t1_tank_spawn_03"
             },
             {
               "icontype": "tank",
               "side": "enemy",
-              "target": "briefing_t2_tank_spawn_03"
+              "target": "briefing_t2_tank_spawn_01"
             }
           ],
           "battleArea": {

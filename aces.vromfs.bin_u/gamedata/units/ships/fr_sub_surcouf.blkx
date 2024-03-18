@@ -2822,5 +2822,13 @@
       "from": "camo_navygrey_5*",
       "to": "camo_blackgreen_geometry*"
     }
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "camo_navygrey_5*"
+      }
+    }
   }
 }

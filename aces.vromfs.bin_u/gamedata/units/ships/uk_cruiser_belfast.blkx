@@ -6346,5 +6346,19 @@
         "to": "camo_syntheticblackpaint*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_navygrey_5*"
+        },
+        {
+          "from": "camo_deckgrey*",
+          "to": "camo_deckgrey*"
+        }
+      ]
+    }
   }
 }

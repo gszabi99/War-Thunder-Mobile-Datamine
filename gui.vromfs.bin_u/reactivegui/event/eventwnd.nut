@@ -22,12 +22,12 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { backButton, backButtonWidth } = require("%rGui/components/backButton.nut")
+let { backButton } = require("%rGui/components/backButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let { infoRhombButton } = require("%rGui/components/infoButton.nut")
 let { has_leaderboard } = require("%appGlobals/permissions.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let lootboxPreviewContent = require("%rGui/shop/lootboxPreviewContent.nut")
+let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
+let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader } = require("%rGui/shop/lootboxPreviewContent.nut")
 let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPreview, previewLootbox
 } = require("%rGui/shop/lootboxPreviewState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -36,6 +36,8 @@ let { getLootboxSizeMul } = require("%rGui/unlocks/rewardsView/lootboxPresentati
 
 let MAX_LOOTBOXES_AMOUNT = 3
 let headerGap = hdpx(30)
+let contentGap = hdpx(40)
+let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
 
 function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
   let { rewardsCfg = null } = sConfigs
@@ -83,26 +85,26 @@ let mkProgress = @(stepsToFixed) @() {
   watch = stepsToFixed
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [
-    mkRow([
-      smallChestIcon
-      { size = [0, 0] }
-      {
-        rendObj = ROBJ_TEXT
-        text = loc("events/jackpot")
-      }.__update(fontTinyShaded)
-      {
-        rendObj = ROBJ_TEXT
-        text = stepsToFixed.value[1] - stepsToFixed.value[0]
-      }.__update(fontTinyShaded)
-    ])
-    progressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = [hdpx(20), 0, hdpx(10), 0] })
-  ]
+  children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null
+    : [
+        mkRow([
+          smallChestIcon
+          { size = [hdpx(10), 0] }
+          {
+            rendObj = ROBJ_TEXT
+            text = loc("events/jackpot")
+          }.__update(fontTinyShaded)
+          {
+            rendObj = ROBJ_TEXT
+            text = stepsToFixed.value[1] - stepsToFixed.value[0]
+          }.__update(fontTinyShaded)
+        ])
+        progressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = [hdpx(20), 0, hdpx(10), 0] })
+      ]
 }
 
 let mkProgressFull = @(stepsToFixed) @() {
   watch = stepsToFixed
-  pos = [backButtonWidth + headerGap, hdpx(20)]
   flow = FLOW_VERTICAL
   children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [
     mkRow([
@@ -123,6 +125,7 @@ let mkProgressFull = @(stepsToFixed) @() {
         behavior = Behaviors.TextArea
         text = loc("events/guaranteedReward")
       }.__update(fontVeryTiny)
+      { size = [hdpx(10), 0] }
       smallChestIcon
     ])
   ]
@@ -244,10 +247,41 @@ let eventGamercard = {
   ]
 }
 
+function mkLootboxPreviewContent() {
+  let progressInfo = mkProgressFull(
+    Computed(@() getStepsToNextFixed(previewLootbox.value, serverConfigs.value, servProfile.value)))
+  return @() {
+    watch = previewLootbox
+    size = flex()
+    padding = [hdpx(40), 0, 0, 0]
+    flow = FLOW_HORIZONTAL
+    gap = contentGap
+    children = previewLootbox.get() == null ? null
+      : [
+          lootboxContentBlock(previewLootbox.get(), rewardsBlockWidth)
+          {
+            size = flex()
+            flow = FLOW_VERTICAL
+            halign = ALIGN_CENTER
+            children = [
+              lootboxHeader(previewLootbox.get())
+              lootboxImageWithTimer(previewLootbox.get())
+              progressInfo
+              { size = flex() }
+              @() {
+                watch = [previewLootbox, lootboxInProgress]
+                size = [SIZE_TO_CONTENT, defButtonHeight]
+                children = lootboxInProgress.get() ? null : mkPurchaseBtns(previewLootbox.get(), onPurchase)
+              }
+            ]
+          }
+        ]
+    animations = wndSwitchAnim
+  }
+}
+
 function eventWndContent() {
   let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.value.len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
-  let stepsToFixed = Computed(@() getStepsToNextFixed(previewLootbox.value, serverConfigs.value, servProfile.value))
-
   return @() {
     watch = isEmbeddedLootboxPreviewOpen
     size = flex()
@@ -255,29 +289,7 @@ function eventWndContent() {
     flow = FLOW_VERTICAL
     children = [eventGamercard]
       .extend(isEmbeddedLootboxPreviewOpen.value
-        ? [
-            {
-              size = flex()
-              flow = FLOW_VERTICAL
-              halign = ALIGN_CENTER
-              children = [
-                {
-                  key = {}
-                  size = flex()
-                  children = [
-                    mkProgressFull(stepsToFixed)
-                    lootboxPreviewContent
-                  ]
-                  animations = wndSwitchAnim
-                }
-                @() {
-                  watch = [previewLootbox, lootboxInProgress]
-                  size = [SIZE_TO_CONTENT, defButtonHeight]
-                  children = lootboxInProgress.get() ? null : mkPurchaseBtns(previewLootbox.get(), onPurchase)
-                }
-              ]
-            }
-          ]
+        ? [ mkLootboxPreviewContent() ]
         : [
             @() {
               watch = [curEventLootboxes, blockSize]

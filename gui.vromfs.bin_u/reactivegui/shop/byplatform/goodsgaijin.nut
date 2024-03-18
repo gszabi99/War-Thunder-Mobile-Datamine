@@ -9,8 +9,7 @@ let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 
 let successPaymentUrl = "https://store.gaijin.net/success_payment.php" //webview should close on success payment url
 
-let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid
-  ?? goods?.purchaseGuid ?? "" //compatibility with pserver 0.0.8.x  2023.05.16
+let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid ?? ""
 
 let goodsIdByGuid = Computed(function() {
   let res = {}

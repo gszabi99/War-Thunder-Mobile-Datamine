@@ -12,16 +12,10 @@ let mkCurrencyImage = @(amount, size, currencyId) {
 function mkRewardImage(reward, size) {
   if (reward == null)
     return null
-  let { lootboxes = {}, wp = 0, gold = 0, currencies = null } = reward
+  let { lootboxes = {}, currencies = {} } = reward
   if (lootboxes.len() > 0)
     return mkLoootboxImage(lootboxes.findindex(@(_) true), size)
 
-  if (currencies == null) { //compatibility with format before 2024.01.23
-    if (gold > 0)
-      return mkCurrencyImage(gold, size, "gold")
-    if (wp > 0)
-      return mkCurrencyImage(wp, size, "wp")
-  }
   let cId = currencies?.findindex(@(_) true)
   let cVal = currencies?[cId] ?? 0
   if (cVal > 0)

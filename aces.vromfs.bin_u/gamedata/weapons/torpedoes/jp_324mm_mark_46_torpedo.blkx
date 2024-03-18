@@ -2,7 +2,7 @@
   "torpedoGun": true,
   "preset_cost": 15,
   "bullets": 1,
-  "shotFreq": 1.5,
+  "shotFreq": 0.125,
   "external": true,
   "reloadTime": 60.0,
   "allowHumanReload": true,
@@ -29,9 +29,8 @@
     "maxSpeedInWater": 25.15,
     "diveDepth": 1.0,
     "detonationRadius": 0.1,
-    "detonationDepth": 4.0,
     "caliber": 0.324,
-    "mass": 235.0,
+    "mass": 400.0,
     "explosiveType": "tnt",
     "explosiveMass": 44.5,
     "explosionFx": "bomb_expl_100kg",
@@ -56,6 +55,12 @@
       300.0,
       1000.0
     ],
+    "splash": {
+      "innerRadius": 9.0,
+      "penetration": 125.0,
+      "damage": 3000.0,
+      "damageType": "explosionTorpedo"
+    },
     "arcadeProp": {
       "dropSpeedRange": [
         -10.0,

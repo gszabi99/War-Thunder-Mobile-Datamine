@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bpCardStyle, bpCardPadding, bpCardGap, bpCardFooterHeight, bpCardHeight, bpCardMargin
 } = require("bpCardsStyle.nut")
-let { mkRewardPlate, getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
+let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
 let { textButtonBattle, textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
 let { receiveBpRewards, isBpRewardsInProgress, selectedStage, bpLevelPrice, isBPLevelPurchaseInProgress } = require("battlePassState.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -14,6 +14,7 @@ let rewardBoxSize = bpCardStyle.boxSize
 let emptySlot = { size = array(2, rewardBoxSize) }
 let receiveMarkIconSize = [hdpxi(100), hdpxi(100)]
 let lockedMarkIconSize = [hdpxi(25), hdpxi(32)]
+let purchBtnHeight = hdpx(60)
 
 let bgCard = mkColoredGradientY(0xFFC59E49, 0xFFCA7119)
 
@@ -41,6 +42,8 @@ let paidMark = {
   rendObj = ROBJ_SOLID
   color = 0xFFFFDE70
 }
+
+let vipMark = paidMark.__merge({ color = 0xFF8307C6 })
 
 let receivedMark = {
   size = flex()
@@ -90,7 +93,7 @@ let freeMark = {
 }
 
 function cardContent(stageInfo, stateFlags) {
-  let { canReceive, viewInfo, isPaid, isReceived } = stageInfo
+  let { canReceive, viewInfo, isPaid, isReceived, isVip = false } = stageInfo
   return @() {
     watch = stateFlags
     padding = bpCardPadding
@@ -102,13 +105,16 @@ function cardContent(stageInfo, stateFlags) {
         valign = ALIGN_CENTER
         children = [
           canReceive ? markAvailableReward(viewInfo.slots) : null
-          viewInfo != null ? mkRewardPlate(viewInfo, bpCardStyle) : emptySlot
+          viewInfo == null ? emptySlot
+            : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
+            : mkRewardPlate(viewInfo, bpCardStyle)
           isReceived
             ? receivedMark
             : canReceive ? null : lockedMark
         ]
       }
       canReceive ? canReceiveMark
+        : isVip ? vipMark
         : isPaid ? paidMark
         : freeMark
     ]
@@ -176,12 +182,12 @@ function mkCard(stageInfo) {
               mkCurrencyComp(bpLevelPrice.get().price, bpLevelPrice.get().currency),
               @() buyBPLevelMsg(bpLevelPrice.get(), stageInfo),
               { hotkeys = ["^J:X"]
-                ovr = { size = [SIZE_TO_CONTENT, hdpx(60)]
+                ovr = { size = [SIZE_TO_CONTENT, purchBtnHeight]
                         minWidth = cardWidth
                         contentPadding = [0, hdpx(20)]
                       }
               }),
-            { hplace = ALIGN_CENTER })
+            { hplace = ALIGN_CENTER, size = [SIZE_TO_CONTENT, purchBtnHeight] })
         : null
     ]
   }

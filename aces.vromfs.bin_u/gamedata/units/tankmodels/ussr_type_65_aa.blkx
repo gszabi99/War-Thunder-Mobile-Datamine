@@ -826,7 +826,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1821,207 +1825,6 @@
       }
     }
   },
-  "upgraded_skin": {
-    "replace_tex": {
-      "from": "ussr_camo_green*",
-      "to": "ussr_camo_dkgreen_ltgreen_brown_ver_2*"
-    }
-  },
-  "upgradedDecals": {
-    "upgraded": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 5.0,
-      "decal0Line0": [
-        2.68881,
-        -1.24793e-7,
-        0.750492,
-        -2.56023
-      ],
-      "decal0Line1": [
-        0.248552,
-        -2.63404,
-        -0.890493,
-        4.84678
-      ],
-      "decal0Line2": [
-        -2.68881,
-        -1.45592e-7,
-        0.750492,
-        3.55606
-      ],
-      "decal0Line3": [
-        0.248552,
-        -2.63404,
-        0.890493,
-        4.84183
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        0.253669,
-        0.331185,
-        -0.908828,
-        -1.61176
-      ],
-      "decal0CPNormDepth1": [
-        0.253669,
-        0.331185,
-        0.908828,
-        -1.6168
-      ],
-      "decal0RotScale": [
-        1.5708,
-        0.35822
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.212912,
-      "decal0Tex": "back_20",
-      "decal1Line0": [
-        2.70702,
-        -0.0676506,
-        0.677666,
-        -1.59041
-      ],
-      "decal1Line1": [
-        0.164257,
-        -2.63071,
-        -0.918763,
-        4.93186
-      ],
-      "decal1Line2": [
-        -2.70702,
-        0.0676503,
-        0.677666,
-        2.58665
-      ],
-      "decal1Line3": [
-        0.164257,
-        -2.63071,
-        0.918763,
-        4.92676
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        0.236776,
-        0.333483,
-        -0.912538,
-        -1.60081
-      ],
-      "decal1CPNormDepth1": [
-        0.236776,
-        0.333483,
-        0.912538,
-        -1.60587
-      ],
-      "decal1RotScale": [
-        1.59651,
-        0.358247
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.254784,
-      "decal1Tex": "ussr_numbers_2",
-      "decal2Line0": [
-        2.72207,
-        -0.0683771,
-        0.614515,
-        -0.965585
-      ],
-      "decal2Line1": [
-        0.151164,
-        -2.61651,
-        -0.960738,
-        4.87771
-      ],
-      "decal2Line2": [
-        -2.72207,
-        0.0683769,
-        0.614515,
-        1.96218
-      ],
-      "decal2Line3": [
-        0.151164,
-        -2.61651,
-        0.960738,
-        4.87238
-      ],
-      "decal2HaveCP": true,
-      "decal2CPNormDepth": [
-        0.214782,
-        0.347548,
-        -0.912732,
-        -1.60904
-      ],
-      "decal2CPNormDepth1": [
-        0.214782,
-        0.347548,
-        0.912732,
-        -1.61411
-      ],
-      "decal2RotScale": [
-        1.59692,
-        0.358242
-      ],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2OppositeMirrored": false,
-      "decal2WidthBox": 0.251977,
-      "decal2Tex": "ussr_numbers_2",
-      "decal3Line0": [
-        2.73159,
-        -0.137519,
-        0.556008,
-        -0.167648
-      ],
-      "decal3Line1": [
-        0.0650361,
-        -2.61736,
-        -0.966872,
-        4.92197
-      ],
-      "decal3Line2": [
-        -2.73159,
-        0.137518,
-        0.556008,
-        1.16456
-      ],
-      "decal3Line3": [
-        0.0650363,
-        -2.61736,
-        0.966872,
-        4.9166
-      ],
-      "decal3HaveCP": true,
-      "decal3CPNormDepth": [
-        0.203891,
-        0.343694,
-        -0.91668,
-        -1.59784
-      ],
-      "decal3CPNormDepth1": [
-        0.203891,
-        0.343694,
-        0.91668,
-        -1.60293
-      ],
-      "decal3RotScale": [
-        1.62329,
-        0.358295
-      ],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": false,
-      "decal3OppositeMirrored": false,
-      "decal3WidthBox": 0.249104,
-      "decal3Tex": "ussr_numbers_2"
-    }
-  },
   "battleHideNodes": {
     "n": "details"
   },
@@ -2948,60 +2751,17 @@
       "decal2Tex": "ussr_numbers_9"
     }
   },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
+  "vehicleSkins": {
+    "forest": {
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
+        "to": "ussr_camo_green*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
       }
     }
-  ]
+  }
 }

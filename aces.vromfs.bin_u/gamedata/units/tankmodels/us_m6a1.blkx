@@ -2921,7 +2921,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": {
         "node": "turret_back_dm",
         "name": "jerrycan",

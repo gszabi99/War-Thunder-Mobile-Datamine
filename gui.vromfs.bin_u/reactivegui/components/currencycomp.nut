@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
+let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let currencyStyles = require("currencyStyles.nut")
@@ -76,9 +76,19 @@ function mkCurrencyImage (id, size, ovr = {}){
   }.__update(ovr)
  }
 
+let function currencyFormat(v){
+  if(type(v) == "integer"){
+    if(v > 1000000)
+      return shortTextFromNum(v)
+    else
+      return decimalFormat(v)
+  }
+  return v
+}
+
 let mkCurrencyText = @(value, style) {
   rendObj = ROBJ_TEXT
-  text = type(value) == "integer" ? decimalFormat(value) : value
+  text = currencyFormat(value)
   color = style.textColor
   fontFxColor = style.fontFxColor
   fontFxFactor = style.fontFxFactor
@@ -147,7 +157,9 @@ function mkDiscountPriceComp(fullValue, value, currencyId, style = CS_COMMON) {
     valign = ALIGN_CENTER
     gap = style.discountPriceGap
     children = [
-      strikeThrough(mkCurrencyComp(fullValue, currencyId, oldPriceStyle), style)
+      value > 0
+        ? strikeThrough(mkCurrencyComp(fullValue, currencyId, oldPriceStyle), style)
+        : null
       price
     ]
   }

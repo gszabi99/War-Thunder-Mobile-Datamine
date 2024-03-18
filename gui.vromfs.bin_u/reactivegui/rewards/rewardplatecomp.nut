@@ -357,7 +357,7 @@ let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, r
 function mkUnitTextsImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
   let size = getRewardPlateSize(r.slots, rStyle)
-  let maxTextWidth = size[0] - 2 * textPadding[1]
+  let maxTextWidth = size[0] - 2 * textPadding[1] - rStyle.markSize
   return function() {
     let res = { watch = unit }
     if (unit.value == null)
@@ -422,6 +422,15 @@ function mkRewardPlateBg(r, rStyle) {
   }
 }
 
+function mkRewardPlateBgVip(r, rStyle) {
+  let size = getRewardPlateSize(r.slots, rStyle)
+  return {
+    size
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/images/offer_item_slot_bg_vip.avif:{size[0]}:{size[1]}:P")
+  }
+}
+
 let rewardPlateCtors = {
   unknown = {
     image = mkRewardPlateUnknownImage
@@ -481,6 +490,15 @@ let mkRewardPlate = @(r, rStyle, ovr = {}) {
   ]
 }.__update(ovr)
 
+let mkRewardPlateVip = @(r, rStyle, ovr = {}) {
+  transform = {}
+  children = [
+    mkRewardPlateBgVip(r, rStyle)
+    mkRewardPlateImage(r, rStyle)
+    mkRewardPlateTexts(r, rStyle)
+  ]
+}.__update(ovr)
+
 return {
   REWARD_STYLE_TINY
   REWARD_STYLE_SMALL
@@ -488,6 +506,7 @@ return {
 
   getRewardPlateSize
   mkRewardPlate
+  mkRewardPlateVip
   mkRewardPlateBg
   mkRewardPlateImage
   mkRewardCurrencyImage

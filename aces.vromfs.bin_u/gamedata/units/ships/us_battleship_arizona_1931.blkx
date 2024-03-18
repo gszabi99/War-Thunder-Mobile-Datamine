@@ -7132,5 +7132,19 @@
         "to": "camo_deepdark_wood*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_navygrey_5*"
+        },
+        {
+          "from": "camo_b15*",
+          "to": "camo_b15*"
+        }
+      ]
+    }
   }
 }

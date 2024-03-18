@@ -4,9 +4,9 @@ let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBar
 let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let aircraftSight = require("%rGui/hud/aircraftSight.nut")
-let bombMissedHint = require("%rGui/hud/bombMissedHint.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let hudTopLeft = require("hudTopLeft.nut")
+let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 
 return {
   size = saSize
@@ -16,12 +16,12 @@ return {
   onAttach = @() startActionBarUpdate("airHud")
   onDetach = @() stopActionBarUpdate("airHud")
   children = [
-    bombMissedHint
     hudTuningElems
     hudTopLeft
     hudTopMainLog
     hudBottomCenter
     currentWeaponNameText
     aircraftSight
+    voiceMsgPie
   ]
 }

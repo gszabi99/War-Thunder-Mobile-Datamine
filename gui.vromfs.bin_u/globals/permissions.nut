@@ -25,6 +25,8 @@ let defaults = {
   can_view_update_suggestion = false
   can_request_ads_consent = DBGLEVEL > 0
   can_view_player_rate = DBGLEVEL > 0
+  allow_chat = DBGLEVEL > 0
+  allow_voice_messages = DBGLEVEL > 0
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

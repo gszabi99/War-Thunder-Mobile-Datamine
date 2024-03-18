@@ -5632,7 +5632,6 @@
           "setStatus": "disable",
           "control": [
             "AXIS_GM_THROTTLE",
-            "AXIS_GM_STEERING",
             "ID_FIRE_GM",
             "ID_ACTION_BAR_ITEM_1",
             "ID_ACTION_BAR_ITEM_2",

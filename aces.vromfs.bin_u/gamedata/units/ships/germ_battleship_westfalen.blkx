@@ -6659,5 +6659,27 @@
         "to": "camo_bottom_green*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "camo_hellgrau_50*"
+        },
+        {
+          "from": "camo_deckbasaltgrau*",
+          "to": "camo_deckbasaltgrau*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_navygrey_5*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_rot_5*"
+        }
+      ]
+    }
   }
 }

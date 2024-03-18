@@ -366,6 +366,16 @@ let lbErrorMsg = @(text) {
   animations = [spinnerOpacityAnim]
 }.__update(fontSmall)
 
+let lbRewardsWarning = {
+  size = [lbRewardsBlockWidth, SIZE_TO_CONTENT]
+  margin = hdpx(10)
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  halign = ALIGN_CENTER
+  text = loc("lb/warning/rewards")
+  color = defTxtColor
+}.__update(fontSmall)
+
 function lbNoDataMsg() {
   let textsList = [loc("leaderboard/noLbData")]
   let count = minRatingBattles.value - bestBattlesCount.value
@@ -419,7 +429,7 @@ let scene = bgShaded.__merge({
       gap = lbVGap
       children = [
         content
-        hasCurLbRewards.value ? lbRewardsBlock : null
+        hasCurLbRewards.value ? lbRewardsBlock : lbRewardsWarning
       ]
     }
     paginator

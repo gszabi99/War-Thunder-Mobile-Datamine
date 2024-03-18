@@ -115,8 +115,9 @@ let tabs = @() {
   children = campaignsList.get().map(
     @(camp) mkTab(
       lbCfgById?[camp]
-      selectedPlayerForInfo.get().campaign == camp,
-      @()selectedPlayerForInfo.mutate(@(v) v.campaign = camp)))
+      selectedPlayerForInfo.get()?.campaign == camp,
+      @() selectedPlayerForInfo.get() == null ? null
+        : selectedPlayerForInfo.mutate(@(v) v.campaign = camp)))
 }
 
 let mkMedals = @(info, selCampaign) function() {

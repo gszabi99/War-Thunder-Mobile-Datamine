@@ -25,7 +25,6 @@ let REWARDS = 3
 let bgColor = 0x80000000
 let questBarColor = premiumTextColor
 let barHeight = hdpx(10)
-let btnSize = [hdpx(300), hdpx(90)]
 let borderWidth = hdpx(1)
 let fillColor = 0x70000000
 let hoverColor = 0xA0000000
@@ -104,12 +103,12 @@ function lootboxInfo(lootbox, sf) {
 
 function progressBar(stepsFinished, stepsToNext, ovr = {}) {
   if (stepsToNext - stepsFinished <= 0)
-    return { size = [btnSize[0], barHeight] }
+    return { size = [flex(), barHeight] }
   let questCompletion = stepsFinished.tofloat() / stepsToNext
 
   return {
     rendObj = ROBJ_BOX
-    size = [btnSize[0], barHeight]
+    size = [flex(), barHeight]
     fillColor = bgColor
     borderWidth
     borderColor = questBarColor
@@ -259,7 +258,6 @@ function mkPurchaseBtns(lootbox, onPurchase) {
 
 let smallChestIcon = {
   size = [smallChestIconSize, smallChestIconSize]
-  margin = [0, hdpx(10)]
   rendObj = ROBJ_IMAGE
   keepAspect = KEEP_ASPECT_FIT
   image = Picture($"ui/gameuiskin#events_chest_icon.svg:{smallChestIconSize}:{smallChestIconSize}:P")

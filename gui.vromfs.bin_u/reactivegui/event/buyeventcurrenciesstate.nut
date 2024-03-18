@@ -20,12 +20,9 @@ let isGoodsFit = @(goods, cId) (goods.currencies?[cId] ?? 0) > 0
   && goods.unitUpgrades.len() == 0
   && goods.items.len() == 0
 
-let isGoodsFitOld = @(goods, cId) (goods?[cId] ?? 0) > 0
-
 let eventCurrenciesGoods = Computed(function() {
   let c = currencyId.get()
-  return shopGoods.get().filter(
-    @(g) "currencies" in g ? isGoodsFit(g, c) : isGoodsFitOld(g, c)) //compatibility with format before 2024.01.23
+  return shopGoods.get().filter(@(g) isGoodsFit(g, c))
 })
 
 let bgFallback = "ui/images/event_bg.avif"

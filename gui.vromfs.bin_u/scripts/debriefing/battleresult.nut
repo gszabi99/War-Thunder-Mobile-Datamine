@@ -18,15 +18,21 @@ let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { get_mp_local_team, get_mplayers_list } = require("mission")
 let { get_mp_tbl_teams } = require("guiMission")
 let mkCommonExtras = require("mkCommonExtras.nut")
+let { lastRoom } = require("%scripts/matchingRooms/sessionLobby.nut")
+
 
 const destroySessionTimeout = 2.0
 const SAVE_FILE = "battleResult.json"
+let exportRoomParams = [ "game_mode_id", "game_mode_name", "mission" ].reduce(@(res, v) res.$rawset(v, true), {})
+
 let debugBattleResult = mkWatched(persist, "debugBattleResult", null)
 let baseBattleResult = mkWatched(persist, "battleResult", null)
 let resultPlayers = mkWatched(persist, "resultPlayers", null)
 let playersCommonStats = mkWatched(persist, "playersCommonStats", {})
 let connectFailedData = mkWatched(persist, "connectFailedData", null)
 let questProgressDiff = mkWatched(persist, "questProgressDiff", null)
+let roomInfo = Computed(@() lastRoom.get()?.public.filter(@(_, key) key in exportRoomParams))
+
 let battleResult = Computed(function() {
   if (debugBattleResult.value)
     return debugBattleResult.value
@@ -34,10 +40,10 @@ let battleResult = Computed(function() {
     return singleMissionResult.value != null
       ? mkCommonExtras(singleMissionResult.value).__merge(singleMissionResult.value)
       : null
-  local res = baseBattleResult.value
+  local res = baseBattleResult.value?.__merge({ roomInfo = roomInfo.get() })
   if (res?.sessionId != battleSessionId.value)
     return connectFailedData.value?.sessionId != battleSessionId.value ? null
-      : connectFailedData.value.__merge({ isDisconnected = true })
+      : connectFailedData.value.__merge({ isDisconnected = true }, { roomInfo = roomInfo.get() })
   if (res?.sessionId == resultPlayers.value?.sessionId)
     res = resultPlayers.value.__merge(res)
   if (playersCommonStats.value.len() != 0)

@@ -2916,6 +2916,41 @@
       }
     ]
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "ussr_camo_green*"
+      },
+      "set_tex": [
+        {
+          "from": "m4a2_76w_sherman_gun_c*",
+          "to": "m4a2_76w_noskin_sherman_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m4a3e8_76w_sherman_hvss_turret_c*",
+          "to": "m4a3e8_76w_noskin_sherman_hvss_turret_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "m4a2_76w_sherman_body_c*",
+          "to": "m4a2_76w_noskin_sherman_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "mg_browning_m2hb_mount_c*",
+          "to": "mg_browning_m2hb_noskin_mount_c*",
+          "param": "camo_skin_tex"
+        }
+      ],
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
+  },
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,

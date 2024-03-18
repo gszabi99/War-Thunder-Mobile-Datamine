@@ -1,7 +1,7 @@
 let { Watched, Computed } = require("frp")
 let { resetTimeout } = require("dagor.workcycle")
 let { serverConfigs } = require("servConfigs.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 
 let seasonsCfg = Computed(@() serverConfigs.get()?.seasons ?? {})
 let curSeasons = Watched({})
@@ -13,6 +13,10 @@ function updateSeasons() {
   let seasons = seasonsCfg.get()
   if (seasons.len() == 0)
     return
+  if (!isServerTimeValid.get()) {
+    curSeasons.set({})
+    return
+  }
 
   let cur = {}
   local nextTime = 0
@@ -56,6 +60,7 @@ function updateSeasons() {
 }
 updateSeasons()
 seasonsCfg.subscribe(@(_) updateSeasons())
+isServerTimeValid.subscribe(@(_) updateSeasons())
 
 let startTimer = @(time) time <= serverTime.get() ? null
   : resetTimeout(time - serverTime.get(), updateSeasons)

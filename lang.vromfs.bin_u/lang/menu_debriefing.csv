@@ -58,7 +58,7 @@
 "debriefing/GroundKillsF";"Friendly ground units destroyed";"Unités au sol amies détruites";"Unità di terra alleate distrutte";"Zerstörte Bodeneinheiten (Verbündete)";"Unidades de superficie aliadas destruidas";"Уничтожение дружественных наземных единиц";"Знищення дружніх наземних одиниць";"Zniszczone sojusznicze jednostki naziemne";"Unidades terrestres amigas destruídas";"İmha edilen müttefik yer birimleri";"오폭한 아군 지상/해상 목표";"友\t军\t地\t面\t单\t位\t误\t伤\t数";"友軍地上・\t海上部隊撃破数";"友\t軍\t地\t面\t單\t位\t誤\t傷\t數"
 "debriefing/Captures";"Zones captured";"Zones capturées";"Zone conquistate";"Gebiete erobert";"Bases capturadas";"Захват зон";"Захоплення зон";"Przejęte strefy";"Bases capturadas";"Ele geçirilen üsler";"점령한 지역";"基\t地\t占\t领\t数";"ゾーン\t占領数";"基\t地\t佔\t領\t數"
 "debriefing/Landings";"Landings";"Atterrissages";"Atterraggi";"Landungen";"Aterrizajes";"Посадки";"Посадки";"Lądowania";"Aterragens";"İnişler";"착륙 성공";"着\t陆\t次\t数";"着陸成功";"著\t陸\t次\t數"
-"debriefing/Takeoffs";"Takeoffs";"Décollages";"Decolli";"Starts";"Despegues";"Взлёты";"Зльоти";"Starty";"Decolagens";"Kalkışlar";"이륙 성공";"出\t击\t次\t数";"離陸総数";"出\t擊\t次\t數"
+"debriefing/Takeoffs";"Take-offs";"Décollages";"Decolli";"Starts";"Despegues";"Взлёты";"Зльоти";"Starty";"Decolagens";"Kalkışlar";"이륙 성공";"出\t击\t次\t数";"離陸総数";"出\t擊\t次\t數"
 "debriefing/Sights";"Enemies spotted";"Ennemi repéré";"Nemici individuati";"Gesichtete Feinde";"Enemigo divisado";"Обнаружение врагов";"Виявлення ворогів";"Spostrzeżeni wrogowie";"Inimigo avistado";"Tespit edilmiş düşmanlar";"적 발견 횟수";"发\t现\t敌\t方\t单\t位";"敵発見数";"發\t現\t敵\t方\t單\t位"
 "debriefing/NewPlane";"New vehicle RP";"Nouveau RP de véhicule";"Esperienza nuovo aereo";"Neue Fahrzeug-FP";"Exp. de avión nuevo";"Очки исследований на новой технике";"Очок досліджень на новому літаку";"PB nowej maszyny";"PP de novo avião";"Yeni araç Araştırma Puanı";"새로운 장비 연구점수";"新\t载\t具\t研\t发\t点";"新機体\tRP";"新\t載\t具\t研\t發\t點"
 "debriefing/Destruction";"Base destruction";"Destruction de base";"Distruzione Basi";"Basen zerstört";"Destrucción de bases";"Разрушение баз";"Руйнування баз";"Zniszczenie baz";"Base Destruída ";"Üsler yok ediliyor";"파괴한 기지";"摧\t毁\t基\t地";"基地破壊数";"基\t地\t摧\t毀"
@@ -116,7 +116,7 @@ noch deine Fortschritte zu Erfolgen gezählt.";"Has destruido un vehículo enemi
 No obtendrás recompensas por esta batalla.
 Progreso del logro no avanzará tambien.";"В бою вы уничтожили технику союзника.
 Боевые награды за этот бой выданы не будут.
-Действия, совершённые в этом бою, также не учтутся в прогрессе достижений.";"В бою ви знищили техніку союзника.
+Действия, совершённые в этом бою, также не зачтутся в прогрессе достижений.";"В бою ви знищили техніку союзника.
 Бойові нагороди за цей бій не будуть видані.
 Дії, вчинені в цьому бою, також не врахуються в прогресі досягнень.";"Zniszczyłeś jednostkę sprzymierzeńca. 
 Kolejne podobne czyny mogą sprawić, że zostaniesz wyrzucony z bitwy. 

@@ -2611,5 +2611,18 @@
       "decal2WidthBox": 0.214129,
       "decal2Tex": "uk_numbers_7"
     }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_vert_olive_arme*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
   }
 }

@@ -5582,5 +5582,19 @@
         "to": "camo_sboat_splotch*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "camo_hellgrau_50*"
+        },
+        {
+          "from": "camo_inside_white*",
+          "to": "camo_inside_white*"
+        }
+      ]
+    }
   }
 }

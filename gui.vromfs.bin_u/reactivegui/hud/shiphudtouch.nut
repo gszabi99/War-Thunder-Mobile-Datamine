@@ -9,6 +9,7 @@ let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBar
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 let { threatRocketsBlock } = require("%rGui/hud/hudThreatRocketsBlock.nut")
 let { isInStrategyMode } = require("%rGui/hudState.nut")
+let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 let strategyHud = require("%rGui/hud/strategyMode/strategyHud.nut")
 
 return @() {
@@ -32,6 +33,7 @@ return @() {
         hudTimersBlock
         shipSight
         currentWeaponNameText
+        voiceMsgPie
       ]
     }
 }

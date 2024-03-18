@@ -5,7 +5,7 @@ let { stop_prem_cutscene } = require("hangar")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { previewGoods, isPreviewGoodsPurchasing } = require("%rGui/shop/goodsPreviewState.nut")
-let purchaseGoods = require("%rGui/shop/purchaseGoods.nut")
+let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
@@ -21,6 +21,7 @@ let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonSty
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { getEventLoc, MAIN_EVENT_ID, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
 
 let activeItemId = Watched(null)
 
@@ -282,14 +283,14 @@ let mkTimeLeftText = @(endTime) function() {
   }, fontBig)
 }
 
-function previewGoodsTimeLeft() {
+let previewGoodsTimeLeft = @(halign) function() {
   let endTime = previewGoods.get()?.endTime ?? previewGoods.get()?.timeRange.end ?? 0
   if (endTime <= 0)
     return { watch = previewGoods }
   return {
     watch = previewGoods
     flow = FLOW_VERTICAL
-    halign = ALIGN_RIGHT
+    halign
     children = [
       {
         size = [hdpx(350), SIZE_TO_CONTENT]
@@ -297,7 +298,7 @@ function previewGoodsTimeLeft() {
         behavior = Behaviors.TextArea
         text = utf8ToUpper(loc("limitedTimeOffer"))
         color = 0xFFFFFFFF
-        halign = ALIGN_RIGHT
+        halign
       }.__update(fontTiny)
       mkTimeLeftText(endTime)
     ]
@@ -337,7 +338,7 @@ let mkTimeBlock = @(animStartTime, child) doubleSideGradient.__merge({
   flow = FLOW_HORIZONTAL
   gap = horGap
   children = [
-    previewGoodsTimeLeft
+    previewGoodsTimeLeft(ALIGN_RIGHT)
     child
   ]
   animations = opacityAnims(aTimeTime, animStartTime, "price")
@@ -345,6 +346,20 @@ let mkTimeBlock = @(animStartTime, child) doubleSideGradient.__merge({
 
 let mkPriceWithTimeBlock = @(animStartTime) mkTimeBlock(animStartTime, purchaseButtonBlock(animStartTime + aTimeTime))
 let mkPriceWithTimeBlockNoOldPrice = @(animStartTime) mkTimeBlock(animStartTime, purchaseButtonNoOldPrice)
+
+let mkTimeBlockCentered = @(animStartTime) doubleSideGradient.__merge({
+  hplace = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = previewGoodsTimeLeft(ALIGN_CENTER)
+  animations = opacityAnims(aTimeTime, animStartTime, "price")
+})
+
+let mkPriceBlockCentered = @(animStartTime) doubleSideGradient.__merge({
+  hplace = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = purchaseButtonBlock(animStartTime + aTimeTime)
+  animations = opacityAnims(aTimeTime, animStartTime, "price")
+})
 
 let mkItemBlink = @(start) {
   size = flex()
@@ -436,7 +451,7 @@ let mkInfoText = @(text, appearDelay) {
 
 let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
   : {
-      watch = activeItemId
+      watch = [activeItemId, eventSeason, specialEvents]
       rendObj = ROBJ_IMAGE
       image = gradTranspDoubleSideX
       color = 0xFF000000
@@ -446,7 +461,8 @@ let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = "\n".concat(
-          colorize(0xFFFFFFFF, loc($"item/{activeItemId.value}")),
+          colorize(0xFFFFFFFF, loc($"item/{activeItemId.value}",
+            { name = getEventLoc(MAIN_EVENT_ID, eventSeason.get(), specialEvents.get()) })),
           loc($"item/{activeItemId.value}/desc")
         )
         color = 0xFFD0D0D0
@@ -456,10 +472,11 @@ let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
 return {
   activeItemId
 
-  previewGoodsTimeLeft
   mkPreviewHeader
   mkPriceWithTimeBlock
   mkPriceWithTimeBlockNoOldPrice
+  mkTimeBlockCentered
+  mkPriceBlockCentered
   mkPreviewItems
   activeItemHint
   mkInfoText

@@ -81,10 +81,6 @@ let overrides = {
   sw_strv_105 = inProgress
   sw_strf_90b = inProgress
   sw_cv_90105_tml = inProgress
-  il_magach_6r = inProgress
-  il_magach_6b = inProgress
-  il_centurion_shot_kal_gimel = inProgress
-  il_m163_vulcan = inProgress
   uk_ac4_thunderbolt = inProgress
   us_halftrack_m16_reskin = inProgress
   uk_bosvark_test = inProgress
@@ -92,14 +88,6 @@ let overrides = {
   germ_pzkpfw_IV_ausf_F2_test = inProgress
   us_m4a1_1942_sherman_test = inProgress
   us_m42_duster_test = inProgress
-  ussr_btr_80a = inProgress
-  ussr_t_44_100_reskin = inProgress
-  ussr_su_122_54 = inProgress
-  ussr_zsu_57_2_reskin2 = inProgress
-  us_m4a2_76w_sherman = inProgress
-  us_m4a3e2_sherman_jumbo = inProgress
-  us_m36 = inProgress
-  us_m42_duster_reskin7 = inProgress
 }
 
 let platoonNames = {

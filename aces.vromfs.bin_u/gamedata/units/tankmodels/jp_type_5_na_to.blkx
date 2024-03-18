@@ -3058,7 +3058,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": [
         {
           "node": "body_side_dm",

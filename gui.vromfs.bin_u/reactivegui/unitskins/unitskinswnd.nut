@@ -37,7 +37,7 @@ let { findLootboxWithReward } = require("%rGui/rewards/lootboxesRewards.nut")
 let { openEmbeddedLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 let { openEventWnd, MAIN_EVENT_ID, getEventLoc, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
 let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
-let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, openBattlePassWnd
+let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, openBattlePassWnd, battlePassGoods
 } = require("%rGui/battlePass/battlePassState.nut")
 let changeSkinTagWnd = require("changeSkinTagWnd.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
@@ -145,7 +145,7 @@ function openLootboxForEvent(lootbox) {
 
 let receiveSkinInfo = @(unitName, skinName) function() {
   let res = {
-    watch = [eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock]
+    watch = [eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoods]
     padding = [0, saBorders[0], 0, 0]
     hplace = ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
@@ -173,7 +173,9 @@ let receiveSkinInfo = @(unitName, skinName) function() {
   let bpUnlock = findUnlockWithReward([bpFreeRewardsUnlock.get(), bpPaidRewardsUnlock.get(), bpPurchasedUnlock.get()],
     serverConfigs.get(),
     @(r) r.skins?[unitName] == skinName)
-  if (bpUnlock != null)
+  let isBpGoods = battlePassGoods.get().findindex(@(v) v.skins?[unitName] == skinName) != null
+
+  if (bpUnlock != null || isBpGoods)
     return res.__update({
       children = [
         mkInfoTextarea(loc("canReceive/inBattlePass"))
@@ -188,6 +190,9 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 }
 
 let function selectBtns(unit, vehicleName, skinName, cSkin) {
+  if ("currentSkins" not in unit) //not own unit
+    return null
+
   let showApplyToPlatoon = unit.platoonUnits.len() > 0
     && ((unit.currentSkins?[unit.name] ?? "") != skinName
       || unit.platoonUnits.findvalue(@(v) (unit.currentSkins?[v.name] ?? "") != skinName) != null)

@@ -1,61 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
-let ads = require("ios.ads")
-let { json_to_string, parse_json } = require("json")
 let logA = log_with_prefix("[ADS] ")
+let { eventbus_subscribe } = require("eventbus")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { parse_json } = require("json")
+let { DBGLEVEL } = require("dagor.system")
 let { is_ios } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
-  debugAdsWndParams, providerPriorities, onShowAds
+  providerPriorities, onShowAds
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let isDebug = !is_ios
-let DBG_PROVIDER = "pc_debug"
-let { DBGLEVEL } = require("dagor.system")
-let { ADS_STATUS_LOADED = 6, ADS_STATUS_SHOWN = 5, ADS_STATUS_NOT_INITED = 1, ADS_STATUS_DISMISS = 4, ADS_STATUS_OK = 8
-} = ads
-let sendAdsBqEvent = !isDebug ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
-let debugAdsInited = persist("debugAdsInited", @() {})
-local isDebugAdsLoaded = false
-let { setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
+let ads = is_ios ? require("ios.ads") : require("adsIosDbg.nut")
+let sendAdsBqEvent = is_ios ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
+let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
+  setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
   isAdsLoaded, loadAds, showAds
-} = !isDebug ? ads
-: {
-      setTestingMode = @(_) null
-      isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
-      getProvidersStatus = @() json_to_string(
-        debugAdsInited.map(@(provider, isInited) { provider, isInited })
-          .values())
-      setPriorityForProvider = @(_, __) null
-      function addProviderInitWithPriority(provider, _, __) {
-        debugAdsInited[provider] <- true
-        setTimeout(0.1, @() eventbus_send("ios.ads.onInit", { status = ADS_STATUS_OK, provider }))
-      }
-      isAdsLoaded = @() isDebugAdsLoaded
-      function loadAds() {
-        isDebugAdsLoaded = false
-        setTimeout(2.0, function() {
-          isDebugAdsLoaded = false
-          eventbus_send("ios.ads.onLoad",  //simulate fail ads
-            { status = ADS_STATUS_DISMISS, provider = "pc_debug_fail" })
-          setTimeout(3.0, function() {
-            isDebugAdsLoaded = debugAdsInited.findvalue(@(v) v) ?? false
-            eventbus_send("ios.ads.onLoad",
-              { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED, provider = DBG_PROVIDER })
-          }, {})
-        }, {})
-      }
-      function showAds() {
-        eventbus_send("ios.ads.onShow", { status = ADS_STATUS_SHOWN, provider = DBG_PROVIDER })
-        debugAdsWndParams({
-          rewardEvent = "ios.ads.onReward"
-          rewardData = { amount = 1, type = "debug", provider = DBG_PROVIDER }
-          finishEvent = "ios.ads.onShow"
-          finishData = { status = ADS_STATUS_DISMISS, provider = DBG_PROVIDER }
-        })
-      }
-    }
+} = ads
+
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())

@@ -149,7 +149,7 @@
             {
               "icontype": "basezone_A",
               "side": "neutral",
-              "target": "briefing_capture_area_03"
+              "target": "briefing_capture_area_01"
             },
             {
               "icontype": "tank",

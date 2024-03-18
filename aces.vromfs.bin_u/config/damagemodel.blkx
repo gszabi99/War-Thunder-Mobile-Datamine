@@ -89,6 +89,19 @@
     1.4,
     1.0
   ],
+  "newbMultsPlaneMissionCount": 5,
+  "botPlaneDamageMultNewbRange": [
+    0.1,
+    1.0
+  ],
+  "planeDamageToBotMultNewbRange": [
+    3.0,
+    1.0
+  ],
+  "botPlaneArcadeSphereMultNewbRange": [
+    3.0,
+    1.0
+  ],
   "genericDamageType": "generic",
   "collisionDamageType": "collision",
   "drowningDamageType": "drowning",
@@ -184,8 +197,8 @@
   "criticalBuoyancy": 0.5,
   "useSyncBulletTrace": true,
   "useParallelBulletQuery": false,
-  "useSyncRocketTrace": false,
-  "useSyncTorpedoTrace": false,
+  "useSyncRocketTrace": true,
+  "useSyncTorpedoTrace": true,
   "ricochetPenetrationModifier": {
     "mod1": [
       0.0,

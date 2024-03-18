@@ -59,6 +59,7 @@ let boostersListActive = require("%rGui/boosters/boostersListActive.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { DBGLEVEL } = require("dagor.system")
 
 
 let unitNameStateFlags = Watched(0)
@@ -162,11 +163,16 @@ let btnVerRow = @(children) {
 
 let leftBottomButtons = btnVerRow([
   campaignsBtn
-  bpBanner
-  btnHorRow([
-    btnOpenQuests
-    btnsOpenSpecialEvents
-  ])
+  @() {
+    watch = newbieOfflineMissions
+    children = newbieOfflineMissions.get() != null && DBGLEVEL == 0 ? null : btnVerRow([
+      bpBanner
+      btnHorRow([
+        btnOpenQuests
+        btnsOpenSpecialEvents
+      ])
+    ])
+  }
   btnHorRow([
     btnVerRow([
       btnOpenUnitAttr

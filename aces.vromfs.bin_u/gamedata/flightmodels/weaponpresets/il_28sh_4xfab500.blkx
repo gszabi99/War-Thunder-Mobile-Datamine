@@ -1,4 +1,24 @@
 {
+  "HideNodes": {
+    "node": [
+      "upk_23_250_b001",
+      "upk_23_250_b002",
+      "rocket_engine_1",
+      "rocket_engine_2",
+      "su_upk_ub_pylon_001",
+      "su_upk_ub_pylon_002",
+      "su_upk_ub_pylon_003",
+      "su_upk_ub_pylon_004",
+      "su_upk_ub_pylon_005",
+      "su_upk_ub_pylon_006",
+      "su_upk_ub_pylon_007",
+      "su_upk_ub_pylon_008",
+      "su_upk_ub_pylon_009",
+      "su_upk_ub_pylon_010",
+      "su_upk_ub_pylon_011",
+      "su_upk_ub_pylon_012"
+    ]
+  },
   "Weapon": [
     {
       "trigger": "rockets",

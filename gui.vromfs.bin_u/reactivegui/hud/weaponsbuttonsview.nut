@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { get_mission_time = @() ::get_mission_time() } = require("mission")
 let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { getRomanNumeral, ceil } = require("%sqstd/math.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")

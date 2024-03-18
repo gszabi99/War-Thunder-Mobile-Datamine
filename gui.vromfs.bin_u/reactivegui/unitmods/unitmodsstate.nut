@@ -84,13 +84,10 @@ let curUnitAllModsCost = Computed(function() {
   return modCostPart.tofloat() * cost
 })
 
-//costWp - compatibility with PServer at 24.07.2023 (0.0.11.X)
-let getModCurrency = @(mod) (mod?.costWp ?? 0) > 0 || (mod?.costWpWeight ?? 0) > 0 ? "wp" : "gold"
+let getModCurrency = @(mod) (mod?.costWpWeight ?? 0) > 0 ? "wp" : "gold"
 function getModCost(mod, allModsCost) {
-  let { costWp = 0, costWpWeight = 0, costGold = 0 } = mod
-  if (costWp > 0) //compatibility with PServer at 24.07.2023 (0.0.11.X)
-    return costWp
-  if (costWpWeight <= 0) //compatibility with PServer at 24.07.2023 (0.0.11.X)
+  let { costWpWeight = 0, costGold = 0 } = mod
+  if (costWpWeight <= 0)
     return costGold
   return roundPrice(costWpWeight.tofloat() * allModsCost)
 }

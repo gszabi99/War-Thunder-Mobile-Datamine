@@ -3233,6 +3233,19 @@
       "decal0Tex": "it_2nd_company_2nd_platoon"
     }
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_olive_green*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
+  },
   "battleHideNodes": {
     "n": "details"
   }

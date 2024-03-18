@@ -3041,5 +3041,18 @@
       "decal3WidthBox": 0.288335,
       "decal3Tex": "jp_5th_sensha_rentai_4_company"
     }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "jp_camo_olive*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
   }
 }

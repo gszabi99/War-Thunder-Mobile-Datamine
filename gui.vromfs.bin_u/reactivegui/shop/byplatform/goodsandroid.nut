@@ -120,7 +120,6 @@ eventbus_subscribe("android.billing.googleplay.onInitAndDataRequested", function
 })
 
 let getSku = @(goods) goods?.purchaseGuids.android.extId
-  ?? goods?.purchaseIds.android //compatibility with pserver 0.0.8.x  2023.05.16
 
 let goodsIdBySku = Computed(function() {
   let res = {}

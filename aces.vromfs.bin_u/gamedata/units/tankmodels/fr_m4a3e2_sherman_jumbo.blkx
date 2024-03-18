@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "minRelativeTankCameraThreshold": 1.32,
+  "minRelativeTankCameraThreshold": 1.3,
   "steeringTable": {
     "point": [
       [
@@ -3021,6 +3021,19 @@
       "decal2OppositeMirrored": false,
       "decal2WidthBox": 0.216831,
       "decal2Tex": "french_tank_emblem_03"
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "fr_camo_vert_olive_arme*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
     }
   }
 }

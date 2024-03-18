@@ -4424,5 +4424,43 @@
         "to": "camo_fadedgreen*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_hazegray*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_rot_5*"
+        }
+      ]
+    },
+    "olive_spots": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_olive_spots*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_warshipdeepgray*"
+        }
+      ]
+    },
+    "arctic_spots": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_arctic_spots*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_warshipdeepgray*"
+        }
+      ]
+    }
   }
 }

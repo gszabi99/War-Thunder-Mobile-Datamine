@@ -6,6 +6,7 @@ let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { openShopWndByCurrencyId } = require("%rGui/shop/shopState.nut")
 let { curEvent } = require("%rGui/event/eventState.nut")
 let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
+let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 
 let NO_BALANCE_UID = "no_balance_msg"
 
@@ -95,7 +96,7 @@ function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo) {
       return
 
     priceComp.append(
-      mkCurrencyComp(price.price, price.currencyId, CS_INCREASED_ICON)
+      mkCurrencyComp(decimalFormat(price.price), price.currencyId, CS_INCREASED_ICON)
         .__update({ margin = [ hdpx(25), 0, 0, 0 ] })
     )
   }

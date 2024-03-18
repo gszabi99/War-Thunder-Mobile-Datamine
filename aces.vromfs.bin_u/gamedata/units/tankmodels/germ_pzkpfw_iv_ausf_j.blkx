@@ -1659,207 +1659,6 @@
     ],
     "detectionHeight": 2.6
   },
-  "upgraded_skin": {
-    "replace_tex": {
-      "from": "ger_camo_dunkelgelb*",
-      "to": "ger_camo_winter_lines*"
-    }
-  },
-  "upgradedDecals": {
-    "upgraded": {
-      "skin_condition": 100.0,
-      "camo_scale": -10.0,
-      "camo_rotation": 4.0,
-      "decal0Line0": [
-        3.12319,
-        -1.41497e-7,
-        0.896563,
-        -0.240415
-      ],
-      "decal0Line1": [
-        0.0061795,
-        -3.24926,
-        -0.021527,
-        6.80416
-      ],
-      "decal0Line2": [
-        -3.12319,
-        -1.41497e-7,
-        0.896562,
-        1.14108
-      ],
-      "decal0Line3": [
-        0.00617977,
-        -3.24925,
-        0.0215268,
-        6.80178
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        0.275916,
-        0.00689258,
-        -0.961157,
-        -1.21313
-      ],
-      "decal0CPNormDepth1": [
-        0.275916,
-        0.00689258,
-        0.961157,
-        -1.31963
-      ],
-      "decal0RotScale": [
-        1.5708,
-        0.307756
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.207419,
-      "decal0Tex": "germany_numbers_red_1",
-      "decal1Line0": [
-        2.7502,
-        -1.24732e-7,
-        0.790175,
-        -0.812233
-      ],
-      "decal1Line1": [
-        0.00585804,
-        -2.86139,
-        -0.0203894,
-        5.99474
-      ],
-      "decal1Line2": [
-        -2.7502,
-        -1.24732e-7,
-        0.790175,
-        1.72468
-      ],
-      "decal1Line3": [
-        0.00585832,
-        -2.86139,
-        0.0203893,
-        5.99248
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        0.276136,
-        0.00741376,
-        -0.96109,
-        -1.21419
-      ],
-      "decal1CPNormDepth1": [
-        0.276136,
-        0.00741376,
-        0.96109,
-        -1.32068
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.349471
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": true,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.214794,
-      "decal1Tex": "back_16",
-      "decal2Line0": [
-        3.39795,
-        -1.55298e-7,
-        0.974587,
-        1.09812
-      ],
-      "decal2Line1": [
-        0.00620936,
-        -3.53488,
-        -0.0216499,
-        7.349
-      ],
-      "decal2Line2": [
-        -3.39795,
-        -1.54064e-7,
-        0.974587,
-        -0.206107
-      ],
-      "decal2Line3": [
-        0.00620963,
-        -3.53488,
-        0.0216496,
-        7.3466
-      ],
-      "decal2HaveCP": true,
-      "decal2CPNormDepth": [
-        0.275695,
-        0.0063714,
-        -0.961224,
-        -1.21207
-      ],
-      "decal2CPNormDepth1": [
-        0.275695,
-        0.0063714,
-        0.961224,
-        -1.31857
-      ],
-      "decal2RotScale": [
-        1.5708,
-        0.282889
-      ],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2OppositeMirrored": false,
-      "decal2WidthBox": 0.200001,
-      "decal2Tex": "germany_numbers_red_4",
-      "decal3Line0": [
-        3.21441,
-        -1.4691e-7,
-        0.921946,
-        0.379648
-      ],
-      "decal3Line1": [
-        0.00587398,
-        -3.34395,
-        -0.0204805,
-        6.96538
-      ],
-      "decal3Line2": [
-        -3.21441,
-        -1.45742e-7,
-        0.921946,
-        0.518201
-      ],
-      "decal3Line3": [
-        0.00587422,
-        -3.34395,
-        0.0204802,
-        6.96312
-      ],
-      "decal3HaveCP": true,
-      "decal3CPNormDepth": [
-        0.275695,
-        0.0063714,
-        -0.961224,
-        -1.21207
-      ],
-      "decal3CPNormDepth1": [
-        0.275695,
-        0.0063714,
-        0.961224,
-        -1.31857
-      ],
-      "decal3RotScale": [
-        1.5708,
-        0.299042
-      ],
-      "decal3Mirrored": false,
-      "decal3Wrap": false,
-      "decal3Abs": false,
-      "decal3OppositeMirrored": false,
-      "decal3WidthBox": 0.201524,
-      "decal3Tex": "germany_numbers_red_5"
-    }
-  },
   "dm_for_shop": {
     "armorThicknessFront": [
       0.8,
@@ -2957,7 +2756,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [
@@ -3097,80 +2895,19 @@
       "decal0Tex": "back_16"
     }
   },
-  "skin": [
-    {
-      "name": "green",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green",
-      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
+  "vehicleSkins": {
+    "forest": {
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green*"
-      }
-    },
-    {
-      "name": "blots",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots*"
-      }
-    },
-    {
-      "name": "lines",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines*"
-      }
-    },
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_dunkelgelb*"
-      }
-    },
-    {
-      "name": "ger_camo_winter_waves",
-      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
-      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_waves_bicolor*"
-      }
-    },
-    {
-      "name": "hinterhalt_daimler",
-      "nameLocId": "skin/ger_camo_hinterhalt_daimler",
-      "descLocId": "skin/ger_camo_hinterhalt_daimler/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_hinterhalt_daimler*"
-      }
-    },
-    {
-      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
-      }
-    },
-    {
-      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
+        "to": "ger_camo_dunkelgelb*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
       }
     }
-  ],
+  },
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,

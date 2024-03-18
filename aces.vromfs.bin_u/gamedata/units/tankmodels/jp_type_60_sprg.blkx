@@ -3042,6 +3042,19 @@
       "decal1Tex": "flag_japan"
     }
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_sdf_green*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
+  },
   "battleHideNodes": {
     "n": "details"
   }

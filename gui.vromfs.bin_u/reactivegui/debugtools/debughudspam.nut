@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { get_mission_time = @() ::get_mission_time() } = require("mission")
 let { eventbus_send } = require("eventbus")
 let { register_command, command } = require("console")
 let { MISSION_CAPTURING_ZONE } = require("guiMission")

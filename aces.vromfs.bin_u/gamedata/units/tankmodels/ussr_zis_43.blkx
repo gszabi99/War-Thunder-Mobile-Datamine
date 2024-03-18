@@ -2944,7 +2944,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": {
         "node": "superstructure_top_dm",
         "name": "ussr_tank_helmet",

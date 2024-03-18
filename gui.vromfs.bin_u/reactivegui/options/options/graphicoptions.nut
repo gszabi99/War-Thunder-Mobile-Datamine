@@ -3,7 +3,7 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_common_local_settings_blk, get_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported, should_notify_about_restart,
-  get_platform_window_resolution, get_default_graphics_preset
+  get_platform_window_resolution = null, get_default_graphics_preset = @() "low"
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, mkOptionValue
@@ -14,17 +14,17 @@ let { has_additional_graphics_content } = require("%appGlobals/permissions.nut")
 
 let qualitiesListDev = ["movie"]
 let minMemory = 4096
-let deviceSH = get_platform_window_resolution().height
+let deviceSH = get_platform_window_resolution?().height
 let qualitiesList = (get_settings_blk()?.graphics.forceLowPreset ?? false) ? ["low"]
   : (is_android && (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory) ? ["low", "medium"]
-  : (is_android && deviceSH < 1080) ? ["low", "medium", "high"]
+  : (is_android && deviceSH != null && deviceSH < 1080) ? ["low", "medium", "high"]
   : ["low", "medium", "high", "max"].extend(is_pc ? qualitiesListDev : [])
 let validateQuality = @(q) qualitiesList.contains(q) ? q : qualitiesList[0]
 let defaultQuality = validateQuality(get_default_graphics_preset())
 let graphicsQuality = mkOptionValue(OPT_GRAPHICS_QUALITY, defaultQuality, validateQuality)
 
-let resolutionList = (get_settings_blk()?.graphics.forceLowPreset ?? false) ? ["low"]
-  : (is_android && (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory) ? ["low", "medium"]
+let resolutionList = (is_android && (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory)
+  ? ["low", "medium"]
   : ["low", "medium", "high"]
 
 let validateResolution = @(q) resolutionList.contains(q) ? q : resolutionList[0]

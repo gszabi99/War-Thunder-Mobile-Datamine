@@ -7,9 +7,11 @@ let { getLocNamePlatinum, mkGoodsPlatinum } = require("%rGui/shop/goodsView/good
 let { getLocNamePremium, mkGoodsPremium } = require("%rGui/shop/goodsView/goodsPremium.nut")
 let { getLocNameUnit, mkGoodsUnit } = require("%rGui/shop/goodsView/goodsUnit.nut")
 let { getLocNameConsumables, mkGoodsConsumables } = require("%rGui/shop/goodsView/goodsConsumables.nut")
+let { getLocNameLootbox, mkGoodsLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
 
 let customLocId = {
   battle_pass = "battlePass"
+  battle_pass_vip = "battlePassVIP"
 }
 
 let locNameGetters = {
@@ -20,6 +22,7 @@ let locNameGetters = {
   [SGT_PREMIUM] = getLocNamePremium,
   [SGT_UNIT] = getLocNameUnit,
   [SGT_CONSUMABLES] = getLocNameConsumables,
+  [SGT_LOOTBOX] = getLocNameLootbox,
 }
 
 let constructors = {
@@ -30,6 +33,7 @@ let constructors = {
   [SGT_PREMIUM] = mkGoodsPremium,
   [SGT_UNIT] = mkGoodsUnit,
   [SGT_CONSUMABLES] = mkGoodsConsumables,
+  [SGT_LOOTBOX] = mkGoodsLootbox,
 }
 
 let getGoodsLocName = @(goods) goods.id in customLocId ? loc(customLocId[goods.id])

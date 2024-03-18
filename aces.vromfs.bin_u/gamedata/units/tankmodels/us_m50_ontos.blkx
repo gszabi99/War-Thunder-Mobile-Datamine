@@ -3018,6 +3018,19 @@
       "decal0Tex": "usa_tank_emblem_08"
     }
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "us_camo_olive*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
+  },
   "battleHideNodes": {
     "n": "details"
   }

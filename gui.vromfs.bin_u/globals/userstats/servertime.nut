@@ -1,5 +1,4 @@
-
-let { Watched } = require("frp")
+let { Watched, Computed } = require("frp")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { get_time_msec } = require("dagor.time")
 let { setInterval } = require("dagor.workcycle")
@@ -20,4 +19,5 @@ return {
   serverTime
   gameStartServerTimeMsec
   lastReceivedServerTime
+  isServerTimeValid = Computed(@() gameStartServerTimeMsec.get() > 0)
 }

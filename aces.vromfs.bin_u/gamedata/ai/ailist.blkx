@@ -5599,7 +5599,8 @@
                 "flyToPos": {
                   "speed": 350.0,
                   "dist": 600.0,
-                  "minAlt": 200.0
+                  "minAlt": 200.0,
+                  "unreachableMaxTime": 60.0
                 },
                 "removeGroupCurrentPlayerOrder": {}
               }
@@ -5996,7 +5997,8 @@
                 "flyToPos": {
                   "speed": 350.0,
                   "dist": 600.0,
-                  "minAlt": 200.0
+                  "minAlt": 200.0,
+                  "unreachableMaxTime": 60.0
                 },
                 "removeGroupCurrentPlayerOrder": {}
               }
@@ -6391,7 +6393,8 @@
                 "flyToPos": {
                   "speed": 350.0,
                   "dist": 600.0,
-                  "minAlt": 200.0
+                  "minAlt": 200.0,
+                  "unreachableMaxTime": 60.0
                 },
                 "removeGroupCurrentPlayerOrder": {}
               }

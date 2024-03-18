@@ -39,7 +39,9 @@ let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
-  "decorator", "medal", "booster", "skin" ]
+  "decorator", "medal", "booster", "skin",
+  "stat" //we will not show this reward, but no need logerr about it
+]
 
 let bgGradient = bgMessage.__merge({size = flex()})
 let wndWidth = saSize[0]

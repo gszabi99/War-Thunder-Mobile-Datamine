@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { get_mission_time = @() ::get_mission_time() } = require("mission")
 let { playSound } = require("sound_wt")
 let { btnBgColor, borderColorPushed, borderNoAmmoColor, borderColor
 } = require("%rGui/hud/hudTouchButtonStyle.nut")

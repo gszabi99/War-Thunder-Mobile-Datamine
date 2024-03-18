@@ -44,7 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": 1.3,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.1,

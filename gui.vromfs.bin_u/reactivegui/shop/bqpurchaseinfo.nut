@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_WARBONDS, SGT_EVENT_KEYS } = require("%rGui/shop/shopConst.nut")
+let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_WARBONDS, SGT_EVENT_KEYS, SGT_LOOTBOX
+} = require("%rGui/shop/shopConst.nut")
 
 /*
 UI BQ event "open_currency_shop" format:
@@ -44,6 +45,7 @@ let goodsTypeToPurchTypeMap = {
   [SGT_WP] = PURCH_TYPE_CURRENCY,
   [SGT_WARBONDS] = PURCH_TYPE_CURRENCY,
   [SGT_EVENT_KEYS] = PURCH_TYPE_CURRENCY,
+  [SGT_LOOTBOX] = PURCH_TYPE_LOOTBOX,
 }
 
 function getPurchaseTypeByGoodsType(gtype) {

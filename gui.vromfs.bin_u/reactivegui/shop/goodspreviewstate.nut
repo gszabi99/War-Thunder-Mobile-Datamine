@@ -15,6 +15,7 @@ let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let GPT_UNIT = "unit"
 let GPT_CURRENCY = "currency"
 let GPT_PREMIUM = "premium"
+let GPT_LOOTBOX = "lootbox"
 
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
@@ -54,16 +55,22 @@ let previewGoodsUnit = Computed(function() {
 })
 
 let previewType = Computed(@() previewGoodsUnit.value != null ? GPT_UNIT
-  : (previewGoods.value?.wp ?? 0) > 0 || (previewGoods.value?.gold ?? 0) > 0 ? GPT_CURRENCY //compatibility with format before 2024.01.23
+  : (previewGoods.get()?.lootboxes.len() ?? 0) > 0 ? GPT_LOOTBOX
   : (previewGoods.get()?.currencies.len() ?? 0) > 0 ? GPT_CURRENCY
-  : (previewGoods.value?.premiumDays ?? 0) > 0  ? GPT_PREMIUM
+  : (previewGoods.get()?.premiumDays ?? 0) > 0  ? GPT_PREMIUM
   : null)
 
 let isPreviewGoodsPurchasing = Computed(@() previewGoods.value?.id != null
   && (previewGoods.value.id == shopPurchaseInProgress.value
     || previewGoods.value.id == platformPurchaseInProgress.value))
 
-isPreviewGoodsPurchasing.subscribe(@(v) v ? null : closeGoodsPreview())
+isPreviewGoodsPurchasing.subscribe(function(v) {
+  if (v || previewGoods.get() == null)
+    return
+  let { id, limit = 0, oncePerSeason = "" } = previewGoods.get()
+  if (previewGoodsUnit.get() != null || activeOffer.get()?.id == id || limit > 0 || oncePerSeason != "")
+    closeGoodsPreview()
+})
 
 eventbus_subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
 
@@ -80,6 +87,7 @@ return {
   GPT_UNIT
   GPT_CURRENCY
   GPT_PREMIUM
+  GPT_LOOTBOX
 
   openGoodsPreview
   closeGoodsPreview

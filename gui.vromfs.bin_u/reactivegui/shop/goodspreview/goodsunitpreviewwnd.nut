@@ -235,12 +235,21 @@ let balanceBlock = @() {
   animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 }
 
+let itemsDesc = {
+  padding = [hdpx(20), hdpx(20)]
+  rendObj = ROBJ_TEXT
+  valign = ALIGN_CENTER
+  text = loc("offer/itemsDesc")
+  animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
+}.__update(fontSmall)
+
 let leftBlock = {
   size = flex()
   flow = FLOW_VERTICAL
   children = [
     platoonUnitsBlock
     { size = flex() }
+    itemsDesc
     packInfo(-1, { pos = [unitSelUnderlineFullSize, 0] })
   ]
 }

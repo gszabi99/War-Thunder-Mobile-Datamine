@@ -20,6 +20,7 @@ let hcDamageStatus = mkWatched(persist, "hcDamageStatus", {})
 let hcImportantEvents = mkWatched(persist, "hcImportantEvents", [])
 let curImportantResult = mkWatched(persist, "curImportantResult", null)
 let hcResultByState = mkWatched(persist, "hcResultByState", null)
+let isBombMiss = Watched(false)
 let mode = Computed(@() state.value.mode)
 let hcInfo = Computed(@() state.value.info)
 let isHcRender = Computed(@() mode.value != HIT_CAMERA_FINISH)
@@ -42,6 +43,7 @@ let hcResult = Computed(function() {
   let iResult = validateByVersion(curImportantResult.value, hcUnitId.value, hcUnitVersion.value)
   if (sResult == null || iResult == null)
     return sResult ?? iResult
+      ?? (isBombMiss.get() ? { styleId = "miss", locId = "hitcamera/result/targetNotHit" } : null)
   return iResult.isRelevant || iResult.time > sResult.time ? iResult : sResult
 })
 
@@ -237,6 +239,12 @@ eventbus_subscribe("EnemyPartDamage", onEnemyPartDamage)
 eventbus_subscribe("EnemyDamageState", @(ev) ev.unitId != hcUnitId.value ? null
   : hcDamageStatus(ev.updateDebuffsOnly ? hcDamageStatus.value.__merge(ev) : ev))
 eventbus_subscribe("HitCameraImportanEvents", onHitCameraImportantEvents)
+
+let resetShowBombMiss = @() isBombMiss(false)
+eventbus_subscribe("onBombMiss", function(_) {
+  isBombMiss(true)
+  resetTimeout(3, resetShowBombMiss)
+})
 
 
 let partsBrokenInfo = @(unitInfo) unitInfo.parts.map(@(dmList)

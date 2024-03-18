@@ -285,6 +285,9 @@
         "mRank": 2
       }
     },
+    "pkg_lvl_st_patrick": {
+      "hangarPath": "config/hangar_field_st_patrick.blk"
+    },
     "pkg_germ_battlecruiser_von_der_tann": {
       "conditions": {
         "campaign": "ships",
@@ -337,6 +340,24 @@
       "conditions": {
         "campaign": "ships",
         "mRank": 3
+      }
+    },
+    "pkg_jp_destroyer_rckt_takatsuki": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_ussr_battleship_marat": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_jp_battlecruiser_kongo": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
       }
     },
     "pkg_ussr_kv_122": {
@@ -415,6 +436,24 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 4
+      }
+    },
+    "pkg_uk_chieftain_mk_3": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_ussr_btr_80a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_il_magach_6r": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
       }
     },
     "pkg_environment": {

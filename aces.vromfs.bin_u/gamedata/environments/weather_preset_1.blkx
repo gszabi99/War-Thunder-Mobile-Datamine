@@ -5,6 +5,11 @@
     "water": {
       "L_inv_white": 0.3
     },
+    "adaptation": {
+      "useAdaptation": false,
+      "minExposure": 0.5,
+      "maxExposure": 0.5
+    },
     "hdr": {
       "useAdaptation": false,
       "adaptationTimeHighToNorm": 0.25,

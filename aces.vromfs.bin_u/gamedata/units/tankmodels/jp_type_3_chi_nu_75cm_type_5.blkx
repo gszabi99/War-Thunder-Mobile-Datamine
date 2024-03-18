@@ -2311,7 +2311,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": [
         {
           "node": "turret_04_top_dm",

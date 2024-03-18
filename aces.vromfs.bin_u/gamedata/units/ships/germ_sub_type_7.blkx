@@ -674,6 +674,14 @@
     "cameraAhead": true
   },
   "commonWeapons": {
+    "hideNodes": {
+      "n": [
+        "ex_decor_01",
+        "auxiliary_caliber_turret_03",
+        "auxiliary_caliber_gun_03",
+        "gun_barrel_01"
+      ]
+    },
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -762,7 +770,7 @@
         "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
-          "head": "auxiliary_caliber_gun_01",
+          "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01",
           "barrel": "auxiliary_caliber_gun_01"
         },
@@ -818,7 +826,7 @@
         "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
-          "head": "auxiliary_caliber_gun_02",
+          "head": "auxiliary_caliber_turret_02",
           "gun": "auxiliary_caliber_gun_02",
           "barrel": "auxiliary_caliber_gun_02"
         },
@@ -1041,6 +1049,14 @@
     "weapons_contact_mines": {
       "effects": {
         "commonWeapons": {
+          "hideNodes": {
+            "n": [
+              "ex_decor_01",
+              "auxiliary_caliber_turret_03",
+              "auxiliary_caliber_gun_03",
+              "gun_barrel_01"
+            ]
+          },
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -1129,7 +1145,7 @@
               "errTargetting": 0.1,
               "errExplTime": 0.0,
               "turret": {
-                "head": "auxiliary_caliber_gun_01",
+                "head": "auxiliary_caliber_turret_01",
                 "gun": "auxiliary_caliber_gun_01",
                 "barrel": "auxiliary_caliber_gun_01"
               },
@@ -1185,7 +1201,7 @@
               "errTargetting": 0.1,
               "errExplTime": 0.0,
               "turret": {
-                "head": "auxiliary_caliber_gun_02",
+                "head": "auxiliary_caliber_turret_02",
                 "gun": "auxiliary_caliber_gun_02",
                 "barrel": "auxiliary_caliber_gun_02"
               },
@@ -2133,7 +2149,13 @@
     }
   },
   "battleHideNodes": {
-    "n": "details"
+    "n": [
+      "details",
+      "ex_decor_01",
+      "auxiliary_caliber_turret_03",
+      "auxiliary_caliber_gun_03",
+      "gun_barrel_01"
+    ]
   },
   "upgraded_skin": {
     "name": "prem_camo",

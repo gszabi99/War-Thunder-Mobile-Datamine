@@ -161,4 +161,5 @@ let scoreBoardEditView = {
 return {
   scoreBoard
   scoreBoardEditView
+  scoreBoardHeight = timerBgHeight
 }

@@ -146,7 +146,6 @@ eventbus_subscribe("ios.billing.onInitAndDataRequested", function(result) {
 })
 
 let getProductId = @(goods) goods?.purchaseGuids.iOS.extId
-  ?? goods?.purchaseIds.android //compatibility with pserver 0.0.8.x  2023.05.16  (there was only android id, because it the same with iOS)
 
 let goodsIdByProductId = Computed(function() {
   let res = {}

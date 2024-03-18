@@ -1,13 +1,13 @@
 from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
-
+let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { format } = require("string")
 let { register_command } = require("console")
-let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { dgs_get_settings } = require("dagor.system")
 let { isDownloadedFromGooglePlay, getPackageName } = require("android.platform")
 let { shell_execute } = require("dagor.shell")
+let { BAN_USER_INFINITE_PENALTY } = require("penalty")
 let { is_ios } = require("%sqstd/platform.nut")
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
 let { isMatchingOnline } = require("%appGlobals/loginState.nut")
@@ -16,6 +16,9 @@ let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/open
 let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { SERVER_ERROR_INVALID_VERSION, CLIENT_ERROR_CONNECTION_CLOSED } = require("matching.errors")
+let matching = require("%scripts/matching_api.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
 isMatchingOnline(is_online_available())
 
@@ -57,6 +60,43 @@ function destroyConnectProgressMessages() {
 
 let leaveQueueImpl = @() eventbus_send("leaveQueue", {})
 
+let getLogoutButtons = @(forceExit) forceExit || !canLogout()
+  ? [{ id = "exit", eventId = "matchingExitGame", styleId = "PRIMARY", isDefault = true }]
+  : [{ id = "ok", styleId = "PRIMARY", isDefault = true }]
+
+matching.subscribe("mrpc.punish_client", function(p, send_resp) {
+  if (canLogout())
+    startLogout()
+  send_resp(null)
+
+  let { message = "", duration = 0, start = 0 } = p?.details
+  if (duration.tointeger() >= BAN_USER_INFINITE_PENALTY) {
+    openFMsgBox({
+      text = "\n\n".concat(
+        loc("charServer/ban/permanent"),
+        message)
+      buttons = getLogoutButtons(false)
+      isPersist = true
+    })
+    return
+  }
+
+  let durationSec = duration.tointeger()
+  let startSec = start.tointeger()
+  openFMsgBox({
+    text = "\n".concat(
+      format(loc("charServer/ban/timed"), secondsToHoursLoc(durationSec)),
+      serverTime.get() <= 0 ? ""
+        : format(loc("charServer/ban/timeLeft"),
+            secondsToHoursLoc(startSec + durationSec - serverTime.get())),
+      " ",
+      message
+    )
+    buttons = getLogoutButtons(false)
+    isPersist = true
+  })
+})
+
 let customErrorHandlers = {
   [SERVER_ERROR_INVALID_VERSION] = function(_, __, ___) {
     sendErrorBqEvent("Downoad new version (required)")
@@ -85,23 +125,16 @@ function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
     return
   }
 
-  local needExit = forceExit
-  if (!needExit) {
-    if (canLogout())
-      startLogout()
-    else
-      needExit = true
-  }
+  if (!forceExit && canLogout())
+    startLogout()
 
-  let id = needExit ? "exit" : "ok"
-  let eventId = needExit ? "matchingExitGame" : null
   let msg = getErrorMsgParams(reason)
   sendErrorLocIdBqEvent(msg.bqLocId)
 
   openFMsgBox(msg
     .__update({
       text = (message ?? "") == "" ? msg.text : $"{msg.text}\n\n{message}"
-      buttons = [{ id, eventId, styleId = "PRIMARY", isDefault = true }]
+      buttons = getLogoutButtons(forceExit)
       isPersist = true
     }))
 }

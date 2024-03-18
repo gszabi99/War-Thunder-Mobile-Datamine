@@ -2551,7 +2551,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": {
         "node": "turret_01_top_dm",
         "name": "jerrycan",

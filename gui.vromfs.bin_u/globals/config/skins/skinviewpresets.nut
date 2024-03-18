@@ -33,11 +33,13 @@ let skinsByTag = {
     "se_camo_modern_deform"
     "tl_camo_green_forest"
     "uk_camo_middle_deep_bronze_greens"
+    "us_camo_modern_green"
     "uk_camo_standart_modern_bicolor"
     "uk_camo_very_dark_drab"
     "us_camo_dark_green_dark_earth"
     "us_camo_olive"
     "us_camo_olive_drab"
+    "us_camo_olive_drab_olive"
     "us_camo_olive_late"
     "usa_modern_seventh_army"
     "usa_modern_summer_verdant"
@@ -48,6 +50,8 @@ let skinsByTag = {
     "ussr_camo_green"
     "ussr_camo_green_ltbrown_lines"
     "ussr_camo_green_new-painty"
+    "ussr_modern_forest"
+    "ussr_camo_deform"
   ],
 
   [DESERT] = [
@@ -61,6 +65,7 @@ let skinsByTag = {
     "rsa_camo_modern_three_color"
     "uk_camo_earth_yellow"
     "uk_camo_light_mud_blue_black"
+    "uk_camo_light_mud_slate_grey"
     "uk_camo_light_stone_slate_grey"
     "us_camo_desert_pink_dark_khaki"
     "us_camo_desert_pink_lines"
@@ -71,6 +76,9 @@ let skinsByTag = {
     "us_camo_olive_drab_desert_pink_"
     "ussr_camo_desert_syrian_green_brown_yellow"
     "ussr_camo_desert_yellow_brown"
+    "tl_camo_desert_chopped"
+    "isr_camo_sandgray"
+
   ],
 
   [WINTER] = [
@@ -90,7 +98,7 @@ let skinsByTag = {
     "ussr_camo_winter"
     "ussr_camo_winter_lines"
     "ussr_camo_winter_net"
-    "ussr_modern_forest"
+    "ussr_modern_winter"
   ],
 
   [NAVAL] = [

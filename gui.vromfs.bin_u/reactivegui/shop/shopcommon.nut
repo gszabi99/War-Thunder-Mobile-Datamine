@@ -9,6 +9,14 @@ let shopCategoriesCfg = [
     gtypes = [ SGT_UNKNOWN ]
   },
   {
+    id = SC_FEATURED
+    title = loc("shop/category/featured")
+    // TODO: replace icon
+    getImage =  @(campaign) campaign == "tanks" ? "!ui/gameuiskin#shop_tanks.svg"
+      : "!ui/gameuiskin#shop_ships.svg"
+    gtypes = [ SGT_UNIT, SGT_LOOTBOX ]
+  },
+  {
     id = SC_GOLD
     title = loc("shop/category/gold")
     image = "!ui/gameuiskin#shop_eagles.svg"
@@ -33,14 +41,6 @@ let shopCategoriesCfg = [
     gtypes = [ SGT_PREMIUM ]
   },
   {
-    id = SC_UNIT
-    getTitle = @(campaign) campaign == "tanks" ? loc("shop/category/tanks")
-      : loc("shop/category/ships")
-    getImage =  @(campaign) campaign == "tanks" ? "!ui/gameuiskin#shop_tanks.svg"
-      : "!ui/gameuiskin#shop_ships.svg"
-    gtypes = [ SGT_UNIT ]
-  },
-  {
     id = SC_CONSUMABLES
     title = loc("shop/category/consumables")
     image = "!ui/gameuiskin#shop_consumables.svg"
@@ -54,33 +54,25 @@ function getGoodsType(goods) {
     return SGT_UNIT
   if (goods.items.len() > 0)
     return SGT_CONSUMABLES
+  if (goods.lootboxes.len() > 0)
+    return SGT_LOOTBOX
   if (goods.premiumDays > 0)
     return SGT_PREMIUM
-  if ("currencies" not in goods) { //compatibility with format before 2024.01.23
-    if (goods.gold > 0)
-      return SGT_GOLD
-    if (goods.wp > 0)
-      return SGT_WP
-    if ((goods?.platinum ?? 0) > 0)
-      return SGT_PLATINUM
-    if ((goods?.warbond ?? 0) > 0)
-      return SGT_WARBONDS
-    if ((goods?.eventKey ?? 0) > 0)
-      return SGT_EVENT_KEYS
-  }
   else if (goods.currencies.len() == 1)
     return currencyToGoodsType?[goods.currencies.findindex(@(_) true)] ?? SGT_UNKNOWN
   return SGT_UNKNOWN
 }
 
-function isGoodsFitToCampaign(goods, cConfigs) {
-  let { units = [], unitUpgrades = [], items = {} } = goods
+function isGoodsFitToCampaign(goods, cConfigs, curCampaign = null) {
+  let { units = [], unitUpgrades = [], items = {} , meta = {}} = goods
   if (units.len() > 0)
     return null != units.findvalue(@(u) u in cConfigs?.allUnits)
   if (unitUpgrades.len() > 0)
     return null != unitUpgrades.findvalue(@(u) u in cConfigs?.allUnits)
   if (items.len() > 0)
     return null != items.findvalue(@(_, i) i in cConfigs?.allItems)
+  if (meta?.campaign && meta?.campaign != curCampaign)
+    return false
   return true
 }
 

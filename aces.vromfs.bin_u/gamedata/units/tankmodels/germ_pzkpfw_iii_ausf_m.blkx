@@ -1539,187 +1539,6 @@
     ],
     "detectionHeight": 2.3
   },
-  "upgraded_skin": {
-    "replace_tex": {
-      "from": "ger_camo_grey*",
-      "to": "ger_camo_dunkelgelb_africa*"
-    }
-  },
-  "upgradedDecals": {
-    "default": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [
-        2.54529,
-        -7.61684e-8,
-        0.23139,
-        -1.07357
-      ],
-      "decal0Line1": [
-        0.0986895,
-        -2.31167,
-        -1.08559,
-        3.8564
-      ],
-      "decal0Line2": [
-        -2.54529,
-        -1.14253e-7,
-        0.23139,
-        2.07357
-      ],
-      "decal0Line3": [
-        0.0986898,
-        -2.31167,
-        1.08559,
-        3.8564
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        0.0818879,
-        0.426508,
-        -0.900769,
-        -1.55658
-      ],
-      "decal0CPNormDepth1": [
-        0.0818879,
-        0.426508,
-        0.900769,
-        -1.55658
-      ],
-      "decal0RotScale": [
-        1.5708,
-        0.391269
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.241229,
-      "decal0Tex": "back_16",
-      "decal1Line0": [
-        0.0,
-        -1.4175e-7,
-        3.24286,
-        1.14537
-      ],
-      "decal1Line1": [
-        0.0,
-        -3.24286,
-        -1.4175e-7,
-        5.11152
-      ],
-      "decal1Line2": [
-        0.0,
-        -1.4175e-7,
-        -3.24286,
-        -0.145369
-      ],
-      "decal1Line3": [
-        0.0,
-        -3.24286,
-        1.4175e-7,
-        5.11152
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        1.0,
-        0.0,
-        0.0,
-        -1.95881
-      ],
-      "decal1CPNormDepth1": [
-        -1.0,
-        -0.0,
-        -0.0,
-        1.94348
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.30837
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.221673,
-      "decal1Tex": "ge_afrika_korps_emblem"
-    }
-  },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ger_camo_winter_grey*"
-      }
-    },
-    {
-      "name": "ger_camo_dunkelgelb_africa",
-      "nameLocId": "skin/ger_camo_dunkelgelb_africa",
-      "descLocId": "skin/ger_camo_dunkelgelb_africa/desc",
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ger_camo_dunkelgelb_africa*"
-      }
-    },
-    {
-      "name": "ger_camo_winter_lines",
-      "nameLocId": "skin/ger_camo_winter_lines",
-      "descLocId": "skin/ger_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ger_camo_winter_lines*"
-      }
-    },
-    {
-      "name": "green",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green",
-      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green*"
-      }
-    },
-    {
-      "name": "blots",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots*"
-      }
-    },
-    {
-      "name": "lines",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines*"
-      }
-    },
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_dunkelgelb*"
-      }
-    },
-    {
-      "name": "ger_camo_winter_waves",
-      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
-      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_waves_bicolor*"
-      }
-    }
-  ],
   "battleHideNodes": {
     "n": "details"
   },
@@ -2870,6 +2689,19 @@
       "decal0Tex": "back_16"
     }
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
+  },
   "modifications": {
     "art_support": {},
     "tank_extinguisher": {},
@@ -3057,7 +2889,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

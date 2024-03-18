@@ -3896,5 +3896,19 @@
         "to": "camo_wood*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_hazegray*"
+        },
+        {
+          "from": "camo_deckbasaltgrau*",
+          "to": "camo_deckbasaltgrau*"
+        }
+      ]
+    }
   }
 }

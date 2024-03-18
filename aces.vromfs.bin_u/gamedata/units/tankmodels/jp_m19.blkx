@@ -2989,7 +2989,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": {
         "node": "superstructure_front_dm",
         "name": "palm_one_pcs",

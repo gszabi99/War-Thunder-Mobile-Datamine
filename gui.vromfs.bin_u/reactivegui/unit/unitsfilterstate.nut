@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { OCT_TEXTINPUT, OCT_MULTISELECT } = require("%rGui/options/optCtrlType.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL
@@ -101,10 +101,15 @@ function mkOptMultiselect(id, override = {}) {
 
 let optCountry = mkOptMultiselect("country", { customValue = @(v) mkFlagImage(v, hdpxi(90)) })
 let optMRank = mkOptMultiselect("mRank", { inBoxValue = @(v) mkGradRank(v) })
+let optUnitClass = mkOptMultiselect("unitClass", { inBoxValue = @(v) {
+  rendObj = ROBJ_TEXT
+  text = unitClassFontIcons?[v]
+}.__update(fontBig) })
 
 let allStatuses = Computed(@() canBuyUnitsStatus.value
-  .reduce(function(res, status) {
-    res[status] <- true
+  .reduce(function(res, status, unitName) {
+    if (!allUnitsCfg.get()?[unitName].isHidden)
+      res[status] <- true
     return res
   }, {})
   .keys()
@@ -124,4 +129,5 @@ return {
   optCountry
   optMRank
   optStatus
+  optUnitClass
 }

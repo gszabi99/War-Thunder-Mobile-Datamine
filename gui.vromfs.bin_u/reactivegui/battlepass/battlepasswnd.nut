@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { register_command } = require("console")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { battlePassOpenCounter, openBattlePassWnd, closeBattlePassWnd, isBpSeasonActive, isBpActive,
-  mkBpStagesList, openBPPurchaseWnd, selectedStage, curStage, maxStage, bpIconActive
+  mkBpStagesList, openBPPurchaseWnd, selectedStage, curStage, maxStage, getBpIcon,
+  BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods
 } = require("battlePassState.nut")
+let { eventSeason } = require("%rGui/event/eventState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
@@ -18,7 +21,6 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let bpProgressBar = require("bpProgressBar.nut")
 let battlePassRewardsList = require("battlePassRewardsList.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let bpRewardDesc = require("bpRewardDesc.nut")
@@ -34,6 +36,12 @@ let scrollHandler = ScrollHandler()
 
 let rewardPannable = horizontalPannableAreaCtor(sw(100),
   [saBorders[0], saBorders[0]])
+
+function scrollToCard(scrollX, selProgress) {
+  selectedStage(selProgress)
+  if (scrollX > saSize[0] / 2)
+    scrollHandler.scrollToX(scrollX - saSize[0] / 2)
+}
 
 let header = {
   size = [flex(), gamercardHeight]
@@ -70,50 +78,16 @@ let scrollArrowsBlock = {
   ]
 }
 
-let rewardsList = @(stages) function() {
-  let rewardsStages = []
-  foreach (idx, s in stages) {
-    let rewInfo = []
-    foreach(key, count in s.rewards) {
-      let reward = serverConfigs.get().userstatRewards?[key]
-      rewInfo.extend(getRewardsViewInfo(reward, count))
-    }
-    let viewInfo = rewInfo.sort(sortRewardsViewInfo)?[0]
-    rewardsStages.append(s.__merge({
-      viewInfo
-      nextSlots = 0
-    }))
-    if (idx > 0)
-      rewardsStages[idx - 1].nextSlots = viewInfo?.slots ?? 1
-  }
-  return {
-    key = "bpRewardsList"
-    watch = serverConfigs
-    flow = FLOW_VERTICAL
-    gap = hdpx(20)
-    function onAttach() {
-      local scrollX = -bpCardMargin
-      local selProgress = null
-      foreach(s in rewardsStages) {
-        if (s.canReceive
-            || (!s.isReceived && (!s.isPaid || isBpActive.value))) {
-          selProgress = s.progress
-          scrollX += bpCardMargin + bpCardPadding[1]
-            + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0] / 2
-          break
-        }
-        scrollX += bpCardMargin + 2 * bpCardPadding[1]
-          + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0]
-      }
-      selectedStage(selProgress ?? rewardsStages?[rewardsStages.len() - 1].progress ?? 0)
-      if (scrollX > saSize[0] / 2)
-        scrollHandler.scrollToX(scrollX - saSize[0] / 2)
-    }
-    children = [
-      bpProgressBar(rewardsStages)
-      battlePassRewardsList(rewardsStages)
-    ]
-  }
+let rewardsList = @(stages, recommendInfo) @() {
+  key = "bpRewardsList"
+  watch = serverConfigs
+  flow = FLOW_VERTICAL
+  gap = hdpx(20)
+  onAttach = @() scrollToCard(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
+  children = [
+    bpProgressBar(stages)
+    battlePassRewardsList(stages)
+  ]
 }
 
 let taskDesc = {
@@ -166,8 +140,11 @@ let leftMiddle = {
   ]
 }
 
+let openPurchBpButton = @(text) textButtonMultiline(utf8ToUpper(text), openBPPurchaseWnd,
+  PURCHASE.__merge({ hotkeys = ["^J:Y"] }))
+
 let rightMiddle = @() {
-  watch = isBpActive
+  watch = [isBpActive, purchasedBp]
   size = [defButtonMinWidth, flex()]
   padding = [hdpx(10), 0, hdpx(20), 0]
   flow = FLOW_VERTICAL
@@ -176,45 +153,49 @@ let rightMiddle = @() {
   gap = hdpx(35)
   children = [
     @() {
-      watch = bpIconActive
+      watch = [purchasedBp, eventSeason, isBpActive, battlePassGoods]
       size = bpIconSize
       vplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
-      image = isBpActive.value
-        ? Picture($"{bpIconActive.get()}:{bpIconSize[0]}:{bpIconSize[1]}:P")
-        : Picture($"ui/gameuiskin#bp_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
+      image = Picture($"{getBpIcon(purchasedBp.get(), eventSeason.get())}:{bpIconSize[0]}:{bpIconSize[1]}:P")
       fallbackImage = Picture($"ui/gameuiskin#bp_icon_not_active.avif:{bpIconSize[0]}:{bpIconSize[1]}:P")
       opacity = isBpActive.value ? 1 : 0.5
     }
-    isBpActive.get()
-      ? {
-          size = [flex(), defButtonHeight]
-          halign = ALIGN_CENTER
-          valign = ALIGN_BOTTOM
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          text = utf8ToUpper(loc("battlepass/active"))
-        }.__update(fontTinyAccented)
-      : textButtonMultiline(utf8ToUpper(loc("battlePass/btn_buy")), openBPPurchaseWnd, PURCHASE.__merge({ hotkeys = ["^J:Y"] }))
+    purchasedBp.get() == BP_COMMON && battlePassGoods.get()[BP_VIP] != null
+        ? openPurchBpButton(loc("battlePass/upgrade"))
+      : purchasedBp.get() == BP_NONE && battlePassGoods.get()[BP_COMMON] != null
+        ? openPurchBpButton(loc("battlePass/btn_buy"))
+      : purchasedBp.get() != BP_NONE
+        ? {
+            size = [flex(), defButtonHeight]
+            halign = ALIGN_CENTER
+            valign = ALIGN_BOTTOM
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            text = utf8ToUpper(loc("battlepass/active"))
+          }.__update(fontTinyAccented)
+      : { size = [flex(), defButtonHeight] }
   ]
 }
 
-let middlePart = @(stagesList) @(){
-  watch = selectedStage
-  size = flex()
-  flow = FLOW_HORIZONTAL
-  children = [
-    leftMiddle
-    {
-      size = flex()
-      children = selectedStage.value not in stagesList ? null
-        : bpRewardDesc(stagesList[selectedStage.value])
-    }
-    rightMiddle
-  ]
+let middlePart = @(stagesList) function() {
+  let stageData = stagesList.findvalue(@(s) s.progress == selectedStage.value)
+  return {
+    watch = selectedStage
+    size = flex()
+    flow = FLOW_HORIZONTAL
+    children = [
+      leftMiddle
+      {
+        size = flex()
+        children = stageData == null ? null : bpRewardDesc(stageData)
+      }
+      rightMiddle
+    ]
+  }
 }
 
-let content = @(stagesList) @() {
+let content = @(stagesList, recommendInfo) @() {
   watch = stagesList
   size = flex()
   flow = FLOW_VERTICAL
@@ -225,7 +206,7 @@ let content = @(stagesList) @() {
       size = [sw(100), SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
       children = [
-        rewardPannable(rewardsList(stagesList.get()),
+        rewardPannable(rewardsList(stagesList.get(), recommendInfo),
           { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], clipChilden = false },
           {
             size = [flex(), SIZE_TO_CONTENT]
@@ -239,17 +220,38 @@ let content = @(stagesList) @() {
 }
 
 let wndKey = {}
-let battlePassWnd = @() {
-  key = wndKey
-  size = flex()
-  padding = saBordersRv
-  gap = hdpx(10)
-  flow = FLOW_VERTICAL
-  children = [
-    header
-    content(mkBpStagesList())
-  ]
-  animations = wndSwitchAnim
+function battlePassWnd() {
+  let stagesList = mkBpStagesList()
+  let recommendInfo = Computed(function(prev) {
+    local scrollX = -bpCardMargin
+    local selProgress = 0
+    foreach(s in stagesList.get()) {
+      selProgress = s.progress
+      if (s.canReceive
+          || (!s.isReceived && (!s.isPaid || isBpActive.value))) {
+        scrollX += bpCardMargin + bpCardPadding[1]
+          + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0] / 2
+        break
+      }
+      scrollX += bpCardMargin + 2 * bpCardPadding[1]
+        + getRewardPlateSize(s.viewInfo?.slots ?? 1, bpCardStyle)[0]
+    }
+    let res = { scrollX, selProgress }
+    return isEqual(prev, res) ? prev : res
+  })
+  recommendInfo.subscribe(@(v) scrollToCard(v.scrollX, v.selProgress))
+  return {
+    key = wndKey
+    size = flex()
+    padding = saBordersRv
+    gap = hdpx(10)
+    flow = FLOW_VERTICAL
+    children = [
+      header
+      content(stagesList, recommendInfo)
+    ]
+    animations = wndSwitchAnim
+  }
 }
 
 register_command(openBattlePassWnd, "ui.battle_pass_open")

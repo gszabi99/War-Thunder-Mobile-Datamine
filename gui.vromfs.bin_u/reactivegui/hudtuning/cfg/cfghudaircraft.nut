@@ -1,8 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { allow_voice_messages } = require("%appGlobals/permissions.nut")
+let { set_chat_handler = null } = require("chat")
+let { missionPlayVoice = null } = require("sound_wt")
+let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { mkZoomButton, mkLockButton, mkWeaponryItemSelfAction, mkWeaponryContinuousSelfAction, mkSimpleButton, mkGroupAttackButton
 } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos,
+let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos,
   weaponryButtonCtor, weaponryButtonsGroupCtor, weaponryButtonsChainedCtor } = require("hudTuningPkg.nut")
 let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkSimpleChainIcon } = require("%rGui/hud/weaponryBlockImpl.nut")
@@ -12,6 +16,7 @@ let {
   aircraftMovementEditView,
   aircraftIndicatorsEditView
 } = require("%rGui/hud/aircraftMovementBlock.nut")
+let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { aircraftRadarEditView, aircraftRadar } = require("%rGui/hud/aircraftRadar.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
@@ -20,17 +25,21 @@ let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, myPlaceUi, mkMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
 let { doll, dollEditView } = require("%rGui/hud/aircraftStateModule.nut")
 
+let allow_voice_messages_compatibility = Computed(@() allow_voice_messages.get() && !!set_chat_handler && !!missionPlayVoice)
+
 return cfgHudCommon.__merge({
   bomb = weaponryButtonCtor("ID_BOMBS", mkWeaponryItemSelfAction,
     {
       defTransform = mkLBPos([hdpx(108), hdpx(-220)])
       editView = mkWeaponBtnEditView("ui/gameuiskin#hud_bomb.svg")
+      priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   rocket = weaponryButtonCtor("ID_ROCKETS", mkWeaponryItemSelfAction,
     {
       defTransform = mkLBPos([hdpx(108), hdpx(-5)])
       editView = mkWeaponBtnEditView("ui/gameuiskin#hud_rb_rocket.svg", 0.8)
+      priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   guns = weaponryButtonsChainedCtor(["ID_FIRE_MGUNS", "ID_FIRE_CANNONS"], mkWeaponryContinuousSelfAction,
@@ -48,12 +57,6 @@ return cfgHudCommon.__merge({
             { pos = [touchButtonSize * 0.5, touchButtonSize * 0.5] })
         ]
       }
-    })
-
-  torpedo = weaponryButtonCtor("ID_TORPEDOES", mkWeaponryItemSelfAction,
-    {
-      defTransform = mkLBPos([hdpx(0), hdpx(-113)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_torpedo.svg", 0.8)
     })
 
   lock = weaponryButtonCtor("ID_LOCK_TARGET", mkLockButton,
@@ -133,10 +136,20 @@ return cfgHudCommon.__merge({
     hideForDelayed = false
   }
 
+  voiceCmdStick = {
+    ctor = @() voiceMsgStickBlock
+    defTransform = mkRBPos([0, hdpx(-27)])
+    editView = voiceMsgStickView
+    isVisibleInEditor = allow_voice_messages_compatibility
+    isVisibleInBattle = Computed(@() allow_voice_messages_compatibility.get() && isInMpSession.get())
+    priority = Z_ORDER.STICK
+  }
+
   movement = {
     ctor = @() aircraftMovement
-    defTransform = mkRBPos([hdpx(-36), 0])
+    defTransform = mkRBPos([hdpx(-140), 0])
     editView = aircraftMovementEditView
+    priority = Z_ORDER.STICK
   }
 
   indicators = {
@@ -150,5 +163,6 @@ return cfgHudCommon.__merge({
     ctor = mkFreeCameraButton
     defTransform = mkLTPos([hdpx(0), hdpx(450)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
+    priority = Z_ORDER.BUTTON
   }
 })

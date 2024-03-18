@@ -6,8 +6,8 @@ let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = requir
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkOfferWrap, txt, textArea, mkBgImg, mkFitCenterImg, mkPricePlate,
-  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsW, offerPad
+let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn,
+  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -20,7 +20,7 @@ let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let fonticonPreview = "⌡"
 let consumableSize = hdpx(120)
-let eliteMarkSize = hdpxi(70)
+let eliteMarkSize = [hdpxi(70), hdpxi(45)]
 
 let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY, GOLD, WARBOND ]
 
@@ -59,37 +59,11 @@ let mkUnitImg = @(img) {
   imageValign = ALIGN_BOTTOM
 }
 
-function mkSquareIconBtn(text, onClick, ovr) {
-  let stateFlags = Watched(0)
-  return @() {
-    watch = stateFlags
-    size = [ hdpx(70), hdpx(70) ]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    behavior = Behaviors.Button
-    onClick
-    onElemState = @(v) stateFlags(v)
-    sound = { click  = "click" }
-    transform = {
-      scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.85, 0.85] : [1, 1]
-    }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
-    children = [
-      {
-        size = flex()
-        rendObj = ROBJ_SOLID
-        color = 0x80000000
-      }
-      txt({ text }.__update(fontBig))
-    ]
-  }.__merge(ovr)
-}
-
 let eliteMark = {
-  size = [eliteMarkSize, flex()]
+  size = eliteMarkSize
   rendObj = ROBJ_IMAGE
   keepAspect = KEEP_ASPECT_FIT
-  image = Picture($"ui/gameuiskin#icon_premium.svg")
+  image = Picture($"ui/gameuiskin#icon_premium.svg:{eliteMarkSize[0]}:{eliteMarkSize[1]}:P")
 }
 
 function mkUnitTexts(goods, unit) {
@@ -102,29 +76,34 @@ function mkUnitTexts(goods, unit) {
     padding = [hdpx(15), hdpx(34), 0, hdpx(34)]
     children = [
       {
+        size = [flex(), SIZE_TO_CONTENT]
         hplace = ALIGN_RIGHT
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
+        halign = ALIGN_RIGHT
         gap = hdpx(10)
         children = [
           isElite ? eliteMark : null
-          textArea({
-            size = SIZE_TO_CONTENT
-            maxWidth = flex()
+          {
+            maxWidth = goods?.isPopular ? hdpx(260) : flex()
+            rendObj = ROBJ_TEXT
             text = getLocNameUnit(goods)
+            color
             font = Fonts.wtfont
             fontSize = hdpx(42)
             fontFxFactor = hdpx(32)
-            halign = ALIGN_RIGHT
-            color
-          })
+            behavior = Behaviors.Marquee
+            delay = defMarqueeDelay
+            speed = hdpx(20)
+          }
         ]
       }
-      txt({
+      {
+        rendObj = ROBJ_TEXT
         hplace = ALIGN_RIGHT
         text = getUnitClassFontIcon(unit)
         color
-      }.__update(fontMedium))
+      }.__update(fontMedium)
     ]
   }
 }
@@ -229,7 +208,7 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
     isPurchased ? purchasedPlate : mkPricePlate(goods, priceBgGrad, state, animParams),
     {
       watch = myUnits
-      size = [goodsW, goodsH - platoonOffset / 2]
+      size = [goodsSmallSize[0], goodsH - platoonOffset / 2]
       pos = [0, platoonOffset]
     }
   )

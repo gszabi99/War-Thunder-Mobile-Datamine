@@ -149,6 +149,8 @@ let SessionLobbyState = persist("SessionLobbyState", @(){
   needJoinSessionAfterMyInfoApply = false
 })
 
+let lastRoom = mkWatched(persist, "lastRoom")
+let lastRoomId = Computed(@() lastRoom.get()?.roomId ?? INVALID_ROOM_ID)
 let MRoomsHandlersState  = persist("MRoomsHandlersState", @() {
   hostId = null  //user host id
   roomId = INVALID_ROOM_ID
@@ -229,8 +231,6 @@ function join_room(params, cb) {
       cb(resp)
     })
 }
-
-let lastRoomId = mkWatched(persist, "lastRoomId", -1)
 
 function leave_room(params, cb) {
   let oldRoomId = g_mrooms_handlers.getRoomId()
@@ -824,8 +824,6 @@ SessionLobby = {
     if (showMatchingError(params))
       return this.switchStatus(lobbyStates.NOT_IN_ROOM)
 
-    lastRoomId.set(params.roomId)
-
     SessionLobbyState.roomId = params.roomId
     SessionLobbyState.roomUpdated = true
     SessionLobbyState.members.replace(getTblValue("members", params, []))
@@ -1366,6 +1364,7 @@ let MRoomsHandlers = class {
   function onRoomJoinCb(resp) {
     this.__cleanupRoomState()
 
+    lastRoom.set(resp)
     MRoomsHandlersState.room = resp
     MRoomsHandlersState.roomId = MRoomsHandlersState.room.roomId
     foreach (member in MRoomsHandlersState.room.members)
@@ -1388,4 +1387,5 @@ g_mrooms_handlers = MRoomsHandlers()
 return {
   joinRoom = @(roomId) SessionLobby.joinRoom(roomId)
   lastRoomId
+  lastRoom
 }

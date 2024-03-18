@@ -2996,7 +2996,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": {
         "node": "ex_decor_r_01_dm",
         "name": "box",

@@ -21,7 +21,7 @@ let optLang = {
 }
 
 let optLangVoice = {
-  locId = "options/language_voice"
+  locId = "options/speech_country_type"
   ctrlType = OCT_LIST
   value = languageVoice
   list = Watched([])

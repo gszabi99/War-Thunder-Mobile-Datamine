@@ -22,7 +22,6 @@ let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { set_camera_shift_upper } = require("hangar")
 let { applyDiscount } = require("%rGui/unit/unitUtils.nut")
-let { ceil } = require("%sqstd/math.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_SMALL_INCREASED_ICON } = currencyStyles
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -30,15 +29,9 @@ let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { openRewardsModal, lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
-
+let { wpOfferCard, premOfferCard, gapCards, battleRewardsTitle } = require("chooseUpgradePkg.nut")
 
 let fonticonPreview = "⌡"
-
-let offerCardWidth = hdpx(480)
-let offerCardHeight = sh(70)
-
-let wpCardPatternSize = [hdpx(140), hdpx(140)]
-let premCardPatternSize = [hdpx(200), hdpx(200)]
 
 let curUnit = mkWatched(persist, "curUnit", null)
 
@@ -101,55 +94,6 @@ let gamercard = {
     backButton(close)
     gamercardBalanceBtns
   ]
-}
-
-let mkOfferCardBgPatternChunk = @(patternSize) {
-  size = patternSize
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#button_pattern.svg:{patternSize[0]}:{patternSize[1]}")
-  keepAspect = KEEP_ASPECT_NONE
-  color = 0x23000000
-}
-
-function mkOfferCardBgPattern(isUpgraded) {
-  let patternSize = isUpgraded ? premCardPatternSize : wpCardPatternSize
-  let patternChunk = mkOfferCardBgPatternChunk(patternSize)
-  return {
-    size = flex()
-    clipChildren = true
-    flow = FLOW_HORIZONTAL
-    children = array(ceil(offerCardWidth.tofloat() / patternSize[0]).tointeger(),
-      {
-        flow = FLOW_VERTICAL
-        children = array(ceil(offerCardHeight.tofloat() / patternSize[1]).tointeger(),
-          patternChunk)
-      })
-  }
-}
-
-let mkBgGradient = @(height, ovr = {}) {
-  size = [flex(), height]
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#gradient_button.svg:{50}:{50}")
-  color = 0xDC000000
-}.__merge(ovr)
-
-let topGradient = mkBgGradient((offerCardHeight / 4).tointeger())
-let bottomGradient = mkBgGradient((offerCardHeight / 2).tointeger(),
-  { transform = { rotate = 180 }, vplace = ALIGN_BOTTOM, color = 0xFF000000 })
-let cardBgGradient = {
-  size = flex()
-  padding = [hdpx(1), 0, 0, 0]
-  children = [
-    topGradient
-    bottomGradient
-  ]
-}
-
-let offerCardBaseStyle = {
-  rendObj = ROBJ_FRAME
-  borderWidth = [hdpx(2), hdpx(2), 0, hdpx(2)]
-  size = [ offerCardWidth, sh(80) ]
 }
 
 let mkCardTitle = @(unit)
@@ -375,6 +319,7 @@ let mkCardContent = @(unit) {
   halign = ALIGN_CENTER
   children = [
     mkCardTitle(unit)
+    battleRewardsTitle(unit)
     mkUnitBonuses(unit, { gap = hdpx(100), margin = [ 0, 0, hdpx(50), 0 ] })
     mkUnitPlate(unit)
     mkTapPreviewText(unit)
@@ -383,39 +328,20 @@ let mkCardContent = @(unit) {
   ]
 }
 
-let wpOfferCard = @(unit) {
-  children = [
-    { rendObj = ROBJ_SOLID, size = flex(), color = 0xC8212C3C }
-    mkOfferCardBgPattern(unit?.isUpgraded)
-    cardBgGradient
-    mkCardContent(unit)
-  ]
-}.__merge(offerCardBaseStyle)
-
-let premOfferCard = @(unit) {
-  children = [
-    { rendObj = ROBJ_SOLID, size = flex(), color = 0xC8760302 }
-    mkOfferCardBgPattern(unit?.isUpgraded)
-    cardBgGradient
-    mkCardContent(unit)
-  ]
-}.__merge(offerCardBaseStyle)
-
 function offerCards() {
   let watch = [allUnitsCfg, campConfigs]
   let unit = allUnitsCfg.value?[curUnit.value]
+  let upgradedUnit = unit?.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
+    { isUpgraded = true })
   if (unit == null)
     return { watch }
   return {
     watch
     flow = FLOW_HORIZONTAL
-    gap = offerCardWidth
+    gap = gapCards
     children = [
-      wpOfferCard(unit)
-      premOfferCard(
-        unit.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
-        { isUpgraded = true })
-      )
+      wpOfferCard(unit, mkCardContent(unit))
+      premOfferCard(upgradedUnit, mkCardContent(upgradedUnit))
     ]
   }
 }

@@ -32,7 +32,8 @@
     "skinsDecalsCacheSzPS4": 157286400,
     "skinsDecalsCacheUGC": "contentUGC",
     "eventLog": {
-      "host": "client-logs.gaijin.net"
+      "host": "client-logs.gaijin.net",
+      "useAsyncConnect": true
     },
     "additionalDNS": {
       "dns": [
@@ -184,7 +185,10 @@
       "flag": [
         "--http_peers http://seeder.gaijin.lan/content/",
         "--p2p_peers seeder.gaijin.lan:27032"
-      ]
+      ],
+      "background_addons": {
+        "requireSameGameVersion": false
+      }
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -251,7 +255,10 @@
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
       "enabled": true,
-      "shouldLogToCrashlytics": true
+      "shouldLogToCrashlytics": true,
+      "background_addons": {
+        "requireSameGameVersion": false
+      }
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -303,7 +310,10 @@
     "skinsDecalsCacheSz": 1073741824,
     "contentUpdater": {
       "enabled": true,
-      "shouldLogToCrashlytics": true
+      "shouldLogToCrashlytics": true,
+      "background_addons": {
+        "requireSameGameVersion": false
+      }
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"
@@ -362,7 +372,10 @@
       "APP_CMD_TERM_WINDOW": true
     },
     "contentUpdater": {
-      "enabled": true
+      "enabled": true,
+      "background_addons": {
+        "requireSameGameVersion": false
+      }
     },
     "webVromfs": {
       "replaceUrls": "test.webVromfs.baseUrls"

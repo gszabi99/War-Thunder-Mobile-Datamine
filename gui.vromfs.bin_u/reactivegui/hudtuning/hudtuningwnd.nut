@@ -49,8 +49,8 @@ let selectBorder = {
   ].map(@(ovr) point.__merge(ovr))
 }
 
-function mkHudTuningElem(cfg, id) {
-  let { editView, defTransform = {}, isVisibleInEditor = null } = cfg
+function mkHudTuningElem(cfg) {
+  let { id, editView, defTransform = {}, isVisibleInEditor = null } = cfg
   let transform = Computed(@() (selectedId.value == id ? transformInProgress.value : null)
     ?? tuningTransform.value?[id]
     ?? defTransform)
@@ -87,9 +87,7 @@ let tuningElems = @() {
   size = saSize
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  children = cfgByUnitType?[tuningUnitType.value]
-    .map(@(cfg, id) mkHudTuningElem(cfg, id))
-    .values()
+  children = cfgByUnitType?[tuningUnitType.value].map(mkHudTuningElem)
 }
 
 let tuningScene = {

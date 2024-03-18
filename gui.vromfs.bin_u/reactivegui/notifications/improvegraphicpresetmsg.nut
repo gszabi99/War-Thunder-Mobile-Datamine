@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { deferOnce } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
-let { get_platform_window_resolution, get_default_graphics_preset } = require("graphicsOptions")
+let { get_platform_window_resolution = null, get_default_graphics_preset = null } = require("graphicsOptions")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { graphicsQuality, setGraphicsQuality } = require("%rGui/options/options/graphicOptions.nut")
@@ -36,7 +36,7 @@ let openMsg = @() openMsgBox({
 })
 
 function updateGraphics() {
-  if (!needUpdateGraphics.get())
+  if (!needUpdateGraphics.get() || get_platform_window_resolution == null || get_default_graphics_preset == null)
     return
   if (get_platform_window_resolution().height > 720
       || get_default_graphics_preset() != "low"

@@ -100,8 +100,9 @@ let rewardDesc = @(reward) @() {
   valign = ALIGN_BOTTOM
   text = reward.isReceived ? loc("battlepass/receivedRew")
     : reward.canReceive ? ""
-    : reward.progress <= curStage.get() ? loc("battlepass/paid")
-    : loc("battlepass/lock", { level = reward.progress })
+    : reward.progress > curStage.get() ? loc("battlepass/lock", { level = reward.progress })
+    : reward?.isVip ? loc("battlepass/paid/vip")
+    : loc("battlepass/paid")
 }.__update(fontTinyAccented)
 
 let defImageCtor = @(viewInfo) mkRewardPlateImage(viewInfo, REWARD_STYLE_LARGE)
@@ -114,12 +115,15 @@ let infoImageCtors = {
 }
 
 let bpRewardDesc = @(reward) function() {
-  let rewInfo = []
-  foreach(key, count in reward.rewards) {
-    let rew = serverConfigs.value.userstatRewards?[key]
-    rewInfo.extend(getRewardsViewInfo(rew, count))
+  local viewInfo = reward?.viewInfo
+  if (viewInfo == null && "rewards" in reward) {
+    let rewInfo = []
+    foreach(key, count in reward.rewards) {
+      let rew = serverConfigs.value.userstatRewards?[key]
+      rewInfo.extend(getRewardsViewInfo(rew, count))
+    }
+    viewInfo = rewInfo.sort(sortRewardsViewInfo)?[0]
   }
-  let viewInfo = rewInfo.sort(sortRewardsViewInfo)?[0]
   return doubleSideGradient.__merge({
     watch = serverConfigs
     size = [hdpx(600) + 4 * doubleSideGradientPaddingX, flex()]

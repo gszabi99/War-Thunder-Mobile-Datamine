@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time } = require("%globalsDarg/mission.nut")
+let { get_mission_time = @() ::get_mission_time() } = require("mission")
 let { eventbus_subscribe } = require("eventbus")
 let { round } = require("math")
 let { get_time_msec } = require("dagor.time")

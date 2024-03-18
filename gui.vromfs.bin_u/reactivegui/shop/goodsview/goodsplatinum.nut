@@ -23,13 +23,13 @@ function getImgByAmount(amount) {
 }
 
 function getLocNamePlatinum(goods) {
-  let amount = goods?.currencies.platinum ?? goods?.platinum ?? 0 //compatibility with format before 2024.01.23
+  let amount = goods?.currencies.platinum ?? 0
   return loc("shop/item/platinum/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
 function mkGoodsPlatinum(goods, onClick, state, animParams) {
   let { viewBaseValue = 0, isShowDebugOnly = false } = goods
-  let platinum = goods?.currencies.platinum ?? goods?.platinum ?? 0 //compatibility with format before 2024.01.23
+  let platinum = goods?.currencies.platinum ?? 0
   return mkGoodsWrap(onClick,
     @(sf) [
       mkSlotBgImg()

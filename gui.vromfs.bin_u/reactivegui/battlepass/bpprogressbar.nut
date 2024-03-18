@@ -43,6 +43,16 @@ let bpProgressIcon = @(progress) @() {
   ]
 }
 
+let vipMark = {
+  size = progressIconSize
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("battlePass/VIP/mark")
+  }.__update(fontSmall)
+}
+
 function bpLineBetweenLevelIcons(stage) {
   let curSlotWidth = getRewardPlateSize(stage?.viewInfo.slots ?? 1, bpCardStyle)[0]
   let nextSlotWidth = getRewardPlateSize(stage.nextSlots, bpCardStyle)[0]
@@ -51,7 +61,8 @@ function bpLineBetweenLevelIcons(stage) {
     watch = curStage
     size = [widthLine, hdpx(15)]
     pos = [0, hdpx(16)]
-    children = stage.progress == curStage.value ? @() bpCurProgressbar({size = [flex(), hdpx(15)]})
+    children = stage?.isVip ? null
+      : stage.progress == curStage.value ? @() bpCurProgressbar({size = [flex(), hdpx(15)]})
       : stage.progress < curStage.value ? bpProgressbarFull
       : bpProgressbarEmpty
   }
@@ -64,7 +75,7 @@ function bpProgressBar(rewardsStages) {
   let children = []
   foreach(idx, stage in rewardsStages)
     children.append(
-      bpProgressIcon(stage.progress)
+      stage?.isVip ? vipMark : bpProgressIcon(max(0, stage.progress))
       lastIdx == idx ? null : bpLineBetweenLevelIcons(stage))
   return {
     pos = [ posFirstElem, 0]

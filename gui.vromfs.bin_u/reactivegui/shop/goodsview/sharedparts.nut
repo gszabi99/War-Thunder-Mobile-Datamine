@@ -138,6 +138,7 @@ let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
     }
   ]
 }
+
 let mkDiscountCorner = @(discountPrc) discountPrc <= 0 || discountPrc >= 100 ? null : {
   size  = [ pricePlateH, pricePlateH ]
   hplace = ALIGN_LEFT
@@ -224,9 +225,8 @@ let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus?.len() ??
       let res = { watch = state }
       if (state.value & HAS_PURCHASES)
         return res
-      let { gold = 0, currencies = null } = goods.firstPurchaseBonus
-      local currencyId = currencies?.findindex(@(_) true) ?? "gold" //compatibility with format before 2024.01.23
-      local value = currencies?[currencyId] ?? gold
+      local currencyId = goods.firstPurchaseBonus.findindex(@(_) true)
+      local value = goods.firstPurchaseBonus?[currencyId] ?? 0
       let bonusComp = value <= 0
         ? firstPurchTxt({ text = "????????" })
         : {
@@ -455,11 +455,19 @@ let mkOfferCommonParts = @(goods, state) [
   mkGoodsTimeTimeProgress(goods)
 ]
 
-function mkOfferTexts(title, endTime) {
+function mkTimeLeft(endTime, ovr = {}) {
   let countdownText = Computed(function() {
     let leftTime = endTime - serverTime.value
-    return leftTime > 0 ? secondsToHoursLoc(leftTime) : loc("icon/hourglass")
+    return leftTime > 0 ? secondsToHoursLoc(leftTime) : ""
   })
+  return @() textArea({
+    watch = countdownText
+    halign = ALIGN_RIGHT
+    text = countdownText.get()
+  }.__update(fontSmall, ovr))
+}
+
+function mkOfferTexts(title, endTime) {
   let titleComp = textArea({
     halign = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
@@ -470,11 +478,7 @@ function mkOfferTexts(title, endTime) {
     size = flex()
     margin = offerPad
     children = [
-      @() textArea({
-        watch = countdownText
-        halign = ALIGN_RIGHT
-        text = countdownText.value
-      }.__update(fontSmall))
+      mkTimeLeft(endTime)
       titleComp
     ]
   }
@@ -490,6 +494,32 @@ let underConstructionBg = {
   color = 0xFFFFFFFF
 }
 
+function mkSquareIconBtn(text, onClick, ovr) {
+  let stateFlags = Watched(0)
+  return @() {
+    watch = stateFlags
+    size = [ hdpx(70), hdpx(70) ]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    behavior = Behaviors.Button
+    onClick
+    onElemState = @(v) stateFlags(v)
+    sound = { click  = "click" }
+    transform = {
+      scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.85, 0.85] : [1, 1]
+    }
+    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
+    children = [
+      {
+        size = flex()
+        rendObj = ROBJ_SOLID
+        color = 0x80000000
+      }
+      txt({ text }.__update(fontBig))
+    ]
+  }.__merge(ovr)
+}
+
 return {
   goodsW
   goodsSmallSize
@@ -497,6 +527,7 @@ return {
   goodsBgH
   goodsGap
   offerPad
+  titlePadding
 
   mkGoodsWrap
   mkOfferWrap
@@ -517,6 +548,8 @@ return {
   mkOfferTexts
   mkGoodsTimeTimeProgress
   underConstructionBg
+  mkSquareIconBtn
+  mkTimeLeft
 
   goodsGlareAnimDuration
   mkBgParticles

@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { platformGoods } = require("platformGoods.nut")
 let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
@@ -34,12 +34,9 @@ let categoryByCurrency = {
   [PLATINUM] = SC_PLATINUM
 }
 
-let sortCurrency = @(a, b) "currencies" not in a //compatibility with format before 2024.01.23
-  ? a.gold <=> b.gold
-    || a.wp <=> b.wp
-  : (a.currencies?.platinum ?? 0) <=> (b.currencies?.platinum ?? 0)
-    || (a.currencies?.gold ?? 0) <=> (b.currencies?.gold ?? 0)
-    || (a.currencies?.wp ?? 0) <=> (b.currencies?.wp ?? 0)
+let sortCurrency = @(a, b) (a.currencies?.platinum ?? 0) <=> (b.currencies?.platinum ?? 0)
+  || (a.currencies?.gold ?? 0) <=> (b.currencies?.gold ?? 0)
+  || (a.currencies?.wp ?? 0) <=> (b.currencies?.wp ?? 0)
 
 let sortGoods = @(a, b)
   a.gtype <=> b.gtype
@@ -58,7 +55,13 @@ function updateGoodsTimers() {
   let inactive = {}
   local nextTime = 0
   let curTime = serverTime.get()
+  let isValid = isServerTimeValid.get()
   foreach(id, goods in goodsWithTimers.get()) {
+    if (!isValid) {
+      inactive[id] <- true
+      continue
+    }
+
     let { start, end } = goods.timeRange
     if (start > curTime) {
       inactive[id] <- true
@@ -87,11 +90,12 @@ nextUpdateTime.subscribe(function(v) {
 
 updateGoodsTimers()
 goodsWithTimers.subscribe(@(_) updateGoodsTimers())
+isServerTimeValid.subscribe(@(_) updateGoodsTimers())
 
-let shopGoodsInternal = Computed(@() (campConfigs.value?.allGoods ?? {})
-  .filter(@(g) (can_debug_shop.value || !g.isShowDebugOnly)
+let shopGoodsInternal = Computed(@() (campConfigs.get()?.allGoods ?? {})
+  .filter(@(g) (can_debug_shop.get() || !g.isShowDebugOnly)
     && (g?.price.price ?? 0) > 0
-    && isGoodsFitToCampaign(g, campConfigs.value))
+    && isGoodsFitToCampaign(g, campConfigs.get(), curCampaign.get()))
   .map(@(g) g.__merge({ gtype = getGoodsType(g) }))
 )
 

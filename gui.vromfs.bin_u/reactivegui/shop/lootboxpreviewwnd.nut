@@ -4,7 +4,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { getLootboxName } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
-let lootboxPreviewContent = require("lootboxPreviewContent.nut")
+let { lootboxPreviewContent } = require("lootboxPreviewContent.nut")
 let { previewLootbox, isLootboxPreviewOpen, closeLootboxPreview } = require("lootboxPreviewState.nut")
 
 
@@ -26,8 +26,9 @@ let wndHeader = {
   ]
 }
 
-let lootboxPreviewWnd = {
+let lootboxPreviewWnd = @() {
   key = isLootboxPreviewOpen
+  watch = previewLootbox
   size = flex()
   rendObj = ROBJ_IMAGE
   keepAspect = KEEP_ASPECT_FILL
@@ -40,7 +41,7 @@ let lootboxPreviewWnd = {
     gap = wndHeaderGap
     children = [
       wndHeader
-      lootboxPreviewContent
+      lootboxPreviewContent(previewLootbox.get())
     ]
   }
   animations = wndSwitchAnim

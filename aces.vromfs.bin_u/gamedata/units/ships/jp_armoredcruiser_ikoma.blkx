@@ -5964,5 +5964,13 @@
       "from": "camo_warshipdeepgray*",
       "to": "camo_darkgrey_big_spots*"
     }
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": {
+        "from": "camo_warshipdeepgray*",
+        "to": "camo_warshipdeepgray*"
+      }
+    }
   }
 }

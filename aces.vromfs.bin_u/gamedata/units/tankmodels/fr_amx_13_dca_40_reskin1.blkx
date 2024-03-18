@@ -3128,5 +3128,65 @@
       "decal2WidthBox": 0.202133,
       "decal2Tex": "uk_numbers_3"
     }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_vert_olive_arme*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0,
+        "decal0Line0": [
+          -2.05534,
+          0.000233514,
+          -0.0000435655,
+          -1.82205
+        ],
+        "decal0Line1": [
+          -0.000236824,
+          -1.9853,
+          0.531964,
+          3.69179
+        ],
+        "decal0Line2": [
+          2.05534,
+          0.000233516,
+          0.0000815762,
+          2.8213
+        ],
+        "decal0Line3": [
+          0.000246656,
+          -1.9853,
+          -0.531964,
+          3.69233
+        ],
+        "decal0HaveCP": true,
+        "decal0CPNormDepth": [
+          0.00000892649,
+          0.258821,
+          0.965925,
+          -1.45649
+        ],
+        "decal0CPNormDepth1": [
+          0.00000892649,
+          0.258821,
+          -0.965925,
+          -1.45649
+        ],
+        "decal0RotScale": [
+          1.57068,
+          0.486538
+        ],
+        "decal0Mirrored": false,
+        "decal0Wrap": false,
+        "decal0Abs": false,
+        "decal0OppositeMirrored": false,
+        "decal0WidthBox": 0.2,
+        "decal0Tex": "savoie_decal"
+      }
+    }
   }
 }

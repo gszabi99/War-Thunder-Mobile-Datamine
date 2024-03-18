@@ -73,29 +73,21 @@ let providerPriorities = Computed(function(prev) {
   if (providersBase.len() == 0)
     return prevIfEqual(prev, res)
 
-  let isOldFormat = providersBase.findvalue(@(_) true)?.showCount == null
-  if (isOldFormat) //compatibility with format before 2023.12.28
-    foreach (id, p in providersBase) {
-      let priority = p.priorityByRegion?[countryCode] ?? p.priority
-      if (priority >= 0)
-        providers[id] <- { priority, key = p.key }
-    }
-  else {
-    local maxPeriods = 0
-    local maxShowCount = 0
-    foreach (id, p in providersBase) {
-      let showCount = p.showCountOverwriteByRegion?[countryCode] ?? p.showCount
-      if (showCount <= 0)
-        continue
-      let periods = (providerShows.get()?[id] ?? 0) / showCount
-      providers[id] <- { key = p.key, periods, showCount }
-      maxShowCount = max(maxShowCount, showCount)
-      maxPeriods = max(maxPeriods, periods)
-    }
-
-    foreach (p in providers)
-      p.priority <- (maxPeriods - p.periods) * (maxShowCount + 1) + p.showCount
+  local maxPeriods = 0
+  local maxShowCount = 0
+  foreach (id, p in providersBase) {
+    let showCount = p.showCountOverwriteByRegion?[countryCode] ?? p.showCount
+    if (showCount <= 0)
+      continue
+    let periods = (providerShows.get()?[id] ?? 0) / showCount
+    providers[id] <- { key = p.key, periods, showCount }
+    maxShowCount = max(maxShowCount, showCount)
+    maxPeriods = max(maxPeriods, periods)
   }
+
+  foreach (p in providers)
+    p.priority <- (maxPeriods - p.periods) * (maxShowCount + 1) + p.showCount
+
   return prevIfEqual(prev, res)
 })
 

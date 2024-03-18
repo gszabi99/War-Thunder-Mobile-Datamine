@@ -50,6 +50,32 @@ function purchaseGoodsImpl(goodsId, currencyId, price) {
   return ""
 }
 
+registerHandler("onShopGoodsPurchaseSequence",
+  function(result, context) {
+    if (result?.error != null) {
+      openMsgBox({ text = loc("msgbox/internal_error_header") })
+      return
+    }
+
+    let { nextGoods } = context
+    if (nextGoods.len() == 0)
+      return
+    let { id, price } = nextGoods[0]
+    let newNextGoods = clone nextGoods
+    newNextGoods.remove(0)
+    buy_goods(id, price.currencyId, price.price, { id = "onShopGoodsPurchaseSequence", nextGoods = newNextGoods })
+  })
+
+function purchaseGoodsSeqImpl(goodsList) {
+  if (shopPurchaseInProgress.get() != null)
+    return "shopPurchaseInProgress"
+  let nextGoods = goodsList.map(@(g) { id = g.id, price = g.price })
+  let { id, price } = nextGoods[0]
+  nextGoods.remove(0)
+  buy_goods(id, price.currencyId, price.price, { id = "onShopGoodsPurchaseSequence", nextGoods })
+  return ""
+}
+
 function purchaseOfferImpl(offer, currencyId, price) {
   if (shopPurchaseInProgress.get() != null)
     return "shopPurchaseInProgress"
@@ -93,4 +119,51 @@ function purchaseGoods(goodsId) {
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
 }
 
-return purchaseGoods
+function purchaseGoodsSeq(goodsList, name) {
+  logShop($"User tries to purchase: ", goodsList.map(@(v) v.id))
+  if (shopPurchaseInProgress.value != null || goodsList.len() == 0)
+    return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.value}")
+  local sum = 0
+  local currency = ""
+  foreach (goods in goodsList) {
+    let { price, currencyId } = goods.price
+    if (currency == "")
+      currency = currencyId
+    let isPriceValid = price > 0 && currencyId != "" && currencyId == currency
+    if (!isPriceValid) {
+      logerr("Try to buy goods with invalid price")
+      return
+    }
+
+    let { logText = null, msgboxText = null, canPurchase = true } = getCantPurchaseReason(goods)
+    if (logText != null)
+      logShop(logText)
+    if (!canPurchase) {
+      if (msgboxText != null)
+        openMsgBox({ text = msgboxText })
+      return
+    }
+    sum += price
+  }
+
+  function purchaseFunc() {
+    let errString = purchaseGoodsSeqImpl(goodsList)
+    if (errString != "")
+      logShop($"ERROR: {errString}")
+  }
+
+  openMsgBoxPurchase(
+    loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, name) }),
+    { price = sum, currencyId = currency },
+    purchaseFunc,
+    mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goodsList[0].gtype), $"pack {",".join(goodsList.map(@(v) v.id))}")
+  )
+  playSound(currency == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
+}
+
+
+
+return {
+  purchaseGoods
+  purchaseGoodsSeq
+}

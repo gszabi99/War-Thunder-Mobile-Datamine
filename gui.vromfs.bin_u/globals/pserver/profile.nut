@@ -1,5 +1,6 @@
 let { deferOnce } = require("dagor.workcycle")
 let { Computed, Watched } = require("frp")
+let { min } = require("math")
 let { units, levelInfo, campConfigs } = require("campaign.nut")
 let { curUnitInProgress } = require("pServerApi.nut")
 
@@ -44,14 +45,14 @@ let curUnitName = Computed(@() curUnit.value?.name)
 let playerLevelInfo = Computed(function() {
   let res = defaultProfileLevelInfo.__merge(levelInfo.value)
   let { playerLevels = null, playerLevelsInfo = null } = campConfigs.value
-  let levelCfg = playerLevels?[res.level]
+  let { maxBaseLevel = null } = playerLevelsInfo
+  let levelCfg = playerLevels?[min(res.level, maxBaseLevel ?? res.level)]
   if (levelCfg == null)
     res.isMaxLevel = true
   else {
     res.__update(levelCfg)
     if (res.exp >= res.nextLevelExp) {
       res.isReadyForLevelUp = true
-      let { maxBaseLevel = null } = playerLevelsInfo
       if (maxBaseLevel != null && res.level >= maxBaseLevel)
         res.isNextStarLevel = true
     }

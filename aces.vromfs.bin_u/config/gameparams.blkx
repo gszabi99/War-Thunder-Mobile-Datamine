@@ -14950,6 +14950,38 @@
         {
           "name": "wheel_l_01_",
           "modelNames": "ystervark_spaa"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "btr_80a"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "btr_80a"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "btr_80a"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "btr_80a"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "btr_80a"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "btr_80a"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "btr_80a"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "btr_80a"
         }
       ]
     },

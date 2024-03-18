@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
+let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { levelup_without_unit } = require("%appGlobals/pServer/pServerApi.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
@@ -95,8 +95,8 @@ function openLvlUpWndIfCan() {
   return hasDataForLevelWnd.value
 }
 
-needOpenLevelUpWnd.subscribe(function(val) {
-  if (!val || isUnitsTreeOpen.get())
+function onNeedOpenLevelUpWnd() {
+  if (!needOpenLevelUpWnd.get() || isUnitsTreeOpen.get())
     return
 
   if (needOpenLevelUpWnd.value) {
@@ -106,7 +106,9 @@ needOpenLevelUpWnd.subscribe(function(val) {
     else
       openLvlUpWndIfCan()
   }
-})
+}
+
+needOpenLevelUpWnd.subscribe(@(_) deferOnce(onNeedOpenLevelUpWnd))
 
 let needAutoLevelUp = keepref(Computed(@() hasDataForLevelWnd.value
   && rewardsToReceive.value.len() == 0

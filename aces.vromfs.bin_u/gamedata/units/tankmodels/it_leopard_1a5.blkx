@@ -47,6 +47,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": 1.37,
   "bladeAnimVar": "leopard_1a5_dozer_blade_action",
   "digForwardOffset": 1.7,
   "rearmSmokeTimeOnField": 60.0,
@@ -1092,6 +1093,7 @@
       "minRPM": 800.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 160000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 1.0,
@@ -1643,8 +1645,8 @@
     "sightName": "emes18",
     "headPos": [
       0.0,
-      3.3,
-      -12.5
+      3.8,
+      -13.4
     ],
     "headPosOnShooting": [
       -0.1,
@@ -2791,7 +2793,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [
@@ -3040,6 +3041,12 @@
           }
         }
       ]
+    }
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "it_camo_olive_green*"
     }
   },
   "upgraded_skin": {

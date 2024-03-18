@@ -14,7 +14,7 @@ let { openEventQuestsWnd, getQuestCurrenciesInTab, questsCfg, questsBySection, p
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
+
 
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let tasksBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
@@ -78,22 +78,8 @@ function mkQuestsLink(curId, season) {
 
 
 let function mkGoods(goods, onClick, state, animParams) {
-  local cId = ""
-  local amount = 0
-  if ("currencies" not in goods) { //compatibility with format before 2024.01.23
-    foreach(c, _ in orderByCurrency) {
-      amount = goods?[c] ?? 0
-      if (amount != 0) {
-        cId = c
-        break
-      }
-    }
-  }
-  else {
-    cId = goods.currencies.findindex(@(v) v > 0) ?? ""
-    amount = goods.currencies?[cId] ?? 0
-  }
-
+  local cId = goods.currencies.findindex(@(v) v > 0) ?? ""
+  local amount = goods.currencies?[cId] ?? 0
   return @() {
     watch = eventSeason
     children = mkGoodsWrap(onClick,
@@ -130,7 +116,7 @@ function mkEventCurrenciesGoods() {
       }
     ]
       .extend(mkGoodsListWithBaseValue(eventCurrenciesGoods.value.values())
-        .sort(@(a, b) (a?.currencies[cId] ?? a?[cId] ?? 0) <=> (b?.currencies[cId] ?? b?[cId] ?? 0)) //compatibility with format before 2024.01.23
+        .sort(@(a, b) (a?.currencies[cId] ?? 0) <=> (b?.currencies[cId] ?? 0))
         .map(@(good, idx) mkGoods(good,
           @() onGoodsClick(good),
           mkGoodsState(good),

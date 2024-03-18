@@ -60,7 +60,6 @@ function buyPlatformGoodsExt(goodsOrId) {
 }
 
 let isGoodsOnlyInternalPurchase = @(goods) (goods?.purchaseGuids.len() ?? 0) == 0
-  && (goods?.purchaseGuid ?? "") == "" //compatibility with pserver 0.0.8.x  2023.05.16
 
 return {
   platformGoods

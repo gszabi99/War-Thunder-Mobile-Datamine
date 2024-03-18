@@ -62,8 +62,9 @@ function getRewardsViewInfo(data, multiply = 1) {
   let res = []
   if (!data)
     return res
-  let { currencies = null, gold = 0, wp = 0, warbond = 0, eventKey = 0, nybond = 0, premiumDays = 0, items = {}, lootboxes = {},
-    decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {} } = data
+  let { currencies = {}, premiumDays = 0, items = {}, lootboxes = {},
+    decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {}
+  } = data
 
   foreach (id in unitUpgrades)
     res.append(mkViewInfo(id, "unitUpgrade"))
@@ -71,22 +72,9 @@ function getRewardsViewInfo(data, multiply = 1) {
     if (!unitUpgrades.contains(id))
       res.append(mkViewInfo(id, "unit"))
 
-  if (currencies == null) {//compatibility with format before 2024.01.23
-    if (gold > 0)
-      res.append(mkViewInfo("gold", "currency", gold * multiply))
-    if (wp > 0)
-      res.append(mkViewInfo("wp", "currency", wp * multiply))
-    if (warbond > 0)
-      res.append(mkViewInfo("warbond", "currency", warbond * multiply))
-    if (eventKey > 0)
-      res.append(mkViewInfo("eventKey", "currency", eventKey * multiply))
-    if (nybond > 0)
-      res.append(mkViewInfo("nybond", "currency", nybond * multiply))
-  }
-  else
-    foreach(id, value in currencies)
-      if (value > 0)
-        res.append(mkViewInfo(id, "currency", value * multiply))
+  foreach(id, value in currencies)
+    if (value > 0)
+      res.append(mkViewInfo(id, "currency", value * multiply))
 
   if (premiumDays > 0)
     res.append(mkViewInfo("", "premium", premiumDays * multiply))
@@ -243,7 +231,8 @@ function getLootboxCommonRewardsViewInfo(lootbox) {
 
   return rewards
     .filter(@(r) r.content != null)
-    .sort(@(a, b) a.dropLimit <=> b.dropLimit
+    .sort(@(a, b) b.content.slots <=> a.content.slots
+      || a.dropLimit <=> b.dropLimit
       || (a?.isLastReward ?? false) <=> (b?.isLastReward ?? false)
       || a.chance <=> b.chance
       || sortRewardsViewInfo(a.content, b.content))

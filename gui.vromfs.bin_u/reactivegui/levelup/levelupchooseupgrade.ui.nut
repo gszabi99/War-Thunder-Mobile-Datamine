@@ -22,6 +22,7 @@ let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { isUnitsWndOpened } = require("%rGui/mainMenu/mainMenuState.nut")
+let { wpOfferCard, premOfferCard, gapCards, battleRewardsTitle } = require("chooseUpgradePkg.nut")
 
 let contentAppearTime = 0.3
 
@@ -115,16 +116,17 @@ let mkUnitPlate = @(unit) {
 let unitBlock = @(unit) {
   size = flex()
   flow = FLOW_VERTICAL
-  valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  gap = hdpx(40)
+  padding = [hdpx(32), hdpx(16)]
+  gap = hdpx(10)
   children = [
     mkUnitTitle(unit)
-    mkUnitBonuses(unit)
+    battleRewardsTitle(unit)
+    mkUnitBonuses(unit, { gap = hdpx(100), margin = [ 0, 0, hdpx(50), 0 ] })
     mkUnitPlate(unit)
     {
       rendObj = ROBJ_TEXT
-      margin = [hdpx(40), 0, 0, 0]
+      margin = [hdpx(50), 0, 0, 0]
       text = loc(unit?.isUpgraded ? "upgradeType/upgraded" : "upgradeType/common")
       color = 0xFFFFFFFF
     }.__update(fontMedium)
@@ -140,12 +142,15 @@ function unitsList() {
   let unit = allUnitsCfg.value?[upgradeUnitName.value]
   if (unit == null)
     return res
+  let upgradedUnit = unit.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}, { isUpgraded = true })
   return {
     size = flex()
     flow = FLOW_HORIZONTAL
+    halign = ALIGN_CENTER
+    gap = gapCards
     children = [
-      unitBlock(unit)
-      unitBlock(unit.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}, { isUpgraded = true }))
+      wpOfferCard(unit, unitBlock(unit))
+      premOfferCard(upgradedUnit, unitBlock(upgradedUnit))
     ]
   }
 }

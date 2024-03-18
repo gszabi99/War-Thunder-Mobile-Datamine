@@ -14,7 +14,7 @@ require("%appGlobals/sqevents.nut")
 require("initVM.nut")
 require("%appGlobals/pServer/pServerApi.nut")
 require("consoleCmd.nut")
-require("%sqstd/regScriptProfiler.nut")("darg")
+require("%sqstd/regScriptProfiler.nut")("darg", dlog) // warning disable: -forbidden-function
 require("%rGui/notifications/foreignMsgBox.nut")
 require("%rGui/notifications/logEvents.nut")
 require("%rGui/options/guiOptions.nut") //need to register options before load profile

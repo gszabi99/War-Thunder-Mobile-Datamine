@@ -74,7 +74,7 @@ require("%scripts/login/updateRights.nut")
 require("%scripts/debugTools/dbgDedicLogerrs.nut")
 require("%scripts/matching/gameModesUpdate.nut")
 require("utils/restartGame.nut")
-require("%sqstd/regScriptProfiler.nut")("dagui")
+require("%sqstd/regScriptProfiler.nut")("dagui", dlog) // warning disable: -forbidden-function
 require("bqQueue.nut")
   // end of Independent Modules
 

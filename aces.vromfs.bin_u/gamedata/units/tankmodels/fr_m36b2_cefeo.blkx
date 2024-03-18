@@ -44,7 +44,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": 1.26,
   "dm_for_shop": {
     "armorThicknessFront": [
       0.2,
@@ -3452,6 +3452,19 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.220084,
       "decal1Tex": "m36b2_rbceo_decal"
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "fr_camo_vert_olive_arme*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
     }
   },
   "battleHideNodes": {

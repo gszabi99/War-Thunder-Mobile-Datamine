@@ -1,9 +1,9 @@
 let shopCategories = [
   "SC_OTHER"
+  "SC_FEATURED"
   "SC_GOLD"
   "SC_WP"
   "SC_PREMIUM"
-  "SC_UNIT"
   "SC_CONSUMABLES"
   "SC_PLATINUM"
 ].map(@(v, i) [ v, 100 + i ]).totable()
@@ -18,6 +18,7 @@ let goodsTypes = [
   "SGT_WARBONDS"
   "SGT_EVENT_KEYS"
   "SGT_PLATINUM"
+  "SGT_LOOTBOX"
 ].map(@(v, i) [ v, 200 + i ]).totable()
 
 let currencyToGoodsType = {

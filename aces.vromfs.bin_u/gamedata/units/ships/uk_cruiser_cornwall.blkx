@@ -6453,5 +6453,47 @@
         "to": "camo_deepdark_wood*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_navygrey_5*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_navygrey_5*"
+        },
+        {
+          "from": "camo_dark_wood*",
+          "to": "camo_dark_wood*"
+        }
+      ]
+    },
+    "greenwhite_spots": {
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_greenwhite_spots*"
+        },
+        {
+          "from": "camo_sandy*",
+          "to": "camo_greenwhite_spots*"
+        }
+      ]
+    },
+    "blackgray_stripes": {
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_blackgray_stripes*"
+        },
+        {
+          "from": "camo_sandy*",
+          "to": "camo_blackgray_stripes*"
+        }
+      ]
+    }
   }
 }

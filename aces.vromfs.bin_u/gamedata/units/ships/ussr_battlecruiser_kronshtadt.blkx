@@ -7440,5 +7440,47 @@
         "to": "camo_deepdark_wood*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_hazegray*"
+        },
+        {
+          "from": "camo_b15*",
+          "to": "camo_b15*"
+        }
+      ]
+    },
+    "disruptive_gray": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_disruptive_gray*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_fadedgreen*"
+        }
+      ]
+    },
+    "threegreenspots": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_threegreenspots*"
+        },
+        {
+          "from": "camo_b15*",
+          "to": "camo_wood*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_bottom_green*"
+        }
+      ]
+    }
   }
 }

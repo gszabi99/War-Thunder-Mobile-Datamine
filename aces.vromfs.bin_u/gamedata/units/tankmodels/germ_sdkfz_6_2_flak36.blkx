@@ -2817,35 +2817,19 @@
       "decal2Tex": "counters_25"
     }
   },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
+  "vehicleSkins": {
+    "forest": {
       "replace_tex": {
         "from": "ger_camo_grey*",
-        "to": "ger_camo_winter_grey*"
-      }
-    },
-    {
-      "name": "ger_camo_dunkelgelb_africa",
-      "nameLocId": "skin/ger_camo_dunkelgelb_africa",
-      "descLocId": "skin/ger_camo_dunkelgelb_africa/desc",
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ger_camo_dunkelgelb_africa*"
-      }
-    },
-    {
-      "name": "ger_camo_winter_lines",
-      "nameLocId": "skin/ger_camo_winter_lines",
-      "descLocId": "skin/ger_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ger_camo_winter_lines*"
+        "to": "ger_camo_grey*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
       }
     }
-  ],
+  },
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,

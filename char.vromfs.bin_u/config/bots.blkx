@@ -7,7 +7,20 @@
   "numTankBotRespawnsInMultiSlot": 3,
   "numBotRespawnsInVersus": 1,
   "numTankBotRespawnsInVersus": 3,
-  "allowedAircrafts": {},
+  "allowedAircrafts": {
+    "aircraft": [
+      {
+        "name": "fw_190a_1",
+        "weight": 1.0,
+        "country": "germany"
+      },
+      {
+        "name": "fw_190a_1",
+        "weight": 1.0,
+        "country": "ussr"
+      }
+    ]
+  },
   "allowedTanks": {
     "tank": [
       {
@@ -23,7 +36,7 @@
       {
         "name": "ussr_t_34_1941",
         "weight": 1.0,
-        "country": "germany"
+        "country": "ussr"
       }
     ],
     "rankRange": [
@@ -66,17 +79,17 @@
           {
             "name": "ussr_t_34_1941_l_11",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_t_34_1941",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_t_28E",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           }
         ]
       },
@@ -134,17 +147,17 @@
           {
             "name": "ussr_t_34_1942",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_t_34E_STZ",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_kv_1_zis_5",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "uk_a30_sp_avenger",
@@ -172,17 +185,17 @@
           {
             "name": "ussr_t_34_85_d_5t",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_su_152",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_is_1",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "fr_panhard_ebr_1951",
@@ -300,17 +313,17 @@
           {
             "name": "ussr_t_34_85_zis_53",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_su_100_1945",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_is_2_1943",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "uk_a_43_black_prince",
@@ -383,17 +396,17 @@
           {
             "name": "ussr_t_44",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_is_2_1944",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_t_44_100",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "uk_fv4202",
@@ -421,12 +434,12 @@
           {
             "name": "ussr_t_54_1949",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_t_10a",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_object_906",
@@ -444,12 +457,12 @@
           {
             "name": "ussr_t_54_1949",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_t_10a",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           },
           {
             "name": "ussr_object_906",

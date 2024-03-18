@@ -2915,7 +2915,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": {
         "node": "ex_decor_06_dm",
         "name": "usa_toolbox",

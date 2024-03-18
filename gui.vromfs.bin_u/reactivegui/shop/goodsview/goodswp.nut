@@ -23,13 +23,13 @@ function getImgByAmount(amount) {
 }
 
 function getLocNameWp(goods) {
-  let amount = goods?.currencies.wp ?? goods?.wp ?? 0 //compatibility with format before 2024.01.23
+  let amount = goods?.currencies.wp ?? 0
   return loc("shop/item/wp/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
 function mkGoodsWp(goods, onClick, state, animParams) {
   let { viewBaseValue = 0, isShowDebugOnly = false } = goods
-  let wp = goods?.currencies.wp ?? goods?.wp ?? 0 //compatibility with format before 2024.01.23
+  let wp = goods?.currencies.wp ?? 0
   return mkGoodsWrap(onClick,
     @(sf) [
       mkSlotBgImg()

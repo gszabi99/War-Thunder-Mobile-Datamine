@@ -18,8 +18,8 @@ let bgByHangar = {
 }
 
 let countriesCfg = [
-  ["country_usa"],
-  ["country_germany", "country_frg", "country_italy"],
+  ["country_usa", "country_israel"],
+  ["country_germany", "country_italy"],
   ["country_ussr", "country_china"],
   ["country_uk", "country_france", "country_sweden"],
   ["country_japan"],

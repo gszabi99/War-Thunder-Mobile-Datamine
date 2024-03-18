@@ -3689,13 +3689,11 @@
   "strategy": {
     "type": "StrategyViewCamera",
     "fov": 120.0,
-    "fovMin": 90.0,
-    "targetingCameraDistanceMin": 500.0,
-    "targetingCameraDistanceMax": 2000.0,
+    "speed": 50.0,
+    "targetingDistanceMin": 700.0,
+    "targetingDistanceMax": 2500.0,
     "transitionFadeInTime": 1.0,
     "transitionFadeOutTime": 1.0,
-    "verticalSpeed": 50.0,
-    "horizontalSpeed": 50.0,
     "viscosity": 0.5
   },
   "follow_object_camera": {

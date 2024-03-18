@@ -56,7 +56,6 @@ function findGoodsPrem(shopGoodsList) {
   local delta = 0
   foreach (g in shopGoodsList) {
     if ((g?.premiumDays ?? 0) <= 0
-      || (g?.gold ?? 0) > 0 || (g?.wp ?? 0) > 0 //compatibility with format before 2024.01.23
       || (g?.currencies.len() ?? 0) > 0
       || (g?.items.len() ?? 0) > 0
       || (g?.units.len() ?? 0) > 0 || (g?.unitUpgrades.len() ?? 0) > 0)

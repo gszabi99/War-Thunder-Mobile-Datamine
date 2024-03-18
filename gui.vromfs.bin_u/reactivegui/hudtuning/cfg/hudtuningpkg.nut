@@ -7,7 +7,15 @@ let { mkChainedWeapons } = require("%rGui/hud/weaponryBlockImpl.nut")
 let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
 
-let withActionButtonCtor = @(aType, actionCtor, cfg) cfg.__update({
+enum Z_ORDER {
+  DEFAULT
+  BUTTON
+  BUTTON_PRIMARY
+  SLIDER
+  STICK
+}
+
+let withActionButtonCtor = @(aType, actionCtor, cfg) {
   function ctor() {
     let action = Computed(@() actionBarItems.value?[aType])
     return @() {
@@ -15,19 +23,21 @@ let withActionButtonCtor = @(aType, actionCtor, cfg) cfg.__update({
       children = action.value == null ? null : actionCtor(action.value)
     }
   }
-})
+  priority = Z_ORDER.BUTTON
+}.__update(cfg)
 
 function withActionBarButtonCtor(config, unitType, cfg) {
   let { actionType, mkButtonFunction, getImage } = config
   let ctor = weaponsButtonsView[mkButtonFunction]
-  return withActionButtonCtor(actionType, @(v) ctor(config, v), cfg.__update({ // warning disable: -unwanted-modification
+  return withActionButtonCtor(actionType, @(v) ctor(config, v), {
     editView = weaponsButtonsView.mkActionItemEditView(getImage(unitType))
-  }))
+    priority = Z_ORDER.BUTTON
+  }.__update(cfg))
 }
 
 function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
   let aTypesList = configsList.map(@(c) c.actionType)
-  return cfg.__update({ // warning disable: -unwanted-modification
+  return {
     function ctor() {
       let aType = Computed(@() aTypesList.findvalue(@(t) t in actionBarItems.value) ?? aTypesList[0])
       let action = Computed(@() actionBarItems.value?[aType.value])
@@ -39,7 +49,8 @@ function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
       }
     }
     editView = weaponsButtonsView.mkActionItemEditView(configsList[0].getImage(unitType))
-  })
+    priority = Z_ORDER.BUTTON
+  }.__update(cfg)
 }
 
 function weaponryButtonCtor(id, actionCtor, cfg) {
@@ -47,7 +58,7 @@ function weaponryButtonCtor(id, actionCtor, cfg) {
     logerr($"Error using weaponryButtonCtor: {id} is not in weaponsButtonsConfig")
     return cfg
   }
-  return cfg.__merge({
+  return {
     function ctor() {
       let isVisible = Computed(@() id in visibleWeaponsMap.value)
       let actionItem = Computed(@() visibleWeaponsMap.value?[id].actionItem)
@@ -57,9 +68,10 @@ function weaponryButtonCtor(id, actionCtor, cfg) {
         children = !isVisible.value ? null : actionCtor(buttonConfig, actionItem.value)
       }
     }
-  })}
+    priority = Z_ORDER.BUTTON
+  }.__update(cfg)}
 
-let weaponryButtonDynamicCtor = @(idx, cfg) cfg.__update({
+let weaponryButtonDynamicCtor = @(idx, cfg) {
   function ctor() {
     let currentWeapon = Computed(@() visibleWeaponsDynamic.value?[idx])
     let actionItem = Computed(@() currentWeapon.value?.actionItem)
@@ -73,15 +85,17 @@ let weaponryButtonDynamicCtor = @(idx, cfg) cfg.__update({
             buttonConfig.value ?? weaponsButtonsConfig?[currentWeapon.value?.id], actionItem.value)
     }
   }
-},
-{ editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_ship_calibre_main_3_left.svg", idx + 1) })
+}.__update({
+  editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_ship_calibre_main_3_left.svg", idx + 1)
+  priority = Z_ORDER.BUTTON
+}, cfg)
 
 function weaponryButtonsGroupCtor(ids, actionCtor, cfg) {
   if (ids.findindex(@(id) id not in weaponsButtonsConfig) != null) {
     logerr("Error using weaponryButtonsGroupCtor: id is not in weaponsButtonsConfig")
     return cfg
   }
-  return cfg.__merge({
+  return {
     function ctor() {
       let id = Computed(@() ids.findvalue(@(i) i in visibleWeaponsMap.value))
       let actionItem = Computed(@() visibleWeaponsMap.value?[id.value].actionItem)
@@ -91,14 +105,16 @@ function weaponryButtonsGroupCtor(ids, actionCtor, cfg) {
         children = buttonConfig.value == null ? null : actionCtor(buttonConfig.value, actionItem.value)
       }
     }
-  })}
+    priority = Z_ORDER.BUTTON
+  }.__update(cfg)
+}
 
 function weaponryButtonsChainedCtor(ids, actionCtor, cfg) {
   if (ids.findindex(@(id) id not in weaponsButtonsConfig) != null) {
     logerr("Error using weaponryButtonsChainedCtor: id is not in weaponsButtonsConfig")
     return cfg
   }
-  return cfg.__merge({
+  return {
     function ctor() {
       let visibleIds = Computed(@() ids.filter(@(id) id in visibleWeaponsMap.value))
       return @() {
@@ -106,7 +122,9 @@ function weaponryButtonsChainedCtor(ids, actionCtor, cfg) {
         children = mkChainedWeapons(actionCtor, visibleIds.value)
       }
     }
-  })}
+  priority = Z_ORDER.BUTTON
+  }.__update(cfg)
+}
 
 let mkRBPos = @(pos) {
   pos
@@ -139,6 +157,8 @@ let mkCBPos = @(pos) {
 }
 
 return {
+  Z_ORDER
+
   withActionButtonCtor
   withActionBarButtonCtor
   withAnyActionBarButtonCtor

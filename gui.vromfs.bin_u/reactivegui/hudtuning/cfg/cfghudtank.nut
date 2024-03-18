@@ -1,7 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+let { allow_voice_messages } = require("%appGlobals/permissions.nut")
+let { set_chat_handler = null } = require("chat")
+let { missionPlayVoice = null } = require("sound_wt")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK
 } = require("%rGui/hud/actionBar/actionType.nut")
+let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_EXTINGUISHER, EII_TOOLKIT, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
   EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
@@ -11,9 +15,10 @@ let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, 
   mkCircleFireworkBtn
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { withActionButtonCtor, withActionBarButtonCtor, withAnyActionBarButtonCtor,
-  mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut")
+  Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut")
 let { tankMoveStick, tankMoveStickView, tankGamepadMoveBlock
 } = require("%rGui/hud/tankMovementBlock.nut")
+let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let tankArrowsMovementBlock = require("%rGui/hud/tankArrowsMovementBlock.nut")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { currentTargetTrackingType } = require("%rGui/options/options/tankControlsOptions.nut")
@@ -37,6 +42,8 @@ let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
 let isTargetTracking = Computed(@() !currentTargetTrackingType.value)
 
+let allow_voice_messages_compatibility = Computed(@() allow_voice_messages.get() && !!set_chat_handler && !!missionPlayVoice)
+
 let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
   mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
@@ -46,6 +53,7 @@ return {
     {
       defTransform = mkRBPos([hdpx(-250), hdpx(-303)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
+      priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   primaryGunLeft = withActionButtonCtor(AB_PRIMARY_WEAPON,
@@ -53,6 +61,7 @@ return {
     {
       defTransform = mkLBPos([0, hdpx(-420)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
+      priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   secondaryGun = withActionButtonCtor(AB_SECONDARY_WEAPON,
@@ -67,6 +76,7 @@ return {
     {
       defTransform = mkRBPos([hdpx(-28), hdpx(-265)])
       editView = mkCircleBtnEditView("ui/gameuiskin#icon_rocket_in_progress.svg")
+      priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   machineGun = withActionButtonCtor(AB_MACHINE_GUN, mkCircleTankMachineGun,
@@ -79,18 +89,21 @@ return {
     ctor = mkCircleZoom
     defTransform = mkRBPos([hdpx(-426), hdpx(-188)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_tank_binoculars.svg")
+    priority = Z_ORDER.BUTTON
   }
 
   winch = {
     ctor = @() winchButton
     defTransform = mkLTPos([0, hdpx(100)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_winch.svg")
+    priority = Z_ORDER.BUTTON
   }
 
   freeCameraButton = {
     ctor = mkFreeCameraButton
     defTransform = mkLTPos([hdpx(0), hdpx(240)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
+    priority = Z_ORDER.BUTTON
   }
 
   targetTrackingButton = {
@@ -99,6 +112,7 @@ return {
     editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_tank_target_tracking.svg")
     isVisibleInEditor = isTargetTracking
     isVisibleInBattle = isTargetTracking
+    priority = Z_ORDER.BUTTON
   }
 
   abExtinguisher = withActionBarButtonCtor(EII_EXTINGUISHER, TANK,
@@ -126,12 +140,23 @@ return {
     ctor = @() bulletMainButton
     defTransform = actionBarTransform(7, true)
     editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 1)
+    priority = Z_ORDER.BUTTON
   }
 
   bulletExtra = {
     ctor = @() bulletExtraButton
     defTransform = actionBarTransform(6, true)
     editView = mkBulletEditView("ui/gameuiskin#hud_ammo_ap1_he1.svg", 2)
+    priority = Z_ORDER.BUTTON
+  }
+
+  voiceCmdStick = {
+    ctor = @() voiceMsgStickBlock
+    defTransform = mkRBPos([hdpx(5), hdpx(-130)])
+    editView = voiceMsgStickView
+    isVisibleInEditor = allow_voice_messages_compatibility
+    isVisibleInBattle = Computed(@() allow_voice_messages_compatibility.get() && isInMpSession.get())
+    priority = Z_ORDER.STICK
   }
 
   moveStick = {
@@ -144,6 +169,7 @@ return {
     editView = tankMoveStickView
     isVisibleInEditor = Computed(@() !isViewMoveArrows.value)
     isVisibleInBattle = Computed(@() !isBattleMoveArrows.value)
+    priority = Z_ORDER.STICK
   }
 
   moveArrows = {
@@ -155,6 +181,7 @@ return {
     editView = moveArrowsView
     isVisibleInEditor = isViewMoveArrows
     isVisibleInBattle = isBattleMoveArrows
+    priority = Z_ORDER.STICK
   }
 
   hitCamera = {

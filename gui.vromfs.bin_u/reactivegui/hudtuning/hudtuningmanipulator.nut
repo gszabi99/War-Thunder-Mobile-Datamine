@@ -17,7 +17,8 @@ function findElemInScene(x, y) {
     return null
 
   local resByInc = null
-  foreach(id, cfg in list) {
+  foreach(cfg in list) {
+    let { id } = cfg
     let aabb = gui_scene.getCompAABBbyKey(cfg?.editView.key)
     if (aabb == null)
       continue
