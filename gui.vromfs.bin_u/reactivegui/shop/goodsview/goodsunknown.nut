@@ -7,8 +7,10 @@ let priceBgGrad = mkColoredGradientY(0xFF7C7C7C, 0xFF404040, 12)
 
 let getLocNameUnknown = @(goods) goods.id
 
-let mkGoodsUnknown = @(goods, onClick, state, animParams) mkGoodsWrap(onClick,
-  @(_) [
+let mkGoodsUnknown = @(goods, onClick, state, animParams) mkGoodsWrap(
+  goods,
+  onClick,
+  @(_, _) [
     goods?.isShowDebugOnly ? underConstructionBg : null
     txt({ text = goods.id, margin = [ hdpx(55), 0, 0, hdpx(35) ] })
   ].extend(mkGoodsCommonParts(goods, state)),

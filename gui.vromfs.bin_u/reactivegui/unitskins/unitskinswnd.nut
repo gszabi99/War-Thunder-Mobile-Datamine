@@ -5,13 +5,16 @@ let { registerScene } = require("%rGui/navState.nut")
 let { closeUnitSkins, isUnitSkinsOpen, unitSkins, selectedSkin, currentSkin,
 availableSkins, selectedSkinCfg } = require("unitSkinsState.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { GOLD, orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { getUnitPresentation, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitRank
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow } = require("%rGui/unitDetails/unitDetailsState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { shopGoods } = require("%rGui/shop/shopState.nut")
+let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { getLootboxName } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
 } = require("%rGui/components/gradientDefComps.nut")
 let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
@@ -143,19 +146,50 @@ function openLootboxForEvent(lootbox) {
   openEmbeddedLootboxPreview(lootbox.name)
 }
 
+function chooseBetterGoods(g1, g2) {
+  if ((g1.price.price > 0) != (g2.price.price > 0))
+    return g1.price.price > 0 ? g1 : g2
+  let currencyOrder = (orderByCurrency?[g1.price.currencyId] ?? 100) <=> (orderByCurrency?[g2.price.currencyId] ?? 100)
+  if (currencyOrder != 0)
+    return currencyOrder > 0 ? g2 : g1
+  return g1.price.price < g2.price.price ? g1 : g2
+}
+
 let receiveSkinInfo = @(unitName, skinName) function() {
   let res = {
-    watch = [eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoods]
+    watch = [eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoods, shopGoods]
     padding = [0, saBorders[0], 0, 0]
     hplace = ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
   }
 
-  let evtLootbox = findLootboxWithReward(eventLootboxesRaw.get(), serverConfigs.get(),
+  let goodsByLootboxId = {}
+  foreach(goods in shopGoods.get())
+    foreach(id, _ in goods.lootboxes)
+      goodsByLootboxId[id] <- (id not in goodsByLootboxId) ? goods : chooseBetterGoods(goodsByLootboxId[id], goods)
+
+  let lootbox = findLootboxWithReward(goodsByLootboxId.keys().extend(eventLootboxesRaw.get().values()),
+    serverConfigs.get(),
     @(r) r.skins?[unitName] == skinName)
-  if (evtLootbox != null) {
-    let { event_id = MAIN_EVENT_ID } = evtLootbox?.meta
+
+  let goods = goodsByLootboxId?[lootbox]
+  if (goods != null) {
+    let lootboxTbl = serverConfigs.get().lootboxesCfg[lootbox]
+    return res.__update({
+      children = [
+        @() mkInfoTextarea(loc("canReceive/inShopLootbox",
+          { name = colorize(markTextColor, getLootboxName(lootboxTbl.name, lootboxTbl?.meta.event)) }))
+        textButtonPrimary(
+          utf8ToUpper(loc("msgbox/btn_browse")),
+          @() openGoodsPreview(goods.id),
+          { hplace = ALIGN_CENTER })
+      ]
+    })
+  }
+
+  if (lootbox != null) {
+    let { event_id = MAIN_EVENT_ID } = lootbox?.meta
     return res.__update({
       children = [
         @() mkInfoTextarea(
@@ -164,7 +198,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
           { watch = [ eventSeason, specialEvents ] })
         textButtonPrimary(
           utf8ToUpper(loc("msgbox/btn_browse")),
-          @() openLootboxForEvent(evtLootbox),
+          @() openLootboxForEvent(lootbox),
           { hplace = ALIGN_CENTER })
       ]
     })

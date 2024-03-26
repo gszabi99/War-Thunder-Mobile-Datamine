@@ -40,6 +40,7 @@ let nickFrames = {
   air_bomb = @(n) $"⋀{n}⋀"
   gas_mask = @(n) $"⋃{n}⋃"
   meteorite = @(n) $"⋁{n}⋂"
+  scorpion = @(n) $"⋋{n}⋌"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

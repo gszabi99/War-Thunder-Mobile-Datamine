@@ -61,11 +61,13 @@ function mkQuestsLink(curId, season) {
   let imgCfg = getCurrencyGoodsPresentation(curId, season)
   let cfg = imgCfg?[imgCfg.len() - 1]
 
-  return mkGoodsWrap(function() {
+  return mkGoodsWrap(
+    {},
+    function() {
       openEventQuestsWnd()
       closeBuyEventCurrenciesWnd()
     },
-    @(sf) [
+    @(sf, _) [
       mkSlotBgImg()
       mkBgParticles(goodsBgSize)
       sf & S_HOVER ? bgHiglight : null
@@ -82,8 +84,10 @@ let function mkGoods(goods, onClick, state, animParams) {
   local amount = goods.currencies?[cId] ?? 0
   return @() {
     watch = eventSeason
-    children = mkGoodsWrap(onClick,
-      @(sf) [
+    children = mkGoodsWrap(
+      goods,
+      onClick,
+      @(sf, _) [
         mkSlotBgImg()
         mkBgParticles(goodsBgSize)
         sf & S_HOVER ? bgHiglight : null

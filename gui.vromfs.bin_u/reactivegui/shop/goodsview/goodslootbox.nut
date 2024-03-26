@@ -9,7 +9,6 @@ let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
-
 let priceBgGrad = mkColoredGradientY(0xFF72A0D0, 0xFF588090, 12)
 let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 let lootboxIconSize = (goodsSmallSize[0] * 0.65).tointeger()
@@ -45,8 +44,10 @@ function mkGoodsLootbox(goods, _, state, animParams) {
   let { lootboxes, isShowDebugOnly = false, timeRange = null } = goods
   let lootboxId = lootboxes.findindex(@(_) true)
   let onClick = @() openGoodsPreview(goods.id)
-  return mkGoodsWrap(onClick,
-    @(sf) [
+  return mkGoodsWrap(
+    goods,
+    onClick,
+    @(sf, canPurchase) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       mkBgParticles([goodsSmallSize[0], goodsBgH])
@@ -55,7 +56,7 @@ function mkGoodsLootbox(goods, _, state, animParams) {
       lootboxId == null ? null
         : mkLoootboxImage(lootboxId, lootboxIconSize, { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, lootboxIconSize * 0.1] })
       mkLootboxTitle(titleFontGrad, mkLootboxNameComp(goods))
-      mkSquareIconBtn(fonticonPreview, onClick, { vplace = ALIGN_BOTTOM, margin = contentMargin })
+      !canPurchase ? null : mkSquareIconBtn(fonticonPreview, onClick, { vplace = ALIGN_BOTTOM, margin = contentMargin })
       timeRange == null ? null
         : mkTimeLeft(timeRange.end, { vplace = ALIGN_BOTTOM, margin = textMargin })
     ].extend(mkGoodsCommonParts(goods, state)),

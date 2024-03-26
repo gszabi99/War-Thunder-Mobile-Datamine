@@ -3,8 +3,8 @@ let { getLootboxImage, getLootboxFallbackImage, getLootboxName
 } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter
-} = require("%rGui/rewards/rewardPlateComp.nut")
+let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter,
+  mkRewardLocked } = require("%rGui/rewards/rewardPlateComp.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -16,6 +16,7 @@ let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkGoodsTimeTimeProgress } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 
 let lootboxImageSize = hdpxi(400)
@@ -98,10 +99,14 @@ function mkReward(reward) {
       clickableInfo = loc("mainmenu/btnPreview")
     }
   let isAllReceived = dropLimit != NO_DROP_LIMIT && dropLimit <= received
-  return {
+  let isAvailable = Computed(@() rType != "skin" || id in myUnits.get())
+
+  return @() {
+    watch = isAvailable
     children = [
       mkRewardPlate(reward, REWARD_STYLE_MEDIUM, ovr)
-      isAllReceived ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
+      !isAvailable.get() ? mkRewardLocked(REWARD_STYLE_MEDIUM)
+        : isAllReceived ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
         : (reward?.isFixed ?? reward?.isJackpot) ? mkRewardFixedIcon(REWARD_STYLE_MEDIUM)
         : dropLimitRaw != NO_DROP_LIMIT ? mkReceivedCounter(received, dropLimit)
         : null

@@ -4,14 +4,14 @@ let sortByCampaign = {
     || b.navalKills <=> a.navalKills
     || b.kills <=> a.kills
     || a.isDead <=> b.isDead
-    || a.name <=> b.name
+    || a.id <=> b.id
 
   tanks = @(a, b)
        b.score <=> a.score
     || b.groundKills <=> a.groundKills
     || b.kills <=> a.kills
     || a.isDead <=> b.isDead
-    || a.name <=> b.name
+    || a.id <=> b.id
 }
 
 let scoreKey = {

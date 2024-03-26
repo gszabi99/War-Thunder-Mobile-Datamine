@@ -2512,6 +2512,204 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.273359,
       "decal1Tex": "text_victory_is_ours"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        3.87445,
+        -1.80656e-7,
+        -0.19915,
+        1.19508
+      ],
+      "decal0Line1": [
+        -0.0529088,
+        -3.74015,
+        -1.02933,
+        7.92933
+      ],
+      "decal0Line2": [
+        -3.87445,
+        -1.87883e-7,
+        -0.19915,
+        -0.195083
+      ],
+      "decal0Line3": [
+        -0.0529085,
+        -3.74015,
+        1.02933,
+        7.92933
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.0494884,
+        0.265672,
+        -0.962792,
+        -1.41563
+      ],
+      "decal0CPNormDepth1": [
+        -0.0494884,
+        0.265672,
+        0.962792,
+        -1.41563
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.257761
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.242854,
+      "decal0Tex": "back_19",
+      "decal1Line0": [
+        -3.91814,
+        -1.6811e-7,
+        -0.215403,
+        -0.174104
+      ],
+      "decal1Line1": [
+        -0.0568856,
+        -3.78474,
+        1.03474,
+        7.95654
+      ],
+      "decal1Line2": [
+        3.91814,
+        -1.79073e-7,
+        -0.215403,
+        1.1741
+      ],
+      "decal1Line3": [
+        -0.0568859,
+        -3.78474,
+        -1.03474,
+        7.95654
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        -0.0529441,
+        0.26409,
+        0.963044,
+        -1.41835
+      ],
+      "decal1CPNormDepth1": [
+        -0.0529441,
+        0.26409,
+        -0.963044,
+        -1.41835
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.254838
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.23696,
+      "decal1Tex": "back_19"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        3.87445,
+        -1.80656e-7,
+        -0.19915,
+        1.19508
+      ],
+      "decal0Line1": [
+        -0.0529088,
+        -3.74015,
+        -1.02933,
+        7.92933
+      ],
+      "decal0Line2": [
+        -3.87445,
+        -1.87883e-7,
+        -0.19915,
+        -0.195083
+      ],
+      "decal0Line3": [
+        -0.0529085,
+        -3.74015,
+        1.02933,
+        7.92933
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.0494884,
+        0.265672,
+        -0.962792,
+        -1.41563
+      ],
+      "decal0CPNormDepth1": [
+        -0.0494884,
+        0.265672,
+        0.962792,
+        -1.41563
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.257761
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.242854,
+      "decal0Tex": "back_19",
+      "decal1Line0": [
+        -3.91814,
+        -1.6811e-7,
+        -0.215403,
+        -0.174104
+      ],
+      "decal1Line1": [
+        -0.0568856,
+        -3.78474,
+        1.03474,
+        7.95654
+      ],
+      "decal1Line2": [
+        3.91814,
+        -1.79073e-7,
+        -0.215403,
+        1.1741
+      ],
+      "decal1Line3": [
+        -0.0568859,
+        -3.78474,
+        -1.03474,
+        7.95654
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        -0.0529441,
+        0.26409,
+        0.963044,
+        -1.41835
+      ],
+      "decal1CPNormDepth1": [
+        -0.0529441,
+        0.26409,
+        -0.963044,
+        -1.41835
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.254838
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.23696,
+      "decal1Tex": "back_19"
     }
   },
   "vehicleSkins": {
@@ -2519,6 +2717,28 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_green*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_green_ltbrown_lines*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_winter*"
       },
       "decal": {
         "skin_condition": 100.0,

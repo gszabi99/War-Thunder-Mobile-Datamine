@@ -30,8 +30,10 @@ function getLocNamePlatinum(goods) {
 function mkGoodsPlatinum(goods, onClick, state, animParams) {
   let { viewBaseValue = 0, isShowDebugOnly = false } = goods
   let platinum = goods?.currencies.platinum ?? 0
-  return mkGoodsWrap(onClick,
-    @(sf) [
+  return mkGoodsWrap(
+    goods,
+    onClick,
+    @(sf, _) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       mkBgParticles([goodsSmallSize[0], goodsBgH])

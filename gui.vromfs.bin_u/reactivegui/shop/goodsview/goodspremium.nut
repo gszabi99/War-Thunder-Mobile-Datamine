@@ -78,8 +78,10 @@ function mkGoodsPremium(goods, onClick, state, animParams) {
       mkPremiumDaysTitle(premiumDays, viewBaseValue)
     ]
   }
-  return mkGoodsWrap(onClick,
-    @(sf) [
+  return mkGoodsWrap(
+    goods,
+    onClick,
+    @(sf, _) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       mkBgParticles([goodsSmallSize[0], goodsBgH])

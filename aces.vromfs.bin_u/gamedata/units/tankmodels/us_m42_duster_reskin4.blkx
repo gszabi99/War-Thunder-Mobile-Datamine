@@ -2903,6 +2903,58 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.261634,
       "decal0Tex": "usa_tank_emblem_08"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.78328,
+        -1.21889e-7,
+        -0.205832,
+        -0.822884
+      ],
+      "decal0Line1": [
+        0.00110154,
+        -2.79084,
+        0.0148967,
+        6.47954
+      ],
+      "decal0Line2": [
+        -2.78328,
+        -1.22132e-7,
+        -0.205832,
+        1.82289
+      ],
+      "decal0Line3": [
+        0.00110178,
+        -2.79084,
+        -0.0148968,
+        6.47954
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.0737507,
+        -0.00535224,
+        -0.997262,
+        -1.05322
+      ],
+      "decal0CPNormDepth1": [
+        -0.0737507,
+        -0.00535224,
+        0.997262,
+        -1.05322
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.5
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.261634,
+      "decal0Tex": "usa_tank_emblem_08"
     }
   },
   "vehicleSkins": {
@@ -2915,6 +2967,33 @@
         "from": "m42_duster_body_c*",
         "to": "m42_duster_skin_born_body_c*",
         "param": "camo_skin_tex"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_olive_drab_olive*"
+      },
+      "set_tex": {
+        "from": "m42_duster_body_c*",
+        "to": "m42_duster_skin_born_body_c*",
+        "param": "camo_skin_tex"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_winter_grid*"
       },
       "decal": {
         "skin_condition": 100.0,

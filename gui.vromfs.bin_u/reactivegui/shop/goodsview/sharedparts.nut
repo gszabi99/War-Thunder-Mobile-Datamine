@@ -18,6 +18,7 @@ let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkGradText, mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
+let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
 
 let goodsW = hdpx(555)
 let goodsH = hdpx(378)
@@ -333,14 +334,28 @@ function mkPricePlate(goods, priceBgTex, state, animParams = null, needDiscountT
   }
 }
 
-function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
+let purchasedPlate = {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = 0x990C1113
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("shop/unit_bought")
+  }.__update(fontMedium)
+}
+
+function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
+  let { limit = 0, id = null } = goods
   let stateFlags = Watched(0)
+  let canPurchase = Computed(@() limit == 0 || (purchasesCount.get()?[id].count ?? 0) < limit)
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]
-    watch = stateFlags
+    watch = [stateFlags, canPurchase]
     behavior = Behaviors.Button
     clickableInfo = loc("mainmenu/btnBuy")
-    onClick
+    onClick = canPurchase.get() ? onClick : null
     onElemState = @(v) stateFlags(v)
     xmbNode = XmbNode()
     transform = {
@@ -352,9 +367,9 @@ function mkGoodsWrap(onClick, mkContent, pricePlate = null, ovr = {}, childOvr =
     children = [
       {
         size = [ flex(), goodsBgH ]
-        children = mkContent?(stateFlags.value)
+        children = mkContent?(stateFlags.get(), canPurchase.get())
       }.__update(childOvr)
-      pricePlate
+      canPurchase.get() ? pricePlate : purchasedPlate
     ]
   }).__update(ovr)
 }
@@ -542,6 +557,7 @@ return {
   mkCurrencyAmountTitle
   numberToTextForWtFont
   mkPricePlate
+  purchasedPlate
   mkGoodsCommonParts
   mkOfferCommonParts
   oldAmountStrikeThrough

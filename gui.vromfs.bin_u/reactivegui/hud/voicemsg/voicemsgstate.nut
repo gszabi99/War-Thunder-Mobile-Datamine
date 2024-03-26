@@ -62,13 +62,15 @@ let addLastUseNow = @() updateUsesTime(true)
 let voiceMsgCooldownEndTime = Computed(@() lastUsesTime.get().len() < COOLDOWN_AFTER_USES ? -1 : (lastUsesTime.get()[0] + COOLDOWN_TIME_SEC))
 let isVoiceMsgEnabled = Computed(@() voiceMsgCooldownEndTime.get() <= 0)
 
-voiceMsgCooldownEndTime.subscribe(function(v) {
-  let cdLeft = v - get_mission_time()
+function updateCooldownTimer(cooldownEndTime) {
+  let cdLeft = cooldownEndTime - get_mission_time()
   if (cdLeft > 0)
     resetTimeout(cdLeft + 0.1, updateUsesTime)
   else
     clearTimer(updateUsesTime)
-})
+}
+voiceMsgCooldownEndTime.subscribe(updateCooldownTimer)
+updateCooldownTimer(voiceMsgCooldownEndTime.get())
 
 let isVoiceMsgStickActive = Watched(false)
 let voiceMsgStickDelta = Watched(Point2(0, 0))

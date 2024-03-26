@@ -6,7 +6,7 @@ let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = requir
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn,
+let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn, purchasedPlate,
   mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
@@ -108,18 +108,6 @@ function mkUnitTexts(goods, unit) {
   }
 }
 
-let purchasedPlate = {
-  size = flex()
-  rendObj = ROBJ_SOLID
-  color = 0x990C1113
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text = loc("shop/unit_bought")
-  }.__update(fontMedium)
-}
-
 let unitFrame = {
   size = flex()
   rendObj = ROBJ_FRAME
@@ -190,8 +178,10 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
     saveSeenGoods([goods.id])
   }
 
-  return mkGoodsWrap(onUnitClick,
-    unit == null ? null : @(sf) [
+  return mkGoodsWrap(
+    goods,
+    onUnitClick,
+    unit == null ? null : @(sf, _) [
       mkPlatoonBgPlates(unit, unit?.platoonUnits)
       mkBgImg($"!ui/unitskin#flag_{unit.country}.avif")
       mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")

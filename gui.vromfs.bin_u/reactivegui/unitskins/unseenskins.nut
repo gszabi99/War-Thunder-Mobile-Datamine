@@ -19,7 +19,7 @@ let mySkinsToMark = Computed(function() {
     return res
   foreach(name, unit in myUnits.get()) {
     let { skins = null } = unit
-    let resSkins = allMySkins?[name].filter(@(_, s) s in skins && s != "upgraded")
+    let resSkins = allMySkins?[name].filter(@(_, s) s in skins && !skins[s] && s != "upgraded")
     if (resSkins != null && resSkins.len() != 0)
       res[name] <- resSkins
   }

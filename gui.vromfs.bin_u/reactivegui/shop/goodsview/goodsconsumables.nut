@@ -61,8 +61,10 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
   let { itemId, amount } = getConsumablesInfo(goods)
   let { viewBaseValue = 0, isShowDebugOnly = false } = goods
   let nameConsumable =  loc($"item/{itemId}")
-  return mkGoodsWrap(onClick,
-    @(sf) [
+  return mkGoodsWrap(
+    goods,
+    onClick,
+    @(sf, _) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       mkBgParticles([goodsSmallSize[0], goodsBgH])

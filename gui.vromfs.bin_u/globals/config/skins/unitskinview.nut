@@ -177,7 +177,9 @@ return {
     },
     "germ_erprobungstrager_3_achs_turm": {
       "": "ger_camo_carc",
-      "forest": "ger_camo_bronzegruen"
+      "desert": "ger_camo_modern_threecolor",
+      "forest": "ger_camo_bronzegruen",
+      "winter": "ussr_camo_winter"
     },
     "germ_flakpanzer_IV_Kugelblitz": {
       "": "ger_camo_dunkelgelb",
@@ -203,7 +205,9 @@ return {
     },
     "germ_flakpanzer_IV_Ostwind_reskin": {
       "": "ger_camo_dunkelgelb_green",
-      "forest": "ger_camo_dunkelgelb"
+      "forest": "ger_camo_dunkelgelb",
+      "forest2": "ger_camo_dunkelgelb_green_braun_lines",
+      "winter": "ger_camo_winter_lines"
     },
     "germ_flakpanzer_IV_Wirbelwind": {
       "": "ger_camo_dunkelgelb",
@@ -233,7 +237,9 @@ return {
     },
     "germ_leopard_I_reskin": {
       "": "ger_camo_carc",
-      "forest": "ger_camo_bronzegruen"
+      "desert": "ger_camo_modern_threecolor",
+      "forest": "ger_camo_bronzegruen",
+      "winter": "ussr_camo_winter"
     },
     "germ_marder_1a1": {
       "": "ger_camo_bronzegruen",
@@ -265,7 +271,9 @@ return {
     },
     "germ_pz_IV_L70_A": {
       "": "ger_camo_dunkelgelb_green",
-      "forest": "ger_camo_dunkelgelb"
+      "forest": "ger_camo_dunkelgelb",
+      "forest2": "ger_camo_dunkelgelb_green_braun_lines",
+      "winter": "ger_camo_winter_lines"
     },
     "germ_pzkpfw_III_ausf_L": {
       "": "ger_camo_grey",
@@ -297,7 +305,9 @@ return {
     },
     "germ_pzkpfw_Maus": {
       "": "ger_camo_tiger_green",
-      "forest": "ger_camo_dunkelgelb"
+      "desert": "ger_camo_tiger",
+      "forest": "ger_camo_dunkelgelb",
+      "winter": "ger_camo_winter_waves_bicolor"
     },
     "germ_pzkpfw_VI_ausf_b_tiger_IIh": {
       "": "ger_camo_dunkelgelb",
@@ -319,7 +329,9 @@ return {
     },
     "germ_pzkpfw_VI_ausf_e_tiger": {
       "": "ger_camo_dunkelgelb_green",
-      "forest": "ger_camo_dunkelgelb"
+      "forest": "ger_camo_dunkelgelb",
+      "forest2": "ger_camo_dunkelgelb_green_braun_lines",
+      "winter": "ger_camo_winter_lines"
     },
     "germ_pzkpfw_VI_ausf_h1_tiger": {
       "": "ger_camo_dunkelgelb",
@@ -327,7 +339,9 @@ return {
     },
     "germ_pzkpfw_VI_tiger_P": {
       "": "ger_camo_dunkelgelb_green",
-      "forest": "ger_camo_dunkelgelb"
+      "forest": "ger_camo_dunkelgelb",
+      "forest2": "ger_camo_dunkelgelb_green_braun_lines",
+      "winter": "ger_camo_winter_lines"
     },
     "germ_pzkpfw_V_ausf_d_panther": {
       "": "ger_camo_dunkelgelb",
@@ -382,7 +396,9 @@ return {
     },
     "germ_wiesel_1_mk20": {
       "": "ger_camo_carc",
-      "forest": "ger_camo_bronzegruen"
+      "desert": "ger_camo_modern_threecolor",
+      "forest": "ger_camo_bronzegruen",
+      "winter": "ussr_camo_winter"
     },
     "il_centurion_shot_kal_gimel": {
       "": "us_camo_olive",
@@ -810,7 +826,9 @@ return {
     },
     "us_m18_super_hellcat": {
       "": "us_camo_desert_pink_lines",
-      "forest": "us_camo_olive"
+      "forest": "us_camo_olive",
+      "forest2": "us_camo_olive_drab_olive",
+      "winter": "us_camo_winter_grid"
     },
     "us_m19": {
       "": "us_camo_olive",
@@ -866,7 +884,9 @@ return {
     },
     "us_m42_duster_reskin4": {
       "": "us_camo_desert_pink_lines",
-      "forest": "us_camo_olive"
+      "forest": "us_camo_olive",
+      "forest2": "us_camo_olive_drab_olive",
+      "winter": "us_camo_winter_grid"
     },
     "us_m42_duster_reskin6": {
       "": "us_camo_olive_drab",
@@ -942,7 +962,9 @@ return {
     },
     "us_m6a2e1": {
       "": "us_camo_desert_pink_lines",
-      "forest": "us_camo_olive"
+      "forest": "us_camo_olive",
+      "forest2": "us_camo_olive_drab_olive",
+      "winter": "us_camo_winter_grid"
     },
     "us_sub_balao": {
       "upgraded": "camo_designpt328"
@@ -972,7 +994,9 @@ return {
     },
     "us_t29": {
       "": "us_camo_desert_pink_lines",
-      "forest": "us_camo_olive"
+      "forest": "us_camo_olive",
+      "forest2": "us_camo_olive_drab_olive",
+      "winter": "us_camo_winter_grid"
     },
     "us_t32e1": {
       "": "us_camo_desert_pink_olive",
@@ -1029,7 +1053,9 @@ return {
     },
     "ussr_btr_152d": {
       "": "ussr_camo_forest_01",
-      "forest": "ussr_camo_green"
+      "forest": "ussr_camo_green",
+      "forest2": "ussr_camo_green_ltbrown_lines",
+      "winter": "ussr_camo_winter"
     },
     "ussr_btr_80a": {
       "": "ussr_camo_green",
@@ -1039,7 +1065,9 @@ return {
     },
     "ussr_btr_zd": {
       "": "ussr_modern_forest",
-      "forest": "ussr_camo_green"
+      "desert": "ussr_camo_desert_syrian_green_brown_yellow",
+      "forest": "ussr_camo_green",
+      "winter": "ussr_modern_winter"
     },
     "ussr_cruiser_chapayev": {
       "": "camo_bluegray_longspot"
@@ -1084,7 +1112,9 @@ return {
     },
     "ussr_is_4m": {
       "": "ussr_camo_dkgreen_ltgreen_brown",
-      "forest": "ussr_camo_green"
+      "desert": "ussr_camo_czechoslovak_yellow_green",
+      "forest": "ussr_camo_green",
+      "forest2": "ussr_camo_forest_01"
     },
     "ussr_it_1": {
       "": "ussr_camo_green",
@@ -1092,7 +1122,9 @@ return {
     },
     "ussr_kv_122": {
       "": "ussr_camo_forest_01",
-      "forest": "ussr_camo_green"
+      "desert": "ussr_camo_desert_syrian_green_brown_yellow",
+      "forest": "ussr_camo_green",
+      "winter": "ussr_camo_winter"
     },
     "ussr_kv_1_zis_5": {
       "": "ussr_camo_green",
@@ -1100,7 +1132,9 @@ return {
     },
     "ussr_kv_1e": {
       "": "ussr_camo_forest_01",
-      "forest": "ussr_camo_green"
+      "forest": "ussr_camo_green",
+      "forest2": "ussr_camo_green_ltbrown_lines",
+      "winter": "ussr_camo_winter"
     },
     "ussr_kv_220": {
       "": "ussr_camo_forest_01",
@@ -1120,7 +1154,9 @@ return {
     },
     "ussr_object_120": {
       "": "ussr_camo_dkgreen_ltgreen_brown",
-      "forest": "ussr_camo_green"
+      "desert": "ussr_camo_czechoslovak_yellow_green",
+      "forest": "ussr_camo_green",
+      "forest2": "ussr_modern_forest"
     },
     "ussr_object_906": {
       "": "ussr_camo_green",
@@ -1128,11 +1164,15 @@ return {
     },
     "ussr_pt_76b": {
       "": "ussr_camo_forest_01",
-      "forest": "ussr_camo_green"
+      "desert": "ussr_camo_desert_syrian_green_brown_yellow",
+      "forest": "ussr_camo_green",
+      "winter": "ussr_camo_winter"
     },
     "ussr_su_100Y": {
       "": "ussr_camo_forest_01",
-      "forest": "ussr_camo_green"
+      "forest": "ussr_camo_green",
+      "forest2": "ussr_camo_green_ltbrown_lines",
+      "winter": "ussr_camo_winter"
     },
     "ussr_su_100_1945": {
       "": "ussr_camo_green",
@@ -1140,7 +1180,9 @@ return {
     },
     "ussr_su_122P": {
       "": "ussr_camo_forest_01",
-      "forest": "ussr_camo_green"
+      "desert": "ussr_camo_desert_syrian_green_brown_yellow",
+      "forest": "ussr_camo_green",
+      "winter": "ussr_camo_winter"
     },
     "ussr_su_122P_reskin": {
       "": "tl_camo_red_grey_chopped",
@@ -1196,7 +1238,9 @@ return {
     },
     "ussr_t_34_1941_57": {
       "": "ussr_camo_forest_01",
-      "forest": "ussr_camo_green"
+      "forest": "ussr_camo_green",
+      "forest2": "ussr_camo_green_ltbrown_lines",
+      "winter": "ussr_camo_winter"
     },
     "ussr_t_34_1941_cast_turret": {
       "": "ussr_camo_winter_net",
@@ -1238,7 +1282,9 @@ return {
     },
     "ussr_t_54_1947": {
       "": "ussr_camo_dkgreen_ltgreen_brown",
-      "forest": "ussr_camo_green"
+      "desert": "ussr_camo_czechoslovak_yellow_green",
+      "forest": "ussr_camo_green",
+      "forest2": "ussr_camo_forest_01"
     },
     "ussr_t_54_1949": {
       "": "ussr_camo_green",
@@ -1274,7 +1320,9 @@ return {
     },
     "ussr_zsu_23_4_reskin": {
       "": "ussr_camo_dkgreen_ltgreen_brown",
-      "forest": "ussr_camo_green"
+      "desert": "ussr_camo_czechoslovak_yellow_green",
+      "forest": "ussr_camo_green",
+      "forest2": "ussr_modern_forest"
     },
     "ussr_zsu_37": {
       "": "ussr_camo_green",

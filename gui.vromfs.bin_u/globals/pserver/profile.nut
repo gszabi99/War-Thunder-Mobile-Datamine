@@ -45,9 +45,9 @@ let curUnitName = Computed(@() curUnit.value?.name)
 let playerLevelInfo = Computed(function() {
   let res = defaultProfileLevelInfo.__merge(levelInfo.value)
   let { playerLevels = null, playerLevelsInfo = null } = campConfigs.value
-  let { maxBaseLevel = null } = playerLevelsInfo
+  let { maxBaseLevel = null, maxLevel = 0 } = playerLevelsInfo
   let levelCfg = playerLevels?[min(res.level, maxBaseLevel ?? res.level)]
-  if (levelCfg == null)
+  if (levelCfg == null || maxLevel <= res.level)
     res.isMaxLevel = true
   else {
     res.__update(levelCfg)

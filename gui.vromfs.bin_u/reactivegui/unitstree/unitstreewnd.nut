@@ -465,7 +465,7 @@ let unitsTreeGamercard = {
       watch = [playerLevelInfo, lvlUpCost, isLvlUpAnimated]
       children = playerLevelInfo.get().isReadyForLevelUp
           ? levelUpBtn(isLvlUpAnimated.get() ? null : openLvlUpWndIfCan)
-        : playerLevelInfo.get()?.nextLevelExp != 0
+        : playerLevelInfo.get()?.nextLevelExp != 0 && !playerLevelInfo.get()?.isMaxLevel
           ? speedUpBtn(isLvlUpAnimated.get() ? null : openExpWnd,
               lvlUpCost.get(),
               playerLevelInfo.get().level,

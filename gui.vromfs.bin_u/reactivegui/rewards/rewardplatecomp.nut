@@ -499,6 +499,19 @@ let mkRewardPlateVip = @(r, rStyle, ovr = {}) {
   ]
 }.__update(ovr)
 
+let mkRewardLocked = @(rStyle) {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = 0x60000000
+  children = {
+    size = [rStyle.markSize, rStyle.markSize]
+    margin = hdpx(8)
+    rendObj = ROBJ_IMAGE
+    keepAspect = KEEP_ASPECT_FIT
+    image = Picture($"ui/gameuiskin#lock_icon.svg:{rStyle.markSize}:{rStyle.markSize}:P")
+  }
+}
+
 return {
   REWARD_STYLE_TINY
   REWARD_STYLE_SMALL
@@ -514,6 +527,7 @@ return {
   mkRewardReceivedMark
   mkRewardFixedIcon
   mkReceivedCounter
+  mkRewardLocked
 
   decoratorIconContentCtors
 }

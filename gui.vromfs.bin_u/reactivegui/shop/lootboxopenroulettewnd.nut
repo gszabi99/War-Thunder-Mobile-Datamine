@@ -14,13 +14,14 @@ let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJa
 } = require("lootboxOpenRouletteState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
+let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked } = require("%rGui/rewards/rewardPlateComp.nut")
 let { addCompToCompAnim } = require("%darg/helpers/compToCompAnim.nut")
 let { mkLensFlareLootbox } = require("%rGui/effects/mkLensFlare.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { opacityAnim, lightAnim } = require("lootboxOpenRouletteAnims.nut")
 let lootboxOpenRouletteConfig = require("lootboxOpenRouletteConfig.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 let markSize = evenPx(40)
 let markMaxOffset = hdpx(20)
@@ -574,6 +575,20 @@ let receiveRewardAnimBlock = @(viewInfo, rewardIdx, key, duration)
       }]
     })
 
+let function mkRewardBlock(reward, rStyle) {
+  let { rType, id } = reward
+  if (rType != "skin")
+    return mkRewardPlate(reward, rStyle)
+  let isAvailable = Computed(@() id in myUnits.get())
+  return @() {
+    watch = isAvailable
+    children = [
+      mkRewardPlate(reward, rStyle)
+      !isAvailable.get() ? mkRewardLocked(REWARD_STYLE_MEDIUM) : null
+    ]
+  }
+}
+
 function rouletteRewardsBlock() {
   if (rouletteRewardsList.value.len() < 2)
     return { watch = rouletteRewardsList }
@@ -587,7 +602,7 @@ function rouletteRewardsBlock() {
   let compsTbl = {}
   foreach(idx, rew in rouletteRewardsList.value) {
     if (rew not in compsTbl)
-      compsTbl[rew] <- mkSlot(rew.len() == 0 ? emptySlot : mkRewardPlate(rew[0], REWARD_STYLE_MEDIUM))
+      compsTbl[rew] <- mkSlot(rew.len() == 0 ? emptySlot : mkRewardBlock(rew[0], REWARD_STYLE_MEDIUM))
     let comp = compsTbl[rew]
     if (rew not in sizesTbl)
       sizesTbl[rew] <- calc_comp_size(comp)[0]
