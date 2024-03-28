@@ -32,6 +32,24 @@ let shipWeaponsList = [
   "EII_STRATEGY_MODE"
 ]
 
+let submarineWeaponList = [
+  "ID_ZOOM"
+//
+
+
+
+  "EII_TORPEDO"
+  "EII_MINE"
+  "EII_DEPTH_CHARGE"
+  "EII_MORTAR"
+  "EII_SUPPORT_PLANE"
+  "EII_SUPPORT_PLANE_2"
+  "EII_SUPPORT_PLANE_3"
+  "EII_SUPPORT_PLANE_4"
+  "EII_DIVING_LOCK"
+  "EII_STRATEGY_MODE"
+]
+
 let shipGunInsertIdx = 1
 let shipGunTriggers = [
   TRIGGER_GROUP_PRIMARY
@@ -80,7 +98,7 @@ let fixedPositionWeapons = [
 
 let weaponsList = Computed(@() unitType.value == AIR ? aircraftWeaponsList
   : unitType.value == TANK ? []
-  : shipWeaponsList)
+  : (unitType.value == SUBMARINE ? submarineWeaponList : shipWeaponsList))
 
 let gunsList = Computed(function() {
   if (unitType.value == AIR || unitType.value == TANK)

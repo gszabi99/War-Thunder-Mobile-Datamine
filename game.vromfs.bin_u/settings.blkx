@@ -285,9 +285,6 @@
         "mRank": 2
       }
     },
-    "pkg_lvl_st_patrick": {
-      "hangarPath": "config/hangar_field_st_patrick.blk"
-    },
     "pkg_germ_battlecruiser_von_der_tann": {
       "conditions": {
         "campaign": "ships",
@@ -506,7 +503,7 @@
     "gameplayD3dPipelineCompileTimeBudgetSeconds": 0.0,
     "sharpen": 0.2,
     "enableSuspensionAnimation": false,
-    "cloudsQuality": 2,
+    "cloudsQuality": 1,
     "contactShadowsQuality": 0,
     "tireTracksQuality": 2,
     "texquality": "high",
@@ -585,6 +582,7 @@
     "sceneResolutionPreset": "medium",
     "riUseStructuredBuffer": true,
     "riexCanIncreaseRenderBuffer": false,
+    "forwardSpeedLines": false,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }
@@ -1807,7 +1805,9 @@
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": false,
         "customRefractionScale": 0.25,
-        "refractionShadows": false
+        "refractionShadows": false,
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       },
       "render": {
         "grassInCompatibility": false
@@ -1879,7 +1879,9 @@
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": false,
         "customRefractionScale": 0.25,
-        "refractionShadows": false
+        "refractionShadows": false,
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       },
       "render": {
         "grassInCompatibility": true
@@ -1951,7 +1953,9 @@
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.25,
-        "refractionShadows": true
+        "refractionShadows": true,
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       },
       "render": {
         "grassInCompatibility": true
@@ -2023,7 +2027,9 @@
         "enableGrassTrackMask": true,
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.5,
-        "refractionShadows": true
+        "refractionShadows": true,
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       },
       "render": {
         "grassInCompatibility": true
@@ -2095,7 +2101,9 @@
         "enableGrassTrackMask": true,
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 1.0,
-        "refractionShadows": true
+        "refractionShadows": true,
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       },
       "render": {
         "grassInCompatibility": true
@@ -2148,7 +2156,9 @@
         "allowNonSkyReflections": false,
         "allowRefractionForTankLevels": false,
         "customRefractionScale": 0.25,
-        "refractionShadows": false
+        "refractionShadows": false,
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       }
     },
     "medium": {
@@ -2177,7 +2187,9 @@
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": false,
         "customRefractionScale": 0.25,
-        "refractionShadows": false
+        "refractionShadows": false,
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       }
     },
     "high": {
@@ -2206,7 +2218,9 @@
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.25,
-        "refractionShadows": true
+        "refractionShadows": true,
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       }
     },
     "max": {
@@ -2235,7 +2249,9 @@
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.5,
-        "refractionShadows": true
+        "refractionShadows": true,
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       }
     }
   },

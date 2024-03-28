@@ -1129,7 +1129,7 @@
       60
     ],
     "hitBlinkFreq": 1.0,
-    "hitBlinkTime": 0.6,
+    "hitBlinkTime": 0.3,
     "colorHitBlink": [
       0,
       0,
@@ -1137,6 +1137,8 @@
       255
     ],
     "sightHit": "sight_hit.svg:41:41:K",
+    "sightCriticalHit": "sight_hit_crit.svg:41:41:K",
+    "hitIndicatorsCount": 3,
     "overheatSight": "sight_overheat_sectors.svg:29:29:K",
     "overheatThreshold": 0.3,
     "overheatFromColor": [

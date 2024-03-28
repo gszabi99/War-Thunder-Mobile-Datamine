@@ -13,7 +13,7 @@ let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapKe
 let { hasTarget, hasTargetCandidate, groupAttack, targetState, torpedoDistToLive, canZoom, isInZoom, unitType,
   groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir } = require("%rGui/hudState.nut")
 let { playHapticPattern } = require("hapticVibration")
-let { fire, isFullBuoyancy } = require("%rGui/hud/shipState.nut")
+let { fire, isFullBuoyancy, isAsmCaptureAllowed } = require("%rGui/hud/shipState.nut")
 let { playSound } = require("sound_wt")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { nextBulletIdx, currentBulletIdxPrim, currentBulletIdxSec
@@ -530,7 +530,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let { key, getShortcut, getImage, getAlternativeImage = @() null, selShortcut = null,
     hasAim = false, fireAnimKey = "fire", canShootWithoutTarget = true,
     needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canLowerCamera = false, canShipLowerCamera = false,
-    addChild = null, needCheckTargetRocket = false } = buttonConfig
+    addChild = null, needCheckRocket = false  } = buttonConfig
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
   let altImage = getAlternativeImage()
   let stateFlags = getWeapStateFlags(key)
@@ -564,11 +564,16 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
 
   function onButtonReleaseWhileActiveZone() {
     onStopTouch()
-    if (needCheckTargetRocket) {
+    if (needCheckRocket) {
+      if (!isAsmCaptureAllowed.value) {
+        addCommonHint(loc("hints/submarine_deeper_periscope"))
+        return
+      }
       if (!hasTarget.value) {
         addCommonHint(loc("hints/select_enemy_to_shoot"))
         return
-      } else if (isWaitForAim) {
+      }
+      if (isWaitForAim) {
         addCommonHint(loc("hints/select_cooldown_rocket"))
         return
       }
@@ -831,9 +836,10 @@ let periscopIcon = {
 }
 
 function mkSubmarineWeaponryItem(buttonConfig, actionItem, ovr = {}) {
+  let { needCheckRocket = false } = buttonConfig
   local btnCfg = {
-    addChild = mkWeaponBlockReasonIcon(Computed(@()
-      unitType.value == SUBMARINE && isDeeperThanPeriscopeDepth.value), periscopIcon)
+    addChild = mkWeaponBlockReasonIcon(Computed(@() unitType.value == SUBMARINE
+      && (needCheckRocket ? !isAsmCaptureAllowed.value : isDeeperThanPeriscopeDepth.value)), periscopIcon)
   }
   return mkWeaponryItem(buttonConfig.__merge(btnCfg), actionItem, ovr)
 }

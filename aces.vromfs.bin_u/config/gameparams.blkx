@@ -17379,5 +17379,12 @@
     "maxWindNoisePerpendicularStrength": 0.5,
     "minWindNoisePerpendicularStrength": 0.2,
     "windNoiseTextureName": "perlin_noise_wind_ati1n"
+  },
+  "speedLines": {
+    "minSpeedLimit": 10000.0,
+    "maxSpeedLimit": 10000.0,
+    "speedFactor": 0.0,
+    "timeFactor": 1.0,
+    "screenLimit": 1.0
   }
 }

@@ -34,6 +34,11 @@ eventbus_subscribe("on_asm_capture:show", function(data) {
   asmCaptureTime.set(lockTime)
 })
 
+eventbus_subscribe("on_asm_capture:hide", function(_) {
+  asmCaptureEndTime.set(0.0)
+  asmCaptureTime.set(0.0)
+})
+
 eventbus_subscribe("on_delayed_target_select:hide", function(_) {
   cooldownEndTime.set(0.0)
   asmCaptureEndTime.set(0.0)

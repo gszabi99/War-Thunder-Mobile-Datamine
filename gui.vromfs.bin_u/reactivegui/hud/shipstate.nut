@@ -113,6 +113,7 @@ let shipState = {
   oxygen = Watched(100)
   isTargetRepair = Watched(false)
   targetHp = Watched(0)
+  isAsmCaptureAllowed = Watched(true)
 
   leftTurretRotationTime = Watched(0)
 }

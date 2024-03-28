@@ -113,18 +113,18 @@ let actionBarItemsConfig = {
     getShortcut = @(unitType, __) unitType == SUBMARINE ? "ID_SUBMARINE_WEAPON_ROCKETS" : "ID_SHIP_WEAPON_ROCKETS"
     getImage = @(_) "ui/gameuiskin#hud_missile_anti_ship.svg"
     actionType = AB_ROCKET
-    mkButtonFunction = "mkWeaponryItem"
+    mkButtonFunction = "mkSubmarineWeaponryItem"
     hasAim = true
-    needCheckTargetRocket = true
+    needCheckRocket = true
     relImageSize = 0.85
   },
   EII_ROCKET_SECONDARY = {
     getShortcut = @(_, __) "ID_SHIP_WEAPON_ROCKETS_SECONDARY"
     getImage = @(_) "ui/gameuiskin#hud_missile_ship_secondary.svg"
     actionType = AB_ROCKET_SECONDARY
-    mkButtonFunction = "mkWeaponryItem"
+    mkButtonFunction = "mkSubmarineWeaponryItem"
     hasAim = true
-    needCheckTargetRocket = true
+    needCheckRocket = true
     relImageSize = 0.85
   },
   EII_SUPPORT_PLANE = {

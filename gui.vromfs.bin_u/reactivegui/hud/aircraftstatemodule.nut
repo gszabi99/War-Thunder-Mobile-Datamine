@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isInZoom, isVisibleDmgIndicator } = require("%rGui/hudState.nut")
+let { isInZoom } = require("%rGui/hudState.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let damagePanelBacklight = require("components/damagePanelBacklight.nut")
 
@@ -36,7 +36,7 @@ let isActive = @(sf) (sf & S_ACTIVE) != 0
 let doll = @() {
   key = "aircraft_state_button"
   behavior = Behaviors.TouchAreaOutButton
-  watch = [ isInZoom, isVisibleDmgIndicator ]
+  watch = isInZoom
   eventPassThrough = true
   function onElemState(sf) {
     let prevSf = stateFlags.value
@@ -55,7 +55,7 @@ let doll = @() {
   }
   hotkeys = mkGamepadHotkey(shortcutId)
   children = [
-    isVisibleDmgIndicator.value ? xrayDoll(isInZoom.value ? null : stateFlags) : null
+    xrayDoll(isInZoom.value ? null : stateFlags)
     mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
   ]
 }
