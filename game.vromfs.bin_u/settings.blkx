@@ -503,7 +503,7 @@
     "gameplayD3dPipelineCompileTimeBudgetSeconds": 0.0,
     "sharpen": 0.2,
     "enableSuspensionAnimation": false,
-    "cloudsQuality": 1,
+    "cloudsQuality": 2,
     "contactShadowsQuality": 0,
     "tireTracksQuality": 2,
     "texquality": "high",
@@ -1880,8 +1880,8 @@
         "allowRefractionForTankLevels": false,
         "customRefractionScale": 0.25,
         "refractionShadows": false,
-        "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       },
       "render": {
         "grassInCompatibility": true
@@ -1954,8 +1954,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.25,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       },
       "render": {
         "grassInCompatibility": true
@@ -2028,8 +2028,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.5,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       },
       "render": {
         "grassInCompatibility": true
@@ -2102,8 +2102,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 1.0,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       },
       "render": {
         "grassInCompatibility": true
@@ -2157,8 +2157,8 @@
         "allowRefractionForTankLevels": false,
         "customRefractionScale": 0.25,
         "refractionShadows": false,
-        "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       }
     },
     "medium": {
@@ -2188,8 +2188,8 @@
         "allowRefractionForTankLevels": false,
         "customRefractionScale": 0.25,
         "refractionShadows": false,
-        "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       }
     },
     "high": {
@@ -2219,8 +2219,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.25,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       }
     },
     "max": {
@@ -2250,8 +2250,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.5,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1
+        "infiniteSkiesInAirplane": true,
+        "cloudsQuality": 2
       }
     }
   },

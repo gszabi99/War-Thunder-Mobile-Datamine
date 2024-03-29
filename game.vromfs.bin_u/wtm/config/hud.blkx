@@ -902,6 +902,13 @@
       "shell_projection.svg:23:23:K",
       "gunner_sight_lines.svg:27:27:K"
     ],
+    "pictureTpsViewAir": [
+      "sight_air.svg:36:36:K",
+      "gun_direction.svg:23:23:K",
+      "gunner_sight.svg:23:23:K",
+      "shell_projection.svg:23:23:K",
+      "gunner_sight_lines.svg:27:27:K"
+    ],
     "pictureGunnerView": "gunner_sight.svg:23:23:K",
     "pictureGunnerViewLines": "gunner_sight_lines.svg:27:27:K",
     "pictureGunnerDeadzone": "gunner_sight_disabled.svg:23:23:K",
@@ -990,6 +997,8 @@
     "mousePointer": "mouse_pointer.svg:45:45:K",
     "mousePointerAfterCockpitOpacity": 1.0,
     "mousePointerRadius": 21.0,
+    "mousePointerAir": "mouse_pointer_air.svg:58:58:K",
+    "mousePointerAfterCockpitOpacityAir": 0.45,
     "mouseAimDisplaceOpacity": 0.4,
     "mouseAimDisplaceWidth": 3.0,
     "mouseAimDisplaceLength": 7.0,
@@ -1129,7 +1138,8 @@
       60
     ],
     "hitBlinkFreq": 1.0,
-    "hitBlinkTime": 0.3,
+    "hitBlinkTime": 0.6,
+    "hitBlinkFreqAir": 0.15,
     "colorHitBlink": [
       0,
       0,
@@ -1137,8 +1147,8 @@
       255
     ],
     "sightHit": "sight_hit.svg:41:41:K",
-    "sightHitAir": "sight_hit_air.svg:41:41:K",
-    "sightCriticalHitAir": "sight_hit_air_crit.svg:41:41:K",
+    "sightHitAir": "sight_hit_air.svg:58:58:K",
+    "sightCriticalHitAir": "sight_hit_air_crit.svg:58:58:K",
     "hitIndicatorsCountAir": 3,
     "overheatSight": "sight_overheat_sectors.svg:29:29:K",
     "overheatThreshold": 0.3,
@@ -1165,6 +1175,19 @@
       180,
       180,
       240
+    ],
+    "overheatSightAir": "sight_overheat_air.svg:45:45:K",
+    "overheatFromColorAir": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "overheatToColorAir": [
+      255,
+      255,
+      255,
+      255
     ],
     "crosshairForestallDist": 750.0,
     "crosshairForestallDistForTanks": 2500.0,
