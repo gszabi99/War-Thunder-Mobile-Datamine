@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkSlotBgImg, borderBg, mkGoodsImg, mkCurrencyAmountTitle,
+let { mkGoodsWrap, mkSlotBgImg, borderBg, mkGoodsImg, mkCurrencyAmountTitle, mkGoodsLimit,
   mkPricePlate, mkGoodsCommonParts, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
@@ -41,6 +41,7 @@ function mkGoodsWp(goods, onClick, state, animParams) {
       sf & S_HOVER ? bgHiglight : null
       getImgByAmount(wp)
       mkCurrencyAmountTitle(wp, viewBaseValue, titleFontGrad)
+      mkGoodsLimit(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
     mkPricePlate(goods, priceBgGrad, state, animParams),  {size = goodsSmallSize})
 }

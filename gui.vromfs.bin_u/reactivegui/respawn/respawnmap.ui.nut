@@ -3,7 +3,7 @@ let { respawnBases, availRespBases, playerSelectedRespBase, curRespBase
 } = require("respawnState.nut")
 let { localTeam } = require("%rGui/missionState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { VISIBLE_ON_MAP, getRespawnBasePos } = require("guiRespawn")
+let { VISIBLE_ON_MAP, getRespawnBasePos = null } = require("guiRespawn")
 
 let baseSize = hdpxi(50)
 let circleSize = hdpx(70)
@@ -14,24 +14,21 @@ let zoneIcons = [
 ]
 
 let visibleRespawnBases = Computed(@() respawnBases.value.filter(@(rb) (rb.flags & VISIBLE_ON_MAP) != 0))
-let mapSizePx = Watched([0, 0])
 
 let mkRespBase = @(rb) @() {
   watch = [curRespBase, localTeam]
   size = [0, 0]
-  translate = mapSizePx.value.map(@(v, axis) v * rb.mapPos[axis])
+  pos = [pw(100.0 * rb.mapPos[0]), ph(100.0 * rb.mapPos[1])]
   rendObj = ROBJ_SOLID
   color = curRespBase.value == rb.id ? 0xFFFFFFFF : 0x80800000
-  behavior = Behaviors.RtPropUpdate
-  function update() {
-    let newPos = getRespawnBasePos(rb.id)
-    return {
-      transform = {
-          translate = mapSizePx.value.map(@(v, axis) v * newPos[axis])
-          rotate = rb.rotate
+  behavior = getRespawnBasePos == null ? null : Behaviors.RtPropUpdate
+  update = getRespawnBasePos == null ? null
+    : function() {
+        let newPos = getRespawnBasePos(rb.id)
+        return {
+          pos = [pw(100.0 * newPos[0]), ph(100.0 * newPos[1])]
+        }
       }
-    }
-  }
   children = [
     (curRespBase.value != rb.id && curRespBase.value > 0) || (rb.team != localTeam.value) ? null
       : {
@@ -47,7 +44,7 @@ let mkRespBase = @(rb) @() {
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
       keepAspect = KEEP_ASPECT_FIT
-      image = Picture($"{rb.iconType < 0 ? rb.mapIcon : zoneIcons[rb.iconType]}:{hdpxi(100)}:{hdpxi(100)}")
+      image = Picture($"{(rb?.iconType ?? 0) < 0 ? rb.mapIcon : zoneIcons[rb?.iconType ?? 0]}:{hdpxi(100)}:{hdpxi(100)}")
       color = rb.team == localTeam.value ? teamBlueColor : teamRedColor
     }.__update(rb.team != localTeam.value ? {}
       : {
@@ -69,7 +66,4 @@ return @() {
   size = flex()
   clipChildren = true
   children = visibleRespawnBases.value.map(mkRespBase)
-  function onAttach(elem) {
-    mapSizePx([elem.getWidth(), elem.getHeight()])
-  }
 }

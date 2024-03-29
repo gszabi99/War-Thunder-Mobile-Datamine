@@ -8,6 +8,7 @@ let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarU
 let curSelectedUnitId = Watched(null)
 let curSelectedUnitSkin = Watched(null)
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
+let unitDetailsOpenCount = Watched(openUnitOvr.get() == null ? 0 : 1)
 let isWindowAttached = Watched(false)
 
 let baseUnit = Computed(function() {
@@ -50,11 +51,23 @@ unitToShow.subscribe(function(unit) {
     resetCustomHangarUnit()
 })
 
+function openUnitDetailsWnd(unitOvr = {}) {
+  openUnitOvr.set(unitOvr)
+  unitDetailsOpenCount.set(unitDetailsOpenCount.get() + 1)
+}
+
+function closeUnitDetailsWnd() {
+  openUnitOvr.set(null)
+  unitDetailsOpenCount.set(0)
+}
+
 return {
   curSelectedUnitId
   curSelectedUnitSkin
   openUnitOvr
-  closeUnitDetailsWnd = @() openUnitOvr.set(null)
+  unitDetailsOpenCount
+  openUnitDetailsWnd
+  closeUnitDetailsWnd
   baseUnit
   platoonUnitsList
   unitToShow

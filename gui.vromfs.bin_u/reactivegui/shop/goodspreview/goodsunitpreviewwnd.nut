@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
-let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
+let { registerScene } = require("%rGui/navState.nut")
 let { GPT_UNIT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
@@ -42,7 +42,7 @@ let verticalGap = hdpx(20)
 let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
 let skipAnimsOnce = Watched(false)
-let isOpened = Computed(@() previewType.value == GPT_UNIT)
+let openCount = Computed(@() previewType.value == GPT_UNIT ? openPreviewCount.get() : 0)
 
 //anim pack info
 let aTimePackInfoStart = aTimePackNameFull
@@ -73,7 +73,7 @@ isWindowAttached.subscribe(function(v) {
 })
 
 isPurchEffectVisible.subscribe(function(v) {
-  if (v && isOpened.value)
+  if (v && openCount.get() > 0)
     closeGoodsPreview()
 })
 
@@ -298,7 +298,7 @@ let markPurchasesSeenDelayed = function(purchList) {
 
 let previewWnd = @() {
   watch = needShowUi
-  key = isOpened
+  key = openCount
   size = flex()
   padding = saBordersRv
   flow = FLOW_VERTICAL
@@ -338,5 +338,4 @@ let previewWnd = @() {
       ]
 }
 
-registerScene("goodsUnitPreviewWnd", previewWnd, closeGoodsPreview, isOpened)
-openPreviewCount.subscribe(@(_) moveSceneToTop("goodsUnitPreviewWnd"))
+registerScene("goodsUnitPreviewWnd", previewWnd, closeGoodsPreview, openCount)

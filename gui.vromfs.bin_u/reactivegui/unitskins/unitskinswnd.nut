@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/config/skins/skinTags.nut" import *
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { closeUnitSkins, isUnitSkinsOpen, unitSkins, selectedSkin, currentSkin,
+let { closeUnitSkins, unitSkinsOpenCount, unitSkins, selectedSkin, currentSkin,
 availableSkins, selectedSkinCfg } = require("unitSkinsState.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { GOLD, orderByCurrency } = require("%appGlobals/currenciesState.nut")
@@ -514,4 +514,4 @@ let unitSkinsWnd = {
   animations = wndSwitchAnim
 }
 
-registerScene("unitSkinsWnd", unitSkinsWnd, closeUnitSkins, isUnitSkinsOpen)
+registerScene("unitSkinsWnd", unitSkinsWnd, closeUnitSkins, unitSkinsOpenCount)

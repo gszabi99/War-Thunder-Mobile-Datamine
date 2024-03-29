@@ -22,11 +22,12 @@ let { justUnlockedPlatoonUnits } = require("%rGui/unit/justUnlockedPlatoonUnits.
 let { btnOpenUnitAttrBig } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let btnOpenUnitSkins = require("%rGui/unitSkins/btnOpenUnitSkins.nut")
 let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
-  platoonUnitsList, unitToShow, isWindowAttached } = require("unitDetailsState.nut")
+  platoonUnitsList, unitToShow, isWindowAttached, openUnitDetailsWnd, unitDetailsOpenCount
+} = require("unitDetailsState.nut")
 
 let buttonsGap = hdpx(40)
 
-let isUnitDetailsOpen = Computed(@() baseUnit.value != null)
+let openCount = Computed(@() baseUnit.value != null ? unitDetailsOpenCount.get() : 0)
 let isShowedUnitOwned = Computed(@() baseUnit.value?.name in myUnits.value)
 
 let nextLevelToUnlockUnit = Computed(function() {
@@ -152,7 +153,7 @@ let buttonsBlock = @() {
 }
 
 let sceneRoot = {
-  key = isUnitDetailsOpen
+  key = openCount
   size = [ sw(100), sh(100) ]
   behavior = Behaviors.HangarCameraControl
   animations = wndSwitchAnim
@@ -193,6 +194,6 @@ let sceneRoot = {
   }
 }
 
-registerScene("unitDetailWnd", sceneRoot, closeUnitDetailsWnd, isUnitDetailsOpen)
+registerScene("unitDetailWnd", sceneRoot, closeUnitDetailsWnd, openCount)
 
-return @(unitOvr = {}) openUnitOvr(unitOvr)
+return openUnitDetailsWnd

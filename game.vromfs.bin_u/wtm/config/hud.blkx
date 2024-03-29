@@ -1137,8 +1137,9 @@
       255
     ],
     "sightHit": "sight_hit.svg:41:41:K",
-    "sightCriticalHit": "sight_hit_crit.svg:41:41:K",
-    "hitIndicatorsCount": 3,
+    "sightHitAir": "sight_hit_air.svg:41:41:K",
+    "sightCriticalHitAir": "sight_hit_air_crit.svg:41:41:K",
+    "hitIndicatorsCountAir": 3,
     "overheatSight": "sight_overheat_sectors.svg:29:29:K",
     "overheatThreshold": 0.3,
     "overheatFromColor": [

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
-let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview
+let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getLootboxName } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
@@ -23,7 +23,7 @@ let rewardsBlockWidth = saSize[0] - hdpx(500)
 let aTimeHeaderStart = 0.5
 let aTimePriceStart = aTimeHeaderStart + 0.3
 
-let isOpened = Computed(@() previewType.get() == GPT_LOOTBOX)
+let openCount = Computed(@() previewType.get() == GPT_LOOTBOX ? openPreviewCount.get() : 0)
 let lootbox = Computed(@() serverConfigs.get()?.lootboxesCfg[previewGoods.get()?.lootboxes.findindex(@(_) true)])
 
 
@@ -99,7 +99,7 @@ let content = @() {
 }
 
 let previewWnd = @() {
-  key = isOpened
+  key = openCount
   size = flex()
 
   children = [
@@ -118,4 +118,4 @@ let previewWnd = @() {
   ]
 }
 
-registerScene("goodsLootboxPreviewWnd", previewWnd, closeGoodsPreview, isOpened)
+registerScene("goodsLootboxPreviewWnd", previewWnd, closeGoodsPreview, openCount)

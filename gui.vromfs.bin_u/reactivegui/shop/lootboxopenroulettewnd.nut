@@ -579,7 +579,18 @@ let function mkRewardBlock(reward, rStyle) {
   let { rType, id } = reward
   if (rType != "skin")
     return mkRewardPlate(reward, rStyle)
-  let isAvailable = Computed(@() id in myUnits.get())
+  let isAvailable = Computed(function() {
+    if (id not in myUnits.get())
+      return false
+    for (local i = 0; i < rouletteOpenIdx.get(); i++) {
+      let rReward = receivedRewardsAll.get()?[i].viewInfo[0]
+      if (rReward?.rType == "unit" && rReward?.id == id)
+        return true
+      if (i == rouletteOpenIdx.get() - 1)
+        return false
+    }
+    return true
+  })
   return @() {
     watch = isAvailable
     children = [

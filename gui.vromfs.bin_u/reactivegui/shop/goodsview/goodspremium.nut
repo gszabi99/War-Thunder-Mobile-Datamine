@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkBgImg, borderBg, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, mkSlotBgImg,
-  oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg
+  oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let openPremiumDescription = require("%rGui/shop/premiumDescription.nut")
 let { infoGreyButton } = require("%rGui/components/infoButton.nut")
@@ -89,6 +89,7 @@ function mkGoodsPremium(goods, onClick, state, animParams) {
       sf & S_HOVER ? bgHiglight : null
       premIconAndDaysTitleWrapper
       infoBtn
+      mkGoodsLimit(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
     mkPricePlate(goods, priceBgGrad, state, animParams), {size = goodsSmallSize})
 }

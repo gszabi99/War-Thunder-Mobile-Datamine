@@ -9,6 +9,11 @@ let muller_regular = isJp ? Fonts.muller_regular_jp : Fonts.muller_regular
 let muller_medium = isJp ? Fonts.muller_medium_jp : Fonts.muller_medium
 let wtfont = Fonts.wtfont
 
+let shadeTiny = {
+  fontFx = FFT_GLOW
+  fontFxColor = 0x80000000
+  fontFxFactor = hdpxi(32)
+}
 let shade = {
   fontFx = FFT_GLOW
   fontFxColor = 0xFF000000
@@ -85,9 +90,9 @@ let fontWtExtraLarge = {
   fontSize = hdpxi(150)
 }
 
-let fontVeryTinyShaded = fontVeryTiny.__merge(shade)
-let fontTinyShaded = fontTiny.__merge(shade)
-let fontTinyAccentedShaded = fontTinyAccented.__merge(shade)
+let fontVeryTinyShaded = fontVeryTiny.__merge(shadeTiny)
+let fontTinyShaded = fontTiny.__merge(shadeTiny)
+let fontTinyAccentedShaded = fontTinyAccented.__merge(shadeTiny)
 let fontSmallShaded = fontSmall.__merge(shade)
 let fontSmallAccentedShaded = fontSmallAccented.__merge(shade)
 let fontMediumShaded = fontMedium.__merge(shade)

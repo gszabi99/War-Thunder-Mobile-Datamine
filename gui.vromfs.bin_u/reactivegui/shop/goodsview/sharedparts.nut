@@ -3,7 +3,7 @@ from "%rGui/shop/shopCommon.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkColoredGradientY, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, gradTranspDoubleSideX, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
@@ -535,6 +535,24 @@ function mkSquareIconBtn(text, onClick, ovr) {
   }.__merge(ovr)
 }
 
+let limitFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
+let function mkGoodsLimit(goods) {
+  let { limit = 0, id = null } = goods
+  return @() {
+    watch = purchasesCount
+    margin = [hdpx(15), hdpx(20)]
+    pos = [0, (goods?.firstPurchaseBonus?.len() ?? 0) == 0 ? 0 : hdpx(-50)]
+    size = flex()
+    halign = ALIGN_RIGHT
+    valign = ALIGN_BOTTOM
+    flow = FLOW_VERTICAL
+    children = !limit || limit == 0 ? null
+      : mkGradGlowText(loc("shop/limit", { available = max(0, limit - (purchasesCount.get()?[id].count ?? 0)), limit }),
+          fontVeryTiny,
+          limitFontGrad)
+  }
+}
+
 return {
   goodsW
   goodsSmallSize
@@ -566,6 +584,7 @@ return {
   underConstructionBg
   mkSquareIconBtn
   mkTimeLeft
+  mkGoodsLimit
 
   goodsGlareAnimDuration
   mkBgParticles

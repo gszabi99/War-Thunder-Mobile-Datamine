@@ -4,7 +4,7 @@ let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkColoredGradientY, mkFontGradient,
   gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, txt,borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg
+  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let icons = {
@@ -78,6 +78,7 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
           ? mkCurrencyAmountTitle(amount, viewBaseValue, titleFontGrad, nameConsumable)
           : txt({ hplace = ALIGN_RIGHT, text = goods.id, margin = [ hdpx(25), hdpx(35), 0, 0 ] })
       })
+      mkGoodsLimit(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
     mkPricePlate(goods, priceBgGrad, state, animParams), {size = goodsSmallSize})
 }

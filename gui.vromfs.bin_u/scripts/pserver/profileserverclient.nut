@@ -27,6 +27,7 @@ let get_time_sec = @() (get_time_msec() * 0.001).tointeger()
 
 let noNeedLogerrOnErrors = {
   ["Couldn't connect to server"] = true,
+  RETRY_LIMIT_EXCEED = true,
 }
 
 function startProgress(id, value) {

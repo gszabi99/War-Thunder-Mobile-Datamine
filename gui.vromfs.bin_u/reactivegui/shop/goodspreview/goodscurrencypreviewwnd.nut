@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerScene } = require("%rGui/navState.nut")
-let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview
+let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimeInfoItem, aTimeInfoItemOffset, aTimeInfoLight,
@@ -13,7 +13,7 @@ let { playSound } = require("sound_wt")
 let { mkCurrencyComp, CS_BIG } = require("%rGui/components/currencyComp.nut")
 let { mkLensFlare, aTimeFlareMiddle } = require("%rGui/effects/mkLensFlare.nut")
 
-let isOpened = Computed(@() previewType.value == GPT_CURRENCY)
+let openCount = Computed(@() previewType.value == GPT_CURRENCY ? openPreviewCount.get() : 0)
 let imageHeight = hdpx(450)
 
 //animation timers
@@ -127,7 +127,7 @@ let currencyEffectBw = {
 }
 
 let previewWnd = @() {
-  key = isOpened
+  key = openCount
   size = flex()
   onAttach = @() playSound("chest_appear")
 
@@ -152,4 +152,4 @@ let previewWnd = @() {
   ]
 }
 
-registerScene("goodsCurrencyPreviewWnd", previewWnd, closeGoodsPreview, isOpened)
+registerScene("goodsCurrencyPreviewWnd", previewWnd, closeGoodsPreview, openCount)

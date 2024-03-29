@@ -5,19 +5,38 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
-let isUnitSkinsOpen = mkWatched(persist, "isUnitSkinsOpen", false)
-let unitSkins = Computed(@() { "" : "true" }.__merge(allUnitsCfg.get()?[baseUnit.get()?.name].skins ?? {}))
-let availableSkins = Computed(@() { "" : "true" }.__merge(servProfile.get()?.skins[baseUnit.get()?.name] ?? {}))
-let currentSkin = Computed(@() baseUnit.get()?.currentSkins[curSelectedUnitId.get() ?? baseUnit.get()?.name] ?? "")
-let selectedSkinCfg = Computed(@() serverConfigs.get()?.skins[curSelectedUnitSkin.get()][baseUnit.get()?.name])
+let openForUnit = mkWatched(persist, "openForUnit", null)
+let openCount = Watched(openForUnit.get() == null ? 0 : 1)
+let unitSkinsOpenCount = Computed(@() openForUnit.get() == null || openForUnit.get() != baseUnit.get()?.name ? 0
+  : openCount.get())
+let unitSkins = Computed(@() { "" : "true" }.__merge(allUnitsCfg.get()?[openForUnit.get()].skins ?? {}))
+let availableSkins = Computed(@() { "" : "true" }.__merge(servProfile.get()?.skins[openForUnit.get()] ?? {}))
+let currentSkin = Computed(@() baseUnit.get()?.currentSkins[curSelectedUnitId.get() ?? openForUnit.get()] ?? "")
+let selectedSkinCfg = Computed(@() serverConfigs.get()?.skins[curSelectedUnitSkin.get()][openForUnit.get()])
+
 
 curSelectedUnitId.subscribe(@(_) curSelectedUnitSkin.set(null))
-isUnitSkinsOpen.subscribe(@(_) curSelectedUnitSkin.set(null))
+unitSkinsOpenCount.subscribe(@(_) curSelectedUnitSkin.set(null))
+
+function openUnitSkins() {
+  openForUnit.set(baseUnit.get()?.name)
+  openCount.set(openCount.get() + 1)
+}
+
+function closeUnitSkins() {
+  openForUnit.set(null)
+  openCount.set(0)
+}
+
+baseUnit.subscribe(function(u) {
+  if (u?.name != openForUnit.get())
+    closeUnitSkins()
+})
 
 return {
-  isUnitSkinsOpen
-  openUnitSkins = @() isUnitSkinsOpen.set(true)
-  closeUnitSkins = @() isUnitSkinsOpen.set(false)
+  unitSkinsOpenCount
+  openUnitSkins
+  closeUnitSkins
 
   unitSkins
   availableSkins

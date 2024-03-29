@@ -19,7 +19,7 @@ let GPT_LOOTBOX = "lootbox"
 
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
-let openPreviewCount = Watched(0)
+let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
 
 function getAddonsToShowGoods(goods) {
   let unit = serverConfigs.value?.allUnits[goods?.unitUpgrades[0] ?? goods?.units[0]]

@@ -2960,6 +2960,7 @@
   },
   "game_mode_info": {
     "_singleton": true,
-    "game_mode_name": ""
+    "game_mode_name": "",
+    "userstat_modes:list<t>": {}
   }
 }
