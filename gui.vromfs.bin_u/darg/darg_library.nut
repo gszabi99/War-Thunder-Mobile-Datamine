@@ -174,6 +174,7 @@ function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null)
 
 return {
   mkWatched
+  WatchedRo
   XmbNode
   XmbContainer
   mul_color

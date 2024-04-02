@@ -3,6 +3,14 @@ let { translucentButton, translucentIconButton } = require("%rGui/components/tra
 let { openUnitAttrWnd, availableAttributes } = require("unitAttrState.nut")
 let mkAvailAttrMark = require("mkAvailAttrMark.nut")
 let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
+let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { baseUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
+
+let function onClick() {
+  if (baseUnit.get())
+    setHangarUnit(baseUnit.get().name)
+  openUnitAttrWnd()
+}
 
 let status = keepref(Computed(function() {
   local res = availableAttributes.value.status
@@ -21,6 +29,6 @@ let statusMark = @(sf) @() {
 }
 
 return {
-  btnOpenUnitAttr = translucentButton("ui/gameuiskin#modify.svg", "", openUnitAttrWnd, statusMark)
-  btnOpenUnitAttrBig = translucentIconButton("ui/gameuiskin#modify.svg", openUnitAttrWnd, hdpxi(75), [hdpx(150), hdpx(110)], statusMark)
+  btnOpenUnitAttr = translucentButton("ui/gameuiskin#modify.svg", "", onClick, statusMark)
+  btnOpenUnitAttrBig = translucentIconButton("ui/gameuiskin#modify.svg", onClick, hdpxi(75), [hdpx(150), hdpx(110)], statusMark)
 }

@@ -94,6 +94,7 @@ let skinsByTag = {
     "jp_camo_post_winter"
     "tl_camo_grey_pink_blots"
     "tl_camo_grey_yellow_lines"
+    "tl_camo_red_grey_lines"
     "tl_camo_red_grey_chopped"
     "us_camo_inside_light"
     "us_camo_winter_grid"
@@ -199,6 +200,7 @@ let skinsByTag = {
     "camo_greencoast"
     "camo_gray_splotch"
     "camo_bluewater_geometry"
+    "camo_sboat_fleet"
   ],
 }
 

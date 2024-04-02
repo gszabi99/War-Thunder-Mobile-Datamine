@@ -199,6 +199,7 @@ return freeze({
   localizeAddons
   localizeAddonsLimited
   getAddonsSizeStr
+  resetAddonNamesCache = @() addonNames.clear()
 
   ADDON_VERSION_EMPTY
 })

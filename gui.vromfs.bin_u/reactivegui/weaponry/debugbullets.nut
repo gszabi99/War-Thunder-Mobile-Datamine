@@ -1,7 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { get_unittags_blk } = require("blkGetters")
+let { json_to_string } = require("json")
+let io = require("io")
 let { eachBlock } = require("%sqstd/datablock.nut")
+let { calcUnitTypeFromTags } = require("%appGlobals/unitConst.nut")
 let { loadUnitBulletsFull, loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 
 register_command(@(unitName) log($"Unit {unitName} full all bullets: ", loadUnitBulletsFull(unitName)),
@@ -67,3 +70,36 @@ register_command(
 register_command(
   @() countBulletsStats(loadUnitBulletsChoice)
   "debug.get_unit_bullets_stats_choice")
+
+register_command(
+  function(filePath) {
+    let res = {}
+    eachBlock(get_unittags_blk(), function(blk) {
+      let name = blk.getBlockName()
+      res[name] <- loadUnitBulletsFull(name)
+    })
+    let file = io.file(filePath, "wt+")
+    file.writestring(json_to_string(res, true))
+    file.close()
+  },
+  "debug.save_all_unit_bullets_to_file")
+
+register_command(
+  function(filePrefix) {
+    let res = {}
+    eachBlock(get_unittags_blk(), function(blk) {
+      let unitType = calcUnitTypeFromTags(blk)
+      if (unitType not in res)
+        res[unitType] <- {}
+      let name = blk.getBlockName()
+      res[unitType][name] <- loadUnitBulletsFull(name)
+    })
+    foreach(unitType, data in res) {
+      let filePath = $"{filePrefix}{unitType}.json"
+      let file = io.file(filePath, "wt+")
+      file.writestring(json_to_string(data, true))
+      file.close()
+      log($"Saved file {filePath}")
+    }
+  },
+  "debug.save_all_unit_bullets_to_files_by_type")

@@ -9,7 +9,7 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
   apply_profile_mutation, add_lootbox, add_warbond, add_event_key, debug_lootbox_chances,
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
-  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle,
+  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, add_aprilbond,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -79,6 +79,7 @@ register_command(@(gold) add_gold(gold, "consolePrintResult"), "meta.add_gold")
 register_command(@(warbond) add_warbond(warbond, "consolePrintResult"), "meta.add_warbond")
 register_command(@(event_key) add_event_key(event_key, "consolePrintResult"), "meta.add_event_key")
 register_command(@(nybond) add_nybond(nybond, "consolePrintResult"), "meta.add_nybond")
+register_command(@(aprilbond) add_aprilbond(aprilbond, "consolePrintResult"), "meta.add_aprilbond")
 register_command(@(name, count) change_item_count(name, count, "consolePrintResult"), "meta.change_item_count")
 register_command(@(seconds) seconds < 0
     ? remove_premium(-seconds, "consolePrintResult")
@@ -132,6 +133,7 @@ register_command(function(count) {
   add_warbond(count * 10)
   add_event_key(count * 1)
   add_nybond(count * 10)
+  add_aprilbond(count * 10)
   foreach (item in itemsOrderFull)
     change_item_count(item, count)
   change_item_count("ircm_kit", count)

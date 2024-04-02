@@ -127,15 +127,18 @@ let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
     {
       margin = [ slotName ? 0 : hdpx(20), 0]
       halign = ALIGN_RIGHT
-      children = [
-        oldAmount <= 0 ? null
-          : mkGradText(numberToTextForWtFont(decimalFormat(oldAmount)), fontWtBig, fontTex, {
-              children = oldAmountStrikeThrough
+      children = type(amount) == "array"
+        ? mkGradText(numberToTextForWtFont("+".join(amount)), fontWtBig, fontTex, {})
+        : [
+            oldAmount <= 0
+              ? null
+              : mkGradText(numberToTextForWtFont(decimalFormat(oldAmount)), fontWtBig, fontTex, {
+                  children = oldAmountStrikeThrough
+                })
+            mkGradGlowText(numberToTextForWtFont(decimalFormat(amount)), fontWtLarge, fontTex, {
+              margin = [oldAmount > 0 ? hdpx(40) : 0, 0, 0, 0]
             })
-        mkGradGlowText(numberToTextForWtFont(decimalFormat(amount)), fontWtLarge, fontTex, {
-          margin = [oldAmount > 0 ? hdpx(40) : 0, 0, 0, 0]
-        })
-      ]
+          ]
     }
   ]
 }
@@ -443,6 +446,7 @@ function mkGoodsTimeTimeProgress(goods) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     gap = hdpx(20)
+    padding = [hdpx(50), 0, 0, 0]
     children = [
       @() {
         watch = fValue

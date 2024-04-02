@@ -645,8 +645,8 @@
       "Empty": 12000000.0,
       "momentOfInertia": [
         53.0,
-        783.0,
-        556.0
+        1183.0,
+        756.0
       ],
       "CenterOfGravity": [
         -3.0,
@@ -708,7 +708,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 1.2,
+      "mulReaction": 2.0,
       "rudder": {
         "pos": [
           -88.4,

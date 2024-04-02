@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getUnitFileName } = require("vehicleModel")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+let { getUnitTagsCfg, getUnitType } = require("%appGlobals/unitTags.nut")
+let { AIR } = require("%appGlobals/unitConst.nut")
 let { eachBlock, isDataBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
 
 let WT_GUNS = "guns"
@@ -34,18 +35,23 @@ function getWeaponId(blkPath) {
   return blkToWeaponId[blkPath]
 }
 
-function gatherWeaponsFromBlk(weaponsBlk) {
+function gatherWeaponsFromBlk(weaponsBlk, hasTriggerGroups) {
   let res = {}
   foreach (wBlk in (weaponsBlk % "Weapon")) {
-    let { dummy = false, blk = null, triggerGroup = "primary", bullets = 0 } = wBlk
+    let { dummy = false, blk = null, triggerGroup = null, trigger = "", bullets = 0, turret = null } = wBlk
+    let triggerGroupExt = hasTriggerGroups ? (triggerGroup ?? "primary") : trigger
     if (dummy || blk == null)
       continue
-    if (triggerGroup not in res)
-      res[triggerGroup] <- {}
-    if (blk not in res[triggerGroup])
-      res[triggerGroup][blk] <- { totalBullets = 0, guns = 0, weaponId = getWeaponId(blk) }
-    res[triggerGroup][blk].totalBullets += bullets
-    res[triggerGroup][blk].guns++
+    if (triggerGroupExt not in res)
+      res[triggerGroupExt] <- {}
+    if (blk not in res[triggerGroupExt])
+      res[triggerGroupExt][blk] <- { totalBullets = 0, guns = 0, weaponId = getWeaponId(blk), trigger, triggerGroup,
+        turrets = 0
+      }
+    res[triggerGroupExt][blk].totalBullets += bullets
+    res[triggerGroupExt][blk].guns++
+    if (turret != null)
+      res[triggerGroupExt][blk].turrets++
   }
   return res
 }
@@ -157,7 +163,7 @@ function loadAllBullets(weaponBlkName) {
   let weaponBlk = blkOptFromPath(weaponBlkName)
   let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false } = weaponBlk
   let isBulletBelt = !useSingleIconForBullet
-    && ((weaponBlk?.isBulletBelt ?? false) || bulletsCartridge > 1)
+    && ((weaponBlk?.isBulletBelt ?? true) || bulletsCartridge > 1)
 
   let res = {
     catridge = bulletsCartridge
@@ -186,13 +192,14 @@ function loadUnitBulletsFullImpl(unitName) {
   let triggersData = {}
   let unitBlk = blkOptFromPath(getUnitFileName(unitName))
   let { commonWeapons = null, weapon_presets = null } = unitBlk
+  let hasTriggerGroups = getUnitType(unitName) != AIR
   if (isDataBlock(commonWeapons))
-    triggersData.commonWeapons <- gatherWeaponsFromBlk(commonWeapons)
+    triggersData.commonWeapons <- gatherWeaponsFromBlk(commonWeapons, hasTriggerGroups)
 
   if (isDataBlock(weapon_presets))
     eachBlock(weapon_presets, function(b) {
       let { name = "", blk = null } = b
-      triggersData[name] <- gatherWeaponsFromBlk(blkOptFromPath(blk))
+      triggersData[name] <- gatherWeaponsFromBlk(blkOptFromPath(blk), hasTriggerGroups)
     })
 
   let bulletsCache = {}
@@ -203,17 +210,23 @@ function loadUnitBulletsFullImpl(unitName) {
       local guns = 0
       local catridge = 1
       local total = 0
+      local trigger = ""
+      local triggerGroup = null
+      local turrets = 0
       foreach (wBlkName, wData in triggerWeapons) {
         let bulletsData = loadBulletsCached(wBlkName, bulletsCache)
         if (bulletSets.len() == 0) {
           weaponId = wData.weaponId
           catridge = bulletsData.catridge
+          trigger = wData.trigger
+          triggerGroup = wData.triggerGroup
         }
         guns += wData.guns
         total += wData.totalBullets
+        turrets += wData.turrets
         bulletSets.__update(bulletsData?.bulletSets)
       }
-      return { weaponId, bulletSets, catridge, guns, total }
+      return { weaponId, bulletSets, catridge, guns, total, trigger, triggerGroup, turrets }
     }))
 
   return res

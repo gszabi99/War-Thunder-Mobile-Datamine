@@ -29,7 +29,7 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { defer } = require("dagor.workcycle")
 let { sendBqQuestsTask } = require("bqQuests.nut")
-let { WARBOND, NYBOND } = require("%appGlobals/currenciesState.nut")
+let { WARBOND, NYBOND, APRILBOND } = require("%appGlobals/currenciesState.nut")
 let { PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { msgBoxText } = require("%rGui/components/msgBox.nut")
@@ -156,7 +156,12 @@ function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
   local countReceivedR = 0
   foreach(r in rewardsPreview)
     countReceivedR += isSingleRewardEmpty(r, sProfile) ?  1 : 0
-  if(countReceivedR == rewardsPreview.len() || item?.isFinished)
+  if (item?.hasReward)
+    children = textButtonSecondary(
+      utf8ToUpper(loc("btn/receive")),
+      @() receiveReward(item, currencyReward),
+      btnStyleSound)
+  else if (countReceivedR == rewardsPreview.len() || item?.isFinished)
     children = {
       size = btnSize
       rendObj = ROBJ_TEXT
@@ -165,11 +170,6 @@ function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
       text = utf8ToUpper(loc("ui/received"))
       behavior = Behaviors.Button //for gamepad navigation only
     }.__update(fontSmallAccentedShaded)
-  else if (item?.hasReward)
-    children = textButtonSecondary(
-      utf8ToUpper(loc("btn/receive")),
-      @() receiveReward(item, currencyReward),
-      btnStyleSound)
   else if (progressCorrectionStep > 0)
     children = mkAdsBtn(item)
   else if ((price.price ?? 0) > 0 ) {
@@ -211,7 +211,7 @@ function mkItem(item, textCtor) {
   let rewardsPreview = Computed(@() getUnlockRewardsViewInfo(item?.stages[0], serverConfigs.value)
     .sort(sortRewardsViewInfo))
 
-  let eventCurrencyReward = Computed(@() rewardsPreview.value.findvalue(@(r) r.id == WARBOND || r.id == NYBOND))
+  let eventCurrencyReward = Computed(@() rewardsPreview.value.findvalue(@(r) r.id == WARBOND || r.id == NYBOND || r.id == APRILBOND))
 
   let headerPadding = Computed(@() item.hasReward ? unseenMarkMargin * 2
   : isUnseen.value ? newMarkSize[0]
@@ -286,7 +286,7 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
 
   let sectionsFont = Computed(function() {
     foreach (id in sections)
-      if (calc_str_box(sectionsCfg.value?[id].text ?? "", fontSmallShaded)[0] > btnWidth - statusIconSize - sectionBtnGap * 2)
+      if (calc_str_box(sectionsCfg.get()?[id] ?? "", fontSmallShaded)[0] > btnWidth - statusIconSize - sectionBtnGap * 2)
         return fontTinyShaded
     return fontSmallShaded
   })
@@ -313,7 +313,7 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
               watch = [sectionsCfg, sectionsFont]
               rendObj = ROBJ_TEXT
               opacity = isUnlocked.value ? 1.0 : lockedOpacity
-              text = sectionsCfg.value?[id].text
+              text = sectionsCfg.get()?[id]
             }.__update(sectionsFont.value)
           ]
        })
@@ -321,10 +321,10 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
   }
 }
 
-let questTimerUntilStart = @(curSectionId) function() {
-  let firstDayStartedAt = userstatStats.value?.stats.day1["$startedAt"]
+let questTimerUntilStart = @(curSectionId, firstDayTable, curTable) function() {
+  let firstDayStartedAt = userstatStats.value?.stats[firstDayTable]["$startedAt"]
   let curSectionDay = inactiveEventUnlocks.value
-    .findvalue(@(u) u.table == curSectionId.value)?.meta.event_day
+    .findvalue(@(u) u.table == curTable)?.meta.event_day
     .tointeger()
 
   local relativeStartTime = null
@@ -364,6 +364,9 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
         return sectionId
     return curId ?? sectionsList?[0]
   })
+
+  let quests = Computed(@() questsBySection.value?[curSectionId.value ?? sections.value?[0]])
+  let firstDayTable = Computed(@() questsBySection.value?[sections.value?[0]].findvalue(@(_) true).table)
 
   let isCurSectionActive = Computed(@()
     isSectionActive(curSectionId.get(), questsBySection.get(), unlockTables.get()))
@@ -420,7 +423,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
     }
     children = [
       @() {
-        watch = [sections, questsBySection, isProgressBySection, isCurSectionActive]
+        watch = [sections, questsBySection, isProgressBySection, isCurSectionActive, firstDayTable, quests]
         size = flex()
         flow = FLOW_VERTICAL
         gap = pageBlocksGap
@@ -434,7 +437,8 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
 
           isProgressBySection.get() ? progressBlock : null
 
-          !isCurSectionActive.get() ? questTimerUntilStart(curSectionId)
+          !isCurSectionActive.get()
+              ? questTimerUntilStart(curSectionId, firstDayTable.get(), quests.get().findvalue(@(_) true)?.table)
             : @() {
                 watch = [isCurSectionActive, blocksOnTop]
                 size = flex()
@@ -442,11 +446,11 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
                   : [
                       pannableCtors[blocksOnTop.value](
                         @() {
-                          watch = [curSectionId, seenQuests, questsBySection, unlockProgress]
+                          watch = [curSectionId, seenQuests, unlockProgress]
                           size = [flex(), SIZE_TO_CONTENT]
                           flow = FLOW_VERTICAL
                           gap = hdpx(20)
-                          children = questsBySection.value?[curSectionId.value ?? sections.value?[0]]
+                          children = quests.get()
                             .values()
                             .filter(@(item) !item?.meta.chain_quest || unlockProgress.get()?[item.requirement].isCompleted)
                             .sort(itemsSort)

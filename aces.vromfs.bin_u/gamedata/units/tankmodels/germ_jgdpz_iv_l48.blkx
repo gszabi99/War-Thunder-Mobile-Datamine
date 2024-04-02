@@ -44,9 +44,21 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "minRelativeTankCameraThreshold": 1.75,
+  "minRelativeTankCameraThreshold": 1.7,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.45,
+      0.05,
+      0.5
+    ],
+    "armorThicknessSide": [
+      0.1,
+      0.0,
+      0.9
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1616,14 +1628,12 @@
     "horizontal": true
   },
   "sound": {
-    "EngineName": "engine_stug40",
-    "TrackSoundPath": "tanks/engines_tanks",
+    "EngineName": "engine_medium_petrol",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks",
-    "TrackSoundNameCockpit": "tracks_interior",
-    "turret_turn": "turret_turn_manual",
+    "TrackSoundName": "tracks_medium",
+    "turret_turn": "turret_turn_manual_y",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_middle",
+    "TrackSoundNameAi": "tracks_ai_medium",
     "gun_turn": "turret_turn_mg_light"
   },
   "class_tags": {},
@@ -1719,7 +1729,17 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "track_l_01",
+        "track_r_01",
+        "ex_armor_body_l_01",
+        "ex_armor_body_l_02",
+        "ex_armor_body_l_03",
+        "ex_armor_body_r_01"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2476,91 +2496,19 @@
     "bone_turret": "",
     "detectionHeight": 1.85
   },
-  "default_skin": {
-    "name": "default",
-    "replace_tex": {
-      "from": "ger_camo_dunkelgelb*",
-      "to": "ger_camo_tiger_green*"
-    }
-  },
-  "skin": [
-    {
-      "name": "dunkelgelb",
-      "nameLocId": "skin/ger_camo_dunkelgelb",
-      "descLocId": "skin/ger_camo_dunkelgelb/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb*"
-      }
-    },
-    {
-      "name": "green",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green",
-      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green*"
-      }
-    },
-    {
-      "name": "blots",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots*"
-      }
-    },
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_dunkelgelb*"
-      }
-    },
-    {
-      "name": "ger_camo_winter_waves",
-      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
-      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_waves_bicolor*"
-      }
-    },
-    {
-      "name": "hinterhalt_daimler",
-      "nameLocId": "skin/ger_camo_hinterhalt_daimler",
-      "descLocId": "skin/ger_camo_hinterhalt_daimler/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_hinterhalt_daimler*"
-      }
-    },
-    {
-      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
-      }
-    },
-    {
-      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
-      }
-    }
-  ],
   "modifications": {
-    "tank_tool_kit_expendable": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "effects": {
@@ -2707,13 +2655,107 @@
                 ]
               }
             }
-          ]
+          ],
+          "hideNodes": {
+            "node": [
+              "track_l_01",
+              "track_r_01",
+              "ex_armor_body_l_01",
+              "ex_armor_body_l_02",
+              "ex_armor_body_l_03",
+              "ex_armor_body_r_01"
+            ]
+          }
         }
       }
     }
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ger_camo_dunkelgelb*",
+      "to": "ger_camo_hinterhalt_daimler*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.79178,
+        -1.42271e-7,
+        -0.00242475,
+        -0.761374
+      ],
+      "decal0Line1": [
+        -0.00118938,
+        -2.43293,
+        -1.36926,
+        2.40062
+      ],
+      "decal0Line2": [
+        -2.79178,
+        -1.16677e-7,
+        -0.00242473,
+        1.76138
+      ],
+      "decal0Line3": [
+        -0.00118913,
+        -2.43293,
+        1.36926,
+        2.40062
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.000756898,
+        0.490462,
+        -0.871462,
+        -1.82124
+      ],
+      "decal0CPNormDepth1": [
+        -0.000756898,
+        0.490462,
+        0.871462,
+        -1.82124
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358195
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.267825,
+      "decal0Tex": "back_16"
+    }
+  },
+  "vehicleSkins": {
+    "desert": {
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "tl_camo_red_grey_lines*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
   },
   "battleHideNodes": {
     "n": "details"

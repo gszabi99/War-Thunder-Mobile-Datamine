@@ -1,7 +1,7 @@
 from "math" import max, min, clamp
 require("%sqstd/globalState.nut").setUniqueNestKey("dagui")
 let { kwarg } = require("%sqstd/functools.nut")
-let { Computed, Watched } = require("frp")
+let { Computed, Watched, WatchedRo } = require("%sqstd/frp.nut")
 let log = require("%globalScripts/logs.nut")
 let mkWatched = require("%globalScripts/mkWatched.nut")
 let { loc } = require("dagor.localize")
@@ -33,6 +33,7 @@ return log.__merge({
   Watched
   Computed
   mkWatched
+  WatchedRo
 
   //function tools
   kwarg

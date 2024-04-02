@@ -569,7 +569,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 1.25,
+      "mulReaction": 1.3,
       "rudder": {
         "pos": [
           -48.0,

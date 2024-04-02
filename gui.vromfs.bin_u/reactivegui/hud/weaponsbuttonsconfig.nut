@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { AirParamsMain } = require("%globalScripts/sharedEnums.nut")
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_SUPPORT_PLANE_CHANGE,
   AB_SUPPORT_PLANE_GROUP_ATTACK, AB_SUPPORT_PLANE_GROUP_RETURN, AB_DIVING_LOCK, AB_STRATEGY_MODE,
@@ -8,7 +7,6 @@ let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE
 } = require("actionBar/actionType.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
-let aircraftWeaponsItems = require("%rGui/hud/aircraftWeaponsItems.nut")
 let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
 
 function getActionBarShortcut(unitType, itemConfig) {
@@ -221,60 +219,10 @@ let actionBarItemsConfig = {
     mkButtonFunction = "mkSimpleButton"
     actionType = AB_SUPPORT_PLANE_4
   },
-  ID_LOCK_TARGET = {
-    getShortcut = @(_, __) "ID_LOCK_TARGET"
-    mkButtonFunction = "mkLockButton"
-    isAlwaysVisible = true
-  },
   ID_ZOOM = {
     getShortcut = @(_, __) "ID_ZOOM_TOGGLE"
     mkButtonFunction = "mkZoomButton"
     isAlwaysVisible = true
-  },
-  ID_FIRE_CANNONS = {
-    flag = AirParamsMain.CANNON_1
-    getShortcut = @(_, __) "ID_FIRE_CANNONS"
-    getImage = @(_) "ui/gameuiskin#hud_aircraft_canons.svg"
-    mkButtonFunction = "mkWeaponryContinuousSelfAction"
-    itemComputed = aircraftWeaponsItems.cannon
-    additionalShortcutId = "ID_FIRE_MGUNS"
-  },
-  ID_FIRE_MGUNS = {
-    flag = AirParamsMain.MACHINE_GUNS_1
-    getShortcut = @(_, __) "ID_FIRE_MGUNS"
-    getImage = @(_) "ui/gameuiskin#hud_aircraft_machine_gun.svg"
-    mkButtonFunction = "mkWeaponryContinuousSelfAction"
-    hasAim = true
-    itemComputed = aircraftWeaponsItems.mGun
-    hasCrosshair = true
-    additionalShortcutId = "ID_FIRE_CANNONS"
-    drawChain = true
-  },
-  ID_BOMBS = {
-    flag = AirParamsMain.BOMBS
-    getShortcut = @(_, __) "ID_BOMBS"
-    getImage = @(_) "ui/gameuiskin#hud_bomb.svg"
-    mkButtonFunction = "mkWeaponryItemSelfAction"
-    itemComputed = aircraftWeaponsItems.bomb
-    canLowerCamera = true
-  },
-  ID_TORPEDOES = {
-    flag = AirParamsMain.TORPEDO
-    getShortcut = @(_, __) "ID_BOMBS"
-    getImage = @(_) "ui/gameuiskin#hud_torpedo.svg"
-    mkButtonFunction = "mkWeaponryItemSelfAction"
-    itemComputed = aircraftWeaponsItems.torpedo
-    canLowerCamera = true
-  },
-  ID_ROCKETS = {
-    flag = AirParamsMain.ROCKET
-    getShortcut = @(_, __) "ID_ROCKETS"
-    getImage = @(_) "ui/gameuiskin#hud_rb_rocket.svg"
-    relImageSize = 0.8
-    mkButtonFunction = "mkWeaponryItemSelfAction"
-    hasAim = true
-    itemComputed = aircraftWeaponsItems.rocket
-    hasCrosshair = true
   },
   EII_SPECIAL_UNIT = {
     getShortcut = getActionBarShortcut

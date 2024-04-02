@@ -52,10 +52,7 @@ let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@
 
 let textParams = {
   rendObj = ROBJ_TEXT
-  fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = 50
-  fontFx = FFT_GLOW
-}.__update(fontSmall)
+}.__update(fontSmallShaded)
 
 let avatar = @() {
   watch = [myAvatarImage, hasUnseenDecorators]
@@ -241,7 +238,7 @@ let gamercardProfile = {
           vplace = ALIGN_CENTER
           children = [
             name
-            mkTitle(fontTinyAccented)
+            mkTitle(fontTinyAccentedShaded)
           ]
         }
       ]

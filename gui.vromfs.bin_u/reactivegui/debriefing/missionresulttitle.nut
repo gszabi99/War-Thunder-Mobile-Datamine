@@ -13,6 +13,12 @@ let glowAppearAnimTime = 0.2
 
 let missionResultTitleAnimTime = max(resultTextAnimTime, glowAnimTime)
 
+let locByCampaign = {
+  tanks = "debriefing/yourPlatoonDestroyed"
+  ships = "debriefing/yourShipDestroyed"
+  default = "debriefing/yourVehicleDestroyed"
+}
+
 let missionResultParamsByType = {
   victory = {
     text = @(_) loc("debriefing/victory")
@@ -25,7 +31,7 @@ let missionResultParamsByType = {
     animTextColor = 0xFFFFA07F
   }
   inProgress = {
-    text = @(campaign) loc(campaign == "tanks" ? "debriefing/yourPlatoonDestroyed" : "debriefing/yourShipDestroyed")
+    text = @(campaign) loc(locByCampaign?[campaign] ?? locByCampaign.default)
     color = 0xFFFFFFFF
     animTextColor =  0xFFFFFFFF
   }

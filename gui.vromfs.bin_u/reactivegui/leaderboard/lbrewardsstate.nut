@@ -3,6 +3,7 @@ let { userstatRequest, userstatRegisterHandler, userstatDescList
 } = require("%rGui/unlocks/userstat.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { curLbCfg } = require("lbState.nut")
+let { unlockTables } = require("%rGui/unlocks/unlocks.nut")
 
 let lbRewardsTypes = ["tillPlaces", "tillPercent"]
   .$reduce(@(res, v, idx) res.$rawset(v, idx), {})
@@ -34,7 +35,9 @@ function getSubArray(tbl, id) {
 
 let lbRewards = Computed(function() {
   let res = {}
-  let rewardsBase = seasonRewards.value?.current ?? []
+  let rewardsBase = seasonRewards.get()?.current
+    .map(@(v, idx) unlockTables.get()?[v.table] ? v : (seasonRewards.get()?.previous[idx]))
+      ?? []
   foreach (rewardsBlock in rewardsBase) {
     let { index = 1, modes = [], category = "", rewards = [] } = rewardsBlock
     foreach (modeId in modes) {

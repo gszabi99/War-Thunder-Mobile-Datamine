@@ -164,6 +164,16 @@ function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
     }
   }
 }
+
+function emptyMutatorDummy() {}
+
+function WatchedRo(val) {
+  let w = Watched(val)
+  w.whiteListMutatorClosure(emptyMutatorDummy)
+  return w
+}
+
+
 return {
   mkLatestByTriggerStream
   mkTriggerableLatestWatchedSetAndStorage
@@ -175,4 +185,5 @@ return {
   FRP_DONT_CHECK_NESTED
   set_nested_observable_debug
   make_all_observables_immutable
+  WatchedRo
 }

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let tabH = hdpx(135)
+let tabH = hdpx(120)
 let tabW = hdpx(410)
 let minContentOffset = isWidescreen ? hdpx(100) : hdpx(50)
 let contentWidthFull = saSize[0] - tabW - minContentOffset

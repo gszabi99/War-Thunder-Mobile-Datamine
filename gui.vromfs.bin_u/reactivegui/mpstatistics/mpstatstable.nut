@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { premiumTextColor, hiddenTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -50,6 +50,16 @@ function getUnitNameText(unitId, unitClass, halign) {
   return " ".join(ordered, true)
 }
 
+let function getColorUnitName(player){
+  if(player.isDead)
+    return unitDeadTextColor
+  else if(player?.isUnitPremium)
+    return premiumTextColor
+  else if(player?.isUnitHidden)
+    return hiddenTextColor
+  return cellTextColor
+}
+
 function mkNameContent(player, teamColor, halign) {
   let unitName = player?.mainUnitName ?? player.aircraftName
   let nameCell = {
@@ -77,9 +87,7 @@ function mkNameContent(player, teamColor, halign) {
       cellTextProps.__merge({
         maxWidth = pw(100)
         halign
-        color = player.isDead ? unitDeadTextColor
-          : !player?.isUnitPremium ?  cellTextColor
-          : premiumTextColor
+        color = getColorUnitName(player)
         text = getUnitNameText(unitName, player.unitClass, halign)
       })
     ]
@@ -155,9 +163,17 @@ let columnsByCampaign = {
     { headerIcon = "ui/gameuiskin#tanks_destroyed_icon.svg", getText = @(p) decimalFormat(p.groundKills) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
   ])
+
+  air = mkColumnsCfg([
+    { width = playerPlaceIconSize, contentCtor = mkPlaceContent }
+    { width = flex(), halign = ALIGN_LEFT, contentCtor = mkNameContent }
+    { width = hdpx(192), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
+    { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
+    { headerIcon = "ui/gameuiskin#air_defence_destroyed_icon.svg", getText = @(p) decimalFormat(p.aiGroundKills) }
+  ])
 }
 
-let getColumnsByCampaign = @(campaign) columnsByCampaign?[campaign] ?? columnsByCampaign.tanks
+let getColumnsByCampaign = @(campaign) columnsByCampaign?[campaign] ?? columnsByCampaign.air
 
 function mkPlayerRow(columnCfg, player, teamColor, idx) {
   let { columns, rowOvr = {} } = columnCfg

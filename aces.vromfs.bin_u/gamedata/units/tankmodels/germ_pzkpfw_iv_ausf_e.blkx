@@ -1700,14 +1700,12 @@
     "horizontal": true
   },
   "sound": {
-    "EngineName": "engine_panzer4",
-    "TrackSoundPath": "tanks/engines_tanks",
+    "EngineName": "engine_medium_petrol",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks",
-    "TrackSoundNameCockpit": "tracks_interior",
+    "TrackSoundName": "tracks_medium",
     "turret_turn": "turret_turn_manual_y",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_middle"
+    "TrackSoundNameAi": "tracks_ai_medium"
   },
   "class_tags": {},
   "commonWeapons": {

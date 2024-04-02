@@ -16,7 +16,7 @@ let { contentWidth } = require("%rGui/options/optionsStyle.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getCurrentLanguage } = require("dagor.localize")
-let { openSuportWebsite } = require("%rGui/feedback/supportState.nut")
+let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch } = require("%sqstd/platform.nut")
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
 
@@ -134,7 +134,7 @@ let languageButton = transparentButton(languageTitle, "ui/gameuiskin#menu_lang.s
   @() isShowLanguagesList.update(true))
 
 let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#menu_support.svg",
-  openSuportWebsite,
+  openSupportTicketWndOrUrl,
   {
     textOverride = {
       children = {

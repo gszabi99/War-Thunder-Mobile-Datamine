@@ -9,6 +9,7 @@ let { curLbData, curLbSelfRow, setLbRequestData, curLbErrName,
 let { lbCfgById } = require("lbConfig.nut")
 let { lbPageRows } = require("lbStyle.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
+let { unlockTables } = require("%rGui/unlocks/unlocks.nut")
 
 
 const REFRESH_PERIOD = 10.0
@@ -50,6 +51,7 @@ let requestDataInternal = keepref(Computed(function() {
     start = lbPage.value * lbPageRows
     resolveNick = 1
     group = ""
+    history = unlockTables.get()?[lbTable] ? 0 : 1
   }
   return newData
 }))

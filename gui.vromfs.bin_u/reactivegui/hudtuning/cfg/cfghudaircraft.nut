@@ -3,13 +3,12 @@ let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { set_chat_handler = null } = require("chat")
 let { missionPlayVoice = null } = require("sound_wt")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
-let { mkZoomButton, mkLockButton, mkWeaponryItemSelfAction, mkWeaponryContinuousSelfAction, mkSimpleButton, mkGroupAttackButton
+let { mkSimpleButton, mkGroupAttackButton
 } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
 let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos,
-  weaponryButtonCtor, weaponryButtonsGroupCtor, weaponryButtonsChainedCtor } = require("hudTuningPkg.nut")
-let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkSimpleChainIcon } = require("%rGui/hud/weaponryBlockImpl.nut")
+  weaponryButtonCtor, weaponryButtonsGroupCtor } = require("hudTuningPkg.nut")
+let { optDoubleCourseGuns } = require("cfgOptions.nut")
 let {
   aircraftMovement,
   aircraftIndicators,
@@ -24,52 +23,44 @@ let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, myPlaceUi, mkMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
 let { doll, dollEditView } = require("%rGui/hud/aircraftStateModule.nut")
+let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkBigCircleBtnEditView, mkCircleBtnEditView,
+  bigButtonSize, bigButtonImgSize, mkCircleZoom, mkCircleWeaponryItem, mkCircleLockBtn
+} = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
+let { Cannon0, MGun0, hasCanon0, hasMGun0,
+  BombsState, hasBombs,
+  RocketsState, hasRockets,
+} = require("%rGui/hud/airState.nut")
+
 
 let allow_voice_messages_compatibility = Computed(@() allow_voice_messages.get() && !!set_chat_handler && !!missionPlayVoice)
 
 return cfgHudCommon.__merge({
-  bomb = weaponryButtonCtor("ID_BOMBS", mkWeaponryItemSelfAction,
-    {
-      defTransform = mkLBPos([hdpx(108), hdpx(-220)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_bomb.svg")
-      priority = Z_ORDER.BUTTON_PRIMARY
-    })
+  bomb = {
+    ctor = @() mkCircleWeaponryItem("ID_BOMBS", BombsState, hasBombs, "ui/gameuiskin#hud_bomb.svg", false)
+    defTransform = mkLBPos([hdpx(320), hdpx(-10)])
+    editView = mkCircleBtnEditView("ui/gameuiskin#hud_bomb.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+  }
 
-  rocket = weaponryButtonCtor("ID_ROCKETS", mkWeaponryItemSelfAction,
-    {
-      defTransform = mkLBPos([hdpx(108), hdpx(-5)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_rb_rocket.svg", 0.8)
-      priority = Z_ORDER.BUTTON_PRIMARY
-    })
+  rocket = {
+    ctor = @() mkCircleWeaponryItem("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg")
+    defTransform = mkLBPos([hdpx(227), hdpx(-287)])
+    editView = mkCircleBtnEditView("ui/gameuiskin#hud_rb_rocket.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+  }
 
-  guns = weaponryButtonsChainedCtor(["ID_FIRE_MGUNS", "ID_FIRE_CANNONS"], mkWeaponryContinuousSelfAction,
-    {
-      defTransform = mkLBPos([hdpx(216), hdpx(-5)])
-      editView = {
-        size = [touchButtonSize * 2, touchButtonSize * 2]
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = [
-          mkWeaponBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg", 1,
-            { pos = [- touchButtonSize * 0.5, - touchButtonSize * 0.5] })
-          mkSimpleChainIcon
-          mkWeaponBtnEditView("ui/gameuiskin#hud_aircraft_canons.svg", 1,
-            { pos = [touchButtonSize * 0.5, touchButtonSize * 0.5] })
-        ]
-      }
-    })
+  lock = {
+    ctor = @() mkCircleLockBtn("ID_LOCK_TARGET")
+    defTransform = mkLBPos([hdpx(0), hdpx(-200)])
+    editView = mkCircleBtnEditView("ui/gameuiskin#hud_target_tracking_off.svg")
+  }
 
-  lock = weaponryButtonCtor("ID_LOCK_TARGET", mkLockButton,
-    {
-      defTransform = mkLBPos([hdpx(325), hdpx(-220)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_target_tracking_off.svg", 1.05)
-    })
-
-  zoom = weaponryButtonCtor("ID_ZOOM", mkZoomButton,
-    {
-      defTransform = mkLBPos([hdpx(216), hdpx(-330)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
-    })
+  zoom = {
+    ctor = @() mkCircleZoom("ui/gameuiskin#hud_binoculars_zoom.svg", "ui/gameuiskin#hud_binoculars.svg")
+    defTransform = mkLBPos([hdpx(100), hdpx(-440)])
+    editView = mkCircleBtnEditView("ui/gameuiskin#hud_binoculars.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+  }
 //
 
 
@@ -85,7 +76,7 @@ return cfgHudCommon.__merge({
 
   groupReturn = weaponryButtonCtor("ID_WTM_AIRCRAFT_RETURN", mkSimpleButton,
     {
-      defTransform = mkLBPos([hdpx(431), hdpx(-335)])
+      defTransform = mkLBPos([hdpx(433), hdpx(-275)])
       editView = mkWeaponBtnEditView("ui/gameuiskin#hud_aircraft_fighter.svg")
     })
 
@@ -161,8 +152,35 @@ return cfgHudCommon.__merge({
 
   freeCameraButton = {
     ctor = mkFreeCameraButton
-    defTransform = mkLTPos([hdpx(0), hdpx(450)])
+    defTransform = mkLTPos([hdpx(0), hdpx(250)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
     priority = Z_ORDER.BUTTON
+  }
+
+  courseGuns = {
+    ctor = mkCirclePlaneCourseGuns
+    defTransform = mkLBPos([hdpx(70), hdpx(-5)])
+    editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+    isVisible = @(options) !optDoubleCourseGuns.has(options)
+    options = [ optDoubleCourseGuns ]
+  }
+
+  cannons = {
+    ctor = @() mkCirclePlaneCourseGunsSingle("ID_FIRE_CANNONS", Cannon0, hasCanon0, bigButtonSize, bigButtonImgSize)
+    defTransform = mkLBPos([hdpx(70), hdpx(-5)])
+    editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+    isVisible = optDoubleCourseGuns.has
+    options = [ optDoubleCourseGuns ]
+  }
+
+  miniguns = {
+    ctor = @() mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS", MGun0, hasMGun0)
+    defTransform = mkLBPos([hdpx(200), hdpx(-135)])
+    editView = mkCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+    isVisible = optDoubleCourseGuns.has
+    options = [ optDoubleCourseGuns ]
   }
 })

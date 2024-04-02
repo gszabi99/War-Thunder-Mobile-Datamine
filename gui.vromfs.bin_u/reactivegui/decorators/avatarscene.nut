@@ -26,7 +26,7 @@ let gap = hdpx(15)
 let avatarSize = hdpxi(200)
 
 let maxDecInRow = 9
-let columns = min(contentWidthFull / (gap + avatarSize), maxDecInRow)
+let columns = min((contentWidthFull / (gap + avatarSize)).tointeger(), maxDecInRow)
 let selectedAvatar = Watched(chosenAvatar.value?.name)
 
 let buySelectedAvatar = @()

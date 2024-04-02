@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
+let { get_game_version_str } = require("app")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -81,6 +82,7 @@ function onBtnApply() {
       poll = pollId
       question = q.id
       answer = q.val.value.tostring()
+      gameVersion = get_game_version_str()
     })
 
   questionAnswered(questionAnswered.value + 1)

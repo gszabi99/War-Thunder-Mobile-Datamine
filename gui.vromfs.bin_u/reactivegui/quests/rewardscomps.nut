@@ -8,6 +8,7 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { isSingleRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 
 
 let rStyleDefault = REWARD_STYLE_SMALL
@@ -105,6 +106,8 @@ let rewardProgressBarCtor = @(r, isUnlocked, claimReward, isRewardInProgress) {
 }
 
 let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyleDefault) {
+  behavior = Behaviors.Button
+  onClick = @() r.rType == "unit" ? unitDetailsWnd({name = r.id}) : null
   children = [
     mkRewardPlate(r, rStyle, {
       key = {}

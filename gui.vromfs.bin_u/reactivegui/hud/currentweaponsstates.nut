@@ -61,11 +61,6 @@ let shipGunTriggers = [
 ]
 
 let aircraftWeaponsList = [
-  "ID_ZOOM"
-  "ID_BOMBS"
-  "ID_TORPEDOES"
-  "ID_ROCKETS"
-  "ID_FIRE_MGUNS"
   "ID_WTM_RETURN_TO_SHIP"
   "ID_WTM_RETURN_TO_SHIP_2"
   "ID_WTM_RETURN_TO_SHIP_3"
@@ -73,8 +68,6 @@ let aircraftWeaponsList = [
   "ID_WTM_AIRCRAFT_CHANGE"
   "ID_WTM_AIRCRAFT_GROUP_ATTACK"
   "ID_WTM_AIRCRAFT_RETURN"
-  "ID_LOCK_TARGET"
-  "ID_FIRE_CANNONS"
 ]
 
 let shipSelectShortcuts = {

@@ -4,7 +4,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { isShowDebugInterface, is_app_loaded, get_base_game_version_str } = require("app")
 let { format } = require("string")
 let { toUpper } = require("%sqstd/string.nut")
-let { isInBattle, isInMenu } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, isInMenu, battleSessionId, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
 let state = Watched({
@@ -78,6 +78,11 @@ let versionComp = @() textStyle.__merge({
   text = gameVersion.get()
 })
 
+let lastBattleID = @() textStyle.__merge({
+  watch = isInDebriefing
+  text = isInDebriefing.get() && battleSessionId.get() > 0 ? battleSessionId.get() : null
+})
+
 let latencyComp = @() textStyle.__merge({
   watch = latencyText
   text = latencyText.value
@@ -93,6 +98,7 @@ let presetBattle = [
 
 let presetMenu = [
   versionComp
+  lastBattleID
 ]
 
 let fpsLineComp = @() {

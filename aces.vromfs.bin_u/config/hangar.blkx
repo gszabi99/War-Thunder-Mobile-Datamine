@@ -182,9 +182,9 @@
     {
       "hangarPlace": "aircraft",
       "modelPos": [
-        3692.3,
+        3712.6,
         25.9,
-        3558.3
+        3549.2
       ],
       "modelRotation": 285.0,
       "unitOffset": [
@@ -221,9 +221,9 @@
     {
       "hangarPlace": "hydroplane",
       "modelPos": [
-        3692.3,
+        3712.6,
         25.9,
-        3558.3
+        3549.2
       ],
       "modelRotation": 285.0,
       "unitOffset": [

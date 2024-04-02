@@ -207,12 +207,12 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
 let leaderbordBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#prizes_icon.svg", loc("mainmenu/titleLeaderboards")),
   openLbWnd,
-  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:Y"] }))
+  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
 
 let questsBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#quests.svg", loc("mainmenu/btnQuests")),
   openEventQuestsWnd,
-  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
+  buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:Y"] }))
 
 let mkCurrencyComp = @(value, currencyId) {
   size = [SIZE_TO_CONTENT, iconSize]

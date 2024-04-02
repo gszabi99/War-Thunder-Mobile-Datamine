@@ -773,13 +773,13 @@
       "speedToTime": {
         "row": [
           11.66,
-          34.0
+          32.0
         ]
       },
       "reverseSpeedToTime": {
         "row": [
           6.0,
-          21.0
+          20.0
         ]
       },
       "engine": [
@@ -849,7 +849,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 2.4,
+      "mulReaction": 2.0,
       "rudder": [
         {
           "pos": [
@@ -857,7 +857,7 @@
             -5.2,
             0.0
           ],
-          "area": 38.0,
+          "area": 35.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         },
@@ -867,7 +867,7 @@
             -4.9,
             0.0
           ],
-          "area": 50.0,
+          "area": 45.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         }

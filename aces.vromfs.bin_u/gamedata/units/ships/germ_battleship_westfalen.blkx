@@ -819,7 +819,7 @@
       ],
       "CenterOfGravity": [
         -2.0,
-        0.0,
+        0.2,
         0.0
       ]
     },
@@ -886,7 +886,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 1.4,
+      "mulReaction": 2.0,
       "rudder": [
         {
           "pos": [
@@ -927,7 +927,7 @@
       40.0,
       -140.0
     ],
-    "detectionHeight": 42.8
+    "detectionHeight": 42.6
   },
   "sound": {
     "EngineName": "engine_shipbig01",

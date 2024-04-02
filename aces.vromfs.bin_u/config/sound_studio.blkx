@@ -926,6 +926,52 @@
       "distScaleOnNotHero": 1.0
     }
   },
+  "engine_pony_ai": {
+    "effects": {
+      "path": "event/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8
+    },
+    "outside": {
+      "path": "event/engines",
+      "eventFront": "",
+      "eventBack": "engine_pony_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_pony_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_pony_jet_ai": {
+    "effects": {
+      "path": "event/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8
+    },
+    "outside": {
+      "path": "event/engines",
+      "eventFront": "",
+      "eventBack": "engine_pony_jet_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_pony_jet_ai",
+      "rpmSmooth": 0.005,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
   "engine_inline_ai": {
     "effects": {
       "path": "aircraft/engines",
@@ -2539,6 +2585,56 @@
       "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_pony": {
+    "effects": {
+      "path": "event/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_pony_start",
+      "eventStop": "engine_pony_stop"
+    },
+    "outside": {
+      "path": "event/engines",
+      "eventFront": "",
+      "eventBack": "engine_pony",
+      "eventSurround": "",
+      "eventLod1": "engine_pony",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_pony_jet": {
+    "effects": {
+      "path": "event/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_pony_jet_start",
+      "eventStop": "engine_pony_jet_stop"
+    },
+    "outside": {
+      "path": "event/engines",
+      "eventFront": "",
+      "eventBack": "engine_pony_jet",
+      "eventSurround": "",
+      "eventLod1": "engine_pony_jet",
+      "rpmSmooth": 0.001,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
     }
   },
   "engine_inline": {

@@ -255,6 +255,7 @@
         "uhq": true
       }
     ],
+    "pkg_april_fools_event_2024": {},
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -282,6 +283,12 @@
     "pkg_lvl_white_rocks": {
       "conditions": {
         "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_lvl_norway_green": {
+      "conditions": {
+        "campaign": "air",
         "mRank": 2
       }
     },
@@ -451,6 +458,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 8
+      }
+    },
+    "pkg_germ_kv_1_kwk_40": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
       }
     },
     "pkg_environment": {
@@ -1043,12 +1056,13 @@
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeMinHeight": -20.0,
-      "staticCascadeMaxHeight": 100.0,
+      "staticCascadeMaxHeight": 2100.0,
+      "staticMaxHeightRange": 2500.0,
       "staticCascadeTransition": false,
       "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.05,
+      "staticCascadeDepthBias": 0.0025,
       "staticCascadeRiExLod0InCascade0": true,
-      "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeDepthBiasForCascade0": 0.0001,
       "staticCascadeMinSizeForRiextraCascade1": 10.0,
       "tank": {
         "staticCascadeCount": 2,
@@ -1058,12 +1072,13 @@
         "staticCascadeStarting": 0,
         "staticCascadeUseRiSecLayer": false,
         "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 100.0,
+        "staticCascadeMaxHeight": 2100.0,
+        "staticMaxHeightRange": 2500.0,
         "staticCascadeTransition": false,
         "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.005,
+        "staticCascadeDepthBias": 0.00025,
         "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeDepthBiasForCascade0": 0.000025,
         "staticCascadeMinSizeForRiextraCascade1": 10.0
       }
     },
@@ -1100,12 +1115,13 @@
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeMinHeight": -20.0,
-      "staticCascadeMaxHeight": 100.0,
+      "staticCascadeMaxHeight": 2100.0,
+      "staticMaxHeightRange": 2500.0,
       "staticCascadeTransition": false,
       "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.05,
+      "staticCascadeDepthBias": 0.0025,
       "staticCascadeRiExLod0InCascade0": true,
-      "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeDepthBiasForCascade0": 0.0001,
       "staticCascadeMinSizeForRiextraCascade1": 10.0,
       "tank": {
         "staticCascadeCount": 2,
@@ -1115,12 +1131,13 @@
         "staticCascadeStarting": 0,
         "staticCascadeUseRiSecLayer": false,
         "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 100.0,
+        "staticCascadeMaxHeight": 2100.0,
+        "staticMaxHeightRange": 2500.0,
         "staticCascadeTransition": false,
         "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.005,
+        "staticCascadeDepthBias": 0.00025,
         "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeDepthBiasForCascade0": 0.000025,
         "staticCascadeMinSizeForRiextraCascade1": 10.0
       }
     },
@@ -1157,12 +1174,13 @@
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeMinHeight": -20.0,
-      "staticCascadeMaxHeight": 100.0,
+      "staticCascadeMaxHeight": 2100.0,
+      "staticMaxHeightRange": 2500.0,
       "staticCascadeTransition": false,
       "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.05,
+      "staticCascadeDepthBias": 0.0025,
       "staticCascadeRiExLod0InCascade0": true,
-      "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeDepthBiasForCascade0": 0.0001,
       "staticCascadeMinSizeForRiextraCascade1": 10.0,
       "tank": {
         "staticCascadeCount": 2,
@@ -1172,12 +1190,13 @@
         "staticCascadeStarting": 0,
         "staticCascadeUseRiSecLayer": false,
         "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 100.0,
+        "staticCascadeMaxHeight": 2100.0,
+        "staticMaxHeightRange": 2500.0,
         "staticCascadeTransition": false,
         "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.005,
+        "staticCascadeDepthBias": 0.00025,
         "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeDepthBiasForCascade0": 0.000025,
         "staticCascadeMinSizeForRiextraCascade1": 10.0
       }
     },
@@ -1214,12 +1233,13 @@
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeMinHeight": -20.0,
-      "staticCascadeMaxHeight": 100.0,
+      "staticCascadeMaxHeight": 2100.0,
+      "staticMaxHeightRange": 2500.0,
       "staticCascadeTransition": false,
       "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.05,
+      "staticCascadeDepthBias": 0.0025,
       "staticCascadeRiExLod0InCascade0": true,
-      "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeDepthBiasForCascade0": 0.0001,
       "staticCascadeMinSizeForRiextraCascade1": -1.0,
       "tank": {
         "staticCascadeCount": 2,
@@ -1229,12 +1249,13 @@
         "staticCascadeStarting": 0,
         "staticCascadeUseRiSecLayer": false,
         "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 100.0,
+        "staticCascadeMaxHeight": 2100.0,
+        "staticMaxHeightRange": 2500.0,
         "staticCascadeTransition": false,
         "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.005,
+        "staticCascadeDepthBias": 0.00025,
         "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeDepthBiasForCascade0": 0.000025,
         "staticCascadeMinSizeForRiextraCascade1": -1.0
       }
     }

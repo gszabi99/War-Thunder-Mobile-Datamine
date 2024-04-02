@@ -22,25 +22,33 @@ let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE]
 let tuningUnitType = mkWatched(persist, "tuningUnitType", null)
 let isTuningOpened = Computed(@() tuningUnitType.value != null)
 let presetsSaved = mkWatched(persist, "presetsSaved", {})
-let transformsByUnitType = Computed(@() presetsSaved.value.map(
+let hudTuningStateByUnitType = Computed(@() presetsSaved.value.map(
   function(p) {
-    let { transforms = {}, resolution = [] } = p
+    let { transforms = {}, resolution = [], options = {} } = p
     if (resolution?[1] == sh(100).tointeger() || (resolution?[1] ?? 0) <= 0)
-      return transforms
+      return { transforms, options }
     let mul = sh(100) / resolution[1]
-    return transforms.map(@(t) "pos" not in t ? t : t.__merge({ pos = t.pos.map(@(v) round(v * mul).tointeger()) }))
+    return {
+      transforms = transforms.map(@(t) "pos" not in t ? t : t.__merge({ pos = t.pos.map(@(v) round(v * mul).tointeger()) }))
+      options
+    }
   }))
-let tuningTransform = mkWatched(persist, "tuningTransform", null)
+let tuningState = mkWatched(persist, "tuningState", null)
+let tuningTransform = Computed(@() tuningState.get()?.transforms)
+let tuningOptions = Computed(@() tuningState.get()?.options)
 let selectedId = mkWatched(persist, "selectedId", null)
 let transformInProgress = Watched(null)
+let isElemHold = Watched(false)
 let history = mkWatched(persist, "history", [])
-let curHistoryIdx = Computed(@() history.value.indexof(tuningTransform.value))
+let curHistoryIdx = Computed(@() history.get().indexof(tuningState.get()))
+
+let mkEmptyTuningState = @() { transforms = {}, options = {} }
 
 let isCurPresetChanged = Computed(function() {
   let ut = tuningUnitType.value
-  if (ut == null || tuningTransform.value == null)
+  if (ut == null || tuningState.get() == null)
     return false
-  return !isEqual(tuningTransform.value, transformsByUnitType.value?[ut] ?? {})
+  return !isEqual(tuningState.get(), hudTuningStateByUnitType.get()?[ut] ?? mkEmptyTuningState())
 })
 
 function loadPresets() {
@@ -75,7 +83,7 @@ function savePreset(unitType, preset) {
 }
 
 local lastHistoryIdx = curHistoryIdx.value
-tuningTransform.subscribe(function(t) {
+tuningState.subscribe(function(t) {
   if (t == null || curHistoryIdx.value != null) {
     lastHistoryIdx = curHistoryIdx.value
     return
@@ -91,23 +99,23 @@ tuningTransform.subscribe(function(t) {
 })
 
 tuningUnitType.subscribe(function(ut) {
-  history([])
-  tuningTransform(ut == null ? null : freeze(transformsByUnitType.value?[ut] ?? {}))
+  history.set([])
+  tuningState.set(ut == null ? null : freeze(hudTuningStateByUnitType.get()?[ut] ?? mkEmptyTuningState()))
 })
+
+let clearTuningState = @() tuningState.set(mkEmptyTuningState())
 
 let saveCurrentTransform = @() tuningUnitType.value == null ? null
   : savePreset(tuningUnitType.value,
-      tuningTransform.value == null ? {}
-        : {
-            resolution = [sw(100).tointeger(), sh(100).tointeger()]
-            transforms = tuningTransform.value
-          })
+      tuningState.get() == null ? {}
+        : tuningState.get().__merge({ resolution = [sw(100).tointeger(), sh(100).tointeger()] }))
 
 function applyTransformProgress() {
   if (selectedId.value == null || transformInProgress.value == null)
     return
-  tuningTransform(tuningTransform.value.__merge({
-    [selectedId.value] = transformInProgress.value
+  let state = tuningState.get()
+  tuningState(state.__merge({
+    transforms = state.transforms.__merge({ [selectedId.value] = transformInProgress.get() })
   }))
   transformInProgress(null)
 }
@@ -119,22 +127,28 @@ function openTuningRecommended() {
   tuningUnitType(uType in allTuningUnitTypes ? uType : allTuningUnitTypes.findindex(@(_) true))
 }
 
-register_command(@() tuningUnitType(tuningUnitType.value == TANK ? null : TANK), "openHudTuning.TANK")
-register_command(@() tuningUnitType(tuningUnitType.value == AIR ? null : AIR), "openHudTuning.AIR")
-register_command(@() tuningUnitType(tuningUnitType.value == SHIP ? null : SHIP), "openHudTuning.SHIP")
-register_command(@() tuningUnitType(tuningUnitType.value == SUBMARINE ? null : SUBMARINE), "openHudTuning.SUBMARINE")
+let logSelElem = @(id) dlog("Hud tuning selectedId: ", id)  // warning disable: -forbidden-function
+local isLogSelOn = false
 register_command(function() {
-  tuningTransform({})
-  saveCurrentTransform()
-}, "resetHudTuning")
+  isLogSelOn = !isLogSelOn
+  if (!isLogSelOn)
+    selectedId.unsubscribe(logSelElem)
+  else {
+    selectedId.subscribe(logSelElem)
+    logSelElem(selectedId.get())
+  }
+}, "hudTuning.debugElems")
 
 return {
   allTuningUnitTypes
-  transformsByUnitType
+  hudTuningStateByUnitType
   isTuningOpened
   tuningUnitType
+  tuningState
   tuningTransform
+  tuningOptions
   transformInProgress
+  isElemHold
   selectedId
   history
   curHistoryIdx
@@ -145,4 +159,5 @@ return {
   closeTuning = @() tuningUnitType(null)
   applyTransformProgress
   saveCurrentTransform
+  clearTuningState
 }

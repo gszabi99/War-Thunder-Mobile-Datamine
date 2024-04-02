@@ -76,6 +76,7 @@
     "transitionFadeOutTime": 0.2,
     "viscosity": 0.07,
     "viscosityCameraHoldFactor": 0.5,
+    "targOffsMult": 0.0,
     "minimumDistanceMultiplier": 1.7,
     "rollAngleFactor": 0.01,
     "overturnAngle": 80.0,

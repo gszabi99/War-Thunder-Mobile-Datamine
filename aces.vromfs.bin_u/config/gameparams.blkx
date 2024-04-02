@@ -6307,6 +6307,93 @@
         200
       ],
       "hdrK": 5.0
+    },
+    "30mmRainbow_r": {
+      "halfSize": 4.0,
+      "distScaleStart": 20.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.0,
+      "radius": 0.09,
+      "color1": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        255,
+        0,
+        0,
+        255
+      ],
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.11,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.11,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "30mmRainbow_g": {
+      "halfSize": 4.0,
+      "distScaleStart": 20.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.0,
+      "radius": 0.09,
+      "color1": [
+        0,
+        255,
+        0,
+        255
+      ],
+      "color2": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.11,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.11,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
+    },
+    "30mmRainbow_b": {
+      "halfSize": 4.0,
+      "distScaleStart": 20.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.0,
+      "radius": 0.09,
+      "color1": [
+        255,
+        0,
+        0,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0,
+        255
+      ],
+      "fx": {
+        "destroyedFxType": "tracer_destr_small",
+        "destroyedFxChance": 0.11,
+        "ricochetedFxType": "tracer_ricocheted_small",
+        "ricochetedFxChance": 0.11,
+        "destroyedFxVelocity": 10.0,
+        "ricochetedFxVelocity": 20.0,
+        "destroyedFxTtl": 3.5,
+        "ricochetedFxTtl": 4.5
+      }
     }
   },
   "tracerTrails": {
@@ -15782,7 +15869,24 @@
   "rendinstExtraForceDisableShadow": {
     "ri": [
       "heap_debris_brick_small_10x10_b",
-      "heap_debris_brick_small_40x10"
+      "heap_debris_brick_small_40x10",
+      "heap_debris_brick_small_40x10",
+      "wr_big_island_a",
+      "wr_big_island_b",
+      "wr_big_island_c",
+      "wr_chalk_cliff_wall_a",
+      "wr_chalk_cliff_wall_b",
+      "wr_chalk_cliff_wall_back_left",
+      "wr_chalk_cliff_wall_back_main",
+      "wr_chalk_cliff_wall_back_right",
+      "wr_chalk_cliff_wall_c",
+      "wr_chalk_cliff_wall_d",
+      "wr_chalk_cliff_wall_e",
+      "wr_formation_a",
+      "wr_formation_b",
+      "wr_formation_c",
+      "wr_sand_island_a",
+      "wr_sand_island_b"
     ]
   },
   "rendinstOpt": {
@@ -16243,8 +16347,14 @@
         "vietnam_sheer_cliff_b",
         "vietnam_sheer_cliff_c",
         "vietnam_sheer_cliff_d",
-        "buddha_statue_a"
-      ]
+        "buddha_statue_a",
+        "celestial_city_platform_a",
+        "celestial_city_platform_b",
+        "celestial_city_platform_bridge_a",
+        "celestial_city_platform_c",
+        "celestial_city_platform_hanger_a"
+      ],
+      "incRE": "celestial_"
     },
     "badLod1ForStaticShadow": {}
   },
@@ -17381,10 +17491,10 @@
     "windNoiseTextureName": "perlin_noise_wind_ati1n"
   },
   "speedLines": {
-    "minSpeedLimit": 10000.0,
-    "maxSpeedLimit": 10000.0,
-    "speedFactor": 0.0,
+    "minSpeedLimit": 350.0,
+    "maxSpeedLimit": 700.0,
+    "speedFactor": 0.4,
     "timeFactor": 1.0,
-    "screenLimit": 1.0
+    "screenLimit": 0.125
   }
 }

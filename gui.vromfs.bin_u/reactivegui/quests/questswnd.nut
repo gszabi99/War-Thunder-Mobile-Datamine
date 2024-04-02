@@ -65,7 +65,7 @@ function eventTabContent(){
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = eventSeasonName.value
-      }.__update(fontSmall)
+      }.__update(fontTinyAccented)
       @() {
         watch = [eventEndsAt, serverTime]
         size = [flex(), SIZE_TO_CONTENT]
@@ -73,14 +73,14 @@ function eventTabContent(){
         rendObj = ROBJ_TEXT
         text = !eventEndsAt.value || (eventEndsAt.value - serverTime.value < 0) ? null
           : secondsToHoursLoc(eventEndsAt.value - serverTime.value)
-      }.__update(fontSmall)
+      }.__update(fontTinyAccented)
     ]
   }
 }
-
 let miniEventTabContent = {
   size = flex()
   flow = FLOW_HORIZONTAL
+  gap = hdpx(10)
   children = [
     @() {
       watch = miniEventSeason
@@ -103,7 +103,7 @@ let miniEventTabContent = {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           text = getMiniEventLoc(miniEventSeason.get())
-        }.__update(fontSmall)
+        }.__update(fontTinyAccented)
         @() {
           watch = [miniEventEndsAt, serverTime]
           size = [flex(), SIZE_TO_CONTENT]
@@ -111,7 +111,7 @@ let miniEventTabContent = {
           rendObj = ROBJ_TEXT
           text = !miniEventEndsAt.get() || (miniEventEndsAt.get() - serverTime.get() < 0) ? null
             : secondsToHoursLoc(miniEventEndsAt.get() - serverTime.get())
-        }.__update(fontSmall)
+        }.__update(fontTinyAccented)
       ]
     }
   ]
@@ -125,6 +125,7 @@ function mkSpecialEventTabContent(idx) {
   return {
     size = flex()
     flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
     children = [
       @() {
         watch = image
@@ -146,15 +147,14 @@ function mkSpecialEventTabContent(idx) {
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             text = loc(locId.get())
-          }.__update(fontSmall)
+          }.__update(fontTinyAccented)
           @() {
             watch = [serverTime, endsAt]
             size = [flex(), SIZE_TO_CONTENT]
             halign = ALIGN_RIGHT
-            rendObj = ROBJ_TEXT
             text = !endsAt.get() || (endsAt.get() - serverTime.get() < 0) ? null
               : secondsToHoursLoc(endsAt.get() - serverTime.get())
-          }.__update(fontSmall)
+          }.__update(fontTinyAccented)
         ]
       }
     ]
@@ -178,17 +178,22 @@ let tabs = [
     imageSizeMul = 1.2
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
-    tabContent = eventTabContent
-    tabHeight = hdpx(160)
+    tabContent = eventTabContent()
     isVisible = Computed(@() isEventActive.value
       && questsCfg.value[EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
+  }
+  {
+    id = SPECIAL_EVENT_1_TAB
+    tabContent = mkSpecialEventTabContent(SPECIAL_EVENT_1_TAB)
+    isFullWidth = true
+    content = questsWndPage(Computed(@() questsCfg.value?[SPECIAL_EVENT_1_TAB] ?? []), mkQuest, SPECIAL_EVENT_1_TAB)
+    isVisible = Computed(@() questsCfg.value?[SPECIAL_EVENT_1_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
   {
     id = MINI_EVENT_TAB
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[MINI_EVENT_TAB]), mkQuest, MINI_EVENT_TAB)
     tabContent = miniEventTabContent
-    tabHeight = hdpx(160)
     isVisible = Computed(@() isMiniEventActive.value
       && questsCfg.value[MINI_EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
@@ -209,13 +214,6 @@ let tabs = [
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[PROMO_TAB]), mkQuest, PROMO_TAB)
     isVisible = Computed(@() questsCfg.value[PROMO_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
-  }
-  {
-    id = SPECIAL_EVENT_1_TAB
-    tabContent = mkSpecialEventTabContent(SPECIAL_EVENT_1_TAB)
-    isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value?[SPECIAL_EVENT_1_TAB] ?? []), mkQuest, SPECIAL_EVENT_1_TAB)
-    isVisible = Computed(@() questsCfg.value?[SPECIAL_EVENT_1_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
 ]
 

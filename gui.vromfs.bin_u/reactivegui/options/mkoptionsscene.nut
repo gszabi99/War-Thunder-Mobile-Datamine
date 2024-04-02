@@ -15,7 +15,7 @@ let mkOptionsTabs = require("mkOptionsTabs.nut")
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
 let topAreaSize = saBorders[1] + backButtonHeight + gapBackButton
-let gradientHeightBottom = hdpxi(256)
+let gradientHeightBottom = saBorders[1]
 let gradientHeightTop = min(topAreaSize, gradientHeightBottom)
 
 let scrollHandler = ScrollHandler()
@@ -25,9 +25,9 @@ let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100),
   [topAreaSize, gradientHeightBottom])
 
 let scrollArrowsBlock = {
-  size = [SIZE_TO_CONTENT, saSize[1]]
+  size = [SIZE_TO_CONTENT, saSize[1] + saBorders[1]]
   hplace = ALIGN_CENTER
-  pos = [0, -topAreaSize + saBorders[1]]
+  pos = [0, -topAreaSize + saBorders[1] / 2]
   children = [
     mkScrollArrow(scrollHandler, MR_T)
     mkScrollArrow(scrollHandler, MR_B)

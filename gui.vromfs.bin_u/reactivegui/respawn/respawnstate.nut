@@ -57,14 +57,14 @@ let respawnSlots = Computed(function() {
   foreach (idx, sUnit in respawnUnitInfo.value?.platoonUnits ?? [])
     res.append(mkSlot(idx + 1, sUnit, rMask, sMask))
   foreach (sUnit in respawnUnitInfo.value?.lockedUnits ?? [])
-    res.append(mkSlot(res.len(), sUnit).__update({ reqLevel = sUnit.reqLevel }))
+    res.append(mkSlot(res.len(), sUnit).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
   let { level = -1 } = respawnUnitInfo.value
   res.each(@(s) s.level <- level)
   return res
 })
 
 let hasUnseenShellsBySlot = Computed(@() respawnSlots.value.map(function (slot) {
-  if (slot.level >= (slot?.reqLevel ?? 0)) {
+  if (!slot?.isLocked) {
     return slot.bullets.map(@(v, id) (id != "")
       && ((v?.reqLevel ?? 0) != 0)
       && (slot.level >= (v?.reqLevel ?? 0))

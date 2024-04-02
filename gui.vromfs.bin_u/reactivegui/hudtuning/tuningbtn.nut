@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { withHoldTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
-let size = evenPx(70)
+let tuningBtnSize = evenPx(70)
 let imgSize = evenPx(54)
+let tuningBtnGap = hdpx(30)
 
 let btnBgColorDefault = 0xFF00DEFF
 let btnBgColorPositive = 0xFF1FDA6A
@@ -27,7 +28,7 @@ function tuningBtn(image, onClick, description, ovr = {}) {
   return @() {
     key
     watch = stateFlags
-    size = [size, size]
+    size = [tuningBtnSize, tuningBtnSize]
     rendObj = ROBJ_SOLID
     color = btnBgColorDefault
     onElemState = withHoldTooltip(stateFlags, key, @(){
@@ -66,4 +67,7 @@ return {
   btnBgColorDisabled
   btnImgColor
   btnImgColorDisabled
+
+  tuningBtnSize
+  tuningBtnGap
 }

@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { get_addon_version, is_addon_exists_in_game_folder } = require("contentUpdater")
 let { check_version } = require("%sqstd/version_compare.nut")
+let { tostring_r } = require("%sqstd/string.nut")
 let { isNewbieMode, isNewbieModeSingle } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
@@ -9,8 +10,12 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { gameModeAddonToAddonSetMap, ADDON_VERSION_EMPTY } = require("%appGlobals/updater/addons.nut")
 
+
+let getModeAddonsDbgString = @(mode)
+  $"only_override_units = {mode?.only_override_units ?? false}, reqPkg = {tostring_r(mode?.reqPkg ?? {})}"
+
 function getModeAddonsInfo(mode, unitNames) {
-  let { reqPkg = {}, campaign = curCampaign.value, name = "" } = mode
+  let { reqPkg = {}, campaign = curCampaign.value, name = "", only_override_units = false } = mode
   local addons = {}  //addon = needDownload
   local allReqAddons = {}
   local updateDiff = 0
@@ -29,19 +34,21 @@ function getModeAddonsInfo(mode, unitNames) {
     updateDiff += version == "" ? -1 : 1
   }
 
-  local mRank = 1
-  foreach(uName in unitNames)
-    mRank = max(mRank, serverConfigs.value?.allUnits[uName].mRank ?? 1)
-  let campAddons = isNewbieMode(name)
-    ? getCampaignPkgsForNewbieBattle(campaign, mRank, isNewbieModeSingle(name))
-    : getCampaignPkgsForOnlineBattle(campaign, mRank)
-  foreach (addon in campAddons) {
-    allReqAddons[addon] <- true
-    if (addon in addons)
-      continue
-    let has = hasAddons.value?[addon] ?? false
-    addons[addon] <- !has
-    updateDiff += has ? 0 : -1
+  if (!only_override_units) {
+    local mRank = 1
+    foreach(uName in unitNames)
+      mRank = max(mRank, serverConfigs.value?.allUnits[uName].mRank ?? 1)
+    let campAddons = isNewbieMode(name)
+      ? getCampaignPkgsForNewbieBattle(campaign, mRank, isNewbieModeSingle(name))
+      : getCampaignPkgsForOnlineBattle(campaign, mRank)
+    foreach (addon in campAddons) {
+      allReqAddons[addon] <- true
+      if (addon in addons)
+        continue
+      let has = hasAddons.value?[addon] ?? false
+      addons[addon] <- !has
+      updateDiff += has ? 0 : -1
+    }
   }
 
   let toDownload = addons.filter(@(v) v)
@@ -68,4 +75,5 @@ function getModeAddonsInfo(mode, unitNames) {
 
 return {
   getModeAddonsInfo
+  getModeAddonsDbgString
 }

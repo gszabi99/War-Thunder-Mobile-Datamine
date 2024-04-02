@@ -106,6 +106,7 @@ let mkPriorityUnseenMarkWatch = @(watch, ovr = {}) @() {
 return {
   priorityUnseenMark
   unseenMark
+  unseenSize
   lowPriorityUnseenMark
   mkUnseenMark
   mkPriorityUnseenMarkWatch

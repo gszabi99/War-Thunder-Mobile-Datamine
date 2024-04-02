@@ -67,6 +67,7 @@ let allShortcuts = {
 
   //AIRCRAFT shortcuts:
   ID_BOMBS = "J:B | Z"
+  ID_FIRE_COURSE_GUNS = "J:RT | Space"
   ID_FIRE_CANNONS = "J:RT | Space"
   ID_FIRE_MGUNS = "J:RB | L.Ctrl"
   ID_LOCK_TARGET = "J:LB | E"

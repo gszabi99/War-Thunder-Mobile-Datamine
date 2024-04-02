@@ -33,7 +33,7 @@ let shortcutsByUnitTypes = {
   },
   [AIR] = {
     shortcuts = [
-      "ID_FLIGHTMENU", "ID_BOMBS", "ID_ROCKETS", "ID_FIRE_CANNONS", "ID_FIRE_MGUNS",
+      "ID_FLIGHTMENU", "ID_BOMBS", "ID_ROCKETS", "ID_FIRE_COURSE_GUNS", "ID_FIRE_CANNONS", "ID_FIRE_MGUNS",
       "ID_LOCK_TARGET", "ID_ZOOM_TOGGLE",
       cLoc("hotkeys/ID_SHIP_WEAPON_TORPEDOES", "ID_WTM_AIRCRAFT_LAUNCH_TORPEDOES"),
     ]

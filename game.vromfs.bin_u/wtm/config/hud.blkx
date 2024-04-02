@@ -483,6 +483,8 @@
     "bomber_outline": "objective_bomber_outline.svg:36:36:K",
     "helicopter": "objective_helicopter.svg:36:36:K",
     "helicopter_outline": "objective_helicopter_outline.svg:36:36:K",
+    "april_event_unit": "objective_pony.svg:48:48:K",
+    "exoskeleton": "objective_pony.svg:48:48:K",
     "truck": "objective_truck",
     "mark": "objective_mark.svg:21:21:K",
     "sunk_carrier": "objective_sunk_carrier",

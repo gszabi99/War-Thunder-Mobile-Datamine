@@ -18,12 +18,12 @@ let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, res
 let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 } = require("%appGlobals/unitPresentation.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { premiumTextColor, markTextColor } = require("%rGui/style/stdColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
 let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullSize, mkUnitPrice,
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine,
+  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
   mkUnitSelectedUnderlineVert, mkUnitRank, unitPlatesGap
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
@@ -89,8 +89,10 @@ function onSlotClick(slot) {
     playerSelectedSlotIdx(slot.id)
     return
   }
-  if ("reqLevel" in slot)
-    openMsgBox({ text  = loc("msg/requirePlatoonLevel", { level = slot.reqLevel, name = loc(getUnitLocId(slot.name)) }) })
+  let name = colorize(markTextColor, loc(getUnitLocId(slot.name)))
+  openMsgBox((slot?.reqLevel ?? 0) > 0 ? { text  = loc("msg/requirePlatoonLevel", { level = slot.reqLevel, name }) }
+    : slot?.isLocked ? { text  = loc("msg/requireUnlockByQuests", { name }) }
+    : { text  = loc("msg/unitAlreadyUsedInBattle", { name }) })
 }
 
 let sparePrice = {
@@ -124,7 +126,9 @@ function mkSlotPlate(slot, baseUnit) {
           canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
           mkUnitImage(unit, !canSpawn)
           mkUnitTexts(unit, loc(p.locId), !canSpawn)
-          canSpawn ? mkUnitRank(unit, isPremium ? {} : { pos = [-hdpx(30), 0] }) : mkUnitSlotLockedLine(slot)
+          canSpawn ? mkUnitRank(unit, isPremium ? {} : { pos = [-hdpx(30), 0] })
+            : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0 ? unitSlotLockedByQuests
+            : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null
         ]
       }
@@ -150,7 +154,7 @@ function platoonTitle(unit) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(20)
     children = [
-      {
+      level < 0 ? null : {
         size = [ levelHolderSize, levelHolderSize ]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER

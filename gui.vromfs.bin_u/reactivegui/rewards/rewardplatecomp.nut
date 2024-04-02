@@ -19,7 +19,8 @@ let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPres
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-
+let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
+let { mkBattleModEventUnitText, mkBattleModRewardUnitImage } = require("%rGui/rewards/battleModComp.nut")
 
 let textPadding = [0, hdpx(5)]
 let fontLabelSmaller = fontVeryTiny
@@ -137,6 +138,7 @@ let currencyImgCtors = {
   warbond = @(size, iconShiftY) mkDynamicCurrencyIcon("warbond", size, iconShiftY, 0.85)
   eventKey = @(size, iconShiftY) mkDynamicCurrencyIcon("eventKey", size, iconShiftY, 0.65)
   nybond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_goods_christmas_01.avif", 0.8)
+  aprilbond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_april_01.avif", 0.8)
 }
 
 function mkRewardPlateCurrencyImage(r, rStyle) {
@@ -431,6 +433,13 @@ function mkRewardPlateBgVip(r, rStyle) {
   }
 }
 
+let battleModeViewCtors = {
+  eventUnit = {
+    image = mkBattleModRewardUnitImage
+    texts = mkBattleModEventUnitText
+  }
+}
+
 let rewardPlateCtors = {
   unknown = {
     image = mkRewardPlateUnknownImage
@@ -475,6 +484,20 @@ let rewardPlateCtors = {
   skin = {
     image = mkRewardPlateSkinImage
     texts = mkRewardPlateSkinTexts
+  }
+  battleMod = {
+    image = function(r, rStyle) {
+      let battleMod = getBattleModPresentation(r.id)
+      return battleMod?.viewType in battleModeViewCtors
+        ? battleModeViewCtors[battleMod.viewType].image(battleMod, rStyle, r.slots)
+        : mkRewardPlateUnknownImage(r, rStyle)
+    }
+    texts = function(r, rStyle) {
+      let battleMod = getBattleModPresentation(r.id)
+      return battleMod?.viewType in battleModeViewCtors
+        ? battleModeViewCtors[battleMod.viewType].texts(battleMod, rStyle, r.slots)
+        : mkRewardPlateCountText(r, rStyle)
+    }
   }
 }
 

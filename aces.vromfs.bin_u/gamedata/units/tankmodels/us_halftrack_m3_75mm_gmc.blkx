@@ -2004,13 +2004,11 @@
     "horizontal": true
   },
   "sound": {
-    "EngineName": "engine_m16",
-    "TrackSoundPath": "tanks/engines_tanks",
+    "EngineName": "engine_light_petrol",
     "TrackSoundPathStudio": "ground/engines",
     "TrackSoundName": "tracks_light",
-    "TrackSoundNameCockpit": "tracks_light_interior",
-    "turret_turn": "turret_turn_manual",
-    "EngineNameAi": "engine_tank_ai_light",
+    "turret_turn": "turret_turn_manual_y",
+    "EngineNameAi": "engine_tank_ai_middle",
     "TrackSoundNameAi": "tracks_ai_light"
   },
   "class_tags": {},

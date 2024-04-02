@@ -37,10 +37,9 @@ function mkPlayerLevelUnlockPlates(debrData, delay) {
 function mkDebriefingWndTabCampaign(debrData, params) {
   let { totalRewardCountsComp, totalRewardsShowTime, btnTryPremium
   } = mkTotalRewardCountsCampaign(debrData, rewardsAnimStartTime)
-  if (totalRewardCountsComp == null)
-    return null
-
   let { reward = {}, player = {}, campaign = "" } = debrData
+  if (totalRewardCountsComp == null || player?.isLastLevel)
+    return null
   let { playerExp = {} } = reward
   let { levelProgressLineComp, levelProgressLineAnimTime } = mkLevelProgressLine(player, playerExp,
     loc($"gamercard/levelCamp/header/{campaign}"), loc("gamercard/levelCamp/desc"),

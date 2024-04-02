@@ -13,6 +13,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, lootboxHeight,
  smallChestIcon, leaderbordBtn, questsBtn } = require("eventPkg.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
+let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { buy_lootbox, lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -32,6 +33,12 @@ let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPrev
 } = require("%rGui/shop/lootboxPreviewState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getLootboxSizeMul } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { eventbus_send } = require("eventbus")
+let { buttonsHGap } = require("%rGui/components/textButton.nut")
+let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let squadPanel = require("%rGui/squad/squadPanel.nut")
 
 
 let MAX_LOOTBOXES_AMOUNT = 3
@@ -203,6 +210,28 @@ function mkCurrencies() {
   }
 }
 
+let toBattleHint = {
+  hplace = ALIGN_RIGHT
+  pos = [saBorders[0] * 0.5, 0]
+  rendObj = ROBJ_9RECT
+  image = gradTranspDoubleSideX
+  padding = [saBorders[0] * 0.2, saBorders[0] * 0.5]
+  texOffs = [0, gradDoubleTexOffset]
+  screenOffs = [0, saBorders[0]]
+  color = 0x70000000
+  children = {
+    size = [defButtonMinWidth, SIZE_TO_CONTENT]
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    text = loc("events/toBattle")
+  }.__update(fontTinyAccented)
+}
+
+let mkToBattleButton = @(modeId, modeName) mkToBattleButtonWithSquadManagement(function() {
+  sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = modeName })
+  eventbus_send("queueToGameMode", { modeId })
+})
+
 let eventGamercard = {
   size = [saSize[0], gamercardHeight]
   flow = FLOW_HORIZONTAL
@@ -266,8 +295,9 @@ function mkLootboxPreviewContent() {
             children = [
               lootboxHeader(previewLootbox.get())
               lootboxImageWithTimer(previewLootbox.get())
-              progressInfo
               { size = flex() }
+              progressInfo
+              { size = [0, hdpx(50)] }
               @() {
                 watch = [previewLootbox, lootboxInProgress]
                 size = [SIZE_TO_CONTENT, defButtonHeight]
@@ -282,8 +312,9 @@ function mkLootboxPreviewContent() {
 
 function eventWndContent() {
   let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.value.len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
+  let modeId = Computed(@() allGameModes.get().findindex(@(v) v.tag == curEventName.get()))
   return @() {
-    watch = isEmbeddedLootboxPreviewOpen
+    watch = [isEmbeddedLootboxPreviewOpen, modeId]
     size = flex()
     padding = saBordersRv
     flow = FLOW_VERTICAL
@@ -291,40 +322,74 @@ function eventWndContent() {
       .extend(isEmbeddedLootboxPreviewOpen.value
         ? [ mkLootboxPreviewContent() ]
         : [
-            @() {
-              watch = [curEventLootboxes, blockSize]
-              size = flex()
-              flow = FLOW_HORIZONTAL
-              hplace = ALIGN_CENTER
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              children = curEventLootboxes.value.map(@(v) mkLootboxBlock(v, blockSize.value))
-              animations = wndSwitchAnim
-            }
-
             {
-              key = {}
-              size = [flex(), SIZE_TO_CONTENT]
-              valign = ALIGN_CENTER
-              flow = FLOW_HORIZONTAL
-              gap = headerGap
+              size = flex()
               children = [
-                questsBtn
-
-                @() {
-                  watch = [has_leaderboard, curEvent]
-                  size = [SIZE_TO_CONTENT, defButtonHeight]
-                  children = !has_leaderboard.value || curEvent.value != MAIN_EVENT_ID ? null : leaderbordBtn
-                }
-
-                { size = flex() }
-
                 {
+                  hplace = ALIGN_CENTER
                   rendObj = ROBJ_TEXT
                   text = loc("events/tapToSelect")
+                  animations = wndSwitchAnim
                 }.__update(fontMediumShaded)
+                {
+                  size = flex()
+                  children = @() {
+                    watch = [curEventLootboxes, blockSize]
+                    size = flex()
+                    margin = [0, 0, hdpx(120), 0]
+                    flow = FLOW_HORIZONTAL
+                    hplace = ALIGN_CENTER
+                    halign = ALIGN_CENTER
+                    valign = ALIGN_CENTER
+                    children = curEventLootboxes.get().map(@(v) mkLootboxBlock(v, blockSize.get()))
+                    animations = wndSwitchAnim
+                  }
+                }
+                {
+                  key = {}
+                  size = [flex(), SIZE_TO_CONTENT]
+                  vplace = ALIGN_BOTTOM
+                  children = [
+                    // Left
+                    {
+                      vplace = ALIGN_BOTTOM
+                      flow = FLOW_HORIZONTAL
+                      gap = buttonsHGap
+                      children = [
+                        questsBtn
+                        @() {
+                          watch = [has_leaderboard, curEvent]
+                          size = [SIZE_TO_CONTENT, defButtonHeight]
+                          children = !has_leaderboard.get() || curEvent.get() != MAIN_EVENT_ID ? null : leaderbordBtn
+                        }
+                      ]
+                    }
+                    // Center
+                    !modeId.get() ? null : {
+                      hplace = ALIGN_CENTER
+                      vplace = ALIGN_BOTTOM
+                      halign = ALIGN_CENTER
+                      valign = ALIGN_BOTTOM
+                      children = squadPanel
+                    }
+                    // Right
+                    !modeId.get() ? null : @() {
+                      watch = curEventName
+                      hplace = ALIGN_RIGHT
+                      vplace = ALIGN_BOTTOM
+                      halign = ALIGN_RIGHT
+                      valign = ALIGN_BOTTOM
+                      flow = FLOW_VERTICAL
+                      gap = hdpx(10)
+                      children = [
+                        toBattleHint
+                        mkToBattleButton(modeId.get(), curEventName.get())
+                      ]
+                    }
+                  ]
+                  animations = wndSwitchAnim
+                }
               ]
-              animations = wndSwitchAnim
             }
           ])
   }

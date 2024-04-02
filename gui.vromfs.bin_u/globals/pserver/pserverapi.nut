@@ -341,6 +341,9 @@ return {
     params = { unitId }
   }, cb)
 
+  get_battle_data_for_overrided_mission = @(cb = null)
+    request({ method = "get_battle_data_for_overrided_mission" }, cb)
+
   get_battle_data_jwt = @(unitId, cb = null) request({
     method = "get_battle_data_jwt"
     params = { unitId }
@@ -470,6 +473,11 @@ return {
 
   add_nybond = @(count, cb = null) request({
     method = "add_nybond"
+    params = { count }
+  }, cb)
+
+  add_aprilbond = @(count, cb = null) request({
+    method = "add_aprilbond"
     params = { count }
   }, cb)
 

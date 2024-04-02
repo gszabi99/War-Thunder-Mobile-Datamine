@@ -17,6 +17,7 @@ function mkPlayersByTeam(debrData) {
     let { unitClass = "", mRank = null } = unit
     let mainUnitName = unit?.name ?? aircraftName ?? ""
     let isUnitPremium = unit?.isPremium ?? false
+    let isUnitHidden = unit?.isHidden ?? false
     return p.__merge({
       userId = userIdStr
       isLocal
@@ -27,6 +28,7 @@ function mkPlayersByTeam(debrData) {
       starLevel
       hasPremium
       isUnitPremium
+      isUnitHidden
       mainUnitName
       unitClass
       mRank

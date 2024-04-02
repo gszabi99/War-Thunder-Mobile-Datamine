@@ -79,11 +79,14 @@
       1000.0
     ],
     "selfDestructionInAir": true,
-    "explosionEffect": "hit_81_105mm_metal_he",
-    "groundCollisionEffect": "hit_81_105mm_dirt_he",
-    "ricochetEffect": "hit_81_105mm_metal_ap",
-    "waterCollisionEffect": "hit_81_105mm_water",
+    "selfDestructionFx": "explosion_air_selfexplosion_med_pony",
+    "explosionEffect": "hit_81_105mm_metal_he_pony",
+    "groundCollisionEffect": "hit_81_105mm_dirt_he_pony",
+    "ricochetEffect": "hit_81_105mm_metal_ap_pony",
+    "waterCollisionEffect": "hit_81_105mm_metal_he_pony",
     "explosionPatchRadius": 3.0,
+    "waterRicochetEffect": "hit_81_105mm_metal_ap_pony",
+    "groundRicochetEffect": "hit_81_105mm_dirt_ap_pony",
     "visual": {
       "range_percent_of_ammo": [
         100.0,
@@ -95,82 +98,120 @@
     },
     "collisions": {
       "default": {
-        "fx": "hit_81_105mm_dirt_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "horLandMesh": {
-        "fx": "hit_81_105mm_dirt_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "soil": {
-        "fx": "hit_81_105mm_dirt_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "dirt": {
-        "fx": "hit_81_105mm_dirt_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "road": {
-        "fx": "hit_81_105mm_dirt_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "roadSoil": {
-        "fx": "hit_81_105mm_dirt_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "bricks_red": {
-        "fx": "hit_81_105mm_stone_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "sand": {
-        "fx": "hit_81_105mm_sand_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "duneSand": {
-        "fx": "hit_81_105mm_sand_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "roadSand": {
-        "fx": "hit_81_105mm_sand_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "quickSand": {
-        "fx": "hit_81_105mm_sand_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "snow": {
-        "fx": "hit_81_105mm_snow_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "ice": {
-        "fx": "hit_81_105mm_snow_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "roadSnow": {
-        "fx": "hit_81_105mm_snow_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "snowLower": {
-        "fx": "hit_81_105mm_snow_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "glass": {
-        "fx": "hit_81_105mm_metal_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "wood": {
-        "fx": "hit_81_105mm_wood_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       },
       "steel": {
-        "fx": "hit_81_105mm_metal_he"
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
       },
       "metal": {
-        "fx": "hit_81_105mm_metal_he"
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
+      },
+      "tank_structural_steel": {
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
+      },
+      "aluminum_armor": {
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
+      },
+      "tank_rubber_screens": {
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
       },
       "buildings": {
-        "fx": "hit_81_105mm_stone_he"
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
       },
       "verLandMesh": {
-        "fx": "hit_81_105mm_stone_he"
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
       },
       "concrete": {
-        "fx": "hit_81_105mm_stone_he"
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
       },
       "rocks": {
-        "fx": "hit_81_105mm_stone_he"
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
       },
       "rocksSlippery": {
-        "fx": "hit_81_105mm_stone_he"
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
       },
       "fabric": {
-        "fx": "hit_81_105mm_stone_he"
+        "fx": "hit_81_105mm_metal_he_pony",
+        "ricochetFx": "hit_81_105mm_metal_ap_pony"
       },
       "stone_snow": {
-        "fx": "hit_81_105mm_snow_he"
+        "fx": "hit_81_105mm_dirt_he_pony",
+        "ricochetFx": "hit_81_105mm_dirt_ap_pony"
       }
     }
   }

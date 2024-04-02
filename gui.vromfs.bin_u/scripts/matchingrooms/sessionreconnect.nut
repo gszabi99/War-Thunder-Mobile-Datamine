@@ -8,7 +8,7 @@ let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState
 let { joinRoom, lastRoomId } = require("sessionLobby.nut")
 let { subscribeFMsgBtns, openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { getModeAddonsInfo } = require("%scripts/matching/gameModeAddons.nut")
+let { getModeAddonsInfo, getModeAddonsDbgString } = require("%scripts/matching/gameModeAddons.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -46,6 +46,7 @@ function getAddonsToDownload(attribs) {
   let mode = allGameModes.value?[game_mode_id]
   let unitName = getAttribUnitName(attribs) ?? getMaxRankUnitName()
   log("[ADDONS] getModeAddonsInfo at sessionReconnect for unit: ", unitName)
+  log("modeInfo = ", getModeAddonsDbgString(mode))
   return getModeAddonsInfo(mode, [unitName]).addonsToDownload
 }
 

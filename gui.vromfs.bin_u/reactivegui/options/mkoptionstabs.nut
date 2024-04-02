@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { tabW, tabH } = require("optionsStyle.nut")
 let { mkTabs } = require("%rGui/components/tabs.nut")
-let { mkUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { mkUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 let { SEEN } = require("%rGui/unseenPriority.nut")
 
 let iconSizeDef = hdpxi(100)
@@ -29,10 +29,12 @@ function mkTabImage(image, imageSizeMul) {
 function tabData(tab, idx, curTabIdx) {
   let { locId  = "", image = null, isVisible = null, unseen = null, tabContent = null, tabHeight = tabH,
     imageSizeMul = 1.0 } = tab
+  let padding = [hdpx(10), hdpx(20)]
+  let unseenMarkPos = [padding[1] + unseenSize[1] / 5, -padding[0] - unseenSize[1] / 5]
   local unseenMark = null
   if (unseen != null) {
     let unseenExt = Computed(@() curTabIdx.value == idx ? SEEN : unseen.value)
-    unseenMark = mkUnseenMark(unseenExt, { vplace = ALIGN_BOTTOM, hplace = ALIGN_RIGHT })
+    unseenMark = mkUnseenMark(unseenExt, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, pos = unseenMarkPos })
   }
 
   return {
@@ -40,11 +42,12 @@ function tabData(tab, idx, curTabIdx) {
     isVisible
     content = {
       size = [ flex(), tabHeight ]
-      padding = [hdpx(10), hdpx(20)]
+      padding
       children = [
         {
           size = flex()
           flow = FLOW_HORIZONTAL
+          gap = hdpx(10)
           children = [
             image == null ? null
               : image instanceof Watched ? @() mkTabImage(image.get(), imageSizeMul).__update({ watch = image })
@@ -56,7 +59,7 @@ function tabData(tab, idx, curTabIdx) {
               halign = ALIGN_RIGHT
               color = textColor
               text = loc(locId)
-            }.__update(fontSmall)
+            }.__update(fontTinyAccented)
           ]
         }
         unseenMark

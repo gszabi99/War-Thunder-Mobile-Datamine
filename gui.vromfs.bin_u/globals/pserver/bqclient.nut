@@ -5,6 +5,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { get_user_system_info = @() null } = require_optional("sysinfo")
 let servProfile = require("servProfile.nut")
+let { get_game_version_str = @() "-" } = require_optional("app") //updater does not have module app
 
 let addEventTime = @(data, key = "eventTime") serverTime.value > 0 ? data.__merge({ [key] = serverTime.value })
   : data //when eventTime not set, profile server will add it by self
@@ -15,10 +16,13 @@ function addSystemInfo(data) {
 }
 
 let sendUiBqEvent = @(event, data = {}) eventbus_send("sendBqEvent",
-  { tableId = "gui_events", data = addEventTime(data.__merge({ event })) })
+  { tableId = "gui_events", data = addEventTime(data.__merge({ event, gameVersion = get_game_version_str() })) })
 
 let sendErrorBqEvent = @(errorStr, data = {}) eventbus_send("sendBqEvent",
-  { tableId = "gui_events", data = addEventTime(data.__merge({ event = "error", id = errorStr })) })
+  {
+    tableId = "gui_events",
+    data = addEventTime(data.__merge({ event = "error", id = errorStr, gameVersion = get_game_version_str() }))
+  })
 
 let sendErrorLocIdBqEvent = @(errorLocId)
   sendErrorBqEvent(getLocTextForLang(errorLocId, "English") ?? errorLocId)
@@ -48,8 +52,15 @@ function sendNewbieBqEvent(actionId, data = {}) {
 
   let campBattles = getTotalBattles(sharedStatsByCampaign.value)
   eventbus_send("sendBqEvent",
-    { tableId = "gui_events",
-      data = addEventTime(data.__merge({ event = "newbieNavigation", id = actionId, level = campBattles })) })
+    {
+      tableId = "gui_events",
+      data = addEventTime(data.__merge({
+        event = "newbieNavigation"
+        id = actionId
+        level = campBattles
+        gameVersion = get_game_version_str()
+      }))
+    })
 }
 
 return {

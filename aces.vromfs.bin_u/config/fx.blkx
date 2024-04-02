@@ -5917,5 +5917,191 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "naval/gui",
     "sfxEvent": "misc_open_tank"
+  },
+  "explosion_pony_blue": {
+    "fx": "explosion_pony_blue_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "destroy"
+  },
+  "explosion_pony_orange": {
+    "fx": "explosion_pony_orange_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "destroy"
+  },
+  "explosion_pony_pink": {
+    "fx": "explosion_pony_pink_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "destroy"
+  },
+  "explosion_pony_rainbow": {
+    "fx": "explosion_pony_rainbow_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "destroy"
+  },
+  "explosion_pony_sparkle": {
+    "fx": "explosion_pony_sparkle_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "destroy"
+  },
+  "explosion_pony_pieces": {
+    "fx": "explosion_piece_tail_cmps_fx",
+    "lifeTime": 20.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "parts_explosion"
+  },
+  "explosion_rocket_rainbow": {
+    "fx": "explosion_rocket_rainbow_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 4,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "rocket_explosion"
+  },
+  "explosion_rocket_sparkle": {
+    "fx": "explosion_rocket_sparkle_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 4,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "rocket_explosion"
+  },
+  "explosion_bomb_rainbow": {
+    "fx": "explosion_bomb_rainbow_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 4,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "bomb_explosion"
+  },
+  "muzzle_blue_20mm": {
+    "fx": "muzzle_blue_20mm_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 12
+  },
+  "muzzle_orange_minigun": {
+    "fx": "muzzle_orange_minigun_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 26
+  },
+  "muzzle_pink_gun": {
+    "fx": "muzzle_pink_gun_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 12
+  },
+  "muzzle_rainbow": {
+    "fx": "muzzle_rainbow_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 12
+  },
+  "rocket_tail_rainbow": {
+    "fx": "rocket_tail_rainbow_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 20
+  },
+  "rocket_tail_sparkle": {
+    "fx": "rocket_tail_sparkle_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 4
+  },
+  "jet_exhaust_rainbow": {
+    "fx": "jet_exhaust_rainbow_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 4
+  },
+  "trail_inversion_rainbow": {
+    "fx": "trail_inversion_rainbow_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 4
+  },
+  "explosion_air_selfexplosion_med_pony": {
+    "fx": "explosion_air_selfexplosion_med_cmps_fx",
+    "numInstances": 100,
+    "numReserved": 30,
+    "farPlane": 3000.0,
+    "onePointNumber": 3,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "explosion_aa"
+  },
+  "hit_81_105mm_metal_he_pony": {
+    "fx": "hit_medium_metal_he_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 30,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "impact_aa"
+  },
+  "hit_81_105mm_dirt_he_pony": {
+    "fx": "hit_medium_dirt_he_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 30,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "impact_aa"
+  },
+  "hit_81_105mm_metal_ap_pony": {
+    "fx": "hit_medium_metal_he_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 30,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "impact_aa"
+  },
+  "hit_81_105mm_dirt_ap_pony": {
+    "fx": "hit_medium_dirt_he_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 30,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "impact_aa"
+  },
+  "explosion_air_selfexplosion_small_pony": {
+    "fx": "explosion_air_selfexplosion_small_cmps_fx",
+    "numInstances": 100,
+    "numReserved": 30,
+    "farPlane": 3000.0,
+    "onePointNumber": 3,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "explosion_aa"
+  },
+  "hit_19_27mm_metal_he_pony": {
+    "fx": "hit_tiny_metal_he_cmps_fx",
+    "numInstances": 180,
+    "numReserved": 40,
+    "onePointNumber": 30,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "impact_aa"
+  },
+  "hit_19_27mm_dirt_he_pony": {
+    "fx": "hit_tiny_dirt_he_cmps_fx",
+    "numInstances": 180,
+    "numReserved": 40,
+    "onePointNumber": 30,
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "impact_aa"
   }
 }

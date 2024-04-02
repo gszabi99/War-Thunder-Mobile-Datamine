@@ -15,7 +15,7 @@ return {
 
   scores = {
     ctor = @() mkScores
-    defTransform = mkCTPos([0, 0])
+    defTransform = mkCTPos([0, -hdpx(16)])
     editView = scoreBoardEditView
     hideForDelayed = false
   }

@@ -8,7 +8,7 @@ let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let { touchButtonSize, borderWidth, btnBgColor, getSvgImage, imageColor, imageDisabledColor,
   borderColor, borderColorPushed, borderNoAmmoColor, textColor, textDisabledColor
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapKeys, userHoldWeapInside, isChainedWeapons
+let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside, isChainedWeapons
 } = require("%rGui/hud/currentWeaponsStates.nut")
 let { hasTarget, hasTargetCandidate, groupAttack, targetState, torpedoDistToLive, canZoom, isInZoom, unitType,
   groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir } = require("%rGui/hudState.nut")
@@ -21,7 +21,6 @@ let { nextBulletIdx, currentBulletIdxPrim, currentBulletIdxSec
 let { AB_TORPEDO } = require("actionBar/actionType.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { lowerAircraftCamera } = require("camera_control")
 let { mkBtnGlare, mkActionGlare, mkConsumableSpend, mkActionBtnGlare
 } = require("%rGui/hud/weaponsButtonsAnimations.nut")
@@ -30,6 +29,7 @@ let { TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { set_can_lower_camera } = require("controlsOptions")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkRhombBtnBg, mkRhombBtnBorder, mkAmmoCount } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
+let { mkBtnZone } = require("%rGui/hud/buttons/hudButtonsPkg.nut")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 let zoomImgSize = touchButtonSize
@@ -471,28 +471,7 @@ let mkWaitForAimImage = @(isWaitForAim) {
   transitions = [{ prop = AnimProp.opacity, duration = 0.3, easing = Linear }]
 }
 
-function mkBtnZone(key) {
-  let isVisible = Computed(@() !isGamepad.value && (userHoldWeapKeys.value?[key] ?? false))
-  let isInside = Computed(@() userHoldWeapInside.value?[key] ?? true)
-  return @() !isVisible.value ? { watch = isVisible }
-    : {
-        watch = isVisible
-        size = [2 * zoneRadiusX, 2 * zoneRadiusY]
-        vplace = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        children = @() {
-          watch = isInside
-          size = flex()
-          rendObj = ROBJ_VECTOR_CANVAS
-          color = isInside.value ? 0x20404040 : 0x20602020
-          fillColor = 0
-          lineWidth = hdpx(3)
-          commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
-          animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.5,
-            easing = OutQuad, play = true }]
-        }
-      }
-}
+
 
 let weaponryItemStateFlags = {}
 function getWeapStateFlags(key) {
@@ -651,7 +630,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
       mkRhombBtnBg(isAvailable && !isDisabled.value, actionItem,
         @() playSound(key == TRIGGER_GROUP_PRIMARY ? "weapon_primary_ready" : "weapon_secondary_ready"))
       mkRhombBtnBorder(stateFlags, isAvailable && !isDisabled.value)
-      mkBtnZone(key)
+      mkBtnZone(key, zoneRadiusX, zoneRadiusY)
       @() {
         watch = [canShoot, unitType, isBlocked]
         rendObj = ROBJ_IMAGE
@@ -698,7 +677,7 @@ function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
     children = [
       mkRhombBtnBg(isAvailable, actionItem, @() playSound("weapon_secondary_ready"))
       mkRhombBtnBorder(stateFlags, isAvailable)
-      isGroupInAir.value ? null : mkBtnZone(key)
+      isGroupInAir.value ? null : mkBtnZone(key, zoneRadiusX, zoneRadiusY)
       {
         rendObj = ROBJ_IMAGE
         size = isGroupInAir.value ? [imgSize * 1.15, imgSize * 1.15] : [imgSize, imgSize]

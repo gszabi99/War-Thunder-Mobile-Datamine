@@ -8,7 +8,8 @@ let { get_time_msec } = require("dagor.time")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { get_battle_data_jwt, registerHandler, callHandler, lastProfileKeysUpdated
+let { get_battle_data_jwt, registerHandler, callHandler, lastProfileKeysUpdated,
+  get_battle_data_for_overrided_mission
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pServer/pServerJwt.nut")
 let { register_command } = require("console")
@@ -21,8 +22,10 @@ const SILENT_ACTUALIZE_DELAY = 60
 let battleUnitName = mkWatched(persist, "battleDataUnit", null)
 let needRefresh = mkWatched(persist, "needRefresh", false)
 let lastResult = mkWatched(persist, "lastResult", null)
+let needRefreshOvrMission = mkWatched(persist, "needRefreshOvrMission", false)
+let lastOvrMissionResult = mkWatched(persist, "lastOvrMissionResult", null)
 let hasBattleUnit = Computed(@() battleUnitName.value in servProfile.value?.units)
-let isBattleDataActual = isOfflineMenu ? Computed(@() true)
+let isBattleDataActual = isOfflineMenu ? WatchedRo(true)
   : Computed(@() battleUnitName.value != null
       && "error" not in lastResult.value
       && lastResult.value?.unitName == battleUnitName.value
@@ -35,8 +38,16 @@ let needActualize = Computed(@()
     && battleUnitName.value != null)
 let battleDataError = Computed(@() lastResult.value?.error)
 let lastActTime = Watched(-1)
+let isBattleDataOvrMissionActual = isOfflineMenu ? WatchedRo(true)
+  : Computed(@() "error" not in lastOvrMissionResult.get()
+      && lastOvrMissionResult.get() != null
+      && (!needRefreshOvrMission.get() || shouldDisableMenu))
 
-serverConfigs.subscribe(@(_) needRefresh(true))
+function markNeedRefresh() {
+  needRefresh(true)
+  needRefreshOvrMission(true)
+}
+serverConfigs.subscribe(@(_) markNeedRefresh())
 let profileKeysAffectData = {
   units = true
   items = true
@@ -52,7 +63,7 @@ let profileKeysAffectData = {
 }
 lastProfileKeysUpdated.subscribe(function(list) {
   if (list.findvalue(@(_, k) profileKeysAffectData?[k]) != null)
-    needRefresh(true)
+    markNeedRefresh()
 })
 
 let curUnitName = Computed(@() curUnit.value?.name)
@@ -115,6 +126,29 @@ needActualize.subscribe(function(v) {
     delayedActualize()
 })
 
+function actualizeBattleDataOvrMission(executeAfterExt = null) {
+  if (isBattleDataOvrMissionActual.get()) {
+    callHandler(executeAfterExt, lastOvrMissionResult.get())
+    return
+  }
+  get_battle_data_for_overrided_mission({ id = "onGetMenuBattleDataOvrMission", executeAfterExt })
+}
+
+registerHandler("onGetMenuBattleDataOvrMission", function(res, context) {
+  let { executeAfterExt = null } = context
+  if (res?.error != null) {
+    lastOvrMissionResult(res)
+    callHandler(executeAfterExt, lastResult)
+    return
+  }
+
+  let result = isOfflineMenu ? {} : decodeJwtAndHandleErrors(res)
+  lastOvrMissionResult(result)
+  callHandler(executeAfterExt, result)
+  if ("error" not in result)
+    needRefreshOvrMission(false)
+})
+
 if (shouldDisableMenu) {
   let jwt = get_arg_value_by_name("battleDataJwt")
   if (type(jwt) == "string") {
@@ -137,6 +171,13 @@ registerHandler("saveMenuBattleDataToJwt", function(result) {
     saveJwtResultToJson(result.jwt, result.payload, "wtmBattleData")
 })
 
+registerHandler("saveMenuBattleDataOvrMissionToJwt", function(result) {
+  if ("error" in result)
+    console_print(result)
+  else
+    saveJwtResultToJson(result.jwt, result.payload, "wtmBattleDataOvrMission")
+})
+
 register_command(function() {
   let unitName = curUnit.value?.name ?? battleUnitName.value
   if (unitName == null)
@@ -145,6 +186,12 @@ register_command(function() {
   actualizeBattleData(unitName, "saveMenuBattleDataToJwt")
   return console_print($"Request battle data for unit {unitName}")
 }, "meta.debugCurBattleData")
+
+register_command(function() {
+  needRefreshOvrMission(true)
+  actualizeBattleDataOvrMission("saveMenuBattleDataOvrMissionToJwt")
+  return console_print($"Request battle data for mission with override")
+}, "meta.debugCurBattleDataOvrMission")
 
 register_command(function() {
   if (lastResult.value?.payload == null)
@@ -161,4 +208,8 @@ return {
   isBattleDataActual
   battleDataError
   actualizeBattleData
+
+  battleDataOvrMission = Computed(@() lastOvrMissionResult.get())
+  isBattleDataOvrMissionActual
+  actualizeBattleDataOvrMission
 }

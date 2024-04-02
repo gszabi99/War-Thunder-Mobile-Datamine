@@ -1,0 +1,487 @@
+{
+  "tpsCameraOffset": [
+    4.8,
+    0.0,
+    0.0
+  ],
+  "useTouchShooting": true,
+  "fmFile": "fm/pony_light_fighter.blk",
+  "ikPilotMaxUpdateDistance": 1500.0,
+  "ikPilotMaxRenderDistance": 1500.0,
+  "model": "ponyplane",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/pony_metaparts.blk",
+  "gearSinkRangeLR": 0.107,
+  "gearSinkRangeC": 0.0,
+  "type": "typeFighter",
+  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "fireParamsPreset": "500kph",
+  "fightAiBehaviour": "fighter",
+  "planeTraceFx": "trail_inversion_rainbow",
+  "spawn_count": {
+    "numSpawnsPerBattleSimulation": 1,
+    "numSpawnsPerBattleArcade": 3,
+    "numSpawnsPerBattleHistorical": 1
+  },
+  "DamageParts": {
+    "armor10": {
+      "gun1_dm": {
+        "hp": 300.0,
+        "genericDamageMult": 1.7,
+        "explosionDamageMult": 6.0
+      },
+      "gun2_dm": {
+        "hp": 300.0,
+        "genericDamageMult": 1.7,
+        "explosionDamageMult": 6.0
+      },
+      "gun3_dm": {
+        "hp": 300.0,
+        "genericDamageMult": 1.7,
+        "explosionDamageMult": 6.0
+      },
+      "gun4_dm": {
+        "hp": 300.0,
+        "genericDamageMult": 1.7,
+        "explosionDamageMult": 6.0
+      }
+    },
+    "armor12_7": {
+      "armor1_dm": {
+        "hp": 300.0
+      }
+    },
+    "armor_engine": {
+      "engine1_dm": {
+        "genericDamageMult": 50.0,
+        "hp": 2000.5
+      }
+    },
+    "c_dural3": {
+      "flap_l_dm": {
+        "hp": 300.0
+      },
+      "flap_r_dm": {
+        "hp": 300.0
+      }
+    },
+    "c_dural7": {
+      "fuse_dm": {
+        "hp": 300.0,
+        "genericDamageMult": 1.7,
+        "explosionDamageMult": 6.0
+      },
+      "wing_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 300.0
+      },
+      "wing_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 300.0
+      }
+    },
+    "steel_tank_s": {
+      "tank1_dm": {
+        "hp": 7000.5
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": [
+      {
+        "name": "armor1_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "gun1_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "gun2_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "gun3_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "gun4_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "engine1_dm"
+      },
+      {
+        "name": "flap_l_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "flap_r_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "fuse_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "tank1_dm"
+      },
+      {
+        "name": "wing_l_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "wing_r_dm",
+        "onHit": {
+          "flame": 0.5,
+          "smoke": 0.5
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    ]
+  },
+  "ikPilot": {
+    "model": "pony_char",
+    "maxHeadHorAngle": 60.0,
+    "maxHeadDownAngle": 60.0,
+    "maxHeadUpAngle": 10.0,
+    "headNode": "Bip001 Head",
+    "pelvisNode": "Bip001 Pelvis",
+    "pelvisTargetNode": "Bip001 Pelvis01",
+    "isIdleAnimated": true,
+    "ikNode": [
+      {
+        "downNode": "Bip001 L Hand",
+        "midNode": "Bip001 L Forearm",
+        "upNode": "Bip001 L UpperArm",
+        "targetNode": "throttle_lhand_1",
+        "flexionDir": [
+          0.0,
+          -1.0,
+          0.2
+        ],
+        "type": "leftHand",
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          -90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
+        ]
+      },
+      {
+        "downNode": "Bip001 R Hand",
+        "midNode": "Bip001 R Forearm",
+        "upNode": "Bip001 R UpperArm",
+        "targetNode": "stick_rhand_1",
+        "flexionDir": [
+          0.0,
+          -1.0,
+          -0.5
+        ],
+        "type": "rightHand",
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
+        ]
+      },
+      {
+        "downNode": "Bip001 L Foot",
+        "midNode": "Bip001 L Calf",
+        "upNode": "Bip001 L Thigh",
+        "targetNode": "pedal_lfoot_1",
+        "flexionDir": [
+          0.0,
+          1.0,
+          0.3
+        ]
+      },
+      {
+        "downNode": "Bip001 R Foot",
+        "midNode": "Bip001 R Calf",
+        "upNode": "Bip001 R Thigh",
+        "targetNode": "pedal_rfoot_1",
+        "flexionDir": [
+          0.0,
+          1.0,
+          -0.3
+        ]
+      }
+    ]
+  },
+  "attach": {
+    "pilot1": "pilot_us_500"
+  },
+  "Sound": {
+    "Engine": "engine_pony",
+    "gun": "gun_default"
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/pony_gun_12_7mm.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "dm": "gun1_dm",
+        "bullets": 500,
+        "spread": 1.05,
+        "counterIndex": 1
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/pony_gun_12_7mm.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "gun2_dm",
+        "bullets": 500,
+        "spread": 1.05,
+        "counterIndex": 1
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/pony_gun_12_7mm.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "dm": "gun3_dm",
+        "bullets": 500,
+        "spread": 1.05,
+        "counterIndex": 1
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/pony_gun_12_7mm.blk",
+        "emitter": "flare4",
+        "flash": "flare4",
+        "dm": "gun4_dm",
+        "bullets": 500,
+        "spread": 1.05,
+        "counterIndex": 1
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "pony_light_fighter_default",
+      "blk": "gameData/FlightModels/weaponPresets/pony_default.blk"
+    }
+  },
+  "jetwash": {
+    "radius": 10.0,
+    "minDist": 50.0,
+    "timeToLive": 45.0,
+    "maxPower": 6.0,
+    "maxSegments": 50
+  },
+  "turbulence": {
+    "segmentlength": 100.0,
+    "startSpeed": 28.0,
+    "maxSpeed": 140.0,
+    "maxPower": 6.0,
+    "initialRadius": 12.0,
+    "radiusSpeed": 2.0
+  },
+  "fireParams": {
+    "engineExtinguishFireSpeed": [
+      82.0,
+      166.0
+    ],
+    "engineExtinguishFireSpeedChance": [
+      0.01,
+      0.1
+    ],
+    "fireDamagePowerRel": 0.05,
+    "nonExtinguishFireTime": 5.0
+  },
+  "balanceData": {
+    "accSpd": 7.41671,
+    "climbSpeed": 37.0,
+    "maxSpeed": 265.27,
+    "turnTime": 21.0
+  },
+  "modifications": {
+    "horsepower": {
+      "effects": {
+        "gForceTolerationMult": 0.05
+      }
+    }
+  },
+  "enabled_modifications": {
+    "horsepower": true
+  },
+  "cutting": {
+    "_emtr_break_wing0_l_from": [
+      -0.915663,
+      -0.284047,
+      0.690654
+    ],
+    "_emtr_break_wing0_l_to": [
+      -0.915663,
+      -0.284047,
+      1.18653
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.915663,
+      -0.284047,
+      1.93034
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.915663,
+      -0.284047,
+      2.31915
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.915663,
+      -0.284047,
+      2.90236
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.915663,
+      -0.284047,
+      3.86189
+    ],
+    "_emtr_break_wing0_r_from": [
+      -0.915663,
+      -0.284047,
+      -0.690654
+    ],
+    "_emtr_break_wing0_r_to": [
+      -0.915663,
+      -0.284047,
+      -1.18653
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.915663,
+      -0.284047,
+      -1.93034
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.915663,
+      -0.284047,
+      -2.31915
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.915663,
+      -0.284047,
+      -2.90236
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.915663,
+      -0.284047,
+      -3.86189
+    ],
+    "emtr_break_wing_tail": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        -4.49752,
+        0.0,
+        0.0
+      ]
+    ],
+    "partKindTail": 2
+  },
+  "effects": {
+    "waterExplosionEffect": "explosion_pony_orange",
+    "landExplosionEffect": "explosion_pony_orange",
+    "landCrashShortFireEffect": "explosion_pony_orange",
+    "landCrashFireEffect": "explosion_pony_orange",
+    "explosionEffect": "explosion_pony_orange",
+    "explosionPiecesEffect": "explosion_pony_pieces"
+  },
+  "engineFx": {
+    "exhaust": {
+      "standard": "jet_exhaust_rainbow",
+      "afterburner": "jet_exhaust_rainbow",
+      "start": "",
+      "trail": "",
+      "haze": ""
+    }
+  }
+}

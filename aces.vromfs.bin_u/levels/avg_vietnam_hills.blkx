@@ -52,6 +52,7 @@
   "lastclip_horizon": true,
   "rendinstPreloadDistance": 8500.0,
   "clipmap_tex_mips": 5,
+  "rendinstMaxHeight": 2000.0,
   "mapCoord0": [
     -16384.0,
     -16384.0

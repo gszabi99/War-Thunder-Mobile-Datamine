@@ -38,11 +38,19 @@ let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
 let debriefingTabBar = require("debriefingTabBar.nut")
 let mkDebriefingEmpty = require("mkDebriefingEmpty.nut")
 let boostersListActive = require("%rGui/boosters/boostersListActive.nut")
+let { openEventWnd, specialEvents } = require("%rGui/event/eventState.nut")
+let { getUnitTags } = require("%appGlobals/unitTags.nut")
 
 local isAttached = false
 
 let closeDebriefing = @() eventbus_send("Debriefing_CloseInDagui", {})
 let startBattle = @(modeId) eventbus_send("queueToGameMode", { modeId })
+let function openSpecialEvent() {
+  let eventName = allGameModes.get().findvalue(@(m) m.name == debriefingData.get()?.roomInfo.game_mode_name)?.tag
+  let eventId = specialEvents.get().findindex(@(e) e.eventName == eventName)
+  if (eventId)
+    openEventWnd(eventId)
+}
 
 const SAVE_ID_UPGRADE_BUTTON_PUSHED = "debriefingUpgradeButtonPushed"
 let countUpgradeButtonPushed = Watched(get_local_custom_settings_blk()?[SAVE_ID_UPGRADE_BUTTON_PUSHED] ?? 0)
@@ -87,6 +95,7 @@ let mkBtnToHangar = @(needShow, campaign) mkBtnAppearAnim(false, needShow, textB
     if (needRateGame.get())
       requestShowRateGame()
     closeDebriefing()
+    openSpecialEvent()
   },
   { hotkeys = [btnBEscUp] }))
 
@@ -248,7 +257,8 @@ function debriefingWnd() {
     isDebriefingAnimFinished.set(debrAnimTime <= 0)
     if (debrAnimTime > 0)
       resetTimeout(debrAnimTime, stopDebriefingAnimation)
-    updateHangarUnit(reward?.unitName)
+    if (reward?.unitName != null && !getUnitTags(reward?.unitName)?.hide_in_hangar)
+      updateHangarUnit(reward.unitName)
     playSound(isWon ? "stats_winner_start" : "stats_looser_start")
     sendNewbieBqEvent("openDebriefing", { status = isWon ? "win" : "loose" })
   }

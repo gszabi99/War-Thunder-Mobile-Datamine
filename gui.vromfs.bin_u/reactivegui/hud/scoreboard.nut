@@ -8,8 +8,9 @@ let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 
-
+let secondsPerHour = 3600
 let barRatio = 56.0 / 19
 const SCORE_PLATES_TEAM_COUNT = 5
 
@@ -19,7 +20,7 @@ let scoreBarPadding = (0.15 * scoreBarPlateHeight).tointeger()
 let scoreBarGap = (-0.4 * scoreBarPlateHeight).tointeger()
 let scoreBarWidth = scoreBarGap * (SCORE_PLATES_TEAM_COUNT - 1) + SCORE_PLATES_TEAM_COUNT * scoreBarPlateWidth + 4 * scoreBarPadding
 let scoreBarHeight = scoreBarPlateHeight + 2 * scoreBarPadding
-let timerBgWidth   = (0.55 * scoreBarWidth).tointeger()
+let timerBgWidth   = (0.65 * scoreBarWidth).tointeger()
 let timerBgHeight  = (57.0 / 131 * timerBgWidth).tointeger()
 let localTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamB.value : ticketsTeamA.value)
 let enemyTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamA.value : ticketsTeamB.value)
@@ -128,7 +129,9 @@ function scoreBoard() {
         children = @() {
           watch = timeLeft
           rendObj = ROBJ_TEXT
-          text = secondsToTimeSimpleString(timeLeft.value)
+          text = timeLeft.get() >= secondsPerHour
+            ? secondsToHoursLoc(timeLeft.get())
+            : secondsToTimeSimpleString(timeLeft.get())
         }.__update(fontTiny)
       }
       barCtor("enemyTeam")

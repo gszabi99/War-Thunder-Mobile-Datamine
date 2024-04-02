@@ -21,9 +21,25 @@ foreach (idx, id in bitsOrder) {
   ALL_UNIT_TYPE_MASK = ALL_UNIT_TYPE_MASK | bit
 }
 
+function calcUnitTypeFromTags(tagsCfg) {
+  let { tags = null } = tagsCfg
+  if ("submarine" in tags)
+    return unitTypes.SUBMARINE
+  if ("boat" in tags)
+    return unitTypes.BOAT
+  if ("ship" in tags)
+    return unitTypes.SHIP
+  if ("tank" in tags)
+    return unitTypes.TANK
+  if (tags?.type == "aircraft")
+    return unitTypes.AIR
+  return tags?.type ?? unitTypes.AIR
+}
+
 return freeze(unitTypes.__merge(bits, {
   ALL_UNIT_TYPE_MASK
+  unitTypeOrder = [unitTypes.SHIP, unitTypes.BOAT, unitTypes.SUBMARINE, unitTypes.AIR, unitTypes.HELICOPTER, unitTypes.TANK]
   unitTypeToBit = @(ut) unitTypeToBitTbl?[ut] ?? 0
   bitToUnitType = @(bit) bitToUnitTypeTbl?[bit] ?? ""
-  unitTypeOrder = [unitTypes.SHIP, unitTypes.BOAT, unitTypes.SUBMARINE, unitTypes.AIR, unitTypes.HELICOPTER, unitTypes.TANK]
+  calcUnitTypeFromTags
 }))

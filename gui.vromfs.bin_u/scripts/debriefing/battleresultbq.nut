@@ -24,6 +24,8 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curQueue } = require("%appGlobals/queueState.nut")
 let { clusterStats } = require("%scripts/matching/optimalClusters.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { get_game_version_str } = require("app")
+let { isInSquad } = require("%appGlobals/squadState.nut")
 
 let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
 let OPT_FPS = addLocalUserOption("OPT_FPS")
@@ -74,6 +76,11 @@ function activatePingMeasurement(isActivate, needReset) {
 }
 
 local batteryOnBattleStart = 0
+local wasInSquadLastBattle = false
+
+function setSquadStatusInLastBattle() {
+  wasInSquadLastBattle = isInSquad.get()
+}
 
 function startBatteryChargeDrainGather() {
   batteryOnBattleStart = get_battery()
@@ -83,6 +90,7 @@ isInBattle.subscribe(function(v) {
   activatePingMeasurement(v, v)
   if (v) {
     startBatteryChargeDrainGather()
+    setSquadStatusInLastBattle()
     reset_emulator_counters()
   }
 })
@@ -137,6 +145,8 @@ function onFrameTimes(evt, _eid, _comp) {
     pingMin
     pingMax
     pingMedian = round(median((clone pingSamples).sort()) ?? -1).tointeger()
+    gameVersion = get_game_version_str()
+    isSquad = wasInSquadLastBattle
   })
 
   sendCustomBqEvent("session_fps", data)

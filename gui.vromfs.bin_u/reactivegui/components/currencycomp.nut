@@ -18,6 +18,7 @@ let iconsCoef = {
   warbond = 1.4
   eventKey = 1.2
   nybond = 1.4
+  aprilbond = 1.4
   ircm_kit = 1.4
 }
 let maxIconsCoef = iconsCoef.reduce(@(a, b) max(a, b))
@@ -34,6 +35,7 @@ let icons = {
   warbond = "ui/gameuiskin#warbond_icon.avif"
   eventKey = "ui/gameuiskin#key_icon.avif"
   nybond = "ui/gameuiskin#warbond_christmas_icon.avif"
+  aprilbond = "ui/gameuiskin#warbond_icon_april.avif"
   // Consumables
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
@@ -78,7 +80,7 @@ function mkCurrencyImage (id, size, ovr = {}){
 
 let function currencyFormat(v){
   if(type(v) == "integer"){
-    if(v > 1000000)
+    if(v > 100000000)
       return shortTextFromNum(v)
     else
       return decimalFormat(v)
@@ -146,7 +148,8 @@ function strikeThrough(content, style = CS_COMMON) {
 }
 
 function mkDiscountPriceComp(fullValue, value, currencyId, style = CS_COMMON) {
-  let price = value > 0
+  let isFree = value == "0" || value == 0
+  let price = !isFree
     ? mkCurrencyComp(value, currencyId, style)
     : mkFreeText(style)
   if (fullValue == value)
@@ -157,7 +160,7 @@ function mkDiscountPriceComp(fullValue, value, currencyId, style = CS_COMMON) {
     valign = ALIGN_CENTER
     gap = style.discountPriceGap
     children = [
-      value > 0
+      !isFree
         ? strikeThrough(mkCurrencyComp(fullValue, currencyId, oldPriceStyle), style)
         : null
       price

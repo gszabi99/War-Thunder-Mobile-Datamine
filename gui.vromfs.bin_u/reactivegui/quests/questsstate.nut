@@ -21,9 +21,11 @@ let SEEN_QUESTS = "seenQuests"
 let COMMON_TAB = "common"
 let EVENT_TAB = MAIN_EVENT_ID
 let PROMO_TAB = "promo"
-let MINI_EVENT_TAB = "miniEvent"
+let MINI_EVENT_TAB = "mini_event"
 let ACHIEVEMENTS_TAB = "achievements"
 let SPECIAL_EVENT_1_TAB = getSpecialEventName(1)
+let DAILY_SECTION = "daily_quest"
+let WEEKLY_SECTION = "weekly_quest"
 
 let SPEED_UP_AD_COST = 1
 
@@ -37,7 +39,7 @@ let curTabParams = Watched({})
 let openRewardsList = @(rewards) rewardsList(rewards)
 let closeRewardsList = @() rewardsList(null)
 
-let mkEventSectionName = @(day) "".concat(EVENT_PREFIX, day)
+let mkEventSectionName = @(day, eventName) "".concat(eventName, "_", EVENT_PREFIX, day)
 
 let inactiveEventUnlocks = Computed(@() allUnlocksRaw.value
   .filter(@(u) u?.meta.event_day != null && !(unlockTables.value?[u?.table] ?? false))
@@ -47,59 +49,65 @@ let eventUnlocksByDays = Computed(function() {
   let days = {}
   let unlocks = {}.__merge(activeUnlocks.value, inactiveEventUnlocks.value)
   foreach (name, u in unlocks) {
-    let day = u?.meta.event_day
-    if (u?.meta.event_quest && day != null)
-      days[day] <- (days?[day] ?? {}).__update({ [name] = u })
+    let { event_day = null, event_id = null } = u?.meta
+    if (!event_id || !event_day)
+      continue
+    if (event_id not in days)
+      days[event_id] <- {}
+    days[event_id][event_day] <- (days[event_id]?[event_day] ?? {}).__update({ [name] = u })
   }
   return days
 })
 
 let eventDays = Computed(function(prev) {
-  let res = eventUnlocksByDays.value.keys()
-    .sort(@(a, b) a.tointeger() <=> b.tointeger())
+  let res = {}
+  foreach (key, event in eventUnlocksByDays.get())
+    res[key] <- event.keys().sort(@(a, b) a.tointeger() <=> b.tointeger())
   return isEqual(prev, res) ? prev : res
 })
 
-let eventSections = Computed(@() eventDays.value.map(@(v) {
-  name = mkEventSectionName(v)
-  idx = v
-}))
+let eventSections = Computed(function() {
+  let res = {}
+  foreach (eventName, days in eventDays.get())
+    res[eventName] <- days.map(@(v) {
+      name = mkEventSectionName(v, eventName)
+      idx = v
+    })
+  return res
+})
 
 let questsCfg = Computed(@() {
-  [COMMON_TAB] = ["daily_quest", "weekly_quest"],
+  [COMMON_TAB] = [DAILY_SECTION, WEEKLY_SECTION],
   [PROMO_TAB] = ["promo_quest"],
-  [EVENT_TAB] = eventSections.value.map(@(v) v.name),
-  [MINI_EVENT_TAB] = ["mini_event"],
+  [EVENT_TAB] = eventSections.get()?[EVENT_TAB].map(@(v) v.name) ?? [EVENT_TAB],
+  [MINI_EVENT_TAB] = eventSections.get()?[MINI_EVENT_TAB].map(@(v) v.name) ?? [MINI_EVENT_TAB],
   [ACHIEVEMENTS_TAB] = ["achievement"],
 }.__merge(specialEvents.value.reduce(@(res, v)
-  res.__update({ [v.eventId] = [v.eventName] }), {})))
+    res.__update({ [v.eventId] = eventSections.get()?[v.eventName].map(@(q) q.name) ?? [v.eventName] }), {})))
 
-let sectionsCfg = Computed(@() {
-  daily_quest = {
-    text = loc("userlog/battletask/type/daily")
-    timerId = "daily"
+let sectionsCfg = Computed(function() {
+  let res = {
+    [DAILY_SECTION] = loc("userlog/battletask/type/daily"),
+    [WEEKLY_SECTION] = loc("quests/weekly")
   }
-  weekly_quest = {
-    text = loc("quests/weekly")
-    timerId = "weekly"
-  }
-}.__update(eventSections.value.reduce(function(res, v) {
-  res[v.name] <- {
-    text = loc("enumerated_day", { number = v.idx }),
-    timerId = v.name
-  }
+  foreach (cfg in eventSections.get())
+    res.__update(cfg.reduce(function(acc, v) {
+      acc[v.name] <- loc("enumerated_day", { number = v.idx })
+      return acc
+    }, {}))
   return res
-}, {})))
+})
 
 let questsBySection = Computed(function() {
   let res = {}
-  foreach (sections in questsCfg.value)
+  foreach (sections in questsCfg.get())
     foreach (section in sections)
       res[section] <- activeUnlocks.value.filter(@(u) section in u?.meta || u?.meta.event_id == section) ?? {}
-  res.__update(eventUnlocksByDays.value.reduce(function(acc, v, key) {
-    acc[mkEventSectionName(key)] <- v
-    return acc
-  }, {}))
+  foreach (eventName, unlocks in eventUnlocksByDays.get())
+    res.__update(unlocks.reduce(function(acc, v, key) {
+      acc[mkEventSectionName(key, eventName)] <- v
+      return acc
+    }, {}))
   return res
 })
 
@@ -108,8 +116,8 @@ let progressUnlockByTab = Computed(@() {
 })
 
 let progressUnlockBySection = Computed(@() {
-  daily_quest = activeUnlocks.get().findvalue(@(unlock) "daily_progress" in unlock?.meta)
-  weekly_quest = activeUnlocks.get().findvalue(@(unlock) "weekly_progress" in unlock?.meta)
+  [DAILY_SECTION] = activeUnlocks.get().findvalue(@(unlock) "daily_progress" in unlock?.meta),
+  [WEEKLY_SECTION] = activeUnlocks.get().findvalue(@(unlock) "weekly_progress" in unlock?.meta)
 })
 
 function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
@@ -234,7 +242,6 @@ return {
 
   questsCfg
   sectionsCfg
-  eventUnlocksByDays
   inactiveEventUnlocks
   progressUnlockByTab
   progressUnlockBySection

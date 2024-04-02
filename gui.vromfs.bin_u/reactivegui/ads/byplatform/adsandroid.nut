@@ -186,7 +186,7 @@ function onTryShowNotAvailableAds() {
 }
 
 return {
-  isAdsAvailable = Computed(@() true)
+  isAdsAvailable = WatchedRo(true)
   isAdsVisible
   canShowAds = isLoaded
   showAdsForReward

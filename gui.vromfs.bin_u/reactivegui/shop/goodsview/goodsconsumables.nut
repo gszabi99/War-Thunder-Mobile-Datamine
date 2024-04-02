@@ -3,7 +3,7 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkColoredGradientY, mkFontGradient,
   gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, txt,borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
+let { mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
   mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
@@ -35,32 +35,57 @@ let bgHiglight = {
   color = 0x3F3F3F
 }
 
-let mkImg = @(itemId) {
-  size = [ imgSize, imgSize ]
-  pos = [ 0, -hdpx(91) ]
+let itemImageOptionsStack = [
+  [{ size = [imgSize, imgSize], pos = [0, -hdpx(91)] }],
+  [
+    { size = [hdpx(400), hdpx(400)], pos = [hdpx(100), -hdpx(35)] }
+    { size = [hdpx(400), hdpx(400)], pos = [0, -hdpx(15)] }
+  ],
+  [
+    { size = [hdpx(350), hdpx(350)], pos = [hdpx(250), hdpx(10)] }
+    { size = [hdpx(350), hdpx(350)], pos = [hdpx(0), hdpx(10)] }
+    { size = [hdpx(350), hdpx(350)], pos = [hdpx(100), -hdpx(35)] }
+  ]
+]
+
+let mkImg = @(id, size, pos) {
+  size
+  pos
   rendObj = ROBJ_IMAGE
-  image = Picture(icons?[itemId] ?? "")
-  keepAspect = KEEP_ASPECT_FIT
+  image = Picture(icons?[id] ?? "")
+  keepAspect = true
+}
+
+let mkImgs = @(ids, imageOptions) {
+  size = flex()
+  children = imageOptions.map(@(cfg, idx) idx not in ids ? null : mkImg(ids[idx], cfg.size, cfg.pos))
 }
 
 function getConsumablesInfo(goods) {
   let { items } = goods
-  let itemId = orderByItems.findindex(@(_, id) items?[id] != null)  ?? items.findindex(@(_) true) ?? ""
-  let amount = items?[itemId] ?? 0
-  return { itemId, amount }
+  let data = []
+
+  foreach (id, count in items) {
+    data.append({ id, amount = count })
+  }
+
+  return data.sort(@(a, b) orderByItems[a.id] <=> orderByItems[b.id])
 }
 
 function getLocNameConsumables(goods) {
-  let { itemId, amount } = getConsumablesInfo(goods)
-  return itemId != ""
-    ? loc($"consumable/amount/{itemId}", { amountTxt = decimalFormat(amount), amount })
-    : goods.id
+  let data = getConsumablesInfo(goods)
+  let amount = data?[0].amount ?? 0
+
+  return data.len() != 1
+    ? loc($"goods/{goods.id}")
+    : loc($"consumable/amount/{data[0].id}", { amountTxt = decimalFormat(amount), amount })
 }
 
 function mkGoodsConsumables(goods, onClick, state, animParams) {
-  let { itemId, amount } = getConsumablesInfo(goods)
+  let data = getConsumablesInfo(goods)
   let { viewBaseValue = 0, isShowDebugOnly = false } = goods
-  let nameConsumable =  loc($"item/{itemId}")
+  let nameConsumable = data.len() != 1 ? loc($"goods/{goods.id}") : loc($"item/{data[0].id}")
+
   return mkGoodsWrap(
     goods,
     onClick,
@@ -70,13 +95,11 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
       mkBgParticles([goodsSmallSize[0], goodsBgH])
       borderBg
       sf & S_HOVER ? bgHiglight : null
-      mkImg(itemId)
+      mkImgs(data.map(@(item) item.id), itemImageOptionsStack?[data.len() - 1] ?? itemImageOptionsStack.top())
       slotNameBG.__merge({
         size = [hdpx(270), viewBaseValue > 0 ? hdpx(175) : hdpx(135)]
         padding = [hdpx(20), 0]
-        children = amount > 0
-          ? mkCurrencyAmountTitle(amount, viewBaseValue, titleFontGrad, nameConsumable)
-          : txt({ hplace = ALIGN_RIGHT, text = goods.id, margin = [ hdpx(25), hdpx(35), 0, 0 ] })
+        children = mkCurrencyAmountTitle(data.map(@(item) item.amount), viewBaseValue, titleFontGrad, nameConsumable)
       })
       mkGoodsLimit(goods)
     ].extend(mkGoodsCommonParts(goods, state)),

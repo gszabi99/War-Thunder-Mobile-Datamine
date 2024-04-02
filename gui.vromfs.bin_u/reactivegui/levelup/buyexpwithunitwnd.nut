@@ -21,7 +21,7 @@ let { buy_player_level, buy_unit, registerHandler, levelInProgress
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { set_camera_shift_upper } = require("hangar")
-let { applyDiscount } = require("%rGui/unit/unitUtils.nut")
+let { applyDiscount, getShortPrice } = require("%rGui/unit/unitUtils.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_SMALL_INCREASED_ICON } = currencyStyles
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -261,7 +261,7 @@ registerHandler("onLvlPurchase",
 function mkPriceComp(unit, lvlCost) {
   if (unit?.isUpgraded)
     return mkCurrencyComp(unit.upgradeCostGold + lvlCost, GOLD)
-  let wpPrice = applyDiscount(unit.costWp, unit.levelUpDiscount)
+  let wpPrice = getShortPrice(applyDiscount(unit.costWp, unit.levelUpDiscount))
   return wpPrice
     ? [mkCurrencyComp(wpPrice, WP), mkCurrencyComp(lvlCost, GOLD)]
     : mkCurrencyComp(lvlCost, GOLD)

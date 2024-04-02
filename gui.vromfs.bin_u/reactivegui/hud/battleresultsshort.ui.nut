@@ -130,7 +130,7 @@ let resultTextBlock = @() {
   transitions = [{ prop = AnimProp.borderColor, duration = borderColorTransitionDuration}]
 }
 
-let mkUserScores = @(valueCtor, locId) {
+let mkUserScores = @(valueComp, locId) {
   size = [saSize[0], SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -147,7 +147,7 @@ let mkUserScores = @(valueCtor, locId) {
       size = [SIZE_TO_CONTENT, playerPlaceIconSize]
       halign = ALIGN_LEFT
       valign = ALIGN_CENTER
-      children = valueCtor
+      children = valueComp
       transform = {}
       animations = [
         { prop = AnimProp.scale, to = [1.25, 1.25], duration = placeIconDuration / 2,
@@ -179,15 +179,18 @@ let achievements = function(streaks) {
 let achievementsBlock = @() {
   watch = [debriefingData]
   children = 0 < (debriefingData.value?.streaks.len() ?? 0)
-    ? mkUserScores(achievements(debriefingData.value?.streaks), loc("debriefing/Unlocks"))
+    ? mkUserScores(achievements(debriefingData.value?.streaks), "debriefing/Unlocks")
     : null
 }
 
 function battleResultsShort() {
   let res = { watch = needShowResultScreen }
+  if (!needShowResultScreen.value)
+    return res
+
   let children = !isPlaceVisible.value ? []
-                 : [ mkUserScores(mkPlaceIcon(myPlace.value), loc("debriefing/placeInMyTeam")) ]
-                   .extend(scoresByCampaign?[battleCampaign.value]
+                 : [ mkUserScores(mkPlaceIcon(myPlace.value), "debriefing/placeInMyTeam") ]
+                   .extend((scoresByCampaign?[battleCampaign.value] ?? [])
                      .map(function(v) {
                        let mul = viewMuls?[v.name] ?? 1.0
                        let score = localPlayerDamageStats.value?[v.name] ?? get_local_mplayer()?[v.name] ?? 0
@@ -195,26 +198,25 @@ function battleResultsShort() {
                      }))
   children.append(achievementsBlock)
 
-  if (needShowResultScreen.value)
-    res.__update({
-      rendObj = ROBJ_SOLID
-      color = 0xAA000000
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      flow = FLOW_VERTICAL
-      gap
-      children = [
-        resultsHintsBlock
-        resultTextBlock
-        @() {
-          watch = [battleCampaign, isPlaceVisible, localPlayerDamageStats, myPlace]
-          flow = FLOW_VERTICAL
-          gap
-          children
-        }
-      ]
-    })
+  res.__update({
+    rendObj = ROBJ_SOLID
+    color = 0xAA000000
+    size = flex()
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    gap
+    children = [
+      resultsHintsBlock
+      resultTextBlock
+      @() {
+        watch = [battleCampaign, isPlaceVisible, localPlayerDamageStats, myPlace]
+        flow = FLOW_VERTICAL
+        gap
+        children
+      }
+    ]
+  })
 
   return res
 }

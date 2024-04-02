@@ -235,6 +235,11 @@
           }
         }
       }
+    },
+    "horsepower": {
+      "effects": {
+        "gForceTolerationMult": 2.9
+      }
     }
   }
 }

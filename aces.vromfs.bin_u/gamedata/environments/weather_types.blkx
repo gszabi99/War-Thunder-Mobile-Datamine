@@ -17,6 +17,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "adaptMinMul": 1.1,
     "clouds_weather_gen": {
       "layers[0].coverage": [
@@ -242,6 +243,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.22,
@@ -494,6 +496,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.2,
@@ -791,6 +794,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.4,
@@ -1072,6 +1076,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.3,
@@ -1323,6 +1328,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.3,
@@ -1577,6 +1583,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "wetnessPower": [
       0.5,
       0.7
@@ -1834,6 +1841,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.9,
@@ -2065,6 +2073,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "wetnessPower": [
       0.7,
       0.9
@@ -2331,6 +2340,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "wetnessPower": 1.0,
     "clouds_weather_gen": {
       "layers[0].coverage": [
@@ -2571,6 +2581,7 @@
     "cloudAircraftReflectMul": 4.0,
     "cloudAircraftReflectPowerMul": 0.5,
     "clouds_fly_cube_tex": "cloud_fly_cube",
+    "enableCloudsHole": false,
     "wetnessPower": 1.0,
     "clouds_weather_gen": {
       "layers[0].coverage": [
@@ -2794,6 +2805,7 @@
     "cloud_shadow_intensity": 0.0,
     "wind_strength": 4.0,
     "waterWindStrength": 2.0,
+    "enableCloudsHole": false,
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.36,
@@ -3050,6 +3062,7 @@
     "cloud_shadow_intensity": 0.0,
     "wind_strength": 4.0,
     "waterWindStrength": 2.0,
+    "enableCloudsHole": false,
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.36,

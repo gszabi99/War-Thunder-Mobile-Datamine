@@ -1,56 +1,38 @@
 from "%globalsDarg/darg_library.nut" import *
-let { AirThrottleMode } = require("%globalScripts/sharedEnums.nut")
+let { register_command } = require("console")
+let { AirThrottleMode, AirParamsMain } = require("%globalScripts/sharedEnums.nut")
 let interopGen = require("%rGui/interopGen.nut")
 let { registerInteropFunc } = require("%globalsDarg/interop.nut")
+let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO } = AirParamsMain
 
-const NUM_ENGINES_MAX = 6
-const NUM_CANNONS_MAX = 3
+let MainMask         = Watched(0)
+let Trt0             = Watched(0)
+let TrtMode0         = Watched(0)
+let Cannon0          = Watched({ count = 0, time = -1, endTime = -1 })
+let MGun0            = Watched({ count = 0, time = -1, endTime = -1 }) // -duplicate-assigned-expr
 
-let Trt = []
-let TrtMode = []
-
-let CannonState = []
-for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  CannonState.append(Watched({ count = 0, time = -1, endTime = -1 }))
-}
-
-let MachineGunState = []
-for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  MachineGunState.append(Watched({ count = 0, time = -1, endTime = -1 }))
-}
-
-let BombsState = Watched({
-  count = 0, time = -1, endTime = 1 })
-let RocketsState = Watched({    // -duplicate-assigned-expr
-  count = 0, time = -1, endTime = 1 })
-let TorpedoesState = Watched({  // -duplicate-assigned-expr
-  count = 0, time = -1, endTime = 1 })
+let BombsState       = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
+let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
+let TorpedoesState   = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
 
 
 let airState = {
-  TrtMode,
-  Trt,
-  MainMask = Watched(0),
+  TrtMode0
+  Trt0
+  IsTrtWep0 = Computed(@() TrtMode0.get() == AirThrottleMode.AIRCRAFT_WEP)
+  MainMask
+  Cannon0
+  MGun0
+  hasCanon0  = Computed(@() (MainMask.get() & (1 << CANNON_1)) != 0)
+  hasMGun0   = Computed(@() (MainMask.get() & (1 << MACHINE_GUNS_1)) != 0)
 
-  CannonCount = CannonState.map(@(c) Computed(@() c.value.count)),
-  CannonCooldownTime = CannonState.map(@(c) Computed(@() c.value.time)),
-  CannonCooldownEndTime = CannonState.map(@(c) Computed(@() c.value.endTime)),
+  BombsState
+  RocketsState
+  TorpedoesState
 
-  MachineGunsCount = MachineGunState.map(@(c) Computed(@() c.value.count)),
-  MachineGunsCooldownTime = MachineGunState.map(@(c) Computed(@() c.value.time)),
-  MachineGunsCooldownEndTime = MachineGunState.map(@(c) Computed(@() c.value.endTime)),
-
-  BombsCount = Computed(@() BombsState.value.count)
-  BombsCooldownTime = Computed(@() BombsState.value.time)
-  BombsCooldownEndTime = Computed(@() BombsState.value.endTime)
-
-  RocketsCount = Computed(@() RocketsState.value.count)
-  RocketsCooldownTime = Computed(@() RocketsState.value.time)
-  RocketsCooldownEndTime = Computed(@() RocketsState.value.endTime)
-
-  TorpedoesCount = Computed(@() TorpedoesState.value.count)
-  TorpedoesCooldownTime = Computed(@() TorpedoesState.value.time)
-  TorpedoesCooldownEndTime = Computed(@() TorpedoesState.value.endTime)
+  hasBombs = Computed(@() (MainMask.get() & (1 << BOMBS)) != 0)
+  hasRockets = Computed(@() (MainMask.get() & (1 << ROCKET)) != 0)
+  hasTorpedos = Computed(@() (MainMask.get() & (1 << TORPEDO)) != 0)
 
   DistanceToGround = Watched(0)
   Spd = Watched(0)
@@ -65,11 +47,31 @@ interopGen({
   postfix = "Update"
 })
 
-registerInteropFunc("updateCannonsArray", @(index, count, _seconds, _selected, time, endTime, _mode)
-  CannonState[index]({ count, time, endTime }))
+let planeState = {
+  IsOnGround = Watched(false)
+}
 
-registerInteropFunc("updateMachineGunsArray", @(index, count, _seconds, _selected, time, endTime, _mode)
-  MachineGunState[index]({ count, time, endTime }))
+interopGen({
+  stateTable = planeState
+  prefix = "plane"
+  postfix = "Update"
+})
+
+registerInteropFunc("updateCannonsArray", function(index, count, _seconds, _selected, time, endTime, _mode) {
+  if (index != 0)
+    return
+  let p = Cannon0.get()
+  if (p.count != count || p.time != time || p.endTime != endTime)
+    Cannon0.set({ count, time, endTime })
+})
+
+registerInteropFunc("updateMachineGunsArray", function(index, count, _seconds, _selected, time, endTime, _mode) {
+  if (index != 0)
+    return
+  let p = MGun0.get()
+  if (p.count != count || p.time != time || p.endTime != endTime)
+    MGun0.set({ count, time, endTime })
+})
 
 registerInteropFunc("updateBombs", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
   BombsState({ count, time, endTime }))
@@ -80,17 +82,21 @@ registerInteropFunc("updateRockets", @(count, _seconds, _mode, _selected, _salvo
 registerInteropFunc("updateTorpedoes", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)
   TorpedoesState({ count, time, endTime }))
 
-for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
-  TrtMode.append(Watched(0))
-  Trt.append(Watched(0))
-}
-
 registerInteropFunc("updateEnginesThrottle", function(mode, trt, _state, index) {
-  TrtMode[index](mode)
-  if (mode == AirThrottleMode.AIRCRAFT_WEP)
-    Trt[index](100)
-  else
-    Trt[index](trt)
+  if (index != 0)
+    return
+  TrtMode0.set(mode)
+  Trt0.set(trt)
 })
 
-return airState
+let logMask = @() log("MainMask = ",
+  ", ".join(
+    AirParamsMain
+      .filter(@(v) (MainMask.get() & (1 << v)) != 0)
+      .reduce(@(res, v, k) res.append({ v, k }), [])
+      .sort(@(a, b) a.v <=> b.v)
+      .map(@(v) v.k)))
+
+register_command(logMask, "debug.airWeaponMask")
+
+return planeState.__merge(airState)

@@ -26,6 +26,12 @@ let isRespawnDataActual = Computed(@() isEqual(respawnData.value, wantedRespawnD
 
 isInBattle.subscribe(@(v) v ? null : isInRespawn(false))
 
+function updateRespawnUnitInfo() {
+  respawnUnitInfo(unitToSpawn.get())
+  respawnUnitItems(curBattleItems.get())
+  respawnUnitSkins(curBattleSkins.get())
+}
+
 isInRespawn.subscribe(function(v) {
   isRespawnInProgress(false)
   isRespawnStarted(false)
@@ -35,13 +41,13 @@ isInRespawn.subscribe(function(v) {
   if (!v)
     return
   disable_flight_menu(true)
-  respawnUnitInfo(unitToSpawn.get())
-  respawnUnitItems(curBattleItems.get())
-  respawnUnitSkins(curBattleSkins.get())
+  updateRespawnUnitInfo()
 })
 unitToSpawn.subscribe(@(v) isInRespawn.value ? respawnUnitInfo(v) : null)
+curBattleItems.subscribe(@(v) isInRespawn.value ? respawnUnitItems(v) : null)
+curBattleSkins.subscribe(@(v) isInRespawn.value ? respawnUnitSkins(v) : null)
 if (isInRespawn.value && unitToSpawn.value != null)
-  respawnUnitInfo(unitToSpawn.value)
+  updateRespawnUnitInfo()
 
 eventbus_subscribe("getLocalPlayerSpawnInfo",
   @(_) eventbus_send("localPlayerSpawnInfo",

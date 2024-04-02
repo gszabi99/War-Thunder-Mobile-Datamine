@@ -3,7 +3,7 @@ let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDownloadedFromGooglePlay } = require("android.platform")
-let { get_base_game_version_str } = require("app")
+let { get_base_game_version_str, get_game_version_str } = require("app")
 let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -150,6 +150,7 @@ function sendGameRating(rating, comment) {
     poll = pollId
     question = q.id
     answer = q.val.tostring()
+    gameVersion = get_game_version_str()
   }))
 
   savedRating(rating)

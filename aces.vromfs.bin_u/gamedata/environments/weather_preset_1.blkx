@@ -8,7 +8,8 @@
     "adaptation": {
       "useAdaptation": false,
       "minExposure": 0.5,
-      "maxExposure": 0.5
+      "maxExposure": 0.5,
+      "initialExposure": 0.5
     },
     "hdr": {
       "useAdaptation": false,

@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "hudTuningConsts.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { abs } = require("%sqstd/math.nut")
-let cfgByUnitType = require("cfgByUnitType.nut")
-let { tuningUnitType, transformInProgress, applyTransformProgress, selectedId
+let { cfgByUnitTypeOrdered } = require("cfgByUnitType.nut")
+let { tuningUnitType, transformInProgress, isElemHold, applyTransformProgress, selectedId
 } = require("hudTuningState.nut")
 
 let INC_AREA = sh(2)
@@ -12,7 +12,7 @@ let MOVE_MIN_THRESHOLD = sh(1) //ignore threshold after START_MOVE_TIME
 let pointer = Watched(null)
 
 function findElemInScene(x, y) {
-  let list = cfgByUnitType?[tuningUnitType.value]
+  let list = cfgByUnitTypeOrdered?[tuningUnitType.value]
   if (list == null)
     return null
 
@@ -68,11 +68,13 @@ let manipulator = {
       return 0
     let elem = findElemInScene(evt.x, evt.y)
     selectedId(elem?.id)
-    if (elem != null)
+    if (elem != null) {
       pointer({ id = evt.pointerId, time = get_time_msec(),
         start = [evt.x, evt.y], offset = [0, 0],
         aabb = elem.aabb, isInProgress = false
       })
+      isElemHold(true)
+    }
     return 1
   }
   function onPointerRelease(evt) {
@@ -80,6 +82,7 @@ let manipulator = {
       return 0
     applyTransformProgress()
     pointer(null)
+    isElemHold(false)
     return 1
   }
   function onPointerMove(evt) {
@@ -100,6 +103,7 @@ let manipulator = {
   function onDetach() {
     transformInProgress(null)
     pointer(null)
+    isElemHold(false)
   }
 }
 

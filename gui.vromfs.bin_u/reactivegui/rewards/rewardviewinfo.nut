@@ -36,6 +36,7 @@ let customPriority = {
 
 let slotsByType = {
   unitUpgrade = 2
+  battleMod = 2
   unit = 2
 }
 
@@ -63,7 +64,8 @@ function getRewardsViewInfo(data, multiply = 1) {
   if (!data)
     return res
   let { currencies = {}, premiumDays = 0, items = {}, lootboxes = {},
-    decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {}
+    decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {},
+    battleMods = {}
   } = data
 
   foreach (id in unitUpgrades)
@@ -89,6 +91,8 @@ function getRewardsViewInfo(data, multiply = 1) {
     res.append(mkViewInfo(id, "booster", count * multiply))
   foreach (unitName, skinName in skins)
     res.append(mkViewInfo(unitName, "skin", 0, skinName))
+  foreach (id, count in battleMods)
+    res.append(mkViewInfo(id, "battleMod", count))
   return res
 }
 

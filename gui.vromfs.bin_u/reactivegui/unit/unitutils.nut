@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 
 let hasPrice = @(unit) unit.costWp > 0 || unit.costGold > 0
 let applyDiscount = @(price, discount = 0.0) (price * (1.0 - discount) + 0.5).tointeger()
@@ -12,6 +13,12 @@ function getUnitAnyPrice(unit, isForLevelUp, unitDiscounts) {
   let discount = isForLevelUp ? unit.levelUpDiscount : unitDiscounts?[unit.name].discount ?? 0.0
   let price = applyDiscount(fullPrice, discount)
   return { currencyId, price, fullPrice, discount }
+}
+
+let function getShortPrice(price) {
+  if(price > 1000000)
+    return shortTextFromNum(price)
+  return decimalFormat(price)
 }
 
 let isUnitGloballyUnavailable = @(u) u.costGold <= 0 && u.costWp <= 0 && !u.isHidden
@@ -32,6 +39,7 @@ let sortUnitsByPrice = @(a, b)
 
 return {
   applyDiscount
+  getShortPrice
   getUnitAnyPrice
   sortUnits
   sortUnitsByPrice

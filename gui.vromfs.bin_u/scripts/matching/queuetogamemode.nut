@@ -13,7 +13,7 @@ let { isInQueue, joinQueue } = require("queuesClient.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getModeAddonsInfo } = require("gameModeAddons.nut")
+let { getModeAddonsInfo, getModeAddonsDbgString } = require("gameModeAddons.nut")
 let { balanceGold } = require("%appGlobals/currenciesState.nut")
 let { isInSquad, isSquadLeader, squadMembers, squadId, isInvitedToSquad, squadOnline,
   MAX_SQUAD_MRANK_DIFF, squadLeaderCampaign
@@ -130,6 +130,7 @@ function queueToGameModeImpl(mode) {
 
   let allBattlenits = getAllBattleUnits()
   log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", getAllBattleUnits())
+  log("modeInfo = ", getModeAddonsDbgString(mode))
   let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode, allBattlenits)
   if (!isSquadReadyWithMsgbox(mode, allReqAddons))
     return
@@ -157,7 +158,7 @@ function queueToGameModeImpl(mode) {
     return
   }
 
-  let { campaign } = mode
+  let { campaign = null } = mode
   if (campaign != null && campaign != curCampaign.value)
     setCampaign(campaign)
 

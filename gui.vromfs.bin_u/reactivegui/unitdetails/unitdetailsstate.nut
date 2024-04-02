@@ -11,6 +11,13 @@ let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let unitDetailsOpenCount = Watched(openUnitOvr.get() == null ? 0 : 1)
 let isWindowAttached = Watched(false)
 
+let function setUnit(unit) {
+  if (unit != null)
+    setCustomHangarUnit(unit)
+  else
+    resetCustomHangarUnit()
+}
+
 let baseUnit = Computed(function() {
   let { name = null, canShowOwnUnit = true} = openUnitOvr.value
   local res = canShowOwnUnit ? myUnits.value?[name] ?? serverConfigs.value?.allUnits[name]
@@ -44,12 +51,8 @@ let unitToShow = Computed(@() unitToShowCommon.get() == null || curSelectedUnitS
       currentSkins = (unitToShowCommon.get()?.currentSkins ?? {})
         .__merge({ [unitToShowCommon.get().name] = curSelectedUnitSkin.get() })
     }))
-unitToShow.subscribe(function(unit) {
-  if (unit != null)
-    setCustomHangarUnit(unit)
-  else
-    resetCustomHangarUnit()
-})
+unitToShow.subscribe(setUnit)
+isWindowAttached.subscribe(@(v) !v ? null : setUnit(unitToShow.get()))
 
 function openUnitDetailsWnd(unitOvr = {}) {
   openUnitOvr.set(unitOvr)

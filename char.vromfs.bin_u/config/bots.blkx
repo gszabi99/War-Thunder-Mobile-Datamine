@@ -10,12 +10,37 @@
   "allowedAircrafts": {
     "aircraft": [
       {
-        "name": "fw_190a_1",
+        "name": "pony_light_fighter",
         "weight": 1.0,
         "country": "germany"
       },
       {
-        "name": "fw_190a_1",
+        "name": "pony_minigun_fighter",
+        "weight": 1.0,
+        "country": "ussr"
+      },
+      {
+        "name": "pony_fighter",
+        "weight": 1.0,
+        "country": "ussr"
+      },
+      {
+        "name": "pony_rocket_fighter",
+        "weight": 1.0,
+        "country": "ussr"
+      },
+      {
+        "name": "pony_jet_fighter",
+        "weight": 1.0,
+        "country": "ussr"
+      },
+      {
+        "name": "pony_assault",
+        "weight": 1.0,
+        "country": "ussr"
+      },
+      {
+        "name": "pony_bomber",
         "weight": 1.0,
         "country": "ussr"
       }

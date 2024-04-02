@@ -6,21 +6,6 @@ let { isReadyToFullLoad, isLoginRequired, isLoginStarted } = require("%appGlobal
 
 let unitTagsCfg = {}
 
-function calcUnitTypeFromTags(tagsCfg) {
-  let { tags } = tagsCfg
-  if ("submarine" in tags)
-    return SUBMARINE
-  if ("boat" in tags)
-    return BOAT
-  if ("ship" in tags)
-    return SHIP
-  if ("tank" in tags)
-    return TANK
-  if (tags?.type == "aircraft")
-    return AIR
-  return tags?.type ?? AIR
-}
-
 let remapBulletName = @(bName) bName == "default" ? "" : bName
 
 function gatherUnitTagsCfg(unitName) {
@@ -30,7 +15,7 @@ function gatherUnitTagsCfg(unitName) {
   let blk = get_unittags_blk()?[unitName]
   let res = isDataBlock(blk) ? blk2SquirrelObjNoArrays(blk) : {}
   res.tags <- (res?.tags ?? {}).filter(@(v) v)
-  res.unitType <- calcUnitTypeFromTags(res)
+  res.unitType <- calcUnitTypeFromTags(blk)
 
   let blockName = "bullets"
   let bulletsBlk = blk?.bullets ?? blk?.Shop.weapons

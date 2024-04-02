@@ -6,10 +6,13 @@ let { unseenPurchases } = require("%appGlobals/pServer/campaign.nut")
 let { clear_unseen_purchases } = require("%appGlobals/pServer/pServerApi.nut")
 let unseenPurchasesDebug = require("unseenPurchasesDebug.nut")
 
+let invisibleGoodsTypes = ["lootbox", "stat", "medal"] //temporary medals no need to be shown
+  .reduce(@(res, v) res.$rawset(v, true), {})
+
 let ignoreUnseen = Watched({}) //no need to persist them if has errors with pServer, better to show window again after reload scripts.
 let isShowDelayed = Watched(false)
 let skipUnseenMessageAnimOnce = Watched(false)
-let isGoodsVisible = @(goods) goods.gType != "lootbox" && goods.gType != "stat" && goods.gType != "medal" //temporary medals no need to be shown
+let isGoodsVisible = @(goods) goods.gType not in invisibleGoodsTypes
 let seenPurchasesNoNeedToShow = Computed(@() unseenPurchases.value
   .filter(@(data) data.goods.findvalue(isGoodsVisible) == null))
 let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.value

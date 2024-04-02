@@ -37,10 +37,13 @@ let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
+let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
+let { mkBattleModEventUnitText } = require("%rGui/rewards/battleModComp.nut")
+let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
   "decorator", "medal", "booster", "skin",
-  "stat" //we will not show this reward, but no need logerr about it
+  "stat", "battleMod"
 ]
 
 let bgGradient = bgMessage.__merge({size = flex()})
@@ -113,7 +116,17 @@ let stackData = Computed(function() {
   foreach (arr in stacksSorted)
     arr.sort(@(a, b) a.order <=> b.order)
 
-  let { currency = [], premium = [], item = [], unitUpgrade = [], unit = [], decorator = [], booster = [], skin = [] } = stacksSorted
+  let {
+    currency = [],
+    premium = [],
+    item = [],
+    unitUpgrade = [],
+    unit = [],
+    decorator = [],
+    booster = [],
+    skin = [],
+    battleMod = []
+  } = stacksSorted
   let rewardIcons = [].extend(currency, premium, item, decorator, booster, skin)
   let unitPlates = [].extend(unitUpgrade, unit)
 
@@ -132,6 +145,7 @@ let stackData = Computed(function() {
   }.__update({
     rewardIcons
     unitPlates
+    battleMod
   }.filter(@(v) v.len() != 0))
 })
 
@@ -309,6 +323,7 @@ let customCurrencyIcons = {
   warbond = @(startDelay) mkDynamicRewardIcon(startDelay, "warbond", 1.0, 1.2)
   eventKey = @(startDelay) mkDynamicRewardIcon(startDelay, "eventKey", 1.0, 1.0)
   nybond = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#warbond_goods_christmas_01.avif", 1.0, 1.6)
+  aprilbond = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#warbond_april_01.avif", 1.0, 1.6)
 }
 
 let mkCurrencyIcon = @(startDelay, id)  customCurrencyIcons?[id](startDelay) ?? {
@@ -470,6 +485,56 @@ function mkUnitPlate(unitInfo) {
       }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))
     ]
   }
+}
+
+function mkBattleModEventUnitPlate(battleMod) {
+  let unit = battleMod.unitCtor()
+  return {
+    size = [ unitPlateWidth, unitPlateHeight ]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = [
+      mkHighlight(0, aUnitPlateFlareScale)
+      {
+        size = [ unitPlateWidth, unitPlateHeight ]
+        children = {
+          size = [ unitPlateWidth, unitPlateHeight ]
+          vplace = ALIGN_BOTTOM
+          children = [
+            mkUnitBg(unit)
+            mkUnitImage(unit)
+            mkBattleModEventUnitText(battleMod, REWARD_STYLE_MEDIUM, 2)
+          ]
+        }
+      }.__update(mkRewardAnimProps(0, aUnitPlateSelfScale))
+    ]
+  }
+}
+
+let battleModeViewCtors = {
+  eventUnit = mkBattleModEventUnitPlate
+}
+
+let mkBattleModeRewards = @(data) data.len() == 0 ? null : @() {
+  watch = serverConfigs
+  flow = FLOW_VERTICAL
+  gap = unitPlatesGap
+  children = arrayByRows(
+    data
+      .map(function(v) {
+        let bmp = getBattleModPresentation(v.id)
+        if (bmp.viewType not in battleModeViewCtors)
+          logerr($"Unknown battle mode reward view type: {bmp.id}")
+        return battleModeViewCtors?[bmp.viewType]?(bmp)
+      })
+      .filter(@(v) v != null),
+    unitsPerRow)
+      .map(@(children) {
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        gap = unitPlatesGap
+        children
+      })
 }
 
 let mkUnitRewards = @(unitsData) unitsData.len() == 0 ? null : @() {
@@ -706,7 +771,7 @@ function onCloseRequest() {
 }
 
 function mkMsgContent(stackDataV, purchGroup) {
-  let { rewardIcons = [], unitPlates = [], outroDelay } = stackDataV
+  let { rewardIcons = [], unitPlates = [], outroDelay, battleMod = [] } = stackDataV
   let { style = null } = purchGroup
   let title = titleCtors?[style](outroDelay, purchGroup) ?? wndTitle
   let size = [max(unitPlates.len() * unitPlateWidth, min(rewardIcons.len(), rewIconsPerRow) * rewBlockWidth) + hdpx(300), SIZE_TO_CONTENT]
@@ -730,6 +795,7 @@ function mkMsgContent(stackDataV, purchGroup) {
         gap = rewBlocksVGap
         children = [
           mkRewardIconsBlock(rewardIcons)
+          mkBattleModeRewards(battleMod)
           mkUnitRewards(unitPlates)
         ]
       }

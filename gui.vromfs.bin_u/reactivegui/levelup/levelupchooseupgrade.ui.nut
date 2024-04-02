@@ -4,7 +4,7 @@ let { getPlatoonOrUnitName, getUnitLocId, getUnitClassFontIcon } = require("%app
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { upgradeUnitName } = require("levelUpState.nut")
-let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
+let { getUnitAnyPrice, getShortPrice } = require("%rGui/unit/unitUtils.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let { unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
@@ -56,7 +56,7 @@ function buyButtonPrimary(unit, discounts) {
   let price = unit != null ? getUnitAnyPrice(unit, true, discounts) : null
   return price == null ? null
     : textButtonPricePurchase(utf8ToUpper(loc(price.price == 0 ? "msgbox/btn_get" : "msgbox/btn_purchase")),
-        mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON),
+        mkDiscountPriceComp(getShortPrice(price.fullPrice), getShortPrice(price.price), price.currencyId, CS_INCREASED_ICON),
         @() purchaseHandler(unit.name),
         buttonStyles.PRIMARY)
 }

@@ -5606,9 +5606,6 @@
           "object_var_value": 0,
           "object": "player",
           "cannotMove": false
-        },
-        "triggerEnable": {
-          "target": "@controls_current"
         }
       },
       "else_actions": {}
@@ -5722,7 +5719,6 @@
             "setStatus": "disable",
             "control": [
               "AXIS_GM_THROTTLE",
-              "AXIS_GM_STEERING",
               "ID_TRANS_GEAR_UP",
               "ID_TRANS_GEAR_DOWN"
             ]

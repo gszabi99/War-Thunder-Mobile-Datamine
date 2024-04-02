@@ -1696,6 +1696,18 @@
   "battleHideNodes": {
     "n": "details"
   },
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.95,
+      0.05,
+      0.0
+    ],
+    "armorThicknessSide": [
+      0.25,
+      0.05,
+      0.7
+    ]
+  },
   "DamageEffects": {
     "part": [
       {

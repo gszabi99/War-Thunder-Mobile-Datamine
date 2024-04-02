@@ -134,6 +134,10 @@ return {
     "fr_sub_surcouf": {
       "": "camo_blackgreen_geometry"
     },
+    "germ_artilleriefahrprahm_typ_d3": {
+      "": "camo_blackgray_net",
+      "special": "camo_sboat_fleet"
+    },
     "germ_battlecruiser_von_der_tann": {
       "": "camo_blackyellow_spots"
     },
@@ -209,6 +213,11 @@ return {
       "forest2": "ger_camo_dunkelgelb_green_braun_lines",
       "winter": "ger_camo_winter_lines"
     },
+    "germ_flakpanzer_IV_Ostwind_reskin2": {
+      "": "ger_camo_hinterhalt_daimler",
+      "desert": "ger_camo_dunkelgelb",
+      "winter": "tl_camo_red_grey_lines"
+    },
     "germ_flakpanzer_IV_Wirbelwind": {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_winter_lines"
@@ -221,11 +230,21 @@ return {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green"
     },
+    "germ_jgdpz_IV_L48": {
+      "": "ger_camo_hinterhalt_daimler",
+      "desert": "ger_camo_dunkelgelb",
+      "winter": "tl_camo_red_grey_lines"
+    },
     "germ_kanonenjagdpanzer": {
       "": "ger_camo_bronzegruen",
       "desert": "ger_camo_bundeswehr_afgan",
       "fiction": "tl_camo_grey_pink_blots",
       "winter": "ussr_camo_winter"
+    },
+    "germ_kv_1_kwk_40": {
+      "": "ger_camo_hinterhalt_daimler",
+      "desert": "ger_camo_dunkelgelb",
+      "winter": "tl_camo_red_grey_lines"
     },
     "germ_leopard_I": {
       "": "ger_camo_bronzegruen",
@@ -368,6 +387,11 @@ return {
       "desert": "ger_camo_bundeswehr_afgan",
       "fiction": "tl_camo_grey_pink_blots",
       "winter": "ussr_camo_winter"
+    },
+    "germ_sdkfz_234_4": {
+      "": "ger_camo_hinterhalt_daimler",
+      "desert": "ger_camo_dunkelgelb",
+      "winter": "tl_camo_red_grey_lines"
     },
     "germ_sdkfz_251_21": {
       "": "ger_camo_grey",

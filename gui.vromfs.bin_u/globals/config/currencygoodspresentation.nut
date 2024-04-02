@@ -1,4 +1,4 @@
-let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND } = require("%appGlobals/currenciesState.nut")
 
 let SEASON_EMPTY = "season_0"
 
@@ -38,6 +38,13 @@ let imgCfgByCurrency = {
       { img = "warbond_goods_christmas_01.avif", amountAtLeast = 0 }
       { img = "warbond_goods_christmas_02.avif", amountAtLeast = 600 }
       { img = "warbond_goods_christmas_03.avif", amountAtLeast = 3000 }
+    ]
+  },
+  [APRILBOND] = {
+    def = [
+      { img = "warbond_april_01.avif", amountAtLeast = 0 }
+      { img = "warbond_april_02.avif", amountAtLeast = 600 }
+      { img = "warbond_april_03.avif", amountAtLeast = 3000 }
     ]
   },
   [WARBOND] = {

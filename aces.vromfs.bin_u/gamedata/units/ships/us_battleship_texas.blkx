@@ -719,13 +719,13 @@
     "mass": {
       "Empty": 29000000.0,
       "momentOfInertia": [
-        63.0,
-        1365.0,
-        840.0
+        69.0,
+        1435.0,
+        910.0
       ],
       "CenterOfGravity": [
-        0.0,
-        0.0,
+        0.5,
+        1.0,
         0.0
       ]
     },
@@ -780,14 +780,14 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 1.4,
+      "mulReaction": 2.0,
       "rudder": {
         "pos": [
           -77.5,
           -2.9,
           0.0
         ],
-        "area": 45.0,
+        "area": 55.0,
         "deflection": 35.0,
         "dmPart": "steering_gear_01_dm"
       }

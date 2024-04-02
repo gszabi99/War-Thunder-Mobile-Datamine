@@ -24,7 +24,7 @@ function getLevelProgress(curLevelConfig, reward) {
       if (idx <= level)
         continue
       res.unlockedLevel = idx
-      res.isLastLevel = (idx + 1) not in levelsExp
+      res.isLastLevel = isLastLevel || (idx + 1) not in levelsExp
       leftReceivedExp = leftReceivedExp - levelExp
     }
   }

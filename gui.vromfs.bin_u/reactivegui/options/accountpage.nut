@@ -20,7 +20,7 @@ let { is_ios, is_nswitch } = require("%sqstd/platform.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { openSuportWebsite } = require("%rGui/feedback/supportState.nut")
+let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 
 let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.value && !is_nswitch
   && [ LT_GOOGLE, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.value))
@@ -190,7 +190,7 @@ let buttons = @() {
     ])
     mkButtonRow([
       textButtonPrimary(loc("mainmenu/support"),
-        openSuportWebsite,
+        openSupportTicketWndOrUrl,
         buttonsWidthStyle)
       textButtonPrimary(loc("options/personalData"), @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
     ])

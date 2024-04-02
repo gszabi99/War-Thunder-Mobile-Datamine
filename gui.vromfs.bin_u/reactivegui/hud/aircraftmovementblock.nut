@@ -1,10 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
-let { AirThrottleMode } = require("%globalScripts/sharedEnums.nut")
-let { floor, fabs } = require("%sqstd/math.nut")
+let { floor, fabs, lerp } = require("%sqstd/math.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue
 } = require("%globalScripts/controls/shortcutActions.nut")
-let { Trt, TrtMode, Spd, DistanceToGround, IsSpdCritical } = require("%rGui/hud/airState.nut")
+let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround } = require("%rGui/hud/airState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let axisListener = require("%rGui/controls/axisListener.nut")
@@ -16,9 +15,11 @@ let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { playerUnitName, unitType } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 
-let maxThrottle = 100.0
-let stepThrottle = 5.0
-let userTrottle = Watched(maxThrottle)
+let maxThrottle = 100
+let stepThrottle = 5
+let wepAxisValue = 1.1 //same with native code
+let sliderWepValue = -3 * stepThrottle
+let sliderValue = Watched(maxThrottle)
 let throttleAxisUpdateTick = 0.05
 let maxThrottleChangeSpeed = 50
 let throttleDeadZone = 0.7
@@ -27,8 +28,8 @@ let throttlePerTick = throttleAxisUpdateTick * maxThrottleChangeSpeed
 let redColor = 0xFFFF5A52
 let neutralColor = 0xFFFFFFFF
 
-let height = shHud(25)
-let scaleWidth = (12.0 / 177.0 * height).tointeger()
+let height = hdpxi(270)
+let scaleWidth = evenPx(18)
 let knobSize = 3 * scaleWidth
 let knobPadding = scaleWidth
 let sliderPadding = 2 * scaleWidth
@@ -46,21 +47,33 @@ let isThrottleAxisActive = keepref(Computed(@() fabs(throttleAxisVal.value) > th
 
 let knobColor = Color(230, 230, 230, 230)
 
+let sliderToThrottleAxisValue = @(sliderV) sliderV >= stepThrottle ? (maxThrottle - sliderV).tofloat() / maxThrottle
+  : sliderV > sliderWepValue ? 1.0
+  : wepAxisValue
+let throttleToSlider = @(trt) trt > maxThrottle ? sliderWepValue //wep
+  : maxThrottle - trt
+
 let throttleScale = {
-  size = flex()
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = hdpx(5)
-  commands = [
-    [VECTOR_LINE, 110, 10, 300, 10],
-    [VECTOR_LINE, 110, 20, 210, 20],
-    [VECTOR_LINE, 110, 30, 190, 30],
-    [VECTOR_LINE, 110, 40, 180, 40],
-    [VECTOR_LINE, 110, 50, 210, 50],
-    [VECTOR_LINE, 110, 60, 150, 60],
-    [VECTOR_LINE, 110, 70, 140, 70],
-    [VECTOR_LINE, 110, 80, 130, 80],
-    [VECTOR_LINE, 110, 90, 150, 90],
-  ]
+  size = [3 * scaleWidth, throttleScaleHeight]
+  pos = [1.2 * scaleWidth, 0]
+  padding = [throttleScaleHeight * (-sliderWepValue) / (maxThrottle - sliderWepValue), 0, 0, 0]
+  children = {
+    size = flex()
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpx(5)
+    commands = [
+      [VECTOR_LINE, 0, 0,  100, 0],
+      [VECTOR_LINE, 0, 10, 50,  10],
+      [VECTOR_LINE, 0, 20, 45,  20],
+      [VECTOR_LINE, 0, 30, 40,  30],
+      [VECTOR_LINE, 0, 40, 35,  40],
+      [VECTOR_LINE, 0, 50, 50,  50],
+      [VECTOR_LINE, 0, 60, 20,  60],
+      [VECTOR_LINE, 0, 70, 15,  70],
+      [VECTOR_LINE, 0, 80, 10,  80],
+      [VECTOR_LINE, 0, 90, 5,   90],
+    ]
+  }
 }
 
 let throttleBgrImage = Picture("!ui/gameuiskin#hud_plane_slider.avif")
@@ -71,17 +84,17 @@ let percentText = loc("measureUnits/percent")
 let HAPT_THROTTLE = registerHapticPattern("ThrottleChange", { time = 0.0, intensity = 0.5, sharpness = 0.4, duration = 0.2, attack = 0.08, release = 1.0 })
 
 function changeThrottleValue(val) {
-  val = clamp(val, 0, maxThrottle)
+  val = clamp(val, sliderWepValue, maxThrottle)
   needOpacityThrottle(false)
   resetTimeout(idleTimeForThrottleOpacity, makeOpacityThrottle)
-  setAxisValue("throttle", (maxThrottle - val) / maxThrottle)
-  let th = (maxThrottle - val) / maxThrottle
 
-  if (th >= 1.0)
-    setShortcutOn("throttle_rangeMax")
-  else
+  let axisVal = sliderToThrottleAxisValue(val).tofloat()
+  if (axisVal < wepAxisValue)
     setShortcutOff("throttle_rangeMax")
-  userTrottle(val)
+  setAxisValue("throttle", axisVal)
+  if (axisVal >= wepAxisValue)
+    setShortcutOn("throttle_rangeMax")
+  sliderValue(val)
   playHapticPattern(HAPT_THROTTLE)
 }
 
@@ -97,18 +110,22 @@ function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
 }
 
 let btnImageThrottleInc = mkGamepadHotkey(axisMinToHotkey(throttle_axis),
-  Computed(@() userTrottle.value > 0),
+  Computed(@() sliderValue.value > sliderWepValue),
   Computed(@() isThrottleAxisActive.value && throttleAxisVal.value > 0),
   { hplace = ALIGN_RIGHT, pos = [pw(-100), 0] })
 let btnImageThrottleDec = mkGamepadHotkey(axisMaxToHotkey(throttle_axis),
-  Computed(@() userTrottle.value < maxThrottle),
+  Computed(@() sliderValue.value < maxThrottle),
   Computed(@() isThrottleAxisActive.value && throttleAxisVal.value < 0),
   { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [pw(-100), 0] })
 
 function throttleSlider() {
+  let sliderV = sliderValue.get()
+  let knobPos = sliderV <= sliderWepValue ? 0
+    : ((clamp(sliderV, 0, maxThrottle) - sliderWepValue).tofloat()
+        / (maxThrottle - sliderWepValue) * throttleScaleHeight).tointeger()
   let knob = {
     size  = [knobSize + 2 * knobPadding, knobSize + 2 * knobPadding]
-    pos = [0, (userTrottle.value.tofloat() / maxThrottle * throttleScaleHeight).tointeger() - knobPadding]
+    pos = [0, knobPos - knobPadding]
     hplace = ALIGN_CENTER
     padding = knobPadding
     children = [
@@ -122,26 +139,30 @@ function throttleSlider() {
         ]
       },
       @() {
-        watch = [Trt[0], TrtMode[0]]
+        watch = [Trt0, IsTrtWep0, IsOnGround]
         rendObj = ROBJ_TEXT
         pos = [knobSize + hdpx(5), 0]
-        fontFxColor = Color(0, 0, 0, 255)
-        color = TrtMode[0].value == AirThrottleMode.AIRCRAFT_WEP ? Color(255, 0, 0, 255) : knobColor
+        fontFxColor = 0xFF000000
+        color = IsTrtWep0.get() ? 0xFFFF0000 : knobColor
         fontFxFactor = 50
         fontFx = FFT_GLOW
-        text = TrtMode[0].value == AirThrottleMode.AIRCRAFT_WEP ? wepText : Trt[0].value >= maxThrottle ? maxThrottleText : $"{Trt[0].value}{percentText}"
-      }.__update(fontTiny)
+        text = IsTrtWep0.get() ? wepText
+          : Trt0.get() >= maxThrottle ? maxThrottleText
+          : IsOnGround.get() && Trt0.get() == 0 ? loc("hotkeys/ID_WHEEL_BRAKE")
+          : $"{Trt0.get()}{percentText}"
+      }.__update(IsOnGround.get() && Trt0.get() == 0 ? fontVeryTiny : fontTiny)
     ]
   }
 
   return {
-    watch = [ userTrottle, needOpacityThrottle ]
-    key = userTrottle
+    watch = [ sliderValue, needOpacityThrottle ]
+    key = sliderValue
     size = [fullWidth, height]
     padding = [0, sliderPadding]
     behavior = Behaviors.Slider
-    fValue = userTrottle.value
+    fValue = sliderV
     knob = knob
+    min = sliderWepValue
     max = maxThrottle
     unit = stepThrottle
     orientation = O_VERTICAL
@@ -149,15 +170,16 @@ function throttleSlider() {
     transitions = [{ prop = AnimProp.opacity, duration = 0.5, easing = Linear }]
     children = [
       {
-        size = [scaleWidth, throttleScaleHeight]
+        size = [scaleWidth, throttleScaleHeight + scaleWidth]
         pos =  [scaleWidth, 0]
+        padding = [scaleWidth / 2, 0]
         vplace = ALIGN_CENTER
         rendObj = ROBJ_IMAGE
         image = throttleBgrImage
         children = [
           throttleScale
           @() {
-            watch = Trt[0]
+            watch = Trt0
             rendObj = ROBJ_MASK
             size = [knobSize, throttleScaleHeight]
             pos = [scaleWidth, 0]
@@ -165,7 +187,14 @@ function throttleSlider() {
             children = {
               rendObj = ROBJ_SOLID
               size = flex()
-              transform = { pivot = [1, 1], scale = [1, Trt[0].value.tofloat() / maxThrottle] }
+              transform = {
+                pivot = [1, 1],
+                scale = [1,
+                  (Trt0.get() <= maxThrottle ? Trt0.get().tofloat()
+                      : lerp(1.0, wepAxisValue, maxThrottle, maxThrottle - sliderWepValue, Trt0.get().tofloat() / maxThrottle))
+                    / (maxThrottle - sliderWepValue)
+                ]
+              }
               transitions = [{ prop = AnimProp.scale, duration = 0.5, easing = InOutQuad }]
             }
           }
@@ -176,8 +205,7 @@ function throttleSlider() {
       btnImageThrottleDec
     ]
     function onAttach() {
-      resetTimeout(0.1, @() userTrottle(maxThrottle - Trt[0].value))
-      setShortcutOn("throttle_rangeMax")
+      resetTimeout(0.1, @() sliderValue(throttleToSlider(Trt0.get())))
       needOpacityThrottle(true)
     }
     onChange = changeThrottleValue
@@ -185,7 +213,8 @@ function throttleSlider() {
 }
 
 let throttleAxisUpdate = @()
-  changeThrottleValue(userTrottle.value - throttlePerTick * throttleAxisVal.value)
+  changeThrottleValue(sliderValue.get() < 0 && throttleAxisVal.get() < 0 ? 0
+    : sliderValue.get() - throttlePerTick * throttleAxisVal.get())
 
 isThrottleAxisActive.subscribe(function(isActive) {
   if (!isActive)

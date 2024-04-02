@@ -9,7 +9,9 @@ let { json_to_string } = require("json")
 let { defer } = require("dagor.workcycle")
 let { get_mp_session_id_str, is_local_multiplayer } = require("multiplayer")
 let { splitStringBySize } = require("%sqstd/string.nut")
-let { battleData, isBattleDataActual, actualizeBattleData } = require("menuBattleData.nut")
+let { battleData, isBattleDataActual, actualizeBattleData,
+ battleDataOvrMission, isBattleDataOvrMissionActual, actualizeBattleDataOvrMission
+} = require("menuBattleData.nut")
 let getDefaultBattleData = require("%appGlobals/data/getDefaultBattleData.nut")
 let { mkCmdSetBattleJwtData, mkCmdGetMyBattleData,
   mkCmdSetDefaultBattleData, CmdSetMyBattleData } = require("%appGlobals/sqevents.nut")
@@ -25,18 +27,20 @@ let curUnitName = mkWatched(persist, "battleDataUnit", null)
 enum ACTION {
   NOTHING = "nothing"
   ACTUALIZE = "actualize"
+  ACTUALIZE_OVR_MISSION = "actualize_ovr_mission"
   SET_AND_SEND = "set_and_send"
   SET_AND_SEND_DEFAULT = "set_and_send_default"
+  SEND_OVR_MISSION = "send_ovr_mission"
   REQUEST = "request"
 }
 
-let state = mkWatched(persist, "state", null) //eid, sessionId, slots, data, isBattleDataReceived
+let state = mkWatched(persist, "state", null) //eid, sessionId, slots, data, isBattleDataReceived, isUnitsOverrided
 let isBattleDataApplied = mkWatched(persist, "isBattleDataApplied", false)
 let wasBattleDataApplied = mkWatched(persist, "wasBattleDataApplied", false)
 let lastClientBattleData = mkWatched(persist, "lastAppliedClientBattleData", null)
 
 let curAction = keepref(Computed(function() {
-  let { isBattleDataReceived = null, sessionId = -1, data = null, slots = null } = state.value
+  let { isBattleDataReceived = null, isUnitsOverrided = null, sessionId = -1, data = null, slots = null } = state.value
   if (isBattleDataReceived == null || sessionId != get_mp_session_id_str())
     return ACTION.NOTHING
   if (isBattleDataReceived)
@@ -45,6 +49,15 @@ let curAction = keepref(Computed(function() {
   let unitName = slots?[0]
   if (unitName == null)
     return ACTION.NOTHING
+
+  if (isUnitsOverrided) {
+    if ((shouldDisableMenu || isOfflineMenu) && !isBattleDataOvrMissionActual.get()) //actual battle data has info from jwt token
+      return ACTION.SET_AND_SEND_DEFAULT
+    if (data == null && (!isBattleDataOvrMissionActual.get()))
+      return ACTION.ACTUALIZE_OVR_MISSION
+    return ACTION.SEND_OVR_MISSION
+  }
+
   if ((shouldDisableMenu || isOfflineMenu) && !isBattleDataActual.value) //actual battle data has info from jwt token
     return ACTION.SET_AND_SEND_DEFAULT
   if (data == null && (!isBattleDataActual.value || battleData.value?.unitName != unitName))
@@ -54,6 +67,7 @@ let curAction = keepref(Computed(function() {
 
 let actions = {
   [ACTION.ACTUALIZE] = @() actualizeBattleData(state.value?.slots[0]),
+  [ACTION.ACTUALIZE_OVR_MISSION] = @() actualizeBattleDataOvrMission(),
   [ACTION.SET_AND_SEND] = function() {
     let { payload, jwt } = battleData.value
     state.mutate(@(v) v.data <- payload)
@@ -66,6 +80,12 @@ let actions = {
     state.mutate(@(v) v.data <- getDefaultBattleData(unitName, myUserId.get()))
     ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdSetDefaultBattleData({ dataId = unitName }))
   },
+  [ACTION.SEND_OVR_MISSION] = function() {
+    let { payload, jwt } = battleDataOvrMission.value
+    if (myUserId.value != payload?.userId)
+      logerr($"[BATTLE_DATA] token userId ({payload?.userId}) does not same with my user id ({myUserId.value}). Will be ignored on dedicated.")
+    ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdSetBattleJwtData({ jwtList = splitStringBySize(jwt, 4096) }))
+  },
   [ACTION.REQUEST] = @()
     ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdGetMyBattleData({ a = "" })),  // Non empty event payload table as otherwise 'fromconnid' won't be added
 }
@@ -76,16 +96,22 @@ function onChangeSlots(eid, comp) {
     return
   if (get_mp_session_id_str() == state.value?.sessionId
       && (state.value?.slots.len() ?? 0) > 0) {
-    logBD($"[sessionId={get_mp_session_id_str()}] Battle data received by dedicated: {comp.isBattleDataReceived}")
-    state.mutate(@(v) v.isBattleDataReceived <- comp.isBattleDataReceived)
+    logBD($"[sessionId={get_mp_session_id_str()}] Battle data received by dedicated: {comp.isBattleDataReceived}, {comp.isUnitsOverrided}")
+    state.mutate(function(v) {
+      v.isBattleDataReceived <- comp.isBattleDataReceived
+      v.isUnitsOverrided <- comp.isUnitsOverrided
+    })
     return
   }
 
   local slots = comp.unitSlots.getAll()
-  logBD($"[sessionId={get_mp_session_id_str()}] Init slots. isBattleDataReceived = {comp.isBattleDataReceived}, slots = ", slots)
+  logBD($"[sessionId={get_mp_session_id_str()}] Init slots. isBattleDataReceived = {comp.isBattleDataReceived}, isUnitsOverrided = {comp.isUnitsOverrided}, slots = ", slots)
   if ((shouldDisableMenu || isOfflineMenu) && slots.len() == 0)
     slots = [get_arg_value_by_name("unitModel") ?? "germ_cruiser_admiral_hipper"]
-  state({ eid, sessionId = get_mp_session_id_str(), slots, isBattleDataReceived = comp.isBattleDataReceived })
+  state({ eid, sessionId = get_mp_session_id_str(), slots,
+    isBattleDataReceived = comp.isBattleDataReceived,
+    isUnitsOverrided = comp.isUnitsOverrided
+  })
 }
 
 function onDestroySlots(_eid, comp) {
@@ -94,7 +120,10 @@ function onDestroySlots(_eid, comp) {
     return
   logBD("Destroy slots")
   if (state.value != null)
-    state.mutate(@(v) v.isBattleDataReceived <- null)
+    state.mutate(function(v) {
+      v.isBattleDataReceived <- null
+      v.isUnitsOverrided <- null
+    })
 }
 
 local isDebugMyBattleData = false
@@ -124,6 +153,7 @@ ecs.register_es("player_battle_data_es",
     comps_track = [
       ["unitSlots", ecs.TYPE_STRING_LIST],
       ["isBattleDataReceived", ecs.TYPE_BOOL],
+      ["isUnitsOverrided", ecs.TYPE_BOOL],
     ]
   })
 

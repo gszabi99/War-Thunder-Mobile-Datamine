@@ -3,15 +3,18 @@ from "hudTuningConsts.nut" import *
 let { dfAnimBottomCenter, dfAnimBottomLeft, dfAnimBottomRight
 } = require("%rGui/style/unitDelayAnims.nut")
 let { unitType, isUnitDelayed } = require("%rGui/hudState.nut")
-let cfgByUnitType = require("cfgByUnitType.nut")
-let { transformsByUnitType } = require("hudTuningState.nut")
+let { cfgByUnitTypeOrdered } = require("cfgByUnitType.nut")
+let { hudTuningStateByUnitType } = require("hudTuningState.nut")
 
 let anims = {
   [ALIGN_RB] = dfAnimBottomRight,
   [ALIGN_LB] = dfAnimBottomLeft,
 }
 
-function mkHudTuningElem(cfg, transform) {
+function mkHudTuningElem(cfg, transform, options) {
+  if (!(cfg?.isVisible(options) ?? true))
+    return null
+
   let { id, ctor, defTransform = {}, hideForDelayed = true, isVisibleInBattle = null } = cfg
   let { align = 0, pos = null } = transform ?? defTransform
   let children = isVisibleInBattle == null ? ctor()
@@ -39,13 +42,15 @@ function mkHudTuningElem(cfg, transform) {
 }
 
 let hudTuningElems = @() {
-  watch = [unitType, transformsByUnitType]
+  watch = [unitType, hudTuningStateByUnitType]
   key = "hudTuningElems"
   size = saSize
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  children = cfgByUnitType?[unitType.value]
-    .map(@(cfg) mkHudTuningElem(cfg, transformsByUnitType.value?[unitType.value][cfg.id]))
+  children = cfgByUnitTypeOrdered?[unitType.value]
+    .map(@(cfg) mkHudTuningElem(cfg,
+      hudTuningStateByUnitType.get()?[unitType.get()].transforms[cfg.id],
+      hudTuningStateByUnitType.get()?[unitType.get()].options))
 }
 
 return hudTuningElems
