@@ -9,7 +9,6 @@ let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, 
   providerPriorities, onShowAds
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-
 let ads = is_ios ? require("ios.ads") : require("adsIosDbg.nut")
 let sendAdsBqEvent = is_ios ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
@@ -17,13 +16,15 @@ let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   isAdsLoaded, loadAds, showAds
 } = ads
 
+let {consentUpdated} = require("%rGui/consent/consentState.nut")
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
-let loadedProvider = hardPersistWatched("adsAndroid.loadedProvider", "")
+let loadedProvider = hardPersistWatched("adsIos.loadedProvider", "")
 let isAdsVisible = Watched(false)
-let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
-let needAdsLoadExt = Computed(@() isInited.value && needAdsLoad.value && !isLoaded.value)
+let failInARow = hardPersistWatched("adsIos.failsInARow", 0)
+
+let needAdsLoadExt = Computed(@() isInited.get() && needAdsLoad.get() && !isLoaded.get())
 
 function initProviders() {
   let { providers, countryCode } = providerPriorities.get()
@@ -52,7 +53,9 @@ providerPriorities.subscribe(@(_) initProviders())
 
 let statusNames = {}
 foreach(id, val in ads)
-  if (type(val) == "integer" && id.startswith("ADS_STATUS_"))
+  if (type(val) != "integer")
+    continue
+  else if (id.startswith("ADS_STATUS_"))
     statusNames[val] <- id
 let getStatusName = @(v) statusNames?[v] ?? v
 
@@ -63,6 +66,7 @@ eventbus_subscribe("ios.ads.onInit", function(msg) {
   logA($"Provider {provider} inited")
   isInited(true)
 })
+
 
 local isLoadStarted = false
 function startLoading() {
@@ -88,6 +92,14 @@ function retryLoad() {
   loadAds()
   sendAdsBqEvent("load_retry", "", false)
 }
+
+consentUpdated.subscribe(function(_) {
+  if (isLoaded.get() || !needAdsLoadExt.get())
+    return
+  clearTimer(retryLoad)
+  failInARow(0)
+  retryLoad()
+})
 
 eventbus_subscribe("ios.ads.onLoad",function (params) {
   let { status, provider = "unknown" } = params

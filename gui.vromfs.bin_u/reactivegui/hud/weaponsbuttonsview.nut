@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { get_mission_time = @() ::get_mission_time() } = require("mission")
-let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
+let { defer, resetTimeout } = require("dagor.workcycle")
 let { getRomanNumeral, ceil } = require("%sqstd/math.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
@@ -21,7 +21,6 @@ let { nextBulletIdx, currentBulletIdxPrim, currentBulletIdxSec
 let { AB_TORPEDO } = require("actionBar/actionType.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { lowerAircraftCamera } = require("camera_control")
 let { mkBtnGlare, mkActionGlare, mkConsumableSpend, mkActionBtnGlare
 } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { isNotOnTheSurface, isDeeperThanPeriscopeDepth } = require("%rGui/hud/submarineDepthBlock.nut")
@@ -480,8 +479,6 @@ function getWeapStateFlags(key) {
   return weaponryItemStateFlags[key]
 }
 
-let lowerCamera = @() lowerAircraftCamera(true)
-
 let mkWeaponBlockReasonIcon = @(isAvailable, iconComponent) @() {
   watch = isAvailable
   pos = [0, hdpx(10)]
@@ -508,7 +505,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
     return null
   let { key, getShortcut, getImage, getAlternativeImage = @() null, selShortcut = null,
     hasAim = false, fireAnimKey = "fire", canShootWithoutTarget = true,
-    needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canLowerCamera = false, canShipLowerCamera = false,
+    needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canShipLowerCamera = false,
     addChild = null, needCheckRocket = false  } = buttonConfig
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
   let altImage = getAlternativeImage()
@@ -530,10 +527,6 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   local isHotkeyPushed = false
   function onStopTouch() {
     isTouchPushed = false
-    if (canLowerCamera) {
-      clearTimer(lowerCamera)
-      lowerAircraftCamera(false)
-    }
     set_can_lower_camera(false)
     unmarkWeapKeyHold(key)
     setDrawWeaponAllowableAngles(false, -1)
@@ -583,8 +576,6 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   }
 
   function onButtonPush() {
-    if (canLowerCamera)
-      resetTimeout(0.3, lowerCamera)
     markWeapKeyHold(key)
     userHoldWeapInside.mutate(@(v) v[key] <- true)
   }

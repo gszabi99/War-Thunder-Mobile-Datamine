@@ -59,7 +59,7 @@ function getGoodsType(goods) {
   if (goods.premiumDays > 0)
     return SGT_PREMIUM
   else if (goods.currencies.len() == 1)
-    return currencyToGoodsType?[goods.currencies.findindex(@(_) true)] ?? SGT_UNKNOWN
+    return currencyToGoodsType?[goods.currencies.findindex(@(_) true)] ?? SGT_EVT_CURRENCY
   return SGT_UNKNOWN
 }
 

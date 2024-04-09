@@ -28,22 +28,15 @@
   "planeTraceFx": "trail_inversion_rainbow",
   "DamageParts": {
     "armor10": {
-      "gun1_dm": {
+      "cannon1_dm": {
         "hp": 300.0,
         "genericDamageMult": 1.7,
-        "explosionDamageMult": 6.0
+        "explosionDamageMult": [
+          6.0,
+          3.0
+        ]
       },
-      "gun2_dm": {
-        "hp": 300.0,
-        "genericDamageMult": 1.7,
-        "explosionDamageMult": 6.0
-      },
-      "gun3_dm": {
-        "hp": 300.0,
-        "genericDamageMult": 1.7,
-        "explosionDamageMult": 6.0
-      },
-      "gun4_dm": {
+      "cannon2_dm": {
         "hp": 300.0,
         "genericDamageMult": 1.7,
         "explosionDamageMult": 6.0
@@ -102,7 +95,7 @@
         }
       },
       {
-        "name": "gun1_dm",
+        "name": "cannon1_dm",
         "onHit": {
           "flame": 0.5,
           "smoke": 0.5
@@ -112,27 +105,7 @@
         }
       },
       {
-        "name": "gun2_dm",
-        "onHit": {
-          "flame": 0.5,
-          "smoke": 0.5
-        },
-        "onKill": {
-          "expl": 1.0
-        }
-      },
-      {
-        "name": "gun3_dm",
-        "onHit": {
-          "flame": 0.5,
-          "smoke": 0.5
-        },
-        "onKill": {
-          "expl": 1.0
-        }
-      },
-      {
-        "name": "gun4_dm",
+        "name": "cannon2_dm",
         "onHit": {
           "flame": 0.5,
           "smoke": 0.5

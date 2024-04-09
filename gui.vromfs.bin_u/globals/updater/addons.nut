@@ -2,7 +2,7 @@ let { loc, doesLocTextExist } = require("dagor.localize")
 let { get_settings_blk } = require("blkGetters")
 let { logerr } = require("dagor.debug")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { get_addon_size } = require("contentUpdater")
+let { get_addon_size, get_addons_size = null } = require("contentUpdater")
 let { startswith, endswith } = require("string")
 let { unique } = require("%sqstd/underscore.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
@@ -175,8 +175,12 @@ function localizeAddonsLimited(list, maxNumber) {
   })
 }
 
+let getAddonsSizeInBytes = @(addons) get_addons_size != null
+  ? get_addons_size(unique(addons))
+  : unique(addons).reduce(@(res, addon) res + get_addon_size(addon), 0)
+
 function getAddonsSizeStr(addons) {
-  let bytes = unique(addons).reduce(@(res, addon) res + get_addon_size(addon), 0)
+  let bytes = getAddonsSizeInBytes(addons)
   let mb = (bytes + (MB / 2)) / MB
   return "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
 }

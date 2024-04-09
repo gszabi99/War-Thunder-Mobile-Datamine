@@ -10,7 +10,7 @@ let { is_bit_set, ceil } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft
 } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { getUnitTags } = require("%appGlobals/unitTags.nut")
+let { getUnitTags, getUnitType } = require("%appGlobals/unitTags.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -122,6 +122,9 @@ let selSlot = Computed(function() {
     return slot
   return respawnSlots.value.findvalue(@(s) s.canSpawn)
 })
+
+let selSlotUnitType = Computed(@() "name" not in selSlot.get() ? null
+  : getUnitType(selSlot.get().name))
 
 let respawnBases = Watched([])
 
@@ -281,6 +284,7 @@ return {
   isRespawnAttached
   respawnSlots
   selSlot
+  selSlotUnitType
   playerSelectedSlotIdx
   spawnUnitName
   respawnBases

@@ -21,10 +21,10 @@ let { startTestFlight, startTestFlightByName } = require("%rGui/gameModes/startO
 let { isLoginAwardOpened, canShowLoginAwards } = require("%rGui/unlocks/loginAwardState.nut")
 let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
 let { startTutor, firstBattleTutor } = require("%rGui/tutorial/tutorialMissions.nut")
-let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
+let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
@@ -108,7 +108,7 @@ let LOGIN_AWARD = {
 }
 let BUG_REPORT = {
   name = loc("mainmenu/btnBugReport")
-  cb = openSupportTicketWndOrUrl
+  cb = openBugReport
 }
 let TUTORIAL = {
   name = loc("mainmenu/btnTutorial")

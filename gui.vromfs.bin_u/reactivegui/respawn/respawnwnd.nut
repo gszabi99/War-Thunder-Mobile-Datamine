@@ -6,9 +6,10 @@ let { round, sqrt } = require("math")
 let { deferOnce } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { AIR } = require("%appGlobals/unitConst.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn,
-  selSlot, playerSelectedSlotIdx, sparesNum
+  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum
 } = require("respawnState.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
 } = require("bulletsChoiceState.nut")
@@ -32,6 +33,7 @@ let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let respawnMap = require("respawnMap.ui.nut")
 let respawnBullets = require("respawnBullets.nut")
+let respawnAirWeaponry = require("respawnAirWeaponry.nut")
 let { bg, headerText, headerHeight, header, gap, headerMarquee, bulletsBlockMargin, bulletsBlockWidth
 } = require("respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
@@ -306,14 +308,21 @@ let updateSlotAABB = @() slotAABB(selSlot.value == null ? null
   : gui_scene.getCompAABBbyKey(selSlot.value))
 selSlot.subscribe(@(_) deferOnce(updateSlotAABB))
 
+let weaponryBlockByUnitType = {
+  [AIR] = respawnAirWeaponry,
+}
+
 function respawnBulletsPlace() {
-  let res = { watch = [slotAABB, respawnUnitSkins], onAttach = @() deferOnce(updateSlotAABB) }
+  let res = { watch = [slotAABB, respawnUnitSkins, selSlotUnitType, selSlot], onAttach = @() deferOnce(updateSlotAABB) }
   if (slotAABB.value == null)
     return res
   let contentAABB = gui_scene.getCompAABBbyKey("respawnWndContent")
   if (contentAABB == null)
     return res
-  let size = calc_comp_size(respawnBullets)
+
+  let content = selSlotUnitType.get() == null ? null
+    : (weaponryBlockByUnitType?[selSlotUnitType.get()](selSlot.get()) ?? respawnBullets)
+  let size = calc_comp_size(content)
   let posY = (slotAABB.value.t + slotAABB.value.b - size[1]) / 2  - contentAABB.t
   let maxY = max(0, contentAABB.b - contentAABB.t - size[1])
   let maxYWithSkins = max(0, contentAABB.b - contentAABB.t - size[1] - skinSize - skinTextHeight - skinPadding * 2 - hdpx(15))
@@ -322,9 +331,42 @@ function respawnBulletsPlace() {
     children = {
       key = slotAABB.value
       pos = [0, clamp(posY, 0, !respawnUnitSkins.get() ? maxY : maxYWithSkins)]
-      children = respawnBullets
+      children = content
     }
   })
+}
+
+let skinsList = @() {
+  watch = respawnUnitSkins
+  size = flex()
+  valign = ALIGN_BOTTOM
+  children = !respawnUnitSkins.get() ? null : {
+    rendObj = ROBJ_SOLID
+    color = 0x99000000
+    pos = [bulletsBlockMargin, 0]
+    padding = skinPadding
+    flow = FLOW_VERTICAL
+    children = [
+      headerText(loc("skins/select"), { size = [SIZE_TO_CONTENT, skinTextHeight] })
+      {
+        size = [bulletsBlockWidth - skinPadding * 2, skinSize]
+        clipChildren = true
+        children = {
+          size = flex()
+          behavior = Behaviors.Pannable
+          skipDirPadNav = true
+          xmbNode = {
+            canFocus = @() false
+            scrollSpeed = 5.0
+            isViewport = true
+            scrollToEdge = true
+            screenSpaceNav = true
+          }
+          children = respawnSkins
+        }
+      }
+    ]
+  }
 }
 
 let content = @() {
@@ -339,38 +381,7 @@ let content = @() {
           size = [SIZE_TO_CONTENT, flex()]
           children = [
             respawnBulletsPlace
-            @() {
-              watch = respawnUnitSkins
-              size = flex()
-              valign = ALIGN_BOTTOM
-              children = !respawnUnitSkins.get() ? null : {
-                rendObj = ROBJ_SOLID
-                color = 0x99000000
-                pos = [bulletsBlockMargin, 0]
-                padding = skinPadding
-                flow = FLOW_VERTICAL
-                children = [
-                  headerText(loc("skins/select"), { size = [SIZE_TO_CONTENT, skinTextHeight] })
-                  {
-                    size = [bulletsBlockWidth - skinPadding * 2, skinSize]
-                    clipChildren = true
-                    children = {
-                      size = flex()
-                      behavior = Behaviors.Pannable
-                      skipDirPadNav = true
-                      xmbNode = {
-                        canFocus = @() false
-                        scrollSpeed = 5.0
-                        isViewport = true
-                        scrollToEdge = true
-                        screenSpaceNav = true
-                      }
-                      children = respawnSkins
-                    }
-                  }
-                ]
-              }
-            }
+            skinsList
           ]
         }
         rightBlock

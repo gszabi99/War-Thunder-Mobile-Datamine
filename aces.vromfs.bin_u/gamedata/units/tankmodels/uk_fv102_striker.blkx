@@ -1358,43 +1358,6 @@
         }
       },
       {
-        "dummy": true,
-        "trigger": "gunner0",
-        "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "bone_gun_03",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "speedYaw": 60.0,
-        "speedPitch": 60.0,
-        "bullets": 1,
-        "turret": {
-          "head": "bone_turret_03",
-          "gun": "bone_gun_03"
-        },
-        "linkedAnimPart": {
-          "verNode": "bone_camera_gunner",
-          "verLimits": [
-            0.0,
-            90.0
-          ],
-          "verOriginLimits": [
-            -180.0,
-            180.0
-          ]
-        },
-        "limits": {
-          "yaw": [
-            -50.0,
-            130.0
-          ],
-          "pitch": [
-            -10.0,
-            20.0
-          ]
-        }
-      },
-      {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
@@ -2265,43 +2228,6 @@
                     ]
                   ]
                 }
-              }
-            },
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "bone_gun_03",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 60.0,
-              "speedPitch": 60.0,
-              "bullets": 1,
-              "turret": {
-                "head": "bone_turret_03",
-                "gun": "bone_gun_03"
-              },
-              "linkedAnimPart": {
-                "verNode": "bone_camera_gunner",
-                "verLimits": [
-                  0.0,
-                  90.0
-                ],
-                "verOriginLimits": [
-                  -180.0,
-                  180.0
-                ]
-              },
-              "limits": {
-                "yaw": [
-                  -50.0,
-                  130.0
-                ],
-                "pitch": [
-                  -10.0,
-                  20.0
-                ]
               }
             },
             {

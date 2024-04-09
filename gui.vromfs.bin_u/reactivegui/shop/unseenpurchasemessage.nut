@@ -774,7 +774,14 @@ function mkMsgContent(stackDataV, purchGroup) {
   let { rewardIcons = [], unitPlates = [], outroDelay, battleMod = [] } = stackDataV
   let { style = null } = purchGroup
   let title = titleCtors?[style](outroDelay, purchGroup) ?? wndTitle
-  let size = [max(unitPlates.len() * unitPlateWidth, min(rewardIcons.len(), rewIconsPerRow) * rewBlockWidth) + hdpx(300), SIZE_TO_CONTENT]
+  let size = [
+    max(
+      unitPlates.len() * unitPlateWidth,
+      battleMod.len() * unitPlateWidth,
+      min(rewardIcons.len(), rewIconsPerRow) * rewBlockWidth
+    ) + hdpx(300),
+    SIZE_TO_CONTENT
+  ]
   let content = {
     minWidth = hdpx(900)
     padding = [0, 0, hdpx(38), 0]
@@ -784,7 +791,11 @@ function mkMsgContent(stackDataV, purchGroup) {
     onClick = onCloseRequest
     flow = FLOW_VERTICAL
     gap = hdpx(44)
-    sound = { attach = (unitPlates.len() > 0 ? "meta_daily_reward" : "meta_unlock_unit") }
+    sound = {
+      attach = (unitPlates.len() > 0 || battleMod.len() > 0
+        ? "meta_daily_reward"
+        : "meta_unlock_unit")
+    }
     children = [
       title
       {

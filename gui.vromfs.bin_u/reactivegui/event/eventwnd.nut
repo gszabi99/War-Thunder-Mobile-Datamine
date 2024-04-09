@@ -206,7 +206,14 @@ function mkCurrencies() {
   let res = [].extend(curEventCurrencies.value, baseCurrencies)
   return {
     watch = [curEventCurrencies, curEvent]
-    children = mkCurrenciesBtns(res, curEvent.get())
+    children = {
+      pos = [saBorders[0] * 0.5, 0]
+      padding = [saBorders[0] * 0.025, saBorders[0] * 0.5]
+      rendObj = ROBJ_9RECT
+      image = gradTranspDoubleSideX
+      color = 0x70000000
+      children = mkCurrenciesBtns(res, curEvent.get()).__update({ size = SIZE_TO_CONTENT })
+    }
   }
 }
 

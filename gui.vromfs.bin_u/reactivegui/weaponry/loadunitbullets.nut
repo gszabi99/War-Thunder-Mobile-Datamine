@@ -11,6 +11,7 @@ let WT_FLARES = "flares"
 let WT_AAM = "aam" // Air-to-Air Missiles
 let WT_AGM = "agm" // Air-to-Ground Missile, Anti-Tank Guided Missiles
 let WT_ROCKETS = "rockets"
+let WT_BOMBS = "bombs"
 
 
 let fullCache = persist("fullCache", @() {})
@@ -61,29 +62,40 @@ function appendOnce(arr, v) {
     arr.append(v)
 }
 
+function getBulletsList(bulletsBlk) {
+  local bulletsList = bulletsBlk % "bullet"
+  local weaponType = WT_GUNS
+  if (bulletsList.len() != 0)
+    return { bulletsList, weaponType }
+
+  bulletsList = bulletsBlk % "rocket"
+  if (bulletsList.len() != 0) {
+    let rocket = bulletsList[0]
+    return {
+      bulletsList
+      weaponType = rocket?.smokeShell == true ? WT_SMOKE
+        : (rocket?.isFlare == true) || (rocket?.isChaff == true) ? WT_COUNTERMEASURES
+        : rocket?.smokeShell == false ? WT_FLARES
+        : rocket?.bulletType == "atgm_tank" ? WT_AGM
+        : rocket?.operated == true || rocket?.guidanceType != null ? WT_AAM
+        : WT_ROCKETS
+    }
+  }
+
+  bulletsList = bulletsBlk % "bomb"
+  if (bulletsList.len() != 0)
+    return { bulletsList, weaponType = WT_BOMBS }
+
+  return { bulletsList, weaponType }
+}
+
 function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
   if (bulletsBlk.paramCount() == 0 && bulletsBlk.blockCount() == 0)
     return null
 
-  local bulletsList = bulletsBlk % "bullet"
-  local weaponType = WT_GUNS
-  if (bulletsList.len() == 0) {
-    bulletsList = bulletsBlk % "rocket"
-    if (bulletsList.len() == 0)
-      return null
-
-    let rocket = bulletsList[0]
-    if (rocket?.smokeShell == true)
-      weaponType = WT_SMOKE
-    else if ((rocket?.isFlare == true) || (rocket?.isChaff == true))
-      weaponType = WT_COUNTERMEASURES
-    else if (rocket?.smokeShell == false)
-      weaponType = WT_FLARES
-    else if (rocket?.operated == true || rocket?.guidanceType != null)
-      weaponType = (rocket?.bulletType == "atgm_tank") ? WT_AGM : WT_AAM
-    else
-      weaponType = WT_ROCKETS
-  }
+  let { bulletsList, weaponType } = getBulletsList(bulletsBlk)
+  if (bulletsList.len() == 0)
+    return null
 
   local res = null
   foreach (b in bulletsList) {
@@ -121,7 +133,7 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
     if ("bulletName" in b)
       res.bulletNames.append(b.bulletName)
 
-    foreach (param in ["explosiveType", "explosiveMass", "explodeTreshold", "speed", "ricochetPreset"])
+    foreach (param in ["explosiveType", "explosiveMass", "explodeTreshold", "speed", "ricochetPreset", "mass"])
       if (param in paramsBlk) {
         res[param] <- paramsBlk[param]
         res.bulletDataByType[bulletType][param] <- paramsBlk[param]

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { floor, ceil } = require("%sqstd/math.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { SGT_UNIT, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
-let { curCategoryId, goodsByCategory, sortGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
+let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
 let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress
@@ -93,8 +93,11 @@ let mkGoodsState = @(goods) Computed(function() {
     if (idInProgress == goods.id)
       res = res | PURCHASING
   }
-  if ((purchasesCount.value?[goods.id].count ?? 0) != 0)
-    res = res | HAS_PURCHASES
+  foreach(id in goodsLinks.get()?[goods.id] ?? [goods.id])
+    if ((purchasesCount.value?[id].count ?? 0) != 0) {
+      res = res | HAS_PURCHASES
+      break
+    }
   return res
 })
 

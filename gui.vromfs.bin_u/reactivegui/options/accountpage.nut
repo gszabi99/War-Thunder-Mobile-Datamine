@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
-let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK } = require("%appGlobals/loginState.nut")
 let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
@@ -153,14 +152,6 @@ let logoutMsgBox = @() openMsgBox({
   ]
 })
 
-let logoutToDeleteAccountMsgBox = @() openMsgBox({
-  text = loc("mainmenu/questionDeleteAcount")
-  buttons = [
-    { id = "cancel", isCancel = true }
-    { id = "delete", text = loc("mainmenu/btnAccountDelete"), styleId = "PRIMARY", isDefault = true, cb = @() eventbus_send("deleteAccount", {}) }
-  ]
-})
-
 let mkButtonRow = @(children) !children.findvalue(@(v) v != null) ? null
   : {
       flow = FLOW_HORIZONTAL
@@ -173,11 +164,11 @@ let buttons = @() {
   flow = FLOW_VERTICAL
   gap = buttonsHGap
   children = [
-    !canChangeAccount.value ? null
-      : mkButtonRow([
-          textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
-          textButtonCommon(loc("mainmenu/btnAccountDelete"), logoutToDeleteAccountMsgBox, buttonsWidthStyle)
-        ])
+    mkButtonRow([
+      !canChangeAccount.value ? null
+        : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
+      textButtonPrimary(loc("mainmenu/support"), openSupportTicketWndOrUrl, buttonsWidthStyle)
+    ])
     mkButtonRow([
       !canLinkToGaijinAccount.value ? null
         : textButtonPrimary(loc("msgbox/btn_linkEmail"),
@@ -187,12 +178,6 @@ let buttons = @() {
         : textButtonPrimary(loc("mainmenu/btnActivateCode"),
             @() eventbus_send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
             buttonsWidthStyle)
-    ])
-    mkButtonRow([
-      textButtonPrimary(loc("mainmenu/support"),
-        openSupportTicketWndOrUrl,
-        buttonsWidthStyle)
-      textButtonPrimary(loc("options/personalData"), @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
     ])
   ]
 }

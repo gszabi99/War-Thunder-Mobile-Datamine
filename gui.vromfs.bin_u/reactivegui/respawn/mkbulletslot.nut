@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let getBulletImage = require("%appGlobals/config/bulletsPresentation.nut")
+let { getBulletImage } = require("%appGlobals/config/bulletsPresentation.nut")
 let { getAmmoTypeShortText, getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
 let { chosenBullets } = require("bulletsChoiceState.nut")
 

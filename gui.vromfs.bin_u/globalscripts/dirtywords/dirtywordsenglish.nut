@@ -45,6 +45,13 @@ excludesdata =
     ]
   },
   {
+    key = "k",
+    arr =
+    [
+      "^kukuruz"
+    ]
+  },
+  {
     key = "m",
     arr =
     [

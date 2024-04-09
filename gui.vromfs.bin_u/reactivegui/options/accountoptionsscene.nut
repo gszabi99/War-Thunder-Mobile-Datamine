@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let communityOptions = require("options/communityOptions.nut")
 let accountPage = require("accountPage.nut")
 let statisticsPage = require("statisticsPage.nut")
+let privacyPage = require("privacyPage.nut")
 let { mkOptionsScene } = require("mkOptionsScene.nut")
 let { hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { UNSEEN_HIGH, SEEN } = require("%rGui/unseenPriority.nut")
@@ -23,6 +24,11 @@ let tabs = [
     locId = "flightmenu/btnStats"
     image = "ui/gameuiskin#menu_stats.svg"
     content = statisticsPage
+  }
+  {
+    locId = "mainmenu/tabPrivacy"
+    image = "ui/gameuiskin#icon_privacy.svg"
+    content = privacyPage
   }
 ]
 

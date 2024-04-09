@@ -36,14 +36,14 @@ let allow_voice_messages_compatibility = Computed(@() allow_voice_messages.get()
 
 return cfgHudCommon.__merge({
   bomb = {
-    ctor = @() mkCircleWeaponryItem("ID_BOMBS", BombsState, hasBombs, "ui/gameuiskin#hud_bomb.svg", false)
+    ctor = @() mkCircleWeaponryItem("ID_BOMBS", BombsState, hasBombs, "ui/gameuiskin#hud_bomb.svg", false, true)
     defTransform = mkLBPos([hdpx(320), hdpx(-10)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_bomb.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
   }
 
   rocket = {
-    ctor = @() mkCircleWeaponryItem("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg")
+    ctor = @() mkCircleWeaponryItem("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", true, true)
     defTransform = mkLBPos([hdpx(227), hdpx(-287)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_rb_rocket.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -167,7 +167,12 @@ return cfgHudCommon.__merge({
   }
 
   cannons = {
-    ctor = @() mkCirclePlaneCourseGunsSingle("ID_FIRE_CANNONS", Cannon0, hasCanon0, bigButtonSize, bigButtonImgSize)
+    ctor = @() @() {
+      watch = [hasCanon0, hasMGun0]
+      children = hasCanon0.get()
+        ? mkCirclePlaneCourseGunsSingle("ID_FIRE_CANNONS", Cannon0, hasCanon0, bigButtonSize, bigButtonImgSize)
+        : mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS", MGun0, hasMGun0, bigButtonSize, bigButtonImgSize)
+    }
     defTransform = mkLBPos([hdpx(70), hdpx(-5)])
     editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -176,7 +181,9 @@ return cfgHudCommon.__merge({
   }
 
   miniguns = {
-    ctor = @() mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS", MGun0, hasMGun0)
+    ctor = @() mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS",
+      MGun0,
+      Computed(@() hasCanon0.get() && hasMGun0.get()))
     defTransform = mkLBPos([hdpx(200), hdpx(-135)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
     priority = Z_ORDER.BUTTON_PRIMARY

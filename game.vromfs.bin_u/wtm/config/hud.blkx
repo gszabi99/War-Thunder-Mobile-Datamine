@@ -1000,6 +1000,7 @@
     "mousePointerAfterCockpitOpacity": 1.0,
     "mousePointerRadius": 21.0,
     "mousePointerAir": "mouse_pointer_air.svg:58:58:K",
+    "fixedPointerAir": "point_center_air.svg:11:11:K",
     "mousePointerAfterCockpitOpacityAir": 0.45,
     "mouseAimDisplaceOpacity": 0.4,
     "mouseAimDisplaceWidth": 3.0,

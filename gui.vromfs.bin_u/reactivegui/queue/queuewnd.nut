@@ -19,12 +19,11 @@ let helpShipParts = require("%rGui/loading/complexScreens/helpShipParts.nut")
 let helpTankControls = require("%rGui/loading/complexScreens/helpTankControls.nut")
 let helpTankCaptureZone = require("%rGui/loading/complexScreens/helpTankCaptureZone.nut")
 let helpTankParts = require("%rGui/loading/complexScreens/helpTankParts.nut")
+let helpAirAiming = require("%rGui/loading/complexScreens/helpAirAiming.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { TANK } = require("%appGlobals/unitConst.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { leaveSquad } = require("%rGui/squad/squadManager.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -44,6 +43,13 @@ let needShowQueueWindow = keepref(Computed(@() !isInBattle.value
   && (isInQueue.value || isInJoiningGame.value)))
 let canCancelJoining = Watched(false)
 isInJoiningGame.subscribe(@(_) canCancelJoining(false))
+
+let lastQueueMode = mkWatched(persist, "lastQueueMode", "")
+curQueue.subscribe(@(v) (v?.params.mode ?? "") == "" ? null : lastQueueMode.set(v.params.mode))
+
+let missionCampaign = Computed(@() lastQueueMode.get().startswith("air_event") // "air_event_1_april_pony"
+  ? "air"
+  : curCampaign.get())
 
 let playersCountInQueue = Computed(function() {
   if (curQueue.value == null || queueInfo.value == null)
@@ -197,10 +203,10 @@ let mkText = @(text) {
 }.__update(textParams)
 
 let hintIcon = @() {
-  watch = unitType
+  watch = missionCampaign
   size = [hintIconSize, hintIconSize]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{unitType.value == TANK ? hintIconTank : hintIconShip}:{hintIconSize}:{hintIconSize}:P")
+  image = Picture($"ui/gameuiskin#{missionCampaign.value == "tanks" ? hintIconTank : hintIconShip}:{hintIconSize}:{hintIconSize}:P")
 }
 
 let aimingHint = {
@@ -214,12 +220,15 @@ let aimingHint = {
       valign = ALIGN_CENTER
       children = mkTextRow(loc("hints/wtm_ship_mission_aiming"), mkText, { ["{button}"] = hintIcon }) //warning disable: -forgot-subst
     }
-    textParams.__merge({
+    @() textParams.__merge({
+      watch = missionCampaign
       size = [flex(), SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER
-      text = loc("hints/wtm_ship_mission_aiming_more_damage")
+      text = loc(missionCampaign.get() == "air"
+        ? "hints/wtm_air_mission_aiming_forestall"
+        : "hints/wtm_ship_mission_aiming_more_damage")
     })
   ]
 }
@@ -227,15 +236,16 @@ let aimingHint = {
 let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankCaptureZone ]
 //no need to subscribe on sharedStatsByCampaign because we do not want to switch loading screen during loading
 let mkBgImagesByCampaign = {
+  air   = @() helpAirAiming
   ships = @() helpShipParts
   tanks = @() get_mp_session_id_int() == -1 ? helpTankControls()
     : tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
 }
 
 let bgImage = @() {
-  watch = curCampaign
+  watch = missionCampaign
   size = flex()
-  children = mkBgImagesByCampaign?[curCampaign.value]()
+  children = mkBgImagesByCampaign?[missionCampaign.get()]()
 }
 
 let key = {}

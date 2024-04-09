@@ -9,7 +9,6 @@ let {
   isAdsVisible = Watched(false),
   canShowAds = Watched(false),
   showAdsForReward = @(_) null
-  onTryShowNotAvailableAds = @() false
 } = is_ios || debugAs == "ios" ? require("byPlatform/adsIOS.nut")
   : is_android || is_pc ? require("byPlatform/adsAndroid.nut") //for pc it in the debug mode
   : null
@@ -19,8 +18,7 @@ isInMenu.subscribe(@(_) isAdsVisible(false)) //in case of some bug by ads update
 let changeAttachedAdsButtons = @(v) attachedAdsButtons.set(attachedAdsButtons.get() + v)
 
 function showNotAvailableAdsMsg() {
-  if (!onTryShowNotAvailableAds())
-    openFMsgBox({ text = loc("msg/adsNotReadyYet") })
+  openFMsgBox({ text = loc("msg/adsNotReadyYet") })
 }
 
 return {

@@ -20,6 +20,8 @@ let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch } = require("%sqstd/platform.nut")
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
 
+let {consentUpdated, showConsent, isGDPR} = require("%rGui/consent/consentState.nut")
+
 let fbButtonVisible = getCurrentLanguage() != "Russian"
 let gpButtonVisible = getGPStatus() == GP_SUCCESS
 let loginName = mkWatched(persist, "loginName", "")
@@ -433,6 +435,13 @@ let termsOfServiceUrl = urlText(loc("termsOfService"), TERMS_OF_SERVICE_URL, url
 let privacyPolicyUrl = urlText(loc("privacyPolicy"), PRIVACY_POLICY_URL, urlOvr)
 let checkAutoLogin = @() eventbus_send("login.checkAutoStart", {})
 
+consentUpdated.subscribe(function(_) {
+  checkAutoLogin()
+  consentUpdated.unsubscribe(callee())
+})
+
+let checkConsent = @() isGDPR() ? showConsent(false) : checkAutoLogin()
+
 let mkLoginWnd = @() {
   key = {}
   size = flex()
@@ -442,7 +451,7 @@ let mkLoginWnd = @() {
 
   function onAttach() {
     eventbus_send("authState.request", {})
-    deferOnce(checkAutoLogin)
+    deferOnce(checkConsent)
     setInterval(1.0, updateResendTimer)
   }
   function onDetach() {

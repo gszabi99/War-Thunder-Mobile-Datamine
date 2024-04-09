@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_mission_time = @() ::get_mission_time() } = require("mission")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { playSound } = require("sound_wt")
 let { btnBgColor, borderColorPushed, borderNoAmmoColor, borderColor,
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
@@ -18,6 +19,7 @@ let { Cannon0, MGun0, hasCanon0, hasMGun0 } = require("%rGui/hud/airState.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
 let { mkBtnZone, lockButtonIcon, canLock}  = require("hudButtonsPkg.nut")
+let { lowerAircraftCamera } = require("camera_control")
 
 let bigButtonSize = hdpxi(150)
 let bigButtonImgSize = (0.65 * bigButtonSize + 0.5).tointeger()
@@ -361,7 +363,9 @@ function getWeapStateFlags(key) {
   return weaponryItemStateFlags[key]
 }
 
-function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrough = true){
+let lowerCamera = @() lowerAircraftCamera(true)
+
+function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrough, canLowerCamera){
   let isDisabled = mkIsControlDisabled(shortcutId)
   let isAvailable = Computed(@() isWeaponAvailable(weapon.get()) && !isDisabled.get())
   let stateFlags = getWeapStateFlags(shortcutId)
@@ -369,6 +373,10 @@ function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrou
   local isHotkeyPushed = false
   function onStopTouch() {
     isTouchPushed = false
+    if (canLowerCamera) {
+      clearTimer(lowerCamera)
+      lowerAircraftCamera(false)
+    }
     unmarkWeapKeyHold(shortcutId)
     if (shortcutId in userHoldWeapInside.value)
       userHoldWeapInside.mutate(@(v) v.$rawdelete(shortcutId))
@@ -380,6 +388,8 @@ function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrou
   }
 
   function onButtonPush() {
+    if (canLowerCamera)
+      resetTimeout(0.3, lowerCamera)
     markWeapKeyHold(shortcutId)
     userHoldWeapInside.mutate(@(v) v[shortcutId] <- true)
   }

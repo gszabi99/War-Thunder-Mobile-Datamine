@@ -50,6 +50,15 @@ let goodsWithTimers = Computed(@() (campConfigs.value?.allGoods ?? {})
   .filter(@(g) (g?.timeRange.start ?? 0) > 0 || (g?.timeRange.end ?? 0) > 0))
 let inactiveGoodsByTime = Watched({})
 let nextUpdateTime = Watched({ time = 0 })
+let goodsLinks = Computed(@() (campConfigs.get()?.allGoods ?? [])
+  .reduce(function(res, goods) {
+    if (goods.relatedGaijinId == "")
+      return res
+    let list = [goods.id, goods.relatedGaijinId]
+    foreach(id in list)
+      res[id] <- list
+    return res
+  }, {}))
 
 function updateGoodsTimers() {
   let inactive = {}
@@ -297,6 +306,7 @@ return {
   goodsIdsByCategory
   shopGoods
   shopGoodsInternal
+  goodsLinks
   sortGoods
 
   hasUnseenGoodsByCategory

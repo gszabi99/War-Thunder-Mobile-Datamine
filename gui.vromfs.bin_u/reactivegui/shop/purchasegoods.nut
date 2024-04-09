@@ -8,10 +8,12 @@ let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { activeOffer } = require("offerState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { playSound } = require("sound_wt")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
+let { SGT_EVT_CURRENCY } = require("%rGui/shop/shopConst.nut")
 
 function getCantPurchaseReason(goods) {
   let hasUnits = goods.units.filter(@(unitId) myUnits.value?[unitId] != null)
@@ -83,6 +85,23 @@ function purchaseOfferImpl(offer, currencyId, price) {
   return ""
 }
 
+function currencyWithIconComp(item){
+  let curId = item.currencies.findindex(@(_) true) ?? ""
+  let value = item.currencies?[curId] ?? 0
+  return {
+    flow = FLOW_VERTICAL
+    size = [flex(), SIZE_TO_CONTENT]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    gap = hdpx(30)
+    children = [
+      msgBoxText(loc("shop/orderQuestion"), { size = SIZE_TO_CONTENT })
+      mkCurrencyComp(value, curId, CS_INCREASED_ICON)
+      msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
+    ]
+  }
+}
+
 function purchaseGoods(goodsId) {
   logShop($"User tries to purchase: {goodsId}")
   if (shopPurchaseInProgress.value != null)
@@ -112,7 +131,9 @@ function purchaseGoods(goodsId) {
   }
 
   openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp)) }),
+    goods.gtype == SGT_EVT_CURRENCY
+      ? currencyWithIconComp(goods)
+      : loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp)) }),
     { price = price, currencyId },
     purchaseFunc,
     mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}"))

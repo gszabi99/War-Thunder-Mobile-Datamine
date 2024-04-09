@@ -15,7 +15,7 @@ let goodsTypes = [
   "SGT_PREMIUM"
   "SGT_UNIT"
   "SGT_CONSUMABLES"
-  "SGT_WARBONDS"
+  "SGT_EVT_CURRENCY"
   "SGT_EVENT_KEYS"
   "SGT_PLATINUM"
   "SGT_LOOTBOX"
@@ -24,7 +24,7 @@ let goodsTypes = [
 let currencyToGoodsType = {
   gold = goodsTypes.SGT_GOLD
   wp = goodsTypes.SGT_WP
-  warbond = goodsTypes.SGT_WARBONDS
+  warbond = goodsTypes.SGT_EVT_CURRENCY
   eventKey = goodsTypes.SGT_EVENT_KEYS
   platinum = goodsTypes.SGT_PLATINUM
 }

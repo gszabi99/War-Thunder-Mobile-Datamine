@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { format } = require("string")
 let { doesLocTextExist } = require("dagor.localize")
 let { getWeaponId } = require("%rGui/weaponry/loadUnitBullets.nut")
 
@@ -64,10 +65,33 @@ function getAmmoAdviceText(bSet) {
   return (locId == "" || !doesLocTextExist(locId)) ? "" : loc(locId)
 }
 
+let isCaliberCannon = @(caliberMm) caliberMm > 15
+
+let withCount = @(text, count) count <= 1 ? text
+  : "".concat(text, format(loc("weapons/counter"), count)) //todo: separate lang instead of WT one
+
+function getWeaponShortName(weapon, bSet) {
+  let { isBulletBelt = false, caliber = 0, bullets = null, bulletDataByType = null,
+    weaponType = null, proximityFuseRadius = 0
+  } = bSet
+  if (isBulletBelt)
+    return loc(isCaliberCannon(caliber) ? "weapons/cannon" : "weapons/minigun", { caliber })
+
+  let { total } = weapon
+  let { mass = 0 } = bulletDataByType?[bullets?[0]]
+  if (weaponType != null) {
+    let locId = proximityFuseRadius > 0 ? $"weapons/{weaponType}_with_fuse" : $"weapons/{weaponType}"
+    return withCount(loc(locId, { caliber, mass }), total)
+  }
+
+  return weapon.weaponId
+}
+
 return {
   getAmmoNameText
   getAmmoNameShortText
   getAmmoTypeShortText
   getAmmoTypeText
   getAmmoAdviceText
+  getWeaponShortName
 }
