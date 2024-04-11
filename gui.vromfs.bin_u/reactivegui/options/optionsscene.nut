@@ -1,9 +1,12 @@
-let soundOptions = require("options/soundOptions.nut")
+let { soundOptions } = require("options/soundOptions.nut")
 let { graphicOptions } = require("options/graphicOptions.nut")
 let { langOptions } = require("options/langOptions.nut")
 let { controlsOptions } = require("options/controlsOptions.nut")
 let { tankControlsOptions } = require("options/tankControlsOptions.nut")
 let { shipControlsOptions } = require("options/shipControlsOptions.nut")
+//
+
+
 let { mkOptionsScene } = require("mkOptionsScene.nut")
 
 let tabs = [ // id, locId, image, options, content
@@ -38,6 +41,13 @@ let tabs = [ // id, locId, image, options, content
     image = "ui/gameuiskin#unit_ship.svg"
     options = shipControlsOptions
   }
+  //
+
+
+
+
+
+
 ]
 
 return mkOptionsScene("optionsScene", tabs)

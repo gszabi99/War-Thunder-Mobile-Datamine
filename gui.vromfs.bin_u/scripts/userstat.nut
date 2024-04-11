@@ -137,13 +137,16 @@ function updateValidationTimer(needValidate) {
 updateValidationTimer(needValidateMissingData.value)
 needValidateMissingData.subscribe(updateValidationTimer)
 
-registerHandler("ChangeStats", function(result) {
+function onChangeStats(result) {
   console_print(result)
   if (!result?.error) {
     unlocksUpdatable.forceRefresh()
     statsUpdatable.forceRefresh()
   }
-})
+}
+
+registerHandler("ChangeStats", onChangeStats)
+registerHandler("ClnChangeStats", onChangeStats)
 
 function getDebugSimilarStatsText(stat) {
   let similar = []

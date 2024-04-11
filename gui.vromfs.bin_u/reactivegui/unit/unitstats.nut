@@ -3,7 +3,7 @@ let { round, round_by_value, lerpClamped } = require("%sqstd/math.nut")
 let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { applyAttrLevels } = require("%rGui/unitAttr/unitAttrValues.nut")
-let { TANK, SHIP, SUBMARINE } = require("%appGlobals/unitConst.nut")
+let { TANK, SHIP, SUBMARINE, AIR } = require("%appGlobals/unitConst.nut")
 let { get_game_params } = require("gameparams")
 let { attrPresets } = require("%rGui/unitAttr/unitAttrState.nut")
 
@@ -52,10 +52,15 @@ let valueRangeTank = {
   powerToWeightRatio = [0, 50]
 }
 
+let valueRangeAir = {
+  maxSpeed = [367, 730]
+}
+
 let valueRange = {
   [SHIP] = valueRangeShip,
   [SUBMARINE] = valueRangeShip,
   [TANK] = valueRangeTank,
+  [AIR] = valueRangeAir,
 }
 
 let allCannons = {
@@ -202,6 +207,30 @@ let statsTank = {
   }
 }.map(@(cfg, id) mkStat(id, cfg, TANK))
 
+let statsAir = {
+  massPerSec = {
+    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/kgPerSec"))
+  }
+  maxSpeed = {
+    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/kmh"))
+  }
+  maxSpeedAlt = {
+    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/meters_alt"))
+  }
+  maxAltitude = {
+    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/meters_alt"))
+  }
+  turnTime = {
+    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/seconds"))
+  }
+  climbSpeed = {
+    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/metersPerSecond_climbSpeed"))
+  }
+  wingLoading = {
+    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/kg_per_sq_meters_wing_loading"))
+  }
+}.map(@(cfg, id) mkStat(id, cfg, AIR))
+
 let statsCfgShip = {
   full = [
     statsShip.shipCrewMax
@@ -251,10 +280,28 @@ let statsCfgTank = {
   ]
 }
 
+let statsCfgAir = {
+  full = [
+    statsAir.maxSpeed
+    statsAir.maxSpeedAlt
+    statsAir.maxAltitude
+    statsAir.turnTime
+    statsAir.climbSpeed
+    statsAir.wingLoading
+  ]
+  short = [
+    statsAir.massPerSec
+    statsAir.maxSpeed
+    statsAir.turnTime
+    statsAir.climbSpeed
+  ]
+}
+
 let statsCfg = {
   [SHIP] = statsCfgShip,
   [SUBMARINE] = statsCfgSubmarine,
   [TANK] = statsCfgTank,
+  [AIR] = statsCfgAir
 }
 
 let mkDamageText = @(dmg, shotFreq) shotFreq <= 0 ? $"{round(dmg)}►"

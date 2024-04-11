@@ -58,13 +58,15 @@ function mkGoodsLootbox(goods, _, state, animParams) {
   let { lootboxes, isShowDebugOnly = false, timeRange = null } = goods
   let lootboxId = lootboxes.findindex(@(_) true)
   let onClick = @() openGoodsPreview(goods.id)
+  let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
+
   return mkGoodsWrap(
     goods,
     onClick,
     @(sf, canPurchase) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
-      mkBgParticles([goodsSmallSize[0], goodsBgH])
+      bgParticles
       borderBg
       sf & S_HOVER ? bgHiglight : null
       lootboxId == null ? null

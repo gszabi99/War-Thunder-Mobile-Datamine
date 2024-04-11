@@ -21,7 +21,7 @@
   "bEnablePause": false,
   "bullets": 250,
   "bulletsCluster": 1,
-  "reloadTime": 50.0,
+  "reloadTime": 10.0,
   "bulletsCartridge": 300,
   "fxType": "muzzle_ground_30mm",
   "fxMultipleSpawn": true,

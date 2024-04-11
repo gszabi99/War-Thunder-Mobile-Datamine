@@ -21,6 +21,7 @@ function mkUserstatWatch(id, defValue = {}) {
 let userstatDescList = mkUserstatWatch("descList")
 let userstatUnlocks = mkUserstatWatch("unlocks")
 let userstatStats = mkUserstatWatch("stats")
+let statsInProgress = mkWatched(persist, "statsInProgress", {})
 
 let getStatsActualTimeLeft = @() (userstatStats.value?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.value
 let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
@@ -45,6 +46,29 @@ function actualizeStats() {
     eventbus_send($"userstat.stats.refresh", {})
 }
 
+registerHandler("ClnChangeStats", function(result, context) {
+  let { mode, stat } = context
+  if (stat in statsInProgress.get())
+    statsInProgress.mutate(@(v) delete v[stat])
+  if (!result?.error)
+    return
+
+  log("ClnChangeStats result = ", result)
+  logerr($"Failed to change stat {mode}/{stat}")
+})
+
+function userstatSetStat(mode, stat, value, context = {}) {
+  statsInProgress.mutate(@(v) v[stat] <- true)
+  request("ClnChangeStats",
+    {
+      data = {
+        [stat] = { ["$set"] = value },
+        ["$mode"] = mode
+      }
+    },
+    context.__merge({ mode, stat, value }))
+}
+
 return {
   isUserstatMissingData
   userstatDescList
@@ -59,4 +83,7 @@ return {
   userstatRequest = request
   userstatRegisterHandler = registerHandler //main handler for actions
   userstatRegisterExecutor = registerExecutor //custom handler for actions
+
+  userstatSetStat
+  statsInProgress
 }

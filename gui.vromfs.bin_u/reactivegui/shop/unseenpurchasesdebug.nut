@@ -31,6 +31,8 @@ let fakeUnseenPurchases = {
       { id = "playerExp", gType = "booster", count = 2 },
       { id = "germ_ru251", subId = "fiction", gType = "skin", count = 0 },
       { id = "uk_destroyer_tribal", subId = "upgraded", gType = "skin", count = 0 },
+      { id = "pony_fighter", gType = "battleMod", count = 36000 },
+      { id = "air_cbt_access", gType = "battleMod", count = 36000 },
     ]
   }
 }

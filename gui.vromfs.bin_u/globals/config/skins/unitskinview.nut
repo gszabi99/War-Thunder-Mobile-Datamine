@@ -56,6 +56,18 @@ return {
       "": "tl_camo_grey_yellow_lines",
       "upgraded": "fr_camo_vert_olive_arme"
     },
+    "fr_amx_13_hot": {
+      "": "fr_camo_vert_olive_arme",
+      "desert": "fr_camo_green_sand_brown",
+      "desert2": "fr_camo_jaune_sahara",
+      "winter": "tl_camo_usa_colors"
+    },
+    "fr_amx_30_1972": {
+      "": "fr_camo_vert_olive_arme",
+      "desert": "fr_camo_green_sand_brown",
+      "desert2": "fr_camo_jaune_sahara",
+      "winter": "tl_camo_usa_colors"
+    },
     "fr_amx_30_b2_brenus": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
@@ -64,9 +76,21 @@ return {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
     },
+    "fr_amx_30_dca_reskin": {
+      "": "fr_camo_vert_olive_arme",
+      "desert": "fr_camo_green_sand_brown",
+      "desert2": "fr_camo_jaune_sahara",
+      "winter": "tl_camo_usa_colors"
+    },
     "fr_amx_32_105": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
+    },
+    "fr_amx_50_surbaisse": {
+      "": "fr_camo_vert_olive_arme",
+      "desert": "fr_camo_green_sand_brown",
+      "desert2": "fr_camo_jaune_sahara",
+      "winter": "tl_camo_usa_colors"
     },
     "fr_amx_m4": {
       "": "fr_camo_vert_olive_arme",
@@ -218,6 +242,10 @@ return {
       "desert": "ger_camo_dunkelgelb",
       "winter": "tl_camo_red_grey_lines"
     },
+    "germ_flakpanzer_IV_Ostwind_reskin3": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_small"
+    },
     "germ_flakpanzer_IV_Wirbelwind": {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_winter_lines"
@@ -275,6 +303,14 @@ return {
     "germ_mkpz_m48a2ga2": {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_modern_threecolor"
+    },
+    "germ_panzerbefelhswagen_VI_P": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_small"
+    },
+    "germ_panzerjager_nashorn": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_small"
     },
     "germ_panzerjager_tiger": {
       "": "ger_camo_dunkelgelb",
@@ -418,6 +454,10 @@ return {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green"
     },
+    "germ_vk_3002m_reskin": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_small"
+    },
     "germ_wiesel_1_mk20": {
       "": "ger_camo_carc",
       "desert": "ger_camo_modern_threecolor",
@@ -439,6 +479,10 @@ return {
     "il_magach_6r": {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
+    },
+    "it_b1_centauro_romor": {
+      "": "it_camo_green",
+      "upgraded": "it_camo_modern_three_color"
     },
     "it_leopard_1a5": {
       "": "it_camo_olive_green",
@@ -468,9 +512,21 @@ return {
       "": "it_camo_olive_green",
       "upgraded": "it_camo_threecolor_modern"
     },
+    "it_otobreda_sidam_25_reskin": {
+      "": "it_camo_green",
+      "upgraded": "it_camo_modern_three_color"
+    },
     "it_sherman_vc_firefly": {
       "": "it_camo_desert_modern",
       "forest": "it_camo_olive_green"
+    },
+    "it_vbc_pt2": {
+      "": "it_camo_green",
+      "upgraded": "it_camo_modern_three_color"
+    },
+    "it_vcc_80_hitfist_60": {
+      "": "it_camo_green",
+      "upgraded": "it_camo_modern_three_color"
     },
     "jp_armoredcruiser_ikoma": {
       "": "camo_darkgrey_big_spots"
@@ -483,6 +539,9 @@ return {
     },
     "jp_battleship_hyuga": {
       "upgraded": "camo_bluewaves"
+    },
+    "jp_battleship_mutsu": {
+      "darkbrown_spots_prem": "camo_darkbrown_spots"
     },
     "jp_battleship_settsu": {
       "upgraded": "camo_bluegray_spots"
@@ -751,6 +810,9 @@ return {
     },
     "uk_sub_type_v": {
       "upgraded": "camo_polish_bluegeometry"
+    },
+    "uk_sub_valiant": {
+      "upgraded": "camo_bluegray_geometry"
     },
     "uk_ystervark_spaa": {
       "": "uk_camo_very_dark_drab",
@@ -1386,8 +1448,10 @@ return {
       "darkgray_blotch": "camo_darkgray_blotch",
       "disruptive_gray": "camo_disruptive_gray",
       "factory": "camo_navygrey_5",
+      "grayriver": "camo_grayriver",
       "greencoast": "camo_greencoast",
       "greenwhite_spots": "camo_greenwhite_spots",
+      "lightblue_geometry": "camo_lightblue_geometry",
       "olive_spots": "camo_olive_spots",
       "threegreenspots": "camo_threegreenspots",
       "upgraded": "camo_navygrey_5"

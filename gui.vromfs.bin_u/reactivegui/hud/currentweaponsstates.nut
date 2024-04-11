@@ -34,10 +34,8 @@ let shipWeaponsList = [
 
 let submarineWeaponList = [
   "ID_ZOOM"
-//
-
-
-
+  "EII_ROCKET"
+  "EII_ROCKET_SECONDARY"
   "EII_TORPEDO"
   "EII_MINE"
   "EII_DEPTH_CHARGE"
@@ -60,16 +58,6 @@ let shipGunTriggers = [
   TRIGGER_GROUP_EXTRA_GUN_4
 ]
 
-let aircraftWeaponsList = [
-  "ID_WTM_RETURN_TO_SHIP"
-  "ID_WTM_RETURN_TO_SHIP_2"
-  "ID_WTM_RETURN_TO_SHIP_3"
-  "ID_WTM_RETURN_TO_SHIP_4"
-  "ID_WTM_AIRCRAFT_CHANGE"
-  "ID_WTM_AIRCRAFT_GROUP_ATTACK"
-  "ID_WTM_AIRCRAFT_RETURN"
-]
-
 let shipSelectShortcuts = {
   [TRIGGER_GROUP_PRIMARY] = "ID_SHIP_WEAPON_PRIMARY",
   [TRIGGER_GROUP_SECONDARY] = "ID_SHIP_WEAPON_SECONDARY",
@@ -89,7 +77,7 @@ let fixedPositionWeapons = [
   "EII_STRATEGY_MODE"
 ].reduce(@(res, v) res.__update({ [v] = true }), {})
 
-let weaponsList = Computed(@() unitType.value == AIR ? aircraftWeaponsList
+let weaponsList = Computed(@() unitType.value == AIR ? []
   : unitType.value == TANK ? []
   : (unitType.value == SUBMARINE ? submarineWeaponList : shipWeaponsList))
 

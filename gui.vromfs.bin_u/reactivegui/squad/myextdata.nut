@@ -10,6 +10,7 @@ let { myClustersRTT, queueDataCheckTime } = require("%appGlobals/squadState.nut"
 let { readyCheckTime } = require("readyCheck.nut")
 let { mRankCheckTime } = require("mRankCheck.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 
 let curUnits = keepref(Computed(function() {
   let { allUnits = null } = serverConfigs.value
@@ -34,6 +35,13 @@ let missingAddons = keepref(Computed(function(prev) {
   return isEqual(prev, res) ? prev : res
 }))
 
+let myBattleMods = keepref(Computed(function(prev) {
+  let res = activeBattleMods.get().filter(@(v) v)
+    .keys()
+    .sort()
+  return isEqual(prev, res) ? prev : res
+}))
+
 bindSquadROVar("campaign", curCampaign)
 bindSquadROVar("units", curUnits)
 bindSquadROVar("missingAddons", missingAddons)
@@ -43,3 +51,4 @@ bindSquadROVar("readyCheckTime", readyCheckTime)
 bindSquadROVar("mRankCheckTime", mRankCheckTime)
 bindSquadROVar("queueDataCheckTime", queueDataCheckTime)
 bindSquadROVar("clustersRTT", myClustersRTT)
+bindSquadROVar("battleMods", myBattleMods)

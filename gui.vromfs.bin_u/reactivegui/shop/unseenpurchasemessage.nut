@@ -130,15 +130,19 @@ let stackData = Computed(function() {
   let rewardIcons = [].extend(currency, premium, item, decorator, booster, skin)
   let unitPlates = [].extend(unitUpgrade, unit)
 
-  let idxOffsetPlates = rewardIcons.len()
-  rewardIcons.each(@(v, i) v.idx <- i)
-  unitPlates.each(@(v, i) v.idx <- idxOffsetPlates + i)
+  local lastIdx = -1
+  unitPlates.each(@(v) v.idx <- ++lastIdx)
+  battleMod.each(@(v) v.idx <- ++lastIdx)
+  rewardIcons.each(@(v) v.idx <- ++lastIdx)
 
-  let rewardIconsStartDelay = aIntroTime
-  let unitPlatesStartDelay = rewardIconsStartDelay + (rewardIcons.len() * aRewardAnimTotalTime)
-  let outroDelay = unitPlatesStartDelay + (unitPlates.len() * aRewardAnimTotalTime) + aOutroExtraDelay
-  rewardIcons.each(@(v, i) v.startDelay <- rewardIconsStartDelay + (i * aRewardAnimTotalTime))
+  let unitPlatesStartDelay = aIntroTime
+  let bModeStartDelay = unitPlatesStartDelay + unitPlates.len() * aRewardAnimTotalTime
+  let rewardIconsStartDelay = bModeStartDelay + battleMod.len() * aRewardAnimTotalTime
+  let outroDelay = rewardIconsStartDelay + rewardIcons.len() * aRewardAnimTotalTime + aOutroExtraDelay
+
   unitPlates.each(@(v, i) v.startDelay <- unitPlatesStartDelay + (i * aRewardAnimTotalTime))
+  battleMod.each(@(v, i) v.startDelay <- bModeStartDelay + (i * aRewardAnimTotalTime))
+  rewardIcons.each(@(v, i) v.startDelay <- rewardIconsStartDelay + (i * aRewardAnimTotalTime))
 
   return {
     outroDelay
@@ -312,8 +316,11 @@ function mkDecoratorRewardIcon(startDelay, decoratorId) {
     size = [SIZE_TO_CONTENT, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = decoratorCompByType[decoratorType.value](decoratorId)
-      .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+    children = [
+      mkHighlight(startDelay, aRewardIconFlareScale)
+      decoratorCompByType[decoratorType.value](decoratorId)
+        .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+    ]
   }
 }
 
@@ -391,16 +398,19 @@ function mkSkinRewardIcon(startDelay, unitName, skinName) {
     size = [SIZE_TO_CONTENT, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = {
-      size = [skinIconSize, skinIconSize]
-      rendObj = ROBJ_MASK
-      image = Picture($"ui/gameuiskin#slot_mask.svg:{skinIconSize}:{skinIconSize}:P")
-      children = {
+    children = [
+      mkHighlight(startDelay, aRewardIconFlareScale)
+      {
         size = [skinIconSize, skinIconSize]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{skinPresentation.image}:{skinIconSize}:{skinIconSize}:P")
-      }
-    }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+        rendObj = ROBJ_MASK
+        image = Picture($"ui/gameuiskin#slot_mask.svg:{skinIconSize}:{skinIconSize}:P")
+        children = {
+          size = [skinIconSize, skinIconSize]
+          rendObj = ROBJ_IMAGE
+          image = Picture($"ui/gameuiskin#{skinPresentation.image}:{skinIconSize}:{skinIconSize}:P")
+        }
+      }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+    ]
   }
 }
 
@@ -487,14 +497,15 @@ function mkUnitPlate(unitInfo) {
   }
 }
 
-function mkBattleModEventUnitPlate(battleMod) {
-  let unit = battleMod.unitCtor()
+function mkBattleModEventUnitPlate(bmp, reward) {
+  let unit = bmp.unitCtor()
+  let { startDelay } = reward
   return {
     size = [ unitPlateWidth, unitPlateHeight ]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      mkHighlight(0, aUnitPlateFlareScale)
+      mkHighlight(startDelay, aUnitPlateFlareScale)
       {
         size = [ unitPlateWidth, unitPlateHeight ]
         children = {
@@ -503,29 +514,59 @@ function mkBattleModEventUnitPlate(battleMod) {
           children = [
             mkUnitBg(unit)
             mkUnitImage(unit)
-            mkBattleModEventUnitText(battleMod, REWARD_STYLE_MEDIUM, 2)
+            mkBattleModEventUnitText(bmp, REWARD_STYLE_MEDIUM, 2)
           ]
         }
-      }.__update(mkRewardAnimProps(0, aUnitPlateSelfScale))
+      }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))
+    ]
+  }
+}
+
+function mkBattleModText(bmp, reward) {
+  let { icon = null, locId = "unknown" } = bmp
+  let { startDelay } = reward
+  return {
+    size = [rewBlockWidth, SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    gap = rewIconToTextGap
+    children = [
+      {
+        size = [rewIconSize, rewIconSize]
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        children = [
+          mkHighlight(startDelay, aRewardIconFlareScale)
+          icon == null ? null
+            : {
+                size = [rewIconSize, rewIconSize]
+                rendObj = ROBJ_IMAGE
+                image = Picture($"{icon}:{rewIconSize}:{rewIconSize}:P")
+              }
+                .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+        ]
+      }
+      mkRewardLabelMultiline(startDelay, loc(locId))
     ]
   }
 }
 
 let battleModeViewCtors = {
   eventUnit = mkBattleModEventUnitPlate
+  common = mkBattleModText
 }
 
-let mkBattleModeRewards = @(data) data.len() == 0 ? null : @() {
+let mkBattleModeRewards = @(rewards) rewards.len() == 0 ? null : @() {
   watch = serverConfigs
   flow = FLOW_VERTICAL
   gap = unitPlatesGap
   children = arrayByRows(
-    data
+    rewards
       .map(function(v) {
         let bmp = getBattleModPresentation(v.id)
         if (bmp.viewType not in battleModeViewCtors)
-          logerr($"Unknown battle mode reward view type: {bmp.id}")
-        return battleModeViewCtors?[bmp.viewType]?(bmp)
+          logerr($"Unknown battle mode reward view type: {v.id}")
+        return battleModeViewCtors?[bmp.viewType]?(bmp, v)
       })
       .filter(@(v) v != null),
     unitsPerRow)
@@ -805,9 +846,9 @@ function mkMsgContent(stackDataV, purchGroup) {
         halign = ALIGN_CENTER
         gap = rewBlocksVGap
         children = [
-          mkRewardIconsBlock(rewardIcons)
-          mkBattleModeRewards(battleMod)
           mkUnitRewards(unitPlates)
+          mkBattleModeRewards(battleMod)
+          mkRewardIconsBlock(rewardIcons)
         ]
       }
       mkTapToContinueText(outroDelay)

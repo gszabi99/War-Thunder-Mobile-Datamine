@@ -1,0 +1,114 @@
+{
+  "lastClip": true,
+  "lastclip_horizon": true,
+  "clipmap_tex_mips": 5,
+  "z_far": 50000.0,
+  "mapCoord0": [
+    -65536.0,
+    -65536.0
+  ],
+  "mapCoord1": [
+    65536.0,
+    65536.0
+  ],
+  "minAreaSize": [
+    6000.0,
+    6000.0
+  ],
+  "aiMapCoord0": [
+    -20384.0,
+    -20384.0
+  ],
+  "aiMapCoord1": [
+    20384.0,
+    20384.0
+  ],
+  "water_level": 0.0,
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 0,
+  "numBorderCellsZPos": 0,
+  "numBorderCellsZNeg": 0,
+  "mirrorShrinkXPos": 64.0,
+  "mirrorShrinkXNeg": 64.0,
+  "mirrorShrinkZPos": 64.0,
+  "mirrorShrinkZNeg": 64.0,
+  "gridSteps": [
+    3250.0,
+    3250.0
+  ],
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
+  "average_ground_level": 16.0,
+  "clipmap": {
+    "texelSize": 0.03125,
+    "lastClipSize": 512
+  },
+  "earth": {
+    "clampZ": true,
+    "clampX": true
+  },
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n*",
+      "microdetail_scan_gravel_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_grass_a_tex_n*",
+      "microdetail_forest_floor_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_wood_a_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 1.11
+  },
+  "shader_vars": {
+    "specular_detect_land_color": [
+      1.0,
+      -0.5,
+      0.2,
+      0.01
+    ],
+    "translucency_detection_hardness": 2.0,
+    "land_smoothness_detect_color": [
+      0.57,
+      0.52,
+      0.46,
+      0.5
+    ],
+    "smoothness_detection_hardness": 0.3,
+    "max_river_width": 1500.0,
+    "ocean_density": 0.5,
+    "river_density": 1.0,
+    "ocean0": [
+      0.27,
+      0.52,
+      0.63,
+      0.0
+    ],
+    "ocean1": [
+      0.57,
+      0.61,
+      0.74,
+      0.0
+    ],
+    "river0": [
+      0.5,
+      0.35,
+      0.12,
+      0.0
+    ],
+    "river1": [
+      0.36,
+      0.41,
+      0.17,
+      0.0
+    ],
+    "water_color_noise_size": 1137.0
+  },
+  "technicsSkins": {
+    "groundSkin": "sand"
+  }
+}

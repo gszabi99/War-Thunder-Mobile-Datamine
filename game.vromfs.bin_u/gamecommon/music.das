@@ -287,19 +287,22 @@ def music_es(info : ParallelUpdateFrameDelayed;
   elif gameState == GameState MISSION
     var heroRank = -1
     var heroUnitType = -1
+    var heroExist = false
     ecs::query() <| $ [es(REQUIRE=controlledHero)] (uid : int; unitType : int)
       heroUnitType = unitType
       let hero = get_unit(uid)
       if hero != null && !hero.isDelayed && hero.props != null
+        heroExist = true
         heroRank = hero.props.unitRank
         let app = get_app()
         if rank_is_top_tier(heroRank, heroUnitType) && app.isMultiplayerGame
           music__curBattleState = int(BattleState TOP_TIER)
         else
           update_battle_state(music__battleRadiusAirSq, music__battleRadiusGroundSq, music__battleEnemiesThreshold, music__curBattleState, music__cooldownBattle, music__cooldownCalm, music__timerBattle, info.dt)
-
         music__curUnitType = heroUnitType
         musicState = get_music_state_from_battle_state(hero, music__curBattleState)
+    if !heroExist
+      return
   elif gameState == GameState FORCED
     musicState = GameMusicState MUSIC_STATE_FORCED
   elif gameState == GameState WIN
@@ -315,6 +318,7 @@ def music_es(info : ParallelUpdateFrameDelayed;
                             curMusicState == int(GameMusicState MUSIC_STATE_LOOSE)) &&
                             is_track_playing())
   let hangarTrackEnded = curMusicState == int(GameMusicState MUSIC_STATE_HANGAR) && !is_track_playing()
+
   if musicState == GameMusicState MUSIC_STATE_HANGAR
     if !lockedHangar && !winOrLoosePlaying
       if music__useHangarMusicForUnitType

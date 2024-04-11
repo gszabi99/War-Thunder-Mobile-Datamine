@@ -15069,6 +15069,38 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "btr_80a"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "vbc_pt2"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "vbc_pt2"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "vbc_pt2"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "vbc_pt2"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "vbc_pt2"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "vbc_pt2"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "vbc_pt2"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "vbc_pt2"
         }
       ]
     },
@@ -16353,8 +16385,7 @@
         "celestial_city_platform_bridge_a",
         "celestial_city_platform_c",
         "celestial_city_platform_hanger_a"
-      ],
-      "incRE": "celestial_"
+      ]
     },
     "badLod1ForStaticShadow": {}
   },

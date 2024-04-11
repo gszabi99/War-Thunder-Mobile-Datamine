@@ -9,8 +9,8 @@ let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
 let { CMD_MSG_PREFIX, registerChatCmdHandler, sendChatMessage } = require("%rGui/chat/mpChatState.nut")
+let { radioMessageVoice } = require("%rGui/options/options/soundOptions.nut")
 
-let VOICE_ID = "voice1"
 let CMD_MSG_PREFIX_VOICE = $"{CMD_MSG_PREFIX}voice:"
 
 let COOLDOWN_AFTER_USES = 2
@@ -18,6 +18,7 @@ let COOLDOWN_TIME_SEC = 20.0
 
 let VOICE_VARIANT_MIN = 0
 let VOICE_VARIANT_MAX = 3
+let getMyVoice = @() radioMessageVoice.get()
 let getRandomVariant = @() rnd_int(VOICE_VARIANT_MIN, VOICE_VARIANT_MAX)
 
 let voiceMsgCfgBase = [
@@ -33,7 +34,7 @@ let voiceMsgCfgBase = [
 voiceMsgCfgBase.each(@(c) c.__update({
   label = loc($"voice_message_{c.id}_0")
   icon = $"voicemsg_{c.id}.svg"
-  action = @() sendChatMessage(CHAT_MODE_TEAM, $"{CMD_MSG_PREFIX_VOICE}{c.id}_{getRandomVariant()}")
+  action = @() sendChatMessage(CHAT_MODE_TEAM, $"{CMD_MSG_PREFIX_VOICE}{c.id}_{getRandomVariant()}:{getMyVoice()}")
 }))
 let voiceMsgCfg = Watched(voiceMsgCfgBase)
 
@@ -87,10 +88,15 @@ isVoiceMsgStickActive.subscribe(function(isActive) {
 function voiceMsgChatCmdHandlerFunc(_sender, msg) {
   if (!allow_voice_messages.get() || !msg.startswith(CMD_MSG_PREFIX_VOICE))
     return null
-  let id = msg.slice(CMD_MSG_PREFIX_VOICE.len())
+  let params = msg.slice(CMD_MSG_PREFIX_VOICE.len()).split(":")
+  let id = params[0]
+  let voiceId = params?[1] ?? 1
   let dialogId = $"voice_message_{id}"
-  missionPlayVoice($"/{VOICE_ID}/{dialogId}")
-  return loc(dialogId)
+  let locText = loc(dialogId, "")
+  if (locText == "")
+    return null
+  missionPlayVoice($"/voice{voiceId}/{dialogId}")
+  return locText
 }
 
 let register = @() registerChatCmdHandler(CMD_MSG_PREFIX_VOICE, voiceMsgChatCmdHandlerFunc)

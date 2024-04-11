@@ -5,7 +5,7 @@ let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { AIR, TANK, SHIP } = require("%appGlobals/unitConst.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, simpleVerGrad } = require("%rGui/style/gradients.nut")
 let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnimation, unlockAnimation,
   ANIMATION_STEP
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
@@ -48,19 +48,24 @@ let plateTextColor = 0xFFFFFFFF
 let levelTextColor = 0xFF9C9EA0
 let equippedFrameColor = 0xFF50C0FF
 let equippedFrameColorPremium = 0xA0E9D3A7
+let equippedFrameColorHidden = 0xA063319B
 let slotLockedTextColor = 0xFFC0C0C0
 let highlightColor = 0xFF50C0FF
 let premiumHighlightColor = 0x00F4E9D3
-let isHiddenHighlightColor = 0xFFCD8BFF
+let isHiddenHighlightColor = 0x90CFC6D1
 
-let getFrameColor = @(unit) unit?.isUpgraded || unit?.isPremium
-    ? equippedFrameColorPremium
-  : equippedFrameColor
+let function getFrameColor(unit) {
+  if(unit?.isHidden)
+    return equippedFrameColorHidden
+  if(unit?.isUpgraded || unit?.isPremium)
+    return equippedFrameColorPremium
+  return equippedFrameColor
+}
 
 let bgUnit = mkColoredGradientY(0xFF383B3E, 0xFF191616, 2)
 let bgUnitPremium = mkColoredGradientY(0xFFC89123, 0xFF644012, 2)
 let bgUnitLocked = mkColoredGradientY(0xFF303234, 0xFF000000, 2)
-let bgUnitHidden = mkColoredGradientY(0xFF7023C8, 0xFF290740, 2)
+let bgUnitHidden = mkColoredGradientY(0xFF63319B, 0xFF290740, 2)
 let bgUnitHiddenLocked = mkColoredGradientY(0xFF371162, 0xFF150421, 2)
 
 function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
@@ -486,14 +491,16 @@ let mkPlatoonEquippedIcon = @(unit, isEquipped, justUnlockedDelay = null) @() is
 let mkUnitSelectedGlow = @(unit, isSelected, justUnlockedDelay = null) @() isSelected.value
   ? {
       watch = isSelected
-      size = flex()
+      size = [flex(), ph(80)]
       rendObj = ROBJ_IMAGE
-      image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
+      vplace = ALIGN_BOTTOM
+      image = simpleVerGrad
       color = unit?.isHidden ? isHiddenHighlightColor
         : unit?.isUpgraded || unit?.isPremium ? premiumHighlightColor
         : highlightColor
       animations = revealAnimation(justUnlockedDelay)
       transform = { rotate = 180 }
+      opacity = 0.5
     }
   : { watch = isSelected }
 

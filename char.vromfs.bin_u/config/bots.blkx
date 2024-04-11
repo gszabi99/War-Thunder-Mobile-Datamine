@@ -8,41 +8,85 @@
   "numBotRespawnsInVersus": 1,
   "numTankBotRespawnsInVersus": 3,
   "allowedAircrafts": {
-    "aircraft": [
+    "rankRange": [
       {
-        "name": "pony_light_fighter",
-        "weight": 1.0,
-        "country": "germany"
+        "range": [
+          0,
+          1
+        ],
+        "aircraft": [
+          {
+            "name": "f3f-2",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "he51c1",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "i-15_1934",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
       },
       {
-        "name": "pony_minigun_fighter",
-        "weight": 1.0,
-        "country": "ussr"
+        "range": [
+          2,
+          3
+        ],
+        "aircraft": [
+          {
+            "name": "p-51c-10-nt",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "sb2c_4",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "la-5_type37_early",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "il_4",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
       },
       {
-        "name": "pony_fighter",
-        "weight": 1.0,
-        "country": "ussr"
-      },
-      {
-        "name": "pony_rocket_fighter",
-        "weight": 1.0,
-        "country": "ussr"
-      },
-      {
-        "name": "pony_jet_fighter",
-        "weight": 1.0,
-        "country": "ussr"
-      },
-      {
-        "name": "pony_assault",
-        "weight": 1.0,
-        "country": "ussr"
-      },
-      {
-        "name": "pony_bomber",
-        "weight": 1.0,
-        "country": "ussr"
+        "range": [
+          4,
+          50
+        ],
+        "aircraft": [
+          {
+            "name": "p-38k",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "b-17g",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "fw-190c",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "yak-3t",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
       }
     ]
   },
@@ -296,22 +340,12 @@
             "country": "germany"
           },
           {
-            "name": "us_m41_walker_bulldog",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
             "name": "us_t26e5",
             "weight": 1.0,
             "country": "germany"
           },
           {
             "name": "jp_st_a1",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "jp_m41_walker_bulldog",
             "weight": 1.0,
             "country": "germany"
           },

@@ -7,6 +7,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
+let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn,
   selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum
@@ -110,6 +111,15 @@ function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
+
+  // Temporary hack, for aircraft event, while we don't have aircraft company:
+  if (unit?.isFake ?? false) {
+    let tags = getUnitTagsCfg(slot.name)?.tags ?? {}
+    let country = tags.findindex(@(v, k) v == true && k.startswith("country_"))
+    if (country != null)
+      unit.__update({ country })
+  }
+
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let { canSpawn, isSpawnBySpare } = slot
   return {

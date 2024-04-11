@@ -49,6 +49,7 @@ let benchmarkGameModes = Computed(@() allGameModes.value.filter(@(m) m?.displayT
   && m.name.indexof("benchmark") != null))
 
 let debugModes = Computed(@() allGameModes.value.filter(@(m, id) m?.displayType != "random_battle"
+  && m?.displayType != "separate_event"
   && id not in benchmarkGameModes.value))
 
 let maxSquadSize = Computed(@() allGameModes.value.reduce(@(res, m) max(res, m?.maxSquadSize ?? m?.minSquadSize ?? 1), 1))
@@ -63,6 +64,19 @@ register_command(
   }
   "debug.forceNewbieModeIdx")
 
+let separateEventModes = Computed(function() {
+  let res = {}
+  foreach(gm in allGameModes.get()) {
+    let { displayType = "", eventId = null } = gm
+    if (displayType != "separate_event" || eventId == null)
+      continue
+    if (eventId not in res)
+      res[eventId] <- []
+    res[eventId].append(gm)
+  }
+  return res
+})
+
 return {
   allGameModes
   randomBattleMode
@@ -70,6 +84,7 @@ return {
   isRandomBattleNewbieSingle = Computed(@() isNewbieModeSingle(randomBattleMode.value?.name))
   debugModes
   benchmarkGameModes
+  separateEventModes
   forceNewbieModeIdx
   maxSquadSize
 }

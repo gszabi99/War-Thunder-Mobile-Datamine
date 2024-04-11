@@ -1,15 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { OPT_AUTO_ZOOM_SHIP,
-  //
-
-
-  mkOptionValue} = require("%rGui/options/guiOptions.nut")
-let {
-  //
-
-
-  set_auto_zoom} = require("controlsOptions")
+let { OPT_AUTO_ZOOM_SHIP, mkOptionValue} = require("%rGui/options/guiOptions.nut")
+let { set_auto_zoom } = require("controlsOptions")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 
@@ -26,26 +18,8 @@ let currentAutoZoomType = {
   description = loc("options/desc/auto_zoom")
 }
 
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 return {
   shipControlsOptions = [
     currentAutoZoomType,
-    //
-
-
   ]
 }

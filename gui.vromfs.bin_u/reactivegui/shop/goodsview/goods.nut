@@ -36,8 +36,13 @@ let constructors = {
   [SGT_LOOTBOX] = mkGoodsLootbox,
 }
 
-let getGoodsLocName = @(goods) goods.id in customLocId ? loc(customLocId[goods.id])
-  : (locNameGetters?[goods.gtype] ?? locNameGetters[SGT_UNKNOWN])(goods)
+let getCustomName = @(goods) goods.meta.findindex(@(_, i) i in customLocId)
+
+let function getGoodsLocName(goods){
+  let customName = getCustomName(goods)
+  return customName ? loc(customLocId[customName])
+    : (locNameGetters?[goods.gtype] ?? locNameGetters[SGT_UNKNOWN])(goods)
+}
 let mkGoods = @(goods, onClick, state, animParams = null)
   (constructors?[goods.gtype] ?? constructors[SGT_UNKNOWN])(goods, onClick, state, animParams)
 

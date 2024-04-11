@@ -11,7 +11,7 @@ let upstreamAcc = hdpx(20)
 let viscosity = 0.1
 
 function fillNewForce(state, time, speedY) {
-  state.accChangeTime <- time + (hdpx(50) / speedY * rand.rfloat(100, 1000)).tointeger()
+  state.accChangeTime <- time + (speedY == 0 ? 200 : (hdpx(50) / speedY * rand.rfloat(100, 1000)).tointeger())
   let randomAcc = rand.rfloat(- speedY * speedY / hdpx(100), speedY * speedY / hdpx(100))
   state.acc <- [randomAcc, randomAcc + upstreamAcc]
 }

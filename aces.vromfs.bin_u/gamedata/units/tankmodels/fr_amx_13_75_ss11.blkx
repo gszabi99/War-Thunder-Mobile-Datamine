@@ -47,7 +47,7 @@
   "destroysTrees": true,
   "type": "typeLightTank",
   "minRelativeTankCameraThreshold": 1.3,
-  "rearmTimeOnField": 120.0,
+  "rearmTimeOnField": 60.0,
   "canReloadNonGuns": [
     true,
     true

@@ -4,6 +4,7 @@ let { register_command } = require("console")
 let { deferOnce } = require("dagor.workcycle")
 let { json_to_string } = require("json")
 let io = require("io")
+let { get_settings_blk } = require("blkGetters")
 let { arrayByRows, deep_clone } = require("%sqstd/underscore.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
@@ -23,6 +24,8 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 
 
 const SAVE_PATH = "../../skyquake/prog/scripts/wtm/globals/config/skins/unitSkinView.nut"
+let isEditAllowed = get_settings_blk()?.debug.useAddonVromSrc ?? false
+
 let isOpened = mkWatched(persist, "isOpened", false)
 let savedUnitType = mkWatched(persist, "savedUnitType", null)
 let savedUnitName = mkWatched(persist, "savedUnitName", null)
@@ -340,6 +343,19 @@ let function presetView(preset, curSkinUnitPreset, curSkinDefaultPreset) {
   }
 }
 
+let framedText = @(text) {
+  padding = [hdpx(10), hdpx(20)]
+  rendObj = ROBJ_SOLID
+  color = 0x40000000
+  children = {
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    maxWidth = hdpx(800)
+    text
+    color = 0xFFC0C0C0
+  }.__update(fontSmall)
+}
+
 let buttonsBlock = @(skinsView, curSkinUnitPreset, curSkinDefaultPreset, curUnitName, curUnitSkin) function() {
   let preset = selPreset.get()
   let { id = null } = preset
@@ -350,21 +366,13 @@ let buttonsBlock = @(skinsView, curSkinUnitPreset, curSkinDefaultPreset, curUnit
     gap = hdpx(15)
     children = [
       preset == null ? null : presetView(preset, curSkinUnitPreset, curSkinDefaultPreset)
-      {
-        padding = [hdpx(10), hdpx(20)]
-        rendObj = ROBJ_SOLID
-        color = 0x40000000
-        children = {
-          rendObj = ROBJ_TEXT
-          text = id ?? ""
-          color = 0xFFC0C0C0
-        }.__update(fontSmall)
-      }
+      framedText(id ?? "")
       @() {
         watch = [curSkinUnitPreset, curSkinDefaultPreset]
         flow = FLOW_HORIZONTAL
         gap = hdpx(15)
         children = id == null ? null
+          : !isEditAllowed ? framedText($"To edit skins you must set\ndebug/<color={0xFFFFFFFF}>useAddonVromSrc</color>:b=yes\nin the config.blk")
           : [
               (curSkinDefaultPreset.get()?.id == id ? textButtonCommon : textButtonPrimary)(
                 "Select for all units", @() setPresetForAllUnits(skinsView, preset, curUnitName, curUnitSkin)),

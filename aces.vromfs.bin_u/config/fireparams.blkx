@@ -125,6 +125,381 @@
       "underwaterExtinguishTime": 5.0,
       "underwaterExtinguishAdditionalWater": 0.5,
       "checkAdditionalWater": true
+    },
+    "100kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        0.0,
+        64.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "200kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        0.0,
+        92.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "300kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        28.0,
+        110.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "400kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        55.0,
+        138.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "500kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        82.0,
+        166.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "600kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        82.0,
+        194.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "700kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        138.0,
+        223.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "800kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        166.0,
+        250.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "900kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        193.0,
+        277.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "1000kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        244.0,
+        288.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "1100kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        272.0,
+        316.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "nonExtinguishFireTime": 5.0,
+      "fireDamagePowerRel": 0.05
+    },
+    "1200kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        299.0,
+        345.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "1300kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        328.0,
+        372.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "1400kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        356.0,
+        400.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "1500kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        383.0,
+        427.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "1600kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        420.0,
+        455.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "1700kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        439.0,
+        483.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "1800kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        467.0,
+        511.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "1900kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        495.0,
+        539.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "2000kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        523.0,
+        567.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "2100kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        550.0,
+        594.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "2200kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        578.0,
+        622.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "2300kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        606.0,
+        650.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
+    },
+    "2400kph": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "engineExtinguishFireSpeed": [
+        634.0,
+        678.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.01,
+        0.1
+      ],
+      "fireDamagePowerRel": [
+        0.05,
+        0.05
+      ],
+      "nonExtinguishFireTime": 5.0
     }
   }
 }

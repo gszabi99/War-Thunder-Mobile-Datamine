@@ -7,7 +7,7 @@ let mkUnitData = @(id) {
   isHidden = true
 }
 
-let april2024Mods = ["pony_fighter", "pony_minigun_fighter", "pony_rocket_fighter", "pony_jet_fighter", "pony_assault", "pony_bomber"]
+let eventUnitMods = ["pony_fighter", "pony_minigun_fighter", "pony_rocket_fighter", "pony_jet_fighter", "pony_assault", "pony_bomber"]
   .reduce(@(res, id) res.$rawset(id, {
     id,
     viewType = "eventUnit"
@@ -16,4 +16,15 @@ let april2024Mods = ["pony_fighter", "pony_minigun_fighter", "pony_rocket_fighte
   }),
 {})
 
-return { getBattleModPresentation = @(id) april2024Mods?[id] ?? {}}
+
+let mkCommonMod = @(id, locId, icon = null) { id, viewType = "common", locId, icon }
+
+let commonMods = {
+  air_cbt_access = { locId = "event_cbt/access", icon = "ui/gameuiskin#unit_air.svg" }
+}.map(@(cfg, id) mkCommonMod(id, cfg.locId, cfg?.icon))
+
+let allMods = eventUnitMods.__merge(
+  commonMods
+)
+
+return { getBattleModPresentation = @(id) allMods?[id] ?? mkCommonMod(id, id) } //-param-pos

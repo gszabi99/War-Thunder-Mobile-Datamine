@@ -115,11 +115,28 @@
       "detectGround": false,
       "detectShells": false
     },
-    "splash": {
-      "innerRadius": 7.0,
-      "outerRadius": 12.0,
-      "damage": 150.0,
-      "damageType": "explosion"
+    "damage": {
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.15,
+        "segment": {
+          "radiusScale": 1.0,
+          "penetrationScale": 1.5,
+          "damageScale": 2.5,
+          "angles": [
+            0.0,
+            359.0
+          ],
+          "countPortion": 1.0
+        }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
+      },
+      "explosive": {
+        "radius": 10.0,
+        "offset": 0.9
+      }
     },
     "collisions": {
       "steel": {

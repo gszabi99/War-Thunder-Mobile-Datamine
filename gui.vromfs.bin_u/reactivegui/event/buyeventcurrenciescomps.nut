@@ -60,6 +60,7 @@ let questsLinkPlate = {
 function mkQuestsLink(curId, season) {
   let imgCfg = getCurrencyGoodsPresentation(curId, season)
   let cfg = imgCfg?[imgCfg.len() - 1]
+  let bgParticles = mkBgParticles(goodsBgSize)
 
   return mkGoodsWrap(
     {},
@@ -69,7 +70,7 @@ function mkQuestsLink(curId, season) {
     },
     @(sf, _) [
       mkSlotBgImg()
-      mkBgParticles(goodsBgSize)
+      bgParticles
       sf & S_HOVER ? bgHiglight : null
       mkGoodsImg(cfg?.img, cfg?.fallbackImg, imgStyle)
     ],
@@ -82,6 +83,8 @@ function mkQuestsLink(curId, season) {
 let function mkGoods(goods, onClick, state, animParams) {
   local cId = goods.currencies.findindex(@(v) v > 0) ?? ""
   local amount = goods.currencies?[cId] ?? 0
+  let bgParticles = mkBgParticles(goodsBgSize)
+
   return @() {
     watch = eventSeason
     children = mkGoodsWrap(
@@ -89,7 +92,7 @@ let function mkGoods(goods, onClick, state, animParams) {
       onClick,
       @(sf, _) [
         mkSlotBgImg()
-        mkBgParticles(goodsBgSize)
+        bgParticles
         sf & S_HOVER ? bgHiglight : null
         getImgByAmount(amount, cId, eventSeason.get())
         mkCurrencyAmountTitle(amount, goods?.viewBaseValue ?? 0, titleFontGrad)

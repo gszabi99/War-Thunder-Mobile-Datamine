@@ -1828,6 +1828,41 @@
       ]
     }
   },
+  "vehicleSkins": {
+    "desert": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_green_sand_brown*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    },
+    "desert2": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_jaune_sahara*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "tl_camo_usa_colors*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 50.0,
+        "camo_rotation": 0.0
+      }
+    }
+  },
   "battleHideNodes": {
     "n": "details"
   },

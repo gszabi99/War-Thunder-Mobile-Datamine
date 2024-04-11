@@ -13,7 +13,7 @@
   "aimMinDist": 10.0,
   "aimMaxDist": 1000.0,
   "maxDeltaAngle": 0.24,
-  "shotFreq": 8.666667,
+  "shotFreq": 11.666667,
   "traceFreq": 4,
   "bEnablePause": false,
   "bullets": 250,

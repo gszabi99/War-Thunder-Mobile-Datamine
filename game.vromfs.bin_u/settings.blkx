@@ -255,7 +255,9 @@
         "uhq": true
       }
     ],
+    "pkg_lvl_air_locations": {},
     "pkg_april_fools_event_2024": {},
+    "pkg_cbt_aircraft": {},
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -268,6 +270,10 @@
     "pkg_tier_5_ground": {},
     "pkg_tier_6_ground": {},
     "pkg_tier_7_ground": {},
+    "pkg_tier_1_aircraft": {},
+    "pkg_tier_2_aircraft": {},
+    "pkg_tier_3_aircraft": {},
+    "pkg_tier_4_aircraft": {},
     "pkg_lvl_vietnam_hills": {
       "conditions": {
         "campaign": "tanks",
@@ -362,6 +368,24 @@
       "conditions": {
         "campaign": "ships",
         "mRank": 4
+      }
+    },
+    "pkg_jp_battleship_mutsu": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_uk_sub_valiant": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_us_cruiser_pensacola_class": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
       }
     },
     "pkg_ussr_kv_122": {
@@ -464,6 +488,24 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 3
+      }
+    },
+    "pkg_it_vcc_80_hitfist_60": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_fr_amx_13_hot": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_germ_panzerbefelhswagen_p": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
       }
     },
     "pkg_environment": {
@@ -1975,8 +2017,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.25,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": true,
-        "cloudsQuality": 2
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       },
       "render": {
         "grassInCompatibility": true
@@ -2049,8 +2091,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.5,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": true,
-        "cloudsQuality": 2
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       },
       "render": {
         "grassInCompatibility": true
@@ -2123,8 +2165,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 1.0,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": true,
-        "cloudsQuality": 2
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       },
       "render": {
         "grassInCompatibility": true
@@ -2209,8 +2251,8 @@
         "allowRefractionForTankLevels": false,
         "customRefractionScale": 0.25,
         "refractionShadows": false,
-        "infiniteSkiesInAirplane": true,
-        "cloudsQuality": 2
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       }
     },
     "high": {
@@ -2240,8 +2282,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.25,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": true,
-        "cloudsQuality": 2
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       }
     },
     "max": {
@@ -2271,8 +2313,8 @@
         "allowRefractionForTankLevels": true,
         "customRefractionScale": 0.5,
         "refractionShadows": true,
-        "infiniteSkiesInAirplane": true,
-        "cloudsQuality": 2
+        "infiniteSkiesInAirplane": false,
+        "cloudsQuality": 1
       }
     }
   },

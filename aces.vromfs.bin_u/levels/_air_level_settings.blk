@@ -1,0 +1,9 @@
+lastClip:b = yes //optimization for hangar loading
+lastclip_horizon:b = yes
+
+clipmap {
+  texelSize:r=0.03125
+  lastClipSize:i=512
+}
+
+clipmap_tex_mips:i=5

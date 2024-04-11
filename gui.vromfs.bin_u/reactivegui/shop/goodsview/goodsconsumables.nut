@@ -85,6 +85,7 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
   let data = getConsumablesInfo(goods)
   let { viewBaseValue = 0, isShowDebugOnly = false } = goods
   let nameConsumable = data.len() != 1 ? loc($"goods/{goods.id}") : loc($"item/{data[0].id}")
+  let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
 
   return mkGoodsWrap(
     goods,
@@ -92,7 +93,7 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
     @(sf, _) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
-      mkBgParticles([goodsSmallSize[0], goodsBgH])
+      bgParticles
       borderBg
       sf & S_HOVER ? bgHiglight : null
       mkImgs(data.map(@(item) item.id), itemImageOptionsStack?[data.len() - 1] ?? itemImageOptionsStack.top())

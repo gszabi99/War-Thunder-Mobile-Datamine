@@ -4,13 +4,21 @@
   "ElevatorsEffectiveSpeed": 400.006,
   "AileronPowerLoss": 1.9,
   "RudderPowerLoss": 2.0,
-  "ElevatorPowerLoss": 1.5,
+  "ElevatorPowerLoss": 1.4,
   "AlphaAileronMin": 0.1,
   "AlphaRudderMin": 0.1,
   "AlphaElevatorMin": 0.1,
   "AllowStrongControlsRestrictions": true,
   "RudderSens": 0.32,
   "ElevatorSens": 0.35,
+  "ArcadeElevatorSensMultiplier0": [
+    0.4,
+    1.0
+  ],
+  "ArcadeElevatorSensMultiplier1": [
+    0.8,
+    0.8
+  ],
   "AileronSens": 0.23,
   "GearActuatorSpeed": 0.2,
   "WingActuatorSpeed": 0.1,
@@ -82,10 +90,11 @@
   "ArcadeLimitWepMultiplier": 1.8,
   "ArcadeHelpersSensitivity": 1.0,
   "MomentOfInertia": [
-    7000.0,
-    17000.0,
-    10000.0
+    10000.0,
+    25000.0,
+    15000.0
   ],
+  "ArcadeRollCorrectionMultiplier": 30.0,
   "IgnoreErrors": true,
   "AvailableControls": {
     "hasAileronControl": true,
@@ -109,12 +118,12 @@
     "hasCombatFlapsPosition": true
   },
   "Areas": {
-    "WingLeftIn": 5.63,
-    "WingLeftMid": 5.63,
-    "WingLeftOut": 4.63,
-    "WingRightIn": 5.63,
-    "WingRightMid": 5.63,
-    "WingRightOut": 4.63,
+    "WingLeftIn": 5.5,
+    "WingLeftMid": 5.0,
+    "WingLeftOut": 4.5,
+    "WingRightIn": 5.5,
+    "WingRightMid": 5.0,
+    "WingRightOut": 4.5,
     "Aileron": 1.4,
     "Stabilizer": 1.9,
     "Elevator": 1.1,
@@ -175,7 +184,7 @@
     "UseSpinLoss": false,
     "SpinClLoss": 0.0,
     "SpinCdLoss": 0.08,
-    "OswaldsEfficiencyNumber": 0.88,
+    "OswaldsEfficiencyNumber": 0.7,
     "lineClCoeff": 0.075,
     "AfterCritParabAngle": 2.0,
     "AfterCritDeclineCoeff": 0.02,
@@ -400,10 +409,10 @@
       "RPMMin": 2700.0,
       "RPMMax": 8700.0,
       "RPMMaxAllowed": 9000.0,
-      "FuelConsumptionOnIdle": 0.001,
-      "FuelConsumptionOnHalfThr": 0.001,
-      "FuelConsumptionOnFullThr": 0.001,
-      "FuelConsumptionOnWEP": 0.001,
+      "FuelConsumptionOnIdle": 0.075,
+      "FuelConsumptionOnHalfThr": 0.075,
+      "FuelConsumptionOnFullThr": 0.1,
+      "FuelConsumptionOnWEP": 0.11,
       "IsAutonomous": false,
       "ExtinguisherNum": 0,
       "MaxCarburetorThrMult": 1.1,
@@ -419,7 +428,7 @@
         0.0,
         2.0
       ],
-      "ConsumptionOmegaMax": 1.35,
+      "ConsumptionOmegaMax": 0.0135,
       "ConsumptionOmegaMinCoeff": 1039.18,
       "ThrustOmegaMinCoeff": 2.40202e-11,
       "TurbineTimeConstant": 1.4,
@@ -646,13 +655,13 @@
       },
       "Mode1": {
         "Altitude": 1000.0,
-        "RPM": 8400.0,
+        "RPM": 9400.0,
         "WaterTemperature": 625.0,
         "OilTemperature": 84.0
       },
       "Mode2": {
         "Altitude": 1000.0,
-        "RPM": 8700.0,
+        "RPM": 9700.0,
         "WaterTemperature": 648.0,
         "OilTemperature": 96.0
       },
@@ -747,10 +756,10 @@
       "RPMMin": 2700.0,
       "RPMMax": 8700.0,
       "RPMMaxAllowed": 9000.0,
-      "FuelConsumptionOnIdle": 0.001,
-      "FuelConsumptionOnHalfThr": 0.001,
-      "FuelConsumptionOnFullThr": 0.001,
-      "FuelConsumptionOnWEP": 0.001,
+      "FuelConsumptionOnIdle": 0.075,
+      "FuelConsumptionOnHalfThr": 0.075,
+      "FuelConsumptionOnFullThr": 0.1,
+      "FuelConsumptionOnWEP": 0.11,
       "IsAutonomous": false,
       "ExtinguisherNum": 0,
       "MaxCarburetorThrMult": 1.1,
@@ -766,7 +775,7 @@
         0.0,
         2.0
       ],
-      "ConsumptionOmegaMax": 1.35,
+      "ConsumptionOmegaMax": 0.12,
       "ConsumptionOmegaMinCoeff": 1039.18,
       "ThrustOmegaMinCoeff": 2.40202e-11,
       "TurbineTimeConstant": 1.4,
@@ -826,7 +835,7 @@
         "Velocity_4": 800.0,
         "Velocity_5": 1000.0,
         "Velocity_6": 1200.0,
-        "ThrustMax0": 1310.0,
+        "ThrustMax0": 1110.0,
         "ThrustMaxCoeff_0_0": 1.0,
         "ThrustMaxCoeff_0_1": 0.88,
         "ThrustMaxCoeff_0_2": 0.84,
@@ -993,13 +1002,13 @@
       },
       "Mode1": {
         "Altitude": 1000.0,
-        "RPM": 8400.0,
+        "RPM": 9400.0,
         "WaterTemperature": 625.0,
         "OilTemperature": 84.0
       },
       "Mode2": {
         "Altitude": 1000.0,
-        "RPM": 8700.0,
+        "RPM": 9700.0,
         "WaterTemperature": 648.0,
         "OilTemperature": 96.0
       },
@@ -1068,8 +1077,8 @@
     }
   },
   "Mass": {
-    "EmptyMass": 2280.0,
-    "MaxFuelMass0": 1950.0,
+    "EmptyMass": 3800.0,
+    "MaxFuelMass0": 500.0,
     "FuelAccumulatorCapacity0": 4.0,
     "FuelAccumulatorLink0": 2,
     "MinimalLoadFactor": 0.0,
@@ -1098,18 +1107,18 @@
       380.4
     ],
     "Parts": {
-      "tank1_capacity": 2000.0,
+      "tank1_capacity": 125.0,
       "tank1_system": 0,
-      "tank1_priority": 1,
-      "tank2_capacity": 2.0,
+      "tank1_priority": 3,
+      "tank2_capacity": 125.0,
       "tank2_system": 0,
-      "tank2_priority": 2,
-      "tank3_capacity": 2.0,
+      "tank2_priority": 4,
+      "tank3_capacity": 125.0,
       "tank3_system": 0,
-      "tank3_priority": 3,
-      "tank4_capacity": 10.0,
+      "tank3_priority": 2,
+      "tank4_capacity": 125.0,
       "tank4_system": 0,
-      "tank4_priority": 4,
+      "tank4_priority": 1,
       "engine2_dm": 900.0,
       "engine1_dm": 900.0
     },

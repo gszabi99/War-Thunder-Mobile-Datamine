@@ -2,26 +2,37 @@ from "%globalsDarg/darg_library.nut" import *
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { openEventWnd, specialEvents, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
+let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 
 
-let btnsOpenSpecialEvents = @() {
-  watch = specialEvents
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(30)
-  children = specialEvents.value.values().map(@(v)
-    translucentButton($"ui/gameuiskin#icon_event_{v.eventName}.svg",
+function btnsOpenSpecialEvents() {
+  let children = []
+  specialEvents.get().each(@(evt)
+    children.append(translucentButton($"ui/gameuiskin#icon_event_{evt.eventName}.svg",
       "",
-      @() openEventWnd(v.eventId),
+      @() openEventWnd(evt.eventId),
       @(_) @() {
         watch = [unseenLootboxes, unseenLootboxesShowOnce]
         hplace = ALIGN_RIGHT
         pos = [hdpx(4), hdpx(-4)]
-        children = (unseenLootboxes.get()?[v.eventName].len() ?? 0) > 0
-          || unseenLootboxesShowOnce.value.findindex(@(l) l == v.eventName) != null
+        children = (unseenLootboxes.get()?[evt.eventName].len() ?? 0) > 0
+          || unseenLootboxesShowOnce.value.findindex(@(l) l == evt.eventName) != null
               ? priorityUnseenMark
             : null
       }
-    ))
+    )))
+  gmEventsList.get().each(@(id)
+    children.append(translucentButton(gmEventPresentation(id).image,
+      "",
+      @() openGmEventWnd(id))))
+
+  return {
+    watch = specialEvents
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(30)
+    children
+  }
 }
 
 

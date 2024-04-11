@@ -78,13 +78,15 @@ function mkGoodsPremium(goods, onClick, state, animParams) {
       mkPremiumDaysTitle(premiumDays, viewBaseValue)
     ]
   }
+  let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
+
   return mkGoodsWrap(
     goods,
     onClick,
     @(sf, _) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
-      mkBgParticles([goodsSmallSize[0], goodsBgH])
+      bgParticles
       borderBg
       sf & S_HOVER ? bgHiglight : null
       premIconAndDaysTitleWrapper

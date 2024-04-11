@@ -3,7 +3,8 @@ let { mkMiniStick, stickHeadSize } = require("%rGui/hud/miniStick.nut")
 let { isVoiceMsgStickActive, voiceMsgStickDelta, voiceMsgCooldownEndTime, COOLDOWN_TIME_SEC, isVoiceMsgEnabled
 } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
 
-let stickHeadIconSize = (stickHeadSize * 0.5 + 0.5).tointeger()
+let stickHeadIconSize = 2 * (stickHeadSize / 4.0 + 0.5).tointeger()
+
 let stickHeadIcon = {
   size = [stickHeadIconSize, stickHeadIconSize]
   hplace = ALIGN_CENTER

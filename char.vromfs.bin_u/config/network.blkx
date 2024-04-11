@@ -123,6 +123,8 @@
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
     "disableAsserts": true,
+    "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
+    "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "contentUpdater": {
       "enabled": true,
       "strictVersionCheck": false,

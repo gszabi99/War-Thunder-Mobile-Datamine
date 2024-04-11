@@ -176,6 +176,7 @@ function tutorialWnd() {
   return {
     watch
     size = flex()
+    stopMouse = true
     children = [
       mkBg(boxes, style, config?.nextStepDelay ?? 0.5)
       arrowLinks

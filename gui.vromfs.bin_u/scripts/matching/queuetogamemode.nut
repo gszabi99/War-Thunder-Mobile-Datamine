@@ -1,4 +1,3 @@
-
 from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { setTimeout } = require("dagor.workcycle")
@@ -22,6 +21,8 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
 let { isOnline, isDisconnected } = require("%appGlobals/clientState/clientState.nut")
 let { checkReconnect } = require("%scripts/matchingRooms/sessionReconnect.nut")
+let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
+let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
 
 let startBattleDelayed = persist("startBattleDelayed", @() { modeId = null })
 let maxSquadRankDiff = mkWatched(persist, "minSquadRankDiff", MAX_SQUAD_MRANK_DIFF)
@@ -33,8 +34,19 @@ function msgBoxWithFalse(params) {
   return false
 }
 
-function isSquadReadyWithMsgbox(mode, allReqAddons) {
-  let { minSquadSize = 1 } = mode
+function showReqBattleModeMsg(msgLocId, reqBMods, msgParams = {}) {
+  local modeName = reqBMods[0]
+  foreach(bm in reqBMods) {
+    let { locId = null} = getBattleModPresentation(bm)
+    if (locId != null) {
+      modeName = loc(locId)
+    }
+  }
+  openFMsgBox({ text = loc(msgLocId, msgParams.__merge({ mode = modeName })) })
+}
+
+function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
+  let { minSquadSize = 1, only_override_units = false } = mode
   if (!isInSquad.value) {
     if (minSquadSize > 1)
       return msgBoxWithFalse({ text = loc("squad/minimumSquadSizeWarning", { count = minSquadSize }) })
@@ -62,35 +74,45 @@ function isSquadReadyWithMsgbox(mode, allReqAddons) {
   if (squadMembers.value.findindex(@(_, uid) !squadOnline.value?[uid]))
     return msgBoxWithFalse({ text = loc("squad/has_offline_members") })
 
-  local rankMin = curUnit.value?.mRank ?? 0
-  local rankMax = rankMin
-  foreach(m in squadMembers.value) {
-    let mRank = serverConfigs.value?.allUnits[m?.units[squadLeaderCampaign.value]].mRank
-    if (mRank == null)
-      continue
-    rankMin = min(rankMin, mRank)
-    rankMax = max(rankMax, mRank)
+  if (reqBMods.len() > 0) {
+    let noModsMembers = squadMembers.get().filter(@(m) !!m?.battleMods.findvalue(@(bm) reqBMods.contains(bm)))
+    if (noModsMembers.len() != squadMembers.get().len()) {
+      showReqBattleModeMsg("squad/not_all_has_battle_mod", reqBMods)
+      return false
+    }
   }
-  if (rankMax - rankMin > maxSquadRankDiff.value)
-    return msgBoxWithFalse({
-      text = loc("msg/bigRankDiff/toBattle", {
-        rankMin = colorize("@mark", getRomanNumeral(rankMin)),
-        rankMax = colorize("@mark", getRomanNumeral(rankMax)),
+
+  if (!only_override_units) {
+    local rankMin = curUnit.value?.mRank ?? 0
+    local rankMax = rankMin
+    foreach(m in squadMembers.value) {
+      let mRank = serverConfigs.value?.allUnits[m?.units[squadLeaderCampaign.value]].mRank
+      if (mRank == null)
+        continue
+      rankMin = min(rankMin, mRank)
+      rankMax = max(rankMax, mRank)
+    }
+    if (rankMax - rankMin > maxSquadRankDiff.value)
+      return msgBoxWithFalse({
+        text = loc("msg/bigRankDiff/toBattle", {
+          rankMin = colorize("@mark", getRomanNumeral(rankMin)),
+          rankMax = colorize("@mark", getRomanNumeral(rankMax)),
+        })
+        buttons = [
+          { id = "cancel", isCancel = true }
+          { text = loc("squad/rankCheck")
+            styleId = "PRIMARY"
+            eventId = "initiateSquadMRankCheck"
+          }
+          { text = loc("mainmenu/toBattle/short")
+            eventId = "incMaxSquadRankDiffAndQueue"
+            context = { diff = rankMax - rankMin, modeId = mode.gameModeId }
+            styleId = "BATTLE"
+            isDefault = true
+          }
+        ]
       })
-      buttons = [
-        { id = "cancel", isCancel = true }
-        { text = loc("squad/rankCheck")
-          styleId = "PRIMARY"
-          eventId = "initiateSquadMRankCheck"
-        }
-        { text = loc("mainmenu/toBattle/short")
-          eventId = "incMaxSquadRankDiffAndQueue"
-          context = { diff = rankMax - rankMin, modeId = mode.gameModeId }
-          styleId = "BATTLE"
-          isDefault = true
-        }
-      ]
-    })
+  }
 
   local hasAllAddons = true
   foreach(uid, member in squadMembers.value)
@@ -128,11 +150,18 @@ function queueToGameModeImpl(mode) {
     return
   }
 
+  let { reqBattleMod = "" } = mode
+  let reqBMods = reqBattleMod.split(";").filter(@(v) v != "")
+  if (reqBMods.len() > 0 && !reqBMods.findvalue(@(v) !!activeBattleMods.get()?[v])) {
+    showReqBattleModeMsg("msg/needBattleMode", reqBMods)
+    return
+  }
+
   let allBattlenits = getAllBattleUnits()
   log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", getAllBattleUnits())
   log("modeInfo = ", getModeAddonsDbgString(mode))
   let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode, allBattlenits)
-  if (!isSquadReadyWithMsgbox(mode, allReqAddons))
+  if (!isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods))
     return
 
   if (addonsToDownload.len() > 0) {

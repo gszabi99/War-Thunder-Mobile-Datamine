@@ -9,7 +9,7 @@ let mkRewardStyle = @(boxSize) {
   boxGap = 2 * round(hdpx(3) + boxSize * 0.035).tointeger()
   iconShiftY = round((labelHeight * -0.5) + (boxSize * 0.04)).tointeger()
   labelCurrencyNeedCompact = boxSize < fontLabel.fontSize * 5.5
-  markSize = max(round(boxSize / 4).tointeger(), evenPx(36))
+  markSize = 2 * round(boxSize / 8).tointeger()
 }
 
 function getRewardPlateSize(slots, rStyle) {

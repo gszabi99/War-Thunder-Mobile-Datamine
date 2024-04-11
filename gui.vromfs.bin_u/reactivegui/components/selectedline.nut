@@ -7,10 +7,12 @@ let lineColor = 0xFF75D0E7
 let lineColorPremium = 0x50C89123
 let aTimeOpacity = 0.3
 let selLineSize = hdpx(7)
-let lineColorHidden = 0x50B04CFC
+let lineColorHidden = 0x80290740
 
 let lineGradientHor = mkBitmapPictureLazy(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColor))
 let lineGradientHorPremium = mkBitmapPictureLazy(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColorPremium))
+let lineGradientHorHidden= mkBitmapPictureLazy(gradTexSize, 4, mkGradientCtorDoubleSideX(0, lineColorHidden))
+
 let lineGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColor, 0.25))
 let lineGradientVertPremium = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColorPremium, 0.25))
 let lineGradientVertHidden = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColorHidden, 0.25))
@@ -26,7 +28,7 @@ let selectedLine = @(isActive, size, image) @() {
   transitions = opacityTransition
 }
 
-let function getLineImage(isHidden, isPremium){
+let function getLineImageV(isHidden, isPremium){
   if(isHidden)
     return lineGradientVertHidden()
   else if(isPremium)
@@ -34,11 +36,19 @@ let function getLineImage(isHidden, isPremium){
   return lineGradientVert()
 }
 
+let function getLineImageH(isHidden, isPremium){
+  if(isHidden)
+    return lineGradientHorHidden()
+  else if(isPremium)
+    return lineGradientHorPremium()
+  return lineGradientHor()
+}
+
 return {
-  selectedLineHor = @(isActive, isPremium = false)
-    selectedLine(isActive, [flex(), selLineSize], isPremium ? lineGradientHorPremium() : lineGradientHor())
+  selectedLineHor = @(isActive, isPremium = false, isHidden = false)
+    selectedLine(isActive, [flex(), selLineSize], getLineImageH(isHidden, isPremium))
   selectedLineVert = @(isActive, isPremium = false, isHidden = false)
-    selectedLine(isActive, [selLineSize, flex()], getLineImage(isHidden, isPremium))
+    selectedLine(isActive, [selLineSize, flex()], getLineImageV(isHidden, isPremium))
   opacityTransition
   selLineSize
 }

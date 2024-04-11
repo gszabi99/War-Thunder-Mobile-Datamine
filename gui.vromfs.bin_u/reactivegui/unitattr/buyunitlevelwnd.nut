@@ -214,6 +214,17 @@ function mkLevelBlock(levels, costMul, unitV, levelsSp) {
   }
 }
 
+function generateDataDiscount(discountConfig, levelsToUnitMax) {
+  let res = [{ levels = 1, costMul = 1.0 }]
+    .extend(discountConfig)
+    .filter(@(v) v.levels <= levelsToUnitMax)
+
+  if (res.top().levels != levelsToUnitMax)
+    return res.append({ levels = levelsToUnitMax, costMul = res.top().costMul ?? 1.0 })
+
+  return res;
+}
+
 function wndContent() {
   let res = { watch = [unit, levelsToMax, campConfigs] }
   let levelsSp = campConfigs.value?.unitLevelsSp?[unit.value?.attrPreset].levels
@@ -223,10 +234,8 @@ function wndContent() {
     flow = FLOW_HORIZONTAL
     padding = buttonsHGap
     gap = buttonsHGap
-    children = [{ levels = 1, costMul = 1.0 }]
-      .extend(campConfigs.value?.unitLevelsDiscount ?? [])
-      .filter(@(v) v.levels <= levelsToMax.value)
-      .map(@(v) mkLevelBlock(v.levels, v.costMul, unit.value, levelsSp))
+    children = generateDataDiscount(campConfigs.get()?.unitLevelsDiscount ?? [], levelsToMax.get())
+      .map(@(v) mkLevelBlock(v.levels, v.costMul, unit.get(), levelsSp))
   })
 }
 

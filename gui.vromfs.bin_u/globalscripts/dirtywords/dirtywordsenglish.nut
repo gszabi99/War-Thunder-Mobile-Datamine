@@ -691,6 +691,7 @@ badphrases =
 
 badcombination =
 [
+  "14.{0,3}88",
   "bin laden",
   "coon hunt",
   "coon kill",

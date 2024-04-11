@@ -237,6 +237,7 @@ function mkUnitPlate(unit, ovr = {}) {
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
   let discount = Computed(@() unitDiscounts?.value[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
+  let isHidden = unit?.isHidden
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
   let justUnlockedDelay = Computed(@() hasModalWindows.get() && canBuyForLvlUp.get() ? 1000000.0
     : canBuyForLvlUp.get()
@@ -289,7 +290,7 @@ function mkUnitPlate(unit, ovr = {}) {
       {
         size = flex()
         pos = [0, unitPlateSize[1] + selLineGap]
-        children = selectedLineHor(isSelected, isPremium)
+        children = selectedLineHor(isSelected, isPremium, isHidden)
       }
     ]
   }.__update(ovr)

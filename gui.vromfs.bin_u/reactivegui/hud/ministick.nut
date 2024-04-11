@@ -3,9 +3,9 @@ let { get_mission_time = @() ::get_mission_time() } = require("mission")
 let { Point2 } = require("dagor.math")
 let { rnd_int } = require("dagor.random")
 
-let stickHeadSize = shHud(11)
+let stickHeadSize = evenPx(120)
 let stickTouchAreaSize = stickHeadSize
-let stickDragAreaSize = (stickHeadSize * 1.63 + 0.5).tointeger()
+let stickDragAreaSize = 2 * (stickHeadSize * 0.82 + 0.5).tointeger()
 
 let stickDragAreaBg = {
   size = [stickDragAreaSize, stickDragAreaSize]

@@ -47,7 +47,8 @@ isInJoiningGame.subscribe(@(_) canCancelJoining(false))
 let lastQueueMode = mkWatched(persist, "lastQueueMode", "")
 curQueue.subscribe(@(v) (v?.params.mode ?? "") == "" ? null : lastQueueMode.set(v.params.mode))
 
-let missionCampaign = Computed(@() lastQueueMode.get().startswith("air_event") // "air_event_1_april_pony"
+let airEventPrefixes = [ "air_event", "event_plane", "plane_" ]
+let missionCampaign = Computed(@() airEventPrefixes.findindex(@(v) lastQueueMode.get().startswith(v)) != null
   ? "air"
   : curCampaign.get())
 

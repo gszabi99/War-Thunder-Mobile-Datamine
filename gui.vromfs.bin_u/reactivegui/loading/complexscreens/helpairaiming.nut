@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkScreenHints } = require("%rGui/components/screenHintsLib.nut")
 let { teamRedColor } = require("%rGui/style/teamColors.nut")
 
-let bgImage = "ui/images/help/help_event_pony.avif"
+let bgImage = "ui/images/help/help_air_aiming.avif"
 let bgSize = [3282, 1041]
 
 let targetLockY = 696

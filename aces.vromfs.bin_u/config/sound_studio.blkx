@@ -318,9 +318,15 @@
     "menu_music": {
       "name": "musicmenu"
     },
-    "radio": {},
+    "radio": {
+      "name": "dialogs/dialogs/common",
+      "defaultVol": 70.0
+    },
     "dialogs": {
-      "name": "dialogs/dialogs",
+      "name": [
+        "dialogs/dialogs/crew_ground",
+        "dialogs/dialogs/crew_naval"
+      ],
       "defaultVol": 70.0
     },
     "voice_out": {},
@@ -8484,6 +8490,7 @@
     "eventWin": "win_battle_music",
     "eventLoose": "loose_battle_music",
     "eventTanksSuspense": "tanks_suspense_01",
+    "eventSuspense": "air_suspense_01",
     "menu": {
       "path": "naval/music",
       "event": "menu"

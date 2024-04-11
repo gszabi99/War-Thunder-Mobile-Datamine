@@ -30,13 +30,15 @@ function getLocNameWp(goods) {
 function mkGoodsWp(goods, onClick, state, animParams) {
   let { viewBaseValue = 0, isShowDebugOnly = false } = goods
   let wp = goods?.currencies.wp ?? 0
+  let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
+
   return mkGoodsWrap(
     goods,
     onClick,
     @(sf, _) [
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
-      mkBgParticles([goodsSmallSize[0], goodsBgH])
+      bgParticles
       borderBg
       sf & S_HOVER ? bgHiglight : null
       getImgByAmount(wp)

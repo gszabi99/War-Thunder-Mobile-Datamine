@@ -70,7 +70,7 @@ let allShortcuts = {
   ID_FIRE_COURSE_GUNS = "J:RT | Space"
   ID_FIRE_CANNONS = "J:RT | Space"
   ID_FIRE_MGUNS = "J:RB | L.Ctrl"
-  ID_LOCK_TARGET = "J:LB | E"
+  ID_LOCK_TARGET = "J:LB | L.Alt"
   ID_ROCKETS = "J:X | X"
   ID_WTM_AIRCRAFT_LAUNCH_TORPEDOES = "J:Y | C"
 }

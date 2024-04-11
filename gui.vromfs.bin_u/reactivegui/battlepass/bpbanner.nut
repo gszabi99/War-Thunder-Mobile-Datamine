@@ -7,14 +7,8 @@ let { openEventWnd, eventSeason, unseenLootboxes, unseenLootboxesShowOnce, MAIN_
 let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
 let { translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 
-
-let eventColors = {
-  season_3 = 0xA5FF2B00
-  season_4 = 0xA5FFBB10
-  season_5 = 0xA500A556
-  def = 0xA5FF2B00
-}
 let bannerIconSize = [hdpxi(216), hdpxi(127)]
 let buttonSize = [translucentButtonsHeight * 1.5, translucentButtonsHeight]
 let horPadding = hdpx(80)
@@ -35,61 +29,65 @@ let mainEventBtn = framedImageBtn($"ui/gameuiskin#icon_events.svg",
         : null
   })
 
-return @() {
-  watch = [isBpSeasonActive, hasBpRewardsToReceive, isEventActive, eventSeason]
-  size = [bannerIconSize[0] * 2, SIZE_TO_CONTENT]
-  children = isBpSeasonActive.get()
-      ? {
-          rendObj = ROBJ_9RECT
-          image = gradTranspDoubleSideX
-          texOffs = [0, gradDoubleTexOffset]
-          screenOffs = [0, hdpx(130)]
-          color = 0x90000000
-          padding = [hdpx(20), horPadding, hdpx(20), horPadding ]
-          flow = FLOW_VERTICAL
-          gap = hdpx(20)
-          halign = ALIGN_CENTER
-          hplace = ALIGN_CENTER
-          children = [
-            {
-              size = [flex(), bannerIconSize[1]]
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              children = [
-                {
-                  size = [bannerIconSize[0] * 1.5 + horPadding * 2, hdpx(75)]
-                  rendObj = ROBJ_9RECT
-                  image = gradTranspDoubleSideX
-                  texOffs = [0, gradDoubleTexOffset]
-                  screenOffs = [0, hdpx(130)]
-                  color = eventColors?[eventSeason.get()] ?? eventColors.def
-                  pos = [0,  hdpx(-6)]
-                }
-                {
-                  size = bannerIconSize
-                  rendObj = ROBJ_IMAGE
-                  image = Picture($"ui/gameuiskin#banner_event_{eventSeason.value}.avif:{bannerIconSize[0]}:{bannerIconSize[1]}:P")
-                }
-              ]
-            }
-            {
-              flow = FLOW_HORIZONTAL
-              gap = hdpx(40)
-              children = [
-                isEventActive.get() ? mainEventBtn : null
-                framedImageBtn($"ui/gameuiskin#icon_bp.svg",
-                  openBattlePassWnd,
+return function () {
+  let { color, image, imageOffset } = getEventPresentation(eventSeason.get())
+  return {
+    watch = [isBpSeasonActive, hasBpRewardsToReceive, isEventActive, eventSeason]
+    size = [bannerIconSize[0] * 2, SIZE_TO_CONTENT]
+    children = isBpSeasonActive.get()
+        ? {
+            rendObj = ROBJ_9RECT
+            image = gradTranspDoubleSideX
+            texOffs = [0, gradDoubleTexOffset]
+            screenOffs = [0, hdpx(130)]
+            color = 0x90000000
+            padding = [hdpx(20), horPadding, hdpx(20), horPadding ]
+            flow = FLOW_VERTICAL
+            gap = hdpx(20)
+            halign = ALIGN_CENTER
+            hplace = ALIGN_CENTER
+            children = [
+              {
+                size = [flex(), bannerIconSize[1]]
+                halign = ALIGN_CENTER
+                valign = ALIGN_CENTER
+                children = [
                   {
-                    size = buttonSize
-                    sound = { click = "click" }
-                  },
-                  !hasBpRewardsToReceive.get() ? null
-                    : priorityUnseenMark.__merge({ pos = [0.5 * buttonSize[0], -0.5 * buttonSize[1]] })
-                )
-              ]
-            }
-          ]
-        }
-  : isEventActive.get() ? mainEventBtn
-  : null
+                    size = [bannerIconSize[0] * 1.5 + horPadding * 2, hdpx(75)]
+                    rendObj = ROBJ_9RECT
+                    image = gradTranspDoubleSideX
+                    texOffs = [0, gradDoubleTexOffset]
+                    screenOffs = [0, hdpx(130)]
+                    color
+                  }
+                  {
+                    size = bannerIconSize
+                    rendObj = ROBJ_IMAGE
+                    keepAspect = true
+                    pos = imageOffset.map(@(pos, idx) pos * bannerIconSize[idx])
+                    image = Picture($"{image}:{bannerIconSize[0]}:{bannerIconSize[1]}:P")
+                  }
+                ]
+              }
+              {
+                flow = FLOW_HORIZONTAL
+                gap = hdpx(40)
+                children = [
+                  isEventActive.get() ? mainEventBtn : null
+                  framedImageBtn($"ui/gameuiskin#icon_bp.svg",
+                    openBattlePassWnd,
+                    {
+                      size = buttonSize
+                      sound = { click = "click" }
+                    },
+                    !hasBpRewardsToReceive.get() ? null
+                      : priorityUnseenMark.__merge({ pos = [0.5 * buttonSize[0], -0.5 * buttonSize[1]] })
+                  )
+                ]
+              }
+            ]
+          }
+    : isEventActive.get() ? mainEventBtn
+    : null
+  }
 }

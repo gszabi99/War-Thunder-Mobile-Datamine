@@ -4,7 +4,7 @@ let { mkTabs } = require("%rGui/components/tabs.nut")
 let { mkUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 let { SEEN } = require("%rGui/unseenPriority.nut")
 
-let iconSizeDef = hdpxi(100)
+let iconSizeDef = hdpxi(80)
 
 let textColor = 0xFFFFFFFF
 
