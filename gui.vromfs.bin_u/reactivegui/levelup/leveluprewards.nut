@@ -51,14 +51,7 @@ let rewardsSum = Computed(@() rewardsToReceive.value.reduce(
   },
   {}))
 
-function receiveRewards() {
-  if (rewardInProgress.value)
-    return
-  let level = rewardsToReceive.value.findindex(@(_) true)
-  if (level == null)
-    return
-  get_player_level_rewards(curCampaign.value, level,
-    { id = "playerLevelRewards.receiveNext", level })
+function afterReceiveRewards() {
   closeRewardsModal()
   resetTimeout(0.1, function() {
     if (playerLevelInfo.get().isReadyForLevelUp) {
@@ -66,6 +59,19 @@ function receiveRewards() {
       openLvlUpAfterDelay()
     }
   })
+}
+
+function receiveRewards() {
+  let level = rewardsToReceive.value.findindex(@(_) true)
+  if (level == null) {
+    afterReceiveRewards()
+    return
+  }
+  if (rewardInProgress.value)
+    return
+  get_player_level_rewards(curCampaign.value, level,
+    { id = "playerLevelRewards.receiveNext", level })
+  afterReceiveRewards()
 }
 
 registerHandler("playerLevelRewards.receiveNext",

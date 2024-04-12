@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": [
@@ -52,13 +48,17 @@
     "mission": {
       "level": "levels/guadalcanal.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "openDiffLevels": true,
       "scoreLimit": 5000,
-      "difficulty": ""
+      "restoreType": "attempts",
+      "difficulty": "",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": {}
   },
@@ -105,6 +105,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t1_quest_units_squad",
           "var": "t1_land_death_counter"
         }
@@ -143,6 +145,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t2_quest_units_squad",
           "var": "t2_land_death_counter"
         }
@@ -223,6 +227,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t1_quest_units_squad"
         }
       },
@@ -252,6 +258,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t2_quest_units_squad"
         }
       },
@@ -313,18 +321,18 @@
           },
           "triggerEnable": {
             "target": [
-              "arcade_units_adding_rank_0_5",
-              "arcade_units_adding_rank_6_11",
-              "arcade_units_adding_rank_12_14",
-              "arcade_units_adding_rank_15_17",
-              "arcade_units_adding_rank_18_23",
-              "arcade_units_adding_rank_23_plus"
+              "arcade_units_adding_rank_0_1",
+              "arcade_units_adding_rank_2_2",
+              "arcade_units_adding_rank_3_3",
+              "arcade_units_adding_rank_4_4",
+              "arcade_units_adding_rank_5_5",
+              "arcade_units_adding_rank_6_plus"
             ]
           }
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_0_5": {
+      "arcade_units_adding_rank_0_1": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -340,7 +348,7 @@
         "conditions": {
           "varCompareInt": {
             "var_value": "adding_units_balance_level",
-            "value": 6,
+            "value": 2,
             "comparasion_func": "less"
           }
         },
@@ -356,7 +364,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_6_11": {
+      "arcade_units_adding_rank_2_2": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -373,12 +381,12 @@
           "varCompareInt": [
             {
               "var_value": "adding_units_balance_level",
-              "value": 5,
+              "value": 1,
               "comparasion_func": "more"
             },
             {
               "var_value": "adding_units_balance_level",
-              "value": 12,
+              "value": 3,
               "comparasion_func": "less"
             }
           ]
@@ -395,7 +403,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_12_14": {
+      "arcade_units_adding_rank_3_3": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -412,12 +420,12 @@
           "varCompareInt": [
             {
               "var_value": "adding_units_balance_level",
-              "value": 11,
+              "value": 2,
               "comparasion_func": "more"
             },
             {
               "var_value": "adding_units_balance_level",
-              "value": 15,
+              "value": 4,
               "comparasion_func": "less"
             }
           ]
@@ -449,7 +457,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_15_17": {
+      "arcade_units_adding_rank_4_4": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -466,12 +474,12 @@
           "varCompareInt": [
             {
               "var_value": "adding_units_balance_level",
-              "value": 14,
+              "value": 3,
               "comparasion_func": "more"
             },
             {
               "var_value": "adding_units_balance_level",
-              "value": 18,
+              "value": 5,
               "comparasion_func": "less"
             }
           ]
@@ -503,7 +511,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_18_23": {
+      "arcade_units_adding_rank_5_5": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -520,12 +528,12 @@
           "varCompareInt": [
             {
               "var_value": "adding_units_balance_level",
-              "value": 17,
+              "value": 4,
               "comparasion_func": "more"
             },
             {
               "var_value": "adding_units_balance_level",
-              "value": 24,
+              "value": 6,
               "comparasion_func": "less"
             }
           ]
@@ -553,7 +561,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_23_plus": {
+      "arcade_units_adding_rank_6_plus": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -569,7 +577,7 @@
         "conditions": {
           "varCompareInt": {
             "var_value": "adding_units_balance_level",
-            "value": 23,
+            "value": 5,
             "comparasion_func": "more"
           }
         },
@@ -619,6 +627,8 @@
             "object_marking": 0,
             "func": "more",
             "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": [
               "t1_quest_units_squad",
               "t2_quest_units_squad"

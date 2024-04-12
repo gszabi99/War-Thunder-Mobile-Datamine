@@ -207,7 +207,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
   let bpUnlock = findUnlockWithReward([bpFreeRewardsUnlock.get(), bpPaidRewardsUnlock.get(), bpPurchasedUnlock.get()],
     serverConfigs.get(),
     @(r) r.skins?[unitName] == skinName)
-  let isBpGoods = battlePassGoods.get().findindex(@(v) v.skins?[unitName] == skinName) != null
+  let isBpGoods = battlePassGoods.get().findindex(@(v) v != null && v.skins?[unitName] == skinName) != null
 
   if (bpUnlock != null || isBpGoods)
     return res.__update({

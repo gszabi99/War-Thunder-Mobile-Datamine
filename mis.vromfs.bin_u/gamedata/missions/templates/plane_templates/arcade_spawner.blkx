@@ -73,13 +73,13 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "arcade_spawn_matcher",
-          "value": 4,
+          "value": 3,
           "comparasion_func": "less"
         }
       },
       "actions": {
         "comment": {
-          "value": "rang 0-3"
+          "value": "rang 0-2"
         },
         "missionMarkAsRespawnPoint": [
           {
@@ -248,19 +248,19 @@
         "varCompareInt": [
           {
             "var_value": "arcade_spawn_matcher",
-            "value": 7,
+            "value": 5,
             "comparasion_func": "less"
           },
           {
             "var_value": "arcade_spawn_matcher",
-            "value": 3,
+            "value": 2,
             "comparasion_func": "more"
           }
         ]
       },
       "actions": {
         "comment": {
-          "value": "rang 4-6"
+          "value": "rang 3-4"
         },
         "missionMarkAsRespawnPoint": [
           {
@@ -434,19 +434,19 @@
         "varCompareInt": [
           {
             "var_value": "arcade_spawn_matcher",
-            "value": 15,
+            "value": 6,
             "comparasion_func": "less"
           },
           {
             "var_value": "arcade_spawn_matcher",
-            "value": 6,
+            "value": 4,
             "comparasion_func": "more"
           }
         ]
       },
       "actions": {
         "comment": {
-          "value": "rang 7-14"
+          "value": "rang 5"
         },
         "missionMarkAsRespawnPoint": [
           {
@@ -626,13 +626,13 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "arcade_spawn_matcher",
-          "value": 15,
+          "value": 6,
           "comparasion_func": "notLess"
         }
       },
       "actions": {
         "comment": {
-          "value": "rang 15+"
+          "value": "rang 6+"
         },
         "missionMarkAsRespawnPoint": [
           {
@@ -832,11 +832,11 @@
             "forceCreate": false,
             "replaceAreas": false,
             "ignoreTeamsOnReuse": false,
+            "customMapIcon": "ui/gameuiskin/objective_bomber.svg",
             "target": "t1_bombers_spawn",
             "team": "A",
             "tags": {
-              "type_bomber": true,
-              "tank": false
+              "type_bomber": true
             }
           },
           {
@@ -856,18 +856,11 @@
             "forceCreate": false,
             "replaceAreas": false,
             "ignoreTeamsOnReuse": false,
+            "customMapIcon": "ui/gameuiskin/objective_bomber.svg",
             "target": "t2_bombers_spawn",
             "team": "B",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
-              "type_bomber": true,
-              "tank": false
+              "type_bomber": true
             }
           }
         ],
@@ -929,11 +922,11 @@
             "forceCreate": false,
             "replaceAreas": false,
             "ignoreTeamsOnReuse": false,
+            "customMapIcon": "ui/gameuiskin/objective_bomber.svg",
             "target": "t1_bombers_spawn_far",
             "team": "A",
             "tags": {
-              "type_bomber": true,
-              "tank": false
+              "type_bomber": true
             }
           },
           {
@@ -953,11 +946,11 @@
             "forceCreate": false,
             "replaceAreas": false,
             "ignoreTeamsOnReuse": false,
+            "customMapIcon": "ui/gameuiskin/objective_bomber.svg",
             "target": "t2_bombers_spawn_far",
             "team": "B",
             "tags": {
-              "type_bomber": true,
-              "tank": false
+              "type_bomber": true
             }
           }
         ],
@@ -994,18 +987,11 @@
             "forceCreate": false,
             "replaceAreas": false,
             "ignoreTeamsOnReuse": false,
+            "customMapIcon": "ui/gameuiskin/objective_bomber.svg",
             "target": "t1_bombers_spawn",
             "team": "A",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
-              "type_bomber": true,
-              "tank": false
+              "type_bomber": true
             }
           },
           {
@@ -1025,18 +1011,11 @@
             "forceCreate": false,
             "replaceAreas": false,
             "ignoreTeamsOnReuse": false,
+            "customMapIcon": "ui/gameuiskin/objective_bomber.svg",
             "target": "t2_bombers_spawn",
             "team": "B",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
-              "type_bomber": true,
-              "tank": false
+              "type_bomber": true
             }
           }
         ],

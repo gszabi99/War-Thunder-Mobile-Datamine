@@ -61,6 +61,10 @@
           "object_var_value": 0
         },
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": [
             "t1_all_aaa_squad",
             "t2_all_aaa_squad"
@@ -102,11 +106,12 @@
           }
         },
         "conditions": {
-          "unitWhenRespawn": {
+          "airfieldIsModuleHP": {
             "object_var_name": "visible_for_aaa",
             "object_var_comp_op": "equal",
             "object": "t1_players_squad",
-            "object_var_value": 1
+            "object_var_value": 1,
+            "hp_check_mode": "equal"
           }
         },
         "actions": {
@@ -139,11 +144,12 @@
           }
         },
         "conditions": {
-          "unitWhenRespawn": {
+          "airfieldIsModuleHP": {
             "object_var_name": "visible_for_aaa",
             "object_var_comp_op": "equal",
             "object": "t2_players_squad",
-            "object_var_value": 1
+            "object_var_value": 1,
+            "hp_check_mode": "equal"
           }
         },
         "actions": {
@@ -362,6 +368,10 @@
         },
         "else_actions": {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "t1_all_aaa_squad",
             "attack_type": "hold_fire"
           }
@@ -405,6 +415,10 @@
         },
         "else_actions": {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "t2_all_aaa_squad",
             "attack_type": "hold_fire"
           }
@@ -430,7 +444,7 @@
         "conditions": {
           "varCompareInt": {
             "var_value": "aat_matching_rank",
-            "value": 20,
+            "value": 7,
             "comparasion_func": "more"
           }
         },
@@ -868,6 +882,10 @@
         },
         "actions": {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@aat_t1_aaa_squad_name",
             "useForTriggerFiltered": true,
             "useSearchRadar": true
@@ -908,6 +926,10 @@
         },
         "actions": {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@aat_t2_aaa_squad_name",
             "useSearchRadar": true
           }
@@ -947,6 +969,10 @@
         },
         "actions": {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@aat_t1_aaa_squad_name",
             "useForTriggerFiltered": true,
             "useSearchRadar": false
@@ -987,6 +1013,10 @@
         },
         "actions": {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@aat_t2_aaa_squad_name",
             "useSearchRadar": false
           }

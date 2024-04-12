@@ -49,8 +49,8 @@
       "level": "levels/air_phiphi_crater.bin",
       "type": "domination",
       "environment": "Day",
-      "weather": "clear",
-      "overrideUnit": "f3f-2;he51c1;i-15_1934;p-51c-10-nt;la-5_type37_early;il_4;p-38k;yak-3t;fw-190c",
+      "weather": "good",
+      "overrideUnit": "f3f-2;he51c1;i-15_1934;p-51c-10-nt;sb2c_4;la-5_type37_early;il_4;p-38k;yak-3t;fw-190c;b-17g",
       "locName": "missions/_GS/ship;location/arcade_phiphi_crater",
       "locDesc": "missions/_GS/desc",
       "openDiffLevels": true,
@@ -62,6 +62,10 @@
       "restoreType": "attempts",
       "difficulty": "",
       "optionalTakeOff": false,
+      "forcedRank": {
+        "min": 0,
+        "max": 4
+      },
       "editSlotbar": {
         "keepOwnUnits": false,
         "country_usa": {
@@ -417,21 +421,32 @@
         ],
         "unitSetIndication": [
           {
+            "indicatorSize": 2.5,
+            "indicatorOpacity": 0.9,
+            "blinksCount": 10,
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t1_quest_units_squad",
+            "target_type": "isAlive",
             "team": "B"
           },
           {
+            "indicatorSize": 2.5,
+            "indicatorOpacity": 0.9,
+            "blinksCount": 10,
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t2_quest_units_squad",
+            "target": [
+              "t2_tanks_squad",
+              "t2_quest_units_squad"
+            ],
+            "target_type": "isAlive",
             "team": "A"
           }
         ],

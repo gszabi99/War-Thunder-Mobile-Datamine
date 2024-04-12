@@ -12,15 +12,15 @@
     "mission": {
       "level": "levels/stalingrad_w.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "scoreLimit": 5000,
       "timeLimit": 20,
       "deathPenaltyMul": 0.0,
       "country_axis": "germany",
-      "country_allies": "ussr"
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": {}
   },
@@ -155,7 +155,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "ad_zone_matcher",
-          "value": 4,
+          "value": 3,
           "comparasion_func": "less"
         },
         "objectExists": {
@@ -165,7 +165,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 0-3"
+          "value": "rang 0-2"
         },
         "varSetString": {
           "value": "capture_area_near",
@@ -178,11 +178,12 @@
           "name_for_respawn_base": "",
           "target": "@capture_area_name",
           "canCaptureOnGround": false,
+          "playAirfieldSound": false,
           "canCaptureInAir": true,
           "canCaptureByGM": false,
           "onlyPlayersCanCapture": false,
           "captureNoPenalty": true,
-          "playAirfieldSound": false
+          "zoneDefenders": {}
         },
         "triggerDisable": {
           "target": [
@@ -213,12 +214,12 @@
         "varCompareInt": [
           {
             "var_value": "ad_zone_matcher",
-            "value": 7,
+            "value": 5,
             "comparasion_func": "less"
           },
           {
             "var_value": "ad_zone_matcher",
-            "value": 3,
+            "value": 2,
             "comparasion_func": "more"
           }
         ],
@@ -229,7 +230,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 4-6"
+          "value": "rang 3-4"
         },
         "varSetString": {
           "value": "capture_area_middle",
@@ -245,7 +246,8 @@
           "canCaptureInAir": true,
           "canCaptureByGM": false,
           "onlyPlayersCanCapture": false,
-          "captureNoPenalty": true
+          "captureNoPenalty": true,
+          "zoneDefenders": {}
         },
         "triggerDisable": {
           "target": [
@@ -276,12 +278,12 @@
         "varCompareInt": [
           {
             "var_value": "ad_zone_matcher",
-            "value": 15,
+            "value": 6,
             "comparasion_func": "less"
           },
           {
             "var_value": "ad_zone_matcher",
-            "value": 6,
+            "value": 4,
             "comparasion_func": "more"
           }
         ],
@@ -292,7 +294,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 7-14"
+          "value": "rang 5"
         },
         "varSetString": {
           "value": "capture_area_far",
@@ -308,7 +310,8 @@
           "canCaptureInAir": true,
           "canCaptureByGM": false,
           "onlyPlayersCanCapture": false,
-          "captureNoPenalty": true
+          "captureNoPenalty": true,
+          "zoneDefenders": {}
         },
         "triggerDisable": {
           "target": [
@@ -338,7 +341,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "ad_zone_matcher",
-          "value": 15,
+          "value": 6,
           "comparasion_func": "notLess"
         },
         "objectExists": {
@@ -348,7 +351,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 15+"
+          "value": "rang 6+"
         },
         "varSetString": {
           "value": "capture_area_huge",
@@ -364,7 +367,8 @@
           "canCaptureInAir": true,
           "canCaptureByGM": false,
           "onlyPlayersCanCapture": false,
-          "captureNoPenalty": true
+          "captureNoPenalty": true,
+          "zoneDefenders": {}
         },
         "triggerDisable": {
           "target": [
@@ -419,7 +423,8 @@
           "canCaptureInAir": true,
           "canCaptureByGM": false,
           "onlyPlayersCanCapture": false,
-          "captureNoPenalty": true
+          "captureNoPenalty": true,
+          "zoneDefenders": {}
         }
       },
       "else_actions": {}

@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": [
@@ -52,11 +48,15 @@
     "mission": {
       "level": "levels/guadalcanal.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "scoreLimit": 5000
+      "scoreLimit": 5000,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": {}
   },
@@ -93,31 +93,31 @@
         },
         "triggerActivate": [
           {
-            "target": "dazt_airfield_0_3_check",
+            "target": "dazt_airfield_0_1_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           },
           {
-            "target": "dazt_airfield_4_7_check",
+            "target": "dazt_airfield_2_2_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           },
           {
-            "target": "dazt_airfield_8_11_check",
+            "target": "dazt_airfield_3_3_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           },
           {
-            "target": "dazt_airfield_12_16_check",
+            "target": "dazt_airfield_4_4_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           },
           {
-            "target": "dazt_airfield_17_20_check",
+            "target": "dazt_airfield_5_20_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
@@ -151,6 +151,9 @@
         "moSetObjectiveStatus": {
           "target": "t2_destroy_airfield",
           "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
           "team": "B"
         },
         "comment": {
@@ -187,6 +190,9 @@
         "moSetObjectiveStatus": {
           "target": "t1_destroy_airfield",
           "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
           "team": "A"
         },
         "comment": {
@@ -454,7 +460,10 @@
       },
       "actions": {
         "moAddMissionObjective": {
-          "target": "t2_destroy_airfield"
+          "target": "t2_destroy_airfield",
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "triggerEnable": {
           "target": "t1_airfield_destroyed"
@@ -492,7 +501,10 @@
       },
       "actions": {
         "moAddMissionObjective": {
-          "target": "t1_destroy_airfield"
+          "target": "t1_destroy_airfield",
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "triggerEnable": {
           "target": "t2_airfield_destroyed"
@@ -508,7 +520,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_0_3_check": {
+    "dazt_airfield_0_1_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -524,7 +536,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "dazt_balance_level",
-          "value": 4,
+          "value": 2,
           "comparasion_func": "less"
         }
       },
@@ -559,7 +571,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_4_7_check": {
+    "dazt_airfield_2_2_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -576,12 +588,12 @@
         "varCompareInt": [
           {
             "var_value": "dazt_balance_level",
-            "value": 3,
+            "value": 1,
             "comparasion_func": "more"
           },
           {
             "var_value": "dazt_balance_level",
-            "value": 8,
+            "value": 3,
             "comparasion_func": "less"
           }
         ]
@@ -617,7 +629,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_8_11_check": {
+    "dazt_airfield_3_3_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -634,12 +646,12 @@
         "varCompareInt": [
           {
             "var_value": "dazt_balance_level",
-            "value": 7,
+            "value": 2,
             "comparasion_func": "more"
           },
           {
             "var_value": "dazt_balance_level",
-            "value": 12,
+            "value": 4,
             "comparasion_func": "less"
           }
         ]
@@ -675,7 +687,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_12_16_check": {
+    "dazt_airfield_4_4_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -692,12 +704,12 @@
         "varCompareInt": [
           {
             "var_value": "dazt_balance_level",
-            "value": 11,
+            "value": 3,
             "comparasion_func": "more"
           },
           {
             "var_value": "dazt_balance_level",
-            "value": 17,
+            "value": 5,
             "comparasion_func": "less"
           }
         ]
@@ -733,7 +745,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_17_20_check": {
+    "dazt_airfield_5_20_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -749,7 +761,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "dazt_balance_level",
-          "value": 16,
+          "value": 4,
           "comparasion_func": "more"
         }
       },

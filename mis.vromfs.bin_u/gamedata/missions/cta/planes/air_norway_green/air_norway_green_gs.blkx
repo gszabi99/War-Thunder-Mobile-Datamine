@@ -49,8 +49,8 @@
       "level": "levels/air_norway_green.bin",
       "type": "domination",
       "environment": "Day",
-      "weather": "hazy",
-      "overrideUnit": "f3f-2;he51c1;i-15_1934;p-51c-10-nt;la-5_type37_early;il_4;p-38k;yak-3t;fw-190c",
+      "weather": "good",
+      "overrideUnit": "f3f-2;he51c1;i-15_1934;p-51c-10-nt;sb2c_4;la-5_type37_early;il_4;p-38k;yak-3t;fw-190c;b-17g",
       "locName": "missions/_GS/heavy_tank;location/air_norway_green",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 5400,
@@ -60,6 +60,10 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
+      "forcedRank": {
+        "min": 0,
+        "max": 4
+      },
       "editSlotbar": {
         "keepOwnUnits": false,
         "country_usa": {
@@ -177,6 +181,20 @@
     "import_record": [
       {
         "file": "gameData/missions/templates/plane_templates/base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/plane_templates/land_units_death_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -523,34 +541,37 @@
         ],
         "unitSetIndication": [
           {
+            "indicatorSize": 2.5,
+            "indicatorOpacity": 0.9,
+            "blinksCount": 10,
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t1_quest_units_squad",
+            "target_type": "isAlive",
             "team": "B"
           },
           {
+            "indicatorSize": 2.5,
+            "indicatorOpacity": 0.9,
+            "blinksCount": 10,
             "set": true,
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t2_quest_units_squad",
+            "target": [
+              "t2_tanks_squad",
+              "t2_quest_units_squad"
+            ],
+            "target_type": "isAlive",
             "team": "A"
           }
         ],
         "wait": {
           "time": 1.0
-        },
-        "unitPutToSleep": {
-          "target": [
-            "t2_def_aaa_squad",
-            "t2_quest_units_squad",
-            "t1_def_aaa_squad",
-            "t1_quest_units_squad"
-          ]
         }
       },
       "else_actions": {}
