@@ -7,7 +7,7 @@ let { mkLoootboxImage, getLootboxName } = require("%rGui/unlocks/rewardsView/loo
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
+let { purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 
 
 let priceBgGrad = mkColoredGradientY(0xFF72A0D0, 0xFF588090, 12)
@@ -32,9 +32,16 @@ let mkLootboxNameComp = @(goods) Computed(@() getGoodsLootboxName(goods, serverC
 
 let function mkLootboxTitle(goods, ovr = {}) {
   let title = mkLootboxNameComp(goods)
-  let { limit = 0, id = null } = goods
+  let { limit = 0, dailyLimit = 0, id = null } = goods
+  let limitExt = Computed(function() {
+    let limitLeft = limit <= 0 ? -1 : max(0, limit - (purchasesCount.get()?[id].count ?? 0))
+    let dailyLimitLeft = dailyLimit <= 0 ? -1 : max(0, dailyLimit - (todayPurchasesCount.get()?[id].count ?? 0))
+    return limitLeft < 0 ? dailyLimitLeft
+      : dailyLimitLeft < 0 ? limitLeft
+      : min(limitLeft, dailyLimitLeft)
+  })
   return @() {
-    watch = [title, purchasesCount]
+    watch = [title, limitExt]
     margin = textMargin
     hplace = ALIGN_RIGHT
     halign = ALIGN_RIGHT
@@ -46,8 +53,10 @@ let function mkLootboxTitle(goods, ovr = {}) {
         maxWidth = goodsSmallSize[0] - contentMargin * 2
       })
       { size = flex() }
-      !limit || limit == 0 ? null
-        : mkGradGlowText(loc("shop/limit", { available = max(0, limit - (purchasesCount.get()?[id].count ?? 0)), limit }),
+      limitExt.get() < 0 ? null
+        : mkGradGlowText(
+            loc(dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit",
+              { available = limitExt.get(), limit = max(limit, dailyLimit) }),
             fontVeryTiny,
             titleFontGrad)
     ]

@@ -252,21 +252,6 @@
         ],
         "tank": [
           {
-            "name": "ussr_t_34_85_d_5t",
-            "weight": 1.0,
-            "country": "ussr"
-          },
-          {
-            "name": "ussr_su_152",
-            "weight": 1.0,
-            "country": "ussr"
-          },
-          {
-            "name": "ussr_is_1",
-            "weight": 1.0,
-            "country": "ussr"
-          },
-          {
             "name": "fr_panhard_ebr_1951",
             "weight": 1.0,
             "country": "germany"
@@ -297,21 +282,6 @@
             "country": "germany"
           },
           {
-            "name": "germ_pzkpfw_VI_ausf_h1_tiger",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_jgdpz_38t",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_vk_3002m",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
             "name": "uk_a_34_comet",
             "weight": 1.0,
             "country": "germany"
@@ -332,6 +302,44 @@
         "range": [
           4,
           4
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_34_85_d_5t",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_su_152",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_is_1",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "germ_pzkpfw_VI_ausf_h1_tiger",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_jgdpz_38t",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_vk_3002m",
+            "weight": 1.0,
+            "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          5,
+          5
         ],
         "tank": [
           {
@@ -403,8 +411,8 @@
       },
       {
         "range": [
-          5,
-          5
+          6,
+          6
         ],
         "tank": [
           {
@@ -486,8 +494,8 @@
       },
       {
         "range": [
-          6,
-          6
+          7,
+          7
         ],
         "tank": [
           {
@@ -509,24 +517,24 @@
       },
       {
         "range": [
-          7,
+          8,
           50
         ],
         "tank": [
           {
-            "name": "ussr_t_54_1949",
+            "name": "ussr_t_55a",
             "weight": 1.0,
             "country": "ussr"
           },
           {
-            "name": "ussr_t_10a",
+            "name": "ussr_t_62",
             "weight": 1.0,
             "country": "ussr"
           },
           {
-            "name": "ussr_object_906",
+            "name": "ussr_it_1",
             "weight": 1.0,
-            "country": "germany"
+            "country": "ussr"
           }
         ]
       }
@@ -713,7 +721,7 @@
       {
         "range": [
           4,
-          50
+          4
         ],
         "ship": [
           {
@@ -745,9 +753,27 @@
             "name": "us_battleship_iowa",
             "weight": 1.0,
             "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          5,
+          50
+        ],
+        "ship": [
+          {
+            "name": "germ_destroyer_rckt_hamburg",
+            "weight": 1.0,
+            "country": "germany"
           },
           {
-            "name": "ussr_battleship_pr23_sovetskij_soyuz",
+            "name": "us_cruiser_rckt_belknap",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_destroyer_rckt_takatsuki",
             "weight": 1.0,
             "country": "germany"
           }

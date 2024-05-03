@@ -15,7 +15,7 @@ let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap
 let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize
 } = require("rewardsComps.nut")
 let { mkQuestBar, mkProgressBar } = require("questBar.nut")
-let { getUnlockRewardsViewInfo, sortRewardsViewInfo, isSingleRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getUnlockRewardsViewInfo, sortRewardsViewInfo, isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
@@ -155,7 +155,7 @@ function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
 
   local countReceivedR = 0
   foreach(r in rewardsPreview)
-    countReceivedR += isSingleRewardEmpty(r, sProfile) ?  1 : 0
+    countReceivedR += isSingleViewInfoRewardEmpty(r, sProfile) ?  1 : 0
   if (item?.hasReward)
     children = textButtonSecondary(
       utf8ToUpper(loc("btn/receive")),

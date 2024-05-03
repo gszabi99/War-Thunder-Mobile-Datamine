@@ -90,3 +90,7 @@ loginCount.subscribe(function(count) {
   if (serverTime.value - todayFirstLogin <= 60)
     sendEvent("login_day_2")
 })
+
+return {
+  sendAppsFlyerEvent = sendEvent
+}

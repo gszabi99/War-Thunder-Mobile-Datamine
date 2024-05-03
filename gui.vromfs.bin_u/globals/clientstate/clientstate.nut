@@ -16,6 +16,7 @@ let isInLoadingScreen = sharedWatched("isInLoadingScreen", @() true)
 let isMissionLoading = sharedWatched("isMissionLoading", @() false)
 let isInDebriefing = sharedWatched("isInDebriefing", @() false)
 let isInFlightMenu = sharedWatched("isInFlightMenu", @() false)
+let canBailoutFromFlightMenu = sharedWatched("canBailoutFromFlightMenu", @() false)
 let isMpStatisticsActive = sharedWatched("isMpStatisticsActive", @() false)
 let isInMenu = Computed(@() isLoggedIn.value && !isInBattle.value && !isInLoadingScreen.value)
 let isOutOfBattleAndResults = Computed(@() !isInBattle.value && !isInDebriefing.value && !isInLoadingScreen.value)
@@ -54,6 +55,7 @@ return {
   localMPlayerTeam
   isOutOfBattleAndResults
   isInFlightMenu
+  canBailoutFromFlightMenu
   isMpStatisticsActive
   isHudVisible
 }

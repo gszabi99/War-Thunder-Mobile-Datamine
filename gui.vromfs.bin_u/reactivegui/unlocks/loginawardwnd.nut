@@ -4,6 +4,7 @@ let { register_command } = require("console")
 let { get_time_msec } = require("dagor.time")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { lerp } = require("%sqstd/math.nut")
+let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -99,7 +100,7 @@ function mkFirstRewardComp(stageData) {
   let rewardId = rewards.findindex(@(_) true)
   if (rewardId == null)
     return Watched(null)
-  return Computed(@() serverConfigs.value?.userstatRewards[rewardId])
+  return Computed(@() serverConfigs.value?.userstatRewards[rewardId] ?? [])
 }
 
 let rewardBg = {
@@ -268,7 +269,12 @@ function previewBtnBlock() {
   })
 }
 
-let openPreview = @(reward) openLootboxPreview(reward.lootboxes.findindex(@(_) true))
+function openPreview(reward) {
+  let lootboxId = "lootboxes" in reward ? reward.lootboxes.findindex(@(_) true) //compatibility with 2024.04.14
+    : reward.findvalue(@(g) g.gType == G_LOOTBOX)?.id
+  if (lootboxId != null)
+    openLootboxPreview(lootboxId)
+}
 
 function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, animState) {
   let place = rewardsPlaces?[periodIdx]

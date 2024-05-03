@@ -68,7 +68,7 @@ function mkTargetSelectionData(endTime, cooldown, textSize) {
   if (endTime <= 0 || cooldown <= 0)
     return null
 
-  let cdLeft = (endTime - get_mission_time())
+  let cdLeft = max(endTime - get_mission_time(), 0.0)
   let iconSize = [targetSize, targetSize]
   let delay = - cdLeft * (1 - cdLeft / cooldown)
   let upscaleX = textSize[0] ? (hdpx(15) / textSize[0] + 1.0) : 1.1

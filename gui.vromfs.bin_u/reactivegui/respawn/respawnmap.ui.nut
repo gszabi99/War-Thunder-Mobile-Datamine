@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { respawnBases, availRespBases, playerSelectedRespBase, curRespBase
+let { respawnBases, availRespBases, playerSelectedRespBase, curRespBase, selSlot
 } = require("respawnState.nut")
 let { localTeam } = require("%rGui/missionState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { VISIBLE_ON_MAP, getRespawnBasePos = null } = require("guiRespawn")
+let { VISIBLE_ON_MAP, getRespawnBasePos = null, is_respawnbase_selectable = null } = require("guiRespawn")
 
 let baseSize = evenPx(50)
 let circleSize = evenPx(70)
@@ -16,7 +16,7 @@ let zoneIcons = [
 let visibleRespawnBases = Computed(@() respawnBases.value.filter(@(rb) (rb.flags & VISIBLE_ON_MAP) != 0))
 
 let mkRespBase = @(rb) @() {
-  watch = [curRespBase, localTeam]
+  watch = [curRespBase, localTeam, selSlot]
   size = [0, 0]
   pos = [pw(100.0 * rb.mapPos[0]), ph(100.0 * rb.mapPos[1])]
   rendObj = ROBJ_SOLID
@@ -30,7 +30,7 @@ let mkRespBase = @(rb) @() {
         }
       }
   children = [
-    (curRespBase.value != rb.id && curRespBase.value > 0) || (rb.team != localTeam.value) ? null
+    (curRespBase.value != rb.id && curRespBase.value > 0) || (rb.team != localTeam.value) || (is_respawnbase_selectable!=null && !is_respawnbase_selectable(rb.id)) ? null
       : {
           size = [circleSize, circleSize]
           rendObj = ROBJ_IMAGE

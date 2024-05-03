@@ -1,21 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
 let logC = log_with_prefix("[Consent] ")
 let { eventbus_subscribe } = require("eventbus")
+let { deferOnce } = require("dagor.workcycle")
 let { can_request_ads_consent } = require("%appGlobals/permissions.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { is_pc } = require("%sqstd/platform.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
+let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
+
 let { isAnyAdsButtonAttached } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+
 let consent = is_pc ? require("consentDbg.nut") : (require_optional("consent") ?? {})
 let { isConsentAcceptedForAll = @() true, isGDPR = @() false, showConsentForm = @(_) null, isConsentInited = @() true } = consent
 
-let isConsentSuggestShowed = hardPersistWatched("conent.showed", false)
+
+let MSG_UID = "consentSuggestMsgBox"
+
+let isConsentSuggestShowed = hardPersistWatched("consent.showed", false)
 let isConsentRequired = hardPersistWatched("consent.required", isGDPR() && isConsentInited() && !isConsentAcceptedForAll())
 let consentUpdated = hardPersistWatched("consent.updated", 0)
 
-let needOpenConsent = keepref(Computed(@() can_request_ads_consent.get() && isConsentRequired.get()
-  && isAnyAdsButtonAttached.get() && !isConsentSuggestShowed.get()))
+let needOpenConsent = Computed(@() can_request_ads_consent.get() && isConsentRequired.get()
+  && isAnyAdsButtonAttached.get() && !isConsentSuggestShowed.get())
+
+let shouldOpenConsent = keepref(Computed(@() needOpenConsent.get() && !hasModalWindows.get()))
 
 let consentNames = {}
 foreach(id, val in consent)
@@ -30,20 +39,30 @@ let function showConsent(force) {
     showConsentForm(force)
 }
 
-needOpenConsent.subscribe(function(v) {
-  if (!v)
+function openConsent() {
+  if (!needOpenConsent.get())
     return
+
   sendUiBqEvent("ads_consent", { id = "request_show_consent_suggest" })
-  isConsentSuggestShowed.set(true)
   openMsgBox({
-    uid = "consentSuggestMsgBox"
+    uid = MSG_UID
     text = loc("msgBox/consent_txt")
     buttons = [
-      { text = loc("msgbox/btn_later"), id = "cancel", isCancel = true }
-      { text = loc("msgBox/btn_open_consent"), id = "open_consent", styleId = "PRIMARY", isDefault = true, cb = @() showConsent(true) }
+      { text = loc("msgbox/btn_later"), id = "cancel", isCancel = true
+        cb = @() isConsentSuggestShowed.set(true)
+      }
+      { text = loc("msgBox/btn_open_consent"), id = "open_consent", styleId = "PRIMARY", isDefault = true,
+        function cb() {
+          isConsentSuggestShowed.set(true)
+          showConsent(true)
+        }
+      }
     ]
   })
-})
+}
+
+shouldOpenConsent.subscribe(@(v) v ? deferOnce(openConsent) : null)
+needOpenConsent.subscribe(@(v) !v ? closeMsgBox(MSG_UID) : null)
 
 eventbus_subscribe("consent.onConsentShow", function(msg) {
   if (!isGDPR())

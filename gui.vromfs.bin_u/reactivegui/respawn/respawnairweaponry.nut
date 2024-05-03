@@ -128,7 +128,8 @@ function divideWeaponryByGroups(weapons) {
 }
 
 function respawnAirWeaponry(selSlot) {
-  let { commonWeapons = {} } = loadUnitBulletsFull(selSlot.name)
+  let bulletsFull = loadUnitBulletsFull(selSlot.name)
+  let commonWeapons = (bulletsFull?.commonWeapons ?? {}).__merge(bulletsFull?[$"{selSlot.name}_default"] ?? {})
   let weaponGroups = divideWeaponryByGroups(commonWeapons)
   let rows = []
   local curRow = null

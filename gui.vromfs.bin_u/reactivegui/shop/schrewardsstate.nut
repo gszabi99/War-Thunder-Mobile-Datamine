@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { shopCategoriesCfg, getGoodsType, isGoodsFitToCampaign } = require("shopCommon.nut")
+let { G_UNIT, G_UNIT_UPGRADE, G_ITEM, G_CURRENCY, G_LOOTBOX, G_PREMIUM } = require("%appGlobals/rewardType.nut")
+let { shopCategoriesCfg, getGoodsType } = require("shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -12,10 +12,65 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { playSound } = require("sound_wt")
 
 
+function rewardsToGoodsFormat(schReward, id) {
+  let { rewards = null } = schReward
+  if (rewards == null) //compatibility with 2024.04.14
+    return schReward.__merge({ id, gtype = getGoodsType(schReward), isFreeReward = true })
+
+  //temporary while goods rewards format not the same with userstat and lootboxes
+  let res = schReward.__merge({
+    id
+    isFreeReward = true
+    units = []
+    unitUpgrades = []
+    items = {}
+    lootboxes = {}
+    premiumDays = 0
+    currencies = {}
+  })
+
+  foreach(g in rewards)
+    if (g.gType == G_UNIT)
+      res.units.append(g.id)
+    else if (g.gType == G_UNIT_UPGRADE)
+      res.unitUpgrades.append(g.id)
+    else if (g.gType == G_ITEM)
+      res.items[g.id] <- g.count
+    else if (g.gType == G_LOOTBOX)
+      res.lootboxes[g.id] <- g.count
+    else if (g.gType == G_CURRENCY)
+      res.currencies[g.id] <- g.count
+    else if (g.gType == G_PREMIUM)
+      res.premiumDays += g.count
+
+  res.gtype <- getGoodsType(res)
+  return res
+}
+
+function isRewardsFitToCampaign(schReward, cConfigs) {
+  let { rewards = null } = schReward
+  if (rewards == null) {//compatibility with 2024.04.14
+    let { units = [], unitUpgrades = [], items = {} } = schReward
+    if (units.len() > 0)
+      return null != units.findvalue(@(u) u in cConfigs?.allUnits)
+    if (unitUpgrades.len() > 0)
+      return null != unitUpgrades.findvalue(@(u) u in cConfigs?.allUnits)
+    if (items.len() > 0)
+      return null != items.findvalue(@(_, i) i in cConfigs?.allItems)
+    return true
+  }
+  foreach(g in rewards)
+    if (g.gType == G_UNIT || g.gType == G_UNIT_UPGRADE)
+      return g.id in cConfigs?.allUnits
+    else if (g.gType == G_ITEM)
+      return g.id in cConfigs?.allItems
+  return true
+}
+
 let lastAppliedSchReward = Watched({})
 let schRewardsBase = Computed(@() (campConfigs.value?.schRewards ?? {})
-  .filter(@(g) isGoodsFitToCampaign(g, campConfigs.value))
-  .map(@(g, id) g.__merge({ id, gtype = getGoodsType(g), isFreeReward = true })))
+  .filter(@(g) isRewardsFitToCampaign(g, campConfigs.value))
+  .map(rewardsToGoodsFormat))
 let schRewardsStatus = Watched({})
 let schRewards = Computed(@() schRewardsBase.value
   .map(@(r, id) id in schRewardsStatus.value ? r.__merge(schRewardsStatus.value[id]) : r))

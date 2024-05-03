@@ -20,7 +20,6 @@ let { get_gui_option, addUserOption, addLocalUserOption } = require("guiOptions"
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { battleResult } = require("battleResult.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curQueue } = require("%appGlobals/queueState.nut")
 let { clusterStats } = require("%scripts/matching/optimalClusters.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -122,8 +121,7 @@ function onFrameTimes(evt, _eid, _comp) {
     cluster = lastCluster.value
     clusters_rtt = ",".join(clusterStats.value.map(@(c)
       ":".join([ c.clusterId, c.hostsRTT == null ? null : round(c.hostsRTT).tointeger()], true)))
-    campaign = battleCampaign.value != "" ? battleCampaign.value
-      : (battleResult.value?.campaign ?? curCampaign.value ?? "")
+    campaign = battleCampaign.get() != "" ? battleCampaign.get() : (battleResult.get()?.campaign ?? "")
     mission = get_current_mission_name()
     fpsLimit = get_gui_option(OPT_FPS)
     videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY)

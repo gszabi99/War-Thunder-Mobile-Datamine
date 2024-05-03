@@ -8,7 +8,7 @@ let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
-let { gameModeAddonToAddonSetMap, ADDON_VERSION_EMPTY } = require("%appGlobals/updater/addons.nut")
+let { gameModeAddonToAddonSetMap, ADDON_VERSION_EMPTY, knownAddons } = require("%appGlobals/updater/addons.nut")
 
 
 let getModeAddonsDbgString = @(mode)
@@ -19,19 +19,28 @@ function getModeAddonsInfo(mode, unitNames) {
   local addons = {}  //addon = needDownload
   local allReqAddons = {}
   local updateDiff = 0
-  foreach (addon, reqVersion in reqPkg) {
+
+  let processAddon = function (addon, reqVersion) {
     allReqAddons[addon] <- true
     if (is_addon_exists_in_game_folder(addon)) {
       addons[addon] <- false
-      continue
+      return
     }
     let version = get_addon_version(addon)
     if (version != ADDON_VERSION_EMPTY && check_version(reqVersion, version)) {
       addons[addon] <- false
-      continue
+      return
     }
     addons[addon] <- true
     updateDiff += version == "" ? -1 : 1
+  }
+
+  foreach (addon, reqVersion in reqPkg) {
+    processAddon(addon, reqVersion)
+
+    let addonHq = $"{addon}_hq"
+    if (addonHq in knownAddons)
+      processAddon(addonHq, reqVersion)
   }
 
   if (!only_override_units) {

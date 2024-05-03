@@ -1805,6 +1805,9 @@ Eğer onu yapmak için şimdi hazır değilseniz bu ayarı her zaman oyunun ana 
 "options/directAim";"Direct";"Direct";"Diretto";"Direkt";"Directo";"Ручное";"Ручне";"Proste";"Direta";"Doğrudan nişan";"직접 조작";"直\t接\t瞄\t准\t模\t式";"直接操作";"直\t接\t瞄\t準\t模\t式"
 "options/camera_sensitivity";"Camera sensitivity";"Sensibilité de la caméra";"Sensibilità telecamera";"Kameraempfindlichkeit";"Sensibilidad de la cámara";"Чувствительность камеры";"Чутливість камери";"Czułość kamery";"Sensibilidade da câmara";"Kamera hassasiyeti";"카메라 감도";"视\t角\t灵\t敏\t度";"カメラ\t感度";"視\t角\t靈\t敏\t度"
 "options/camera_sensitivity_in_zoom";"Camera sensitivity in zoom mode";"Sensibilité de la caméra en mode zoom";"Sensibilità telecamera in modalità zoom";"Kameraempfindlichkeit im Zoom-Modus";"Sensibilidad de la cámara en modo zoom";"Чувствительность камеры в прицеле";"Чутливість камери в біноклі";"Czułość kamery w trybie zbliżenia";"Sensibilidade da câmara no modo de zoom";"Yakınlaştırma modunda kamera hassasiyeti";"줌 모드 사용 시의 카메라 감도";"缩\t放\t后\t视\t角\t灵\t敏\t度";"ズームモード\t時の\tカメラ\t感度";"縮\t放\t後\t視\t角\t靈\t敏\t度"
+"options/cursor_sensitivity";"Cursor sensitivity";"Sensibilité du curseur";"Sensibilità del cursore";"Cursor-Empfindlichkeit";"Sensibilidad del cursor";"Чувствительность курсора";"Чутливість курсору";"Czułość kursora";"Sensibilidade do cursor";"İşaretçi hassasiyeti";"커서 민감도";"光\t标\t灵\t敏\t度";"カーソル\t感度";"滑\t鼠\t游\t標\t靈\t敏\t度"
+"options/cursor_sensitivity_in_zoom";"Cursor sensitivity in zoom mode";"Sensibilité du curseur en mode zoom";"Sensibilità del cursore in modalità zoom";"Cursor-Empfindlichkeit im Zoom-Modus";"Sensibilidad del cursor en modo zoom";"Чувствительность курсора в прицеле";"Чутливість курсору в режимі масштабування";"Czułość kursora w trybie zbliżenia";"Sensibilidade do cursor no modo zoom";"Yakınlaştırma modunda işaretçi hassasiyeti";"줌 모드 사용 시의 커서 감도";"缩\t放\t后\t光\t标\t灵\t敏\t度";"ズームモード\t時の\tカーソル\t感度";"縮\t放\t模\t式\t的\t滑\t鼠\t游\t標\t靈\t敏\t度"
+"options/inverted_y";"Inverted elevator axis";"Axe de la gouverne de profondeur inversé";"Assi elevatore invertiti";"Umgekehrte Achse des Höhenruders";"Eje de elevador invertido";"Инвертировать ось элеватора";"Перевернута вісь керма висоти";"Odwrócona oś statecznika poziomego";"Inverter eixo elevador";"Tersi alınmış irtifa dümeni ekseni";"엘리베이터 축 반전";"升\t降\t轴\t反\t转";"反転\tエレベーター\t軸";"升\t降\t軸\t反\t轉"
 "options/free_camera_sensitivity_tank";"Free camera sensitivity of a tank";"Sensibilité de la caméra libre du char";"Sensibilità telecamera libera per carri armati";"Empfindlichkeit der freien Kamera eines Panzers";"Sensibilidad de la cámara libre de un tanque";"Чувствительность свободной камеры танка";"Чутливість вільної камери танка";"Czułość swobodnej kamery czołgu";"Sensibilidade da câmara livre de um tanque";"Tank serbest kamera hassasiyeti";"전차 자유 시점 감도";"地\t面\t载\t具\t自\t由\t视\t角\t灵\t敏\t度";"戦車の\tフリーカメラ\t感度";"地\t面\t載\t具\t自\t由\t視\t角\t靈\t敏\t度"
 "options/free_camera_sensitivity_plane";"Free camera sensitivity of a plane";"Sensibilité de la caméra libre de l'avion";"Sensibilità telecamera libera per aerei";"Empfindlichkeit der freien Kamera eines Flugzeugs";"Sensibilidad de la cámara libre de un avión";"Чувствительность свободной камеры самолета";"Чутливість вільної камери літака";"Czułość swobodnej kamery samolotu";"Sensibilidade da câmara livre de um avião";"Uçak serbest kamera hassasiyeti";"항공기 자유 시점 감도";"空\t中\t载\t具\t自\t由\t视\t角\t灵\t敏\t度";"航空機の\tフリーカメラ\t感度";"空\t中\t載\t具\t自\t由\t視\t角\t靈\t敏\t度"
 "options/target_tracking";"Track targets";"Suivre les cibles";"Traccia i bersagli";"Ziele verfolgen";"Seguir objetivos";"Отслеживание целей";"Відстеження цілей";"Śledź cele";"Seguir alvos";"Hedefleri takip et";"목표물 추적";"追\t踪\t目\t标";"標的の\t追跡";"追\t蹤\t目\t標"
@@ -1852,10 +1855,26 @@ Eğer onu yapmak için şimdi hazır değilseniz bu ayarı her zaman oyunun ana 
 <color=@mark>Enable</color> - Kursor znajduje się w centrum kamery";"<color=@mark>Desativar</color> - Direção de câmera em direção ao cursor
 <color=@mark>Ativar</color> - Cursor localizardo no centro da câmera";"<color=@mark>Devre Dışı Bırak</color> - Kamera işaretçiye doğru gider
 <color=@mark>Etkinleştir</color> - İşaretçi kameranın merkezinde yer alır";"<color=@mark>꺼짐</color> 상태의 경우 시점이 커서를 향해 움직이며
-<color=@mark>켜짐</color> 싱태의 경우 커서가 시점의 중심에 위치하게 됩니다.";"<color=@mark>\t禁\t用\t</color>：\t视\t角\t自\t动\t对\t向\t准\t星
+<color=@mark>켜짐</color> 상태의 경우 커서가 시점의 중심에 위치하게 됩니다.";"<color=@mark>\t禁\t用\t</color>：\t视\t角\t自\t动\t对\t向\t准\t星
 <color=@mark>\t启\t用\t</color>：\t准\t星\t固\t定\t在\t屏\t幕\t中\t央，\t随\t视\t角\t移\t动";"<color=@mark>無効</color> - カメラが\tカーソルに\t向かって\t移動します
 <color=@mark>有効</color> - カーソルを\tカメラ\t中央に\t配置します";"<color=@mark>\t停\t用\t</color> - 鏡\t頭\t朝\t向\t游\t標
 <color=@mark>\t啟\t用\t</color> - 游\t標\t置\t於\t鏡\t頭\t中\t心"
+"options/continuous_turn_mode";"Continuous turning mode";"Mode de tour continu";"Modalità virata continua";"Kontinuierliche Drehung";"Modo de giro continuo";"Режим постоянного поворота";"Режим «Безперервне обертання»";"Tryb ciągłego skrętu";"Modo de viragem contínua";"Sürekli dönüş modu";"지속 선회 모드";"持\t续\t转\t向\t模\t式";"連続旋回\tモード";"持\t續\t旋\t轉\t模\t式"
+"options/desc/continuous_turn_mode";"<color=@mark>Disable</color> - direct control of the aim cursor
+<color=@mark>Enable</color> - helping of moving aim cursor while turning";"<color=@mark>Désactiver</color> - contrôle direct du curseur de visée
+<color=@mark>Activer</color> - aide pour bouger le curseur de visée en tournant";"<color=@mark>Disabilita</color> - controllo diretto del cursore di puntamento
+<color=@mark>Abilita</color> - aiuto nel muovere il cursore di puntamento in virata";"<color=@mark>Deaktivieren</color> - direkte Kontrolle des Zielcursors
+<color=@mark>Aktivieren</color> - Hilfe bei der Bewegung des Zielcursors beim Drehen";"<color=@mark>Desactivar</color> - control directo del cursor de puntería
+<color=@mark>Activar</color> - ayuda para mover el cursor de puntería al girar";"<color=@mark>Неактивный</color> - непосредственное управление курсором
+<color=@mark>Активный</color> - помощь в повороте при достаточном отклонении";"<color=@mark>Вимкнути</color> — ручне керування курсором прицілу
+<color=@mark>Увімкнути</color> — допомагає переміщати курсор прицілу під час повороту";"<color=@mark>Wyłącz</color> - bezpośrednie sterowanie kursorem celowania
+<color=@mark>Włącz</color> - pomoc w poruszaniu kursorem celowania podczas skręcania";"<color=@mark>Desativar</color> - controlo direto do cursor da mira
+<color=@mark>Ativar</color> - ajuda a mover o cursor de mira ao virar";"<color=@mark> Etkinleştir</color> - nişan işaretçisi doğrudan kontrol edilir. 
+<color=@mark> Devre dışı bırak</color> - dönüşte nişan işaretçisi hareketine yardım edilir.";"<color=@mark>꺼짐</color> 상태의 경우 조준 커서를 통해 직접 조종하게 되며
+<color=@mark>켜짐</color> 상태의 경우 선회 중 조준 커서의 움직임이 보정됩니다.";"<color=@mark>\t禁\t用\t</color>：\t直\t接\t控\t制\t主\t炮\t准\t星
+<color=@mark>\t启\t用\t</color>：\t转\t向\t辅\t助\t准\t星\t移\t动";"<color=@mark>無効</color> - 照準\tカーソルを\t直接操作
+<color=@mark>有効</color> - 旋回中の\tカーソル\t移動を\t補助";"<color=@mark>\t停\t用\t</color> - 直\t接\t控\t制\t瞄\t準\t游\t標
+<color=@mark>\t啟\t用\t</color> - 協\t助\t在\t旋\t轉\t時\t移\t動\t瞄\t準\t游\t標"
 "options/disable";"Disabled";"Désactivé";"Disattivato";"Deaktiviert";"Desactivado";"Неактивный";"Неактивний";"Wyłączono";"Desativado";"Devre dışı";"끔";"禁\t用";"無効";"禁\t用"
 "options/enable";"Enabled";"Activé";"Attivato";"Aktiviert";"Activado";"Активный";"Активний";"Włączono";"Ativado";"Etkin";"켬";"启\t用";"有効";"啟\t用"
 "options/manual";"Manual";"Manuel";"Manuale";"Manuell";"Manual";"Ручное";"Ручне";"Ręczne";"Manual";"Manuel";"수동";"手\t动";"手動";"手\t動"

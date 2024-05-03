@@ -36,8 +36,8 @@ function getWeaponId(blkPath) {
   return blkToWeaponId[blkPath]
 }
 
-function gatherWeaponsFromBlk(weaponsBlk, hasTriggerGroups) {
-  let res = {}
+function gatherWeaponsFromBlk(weaponsBlk, hasTriggerGroups, res = null) {
+  res = res ?? {}
   foreach (wBlk in (weaponsBlk % "Weapon")) {
     let { dummy = false, blk = null, triggerGroup = null, trigger = "", bullets = 0, turret = null } = wBlk
     let triggerGroupExt = hasTriggerGroups ? (triggerGroup ?? "primary") : trigger
@@ -203,15 +203,50 @@ function loadBulletsCached(weaponBlkName, cache) {
 function loadUnitBulletsFullImpl(unitName) {
   let triggersData = {}
   let unitBlk = blkOptFromPath(getUnitFileName(unitName))
-  let { commonWeapons = null, weapon_presets = null } = unitBlk
+  let { commonWeapons = null, weapon_presets = null, WeaponSlots = null } = unitBlk
   let hasTriggerGroups = getUnitType(unitName) != AIR
   if (isDataBlock(commonWeapons))
     triggersData.commonWeapons <- gatherWeaponsFromBlk(commonWeapons, hasTriggerGroups)
 
+  let weaponSlots = {}
+  if (isDataBlock(WeaponSlots))
+    foreach(wsBlk in WeaponSlots % "WeaponSlot") {
+      let { index = null } = wsBlk
+      if (index == null)
+        continue
+      weaponSlots[index] <- {}
+      foreach(presetBlk in wsBlk % "WeaponPreset") {
+        let presetName = presetBlk?.name
+        if (presetName != null)
+          weaponSlots[index][presetName] <- presetBlk
+      }
+    }
+
   if (isDataBlock(weapon_presets))
     eachBlock(weapon_presets, function(b) {
       let { name = "", blk = null } = b
-      triggersData[name] <- gatherWeaponsFromBlk(blkOptFromPath(blk), hasTriggerGroups)
+      let fullPresetBlk = blkOptFromPath(blk)
+      triggersData[name] <- gatherWeaponsFromBlk(fullPresetBlk, hasTriggerGroups)
+      if (weaponSlots.len() == 0)
+        return
+      let usedSlots = {}
+      foreach(w in fullPresetBlk % "Weapon") {
+        let { slot = null, preset = null } = w
+        let presetBlk = weaponSlots?[slot][preset]
+        if (presetBlk == null)
+          continue
+        triggersData[name] = gatherWeaponsFromBlk(presetBlk, hasTriggerGroups, triggersData[name])
+        usedSlots[slot] <- true //-potentially-nulled-index
+      }
+      foreach(slot, slotPresets in weaponSlots) {
+        if (usedSlots?[slot])
+          continue
+        foreach(presetId, presetBlk in slotPresets)
+          if (presetId.startswith("default")) {
+            triggersData[name] = gatherWeaponsFromBlk(presetBlk, hasTriggerGroups, triggersData[name])
+            break
+          }
+      }
     })
 
   let bulletsCache = {}

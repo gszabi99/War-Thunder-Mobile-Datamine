@@ -27,7 +27,7 @@ let selectorBtnGap = Watched(selectorBtnMinGap)
 let selectorImgSize = hdpxi(92)
 
 let scrollWatch = Watched(0)
-let moreInfoUrl = $"https://wtmobile.live/{loc("current_lang")}"
+let moreInfoUrl = $"https://wtmobile.com/{loc("current_lang")}"
 
 let pagesStripW = hdpx(11)
 let pagesStripGap = hdpx(30)

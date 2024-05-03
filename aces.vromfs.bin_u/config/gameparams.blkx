@@ -164,6 +164,9 @@
     1.0,
     0.2
   ],
+  "groundModelLowTickRateMinDist": 1000.0,
+  "groundModelLowTickRateMaxDt": 0.1,
+  "groundModelLowTickRateScreenVelToDtK": 0.00075,
   "impostorSizeScaleCoefficient": 4.0,
   "rendInstMaxLifeTime": 15.0,
   "rendinstPreloadDistance": 20000.0,
@@ -331,7 +334,7 @@
   "shipTouchSensMult": 0.2,
   "shipTouchAimSensMult": 0.3,
   "aircraftTouchSensMult": 1.0,
-  "aircraftTouchAimSensMult": 0.35,
+  "aircraftTouchAimSensMult": 0.7,
   "loadNetEffectiveness": 100,
   "forceShowIndicators": true,
   "drawDamagePoints": true,
@@ -12815,6 +12818,11 @@
   "unitPoseIndicator": {
     "enableHud": false,
     "enableModel": false
+  },
+  "aircraftControlByGyro": {
+    "ailerons": 0,
+    "elevator": 1,
+    "rudder": 2
   },
   "wodParams": {
     "gForce": 0.1,

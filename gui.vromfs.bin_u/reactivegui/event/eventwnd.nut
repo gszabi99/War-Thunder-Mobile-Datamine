@@ -21,7 +21,6 @@ let { PURCH_SRC_EVENT, PURCH_TYPE_LOOTBOX, mkBqPurchaseInfo } = require("%rGui/s
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
@@ -29,7 +28,8 @@ let { infoRhombButton } = require("%rGui/components/infoButton.nut")
 let { has_leaderboard } = require("%appGlobals/permissions.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader } = require("%rGui/shop/lootboxPreviewContent.nut")
-let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPreview, previewLootbox
+let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPreview, previewLootbox,
+  getStepsToNextFixed
 } = require("%rGui/shop/lootboxPreviewState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getLootboxSizeMul } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
@@ -45,19 +45,6 @@ let MAX_LOOTBOXES_AMOUNT = 3
 let headerGap = hdpx(30)
 let contentGap = hdpx(40)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
-
-function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
-  let { rewardsCfg = null } = sConfigs
-  let stepsFinished = sProfile?.lootboxStats[lootbox?.name].opened ?? 0
-  local stepsToNext = 0
-  foreach (steps, id in (lootbox?.fixedRewards ?? {}))
-    if (steps.tointeger() > stepsFinished
-        && (steps.tointeger() < stepsToNext || stepsToNext == 0)
-        && id in rewardsCfg
-        && !isRewardEmpty(rewardsCfg[id], sProfile))
-      stepsToNext = steps.tointeger()
-  return [stepsFinished, stepsToNext]
-}
 
 function onPurchase(lootbox, price, currencyId, count = 1) {
   if (lootboxInProgress.get())

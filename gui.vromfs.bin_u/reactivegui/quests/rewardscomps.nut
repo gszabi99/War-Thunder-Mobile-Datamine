@@ -6,7 +6,7 @@ let { openRewardsList } = require("questsState.nut")
 let { mkGlare, defGlareSize } = require("%rGui/components/glare.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
-let { isSingleRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 
@@ -116,7 +116,7 @@ let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyle
     })
     @() {
       watch = servProfile
-      children = isQuestFinished || isSingleRewardEmpty(r, servProfile.value)
+      children = isQuestFinished || isSingleViewInfoRewardEmpty(r, servProfile.value)
           ? mkRewardReceivedMark(REWARD_STYLE_SMALL)
         : null
     }

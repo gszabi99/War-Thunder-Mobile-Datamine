@@ -36,6 +36,10 @@
     "basePkgDir": "content/base/res",
     "patchRoot": "patch"
   },
+  "androidAllowToDelayCmd": {
+    "APP_CMD_GAINED_FOCUS": true,
+    "APP_CMD_LOST_FOCUS": true
+  },
   "mountPoints": {
     "%darg": {
       "forSource": "..\\..\\prog\\scripts\\sq\\daRg",

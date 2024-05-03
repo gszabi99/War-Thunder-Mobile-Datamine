@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/rewardType.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { statsImages } = require("%appGlobals/config/rewardStatsPresentation.nut")
@@ -44,8 +45,10 @@ let slotsByDType = {
   title = 2
 }
 
-let dropLimitByType = ["unit", "unitUpgrade", "decorator", "skin"]
+let dropLimitByType = [G_UNIT, G_UNIT_UPGRADE, G_DECORATOR, G_SKIN]
   .reduce(@(res, id) res.rawset(id, 1), {})
+
+let ignoreSubIdRTypes = [G_CURRENCY, G_LOOTBOX].reduce(@(res, t) res.$rawset(t, true), {})
 
 let getPriorirty = @(info)
   customPriority?[info.rType]?[info.id] ?? rTypesPriority?[info.rType] ?? 0
@@ -63,36 +66,41 @@ function getRewardsViewInfo(data, multiply = 1) {
   let res = []
   if (!data)
     return res
+
+  if (type(data) == "array")
+    return data.map(@(g) mkViewInfo(g.id, g.gType, g.count, g.subId))
+
+  //typeof(reward) == "table" //compatibility with 2024.04.14
   let { currencies = {}, premiumDays = 0, items = {}, lootboxes = {},
     decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {},
     battleMods = {}
   } = data
 
   foreach (id in unitUpgrades)
-    res.append(mkViewInfo(id, "unitUpgrade"))
+    res.append(mkViewInfo(id, G_UNIT_UPGRADE))
   foreach (id in units)
     if (!unitUpgrades.contains(id))
-      res.append(mkViewInfo(id, "unit"))
+      res.append(mkViewInfo(id, G_UNIT))
 
   foreach(id, value in currencies)
     if (value > 0)
-      res.append(mkViewInfo(id, "currency", value * multiply))
+      res.append(mkViewInfo(id, G_CURRENCY, value * multiply))
 
   if (premiumDays > 0)
-    res.append(mkViewInfo("", "premium", premiumDays * multiply))
+    res.append(mkViewInfo("", G_PREMIUM, premiumDays * multiply))
 
   foreach (id in decorators)
-    res.append(mkViewInfo(id, "decorator"))
+    res.append(mkViewInfo(id, G_DECORATOR))
   foreach (id, count in items)
-    res.append(mkViewInfo(id, "item", count * multiply))
+    res.append(mkViewInfo(id, G_ITEM, count * multiply))
   foreach (id, count in lootboxes)
-    res.append(mkViewInfo(id, "lootbox", count * multiply))
+    res.append(mkViewInfo(id, G_LOOTBOX, count * multiply))
   foreach (id, count in boosters)
-    res.append(mkViewInfo(id, "booster", count * multiply))
+    res.append(mkViewInfo(id, G_BOOSTER, count * multiply))
   foreach (unitName, skinName in skins)
-    res.append(mkViewInfo(unitName, "skin", 0, skinName))
+    res.append(mkViewInfo(unitName, G_SKIN, 0, skinName))
   foreach (id, count in battleMods)
-    res.append(mkViewInfo(id, "battleMod", count))
+    res.append(mkViewInfo(id, G_BATTLE_MOD, count))
   return res
 }
 
@@ -121,7 +129,7 @@ function getUnlockRewardsViewInfo(unlockStage, servConfigs) {
 let customJoin = {
   unit = {
     function unitUpgrade(resV, _) {
-      resV.rType = "unitUpgrade"
+      resV.rType = G_UNIT_UPGRADE
       return true
     }
   }
@@ -196,6 +204,10 @@ function groupRewards(rewards) {
         slots = group[0].slots
         count = group[0].count
         countRange = group[group.len() - 1].count
+        agregatedRewards = group.map(@(r) {
+          count = r.count
+          id = r.rewardId
+        })
       })
     }
 
@@ -295,10 +307,10 @@ let isEmptyByField = {
 }
 
 let isEmptyByRType = {
-  decorator = @(value, _, profile) value in profile?.decorators
-  unit = @(value, _, profile) value in profile?.units
-  unitUpgrade = @(value, _, profile) profile?.units[value].isUpgraded
-  skin = @(unitName, skinName, profile) skinName in profile?.skins[unitName]
+  [G_DECORATOR] = @(value, _, profile) value in profile?.decorators,
+  [G_UNIT] = @(value, _, profile) value in profile?.units,
+  [G_UNIT_UPGRADE] = @(value, _, profile) profile?.units[value].isUpgraded,
+  [G_SKIN] = @(unitName, skinName, profile) skinName in profile?.skins[unitName],
 }
 
 let isEmptyByType = {
@@ -310,24 +322,38 @@ let isEmptyByType = {
 
 function isRewardEmpty(reward, profile) {
   local res = true
-  foreach(id, value in reward) {
-    let empty = isEmptyByField?[id](value, profile)
-      ?? isEmptyByType?[type(value)](value)
-    if (empty == null) {
-      logerr($"Unknown reward field '{id}' type = {type(value)}")
-      break
+  if (typeof(reward) == "table") //compatibility with 2024.04.14
+    foreach(id, value in reward) {
+      let empty = isEmptyByField?[id](value, profile)
+        ?? isEmptyByType?[type(value)](value)
+      if (empty == null) {
+        logerr($"Unknown reward field '{id}' type = {type(value)}")
+        break
+      }
+      if (!empty) {
+        res = false
+        break
+      }
     }
-    if (!empty) {
-      res = false
-      break
-    }
-  }
+  else //typeof(reward) == "array"
+    foreach(r in reward)
+      if (!(isEmptyByRType?[r.gType](r.id, r.subId, profile) ?? false)) {
+        res = false
+        break
+      }
   return res
 }
 
-function isSingleRewardEmpty(reward, profile) {
+function isSingleViewInfoRewardEmpty(reward, profile) {
   let { id, rType, subId = "" } = reward
   return isEmptyByRType?[rType](id, subId, profile) ?? false
+}
+
+function isViewInfoRewardEmpty(reward, profile) {
+  foreach(r in reward)
+    if (!isSingleViewInfoRewardEmpty(r, profile))
+      return false
+  return true
 }
 
 function isRewardReceived(lootbox, id, reward, profile) {
@@ -391,6 +417,8 @@ function fillRewardsCounts(rewards, profile, configs) {
 
 return {
   NO_DROP_LIMIT
+  ignoreSubIdRTypes
+
   getRewardsViewInfo
   getStatsRewardsViewInfo
   getUnlockRewardsViewInfo
@@ -399,7 +427,8 @@ return {
   getLootboxRewardsViewInfo
   receivedGoodsToViewInfo
   isRewardEmpty
-  isSingleRewardEmpty
+  isViewInfoRewardEmpty
+  isSingleViewInfoRewardEmpty
   isRewardReceived
   fillRewardsCounts
 }

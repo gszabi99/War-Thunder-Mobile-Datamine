@@ -23,10 +23,10 @@
       "gt_training": false,
       "environment": "Day",
       "weather": "cloudy",
-      "locName": "missions/tutorial_tank_basic",
-      "locDesc": "missions/tutorial_tank_basic/desc",
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 12,
+      "locName": "missions/tutorial_tank_basic",
+      "locDesc": "missions/tutorial_tank_basic/desc",
       "gt_mp_tickets": true,
       "gt_mp_capture": true,
       "isLimitedFuel": false,
@@ -2975,7 +2975,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -3001,6 +3001,15 @@
         },
         "triggerEnable": {
           "target": "player_in_battle_area"
+        },
+        "wait": {
+          "time": 1.0
+        },
+        "triggerActivate": {
+          "target": "player_respawn",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         }
       },
       "else_actions": {}
@@ -3015,7 +3024,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -3791,14 +3800,14 @@
         },
         "unitSetProperties": {
           "showXray": true,
-          "object": [
-            "target_tank01",
-            "target_tank02"
-          ],
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "object_var_value": 0,
+          "object": [
+            "target_tank01",
+            "target_tank02"
+          ]
         },
         "varSetString": {
           "value": "hints/wtm_tutorial_tank/tutorial_xray",
@@ -4417,14 +4426,14 @@
         },
         "unitSetProperties": {
           "showXray": true,
-          "object": [
-            "target_tank01",
-            "target_tank02"
-          ],
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "object_var_value": 0,
+          "object": [
+            "target_tank01",
+            "target_tank02"
+          ]
         },
         "varSetString": {
           "value": "hints/wtm_tutorial_tank/tutorial_xray",
@@ -5170,41 +5179,7 @@
               "ammo_body_07_dm",
               "ammo_body_08_dm",
               "ammo_body_09_dm",
-              "ammo_body_10_dm",
-              "ammo_body_11_dm",
-              "ammo_body_12_dm",
-              "ammo_body_13_dm",
-              "ammo_body_14_dm",
-              "ammo_body_15_dm",
-              "ammo_body_16_dm",
-              "ammo_body_17_dm",
-              "ammo_body_18_dm",
-              "ammo_body_19_dm",
-              "ammo_body_20_dm",
-              "ammo_body_21_dm",
-              "ammo_body_22_dm",
-              "ammo_body_23_dm",
-              "ammo_body_24_dm",
-              "ammo_body_25_dm",
-              "ammo_body_26_dm",
-              "ammo_body_27_dm",
-              "ammo_body_28_dm",
-              "ammo_body_29_dm",
-              "ammo_body_30_dm",
-              "ammo_body_31_dm",
-              "ammo_body_32_dm",
-              "ammo_body_33_dm",
-              "ammo_body_34_dm",
-              "ammo_body_35_dm",
-              "ammo_body_36_dm",
-              "ammo_body_37_dm",
-              "ammo_body_38_dm",
-              "ammo_body_39_dm",
-              "ammo_body_40_dm",
-              "ammo_body_41_dm",
-              "ammo_body_42_dm",
-              "ammo_body_43_dm",
-              "ammo_body_44_dm"
+              "ammo_body_10_dm"
             ]
           }
         ]
@@ -5606,6 +5581,9 @@
           "object_var_value": 0,
           "object": "player",
           "cannotMove": false
+        },
+        "triggerEnable": {
+          "target": "@controls_current"
         }
       },
       "else_actions": {}
@@ -6918,7 +6896,7 @@
       "type": "Box",
       "tm": [
         [
-          -233.547,
+          -102.346,
           0.0,
           0.0
         ],
@@ -6930,11 +6908,11 @@
         [
           0.0,
           0.0,
-          -220.373
+          -70.5036
         ],
         [
-          1799.68,
-          2.46115,
+          1791.9,
+          8.1,
           1808.4
         ]
       ],

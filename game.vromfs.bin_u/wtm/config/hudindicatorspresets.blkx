@@ -72,10 +72,10 @@
         148
       ],
       "objectivesBlinkFxColor": [
-        128,
-        128,
-        128,
-        148
+        0,
+        0,
+        0,
+        50
       ],
       "objectivesEnemyBlinkFxColor": [
         0,
@@ -174,10 +174,10 @@
         148
       ],
       "objectivesBlinkFxColor": [
-        128,
-        128,
-        128,
-        148
+        0,
+        0,
+        0,
+        50
       ],
       "objectivesEnemyBlinkFxColor": [
         0,

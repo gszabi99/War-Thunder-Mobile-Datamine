@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { format } =  require("string")
 let { register_command } = require("console")
+let { HUD_MSG_EVENT } = require("hudMessages")
 let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
@@ -9,6 +10,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { bulletsInfo, currentBulletName } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
 let { addHudElementPointer, removeHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
+let { resetTimeout } = require("dagor.workcycle")
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "commonHintLogState"
@@ -274,6 +276,33 @@ eventbus_subscribe("hint:this_is_score_board", function(p) {
   }
 })
 
+let bailoutTimer = mkWatched(persist,"bailoutTimer", 0)
+local bailoutTimerStep = 0
+
+function updateBailoutText() {
+  bailoutTimerStep = 1.0
+  let time = bailoutTimer.get()
+  if (time <= 0) {
+    removeEvent({ id = "start_bailout" })
+    return
+  }
+  let text = " ".concat(loc("hints/bailout_in_progress"), secondsToTimeSimpleString(time))
+  addEvent({id = "start_bailout", hType = "simpleTextTiny", text, ttl = bailoutTimerStep + 1.0})
+  bailoutTimer.set(time - bailoutTimerStep)
+}
+
+bailoutTimer.subscribe(@(_) resetTimeout(bailoutTimerStep, updateBailoutText))
+updateBailoutText()
+
+eventbus_subscribe("hint:bailout:startBailout", function(data) {
+  bailoutTimerStep = 0
+  bailoutTimer.set(data?.lifeTime ?? 0)
+})
+
+eventbus_subscribe("hint:bailout:notBailouts", function(_) {
+  bailoutTimer.set(0)
+})
+
 eventbus_subscribe("hint:ticket_loose", function(p) {
   if (incHintCounter("ticket_loose", 3)) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/ticket_loose"), p.duration)
@@ -281,6 +310,23 @@ eventbus_subscribe("hint:ticket_loose", function(p) {
   }
 })
 
+const MSG_EVENT_HINT = "MSG_EVENT_HINT"
+eventbus_subscribe("HudMessage", @(data) data.type != HUD_MSG_EVENT ? null
+  : modifyOrAddEvent(data.__merge({
+        id = MSG_EVENT_HINT
+        hType = "simpleTextTiny"
+        ttl = data?.time ?? 3.0
+      }),
+      @(ev) ev?.id == MSG_EVENT_HINT))
+
+eventbus_subscribe("hint:air_target_far_away", function(data) {
+  let rangeText = "".concat(data?.effectiveRange ?? "", loc("measureUnits/meters_alt"))
+  addCommonHintWithTtl("".concat(loc("hints/air_target_far_away"), rangeText), 10)
+})
+
+eventbus_subscribe("hint:air_critical_speed", function(_) {
+  addCommonHintWithTtl(loc("hints/air_critical_speed"), 10)
+})
 
 register_command(function() {
     let sBlk = get_local_custom_settings_blk()

@@ -1868,6 +1868,12 @@
     }
   },
   "crew_parameters": {
+    "stamina": {
+      "restorationSpeed": [
+        0.5,
+        1.0
+      ]
+    },
     "gunner": {
       "shootingRealistic": {
         "fullStamina": {

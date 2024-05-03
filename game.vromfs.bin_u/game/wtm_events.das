@@ -38,6 +38,14 @@ struct EventOnPlayerDamage
   dmg : float
   fullHp : float
 
+[cpp_event(broadcast)]
+struct EventOnZoneDamage
+  offenderPlayerId : uint8
+  offenderUnitId : int
+  zoneId : int
+  dmg : float
+  allDmg : float
+  fullHp : float
 
 [cpp_event(broadcast)]
 struct EventOnPlayerCriticalHit
@@ -60,6 +68,14 @@ struct EventOnPlayerKill
   victimPos : float3
   weaponId : int
 
+[cpp_event(broadcast)]
+struct EventOnZoneKill
+  offenderPlayerId : uint8
+  offenderUnitId : int
+  zoneId : int
+  dmg : float
+  allDmg : float
+  fullHp : float
 
 [cpp_event(broadcast)]
 struct EventOnPlayerDeath

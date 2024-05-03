@@ -21,8 +21,8 @@ let bgHiglight = {
 }
 
 let goodsGap = hdpx(40)
-let goodsW = hdpx(310)
-let goodsH = hdpx(480)
+let goodsW = hdpx(280)
+let goodsH = hdpx(400)
 let pricePlateH = hdpx(90)
 let goodsSize = [goodsW, goodsH]
 let goodsBgSize = [goodsW, goodsH - pricePlateH]

@@ -67,8 +67,8 @@ let isPreviewGoodsPurchasing = Computed(@() previewGoods.value?.id != null
 isPreviewGoodsPurchasing.subscribe(function(v) {
   if (v || previewGoods.get() == null)
     return
-  let { id, limit = 0, oncePerSeason = "" } = previewGoods.get()
-  if (previewGoodsUnit.get() != null || activeOffer.get()?.id == id || limit > 0 || oncePerSeason != "")
+  let { id, limit = 0, dailyLimit = 0, oncePerSeason = "" } = previewGoods.get()
+  if (previewGoodsUnit.get() != null || activeOffer.get()?.id == id || limit > 0 || dailyLimit > 0 || oncePerSeason != "")
     closeGoodsPreview()
 })
 

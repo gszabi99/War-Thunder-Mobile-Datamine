@@ -4,7 +4,7 @@ let { log10, round, ceil } = require("math")
 let { register_command } = require("console")
 let Rand = require("%sqstd/rand.nut")
 let { lootboxes, canOpenWithWindow, wasErrorSoon } = require("autoOpenLootboxes.nut")
-let { sortRewardsViewInfo, getRewardsViewInfo, isRewardEmpty, receivedGoodsToViewInfo
+let { sortRewardsViewInfo, getRewardsViewInfo, isRewardEmpty, isViewInfoRewardEmpty, receivedGoodsToViewInfo
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -116,7 +116,7 @@ let nextFixedReward = Computed(function() {
   foreach(r in rouletteFixedRewards.value) {
     let isJackpot = r.viewInfo?[0].rType == "lootbox"
     let compareCount = isJackpot ? openConfig.value.finalOpenCount + 1 : rouletteOpenCount.value
-    if (r.count >= compareCount && !isRewardEmpty(r.viewInfo, servProfile.value))
+    if (r.count >= compareCount && !isViewInfoRewardEmpty(r.viewInfo, servProfile.value))
       return {
         viewInfo = r.viewInfo
         total = r.count
@@ -140,7 +140,9 @@ function calcJackpotOpens(id, openCount, profile, configs) {
     let idx = idxStr.tointeger()
     if (idx <= hasOpens || idx > hasOpens + openCount)
       continue
-    let rewLootboxes = configs?.rewardsCfg[rewardId].lootboxes ?? {}
+    let rewCfg = configs?.rewardsCfg[rewardId] ?? []
+    let rewLootboxes = type(rewCfg) == "table" ? rewCfg.lootboxes //compatibility with 2024.04.14
+      : rewCfg.reduce(@(res, g) g.gType == "lootbox" ? res.$rawset(g.id, g.count) : res, {})
     let jackpotId = rewLootboxes.findindex(@(_) true)
     if (jackpotId == null)
       continue

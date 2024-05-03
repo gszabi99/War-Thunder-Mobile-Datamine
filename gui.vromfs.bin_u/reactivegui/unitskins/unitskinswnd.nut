@@ -171,7 +171,8 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 
   let lootbox = findLootboxWithReward(goodsByLootboxId.keys().extend(eventLootboxesRaw.get().values()),
     serverConfigs.get(),
-    @(r) r.skins?[unitName] == skinName)
+    @(r) type(r) == "table" ? r.skins?[unitName] == skinName //compatibility with 2024.04.14
+      : (null != r.findvalue(@(g) g.gType == "skin" && g.id == unitName && g.subId == skinName)))
 
   let goods = goodsByLootboxId?[lootbox]
   if (goods != null) {
@@ -206,7 +207,8 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 
   let bpUnlock = findUnlockWithReward([bpFreeRewardsUnlock.get(), bpPaidRewardsUnlock.get(), bpPurchasedUnlock.get()],
     serverConfigs.get(),
-    @(r) r.skins?[unitName] == skinName)
+    @(r) type(r) == "table" ? r.skins?[unitName] == skinName //compatibility with 2024.04.14
+      : (null != r.findvalue(@(g) g.gType == "skin" && g.id == unitName && g.subId == skinName)))
   let isBpGoods = battlePassGoods.get().findindex(@(v) v != null && v.skins?[unitName] == skinName) != null
 
   if (bpUnlock != null || isBpGoods)

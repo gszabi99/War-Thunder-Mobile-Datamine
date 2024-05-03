@@ -10,7 +10,7 @@ let { requestEarlyExitRewards } = require("%scripts/debriefing/battleResult.nut"
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { command } = require("console")
 let { is_multiplayer } = require("%scripts/util.nut")
-let { isInFlightMenu, isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInFlightMenu, isInBattle, canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
   quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status
@@ -188,6 +188,7 @@ function gui_start_flight_menu(...) {
     buttons = flightMenuButtons.filter(@(b) b.isVisible()).map(@(b) b.name)
   })
   isInFlightMenu(true)
+  canBailoutFromFlightMenu(canBailout())
 }
 eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
 

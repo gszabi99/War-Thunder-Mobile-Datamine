@@ -9265,52 +9265,6 @@
       }
     }
   },
-  "ussr_kv_1_L_11": {
-    "type": "tank",
-    "hangar_place": "tank",
-    "testFlight": "testFlight_ussr_tft",
-    "tags": {
-      "country_ussr": true,
-      "tank": true,
-      "type_heavy_tank": true
-    },
-    "Shop": {
-      "mainWeaponCaliber": 76.2,
-      "armorThicknessFront": [
-        0.95,
-        0.05,
-        0.0
-      ],
-      "armorThicknessSide": [
-        0.2,
-        0.8,
-        0.0
-      ],
-      "crew": 5,
-      "mass": 46000.0,
-      "maxSpeedForward": 34.3099,
-      "maxSpeedBackward": 6.18425,
-      "powerToWeightRatio": 13.0435,
-      "weapons": {
-        "76mm_L11_user_cannon": {
-          "wtype": "mainCannon",
-          "caliber": 76.2,
-          "armorPower": 78.0744,
-          "reloadTime": 7.14286,
-          "gunnerTurretRotationSpeed": 12.0,
-          "isBeltAmmo": false
-        },
-        "7_62mm_DT_user_machinegun": {
-          "wtype": "machinegun",
-          "caliber": 7.62,
-          "armorPower": 8.5,
-          "reloadTime": 0.1,
-          "gunnerTurretRotationSpeed": 5.5,
-          "isBeltAmmo": true
-        }
-      }
-    }
-  },
   "ussr_t_34_85_d_5t": {
     "type": "tank",
     "hangar_place": "tank",

@@ -7,7 +7,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { registerScene, scenesOrder } = require("%rGui/navState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { hangarUnit, setCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { playSound } = require("sound_wt")
 let { Point3 } = require("dagor.math")
 let { TANK } = require("%appGlobals/unitConst.nut")
@@ -44,6 +44,9 @@ let unitOpening = @(play, timeToShowUnit, timeTotal) {
   key = {}
 
   function onAttach() {
+    let unit = unitToShow.get()
+    if (unit != null && hangarUnit.get?.name != unit.name)
+      setCustomHangarUnit(unit)
     hide_unit()
     disable_scene_camera()
     reset_camera_pos_dir()

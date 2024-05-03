@@ -5,7 +5,7 @@ let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
-let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult
+let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFreeCamera
 } = require("%rGui/hudState.nut")
 let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { crosshairScreenPosition, crosshairDestinationScreenPosition, crosshairSecondaryScreenPosition
@@ -161,9 +161,9 @@ function mkCircleGunPosition(for_secondary) {
 }
 
 let arcadeCrosshair = @() {
-  watch = [currentArmorPiercingFixed, primaryRocketGun, hasSecondaryGun]
+  watch = [currentArmorPiercingFixed, primaryRocketGun, hasSecondaryGun, isFreeCamera]
   children = [
-    primaryRocketGun.value ? null : arcadeCrosshairSight
+    primaryRocketGun.value || isFreeCamera.value ? null : arcadeCrosshairSight
     currentArmorPiercingFixed.value && !primaryRocketGun.value ? mkCircleGunPosition(false) : null
     hasSecondaryGun.value ? mkCircleGunPosition(true) : null
   ]

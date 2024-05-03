@@ -18,7 +18,7 @@ let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkGradText, mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
-let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
+let { purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 
 let goodsW = hdpx(555)
 let goodsH = hdpx(378)
@@ -350,9 +350,10 @@ let purchasedPlate = {
 }
 
 function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
-  let { limit = 0, id = null } = goods
+  let { limit = 0, dailyLimit = 0, id = null } = goods
   let stateFlags = Watched(0)
-  let canPurchase = Computed(@() limit == 0 || (purchasesCount.get()?[id].count ?? 0) < limit)
+  let canPurchase = Computed(@() (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit)
+    && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit))
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]
     watch = [stateFlags, canPurchase]
@@ -541,17 +542,26 @@ function mkSquareIconBtn(text, onClick, ovr) {
 
 let limitFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 let function mkGoodsLimit(goods) {
-  let { limit = 0, id = null } = goods
+  let { limit = 0, dailyLimit = 0, id = null } = goods
+  let limitExt = Computed(function() {
+    let limitLeft = limit <= 0 ? -1 : max(0, limit - (purchasesCount.get()?[id].count ?? 0))
+    let dailyLimitLeft = dailyLimit <= 0 ? -1 : max(0, dailyLimit - (todayPurchasesCount.get()?[id].count ?? 0))
+    return limitLeft < 0 ? dailyLimitLeft
+      : dailyLimitLeft < 0 ? limitLeft
+      : min(limitLeft, dailyLimitLeft)
+  })
   return @() {
-    watch = purchasesCount
+    watch = limitExt
     margin = [hdpx(15), hdpx(20)]
     pos = [0, (goods?.firstPurchaseBonus?.len() ?? 0) == 0 ? 0 : hdpx(-50)]
     size = flex()
     halign = ALIGN_RIGHT
     valign = ALIGN_BOTTOM
     flow = FLOW_VERTICAL
-    children = !limit || limit == 0 ? null
-      : mkGradGlowText(loc("shop/limit", { available = max(0, limit - (purchasesCount.get()?[id].count ?? 0)), limit }),
+    children = limitExt.get() < 0 ? null
+      : mkGradGlowText(
+          loc(dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit",
+            { available = limitExt.get(), limit = max(limit, dailyLimit) }),
           fontVeryTiny,
           limitFontGrad)
   }

@@ -84,7 +84,7 @@ function handleMessages(msg) {
         if (type(v) != "table" || k == "configs" || k == "removed")
           continue
         else {
-          if (k == "receivedLevelsRewards") {
+          if (k == "receivedLevelsRewards" || k == "receivedLvlRewards") { //compatibility with 2024.04.14
             let curV = clone (newProfile?[k] ?? {})
             foreach (camp, list in v)
               curV[camp] <- (camp in curV) ? curV[camp].__merge(list) : list
@@ -580,9 +580,14 @@ return {
     progressValue = id
   }, cb)
 
-  debug_lootbox_chances = @(id, shouldFilter, cb = null) request({
-    method = "debug_lootbox_chances"
-    params = { id, shouldFilter }
+  get_my_lootbox_chances = @(id, cb = null) request({
+    method = "get_my_lootbox_chances"
+    params = { id }
+  }, cb)
+
+  get_base_lootbox_chances = @(id, cb = null) request({
+    method = "get_base_lootbox_chances"
+    params = { id }
   }, cb)
 
   reset_lootbox_counters = @(id, cb = null) request({
@@ -650,5 +655,10 @@ return {
     params = { name, currencyId, price }
     progressId = PROGRESS_BOOSTER
     progressValue = name
+  }, cb)
+
+  add_battle_mod = @(id, time, cb = null) request({
+    method = "add_battle_mod"
+    params = { id, time }
   }, cb)
 }

@@ -24,7 +24,13 @@ let optListLocalNative = [
 
 let optListScriptOnly = [
   // "OPT_TANK_TARGETING_CONTROL"
+  "OPT_CAMERA_SENSE_TANK"
+  "OPT_CAMERA_SENSE_SHIP"
+  "OPT_CAMERA_SENSE_PLANE"
   "OPT_CAMERA_SENSE_IN_ZOOM"
+  "OPT_CAMERA_SENSE_IN_ZOOM_TANK"
+  "OPT_CAMERA_SENSE_IN_ZOOM_SHIP"
+  "OPT_CAMERA_SENSE_IN_ZOOM_PLANE"
   "OPT_HAPTIC_INTENSITY"
   "OPT_HAPTIC_INTENSITY_ON_SHOOT"
   "OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT"
@@ -37,6 +43,10 @@ let optListScriptOnly = [
   "OPT_CAMERA_ROTATION_ASSIST"
   "OPT_HUD_TANK_SHOW_SCORE"
   "OPT_AIRCRAFT_FIXED_AIM_CURSOR"
+  "OPT_CAMERA_VISC_PLANE"
+  "OPT_CAMERA_VISC_IN_ZOOM_PLANE"
+  "OPT_AIRCRAFT_INVERTED_Y"
+  "OPT_AIRCRAFT_CONTINUOUS_TURN_MODE"
 ]
 
 let export = {}
@@ -103,6 +113,9 @@ function mkOptionValue(id, defValue = null, validate = @(v) v) {
   return optionValues[id]
 }
 
+let getOptValue = @(id) isSettingsAvailable.get() ? get_gui_option(id) : null
+
 return export.__update({
   mkOptionValue
+  getOptValue
 })

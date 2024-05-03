@@ -7,10 +7,12 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
-  apply_profile_mutation, add_lootbox, add_warbond, add_event_key, debug_lootbox_chances,
+  apply_profile_mutation, add_lootbox, add_warbond, add_event_key,
+  get_base_lootbox_chances, get_my_lootbox_chances,
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, add_aprilbond,
-  add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit
+  add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit,
+  add_battle_mod
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -89,6 +91,7 @@ register_command(@(unitName) add_unit(unitName, "consolePrintResult"), "meta.add
 register_command(@(unitName) remove_unit(unitName, "consolePrintResult"), "meta.remove_unit")
 register_command(@() add_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.add_hangar_unit")
 register_command(@() remove_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.remove_hangar_unit")
+register_command(@(name) add_battle_mod(name, 3600 * 24 * 30, "consolePrintResult"), "meta.add_battle_mod")
 
 register_command(@(name) set_current_decorator(name, "consolePrintResult"), "meta.set_current_decorator")
 register_command(@(name) add_decorator(name, "consolePrintResult"), "meta.add_decorator")
@@ -100,8 +103,8 @@ register_command(@(id, count) add_lootbox(id, count, "consolePrintResult"), "met
 register_command(@(id) halt_goods_purchase(id, "consolePrintResult"), "meta.halt_goods_purchase")
 register_command(@(id) halt_offer_purchase(id, "consolePrintResult"), "meta.halt_offer_purchase")
 
-register_command(@(id) debug_lootbox_chances(id, true, "onDebugLootboxChances"), "meta.debug_lootbox_chances_filtered")
-register_command(@(id) debug_lootbox_chances(id, false, "onDebugLootboxChances"), "meta.debug_lootbox_chances_full")
+register_command(@(id) get_my_lootbox_chances(id, "onDebugLootboxChances"), "meta.debug_lootbox_chances_my")
+register_command(@(id) get_base_lootbox_chances(id, "onDebugLootboxChances"), "meta.debug_lootbox_chances_base")
 register_command(@(id) reset_lootbox_counters(id, "consolePrintResult"), "meta.reset_lootbox_counters")
 
 register_command(@() renew_ad_budget("consolePrintResult"), "meta.renew_ad_budget")

@@ -1,0 +1,114 @@
+{
+  "expClass": "exp_ship",
+  "timeToFire": 60.0,
+  "timeToSmoke": 600.0,
+  "damageableByGun": false,
+  "hasExpl": false,
+  "hasDmg2": false,
+  "model": "cargo_ship_small_a",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "exhaustFx": "ship_exhaust_large",
+  "dynCollisionGeom": true,
+  "moveType": "ship",
+  "maxFwdSpeed": 55.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 1.0,
+  "maxAccel": 0.5,
+  "maxDecel": 0.5,
+  "maxAngAccel": 0.7,
+  "maxAngAccel0": 0.00001,
+  "maxAngAccelV": 0.01,
+  "groundNormSmoothViscosity": 4.5,
+  "customUpdateDiv": 5,
+  "drownGFactor": 0.00001,
+  "drownRollSpeed": 0.01,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": -10.0,
+  "DamageParts": {
+    "armor20_tanks": [
+      {
+        "bodypart1_dm": {
+          "hp": 200.0
+        }
+      },
+      {
+        "body_dm": {
+          "hp": 200.0
+        },
+        "engine_dm": {
+          "hp": 160.0
+        }
+      }
+    ]
+  },
+  "class_tags": {
+    "pacific": true,
+    "mediterran": true,
+    "westernfront": true,
+    "country_usa": true,
+    "country_australia": true,
+    "light_ship": true,
+    "year1940": true,
+    "year1941": true,
+    "year1942": true,
+    "year1943": true,
+    "year1944": true,
+    "year1945": true
+  },
+  "DamageEffects": {
+    "part": [
+      {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01,
+          "fire": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      },
+      {
+        "name": "engine_dm",
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
+        },
+        "onKill": {
+          "body_dm": 1.0
+        }
+      },
+      {
+        "name": "bodypart1_dm",
+        "onHit": {
+          "smoke": 0.1,
+          "fire": 0.01
+        },
+        "onKill": {
+          "smoke": 1.0
+        }
+      }
+    ]
+  },
+  "attach": {},
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
+  },
+  "ShipPhys": {
+    "mass": {
+      "Empty": 700000.0,
+      "momentOfInertia": [
+        5.0,
+        10.0,
+        20.0
+      ],
+      "CenterOfGravity": [
+        0.0,
+        -2.0,
+        0.0
+      ]
+    }
+  }
+}

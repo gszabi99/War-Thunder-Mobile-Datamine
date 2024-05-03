@@ -25,6 +25,8 @@ let { PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { infoRhombButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
+let { openBugReport } = require("%rGui/feedback/bugReport.nut")
+let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 
 let headerGap = hdpx(30)
 
@@ -124,6 +126,7 @@ function validateAccessStat() {
   if (hasAccessCurGmEvent.get() && curEventAccessStatValue.get() != STAT_HAS_ACCESS) {
     logE($"Has access on window attach. set stat {curEventAccessStat.get()} to {STAT_HAS_ACCESS}")
     setAccessStat(STAT_HAS_ACCESS)
+    sendAppsFlyerEvent("purchase_cbt_access")
   }
   else if (!hasAccessCurGmEvent.get() && curEventAccessStatValue.get() == STAT_HAS_ACCESS) {
     logE($"Dont has access on window attach. But has stat. So set stat {curEventAccessStat.get()} to {STAT_NOT_REQUESTED}")
@@ -145,11 +148,6 @@ let content = @() {
     ? signUpForCbtContent
     : [
         {
-          hplace = ALIGN_LEFT
-          vplace = ALIGN_TOP
-          children = gmEventStatusText(loc($"{openedGmEventId.get()}/freeAccess/resultMsg"))
-        }
-        {
           flow = FLOW_VERTICAL
           halign = ALIGN_CENTER
           children = [
@@ -161,7 +159,13 @@ let content = @() {
             gmEventDescriptionText(loc($"{openedGmEventId.get()}/accessPacks/description"))
           ]
         }
-      ]
+      ].append(!hasAccessCurGmEvent.get() ?
+        {
+          hplace = ALIGN_LEFT
+          vplace = ALIGN_TOP
+          children = gmEventStatusText(loc($"{openedGmEventId.get()}/freeAccess/resultMsg"))
+        }
+      : null)
 }
 
 let toBattleHint = @(text) {
@@ -219,6 +223,13 @@ let footer = @() {
   valign = ALIGN_BOTTOM
   children = curGmList.get().len() == 0 ? null
     : [
+        @() {
+          watch = hasAccessCurGmEvent
+          valign = ALIGN_BOTTOM
+          children = hasAccessCurGmEvent.get()
+            ? textButtonPrimary(utf8ToUpper(loc("mainmenu/btnFeedback")), openBugReport)
+            : null
+        }
         {
           hplace = ALIGN_CENTER
           children = squadPanel

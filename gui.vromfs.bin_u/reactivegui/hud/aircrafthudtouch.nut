@@ -7,6 +7,7 @@ let aircraftSight = require("%rGui/hud/aircraftSight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let hudTopLeft = require("hudTopLeft.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
+let ctrlPieMenu = require("%rGui/hud/controlsPieMenu/ctrlPieMenu.nut")
 
 return {
   size = saSize
@@ -23,5 +24,6 @@ return {
     currentWeaponNameText
     aircraftSight
     voiceMsgPie
+    ctrlPieMenu
   ]
 }

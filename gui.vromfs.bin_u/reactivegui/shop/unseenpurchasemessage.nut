@@ -40,6 +40,7 @@ let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
 let { mkBattleModEventUnitText } = require("%rGui/rewards/battleModComp.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+let { ignoreSubIdRTypes } = require("%rGui/rewards/rewardViewInfo.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
   "decorator", "medal", "booster", "skin",
@@ -94,10 +95,10 @@ let stackData = Computed(function() {
   foreach (purch in activeUnseenPurchasesGroup.value.list)
     foreach (data in purch.goods) {
       let { id, gType, count, subId = "" } = data
-      let rewId = "".concat(id, subId)
+      let rewId = gType in ignoreSubIdRTypes ? id : "".concat(id, subId)
       if (gType not in stackRaw)
         stackRaw[gType] <- {}
-      if (id not in stackRaw[gType])
+      if (rewId not in stackRaw[gType])
         stackRaw[gType][rewId] <- { id, gType, count, subId, order = -1 }
       else
         stackRaw[gType][rewId].count += count

@@ -8,7 +8,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { gameModesRaw } = require("%appGlobals/gameModes/gameModes.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let showMatchingError = require("showMatchingError.nut")
-let { setTimeout } = require("dagor.workcycle")
+let { resetTimeout } = require("dagor.workcycle")
 let matching = require("%scripts/matching_api.nut")
 
 const MAX_FETCH_RETRIES = 5
@@ -51,7 +51,7 @@ function fetchGameModes() {
       }
 
       if (++failedFetches <= MAX_FETCH_RETRIES)
-        setTimeout(0.1, again)
+        resetTimeout(0.1, again)
       else {
         showMatchingError(result)
         startLogout()
@@ -138,6 +138,6 @@ matching.subscribe("match.notify_game_modes_changed", function(modes) {
     return
   }
   let delay = rnd_int(0, MAX_FETCH_DELAY_SEC)
-  logGM($"setTimeout to fetch modes in {delay}")
-  setTimeout(delay, updateChangedModes)
+  logGM($"resetTimeout to fetch modes in {delay}")
+  resetTimeout(delay, updateChangedModes)
 })

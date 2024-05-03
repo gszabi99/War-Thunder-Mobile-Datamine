@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
@@ -231,7 +232,9 @@ function mkPurchaseBtns(lootbox, onPurchase) {
   let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
     && start < serverTime.value
     && (end <= 0 || end > serverTime.value))
-  let adReward = Computed(@() schRewards.value.findvalue(@(r) (r.lootboxes?[name] ?? 0) > 0))
+  let adReward = Computed(@() schRewards.value.findvalue(
+    @(r) "rewards" not in r ? (r.lootboxes?[name] ?? 0) > 0 //compatibility with 2024.04.14
+      : (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
 
   return @() {
     watch = [isActive, balance, adReward]

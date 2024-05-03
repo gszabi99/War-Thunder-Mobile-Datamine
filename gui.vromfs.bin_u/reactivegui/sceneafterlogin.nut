@@ -78,6 +78,7 @@ require("debriefing/debrQuestsMgr.nut")
 require("%rGui/loading/loadingScreen.nut")
   .setMissionLoadingScreen(require("%rGui/loading/missionLoadingScreen.nut"))
 require("%rGui/chat/mpChatHandler.nut")
+require("%rGui/rewards/lootboxRewardChances.nut") //FIXME: remove this include on start use this module. this is temporary include for suppress analizer warning
 
 let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")
 let { scenesOrder, getTopScene } = require("navState.nut")

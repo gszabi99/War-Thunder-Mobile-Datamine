@@ -65,7 +65,8 @@
         "relative": true
       },
       "throttle": {
-        "relative": true
+        "relative": true,
+        "rangeMin": 0.0
       },
       "gm_steering": {
         "nonlinearity": 0.0,

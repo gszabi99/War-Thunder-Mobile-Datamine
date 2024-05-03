@@ -6,7 +6,14 @@
         "benchmark_tank",
         "benchmark_tank_corpses",
         "benchmark_tank_paused",
-        "benchmark_tank_paused_24h"
+        "benchmark_tank_paused_24h",
+        "benchmark_planes_battle",
+        "benchmark_planes_battle_paused",
+        "location_bencrmark_air_alps",
+        "location_bencrmark_air_norway_green",
+        "location_bencrmark_air_phiphi_crater",
+        "location_bencrmark_air_stalingrad_w",
+        "location_bencrmark_air_zhengzhou"
       ]
     }
   },

@@ -32,7 +32,7 @@ function getPieMenuSelectedIdx(menuItemsCount, stickDeltaV) {
 }
 
 function mkPieMenuItemIcon(c, pieRadius, pieIconSizeMul) {
-  let { icon, iconScale = 1.0 } = c
+  let { icon, iconScale = 1.0, iconColor = 0xFFFFFFFF } = c
   let iconSize = (pieRadius * pieIconSizeMul + 0.5).tointeger()
   let iconTexSize = (iconSize * iconScale + 0.5).tointeger()
   return {
@@ -44,7 +44,7 @@ function mkPieMenuItemIcon(c, pieRadius, pieIconSizeMul) {
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#{icon}:{iconTexSize}:{iconTexSize}:P")
       keepAspect = true
-      color = 0xFFFFFFFF
+      color = iconColor
     }
   }
 }

@@ -14,6 +14,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { playerUnitName, unitType } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
+let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
 
 let maxThrottle = 100
 let stepThrottle = 5
@@ -92,6 +93,7 @@ function changeThrottleValue(val) {
   if (axisVal < wepAxisValue)
     setShortcutOff("throttle_rangeMax")
   setAxisValue("throttle", axisVal)
+  setVirtualAxisValue("throttle", axisVal <= 0 ? -1 : 0)
   if (axisVal >= wepAxisValue)
     setShortcutOn("throttle_rangeMax")
   sliderValue(val)
@@ -224,6 +226,8 @@ isThrottleAxisActive.subscribe(function(isActive) {
     throttleAxisUpdate()
   }
 })
+
+isRespawnStarted.subscribe(@(v) v ? setVirtualAxisValue("throttle", 0) : null)
 
 let gamepadAxisListener = axisListener({
   [ailerons] = @(v) setVirtualAxisValue("ailerons", v),

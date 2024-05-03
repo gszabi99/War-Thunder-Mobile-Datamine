@@ -50,7 +50,6 @@
       "type": "domination",
       "environment": "Day",
       "weather": "good",
-      "overrideUnit": "f3f-2;he51c1;i-15_1934;p-51c-10-nt;sb2c_4;la-5_type37_early;il_4;p-38k;yak-3t;fw-190c;b-17g",
       "locName": "missions/_GS/ship;location/arcade_phiphi_crater",
       "locDesc": "missions/_GS/desc",
       "openDiffLevels": true,
@@ -62,10 +61,6 @@
       "restoreType": "attempts",
       "difficulty": "",
       "optionalTakeOff": false,
-      "forcedRank": {
-        "min": 0,
-        "max": 4
-      },
       "editSlotbar": {
         "keepOwnUnits": false,
         "country_usa": {
@@ -419,37 +414,6 @@
             }
           }
         ],
-        "unitSetIndication": [
-          {
-            "indicatorSize": 2.5,
-            "indicatorOpacity": 0.9,
-            "blinksCount": 10,
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t1_quest_units_squad",
-            "target_type": "isAlive",
-            "team": "B"
-          },
-          {
-            "indicatorSize": 2.5,
-            "indicatorOpacity": 0.9,
-            "blinksCount": 10,
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": [
-              "t2_tanks_squad",
-              "t2_quest_units_squad"
-            ],
-            "target_type": "isAlive",
-            "team": "A"
-          }
-        ],
         "unitSetProperties": [
           {
             "object_marking": 0,
@@ -584,6 +548,49 @@
       },
       "else_actions": {}
     },
+    "set_indicators": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 10.0
+        },
+        "unitSetIndication": [
+          {
+            "indicatorOpacity": 0.9,
+            "blinksCount": 15,
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_quest_units_squad",
+            "team": "B"
+          },
+          {
+            "indicatorOpacity": 0.9,
+            "blinksCount": 15,
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t2_quest_units_squad",
+            "team": "A"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
     "update_indicator": {
       "is_enabled": true,
       "comments": "",
@@ -654,8 +661,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "t1_ships_squad",
-          "target": "t2_ships_squad",
-          "object_var_value": 0
+          "target": "t2_ships_squad"
         }
       },
       "actions": {
@@ -760,7 +766,7 @@
           -6953.75
         ]
       ],
-      "unit_class": "fw-189a-1",
+      "unit_class": "he51c1",
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -823,7 +829,7 @@
             -3534.27
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -2705,7 +2711,7 @@
             3923.9
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4331,7 +4337,7 @@
             -3532.59
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5669,7 +5675,7 @@
             -3702.18
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -7007,7 +7013,7 @@
             -3593.69
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -9145,7 +9151,7 @@
             4098.45
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -10451,7 +10457,7 @@
             4070.09
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -11821,7 +11827,7 @@
             4377.99
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -13383,7 +13389,7 @@
             -3744.06
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -15265,7 +15271,7 @@
             4272.14
           ]
         ],
-        "unit_class": "germ_artilleriefahrprahm_typ_d3",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -16891,7 +16897,7 @@
             -4009.57
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -16948,7 +16954,7 @@
             4790.39
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -17005,7 +17011,7 @@
             2777.9
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -17479,7 +17485,7 @@
             2726.91
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -17953,7 +17959,7 @@
             2605.98
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -18427,7 +18433,7 @@
             2473.33
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -18901,7 +18907,7 @@
             -9085.68
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -19343,7 +19349,7 @@
             -9210.54
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -19785,7 +19791,7 @@
             -9197.14
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -20227,7 +20233,7 @@
             -9371.44
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -20669,7 +20675,7 @@
             -9349.44
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "uss_dd_sims",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -21111,7 +21117,7 @@
             -282.539
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -21553,7 +21559,7 @@
             -90.5538
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -22027,7 +22033,7 @@
             11.0772
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -22501,7 +22507,7 @@
             201.486
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -22975,7 +22981,7 @@
             339.237
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -23417,7 +23423,7 @@
             9314.09
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -23827,7 +23833,7 @@
             9318.59
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -24237,7 +24243,7 @@
             9333.69
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -24647,7 +24653,7 @@
             9498.89
           ]
         ],
-        "unit_class": "us_destroyer_fletcher",
+        "unit_class": "germ_dd_z28",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -25552,9 +25558,9 @@
             1.0
           ],
           [
-            -15369.5,
+            -10357.6,
             199.25,
-            -9193.5
+            -6550.15
           ]
         ],
         "props": {
@@ -25580,9 +25586,9 @@
             1.0
           ],
           [
-            -16565.0,
+            -11174.0,
             199.25,
-            -4768.25
+            -4906.85
           ]
         ],
         "props": {

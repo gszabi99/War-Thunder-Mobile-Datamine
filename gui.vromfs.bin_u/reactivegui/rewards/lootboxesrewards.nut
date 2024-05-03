@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 
 let RewardSearcher = class {
   rewardsCfg = null
@@ -22,9 +23,16 @@ let RewardSearcher = class {
       return false
     if (this.isRewardFitExt(reward))
       return true
-    foreach(id, _ in reward.lootboxes)
-      if (this.isLootboxHasReward(id, recursionLevel + 1))
-        return true
+    if ("lootboxes" in reward) { //compatibility with 2024.04.14
+      foreach(id, _ in reward.lootboxes)
+        if (this.isLootboxHasReward(id, recursionLevel + 1))
+          return true
+    }
+    else
+      foreach(g in reward)
+        if (g.gType == G_LOOTBOX)
+          if (this.isLootboxHasReward(g.id, recursionLevel + 1))
+            return true
     return false
   }
 

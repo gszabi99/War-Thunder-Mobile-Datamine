@@ -15,6 +15,7 @@ let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJa
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked } = require("%rGui/rewards/rewardPlateComp.nut")
+let { ignoreSubIdRTypes } = require("%rGui/rewards/rewardViewInfo.nut")
 let { addCompToCompAnim } = require("%darg/helpers/compToCompAnim.nut")
 let { mkLensFlareLootbox } = require("%rGui/effects/mkLensFlare.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
@@ -69,7 +70,8 @@ let openConfig = Computed(@() lootboxOpenRouletteConfig?[rouletteOpenType.value]
 function isReceivedSame(received, rewardInfo) {
   foreach(rec in received)
     foreach(info in rewardInfo)
-      if (info.id == rec.id && info.rType == rec.rType && info.subId == rec.subId && info.count == rec.count)
+      if (info.id == rec.id && info.rType == rec.rType && info.count == rec.count
+          && (info.rType in ignoreSubIdRTypes || info.subId == rec.subId))
         return true //support only single reward drop from lootboxes atm.
   return false
 }

@@ -90,7 +90,8 @@ let campProfile = Computed(function(prev) {
   let { allUnits = {}, allItems = {} } = campConfigs.value
   filterByCampaignTbl(res, prev, "units", campaign, allUnits)
   filterByCampaignTbl(res, prev, "items", campaign, allItems)
-  chooseListByCampaignTbl(res, prev, "receivedLevelsRewards", campaign)
+  chooseListByCampaignTbl(res, prev, "receivedLevelsRewards", campaign) //compatibility with 2024.04.14
+  chooseListByCampaignTbl(res, prev, "receivedLvlRewards", campaign)
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
   chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", campaign)
   chooseOneByCampaignTbl(res, prev, "activeOffers", campaign)
@@ -105,7 +106,9 @@ let exportProfile = {
   lastBattles = {}
   premium = {}
   purchasesCount = {}
-  receivedLevelsRewards = {}
+  todayPurchasesCount = {}
+  receivedLevelsRewards = {} //compatibility with 2024.04.14
+  receivedLvlRewards = {}
   receivedMissionRewards = {}
   receivedSchRewards = {}
   sharedStats = {}

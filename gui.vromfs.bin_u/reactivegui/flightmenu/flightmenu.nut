@@ -3,9 +3,10 @@ let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
+let { canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonBright, textButtonPrimary, textButtonCommon, buttonsHGap
+let { textButtonBright, textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsHGap
 } = require("%rGui/components/textButton.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { devMenuContent, openDevMenuButton, needShowDevMenu } = require("%rGui/flightMenu/devFlightMenu.nut")
@@ -14,6 +15,10 @@ let { mkCustomMsgBoxWnd } = require("%rGui/components/msgBox.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
+let { COMMON } = require("%rGui/components/buttonStyles.nut")
+let { isUnitDelayed, unitType, isUnitAlive } = require("%rGui/hudState.nut")
+let { AIR } = require("%appGlobals/unitConst.nut")
+
 
 let spawnInfo = Watched(null)
 let aliveOrHasSpawn = Computed(@() (spawnInfo.value?.isAlive ?? false) || (spawnInfo.value?.hasSpawns ?? false))
@@ -21,6 +26,7 @@ eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
 
 let battleResume = @() eventbus_send("FlightMenu_doButtonAction", { buttonName = "Resume" })
 let quitMission = @() eventbus_send("quitMission", {})
+let leaveVehicle = @() eventbus_send("FlightMenu_doButtonAction", { buttonName = "LeaveTheTank" })
 
 let backBtn = backButton(battleResume,
   { hotkeys = [["^J:Start", loc("btn/continueBattle")]], clickableInfo = loc("btn/continueBattle") })
@@ -41,7 +47,8 @@ let optionsButton = textButtonCommon(utf8ToUpper(loc("mainmenu/btnOptions")), op
   { hotkeys = ["^J:Y"] })
 let helpButton = textButtonCommon(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
   { hotkeys = ["^J:X"] })
-
+let leaveVehicleButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnLeaveTheTank")), leaveVehicle,
+  COMMON.__merge({ hotkeys = ["^J:LT"] }))
 
 let customButtons = @() {
   watch = isGamepad
@@ -72,7 +79,20 @@ let flightMenu = @() bgShaded.__merge({
     backBtn
     needShowDevMenu.value ? devMenuContent : menuContent(aliveOrHasSpawn.value, battleCampaign.value)
     customButtons
-    openDevMenuButton
+    @(){
+      watch = [isUnitAlive, unitType, isUnitDelayed, canBailoutFromFlightMenu]
+      flow = FLOW_HORIZONTAL
+      gap = buttonsHGap
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+      children = [
+        isUnitAlive.get() && unitType.get() == AIR && !isUnitDelayed.get()
+            && canBailoutFromFlightMenu.get()
+          ? leaveVehicleButton
+          : null
+          openDevMenuButton
+      ]
+    }
   ]
   animations = wndSwitchAnim
 })

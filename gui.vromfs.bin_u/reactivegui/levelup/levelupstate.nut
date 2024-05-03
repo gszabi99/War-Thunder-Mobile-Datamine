@@ -3,7 +3,7 @@ let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { levelup_without_unit } = require("%appGlobals/pServer/pServerApi.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs, receivedLevelsRewards, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs, receivedLevelsRewards, receivedLvlRewards, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInMenu, isInDebriefing, isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -58,11 +58,12 @@ let maxRewardLevelInfo = Computed(function(prev) {
 
 let rewardsToReceive = Computed(function() {
   let level = maxRewardLevelInfo.value.level
-  let received = receivedLevelsRewards.value
+  let receivedOld = receivedLevelsRewards.get() //compatibility with 2024.04.14
+  let received = receivedLvlRewards.get()
   let failed = failedRewardsLevelStr.value
   let res = {}
   foreach (lvlStr, reward in (campConfigs.value?.playerLevelRewards ?? {}))
-    if (lvlStr not in received && lvlStr not in failed && lvlStr.tointeger() <= level)
+    if (lvlStr not in received && lvlStr not in receivedOld && lvlStr not in failed && lvlStr.tointeger() <= level)
       res[lvlStr.tointeger()] <- reward
   return res
 })
