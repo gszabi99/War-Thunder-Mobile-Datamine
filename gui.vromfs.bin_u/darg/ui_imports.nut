@@ -37,4 +37,7 @@ let logs = {
   make_all_observables_immutable
 }
 
+if (getconsttable()?.Behaviors == null)
+  logs.Behaviors <- require("daRg.behaviors")
+
 return require("daRg").__merge(require("darg_library.nut"), require("%sqstd/functools.nut"), logs)

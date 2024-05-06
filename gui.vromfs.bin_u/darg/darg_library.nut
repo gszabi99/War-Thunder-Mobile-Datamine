@@ -172,7 +172,7 @@ function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null)
   return watch
 }
 
-return {
+let res = {
   mkWatched
   WatchedRo
   XmbNode
@@ -187,3 +187,8 @@ return {
   fsh
   NamedColor
 }
+
+if (getconsttable()?.Behaviors == null)
+  res.Behaviors <- require("daRg.behaviors")
+
+return res

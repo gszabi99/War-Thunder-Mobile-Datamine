@@ -1619,6 +1619,8 @@
       "node": [
         "dgp_1_l",
         "dgp_1_r",
+        "pylon_bomb1",
+        "pylon_bomb2",
         "pylon_dgp_1",
         "pylon_dgp_2",
         "flare13",

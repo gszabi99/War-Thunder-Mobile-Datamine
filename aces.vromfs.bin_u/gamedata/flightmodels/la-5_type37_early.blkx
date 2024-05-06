@@ -1586,6 +1586,12 @@
     "maxloadMassLeftConsoles": 570.0,
     "maxloadMassRightConsoles": 570.0,
     "maxDisbalance": 420.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2"
+      ]
+    },
     "WeaponSlot": [
       {
         "index": 0,

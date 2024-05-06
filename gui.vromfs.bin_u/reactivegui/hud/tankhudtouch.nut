@@ -10,7 +10,7 @@ let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFree
 let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { crosshairScreenPosition, crosshairDestinationScreenPosition, crosshairSecondaryScreenPosition
 } = require("%rGui/hud/commonState.nut")
-let { shootReadyness, primaryRocketGun, hasSecondaryGun } = require("%rGui/hud/tankState.nut")
+let { shootReadyness, primaryRocketGun, hasSecondaryGun, allowShoot } = require("%rGui/hud/tankState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
@@ -161,11 +161,11 @@ function mkCircleGunPosition(for_secondary) {
 }
 
 let arcadeCrosshair = @() {
-  watch = [currentArmorPiercingFixed, primaryRocketGun, hasSecondaryGun, isFreeCamera]
+  watch = [currentArmorPiercingFixed, primaryRocketGun, hasSecondaryGun, isFreeCamera, allowShoot]
   children = [
     primaryRocketGun.value || isFreeCamera.value ? null : arcadeCrosshairSight
-    currentArmorPiercingFixed.value && !primaryRocketGun.value ? mkCircleGunPosition(false) : null
-    hasSecondaryGun.value ? mkCircleGunPosition(true) : null
+    currentArmorPiercingFixed.value && !primaryRocketGun.value && allowShoot.value ? mkCircleGunPosition(false) : null
+    hasSecondaryGun.value && allowShoot.value ? mkCircleGunPosition(true) : null
   ]
 }
 

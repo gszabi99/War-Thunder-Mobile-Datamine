@@ -392,6 +392,12 @@
         "mRank": 2
       }
     },
+    "pkg_us_battleship_mississippi": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -510,6 +516,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 4
+      }
+    },
+    "pkg_ussr_bmp_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
       }
     },
     "pkg_environment": {
