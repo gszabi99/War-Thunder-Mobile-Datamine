@@ -833,6 +833,9 @@ return {
     "us_battleship_iowa": {
       "upgraded": "camo_nato_blue_geometry"
     },
+    "us_battleship_mississippi": {
+      "": "camo_nato_blue_geometry"
+    },
     "us_battleship_north_dakota": {
       "upgraded": "camo_blackgray_spots"
     },
@@ -1133,6 +1136,10 @@ return {
     "ussr_battleship_pr23_sovetskij_soyuz": {
       "upgraded": "camo_arctic_minesweeper_block"
     },
+    "ussr_bmp_1": {
+      "": "ussr_camo_green",
+      "fiction": "ussr_t_34_85_zis_53_dislike"
+    },
     "ussr_btr_152a": {
       "": "ussr_camo_winter_net",
       "forest": "ussr_camo_green"
@@ -1196,6 +1203,10 @@ return {
       "": "ussr_camo_green",
       "forest": "ussr_camo_green"
     },
+    "ussr_is_3": {
+      "": "ussr_camo_green",
+      "fiction": "ussr_t_34_85_zis_53_dislike"
+    },
     "ussr_is_4m": {
       "": "ussr_camo_dkgreen_ltgreen_brown",
       "desert": "ussr_camo_czechoslovak_yellow_green",
@@ -1243,6 +1254,10 @@ return {
       "desert": "ussr_camo_czechoslovak_yellow_green",
       "forest": "ussr_camo_green",
       "forest2": "ussr_modern_forest"
+    },
+    "ussr_object_268": {
+      "": "ussr_camo_green",
+      "fiction": "ussr_t_34_85_zis_53_dislike"
     },
     "ussr_object_906": {
       "": "ussr_camo_green",
@@ -1435,6 +1450,10 @@ return {
       "fiction": "tl_camo_desert_chopped",
       "forest": "ussr_camo_forest_01",
       "winter": "ussr_camo_winter"
+    },
+    "ussr_zsu_57_2_reskin3": {
+      "": "ussr_camo_green",
+      "fiction": "ussr_t_34_85_zis_53_dislike"
     }
   },
   "byUnitType": {

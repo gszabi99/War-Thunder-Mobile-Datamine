@@ -2709,6 +2709,9 @@
       }
     }
   },
+  "enabled_modifications": {
+    "tank_smoke_screen_system_mod": true
+  },
   "defaultDecals": {
     "fiction": {
       "skin_condition": 100.0,

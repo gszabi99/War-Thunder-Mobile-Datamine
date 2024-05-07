@@ -84,7 +84,7 @@ let skinsByTag = {
     "ussr_camo_desert_yellow_brown"
     "tl_camo_desert_chopped"
     "isr_camo_sandgray"
-
+    "ussr_t_34_85_zis_53_dislike"
   ],
 
   [WINTER] = [

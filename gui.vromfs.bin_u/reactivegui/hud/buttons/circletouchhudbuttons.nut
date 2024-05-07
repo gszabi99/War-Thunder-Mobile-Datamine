@@ -251,6 +251,22 @@ let mkCountTextLeft = @(text, color)
     text
   })
 
+let mkCountTextLeftUpper = @(text, color)
+  countTextStyle.__merge({
+    hplace = ALIGN_RIGHT
+    pos = [pw(-85), ph(-85)]
+    color
+    text
+  })
+
+  let mkCountTextLeftLower = @(text, color)
+  countTextStyle.__merge({
+    hplace = ALIGN_RIGHT
+    pos = [pw(-100), ph(-70)]
+    color
+    text
+  })
+
 let waitForAimIcon = {
   rendObj = ROBJ_IMAGE
   size = [aimImageSize, aimImageSize]
@@ -485,9 +501,9 @@ function mkCirclePlaneCourseGuns() {
   let cannonsDisabled = mkIsControlDisabled("ID_FIRE_CANNONS")
 
   let hasAnyWeapon = Computed(@() hasMGun0.get() || hasCanon0.get())
-  let isAnyWeaponAvailable = Computed(@() (isWeaponAvailable(MGun0.get()) && !mGunsDisabled.get())
-    || (isWeaponAvailable(Cannon0.get()) && !cannonsDisabled.get()))
-  let totalBullets = Computed(@() (hasMGun0.get() ? MGun0.get().count : 0) + (hasCanon0.get() ? Cannon0.get().count : 0))
+  let isMgunsAvailable = Computed(@() (hasMGun0.get() && isWeaponAvailable(MGun0.get()) && !mGunsDisabled.get()))
+  let isCannonsAvailable = Computed(@() (hasCanon0.get() && isWeaponAvailable(Cannon0.get()) && !cannonsDisabled.get()))
+  let isAnyWeaponAvailable = Computed(@() isMgunsAvailable.get() || isCannonsAvailable.get())
   let availableWeapon = Computed(@() hasMGun0.get() && !mGunsDisabled.value
       && (MGun0.get().count > 0  || !hasCanon0.get() || cannonsDisabled.value || MGun0.get().endTime < Cannon0.get().endTime)
     ? MGun0.get()
@@ -525,9 +541,13 @@ function mkCirclePlaneCourseGuns() {
           mkBorderPlane(bigButtonSize, isAnyWeaponAvailable.get(), stateFlags)
           mkBtnImage(bigButtonImgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? 0xFFFFFFFF : disabledColor)
           @() {
-            watch = [totalBullets, isAnyWeaponAvailable]
-          }.__update(totalBullets.value < 0 ? {}
-            : mkCountTextLeft(totalBullets.value, isAnyWeaponAvailable.get() ? 0xFFFFFFFF : disabledColor))
+              watch = [MGun0, isMgunsAvailable]
+            }.__update(!isMgunsAvailable.get() || MGun0.get().count < 0 ? {}
+              : mkCountTextLeftLower(MGun0.get().count, isMgunsAvailable.get() ? 0xFFFFFFFF : disabledColor))
+          @() {
+                watch = [Cannon0, isCannonsAvailable]
+              }.__update(!isCannonsAvailable.get() || Cannon0.get().count < 0 ? {}
+                : mkCountTextLeftUpper(Cannon0.get().count, isCannonsAvailable.get() ? 0xFFFFFFFF : disabledColor))
           mkCircleGlare(bigButtonSize, "course_gun")
           mkGamepadShortcutImage(shortcutId, defShortcutOvr)
         ]

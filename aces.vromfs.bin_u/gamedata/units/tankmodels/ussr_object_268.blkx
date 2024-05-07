@@ -2055,6 +2055,9 @@
       }
     }
   },
+  "enabled_modifications": {
+    "tank_smoke_screen_system_mod": true
+  },
   "user_skin": {
     "name": "t_10m",
     "replace_tex": {
