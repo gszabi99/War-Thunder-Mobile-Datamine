@@ -81,7 +81,7 @@ let parseTimeOnce = @(timeRange) {
 }
 
 let isTimeInRange = @(timeRange, time)
-  timeRange.start <= time && (timeRange.end <= 0 || timeRange.end >= time)
+  time >= timeRange.start && time <= timeRange.end
 
 function updateActualSeasonsIntervals() {
   if (!isServerTimeValid.get())
