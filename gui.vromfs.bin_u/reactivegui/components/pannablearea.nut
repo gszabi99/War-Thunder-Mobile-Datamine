@@ -167,17 +167,15 @@ function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) 
   * @param {integer} height - Height in pixels of the whole area with gradients included.
  * @param {[integer,integer]} gradientOffsetX - Left and right gradient offsets in pixels.
   * @param {[integer,integer]} gradientOffsetY - Top and bottom gradient offsets in pixels.
- * @param {[integer,integer]|null} scrollOffset - Optional left and right scroll offsets.
                                    Pass null to make it equal gradientOffset (usually it should be equal).
  * @return {function} - Pannable area constructor function.
  */
-function doubleSidePannableAreaCtor(width, height, gradientOffsetX, gradientOffsetY = null, scrollOffset = null) {
-  if (gradientOffsetX[0] < hdpx(3) || gradientOffsetX[1] < hdpx(3))
+function doubleSidePannableAreaCtor(width, height, gradientOffsetX, gradientOffsetY) {
+  if (gradientOffsetX[0] < hdpx(3) || gradientOffsetX[1] < hdpx(3) || gradientOffsetY[0] < hdpx(3) || gradientOffsetY[1] < hdpx(3))
     logerr("gradientOffsetX in doubleSidePannableAreaCtor is too small")
-  scrollOffset = scrollOffset ?? gradientOffsetX
   gradientOffsetY = gradientOffsetY ?? gradientOffsetX
   let scaleMulX = 0.1
-  let scaleMulY = max(0.1, 4.0 / max(4, gradientOffsetY[0]), 4.0 / max(4, gradientOffsetY[1]))
+  let scaleMulY = 0.1
   let pageMask = mkBitmapPictureLazyExt((width * scaleMulX + 0.5).tointeger(), (height * scaleMulY + 0.5).tointeger(),
     "doubleSidePannableAreaCtor",
     function(params, bmp) {
@@ -205,40 +203,20 @@ function doubleSidePannableAreaCtor(width, height, gradientOffsetX, gradientOffs
 
   let key = {}
   let pannableBaseExt = pannableBase.__merge({ key = {} })
-  return function mkHorizontalPannableArea(content, rootOvr = {}, pannableOvr = {}) {
-    let root = {
-      watch = isMoveByKeys
+  return function mkDoubleSidePannableArea(content, rootOvr = {}, pannableOvr = {}) {
+    return {
       size = [width, height]
-      pos = [-scrollOffset[0], 0]
       rendObj = ROBJ_MASK
       image = pageMask()
       clipChildren = true
+      children = {
+        key
+        size = [width, height]
+        children = pannableBaseExt.__merge({
+          children = content
+        }, pannableOvr)
+      }
     }.__update(rootOvr)
-    return @() isMoveByKeys.value
-      ? root.__merge({
-          children = {
-            key
-            size = root.size
-            padding = [0, scrollOffset[1], 0, scrollOffset[0]] //padding here to correct clipObject by parent
-            children = pannableBaseExt.__merge({
-              children = content
-            }, pannableOvr)
-          }
-        })
-      : root.__merge({
-          children = { //need the same nesting with isMoveByKeys to not reset scroll on change
-            key
-            size = root.size
-            children = pannableBaseExt.__merge({
-              flow = FLOW_HORIZONTAL
-              children = [
-                { size = [scrollOffset[0], flex()] }
-                content
-                { size = [scrollOffset[1], flex()] }
-              ]
-            }, pannableOvr)
-          }
-        })
   }
 }
 

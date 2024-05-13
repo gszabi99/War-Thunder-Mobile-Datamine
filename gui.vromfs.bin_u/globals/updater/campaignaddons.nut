@@ -37,6 +37,16 @@ function appendCampaignExtAddons(addons, campaign, mRank) {
   return addons
 }
 
+function appendSideAddons(addons, mRank) {
+  let addon = $"pkg_common_{mRank}_aircraft"
+  if (addon in knownAddons)
+    addons.append(addon)
+  let addonHq = $"{addon}_hq"
+  if (addonHq in knownAddons)
+    addons.append(addonHq)
+  return addons
+}
+
 function getUnitPkgs(unitName, mRank) {
   if (unitName in customUnitPkg)
     return customUnitPkg[unitName] ?? []
@@ -46,6 +56,7 @@ function getUnitPkgs(unitName, mRank) {
   for (local i = mRank; i >= 1; i--) {
     appendRankAddon(res, postfix, i)
     appendCampaignExtAddons(res, campaign, i)
+    appendSideAddons(res, i)
   }
   return res
 }
@@ -58,6 +69,7 @@ function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   for (local i = mRank + 1; i >= 1 ; i--) {
     appendRankAddon(res, postfix, i)
     appendCampaignExtAddons(res, campaign, i)
+    appendSideAddons(res, i)
   }
   return res
 }
@@ -72,6 +84,7 @@ function getCampaignPkgsForNewbieBattle(campaign, mRank, isSingle) {
   for (local i = maxRank; i >= 1 ; i--) {
     appendRankAddon(res, postfix, i)
     appendCampaignExtAddons(res, campaign, i)
+    appendSideAddons(res, i)
   }
   return res
 }

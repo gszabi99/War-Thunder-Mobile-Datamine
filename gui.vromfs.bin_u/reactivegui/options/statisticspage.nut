@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
-let { levelMark, defColor, hlColor, iconSize, mkText, mkRow} = require("%rGui/mpStatistics/playerInfo.nut")
+let { levelMark, defColor, hlColor, iconSize, mkText } = require("%rGui/mpStatistics/playerInfo.nut")
 let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
 let { actualizeStats, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { can_view_player_rate } = require("%appGlobals/permissions.nut")
+let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
 
 let playerStats = Computed( @() userstatStats.get()?.stats["global"])
 
@@ -25,7 +25,6 @@ let mkMedals = @(selCampaign) function() {
   }
   return {
     watch = servProfile
-    size = [flex(), SIZE_TO_CONTENT]
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(30)
@@ -46,6 +45,7 @@ let mkMedals = @(selCampaign) function() {
 function mkInfo(campaign, unitsStats) {
 
   return bgMessage.__merge({
+    minWidth = SIZE_TO_CONTENT
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
@@ -63,7 +63,6 @@ function mkInfo(campaign, unitsStats) {
       })
       {
         flow = FLOW_HORIZONTAL
-        size = [flex(), SIZE_TO_CONTENT]
         margin = [hdpx(20), hdpx(50)]
         gap = hdpx(50)
         children = [
@@ -73,6 +72,7 @@ function mkInfo(campaign, unitsStats) {
             let all = unitsStats.get().all[campaign]
             return {
               watch = unitsStats
+              minWidth = SIZE_TO_CONTENT
               size = [flex(), SIZE_TO_CONTENT]
               valign = ALIGN_CENTER
               flow = FLOW_VERTICAL
@@ -86,30 +86,21 @@ function mkInfo(campaign, unitsStats) {
                   rendObj = ROBJ_IMAGE
                   keepAspect = KEEP_ASPECT_FIT
                   image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
-                  hplace = ALIGN_RIGHT
                   vplace = ALIGN_CENTER
-                  pos = [hdpx(45), 0]
                 })
                 mkRow(loc("stats/rare"), $"{my.rare}")
               ]
             }
           }
           function() {
-            let {win, battle_end} = playerStats.get()[campaign]
-            let percent = battle_end > 0 ? win * 100 / battle_end : 0
+            let stats = playerStats.get()?[campaign] ?? {}
             return {
               watch = playerStats
-              size = [flex(), SIZE_TO_CONTENT]
               valign = ALIGN_CENTER
               flow = FLOW_VERTICAL
               gap = hdpx(5)
-              children = [
-                mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)
-                mkRow(loc("lb/battles"), $"{battle_end}")
-                can_view_player_rate.get() ?
-                  mkRow(loc("stats/missions_wins"), $"{percent}%")
-                  : null
-              ]
+              children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
+                .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
             }
           }
         ]
@@ -124,6 +115,12 @@ return function() {
     let { units = {} } = servProfile.get()
     let all = {}
     let my = {}
+
+    foreach (v in campaignsList.get()) {
+      all[v] <- { prem = 0, wp = 0 }
+      my[v] <- { prem = 0 wp = 0 maxLevel = 0 rare = 0 }
+    }
+
     foreach (id, v in allUnits) {
       let { levelPreset = "0", campaign = "", isHidden = false, isPremium = false, costWp = 0 } = v
       if (campaign not in all)
@@ -154,7 +151,8 @@ return function() {
   return {
     onAttach = actualizeStats
     watch = campaignsList
-    size = flex()
+    minWidth = SIZE_TO_CONTENT
+    size = [flex(), SIZE_TO_CONTENT]
     padding = [0, 0, hdpx(40), 0]
     flow = FLOW_VERTICAL
     gap = hdpx(20)

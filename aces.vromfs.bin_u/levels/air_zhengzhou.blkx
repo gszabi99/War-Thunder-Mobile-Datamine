@@ -1,7 +1,7 @@
 {
   "lastClip": true,
   "lastclip_horizon": true,
-  "clipmap_tex_mips": 5,
+  "clipmap_tex_mips": 6,
   "mapCoord0": [
     -32768.0,
     -32768.0
@@ -47,7 +47,7 @@
   "max_wind_strength": 3.5,
   "average_ground_level": 81.0,
   "clipmap": {
-    "texelSize": 0.03125,
+    "texelSize": 0.125,
     "lastClipSize": 512
   },
   "micro_details": {

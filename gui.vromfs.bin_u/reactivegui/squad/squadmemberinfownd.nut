@@ -26,7 +26,6 @@ let { mkSpinner } = require("%rGui/components/spinner.nut")
 
 let WND_UID = "squad_member_info_wnd"
 
-let headerWidth = hdpx(1250)
 let avatarSize = hdpxi(200)
 let wndMargin = hdpx(24)
 let wndGap = hdpx(24)
@@ -142,7 +141,7 @@ function memberInfo(uid) {
   let unit = Computed(@() serverConfigs.value?.allUnits[squadMembers.value?[uid].units[squadLeaderCampaign.value]])
   return @() {
     watch = [contact, info]
-    size = [headerWidth, avatarSize]
+    size = [SIZE_TO_CONTENT, avatarSize]
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap
@@ -261,7 +260,7 @@ function content() {
       mkBg(rect)
       {
         size = [0, 0]
-        pos = [(r + l) / 2, t - wndMargin]
+        pos = [(r + l) / 2.5, t - wndMargin]
         valign = ALIGN_BOTTOM
         halign = ALIGN_CENTER
         children = mkWindow(uid)

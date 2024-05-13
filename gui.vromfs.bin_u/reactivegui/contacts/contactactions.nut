@@ -9,6 +9,7 @@ let { inviteToSquad, dismissSquadMember, transferSquad, revokeSquadInvite,
   leaveSquadMessage, isInSquad, isSquadLeader, squadMembers, isInvitedToSquad, canInviteToSquad
 } = require("%rGui/squad/squadManager.nut")
 let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
+let { viewProfile } = require("%rGui/mpStatistics/viewProfile.nut")
 
 let mkCommonInProgress = @(userId) Computed(@() userId in contactsInProgress.value)
 let isInMySquad = @(userId, members) members?[userId.tointeger()] != null
@@ -114,6 +115,12 @@ let actions = {
     locId = "squadAction/leave"
     mkIsVisible = @(userId) Computed(@() userId == myUserIdStr.value && isInSquad.value)
     action = @(_) leaveSquadMessage()
+  }
+
+  PROFILE_VIEW = {
+    locId = "mainmenu/titleProfile"
+    mkIsVisible = @(_) Watched(true)
+    action = viewProfile
   }
 }
 

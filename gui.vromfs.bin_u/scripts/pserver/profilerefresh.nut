@@ -6,7 +6,7 @@ let { json_to_string } = require("json")
 let { isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { battleResult } = require("%scripts/debriefing/battleResult.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { mnSubscribe } = require("%appGlobals/matchingNotifications.nut")
+let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
 let { get_profile, get_all_configs, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let logPR = log_with_prefix("[profileRefresh] ")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -126,5 +126,5 @@ isLoggedIn.subscribe(function(v) {
   lastConfigsError(null)
 })
 
-mnSubscribe("profile",
+mnGenericSubscribe("profile",
   @(ev) ev?.func == "updateConfig" ? isConfigsChanged(true) : checkUpdateProfile())

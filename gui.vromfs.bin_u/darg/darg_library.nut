@@ -1,5 +1,6 @@
 from "%sqstd/frp.nut" import *
 from "daRg" import *
+let bhvModule = require_optional("daRg.behaviors")
 
 let {tostring_r} = require("%sqstd/string.nut")
 let {min}  = require("math")
@@ -20,20 +21,6 @@ function watchElemState(builder, params={}) {
     desc.onElemState <- onElemState
     return desc
   }
-}
-
-let NamedColor = {
-  red = Color(255,0,0)
-  blue = Color(0,0,255)
-  green = Color(0,255,0)
-  magenta = Color(255,0,255)
-  yellow = Color(255,255,0)
-  cyan = Color(0,255,255)
-  gray = Color(128,128,128)
-  lightgray = Color(192,192,192)
-  darkgray = Color(64,64,64)
-  black = Color(0,0,0)
-  white = Color(255,255,255)
 }
 
 /*
@@ -185,10 +172,9 @@ let res = {
   watchElemState
   isDargComponent
   fsh
-  NamedColor
 }
 
-if (getconsttable()?.Behaviors == null)
-  res.Behaviors <- require("daRg.behaviors")
+if (bhvModule != null)
+  res.Behaviors <- bhvModule
 
 return res

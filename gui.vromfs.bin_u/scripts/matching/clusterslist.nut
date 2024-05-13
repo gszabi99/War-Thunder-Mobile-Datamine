@@ -9,7 +9,7 @@ let { isMatchingOnline } = require("matchingOnline.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { optimalClusters } = require("%scripts/matching/optimalClusters.nut")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 const MAX_FETCH_RETRIES = 5
 let clusters = hardPersistWatched("matching.clusters", [])

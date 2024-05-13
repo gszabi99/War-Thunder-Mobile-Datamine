@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { HangarCameraControl } = require("wt.behaviors")
 let { registerScene } = require("%rGui/navState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -104,7 +105,7 @@ let unitInfoPanelPlace = @() {
   children = unitInfoPanelFull({
     pos = curCampaign.value == "tanks" ? [ saBorders[0], hdpx(20) ] : unitInfoPanelDefPos
     hplace = ALIGN_RIGHT
-    behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
+    behavior = [ Behaviors.Button, HangarCameraControl ]
     eventPassThrough = true
     onClick = closeUnitDetailsWnd
   }, unitToShow)
@@ -155,7 +156,7 @@ let buttonsBlock = @() {
 let sceneRoot = {
   key = openCount
   size = [ sw(100), sh(100) ]
-  behavior = Behaviors.HangarCameraControl
+  behavior = HangarCameraControl
   animations = wndSwitchAnim
 
   function onAttach() {

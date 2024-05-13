@@ -7,7 +7,9 @@ let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style
 
 let stateFlags = Watched(0)
 
-let iconSize = hdpx(87)
+let iconSize = hdpxi(87)
+let iconShift = hdpx(-45)
+let boostersHeight = iconSize * 1.3
 
 let activeBoosters = Computed(function() {
   let res = []
@@ -18,7 +20,7 @@ let activeBoosters = Computed(function() {
 })
 
 let hoverBg = {
-  size = [pw(150), ph(130)]
+  size = [pw(150), boostersHeight]
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
   color = 0x4052C4E4
@@ -51,7 +53,7 @@ let emptyBst = {
 
 let boostersList = @(boosters) {
   flow = FLOW_HORIZONTAL
-  gap = hdpx(-45)
+  gap = iconShift
   children = boosters.map(bstIcon)
 }
 
@@ -61,6 +63,7 @@ let function boostersListActive() {
     : boostersList(activeBoosters.get())
   return{
     watch = [activeBoosters, stateFlags]
+    size = [SIZE_TO_CONTENT, iconSize]
     vplace = ALIGN_CENTER
     onClick = @() isOpenedBoosterWnd(true)
     behavior = Behaviors.Button
@@ -77,4 +80,7 @@ let function boostersListActive() {
     ]
   }
 }
-return boostersListActive
+return {
+  boostersListActive
+  boostersHeight
+}

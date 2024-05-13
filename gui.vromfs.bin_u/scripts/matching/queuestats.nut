@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { queueInfo, isInQueue } = require("%appGlobals/queueState.nut")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 isInQueue.subscribe(@(v) v ? null : queueInfo(null))
 

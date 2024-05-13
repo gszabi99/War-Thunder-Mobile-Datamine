@@ -7,9 +7,10 @@ let searchContactsScene = require("searchContactsScene.nut")
 let mkContactListScene = require("mkContactListScene.nut")
 let { mkContactActionBtn, mkContactActionBtnPrimary } = require("mkContactActionBtn.nut")
 let { CANCEL_INVITE, APPROVE_INVITE, REJECT_INVITE, REMOVE_FROM_FRIENDS,
-  ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD, REVOKE_INVITE
+  ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD, REVOKE_INVITE, PROFILE_VIEW
 } = require("contactActions.nut")
 let { UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
+let friendRequestToMeResponse = require("mkContactResponse.nut")
 
 let tabs = [
   {
@@ -24,6 +25,7 @@ let tabs = [
     locId = "contacts/friend"
     image = "ui/gameuiskin#icon_contacts.svg"
     content = mkContactListScene(friendsUids, @(userId) [
+      mkContactActionBtn(PROFILE_VIEW, userId, { hotkeys = ["^J:LT"] })
       mkContactActionBtn(REMOVE_FROM_FRIENDS, userId, { hotkeys = ["^J:RB"] })
       mkContactActionBtn(REVOKE_INVITE, userId, { hotkeys = ["^J:LB"] })
       mkContactActionBtnPrimary(INVITE_TO_SQUAD, userId, { hotkeys = ["^J:Y"] })
@@ -34,11 +36,13 @@ let tabs = [
     locId = "contacts/requestsToMe"
     image = "ui/gameuiskin#icon_contacts.svg"
     content = mkContactListScene(requestsToMeUids, @(userId) [
+      mkContactActionBtn(PROFILE_VIEW, userId, { hotkeys = ["^J:LT"] })
+      mkContactActionBtn(ADD_TO_BLACKLIST, userId, { hotkeys = ["^J:RT"] })
       mkContactActionBtn(REJECT_INVITE, userId, { hotkeys = ["^J:RB"] })
       mkContactActionBtn(REVOKE_INVITE, userId, { hotkeys = ["^J:LB"] })
       mkContactActionBtnPrimary(INVITE_TO_SQUAD, userId, { hotkeys = ["^J:Y"] })
       mkContactActionBtnPrimary(APPROVE_INVITE, userId, { hotkeys = ["^J:X | Enter"] })
-    ])
+    ], friendRequestToMeResponse)
     isFullWidth = true
     isVisible = Computed(@() requestsToMeUids.value.len() > 0)
     unseen = Watched(UNSEEN_HIGH)
@@ -47,6 +51,7 @@ let tabs = [
     locId = "contacts/myRequests"
     image = "ui/gameuiskin#icon_contacts.svg"
     content = mkContactListScene(myRequestsUids, @(userId) [
+      mkContactActionBtn(PROFILE_VIEW, userId, { hotkeys = ["^J:LT"] })
       mkContactActionBtn(CANCEL_INVITE, userId, { hotkeys = ["^J:RB"] })
       mkContactActionBtn(REVOKE_INVITE, userId, { hotkeys = ["^J:LB"] })
       mkContactActionBtnPrimary(INVITE_TO_SQUAD, userId, { hotkeys = ["^J:Y"] })
@@ -58,7 +63,8 @@ let tabs = [
     locId = "contacts/rejectedByMe"
     image = "ui/gameuiskin#icon_contacts.svg"
     content = mkContactListScene(rejectedByMeUids, @(userId) [
-      mkContactActionBtn(ADD_TO_BLACKLIST, userId, { hotkeys = ["^J:RB"] })
+      mkContactActionBtn(PROFILE_VIEW, userId, { hotkeys = ["^J:LT"] })
+      mkContactActionBtn(ADD_TO_BLACKLIST, userId, { hotkeys = ["^J:RT"] })
       mkContactActionBtn(REVOKE_INVITE, userId, { hotkeys = ["^J:LB"] })
       mkContactActionBtnPrimary(INVITE_TO_SQUAD, userId, { hotkeys = ["^J:Y"] })
       mkContactActionBtnPrimary(APPROVE_INVITE, userId, { hotkeys = ["^J:X | Enter"] })
@@ -70,6 +76,7 @@ let tabs = [
     locId = "contacts/block"
     image = "ui/gameuiskin#icon_contacts.svg"
     content = mkContactListScene(myBlacklistUids, @(userId) [
+      mkContactActionBtn(PROFILE_VIEW, userId, { hotkeys = ["^J:LT"] })
       mkContactActionBtn(REMOVE_FROM_BLACKLIST, userId, { hotkeys = ["^J:X | Enter"] })
     ])
     isFullWidth = true

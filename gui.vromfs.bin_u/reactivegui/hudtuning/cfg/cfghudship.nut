@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { allow_voice_messages } = require("%appGlobals/permissions.nut")
-let { set_chat_handler = null } = require("chat")
-let { missionPlayVoice = null } = require("sound_wt")
+let { allow_voice_messages, has_strategy_mode } = require("%appGlobals/permissions.nut")
 let { SHIP } = require("%appGlobals/unitConst.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
@@ -19,8 +17,6 @@ let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voic
 let { mkRhombFireworkBtn } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 
-let allow_voice_messages_compatibility = Computed(@() allow_voice_messages.get() && !!set_chat_handler && !!missionPlayVoice)
-
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
   zoom = weaponryButtonCtor("ID_ZOOM", mkZoomButton,
     {
@@ -34,6 +30,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
       editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_aircraft_fighter.svg", 1, false)
     })
 //
+
 
 
 
@@ -103,8 +100,8 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     ctor = @() voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(5), 0])
     editView = voiceMsgStickView
-    isVisibleInEditor = allow_voice_messages_compatibility
-    isVisibleInBattle = Computed(@() allow_voice_messages_compatibility.get() && isInMpSession.get())
+    isVisibleInEditor = allow_voice_messages
+    isVisibleInBattle = Computed(@() allow_voice_messages.get() && isInMpSession.get())
     priority = Z_ORDER.STICK
   }
 

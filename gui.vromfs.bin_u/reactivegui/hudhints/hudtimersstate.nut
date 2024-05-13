@@ -103,11 +103,14 @@ eventbus_subscribe("ShipDebuffs:CancelRepairBreaches", @(data) onCancelAction(
   data?.time ?? 0))
 
 let onRearm = @(data) activeTimers.mutate(function onRearmImpl(actTimers) {
-  let { object_name, state, timeToLoadOne = 0, currentLoadTime = 0 } = data
+  let { object_name, state, timeToLoadOne = 0, currentLoadTime = 0, rearmState = ""} = data
   if (timeToLoadOne <= 0 || state == "notInRearm")
     deleteF(actTimers, object_name)
-  else
-    actTimers[object_name] <- mkTimerOffset(timeToLoadOne, currentLoadTime)
+  else {
+    let isForward = (rearmState != "discharge")
+    let curTime = isForward ? currentLoadTime : timeToLoadOne - currentLoadTime
+    actTimers[object_name] <- mkTimerOffset(timeToLoadOne, curTime, { isPaused = (rearmState == "pause") , isForward })
+  }
 })
 eventbus_subscribe("TankDebuffs:Rearm", onRearm)
 eventbus_subscribe("ShipDebuffs:Rearm", onRearm)

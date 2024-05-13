@@ -7,6 +7,8 @@ let { can_debug_missions } = require("%appGlobals/permissions.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
+let { replayCamerasButtons } = require("replayMenu.nut")
+let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 let isShowDevMenu = mkWatched(persist, "isShowDevMenu", false)
 
@@ -32,14 +34,33 @@ function getFlightButtonText(buttonName) {
 
 let devMenuContent = @() {
   key = buttonsList
-  watch = buttonsList
+  watch = isPlayingReplay
   size = flex()
-  flow = FLOW_VERTICAL
+  flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   gap = hdpx(30)
-  children = buttonsList.value.map(@(b) textButtonCommon(utf8ToUpper(getFlightButtonText(b)),
-    flightMenuButtonsAction?[b] ?? getFlightMenuButtonAction(b)))
+  children = [
+    @() {
+      watch = buttonsList
+      size = flex()
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      gap = hdpx(30)
+      children = buttonsList.value.map(@(b) textButtonCommon(utf8ToUpper(getFlightButtonText(b)),
+        flightMenuButtonsAction?[b] ?? getFlightMenuButtonAction(b)))
+    }
+    !isPlayingReplay.value ? null
+      : {
+          size = flex()
+          flow = FLOW_VERTICAL
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          gap = hdpx(30)
+          children = replayCamerasButtons.map(@(b) textButtonCommon(utf8ToUpper(getFlightButtonText(b.name)), b.action))
+        }
+  ]
   animations = wndSwitchAnim
 }
 

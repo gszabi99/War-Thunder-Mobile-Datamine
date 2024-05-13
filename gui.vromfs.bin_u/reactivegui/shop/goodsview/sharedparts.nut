@@ -31,8 +31,8 @@ let advertSize = hdpxi(60)
 let glareWidth = sh(8)
 let goodsGlareAnimDuration = 0.2
 
-let offerW = hdpx(420)
-let offerH = hdpx(180)
+let offerW = hdpx(325)
+let offerH = hdpx(140)
 let offerPad = [hdpx(10), hdpx(15)]
 let titlePadding = hdpx(33)
 

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { TouchScreenButton } = require("wt.behaviors")
 let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { visibleWeaponsMap, currentHoldWeaponName, isChainedWeapons } = require("%rGui/hud/currentWeaponsStates.nut")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
@@ -48,7 +49,7 @@ function mkChainedWeapons(actionCtor, visibleIds) {
 
           {
             pos = [touchButtonSize * 0.75, touchButtonSize * 0.75]
-            behavior = Behaviors.TouchScreenButton
+            behavior = TouchScreenButton
             onTouchBegin = @() isChainedWeapons(!isChainedWeapons.value)
             rendObj = ROBJ_IMAGE
             opacity = 0.5

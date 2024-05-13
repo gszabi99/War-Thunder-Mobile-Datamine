@@ -39,6 +39,7 @@ let slotsByType = {
   unitUpgrade = 2
   battleMod = 2
   unit = 2
+  blueprint = 2
 }
 
 let slotsByDType = {

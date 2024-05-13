@@ -86,6 +86,7 @@ function mkDebriefingWndTabScores(debrData, _params) {
   return {
     comp
     timeShow
+    forceStopAnim = false
   }
 }
 

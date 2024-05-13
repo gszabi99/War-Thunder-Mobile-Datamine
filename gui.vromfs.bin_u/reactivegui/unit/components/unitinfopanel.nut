@@ -18,6 +18,7 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { blueprintsInfo } = require("%rGui/blueprints/bluePrintsComp.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -363,7 +364,7 @@ let unitHeaderBlock = @(unit, unitTitleCtor) @(){
 
 local lastUnitStats = null
 
-let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit) function() {
+let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, ovr = {}) function() {
   if (unit.value == null)
     return { watch = unit }
 
@@ -388,8 +389,9 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
             { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
         unitStatsBlock(unitStats, prevStats)
         unitArmorBlock(unit.value, false)
+        blueprintsInfo(unit.value)
       ]
-    }
+    }.__update(ovr)
   }, override)
 }
 

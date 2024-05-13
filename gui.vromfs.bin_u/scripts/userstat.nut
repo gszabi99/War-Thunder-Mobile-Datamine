@@ -12,7 +12,7 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { isProfileReceived, isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let charClientEvent = require("charClientEvent.nut")
-let { mnSubscribe } = require("%appGlobals/matchingNotifications.nut")
+let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
@@ -106,10 +106,12 @@ let descListUpdatable = makeUpdatable("descList", "GetUserStatDescList",
   @() { language = getCurrentSteamLanguage() })
 let statsUpdatable = makeUpdatable("stats", "GetStats")
 let unlocksUpdatable = makeUpdatable("unlocks", "GetUnlocks", null, ["GrantRewards"])
+let infoTablesUpdatable = makeUpdatable("infoTables", "GetTablesInfo")
 
 let userstatUnlocks = unlocksUpdatable.data
 let userstatDescList = descListUpdatable.data
 let userstatStats = statsUpdatable.data
+let userstatInfoTables = infoTablesUpdatable.data
 
 function validateUserstatData() {
   if (unlocksUpdatable.data.value.len() == 0)
@@ -118,11 +120,14 @@ function validateUserstatData() {
     descListUpdatable.refresh()
   if (statsUpdatable.data.value.len() == 0)
     statsUpdatable.refresh()
+  if (infoTablesUpdatable.data.get().len() == 0)
+    infoTablesUpdatable.refresh()
 }
 
 let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
-  || userstatStats.value.len() == 0)
+  || userstatStats.value.len() == 0
+  || userstatInfoTables.get().len() == 0)
 let needValidateMissingData = keepref(Computed(@()
   isUserstatMissingData.value && isReadyToConnect.value && !isInBattle.value))
 
@@ -184,7 +189,7 @@ let addStat = @(stat, mode, amount)
 let setStat = @(stat, mode, amount)
   changeStat(stat, mode, amount, true)
 
-mnSubscribe("userStat", function(ev) {
+mnGenericSubscribe("userStat", function(ev) {
   if (ev?.func == "changed")
     unlocksUpdatable.forceRefresh()
   else if (ev?.func == "updateConfig")
@@ -197,6 +202,7 @@ function updateConfigsIfNeed() {
   needConfigsUpdate.set(false)
   descListUpdatable.forceRefresh()
   unlocksUpdatable.forceRefresh()
+  infoTablesUpdatable.forceRefresh()
 }
 updateConfigsIfNeed()
 needConfigsUpdate.subscribe(@(_) isInBattle.get() ? null

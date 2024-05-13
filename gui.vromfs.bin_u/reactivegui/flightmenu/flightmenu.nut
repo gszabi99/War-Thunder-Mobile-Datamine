@@ -17,7 +17,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
 let { isUnitDelayed, unitType, isUnitAlive } = require("%rGui/hudState.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
+let { respawnSlots } = require("%rGui/respawn/respawnState.nut")
 
 
 let spawnInfo = Watched(null)
@@ -79,14 +79,15 @@ let flightMenu = @() bgShaded.__merge({
     backBtn
     needShowDevMenu.value ? devMenuContent : menuContent(aliveOrHasSpawn.value, battleCampaign.value)
     customButtons
-    @(){
-      watch = [isUnitAlive, unitType, isUnitDelayed, canBailoutFromFlightMenu]
+    @() {
+      watch = [isUnitAlive, unitType, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu]
       flow = FLOW_HORIZONTAL
       gap = buttonsHGap
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
       children = [
-        isUnitAlive.get() && unitType.get() == AIR && !isUnitDelayed.get()
+        isUnitAlive.get() && !isUnitDelayed.get()
+            && respawnSlots.get().reduce(@(res, s) res + (s?.isLocked ? 0 : 1), 0) > 1
             && canBailoutFromFlightMenu.get()
           ? leaveVehicleButton
           : null

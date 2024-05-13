@@ -9,12 +9,13 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let isFiltersVisible = Watched(false)
 let filters = [optName, optStatus, optUnitClass, optMRank, optCountry]
+let filtersTreeNodes = [optName, optStatus, optUnitClass, optMRank]
 let activeFilters = Watched(0)
 let filterCount = Watched(0)
 
 const FILTER_UID = "units_filter"
 let closeFilters = @() modalPopupWnd.remove(FILTER_UID)
-let openFilters = @(event, ovr = {})
+let openFilters = @(event, isTreeNodes, ovr = {})
   modalPopupWnd.add(event.targetRect, {
     uid = FILTER_UID
     rendObj = ROBJ_BOX
@@ -24,7 +25,7 @@ let openFilters = @(event, ovr = {})
     padding = hdpx(20)
     popupValign = ALIGN_BOTTOM
     popupHalign = ALIGN_LEFT
-    children = mkUnitsFilter(filters, availableUnitsList, closeFilters, clearFilters)
+    children = mkUnitsFilter(isTreeNodes ? filtersTreeNodes : filters, availableUnitsList, closeFilters, clearFilters)
     // OFFSET
     popupOffset = hdpx(20)
     hotkeys = [[btnBEscUp, closeFilters]]

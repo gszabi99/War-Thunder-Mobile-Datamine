@@ -48,6 +48,10 @@ let nickFrames = {
   wasp = @(n) $"⋎{n}⋏"
   wolf_head = @(n) $"⋐{n}⋑"
   laurel_wreath = @(n) $"◬{n}◭"
+  thunder_cloud = @(n) $"⌢{n}⌣"
+  tornado = @(n) $"␀{n}␁"
+  aircraft_wings = @(n) $"␂{n}␃"
+  tank_tracks = @(n) $"␄{n}␅"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

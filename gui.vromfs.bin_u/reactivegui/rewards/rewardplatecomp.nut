@@ -353,6 +353,31 @@ function mkRewardPlateSkinTexts(r, rStyle) {
   return mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(id)), rStyle))
 }
 
+//  BLUEPRINTS ///////////////////////////////////////////////////////////////////////
+
+function mkRewardPlateBlueprintImage(r, rStyle) {
+  let { id } = r
+  let size = getRewardPlateSize(r.slots, rStyle)
+  let imageW = size[0]
+  let imageH = size[1] - labelHeight
+  return {
+    size = [imageW,imageH]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/unitskin#blueprint_default.avif:{imageW}:{imageH}:P")
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = {
+      padding = hdpx(5)
+      rendObj = ROBJ_TEXT
+      text = loc(getUnitLocId(id))
+      hplace = ALIGN_LEFT
+      vplace = ALIGN_BOTTOM
+    }.__update(fontVeryTinyAccented)
+  }
+}
+
+let mkRewardPlateBlueprintTexts = @(r, rStyle) mkRewardLabel(mkCommonLabelTextMarquee(r?.count ?? 0, rStyle))
+
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
 
@@ -498,6 +523,10 @@ let rewardPlateCtors = {
         ? battleModeViewCtors[battleMod.viewType].texts(battleMod, rStyle, r.slots)
         : mkRewardPlateCountText(r, rStyle)
     }
+  }
+  blueprint = {
+    image = mkRewardPlateBlueprintImage
+    texts = mkRewardPlateBlueprintTexts
   }
 }
 

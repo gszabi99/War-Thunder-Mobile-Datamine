@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let logC = log_with_prefix("[CURRENCY] ")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { mnSubscribe } = require("%appGlobals/matchingNotifications.nut")
+let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 
@@ -45,4 +45,4 @@ function processNotification(ev) {
     logC("Unexpected currency notification type:", (ev?.func ?? "null"))
 }
 
-mnSubscribe("currency", processNotification)
+mnGenericSubscribe("currency", processNotification)

@@ -26,6 +26,7 @@ function mkDebriefingWndTabMpStats(debrData, _params) {
   return {
     comp
     timeShow = 1.0
+    forceStopAnim = false
   }
 }
 

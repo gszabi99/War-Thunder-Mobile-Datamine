@@ -17,6 +17,7 @@ let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { mkGradientCtorDoubleSideY, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+let { sendPlayerActivityToServer } = require("playerActivity.nut")
 
 let bgSlotColor = 0xFF51C1D1
 let slotBGImage = mkBitmapPictureLazy(gradTexSize, gradTexSize,
@@ -51,6 +52,7 @@ let hasBulletsVideo = Computed(@() hasAddons.value?.pkg_video ?? false)
 function close(){
   openedSlot(-1)
   openParams(null)
+  sendPlayerActivityToServer()
 }
 savedSlotName.subscribe(@(v) curSlotName(v))
 chosenBullets.subscribe(@(_) curSlotName(savedSlotName.value))
@@ -118,7 +120,10 @@ function mkBulletButton(name, bSet, fromUnitTags, columns, id) {
     }
     mkPriorityUnseenMarkWatch(hasUnseenBullets, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, margin = [hdpx(7), hdpx(7)] })
   ]
-  let onClick = @() curSlotName(name)
+  function onClick() {
+    sendPlayerActivityToServer()
+    curSlotName(name)
+  }
 
   return {
     behavior = Behaviors.Button

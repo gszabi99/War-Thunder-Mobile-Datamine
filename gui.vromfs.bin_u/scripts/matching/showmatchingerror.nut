@@ -10,7 +10,7 @@ let { replace } = require("%sqstd/string.nut")
 let { isDownloadedFromGooglePlay } = require("android.platform")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { is_ios } = require("%sqstd/platform.nut")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 function errorHandlerRetryMessage(code) {
   let errorId = matching.error_string(code)

@@ -3,8 +3,8 @@ let { setTimeout } = require("dagor.workcycle")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { eventbus_send } = require("eventbus")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let consent = require_optional("consent") ?? {}
-let { CONSENT_GIVEN = 0, CONSENT_NOT_REQUIRED = 1 } = consent
+let consent = require("consent")
+let { CONSENT_GIVEN, CONSENT_NOT_REQUIRED } = consent
 
 let debugConsentGDPR = hardPersistWatched("consent.debugConsentGDPR", true)
 let debugConsentGiven = hardPersistWatched("consent.debugConsentGiven", false)

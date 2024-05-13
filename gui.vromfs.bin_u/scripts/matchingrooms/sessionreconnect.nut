@@ -13,7 +13,7 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 
 const MSG_UID = "reconnect_msg"

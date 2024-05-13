@@ -71,7 +71,7 @@ function mkRewardRow(rewardInfo, idx) {
     rewardSlots = min(minRewardsInRow, lbRewardsPerRow - prizeTextSlots)
     children = [mkPrizeInfo(rType, progress, idx, isReady)]
   }]
-  foreach(rInfo in rewardsViewInfo) {
+  foreach(rInfo in rewardsViewInfo.filter(@(r) r.rType != "medal")) {
     let comp = mkRewardPlate(rInfo, rewardStyle)
     local row = rows.findvalue(@(r, i) r.rewardSlots >= rInfo.slots || (i + 1) == totalRows)
     if (row == null) {

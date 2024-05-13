@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time = @() ::get_mission_time() } = require("mission")
+let { get_mission_time } = require("mission")
 let { inKillZone } = require("%rGui/hudState.nut")
 let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
 let { addEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")

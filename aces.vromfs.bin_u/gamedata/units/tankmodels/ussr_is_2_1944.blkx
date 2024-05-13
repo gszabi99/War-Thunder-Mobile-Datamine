@@ -2136,6 +2136,19 @@
       },
       {
         "name": "engine_dm",
+        "onKill": [
+          {
+            "moduleStatusEffect": {
+              "name": "maxPowerMultTank",
+              "prob": 1.0
+            }
+          },
+          {
+            "fire": 0.4,
+            "nothing": 0.6,
+            "fHitCritical": true
+          }
+        ],
         "onHit": [
           {
             "damageType": "cumulative",
@@ -2177,12 +2190,7 @@
             "damageType": "fire",
             "fire": 0.1
           }
-        ],
-        "onKill": {
-          "fire": 0.4,
-          "nothing": 0.6,
-          "fHitCritical": true
-        }
+        ]
       },
       {
         "name": [
@@ -2319,7 +2327,13 @@
             "damageType": "fire",
             "fire": 0.02
           }
-        ]
+        ],
+        "onKill": {
+          "moduleStatusEffect": {
+            "name": "maxSpeedMultTank",
+            "prob": 1.0
+          }
+        }
       },
       {
         "name": "wheel_r_drive_dm",

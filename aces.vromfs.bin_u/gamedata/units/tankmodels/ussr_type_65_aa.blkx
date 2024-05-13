@@ -915,6 +915,19 @@
       },
       {
         "name": "engine_dm",
+        "onKill": [
+          {
+            "moduleStatusEffect": {
+              "name": "maxPowerMultTank",
+              "prob": 1.0
+            }
+          },
+          {
+            "fire": 0.4,
+            "nothing": 0.6,
+            "fHitCritical": true
+          }
+        ],
         "onHit": [
           {
             "damageType": "cumulative",
@@ -956,12 +969,7 @@
             "damageType": "fire",
             "fire": 0.1
           }
-        ],
-        "onKill": {
-          "fire": 0.4,
-          "nothing": 0.6,
-          "fHitCritical": true
-        }
+        ]
       },
       {
         "name": "transmission_dm",
@@ -994,7 +1002,13 @@
             "damageType": "fire",
             "fire": 0.02
           }
-        ]
+        ],
+        "onKill": {
+          "moduleStatusEffect": {
+            "name": "maxSpeedMultTank",
+            "prob": 1.0
+          }
+        }
       },
       {
         "name": "wheel_r_drive_dm",
@@ -2606,8 +2620,8 @@
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
-      "camo_scale": -20.0,
-      "camo_rotation": -30.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
       "decal0Line0": [
         2.5044,
         -1.02626e-7,

@@ -10,6 +10,7 @@ let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, 
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
 let sendAdsBqEvent = is_android ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
+let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
   isAdsLoaded, loadAds, showAds
@@ -118,6 +119,20 @@ eventbus_subscribe("android.ads.onLoad", function (params) {
     failInARow(failInARow.value + 1) //we can have several fail events on single adsLoad request
   }
   sendAdsBqEvent("load_failed", provider, false)
+})
+
+eventbus_subscribe("android.ads.onRevenue", function (params) {
+  let { adapter = "default", provider = "unknown", json = "{}" } = params
+  let { value = 0.0, currency = "USD" } = parse_json(json)
+  logA($"revenue {value} {currency} provider = {provider} ({adapter})")
+  if (value == 0.0)
+    return
+  sendCustomBqEvent("ad_revenue", {
+    provider
+    mediator = adapter
+    revenue = value
+    currency
+  })
 })
 
 eventbus_subscribe("android.ads.onShow", function (params) { //we got this event on start ads show, and on finish

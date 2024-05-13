@@ -3,7 +3,7 @@ let { eventbus_send } = require("eventbus")
 let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { is_pc } = require("%sqstd/platform.nut")
-let { isGDPR = @() false, showConsentForm = @(_) null } = is_pc ? require("%rGui/consent/consentDbg.nut") : (require_optional("consent") ?? {})
+let { isGDPR, showConsentForm } = is_pc ? require("%rGui/consent/consentDbg.nut") : require("consent")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let buttonsWidthStyle = {

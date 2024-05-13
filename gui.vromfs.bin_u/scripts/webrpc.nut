@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { registerRespondent } = require("%appGlobals/scriptRespondents.nut")
+let { registerRespondent } = require("scriptRespondent")
 
 let web_rpc = {
   handlers = {}

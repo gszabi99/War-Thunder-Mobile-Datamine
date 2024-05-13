@@ -348,12 +348,22 @@
             "country": "germany"
           },
           {
+            "name": "us_m41_walker_bulldog",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
             "name": "us_t26e5",
             "weight": 1.0,
             "country": "germany"
           },
           {
             "name": "jp_st_a1",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_m41_walker_bulldog",
             "weight": 1.0,
             "country": "germany"
           },

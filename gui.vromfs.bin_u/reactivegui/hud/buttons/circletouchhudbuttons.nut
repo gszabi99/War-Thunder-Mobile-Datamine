@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_mission_time = @() ::get_mission_time() } = require("mission")
+let { get_mission_time } = require("mission")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { playSound } = require("sound_wt")
+let { TouchAreaOutButton, TouchScreenButton } = require("wt.behaviors")
 let { btnBgColor, borderColorPushed, borderNoAmmoColor, borderColor,
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -304,7 +305,7 @@ function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary", countCto
 
     let res = isContinuous
       ? mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_GM"), "ID_FIRE_GM", primStateFlags)
-          .__update({ behavior = Behaviors.TouchAreaOutButton })
+          .__update({ behavior = TouchAreaOutButton })
       : {
           behavior = Behaviors.Button
           onElemState = @(v) primStateFlags(v)
@@ -354,7 +355,7 @@ function mkCircleTankMachineGun(actionItem) {
       watch = [allowShoot, primaryRocketGun, isDisabled]
       key = "btn_machinegun"
       size = [buttonSize, buttonSize]
-      behavior = Behaviors.TouchAreaOutButton
+      behavior = TouchAreaOutButton
       eventPassThrough = true
       children = [
         mkCircleProgressBg(buttonSize, actionItem)
@@ -466,7 +467,7 @@ function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrou
     : res.__update({
       watch = [isDisabled, isAvailable]
       size = [airButtonSize, airButtonSize]
-      behavior = Behaviors.TouchAreaOutButton
+      behavior = TouchAreaOutButton
       eventPassThrough
       zoneRadiusX
       zoneRadiusY
@@ -522,7 +523,7 @@ function mkCirclePlaneCourseGuns() {
 
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
     .__update({
-      behavior = Behaviors.TouchAreaOutButton
+      behavior = TouchAreaOutButton
       eventPassThrough = true
     })
 
@@ -570,7 +571,7 @@ function mkCirclePlaneCourseGunsSingle(shortcutId, weapon, hasWeapon,
 
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
     .__update({
-      behavior = Behaviors.TouchAreaOutButton
+      behavior = TouchAreaOutButton
       eventPassThrough = true
     })
 
@@ -691,7 +692,7 @@ function mkSimpleCircleTouchBtn(image, shortcutId, ovr = {}) {
     watch = [canZoom, isInZoom]
     key = "btn_zoom_circle"
     size = [buttonSize, buttonSize]
-    behavior = Behaviors.TouchScreenButton
+    behavior = TouchScreenButton
     eventPassThrough = true
     hotkeys = mkGamepadHotkey(shortcutId)
     onTouchBegin = @() useShortcutOn(shortcutId)

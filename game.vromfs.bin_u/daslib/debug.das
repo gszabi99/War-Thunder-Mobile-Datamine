@@ -1036,7 +1036,7 @@ class private DAgent: DapiDebugAgent
             if logStrMemory
                 report = "STRING HEAP COLLECT: {bytes_hr(alloc)} -> "
             unsafe
-                string_heap_collect()
+                heap_collect(true)
             alloc = string_heap_bytes_allocated()
             if logStrMemory
                 to_log(LOG_DEBUG, "dap: {report}{bytes_hr(alloc)} limit : {bytes_hr(strLimit)}\n")
@@ -1830,12 +1830,12 @@ def private auto_start_debug()
     set_single_step(this_context(), !use_instruments() || wait_debugger())
     if !has_debug_agent_context("~debug")
         if start_agent()
-            new_thread <| @
+            new_debugger_thread <|
                 this_context().category &= ~context_category_flags debugger_attached
                 this_context().category |= context_category_flags debugger_tick
                 set_single_step(this_context(), false)
                 this_context().name := "tick thread"
-                while !is_job_que_shutting_down()
+                while !debugger_stop_requested() && !is_job_que_shutting_down()
                     tick_debugger()
             if wait_debugger()
                 wait_for_debugger()

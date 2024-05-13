@@ -1,6 +1,7 @@
 {
   "model": "sb2c_4",
   "fmFile": "fm/sb2c_4.blk",
+  "useTouchShooting": true,
   "tpsCameraTargetOffsetAtZoom": [
     40.0,
     10.0,

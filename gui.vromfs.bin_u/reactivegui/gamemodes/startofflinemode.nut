@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { ceil } = require("%sqstd/math.nut")
-let { SHIP, SUBMARINE } = require("%appGlobals/unitConst.nut")
+let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
@@ -16,6 +16,13 @@ let MAX_SLOTS = 2
 let testFlightExtPacks = { //for bots
   ground = getCampaignPkgsForOnlineBattle("tanks", 1) //t_34_1942
   naval = getCampaignPkgsForOnlineBattle("ships", 1) //cruiser_admiral_hipper
+}
+
+let defTestFlight = "testFlight_destroyer_usa_tfs"
+let testFlightByUnitType = {
+  [AIR]             = "testFlight_plane",
+  [HELICOPTER]      = "testFlight_plane",
+  [TANK]            = "testFlight_ussr_tft",
 }
 
 function getBulletsForTestFlight(unitName) {
@@ -61,9 +68,7 @@ function startTestFlightImpl(unitName, missionName, skin) {
   let params = {
     unitName
     skin
-    missionName = missionName ?? (unitType == SHIP || unitType == SUBMARINE
-      ? "testFlight_destroyer_usa_tfs"
-      : "testFlight_ussr_tft")
+    missionName = missionName ?? testFlightByUnitType?[unitType] ?? defTestFlight
     bullets = getBulletsForTestFlight(unitName)
   }
   donloadUnitPacksAndSend(unitName, testFlightExtPacks?[getAddonPostfix(unitName)] ?? [],

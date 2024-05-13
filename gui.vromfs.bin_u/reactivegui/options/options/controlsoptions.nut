@@ -3,13 +3,14 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send } = require("eventbus")
 let { DBGLEVEL } = require("dagor.system")
 let {OPT_FREE_CAMERA_TANK, OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
-  OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_CAMERA_SENSE, OPT_CAMERA_SENSE_IN_ZOOM, mkOptionValue
+  OPT_HAPTIC_INTENSITY_ON_COLLISION, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
-let { CAM_TYPE_FREE_TANK, CAM_TYPE_NORMAL = -1, CAM_TYPE_BINOCULAR = -1, set_camera_sens } = require("controlsOptions")
+let { CAM_TYPE_FREE_TANK, set_camera_sens } = require("controlsOptions")
 let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION } = require("hapticVibration")
 let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
+let { openVoiceMsgPieEditor } = require("%rGui/hud/voiceMsg/voiceMsgPieEditor.nut")
 
 function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxVal = 3.0, stepVal = 0.03) {
   let value = mkOptionValue(optId, cur)
@@ -72,12 +73,15 @@ return {
       ctrlType = OCT_BUTTON
       onClick = openTuningRecommended
     }
+    {
+      locId = "radio_messages_menu/editor"
+      ctrlType = OCT_BUTTON
+      onClick = openVoiceMsgPieEditor
+    }
     hapticIntensitySlider("options/vibration", OPT_HAPTIC_INTENSITY)
     hapticIntensitySlider("options/vibration_on_shoot", OPT_HAPTIC_INTENSITY_ON_SHOOT, ON_SHOOT)
     hapticIntensitySlider("options/vibration_on_hero_get_shot", OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT, ON_HERO_GET_SHOT)
     hapticIntensitySlider("options/vibration_on_collision", OPT_HAPTIC_INTENSITY_ON_COLLISION, ON_COLLISION)
-    CAM_TYPE_NORMAL < 0 ? null : cameraSenseSlider(CAM_TYPE_NORMAL, "options/camera_sensitivity", OPT_CAMERA_SENSE)
-    CAM_TYPE_BINOCULAR < 0 ? null : cameraSenseSlider(CAM_TYPE_BINOCULAR, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM)
     cameraSenseSlider(CAM_TYPE_FREE_TANK, "options/free_camera_sensitivity_tank", OPT_FREE_CAMERA_TANK, 2.0, 0.5, 8.0)
     DBGLEVEL > 0 ? optFreeCameraInertia : null
   ]

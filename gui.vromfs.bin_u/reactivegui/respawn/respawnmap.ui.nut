@@ -1,9 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { respawnBases, availRespBases, playerSelectedRespBase, curRespBase, selSlot
+let { round } = require("math")
+let { deferOnce } = require("dagor.workcycle")
+let { respawnBases, availRespBases, playerSelectedRespBase, curRespBase, selSlotContentGenId, selSlot
 } = require("respawnState.nut")
 let { localTeam } = require("%rGui/missionState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { VISIBLE_ON_MAP, getRespawnBasePos = null, is_respawnbase_selectable = null } = require("guiRespawn")
+let { VISIBLE_ON_MAP, getRespawnBasePos, is_respawnbase_selectable } = require("guiRespawn")
+let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
 
 let baseSize = evenPx(50)
 let circleSize = evenPx(70)
@@ -14,23 +18,28 @@ let zoneIcons = [
 ]
 
 let visibleRespawnBases = Computed(@() respawnBases.value.filter(@(rb) (rb.flags & VISIBLE_ON_MAP) != 0))
+let mapSizePx = Watched([0, 0])
+let mapRootKey = {}
+
 
 let mkRespBase = @(rb) @() {
   watch = [curRespBase, localTeam, selSlot]
   size = [0, 0]
-  pos = [pw(100.0 * rb.mapPos[0]), ph(100.0 * rb.mapPos[1])]
+  translate = mapSizePx.value.map(@(v, axis) round(v * rb.mapPos[axis]))
   rendObj = ROBJ_SOLID
   color = curRespBase.value == rb.id ? 0xFFFFFFFF : 0x80800000
-  behavior = getRespawnBasePos == null ? null : Behaviors.RtPropUpdate
-  update = getRespawnBasePos == null ? null
-    : function() {
-        let newPos = getRespawnBasePos(rb.id)
-        return {
-          pos = [pw(100.0 * newPos[0]), ph(100.0 * newPos[1])]
-        }
+  behavior = Behaviors.RtPropUpdate
+  function update() {
+    let newPos = getRespawnBasePos(rb.id)
+    return {
+      transform = {
+          translate = mapSizePx.value.map(@(v, axis) round(v * newPos[axis]))
+          rotate = rb.rotate
       }
+    }
+  }
   children = [
-    (curRespBase.value != rb.id && curRespBase.value > 0) || (rb.team != localTeam.value) || (is_respawnbase_selectable!=null && !is_respawnbase_selectable(rb.id)) ? null
+    (curRespBase.value != rb.id && curRespBase.value > 0) || (rb.team != localTeam.value) || !is_respawnbase_selectable(rb.id) ? null
       : {
           size = [circleSize, circleSize]
           rendObj = ROBJ_IMAGE
@@ -44,12 +53,14 @@ let mkRespBase = @(rb) @() {
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
       keepAspect = KEEP_ASPECT_FIT
-      image = Picture($"{(rb?.iconType ?? 0) < 0 ? rb.mapIcon : zoneIcons[rb?.iconType ?? 0]}:{baseSize}:{baseSize}:P")
+      // Texture size is enlarged twice to avoid blurring then rotation is applied.
+      image = Picture($"{rb.iconType < 0 ? rb.mapIcon : zoneIcons[rb.iconType]}:{baseSize * 2}:{baseSize * 2}:P")
       color = rb.team == localTeam.value ? teamBlueColor : teamRedColor
     }.__update(rb.team != localTeam.value ? {}
       : {
           behavior = Behaviors.Button
           function onClick() {
+            sendPlayerActivityToServer()
             if (curRespBase.value == rb.id)
               playerSelectedRespBase(-1)
             else if (rb.id in availRespBases.value)
@@ -60,10 +71,35 @@ let mkRespBase = @(rb) @() {
   ]
 }
 
-return @() {
-  rendObj = ROBJ_TACTICAL_MAP
+let respawnBasesLayer = @() {
   watch = visibleRespawnBases
   size = flex()
+  children = visibleRespawnBases.get().map(mkRespBase)
+}
+
+function refreshMapSize() {
+  let aabb = gui_scene.getCompAABBbyKey(mapRootKey)
+  if (aabb == null)
+    return
+
+  let size = [aabb.r-aabb.l, aabb.b-aabb.t]
+  if (size[0] > 0 && size[1] > 0)
+    mapSizePx.set(size)
+}
+
+selSlotContentGenId.subscribe(@(_) deferOnce(refreshMapSize))
+
+return {
+  rendObj = ROBJ_TACTICAL_MAP
+  key = mapRootKey
+  size = flex()
   clipChildren = true
-  children = visibleRespawnBases.value.map(mkRespBase)
+  children = [
+    tacticalMapMarkersLayer
+    respawnBasesLayer
+  ]
+  function onAttach(elem) {
+    mapSizePx([elem.getWidth(), elem.getHeight()])
+    deferOnce(refreshMapSize)
+  }
 }

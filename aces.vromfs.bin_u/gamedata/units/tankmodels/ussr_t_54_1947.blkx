@@ -19,8 +19,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "support_unit_class": "structures/ussr_152mm_d1",
-  "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchShooting": true,
   "ecsTemplate": "tank_wtm",
@@ -481,6 +479,19 @@
       },
       {
         "name": "engine_dm",
+        "onKill": [
+          {
+            "moduleStatusEffect": {
+              "name": "maxPowerMultTank",
+              "prob": 1.0
+            }
+          },
+          {
+            "fire": 0.4,
+            "nothing": 0.6,
+            "fHitCritical": true
+          }
+        ],
         "onHit": [
           {
             "damageType": "cumulative",
@@ -522,12 +533,7 @@
             "damageType": "fire",
             "fire": 0.1
           }
-        ],
-        "onKill": {
-          "fire": 0.4,
-          "nothing": 0.6,
-          "fHitCritical": true
-        }
+        ]
       },
       {
         "name": "transmission_dm",
@@ -560,7 +566,13 @@
             "damageType": "fire",
             "fire": 0.02
           }
-        ]
+        ],
+        "onKill": {
+          "moduleStatusEffect": {
+            "name": "maxSpeedMultTank",
+            "prob": 1.0
+          }
+        }
       },
       {
         "name": "wheel_r_drive_dm",
@@ -2794,6 +2806,7 @@
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "shotFreq": 0.2,
               "allowableDelta": 360.0,
               "salvo": 1,
               "speedYaw": 24.0,

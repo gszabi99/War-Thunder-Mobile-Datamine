@@ -29,6 +29,7 @@
     3250.0
   ],
   "vsmAngleThreshold": 0.0,
+  "useGuiLevelMap": false,
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "wind_scale": 1.2,

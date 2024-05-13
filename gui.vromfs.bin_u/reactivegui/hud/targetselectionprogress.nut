@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { get_mission_time = @() ::get_mission_time() } = require("mission")
+let { Indicator } = require("wt.behaviors")
+let { get_mission_time } = require("mission")
 let { eventbus_subscribe } = require("eventbus")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { targetUnitName } = require("%rGui/hudState.nut")
@@ -129,7 +129,7 @@ let targetName = @(text) {
 let targetSelectionProgress = @() {
   watch = [cooldownTime, cooldownEndTime, targetUnitName]
   transform = defTransform
-  behavior = Behaviors.Indicator
+  behavior = Indicator
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
@@ -198,7 +198,7 @@ let asmCaptureProgress = @() {
   watch = [asmCaptureTime, asmCaptureEndTime]
   transform = defTransform
   size = [0, 0]
-  behavior = Behaviors.Indicator
+  behavior = Indicator
   useTargetCenterPos = true
   offsetY = 10
   halign = ALIGN_CENTER

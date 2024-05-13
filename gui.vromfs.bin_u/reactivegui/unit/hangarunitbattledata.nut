@@ -61,7 +61,7 @@ function mkHangarBattleData() {
       name
       country
       unitType
-//      isUpgraded  //!!! comment untill it affect selected skin in the hangar
+      isUpgraded
       isPremium = isPremium || isUpgraded
       weapons = {} //olnly default weapon atm
       attributes = {} //no need in the hangar

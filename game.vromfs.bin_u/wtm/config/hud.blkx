@@ -2428,8 +2428,8 @@
       "distanceFullySpecifiedTarget": 500.0,
       "distanceShowTitle": 1000.0,
       "scaleAlphaForPlane": [
-        2.25,
-        195.0
+        2.5,
+        200.0
       ]
     },
     "indicatorsForTanks": {
@@ -4718,7 +4718,6 @@
     "maxSteeringRadius": 1000.0,
     "segmentsNum": 15,
     "segmentsInterval": 1.0,
-    "trackSpeedThreshold": 0.5,
     "colorFwd": [
       0,
       233,

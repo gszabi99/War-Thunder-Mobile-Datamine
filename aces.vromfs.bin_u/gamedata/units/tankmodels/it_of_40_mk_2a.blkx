@@ -1225,6 +1225,19 @@
       },
       {
         "name": "engine_dm",
+        "onKill": [
+          {
+            "moduleStatusEffect": {
+              "name": "maxPowerMultTank",
+              "prob": 1.0
+            }
+          },
+          {
+            "fire": 0.5,
+            "nothing": 0.5,
+            "fHitCritical": true
+          }
+        ],
         "onHit": [
           {
             "damageType": "cumulative",
@@ -1266,12 +1279,7 @@
             "damageType": "fire",
             "fire": 0.1
           }
-        ],
-        "onKill": {
-          "fire": 0.5,
-          "nothing": 0.5,
-          "fHitCritical": true
-        }
+        ]
       },
       {
         "name": "transmission_dm",
@@ -1304,7 +1312,13 @@
             "damageType": "fire",
             "fire": 0.02
           }
-        ]
+        ],
+        "onKill": {
+          "moduleStatusEffect": {
+            "name": "maxSpeedMultTank",
+            "prob": 1.0
+          }
+        }
       },
       {
         "name": "wheel_r_drive_dm",
@@ -3221,9 +3235,10 @@
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "shotFreq": 0.2,
               "allowableDelta": 360.0,
-              "salvo": 2,
-              "salvoDelay": 0.5,
+              "salvo": 1,
+              "salvoDelay": 0.0,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
               "fireConeAngle": [
@@ -3231,6 +3246,61 @@
                 5.0
               ],
               "bullets": 8,
+              "ChainfireTime": 0.5,
+              "DelayAfterShoot": 2.0,
+              "accuracyAir": 1.5,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "forestallTime": 0.1,
+              "turret": {
+                "head": "bone_grenade",
+                "gun": "bone_grenade"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "smoke",
+              "isSharedAmmoOnTriggerGroup": true,
+              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
+              "weaponType": "rockets",
+              "useEmitter": true,
+              "emitter": "emtr_mortar_flame_02",
+              "emitterGenRange": [
+                1,
+                8
+              ],
+              "emitterGenFmt": "emtr_mortar_flame_%02d",
+              "ignoreLoaderPenalty": true,
+              "createGunEffects": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.2,
+              "allowableDelta": 360.0,
+              "salvo": 1,
+              "salvoDelay": 0.0,
+              "speedYaw": 24.0,
+              "speedPitch": 15.0,
+              "fireConeAngle": [
+                1.0,
+                5.0
+              ],
+              "bullets": 0,
               "ChainfireTime": 0.5,
               "DelayAfterShoot": 2.0,
               "accuracyAir": 1.5,

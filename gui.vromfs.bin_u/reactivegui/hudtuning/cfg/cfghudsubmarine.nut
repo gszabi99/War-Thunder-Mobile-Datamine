@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
-let { set_chat_handler = null } = require("chat")
-let { missionPlayVoice = null } = require("sound_wt")
 let { SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_SMOKE_SCREEN, EII_TOOLKIT } = require("%rGui/hud/weaponsButtonsConfig.nut")
@@ -20,8 +18,6 @@ let { oxygenLevel, oxygenLevelEditView, depthControl, depthControlEditView
 let { scopeSize } = require("%rGui/hud/commonSight.nut")
 
 let oxygenBlockPosX = - (scopeSize[0] * 2 / 3 + hdpx(5))
-
-let allow_voice_messages_compatibility = Computed(@() allow_voice_messages.get() && !!set_chat_handler && !!missionPlayVoice)
 
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
   zoom = weaponryButtonCtor("ID_ZOOM", mkZoomButton,
@@ -76,8 +72,8 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     ctor = @() voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(-10), hdpx(-10)])
     editView = voiceMsgStickView
-    isVisibleInEditor = allow_voice_messages_compatibility
-    isVisibleInBattle = Computed(@() allow_voice_messages_compatibility.get() && isInMpSession.get())
+    isVisibleInEditor = allow_voice_messages
+    isVisibleInBattle = Computed(@() allow_voice_messages.get() && isInMpSession.get())
     priority = Z_ORDER.STICK
   }
 

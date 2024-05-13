@@ -41,7 +41,6 @@ require("login/initLoginWTM.nut")
 require("%scripts/pServer/profileServerClient.nut")
 require("%scripts/pServer/writeProfileToNdb.nut")
 require("%scripts/currencies.nut")
-require("%scripts/matching/matchingClient.nut")
 require("%scripts/matching/onlineInfo.nut")
 require("%scripts/matching/rpcCall.nut")
 
@@ -144,5 +143,5 @@ eventbus_subscribe("register_mplayer_callbacks",
   }))
 
 let { squadMembers } = require("%appGlobals/squadState.nut")
-let { registerRespondent } = require("%appGlobals/scriptRespondents.nut")
+let { registerRespondent } = require("scriptRespondent")
 registerRespondent("is_in_my_squad", @(userId, _checkAutosquad = true) userId in squadMembers.value)

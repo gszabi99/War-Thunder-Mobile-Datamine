@@ -63,6 +63,9 @@ require("%rGui/decorators/decoratorsScene.nut")
 require("%rGui/battlePass/battlePassWnd.nut")
 require("%rGui/battlePass/bpPurchaseWnd.nut")
 require("%rGui/boosters/boostersPurchaseWnd.nut")
+require("%rGui/notifications/consent/consentMainWnd.nut")
+require("%rGui/notifications/consent/manageOptionsWnd.nut")
+require("%rGui/notifications/consent/partnersWnd.nut")
 require("options/chooseMovementControls/chooseMovementControlsWnd.nut")
 require("contacts/contactsWnd.nut")
 require("contacts/myContactPresence.nut")
@@ -92,6 +95,7 @@ let mainMenuWnd = require("%rGui/mainMenu/mainMenuWnd.nut")
 let respawnWnd = require("%rGui/respawn/respawnWnd.nut")
 let hudSpectator = require("%rGui/hud/hudSpectator.nut")
 let hudArtilleryMap = require("%rGui/hud/hudArtilleryMap.nut")
+let { isVoiceMsgMapSceneOpened, voiceMsgMapScene } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut")
 let flightMenu = require("%rGui/flightMenu/flightMenu.nut")
 let mpStatisticsWnd = require("%rGui/mpStatistics/mpStatisticsWnd.nut")
 let hudBase = require("%rGui/hud/hudBase.nut")
@@ -101,7 +105,7 @@ isInBattle.subscribe(@(v)
   sendNewbieBqEvent(v ? "enterBattle" : "leaveBattle", { status = isInMpSession.value ? "online" : "offline" }))
 
 let battleScene = @() {
-  watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu, isMpStatisticsActive]
+  watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu, isMpStatisticsActive, isVoiceMsgMapSceneOpened]
   key = {}
   size = flex()
   children = isInFlightMenu.value ? flightMenu
@@ -109,6 +113,7 @@ let battleScene = @() {
     : isInSpectatorMode.value ? hudSpectator
     : isInRespawn.value ? respawnWnd
     : isInArtilleryMap.value ? hudArtilleryMap
+    : isVoiceMsgMapSceneOpened.get() ? voiceMsgMapScene
     : hudBase
 }
 

@@ -37,10 +37,11 @@ let tabsCfgOrdered = [
 
 function mkDebrTabsInfo(debrData, params) {
   let res = tabsCfgOrdered
-    .map(@(v) {}
-    .__update(v, v.dataCtor(debrData, params) ?? {}))
+    .map(@(v) v.__merge(v.dataCtor(debrData, params) ?? {}))
     .filter(@(v) v?.comp != null)
-  let lastAnimTabId = res?[res.len() - 1].id ?? 0
+  let lastAnimTabId = res.findvalue(@(v) v.forceStopAnim)?.id
+    ?? res?[res.len() - 1].id
+    ?? 0
   foreach (idx, v in res) {
     let nextId = res?[idx + 1].id
     v.__update({

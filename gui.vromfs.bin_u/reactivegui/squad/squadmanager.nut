@@ -24,6 +24,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
 let setReady = require("setReady.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 
 const INVITE_ACTION_ID = "squad_invite_action"
@@ -589,8 +590,7 @@ let msubscribes = {
 }
 
 foreach (ev, handler in msubscribes) {
-  eventbus_send("matchingSubscribe", ev)
-  eventbus_subscribe(ev, handler)
+  matching.matching_subscribe(ev, handler)
 }
 
 canFetchSquad.subscribe(function(v) {

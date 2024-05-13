@@ -28,6 +28,7 @@ let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
+let TF_SHIP_VS_PLANES_MISSION = "testFlight_ship_aaa_vs_planes"
 let TEST_AIR_BATTLE_MISSION = "abandoned_factory_single_AD"
 let TEST_AIR_BATTLE_UNIT = "fw_190a_1"
 
@@ -51,7 +52,14 @@ let TEST_FLIGHT = {
 }
 let TF_SHIP_TUNE = {
   name = "Ship Tuning"
-  cb = @() startTestFlight(hangarUnit.get(), TF_SHIP_TUNE_MISSION)
+  cb = @() openMsgBox({
+    text = "Select mission"
+    buttons = [
+      { text = "basic", styleId = "PRIMARY", cb = @() startTestFlight(hangarUnit.get(), TF_SHIP_TUNE_MISSION) }
+      { text = "antiair", styleId = "PRIMARY", cb = @() startTestFlight(hangarUnit.get(), TF_SHIP_VS_PLANES_MISSION) }
+      { id = "cancel", isCancel = true }
+    ]
+  })
 }
 let TEST_AIR_BATTLE = {
   name = "Test Air Battle"

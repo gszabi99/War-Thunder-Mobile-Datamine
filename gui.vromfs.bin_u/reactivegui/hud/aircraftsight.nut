@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { Indicator } = require("wt.behaviors")
 let { hasTarget, targetUnitName } = require("%rGui/hudState.nut")
 let { startCrosshairAnimationTime } = require("%rGui/hud/commonState.nut")
 let { TargetLockTime } = require("%rGui/hud/airState.nut")
@@ -7,7 +8,7 @@ let { targetName, mkTargetSelectionData } = require("%rGui/hud/targetSelectionPr
 let aircraftSight = @() {
   watch = [hasTarget, targetUnitName, startCrosshairAnimationTime, TargetLockTime]
   transform = {}
-  behavior = Behaviors.Indicator
+  behavior = Indicator
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = !hasTarget.value ? null : [

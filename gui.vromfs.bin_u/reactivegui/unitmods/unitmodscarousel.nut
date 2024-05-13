@@ -5,6 +5,7 @@ let { unit, unitMods, curModId, getModCurrency, mkCurUnitModCostComp } = require
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkLevelLock, mkNotPurchasedShade, mkModImage } = require("modsComps.nut")
 let { selectedLineHor, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
+let { defer } = require("dagor.workcycle")
 
 let modsGap = hdpx(10)
 let selLineGap = hdpx(14)
@@ -146,7 +147,7 @@ function mkMod(id, content, scrollToMod) {
     xmbNode
     function onClick() {
       curModId(id)
-      gui_scene.setXmbFocus(xmbNode)
+      defer(@() gui_scene.setXmbFocus(xmbNode))
     }
     onAttach = @() isActive.get() ? scrollToMod() : null
     sound = { click = "choose" }

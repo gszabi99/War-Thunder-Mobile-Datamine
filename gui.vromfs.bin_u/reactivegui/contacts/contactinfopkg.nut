@@ -13,14 +13,14 @@ let darkenBgColor = 0x80001521
 let borderWidth = hdpx(3)
 let avatarSize = hdpxi(90)
 let rowHeight = avatarSize + 2 * borderWidth
-let gap = hdpx(24)
+let gap = hdpx(10)
 
 function contactNameBlock(contact, info, addChildren = [], styles = {}) {
   let { realnick } = contact
   let { nickFrame = null, title = null } = info?.decorators
   let { nameStyle = fontTiny, titleStyle = fontTiny } = styles
   return {
-    size = flex()
+    size = [SIZE_TO_CONTENT, flex()]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -74,7 +74,7 @@ function contactLevelBlock(info) {
   let { playerLevel = null, playerStarLevel = 0, playerStarHistoryLevel = 0 } = info
   let starAdd = max(0, playerStarHistoryLevel - playerStarLevel)
   return {
-    size = [1.5 * avatarSize, flex()]
+    size = [1.1 * avatarSize, flex()]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = playerLevel == null ? null : levelMark(playerLevel + starAdd, playerStarLevel + starAdd)

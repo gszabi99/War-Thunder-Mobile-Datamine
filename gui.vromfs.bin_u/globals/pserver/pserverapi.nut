@@ -657,6 +657,13 @@ return {
     progressValue = name
   }, cb)
 
+  add_blueprints = @(name, count, cb = null) request({
+    method = "add_blueprints"
+    params = { name, count }
+    progressId = PROGRESS_UNIT
+    progressValue = name
+  }, cb)
+
   add_battle_mod = @(id, time, cb = null) request({
     method = "add_battle_mod"
     params = { id, time }

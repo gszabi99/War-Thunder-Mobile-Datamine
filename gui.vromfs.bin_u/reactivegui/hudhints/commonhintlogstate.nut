@@ -189,8 +189,8 @@ eventbus_subscribe("hint:repair_module:hide", function(_) {
 
 const SHIP_REPAIR_OFFER_ID = "ship_offer_repair"
 eventbus_subscribe("hint:ship_offer_repair:show", function(_) {
-  // if (!incHintCounter(SHIP_REPAIR_OFFER_ID, 15))
-  //   return
+  if (!incHintCounter(SHIP_REPAIR_OFFER_ID, 15))
+    return
   addCommonHintWithTtl(loc("hints/ship_offer_repair"), 30, SHIP_REPAIR_OFFER_ID)
   addHudElementPointer("btn_repair", 30)
 })
@@ -326,6 +326,10 @@ eventbus_subscribe("hint:air_target_far_away", function(data) {
 
 eventbus_subscribe("hint:air_critical_speed", function(_) {
   addCommonHintWithTtl(loc("hints/air_critical_speed"), 10)
+})
+
+eventbus_subscribe("hint:aim_for_lead_indicator", function(_) {
+  addCommonHintWithTtl(loc("hints/aim_for_lead_indicator"), 10)
 })
 
 register_command(function() {

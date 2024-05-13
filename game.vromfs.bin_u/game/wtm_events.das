@@ -172,3 +172,10 @@ struct EventOnPlayerRicochetStat
   victimUnitId : int
   victimUnitVersion : uint8
   victimUnitType : int
+
+
+[cpp_event(broadcast)]
+struct EventOnPlayerBailout
+  userId : uint64
+  unitId : int
+  isReadyToDie : bool

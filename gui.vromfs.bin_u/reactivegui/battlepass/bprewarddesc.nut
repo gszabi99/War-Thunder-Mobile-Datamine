@@ -64,6 +64,7 @@ let locByTypesReward = {
   unitUpgrade = @(id) getPlatoonName(id, loc)
   skin = @(id) loc("reward/skin_for",
     { unitName = colorize(markTextColor, loc(getUnitLocId(id))) })
+  blueprint = @(_) loc("blueprints")
 }
 
 let mkDecoratorHeader = @(viewInfo) @() {

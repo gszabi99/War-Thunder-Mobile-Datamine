@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { TouchAreaOutButton } = require("wt.behaviors")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
@@ -35,7 +36,7 @@ let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 let doll = @() {
   key = "aircraft_state_button"
-  behavior = Behaviors.TouchAreaOutButton
+  behavior = TouchAreaOutButton
   watch = isInZoom
   eventPassThrough = true
   function onElemState(sf) {

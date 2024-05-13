@@ -9,6 +9,10 @@ let { mkFlagImage, mkPlayerLevel, unitPlateSmall } = require("%rGui/unit/compone
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { selectedLineVert, opacityTransition } = require("%rGui/components/selectedLine.nut")
+let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 
 
 let flagSize = hdpxi(70)
@@ -17,14 +21,22 @@ let flagsWidth = flagSize * 2 + flagGap
 let levelMarkSize = hdpx(60)
 let levelBlockSize = round(levelMarkSize / sqrt(2) / 2) * 2
 let progressBarHeight = hdpx(10)
+let unitPlateSize = unitPlateSmall
 let platesGap = [hdpx(28), hdpx(56)]
+let blockSize = [unitPlateSize[0] + platesGap[0], unitPlateSize[1] + platesGap[1]]
 let btnSize = [SIZE_TO_CONTENT, hdpxi(70)]
 let btnStyle = { ovr = { size = btnSize } }
+let flagTreeOffset = hdpx(60)
+let gamercardOverlap = hdpx(55)
 
 let aTimeBarFill = 0.8
 
-let mkFlags = @(countries, blockSize) {
-  size = [flagsWidth, blockSize]
+let gradColor = 0xFF52C4E4
+let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(gradColor, 0, gradTexSize / 2, gradTexSize / 2, 0, 0))
+
+let mkFlags = @(countries) {
+  size = [flagsWidth, blockSize[1]]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
@@ -36,6 +48,38 @@ let mkFlags = @(countries, blockSize) {
     gap = flagGap
     children = item
   })
+}
+
+let selectedFlagBg = @(isSelected) @() {
+  watch = isSelected
+  key = {}
+  size = flex()
+  opacity = isSelected.get() ? 0.5 : 0
+  rendObj = ROBJ_IMAGE
+  image = bgGradient()
+  transitions = opacityTransition
+}
+
+let function mkTreeNodesFlag(country, curCountry, onClick, showUnseenMark) {
+  let isSelected = Computed(@() curCountry.get() == country)
+  return {
+    size = [flagsWidth, blockSize[1]]
+    padding = [hdpx(20), 0]
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    behavior = Behaviors.Button
+    onClick
+    children = [
+      selectedFlagBg(isSelected)
+      {
+        size = flex()
+        hplace = ALIGN_LEFT
+        children = selectedLineVert(isSelected)
+      }
+      mkFlagImage(country, flagSize)
+      mkPriorityUnseenMarkWatch(showUnseenMark, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
+    ]
+  }
 }
 
 let starLevelOvr = { pos = [0, ph(40)] }
@@ -115,13 +159,14 @@ let bgLight = {
 
 let noUnitsMsg = {
   size = saSize
-  pos = [unitPlateSmall[0] * 0.5, levelMarkSize + (unitPlateSmall[1]) * 0.5]
+  pos = [unitPlateSize[0] * 0.5, levelMarkSize + (unitPlateSize[1]) * 0.5]
   rendObj = ROBJ_TEXT
   text = loc("noUnitsByCurrentFilters")
 }.__update(fontSmall)
 
 return {
   mkFlags
+  mkTreeNodesFlag
   mkFlagImage
   flagSize
   flagsWidth
@@ -134,5 +179,10 @@ return {
   progressBarHeight
   bgLight
   noUnitsMsg
+
+  flagTreeOffset
+  gamercardOverlap
   platesGap
+  unitPlateSize
+  blockSize
 }

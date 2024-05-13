@@ -18,6 +18,8 @@ let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { selectedLineVert, selectedLineHor, selLineSize } = require("%rGui/components/selectedLine.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let unitPlateWidth = hdpx(406)
 let unitPlateHeight = hdpx(158)
@@ -25,6 +27,9 @@ let unitPlateRatio = unitPlateHeight / unitPlateWidth
 let unitPlateSmallWidth = hdpx(320)
 let unitPlateSmallHeight = (unitPlateSmallWidth * unitPlateRatio).tointeger()
 let unitPlateSmall = [unitPlateSmallWidth, unitPlateSmallHeight]
+let unitPlateTinyWidth = hdpx(280)
+let unitPlateTinyHeight = (unitPlateTinyWidth * unitPlateRatio).tointeger()
+let unitPlateTiny = [unitPlateTinyWidth, unitPlateTinyHeight]
 
 let unutEquppedTopLineFullHeight = hdpx(15)
 let unitSelUnderlineFullSize = hdpx(20)
@@ -140,10 +145,9 @@ let componentsByUnitType = {
   [TANK] = {
     unitImage = {
       size = flex()
-      pos = [pw(6), 0]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FIT
-      imageHalign = ALIGN_LEFT
+      imageHalign = ALIGN_CENTER
     }
     equippedIcons = @(unit) [
       mkIcon("ui/gameuiskin#selected_icon_tank_outline.svg", [hdpx(95), hdpx(41)], { color = getFrameColor(unit) })
@@ -163,6 +167,19 @@ let componentsByUnitType = {
 
 let getComponentsByUnitType = @(unitType)
   componentsByUnitType?[unitType] ?? defaultComponents
+
+let mkUnitBlueprintMark = @(unit) @()
+  unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get()
+    ? {
+      watch = [serverConfigs, myUnits]
+      size = [hdpx(54), hdpx(20)]
+      margin = hdpx(10)
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/unitskin#blueprint_default.avif:{hdpx(54)}:{hdpx(20)}:P")
+      hplace = ALIGN_LEFT
+      vplace = ALIGN_BOTTOM
+    }
+    : { watch = [serverConfigs, myUnits] }
 
 function mkUnitImage(unit, isDesaturated = false) {
   let p = getUnitPresentation(unit)
@@ -556,6 +573,7 @@ return {
   unitPlateHeight
   unitPlateRatio
   unitPlateSmall
+  unitPlateTiny
   unutEquppedTopLineFullHeight
   unitSelUnderlineFullSize
   unitPlatesGap
@@ -587,6 +605,7 @@ return {
   mkPlateText
   mkIcon
   mkPlayerLevel
+  mkUnitBlueprintMark
 
   mkPlatoonPlateFrame
   mkPlatoonBgPlates

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { register_command } = require("console")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -29,7 +30,6 @@ let { leaveSquad } = require("%rGui/squad/squadManager.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
-let { get_mp_session_id_int } = require("multiplayer")
 
 let textColor = 0xFFF0F0F0
 let timeToShowCancelJoining = 30
@@ -39,8 +39,11 @@ let hintIconSize = hdpxi(50)
 let hintIconTank = "hud_tank_binoculars.svg"
 let hintIconShip = "hud_binoculars.svg"
 
-let needShowQueueWindow = keepref(Computed(@() !isInBattle.value
-  && (isInQueue.value || isInJoiningGame.value)))
+let isDebugQueueWnd = mkWatched(persist, "isDebugQueueWnd", false)
+register_command(@() isDebugQueueWnd.set(!isDebugQueueWnd.get()), "ui.debug.queueWnd")
+
+let needShowQueueWindow = keepref(Computed(@() !isInBattle.get()
+  && (isInQueue.get() || isInJoiningGame.get() || isDebugQueueWnd.get())))
 let canCancelJoining = Watched(false)
 isInJoiningGame.subscribe(@(_) canCancelJoining(false))
 
@@ -138,6 +141,8 @@ let leaveQueueImpl = @() eventbus_send("leaveQueue", {})
 let cancelOvr = { hotkeys = [[btnBEscUp, loc("mainmenu/btnCancel")]] }
 
 function leaveQueue() {
+  if (isDebugQueueWnd.get())
+    return isDebugQueueWnd.set(false)
   if (!isInSquad.value || isSquadLeader.value) {
     leaveQueueImpl()
     return
@@ -158,14 +163,13 @@ function leaveQueue() {
 }
 
 let isCancelInProgress = Computed(@() curQueueState.value == QS_LEAVING)
-let cancelQueueButton = {
+let cancelQueueButton = @(isOnlyOverride) {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   halign = ALIGN_RIGHT
   gap = hdpx(12)
   children = [
-    mkMRankRange
     mkSpinnerHideBlock(isCancelInProgress,
       textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), leaveQueue, cancelOvr),
       {
@@ -175,7 +179,7 @@ let cancelQueueButton = {
         valign = ALIGN_CENTER
       }
     )
-  ]
+  ].insert(0, !isOnlyOverride ? mkMRankRange : null)
 }
 
 let allowCancelJoining = @() canCancelJoining(true)
@@ -234,13 +238,12 @@ let aimingHint = {
   ]
 }
 
-let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankCaptureZone ]
+let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankControls, helpTankCaptureZone ]
 //no need to subscribe on sharedStatsByCampaign because we do not want to switch loading screen during loading
 let mkBgImagesByCampaign = {
   air   = @() helpAirAiming
   ships = @() helpShipParts
-  tanks = @() get_mp_session_id_int() == -1 ? helpTankControls()
-    : tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
+  tanks = @() tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
 }
 
 let bgImage = @() {
@@ -275,7 +278,7 @@ let queueWindow = @() {
             aimingHint
             playersCount
             waitingBlock
-            cancelQueueButton
+            cancelQueueButton(curQueue.get()?.params.isOnlyOverride ?? false)
           ]
     }
   ]

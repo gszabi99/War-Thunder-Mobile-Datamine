@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+let { TouchCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
 let { unitType } = require("%rGui/hudState.nut")
@@ -9,6 +10,7 @@ let aircraftHudTouch = require("%rGui/hud/aircraftHudTouch.nut")
 let submarineHudTouch = require("%rGui/hud/submarineHudTouch.nut")
 let cutsceneHud = require("%rGui/hud/cutsceneHud.nut")
 let freeCamHud = require("%rGui/hud/freeCamHud.nut")
+let hudIndicators = require("%rGui/hud/indicators/hudIndicators.nut")
 let { hudElementShade } = require("%rGui/tutorial/hudElementShade.nut")
 let { hudElementPointers } = require("%rGui/tutorial/hudElementPointers.nut")
 let hudTutorElems = require("%rGui/tutorial/hudTutorElems.nut")
@@ -31,6 +33,7 @@ let emptySceneWithMenuButton = {
 
 let hudByType = {
   [HT_HUD] = @(unitTypeV) [
+    hudIndicators
     hudByUnitType?[unitTypeV]
     hudElementShade
     hudElementPointers
@@ -49,7 +52,7 @@ let hudBase = {
   children = [
     {
       size = flex()
-      behavior = Behaviors.TouchCameraControl
+      behavior = TouchCameraControl
     }
     @() {
       watch = [isInFlight, viewHudType, unitType]

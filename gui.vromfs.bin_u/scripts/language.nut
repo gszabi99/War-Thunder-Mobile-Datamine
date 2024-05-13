@@ -12,7 +12,7 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { registerRespondent } = require("%appGlobals/scriptRespondents.nut")
+let { registerRespondent } = require("scriptRespondent")
 let { resetAddonNamesCache } = require("%appGlobals/updater/addons.nut")
 
 // Please use lang codes from ISO 639-1 standard for chatId

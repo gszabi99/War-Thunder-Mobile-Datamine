@@ -9,6 +9,7 @@ let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let bgByCampaign = {
   tanks = "tank_blur_bg.avif"
   ships = "ship_blur_bg.avif"
+  air = "air_blur_bg.avif"
 }
 
 let bgByHangar = {

@@ -220,11 +220,11 @@ return {
   onAttach = @() startActionBarUpdate("tankHud")
   onDetach = @() stopActionBarUpdate("tankHud")
   children = [
-    hudTopLeft
     hudTimersBlock
     hudTopMainLog
     hudBottomCenter
     hudTuningElems
+    hudTopLeft
     gunReadyIndicator
     tankSight
     arcadeCrosshairAim

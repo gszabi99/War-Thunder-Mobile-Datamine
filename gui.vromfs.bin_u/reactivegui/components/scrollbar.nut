@@ -1,5 +1,4 @@
-from "daRg" import *
-from "frp" import *
+from "%globalsDarg/darg_library.nut" import *
 
 let scrollbarWidth = sh(1)
 

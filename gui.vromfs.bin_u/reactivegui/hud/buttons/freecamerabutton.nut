@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { TouchAreaOutButton } = require("wt.behaviors")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { btnBgColor, touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
@@ -25,7 +26,7 @@ function mkFreeCameraButton(ovr = {}) {
     hotkeys = mkGamepadHotkey(shortcutId)
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    behavior = Behaviors.TouchAreaOutButton
+    behavior = TouchAreaOutButton
     eventPassThrough = true
     children = [
       {

@@ -1,10 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { eventbus_subscribe } = require("eventbus")
-local compatibilitBGModels = []
 let { hangar_load_model_with_skin,
   hangar_get_current_unit_name, hangar_get_loaded_unit_name, change_background_models_list_with_skin,
-  change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list = @() compatibilitBGModels
+  change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list
 } = require("hangar")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -108,11 +107,7 @@ function loadModel(unitName, skin) {
 
   if ((unitName ?? "") == "")
     return
-
-  if (hangar_load_model_with_skin.getfuncinfos().paramscheck == 3)
-    hangar_load_model_with_skin(unitName, skin)
-  else
-    hangar_load_model_with_skin(unitName, skin, hangarUnit.get()?.isUpgraded ?? false)
+  hangar_load_model_with_skin(unitName, skin)
 }
 
 let loadCurrentHangarUnitModel = @() loadModel(hangarUnitName.value, hangarUnitSkin.value)
@@ -130,10 +125,8 @@ isInMpSession.subscribe(function(v) {
   loadCurrentHangarUnitModel()
 })
 
-let function reloadAllBgModels() {
-  compatibilitBGModels = hangarBgUnits.get()
+let reloadAllBgModels = @()
   change_background_models_list_with_skin(hangarUnitName.get(), hangarBgUnits.get())
-}
 
 function loadBGModels() {
   let bgUnits = hangarBgUnits.get()

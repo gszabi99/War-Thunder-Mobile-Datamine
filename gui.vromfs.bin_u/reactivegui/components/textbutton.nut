@@ -118,6 +118,31 @@ function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
   }
 }
 
+let mkImageTextContent = @(icon, iconSize, text, ovr = {}) {
+  key = text
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(20)
+  children = [
+    {
+      size = [iconSize, iconSize]
+      rendObj = ROBJ_IMAGE
+      keepAspect = KEEP_ASPECT_FILL
+      color = icon.color
+      image = Picture($"{icon.name}:{iconSize}:{iconSize}:P")
+      fallbackImage = Picture($"ui/gameuiskin#icon_contacts.svg:{iconSize}:{iconSize}:P")
+    }
+    {
+      maxWidth = hdpx(250)
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      halign = ALIGN_CENTER
+      text
+    }.__update(fontTinyAccentedShaded)
+  ]
+}.__update(ovr)
+
 function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let { ovr = {}, childOvr = {}, gradientOvr = {}, hotkeyBlockOvr = {}, hotkeys = null,
     tooltipCtor = null
@@ -174,6 +199,7 @@ let textButtonMultiline = @(text, onClick, style = buttonStyles.COMMON)
 return {
   paddingX
   mkCustomButton
+  mkImageTextContent
   textButton
   textButtonMultiline
   mergeStyles

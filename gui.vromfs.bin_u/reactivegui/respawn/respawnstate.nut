@@ -22,6 +22,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
 let { getSkinCustomTags } = require("%rGui/unitSkins/skinTuning.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
+let { sendPlayerActivityToServer } = require("playerActivity.nut")
 
 
 let sparesNum = mkWatched(persist, "sparesNum", servProfile.value?.items[SPARE].count ?? 0)
@@ -31,6 +32,7 @@ let spareSlotsMask = Watched(0)
 let disabledSlotsMask = Watched(0)
 let playerSelectedSlotIdx = mkWatched(persist, "playerSelectedSlotIdx", -1)
 let spawnUnitName = mkWatched(persist, "spawnUnitName", null)
+let selSlotContentGenId = Watched(0)
 isRespawnStarted.subscribe(@(v) v ? null : spawnUnitName(null))
 
 const SEEN_SHELLS = "SeenShells"
@@ -221,7 +223,10 @@ function respawn(slot, bullets) {
   }.__update(bulletsData))
 }
 
-let cancelRespawn = @() eventbus_send("cancelRespawn", {})
+function cancelRespawn() {
+  sendPlayerActivityToServer()
+  eventbus_send("cancelRespawn", {})
+}
 
 function tryAutospawn() {
   let slot = respawnSlots.value?[0]
@@ -294,6 +299,7 @@ return {
   sparesNum
   saveSeenShells
   hasUnseenShellsBySlot
+  selSlotContentGenId
 
   respawn
   cancelRespawn

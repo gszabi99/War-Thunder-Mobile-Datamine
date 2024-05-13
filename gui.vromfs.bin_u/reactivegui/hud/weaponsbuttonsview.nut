@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { get_mission_time = @() ::get_mission_time() } = require("mission")
+let { TouchAreaOutButton } = require("wt.behaviors")
+let { get_mission_time } = require("mission")
 let { defer, resetTimeout } = require("dagor.workcycle")
 let { getRomanNumeral, ceil } = require("%sqstd/math.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
@@ -500,13 +500,38 @@ let mkWeaponBlockReasonIcon = @(isAvailable, iconComponent) @() {
     : null
 }
 
+let mkWeaponRightBlock = @(content) {
+  pos = [pw(30), 0]
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_RIGHT
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = [
+    {
+      size = [weaponNumberSize, weaponNumberSize]
+      rendObj = ROBJ_BOX
+      fillColor = 0xFFFFFFFF
+      borderColor = wNumberColor
+      borderWidth = [hdpx(3)]
+      transform = { rotate = 45 }
+    }
+    content
+  ]
+}
+
+let weaponNumber = @(number) mkWeaponRightBlock({
+  rendObj = ROBJ_TEXT
+  color = wNumberColor
+  text = getRomanNumeral(number + 1)
+}.__update(fontVeryTiny))
+
 function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   if (actionItem == null)
     return null
   let { key, getShortcut, getImage, getAlternativeImage = @() null, selShortcut = null,
     hasAim = false, fireAnimKey = "fire", canShootWithoutTarget = true,
     needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canShipLowerCamera = false,
-    addChild = null, needCheckRocket = false  } = buttonConfig
+    addChild = null, needCheckRocket = false, number = -1  } = buttonConfig
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
   let altImage = getAlternativeImage()
   let stateFlags = getWeapStateFlags(key)
@@ -522,6 +547,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let mainShortcut = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   let hotkeyShortcut = selShortcut ?? mainShortcut
   let isDisabled = mkIsControlDisabled(mainShortcut)
+  let isBulletBelt = actionItem?.isBulletBelt && key == TRIGGER_GROUP_PRIMARY
 
   local isTouchPushed = false
   local isHotkeyPushed = false
@@ -536,6 +562,10 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
 
   function onButtonReleaseWhileActiveZone() {
     onStopTouch()
+    if(isBulletBelt) {
+      setShortcutOff(mainShortcut)
+      return
+    }
     if (needCheckRocket) {
       if (!isAsmCaptureAllowed.value) {
         addCommonHint(loc("hints/submarine_deeper_periscope"))
@@ -576,6 +606,11 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   }
 
   function onButtonPush() {
+    if(isBulletBelt) {
+      anim_start(fireAnimKey)
+      useShortcutOn(mainShortcut)
+      playHapticPattern(haptPatternId)
+    }
     markWeapKeyHold(key)
     userHoldWeapInside.mutate(@(v) v[key] <- true)
   }
@@ -607,7 +642,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   return @() res.__update({
     watch = isDisabled
     size = [touchButtonSize, touchButtonSize]
-    behavior = Behaviors.TouchAreaOutButton
+    behavior = TouchAreaOutButton
     eventPassThrough = mainShortcut != "ID_BOMBS"
     zoneRadiusX
     zoneRadiusY
@@ -639,6 +674,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
       isDisabled.value ? null
         : mkGamepadShortcutImage(hotkeyShortcut, rotatedShortcutImageOvr)
       addChild
+      number != -1 ? weaponNumber(number) : null
     ]
   }, ovr)
 }
@@ -687,7 +723,7 @@ function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
 function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
   if (actionItem == null)
     return null
-  let { key, getShortcut, getImage, hasAim = false, haptPatternId = -1, relImageSize = 1.0, additionalShortcutId = {}
+  let { key, getShortcut, getImage, hasAim = false, haptPatternId = -1, relImageSize = 1.0, additionalShortcutId = ""
   } = buttonConfig
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
   let stateFlags = Watched(0)
@@ -748,30 +784,7 @@ function mkWeaponryContinuousSelfAction(buttonConfig, _actionItem, ovr = {}) {
     .__update(mkWeaponryContinuous(buttonConfig, itemComputed.value, ovr) ?? {})
 }
 
-let mkWeaponRightBlock = @(content) {
-  pos = [pw(30), 0]
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_RIGHT
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = [
-    {
-      size = [weaponNumberSize, weaponNumberSize]
-      rendObj = ROBJ_BOX
-      fillColor = 0xFFFFFFFF
-      borderColor = wNumberColor
-      borderWidth = [hdpx(3)]
-      transform = { rotate = 45 }
-    }
-    content
-  ]
-}
 
-let weaponNumber = @(number) mkWeaponRightBlock({
-  rendObj = ROBJ_TEXT
-  color = wNumberColor
-  text = getRomanNumeral(number + 1)
-}.__update(fontVeryTiny))
 
 let changeMarkSize = hdpxi(20)
 let weaponChangeMark = mkWeaponRightBlock({

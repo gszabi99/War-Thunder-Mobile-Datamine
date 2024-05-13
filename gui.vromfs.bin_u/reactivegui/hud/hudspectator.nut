@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { get_mplayer_by_id } = require("mission")
+let { TouchCameraControl } = require("wt.behaviors")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
@@ -137,7 +138,7 @@ return {
   children = [
     {
       size = flex()
-      behavior = Behaviors.TouchCameraControl
+      behavior = TouchCameraControl
     }
     topLeft
     hudTopCenter

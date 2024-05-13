@@ -14,6 +14,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isContactsLoggedIn, isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { contactsRequest, contactsRegisterHandler } = require("contactsClient.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 
 const GAME_GROUP_NAME = "warthunder"
@@ -132,11 +133,8 @@ function onFetchContacts(result) {
 
 eventbus_subscribe(FETCH_CB, @(msg) onFetchContacts(msg.result))
 
-eventbus_send("matchingSubscribe", "mpresence.notify_presence_update")
-eventbus_send("matchingSubscribe", "mpresence.on_added_to_contact_list")
-
-eventbus_subscribe("mpresence.notify_presence_update", @(r) onFetchContacts(r))
-eventbus_subscribe("mpresence.on_added_to_contact_list", @(_) fetchContacts())
+matching.matching_subscribe("mpresence.notify_presence_update", @(r) onFetchContacts(r))
+matching.matching_subscribe("mpresence.on_added_to_contact_list", @(_) fetchContacts())
 
 contactsRegisterHandler("cln_find_users_by_nick_prefix_json", function(result, context) {
   if (searchedNick.value != context?.nick)
@@ -194,6 +192,9 @@ function mkSimpleContactAction(actionId, mkData, onSucces = null) {
   })
 
   return function(userId) {
+    //skip requests to bots userId is negative
+    if (userId.tointeger() <= 0)
+      return
     if (userId in contactsInProgress.value)
       return
     let data = mkData(userId)

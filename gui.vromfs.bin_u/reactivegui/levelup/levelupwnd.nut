@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { HangarCameraControl } = require("wt.behaviors")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { isLvlUpOpened, upgradeUnitName, closeLvlUpWnd } = require("levelUpState.nut")
@@ -146,7 +147,7 @@ let levelUpWnd = @() {
   onDetach = @() sendNewbieBqEvent("closeLevelUpWnd")
   size = flex()
   padding = saBordersRv
-  behavior = Behaviors.HangarCameraControl
+  behavior = HangarCameraControl
   flow = FLOW_VERTICAL
   children = [
     headerPanel

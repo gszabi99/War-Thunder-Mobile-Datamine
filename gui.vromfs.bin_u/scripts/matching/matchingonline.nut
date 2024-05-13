@@ -16,7 +16,7 @@ let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/open
 let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { SERVER_ERROR_INVALID_VERSION, CLIENT_ERROR_CONNECTION_CLOSED } = require("matching.errors")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 

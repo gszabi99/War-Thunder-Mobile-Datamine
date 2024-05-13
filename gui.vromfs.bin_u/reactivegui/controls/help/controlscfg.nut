@@ -37,7 +37,7 @@ let shortcutsByUnitTypes = {
       "ID_LOCK_TARGET", "ID_ZOOM_TOGGLE",
       cLoc("hotkeys/ID_SHIP_WEAPON_TORPEDOES", "ID_WTM_AIRCRAFT_LAUNCH_TORPEDOES"),
     ]
-    axes = [cLoc("controls/walker_throttle", "throttle_axis"), "ailerons"]
+    axes = [cLoc("controls/walker_throttle", "throttle_axis"), "ailerons", "elevator", "rudder"]
       .extend(sameLoc("controls/help/movement_direction_control", ["mouse_aim_x", "mouse_aim_y"]))
   },
   [TANK] = {

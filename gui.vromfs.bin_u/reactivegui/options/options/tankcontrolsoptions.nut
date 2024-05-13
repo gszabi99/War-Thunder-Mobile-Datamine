@@ -7,7 +7,7 @@ let { /* OPT_TANK_TARGETING_CONTROL,  */
   OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, mkOptionValue, getOptValue
 } = require("%rGui/options/guiOptions.nut")
 let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing_fixed, set_show_reticle,
-  set_auto_zoom, CAM_TYPE_NORMAL_TANK = -1, CAM_TYPE_BINOCULAR_TANK = -1
+  set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK
 } = require("controlsOptions")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { abTests, sharedStats } = require("%appGlobals/pServer/campaign.nut")
@@ -186,8 +186,8 @@ return {
   hudScoreTank
   tankControlsOptions = [
     tankMoveControlType
-    CAM_TYPE_NORMAL_TANK < 0 ? null : cameraSenseSlider(CAM_TYPE_NORMAL_TANK, "options/camera_sensitivity", OPT_CAMERA_SENSE_TANK, getOptValue(OPT_CAMERA_SENSE)?? 1.0)
-    CAM_TYPE_BINOCULAR_TANK < 0 ? null : cameraSenseSlider(CAM_TYPE_BINOCULAR_TANK, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_TANK, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)
+    cameraSenseSlider(CAM_TYPE_NORMAL_TANK, "options/camera_sensitivity", OPT_CAMERA_SENSE_TANK, getOptValue(OPT_CAMERA_SENSE)?? 1.0)
+    cameraSenseSlider(CAM_TYPE_BINOCULAR_TANK, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_TANK, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)
     gearDownOnStopButtonTouch
     targetTrackingType
     // tankTargetControlType

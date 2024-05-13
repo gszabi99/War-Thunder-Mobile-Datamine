@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
 let { logEvent, setAppsFlyerCUID } = require("appsFlyer")
+let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { firstBattleTutor, tutorialMissions } = require("%rGui/tutorial/tutorialMissions.nut")
 let { lastBattles, sharedStats, curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -70,6 +71,7 @@ myUserId.subscribe(function(v) {
   if (v != INVALID_USER_ID) {
     let uid = v.tostring()
     setAppsFlyerCUID(uid)
+    setBillingUUID(uid)
     setFirebaseUID(uid)
     let blk = get_common_local_settings_blk()
     let wasLoginedBefore = blk?[FIRST_LOGIN_EVENT] ?? false

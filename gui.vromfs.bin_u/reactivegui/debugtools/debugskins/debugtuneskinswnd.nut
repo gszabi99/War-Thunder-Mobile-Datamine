@@ -5,6 +5,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { json_to_string } = require("json")
 let io = require("io")
 let { get_settings_blk } = require("blkGetters")
+let { HangarCameraControl } = require("wt.behaviors")
 let { arrayByRows, deep_clone } = require("%sqstd/underscore.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
@@ -479,7 +480,7 @@ function mkDebugTuneSkinsWnd() {
     size = flex()
     padding = saBordersRv
     flow = FLOW_VERTICAL
-    behavior = Behaviors.HangarCameraControl
+    behavior = HangarCameraControl
     function onAttach() {
       initSkinsWnd()
       onUnitOrSkinChange()

@@ -19,8 +19,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "support_unit_class": "structures/ussr_152mm_d1",
-  "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchShooting": true,
   "ecsTemplate": "tank_wtm",
@@ -49,6 +47,18 @@
   "minRelativeTankCameraThreshold": 1.45,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.85,
+      0.05,
+      0.1
+    ],
+    "armorThicknessSide": [
+      0.1,
+      0.05,
+      0.85
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1148,6 +1158,19 @@
       },
       {
         "name": "engine_dm",
+        "onKill": [
+          {
+            "moduleStatusEffect": {
+              "name": "maxPowerMultTank",
+              "prob": 1.0
+            }
+          },
+          {
+            "fire": 0.4,
+            "nothing": 0.6,
+            "fHitCritical": true
+          }
+        ],
         "onHit": [
           {
             "damageType": "cumulative",
@@ -1189,12 +1212,7 @@
             "damageType": "fire",
             "fire": 0.1
           }
-        ],
-        "onKill": {
-          "fire": 0.4,
-          "nothing": 0.6,
-          "fHitCritical": true
-        }
+        ]
       },
       {
         "name": "transmission_dm",
@@ -1227,7 +1245,13 @@
             "damageType": "fire",
             "fire": 0.02
           }
-        ]
+        ],
+        "onKill": {
+          "moduleStatusEffect": {
+            "name": "maxSpeedMultTank",
+            "prob": 1.0
+          }
+        }
       },
       {
         "name": "wheel_r_drive_dm",
@@ -1702,7 +1726,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T_t_54_1951_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.117,
@@ -2470,9 +2494,18 @@
     "detectionHeight": 2.4
   },
   "modifications": {
-    "tank_tool_kit_expendable": {},
     "art_support": {},
     "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {},
     "tank_smoke_screen_system_mod": {
       "tier": 2,
       "effects": {
@@ -2480,7 +2513,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T_t_54_1951_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.117,
@@ -2652,6 +2685,7 @@
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "shotFreq": 0.2,
               "allowableDelta": 360.0,
               "salvo": 1,
               "speedYaw": 24.0,
@@ -2691,12 +2725,6 @@
           ]
         }
       }
-    }
-  },
-  "user_skin": {
-    "name": "t_54_1951",
-    "replace_tex": {
-      "from": "ussr_camo_green*"
     }
   },
   "ammoStowages": {
@@ -2819,62 +2847,43 @@
       ]
     }
   },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
+  "defaultDecals": {
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
+    "fiction": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "vehicleSkins": {
+    "desert": {
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_czechoslovak_yellow_green*"
       }
     },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
+    "winter": {
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
+        "to": "ussr_camo_winter*"
       }
     },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
+    "fiction": {
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
+        "to": "us_t32_akai_victory*"
       }
     }
-  ],
+  },
   "battleHideNodes": {
     "n": "details"
   }

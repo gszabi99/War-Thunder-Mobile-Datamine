@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
-let { set_chat_handler = null } = require("chat")
-let { missionPlayVoice = null } = require("sound_wt")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos } = require("hudTuningPkg.nut")
 let { optDoubleCourseGuns } = require("cfgOptions.nut")
@@ -9,7 +7,9 @@ let {
   aircraftMovement,
   aircraftIndicators,
   aircraftMovementEditView,
-  aircraftIndicatorsEditView
+  aircraftIndicatorsEditView,
+  aircraftMoveStick,
+  aircraftMoveStickView
 } = require("%rGui/hud/aircraftMovementBlock.nut")
 let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { ctrlPieStickBlock, ctrlPieStickView } = require("%rGui/hud/controlsPieMenu/ctrlPieStick.nut")
@@ -27,11 +27,10 @@ let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEd
 let { Cannon0, MGun0, hasCanon0, hasMGun0,
   BombsState, hasBombs,
   RocketsState, hasRockets,
+  TorpedoesState, hasTorpedos
 } = require("%rGui/hud/airState.nut")
 let { returnToShipButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { zoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
-
-let allow_voice_messages_compatibility = Computed(@() allow_voice_messages.get() && !!set_chat_handler && !!missionPlayVoice)
 
 return cfgHudCommon.__merge({
 
@@ -53,6 +52,13 @@ return cfgHudCommon.__merge({
     ctor = @() mkCircleWeaponryItem("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", true)
     defTransform = mkLBPos([hdpx(272), hdpx(-148)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_rb_rocket.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+  }
+
+  torpedo = {
+    ctor = @() mkCircleWeaponryItem("ID_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", true)
+    defTransform = mkLBPos([hdpx(435), hdpx(-107)])
+    editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_torpedo.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
   }
 
@@ -113,8 +119,8 @@ return cfgHudCommon.__merge({
     ctor = @() voiceMsgStickBlock
     defTransform = mkRBPos([0, hdpx(-0)])
     editView = voiceMsgStickView
-    isVisibleInEditor = allow_voice_messages_compatibility
-    isVisibleInBattle = Computed(@() allow_voice_messages_compatibility.get() && isInMpSession.get())
+    isVisibleInEditor = allow_voice_messages
+    isVisibleInBattle = Computed(@() allow_voice_messages.get() && isInMpSession.get())
     priority = Z_ORDER.STICK
   }
 
@@ -127,7 +133,7 @@ return cfgHudCommon.__merge({
 
   indicators = {
     ctor = @() aircraftIndicators
-    defTransform = mkRBPos([0, hdpx(-290)])
+    defTransform = mkRBPos([0, hdpx(-600)])
     editView = aircraftIndicatorsEditView
     hideForDelayed = false
   }
@@ -178,6 +184,15 @@ return cfgHudCommon.__merge({
     defTransform = mkRBPos([hdpx(-615), hdpx(-0)])
     editView = ctrlPieStickView
     isVisibleInBattle = isCtrlPieAvailable
+    priority = Z_ORDER.STICK
+  }
+
+  moveStick = {
+    ctor = @() @() {
+      children = aircraftMoveStick
+    }
+    defTransform = mkRBPos([hdpx(20), hdpx(-220)])
+    editView = aircraftMoveStickView
     priority = Z_ORDER.STICK
   }
 })

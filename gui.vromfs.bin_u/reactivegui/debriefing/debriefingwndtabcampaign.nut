@@ -91,6 +91,7 @@ function mkDebriefingWndTabCampaign(debrData, params) {
   return {
     comp
     timeShow
+    forceStopAnim = params.needBtnCampaign
   }
 }
 

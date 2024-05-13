@@ -8,7 +8,7 @@ let math = require("math")
 let hexNumbers = "0123456789abcdef"
 local toString //forward declaration
 
-let function tableKeyToString(k) {
+function tableKeyToString(k) {
   if (type(k) != "string")
     return $"[ {toString(k) }]"
   if (g_string.isStringInteger(k) || g_string.isStringFloat(k) ||
@@ -27,7 +27,7 @@ let DEBUG_TABLE_DATA_PARAMS = {
   printFn = null
 }
 
-let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
+function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
   let showBlockBrackets = params?.showBlockBrackets ?? true
   let addStr = params?.addStr ?? ""
   let silentMode = params?.silentMode ?? false

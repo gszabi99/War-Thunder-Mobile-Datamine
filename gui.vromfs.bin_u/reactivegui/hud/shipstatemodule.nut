@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { TouchAreaOutButton } = require("wt.behaviors")
 let { hasDebuffFire, curRelativeHealth, maxHealth, hasDebuffFlooding, hasDebuffGuns, hasDebuffEngines, hasDebuffMoveControl,
 hasDebuffTorpedoes, maxHpToRepair } = require("%rGui/hud/shipState.nut")
 let { teamBlueLightColor } = require("%rGui/style/teamColors.nut")
@@ -107,7 +108,7 @@ let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 let doll =  @() {
   key = "ship_state_button"
-  behavior = Behaviors.TouchAreaOutButton
+  behavior = TouchAreaOutButton
   watch = isInZoom
   eventPassThrough = true
   function onElemState(sf) {

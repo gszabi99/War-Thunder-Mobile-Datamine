@@ -8,9 +8,11 @@ require %game.events
 def spawn_time_count_es(evt : EventOnPlayerSpawn;
                         server_player__userId : uint64;
                         var lastSpawnTime : float&;
+                        var lastBailoutTime : float&;
                         var stats__spawns : int&)
   if evt.userId == server_player__userId && lastSpawnTime < 0.0
     lastSpawnTime = float(get_total_time())
+    lastBailoutTime = -1.0
     stats__spawns++
 
 

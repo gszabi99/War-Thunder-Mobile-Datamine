@@ -66,6 +66,7 @@ enum DargWidgets {
   , CHANGE_LOG
   , DAMAGE_PANEL
   , HUD_TOUCH
+  , RESPAWN
 };
 
 enum AirParamsMain {
@@ -136,7 +137,8 @@ enum TemperatureState {
   EMPTY_TANK = 2,
   FUEL_LEAK = 3,
   FUEL_SEALING = 4,
-  BLANK = 5
+  BLANK = 5,
+  FUEL_DUMPING = 6
 };
 
 enum AirThrottleMode {

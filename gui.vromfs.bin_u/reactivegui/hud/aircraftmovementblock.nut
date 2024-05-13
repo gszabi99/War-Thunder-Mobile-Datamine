@@ -1,19 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
+let { TouchScreenSteeringStick } = require("wt.behaviors")
 let { floor, fabs, lerp } = require("%sqstd/math.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue
 } = require("%globalScripts/controls/shortcutActions.nut")
 let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround } = require("%rGui/hud/airState.nut")
-let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { getSvgImage, borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let axisListener = require("%rGui/controls/axisListener.nut")
-let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis
-} = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
+let shortcutsMap = require("%rGui/controls/shortcutsMap.nut")
+let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, rudder, elevator} = shortcutsMap.gamepadAxes
 let { axisMinToHotkey, axisMaxToHotkey } = require("%rGui/controls/axisToHotkey.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { playerUnitName, unitType } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
+let { currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity, currentAircraftCtrlType } = require("%rGui/options/options/airControlsOptions.nut")
+let { set_mouse_aim } = require("controlsOptions")
+let { isMpStatisticsActive } = require("%appGlobals/clientState/clientState.nut")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
 
 let maxThrottle = 100
@@ -45,6 +49,7 @@ let SHOW_MODEL_NAME_TIMEOUT = 7.0
 
 let throttleAxisVal = Watched(0)
 let isThrottleAxisActive = keepref(Computed(@() fabs(throttleAxisVal.value) > throttleDeadZone))
+let isGamepadActive = Computed(@() isGamepad.value && !isMpStatisticsActive.value)
 
 let knobColor = Color(230, 230, 230, 230)
 
@@ -103,9 +108,9 @@ function changeThrottleValue(val) {
 function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
   let imageComp = mkBtnImageComp(hotkey, hdpxi(50))
   return @() {
-    watch = [isVisible, isGamepad, isActive]
+    watch = [isVisible, isGamepadActive, isActive]
     key = imageComp
-    children = isVisible.value && isGamepad.value ? imageComp : null
+    children = isVisible.value && isGamepadActive.value ? imageComp : null
     transform = { scale = isActive.value ? [0.8, 0.8] : [1.0, 1.0] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   }.__update(ovr)
@@ -229,19 +234,116 @@ isThrottleAxisActive.subscribe(function(isActive) {
 
 isRespawnStarted.subscribe(@(v) v ? setVirtualAxisValue("throttle", 0) : null)
 
-let gamepadAxisListener = axisListener({
+let gamepadMouseAimAxisListener = axisListener({
   [ailerons] = @(v) setVirtualAxisValue("ailerons", v),
   [throttle_axis] = @(v) throttleAxisVal(v),
   [mouse_aim_x] = @(v) setVirtualAxisValue("mouse_aim_x", v),
-  [mouse_aim_y] = @(v) setVirtualAxisValue("mouse_aim_y", v),
+  [mouse_aim_y] = @(v) setVirtualAxisValue("mouse_aim_y", v)
 })
+
+let gamepadAxisListener = axisListener({
+ [ailerons] = @(v) setVirtualAxisValue("ailerons", v),
+ [elevator] = @(v) setVirtualAxisValue("elevator", v),
+ [rudder] = @(v) setVirtualAxisValue("rudder", v),
+ [throttle_axis] = @(v) throttleAxisVal(v),
+})
+
+function applyGyroAxisParams(val, deadZone, sensitivity) {
+  let minVal = val > 0.0 ? deadZone : -deadZone
+  return (val - minVal) / (1.0 - deadZone) * sensitivity
+}
+
+let gyroAxisListener = axisListener({
+  [shortcutsMap.gyroAxes.ailerons] = @(v) setVirtualAxisValue("ailerons", applyGyroAxisParams(v, currentControlByGyroModeDeadZone.value, currentControlByGyroModeSensitivity.value)),
+  [shortcutsMap.gyroAxes.elevator] = @(v) setVirtualAxisValue("elevator", applyGyroAxisParams(v, currentControlByGyroModeDeadZone.value, currentControlByGyroModeSensitivity.value)),
+  [shortcutsMap.gyroAxes.rudder] = @(v) setVirtualAxisValue("rudder", applyGyroAxisParams(v, currentControlByGyroModeDeadZone.value, currentControlByGyroModeSensitivity.value))
+})
+
+let stickZoneSize = [shHud(40), shHud(40)]
+let bgRadius = shHud(15)
+let imgBgSize = 2 * bgRadius
+let stickSize = shHud(11)
+
+let imgBg = {
+  size = [imgBgSize, imgBgSize]
+  image = Picture($"ui/gameuiskin#hud_tank_stick_bg.svg:{imgBgSize}:{imgBgSize}:P")
+  rendObj = ROBJ_IMAGE
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  color = borderColor
+}
+
+let imgBgComp = @() {
+  size = flex()
+  opacity = 0.5
+  children = imgBg
+  transform = {}
+}
+
+let imgStick = {
+  size = [stickSize, stickSize]
+  image = Picture($"ui/gameuiskin#joy_head.svg:{stickSize}:{stickSize}:P")
+  rendObj = ROBJ_IMAGE
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  transform = {}
+}
+
+let aircraftMoveStickBase  = @() {
+  watch = currentAircraftCtrlType
+  key = currentAircraftCtrlType
+  behavior = TouchScreenSteeringStick
+  size = stickZoneSize
+  touchStickAction = {
+    horizontal = "ailerons"
+    vertical = "elevator"
+  }
+  isForAircraft = true
+  invertedX=true
+  maxValueRadius = bgRadius
+  useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+
+  function onAttach() {
+    set_mouse_aim(false)
+  }
+  function onDetach() {
+    setVirtualAxisValue("elevator", 0)
+    setVirtualAxisValue("ailerons", 0)
+    set_mouse_aim(true)
+  }
+  children = [
+    imgBgComp
+    imgStick
+  ]
+}
+
+let aircraftMoveStick = @() {
+  watch = currentAircraftCtrlType
+  size = stickZoneSize
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_LEFT
+  children = currentAircraftCtrlType.value == "stick" || currentAircraftCtrlType.value == "stick_static" ? aircraftMoveStickBase : null
+}
+
+let aircraftMoveStickView = {
+  size = stickZoneSize
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = [
+    imgBgComp
+    imgStick
+  ]
+}
 
 let aircraftMovement = {
   children = [
     throttleSlider
     @() {
-      watch = isGamepad
-      children = isGamepad.value ? gamepadAxisListener : null
+      watch = [isGamepadActive, currentAircraftCtrlType, currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity]
+      children =[
+        currentAircraftCtrlType.value == "control_by_gyro" ? gyroAxisListener : null
+        isGamepadActive.value ? (currentAircraftCtrlType.value == "mouse_aim" ? gamepadMouseAimAxisListener : gamepadAxisListener) : null
+      ]
     }
   ]
 }
@@ -340,4 +442,6 @@ return {
   aircraftIndicators
   aircraftMovementEditView
   aircraftIndicatorsEditView
+  aircraftMoveStick
+  aircraftMoveStickView
 }

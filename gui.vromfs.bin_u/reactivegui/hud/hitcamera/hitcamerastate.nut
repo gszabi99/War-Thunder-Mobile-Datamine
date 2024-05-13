@@ -69,15 +69,18 @@ let isHcUnitHit = Computed(@() state.value.result >= DM_HIT_RESULT_HIT || hcUnit
 let isHcUnitKilled = Computed(@() state.value.result >= DM_HIT_RESULT_KILL || hcUnitDmgPartsUnitInfo.value.isKilled)
 let hcDmgPartsInfo = Computed(@() hcUnitDmgPartsUnitInfo.value.parts)
 
-let modifyUnitInfo = @(unitId, unitVersion, update)
+let modifyUnitsInfo = @(units, update)
   unitsInfo.mutate(function(list) {
-    local info = list?[unitId]
-    if (info?.unitVersion == unitVersion)
-      info = clone info
-    else
-      info = mkDefaultUnitInfo(unitVersion)
-    update(info)
-    list[unitId] <- info
+    foreach(data in units) {
+      let { unitId = -1, unitVersion = -1 } = data
+      local info = list?[unitId]
+      if (info?.unitVersion == unitVersion)
+        info = clone info
+      else
+        info = mkDefaultUnitInfo(unitVersion)
+      update(info, data)
+      list[unitId] <- info
+    }
   })
 
 isHcRender.subscribe(@(v) v ? null : unitsInfo.mutate(function(list) {
@@ -100,26 +103,25 @@ isHcRender.subscribe(@(v) v ? null : unitsInfo.mutate(function(list) {
   }
 }))
 
-function onEnemyPartDamage(data) {
-  let { unitId = -1, unitVersion = -1, unitKilled = false, partName = null, partDmName = null
-  } = data
-  modifyUnitInfo(unitId, unitVersion,
-    function updateOnPartDamage(unitInfo) {
-      unitInfo.isKilled = unitInfo.isKilled || unitKilled
-      if (unitInfo.isKilled || partName == null)
-        return
+function onEnemyPartsDamage(data) {
+  modifyUnitsInfo(data, function updateOnPartsDamage(unitInfo, partInfo) {
+    let { unitKilled = false, partName = null, partDmName = null } = partInfo
 
-      let parts = clone unitInfo.parts
-      unitInfo.parts = parts
+    unitInfo.isKilled = unitInfo.isKilled || unitKilled
+    if (unitInfo.isKilled || partName == null)
+      return
 
-      parts[partName] <- partName in parts ? clone parts[partName] : {}
-      let prevPartKilled = parts[partName]?[partDmName].partKilled ?? false
-      let dmPart = (parts[partName]?[partDmName] ?? {}).__merge(data)
-      if (prevPartKilled)
-        dmPart.partKilled <- true
-      if (partDmName != null)
-        parts[partName][partDmName] <- dmPart
-    })
+    let parts = clone unitInfo.parts
+    unitInfo.parts = parts
+
+    parts[partName] <- partName in parts ? clone parts[partName] : {}
+    let prevPartKilled = parts[partName]?[partDmName].partKilled ?? false
+    let dmPart = (parts[partName]?[partDmName] ?? {}).__merge(partInfo)
+    if (prevPartKilled)
+      dmPart.partKilled <- true
+    if (partDmName != null)
+      parts[partName][partDmName] <- dmPart
+  })
 }
 
 
@@ -235,7 +237,7 @@ function onHitCameraImportantEvents(data) {
 }
 
 eventbus_subscribe("hitCamera", @(ev) state(ev))
-eventbus_subscribe("EnemyPartDamage", onEnemyPartDamage)
+eventbus_subscribe("EnemyPartsDamage", onEnemyPartsDamage)
 eventbus_subscribe("EnemyDamageState", @(ev) ev.unitId != hcUnitId.value ? null
   : hcDamageStatus(ev.updateDebuffsOnly ? hcDamageStatus.value.__merge(ev) : ev))
 eventbus_subscribe("HitCameraImportanEvents", onHitCameraImportantEvents)

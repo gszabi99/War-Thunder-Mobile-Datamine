@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { HangarCameraControl } = require("wt.behaviors")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let Rand = require("%sqstd/rand.nut")
@@ -240,7 +241,7 @@ return {
   children = [
     unitInfoPanel({
       pos = [ saBorders[0], 0 ]
-      behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
+      behavior = [ Behaviors.Button, HangarCameraControl ]
       eventPassThrough = true
       onClick = @() unitDetailsWnd({ name = curSelectedUnit.value })
     })

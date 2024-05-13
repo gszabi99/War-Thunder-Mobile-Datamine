@@ -31,8 +31,8 @@ let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicI
 let { contactNameBlock, contactAvatar } = require("%rGui/contacts/contactInfoPkg.nut")
 let { mkLbHeaderRow, headerIconHeight } = require("mkLbHeaderRow.nut")
 let lbRewardsBlock = require("lbRewardsBlock.nut")
-let { selectedPlayerForInfo } = require("%rGui/mpStatistics/playerInfo.nut")
 let { mkTab } = require("%rGui/controls/tabs.nut")
+let { viewProfile } = require("%rGui/mpStatistics/viewProfile.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 
 let rankCellWidth = lbHeaderRowHeight * (isWidescreen ? 2.5 : 2.0)
@@ -164,13 +164,7 @@ function mkNameCell(category, rowData) {
       gap = nameGap
       valign = ALIGN_CENTER
       behavior = Behaviors.Button
-      function onClick() {
-        local campaign = curLbId.get()
-        if (campaign == "wp")
-          campaign = "tanks"
-        selectedPlayerForInfo({ player = { userId isBot = false name = visualName realName = realnick }, campaign })
-      }
-
+      onClick = @() viewProfile(userId)
       children = [
         contactAvatar(info.get(), lbRowHeight - hdpx(2))
         contactNameBlock({ realnick }, info.get(), [], { nameStyle = nameFont, titleStyle = fontVeryTiny })

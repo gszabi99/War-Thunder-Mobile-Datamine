@@ -193,7 +193,7 @@ function queueToGameModeImpl(mode) {
 
   //can check units here, but no unit rquirements in the current event yet.
   //so better to do it only when become need.
-  joinQueue({ mode = mode.name })
+  joinQueue({ mode = mode.name, isOnlyOverride = mode?.only_override_units ?? false })
 }
 
 function queueModeOnRandomUnit(mode) {

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { HangarCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { modsInProgress, buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
@@ -192,7 +193,7 @@ let unitModsWnd = {
   key = {}
   size = flex()
   padding = saBordersRv
-  behavior = Behaviors.HangarCameraControl
+  behavior = HangarCameraControl
   flow = FLOW_VERTICAL
   children = [
     @(){

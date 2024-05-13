@@ -1,7 +1,7 @@
 {
   "lastClip": true,
   "lastclip_horizon": true,
-  "clipmap_tex_mips": 5,
+  "clipmap_tex_mips": 6,
   "z_far": 50000.0,
   "mapCoord0": [
     -65536.0,
@@ -40,7 +40,7 @@
   "weatherTypes": "gameData/environments/weather_types.blk",
   "average_ground_level": 16.0,
   "clipmap": {
-    "texelSize": 0.03125,
+    "texelSize": 0.125,
     "lastClipSize": 512
   },
   "earth": {

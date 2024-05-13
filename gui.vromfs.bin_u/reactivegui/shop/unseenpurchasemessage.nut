@@ -44,7 +44,7 @@ let { ignoreSubIdRTypes } = require("%rGui/rewards/rewardViewInfo.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
   "decorator", "medal", "booster", "skin",
-  "stat", "battleMod"
+  "stat", "battleMod", "blueprint"
 ]
 
 let bgGradient = bgMessage.__merge({size = flex()})
@@ -127,8 +127,9 @@ let stackData = Computed(function() {
     booster = [],
     skin = [],
     battleMod = []
+    blueprint = []
   } = stacksSorted
-  let rewardIcons = [].extend(currency, premium, item, decorator, booster, skin)
+  let rewardIcons = [].extend(currency, premium, item, decorator, booster, skin, blueprint)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   local lastIdx = -1
@@ -441,6 +442,11 @@ let rewardCtors = {
     mkIcon = @(rewardInfo) mkSkinRewardIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.subId)
     mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
       loc("skins/title", { unitName = loc(getUnitLocId(rewardInfo.id)) }))
+  }
+  blueprint = {
+    mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, "ui/unitskin#blueprint_default.avif", 1.0, 2)
+    mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
+      "\n".concat(loc("blueprints/title", {count = rewardInfo.count}), loc(getUnitLocId(rewardInfo.id))))
   }
 }
 

@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { isMpStatisticsActive } = require("%appGlobals/clientState/clientState.nut")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
-let { registerRespondent } = require("%appGlobals/scriptRespondents.nut")
+let { registerRespondent } = require("scriptRespondent")
 
 isMpStatisticsActive.subscribe(function(val) {
   in_flight_menu(val)

@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
-let { set_chat_handler = null } = require("chat")
-let { missionPlayVoice = null } = require("sound_wt")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK
 } = require("%rGui/hud/actionBar/actionType.nut")
@@ -25,7 +23,7 @@ let { currentTargetTrackingType } = require("%rGui/options/options/tankControlsO
 let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
 let { moveArrowsView } = require("%rGui/components/movementArrows.nut")
 let { hitCamera, hitCameraTankEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
-let { tacticalMap, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
+let { mkTacticalMapForHud, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
 let winchButton = require("%rGui/hud/buttons/winchButton.nut")
 let { doll, dollEditView, speedText, speedTextEditView, crewDebuffs, crewDebuffsEditView,
   techDebuffs, techDebuffsEditView } = require("%rGui/hud/tankStateModule.nut")
@@ -41,8 +39,6 @@ let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
 let isTargetTracking = Computed(@() !currentTargetTrackingType.value)
-
-let allow_voice_messages_compatibility = Computed(@() allow_voice_messages.get() && !!set_chat_handler && !!missionPlayVoice)
 
 let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
@@ -154,8 +150,8 @@ return {
     ctor = @() voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(5), hdpx(-130)])
     editView = voiceMsgStickView
-    isVisibleInEditor = allow_voice_messages_compatibility
-    isVisibleInBattle = Computed(@() allow_voice_messages_compatibility.get() && isInMpSession.get())
+    isVisibleInEditor = allow_voice_messages
+    isVisibleInBattle = Computed(@() allow_voice_messages.get() && isInMpSession.get())
     priority = Z_ORDER.STICK
   }
 
@@ -192,7 +188,7 @@ return {
   }
 
   tacticalMap = {
-    ctor = @() tacticalMap
+    ctor = mkTacticalMapForHud
     defTransform = mkLTPos([hdpx(155), 0])
     editView = tacticalMapEditView
     hideForDelayed = false

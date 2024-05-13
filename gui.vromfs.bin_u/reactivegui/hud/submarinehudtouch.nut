@@ -17,11 +17,11 @@ return {
   onAttach = @() startActionBarUpdate("submarineHud")
   onDetach = @() stopActionBarUpdate("submarineHud")
   children = [
-    hudTopLeft
     hudTimersBlock
     hudBottomCenter
     hudTopMainLog
     hudTuningElems
+    hudTopLeft
     shipSight
     currentWeaponNameText
     voiceMsgPie

@@ -1,7 +1,7 @@
 {
   "lastClip": true,
   "lastclip_horizon": true,
-  "clipmap_tex_mips": 5,
+  "clipmap_tex_mips": 6,
   "mapCoord0": [
     -16384.0,
     -16384.0
@@ -39,7 +39,7 @@
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "clipmap": {
-    "texelSize": 0.03125,
+    "texelSize": 0.125,
     "lastClipSize": 512
   },
   "micro_details": {

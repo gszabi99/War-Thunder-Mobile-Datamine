@@ -9,7 +9,7 @@ let { gameModesRaw } = require("%appGlobals/gameModes/gameModes.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { resetTimeout } = require("dagor.workcycle")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 const MAX_FETCH_RETRIES = 5
 const MAX_FETCH_DELAY_SEC = 60

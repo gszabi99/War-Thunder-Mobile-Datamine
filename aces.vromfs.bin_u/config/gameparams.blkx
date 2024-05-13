@@ -444,11 +444,13 @@
       ]
     },
     "7mmRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         15,
         15,
@@ -473,11 +475,13 @@
       }
     },
     "12mmRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         15,
         15,
@@ -503,10 +507,12 @@
     },
     "20mmRed": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         15,
         15,
@@ -532,10 +538,12 @@
     },
     "30mmRed": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         15,
         15,
@@ -561,10 +569,12 @@
     },
     "37mmRed": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         15,
         15,
@@ -590,10 +600,12 @@
     },
     "50mmRed": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         15,
         15,
@@ -618,11 +630,13 @@
       }
     },
     "76mmRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         15,
         15,
@@ -678,11 +692,13 @@
       }
     },
     "100mmRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         15,
         15,
@@ -738,11 +754,13 @@
       }
     },
     "152mmRed": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         15,
         15,
@@ -847,11 +865,13 @@
       ]
     },
     "7mmDarkRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         25,
         25,
@@ -876,11 +896,13 @@
       }
     },
     "12mmDarkRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         25,
         25,
@@ -906,10 +928,12 @@
     },
     "20mmDarkRed": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         25,
         25,
@@ -935,10 +959,12 @@
     },
     "30mmDarkRed": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         25,
         25,
@@ -964,10 +990,12 @@
     },
     "37mmDarkRed": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         25,
         25,
@@ -993,10 +1021,12 @@
     },
     "50mmDarkRed": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         25,
         25,
@@ -1021,11 +1051,13 @@
       }
     },
     "76mmDarkRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         25,
         25,
@@ -1081,11 +1113,13 @@
       }
     },
     "100mmDarkRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         25,
         25,
@@ -1141,11 +1175,13 @@
       }
     },
     "152mmDarkRed": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         25,
         25,
@@ -1232,11 +1268,13 @@
       }
     },
     "7mmBrightRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         54,
         71,
@@ -1261,11 +1299,13 @@
       }
     },
     "12mmBrightRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         54,
         71,
@@ -1291,10 +1331,12 @@
     },
     "20mmBrightRed": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         54,
         71,
@@ -1320,10 +1362,12 @@
     },
     "30mmBrightRed": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         54,
         71,
@@ -1349,10 +1393,12 @@
     },
     "37mmBrightRed": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         54,
         71,
@@ -1378,10 +1424,12 @@
     },
     "50mmBrightRed": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         54,
         71,
@@ -1406,11 +1454,13 @@
       }
     },
     "76mmBrightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         54,
         71,
@@ -1466,11 +1516,13 @@
       }
     },
     "100mmBrightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         54,
         71,
@@ -1526,11 +1578,13 @@
       }
     },
     "152mmBrightRed": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         54,
         71,
@@ -1617,11 +1671,13 @@
       }
     },
     "7mmWhite": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         255,
         255,
@@ -1646,11 +1702,13 @@
       }
     },
     "12mmWhite": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         255,
         255,
@@ -1676,10 +1734,12 @@
     },
     "20mmWhite": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         255,
         255,
@@ -1705,10 +1765,12 @@
     },
     "30mmWhite": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         255,
         255,
@@ -1734,10 +1796,12 @@
     },
     "37mmWhite": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         255,
         255,
@@ -1763,10 +1827,12 @@
     },
     "50mmWhite": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         255,
         255,
@@ -1791,11 +1857,13 @@
       }
     },
     "76mmWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         255,
@@ -1851,11 +1919,13 @@
       }
     },
     "100mmWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         255,
@@ -1911,11 +1981,13 @@
       }
     },
     "152mmWhite": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         255,
@@ -2002,11 +2074,13 @@
       }
     },
     "7mmPaleWhite": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         255,
         255,
@@ -2031,11 +2105,13 @@
       }
     },
     "12mmPaleWhite": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         255,
         255,
@@ -2061,10 +2137,12 @@
     },
     "20mmPaleWhite": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         255,
         255,
@@ -2090,10 +2168,12 @@
     },
     "30mmPaleWhite": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         255,
         255,
@@ -2119,10 +2199,12 @@
     },
     "37mmPaleWhite": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         255,
         255,
@@ -2148,10 +2230,12 @@
     },
     "50mmPaleWhite": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         255,
         255,
@@ -2176,11 +2260,13 @@
       }
     },
     "76mmPaleWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         255,
@@ -2236,11 +2322,13 @@
       }
     },
     "100mmPaleWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         255,
@@ -2296,11 +2384,13 @@
       }
     },
     "152mmPaleWhite": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         255,
@@ -2387,11 +2477,13 @@
       }
     },
     "7mmLightRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         212,
         247,
@@ -2416,11 +2508,13 @@
       }
     },
     "12mmLightRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         212,
         247,
@@ -2446,10 +2540,12 @@
     },
     "20mmLightRed": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         212,
         247,
@@ -2475,10 +2571,12 @@
     },
     "30mmLightRed": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         212,
         247,
@@ -2504,10 +2602,12 @@
     },
     "37mmLightRed": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         212,
         247,
@@ -2533,10 +2633,12 @@
     },
     "50mmLightRed": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         212,
         247,
@@ -2561,11 +2663,13 @@
       }
     },
     "76mmLightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         212,
         247,
@@ -2621,11 +2725,13 @@
       }
     },
     "100mmLightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         212,
         247,
@@ -2681,11 +2787,13 @@
       }
     },
     "152mmLightRed": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         212,
         247,
@@ -2787,11 +2895,13 @@
       "halfSize": 1.5
     },
     "7mmGreenBlue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         212,
         247,
@@ -2816,11 +2926,13 @@
       }
     },
     "12mmGreenBlue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         212,
         247,
@@ -2846,10 +2958,12 @@
     },
     "20mmGreenBlue": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         212,
         247,
@@ -2875,10 +2989,12 @@
     },
     "30mmGreenBlue": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         212,
         247,
@@ -2904,10 +3020,12 @@
     },
     "37mmGreenBlue": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         212,
         247,
@@ -2933,10 +3051,12 @@
     },
     "50mmGreenBlue": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         212,
         247,
@@ -2961,11 +3081,13 @@
       }
     },
     "76mmGreenBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         212,
         247,
@@ -3021,11 +3143,13 @@
       }
     },
     "100mmGreenBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         212,
         247,
@@ -3081,11 +3205,13 @@
       }
     },
     "152mmGreenBlue": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         212,
         247,
@@ -3172,11 +3298,13 @@
       }
     },
     "7mmYellow": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         60,
         248,
@@ -3201,11 +3329,13 @@
       }
     },
     "12mmYellow": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         60,
         248,
@@ -3231,10 +3361,12 @@
     },
     "20mmYellow": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         60,
         248,
@@ -3260,10 +3392,12 @@
     },
     "30mmYellow": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         60,
         248,
@@ -3289,10 +3423,12 @@
     },
     "37mmYellow": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         60,
         248,
@@ -3318,10 +3454,12 @@
     },
     "50mmYellow": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         60,
         248,
@@ -3346,11 +3484,13 @@
       }
     },
     "76mmYellow": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         60,
         248,
@@ -3406,11 +3546,13 @@
       }
     },
     "100mmYellow": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         60,
         248,
@@ -3466,11 +3608,13 @@
       }
     },
     "152mmYellow": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         60,
         248,
@@ -3557,11 +3701,13 @@
       }
     },
     "7mmBlue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         255,
         231,
@@ -3586,11 +3732,13 @@
       }
     },
     "12mmBlue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         255,
         231,
@@ -3616,10 +3764,12 @@
     },
     "20mmBlue": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         255,
         231,
@@ -3645,10 +3795,12 @@
     },
     "30mmBlue": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         255,
         231,
@@ -3674,10 +3826,12 @@
     },
     "37mmBlue": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         255,
         231,
@@ -3703,10 +3857,12 @@
     },
     "50mmBlue": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         255,
         231,
@@ -3731,11 +3887,13 @@
       }
     },
     "76mmBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         231,
@@ -3791,11 +3949,13 @@
       }
     },
     "100mmBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         231,
@@ -3851,11 +4011,13 @@
       }
     },
     "152mmBlue": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         231,
@@ -3942,11 +4104,13 @@
       }
     },
     "7mmDark_Blue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         255,
         231,
@@ -3971,11 +4135,13 @@
       }
     },
     "12mmDark_Blue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         255,
         231,
@@ -4001,10 +4167,12 @@
     },
     "20mmDark_Blue": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         255,
         231,
@@ -4030,10 +4198,12 @@
     },
     "30mmDark_Blue": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         255,
         231,
@@ -4059,10 +4229,12 @@
     },
     "37mmDark_Blue": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         255,
         231,
@@ -4088,10 +4260,12 @@
     },
     "50mmDark_Blue": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         255,
         231,
@@ -4116,11 +4290,13 @@
       }
     },
     "76mmDark_Blue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         231,
@@ -4176,11 +4352,13 @@
       }
     },
     "100mmDark_Blue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         231,
@@ -4236,11 +4414,13 @@
       }
     },
     "152mmDark_Blue": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         231,
@@ -4327,11 +4507,13 @@
       }
     },
     "7mmPink": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         248,
         236,
@@ -4356,11 +4538,13 @@
       }
     },
     "12mmPink": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         248,
         236,
@@ -4386,10 +4570,12 @@
     },
     "20mmPink": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         248,
         236,
@@ -4415,10 +4601,12 @@
     },
     "30mmPink": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         248,
         236,
@@ -4444,10 +4632,12 @@
     },
     "37mmPink": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         248,
         236,
@@ -4473,10 +4663,12 @@
     },
     "50mmPink": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         248,
         236,
@@ -4501,11 +4693,13 @@
       }
     },
     "76mmPink": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         248,
         236,
@@ -4561,11 +4755,13 @@
       }
     },
     "100mmPink": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         248,
         236,
@@ -4621,11 +4817,13 @@
       }
     },
     "152mmPink": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         248,
         236,
@@ -4712,11 +4910,13 @@
       }
     },
     "7mmOrange": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         0,
         36,
@@ -4741,11 +4941,13 @@
       }
     },
     "12mmOrange": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         0,
         36,
@@ -4771,10 +4973,12 @@
     },
     "20mmOrange": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         0,
         36,
@@ -4800,10 +5004,12 @@
     },
     "30mmOrange": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         0,
         36,
@@ -4829,10 +5035,12 @@
     },
     "37mmOrange": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         0,
         36,
@@ -4858,10 +5066,12 @@
     },
     "50mmOrange": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         0,
         36,
@@ -4886,11 +5096,13 @@
       }
     },
     "76mmOrange": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         0,
         36,
@@ -4946,11 +5158,13 @@
       }
     },
     "100mmOrange": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         0,
         36,
@@ -5006,11 +5220,13 @@
       }
     },
     "152mmOrange": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         0,
         36,
@@ -5097,11 +5313,13 @@
       }
     },
     "7mmGreen": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         102,
         255,
@@ -5126,11 +5344,13 @@
       }
     },
     "12mmGreen": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         102,
         255,
@@ -5156,10 +5376,12 @@
     },
     "20mmGreen": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         102,
         255,
@@ -5185,10 +5407,12 @@
     },
     "30mmGreen": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         102,
         255,
@@ -5214,10 +5438,12 @@
     },
     "37mmGreen": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         102,
         255,
@@ -5243,10 +5469,12 @@
     },
     "50mmGreen": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         102,
         255,
@@ -5271,11 +5499,13 @@
       }
     },
     "76mmGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         102,
         255,
@@ -5331,11 +5561,13 @@
       }
     },
     "100mmGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         102,
         255,
@@ -5391,11 +5623,13 @@
       }
     },
     "152mmGreen": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         102,
         255,
@@ -5482,11 +5716,13 @@
       }
     },
     "7mmWhiteGreen": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         191,
         255,
@@ -5511,11 +5747,13 @@
       }
     },
     "12mmWhiteGreen": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         191,
         255,
@@ -5541,10 +5779,12 @@
     },
     "20mmWhiteGreen": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         191,
         255,
@@ -5570,10 +5810,12 @@
     },
     "30mmWhiteGreen": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         191,
         255,
@@ -5599,10 +5841,12 @@
     },
     "37mmWhiteGreen": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         191,
         255,
@@ -5628,10 +5872,12 @@
     },
     "50mmWhiteGreen": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         191,
         255,
@@ -5656,11 +5902,13 @@
       }
     },
     "76mmWhiteGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         191,
         255,
@@ -5716,11 +5964,13 @@
       }
     },
     "100mmWhiteGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         191,
         255,
@@ -5776,11 +6026,13 @@
       }
     },
     "152mmWhiteGreen": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         191,
         255,
@@ -5867,11 +6119,13 @@
       }
     },
     "7mmGold": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 1.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.1,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.1,
       "color1": [
         132,
         224,
@@ -5896,11 +6150,13 @@
       }
     },
     "12mmGold": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "halfSize": 2.5,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.2,
+      "radius": 0.05,
+      "hdrK": 3.0,
+      "minPixelSize": 0.3,
       "color1": [
         132,
         224,
@@ -5926,10 +6182,12 @@
     },
     "20mmGold": {
       "halfSize": 3.5,
-      "distScaleStart": 50.0,
+      "distScaleStart": 100.0,
       "distScaleEnd": 2000.0,
-      "distScale": 3.0,
-      "radius": 0.04,
+      "distScale": 2.5,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.5,
       "color1": [
         132,
         224,
@@ -5955,10 +6213,12 @@
     },
     "30mmGold": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
-      "radius": 0.05,
+      "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 0.7,
       "color1": [
         132,
         224,
@@ -5984,10 +6244,12 @@
     },
     "37mmGold": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
+      "hdrK": 4.0,
+      "minPixelSize": 1.0,
       "color1": [
         132,
         224,
@@ -6013,10 +6275,12 @@
     },
     "50mmGold": {
       "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "distScaleStart": 200.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.0,
-      "radius": 0.08,
+      "distScale": 2.5,
+      "radius": 0.07,
+      "hdrK": 5.0,
+      "minPixelSize": 1.0,
       "color1": [
         132,
         224,
@@ -6041,11 +6305,13 @@
       }
     },
     "76mmGold": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         132,
         224,
@@ -6101,11 +6367,13 @@
       }
     },
     "100mmGold": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
-      "distScale": 2.0,
-      "radius": 0.12,
+      "halfSize": 6.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         132,
         224,
@@ -6161,11 +6429,13 @@
       }
     },
     "152mmGold": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 7.5,
+      "distScaleStart": 200.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.09,
+      "hdrK": 10.0,
+      "minPixelSize": 1.5,
       "color1": [
         132,
         224,
@@ -6312,11 +6582,13 @@
       "hdrK": 5.0
     },
     "30mmRainbow_r": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         0,
         0,
@@ -6341,11 +6613,13 @@
       }
     },
     "30mmRainbow_g": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         0,
         255,
@@ -6370,11 +6644,13 @@
       }
     },
     "30mmRainbow_b": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 3000.0,
-      "distScale": 2.0,
-      "radius": 0.09,
+      "halfSize": 5.5,
+      "distScaleStart": 1.0,
+      "distScaleEnd": 50.0,
+      "distScale": 2.5,
+      "radius": 0.08,
+      "hdrK": 7.0,
+      "minPixelSize": 1.5,
       "color1": [
         255,
         0,
@@ -6407,20 +6683,20 @@
         128,
         128,
         128,
-        128
+        180
       ],
       "deviation": 15.0
     },
     "curved": {
-      "particleHalfSizeFrom": 0.03,
-      "particleHalfSizeTo": 0.3,
+      "particleHalfSizeFrom": 0.1,
+      "particleHalfSizeTo": 0.4,
       "color": [
         158,
         158,
         158,
-        158
+        200
       ],
-      "deviation": 10.0
+      "deviation": 30.0
     },
     "noTrail": {
       "particleHalfSizeFrom": 0.0,
@@ -6431,40 +6707,40 @@
         0,
         0
       ],
-      "deviation": 2.0
+      "deviation": 1.0
     },
     "black": {
-      "particleHalfSizeFrom": 0.03,
-      "particleHalfSizeTo": 0.15,
+      "particleHalfSizeFrom": 0.1,
+      "particleHalfSizeTo": 0.5,
       "color": [
         80,
         80,
         80,
-        186
+        200
       ],
-      "deviation": 3.0
+      "deviation": 5.0
     },
     "black_rpg": {
       "particleHalfSizeFrom": 0.1,
-      "particleHalfSizeTo": 0.2,
+      "particleHalfSizeTo": 0.3,
       "color": [
         80,
         80,
         80,
-        255
+        220
       ],
-      "deviation": 0.00001
+      "deviation": 10.0
     },
     "smallTrail": {
-      "particleHalfSizeFrom": 0.02,
-      "particleHalfSizeTo": 0.08,
+      "particleHalfSizeFrom": 0.1,
+      "particleHalfSizeTo": 0.2,
       "color": [
-        228,
-        228,
-        228,
-        228
+        120,
+        120,
+        120,
+        220
       ],
-      "deviation": 5.0
+      "deviation": 15.0
     }
   },
   "overrideTracerColorHero": {
@@ -17529,11 +17805,14 @@
     "minWindNoisePerpendicularStrength": 0.2,
     "windNoiseTextureName": "perlin_noise_wind_ati1n"
   },
-  "speedLines": {
-    "minSpeedLimit": 350.0,
-    "maxSpeedLimit": 700.0,
-    "speedFactor": 0.4,
-    "timeFactor": 1.0,
-    "screenLimit": 0.125
+  "speedLinesPresets": {
+    "default": {
+      "minSpeedLimit": 0.65,
+      "maxSpeedLimit": 0.85,
+      "speedFactor": 0.4,
+      "timeFactor": 1.0,
+      "screenLimit": 0.125,
+      "interpolationFactor": 1.0
+    }
   }
 }

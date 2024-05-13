@@ -9,7 +9,7 @@ let { register_command } = require("console")
 let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { authState } = require("%scripts/login/authState.nut")
 let { SST_MAIL } = require("%appGlobals/loginState.nut")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 let curtomUrls = {
   [SERVER_ERROR_MAINTENANCE] = "https://www.wtmobile.com/news",

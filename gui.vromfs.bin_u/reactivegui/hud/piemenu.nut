@@ -12,7 +12,7 @@ let defaultPieMenuParams = freeze({
 })
 
 /**
- * Creates a pie menu component, which should be controlled with miniTouchStick.
+ * Calculates the selected menu item index, by stick delta value from miniTouchStick.
  * @param {integer} menuItemsCount - Menu items count.
  * @param {Point2} stickDeltaV - Value of stickDelta watched.
  * @return {integer} - Selected menu item index, or -1 if nothing is selected.

@@ -908,6 +908,22 @@
       255
     ]
   },
+  "omni_light_red_medium": {
+    "_use": [
+      "omni_light",
+      "replicating"
+    ],
+    "light__nightly": false,
+    "light__contact_shadows": false,
+    "light__max_radius": 8.0,
+    "light__brightness": 60.0,
+    "light__color": [
+      3,
+      10,
+      255,
+      255
+    ]
+  },
   "lamppost_a": {
     "_use": [
       "spot_light",
@@ -1160,7 +1176,8 @@
     "canChangeUnit": false,
     "missionUnitName": "",
     "_replicated": "uid",
-    "_tracked": "playerNo"
+    "_tracked": "playerNo",
+    "killerEid:eid": {}
   },
   "unit": {
     "_use": "simple_unit"
@@ -1312,16 +1329,17 @@
     "ammo_stowage__partIdRemap:list<ip4>": {},
     "ammo_stowage__triggerIdRemap:list<i>": {},
     "ammo_stowages__state:list<u32>": {},
-    "ammo_stowages__numAmmo:list<ip3>": {},
-    "ammo_stowages__numAmmoFirstStage:list<ip3>": {},
+    "ammo_stowages__bulletsCartridge:list<i>": {},
     "ammo_stowages__replenishmentStartEnd:list<p2>": {},
     "ammo_stowages__replenishmentTime:list<p2>": {},
     "ammo_stowages__powderMassToSplash": {},
     "ammo_stowages__floodedAmmoReloadMult:list<r>": {},
+    "ammo_stowages__cachedNumAmmoFirstStage:list<ip3>": {},
     "ammo_stowages__clustersRange:list<ip2>": {},
     "ammo_stowages__weaponTriggersRange:list<ip2>": {},
     "ammo_stowage__weaponTriggers:list<i>": {},
-    "ammo_clusters__type:list<i>": {},
+    "ammo_clusters__typeAndStage:list<u16>": {},
+    "ammo_clusters__numAmmo:list<ip3>": {},
     "ammo_clusters__state:list<u32>": {},
     "ammo_clusters__fireEvtId:list<i>": {},
     "ammo_clusters__fireParamsId:list<i>": {},
@@ -1403,7 +1421,10 @@
     }
   },
   "tank": {
-    "_use": "ground_unit",
+    "_use": [
+      "ground_unit",
+      "gm_engine_sound"
+    ],
     "mods:list<t>": {
       "mod": [
         "toolkit_ecs",
@@ -1514,7 +1535,8 @@
   "ship": {
     "_use": [
       "ground_unit",
-      "ship_damage_control"
+      "ship_damage_control",
+      "gm_engine_sound"
     ],
     "mods:list<t>": {
       "mod": [
@@ -1829,8 +1851,47 @@
       ]
     ],
     "camera_fx__radius": 10.0,
-    "camera_fx__res": "unknown",
+    "camera_fx__is_cylindrical": false,
+    "camera_fx__height": 0.0,
+    "camera_fx__res": "misc_placeholder_cmps_fx",
+    "camera_fx__moveByWind": false,
     "camera_fx": {
+      "_tags": "render"
+    }
+  },
+  "area_fx": {
+    "_use": "replicating",
+    "_replicate": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "area_fx__radius": 20.0,
+    "area_fx__height": 5.0,
+    "area_fx__active_limit": 10,
+    "area_fx__spawn_timer_min": 1.0,
+    "area_fx__spawn_timer_max": 1.0,
+    "area_fx__res": "misc_placeholder_cmps_fx",
+    "area_fx__moveByWind": false,
+    "area_fx": {
       "_tags": "render"
     }
   },
@@ -2242,6 +2303,9 @@
     "active": false,
     "proj_trace_handle": -1
   },
+  "projectile_physics": {
+    "projectile_phys_obj": {}
+  },
   "bullet": {
     "_use": "projectile",
     "bullet_component": {}
@@ -2339,6 +2403,53 @@
     "sound_area__event:SoundEvent": {
       "_tags": "sound"
     }
+  },
+  "gm_engine_sound": {
+    "_tags": "sound",
+    "gm_engine_sound__event_name": "",
+    "gm_engine_sound__event_inside_name": "",
+    "gm_engine_sound__start_event_name": "",
+    "gm_engine_sound__stop_event_name": "",
+    "gm_engine_sound__start_inside_name": "",
+    "gm_engine_sound__stop_inside_name": "",
+    "gm_engine_sound__load_smooth": 0.0,
+    "gm_engine_sound__update_interval": 0.0,
+    "gm_engine_sound__is_inside": false,
+    "gm_engine_sound__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_engine_sound__pos_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_engine_sound__is_playing": false,
+    "gm_engine_sound__should_play": true,
+    "gm_engine_sound__load": 0.0,
+    "gm_engine_sound__loadswitch": false,
+    "gm_engine_sound__event:SoundEvent": {},
+    "gm_engine_sound__event_inside:SoundEvent": {},
+    "gm_engine_sound__start_event:SoundEvent": {},
+    "gm_engine_sound__stop_event:SoundEvent": {},
+    "gm_engine_sound__start_inside_event:SoundEvent": {},
+    "gm_engine_sound__stop_inside_event:SoundEvent": {}
+  },
+  "gm_additional_engine_sound": {
+    "_tags": "sound",
+    "gm_additional_engine_sound__event_name": "",
+    "gm_additional_engine_sound__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_additional_engine_sound__pos_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_additional_engine_sound__event:SoundEvent": {}
   },
   "asset_manager": {
     "_tags": "render",
@@ -2439,6 +2550,389 @@
       "_replicate": true
     }
   },
+  "unit_showcase": {
+    "unit_showcase_mission_name": "",
+    "unit_showcase_eid:eid": {}
+  },
+  "loot": {
+    "_use": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "loot__count": -1,
+    "loot__resName": "",
+    "loot__countRange": [
+      1,
+      5
+    ],
+    "loot__radius": 1.0,
+    "loot__typeName": "",
+    "loot__type": -1,
+    "loot__itemId": 0,
+    "loot__model_res": {
+      "_tags": "render"
+    }
+  },
+  "scrap_metal_loot": {
+    "_use": "loot",
+    "loot__resName": "mt_loot_metal_scrap_b",
+    "loot__countRange": [
+      5,
+      9
+    ],
+    "loot__typeName": "scrap_metal_loot",
+    "loot__itemId": 2907201
+  },
+  "vehicle_parts_loot": {
+    "_use": "loot",
+    "loot__resName": "mt_loot_metal_parts_a",
+    "loot__countRange": [
+      5,
+      9
+    ],
+    "loot__typeName": "vehicle_parts_loot",
+    "loot__itemId": 2907202
+  },
+  "armor_loot": {
+    "_use": "loot",
+    "loot__resName": "mt_loot_armor_parts_a",
+    "loot__countRange": [
+      5,
+      9
+    ],
+    "loot__typeName": "armor_loot",
+    "loot__itemId": 2907203
+  },
+  "electronics_loot": {
+    "_use": "loot",
+    "loot__resName": "mt_loot_electronics_a",
+    "loot__countRange": [
+      5,
+      9
+    ],
+    "loot__typeName": "electronics_loot",
+    "loot__itemId": 2907204
+  },
+  "loot_carrier": {
+    "loot_carrier__capacity": 25,
+    "_tracked": "loot_carrier__loot_count",
+    "loot_carrier__rage": 0,
+    "loot_carrier__pickUpSfx": "ground/effects/pickup_md",
+    "loot_carrier__pickUpRageSfx": "ground/effects/level_up_md",
+    "loot_carrier__pickUpRageMaxSfx": "ground/effects/level_max_md",
+    "_replicated": [
+      "loot_carrier__loot_count",
+      "loot_carrier__loot_type",
+      "loot_carrier__rage"
+    ],
+    "loot_carrier__loot_type:list<i>": {},
+    "loot_carrier__loot_count:list<i>": {},
+    "loot_carrier__loot_itemId:list<i>": {}
+  },
+  "loot_creater": {
+    "loot_creater__scrapProb": 0.035,
+    "loot_creater__partsProb": 0.035,
+    "loot_creater__armorProb": 0.035,
+    "loot_creater__electronicsProb": 0.035,
+    "loot_carrier__riNames:list<t>": {
+      "n": [
+        "conex_box_a",
+        "conex_box_b",
+        "ammunition_box_piles_a",
+        "ammunition_box_piles_b",
+        "ammunition_box_piles_c",
+        "ammunition_box_piles_e",
+        "ammunition_box_piles_f",
+        "ammunition_box_wooden_sanded_a",
+        "ammunition_box_wooden_sanded_b",
+        "ammunition_box_wooden_sanded_c",
+        "ammunition_box_wooden_sanded_d",
+        "ammunition_box_wooden_sanded_e",
+        "ammunition_box_wooden_sanded_o",
+        "ammunition_box_a_sanded",
+        "ammunition_box_b_sanded",
+        "ammunition_box_c_sanded",
+        "ammunition_box_d_sanded",
+        "ammunition_box_e_sanded",
+        "ammunition_box_f_sanded",
+        "air_cargo_a",
+        "air_cargo_b_ammunition_boxes_a",
+        "air_cargo_b_ammunition_boxes_b",
+        "air_cargo_c_bags_pile_a",
+        "air_cargo_d_pallet_cardboard_b",
+        "metal_barrels_pile_a_sanded",
+        "metal_barrels_pile_b_sanded",
+        "metal_barrels_pile_c_sanded",
+        "metal_barrels_pile_d_sanded",
+        "metal_barrel_a_sanded",
+        "metal_barrel_b_sanded",
+        "metal_barrel_c_sanded"
+      ]
+    },
+    "loot_carrier__riHandlers:list<u32>": {}
+  },
+  "loot_chance_mult_zone": {
+    "_use": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "loot_chance_mult__scrap": 1.0,
+    "loot_chance_mult__parts": 1.0,
+    "loot_chance_mult__armor": 1.0,
+    "loot_chance_mult__electronics": 1.0
+  },
+  "loot_carrier_capacity_20": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 20
+  },
+  "loot_carrier_capacity_40": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 40
+  },
+  "loot_carrier_capacity_50": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 50
+  },
+  "loot_carrier_capacity_80": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 80
+  },
+  "loot_carrier_capacity_100": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 100
+  },
+  "dafx_rain": [
+    {
+      "_singleton": true,
+      "_group": {
+        "_track": true,
+        "far_rain__density": 10.0,
+        "far_rain__speed": 1.0,
+        "far_rain__width": 1.0,
+        "far_rain__length": 1.0,
+        "far_rain__alpha": 1.0,
+        "far_rain__maxDensity": 10.0,
+        "far_rain__effectTemplates:array": {
+          "template": [
+            "camera_rain_light_effect",
+            "camera_rain_drop_splashes_effect"
+          ]
+        }
+      },
+      "rain_tag:tag": {}
+    },
+    {
+      "_singleton": true,
+      "_group": {
+        "_track": true,
+        "far_rain__density": 10.0,
+        "far_rain__speed": 1.0,
+        "far_rain__width": 1.0,
+        "far_rain__length": 1.0,
+        "far_rain__alpha": 1.0,
+        "far_rain__maxDensity": 10.0,
+        "far_rain__effectTemplates:array": {
+          "template": [
+            "camera_rain_light_effect",
+            "camera_rain_drop_splashes_effect"
+          ]
+        }
+      },
+      "rain_tag:tag": {}
+    }
+  ],
+  "camera_bound_rain_effect_template": [
+    {
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ]
+      ],
+      "_group": {
+        "_tags": "render",
+        "camera_effect__offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "camera_effect__distance": 0.0,
+        "effect__name": "",
+        "is_ground_effect": false
+      },
+      "effect": {
+        "_tags": "render"
+      },
+      "rain_effect_tag:tag": {}
+    },
+    {
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ]
+      ],
+      "_group": {
+        "_tags": "render",
+        "camera_effect__offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "camera_effect__distance": 0.0,
+        "effect__name": "",
+        "is_ground_effect": false
+      },
+      "effect": {
+        "_tags": "render"
+      },
+      "rain_effect_tag:tag": {}
+    }
+  ],
+  "camera_rain_light_effect": [
+    {
+      "_use": "camera_bound_rain_effect_template",
+      "_group": {
+        "_tags": "render",
+        "camera_effect__offset": [
+          0.0,
+          -4.0,
+          0.0
+        ],
+        "camera_effect__distance": 3.0,
+        "effect__name": "camera_rain_light_cmps_fx"
+      }
+    },
+    {
+      "_use": "camera_bound_rain_effect_template",
+      "_group": {
+        "_tags": "render",
+        "camera_effect__offset": [
+          0.0,
+          -4.0,
+          0.0
+        ],
+        "camera_effect__distance": 3.0,
+        "effect__name": "camera_rain_light_cmps_fx"
+      }
+    }
+  ],
+  "camera_rain_heavy_effect": [
+    {
+      "_use": "camera_bound_rain_effect_template",
+      "_group": {
+        "_tags": "render",
+        "camera_effect__offset": [
+          0.0,
+          -4.0,
+          0.0
+        ],
+        "camera_effect__distance": 3.0,
+        "effect__name": "camera_rain_heavy_cmps_fx"
+      }
+    },
+    {
+      "_use": "camera_bound_rain_effect_template",
+      "_group": {
+        "_tags": "render",
+        "camera_effect__offset": [
+          0.0,
+          -4.0,
+          0.0
+        ],
+        "camera_effect__distance": 3.0,
+        "effect__name": "camera_rain_heavy_cmps_fx"
+      }
+    }
+  ],
+  "camera_rain_drop_splashes_effect": [
+    {
+      "_use": "camera_bound_rain_effect_template",
+      "_group": {
+        "_tags": "render",
+        "effect__name": "camera_rain_drops_cmps_fx",
+        "is_ground_effect": true
+      }
+    },
+    {
+      "_use": "camera_bound_rain_effect_template",
+      "_group": {
+        "_tags": "render",
+        "effect__name": "camera_rain_drops_cmps_fx",
+        "is_ground_effect": true
+      }
+    }
+  ],
   "torpedo_auto_aim": {
     "torpedo_auto_aim__targetAngles": [
       0.0,
@@ -2674,6 +3168,7 @@
       "_tags": "server",
       "battleTimeTotal": 0.0,
       "lastSpawnTime": -1.0,
+      "lastBailoutTime": -1.0,
       "stats__spawns": 0,
       "isRewardsReceived": false,
       "isDeserter": false,
@@ -2718,98 +3213,6 @@
   },
   "simple_tank_wtm": {
     "_use": "simple_tank"
-  },
-  "dafx_rain": {
-    "_singleton": true,
-    "_group": {
-      "_track": true,
-      "far_rain__density": 10.0,
-      "far_rain__speed": 1.0,
-      "far_rain__width": 1.0,
-      "far_rain__length": 1.0,
-      "far_rain__alpha": 1.0,
-      "far_rain__maxDensity": 10.0,
-      "far_rain__effectTemplates:array": {
-        "template": [
-          "camera_rain_light_effect",
-          "camera_rain_drop_splashes_effect"
-        ]
-      }
-    },
-    "rain_tag:tag": {}
-  },
-  "camera_bound_rain_effect_template": {
-    "transform": [
-      [
-        1.0,
-        0.0,
-        0.0
-      ],
-      [
-        0.0,
-        1.0,
-        0.0
-      ],
-      [
-        0.0,
-        0.0,
-        1.0
-      ],
-      [
-        0.0,
-        20.0,
-        0.0
-      ]
-    ],
-    "_group": {
-      "_tags": "render",
-      "camera_effect__offset": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "camera_effect__distance": 0.0,
-      "effect__name": "",
-      "is_ground_effect": false
-    },
-    "effect": {
-      "_tags": "render"
-    },
-    "rain_effect_tag:tag": {}
-  },
-  "camera_rain_light_effect": {
-    "_use": "camera_bound_rain_effect_template",
-    "_group": {
-      "_tags": "render",
-      "camera_effect__offset": [
-        0.0,
-        -4.0,
-        0.0
-      ],
-      "camera_effect__distance": 3.0,
-      "effect__name": "camera_rain_light_cmps_fx"
-    }
-  },
-  "camera_rain_heavy_effect": {
-    "_use": "camera_bound_rain_effect_template",
-    "_group": {
-      "_tags": "render",
-      "camera_effect__offset": [
-        0.0,
-        -4.0,
-        0.0
-      ],
-      "camera_effect__distance": 3.0,
-      "effect__name": "camera_rain_heavy_cmps_fx"
-    }
-  },
-  "camera_rain_drop_splashes_effect": {
-    "_use": "camera_bound_rain_effect_template",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "camera_rain_drops_cmps_fx",
-      "is_ground_effect": true
-    }
   },
   "lightning_animchar": {
     "animchar__res": "lightning_short_aa_char",

@@ -7,7 +7,7 @@ let mkContactsOrder = require("mkContactsOrder.nut")
 
 let gap = hdpx(24)
 
-function contactsList(uidsList, playerSelectedUserId) {
+function contactsList(uidsList, playerSelectedUserId, responseAction) {
   let ordered = mkContactsOrder(uidsList)
   let scrollHandler = ScrollHandler()
   return {
@@ -21,7 +21,8 @@ function contactsList(uidsList, playerSelectedUserId) {
           children = ordered.value
             .map(@(uid, idx) mkContactRow(uid, idx,
               Computed(@() playerSelectedUserId.value == uid),
-              @() playerSelectedUserId(uid)))
+              @() playerSelectedUserId(uid),
+              responseAction?(uid)))
         }, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
       mkScrollArrow(scrollHandler, MR_B)
     ]
@@ -34,13 +35,13 @@ let noContactsMsg = {
   text = loc("contacts/list_empty")
 }.__update(fontSmall)
 
-function contactsBlock(uidsList, playerSelectedUserId) {
+function contactsBlock(uidsList, playerSelectedUserId, responseAction) {
   let hasContacts = Computed(@() uidsList.value.len() != 0)
   return @() {
     watch = hasContacts
     size = flex()
     children = !hasContacts.value ? noContactsMsg
-      : contactsList(uidsList, playerSelectedUserId)
+      : contactsList(uidsList, playerSelectedUserId, responseAction)
   }
 }
 
@@ -54,7 +55,7 @@ let buttons = @(selectedUserId, mkContactActions) @() {
     : mkContactActions(selectedUserId.value)
 }
 
-function mkContactListScene(uidsList, mkContactActions, selectedId = "selectedUserId") {
+function mkContactListScene(uidsList, mkContactActions, responseAction = null, selectedId = "selectedUserId") {
   let playerSelectedUserId = mkWatched(persist, selectedId, null)
   let selectedUserId = Computed(@() playerSelectedUserId.value in uidsList.value
     ? playerSelectedUserId.value
@@ -65,7 +66,7 @@ function mkContactListScene(uidsList, mkContactActions, selectedId = "selectedUs
     flow = FLOW_HORIZONTAL
     gap
     children = [
-      contactsBlock(uidsList, playerSelectedUserId)
+      contactsBlock(uidsList, playerSelectedUserId, responseAction)
       buttons(selectedUserId, mkContactActions)
     ]
   }

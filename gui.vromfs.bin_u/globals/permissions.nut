@@ -21,10 +21,10 @@ let defaults = {
   can_link_to_gaijin_account = DBGLEVEL > 0
   has_additional_graphics_content = DBGLEVEL > 0
   has_leaderboard = DBGLEVEL > 0
+  has_strategy_mode = DBGLEVEL > 0
   can_view_player_uids = DBGLEVEL > 0
   can_view_update_suggestion = false
   can_request_ads_consent = DBGLEVEL > 0
-  can_view_player_rate = DBGLEVEL > 0
   allow_chat = DBGLEVEL > 0
   allow_voice_messages = DBGLEVEL > 0
 }

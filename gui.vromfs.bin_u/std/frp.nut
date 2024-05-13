@@ -37,9 +37,10 @@ function mkLatestByTriggerStream(triggerObservable) {
     }
     res.whiteListMutatorClosure(updateFunc)
     function deleteKey(k){
-      if (k in next_value)
+      if (k in next_value){
         next_value.$rawdelete(k)
-      triggerObservable.subscribe(updateFunc)
+        triggerObservable.subscribe(updateFunc)
+      }
     }
     function setKeyVal(k, v){
       next_value[k] <- v

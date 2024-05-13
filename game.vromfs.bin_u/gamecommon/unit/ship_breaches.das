@@ -162,7 +162,7 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
   v.ship_cover_parts__innerPartsId |> clear()
   v.ship_cover_parts__innerPartsCriticalWater |> clear()
 
-  v.ship_cover_parts__disableDeadParts = *evt.modelBlk |> datablock_getBool("shipsDisableDeadCoverParts", get_app().gameParams.shipsDisableDeadCoverParts)
+  v.ship_cover_parts__disableDeadParts = *evt.modelBlk |> datablock_getBool("shipsDisableDeadCoverParts", get_game_params().shipsDisableDeadCoverParts)
 
   var loading_errors : array<string>
   *evt.modelBlk |> datablock_get_block("shipCover") <| $(blk)
@@ -419,6 +419,9 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return
+  let ship = as_ship(unit)
+  if ship == null
+    return
 
   var cover_id = -1
   let part_id = evt.partId
@@ -430,7 +433,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
     return
 
   let box = (*unit).boundingBox
-  let ship_props = as_ship(unit).shipProps
+  let ship_props = ship.shipProps
   var pos = evt.localPos
   pos.x = clamp(pos.x, box.boxMin.x, box.boxMax.x);
   pos.y = clamp(pos.y, box.boxMin.y, box.boxMax.y);

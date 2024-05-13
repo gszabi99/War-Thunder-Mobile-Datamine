@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { set_camera_shift_centered, set_camera_shift_upper } = require("hangar")
 let { get_time_msec } = require("dagor.time")
+let { HangarCameraControl } = require("wt.behaviors")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { wndSwitchAnim, WND_REVEAL } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -46,6 +47,7 @@ let { curSelectedUnit, availableUnitsList, sizePlatoon, curUnitName } = require(
 let { unitActions } = require("%rGui/unit/unitsWndActions.nut")
 let { isFiltersVisible, filterStateFlags, activeFilters, getFiltersText, openFilters, filters
 } = require("%rGui/unit/unitsFilterPkg.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 const MIN_HOLD_MSEC = 700
 let profileStateFlags = Watched(0)
@@ -95,7 +97,11 @@ let unitFilterButton = @() {
 }.__update(isGamepad.value
   ? {
       key = filterStateFlags
-      children = { hotkeys = [["^J:LT", getFiltersText(activeFilters.value), @(e) openFilters(e)]] }
+      children = { hotkeys = [[
+        "^J:LT",
+        getFiltersText(activeFilters.value),
+        @(e) openFilters(e, curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
+      ]] }
     }
   : {
       padding = hdpx(10)
@@ -104,7 +110,7 @@ let unitFilterButton = @() {
 
       behavior = Behaviors.Button
       onElemState = @(s) filterStateFlags(s)
-      onClick = @(e) openFilters(e)
+      onClick = @(e) openFilters(e, curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
       children = @() {
         watch = [filterStateFlags, activeFilters]
         rendObj = ROBJ_TEXT
@@ -459,7 +465,7 @@ let gamercardPlace = {
     mkGamercardUnitWnd(closeByBackBtn)
     unitInfoPanel({
       pos = unitInfoPanelDefPos
-      behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
+      behavior = [ Behaviors.Button, HangarCameraControl ]
       eventPassThrough = true
       onClick = @() unitDetailsWnd({ name = hangarUnitName.value })
       clickableInfo = loc("msgbox/btn_more")
@@ -502,7 +508,7 @@ let unitsWnd = {
   size = [ sw(100), sh(100) ]
   stopMouse = true
   stopHotkeys = true
-  behavior = Behaviors.HangarCameraControl
+  behavior = HangarCameraControl
   function onAttach() {
     isUnitsWndAttached(true)
     sendNewbieBqEvent("openUnitsListWnd")

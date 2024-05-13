@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time = @() ::get_mission_time() } = require("mission")
+let { get_mission_time } = require("mission")
 let { eventbus_send } = require("eventbus")
 let { round, sqrt } = require("math")
 let { deferOnce } = require("dagor.workcycle")
@@ -9,7 +9,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isRespawnAttached, respawnSlots, respawn, cancelRespawn,
+let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
   selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum
 } = require("respawnState.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
@@ -44,6 +44,7 @@ let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { respawnSkins, skinSize } = require("respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
+let { sendPlayerActivityToServer } = require("playerActivity.nut")
 
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullSize
@@ -88,6 +89,7 @@ let topPanel = @() {
 
 function onSlotClick(slot) {
   //todo: validate spawn here
+  sendPlayerActivityToServer()
   if (slot.canSpawn) {
     playerSelectedSlotIdx(slot.id)
     return
@@ -340,6 +342,7 @@ function respawnBulletsPlace() {
     size = [SIZE_TO_CONTENT, flex()]
     children = {
       key = slotAABB.value
+      onAttach = @() selSlotContentGenId.set(selSlotContentGenId.get() + 1)
       pos = [0, clamp(posY, 0, !respawnUnitSkins.get() ? maxY : maxYWithSkins)]
       children = content
     }

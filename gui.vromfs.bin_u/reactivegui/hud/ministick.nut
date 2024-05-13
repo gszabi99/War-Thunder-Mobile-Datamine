@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_mission_time = @() ::get_mission_time() } = require("mission")
+let { get_mission_time } = require("mission")
+let { TouchScreenStick } = require("wt.behaviors")
 let { Point2 } = require("dagor.math")
 let { rnd_int } = require("dagor.random")
 
@@ -65,7 +66,7 @@ let mkMiniStick = kwarg(function mkMiniStick(
   }
 
   let stickControlEnabled = {
-    behavior = Behaviors.TouchScreenStick
+    behavior = TouchScreenStick
     size = [stickTouchAreaSize, stickTouchAreaSize]
 
     useCenteringOnTouchBegin = true

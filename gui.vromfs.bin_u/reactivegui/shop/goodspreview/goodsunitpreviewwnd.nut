@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-
+let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
 let { registerScene } = require("%rGui/navState.nut")
@@ -272,7 +272,7 @@ let rightBlock = {
     {
       size = [flex(), SIZE_TO_CONTENT]
       children = unitInfoPanel({
-        behavior = [ Behaviors.Button, Behaviors.HangarCameraControl ]
+        behavior = [ Behaviors.Button, HangarCameraControl ]
         eventPassThrough = true
         onClick = openDetailsWnd
         clickableInfo = loc("msgbox/btn_more")
@@ -303,7 +303,7 @@ let previewWnd = @() {
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = verticalGap
-  behavior = Behaviors.HangarCameraControl
+  behavior = HangarCameraControl
   stopMouse = true
   stopHotkeys = true
 

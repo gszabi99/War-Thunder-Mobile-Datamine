@@ -2,22 +2,27 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
-let { can_view_player_uids, can_view_player_rate } = require("%appGlobals/permissions.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
+let { can_view_player_uids } = require("%appGlobals/permissions.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { mkPublicInfo, refreshPublicInfo, mkIsPublicInfoWait } = require("%rGui/contacts/contactPublicInfo.nut")
 let { mkStatsInfo, mkIsStatsWait, refreshUserStats } = require("%rGui/contacts/userstatPublicInfo.nut")
 let { calcPosition } = require("%rGui/tooltip.nut")
-let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
+let { bgMessage, bgHeader, bgShaded } = require("%rGui/style/backgrounds.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkBotStats, mkBotInfo } = require("botsInfoState.nut")
+let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkTab } = require("%rGui/controls/tabs.nut")
 let { lbCfgById } = require("%rGui/leaderboard/lbConfig.nut")
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
-
-let selectedPlayerForInfo = Watched(null)
+let { validateNickNames, Contact } = require("%rGui/contacts/contact.nut")
+let { mkExtContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
+let { contactNameBlock, contactAvatar, contactLevelBlock } = require("%rGui/contacts/contactInfoPkg.nut")
+let { INVITE_TO_FRIENDS, CANCEL_INVITE, REVOKE_INVITE, INVITE_TO_SQUAD } = require("%rGui/contacts/contactActions.nut")
+let { isLbWndOpened } = require("%rGui/leaderboard/lbState.nut")
+let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
 
 let defColor = 0xFFFFFFFF
 let hlColor = 0xFF5FC5FF
@@ -29,15 +34,6 @@ let mkText = @(text, color = defColor) {
   text
   color
 }.__update(fontTiny)
-
-let mkRow = @(t1, t2, icon = null) {
-  size = [flex(), SIZE_TO_CONTENT]
-  children = [
-    mkText(t1).__update({hplace = ALIGN_LEFT})
-    mkText(t2).__update({hplace = ALIGN_RIGHT})
-    icon
-  ]
-}
 
 let textProps = {
     rendObj = ROBJ_TEXT
@@ -67,7 +63,21 @@ let levelMark = @(level, starLevel) {
   ]
 }
 
-let mkNameContent = @(player, info) function() {
+let mkContactInfo = @(contact, info) @() {
+  watch = [contact, info]
+  valign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(30)
+  minWidth = SIZE_TO_CONTENT
+  size = [flex(), SIZE_TO_CONTENT]
+  children = [
+    contactAvatar(info.value)
+    contactNameBlock(contact.value, info.value)
+    contactLevelBlock(info.value)
+  ]
+}
+
+let mkBotNameContent = @(player, info) function() {
   let {
     playerLevel = player?.level ?? 1,
     playerStarLevel = (player?.starLevel ?? 0),
@@ -78,12 +88,10 @@ let mkNameContent = @(player, info) function() {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
+    minWidth = SIZE_TO_CONTENT
+    size = [flex(), SIZE_TO_CONTENT]
     children = [
-      {
-        size = [avatarSize, avatarSize]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"{getAvatarImage(info.get()?.decorators.avatar)}:{avatarSize}:{avatarSize}:P")
-      }
+      contactAvatar(info.value)
       {
         valign = ALIGN_CENTER
         gap = hdpx(10)
@@ -100,12 +108,54 @@ let mkNameContent = @(player, info) function() {
   }
 }
 
-let mkPlayerUidInfo = @(player) function() {
+function mkPlayerUidInfo(player, contact) {
   let res = { watch = can_view_player_uids }
   if (!can_view_player_uids.get())
     return res
-  let text = player?.isBot ? loc("multiplayer/state/bot_ready") : $"UID: {player?.userId} | {player?.realName}"
-  return mkText(text, grayColor)
+  return @() {
+    watch = [can_view_player_uids, contact]
+    rendObj = ROBJ_TEXT
+    text = player?.isBot ? loc("multiplayer/state/bot_ready") : $"UID: {player?.userId} | {contact.get()?.realnick}"
+    grayColor
+  }.__update(fontTiny)
+}
+
+let actions = [
+  {
+    action = INVITE_TO_FRIENDS
+    hotkeys = ["^J:RB"]
+    icon = { name = "ui/gameuiskin#icon_contacts.svg" color = 0xFFFFFFFF }
+  }
+    //same hotkey is correct, only 1 from 4 buttons, displayed at once
+  {
+    action = CANCEL_INVITE
+    hotkeys = ["^J:RB"]
+    icon = { name = "ui/gameuiskin#icon_contacts.svg" color = 0xFFEE5252 }
+  }
+  {
+    action = INVITE_TO_SQUAD
+    hotkeys = ["^J:RB"]
+    icon = { name = "ui/gameuiskin#icon_party.svg" color = 0xFFFFFFFF }
+    onlyForFriends = true
+  }
+  {
+    action = REVOKE_INVITE
+    hotkeys = ["^J:RB"]
+    icon = { name = "ui/gameuiskin#icon_party.svg" color = 0xFFEE5252 }
+  }
+]
+
+function mkButtons(userId) {
+  let gap = { minWidth = hdpx(40) size = flex() }
+  if (isLbWndOpened.get())
+    return null
+  return {
+    minWidth = SIZE_TO_CONTENT
+    size = [flex(), SIZE_TO_CONTENT]
+    flow = FLOW_HORIZONTAL
+    gap
+    children = actions.map(@(cfg) mkExtContactActionBtn(cfg, userId))
+  }
 }
 
 let tabs = @() {
@@ -159,12 +209,14 @@ function mkPlayerInfo(player, globalStats, campaign) {
     refreshPublicInfo(userId)
     refreshUserStats(userId)
   }
+  let contact = Contact(userId)
+  if (!isBot)
+    validateNickNames([userId])
   let info = isBot ? mkBotInfo(player) : mkPublicInfo(userId)
   let isWaitInfo = mkIsPublicInfoWait(userId)
   let publicStats = isBot ? mkBotStats(player) : mkStatsInfo(userId)
   let isWaitStats = mkIsStatsWait(userId)
   return bgMessage.__merge({
-    size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     stopMouse = true
@@ -178,18 +230,23 @@ function mkPlayerInfo(player, globalStats, campaign) {
       })
       {
         flow = FLOW_VERTICAL
-        size = [flex(), SIZE_TO_CONTENT]
         valign = ALIGN_TOP
         padding = [hdpx(40), hdpx(80), hdpx(40), hdpx(80)]
         gap = hdpx(30)
+        minWidth = SIZE_TO_CONTENT
+        size = [flex(), SIZE_TO_CONTENT]
         children = [
-          mkNameContent(player, info)
+          isBot
+            ? mkBotNameContent(player, info)
+            : mkContactInfo(contact, info)
+          mkPlayerUidInfo(player, contact)
           tabs
           mkMedals(info, campaign)
           {
-            size = [flex(), SIZE_TO_CONTENT]
             flow = FLOW_HORIZONTAL
-            gap = hdpx(50)
+            gap = { minWidth = hdpx(50) size = flex() }
+            minWidth = SIZE_TO_CONTENT
+            size = [flex(), SIZE_TO_CONTENT]
             children = [
               function() {
                 let my = info.get()?.campaigns[campaign].units
@@ -205,7 +262,6 @@ function mkPlayerInfo(player, globalStats, campaign) {
                   }
                 return {
                   watch = [isWaitInfo, globalStats, info]
-                  size = [flex(), SIZE_TO_CONTENT]
                   valign = ALIGN_CENTER
                   flow = FLOW_VERTICAL
                   gap = hdpx(5)
@@ -218,9 +274,7 @@ function mkPlayerInfo(player, globalStats, campaign) {
                       rendObj = ROBJ_IMAGE
                       keepAspect = KEEP_ASPECT_FIT
                       image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
-                      hplace = ALIGN_RIGHT
                       vplace = ALIGN_CENTER
-                      pos = [hdpx(45), 0]
                     })
                     mkRow(loc("stats/rare"), $"{my.rare}")
                   ]
@@ -235,41 +289,40 @@ function mkPlayerInfo(player, globalStats, campaign) {
                   }
                 if (!stats)
                   return { watch = [isWaitStats, publicStats] }
-                let percent = stats.battle_end > 0 ? stats.win * 100 / stats.battle_end : 0
                 return {
                   watch = [isWaitStats, publicStats]
-                  size = [flex(), SIZE_TO_CONTENT]
                   valign = ALIGN_CENTER
                   flow = FLOW_VERTICAL
                   gap = hdpx(5)
-                  children = [
-                    mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)
-                    mkRow(loc("lb/battles"), $"{stats.battle_end}")
-                    can_view_player_rate.get() ?
-                      mkRow(loc("stats/missions_wins"), $"{percent}%")
-                      : null
-                  ]
+                  children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
+                    .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
                 }
               }
             ]
           }
-          mkPlayerUidInfo(player)
+          mkButtons(userId)
         ]
       }
     ]
   })
 }
 
+let close = @() selectedPlayerForInfo(null)
 let key = "playerInfo"
 selectedPlayerForInfo.subscribe(function(v) {
   removeModalWindow(key)
   if (v == null)
     return
-  let position = calcPosition(gui_scene.getCompAABBbyKey(selectedPlayerForInfo.get().player.userId), FLOW_VERTICAL, hdpx(20), ALIGN_CENTER, ALIGN_CENTER)
 
+  let { player } = selectedPlayerForInfo.get()
+  let position = calcPosition(gui_scene.getCompAABBbyKey(player.userId), FLOW_VERTICAL, hdpx(20), ALIGN_CENTER, ALIGN_CENTER)
+  let selCampaign = selectedPlayerForInfo.get().campaign
   let globalStats = Computed(function() {
     let { allUnits = {} } = serverConfigs.get()
     let all = {}
+    foreach (camp in campaignsList.get()) {
+      all[camp] <- { prem = 0, wp = 0 }
+    }
     foreach (unit in allUnits) {
       let { campaign = "", isHidden = false, isPremium = false, costWp = 0} = unit
       if (campaign not in all)
@@ -282,10 +335,11 @@ selectedPlayerForInfo.subscribe(function(v) {
     return all
   })
 
-  addModalWindow({
+  addModalWindow(bgShaded.__merge({
     key
     animations = appearAnim(0, 0.2)
-    onClick = @() selectedPlayerForInfo(null)
+    onClick = close
+    hotkeys = [[btnBEscUp, { action = close }]]
     sound = { click  = "click" }
     size = [sw(100), sh(100)]
     children = position.__merge({
@@ -295,14 +349,13 @@ selectedPlayerForInfo.subscribe(function(v) {
         transform = {}
         safeAreaMargin = saBordersRv
         behavior = Behaviors.BoundToArea
-        children = mkPlayerInfo(selectedPlayerForInfo.get().player, globalStats, selectedPlayerForInfo.get().campaign)
+        children = mkPlayerInfo(player, globalStats, selCampaign)
       }
     })
-  })
+  }))
 })
 
 return {
-  selectedPlayerForInfo
   mkPlayerInfo
   levelMark
 
@@ -310,5 +363,4 @@ return {
   hlColor
   iconSize
   mkText
-  mkRow
 }

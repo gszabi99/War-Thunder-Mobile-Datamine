@@ -5,7 +5,7 @@ let { log } = require("%sqstd/log.nut")()
 
 let sharedData = {}
 
-let function make(name, ctor) {
+function make(name, ctor) {
   if (sharedData?[name].watch != null) {
     assert(false, $"sharedWatched: duplicate name: {name}")
     return sharedData[name].watch

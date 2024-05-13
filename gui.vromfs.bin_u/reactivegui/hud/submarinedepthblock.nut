@@ -4,10 +4,11 @@ let { fabs } = require("math")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { dfAnimBottomRight } = require("%rGui/style/unitDelayAnims.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { setAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
+let { setAxisValue, toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { wishDist, waterDist, periscopeDepthCtrl, deadZoneDepth, maxControlDepth } = require("%rGui/hud/shipState.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 
 let height = hdpx(380)
 let markStep = 5
@@ -175,8 +176,13 @@ function depthSlider() {
       mkMarksOfDepthTexts(countOfMarks, periscopeDepthCtrl.value)
     ]
     onChange = function(val) {
-      let newVal = val < minVal + deadZoneVal / 2.0 ? minVal : max(minVal + deadZoneVal, val)
-      setAxisValue("submarine_depth", newVal)
+      if (!isDeeperThanPeriscopeDepth.value && wishDist.value == 0) {
+        toggleShortcut("ID_DIVING_LOCK")
+        updateActionBarDelayed()
+      } else {
+        let newVal = val < minVal + deadZoneVal / 2.0 ? minVal : max(minVal + deadZoneVal, val)
+        setAxisValue("submarine_depth", newVal)
+      }
     }
     transform = {}
     animations = dfAnimBottomRight.extend(wndSwitchAnim)

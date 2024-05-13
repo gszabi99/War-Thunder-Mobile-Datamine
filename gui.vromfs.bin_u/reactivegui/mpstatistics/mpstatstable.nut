@@ -6,7 +6,7 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
-let { selectedPlayerForInfo } = require("%rGui/mpStatistics/playerInfo.nut")
+let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 let cellTextColor = Color(255, 255, 255)

@@ -1,0 +1,364 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "t1_player01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_abandoned_factory.bin",
+      "type": "domination",
+      "environment": "14",
+      "weather": "cloudy",
+      "overrideUnit": "f3f-2;he51c1;i-15_1934;p-51c-10-nt;sb2c_4;la-5_type37_early;il_4;p-38k;yak-3t;fw-190c;b-17g",
+      "locName": "missions/test_cbt_offer",
+      "openDiffLevels": true,
+      "allowEmptyTeams": true,
+      "restoreType": "manual",
+      "difficulty": "arcade",
+      "optionalTakeOff": false,
+      "skiesInitialRandomSeed": 2,
+      "editSlotbar": {
+        "keepOwnUnits": false,
+        "country_usa": {
+          "he51c1": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          }
+        }
+      }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 15.0
+    },
+    "spectator_points": {}
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": false,
+          "radius": -1.0,
+          "target": "spawn01",
+          "team": "A",
+          "tags": {
+            "air": true,
+            "type_bomber": true,
+            "type_fighter": true,
+            "type_assault": true
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "player_respawn": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isKilled",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 2.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "t1_player01",
+          "target": "spawn01"
+        }
+      },
+      "else_actions": {}
+    },
+    "mark_rearm_area_copy": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "rearm_area",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "missionMarkAsRearmZone": {
+          "army": 1,
+          "area_name": "rearm_area",
+          "enabled": true,
+          "restoreWhenNoAmmoLeft": false,
+          "hideMarkers": true,
+          "tags": {
+            "tank": true
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "mark_battle_area_copy": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "game_area",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "missionBattleArea": {
+          "air": true,
+          "ground": false,
+          "mapArea": false,
+          "airMapArea": false,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": false,
+          "area": "game_area",
+          "team": "A"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          -0.733375,
+          0.0,
+          0.679824
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.679824,
+          0.0,
+          -0.733375
+        ],
+        [
+          2934.1,
+          3550.25,
+          2086.9
+        ]
+      ],
+      "unit_class": "p-38k",
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 99,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 1,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "spawn01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -27.1537,
+          0.0,
+          12.7545
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -12.7545,
+          0.0,
+          -27.1537
+        ],
+        [
+          2929.85,
+          3500.0,
+          2150.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "game_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -20000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          15000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -20000.0
+        ],
+        [
+          2263.2,
+          -204.95,
+          1801.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "rearm_area": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          20000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          8000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20000.0
+        ],
+        [
+          2309.8,
+          61.55,
+          1624.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

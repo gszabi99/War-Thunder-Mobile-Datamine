@@ -4036,7 +4036,7 @@
             529.412
           ]
         ],
-        "unit_class": "uk_destroyer_hunt_4series_tutorial",
+        "unit_class": "uk_destroyer_hunt_4series_tutorial_ai",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,

@@ -37,7 +37,7 @@ let { isPlayerReceiveLevel, isUnitReceiveLevel, getNewPlatoonUnit } = require("d
 let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
 let debriefingTabBar = require("debriefingTabBar.nut")
 let mkDebriefingEmpty = require("mkDebriefingEmpty.nut")
-let boostersListActive = require("%rGui/boosters/boostersListActive.nut")
+let { boostersListActive } = require("%rGui/boosters/boostersListActive.nut")
 let { openEventWnd, specialEvents } = require("%rGui/event/eventState.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 

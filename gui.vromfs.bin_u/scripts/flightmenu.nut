@@ -2,7 +2,6 @@ from "%scripts/dagui_natives.nut" import toggle_freecam, in_flight_menu, is_free
 from "app" import is_dev_version, is_offline_version
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { is_mplayer_host } = require("multiplayer")
@@ -12,7 +11,7 @@ let { command } = require("console")
 let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle, canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
-let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
+let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer, get_respawns_left,
   quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status
 } = require("guiMission")
 
@@ -123,10 +122,15 @@ function quitMission() {
 }
 
 function bailout() {
-  if (canBailout())
-    openConfirmMsg(loc("flightmenu/questionLeaveTheTank"), loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")
-  else
+  if (!canBailout()) {
     closeFlightMenu()
+    return
+  }
+
+  local msg = loc("flightmenu/questionLeaveTheTank")
+  if (get_respawns_left() >= 0 && get_respawns_left() <= 1) //on unit death respawnsLeft will decrease
+    msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserter"))
+  openConfirmMsg(msg, loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")
 }
 
 function startFreecam() {

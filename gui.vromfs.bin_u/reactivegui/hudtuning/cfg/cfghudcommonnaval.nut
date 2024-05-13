@@ -3,7 +3,7 @@ let { NEED_SHOW_POSE_INDICATOR, moveIndicator, moveIndicatorShipEditView
 } = require("%rGui/hud/components/moveIndicator.nut")
 let { doll, dollEditView, shipDebuffs, shipDebuffsEditView, crewHealth, crewHealthEditView
 } = require("%rGui/hud/shipStateModule.nut")
-let { tacticalMap, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
+let { mkTacticalMapForHud, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
 let { mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkMyPlace, myPlaceUi, mkMyDamage, myScoresUi } = require("%rGui/hud/myScores.nut")
@@ -20,7 +20,7 @@ return {
   }
 
   tacticalMap = {
-    ctor = @() tacticalMap
+    ctor = mkTacticalMapForHud
     defTransform = mkLTPos([hdpx(105), 0])
     editView = tacticalMapEditView
     hideForDelayed = false

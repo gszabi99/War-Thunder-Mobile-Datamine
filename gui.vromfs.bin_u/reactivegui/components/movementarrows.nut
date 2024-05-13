@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { TouchScreenButton } = require("wt.behaviors")
 let { mkContinuousButtonParams, mkGamepadShortcutImage
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 
@@ -91,7 +92,7 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
     size
     vplace = ALIGN_CENTER
     halign = ALIGN_CENTER
-    behavior = Behaviors.TouchScreenButton
+    behavior = TouchScreenButton
     children = [
       @() {
         watch = stateFlags
@@ -181,7 +182,7 @@ function mkMoveVertBtnNoHotkey(ovr = {}) {
   let { size = verSize } = ovr
   return @() {
     watch = stateFlags
-    behavior = Behaviors.TouchScreenButton
+    behavior = TouchScreenButton
     size
     onElemState = @(sf) stateFlags(sf)
     rendObj = ROBJ_IMAGE

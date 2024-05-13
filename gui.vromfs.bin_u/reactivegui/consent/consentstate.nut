@@ -11,8 +11,8 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isAnyAdsButtonAttached } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let consent = is_pc ? require("consentDbg.nut") : (require_optional("consent") ?? {})
-let { isConsentAcceptedForAll = @() true, isGDPR = @() false, showConsentForm = @(_) null, isConsentInited = @() true } = consent
+let consent = is_pc ? require("consentDbg.nut") : require("consent")
+let { isConsentAcceptedForAll, isGDPR, showConsentForm, isConsentInited } = consent
 
 
 let MSG_UID = "consentSuggestMsgBox"

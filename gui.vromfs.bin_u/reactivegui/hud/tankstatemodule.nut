@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { fabs } = require("math")
+let { XrayDoll, TouchAreaOutButton } = require("wt.behaviors")
 let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire, speed,
   hasDebuffDriver, hasDebuffGunner, hasDebuffLoader
 } = require("%rGui/hud/tankState.nut")
@@ -145,7 +146,7 @@ let xrayDoll = @(stateFlags) @() {
       modulateSilhouetteColor = true
       children = {
         size = flex()
-        behavior = Behaviors.XrayDoll
+        behavior = XrayDoll
         transform = {}
         children = moveTypeImage
       }
@@ -177,7 +178,7 @@ let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 let doll =  @() {
   key = "tank_state_button"
-  behavior = Behaviors.TouchAreaOutButton
+  behavior = TouchAreaOutButton
   watch = isInZoom
   eventPassThrough = true
   function onElemState(sf) {

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
 let { Point2 } = require("dagor.math")
+let { TouchScreenSteeringStick } = require("wt.behaviors")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { setVirtualAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
 let { isStickActiveByStick, stickDelta } = require("stickState.nut")
@@ -10,6 +11,8 @@ let axisListener = require("%rGui/controls/axisListener.nut")
 let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
 let { setMoveControlByArrows } = require("hudState")
 let { enabledControls, isAllControlsEnabled, isControlEnabled } = require("%rGui/controls/disabledControls.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { isMpStatisticsActive } = require("%appGlobals/clientState/clientState.nut")
 
 let stickZoneSize = [shHud(40), shHud(40)]
 let bgRadius = shHud(15)
@@ -23,6 +26,8 @@ let imgArrowSmallH = (23.0 / 35 * imgArrowW).tointeger()
 let imgArrowSmallPosX = 0.35 * imgBgSize + 0.5 * imgArrowSmallW
 let imgArrowSmallPosY = 0.35 * imgBgSize + 0.5 * imgArrowSmallH
 let stickSize = shHud(11)
+
+let isGamepadActive = Computed(@() isGamepad.value && !isMpStatisticsActive.value)
 
 let isTankMoveEnabled = Computed(@()
   isControlEnabled("gm_throttle", enabledControls.get(), isAllControlsEnabled.get())
@@ -113,7 +118,7 @@ let imgStick = {
 let tankMoveStickBase  = @() {
   watch = [IsTracked, currentTankMoveCtrlType]
   key = currentTankMoveCtrlType
-  behavior = Behaviors?.TouchScreenSteeringStick ?? Behaviors.TouchScreenStick
+  behavior = TouchScreenSteeringStick
   size = stickZoneSize
   touchStickAction = {
     horizontal = "gm_steering"
@@ -213,7 +218,7 @@ let tankGamepadStick = {
       children = fullImgBg
     }
     gamepadStick
-    gamepadAxisListener
+    isGamepadActive.value ? gamepadAxisListener : null
   ]
 }
 

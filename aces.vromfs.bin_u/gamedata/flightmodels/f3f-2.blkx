@@ -1693,7 +1693,7 @@
               "breechInCockpit": true
             },
             {
-              "trigger": "machine gun",
+              "trigger": "cannon",
               "blk": "gameData/Weapons/gunBrowning50_early.blk",
               "emitter": "flare2",
               "flash": "flare2",

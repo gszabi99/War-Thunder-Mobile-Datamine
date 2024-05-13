@@ -7,7 +7,7 @@ let iconSizeDefault  = evenPx(65)
 let lineWidth = hdpx(2)
 let maxTextWidth = hdpx(450)
 
-let translucentButtonsVGap = hdpx(30)
+let translucentButtonsVGap = hdpx(20)
 
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 

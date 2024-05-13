@@ -136,6 +136,7 @@ function mkDebriefingWndTabUnit(debrData, params) {
   return {
     comp
     timeShow
+    forceStopAnim = params.needBtnUnit
   }
 }
 

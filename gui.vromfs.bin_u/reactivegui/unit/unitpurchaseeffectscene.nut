@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { hide_unit, show_unit, play_fx_on_unit = @(...) null,
+let { hide_unit, show_unit, play_fx_on_unit,
   enable_scene_camera, disable_scene_camera, reset_camera_pos_dir,
 } = require("hangar")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")

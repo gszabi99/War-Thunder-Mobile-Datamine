@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { get_mission_time = @() ::get_mission_time() } = require("mission")
+let { get_mission_time } = require("mission")
 let { tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera } = require("%rGui/hudState.nut")
 let { hasCrosshairForWeapon, isCurHoldWeaponInCancelZone
 } = require("%rGui/hud/currentWeaponsStates.nut")

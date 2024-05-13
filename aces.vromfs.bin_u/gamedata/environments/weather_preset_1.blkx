@@ -11,22 +11,6 @@
       "maxExposure": 0.5,
       "initialExposure": 0.5
     },
-    "hdr": {
-      "useAdaptation": false,
-      "adaptationTimeHighToNorm": 0.25,
-      "adaptationTimeNormToHigh": 0.65,
-      "adaptationMultiplier": 0.65,
-      "targetBrightnessUp": 1.005,
-      "targetBrightnessEffect": 0.0,
-      "perceptionLinear": 0.85,
-      "perceptionPower": 0.8,
-      "fake": {
-        "adaptationMax": 0.5,
-        "adaptationMin": 0.5,
-        "lumMin": 0.68,
-        "lumMax": 0.95
-      }
-    },
     "DemonPostFx": {
       "use": true,
       "showAlpha": false,

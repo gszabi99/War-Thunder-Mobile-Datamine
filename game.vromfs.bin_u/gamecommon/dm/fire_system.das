@@ -17,7 +17,7 @@ require %game.events
 
 [es(no_order)]
 def fire_damage_init_es(evt : CmdInitComponent; var fire_damage__updateBurnInterval : float&)
-  fire_damage__updateBurnInterval = get_app().gameParams.updateBurnInterval
+  fire_damage__updateBurnInterval = get_game_params().updateBurnInterval
 
 
 [soa_es, es(tag=server, no_order)]
@@ -124,7 +124,7 @@ def fire_damage_process_start_burn_event(eid : EntityId;
     radius=radius.radius,
     finalRadius=radius.final_radius,
     atTime=at_time,
-    initiatorId=offender.bulletUID
+    initiatorId=offender |> get_bullet_uid()
   ]], fd)
 
   if fire_id >= 0 && !fire_damage__isBurn

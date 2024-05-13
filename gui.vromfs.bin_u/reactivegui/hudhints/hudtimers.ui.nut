@@ -112,7 +112,7 @@ let timers = [
 ]
 
 function progressCircle(timer) {
-  let { startTime = 0, endTime = 0, isForward = true } = timer
+  let { startTime = 0, endTime = 0, isForward = true, isPaused = false } = timer
   let timeLeft = endTime - get_time_msec()
   local startValue = startTime >= endTime ? 1.0
     : lerpClamped(startTime, endTime, 0.0, 1.0, get_time_msec())
@@ -127,7 +127,7 @@ function progressCircle(timer) {
     bgColor = 0x33555555
     fValue = isForward ? 1.0 : 0.0
     animations = timeLeft <= 0 ? null
-      : [{ prop = AnimProp.fValue, from = startValue, duration = 0.001 * timeLeft, play = true }]
+      : [{ prop = AnimProp.fValue, from = startValue, duration = !isPaused ? 0.001 * timeLeft : 1000000.0, play = true }]
   }
 }
 

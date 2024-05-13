@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
+let { Indicator } = require("wt.behaviors")
 let { crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { register_command } = require("console")
@@ -74,7 +75,7 @@ function fake_crosshair(p) {
   let { penetration = true, offsetX = 0, offsetY = 0, offsetZ = 0} = p
   return {
     transform = {}
-    behavior = Behaviors.Indicator
+    behavior = Indicator
     useTargetCenterPos = true
     offsetX
     offsetY

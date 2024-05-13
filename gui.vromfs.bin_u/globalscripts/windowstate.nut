@@ -9,7 +9,7 @@ let windowInactiveFlags = hardPersistWatched("globals.windowInactiveFlags", {})
 let windowActive = Computed(@() windowInactiveFlags.value.len() == 0)
 local needDebug = false
 
-let function blockWindow(flag) {
+function blockWindow(flag) {
   if (flag in windowInactiveFlags.value)
     return
   if (needDebug)
@@ -17,7 +17,7 @@ let function blockWindow(flag) {
   windowInactiveFlags.mutate(@(v) v[flag] <- true)
 }
 
-let function unblockWindow(flag) {
+function unblockWindow(flag) {
   if (flag not in windowInactiveFlags.value)
     return
   if (needDebug)

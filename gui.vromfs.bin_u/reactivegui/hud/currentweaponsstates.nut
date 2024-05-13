@@ -133,6 +133,16 @@ local visibleWeaponsList = Computed(function(prev) {
   let res = []
   let { insertIdx = 0, guns = [] } = gunsList.value
   local gunsIdx = 0
+  let explosiveMass = {}
+  foreach (_, weapon in weaponsList.value) {
+    let actionType = weaponsButtonsConfig[weapon]?.actionType
+    if(actionType != null) {
+      let mass = actionBarItems.value?[actionType]?.explosiveMass
+      if (mass != null && mass > 0)
+        explosiveMass[mass] <- (explosiveMass?[mass] ?? 0) + 1
+    }
+  }
+  let counts = {}
   foreach (idx, weapon in weaponsList.value) {
     let config = weaponsButtonsConfig[weapon]
     local actionItem = null
@@ -147,7 +157,21 @@ local visibleWeaponsList = Computed(function(prev) {
           continue
       }
     }
-    res.append({ id = weapon, actionItem })
+
+    if ((weapon == "EII_ROCKET" || weapon == "EII_ROCKET_SECONDARY")
+      && "explosiveMass" in actionItem && actionItem.explosiveMass > 0) {
+      counts[actionItem.explosiveMass] <- (counts?[actionItem.explosiveMass] ?? -1) + 1
+      let viewCfg = {
+        selShortcut = weapon
+        number = explosiveMass[actionItem.explosiveMass] == 0 ? -1 : counts[actionItem.explosiveMass]
+      }.__merge(config)
+      if(counts[actionItem.explosiveMass] > 0)
+        viewCfg.getImage <- weaponsButtonsConfig["EII_ROCKET"].getImage
+      res.append({ id = weapon, actionItem, viewCfg })
+    }
+    else
+      res.append({ id = weapon, actionItem })
+
     if (idx < insertIdx)
       gunsIdx = res.len()
   }

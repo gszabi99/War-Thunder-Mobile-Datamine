@@ -25,10 +25,10 @@ return @() {
       onAttach = @() startActionBarUpdate("shipHud")
       onDetach = @() stopActionBarUpdate("shipHud")
       children = [
-        hudTopLeft
         hudBottomCenter
         hudTopMainLog
         hudTuningElems
+        hudTopLeft
         threatRocketsBlock
         hudTimersBlock
         shipSight

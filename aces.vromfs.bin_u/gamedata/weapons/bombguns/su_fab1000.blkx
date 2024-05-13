@@ -16,6 +16,7 @@
     "explosiveMass": 350.0,
     "bombType": "he_bomb",
     "bombName": "fab1000sv_39",
+    "bulletName": "su_fab1000",
     "dragCx": 0.134,
     "caliber": 0.502,
     "length": 3.536,

@@ -139,15 +139,14 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
                       ammo_stowage__delayedOffender : OffenderData;
                       ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                       ammo_stowages__weaponTriggersRange : IPoint2List;
-                      ammo_stowages__numAmmo : IPoint3List- const;
-                      ammo_stowages__numAmmoFirstStage : IPoint3List- const;
                       ammo_stowages__state : UInt32List- const;
                       ammo_stowages__clustersRange : IPoint2List;
-                      ammo_clusters__type : IntList;
+                      ammo_clusters__typeAndStage : UInt16List;
                       ammo_clusters__state : UInt32List;
                       ammo_clusters__fireParamsId : IntList;
                       ammo_clusters__fireEvtId : IntList;
                       ammo_stowage__weaponTriggers : IntList;
+                      ammo_clusters__numAmmo : IPoint3List- const;
                       ammo_clusters__slotsRange : IPoint2List;
                       ammo_clusters__exterminatedAmmo : IntList;
                       ammo_slots__state : UInt32List- const;
@@ -205,13 +204,12 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
                            ammo_stowages__weaponTriggersRange : IPoint2List;
                            ammo_stowage__weaponTriggers : IntList;
                            ammo_stowages__state : UInt32List- const;
-                           ammo_stowages__numAmmo : IPoint3List- const;
-                           ammo_stowages__numAmmoFirstStage : IPoint3List- const;
                            ammo_stowages__clustersRange : IPoint2List;
-                           ammo_clusters__type : IntList;
+                           ammo_clusters__typeAndStage : UInt16List;
                            ammo_clusters__state : UInt32List;
                            ammo_clusters__exterminatedAmmo : IntList;
                            ammo_clusters__explosionEvtId : IntList;
+                           ammo_clusters__numAmmo : IPoint3List- const;
                            ammo_clusters__slotsRange : IPoint2List;
                            ammo_slots__state : UInt32List- const;
                            ammo_slots__numAmmo : IPoint2List- const;
@@ -275,8 +273,6 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_stowage__ammoLost : int-const;
                                       ammo_stowage__delayedOffender : OffenderData- const;
                                       ammo_stowages__state : UInt32List- const;
-                                      ammo_stowages__numAmmo : IPoint3List- const;
-                                      ammo_stowages__numAmmoFirstStage : IPoint3List- const;
                                       ammo_stowages__clustersRange : IPoint2List;
                                       ammo_clusters__fireParamsId : IntList;
                                       ammo_clusters__fireEvtId : IntList;
@@ -284,9 +280,10 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_stowages__weaponTriggersRange : IPoint2List;
                                       ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                                       ammo_stowage__weaponTriggers : IntList;
-                                      ammo_clusters__type : IntList;
+                                      ammo_clusters__typeAndStage : UInt16List;
                                       ammo_clusters__state : UInt32List- const;
                                       ammo_clusters__exterminatedAmmo : IntList;
+                                      ammo_clusters__numAmmo : IPoint3List- const;
                                       ammo_clusters__slotsRange : IPoint2List;
                                       ammo_slots__state : UInt32List- const;
                                       ammo_slots__partId : PartIdList;
@@ -439,7 +436,7 @@ def ammo_stowage_do_explosion(eid : EntityId; part_id : PartId; offender : Offen
                                 ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                 ammo_stowage__detonatePortion : float2;
                                 ammo_stowage__partIdRemap : IPoint4List;
-                                ammo_clusters__type : IntList;
+                                ammo_clusters__typeAndStage : UInt16List;
                                 ammo_clusters__state : UInt32List- const;
                                 ammo_clusters__exterminatedAmmo : IntList- const;
                                 ammo_clusters__slotsRange : IPoint2List;
@@ -454,7 +451,12 @@ def ammo_stowage_do_explosion(eid : EntityId; part_id : PartId; offender : Offen
     ammo_stowage_do_explosion_fatal(eid, -1, -1, part_id, offender, seed, is_full_expl) <| v
     return
 
-  if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_EXPLODE) || v.ammo_clusters__type[remap.clusterId] == int(AmmoClusterType CHARGES)
+  if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_EXPLODE)
+    return
+
+  // Hack! Charges don't have explosion, only fire
+  if get_ammo_cluster_type(remap.clusterId, v) == int(AmmoClusterType CHARGES)
+    ammo_stowage_do_fire(eid, part_id, offender) <| v
     return
 
   if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState EXPLOSION_FATAL)
@@ -487,7 +489,7 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
                                           ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                           ammo_stowage__detonatePortion : float2;
                                           ammo_stowage__partIdRemap : IPoint4List;
-                                          ammo_clusters__type : IntList;
+                                          ammo_clusters__typeAndStage : UInt16List;
                                           ammo_clusters__state : UInt32List- const;
                                           ammo_clusters__exterminatedAmmo : IntList- const;
                                           ammo_clusters__slotsRange : IPoint2List;
@@ -504,7 +506,7 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
     return
 
   let should_be_hp = rel_hp_fixed_to_float(evt.hpFixed)
-  if get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_EXPL)
+  if get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_EXPL) || get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_FULL_EXPL)
     ammo_stowage_do_explosion(eid, partId, evt.offender, evt.seed, evt.dmEffects) <| v
   elif get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_FIRE)
     ammo_stowage_do_fire(eid, partId, evt.offender) <| v
@@ -529,7 +531,7 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
                                 ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                 ammo_stowage__detonatePortion : float2;
                                 ammo_stowage__partIdRemap : IPoint4List;
-                                ammo_clusters__type : IntList;
+                                ammo_clusters__typeAndStage : UInt16List;
                                 ammo_clusters__state : UInt32List- const;
                                 ammo_clusters__exterminatedAmmo : IntList- const;
                                 ammo_clusters__damageEffectPresetId : IntList;
@@ -564,46 +566,11 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
   var dm_effects = 0
   var is_critical = false
   if on_kill
-    dm_effect_on_part_kill(*action, dm_effects, seed, is_critical) <| $(part_id, can_cut)
-      let allowed_dm_effects = (can_cut ? uint(DamageEffectsMask DM_EFFECTS_MASK_ALL) :
-                                          uint(DamageEffectsMask DM_EFFECTS_MASK_ALL) & ~uint(DamageEffectsMask DM_EFFECTS_MASK_CUT))
-      sendEvent(eid, [[EventUnitDoPartDamageOffender
-        partId=evt.partId,
-        offender=evt.offender,
-        damage=get_part_hp_prop_value(dm.dmData, part_id),
-        damageTypeId=evt.damageTypeId,
-        chanceMult=1.0f,
-        chanceMultFire=1.0f,
-        chanceMultExplFuel=1.0f,
-        pos=float3(0.0f),
-        dir=float3(0.0f, 1.0f, 0.0f),
-        damageEvent=null,
-        allowedDmEffects=int(allowed_dm_effects)
-      ]])
+    dm_effect_on_part_kill(*action, dm_effects, seed, is_critical)
   else
-    dm_effect_on_part_hit(
-      *action, get_dm_params().dmParams, dm_effects, seed, evt.effectProb, evt.prevHpFixed, is_critical,
-      $ [unused_argument(part_id)] (effect_type, part_id) {
-        return effect_type == int(DamageEffectType DM_EFFECT_FIRE) ? evt.effectProbFire : 1.0f;
-      }
-    ) <| $(part_id, can_cut)
-      let allowed_dm_effects = (can_cut ? uint(DamageEffectsMask DM_EFFECTS_MASK_ALL) :
-                                          uint(DamageEffectsMask DM_EFFECTS_MASK_ALL) & ~uint(DamageEffectsMask DM_EFFECTS_MASK_CUT))
-      sendEvent(eid, [[EventUnitDoPartDamageOffender
-        partId=evt.partId,
-        offender=evt.offender,
-        damage=get_part_hp_prop_value(dm.dmData, part_id),
-        damageTypeId=evt.damageTypeId,
-        chanceMult=1.0f,
-        chanceMultFire=1.0f,
-        chanceMultExplFuel=1.0f,
-        pos=float3(0.0f),
-        dir=float3(0.0f, 1.0f, 0.0f),
-        damageEvent=null,
-        allowedDmEffects=int(allowed_dm_effects)
-      ]])
+    dm_effect_on_part_hit(*action, get_dm_params().dmParams, dm_effects, seed, evt.effectProb, evt.effectProbFire, evt.prevHpFixed, is_critical)
 
-  if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_EXPL)
+  if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_EXPL) || get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FULL_EXPL)
     ammo_stowage_do_explosion(eid, remap.partId, evt.offender, seed, dm_effects) <| v
     return
   if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FIRE)

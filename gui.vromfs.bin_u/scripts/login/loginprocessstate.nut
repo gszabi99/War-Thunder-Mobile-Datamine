@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import pause_game, sign_out
 from "%scripts/dagui_library.nut" import *
 
-let { registerRespondent } = require("%appGlobals/scriptRespondents.nut")
+let { registerRespondent } = require("scriptRespondent")
 let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")

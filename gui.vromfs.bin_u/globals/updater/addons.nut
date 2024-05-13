@@ -2,7 +2,7 @@ let { loc, doesLocTextExist } = require("dagor.localize")
 let { get_settings_blk } = require("blkGetters")
 let { logerr } = require("dagor.debug")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { get_addon_size, get_addons_size = null } = require("contentUpdater")
+let { get_addons_size } = require("contentUpdater")
 let { startswith, endswith } = require("string")
 let { unique } = require("%sqstd/underscore.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
@@ -41,6 +41,7 @@ let gameModeAddonToAddonSetMap = {
 let campaignPostfix = {
   tanks = "ground"
   ships = "naval"
+  air = "aircraft"
 }
 
 let toIdsMap = @(list) list
@@ -126,21 +127,23 @@ function getAddonNameImpl(addon) {
   local locId = addonLocId?[addon]
   if (locId != null)
     return locId == "" ? "" : loc(locId)
-  if (!startswith(addon, "pkg_tier_")) {
-    let res = calcCommonAddonName(addon)
-    if (res != null)
-      return res
-    if (endswith(addon, "_hq"))
-      return calcCommonAddonName(addon.slice(0, addon.len() - 3)) ?? addon
-    return addon
+
+  if (startswith(addon, "pkg_tier_") || startswith(addon, "pkg_common_")) {
+    let list = addon.split("_")
+    let postfixIdx = list.len() - (list.top() == "hq" ? 2 : 1)
+    let postfix = list[postfixIdx]
+    let tier = toIntegerSafe(list[postfixIdx - 1])
+    if (tier <= 0)
+      return loc($"addon/{postfix}").replace(" ", nbsp)
+    return loc($"addon/{postfix}_tier", { tier = getRomanNumeral(tier) }).replace(" ", nbsp)
   }
-  let list = addon.split("_")
-  let postfixIdx = list.len() - (list.top() == "hq" ? 2 : 1)
-  let postfix = list[postfixIdx]
-  let tier = toIntegerSafe(list[postfixIdx - 1])
-  if (tier <= 0)
-    return loc($"addon/{postfix}").replace(" ", nbsp)
-  return loc($"addon/{postfix}_tier", { tier = getRomanNumeral(tier) }).replace(" ", nbsp)
+
+  let res = calcCommonAddonName(addon)
+  if (res != null)
+    return res
+  if (endswith(addon, "_hq"))
+    return calcCommonAddonName(addon.slice(0, addon.len() - 3)) ?? addon
+  return addon
 }
 
 let addonNames = {}
@@ -175,12 +178,8 @@ function localizeAddonsLimited(list, maxNumber) {
   })
 }
 
-let getAddonsSizeInBytes = @(addons) get_addons_size != null
-  ? get_addons_size(unique(addons))
-  : unique(addons).reduce(@(res, addon) res + get_addon_size(addon), 0)
-
 function getAddonsSizeStr(addons) {
-  let bytes = getAddonsSizeInBytes(addons)
+  let bytes = get_addons_size(unique(addons))
   let mb = (bytes + (MB / 2)) / MB
   return "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
 }

@@ -22,7 +22,7 @@ let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign, queueDataChec
 let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
 let { curUnitName } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 let isSquadActualizeSend = mkWatched(persist, "isSquadActualizeSend", false)
 

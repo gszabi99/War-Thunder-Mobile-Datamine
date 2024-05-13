@@ -1,5 +1,6 @@
 {
   "curCircuit": "wtm-dev",
+  "useMQForStats": true,
   "baseP2PPort": 20010,
   "maxP2PConnections": 200,
   "voiceMinPort": 20400,
@@ -125,6 +126,11 @@
     "disableAsserts": true,
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
+    "androidExitOnANR": {
+      "APP_CMD_TERM_WINDOW": true,
+      "APP_CMD_GAINED_FOCUS": true,
+      "APP_CMD_LOST_FOCUS": true
+    },
     "contentUpdater": {
       "enabled": true,
       "strictVersionCheck": false,
@@ -371,7 +377,9 @@
     "skinsDecalsCacheSz": 1073741824,
     "disableAsserts": true,
     "androidExitOnANR": {
-      "APP_CMD_TERM_WINDOW": true
+      "APP_CMD_TERM_WINDOW": true,
+      "APP_CMD_GAINED_FOCUS": true,
+      "APP_CMD_LOST_FOCUS": true
     },
     "contentUpdater": {
       "enabled": true,

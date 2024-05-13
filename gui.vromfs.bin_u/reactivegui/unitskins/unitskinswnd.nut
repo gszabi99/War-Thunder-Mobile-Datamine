@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/config/skins/skinTags.nut" import *
+let { HangarCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { closeUnitSkins, unitSkinsOpenCount, unitSkins, selectedSkin, currentSkin,
@@ -488,7 +489,7 @@ let unitSkinsGamercard = {
 let unitSkinsWnd = {
   key = {}
   size = flex()
-  behavior = Behaviors.HangarCameraControl
+  behavior = HangarCameraControl
   flow = FLOW_VERTICAL
   children = [
     unitSkinsGamercard

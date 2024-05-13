@@ -1,6 +1,9 @@
 from "shortcutConsts.nut" import *
+let { isReplayShortcuts } = require("shortcutFlags.nut")
+let { get_game_params_blk } = require("blkGetters")
 
-let allShortcuts = {
+let allShortcuts = isReplayShortcuts ? {}
+: {
   ID_FLIGHTMENU = "J:Start" //can't be changed. Need here for correct show in the controls help.
   ID_CONTINUE = "J:RT | Space"
   ID_CAMERA_NEUTRAL =  "J:LS | N"
@@ -19,10 +22,10 @@ let allShortcuts = {
   ID_SMOKE_SCREEN_GENERATOR = "J:D.Right | 4"
   ID_SMOKE_SCREEN = "J:D.Right | 4"
   ID_ACTION_BAR_ITEM_11 = "J:D.Left | 5" //toolkit
-  ID_ACTION_BAR_ITEM_6 = "J:D.Left | 5" //extinguisher
+  ID_ACTION_BAR_ITEM_6 = "J:D.Up | 7" //extinguisher
   ID_SHOW_HERO_MODULES = "J:X | 6"
 
-  ID_ACTION_BAR_ITEM_10 = "J:D.Up | Q" //winch
+  ID_ACTION_BAR_ITEM_10 = "J:LB | Q" //winch
   ID_NEXT_BULLET_TYPE = "J:Y | E"
 
   ID_TRANS_GEAR_UP = "W | Up"
@@ -95,11 +98,22 @@ let gamepadAxes = {
   mouse_aim_x = JOY_XBOX_REAL_AXIS_R_THUMB_H
   mouse_aim_y = JOY_XBOX_REAL_AXIS_R_THUMB_V
   throttle_axis = JOY_XBOX_REAL_AXIS_L_THUMB_V
+  rudder = JOY_XBOX_REAL_AXIS_R_THUMB_H
+  elevator = JOY_XBOX_REAL_AXIS_R_THUMB_V
+}
+
+let aircraftControlByGyro = get_game_params_blk()?.aircraftControlByGyro ?? {}
+
+let gyroAxes = {
+  ailerons = GYRO_AXIS_NULL + (aircraftControlByGyro?.ailerons ?? 0)
+  elevator = GYRO_AXIS_NULL + (aircraftControlByGyro?.elevator ?? 1)
+  rudder = GYRO_AXIS_NULL + (aircraftControlByGyro?.rudder ?? 2)
 }
 
 return {
   allShortcuts
   gamepadAxes
+  gyroAxes
   allShortcutsUp = allShortcuts.map(@(s) $"^{s}")
   gamepadShortcuts = allShortcuts.map(@(s) s.split(" | ").findvalue(@(v) v.startswith("J:")))
     .filter(@(s) s != null)

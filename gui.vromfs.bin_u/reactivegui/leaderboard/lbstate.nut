@@ -8,8 +8,7 @@ let { curLbData, curLbSelfRow, setLbRequestData, curLbErrName,
 } = require("lbStateBase.nut")
 let { lbCfgById } = require("lbConfig.nut")
 let { lbPageRows } = require("lbStyle.nut")
-let { userstatStats } = require("%rGui/unlocks/userstat.nut")
-let { unlockTables } = require("%rGui/unlocks/unlocks.nut")
+let { userstatStats, seasonIntervals } = require("%rGui/unlocks/userstat.nut")
 
 
 const REFRESH_PERIOD = 10.0
@@ -42,6 +41,10 @@ let requestDataInternal = keepref(Computed(function() {
   if (lbTable == null || sortBy == null || !isLoggedIn.value)
     return null
 
+  let curSeasonIntervals = seasonIntervals.get()?[lbTable] ?? {}
+  let { prevInterval = null, interval = null } = curSeasonIntervals
+
+  let isCurSeasonActive = interval?.isActive ?? false
   let newData =  {
     appid = APP_ID
     table = lbTable
@@ -51,7 +54,9 @@ let requestDataInternal = keepref(Computed(function() {
     start = lbPage.value * lbPageRows
     resolveNick = 1
     group = ""
-    history = unlockTables.get()?[lbTable] ? 0 : 1
+    tableIndex = isCurSeasonActive ? interval.index
+      : prevInterval != null ? prevInterval.index
+      : 0
   }
   return newData
 }))

@@ -116,6 +116,18 @@
   "iPhone 14 Pro Max": {
     "batterySize": 4323
   },
+  "iPhone 15": {
+    "batterySize": 3367
+  },
+  "iPhone 15 Plus": {
+    "batterySize": 4407
+  },
+  "iPhone 15 Pro": {
+    "batterySize": 3290
+  },
+  "iPhone 15 Pro Max": {
+    "batterySize": 4422
+  },
   "iPad 1": {
     "batterySize": 6600
   },

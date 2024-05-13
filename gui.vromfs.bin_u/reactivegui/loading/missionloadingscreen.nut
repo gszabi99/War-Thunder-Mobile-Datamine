@@ -110,6 +110,7 @@ return @() {
         }
         {
           size = flex()
+          transform = { scale = [2.5, 1] }
           rendObj = ROBJ_IMAGE
           image = Picture("ui/images/loading/briefingshade.avif:0:P")
         }

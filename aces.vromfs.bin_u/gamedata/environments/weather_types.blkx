@@ -22,11 +22,11 @@
     "clouds_weather_gen": {
       "layers[0].coverage": [
         0.0,
-        0.0
+        0.2
       ],
       "layers[1].coverage": [
         0.0,
-        0.0
+        0.2
       ],
       "layers[0].seed": [
         0.0,

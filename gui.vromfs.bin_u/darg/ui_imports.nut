@@ -1,5 +1,5 @@
 from "%sqstd/frp.nut" import Watched, Computed, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug, make_all_observables_immutable
-
+let bhvModule = require_optional("daRg.behaviors")
 let {tostring_r} = require("%sqstd/string.nut")
 let logLib = require("%sqstd/log.nut")
 
@@ -28,7 +28,9 @@ let logs = {
   logerr = log.logerr
   wlog = log.wlog
   wdlog = @(watched, prefix = null, transform=null) log.wlog(watched, prefix, transform, log.dlog) //disable: -dlog-warn
+}
 
+let frpExtras = {
   Watched
   Computed
   FRP_INITIAL
@@ -37,7 +39,14 @@ let logs = {
   make_all_observables_immutable
 }
 
-if (getconsttable()?.Behaviors == null)
-  logs.Behaviors <- require("daRg.behaviors")
+let res = require("daRg").__merge(
+  require("darg_library.nut")
+  require("%sqstd/functools.nut")
+  logs
+  frpExtras
+)
 
-return require("daRg").__merge(require("darg_library.nut"), require("%sqstd/functools.nut"), logs)
+if (bhvModule != null)
+  res.Behaviors <- bhvModule
+
+return res

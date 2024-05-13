@@ -4,6 +4,9 @@ let { AirThrottleMode, AirParamsMain } = require("%globalScripts/sharedEnums.nut
 let interopGen = require("%rGui/interopGen.nut")
 let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO } = AirParamsMain
+let { use_mgun_as_cannon_by_trigger } = require("hudAircraftStates")
+
+use_mgun_as_cannon_by_trigger(true)
 
 let MainMask         = Watched(0)
 let Trt0             = Watched(0)
@@ -14,7 +17,8 @@ let MGun0            = Watched({ count = 0, time = -1, endTime = -1 }) // -dupli
 let BombsState       = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
 let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
 let TorpedoesState   = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
-
+let cannonsOverheat  = Watched(0)
+let mgunsOverheat  = Watched(0)
 
 let airState = {
   TrtMode0
@@ -25,6 +29,8 @@ let airState = {
   MGun0
   hasCanon0  = Computed(@() (MainMask.get() & (1 << CANNON_1)) != 0)
   hasMGun0   = Computed(@() (MainMask.get() & (1 << MACHINE_GUNS_1)) != 0)
+  cannonsOverheat
+  mgunsOverheat
 
   BombsState
   RocketsState
@@ -63,6 +69,13 @@ registerInteropFunc("updateCannonsArray", function(index, count, _seconds, _sele
   let p = Cannon0.get()
   if (p.count != count || p.time != time || p.endTime != endTime)
     Cannon0.set({ count, time, endTime })
+})
+
+registerInteropFunc("updateGunsOverheat", function(cannons_overheat, mguns_overheat) {
+  if (cannonsOverheat.get() != cannons_overheat)
+    cannonsOverheat.set(cannons_overheat)
+  if (mgunsOverheat.get() != mguns_overheat)
+    mgunsOverheat.set(mguns_overheat)
 })
 
 registerInteropFunc("updateMachineGunsArray", function(index, count, _seconds, _selected, time, endTime, _mode) {

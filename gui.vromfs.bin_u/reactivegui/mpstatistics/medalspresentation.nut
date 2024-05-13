@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { date = null } = require_optional("datetime")
+let { date } = require("datetime")
 let { format } = require("string")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
@@ -32,13 +32,10 @@ function mkLbMedalTop10(medal) {
         valign =  ALIGN_CENTER
         children = [mkText(loc($"lb/{medal.name}/desc"))].extend(
           medal.list.map(function(v){
-            local text = loc($"events/name/{v.details.replace(":", "_")}")
-            if (date != null) {
-              let d = date(v.time)
-              let time = format("%04d-%02d-%02d", d.year, d.month + 1, d.day) //ISO 8601
-              text = $"{text} {time}"
-            }
-            return mkText(text)
+            let d = date(v.time)
+            let time = format("%04d-%02d-%02d", d.year, d.month + 1, d.day) //ISO 8601
+            let desc = loc($"events/name/{v.details.replace(":", "_")}")
+            return mkText($"{desc} {time}")
           }))
       }
       flow = FLOW_HORIZONTAL

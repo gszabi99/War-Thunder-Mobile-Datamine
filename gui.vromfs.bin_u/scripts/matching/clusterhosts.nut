@@ -8,7 +8,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getForbiddenClustersByCountry } = require("%appGlobals/defaultClusters.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 const MAX_FETCH_RETRIES = 5
 const MAX_FETCH_DELAY_SEC = 60

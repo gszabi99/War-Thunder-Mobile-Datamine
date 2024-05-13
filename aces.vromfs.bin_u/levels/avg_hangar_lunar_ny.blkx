@@ -46,7 +46,9 @@
     2048.0,
     2048.0
   ],
+  "useGuiLevelMap": false,
   "customLevelMap": "avg_abandoned_factory_tankmap*",
+  "customLevelTankMap": "avg_abandoned_factory_tankmap*",
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
   "water_level": 7.0,

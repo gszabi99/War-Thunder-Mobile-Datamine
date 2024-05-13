@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { HangarCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
-let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
+let { translucentButtonsVGap, translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
+let { gamercardGap, CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { unitSpecificItems } = require("%appGlobals/unitSpecificItems.nut")
@@ -41,11 +42,12 @@ let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { toBattleButtonForRandomBattles } = require("%rGui/mainMenu/toBattleButton.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let boostersListActive = require("%rGui/boosters/boostersListActive.nut")
+let { boostersListActive, boostersHeight } = require("%rGui/boosters/boostersListActive.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
+let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -160,7 +162,10 @@ let leftBottomButtons = btnVerRow([
   }
   btnHorRow([
     btnVerRow([
-      btnOpenUnitAttr
+      @() {
+        watch = curCampaign
+        children = curCampaign.get() != "air" ? btnOpenUnitAttr  : null
+      }
       btnOpenUnitsTree
     ])
     btnVerRow([
@@ -168,6 +173,12 @@ let leftBottomButtons = btnVerRow([
       downloadInfoBlock
     ])
   ])
+  // TODO: slotbar
+  @() curCampaign.get() != "air" ? { watch = curCampaign }
+    : {
+        watch = curCampaign
+        size = [unitPlateTiny[0] * 4 + hdpx(30), unitPlateTiny[1] + translucentButtonsHeight * 0.8]
+      }
 ])
 
 let gamercardBattleItemsBalanceBtns = @(){
@@ -175,9 +186,9 @@ let gamercardBattleItemsBalanceBtns = @(){
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
-  children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName)))
-    .extend(itemsOrder.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES))))
-    .extend(unitSpecificItems.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES))))
+  children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName), CS_COMMON))
+    .extend(itemsOrder.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_COMMON)))
+    .extend(unitSpecificItems.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_COMMON)))
 }
 
 let toBattleButtonPlace = {
@@ -187,10 +198,23 @@ let toBattleButtonPlace = {
   flow = FLOW_VERTICAL
   children = [
     {
+      halign = ALIGN_RIGHT
+      flow = FLOW_VERTICAL
+      children = [
+        squadPanel
+        @() {
+          watch = serverConfigs
+          size = [SIZE_TO_CONTENT, boostersHeight]
+          valign = ALIGN_CENTER
+          children = (serverConfigs.get()?.allBoosters.len() ?? 0) > 0 ? boostersListActive : null
+        }
+      ]
+    }
+    {
       pos = [saBorders[0] * 0.5, 0]
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
-      padding = [ hdpx(24), saBorders[0] * 0.5, hdpx(12), saBorders[0] * 0.5 ]
+      padding = [ hdpx(12), saBorders[0] * 0.5]
       texOffs = [0 , gradDoubleTexOffset]
       screenOffs = [0, hdpx(70)]
       color = 0x50000000
@@ -202,17 +226,7 @@ let toBattleButtonPlace = {
         mkMRankRange
       ]
     }
-    {
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(20)
-      children = [
-        @() {
-          watch = serverConfigs
-          children = (serverConfigs.get()?.allBoosters.len() ?? 0) > 0 ? boostersListActive : null
-        }
-        toBattleButtonForRandomBattles
-      ]
-    }
+    toBattleButtonForRandomBattles
   ]
 }
 
@@ -231,15 +245,14 @@ let bottomCenterBlock = {
   valign = ALIGN_BOTTOM
   children = [
     mkUnitPkgDownloadInfo(curUnit, false,
-      { pos = [0, -evenPx(150) - translucentButtonsVGap] })
-    squadPanel
+      { pos = [0, - unitPlateTiny[1] - translucentButtonsHeight * 0.8 - translucentButtonsVGap] })
   ]
 }
 
 return {
   key = {}
   size = saSize
-  behavior = Behaviors.HangarCameraControl
+  behavior = HangarCameraControl
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   onAttach = @() isMainMenuAttached(true)

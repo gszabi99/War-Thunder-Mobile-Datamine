@@ -55,6 +55,7 @@ let skinsByTag = {
     "ussr_camo_green_new-painty"
     "ussr_modern_forest"
     "ussr_camo_deform"
+    "chieftain_mk_10_skin"
   ],
 
   [DESERT] = [
@@ -84,6 +85,9 @@ let skinsByTag = {
     "ussr_camo_desert_yellow_brown"
     "tl_camo_desert_chopped"
     "isr_camo_sandgray"
+    "rsa_camo_dark_earth"
+    "rsa_camo_gray_earth_stone"
+    "us_t32_akai_victory"
     "ussr_t_34_85_zis_53_dislike"
   ],
 

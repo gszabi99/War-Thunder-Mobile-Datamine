@@ -3,12 +3,11 @@ let { Contact } = require("contact.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("contactPublicInfo.nut")
 let { mkContactOnlineStatus, presences } = require("contactPresence.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { darkenBgColor, borderWidth, avatarSize, rowHeight, gap,
+let { darkenBgColor, borderWidth, rowHeight, gap,
   contactNameBlock, contactAvatar, contactLevelBlock
 } = require("contactInfoPkg.nut")
 let { isInSquad, squadId, isInvitedToSquad, squadMembers } = require("%appGlobals/squadState.nut")
 let { onlineColor, offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
-
 
 function onlineBlock(uid, onlineStatus, battleUnit) {
   let onlineText = Computed(@() onlineStatus.value == null ? ""
@@ -23,7 +22,6 @@ function onlineBlock(uid, onlineStatus, battleUnit) {
     : "")
   return @() {
     watch = [onlineText, squadText]
-    size = [2 * avatarSize, flex()]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_TEXTAREA
@@ -32,7 +30,7 @@ function onlineBlock(uid, onlineStatus, battleUnit) {
   }.__update(fontVeryTiny)
 }
 
-function mkContactRow(uid, rowIdx, isSelected, onClick) {
+function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null) {
   let userId = uid.tostring()
   let contact = Contact(userId)
   let info = mkPublicInfo(userId)
@@ -64,6 +62,10 @@ function mkContactRow(uid, rowIdx, isSelected, onClick) {
       contactLevelBlock(info.value)
       contactAvatar(info.value)
       contactNameBlock(contact.value, info.value)
+      {
+        size = flex()
+      }
+      responseAction
       onlineBlock(uid.tointeger(), onlineStatus, battleUnit)
     ]
   }

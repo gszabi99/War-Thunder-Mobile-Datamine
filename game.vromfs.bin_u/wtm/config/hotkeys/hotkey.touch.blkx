@@ -9,10 +9,16 @@
         "keyboardKey": 57
       },
       "ID_REPLAY_FASTER": {
-        "keyboardKey": 201
+        "keyboardKey": 200
       },
       "ID_REPLAY_SLOWER": {
-        "keyboardKey": 209
+        "keyboardKey": 208
+      },
+      "ID_REPLAY_PREVIOUS_ANCHOR": {
+        "keyboardKey": 203
+      },
+      "ID_REPLAY_NEXT_ANCHOR": {
+        "keyboardKey": 205
       },
       "ID_REPLAY_CAMERA_FREE": {
         "keyboardKey": [
@@ -35,17 +41,52 @@
       "cam_strafe_rangeMin": {
         "keyboardKey": 30
       },
-      "ID_REPLAY_CAMERA_ZOOM_OUT": {
-        "keyboardKey": 44
-      },
-      "ID_REPLAY_CAMERA_ZOOM_IN": {
-        "keyboardKey": 45
-      },
+      "ID_REPLAY_CAMERA_ZOOM_OUT": [
+        {
+          "keyboardKey": 44
+        },
+        {
+          "mouseButton": 3
+        }
+      ],
+      "ID_REPLAY_CAMERA_ZOOM_IN": [
+        {
+          "keyboardKey": 45
+        },
+        {
+          "mouseButton": 4
+        }
+      ],
+      "ID_FREECAM_ZOOM_OUT": [
+        {
+          "mouseButton": 3
+        },
+        {
+          "keyboardKey": 44
+        }
+      ],
+      "ID_FREECAM_ZOOM_IN": [
+        {
+          "mouseButton": 4
+        },
+        {
+          "keyboardKey": 45
+        }
+      ],
       "cam_vert_rangeMax": {
         "keyboardKey": 18
       },
       "cam_vert_rangeMin": {
         "keyboardKey": 16
+      },
+      "ID_REPLAY_RESET_CAMERA_ROLL": {
+        "keyboardKey": 19
+      },
+      "cam_roll_rangeMax": {
+        "keyboardKey": 79
+      },
+      "cam_roll_rangeMin": {
+        "keyboardKey": 81
       }
     },
     "axes": {

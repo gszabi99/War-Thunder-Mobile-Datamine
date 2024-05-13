@@ -43,7 +43,7 @@ return function () {
             color = 0x90000000
             padding = [hdpx(20), horPadding, hdpx(20), horPadding ]
             flow = FLOW_VERTICAL
-            gap = hdpx(20)
+            gap = hdpx(10)
             halign = ALIGN_CENTER
             hplace = ALIGN_CENTER
             children = [

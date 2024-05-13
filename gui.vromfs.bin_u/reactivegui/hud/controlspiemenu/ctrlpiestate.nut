@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { Point2 } = require("dagor.math")
 let { deferOnce } = require("dagor.workcycle")
-let { MechState = null, get_gears_current_state = null, get_gears_next_toggle_state = null,
-  get_air_breaks_current_state = null, get_air_breaks_next_toggle_state = null,
-  get_flaps_current_state = null, get_flaps_next_toggle_state = null
-} = require_optional("hudAircraftStates")
-let { UNDEF = -1, NOT_INSTALLED = 0, NO_CONTROL = 1, IS_CUT_OFF = 2, OFF = 3, ON = 4 } = MechState
-let { HudTextId = null, get_localized_text_by_id = null } = require_optional("hudTexts")
-let { TXT_VOID = 0, TXT_NO_FLAPS = 1, TXT_FLAPS_ARE_SNAPPED_OFF = 2, TXT_FLAPS_RAISED = 3 } = HudTextId
+let { MechState, get_gears_current_state, get_gears_next_toggle_state,
+  get_air_breaks_current_state, get_air_breaks_next_toggle_state,
+  get_flaps_current_state, get_flaps_next_toggle_state
+} = require("hudAircraftStates")
+let { UNDEF, NOT_INSTALLED, NO_CONTROL, IS_CUT_OFF, OFF, ON } = MechState
+let { HudTextId, get_localized_text_by_id } = require("hudTexts")
+let { TXT_VOID, TXT_NO_FLAPS, TXT_FLAPS_ARE_SNAPPED_OFF, TXT_FLAPS_RAISED } = HudTextId
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
 let { playerUnitName, isUnitDelayed, isUnitAlive } = require("%rGui/hudState.nut")
@@ -37,10 +37,10 @@ let airBreaksActionLocId = {
   [IS_CUT_OFF] = "controls/airbrakeSnappedOff",
 }
 
-let ctrlPieCfgBase = get_gears_next_toggle_state == null ? [] : [
+let ctrlPieCfgBase = [
   {
     function mkView() {
-      let nextState = get_gears_next_toggle_state?()
+      let nextState = get_gears_next_toggle_state()
       return {
         label = loc(gearActionLocId?[nextState] ?? "hotkeys/ID_GEAR")
         icon = "icon_pie_chassis.svg"
@@ -48,24 +48,24 @@ let ctrlPieCfgBase = get_gears_next_toggle_state == null ? [] : [
       }
     }
     action = @() toggleShortcut("ID_GEAR")
-    isVisibleByUnit = @() isStateVisible(get_gears_current_state?())
+    isVisibleByUnit = @() isStateVisible(get_gears_current_state())
   }
   {
     function mkView() {
-      let nextFlapsState = get_flaps_next_toggle_state?()
+      let nextFlapsState = get_flaps_next_toggle_state()
       return {
         label = nextFlapsState in flapsActionLocId ? loc(flapsActionLocId[nextFlapsState])
-          : get_localized_text_by_id?(nextFlapsState)
+          : get_localized_text_by_id(nextFlapsState)
         icon = "icon_pie_flaps.svg"
         iconColor = nextFlapsState == TXT_FLAPS_ARE_SNAPPED_OFF ? brokenIconColor : 0xFFFFFFFF
       }
     }
     action = @() toggleShortcut("ID_FLAPS")
-    isVisibleByUnit = @() isFlapsVisible(get_flaps_current_state?())
+    isVisibleByUnit = @() isFlapsVisible(get_flaps_current_state())
   }
   {
     function mkView() {
-      let nextState = get_air_breaks_next_toggle_state?()
+      let nextState = get_air_breaks_next_toggle_state()
       return {
         label = loc(airBreaksActionLocId?[nextState] ?? "hotkeys/ID_AIR_BRAKE")
         icon = "icon_pie_brake.svg"
@@ -73,7 +73,7 @@ let ctrlPieCfgBase = get_gears_next_toggle_state == null ? [] : [
       }
     }
     action = @() toggleShortcut("ID_AIR_BRAKE")
-    isVisibleByUnit = @() isStateVisible(get_air_breaks_current_state?())
+    isVisibleByUnit = @() isStateVisible(get_air_breaks_current_state())
   }
 ]
 

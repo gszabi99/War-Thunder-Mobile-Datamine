@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { set_chat_handler = @(_) null, chat_set_mode, CHAT_MODE_ALL } = require("chat")
-let { get_mission_time = @() ::get_mission_time(), get_mplayer_by_name = @(n) require("mission").get_mplayers_list(-1, true).findvalue(@(p) p.name == n) } = require("mission")
+let { set_chat_handler, chat_set_mode, CHAT_MODE_ALL } = require("chat")
+let { get_mission_time, get_mplayer_by_name } = require("mission")
 let { INVALID_USER_ID } = require("matching.errors")
 let { allow_chat } = require("%appGlobals/permissions.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")

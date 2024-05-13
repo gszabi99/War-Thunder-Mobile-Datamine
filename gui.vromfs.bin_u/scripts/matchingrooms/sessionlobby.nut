@@ -35,7 +35,7 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { isInFlight } = require("gameplayBinding")
 let { format } = require("string")
 let { tostring_r } = require("%sqstd/string.nut")
-let matching = require("%scripts/matching_api.nut")
+let matching = require("%appGlobals/matching_api.nut")
 
 function is_my_userid(user_id) {
   if (type(user_id) == "string")

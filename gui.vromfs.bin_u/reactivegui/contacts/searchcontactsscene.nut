@@ -8,7 +8,7 @@ let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
 let mkContactRow = require("mkContactRow.nut")
 let { mkContactActionBtnPrimary, mkContactActionBtn } = require("mkContactActionBtn.nut")
 let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST,
-  INVITE_TO_SQUAD, REVOKE_INVITE
+  INVITE_TO_SQUAD, REVOKE_INVITE, PROFILE_VIEW
 } = require("contactActions.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
@@ -141,6 +141,7 @@ let buttons = @() {
   gap
   children = selectedUserId.value == null ? null
     : [
+        mkContactActionBtn(PROFILE_VIEW, selectedUserId.value, { hotkeys = ["^J:LT"] })
         mkContactActionBtn(REMOVE_FROM_BLACKLIST, selectedUserId.value, { hotkeys = ["^J:RB"] })
         mkContactActionBtn(ADD_TO_BLACKLIST, selectedUserId.value, { hotkeys = ["^J:RT"] })
         mkContactActionBtn(REVOKE_INVITE, selectedUserId.value, { hotkeys = ["^J:LB"] })

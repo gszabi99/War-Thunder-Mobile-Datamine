@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 
 const REPAY_TIME = 0.3
@@ -74,10 +74,12 @@ function hideTooltip() {
   state(null)
   curContent = null
   delayedTooltip = null
+  clearTimer(hideTooltip)
 }
 
 function showTooltip(rectOrPos, params) {
   delayedTooltip = null
+  clearTimer(hideTooltip)
   if (params == null) {
     hideTooltip()
     return
@@ -111,6 +113,16 @@ function showDelayedTooltip(rectOrPos, params, repayTime = REPAY_TIME) {
   hideTooltip()
   delayedTooltip = { rectOrPos, params }
   resetTimeout(repayTime, showDelayedTooltipImpl)
+}
+
+function showHint(rectOrPos, params, showTime) {
+  let hintOnCloseArea = { size = flex(), behavior = Behaviors.Button, onClick = hideTooltip }
+  let openParams = type(params) == "string"
+    ? { content = mkTooltipText(params, { children = hintOnCloseArea }) }
+    : params.__merge({ content = hintOnCloseArea.__merge({ children = params?.content }) })
+
+  showTooltip(rectOrPos, openParams)
+  resetTimeout(showTime, hideTooltip)
 }
 
 let withTooltipImpl = @(stateFlags, showFunc) function(sf) {
@@ -189,6 +201,7 @@ return {
   withHoldTooltip
   withTooltip
   tooltipDetach
+  showHint
 
   tooltipBg
   mkTooltipText

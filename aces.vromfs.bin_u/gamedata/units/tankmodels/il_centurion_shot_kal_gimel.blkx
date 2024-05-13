@@ -1231,6 +1231,19 @@
       },
       {
         "name": "engine_dm",
+        "onKill": [
+          {
+            "moduleStatusEffect": {
+              "name": "maxPowerMultTank",
+              "prob": 1.0
+            }
+          },
+          {
+            "fire": 0.5,
+            "nothing": 0.5,
+            "fHitCritical": true
+          }
+        ],
         "onHit": [
           {
             "damageType": "cumulative",
@@ -1272,12 +1285,7 @@
             "damageType": "fire",
             "fire": 0.1
           }
-        ],
-        "onKill": {
-          "fire": 0.5,
-          "nothing": 0.5,
-          "fHitCritical": true
-        }
+        ]
       },
       {
         "name": "transmission_dm",
@@ -1310,7 +1318,13 @@
             "damageType": "fire",
             "fire": 0.02
           }
-        ]
+        ],
+        "onKill": {
+          "moduleStatusEffect": {
+            "name": "maxSpeedMultTank",
+            "prob": 1.0
+          }
+        }
       },
       {
         "name": "wheel_r_drive_dm",
@@ -2091,58 +2105,6 @@
           "pitch": [
             -10.0,
             50.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner6",
-        "triggerGroup": "smoke",
-        "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
-        "weaponType": "rockets",
-        "startFx": "",
-        "useEmitter": true,
-        "emitter": "emtr_mortar_flame_21",
-        "emitterGenRange": [
-          1,
-          1
-        ],
-        "emitterGenFmt": "emtr_mortar_flame_%02d",
-        "createGunEffects": true,
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "allowableDelta": 360.0,
-        "salvo": 1,
-        "speedYaw": 24.0,
-        "speedPitch": 15.0,
-        "fireConeAngle": 1.0,
-        "bullets": 10,
-        "salvoAmount": 100.0,
-        "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_grenade",
-          "gun": "bone_grenade"
-        },
-        "limits": {
-          "yaw": [
-            -0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
           ]
         }
       },
@@ -3348,6 +3310,34 @@
               }
             },
             {
+              "trigger": "gunner7",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 90.0,
+              "speedPitch": 90.0,
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -5.0,
+                  10.0
+                ]
+              },
+              "turret": {
+                "head": "bone_mg_aa_h_03",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
+              }
+            },
+            {
               "trigger": "gunner6",
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
@@ -3363,12 +3353,13 @@
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "shotFreq": 0.2,
               "allowableDelta": 360.0,
               "salvo": 1,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
               "fireConeAngle": 1.0,
-              "bullets": 10,
+              "bullets": 30,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
@@ -3400,36 +3391,9 @@
               }
             },
             {
-              "trigger": "gunner7",
-              "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "bone_commander_sight_v",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "parkInDeadzone": false,
-              "speedYaw": 90.0,
-              "speedPitch": 90.0,
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -5.0,
-                  10.0
-                ]
-              },
-              "turret": {
-                "head": "bone_mg_aa_h_03",
-                "gun": "bone_commander_sight_v",
-                "gunnerDm": "commander_dm",
-                "verDriveDm": "commander_panoramic_sight_dm",
-                "horDriveDm": "commander_panoramic_sight_dm"
-              }
-            },
-            {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
+              "isSharedAmmoOnTriggerGroup": true,
               "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "startFx": "",
@@ -3444,13 +3408,70 @@
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "shotFreq": 0.2,
               "allowableDelta": 360.0,
-              "salvo": 2,
-              "salvoDelay": 0.5,
+              "salvo": 1,
+              "salvoDelay": 0.0,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
               "fireConeAngle": 1.0,
-              "bullets": 20,
+              "bullets": 0,
+              "salvoAmount": 100.0,
+              "ChainfireTime": 0.0,
+              "DelayAfterShoot": 5.0,
+              "AttackMaxDistance": 1000.0,
+              "AttackMaxRadius": 1000.0,
+              "AttackMaxHeight": 1000.0,
+              "accuracyAir": 0.0,
+              "accuracyGnd": 1.5,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "bone_grenade",
+                "gun": "bone_grenade"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "smoke",
+              "isSharedAmmoOnTriggerGroup": true,
+              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
+              "weaponType": "rockets",
+              "startFx": "",
+              "useEmitter": true,
+              "emitter": "emtr_mortar_flame_02",
+              "emitterGenRange": [
+                1,
+                20
+              ],
+              "emitterGenFmt": "emtr_mortar_flame_%02d",
+              "ignoreLoaderPenalty": true,
+              "createGunEffects": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.2,
+              "allowableDelta": 360.0,
+              "salvo": 1,
+              "salvoDelay": 0.0,
+              "speedYaw": 24.0,
+              "speedPitch": 15.0,
+              "fireConeAngle": 1.0,
+              "bullets": 0,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
