@@ -29,7 +29,7 @@ let { doll, dollEditView, speedText, speedTextEditView, crewDebuffs, crewDebuffs
   techDebuffs, techDebuffsEditView } = require("%rGui/hud/tankStateModule.nut")
 let { NEED_SHOW_POSE_INDICATOR, moveIndicator, moveIndicatorTankEditView
 } = require("%rGui/hud/components/moveIndicator.nut")
-let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
+let { mkFreeCameraButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
 let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")

@@ -17,7 +17,6 @@ let { playerUnitName, unitType } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity, currentAircraftCtrlType } = require("%rGui/options/options/airControlsOptions.nut")
 let { set_mouse_aim } = require("controlsOptions")
-let { isMpStatisticsActive } = require("%appGlobals/clientState/clientState.nut")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
 
 let maxThrottle = 100
@@ -49,7 +48,6 @@ let SHOW_MODEL_NAME_TIMEOUT = 7.0
 
 let throttleAxisVal = Watched(0)
 let isThrottleAxisActive = keepref(Computed(@() fabs(throttleAxisVal.value) > throttleDeadZone))
-let isGamepadActive = Computed(@() isGamepad.value && !isMpStatisticsActive.value)
 
 let knobColor = Color(230, 230, 230, 230)
 
@@ -108,9 +106,9 @@ function changeThrottleValue(val) {
 function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
   let imageComp = mkBtnImageComp(hotkey, hdpxi(50))
   return @() {
-    watch = [isVisible, isGamepadActive, isActive]
+    watch = [isVisible, isGamepad, isActive]
     key = imageComp
-    children = isVisible.value && isGamepadActive.value ? imageComp : null
+    children = isVisible.value && isGamepad.value ? imageComp : null
     transform = { scale = isActive.value ? [0.8, 0.8] : [1.0, 1.0] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   }.__update(ovr)
@@ -132,11 +130,11 @@ function throttleSlider() {
         / (maxThrottle - sliderWepValue) * throttleScaleHeight).tointeger()
   let knob = {
     size  = [knobSize + 2 * knobPadding, knobSize + 2 * knobPadding]
-    pos = [0, knobPos - knobPadding]
     hplace = ALIGN_CENTER
     padding = knobPadding
     children = [
       {
+        pos = [0, knobPos - knobPadding]
         size  = [knobSize, knobSize]
         fillColor = knobColor
         color = knobColor
@@ -339,10 +337,10 @@ let aircraftMovement = {
   children = [
     throttleSlider
     @() {
-      watch = [isGamepadActive, currentAircraftCtrlType, currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity]
+      watch = [isGamepad, currentAircraftCtrlType, currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity]
       children =[
         currentAircraftCtrlType.value == "control_by_gyro" ? gyroAxisListener : null
-        isGamepadActive.value ? (currentAircraftCtrlType.value == "mouse_aim" ? gamepadMouseAimAxisListener : gamepadAxisListener) : null
+        isGamepad.value ? (currentAircraftCtrlType.value == "mouse_aim" ? gamepadMouseAimAxisListener : gamepadAxisListener ): null
       ]
     }
   ]

@@ -1686,7 +1686,9 @@ Oyunun kök dizininde ""UserSkins"" klasöründe bulabilirsiniz.";"사용자 조
 "hints/shotFreq/high";"high";"haute";"alto";"hoch";"alta";"высокую";"високу";"duża";"elevada";"yüksek";"높음";"高";"高";"高";;
 "hints/shotFreq/low";"low";"basse";"basso";"niedrig";"baja";"низкую";"низьку";"mała";"baixa";"düşük";"낮음";"低";"低";"低";;
 "hud/standby";;;;;;;;;;;;;;;;
-"UI_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;"";
+"UI_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;;
+"hud/rocket_approaching";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}с";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";"x{count}: {time}s";;
+"UI_LANG_KEEP_IT_ALWAYS_LAST";;;;;;;;;;;;;;;;
 "hud/search";"SRC";"RCH";"SRC";"SRC";"SRC";"ПСК";"ПСК";"SRC";"SRC";"ARM";"탐색";"搜\t　\t索";"SRC";"搜\t　\t索";;
 "hud/acquisition";"ACQ";"ACQ";"ACQ";"ACQ";"ACQ";"ЗХВ";"ЗАХ";"ACQ";"ACQ";"KLT";"ACQ";"截\t　\t获";"ACQ";"截\t　\t獲";;
 "hud/ACM";"ACM";"ACM";"ACM";"ACM";"ACM";"БВБ";"БПБ";"ACM";"ACM";"ACM";"ACM";"格\t　\t斗";"ACM";"格\t　\t鬥";;

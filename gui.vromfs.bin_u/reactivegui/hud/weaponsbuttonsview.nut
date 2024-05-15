@@ -558,14 +558,14 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
     setDrawWeaponAllowableAngles(false, -1)
     if (key in userHoldWeapInside.value)
       userHoldWeapInside.mutate(@(v) v.$rawdelete(key))
+    if(isBulletBelt)
+      setShortcutOff(mainShortcut)
   }
 
   function onButtonReleaseWhileActiveZone() {
     onStopTouch()
-    if(isBulletBelt) {
-      setShortcutOff(mainShortcut)
+    if(isBulletBelt)
       return
-    }
     if (needCheckRocket) {
       if (!isAsmCaptureAllowed.value) {
         addCommonHint(loc("hints/submarine_deeper_periscope"))
@@ -607,6 +607,8 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
 
   function onButtonPush() {
     if(isBulletBelt) {
+      if (!isAvailable || isBlocked.value || (actionItem?.cooldownEndTime ?? 0) > get_mission_time())
+        return
       anim_start(fireAnimKey)
       useShortcutOn(mainShortcut)
       playHapticPattern(haptPatternId)

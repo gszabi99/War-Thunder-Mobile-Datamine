@@ -24916,7 +24916,8 @@
           "icon": "hud_ammo_he"
         },
         "120mm_britain_L23_APDSFS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 3
         },
         "120mm_britain_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -24984,10 +24985,12 @@
           "icon": "hud_ammo_heat"
         },
         "105mm_NATO_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 8
         },
         "105mm_DM33_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 11
         }
       }
     },
@@ -25044,7 +25047,8 @@
           "icon": "hud_ammo_atgm_ap1_he1"
         },
         "127mm_uk_zt3_ingwe": {
-          "icon": "hud_ammo_atgm_tandem_ap2_he1"
+          "icon": "hud_ammo_atgm_tandem_ap2_he1",
+          "reqLevel": 13
         }
       }
     },
@@ -25103,7 +25107,8 @@
           "icon": "hud_ammo_bullet_he"
         },
         "35mm_kda_APHEI": {
-          "icon": "hud_ammo_bullet_ap"
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 18
         }
       }
     },
@@ -25194,84 +25199,6 @@
           "armorPower": 8.5,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 10.0,
-          "isBeltAmmo": true
-        },
-        "12_7mm_DShK_user_machinegun": {
-          "wtype": "machinegun",
-          "caliber": 12.7,
-          "armorPower": 24.0,
-          "reloadTime": 0.1,
-          "gunnerTurretRotationSpeed": 90.0,
-          "isBeltAmmo": true
-        }
-      }
-    }
-  },
-  "ussr_t_54_1951": {
-    "type": "tank",
-    "hangar_place": "tank",
-    "testFlight": "testFlight_ussr_tft",
-    "tags": {
-      "country_ussr": true,
-      "tank": true,
-      "type_medium_tank": true
-    },
-    "bullets": {
-      "100mm_D10T_t_54_1951_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he2"
-        },
-        "100mm_ussr_APCBC": {
-          "icon": "hud_ammo_ap2_he1"
-        },
-        "100mm_ussr_APDS": {
-          "icon": "hud_ammo_apds"
-        },
-        "100mm_ussr_HEAT": {
-          "icon": "hud_ammo_heat"
-        },
-        "100mm_ussr_HE": {
-          "isHE": true,
-          "icon": "hud_ammo_he"
-        },
-        "100mm_ussr_Smoke": {
-          "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2
-        }
-      }
-    },
-    "Shop": {
-      "mainWeaponCaliber": 100.0,
-      "armorThicknessFront": [
-        0.85,
-        0.05,
-        0.1
-      ],
-      "armorThicknessSide": [
-        0.1,
-        0.05,
-        0.85
-      ],
-      "crew": 4,
-      "mass": 35500.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
-      "powerToWeightRatio": 14.6479,
-      "weapons": {
-        "100mm_D10T_t_54_1951_user_cannon": {
-          "wtype": "mainCannon",
-          "caliber": 100.0,
-          "armorPower": 218.637,
-          "reloadTime": 10.5263,
-          "gunnerTurretRotationSpeed": 10.0,
-          "isBeltAmmo": false
-        },
-        "7_62mm_SGMT_user_machinegun": {
-          "wtype": "machinegun",
-          "caliber": 7.62,
-          "armorPower": 8.5,
-          "reloadTime": 0.1,
-          "gunnerTurretRotationSpeed": 5.5,
           "isBeltAmmo": true
         },
         "12_7mm_DShK_user_machinegun": {
@@ -25909,6 +25836,69 @@
           "armorPower": 76.1917,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 60.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "ussr_t_10m": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_ussr_tft",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_heavy_tank": true
+    },
+    "bullets": {
+      "122mm_M62T2S_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_ap1_he1"
+        },
+        "122mm_ussr_HEAT_ZBK": {
+          "icon": "hud_ammo_heat"
+        },
+        "122mm_ussr_APDS": {
+          "icon": "hud_ammo_apds"
+        },
+        "122mm_ussr_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 122.0,
+      "armorThicknessFront": [
+        0.9,
+        0.0,
+        0.1
+      ],
+      "armorThicknessSide": [
+        0.45,
+        0.1,
+        0.45
+      ],
+      "crew": 4,
+      "mass": 50000.0,
+      "maxSpeedForward": 50.2171,
+      "maxSpeedBackward": 9.85028,
+      "powerToWeightRatio": 15.0,
+      "weapons": {
+        "122mm_M62T2S_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 122.0,
+          "armorPower": 295.727,
+          "reloadTime": 14.9925,
+          "gunnerTurretRotationSpeed": 17.0,
+          "isBeltAmmo": false
+        },
+        "14_5mm_KPVT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 14.5,
+          "armorPower": 34.0,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
         }
       }

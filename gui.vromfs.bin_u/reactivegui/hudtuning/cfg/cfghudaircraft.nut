@@ -17,7 +17,7 @@ let { isCtrlPieAvailable } = require("%rGui/hud/controlsPieMenu/ctrlPieState.nut
 let { aircraftRadarEditView, aircraftRadar } = require("%rGui/hud/aircraftRadar.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
-let mkFreeCameraButton = require("%rGui/hud/buttons/freeCameraButton.nut")
+let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, myPlaceUi, mkMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
 let { doll, dollEditView } = require("%rGui/hud/aircraftStateModule.nut")
@@ -138,9 +138,16 @@ return cfgHudCommon.__merge({
     hideForDelayed = false
   }
 
+  viewBackButton = {
+    ctor = mkViewBackButton
+    defTransform = mkLTPos([hdpx(0), hdpx(210)])
+    editView = mkSquareBtnEditView("ui/gameuiskin#hud_look_back.svg")
+    priority = Z_ORDER.BUTTON
+  }
+
   freeCameraButton = {
     ctor = mkFreeCameraButton
-    defTransform = mkLTPos([hdpx(0), hdpx(310)])
+    defTransform = mkLTPos([hdpx(0), hdpx(350)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
     priority = Z_ORDER.BUTTON
   }

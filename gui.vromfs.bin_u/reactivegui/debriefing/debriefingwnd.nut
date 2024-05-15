@@ -236,7 +236,9 @@ let btnSkip = function() {
 
 function debriefingWnd() {
   let debrData = debriefingData.get()
-  let { campaign = "", isWon = false, reward = {}, roomInfo = null } = debrData
+  let { campaign = "", isWon = false, reward = {}, roomInfo = null,
+    isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false
+  } = debrData
 
   let hasPlayerLevelUp = isPlayerReceiveLevel(debrData)
   let hasUnitLevelUp = isUnitReceiveLevel(debrData)
@@ -261,6 +263,7 @@ function debriefingWnd() {
       updateHangarUnit(reward.unitName)
     playSound(isWon ? "stats_winner_start" : "stats_looser_start")
     sendNewbieBqEvent("openDebriefing", { status = isWon ? "win" : "loose" })
+    log($"[BATTLE_RESULT] isWon = {isWon}, isFinished = {isFinished}, isDeserter = {isDeserter}, isDisconnected = {isDisconnected}, kickInactivity = {kickInactivity}")
   }
 
   if (isAttached)

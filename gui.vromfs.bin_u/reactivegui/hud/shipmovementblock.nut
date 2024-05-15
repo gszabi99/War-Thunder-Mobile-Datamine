@@ -21,7 +21,6 @@ let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { eventbus_send } = require("eventbus")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { isMpStatisticsActive } = require("%appGlobals/clientState/clientState.nut")
 
 let HAPT_FORWARD = registerHapticPattern("Forward", { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
 let HAPT_BACKWARD = registerHapticPattern("Backward", { time = 0.0, intensity = 0.5, sharpness = 0.8, duration = 0.0, attack = 0.0, release = 0.0 })
@@ -40,7 +39,6 @@ function showCtrlHint() {
 }
 
 let averageSpeedDirection = Computed(@() machineSpeedDirection[averageSpeed.value])
-let isGamepadActive = Computed(@() isGamepad.value && !isMpStatisticsActive.value)
 
 let maxSpeedBySteps = Computed(function() {
   if (playerUnitName.value == "")
@@ -214,7 +212,7 @@ function movementBlock(unitType) {
   let isEngineDisabled = mkIsControlDisabled(engineAxis)
 
   return @() {
-    watch = [isUnitDelayed, isGamepadActive]
+    watch = [isUnitDelayed, isGamepad]
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_LEFT
     flow = FLOW_HORIZONTAL
@@ -237,7 +235,7 @@ function movementBlock(unitType) {
               speedComp
             ]
           }
-          isGamepadActive.value ? gamepadShipAxisListener : null
+          isGamepad.value ? gamepadShipAxisListener : null
         ]
     transform = {}
     animations = dfAnimBottomLeft

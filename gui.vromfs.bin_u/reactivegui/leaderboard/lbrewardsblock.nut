@@ -54,11 +54,12 @@ function mkIsReady(rewardInfo) {
 
 function mkRewardRow(rewardInfo, idx) {
   let { rType, progress, rewards } = rewardInfo
-  let rewardsViewInfo = []
+  local rewardsViewInfo = []
   foreach (id, count in rewards) {
     let reward = serverConfigs.value.userstatRewards?[id]
     rewardsViewInfo.extend(getRewardsViewInfo(reward, count))
   }
+  rewardsViewInfo = rewardsViewInfo.filter(@(r) r.rType != "medal")
   rewardsViewInfo.sort(sortRewardsViewInfo)
 
   let totalRewardSlots = rewardsViewInfo.reduce(@(res, r) res + r.slots, 0)
@@ -71,7 +72,7 @@ function mkRewardRow(rewardInfo, idx) {
     rewardSlots = min(minRewardsInRow, lbRewardsPerRow - prizeTextSlots)
     children = [mkPrizeInfo(rType, progress, idx, isReady)]
   }]
-  foreach(rInfo in rewardsViewInfo.filter(@(r) r.rType != "medal")) {
+  foreach(rInfo in rewardsViewInfo) {
     let comp = mkRewardPlate(rInfo, rewardStyle)
     local row = rows.findvalue(@(r, i) r.rewardSlots >= rInfo.slots || (i + 1) == totalRows)
     if (row == null) {

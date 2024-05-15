@@ -2,7 +2,7 @@
   "maxChannels": 32,
   "maxSoftwareChannels": 32,
   "maxVorbisCodecs": 10,
-  "maxFADPCMCodecs": 22,
+  "maxFADPCMCodecs": 32,
   "vol0virtualvol": 0.001,
   "sampleRate": 44100,
   "rejectFarOneshots": true,
@@ -50,7 +50,7 @@
   "dialogsVolumeDownSpeed": 0.4,
   "dialogsVolumeUpSpeed": 0.1,
   "dialogFilePrefix": "dialogs_wopl_",
-  "hangar_sound": "new_hangar/hangar_ships",
+  "hangar_sound": "new_hangar/hangar_outside",
   "hangar_sound_tanks": "new_hangar/hangar_tanks",
   "hangar_sound_ships": "new_hangar/hangar_ships",
   "hangar_sound_globe": "hangar_worldwar",
@@ -129,28 +129,6 @@
         "mobile_event.assets": {
           "async": true,
           "preload": false
-        }
-      },
-      "crew": {
-        "crew_dialogs_ground": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "_crew_dialogs_ground_<lang>": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "crew_dialogs_ground.assets": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "_crew_dialogs_ground_<lang>.assets": {
-          "async": true,
-          "preload": false,
-          "optional": true
         }
       },
       "crew_extended": {

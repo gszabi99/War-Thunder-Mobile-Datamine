@@ -1370,6 +1370,12 @@ return {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown"
     },
+    "ussr_t_10m": {
+      "": "ussr_camo_green",
+      "desert": "ussr_camo_czechoslovak_yellow_green",
+      "fiction": "us_t32_akai_victory",
+      "winter": "ussr_camo_winter"
+    },
     "ussr_t_28E": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_net"
