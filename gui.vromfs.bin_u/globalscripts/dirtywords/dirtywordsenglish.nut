@@ -34,6 +34,7 @@ excludesdata =
     key = "h",
     arr =
     [
+      "homochka",
       "hor[adimnorstu]",
     ]
   },

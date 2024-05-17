@@ -111,7 +111,7 @@ let mkBotNameContent = @(player, info) function() {
 function mkPlayerUidInfo(player, contact) {
   let res = { watch = can_view_player_uids }
   if (!can_view_player_uids.get())
-    return res
+    return @() res
   return @() {
     watch = [can_view_player_uids, contact]
     rendObj = ROBJ_TEXT

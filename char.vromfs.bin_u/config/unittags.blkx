@@ -25426,6 +25426,10 @@
         "90mm_us_T142E3_HESH": {
           "isHE": true,
           "icon": "hud_ammo_he"
+        },
+        "90mm_us_M313_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },

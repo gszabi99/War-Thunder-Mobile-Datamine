@@ -83,6 +83,8 @@
         },
         "missionMarkAsRespawnPoint": [
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_assaults_spawn_near",
             "loc_name": "missions/assaults_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -109,6 +111,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_assaults_spawn_near",
             "loc_name": "missions/assaults_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -142,6 +146,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_fighters_spawn_near",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -172,6 +178,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_fighters_spawn_near",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -264,6 +272,8 @@
         },
         "missionMarkAsRespawnPoint": [
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_assaults_spawn_middle",
             "loc_name": "missions/assaults_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -290,6 +300,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_assaults_spawn_middle",
             "loc_name": "missions/assaults_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -323,6 +335,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_fighters_spawn_middle",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -353,6 +367,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_fighters_spawn_middle",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -450,6 +466,8 @@
         },
         "missionMarkAsRespawnPoint": [
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_assaults_spawn_far",
             "loc_name": "missions/assaults_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -483,6 +501,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_assaults_spawn_far",
             "loc_name": "missions/assaults_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -516,6 +536,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_fighters_spawn_far",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -546,6 +568,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_fighters_spawn_far",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -636,6 +660,8 @@
         },
         "missionMarkAsRespawnPoint": [
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_assaults_spawn_huge",
             "loc_name": "missions/assaults_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -669,6 +695,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_assaults_spawn_huge",
             "loc_name": "missions/assaults_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -702,6 +730,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_fighters_spawn_huge",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -732,6 +762,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_fighters_spawn_huge",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
@@ -816,6 +848,8 @@
         },
         "missionMarkAsRespawnPoint": [
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_bombers_spawn",
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
             "isAirfield": false,
@@ -840,6 +874,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_bombers_spawn",
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
             "isAirfield": false,
@@ -906,6 +942,8 @@
         },
         "missionMarkAsRespawnPoint": [
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_bombers_spawn_far",
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
             "isAirfield": false,
@@ -930,6 +968,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_bombers_spawn_far",
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
             "isAirfield": false,
@@ -971,6 +1011,8 @@
         },
         "missionMarkAsRespawnPoint": [
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t2_bombers_spawn",
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
             "isAirfield": false,
@@ -995,6 +1037,8 @@
             }
           },
           {
+            "rotateMapIcon": 270.0,
+            "lookAt": "t1_bombers_spawn",
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
             "isAirfield": false,

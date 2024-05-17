@@ -3,13 +3,14 @@ from "%scripts/dagui_library.nut" import *
 let logGM = log_with_prefix("[GAME_MODES] ")
 let { rnd_int } = require("dagor.random")
 let { OPERATION_COMPLETE } = require("matching.errors")
+let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { gameModesRaw } = require("%appGlobals/gameModes/gameModes.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let showMatchingError = require("showMatchingError.nut")
-let { resetTimeout } = require("dagor.workcycle")
 let matching = require("%appGlobals/matching_api.nut")
+
 
 const MAX_FETCH_RETRIES = 5
 const MAX_FETCH_DELAY_SEC = 60
@@ -54,7 +55,7 @@ function fetchGameModes() {
         resetTimeout(0.1, again)
       else {
         showMatchingError(result)
-        startLogout()
+        deferOnce(startLogout)
       }
     })
 }

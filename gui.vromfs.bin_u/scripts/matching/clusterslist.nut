@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let logC = log_with_prefix("[CLUSTERS] ")
 let { OPERATION_COMPLETE } = require("matching.errors")
 let { getCountryCode } = require("auth_wt")
+let { deferOnce } = require("dagor.workcycle")
 let { getClustersByCountry, getForbiddenClustersByCountry } = require("%appGlobals/defaultClusters.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let showMatchingError = require("showMatchingError.nut")
@@ -50,7 +51,7 @@ function fetchClusters() {
       }
       else {
         showMatchingError(res)
-        startLogout()
+        deferOnce(startLogout)
       }
     })
 }
