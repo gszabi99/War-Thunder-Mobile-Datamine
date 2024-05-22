@@ -16,7 +16,6 @@ let goodsTypes = [
   "SGT_UNIT"
   "SGT_CONSUMABLES"
   "SGT_EVT_CURRENCY"
-  "SGT_EVENT_KEYS"
   "SGT_PLATINUM"
   "SGT_LOOTBOX"
 ].map(@(v, i) [ v, 200 + i ]).totable()
@@ -25,7 +24,7 @@ let currencyToGoodsType = {
   gold = goodsTypes.SGT_GOLD
   wp = goodsTypes.SGT_WP
   warbond = goodsTypes.SGT_EVT_CURRENCY
-  eventKey = goodsTypes.SGT_EVENT_KEYS
+  eventKey = goodsTypes.SGT_EVT_CURRENCY
   platinum = goodsTypes.SGT_PLATINUM
 }
 

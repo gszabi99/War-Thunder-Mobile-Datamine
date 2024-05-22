@@ -6970,7 +6970,7 @@
     "tierGroup": 4,
     "tags": {
       "country_germany": true,
-      "type_destroyer": true,
+      "type_battleship": true,
       "ship": true
     },
     "Shop": {
@@ -7127,8 +7127,8 @@
     },
     "Shop": {
       "shipCrewMax": 290,
-      "shipCrewMin": 110,
-      "shipCrewRating": 1.05,
+      "shipCrewMin": 50,
+      "shipCrewRating": 2.1897,
       "maxSpeed": 19.25,
       "turningTime": 14,
       "addTorpedoesCountPack": 3,
@@ -7139,7 +7139,7 @@
           "wtype": "mainCannon",
           "damage": 50.0,
           "shotFreq": 3.33,
-          "gunsCount": 16,
+          "gunsCount": 4,
           "caliber": 57.0,
           "ammoCount": 32000,
           "isBeltAmmo": true
@@ -7163,6 +7163,16 @@
           "caliber": 900.0,
           "ammoCount": 400,
           "isBeltAmmo": false
+        },
+        "57mm_ak_725_naval_user_cannon": {
+          "wtype": "aaa",
+          "damage": 50.0,
+          "shotFreq": 3.33,
+          "aimMaxDist": 9000.0,
+          "gunsCount": 12,
+          "caliber": 57.0,
+          "ammoCount": 32000,
+          "isBeltAmmo": true
         },
         "countermeasure_launcher_ship": {
           "wtype": "ircm",

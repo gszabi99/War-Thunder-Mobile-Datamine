@@ -60,9 +60,10 @@ function commonWeaponIcon(w, bSet) {
   return image == null ? null : mkSimpleIcon(image)
 }
 
-function mkWeaponCard(w) {
+function mkWeaponCard(w, count = 0) {
   let bSet = w.bulletSets?[""]
   let { bullets = [], isBulletBelt = false } = bSet
+  let bulletName = getWeaponShortName(w, bSet)
   return bg.__merge({
     size = [weaponWidth, weaponHeight]
     flow = FLOW_HORIZONTAL
@@ -85,7 +86,7 @@ function mkWeaponCard(w) {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           color = 0xFFD0D0D0
-          text = getWeaponShortName(w, bSet)
+          text = count > 1 ? $"{bulletName} x {count}" : bulletName
         }.__update(fontVeryTiny)
       }
     ]
@@ -96,7 +97,18 @@ function mkWeaponGroup(wg, wgCfg) {
   if (wg.len() == 0)
     return null
   let columns = min(wg.len(), MAX_COLUMNS)
-  let children = wg.map(mkWeaponCard)
+  let reducedWg = wg.reduce(function(acc, w) {
+    let id = w.weaponId
+    if(id not in acc.gunCount) {
+      acc.gunCount[id] <- w.turrets
+      acc.value.append(w)
+    } else
+      acc.gunCount[id] += w.turrets
+    return acc
+  }, { gunCount = {}, value = [] })
+
+  let children = reducedWg.value.map(@(w) mkWeaponCard(w, reducedWg.gunCount[w.weaponId]))
+
   return {
     size = [weaponWidth * columns + gap * (columns - 1), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL

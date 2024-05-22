@@ -95,4 +95,5 @@ loginCount.subscribe(function(count) {
 
 return {
   sendAppsFlyerEvent = sendEvent
+  logFirebaseEventWithJson
 }

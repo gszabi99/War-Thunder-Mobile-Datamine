@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logA = log_with_prefix("[ADS] ")
 let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { parse_json } = require("json")
+let { parse_json, json_to_string } = require("json")
 let { DBGLEVEL } = require("dagor.system")
 let { is_ios } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
@@ -17,7 +17,7 @@ let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   isAdsLoaded, loadAds, showAds
 } = ads
 
-let {consentUpdated} = require("%rGui/consent/consentState.nut")
+let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
@@ -94,14 +94,6 @@ function retryLoad() {
   sendAdsBqEvent("load_retry", "", false)
 }
 
-consentUpdated.subscribe(function(_) {
-  if (isLoaded.get() || !needAdsLoadExt.get())
-    return
-  clearTimer(retryLoad)
-  failInARow(0)
-  retryLoad()
-})
-
 eventbus_subscribe("ios.ads.onLoad",function (params) {
   let { status, provider = "unknown" } = params
   logA($"onLoad {getStatusName(status)} ({provider})")
@@ -123,7 +115,7 @@ eventbus_subscribe("ios.ads.onLoad",function (params) {
   sendAdsBqEvent("load_failed", provider, false)
 })
 
-eventbus_subscribe("android.ads.onRevenue", function (params) {
+eventbus_subscribe("ios.ads.onRevenue", function (params) {
   let { adapter = "default", provider = "unknown", json = "{}" } = params
   let { value = 0.0, currency = "USD" } = parse_json(json)
   logA($"revenue {value} {currency} provider = {provider} ({adapter})")
@@ -135,6 +127,12 @@ eventbus_subscribe("android.ads.onRevenue", function (params) {
     revenue = value
     currency
   })
+  logFirebaseEventWithJson("ad_impression", json_to_string({
+    ad_platform = provider
+    ad_source = adapter
+    value = value
+    currency = currency
+  }, false))
 })
 
 

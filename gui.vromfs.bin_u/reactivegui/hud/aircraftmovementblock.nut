@@ -146,7 +146,7 @@ function throttleSlider() {
       @() {
         watch = [Trt0, IsTrtWep0, IsOnGround]
         rendObj = ROBJ_TEXT
-        pos = [knobSize + hdpx(5), 0]
+        pos = [knobSize + hdpx(5), -knobPadding]
         fontFxColor = 0xFF000000
         color = IsTrtWep0.get() ? 0xFFFF0000 : knobColor
         fontFxFactor = 50

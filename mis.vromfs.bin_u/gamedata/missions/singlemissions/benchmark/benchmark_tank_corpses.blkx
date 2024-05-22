@@ -2,6 +2,7 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
+    "proximity": "ground_vehicle",
     "player": {
       "army": 1,
       "wing": "tankModels_01"

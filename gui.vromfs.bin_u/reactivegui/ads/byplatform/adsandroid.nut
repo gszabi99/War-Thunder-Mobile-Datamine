@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logA = log_with_prefix("[ADS] ")
 let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { parse_json } = require("json")
+let { parse_json, json_to_string } = require("json")
 let { is_android } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
   providerPriorities, onShowAds
@@ -16,9 +16,9 @@ let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   isAdsLoaded, loadAds, showAds
 } = ads
 
-let {consentUpdated} = require("%rGui/consent/consentState.nut")
+let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 
-let isInited = Watched(isAdsInited())
+  let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
 let loadedProvider = hardPersistWatched("adsAndroid.loadedProvider", "")
 let isAdsVisible = Watched(false)
@@ -92,14 +92,6 @@ function retryLoad() {
   sendAdsBqEvent("load_retry", "", false)
 }
 
-consentUpdated.subscribe(function(_) {
-  if (isLoaded.get() || !needAdsLoadExt.get())
-    return
-  clearTimer(retryLoad)
-  failInARow(0)
-  retryLoad()
-})
-
 eventbus_subscribe("android.ads.onLoad", function (params) {
   let { status, provider = "unknown" } = params
   logA($"onLoad {getStatusName(status)} ({provider})")
@@ -133,6 +125,12 @@ eventbus_subscribe("android.ads.onRevenue", function (params) {
     revenue = value
     currency
   })
+  logFirebaseEventWithJson("ad_impression", json_to_string({
+    ad_platform = provider
+    ad_source = adapter
+    value = value
+    currency = currency
+  }, false))
 })
 
 eventbus_subscribe("android.ads.onShow", function (params) { //we got this event on start ads show, and on finish

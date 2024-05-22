@@ -2,8 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
-let { is_pc } = require("%sqstd/platform.nut")
-let { isGDPR, showConsentForm } = is_pc ? require("%rGui/consent/consentDbg.nut") : require("consent")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let buttonsWidthStyle = {
@@ -29,6 +27,6 @@ return {
   children = [
     textButtonCommon(loc("mainmenu/btnAccountDelete"), logoutToDeleteAccountMsgBox, buttonsWidthStyle)
     textButtonPrimary(loc("options/personalData"), @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
-    !isGDPR() ? null : textButtonPrimary(loc("mainmenu/consentPrivacy"), @() showConsentForm(true), buttonsWidthStyle)
+    // textButtonPrimary(loc("mainmenu/consentPrivacy"), @() null, buttonsWidthStyle)
   ]
 }

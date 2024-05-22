@@ -23,7 +23,7 @@ let { battleResult } = require("battleResult.nut")
 let { curQueue } = require("%appGlobals/queueState.nut")
 let { clusterStats } = require("%scripts/matching/optimalClusters.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { get_game_version_str } = require("app")
+let { get_game_version_str, get_base_game_version_str } = require("app")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 
 let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
@@ -144,6 +144,7 @@ function onFrameTimes(evt, _eid, _comp) {
     pingMax
     pingMedian = round(median((clone pingSamples).sort()) ?? -1).tointeger()
     gameVersion = get_game_version_str()
+    apkVersion = get_base_game_version_str()
     isSquad = wasInSquadLastBattle
   })
 
