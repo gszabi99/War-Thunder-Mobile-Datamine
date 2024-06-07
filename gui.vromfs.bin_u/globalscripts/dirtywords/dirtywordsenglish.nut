@@ -688,6 +688,7 @@ fouldata =
 
 badphrases =
 [
+  "h[i1İl]tl[e3]r"
 ]
 
 badcombination =
@@ -728,6 +729,7 @@ badcombination =
   "succhia cazzi",
   "tea bag",
   "testa di cazzo",
+  "waffen.?ss",
   "white power",
   "xbl pet",
   "8(=)+[d@]",

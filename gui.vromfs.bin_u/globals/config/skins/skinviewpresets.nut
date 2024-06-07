@@ -56,6 +56,8 @@ let skinsByTag = {
     "ussr_modern_forest"
     "ussr_camo_deform"
     "chieftain_mk_10_skin"
+    "fr_camo_green_sand_gray"
+    "fr_camo_green_brown_lines"
   ],
 
   [DESERT] = [
@@ -112,6 +114,7 @@ let skinsByTag = {
     "ussr_camo_winter_lines"
     "ussr_camo_winter_net"
     "ussr_modern_winter"
+    "fr_camo_winter_green_white"
   ],
 
   [NAVAL] = [
@@ -210,6 +213,7 @@ let skinsByTag = {
     "camo_gray_splotch"
     "camo_bluewater_geometry"
     "camo_sboat_fleet"
+    "camo_multicolor_waves"
   ],
 }
 

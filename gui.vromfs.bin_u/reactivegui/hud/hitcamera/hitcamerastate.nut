@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { HIT_CAMERA_FINISH, HIT_CAMERA_START, HIT_CAMERA_FADE_IN, DM_HIT_RESULT_NONE, DM_HIT_RESULT_HIT, DM_HIT_RESULT_KILL
+let { HIT_CAMERA_FINISH, HIT_CAMERA_START, HIT_CAMERA_FADE_IN, DM_HIT_RESULT_NONE, DM_HIT_RESULT_KILL
 } = require("hitCamera")
 let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
@@ -65,7 +65,7 @@ let hcUnitDmgPartsUnitInfo = Computed(function() {
   let res = unitsInfo.value?[hcUnitId.value]
   return (res == null || res.unitVersion != hcUnitVersion.value) ? emptyUnitInfo : res
 })
-let isHcUnitHit = Computed(@() state.value.result >= DM_HIT_RESULT_HIT || hcUnitDmgPartsUnitInfo.value.isKilled)
+let isHcUnitHit = Computed(@() state.value.result > DM_HIT_RESULT_NONE || hcUnitDmgPartsUnitInfo.value.isKilled)
 let isHcUnitKilled = Computed(@() state.value.result >= DM_HIT_RESULT_KILL || hcUnitDmgPartsUnitInfo.value.isKilled)
 let hcDmgPartsInfo = Computed(@() hcUnitDmgPartsUnitInfo.value.parts)
 

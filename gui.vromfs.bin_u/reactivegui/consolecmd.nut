@@ -1,3 +1,5 @@
+// warning disable: -file:forbidden-function
+
 from "%globalsDarg/darg_library.nut" import *
 let { startSound, playSound, stopSound } = require("sound_wt")
 let { inspectorToggle } = require("%darg/helpers/inspector.nut")
@@ -7,7 +9,7 @@ let { format } =  require("string")
 let { hexStringToInt } = require("%sqstd/string.nut")
 let { allPermissions, dbgPermissions } = require("%appGlobals/permissions.nut")
 let { localizeAddons } = require("%appGlobals/updater/addons.nut")
-let { isPhrasePassing, checkPhrase } = require("%appGlobals/dirtyWordsFilter.nut")
+let { debugDirtyWordsFilter } = require("%appGlobals/dirtyWordsFilter.nut")
 
 register_command(@() inspectorToggle(), "ui.inspector")
 
@@ -37,5 +39,4 @@ register_command(@(name) playSound(name), "debug.guiSound.play")
 register_command(@(name) startSound(name), "debug.guiSound.start")
 register_command(@(name) stopSound(name), "debug.guiSound.stop")
 
-register_command(@(text) console_print( // warning disable: -forbidden-function
-  "".concat(isPhrasePassing(text) ? "(CLEAN)" : "(DIRTY)", " \"", checkPhrase(text), "\"")), "debug.dirty_words_filter")
+register_command(@(text) debugDirtyWordsFilter(text, console_print), "debug.dirty_words_filter")

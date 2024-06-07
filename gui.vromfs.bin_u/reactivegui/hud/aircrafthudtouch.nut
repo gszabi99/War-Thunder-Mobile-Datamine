@@ -8,6 +8,7 @@ let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let hudTopLeft = require("hudTopLeft.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 let ctrlPieMenu = require("%rGui/hud/controlsPieMenu/ctrlPieMenu.nut")
+let cameraPieMenu = require("%rGui/hud/cameraPieMenu/cameraPieMenu.nut")
 let { TargetSelector } = require("wt.behaviors")
 let { cannonsOverheat, mgunsOverheat, hasMGun0, hasCanon0, Cannon0, MGun0 } = require("%rGui/hud/airState.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
@@ -127,5 +128,6 @@ return {
       selectAngle = 30
       captureAngle = 7
     }
+    cameraPieMenu
   ]
 }

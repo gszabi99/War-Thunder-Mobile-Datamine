@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
+let { format } = require("string")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { getBulletBeltImage } = require("%appGlobals/config/bulletsPresentation.nut")
 let { loadUnitBulletsFull } = require("%rGui/weaponry/loadUnitBullets.nut")
@@ -86,7 +87,7 @@ function mkWeaponCard(w, count = 0) {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           color = 0xFFD0D0D0
-          text = count > 1 ? $"{bulletName} x {count}" : bulletName
+          text = count > 1 ? $"{bulletName} {format(loc("weapons/counter"), count)}" : bulletName
         }.__update(fontVeryTiny)
       }
     ]

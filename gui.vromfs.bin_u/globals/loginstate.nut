@@ -20,6 +20,7 @@ let LOGIN_STATE = { //bit mask
   ONLINE_SETTINGS_AVAILABLE   = 0x0100
   LEGAL_ACCEPTED              = 0x0200
   CONTACTS_LOGGED_IN          = 0x0400
+  CONSENT_WND                 = 0x0800
 
   //not required for login
   HANGAR_LOADED               = 0x1000
@@ -30,7 +31,7 @@ let LOGIN_STATE = { //bit mask
   NOT_LOGGED_IN               = 0x0000
   AUTH_AND_UPDATED            = 0x0003
   READY_TO_FULL_LOAD          = 0x0107
-  LOGGED_IN                   = 0x07F7 // logged in to all hosts and all configs are loaded
+  LOGGED_IN                   = 0x0FF7 // logged in to all hosts and all configs are loaded
 }
 
 let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
@@ -42,6 +43,7 @@ let authTags = sharedWatched("authTags", @() [])
 let isLoginByGajin = sharedWatched("isLoginByGajin", @() false)
 let legalListForApprove = sharedWatched("legalsToApprove", @() {})
 let isMatchingOnline = sharedWatched("isMatchingOnline", @() false)
+let isConsentAllowLogin = sharedWatched("isConsentAllowLogin", @() false)
 
 function getLoginStateDebugStr(state = null) {
   state = state ?? loginState.value
@@ -98,6 +100,7 @@ return loginTypes.__merge(secondStepTypes, {
   availableLoginTypes
   legalListForApprove
   isMatchingOnline
+  isConsentAllowLogin
 
   isLoginStarted = Computed(@() (loginState.value & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.value & LOGIN_STATE.AUTHORIZED) != 0)
@@ -106,6 +109,8 @@ return loginTypes.__merge(secondStepTypes, {
   isMatchingConnected = Computed(@() (loginState.value & LOGIN_STATE.MATCHING_CONNECTED) != 0)
   isProfileReceived = Computed(@() (loginState.value & LOGIN_STATE.PROFILE_RECEIVED) != 0)
   isContactsLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)
+  isOpenedLegalWnd = Computed(@() legalListForApprove.value.findvalue(@(v) v) != null)
+
 
   isLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
   isAuthAndUpdated = Computed(@() (loginState.value & LOGIN_STATE.AUTH_AND_UPDATED) == LOGIN_STATE.AUTH_AND_UPDATED)

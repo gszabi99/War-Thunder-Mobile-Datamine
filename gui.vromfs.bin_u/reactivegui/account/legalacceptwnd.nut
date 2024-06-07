@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
-let { legalListForApprove } = require("%appGlobals/loginState.nut")
+let { isOpenedLegalWnd } = require("%appGlobals/loginState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -13,7 +13,6 @@ let { legalToApprove } = require("%appGlobals/legal.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 const WND_UID = "legalAcceptWnd"
-let isOpened = keepref(Computed(@() legalListForApprove.value.findvalue(@(v) v) != null))
 
 let urlColor = 0xFF17C0FC
 let wndWidthDefault = hdpx(1300)
@@ -104,6 +103,6 @@ let legalWnd = bgShaded.__merge({
   animations = wndSwitchAnim
 })
 
-if (isOpened.value)
+if (isOpenedLegalWnd.value)
   addModalWindow(legalWnd)
-isOpened.subscribe(@(v) v ? addModalWindow(legalWnd) : removeModalWindow(WND_UID))
+isOpenedLegalWnd.subscribe(@(v) v ? addModalWindow(legalWnd) : removeModalWindow(WND_UID))

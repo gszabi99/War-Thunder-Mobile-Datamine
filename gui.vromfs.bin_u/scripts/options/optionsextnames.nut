@@ -13,6 +13,7 @@ let native_required_options = [
   "USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE",
   "USEROPT_REALISTIC_AIMING_SHIP",
   "USEROPT_REPLAY_LOAD_COCKPIT",
+  "USEROPT_GUNNER_FPS_CAMERA",
 ]
 native_required_options.each(addUserOption)
 

@@ -3,6 +3,7 @@ let { eventbus_send } = require("eventbus")
 let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { isOpenedManage } = require("%rGui/notifications/consent/consentState.nut")
 
 let buttonsWidthStyle = {
   ovr = {
@@ -27,6 +28,6 @@ return {
   children = [
     textButtonCommon(loc("mainmenu/btnAccountDelete"), logoutToDeleteAccountMsgBox, buttonsWidthStyle)
     textButtonPrimary(loc("options/personalData"), @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
-    // textButtonPrimary(loc("mainmenu/consentPrivacy"), @() null, buttonsWidthStyle)
+    textButtonPrimary(loc("mainmenu/consentPrivacy"), @() isOpenedManage(true), buttonsWidthStyle)
   ]
 }

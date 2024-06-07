@@ -1,6 +1,5 @@
 from "shortcutConsts.nut" import *
 let { isReplayShortcuts } = require("shortcutFlags.nut")
-let { get_game_params_blk } = require("blkGetters")
 
 let allShortcuts = isReplayShortcuts ? {}
 : {
@@ -102,18 +101,16 @@ let gamepadAxes = {
   elevator = JOY_XBOX_REAL_AXIS_R_THUMB_V
 }
 
-let aircraftControlByGyro = get_game_params_blk()?.aircraftControlByGyro ?? {}
-
-let gyroAxes = {
-  ailerons = GYRO_AXIS_NULL + (aircraftControlByGyro?.ailerons ?? 0)
-  elevator = GYRO_AXIS_NULL + (aircraftControlByGyro?.elevator ?? 1)
-  rudder = GYRO_AXIS_NULL + (aircraftControlByGyro?.rudder ?? 2)
+let imuAxes = {
+  gravityLeft = GRAVITY_AXIS_Y
+  gravityForward = GRAVITY_AXIS_Z
+  gravityUp = GRAVITY_AXIS_X
 }
 
 return {
   allShortcuts
   gamepadAxes
-  gyroAxes
+  imuAxes
   allShortcutsUp = allShortcuts.map(@(s) $"^{s}")
   gamepadShortcuts = allShortcuts.map(@(s) s.split(" | ").findvalue(@(v) v.startswith("J:")))
     .filter(@(s) s != null)

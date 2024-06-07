@@ -11,7 +11,7 @@ let { isOpenedPartners } = require("consentState.nut")
 let key = "consentPartners"
 let close = @() isOpenedPartners(false)
 
-let partners = ["google", "huawei", "meta", "unity"]
+let partners = ["google", "meta", "unity"]
 
 let pointSize = [hdpx(3), hdpx(3)]
 

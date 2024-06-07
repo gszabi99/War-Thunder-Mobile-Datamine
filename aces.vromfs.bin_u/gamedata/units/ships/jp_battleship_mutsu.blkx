@@ -54,6 +54,9 @@
   "hideNodesInDmg": {
     "node": "flag"
   },
+  "aimNodesNames": {
+    "node": "funnel_02_dm"
+  },
   "default_skin_tomoe": {
     "replace_tex": [
       {
@@ -8635,7 +8638,7 @@
   "smokeWall": {
     "distance": 450.0,
     "speed": 350.0,
-    "height": 0.0,
+    "height": 30.0,
     "length": 450.0,
     "fxOffset": 65.0
   },

@@ -10,23 +10,26 @@ let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, 
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
 let sendAdsBqEvent = is_android ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { sendUiBqEvent, sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
-  isAdsLoaded, loadAds, showAds
+  isAdsLoaded, loadAds, showAds, showConsent
 } = ads
 
+let { isAdsAllowedForRequest } = require("%rGui/notifications/consent/consentGoogleState.nut")
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 
-  let isInited = Watched(isAdsInited())
+let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
 let loadedProvider = hardPersistWatched("adsAndroid.loadedProvider", "")
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsAndroid.failsInARow", 0)
 
-let needAdsLoadExt = Computed(@() isInited.get() && needAdsLoad.get() && !isLoaded.get())
+let needAdsLoadExt = Computed(@() isAdsAllowedForRequest.get() && isInited.get() && needAdsLoad.get() && !isLoaded.get())
 
 function initProviders() {
+  if (!isAdsAllowedForRequest.get())
+    return
   let { providers, countryCode } = providerPriorities.get()
   if (providers.len() == 0)
     return
@@ -50,6 +53,7 @@ function initProviders() {
 }
 initProviders()
 providerPriorities.subscribe(@(_) initProviders())
+isAdsAllowedForRequest.subscribe(@(_) initProviders())
 
 let statusNames = {}
 foreach(id, val in ads)
@@ -163,9 +167,18 @@ function showAdsForReward(rInfo) {
   showAds()
 }
 
+function onTryShowNotAvailableAds() {
+  if (isAdsAllowedForRequest.get())
+    return false
+  sendUiBqEvent("ads_consent", { id = "show_on_try_watch_ads" })
+  showConsent()
+  return true
+}
+
 return {
   isAdsAvailable = WatchedRo(true)
   isAdsVisible
   canShowAds = isLoaded
   showAdsForReward
+  onTryShowNotAvailableAds
 }

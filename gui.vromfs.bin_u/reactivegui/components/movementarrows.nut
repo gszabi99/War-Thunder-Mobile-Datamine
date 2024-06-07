@@ -11,6 +11,8 @@ let verSize = toInt([shHud(16), shHud(12.8)])
 let verCornerSizeMul = [0.61, 0.24]
 let ver2stepSizeMul = [0.85, 0.34]
 let stopSize = toInt([shHud(9.3), shHud(9.3)])
+let horSizeAir = toInt([shHud(9), shHud(12)])
+let verSizeAir = toInt([shHud(12), shHud(10)])
 
 let animTime = 0.3
 let bgColor = 0x28000000
@@ -231,23 +233,23 @@ function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFFFFFF
   }
 }
 
-function mkMoveHorView(flipX) {
-  let horAnimSize = horAnimSizeMul.map(@(v, i) (v * horSize[i]).tointeger())
+function mkMoveHorView(flipX, viewSize = horSize) {
+  let horAnimSize = horAnimSizeMul.map(@(v, i) (v * viewSize[i]).tointeger())
   let cornerOffset = (0.72 * horAnimSize[0]).tointeger()
   return {
-    size = horSize
+    size = viewSize
     children = [
       {
-        size = horSize
+        size = viewSize
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_bg.svg:{horSize[0]}:{horSize[1]}")
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_bg.svg:{viewSize[0]}:{viewSize[1]}")
         color = bgColor
         flipX
       }
       {
-        size = horSize
+        size = viewSize
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_outline.svg:{horSize[0]}:{horSize[1]}")
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_outline.svg:{viewSize[0]}:{viewSize[1]}")
         flipX
       }
       {
@@ -263,23 +265,23 @@ function mkMoveHorView(flipX) {
   }
 }
 
-function mkMoveVertView(flipY) {
-  let verCornerSize = verCornerSizeMul.map(@(v, i) (v * verSize[i]).tointeger())
+function mkMoveVertView(flipY, viewSize = verSize) {
+  let verCornerSize = verCornerSizeMul.map(@(v, i) (v * viewSize[i]).tointeger())
   let cornerOffset = (0.3 * verCornerSize[1]).tointeger()
   return {
-    size = verSize
+    size = viewSize
     children = [
       {
-        size = verSize
+        size = viewSize
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_bg.svg:{verSize[0]}:{verSize[1]}")
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_bg.svg:{viewSize[0]}:{viewSize[1]}")
         color = bgColor
         flipY
       }
       {
-        size = verSize
+        size = viewSize
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_outline.svg:{verSize[0]}:{verSize[1]}")
+        image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_outline.svg:{viewSize[0]}:{viewSize[1]}")
         flipY
       }
       {
@@ -324,6 +326,25 @@ let moveArrowsViewWithMode = mkMoveArrowsView(0,
     text = loc("HUD/ENGINE_REV_STOP_SHORT")
   }.__update(fontTiny))
 
+let mkMoveArrowsAirView = @() {
+  valign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  children = [
+    mkMoveHorView(false, horSizeAir)
+    {
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      children = [
+        mkMoveVertView(false, verSizeAir)
+        mkMoveVertView(true, verSizeAir)
+      ]
+    }
+    mkMoveHorView(true, horSizeAir)
+  ]
+}
+
+let moveArrowsAirView = mkMoveArrowsAirView()
+
 return {
   mkMoveLeftBtn = mkMoveHorCtor(false)
   mkMoveRightBtn = mkMoveHorCtor(true)
@@ -340,4 +361,5 @@ return {
 
   moveArrowsView
   moveArrowsViewWithMode
+  moveArrowsAirView
 }

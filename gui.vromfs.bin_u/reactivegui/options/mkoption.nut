@@ -69,7 +69,7 @@ let optionCtors = {
 
   [OCT_LIST] = function(opt) {
     let { value = null, setValue = null, locId = "", list = [], valToString = @(v) v, openInfo = null,
-      description = ""} = opt
+      description = "", mkContentCtor = null } = opt
     if (value == null) {
       logerr($"Options: Missing value for option {opt?.locId}")
       return null
@@ -79,7 +79,8 @@ let optionCtors = {
       return @() list.value.len() == 0 ? { watch = list }
         : optBlock(loc(locId),
             listbox({ value, list = list.value, valToString, setValue,
-              columns = clamp(list.value.len(), columnsMin, columnsMax)
+              columns = clamp(list.value.len(), columnsMin, columnsMax),
+              mkContentCtor
             }),
             openInfo, description, locId,
             { watch = list })
@@ -88,7 +89,8 @@ let optionCtors = {
       return null
     return optBlock(loc(locId),
       listbox({ value, list, valToString, setValue,
-        columns = clamp(list.len(), columnsMin, columnsMax)
+        columns = clamp(list.len(), columnsMin, columnsMax),
+        mkContentCtor
       }),
       openInfo, description, locId)
   },

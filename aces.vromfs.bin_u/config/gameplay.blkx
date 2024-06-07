@@ -1955,6 +1955,7 @@
   },
   "mouseAim": {
     "mouseAimDisableControlTreshold": 0.8,
+    "resetAimByElevatorAndRudder": true,
     "disableMouseAimTime": 0.05,
     "enableMouseAimTime": 0.1,
     "angVelFactorMin": 1.42,

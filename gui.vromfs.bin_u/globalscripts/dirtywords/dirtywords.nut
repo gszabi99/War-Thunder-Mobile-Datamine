@@ -1,3 +1,4 @@
+from "auth_wt" import getCountryCode
 from "%globalScripts/logs.nut" import *
 
 //
@@ -30,6 +31,8 @@ local dictAsian = {
   badsegments     = null
 }
 
+local pendingDict = null
+
 let toRegexpFunc = {
   default = @(str) regexp2(str)
   badcombination = @(str) regexp2("".concat("(", "\\s".join(str.split(" ").filter(@(w) w != "")), ")"))
@@ -37,16 +40,22 @@ let toRegexpFunc = {
 
 // Collect language tables
 local function init(langSources) {
+  let myLocation = getCountryCode()
+  let isMyLocationKnown = myLocation != "" // is true only after login
   foreach (varName, _val in dict) {
     dict[varName] = []
     let mkRegexp = toRegexpFunc?[varName] ?? toRegexpFunc.default
     foreach (source in langSources) {
       foreach (_i, vSrc in (source?[varName] ?? [])) {
         local v
+        local hasRegion = false
         let tVSrc = type(vSrc)
         if (tVSrc == "string")
           v = mkRegexp(vSrc)
         else if (tVSrc == "table") {
+          hasRegion = "region" in vSrc
+          if (hasRegion && isMyLocationKnown && !vSrc.region.contains(myLocation))
+            continue
           v = clone vSrc
           if ("value" in v)
             v.value = mkRegexp(v.value)
@@ -55,7 +64,16 @@ local function init(langSources) {
          }
         else
           assert(false, "Wrong var type in DirtyWordsFilter config")
-        dict[varName].append(v)
+
+        let isPending = hasRegion && !isMyLocationKnown
+        if (!isPending)
+          dict[varName].append(v)
+        else {
+          pendingDict = pendingDict ?? {}
+          if (varName not in pendingDict)
+            pendingDict[varName] <- []
+          pendingDict[varName].append(v)
+        }
       }
     }
   }
@@ -78,6 +96,19 @@ local function init(langSources) {
 
   foreach (source in langSources)
     source.clear()
+}
+
+function continueInitAfterLogin() {
+  if (pendingDict == null)
+    return
+  let myLocation = getCountryCode()
+  if (myLocation == "")
+    return
+  foreach (varName, val in pendingDict)
+    foreach (v in val)
+      if (v.region.contains(myLocation))
+        dict[varName].append(v)
+  pendingDict = null
 }
 
 local alphabet = {
@@ -210,8 +241,7 @@ local function prepareWord(word) {
 local function checkRegexps(word, regexps, accuse) {
   foreach (reg in regexps)
     if ((reg?.value ?? reg).match(word)) {
-      if (debugLogFunc)
-        debugLogFunc("DirtyWordsFilter: \"{0}\" matched pattern \"{1}\"".subst(word, (reg?.value ?? reg).pattern()))
+      debugLogFunc?($"DirtyWordsFilter: Word \"{word}\" matched pattern \"{(reg?.value ?? reg).pattern()}\"")
       return !accuse
     }
   return accuse
@@ -271,6 +301,7 @@ local function checkPhrase(text) {
     foreach (segment in (dictAsian.badsegments?[char] ?? [])) {
       if (!phrase.contains(segment))
         continue
+      debugLogFunc?($"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
 
       local utfPhrase = utf8(phrase)
       maskChars = maskChars ?? array(utfPhrase.charCount(), false)
@@ -293,6 +324,7 @@ local function checkPhrase(text) {
   //To match a whole combination of words
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
+      debugLogFunc?($"DirtyWordsFilter: Phrase matched pattern \"{pattern.pattern()}\"")
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
       lowerPhrase = phrase.tolower()
@@ -317,9 +349,26 @@ local function setDebugLogFunc(funcOrNull) {
   debugLogFunc = funcOrNull
 }
 
+// This func is for binding a text checking console command, like:
+// register_command(@(text) debugDirtyWordsFilter(text, console_print), "debug.dirty_words_filter")
+function debugDirtyWordsFilter(text, temporaryDebugLogFunc) {
+  let isPassing = isPhrasePassing(text)
+  local prevLogFunc = null
+  if (!isPassing) {
+    prevLogFunc = debugLogFunc
+    debugLogFunc = temporaryDebugLogFunc
+  }
+  let censoredResult = checkPhrase(text)
+  if (!isPassing)
+    debugLogFunc = prevLogFunc
+  temporaryDebugLogFunc("".concat(isPassing ? "(CLEAN)" : "(DIRTY)", " \"", censoredResult, "\""))
+}
+
 return {
   init
+  continueInitAfterLogin
   checkPhrase
   isPhrasePassing
   setDebugLogFunc
+  debugDirtyWordsFilter
 }

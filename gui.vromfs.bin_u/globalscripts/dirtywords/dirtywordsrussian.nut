@@ -3,6 +3,8 @@ from "%globalScripts/logs.nut" import *
 // Dirty Words tables for Russian language.
 //
 
+let REGION_RU = [ "RU", "BY" ]
+
 return {
 
 excludesdata =
@@ -260,6 +262,7 @@ excludesdata =
       "оглобл",
       "одномандат",
       "озлобля",
+      "озорная",
       "октябр",
       "опозд",
       "оскорбл",
@@ -1205,13 +1208,18 @@ fouldata =
 badphrases =
 [
   @"анепош[е]?л[и]?бы[вт]ы",
+  { value = "бандер", region = REGION_RU },
   "еханыйбабай",
   "идинахуй",
+  "гитл[е3]р",
   @"редк..педальност",
   "сучийпотрох",
   @"тык[ао]зел",
   @"отс[ао]сатьу",
   @"отс[ао]сичлен",
+  { value = "шухевич", region = REGION_RU },
+  { value = "bander", region = REGION_RU },
+  { value = "shuhevich", region = REGION_RU },
 ]
 
 badcombination =

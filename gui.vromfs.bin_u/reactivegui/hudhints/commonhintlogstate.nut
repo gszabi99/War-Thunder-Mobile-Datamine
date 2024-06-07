@@ -341,4 +341,7 @@ register_command(function() {
   },
   "reset_hint_counters")
 
-return state.__update({ addCommonHint })
+return state.__update({
+  addCommonHint
+  addCommonHintWithTtl
+})

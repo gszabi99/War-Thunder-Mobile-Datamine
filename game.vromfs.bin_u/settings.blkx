@@ -423,6 +423,12 @@
         "mRank": 2
       }
     },
+    "pkg_fr_cruiser_emile_bertin": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -565,6 +571,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 6
+      }
+    },
+    "pkg_fr_amx_10rc": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
       }
     },
     "pkg_environment": {

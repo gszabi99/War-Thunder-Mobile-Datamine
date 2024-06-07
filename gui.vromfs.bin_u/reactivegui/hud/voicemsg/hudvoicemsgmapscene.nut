@@ -17,6 +17,7 @@ let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMark
 let mkTacticalMapPointingInputProcessor = require("%rGui/hud/tacticalMap/tacticalMapPointingProcessor.nut")
 let { capZones } = require("%rGui/hud/capZones/capZonesState.nut")
 let { sendVoiceMsgById } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
+let { markMinimapVoiceMsgFeatureKnown } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapHint.nut")
 
 enum MAP_OBJ_TYPE {
   NONE
@@ -114,7 +115,12 @@ function reinit() {
   mapCoords.set(zones[zoneDistances[0].idx].mapPos)
 }
 
-isOpened.subscribe(@(v) v ? reinit() : null)
+isOpened.subscribe(function(v) {
+  if (!v)
+    return
+  reinit()
+  markMinimapVoiceMsgFeatureKnown()
+})
 
 let txtAreaBase = {
   size = [flex(), SIZE_TO_CONTENT]

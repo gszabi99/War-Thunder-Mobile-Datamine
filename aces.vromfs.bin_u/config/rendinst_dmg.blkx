@@ -17278,6 +17278,38 @@
       "fxScale": 0.4,
       "material": "metal"
     },
+    "brick_fence_a": {
+      "physRes": "brick_fence_a_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    "brick_fence_a_snow": {
+      "physRes": "brick_fence_a_snow_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_snow",
+      "material": "transparentBeton"
+    },
+    "brick_fence_b": {
+      "physRes": "brick_fence_b_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    "brick_fence_b_snow": {
+      "physRes": "brick_fence_b_snow_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_snow",
+      "material": "transparentBeton",
+      "isParent": true
+    },
     "brick_fence_column_d": {
       "nextRes": "brick_fence_column_d_dmg",
       "physRes": "brick_fence_column_d_destr_phobj",
@@ -17510,7 +17542,7 @@
       "impulseThreshold": 0.15,
       "fx": "ad_haystack",
       "fxScale": 1.0,
-      "dmPreset": "hay_props"
+      "dmPreset": "bush_props"
     },
     "japan_haystack_a": {
       "nextRes": "japan_haystack_a_dmg",
@@ -17519,7 +17551,7 @@
       "impulseThreshold": 0.15,
       "fx": "ad_haystack",
       "fxScale": 0.7,
-      "dmPreset": "hay_props"
+      "dmPreset": "bush_props"
     },
     "sandbag_a": {
       "physRes": "sandbag_a_destr_phobj",
@@ -21673,39 +21705,43 @@
       "riArmorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 20.0,
+      "armorThrough": 200.0,
       "explosionDamageMult": 0.3,
       "genericDamageMult": 0.03,
-      "cumulativeDamageMult": 0.03
+      "cumulativeDamageMult": 0.03,
+      "shatterDamageMult": 0.05
     },
     "frame_house": {
       "riArmorClass": "RHA_tank",
       "allowRicochet": false,
       "armorThickness": 1.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 20.0,
+      "armorThrough": 200.0,
       "explosionDamageMult": 0.14,
       "genericDamageMult": 0.03,
-      "cumulativeDamageMult": 0.03
+      "cumulativeDamageMult": 0.03,
+      "shatterDamageMult": 0.01
     },
     "frame_metal_house": {
       "riArmorClass": "RHA_tank",
       "armorThickness": 5.0,
       "restrainDamage": 0.0001,
-      "armorThrough": 20.0,
+      "armorThrough": 200.0,
       "explosionDamageMult": 0.3,
       "genericDamageMult": 0.001,
-      "cumulativeDamageMult": 0.001
+      "cumulativeDamageMult": 0.001,
+      "shatterDamageMult": 0.01
     },
     "he_damaged_house": {
       "riArmorClass": "RHA_tank",
       "allowRicochet": false,
-      "armorThickness": 5.0,
+      "armorThickness": 10.0,
       "restrainDamage": 0.0001,
-      "armorThrough": 100.0,
+      "armorThrough": 600.0,
       "explosionDamageMult": 0.1,
       "genericDamageMult": 0.001,
-      "cumulativeDamageMult": 0.001
+      "cumulativeDamageMult": 0.001,
+      "shatterDamageMult": 0.01
     },
     "conex_box": {
       "riArmorClass": "RHA_tank",
@@ -21714,45 +21750,52 @@
       "armorThrough": 20.0,
       "explosionDamageMult": 0.001,
       "genericDamageMult": 0.001,
-      "cumulativeDamageMult": 0.001
+      "cumulativeDamageMult": 0.001,
+      "shatterDamageMult": 0.01,
+      "maxTracedWidth": 0.01,
+      "armorQuality": 0.01
     },
     "korean_houses": {
       "riArmorClass": "RHA_tank",
       "allowRicochet": false,
       "armorThickness": 3.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 20.0,
+      "armorThrough": 200.0,
       "explosionDamageMult": 0.3,
       "genericDamageMult": 0.03,
-      "cumulativeDamageMult": 0.03
+      "cumulativeDamageMult": 0.03,
+      "shatterDamageMult": 0.01
     },
     "log_house": {
       "riArmorClass": "RHA_tank",
       "allowRicochet": false,
       "armorThickness": 10.0,
       "restrainDamage": 0.0001,
-      "armorThrough": 30.0,
+      "armorThrough": 400.0,
       "explosionDamageMult": 0.2,
       "genericDamageMult": 0.1,
-      "cumulativeDamageMult": 0.05
+      "cumulativeDamageMult": 0.05,
+      "shatterDamageMult": 0.01
     },
     "stone_house": {
       "riArmorClass": "RHA_tank",
       "armorThickness": 10.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 300.0,
+      "armorThrough": 600.0,
       "explosionDamageMult": 1.3,
       "genericDamageMult": 0.01,
-      "cumulativeDamageMult": 0.01
+      "cumulativeDamageMult": 0.01,
+      "shatterDamageMult": 0.1
     },
     "wall_2_5_brick": {
       "riArmorClass": "RHA_tank",
       "armorThickness": 8.0,
       "restrainDamage": 0.0005,
-      "armorThrough": 30.0,
+      "armorThrough": 300.0,
       "explosionDamageMult": 0.35,
       "genericDamageMult": 0.025,
-      "cumulativeDamageMult": 0.025
+      "cumulativeDamageMult": 0.025,
+      "shatterDamageMult": 0.1
     },
     "hard_shoot_objects": {
       "riArmorClass": "RHA_tank",
@@ -21762,7 +21805,8 @@
       "armorThrough": 100.0,
       "explosionDamageMult": 0.1,
       "genericDamageMult": 0.01,
-      "cumulativeDamageMult": 0.01
+      "cumulativeDamageMult": 0.01,
+      "shatterDamageMult": 0.01
     },
     "multistory_building": {
       "riArmorClass": "RHA_tank",
@@ -21778,7 +21822,14 @@
       "armorThrough": 5.0,
       "explosionDamageMult": 0.05,
       "genericDamageMult": 0.05,
-      "cumulativeDamageMult": 0.05
+      "cumulativeDamageMult": 0.05,
+      "shatterDamageMult": 0.01
+    },
+    "bush_props": {
+      "allowRicochet": false,
+      "armorThickness": 0.01,
+      "armorThrough": 0.01,
+      "dontTriggerExplodeOnRendinst": true
     },
     "hay_props": {
       "allowRicochet": false,
@@ -21787,7 +21838,8 @@
       "armorThrough": 30.0,
       "explosionDamageMult": 0.03,
       "genericDamageMult": 0.03,
-      "cumulativeDamageMult": 0.03
+      "cumulativeDamageMult": 0.03,
+      "shatterDamageMult": 0.01
     },
     "metal_explosive_props": {
       "riArmorClass": "RHA_tank",
@@ -21797,10 +21849,11 @@
       "armorThrough": 30.0,
       "explosionDamageMult": 1.0,
       "genericDamageMult": 0.3,
-      "cumulativeDamageMult": 0.03
+      "cumulativeDamageMult": 0.03,
+      "shatterDamageMult": 0.1
     },
     "metal_light_explosive_props": {
-      "riArmorClass": "RHA_tank",
+      "riArmorClass": "steel",
       "allowRicochet": false,
       "armorThickness": 5.0,
       "restrainDamage": 0.005,
@@ -21808,6 +21861,7 @@
       "explosionDamageMult": 0.5,
       "genericDamageMult": 0.1,
       "cumulativeDamageMult": 0.1,
+      "shatterDamageMult": 0.1,
       "defaultTracedWidth": 0.01,
       "maxTracedWidth": 0.01,
       "clampTracedWidth": [
@@ -21822,7 +21876,24 @@
       "armorThrough": 20.0,
       "explosionDamageMult": 0.5,
       "genericDamageMult": 0.02,
-      "cumulativeDamageMult": 0.02
+      "cumulativeDamageMult": 0.02,
+      "shatterDamageMult": 0.01
+    },
+    "dural_props": {
+      "riArmorClass": "dural",
+      "allowRicochet": false,
+      "armorQuality": 0.01,
+      "armorThickness": 0.5,
+      "restrainDamage": 0.85,
+      "armorThrough": 0.5,
+      "explosionDamageMult": 0.85,
+      "shatterDamageMult": 0.85,
+      "cumulativeDamageMult": 1.0,
+      "maxTracedWidth": 0.005,
+      "clampTracedWidth": [
+        0.01,
+        0.05
+      ]
     },
     "oil_tanks_full": {
       "riArmorClass": "RHA_tank",
@@ -21832,6 +21903,7 @@
       "explosionDamageMult": 0.5,
       "genericDamageMult": 0.3,
       "cumulativeDamageMult": 0.3,
+      "shatterDamageMult": 0.01,
       "defaultTracedWidth": 0.01,
       "maxTracedWidth": 0.01,
       "clampTracedWidth": [
@@ -21846,36 +21918,23 @@
       "armorThrough": 300.0,
       "explosionDamageMult": 0.2,
       "genericDamageMult": 0.04,
-      "cumulativeDamageMult": 0.04
+      "cumulativeDamageMult": 0.04,
+      "shatterDamageMult": 0.1
     },
     "trees_large": {
-      "riArmorClass": "RHA_tank",
+      "riArmorClass": "wood",
       "allowRicochet": false,
-      "armorThickness": 5.0,
-      "restrainDamage": 0.0005,
-      "armorThrough": 30.0,
-      "explosionDamageMult": 0.8,
-      "genericDamageMult": 0.4,
-      "cumulativeDamageMult": 0.4
+      "armorThrough": 30.0
     },
     "trees_medium": {
-      "riArmorClass": "RHA_tank",
+      "riArmorClass": "wood",
       "allowRicochet": false,
-      "armorThickness": 5.0,
-      "restrainDamage": 0.0005,
-      "armorThrough": 15.0,
-      "explosionDamageMult": 1.0,
-      "genericDamageMult": 0.8,
-      "cumulativeDamageMult": 0.8
+      "armorThrough": 10.0
     },
     "trees_small": {
+      "riArmorClass": "wood",
       "allowRicochet": false,
-      "armorThickness": 5.0,
-      "restrainDamage": 0.005,
-      "armorThrough": 8.0,
-      "explosionDamageMult": 1.0,
-      "genericDamageMult": 1.0,
-      "cumulativeDamageMult": 1.0
+      "armorThrough": 5.0
     },
     "unshootable_objects": {
       "riArmorClass": "RHA_tank",
@@ -21885,7 +21944,8 @@
       "armorThrough": 1.0,
       "explosionDamageMult": 0.00001,
       "genericDamageMult": 0.00001,
-      "cumulativeDamageMult": 0.00001
+      "cumulativeDamageMult": 0.00001,
+      "shatterDamageMult": 0.001
     },
     "wood_props": {
       "allowRicochet": false,
@@ -21893,8 +21953,9 @@
       "restrainDamage": 0.05,
       "armorThrough": 10.0,
       "explosionDamageMult": 0.5,
-      "genericDamageMult": 0.05,
-      "cumulativeDamageMult": 0.05
+      "genericDamageMult": 0.45,
+      "cumulativeDamageMult": 0.05,
+      "shatterDamageMult": 0.01
     },
     "wood_small_props": {
       "allowRicochet": false,
@@ -21903,7 +21964,8 @@
       "armorThrough": 1.0,
       "explosionDamageMult": 1.0,
       "genericDamageMult": 1.0,
-      "cumulativeDamageMult": 1.0
+      "cumulativeDamageMult": 1.0,
+      "shatterDamageMult": 0.1
     }
   },
   "DamageEffects": {

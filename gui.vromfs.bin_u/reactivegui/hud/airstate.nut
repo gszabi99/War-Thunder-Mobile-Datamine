@@ -1,12 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
+let { eventbus_subscribe } = require("eventbus")
 let { AirThrottleMode, AirParamsMain } = require("%globalScripts/sharedEnums.nut")
 let interopGen = require("%rGui/interopGen.nut")
 let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO } = AirParamsMain
 let { use_mgun_as_cannon_by_trigger } = require("hudAircraftStates")
+let { isUnitAlive, isUnitDelayed, playerUnitName } = require("%rGui/hudState.nut")
+let { FlightCameraType = { TURRET = 9 }, getCameraViewType = @() 1 } = require("camera_control")
+let { TURRET } = FlightCameraType
 
 use_mgun_as_cannon_by_trigger(true)
+const NUM_TURRETS_MAX = 10
 
 let MainMask         = Watched(0)
 let Trt0             = Watched(0)
@@ -19,6 +24,11 @@ let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) // -duplic
 let TorpedoesState   = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
 let cannonsOverheat  = Watched(0)
 let mgunsOverheat  = Watched(0)
+let TurretsVisible = Watched(array(NUM_TURRETS_MAX, false))
+let TurretsReloading = Watched(array(NUM_TURRETS_MAX, false))
+let TurretsEmpty = Watched(array(NUM_TURRETS_MAX, false))
+let activeCameraView = Watched(null)
+let isActiveTurretCamera = Computed(@() activeCameraView.get() == TURRET)
 
 let airState = {
   TrtMode0
@@ -29,8 +39,13 @@ let airState = {
   MGun0
   hasCanon0  = Computed(@() (MainMask.get() & (1 << CANNON_1)) != 0)
   hasMGun0   = Computed(@() (MainMask.get() & (1 << MACHINE_GUNS_1)) != 0)
+  isActiveTurretCamera
   cannonsOverheat
   mgunsOverheat
+
+  TurretsVisible
+  TurretsReloading
+  TurretsEmpty
 
   BombsState
   RocketsState
@@ -101,6 +116,19 @@ registerInteropFunc("updateEnginesThrottle", function(mode, trt, _state, index) 
   TrtMode0.set(mode)
   Trt0.set(trt)
 })
+registerInteropFunc("updateTurrets", function(_, _, _, isReloading, empty, visible, index) {
+  if (TurretsReloading.get()[index] != isReloading)
+    TurretsReloading.mutate(@(v) v[index] = isReloading)
+  if (TurretsEmpty.get()[index] != empty)
+    TurretsEmpty.mutate(@(v) v[index] = empty)
+  if (TurretsVisible.get()[index] != visible)
+    TurretsVisible.mutate(@(v) v[index] = visible)
+})
+
+eventbus_subscribe("onSetCamera", @(v) activeCameraView.set(v.newType))
+
+foreach(w in [isUnitAlive, isUnitDelayed, MainMask, playerUnitName])
+  w.subscribe(@(_) activeCameraView.set(getCameraViewType()))
 
 let logMask = @() log("MainMask = ",
   ", ".join(

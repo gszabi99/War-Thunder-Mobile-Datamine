@@ -36,14 +36,14 @@ let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
 let columnsCount = (saSize[0] + saBorders[0] + boxGap) / (boxSize + boxGap) //allow items a bit go out of safearea to fit more items
 let itemsBlockWidth = isWidescreen ? saSize[0] : columnsCount * (boxSize + boxGap)
 
-let mkText = @(text, style) {
+let mkText = @(text, ovr = {}) {
   text
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF
   fontFx = FFT_GLOW
   fontFxFactor = max(64, hdpx(64))
   fontFxColor = 0xFF000000
-}.__update(style)
+}.__update(fontSmall, ovr)
 
 function lootboxImageWithTimer(lootbox) {
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
@@ -109,19 +109,19 @@ let mkCurrencyComp = @(count, chance, currencyId, style = CS_COMMON) {
   valign = ALIGN_CENTER
   gap = style.iconGap
   children = [
-    mkText(loc("item/chance"), fontSmall)
+    mkText(loc("item/chance"))
     mkCurrencyImage(currencyId, style.iconSize, { key = style?.iconKey })
-    mkText($"{count}{colon}{chance}%", fontSmall)
+    mkText($"{count}{colon}{chance}%")
   ]
 }
 
 function mkTextForChance(rewardId, chances = null, count = null, currencyId = "") {
-  if(chances == null)
-    return loc("item/chance/error")
+  if (chances == null)
+    return mkText(loc("item/chance/error"))
 
   let chance = roundToDigits(chances.percents[rewardId], 2)
   return count ? mkCurrencyComp(decimalFormat(count), chance, currencyId)
-    : mkText($"{loc("item/chance")}{colon}{chance}%", fontSmall)
+    : mkText($"{loc("item/chance")}{colon}{chance}%")
 }
 
 function mkJackpotChanceText(id, chances, mainChances, stepsToFixed) {
@@ -271,13 +271,13 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
     gap = REWARD_STYLE_MEDIUM.boxGap
     children = jackpotCount.get() == 0
       ? [
-          mkText(loc("events/lootboxContains"), fontSmall)
+          mkText(loc("events/lootboxContains"))
           itemsBlock(allRewards, width)
         ]
       : [
-          mkText(loc("jackpot/rewardsHeader"), fontSmall)
+          mkText(loc("jackpot/rewardsHeader"))
           itemsBlock(Computed(@() allRewards.get().slice(0, jackpotCount.get())), width, {}, lootbox)
-          mkText(loc("events/lootboxContains"), fontSmall)
+          mkText(loc("events/lootboxContains"))
           itemsBlock(Computed(@() allRewards.get().slice(jackpotCount.get())), width)
         ]
     animations = wndSwitchAnim
@@ -292,13 +292,13 @@ let lootboxPreviewContent = @(lootbox, ovr = {}) lootbox == null ? { size = flex
       flow = FLOW_VERTICAL
       children = [
         mkText(loc("events/lootboxContains"),
-          { hplace = ALIGN_CENTER }.__update(fontSmall))
+          { hplace = ALIGN_CENTER })
         lootboxImageWithTimer(lootbox)
         itemsBlock(mkLootboxRewardsComp(lootbox), itemsBlockWidth, { halign = ALIGN_CENTER })
       ]
     }.__update(ovr)
 
-let lootboxHeader = @(lootbox) mkText(getLootboxName(lootbox.name, lootbox?.meta.event), fontSmall)
+let lootboxHeader = @(lootbox) mkText(getLootboxName(lootbox.name, lootbox?.meta.event))
 
 return {
   lootboxPreviewContent

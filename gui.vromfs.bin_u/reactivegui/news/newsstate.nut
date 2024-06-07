@@ -80,8 +80,6 @@ let unseenArticleId = Computed(function() {
       break
     if (info.id > lastId)
       res = info.id
-    else
-      break
   }
   return res
 })

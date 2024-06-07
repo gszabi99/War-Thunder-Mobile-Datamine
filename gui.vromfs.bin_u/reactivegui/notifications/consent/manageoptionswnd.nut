@@ -1,20 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bgShaded, bgMessage } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { urlUnderline, gapAfterPoint, linkColor } = require("consentComps.nut")
-let { msgBoxHeaderWithClose, openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { isOpenedManage, isOpenedConsentWnd, points} = require("consentState.nut")
+let { msgBoxHeaderWithClose, openMsgBox, msgBoxText, wndWidthDefault } = require("%rGui/components/msgBox.nut")
+let { isOpenedManage, defaultPointsTable, savedPoints,
+  applyConsent} = require("consentState.nut")
 
 let key = "consentManage"
 let close = @() isOpenedManage(false)
 
 let checkSize = [hdpxi(30), hdpxi(30)]
 
+function copyPoints(v){
+  let savedPointsClone = clone v
+  if((savedPointsClone?.len() ?? 0) == 0)
+    return defaultPointsTable
+  return savedPointsClone
+}
+
+let choosenPoints = Watched(copyPoints(savedPoints.get()))
+savedPoints.subscribe(@(v) choosenPoints.set(copyPoints(v)))
+
 function checkBox(p){
-  let isChecked = Computed(@() points.get()[p])
+  let isChecked = Computed(@() choosenPoints.get()[p])
   return @(){
     watch = isChecked
     size = checkSize
@@ -56,15 +66,15 @@ let optionRow = @(p){
   gap = gapAfterPoint
   children = [
     @() {
-      watch = points
+      watch = choosenPoints
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_TOP
       gap = gapAfterPoint
       behavior = Behaviors.Button
       function onClick() {
-        let oldValue = points.get()[p]
-        points(points.get().__merge({[p] = !oldValue}))
+        let oldValue = choosenPoints.get()[p]
+        choosenPoints(choosenPoints.get().__merge({[p] = !oldValue}))
       }
       children = [
         checkBox(p)
@@ -79,40 +89,39 @@ let optionRow = @(p){
     mkAdditionalInfo(p)
   ]
 }
-function onClickAcceptAll() {
-  points(points.get().map(@(_) true))
-  eventbus_send("consent.onCustomFormSave", points.get())
-  close()
-  isOpenedConsentWnd(false)
-}
 
-function onClickConfirmCustom() {
-  eventbus_send("consent.onCustomFormSave", points.get())
-  close()
-  isOpenedConsentWnd(false)
-}
-
-let manageButtons = {
+let manageButtons = @(){
+  watch = choosenPoints
   size = [flex(), SIZE_TO_CONTENT]
   padding = [hdpx(20), hdpx(50), hdpx(40), hdpx(50)]
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   children = [
-    textButtonCommon(loc("consentWnd/manage/accept"), onClickAcceptAll)
+    textButtonCommon(loc("consentWnd/manage/acceptAll"), @() applyConsent(defaultPointsTable.map(@(_) true), {wnd="consentManage", action="accept_all"}))
     {size = flex()}
-    textButtonPrimary(loc("consentWnd/manage/confirm"), onClickConfirmCustom)
+    textButtonPrimary(loc("consentWnd/manage/acceptChoosen"), @() applyConsent(choosenPoints.get(), {wnd="consentManage", action="accept_chosen"}))
   ]
 }
 
+let pointsComp = @() {
+  watch = choosenPoints
+  size = flex()
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  children = choosenPoints.get()?.keys().map(optionRow) ?? []
+}
+
 let content = bgMessage.__merge({
-  size = [pw(50), ph(80)]
+  size = [wndWidthDefault, hdpx(880)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
     msgBoxHeaderWithClose(loc("consentWnd/main/manage"), close)
-  ].extend(points.get().keys().map(optionRow))
-  .append(manageButtons)
+    pointsComp
+    manageButtons
+  ]
 })
 
 let manageWnd = bgShaded.__merge({

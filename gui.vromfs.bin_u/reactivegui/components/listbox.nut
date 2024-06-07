@@ -6,11 +6,14 @@ let gapH = hdpx(20)
 let gapV = hdpx(10)
 
 
-function listbox(value, list, columns = null, valToString = @(v) v, setValue = null) {
+function listbox(value, list, columns = null, valToString = @(v) v, setValue = null, mkContentCtor = null) {
   setValue = setValue ?? @(v) value(v)
   let colCount = columns ?? list.len()
   let rows = arrayByRows(
-    list.map(@(v) listButton(valToString(v), Computed(@() v == value.value), @() setValue(v))),
+    list.map(@(v)
+      listButton(mkContentCtor ? @(sf, isSelected) mkContentCtor(v, sf, isSelected) : valToString(v),
+        Computed(@() v == value.get()),
+        @() setValue(v))),
     colCount
   )
   if (rows.len() > 0 && rows.top().len() < colCount)

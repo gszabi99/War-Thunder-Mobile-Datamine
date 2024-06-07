@@ -1,28 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
+let logC = log_with_prefix("[consent] ")
+
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { register_command } = require("console")
 let { bgShaded, bgMessage } = require("%rGui/style/backgrounds.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { urlUnderline, linkColor } = require("consentComps.nut")
-let { msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
-let { isOpenedConsentWnd, isOpenedPartners, isOpenedManage points} = require("consentState.nut")
+let { msgBoxHeaderWithClose, wndWidthDefault } = require("%rGui/components/msgBox.nut")
+let { isOpenedConsentWnd,needOpenConsentWnd, isOpenedPartners, isOpenedManage,
+  defaultPointsTable, applyConsent, savedPoints, isConsentAcceptedOnce, setupAnalytics} = require("consentState.nut")
 
 let key = "consentMain"
-let close = @() isOpenedConsentWnd(false)
-
-function onClickConsent() {
-  points(points.get().map(@(_) true))
-  eventbus_send("consent.onCustomFormSave", points.get())
-  close()
-}
-
-function onClickDontConsent() {
-  points(points.get().map(@(_) false))
-  eventbus_send("consent.onCustomFormSave", points.get())
-  close()
-}
+let close = @() needOpenConsentWnd(false)
 
 let mainButtons = {
   size = [flex(), SIZE_TO_CONTENT]
@@ -30,9 +20,9 @@ let mainButtons = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   children = [
-    textButtonCommon(loc("consentWnd/btns/notConsent"), onClickDontConsent)
+    textButtonCommon(loc("consentWnd/btns/notConsent"), @() applyConsent(defaultPointsTable.map(@(_) false), {wnd="consentMain", action="dont_consent"}))
     {size = flex()}
-    textButtonPrimary(loc("consentWnd/btns/consent"), onClickConsent)
+    textButtonPrimary(loc("consentWnd/btns/consent"), @() applyConsent(defaultPointsTable, {wnd="consentMain", action="accept_all"}))
   ]
 }
 
@@ -67,13 +57,18 @@ let desc = {
 
 
 let content = bgMessage.__merge({
-  size = [pw(50), ph(80)]
+  size = [wndWidthDefault, hdpx(880)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
     msgBoxHeaderWithClose(loc("consentWnd/main/header"), function(){
-      eventbus_send("consent.onCustomFormSave", null)
+      if (!isConsentAcceptedOnce.get()) {
+        savedPoints(defaultPointsTable.map(@(_) false))// dont need to save to online storage so that the window opens again at the next login
+        logC("consent skipped")
+        sendUiBqEvent("consent", { id = "consent_skip" })
+        setupAnalytics()
+      }
       close()
     })
     desc
@@ -93,5 +88,3 @@ let consentWnd = bgShaded.__merge({
 if (isOpenedConsentWnd.get())
   addModalWindow(consentWnd)
 isOpenedConsentWnd.subscribe(@(v) v ? addModalWindow(consentWnd) : removeModalWindow(key))
-
-register_command(@() isOpenedConsentWnd(true), "ui.consentWnd")

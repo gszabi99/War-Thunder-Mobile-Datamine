@@ -32,6 +32,10 @@ return {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
     },
+    "fr_amx_10rc": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_green_sand_gray"
+    },
     "fr_amx_13_75": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_desert_storm"
@@ -68,6 +72,10 @@ return {
       "desert2": "fr_camo_jaune_sahara",
       "winter": "tl_camo_usa_colors"
     },
+    "fr_amx_30_ACRA": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_green_sand_gray"
+    },
     "fr_amx_30_b2_brenus": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
@@ -82,9 +90,17 @@ return {
       "desert2": "fr_camo_jaune_sahara",
       "winter": "tl_camo_usa_colors"
     },
+    "fr_amx_30_dca_reskin2": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_green_sand_gray"
+    },
     "fr_amx_32_105": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
+    },
+    "fr_amx_50_1950": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_green_brown_lines"
     },
     "fr_amx_50_surbaisse": {
       "": "fr_camo_vert_olive_arme",
@@ -119,6 +135,9 @@ return {
     "fr_cckw_353_bofors_reward": {
       "": "tl_camo_grey_yellow_lines",
       "upgraded": "fr_camo_vert_olive_arme"
+    },
+    "fr_cruiser_emile_bertin": {
+      "": "camo_multicolor_waves"
     },
     "fr_m36b2_cefeo": {
       "": "fr_camo_green_sand_brown",

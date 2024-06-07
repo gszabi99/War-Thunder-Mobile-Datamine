@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
 let { TouchScreenSteeringStick } = require("wt.behaviors")
 let { floor, fabs, lerp } = require("%sqstd/math.nut")
-let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue
+let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue
 } = require("%globalScripts/controls/shortcutActions.nut")
 let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround } = require("%rGui/hud/airState.nut")
 let { getSvgImage, borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
@@ -13,11 +13,16 @@ let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, rudder, elevator} = sho
 let { axisMinToHotkey, axisMaxToHotkey } = require("%rGui/controls/axisToHotkey.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { playerUnitName, unitType } = require("%rGui/hudState.nut")
+let { playerUnitName, unitType, isUnitDelayed } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
-let { currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity, currentAircraftCtrlType } = require("%rGui/options/options/airControlsOptions.nut")
+let { currentControlByGyroModeAilerons, currentControlByGyroModeElevator, currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity,
+      currentAircraftCtrlType, currentAdditionalFlyControls } = require("%rGui/options/options/airControlsOptions.nut")
 let { set_mouse_aim } = require("controlsOptions")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
+let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner } = require("%rGui/components/movementArrows.nut")
+let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
+let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
 
 let maxThrottle = 100
 let stepThrottle = 5
@@ -246,15 +251,63 @@ let gamepadAxisListener = axisListener({
  [throttle_axis] = @(v) throttleAxisVal(v),
 })
 
-function applyGyroAxisParams(val, deadZone, sensitivity) {
-  let minVal = val > 0.0 ? deadZone : -deadZone
-  return (val - minVal) / (1.0 - deadZone) * sensitivity
+local resetGravityLeft0 = false
+local resetGravityForward0 = false
+local resetGravityUp0 = false
+function resetAxesZero() {
+  resetGravityLeft0 = true
+  resetGravityForward0 = true
+  resetGravityUp0 = true
+  setVirtualAxisValue("ailerons", 0.0)
+  setVirtualAxisValue("elevator", 0.0)
+}
+unitType.subscribe(@(_v) resetAxesZero())
+currentControlByGyroModeAilerons.subscribe(@(_v) resetAxesZero())
+currentControlByGyroModeElevator.subscribe(@(_v) resetAxesZero())
+
+local gravityLeft0 = 0.0
+local gravityForward0 = 0.0
+local gravityUp0 = -1.0
+
+local gravityLeft = 0.0
+local gravityForward = 0.0
+local gravityUp = -1.0
+
+function setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, set_elevator, sensitivity) {
+  setVirtualAxesAileronsElevatorValue(sensitivity, set_ailerons, set_elevator, gravityLeft0, gravityForward0, gravityUp0, gravityLeft, gravityForward, gravityUp)
 }
 
-let gyroAxisListener = axisListener({
-  [shortcutsMap.gyroAxes.ailerons] = @(v) setVirtualAxisValue("ailerons", applyGyroAxisParams(v, currentControlByGyroModeDeadZone.value, currentControlByGyroModeSensitivity.value)),
-  [shortcutsMap.gyroAxes.elevator] = @(v) setVirtualAxisValue("elevator", applyGyroAxisParams(v, currentControlByGyroModeDeadZone.value, currentControlByGyroModeSensitivity.value)),
-  [shortcutsMap.gyroAxes.rudder] = @(v) setVirtualAxisValue("rudder", applyGyroAxisParams(v, currentControlByGyroModeDeadZone.value, currentControlByGyroModeSensitivity.value))
+function applyGravityLeft(val, set_ailerons, set_elevator, sensitivity) {
+  if (resetGravityLeft0) {
+    gravityLeft0 = val
+    resetGravityLeft0 = false
+  }
+  gravityLeft = val
+  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, set_elevator, sensitivity)
+}
+
+function applyGravityForward(val, set_ailerons, set_elevator, sensitivity) {
+  if (resetGravityForward0) {
+    gravityForward0 = val
+    resetGravityForward0 = false
+  }
+  gravityForward = val
+  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, set_elevator, sensitivity)
+}
+
+function applyGravityUp(val, set_ailerons, set_elevator, sensitivity) {
+  if (resetGravityUp0) {
+    gravityUp0 = val
+    resetGravityUp0 = false
+  }
+  gravityUp = val
+  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, set_elevator, sensitivity)
+}
+
+let imuAxisListener = axisListener({
+  [shortcutsMap.imuAxes.gravityLeft]    = @(v) applyGravityLeft   ( v, currentControlByGyroModeAilerons.value, currentControlByGyroModeElevator.value, currentControlByGyroModeSensitivity.value),
+  [shortcutsMap.imuAxes.gravityForward] = @(v) applyGravityForward(-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeElevator.value, currentControlByGyroModeSensitivity.value),
+  [shortcutsMap.imuAxes.gravityUp]      = @(v) applyGravityUp     (-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeElevator.value, currentControlByGyroModeSensitivity.value)
 })
 
 let stickZoneSize = [shHud(40), shHud(40)]
@@ -337,9 +390,11 @@ let aircraftMovement = {
   children = [
     throttleSlider
     @() {
-      watch = [isGamepad, currentAircraftCtrlType, currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity]
-      children =[
-        currentAircraftCtrlType.value == "control_by_gyro" ? gyroAxisListener : null
+      watch = [ isGamepad, currentAircraftCtrlType,
+                currentControlByGyroModeAilerons, currentControlByGyroModeElevator,
+                currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity]
+      children = [
+        currentAircraftCtrlType.value == "mouse_aim" && (currentControlByGyroModeAilerons.value || currentControlByGyroModeElevator.value) ? imuAxisListener : null
         isGamepad.value ? (currentAircraftCtrlType.value == "mouse_aim" ? gamepadMouseAimAxisListener : gamepadAxisListener ): null
       ]
     }
@@ -435,6 +490,77 @@ let aircraftIndicatorsEditView = {
   ]
 }
 
+let outlineColor = Watched(0x4D4D4D4D)
+let isAircraftMoveArrowsAvailable = Computed(@() currentAdditionalFlyControls.value)
+let toInt = @(list) list.map(@(v) v.tointeger())
+let horSize = toInt([shHud(9), shHud(12)])
+let verSize = toInt([shHud(12), shHud(10)])
+
+let mkVerticalArrow = @(id, isControlDisabled, upDirection) mkMoveVertBtn(
+  function onTouchBegin() {
+    setShortcutOn(id)
+  },
+  @() setShortcutOff(id),
+  id,
+  {
+    size = verSize
+    key = id
+    flipY = upDirection
+    children = @() {
+      watch = isControlDisabled
+      children = isControlDisabled.value ? null
+        : [
+            mkMoveVertBtnCorner(upDirection, Watched(0xFFFFFFFF), verSize)
+            mkMoveVertBtnOutline(upDirection, outlineColor, verSize)
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] })
+          ]
+    }
+  })
+
+let mkHorizontalMovementParams = @(id, disableId) {
+  ovr = { key = id, size = horSize }
+  shortcutId = id
+  outlineColor
+  function onTouchBegin() {
+    setShortcutOn(id)
+  }
+  onTouchEnd = @() setShortcutOff(id)
+  isDisabled = mkIsControlDisabled(disableId)
+}
+
+function aircraftMoveArrows() {
+  let vertical = "elevator"
+  let horizontal = "ailerons"
+  let vertical_max = $"{vertical}_rangeMax"
+  let vertical_min = $"{vertical}_rangeMin"
+
+  let leftArrow = mkMoveLeftBtn(mkHorizontalMovementParams($"{horizontal}_rangeMin", horizontal))
+  let rightArrow = mkMoveRightBtn(mkHorizontalMovementParams($"{horizontal}_rangeMax", horizontal))
+
+  let isControlDisabled = mkIsControlDisabled(vertical)
+
+  return @() {
+    watch = [isUnitDelayed, isGamepad]
+    vplace = ALIGN_BOTTOM
+    hplace = ALIGN_RIGHT
+    flow = FLOW_HORIZONTAL
+    children = [
+          leftArrow
+          {
+            flow = FLOW_VERTICAL
+            halign = ALIGN_CENTER
+            children = [
+              mkVerticalArrow(vertical_min, isControlDisabled, false)
+              mkVerticalArrow(vertical_max, isControlDisabled, true)
+            ]
+          }
+          rightArrow
+          isGamepad.value ? gamepadMouseAimAxisListener : null
+        ]
+    animations = dfAnimBottomLeft
+  }
+}
+
 return {
   aircraftMovement
   aircraftIndicators
@@ -442,4 +568,6 @@ return {
   aircraftIndicatorsEditView
   aircraftMoveStick
   aircraftMoveStickView
+  aircraftMoveArrows
+  isAircraftMoveArrowsAvailable
 }
