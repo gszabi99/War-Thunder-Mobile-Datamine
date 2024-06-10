@@ -5,7 +5,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer } = require("dagor.workcycle")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { getPlayerToken } = require("auth_wt")
 let { get_cur_circuit_block } = require("blkGetters")
 let DataBlock = require("DataBlock")
@@ -96,7 +96,7 @@ function sendAll() {
     url = url.get()
     headers
     waitable = true
-    data = json_to_string(list)
+    data = object_to_json_string(list)
     respEventId = RESPONSE_EVENT
     context = {
       userId = myUserId.value

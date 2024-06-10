@@ -48,4 +48,5 @@ function locMissionDesc() {
 return {
   locMissionDesc
   locMissionName
+  getMissionLocName
 }

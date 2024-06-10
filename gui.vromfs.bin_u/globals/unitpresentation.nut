@@ -36,7 +36,6 @@ let defaults = {
   image = ""
   upgradedImage = ""
   locId = ""
-  locIdFull = ""
 }
 
 let inProgress = { image = "!ui/unitskin#image_in_progress.avif" }
@@ -45,7 +44,6 @@ let overrides = {
   us_m3a3_bradley_reskin = inProgress
   germ_flakpz_I_Gepard_reskin = inProgress
   jp_type_87_reskin = inProgress
-  sw_veak_40_reskin = inProgress
   us_mbt_70 = inProgress
   us_m60a1_rise_passive_era = inProgress
   us_m3a3_bradley = inProgress
@@ -70,9 +68,6 @@ let overrides = {
   jp_type_74_mod_g_kai = inProgress
   jp_type_74_f = inProgress
   jp_type_89 = inProgress
-  sw_strv_105 = inProgress
-  sw_strf_90b = inProgress
-  sw_cv_90105_tml = inProgress
   uk_ac4_thunderbolt = inProgress
   us_halftrack_m16_reskin = inProgress
   uk_bosvark_test = inProgress
@@ -80,6 +75,7 @@ let overrides = {
   germ_pzkpfw_IV_ausf_F2_test = inProgress
   us_m4a1_1942_sherman_test = inProgress
   us_m42_duster_test = inProgress
+  cn_zts_63_1980 = inProgress
 }
 
 let platoonNames = {
@@ -90,8 +86,7 @@ let platoonNames = {
 let genParams = {
   image = @(name) $"!ui/unitskin#{name}.avif"
   upgradedImage = @(name) $"!ui/unitskin#{name}_upgraded.avif"
-  locId = @(name) $"{name}_shop"
-  locIdFull = @(name) $"{name}_0"
+  locId = @(name) $"{name}"
 }
 
 function mkUnitPresentation(unitName) {
@@ -120,7 +115,6 @@ return {
   unitTypeColors
   getUnitPresentation
   getUnitLocId
-  getUnitLocIdFull = @(u) getUnitPresentation(u).locIdFull
   getUnitClassFontIcon = @(u) unitClassFontIcons?[u?.unitClass] ?? ""
   getPlatoonName
   getPlatoonOrUnitName = @(unit, loc) (unit?.platoonUnits.len() ?? 0) > 0 ? getPlatoonName(unit.name, loc) : loc(getUnitLocId(unit.name))

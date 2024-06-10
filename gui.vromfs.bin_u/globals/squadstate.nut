@@ -1,4 +1,5 @@
 let { Computed } = require("frp")
+let { max } = require("math")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
@@ -22,6 +23,15 @@ let isLeavingWillDisbandSquad = Computed(@() squadLen.value == 1 || (squadLen.va
 let canInviteToSquad = Computed(@() !isInSquad.value || isSquadLeader.value)
 let myClustersRTT = sharedWatched("myClustersRTT", @() {})
 let queueDataCheckTime = sharedWatched("queueDataCheckTime", @() 0)
+
+function getMemberMaxMRank(memberInfo, campaign, srvConfigs) {
+  local list = memberInfo?.units[campaign]
+  if (list == null)
+    return -1
+  if (type(list) != "array")
+    list = [list] //compatibility with 2024.05.15
+  return list.reduce(@(res, unitName) max(res, srvConfigs?.allUnits[unitName].mRank ?? 0), -1)
+}
 
 return {
   MAX_SQUAD_MRANK_DIFF = 1
@@ -47,4 +57,6 @@ return {
   canInviteToSquad
   myClustersRTT
   queueDataCheckTime
+
+  getMemberMaxMRank
 }

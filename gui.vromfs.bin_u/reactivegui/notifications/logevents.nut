@@ -10,7 +10,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { INVALID_USER_ID } = require("matching.errors")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { eventbus_send } = require("eventbus")
 let {
@@ -76,8 +76,8 @@ myUserId.subscribe(function(v) {
     let blk = get_common_local_settings_blk()
     let wasLoginedBefore = blk?[FIRST_LOGIN_EVENT] ?? false
     if (!wasLoginedBefore) {
-      logEvent("af_first_login",json_to_string({cuid = uid}, false))
-      logFirebaseEventWithJson("first_login",json_to_string({cuid = uid}, false))
+      logEvent("af_first_login",object_to_json_string({cuid = uid}, false))
+      logFirebaseEventWithJson("first_login",object_to_json_string({cuid = uid}, false))
       blk[FIRST_LOGIN_EVENT] = true
       eventbus_send("saveProfile", {})
     }

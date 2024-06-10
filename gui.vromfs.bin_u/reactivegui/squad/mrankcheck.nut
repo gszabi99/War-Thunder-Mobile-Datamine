@@ -3,7 +3,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInSquad, isSquadLeader, squadLeaderMRankCheckTime, squadMembers,
-  squadLeaderCampaign, squadLeaderState
+  squadLeaderCampaign, squadLeaderState, getMemberMaxMRank
 } = require("%appGlobals/squadState.nut")
 let setReady = require("setReady.nut")
 let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
@@ -47,10 +47,10 @@ function showMRankCheck() {
   if (!shouldShowMsg.value)
     return
 
-  let leaderMRank = serverConfigs.value?.allUnits[squadLeaderState.value?.units[squadLeaderCampaign.value]].mRank ?? -1
-  let myMRank = serverConfigs.value?.allUnits[squadMembers.value?[myUserId.value].units[squadLeaderCampaign.value]].mRank ?? -1
+  let leaderMRank = getMemberMaxMRank(squadLeaderState.get(), squadLeaderCampaign.get(), serverConfigs.get())
+  let myMRank = getMemberMaxMRank(squadMembers.get()?[myUserId.get()], squadLeaderCampaign.get(), serverConfigs.get())
   if (leaderMRank == myMRank) {
-    mRankCheckTime(serverTime.value)
+    mRankCheckTime(serverTime.get())
     return
   }
 

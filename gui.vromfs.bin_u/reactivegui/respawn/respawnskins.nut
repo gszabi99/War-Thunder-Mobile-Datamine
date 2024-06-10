@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { checkIcon } = require("%rGui/unitSkins/unitSkinsComps.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { respawnUnitSkins, respawnUnitInfo } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { isAutoSkin } = require("%rGui/unitSkins/skinTuning.nut")
+let { isAutoSkin } = require("%rGui/unit/unitSettings.nut")
 let { chooseAutoSkin, respawnSlots, selSlot, selectedSkins } = require("%rGui/respawn/respawnState.nut")
 let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
 

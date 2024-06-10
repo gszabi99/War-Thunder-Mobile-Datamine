@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { can_debug_configs, can_debug_missions, can_use_debug_console, can_view_replays, can_write_replays
+let { can_debug_configs, can_debug_missions, can_use_debug_console, can_view_replays, can_write_replays,
+has_offline_battle_access
 } = require("%appGlobals/permissions.nut")
 let { openDebugProfileWnd } = require("%rGui/debugTools/debugProfileWnd.nut")
 let { openDebugConfigWnd } = require("%rGui/debugTools/debugConfigsWnd.nut")
@@ -25,6 +26,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { openBugReport } = require("%rGui/feedback/bugReport.nut")
+let { openOfflineBattleMenu } = require("%rGui/debugTools/debugOfflineBattleState.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
@@ -126,6 +128,10 @@ let UNITS = {
   name = loc("mainmenu/btnUnits")
   cb = unitsWnd
 }
+let OFFLINE_BATTLES = {
+  name = loc("mainmenu/offlineBattles")
+  cb = openOfflineBattleMenu
+}
 
 function getPublicButtons() {
   let res = [OPTIONS, STORE, UNITS]
@@ -158,6 +164,8 @@ function getDevButtons() {
     res.append(DEBUG_CONFIGS, DEBUG_PROFILE, DEBUG_SHOP)
   if (can_use_debug_console.value)
     res.append(DEBUG_COMMANDS)
+  if (has_offline_battle_access.value)
+    res.append(OFFLINE_BATTLES)
   return res
 }
 
@@ -170,7 +178,7 @@ let topMenuButtonsGenId = Computed(function(prev) {
   let vals = [   //warning disable: -declared-never-used
     can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad,
     isFeedReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData,
-    can_view_replays, can_write_replays, hasUnsavedReplay
+    can_view_replays, can_write_replays, hasUnsavedReplay, has_offline_battle_access
   ]
   return prev == FRP_INITIAL ? 0 : prev + 1
 })

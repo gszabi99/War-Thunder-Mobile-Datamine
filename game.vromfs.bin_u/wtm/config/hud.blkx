@@ -99,6 +99,7 @@
   "drawNativeTankSpeedInSpectator": false,
   "drawNativeRespawnIndicators": false,
   "maxShipRelativeHpRepairHint": 0.12,
+  "heightTresholdForCriticalSpeedHint": 100.0,
   "skins": {
     "defSkin": "ui/gameuiskin"
   },
@@ -911,7 +912,7 @@
       "shell_projection.svg:23:23:K",
       "gunner_sight_lines.svg:27:27:K"
     ],
-    "pictureGunnerView": "gunner_sight.svg:23:23:K",
+    "pictureGunnerView": "gunner_sight.svg:53:53:K",
     "pictureGunnerViewLines": "gunner_sight_lines.svg:27:27:K",
     "pictureGunnerDeadzone": "gunner_sight_disabled.svg:23:23:K",
     "pictureGunnerDeadzoneLines": "gunner_sight_lines_disabled.svg:27:27:K",
@@ -1606,7 +1607,7 @@
         "icon": "gun_direction.svg:23:23:K"
       },
       "machinegun": {
-        "icon": "gun_direction.svg:13:13:K"
+        "icon": "gun_direction.svg:30:30:K"
       },
       "special": {
         "icon": "gun_direction.svg:23:23:K"
@@ -1955,13 +1956,17 @@
     "targetUnitScale": 0.8,
     "hudScreenSafeAreaForPointers": 1.0,
     "captureZonePointersInDarg": true,
-    "airTargetOutOfScreenArrowScale": 2.0,
-    "airTargetOutOfScreenArrowColor": [
-      255,
-      255,
-      255,
-      255
-    ]
+    "airTargetArrow": {
+      "scale": 2.0,
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "animFreq": 1.5,
+      "animScale": 1.5
+    }
   },
   "indicators": {
     "hpProgressSize": [
@@ -4710,6 +4715,10 @@
     "blinkDuration": 0.3,
     "maxBlinkScale": 1.2,
     "fxAlpha": 255
+  },
+  "airDebuffs": {
+    "overheatLevel": 0.7,
+    "engineDebuffReadiness": 0.5
   },
   "move_direction_arrow": {
     "scale": 1.0,

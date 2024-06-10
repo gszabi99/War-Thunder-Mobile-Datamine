@@ -20,17 +20,18 @@ let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
+let { showHint } = require("%rGui/tooltip.nut")
+let { set_clipboard_text } = require("dagor.clipboard")
 
-let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.value && !is_nswitch
-  && [ LT_GOOGLE, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.value))
+let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
+  && [ LT_GOOGLE, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.get()))
 
-let canChangeAccount = Computed(@() isInMenu.value && !is_nswitch)
+let canChangeAccount = Computed(@() isInMenu.get() && !is_nswitch)
 
 let canUsePromoCodes = !is_ios && !is_nswitch
 
 let avatarSize = hdpx(200)
 let levelBlockSize = hdpx(60)
-let imgBtnSize = hdpx(50).tointeger()
 let borderColor = 0xFF000000
 let borderWidth = hdpx(1)
 let gap = hdpx(20)
@@ -48,64 +49,112 @@ let levelMark = @() {
     mkLevelBg()
     {
       rendObj = ROBJ_TEXT
-      text = playerLevelInfo.value.level - playerLevelInfo.value.starLevel
+      text = playerLevelInfo.get().level - playerLevelInfo.get().starLevel
       pos = [0, -hdpx(2)]
     }.__update(fontSmall)
-    starLevelTiny(playerLevelInfo.value.starLevel, starLevelOvr)
+    starLevelTiny(playerLevelInfo.get().starLevel, starLevelOvr)
   ]
 }
 
-let avatar = {
-  size = array(2, avatarSize + 2 * borderWidth)
-  padding = borderWidth
-  rendObj = ROBJ_BOX
-  borderWidth
-  borderColor = borderColor
-  children = [
-    @() {
-      watch = myAvatarImage
-      size = [avatarSize, avatarSize]
-      rendObj = ROBJ_IMAGE
-      image =  Picture($"{myAvatarImage.value}:{avatarSize}:{avatarSize}:P")
-    }
-    levelMark
-  ]
+let iconBtn = @(path, size, stateFlags) @() {
+  watch = stateFlags
+  size = array(2, size)
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{path}:{size}:{size}")
+  color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
+  transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+  transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
 }
 
-let pnStateFlags = Watched(0)
-let myUserNameBtn = @() {
-  watch = hasUnseenDecorators
-  behavior = Behaviors.Button
-  onClick = openDecoratorsScene
-  sound = { click  = "meta_profile_edit" }
-  onElemState = @(s) pnStateFlags(s)
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap
-  children = [
-    @() {
-      watch = myNameWithFrame
-      rendObj = ROBJ_TEXT
-      text = myNameWithFrame.value ?? ""
-    }.__update(fontMedium)
-    @() {
-      watch = pnStateFlags
-      size = array(2, imgBtnSize)
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#menu_edit.svg:{imgBtnSize}:{imgBtnSize}")
-      color = pnStateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
-      transform = { scale = pnStateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-      transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
-    }
-    !hasUnseenDecorators.value ? null
-      : priorityUnseenMark
-  ]
+function mkAvatar() {
+  let avatarBtnSize = hdpxi(40)
+  let iconStateFlags = Watched(0)
+  return {
+    behavior = Behaviors.Button
+    onClick = openDecoratorsScene
+    onElemState = @(s) iconStateFlags.set(s)
+    sound = { click = "meta_profile_edit" }
+    size = array(2, avatarSize + 2 * borderWidth)
+    padding = borderWidth
+    rendObj = ROBJ_BOX
+    borderWidth
+    borderColor = borderColor
+    children = [
+      @() {
+        watch = myAvatarImage
+        size = [avatarSize, avatarSize]
+        rendObj = ROBJ_IMAGE
+        image =  Picture($"{myAvatarImage.get()}:{avatarSize}:{avatarSize}:P")
+        padding = [hdpx(10), hdpx(10), 0, 0]
+        valign = ALIGN_TOP
+        halign = ALIGN_RIGHT
+        children = iconBtn("ui/gameuiskin#menu_edit.svg", avatarBtnSize, iconStateFlags)
+      }
+      levelMark
+    ]
+  }
+}
+
+function copyToClipboard(evt, text) {
+  set_clipboard_text(text)
+  showHint(evt.targetRect, loc("msgbox/copied"), 2)
+}
+
+function mkUserName() {
+  let userNameBtnSize = hdpxi(40)
+  let iconStateFlags = Watched(0)
+  return @() {
+    watch = hasUnseenDecorators
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    gap
+    children = [
+      @() {
+        watch = myNameWithFrame
+        behavior = Behaviors.Button
+        onClick = openDecoratorsScene
+        sound = { click = "meta_profile_edit" }
+        rendObj = ROBJ_TEXT
+        text = myNameWithFrame.get() ?? ""
+      }.__update(fontMedium)
+      @() {
+        watch = iconStateFlags
+        behavior = Behaviors.Button
+        onElemState = @(s) iconStateFlags.set(s)
+        onClick = @(evt) copyToClipboard(evt, myNameWithFrame.get() ?? "")
+        children = iconBtn("ui/gameuiskin#icon_copy.svg", userNameBtnSize, iconStateFlags)
+      }
+      !hasUnseenDecorators.get() ? null
+        : priorityUnseenMark
+    ]
+  }
+}
+
+function mkUserId() {
+  let idBtnSize = hdpxi(30)
+  let iconStateFlags = Watched(0)
+  return {
+    behavior = Behaviors.Button
+    onClick = @(evt) copyToClipboard(evt, $"{myUserId.get()}")
+    onElemState = @(s) iconStateFlags.set(s)
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    gap
+    children = [
+      @() {
+        watch = myUserId
+        rendObj = ROBJ_TEXT
+        text = "".concat(loc("options/userId"), colon, myUserId.get())
+      }.__update(fontTiny)
+      iconBtn("ui/gameuiskin#icon_copy.svg", idBtnSize, iconStateFlags)
+    ]
+  }
 }
 
 let premiumAccountTxt = loc("charServer/entitlement/PremiumAccount")
 let mkPremiumTimeLeftText = function() {
   let res = { watch = [ premiumEndsAt ] }
-  let timeLeft = max(0, premiumEndsAt.value - serverTime.value)
+  let timeLeft = max(0, premiumEndsAt.get() - serverTime.get())
   if (timeLeft == 0)
     return res.__update({ size = flex() })
   res.watch.append(serverTime)
@@ -121,18 +170,14 @@ let userInfoBlock = {
   flow = FLOW_HORIZONTAL
   gap
   children = [
-    avatar
+    mkAvatar()
     {
       flow = FLOW_VERTICAL
       gap
       children = [
-        myUserNameBtn
+        mkUserName()
         mkTitle(fontSmall)
-        @() {
-          watch = myUserId
-          rendObj = ROBJ_TEXT
-          text = "".concat(loc("options/userId"), colon, myUserId.value)
-        }.__update(fontTiny)
+        mkUserId()
       ]
     }
   ]
@@ -165,12 +210,12 @@ let buttons = @() {
   gap = buttonsHGap
   children = [
     mkButtonRow([
-      !canChangeAccount.value ? null
+      !canChangeAccount.get() ? null
         : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
       textButtonPrimary(loc("mainmenu/support"), openSupportTicketWndOrUrl, buttonsWidthStyle)
     ])
     mkButtonRow([
-      !canLinkToGaijinAccount.value ? null
+      !canLinkToGaijinAccount.get() ? null
         : textButtonPrimary(loc("msgbox/btn_linkEmail"),
             @() eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL }),
             buttonsWidthStyle)

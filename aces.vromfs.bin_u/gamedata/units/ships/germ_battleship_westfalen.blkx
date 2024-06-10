@@ -6680,6 +6680,54 @@
           "to": "camo_rot_5*"
         }
       ]
+    },
+    "bluewater_geometry": {
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "camo_bluewater_geometry*"
+        },
+        {
+          "from": "camo_deckbasaltgrau*",
+          "to": "camo_bluewater_geometry*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_bluewater_geometry*"
+        },
+        {
+          "from": "camo_wood*",
+          "to": "camo_dark_wood*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_b15*"
+        }
+      ]
+    },
+    "greenwhite_spots": {
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "camo_greenwhite_spots*"
+        },
+        {
+          "from": "camo_deckbasaltgrau*",
+          "to": "camo_greenwhite_spots*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_greenwhite_spots*"
+        },
+        {
+          "from": "camo_wood*",
+          "to": "camo_dark_wood*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_bottom_green*"
+        }
+      ]
     }
   }
 }

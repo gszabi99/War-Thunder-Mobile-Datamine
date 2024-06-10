@@ -14,8 +14,6 @@ let { shootReadyness, primaryRocketGun, hasSecondaryGun, allowShoot } = require(
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
-let { tacticalMapSize } = require("components/tacticalMap.nut")
-let { logerrAndKillLogPlace } = require("%rGui/hudHints/hintBlocks.nut")
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
@@ -200,18 +198,6 @@ let gunReadyIndicator = @() {
   children = mkReadyPart(shootReadyness.value)
 }
 
-let hudTopLeft = {
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(90)
-  children = [
-    menuButton
-    {
-      pos = [0, tacticalMapSize[1]]
-      children = logerrAndKillLogPlace
-    }
-  ]
-}
-
 return {
   size = saSize
   hplace = ALIGN_CENTER
@@ -224,7 +210,7 @@ return {
     hudTopMainLog
     hudBottomCenter
     hudTuningElems
-    hudTopLeft
+    menuButton
     gunReadyIndicator
     tankSight
     arcadeCrosshairAim

@@ -1748,61 +1748,77 @@
     "wingStrainLimitDown": 1.0
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/cannonNS23.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 75,
-        "spread": 1.0,
-        "counterIndex": 1,
-        "recoilMultiplier": 0.5
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonNS23.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 75,
-        "spread": 1.0,
-        "traceOffset": 2,
-        "recoilMultiplier": 0.5
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonNS23.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon3_dm",
-        "bullets": 75,
-        "spread": 1.0,
-        "traceOffset": 3,
-        "recoilMultiplier": 0.5
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/cannonNS23.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon4_dm",
-        "bullets": 75,
-        "spread": 1.0,
-        "traceOffset": 4,
-        "counterIndex": 2,
-        "recoilMultiplier": 0.5
-      }
-    ],
-    "hideDmParts": {
-      "node": "armor4_dm"
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
     }
   },
   "weapon_presets": {
     "preset": {
       "name": "la_9_default",
       "blk": "gameData/FlightModels/weaponPresets/la_9_default.blk"
+    }
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1040.0,
+    "maxloadMassLeftConsoles": 570.0,
+    "maxloadMassRightConsoles": 570.0,
+    "maxDisbalance": 420.0,
+    "hideDmParts": {
+      "node": "armor4_dm"
+    },
+    "WeaponSlot": {
+      "index": 0,
+      "WeaponPreset": {
+        "name": "default_common",
+        "Weapon": [
+          {
+            "trigger": "machine gun",
+            "blk": "gameData/Weapons/cannonNS23.blk",
+            "emitter": "flare1",
+            "flash": "flare1",
+            "dm": "cannon1_dm",
+            "bullets": 75,
+            "spread": 1.0,
+            "counterIndex": 1,
+            "recoilMultiplier": 0.5
+          },
+          {
+            "trigger": "cannon",
+            "blk": "gameData/Weapons/cannonNS23.blk",
+            "emitter": "flare2",
+            "flash": "flare2",
+            "dm": "cannon2_dm",
+            "bullets": 75,
+            "spread": 1.0,
+            "traceOffset": 2,
+            "recoilMultiplier": 0.5
+          },
+          {
+            "trigger": "cannon",
+            "blk": "gameData/Weapons/cannonNS23.blk",
+            "emitter": "flare3",
+            "flash": "flare3",
+            "dm": "cannon3_dm",
+            "bullets": 75,
+            "spread": 1.0,
+            "traceOffset": 3,
+            "recoilMultiplier": 0.5
+          },
+          {
+            "trigger": "machine gun",
+            "blk": "gameData/Weapons/cannonNS23.blk",
+            "emitter": "flare4",
+            "flash": "flare4",
+            "dm": "cannon4_dm",
+            "bullets": 75,
+            "spread": 1.0,
+            "traceOffset": 4,
+            "counterIndex": 2,
+            "recoilMultiplier": 0.5
+          }
+        ]
+      }
     }
   },
   "turbulence": {

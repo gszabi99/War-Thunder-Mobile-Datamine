@@ -20,14 +20,23 @@ let WND_PARAMS = {
 
 let modalWindows = []
 let modalWindowsGeneration = Watched(0)
-let hasModalWindows = Computed(@() modalWindowsGeneration.value >= 0 && modalWindows.len() > 0)
+let hasModalWindows = Computed(@() modalWindowsGeneration.get() >= 0 && modalWindows.len() > 0)
+
+function moveModalToTop(key) {
+  let idx = modalWindows.findindex(@(m) m.key == key)
+  if (idx == null)
+    return false
+  modalWindows.append(modalWindows.remove(idx))
+  modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
+  return true
+}
 
 function removeModalWindow(key) {
   let idx = modalWindows.findindex(@(w) w.key == key)
   if (idx == null)
     return false
   modalWindows.remove(idx)
-  modalWindowsGeneration(modalWindowsGeneration.value + 1)
+  modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
   return true
 }
 
@@ -44,14 +53,14 @@ function addModalWindow(wnd = {}) {
   if (wnd.onClick == EMPTY_ACTION)
     wnd.behavior = null
   modalWindows.append(wnd)
-  modalWindowsGeneration(modalWindowsGeneration.value + 1)
+  modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
 }
 
 function hideAllModalWindows() {
   if (modalWindows.len() == 0)
     return
   modalWindows.clear()
-  modalWindowsGeneration(modalWindowsGeneration.value + 1)
+  modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
 }
 
 let modalWindowsComponent = @() {
@@ -66,4 +75,5 @@ return {
   hideAllModalWindows
   modalWindowsComponent
   hasModalWindows
+  moveModalToTop
 }

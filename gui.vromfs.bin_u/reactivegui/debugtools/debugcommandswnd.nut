@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { command } = require("console")
 let { set_clipboard_text } = require("dagor.clipboard")
 let { screenlog } = require("dagor.debug")
@@ -79,7 +79,7 @@ let commandsList = [
       close()
       if (debriefingData.value == null)
         return dlog("Debriefing data is empty") //warning disable: -forbidden-function
-      set_clipboard_text(json_to_string(debriefingData.value, true))
+      set_clipboard_text(object_to_json_string(debriefingData.value, true))
       return dlog("Debriefing data copied to clipboard") //warning disable: -forbidden-function
     }
   }

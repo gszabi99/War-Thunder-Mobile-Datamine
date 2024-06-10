@@ -31,4 +31,6 @@ let statusMark = @(sf) @() {
 return {
   btnOpenUnitAttr = translucentButton("ui/gameuiskin#modify.svg", "", onClick, statusMark)
   btnOpenUnitAttrBig = translucentIconButton("ui/gameuiskin#modify.svg", onClick, hdpxi(75), [hdpx(150), hdpx(110)], statusMark)
+  btnOpenUnitAttrCustom = @(imageSize, bgSize)
+    translucentIconButton("ui/gameuiskin#modify.svg", onClick, imageSize, bgSize, statusMark)
 }

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { frnd } = require("dagor.random")
-let { parse_json_rapid } = require("json")
+let { parse_json } = require("json")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -649,7 +649,7 @@ function getLbRewardTexts(activeGroup) {
     if (purch.source in processed)
       continue
     processed[purch.source] <- true
-    let cfgList = parse_json_rapid(purch.source.slice(sourcePrefix.len()))
+    let cfgList = parse_json(purch.source.slice(sourcePrefix.len()))
     if (type(cfgList) != "array") {
       logerr($"Wrong type of leaderboard reward source json (array required): {purch.source}")
       continue

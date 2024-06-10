@@ -1752,45 +1752,126 @@
     "gun": "gun_default"
   },
   "commonWeapons": {
-    "Weapon": [
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
+  "weapon_presets": {
+    "preset": [
       {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMK103.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 70,
-        "spread": 1.0,
-        "counterIndex": 2
+        "name": "do_335a_1_default",
+        "blk": "gameData/FlightModels/weaponPresets/do_335a_2x250.blk"
       },
       {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/cannonMG15115.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 200,
-        "spread": 1.25,
-        "traceOffset": 1,
-        "counterIndex": 1
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/cannonMG15115.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon3_dm",
-        "bullets": 200,
-        "spread": 1.25,
-        "counterIndex": 3
+        "name": "do_335a_500_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/do_335a_1x500.blk"
       }
     ]
   },
-  "weapon_presets": {
-    "preset": {
-      "name": "do_335a_1_default",
-      "blk": "gameData/FlightModels/weaponPresets/do_335a_1_bomb.blk"
-    }
+  "WeaponSlots": {
+    "maxloadMass": 1040.0,
+    "maxloadMassLeftConsoles": 570.0,
+    "maxloadMassRightConsoles": 570.0,
+    "maxDisbalance": 420.0,
+    "HideNodes": {},
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonMK103.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 70,
+              "spread": 1.0,
+              "counterIndex": 2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/cannonMG15115.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 200,
+              "spread": 1.25,
+              "traceOffset": 1,
+              "counterIndex": 1
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/cannonMG15115.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon3_dm",
+              "bullets": 200,
+              "spread": 1.25,
+              "counterIndex": 3
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "sc250",
+          "reqModification": "etc250_2_mod",
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "bomb2",
+            "external": true,
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "sc500",
+          "reqModification": "etc500_3_mod",
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+            "emitter": "bomb1",
+            "bullets": 1
+          },
+          "HideNodes": {
+            "node": [
+              "pylon_bomb1",
+              "pylon_bomb2"
+            ]
+          }
+        }
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "sc250",
+          "reqModification": "etc250_2_mod",
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "bomb3",
+            "external": true,
+            "bullets": 1
+          }
+        }
+      }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,

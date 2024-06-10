@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let { eventbus_subscribe } = require("eventbus")
 let io = require("io")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { register_command } = require("console")
 let logBD = log_with_prefix("[HANGAR_BATTLE_DATA] ")
 let { hangarUnit } = require("hangarUnit.nut")
@@ -76,7 +76,7 @@ register_command(
   function() {
     const fileName = "wtmHangarBattleData.json"
     let file = io.file(fileName, "wt+")
-    file.writestring(json_to_string(mkHangarBattleData(), true))
+    file.writestring(object_to_json_string(mkHangarBattleData(), true))
     file.close()
     log($"Saved json hangar battle data to {fileName}")
   }

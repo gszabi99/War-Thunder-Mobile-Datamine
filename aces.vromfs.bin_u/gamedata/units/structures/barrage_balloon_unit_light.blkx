@@ -1,0 +1,51 @@
+{
+  "balloonCollision": true,
+  "balloonRadius": 20.0,
+  "model": "barrage_balloon_a",
+  "subclass": "barrageBalloon",
+  "dynCollisionGeom": true,
+  "damageableByGun": true,
+  "ropeAttachPoint": [
+    0.6,
+    -9.0,
+    0.0
+  ],
+  "balloonCxOnSq": 500.0,
+  "liftForce": 100500.0,
+  "ropeStiffness": 100000.0,
+  "mass": 2800.0,
+  "toGround": false,
+  "useOldExplosion": false,
+  "expClass": "exp_zero",
+  "fireFx": "fire_ground_black_fx",
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "fire": 1.0
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "explosion": {
+    "expl": {
+      "partNo": 0,
+      "timeToExplode": 0.5,
+      "preEffectName": "",
+      "postEffectName": "smoke_ground_black_fx",
+      "explosionEffectName": "explosion_midair_medium",
+      "timeForPostEffect": 60.0,
+      "preScale": 1.0,
+      "postScale": 1.0
+    }
+  },
+  "DamageParts": {
+    "steel": {
+      "body_dm": {
+        "hp": 50.0
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let logPSC = log_with_prefix("[profileServerClient] ")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let profile = require("profile_server")
 let { isAuthAndUpdated } = require("%appGlobals/loginState.nut")
@@ -97,7 +97,7 @@ function checkAndLogError(id, action, cb, data) {
   if (type(err) == "table" && "message" in err)
     logErr = " ".concat(err.message, "code" in err ? $"(code: {err.code})" : "")
   else if (type(err) != "string") {
-    let dumpStr = json_to_string(data)
+    let dumpStr = object_to_json_string(data)
     logErr = " ".concat("(full answer dump)", dumpStr)
   }
   if (logErr not in noNeedLogerrOnErrors)

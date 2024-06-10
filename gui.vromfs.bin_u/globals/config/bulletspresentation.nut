@@ -41,6 +41,7 @@ let bulletsImages = {
   atgm_he_tank                        = "shell_atgm_he_tank"
   atgm_vt_fuze_tank                   = "shell_atgm_vt_fuze_tank"
   shell_bullet_belt_tank              = "shell_bullet_belt_tank"
+  he_frag_radio_fuse                  = "shell_he_proxi_fuze"
 
   aam                                 = "air_to_air_missile"
 }

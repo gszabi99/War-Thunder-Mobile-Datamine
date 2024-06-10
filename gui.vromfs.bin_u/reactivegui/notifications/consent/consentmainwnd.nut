@@ -7,9 +7,11 @@ let { bgShaded, bgMessage } = require("%rGui/style/backgrounds.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { urlUnderline, linkColor } = require("consentComps.nut")
-let { msgBoxHeaderWithClose, wndWidthDefault } = require("%rGui/components/msgBox.nut")
+let { msgBoxHeader, wndWidthDefault } = require("%rGui/components/msgBox.nut")
 let { isOpenedConsentWnd,needOpenConsentWnd, isOpenedPartners, isOpenedManage,
   defaultPointsTable, applyConsent, savedPoints, isConsentAcceptedOnce, setupAnalytics} = require("consentState.nut")
+let { can_skip_consent } = require("%appGlobals/permissions.nut")
+let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
 
 let key = "consentMain"
 let close = @() needOpenConsentWnd(false)
@@ -62,15 +64,25 @@ let content = bgMessage.__merge({
   vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
-    msgBoxHeaderWithClose(loc("consentWnd/main/header"), function(){
-      if (!isConsentAcceptedOnce.get()) {
-        savedPoints(defaultPointsTable.map(@(_) false))// dont need to save to online storage so that the window opens again at the next login
-        logC("consent skipped")
-        sendUiBqEvent("consent", { id = "consent_skip" })
-        setupAnalytics()
-      }
-      close()
-    })
+    @(){
+      watch = can_skip_consent
+      size = [flex(), SIZE_TO_CONTENT]
+      valign = ALIGN_CENTER
+      children = [
+        msgBoxHeader(loc("consentWnd/main/header"))
+        can_skip_consent.get()
+          ? closeWndBtn(function(){
+            if (!isConsentAcceptedOnce.get()) {
+              savedPoints(defaultPointsTable.map(@(_) false))// dont need to save to online storage so that the window opens again at the next login
+              logC("consent skipped")
+              sendUiBqEvent("consent", { id = "consent_skip" })
+              setupAnalytics()
+            }
+            close()
+          })
+          : null
+      ]
+    }
     desc
     mainButtons
   ]

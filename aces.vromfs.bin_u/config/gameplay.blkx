@@ -1599,152 +1599,152 @@
   "killStreaksUnits": {
     "bomber": [
       {
-        "name": "il_2m_1943",
-        "weap": "il_2m_1943_default",
+        "name": "il_2m_1943_killstreak",
+        "weap": "il_2m_1943_killstreak_default",
         "rankRange": [
           0,
           1
         ]
       },
       {
-        "name": "sb2c_1c",
-        "weap": "sb2c_1c_default",
+        "name": "sb2c_1c_killstreak",
+        "weap": "sb2c_1c_killstreak_default",
         "rankRange": [
           2,
           2
         ]
       },
       {
-        "name": "il_2m_1943",
-        "weap": "il_2m_1943_default",
+        "name": "il_2m_1943_killstreak",
+        "weap": "il_2m_1943_killstreak_default",
         "rankRange": [
           2,
           2
         ]
       },
       {
-        "name": "ju_87d_5",
-        "weap": "ju_87d_5_default",
+        "name": "ju_87d_5_killstreak",
+        "weap": "ju_87d_5_killstreak_default",
         "rankRange": [
           2,
           2
         ]
       },
       {
-        "name": "he_111h_6",
-        "weap": "he_111h_6_default",
+        "name": "he_111h_6_killstreak",
+        "weap": "he_111h_6_killstreak_default",
         "rankRange": [
           3,
           3
         ]
       },
       {
-        "name": "il_4",
-        "weap": "il_4_default",
+        "name": "il_4_killstreak",
+        "weap": "il_4_killstreak_default",
         "rankRange": [
           3,
           3
         ]
       },
       {
-        "name": "firefly_mk5",
-        "weap": "firefly_mk5_default",
+        "name": "firefly_mk5_killstreak",
+        "weap": "firefly_mk5_killstreak_default",
         "rankRange": [
           3,
           3
         ]
       },
       {
-        "name": "he_111h_6",
-        "weap": "he_111h_6_default",
+        "name": "he_111h_6_killstreak",
+        "weap": "he_111h_6_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "il_4",
-        "weap": "il_4_default",
+        "name": "il_4_killstreak",
+        "weap": "il_4_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "firefly_mk5",
-        "weap": "firefly_mk5_default",
+        "name": "firefly_mk5_killstreak",
+        "weap": "firefly_mk5_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "p_47n_15",
-        "weap": "p_47n_15_default",
+        "name": "p_47n_15_killstreak",
+        "weap": "p_47n_15_killstreak_default",
         "rankRange": [
           5,
           5
         ]
       },
       {
-        "name": "wyvern_s4",
-        "weap": "wyvern_s4_default",
+        "name": "wyvern_s4_killstreak",
+        "weap": "wyvern_s4_killstreak_default",
         "rankRange": [
           5,
           5
         ]
       },
       {
-        "name": "do_335a_1",
-        "weap": "do_335a_1_default",
+        "name": "do_335a_1_killstreak",
+        "weap": "do_335a_1_killstreak_default",
         "rankRange": [
           5,
           5
         ]
       },
       {
-        "name": "canberra_bimk6",
-        "weap": "canberra_bimk6_default",
+        "name": "canberra_bimk6_killstreak",
+        "weap": "canberra_bimk6_killstreak_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "so_4050_vautour_2a",
-        "weap": "so_4050_vautour_2a_default",
+        "name": "so_4050_vautour_2a_killstreak",
+        "weap": "so_4050_vautour_2a_killstreak_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "il_28sh",
-        "weap": "il_28sh_default",
+        "name": "il_28sh_killstreak",
+        "weap": "il_28sh_killstreak_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "canberra_bimk6",
-        "weap": "canberra_bimk6_default",
+        "name": "canberra_bimk6_killstreak",
+        "weap": "canberra_bimk6_killstreak_default",
         "rankRange": [
           7,
           50
         ]
       },
       {
-        "name": "so_4050_vautour_2a",
-        "weap": "so_4050_vautour_2a_default",
+        "name": "so_4050_vautour_2a_killstreak",
+        "weap": "so_4050_vautour_2a_killstreak_default",
         "rankRange": [
           7,
           50
         ]
       },
       {
-        "name": "il_28sh",
-        "weap": "il_28sh_default",
+        "name": "il_28sh_killstreak",
+        "weap": "il_28sh_killstreak_default",
         "rankRange": [
           7,
           50
@@ -1753,152 +1753,152 @@
     ],
     "fighter": [
       {
-        "name": "fw_190a_1",
-        "weap": "fw_190a_1_default",
+        "name": "fw_190a_1_killstreak",
+        "weap": "fw_190a_1_killstreak_default",
         "rankRange": [
           0,
           1
         ]
       },
       {
-        "name": "p_40e",
-        "weap": "p_40e_default",
+        "name": "p_40e_killstreak",
+        "weap": "p_40e_killstreak_default",
         "rankRange": [
           2,
           2
         ]
       },
       {
-        "name": "yak_9",
-        "weap": "yak_9_default",
+        "name": "yak_9_killstreak",
+        "weap": "yak_9_killstreak_default",
         "rankRange": [
           2,
           2
         ]
       },
       {
-        "name": "fw_190a_1",
-        "weap": "fw_190a_1_default",
+        "name": "fw_190a_1_killstreak",
+        "weap": "fw_190a_1_killstreak_default",
         "rankRange": [
           2,
           2
         ]
       },
       {
-        "name": "f4u_4",
-        "weap": "f4u_4_default",
+        "name": "f4u_4_killstreak",
+        "weap": "f4u_4_killstreak_default",
         "rankRange": [
           3,
           3
         ]
       },
       {
-        "name": "seafire_mk3",
-        "weap": "seafire_mk3_default",
+        "name": "seafire_mk3_killstreak",
+        "weap": "seafire_mk3_killstreak_default",
         "rankRange": [
           3,
           3
         ]
       },
       {
-        "name": "a6m5_zero",
-        "weap": "a6m5_zero_default",
+        "name": "a6m5_zero_killstreak",
+        "weap": "a6m5_zero_killstreak_default",
         "rankRange": [
           3,
           3
         ]
       },
       {
-        "name": "f4u_4",
-        "weap": "f4u_4_default",
+        "name": "f4u_4_killstreak",
+        "weap": "f4u_4_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "seafire_mk3",
-        "weap": "seafire_mk3_default",
+        "name": "seafire_mk3_killstreak",
+        "weap": "seafire_mk3_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "a6m5_zero",
-        "weap": "a6m5_zero_default",
+        "name": "a6m5_zero_killstreak",
+        "weap": "a6m5_zero_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "f8f1",
-        "weap": "f8f1_default",
+        "name": "f8f1_killstreak",
+        "weap": "f8f1_killstreak_default",
         "rankRange": [
           5,
           5
         ]
       },
       {
-        "name": "bf_109k_4",
-        "weap": "bf_109k_4_default",
+        "name": "bf_109k_4_killstreak",
+        "weap": "bf_109k_4_killstreak_default",
         "rankRange": [
           5,
           5
         ]
       },
       {
-        "name": "la_9",
-        "weap": "la_9_default",
+        "name": "la_9_killstreak",
+        "weap": "la_9_killstreak_default",
         "rankRange": [
           5,
           5
         ]
       },
       {
-        "name": "mig_15",
-        "weap": "mig_15_default",
+        "name": "mig_15_killstreak",
+        "weap": "mig_15_killstreak_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "meteor_fmk8",
-        "weap": "meteor_fmk8_default",
+        "name": "meteor_fmk8_killstreak",
+        "weap": "meteor_fmk8_killstreak_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "me_262c_2b",
-        "weap": "me_262c_2b_default",
+        "name": "me_262c_2b_killstreak",
+        "weap": "me_262c_2b_killstreak_default",
         "rankRange": [
           6,
           6
         ]
       },
       {
-        "name": "mig_15",
-        "weap": "mig_15_default",
+        "name": "mig_15_killstreak",
+        "weap": "mig_15_killstreak_default",
         "rankRange": [
           7,
           50
         ]
       },
       {
-        "name": "meteor_fmk8",
-        "weap": "meteor_fmk8_default",
+        "name": "meteor_fmk8_killstreak",
+        "weap": "meteor_fmk8_killstreak_default",
         "rankRange": [
           7,
           50
         ]
       },
       {
-        "name": "me_262c_2b",
-        "weap": "me_262c_2b_default",
+        "name": "me_262c_2b_killstreak",
+        "weap": "me_262c_2b_killstreak_default",
         "rankRange": [
           7,
           50

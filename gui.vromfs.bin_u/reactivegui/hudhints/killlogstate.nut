@@ -71,7 +71,7 @@ eventbus_subscribe("HudMessage", function(data) {
     ? " ".concat(whom, what)
     : " ".concat(getTargetName(killer, unitNameLoc, team), what, whom)
 
-  addEvent({ hType = "simpleText", text })
+  addEvent({ hType = "chatLogTextTiny", text })
 })
 
 return state

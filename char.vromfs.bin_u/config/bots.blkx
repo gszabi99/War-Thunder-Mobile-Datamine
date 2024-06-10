@@ -758,9 +758,27 @@
             "name": "germ_battleship_tirpitz_1944",
             "weight": 1.0,
             "country": "germany"
-          },
+          }
+        ]
+      },
+      {
+        "range": [
+          5,
+          6
+        ],
+        "ship": [
           {
             "name": "us_battleship_iowa",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_battleship_bismarck",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_battleship_vanguard",
             "weight": 1.0,
             "country": "germany"
           }
@@ -768,8 +786,8 @@
       },
       {
         "range": [
-          5,
-          50
+          6,
+          60
         ],
         "ship": [
           {

@@ -12,13 +12,10 @@ isMpStatisticsActive.subscribe(function(val) {
     set_mute_sound_in_flight_menu(false)
 })
 
-function openMpStatistics() {
-  isMpStatisticsActive(true)
-}
+let cbOpenMpStatistics = @(_) isMpStatisticsActive.set(true)
+eventbus_subscribe("gui_start_mpstatscreen_from_game", cbOpenMpStatistics) // called from client
+eventbus_subscribe("gui_start_flight_menu_stat", cbOpenMpStatistics) // called from client
 
-eventbus_subscribe("toggleMpstatscreen", @(_) !isMpStatisticsActive.value
-  ? openMpStatistics()
-  : isMpStatisticsActive(false))
 eventbus_subscribe("MpStatistics_CloseInDagui", @(_) isMpStatisticsActive(false))
 eventbus_subscribe("MpStatistics_GetInitialData",
   @(_) eventbus_send("MpStatistics_InitialData", { missionName = locCurrentMissionName() }))

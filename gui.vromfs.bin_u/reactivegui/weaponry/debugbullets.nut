@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
+let { register_command, command } = require("console")
 let { get_unittags_blk } = require("blkGetters")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let io = require("io")
+let { setInterval, clearTimer } = require("dagor.workcycle")
+let { get_time_msec } = require("dagor.time")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { calcUnitTypeFromTags } = require("%appGlobals/unitConst.nut")
 let { loadUnitBulletsFull, loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
@@ -71,35 +73,73 @@ register_command(
   @() countBulletsStats(loadUnitBulletsChoice)
   "debug.get_unit_bullets_stats_choice")
 
+local loadAllBulletsProgress = null
+let onLoadAllBullets = []
+
+function onFinishLoad() {
+  let actions = clone onLoadAllBullets
+  onLoadAllBullets.clear()
+  if (loadAllBulletsProgress == null)
+    return
+  let { res } = loadAllBulletsProgress
+  loadAllBulletsProgress = null
+  foreach(action in actions)
+    action(res)
+}
+
+function loadNextBullets() {
+  if (loadAllBulletsProgress == null) {
+    clearTimer(loadNextBullets)
+    onFinishLoad()
+    return
+  }
+  let time = get_time_msec()
+  let { res, todo } = loadAllBulletsProgress
+  while(todo.len() > 0) {
+    let name = todo.pop()
+    command($"console.progress_indicator loadAllBullets {res.len()}/{res.len() + todo.len()}")
+    res[name] <- loadUnitBulletsFull(name)
+    if (get_time_msec() - time >= 10)
+      return
+  }
+  command($"console.progress_indicator loadAllBullets")
+  clearTimer(loadNextBullets)
+  onFinishLoad()
+}
+
+function loadAllBulletsAndDo(action) {
+  onLoadAllBullets.append(action)
+  if (loadAllBulletsProgress != null)
+    return
+  loadAllBulletsProgress = { res = {}, todo = [] }
+  eachBlock(get_unittags_blk(), @(blk) loadAllBulletsProgress.todo.append(blk.getBlockName()))
+  setInterval(0.001, loadNextBullets)
+}
+
 register_command(
-  function(filePath) {
-    let res = {}
-    eachBlock(get_unittags_blk(), function(blk) {
-      let name = blk.getBlockName()
-      res[name] <- loadUnitBulletsFull(name)
-    })
+  @(filePath) loadAllBulletsAndDo(function(res) {
     let file = io.file(filePath, "wt+")
-    file.writestring(json_to_string(res, true))
+    file.writestring(object_to_json_string(res, true))
     file.close()
-  },
+  }),
   "debug.save_all_unit_bullets_to_file")
 
 register_command(
-  function(filePrefix) {
-    let res = {}
-    eachBlock(get_unittags_blk(), function(blk) {
-      let unitType = calcUnitTypeFromTags(blk)
-      if (unitType not in res)
-        res[unitType] <- {}
-      let name = blk.getBlockName()
-      res[unitType][name] <- loadUnitBulletsFull(name)
-    })
-    foreach(unitType, data in res) {
+  @(filePrefix) loadAllBulletsAndDo(function(res) {
+    let resByType = {}
+    let blk = get_unittags_blk()
+    foreach(name, b in res) {
+      let unitType = calcUnitTypeFromTags(blk?[name])
+      if (unitType not in resByType)
+        resByType[unitType] <- {}
+      resByType[unitType][name] <- b
+    }
+    foreach(unitType, data in resByType) {
       let filePath = $"{filePrefix}{unitType}.json"
       let file = io.file(filePath, "wt+")
-      file.writestring(json_to_string(data, true))
+      file.writestring(object_to_json_string(data, true))
       file.close()
       log($"Saved file {filePath}")
     }
-  },
+  }),
   "debug.save_all_unit_bullets_to_files_by_type")

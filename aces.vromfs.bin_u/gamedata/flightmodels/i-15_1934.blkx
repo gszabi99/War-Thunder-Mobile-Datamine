@@ -1785,7 +1785,7 @@
     "preset": [
       {
         "name": "i-15_1934_default",
-        "blk": "gameData/FlightModels/weaponPresets/I-153_default.blk"
+        "blk": "gameData/FlightModels/weaponPresets/i-153_default.blk"
       },
       {
         "name": "I-15_2bomb_fab50",

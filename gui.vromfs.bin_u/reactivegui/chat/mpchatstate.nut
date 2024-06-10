@@ -31,7 +31,7 @@ chatLog.subscribe(function(v) {
     return
   let message = v.top()
   if (!message.isBlocked)
-    addEvent({ hType = "simpleText", text = mkChatLogText(message) })
+    addEvent({ hType = "chatLogTextTiny", text = mkChatLogText(message) })
 })
 
 let chatCmdHandlers = {}

@@ -8,7 +8,6 @@ let { openGoodsPreview, previewType } = require("%rGui/shop/goodsPreviewState.nu
 let { buyPlatformGoods } = require("platformGoods.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
 
 
 function previewOffer() {
@@ -53,7 +52,7 @@ let offerPromo = @() {
   onAttach = @() onOfferSceneAttach(promoKey)
   onDetach = @() onOfferSceneDetach(promoKey)
   flow = FLOW_VERTICAL
-  gap = translucentButtonsVGap
+  gap = hdpx(5)
   children = [
     visibleOffer.get() == null ? null
       : mkOffer(visibleOffer.get(), previewOffer, offerPurchasingState)

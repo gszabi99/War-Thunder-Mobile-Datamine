@@ -1682,6 +1682,9 @@
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "hasProximityFuse": true,
       "hitPowerMult": 5.0,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
       "explosionEffect": "hit_59_80mm_metal_he",
@@ -1729,64 +1732,81 @@
       },
       "damage": {
         "kinetic": {
-          "damageType": "generic"
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 1.0,
+          "countPortion": 0.8,
           "segment": [
             {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.6,
-              "damageScale": 2.5,
+              "radiusScale": 1.5,
+              "penetrationScale": 1.75,
+              "damageScale": 1.5,
               "angles": [
                 0.0,
-                20.0
+                19.0
               ],
-              "countPortion": 0.1
+              "countPortion": 0.05
             },
             {
-              "radiusScale": 1.0,
-              "penetrationScale": 2.0,
-              "damageScale": 3.0,
-              "angles": [
-                80.0,
-                120.0
-              ],
-              "countPortion": 0.5
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 2.0,
-              "damageScale": 3.0,
-              "angles": [
-                170.0,
-                190.0
-              ],
-              "countPortion": 0.5
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 2.0,
-              "damageScale": 3.0,
-              "angles": [
-                210.0,
-                280.0
-              ],
-              "countPortion": 0.5
-            },
-            {
-              "radiusScale": 1.0,
+              "radiusScale": 1.5,
               "penetrationScale": 1.6,
-              "damageScale": 2.5,
+              "damageScale": 1.5,
+              "angles": [
+                20.0,
+                119.0
+              ],
+              "countPortion": 0.25
+            },
+            {
+              "radiusScale": 1.5,
+              "penetrationScale": 1.4,
+              "damageScale": 1.5,
+              "angles": [
+                120.0,
+                179.0
+              ],
+              "countPortion": 0.2
+            },
+            {
+              "radiusScale": 1.5,
+              "penetrationScale": 1.4,
+              "damageScale": 1.5,
+              "angles": [
+                180.0,
+                239.0
+              ],
+              "countPortion": 0.2
+            },
+            {
+              "radiusScale": 1.5,
+              "penetrationScale": 1.6,
+              "damageScale": 1.5,
+              "angles": [
+                240.0,
+                339.0
+              ],
+              "countPortion": 0.25
+            },
+            {
+              "radiusScale": 1.5,
+              "penetrationScale": 1.75,
+              "damageScale": 1.5,
               "angles": [
                 340.0,
                 359.0
               ],
-              "countPortion": 0.1
+              "countPortion": 0.05
             }
           ]
         }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [

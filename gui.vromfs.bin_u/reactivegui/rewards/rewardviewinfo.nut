@@ -69,7 +69,7 @@ function getRewardsViewInfo(data, multiply = 1) {
     return res
 
   if (type(data) == "array")
-    return data.map(@(g) mkViewInfo(g.id, g.gType, g.count, g.subId))
+    return data.map(@(g) mkViewInfo(g.id, g.gType, g.count * multiply, g.subId))
 
   //typeof(reward) == "table" //compatibility with 2024.04.14
   let { currencies = {}, premiumDays = 0, items = {}, lootboxes = {},

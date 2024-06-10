@@ -136,6 +136,7 @@ struct EventOnPlayerModSpend
   userId : uint64
   modName : string
   count : int
+  unitName : string
 
 [event(broadcast)]
 struct MatchingRoomExtraParams

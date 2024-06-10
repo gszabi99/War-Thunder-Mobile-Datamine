@@ -9,6 +9,9 @@ let warningBgColor = 0x66664102 //0xFFffa406
 let hintWidth = hdpx(800)
 let hintSideGradWidth = hdpx(150)
 let maxHintWidth = min(saSize[0] - hdpx(1100), hintWidth)
+let freeSpaceToCenter = sw(50) - saBorders[0]
+let maxChatLogHeight = hdpx(250)
+let maxChatLogWidth = freeSpaceToCenter - freeSpaceToCenter * 0.30
 let textGap = hdpx(10)
 
 let appearTime = 0.4
@@ -125,9 +128,11 @@ let hintCtors = {
     hdpx(10))
 
   errorText = @(hint) errorText(hint.text)
-  simpleText = @(hint) simpleText(hint.text)
+  simpleText = @(hint) simpleText(hint.text, { maxWidth = maxHintWidth })
   simpleTextTiny = @(hint) simpleText(hint.text,
     { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
+  chatLogTextTiny = @(hint) simpleText(hint.text,
+    { halign = ALIGN_CENTER, maxWidth = maxChatLogWidth }.__update(fontTiny))
 }
 
 function registerHintCreator(id, ctor) {
@@ -143,6 +148,9 @@ return {
   defaultHintCtor
   registerHintCreator
   mkGradientBlock
+  maxHintWidth
+  maxChatLogWidth
+  maxChatLogHeight
 
   failBgColor
   defBgColor

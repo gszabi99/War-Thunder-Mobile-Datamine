@@ -20,7 +20,7 @@ let { isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { register_command } = require("console")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
-let { getSkinCustomTags } = require("%rGui/unitSkins/skinTuning.nut")
+let { getSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
 

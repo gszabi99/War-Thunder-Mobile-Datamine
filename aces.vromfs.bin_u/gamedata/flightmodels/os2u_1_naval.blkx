@@ -1521,95 +1521,10 @@
     "gun": "gun_default"
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 500,
-        "spread": 1.0
-      },
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunBrowning30_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare2",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 600,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -75.0,
-            75.0
-          ],
-          "pitch": [
-            -70.0,
-            45.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -75.0,
-            -30.0,
-            -70.0,
-            45.0
-          ],
-          "lim2": [
-            -30.0,
-            30.0,
-            -5.0,
-            45.0
-          ],
-          "lim3": [
-            30.0,
-            75.0,
-            -70.0,
-            45.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -13.0,
-              13.0
-            ],
-            "pitch": [
-              -5.0,
-              8.0
-            ]
-          },
-          {
-            "yaw": [
-              -10.0,
-              10.0
-            ],
-            "pitch": [
-              8.0,
-              10.0
-            ]
-          },
-          {
-            "yaw": [
-              -2.0,
-              2.0
-            ],
-            "pitch": [
-              10.0,
-              34.0
-            ]
-          }
-        ]
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "gunnerFps": {
     "pos": [
@@ -1624,6 +1539,332 @@
       "name": "os2u_1_naval_default",
       "blk": "gameData/FlightModels/weaponPresets/os2u_1_naval_default.blk"
     }
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1040.0,
+    "maxloadMassLeftConsoles": 570.0,
+    "maxloadMassRightConsoles": 570.0,
+    "maxDisbalance": 420.0,
+    "HideNodes": {},
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun1_dm",
+              "bullets": 500,
+              "spread": 1.0
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunBrowning30_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare2",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 600,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -75.0,
+                  75.0
+                ],
+                "pitch": [
+                  -70.0,
+                  45.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -75.0,
+                  -30.0,
+                  -70.0,
+                  45.0
+                ],
+                "lim2": [
+                  -30.0,
+                  30.0,
+                  -5.0,
+                  45.0
+                ],
+                "lim3": [
+                  30.0,
+                  75.0,
+                  -70.0,
+                  45.0
+                ]
+              },
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -13.0,
+                    13.0
+                  ],
+                  "pitch": [
+                    -5.0,
+                    8.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    -10.0,
+                    10.0
+                  ],
+                  "pitch": [
+                    8.0,
+                    10.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    -2.0,
+                    2.0
+                  ],
+                  "pitch": [
+                    10.0,
+                    34.0
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 5,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bombs_midlle",
+          "name": "100lb",
+          "smokeScreenCount": 3,
+          "smokeScreenTime": 25.0,
+          "smokeScreenCooldown": 100.0,
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+            "emitter": "bomb1",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "Bombing": {
+            "maxDelay": 0.0,
+            "canBeDropped": {
+              "altitude": [
+                -100.0,
+                20000.0
+              ],
+              "tangage": [
+                -95.0,
+                60.0
+              ],
+              "roll": 65.0
+            },
+            "maxDispersionAt": {
+              "altitude": [
+                20.0,
+                10000.0
+              ],
+              "tangage": [
+                -100.0,
+                55.0
+              ],
+              "roll": 65.0
+            },
+            "noDispersionAt": {
+              "altitude": [
+                20.0,
+                6000.0
+              ],
+              "tangage": [
+                -90.0,
+                15.0
+              ],
+              "roll": 40.0
+            },
+            "sightDisappears": {
+              "altitude": [
+                40.0,
+                10000.0
+              ],
+              "tangage": [
+                -100.0,
+                45.0
+              ],
+              "roll": 55.0
+            },
+            "sightStartsFading": {
+              "altitude": [
+                95.0,
+                6000.0
+              ],
+              "tangage": [
+                -30.0,
+                18.0
+              ],
+              "roll": 40.0
+            },
+            "sightEnabled": {
+              "altitude": [
+                20.0,
+                15000.0
+              ],
+              "tangage": [
+                -120.0,
+                60.0
+              ],
+              "roll": 180.0
+            },
+            "maxDelayAt": {
+              "altitude": [
+                -20000.0,
+                20000.0
+              ],
+              "tangage": [
+                -180.0,
+                180.0
+              ],
+              "roll": 180.0
+            },
+            "noDelayAt": {
+              "altitude": [
+                -19999.0,
+                19999.0
+              ],
+              "tangage": [
+                -179.0,
+                179.0
+              ],
+              "roll": 179.0
+            }
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bombs_midlle",
+          "name": "100lb",
+          "smokeScreenCount": 3,
+          "smokeScreenTime": 25.0,
+          "smokeScreenCooldown": 100.0,
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+            "emitter": "bomb2",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "Bombing": {
+            "maxDelay": 0.0,
+            "canBeDropped": {
+              "altitude": [
+                -100.0,
+                20000.0
+              ],
+              "tangage": [
+                -95.0,
+                60.0
+              ],
+              "roll": 65.0
+            },
+            "maxDispersionAt": {
+              "altitude": [
+                20.0,
+                10000.0
+              ],
+              "tangage": [
+                -100.0,
+                55.0
+              ],
+              "roll": 65.0
+            },
+            "noDispersionAt": {
+              "altitude": [
+                20.0,
+                6000.0
+              ],
+              "tangage": [
+                -90.0,
+                15.0
+              ],
+              "roll": 40.0
+            },
+            "sightDisappears": {
+              "altitude": [
+                40.0,
+                10000.0
+              ],
+              "tangage": [
+                -100.0,
+                45.0
+              ],
+              "roll": 55.0
+            },
+            "sightStartsFading": {
+              "altitude": [
+                95.0,
+                6000.0
+              ],
+              "tangage": [
+                -30.0,
+                18.0
+              ],
+              "roll": 40.0
+            },
+            "sightEnabled": {
+              "altitude": [
+                20.0,
+                15000.0
+              ],
+              "tangage": [
+                -120.0,
+                60.0
+              ],
+              "roll": 180.0
+            },
+            "maxDelayAt": {
+              "altitude": [
+                -20000.0,
+                20000.0
+              ],
+              "tangage": [
+                -180.0,
+                180.0
+              ],
+              "roll": 180.0
+            },
+            "noDelayAt": {
+              "altitude": [
+                -19999.0,
+                19999.0
+              ],
+              "tangage": [
+                -179.0,
+                179.0
+              ],
+              "roll": 179.0
+            }
+          }
+        }
+      }
+    ]
   },
   "jetwash": {
     "radius": 10.0,

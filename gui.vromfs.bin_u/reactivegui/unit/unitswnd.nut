@@ -68,7 +68,7 @@ let holdInfo = {} //unitName = { press = int, release = int }
 let scrollHandler = ScrollHandler()
 let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))
 
-let gap = Computed(@() sizePlatoon.value > 0 ? (sizePlatoon.value + 0.8) * platoonSelPlatesGap : 0)
+let gap = Computed(@() (sizePlatoon.value + 0.8) * platoonSelPlatesGap)
 
 let isShowedUnitOwned = Computed(@() hangarUnitName.value in myUnits.value)
 

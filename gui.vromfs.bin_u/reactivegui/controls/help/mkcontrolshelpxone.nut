@@ -24,6 +24,11 @@ let mkTextarea = @(text, maxWidth) {
 let hints = [
   //LEFT SIDE
   {
+    key = "J:Back"
+    lines = mkLines([366, 225, 366, -90])
+    blockOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM }
+  }
+  {
     key = "J:LT"
     lines = mkLines([208, 37, leftBk, -140, left, -140])
     pos = mkSizeByParent([left, -140  - borderOffs])

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { get_hud_crosshair_type = null, set_hud_crosshair_type = @(_) null } = require("crosshair")
+let { get_hud_crosshair_type, set_hud_crosshair_type } = require("crosshair")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
 
 let btnH = hdpx(103)
@@ -28,10 +28,10 @@ function mkImageContent(value) {
 }
 
 function mkCrosshairTypeValue(defValue, validate) {
-  let getSaved = @() validate(get_hud_crosshair_type?() ?? defValue)
+  let getSaved = @() validate(get_hud_crosshair_type() ?? defValue)
   let value = Watched(isSettingsAvailable.get() ? getSaved() : validate(defValue))
   function updateSaved() {
-    if (!isSettingsAvailable.get() || get_hud_crosshair_type?() == value.get())
+    if (!isSettingsAvailable.get() || get_hud_crosshair_type() == value.get())
       return
     set_hud_crosshair_type(value.get())
     eventbus_send("saveProfile", {})
@@ -60,6 +60,6 @@ let crosshairType = {
 
 return {
   crosshairOptions = [
-    get_hud_crosshair_type == null ? null : crosshairType
+    crosshairType
   ]
 }

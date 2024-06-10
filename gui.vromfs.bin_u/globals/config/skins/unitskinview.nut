@@ -8,6 +8,12 @@ return {
       "": "cn_camo_green_yellow_black",
       "forest": "ussr_camo_green"
     },
+    "cn_m_41d": {
+      "": "us_camo_modern_green",
+      "forest": "cn_camo_green_brown_black",
+      "forest2": "cn_f_green_black",
+      "winter": "fr_camo_winter_green_white"
+    },
     "cn_pgz_09": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
@@ -20,9 +26,27 @@ return {
       "": "cn_camo_green_yellow_black",
       "forest": "ussr_camo_green"
     },
+    "cn_type_59": {
+      "": "ussr_camo_green",
+      "forest": "cn_camo_sand_green_black",
+      "forest2": "cn_f_green_black",
+      "winter": "ussr_camo_winter"
+    },
     "cn_type_59d": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
+    },
+    "cn_type_69_2a": {
+      "": "ussr_camo_green",
+      "forest": "cn_camo_sand_green_black",
+      "forest2": "cn_f_green_black",
+      "winter": "ussr_camo_winter"
+    },
+    "cn_wz_305": {
+      "": "ussr_camo_green",
+      "forest": "cn_camo_sand_green_black",
+      "forest2": "cn_f_green_black",
+      "winter": "ussr_camo_winter"
     },
     "cn_zsd63_pg87": {
       "": "cn_camo_green_yellow_black",
@@ -657,9 +681,21 @@ return {
       "": "jp_camo_sdf_green",
       "upgraded": "jp_camo_post_winter"
     },
+    "sw_cv_90105_tml": {
+      "": "se_camo_green",
+      "upgraded": "se_camo_modern_winter_m90"
+    },
+    "sw_itpsv_90": {
+      "": "se_camo_green",
+      "upgraded": "fin_camo_black_green_white"
+    },
     "sw_pvrbv_551": {
       "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
+    },
+    "sw_strf_90b": {
+      "": "se_camo_green",
+      "upgraded": "se_camo_modern_winter_m90"
     },
     "sw_strv_103c": {
       "": "se_camo_green",
@@ -668,6 +704,10 @@ return {
     "sw_strv_104": {
       "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
+    },
+    "sw_strv_105": {
+      "": "se_camo_green",
+      "upgraded": "se_camo_modern_winter_m90"
     },
     "sw_veak_40": {
       "": "se_camo_green",
@@ -785,6 +825,9 @@ return {
     },
     "uk_destroyer_hunt_4series": {
       "upgraded": "camo_mtb_spots"
+    },
+    "uk_destroyer_rckt_type23": {
+      "upgraded": "camo_greygreen_curves"
     },
     "uk_destroyer_tribal": {
       "upgraded": "camo_polish_bluegeometry"
@@ -1219,6 +1262,10 @@ return {
       "forest": "ussr_camo_green",
       "winter": "ussr_modern_winter"
     },
+    "ussr_btr_zd_reskin": {
+      "": "ussr_camo_green",
+      "forest": "ussr_camo_deform"
+    },
     "ussr_cruiser_chapayev": {
       "": "camo_bluegray_longspot"
     },
@@ -1321,6 +1368,10 @@ return {
       "forest": "ussr_camo_green",
       "forest2": "ussr_modern_forest"
     },
+    "ussr_object_248": {
+      "": "ussr_camo_green",
+      "forest": "ussr_camo_forest_black"
+    },
     "ussr_object_268": {
       "": "ussr_camo_green",
       "fiction": "ussr_t_34_85_zis_53_dislike"
@@ -1350,6 +1401,10 @@ return {
     "ussr_su_100_1945": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown_ver_2"
+    },
+    "ussr_su_100p": {
+      "": "ussr_camo_green",
+      "forest": "ussr_camo_forest_black"
     },
     "ussr_su_122P": {
       "": "ussr_camo_forest_01",
@@ -1440,6 +1495,10 @@ return {
     "ussr_t_34_85_zis_53": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown_ver_2"
+    },
+    "ussr_t_34_85_zis_53_reskin": {
+      "": "ussr_camo_green",
+      "forest": "ussr_camo_forest_black"
     },
     "ussr_t_44": {
       "": "ussr_camo_green",
@@ -1549,6 +1608,7 @@ return {
   "byUnitType": {
     "ship": {
       "": "camo_navygrey_5",
+      "arctic_minesweeper_block_prem": "camo_arctic_minesweeper_block",
       "arctic_spots": "camo_arctic_spots",
       "black_longdiag": "camo_black_longdiag",
       "blackgray_stripes": "camo_blackgray_stripes",
@@ -1562,6 +1622,7 @@ return {
       "greenwhite_spots": "camo_greenwhite_spots",
       "lightblue_geometry": "camo_lightblue_geometry",
       "lightblue_splotch": "camo_lightblue_splotch",
+      "marine_geometry": "camo_marine_geometry",
       "olive_spots": "camo_olive_spots",
       "threegreenspots": "camo_threegreenspots",
       "upgraded": "camo_navygrey_5"

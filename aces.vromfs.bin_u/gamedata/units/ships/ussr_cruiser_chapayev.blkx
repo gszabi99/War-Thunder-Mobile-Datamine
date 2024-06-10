@@ -14075,6 +14075,34 @@
           "to": "camo_deepdark_wood*"
         }
       ]
+    },
+    "marine_geometry": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_marine_geometry*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_b15*"
+        },
+        {
+          "from": "camo_deepdark_wood*",
+          "to": "camo_b15*"
+        }
+      ]
+    },
+    "blackgray_stripes": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_blackgray_stripes*"
+        },
+        {
+          "from": "camo_deepdark_wood*",
+          "to": "camo_b15*"
+        }
+      ]
     }
   }
 }

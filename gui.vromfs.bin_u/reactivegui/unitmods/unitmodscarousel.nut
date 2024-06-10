@@ -104,7 +104,7 @@ function modData(mod) {
       children = [
         mkModImage(mod)
         {
-          maxWidth = textSize > modW ? modW - contentMargin[1] * 2 : null
+          maxWidth = textSize + contentMargin[1] * 2 > modW ? modW - contentMargin[1] * 2 : null
           vplace = ALIGN_TOP
           hplace = ALIGN_RIGHT
           margin = contentMargin

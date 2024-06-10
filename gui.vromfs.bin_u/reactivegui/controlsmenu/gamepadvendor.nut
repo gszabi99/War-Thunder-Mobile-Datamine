@@ -48,7 +48,7 @@ function setDbgVendor(id) {
 
 VendorId.each(@(id, name) register_command(
   @() setDbgVendor(id)
-  $"ui.setGamepadVedor.{id == UNKNOWN ? "DEFAULT" : name}"
+  $"ui.setGamepadVendor.{id == UNKNOWN ? "DEFAULT" : name}"
 ))
 
 return {

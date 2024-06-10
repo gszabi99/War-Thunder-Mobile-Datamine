@@ -8,30 +8,35 @@ let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
 
 let LOGIN_STATE = { //bit mask
   //before full load
-  AUTHORIZED                  = 0x0001 //succesfully connected to auth
-  GAME_UPDATED                = 0x0002
-  ONLINE_BINARIES_INITED      = 0x0004
+  AUTHORIZED                  = 0x00001 //succesfully connected to auth
+  GAME_UPDATED                = 0x00002
+  ONLINE_BINARIES_INITED      = 0x00004
 
-  PROFILE_RECEIVED            = 0x0010
-  CONFIGS_RECEIVED            = 0x0020
-  MATCHING_CONNECTED          = 0x0040
-  CONFIGS_INITED              = 0x0080
+  PROFILE_RECEIVED            = 0x00010
+  CONFIGS_RECEIVED            = 0x00020
+  MATCHING_CONNECTED          = 0x00040
+  CONFIGS_INITED              = 0x00080
 
-  ONLINE_SETTINGS_AVAILABLE   = 0x0100
-  LEGAL_ACCEPTED              = 0x0200
-  CONTACTS_LOGGED_IN          = 0x0400
-  CONSENT_WND                 = 0x0800
+  ONLINE_SETTINGS_AVAILABLE   = 0x00100
+  LEGAL_ACCEPTED              = 0x00200
+  CONTACTS_LOGGED_IN          = 0x00400
+  GOOGLE_CONSENT              = 0x00800
+  IOS_IDFA                    = 0x01000
+  CONSENT_WND                 = 0x02000
 
   //not required for login
-  HANGAR_LOADED               = 0x1000
-  LOGIN_STARTED               = 0x2000
-  PURCHASES_RECEIVED          = 0x4000
+  HANGAR_LOADED               = 0x10000
+  LOGIN_STARTED               = 0x20000
+  PURCHASES_RECEIVED          = 0x40000
 
   //masks
-  NOT_LOGGED_IN               = 0x0000
-  AUTH_AND_UPDATED            = 0x0003
-  READY_TO_FULL_LOAD          = 0x0107
-  LOGGED_IN                   = 0x0FF7 // logged in to all hosts and all configs are loaded
+  NOT_LOGGED_IN               = 0x00000
+  AUTH_AND_UPDATED            = 0x00003
+  READY_TO_FULL_LOAD          = 0x00107
+  READY_FOR_GOOGLE_CONSENT    = 0x00700
+  READY_FOR_IDFA              = 0x00F00
+  READY_FOR_OUR_CONSENT       = 0x01F00
+  LOGGED_IN                   = 0x03FF7 // logged in to all hosts and all configs are loaded
 }
 
 let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
@@ -44,6 +49,9 @@ let isLoginByGajin = sharedWatched("isLoginByGajin", @() false)
 let legalListForApprove = sharedWatched("legalsToApprove", @() {})
 let isMatchingOnline = sharedWatched("isMatchingOnline", @() false)
 let isConsentAllowLogin = sharedWatched("isConsentAllowLogin", @() false)
+let goodleConsent = sharedWatched("googleConsent", @() null)
+let isGoogleConsentShowed = Computed(@() goodleConsent.get()?.isShowed ?? false)
+let isGoogleConsentAllowAds = Computed(@() goodleConsent.get()?.canRequest ?? false)
 
 function getLoginStateDebugStr(state = null) {
   state = state ?? loginState.value
@@ -101,6 +109,9 @@ return loginTypes.__merge(secondStepTypes, {
   legalListForApprove
   isMatchingOnline
   isConsentAllowLogin
+  goodleConsent
+  isGoogleConsentShowed
+  isGoogleConsentAllowAds
 
   isLoginStarted = Computed(@() (loginState.value & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.value & LOGIN_STATE.AUTHORIZED) != 0)
@@ -111,10 +122,11 @@ return loginTypes.__merge(secondStepTypes, {
   isContactsLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)
   isOpenedLegalWnd = Computed(@() legalListForApprove.value.findvalue(@(v) v) != null)
 
-
   isLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
   isAuthAndUpdated = Computed(@() (loginState.value & LOGIN_STATE.AUTH_AND_UPDATED) == LOGIN_STATE.AUTH_AND_UPDATED)
   isReadyToFullLoad = Computed(@() (loginState.value & LOGIN_STATE.READY_TO_FULL_LOAD) == LOGIN_STATE.READY_TO_FULL_LOAD)
+  isReadyForGoogleConsent = Computed(@() (loginState.value & LOGIN_STATE.READY_FOR_GOOGLE_CONSENT) == LOGIN_STATE.READY_FOR_GOOGLE_CONSENT)
+  isReadyForConsent = Computed(@() (loginState.value & LOGIN_STATE.READY_FOR_OUR_CONSENT) == LOGIN_STATE.READY_FOR_OUR_CONSENT)
 
   getLoginStateDebugStr
 })

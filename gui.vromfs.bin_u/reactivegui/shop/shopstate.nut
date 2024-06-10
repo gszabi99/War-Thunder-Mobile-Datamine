@@ -4,7 +4,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs, curCampaign, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { platformGoods } = require("platformGoods.nut")
 let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
@@ -17,6 +17,7 @@ let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewa
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
+let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 
 let isShopOpened = mkWatched(persist, "isShopOpened", false)
 let shopOpenCount = Watched(0)
@@ -60,6 +61,8 @@ let goodsLinks = Computed(@() (campConfigs.get()?.allGoods ?? [])
     return res
   }, {}))
 
+let startNextDayTime = @() TIME_DAY_IN_SECONDS - (serverTime.get() % TIME_DAY_IN_SECONDS)
+
 function updateGoodsTimers() {
   let inactive = {}
   local nextTime = 0
@@ -71,7 +74,8 @@ function updateGoodsTimers() {
       continue
     }
 
-    let { start, end } = goods.timeRange
+    let { timeRange, dailyLimit = 0 } = goods
+    let { start, end } = timeRange
     if (start > curTime) {
       inactive[id] <- true
       nextTime = nextTime == 0 ? start : min(start, nextTime)
@@ -79,6 +83,8 @@ function updateGoodsTimers() {
     else if (end <= 0)
       continue
     else if (end <= curTime)
+      inactive[id] <- true
+    else if (end <= startNextDayTime() && dailyLimit > 0 && todayPurchasesCount.get()?[id].count == dailyLimit)
       inactive[id] <- true
     else
       nextTime = nextTime == 0 ? end : min(end, nextTime)

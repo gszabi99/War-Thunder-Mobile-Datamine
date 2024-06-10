@@ -127,9 +127,13 @@
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "androidExitOnANR": {
-      "APP_CMD_TERM_WINDOW": true,
-      "APP_CMD_GAINED_FOCUS": true,
-      "APP_CMD_LOST_FOCUS": true
+      "APP_CMD_INIT_WINDOW": true,
+      "APP_CMD_TERM_WINDOW": true
+    },
+    "androidAllowToDelayCmd": {
+      "APP_CMD_INIT_WINDOW": true,
+      "APP_CMD_WINDOW_RESIZED": true,
+      "APP_CMD_WINDOW_REDRAW_NEEDED": true
     },
     "contentUpdater": {
       "enabled": true,
@@ -377,9 +381,8 @@
     "skinsDecalsCacheSz": 1073741824,
     "disableAsserts": true,
     "androidExitOnANR": {
-      "APP_CMD_TERM_WINDOW": true,
-      "APP_CMD_GAINED_FOCUS": true,
-      "APP_CMD_LOST_FOCUS": true
+      "APP_CMD_INIT_WINDOW": true,
+      "APP_CMD_TERM_WINDOW": true
     },
     "contentUpdater": {
       "enabled": true,

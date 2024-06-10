@@ -15,7 +15,7 @@
       0.0
     ],
     "cameraOffsetNeutral": [
-      -15.0,
+      -17.0,
       4.0,
       0.0
     ],
@@ -351,15 +351,7 @@
     "transitionFadeOutTime": 0.2,
     "viscosity": 0.00011,
     "condition": {
-      "and": {
-        "isFPSViewsAllowed": {},
-        "or": {
-          "isVirtualViewsAllowed": {},
-          "not": {
-            "isCockpit": {}
-          }
-        }
-      }
+      "isFPSViewsAllowed": {}
     }
   },
   "flight_camera_target_view": {
@@ -446,12 +438,21 @@
       "TurretFpsCamera",
       "TurretVirtualFpsCamera"
     ],
+    "subtype": "target_turret",
+    "horLimit": [
+      0.0,
+      0.0
+    ],
+    "verLimit": [
+      -1.0,
+      1.0
+    ],
     "fov": 55.0,
     "zoomFov": 25.0,
     "cameraControlSmoothX": 0.0,
     "cameraControlSmoothY": 0.0,
     "cameraControlViewRadius": 14.0,
-    "verticalLimit": 10.0,
+    "verticalLimit": 50.0,
     "verticalSpeed": 1.5,
     "horizontalSpeed": 1.5,
     "velocitySmooth": 0.0,

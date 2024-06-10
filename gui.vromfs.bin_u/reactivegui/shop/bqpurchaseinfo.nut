@@ -17,16 +17,19 @@ let PURCH_SRC_UNITS = "units_list"
 let PURCH_SRC_LEVELUP = "level_up"
 let PURCH_SRC_UNIT_UPGRADES = "unit_upgrades"
 let PURCH_SRC_UNIT_MODS = "unit_mods"
+let PURCH_SRC_UNIT_RESEARCH = "unit_research"
 let PURCH_SRC_PROFILE = "profile"
 let PURCH_SRC_SHOP = "shop"
 let PURCH_SRC_EVENT = "event"
 let PURCH_SRC_BATTLE_PASS = "battle_pass"
 let PURCH_SRC_SKINS = "skins"
 let PURCH_SRC_BOOSTERS = "boosters"
+let PURCH_SRC_SLOTBAR = "slotbar"
 
 let PURCH_TYPE_UNIT = "unit"
 let PURCH_TYPE_UNIT_MOD = "unit_mod"
 let PURCH_TYPE_UNIT_LEVEL = "unit_level"
+let PURCH_TYPE_UNIT_EXP = "unit_exp"
 let PURCH_TYPE_BP_LEVEL = "bp_level"
 let PURCH_TYPE_CONSUMABLES = "consumables"
 let PURCH_TYPE_PLAYER_LEVEL = "player_level"
@@ -37,6 +40,7 @@ let PURCH_TYPE_LOOTBOX = "lootbox"
 let PURCH_TYPE_SKIN = "skin"
 let PURCH_TYPE_BOOSTERS = "boosters"
 let PURCH_TYPE_MINI_EVENT = "mini_event"
+let PURCH_TYPE_SLOT = "slot"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -75,16 +79,19 @@ return {
   PURCH_SRC_LEVELUP
   PURCH_SRC_UNIT_UPGRADES
   PURCH_SRC_UNIT_MODS
+  PURCH_SRC_UNIT_RESEARCH
   PURCH_SRC_PROFILE
   PURCH_SRC_SHOP
   PURCH_SRC_EVENT
   PURCH_SRC_BATTLE_PASS
   PURCH_SRC_SKINS
   PURCH_SRC_BOOSTERS
+  PURCH_SRC_SLOTBAR
 
   PURCH_TYPE_UNIT
   PURCH_TYPE_UNIT_MOD
   PURCH_TYPE_UNIT_LEVEL
+  PURCH_TYPE_UNIT_EXP
   PURCH_TYPE_CONSUMABLES
   PURCH_TYPE_PLAYER_LEVEL
   PURCH_TYPE_DECORATOR
@@ -95,6 +102,7 @@ return {
   PURCH_TYPE_SKIN
   PURCH_TYPE_BOOSTERS
   PURCH_TYPE_MINI_EVENT
+  PURCH_TYPE_SLOT
 
   getPurchaseTypeByGoodsType
   mkBqPurchaseInfo

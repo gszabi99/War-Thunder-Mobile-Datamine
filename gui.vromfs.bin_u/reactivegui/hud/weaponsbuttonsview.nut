@@ -551,6 +551,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
 
   local isTouchPushed = false
   local isHotkeyPushed = false
+
   function onStopTouch() {
     isTouchPushed = false
     set_can_lower_camera(false)
@@ -639,7 +640,8 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
     onButtonReleaseWhileActiveZone()
   }
 
-  let res = mkContinuousButtonParams(onStatePush, onStateRelease, hotkeyShortcut, stateFlags)
+  let res = mkContinuousButtonParams(onStatePush, onStateRelease, hotkeyShortcut, stateFlags,
+    isBulletBelt && (!isAvailable || isBlocked.value || (actionItem?.cooldownEndTime ?? 0) > get_mission_time()),  onStopTouch)
 
   return @() res.__update({
     watch = isDisabled

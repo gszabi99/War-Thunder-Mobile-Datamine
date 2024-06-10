@@ -3,6 +3,7 @@ let presentations = {
   season_6 = { imageOffset = [0, -0.06] }
   season_7 = { color = 0xA584C827, imageOffset = [0, -0.08] }
   season_8 = { color = 0xA50A65B1 }
+  season_9 = { color = 0XA57E34FF }
 }
 
 let genParams = {

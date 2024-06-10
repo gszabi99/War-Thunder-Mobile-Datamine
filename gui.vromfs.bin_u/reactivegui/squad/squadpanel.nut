@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { isInSquad, squadMembers, squadMembersOrder, isInvitedToSquad, squadId, squadLeaderCampaign,
-  squadLeaderReadyCheckTime
+  squadLeaderReadyCheckTime, getMemberMaxMRank
 } = require("%appGlobals/squadState.nut")
 let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
 let { openContacts, SEARCH_TAB, FRIENDS_TAB } = require("%rGui/contacts/contactsState.nut")
@@ -99,7 +99,7 @@ function mkMember(uid) {
   let isMe = Computed(@() uid == myUserId.value)
   let isInvitee = Computed(@() state.value == null && uid in isInvitedToSquad.value)
   let onlineStatus = mkContactOnlineStatus(userId)
-  let rank = Computed(@() serverConfigs.value?.allUnits[state.value?.units[squadLeaderCampaign.value]].mRank)
+  let rank = Computed(@() getMemberMaxMRank(state.get(), squadLeaderCampaign.get(), serverConfigs.get()))
   let stateFlags = Watched(0)
   return @() {
     watch = [isMe, isInvitee, stateFlags]

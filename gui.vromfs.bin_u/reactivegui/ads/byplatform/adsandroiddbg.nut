@@ -5,7 +5,7 @@ let ads = require("android.ads")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK,
   CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN
 } = ads
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
@@ -13,7 +13,7 @@ let { chooseRandom } = require("%sqstd/rand.nut")
 
 
 let debugAdsInited = persist("debugAdsInited", @() {})
-let debugConsentRequired = hardPersistWatched("adsAndroid.debugConsentRequired", true)
+let debugConsentRequired = hardPersistWatched("adsAndroid.debugConsentRequired", false)
 let debugConsentApprove = hardPersistWatched("adsAndroid.debugConsentRequested", null)
 let priorities = hardPersistWatched("adsAndroid.debug.priorities", {})
 let loadedProvider = hardPersistWatched("adsAndroid.debug.loadedProvider", "")
@@ -75,7 +75,7 @@ function calcLoadedProvider(list) {
 
 return ads.__merge({
   isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
-  getProvidersStatus = @() json_to_string(
+  getProvidersStatus = @() object_to_json_string(
     debugAdsInited.map(@(isInited, provider) { provider, isInited })
       .values())
   setPriorityForProvider = @(provider, priority) priorities.mutate(@(v) v[provider] <- priority)

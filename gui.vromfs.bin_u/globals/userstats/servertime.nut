@@ -8,8 +8,8 @@ let lastReceivedServerTime = sharedWatched("lastReceivedServerTime", @() 0)
 
 let serverTime = Watched(0)
 
-let updateTime = @() gameStartServerTimeMsec.value <= 0 ? null
-  : serverTime((gameStartServerTimeMsec.value + get_time_msec()) / 1000)
+let updateTime = @() gameStartServerTimeMsec.get() <= 0 ? null
+  : serverTime((gameStartServerTimeMsec.get() + get_time_msec()) / 1000)
 
 updateTime()
 gameStartServerTimeMsec.subscribe(@(_) updateTime())

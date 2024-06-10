@@ -3,6 +3,7 @@ require ecs
 require dm
 require WTDamageModel
 require AmmoStowage
+require BitStream
 
 
 [cpp_event(unicast, with_scheme)]
@@ -102,11 +103,10 @@ struct EventAmmoStowageSetup
   initNum : bool
   isRefill : bool
 
-[event(unicast, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+[event(unicast, version=0, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventAmmoStowageNetSync
-  ammo : IntList const?
-  replenishment : FloatList const?
+  bs : BitStream const?
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventAmmoStowageForceReloadGun
-  triggerId : int
+  stowageId : int

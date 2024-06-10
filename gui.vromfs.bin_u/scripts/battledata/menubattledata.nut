@@ -1,15 +1,16 @@
-
 from "%scripts/dagui_library.nut" import *
 let { get_arg_value_by_name } = require("dagor.system")
 let { resetTimeout } = require("dagor.workcycle")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let io = require("io")
 let { get_time_msec } = require("dagor.time")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { get_battle_data_jwt, registerHandler, callHandler, lastProfileKeysUpdated,
-  get_battle_data_for_overrided_mission
+let { get_battle_data_jwt, get_battle_data_slots_jwt, registerHandler, callHandler,
+  lastProfileKeysUpdated, get_battle_data_for_overrided_mission
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pServer/pServerJwt.nut")
 let { register_command } = require("console")
@@ -19,29 +20,32 @@ let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 
 const SILENT_ACTUALIZE_DELAY = 60
 
-let battleUnitName = mkWatched(persist, "battleDataUnit", null)
+let battleUnitsInfo = mkWatched(persist, "battleUnitsInfo", null) //{ isSlots, unit<for not slots>, unitList<for slots> }
 let needRefresh = mkWatched(persist, "needRefresh", false)
 let lastResult = mkWatched(persist, "lastResult", null)
 let needRefreshOvrMission = mkWatched(persist, "needRefreshOvrMission", false)
 let lastOvrMissionResult = mkWatched(persist, "lastOvrMissionResult", null)
-let hasBattleUnit = Computed(@() battleUnitName.value in servProfile.value?.units)
+let hasBattleUnit = Computed(@() battleUnitsInfo.get() != null
+  && (!battleUnitsInfo.get().isSlots ? battleUnitsInfo.get().unit in servProfile.value?.units
+    : (null == battleUnitsInfo.get().unitList.findvalue(@(u) u not in servProfile.value?.units))))
 let isBattleDataActual = isOfflineMenu ? WatchedRo(true)
-  : Computed(@() battleUnitName.value != null
-      && "error" not in lastResult.value
-      && lastResult.value?.unitName == battleUnitName.value
+  : Computed(@() battleUnitsInfo.get() != null
+      && "error" not in lastResult.get()
+      && isEqual(lastResult.value?.unitsInfo, battleUnitsInfo.get())
       && (!needRefresh.value || shouldDisableMenu))
 let needActualize = Computed(@()
   !isBattleDataActual.value
     && hasBattleUnit.value
     && isLoggedIn.value
     && !isInMpSession.value
-    && battleUnitName.value != null)
+    && battleUnitsInfo.get() != null)
 let battleDataError = Computed(@() lastResult.value?.error)
 let lastActTime = Watched(-1)
 let isBattleDataOvrMissionActual = isOfflineMenu ? WatchedRo(true)
   : Computed(@() "error" not in lastOvrMissionResult.get()
       && lastOvrMissionResult.get() != null
       && (!needRefreshOvrMission.get() || shouldDisableMenu))
+
 
 function markNeedRefresh() {
   needRefresh(true)
@@ -50,6 +54,7 @@ function markNeedRefresh() {
 serverConfigs.subscribe(@(_) markNeedRefresh())
 let profileKeysAffectData = {
   units = true
+  campaignSlots = true
   items = true
   boosters = true
   decorators = true
@@ -67,40 +72,72 @@ lastProfileKeysUpdated.subscribe(function(list) {
 })
 
 let curUnitName = Computed(@() curUnit.value?.name)
-isInMpSession.subscribe(function(v) {
-  if (!v && curUnitName.value != null)
-    battleUnitName(curUnitName.value)
-})
-curUnitName.subscribe(@(v) v ? battleUnitName(v) : null)
+function refreshBattleUnitsinfo() {
+  if (isInMpSession.get())
+    return
+  if (curCampaignSlotUnits.get() != null)
+    battleUnitsInfo.set({
+      isSlots = true,
+      unitList = curCampaignSlotUnits.get()
+    })
+  else if (curUnitName.get() != null)
+    battleUnitsInfo.set({ isSlots = false, unit = curUnitName.get() })
+}
+if (battleUnitsInfo.get() == null)
+  refreshBattleUnitsinfo()
+isInMpSession.subscribe(@(_) refreshBattleUnitsinfo())
+curUnitName.subscribe(@(_) refreshBattleUnitsinfo())
+curCampaignSlotUnits.subscribe(@(_) refreshBattleUnitsinfo())
 
-function actualizeBattleData(unitName, executeAfterExt = null) {
-  if (unitName == null) {
+function actualizeBattleDataByUnitsInfo(unitsInfo, executeAfterExt = null) {
+  if (unitsInfo == null) {
     callHandler(executeAfterExt, { error = "No current unit" })
     return
   }
-  if (unitName == battleUnitName.value && isBattleDataActual.value) {
-    callHandler(executeAfterExt, lastResult.value)
+  if (isEqual(unitsInfo, battleUnitsInfo.get()) && isBattleDataActual.value) {
+    callHandler(executeAfterExt, lastResult.get())
     return
   }
   lastActTime(get_time_msec())
-  battleUnitName(unitName)
-  get_battle_data_jwt(unitName, { id = "onGetMenuBattleData", unitName, executeAfterExt })
+  battleUnitsInfo(unitsInfo)
+  if (unitsInfo.isSlots)
+    get_battle_data_slots_jwt(unitsInfo.unitList, { id = "onGetMenuBattleData", unitsInfo, executeAfterExt })
+  else
+    get_battle_data_jwt(unitsInfo.unit, { id = "onGetMenuBattleData", unitsInfo, executeAfterExt })
+}
+
+function actualizeBattleData(unitNameOrSlots, executeAfterExt = null) {
+  if (unitNameOrSlots == null) {
+    callHandler(executeAfterExt, { error = "No current unit" })
+    return
+  }
+  actualizeBattleDataByUnitsInfo(
+    type(unitNameOrSlots) == "array"
+      ? {
+          isSlots = true
+          unitList = unitNameOrSlots
+        }
+      : {
+          isSlots = false
+          unit = unitNameOrSlots
+        }
+      executeAfterExt)
 }
 
 registerHandler("onGetMenuBattleData", function(res, context) {
-  let { unitName, executeAfterExt = null } = context
-  if (unitName != battleUnitName.value) {
-    actualizeBattleData(unitName, executeAfterExt)
+  let { unitsInfo, executeAfterExt = null } = context
+  if (!isEqual(unitsInfo, battleUnitsInfo.get())) {
+    actualizeBattleDataByUnitsInfo(battleUnitsInfo.get(), executeAfterExt)
     return
   }
   lastActTime(get_time_msec())
   if (res?.error != null) {
-    lastResult(res.__merge({ unitName }))
+    lastResult(res.__merge({ unitsInfo }))
     callHandler(executeAfterExt, lastResult)
     return
   }
 
-  let result = isOfflineMenu ? { unitName } : decodeJwtAndHandleErrors(res).__update({ unitName })
+  let result = isOfflineMenu ? { unitsInfo } : decodeJwtAndHandleErrors(res).__update({ unitsInfo })
   lastResult(result)
   callHandler(executeAfterExt, result)
   if ("error" not in result)
@@ -109,7 +146,7 @@ registerHandler("onGetMenuBattleData", function(res, context) {
 
 function actualizeIfNeed() {
   if (needActualize.value)
-    actualizeBattleData(battleUnitName.value)
+    actualizeBattleDataByUnitsInfo(battleUnitsInfo.get())
 }
 
 function delayedActualize() {
@@ -121,7 +158,7 @@ needActualize.subscribe(function(v) {
   if (!v)
     return
   if (lastResult.value == null)
-    actualizeBattleData(battleUnitName.value)
+    actualizeBattleDataByUnitsInfo(battleUnitsInfo.get())
   else
     delayedActualize()
 })
@@ -154,8 +191,8 @@ if (shouldDisableMenu) {
   if (type(jwt) == "string") {
     let result = decodeJwtAndHandleErrors({ jwt })
     let unitName = result?.payload.unit.name
-    battleUnitName(unitName)
-    lastResult(result.__update({ unitName }))
+    battleUnitsInfo.set({ isSlots = false, unit = unitName })
+    lastResult(result.__update({ unitsInfo = battleUnitsInfo.get() }))
     log($"Init jwt battle data. unitName = {unitName}")
     if ("error" in result)
       logerr($"Init jwt data by jwt failed: {result.error}")
@@ -179,12 +216,18 @@ registerHandler("saveMenuBattleDataOvrMissionToJwt", function(result) {
 })
 
 register_command(function() {
-  let unitName = curUnit.value?.name ?? battleUnitName.value
-  if (unitName == null)
+  let unitsInfo = curCampaignSlotUnits.get() != null
+      ? {
+          isSlots = true,
+          unitList = curCampaignSlotUnits.get()
+        }
+    : curUnitName.get() != null ? { isSlots = false, unit = curUnitName.get() }
+    : battleUnitsInfo.get()
+  if (unitsInfo == null)
     return console_print("curUnit is empty")
   needRefresh(true)
-  actualizeBattleData(unitName, "saveMenuBattleDataToJwt")
-  return console_print($"Request battle data for unit {unitName}")
+  actualizeBattleDataByUnitsInfo(unitsInfo, "saveMenuBattleDataToJwt")
+  return console_print($"Request battle data for unit: ", unitsInfo?.unit ?? unitsInfo?.unitList)
 }, "meta.debugCurBattleData")
 
 register_command(function() {
@@ -198,7 +241,7 @@ register_command(function() {
     return "empty cache"
   let fileName = "wtmBattleData.json"
   local file = io.file(fileName, "wt+")
-  file.writestring(json_to_string(lastResult.value.payload, true))
+  file.writestring(object_to_json_string(lastResult.value.payload, true))
   file.close()
   return console_print($"Saved to {fileName}. Is actual ? {isBattleDataActual.value}")
 }, "meta.debugCurBattleDataCache")

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+let { can_use_debug_console } = require("%appGlobals/permissions.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { campaignsList, setCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
-let { needFirstBattleTutorForCampaign, rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
+let { needFirstBattleTutorForCampaign, rewardTutorialMission, setSkippedTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -24,6 +25,7 @@ let imageRatio = 600.0 / 800
 let campagnImages = {
   ships = "ui/bkg/login_bkg_s_2.avif"
   tanks = "ui/bkg/login_bkg_t_2.avif"
+  air   = "ui/bkg/login_bkg_a_2.avif"
 }
 
 let mkCampaignImage = @(campaign) {
@@ -53,10 +55,16 @@ let mkCampaignName = @(name, sf) {
   }.__update(fontSmall)
 }
 
-function onCampaignButtonClick(campaign) {
+function onCampaignButtonClick(campaign, skipTutor = false) {
   function applyCampaign() {
     close()
     setCampaign(campaign)
+  }
+
+  if(skipTutor) {
+    setSkippedTutor(campaign)
+    applyCampaign()
+    return
   }
 
   if (!isAnyCampaignSelected.value)
@@ -89,6 +97,15 @@ function onCampaignButtonClick(campaign) {
     buttons = [{ id = "ok", styleId = "PRIMARY", isDefault = true, cb = close }]
   })
 }
+
+let mkCampaignSkipTutorButton = @(campaign) {
+  rendObj = ROBJ_TEXT
+  text = $"{loc("options/skip")} {loc("mainmenu/btnTutorial")}"
+  hplace = ALIGN_CENTER
+  behavior = Behaviors.Button
+  onClick = @() onCampaignButtonClick(campaign, true)
+  sound = { click  = "click" }
+}.__update(fontSmall)
 
 function mkCampaignButton(campaign, campaignW) {
   let stateFlags = Watched(0)
@@ -127,7 +144,14 @@ function campaignsListUi() {
     hplace = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     children = campaignsList.value.map(
-      @(c) mkCampaignButton(c, campaignW))
+      @(c) (can_use_debug_console.value && needFirstBattleTutorForCampaign(c)) ? {
+        flow = FLOW_VERTICAL
+        gap
+        children = [
+          mkCampaignButton(c, campaignW)
+          mkCampaignSkipTutorButton(c)
+        ]
+      } : mkCampaignButton(c, campaignW))
   }
 }
 

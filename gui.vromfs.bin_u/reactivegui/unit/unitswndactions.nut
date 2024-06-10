@@ -4,18 +4,20 @@ let { abs } = require("%sqstd/math.nut")
 let { hangarUnitName } = require("hangarUnit.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight, PURCHASE } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
-let { textButtonPrimary, textButtonPricePurchase, mkCustomButton } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPricePurchase, textButtonMultiline, mergeStyles, textButtonCommon
+} = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { unitInProgress, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { unitInProgress, curUnitInProgress, set_research_unit
+} = require("%appGlobals/pServer/pServerApi.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { allUnitsCfg, curUnit, playerLevelInfo, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { setCurrentUnit, canBuyUnits, buyUnitsData, canBuyUnitsStatus, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
 } = require("%appGlobals/unitsState.nut")
@@ -28,6 +30,9 @@ let { curSelectedUnit, availableUnitsList } = require("%rGui/unit/unitsWndState.
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let openBuyUnitResearchWnd = require("%rGui/unitsTree/buyUnitResearchWnd.nut")
+let { hasUnitInSlot, selectedUnitToSlot, slots, clearUnitSlot } = require("%rGui/slotBar/slotBarState.nut")
 
 
 let premiumDays = 30
@@ -81,33 +86,6 @@ let bgTextMessage = {
   texOffs = gradCircCornerOffset
 }
 
-let platoonBtn = mkCustomButton(
-  {
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(20)
-    valign = ALIGN_CENTER
-    children = [
-      {
-        rendObj = ROBJ_TEXT
-        text = fontIconPreview
-      }.__update(fontBigShaded)
-      {
-        rendObj = ROBJ_TEXT
-        text = loc("squadSize/platoon")
-      }.__update(fontSmallShaded)
-    ]
-  },
-  @() unitDetailsWnd({ name = hangarUnitName.value }),
-  {
-    ovr = {
-      size = [SIZE_TO_CONTENT,  defButtonHeight]
-      fillColor = Color(5, 147, 173)
-      borderColor = Color(35, 109, 181)
-    }
-    gradientOvr = {color = Color(22, 178, 233)}
-  }
-)
-
 let infoBtn = infoBlueButton(
   @() unitDetailsWnd({ name = hangarUnitName.value })
   {
@@ -118,7 +96,7 @@ let infoBtn = infoBlueButton(
 )
 
 let withSkinUnseen = @(unitName, button) {
-  children = [
+  children = !unitName ? null : [
     button
     @() {
       watch = unseenSkins
@@ -131,9 +109,19 @@ let withSkinUnseen = @(unitName, button) {
 
 function unitActionButtons() {
   let children = []
-  if (canEquipSelectedUnit.value)
+  if (hasUnitInSlot(curSelectedUnit.get()) && curCampaignSlotUnits.get().len() > 1)
     children.append(
-      textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
+      textButtonCommon(utf8ToUpper(loc("slotbar/clearSlot")),
+        @() clearUnitSlot(curSelectedUnit.get()),
+        { hotkeys = ["^J:X"] }))
+  else if (canEquipSelectedUnit.value) {
+    if (slots.get().len() == 0)
+      children.append(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
+    else
+      children.append(textButtonPrimary(utf8ToUpper(loc("mod/enable")),
+        @() selectedUnitToSlot.set(curSelectedUnit.get()),
+        { hotkeys = ["^J:X"] }))
+  }
   else if (curSelectedUnit.value in canBuyUnits.value) {
     let unit = canBuyUnits.value[curSelectedUnit.value]
     let isForLevelUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
@@ -145,6 +133,20 @@ function unitActionButtons() {
           onBuyUnit, { hotkeys = ["^J:X"] }))
     }
   }
+  else if (unitsResearchStatus.get()?[curSelectedUnit.get()].isAvailable
+      && !unitsResearchStatus.get()?[curSelectedUnit.get()].isResearched
+      && !unitsResearchStatus.get()?[curSelectedUnit.get()].isCurrent) {
+    children.append(
+      textButtonMultiline(utf8ToUpper(loc("unitsTree/startResearch")),
+        @() set_research_unit(curCampaign.get(), curSelectedUnit.get()),
+        mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })))
+  }
+  else if (unitsResearchStatus.get()?[curSelectedUnit.get()].isCurrent) {
+    children.append(
+      textButtonMultiline(utf8ToUpper(loc("unitsTree/speedUpProgress")),
+        @() openBuyUnitResearchWnd(curSelectedUnit.get()),
+        mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })))
+  }
   else if (canBuyUnitsStatus.value?[curSelectedUnit.value] == US_TOO_LOW_LEVEL){
     let { rank = 0, starRank = 0 } = allUnitsCfg.value.findvalue(@(u) u.name == curSelectedUnit.value)
     let deltaLevels = rank - playerLevelInfo.value.level
@@ -153,7 +155,6 @@ function unitActionButtons() {
         children = @(){
           size = SIZE_TO_CONTENT
           rendObj = ROBJ_TEXT
-          color = 0xFFFFFF
           text = curSelectedUnitPrice.value == 0
               ? loc("unitWnd/coming_soon")
             : loc("unitWnd/explore_request")
@@ -165,21 +166,19 @@ function unitActionButtons() {
         textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), rank, starRank,
           havePremium.value || premId == null
               ? @() openBuyExpWithUnitWnd(curSelectedUnit.value)
-            : @() openGoodsPreview(premId), { hotkeys = ["^J:Y"] })
+            : @() openGoodsPreview(premId), { hotkeys = ["^J:Y"] , childOvr = {padding = [0, hdpx(6)] gap = 0}})
       )
     }
   }
-  children.append(
-    (availableUnitsList.value.findvalue(@(unit) unit.name == curSelectedUnit.value)?.platoonUnits.len() ?? 0) > 0
-        ? withSkinUnseen(curSelectedUnit.get(), platoonBtn)
-      : withSkinUnseen(curSelectedUnit.get(), infoBtn)
+  children.append(withSkinUnseen(curSelectedUnit.get(), infoBtn)
   )
   return {
     watch = [
       curSelectedUnit, curSelectedUnitPrice, allUnitsCfg,
       canBuyUnits, canEquipSelectedUnit, havePremium,
       canBuyUnitsStatus, playerLevelInfo, curCampaign,
-      shopGoods, buyUnitsData, availableUnitsList, unitDiscounts
+      shopGoods, buyUnitsData, availableUnitsList, unitDiscounts,
+      unitsResearchStatus
     ]
     size = SIZE_TO_CONTENT
     valign = ALIGN_CENTER

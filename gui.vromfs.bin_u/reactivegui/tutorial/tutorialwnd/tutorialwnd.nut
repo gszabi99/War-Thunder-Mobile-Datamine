@@ -2,14 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { setTimeout } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let tutorialWndDefStyle = require("tutorialWndDefStyle.nut")
-let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx,
+let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID,
   nextStep, nextStepByDefaultHotkey, skipStep, nextKeyAllowed, skipKeyAllowed, getTimeAfterStepStart
 } = require("tutorialWndState.nut")
 let { getBox, incBoxSize, createHighlight, findGoodPos, findGoodArrowPos, sizePosToBox,
   hasInteractions
 } = require("tutorialUtils.nut")
 
-const WND_UID = "tutorial_wnd"
 const DEF_SKIP_TIME = 3.0
 
 let mkLightCtorExt = @(lightCtor, nextStepDelay) function(box) {

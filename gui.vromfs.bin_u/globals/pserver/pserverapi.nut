@@ -336,11 +336,6 @@ return {
     progressValue = unitName
   }, cb)
 
-  get_battle_data = @(unitId, cb = null) request({
-    method = "get_battle_data"
-    params = { unitId }
-  }, cb)
-
   get_battle_data_for_overrided_mission = @(cb = null)
     request({ method = "get_battle_data_for_overrided_mission" }, cb)
 
@@ -349,14 +344,19 @@ return {
     params = { unitId }
   }, cb)
 
-  get_queue_data = @(unitName, cb = null) request({
-    method = "get_queue_data"
-    params = { unitName }
+  get_battle_data_slots_jwt = @(unitList, cb = null) request({
+    method = "get_battle_data_slots_jwt"
+    params = { unitList }
   }, cb)
 
   get_queue_data_jwt = @(unitName, cb = null) request({
     method = "get_queue_data_jwt"
     params = { unitName }
+  }, cb)
+
+  get_queue_data_slots_jwt = @(unitList, cb = null) request({
+    method = "get_queue_data_slots_jwt"
+    params = { unitList }
   }, cb)
 
   add_unit_attributes = @(unitName, attributes, totalSpCost, cb = null) request({
@@ -667,5 +667,34 @@ return {
   add_battle_mod = @(id, time, cb = null) request({
     method = "add_battle_mod"
     params = { id, time }
+  }, cb)
+
+  set_unit_to_slot = @(unitName, slotId, cb = null) request({
+    method = "set_unit_to_slot"
+    params = { unitName, slotId }
+  }, cb)
+
+  clear_unit_slot = @(campaign, slotId, cb = null) request({
+    method = "clear_unit_slot"
+    params = { campaign, slotId }
+  }, cb)
+
+  buy_unit_slot = @(campaign, slotId, costGold, cb = null) request({
+    method = "buy_unit_slot"
+    params = { campaign, slotId, costGold }
+  }, cb)
+
+  set_research_unit = @(campaign, unitName, cb = null) request({
+    method = "set_research_unit"
+    params = { campaign, unitName }
+    progressId = PROGRESS_UNIT
+    progressValue = unitName
+  }, cb)
+
+  buy_unit_research = @(unitName, campaign, costGold, exp, cb = null) request({
+    method = "buy_unit_research"
+    params = { unitName, campaign, costGold, exp }
+    progressId = PROGRESS_UNIT
+    progressValue = unitName
   }, cb)
 }

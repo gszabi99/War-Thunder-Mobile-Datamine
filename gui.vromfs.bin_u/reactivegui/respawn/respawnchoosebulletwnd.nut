@@ -44,7 +44,7 @@ let bulletsListWidth = @(columns) max((minBulletWidth * columns) + slotsGap, min
 let openedSlot = Watched(-1)
 let openParams = mkWatched(persist, "openParams", null)
 let curSlotName = mkWatched(persist, "curSlotName", "")
-let savedSlotName = Computed(@() chosenBullets.value?[openParams.value?.slotIdx].name ?? "")
+let savedSlotName = Computed(@() chosenBullets.value?[openParams.value?.slotIdx].name ?? curSlotName.get())
 let wndAABB = Watched(null)
 
 let hasBulletsVideo = Computed(@() hasAddons.value?.pkg_video ?? false)
@@ -79,7 +79,10 @@ function mkBulletButton(name, bSet, fromUnitTags, columns, id) {
             rendObj = isCurrent.value ? ROBJ_IMAGE : ROBJ_SOLID
             image = isCurrent.value ? slotBGImage() : null
           }, {
+            key = $"{name}_icon" //for UI tutorial
+          } {
             watch = [ isCurrent, isLockedSlot]
+            key = name //for UI tutorial
             size = columns < 2 ? [minWndWidth, bulletHeight] : bulletSlotSize
             halign = columns < 2 ? ALIGN_CENTER : null
           })
@@ -143,6 +146,7 @@ function bulletsList() {
   let rows = ceil(numberBullets.tofloat()/columns)
   return {
     watch = [bulletsInfo, visibleBullets]
+    key = "bulletsList" //for UI tutorial
     size = [bulletsListWidth(columns), bulletHeight * rows]
     flow = FLOW_VERTICAL
     gap = slotsGap
@@ -258,6 +262,7 @@ function curBulletInfo() {
 
   return {
     watch = [bulletsInfo, curSlotName]
+    key = "curBulletInfo" //for UI tutorial
     size = [flex(), SIZE_TO_CONTENT]
     minHeight = hdpx(500)
     padding = hdpx(15)
@@ -277,10 +282,16 @@ function applyButton() {
   let { reqLevel = 0 } = fromUnitTags?[curSlotName.value]
   let isEnoughLevel = reqLevel <= (selSlot.value?.level ?? 0)
   let children = savedSlotName.value == curSlotName.value
-      ? textButtonCommon(utf8ToUpper(loc("mainmenu/btnClose")), close)
+      ? textButtonCommon(utf8ToUpper(loc("mainmenu/btnClose")),
+        close,
+        { ovr = { key = "closeButton" }}) // key for UI tutorial
     : !isEnoughLevel
-      ? textButtonCommon(applyText, @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }))
-    : textButtonPrimary(applyText, applyBullet)
+      ? textButtonCommon(applyText,
+        @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }),
+        { ovr = { key = "errorButton" }}) // key for UI tutorial
+    : textButtonPrimary(applyText,
+      applyBullet,
+      { ovr = { key = "applyButton" }}) // key for UI tutorial
   return {
     watch = [savedSlotName, curSlotName, bulletsInfo, selSlot]
     valign = ALIGN_CENTER
@@ -291,8 +302,8 @@ function applyButton() {
 }
 
 let window = {
-  key = wndKey
   onAttach = @() defer(@() wndAABB(gui_scene.getCompAABBbyKey(wndKey)))
+  key = "bulletsInfo" //for UI tutorial
   stopMouse = true
   vplace = ALIGN_CENTER
   hplace = ALIGN_RIGHT
@@ -355,4 +366,6 @@ function showRespChooseWnd(slotIdx, bulletBox, wndBox) {
 return {
   showRespChooseWnd
   openedSlot
+  curSlotName
+  applyBullet
 }

@@ -17,7 +17,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { eventSeason, bestCampLevel } = require("%rGui/event/eventState.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { mkGoodsTimeTimeProgress } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { mkFreeAdsGoodsTimeProgress } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
@@ -79,7 +79,7 @@ function lootboxImageWithTimer(lootbox) {
         children = [
           lootboxInProgress.value ? spinner : null
           !needAdtimeProgress.value ? null
-            : mkGoodsTimeTimeProgress(adReward.value)
+            : mkFreeAdsGoodsTimeProgress(adReward.value)
         ]
       }
 
@@ -129,11 +129,16 @@ function mkJackpotChanceText(id, chances, mainChances, stepsToFixed) {
     return loc("item/chance/error")
 
   let chance = roundToDigits(chances.percents[id], 2)
-  let mainChance = roundToDigits(mainChances.percents[id], 2)
   let stepsToFixedJackpot = stepsToFixed[1] - stepsToFixed[0]
 
-  return "\n".concat($"{loc("item/chance")}{colon}{mainChance}%",
-    $"{loc("item/chance/jackpot", { count = stepsToFixedJackpot })}{colon}{chance}%")
+  let chanceForGuaranteed = $"{loc("item/chance/jackpot", { count = stepsToFixedJackpot })}{colon}{chance}%"
+
+  if (!mainChances.percents?[id] && chances.percents?[id])
+    return chanceForGuaranteed
+
+  let mainChance = roundToDigits(mainChances.percents[id], 2)
+
+  return "\n".concat($"{loc("item/chance")}{colon}{mainChance}%", chanceForGuaranteed)
 }
 
 function mkJackpotChanceContent(reward, lootbox, mainPercents, mainChanceInProgress) { //-return-different-types

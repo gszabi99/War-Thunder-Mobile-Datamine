@@ -1506,6 +1506,919 @@
       "material": "metal"
     },
     {
+      "name": "wood_fence_a",
+      "destroyedModelName": "wood_fence_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_a_white",
+      "destroyedModelName": "wood_fence_a_white_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_b",
+      "destroyedModelName": "wood_fence_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_c",
+      "destroyedModelName": "wood_fence_c_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_d",
+      "destroyedModelName": "wood_fence_d_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_e",
+      "destroyedModelName": "wood_fence_e_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_f",
+      "destroyedModelName": "wood_fence_f_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_f_snow",
+      "destroyedModelName": "wood_fence_f_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_g",
+      "destroyedModelName": "wood_fence_g_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_g_snow",
+      "destroyedModelName": "wood_fence_g_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_g_plank",
+      "destroyedModelName": "wood_fence_g_plank_destr_phobj",
+      "destructionImpulse": 100.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "wood_fence_h",
+      "destroyedModelName": "wood_fence_h_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_h_snow",
+      "destroyedModelName": "wood_fence_h_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_h_plank",
+      "destroyedModelName": "wood_fence_h_plank_destr_phobj",
+      "destructionImpulse": 500.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "wood_fence_j",
+      "destroyedModelName": "wood_fence_j_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_j_snow",
+      "destroyedModelName": "wood_fence_j_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_k",
+      "destroyedModelName": "wood_fence_k_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_k_column",
+      "destroyedModelName": "wood_fence_k_column_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_dust_stucco",
+      "stopsBullets": false,
+      "material": "transparentBeton",
+      "isParent": true
+    },
+    {
+      "name": "wood_fence_m_gate_single_a",
+      "destroyedModelName": "wood_fence_m_gate_single_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_m_pole",
+      "destroyedModelName": "wood_fence_m_pole_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_m_w500_a",
+      "destroyedModelName": "wood_fence_m_w500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_m_w1000_a",
+      "destroyedModelName": "wood_fence_m_w1000_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_m_w1500_a",
+      "destroyedModelName": "wood_fence_m_w1500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_m_w1500_b",
+      "destroyedModelName": "wood_fence_m_w1500_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_n_gate_double_a",
+      "destroyedModelName": "wood_fence_n_gate_double_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_n_pole",
+      "destroyedModelName": "wood_fence_n_pole_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_n_w500_a",
+      "destroyedModelName": "wood_fence_n_w500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_n_w1000_a",
+      "destroyedModelName": "wood_fence_n_w1000_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_n_w1500_a",
+      "destroyedModelName": "wood_fence_n_w1500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_n_w1500_b",
+      "destroyedModelName": "wood_fence_n_w1500_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_o_gate_double_a",
+      "destroyedModelName": "wood_fence_o_gate_double_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_o_pole",
+      "destroyedModelName": "wood_fence_o_pole_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_o_w500_a",
+      "destroyedModelName": "wood_fence_o_w500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_o_w1000_a",
+      "destroyedModelName": "wood_fence_o_w1000_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_o_w1500_a",
+      "destroyedModelName": "wood_fence_o_w1500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_o_w1500_b",
+      "destroyedModelName": "wood_fence_o_w1500_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_p_gate_single_a",
+      "destroyedModelName": "wood_fence_p_gate_single_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_p_pole",
+      "destroyedModelName": "wood_fence_p_pole_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_p_w500_a",
+      "destroyedModelName": "wood_fence_p_w500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_p_w1000_a",
+      "destroyedModelName": "wood_fence_p_w1000_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_p_w1500_a",
+      "destroyedModelName": "wood_fence_p_w1500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_p_w1500_b",
+      "destroyedModelName": "wood_fence_p_w1500_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_a_w1500_a",
+      "destroyedModelName": "backyard_fence_a_w1500_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_a_w1500_b",
+      "destroyedModelName": "backyard_fence_a_w1500_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_b_metal_a",
+      "destroyedModelName": "backyard_fence_b_metal_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_b_metal_b",
+      "destroyedModelName": "backyard_fence_b_metal_b_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_b_metal_c",
+      "destroyedModelName": "backyard_fence_b_metal_c_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_b_metal_d",
+      "destroyedModelName": "backyard_fence_b_metal_d_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_b_slate_a",
+      "destroyedModelName": "backyard_fence_b_slate_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_b_slate_b",
+      "destroyedModelName": "backyard_fence_b_slate_b_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "backyard_fence_b_slate_c",
+      "destroyedModelName": "backyard_fence_b_slate_c_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_a",
+      "destroyedModelName": "wood_gates_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_fence_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_a_snow",
+      "destroyedModelName": "wood_gates_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_b",
+      "destroyedModelName": "wood_gates_b_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_b_snow",
+      "destroyedModelName": "wood_gates_b_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_d",
+      "destroyedModelName": "wood_gates_d_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_d_snow",
+      "destroyedModelName": "wood_gates_d_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_e",
+      "destroyedModelName": "wood_gates_e_destr_phobj",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_e_snow",
+      "destroyedModelName": "wood_gates_e_destr_phobj",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_f",
+      "destroyedModelName": "wood_gates_f_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_f_snow",
+      "destroyedModelName": "wood_gates_f_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_gates_g",
+      "destroyedModelName": "wood_gates_g_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_fence_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_a_1",
+      "destroyedModelName": "wood_fence_sand_a_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_a_2",
+      "destroyedModelName": "wood_fence_sand_a_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_a_3",
+      "destroyedModelName": "wood_fence_sand_a_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_a_gates",
+      "destroyedModelName": "wood_fence_sand_a_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_b_1",
+      "destroyedModelName": "wood_fence_sand_b_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_b_2",
+      "destroyedModelName": "wood_fence_sand_b_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_b_3",
+      "destroyedModelName": "wood_fence_sand_b_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_b_gates",
+      "destroyedModelName": "wood_fence_sand_b_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_c_1",
+      "destroyedModelName": "wood_fence_sand_c_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_c_2",
+      "destroyedModelName": "wood_fence_sand_c_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_c_3",
+      "destroyedModelName": "wood_fence_sand_c_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_c_gates",
+      "destroyedModelName": "wood_fence_sand_c_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_d_1",
+      "destroyedModelName": "wood_fence_sand_d_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_d_2",
+      "destroyedModelName": "wood_fence_sand_d_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_d_3",
+      "destroyedModelName": "wood_fence_sand_d_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_d_gates",
+      "destroyedModelName": "wood_fence_sand_d_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_f_gates",
+      "destroyedModelName": "wood_fence_sand_f_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_g_1",
+      "destroyedModelName": "wood_fence_sand_g_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_sand_g_2",
+      "destroyedModelName": "wood_fence_sand_g_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_a_1",
+      "destroyedModelName": "wood_fence_snow_a_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_a_2",
+      "destroyedModelName": "wood_fence_snow_a_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_a_3",
+      "destroyedModelName": "wood_fence_snow_a_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_a_gates",
+      "destroyedModelName": "wood_fence_snow_a_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_b_1",
+      "destroyedModelName": "wood_fence_snow_b_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_b_2",
+      "destroyedModelName": "wood_fence_snow_b_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_b_3",
+      "destroyedModelName": "wood_fence_snow_b_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_b_gates",
+      "destroyedModelName": "wood_fence_snow_b_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_c_1",
+      "destroyedModelName": "wood_fence_snow_c_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_c_2",
+      "destroyedModelName": "wood_fence_snow_c_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_c_3",
+      "destroyedModelName": "wood_fence_snow_c_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_c_gates",
+      "destroyedModelName": "wood_fence_snow_c_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_d_1",
+      "destroyedModelName": "wood_fence_snow_d_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_d_2",
+      "destroyedModelName": "wood_fence_snow_d_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_d_3",
+      "destroyedModelName": "wood_fence_snow_d_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_d_gates",
+      "destroyedModelName": "wood_fence_snow_d_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_e_1",
+      "destroyedModelName": "wood_fence_snow_e_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_e_2",
+      "destroyedModelName": "wood_fence_snow_e_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_e_3",
+      "destroyedModelName": "wood_fence_snow_e_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_f_1",
+      "destroyedModelName": "wood_fence_snow_f_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_f_2",
+      "destroyedModelName": "wood_fence_snow_f_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_f_3",
+      "destroyedModelName": "wood_fence_snow_f_3_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_f_gates",
+      "destroyedModelName": "wood_fence_snow_f_gates_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_g_1",
+      "destroyedModelName": "wood_fence_snow_g_1_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "wood_fence_snow_g_2",
+      "destroyedModelName": "wood_fence_snow_g_2_destr_phobj",
+      "destructionImpulse": 2000.0,
+      "fx": "ad_wood_snow_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "log_ramp_a",
+      "destroyedModelName": "log_ramp_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "barbedwire_a",
+      "destroyedModelName": "barbedwire_a_destr_phobj",
+      "destructionImpulse": 1400.0,
+      "fx": "ad_barbwire",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "dmPreset": "unshootable_objects"
+    },
+    {
       "name": "iceberg_chunk_1a",
       "destroyedModelName": "iceberg_chunk_1a_destr_phobj",
       "updateDist": 1000.0,
@@ -1738,23 +2651,6 @@
         2.0
       ],
       "volumesCount": 1
-    },
-    {
-      "name": "log_ramp_a",
-      "destroyedModelName": "log_ramp_a_destr_phobj",
-      "destructionImpulse": 10000.0,
-      "fx": "ad_explosion_mine",
-      "fxScale": 1.0,
-      "material": "transparentBeton"
-    },
-    {
-      "name": "barbedwire_a",
-      "destroyedModelName": "barbedwire_a_destr_phobj",
-      "destructionImpulse": 1400.0,
-      "fx": "ad_barbwire",
-      "fxScale": 1.0,
-      "material": "transparentBeton",
-      "dmPreset": "unshootable_objects"
     },
     {
       "name": "phi_cliff_a",
@@ -18061,8 +18957,7 @@
       "impulseThreshold": 3.0,
       "isParent": true,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_big"
     },
     "american_boxcar_wagon_dmg": {
       "nextRes": "american_boxcar_wagon_dmg_02",
@@ -18071,8 +18966,7 @@
       "impulseThreshold": 3.0,
       "isParent": true,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_big"
     },
     "american_emd_f3_locomotive": {
       "nextRes": "american_emd_f3_locomotive_dmg",
@@ -18082,7 +18976,6 @@
       "isParent": true,
       "dmPreset": "metal_props",
       "fx": "ad_car_wreck",
-      "fxScale": 1.4,
       "material": "metal"
     },
     "american_gondola_wagon": {
@@ -18093,7 +18986,6 @@
       "isParent": true,
       "dmPreset": "metal_props",
       "fx": "ad_wood_metal_big",
-      "fxScale": 1.4,
       "material": "metal"
     },
     "american_passenger_wagon": {
@@ -18103,8 +18995,7 @@
       "impulseThreshold": 3.0,
       "isParent": true,
       "dmPreset": "metal_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_big"
     },
     "american_passenger_wagon_dmg": {
       "nextRes": "american_passenger_wagon_dmg_02",
@@ -18113,8 +19004,7 @@
       "impulseThreshold": 3.0,
       "isParent": true,
       "dmPreset": "metal_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_big"
     },
     "fabric_locomotive": {
       "nextRes": "fabric_locomotive_dmg",
@@ -18129,29 +19019,30 @@
     "fabric_locomotive_platform": {
       "nextRes": "fabric_locomotive_platform_dmg",
       "physRes": "fabric_locomotive_platform_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
+      "hpFullRegenTime": 3.0,
       "fx": "ad_wood_metal_big",
       "fxScale": 1.1
     },
     "nvrsk_op_ussr_freight_car_1926": {
       "nextRes": "nvrsk_op_ussr_freight_car_1926_dmg",
       "physRes": "ussr_freight_car_1926_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_big"
     },
     "nvrsk_op_ussr_freight_car_1926_dmg": {
       "nextRes": "nvrsk_op_ussr_freight_car_1926_dmg_02",
       "physRes": "ussr_freight_car_1926_dmg_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_metal",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_metal"
     },
     "ussr_diesel_locomotive_te1": {
       "nextRes": "ussr_diesel_locomotive_te1_dmg",
@@ -18160,7 +19051,6 @@
       "impulseThreshold": 3.0,
       "dmPreset": "oil_tanks_full",
       "fx": "ad_car_wreck",
-      "fxScale": 1.4,
       "material": "metal"
     },
     "ussr_diesel_locomotive_te1_snow": {
@@ -18170,62 +19060,61 @@
       "impulseThreshold": 3.0,
       "dmPreset": "oil_tanks_full",
       "fx": "ad_car_wreck",
-      "fxScale": 1.4,
       "material": "metal"
     },
     "ussr_freight_car_1926": {
       "nextRes": "ussr_freight_car_1926_dmg",
       "physRes": "ussr_freight_car_1926_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_big"
     },
     "ussr_freight_car_1926_dmg": {
       "nextRes": "ussr_freight_car_1926_dmg_02",
       "physRes": "ussr_freight_car_1926_dmg_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_big"
     },
     "ussr_freight_car_1926_snow": {
       "nextRes": "ussr_freight_car_1926_dmg",
       "physRes": "ussr_freight_car_1926_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_snow_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_snow_big"
     },
     "ussr_freight_car_1926_dmg_snow": {
       "nextRes": "ussr_freight_car_1926_dmg_02_snow",
       "physRes": "ussr_freight_car_1926_dmg_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_snow_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_snow_big"
     },
     "ussr_hopper_wagon_1933": {
       "nextRes": "ussr_hopper_wagon_1933_dmg",
       "physRes": "ussr_hopper_wagon_1933_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_big"
     },
     "ussr_hopper_wagon_1933_dmg": {
       "nextRes": "ussr_hopper_wagon_1933_dmg_02",
       "physRes": "ussr_hopper_wagon_1933_dmg_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_big"
     },
     "ussr_locomotive_e_1298": {
       "nextRes": "ussr_locomotive_e_1298_dmg",
@@ -18234,7 +19123,6 @@
       "impulseThreshold": 3.0,
       "dmPreset": "oil_tanks_full",
       "fx": "ad_car_wreck",
-      "fxScale": 1.4,
       "material": "metal"
     },
     "ussr_locomotive_e_1298_snow": {
@@ -18244,7 +19132,6 @@
       "impulseThreshold": 3.0,
       "dmPreset": "oil_tanks_full",
       "fx": "ad_car_wreck",
-      "fxScale": 1.4,
       "material": "metal"
     },
     "ussr_low_freight_car_1933": {
@@ -18280,8 +19167,7 @@
       "hp": 180.0,
       "impulseThreshold": 3.0,
       "dmPreset": "metal_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_big"
     },
     "ussr_sleeping_car_1928_dmg": {
       "nextRes": "ussr_sleeping_car_1928_dmg_02",
@@ -18289,8 +19175,7 @@
       "hp": 150.0,
       "impulseThreshold": 3.0,
       "dmPreset": "metal_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_big"
     },
     "ussr_sleeping_car_1928_snow": {
       "nextRes": "ussr_sleeping_car_1928_dmg_snow",
@@ -18298,8 +19183,7 @@
       "hp": 180.0,
       "impulseThreshold": 3.0,
       "dmPreset": "metal_props",
-      "fx": "ad_wood_metal_snow_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_snow_big"
     },
     "ussr_sleeping_car_1928_dmg_snow": {
       "nextRes": "ussr_sleeping_car_1928_dmg_02",
@@ -18307,15 +19191,15 @@
       "hp": 150.0,
       "impulseThreshold": 3.0,
       "dmPreset": "metal_props",
-      "fx": "ad_wood_metal_snow_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_snow_big"
     },
     "ussr_tank_wagon_1931": {
       "nextRes": "ussr_tank_wagon_1931_dmg",
       "physRes": "ussr_tank_wagon_1931_destr_phobj",
-      "hp": 60.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "oil_tanks_full",
-      "impulseThreshold": 4.0,
+      "hpFullRegenTime": 3.0,
       "fx": "ad_explosion_big",
       "fxScale": 1.0,
       "material": "metal"
@@ -18323,9 +19207,10 @@
     "ussr_tank_wagon_1931_snow": {
       "nextRes": "ussr_tank_wagon_1931_dmg",
       "physRes": "ussr_tank_wagon_1931_destr_phobj",
-      "hp": 100.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "oil_tanks_full",
-      "impulseThreshold": 1.0,
+      "hpFullRegenTime": 3.0,
       "fx": "ad_explosion_big",
       "fxScale": 1.0,
       "material": "metal"
@@ -18333,28 +19218,27 @@
     "damage_test_wagon": {
       "nextRes": "damage_test_wagon_dmg",
       "physRes": "damage_test_wagon_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_big"
     },
     "damage_test_wagon_dmg": {
       "nextRes": "damage_test_wagon_dmg_02",
       "physRes": "damage_test_wagon_dmg_destr_phobj",
-      "hp": 130.0,
-      "impulseThreshold": 3.0,
+      "hp": 50.0,
+      "impulseThreshold": 5.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_wood_metal_big"
     },
     "damage_test_wagon_dmg_02": {
       "nextRes": "damage_test_wagon_dmg",
       "hp": 1000000.0,
       "impulseThreshold": 1000000.0,
       "dmPreset": "wood_props",
-      "fx": "ad_wood_metal_big",
-      "fxScale": 1.5
+      "fx": "ad_wood_metal_big"
     },
     "m60a1_rendinst": {
       "nextRes": "m60a1_rendinst_dmg",
@@ -21955,7 +22839,13 @@
       "explosionDamageMult": 0.5,
       "genericDamageMult": 0.45,
       "cumulativeDamageMult": 0.05,
-      "shatterDamageMult": 0.01
+      "shatterDamageMult": 0.01,
+      "defaultTracedWidth": 0.01,
+      "maxTracedWidth": 0.01,
+      "clampTracedWidth": [
+        0.0,
+        0.05
+      ]
     },
     "wood_small_props": {
       "allowRicochet": false,

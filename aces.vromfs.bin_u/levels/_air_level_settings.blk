@@ -7,3 +7,4 @@ clipmap {
 }
 
 clipmap_tex_mips:i=6
+volumeCloudsActive:b = yes

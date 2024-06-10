@@ -40,6 +40,7 @@ return @(targetRect, unitTypes, curUnitType, onChange) modalPopupWnd.add(targetR
     flow = FLOW_VERTICAL
     children = [
       {
+        pos = [hdpx(10), 0]
         rendObj = ROBJ_TEXT
         text = loc("hudTuning/chooseUnitType")
       }.__update(fontSmall)

@@ -5,7 +5,7 @@ let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { doesLocTextExist } = require("dagor.localize")
-let { parse_json, json_to_string } = require("json")
+let { parse_json, object_to_json_string } = require("json")
 let { registerGoogleplayPurchase, YU2_WRONG_PAYMENT, YU2_OK } = require("auth_wt")
 let logG = log_with_prefix("[GOODS] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -32,7 +32,7 @@ let { //defaults only to allow test this module on PC
     let list = parse_json(listStr)
     let result = {
       status = GP_OK
-      value = json_to_string(
+      value = object_to_json_string(
         list.values().map(@(v) {
           productId = v.google_id,
           type = "inapp",
@@ -146,7 +146,7 @@ let skusForRequest = keepref(Computed(function() {
   let list = {}
   foreach (k, v in ids)
     list[v] <- { google_id = k }
-  return json_to_string(list)
+  return object_to_json_string(list)
 }))
 function refreshAvailableSkus() {
   if (skusForRequest.value.len() == 0)
@@ -218,7 +218,7 @@ function sendLogPurchaseData(json_value) {
     af_price = availableSkusPrices.value?[productId].price ?? -1
     af_currency = availableSkusPrices.value?[productId].currencyId ?? "USD" //or af_purchase_currency?
   }
-  logEvent("af_purchase", json_to_string(af, true))
+  logEvent("af_purchase", object_to_json_string(af, true))
 }
 
 eventbus_subscribe("android.billing.googleplay.onGooglePurchaseCallback", function(result) {
@@ -259,7 +259,7 @@ eventbus_subscribe("auth.onRegisterGooglePurchase", function(result) {
       productId = item_id
       purchaseToken = purch_token
     }
-    local purch = json_to_string(purchase, true)
+    local purch = object_to_json_string(purchase, true)
     confirmPurchase(purch)
     return
   }

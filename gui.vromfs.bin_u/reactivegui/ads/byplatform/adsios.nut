@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logA = log_with_prefix("[ADS] ")
 let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { parse_json, json_to_string } = require("json")
+let { parse_json, object_to_json_string } = require("json")
 let { DBGLEVEL } = require("dagor.system")
 let { is_ios } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
@@ -16,7 +16,7 @@ let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
   isAdsLoaded, loadAds, showAds, showConsent
 } = ads
-let { isAdsAllowedForRequest } = require("%rGui/notifications/consent/consentGoogleState.nut")
+let { isGoogleConsentAllowAds } = require("%appGlobals/loginState.nut")
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 
 let isInited = Watched(isAdsInited())
@@ -25,10 +25,10 @@ let loadedProvider = hardPersistWatched("adsIos.loadedProvider", "")
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsIos.failsInARow", 0)
 
-let needAdsLoadExt = Computed(@() isAdsAllowedForRequest.get() && isInited.get() && needAdsLoad.get() && !isLoaded.get())
+let needAdsLoadExt = Computed(@() isGoogleConsentAllowAds.get() && isInited.get() && needAdsLoad.get() && !isLoaded.get())
 
 function initProviders() {
-  if (!isAdsAllowedForRequest.get())
+  if (!isGoogleConsentAllowAds.get())
     return
   let { providers, countryCode } = providerPriorities.get()
   if (providers.len() == 0)
@@ -53,7 +53,7 @@ function initProviders() {
 }
 initProviders()
 providerPriorities.subscribe(@(_) initProviders())
-isAdsAllowedForRequest.subscribe(@(_) initProviders())
+isGoogleConsentAllowAds.subscribe(@(_) initProviders())
 
 let statusNames = {}
 foreach(id, val in ads)
@@ -129,7 +129,7 @@ eventbus_subscribe("ios.ads.onRevenue", function (params) {
     revenue = value
     currency
   })
-  logFirebaseEventWithJson("ad_impression", json_to_string({
+  logFirebaseEventWithJson("ad_impression", object_to_json_string({
     ad_platform = provider
     ad_source = adapter
     value = value
@@ -170,7 +170,7 @@ function showAdsForReward(rInfo) {
 }
 
 function onTryShowNotAvailableAds() {
-  if (isAdsAllowedForRequest.get())
+  if (isGoogleConsentAllowAds.get())
     return false
   sendUiBqEvent("ads_consent", { id = "show_on_try_watch_ads" })
   showConsent()

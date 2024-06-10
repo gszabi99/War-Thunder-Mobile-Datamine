@@ -5213,6 +5213,15 @@
       "waypointFollow": {}
     },
     {
+      "name": "hangarCutscene",
+      "selectStrategy": "ordered",
+      "waypointFollow": {
+        "maxPitch": 80.0,
+        "terrainSensitivity": 0.5,
+        "aggressiveness": 2.0
+      }
+    },
+    {
       "name": "catapulted",
       "selectStrategy": "ordered",
       "reaction": [

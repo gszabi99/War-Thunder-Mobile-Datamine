@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { frnd } = require("dagor.random")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { battleResult } = require("%scripts/debriefing/battleResult.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -95,7 +95,7 @@ function sendBqNotReceivedProfile() {
   }
   sendUiBqEvent("profileUpdateError", {
     id = $"not updated for {SEND_BQ_NOT_RECEIVED_TIME}sec after the battle",
-    status = json_to_string(lastProfileError.value?.error)
+    status = object_to_json_string(lastProfileError.value?.error)
   })
 }
 

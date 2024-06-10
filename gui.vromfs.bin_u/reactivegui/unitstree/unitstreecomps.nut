@@ -60,7 +60,7 @@ let selectedFlagBg = @(isSelected) @() {
   transitions = opacityTransition
 }
 
-let function mkTreeNodesFlag(country, curCountry, onClick, showUnseenMark) {
+let function mkTreeNodesFlag(country, curCountry, onClick, showUnseenMark, selectOvr = {}) {
   let isSelected = Computed(@() curCountry.get() == country)
   return {
     size = [flagsWidth, blockSize[1]]
@@ -70,12 +70,17 @@ let function mkTreeNodesFlag(country, curCountry, onClick, showUnseenMark) {
     behavior = Behaviors.Button
     onClick
     children = [
-      selectedFlagBg(isSelected)
       {
         size = flex()
-        hplace = ALIGN_LEFT
-        children = selectedLineVert(isSelected)
-      }
+        children = [
+          selectedFlagBg(isSelected)
+          {
+            size = flex()
+            hplace = ALIGN_LEFT
+            children = selectedLineVert(isSelected)
+          }
+        ]
+      }.__update(selectOvr)
       mkFlagImage(country, flagSize)
       mkPriorityUnseenMarkWatch(showUnseenMark, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
     ]

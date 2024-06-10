@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { Point2 } = require("dagor.math")
 let { deferOnce } = require("dagor.workcycle")
-let { FlightCameraType = { TPS = 1, VIRTUAL_FPS = 12, BOMBERVIEW = 11, TURRET = 9 },
-  getCameraViewType = @() 1, isCameraViewAvailable = @(_) false } = require("camera_control")
+let { FlightCameraType, getCameraViewType, isCameraViewAvailable } = require("camera_control")
 let { TPS, VIRTUAL_FPS, BOMBERVIEW, TURRET } = FlightCameraType
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")

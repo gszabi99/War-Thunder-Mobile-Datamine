@@ -1502,7 +1502,7 @@
   "weapon_presets": {
     "preset": {
       "name": "fw-190c_default",
-      "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+      "blk": "gameData/FlightModels/weaponPresets/fw_190c_default.blk"
     }
   },
   "WeaponSlots": {

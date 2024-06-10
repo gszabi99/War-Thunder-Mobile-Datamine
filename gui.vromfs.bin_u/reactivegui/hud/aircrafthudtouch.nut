@@ -5,13 +5,13 @@ let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let aircraftSight = require("%rGui/hud/aircraftSight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
-let hudTopLeft = require("hudTopLeft.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 let ctrlPieMenu = require("%rGui/hud/controlsPieMenu/ctrlPieMenu.nut")
 let cameraPieMenu = require("%rGui/hud/cameraPieMenu/cameraPieMenu.nut")
 let { TargetSelector } = require("wt.behaviors")
 let { cannonsOverheat, mgunsOverheat, hasMGun0, hasCanon0, Cannon0, MGun0 } = require("%rGui/hud/airState.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
+let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 
 let circularIndSize = hdpx(74).tointeger()
 let progressImageRight = Picture($"ui/gameuiskin#air_reload_indicator_right.svg:{circularIndSize}:{circularIndSize}")
@@ -114,7 +114,7 @@ return {
   onDetach = @() stopActionBarUpdate("airHud")
   children = [
     hudTuningElems
-    hudTopLeft
+    menuButton
     hudTopMainLog
     hudBottomCenter
     currentWeaponNameText

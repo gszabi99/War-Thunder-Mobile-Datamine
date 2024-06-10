@@ -16,21 +16,10 @@
       "weather": "clear",
       "locName": "missions/testDrive",
       "openDiffLevels": true,
-      "maxRespawns": -1,
       "allowEmptyTeams": true,
       "restoreType": "manual",
       "difficulty": "arcade",
-      "editSlotbar": {
-        "keepOwnUnits": false,
-        "country_usa": {
-          "he51c1": {
-            "crewSkillsPercent": 100,
-            "crewSpecialization": 2,
-            "allWeapons": true,
-            "allModifications": true
-          }
-        }
-      }
+      "optionalTakeOff": false
     },
     "atmosphere": {
       "pressure": 760.0,
@@ -61,85 +50,37 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "set": true,
-          "target": "enemy_units_sq",
+          "target": "all_enemy_units_sq",
           "target_type": "isAlive",
           "team": "A"
         },
-        "addAirfield": {
-          "runwayStart": "airfield00",
-          "runwayEnd": "airfield01",
-          "runwayWidth": 50.0,
-          "army": 1,
-          "spawnPoint": "spawnpoint",
-          "visibleOnHud": true
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": [
+            "plane_sq",
+            "enemy_ground_units_sq",
+            "ship_sq"
+          ],
+          "attack_type": "hold_fire"
         },
-        "missionMarkAsRespawnPoint": {
-          "loc_name": "",
-          "spawnEffect": false,
-          "isStrictSpawn": false,
-          "resetStrictSpawnIndex": false,
-          "isAirfield": true,
-          "isUnit": false,
-          "forceCreate": false,
-          "useExisting": false,
-          "ignoreTeamsOnReuse": false,
-          "isIndividual": false,
-          "onlyOnePlayerPerSpawnPoint": false,
-          "removeAreas": false,
-          "replaceAreas": false,
-          "canSpawnOnNeutral": false,
-          "showOnMap": true,
-          "radius": -1.0,
-          "target": "field",
-          "team": "A",
-          "separate_fuel_time": true,
-          "modular_airfield": true,
-          "tags": {
-            "tank": false,
-            "artillery": false,
-            "aaa": false,
-            "ship": false,
-            "boat": false
-          }
-        },
-        "spawnOnAirfield": {
-          "runwayName": "field",
-          "objects": "t1_player01"
+        "missionSetBombingArea": {
+          "army": 2,
+          "target": [
+            "bomb_area_01",
+            "bomb_area_02",
+            "bomb_area_03"
+          ],
+          "hp": 10000.0,
+          "hpFireMult": 0.1,
+          "fireSpeed": 0.03
         }
       },
       "else_actions": {}
     },
-    "player_respawn": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "playersWhenStatus": {
-          "players": "isKilled",
-          "check_players": "any"
-        }
-      },
-      "actions": {
-        "wait": {
-          "time": 3.0
-        },
-        "spawnOnAirfield": {
-          "runwayName": "field",
-          "objects": "t1_player01"
-        }
-      },
-      "else_actions": {}
-    },
-    "planes_respawn": {
+    "ai_planes_respawn_init": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -274,6 +215,68 @@
         ]
       },
       "else_actions": {}
+    },
+    "player_respawn": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isKilled",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 3.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "t1_player01",
+          "target": "player_respawn"
+        },
+        "spawnOnAirfield": {
+          "runwayName": "airfield_01",
+          "objects": "t1_player01"
+        }
+      },
+      "else_actions": {}
+    },
+    "init_ai": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "__unitLoadBehTree": {
+          "name": "wtmBenchmark",
+          "objects": "plane_sq"
+        }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -290,9 +293,9 @@
         "name": "t1_player01",
         "tm": [
           [
-            0.629917,
+            -0.663195,
             0.0,
-            0.776662
+            -0.748446
           ],
           [
             0.0,
@@ -300,14 +303,14 @@
             0.0
           ],
           [
-            -0.776662,
+            0.748446,
             0.0,
-            0.629917
+            -0.663195
           ],
           [
-            3814.5,
-            245.7,
-            8653.1
+            8082.0,
+            750.0,
+            9984.5
           ]
         ],
         "unit_class": "he51c1",
@@ -614,9 +617,9 @@
             0.998308
           ],
           [
-            7808.05,
+            7877.1,
             1000.0,
-            12292.2
+            12303.9
           ]
         ],
         "unit_class": "fw_190a_1",
@@ -676,9 +679,9 @@
             -0.998308
           ],
           [
-            7803.92,
+            7872.97,
             1000.0,
-            12352.9
+            12364.6
           ]
         ],
         "unit_class": "fw_190a_1",
@@ -988,9 +991,9 @@
             0.0581383
           ],
           [
-            8228.45,
+            8093.05,
             1000.0,
-            12697.1
+            12496.3
           ]
         ],
         "props": {
@@ -1010,43 +1013,7 @@
         }
       },
       {
-        "name": "ship_static_sq",
-        "tm": [
-          [
-            0.0581383,
-            0.0,
-            -0.998308
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.998308,
-            0.0,
-            0.0581383
-          ],
-          [
-            7382.75,
-            1.0,
-            7020.05
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "ai_01",
-            "ai_02",
-            "ai_03",
-            "ai_06",
-            "ai_07",
-            "ai_08"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "all_ground_units_sq",
+        "name": "enemy_ground_units_sq",
         "tm": [
           [
             1.0,
@@ -1064,9 +1031,9 @@
             1.0
           ],
           [
-            5011.8,
-            253.542,
-            9526.0
+            2609.45,
+            253.544,
+            6463.95
           ]
         ],
         "props": {
@@ -1085,7 +1052,7 @@
         }
       },
       {
-        "name": "plane_friendly_sq",
+        "name": "all_enemy_units_sq",
         "tm": [
           [
             1.0,
@@ -1103,59 +1070,17 @@
             1.0
           ],
           [
-            8206.35,
-            1000.0,
-            12658.5
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "plane_01",
-            "plane_02",
-            "plane_03",
-            "plane_04",
-            "plane_07",
-            "plane_08",
-            "plane_09",
-            "plane_10"
-          ]
-        }
-      },
-      {
-        "name": "enemy_units_sq",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            5497.7,
+            6403.45,
             431.45,
-            10036.2
+            10908.9
           ]
         ],
         "props": {
           "squad_members": [
-            "ai_01",
-            "ai_02",
-            "ai_03",
             "ai_14",
             "ai_12",
             "ai_11",
             "ai_13",
-            "ai_04",
-            "ai_05",
             "base_03",
             "base_02",
             "base_01",
@@ -1168,14 +1093,63 @@
             "plane_07",
             "plane_08",
             "plane_09",
-            "plane_10"
+            "plane_10",
+            "ship_01",
+            "ship_03",
+            "ship_02",
+            "ship_05",
+            "ship_04",
+            "ship_07",
+            "ship_08",
+            "ship_06",
+            "ship_09",
+            "ship_10"
+          ]
+        }
+      },
+      {
+        "name": "ship_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6018.55,
+            400.0,
+            6644.35
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "ship_01",
+            "ship_03",
+            "ship_02",
+            "ship_05",
+            "ship_04",
+            "ship_07",
+            "ship_08",
+            "ship_06",
+            "ship_09",
+            "ship_10"
           ]
         }
       }
     ],
     "ships": [
       {
-        "name": "ai_01",
+        "name": "ship_01",
         "tm": [
           [
             1.0,
@@ -1233,7 +1207,7 @@
         "way": {}
       },
       {
-        "name": "ai_02",
+        "name": "ship_03",
         "tm": [
           [
             1.0,
@@ -1291,7 +1265,7 @@
         "way": {}
       },
       {
-        "name": "ai_03",
+        "name": "ship_02",
         "tm": [
           [
             1.0,
@@ -1349,7 +1323,7 @@
         "way": {}
       },
       {
-        "name": "ai_04",
+        "name": "ship_05",
         "tm": [
           [
             -0.811947,
@@ -1367,9 +1341,9 @@
             -0.811947
           ],
           [
-            7077.3,
+            5709.3,
             0.00219727,
-            5506.4
+            7107.25
           ]
         ],
         "unit_class": "uss_pt_109",
@@ -1407,7 +1381,7 @@
         "way": {}
       },
       {
-        "name": "ai_05",
+        "name": "ship_04",
         "tm": [
           [
             -0.794054,
@@ -1425,9 +1399,9 @@
             -0.794054
           ],
           [
-            7010.9,
+            5598.05,
             0.00219727,
-            5599.0
+            7371.85
           ]
         ],
         "unit_class": "uss_dd_sims",
@@ -1465,7 +1439,7 @@
         "way": {}
       },
       {
-        "name": "ai_06",
+        "name": "ship_07",
         "tm": [
           [
             -1.0,
@@ -1523,7 +1497,7 @@
         "way": {}
       },
       {
-        "name": "ai_07",
+        "name": "ship_08",
         "tm": [
           [
             -1.0,
@@ -1581,7 +1555,7 @@
         "way": {}
       },
       {
-        "name": "ai_08",
+        "name": "ship_06",
         "tm": [
           [
             -1.0,
@@ -1639,7 +1613,7 @@
         "way": {}
       },
       {
-        "name": "ai_09",
+        "name": "ship_09",
         "tm": [
           [
             0.851969,
@@ -1657,9 +1631,9 @@
             0.851969
           ],
           [
-            6781.95,
+            6475.25,
             0.00219727,
-            5453.2
+            7260.85
           ]
         ],
         "unit_class": "germ_dd_z28",
@@ -1692,12 +1666,12 @@
             0.1
           ],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "attack_type": "hold_fire"
         },
         "way": {}
       },
       {
-        "name": "ai_10",
+        "name": "ship_10",
         "tm": [
           [
             0.853102,
@@ -1715,9 +1689,9 @@
             0.853102
           ],
           [
-            6855.7,
+            6549.0,
             0.00219727,
-            5372.85
+            7180.5
           ]
         ],
         "unit_class": "uss_pt_109",
@@ -1750,7 +1724,7 @@
             0.1
           ],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "attack_type": "hold_fire"
         },
         "way": {}
       }
@@ -1796,7 +1770,7 @@
     },
     "objectGroups": [
       {
-        "name": "field",
+        "name": "airfield_01",
         "tm": [
           [
             0.720023,
@@ -1877,7 +1851,7 @@
           ],
           [
             4017.65,
-            243.404,
+            274.7,
             7219.2
           ]
         ],
@@ -1908,7 +1882,7 @@
           ],
           [
             4013.6,
-            244.613,
+            254.25,
             6782.8
           ]
         ],
@@ -2002,9 +1976,9 @@
             1.0
           ],
           [
-            5712.8,
-            245.551,
-            9023.5
+            2928.95,
+            239.65,
+            6794.45
           ]
         ],
         "unit_class": "germ_pzIIf",
@@ -2058,9 +2032,9 @@
             1.0
           ],
           [
-            5714.35,
-            245.404,
-            8975.75
+            2930.5,
+            240.267,
+            6746.7
           ]
         ],
         "unit_class": "us_m5a1_stuart6",
@@ -2132,9 +2106,9 @@
             1.0
           ],
           [
-            5879.0,
-            293.55,
-            9010.8
+            3095.15,
+            241.462,
+            6781.75
           ]
         ],
         "unit_class": "us_m8_greyhound",
@@ -2204,9 +2178,9 @@
             1.0
           ],
           [
-            5875.4,
-            281.222,
-            8966.3
+            3091.55,
+            242.191,
+            6737.25
           ]
         ],
         "unit_class": "germ_sdKfz_222",
@@ -2600,82 +2574,31 @@
     ]
   },
   "areas": {
-    "airfield00": {
+    "player_respawn": {
       "type": "Sphere",
       "tm": [
         [
-          161.384,
+          -6.63195,
           0.0,
-          164.296
+          -7.48447
         ],
         [
           0.0,
-          230.3,
+          10.0,
           0.0
         ],
         [
-          -164.296,
+          7.48447,
           0.0,
-          161.384
+          -6.63195
         ],
         [
-          3829.65,
-          250.65,
-          8671.3
+          8086.26,
+          750.0,
+          9981.4
         ]
       ],
-      "props": {}
-    },
-    "airfield01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          161.384,
-          0.0,
-          164.296
-        ],
-        [
-          0.0,
-          230.3,
-          0.0
-        ],
-        [
-          -164.296,
-          0.0,
-          161.384
-        ],
-        [
-          4604.85,
-          250.65,
-          9421.2
-        ]
-      ],
-      "props": {}
-    },
-    "spawnpoint": {
-      "type": "Sphere",
-      "tm": [
-        [
-          53.6079,
-          0.0,
-          54.5751
-        ],
-        [
-          0.0,
-          76.5,
-          0.0
-        ],
-        [
-          -54.5751,
-          0.0,
-          53.6079
-        ],
-        [
-          3806.16,
-          250.65,
-          8656.52
-        ]
-      ],
+      "objLayer": 0,
       "props": {}
     },
     "plane_spawn_01": {
@@ -3213,6 +3136,87 @@
           4475.22,
           241.497,
           7939.92
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bomb_area_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          4008.3,
+          252.45,
+          7221.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bomb_area_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          4013.2,
+          257.95,
+          6766.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bomb_area_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          4020.7,
+          261.6,
+          6282.65
         ]
       ],
       "objLayer": 0,

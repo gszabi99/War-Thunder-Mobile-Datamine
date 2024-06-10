@@ -180,7 +180,7 @@
             3832.36
           ]
         ],
-        "unit_class": "germ_cruiser_admiral_hipper",
+        "unit_class": "us_destroyer_fletcher",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -237,7 +237,7 @@
             2278.48
           ]
         ],
-        "unit_class": "germ_cruiser_admiral_hipper",
+        "unit_class": "us_destroyer_fletcher",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -294,7 +294,7 @@
             3100.69
           ]
         ],
-        "unit_class": "germ_cruiser_admiral_hipper",
+        "unit_class": "us_destroyer_fletcher",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -352,7 +352,7 @@
             1313.83
           ]
         ],
-        "unit_class": "germ_cruiser_admiral_hipper",
+        "unit_class": "us_destroyer_fletcher",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,

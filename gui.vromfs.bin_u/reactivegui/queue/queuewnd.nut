@@ -58,7 +58,9 @@ let missionCampaign = Computed(@() airEventPrefixes.findindex(@(v) lastQueueMode
 let playersCountInQueue = Computed(function() {
   if (curQueue.value == null || queueInfo.value == null)
     return null
-  let { rank = null } = allUnitsCfg.value?[curQueue.value?.unitName] ?? curUnit.value //why rank here instead of matching rank?
+  let unitInfo = curQueue.value?.unitInfo
+  let unitName = type(unitInfo) == "array" ? unitInfo?[0] : unitInfo
+  let { rank = null } = allUnitsCfg.get()?[unitName] ?? curUnit.get() //why rank here instead of matching rank?
   if (rank == null)
     return null
   let rankStr = rank.tostring()

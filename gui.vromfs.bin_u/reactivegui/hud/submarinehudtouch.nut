@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
 let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
-let hudTopLeft = require("hudTopLeft.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let { shipSight } = require("%rGui/hud/sight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
+let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 
 return {
   size = saSize
@@ -21,7 +21,7 @@ return {
     hudBottomCenter
     hudTopMainLog
     hudTuningElems
-    hudTopLeft
+    menuButton
     shipSight
     currentWeaponNameText
     voiceMsgPie

@@ -5,8 +5,9 @@ let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlace
 let { shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { playerTeamDamageStats, localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
-let { getScoreKey } = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { getScoreKey, getScoreKeyAir } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { hudScoreTank } = require("%rGui/options/options/tankControlsOptions.nut")
+let { curUnit } = require("%appGlobals/pServer/profile.nut")
 
 let countImageSize = evenPx(60)
 let counterBgSize = evenPx(40)
@@ -19,16 +20,25 @@ let icons = {
   damage = "ui/gameuiskin#damage_icon.svg"
   score = "ui/gameuiskin#score_icon.svg"
   groundKills = "ui/gameuiskin#tanks_destroyed_icon.svg"
+  kills = "ui/gameuiskin#stats_airplanes_destroyed.svg"
 }
 
 let viewMuls = {
   score = 100.0
 }
 
-let scoreKey = Computed(@() getScoreKey(battleCampaign.value))
-let viewScoreKey = Computed(@() battleCampaign.value == "tanks" && hudScoreTank.value == "kills"
-  ? "groundKills"
-  : scoreKey.value)
+let scoreKey = Computed(@() battleCampaign.get() == "air"
+  ? getScoreKeyAir(curUnit.get()?.unitClass)
+  : getScoreKey(battleCampaign.value))
+
+function getViewScoreKey(campaign, scoreTank, unit){
+  if(campaign == "tanks" && scoreTank == "kills")
+    return "groundKills"
+  if(campaign == "air")
+    return getScoreKeyAir(unit?.unitClass)
+  return getScoreKey(campaign)
+}
+let viewScoreKey = Computed(@() getViewScoreKey( battleCampaign.get(), hudScoreTank.get(), curUnit.get()))
 
 let myPlace = Computed(function() {
   let key = scoreKey.value
@@ -88,6 +98,9 @@ let mkMyDamage = @(score) mkImageWithCount(score, icons.damage)
 let mkTankMyScores = @(score) @()
   mkImageWithCount(score, hudScoreTank.value == "kills" ? icons.groundKills : icons.score)
     .__update({ watch = hudScoreTank })
+let mkAirMyScores = @(score) @()
+  mkImageWithCount(score, curUnit.get()?.unitClass == "fighter" ? icons.kills : icons.score)
+    .__update({ watch = curUnit })
 
 
 let myPlaceUi = @() {
@@ -140,6 +153,7 @@ return {
   mkMyScores
   mkMyDamage
   mkTankMyScores
+  mkAirMyScores
   mkMyPlace = mkPlaceIcon
   mkImageWithCount
 

@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "fab250_external"
+    },
+    {
+      "slot": 3,
+      "preset": "fab250"
+    },
+    {
+      "slot": 4,
+      "preset": "fab250_external"
+    }
+  ]
+}

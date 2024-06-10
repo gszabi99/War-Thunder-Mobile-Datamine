@@ -1621,58 +1621,75 @@
     "head": "turret1"
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunVikkersE.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 500,
-        "spread": 1.1
-      },
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunLewis_turret.blk",
-        "emitter": "gun1",
-        "flash": "flare2",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 485,
-        "breechInCockpit": true,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -90.0,
-            90.0
-          ],
-          "pitch": [
-            -5.0,
-            85.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -1.0,
-            1.0
-          ],
-          "pitch": [
-            -5.0,
-            17.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": {
       "name": "osprey_mk4_default",
       "blk": "gameData/FlightModels/weaponPresets/osprey_mk4_default.blk"
+    }
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1040.0,
+    "maxloadMassLeftConsoles": 570.0,
+    "maxloadMassRightConsoles": 570.0,
+    "maxDisbalance": 420.0,
+    "HideNodes": {},
+    "WeaponSlot": {
+      "index": 0,
+      "WeaponPreset": {
+        "name": "default_common",
+        "Weapon": [
+          {
+            "trigger": "machine gun",
+            "blk": "gameData/Weapons/gunVikkersE.blk",
+            "emitter": "flare1",
+            "flash": "flare1",
+            "dm": "mgun1_dm",
+            "bullets": 500,
+            "spread": 1.1
+          },
+          {
+            "trigger": "gunner0",
+            "blk": "gameData/Weapons/gunLewis_turret.blk",
+            "emitter": "gun1",
+            "flash": "flare2",
+            "dm": "gunner1_dm",
+            "gunnerDm": "gunner1_dm",
+            "gunDm": "gun1_dm",
+            "partsDP": "gun1_dm",
+            "bullets": 485,
+            "breechInCockpit": true,
+            "turret": {
+              "head": "turret1",
+              "gun": "gun1"
+            },
+            "limits": {
+              "yaw": [
+                -90.0,
+                90.0
+              ],
+              "pitch": [
+                -5.0,
+                85.0
+              ]
+            },
+            "limitsDeadzone": {
+              "yaw": [
+                -1.0,
+                1.0
+              ],
+              "pitch": [
+                -5.0,
+                17.0
+              ]
+            }
+          }
+        ]
+      }
     }
   },
   "turbulence": {

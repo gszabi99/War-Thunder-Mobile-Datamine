@@ -27,6 +27,7 @@ let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
 let nextLevelBorderColor = 0xFFDADADA
@@ -85,12 +86,12 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
   } = playerLevelInfo.value
   let progresOffset = levelHolderSize * rotateCompensate
   let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan
-    : !isMaxLevel ? openExpWnd
+    : !isMaxLevel && curCampaign.get() not in serverConfigs.get()?.unitTreeNodes ? openExpWnd
     : null
   let showStarLevel = max(starLevel, historyStarLevel)
   let nextStarLevel = isStarProgress ? starLevel + 1 : 0
   return {
-    watch = playerLevelInfo
+    watch = [playerLevelInfo, curCampaign, serverConfigs]
     valign = ALIGN_CENTER
     pos = [levelHolderPlace, levelHolderPlace]
     padding = [0, progresOffset]

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { set_clipboard_text } = require("dagor.clipboard")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
 let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_count, set_purch_player_type,
@@ -12,7 +12,7 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, add_aprilbond,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
-  add_battle_mod
+  add_battle_mod, set_research_unit
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -43,7 +43,7 @@ registerHandler("onDebugLootboxChances",
     if ("percents" in data)
       data.percents = data.percents.map(@(v)
         $"{v > 0.1 ? round_by_value(v, 0.01) : roundToDigits(v, 2)}%")
-    let text = json_to_string(data)
+    let text = object_to_json_string(data)
     openMsgBox({
       uid = "debug_lootbox_chances"
       text = makeSideScroll(msgBoxText(text, infoTextOvr))
@@ -191,7 +191,9 @@ register_command(function(id) {
       { table = "tanks_event_leaderboard", mode = "tanks", place = 50342, tillPercent = [50], percent = 44 }
       { table = "wp_event_leaderboard", mode = "battle_common", tillPlaces = [100], place = 17 }
     ]
-    userstat_add_item(id, 1, json_to_string(tags, false), "consolePrintResult")
+    userstat_add_item(id, 1, object_to_json_string(tags, false), "consolePrintResult")
     return "Sent"
   },
   $"meta.add_lb_reward")
+
+register_command(@(unitname) set_research_unit("air", unitname), "meta.set_research_unit")

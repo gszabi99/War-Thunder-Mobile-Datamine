@@ -15,7 +15,7 @@ let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getModeAddonsInfo, getModeAddonsDbgString } = require("gameModeAddons.nut")
 let { balanceGold } = require("%appGlobals/currenciesState.nut")
 let { isInSquad, isSquadLeader, squadMembers, squadId, isInvitedToSquad, squadOnline,
-  MAX_SQUAD_MRANK_DIFF, squadLeaderCampaign
+  MAX_SQUAD_MRANK_DIFF, squadLeaderCampaign, getMemberMaxMRank
 } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
@@ -86,7 +86,7 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
     local rankMin = curUnit.value?.mRank ?? 0
     local rankMax = rankMin
     foreach(m in squadMembers.value) {
-      let mRank = serverConfigs.value?.allUnits[m?.units[squadLeaderCampaign.value]].mRank
+      let mRank = getMemberMaxMRank(m, squadLeaderCampaign.get(), serverConfigs.get())
       if (mRank == null)
         continue
       rankMin = min(rankMin, mRank)
@@ -135,9 +135,12 @@ function getAllBattleUnits() {
   if (curUnit.value != null)
     res[curUnit.value.name] <- true
   foreach(m in squadMembers.value) {
-    let name = m?.units[squadLeaderCampaign.value]
-    if (name != null)
-      res[name] <- true
+    let list = m?.units[squadLeaderCampaign.get()]
+    if (type(list) == "array")
+      foreach(name in list)
+        res[name] <- true
+    else if (list != null) //compatibility with 2024.05.15
+      res[list] <- true
   }
   return res.keys()
 }

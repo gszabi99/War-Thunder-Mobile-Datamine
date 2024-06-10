@@ -85,7 +85,7 @@ function mkUnitTexts(goods, unit) {
         children = [
           isElite ? eliteMark : null
           {
-            maxWidth = goods?.isPopular ? hdpx(260) : flex()
+            maxWidth = goods?.isPopular ? hdpx(260) : hdpx(340)
             rendObj = ROBJ_TEXT
             text = getLocNameUnit(goods)
             color

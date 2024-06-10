@@ -72,6 +72,7 @@ let bgUnitPremium = mkColoredGradientY(0xFFC89123, 0xFF644012, 2)
 let bgUnitLocked = mkColoredGradientY(0xFF303234, 0xFF000000, 2)
 let bgUnitHidden = mkColoredGradientY(0xFF63319B, 0xFF290740, 2)
 let bgUnitHiddenLocked = mkColoredGradientY(0xFF371162, 0xFF150421, 2)
+let bgUnitNotAvailable = mkColoredGradientY(0xFF552020, 0xFF201010, 2)
 
 function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
   let gap = isSelected ? platoonSelPlatesGap : platoonPlatesGap
@@ -90,15 +91,17 @@ let mkIcon = @(icon, iconSize, override = {}) {
   keepAspect = KEEP_ASPECT_FIT
 }.__update(override)
 
-let function getUnitBG(isHidden, isPremium, isLocked){
+let function getUnitBG(isHidden, isPremium, isLocked, isAvailable){
   if(isHidden)
     return isLocked ? bgUnitHiddenLocked : bgUnitHidden
   if(isPremium)
     return bgUnitPremium
+  if (!isAvailable)
+    return bgUnitNotAvailable
   return isLocked ? bgUnitLocked : bgUnit
 }
 
-function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null) {
+function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null, isAvailable = true) {
   let isPremium = unit.isPremium || unit?.isUpgraded
   let isHidden = unit?.isHidden
   return {
@@ -108,7 +111,7 @@ function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null) {
       {
         size = flex()
         rendObj = ROBJ_IMAGE
-        image = getUnitBG(isHidden, isPremium, isLocked)
+        image = getUnitBG(isHidden, isPremium, isLocked, isAvailable)
         keepAspect = KEEP_ASPECT_FILL
         imageValign = ALIGN_TOP
       }
@@ -172,12 +175,15 @@ let mkUnitBlueprintMark = @(unit) @()
   unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get()
     ? {
       watch = [serverConfigs, myUnits]
-      size = [hdpx(54), hdpx(20)]
+      size = [hdpx(30), hdpx(30)]
       margin = hdpx(10)
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/unitskin#blueprint_default.avif:{hdpx(54)}:{hdpx(20)}:P")
+      image = Picture($"ui/unitskin#blueprint_default_small.avif:{hdpx(30)}:{hdpx(30)}:P")
       hplace = ALIGN_LEFT
       vplace = ALIGN_BOTTOM
+      transform = {
+        rotate = -10
+      }
     }
     : { watch = [serverConfigs, myUnits] }
 
@@ -568,6 +574,28 @@ function mkSingleUnitPlate(unit) {
   }
 }
 
+let function mkUnitResearchPrice(researchStatus) {
+  if (!researchStatus?.isAvailable || (researchStatus?.reqExp ?? 0) <= 0
+      || (researchStatus?.exp ?? 0) >= researchStatus.reqExp)
+    return null
+  return {
+    padding = plateTextsSmallPad
+    hplace = ALIGN_LEFT
+    vplace = ALIGN_BOTTOM
+    valign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    children = [
+      mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(36), hdpxi(36)])
+      {
+        rendObj = ROBJ_TEXT
+        text = researchStatus.reqExp - (researchStatus?.exp ?? 0)
+      }.__update(fontTinyAccented)
+    ]
+
+  }
+}
+
 return {
   unitPlateWidth
   unitPlateHeight
@@ -606,10 +634,12 @@ return {
   mkIcon
   mkPlayerLevel
   mkUnitBlueprintMark
+  mkUnitResearchPrice
 
   mkPlatoonPlateFrame
   mkPlatoonBgPlates
   mkPlatoonEquippedIcon
 
   mkFlagImage
+  bgUnit
 }

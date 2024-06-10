@@ -4,7 +4,7 @@ let { defer } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { getPlayerSsoShortTokenAsync, YU2_OK, renewToken, get_player_tags, get_authenticated_url_sso
 } = require("auth_wt")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let logGuest = log_with_prefix("[GUEST] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { authTags, isLoginByGajin } = require("%appGlobals/loginState.nut")
@@ -46,7 +46,7 @@ function openGuestEmailRegistration() {
 function openVerifyEmail() {
   logGuest("Open verify message")
   let url = $"https://store.gaijin.net/user.php?skin_lang={loc("current_lang")}"
-  get_authenticated_url_sso(url, "", "", "onAuthenticatedUrlResult", json_to_string({ notAuthUrl = url }))
+  get_authenticated_url_sso(url, "", "", "onAuthenticatedUrlResult", object_to_json_string({ notAuthUrl = url }))
 }
 
 subscribeFMsgBtns({

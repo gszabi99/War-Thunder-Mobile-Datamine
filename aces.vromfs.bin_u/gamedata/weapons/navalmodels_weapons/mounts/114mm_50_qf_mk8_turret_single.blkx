@@ -1,0 +1,17 @@
+{
+  "speedYaw": 30.0,
+  "speedPitch": 30.0,
+  "bullets": 300,
+  "useGunnerTargetingQuality": true,
+  "fireConeAngle": 1.0,
+  "gunStabilizer": {
+    "hasVerticalGunFreeMode": true,
+    "hasHorizontal": true,
+    "horizontalOmegaMult": 1.0,
+    "horizontalSpeedLimitKPH": 100.0,
+    "hasVertical": true,
+    "verticalOmegaMult": 1.0,
+    "verticalSpeedLimitKPH": 100.0,
+    "speedFromVehicleVerticalMult": -1.0
+  }
+}

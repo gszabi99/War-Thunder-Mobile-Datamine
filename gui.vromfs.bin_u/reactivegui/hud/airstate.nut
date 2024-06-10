@@ -7,7 +7,9 @@ let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO } = AirParamsMain
 let { use_mgun_as_cannon_by_trigger } = require("hudAircraftStates")
 let { isUnitAlive, isUnitDelayed, playerUnitName } = require("%rGui/hudState.nut")
-let { FlightCameraType = { TURRET = 9 }, getCameraViewType = @() 1 } = require("camera_control")
+let { FlightCameraType, getCameraViewType } = require("camera_control")
+let debugDebuff = mkWatched(persist, "debugDebuff", 0)
+let { rnd_int } = require("dagor.random")
 let { TURRET } = FlightCameraType
 
 use_mgun_as_cannon_by_trigger(true)
@@ -29,6 +31,7 @@ let TurretsReloading = Watched(array(NUM_TURRETS_MAX, false))
 let TurretsEmpty = Watched(array(NUM_TURRETS_MAX, false))
 let activeCameraView = Watched(null)
 let isActiveTurretCamera = Computed(@() activeCameraView.get() == TURRET)
+let DmStateMask    = Watched(0)
 
 let airState = {
   TrtMode0
@@ -60,6 +63,7 @@ let airState = {
   IsSpdCritical = Watched(false)
 
   TargetLockTime = Watched(0)
+  DmStateMask
 }
 
 interopGen({
@@ -140,4 +144,18 @@ let logMask = @() log("MainMask = ",
 
 register_command(logMask, "debug.airWeaponMask")
 
-return planeState.__merge(airState)
+let maxDebugDebuff = 1023
+register_command(@() debugDebuff(debugDebuff.value == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.airDebuffsAll")
+register_command(@() debugDebuff(rnd_int(0, maxDebugDebuff)), "hud.debug.airDebuffsRandom")
+register_command(function(idx) {
+  let bit = 1 << idx
+  log(debugDebuff.value)
+  debugDebuff((debugDebuff.value & bit) ? (debugDebuff.value & ~bit) : (debugDebuff.value | bit))
+  log(debugDebuff.value)
+}, "hud.debug.airDebuffsToggle")
+
+let export = planeState.__merge(airState).__merge({
+  DmStateMask = Computed(@() DmStateMask.value | debugDebuff.value)
+})
+
+return export

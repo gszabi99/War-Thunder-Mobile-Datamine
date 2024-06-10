@@ -25,6 +25,7 @@
       "%lang/shop.csv",
       "%lang/ui.csv",
       "%lang/units.csv",
+      "%lang/units_ammo.csv",
       "%lang/units_weaponry.csv",
       "%lang/units_attributes.csv",
       "%lang/unlocks.csv",

@@ -4,18 +4,18 @@ let { TouchScreenSteeringStick } = require("wt.behaviors")
 let { floor, fabs, lerp } = require("%sqstd/math.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue
 } = require("%globalScripts/controls/shortcutActions.nut")
-let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround } = require("%rGui/hud/airState.nut")
+let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera } = require("%rGui/hud/airState.nut")
 let { getSvgImage, borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let axisListener = require("%rGui/controls/axisListener.nut")
 let shortcutsMap = require("%rGui/controls/shortcutsMap.nut")
-let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, rudder, elevator} = shortcutsMap.gamepadAxes
+let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, rudder, elevator, turret_x, turret_y} = shortcutsMap.gamepadAxes
 let { axisMinToHotkey, axisMaxToHotkey } = require("%rGui/controls/axisToHotkey.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { playerUnitName, unitType, isUnitDelayed } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
-let { currentControlByGyroModeAilerons, currentControlByGyroModeElevator, currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity,
+let { currentControlByGyroModeAilerons, currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity,
       currentAircraftCtrlType, currentAdditionalFlyControls } = require("%rGui/options/options/airControlsOptions.nut")
 let { set_mouse_aim } = require("controlsOptions")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -251,6 +251,13 @@ let gamepadAxisListener = axisListener({
  [throttle_axis] = @(v) throttleAxisVal(v),
 })
 
+let gamepadGunnerAxisListener = axisListener({
+  [ailerons] = @(v) setVirtualAxisValue("ailerons", v),
+  [throttle_axis] = @(v) throttleAxisVal(v),
+  [turret_x] = @(v) setVirtualAxisValue("turret_x", v),
+  [turret_y] = @(v) setVirtualAxisValue("turret_y", -v)
+ })
+
 local resetGravityLeft0 = false
 local resetGravityForward0 = false
 local resetGravityUp0 = false
@@ -263,7 +270,6 @@ function resetAxesZero() {
 }
 unitType.subscribe(@(_v) resetAxesZero())
 currentControlByGyroModeAilerons.subscribe(@(_v) resetAxesZero())
-currentControlByGyroModeElevator.subscribe(@(_v) resetAxesZero())
 
 local gravityLeft0 = 0.0
 local gravityForward0 = 0.0
@@ -273,41 +279,41 @@ local gravityLeft = 0.0
 local gravityForward = 0.0
 local gravityUp = -1.0
 
-function setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, set_elevator, sensitivity) {
-  setVirtualAxesAileronsElevatorValue(sensitivity, set_ailerons, set_elevator, gravityLeft0, gravityForward0, gravityUp0, gravityLeft, gravityForward, gravityUp)
+function setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, sensitivity) {
+  setVirtualAxesAileronsElevatorValue(sensitivity, set_ailerons, false, gravityLeft0, gravityForward0, gravityUp0, gravityLeft, gravityForward, gravityUp)
 }
 
-function applyGravityLeft(val, set_ailerons, set_elevator, sensitivity) {
+function applyGravityLeft(val, set_ailerons, sensitivity) {
   if (resetGravityLeft0) {
     gravityLeft0 = val
     resetGravityLeft0 = false
   }
   gravityLeft = val
-  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, set_elevator, sensitivity)
+  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, sensitivity)
 }
 
-function applyGravityForward(val, set_ailerons, set_elevator, sensitivity) {
+function applyGravityForward(val, set_ailerons, sensitivity) {
   if (resetGravityForward0) {
     gravityForward0 = val
     resetGravityForward0 = false
   }
   gravityForward = val
-  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, set_elevator, sensitivity)
+  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, sensitivity)
 }
 
-function applyGravityUp(val, set_ailerons, set_elevator, sensitivity) {
+function applyGravityUp(val, set_ailerons, sensitivity) {
   if (resetGravityUp0) {
     gravityUp0 = val
     resetGravityUp0 = false
   }
   gravityUp = val
-  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, set_elevator, sensitivity)
+  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, sensitivity)
 }
 
 let imuAxisListener = axisListener({
-  [shortcutsMap.imuAxes.gravityLeft]    = @(v) applyGravityLeft   ( v, currentControlByGyroModeAilerons.value, currentControlByGyroModeElevator.value, currentControlByGyroModeSensitivity.value),
-  [shortcutsMap.imuAxes.gravityForward] = @(v) applyGravityForward(-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeElevator.value, currentControlByGyroModeSensitivity.value),
-  [shortcutsMap.imuAxes.gravityUp]      = @(v) applyGravityUp     (-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeElevator.value, currentControlByGyroModeSensitivity.value)
+  [shortcutsMap.imuAxes.gravityLeft]    = @(v) applyGravityLeft   ( v, currentControlByGyroModeAilerons.value, currentControlByGyroModeSensitivity.value),
+  [shortcutsMap.imuAxes.gravityForward] = @(v) applyGravityForward(-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeSensitivity.value),
+  [shortcutsMap.imuAxes.gravityUp]      = @(v) applyGravityUp     (-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeSensitivity.value)
 })
 
 let stickZoneSize = [shHud(40), shHud(40)]
@@ -386,16 +392,23 @@ let aircraftMoveStickView = {
   ]
 }
 
+function mkGamepadAxisListener() {
+  if (isActiveTurretCamera.get())
+    return gamepadGunnerAxisListener
+  if (currentAircraftCtrlType.value == "mouse_aim")
+    return gamepadMouseAimAxisListener
+  return gamepadAxisListener
+}
+
 let aircraftMovement = {
   children = [
     throttleSlider
     @() {
-      watch = [ isGamepad, currentAircraftCtrlType,
-                currentControlByGyroModeAilerons, currentControlByGyroModeElevator,
+      watch = [ isGamepad, currentAircraftCtrlType, currentControlByGyroModeAilerons,
                 currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity]
       children = [
-        currentAircraftCtrlType.value == "mouse_aim" && (currentControlByGyroModeAilerons.value || currentControlByGyroModeElevator.value) ? imuAxisListener : null
-        isGamepad.value ? (currentAircraftCtrlType.value == "mouse_aim" ? gamepadMouseAimAxisListener : gamepadAxisListener ): null
+        currentAircraftCtrlType.value == "mouse_aim" && currentControlByGyroModeAilerons.value ? imuAxisListener : null
+        isGamepad.value ? mkGamepadAxisListener() : null
       ]
     }
   ]
@@ -451,7 +464,7 @@ let aircraftIndicators = {
         watch = [showModelName, playerUnitName]
         rendObj = ROBJ_TEXT
         color = neutralColor
-        text = loc($"{playerUnitName.value}_1")
+        text = loc($"{playerUnitName.value}_1", loc(playerUnitName.value))
       }.__update(fontSmallAccented)
     @() {
       watch = [Spd, IsSpdCritical]

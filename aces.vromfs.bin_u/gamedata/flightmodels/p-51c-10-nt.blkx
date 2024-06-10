@@ -1619,8 +1619,6 @@
       "node": [
         "dgp_1_l",
         "dgp_1_r",
-        "pylon_bomb1",
-        "pylon_bomb2",
         "pylon_dgp_1",
         "pylon_dgp_2",
         "flare13",
@@ -1696,6 +1694,7 @@
           {
             "iconType": "bombs_small",
             "name": "100lb",
+            "reqModification": "etc250_2_mod",
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/bombGuns/us_100lb_anm30.blk",
@@ -1706,7 +1705,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bombs_large",
             "name": "250lb",
             "Weapon": {
               "trigger": "bombs",
@@ -1718,7 +1717,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bombs_heavy",
             "name": "500lb",
             "Weapon": {
               "trigger": "bombs",
@@ -1748,7 +1747,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bombs_large",
             "name": "250lb",
             "Weapon": {
               "trigger": "bombs",
@@ -1760,7 +1759,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bombs_heavy",
             "name": "500lb",
             "Weapon": {
               "trigger": "bombs",

@@ -4,7 +4,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets
 } = require("bulletsChoiceState.nut")
 let { bulletsAABB } = require("respawnAnimState.nut")
-let { bg, bulletsBlockWidth, bulletsBlockMargin, headerText, header, gap, bulletsLegend } = require("respawnComps.nut")
+let { bg, bulletsBlockWidth, headerMargin, headerText, header, gap, bulletsLegend } = require("respawnComps.nut")
 let { slider, sliderValueSound, sliderBtn, mkSliderKnob } = require("%rGui/components/slider.nut")
 let mkBulletSlot = require("mkBulletSlot.nut")
 let { showRespChooseWnd, openedSlot } = require("respawnChooseBulletWnd.nut")
@@ -57,7 +57,7 @@ function bulletHeader(bSlot, bInfo) {
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         children = [
-          @() mkBulletSlot(bInfo.value, fromUnitTags.value, {}, {
+          @() mkBulletSlot(bInfo.value, fromUnitTags.value, {}, {}, {
             watch = [fromUnitTags, bInfo]})
           @(){
             watch = openedSlot
@@ -68,6 +68,7 @@ function bulletHeader(bSlot, bInfo) {
         ]
       }
       @(){
+        key = $"respBulletsBtn{idx}" //for UI tutorial
         size = flex()
         watch = openedSlot
         rendObj = ROBJ_SOLID
@@ -187,7 +188,7 @@ function respawnBullets() {
     flow = FLOW_HORIZONTAL
     children = [
       {
-        margin = [0, hdpx(20), 0, bulletsBlockMargin]
+        margin = headerMargin
         flow = FLOW_VERTICAL
         gap
         children = [header(headerText(loc("respawn/chooseBullets")))]

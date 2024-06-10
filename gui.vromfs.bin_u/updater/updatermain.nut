@@ -8,10 +8,8 @@ let messages = require("messages.nut")
 
 gui_scene.setConfigProps({
   clickRumbleEnabled = false
+  defTextColor = 0xFFFFFFFF
 })
-
-if ("defTextColor" in gui_scene.config)
-  gui_scene.setConfigProps({ defTextColor = 0xFFFFFFFF })
 
 return {
   size = flex()

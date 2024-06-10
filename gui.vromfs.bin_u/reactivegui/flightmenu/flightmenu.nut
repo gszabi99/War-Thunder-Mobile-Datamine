@@ -38,7 +38,7 @@ let menuContent = @(isAlive, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBattle
       utf8ToUpper(loc(isAlive ? "btn/giveUp"
         : campaign == "ships" ? "return_to_port/short"
         : "return_to_hangar/short")),
-      quitMission)
+      quitMission, { hotkeys = ["^J:LB"] })
     textButtonPrimary(utf8ToUpper(loc("btn/continueBattle")), battleResume,
       { hotkeys = [btnBEscUp] })
   ])

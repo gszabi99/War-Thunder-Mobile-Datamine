@@ -1511,126 +1511,182 @@
     "head": "turret1"
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunMG17.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 500,
-        "spread": 1.0,
-        "counterIndex": 6
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMGFF.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon1_dm",
-        "isWingLPositioned": true,
-        "bullets": 60,
-        "spread": 1.5,
-        "traceOffset": 2,
-        "counterIndex": [
-          1,
-          2
-        ]
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMGFF.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon2_dm",
-        "isWingRPositioned": true,
-        "bullets": 60,
-        "spread": 1.5,
-        "traceOffset": 2,
-        "counterIndex": [
-          3,
-          4
-        ]
-      },
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunMG15_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare4",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 525,
-        "counterIndex": 5,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -40.0,
-            40.0
-          ],
-          "pitch": [
-            -20.0,
-            50.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -25.0,
-              -2.0
-            ],
-            "pitch": [
-              -10.0,
-              -8.0
-            ]
-          },
-          {
-            "yaw": [
-              -2.0,
-              2.0
-            ],
-            "pitch": [
-              -20.0,
-              25.0
-            ]
-          },
-          {
-            "yaw": [
-              -10.0,
-              10.0
-            ],
-            "pitch": [
-              -20.0,
-              -5.0
-            ]
-          },
-          {
-            "yaw": [
-              2.0,
-              25.0
-            ],
-            "pitch": [
-              -10.0,
-              -8.0
-            ]
-          }
-        ]
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": {
       "name": "ar_196a_3_default",
-      "blk": "gameData/FlightModels/weaponPresets/ar_196a_3_2xsc50.blk",
-      "tags": {
-        "free": true
-      }
+      "blk": "gameData/FlightModels/weaponPresets/ar_196a_3_2xsc50.blk"
     }
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1040.0,
+    "maxloadMassLeftConsoles": 570.0,
+    "maxloadMassRightConsoles": 570.0,
+    "maxDisbalance": 420.0,
+    "HideNodes": {},
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunMG17.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun1_dm",
+              "bullets": 500,
+              "spread": 1.0,
+              "counterIndex": 6
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonMGFF.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon1_dm",
+              "isWingLPositioned": true,
+              "bullets": 60,
+              "spread": 1.5,
+              "traceOffset": 2,
+              "counterIndex": [
+                1,
+                2
+              ]
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonMGFF.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon2_dm",
+              "isWingRPositioned": true,
+              "bullets": 60,
+              "spread": 1.5,
+              "traceOffset": 2,
+              "counterIndex": [
+                3,
+                4
+              ]
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunMG15_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare4",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 525,
+              "counterIndex": 5,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -40.0,
+                  40.0
+                ],
+                "pitch": [
+                  -20.0,
+                  50.0
+                ]
+              },
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -25.0,
+                    -2.0
+                  ],
+                  "pitch": [
+                    -10.0,
+                    -8.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    -2.0,
+                    2.0
+                  ],
+                  "pitch": [
+                    -20.0,
+                    25.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    -10.0,
+                    10.0
+                  ],
+                  "pitch": [
+                    -20.0,
+                    -5.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    2.0,
+                    25.0
+                  ],
+                  "pitch": [
+                    -10.0,
+                    -8.0
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bombs_midlle",
+          "name": "sc50",
+          "smokeScreenCount": 3,
+          "smokeScreenTime": 25.0,
+          "smokeScreenCooldown": 100.0,
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+            "separate": true,
+            "emitter": "bomb1",
+            "bullets": 1,
+            "external": true
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bombs_midlle",
+          "name": "sc50",
+          "smokeScreenCount": 3,
+          "smokeScreenTime": 25.0,
+          "smokeScreenCooldown": 100.0,
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+            "separate": true,
+            "emitter": "bomb2",
+            "bullets": 1,
+            "external": true
+          }
+        }
+      }
+    ]
   },
   "jetwash": {
     "radius": 10.0,

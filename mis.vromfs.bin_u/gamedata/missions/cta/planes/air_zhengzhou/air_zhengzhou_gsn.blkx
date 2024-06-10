@@ -453,7 +453,8 @@
             }
           },
           {
-            "rotateMapIcon": 8.8,
+            "rotateMapIcon": 45.0,
+            "lookAt": "t1_fighters_spawn",
             "loc_name": "missions/fighters_spawn",
             "spawnEffect": false,
             "isAirfield": false,

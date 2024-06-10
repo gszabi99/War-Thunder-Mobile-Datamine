@@ -5,7 +5,7 @@ let ads = require("ios.ads")
 let { ADS_STATUS_LOADED = 6, ADS_STATUS_SHOWN = 5, ADS_STATUS_NOT_INITED = 1, ADS_STATUS_DISMISS = 4, ADS_STATUS_OK = 8,
   CONSENT_REQUEST_NOT_REQUIRED = 1, CONSENT_REQUEST_OBTAINED = 3, CONSENT_REQUEST_REQUIRED = 2, CONSENT_REQUEST_UNKNOWN = 0
 } = ads
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
@@ -87,7 +87,7 @@ return ads.__merge({
 
   setTestingMode = @(_) null
   isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
-  getProvidersStatus = @() json_to_string(
+  getProvidersStatus = @() object_to_json_string(
     debugAdsInited.map(@(isInited, provider) { provider, isInited })
       .values())
   setPriorityForProvider = @(provider, priority) priorities.mutate(@(v) v[provider] <- priority)

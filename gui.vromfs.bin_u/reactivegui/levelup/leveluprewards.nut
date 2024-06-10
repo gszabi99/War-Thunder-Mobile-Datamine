@@ -3,7 +3,7 @@ let { get_time_msec } = require("dagor.time")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { rewardsToReceive, failedRewardsLevelStr, maxRewardLevelInfo, isRewardsModalOpen,
-  openLvlUpAfterDelay, startLvlUpAnimation, closeRewardsModal
+  openLvlUpAfterDelay, startLvlUpAnimation, closeRewardsModal, skipLevelUpUnitPurchase
 } = require("levelUpState.nut")
 let { rewardInProgress, get_player_level_rewards, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -21,6 +21,8 @@ let { bgMW } = require("%rGui/style/stdColors.nut")
 let { levelUpFlag, flagHeight } = require("levelUpFlag.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let openSelectUnitResearchIfCan = require("%rGui/unitsTree/selectUnitResearchWnd.nut")
 
 
 let WND_UID = "levelup_rewards_wnd"
@@ -62,8 +64,14 @@ function afterReceiveRewards() {
   closeRewardsModal()
   resetTimeout(0.1, function() {
     if (playerLevelInfo.get().isReadyForLevelUp) {
-      startLvlUpAnimation()
-      openLvlUpAfterDelay()
+      if (curCampaign.get() in serverConfigs.get()?.unitTreeNodes) {
+        skipLevelUpUnitPurchase()
+        openSelectUnitResearchIfCan()
+      }
+      else {
+        startLvlUpAnimation()
+        openLvlUpAfterDelay()
+      }
     }
   })
 }

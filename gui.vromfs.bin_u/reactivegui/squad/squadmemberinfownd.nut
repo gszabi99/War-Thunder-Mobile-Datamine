@@ -12,7 +12,7 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let { createHighlight } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 let { darkCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
-let { gap, contactNameBlock, contactAvatar, contactLevelBlock
+let { gap, contactNameBlock, contactAvatar, contactLevelBlock, contactLevelSize
 } = require("%rGui/contacts/contactInfoPkg.nut")
 let { offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
@@ -26,10 +26,11 @@ let { mkSpinner } = require("%rGui/components/spinner.nut")
 
 let WND_UID = "squad_member_info_wnd"
 
+let headerWidth = hdpx(1250)
 let avatarSize = hdpxi(200)
-let wndMargin = hdpx(24)
 let wndGap = hdpx(24)
 let statusSize = hdpxi(25)
+let wndHSize = avatarSize + wndGap + defButtonHeight
 
 let openParams = mkWatched(persist, "openParams", null)
 let wndAABB = Watched(null)
@@ -138,18 +139,30 @@ function memberInfo(uid) {
   let info = mkPublicInfo(userId)
   let status = statusBlock(uid)
   let battleStatus = inBattleBlock(uid)
-  let unit = Computed(@() serverConfigs.value?.allUnits[squadMembers.value?[uid].units[squadLeaderCampaign.value]])
+  let bestUnit = Computed(function() {
+    local list = squadMembers.get()?[uid].units[squadLeaderCampaign.get()]
+    if (type(list) != "array")
+      list = [list] //compatibility with 2024.05.15
+    local res = null
+    foreach(unitName in list) {
+      let unit = serverConfigs.get()?.allUnits[unitName]
+      if (unit != null && (res == null || unit.mRank > res.mRank))
+        res = unit
+    }
+    return res
+  })
   return @() {
     watch = [contact, info]
-    size = [SIZE_TO_CONTENT, avatarSize]
+    size = [headerWidth, avatarSize]
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap
     children = [
-      contactLevelBlock(info.value).__update({ size = [SIZE_TO_CONTENT, flex()] })
+      contactLevelBlock(info.value)
       contactAvatar(info.value, avatarSize)
-      contactNameBlock(contact.value, info.value, [status, battleStatus]).__update({ padding = [hdpx(40), 0] })
-      unitInfo(unit)
+      contactNameBlock(contact.value, info.value, [status, battleStatus])
+        .__update({ padding = [hdpx(40), 0], size = flex()})
+      unitInfo(bestUnit)
     ]
   }
 }
@@ -162,7 +175,7 @@ function buttons(uid) {
         watch = needButtonsPlace
         size = [flex(), defButtonHeight]
         flow = FLOW_HORIZONTAL
-        padding = [0, 0, 0, hdpx(104)]
+        padding = [0, 0, 0, contactLevelSize + gap]
         gap = wndGap
         children = [
           mkContactActionBtn(LEAVE_SQUAD, userId, { hotkeys = ["^J:LB"] })
@@ -251,18 +264,25 @@ function content() {
   if (openParams.value == null)
     return { watch = openParams }
 
-  let { uid, rect } = openParams.value
-  let { t, r, l } = rect
+  let { uid, rect } = openParams.get()
+  let { r, l, t, b } = rect
+
+  let buttonCenter = (l + r) / 2
+  let isButtonInCenter = buttonCenter <  0.75 * saSize[0]
+
+  let posX = isButtonInCenter ? buttonCenter - headerWidth / 2
+    : (saSize[0] + saBordersRv[0]) - headerWidth
+  let posY = t - ((b - t) + wndHSize)
+
   return {
     watch = openParams
     size = flex()
     children = [
       mkBg(rect)
       {
-        size = [0, 0]
-        pos = [(r + l) / 2.5, t - wndMargin]
-        valign = ALIGN_BOTTOM
-        halign = ALIGN_CENTER
+        pos = [posX, posY]
+        safeAreaMargin = saBordersRv
+        behavior = Behaviors.BoundToArea
         children = mkWindow(uid)
       }
       animLines(rect)

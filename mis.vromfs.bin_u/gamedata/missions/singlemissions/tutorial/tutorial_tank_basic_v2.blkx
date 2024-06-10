@@ -8593,7 +8593,7 @@
             2719.55
           ]
         ],
-        "unit_class": "il_2m_1943",
+        "unit_class": "il_2m_1943_killstreak",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -8655,7 +8655,7 @@
             4273.61
           ]
         ],
-        "unit_class": "il_2m_1943",
+        "unit_class": "il_2m_1943_killstreak",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -8779,12 +8779,12 @@
             2604.6
           ]
         ],
-        "unit_class": "il_2m_1943",
+        "unit_class": "il_2m_1943_killstreak",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "il_2m_1943_tutorial",
+        "weapons": "il_2m_1943_1xfab100_tutorial",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",

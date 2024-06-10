@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { deferOnce } = require("dagor.workcycle")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let io = require("io")
 let { get_settings_blk } = require("blkGetters")
 let { HangarCameraControl } = require("wt.behaviors")
@@ -65,7 +65,7 @@ function saveSkinView(view) {
 
   let file = io.file(SAVE_PATH, "wt+")
   file.writestring("return ")
-  file.writestring(json_to_string(saveTbl, true))
+  file.writestring(object_to_json_string(saveTbl, true))
   file.close()
   dlog("Saved to: wtm/globals/config/skins/unitSkinView.nut") //warning disable: -forbidden-function
 }

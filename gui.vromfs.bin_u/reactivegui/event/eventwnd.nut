@@ -39,12 +39,18 @@ let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
+let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
+let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
+let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
 
 
 let MAX_LOOTBOXES_AMOUNT = 3
 let headerGap = hdpx(30)
 let contentGap = hdpx(40)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
+
+let wndHeaderHeight = hdpx(110)
 
 function onPurchase(lootbox, price, currencyId, count = 1) {
   if (lootboxInProgress.get())
@@ -270,6 +276,16 @@ let eventGamercard = {
   ]
 }
 
+let pannableArea = verticalPannableAreaCtor(sh(100) - wndHeaderHeight - saBorders[1],
+  [saBorders[1], saBorders[1]])
+let scrollHandler = ScrollHandler()
+
+let scrollArrowsBlock = {
+  size = [SIZE_TO_CONTENT, flex()]
+  pos = [boxSize*2-boxGap , 0]
+  children = mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
+}
+
 function mkLootboxPreviewContent() {
   let progressInfo = mkProgressFull(
     Computed(@() getStepsToNextFixed(previewLootbox.value, serverConfigs.value, servProfile.value)))
@@ -281,7 +297,15 @@ function mkLootboxPreviewContent() {
     gap = contentGap
     children = previewLootbox.get() == null ? null
       : [
-          lootboxContentBlock(previewLootbox.get(), rewardsBlockWidth)
+          {
+            size = [rewardsBlockWidth, flex()]
+            children = [
+              pannableArea(lootboxContentBlock(previewLootbox.get(), rewardsBlockWidth, { size = [flex(), SIZE_TO_CONTENT]}),
+              {},
+              { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+              scrollArrowsBlock
+            ]
+          }
           {
             size = flex()
             flow = FLOW_VERTICAL

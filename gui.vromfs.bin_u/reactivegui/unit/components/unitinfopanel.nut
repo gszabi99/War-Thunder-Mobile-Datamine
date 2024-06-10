@@ -3,12 +3,12 @@ let { round } = require("math")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { getUnitLocId, getUnitClassFontIcon, getPlatoonName } = require("%appGlobals/unitPresentation.nut")
 let { mkUnitLevelBlock, levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyImage, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
   avgShellPenetrationMmByRank } = require("%rGui/unit/unitStats.nut")
 let { attrPresets } = require("%rGui/unitAttr/unitAttrState.nut")
-let { mkUnitBonuses, mkBonusTiny } = require("unitInfoComps.nut")
+let { mkUnitBonuses, mkBonusTiny, bonusTinySize } = require("unitInfoComps.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { itemsCfgOrdered } = require("%appGlobals/itemsState.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
@@ -19,6 +19,11 @@ let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { blueprintsInfo } = require("%rGui/blueprints/bluePrintsComp.nut")
+let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
+let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
+let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -281,6 +286,29 @@ function unitArmorBlock(unit, needLabels) {
   }
 }
 
+function unitPriceBlock(unit) {
+  if (unit.campaign not in serverConfigs.get()?.unitTreeNodes
+      || unit.isPremium
+      || unit.name in myUnits.get()
+      || unit.name in canBuyUnits.get())
+    return null
+  let price = Computed(@() getUnitAnyPrice(unit, false, unitDiscounts.get()))
+  return @() {
+    watch = [serverConfigs, myUnits, canBuyUnits, price]
+    size = [statsWidth, SIZE_TO_CONTENT]
+    margin = [statsGap, 0, 0, 0]
+    flow = FLOW_HORIZONTAL
+    children = [
+      mkText({ text = loc("unitsTree/purchasePrice"), size = [ flex(), SIZE_TO_CONTENT ] })
+      mkCurrencyComp(price.get().price, price.get().currencyId, CS_COMMON.__merge({
+        iconSize = bonusTinySize
+        fontStyle = fontTiny
+        iconGap = hdpx(6)
+      }))
+    ]
+  }
+}
+
 let mkConsumableRow = @(id, value) {
   size = [flex(), SIZE_TO_CONTENT]
   valign = ALIGN_CENTER
@@ -337,9 +365,13 @@ let unitRewardsBlock = @(unit, title) {
   size = [ statsWidth, hdpx(40) ]
   children = [
     {
+      margin = [ 0, hdpx(10), 0, 0 ]
       rendObj = ROBJ_TEXT
       text = title
       size = [ flex(), SIZE_TO_CONTENT ]
+      behavior = Behaviors.Marquee
+      delay = defMarqueeDelay
+      speed = hdpx(50)
     }.__update(fontTiny)
     mkUnitBonuses(unit, {}, mkBonusTiny)
   ]
@@ -389,6 +421,7 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
             { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
         unitStatsBlock(unitStats, prevStats)
         unitArmorBlock(unit.value, false)
+        unitPriceBlock(unit.get())
         blueprintsInfo(unit.value)
       ]
     }.__update(ovr)

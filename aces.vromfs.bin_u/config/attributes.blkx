@@ -54,5 +54,19 @@
     "attrib_rckt_cm_lifetime": {
       "cloudTimeLifeMul": 1.25
     }
+  },
+  "plane_attributes": {
+    "plane_engine": {
+      "mulHorsePowers": 1.2
+    },
+    "plane_fuselage": {
+      "mulCdminFuse": 1.2
+    },
+    "plane_flaps_wings": {
+      "mulCdmin": 1.2
+    },
+    "plane_compressor": {
+      "mulCompressorMaxP": 1.2
+    }
   }
 }

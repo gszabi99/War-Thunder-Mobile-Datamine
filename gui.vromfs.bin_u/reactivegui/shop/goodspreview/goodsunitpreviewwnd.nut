@@ -12,8 +12,8 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem,
   aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
 } = require("goodsPreviewPkg.nut")
-let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE
-} = require("hangar")
+let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE,
+  AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
 let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit, isHangarUnitLoaded,
   hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
@@ -22,13 +22,14 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
-let { SHIP } = require("%appGlobals/unitConst.nut")
+let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { getPlatoonOrUnitName, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { unitSelUnderlineFullSize, unitPlatesGap, unitPlateSmall, mkUnitRank,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+let { getUnitTags } = require("%appGlobals/unitTags.nut")
 
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
@@ -112,7 +113,17 @@ function showCutscene(v) {
     stop_prem_cutscene()
   else if (!needShowUi.value && !skipAnimsOnce.value) {
     let unitType = unitForShow.value?.unitType ?? ""
-    let presetIds = get_prem_cutscene_preset_ids(unitType == SHIP ? SHIP_PRESET_TYPE : TANK_PRESET_TYPE)
+    local presetType = TANK_PRESET_TYPE
+    if (unitType == SHIP)
+      presetType = SHIP_PRESET_TYPE
+    else if (unitType == AIR) {
+      let tags = getUnitTags(unitForShow.value.name)
+      if (tags?.type_fighter == true || tags?.type_strike_aircraft == true)
+        presetType = AIR_FIGHTER_PRESET_TYPE
+      else
+        presetType = AIR_BOMBER_PRESET_TYPE
+    }
+    let presetIds = get_prem_cutscene_preset_ids(presetType)
     if(presetIds.len() > 0)
       start_prem_cutscene(presetIds[rnd_int(0, presetIds.len()-1)])
   }

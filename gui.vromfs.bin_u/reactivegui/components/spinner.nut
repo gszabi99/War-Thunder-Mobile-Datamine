@@ -26,13 +26,35 @@ function mkSpinnerHideBlock(watch, content, blockOvr = {}, spinner = null) {
     spinner = mkSpinner()
   return @() {
     watch
-    children = watch.value ? spinner : content
+    children = watch.get() ? spinner : content
   }.__update(blockOvr)
 }
+
+let appearAnims = [
+  { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.5, easing = InQuad, play = true }
+]
+let mkWaitDimmingSpinner = @(watch, size = hdpxi(100)) @() watch.get()
+  ? {
+      watch
+      size = flex()
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      children = [
+        {
+          size = flex()
+          rendObj = ROBJ_SOLID
+          color = 0x80000000
+          animations = appearAnims
+        }
+        mkSpinner(size)
+      ]
+    }
+  : { watch }
 
 return {
   spinner = mkSpinner()
   mkSpinner
   mkSpinnerHideBlock
+  mkWaitDimmingSpinner
   spinnerOpacityAnim
 }

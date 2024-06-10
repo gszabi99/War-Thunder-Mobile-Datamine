@@ -8,6 +8,7 @@ let { mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut"
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkMyPlace, myPlaceUi, mkMyDamage, myScoresUi } = require("%rGui/hud/myScores.nut")
 let { simpleThreatRocketsIndicator, simpleThreatRocketsIndicatorEditView } = require("%rGui/hud/hudThreatRocketsBlock.nut")
+let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
 
 let dollPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
 
@@ -76,5 +77,11 @@ return {
     defTransform = mkLBPos([dollPosX + hdpx(-55), hdpx(-55)])
     editView = simpleThreatRocketsIndicatorEditView
     hideForDelayed = false
+  }
+
+  chatLogAndKillLog = {
+    ctor = chatLogAndKillLogPlace
+    defTransform = mkLTPos([hdpx(105), hdpx(360)])
+    editView = chatLogAndKillLogEditView
   }
 }.filter(@(v) v != null)

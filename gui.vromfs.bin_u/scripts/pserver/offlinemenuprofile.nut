@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { register_command } = require("console")
 let { eventbus_send } = require("eventbus")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let io = require("io")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { setBlkValueByPath, getBlkValueByPath, isDataBlock, eachParam
@@ -58,7 +58,7 @@ function saveResult(res, fileName) {
   let fullName = $"{WTM_DATA_PATH}{fileName}"
   let file = io.file(fullName, "wt+")
   file.writestring("return ");
-  file.writestring(json_to_string(res, true))
+  file.writestring(object_to_json_string(res, true))
   file.close()
   console_print($"Saved json to {fullName}")
 }

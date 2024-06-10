@@ -4,15 +4,17 @@ let { get_time_msec } = require("dagor.time")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { SERVER_ERROR_REQUEST_REJECTED, SERVER_ERROR_NOT_IN_QUEUE } = require("matching.errors")
+let { isEqual } = require("%sqstd/underscore.nut")
 let queueState = require("%appGlobals/queueState.nut")
 let { curQueue, isInQueue, curQueueState, queueStates,
   QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_JOINING, QS_IN_QUEUE, QS_LEAVING
 } = queueState
 let { TEAM_ANY } = require("%appGlobals/teams.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { selClusters } = require("clustersList.nut")
 let { getOptimalClustersForSquad } = require("optimalClusters.nut")
-let { queueData, isQueueDataActual, actualizeQueueData } = require("%scripts/battleData/queueData.nut")
-let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
+let { queueData, isQueueDataActual, actualizeQueueData, curUnitInfo
+} = require("%scripts/battleData/queueData.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
@@ -20,7 +22,6 @@ let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign, queueDataCheckTime
 } = require("%appGlobals/squadState.nut")
 let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
-let { curUnitName } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let matching = require("%appGlobals/matching_api.nut")
 
@@ -40,8 +41,8 @@ let writeJwtData = @() curQueue.mutate(function(q) {
   q.params = q.params.__merge({
     players = { [myUserId.value.tostring()] = myParams }
   })
-  q.unitName <- queueData.value?.unitName
-  logQ($"Queue {q.unitName} params by token: ", payload)
+  q.unitInfo <- queueData.value?.unitInfo
+  logQ($"Queue ", q.unitInfo, " params by token: ", payload)
 })
 
 function actualizeSquadQueueOnce() {
@@ -53,6 +54,7 @@ function actualizeSquadQueueOnce() {
 
 function tryWriteMembersData() {
   let playersUpd = {}
+  let campaign = squadLeaderCampaign.value
   foreach(uid, m in squadMembers.value) {
     if (uid == myUserId.value)
       continue
@@ -68,10 +70,16 @@ function tryWriteMembersData() {
       actualizeSquadQueueOnce()
       return
     }
-    let unitName = units?[squadLeaderCampaign.value]
-    let tokenUnitName = payload?.crafts_info[0].name
-    if (unitName != tokenUnitName) {
-      logQ($"Squad member {uid} token unit name {tokenUnitName} not same with unit name {unitName}. wait for validation.")
+    let isSlots = (serverConfigs.get()?.campaignCfg[campaign].totalSlots ?? 0) > 0
+    local unitInfo = units?[campaign]
+    if (type(unitInfo) == "string") //compatibility with 2024.05.15
+      unitInfo = [unitInfo]
+
+    let tokenUnitInfo = isSlots ? payload?.crafts_info.map(@(u) u.name)
+      : [payload?.crafts_info[0].name]
+
+    if (!isEqual(unitInfo, tokenUnitInfo)) {
+      logQ($"Squad member {uid} token unit ", tokenUnitInfo, " not same with unit ", unitInfo, ". wait for validation.")
       actualizeSquadQueueOnce()
       return
     }
@@ -117,10 +125,7 @@ let queueSteps = {
         setQueueState(QS_IN_QUEUE)
     }),
 
-  [QS_IN_QUEUE] = function() {
-    curQueue.mutate(@(q) q.activateTime <- get_time_msec())
-    actualizeBattleData(curQueue.value?.unitName)
-  },
+  [QS_IN_QUEUE] = @() curQueue.mutate(@(q) q.activateTime <- get_time_msec()),
 
   [QS_LEAVING] = @() matching.rpc_call("match.leave_queue",
     {},
@@ -149,10 +154,10 @@ isQueueDataActual.subscribe(function(v) {
     writeJwtData()
 })
 
-curUnitName.subscribe(function(_) {  //leave queue if unit change
+curUnitInfo.subscribe(function(_) {  //leave queue if unit change
   if (!isInQueue.value)
     return
-  logQ("Leave queue by curUnit change")
+  logQ("Leave queue by curUnitInfo change")
   leaveQueue()
 })
 

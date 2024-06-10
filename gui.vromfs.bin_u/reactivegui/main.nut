@@ -29,6 +29,9 @@ require("squad/squadManager.nut") //need to catch notifications before login fin
 require("initHangar.nut")
 require("updater/connectionStatus/initConnectionStatus.nut")
 require("activeControls.nut")
+require("unitsTree/selectUnitResearchWnd.nut")
+require("slotBar/selectUnitToSlotWnd.nut")
+require("login/consentGoogleState.nut")
 
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { modalWindowsComponent, hideAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -41,6 +44,7 @@ let { register_command } = require("console")
 let fpsLineComp = require("%rGui/mainMenu/fpsLineComp.nut")
 let { closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { needCursorForActiveInputDevice, isGamepad } = require("%appGlobals/activeControls.nut")
+let { enableClickButtons }  = require("%rGui/controlsMenu/gpActBtn.nut")
 let hotkeysPanel = require("controlsMenu/hotkeysPanel.nut")
 let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")
@@ -62,6 +66,9 @@ let needShowCursor  = Computed(@() !forceHideCursor.value
                                   && (!isInBattle.value || (isHudVisible.value && needCursorInHud.value)))
 
 register_command(@() forceHideCursor(!forceHideCursor.value), "ui.force_hide_mouse_pointer")
+
+isHudAttached.subscribe(@(v) enableClickButtons(!v))
+enableClickButtons(!isHudAttached.get())
 
 
 function loadAfterLoginImpl() {

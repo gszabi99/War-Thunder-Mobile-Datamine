@@ -6,6 +6,7 @@ let gap = hdpx(10)
 let bulletsBlockWidth = hdpx(520)
 let bulletsBlockMargin = hdpx(40)
 let bulletsLegendWidth = hdpx(220)
+let headerMargin = [0, hdpx(20), 0, bulletsBlockMargin]
 
 let bg = {
   rendObj = ROBJ_SOLID
@@ -62,6 +63,7 @@ let bulletsLegendBlock = @(text, bulletIcon, width, height) {
 }
 
 let bulletsLegend = {
+  key = "bulletsLegend" //for UI tutorial
   rendObj = ROBJ_BOX
   size = [ bulletsLegendWidth, hdpx(300) + gap ]
   pos = [ 0, headerHeight + gap ]
@@ -82,6 +84,7 @@ return {
   gap
   headerText
   header
+  headerMargin
   headerHeight
   headerMarquee
   bulletsBlockWidth

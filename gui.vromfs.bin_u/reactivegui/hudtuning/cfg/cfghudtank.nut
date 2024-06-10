@@ -35,6 +35,7 @@ let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletB
 let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkMyPlace, myPlaceUi, mkTankMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
+let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
@@ -178,6 +179,12 @@ return {
     isVisibleInEditor = isViewMoveArrows
     isVisibleInBattle = isBattleMoveArrows
     priority = Z_ORDER.STICK
+  }
+
+  chatLogAndKillLog = {
+    ctor = chatLogAndKillLogPlace
+    defTransform = mkLTPos([hdpx(155), hdpx(360)])
+    editView = chatLogAndKillLogEditView
   }
 
   hitCamera = {

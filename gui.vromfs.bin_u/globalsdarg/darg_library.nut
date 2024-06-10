@@ -1,7 +1,8 @@
 from "daRg" import *
 from "math" import max, min, clamp
 
-require("%sqstd/globalState.nut").setUniqueNestKey("darg")
+if (require_optional("json") != null) //no json module in the updater, and no need globalState in it.
+  require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let log = require("%globalScripts/logs.nut")
 let { loc } = require("dagor.localize")
 let dargBaseLib = require("%darg/darg_library.nut")

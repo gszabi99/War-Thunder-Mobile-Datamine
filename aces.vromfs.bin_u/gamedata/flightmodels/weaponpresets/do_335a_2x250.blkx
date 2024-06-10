@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "sc250"
+    },
+    {
+      "slot": 3,
+      "preset": "sc250"
+    }
+  ]
+}

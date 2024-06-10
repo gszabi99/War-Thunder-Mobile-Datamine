@@ -225,6 +225,8 @@ function loadUnitBulletsFullImpl(unitName) {
   if (isDataBlock(weapon_presets))
     eachBlock(weapon_presets, function(b) {
       let { name = "", blk = null } = b
+      if (name != $"{unitName}_default") //we not use not default preset
+        return
       let fullPresetBlk = blkOptFromPath(blk)
       triggersData[name] <- gatherWeaponsFromBlk(fullPresetBlk, hasTriggerGroups)
       if (weaponSlots.len() == 0)

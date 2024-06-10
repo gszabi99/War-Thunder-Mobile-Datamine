@@ -44,7 +44,7 @@ let imageBullet = @(imageBulletName) {
   keepAspect = KEEP_ASPECT_FIT
 }
 
-function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovr = {}) {
+function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovrBulletIcon = {}, ovr = {}) {
   if (bulletInfo == null)
     return null
   local { icon = null } = bInfoFromUnitTags
@@ -87,7 +87,7 @@ function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovr = 
             text = nameText
           }.__update(fontVeryTinyShaded)
         ]
-      }
+      }.__update(ovrBulletIcon)
     ]
   }.__update(ovr)
 }

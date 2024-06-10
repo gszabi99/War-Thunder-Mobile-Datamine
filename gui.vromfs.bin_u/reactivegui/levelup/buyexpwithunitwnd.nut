@@ -142,13 +142,16 @@ function mkTapPreviewText(unit) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    valign = ALIGN_CENTER
     behavior = Behaviors.Button
+    onClick = @() unitDetailsWnd(unit)
+    onElemState = @(sf) stateFlags(sf)
+    size = [flex(), SIZE_TO_CONTENT]
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(24)
     margin = [0, 0, hdpx(40), 0]
-    onClick = @() unitDetailsWnd(unit)
-    onElemState = @(sf) stateFlags(sf)
+    padding = [0, hdpx(40)]
     sound = { click = "click" }
     transform = {
       scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.85, 0.85] : [1, 1]
@@ -157,10 +160,14 @@ function mkTapPreviewText(unit) {
     children = [
       {
         rendObj = ROBJ_TEXT
+        halign = ALIGN_CENTER
         text = fonticonPreview
       }.__update(fontBig)
       {
-        rendObj = ROBJ_TEXT
+        behavior = Behaviors.TextArea
+        size = [flex(), SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXTAREA
+        halign = ALIGN_CENTER
         text = loc("buyUnitAndExp/tapToPreview")
       }.__update(fontSmall)
     ]
@@ -305,9 +312,11 @@ function mkBuyBtn(unit) {
   return @() {
     watch = [playerLevelInfo, curCampaign, lvlUpCost]
     children = mkCustomButton(
-        content
-        @() openConfirmationWnd(unit, curCampaign.value, lvlUpCost.value, playerLevelInfo.value)
-        unit?.isUpgraded ? buttonStyles.PURCHASE : buttonStyles.PRIMARY
+        content,
+        @() openConfirmationWnd(unit, curCampaign.value, lvlUpCost.value, playerLevelInfo.value),
+        unit?.isUpgraded
+          ? buttonStyles.PURCHASE.__merge({ hotkeys = ["^J:RT | Enter"] })
+          : buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:LT | Enter"] })
       )
   }
 }

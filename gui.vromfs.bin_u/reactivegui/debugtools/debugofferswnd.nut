@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { screenlog } = require("dagor.debug")
 let { set_clipboard_text } = require("dagor.clipboard")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { tostring_r } = require("%sqstd/string.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
@@ -106,7 +106,7 @@ registerHandler("onDebugOfferUnits",
         { rootBase = { behavior = Behaviors.Pannable } })
       wndOvr = { size = [hdpx(max(1100, 650 * textsByCamp.len())), hdpx(1000)] }
       buttons = [
-        { text = "COPY", cb = @() set_clipboard_text(json_to_string(textsByCamp)) }
+        { text = "COPY", cb = @() set_clipboard_text(object_to_json_string(textsByCamp)) }
         { id = "ok", styleId = "PRIMARY", isDefault = true }
       ]
     })

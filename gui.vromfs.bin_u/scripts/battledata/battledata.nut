@@ -1,14 +1,15 @@
 from "%scripts/dagui_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
-
 let logBD = log_with_prefix("[BATTLE_DATA] ")
 let { is_multiplayer } = require("%scripts/util.nut")
 let { get_arg_value_by_name } = require("dagor.system")
 let io = require("io")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { defer } = require("dagor.workcycle")
 let { get_mp_session_id_str, is_local_multiplayer } = require("multiplayer")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { splitStringBySize } = require("%sqstd/string.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { battleData, isBattleDataActual, actualizeBattleData,
  battleDataOvrMission, isBattleDataOvrMissionActual, actualizeBattleDataOvrMission
 } = require("menuBattleData.nut")
@@ -22,7 +23,8 @@ let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/init
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
-let curUnitName = mkWatched(persist, "battleDataUnit", null)
+let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
+
 
 enum ACTION {
   NOTHING = "nothing"
@@ -34,20 +36,28 @@ enum ACTION {
   REQUEST = "request"
 }
 
-let state = mkWatched(persist, "state", null) //eid, sessionId, slots, data, isBattleDataReceived, isUnitsOverrided
+let curUnitName = mkWatched(persist, "battleDataUnit", null)
+let state = mkWatched(persist, "state", null) //eid, sessionId, slots, isSlots, data, isBattleDataReceived, isUnitsOverrided
 let isBattleDataApplied = mkWatched(persist, "isBattleDataApplied", false)
 let wasBattleDataApplied = mkWatched(persist, "wasBattleDataApplied", false)
 let lastClientBattleData = mkWatched(persist, "lastAppliedClientBattleData", null)
 
+function isUnitsInfoSame(unitsInfo, isSlots, slots) {
+  if (unitsInfo == null || unitsInfo.isSlots != isSlots)
+    return false
+  return isSlots ? isEqual(unitsInfo.unitList, slots) : unitsInfo.unit == slots[0]
+}
+
 let curAction = keepref(Computed(function() {
-  let { isBattleDataReceived = null, isUnitsOverrided = null, sessionId = -1, data = null, slots = null } = state.value
+  let { isBattleDataReceived = null, isUnitsOverrided = null, sessionId = -1, data = null,
+    isSlots = false, slots = null
+  } = state.get()
   if (isBattleDataReceived == null || sessionId != get_mp_session_id_str())
     return ACTION.NOTHING
   if (isBattleDataReceived)
     return data == null ? ACTION.REQUEST : ACTION.NOTHING
 
-  let unitName = slots?[0]
-  if (unitName == null)
+  if (slots?[0] == null)
     return ACTION.NOTHING
 
   if (isUnitsOverrided) {
@@ -60,13 +70,15 @@ let curAction = keepref(Computed(function() {
 
   if ((shouldDisableMenu || isOfflineMenu) && !isBattleDataActual.value) //actual battle data has info from jwt token
     return ACTION.SET_AND_SEND_DEFAULT
-  if (data == null && (!isBattleDataActual.value || battleData.value?.unitName != unitName))
+
+  if (data == null
+      && (!isBattleDataActual.value || !isUnitsInfoSame(battleData.get()?.unitsInfo, isSlots, slots)))
     return ACTION.ACTUALIZE
   return ACTION.SET_AND_SEND
 }))
 
 let actions = {
-  [ACTION.ACTUALIZE] = @() actualizeBattleData(state.value?.slots[0]),
+  [ACTION.ACTUALIZE] = @() actualizeBattleData(state.get().isSlots ? state.get().slots : state.get().slots[0]),
   [ACTION.ACTUALIZE_OVR_MISSION] = @() actualizeBattleDataOvrMission(),
   [ACTION.SET_AND_SEND] = function() {
     let { payload, jwt } = battleData.value
@@ -96,7 +108,7 @@ function onChangeSlots(eid, comp) {
     return
   if (get_mp_session_id_str() == state.value?.sessionId
       && (state.value?.slots.len() ?? 0) > 0) {
-    logBD($"[sessionId={get_mp_session_id_str()}] Battle data received by dedicated: {comp.isBattleDataReceived}, {comp.isUnitsOverrided}")
+    logBD($"[sessionId={get_mp_session_id_str()}] Battle data received by dedicated: {comp.isBattleDataReceived}, isUnitsOverrided = {comp.isUnitsOverrided}")
     state.mutate(function(v) {
       v.isBattleDataReceived <- comp.isBattleDataReceived
       v.isUnitsOverrided <- comp.isUnitsOverrided
@@ -105,10 +117,12 @@ function onChangeSlots(eid, comp) {
   }
 
   local slots = comp.unitSlots.getAll()
-  logBD($"[sessionId={get_mp_session_id_str()}] Init slots. isBattleDataReceived = {comp.isBattleDataReceived}, isUnitsOverrided = {comp.isUnitsOverrided}, slots = ", slots)
   if ((shouldDisableMenu || isOfflineMenu) && slots.len() == 0)
     slots = [get_arg_value_by_name("unitModel") ?? "germ_cruiser_admiral_hipper"]
-  state({ eid, sessionId = get_mp_session_id_str(), slots,
+  let campaign = serverConfigs.get()?.allUnits[slots[0]].campaign ?? ""
+  local isSlots = (serverConfigs.get()?.campaignCfg[campaign].totalSlots ?? 0) > 0
+  logBD($"[sessionId={get_mp_session_id_str()}] Init slots. isBattleDataReceived = {comp.isBattleDataReceived}, isUnitsOverrided = {comp.isUnitsOverrided}, isSlots = {isSlots}, slots = ", slots)
+  state({ eid, sessionId = get_mp_session_id_str(), isSlots, slots,
     isBattleDataReceived = comp.isBattleDataReceived,
     isUnitsOverrided = comp.isUnitsOverrided
   })
@@ -135,7 +149,7 @@ function onSetMyBattleData(evt, _eid, comp) {
   if (isDebugMyBattleData) {
     isDebugMyBattleData = false
     let file = io.file($"wtmBattleDataDedic.json", "wt+")
-    file.writestring(json_to_string(evt.data, true))
+    file.writestring(object_to_json_string(evt.data, true))
     file.close()
     console_print($"Result saved to wtmBattleDataDedic.json")
   }
@@ -213,9 +227,13 @@ function setBattleDataToClientEcs(bd) {
 
 function createBattleDataForLocalMP() {
   let unitName = curUnit.value?.name ?? curUnitName.value
-  logBD("createBattleDataForLocalMP ", unitName)
-  if (unitName != null)
+  let slots = curCampaignSlotUnits.get()
+  logBD("createBattleDataForLocalMP ", unitName, slots)
+  if (slots != null)
+    actualizeBattleData(slots)
+  else if (unitName != null)
     actualizeBattleData(unitName)
+
   if (isBattleDataActual.value)
     setBattleDataToClientEcs(battleData.value?.payload)
   else

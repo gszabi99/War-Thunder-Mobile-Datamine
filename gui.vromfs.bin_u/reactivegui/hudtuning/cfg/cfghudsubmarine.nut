@@ -7,8 +7,8 @@ let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
 let { mkZoomButton, mkDivingLockButton } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { Z_ORDER, mkRBPos, mkLBPos, mkCBPos, weaponryButtonCtor, weaponryButtonDynamicCtor, withActionBarButtonCtor
-} = require("hudTuningPkg.nut")
+let { Z_ORDER, mkRBPos, mkLBPos, mkCBPos, weaponryButtonCtor, weaponryButtonDynamicCtor,
+  withActionBarButtonCtor } = require("hudTuningPkg.nut")
 let { depthSliderBlock, depthSliderEditView } = require("%rGui/hud/submarineDepthBlock.nut")
 let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
 let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")

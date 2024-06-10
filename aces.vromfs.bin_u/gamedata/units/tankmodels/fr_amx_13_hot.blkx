@@ -1912,10 +1912,12 @@
       "hp": 40.0,
       "genericDamageMult": 3.0,
       "pressureDamageMult": 1.0,
+      "ignoreSolidDimension": true,
       "driver_dm": {},
       "loader_dm": {},
       "loader_01_dm": {},
       "loader_02_dm": {},
+      "loader_03_dm": {},
       "gunner_dm": {},
       "gunner_01_dm": {},
       "gunner_02_dm": {},
@@ -3027,7 +3029,7 @@
   "defaultDecals": {
     "winter": {
       "skin_condition": 100.0,
-      "camo_scale": 90.0,
+      "camo_scale": 0.0,
       "camo_rotation": 0.0
     }
   },

@@ -298,28 +298,17 @@ function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary", countCto
     let isWaitForAim = !(actionItem?.aimReady ?? true)
     let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
     let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
-    let isContinuous = actionItem.isBulletBelt
     let image = weaponTouchIcons?[actionItem.weaponName] ?? "ui/gameuiskin#hud_main_weapon_fire.svg"
     function onTouchBegin() {
       if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
         addCommonHint(loc("hints/wait_for_aiming"))
       else if (isActionAvailable(actionItem)) {
-        if (isContinuous)
           useShortcutOn("ID_FIRE_GM")
-        else
-          useShortcut("ID_FIRE_GM")
       }
     }
 
-    let res = isContinuous
-      ? mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_GM"), "ID_FIRE_GM", primStateFlags)
-          .__update({ behavior = TouchAreaOutButton })
-      : {
-          behavior = Behaviors.Button
-          onElemState = @(v) primStateFlags(v)
-          hotkeys = mkGamepadHotkey("ID_FIRE_GM")
-          onClick = onTouchBegin
-        }
+    let res = mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_GM"), "ID_FIRE_GM", primStateFlags)
+      .__update({ behavior = TouchAreaOutButton })
 
     return res.__update({ //warning disable: -unwanted-modification
       watch = [allowShoot, primaryRocketGun, isDisabled]
@@ -651,7 +640,9 @@ function mkCirclePlaneTurretsGuns(btnSize = buttonSize, btnImgSize = buttonImgSi
 
 function mkCircleLockBtn(shortcutId){
   let stateFlags = Watched(0)
-  return {
+  let isDisabled = mkIsControlDisabled(shortcutId)
+  return @() {
+    watch = isDisabled
     key = shortcutId
     size = [airButtonSize, airButtonSize]
     valign = ALIGN_CENTER
@@ -675,6 +666,8 @@ function mkCircleLockBtn(shortcutId){
       }
       lockButtonIcon(targetTrackingImgSize, targetTrackingOffImgSize)
       mkCircleGlare(airButtonSize, "lock")
+      isDisabled.get() ? null
+        : mkGamepadShortcutImage(shortcutId, defShortcutOvr)
     ]
   }
 }

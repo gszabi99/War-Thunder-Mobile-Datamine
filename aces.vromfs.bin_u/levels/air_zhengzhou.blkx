@@ -2,6 +2,7 @@
   "lastClip": true,
   "lastclip_horizon": true,
   "clipmap_tex_mips": 6,
+  "volumeCloudsActive": true,
   "mapCoord0": [
     -32768.0,
     -32768.0

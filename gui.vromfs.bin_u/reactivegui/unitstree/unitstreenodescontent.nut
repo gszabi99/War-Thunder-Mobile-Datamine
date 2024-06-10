@@ -12,8 +12,7 @@ let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { unseenArrowsBlockCtor, scrollHandler, scrollPos } = require("unitsTreeScroll.nut")
 let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
-let { mkUnitPlate } = require("mkUnitPlate.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { mkTreeNodesUnitPlate } = require("mkUnitPlate.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
@@ -22,63 +21,26 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { selectedCountry, curCountry, filteredNodes, countries
+} = require("unitsTreeNodesState.nut")
+let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
 
 
 let lineWidth = hdpxi(2)
 let nodePlatesSize = unitPlateTiny
 let nodePlatesGap = [platesGap[0] * 3, platesGap[1]]
 let nodeBlockSize = [nodePlatesSize[0] + nodePlatesGap[0], nodePlatesSize[1] + nodePlatesGap[1]]
-
 let barHeight = hdpx(10)
 let rankBlockHeight = hdpxi(60)
 let rankBlockWidth = (rankBlockHeight * 3.3).tointeger()
+let areaSize = [
+  sw(100) - saBorders[0] - flagsWidth - flagTreeOffset,
+  sh(100) - saBorders[1] - gamercardHeight + gamercardOverlap - rankBlockHeight - slotBarTreeHeight]
 let rankBlockGap = hdpx(40)
 let rankBlockOffset = hdpx(15)
 let gradientOffsetX = [hdpx(120), hdpx(120)]
 let gradientOffsetY = [hdpx(3), hdpx(50)]
-
-let nodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()])
-let selectedCountry = mkWatched(persist, "selectedCountry", null)
-let curCountry = Computed(@() nodes.get()?.findindex(@(_, country) country == selectedCountry.get())
-  ?? nodes.get()?.keys()[0])
-
-let filteredNodes = Computed(function(prev) {
-  local res = nodes.get()?[curCountry.get()] ?? {}
-
-  if (filterCount.get() > 0)
-    foreach (f in filters) {
-      let value = f.value.get()
-      if (value != null)
-        res = res.filter(@(node) f.isFit(allUnitsCfg.get()?[node.name], value))
-    }
-
-  local prevX = 0
-  local xGaps = {}
-  foreach (node in res.values().sort(@(a, b) a.x <=> b.x)) {
-    node.xMod <- node.x
-    if (node.x - prevX > 1)
-      xGaps[node.x] <- (node.x - prevX - 1)
-    prevX = node.x
-    foreach (gapX, gapSize in xGaps)
-      if (node.x >= gapX)
-        node.xMod = (node?.xMod ?? node.x) - gapSize
-
-  }
-
-  local prevY = 0
-  local yGaps = {}
-  foreach (node in res.values().sort(@(a, b) a.y <=> b.y)) {
-    node.yMod <- node.y
-    if (node.y - prevY > 1)
-      yGaps[node.y] <- (node.y - prevY - 1)
-    prevY = node.y
-    foreach (gapY, gapSize in yGaps)
-      if (node.y >= gapY)
-        node.yMod = (node?.yMod ?? node.y) - gapSize
-  }
-
-  return isEqual(prev, res) ? prev : res
-})
+let linkColorLocked = 0xFFC03030
 
 let ranksCfg = Computed(function() {
   let res = {}
@@ -117,7 +79,7 @@ let needShowArrowL = Computed(function() {
 })
 
 let needShowArrowR = Computed(function() {
-  let offsetIdx = (scrollPos.get() + sw(100) - flagsWidth - flagTreeOffset).tofloat() / nodeBlockSize[0] - 1
+  let offsetIdx = (scrollPos.get() + areaSize[0] + saBorders[0]).tofloat() / nodeBlockSize[0] - 1
   return null != unseenNodesIndex.get()?[curCountry.get()].findvalue(@(index) offsetIdx < index)
 })
 
@@ -139,20 +101,24 @@ function scrollToRank(rank) {
 let function mkLinks(links, size) {
   let commands = []
   foreach (link in links) {
-    let { x, y, pos } = link
+    let { x, y, pos, isAvailable, needParentToBuy } = link
     let height = max(1, abs(y))
     let width = max(1, abs(x))
     let relXStart = pos[0] / size[0] * 100
     let relXEnd = (pos[0] - nodePlatesGap[0] - (width - 1) * nodeBlockSize[0]) / size[0] * 100
     if (y == 0) {
       let relY = (pos[1] + nodePlatesSize[1] * 0.5) / size[1] * 100
-      commands.append([VECTOR_LINE, relXStart, relY, relXEnd, relY])
+      commands.append(
+        [VECTOR_COLOR, needParentToBuy ? 0xFF606060 : isAvailable ? 0xFFFFFFFF : linkColorLocked],
+        [VECTOR_LINE, relXStart, relY, relXEnd, relY]
+      )
     }
     else {
       let relXMiddle = (pos[0] - nodePlatesGap[0] * 0.5) / size[0] * 100
       let relYStart = (pos[1] + nodePlatesSize[1] * 0.5) / size[1] * 100
       let relYEnd = (pos[1] + nodePlatesSize[1] * 0.5 + height * nodeBlockSize[1] * (y > 0 ? -1 : 1)) / size[1] * 100
       commands.append(
+        [VECTOR_COLOR, isAvailable ? 0xFFFFFFFF : 0xFFFF0000],
         [VECTOR_LINE, relXStart, relYStart, relXMiddle, relYStart],
         [VECTOR_LINE, relXMiddle, relYStart, relXMiddle, relYEnd],
         [VECTOR_LINE, relXMiddle, relYEnd, relXEnd, relYEnd])
@@ -236,7 +202,10 @@ let function mkUnitsNode(name, pos) {
   let xmbNode = XmbNode()
   return @() {
     watch = allUnitsCfg
-    children = mkUnitPlate(allUnitsCfg.get()[name], xmbNode, { pos, size = nodePlatesSize })
+    children = mkTreeNodesUnitPlate(
+      allUnitsCfg.get()[name],
+      xmbNode,
+      { pos })
   }
 }
 
@@ -251,7 +220,7 @@ let function unitsTree() {
   local links = []
 
   foreach (node in filteredNodes.get()) {
-    let { xMod, yMod, name, reqUnits } = node
+    let { xMod, yMod, name, reqUnits, isAvailable, needParentToBuy } = node
     let pos = [
       nodeBlockSize[0] * (xMod - 1) + nodePlatesGap[0] * 0.5 + flagTreeOffset,
       nodeBlockSize[1] * yMod + nodePlatesGap[1] * (yMod == 0 ? 0 : 0.5) + rankBlockGap]
@@ -269,18 +238,17 @@ let function unitsTree() {
         x = xMod - reqUnitCfg.xMod
         y = yMod - reqUnitCfg.yMod
         pos
+        isAvailable
+        needParentToBuy
       })
     }
   }
 
   let size = [
-    max(sw(100),
       nodesSize.xMax * nodeBlockSize[0] + (!curSelectedUnit.get() ? 0 : (statsWidth + nodePlatesGap[0] + saBorders[0]))
-        + saBorders[0] + flagTreeOffset),
-    max(sh(100),
+        + saBorders[0] + flagTreeOffset,
       nodesSize.yMax * nodeBlockSize[1] + nodePlatesGap[1] + gradientOffsetY[1]
-        + saBorders[1]  + gamercardHeight - gamercardOverlap + rankBlockHeight * 0.5 - rankBlockOffset)
-  ]
+        + saBorders[1]  + gamercardHeight - gamercardOverlap + rankBlockHeight * 0.5 - rankBlockOffset]
 
   return {
     watch = listWatches
@@ -290,7 +258,7 @@ let function unitsTree() {
       : scrollToUnit(curSelectedUnit.get() ?? curUnitName.get()))
     children = [
       {
-        size = [size[0], nodeBlockSize[1] + rankBlockGap * 0.5]
+        size = [max(size[0], areaSize[0]), nodeBlockSize[1] + rankBlockGap * 0.5]
       }.__merge(bgLight)
       {
         size = flex()
@@ -304,15 +272,15 @@ let function unitsTree() {
 }
 
 let pannableArea = doubleSidePannableAreaCtor(
-  sw(100) - saBorders[0] - flagsWidth - flagTreeOffset,
-  sh(100) - saBorders[1] - gamercardHeight + gamercardOverlap - rankBlockHeight,
+  areaSize[0],
+  areaSize[1],
   gradientOffsetX,
   gradientOffsetY)
 
 let function unitsTreeNodesContent() {
   let size = [
-    sw(100) - saBorders[0] - flagsWidth - flagTreeOffset,
-    sh(100) - saBorders[1] - gamercardHeight + gamercardOverlap - rankBlockHeight]
+    areaSize[0],
+    areaSize[1]]
   return [
     {
       size
@@ -327,6 +295,7 @@ let function unitsTreeNodesContent() {
           {
             behavior = [Behaviors.Pannable, Behaviors.ScrollEvent]
             scrollHandler
+            kineticAxisLockAngle = 30
             xmbNode = {
               canFocus = false
               scrollSpeed = 2.5
@@ -340,10 +309,10 @@ let function unitsTreeNodesContent() {
       ]
     }
     @() {
-      watch = nodes
+      watch = countries
       pos = [saBorders[0], rankBlockHeight + gamercardHeight + saBorders[1] - gamercardOverlap]
       flow = FLOW_VERTICAL
-      children = nodes.get().keys()
+      children = countries.get()
         .map(@(country) mkTreeNodesFlag(
           country,
           curCountry,
@@ -351,7 +320,12 @@ let function unitsTreeNodesContent() {
           Computed(@() country in unseenNodesIndex.get())
         ))
     }
+    slotBarUnitsTree
   ]
 }
 
-return unitsTreeNodesContent
+return {
+  unitsTreeNodesContent
+  rankBlockHeight
+  rankBlockOffset
+}

@@ -1823,108 +1823,207 @@
     "wingStrainLimitDown": 1.0
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunType92_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare1",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 485,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -50.0,
-            50.0
-          ],
-          "pitch": [
-            -10.0,
-            80.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -5.0,
-            5.0
-          ],
-          "pitch": [
-            -10.0,
-            15.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -50.0,
-            -30.0,
-            -10.0,
-            80.0
-          ],
-          "lim2": [
-            -30.0,
-            -5.0,
-            0.0,
-            80.0
-          ],
-          "lim3": [
-            -5.0,
-            5.0,
-            0.0,
-            80.0
-          ],
-          "lim4": [
-            5.0,
-            30.0,
-            0.0,
-            80.0
-          ],
-          "lim5": [
-            30.0,
-            50.0,
-            -10.0,
-            80.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunType92_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun2",
-        "flash": "flare2",
-        "dm": "gunner2_dm",
-        "gunnerDm": "gunner2_dm",
-        "gunDm": "gun2_dm",
-        "partsDP": "gun2_dm",
-        "bullets": 388,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun2"
-        },
-        "limits": {
-          "yaw": [
-            -20.0,
-            20.0
-          ],
-          "pitch": [
-            -25.0,
-            -5.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": {
       "name": "e7k2_default",
       "blk": "gameData/FlightModels/weaponPresets/e7k2_4x_type97mod6_bombs.blk"
     }
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1040.0,
+    "maxloadMassLeftConsoles": 570.0,
+    "maxloadMassRightConsoles": 570.0,
+    "maxDisbalance": 420.0,
+    "HideNodes": {},
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunType92_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare1",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 485,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -50.0,
+                  50.0
+                ],
+                "pitch": [
+                  -10.0,
+                  80.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -5.0,
+                  5.0
+                ],
+                "pitch": [
+                  -10.0,
+                  15.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -50.0,
+                  -30.0,
+                  -10.0,
+                  80.0
+                ],
+                "lim2": [
+                  -30.0,
+                  -5.0,
+                  0.0,
+                  80.0
+                ],
+                "lim3": [
+                  -5.0,
+                  5.0,
+                  0.0,
+                  80.0
+                ],
+                "lim4": [
+                  5.0,
+                  30.0,
+                  0.0,
+                  80.0
+                ],
+                "lim5": [
+                  30.0,
+                  50.0,
+                  -10.0,
+                  80.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunType92_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun2",
+              "flash": "flare2",
+              "dm": "gunner2_dm",
+              "gunnerDm": "gunner2_dm",
+              "gunDm": "gun2_dm",
+              "partsDP": "gun2_dm",
+              "bullets": 388,
+              "turret": {
+                "head": "turret2",
+                "gun": "gun2"
+              },
+              "limits": {
+                "yaw": [
+                  -20.0,
+                  20.0
+                ],
+                "pitch": [
+                  -25.0,
+                  -5.0
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 5,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bombs_midlle",
+          "name": "60kg",
+          "smokeScreenCount": 3,
+          "smokeScreenTime": 25.0,
+          "smokeScreenCooldown": 100.0,
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/jp_navy_type97mod6_60kg.blk",
+            "emitter": "bomb_60kg_1",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "bombs_midlle",
+          "name": "60kg",
+          "smokeScreenCount": 3,
+          "smokeScreenTime": 25.0,
+          "smokeScreenCooldown": 100.0,
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/jp_navy_type97mod6_60kg.blk",
+            "emitter": "bomb_60kg_2",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 3,
+        "tier": 7,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "bombs_midlle",
+          "name": "60kg",
+          "smokeScreenCount": 3,
+          "smokeScreenTime": 25.0,
+          "smokeScreenCooldown": 100.0,
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/jp_navy_type97mod6_60kg.blk",
+            "emitter": "bomb_60kg_3",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 8,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bombs_midlle",
+          "name": "60kg",
+          "smokeScreenCount": 3,
+          "smokeScreenTime": 25.0,
+          "smokeScreenCooldown": 100.0,
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/jp_navy_type97mod6_60kg.blk",
+            "emitter": "bomb_60kg_4",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      }
+    ]
   },
   "jetwash": {
     "radius": 10.0,

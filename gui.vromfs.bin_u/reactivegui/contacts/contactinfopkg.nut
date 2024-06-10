@@ -12,6 +12,7 @@ let darkenBgColor = 0x80001521
 
 let borderWidth = hdpx(3)
 let avatarSize = hdpxi(90)
+let contactLevelSize = avatarSize * 1.1
 let rowHeight = avatarSize + 2 * borderWidth
 let gap = hdpx(10)
 
@@ -74,7 +75,7 @@ function contactLevelBlock(info) {
   let { playerLevel = null, playerStarLevel = 0, playerStarHistoryLevel = 0 } = info
   let starAdd = max(0, playerStarHistoryLevel - playerStarLevel)
   return {
-    size = [1.1 * avatarSize, flex()]
+    size = [contactLevelSize, flex()]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = playerLevel == null ? null : levelMark(playerLevel + starAdd, playerStarLevel + starAdd)
@@ -86,6 +87,7 @@ return {
   contactAvatar
   contactLevelBlock
 
+  contactLevelSize
   darkenBgColor
   borderWidth
   avatarSize

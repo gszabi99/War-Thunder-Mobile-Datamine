@@ -5,9 +5,30 @@ let logerrLogState = require("logerrLogState.nut")
 let killLogState = require("killLogState.nut")
 let commonHintLogState = require("commonHintLogState.nut")
 let resultsHintLogState = require("resultsHintLogState.nut")
-let { hintCtors, defaultHintCtor } = require("hintCtors.nut")
+let { hintCtors, defaultHintCtor, maxChatLogWidth, maxChatLogHeight } = require("hintCtors.nut")
+let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { myUserName } = require("%appGlobals/profileStates.nut")
+let { localPlayerColor } = require("%rGui/style/stdColors.nut")
+let { teamBlueLightColor, teamRedLightColor } = require("%rGui/style/teamColors.nut")
+
+let textsForLoggerEditView = [
+  $"{colorize(localPlayerColor, myUserName.get())} {loc("icon/hud_msg_mp_dmg/kill_s_s")} {
+      colorize(teamRedLightColor, loc("coop/Bot53"))}",
+  $"{colorize(teamBlueLightColor, loc("coop/Bot31"))}{colon} {loc("voice_message_attack_enemy_troops_2")}",
+  $"{colorize(teamBlueLightColor, loc("coop/Bot34"))}{colon} {loc("voice_message_yes_0")}",
+]
 
 let hintsGap = hdpx(10)
+
+let mkTextLogger = @(text) {
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  text
+  color = 0xFFFFFFFF
+  fontFx = FFT_GLOW
+  fontFxFactor = max(64, hdpx(64))
+  fontFxColor = 0xFF000000
+}
 
 let mkTransition = @(uid, children, offset, zOrder, ovr) {
   key = uid
@@ -39,13 +60,25 @@ let mkHintsBlock = @(events, transOvr = {}, blockOvr = {}) function mainHintsBlo
 
 let logerrHintsBlock = mkHintsBlock(logerrLogState.curEvents, { halign = ALIGN_LEFT })
 let killLogBlock = mkHintsBlock(killLogState.curEvents, { halign = ALIGN_LEFT })
-let logerrAndKillLogPlace = {
-  size = [0.3 * saSize[0], SIZE_TO_CONTENT] //FIXME: animations or position break when not fixed. So better to move all width consts to separate file, or push as param.
+let chatLogAndKillLogPlace = @() {
+  size = [maxChatLogWidth, maxChatLogHeight] //FIXME: animations or position break when not fixed. So better to move all width consts to separate file, or push as param.
   flow = FLOW_VERTICAL
   children = [
     killLogBlock
     logerrHintsBlock
   ]
+}
+
+let chatLogAndKillLogEditView = {
+  size = [maxChatLogWidth, maxChatLogHeight]
+  rendObj = ROBJ_BOX
+  valign = ALIGN_TOP
+  flow = FLOW_VERTICAL
+  padding = hdpx(5)
+  gap = hdpx(10)
+  borderWidth = hdpx(3)
+  borderColor
+  children = textsForLoggerEditView.map(@(text) mkTextLogger(text).__update(fontTiny))
 }
 
 return {
@@ -54,5 +87,6 @@ return {
   commonHintsBlock = mkHintsBlock(commonHintLogState.curEvents)
   resultsHintsBlock = mkHintsBlock(resultsHintLogState.curEvents)
   logerrHintsBlock
-  logerrAndKillLogPlace
+  chatLogAndKillLogPlace
+  chatLogAndKillLogEditView
 }

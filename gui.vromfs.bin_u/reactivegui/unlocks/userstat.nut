@@ -51,7 +51,7 @@ function actualizeStats() {
 registerHandler("ClnChangeStats", function(result, context) {
   let { mode, stat } = context
   if (stat in statsInProgress.get())
-    statsInProgress.mutate(@(v) delete v[stat])
+    statsInProgress.mutate(@(v) v.$rawdelete(stat))
   if (!result?.error)
     return
 

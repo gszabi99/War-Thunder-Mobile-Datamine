@@ -13,6 +13,7 @@ let { WP, balanceWp } = require("%appGlobals/currenciesState.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { openUnitsTreeAtCurRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let LVL_UP_ANIM = 2.2
 
@@ -90,14 +91,16 @@ function openLvlUpWndIfCan() {
       openUnitsTreeAtCurRank()
     if (rewardsToReceive.get().len() > 0)
       openRewardsModal()
-    else
+    else if (curCampaign.get() not in serverConfigs.get()?.unitTreeNodes)
       openLvlUpWnd()
+    else
+      levelup_without_unit(curCampaign.value)
   }
   return hasDataForLevelWnd.value
 }
 
 function onNeedOpenLevelUpWnd() {
-  if (!needOpenLevelUpWnd.get() || isUnitsTreeOpen.get())
+  if (!needOpenLevelUpWnd.get())
     return
 
   if (needOpenLevelUpWnd.value) {

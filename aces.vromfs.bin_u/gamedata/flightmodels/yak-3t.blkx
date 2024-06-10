@@ -1532,7 +1532,7 @@
   "weapon_presets": {
     "preset": {
       "name": "yak-3t_default",
-      "blk": "gameData/FlightModels/weaponPresets/Yak-3_default.blk"
+      "blk": "gameData/FlightModels/weaponPresets/yak-3_default.blk"
     }
   },
   "WeaponSlots": {

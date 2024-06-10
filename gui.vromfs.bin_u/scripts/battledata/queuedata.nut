@@ -1,9 +1,10 @@
-
 from "%scripts/dagui_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { get_queue_data_jwt, registerHandler, callHandler, lastProfileKeysUpdated
+let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
+let { get_queue_data_jwt, get_queue_data_slots_jwt, registerHandler, callHandler, lastProfileKeysUpdated
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pServer/pServerJwt.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -19,9 +20,10 @@ const SQUAD_ACTUALIZE_DELAY = 2
 let lastResult = mkWatched(persist, "lastResult", null)
 let successResult = mkWatched(persist, "lastSuccessResult", null)
 let needRefresh = mkWatched(persist, "needRefresh", false)
-let isQueueDataActual = Computed(@() !needRefresh.value && successResult.value?.unitName == curUnit.value?.name)
+let curUnitInfo = Computed(@() curCampaignSlotUnits.get() ?? curUnit.get()?.name)
+let isQueueDataActual = Computed(@() !needRefresh.value && isEqual(successResult.get()?.unitInfo, curUnitInfo.get()))
 let queueDataError = Computed(@() lastResult.value?.error)
-let needActualize = Computed(@() !isQueueDataActual.value && isLoggedIn.value)
+let needActualize = Computed(@() !isQueueDataActual.get() && isLoggedIn.get() && curUnitInfo.get() != null)
 let needDebugNewResult = Watched(false)
 let actualizeDelay = Computed(@() isInSquad.value && !isSquadLeader.value && isReady.value
   ? SQUAD_ACTUALIZE_DELAY
@@ -32,6 +34,7 @@ isInMpSession.subscribe(@(v) !v ? needRefresh(true) : null)
 
 let profileKeysAffectQueue = {
   units = true
+  campaignSlots = true
   items = true
   sharedStats = true
   sharedStatsByCampaign = true
@@ -43,28 +46,30 @@ lastProfileKeysUpdated.subscribe(function(list) {
 })
 
 function actualizeQueueData(executeAfter = null) {
-  let unitName = curUnit.value?.name
-  if (unitName == null) {
+  let unitInfo = curUnitInfo.get()
+  if (unitInfo == null) {
     callHandler(executeAfter, { error = "No current unit" })
     return
   }
-
-  get_queue_data_jwt(unitName, { id = "onGetQueueData", unitName, extExecuteAfter = executeAfter })
+  if (type(unitInfo) == "array")
+    get_queue_data_slots_jwt(unitInfo, { id = "onGetQueueData", unitInfo, extExecuteAfter = executeAfter })
+  else
+    get_queue_data_jwt(unitInfo, { id = "onGetQueueData", unitInfo, extExecuteAfter = executeAfter })
 }
 
 registerHandler("onGetQueueData", function(res, context) {
-  let { unitName, extExecuteAfter  = null } = context
-  if (unitName != curUnit.value?.name) {
+  let { unitInfo, extExecuteAfter  = null } = context
+  if (!isEqual(unitInfo, curUnitInfo.get())) {
     actualizeQueueData(extExecuteAfter)
     return
   }
   if (res?.error != null) {
-    lastResult(res.__merge({ unitName }))
+    lastResult(res.__merge({ unitInfo }))
     callHandler(extExecuteAfter, res)
     return
   }
 
-  let result = decodeJwtAndHandleErrors(res).__update({ unitName })
+  let result = decodeJwtAndHandleErrors(res).__update({ unitInfo })
   lastResult(result)
   if ("error" not in result)
     successResult(result)
@@ -129,4 +134,5 @@ return {
   isQueueDataActual
   queueDataError
   actualizeQueueData
+  curUnitInfo
 }

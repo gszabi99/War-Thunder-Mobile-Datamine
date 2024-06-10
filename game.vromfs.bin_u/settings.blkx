@@ -137,7 +137,8 @@
         "vrom": "aces.vromfs.bin",
         "src": [
           "../develop/gameBase",
-          "../develop/gameBase/lang_src"
+          "../develop/gameBase/lang_src",
+          "../develop/gameBase/pkg_dev"
         ]
       },
       {
@@ -275,6 +276,10 @@
     "pkg_tier_5_ground": {},
     "pkg_tier_6_ground": {},
     "pkg_tier_7_ground": {},
+    "pkg_tier_1_aircraft": {},
+    "pkg_tier_2_aircraft": {},
+    "pkg_tier_3_aircraft": {},
+    "pkg_tier_4_aircraft": {},
     "pkg_common_2_aircraft": {},
     "pkg_common_3_aircraft": {},
     "pkg_common_4_aircraft": {},
@@ -318,13 +323,13 @@
     "pkg_jp_battleship_yamato": {
       "conditions": {
         "campaign": "ships",
-        "mRank": 4
+        "mRank": 5
       }
     },
     "pkg_germ_battleship_bismarck": {
       "conditions": {
         "campaign": "ships",
-        "mRank": 4
+        "mRank": 5
       }
     },
     "pkg_us_battleship_arkansas": {
@@ -342,7 +347,7 @@
     "pkg_germ_destroyer_rckt_hamburg": {
       "conditions": {
         "campaign": "ships",
-        "mRank": 5
+        "mRank": 6
       }
     },
     "pkg_ussr_cruiser_chapayev": {
@@ -354,7 +359,7 @@
     "pkg_us_cruiser_rckt_belknap": {
       "conditions": {
         "campaign": "ships",
-        "mRank": 5
+        "mRank": 6
       }
     },
     "pkg_us_battleship_texas": {
@@ -366,7 +371,7 @@
     "pkg_jp_destroyer_rckt_takatsuki": {
       "conditions": {
         "campaign": "ships",
-        "mRank": 5
+        "mRank": 6
       }
     },
     "pkg_ussr_battleship_marat": {
@@ -390,7 +395,7 @@
     "pkg_uk_sub_valiant": {
       "conditions": {
         "campaign": "ships",
-        "mRank": 5
+        "mRank": 6
       }
     },
     "pkg_us_cruiser_pensacola_class": {
@@ -408,7 +413,7 @@
     "pkg_ussr_desroyer_rckt_pr57bis": {
       "conditions": {
         "campaign": "ships",
-        "mRank": 5
+        "mRank": 6
       }
     },
     "pkg_uk_battleship_colossus": {
@@ -418,6 +423,24 @@
       }
     },
     "pkg_ussr_sub_l3": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_destroyer_rckt_type23": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_ussr_battleship_novorossiysk": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_jp_cruiser_mogami": {
       "conditions": {
         "campaign": "ships",
         "mRank": 2
@@ -573,10 +596,28 @@
         "mRank": 6
       }
     },
+    "pkg_cn_type_69_2a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
     "pkg_fr_amx_10rc": {
       "conditions": {
         "campaign": "tanks",
         "mRank": 7
+      }
+    },
+    "pkg_sw_strv_105": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_ussr_object_248": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
       }
     },
     "pkg_environment": {
@@ -625,11 +666,13 @@
     "fadeInDelayFrames": 3,
     "fadeInSeconds": 2.0,
     "fadeInPreloadTimelimitSeconds": 1.0,
-    "beforeFadeInD3dPipelineCompileTimeBudgetSeconds": 0.25,
+    "beforeFadeInD3dPipelineCompileTimeBudgetSeconds": 0.0,
     "gameplayD3dPipelineCompileTimeBudgetSeconds": 0.0,
     "sharpen": 0.2,
     "enableSuspensionAnimation": false,
-    "cloudsQuality": 1,
+    "cloudsQuality": 2,
+    "nonVolumeCloudsQuality": 2,
+    "volumeCloudsQuality": 1,
     "contactShadowsQuality": 0,
     "tireTracksQuality": 2,
     "texquality": "high",
@@ -711,7 +754,6 @@
     "riMaxModelsPerLevel": 1024,
     "taaClampingGammaInGame": 1.2,
     "taaClampingGammaInHangar": 0.6,
-    "taaPreSharpen": 0.2,
     "forwardSpeedLines": false,
     "volumetricAfterBurner": false,
     "backbufferHolderReadable": false,
@@ -905,7 +947,8 @@
     "virtualTextureMipCnt": 2,
     "virtualTextureAnisotropy": 1,
     "cachesCount": 2,
-    "buffersCount": 2
+    "buffersCount": 2,
+    "growTexSizeWithRenderingResolution": true
   },
   "clipmapImpostor": {
     "enabled": false,
@@ -1472,8 +1515,11 @@
     ]
   },
   "shadersWarmup": {
+    "hangarWarmup": true,
+    "hangarWarmupTimeLimit": 1.0,
     "android": true,
     "win64": true,
+    "linux64": true,
     "graphics": {
       "dafx_modfx_bboard_render": true,
       "sparks_ps": true,
@@ -1481,7 +1527,16 @@
       "render_full_tonemap": true,
       "skies_render_screen": true,
       "skyPanorama": true,
-      "strata_clouds": true
+      "strata_clouds": true,
+      "tileConstantFiller": true,
+      "copy": true,
+      "specular_cube": true,
+      "gen_clouds_types_lut": true,
+      "gen_clouds_erosion_lut": true,
+      "impostor_shadow_atlas": true,
+      "water_normals": true,
+      "random_grass_filter": true,
+      "clouds2_direct": true
     },
     "compute": {
       "skies_generate_transmittance_cs": true,
@@ -1491,7 +1546,13 @@
       "gen_cloud_field_cmpr": true,
       "trace_clouds_cs": true,
       "skies_view_lut_tex_prepare_cs": true,
-      "clouds2_temporal_cs": true
+      "clouds2_temporal_cs": true,
+      "skies_integrate_froxel_scattering_cs": true,
+      "compute_full_tonemap": true,
+      "skies_prepare_transmittance_for_altitude_cs": true,
+      "water_foam_blur_cs": true,
+      "water_gradient_foam_combine_cs": true,
+      "query_rainmap_cs": true
     },
     "000backgroundWarmup": {
       "graphics": {
@@ -1766,7 +1827,8 @@
         "customRefractionScale": 0.25,
         "refractionShadows": false,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 3,
         "xrayOutlinesScale": 1.0
       },
       "render": {
@@ -1844,7 +1906,8 @@
         "customRefractionScale": 0.25,
         "refractionShadows": false,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 3,
         "xrayOutlinesScale": 1.0
       },
       "render": {
@@ -1852,10 +1915,10 @@
       },
       "clipmap": {
         "texSize": [
-          2048,
+          3072,
           3072
         ],
-        "texTileSize": 128,
+        "texTileSize": 256,
         "swFeedbackMipTiles0": 6,
         "swFeedbackMipTiles1": 6,
         "swFeedbackMipTiles2": 4,
@@ -1922,7 +1985,8 @@
         "customRefractionScale": 0.25,
         "refractionShadows": true,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 1,
         "xrayOutlinesScale": 1.0
       },
       "render": {
@@ -1933,7 +1997,7 @@
           3072,
           4096
         ],
-        "texTileSize": 128,
+        "texTileSize": 256,
         "swFeedbackMipTiles0": 10,
         "swFeedbackMipTiles1": 8,
         "swFeedbackMipTiles2": 4,
@@ -2000,7 +2064,8 @@
         "customRefractionScale": 0.5,
         "refractionShadows": true,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 1,
         "xrayOutlinesScale": 1.0
       },
       "render": {
@@ -2011,7 +2076,7 @@
           4096,
           4096
         ],
-        "texTileSize": 128,
+        "texTileSize": 256,
         "swFeedbackMipTiles0": 12,
         "swFeedbackMipTiles1": 10,
         "swFeedbackMipTiles2": 6,
@@ -2078,7 +2143,8 @@
         "customRefractionScale": 1.0,
         "refractionShadows": true,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 1,
+        "volumeCloudsQuality": 1,
         "xrayOutlinesScale": 1.0
       },
       "render": {
@@ -2086,10 +2152,10 @@
       },
       "clipmap": {
         "texSize": [
-          4096,
+          8192,
           8192
         ],
-        "texTileSize": 256,
+        "texTileSize": 512,
         "swFeedbackMipTiles0": 12,
         "swFeedbackMipTiles1": 10,
         "swFeedbackMipTiles2": 6,
@@ -2104,7 +2170,7 @@
         "lodDistanceScale": 0.5
       },
       "video": {
-        "postfx_antialiasing": "fxaa"
+        "postfx_antialiasing": "high_fxaa"
       }
     }
   },
@@ -2150,22 +2216,23 @@
         "fftWaterRenderResolution": 7,
         "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 2,
         "xrayOutlinesScale": 1.0
       },
       "clipmap": {
         "texSize": [
-          2048,
-          3072
+          3072,
+          2048
         ],
         "texTileSize": 128,
-        "swFeedbackMipTiles0": 6,
-        "swFeedbackMipTiles1": 6,
+        "swFeedbackMipTiles0": 4,
+        "swFeedbackMipTiles1": 4,
         "swFeedbackMipTiles2": 4,
         "swFeedbackInnerMipTiles": 2,
         "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 2,
-        "texelSizeMul": 1.0,
+        "texelSizeMul": 3.0,
+        "max_clipmap_tex_mips": 5,
         "minTexTileBorder": 1,
         "hwfeedback": false
       }
@@ -2211,7 +2278,7 @@
         "fftWaterRenderResolution": 7,
         "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 2,
         "xrayOutlinesScale": 1.0
       },
       "clipmap": {
@@ -2225,9 +2292,10 @@
         "swFeedbackInnerMipTiles": 4,
         "swFeedbackOuterMipTiles": 6,
         "texelSizeMul": 1.0,
+        "max_clipmap_tex_mips": 10,
         "minTexTileBorder": 1,
         "virtualTextureAnisotropy": 8,
-        "texTileSize": 128,
+        "texTileSize": 256,
         "hwfeedback": true
       }
     },
@@ -2272,7 +2340,7 @@
         "fftWaterRenderResolution": 8,
         "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 2,
         "xrayOutlinesScale": 1.0
       },
       "clipmap": {
@@ -2286,9 +2354,10 @@
         "swFeedbackInnerMipTiles": 4,
         "swFeedbackOuterMipTiles": 6,
         "texelSizeMul": 1.0,
+        "max_clipmap_tex_mips": 10,
         "minTexTileBorder": 1,
         "virtualTextureAnisotropy": 8,
-        "texTileSize": 128,
+        "texTileSize": 256,
         "hwfeedback": true
       }
     },
@@ -2333,7 +2402,7 @@
         "fftWaterRenderResolution": 8,
         "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
-        "cloudsQuality": 1,
+        "nonVolumeCloudsQuality": 2,
         "xrayOutlinesScale": 1.0
       },
       "clipmap": {
@@ -2347,6 +2416,7 @@
         "swFeedbackInnerMipTiles": 4,
         "swFeedbackOuterMipTiles": 6,
         "texelSizeMul": 1.0,
+        "max_clipmap_tex_mips": 10,
         "minTexTileBorder": 1,
         "virtualTextureAnisotropy": 8,
         "texTileSize": 256,

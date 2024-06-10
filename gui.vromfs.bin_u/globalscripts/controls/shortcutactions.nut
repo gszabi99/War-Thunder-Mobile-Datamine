@@ -1,4 +1,4 @@
-let { activateShortcut, setAxisValue, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue = @(...) null, changeCruiseControl } = require("controls")
+let { activateShortcut, setAxisValue, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue, changeCruiseControl } = require("controls")
 
 local toggleShortcut = @(shortcutName) activateShortcut(shortcutName, true, true)
 

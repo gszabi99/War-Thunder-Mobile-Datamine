@@ -1,14 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { eventbus_send } = require("eventbus")
 let { ceil } = require("%sqstd/math.nut")
+let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit
 } = require("%rGui/missionState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 
 let secondsPerHour = 3600
 let barRatio = 56.0 / 19
@@ -106,6 +108,15 @@ function mkLinearScoreBar(teamName) {
   })
 }
 
+let shortcutId = "ID_MPSTATSCREEN"
+let shortcutImg = @() {
+  watch = isHudAttached
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_CENTER
+  pos = [hdpx(60), 0]
+  children = !isHudAttached.get() ? null : mkGamepadShortcutImage(shortcutId)
+}
+
 function scoreBoard() {
   let barCtor = missionProgressType.value == "split" ? mkSplitScoreBar : mkLinearScoreBar
   return {
@@ -113,28 +124,34 @@ function scoreBoard() {
     watch = missionProgressType
     hplace = ALIGN_CENTER
     behavior = Behaviors.Button
-    flow = FLOW_HORIZONTAL
-    gap = -0.15 * timerBgWidth
-    onClick = @() eventbus_send("toggleMpstatscreen", {})
+    onClick = @() toggleShortcut(shortcutId)
+    hotkeys = mkGamepadHotkey(shortcutId)
     sound = { click  = "click" }
     children = [
-      barCtor("localTeam")
       {
-        rendObj = ROBJ_IMAGE
-        size = [ timerBgWidth, timerBgHeight ]
-        image = getSvgImage("hud_time_bg", timerBgWidth, timerBgHeight)
-        color = Color(0, 0, 0, 77)
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = @() {
-          watch = timeLeft
-          rendObj = ROBJ_TEXT
-          text = timeLeft.get() >= secondsPerHour
-            ? secondsToHoursLoc(timeLeft.get())
-            : secondsToTimeSimpleString(timeLeft.get())
-        }.__update(fontTiny)
+        flow = FLOW_HORIZONTAL
+        gap = -0.15 * timerBgWidth
+        children = [
+          barCtor("localTeam")
+          {
+            rendObj = ROBJ_IMAGE
+            size = [ timerBgWidth, timerBgHeight ]
+            image = getSvgImage("hud_time_bg", timerBgWidth, timerBgHeight)
+            color = Color(0, 0, 0, 77)
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            children = @() {
+              watch = timeLeft
+              rendObj = ROBJ_TEXT
+              text = timeLeft.get() >= secondsPerHour
+                ? secondsToHoursLoc(timeLeft.get())
+                : secondsToTimeSimpleString(timeLeft.get())
+            }.__update(fontTiny)
+          }
+          barCtor("enemyTeam")
+        ]
       }
-      barCtor("enemyTeam")
+      shortcutImg
     ]
   }
 }

@@ -53,7 +53,8 @@ function btnBase(textOrCtor, sf, isSelected) {
             size = [flex(), btnH]
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
-            rendObj = ROBJ_TEXT
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
             color = textColor
             text = textOrCtor
           }.__update(fontSmall)

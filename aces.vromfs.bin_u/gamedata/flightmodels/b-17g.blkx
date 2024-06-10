@@ -2586,7 +2586,7 @@
   "weapon_presets": {
     "preset": {
       "name": "b-17g_default",
-      "blk": "gameData/FlightModels/weaponPresets/B-17G_default.blk"
+      "blk": "gameData/FlightModels/weaponPresets/b-17g_default.blk"
     }
   },
   "WeaponSlots": {

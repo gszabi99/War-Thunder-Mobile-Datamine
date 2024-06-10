@@ -3,7 +3,7 @@ let { OCT_TEXTINPUT, OCT_MULTISELECT } = require("%rGui/options/optCtrlType.nut"
 let { getUnitPresentation, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL
+let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL, US_NOT_RESEARCHED
 } = require("%appGlobals/unitsState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
@@ -15,6 +15,7 @@ let statusLoc = {
   [US_CAN_BUY] = "options/unitCanBuy",
   [US_TOO_LOW_LEVEL] = "options/unitNeedLevel",
   [US_NOT_FOR_SALE] = "options/unitNotForSale",
+  [US_NOT_RESEARCHED] = "options/unitNotResearched",
 }
 
 let curFilters = mkWatched(persist, "curFilters", {})

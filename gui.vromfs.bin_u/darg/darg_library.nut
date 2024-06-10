@@ -1,6 +1,6 @@
 from "%sqstd/frp.nut" import *
 from "daRg" import *
-let bhvModule = require_optional("daRg.behaviors")
+import "daRg.behaviors" as Behaviors
 
 let {tostring_r} = require("%sqstd/string.nut")
 let {min}  = require("math")
@@ -159,7 +159,7 @@ function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null)
   return watch
 }
 
-let res = {
+return {
   mkWatched
   WatchedRo
   XmbNode
@@ -172,9 +172,5 @@ let res = {
   watchElemState
   isDargComponent
   fsh
+  Behaviors
 }
-
-if (bhvModule != null)
-  res.Behaviors <- bhvModule
-
-return res

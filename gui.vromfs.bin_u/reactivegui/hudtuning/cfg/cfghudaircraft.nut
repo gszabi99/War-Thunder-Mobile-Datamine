@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isCameraViewAvailable = null } = require("camera_control")
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos } = require("hudTuningPkg.nut")
@@ -14,7 +13,6 @@ let {
   aircraftMoveArrows,
   isAircraftMoveArrowsAvailable
 } = require("%rGui/hud/aircraftMovementBlock.nut")
-let { CAN_USE_ADDINTIONAL_FLY_CTRLS } = require("%rGui/options/options/airControlsOptions.nut")
 let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { ctrlPieStickBlock, ctrlPieStickView } = require("%rGui/hud/controlsPieMenu/ctrlPieStick.nut")
 let { isCtrlPieAvailable } = require("%rGui/hud/controlsPieMenu/ctrlPieState.nut")
@@ -25,8 +23,8 @@ let cfgHudCommon = require("cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
-let { mkMyPlace, myPlaceUi, mkMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
-let { doll, dollEditView } = require("%rGui/hud/aircraftStateModule.nut")
+let { mkMyPlace, myPlaceUi, mkAirMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
+let { dmPanel, dmPanelEditView } = require("%rGui/hud/aircraftStateModule.nut")
 let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
   bigButtonSize, bigButtonImgSize, mkCircleZoom, mkCircleWeaponryItem, mkCircleLockBtn, mkBigCirclePlaneBtnEditView
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
@@ -39,12 +37,13 @@ let { Cannon0, MGun0, hasCanon0, hasMGun0,
 let { returnToShipButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { zoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
 let { moveArrowsAirView } = require("%rGui/components/movementArrows.nut")
+let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
 
 return cfgHudCommon.__merge({
 
   zoomSlider = {
     ctor = @() zoomSlider
-    defTransform = mkLBPos([hdpx(120), hdpx(-360)])
+    defTransform = mkLBPos([hdpx(140), hdpx(-280)])
     editView = zoomSliderEditView
     priority = Z_ORDER.SLIDER
   }
@@ -86,6 +85,7 @@ return cfgHudCommon.__merge({
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_binoculars.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
   }
+
   back = {
     ctor = returnToShipButton
     defTransform = mkRBPos([hdpx(-480), hdpx(-0)])
@@ -116,14 +116,14 @@ return cfgHudCommon.__merge({
   myScores = {
     ctor = @() myScoresUi
     defTransform = isWidescreen ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
-    editView = mkMyScores(22100)
+    editView = { children = mkAirMyScores(221) }
     hideForDelayed = false
   }
 
-  doll = {
-    ctor = @() doll
-    defTransform = mkLBPos([hdpx(630), hdpx(30)])
-    editView = dollEditView
+  dmPanel = {
+    ctor = @() dmPanel
+    defTransform = mkLBPos([hdpx(450), hdpx(30)])
+    editView = dmPanelEditView
     hideForDelayed = false
   }
 
@@ -215,7 +215,6 @@ return cfgHudCommon.__merge({
     defTransform = mkRBPos([hdpx(-615), hdpx(-0)])
     editView = cameraPieStickView
     isVisibleInBattle = isCameraPieAvailable
-    isVisibleInEditor = Watched(isCameraViewAvailable != null)
     priority = Z_ORDER.STICK
   }
 
@@ -234,6 +233,11 @@ return cfgHudCommon.__merge({
     editView = moveArrowsAirView
     priority = Z_ORDER.STICK
     isVisibleInBattle = isAircraftMoveArrowsAvailable
-    isVisibleInEditor = Watched(CAN_USE_ADDINTIONAL_FLY_CTRLS)
+  }
+
+  chatLogAndKillLog = {
+    ctor = chatLogAndKillLogPlace
+    defTransform = mkLTPos([hdpx(140), hdpx(320)])
+    editView = chatLogAndKillLogEditView
   }
 })

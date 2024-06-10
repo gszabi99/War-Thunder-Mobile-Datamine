@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isInSquad, squadMembers, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
+let { isInSquad, squadMembers, squadLeaderCampaign, getMemberMaxMRank
+} = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
@@ -9,7 +10,7 @@ let maxSquadMRank = Computed(function() {
     return null
   local maxRank = 0
   foreach(m in squadMembers.value)
-    maxRank = max(maxRank, serverConfigs.value?.allUnits[m?.units[squadLeaderCampaign.value]].mRank ?? 0)
+    maxRank = max(maxRank, getMemberMaxMRank(m, squadLeaderCampaign.get(), serverConfigs.get()))
   return maxRank
 })
 

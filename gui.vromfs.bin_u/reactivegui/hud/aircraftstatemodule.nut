@@ -6,13 +6,16 @@ let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortc
 let { isInZoom } = require("%rGui/hudState.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let damagePanelBacklight = require("components/damagePanelBacklight.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
+let { DmStateMask } = require("%rGui/hud/airState.nut")
 
-let damagePanelSize = shHud(20)
+let xrayDollSize = shHud(20)
+let dmPanleSize = [shHud(40), shHud(20)]
 
 let xrayDoll = @(stateFlags) {
-  size = [damagePanelSize, damagePanelSize]
+  size = [xrayDollSize, xrayDollSize]
   children = [
-    damagePanelBacklight(stateFlags, damagePanelSize)
+    damagePanelBacklight(stateFlags, xrayDollSize)
     {
       rendObj = ROBJ_XRAYDOLL
       size = flex()
@@ -34,7 +37,7 @@ let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
-let doll = @() {
+let xray = @() {
   key = "aircraft_state_button"
   behavior = TouchAreaOutButton
   watch = isInZoom
@@ -61,8 +64,54 @@ let doll = @() {
   ]
 }
 
-let dollEditView = {
-  size = [damagePanelSize, damagePanelSize]
+let iconSize = hdpx(60).tointeger()
+let iconColumnCount = 5
+
+let mkIcon = @(iconId) {
+  rendObj = ROBJ_IMAGE
+  size = [iconSize, iconSize]
+  image = Picture($"ui/gameuiskin#{iconId}:{iconSize}:{iconSize}")
+}
+
+let dmIcons = [
+  mkIcon("dmg_air_altitude_control.svg")
+  mkIcon("dmg_air_rudder.svg")
+  mkIcon("dmg_air_flaps.svg")
+  mkIcon("dmg_air_aileron.svg")
+  mkIcon("dmg_air_chassis.svg")
+  mkIcon("dmg_air_gunner.svg")
+  mkIcon("dmg_air_engine.svg")
+  mkIcon("dmg_air_fire.svg")
+  mkIcon("dmg_air_oil.svg")
+  mkIcon("dmg_air_water.svg")
+]
+
+let dmModules = @() {
+  watch = DmStateMask
+  size = [iconSize * iconColumnCount, flex()]
+  pos = [0, -iconSize * 0.5]
+  flow = FLOW_VERTICAL
+  valign = ALIGN_BOTTOM
+  children = arrayByRows(dmIcons.filter(@(_, idx) DmStateMask.get() & (1 << idx)), iconColumnCount)
+    .map(@(row) {
+      size = [flex(), SIZE_TO_CONTENT]
+      flow = FLOW_HORIZONTAL
+      halign = ALIGN_RIGHT
+      children = row
+    })
+}
+
+let dmPanel = {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_RIGHT
+  children = [
+    dmModules
+    xray
+  ]
+}
+
+let dmPanelEditView = {
+  size = dmPanleSize
   rendObj = ROBJ_BOX
   borderWidth = hdpx(3)
   borderColor
@@ -76,6 +125,6 @@ let dollEditView = {
 
 
 return {
-  doll
-  dollEditView
+  dmPanel
+  dmPanelEditView
 }

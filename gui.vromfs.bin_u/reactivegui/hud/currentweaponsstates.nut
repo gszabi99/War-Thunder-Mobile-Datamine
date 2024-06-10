@@ -68,6 +68,11 @@ let shipSelectShortcuts = {
   [TRIGGER_GROUP_EXTRA_GUN_4] = "ID_SHIP_WEAPON_EXTRA_GUN_4",
 }
 
+let shipRocketShortcuts = {
+  EII_ROCKET = "ID_SHIP_WEAPON_ROCKETS",
+  EII_ROCKET_SECONDARY = "ID_SHIP_WEAPON_ROCKETS_SECONDARY",
+}
+
 let fixedPositionWeapons = [
   "ID_ZOOM",
   "EII_SUPPORT_PLANE",
@@ -162,7 +167,7 @@ local visibleWeaponsList = Computed(function(prev) {
       && "explosiveMass" in actionItem && actionItem.explosiveMass > 0) {
       counts[actionItem.explosiveMass] <- (counts?[actionItem.explosiveMass] ?? -1) + 1
       let viewCfg = {
-        selShortcut = weapon
+        selShortcut = shipRocketShortcuts?[weapon]
         number = explosiveMass[actionItem.explosiveMass] == 0 ? -1 : counts[actionItem.explosiveMass]
       }.__merge(config)
       if(counts[actionItem.explosiveMass] > 0)

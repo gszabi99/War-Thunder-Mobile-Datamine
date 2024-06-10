@@ -46,7 +46,7 @@ function startOfflineMission(unitName, skin, missionId, bullets, localMP = false
     misBlk["_gameMode"] = gameMode
   misBlk["difficulty"] = "arcade"
   misBlk["localMP"] = localMP
-
+  misBlk["isBotsAllowed"] = true
   setGuiOptionsMode(optModeTraining)
   set_gui_option(USEROPT_AIRCRAFT, unitName)
   set_gui_option(USEROPT_WEAPONS, $"{unitName}_default")

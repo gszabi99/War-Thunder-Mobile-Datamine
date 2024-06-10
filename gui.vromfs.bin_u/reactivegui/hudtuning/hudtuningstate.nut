@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 require("%rGui/onlyAfterLogin.nut")
 let { register_command } = require("console")
-let { json_to_string, parse_json } = require("json")
+let { object_to_json_string, parse_json } = require("json")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { eventbus_send } = require("eventbus")
 let { round } =  require("math")
@@ -77,7 +77,7 @@ isOnlineSettingsAvailable.subscribe(@(_) loadPresets())
 function savePreset(unitType, preset) {
   let blk = get_local_custom_settings_blk()
   let htBlk = blk.addBlock(SAVE_ID)
-  htBlk[unitType] = json_to_string(preset)
+  htBlk[unitType] = object_to_json_string(preset)
   presetsSaved.mutate(@(v) v[unitType] <- preset)
   eventbus_send("saveProfile", {})
 }

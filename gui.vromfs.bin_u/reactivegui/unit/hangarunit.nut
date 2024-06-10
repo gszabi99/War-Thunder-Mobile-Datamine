@@ -67,12 +67,12 @@ let hangarBgUnits = Computed(function(prevC) {
   if (prev.len() + 1 == allNames.len() && prev.findvalue(@(p) p.name not in allNames) == null) {
     //previous bh units are from the same squad
     let leftNames = clone allNames
-    delete leftNames[fgName]
+    leftNames.$rawdelete(fgName)
     return prev
       .map(function(p) {
         if (p.name not in leftNames)
           return null
-        delete leftNames[p.name]
+        leftNames.$rawdelete(p.name)
         return nameAndSkin(p.name, skin, currentSkins, defSkin)
       })
      .map(function(p) {
@@ -81,7 +81,7 @@ let hangarBgUnits = Computed(function(prevC) {
        let name = mainName in leftNames ? mainName
          : leftNames.findindex(@(_) true)
        if (name in leftNames)
-         delete leftNames[name]
+         leftNames.$rawdelete(name)
        return nameAndSkin(name, skin, currentSkins, defSkin)
      })
   }

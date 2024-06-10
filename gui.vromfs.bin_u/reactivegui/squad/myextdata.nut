@@ -13,8 +13,8 @@ let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 
 let curUnits = keepref(Computed(function() {
-  let { allUnits = null } = serverConfigs.value
-  let { units = null } = servProfile.value
+  let { allUnits = null, campaignCfg = {} } = serverConfigs.value
+  let { units = null, campaignSlots = null } = servProfile.value
   if (units == null || allUnits == null)
     return null
   let res = {}
@@ -23,8 +23,14 @@ let curUnits = keepref(Computed(function() {
       continue
     let campaign = allUnits?[u.name].campaign
     if (campaign != null && campaign not in res)
-      res[campaign] <- u.name
+      res[campaign] <- [u.name]
   }
+  foreach(campaign, cfg in campaignCfg)
+    if (cfg.totalSlots > 0)
+      res[campaign] <- campaignSlots?[campaign].slots
+        .filter(@(s) s.name != "")
+        .map(@(s) s.name)
+        ?? []
   return res
 }))
 

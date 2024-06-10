@@ -15,9 +15,9 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let boosterDesc = require("boosterDesc.nut")
 let { PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let purchaseBooster = require("purchaseBooster.nut")
-let { boosterInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
+let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { boosterInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 
 let close = @() isOpenedBoosterWnd(false)
 
@@ -47,16 +47,19 @@ let footer = {
   text = loc("boosters/footer")
 }.__update(fontTiny)
 
-let mkPricePlate = @(bst) {
-  size = [flex(), hdpx(90)]
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  rendObj = ROBJ_IMAGE
-  image = priceBgGrad
-  children = bst.price > 0
-    ? mkSpinnerHideBlock(Computed(@() boosterInProgress.value != null),
-        boosterInProgress.value == null ? mkCurrencyComp(bst.price, bst.currencyId) : null)
-    : null
+function mkPricePlate(bst) {
+  let isDelayed = Computed(@() boosterInProgress.value != null)
+  return @() {
+    watch = isDelayed
+    size = [flex(), hdpx(90)]
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = priceBgGrad
+    picSaturate = isDelayed.get() ? 0 : 1.0
+    children = bst.price > 0 ? mkCurrencyComp(bst.price, bst.currencyId) : null
+    transitions = [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
+  }
 }
 
 let gamercardPannel = {
@@ -158,7 +161,7 @@ let battlesLeftTitle = @(bst) {
     @() {
       watch = servProfile
       rendObj = ROBJ_TEXT
-      text = servProfile.value?.boosters[bst.id].battlesLeft ?? 0
+      text = servProfile.get()?.boosters[bst.id].battlesLeft ?? 0
       transform = {}
       animations = [{
         prop = AnimProp.scale, from = [1,1], to = [1.7, 1.7],
@@ -170,7 +173,8 @@ let battlesLeftTitle = @(bst) {
 
 let function boosterCard(bst) {
   let stateFlags = Watched(0)
-  let battlesLeft = Computed(@() servProfile.value?.boosters[bst.id].battlesLeft)
+  let battlesLeft = Computed(@() servProfile.get()?.boosters[bst.id].battlesLeft)
+  let hasSpinner = Computed(@() boosterInProgress.get() == bst.id)
   battlesLeft.subscribe(@(_) anim_start($"changeBoosterNumber_{bst.id}"))
   return @(){
     watch = [stateFlags, serverConfigs]
@@ -182,10 +186,15 @@ let function boosterCard(bst) {
     behavior = Behaviors.Button
     sound = { click  = "click" }
     transform = {
-      scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1]
+      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
     }
     children = [
-      boosterSlot(bst, stateFlags.value)
+      {
+        children = [
+          boosterSlot(bst, stateFlags.get())
+          mkWaitDimmingSpinner(hasSpinner)
+        ]
+      }
       mkPricePlate(bst)
       battlesLeftTitle(bst)
     ]

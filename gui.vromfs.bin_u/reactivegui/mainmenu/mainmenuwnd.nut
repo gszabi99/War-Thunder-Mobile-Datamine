@@ -4,7 +4,7 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
-let { translucentButtonsVGap, translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
+let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
 let { gamercardGap, CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
@@ -47,7 +47,8 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
-let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
+let { slotBarMainMenu, slotBarSize } = require("%rGui/slotBar/slotBar.nut")
+let { slots } = require("%rGui/slotBar/slotBarState.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -148,38 +149,44 @@ let btnVerRow = @(children) {
   children
 }
 
-let leftBottomButtons = btnVerRow([
-  campaignsBtn
-  @() {
-    watch = newbieOfflineMissions
-    children = newbieOfflineMissions.get() != null && DBGLEVEL == 0 ? null : btnVerRow([
-      bpBanner
+let leftBottomButtons = {
+  vplace = ALIGN_BOTTOM
+  flow = FLOW_VERTICAL
+  children = [
+    btnVerRow([
+      campaignsBtn
+      @() {
+        watch = newbieOfflineMissions
+        children = newbieOfflineMissions.get() != null && DBGLEVEL == 0 ? null : btnVerRow([
+          bpBanner
+          btnHorRow([
+            btnOpenQuests
+            btnsOpenSpecialEvents
+          ])
+        ])
+      }
       btnHorRow([
-        btnOpenQuests
-        btnsOpenSpecialEvents
+        btnVerRow([
+          @() {
+            watch = slots
+            children = slots.get().len() == 0 ? btnOpenUnitAttr : null
+          }
+          btnOpenUnitsTree
+        ])
+        btnVerRow([
+          onlineInfo
+          downloadInfoBlock
+        ])
       ])
     ])
-  }
-  btnHorRow([
-    btnVerRow([
-      @() {
-        watch = curCampaign
-        children = curCampaign.get() != "air" ? btnOpenUnitAttr  : null
-      }
-      btnOpenUnitsTree
-    ])
-    btnVerRow([
-      onlineInfo
-      downloadInfoBlock
-    ])
-  ])
-  // TODO: slotbar
-  @() curCampaign.get() != "air" ? { watch = curCampaign }
-    : {
-        watch = curCampaign
-        size = [unitPlateTiny[0] * 4 + hdpx(30), unitPlateTiny[1] + translucentButtonsHeight * 0.8]
-      }
-])
+    @() slots.get().len() == 0 ? { watch = slots }
+      : {
+          watch = slots
+          size = slotBarSize
+          children = slotBarMainMenu
+        }
+  ]
+}
 
 let gamercardBattleItemsBalanceBtns = @(){
   watch = [itemsOrder, specialEventGamercardItems, unitSpecificItems]
@@ -226,6 +233,7 @@ let toBattleButtonPlace = {
         mkMRankRange
       ]
     }
+    isWidescreen ? null : { size = [0, hdpx(40)] }
     toBattleButtonForRandomBattles
   ]
 }
@@ -245,7 +253,7 @@ let bottomCenterBlock = {
   valign = ALIGN_BOTTOM
   children = [
     mkUnitPkgDownloadInfo(curUnit, false,
-      { pos = [0, - unitPlateTiny[1] - translucentButtonsHeight * 0.8 - translucentButtonsVGap] })
+      { pos = [0, - slotBarSize[1] - translucentButtonsVGap] })
   ]
 }
 

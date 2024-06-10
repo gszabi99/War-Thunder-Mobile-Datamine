@@ -5,7 +5,7 @@ let { SGT_UNIT, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
 let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { shopPurchaseInProgress, schRewardInProgress
+let { shopPurchaseInProgress, schRewardInProgress, unitInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("goodsStates.nut")
 let { purchaseGoods } = require("purchaseGoods.nut")
@@ -25,6 +25,7 @@ let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
+let { fakeGoodsByCategory, allFakeGoods } = require("fakeGoodsState.nut")
 
 
 let tabTranslateWithOpacitySwitchAnim = [
@@ -101,6 +102,16 @@ let mkGoodsState = @(goods) Computed(function() {
   return res
 })
 
+let mkFakeGoodsState = @(goods) Computed(function() {
+  local res = 0
+  if (unitInProgress.get() != null) {
+    res = res | DELAYED
+    if (unitInProgress.get() == goods.id)
+      res = res | PURCHASING
+  }
+  return res
+})
+
 let mkSchRewardState = @(schReward) Computed(function() {
   local res = schRewardInProgress.value == schReward.id ? PURCHASING : 0
   if (schReward.needAdvert && !canShowAds.value)
@@ -171,6 +182,10 @@ function onGoodsClick(goods) {
     purchaseFunc(goods)
 }
 
+function onFakeGoodsClick(goods) {
+  openGoodsPreview(goods.id)
+}
+
 let gamercardShopItemsBalanceBtns = @(items) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -210,23 +225,49 @@ let mkShopGamercard = @(onClose) function(){
 }
 
 let mkShopPage = @(pageW, pageH) function() {
-  let goodsList = mkGoodsListWithBaseValue(goodsByCategory.value?[curCategoryId.value] ?? [])
+  let goodsListBase = Computed(@() goodsByCategory.get()?[curCategoryId.get()] ?? [])
+  let schReward = Computed(@() actualSchRewardByCategory.get()?[curCategoryId.get()])
+  let fakeGoodsList = Computed(@() fakeGoodsByCategory.get()?[curCategoryId.get()] ?? [])
+
+  let hasSchReward = schReward.get() != null
+
+  let goodsList = mkGoodsListWithBaseValue(goodsListBase.get())
   goodsList.sort(sortGoods)
-  let schReward = actualSchRewardByCategory.value?[curCategoryId.value]
-  let goodsTotal = goodsList.len() + (schReward == null ? 0 : 1)
+  let goodsTotal = goodsList.len() + fakeGoodsList.get().len() + (hasSchReward ? 1 : 0)
   let maxGoodsPerW = floor((pageW + goodsGap + 1) / (goodsW + goodsGap))
   let maxGoodsPerH = floor((pageH + goodsGap + 1) / (goodsH + goodsGap))
   let goodsPerW = max(min(goodsTotal, maxGoodsPerW, 1), ceil(goodsTotal * 1.0 / maxGoodsPerH))
-  let rows = arrayByRows(schReward != null ? [schReward].extend(goodsList) : goodsList, goodsPerW)
+
+  let allRows = []
+  if (hasSchReward)
+    allRows.append(schReward.get())
+  allRows.extend(goodsList)
+  allRows.extend(fakeGoodsList.get())
+  let rows = arrayByRows(allRows, goodsPerW)
 
   let resultRows = rows
     .map(@(row, rowIdx) row
       .map(function(good, goodIdx) {
-        if (rowIdx == 0 && good == schReward)
-          return mkGoods(schReward, @() onSchRewardReceive(schReward), mkSchRewardState(schReward), {
-            delay = goodsGlareRepeatDelay,
-            repeatDelay = goodsGlareAnimDuration * rows[0].len()
-          })
+        if (rowIdx == 0 && good == schReward.get())
+          return mkGoods(
+            good,
+            @() onSchRewardReceive(good),
+            mkSchRewardState(good),
+            {
+              delay = goodsGlareRepeatDelay,
+              repeatDelay = goodsGlareAnimDuration * rows[0].len()
+            }
+          )
+        if (allFakeGoods.get()?[good?.id])
+          return mkGoods(
+            good,
+            @() onFakeGoodsClick(good),
+            mkFakeGoodsState(good),
+            {
+              delay = goodIdx * goodsGlareAnimDuration + goodsGlareRepeatDelay + rowIdx * goodsGlareAnimDuration / 3
+              repeatDelay = goodsGlareAnimDuration * (rows[0].len() - goodIdx) - rowIdx * goodsGlareAnimDuration / 3
+            }
+          )
         return mkGoods(
           good,
           @() onGoodsClick(good),
@@ -240,9 +281,9 @@ let mkShopPage = @(pageW, pageH) function() {
     )
 
   return {
-    watch = [ goodsByCategory, curCategoryId, actualSchRewardByCategory ]
+    watch = [ goodsListBase, curCategoryId, schReward, fakeGoodsList ]
     children = {
-      key = curCategoryId.value
+      key = curCategoryId.get()
       flow = FLOW_VERTICAL
       gap = goodsGap
       children = resultRows.map(@(children) {

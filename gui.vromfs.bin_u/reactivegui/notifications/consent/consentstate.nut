@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let logC = log_with_prefix("[consent] ")
-
+let { deferOnce } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
-let { isConsentAllowLogin, isOnlineSettingsAvailable, isOpenedLegalWnd } = require("%appGlobals/loginState.nut")
+let { isConsentAllowLogin, isReadyForConsent } = require("%appGlobals/loginState.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -11,11 +11,10 @@ let { setFirebaseConsent = @(_) null  } = is_android ? require("android.firebase
         : is_ios ? require("ios.firebase.analytics")
         : {}
 let { setAppsFlyerConsent, startAppsFlyer } = require("appsFlyer")
-let { json_to_string } = require("json")
-
-let {requestGoogleConsent, googleConsent} = require("consentGoogleState.nut")
-
+let { object_to_json_string } = require("json")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { isIdfaDenied } = require("%rGui/login/stateIDFA.nut")
+
 
 let CONSENT_OPTIONS_SAVE_ID = "consentManageOptions"
 
@@ -46,28 +45,31 @@ let points = Computed(@() defaultPointsTable.map(@(v, k) savedPoints.get()?[k] ?
 let isConsentAcceptedOnce = Computed(@() (savedPoints.get()?.len() ?? 0) != 0)
 
 let needOpenConsentWnd = mkWatched(persist, "consentMainWnd", false)
-let needForceOpenConsetnWnd = Computed(@() savedPoints.get() != null && !isConsentAcceptedOnce.get())
+let needForceOpenConsetnWnd    = Computed(@() savedPoints.get() != null && !isConsentAcceptedOnce.get() && !isIdfaDenied.get())
+let needSkipConsentWnd = keepref(Computed(@() savedPoints.get() != null && !isConsentAcceptedOnce.get() && isIdfaDenied.get()))
 
 let isOpenedConsentWnd = Computed(@()
   (needOpenConsentWnd.get() || needForceOpenConsetnWnd.get())
-  && !isOpenedLegalWnd.get())
+  && isReadyForConsent.get())
 
 function setupAnalytics() {
-  requestGoogleConsent(true)
-}
-
-function onGoogleConsentResponse() {
   let v = savedPoints.get()
   logC("analytics starting with consent:", v)
-  setFirebaseConsent(json_to_string(v))
-  setAppsFlyerConsent(v?.analytics_storage ?? false, v?.ad_personalization ?? false, true)
+  setFirebaseConsent(object_to_json_string(v))
+  setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
   startAppsFlyer()
-  if (isConsentAcceptedOnce.get()) {
-    isConsentAllowLogin.set(true)
-  }
 }
 
-googleConsent.subscribe(@(v) v ? onGoogleConsentResponse() : null)
+function autoSkipConsent() {
+  if (isConsentAcceptedOnce.get())
+    return
+  savedPoints(defaultPointsTable.map(@(_) false))// dont need to save to online storage so that the window can open again at the next login
+  logC("consent skipped by denied IDFA")
+  sendUiBqEvent("consent", { id = "consent_skip_by_denied_idfa" })
+  setupAnalytics()
+}
+
+needSkipConsentWnd.subscribe(@(v) v ? deferOnce(autoSkipConsent) : null)
 
 let function loadPoints(){
   let res = {}
@@ -80,17 +82,22 @@ let function loadPoints(){
   if (isDataBlock(blk))
     eachParam(blk, @(v, id) res[id] <- v)
   savedPoints(res)
-  setupAnalytics()//run analytics when user already accepted in previous session
+  setupAnalytics() //run analytics when user already accepted in previous session
 }
 
-if (savedPoints.get() == null && isOnlineSettingsAvailable.get()){
+isConsentAcceptedOnce.subscribe(@(v) v ? isConsentAllowLogin.set(true) : null)
+
+if (isConsentAcceptedOnce.get())
+  isConsentAllowLogin.set(true)
+
+if (savedPoints.get() == null && isReadyForConsent.get())
   loadPoints()
-}
+
 function onOnlineSettingsNOTAvailable(){
   isConsentAllowLogin.set(false)
   savedPoints(null)
 }
-isOnlineSettingsAvailable.subscribe(@(v) v ? loadPoints(): onOnlineSettingsNOTAvailable())
+isReadyForConsent.subscribe(@(v) v ? loadPoints(): onOnlineSettingsNOTAvailable())
 
 let isOpenedManage = mkWatched(persist, "consentManage", false)
 let isOpenedPartners = mkWatched(persist, "consentPartners", false)
@@ -115,7 +122,7 @@ function applyConsent(pointsTable, source){
     id = "consent_save",
     from = source.wnd,
     status = source.action,
-    values = json_to_string(pointsTable)
+    values = object_to_json_string(pointsTable)
   })
   savedPoints(pointsTable)
   let sBlk = get_local_custom_settings_blk()
@@ -130,10 +137,13 @@ function applyConsent(pointsTable, source){
   setupAnalytics()
 }
 
-register_command(function(){
-  let sBlk = get_local_custom_settings_blk()
-  sBlk.removeBlock(CONSENT_OPTIONS_SAVE_ID)
-  }, "ui.removeConsentUserData")
+register_command(
+  function(){
+    let sBlk = get_local_custom_settings_blk()
+    sBlk.removeBlock(CONSENT_OPTIONS_SAVE_ID)
+    eventbus_send("saveProfile", {})
+  },
+  "ui.removeConsentUserData")
 
 return {
   CONSENT_OPTIONS_SAVE_ID

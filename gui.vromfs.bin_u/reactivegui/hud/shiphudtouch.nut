@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
 let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
-let hudTopLeft = require("hudTopLeft.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let { shipSight } = require("%rGui/hud/sight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
@@ -11,6 +10,7 @@ let { threatRocketsBlock } = require("%rGui/hud/hudThreatRocketsBlock.nut")
 let { isInStrategyMode } = require("%rGui/hudState.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 let strategyHud = require("%rGui/hud/strategyMode/strategyHud.nut")
+let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 
 return @() {
   watch = isInStrategyMode
@@ -28,7 +28,7 @@ return @() {
         hudBottomCenter
         hudTopMainLog
         hudTuningElems
-        hudTopLeft
+        menuButton
         threatRocketsBlock
         hudTimersBlock
         shipSight

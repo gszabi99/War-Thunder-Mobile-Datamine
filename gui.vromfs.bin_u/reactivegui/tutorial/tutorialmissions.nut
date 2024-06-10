@@ -19,7 +19,9 @@ let forceTutorTankMissionV2 = mkWatched(persist, "forceTutorTankMissionV2", null
 let tutorialMissions = Computed(@() {
   tutorial_ships_1 = "tutorial_ship_basic"
   tutorial_tanks_1 = (forceTutorTankMissionV2.value ?? abTests.value?.tutorialTankMissionV2) == "true" ? "tutorial_tank_basic_v2" : "tutorial_tank_basic"
+  tutorial_air_1   = "tutorial_plane_basic"
 })
+let isSkippedTutor = mkWatched(persist, "isSkippedFirstBattleTutor", {})
 let started = mkWatched(persist, "started", null)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 
@@ -37,6 +39,8 @@ let needFirstBattleTutor = Computed(@()
       || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign?[curCampaign.value]))
   )
   != isDebugMode.value)
+
+let setSkippedTutor = @(campaign) isSkippedTutor.mutate(@(v) v[getFirstBattleTutor(campaign)] <- true)
 
 function needFirstBattleTutorForCampaign(campaign) {
   if (getFirstBattleTutor(campaign) not in missionsWithRewards.value)
@@ -73,7 +77,8 @@ function startTutor(id) {
       needAddUnit = true
     })
   }
-  eventbus_send("startSingleMission", { id = tutorialMissions.value[id] })
+  if (!isSkippedTutor.get()?[id])
+    eventbus_send("startSingleMission", { id = tutorialMissions.value[id] })
   resetTimeout(0.1, @() isDebugMode(false))
 }
 
@@ -102,4 +107,5 @@ return {
   isTutorialMissionsDebug = isDebugMode
   tutorialMissions
   rewardTutorialMission
+  setSkippedTutor
 }

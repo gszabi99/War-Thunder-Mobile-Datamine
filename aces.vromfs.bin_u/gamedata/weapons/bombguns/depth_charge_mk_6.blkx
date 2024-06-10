@@ -6,10 +6,10 @@
   "reloadTime": 60.0,
   "mesh": "depth_charge_mk6",
   "bomb": {
-    "detonationRadius": 15.0,
+    "detonationRadius": 20.0,
     "mass": 700.0,
     "explosiveType": "tnt",
-    "explosiveMass": 100.0,
+    "explosiveMass": 360.0,
     "bombType": "he_bomb",
     "bombName": "mk_6",
     "dragCx": 0.07,
@@ -28,9 +28,9 @@
     "rendinstDamageRadius": 30.0,
     "isDepthCharge": true,
     "splash": {
-      "innerRadius": 40.0,
+      "innerRadius": 60.0,
       "penetration": 100.0,
-      "damage": 3500.0,
+      "damage": 6500.0,
       "damageType": "explosion"
     },
     "DamageParts": {

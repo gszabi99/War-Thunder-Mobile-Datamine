@@ -52,6 +52,10 @@ let nickFrames = {
   tornado = @(n) $"␀{n}␁"
   aircraft_wings = @(n) $"␂{n}␃"
   tank_tracks = @(n) $"␄{n}␅"
+  antitank_hedgehog = @(n) $"⊲{n}⊳"
+  sun_and_fighter = @(n) $"⊴{n}⊴"
+  radio_tower = @(n) $"⊵{n}⊵"
+  missle_strike = @(n) $"⊶{n}⊷"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

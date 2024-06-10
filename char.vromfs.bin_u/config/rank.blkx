@@ -1876,6 +1876,142 @@
         }
       }
     },
+    "flightPerformance": {
+      "engine": [
+        1.0,
+        1.2
+      ],
+      "fuselage": [
+        1.0,
+        1.2
+      ],
+      "flapsWings": [
+        1.0,
+        1.2
+      ],
+      "compressor": [
+        1.0,
+        1.2
+      ]
+    },
+    "pilot": {
+      "detection": {
+        "vision": {
+          "spottingDistance": [
+            3000.0,
+            6000.0
+          ],
+          "instantSpottingDistance": [
+            500.0,
+            1000.0
+          ],
+          "rocketSpottingDistance": [
+            5000.0,
+            10000.0
+          ]
+        },
+        "hearing": {
+          "spottingDistance": [
+            400.0,
+            800.0
+          ],
+          "instantSpottingDistance": [
+            150.0,
+            300.0
+          ]
+        }
+      },
+      "takingDamage": {
+        "damageMultiplier": [
+          3.0,
+          1.0
+        ],
+        "deathChanceMultiplier": [
+          1.0,
+          0.3
+        ]
+      }
+    },
+    "gForce": {
+      "adaptationK": [
+        0.0,
+        1.0
+      ],
+      "blackout": {
+        "start": [
+          3.3,
+          4.5
+        ],
+        "end": [
+          4.5,
+          7.5
+        ]
+      },
+      "redout": {
+        "start": [
+          2.0,
+          3.0
+        ],
+        "end": [
+          3.0,
+          4.0
+        ]
+      }
+    },
+    "weaponsmith": {
+      "reloadSpeed": {
+        "gun": [
+          1.0,
+          3.0
+        ],
+        "cannon": [
+          1.0,
+          3.0
+        ],
+        "schraegeMusik": [
+          1.0,
+          3.0
+        ],
+        "bombs": [
+          1.0,
+          2.0
+        ],
+        "rockets": [
+          1.0,
+          2.0
+        ],
+        "torpedoes": [
+          1.0,
+          2.0
+        ],
+        "gunners": [
+          0.5,
+          2.0
+        ]
+      },
+      "weaponCare": {
+        "mulMaxDeltaAngle": [
+          0.9,
+          1.0
+        ],
+        "bombScatterMultiplier": [
+          2.0,
+          1.0
+        ],
+        "torpedoScatterMultiplier": [
+          2.0,
+          1.0
+        ],
+        "rocketScatterMultiplier": [
+          2.0,
+          1.0
+        ],
+        "jamProbabilityMultiplier": [
+          3.0,
+          1.0
+        ]
+      }
+    },
     "tank_crew": {
       "crewTankHearingDistance": 215.0,
       "crewTankHearingSpottingDistance": 27.0,

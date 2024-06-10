@@ -1,5 +1,5 @@
-
 let { Computed } = require("frp")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { serverConfigs } = require("servConfigs.nut")
 let servProfile = require("servProfile.nut")
 let { set_current_campaign } = require("pServerApi.nut")
@@ -41,6 +41,7 @@ function filterByCampaign(res, key, campaign) {
 let campConfigs = Computed(function() {
   let campaign = curCampaign.value
   let res = clone (serverConfigs.value ?? {})
+  chooseByCampaign(res, "campaignCfg", campaign)
   chooseByCampaign(res, "playerLevels", campaign)
   chooseByCampaign(res, "playerLevelsInfo", campaign)
   chooseByCampaign(res, "playerLevelRewards", campaign)
@@ -95,6 +96,7 @@ let campProfile = Computed(function(prev) {
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
   chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", campaign)
   chooseOneByCampaignTbl(res, prev, "activeOffers", campaign)
+  chooseOneByCampaignTbl(res, prev, "campaignSlots", campaign)
   return res
 })
 
@@ -119,6 +121,15 @@ let exportProfile = {
   decorators = {}
 }.map(@(value, key) Computed(@() campProfile.value?[key] ?? value))
 
+let curCampaignSlots = Computed(@() (campConfigs.get()?.campaignCfg.totalSlots ?? 0) <= 0 ? null
+  : campProfile.get()?.campaignSlots)
+let curCampaignSlotUnits = Computed(function(prev) {
+  let res = curCampaignSlots.get()?.slots
+    .map(@(s) s.name)
+    .filter(@(v) v != "")
+  return isEqual(res, prev) ? prev : res
+})
+
 return exportProfile.__update({
   isProfileReceived = Computed(@() servProfile.value.len() > 0)
   curCampaign
@@ -128,4 +139,6 @@ return exportProfile.__update({
   isAnyCampaignSelected
   campConfigs
   campProfile
+  curCampaignSlots
+  curCampaignSlotUnits
 })

@@ -3,7 +3,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
 let { tankTagsOrder, getTagName } = require("%appGlobals/config/skins/skinTags.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { mkSkinCustomTags } = require("skinTuning.nut")
+let { mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textButtonCommon, textButtonBright } = require("%rGui/components/textButton.nut")

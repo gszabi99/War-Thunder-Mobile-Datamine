@@ -103,18 +103,21 @@ let needShowNewsWnd = Computed(@() isMainMenuAttached.value
 let pagesCount = Computed(@() ceil(newsfeed.value.len() * 1.0 / articlesPerPage.value))
 let curPageIdx = Computed(@() curArticleIdx.value / articlesPerPage.value)
 
+function saveLastSeenId(id) {
+  lastSeenId(id)
+  let sBlk = get_local_custom_settings_blk()
+  setBlkValueByPath(sBlk, SEEN_SAVE_ID, id)
+  eventbus_send("saveProfile", {})
+}
+
 isNewsWndOpened.subscribe(function (v) {
   if (haveUnseenArticles.value)
     playerSelectedArticleId(null)
 
   if (v)
     updateUnreadArticles()
-  else {
-    lastSeenId(newsfeed.value.reduce(@(res, val) max(res, val.id), lastSeenId.value))
-    let sBlk = get_local_custom_settings_blk()
-    setBlkValueByPath(sBlk, SEEN_SAVE_ID, lastSeenId.value)
-    eventbus_send("saveProfile", {})
-  }
+  else
+    saveLastSeenId(newsfeed.value.reduce(@(res, val) max(res, val.id), lastSeenId.value))
 })
 
 function loadLastSeenArticleId() {
@@ -270,14 +273,15 @@ isFeedReceived.subscribe(function(value) {
 isNewsWndOpened.subscribe(@(v) v ? requestCurArticle() : null)
 curArticleId.subscribe(@(v) isNewsWndOpened.value ? requestNewsArticle(v) : null)
 if (isLoggedIn.value && isFeedReceived.value && (isNewsWndOpened.value || haveUnseenArticles.value))
-  requestNewsArticle(curArticleId.value)
+  requestCurArticle()
 
-register_command(function() {
-  lastSeenId(0)
-  let sBlk = get_local_custom_settings_blk()
-  setBlkValueByPath(sBlk, SEEN_SAVE_ID, 0)
-  eventbus_send("forceSaveProfile", {})
-}, "ui.resetNewsSeen")
+register_command(@() saveLastSeenId(0), "ui.resetNewsSeen")
+
+register_command(function(count) {
+  let news = clone newsfeed.get()
+  news.sort(@(a, b) b.id <=> a.id)
+  saveLastSeenId(news?[count]?.id ?? 0)
+}, "ui.resetNewsSeenOnlyLast")
 
 return {
   isNewsWndOpened

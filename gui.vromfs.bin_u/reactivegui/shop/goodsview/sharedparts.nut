@@ -8,8 +8,9 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
 let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
+let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { TIME_DAY_IN_SECONDS_F, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { getFontSizeToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
@@ -32,7 +33,7 @@ let glareWidth = sh(8)
 let goodsGlareAnimDuration = 0.2
 
 let offerW = hdpx(325)
-let offerH = hdpx(140)
+let offerH = hdpx(120)
 let offerPad = [hdpx(10), hdpx(15)]
 let titlePadding = hdpx(33)
 
@@ -180,12 +181,12 @@ let popularMark = {
 
 function mkGoodsNewPopularMark(goods) {
   let isPopular = goods?.isPopular
-  let isNew = Computed(@() goods.id in shopUnseenGoods.value)
+  let isNew = Computed(@() goods.id in shopUnseenGoods.get())
 
   return @() {
     watch = isNew
-    margin = isNew.value ? hdpx(30) : null
-    children = isNew.value ? priorityUnseenMark
+    margin = isNew.get() ? hdpx(30) : null
+    children = isNew.get() ? priorityUnseenMark
       : isPopular ? popularMark
       : null
   }
@@ -227,7 +228,7 @@ let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus?.len() ??
   ? null
   : function() {
       let res = { watch = state }
-      if (state.value & HAS_PURCHASES)
+      if (state.get() & HAS_PURCHASES)
         return res
       local currencyId = goods.firstPurchaseBonus.findindex(@(_) true)
       local value = goods.firstPurchaseBonus?[currencyId] ?? 0
@@ -261,7 +262,7 @@ function mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag = true) {
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
     image = priceBgTex
-    picSaturate = state.value & DELAYED ? 0 : 1.0
+    picSaturate = state.get() & DELAYED ? 0 : 1.0
     children = [
       price > 0 && currencyId != "" ? mkDiscountPriceComp(basePrice, price, currencyId, CS_COMMON.__merge({fontStyle = fontMedium}))
         : "priceText" in priceExt ? txt({ text = priceExt.priceText }.__update(fontMedium))
@@ -291,7 +292,7 @@ function mkFreePricePlate(goods, state) {
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
     image = freeBgGrad
-    picSaturate = (state.value & (PURCHASING | NOT_READY)) || !isReady ? 0 : 1.0
+    picSaturate = (state.get() & (PURCHASING | NOT_READY)) || !isReady ? 0 : 1.0
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = !needAdvert ? txt({ text = utf8ToUpper(loc("shop/free")) }.__update(fontSmall))
@@ -316,7 +317,7 @@ function mkPricePlate(goods, priceBgTex, state, animParams = null, needDiscountT
       (goods?.isFreeReward ?? false)
         ? mkFreePricePlate(goods, state)
         : mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag)
-      animParams == null || ((state.value & (PURCHASING | NOT_READY)) || !isReady)
+      animParams == null || ((state.get() & (PURCHASING | NOT_READY)) || !isReady)
         ? null
         : {
           rendObj = ROBJ_IMAGE
@@ -363,7 +364,7 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
     onElemState = @(v) stateFlags(v)
     xmbNode = XmbNode()
     transform = {
-      scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
+      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click = "choose" }
@@ -389,14 +390,14 @@ function mkOfferWrap(onClick, mkContent) {
     onElemState = @(v) stateFlags(v)
     xmbNode = XmbNode()
     transform = {
-      scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
+      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click = "choose" }
     children = [
       {
         size = flex()
-        children = mkContent?(stateFlags.value)
+        children = mkContent?(stateFlags.get())
       }
       {
         size = flex()
@@ -407,77 +408,88 @@ function mkOfferWrap(onClick, mkContent) {
   })
 }
 
-let appearAnims = [
-  { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.5, easing = InQuad, play = true }
-]
-let waitSpinner = mkSpinner(hdpxi(100))
-let mkGoodsWaitSpinner = @(state) @() (state.value & PURCHASING) == 0 ? { watch = state }
-  : {
-      watch = state
-      size = flex()
-      valign = ALIGN_CENTER
-      halign = ALIGN_CENTER
-      children = [
-        {
-          size = flex()
-          rendObj = ROBJ_SOLID
-          color = 0x80000000
-          animations = appearAnims
-        }
-        waitSpinner
-      ]
-    }
-
 let fadeAnims = [
   { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = InQuad, playFadeOut = true }
 ]
-function mkGoodsTimeTimeProgress(goods) {
-  let { readyTime = 0, interval = 0 } = goods
-  if (readyTime <= serverTime.value)
+let mkGoodsTimeProgress = @(fValue, text) {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = 0x80000000
+  animations = fadeAnims
+  flow = FLOW_VERTICAL
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  gap = hdpx(20)
+  padding = [hdpx(50), 0, 0, 0]
+  children = [
+    @() {
+      watch = fValue
+      size = [timerSize, timerSize]
+      rendObj = ROBJ_PROGRESS_CIRCULAR
+      image = Picture($"ui/gameuiskin#circular_progress_1.svg:{timerSize}:{timerSize}")
+      fgColor = 0xFFFFFFFF
+      bgColor = 0x33555555
+      fValue = fValue.get()
+    }
+    {
+      size = flex()
+      halign = ALIGN_CENTER
+      flow = FLOW_VERTICAL
+      children = [
+        txtBase.__merge({ text = loc("shop/updateIn") }, fontSmall)
+        @() txtBase.__merge({ watch = text, text = text.get() }, fontSmall)
+      ]
+    }
+  ]
+}
+
+let untilNextDaySec = @(currentTime) TIME_DAY_IN_SECONDS - (currentTime % TIME_DAY_IN_SECONDS)
+function mkCalcDailyLimitGoodsTimeProgress() {
+  let sec = Computed(@() untilNextDaySec(serverTime.get()))
+  let fValue = Computed(@() max(0, clamp(1.0 - sec.get() / TIME_DAY_IN_SECONDS_F, 0, 1)))
+  let timeText = Computed(@() secondsToHoursLoc(sec.get()))
+  return mkGoodsTimeProgress(fValue, timeText)
+}
+
+function mkDailyLimitGoodsTimeProgress(goods) {
+  let { dailyLimit = 0, id = null } = goods
+  if (dailyLimit <= 0)
     return null
-  let timeText = Computed(@() secondsToHoursLoc(max(0, readyTime - serverTime.value)))
-  let fValue = Computed(@() interval <= 0 ? 0
-    : clamp(1.0 - (readyTime - serverTime.value).tofloat() / interval, 0, 1))
-  return {
+  let canShowTimeProgress = Computed(@() (todayPurchasesCount.get()?[id].count ?? 0) >= dailyLimit)
+  return @() {
+    watch = canShowTimeProgress
     size = flex()
-    rendObj = ROBJ_SOLID
-    color = 0x80000000
-    animations = fadeAnims
-    flow = FLOW_VERTICAL
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    gap = hdpx(20)
-    padding = [hdpx(50), 0, 0, 0]
-    children = [
-      @() {
-        watch = fValue
-        size = [timerSize, timerSize]
-        rendObj = ROBJ_PROGRESS_CIRCULAR
-        image = Picture($"ui/gameuiskin#circular_progress_1.svg:{timerSize}:{timerSize}")
-        fgColor = 0xFFFFFFFF
-        bgColor = 0x33555555
-        fValue = fValue.value
-      }
-      @() txtBase.__merge({ watch = timeText, text = timeText.value }, fontSmall)
-    ]
+    children = canShowTimeProgress.get() ? mkCalcDailyLimitGoodsTimeProgress() : null
   }
+}
+
+function mkFreeAdsGoodsTimeProgress(goods) {
+  let { readyTime = 0, interval = 0 } = goods
+  if (readyTime <= serverTime.get())
+    return null
+  let diff = Computed(@() readyTime - serverTime.get())
+  let timeText = Computed(@() secondsToHoursLoc(max(0, diff.get())))
+  let fValue = Computed(@() max(0, clamp(1.0 - diff.get().tofloat() / interval, 0, 1)))
+  return mkGoodsTimeProgress(fValue, timeText)
 }
 
 let mkGoodsCommonParts = @(goods, state) [
   mkGoodsNewPopularMark(goods)
   mkFirstPurchBonusMark(goods, state)
-  mkGoodsWaitSpinner(state)
-  mkGoodsTimeTimeProgress(goods)
+  mkWaitDimmingSpinner(Computed(@() (state.value & PURCHASING) != 0))
+  mkFreeAdsGoodsTimeProgress(goods)
+  mkDailyLimitGoodsTimeProgress(goods)
 ]
 
 let mkOfferCommonParts = @(goods, state) [
-  mkGoodsWaitSpinner(state)
-  mkGoodsTimeTimeProgress(goods)
+  mkWaitDimmingSpinner(Computed(@() (state.value & PURCHASING) != 0))
+  mkFreeAdsGoodsTimeProgress(goods)
+  mkDailyLimitGoodsTimeProgress(goods)
 ]
 
 function mkTimeLeft(endTime, ovr = {}) {
   let countdownText = Computed(function() {
-    let leftTime = endTime - serverTime.value
+    let leftTime = endTime - serverTime.get()
     return leftTime > 0 ? secondsToHoursLoc(leftTime) : ""
   })
   return @() textArea({
@@ -526,7 +538,7 @@ function mkSquareIconBtn(text, onClick, ovr) {
     onElemState = @(v) stateFlags(v)
     sound = { click  = "click" }
     transform = {
-      scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.85, 0.85] : [1, 1]
+      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.85, 0.85] : [1, 1]
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
     children = [
@@ -540,30 +552,38 @@ function mkSquareIconBtn(text, onClick, ovr) {
   }.__merge(ovr)
 }
 
-let limitFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
-let function mkGoodsLimit(goods) {
+function mkGoodsLimitText(goods, limitFontGradient) {
   let { limit = 0, dailyLimit = 0, id = null } = goods
+  if (limit <= 0 && dailyLimit <= 0)
+    return null
   let limitExt = Computed(function() {
-    let limitLeft = limit <= 0 ? -1 : max(0, limit - (purchasesCount.get()?[id].count ?? 0))
-    let dailyLimitLeft = dailyLimit <= 0 ? -1 : max(0, dailyLimit - (todayPurchasesCount.get()?[id].count ?? 0))
-    return limitLeft < 0 ? dailyLimitLeft
-      : dailyLimitLeft < 0 ? limitLeft
+    let limitLeft = limit > 0 ? max(0, limit - (purchasesCount.get()?[id].count ?? 0)) : -1
+    let dailyLimitLeft = dailyLimit > 0 ? max(0, dailyLimit - (todayPurchasesCount.get()?[id].count ?? 0)) : -1
+    return limitLeft < 0 || dailyLimitLeft < 0
+      ? max(limitLeft, dailyLimitLeft)
       : min(limitLeft, dailyLimitLeft)
   })
   return @() {
     watch = limitExt
+    children = limit <= 0 && limitExt.get() <= 0 ? null
+      : mkGradGlowText(
+          loc(dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit",
+            { available = limitExt.get(), limit = max(limit, dailyLimit) }),
+          fontVeryTiny,
+          limitFontGradient)
+  }
+}
+
+let limitFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
+let function mkGoodsLimit(goods) {
+  return @() {
     margin = [hdpx(15), hdpx(20)]
     pos = [0, (goods?.firstPurchaseBonus?.len() ?? 0) == 0 ? 0 : hdpx(-50)]
     size = flex()
     halign = ALIGN_RIGHT
     valign = ALIGN_BOTTOM
     flow = FLOW_VERTICAL
-    children = limitExt.get() < 0 ? null
-      : mkGradGlowText(
-          loc(dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit",
-            { available = limitExt.get(), limit = max(limit, dailyLimit) }),
-          fontVeryTiny,
-          limitFontGrad)
+    children = mkGoodsLimitText(goods, limitFontGrad)
   }
 }
 
@@ -594,11 +614,12 @@ return {
   mkOfferCommonParts
   oldAmountStrikeThrough
   mkOfferTexts
-  mkGoodsTimeTimeProgress
+  mkFreeAdsGoodsTimeProgress
   underConstructionBg
   mkSquareIconBtn
   mkTimeLeft
   mkGoodsLimit
+  mkGoodsLimitText
 
   goodsGlareAnimDuration
   mkBgParticles

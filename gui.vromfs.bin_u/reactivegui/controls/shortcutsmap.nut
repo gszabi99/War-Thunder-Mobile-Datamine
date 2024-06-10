@@ -3,9 +3,12 @@ let { isReplayShortcuts } = require("shortcutFlags.nut")
 
 let allShortcuts = isReplayShortcuts ? {}
 : {
+  // Shared shortcuts:
   ID_FLIGHTMENU = "J:Start" //can't be changed. Need here for correct show in the controls help.
   ID_CONTINUE = "J:RT | Space"
-  ID_CAMERA_NEUTRAL =  "J:LS | N"
+  ID_MPSTATSCREEN =  "J:Back | Tab"
+
+  ID_CAMERA_NEUTRAL =  "J:LS | N" // Tank and Air
 
   //TANK shortcuts:
   ID_FIRE_GM = "J:RT | Space"
@@ -44,9 +47,8 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_SHIP_WEAPON_TORPEDOES = "J:A | X"
   ID_SHIP_WEAPON_MINE = "J:B | C"
   ID_SHIP_WEAPON_MORTAR = "J:B | C"
-  ID_SHIP_WEAPON_ROCKETS = "J:Y | E"
-  ID_SHIP_WEAPON_ROCKETS_SECONDARY = "J:Y | R"
-  ID_SHIP_STRATEGY_MODE_TOGGLE = "Tab" //also used for strategy return to ship
+  ID_SHIP_WEAPON_ROCKETS = "J:Y | V"
+  ID_SHIP_WEAPON_ROCKETS_SECONDARY = "J:Y | V"
   ID_WTM_LAUNCH_AIRCRAFT = "J:D.Down | Q" //also used for aircraft return to ship
 
 
@@ -61,13 +63,16 @@ let allShortcuts = isReplayShortcuts ? {}
   submarine_main_engine_rangeMin = "J:LS.Down | S | Down"
   submarine_depth_inc = "J:LT | F"
   submarine_depth_dec = "J:LB | R"
-  ID_SUBMARINE_WEAPON_TORPEDOES = "J:A | Z"
+  ID_SUBMARINE_WEAPON_TORPEDOES = "J:A | X"
+  ID_SUBMARINE_WEAPON_ROCKETS = "J:Y | V"
   ID_DIVING_LOCK = "J:LS | B"
 
   ID_SUBMARINE_ACTION_BAR_ITEM_11 = "J:D.Left | 1" //toolkit
+  ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES = "J:D.Right | 2"
 
 
   //AIRCRAFT shortcuts:
+  ID_CAMERA_VIEW_BACK = "J:D.Down | B"
   ID_BOMBS = "J:B | Z"
   ID_FIRE_COURSE_GUNS = "J:RT | Space"
   ID_FIRE_CANNONS = "J:RT | Space"
@@ -99,6 +104,8 @@ let gamepadAxes = {
   throttle_axis = JOY_XBOX_REAL_AXIS_L_THUMB_V
   rudder = JOY_XBOX_REAL_AXIS_R_THUMB_H
   elevator = JOY_XBOX_REAL_AXIS_R_THUMB_V
+  turret_x = JOY_XBOX_REAL_AXIS_R_THUMB_H
+  turret_y = JOY_XBOX_REAL_AXIS_R_THUMB_V
 }
 
 let imuAxes = {

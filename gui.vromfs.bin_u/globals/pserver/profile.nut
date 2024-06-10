@@ -1,7 +1,7 @@
 let { deferOnce } = require("dagor.workcycle")
 let { Computed, Watched } = require("frp")
 let { min } = require("math")
-let { units, levelInfo, campConfigs } = require("campaign.nut")
+let { units, levelInfo, campConfigs, curCampaignSlotUnits } = require("campaign.nut")
 let { curUnitInProgress } = require("pServerApi.nut")
 
 let defaultProfileLevelInfo = {
@@ -36,9 +36,18 @@ let curUnitInProgressExt = Watched(curUnitInProgress.value)
 curUnitInProgress.subscribe(@(v) v != null ? curUnitInProgressExt(v)
   : deferOnce(@() curUnitInProgressExt(curUnitInProgress.value)))
 
-let curUnit = Computed(@() myUnits.value?[curUnitInProgressExt.value]
-  ?? myUnits.value.findvalue(@(u) u?.isCurrent)
-  ?? myUnits.value.findvalue(@(_) true))
+let curUnit = Computed(function() {
+  let my = myUnits.get()
+  local res = my?[curUnitInProgressExt.value]
+    ?? my.findvalue(@(u) u?.isCurrent)
+  let slots = curCampaignSlotUnits.get()
+  if (slots != null) {
+    if (slots.findvalue(@(n) n == res?.name))
+      return res
+    res = my?[slots.findvalue(@(n) n in my)]
+  }
+  return res ?? my.findvalue(@(_) true)
+})
 let curUnitMRank = Computed(@() curUnit.value?.mRank ?? 0)
 let curUnitName = Computed(@() curUnit.value?.name)
 

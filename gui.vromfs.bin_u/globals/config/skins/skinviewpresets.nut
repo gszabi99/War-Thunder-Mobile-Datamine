@@ -58,6 +58,11 @@ let skinsByTag = {
     "chieftain_mk_10_skin"
     "fr_camo_green_sand_gray"
     "fr_camo_green_brown_lines"
+    "ussr_camo_green_ltbrown_spots"
+    "ussr_camo_forest_black"
+    "cn_camo_sand_green_black"
+    "cn_f_green_black"
+    "cn_camo_green_brown_black"
   ],
 
   [DESERT] = [
@@ -114,6 +119,7 @@ let skinsByTag = {
     "ussr_camo_winter_lines"
     "ussr_camo_winter_net"
     "ussr_modern_winter"
+    "se_camo_modern_winter_m90"
     "fr_camo_winter_green_white"
   ],
 

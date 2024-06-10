@@ -13,7 +13,7 @@ let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { logEvent } = require("appsFlyer")
 let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
 
@@ -111,7 +111,7 @@ function sendLogPurchaseData(product_id,transaction_id) {
     af_price = availablePrices.value?[product_id].price ?? -1
     af_currency = availablePrices.value?[product_id].currencyId ?? "USD"
   }
-  logEvent("af_purchase", json_to_string(af, true))
+  logEvent("af_purchase", object_to_json_string(af, true))
 }
 
 eventbus_subscribe("ios.billing.onPurchaseCallback", function(result) {

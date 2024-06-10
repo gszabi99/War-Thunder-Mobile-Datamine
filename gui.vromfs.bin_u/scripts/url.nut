@@ -8,7 +8,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { split_by_chars } = require("string")
 let { shell_launch } = require("url")
 let { get_authenticated_url_sso } = require("auth_wt")
-let { json_to_string, parse_json } = require("json")
+let { object_to_json_string, parse_json } = require("json")
 let { defer } = require("dagor.workcycle")
 let logUrl = log_with_prefix("[URL] ")
 let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
@@ -95,7 +95,7 @@ function openAuthenticatedUrl(url, urlTags, onCloseUrl, useExternalBrowser) {
   let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
   let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
   get_authenticated_url_sso(autoLoginUrl, "", ssoService, "onAuthenticatedUrlResult",
-    json_to_string({ onCloseUrl, useExternalBrowser, notAuthUrl = url, shouldEncode }))
+    object_to_json_string({ onCloseUrl, useExternalBrowser, notAuthUrl = url, shouldEncode }))
 }
 
 function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExternalBrowser=true) {

@@ -11,7 +11,8 @@ let { getUnitPresentation, getPlatoonOrUnitName } = require("%appGlobals/unitPre
 let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitRank
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow } = require("%rGui/unitDetails/unitDetailsState.nut")
+let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow, isSkinsWndAttached
+} = require("%rGui/unitDetails/unitDetailsState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
@@ -33,7 +34,7 @@ let { PURCH_SRC_SKINS, PURCH_TYPE_SKIN, mkBqPurchaseInfo } = require("%rGui/shop
 let { buy_unit_skin, enable_unit_skin, skinsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkIsAutoSkin, mkSkinCustomTags } = require("skinTuning.nut")
+let { mkIsAutoSkin, mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 let { unseenSkins, markAllUnitSkinsSeen, markSkinSeen } = require("unseenSkins.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
@@ -491,6 +492,8 @@ let unitSkinsWnd = {
   size = flex()
   behavior = HangarCameraControl
   flow = FLOW_VERTICAL
+  onAttach = @() isSkinsWndAttached.set(true)
+  onDetach = @() isSkinsWndAttached.set(false)
   children = [
     unitSkinsGamercard
     {
