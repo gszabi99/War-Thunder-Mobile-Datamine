@@ -84,14 +84,17 @@ let buttons = @(toBattle){
   margin = [hdpx(20), 0, hdpx(20), 0]
   children = [
     textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
-    function() {
-      close()
-      toBattle()
-    })
-    textButtonPurchase(loc("premBuyWnd/activeBtn"), function(){
-      close()
-      openShopWnd(SC_PREMIUM)
-    })
+      function() {
+        close()
+        toBattle()
+      },
+      { hotkeys = ["^J:X"] })
+    textButtonPurchase(loc("premBuyWnd/activeBtn"),
+      function(){
+        close()
+        openShopWnd(SC_PREMIUM)
+      },
+      { hotkeys = ["^J:Y"] })
   ]
 }
 

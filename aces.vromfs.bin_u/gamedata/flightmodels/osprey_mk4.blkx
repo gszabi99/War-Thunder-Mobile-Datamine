@@ -1612,14 +1612,6 @@
     "Engine": "engine_v12",
     "gun": "gun_default"
   },
-  "gunnerFps": {
-    "pos": [
-      0.0,
-      0.32,
-      0.0
-    ],
-    "head": "turret1"
-  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,

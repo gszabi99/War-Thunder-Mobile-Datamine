@@ -40,6 +40,8 @@
 "us_m8_greyhound";"Armoured Car";"Voiture blindée";"Autoblindo";"Panzerwagen";"Vehículo Blindado";"Бронеавтомобиль";"Бронеавтомобіль";"Samochód Pancerny";"Carro Blindado";"Zırhlı Araç";"장갑차";"装\t甲\t车";"装甲車";"裝\t甲\t車";;
 "uss_pt_109";"Patrol boat";"Bateau de patrouille";"Pattugliatore";"Patrouillenboot";"Barco patrulla";"Дозорное судно";"Патрульний човен";"Patrolowiec";"Navio patrulha";"Devriye Botu";"초계정";"巡\t逻\t艇";"哨戒艇";"巡\t邏\t艇";;
 "uss_dd_sims";"Destroyer";"Destroyer";"Cacciatorpediniere";"Zerstörer";"Destructor";"Эсминец";"Есмінець";"Niszczyciel";"Contratorpedeiro";"Muhrip";"구축함";"驱\t逐\t舰";"駆逐艦";"驅\t逐\t艦";;
+"germ_dd_z28";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Эсминец";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";;
+"cargo_ship_small";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Лёгкий грузовой корабль";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";;
 "air_cbt_p_38k";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";;
 "air_cbt_yak_3t";"Yak-3t";"Yak-3T";"Yak-3t";"Yak-3T";"Yak-3t";"Як-3Т";"Як-3Т";"Jak-3T";"Yak-3t";"Yak-3t";"Yak-3T";"雅\t克\t-3T";"Yak-3t";"雅\t克\t-3t";;
 "air_cbt_fw_190c";"FW 190 C";"FW 190 C";"FW 190 C";"Fw 190 C";"FW 190 C";"FW 190 C";"Fw 190 C";"FW 190 C";"FW 190 C";"FW 190 C";"Fw 190 C";"Fw 190 C";"FW 190 C";"FW 190 C";;
@@ -57,7 +59,7 @@
 "do_335a_1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";;
 "do_335a_1_killstreak";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";"Do 335 A-1";;
 "il_28sh_killstreak";"IL-28Sh";"IL-28Sh";"IL-28Sh";"IL-28Sh";"IL-28Sh";"Ил-28Ш";"Іл-28Ш";"Ił-28Sz";"IL-28Sh";"IL-28Sh";"IL-28Sh";"伊\t尔\t-28Sh";"IL-28Sh";"IL-28Sh";;
-"canberra_bimk6_killstreak";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B.Mk.6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"☢Canberra B Mk 6";"캔버라 B Mk 6";"堪\t培\t拉 B Mk 6";"キャンベラ B Mk 6";"坎\t培\t拉 B Mk 6";;
+"canberra_bimk6_killstreak";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B.Mk.6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"Canberra B Mk 6";"캔버라 B Mk 6";"堪\t培\t拉 B Mk 6";"キャンベラ B Mk 6";"坎\t培\t拉 B Mk 6";;
 "so_4050_vautour_2a_killstreak";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 Vautour IIA";"S.O.4050 보투르 IIA";"SO.4050 IIA";"S.O.4050 ボートゥール IIA";"SO.4050 禿\t鷹 IIA";;
 "mig_15_killstreak";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"МиГ-15бис";"МіГ-15біс";"MiG-15bis";"MiG-15bis";"MiG-15bis";"MiG-15bis";"米\t格\t-15bis";"MiG-15bis";"MiG-15 比\t斯";;
 "me_262c_2b_killstreak";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";"Me 262 C-2b";;
@@ -482,7 +484,7 @@
 "ussr_t_10m";"T-10M";"T-10M";"T-10M";"Т-10М";"T-10M";"Т-10М";"Т-10М";"T-10M";"T-10M";"T-10M";"T-10M";"T-10M";"T-10M";"T-10M";;
 "sw_strv_105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";"Strv 105";;
 "sw_strf_90b";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";"Strf 9040B";;
-"sw_cv_90105_tml";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 TML";"CV 90105 XC-8";"CV 90105 (XC-8)";"CV 90105 XC-8";"CV 90105 XC-8";;
+"sw_cv_90105_tml";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 XC-8";"CV 90105 (XC-8)";"CV 90105 XC-8";"CV 90105 XC-8";;
 "sw_veak_40_reskin";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";"VEAK 40";;
 "cn_type_69_2a";"Type 69-IIa";"Type 69-IIA";"Tipo 69-IIa";"Typ 69-IIa";"Tipo 69-IIa";"Type 69-IIa";"Type 69-IIa";"Typ 69-IIa";"Type 69-IIa";"Type 69-IIa";"69-IIa식";"69-IIA";"69-IIA\t式";"Type 69-IIa";;
 "cn_type_59";"Type 59";"Type 59";"Tipo 59";"Typ 59";"Tipo 59";"Type 59";"Type 59";"Typ 59";"Type 59";"Type 59";"59식 전차";"ZTZ59";"59式";"Type 59";;

@@ -1502,14 +1502,6 @@
     "Engine": "engine_radial",
     "gun": "gun_default"
   },
-  "gunnerFps": {
-    "pos": [
-      -0.7,
-      0.4,
-      0.0
-    ],
-    "head": "turret1"
-  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,

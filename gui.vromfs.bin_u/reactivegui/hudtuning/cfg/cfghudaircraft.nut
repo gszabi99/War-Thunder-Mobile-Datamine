@@ -24,7 +24,7 @@ let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCam
 let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, myPlaceUi, mkAirMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
-let { dmPanel, dmPanelEditView } = require("%rGui/hud/aircraftStateModule.nut")
+let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView } = require("%rGui/hud/aircraftStateModule.nut")
 let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
   bigButtonSize, bigButtonImgSize, mkCircleZoom, mkCircleWeaponryItem, mkCircleLockBtn, mkBigCirclePlaneBtnEditView
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
@@ -120,10 +120,17 @@ return cfgHudCommon.__merge({
     hideForDelayed = false
   }
 
-  dmPanel = {
-    ctor = @() dmPanel
-    defTransform = mkLBPos([hdpx(450), hdpx(30)])
-    editView = dmPanelEditView
+  dmModules = {
+    ctor = @() dmModules
+    defTransform = mkLBPos([hdpx(250), hdpx(30)])
+    editView = dmModulesEditView
+    hideForDelayed = false
+  }
+
+  xpayModel = {
+    ctor = @() xrayModel
+    defTransform = mkLBPos([hdpx(600), hdpx(30)])
+    editView = xrayModelEditView
     hideForDelayed = false
   }
 

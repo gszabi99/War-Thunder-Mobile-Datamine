@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
+let { eventbus_send } = require("eventbus")
 let { ceil } = require("%sqstd/math.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit
@@ -124,7 +125,7 @@ function scoreBoard() {
     watch = missionProgressType
     hplace = ALIGN_CENTER
     behavior = Behaviors.Button
-    onClick = @() toggleShortcut(shortcutId)
+    onClick = @() isHudAttached.get() ? toggleShortcut(shortcutId) : eventbus_send("toggleMpstatscreen", {})
     hotkeys = mkGamepadHotkey(shortcutId)
     sound = { click  = "click" }
     children = [

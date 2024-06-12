@@ -465,7 +465,7 @@ function mkDailyLimitGoodsTimeProgress(goods) {
 
 function mkFreeAdsGoodsTimeProgress(goods) {
   let { readyTime = 0, interval = 0 } = goods
-  if (readyTime <= serverTime.get())
+  if (readyTime <= serverTime.get() || interval <= 0)
     return null
   let diff = Computed(@() readyTime - serverTime.get())
   let timeText = Computed(@() secondsToHoursLoc(max(0, diff.get())))

@@ -287,7 +287,7 @@ function unitArmorBlock(unit, needLabels) {
 }
 
 function unitPriceBlock(unit) {
-  if (unit.campaign not in serverConfigs.get()?.unitTreeNodes
+  if (unit?.campaign not in serverConfigs.get()?.unitTreeNodes
       || unit.isPremium
       || unit.name in myUnits.get()
       || unit.name in canBuyUnits.get())

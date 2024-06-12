@@ -1985,14 +1985,6 @@
     "Engine": "engine_jet",
     "gun": "gun_default"
   },
-  "gunnerFps": {
-    "pos": [
-      -0.15,
-      1.0,
-      0.0
-    ],
-    "head": "turret1"
-  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,

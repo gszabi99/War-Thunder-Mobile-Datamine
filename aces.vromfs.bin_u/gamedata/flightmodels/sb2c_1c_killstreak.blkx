@@ -1492,14 +1492,6 @@
       "preset": "default_common"
     }
   },
-  "gunnerFps": {
-    "pos": [
-      0.22,
-      0.5,
-      0.0
-    ],
-    "head": "turret1"
-  },
   "weapon_presets": {
     "preset": {
       "name": "sb2c_1c_killstreak_default",

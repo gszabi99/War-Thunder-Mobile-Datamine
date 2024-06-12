@@ -7,6 +7,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_FLIGHTMENU = "J:Start" //can't be changed. Need here for correct show in the controls help.
   ID_CONTINUE = "J:RT | Space"
   ID_MPSTATSCREEN =  "J:Back | Tab"
+  ID_ZOOM_TOGGLE = "J:RS | L.Shift"
 
   ID_CAMERA_NEUTRAL =  "J:LS | N" // Tank and Air
 
@@ -15,7 +16,6 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_FIRE_GM_SECONDARY_GUN = "J:LT | L.Ctrl"
   ID_FIRE_GM_SPECIAL_GUN = "J:LB | Z"
   ID_FIRE_GM_MACHINE_GUN = "J:RB | X"
-  ID_ZOOM_TOGGLE = "J:RS | L.Shift"
   ID_TOGGLE_TARGET_TRACKING =  "J:LT | B"
 
   ID_ACTION_BAR_ITEM_7 = "J:B | 1" //fighter
@@ -48,7 +48,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_SHIP_WEAPON_MINE = "J:B | C"
   ID_SHIP_WEAPON_MORTAR = "J:B | C"
   ID_SHIP_WEAPON_ROCKETS = "J:Y | V"
-  ID_SHIP_WEAPON_ROCKETS_SECONDARY = "J:Y | V"
+  ID_SHIP_WEAPON_ROCKETS_SECONDARY = "J:LS | B"
   ID_WTM_LAUNCH_AIRCRAFT = "J:D.Down | Q" //also used for aircraft return to ship
 
 

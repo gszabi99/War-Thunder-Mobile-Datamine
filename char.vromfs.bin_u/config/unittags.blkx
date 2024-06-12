@@ -27158,10 +27158,6 @@
         "60mm_it_OTO_HE": {
           "isHE": true,
           "icon": "hud_ammo_he"
-        },
-        "60mm_it_OTO_HE_VT": {
-          "icon": "hud_ammo_he_vt",
-          "reqLevel": 3
         }
       }
     },

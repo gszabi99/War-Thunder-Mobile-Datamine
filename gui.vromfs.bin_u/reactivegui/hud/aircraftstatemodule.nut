@@ -9,8 +9,11 @@ let damagePanelBacklight = require("components/damagePanelBacklight.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { DmStateMask } = require("%rGui/hud/airState.nut")
 
+let iconSize = hdpx(60).tointeger()
+let iconColumnCount = 5
+
+let dmModulesSize = [iconSize * iconColumnCount, SIZE_TO_CONTENT]
 let xrayDollSize = shHud(20)
-let dmPanleSize = [shHud(40), shHud(20)]
 
 let xrayDoll = @(stateFlags) {
   size = [xrayDollSize, xrayDollSize]
@@ -37,7 +40,7 @@ let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
-let xray = @() {
+let xrayModel = @() {
   key = "aircraft_state_button"
   behavior = TouchAreaOutButton
   watch = isInZoom
@@ -64,9 +67,6 @@ let xray = @() {
   ]
 }
 
-let iconSize = hdpx(60).tointeger()
-let iconColumnCount = 5
-
 let mkIcon = @(iconId) {
   rendObj = ROBJ_IMAGE
   size = [iconSize, iconSize]
@@ -88,8 +88,7 @@ let dmIcons = [
 
 let dmModules = @() {
   watch = DmStateMask
-  size = [iconSize * iconColumnCount, flex()]
-  pos = [0, -iconSize * 0.5]
+  size = dmModulesSize
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   children = arrayByRows(dmIcons.filter(@(_, idx) DmStateMask.get() & (1 << idx)), iconColumnCount)
@@ -101,17 +100,24 @@ let dmModules = @() {
     })
 }
 
-let dmPanel = {
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_RIGHT
-  children = [
-    dmModules
-    xray
-  ]
+let dmModulesEditView = {
+  size = dmModulesSize
+  rendObj = ROBJ_BOX
+  borderWidth = hdpx(3)
+  borderColor
+  flow = FLOW_VERTICAL
+  valign = ALIGN_BOTTOM
+  children = arrayByRows(dmIcons, iconColumnCount)
+    .map(@(row) {
+      size = [flex(), SIZE_TO_CONTENT]
+      flow = FLOW_HORIZONTAL
+      halign = ALIGN_RIGHT
+      children = row
+    })
 }
 
-let dmPanelEditView = {
-  size = dmPanleSize
+let xrayModelEditView = {
+  size = [xrayDollSize, xrayDollSize]
   rendObj = ROBJ_BOX
   borderWidth = hdpx(3)
   borderColor
@@ -123,8 +129,9 @@ let dmPanelEditView = {
   }.__update(fontSmall)
 }
 
-
 return {
-  dmPanel
-  dmPanelEditView
+  xrayModel
+  dmModules
+  xrayModelEditView
+  dmModulesEditView
 }

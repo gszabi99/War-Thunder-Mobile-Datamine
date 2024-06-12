@@ -1696,14 +1696,6 @@
       "preset": "default_common"
     }
   },
-  "gunnerFps": {
-    "pos": [
-      -0.3,
-      0.45,
-      0.0
-    ],
-    "head": "turret1"
-  },
   "weapon_presets": {
     "preset": {
       "name": "soc_1_default",

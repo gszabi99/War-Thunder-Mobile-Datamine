@@ -10,7 +10,7 @@ let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/compon
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
+let { myUserId, myUserIdStr, myUserName } = require("%appGlobals/profileStates.nut")
 let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -121,7 +121,7 @@ function mkUserName() {
         watch = iconStateFlags
         behavior = Behaviors.Button
         onElemState = @(s) iconStateFlags.set(s)
-        onClick = @(evt) copyToClipboard(evt, myNameWithFrame.get() ?? "")
+        onClick = @(evt) copyToClipboard(evt, myUserName.get())
         children = iconBtn("ui/gameuiskin#icon_copy.svg", userNameBtnSize, iconStateFlags)
       }
       !hasUnseenDecorators.get() ? null
@@ -135,7 +135,7 @@ function mkUserId() {
   let iconStateFlags = Watched(0)
   return {
     behavior = Behaviors.Button
-    onClick = @(evt) copyToClipboard(evt, $"{myUserId.get()}")
+    onClick = @(evt) copyToClipboard(evt, myUserIdStr.get())
     onElemState = @(s) iconStateFlags.set(s)
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER

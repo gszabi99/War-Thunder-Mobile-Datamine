@@ -294,21 +294,32 @@ function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary", countCto
   let isDisabled = mkIsControlDisabled("ID_FIRE_GM")
   return function() {
     let isAvailable = isActionAvailable(actionItem) && !isDisabled.get()
-    let { count, countEx, isBulletBelt = false } = actionItem
+    let { count, countEx, isBulletBelt = false, isContinuous = false } = actionItem
     let isWaitForAim = !(actionItem?.aimReady ?? true)
     let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
     let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
+    let needContinuous = isBulletBelt || isContinuous
     let image = weaponTouchIcons?[actionItem.weaponName] ?? "ui/gameuiskin#hud_main_weapon_fire.svg"
     function onTouchBegin() {
       if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
         addCommonHint(loc("hints/wait_for_aiming"))
       else if (isActionAvailable(actionItem)) {
+        if (needContinuous)
           useShortcutOn("ID_FIRE_GM")
+        else
+          useShortcut("ID_FIRE_GM")
       }
     }
 
-    let res = mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_GM"), "ID_FIRE_GM", primStateFlags)
-      .__update({ behavior = TouchAreaOutButton })
+    let res = needContinuous
+      ? mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_GM"), "ID_FIRE_GM", primStateFlags)
+          .__update({ behavior = TouchAreaOutButton })
+      : {
+          behavior = Behaviors.Button
+          onElemState = @(v) primStateFlags(v)
+          hotkeys = mkGamepadHotkey("ID_FIRE_GM")
+          onClick = onTouchBegin
+        }
 
     return res.__update({ //warning disable: -unwanted-modification
       watch = [allowShoot, primaryRocketGun, isDisabled]
