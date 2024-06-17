@@ -1536,7 +1536,8 @@
       "impostor_shadow_atlas": true,
       "water_normals": true,
       "random_grass_filter": true,
-      "clouds2_direct": true
+      "clouds2_direct": true,
+      "dynamic_masked_tank": true
     },
     "compute": {
       "skies_generate_transmittance_cs": true,

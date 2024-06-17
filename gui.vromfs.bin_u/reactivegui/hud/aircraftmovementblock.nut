@@ -465,18 +465,18 @@ let aircraftIndicators = {
         rendObj = ROBJ_TEXT
         color = neutralColor
         text = loc($"{playerUnitName.value}_1", loc(playerUnitName.value))
-      }.__update(fontSmallAccented)
+      }.__update(fontTinyAccented)
     @() {
       watch = [Spd, IsSpdCritical]
       rendObj = ROBJ_TEXT
       color = IsSpdCritical.value ? redColor : neutralColor
       text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), Spd.value, loc("measureUnits/kmh"))
-    }.__update(fontSmallAccented)
+    }.__update(fontTinyAccented)
     @() {
       watch = DistanceToGround
       rendObj = ROBJ_TEXT
       text = " ".concat(loc("HUD/ALTITUDE_SHORT"), floor(DistanceToGround.value), loc("measureUnits/meters_alt"))
-    }.__update(fontSmallAccented)
+    }.__update(fontTinyAccented)
   ]
 }
 
@@ -490,16 +490,16 @@ let aircraftIndicatorsEditView = {
       rendObj = ROBJ_TEXT
       color = neutralColor
       text = loc("hud/aircraft_name")
-    }.__update(fontSmallAccented)
+    }.__update(fontTinyAccented)
     {
       rendObj = ROBJ_TEXT
       color = neutralColor
       text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), "xxx", loc("measureUnits/kmh"))
-    }.__update(fontSmallAccented)
+    }.__update(fontTinyAccented)
     {
       rendObj = ROBJ_TEXT
       text = " ".concat(loc("HUD/ALTITUDE_SHORT"), "xxxx", loc("measureUnits/meters_alt"))
-    }.__update(fontSmallAccented)
+    }.__update(fontTinyAccented)
   ]
 }
 

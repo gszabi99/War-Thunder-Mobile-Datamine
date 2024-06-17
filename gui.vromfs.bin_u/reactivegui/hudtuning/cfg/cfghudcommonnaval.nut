@@ -81,7 +81,7 @@ return {
 
   chatLogAndKillLog = {
     ctor = chatLogAndKillLogPlace
-    defTransform = mkLTPos([hdpx(105), hdpx(360)])
+    defTransform = mkLTPos([0, hdpx(360)])
     editView = chatLogAndKillLogEditView
   }
 }.filter(@(v) v != null)

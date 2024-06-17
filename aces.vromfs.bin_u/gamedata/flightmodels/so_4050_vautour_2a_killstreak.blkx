@@ -2395,13 +2395,6 @@
                 "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
                 "emitter": "us_500lb_anm64_8",
                 "bullets": 1
-              },
-              {
-                "trigger": "bombs",
-                "separate": true,
-                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
-                "emitter": "us_500lb_anm64_6",
-                "bullets": 1
               }
             ]
           },

@@ -27158,6 +27158,10 @@
         "60mm_it_OTO_HE": {
           "isHE": true,
           "icon": "hud_ammo_he"
+        },
+        "60mm_it_OTO_HE_VT": {
+          "icon": "hud_ammo_he1_vt",
+          "reqLevel": 3
         }
       }
     },
@@ -28934,14 +28938,14 @@
     "Shop": {
       "mainWeaponCaliber": 105.0,
       "armorThicknessFront": [
-        1.0,
-        0.0,
-        0.0
+        0.25,
+        0.1,
+        0.65
       ],
       "armorThicknessSide": [
-        1.0,
+        0.05,
         0.0,
-        0.0
+        0.95
       ],
       "crew": 4,
       "mass": 56000.0,
@@ -29119,6 +29123,16 @@
     },
     "Shop": {
       "mainWeaponCaliber": 35.0,
+      "armorThicknessFront": [
+        0.15,
+        0.05,
+        0.8
+      ],
+      "armorThicknessSide": [
+        0.05,
+        0.0,
+        0.95
+      ],
       "crew": 3,
       "mass": 49255.0,
       "maxSpeedForward": 68.2106,
@@ -29462,14 +29476,14 @@
     "Shop": {
       "mainWeaponCaliber": 100.0,
       "armorThicknessFront": [
-        1.0,
-        0.0,
-        0.0
+        0.55,
+        0.05,
+        0.4
       ],
       "armorThicknessSide": [
-        1.0,
-        0.0,
-        0.0
+        0.15,
+        0.15,
+        0.7
       ],
       "crew": 4,
       "mass": 46500.0,
@@ -29594,14 +29608,14 @@
     "Shop": {
       "mainWeaponCaliber": 100.0,
       "armorThicknessFront": [
-        1.0,
         0.0,
-        0.0
+        0.05,
+        0.95
       ],
       "armorThicknessSide": [
-        1.0,
         0.0,
-        0.0
+        0.05,
+        0.95
       ],
       "crew": 5,
       "mass": 21600.0,
@@ -29776,7 +29790,7 @@
           "wtype": "mainCannon",
           "caliber": 142.0,
           "armorPower": 700.0,
-          "reloadTime": 7.46269,
+          "reloadTime": 12.0005,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": false
         },

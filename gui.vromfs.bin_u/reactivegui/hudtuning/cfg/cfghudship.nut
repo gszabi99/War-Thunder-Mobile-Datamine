@@ -20,13 +20,13 @@ let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
   zoom = weaponryButtonCtor("ID_ZOOM", mkZoomButton,
     {
-      defTransform = mkRBPos([hdpx(-432), hdpx(-220)])
+      defTransform = mkRBPos([hdpx(-380), hdpx(-220)])
       editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
     })
 
   plane1 = weaponryButtonCtor("EII_SUPPORT_PLANE", mkPlaneItem,
     {
-      defTransform = mkRBPos([0, hdpx(-222)])
+      defTransform = mkRBPos([0, hdpx(-220)])
       editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_aircraft_fighter.svg", 1, false)
     })
 //
@@ -51,31 +51,31 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   weapon1 = weaponryButtonDynamicCtor(0,
     {
-      defTransform = mkRBPos([hdpx(-216), hdpx(-220)])
+      defTransform = mkRBPos([hdpx(-190), hdpx(-220)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon2 = weaponryButtonDynamicCtor(1,
     {
-      defTransform = mkRBPos([hdpx(-325), hdpx(-112)])
+      defTransform = mkRBPos([hdpx(-285), hdpx(-125)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon3 = weaponryButtonDynamicCtor(2,
     {
-      defTransform = mkRBPos([hdpx(-216), hdpx(-4)])
+      defTransform = mkRBPos([hdpx(-190), hdpx(-30)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon4 = weaponryButtonDynamicCtor(3,
     {
-      defTransform = mkRBPos([hdpx(-108), hdpx(-112)])
+      defTransform = mkRBPos([hdpx(-95), hdpx(-125)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
   weapon5 = weaponryButtonDynamicCtor(4,
     {
-      defTransform = mkRBPos([hdpx(-326), hdpx(-328)])
+      defTransform = mkRBPos([hdpx(-285), hdpx(-315)])
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 

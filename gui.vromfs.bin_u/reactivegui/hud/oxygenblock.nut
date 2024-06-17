@@ -52,7 +52,7 @@ let depthControl = {
       rendObj = ROBJ_TEXT
       text = $"{waterDist.value.tointeger()} {mText}"
       padding = [0, textPadding, 0, 0]
-    }.__update(fontMedium, fontFx)
+    }.__update(fontTinyAccented, fontFx)
     {
       size = [flex(), SIZE_TO_CONTENT]
       rendObj = ROBJ_SOLID
@@ -82,7 +82,7 @@ let depthControl = {
         halign = ALIGN_RIGHT
         behavior = [Behaviors.TextArea]
         text = depthText.value
-      }.__update(fontTiny, fontFx)
+      }.__update(fontVeryTiny, fontFx)
     }
   ]
 }
@@ -98,7 +98,7 @@ let depthControlEditView = {
       padding = [0, textPadding, 0, 0]
       rendObj = ROBJ_TEXT
       text = $"XX {mText}"
-    }.__update(fontMedium, fontFx)
+    }.__update(fontTinyAccented, fontFx)
     {
       margin = textPadding
       rendObj = ROBJ_TEXTAREA
@@ -106,7 +106,7 @@ let depthControlEditView = {
       halign = ALIGN_RIGHT
       behavior = [Behaviors.TextArea]
       text = loc("controls/submarine_depth")
-    }.__update(fontTiny, fontFx)
+    }.__update(fontVeryTiny, fontFx)
   ]
 }
 

@@ -43,7 +43,7 @@ return cfgHudCommon.__merge({
 
   zoomSlider = {
     ctor = @() zoomSlider
-    defTransform = mkLBPos([hdpx(140), hdpx(-280)])
+    defTransform = mkLBPos([hdpx(100), hdpx(-350)])
     editView = zoomSliderEditView
     priority = Z_ORDER.SLIDER
   }
@@ -88,7 +88,7 @@ return cfgHudCommon.__merge({
 
   back = {
     ctor = returnToShipButton
-    defTransform = mkRBPos([hdpx(-480), hdpx(-0)])
+    defTransform = mkRBPos([hdpx(-240), hdpx(-0)])
     editView = mkSquareButtonEditView("ui/gameuiskin#hud_ship_selection.svg")
   }
 
@@ -122,14 +122,14 @@ return cfgHudCommon.__merge({
 
   dmModules = {
     ctor = @() dmModules
-    defTransform = mkLBPos([hdpx(250), hdpx(30)])
+    defTransform = mkLBPos([hdpx(480), hdpx(30)])
     editView = dmModulesEditView
     hideForDelayed = false
   }
 
   xpayModel = {
     ctor = @() xrayModel
-    defTransform = mkLBPos([hdpx(600), hdpx(30)])
+    defTransform = mkLBPos([hdpx(820), hdpx(30)])
     editView = xrayModelEditView
     hideForDelayed = false
   }
@@ -152,7 +152,7 @@ return cfgHudCommon.__merge({
 
   indicators = {
     ctor = @() aircraftIndicators
-    defTransform = mkRBPos([0, hdpx(-600)])
+    defTransform = mkRBPos([hdpx(-20), hdpx(-500)])
     editView = aircraftIndicatorsEditView
     hideForDelayed = false
   }
@@ -211,7 +211,7 @@ return cfgHudCommon.__merge({
 
   controlsStick = {
     ctor = @() ctrlPieStickBlock
-    defTransform = mkRBPos([hdpx(-755), hdpx(-0)])
+    defTransform = mkRBPos([hdpx(-535), hdpx(-0)])
     editView = ctrlPieStickView
     isVisibleInBattle = isCtrlPieAvailable
     priority = Z_ORDER.STICK
@@ -219,7 +219,7 @@ return cfgHudCommon.__merge({
 
   cameraStick = {
     ctor = @() cameraPieStickBlock
-    defTransform = mkRBPos([hdpx(-615), hdpx(-0)])
+    defTransform = mkRBPos([hdpx(-395), hdpx(-0)])
     editView = cameraPieStickView
     isVisibleInBattle = isCameraPieAvailable
     priority = Z_ORDER.STICK
@@ -236,7 +236,7 @@ return cfgHudCommon.__merge({
 
   moveArrows = {
     ctor = aircraftMoveArrows
-    defTransform = mkRBPos([hdpx(-300), hdpx(-100)])
+    defTransform = mkRBPos([hdpx(-300), hdpx(-150)])
     editView = moveArrowsAirView
     priority = Z_ORDER.STICK
     isVisibleInBattle = isAircraftMoveArrowsAvailable
@@ -244,7 +244,7 @@ return cfgHudCommon.__merge({
 
   chatLogAndKillLog = {
     ctor = chatLogAndKillLogPlace
-    defTransform = mkLTPos([hdpx(140), hdpx(320)])
+    defTransform = mkLTPos([hdpx(220), hdpx(320)])
     editView = chatLogAndKillLogEditView
   }
 })

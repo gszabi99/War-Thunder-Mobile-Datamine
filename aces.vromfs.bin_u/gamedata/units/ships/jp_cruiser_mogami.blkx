@@ -2383,13 +2383,23 @@
         "shotFreq": 0.2,
         "turret": {
           "head": "tt_head_01",
-          "gun": "tt_head_01",
+          "gun": "tt_01",
           "gunnerDm": "tt_01_dm"
         },
         "limits": {
           "yaw": [
-            -90.0,
-            -35.0
+            -100.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        "limitsDeadzone": {
+          "yaw": [
+            -37.0,
+            0.0
           ],
           "pitch": [
             0.0,
@@ -2428,13 +2438,23 @@
         "shotFreq": 0.2,
         "turret": {
           "head": "tt_head_02",
-          "gun": "tt_head_02",
+          "gun": "tt_02",
           "gunnerDm": "tt_02_dm"
         },
         "limits": {
           "yaw": [
-            -90.0,
-            -35.0
+            -104.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        "limitsDeadzone": {
+          "yaw": [
+            -34.0,
+            0.0
           ],
           "pitch": [
             0.0,
@@ -2473,13 +2493,23 @@
         "shotFreq": 0.2,
         "turret": {
           "head": "tt_head_03",
-          "gun": "tt_head_03",
+          "gun": "tt_03",
           "gunnerDm": "tt_03_dm"
         },
         "limits": {
           "yaw": [
-            35.0,
-            90.0
+            0.0,
+            100.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        "limitsDeadzone": {
+          "yaw": [
+            0.0,
+            37.0
           ],
           "pitch": [
             0.0,
@@ -2518,13 +2548,23 @@
         "shotFreq": 0.2,
         "turret": {
           "head": "tt_head_04",
-          "gun": "tt_head_04",
+          "gun": "tt_04",
           "gunnerDm": "tt_04_dm"
         },
         "limits": {
           "yaw": [
-            35.0,
-            90.0
+            0.0,
+            104.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        "limitsDeadzone": {
+          "yaw": [
+            0.0,
+            34.0
           ],
           "pitch": [
             0.0,
@@ -4063,13 +4103,23 @@
               "shotFreq": 0.2,
               "turret": {
                 "head": "tt_head_01",
-                "gun": "tt_head_01",
+                "gun": "tt_01",
                 "gunnerDm": "tt_01_dm"
               },
               "limits": {
                 "yaw": [
-                  -90.0,
-                  -35.0
+                  -100.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -37.0,
+                  0.0
                 ],
                 "pitch": [
                   0.0,
@@ -4108,13 +4158,23 @@
               "shotFreq": 0.2,
               "turret": {
                 "head": "tt_head_02",
-                "gun": "tt_head_02",
+                "gun": "tt_02",
                 "gunnerDm": "tt_02_dm"
               },
               "limits": {
                 "yaw": [
-                  -90.0,
-                  -35.0
+                  -104.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -34.0,
+                  0.0
                 ],
                 "pitch": [
                   0.0,
@@ -4153,13 +4213,23 @@
               "shotFreq": 0.2,
               "turret": {
                 "head": "tt_head_03",
-                "gun": "tt_head_03",
+                "gun": "tt_03",
                 "gunnerDm": "tt_03_dm"
               },
               "limits": {
                 "yaw": [
-                  35.0,
-                  90.0
+                  0.0,
+                  100.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  0.0,
+                  37.0
                 ],
                 "pitch": [
                   0.0,
@@ -4198,13 +4268,23 @@
               "shotFreq": 0.2,
               "turret": {
                 "head": "tt_head_04",
-                "gun": "tt_head_04",
+                "gun": "tt_04",
                 "gunnerDm": "tt_04_dm"
               },
               "limits": {
                 "yaw": [
-                  35.0,
-                  90.0
+                  0.0,
+                  104.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  0.0,
+                  34.0
                 ],
                 "pitch": [
                   0.0,
@@ -5741,13 +5821,23 @@
               "shotFreq": 0.2,
               "turret": {
                 "head": "tt_head_01",
-                "gun": "tt_head_01",
+                "gun": "tt_01",
                 "gunnerDm": "tt_01_dm"
               },
               "limits": {
                 "yaw": [
-                  -90.0,
-                  -35.0
+                  -100.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -37.0,
+                  0.0
                 ],
                 "pitch": [
                   0.0,
@@ -5786,13 +5876,23 @@
               "shotFreq": 0.2,
               "turret": {
                 "head": "tt_head_02",
-                "gun": "tt_head_02",
+                "gun": "tt_02",
                 "gunnerDm": "tt_02_dm"
               },
               "limits": {
                 "yaw": [
-                  -90.0,
-                  -35.0
+                  -104.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -34.0,
+                  0.0
                 ],
                 "pitch": [
                   0.0,
@@ -5831,13 +5931,23 @@
               "shotFreq": 0.2,
               "turret": {
                 "head": "tt_head_03",
-                "gun": "tt_head_03",
+                "gun": "tt_03",
                 "gunnerDm": "tt_03_dm"
               },
               "limits": {
                 "yaw": [
-                  35.0,
-                  90.0
+                  0.0,
+                  100.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  0.0,
+                  37.0
                 ],
                 "pitch": [
                   0.0,
@@ -5876,13 +5986,23 @@
               "shotFreq": 0.2,
               "turret": {
                 "head": "tt_head_04",
-                "gun": "tt_head_04",
+                "gun": "tt_04",
                 "gunnerDm": "tt_04_dm"
               },
               "limits": {
                 "yaw": [
-                  35.0,
-                  90.0
+                  0.0,
+                  104.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  0.0,
+                  34.0
                 ],
                 "pitch": [
                   0.0,
