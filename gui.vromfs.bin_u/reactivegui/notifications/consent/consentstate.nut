@@ -7,9 +7,10 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
-let { setFirebaseConsent = @(_) null  } = is_android ? require("android.firebase.analytics")
-        : is_ios ? require("ios.firebase.analytics")
-        : {}
+let { setCollectionEnabled = @(_) null,
+      setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
+    : is_ios ? require("ios.firebase.analytics")
+    : {}
 let { setAppsFlyerConsent, startAppsFlyer } = require("appsFlyer")
 let { object_to_json_string } = require("json")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -56,6 +57,7 @@ function setupAnalytics() {
   let v = savedPoints.get()
   logC("analytics starting with consent:", v)
   setFirebaseConsent(object_to_json_string(v))
+  setCollectionEnabled(true)
   setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
   startAppsFlyer()
 }

@@ -713,12 +713,6 @@
     "binoculars": "navy_binoculars"
   },
   "commonWeapons": {
-    "hideNodes": {
-      "n": [
-        "portholes",
-        "details"
-      ]
-    },
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1309,12 +1303,6 @@
     "weapons_contact_mines": {
       "effects": {
         "commonWeapons": {
-          "hideNodes": {
-            "n": [
-              "portholes",
-              "details"
-            ]
-          },
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -1893,12 +1881,6 @@
     "weapons_depth_charges": {
       "effects": {
         "commonWeapons": {
-          "hideNodes": {
-            "n": [
-              "portholes",
-              "details"
-            ]
-          },
           "Weapon": [
             {
               "trigger": "gunner0",

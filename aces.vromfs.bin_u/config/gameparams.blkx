@@ -7661,6 +7661,7 @@
     "noArcadeBoost": {
       "off": {
         "arcadeBoost": true,
+        "wepOverspeed": 1.25,
         "maxSpeedMultiplier": 1.0,
         "arcadePowerMult": 1.716,
         "arcadeTurretBoostHorz": 1.6,
@@ -17798,7 +17799,9 @@
       "extra_gun_1": true,
       "extra_gun_2": true,
       "extra_gun_3": true,
-      "extra_gun_4": true
+      "extra_gun_4": true,
+      "rockets": true,
+      "rockets_secondary": true
     },
     "ai": {
       "machinegun": true

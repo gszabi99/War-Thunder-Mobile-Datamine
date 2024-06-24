@@ -40,8 +40,8 @@
 "us_m8_greyhound";"Armoured Car";"Voiture blindée";"Autoblindo";"Panzerwagen";"Vehículo Blindado";"Бронеавтомобиль";"Бронеавтомобіль";"Samochód Pancerny";"Carro Blindado";"Zırhlı Araç";"장갑차";"装\t甲\t车";"装甲車";"裝\t甲\t車";;
 "uss_pt_109";"Patrol boat";"Bateau de patrouille";"Pattugliatore";"Patrouillenboot";"Barco patrulla";"Дозорное судно";"Патрульний човен";"Patrolowiec";"Navio patrulha";"Devriye Botu";"초계정";"巡\t逻\t艇";"哨戒艇";"巡\t邏\t艇";;
 "uss_dd_sims";"Destroyer";"Destroyer";"Cacciatorpediniere";"Zerstörer";"Destructor";"Эсминец";"Есмінець";"Niszczyciel";"Contratorpedeiro";"Muhrip";"구축함";"驱\t逐\t舰";"駆逐艦";"驅\t逐\t艦";;
-"germ_dd_z28";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Эсминец";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";"Destroyer";;
-"cargo_ship_small";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Лёгкий грузовой корабль";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";"Light cargo ship";;
+"germ_dd_z28";"Destroyer";"Destroyer";"Cacciatorpediniere";"Zerstörer";"Destructor";"Эсминец";"Есмінець";"Niszczyciel";"Contratorpedeiro";"Muhrip";"구축함";"驱\t逐\t舰";"駆逐艦";"驅\t逐\t艦";;
+"cargo_ship_small";"Light cargo ship";"Cargo léger";"Nave da trasporto leggera";"Leichtes Frachtschiff";"Buque de carga ligero";"Лёгкий грузовой корабль";"Легке вантажне судно";"Lekki transportowiec";"Navio de carga ligeiro";"Hafif Kargo Gemisi";"소형 화물선";"小\t型\t货\t船";"軽貨物船";"輕\t型\t貨\t船";;
 "air_cbt_p_38k";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";"P-38K";;
 "air_cbt_yak_3t";"Yak-3t";"Yak-3T";"Yak-3t";"Yak-3T";"Yak-3t";"Як-3Т";"Як-3Т";"Jak-3T";"Yak-3t";"Yak-3t";"Yak-3T";"雅\t克\t-3T";"Yak-3t";"雅\t克\t-3t";;
 "air_cbt_fw_190c";"FW 190 C";"FW 190 C";"FW 190 C";"Fw 190 C";"FW 190 C";"FW 190 C";"Fw 190 C";"FW 190 C";"FW 190 C";"FW 190 C";"Fw 190 C";"Fw 190 C";"FW 190 C";"FW 190 C";;

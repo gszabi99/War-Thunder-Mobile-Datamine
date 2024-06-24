@@ -87,8 +87,17 @@ function mkAvatar() {
         image =  Picture($"{myAvatarImage.get()}:{avatarSize}:{avatarSize}:P")
         padding = [hdpx(10), hdpx(10), 0, 0]
         valign = ALIGN_TOP
-        halign = ALIGN_RIGHT
-        children = iconBtn("ui/gameuiskin#menu_edit.svg", avatarBtnSize, iconStateFlags)
+        children = [
+          !hasUnseenDecorators.get() ? null : {
+            padding = hdpx(10)
+            hplace = ALIGN_LEFT
+            children = priorityUnseenMark
+          }
+          {
+            hplace = ALIGN_RIGHT
+            children = iconBtn("ui/gameuiskin#menu_edit.svg", avatarBtnSize, iconStateFlags)
+          }
+        ]
       }
       levelMark
     ]
@@ -124,8 +133,6 @@ function mkUserName() {
         onClick = @(evt) copyToClipboard(evt, myUserName.get())
         children = iconBtn("ui/gameuiskin#icon_copy.svg", userNameBtnSize, iconStateFlags)
       }
-      !hasUnseenDecorators.get() ? null
-        : priorityUnseenMark
     ]
   }
 }

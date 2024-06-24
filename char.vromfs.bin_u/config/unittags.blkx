@@ -10028,15 +10028,15 @@
     },
     "Shop": {
       "shipCrewMax": 1240,
-      "shipCrewMin": 190,
-      "shipCrewRating": 2.71667,
+      "shipCrewMin": 170,
+      "shipCrewRating": 2.99091,
       "maxSpeed": 14.4,
       "turningTime": 32,
       "mainWeaponCaliber": 320.0,
       "weapons": {
         "320mm_40_ansaldo_mod_1934_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 2200,
+          "damage": 2200.0,
           "shotFreq": 0.091,
           "gunsCount": 10,
           "caliber": 320.0,

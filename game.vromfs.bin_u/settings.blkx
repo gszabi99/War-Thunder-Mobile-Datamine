@@ -2503,14 +2503,26 @@
             }
           },
           "pipelineCompiler": {
-            "entry": {
-              "driverMaxVer0": 512,
-              "driverMaxVer1": 444,
-              "data": {
-                "maxSecondaryThreads": 0,
-                "usePipelineCacheMutex": true
+            "entry": [
+              {
+                "driverMaxVer0": 512,
+                "driverMaxVer1": 444,
+                "data": {
+                  "maxSecondaryThreads": 0,
+                  "usePipelineCacheMutex": true
+                }
+              },
+              {
+                "driverMinVer0": 512,
+                "driverMinVer1": 499,
+                "driverMaxVer0": 512,
+                "driverMaxVer1": 502,
+                "data": {
+                  "maxSecondaryThreads": 0,
+                  "usePipelineCacheMutex": true
+                }
               }
-            }
+            ]
           }
         }
       },
