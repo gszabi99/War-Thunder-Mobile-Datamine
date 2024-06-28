@@ -2345,6 +2345,30 @@
           "to": "camo_olive_spots*"
         }
       ]
+    },
+    "blue_stains": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_blue_stains*"
+        },
+        {
+          "from": "camo_deckbasaltgrau*",
+          "to": "camo_blue_stains*"
+        }
+      ]
+    },
+    "threegreenspots": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_threegreenspots*"
+        },
+        {
+          "from": "camo_deckbasaltgrau*",
+          "to": "camo_threegreenspots*"
+        }
+      ]
     }
   }
 }

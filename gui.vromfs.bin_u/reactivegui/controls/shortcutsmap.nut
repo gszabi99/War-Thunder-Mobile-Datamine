@@ -72,7 +72,7 @@ let allShortcuts = isReplayShortcuts ? {}
 
 
   //AIRCRAFT shortcuts:
-  ID_CAMERA_VIEW_BACK = "J:D.Down | B"
+  ID_CAMERA_VIEW_BACK = "J:D.Left | B"
   ID_BOMBS = "J:B | Z"
   ID_FIRE_COURSE_GUNS = "J:RT | Space"
   ID_FIRE_CANNONS = "J:RT | Space"

@@ -38,45 +38,49 @@ let defaults = {
   locId = ""
 }
 
+
 let inProgress = { image = "!ui/unitskin#image_in_progress.avif" }
 let overrides = {
-  //here all overrides by unit
-  us_m3a3_bradley_reskin = inProgress
-  germ_flakpz_I_Gepard_reskin = inProgress
-  jp_type_87_reskin = inProgress
-  us_mbt_70 = inProgress
-  us_m60a1_rise_passive_era = inProgress
-  us_m3a3_bradley = inProgress
-  us_m60a3_tts = inProgress
-  us_xm_8 = inProgress
-  us_xm_803 = inProgress
-  germ_leopard_1a5 = inProgress
-  germ_kpz_70 = inProgress
-  germ_thyssen_henschel_tam = inProgress
-  germ_mkpz_super_m48 = inProgress
-  germ_th_800_bismark = inProgress
-  germ_begleitpanzer_57 = inProgress
-  germ_leopard_c2_mexas = inProgress
-  ussr_t_64a_1971 = inProgress
-  ussr_t_72a = inProgress
-  ussr_bmp_2 = inProgress
-  ussr_9p149 = inProgress
-  ussr_t_62m1 = inProgress
-  ussr_t_55_amd_1 = inProgress
-  ussr_bmd_4 = inProgress
-  ussr_object_279 = inProgress
-  jp_type_74_mod_g_kai = inProgress
-  jp_type_74_f = inProgress
-  jp_type_89 = inProgress
-  uk_ac4_thunderbolt = inProgress
-  us_halftrack_m16_reskin = inProgress
-  uk_bosvark_test = inProgress
-  ussr_t_34_1940_l_11_test = inProgress
-  germ_pzkpfw_IV_ausf_F2_test = inProgress
-  us_m4a1_1942_sherman_test = inProgress
-  us_m42_duster_test = inProgress
-  cn_zts_63_1980 = inProgress
+  //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
 
 let platoonNames = {
   //here overiides for platoon names

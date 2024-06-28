@@ -3247,6 +3247,16 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.203379,
       "decal0Tex": "it_2nd_company_2nd_platoon"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3254,11 +3264,18 @@
       "replace_tex": {
         "from": "it_camo_olive_green*",
         "to": "it_camo_olive_green*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_green_postwar*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_two_color_spots*"
       }
     }
   },

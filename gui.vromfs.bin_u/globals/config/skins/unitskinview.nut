@@ -6,7 +6,9 @@ return {
     },
     "cn_isu_122": {
       "": "cn_camo_green_yellow_black",
-      "forest": "ussr_camo_green"
+      "forest": "ussr_camo_green",
+      "forest2": "cn_camo_green_yellow_black_lines",
+      "forest3": "cn_camo_dkgreen"
     },
     "cn_m_41d": {
       "": "us_camo_modern_green",
@@ -20,11 +22,15 @@ return {
     },
     "cn_pt_76": {
       "": "cn_camo_green_yellow_black",
-      "forest": "ussr_camo_green"
+      "forest": "ussr_camo_green",
+      "forest2": "cn_camo_green_yellow_black_lines",
+      "forest3": "cn_camo_dkgreen"
     },
     "cn_t_34_85_d_5t": {
       "": "cn_camo_green_yellow_black",
-      "forest": "ussr_camo_green"
+      "forest": "ussr_camo_green",
+      "forest2": "cn_camo_green_yellow_black_lines",
+      "forest3": "cn_camo_dkgreen"
     },
     "cn_type_59": {
       "": "ussr_camo_green",
@@ -50,7 +56,9 @@ return {
     },
     "cn_zsd63_pg87": {
       "": "cn_camo_green_yellow_black",
-      "forest": "ussr_camo_green"
+      "forest": "ussr_camo_green",
+      "forest2": "cn_camo_green_yellow_black_lines",
+      "forest3": "cn_camo_dkgreen"
     },
     "cn_ztz_88a": {
       "": "ussr_camo_green",
@@ -537,11 +545,15 @@ return {
     },
     "it_m18_hellcat": {
       "": "it_camo_desert_modern",
-      "forest": "it_camo_olive_green"
+      "desert": "it_camo_two_color_spots",
+      "forest": "it_camo_olive_green",
+      "forest2": "it_camo_green_postwar"
     },
     "it_m36b1": {
       "": "it_camo_desert_modern",
-      "forest": "it_camo_olive_green"
+      "desert": "it_camo_two_color_spots",
+      "forest": "it_camo_olive_green",
+      "forest2": "it_camo_green_postwar"
     },
     "it_of_40_mk_2a": {
       "": "it_camo_olive_green",
@@ -549,7 +561,9 @@ return {
     },
     "it_oto_r3_t20_fa": {
       "": "it_camo_desert_modern",
-      "forest": "it_camo_olive_green"
+      "desert": "it_camo_two_color_spots",
+      "forest": "it_camo_olive_green",
+      "forest2": "it_camo_green_postwar"
     },
     "it_otobreda_sidam_25": {
       "": "it_camo_olive_green",
@@ -561,7 +575,9 @@ return {
     },
     "it_sherman_vc_firefly": {
       "": "it_camo_desert_modern",
-      "forest": "it_camo_olive_green"
+      "desert": "it_camo_two_color_spots",
+      "forest": "it_camo_olive_green",
+      "forest2": "it_camo_green_postwar"
     },
     "it_vbc_pt2": {
       "": "it_camo_green",
@@ -1067,7 +1083,9 @@ return {
     },
     "us_m42_duster_reskin6": {
       "": "us_camo_olive_drab",
-      "forest": "us_camo_olive"
+      "desert": "usa_sh_desert_threecolor",
+      "forest": "us_camo_olive",
+      "forest2": "usa_ww_3"
     },
     "us_m42_duster_reskin7": {
       "": "us_camo_olive",
@@ -1075,7 +1093,9 @@ return {
     },
     "us_m46_patton_73_armor_bat": {
       "": "us_camo_olive_late",
-      "forest": "us_camo_olive"
+      "desert": "usa_sh_desert_threecolor",
+      "forest": "us_camo_olive",
+      "forest2": "usa_ww_3"
     },
     "us_m47_patton_II": {
       "": "us_camo_olive",
@@ -1201,7 +1221,9 @@ return {
     },
     "us_t92": {
       "": "us_camo_olive_drab",
-      "forest": "us_camo_olive"
+      "desert": "usa_sh_desert_threecolor",
+      "forest": "us_camo_olive",
+      "forest2": "usa_ww_3"
     },
     "us_t95": {
       "": "us_camo_olive",
@@ -1209,7 +1231,9 @@ return {
     },
     "us_t95_reskin": {
       "": "us_camo_olive_drab",
-      "forest": "us_camo_olive"
+      "desert": "usa_sh_desert_threecolor",
+      "forest": "us_camo_olive",
+      "forest2": "usa_ww_3"
     },
     "ussr_battlecruiser_kronshtadt": {
       "": "camo_geometry_zheleznyakov",
@@ -1613,6 +1637,7 @@ return {
       "black_longdiag": "camo_black_longdiag",
       "blackgray_stripes": "camo_blackgray_stripes",
       "bluegreen_splotch": "camo_bluegreen_splotch",
+      "blue_stains": "camo_blue_stains"
       "bluewater_geometry": "camo_bluewater_geometry",
       "darkgray_blotch": "camo_darkgray_blotch",
       "disruptive_gray": "camo_disruptive_gray",
@@ -1629,8 +1654,10 @@ return {
     },
     "submarine": {
       "": "camo_navygrey_5",
+      "blue_stains": "camo_blue_stains"
       "disruptive_gray": "camo_disruptive_gray",
-      "factory": "camo_navygrey_5"
+      "factory": "camo_navygrey_5",
+      "threegreenspots": "camo_threegreenspots"
     },
     "tank": {
       "": "us_camo_olive",

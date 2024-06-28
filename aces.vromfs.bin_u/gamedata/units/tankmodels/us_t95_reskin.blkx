@@ -2417,6 +2417,16 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.202834,
       "decal1Tex": "usa_tank_emblem_08"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -2424,11 +2434,18 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "us_camo_olive*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_ww_3*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_sh_desert_threecolor*"
       }
     }
   }

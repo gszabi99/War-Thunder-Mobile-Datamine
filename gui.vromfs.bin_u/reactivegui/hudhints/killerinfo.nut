@@ -11,8 +11,6 @@ let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut"
 let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { mkGradientBlock, failBgColor } = require("hintCtors.nut")
 let { mkSingleUnitPlate, unitPlateWidth } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
 let unitFake = require("%rGui/unit/unitFake.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -78,23 +76,6 @@ let mkText = @(text, style = fontMedium, color = 0xFFFFFFFF) {
 let fontByPlateWidth = @(text) calc_str_box(text, fontSmall)[0] > unitPlateWidth
   ? fontSmall : fontMedium
 
-let starLevelOvr = { pos = [0, ph(40)] }
-let levelMark = @(level, starLevel) {
-  size = array(2, hdpx(60))
-  margin = hdpx(10)
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = [
-    mkLevelBg()
-    {
-      rendObj = ROBJ_TEXT
-      pos = [0, -hdpx(2)]
-      text = level - starLevel
-    }.__update(fontSmall)
-    starLevelTiny(starLevel, starLevelOvr)
-  ]
-}
-
 let premiumMark = {
   size = [premIconSize, premIconSize]
   rendObj = ROBJ_IMAGE
@@ -103,7 +84,7 @@ let premiumMark = {
 }
 
 function hintContent(infoV) {
-  let { killerUnit, killerHasPremium, killerLevel, killerStarLevel, killer, killerAvatar } = infoV
+  let { killerUnit, killerHasPremium, killer, killerAvatar } = infoV
   let name = killer.name
   return {
     flow = FLOW_VERTICAL
@@ -114,7 +95,6 @@ function hintContent(infoV) {
         valign = ALIGN_CENTER
         gap = hdpx(20)
         children = [
-          levelMark(killerLevel, killerStarLevel)
           {
             flow = FLOW_VERTICAL
             gap = -hdpx(8)

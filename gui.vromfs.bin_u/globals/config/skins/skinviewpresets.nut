@@ -63,6 +63,10 @@ let skinsByTag = {
     "cn_camo_sand_green_black"
     "cn_f_green_black"
     "cn_camo_green_brown_black"
+    "usa_ww_3"
+    "it_camo_green_postwar"
+    "cn_camo_green_yellow_black_lines"
+    "cn_camo_dkgreen"
   ],
 
   [DESERT] = [
@@ -96,6 +100,8 @@ let skinsByTag = {
     "rsa_camo_gray_earth_stone"
     "us_t32_akai_victory"
     "ussr_t_34_85_zis_53_dislike"
+    "it_camo_two_color_spots"
+    "usa_sh_desert_threecolor"
   ],
 
   [WINTER] = [

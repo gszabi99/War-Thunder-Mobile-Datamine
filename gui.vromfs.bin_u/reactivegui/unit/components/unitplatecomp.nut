@@ -561,7 +561,7 @@ function mkSingleUnitPlate(unit) {
   if (unit == null)
     return null
   let p = getUnitPresentation(unit)
-  let { level = -1 } = unit
+  let { mRank = 0 } = unit
   return {
     size = [ unitPlateWidth, unitPlateHeight ]
     vplace = ALIGN_BOTTOM
@@ -569,7 +569,7 @@ function mkSingleUnitPlate(unit) {
       mkUnitBg(unit)
       mkUnitImage(unit)
       mkUnitTexts(unit, loc(p.locId))
-      level >= 0 ? mkUnitLevel(level) : null
+      mRank > 0 ? mkUnitRank(unit) : null
     ]
   }
 }

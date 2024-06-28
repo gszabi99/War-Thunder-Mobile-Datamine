@@ -54,6 +54,7 @@ function markNeedRefresh() {
 serverConfigs.subscribe(@(_) markNeedRefresh())
 let profileKeysAffectData = {
   units = true
+  skins = true
   campaignSlots = true
   items = true
   boosters = true

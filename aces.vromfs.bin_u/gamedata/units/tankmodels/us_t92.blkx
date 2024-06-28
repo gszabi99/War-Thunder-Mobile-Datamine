@@ -2772,6 +2772,8 @@
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
       "decal0Line0": [
         4.84627e-8,
         -4.84627e-8,
@@ -2819,6 +2821,16 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.313109,
       "decal0Tex": "usa_tank_emblem_09"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -2826,11 +2838,18 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "us_camo_olive*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_ww_3*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_sh_desert_threecolor*"
       }
     }
   },

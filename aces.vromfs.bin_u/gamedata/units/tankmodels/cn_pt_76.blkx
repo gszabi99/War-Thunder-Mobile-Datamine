@@ -2854,6 +2854,16 @@
       "decal3OppositeMirrored": false,
       "decal3WidthBox": 0.203091,
       "decal3Tex": "ussr_numbers_5"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 91.0
+    },
+    "forest3": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -2861,11 +2871,18 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "ussr_camo_green*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "cn_camo_green_yellow_black_lines*"
+      }
+    },
+    "forest3": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "cn_camo_dkgreen*"
       }
     }
   }
