@@ -1,14 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isQuestsOpen, hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
-  COMMON_TAB, EVENT_TAB, MINI_EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, SPECIAL_EVENT_1_TAB,
+  COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB,
   progressUnlockByTab, progressUnlockBySection, curTabParams
 } = require("questsState.nut")
 let { questsWndPage, mkQuest, mkAchievement, unseenMarkMargin } = require("questsWndPage.nut")
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { eventSeason, getMiniEventLoc, eventEndsAt, miniEventEndsAt, isEventActive, isMiniEventActive,
-  specialEvents, openEventWnd, miniEventSeason
+let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, openEventWnd, getSpecialEventName
 } = require("%rGui/event/eventState.nut")
 let { openBattlePassWnd, hasBpRewardsToReceive, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
@@ -77,50 +76,11 @@ function eventTabContent(){
     ]
   }
 }
-let miniEventTabContent = {
-  size = flex()
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(10)
-  children = [
-    @() {
-      watch = miniEventSeason
-      size = [iconSize, iconSize]
-      vplace = ALIGN_CENTER
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#icon_mini_event_{miniEventSeason.get()}.svg:{iconSize}:{iconSize}:P")
-      fallbackImage = Picture($"ui/gameuiskin#quest_events_icon.svg:{iconSize}:{iconSize}:P")
-      color = iconColor
-      keepAspect = KEEP_ASPECT_FIT
-    }
-    {
-      size = [flex(), SIZE_TO_CONTENT]
-      flow = FLOW_VERTICAL
-      children = [
-        @() {
-          watch = miniEventSeason
-          size = [flex(), SIZE_TO_CONTENT]
-          halign = ALIGN_RIGHT
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          text = getMiniEventLoc(miniEventSeason.get())
-        }.__update(fontTinyAccented)
-        @() {
-          watch = [miniEventEndsAt, serverTime]
-          size = [flex(), SIZE_TO_CONTENT]
-          halign = ALIGN_RIGHT
-          rendObj = ROBJ_TEXT
-          text = !miniEventEndsAt.get() || (miniEventEndsAt.get() - serverTime.get() < 0) ? null
-            : secondsToHoursLoc(miniEventEndsAt.get() - serverTime.get())
-        }.__update(fontTinyAccented)
-      ]
-    }
-  ]
-}
 
 function mkSpecialEventTabContent(idx) {
-  let endsAt = Computed(@() specialEvents.value?[idx].endsAt)
-  let locId = Computed(@() $"events/name/{specialEvents.value?[idx].eventName}")
-  let image = Computed(@() $"ui/gameuiskin#icon_event_{specialEvents.value?[idx].eventName}_quests_wnd.svg")
+  let endsAt = Computed(@() specialEventsOrdered.get()?[idx].endsAt)
+  let locId = Computed(@() $"events/name/{specialEventsOrdered.get()?[idx].eventName}")
+  let image = Computed(@() $"ui/gameuiskin#icon_event_{specialEventsOrdered.get()?[idx].eventName}_quests_wnd.svg")
 
   return {
     size = flex()
@@ -152,12 +112,24 @@ function mkSpecialEventTabContent(idx) {
             watch = [serverTime, endsAt]
             size = [flex(), SIZE_TO_CONTENT]
             halign = ALIGN_RIGHT
+            rendObj = ROBJ_TEXT
             text = !endsAt.get() || (endsAt.get() - serverTime.get() < 0) ? null
               : secondsToHoursLoc(endsAt.get() - serverTime.get())
           }.__update(fontTinyAccented)
         ]
       }
     ]
+  }
+}
+
+function mkSpecialQuestsTab(idx) {
+  let id = getSpecialEventName(idx + 1)
+  return {
+    id
+    tabContent = mkSpecialEventTabContent(idx)
+    isFullWidth = true
+    content = questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id)
+    isVisible = Computed(@() questsCfg.value?[id].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
 }
 
@@ -182,21 +154,9 @@ let tabs = [
     isVisible = Computed(@() isEventActive.value
       && questsCfg.value[EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
-  {
-    id = SPECIAL_EVENT_1_TAB
-    tabContent = mkSpecialEventTabContent(SPECIAL_EVENT_1_TAB)
-    isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value?[SPECIAL_EVENT_1_TAB] ?? []), mkQuest, SPECIAL_EVENT_1_TAB)
-    isVisible = Computed(@() questsCfg.value?[SPECIAL_EVENT_1_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
-  }
-  {
-    id = MINI_EVENT_TAB
-    isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[MINI_EVENT_TAB]), mkQuest, MINI_EVENT_TAB)
-    tabContent = miniEventTabContent
-    isVisible = Computed(@() isMiniEventActive.value
-      && questsCfg.value[MINI_EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
-  }
+  mkSpecialQuestsTab(0)
+  mkSpecialQuestsTab(1)
+  mkSpecialQuestsTab(2)
   {
     id = ACHIEVEMENTS_TAB
     locId = "quests/achievements"

@@ -452,6 +452,12 @@
         "mRank": 2
       }
     },
+    "pkg_us_cruiser_baltimore_class": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -620,6 +626,12 @@
         "mRank": 5
       }
     },
+    "pkg_us_t95e1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
     "pkg_environment": {
       "base": false,
       "hq": false,
@@ -666,7 +678,8 @@
     "fadeInDelayFrames": 3,
     "fadeInSeconds": 2.0,
     "fadeInPreloadTimelimitSeconds": 1.0,
-    "beforeFadeInD3dPipelineCompileTimeBudgetSeconds": 0.0,
+    "beforeFadeInD3dPipelineCompileTimeBudgetSeconds": 0.5,
+    "hangarD3dPipelineCompileTimeBudgetSeconds": 0.5,
     "gameplayD3dPipelineCompileTimeBudgetSeconds": 0.0,
     "sharpen": 0.2,
     "enableSuspensionAnimation": false,
@@ -750,6 +763,7 @@
     "forceLowPreset": false,
     "sceneResolutionPreset": "medium",
     "xrayOutlinesScale": 1.0,
+    "hasLowresDecals": false,
     "riexCanIncreaseRenderBuffer": false,
     "riMaxModelsPerLevel": 1024,
     "taaClampingGammaInGame": 1.2,

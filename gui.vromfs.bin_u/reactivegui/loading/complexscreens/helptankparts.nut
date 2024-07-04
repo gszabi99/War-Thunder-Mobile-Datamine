@@ -35,7 +35,7 @@ let hints = [
     blockOvr = { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER }
   }
   {
-    content = mkText(loc("crew/tank_gunner"))
+    content = mkText(loc("crew/tank_machine_gunner"))
     lines = mkLines([1411, 448, 1411, crewLineY(3), crewX, crewLineY(3)])
     blockOvr = { hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER }
   }

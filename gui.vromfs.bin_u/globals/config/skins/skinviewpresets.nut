@@ -67,6 +67,7 @@ let skinsByTag = {
     "it_camo_green_postwar"
     "cn_camo_green_yellow_black_lines"
     "cn_camo_dkgreen"
+    "usa_pw_4"
   ],
 
   [DESERT] = [
@@ -226,6 +227,7 @@ let skinsByTag = {
     "camo_bluewater_geometry"
     "camo_sboat_fleet"
     "camo_multicolor_waves"
+    "camo_blackblue_geometry"
   ],
 }
 

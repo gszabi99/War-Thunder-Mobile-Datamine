@@ -109,7 +109,7 @@ let hints = [
   }
   {
     key = ["J:RS", "J:RS.Up", "J:RS.Down", "J:RS.Left", "J:RS.Right"]
-    lines = mkLines([517, 378, 517, 520 - borderOffs])
+    lines = mkLines([517, 378, 517, 470 - borderOffs])
     blockOvr = { hplace = ALIGN_CENTER }
   }
 ]

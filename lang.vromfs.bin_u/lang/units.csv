@@ -326,6 +326,7 @@
 "us_t114";"T114";"T114";"T114";"T114";"T114";"T114";"T114";"T114";"T114";"T114";"T114";"T114";"T114";"T114";;
 "us_m163_vulcan";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";;
 "us_m163_vulcan_reskin";"M163 (1st CVT)";"M163 (1st CVT)";"M163 (1st CVT)";"M163 (1st CVT)";"M163 (1ª CVT)";"M163 (1st CVT)";"M163 (1st CVT)";"M163 (1st CVT)";"M163 (1st CVT)";"M163 (1st CVT)";"M163 (제1기병대)";"M163 (第 1 骑\t兵\t师)";"M163 (1st CVT)";"M163 (1st CVT)";;
+"us_m163_vulcan_reskin2";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";"M163";;
 "us_t54e1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";"T54E1";;
 "us_m50_ontos";"M50";"M50";"M50";"M50";"M50";"M50";"M50";"M50";"M50";"M50";"M50";"M50";"M50";"M50";;
 "us_t32e1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";"T32E1";;
@@ -661,4 +662,8 @@
 "ussr_battleship_novorossiysk";"Novorossiysk";"Novorossiysk";"Novorossiysk";"Noworossijsk";"Novorossiysk";"Новороссийск";"Новоросійськ";"Noworosyjsk";"Novorossiysk";"Novorossiysk";"노보로시스크";"新\t罗\t西\t斯\t克";"ノヴォロシースク";"新\t羅\t西\t斯\t克\t號";;
 "uk_destroyer_rckt_type23";"HMS Type 23";"HMS Type 23";"HMS Tipo 23";"HMS Type 23";"HMS Tipo 23";"HMS Type 23";"HMS тип 23";"HMS Typ 23";"HMS Type 23";"HMS Type 23";"HMS 23형";"23 型";"イギリス\t海軍 23型";"陛\t下\t之\t艦 23 型";;
 "fr_cruiser_emile_bertin";"Emile Bertin";"Emile Bertin";"Emile Bertin";"Émile Bertin";"Emile Bertin";"Emile Bertin";"Еміль Бертен";"Emile Bertin";"Emile Bertin";"Emile Bertin";"에밀 베르탱";"埃\t米\t尔·贝\t尔\t廷";"エミール・ベルタン";"埃\t米\t爾·貝\t爾\t廷";;
+"us_t95e1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";"T95E1";;
+"us_m728";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";"M728 CEV";;
+"us_m901_itv";"M901";"M901";"M901";"M901";"M901";"M901";"M901";"M901";"M901";"M901";"M901";"M901";"M901";"M901";;
+"us_cruiser_baltimore_class";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";"USS Baltimore";;
 "SHIPS_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;"";

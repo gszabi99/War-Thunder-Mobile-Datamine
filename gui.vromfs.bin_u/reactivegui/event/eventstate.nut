@@ -34,10 +34,6 @@ let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0
 let eventSeason = Computed(@() getSeasonPrefix(userstatStats.value?.stats.season["$index"] ?? 0))
 let isEventActive = Computed(@() unlockTables.value?.season == true)
 
-let miniEventSeason = Computed(@() userstatStats.value?.stats.mini_event_season["$index"] ?? 0)
-let miniEventEndsAt = Computed(@() userstatStats.value?.stats.mini_event_season["$endsAt"] ?? 0)
-let isMiniEventActive = Computed(@() unlockTables.value?.mini_event_season == true)
-
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
 let lootboxesAvailability = mkWatched(persist, LOOTBOXES_AVAILABILITY, {})
 let unseenLootboxes = Computed(function() {
@@ -56,33 +52,39 @@ let unseenLootboxesShowOnce = mkWatched(persist, "unseenLootboxesShowOnce", {})
 
 let bestCampLevel = Computed(@() servProfile.value?.levelInfo.reduce(@(res, li) max(res, li?.level ?? 0), 0) ?? 1)
 
-let specialEvents = Computed(function() {
-  let res = {}
-  let specialEventsList = eventLootboxesRaw.value.reduce(function(acc, e) {
-    let id = e?.meta.event_id
-    if (id != null && acc.findindex(@(v) v == id) == null && id != MAIN_EVENT_ID)
-      acc.append(id)
-    return acc
-  }, [])
-
-  foreach (idx, eventName in specialEventsList) {
-    let tableId = activeUnlocks.value
-      .filter(@(u) u?.meta.event_id == eventName)
-      .findvalue(@(v) v.table != "")?.table
-    if (!unlockTables.value?[tableId])
+let specialEventsOrdered = Computed(function() {
+  let list = {}
+  foreach (unlock in activeUnlocks.value) {
+    let { event_id = null } = unlock?.meta
+    if (event_id == null || event_id == MAIN_EVENT_ID || event_id in list)
       continue
-    let endsAt = userstatStats.value?.stats[tableId]["$endsAt"] ?? 0
-    let season = userstatStats.value?.stats[tableId]["$index"] ?? 1
-    let eventId = getSpecialEventName(idx + 1)
-
-    res[eventId] <- {
-      eventName
-      eventId
+    let tableId = unlock.table
+    if (!unlockTables.get()?[tableId])
+      continue
+    let endsAt = userstatStats.get()?.stats[tableId]["$endsAt"] ?? 0
+    let season = userstatStats.get()?.stats[tableId]["$index"] ?? 1
+    list[event_id] <- {
+      eventName = event_id
       endsAt
       season
     }
   }
+
+  let res = list.values().sort(@(a, b) a.endsAt <=> b.endsAt)
+  res.each(@(v, idx) v.__update({ idx, eventId = getSpecialEventName(idx + 1) }))
   return res
+})
+
+let specialEvents = Computed(@() specialEventsOrdered.get().reduce(@(res, v) res.$rawset(v.eventName, v), {}))
+
+let specialEventsWithLootboxes = Computed(function() {
+  let lootboxesEventIds = {}
+  foreach(l in eventLootboxesRaw.get()) {
+    let { event_id = null } = l?.meta
+    if (event_id != null)
+      lootboxesEventIds[event_id] <- true
+  }
+  return specialEvents.get().filter(@(se) se.eventName in lootboxesEventIds)
 })
 
 let getEventBg = @(eventId, eSeason, sEvents, bgFallback) !eventId ? bgFallback
@@ -100,13 +102,6 @@ function getEventLoc(eventId, eSeason, sEvents) {
 }
 let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), specialEvents.get()))
 
-function getMiniEventLoc(eSeason) {
-  local locId = $"events/name/mini_event_{eSeason}"
-  if (!doesLocTextExist(locId))
-    locId = "events/name/special"
-  return loc(locId)
-}
-
 let curEventSeason = Computed(@() curEvent.value == MAIN_EVENT_ID
     ? (userstatStats.value?.stats.season["$index"] ?? 0)
   : specialEvents.value?[curEvent.value].season)
@@ -119,9 +114,8 @@ let curEventName = Computed(@() curEvent.value == MAIN_EVENT_ID
     ? curEvent.value
   : specialEvents.value?[curEvent.value].eventName)
 
-let isCurEventActive = Computed(@() curEvent.get() == MAIN_EVENT_ID
-    ? isEventActive.get()
-  : isMiniEventActive.get())
+let isCurEventActive = Computed(@() curEvent.get() == MAIN_EVENT_ID ? isEventActive.get()
+  : curEvent.get() in specialEvents.get())
 
 let curEventLootboxes = Computed(@()
   orderLootboxesBySlot(eventLootboxesRaw.value.filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == curEventName.value)))
@@ -268,7 +262,6 @@ register_command(function() {
 }, "debug.reset_lootboxes_availability")
 
 isEventActive.subscribe(@(v) v ? null : logE($"Primary game event finished!"))
-isMiniEventActive.subscribe(@(v) v ? null : logE($"Mini game event finished!"))
 
 return {
   curEvent
@@ -286,10 +279,6 @@ return {
   eventEndsAt
   eventSeason
   isEventActive
-  isMiniEventActive
-  miniEventEndsAt
-  miniEventSeason
-  getMiniEventLoc
 
   unseenLootboxes
   unseenLootboxesShowOnce
@@ -299,6 +288,8 @@ return {
   MAIN_EVENT_ID
   SEASON_EMPTY
   specialEvents
+  specialEventsOrdered
+  specialEventsWithLootboxes
   getSpecialEventName
   curEventLootboxes
   curEventCurrencies

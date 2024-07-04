@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { getEventBg, getEventLoc, eventSeason, specialEvents, MAIN_EVENT_ID, isEventActive, isMiniEventActive
+let { getEventBg, getEventLoc, eventSeason, specialEvents, MAIN_EVENT_ID, isEventActive
 } = require("%rGui/event/eventState.nut")
 
 
@@ -10,9 +10,8 @@ let currencyId = mkWatched(persist, "currencyId", null)
 let parentEventId = mkWatched(persist, "parentEventId", null)
 let isBuyCurrencyWndOpen = Computed(@() currencyId.value != null)
 
-let isParentEventActive = Computed(@() parentEventId.get() == MAIN_EVENT_ID
-    ? isEventActive.get()
-  : isMiniEventActive.get())
+let isParentEventActive = Computed(@() parentEventId.get() == MAIN_EVENT_ID ? isEventActive.get()
+  : parentEventId.get() in specialEvents.get())
 
 let isGoodsFit = @(goods, cId) (goods.currencies?[cId] ?? 0) > 0
   && goods.currencies.len() == 1

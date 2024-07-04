@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
-let { openEventWnd, specialEvents, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
+let { openEventWnd, specialEventsWithLootboxes, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
@@ -8,7 +8,7 @@ let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 
 function btnsOpenSpecialEvents() {
   let children = []
-  specialEvents.get().each(@(evt)
+  specialEventsWithLootboxes.get().each(@(evt)
     children.append(translucentButton($"ui/gameuiskin#icon_event_{evt.eventName}.svg",
       "",
       @() openEventWnd(evt.eventId),
@@ -28,7 +28,7 @@ function btnsOpenSpecialEvents() {
       @() openGmEventWnd(id))))
 
   return {
-    watch = specialEvents
+    watch = specialEventsWithLootboxes
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
     children

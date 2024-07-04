@@ -12,7 +12,7 @@ let { playSound } = require("sound_wt")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
-let { specialEvents, MAIN_EVENT_ID, curEvent, getSpecialEventName } = require("%rGui/event/eventState.nut")
+let { specialEvents, MAIN_EVENT_ID, curEvent } = require("%rGui/event/eventState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
 
@@ -21,9 +21,7 @@ let SEEN_QUESTS = "seenQuests"
 let COMMON_TAB = "common"
 let EVENT_TAB = MAIN_EVENT_ID
 let PROMO_TAB = "promo"
-let MINI_EVENT_TAB = "mini_event"
 let ACHIEVEMENTS_TAB = "achievements"
-let SPECIAL_EVENT_1_TAB = getSpecialEventName(1)
 let DAILY_SECTION = "daily_quest"
 let WEEKLY_SECTION = "weekly_quest"
 
@@ -80,7 +78,6 @@ let questsCfg = Computed(@() {
   [COMMON_TAB] = [DAILY_SECTION, WEEKLY_SECTION],
   [PROMO_TAB] = ["promo_quest"],
   [EVENT_TAB] = eventSections.get()?[EVENT_TAB].map(@(v) v.name) ?? [EVENT_TAB],
-  [MINI_EVENT_TAB] = eventSections.get()?[MINI_EVENT_TAB].map(@(v) v.name) ?? [MINI_EVENT_TAB],
   [ACHIEVEMENTS_TAB] = ["achievement"],
 }.__merge(specialEvents.value.reduce(@(res, v)
     res.__update({ [v.eventId] = eventSections.get()?[v.eventName].map(@(q) q.name) ?? [v.eventName] }), {})))
@@ -249,10 +246,8 @@ return {
 
   COMMON_TAB
   EVENT_TAB
-  MINI_EVENT_TAB
   PROMO_TAB
   ACHIEVEMENTS_TAB
-  SPECIAL_EVENT_1_TAB
 
   onWatchQuestAd
   SPEED_UP_AD_COST

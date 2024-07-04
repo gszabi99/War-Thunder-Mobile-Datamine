@@ -951,6 +951,9 @@ return {
     "us_cruiser_cleveland_class_cleveland": {
       "upgraded": "camo_measure_12mod"
     },
+    "us_cruiser_baltimore_class": {
+      "": "camo_blackblue_geometry"
+    },
     "us_cruiser_des_moines_class": {
       "": "camo_multicolor_cubes",
       "bluewater_geometry": "camo_bluewater_geometry",
@@ -1005,6 +1008,10 @@ return {
     "us_m163_vulcan_reskin": {
       "": "us_camo_desert_pink_olive",
       "forest": "us_camo_olive"
+    },
+    "us_m163_vulcan_reskin2": {
+      "": "us_camo_modern_green",
+      "forest": "usa_pw_4"
     },
     "us_m18_hellcat": {
       "": "us_camo_olive",
@@ -1167,6 +1174,14 @@ return {
       "forest2": "us_camo_olive_drab_olive",
       "winter": "us_camo_winter_grid"
     },
+    "us_m728": {
+      "": "us_camo_modern_green",
+      "forest": "usa_pw_4"
+    },
+    "us_m901_itv": {
+      "": "us_camo_modern_green",
+      "forest": "usa_pw_4"
+    },
     "us_sub_balao": {
       "upgraded": "camo_designpt328"
     },
@@ -1234,6 +1249,10 @@ return {
       "desert": "usa_sh_desert_threecolor",
       "forest": "us_camo_olive",
       "forest2": "usa_ww_3"
+    },
+    "us_t95e1": {
+      "": "us_camo_modern_green",
+      "forest": "usa_pw_4"
     },
     "ussr_battlecruiser_kronshtadt": {
       "": "camo_geometry_zheleznyakov",

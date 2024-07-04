@@ -27,7 +27,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_ACTION_BAR_ITEM_6 = "J:D.Up | 7" //extinguisher
   ID_SHOW_HERO_MODULES = "J:X | 6"
 
-  ID_ACTION_BAR_ITEM_10 = "J:LB | Q" //winch
+  ID_ACTION_BAR_ITEM_10 = "Q" //winch
   ID_NEXT_BULLET_TYPE = "J:Y | E"
 
   ID_TRANS_GEAR_UP = "W | Up"
