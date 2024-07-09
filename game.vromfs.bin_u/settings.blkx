@@ -17,7 +17,7 @@
   "nswitch_app_id": 1280,
   "entitiesBlk": "%wtmGameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
-  "game_das_loading_threads": 1,
+  "game_das_loading_threads": 2,
   "addAllAddonsToBasePath": false,
   "clientBitType": "auto",
   "releaseChannel": "",
@@ -303,6 +303,12 @@
       }
     },
     "pkg_lvl_white_rocks": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_lvl_greece": {
       "conditions": {
         "campaign": "ships",
         "mRank": 2
@@ -602,6 +608,12 @@
         "mRank": 6
       }
     },
+    "pkg_sw_strv_105": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
     "pkg_cn_type_69_2a": {
       "conditions": {
         "campaign": "tanks",
@@ -612,12 +624,6 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 7
-      }
-    },
-    "pkg_sw_strv_105": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
       }
     },
     "pkg_ussr_object_248": {
@@ -678,7 +684,6 @@
     "fadeInDelayFrames": 3,
     "fadeInSeconds": 2.0,
     "fadeInPreloadTimelimitSeconds": 1.0,
-    "beforeFadeInD3dPipelineCompileTimeBudgetSeconds": 0.5,
     "hangarD3dPipelineCompileTimeBudgetSeconds": 0.5,
     "gameplayD3dPipelineCompileTimeBudgetSeconds": 0.0,
     "sharpen": 0.2,
@@ -766,11 +771,14 @@
     "hasLowresDecals": false,
     "riexCanIncreaseRenderBuffer": false,
     "riMaxModelsPerLevel": 1024,
-    "taaClampingGammaInGame": 1.2,
-    "taaClampingGammaInHangar": 0.6,
+    "taaSigmaScaleMin": 1.5,
+    "taaSigmaScaleMax": 7.5,
+    "taaMotionScale": 2500.0,
     "forwardSpeedLines": false,
     "volumetricAfterBurner": false,
     "backbufferHolderReadable": false,
+    "useUnderwaterFogPrepassPlane": true,
+    "csmAllowDynrendPrepareJobsInThreads": false,
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }
@@ -887,6 +895,7 @@
     "enableNvHighlights": "auto",
     "logerrOnSecLayer": true,
     "mobileStyleFpsString": true,
+    "maxWorkThreads": 3,
     "sendFullLogOnFatalIntervalHours": 4,
     "useANRWatcherThreadProbability": 0.1,
     "logSignificantChangesAsWarnings": true,
@@ -920,10 +929,6 @@
     "gui": true,
     "water3d": true,
     "clipmap": true,
-    "rendinstClipmapShadows": [
-      true,
-      false
-    ],
     "fxReflection": true,
     "detailedWaterForPlanes": true,
     "wakeFoamWithoutAA": true,
@@ -939,6 +944,7 @@
     "softFx": true,
     "shadows": true,
     "selfReflection": false,
+    "rendinstClipmapShadows": false,
     "landmesh_lod_radius": 1024,
     "secLayer": false
   },
@@ -1217,8 +1223,8 @@
       "hangarShipsPowWeight": 0.5,
       "tanksShadowDist": 200.0,
       "tanksPowWeight": 0.7,
-      "underwaterShadowDist": 5000.0,
-      "underwaterPowWeight": 0.9,
+      "underwaterShadowDist": 500.0,
+      "underwaterPowWeight": 0.5,
       "underwaterShadowStart": 0.01,
       "fadeOut": 30.0,
       "rotationMargin": 0.1,
@@ -1296,8 +1302,8 @@
       "hangarShipsPowWeight": 0.7,
       "tanksShadowDist": 500.0,
       "tanksPowWeight": 0.9,
-      "underwaterShadowDist": 5000.0,
-      "underwaterPowWeight": 0.9,
+      "underwaterShadowDist": 500.0,
+      "underwaterPowWeight": 0.5,
       "underwaterShadowStart": 0.01,
       "fadeOut": 30.0,
       "rotationMargin": 0.1,
@@ -1375,8 +1381,8 @@
       "hangarShipsPowWeight": 0.7,
       "tanksShadowDist": 500.0,
       "tanksPowWeight": 0.9,
-      "underwaterShadowDist": 5000.0,
-      "underwaterPowWeight": 0.9,
+      "underwaterShadowDist": 500.0,
+      "underwaterPowWeight": 0.5,
       "underwaterShadowStart": 0.01,
       "fadeOut": 30.0,
       "rotationMargin": 0.1,
@@ -1454,8 +1460,8 @@
       "hangarShipsPowWeight": 0.7,
       "tanksShadowDist": 500.0,
       "tanksPowWeight": 0.9,
-      "underwaterShadowDist": 5000.0,
-      "underwaterPowWeight": 0.9,
+      "underwaterShadowDist": 500.0,
+      "underwaterPowWeight": 0.5,
       "underwaterShadowStart": 0.01,
       "fadeOut": 30.0,
       "rotationMargin": 0.1,
@@ -1844,7 +1850,8 @@
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
         "volumeCloudsQuality": 3,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": false
       },
       "render": {
         "grassInCompatibility": false
@@ -1907,7 +1914,7 @@
         "shaderlod": "high",
         "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
-        "underwaterFogUseSimple": false,
+        "underwaterFogUseSimple": true,
         "underwaterFogUseTAA": false,
         "texquality": "high",
         "fxTarget": "high",
@@ -1923,7 +1930,8 @@
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
         "volumeCloudsQuality": 3,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": false
       },
       "render": {
         "grassInCompatibility": true
@@ -2002,7 +2010,8 @@
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
         "volumeCloudsQuality": 1,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
       },
       "render": {
         "grassInCompatibility": true
@@ -2081,7 +2090,8 @@
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
         "volumeCloudsQuality": 1,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
       },
       "render": {
         "grassInCompatibility": true
@@ -2160,7 +2170,8 @@
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 1,
         "volumeCloudsQuality": 1,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
       },
       "render": {
         "grassInCompatibility": true
@@ -2232,7 +2243,8 @@
         "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": false
       },
       "clipmap": {
         "texSize": [
@@ -2294,7 +2306,8 @@
         "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": false
       },
       "clipmap": {
         "texSize": [
@@ -2356,7 +2369,8 @@
         "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
       },
       "clipmap": {
         "texSize": [
@@ -2418,7 +2432,8 @@
         "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
-        "xrayOutlinesScale": 1.0
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
       },
       "clipmap": {
         "texSize": [
@@ -2440,19 +2455,10 @@
     }
   },
   "vulkan": {
-    "texUploadLimitMb": 32,
+    "texUploadLimitMb": 64,
     "vendor": {
       "Qualcomm": {
         "driverProps": {
-          "reuseSwapchainHandle": {
-            "entry": {
-              "driverMinVer0": 512,
-              "driverMinVer1": 502,
-              "data": {
-                "allow": false
-              }
-            }
-          },
           "adrenoClearStoreRace": {
             "entry": [
               {
@@ -2560,6 +2566,17 @@
           "brokenShadersAfterAppSwitch": {
             "entry": {
               "gpu": "G76",
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "brokenRecreateImage": {
+            "entry": {
+              "gpu": [
+                "G610",
+                "G710"
+              ],
               "data": {
                 "affected": true
               }

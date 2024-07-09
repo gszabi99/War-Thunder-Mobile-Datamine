@@ -3,12 +3,12 @@ let { eventbus_subscribe } = require("eventbus")
 let logU = log_with_prefix("[UPDATER] ")
 let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
 let { is_android, is_ios } = require("%sqstd/platform.nut")
-let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+
 
 let contentUpdater = (is_android || is_ios) ? require_optional("contentUpdater") : require("dbgContentUpdater.nut")
 let { get_total_download_mb, get_progress_percent, get_eta, get_download_speed,
   UPDATER_DOWNLOADING, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
-  UPDATER_EVENT_ERROR, UPDATER_EVENT_INCOMPATIBLE_VERSION, UPDATER_EVENT_FINISH
+  UPDATER_EVENT_ERROR, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = contentUpdater
 
 let updaterStage = Watched(null)
@@ -41,16 +41,6 @@ let updaterEvents = {
   [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(p) (p?.needExeUpdate ?? true) ? needUpdateMsg(true) : needRestartMsg(true),
 }
 
-let updaterBqEvents = {
-  [UPDATER_EVENT_STAGE] = function(evt) {
-    if (evt.stage == UPDATER_DOWNLOADING)
-      sendLoadingStageBqEvent("embedded_updater_downloading")
-  },
-  [UPDATER_EVENT_ERROR]                = @(_evt) sendLoadingStageBqEvent("embedded_updater_failed"),
-  [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(_evt) sendLoadingStageBqEvent("embedded_updater_incompatible_version"),
-  [UPDATER_EVENT_FINISH]               = @(_evt) sendLoadingStageBqEvent("embedded_updater_finished"),
-}
-
 let stageNames = {}
 let eventNames = {}
 foreach(id, val in contentUpdater)
@@ -68,7 +58,6 @@ eventbus_subscribe("android.embedded.updater.event", function (evt) {
   let { eventType } = evt
   logU($"event: {eventNames?[eventType] ?? eventType}")
   updaterEvents?[eventType](evt)
-  updaterBqEvents?[eventType](evt)
 })
 
 return {

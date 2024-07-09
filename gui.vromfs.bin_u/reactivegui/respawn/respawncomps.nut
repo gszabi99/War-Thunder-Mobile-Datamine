@@ -5,7 +5,7 @@ let headerHeight = hdpx(60)
 let gap = hdpx(10)
 let bulletsBlockWidth = hdpx(520)
 let bulletsBlockMargin = hdpx(40)
-let bulletsLegendWidth = hdpx(220)
+let bulletsLegendWidth = hdpx(260)
 let headerMargin = [0, hdpx(20), 0, bulletsBlockMargin]
 
 let bg = {

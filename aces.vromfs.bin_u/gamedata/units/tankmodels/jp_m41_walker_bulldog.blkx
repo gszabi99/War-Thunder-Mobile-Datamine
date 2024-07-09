@@ -46,7 +46,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "minRelativeTankCameraThreshold": 1.37,
+  "minRelativeTankCameraThreshold": 1.3,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",

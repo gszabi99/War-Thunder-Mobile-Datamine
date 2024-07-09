@@ -5,7 +5,7 @@ let shopCategoriesCfg = [
   {
     id = SC_OTHER
     title = loc("shop/category/other")
-    image = ""
+    image = null
     gtypes = [ SGT_UNKNOWN ]
   },
   {
@@ -14,7 +14,7 @@ let shopCategoriesCfg = [
     // TODO: replace icon
     getImage =  @(campaign) campaign == "tanks" ? "!ui/gameuiskin#shop_tanks.svg"
       : "!ui/gameuiskin#shop_ships.svg"
-    gtypes = [ SGT_UNIT, SGT_LOOTBOX ]
+    gtypes = [ SGT_UNIT, SGT_LOOTBOX, SGT_BOOSTERS ]
   },
   {
     id = SC_GOLD
@@ -50,7 +50,7 @@ let shopCategoriesCfg = [
 
 
 function getGoodsType(goods) {
-  if (goods.units.len() > 0 || (goods?.unitUpgrades.len() ?? 0) > 0)
+  if (goods.units.len() > 0 || (goods?.unitUpgrades.len() ?? 0) > 0 || goods?.meta.previewUnit)
     return SGT_UNIT
   if (goods.items.len() > 0)
     return SGT_CONSUMABLES
@@ -58,6 +58,8 @@ function getGoodsType(goods) {
     return SGT_LOOTBOX
   if (goods.premiumDays > 0)
     return SGT_PREMIUM
+  if ((goods?.boosters.len() ?? 0) > 0)
+    return SGT_BOOSTERS
   else if (goods.currencies.len() == 1)
     return currencyToGoodsType?[goods.currencies.findindex(@(_) true)] ?? SGT_EVT_CURRENCY
   return SGT_UNKNOWN

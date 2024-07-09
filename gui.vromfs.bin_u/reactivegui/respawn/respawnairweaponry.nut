@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
-let { format } = require("string")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { getBulletBeltImage } = require("%appGlobals/config/bulletsPresentation.nut")
-let { loadUnitBulletsFull } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getWeaponShortName } = require("%rGui/weaponry/weaponsVisual.nut")
+let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { getWeaponShortNameWithCount } = require("%rGui/weaponry/weaponsVisual.nut")
+let { getEquippedWeapon } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { mkWeaponPreset } = require("%rGui/unit/unitSettings.nut")
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bg, bulletsBlockMargin, headerText, header, gap } = require("respawnComps.nut")
@@ -54,17 +55,14 @@ let mkSimpleIcon = @(image) {
   keepAspect = true
 }
 
-function commonWeaponIcon(w, bSet) {
-  let image = bSet?.weaponType == "rockets" ? "ui/gameuiskin#air_to_air_missile.avif"
-    : w?.trigger == "bombs" ? "ui/gameuiskin#bomb_big_01.avif"
-    : null
-  return image == null ? null : mkSimpleIcon(image)
+function commonWeaponIcon(w) {
+  let { iconType = "" } = w
+  return iconType == "" ? null : mkSimpleIcon($"ui/gameuiskin#{iconType}.avif")
 }
 
-function mkWeaponCard(w, count = 0) {
+function mkWeaponCard(w) {
   let bSet = w.bulletSets?[""]
   let { bullets = [], isBulletBelt = false } = bSet
-  let bulletName = getWeaponShortName(w, bSet)
   return bg.__merge({
     size = [weaponWidth, weaponHeight]
     flow = FLOW_HORIZONTAL
@@ -77,7 +75,7 @@ function mkWeaponCard(w, count = 0) {
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         children = isBulletBelt ? mkBeltImage(bullets)
-          : commonWeaponIcon(w, bSet)
+          : commonWeaponIcon(w)
       }
       {
         size = flex()
@@ -87,7 +85,7 @@ function mkWeaponCard(w, count = 0) {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           color = 0xFFD0D0D0
-          text = count > 1 ? $"{bulletName} {format(loc("weapons/counter"), count)}" : bulletName
+          text = getWeaponShortNameWithCount(w, bSet)
         }.__update(fontVeryTiny)
       }
     ]
@@ -98,18 +96,7 @@ function mkWeaponGroup(wg, wgCfg) {
   if (wg.len() == 0)
     return null
   let columns = min(wg.len(), MAX_COLUMNS)
-  let reducedWg = wg.reduce(function(acc, w) {
-    let id = w.weaponId
-    if(id not in acc.gunCount) {
-      acc.gunCount[id] <- w.turrets
-      acc.value.append(w)
-    } else
-      acc.gunCount[id] += w.turrets
-    return acc
-  }, { gunCount = {}, value = [] })
-
-  let children = reducedWg.value.map(@(w) mkWeaponCard(w, reducedWg.gunCount[w.weaponId]))
-
+  let children = wg.map(mkWeaponCard)
   return {
     size = [weaponWidth * columns + gap * (columns - 1), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
@@ -130,47 +117,73 @@ function mkWeaponGroup(wg, wgCfg) {
 }
 
 function divideWeaponryByGroups(weapons) {
-  let res = groupsCfg.map(@(_) [])
-  foreach(trigger, w in weapons)
+  let groups = groupsCfg.map(@(_) [])
+  foreach(w in weapons)
     foreach(idx, group in groupsCfg)
-      if (group.isFit(trigger, w)) {
-        res[idx].append(w)
+      if (group.isFit(w.trigger, w)) {
+        groups[idx].append(w)
         break
       }
-  return res
+
+  return groups.map(function(group) {
+    let byBlk = {}
+    let res = []
+    foreach(w in group)
+      if (w.blk not in byBlk) {
+        byBlk[w.blk] <- res.len()
+        res.append(clone w)
+      }
+      else {
+        let idx = byBlk[w.blk]
+        res[idx].count <- (res[idx]?.count ?? 1) + (w?.count ?? 1)
+      }
+    return res
+  })
 }
 
 function respawnAirWeaponry(selSlot) {
-  let bulletsFull = loadUnitBulletsFull(selSlot.name)
-  let commonWeapons = (bulletsFull?.commonWeapons ?? {}).__merge(bulletsFull?[$"{selSlot.name}_default"] ?? {})
-  let weaponGroups = divideWeaponryByGroups(commonWeapons)
-  let rows = []
-  local curRow = null
-  local columnsLeft = MAX_COLUMNS
-  foreach(idx, wg in weaponGroups) {
-    if (wg.len() == 0)
-      continue
-    if (curRow == null || columnsLeft < wg.len()) {
-      curRow = []
-      rows.append(curRow)
-      columnsLeft = MAX_COLUMNS
+  let wSlots = loadUnitWeaponSlots(selSlot.name)
+  let { weaponPreset } = mkWeaponPreset(Watched(selSlot.name))
+  return function() {
+    let activeWeapons = []
+    foreach(idx, wSlot in wSlots) {
+      let weapon = getEquippedWeapon(weaponPreset.get(), idx, wSlot?.wPresets ?? {}, selSlot?.mods)
+      if (weapon == null)
+        continue
+      let { iconType = "", weapons } = weapon
+      activeWeapons.extend(iconType == "" ? weapons : weapons.map(@(w) w.__merge({ iconType })))
     }
-    columnsLeft -= wg.len()
-    curRow.append(mkWeaponGroup(wg, groupsCfg[idx]))
-  }
 
-  return {
-    key = selSlot.name
-    size = [MAX_COLUMNS * weaponWidth + smallGap * (MAX_COLUMNS - 1), SIZE_TO_CONTENT]
-    margin = [0, hdpx(20), 0, bulletsBlockMargin]
-    flow = FLOW_VERTICAL
-    gap
-    children = rows.map(@(children) {
-      flow = FLOW_HORIZONTAL
-      gap = smallGap
-      children
-    })
-    animations = wndSwitchAnim
+    let weaponGroups = divideWeaponryByGroups(activeWeapons)
+    let rows = []
+    local curRow = null
+    local columnsLeft = MAX_COLUMNS
+    foreach(idx, wg in weaponGroups) {
+      if (wg.len() == 0)
+        continue
+      if (curRow == null || columnsLeft < wg.len()) {
+        curRow = []
+        rows.append(curRow)
+        columnsLeft = MAX_COLUMNS
+      }
+      columnsLeft -= wg.len()
+      curRow.append(mkWeaponGroup(wg, groupsCfg[idx]))
+    }
+
+    return {
+      watch = weaponPreset
+      key = selSlot.name
+      size = [MAX_COLUMNS * weaponWidth + smallGap * (MAX_COLUMNS - 1), SIZE_TO_CONTENT]
+      margin = [0, hdpx(20), 0, bulletsBlockMargin]
+      flow = FLOW_VERTICAL
+      gap
+      children = rows.map(@(children) {
+        flow = FLOW_HORIZONTAL
+        gap = smallGap
+        children
+      })
+      animations = wndSwitchAnim
+    }
   }
 }
 

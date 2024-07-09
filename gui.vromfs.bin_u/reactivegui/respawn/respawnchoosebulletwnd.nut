@@ -5,8 +5,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bulletsInfo, chosenBullets, setOrSwapUnitBullet, visibleBullets } = require("bulletsChoiceState.nut")
 let { selSlot, hasUnseenShellsBySlot, saveSeenShells } = require("respawnState.nut")
-let { createHighlight } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
-let { darkCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
+let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let mkBulletSlot = require("mkBulletSlot.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -63,7 +62,7 @@ curSlotName.subscribe(@(_) defer( function() {
     wndAABB(aabb)
 }))
 
-function mkBulletButton(name, bSet, fromUnitTags, columns, id) {
+function mkBulletButton(name, bSet, fromUnitTags, id) {
   let isCurrent = Computed(@() name == curSlotName.value)
   let isLockedSlot = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.value?.level ?? 0))
   let hasUnseenBullets = Computed(@() hasUnseenShellsBySlot.value?[selSlot.value?.id ?? 0][name])
@@ -83,8 +82,6 @@ function mkBulletButton(name, bSet, fromUnitTags, columns, id) {
           } {
             watch = [ isCurrent, isLockedSlot]
             key = name //for UI tutorial
-            size = columns < 2 ? [minWndWidth, bulletHeight] : bulletSlotSize
-            halign = columns < 2 ? ALIGN_CENTER : null
           })
         @() {
           watch = isCurrent
@@ -152,7 +149,7 @@ function bulletsList() {
     gap = slotsGap
     children = (arrayByRows(
       visibleBulletsList
-        .map(@(name, id) mkBulletButton(name, bulletSets[name], fromUnitTags?[name], columns, id)), columns)
+        .map(@(name, id) mkBulletButton(name, bulletSets[name], fromUnitTags?[name], id)), columns)
       .map(@(item) {
         flow = FLOW_HORIZONTAL
         children = item
@@ -320,14 +317,6 @@ let window = {
   ]
 }
 
-let mkBg = @(box) box == null
-  ? darkCtor({ t = 0, b = sh(100), l = 0, r = sw(100) })
-  : {
-      size = flex()
-      children = createHighlight([box], @(_) null, darkCtor)
-    }
-
-
 function content() {
   if (openParams.value == null)
     return { watch = openParams }
@@ -337,7 +326,7 @@ function content() {
     watch = openParams
     size = flex()
     children = [
-      mkBg(bulletBox)
+      mkCutBg([bulletBox])
       {
         size = flex()
         padding = wndBox == null ? null

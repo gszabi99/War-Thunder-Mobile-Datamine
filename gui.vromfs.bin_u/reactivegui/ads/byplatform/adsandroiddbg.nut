@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
+let { register_command } = require("console")
 let { eventbus_send } = require("eventbus")
 let { setTimeout } = require("dagor.workcycle")
 let ads = require("android.ads")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK,
-  CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN
+  CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED
 } = ads
 let { object_to_json_string } = require("json")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
-let { chooseRandom } = require("%sqstd/rand.nut")
 
 
 let debugAdsInited = persist("debugAdsInited", @() {})
@@ -18,6 +18,7 @@ let debugConsentApprove = hardPersistWatched("adsAndroid.debugConsentRequested",
 let priorities = hardPersistWatched("adsAndroid.debug.priorities", {})
 let loadedProvider = hardPersistWatched("adsAndroid.debug.loadedProvider", "")
 local isDebugAdsLoaded = false
+local debugAdsFailsCount = 0
 
 let showConsent = @(eventId) setTimeout(0.01, @() openFMsgBox({
   text = "Debug Google Consent:\nDo you approve download ads?"
@@ -31,8 +32,7 @@ let showConsent = @(eventId) setTimeout(0.01, @() openFMsgBox({
 let mkConsentResult = @() {
   status = !debugConsentRequired.get() ? CONSENT_REQUEST_NOT_REQUIRED
     : debugConsentApprove.get() == null ? CONSENT_REQUEST_REQUIRED
-    : debugConsentApprove.get() ? CONSENT_REQUEST_OBTAINED
-    : CONSENT_REQUEST_UNKNOWN
+    : CONSENT_REQUEST_OBTAINED
   canRequest = !debugConsentRequired.get() || debugConsentApprove.get()
   canShowPrivacy = true
   errorCode = ""
@@ -57,21 +57,25 @@ subscribeFMsgBtns({
   }
 })
 
-function calcLoadedProvider(list) {
-  local priority = -1
-  local allowed = []
-  foreach(id, value in list) {
-    if (value < 0 || value < priority)
-      continue
-    if (value == priority)
-      allowed.append(id)
-    else {
-      allowed = [id]
-      priority = value
-    }
-  }
-  return allowed.len() == 0 ? null : chooseRandom(allowed)
+function sortProviderPriority(list) {
+  local res = []
+  foreach(id, value in list)
+    res.append({ id = id, value = value })
+  return res.sort(@(a, b) b.value <=> a.value).map(@(v) v.id)
 }
+
+function sendSuccessedResponse(provider) {
+  isDebugAdsLoaded = debugAdsInited.findvalue(@(v) v) ?? false
+  loadedProvider.set(provider)
+  eventbus_send("android.ads.onLoad",
+    { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED, provider = loadedProvider.get() })
+}
+
+register_command(function(count) {
+    debugAdsFailsCount = count
+    log($"Fake debug fails seted: {debugAdsFailsCount}")
+  },
+  "ads.set_fake_debug_fails_for_provider")
 
 return ads.__merge({
   isAdsInited = @() debugAdsInited.findvalue(@(v) v) ?? false
@@ -86,23 +90,16 @@ return ads.__merge({
   }
   isAdsLoaded = @() isDebugAdsLoaded
   function loadAds() {
-    isDebugAdsLoaded = false
-    setTimeout(2.0, function() {
-      isDebugAdsLoaded = false
-      eventbus_send("android.ads.onLoad",  //simulate fail ads
-        { status = ADS_STATUS_DISMISS, provider = "pc_debug_fail" })
-      if (priorities.get().findvalue(@(v) v >= 0) == null)
-        return
-      setTimeout(3.0, function() {
-        let provider = calcLoadedProvider(priorities.get())
-        if (provider == null)
-          return
-        isDebugAdsLoaded = debugAdsInited.findvalue(@(v) v) ?? false
-        loadedProvider.set(provider)
-        eventbus_send("android.ads.onLoad",
-          { status = isDebugAdsLoaded ? ADS_STATUS_LOADED : ADS_STATUS_NOT_INITED, provider = loadedProvider.get() })
-      }, {})
-    }, {})
+    foreach (p in sortProviderPriority(priorities.get())) {
+      let provider = p
+      if (debugAdsFailsCount <= 0) {
+        setTimeout(3.0, @() sendSuccessedResponse(provider), {})
+        break
+      }
+      debugAdsFailsCount--
+      setTimeout(1.0, @() eventbus_send("android.ads.onLoad",
+        { status = ADS_STATUS_DISMISS, provider }), {})
+    }
   }
   function showAds() {
     eventbus_send("android.ads.onShow", { status = ADS_STATUS_SHOWN, provider = loadedProvider.get() })

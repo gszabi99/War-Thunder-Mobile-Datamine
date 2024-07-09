@@ -163,6 +163,114 @@
       "forPremiumVehicle": false
     },
     {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          -0.0175486,
+          0.0816469,
+          -0.996507
+        ],
+        [
+          -0.0092556,
+          0.996604,
+          0.0818179
+        ],
+        [
+          0.999803,
+          0.0106591,
+          -0.0167333
+        ],
+        [
+          3695.54,
+          25.6002,
+          3650.58
+        ]
+      ],
+      "spawnPointType": "aircraft",
+      "forPremiumVehicle": true
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          -0.0726417,
+          0.0,
+          -0.997358
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.997358,
+          0.0,
+          -0.0726417
+        ],
+        [
+          3671.73,
+          26.2387,
+          3655.06
+        ]
+      ],
+      "spawnPointType": "aircraft",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          0.00635344,
+          0.0,
+          -0.99998
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.99998,
+          0.0,
+          0.00635344
+        ],
+        [
+          3630.33,
+          25.2393,
+          3654.13
+        ]
+      ],
+      "spawnPointType": "aircraft",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          -0.0149135,
+          0.0,
+          -0.999889
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999889,
+          0.0,
+          -0.0149135
+        ],
+        [
+          3605.65,
+          25.9672,
+          3650.37
+        ]
+      ],
+      "spawnPointType": "aircraft",
+      "forPremiumVehicle": false
+    },
+    {
       "_template": "ecs_fx",
       "transform": [
         [

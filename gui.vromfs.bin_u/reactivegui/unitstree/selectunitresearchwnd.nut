@@ -13,15 +13,23 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitRank, mkUnitSelec
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { set_research_unit } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkTreeNodesFlag } = require("unitsTreeComps.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 
 let WND_UID = "chooseUnitResearch"
 
 let needSelectUnitResearch = keepref(Computed(@() unitsResearchStatus.get().findvalue(@(v) v?.isCurrent) == null
-  && unitsResearchStatus.get().findvalue(@(v) v?.isAvailable && !v?.isResearched) != null))
+  && unitsResearchStatus.get().findvalue(@(v) v?.isAvailable && !v?.isResearched) != null
+  && !isInDebriefing.get()
+  && myUnits.get().len() > 0))
 
 let close = @() removeModalWindow(WND_UID)
+let function closeWithoutSelect() {
+  close()
+  set_research_unit(curCampaign.get(),
+    unitsResearchStatus.get().filter(@(v) v.isAvailable && !v?.isResearched).keys()?[0])
+}
 
 function mkUnitPlate(unit, researchStatus, onClick) {
   if (unit == null)
@@ -57,8 +65,8 @@ let function unitsBlock() {
       serverConfigs.get()?.allUnits[u],
       unitsResearchStatus.get()?[u],
       function() {
-        set_research_unit(curCampaign.get(), u)
         close()
+        set_research_unit(curCampaign.get(), u)
       }
     )).append(units.get().len() > 0 ? {} : {
       rendObj = ROBJ_TEXT
@@ -92,13 +100,14 @@ let wndContent = {
 let openImpl = @() addModalWindow(bgShaded.__merge({
   key = WND_UID
   size = flex()
-  onClick = close
+  onClick = closeWithoutSelect
+  onDetach = closeWithoutSelect
   children = msgBoxBg.__merge({
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
       msgBoxHeaderWithClose(loc("unitsTree/chooseResearch"),
-        close,
+        closeWithoutSelect,
         {
           minWidth = SIZE_TO_CONTENT,
           padding = [0, buttonsHGap]
@@ -113,6 +122,7 @@ function openWndIfCan() {
   if (needSelectUnitResearch.get()
       && !hasModalWindows.get()
       && !isInBattle.get()
+      && !isInDebriefing.get()
       && curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
     openImpl()
 }

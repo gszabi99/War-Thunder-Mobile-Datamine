@@ -1765,9 +1765,7 @@
         "pylon_1006_bomb",
         "pylon_1006_torpedo",
         "pylon_bomb1",
-        "etc50",
-        "pylon_1006_torpedo",
-        "pylon_bomb1"
+        "etc50"
       ]
     },
     "WeaponSlot": [
@@ -2492,22 +2490,6 @@
                 "bombBayHeight": 1.5
               }
             ]
-          },
-          {
-            "iconType": "bombs_heavy_high_drag",
-            "name": "fx1400",
-            "reqModification": "fx1400",
-            "ShowNodes": {
-              "node": "pylon_1006_bomb"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_fx1400.blk",
-              "emitter": "bomb28",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
           }
         ]
       },
@@ -2559,6 +2541,22 @@
               "trigger": "torpedoes",
               "blk": "gameData/Weapons/torpedoes/de_f5w_torpedo.blk",
               "emitter": "torp2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "fx1400",
+            "reqModification": "fx1400",
+            "ShowNodes": {
+              "node": "pylon_1006_bomb"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_fx1400.blk",
+              "emitter": "bomb28",
               "bullets": 1,
               "external": true,
               "separate": true

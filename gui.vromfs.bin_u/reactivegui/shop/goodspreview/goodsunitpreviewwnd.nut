@@ -14,7 +14,7 @@ let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreview
 } = require("goodsPreviewPkg.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE,
   AIR_FIGHTER_PRESET_TYPE, AIR_BOMBER_PRESET_TYPE } = require("hangar")
-let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit, isHangarUnitLoaded,
+let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
   hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { gradCircularSqCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
@@ -30,6 +30,8 @@ let { unitSelUnderlineFullSize, unitPlatesGap, unitPlateSmall, mkUnitRank,
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
+let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
+let { get_settings_blk } = require("blkGetters")
 
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
@@ -104,9 +106,16 @@ previewGoodsUnit.subscribe(function(unit) {
     set_load_sounds_for_model(true)
 })
 
+let cutSceneWaitForVisualsLoaded = get_settings_blk()?.unitOffer.cutSceneWaitForVisualsLoaded ?? false
+let transitionThroughBlackScreen = get_settings_blk()?.unitOffer.transitionThroughBlackScreen ?? false
+
+let readyToShowCutScene = mkWatched(persist, "readyToShowCutScene", false)
+eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene(false))
+eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene(true))
+
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
   && loadedHangarUnitName.value == unitForShow.value?.name
-  && isHangarUnitLoaded.value ))
+  && readyToShowCutScene.value ))
 
 function showCutscene(v) {
   if (!v)
@@ -156,9 +165,7 @@ function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
     behavior = Behaviors.Button
     onClick = onSelectUnit
     sound = { click  = "choose" }
-    flow = FLOW_HORIZONTAL
     children = [
-      onSelectUnit == null ? null : mkUnitSelectedUnderlineVert(unit, isSelected)
       {
         size
         children = [
@@ -169,6 +176,7 @@ function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
           mkUnitRank(unit)
         ]
       }
+      onSelectUnit == null ? null : mkUnitSelectedUnderlineVert(unit, isSelected)
     ]
     animations = opacityAnims(aTimePackUnitPlates, aTimePackUnitInfoStart + aTimePackUnitPlatesOffset * idx)
   }
@@ -307,6 +315,13 @@ let markPurchasesSeenDelayed = function(purchList) {
   })
 }
 
+function closeBlackOverlayOnceOnVisualsLoaded(loaded) {
+  if (loaded) {
+    closeBlackOverlay()
+    readyToShowCutScene.unsubscribe(closeBlackOverlayOnceOnVisualsLoaded)
+  }
+}
+
 let previewWnd = @() {
   watch = needShowUi
   key = openCount
@@ -321,6 +336,13 @@ let previewWnd = @() {
   onAttach = function() {
     addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     isWindowAttached(true)
+    if (transitionThroughBlackScreen) {
+      showBlackOverlay()
+      if (!readyToShowCutScene.value)
+        readyToShowCutScene.subscribe(closeBlackOverlayOnceOnVisualsLoaded)
+      else
+        closeBlackOverlay()
+    }
   }
 
   onDetach = function() {

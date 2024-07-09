@@ -351,7 +351,6 @@
   "dayTimeSpeed": 0.0,
   "syncWeatherPeriod": 1000000.0,
   "useMedicalKitWithToolkit": true,
-  "dumpActiveGMUnitsPosEveryTick": 100,
   "disableDamageForBombOwner": true,
   "maxTimeWaitFirstSpawn": 60.0,
   "tracers": {
@@ -8801,6 +8800,24 @@
     "density_mul": 0.9,
     "density_add": 0.0
   },
+  "caliberToHapticIntensity": {
+    "val0": [
+      0.02,
+      0.1
+    ],
+    "val1": [
+      0.05,
+      0.4
+    ],
+    "val2": [
+      0.075,
+      0.5
+    ],
+    "val3": [
+      0.183,
+      1.0
+    ]
+  },
   "GrassSettingsTanks": {
     "distance_mul": 0.3,
     "distance_add": 0.0,
@@ -8833,6 +8850,7 @@
     "maxPatchesUnit": 400,
     "maxPatchesRendinst": 300,
     "maxDropRadius": 0.002,
+    "allowGatherJobInThreads": false,
     "maxPatches": 200
   },
   "glassScratches": {
@@ -15403,6 +15421,22 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "vbc_pt2"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "hj_9"
         }
       ]
     },
@@ -16686,7 +16720,19 @@
         "celestial_city_platform_b",
         "celestial_city_platform_bridge_a",
         "celestial_city_platform_c",
-        "celestial_city_platform_hanger_a"
+        "celestial_city_platform_hanger_a",
+        "gr_big_island_a",
+        "gr_big_island_b",
+        "gr_island_a",
+        "gr_island_b",
+        "gr_island_c",
+        "gr_island_d",
+        "gr_island_e",
+        "gr_island_f",
+        "gr_island_g",
+        "gr_island_h",
+        "gr_island_b_temple",
+        "gr_island_d_lighthouse"
       ]
     },
     "badLod1ForStaticShadow": {}

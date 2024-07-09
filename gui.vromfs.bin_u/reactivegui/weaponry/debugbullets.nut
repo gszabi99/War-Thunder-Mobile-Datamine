@@ -7,7 +7,8 @@ let { setInterval, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { calcUnitTypeFromTags } = require("%appGlobals/unitConst.nut")
-let { loadUnitBulletsFull, loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { loadUnitBulletsFull, loadUnitBulletsChoice, loadUnitBulletsAndSlots, loadUnitWeaponSlots
+} = require("%rGui/weaponry/loadUnitBullets.nut")
 
 register_command(@(unitName) log($"Unit {unitName} full all bullets: ", loadUnitBulletsFull(unitName)),
   "debug.get_unit_bullets_full_all")
@@ -23,6 +24,17 @@ register_command(@(unitName) log($"Unit {unitName} choice common bullets: ", loa
   "debug.get_unit_bullets_choice_common_primary")
 register_command(@(unitName) log($"Unit {unitName} choice common primary bulletsSets: ", loadUnitBulletsChoice(unitName)?.commonWeapons.primary.bulletSets),
   "debug.get_unit_bullets_choice_common_primary_bulletSets")
+register_command(function(unitName) {
+    log($"Unit {unitName} weapon slots: ")
+    debugTableData(loadUnitWeaponSlots(unitName), { recursionLevel = 5 })
+  },
+  "debug.get_unit_weapon_slots")
+register_command(function(unitName, slotIndex) {
+    log($"Unit {unitName} weapon slots: ")
+    debugTableData(loadUnitWeaponSlots(unitName).findvalue(@(s) s.index == slotIndex),
+      { recursionLevel = 5 })
+  },
+  "debug.get_unit_weapon_slot")
 
 function printAllBulletNames() {
   let res = {}
@@ -98,7 +110,7 @@ function loadNextBullets() {
   while(todo.len() > 0) {
     let name = todo.pop()
     command($"console.progress_indicator loadAllBullets {res.len()}/{res.len() + todo.len()}")
-    res[name] <- loadUnitBulletsFull(name)
+    res[name] <- loadUnitBulletsAndSlots(name)
     if (get_time_msec() - time >= 10)
       return
   }

@@ -76,7 +76,11 @@
       "Korean",
       "Japanese",
       "Chinese",
-      "TChinese"
+      "TChinese",
+      "Czech",
+      "Greek",
+      "Indonesian",
+      "Thai"
     ]
   },
   "abbreviation_languages_table": {
@@ -134,6 +138,9 @@
     "sr": "Serbian",
     "hu": "Hungarian",
     "ko": "Korean",
-    "ro": "Romanian"
+    "ro": "Romanian",
+    "el": "Greek",
+    "id": "Indonesian",
+    "th": "Thai"
   }
 }

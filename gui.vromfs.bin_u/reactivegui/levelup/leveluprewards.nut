@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { rewardsToReceive, failedRewardsLevelStr, maxRewardLevelInfo, isRewardsModalOpen,
   openLvlUpAfterDelay, startLvlUpAnimation, closeRewardsModal, skipLevelUpUnitPurchase
 } = require("levelUpState.nut")
@@ -97,7 +98,7 @@ registerHandler("playerLevelRewards.receiveNext",
   })
 
 let receiveBtn = mkSpinnerHideBlock(Computed(@() rewardInProgress.value != null),
-  textButtonPrimary(utf8ToUpper(loc("btn/receive")), receiveRewards),
+  textButtonPrimary(utf8ToUpper(loc("btn/receive")), receiveRewards, { hotkeys = [btnAUp] }),
   {
     size = [flex(), defButtonHeight]
     halign = ALIGN_CENTER

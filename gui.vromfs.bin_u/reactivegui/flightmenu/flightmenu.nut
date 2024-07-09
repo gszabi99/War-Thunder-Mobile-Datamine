@@ -16,12 +16,12 @@ let optionsScene = require("%rGui/options/optionsScene.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
-let { isUnitDelayed, unitType, isUnitAlive } = require("%rGui/hudState.nut")
-let { respawnSlots } = require("%rGui/respawn/respawnState.nut")
+let { isUnitDelayed, isUnitAlive } = require("%rGui/hudState.nut")
+let { respawnSlots, canUseSpare } = require("%rGui/respawn/respawnState.nut")
 
 
 let spawnInfo = Watched(null)
-let aliveOrHasSpawn = Computed(@() (spawnInfo.value?.isAlive ?? false) || (spawnInfo.value?.hasSpawns ?? false))
+let aliveOrHasSpawn = Computed(@() (spawnInfo.get()?.isAlive ?? false) || (spawnInfo.get()?.hasSpawns ?? false))
 eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
 
 let battleResume = @() eventbus_send("FlightMenu_doButtonAction", { buttonName = "Resume" })
@@ -58,7 +58,7 @@ let customButtons = @() {
   gap = buttonsHGap
   children = [
     optionsButton
-    isGamepad.value ? helpButton : null
+    isGamepad.get() ? helpButton : null
   ]
 }
 
@@ -77,18 +77,18 @@ let flightMenu = @() bgShaded.__merge({
   padding = saBordersRv
   children = [
     backBtn
-    needShowDevMenu.value ? devMenuContent : menuContent(aliveOrHasSpawn.value, battleCampaign.value)
+    needShowDevMenu.get() ? devMenuContent : menuContent(aliveOrHasSpawn.get(), battleCampaign.get())
     customButtons
     @() {
-      watch = [isUnitAlive, unitType, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu]
+      watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare]
       flow = FLOW_HORIZONTAL
       gap = buttonsHGap
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
       children = [
         isUnitAlive.get() && !isUnitDelayed.get()
-            && respawnSlots.get().reduce(@(res, s) res + (s?.isLocked ? 0 : 1), 0) > 1
             && canBailoutFromFlightMenu.get()
+            && (respawnSlots.get().len() > 1 || canUseSpare.get())
           ? leaveVehicleButton
           : null
           openDevMenuButton

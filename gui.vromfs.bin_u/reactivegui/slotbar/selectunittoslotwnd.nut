@@ -1,57 +1,68 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { msgBoxBg, msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
+let { msgBoxBg } = require("%rGui/components/msgBox.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
 let { selectedUnitToSlot, slots } = require("slotBarState.nut")
-let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
+let { defer } = require("dagor.workcycle")
+let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
+let { scrollToUnit } = require("%rGui/unitsTree/unitsTreeNodesContent.nut")
+let { getBox } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
+let { treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
+let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 
 
 let WND_UID = "selectUnitToSlot"
 
-let needSelectUnitResearch = keepref(Computed(@() selectedUnitToSlot.get() != null))
+let needSelectUnitResearch = keepref(Computed(@() selectedUnitToSlot.get() != null && !isPurchEffectVisible.get()))
 
 let function close() {
   selectedUnitToSlot.set(null)
   removeModalWindow(WND_UID)
 }
 
-let openImpl = @() addModalWindow(bgShaded.__merge({
+function mkBgText(rect) {
+  let text = loc("slotbar/chooseSlot", { unit = loc(getUnitLocId(selectedUnitToSlot.get())) })
+  let textSize = calc_str_box(text, fontSmall)
+  // align text relative to the selected unit
+  let posX = rect.l - ((textSize[0] - (rect.r - rect.l)) / 2)
+  return {
+    size = flex()
+    pos = [posX, rect.t - hdpx(75)]
+    rendObj = ROBJ_TEXT
+    text
+  }.__update(fontSmall)
+}
+
+let openImpl = @(rect) addModalWindow({
   key = WND_UID
-  size = flex()
   onClick = close
-  children = msgBoxBg.__merge({
-    flow = FLOW_VERTICAL
-    halign = ALIGN_CENTER
-    children = [
-      msgBoxHeaderWithClose(loc("slotbar/chooseSlot", { unit = loc(getUnitLocId(curSelectedUnit.get())) }),
-        close,
-        {
-          minWidth = SIZE_TO_CONTENT,
-          padding = [0, buttonsHGap]
-        })
-      {
-        padding = buttonsHGap
-        gap = buttonsHGap
-        flow = FLOW_VERTICAL
-        halign = ALIGN_CENTER
-        children = slotBarSelectWnd
-      }
-    ]
-  })
+  children = [
+    mkCutBg([rect])
+    {
+      margin = [rect.b + hdpx(50), 0, 0, 0]
+      children = msgBoxBg.__merge({ children = slotBarSelectWnd })
+    }
+    mkBgText(rect)
+  ]
   animations = wndSwitchAnim
-}))
+})
 
 function openWndIfCan() {
   if (needSelectUnitResearch.get()
       && !hasModalWindows.get()
       && !isInBattle.get()
-      && slots.get().len() > 0)
-    openImpl()
+      && !isPurchEffectVisible.get()
+      && slots.get().len() > 0) {
+    scrollToUnit(selectedUnitToSlot.get())
+    defer(function() {
+      let rect = getBox(treeNodeUnitPlateKey(selectedUnitToSlot.get()))
+      if (rect)
+        openImpl(rect)
+    })
+  }
 }
 
 if (needSelectUnitResearch.get())

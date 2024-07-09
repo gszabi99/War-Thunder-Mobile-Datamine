@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
+let { allShopGoods } = require("%rGui/shop/shopState.nut")
 let { getEventBg, getEventLoc, eventSeason, specialEvents, MAIN_EVENT_ID, isEventActive
 } = require("%rGui/event/eventState.nut")
 
 
 let currencyId = mkWatched(persist, "currencyId", null)
 let parentEventId = mkWatched(persist, "parentEventId", null)
-let isBuyCurrencyWndOpen = Computed(@() currencyId.value != null)
+let isBuyCurrencyWndOpen = Computed(@() currencyId.get() != null)
 
 let isParentEventActive = Computed(@() parentEventId.get() == MAIN_EVENT_ID ? isEventActive.get()
   : parentEventId.get() in specialEvents.get())
@@ -19,10 +19,7 @@ let isGoodsFit = @(goods, cId) (goods.currencies?[cId] ?? 0) > 0
   && goods.unitUpgrades.len() == 0
   && goods.items.len() == 0
 
-let eventCurrenciesGoods = Computed(function() {
-  let c = currencyId.get()
-  return shopGoods.get().filter(@(g) isGoodsFit(g, c))
-})
+let eventCurrenciesGoods = Computed(@() allShopGoods.get().filter(@(g) isGoodsFit(g, currencyId.get())))
 
 let bgFallback = "ui/images/event_bg.avif"
 let bgImage = Computed(@() getEventBg(parentEventId.get(), eventSeason.get(), specialEvents.get(), bgFallback))

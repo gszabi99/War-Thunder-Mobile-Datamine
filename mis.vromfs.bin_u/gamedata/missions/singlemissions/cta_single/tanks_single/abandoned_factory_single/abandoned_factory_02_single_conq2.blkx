@@ -103,6 +103,7 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
+      "ctaPenaltyInactive": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,

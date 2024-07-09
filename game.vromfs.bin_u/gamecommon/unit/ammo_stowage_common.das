@@ -1,6 +1,5 @@
 module ammo_stowage_common shared
 
-require daslib/lpipe
 require ecs
 require dm
 require app

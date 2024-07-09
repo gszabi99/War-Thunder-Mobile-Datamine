@@ -14,6 +14,8 @@ let { openEventQuestsWnd, getQuestCurrenciesInTab, questsCfg, questsBySection, p
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
 
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
@@ -80,26 +82,50 @@ function mkQuestsLink(curId, season) {
 }
 
 
-let function mkGoods(goods, onClick, state, animParams) {
+function mkGoods(goods, onClick, state, animParams) {
   local cId = goods.currencies.findindex(@(v) v > 0) ?? ""
   local amount = goods.currencies?[cId] ?? 0
   let bgParticles = mkBgParticles(goodsBgSize)
+  let { timeRange } = goods
+  let { start = 0, end = 0 } = timeRange
 
+  let timeText = Computed(@() start > serverTime.get()
+      ? loc("events/buyCurrency/availableAfter", { time = secondsToHoursLoc(start - serverTime.get()) })
+    : end > 0 && end < serverTime.get() ? loc("events/buyCurrency/noLongerAvailable")
+    : null)
+  let isAvailable = Computed(@() timeText.get() == null)
   return @() {
-    watch = eventSeason
-    children = mkGoodsWrap(
-      goods,
-      onClick,
-      @(sf, _) [
-        mkSlotBgImg()
-        bgParticles
-        sf & S_HOVER ? bgHiglight : null
-        getImgByAmount(amount, cId, eventSeason.get())
-        mkCurrencyAmountTitle(amount, goods?.viewBaseValue ?? 0, titleFontGrad)
-      ].extend(mkGoodsCommonParts(goods, state)),
-      mkPricePlate(goods, priceBgGrad, state, animParams),
-      { size = goodsSize },
-      { size = goodsBgSize })
+    watch = [isAvailable, eventSeason]
+    children = [
+      mkGoodsWrap(
+        goods,
+        isAvailable.get() ? onClick : null,
+        @(sf, _) [
+          mkSlotBgImg()
+          bgParticles
+          sf & S_HOVER ? bgHiglight : null
+          getImgByAmount(amount, cId, eventSeason.get())
+          mkCurrencyAmountTitle(amount, goods?.viewBaseValue ?? 0, titleFontGrad)
+        ].extend(mkGoodsCommonParts(goods, state)),
+        mkPricePlate(goods, priceBgGrad, state, animParams),
+        { size = goodsSize },
+        { size = goodsBgSize }
+      )
+      isAvailable.get() ? null : {
+        size = flex()
+        rendObj = ROBJ_BOX
+        fillColor = 0xBF000000
+        children = @() {
+          watch = timeText
+          size = [flex(), SIZE_TO_CONTENT]
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          vplace = ALIGN_CENTER
+          halign = ALIGN_CENTER
+          text = timeText.get()
+        }.__update(fontTinyShaded)
+      }
+    ]
   }
 }
 
@@ -122,14 +148,14 @@ function mkEventCurrenciesGoods() {
         children = showQuestsLink.get() ? mkQuestsLink(cId, eventSeason.get()) : null
       }
     ]
-      .extend(mkGoodsListWithBaseValue(eventCurrenciesGoods.value.values())
+      .extend(mkGoodsListWithBaseValue(eventCurrenciesGoods.get().values())
         .sort(@(a, b) (a?.currencies[cId] ?? 0) <=> (b?.currencies[cId] ?? 0))
         .map(@(good, idx) mkGoods(good,
           @() onGoodsClick(good),
           mkGoodsState(good),
           {
             delay = idx * glareDuration + glareDelay
-            repeatDelay = glareDuration * (eventCurrenciesGoods.value.len() - idx)
+            repeatDelay = glareDuration * (eventCurrenciesGoods.get().len() - idx)
           })))
   }
 }
@@ -140,12 +166,12 @@ let buyEventCurrenciesHeader = @() {
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.value}", { name = parentEventLoc.value }))
+  text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.get()}", { name = parentEventLoc.get() }))
 }.__update(fontLarge)
 
 let buyEventCurrenciesDesc = @(){
   watch = eventCurrenciesGoods
-  size = [(goodsW + gap) * (eventCurrenciesGoods.value.len() + 1), SIZE_TO_CONTENT]
+  size = [(goodsW + gap) * (eventCurrenciesGoods.get().len() + 1), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   hplace = ALIGN_CENTER
@@ -162,7 +188,7 @@ let buyEventCurrenciesGamercard = @() {
   children = [
     backButton(closeBuyEventCurrenciesWnd, { vplace = ALIGN_CENTER })
     { size = flex() }
-    mkCurrencyBalance(currencyId.value)
+    mkCurrencyBalance(currencyId.get())
   ]
 }
 

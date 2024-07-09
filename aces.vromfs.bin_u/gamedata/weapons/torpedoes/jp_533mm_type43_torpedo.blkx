@@ -25,15 +25,15 @@
       90.0
     ],
     "bulletType": "torpedo",
-    "distToLive": 2500.0,
-    "maxSpeedInWater": 13.89,
+    "distToLive": 3500.0,
+    "maxSpeedInWater": 19.89,
     "diveDepth": 1.0,
     "detonationRadius": 0.1,
     "detonationDepth": 4.0,
     "caliber": 0.533,
     "mass": 1187.0,
-    "explosiveType": "shimose",
-    "explosiveMass": 130.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 300.0,
     "explosionFx": "bomb_expl_100kg",
     "propellerEffect": "underwater_trp_propeller_water_splashes",
     "explosionEffect": "water_under_explosion_medium",
@@ -56,6 +56,12 @@
       300.0,
       1000.0
     ],
+    "splash": {
+      "innerRadius": 9.0,
+      "penetration": 140.0,
+      "damage": 6000.0,
+      "damageType": "explosionTorpedo"
+    },
     "arcadeProp": {
       "dropSpeedRange": [
         -10.0,

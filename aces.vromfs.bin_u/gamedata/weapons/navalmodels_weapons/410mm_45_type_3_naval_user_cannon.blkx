@@ -27,7 +27,7 @@
     "bulletCount": 25,
     "mass": 1000.0,
     "explosiveType": "tnt",
-    "explosiveMass": 80.0,
+    "explosiveMass": 70.0,
     "caliber": 0.41,
     "speed": 780.0,
     "maxDistance": 100000.0,
@@ -52,7 +52,7 @@
     "shellAnimation": "video/shells_animations/aphe.ivf",
     "bulletName": "410mm_no5_apc",
     "dynamicKv": true,
-    "hitPowerMult": 3500.0,
+    "hitPowerMult": 3000.0,
     "relativeVelArmorShift": [
       200.0,
       1000.0
@@ -234,7 +234,7 @@
       "bulletCount": 25,
       "mass": 1000.0,
       "explosiveType": "tnt",
-      "explosiveMass": 80.0,
+      "explosiveMass": 70.0,
       "caliber": 0.41,
       "speed": 780.0,
       "maxDistance": 100000.0,
@@ -259,7 +259,7 @@
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "410mm_no5_apc",
       "dynamicKv": true,
-      "hitPowerMult": 3500.0,
+      "hitPowerMult": 3000.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0

@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 function mkTab(cfg, isSelected, onClick) {
-  let { icon, locId, iconSize } = cfg
+  let { icon, locId } = cfg
+  let iconSize = hdpxi(60)
   let stateFlags = Watched(0)
   let color = Computed(@() isSelected ? 0xFFFFFFFF
     : stateFlags.value & S_HOVER ? hoverColor

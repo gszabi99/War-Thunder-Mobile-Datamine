@@ -111,10 +111,10 @@ let unitActionButtons = function() {
     flow = FLOW_HORIZONTAL
     gap = buttonsHGap
     children = [
-      needSkipBtn.value ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")), onSkipUnitPurchase)
+      needSkipBtn.value ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_skip")), onSkipUnitPurchase, { hotkeys = ["^J:Y"] })
         : null
-      isPaid ? textButtonPurchase(utf8ToUpper(loc("msgbox/btn_purchase")), onBuyUnit)
-        : isFree ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")), onBuyUnit)
+      isPaid ? textButtonPurchase(utf8ToUpper(loc("msgbox/btn_purchase")), onBuyUnit, { hotkeys = ["^J:X"] })
+        : isFree ? textButtonPrimary(utf8ToUpper(loc("msgbox/btn_get")), onBuyUnit, { hotkeys = ["^J:X"] })
         : null
     ]
   }
@@ -130,7 +130,7 @@ let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
   })
 
 let btnLater = textButtonCommon(utf8ToUpper(loc("msgbox/btn_later")), closeLvlUpWnd,
-  { ovr = { hotkeys = [[btnBEscUp, { action = closeLvlUpWnd }]] } })
+  { hotkeys = [btnBEscUp] })
 
 let navBarPlace = {
   size = [ defButtonMinWidth * 2 + buttonsHGap, SIZE_TO_CONTENT ]

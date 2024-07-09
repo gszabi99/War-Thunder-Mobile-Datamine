@@ -8,4 +8,5 @@ return {
   HAPT_REPAIR = registerHapticPattern("Repair", { time = 0.0, intensity = 0.8, sharpness = 0.7, duration = 0.0, attack = 0.0, release = 0.0 })
   HAPT_SMOKE = registerHapticPattern("Smoke", { time = 0.0, intensity = 0.8, sharpness = 0.7, duration = 0.0, attack = 0.0, release = 0.0 })
   HAPT_IRCM = registerHapticPattern("Ircm", { time = 0.0, intensity = 0.8, sharpness = 0.7, duration = 0.0, attack = 0.0, release = 0.0 })
+  HAPT_DAMAGE = registerHapticPattern("TakingDamage", { time = 0.0, intensity = 0.4, sharpness = 0.1, duration = 0.1, attack = 0.01, release = 0.14 })
 }

@@ -8,7 +8,7 @@ let { setSelectedUnitInfo, getAvailableRespawnBases, getFullRespawnBasesList,
 let { onSpectatorMode } = require("guiSpectator")
 let { is_bit_set, ceil } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft
+let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitTags, getUnitType } = require("%appGlobals/unitTags.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -23,6 +23,7 @@ let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
 let { getSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { getUnitSlotsPresetNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 
 
 let sparesNum = mkWatched(persist, "sparesNum", servProfile.value?.items[SPARE].count ?? 0)
@@ -42,12 +43,15 @@ let seenShells = mkWatched(persist, SEEN_SHELLS, {})
 let selectedSkins = Watched({})
 
 let getWeapon = @(weapons) weapons.findindex(@(v) v) ?? weapons.findindex(@(_) true)
-let mkSlot =  @(id, info, readyMask = 0, spareMask = 0)
+let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
   { id, name = info?.name ?? {}, weapon = getWeapon(info?.weapons ?? {}), skin = info?.skin ?? "",
     canSpawn = is_bit_set(readyMask, id),
     isSpawnBySpare = is_bit_set(spareMask, id),
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
+    mods = info?.items ?? defMods
   }
+
+let canUseSpare = Computed(@() (respawnUnitItems.get()?.spare ?? 0) > 0)
 
 let respawnSlots = Computed(function() {
   let res = []
@@ -55,11 +59,12 @@ let respawnSlots = Computed(function() {
     return res
   let rMask = (readySlotsMask.value | spareSlotsMask.value) & ~disabledSlotsMask.value
   let sMask = spareSlotsMask.value
-  res.append(mkSlot(0, respawnUnitInfo.value, rMask, sMask))
+  let defMods = respawnUnitItems.get()
+  res.append(mkSlot(0, respawnUnitInfo.value, defMods, rMask, sMask))
   foreach (idx, sUnit in respawnUnitInfo.value?.platoonUnits ?? [])
-    res.append(mkSlot(idx + 1, sUnit, rMask, sMask))
+    res.append(mkSlot(idx + 1, sUnit, defMods, rMask, sMask))
   foreach (sUnit in respawnUnitInfo.value?.lockedUnits ?? [])
-    res.append(mkSlot(res.len(), sUnit).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
+    res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
   let { level = -1 } = respawnUnitInfo.value
   res.each(@(s) s.level <- level)
   return res
@@ -200,7 +205,7 @@ function chooseAutoSkin(unitName, skins, defSkin) {
 function respawn(slot, bullets) {
   if (isRespawnStarted.value)
     return
-  let { id, name, weapon, skin } = slot
+  let { id, name, weapon, skin, mods } = slot
   spawnUnitName(name)
   local respBaseId = curRespBase.value
   if (respBaseId == -1)
@@ -220,6 +225,7 @@ function respawn(slot, bullets) {
     respBaseId
     idInCountry = id
     skin = spawnSkin
+    weaponPreset = getUnitSlotsPresetNonUpdatable(name, mods)
   }.__update(bulletsData))
 }
 
@@ -286,6 +292,7 @@ register_command(function() {
 
 
 return {
+  canUseSpare
   isRespawnAttached
   respawnSlots
   selSlot

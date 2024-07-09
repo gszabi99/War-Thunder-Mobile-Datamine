@@ -304,7 +304,8 @@ let statsCfg = {
   [AIR] = statsCfgAir
 }
 
-let mkDamageText = @(dmg, shotFreq) shotFreq <= 0 ? $"{round(dmg)}►"
+let mkDamageText = @(dmg, shotFreq, reloadTime = 0) reloadTime > 0 ? $"{round(dmg)}► {reloadTime}▩"
+  : shotFreq <= 0 ? $"{round(dmg)}►"
   : $"{round(dmg)}► {round_by_value(1.0 / shotFreq, shotFreq > 1 ? 0.01 : 0.1)}▩"
 
 let mkGunStat = @(id) {
@@ -327,18 +328,25 @@ let mkWeapStat = @(id, override = {}) {
   getProgressColor = @(_, __) null
 }.__update(override)
 
+let calcSalvoRocketDamage = @(s) (s?.damage ?? 0) * (
+  (s?.reloadTime ?? 0) > 0 ? ((s?.rocketsSalvo ?? 1) / s.reloadTime) : ((s?.gunsCount ?? 1) * (s?.shotFreq ?? 0))
+)
+
 let weaponsCfgShip = {
   full = [
     mkGunStat("mainCannon")
     mkGunStat("auxCannon")
     mkGunStat("aaa")
-    mkWeapStat("rockets")
+    mkWeapStat("rockets", {
+      getValue = @(s) s?.damage ?? 0,
+      valueToText = @(_, s) mkDamageText(s?.damage ?? 0, s?.shotFreq ?? 0, s?.reloadTime ?? 0)
+    })
     mkWeapStat("torpedo")
     mkWeapStat("mine")
     mkWeapStat("bomb")
   ]
   short = [
-    mkWeapStat("rockets", { valueToText = @(_, s) dpsText((s?.damage ?? 0) * (s?.shotFreq ?? 0)) })
+    mkWeapStat("rockets", { valueToText = @(_, s) dpsText(calcSalvoRocketDamage(s)) })
     mkWeapStat("torpedo", { valueToText = @(_, s) dpsText((s?.damage ?? 0) * (s?.shotFreq ?? 0)) })
   ]
 }

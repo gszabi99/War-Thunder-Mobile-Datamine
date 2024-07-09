@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { can_view_player_uids } = require("%appGlobals/permissions.nut")
@@ -13,16 +14,17 @@ let { mkBotStats, mkBotInfo } = require("botsInfoState.nut")
 let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkTab } = require("%rGui/controls/tabs.nut")
-let { lbCfgById } = require("%rGui/leaderboard/lbConfig.nut")
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
 let { validateNickNames, Contact } = require("%rGui/contacts/contact.nut")
 let { mkExtContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
 let { contactNameBlock, contactAvatar, contactLevelBlock } = require("%rGui/contacts/contactInfoPkg.nut")
-let { INVITE_TO_FRIENDS, CANCEL_INVITE, REVOKE_INVITE, INVITE_TO_SQUAD } = require("%rGui/contacts/contactActions.nut")
-let { isLbWndOpened } = require("%rGui/leaderboard/lbState.nut")
+let { INVITE_TO_FRIENDS, CANCEL_INVITE, REVOKE_INVITE, INVITE_TO_SQUAD, REPORT } = require("%rGui/contacts/contactActions.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
+let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
+let { needFetchContactsInBattle } = require("%rGui/contacts/contactsState.nut")
+let { textButtonCommon } = require("%rGui/components/textButton.nut")
 
 let defColor = 0xFFFFFFFF
 let hlColor = 0xFF5FC5FF
@@ -125,36 +127,54 @@ let actions = [
     action = INVITE_TO_FRIENDS
     hotkeys = ["^J:RB"]
     icon = { name = "ui/gameuiskin#icon_contacts.svg" color = 0xFFFFFFFF }
+    isInviteAction = true
   }
     //same hotkey is correct, only 1 from 4 buttons, displayed at once
   {
     action = CANCEL_INVITE
     hotkeys = ["^J:RB"]
     icon = { name = "ui/gameuiskin#icon_contacts.svg" color = 0xFFEE5252 }
+    isInviteAction = true
   }
   {
     action = INVITE_TO_SQUAD
     hotkeys = ["^J:RB"]
     icon = { name = "ui/gameuiskin#icon_party.svg" color = 0xFFFFFFFF }
     onlyForFriends = true
+    isInviteAction = true
   }
   {
     action = REVOKE_INVITE
     hotkeys = ["^J:RB"]
     icon = { name = "ui/gameuiskin#icon_party.svg" color = 0xFFEE5252 }
+    isInviteAction = true
   }
 ]
 
-function mkButtons(userId) {
+function mkButtons(userId, isInvitesAllowed) {
   let gap = { minWidth = hdpx(40) size = flex() }
-  if (isLbWndOpened.get())
-    return null
+  let isVisibleReport = REPORT.mkIsVisible(userId)
   return {
     minWidth = SIZE_TO_CONTENT
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     gap
-    children = actions.map(@(cfg) mkExtContactActionBtn(cfg, userId))
+    children = [
+      {
+        hplace=ALIGN_LEFT
+        children = actions
+          .filter(@(v) isInvitesAllowed || !v.isInviteAction)
+          .map(@(cfg) mkExtContactActionBtn(cfg, userId))
+      }
+      @() {
+        watch = isVisibleReport
+        hplace=ALIGN_RIGHT
+        children = !isVisibleReport.get() ? null
+          : textButtonCommon(utf8ToUpper(loc(REPORT.locId)),
+              @() REPORT.action(userId),
+              { hotkeys = ["^J:LB"] })
+      }
+    ]
   }
 }
 
@@ -162,12 +182,14 @@ let tabs = @() {
   watch = selectedPlayerForInfo
   flow = FLOW_HORIZONTAL
   gap = hdpx(40)
-  children = campaignsList.get().map(
-    @(camp) mkTab(
-      lbCfgById?[camp]
+  children = campaignsList.get().map(function(camp) {
+    let cfg = campaignPresentations?[camp]
+    return mkTab(
+      { icon = cfg?.icon, locId = cfg?.unitsLocId }
       selectedPlayerForInfo.get()?.campaign == camp,
       @() selectedPlayerForInfo.get() == null ? null
-        : selectedPlayerForInfo.mutate(@(v) v.campaign = camp)))
+        : selectedPlayerForInfo.mutate(@(v) v.campaign = camp))
+    })
 }
 
 let mkMedals = @(info, selCampaign) function() {
@@ -203,7 +225,7 @@ let mkMedals = @(info, selCampaign) function() {
   }
 }
 
-function mkPlayerInfo(player, globalStats, campaign) {
+function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
   let { userId = 0, isBot = false } = player
   if (!isBot) {
     refreshPublicInfo(userId)
@@ -220,6 +242,7 @@ function mkPlayerInfo(player, globalStats, campaign) {
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     stopMouse = true
+    size = [flex(), SIZE_TO_CONTENT]
     children = [
       bgHeader.__merge({
         size = [flex(), SIZE_TO_CONTENT]
@@ -229,12 +252,12 @@ function mkPlayerInfo(player, globalStats, campaign) {
         children = {rendObj = ROBJ_TEXT text = loc("mainmenu/titlePlayerProfile")}.__update(fontSmallAccented)
       })
       {
+        hplace = ALIGN_CENTER
         flow = FLOW_VERTICAL
         valign = ALIGN_TOP
-        padding = [hdpx(40), hdpx(80), hdpx(40), hdpx(80)]
+        padding = [hdpx(40), 0]
         gap = hdpx(30)
-        minWidth = SIZE_TO_CONTENT
-        size = [flex(), SIZE_TO_CONTENT]
+        minWidth = hdpx(780)
         children = [
           isBot
             ? mkBotNameContent(player, info)
@@ -300,7 +323,7 @@ function mkPlayerInfo(player, globalStats, campaign) {
               }
             ]
           }
-          mkButtons(userId)
+          mkButtons(userId, isInvitesAllowed)
         ]
       }
     ]
@@ -314,9 +337,9 @@ selectedPlayerForInfo.subscribe(function(v) {
   if (v == null)
     return
 
-  let { player } = selectedPlayerForInfo.get()
+  let { player, isInvitesAllowed = true } = v
   let position = calcPosition(gui_scene.getCompAABBbyKey(player.userId), FLOW_VERTICAL, hdpx(20), ALIGN_CENTER, ALIGN_CENTER)
-  let selCampaign = selectedPlayerForInfo.get().campaign
+  let selCampaign = v.campaign
   let globalStats = Computed(function() {
     let { allUnits = {} } = serverConfigs.get()
     let all = {}
@@ -342,14 +365,16 @@ selectedPlayerForInfo.subscribe(function(v) {
     hotkeys = [[btnBEscUp, { action = close }]]
     sound = { click  = "click" }
     size = [sw(100), sh(100)]
+    onAttach = @() needFetchContactsInBattle.set(true)
+    onDetach = @() needFetchContactsInBattle.set(false)
     children = position.__merge({
       size = [0, 0]
       children = {
-        size = [hdpx(1000), SIZE_TO_CONTENT]
+        size = [hdpx(900), SIZE_TO_CONTENT]
         transform = {}
         safeAreaMargin = saBordersRv
         behavior = Behaviors.BoundToArea
-        children = mkPlayerInfo(player, globalStats, selCampaign)
+        children = mkPlayerInfo(player, globalStats, selCampaign, isInvitesAllowed)
       }
     })
   }))

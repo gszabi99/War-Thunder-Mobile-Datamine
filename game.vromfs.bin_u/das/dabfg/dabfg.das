@@ -82,10 +82,11 @@ variant TextureResolution
   autoRes : AutoResolutionRequest
 
 
+[unsafe_when_uninitialized]
 struct Texture2dCreateInfo
   resolution : TextureResolution
   creationFlags : uint
-  mipLevels : uint
+  mipLevels : uint = 1u
 
 
 struct BufferCreateInfo

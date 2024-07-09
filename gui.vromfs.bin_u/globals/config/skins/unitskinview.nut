@@ -965,6 +965,9 @@ return {
     "us_cruiser_rckt_belknap": {
       "upgraded": "camo_measure_12mod"
     },
+    "us_cruiser_rckt_truxtun": {
+      "upgraded": "camo_blackgray_spots"
+    },
     "us_destroyer_fletcher": {
       "upgraded": "camo_measure_geometry"
     },
@@ -1373,6 +1376,12 @@ return {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_lines"
     },
+    "ussr_it_1_reskin": {
+      "": "ussr_camo_green",
+      "desert": "ussr_modern_desert",
+      "forest": "ussr_camo_fiction_var1",
+      "winter": "ussr_camo_winter_white_olive"
+    },
     "ussr_kv_122": {
       "": "ussr_camo_forest_01",
       "desert": "ussr_camo_desert_syrian_green_brown_yellow",
@@ -1418,6 +1427,12 @@ return {
     "ussr_object_268": {
       "": "ussr_camo_green",
       "fiction": "ussr_t_34_85_zis_53_dislike"
+    },
+    "ussr_object_685": {
+      "": "ussr_camo_green",
+      "desert": "ussr_modern_desert",
+      "forest": "ussr_camo_fiction_var1",
+      "winter": "ussr_camo_winter_white_olive"
     },
     "ussr_object_906": {
       "": "ussr_camo_green",
@@ -1577,6 +1592,12 @@ return {
       "fiction": "us_t32_akai_victory",
       "winter": "ussr_camo_winter"
     },
+    "ussr_t_55_amd_1": {
+      "": "ussr_camo_green",
+      "desert": "ussr_modern_desert",
+      "forest": "ussr_camo_fiction_var1",
+      "winter": "ussr_camo_winter_white_olive"
+    },
     "ussr_t_55a": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_lines"
@@ -1624,6 +1645,12 @@ return {
       "desert": "ussr_camo_czechoslovak_yellow_green",
       "fiction": "us_t32_akai_victory",
       "winter": "ussr_camo_winter"
+    },
+    "ussr_zsu_37_2_reskin2": {
+      "": "ussr_camo_green",
+      "desert": "ussr_modern_desert",
+      "forest": "ussr_camo_fiction_var1",
+      "winter": "ussr_camo_winter_white_olive"
     },
     "ussr_zsu_37_reskin": {
       "": "ussr_camo_green",

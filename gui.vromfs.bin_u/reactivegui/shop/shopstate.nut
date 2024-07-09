@@ -310,6 +310,7 @@ return {
   curCategoryId
   goodsByCategory
   goodsIdsByCategory
+  allShopGoods
   shopGoods
   shopGoodsInternal
   goodsLinks

@@ -26,8 +26,8 @@
   "bullet": {
     "bulletCount": 40,
     "mass": 7.26,
-    "explosiveType": "amatol",
-    "explosiveMass": 0.32,
+    "explosiveType": "tnt",
+    "explosiveMass": 0.5,
     "caliber": 0.0762,
     "speed": 762.0,
     "maxDistance": 15000.0,
@@ -51,6 +51,7 @@
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "76mm_ww_ii_he",
     "dynamicKv": true,
+    "hitPowerMult": 100.0,
     "relativeVelArmorShift": [
       200.0,
       1000.0
@@ -222,8 +223,8 @@
     "bullet": {
       "bulletCount": 40,
       "mass": 7.26,
-      "explosiveType": "amatol",
-      "explosiveMass": 0.32,
+      "explosiveType": "tnt",
+      "explosiveMass": 0.5,
       "caliber": 0.0762,
       "speed": 762.0,
       "maxDistance": 15000.0,
@@ -247,6 +248,7 @@
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "76mm_ww_ii_he",
       "dynamicKv": true,
+      "hitPowerMult": 100.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0

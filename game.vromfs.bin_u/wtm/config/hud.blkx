@@ -3005,7 +3005,8 @@
       0,
       155
     ],
-    "fontFxScale": 42
+    "fontFxScale": 42,
+    "shouldOnlyNotifyGui": true
   },
   "multiplayer_score_digits": {
     "position": [

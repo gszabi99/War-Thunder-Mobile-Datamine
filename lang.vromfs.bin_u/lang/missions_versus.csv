@@ -1,5 +1,5 @@
-"<ID|readonly|noverify>";"<English>";"<French>";"<Italian>";"<German>";"<Spanish>";"<Russian>";"<Ukrainian>";"<Polish>";"<Portuguese>";"<Turkish>";"<Korean>";"<Chinese>";"<Japanese>";"<TChinese>";"<Comments>";"<max_chars>"
-"missions/_Dom";"[Domination]";"[Domination]";"[Predominio]";"[Vorherrschaft]";"Dominación";"[Превосходство]";"[Панування]";"[Dominacja]";"[Domination]";"[Domination]";"[우세 점령]";"【战\t区\t控\t制\t】";"支配";"【戰\t區\t控\t制\t】";;
+"<ID|readonly|noverify>";"<English>";"<French>";"<Italian>";"<German>";"<Spanish>";"<Russian>";"<Ukrainian>";"<Polish>";"<Portuguese>";"<Turkish>";"<Czech>";"<Greek>";"<Indonesian>";"<Thai>";"<Korean>";"<Chinese>";"<Japanese>";"<TChinese>";"<Comments>";"<max_chars>"
+"missions/_Dom";"[Domination]";"[Domination]";"[Predominio]";"[Vorherrschaft]";"Dominación";"[Превосходство]";"[Панування]";"[Dominacja]";"[Domination]";"[Domination]";"[Nadvláda]";"[Κυριαρχία]";"[Dominasi]";"[ยึดครอง]";"[우세 점령]";"【战\t区\t控\t制\t】";"支配";"【戰\t區\t控\t制\t】";;
 "missions/_Dom/desc";"
 
 In [Domination] mode teams fight for control over three strategic points in the location.
@@ -52,7 +52,25 @@ Objetivos das forças terrestres:
 [Domination] modunda takımlar konumun üç stratejik noktasının kontrolü için savaşır.
 
 Kara kuvvetleri görevleri:
-- Noktaları ele geçir ve avantajı elinde tut ╸,╹,╺";"
+- Noktaları ele geçir ve avantajı elinde tut ╸,╹,╺";"Při získávání nadvlády bojují armády o ovládnutí strategických oblastí.
+
+Úkoly pozemních sil:
+- Obsaďte a udržte oblasti ╸,╹,╺";"
+
+Στη λειτουργία [Κυριαρχία] οι ομάδες μάχονται για τον έλεγχο τριών στρατηγικών σημείων στην τοποθεσία.
+
+Στόχοι των χερσαίων δυνάμεων:
+- Κατάληψη και διατήρηση του πλεονεκτήματος στα σημεία που έχουν καταληφθεί ╸,╹,╺";"
+
+Dalam mode [Dominasi], tim akan bertarung untuk menguasai tiga titik strategis di lokasi.
+
+Target angkatan darat:
+- Merebut dan mempertahankan dominasi di titik-titik yang direbut ╸, ╹, ╺.";"
+
+ในโหมด [ยึดครอง] ทีมจะสู้กันเพื่อยึดครองจุดยุทธศาสตร์สามแห่งในสถานที่
+
+เป้าหมายของทัพบก:
+- ยึดและรักษาการครอบครองตำแหน่ง ╸,╹,╺";"
 
 [우세 점령] 모드에서 각 편은 세 개의 전략적 지점을 점령하기 위해 싸우게 된다.
 
@@ -75,7 +93,7 @@ Kara kuvvetleri görevleri:
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t的\t地\t面\t部\t隊
 • 攻\t占\t並\t防\t守\t戰\t區 ╸,╹,╺";;
-"missions/_Conq";"[Conquest]";"[Conquest]";"[Conquista]";"[Eroberung]";"Conquista";"[Захват]";"[Захоплення]";"[Podbój]";"[Conquest]";"[Fetih]";"[거점 점령]";"【战\t区\t争\t夺\t】";"制圧";"【戰\t區\t爭\t奪\t】";;
+"missions/_Conq";"[Conquest]";"[Conquest]";"[Conquista]";"[Eroberung]";"Conquista";"[Захват]";"[Захоплення]";"[Podbój]";"[Conquest]";"[Fetih]";"[Obsazování]";"[Κατάκτηση]";"[Penaklukan]";"[พิชิต]";"[거점 점령]";"【战\t区\t争\t夺\t】";"制圧";"【戰\t區\t爭\t奪\t】";;
 "missions/_Conq/desc";"
 
 In [Conquest] mode teams fight for control over one strategic point.
@@ -126,7 +144,25 @@ Objetivos das forças terrestres:
 [Fetih] modunda takımlar bir stratejik noktanın kontrolü için savaşır.
 
 Kara kuvvetleri görevleri:
--Noktayı ele geçir ve elde tut ╸";"[거점 점령] 모드에서 각 편은 하나의 전략적 지점을 점령하기 위해 싸우게 된다.
+-Noktayı ele geçir ve elde tut ╸";"Při obsazování bojují armády o ovládnutí pozemní oblasti.
+
+Úkoly pozemních sil:
+- Obsaďte a udržte oblast ╸";"
+
+Στη λειτουργία [Κατάκτηση] οι ομάδες μάχονται για τον έλεγχο ενός στρατηγικού σημείου.
+
+Στόχοι των χερσαίων δυνάμεων:
+- Κατάληψη και διατήρηση του σημείου ╸";"
+
+Dalam mode [Penaklukan], tim akan bertarung untuk menguasai satu titik strategis.
+
+Target angkatan darat:
+- Merebut dan mempertahankan titik ╸";"
+
+ในโหมด [พิชิต] ทีมจะสู้กันเพื่อยึดครองจุดยุทธศาสตร์หนึ่งแห่ง
+
+เป้าหมายของทัพบก:
+- ยึดและรักษาการครอบครองตำแหน่ง ╸";"[거점 점령] 모드에서 각 편은 하나의 전략적 지점을 점령하기 위해 싸우게 된다.
 
 지상군 목표:
 - ╸ 지점을 점령하고 사수하라";"
@@ -148,7 +184,7 @@ Kara kuvvetleri görevleri:
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t的\t地\t面\t部\t隊
 • 攻\t占\t並\t防\t守\t戰\t區 ╸";;
-"missions/_Bttl";"[Battle]";"[Battle]";"[Battaglia]";"[Schlacht]";"Batalla";"[Сражение]";"[Битва]";"[Bitwa]";"[Battle]";"[Muharebe]";"[전투]";"【战\t区\t攻\t陷\t】";"バトル";"【戰\t區\t攻\t陷\t】";;
+"missions/_Bttl";"[Battle]";"[Battle]";"[Battaglia]";"[Schlacht]";"Batalla";"[Сражение]";"[Битва]";"[Bitwa]";"[Battle]";"[Muharebe]";"[Bitva]";"[Μάχη]";"[Pertempuran]";"[ต่อสู้]";"[전투]";"【战\t区\t攻\t陷\t】";"バトル";"【戰\t區\t攻\t陷\t】";;
 "missions/_Bttl/desc";"
 
 In [Battle] mode, each of the teams begins with one strategic point captured. If one of the teams manages to re-capture another team's point, it wins instantly.
@@ -209,7 +245,29 @@ Objetivos das forças terrestres:
 
 Kara kuvvetleri görevleri:
 -Düşman noktasını ele geçir<color=@teamRedColor>-</color>
--Müttefik noktasının ele geçirilmesini engelle <color=@teamBlueColor>-</color>";"
+-Müttefik noktasının ele geçirilmesini engelle <color=@teamBlueColor>-</color>";"V bitvě začíná každá armáda s obsazenou oblastí. Jestliže se jedné z nich podaří obsadit oblast nepřítele, okamžitě vyhrává.
+
+Úkoly pozemních sil:
+- Obsaďte nepřátelskou oblast <color=@teamRedColor>╶</color>
+- Udržte spojeneckou oblast <color=@teamBlueColor>╶</color>";"
+
+Στη λειτουργία [Μάχη], κάθε ομάδα ξεκινά έχοντας καταλάβει ένα στρατηγικό σημείο. Αν μία από τις ομάδες καταφέρει να καταλάβει ξανά το σημείο μιας άλλης ομάδας, κερδίζει αμέσως.
+
+Στόχοι των χερσαίων δυνάμεων:
+- Κατάληψη του εχθρικού σημείου <color=@teamRedColor>╶</color>
+- Να μην καταληφθεί το συμμαχικό σημείο <color=@teamBlueColor>╶</color>";"
+
+Dalam mode [Pertempuran], masing-masing tim akan memulai dengan merebut satu titik strategis. Jika salah satu tim berhasil merebut kembali titik tim lain, maka tim itu akan menang secara instan.
+
+Target angkatan darat:
+- Merebut titik musuh <color=@teamRedColor>╶</color>
+- Mencegah perebutan titik sekutu <color=@teamBlueColor>╶</color>";"
+
+ในโหมด [ต่อสู้] แต่ละทีมจะเริ่มต้นโดยยึดครองจุดยุทธศาสตร์ฝ่ายละจุด หากทีมใดทีมหนึ่งยึดตำแหน่งจากอีกทีมได้ก็จะชนะทันที
+
+เป้าหมายของทัพบก:
+- ยึดตำแหน่งของศัตรู <color=@teamRedColor>╶</color>
+- ป้องกันไม่ให้ตำแหน่งของพันธมิตรถูกยึด <color=@teamBlueColor>╶</color>";"
 
 [전투] 모드에서 각 편은 하나씩의 전략적 지점을 점령한 채로 시작한다. 만약 어떤 편이 다른 편의 지점을 점령하면 곧바로 승리하게 된다.
 
@@ -236,7 +294,7 @@ Kara kuvvetleri görevleri:
 • 摧\t毀\t敵\t方\t的\t地\t面\t部\t隊
 • 防\t守\t己\t方\t戰\t區 <color=@teamBlueColor>\t╶\t</color>
 • 攻\t占\t敵\t方\t戰\t區 <color=@teamRedColor>\t╶\t</color>";;
-"missions/_Conq1";"[Conquest #1]";"[Conquest #1]";"[Conquista] #1";"[Eroberung #1]";"[Conquista] #1";"[Захват #1]";"[Захоплення №1]";"[Podbój #1]";"[Conquest #1]";"[Fetih #1]";"[거점 점령 #1]";"【战\t区\t争\t夺\t】\t#1";"[制圧] #1";"【戰\t區\t爭\t奪\t】\t#1";;
+"missions/_Conq1";"[Conquest #1]";"[Conquest #1]";"[Conquista] #1";"[Eroberung #1]";"[Conquista] #1";"[Захват #1]";"[Захоплення №1]";"[Podbój #1]";"[Conquest #1]";"[Fetih #1]";"[Obsazování #1]";"[Κατάκτηση #1]";"[Penaklukan #1]";"[พิชิต #1]";"[거점 점령 #1]";"【战\t区\t争\t夺\t】\t#1";"[制圧] #1";"【戰\t區\t爭\t奪\t】\t#1";;
 "missions/_Conq1/desc";"
 
 In [Conquest] mode teams fight for control over one strategic point.
@@ -289,6 +347,26 @@ Objetivos das forças terrestres:
 Kara kuvvetleri görevleri:
 -Noktayı ele geçir ve elde tut ╸";"
 
+Při [Obsazování] bojují armády o ovládnutí jedné strategické oblasti.
+
+Úkoly pozemních sil:
+- Obsaď a udrž oblast ╸";"
+
+Στη λειτουργία [Κατάκτηση] οι ομάδες μάχονται για τον έλεγχο ενός στρατηγικού σημείου.
+
+Στόχοι των χερσαίων δυνάμεων:
+- Κατάληψη και διατήρηση του σημείου ╸";"
+
+Dalam mode [Penaklukan], tim akan bertarung untuk menguasai satu titik strategis.
+
+Target angkatan darat:
+- Merebut dan mempertahankan titik ╸";"
+
+ในโหมด [พิชิต] ทีมจะสู้กันเพื่อยึดครองจุดยุทธศาสตร์หนึ่งแห่ง
+
+เป้าหมายของทัพบก:
+- ยึดและรักษาการครอบครองตำแหน่ง ╸";"
+
 [거점 점령] 모드에서 각 편은 하나의 전략적 지점을 점령하기 위해 싸우게 된다.
 
 지상군 목표:
@@ -310,7 +388,7 @@ Kara kuvvetleri görevleri:
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t的\t地\t面\t部\t隊
 • 攻\t占\t並\t防\t守\t戰\t區 ╸";;
-"missions/_Conq2";"[Conquest #2]";"[Conquest #2]";"[Conquista] #2";"[Eroberung #2]";"[Conquista] #2";"[Захват #2]";"[Захоплення №2]";"[Podbój #2]";"[Conquest #2]";"[Fetih #2]";"[거점 점령 #2]";"【战\t区\t争\t夺\t】\t#2";"[制圧] #2";"【戰\t區\t爭\t奪\t】\t#2";;
+"missions/_Conq2";"[Conquest #2]";"[Conquest #2]";"[Conquista] #2";"[Eroberung #2]";"[Conquista] #2";"[Захват #2]";"[Захоплення №2]";"[Podbój #2]";"[Conquest #2]";"[Fetih #2]";"[Obsazování #2]";"[Κατάκτηση #2]";"[Penaklukan #2]";"[พิชิต #2]";"[거점 점령 #2]";"【战\t区\t争\t夺\t】\t#2";"[制圧] #2";"【戰\t區\t爭\t奪\t】\t#2";;
 "missions/_Conq2/desc";"
 
 In [Conquest] mode, teams fight for control over one strategic point.
@@ -361,7 +439,27 @@ Objetivos das forças terrestres:
 [Fetih] modunda takımlar bir stratejik noktanın kontrolü için savaşır.
 
 Kara kuvvetleri görevleri:
--Noktayı ele geçir ve elde tut ╸";"[거점 점령] 모드에서 각 편은 하나의 전략적 지점을 점령하기 위해 싸우게 된다.
+-Noktayı ele geçir ve elde tut ╸";"
+
+Při [Obsazování] bojují armády o ovládnutí jedné strategické oblasti.
+
+Úkoly pozemních sil:
+- Obsaď a udrž oblast ╸";"
+
+Στη λειτουργία [Κατάκτηση] οι ομάδες μάχονται για τον έλεγχο ενός στρατηγικού σημείου.
+
+Στόχοι των χερσαίων δυνάμεων:
+- Κατάληψη και διατήρηση του σημείου ╸";"
+
+Dalam mode [Penaklukan], tim akan bertarung untuk menguasai satu titik strategis.
+
+Target angkatan darat:
+- Merebut dan mempertahankan titik ╸";"
+
+ในโหมด [พิชิต] ทีมจะสู้กันเพื่อยึดครองจุดยุทธศาสตร์หนึ่งแห่ง
+
+เป้าหมายของทัพบก:
+- ยึดและรักษาการครอบครองตำแหน่ง ╸";"[거점 점령] 모드에서 각 편은 하나의 전략적 지점을 점령하기 위해 싸우게 된다.
 
 지상군 목표:
 - ╸ 지점을 점령하고 사수하라";"
@@ -382,7 +480,7 @@ Kara kuvvetleri görevleri:
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t的\t地\t面\t部\t隊
 • 攻\t占\t並\t防\t守\t戰\t區 ╸";;
-"missions/_Conq3";"[Conquest #3]";"[Conquest #3]";"[Conquista] #3";"[Eroberung #3]";"[Conquista] #3";"[Захват #3]";"[Захоплення №3]";"[Podbój #3]";"[Conquest #3]";"[Fetih #3]";"[거점 점령 #3]";"【战\t区\t争\t夺\t】\t#3";"[制圧] #3";"【戰\t區\t爭\t奪\t】\t#3";;
+"missions/_Conq3";"[Conquest #3]";"[Conquest #3]";"[Conquista] #3";"[Eroberung #3]";"[Conquista] #3";"[Захват #3]";"[Захоплення №3]";"[Podbój #3]";"[Conquest #3]";"[Fetih #3]";"[Obsazování #3]";"[Κατάκτηση #3]";"[Penaklukan #3]";"[พิชิต #3]";"[거점 점령 #3]";"【战\t区\t争\t夺\t】\t#3";"[制圧] #3";"【戰\t區\t爭\t奪\t】\t#3";;
 "missions/_Conq3/desc";"
 
 In [Conquest] mode, teams fight for control over one strategic point.
@@ -435,6 +533,26 @@ Objetivos das forças terrestres:
 Kara kuvvetleri görevleri:
 -Noktayı ele geçir ve elde tut ╸";"
 
+Při [Obsazování] bojují armády o ovládnutí jedné strategické oblasti.
+
+Úkoly pozemních sil:
+- Obsaď a udrž oblast ╸";"
+
+Στη λειτουργία [Κατάκτηση] οι ομάδες μάχονται για τον έλεγχο ενός στρατηγικού σημείου.
+
+Στόχοι των χερσαίων δυνάμεων:
+- Κατάληψη και διατήρηση του σημείου ╸";"
+
+Dalam mode [Penaklukan], tim akan bertarung untuk menguasai satu titik strategis.
+
+Target angkatan darat:
+- Merebut dan mempertahankan titik ╸";"
+
+ในโหมด [พิชิต] ทีมจะสู้กันเพื่อยึดครองจุดยุทธศาสตร์หนึ่งแห่ง
+
+เป้าหมายของทัพบก:
+- ยึดและรักษาการครอบครองตำแหน่ง ╸";"
+
 [거점 점령] 모드에서 각 편은 하나의 전략적 지점을 점령하기 위해 싸우게 된다.
 
 지상군 목표:
@@ -456,41 +574,43 @@ Kara kuvvetleri görevleri:
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t的\t地\t面\t部\t隊
 • 攻\t占\t並\t防\t守\t戰\t區 ╸";;
-"missions/_GS/light_tank";"[Ground Strike ⋢]";"[Attaque au sol ⋢]";"[Attacco al suolo ⋢]";"[Bodenangriff ⋢]";"[Ataque a Tierra ⋢]";"[Штурмовка ⋢]";"[Штурмування ⋢]";"[Atak na cele naziemne ⋢]";"[Ground Strike ⋢]";"[Kara Saldırısı ⋢]";"[지상 공격 ⋢]";"【对\t地\t攻\t击 ⋢\t】";"[地上攻撃 ⋢]";"【對\t地\t攻\t擊 ⋢\t】";;
-"missions/_GS/medium_tank";"[Ground Strike ⋤]";"[Attaque au sol ⋤]";"[Attacco al suolo ⋤]";"[Bodenangriff ⋤]";"[Ataque a Tierra ⋤]";"[Штурмовка ⋤]";"[Штурмування ⋤]";"[Atak na cele naziemne ⋤]";"[Ground Strike ⋤]";"[Kara Saldırısı ⋤]";"[지상 공격 ⋤]";"【对\t地\t攻\t击 ⋤\t】";"[地上攻撃 ⋤]";"【對\t地\t攻\t擊 ⋤\t】";;
-"missions/_GS/medium_tank_ship";"[Ground Strike ⋤/⋩]";"[Attaque au sol ⋤/⋩]";"[Attacco al suolo ⋤/⋩]";"[Bodenangriff ⋤/⋩]";"[Ataque a Tierra ⋤/⋩]";"[Штурмовка ⋤/⋩]";"[Штурмування ⋤/⋩]";"[Atak na cele naziemne ⋤/⋩]";"[Ground Strike ⋤/⋩]";"[Kara Saldırısı ⋤/⋩]";"[지상 공격 ⋤/⋩]";"【对\t地\t攻\t击 ⋤\t/\t⋩\t】";"[地上攻撃 ⋤/⋩]";"【對\t地\t攻\t擊 ⋤\t/\t⋩\t】";;
-"missions/_GS/heavy_tank";"[Ground Strike ⋣]";"[Attaque au sol ⋣]";"[Attacco al suolo ⋣]";"[Bodenangriff ⋣]";"[Ataque a Tierra ⋣]";"[Штурмовка ⋣]";"[Штурмування ⋣]";"[Atak na cele naziemne ⋣]";"[Ground Strike ⋣]";"[Kara Saldırısı ⋣]";"[지상 공격 ⋣]";"【对\t地\t攻\t击 ⋣\t】";"[地上攻撃 ⋣]";"【對\t地\t攻\t擊 ⋣\t】";;
-"missions/_GS/heavy_tank_ship";"[Ground Strike ⋣/⋩]";"[Attaque au sol ⋣/⋩]";"[Attacco al suolo ⋣/⋩]";"[Bodenangriff ⋣/⋩]";"[Ataque a Tierra ⋣/⋩]";"[Штурмовка ⋣/⋩]";"[Штурмування ⋣/⋩]";"[Atak na cele naziemne ⋣/⋩]";"[Ground Strike ⋣/⋩]";"[Kara Saldırısı ⋣/⋩]";"[지상 공격 ⋣/⋩]";"【对\t地\t攻\t击 ⋣\t/\t⋩\t】";"[地上攻撃 ⋣/⋩]";"【對\t地\t攻\t擊 ⋣\t/\t⋩\t】";;
-"missions/_GS/ship";"[Ground Strike ⋩]";"[Attaque au sol ⋩]";"[Attacco al suolo ⋩]";"[Bodenangriff ⋩]";"[Ataque a Tierra ⋩]";"[Штурмовка ⋩]";"[Штурмування ⋩]";"[Atak na cele naziemne ⋩]";"[Ataque ao solo ⋩]";"[Kara Saldırısı ⋩]";"[지상 공격 ⋩]";"【对\t地\t攻\t击 ⋩\t】";"[地上攻撃 ⋩]";"【對\t地\t攻\t擊 ⋩\t】";;
-"missions/_GS/desc";"In [Ground Strike] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"Dans le mode [Attaque au sol], les équipes devront détruire les cibles indiquées et compléter les tâches afin de gagner. Chaque unité détruite affecte le résultat!";"In modalità [Attacco al suolo] le squadre devono distruggere i bersagli indicati e soddisfare le altre missioni per vincere.Ciascuna unità distrutta influisce sul risultato!";"Im Modus [Bodenangriff] sollten Teams angezeigte Ziele zerstören und andere Aufgaben erfüllen, um zu gewinnen. Jede zerstörte Einheit beeinflusst das Ergebnis!";"En el modo [Ataque a Tierra] los equipos deben destruir los objetivos indicados y completar otras tareas para ganar. Cada unidad destruida afecta el resultado.";"В режиме [Штурмовка] команды должны уничтожать отмеченные цели и выполнять сопутствующие задания для достижения победы. Каждая уничтоженная единица техники влияет на результат!";"У режимі [Штурмування] команди повинні знищувати зазначені цілі і виконувати супутні завдання для досягнення перемоги. Кожна знищена одиниця техніки впливає на результат!";"W misji [Atak na Cele Naziemne] celem jest zniszczenie wskazanych celów oraz wypełnienie pozostałych zadań. Liczy się każda zniszczona jednostka!";"In [Ground Strike] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"[Kara Saldırısı] modunda takımlar kazanmak için belirtilmiş hedefleri yok etmeli ve diğer görevleri de tamamlamalıdır. Her yok edilen birim sonucu etkiler!";"[지상 공격] 모드에서, 팀들은 지정된 목표를 격파하고 다른 임무를 완료해야 승리할 수 있다. 모든 파괴한 적은 결과에 영향을 미칩니다!";"在\t【对\t地\t攻\t击\t】\t模\t式\t中，\t玩\t家\t必\t须\t摧\t毁\t敌\t军\t的\t地\t面\t目\t标，\t并\t完\t成\t一\t系\t列\t任\t务\t才\t能\t获\t胜。\t你\t所\t摧\t毁\t的\t每\t一\t个\t单\t位\t都\t将\t影\t响\t战\t争\t进\t程！";"[地上攻撃]モードでは、\tチームの\t勝利のために\t指定された\tターゲットの\t破壊や\t他の\tタスクを\t実行する\t必要があります。\t 破壊された\tユニットの\t数が\t勝敗に\t影響します！";"在\t【對\t地\t攻\t擊\t】\t模\t式\t中，\t玩\t家\t必\t須\t摧\t毀\t敵\t軍\t的\t地\t面\t目\t標，\t並\t完\t成\t一\t系\t列\t任\t務\t才\t能\t獲\t勝。\t你\t所\t摧\t毀\t的\t每\t一\t個\t單\t位\t都\t將\t影\t響\t戰\t爭\t進\t程！";;
-"poland/name";"Poland";"Pologne";"Polonia (Città)";"Polen";"Polonia";"Польша";"Польща";"Polska";"Polónia";"Polonya";"폴란드";"波\t兰 • 镜\t湖";"ポーランド";"波\t蘭 • 鏡\t湖";;
-"poland/desc";;;;;;;;;;;;;;;;
-"normandy/name";"Normandy";"Normandie";"Normandia";"Normandie";"Normandía";"Нормандия";"Нормандія";"Normandia";"Normandia";"Normandiya";"노르망디";"诺\t曼\t底";"ノルマンディー";"諾\t曼\t第";;
-"normandy/desc";;;;;;;;;;;;;;;;
-"rheinland_short/name";"Rhine";"Rhin";"Il Reno";"Rhein";"Rin";"Рейн";"Рейн";"Ren";"Reno";"Ren nehri";"라인강";"莱\t茵\t河\t畔";"ライン";"萊\t茵\t河\t畔";;
-"rheinland/name";"Rheinland";"Rheinland";"Rheinland";"Rheinland";"Rheinland";"Рейнланд";"Рейн";"Rheinland";"Rheinland";"Rheinland";"라인란트";"莱\t茵\t兰";"ラインランド";"萊\t茵\t蘭";;
-"rheinland/desc";;;;;;;;;;;;;;;;
-"stalingrad_factory/name";"Stalingrad";"Stalingrad";"Stalingrado";"Stalingrad";"Stalingrado";"Сталинград";"Сталінград";"Stalingrad";"Stalinegrado";"Stalingrad";"스탈린그라드";"斯\t大\t林\t格\t勒";"スターリングラード";"史\t達\t林\t格\t勒";;
-"stalingrad_factory/desc";;;;;;;;;;;;;;;;
-"abandoned_factory/name";"Abandoned factory";"Usine abandonnée";"Fabbrica Abbandonata";"Verlassene Fabrik";"Fábrica abandonada";"Заброшенный завод";"Покинутий завод";"Opuszczona fabryka";"Fábrica Abandonada";"Terk edilmiş fabrika";"버려진 공장";"废\t弃\t工\t厂";"廃工場";"廢\t棄\t工\t廠";;
-"abandoned_factory/desc";;;;;;;;;;;;;;;;
-"japan/name";"Japan";"Japon";"Giappone";"Japan";"Japón";"Япония";"Японія";"Japonia";"Japão";"Japonya";"일본";"日\t本";"日本";"日\t本";;
-"japan/desc";;;;;;;;;;;;;;;;
-"american_valley/name";"American Desert";"Désert américain";"Deserto Americano";"Amerikanische Wüste";"Desierto de América";"Американская пустыня";"Американська пустеля";"Amerykańska pustynia";"Deserto Americano";"Amerikan Çölü";"아메리칸 데저트";"美\t国 • 沙\t漠\t之\t城";"アメリカの\t砂漠";"美\t國 • 沙\t漠\t之\t城";;
-"american_valley/desc";;;;;;;;;;;;;;;;
-"pacific_island/name";"Pacific Islands";"Îles du Pacifique";"Isole del Pacifico";"Inseln im Pazifik";"Islas del Pacífico";"Тихоокеанские острова";"Тихоокеанські острови";"Wyspy pacyficzne";"Ilhas do Pacífico";"Pasifik Adaları";"태평양의 섬";"太\t平\t洋\t岛\t屿";"太平洋諸島";"太\t平\t洋\t島\t嶼";;
-"pacific_island/desc";;;;;;;;;;;;;;;;
-"ice_shelf/name";"Ice shelf";"Plateau de glace";"Piattaforma Ghiacciata";"Eisschelf";"Plataforma de hielo";"Шельфовые ледники";"Шельфові льодовики";"Lodowiec szelfowy";"Plataforma de gelo";"Buz sahanlığı";"빙붕";"冰\t架";"棚氷";"冰\t架";;
-"ice_shelf/desc";;;;;;;;;;;;;;;;
-"scotland/name";"Scotland";"Écosse";"Scozia";"Schottland";"Escocia";"Шотландия";"Шотландія";"Szkocja";"Escócia";"İskoçya";"스코틀랜드";"苏\t格\t兰";"スコットランド";"蘇\t格\t蘭";;
-"scotland/desc";;;;;;;;;;;;;;;;
-"ships_graveyard/name";"Ships Graveyard";"Cimetière de Navires";"Cimitero Navale";"Schiffsfriedhof";"Cementerio de Barcos";"Кладбище кораблей";"Кладовище кораблів";"Cmentarzysko okrętów";"Cemitério de Navios";"Gemi Mezarlığı";"함선들의 무덤";"船\t舶\t坟\t场";"船の\t墓場";"船\t舶\t墳\t場";;
-"ships_graveyard/desc";;;;;;;;;;;;;;;;
-"white_rocks/name";"White Rocks";"White Rocks";"Rocce Bianche";"Weiße Felsen";"Rocas Blancas";"Белые скалы";"Білі скелі";"White Rocks";"Rochedos Brancos";"Beyaz Kayalar";"백색 바위";"英\t吉\t利\t云\t崖";"白岩";"蒼\t白\t亂\t石";;
-"white_rocks/desc";;;;;;;;;;;;;;;;
-"lofoten_islands/name";"Lofoten Islands";"Lofoten Islands";"Isole Lofoten";"Lofoten";"Islas Lofoten";"Лофотенские острова";"Лофотенські острови";"Wyspy Lofoten";"Ilhas Lofoten";"Lofoten Adaları";"로포텐 제도";"罗\t弗\t敦\t群\t岛";"ロフォーテン\t諸島";"羅\t弗\t敦\t群\t島";;
-"lofoten_islands/desc";;;;;;;;;;;;;;;;
-"missions/_NTdm_WTM";"[┚ Encounter]";"[┚ Encounter]";"[┚ Scontro]";"[┚ Zusammenstoß]";"[┚ Encuentro]";"[┚ Столкновение]";"[┚ Зіткнення]";"[┚ Starcie]";"[┚ Encontro]";"[┚ Karşılaşma]";"[┚조우전]";"【┚ 海\t上\t交\t锋\t】";"[┚ 会戦]";"【┚ 海\t上\t交\t鋒\t】";;
+"missions/_GS/light_tank";"[Ground Strike ⋢]";"[Attaque au sol ⋢]";"[Attacco al suolo ⋢]";"[Bodenangriff ⋢]";"[Ataque a Tierra ⋢]";"[Штурмовка ⋢]";"[Штурмування ⋢]";"[Atak na cele naziemne ⋢]";"[Ground Strike ⋢]";"[Kara Saldırısı ⋢]";"[Nálet ⋢]";"[Χτύπημα εδάφους ⋢]";"[Serangan Darat ⋢]";"[จู่โจมภาคพื้นดิน ⋢]";"[지상 공격 ⋢]";"【对\t地\t攻\t击 ⋢\t】";"[地上攻撃 ⋢]";"【對\t地\t攻\t擊 ⋢\t】";;
+"missions/_GS/medium_tank";"[Ground Strike ⋤]";"[Attaque au sol ⋤]";"[Attacco al suolo ⋤]";"[Bodenangriff ⋤]";"[Ataque a Tierra ⋤]";"[Штурмовка ⋤]";"[Штурмування ⋤]";"[Atak na cele naziemne ⋤]";"[Ground Strike ⋤]";"[Kara Saldırısı ⋤]";"[Nálet ⋤]";"[Χτύπημα εδάφους ⋤]";"[Serangan Darat ⋤]";"[จู่โจมภาคพื้นดิน ⋤]";"[지상 공격 ⋤]";"【对\t地\t攻\t击 ⋤\t】";"[地上攻撃 ⋤]";"【對\t地\t攻\t擊 ⋤\t】";;
+"missions/_GS/medium_tank_ship";"[Ground Strike ⋤/⋩]";"[Attaque au sol ⋤/⋩]";"[Attacco al suolo ⋤/⋩]";"[Bodenangriff ⋤/⋩]";"[Ataque a Tierra ⋤/⋩]";"[Штурмовка ⋤/⋩]";"[Штурмування ⋤/⋩]";"[Atak na cele naziemne ⋤/⋩]";"[Ground Strike ⋤/⋩]";"[Kara Saldırısı ⋤/⋩]";"[Nálet ⋤/⋩]";"[Χτύπημα εδάφους ⋤/⋩]";"[Serangan Darat ⋤/⋩]";"[จู่โจมภาคพื้นดิน ⋤/⋩]";"[지상 공격 ⋤/⋩]";"【对\t地\t攻\t击 ⋤\t/\t⋩\t】";"[地上攻撃 ⋤/⋩]";"【對\t地\t攻\t擊 ⋤\t/\t⋩\t】";;
+"missions/_GS/heavy_tank";"[Ground Strike ⋣]";"[Attaque au sol ⋣]";"[Attacco al suolo ⋣]";"[Bodenangriff ⋣]";"[Ataque a Tierra ⋣]";"[Штурмовка ⋣]";"[Штурмування ⋣]";"[Atak na cele naziemne ⋣]";"[Ground Strike ⋣]";"[Kara Saldırısı ⋣]";"[Nálet ⋣]";"[Χτύπημα εδάφους ⋣]";"[Serangan Darat ⋣]";"[จู่โจมภาคพื้นดิน ⋣]";"[지상 공격 ⋣]";"【对\t地\t攻\t击 ⋣\t】";"[地上攻撃 ⋣]";"【對\t地\t攻\t擊 ⋣\t】";;
+"missions/_GS/heavy_tank_ship";"[Ground Strike ⋣/⋩]";"[Attaque au sol ⋣/⋩]";"[Attacco al suolo ⋣/⋩]";"[Bodenangriff ⋣/⋩]";"[Ataque a Tierra ⋣/⋩]";"[Штурмовка ⋣/⋩]";"[Штурмування ⋣/⋩]";"[Atak na cele naziemne ⋣/⋩]";"[Ground Strike ⋣/⋩]";"[Kara Saldırısı ⋣/⋩]";"[Nálet ⋣/⋩]";"[Χτύπημα εδάφους ⋣/⋩]";"[Serangan Darat ⋣/⋩]";"[จู่โจมภาคพื้นดิน ⋣/⋩]";"[지상 공격 ⋣/⋩]";"【对\t地\t攻\t击 ⋣\t/\t⋩\t】";"[地上攻撃 ⋣/⋩]";"【對\t地\t攻\t擊 ⋣\t/\t⋩\t】";;
+"missions/_GS/ship";"[Ground Strike ⋩]";"[Attaque au sol ⋩]";"[Attacco al suolo ⋩]";"[Bodenangriff ⋩]";"[Ataque a Tierra ⋩]";"[Штурмовка ⋩]";"[Штурмування ⋩]";"[Atak na cele naziemne ⋩]";"[Ataque ao solo ⋩]";"[Kara Saldırısı ⋩]";"[Nálet ⋩]";"[Χτύπημα εδάφους ⋩]";"[Serangan Darat ⋩]";"[จู่โจมภาคพื้นดิน ⋩]";"[지상 공격 ⋩]";"【对\t地\t攻\t击 ⋩\t】";"[地上攻撃 ⋩]";"【對\t地\t攻\t擊 ⋩\t】";;
+"missions/_GS/desc";"In [Ground Strike] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"Dans le mode [Attaque au sol], les équipes devront détruire les cibles indiquées et compléter les tâches afin de gagner. Chaque unité détruite affecte le résultat!";"In modalità [Attacco al suolo] le squadre devono distruggere i bersagli indicati e soddisfare le altre missioni per vincere.Ciascuna unità distrutta influisce sul risultato!";"Im Modus [Bodenangriff] sollten Teams angezeigte Ziele zerstören und andere Aufgaben erfüllen, um zu gewinnen. Jede zerstörte Einheit beeinflusst das Ergebnis!";"En el modo [Ataque a Tierra] los equipos deben destruir los objetivos indicados y completar otras tareas para ganar. Cada unidad destruida afecta el resultado.";"В режиме [Штурмовка] команды должны уничтожать отмеченные цели и выполнять сопутствующие задания для достижения победы. Каждая уничтоженная единица техники влияет на результат!";"У режимі [Штурмування] команди повинні знищувати зазначені цілі і виконувати супутні завдання для досягнення перемоги. Кожна знищена одиниця техніки впливає на результат!";"W misji [Atak na Cele Naziemne] celem jest zniszczenie wskazanych celów oraz wypełnienie pozostałych zadań. Liczy się każda zniszczona jednostka!";"In [Ground Strike] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"[Kara Saldırısı] modunda takımlar kazanmak için belirtilmiş hedefleri yok etmeli ve diğer görevleri de tamamlamalıdır. Her yok edilen birim sonucu etkiler!";"In [Ground Strike] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"Στη λειτουργία [Χτύπημα εδάφους], οι ομάδες πρέπει να καταστρέψουν τους στόχους που υποδεικνύονται και να ολοκληρώσουν κι άλλες αποστολές για να κερδίσουν. Κάθε μονάδα που καταστρέφεται επηρεάζει το αποτέλεσμα!";"Dalam mode [Serangan Darat], tim harus menghancurkan target yang ditunjukkan dan memenuhi berbagai tugas lain untuk menang. Setiap unit yang dihancurkan akan memengaruhi hasil!";"ในโหมด [จู่โจมภาคพื้นดิน] แต่ละทีมจะต้องทำลายเป้าหมายที่ระบุและทำงานอีกอย่างหนึ่งให้สำเร็จเพื่อคว้าชัยชนะ พาหนะที่ถูกทำลายทั้งหมดจะส่งผลต่อผลลัพธ์!";"[지상 공격] 모드에서, 팀들은 지정된 목표를 격파하고 다른 임무를 완료해야 승리할 수 있다. 모든 파괴한 적은 결과에 영향을 미칩니다!";"在\t【对\t地\t攻\t击\t】\t模\t式\t中，\t玩\t家\t必\t须\t摧\t毁\t敌\t军\t的\t地\t面\t目\t标，\t并\t完\t成\t一\t系\t列\t任\t务\t才\t能\t获\t胜。\t你\t所\t摧\t毁\t的\t每\t一\t个\t单\t位\t都\t将\t影\t响\t战\t争\t进\t程！";"[地上攻撃]モードでは、\tチームの\t勝利のために\t指定された\tターゲットの\t破壊や\t他の\tタスクを\t実行する\t必要があります。\t 破壊された\tユニットの\t数が\t勝敗に\t影響します！";"在\t【對\t地\t攻\t擊\t】\t模\t式\t中，\t玩\t家\t必\t須\t摧\t毀\t敵\t軍\t的\t地\t面\t目\t標，\t並\t完\t成\t一\t系\t列\t任\t務\t才\t能\t獲\t勝。\t你\t所\t摧\t毀\t的\t每\t一\t個\t單\t位\t都\t將\t影\t響\t戰\t爭\t進\t程！";;
+"poland/name";"Poland";"Pologne";"Polonia (Città)";"Polen";"Polonia";"Польша";"Польща";"Polska";"Polónia";"Polonya";"Polsko";"Πολωνία";"Polandia";"โปแลนด์";"폴란드";"波\t兰 • 镜\t湖";"ポーランド";"波\t蘭 • 鏡\t湖";;
+"poland/desc";;;;;;;;;;;;;;;;;;;;
+"normandy/name";"Normandy";"Normandie";"Normandia";"Normandie";"Normandía";"Нормандия";"Нормандія";"Normandia";"Normandia";"Normandiya";"Normandie";"Νορμανδία";"Normandy";"นอร์มังดี";"노르망디";"诺\t曼\t底";"ノルマンディー";"諾\t曼\t第";;
+"normandy/desc";;;;;;;;;;;;;;;;;;;;
+"rheinland_short/name";"Rhine";"Rhin";"Il Reno";"Rhein";"Rin";"Рейн";"Рейн";"Ren";"Reno";"Ren nehri";"Rýn";"Ρήνος";"Rhine";"ไรน์";"라인강";"莱\t茵\t河\t畔";"ライン";"萊\t茵\t河\t畔";;
+"rheinland/name";"Rheinland";"Rheinland";"Rheinland";"Rheinland";"Rheinland";"Рейнланд";"Рейн";"Rheinland";"Rheinland";"Rheinland";"Porýní";"Ρηνανία";"Rheinland";"ไรน์ลันท์";"라인란트";"莱\t茵\t兰";"ラインランド";"萊\t茵\t蘭";;
+"rheinland/desc";;;;;;;;;;;;;;;;;;;;
+"stalingrad_factory/name";"Stalingrad";"Stalingrad";"Stalingrado";"Stalingrad";"Stalingrado";"Сталинград";"Сталінград";"Stalingrad";"Stalinegrado";"Stalingrad";"Stalingrad";"Stalingrad";"Stalingrad";"สตาลินกราด";"스탈린그라드";"斯\t大\t林\t格\t勒";"スターリングラード";"史\t達\t林\t格\t勒";;
+"stalingrad_factory/desc";;;;;;;;;;;;;;;;;;;;
+"abandoned_factory/name";"Abandoned factory";"Usine abandonnée";"Fabbrica Abbandonata";"Verlassene Fabrik";"Fábrica abandonada";"Заброшенный завод";"Покинутий завод";"Opuszczona fabryka";"Fábrica Abandonada";"Terk edilmiş fabrika";"Opuštěná továrna";"Εγκαταλελειμμένο εργοστάσιο";"Pabrik Terbengkalai";"โรงงานทิ้งร้าง";"버려진 공장";"废\t弃\t工\t厂";"廃工場";"廢\t棄\t工\t廠";;
+"abandoned_factory/desc";;;;;;;;;;;;;;;;;;;;
+"japan/name";"Japan";"Japon";"Giappone";"Japan";"Japón";"Япония";"Японія";"Japonia";"Japão";"Japonya";"Japonsko";"Ιαπωνία";"Jepang";"ญี่ปุ่น";"일본";"日\t本";"日本";"日\t本";;
+"japan/desc";;;;;;;;;;;;;;;;;;;;
+"american_valley/name";"American Desert";"Désert américain";"Deserto Americano";"Amerikanische Wüste";"Desierto de América";"Американская пустыня";"Американська пустеля";"Amerykańska pustynia";"Deserto Americano";"Amerikan Çölü";"American Desert";"Αμερικανική έρημος";"Gurun Amerika";"ทะเลทรายอเมริกา";"아메리칸 데저트";"美\t国 • 沙\t漠\t之\t城";"アメリカの\t砂漠";"美\t國 • 沙\t漠\t之\t城";;
+"american_valley/desc";;;;;;;;;;;;;;;;;;;;
+"pacific_island/name";"Pacific Islands";"Îles du Pacifique";"Isole del Pacifico";"Inseln im Pazifik";"Islas del Pacífico";"Тихоокеанские острова";"Тихоокеанські острови";"Wyspy pacyficzne";"Ilhas do Pacífico";"Pasifik Adaları";"Tichomořské ostrovy";"Νησιά του Ειρηνικού";"Kepulauan Pasifik";"หมู่เกาะแปซิฟิก";"태평양의 섬";"太\t平\t洋\t岛\t屿";"太平洋諸島";"太\t平\t洋\t島\t嶼";;
+"pacific_island/desc";;;;;;;;;;;;;;;;;;;;
+"ice_shelf/name";"Ice shelf";"Plateau de glace";"Piattaforma Ghiacciata";"Eisschelf";"Plataforma de hielo";"Шельфовые ледники";"Шельфові льодовики";"Lodowiec szelfowy";"Plataforma de gelo";"Buz sahanlığı";"Ledový šelf";"Παγοκρηπίδα";"Lempengan Es";"หิ้งน้ำแข็ง";"빙붕";"冰\t架";"棚氷";"冰\t架";;
+"ice_shelf/desc";;;;;;;;;;;;;;;;;;;;
+"scotland/name";"Scotland";"Écosse";"Scozia";"Schottland";"Escocia";"Шотландия";"Шотландія";"Szkocja";"Escócia";"İskoçya";"Skotsko";"Σκωτία";"Skotlandia";"สกอตแลนด์";"스코틀랜드";"苏\t格\t兰";"スコットランド";"蘇\t格\t蘭";;
+"scotland/desc";;;;;;;;;;;;;;;;;;;;
+"ships_graveyard/name";"Ships Graveyard";"Cimetière de Navires";"Cimitero Navale";"Schiffsfriedhof";"Cementerio de Barcos";"Кладбище кораблей";"Кладовище кораблів";"Cmentarzysko okrętów";"Cemitério de Navios";"Gemi Mezarlığı";"Hřbitov lodí";"Νεκροταφείο πλοίων";"Kuburan Kapal";"สุสานเรือ";"함선들의 무덤";"船\t舶\t坟\t场";"船の\t墓場";"船\t舶\t墳\t場";;
+"ships_graveyard/desc";;;;;;;;;;;;;;;;;;;;
+"white_rocks/name";"White Rocks";"White Rocks";"Rocce Bianche";"Weiße Felsen";"Rocas Blancas";"Белые скалы";"Білі скелі";"White Rocks";"Rochedos Brancos";"Beyaz Kayalar";"Bílá skaliska";"Λευκοί βράχοι";"Tebing Putih";"ไวท์ร็อค";"백색 바위";"英\t吉\t利\t云\t崖";"白岩";"蒼\t白\t亂\t石";;
+"white_rocks/desc";;;;;;;;;;;;;;;;;;;;
+"greece/name";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Греческий архипелаг";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";"Greek archipelago";;
+"greece/desc";;;;;;;;;;;;;;;;;;;;
+"lofoten_islands/name";"Lofoten Islands";"Lofoten Islands";"Isole Lofoten";"Lofoten";"Islas Lofoten";"Лофотенские острова";"Лофотенські острови";"Wyspy Lofoten";"Ilhas Lofoten";"Lofoten Adaları";"Lofotské ostrovy";"Νησιά Λοφότεν";"Kepulauan Lofoten";"หมู่เกาะโลโฟเทน";"로포텐 제도";"罗\t弗\t敦\t群\t岛";"ロフォーテン\t諸島";"羅\t弗\t敦\t群\t島";;
+"lofoten_islands/desc";;;;;;;;;;;;;;;;;;;;
+"missions/_NTdm_WTM";"[┚ Encounter]";"[┚ Encounter]";"[┚ Scontro]";"[┚ Zusammenstoß]";"[┚ Encuentro]";"[┚ Столкновение]";"[┚ Зіткнення]";"[┚ Starcie]";"[┚ Encontro]";"[┚ Karşılaşma]";"[┚ Střetnutí]";"[┚ Συμπλοκή]";"[┚ Konfrontasi]";"[เผชิญหน้า ┚]";"[┚조우전]";"【┚ 海\t上\t交\t锋\t】";"[┚ 会戦]";"【┚ 海\t上\t交\t鋒\t】";;
 "missions/_NTdm_WTM/desc";"
 
 In [┚ Encounter] teams must destroy the enemy fleet.
@@ -540,6 +660,26 @@ Objetivos da frota:
 Filo görevleri:
 - Düşman filosunu imha et.";"
 
+Ve režimu [┚ Střetnutí] musí týmy zničit nepřátelskou flotilu.
+
+Cíle flotily:
+- Znič nepřátelskou flotilu.";"
+
+Στη [┚ Συμπλοκή] οι ομάδες πρέπει να καταστρέψουν τον εχθρικό στόλο.
+
+Στόχοι στόλου:
+- Καταστρέψτε τον εχθρικό στόλο.";"
+
+Dalam [┚ Konfrontasi], tim harus menghancurkan armada musuh.
+
+Target armada:
+- Menghancurkan armada musuh.";"
+
+ใน [เผชิญหน้า ┚] แต่ละทีมจะต้องทำลายกองเรือศัตรู
+
+ภารกิจกองเรือ:
+- ทำลายกองเรือศัตรู";"
+
 [┚ 조우전] 에서 각 편은 적 함대를 격파해야 합니다.
 
 해군 목표:
@@ -559,5 +699,5 @@ Filo görevleri:
 
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t艦\t隊";;
-"vietnam_hills/name";"Vietnam";"Viêtnam";"Vietnam";"Vietnam";"Vietnam";"Вьетнам";"В'єтнам";"Wietnam";"Vietname";"Vietnam";"베트남";"越\t南 • 高\t地";"ベトナム";"越\t南 • 高\t地";;
-"vietnam_hills/desc";;;;;;;;;;;;;;;;
+"vietnam_hills/name";"Vietnam";"Viêtnam";"Vietnam";"Vietnam";"Vietnam";"Вьетнам";"В'єтнам";"Wietnam";"Vietname";"Vietnam";"Vietnam";"Βιετνάμ";"Vietnam";"เวียดนาม";"베트남";"越\t南 • 高\t地";"ベトナム";"越\t南 • 高\t地";;
+"vietnam_hills/desc";;;;;;;;;;;;;;;;;;;;

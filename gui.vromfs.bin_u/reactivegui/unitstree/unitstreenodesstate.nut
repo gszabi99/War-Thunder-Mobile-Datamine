@@ -8,6 +8,7 @@ let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
 
 
 let nodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()])
+let isCampaignWithTree = Computed(@() (nodes.get()?.len() ?? 0) > 0)
 let selectedCountry = mkWatched(persist, "selectedCountry", null)
 let curCountry = Computed(@() nodes.get()?.findvalue(@(n) n?.nodeCountry == selectedCountry.get()).nodeCountry
   ?? nodes.get()?[0].nodeCountry)
@@ -68,19 +69,20 @@ let filteredNodes = Computed(function(prev) {
 let unitsResearchStatus = Computed(function(prev) {
   let res = {}
   foreach (unitName, reqExp in serverConfigs.get()?.unitResearchExp ?? {}) {
-    let hasUnlockedParent = filteredNodes.get()?[unitName].isAvailable ?? false
-    let isAvailable = hasUnlockedParent && unitName not in myUnits.get()
+    let { isAvailable = false, reqUnits = [] } = filteredNodes.get()?[unitName]
     res[unitName] <- {
-      isAvailable
+      isAvailable = isAvailable && unitName not in myUnits.get()
       reqExp
+      reqUnits
     }
   }
   foreach (unitName, unitResearch in servProfile.value?.unitsResearch ?? {}) {
     let { exp = 0, isCurrent = false, isResearched = false, canBuy = false
     } = unitResearch
-    res[unitName].__update({
+    res?[unitName].__update({
       isCurrent
       isResearched
+      canResearch = !!res?[unitName].isAvailable && !isResearched //todo: need to fill it by server
       canBuy = canBuy || serverConfigs.get()?.allUnits[unitName].isPremium
       exp
     })
@@ -95,4 +97,5 @@ return {
   countries
   filteredNodes
   unitsResearchStatus
+  isCampaignWithTree
 }

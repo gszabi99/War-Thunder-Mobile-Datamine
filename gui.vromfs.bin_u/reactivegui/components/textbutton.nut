@@ -91,12 +91,9 @@ function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
   let isHovered = Computed(@() (stateFlags.value & S_HOVER) != 0)
   let isHotkeyDisabled = hotkeyBase != btnA ? alwaysFalse : cursorOverClickable
   return function() {
-    let paddingSpecial = ovr?.padding ?? [0, paddingX]
-    let paddingSpecialWithHotkey = ovr?.padding ?? [0, paddingXWithHotkey]
-    let gapSpecial = ovr?.gap ?? hotkeyGap
     let res = {
       watch = [isGamepad, isHovered, isHotkeyDisabled]
-      padding = paddingSpecial
+      padding = [0, paddingX]
       children = content
     }
     let hotkey = isHovered.value ? btnA
@@ -106,8 +103,8 @@ function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
       return res
 
     return res.__update({
-      padding = paddingSpecialWithHotkey
-      gap = gapSpecial
+      padding = [0, paddingXWithHotkey]
+      gap = hotkeyGap
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
@@ -157,11 +154,7 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let stateFlags = style?.stateFlags ?? Watched(0)
   let contentExt = mkButtonContentWithHotkey(stateFlags, hotkeys,
     (type(content) == "table") ? content.__merge(childOvr) : content,
-    {
-      padding = childOvr?.padding
-      gap = childOvr?.gap
-      size = ovr?.size
-    }.__update(hotkeyBlockOvr)
+    { size = ovr?.size }.__update(hotkeyBlockOvr)
   )
 
   local ovrExt = ovr

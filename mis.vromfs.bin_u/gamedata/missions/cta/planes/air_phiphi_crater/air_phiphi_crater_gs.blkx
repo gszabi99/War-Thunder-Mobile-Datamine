@@ -53,7 +53,7 @@
       "locName": "missions/_GS/ship;location/arcade_phiphi_crater",
       "locDesc": "missions/_GS/desc",
       "openDiffLevels": true,
-      "scoreLimit": 4200,
+      "scoreLimit": 3800,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
       "country_axis": "japan",

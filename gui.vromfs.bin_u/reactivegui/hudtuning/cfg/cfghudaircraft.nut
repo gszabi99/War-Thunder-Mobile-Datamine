@@ -38,6 +38,7 @@ let { returnToShipButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/
 let { zoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
 let { moveArrowsAirView } = require("%rGui/components/movementArrows.nut")
 let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
+let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
 
 return cfgHudCommon.__merge({
 
@@ -73,7 +74,10 @@ return cfgHudCommon.__merge({
   }
 
   lock = {
-    ctor = @() mkCircleLockBtn("ID_LOCK_TARGET")
+    ctor = @() {
+      key = "plane_lock_target"
+      children = mkCircleLockBtn("ID_LOCK_TARGET")
+    }
     defTransform = mkLBPos([hdpx(0), hdpx(-162)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_target_tracking_off.svg")
     isVisibleInBattle = Computed(@() !isActiveTurretCamera.value)
@@ -104,6 +108,7 @@ return cfgHudCommon.__merge({
     defTransform = mkLTPos([hdpx(105), 0])
     editView = aircraftRadarEditView
     hideForDelayed = false
+    isVisibleInBattle = canShowRadar
   }
 
   myPlace = {
@@ -173,6 +178,7 @@ return cfgHudCommon.__merge({
 
   courseGuns = {
     ctor = @() @() {
+      key = "plane_course_guns"
       watch = isActiveTurretCamera
       children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
         : mkCirclePlaneCourseGuns()

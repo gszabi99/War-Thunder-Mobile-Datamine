@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curCampaignSlots, curCampaignSlotUnits, campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlots, campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { set_unit_to_slot, buy_unit_slot, clear_unit_slot } = require("%appGlobals/pServer/pServerApi.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
@@ -13,7 +13,6 @@ let slots = Computed(function() {
 })
 let newSlotPriceGold = Computed(@() campConfigs.get()?.campaignCfg.slotPriceGold[curCampaignSlots.get()?.totalSlots])
 let selectedUnitToSlot = Watched(null)
-let hasUnitInSlot = @(unitName) curCampaignSlotUnits.get()?.findvalue(@(v) v == unitName) != null
 
 let function setUnitToSlot(idx) {
   set_unit_to_slot(selectedUnitToSlot.get(), idx)
@@ -40,7 +39,6 @@ return {
   slots
   newSlotPriceGold
   selectedUnitToSlot
-  hasUnitInSlot
   setUnitToSlot
   buyUnitSlot
   clearUnitSlot

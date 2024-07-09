@@ -15,7 +15,7 @@ let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkP
 } = require("unitsTreeComps.nut")
 let { unitInfoPanel, mkUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { curSelectedUnit, sizePlatoon, curUnitName } = require("%rGui/unit/unitsWndState.nut")
-let { unitActions } = require("%rGui/unit/unitsWndActions.nut")
+let { unitActions, discountBlock } = require("%rGui/unit/unitsWndActions.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { levelBorder } = require("%rGui/components/levelBlockPkg.nut")
@@ -32,13 +32,11 @@ let { unseenArrowsBlock, scrollToUnit, scrollToRank, scrollHandler
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { unitResearchBar } = require("unitResearchBar.nut")
 let openSelectUnitResearchIfCan = require("selectUnitResearchWnd.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
 
 
-let infoPanelPadding = hdpx(45)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
 
@@ -309,7 +307,6 @@ let infoPanel = @() {
             rendObj = ROBJ_IMAGE
             image = infoPanelBGImageDark
             color = 0xFF000000
-            padding = [infoPanelPadding, infoPanelPadding + saBorders[0], infoPanelPadding, infoPanelPadding]
             animations = wndSwitchAnim
           }, mkUnitTitle)
       : unitInfoPanel({
@@ -320,12 +317,20 @@ let infoPanel = @() {
           rendObj = ROBJ_IMAGE
           image = infoPanelBGImage
           color = 0xFF000000
-          padding = [infoPanelPadding, infoPanelPadding + saBorders[0], infoPanelPadding, infoPanelPadding]
           animations = wndSwitchAnim
           halign = ALIGN_CENTER
         }, mkUnitTitle, hangarUnit, {size = flex()})
-    isTreeNodes.get() ? unitResearchBar() : null
-    unitActions
+    {
+      rendObj = ROBJ_BOX
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+      halign = ALIGN_CENTER
+      flow = FLOW_VERTICAL
+      children = [
+        discountBlock
+        unitActions
+      ]
+    }
   ]
 }
 

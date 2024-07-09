@@ -42,6 +42,8 @@ let isElemHold = Watched(false)
 let history = mkWatched(persist, "history", [])
 let curHistoryIdx = Computed(@() history.get().indexof(tuningState.get()))
 
+let canShowRadar = mkWatched(persist, "canShowRadar", true)
+
 let mkEmptyTuningState = @() { transforms = {}, options = {} }
 
 let isCurPresetChanged = Computed(function() {
@@ -153,6 +155,7 @@ return {
   history
   curHistoryIdx
   isCurPresetChanged
+  canShowRadar
 
   openTuning = @(unitType) tuningUnitType(unitType)
   openTuningRecommended

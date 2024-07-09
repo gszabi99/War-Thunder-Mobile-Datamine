@@ -20,6 +20,7 @@ let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
 let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 
 let REWARDS = 3
@@ -84,13 +85,14 @@ function lootboxInfo(lootbox, sf) {
   }
 
   return @() {
-    watch = [serverConfigs, servProfile]
+    watch = [serverConfigs, servProfile, myUnits]
     fillColor = sf & S_HOVER ? hoverColor : fillColor
     transitions = [{ prop = AnimProp.fillColor, duration = 0.15, easing = Linear }]
     children = rewards.map(function(r) {
       let { rewardsCfg = null } = serverConfigs.value
       let id = r?.rewardId
-      let showMark = id in rewardsCfg && isRewardReceived(lootbox, id, rewardsCfg[id], servProfile.value)
+      let showMark = (id in rewardsCfg && isRewardReceived(lootbox, id, rewardsCfg[id], servProfile.value))
+        || (r.rType == "blueprint" && r.id in myUnits.get())
       return {
         children = [
           mkRewardPlate(r, REWARD_STYLE_TINY)

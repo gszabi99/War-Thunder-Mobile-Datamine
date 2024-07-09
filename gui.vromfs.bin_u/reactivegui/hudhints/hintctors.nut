@@ -113,14 +113,15 @@ function mkTextWithIcon(text, icon, iconSize, width) {
   }
 }
 
-function defaultHintCtor(hint) {
-  let res = mkGradientBlock(defBgColor, mkTextByWidth(hint?.text ?? loc(hint?.locId ?? "")))
+function commonHintCtor(hint, bgColor, width = hintWidth) {
+  let res = mkGradientBlock(bgColor, mkTextByWidth(hint?.text ?? loc(hint?.locId ?? ""), width))
   return hint?.key == null ? res : res.__update({ key = hint.key })
 }
 
 let hintCtors = {
-  win = @(hint) mkGradientBlock(winBgColor, mkTextByWidth(hint?.text ?? ""))
-  fail = @(hint) mkGradientBlock(failBgColor, mkTextByWidth(hint?.text ?? ""))
+  win = @(hint) commonHintCtor(hint, winBgColor)
+  fail = @(hint) commonHintCtor(hint, failBgColor)
+  mission = @(hint) commonHintCtor(hint, defBgColor, isWidescreen ? hintWidth : hdpx(600))
 
   warningWithIcon = @(hint) mkGradientBlock(warningBgColor,
     mkTextWithIcon(hint?.text ?? "", hint?.icon, hint?.iconSize, maxHintWidth),
@@ -145,7 +146,7 @@ function registerHintCreator(id, ctor) {
 
 return {
   hintCtors = freeze(hintCtors)
-  defaultHintCtor
+  defaultHintCtor = @(hint) commonHintCtor(hint, defBgColor)
   registerHintCreator
   mkGradientBlock
   maxHintWidth

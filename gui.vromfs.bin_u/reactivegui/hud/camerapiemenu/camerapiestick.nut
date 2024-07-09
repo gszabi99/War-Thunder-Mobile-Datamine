@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkMiniStick, stickHeadSize } = require("%rGui/hud/miniStick.nut")
 let { isCameraPieStickActive, cameraPieStickDelta } = require("cameraPieState.nut")
 
-let stickHeadIconSize = 2 * (stickHeadSize / 4.0 + 0.5).tointeger()
+let stickHeadIconSize = 2 * (stickHeadSize * 0.38 + 0.5).tointeger()
 
 let stickHeadIcon = {
   size = [stickHeadIconSize, stickHeadIconSize]

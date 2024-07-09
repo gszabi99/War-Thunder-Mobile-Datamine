@@ -23,6 +23,7 @@ let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMove
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 let maxThrottle = 100
 let stepThrottle = 5
@@ -150,6 +151,7 @@ function throttleSlider() {
       },
       @() {
         watch = [Trt0, IsTrtWep0, IsOnGround]
+        key = "air_throttle_slider_text"
         rendObj = ROBJ_TEXT
         pos = [knobSize + hdpx(5), -knobPadding]
         fontFxColor = 0xFF000000
@@ -166,7 +168,7 @@ function throttleSlider() {
 
   return {
     watch = [ sliderValue, needOpacityThrottle ]
-    key = sliderValue
+    key = "air_throttle_slider"
     size = [fullWidth, height]
     padding = [0, sliderPadding]
     behavior = Behaviors.Slider
@@ -221,6 +223,10 @@ function throttleSlider() {
     onChange = changeThrottleValue
   }
 }
+
+eventbus_subscribe("throttleFromMission", function(msg) {
+  sliderValue(throttleToSlider(msg.value * 100))
+})
 
 let throttleAxisUpdate = @()
   changeThrottleValue(sliderValue.get() < 0 && throttleAxisVal.get() < 0 ? 0
@@ -468,12 +474,14 @@ let aircraftIndicators = {
       }.__update(fontTinyAccented)
     @() {
       watch = [Spd, IsSpdCritical]
+      key = "plane_speed_indicator"
       rendObj = ROBJ_TEXT
       color = IsSpdCritical.value ? redColor : neutralColor
       text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), Spd.value, loc("measureUnits/kmh"))
     }.__update(fontTinyAccented)
     @() {
       watch = DistanceToGround
+      key = "plane_altitude_indicator"
       rendObj = ROBJ_TEXT
       text = " ".concat(loc("HUD/ALTITUDE_SHORT"), floor(DistanceToGround.value), loc("measureUnits/meters_alt"))
     }.__update(fontTinyAccented)

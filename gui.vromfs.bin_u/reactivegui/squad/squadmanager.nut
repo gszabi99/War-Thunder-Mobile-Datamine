@@ -557,6 +557,7 @@ let msubscribes = {
       return
     removeInvitedSquadmate(p.invite.id)
     pushNotification({ playerUid = p.invite.id, text = loc("squad/invite/reject") })
+    checkDisbandEmptySquad()
   },
   ["msquad.notify_invite_expired"] = @(p) removeInvitedSquadmate(p.invite.id),
   ["msquad.notify_disbanded"] = function(_) {

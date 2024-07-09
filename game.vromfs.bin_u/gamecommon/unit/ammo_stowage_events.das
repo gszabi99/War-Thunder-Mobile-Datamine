@@ -71,6 +71,18 @@ struct EventAmmoStowageDoDelayedFireEffects
   damageTypeId : int
   pos : float3
 
+[cpp_event(unicast, with_scheme)]
+struct EventAmmoStowageDoImmediateExplosionEffects
+  packedPartId : uint
+  stowageId : int
+  clusterId : int
+
+[cpp_event(unicast, with_scheme)]
+struct EventAmmoStowageDoImmediateFireEffects
+  packedPartId : uint
+  stowageId : int
+  clusterId : int
+
 [cpp_event(unicast)]
 struct EventAmmoStowageDoFatalFire
   stowageId : int

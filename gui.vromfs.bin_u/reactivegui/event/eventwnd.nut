@@ -47,7 +47,7 @@ let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
 
 let MAX_LOOTBOXES_AMOUNT = 3
 let headerGap = hdpx(30)
-let contentGap = hdpx(40)
+let contentGap = hdpx(30)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
 
 let wndHeaderHeight = hdpx(110)

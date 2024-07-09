@@ -118,11 +118,12 @@ function modData(mod) {
         mkNotPurchasedShade(isPurchased)
         mkEquippedFrame(isEquipped)
         mkEquippedIcon(isEquipped)
-        {
+        @() {
+          watch = isLocked
           hplace = ALIGN_RIGHT
           vplace = ALIGN_BOTTOM
           padding = hdpx(10)
-          children = mkLevelLock(isLocked, reqLevel)
+          children = isLocked.get() ? mkLevelLock(reqLevel) : null
         }
         @() {
           watch = [isPurchased, isLocked, cost]

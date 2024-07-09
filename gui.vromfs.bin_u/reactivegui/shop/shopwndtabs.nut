@@ -11,6 +11,7 @@ let iconSize = hdpxi(104)
 
 function tabData(tab, campaign) {
   let { id = "", image = null, title = "", getImage = null, getTitle = null } = tab
+  let icon = getImage?(campaign) ?? image
   return {
     id
     content = {
@@ -20,17 +21,19 @@ function tabData(tab, campaign) {
           size = flex()
           flow = FLOW_HORIZONTAL
           children = [
-            {
-              size = [iconSize, iconSize]
-              rendObj = ROBJ_IMAGE
-              image = Picture($"{getImage?(campaign) ?? image}:{iconSize}:{iconSize}")
-              keepAspect = KEEP_ASPECT_FIT
-              imageHalign = ALIGN_LEFT
-              imageValign = ALIGN_CENTER
-              color = textColor
-              vplace = ALIGN_CENTER
-              margin = [0, hdpx(10)]
-            }
+            icon
+              ? {
+                size = [iconSize, iconSize]
+                rendObj = ROBJ_IMAGE
+                image = Picture($"{icon}:{iconSize}:{iconSize}")
+                keepAspect = KEEP_ASPECT_FIT
+                imageHalign = ALIGN_LEFT
+                imageValign = ALIGN_CENTER
+                color = textColor
+                vplace = ALIGN_CENTER
+                margin = [0, hdpx(10)]
+              }
+              : null
             {
               size = flex()
               halign = ALIGN_RIGHT

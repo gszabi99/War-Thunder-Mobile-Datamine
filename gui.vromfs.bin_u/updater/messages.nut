@@ -10,7 +10,7 @@ let { dgs_get_settings, exit } = require("dagor.system")
 let { send_counter = @(_, __, ___) null } = require_optional("statsd")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { needUpdateMsg, needRestartMsg } = require("updaterState.nut")
-let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+
 
 let wndWidth = hdpx(1100)
 let wndHeight = hdpx(550)
@@ -119,7 +119,6 @@ function mkButton(text, onClick) {
 
 function openUpdateUrl() {
   send_counter("sq.app.stage", 1, { stage = "open_update_from_store_url" })
-  sendLoadingStageBqEvent("open_update_from_store_url")
 
   if (isDownloadedFromGooglePlay())
     shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })

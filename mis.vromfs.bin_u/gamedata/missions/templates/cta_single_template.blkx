@@ -82,7 +82,8 @@
             {
               "target": [
                 "check_is_tank_battle",
-                "check_is_ship_battle"
+                "check_is_ship_battle",
+                "check_is_plane_battle"
               ]
             },
             {
@@ -127,7 +128,13 @@
             {
               "target": "bq_player_deaths"
             }
-          ]
+          ],
+          "unitSetControls": {
+            "controls": "gears",
+            "value": 0.0,
+            "force": false,
+            "objects": "t1_bot_ship_03"
+          }
         },
         "else_actions": {}
       },
@@ -208,8 +215,8 @@
           "gameMPChangeScore": {
             "value": -100,
             "valueSystem": "percentage",
-            "team": "B",
-            "ignoreSingleMissions": false
+            "ignoreSingleMissions": false,
+            "team": "B"
           }
         },
         "else_actions": {
@@ -221,8 +228,8 @@
           "gameMPChangeScore": {
             "value": -100,
             "valueSystem": "percentage",
-            "team": "A",
-            "ignoreSingleMissions": false
+            "ignoreSingleMissions": false,
+            "team": "A"
           }
         }
       },
@@ -261,8 +268,8 @@
           "gameMPChangeScore": {
             "value": -100,
             "valueSystem": "percentage",
-            "team": "A",
-            "ignoreSingleMissions": false
+            "ignoreSingleMissions": false,
+            "team": "A"
           }
         },
         "else_actions": {
@@ -274,8 +281,8 @@
           "gameMPChangeScore": {
             "value": -100,
             "valueSystem": "percentage",
-            "team": "B",
-            "ignoreSingleMissions": false
+            "ignoreSingleMissions": false,
+            "team": "B"
           }
         }
       },
@@ -505,6 +512,10 @@
           ],
           "unitSetProperties": [
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t1_player_name",
                 "@t1_bot02_name",
@@ -515,6 +526,10 @@
               "army": 1
             },
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t2_bot01_name",
                 "@t2_bot02_name",
@@ -583,6 +598,10 @@
           ],
           "unitSetProperties": [
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t1_player_name",
                 "@t1_bot02_name",
@@ -593,6 +612,10 @@
               "army": 2
             },
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t2_bot01_name",
                 "@t2_bot02_name",
@@ -641,6 +664,10 @@
         "actions": {
           "__unitSetProperties": [
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t1_player_name",
                 "@t1_bot02_name",
@@ -650,6 +677,10 @@
               ]
             },
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t2_bot01_name",
                 "@t2_bot02_name",
@@ -2086,6 +2117,10 @@
           ],
           "unitSetProperties": [
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t1_player_name",
                 "@t1_bot02_name",
@@ -2096,6 +2131,10 @@
               "army": 1
             },
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t2_bot01_name",
                 "@t2_bot02_name",
@@ -2154,6 +2193,10 @@
           ],
           "unitSetProperties": [
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t1_player_name",
                 "@t1_bot02_name",
@@ -2164,6 +2207,10 @@
               "army": 2
             },
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t2_bot01_name",
                 "@t2_bot02_name",
@@ -2206,6 +2253,10 @@
         "actions": {
           "__unitSetProperties": [
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t1_player_name",
                 "@t1_bot02_name",
@@ -2215,6 +2266,10 @@
               ]
             },
             {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": [
                 "@t2_bot01_name",
                 "@t2_bot02_name",
@@ -2602,8 +2657,8 @@
           "gameMPChangeScore": {
             "value": -20,
             "valueSystem": "percentage",
-            "team": "A",
-            "ignoreSingleMissions": false
+            "ignoreSingleMissions": false,
+            "team": "A"
           }
         },
         "else_actions": {}
@@ -2648,8 +2703,8 @@
           "gameMPChangeScore": {
             "value": -20,
             "valueSystem": "percentage",
-            "team": "B",
-            "ignoreSingleMissions": false
+            "ignoreSingleMissions": false,
+            "team": "B"
           }
         },
         "else_actions": {}
@@ -3522,6 +3577,1316 @@
             "operator": "add",
             "value": 1.0,
             "var": "bq_player_not_shooting"
+          }
+        }
+      }
+    },
+    "planes": {
+      "isCategory": true,
+      "is_enabled": true,
+      "check_is_plane_battle": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "missionNamePostfix": [
+            {
+              "postfix": "_GSn",
+              "equal": true
+            },
+            {
+              "postfix": "_basic",
+              "equal": true
+            }
+          ]
+        },
+        "actions": {
+          "varSetString": [
+            {
+              "value": "single planes",
+              "var": "battle_type_name"
+            },
+            {
+              "value": "",
+              "var": "bq_record",
+              "input_var": "string_mission_id"
+            }
+          ],
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "battle_type_name"
+            },
+            {
+              "value": "battle start",
+              "digits": 0,
+              "var": "bq_record"
+            }
+          ],
+          "bigQueryAddRecord": {
+            "params": "",
+            "event": "@bq_record",
+            "name": ""
+          },
+          "varSetInt": [
+            {
+              "value": 1,
+              "var": "spawn_side",
+              "fromDescriptor": "playerSpawnSide"
+            },
+            {
+              "value": 100,
+              "var": "t1_mp_tickets"
+            },
+            {
+              "value": 100,
+              "var": "t2_mp_tickets"
+            }
+          ],
+          "varSetBool": {
+            "value": true,
+            "var": "is_change_units_random",
+            "fromDescriptor": "isChangeUnitsRandom"
+          },
+          "triggerEnable": {
+            "target": [
+              "check_roll_side",
+              "player_fade_on_killed",
+              "player_fade_on_respawn",
+              "planes_player_victory",
+              "planes_player_defeat",
+              "planes_timeout",
+              "bq_player_check_shooting",
+              "bq_player_not_shooting"
+            ]
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_check_roll_side": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "spawn_side",
+              "value": 1,
+              "comparasion_func": "notEqual"
+            },
+            {
+              "var_value": "spawn_side",
+              "value": 2,
+              "comparasion_func": "notEqual"
+            }
+          ]
+        },
+        "actions": {
+          "varSetRandomInt": {
+            "var": "spawn_side",
+            "from": 1,
+            "to_not_including": 3
+          },
+          "missionBattleArea": [
+            {
+              "air": false,
+              "ground": true,
+              "mapArea": false,
+              "airMapArea": false,
+              "killArea": true,
+              "detectionArea": false,
+              "killOutOfBattleArea": false,
+              "area": "@t1_spawn_killarea",
+              "team": "B"
+            },
+            {
+              "air": false,
+              "ground": true,
+              "mapArea": false,
+              "airMapArea": false,
+              "killArea": true,
+              "detectionArea": false,
+              "killOutOfBattleArea": false,
+              "area": "@t2_spawn_killarea",
+              "team": "A"
+            }
+          ],
+          "triggerEnable": {
+            "target": [
+              "check_if_side_t1",
+              "check_if_side_t2"
+            ]
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": [
+              "check_if_side_t1",
+              "check_if_side_t2"
+            ]
+          }
+        }
+      },
+      "planes_check_if_side_t1": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "spawn_side",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "varSetString": [
+            {
+              "value": "t1_botSpawn01_zone_sq",
+              "var": "t1_spawn_tank_name"
+            },
+            {
+              "value": "t2_botSpawn01_zone_sq",
+              "var": "t2_spawn_tank_name"
+            },
+            {
+              "value": "t1_playerSpawn01_zone",
+              "var": "t1_spawn_player_name"
+            }
+          ],
+          "unitSetProperties": [
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": [
+                "@t1_player_name",
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name"
+              ],
+              "army": 1
+            },
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": [
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ],
+              "army": 2
+            }
+          ],
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "@t1_player_name",
+            "target": "@t1_spawn_player_name",
+            "randomSpawn": true
+          },
+          "unitRespawnAfterTime": {
+            "time_to_respawn": 3.0,
+            "object_name": "@t1_player_name",
+            "place_to_respawn": "@t1_spawn_player_name",
+            "cycle_respawn": true
+          },
+          "triggerEnable": {
+            "target": "bots_properties"
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_check_if_side_t2": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "spawn_side",
+            "value": 2,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "varSetString": [
+            {
+              "value": "t2_botSpawn01_zone_sq",
+              "var": "t1_spawn_tank_name"
+            },
+            {
+              "value": "t1_botSpawn01_zone_sq",
+              "var": "t2_spawn_tank_name"
+            },
+            {
+              "value": "t2_playerSpawn01_zone",
+              "var": "t1_spawn_player_name"
+            }
+          ],
+          "unitSetProperties": [
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": [
+                "@t1_player_name",
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name"
+              ],
+              "army": 2
+            },
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": [
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ],
+              "army": 1
+            }
+          ],
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "@t1_player_name",
+            "target": "@t1_spawn_player_name",
+            "randomSpawn": true
+          },
+          "unitRespawnAfterTime": {
+            "time_to_respawn": 3.0,
+            "object_name": "@t1_player_name",
+            "place_to_respawn": "@t1_spawn_player_name",
+            "cycle_respawn": true
+          },
+          "triggerEnable": {
+            "target": "bots_properties"
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_bots_properties": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "triggerEnable": {
+            "target": "planes_bots_change_units_preset"
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_bots_change_units_preset": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "changeUnit": [
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot02_name"
+            },
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot03_name"
+            },
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot04_name"
+            },
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot05_name"
+            },
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot01_name"
+            },
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot02_name"
+            },
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot03_name"
+            },
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot04_name"
+            },
+            {
+              "unit_class": "he51c1",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot05_name"
+            }
+          ],
+          "triggerEnable": {
+            "target": "bots_set_respawn"
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_bots_set_respawn": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "unitRespawnAfterTime": [
+            {
+              "time_to_respawn": 10.0,
+              "object_name": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name"
+              ],
+              "place_to_respawn": "@t1_spawn_tank_name",
+              "cycle_respawn": true
+            },
+            {
+              "time_to_respawn": 10.0,
+              "object_name": [
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ],
+              "place_to_respawn": "@t2_spawn_tank_name",
+              "cycle_respawn": true
+            }
+          ],
+          "unitRespawn": [
+            {
+              "delay": 1.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name"
+              ],
+              "target": "@t1_spawn_tank_name",
+              "needStopOnRespawn": true
+            },
+            {
+              "delay": 1.0,
+              "offset": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "object": [
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ],
+              "target": "@t2_spawn_tank_name",
+              "needStopOnRespawn": true
+            }
+          ],
+          "triggerEnable": {
+            "target": "bots_load_behtree"
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_bots_load_behtree": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "wait": {
+            "time": 3.0
+          },
+          "__unitLoadBehTree": [
+            {
+              "name": "tankBot",
+              "objects": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name"
+              ]
+            },
+            {
+              "name": "tankBot",
+              "objects": [
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            }
+          ],
+          "unitSetVar": {
+            "object_var_name": "death_count",
+            "object": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "object_var_value": 0
+          },
+          "triggerEnable": {
+            "target": [
+              "planes_bots_check_killed",
+              "planes_bots_check_respawn",
+              "planes_bots_check_no_respawns",
+              "planes_bots_reset_mark_on_respawn"
+            ]
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_bots_check_killed": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": [
+            {
+              "object_type": "isInactive",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            },
+            {
+              "object_type": "isNotMarked",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            }
+          ]
+        },
+        "actions": {
+          "unitMark": {
+            "target_marking": 0,
+            "target": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "useForTriggerFiltered": true
+          },
+          "unitModifyVar": {
+            "object_var_name": "death_count",
+            "operator": "add",
+            "value": 1,
+            "object": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "useForTriggerFiltered": true
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_bots_check_respawn": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": [
+            {
+              "object_type": "isUnitVar",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "death_count",
+              "object_var_comp_op": "more",
+              "object_var_value": 1,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            },
+            {
+              "object_type": "isActive",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "death_count",
+              "object_var_comp_op": "more",
+              "object_var_value": 1,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            }
+          ]
+        },
+        "actions": {
+          "unitPutToSleep": {
+            "target": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "useForTriggerFiltered": true
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_bots_check_no_respawns": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isActive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": [
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ]
+          }
+        },
+        "actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "bots_no_respawns_timer"
+          }
+        },
+        "else_actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "bots_no_respawns_timer"
+          }
+        }
+      },
+      "planes_bots_reset_mark_on_respawn": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": [
+            {
+              "object_type": "isActive",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            },
+            {
+              "object_type": "isMarked",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": [
+                "@t1_bot02_name",
+                "@t1_bot03_name",
+                "@t1_bot04_name",
+                "@t1_bot05_name",
+                "@t2_bot01_name",
+                "@t2_bot02_name",
+                "@t2_bot03_name",
+                "@t2_bot04_name",
+                "@t2_bot05_name"
+              ]
+            }
+          ]
+        },
+        "actions": {
+          "unitMark": {
+            "target_marking": 0,
+            "target": [
+              "@t1_bot02_name",
+              "@t1_bot03_name",
+              "@t1_bot04_name",
+              "@t1_bot05_name",
+              "@t2_bot01_name",
+              "@t2_bot02_name",
+              "@t2_bot03_name",
+              "@t2_bot04_name",
+              "@t2_bot05_name"
+            ],
+            "useForTriggerFiltered": true,
+            "reset_marking": true
+          }
+        },
+        "else_actions": {}
+      },
+      "planes_player_victory": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "t2_mp_tickets",
+              "value": 0,
+              "comparasion_func": "notMore",
+              "var_value_other": "t2_mp_tickets_delta"
+            },
+            {
+              "var_value": "bots_no_respawns_timer",
+              "value": 10,
+              "comparasion_func": "notLess"
+            }
+          ]
+        },
+        "actions": {
+          "varSetString": {
+            "value": "",
+            "var": "bq_record",
+            "input_var": "string_mission_id"
+          },
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "battle_type_name"
+            },
+            {
+              "value": "victory total k/d: ",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "player_kill_count"
+            },
+            {
+              "value": "/",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "player_death_count"
+            },
+            {
+              "value": " on point time: ",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "bq_on_point_time"
+            }
+          ],
+          "bigQueryAddRecord": {
+            "params": "",
+            "event": "@bq_record",
+            "name": ""
+          },
+          "triggerEnable": {
+            "target": "mission_completed"
+          },
+          "triggerDisable": {
+            "target": [
+              "planes_player_victory",
+              "planes_player_defeat",
+              "planes_timeout"
+            ]
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "planes_enemy_get_tickets"
+          }
+        }
+      },
+      "planes_enemy_get_tickets": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isTeamA",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "@t1_player_name"
+          }
+        },
+        "actions": {
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "t2_mp_tickets_past",
+              "input_var": "t2_mp_tickets"
+            },
+            {
+              "value": 0,
+              "var": "t2_mp_tickets",
+              "source_var": "mpTi2"
+            },
+            {
+              "value": 0,
+              "var": "t2_mp_tickets_delta",
+              "input_var": "t2_mp_tickets_past"
+            }
+          ],
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "t2_mp_tickets_delta",
+            "use_variable": true,
+            "var_value": "t2_mp_tickets"
+          },
+          "triggerEnable": {
+            "target": "planes_player_victory"
+          }
+        },
+        "else_actions": {
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "t2_mp_tickets_past",
+              "input_var": "t2_mp_tickets"
+            },
+            {
+              "value": 0,
+              "var": "t2_mp_tickets",
+              "source_var": "mpTi1"
+            },
+            {
+              "value": 0,
+              "var": "t2_mp_tickets_delta",
+              "input_var": "t2_mp_tickets_past"
+            }
+          ],
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "t2_mp_tickets_delta",
+            "use_variable": true,
+            "var_value": "t2_mp_tickets"
+          },
+          "triggerEnable": {
+            "target": "planes_player_victory"
+          }
+        }
+      },
+      "planes_player_defeat": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "t1_mp_tickets",
+            "value": 0,
+            "comparasion_func": "notMore",
+            "var_value_other": "t1_mp_tickets_delta"
+          }
+        },
+        "actions": {
+          "varSetString": {
+            "value": "",
+            "var": "bq_record",
+            "input_var": "string_mission_id"
+          },
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "battle_type_name"
+            },
+            {
+              "value": "defeat total k/d: ",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "player_kill_count"
+            },
+            {
+              "value": "/",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "player_death_count"
+            },
+            {
+              "value": " on point time: ",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "bq_on_point_time"
+            }
+          ],
+          "bigQueryAddRecord": {
+            "params": "",
+            "event": "@bq_record",
+            "name": ""
+          },
+          "triggerEnable": {
+            "target": "mission_failed"
+          },
+          "triggerDisable": {
+            "target": [
+              "tanks_player_victory",
+              "tanks_player_defeat",
+              "tanks_timeout"
+            ]
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "planes_player_get_tickets"
+          }
+        }
+      },
+      "planes_player_get_tickets": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isTeamA",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "@t1_player_name"
+          }
+        },
+        "actions": {
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "t1_mp_tickets_past",
+              "input_var": "t1_mp_tickets"
+            },
+            {
+              "value": 0,
+              "var": "t1_mp_tickets",
+              "source_var": "mpTi1"
+            },
+            {
+              "value": 0,
+              "var": "t1_mp_tickets_delta",
+              "input_var": "t1_mp_tickets_past"
+            }
+          ],
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "t1_mp_tickets_delta",
+            "use_variable": true,
+            "var_value": "t1_mp_tickets"
+          },
+          "triggerEnable": {
+            "target": "planes_player_defeat"
+          }
+        },
+        "else_actions": {
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "t1_mp_tickets_past",
+              "input_var": "t1_mp_tickets"
+            },
+            {
+              "value": 0,
+              "var": "t1_mp_tickets",
+              "source_var": "mpTi2"
+            },
+            {
+              "value": 0,
+              "var": "t1_mp_tickets_delta",
+              "input_var": "t1_mp_tickets_past"
+            }
+          ],
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "t1_mp_tickets_delta",
+            "use_variable": true,
+            "var_value": "t1_mp_tickets"
+          },
+          "triggerEnable": {
+            "target": "planes_player_defeat"
+          }
+        }
+      },
+      "planes_timeout": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "mission_time_left",
+            "value": 1,
+            "comparasion_func": "notMore"
+          }
+        },
+        "actions": {
+          "varSetString": {
+            "value": "",
+            "var": "bq_record",
+            "input_var": "string_mission_id"
+          },
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "battle_type_name"
+            },
+            {
+              "value": "timeout total k/d: ",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "",
+              "digits": 0,
+              "var": "bq_record",
+              "input_var": "player_kill_count"
+            },
+            {
+              "value": "/",
+              "digits": 0,
+              "var": "bq_record"
+            },
+            {
+              "value": "1",
+              "digits": 0,
+              "var": "bq_record"
+            }
+          ],
+          "bigQueryAddRecord": {
+            "params": "",
+            "event": "@bq_record",
+            "name": ""
+          },
+          "triggerDisable": {
+            "target": [
+              "planes_player_victory",
+              "planes_player_defeat",
+              "planes_timeout"
+            ]
+          }
+        },
+        "else_actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "mission_time_left",
+            "source_var": "timeLeft"
           }
         }
       }

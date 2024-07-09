@@ -11,7 +11,7 @@ let { mkUnitBg, mkUnitImage, mkPlateText } = require("%rGui/unit/components/unit
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
@@ -20,7 +20,7 @@ let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
-let { mkBattleModEventUnitText, mkBattleModRewardUnitImage } = require("%rGui/rewards/battleModComp.nut")
+let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonText, mkBattleModCommonImage } = require("%rGui/rewards/battleModComp.nut")
 
 let textPadding = [0, hdpx(5)]
 let fontLabelSmaller = fontVeryTiny
@@ -360,10 +360,12 @@ function mkRewardPlateBlueprintImage(r, rStyle) {
   let size = getRewardPlateSize(r.slots, rStyle)
   let imageW = size[0]
   let imageH = size[1] - labelHeight
+  let textStyle = rStyle.textStyle
   return {
     size = [imageW,imageH]
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/unitskin#blueprint_default.avif:{imageW}:{imageH}:P")
+    fallbackImage = Picture($"ui/unitskin#blueprint_default.avif:{imageW}:{imageH}:P")
+    image = Picture($"ui/unitskin#blueprint_{id}.avif:{imageW}:{imageH}:P")
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = {
@@ -372,7 +374,7 @@ function mkRewardPlateBlueprintImage(r, rStyle) {
       text = loc(getUnitLocId(id))
       hplace = ALIGN_LEFT
       vplace = ALIGN_BOTTOM
-    }.__update(fontVeryTinyAccented)
+    }.__update(textStyle)
   }
 }
 
@@ -390,7 +392,8 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
     if (unit.value == null)
       return res
     let unitNameLoc = loc(getUnitLocId(unit.value))
-    local nameText = mkPlateText(unitNameLoc, fontTiny)
+    let textStyle = rStyle.textStyle
+    local nameText = mkPlateText(unitNameLoc, textStyle)
     if (calc_comp_size(nameText)[0] > maxTextWidth)
       nameText = mkPlateText(unitNameLoc, fontVeryTiny)
         .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
@@ -412,7 +415,7 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
         {
           hplace = ALIGN_RIGHT
           vplace = ALIGN_BOTTOM
-          children = mkGradRank(unit.value.mRank)
+          children = mkGradRankSmall(unit.value.mRank)
         }
       ]
     })
@@ -462,6 +465,10 @@ let battleModeViewCtors = {
   eventUnit = {
     image = mkBattleModRewardUnitImage
     texts = mkBattleModEventUnitText
+  }
+  common = {
+    image = mkBattleModCommonImage
+    texts = mkBattleModCommonText
   }
 }
 

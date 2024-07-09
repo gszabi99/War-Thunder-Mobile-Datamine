@@ -85,6 +85,8 @@
       "environment": "Day",
       "weather": "cloudy",
       "gt_training": true,
+      "gt_versus": true,
+      "useKillStreaks": true,
       "locName": "missions/_Conq3;abandoned_factory/name",
       "locDesc": "abandoned_factory/desc;missions/_Conq3/desc",
       "gt_mp_tickets": true,
@@ -103,6 +105,7 @@
       "country_allies": "ussr",
       "showTacticalMapCellSize": true,
       "checkFriendlyFireAlsoFromAircrafts": true,
+      "ctaPenaltyInactive": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,

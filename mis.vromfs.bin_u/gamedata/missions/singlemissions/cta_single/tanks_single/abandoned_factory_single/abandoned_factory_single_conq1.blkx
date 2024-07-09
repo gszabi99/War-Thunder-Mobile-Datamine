@@ -84,6 +84,8 @@
       "weather": "cloudy",
       "checkFriendlyFireAlsoFromAircrafts": true,
       "gt_training": true,
+      "gt_versus": true,
+      "useKillStreaks": true,
       "locName": "missions/_Conq1;abandoned_factory/name",
       "locDesc": "abandoned_factory/desc;missions/_Conq1/desc",
       "gt_mp_tickets": true,
@@ -102,7 +104,8 @@
       "country_axis": "germany",
       "country_allies": "ussr",
       "restoreType": "attempts",
-      "optionalTakeOff": false
+      "optionalTakeOff": false,
+      "ctaPenaltyInactive": false
     },
     "spectator_points": {},
     "briefing": {

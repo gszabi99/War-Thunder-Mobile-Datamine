@@ -71,6 +71,17 @@
       }
     ]
   },
+  "hideNodesInDmg": {
+    "node": [
+      "props",
+      "gun7",
+      "gun6",
+      "turret2",
+      "gun2",
+      "turret3",
+      "gun3"
+    ]
+  },
   "DamageEffects": {
     "part": [
       {

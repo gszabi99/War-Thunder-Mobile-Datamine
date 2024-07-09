@@ -6,7 +6,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { unitInfoPanelFull, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitRank
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
+  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
@@ -25,6 +25,8 @@ let btnOpenUnitSkins = require("%rGui/unitSkins/btnOpenUnitSkins.nut")
 let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
   platoonUnitsList, unitToShow, isWindowAttached, openUnitDetailsWnd, unitDetailsOpenCount
 } = require("unitDetailsState.nut")
+let { selectedLineHorUnitsCustomSize, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
+
 
 let buttonsGap = hdpx(40)
 
@@ -59,7 +61,7 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
   let isSelected = Computed(@() unitToShow.get()?.name == platoonUnit.name)
   let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
   let justUnlockedDelay = Computed(@() justUnlockedPlatoonUnits.value.indexof(platoonUnit.name) != null ? UNIT_DELAY : null)
-
+  let isCollectible = unit?.isCollectible
   return @() {
     watch = [isLocked, justUnlockedDelay]
     behavior = Behaviors.Button
@@ -67,13 +69,18 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
     sound = { click  = "choose" }
     flow = FLOW_HORIZONTAL
     children = [
-      mkUnitSelectedUnderlineVert(unit, isSelected)
       {
         key = {}
         size = [ unitPlateWidth, unitPlateHeight ]
         transform = {}
         animations = scaleAnimation(justUnlockedDelay.value, [UNIT_SCALE, UNIT_SCALE])
         children = [
+          {
+            size = flex()
+            valign = ALIGN_TOP
+            pos = [0, -2 * selLineSize]
+            children = selectedLineHorUnitsCustomSize([flex(), 2*selLineSize], isSelected, isPremium, isCollectible)
+          }
           mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(platoonUnitFull, isLocked.get())

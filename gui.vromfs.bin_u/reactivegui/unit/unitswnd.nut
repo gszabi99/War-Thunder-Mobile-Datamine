@@ -18,7 +18,7 @@ let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnde
   mkPlatoonPlateFrame, platoonSelPlatesGap, mkPlatoonEquippedIcon,
   bgPlatesTranslate, mkPlateText, plateTextsSmallPad
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { unitInfoPanel, unitInfoPanelDefPos, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { btnOpenUnitAttr } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let { curFilters } = require("%rGui/unit/unitsFilterState.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -119,15 +119,6 @@ let unitFilterButton = @() {
       }.__update(fontTiny)
       transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
     })
-
-let unitTweakingButtons = @() isShowedUnitOwned.value && !isFiltersVisible.value
-  ? {
-      watch = [isShowedUnitOwned, isFiltersVisible]
-      size = SIZE_TO_CONTENT
-      vplace = ALIGN_BOTTOM
-      children = btnOpenUnitAttr
-    }
-  : { watch = isShowedUnitOwned }
 
 let mkOnElemState = @(holdId, stateFlags = Watched(0)) function(sf) {
   local { release = 0, press = 0 } = holdInfo?[holdId]
@@ -460,17 +451,32 @@ let mkGamercardUnitWnd = @(backCb = null) {
   ]
 }
 
+let unitButtons = @() {
+  watch = [isShowedUnitOwned, isFiltersVisible]
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  children = [
+    isShowedUnitOwned.get() && !isFiltersVisible.get() ? btnOpenUnitAttr : null
+    { size = flex() }
+    unitActions
+  ]
+}
+
 let gamercardPlace = {
+  size = flex()
+  flow = FLOW_VERTICAL
   children = [
     mkGamercardUnitWnd(closeByBackBtn)
     unitInfoPanel({
-      pos = unitInfoPanelDefPos
+      size = [SIZE_TO_CONTENT, flex()]
+      hplace = ALIGN_RIGHT
       behavior = [ Behaviors.Button, HangarCameraControl ]
       eventPassThrough = true
       onClick = @() unitDetailsWnd({ name = hangarUnitName.value })
       clickableInfo = loc("msgbox/btn_more")
       hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
     }, mkUnitTitle )
+    unitButtons
   ]
 }
 
@@ -539,8 +545,6 @@ let unitsWnd = {
       hplace = ALIGN_CENTER
       children = [
         gamercardPlace
-        unitTweakingButtons
-        unitActions
         {
           vplace = ALIGN_BOTTOM
           hplace = ALIGN_CENTER

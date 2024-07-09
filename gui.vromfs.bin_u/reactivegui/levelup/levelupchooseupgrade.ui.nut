@@ -58,7 +58,7 @@ function buyButtonPrimary(unit, discounts) {
     : textButtonPricePurchase(utf8ToUpper(loc(price.price == 0 ? "msgbox/btn_get" : "msgbox/btn_purchase")),
         mkDiscountPriceComp(getShortPrice(price.fullPrice), getShortPrice(price.price), price.currencyId, CS_INCREASED_ICON),
         @() purchaseHandler(unit.name),
-        buttonStyles.PRIMARY)
+        buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:Y"] }))
 }
 
 function buyButtonUpgraded(unit, allUnits) {
@@ -67,7 +67,8 @@ function buyButtonUpgraded(unit, allUnits) {
     : textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
         mkDiscountPriceComp(getUpgradeOldPrice(rank, allUnits) ?? upgradeCostGold,
           upgradeCostGold, "gold", CS_INCREASED_ICON),
-        @() purchaseHandler(unit.name, true))
+        @() purchaseHandler(unit.name, true),
+        { hotkeys = ["^J:X"] })
 }
 
 let shouldHideButtons = Computed(@() unitInProgress.value != null)

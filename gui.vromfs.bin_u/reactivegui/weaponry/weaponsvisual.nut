@@ -87,6 +87,30 @@ function getWeaponShortName(weapon, bSet) {
   return weapon.weaponId
 }
 
+function getWeaponShortNameWithCount(weapon, bSet) {
+  let { turrets, count = 1 } = weapon
+  let total = max(turrets, 1) * count
+  let res = getWeaponShortName(weapon, bSet)
+  return total <= 1 ? res : $"{res} {format(loc("weapons/counter"), total)}"
+}
+
+function getWeaponNamesList(weapons) {
+  let counts = {}
+  let order = []
+  foreach(w in weapons) {
+    let { weaponId, turrets, count = 1 } = w
+    if(weaponId not in counts)
+      order.append(w)
+    counts[weaponId] <- (counts?[weaponId] ?? 0) + max(turrets, 1) * count
+  }
+  return order.map(function(w) {
+    let bSet = w.bulletSets?[""]
+    let bulletName = getWeaponShortName(w, bSet)
+    let count = counts[w.weaponId]
+    return count > 1 ? $"{bulletName} {format(loc("weapons/counter"), count)}" : bulletName
+  })
+}
+
 return {
   getAmmoNameText
   getAmmoNameShortText
@@ -94,4 +118,6 @@ return {
   getAmmoTypeText
   getAmmoAdviceText
   getWeaponShortName
+  getWeaponShortNameWithCount
+  getWeaponNamesList
 }

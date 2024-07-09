@@ -49,7 +49,7 @@ let slotsByDType = {
 let dropLimitByType = [G_UNIT, G_UNIT_UPGRADE, G_DECORATOR, G_SKIN]
   .reduce(@(res, id) res.rawset(id, 1), {})
 
-let ignoreSubIdRTypes = [G_CURRENCY, G_LOOTBOX].reduce(@(res, t) res.$rawset(t, true), {})
+let ignoreSubIdRTypes = [G_CURRENCY, G_LOOTBOX, G_BLUEPRINT].reduce(@(res, t) res.$rawset(t, true), {})
 
 let getPriorirty = @(info)
   customPriority?[info.rType]?[info.id] ?? rTypesPriority?[info.rType] ?? 0

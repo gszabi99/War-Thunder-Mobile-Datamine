@@ -3192,10 +3192,10 @@
   "player_profile_applied": {
     "appliedExp": 0,
     "appliedWp": 0,
-    "appliedUnitExp": 0,
     "userId:u64": {
       "value": -1
-    }
+    },
+    "appliedUnits:object": {}
   },
   "message_queue": {
     "_singleton": true,

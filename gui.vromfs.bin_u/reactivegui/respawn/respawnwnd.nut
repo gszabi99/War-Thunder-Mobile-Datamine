@@ -7,7 +7,6 @@ let { deferOnce } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
   selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum
@@ -45,6 +44,7 @@ let { respawnSkins, skinSize } = require("respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullSize
@@ -112,36 +112,29 @@ let sparePrice = {
 function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
-  let unit = baseUnit.__merge(slot)
-
-  // Temporary hack, for aircraft event, while we don't have aircraft company:
-  if (unit?.isFake ?? false) {
-    let tags = getUnitTagsCfg(slot.name)?.tags ?? {}
-    let country = tags.findindex(@(v, k) v == true && k.startswith("country_"))
-    if (country != null)
-      unit.__update({ country })
-  }
-
-  let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
+  let unit = Computed(@() myUnits.get()?[slot.name] ?? baseUnit.__merge(slot))
   let { canSpawn, isSpawnBySpare } = slot
-  return {
+  return @() {
+    watch = unit
     size = [slotPlateWidth, unitPlateHeight]
     behavior = Behaviors.Button
     onClick = @() onSlotClick(slot)
     sound = { click  = "choose" }
     flow = FLOW_HORIZONTAL
     children = [
-      mkUnitSelectedUnderlineVert(unit, isSelected)
+      mkUnitSelectedUnderlineVert(unit.get(), isSelected)
       {
         key = slot
         size = [unitPlateWidth, unitPlateHeight]
         children = [
-          mkUnitBg(unit, !canSpawn)
-          canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
-          mkUnitImage(unit, !canSpawn)
-          mkUnitTexts(unit, loc(p.locId), !canSpawn)
-          canSpawn ? mkUnitRank(unit, isPremium ? {} : { pos = [-hdpx(30), 0] })
-            : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0 ? unitSlotLockedByQuests
+          mkUnitBg(unit.get(), !canSpawn)
+          canSpawn ? mkUnitSelectedGlow(unit.get(), isSelected) : null
+          mkUnitImage(unit.get(), !canSpawn)
+          mkUnitTexts(unit.get(), loc(p.locId), !canSpawn)
+          canSpawn
+              ? mkUnitRank(unit.get(), !!(unit.get()?.isPremium || unit.get()?.isUpgraded) ? {} : { pos = [-hdpx(30), 0] })
+            : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0
+              ? unitSlotLockedByQuests
             : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null
         ]

@@ -33,7 +33,7 @@
     "caliber": 0.324,
     "mass": 400.0,
     "explosiveType": "torpex",
-    "explosiveMass": 34.0,
+    "explosiveMass": 70.0,
     "explosionFx": "bomb_expl_100kg",
     "propellerEffect": "underwater_trp_propeller_water_splashes",
     "explosionEffect": "water_under_explosion_medium",

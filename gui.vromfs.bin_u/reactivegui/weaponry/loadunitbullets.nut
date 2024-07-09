@@ -57,6 +57,25 @@ function gatherWeaponsFromBlk(weaponsBlk, hasTriggerGroups, res = null) {
   return res
 }
 
+function gatherSlotWeaponPreset(weaponsBlk) {
+  let res = []
+  let byBlk = {}
+  foreach (wBlk in (weaponsBlk % "Weapon")) {
+    let { dummy = false, blk = null, trigger = "", bullets = 0, turret = null } = wBlk
+    if (dummy || blk == null)
+      continue
+    if (blk not in byBlk) {
+      byBlk[blk] <- { blk, totalBullets = 0, guns = 0, weaponId = getWeaponId(blk), trigger, turrets = 0 }
+      res.append(byBlk[blk])
+    }
+    byBlk[blk].totalBullets += bullets
+    byBlk[blk].guns++
+    if (turret != null)
+      byBlk[blk].turrets++
+  }
+  return res
+}
+
 function appendOnce(arr, v) {
   if (!arr.contains(v))
     arr.append(v)
@@ -209,16 +228,20 @@ function loadUnitBulletsFullImpl(unitName) {
     triggersData.commonWeapons <- gatherWeaponsFromBlk(commonWeapons, hasTriggerGroups)
 
   let weaponSlots = {}
+  let weaponSlotsOrder = {}
   if (isDataBlock(WeaponSlots))
     foreach(wsBlk in WeaponSlots % "WeaponSlot") {
       let { index = null } = wsBlk
       if (index == null)
         continue
       weaponSlots[index] <- {}
+      weaponSlotsOrder[index] <- []
       foreach(presetBlk in wsBlk % "WeaponPreset") {
         let presetName = presetBlk?.name
-        if (presetName != null)
-          weaponSlots[index][presetName] <- presetBlk
+        if (presetName == null)
+          continue
+        weaponSlots[index][presetName] <- presetBlk
+        weaponSlotsOrder[index].append(presetName)
       }
     }
 
@@ -252,7 +275,7 @@ function loadUnitBulletsFullImpl(unitName) {
     })
 
   let bulletsCache = {}
-  let res = triggersData.map(@(presetTriggers)
+  let presets = triggersData.map(@(presetTriggers)
     presetTriggers.map(function(triggerWeapons) {
       let bulletSets = {}
       local weaponId = ""
@@ -278,14 +301,44 @@ function loadUnitBulletsFullImpl(unitName) {
       return { weaponId, bulletSets, catridge, guns, total, trigger, triggerGroup, turrets }
     }))
 
+  let res = { presets, slots = [] }
+  if (weaponSlots.len() == 0)
+    return res
+
+  let { slots } = res
+  let weaponsTags = getUnitTagsCfg(unitName)?.Shop.weapons
+  foreach(index, slotPresets in weaponSlots) {
+    let wPresets = slotPresets.map(function(presetBlk, presetId) {
+      let { iconType = "" } = presetBlk
+      let reqModification = weaponsTags?[presetId].reqModification ?? ""
+      let weapons = []
+      let preset = gatherSlotWeaponPreset(presetBlk)
+      foreach(wData in preset)
+        weapons.append(wData.__merge(
+          loadBulletsCached(wData.blk, bulletsCache)))
+      return {
+        name = presetId
+        reqModification
+        iconType
+        isDefault = reqModification == "" && presetId.startswith("default")
+        weapons
+      }
+    })
+    slots.append({ index, wPresets, wPresetsOrder = weaponSlotsOrder[index] })
+  }
+  slots.sort(@(a, b) a.index <=> b.index)
+
   return res
 }
 
-function loadUnitBulletsFull(unitName) {
+function loadUnitBulletsAndSlots(unitName) {
   if (unitName not in fullCache)
     fullCache[unitName] <- freeze(loadUnitBulletsFullImpl(unitName))
   return fullCache[unitName]
 }
+
+let loadUnitBulletsFull = @(unitName) loadUnitBulletsAndSlots(unitName).presets
+let loadUnitWeaponSlots = @(unitName) loadUnitBulletsAndSlots(unitName).slots
 
 function loadUnitBulletsChoiceImpl(unitName) {
   let { bullets = {}, bulletsOrder = [] } = getUnitTagsCfg(unitName)
@@ -322,5 +375,7 @@ function loadUnitBulletsChoice(unitName) {
 return {
   loadUnitBulletsFull //include all bullets described in the unit blk
   loadUnitBulletsChoice //include only bullets described in the unittags
+  loadUnitWeaponSlots
+  loadUnitBulletsAndSlots
   getWeaponId
 }

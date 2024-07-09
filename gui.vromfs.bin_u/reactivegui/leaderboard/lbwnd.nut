@@ -164,7 +164,7 @@ function mkNameCell(category, rowData) {
       gap = nameGap
       valign = ALIGN_CENTER
       behavior = Behaviors.Button
-      onClick = @() viewProfile(userId)
+      onClick = @() viewProfile(userId, { isInvitesAllowed = false })
       children = [
         contactAvatar(info.get(), lbRowHeight - hdpx(2))
         contactNameBlock({ realnick }, info.get(), [], { nameStyle = nameFont, titleStyle = fontVeryTiny })

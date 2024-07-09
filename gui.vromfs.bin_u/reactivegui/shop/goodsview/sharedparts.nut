@@ -350,11 +350,13 @@ let purchasedPlate = {
   }.__update(fontMedium)
 }
 
+let mkCanPurchase = @(id, limit, dailyLimit) Computed(@() (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit)
+  && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit))
+
 function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
   let { limit = 0, dailyLimit = 0, id = null } = goods
   let stateFlags = Watched(0)
-  let canPurchase = Computed(@() (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit)
-    && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit))
+  let canPurchase = mkCanPurchase(id, limit, dailyLimit)
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]
     watch = [stateFlags, canPurchase]
@@ -569,7 +571,7 @@ function mkGoodsLimitText(goods, limitFontGradient) {
       : mkGradGlowText(
           loc(dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit",
             { available = limitExt.get(), limit = max(limit, dailyLimit) }),
-          fontVeryTiny,
+          fontTiny,
           limitFontGradient)
   }
 }
@@ -620,6 +622,7 @@ return {
   mkTimeLeft
   mkGoodsLimit
   mkGoodsLimitText
+  mkCanPurchase
 
   goodsGlareAnimDuration
   mkBgParticles

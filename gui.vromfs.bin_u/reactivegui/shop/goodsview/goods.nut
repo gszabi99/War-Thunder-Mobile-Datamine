@@ -8,6 +8,7 @@ let { getLocNamePremium, mkGoodsPremium } = require("%rGui/shop/goodsView/goodsP
 let { getLocNameUnit, mkGoodsUnit } = require("%rGui/shop/goodsView/goodsUnit.nut")
 let { getLocNameConsumables, mkGoodsConsumables } = require("%rGui/shop/goodsView/goodsConsumables.nut")
 let { getLocNameLootbox, mkGoodsLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
+let { getLocNameBooster, mkGoodsBooster } = require("%rGui/shop/goodsView/goodsBooster.nut")
 
 let customLocId = {
   battle_pass = "battlePass"
@@ -23,6 +24,7 @@ let locNameGetters = {
   [SGT_UNIT] = getLocNameUnit,
   [SGT_CONSUMABLES] = getLocNameConsumables,
   [SGT_LOOTBOX] = getLocNameLootbox,
+  [SGT_BOOSTERS] = getLocNameBooster,
 }
 
 let constructors = {
@@ -34,6 +36,7 @@ let constructors = {
   [SGT_UNIT] = mkGoodsUnit,
   [SGT_CONSUMABLES] = mkGoodsConsumables,
   [SGT_LOOTBOX] = mkGoodsLootbox,
+  [SGT_BOOSTERS] = mkGoodsBooster,
 }
 
 let getCustomName = @(goods) goods.meta.findindex(@(_, i) i in customLocId)

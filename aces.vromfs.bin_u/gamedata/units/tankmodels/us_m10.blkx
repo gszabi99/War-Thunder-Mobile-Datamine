@@ -3113,7 +3113,7 @@
     }
   },
   "upgradedDecals": {
-    "default": {
+    "upgraded": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0,
@@ -3308,7 +3308,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": [
         {
           "node": "turret_side_dm",

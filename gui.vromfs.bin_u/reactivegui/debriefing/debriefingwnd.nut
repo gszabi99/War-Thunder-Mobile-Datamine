@@ -30,6 +30,7 @@ let { needRateGame } = require("%rGui/feedback/rateGameState.nut")
 let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
@@ -57,6 +58,12 @@ let countUpgradeButtonPushed = Watched(get_local_custom_settings_blk()?[SAVE_ID_
 let minCountUpgradeButtonPushed = 3
 
 let updateHangarUnit = @(unitId) unitId == null ? null : setHangarUnit(unitId)
+
+let upgradeUnitLocIdByCampaign = {
+  air   = "mainmenu/btnUpgradeAircraft"
+  tanks = "mainmenu/btnUpgradePlatoon"
+  ships = "mainmenu/btnUpgradeShip"
+}
 
 let buttonDescText = @(needShowW, text) @() !needShowW.get() ? { watch = needShowW } : {
   watch = needShowW
@@ -109,12 +116,13 @@ let mkBtnLevelUp = @(needShow) mkBtnAppearAnim(true, needShow, textButtonBattle(
   },
   { hotkeys = ["^J:X | Enter"] }))
 
-let mkBtnBuyNextPlayerLevel = @(needShow, curPlayerLevel) function() {
+let mkBtnBuyNextPlayerLevel = @(needShow, curPlayerLevel, campaign) function() {
   let res = {
-    watch = [playerLevelInfo, lvlUpCost]
+    watch = [playerLevelInfo, lvlUpCost, serverConfigs]
   }
   let { level, starLevel, isMaxLevel, isReadyForLevelUp } = playerLevelInfo.get()
-  if (level > curPlayerLevel || isMaxLevel || isReadyForLevelUp)
+  if (level > curPlayerLevel || isMaxLevel || isReadyForLevelUp
+      || campaign in serverConfigs.get()?.unitTreeNodes)
     return res
 
   let cost = { price = lvlUpCost.get(), currencyId = GOLD }
@@ -151,7 +159,7 @@ let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBat
   { hotkeys = ["^J:X | Enter"] })
 
 let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, textButtonPrimary(
-  utf8ToUpper(loc(campaign == "tanks" ? "mainmenu/btnUpgradePlatoon" : "mainmenu/btnUpgradeShip")),
+  utf8ToUpper(loc(upgradeUnitLocIdByCampaign?[campaign] ?? upgradeUnitLocIdByCampaign.tanks)),
   function() {
     isNoExtraScenesAfterDebriefing.set(false)
     function nextAction() {
@@ -328,7 +336,7 @@ function debriefingWnd() {
                       ]
                     : [
                         mkBtnBuyNextPlayerLevel(Computed(@() curDebrTabId.get() == DEBR_TAB_CAMPAIGN),
-                          debrData?.player.level ?? -1)
+                          debrData?.player.level ?? -1, campaign)
                         mkBtnToBattlePlace(mkNextGameModeInfo(roomInfo), needShowBtns_Final)
                       ]
                   ).append(btnSkip)  //warning disable: -unwanted-modification

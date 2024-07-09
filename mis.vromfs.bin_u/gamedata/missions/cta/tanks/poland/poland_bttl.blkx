@@ -148,7 +148,7 @@
             {
               "icontype": "basezone_A",
               "side": "ally",
-              "target": "briefing_capture_area_01"
+              "target": "briefing_capture_area_03"
             },
             {
               "icontype": "basezone_B",

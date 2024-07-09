@@ -46,6 +46,7 @@ let points = Computed(@() defaultPointsTable.map(@(v, k) savedPoints.get()?[k] ?
 let isConsentAcceptedOnce = Computed(@() (savedPoints.get()?.len() ?? 0) != 0)
 
 let needOpenConsentWnd = mkWatched(persist, "consentMainWnd", false)
+let isConsentWasAutoSkipped = mkWatched(persist, "isConsentWasAutoSkipped", false)
 let needForceOpenConsetnWnd    = Computed(@() savedPoints.get() != null && !isConsentAcceptedOnce.get() && !isIdfaDenied.get())
 let needSkipConsentWnd = keepref(Computed(@() savedPoints.get() != null && !isConsentAcceptedOnce.get() && isIdfaDenied.get()))
 
@@ -69,6 +70,7 @@ function autoSkipConsent() {
   logC("consent skipped by denied IDFA")
   sendUiBqEvent("consent", { id = "consent_skip_by_denied_idfa" })
   setupAnalytics()
+  isConsentWasAutoSkipped.set(true)
 }
 
 needSkipConsentWnd.subscribe(@(v) v ? deferOnce(autoSkipConsent) : null)
@@ -100,6 +102,8 @@ function onOnlineSettingsNOTAvailable(){
   savedPoints(null)
 }
 isReadyForConsent.subscribe(@(v) v ? loadPoints(): onOnlineSettingsNOTAvailable())
+
+savedPoints.subscribe(@(_) isConsentWasAutoSkipped.set(false))
 
 let isOpenedManage = mkWatched(persist, "consentManage", false)
 let isOpenedPartners = mkWatched(persist, "consentPartners", false)
@@ -155,6 +159,7 @@ return {
   isOpenedManage
   isOpenedPartners
   isConsentAcceptedOnce
+  isConsentWasAutoSkipped
   applyConsent
   setupAnalytics
 

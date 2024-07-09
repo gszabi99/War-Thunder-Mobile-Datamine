@@ -444,7 +444,7 @@ let rewardCtors = {
       loc("skins/title", { unitName = loc(getUnitLocId(rewardInfo.id)) }))
   }
   blueprint = {
-    mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, "ui/unitskin#blueprint_default.avif", 1.0, 2)
+    mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, "ui/unitskin#blueprint_default.avif", 1.0, 1.5)
     mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
       "\n".concat(loc("blueprints/title", {count = rewardInfo.count}), loc(getUnitLocId(rewardInfo.id))))
   }

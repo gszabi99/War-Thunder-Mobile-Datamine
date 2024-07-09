@@ -9,30 +9,54 @@ let {
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getRewardPlateSize, REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
 
+let padding = [hdpx(5), hdpx(5)]
+let iconSize = hdpxi(90)
+
+function calcMaxTextWidth(slots, styles) {
+  let size = getRewardPlateSize(slots, styles)
+  return size[0] - 2 * padding[1] - styles.markSize
+}
+
+let mkNameText = @(nameLoc, styles = REWARD_STYLE_TINY, slots = 1) mkPlateText(nameLoc, fontTiny).__update({
+  behavior = Behaviors.Marquee,
+  maxWidth = calcMaxTextWidth(slots, styles),
+  speed = hdpx(30),
+  delay = defMarqueeDelay
+})
+
+
+let mkBattleModCommonText = @(battleMod, styles = REWARD_STYLE_TINY, slots = 1) {
+  size = flex()
+  padding
+  clipChildren = true
+  halign = ALIGN_RIGHT
+  children = mkNameText(loc(battleMod.locId), styles, slots)
+}
+
+let mkBattleModCommonImage = @(battleMod, styles, slots = 1) {
+  size = getRewardPlateSize(slots, styles)
+  children = {
+    size = [iconSize, iconSize]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    keepAspect = KEEP_ASPECT_FIT
+    image = Picture($"{battleMod.icon}:{iconSize}:{iconSize}")
+  }
+}
+
 function mkBattleModEventUnitText(battleMod, styles = REWARD_STYLE_TINY, slots = 1) {
   let eventEndsAt = Computed(@() specialEvents.value.findvalue(@(event) event.eventName == battleMod.eventId)?.endsAt ?? -1)
-
   let unit = battleMod.unitCtor()
-  let size = getRewardPlateSize(slots, styles)
-  let padding = [hdpx(5), hdpx(5)]
-  let maxTextWidth = size[0] - 2 * padding[1] - styles.markSize
-  let unitNameLoc = loc(getUnitLocId(unit.name))
-
-  local nameText = mkPlateText(unitNameLoc, fontTiny).__update({
-    behavior = Behaviors.Marquee,
-    maxWidth = maxTextWidth,
-    speed = hdpx(30),
-    delay = defMarqueeDelay
-  })
 
   return @() {
+    watch = eventEndsAt
     size = flex()
     padding
     clipChildren = true
-    watch = eventEndsAt
     halign = ALIGN_RIGHT
     children = [
-      nameText
+      mkNameText(loc(getUnitLocId(unit.name)), styles, slots)
       mkPlateTextTimer(eventEndsAt.get(),{ vplace = ALIGN_BOTTOM })
     ]
   }
@@ -50,6 +74,8 @@ function mkBattleModRewardUnitImage(battleMod, styles, slots = 1) {
 }
 
 return {
+  mkBattleModCommonText,
+  mkBattleModCommonImage,
   mkBattleModEventUnitText,
   mkBattleModRewardUnitImage
 }

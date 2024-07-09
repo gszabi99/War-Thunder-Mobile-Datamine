@@ -52,7 +52,7 @@
       "weather": "good",
       "locName": "missions/_GS/medium_tank;location/stalingrad_w",
       "locDesc": "missions/_GS/desc",
-      "scoreLimit": 5400,
+      "scoreLimit": 3800,
       "timeLimit": 15,
       "deathPenaltyMul": 0.2,
       "country_axis": "germany",

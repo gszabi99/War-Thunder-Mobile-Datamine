@@ -19,7 +19,7 @@ let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { myUnits, curUnitMRank } = require("%appGlobals/pServer/profile.nut")
+let { myUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { isConnectionLimited, hasConnection } = require("%appGlobals/clientState/connectionStatus.nut")
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
@@ -99,8 +99,8 @@ let wantStartDownloadAddons = Computed(function(prev) {
 
   let campaign = curCampaign.value
   let curUnitAddons = isRandomBattleNewbie.value
-    ? getCampaignPkgsForNewbieBattle(campaign, curUnitMRank.value, isRandomBattleNewbieSingle.value)
-    : getCampaignPkgsForOnlineBattle(campaign, curUnitMRank.value)
+    ? getCampaignPkgsForNewbieBattle(campaign, battleUnitsMaxMRank.get(), isRandomBattleNewbieSingle.value)
+    : getCampaignPkgsForOnlineBattle(campaign, battleUnitsMaxMRank.get())
   res = addonsToDownload.value.filter(@(_, a) curUnitAddons.contains(a))
   if (res.len() != 0)
     return prevIfEqual(prev, res)

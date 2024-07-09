@@ -30,6 +30,7 @@ let shipWeaponsList = [
   "EII_SUPPORT_PLANE_4"
   "EII_DIVING_LOCK"
   "EII_STRATEGY_MODE"
+  "EII_MANUAL_ANTIAIR"
 ]
 
 let submarineWeaponList = [
@@ -79,7 +80,8 @@ let fixedPositionWeapons = [
   "EII_SUPPORT_PLANE_2",
   "EII_SUPPORT_PLANE_3",
   "EII_DIVING_LOCK",
-  "EII_STRATEGY_MODE"
+  "EII_STRATEGY_MODE",
+  "EII_MANUAL_ANTIAIR"
 ].reduce(@(res, v) res.__update({ [v] = true }), {})
 
 let weaponsList = Computed(@() unitType.value == AIR ? []

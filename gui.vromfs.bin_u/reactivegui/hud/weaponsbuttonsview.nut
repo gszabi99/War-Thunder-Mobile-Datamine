@@ -29,6 +29,7 @@ let { set_can_lower_camera } = require("controlsOptions")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkRhombBtnBg, mkRhombBtnBorder, mkAmmoCount } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 let { mkBtnZone } = require("%rGui/hud/buttons/hudButtonsPkg.nut")
+let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 let zoomImgSize = touchButtonSize
@@ -548,6 +549,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let hotkeyShortcut = selShortcut ?? mainShortcut
   let isDisabled = mkIsControlDisabled(mainShortcut)
   let isBulletBelt = actionItem?.isBulletBelt && key == TRIGGER_GROUP_PRIMARY
+  let vibrationMult = getOptValue(OPT_HAPTIC_INTENSITY_ON_SHOOT)
 
   local isTouchPushed = false
   local isHotkeyPushed = false
@@ -603,7 +605,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
     if (selShortcut != null)
       useShortcut(selShortcut)
     useShortcut(mainShortcut)
-    playHapticPattern(haptPatternId)
+    playHapticPattern(haptPatternId, vibrationMult)
   }
 
   function onButtonPush() {
@@ -612,7 +614,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
         return
       anim_start(fireAnimKey)
       useShortcutOn(mainShortcut)
-      playHapticPattern(haptPatternId)
+      playHapticPattern(haptPatternId, vibrationMult)
     }
     markWeapKeyHold(key)
     userHoldWeapInside.mutate(@(v) v[key] <- true)
@@ -735,12 +737,13 @@ function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
   let isBlocked = Computed(@() unitType.value == SUBMARINE && isNotOnTheSurface.value
     && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_SECONDARY))
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
+  let vibrationMult = getOptValue(OPT_HAPTIC_INTENSITY_ON_SHOOT)
 
   let res = mkContinuousButtonParams(
     function onTouchBegin() {
       useShortcutOn(shortcutId)
       useShortcutOn(isChainedWeapons.value ? additionalShortcutId : "")
-      playHapticPattern(haptPatternId)
+      playHapticPattern(haptPatternId, vibrationMult)
     },
     function(){ setShortcutOff(shortcutId)
          setShortcutOff(isChainedWeapons.value ? additionalShortcutId : "")},

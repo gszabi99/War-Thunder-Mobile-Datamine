@@ -5,6 +5,7 @@ let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/te
 let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { contentMargin } = require("%rGui/unitAttr/unitAttrWndTabs.nut")
+let { isHangarUnitHasWeaponSlots, openUnitModsSlotsWnd } = require("unitModsSlotsState.nut")
 
 let arsenalIconSize = hdpxi(80)
 
@@ -27,10 +28,12 @@ let mkArsenalBtnContent = {
 }
 
 return @(styleOvr) @() {
-  watch = modsCategories
-  children = modsCategories.value.len() == 0 ? null
+  watch = [modsCategories, isHangarUnitHasWeaponSlots]
+  children = modsCategories.value.len() == 0 && !isHangarUnitHasWeaponSlots.get() ? null
     : [
-        mkCustomButton(mkArsenalBtnContent, openUnitModsWnd, mergeStyles(buttonStyles.PRIMARY, styleOvr))
+        mkCustomButton(mkArsenalBtnContent,
+          isHangarUnitHasWeaponSlots.get() ? openUnitModsSlotsWnd : openUnitModsWnd,
+          mergeStyles(buttonStyles.PRIMARY, styleOvr))
         @() {
           watch = unseenModsByCategory
           margin = [hdpx(20), hdpx(20) + contentMargin]

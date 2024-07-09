@@ -17,6 +17,7 @@ let damagePanelSize = hdpxi(175)
 let moveTypeImageSize = hdpxi(50)
 let iconSize = hdpxi(53)
 
+
 let moveType = Computed(function() {
   let sd = stickDelta.value
   if (!isStickActive.value || (sd.x == 0 && sd.y == 0))

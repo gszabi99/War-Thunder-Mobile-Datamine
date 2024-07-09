@@ -83,11 +83,11 @@ function tabData(tab, ovr = {}) {
         }
 
         @() {
-          watch = reqLevel
+          watch = [ isLocked, reqLevel]
           hplace  =  ALIGN_RIGHT
           vplace = ALIGN_BOTTOM
           padding = hdpx(10)
-          children = mkLevelLock(isLocked, reqLevel.value)
+          children = isLocked.get() ? mkLevelLock(reqLevel.get()) : null
         }
 
         @() {

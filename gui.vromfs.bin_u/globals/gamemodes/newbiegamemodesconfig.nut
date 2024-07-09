@@ -9,6 +9,9 @@ let offlineMissionsSets = {
     "poland_single_Conq2"
     "poland_single_Conq3"
   ]
+  plane_newbie = [
+    "air_zhengzhou_single_GSn"
+  ]
 }
 
 let newbieGameModesConfig = {
@@ -39,6 +42,20 @@ let newbieGameModesConfig = {
       gmName = "ship_new_players_battle_coop"
       isFit = @(s, mRank) mRank <= 2
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 3))
+    }
+  ]
+  air = [
+    {
+      gmName = "plane_new_players_battle_single"
+      isFit = @(s, _) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
+      isSingle = true
+      offlineMissionsSets
+      offlineMissions = offlineMissionsSets.plane_newbie
+    }
+    {
+      gmName = "plane_new_players_battle_coop"
+      isFit = @(s, mRank) mRank <= 2
+        && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
     }
   ]
 }

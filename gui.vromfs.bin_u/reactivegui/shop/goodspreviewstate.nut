@@ -23,7 +23,7 @@ let closeGoodsPreview = @() openedGoodsId(null)
 let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
 
 function getAddonsToShowGoods(goods) {
-  let unit = serverConfigs.value?.allUnits[goods?.unitUpgrades[0] ?? goods?.units[0]]
+  let unit = serverConfigs.get()?.allUnits[goods?.unitUpgrades[0] ?? goods?.units[0] ?? goods?.meta.previewUnit]
   if (unit == null)
     return []
   return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.value?[a])
@@ -52,7 +52,7 @@ let previewGoodsUnit = Computed(function() {
     return unit.__merge({ isUpgraded = true }, upgradeUnitBonus)
   }
 
-  return serverConfigs.value?.allUnits[previewGoods.value?.units[0]]
+  return serverConfigs.get()?.allUnits[previewGoods.get()?.units[0] ?? previewGoods.get()?.meta.previewUnit]
 })
 
 let previewType = Computed(@() previewGoodsUnit.value != null ? GPT_UNIT

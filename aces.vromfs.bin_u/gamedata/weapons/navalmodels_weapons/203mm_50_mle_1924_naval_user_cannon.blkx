@@ -51,13 +51,12 @@
     ],
     "shellAnimation": "video/shells_animations/aphe.ivf",
     "bulletName": "203mm_opf_mle1936_apcbc",
-    "dynamicKv": false,
+    "dynamicKv": true,
     "hitPowerMult": 1000.0,
     "relativeVelArmorShift": [
       200.0,
       1000.0
     ],
-    "rendinstDamageRadius": 5.0,
     "explodeTreshold": 11.0,
     "fuseDelayDist": 16.0,
     "hpThresholdForFuse": 0.000001,
@@ -135,21 +134,9 @@
         1.0,
         500.0
       ],
-      "HitPower10000m": [
+      "HitPower50000m": [
         1.0,
-        10000.0
-      ],
-      "HitPower15000m": [
-        0.8,
-        15000.0
-      ],
-      "HitPower20000m": [
-        0.7,
-        20000.0
-      ],
-      "HitPower30000m": [
-        0.5,
-        30000.0
+        50000.0
       ]
     },
     "visual": {
@@ -710,13 +697,12 @@
       ],
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "203mm_opf_mle1936_apcbc",
-      "dynamicKv": false,
+      "dynamicKv": true,
       "hitPowerMult": 1000.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
       ],
-      "rendinstDamageRadius": 5.0,
       "explodeTreshold": 11.0,
       "fuseDelayDist": 16.0,
       "hpThresholdForFuse": 0.000001,
@@ -794,21 +780,9 @@
           1.0,
           500.0
         ],
-        "HitPower10000m": [
+        "HitPower50000m": [
           1.0,
-          10000.0
-        ],
-        "HitPower15000m": [
-          0.8,
-          15000.0
-        ],
-        "HitPower20000m": [
-          0.7,
-          20000.0
-        ],
-        "HitPower30000m": [
-          0.5,
-          30000.0
+          50000.0
         ]
       },
       "visual": {

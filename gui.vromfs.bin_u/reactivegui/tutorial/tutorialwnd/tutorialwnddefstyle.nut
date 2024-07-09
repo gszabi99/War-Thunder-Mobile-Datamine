@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { debounce } = require("%sqstd/timers.nut")
-let { sizePosToBox, getLinkArrowMiddleCfg } = require("tutorialUtils.nut")
+let { sizePosToBox, getLinkArrowMiddleCfg, createHighlight } = require("tutorialUtils.nut")
+let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let borderWidth = hdpx(1)
 let defMsgPadding = [hdpx(20), hdpx(40)] //to not be too close to highlighted objects.
@@ -35,6 +36,7 @@ let nextKeyHintCtor = @(nextKeyAllowed, onClick) onClick == null ? null
   : @() {
       watch = nextKeyAllowed
       children = !nextKeyAllowed.value ? null : anyTapHint
+        .__merge({ hotkeys = [[$"{btnAUp} | Space", onClick]] })
       behavior = Behaviors.Button
       onClick
       sound = { click  = "click" }
@@ -76,6 +78,13 @@ let mkSkipProgress = @(stepSkipDelay, skipStep) {
     { prop = AnimProp.fValue, from = 0.0, to = 1.0, duration = stepSkipDelay, trigger = skipTrigger, onFinish = skipStep }
   ]
 }
+
+let mkCutBg = @(boxes) boxes == null || boxes.len() == 0
+  ? darkCtor({ t = 0, b = sh(100), l = 0, r = sw(100) })
+  : {
+      size = flex()
+      children = createHighlight(boxes, @(_) null, darkCtor)
+    }
 
 let skipBtnCtor = @(stepSkipDelay, skipStep, key) {
   key
@@ -145,6 +154,7 @@ return freeze({
   pointerArrow
   mkPointerArrow
   mkLinkArrow
+  mkCutBg
 
   //components to reuse from outside
   mkSizeTable

@@ -18,12 +18,12 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { blueprintsInfo } = require("%rGui/blueprints/bluePrintsComp.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
+let { researchBlock } = require("%rGui/unitsTree/components/researchBars.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -293,20 +293,22 @@ function unitPriceBlock(unit) {
       || unit.name in canBuyUnits.get())
     return null
   let price = Computed(@() getUnitAnyPrice(unit, false, unitDiscounts.get()))
-  return @() {
-    watch = [serverConfigs, myUnits, canBuyUnits, price]
-    size = [statsWidth, SIZE_TO_CONTENT]
-    margin = [statsGap, 0, 0, 0]
-    flow = FLOW_HORIZONTAL
-    children = [
-      mkText({ text = loc("unitsTree/purchasePrice"), size = [ flex(), SIZE_TO_CONTENT ] })
-      mkCurrencyComp(price.get().price, price.get().currencyId, CS_COMMON.__merge({
-        iconSize = bonusTinySize
-        fontStyle = fontTiny
-        iconGap = hdpx(6)
-      }))
-    ]
-  }
+  return @() price.get()?.price
+    ? {
+      watch = [serverConfigs, myUnits, canBuyUnits, price]
+      size = [statsWidth, SIZE_TO_CONTENT]
+      margin = [statsGap, 0, 0, 0]
+      flow = FLOW_HORIZONTAL
+      children = [
+        mkText({ text = loc("unitsTree/purchasePrice"), size = [ flex(), SIZE_TO_CONTENT ] })
+        mkCurrencyComp(price.get().price, price.get().currencyId, CS_COMMON.__merge({
+          iconSize = bonusTinySize
+          fontStyle = fontTiny
+          iconGap = hdpx(6)
+        }))
+      ]
+    }
+    : { watch = price }
 }
 
 let mkConsumableRow = @(id, value) {
@@ -422,7 +424,7 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
         unitStatsBlock(unitStats, prevStats)
         unitArmorBlock(unit.value, false)
         unitPriceBlock(unit.get())
-        blueprintsInfo(unit.value)
+        researchBlock(unit.get())
       ]
     }.__update(ovr)
   }, override)

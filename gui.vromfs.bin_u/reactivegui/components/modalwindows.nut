@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { register_command } = require("console")
 let { EMPTY_ACTION, btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let WND_PARAMS = {
@@ -68,6 +69,17 @@ let modalWindowsComponent = @() {
   size = flex()
   children = modalWindows
 }
+
+function printOpenedModalWindows(mws = null) {
+  if (mws == null || mws.len() == 0)
+    return console_print("Empty") //warning disable: -forbidden-function
+  foreach (mw in mws.map(@(v) v.key))
+    console_print(mw) //warning disable: -forbidden-function
+}
+
+register_command(@() printOpenedModalWindows(modalWindows), "debug.print_opened_modal_windows")
+register_command(@() hideAllModalWindows(), "debug.close_all_modal_windows")
+register_command(@(key) removeModalWindow(key), "debug.close_modal_window")
 
 return {
   addModalWindow

@@ -1,8 +1,8 @@
-"<ID|readonly|noverify>";"<English>";"<French>";"<Italian>";"<German>";"<Spanish>";"<Russian>";"<Ukrainian>";"<Polish>";"<Portuguese>";"<Turkish>";"<Korean>";"<Chinese>";"<Japanese>";"<TChinese>";"<Comments>";"<max_chars>"
-"missions/testFlight";"Test Flight";"Vol test";"Volo di prova";"Testflug";"Vuelo de prueba";"Пробный вылет";"Пробний виліт";"Lot próbny";"Teste de voo";"Test Uçuşu";"시험 비행";"试\t飞";"テスト\t飛行";"試\t飛";;
-"missions/testSail";"Test Sail";"Essai en mer";"Navigazione di prova";"Testfahrt";"Zarpe de prueba";"Пробный выход";"Пробний вихід";"Rejs próbny";"Testar embarcação";"Gemi Kullanma Testi";"시험 항해";"试\t航";"テスト\t航海";"試\t航";;
-"missions/testDrive";"Test Drive";"Essai";"Guida di Prova";"Testfahrt";"Prueba de manejo";"Пробный выезд";"Пробний виїзд";"Jazda próbna";"Teste de Condução";"Test Sürüşü";"시험 주행";"试\t驾";"テストドライブ";"試\t駕";;
-"missions/tutorial_ship_basic";"Ship Control Basics";"Contrôles de base des navires";"Controlli Base Navi";"Grundlagen der Schiffssteuerung";"Controles Básicos de Barcos";"Основы управления кораблём";"Основи управління кораблем";"Podstawy sterowania okrętem";"Elementos básicos de controlo de navios";"Gemi Kontrolü Temelleri";"함선 조종 기초";"舰\t船\t基\t础\t操\t控";"艦船\tコントロールの\t基本";"艦\t船\t基\t礎\t操\t控";;
+"<ID|readonly|noverify>";"<English>";"<French>";"<Italian>";"<German>";"<Spanish>";"<Russian>";"<Ukrainian>";"<Polish>";"<Portuguese>";"<Turkish>";"<Czech>";"<Greek>";"<Indonesian>";"<Thai>";"<Korean>";"<Chinese>";"<Japanese>";"<TChinese>";"<Comments>";"<max_chars>"
+"missions/testFlight";"Test Flight";"Vol test";"Volo di prova";"Testflug";"Vuelo de prueba";"Пробный вылет";"Пробний виліт";"Lot próbny";"Teste de voo";"Test Uçuşu";"Zkušební let";"Δοκιμαστική πτήση";"Uji Penerbangan";"ทดลองบิน";"시험 비행";"试\t飞";"テスト\t飛行";"試\t飛";;
+"missions/testSail";"Test Sail";"Essai en mer";"Navigazione di prova";"Testfahrt";"Zarpe de prueba";"Пробный выход";"Пробний вихід";"Rejs próbny";"Testar embarcação";"Gemi Kullanma Testi";"Zkušební plavba";"Δοκιμαστική πλεύση";"Uji Pelayaran";"ทดลองล่องเรือ";"시험 항해";"试\t航";"テスト\t航海";"試\t航";;
+"missions/testDrive";"Test Drive";"Essai";"Guida di Prova";"Testfahrt";"Prueba de manejo";"Пробный выезд";"Пробний виїзд";"Jazda próbna";"Teste de Condução";"Test Sürüşü";"Zkušební jízda";"Test Drive";"Uji Coba";"ทดลองขับ";"시험 주행";"试\t驾";"テストドライブ";"試\t駕";;
+"missions/tutorial_ship_basic";"Ship Control Basics";"Contrôles de base des navires";"Controlli Base Navi";"Grundlagen der Schiffssteuerung";"Controles Básicos de Barcos";"Основы управления кораблём";"Основи управління кораблем";"Podstawy sterowania okrętem";"Elementos básicos de controlo de navios";"Gemi Kontrolü Temelleri";"Základní ovládání lodě";"Βασικά στοιχεία ελέγχου πλοίου";"Dasar-Dasar Pengendalian Kapal";"พื้นฐานการควบคุมเรือ";"함선 조종 기초";"舰\t船\t基\t础\t操\t控";"艦船\tコントロールの\t基本";"艦\t船\t基\t礎\t操\t控";;
 "missions/tutorial_ship_basic/desc";"
 
 A short tutorial on basic ship controls";"
@@ -25,6 +25,14 @@ Um breve tutorial sobre os controlos básicos do navio";"
 
 Temel gemi kontrolleri üzerine kısa bir eğitim";"
 
+Krátký tutoriál se základním ovládáním plavidla";"
+
+Ένα σύντομο σεμινάριο για τα βασικά στοιχεία ελέγχου του πλοίου";"
+
+Tutorial singkat untuk dasar-dasar pengendalian kapal";"
+
+บทสอนเล่นสั้นๆ เกี่ยวกับการควบคุมเรือพื้นฐาน";"
+
 함선 조종을 위한 단기 기본 훈련 과정";"
 
 有\t关\t舰\t艇\t操\t控\t的\t简\t短\t教\t程";"
@@ -32,7 +40,7 @@ Temel gemi kontrolleri üzerine kısa bir eğitim";"
 艦船の\t基本操作に\t関する\t短い\tチュートリアル";"
 
 有\t關\t艦\t艇\t操\t控\t的\t簡\t短\t教\t程";;
-"missions/tutorial_tank_basic";"Tank Control Basics";"Contrôles de base des chars";"Controlli Base Carro Armato";"Grundlagen der Panzersteuerung";"Controles Básicos de Tanques";"Основы управления танком";"Основи управління танком";"Podstawy sterowania czołgiem";"Elementos básicos de controlo de tanques";"Tank Kontrolü Temelleri";"전차 조종 기초";"坦\t克\t基\t础\t操\t控";"戦車\tコントロールの\t基本";"坦\t克\t基\t礎\t操\t控";;
+"missions/tutorial_tank_basic";"Tank Control Basics";"Contrôles de base des chars";"Controlli Base Carro Armato";"Grundlagen der Panzersteuerung";"Controles Básicos de Tanques";"Основы управления танком";"Основи управління танком";"Podstawy sterowania czołgiem";"Elementos básicos de controlo de tanques";"Tank Kontrolü Temelleri";"Základní ovládání tanku";"Βασικά στοιχεία ελέγχου τανκ";"Dasar-Dasar Pengendalian Tank";"พื้นฐานการควบคุมรถถัง";"전차 조종 기초";"坦\t克\t基\t础\t操\t控";"戦車\tコントロールの\t基本";"坦\t克\t基\t礎\t操\t控";;
 "missions/tutorial_tank_basic/desc";"
 
 A short tutorial on basic tank controls";"
@@ -55,6 +63,14 @@ Um breve tutorial sobre os controlos básicos do tanque";"
 
 Temel tank kontrolleri üzerine kısa bir eğitim";"
 
+Krátký tutoriál se základním ovládáním tanku";"
+
+Ένα σύντομο σεμινάριο για τα βασικά στοιχεία ελέγχου του τανκ";"
+
+Tutorial singkat untuk dasar-dasar pengendalian tank";"
+
+บทสอนเล่นสั้นๆ เกี่ยวกับการควบคุมรถถังพื้นฐาน";"
+
 전차 조종을 위한 단기 기본 훈련 과정";"
 
 有\t关\t坦\t克\t操\t纵\t的\t简\t短\t教\t程";"
@@ -62,4 +78,4 @@ Temel tank kontrolleri üzerine kısa bir eğitim";"
 戦車の\t基本操作に\t関する\t短い\tチュートリアル";"
 
 有\t關\t坦\t克\t操\t控\t的\t簡\t短\t教\t程";;
-"missions/tutorial_tank_basic_v2";"Tank Control Basics";"Contrôles de base des chars";"Controlli Base Carro Armato";"Grundlagen der Panzersteuerung";"Controles Básicos de Tanques";"Основы управления танком";"Основи управління танком";"Podstawy sterowania czołgiem";"Elementos básicos de controlo de tanques";"Tank Kontrolü Temelleri";"전차 조종 기초";"坦\t克\t基\t础\t操\t控";"戦車\tコントロールの\t基本";"坦\t克\t基\t礎\t操\t控";;
+"missions/tutorial_tank_basic_v2";"Tank Control Basics";"Contrôles de base des chars";"Controlli Base Carro Armato";"Grundlagen der Panzersteuerung";"Controles Básicos de Tanques";"Основы управления танком";"Основи управління танком";"Podstawy sterowania czołgiem";"Elementos básicos de controlo de tanques";"Tank Kontrolü Temelleri";"Základní ovládání tanku";"Βασικά στοιχεία ελέγχου τανκ";"Dasar-Dasar Pengendalian Tank";"พื้นฐานการควบคุมรถถัง";"전차 조종 기초";"坦\t克\t基\t础\t操\t控";"戦車\tコントロールの\t基本";"坦\t克\t基\t礎\t操\t控";;

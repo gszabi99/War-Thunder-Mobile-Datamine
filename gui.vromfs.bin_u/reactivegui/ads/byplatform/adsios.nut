@@ -6,7 +6,8 @@ let { parse_json, object_to_json_string } = require("json")
 let { DBGLEVEL } = require("dagor.system")
 let { is_ios } = require("%sqstd/platform.nut")
 let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
-  providerPriorities, onShowAds
+  providerPriorities, onShowAds, openAdsPreloader, isOpenedAdsPreloaderWnd, closeAdsPreloader,
+  hasAdsPreloadError, adsPreloadParams
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_ios ? require("ios.ads") : require("adsIosDbg.nut")
@@ -18,6 +19,7 @@ let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
 } = ads
 let { isGoogleConsentAllowAds } = require("%appGlobals/loginState.nut")
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
+let { can_preload_request_ads_consent } = require("%appGlobals/permissions.nut")
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
@@ -25,7 +27,21 @@ let loadedProvider = hardPersistWatched("adsIos.loadedProvider", "")
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsIos.failsInARow", 0)
 
-let needAdsLoadExt = Computed(@() isGoogleConsentAllowAds.get() && isInited.get() && needAdsLoad.get() && !isLoaded.get())
+let needAdsLoadExt = Computed(@() isGoogleConsentAllowAds.get() && isInited.get() && !isLoaded.get()
+  && (needAdsLoad.get() || isOpenedAdsPreloaderWnd.get()))
+
+function isAllProvidersFailed(providers, statuses) {
+  foreach(key, _ in providers)
+    if (key not in statuses || statuses[key] == ADS_STATUS_LOADED)
+      return false
+  return true
+}
+
+function handleShowAds(rInfo) {
+  rewardInfo(rInfo)
+  onShowAds(loadedProvider.get())
+  showAds()
+}
 
 function initProviders() {
   if (!isGoogleConsentAllowAds.get())
@@ -96,24 +112,33 @@ function retryLoad() {
   sendAdsBqEvent("load_retry", "", false)
 }
 
+local providersStatuses = {}
 eventbus_subscribe("ios.ads.onLoad",function (params) {
   let { status, provider = "unknown" } = params
   logA($"onLoad {getStatusName(status)} ({provider})")
   isLoadStarted = false
   loadedProvider.set(provider)
   isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())
-  if (isLoaded.value) {
+  if (isLoaded.get()) {
     failInARow(0)
     clearTimer(retryLoad)
+    providersStatuses.clear()
     sendAdsBqEvent("loaded", provider, false)
+    if (isOpenedAdsPreloaderWnd.get() && adsPreloadParams.get())
+      handleShowAds(adsPreloadParams.get())
     return
   }
 
-  if (needAdsLoadExt.value && !isRetryQueued) {
+  if (provider not in providersStatuses)
+    providersStatuses[provider] <- status
+
+  if (needAdsLoadExt.get() && !isRetryQueued) {
     isRetryQueued = true
-    resetTimeout(RETRY_LOAD_TIMEOUT + failInARow.value * RETRY_INC_TIMEOUT, retryLoad)
-    failInARow(failInARow.value + 1) //we can have several fail events on single adsLoad request
+    resetTimeout(RETRY_LOAD_TIMEOUT + failInARow.get() * RETRY_INC_TIMEOUT, retryLoad)
+    failInARow(failInARow.get() + 1) //we can have several fail events on single adsLoad request
   }
+  if (isAllProvidersFailed(providerPriorities.get().providers, providersStatuses))
+    hasAdsPreloadError.set(true)
   sendAdsBqEvent("load_failed", provider, false)
 })
 
@@ -143,12 +168,13 @@ eventbus_subscribe("ios.ads.onShow",function (params) { //we got this event on s
   logA($"onShow {getStatusName(status)}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   if (status == ADS_STATUS_SHOWN) {
     sendAdsBqEvent("show_start", provider)
-    isAdsVisible(true)
+    isAdsVisible.set(true)
   }
   else {
-    isLoaded(false)
-    isAdsVisible(false)
+    isLoaded.set(false)
+    isAdsVisible.set(false)
     onFinishShowAds()
+    closeAdsPreloader()
     sendAdsBqEvent("show_stop", provider)
   }
 })
@@ -157,16 +183,17 @@ eventbus_subscribe("ios.ads.onReward", function (params) {
   let { provider = "unknown" } = params
   logA($"onReward {params.amount} {params.type}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   giveReward()
+  closeAdsPreloader()
   sendAdsBqEvent("receive_reward", provider)
 })
 
 
 function showAdsForReward(rInfo) {
-  if (!isLoaded.value)
-    return
-  rewardInfo(rInfo)
-  onShowAds(loadedProvider.get())
-  showAds()
+  providersStatuses.clear()
+  if (isLoaded.get())
+    handleShowAds(rInfo)
+  else
+    openAdsPreloader(rInfo)
 }
 
 function onTryShowNotAvailableAds() {
@@ -181,7 +208,8 @@ function onTryShowNotAvailableAds() {
 return {
   isAdsAvailable = WatchedRo(true)
   isAdsVisible
-  canShowAds = isLoaded
+  canShowAds = can_preload_request_ads_consent.get() ? isLoaded : Watched(true)
   showAdsForReward
+  isLoaded
   onTryShowNotAvailableAds
 }

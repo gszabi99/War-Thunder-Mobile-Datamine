@@ -4,7 +4,7 @@ let { hasDebuffFire, curRelativeHealth, maxHealth, hasDebuffFlooding, hasDebuffG
 hasDebuffTorpedoes, maxHpToRepair } = require("%rGui/hud/shipState.nut")
 let { teamBlueLightColor } = require("%rGui/style/teamColors.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
-let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
+let { playHapticPattern, HAPT_DAMAGE } = require("hudHaptic.nut")
 let { mkDebuffIcon, mkDebuffIconEditView } = require("components/debuffIcon.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
@@ -12,6 +12,7 @@ let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortc
 let { isInZoom } = require("%rGui/hudState.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let damagePanelBacklight = require("components/damagePanelBacklight.nut")
+let { getOptValue, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT } = require("%rGui/options/guiOptions.nut")
 
 let iconSize = shHud(3.5)
 let crewIconSize = shHud(4.0)
@@ -25,14 +26,7 @@ let fontFx = {
   fontFx = FFT_GLOW
 }
 
-let HAPT_DAMAGE = registerHapticPattern("TakingDamage", { time = 0.0, intensity = 0.4, sharpness = 0.1, duration = 0.1, attack = 0.01, release = 0.14 })
-
-let remainingHpPercent = Computed(function() {
-  if (maxHealth.value == 0)
-    return 1
-
-  return curRelativeHealth.value
-})
+let remainingHpPercent = Computed(@() maxHealth.value == 0 ? 1 : curRelativeHealth.value)
 
 local prevHpPercent = 1.0
 let colorConfig = [
@@ -51,8 +45,9 @@ let healthColor = Computed(function() {
 })
 
 remainingHpPercent.subscribe(function(value) {
-  if (value < 1.0 && value < prevHpPercent)
-    playHapticPattern(HAPT_DAMAGE)
+  if (value < 1.0 && value < prevHpPercent) {
+    playHapticPattern(HAPT_DAMAGE, getOptValue(OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT))
+  }
   prevHpPercent = value
 })
 

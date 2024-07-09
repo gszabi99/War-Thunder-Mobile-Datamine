@@ -97,10 +97,25 @@ function getSkinCustomTags(unitName) {
   return loadedSettings.get()?[unitName].tags ?? {}
 }
 
+function mkWeaponPreset(unitNameW) {
+  let { unitSettings, updateUnitSettings } = mkUnitSettingsWatch(unitNameW)
+  let weaponPreset = Computed(@() unitSettings.get()?.weaponPreset ?? [])
+  let setWeaponPreset = @(preset) isEqual(preset, weaponPreset.get()) ? null
+    : updateUnitSettings({ weaponPreset = preset })
+  return { weaponPreset, setWeaponPreset }
+}
+
+function getWeaponPreset(unitName) {
+  loadSettingsOnce(unitName)
+  return loadedSettings.get()?[unitName].weaponPreset ?? {}
+}
+
 return {
   mkUnitSettingsWatch
   mkIsAutoSkin
   isAutoSkin
   mkSkinCustomTags
   getSkinCustomTags
+  mkWeaponPreset
+  getWeaponPreset
 }

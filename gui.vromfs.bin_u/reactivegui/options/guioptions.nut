@@ -57,6 +57,9 @@ let optListScriptOnly = [
   "OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS"
 ]
 
+let optListLocalScriptOnly = [
+]
+
 let export = {}
 let nativeOptions = {}
 foreach (id in optListNative) {
@@ -69,6 +72,8 @@ foreach (id in optListLocalNative) {
 }
 foreach (id in optListScriptOnly)
   export[id] <- addUserOption(id)
+foreach (id in optListLocalScriptOnly)
+  export[id] <- addLocalUserOption(id)
 
 function mkOptionValueNative(id, defValue, validate) {
   let getSaved = @() validate(get_gui_option(id) ?? defValue)
@@ -116,7 +121,7 @@ function mkOptionValue(id, defValue = null, validate = @(v) v) {
     logerr($"Try to init option value twice")
     return optionValues[id]
   }
-  let ctor = (id in nativeOptions || id in optListLocalNative) ? mkOptionValueNative : mkOptionValueScriptOnly
+  let ctor = (id in nativeOptions) ? mkOptionValueNative : mkOptionValueScriptOnly
   optionValues[id] <- ctor(id, defValue, validate)
   return optionValues[id]
 }

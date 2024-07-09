@@ -18,6 +18,7 @@ let goodsTypes = [
   "SGT_EVT_CURRENCY"
   "SGT_PLATINUM"
   "SGT_LOOTBOX"
+  "SGT_BOOSTERS"
 ].map(@(v, i) [ v, 200 + i ]).totable()
 
 let currencyToGoodsType = {

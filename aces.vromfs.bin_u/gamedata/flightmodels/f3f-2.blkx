@@ -73,7 +73,33 @@
         "hp": 14.5
       }
     },
-    "c_dural7": {
+    "c_wood30": {
+      "wing1_l_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 33.3
+      },
+      "wing1_r_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 33.3
+      },
+      "wing2_l_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 23.8
+      },
+      "wing2_r_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 23.8
+      },
+      "wing_l_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 31.3
+      },
+      "wing_r_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 31.3
+      }
+    },
+    "c_wood40": {
       "fuse1_dm": {
         "hp": 44.5
       },
@@ -86,30 +112,6 @@
       "tail_dm": {
         "genericDamageMult": 0.5,
         "hp": 54.5
-      },
-      "wing1_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 59.2
-      },
-      "wing1_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 59.2
-      },
-      "wing2_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
-      },
-      "wing2_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
-      },
-      "wing_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
-      },
-      "wing_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 80.5
       }
     },
     "dural": {
@@ -1793,12 +1795,12 @@
     "turnTime": 15.0
   },
   "cutting": {
-    "_emtr_break_wing0_l_from": [
+    "emtr_break_wing0_l_from": [
       -1.20793,
       -0.432071,
       1.16793
     ],
-    "_emtr_break_wing0_l_to": [
+    "emtr_break_wing0_l_to": [
       -1.20793,
       -0.432071,
       1.65471
@@ -1823,12 +1825,12 @@
       -0.432071,
       3.14918
     ],
-    "_emtr_break_wing0_r_from": [
+    "emtr_break_wing0_r_from": [
       -1.20793,
       -0.432071,
       -1.16793
     ],
-    "_emtr_break_wing0_r_to": [
+    "emtr_break_wing0_r_to": [
       -1.20793,
       -0.432071,
       -1.65471

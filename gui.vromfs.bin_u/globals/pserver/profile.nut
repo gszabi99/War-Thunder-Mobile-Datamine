@@ -1,6 +1,6 @@
 let { deferOnce } = require("dagor.workcycle")
 let { Computed, Watched } = require("frp")
-let { min } = require("math")
+let { min, max } = require("math")
 let { units, levelInfo, campConfigs, curCampaignSlotUnits } = require("campaign.nut")
 let { curUnitInProgress } = require("pServerApi.nut")
 
@@ -48,8 +48,9 @@ let curUnit = Computed(function() {
   }
   return res ?? my.findvalue(@(_) true)
 })
-let curUnitMRank = Computed(@() curUnit.value?.mRank ?? 0)
 let curUnitName = Computed(@() curUnit.value?.name)
+let battleUnitsMaxMRank = Computed(@() curCampaignSlotUnits.get() == null ? (curUnit.value?.mRank ?? 0)
+  : curCampaignSlotUnits.get().reduce(@(res, name) max(res, campConfigs.get()?.allUnits[name].mRank), 0))
 
 let playerLevelInfo = Computed(function() {
   let res = defaultProfileLevelInfo.__merge(levelInfo.value)
@@ -88,7 +89,7 @@ return {
   allUnitsCfgFlat
   myUnits
   curUnit
-  curUnitMRank
+  battleUnitsMaxMRank
   curUnitName
   playerLevelInfo
 }

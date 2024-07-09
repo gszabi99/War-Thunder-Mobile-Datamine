@@ -1,10 +1,10 @@
 from "%scripts/dagui_natives.nut" import disable_flight_menu, hud_request_hud_crew_state, is_player_unit_alive, is_respawn_screen, hud_request_hud_ship_debuffs_state, hud_request_hud_tank_debuffs_state, set_aircraft_accepted_cb
-
 from "%scripts/dagui_library.nut" import *
 let logR = log_with_prefix("[RESPAWN] ")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
-let { canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer, requestAircraftAndWeaponWithSpare } = require("guiRespawn")
+let DataBlock = require("DataBlock")
+let { canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer, requestAircraftAndWeaponWithSlots } = require("guiRespawn")
 let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, get_respawns_left,
   get_mp_respawn_countdown, get_mission_status } = require("guiMission")
@@ -78,8 +78,15 @@ set_aircraft_accepted_cb({}, applyRespawnDataCb)
 function applyRespawnData() {
   if (isRespawnDataInProgress.value)
     return
-  let { idInCountry, respBaseId } = wantedRespawnData.value
-  if (requestAircraftAndWeaponWithSpare(wantedRespawnData.value, idInCountry, respBaseId, "") < 0) {
+  let { idInCountry, respBaseId, weaponPreset = {} } = wantedRespawnData.value
+  let wBlk = DataBlock()
+  foreach(slotId, presetId in weaponPreset) {
+    let blk = DataBlock()
+    blk.slot = slotId
+    blk.preset = presetId
+    wBlk.Weapon <- blk
+  }
+  if (requestAircraftAndWeaponWithSlots(wantedRespawnData.value, idInCountry, respBaseId, "", wBlk) < 0) {
     isRespawnStarted(false)
     return
   }

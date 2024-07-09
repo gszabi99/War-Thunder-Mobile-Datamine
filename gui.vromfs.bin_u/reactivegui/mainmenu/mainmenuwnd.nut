@@ -110,31 +110,21 @@ let campaignsBtn = @() {
       )
 }
 
-let onlineInfo = @() {
-  watch = [totalPlayers, allow_players_online_info]
+let mkOnlineInfoText = @(total) {
   rendObj = ROBJ_TEXT
-  text = !allow_players_online_info.value || totalPlayers.value < 0
-    ? null
-    : loc("mainmenu/online_info/player_online", {
-        playersOnline = totalPlayers.value
-      })
+  text = loc("mainmenu/online_info/player_online", {
+    playersOnline = total
+  })
   color = 0xD0D0D0D0
 }.__update(fontVeryTinyShaded)
 
-let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
-
-let gamercardPlace = {
-  size = [flex(), SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
-  children = [
-    mkGamercard(dropMenuBtn)
-    {
-      size = [flex(), SIZE_TO_CONTENT]
-      halign = ALIGN_RIGHT
-      children = offerPromo
-    }
-  ]
+let onlineInfo = @() {
+  watch = [totalPlayers, allow_players_online_info]
+  children = !allow_players_online_info.get() || totalPlayers.get() < 0 ? null
+    : mkOnlineInfoText(totalPlayers.get())
 }
+
+let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
 
 let btnHorRow = @(children) {
   flow = FLOW_HORIZONTAL
@@ -152,9 +142,40 @@ let btnVerRow = @(children) {
 let leftBottomButtons = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
+  children = @() slots.get().len() == 0 ? { watch = slots }
+    : {
+        watch = slots
+        size = slotBarSize
+        children = slotBarMainMenu
+      }
+}
+
+let leftTopButtons = {
+  vplace = ALIGN_TOP
+  flow = FLOW_VERTICAL
   children = [
     btnVerRow([
-      campaignsBtn
+      mkGamercard(dropMenuBtn)
+      {
+        size = [flex(), SIZE_TO_CONTENT]
+        children = [
+          {
+            hplace = ALIGN_LEFT
+            gap = translucentButtonsVGap
+            flow = FLOW_HORIZONTAL
+            children = [
+              campaignsBtn
+              downloadInfoBlock
+            ]
+          }
+          {
+            size = [0, 0]
+            hplace = ALIGN_RIGHT
+            halign = ALIGN_RIGHT
+            children = offerPromo
+          }
+        ]
+      }
       @() {
         watch = newbieOfflineMissions
         children = newbieOfflineMissions.get() != null && DBGLEVEL == 0 ? null : btnVerRow([
@@ -173,18 +194,8 @@ let leftBottomButtons = {
           }
           btnOpenUnitsTree
         ])
-        btnVerRow([
-          onlineInfo
-          downloadInfoBlock
-        ])
       ])
     ])
-    @() slots.get().len() == 0 ? { watch = slots }
-      : {
-          watch = slots
-          size = slotBarSize
-          children = slotBarMainMenu
-        }
   ]
 }
 
@@ -228,6 +239,7 @@ let toBattleButtonPlace = {
       flow = FLOW_VERTICAL
       halign = ALIGN_RIGHT
       children = [
+        onlineInfo
         unitNameBlock
         gamercardBattleItemsBalanceBtns
         mkMRankRange
@@ -267,7 +279,7 @@ return {
   onDetach = @() isMainMenuAttached(false)
   children = [
     lqTexturesWarningHangar
-    gamercardPlace
+    leftTopButtons
     leftBottomButtons
     toBattleButtonPlace
     bottomCenterBlock

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_DIVING_LOCK, AB_STRATEGY_MODE,
-  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM
+  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_MANUAL_ANTIAIR
 } = require("actionBar/actionType.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
@@ -165,6 +165,13 @@ let actionBarItemsConfig = {
     image = "!ui/gameuiskin#menu_lang.svg"
     mkButtonFunction = "mkSimpleButton"
     actionType = AB_STRATEGY_MODE
+  },
+  EII_MANUAL_ANTIAIR = {
+    getShortcut = @(_, __) "ID_SHIP_MANUAL_ANTIAIR_TOGGLE"
+    image = "!ui/gameuiskin#icon_repeatable.svg"
+    actionType = AB_MANUAL_ANTIAIR
+    mkButtonFunction = "mkWeaponryItem"
+    canShipLowerCamera = true
   },
   EII_DIVING_LOCK = {
     getShortcut = @(_, __) "ID_DIVING_LOCK"

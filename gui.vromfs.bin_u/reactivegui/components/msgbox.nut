@@ -90,6 +90,7 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) msgBoxBg.__mer
       size = flex()
       flow = FLOW_VERTICAL
       padding = [ 0, buttonsHGap, buttonsHGap, buttonsHGap ]
+      halign = ALIGN_CENTER
       children = [
         type(content) == "string" ? msgBoxText(content) : content,
         {
@@ -145,6 +146,7 @@ return {
   msgBoxBg
   msgBoxHeader
   msgBoxHeaderWithClose
+  mkBtn
 
   wndWidthDefault
   wndHeight

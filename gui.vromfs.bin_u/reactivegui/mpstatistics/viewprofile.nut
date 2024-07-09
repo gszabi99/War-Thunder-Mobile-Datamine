@@ -5,5 +5,8 @@ let selectedPlayerForInfo = Watched(null)
 
 return {
   selectedPlayerForInfo
-  viewProfile = @(userId) selectedPlayerForInfo.set({ player = { userId, isBot = false }, campaign = curCampaign.get() })
+  viewProfile = @(userId, ovr = {}) selectedPlayerForInfo.set({
+    player = { userId, isBot = false }
+    campaign = curCampaign.get()
+  }.__merge(ovr))
 }

@@ -1,4 +1,3 @@
-require daslib/lpipe
 require daslib/algorithm
 require ecs
 require dm
@@ -189,7 +188,6 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
     ammo_clusters__explosionEvtId = *get_unit_fx(unit) |> getEventIdByName("ammo_explosion");
   ammo_clusters__damageEffectPresetId = dm_read_overrided_preset(unit.visual.damageEffects, blk, "damageEffect", -1, unit.visual.dmData);
 
-  let is_auto_load_cluster = get_flag(ammo_clusters__state, AmmoClusterState AUTO_LOAD)
   let wreckage_name_id = blk |> datablock_getNameId("wreckedPartId")
   let elevator_name_id = blk |> datablock_getNameId("elevator")
   let autoloader_name_id = blk |> datablock_getNameId("autoloader")
@@ -211,7 +209,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
         return
       add_related_part |> invoke(elevator_part_id)
       set_flag(ammo_clusters__state, AmmoClusterState HAS_ELEVATOR_PARTS, true)
-    elif is_auto_load_cluster && name_id == autoloader_name_id && t == int(DataBlockParamType TYPE_STRING)
+    elif name_id == autoloader_name_id && t == int(DataBlockParamType TYPE_STRING)
       let autoloader_part_name = blk |> datablock_getStr(i)
       let autoloader_part_id = find_part_id(unit.dmData, autoloader_part_name)
       if !autoloader_part_id.valid
@@ -266,11 +264,10 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
     v.ammo_clusters__damageEffectPresetId[cluster_id],
     v.ammo_clusters__reloadTimeMult[cluster_id],
     v.ammo_clusters__splashConstraints[cluster_id],
-    v.ammo_clusters__shatterConstraints[cluster_id]
-  ) <| $(wreckage_id : int)
-    v.ammo_stowage__wreckageIds |> push(wreckage_id)
-  lpipe <| $(rel_part_id : PartId)
-    v.ammo_stowage__relatedPartsIds |> push(rel_part_id)
+    v.ammo_clusters__shatterConstraints[cluster_id],
+    $(wreckage_id : int) { v.ammo_stowage__wreckageIds |> push(wreckage_id); },
+    $(rel_part_id : PartId) { v.ammo_stowage__relatedPartsIds |> push(rel_part_id); }
+  )
   v.ammo_clusters__wreckageRange[cluster_id].y = length(v.ammo_stowage__wreckageIds)
   v.ammo_clusters__relatedPartsRange[cluster_id].y = length(v.ammo_stowage__relatedPartsIds)
 
@@ -652,11 +649,10 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
         def_cluster.ammo_clusters__damageEffectPresetId,
         def_cluster.ammo_clusters__reloadTimeMult,
         def_cluster.ammo_clusters__splashConstraints,
-        def_cluster.ammo_clusters__shatterConstraints
-      ) <| $(wreckage_id)
-        def_cluster.ammo_stowage__wreckageIds |> push(wreckage_id)
-      lpipe <| $(rel_part_id)
-        def_cluster.ammo_stowage__relatedPartsIds |> push(rel_part_id.packed)
+        def_cluster.ammo_clusters__shatterConstraints,
+        $(wreckage_id) { def_cluster.ammo_stowage__wreckageIds |> push(wreckage_id); },
+        $(rel_part_id) { def_cluster.ammo_stowage__relatedPartsIds |> push(rel_part_id.packed); }
+      )
 
       v.ammo_stowages__clustersRange[stowage_id].x = v.ammo_clusters__state |> length()
       load_clusters_in_order(stowage_blk, model_name) <| $ [unused_argument(order_idx)] (cluster_blk, cluster_type, cluster_stage, order_idx)
@@ -839,7 +835,7 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
   let ammo_stowage_count = length(v.ammo_stowages__clustersRange)
 
   // init weapons remap & ammo type remap weapons range
-  v.ammo_stowage__weaponsRemap |> resize(unit.weap.Weapons.weaponCount * 2)
+  v.ammo_stowage__weaponsRemap |> resize(unit.weap.Weapons.weaponCount * 2 + 3)
   for remap in v.ammo_stowage__weaponsRemap
     remap = int16(-1)
   if true
@@ -855,7 +851,7 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
 
       // add weapon remap
       let glob_weapon_idx = info.first_weapon_idx
-      let weapon_offset = glob_weapon_idx * 2
+      let weapon_offset = glob_weapon_idx * 2 + 3
       if v.ammo_stowage__weaponsRemap[weapon_offset] == int16(-1)
         v.ammo_stowage__weaponsRemap[weapon_offset] = int16(info.stowage_id)
         v.ammo_stowage__weaponsRemap[weapon_offset + 1] = int16(length(v.ammo_stowage__weaponsRemap))
@@ -878,6 +874,10 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
   v.ammo_per_type_data__numAmmoFs |> resize(per_ammo_data_size)
   v.ammo_per_type_data__numAmmoFsSync |> resize(per_ammo_data_size)
 
+  v.ammo_stowage__weaponsRemap[0] = int16(unit.weap.Weapons.weaponCount)
+  v.ammo_stowage__weaponsRemap[1] = int16(ammo_type_count)
+  v.ammo_stowage__weaponsRemap[2] = int16(per_ammo_data_size)
+
   // init ammo type to mask
   let ammo_constrains_enabled = get_flag(v.ammo_stowage__ammoState, AmmoState ENABLE_PER_AMMO_TYPES)
   v.ammo_stowage__ammoTypeToMask |> resize(ammo_type_count)
@@ -898,9 +898,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
     for slot_id in slots_range.x..slots_range.y
       let mask = get_ammo_slot_class_mask(slot_id, v)
       cluster_constraints |= mask
-
-  if uid == 0
-    print_bundle(v)
 
   // setup slots
   sendEventImmediate(eid, [[EventAmmoStowageSetup

@@ -8,6 +8,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { PURCHASING, DELAYED } = require("goodsStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 
 
 let activeOfferByGoods = Computed(function() {
@@ -47,7 +48,7 @@ let offerByGoodsPurchasingState = Computed(function() {
 
 let reqAddonsToShowOfferByGoods = Computed(function() {
   let unit = serverConfigs.get()?.allUnits[activeOfferByGoods.get()?.unitUpgrades[0] ?? activeOfferByGoods.get()?.units[0]]
-  if (unit == null)
+  if (unit == null || !isReadyToFullLoad.get())
     return []
   return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.get()?[a])
 })

@@ -5,7 +5,7 @@ let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { AIR, TANK, SHIP } = require("%appGlobals/unitConst.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let { mkColoredGradientY, simpleVerGrad } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnimation, unlockAnimation,
   ANIMATION_STEP
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
@@ -15,11 +15,13 @@ let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
-let { selectedLineVert, selectedLineHor, selLineSize } = require("%rGui/components/selectedLine.nut")
+let { selectedLineVertUnits, selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 
 let unitPlateWidth = hdpx(406)
 let unitPlateHeight = hdpx(158)
@@ -47,21 +49,28 @@ let platoonSelPlatesGap = hdpx(9)
 let plateBorderThickness = hdpx(2)
 let plateFrameTopLineThickness = hdpx(4)
 let plateTextsPad = hdpx(15)
-let plateTextsSmallPad = hdpx(10)
+let plateTextsSmallPad = hdpx(5)
 
 let plateTextColor = 0xFFFFFFFF
 let levelTextColor = 0xFF9C9EA0
 let equippedFrameColor = 0xFF50C0FF
 let equippedFrameColorPremium = 0xA0E9D3A7
-let equippedFrameColorHidden = 0xA063319B
+let equippedFrameColorCollectible = 0xA063319B
 let slotLockedTextColor = 0xFFC0C0C0
 let highlightColor = 0xFF50C0FF
 let premiumHighlightColor = 0x00F4E9D3
-let isHiddenHighlightColor = 0x90CFC6D1
+let collectibleHighlightColor = 0x90CFC6D1
+
+let highlightCommon = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(highlightColor, 0, 25, 22, 31,-22))
+let highlightPrem = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(premiumHighlightColor, 0, 25, 22, 31, -22))
+let highlightCollect = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(collectibleHighlightColor, 0, 25, 22, 31, -22))
 
 let function getFrameColor(unit) {
-  if(unit?.isHidden)
-    return equippedFrameColorHidden
+  if(unit?.isCollectible)
+    return equippedFrameColorCollectible
   if(unit?.isUpgraded || unit?.isPremium)
     return equippedFrameColorPremium
   return equippedFrameColor
@@ -70,8 +79,8 @@ let function getFrameColor(unit) {
 let bgUnit = mkColoredGradientY(0xFF383B3E, 0xFF191616, 2)
 let bgUnitPremium = mkColoredGradientY(0xFFC89123, 0xFF644012, 2)
 let bgUnitLocked = mkColoredGradientY(0xFF303234, 0xFF000000, 2)
-let bgUnitHidden = mkColoredGradientY(0xFF63319B, 0xFF290740, 2)
-let bgUnitHiddenLocked = mkColoredGradientY(0xFF371162, 0xFF150421, 2)
+let bgUnitCollectible = mkColoredGradientY(0xFF63319B, 0xFF290740, 2)
+let bgUnitCollectibleLocked = mkColoredGradientY(0xFF371162, 0xFF150421, 2)
 let bgUnitNotAvailable = mkColoredGradientY(0xFF552020, 0xFF201010, 2)
 
 function bgPlatesTranslate(platoonSize, idx, isSelected = false, sizeMul = 1.0) {
@@ -91,9 +100,9 @@ let mkIcon = @(icon, iconSize, override = {}) {
   keepAspect = KEEP_ASPECT_FIT
 }.__update(override)
 
-let function getUnitBG(isHidden, isPremium, isLocked, isAvailable){
-  if(isHidden)
-    return isLocked ? bgUnitHiddenLocked : bgUnitHidden
+let function getUnitBG(isCollectible, isPremium, isLocked, isAvailable){
+  if(isCollectible)
+    return isLocked ? bgUnitCollectibleLocked : bgUnitCollectible
   if(isPremium)
     return bgUnitPremium
   if (!isAvailable)
@@ -103,7 +112,7 @@ let function getUnitBG(isHidden, isPremium, isLocked, isAvailable){
 
 function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null, isAvailable = true) {
   let isPremium = unit.isPremium || unit?.isUpgraded
-  let isHidden = unit?.isHidden
+  let isCollectible = unit?.isCollectible
   return {
     size = flex()
     animations = scaleAnimation(justUnlockedDelay, [1.04, 1.04])
@@ -111,7 +120,7 @@ function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null, isAvailable 
       {
         size = flex()
         rendObj = ROBJ_IMAGE
-        image = getUnitBG(isHidden, isPremium, isLocked, isAvailable)
+        image = getUnitBG(isCollectible, isPremium, isLocked, isAvailable)
         keepAspect = KEEP_ASPECT_FILL
         imageValign = ALIGN_TOP
       }
@@ -172,20 +181,31 @@ let getComponentsByUnitType = @(unitType)
   componentsByUnitType?[unitType] ?? defaultComponents
 
 let mkUnitBlueprintMark = @(unit) @()
-  unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get()
-    ? {
-      watch = [serverConfigs, myUnits]
-      size = [hdpx(30), hdpx(30)]
-      margin = hdpx(10)
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/unitskin#blueprint_default_small.avif:{hdpx(30)}:{hdpx(30)}:P")
-      hplace = ALIGN_LEFT
-      vplace = ALIGN_BOTTOM
-      transform = {
-        rotate = -10
-      }
+  unit.name not in serverConfigs.get()?.allBlueprints || unit.name in myUnits.get()
+    ? { watch = [serverConfigs, myUnits] }
+    : {
+        watch = [serverConfigs, myUnits]
+        hplace = ALIGN_LEFT
+        vplace = ALIGN_BOTTOM
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        gap = hdpx(5)
+        children = [
+          {
+            size = [hdpx(30), hdpx(30)]
+            rendObj = ROBJ_IMAGE
+            image = Picture($"ui/unitskin#blueprint_default_small.avif:{hdpx(30)}:{hdpx(30)}:P")
+            transform = {
+              rotate = -10
+            }
+          }
+          @() {
+            watch = servProfile
+            rendObj = ROBJ_TEXT
+            text = "/".concat(servProfile.get()?.blueprints?[unit.name] ?? 0, serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
+          }.__update(fontVeryTiny)
+        ]
     }
-    : { watch = [serverConfigs, myUnits] }
 
 function mkUnitImage(unit, isDesaturated = false) {
   let p = getUnitPresentation(unit)
@@ -492,14 +512,14 @@ let mkUnitEquippedTopLine = @(unit, isEquipped, justUnlockedDelay = null) {
 let mkUnitSelectedUnderline = @(unit, isSelected, justUnlockedDelay = null) {
   size = [flex(), unitSelUnderlineFullSize]
   margin = [unitSelUnderlineFullSize - selLineSize, 0, 0, 0]
-  children = selectedLineHor(isSelected, !!(unit?.isUpgraded || unit?.isPremium))
+  children = selectedLineHorUnits(isSelected, !!(unit?.isUpgraded || unit?.isPremium), unit?.isCollectible)
   animations = revealAnimation(justUnlockedDelay)
 }
 
 let mkUnitSelectedUnderlineVert = @(unit, isSelected) {
   size = [unitSelUnderlineFullSize, flex()]
-  pos = [- unitSelUnderlineFullSize + selLineSize, 0]
-  children = selectedLineVert(isSelected, !!(unit?.isUpgraded || unit?.isPremium), unit?.isHidden)
+  pos = [ - selLineSize, 0]
+  children = selectedLineVertUnits(isSelected, !!(unit?.isUpgraded || unit?.isPremium), unit?.isCollectible)
 }
 
 let mkPlatoonEquippedIcon = @(unit, isEquipped, justUnlockedDelay = null) @() isEquipped.value
@@ -514,13 +534,13 @@ let mkPlatoonEquippedIcon = @(unit, isEquipped, justUnlockedDelay = null) @() is
 let mkUnitSelectedGlow = @(unit, isSelected, justUnlockedDelay = null) @() isSelected.value
   ? {
       watch = isSelected
-      size = [flex(), ph(80)]
+      size = flex()
       rendObj = ROBJ_IMAGE
-      vplace = ALIGN_BOTTOM
-      image = simpleVerGrad
-      color = unit?.isHidden ? isHiddenHighlightColor
-        : unit?.isUpgraded || unit?.isPremium ? premiumHighlightColor
-        : highlightColor
+      vplace = ALIGN_TOP
+      flipY = true
+      image = unit?.isCollectible ? highlightCollect()
+        : unit?.isUpgraded || unit?.isPremium ? highlightPrem()
+        : highlightCommon()
       animations = revealAnimation(justUnlockedDelay)
       transform = { rotate = 180 }
       opacity = 0.5
@@ -574,7 +594,7 @@ function mkSingleUnitPlate(unit) {
   }
 }
 
-let function mkUnitResearchPrice(researchStatus) {
+let function mkUnitResearchPrice(researchStatus, ovr = {}) {
   if (!researchStatus?.isAvailable || (researchStatus?.reqExp ?? 0) <= 0
       || (researchStatus?.exp ?? 0) >= researchStatus.reqExp)
     return null
@@ -586,14 +606,14 @@ let function mkUnitResearchPrice(researchStatus) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = [
-      mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(36), hdpxi(36)])
+      mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(28), hdpxi(28)])
       {
         rendObj = ROBJ_TEXT
-        text = researchStatus.reqExp - (researchStatus?.exp ?? 0)
-      }.__update(fontTinyAccented)
+        text = "/".concat(researchStatus?.exp ?? 0, researchStatus.reqExp)
+        color = 0xFFFF9D47
+      }.__update(fontVeryTiny)
     ]
-
-  }
+  }.__update(ovr)
 }
 
 return {

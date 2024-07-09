@@ -3,8 +3,8 @@ let { round } = require("math")
 let { Indicator } = require("wt.behaviors")
 let { crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
-let { register_command } = require("console")
-let { eventbus_send } = require("eventbus")
+let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
+
 
 let swipeImgW = hdpx(200).tointeger()
 let swipeImgH = round(swipeImgW / (41.0 / 43)).tointeger()
@@ -31,6 +31,24 @@ let img_swipe_to_rotate_cam = @(_) {
     { prop = AnimProp.scale, from = [ 1.0, 1.0 ], to = [ 0.9, 0.9 ],
       duration = swipeAnimTime * 0.5, play = true, loop = true, easing = CosineFull }
   ]
+}
+
+let air_tutorial_shooting_moving_target = @(_) {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = 0xFF000000
+  padding = sh(5)
+  onAttach = @() canShowRadar.set(false)
+  onDetach = @() canShowRadar.set(true)
+  children = {
+    size = flex()
+    rendObj = ROBJ_MOVIE
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    behavior = Behaviors.Movie
+    keepAspect = true
+    movie = "content/base/ui/tutorial_shooting_air_moving.ivf"
+  }
 }
 
 let fakeCrosshairElem = @(penetration) {
@@ -83,12 +101,9 @@ function fake_crosshair(p) {
     children = fakeCrosshairElem(penetration)
   }
 }
-
-register_command(function(offsetX, offsetY, offsetZ, penetration, show) {
-  eventbus_send("hudElementShow",{element = "fake_crosshair", offsetX, offsetY, offsetZ, penetration, show })
-}, "hud.show_fake_crosshair")
-
 return {
   img_swipe_to_rotate_cam
   fake_crosshair
+  air_tutorial_shooting_moving_target
+  canShowRadar
 }

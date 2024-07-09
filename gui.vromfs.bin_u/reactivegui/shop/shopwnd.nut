@@ -22,15 +22,15 @@ let opacityGradWidth = saBorders[0]
 let shopPageH = saSize[1] - gapFromGamercard - gamercardHeight
 let shopPageW = saSize[0] - tabW + opacityGradWidth
 
-let close = @() isShopOpened(false)
-isPurchEffectVisible.subscribe(function(v) {
-  if (v && isShopOpened.value)
-    close()
-})
+local lastScrollPosX = 0
+let resetScrollPos = @() lastScrollPosX = 0
+let close = @() isShopOpened.set(false)
+isShopOpened.subscribe(@(v) v ? null : resetScrollPos())
+isPurchEffectVisible.subscribe(@(v) v && isShopOpened.get() ? close() : null)
 
 let curCategoriesCfg = Computed(@() shopCategoriesCfg
-  .filter(@(c) c.id in actualSchRewardByCategory.value
-    || c.id in goodsByCategory.value))
+  .filter(@(c) c.id in actualSchRewardByCategory.get()
+    || c.id in goodsByCategory.get()))
 
 let pageScrollHandler = ScrollHandler()
 curCategoryId.subscribe(@(_) pageScrollHandler.scrollToX(0))
@@ -72,7 +72,11 @@ let shopScene = bgShaded.__merge({
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = gapFromGamercard
-  onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
+  function onAttach() {
+    addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
+    pageScrollHandler.scrollToX(lastScrollPosX)
+    resetScrollPos()
+  },
   onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
   children = [
     mkShopGamercard(onClose)
@@ -85,7 +89,7 @@ let shopScene = bgShaded.__merge({
           clipChildren = true
           children = @() pannable({
             watch = [curCategoriesCfg, curCampaign]
-            children = @() mkShopTabs(curCategoriesCfg.value, curCategoryId, curCampaign.value)
+            children = @() mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get())
           })
         }
         {
@@ -94,7 +98,11 @@ let shopScene = bgShaded.__merge({
             horizontalPannableAreaCtor(shopPageW, [opacityGradWidth, opacityGradWidth])(
               mkShopPage(shopPageW, shopPageH),
               { pos = [0, 0] },
-              { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler = pageScrollHandler })
+              {
+                behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
+                scrollHandler = pageScrollHandler
+                onScroll = @(elem) lastScrollPosX = elem.getScrollOffsX() ?? 0
+              })
             scrollArrowsBlock
           ]
         }

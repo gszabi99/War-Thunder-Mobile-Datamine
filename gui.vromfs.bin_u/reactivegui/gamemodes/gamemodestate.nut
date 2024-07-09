@@ -5,7 +5,7 @@ let { newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
 } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let newbieModeStats = require("newbieModeStats.nut")
-let { curUnitMRank } = require("%appGlobals/pServer/profile.nut")
+let { battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 
 let forceNewbieModeIdx = mkWatched(persist, "forceNewbieModeIdx", -1)
@@ -23,7 +23,7 @@ let curNewbieMode = Computed(function() {
   }
   else
     foreach (cfg in list)
-      if (cfg.isFit(stats, curUnitMRank.value)) {
+      if (cfg.isFit(stats, battleUnitsMaxMRank.get())) {
         res = allGameModes.value.findvalue(@(gm) gm?.name == cfg.gmName)
         if (res != null)
           break

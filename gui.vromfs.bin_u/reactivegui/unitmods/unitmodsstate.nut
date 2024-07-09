@@ -76,13 +76,15 @@ function openUnitModsWnd() {
   isUnitModsOpen(true)
 }
 
-let curUnitAllModsCost = Computed(function() {
-  let { costWp = 0, modCostPart = 0.0, campaign = "", rank = 0 } = unit.value
+let mkUnitAllModsCost = @(unitW) Computed(function() {
+  let { costWp = 0, modCostPart = 0.0, campaign = "", rank = 0 } = unitW.get()
   if (modCostPart <= 0)
     return 0
-  let cost = costWp > 0 ? costWp : (serverConfigs.value?.unitsAvgCostWp[campaign][rank] ?? 0)
+  let cost = costWp > 0 ? costWp : (serverConfigs.get()?.unitsAvgCostWp[campaign][rank] ?? 0)
   return modCostPart.tofloat() * cost
 })
+
+let curUnitAllModsCost = mkUnitAllModsCost(unit)
 
 let getModCurrency = @(mod) (mod?.costWpWeight ?? 0) > 0 ? "wp" : "gold"
 function getModCost(mod, allModsCost) {
@@ -177,6 +179,7 @@ return {
   enableCurUnitMod
   disableCurUnitMod
 
+  mkUnitAllModsCost
   getModCurrency
   getModCost
   mkCurUnitModCostComp

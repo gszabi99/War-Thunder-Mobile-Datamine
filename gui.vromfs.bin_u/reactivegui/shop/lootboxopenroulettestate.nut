@@ -330,6 +330,8 @@ function requestOpenCurLootbox() {
 
 function logOpenConfig() {
   log("jackpotIdxInfo: ", jackpotIdxInfo)
+  log("rouletteOpenResult main: ", rouletteOpenResultFull.get()?.main.unseenPurchases)
+  log("rouletteOpenResult jackpots: ", rouletteOpenResultFull.get()?.jackpots.map(@(v) v?.unseenPurchases))
   log("lootbox cur open group info: ", curGroup.value)
   if (curGroup.value != openConfig.value)
     log("lootbox open roulette config: ", openConfig.value)

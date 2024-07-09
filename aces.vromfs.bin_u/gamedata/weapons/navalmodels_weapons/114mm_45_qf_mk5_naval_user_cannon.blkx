@@ -518,7 +518,7 @@
       "bulletCount": 25,
       "mass": 23.0,
       "explosiveType": "tnt",
-      "explosiveMass": 0.72,
+      "explosiveMass": 3.0,
       "caliber": 0.114,
       "speed": 746.0,
       "maxDistance": 40000.0,
@@ -542,6 +542,7 @@
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "uk_114mm_45_sap",
       "dynamicKv": true,
+      "hitPowerMult": 400.0,
       "relativeVelHitShift": [
         300.0,
         1000.0

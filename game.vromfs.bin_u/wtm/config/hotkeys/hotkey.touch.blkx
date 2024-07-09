@@ -57,22 +57,12 @@
           "mouseButton": 4
         }
       ],
-      "ID_FREECAM_ZOOM_OUT": [
-        {
-          "mouseButton": 3
-        },
-        {
-          "keyboardKey": 44
-        }
-      ],
-      "ID_FREECAM_ZOOM_IN": [
-        {
-          "mouseButton": 4
-        },
-        {
-          "keyboardKey": 45
-        }
-      ],
+      "ID_FREECAM_ZOOM_OUT": {
+        "mouseButton": 3
+      },
+      "ID_FREECAM_ZOOM_IN": {
+        "mouseButton": 4
+      },
       "cam_vert_rangeMax": {
         "keyboardKey": 18
       },

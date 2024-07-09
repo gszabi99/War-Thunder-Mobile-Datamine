@@ -8,6 +8,12 @@ let pushedArrowColor = 0xFF7EE2FF
 let rotated = @(objs) { objs, sizeInc = rotatedBtnSizeInc }
 let circle = @(objs) { objs, sizeInc = circleWithCountSizeInc }
 let elements = {
+  air_throttle_slider = [["air_throttle_slider", "air_throttle_slider_text"]]
+  air_throttle_slider_text = ["air_throttle_slider_text"]
+  plane_course_guns = ["plane_course_guns", "ID_FIRE_MGUNS", "ID_FIRE_CANNONS"]
+  plane_lock_target = ["plane_lock_target"]
+  plane_speed_indicator = ["plane_speed_indicator"]
+  plane_altitude_indicator = ["plane_altitude_indicator"]
   btn_forward = ["ship_main_engine_rangeMax", "submarine_main_engine_rangeMax", "ID_TRANS_GEAR_UP"]
   btn_left_right = ["ship_steering_rangeMax", "ship_steering_rangeMin", "gm_steering_right", "gm_steering_left"]
   btn_left = ["ship_steering_rangeMax", "gm_steering_left"]

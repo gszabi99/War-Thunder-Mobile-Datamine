@@ -21,9 +21,10 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { selectedCountry, curCountry, filteredNodes, countries
+let { selectedCountry, curCountry, filteredNodes, countries, unitsResearchStatus
 } = require("unitsTreeNodesState.nut")
 let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 
 let lineWidth = hdpxi(2)
@@ -209,6 +210,22 @@ let function mkUnitsNode(name, pos) {
   }
 }
 
+let function selectCountryByCurResearch() {
+  let selectedResearchedUnit = unitsResearchStatus.get().findindex(@(unit) unit?.isCurrent)
+  let hangarUnitName = hangarUnit.get()?.name
+  local researchedUnitCountry = null
+  local hangarUnitCountry = null
+  foreach (node in serverConfigs.get()?.unitTreeNodes[curCampaign.get()] ?? []) {
+    if (node.name == selectedResearchedUnit) {
+      researchedUnitCountry = node.nodeCountry
+      break
+    }
+    if (node.name == hangarUnitName)
+      hangarUnitCountry = node.nodeCountry
+  }
+  selectedCountry.set(researchedUnitCountry ?? hangarUnitCountry)
+}
+
 local listWatches = [curSelectedUnit, filteredNodes, curCountry, filterCount]
 foreach (f in filters)
   listWatches.append(f?.value, f?.allValues)
@@ -287,7 +304,7 @@ let function unitsTreeNodesContent() {
       pos = [
         saBorders[0] + flagsWidth,
         saBorders[1] + gamercardHeight - gamercardOverlap + (rankBlockHeight + rankBlockOffset) * 0.5]
-      onAttach = @() selectedCountry.set(hangarUnit.get()?.country)
+      onAttach = selectCountryByCurResearch
       children = [
         pannableArea(
           unitsTree,
@@ -328,4 +345,5 @@ return {
   unitsTreeNodesContent
   rankBlockHeight
   rankBlockOffset
+  scrollToUnit
 }

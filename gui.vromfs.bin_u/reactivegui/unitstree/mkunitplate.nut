@@ -6,6 +6,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
   mkUnitsTreePrice, bgPlatesTranslate, mkUnitBlueprintMark, mkUnitResearchPrice,
   mkUnitSelectedGlow, mkUnitEquippedIcon, mkPlateText, plateTextsSmallPad, unitPlateTiny
 } = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { canBuyUnits, buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { flagsWidth, unitPlateSize, blockSize } = require("unitsTreeComps.nut")
@@ -16,20 +17,19 @@ let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { hasDataForLevelWnd, isSeen, isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
-let { selectedLineHor, selLineSize } = require("%rGui/components/selectedLine.nut")
+let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { justBoughtUnits, deleteJustBoughtUnit } = require("%rGui/unit/justUnlockedUnits.nut")
 let { revealAnimation, raisePlatesAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { ceil } = require("math")
 let { scrollToUnit, nodeToScroll } = require("unitsTreeScroll.nut")
 let { unitsResearchStatus, filteredNodes } = require("unitsTreeNodesState.nut")
-let { mkPlateExpBar, plateBarHeight } = require("unitResearchBar.nut")
+let { mkPlateExpBar, mkPlateBlueprintBar } = require("unitResearchBar.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
 let framesGapMul = 0.7
 let scrollBlocks = ceil((saSize[0] - saBorders[0] - flagsWidth) / blockSize[0] / 2)
-let selLineGap = hdpx(10)
-let lockIconSize = hdpxi(34)
 
 function mkPlatoonPlates(unit) {
   let { platoonUnits = [] } = unit
@@ -80,7 +80,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
   let price = Computed(@() canPurchase.get() ? getUnitAnyPrice(unit, canBuyForLvlUp.get(), unitDiscounts.get()) : null)
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
-  let isHidden = unit?.isHidden
+  let isCollectible = unit?.isCollectible
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
   let justUnlockedDelay = Computed(@() hasModalWindows.get() && canBuyForLvlUp.get()
       ? 1000000.0
@@ -134,15 +134,17 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
       }
       mkPlatoonPlateFrame(unit, isEquipped, isSelected, justUnlockedDelay.get())
       mkUnitEquippedIcon(unit, isEquipped, justUnlockedDelay.get())
-      {
+      unit.platoonUnits.len() == 0 ?{
         size = flex()
-        valign = ALIGN_BOTTOM
-        pos = [0, selLineGap + selLineSize]
-        children = selectedLineHor(isSelected, isPremium, isHidden)
-      }
+        valign = ALIGN_TOP
+        pos = [0, -selLineSize]
+        children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
+      } : null
     ]
   }.__update(ovr)
 }
+
+let treeNodeUnitPlateKey = @(name) name == null ? null : $"treeNodeUnitPlate:{name}"
 
 function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
   if (unit == null)
@@ -150,7 +152,8 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
 
   let stateFlags = Watched(0)
   let researchStatus = Computed(@() unitsResearchStatus.get()?[unit.name])
-  let isLocked = Computed(@() (unit.name not in myUnits.get()) && (unit.name not in canBuyUnits.get()))
+  let isOwned = Computed(@() unit.name in myUnits.get())
+  let isLocked = Computed(@() !isOwned.get() && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
   let price = Computed(@() canPurchase.get() || (researchStatus.get()?.isResearched && unit.name not in myUnits.get())
@@ -158,15 +161,14 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
     : null)
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
-  let isHidden = unit?.isHidden
+  let isCollectible = unit?.isCollectible
   let needShowPrice = Computed(@() isPremium || researchStatus.get()?.canBuy || researchStatus.get()?.isResearched)
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
-  let needShowExpBar = Computed(@() !researchStatus.get()?.isResearched
-    && (researchStatus.get()?.isCurrent || (researchStatus.get()?.exp ?? 0) > 0)
-    && researchStatus.get().reqExp > 0)
+  let needShowBlueprintBar = Computed(@() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get())
 
   return @() {
-    watch = [isSelected, isLocked, canPurchase, researchStatus, filteredNodes, needShowExpBar]
+    watch = [isSelected, isOwned, isLocked, canPurchase, researchStatus, filteredNodes,
+      needShowBlueprintBar]
     size = unitPlateTiny
     behavior = Behaviors.Button
     function onClick() {
@@ -174,6 +176,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
       scrollToUnit(unit.name, xmbNode)
       markUnitSeen(unit)
     }
+    key = treeNodeUnitPlateKey(unit.name)
     onAttach = unitsTreeOpenRank.get() != null
       && unit.rank == (unitsTreeOpenRank.get() + min(scrollBlocks, unitsMaxRank.get() - playerLevelInfo.get().level))
           ? nodeToScroll.set(xmbNode)
@@ -183,21 +186,10 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
     xmbNode
     sound = { click  = "choose" }
     children = [
-      mkUnitBg(unit, isLocked.get(), null, filteredNodes.get()?[unit.name].isAvailable ?? true)
+      mkUnitBg(unit, isLocked.get(), null, isOwned.get() || (filteredNodes.get()?[unit.name].isAvailable ?? true))
       mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
       mkUnitImage(unit, canPurchase.get() || isLocked.get())
-      mkUnitBlueprintMark(unit)
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
-      researchStatus.get()?.canBuy || !researchStatus.get()?.isResearched ? mkUnitLock(unit, false) : {
-        size = [lockIconSize, lockIconSize]
-        margin = hdpx(10)
-        vplace = ALIGN_BOTTOM
-        hplace = ALIGN_RIGHT
-        rendObj = ROBJ_IMAGE
-        keepAspect = true
-        image = Picture($"ui/gameuiskin#lock_icon.svg:{lockIconSize}:{lockIconSize}:P")
-      }
-      mkUnitResearchPrice(researchStatus.get())
       mkPriorityUnseenMarkWatch(needShowUnseenMark)
       @() {
         watch = [price, discount, needShowPrice]
@@ -212,12 +204,38 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
             : null
         ]
       }
-      !needShowExpBar.get() ? null : mkPlateExpBar(researchStatus.get())
       {
         size = flex()
         valign = ALIGN_BOTTOM
-        pos = [0, selLineGap + selLineSize + (needShowExpBar.get() ? plateBarHeight : 0)]
-        children = selectedLineHor(isSelected, isPremium, isHidden)
+        flow = FLOW_VERTICAL
+        children = [
+          {
+            size = [flex(), hdpx(40)]
+            padding = plateTextsSmallPad
+            valign = ALIGN_BOTTOM
+            flow = FLOW_HORIZONTAL
+            children = [
+              needShowBlueprintBar.get()
+                  ? mkUnitBlueprintMark(unit)
+                : !researchStatus.get()?.isResearched
+                  ? mkUnitResearchPrice(researchStatus.get(), { padding = 0 })
+                : null
+              { size = flex() }
+              mkGradRank(unit.mRank, { pos = [0, hdpx(7)] })
+            ]
+          }
+          needShowBlueprintBar.get()
+              ? mkPlateBlueprintBar(unit)
+            : !researchStatus.get()?.isResearched
+              ? mkPlateExpBar(researchStatus.get())
+            : null
+        ]
+      }
+      {
+        size = flex()
+        valign = ALIGN_TOP
+        pos = [0, -selLineSize]
+        children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
       }
     ]
   }.__update(ovr)
@@ -227,4 +245,5 @@ return {
   mkUnitPlate
   mkTreeNodesUnitPlate
   framesGapMul
+  treeNodeUnitPlateKey
 }

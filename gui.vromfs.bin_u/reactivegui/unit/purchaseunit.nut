@@ -10,6 +10,7 @@ let { requestOpenUnitPurchEffect } = require("unitPurchaseEffectScene.nut")
 let { playSound } = require("sound_wt")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { unitDiscounts } = require("unitsDiscountState.nut")
+let { selectedUnitToSlot, slots } = require("%rGui/slotBar/slotBarState.nut")
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
@@ -26,6 +27,8 @@ registerHandler("onUnitPurchaseResult",
     else
       setHangarUnit(unitId)
     requestOpenUnitPurchEffect(myUnits.value?[unitId])
+    if (slots.get().len() > 0)
+      selectedUnitToSlot.set(unitId)
   })
 
 function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter = null) {

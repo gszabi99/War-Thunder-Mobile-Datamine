@@ -6,6 +6,7 @@ let { rnd_int } = require("dagor.random")
 let { loc } = require("dagor.localize")
 let servProfile = require("servProfile.nut")
 let { updateAllConfigs } = require("servConfigs.nut")
+let { isAuthorized } = require("%appGlobals/loginState.nut")
 
 
 const PROGRESS_UNIT = "UnitInProgress"
@@ -177,6 +178,13 @@ function localizePServerError(err) {
     return { bqLocId = err, text = loc($"error/{err}", err) }
   return { bqLocId = "profile server internal error", text = loc("matching/SERVER_ERROR_INTERNAL") }
 }
+
+isAuthorized.subscribe(function(v) {
+  if (v)
+    return
+  servProfile.set({})
+  updateAllConfigs({ configs = {} })
+})
 
 return {
   registerHandler

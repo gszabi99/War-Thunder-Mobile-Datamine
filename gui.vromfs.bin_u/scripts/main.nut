@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import run_reactive_gui, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 
-let { get_time_msec, get_local_unixtime } = require("dagor.time")
+let { get_time_msec, ref_time_ticks } = require("dagor.time")
 let startLoadTime = get_time_msec()
 let { g_listener_priority } = require("%scripts/g_listener_priority.nut")
 let { loadOnce, isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -23,7 +23,7 @@ let { is_pc } = require("%sqstd/platform.nut")
 
 //------- vvv enums vvv ----------
 
-set_rnd_seed(get_local_unixtime())
+set_rnd_seed(ref_time_ticks())
 
 //------- vvv files before login vvv ----------
 

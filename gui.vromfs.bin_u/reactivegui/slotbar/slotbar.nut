@@ -25,7 +25,6 @@ let actionIconSize = (translucentButtonsHeight * 0.5).tointeger()
 let actionBtnSize = [translucentButtonsHeight * 1.1, translucentButtonsHeight * 0.7]
 let actionBtnsBlockSize = [translucentButtonsHeight * 1.1, actionBtnSize[1] + actionIconSize * 0.5 + gapVert]
 let slotBarSize = [saSize[0] - defButtonMinWidth, unitPlateSize[1] + actionBtnsBlockSize[1] + gapVert]
-let slotBarSelectWndWidth = unitPlateSize[0] * 4 + gap * 3
 let slotBarTreeGap = hdpx(20)
 let slotBarTreeHeight = unitPlateSize[1] + slotBarTreeGap
 
@@ -152,12 +151,15 @@ let function mkSlotWithButtons(slot) {
   }
 }
 
-let function mkSlot(slot, idx) {
+function mkSlot(slot, idx, child = null) {
   let unit = Computed(@() allUnitsCfg.get()?[slot?.name])
   return @() {
     watch = unit
     valign = ALIGN_BOTTOM
-    children = mkUnitPlate(unit.get(), idx)
+    children = [
+      mkUnitPlate(unit.get(), idx)
+      child
+    ]
   }
 }
 
@@ -197,19 +199,25 @@ let slotBarUnitsTree = {
   ]
 }
 
+let frame = {
+  size = flex()
+  rendObj = ROBJ_BOX
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  borderColor = 0xFFFFFFFF
+  borderWidth = hdpx(3)
+}
+
 let slotBarSelectWnd = @() {
   watch = [slots, newSlotPriceGold]
-  padding = [saBorders[1], saBorders[0]]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
+  padding = hdpx(10)
   gap
-  children = wrap(
-    slots.get().map(@(slot, idx) mkSlot(slot, idx))
-      .append(newSlotPriceGold.get() == null ? null : slotToPurchase(newSlotPriceGold.get())),
-    {
-      width = slotBarSelectWndWidth
-      vGap = gap
-      hGap = gap
-    })
+  size = [sw(100), SIZE_TO_CONTENT]
+  children = slots.get().map(@(slot, idx) mkSlot(slot, idx, frame))
+    .append(newSlotPriceGold.get() == null ? null : slotToPurchase(newSlotPriceGold.get()))
 }
 
 return {

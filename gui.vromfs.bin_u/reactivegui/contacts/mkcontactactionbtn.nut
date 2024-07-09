@@ -40,7 +40,7 @@ function mkExtContactActionBtn(cfg, userId) {
       : mkCustomButton(
           mkImageTextContent(cfg.icon, CS_COMMON.iconSize, utf8ToUpper(loc(locId))),
           @() action(userId),
-          mergeStyles(COMMON, { hotkeys = cfg.hotkeys }))
+          mergeStyles(PRIMARY, { hotkeys = cfg.hotkeys }))
   }
 }
 

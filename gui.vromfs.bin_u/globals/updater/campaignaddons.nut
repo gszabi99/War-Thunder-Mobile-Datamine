@@ -1,10 +1,11 @@
 from "math" import max
 
-let { TANK } = require("%appGlobals/unitConst.nut")
+let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { naval, ground, extAddonsByRank, knownAddons, campaignPostfix
 } = require("%appGlobals/updater/addons.nut")
 
+let aircraftCbtPkgs = ["pkg_cbt_aircraft", "pkg_cbt_aircraft_hq"].filter(@(a) a in knownAddons)
 let customUnitPkg = {
   //ships
   germ_destroyer_class1934a_1940 = null
@@ -13,11 +14,22 @@ let customUnitPkg = {
   //tanks
   us_m4a1_1942_sherman = null
   ussr_t_34_1941_l_11 = null
-  germ_pzkpfw_IV_ausf_F2 = null
+  germ_pzkpfw_IV_ausf_F2 = null,
+  //aircrafts
+  ["p-38k"] = aircraftCbtPkgs,
+  ["yak-3t"] = aircraftCbtPkgs,
+  ["fw-190c"] = aircraftCbtPkgs
+}
+
+let defAddonPostfix = "naval"
+let addonPostfixByType = {
+  [TANK] = "ground",
+  [AIR] = "aircraft",
+  [HELICOPTER] = "aircraft",
 }
 
 let commonAddons = { ground, naval }
-let getAddonPostfix = @(unitName) getUnitType(unitName) == TANK ? "ground" : "naval"
+let getAddonPostfix = @(unitName) addonPostfixByType?[getUnitType(unitName)] ?? defAddonPostfix
 let getCampaignByPostfix = @(postfix) campaignPostfix.findindex(@(v) v == postfix)
 
 function appendRankAddon(addons, postfix, mRank) {

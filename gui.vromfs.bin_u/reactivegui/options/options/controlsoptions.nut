@@ -37,11 +37,11 @@ function hapticIntensitySlider(locId, optId, intensityType = -1) {
     locId
     value
     ctrlType = OCT_SLIDER
-    valToString = @(v) $"{((v/3)*100 + 0.5).tointeger()}%"
+    valToString = @(v) $"{(v*100 + 0.5).tointeger()}%"
     ctrlOverride = {
       min = 0
-      max = 3
-      unit = 0.03 //step
+      max = 1
+      unit = 0.01
     }
   }
 }
@@ -61,7 +61,7 @@ let optFreeCameraInertia = {
   ctrlOverride = {
     min = 0
     max = 1.0
-    unit = 0.01 //step
+    unit = 0.01
   }
 }
 

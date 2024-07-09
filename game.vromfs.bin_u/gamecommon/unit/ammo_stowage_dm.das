@@ -345,6 +345,37 @@ def calc_explosion_params(unit : Unit?; cluster_id : int; var seed : int;
 // FIRE/EXPLOSION EFFECTS LOGIC
 // ==========================================================================
 
+[with_bundle(v)]
+def ammo_stowage_send_explosion_fatal(eid : EntityId; ammo_left : float; var seed : int; full_expl : bool;
+                                      v : tuple<
+                                        ammo_stowage__explosiveProperties : ExplosiveProps- const;
+                                        ammo_stowage__fatalDetonatePortion : float2;
+                                        ammo_stowage__splashProperties : SplashProps- const
+                                      >) : void
+  var splash_params = calc_splash_params(v.ammo_stowage__explosiveProperties, v.ammo_stowage__splashProperties, false)
+  if splash_params.outerRadius <= 0.0f
+    return
+  splash_params |> splash_params_scale(ammo_left *
+    (_frnd(seed) * (v.ammo_stowage__fatalDetonatePortion.y - v.ammo_stowage__fatalDetonatePortion.x) + v.ammo_stowage__fatalDetonatePortion.x)
+  )
+  let splash_damage_type_id = v.ammo_stowage__splashProperties.damageTypeId
+  sendEvent(eid, [[EventDoAmmoExplode
+    isFatal=true,
+    fullExpl=full_expl,
+    localPos=float3(0.0f),
+    packedPartId=PartId().packed,
+    rndSeed=seed,
+    splashRadius=float2(splash_params.innerRadius, splash_params.outerRadius),
+    splashPenetration=splash_params.penetration,
+    splashDamage=splash_params.damage,
+    splashDamageTypeId=splash_damage_type_id,
+    shatterRadius=0.0f,
+    shatterCount=0.0f,
+    shatterPenetration=0.0f,
+    shatterDamage=0.0f,
+    shatterDamageTypeId=0
+  ]])
+
 
 [with_bundle(v)]
 def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_id : int;
@@ -610,37 +641,6 @@ def ammo_stowage_do_explosion_fatal(eid : EntityId; stowage_id : int; cluster_id
   ]])
   ammo_stowage_send_explosion_fatal(eid, ammo_left, seed, full_expl) <| v
 
-[with_bundle(v)]
-def ammo_stowage_send_explosion_fatal(eid : EntityId; ammo_left : float; var seed : int; full_expl : bool;
-                                      v : tuple<
-                                        ammo_stowage__explosiveProperties : ExplosiveProps- const;
-                                        ammo_stowage__fatalDetonatePortion : float2;
-                                        ammo_stowage__splashProperties : SplashProps- const
-                                      >) : void
-  var splash_params = calc_splash_params(v.ammo_stowage__explosiveProperties, v.ammo_stowage__splashProperties, false)
-  if splash_params.outerRadius <= 0.0f
-    return
-  splash_params |> splash_params_scale(ammo_left *
-    (_frnd(seed) * (v.ammo_stowage__fatalDetonatePortion.y - v.ammo_stowage__fatalDetonatePortion.x) + v.ammo_stowage__fatalDetonatePortion.x)
-  )
-  let splash_damage_type_id = v.ammo_stowage__splashProperties.damageTypeId
-  sendEvent(eid, [[EventDoAmmoExplode
-    isFatal=true,
-    fullExpl=full_expl,
-    localPos=float3(0.0f),
-    packedPartId=PartId().packed,
-    rndSeed=seed,
-    splashRadius=float2(splash_params.innerRadius, splash_params.outerRadius),
-    splashPenetration=splash_params.penetration,
-    splashDamage=splash_params.damage,
-    splashDamageTypeId=splash_damage_type_id,
-    shatterRadius=0.0f,
-    shatterCount=0.0f,
-    shatterPenetration=0.0f,
-    shatterDamage=0.0f,
-    shatterDamageTypeId=0
-  ]])
-
 [es, with_bundle(v)]
 def ammo_stowage_send_explosion_fatal_es(evt : EventAmmoStowageSendExplosionFatal;
                                          eid : EntityId;
@@ -700,6 +700,12 @@ def ammo_stowage_do_fire(unit : Unit?; eid : EntityId; remap : PartRemap; offend
     if is_ammo_slot_affected_by_dm_effect(unit, remap.stowageId, remap.clusterId, slot_id, v).fire
       set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE, true)
 
+  sendEventImmediate(eid, [[EventAmmoStowageDoImmediateFireEffects
+    packedPartId = remap.partId.packed,
+    stowageId = remap.stowageId,
+    clusterId = remap.clusterId,
+  ]])
+
 
 [with_bundle(v), unused_argument(eid, seed, dm_effects)]
 def ammo_stowage_do_explosion(unit : Unit?; eid : EntityId; remap : PartRemap; offender : OffenderData; seed : int; dm_effects : int;
@@ -748,6 +754,12 @@ def ammo_stowage_do_explosion(unit : Unit?; eid : EntityId; remap : PartRemap; o
   for slot_id in slots_range.x..slots_range.y
     if is_ammo_slot_affected_by_dm_effect(unit, remap.stowageId, remap.clusterId, slot_id, v).expl
       set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE, true)
+
+  sendEventImmediate(eid, [[EventAmmoStowageDoImmediateExplosionEffects
+    packedPartId = remap.partId.packed,
+    stowageId = remap.stowageId,
+    clusterId = remap.clusterId
+  ]])
 
 
 [es, with_bundle(v)]

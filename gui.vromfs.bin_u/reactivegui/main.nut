@@ -30,6 +30,7 @@ require("initHangar.nut")
 require("updater/connectionStatus/initConnectionStatus.nut")
 require("activeControls.nut")
 require("unitsTree/selectUnitResearchWnd.nut")
+require("unitsTree/selectResearchWnd.nut")
 require("slotBar/selectUnitToSlotWnd.nut")
 require("login/consentGoogleState.nut")
 

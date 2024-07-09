@@ -1,0 +1,558 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/greece.bin",
+      "environment": "Day",
+      "weather": "clear",
+      "checkFriendlyFireAlsoFromAircrafts": true,
+      "preventBotsLeavingBattleArea": true,
+      "locName": "greece/name",
+      "locDesc": "greece/desc",
+      "scoreLimit": 10000,
+      "timeLimit": 10,
+      "deathPenaltyMul": 0.0,
+      "useDeathmatchHUD": true,
+      "showTacticalMapCellSize": true,
+      "country_axis": "usa",
+      "country_allies": "germany",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": false,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_01"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_02"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_03"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_04"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_05"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_01"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_02"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_03"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_04"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_05"
+            }
+          ],
+          "battleArea": {
+            "target": "ntdm_battle_area"
+          }
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/navy_templates/ntdm_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/navy_templates/ship_base_logic.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/ships/greece/mainareas/greece_NTdm_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          -2.21533e-7,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          -2.21533e-7
+        ],
+        [
+          7810.25,
+          400.0,
+          2416.9
+        ]
+      ],
+      "unit_class": "us_destroyer_fletcher",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 1,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "briefing_t1_collective_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.999485,
+          0.0,
+          -0.0320945
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0320945,
+          0.0,
+          0.999485
+        ],
+        [
+          3925.53,
+          0.0,
+          3496.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_collective_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.729437,
+          0.0,
+          0.684048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.684048,
+          0.0,
+          0.729437
+        ],
+        [
+          1325.24,
+          -0.000732422,
+          3506.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_collective_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.729437,
+          0.0,
+          0.684048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.684048,
+          0.0,
+          0.729437
+        ],
+        [
+          -1.57,
+          0.0,
+          3539.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_collective_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [
+          0.729437,
+          0.0,
+          0.684048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.684048,
+          0.0,
+          0.729437
+        ],
+        [
+          -1259.1,
+          0.00244141,
+          3539.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_collective_spawn_05": {
+      "type": "Point",
+      "tm": [
+        [
+          0.729437,
+          0.0,
+          0.684048
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.684048,
+          0.0,
+          0.729437
+        ],
+        [
+          -3784.25,
+          0.00292969,
+          3534.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.998159,
+          0.0,
+          0.0606589
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0606589,
+          0.0,
+          0.998159
+        ],
+        [
+          3916.7,
+          0.0,
+          -3484.53
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.662912,
+          0.0,
+          0.748697
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.748697,
+          0.0,
+          0.662912
+        ],
+        [
+          1331.31,
+          -0.000488281,
+          -3498.43
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.662912,
+          0.0,
+          0.748697
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.748697,
+          0.0,
+          0.662912
+        ],
+        [
+          1.25,
+          -0.000488281,
+          -3532.46
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [
+          0.662912,
+          0.0,
+          0.748697
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.748697,
+          0.0,
+          0.662912
+        ],
+        [
+          -1266.86,
+          -0.000488281,
+          -3517.73
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_05": {
+      "type": "Point",
+      "tm": [
+        [
+          0.662912,
+          0.0,
+          0.748697
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.748697,
+          0.0,
+          0.662912
+        ],
+        [
+          -3790.15,
+          -0.000488281,
+          -3516.58
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -66,7 +66,7 @@
     "armDistance": 500.0,
     "distanceFuse": false,
     "explosiveType": "comp_b",
-    "explosiveMass": 911.0,
+    "explosiveMass": 911.1111,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.02,
     "spawnExplosionWreckage": false,

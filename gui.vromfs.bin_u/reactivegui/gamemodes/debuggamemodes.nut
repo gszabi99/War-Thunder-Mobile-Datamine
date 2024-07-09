@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let listButton = require("%rGui/components/listButton.nut")
 let { eventbus_send } = require("eventbus")
 let { debugModes } = require("gameModeState.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -7,11 +8,13 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 let wndUid = "debugGameModes"
 let close = @() removeModalWindow(wndUid)
 
 let gap = hdpx(10)
+let selectedCampaign = mkWatched(persist, "selectedCampaign", curCampaign.get())
 
 let noGameModes = {
   size = [ hdpx(500), SIZE_TO_CONTENT ]
@@ -24,16 +27,14 @@ let noGameModes = {
 
 function gameModesList() {
   let res = {
-    watch = debugModes
+    watch = [debugModes, selectedCampaign]
     size = [flex(), SIZE_TO_CONTENT]
     padding = gap
     children = noGameModes
   }
 
-  if (debugModes.value.len() == 0)
-    return res
-
-  let modes = debugModes.value.values()
+  let modes = debugModes.get().values()
+    .filter(@(m) m?.campaign == selectedCampaign.get())
     .sort(@(a, b) (a?.name ?? "") <=> (b?.name ?? ""))
     .map(@(m) textButtonCommon(m?.name ?? m?.gameModeId ?? "!!!ERROR!!!",
       function() {
@@ -41,6 +42,10 @@ function gameModesList() {
         close()
       },
       { ovr = { size = [flex(), hdpx(100)] } }))
+
+  if (modes.len() == 0)
+    return res
+
   let rows = arrayByRows(modes, 2)
   if (rows.top().len() < 2)
     rows.top().resize(2, { size = flex() })
@@ -56,6 +61,21 @@ function gameModesList() {
       children
     })
   })
+}
+
+function gameModesTabs() {
+  let campaigns = debugModes.get()
+    .reduce(@(res, m) res.$rawset(m?.campaign ?? "", true), {})
+    .keys()
+    .sort()
+  let res = { watch = [ selectedCampaign, debugModes ]}
+  return campaigns.len() == 0 ? res
+    : res.__update({
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(20)
+      onAttach = @() selectedCampaign.set(campaigns.contains(curCampaign.get()) ? curCampaign.get() : campaigns[0])
+      children = campaigns.map(@(c) listButton(c, Computed(@() selectedCampaign.get() == c), @() selectedCampaign.set(c), { size = [hdpx(200), SIZE_TO_CONTENT] }))
+    })
 }
 
 return @() addModalWindow({
@@ -86,6 +106,7 @@ return @() addModalWindow({
           closeButton(close)
         ]
       }
+      gameModesTabs
       makeVertScroll(
         gameModesList,
         { rootBase = { behavior = Behaviors.Pannable } })

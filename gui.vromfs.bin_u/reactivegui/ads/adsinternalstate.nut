@@ -12,14 +12,20 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { can_preload_request_ads_consent } = require("%appGlobals/permissions.nut")
+let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consent/consentState.nut")
 
 
 let LOAD_ADS_BEFORE_TIME = 120 //2 min before ads will be ready to watch
 let RETRY_LOAD_TIMEOUT = 120
 let RETRY_INC_TIMEOUT = 60 //increase time with each fail, but reset on success. Also retry after battle without timeout
 
+let hasAdsPreloadError = Watched(false)
+let adsPreloadParams = Watched(null)
+let isOpenedAdsPreloaderWnd = Computed(@() adsPreloadParams.get() != null && !isConsentWasAutoSkipped.get())
+
 let needAdsLoadByTime = Watched(false)
-let needAdsLoad = Computed(@() !isInBattle.value && needAdsLoadByTime.value)
+let needAdsLoad = Computed(@() !isInBattle.get() && needAdsLoadByTime.get())
 let advertRewardsTimes = keepref(Computed(function() {
   let received = receivedSchRewards.value
   return (campConfigs.value?.schRewards ?? {})
@@ -32,12 +38,11 @@ let attachedAdsButtons = Watched(0)
 let isAnyAdsButtonAttached = Computed(@() attachedAdsButtons.get() > 0)
 
 needAdsLoad.subscribe(@(v) logA(v ? "Need to prepare ads load" : "no more need to load ads now"))
-
 function updateNeedAdsLoad() {
   local nextTime = advertRewardsTimes.value.reduce(@(a, b) min(a, b))
-  needAdsLoadByTime(nextTime != null && nextTime - LOAD_ADS_BEFORE_TIME <= serverTime.value)
-  if (!needAdsLoadByTime.value && nextTime != null)
-    resetTimeout(nextTime - serverTime.value - LOAD_ADS_BEFORE_TIME, updateNeedAdsLoad)
+  needAdsLoadByTime(can_preload_request_ads_consent.get() && nextTime != null && nextTime - LOAD_ADS_BEFORE_TIME <= serverTime.get())
+  if (!needAdsLoadByTime.get() && nextTime != null)
+    resetTimeout(nextTime - serverTime.get() - LOAD_ADS_BEFORE_TIME, updateNeedAdsLoad)
   else
     clearTimer(updateNeedAdsLoad)
 }
@@ -105,6 +110,12 @@ function onShowAds(providerBase = "") {
   providerShows.mutate(@(v) v[provider] <- (v?[provider] ?? 0) + 1)
 }
 
+function openAdsPreloader(rInfo) {
+  if (isConsentWasAutoSkipped.get())
+    needOpenConsentWnd.set(true)
+  adsPreloadParams.set(rInfo)
+}
+
 return {
   RETRY_LOAD_TIMEOUT
   RETRY_INC_TIMEOUT
@@ -118,4 +129,9 @@ return {
   attachedAdsButtons
   isAnyAdsButtonAttached
   providerPriorities
+  isOpenedAdsPreloaderWnd
+  openAdsPreloader
+  closeAdsPreloader = @() adsPreloadParams.set(null)
+  hasAdsPreloadError
+  adsPreloadParams
 }

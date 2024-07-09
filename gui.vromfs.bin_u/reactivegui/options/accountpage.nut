@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { set_clipboard_text } = require("dagor.clipboard")
 let { ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK } = require("%appGlobals/loginState.nut")
 let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
@@ -21,7 +22,6 @@ let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators }
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { showHint } = require("%rGui/tooltip.nut")
-let { set_clipboard_text } = require("dagor.clipboard")
 
 let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
   && [ LT_GOOGLE, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.get()))
@@ -85,7 +85,7 @@ function mkAvatar() {
         size = [avatarSize, avatarSize]
         rendObj = ROBJ_IMAGE
         image =  Picture($"{myAvatarImage.get()}:{avatarSize}:{avatarSize}:P")
-        padding = [hdpx(10), hdpx(10), 0, 0]
+        padding = hdpx(10)
         valign = ALIGN_TOP
         children = [
           !hasUnseenDecorators.get() ? null : {

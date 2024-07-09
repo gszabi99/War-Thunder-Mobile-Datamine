@@ -30,11 +30,11 @@ let bgHiglight = {
   color = 0x3F3F3F
 }
 
-function getUnit(goods) {
+function getUnitByGoods(goods) {
   let unit = serverConfigs.value?.allUnits[goods?.unitUpgrades[0]]
   if (unit != null)
     return unit.__merge({ isUpgraded = true })
-  return serverConfigs.value?.allUnits?[goods.units?[0]]
+  return serverConfigs.get()?.allUnits[goods.units?[0] ?? goods?.meta.previewUnit]
 }
 
 function isUnitOrUnitUpgradePurchased(myUnitsValue, unit) {
@@ -44,7 +44,7 @@ function isUnitOrUnitUpgradePurchased(myUnitsValue, unit) {
 }
 
 let getLocNameUnit = function(goods) {
-  let unit = getUnit(goods)
+  let unit = getUnitByGoods(goods)
   return unit != null ? getPlatoonOrUnitName(unit, loc) : goods.id
 }
 
@@ -164,7 +164,7 @@ let mkMRank = @(mRank) !mRank ? null : {
 }
 
 function mkGoodsUnit(goods, onClick, state, animParams) {
-  let unit = getUnit(goods)
+  let unit = getUnitByGoods(goods)
   let p = getUnitPresentation(unit)
   let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
   let platoonOffset = platoonPlatesGap * (unit?.platoonUnits.len() ?? 0)
@@ -213,7 +213,7 @@ let mkCurrencyIcon = @(currencyId) {
 }
 
 function mkOfferUnit(goods, onClick, state) {
-  let unit = getUnit(goods)
+  let unit = getUnitByGoods(goods)
   let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
     currencies = null, offerClass = null
   } = goods
@@ -242,4 +242,5 @@ return {
   getLocNameUnit
   mkGoodsUnit
   mkOfferUnit
+  getUnitByGoods
 }

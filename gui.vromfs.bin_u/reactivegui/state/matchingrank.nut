@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { maxSquadMRank } = require("%rGui/squad/squadAddons.nut")
 let { squadLeaderCampaign } = require("%appGlobals/squadState.nut")
@@ -7,8 +8,8 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 let curUnitMRankRange = Computed(function() {
-  let mRank = maxSquadMRank.value ?? curUnit.value?.mRank
-  let campaign = squadLeaderCampaign.value ?? curUnit.value?.campaign
+  let mRank = maxSquadMRank.value ?? battleUnitsMaxMRank.get()
+  let campaign = squadLeaderCampaign.value ?? curCampaign.get()
   if (mRank == null || campaign == null)
     return null
   let isMaxMRank = !serverConfigs.value?.allUnits.findvalue(@(u) u.campaign == campaign && u.mRank > mRank)

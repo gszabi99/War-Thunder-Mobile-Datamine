@@ -7,7 +7,7 @@ let { defer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { reset_profile, reset_profile_with_stats, unlock_all_units, add_gold, add_wp, add_platinum,
   add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
-  royal_beta_units_unlock, add_warbond, add_event_key, add_nybond, add_aprilbond
+  royal_beta_units_unlock, add_warbond, add_event_key, add_nybond, add_aprilbond, add_all_skins_for_unit
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -29,7 +29,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let debugOffersWnd = require("debugOffersWnd.nut")
 let { isDebugTouchesActive } = require("debugTouches.nut")
 let debugUnlocks = require("debugUnlocks.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+let { mainHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 
@@ -60,14 +60,18 @@ let commandsList = [
   { label = "meta.add_event_key 10", func = @() add_event_key(10, "sceenlogResult") }
   { label = "meta.add_nybond 100", func = @() add_nybond(100, "sceenlogResult") }
   { label = "meta.add_aprilbond 100", func = @() add_aprilbond(100, "sceenlogResult") }
+  { label = "add_all_skins_for_unit", func = withClose(@() add_all_skins_for_unit(mainHangarUnitName.get(),
+    mainHangarUnitName.get()?.isUpgraded || mainHangarUnitName.get()?.isPremium
+      ? "consolePrintResult"
+      : { id = "upgradeUnit", name = mainHangarUnitName.get() })) }
   { label = "meta.reset_profile", func = withClose(reset_profile) }
   { label = "meta.reset_profile_with_stats", func = withClose(resetProfileWithStats) }
   { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
   { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }
   { label = "meta.royal_beta_units_unlock", func = withClose(royal_beta_units_unlock) }
   { label = "toggle_debug_touches", func = withClose(@() isDebugTouchesActive(!isDebugTouchesActive.value)) }
-  { label = "upgrade_cur_unit", func = withClose(@() upgrade_unit(hangarUnitName.value)) }
-  { label = "downgrade_cur_unit", func = withClose(@() downgrade_unit(hangarUnitName.value)) }
+  { label = "upgrade_cur_unit", func = withClose(@() upgrade_unit(mainHangarUnitName.get())) }
+  { label = "downgrade_cur_unit", func = withClose(@() downgrade_unit(mainHangarUnitName.get())) }
   { label = "meta.reset_custom_settings", func = withClose(resetCustomSettings) }
   { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug(!isTutorialMissionsDebug.value)) }
   { label = "startFirstBattlesOfflineMission",

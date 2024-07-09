@@ -103,6 +103,7 @@
       "country_allies": "ussr",
       "showTacticalMapCellSize": true,
       "checkFriendlyFireAlsoFromAircrafts": true,
+      "ctaPenaltyInactive": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,

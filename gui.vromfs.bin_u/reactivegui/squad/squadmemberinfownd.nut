@@ -9,8 +9,6 @@ let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicI
 let { mkContactOnlineStatus } = require("%rGui/contacts/contactPresence.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let { createHighlight } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
-let { darkCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { gap, contactNameBlock, contactAvatar, contactLevelBlock, contactLevelSize
 } = require("%rGui/contacts/contactInfoPkg.nut")
@@ -22,6 +20,7 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
 let { REVOKE_INVITE, REMOVE_FROM_SQUAD, PROMOTE_TO_LEADER, LEAVE_SQUAD } = require("%rGui/contacts/contactActions.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
+let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 
 
 let WND_UID = "squad_member_info_wnd"
@@ -208,11 +207,6 @@ let mkWindow = @(uid) {
   ]
 }
 
-let mkBg = @(rect) {
-  size = flex()
-  children = createHighlight([rect], @(_) null, darkCtor)
-}
-
 let animLines = @(rect) function() {
   let res = { watch = wndAABB }
   if (wndAABB.value == null)
@@ -278,7 +272,7 @@ function content() {
     watch = openParams
     size = flex()
     children = [
-      mkBg(rect)
+      mkCutBg([rect])
       {
         pos = [posX, posY]
         safeAreaMargin = saBordersRv

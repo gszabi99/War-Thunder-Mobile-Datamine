@@ -10,7 +10,7 @@ let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
-let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, setCampaign, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getModeAddonsInfo, getModeAddonsDbgString } = require("gameModeAddons.nut")
 let { balanceGold } = require("%appGlobals/currenciesState.nut")
@@ -132,7 +132,9 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
 
 function getAllBattleUnits() {
   let res = {}
-  if (curUnit.value != null)
+  if (curCampaignSlotUnits.get() != null)
+    curCampaignSlotUnits.get().each(@(name) res[name] <- true)
+  else if (curUnit.value != null)
     res[curUnit.value.name] <- true
   foreach(m in squadMembers.value) {
     let list = m?.units[squadLeaderCampaign.get()]

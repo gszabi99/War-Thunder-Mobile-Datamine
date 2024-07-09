@@ -18289,6 +18289,14 @@
       "fxScale": 3.0,
       "physRes": "highway_road_sign_b_oposite_destr_phobj"
     },
+    "greece_towns_building_pier": {
+      "physRes": "greece_towns_building_pier_destr_phobj",
+      "hp": 600.0,
+      "impulseThreshold": 5.0,
+      "hpFullRegenTime": 3.0,
+      "fx": "ad_buildings_destructions_big",
+      "fxScale": 1.0
+    },
     "snowman_rendinst_a": {
       "nextRes": "snowman_rendinst_dmg",
       "physRes": "snowman_rendinst_a_destr_phobj",

@@ -1911,12 +1911,12 @@
     "turnTime": 15.4597
   },
   "cutting": {
-    "_emtr_break_wing0_l_from": [
+    "emtr_break_wing0_l_from": [
       -0.768403,
       -0.416039,
       1.06228
     ],
-    "_emtr_break_wing0_l_to": [
+    "emtr_break_wing0_l_to": [
       -0.768403,
       -0.416039,
       1.55352
@@ -1941,12 +1941,12 @@
       -0.416039,
       3.59695
     ],
-    "_emtr_break_wing0_r_from": [
+    "emtr_break_wing0_r_from": [
       -0.768403,
       -0.416039,
       -1.06228
     ],
-    "_emtr_break_wing0_r_to": [
+    "emtr_break_wing0_r_to": [
       -0.768403,
       -0.416039,
       -1.55352

@@ -79,6 +79,20 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
+  weapon6 = weaponryButtonDynamicCtor(5,
+    {
+      defTransform = mkRBPos([hdpx(-95), hdpx(-315)])
+      priority = Z_ORDER.BUTTON_PRIMARY
+    })
+
+//
+
+
+
+
+
+
+
   abSmokeScreen = withActionBarButtonCtor(EII_SMOKE_SCREEN, SHIP,
     { defTransform = mkRBPos([hdpx(-450), hdpx(43)]) })
 

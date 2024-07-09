@@ -2633,6 +2633,16 @@
       }
     }
   },
+  "commanderView": {
+    "aimModeAvailable": true,
+    "optics": "commander_optics_square",
+    "zoomOutFov": 80.0,
+    "zoomInFov": 10.53,
+    "sightSize": [
+      1.775,
+      1.25
+    ]
+  },
   "cockpit": {
     "headPos": [
       0.0,

@@ -3,6 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let hudTutorElemsCtors = require("%rGui/tutorial/hudTutorElemsCtors.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { register_command } = require("console")
 
 
 let hudTutorElemsState = mkWatched(persist, "hudTutorElemsState", {})
@@ -16,6 +17,13 @@ eventbus_subscribe("hudElementShow", function(p) {
 })
 
 isInBattle.subscribe(@(_) hudTutorElemsState({}))
+
+register_command(function(id) {
+  if (id not in hudTutorElemsState.get())
+    hudTutorElemsState.mutate(@(v) v[id] <- {})
+  else
+    hudTutorElemsState.mutate(@(v) v.$rawdelete(id))
+},"debug.hudElements")
 
 let tutorElemsKey = {}
 let hudTutorElems = @() {

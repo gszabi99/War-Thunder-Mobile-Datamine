@@ -8,6 +8,7 @@ let {
   isAdsAvailable = Watched(false),
   isAdsVisible = Watched(false),
   canShowAds = Watched(false),
+  isLoaded = Watched(false),
   showAdsForReward = @(_) null
   onTryShowNotAvailableAds = @() false
 } = is_ios || debugAs == "ios" ? require("byPlatform/adsIOS.nut")
@@ -27,6 +28,7 @@ return {
   isAdsAvailable
   isAdsVisible
   canShowAds
+  isLoaded
   showAdsForReward
   changeAttachedAdsButtons
   adsButtonCounter = {

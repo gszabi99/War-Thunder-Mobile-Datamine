@@ -1,0 +1,122 @@
+{
+  "z_far": 35000.0,
+  "mapCoord0": [
+    -8192.0,
+    -8192.0
+  ],
+  "mapCoord1": [
+    8192.0,
+    8192.0
+  ],
+  "minAreaSize": [
+    16384.0,
+    16384.0
+  ],
+  "aiMapCoord0": [
+    -90068.0,
+    -90068.0
+  ],
+  "aiMapCoord1": [
+    90068.0,
+    90068.0
+  ],
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 0,
+  "numBorderCellsZPos": 0,
+  "numBorderCellsZNeg": 0,
+  "gridSteps": [
+    2000.0,
+    2000.0
+  ],
+  "vsmAngleThreshold": 0.0,
+  "customLevelMap": "greece_map*",
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
+  "shore_waves_dist": [
+    50.0,
+    200.0
+  ],
+  "wind_scale": 1.2,
+  "max_wind_strength": 6.5,
+  "water_level": 0.0,
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n*",
+      "microdetail_scan_gravel_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_grass_a_tex_n*",
+      "microdetail_forest_floor_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_wood_a_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 1.11
+  },
+  "shader_vars": {
+    "max_river_width": 1500.0,
+    "ocean_density": 0.4,
+    "river_density": 2.0,
+    "ocean0": [
+      0.149,
+      0.208,
+      0.494,
+      0.0
+    ],
+    "ocean1": [
+      0.149,
+      0.208,
+      0.494,
+      0.0
+    ],
+    "water_color_noise_size": 1737.0,
+    "shore_depth_scale": 0.1
+  },
+  "technicsSkins": {},
+  "overrideRiLodRange": {
+    "wr_big_island_a": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_big_island_b": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_big_island_c": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_formation_a": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_formation_b": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_formation_c": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    },
+    "wr_sand_island_b": {
+      "lod0": 0.0,
+      "lod1": 0.0,
+      "lod2": 25000.0
+    }
+  },
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": true,
+    "riExtraMinSizeForReflection": 100.0,
+    "riExToHeightmap": true
+  }
+}

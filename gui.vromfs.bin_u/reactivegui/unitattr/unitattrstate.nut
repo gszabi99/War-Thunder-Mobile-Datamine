@@ -91,7 +91,7 @@ let availableAttributes = Computed(function() {
   let { unit = null, preset = null } = attrUnitData.value
   let { attrLevels = null } = unit
   let leftSp = leftUnitSp.value
-  if (attrLevels == null || preset == null || leftSp <= 0)
+  if (attrLevels == null || preset == null || leftSp <= 0 || isUnitMaxSkills.get())
     return { status = -1, statusByCat = [] }
   let selAttr = selAttributes.value
   let avail = array(MAX_AVAIL_STATUS, 0)

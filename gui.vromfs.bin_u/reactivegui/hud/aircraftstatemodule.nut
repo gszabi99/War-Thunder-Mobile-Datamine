@@ -67,23 +67,26 @@ let xrayModel = @() {
   ]
 }
 
-let mkIcon = @(iconId) {
+let mkIcon = @(iconId, color = null) {
   rendObj = ROBJ_IMAGE
   size = [iconSize, iconSize]
   image = Picture($"ui/gameuiskin#{iconId}:{iconSize}:{iconSize}")
+  color
 }
+
+let red = 0xFFE95E5E
 
 let dmIcons = [
   mkIcon("dmg_air_altitude_control.svg")
   mkIcon("dmg_air_rudder.svg")
   mkIcon("dmg_air_flaps.svg")
   mkIcon("dmg_air_aileron.svg")
-  mkIcon("dmg_air_chassis.svg")
-  mkIcon("dmg_air_gunner.svg")
-  mkIcon("dmg_air_engine.svg")
-  mkIcon("dmg_air_fire.svg")
-  mkIcon("dmg_air_oil.svg")
-  mkIcon("dmg_air_water.svg")
+  mkIcon("dmg_air_chassis.svg", red)
+  mkIcon("dmg_air_gunner.svg", red)
+  mkIcon("dmg_air_engine.svg", red)
+  mkIcon("dmg_air_fire.svg", red)
+  mkIcon("dmg_air_oil.svg", red)
+  mkIcon("dmg_air_water.svg", red)
 ]
 
 let dmModules = @() {
