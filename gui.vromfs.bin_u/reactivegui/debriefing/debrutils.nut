@@ -39,19 +39,21 @@ function isPlayerReceiveLevel(debrData) {
     && exp + totalExp >= nextLevelExp
 }
 
+let getUnitRewards = @(debrData) (debrData?.reward.units ?? [])?[0]
+
 function isUnitReceiveLevel(debrData) {
   let { exp = 0, nextLevelExp = 0 } = debrData?.unit
-  let { totalExp = 0 } = debrData?.reward.unitExp
+  let { totalExp = 0 } = getUnitRewards(debrData)?.exp
   return nextLevelExp != 0
     && exp + totalExp >= nextLevelExp
 }
 
 function getNewPlatoonUnit(debrData) {
-  let { unit = null, reward = null } = debrData
+  let { unit = null } = debrData
   if (unit == null)
     return null
   let { level = 0, exp = 0, levelsExp = [], lockedUnits = [] } = unit
-  let { totalExp = 0 } = reward?.unitExp
+  let { totalExp = 0 } = getUnitRewards(debrData)?.exp
   if (totalExp == 0 || lockedUnits.len() == 0)
     return null
   local pReqLevel = -1
@@ -75,6 +77,7 @@ function getNewPlatoonUnit(debrData) {
 return {
   getLevelProgress
   isPlayerReceiveLevel
+  getUnitRewards
   isUnitReceiveLevel
   getNewPlatoonUnit
 }

@@ -1,8 +1,16 @@
 return {
   "byUnit": {
+    "cn_cm11": {
+      "": "us_camo_modern_green",
+      "upgraded": "ger_camo_carc"
+    },
     "cn_cm_25": {
       "": "us_camo_olive",
       "upgraded": "usa_modern_summer_verdant"
+    },
+    "cn_hj_9": {
+      "": "ussr_camo_green",
+      "upgraded": "cn_camo_sand_ltgreen_dkgreen_lines"
     },
     "cn_isu_122": {
       "": "cn_camo_green_yellow_black",
@@ -19,6 +27,10 @@ return {
     "cn_pgz_09": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
+    },
+    "cn_pgz_09_reskin": {
+      "": "ussr_camo_green",
+      "upgraded": "cn_camo_sand_ltgreen_dkgreen_lines"
     },
     "cn_pt_76": {
       "": "cn_camo_green_yellow_black",
@@ -63,6 +75,10 @@ return {
     "cn_ztz_88a": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
+    },
+    "cn_ztz_96": {
+      "": "ussr_camo_green",
+      "upgraded": "cn_camo_sand_ltgreen_dkgreen_lines"
     },
     "fr_amx_10rc": {
       "": "fr_camo_vert_olive_arme",
@@ -301,6 +317,10 @@ return {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_winter_lines"
     },
+    "germ_flakpanzer_zerstorer_45": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_hinterhalt_tarnung"
+    },
     "germ_flakpz_I_Gepard": {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_modern_threecolor"
@@ -324,6 +344,10 @@ return {
       "": "ger_camo_hinterhalt_daimler",
       "desert": "ger_camo_dunkelgelb",
       "winter": "tl_camo_red_grey_lines"
+    },
+    "germ_le_kpz_m41": {
+      "": "ger_camo_bronzegruen",
+      "forest": "ger_camo_carc"
     },
     "germ_leopard_I": {
       "": "ger_camo_bronzegruen",
@@ -433,6 +457,10 @@ return {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green_braun_lines_mhn"
     },
+    "germ_pzkpfw_VI_ausf_b_tiger_IIp_reskin": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_hinterhalt_tarnung"
+    },
     "germ_pzkpfw_VI_ausf_e_tiger": {
       "": "ger_camo_dunkelgelb_green",
       "forest": "ger_camo_dunkelgelb",
@@ -460,6 +488,10 @@ return {
     "germ_pzkpfw_V_ausf_g_panther": {
       "": "ger_camo_hinterhalt_man",
       "forest": "ger_camo_dunkelgelb"
+    },
+    "germ_pzkpfw_V_ersatz_m10": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "us_camo_olive"
     },
     "germ_pzsfl_IVa_dickermax": {
       "": "ger_camo_dunkelgelb_africa",
@@ -948,11 +980,11 @@ return {
     "us_battleship_wyoming_class": {
       "upgraded": "camo_designpt328"
     },
-    "us_cruiser_cleveland_class_cleveland": {
-      "upgraded": "camo_measure_12mod"
-    },
     "us_cruiser_baltimore_class": {
       "": "camo_blackblue_geometry"
+    },
+    "us_cruiser_cleveland_class_cleveland": {
+      "upgraded": "camo_measure_12mod"
     },
     "us_cruiser_des_moines_class": {
       "": "camo_multicolor_cubes",
@@ -1680,10 +1712,11 @@ return {
       "": "camo_navygrey_5",
       "arctic_minesweeper_block_prem": "camo_arctic_minesweeper_block",
       "arctic_spots": "camo_arctic_spots",
+      "asiatic_forest_prem": "camo_asiatic_forest",
       "black_longdiag": "camo_black_longdiag",
       "blackgray_stripes": "camo_blackgray_stripes",
+      "blue_stains": "camo_blue_stains",
       "bluegreen_splotch": "camo_bluegreen_splotch",
-      "blue_stains": "camo_blue_stains"
       "bluewater_geometry": "camo_bluewater_geometry",
       "darkgray_blotch": "camo_darkgray_blotch",
       "disruptive_gray": "camo_disruptive_gray",
@@ -1700,7 +1733,7 @@ return {
     },
     "submarine": {
       "": "camo_navygrey_5",
-      "blue_stains": "camo_blue_stains"
+      "blue_stains": "camo_blue_stains",
       "disruptive_gray": "camo_disruptive_gray",
       "factory": "camo_navygrey_5",
       "threegreenspots": "camo_threegreenspots"

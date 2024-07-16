@@ -1674,15 +1674,50 @@
     {
       "name": "supportPlaneBot",
       "selectStrategy": "ordered",
-      "followTarget": {
-        "offsetFromBot": false,
-        "offset": [
-          0.0,
-          100.0,
-          0.0
-        ],
-        "useTarget": true,
-        "aggressiveness": 10.0
+      "reaction": [
+        {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": {},
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        },
+        {
+          "event": "collisionAhead",
+          "parallel": {
+            "turnToEvasiveDir": {},
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        },
+        {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      ],
+      "parallel": {
+        "stayAtCurrentAlt": {},
+        "stayAtSpeed": {
+          "speedMode": "maxSpeed"
+        },
+        "followTarget": {
+          "offsetFromBot": false,
+          "offset": [
+            0.0,
+            100.0,
+            0.0
+          ],
+          "useTarget": true,
+          "aggressiveness": 10.0
+        }
       }
     }
   ]

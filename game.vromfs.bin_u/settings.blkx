@@ -458,10 +458,28 @@
         "mRank": 2
       }
     },
+    "pkg_uk_cruiser_dido": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_jp_battleship_yamashiro": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
     "pkg_us_cruiser_baltimore_class": {
       "conditions": {
         "campaign": "ships",
         "mRank": 2
+      }
+    },
+    "pkg_us_cruiser_rckt_truxtun": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
       }
     },
     "pkg_ussr_kv_122": {
@@ -627,6 +645,24 @@
       }
     },
     "pkg_ussr_object_248": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_cn_ztz_96": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_ussr_t_55_amd_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_pzkpfw_v_ersatz_m10": {
       "conditions": {
         "campaign": "tanks",
         "mRank": 5
@@ -2574,6 +2610,11 @@
           "brokenRecreateImage": {
             "entry": {
               "gpu": [
+                "G52",
+                "G57",
+                "G68",
+                "G76",
+                "G77",
                 "G610",
                 "G710"
               ],

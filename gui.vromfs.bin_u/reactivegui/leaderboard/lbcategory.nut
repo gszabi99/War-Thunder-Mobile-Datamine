@@ -102,7 +102,7 @@ let categories = {
   }
 
   BATTLES = {
-    field = "battle_end"
+    field = "profile_stat_battle_end"
     dataType = NUM
     locId = "lb/battles"
     icon = "ui/gameuiskin#lb_battles_icon.svg"

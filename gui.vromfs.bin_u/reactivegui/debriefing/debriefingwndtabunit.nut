@@ -6,7 +6,7 @@ let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
 let mkLevelProgressLine = require("%rGui/debriefing/levelProgressLine.nut")
 let { mkTotalRewardCountsUnit } = require("%rGui/debriefing/totalRewardCounts.nut")
-let { getLevelProgress } = require("%rGui/debriefing/debrUtils.nut")
+let { getLevelProgress, getUnitRewards } = require("%rGui/debriefing/debrUtils.nut")
 let { getLevelUnlockPlateAnimTime, mkLevelUnlockPlatesContainer,
   mkDebrPlateUnit, mkDebrPlateMod, mkDebrPlatePoints
 } = require("%rGui/debriefing/debrLevelUnlockPlates.nut")
@@ -22,8 +22,8 @@ let sortMods = @(a, b) (a?.reqLevel ?? 0) <=> (b?.reqLevel ?? 0)
   || (a?.name ?? "") <=> (b?.name ?? "")
 
 function mkUnitLevelUnlockPlates(debrData, delay) {
-  let { reward = {}, items = {}, unit = null } = debrData
-  let { unitExp = {} } = reward
+  let { items = {}, unit = null } = debrData
+  let unitExp = getUnitRewards(debrData)?.exp
   let res = {
     levelUnlocksAnimTime = 0
     levelUnlocksComps = null
@@ -72,7 +72,7 @@ function mkUnitLevelUnlockPlates(debrData, delay) {
 }
 
 function mkDebriefingWndTabUnit(debrData, params) {
-  let { reward = {}, unit = null, campaign = "" } = debrData
+  let { unit = null, campaign = "" } = debrData
   if (unit == null)
     return null
 
@@ -85,7 +85,7 @@ function mkDebriefingWndTabUnit(debrData, params) {
   if (totalRewardCountsComp == null)
     return null
 
-  let { unitExp = {} } = reward
+  let unitExp = getUnitRewards(debrData)?.exp
   let { levelProgressLineComp, levelProgressLineAnimTime } = mkLevelProgressLine(unit, unitExp,
     unitNameLoc, loc($"gamercard/debriefing/desc/{campaign}"),
     levelProgressAnimStartTime,  unitExpColor)

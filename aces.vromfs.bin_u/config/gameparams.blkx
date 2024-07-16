@@ -16254,7 +16254,17 @@
       "wr_formation_b",
       "wr_formation_c",
       "wr_sand_island_a",
-      "wr_sand_island_b"
+      "wr_sand_island_b",
+      "gr_big_island_a",
+      "gr_big_island_b",
+      "gr_island_a",
+      "gr_island_b",
+      "gr_island_c",
+      "gr_island_d",
+      "gr_island_e",
+      "gr_island_f",
+      "gr_island_g",
+      "gr_island_h"
     ]
   },
   "rendinstOpt": {

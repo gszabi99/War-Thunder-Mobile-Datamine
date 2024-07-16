@@ -1852,7 +1852,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T2S_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T2S_t_55_amd_1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -2764,7 +2764,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T2S_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T2S_t_55_amd_1_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "maxAdditionalPitch": 0.0,

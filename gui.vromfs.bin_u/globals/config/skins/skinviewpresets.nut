@@ -69,6 +69,8 @@ let skinsByTag = {
     "cn_camo_dkgreen"
     "usa_pw_4"
     "ussr_camo_fiction_var1"
+    "ger_camo_hinterhalt_tarnung"
+    "cn_camo_sand_ltgreen_dkgreen_lines"
   ],
 
   [DESERT] = [

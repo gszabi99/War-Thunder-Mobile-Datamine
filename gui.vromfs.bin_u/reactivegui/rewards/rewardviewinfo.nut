@@ -271,7 +271,8 @@ function getLootboxFixedRewardsViewInfo(lootbox) {
       continue
     added[id] <- true
 
-    let content = getRewardsViewInfo(serverConfigs.value?.rewardsCfg[id])?[0]
+    let rewardCfg = serverConfigs.value?.rewardsCfg[id]
+    let content = getRewardsViewInfo(rewardCfg)?[0]
     if (content?.rType == "lootbox") {
       let rewards = getLootboxCommonRewardsViewInfo(serverConfigs.value?.lootboxesCfg[content.id])
       foreach (r in rewards)
@@ -280,6 +281,7 @@ function getLootboxFixedRewardsViewInfo(lootbox) {
     else
       fixedRewards.append({
         id
+        rewardCfg
         isFixed = true
         source = lootbox?.name ?? ""
         chance = 0
@@ -377,7 +379,7 @@ function fillRewardsCounts(rewards, profile, configs) {
       }
 
       let { opened = 0 } = lootboxStats?[r?.parentSource]
-      let { fixedRewards = {} } = configs.lootboxesCfg?[r?.parentSource]
+      let { fixedRewards = {} } = configs?.lootboxesCfg[r?.parentSource]
       hideLastReward[true] <- null == fixedRewards.findindex(@(_, c) c.tointeger() > opened)
       return r
     }
@@ -387,7 +389,7 @@ function fillRewardsCounts(rewards, profile, configs) {
 
     if (r?.isFixed) {
       let { opened = 0 } = lootboxStats?[r?.source]
-      let { fixedRewards = {} } = configs.lootboxesCfg?[r?.source]
+      let { fixedRewards = {} } = configs?.lootboxesCfg[r?.source]
       local received = 0
       local dropLimit = 0
       foreach(countStr, id in fixedRewards)

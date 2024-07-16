@@ -130,7 +130,7 @@ function fillViewInfo(res, servConfigs) {
     if ("viewInfo" not in s) {
       let rewInfo = []
       foreach(key, count in s.rewards) {
-        let reward = servConfigs.userstatRewards?[key]
+        let reward = servConfigs?.userstatRewards[key]
         rewInfo.extend(getRewardsViewInfo(reward, count))
       }
       s.viewInfo <- rewInfo.sort(sortRewardsViewInfo)?[0]

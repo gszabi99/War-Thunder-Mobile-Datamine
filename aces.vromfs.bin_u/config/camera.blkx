@@ -466,24 +466,19 @@
     "tiltShakeMultiplierForTanks": 0.0,
     "tiltShakeMultiplierForShips": 0.0,
     "condition": {
-      "or": {
-        "and": {
-          "hasGunners": {},
-          "not": [
-            {
-              "hasFPSGunner": {}
-            },
-            {
-              "isHelicopter": {}
-            },
-            {
-              "hasOpticFPSGunner": {}
-            }
-          ]
-        },
-        "not": {
-          "isFlightModel": {}
-        }
+      "and": {
+        "hasGunners": {},
+        "not": [
+          {
+            "hasFPSGunner": {}
+          },
+          {
+            "isHelicopter": {}
+          },
+          {
+            "hasOpticFPSGunner": {}
+          }
+        ]
       }
     }
   },

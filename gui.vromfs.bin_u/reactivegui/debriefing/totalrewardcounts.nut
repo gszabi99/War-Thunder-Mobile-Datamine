@@ -8,6 +8,7 @@ let { playerExpColor, unitExpColor } = require("%rGui/components/levelBlockPkg.n
 let { mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL } = require("%rGui/components/currencyComp.nut")
 let { premiumTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let mkTryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
+let { getUnitRewards } = require("debrUtils.nut")
 
 let REWARDS_SCORES = "wp"
 let REWARDS_CAMPAIGN = "campaign"
@@ -63,19 +64,26 @@ let rewardsInfoCfg = {
   },
   [REWARDS_UNIT] = {
     getHasProgress = @(debrData) (debrData?.unit.nextLevelExp ?? 0) > 0
-    getBasic = @(debrData) (debrData?.reward.unitExp.baseExp ?? 0)
-      + (debrData?.reward.unitExp.misStatusExp ?? 0)
-      + (debrData?.reward.unitExp.bonusExp ?? 0)
-    getBooster = @(debrData) debrData?.reward.unitExp.boosterExp ?? 0
+    function getBasic(debrData) {
+      let { baseExp = 0, misStatusExp = 0, bonusExp = 0 } = getUnitRewards(debrData)?.exp
+      return baseExp + misStatusExp + bonusExp
+    }
+    getBooster = @(debrData) getUnitRewards(debrData)?.exp.boosterExp ?? 0
     getStreaks = @(_debrData) 0
     getIsPremiumIncluded = getIsPremiumIncludedExp
     getPremMul = getPremMulExp
-    getTotalWithoutPremium = @(debrData) getIsMultiplayerMission(debrData) && getIsPremiumIncludedExp(debrData)
-      ? (debrData?.reward.unitExp.totalExp ?? 0) - (debrData?.reward.unitExp.premExp ?? 0)
-      : (debrData?.reward.unitExp.totalExp ?? 0)
-    getTotalWithPremium = @(debrData) !getIsMultiplayerMission(debrData) || getIsPremiumIncludedExp(debrData)
-      ? (debrData?.reward.unitExp.totalExp ?? 0)
-      : round((debrData?.reward.unitExp.totalExp ?? 0) * getPremMulExp(debrData)).tointeger()
+    function getTotalWithoutPremium(debrData) {
+      let { totalExp = 0, premExp = 0 } = getUnitRewards(debrData)?.exp
+      return getIsMultiplayerMission(debrData) && getIsPremiumIncludedExp(debrData)
+        ? totalExp - premExp
+        : totalExp
+    }
+    function getTotalWithPremium(debrData) {
+      let { totalExp = 0 } = getUnitRewards(debrData)?.exp
+      return !getIsMultiplayerMission(debrData) || getIsPremiumIncludedExp(debrData)
+        ? totalExp
+        : round(totalExp * getPremMulExp(debrData)).tointeger()
+    }
     mkCurrComp = @(val, style) mkExp(val, unitExpColor, style)
   },
 }

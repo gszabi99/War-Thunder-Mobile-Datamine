@@ -34,7 +34,7 @@ let goodsGlareAnimDuration = 0.2
 
 let offerW = hdpx(325)
 let offerH = hdpx(120)
-let offerPad = [hdpx(10), hdpx(15)]
+let offerPad = [hdpx(10), hdpx(20)]
 let titlePadding = hdpx(33)
 
 let pricePlateH = goodsH - goodsBgH

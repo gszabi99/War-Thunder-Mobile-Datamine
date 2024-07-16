@@ -62,7 +62,7 @@ windowActive.subscribe(function(v) {
 })
 
 function onGuestTagsUpdate() {
-  if (isGuestLogin.value)
+  if (!authTags.get().contains("email_verified"))
     return
   isLoginByGajin.update(true)
   openFMsgBox({ text = loc("msg/needToLoginByYourLinkedMail"), isPersist = true })
@@ -83,6 +83,8 @@ eventbus_subscribe("onRenewGuestAuthTokenInAdvance", function(_) {
 })
 
 function renewGuestRegistrationTags() {
+  if (!isGuestLogin.get())
+    return
   logGuest("Request renew guest token in advance")
   renewToken("onRenewGuestAuthTokenInAdvance")
 }

@@ -799,14 +799,14 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 31500000.0,
+      "Empty": 30000000.0,
       "momentOfInertia": [
         91.0,
         1960.0,
         1134.0
       ],
       "CenterOfGravity": [
-        -3.0,
+        -2.0,
         -0.7,
         0.0
       ]
@@ -3653,6 +3653,9 @@
         "startSpeed": 18.0,
         "useStartSpeed": true,
         "allowableDelta": 180.0,
+        "gyroAngle": 0.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
         "shotFreq": 0.05,
         "turret": {
           "head": "tt_head_03",
@@ -3687,6 +3690,9 @@
         "startSpeed": 18.0,
         "useStartSpeed": true,
         "allowableDelta": 180.0,
+        "gyroAngle": 0.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
         "shotFreq": 0.05,
         "turret": {
           "head": "tt_head_04",
@@ -6431,6 +6437,9 @@
               "startSpeed": 18.0,
               "useStartSpeed": true,
               "allowableDelta": 180.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
               "shotFreq": 0.05,
               "turret": {
                 "head": "tt_head_03",
@@ -6465,6 +6474,9 @@
               "startSpeed": 18.0,
               "useStartSpeed": true,
               "allowableDelta": 180.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
               "shotFreq": 0.05,
               "turret": {
                 "head": "tt_head_04",
@@ -9211,6 +9223,9 @@
               "startSpeed": 18.0,
               "useStartSpeed": true,
               "allowableDelta": 180.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
               "shotFreq": 0.05,
               "turret": {
                 "head": "tt_head_03",
@@ -9245,6 +9260,9 @@
               "startSpeed": 18.0,
               "useStartSpeed": true,
               "allowableDelta": 180.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
               "shotFreq": 0.05,
               "turret": {
                 "head": "tt_head_04",
