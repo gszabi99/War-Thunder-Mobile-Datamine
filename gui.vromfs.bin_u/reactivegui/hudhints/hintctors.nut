@@ -93,6 +93,17 @@ let simpleText = @(text, ovr = {}) {
   colorTable = teamColors
 }.__update(fontSmall, fontShade, ovr)
 
+let warningText = @(text, ovr = {}) {
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  text
+  color = Color(255,  90,  82)
+  colorTable = teamColors
+  animations = [
+    { prop = AnimProp.opacity, from = 0.0, to = 1.0, easing = CosineFull, duration = 0.8, play = true, loop = true  }
+  ]
+}.__update(fontSmall, fontShade, ovr)
+
 function mkTextWithIcon(text, icon, iconSize, width) {
   let imgSize = (iconSize ?? array(2, hdpx(30))).map(@(v) v.tointeger())
   return {
@@ -132,6 +143,8 @@ let hintCtors = {
   simpleText = @(hint) simpleText(hint.text, { maxWidth = maxHintWidth })
   simpleTextTiny = @(hint) simpleText(hint.text,
     { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
+  warningTextTiny = @(hint) warningText(hint.text,
+      { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
   chatLogTextTiny = @(hint) simpleText(hint.text,
     { halign = ALIGN_CENTER, maxWidth = maxChatLogWidth }.__update(fontTiny))
 }

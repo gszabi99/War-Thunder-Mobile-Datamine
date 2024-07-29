@@ -1087,7 +1087,9 @@ return {
     },
     "us_m36": {
       "": "us_camo_olive",
-      "forest": "us_camo_olive_drab_olive"
+      "desert": "usa_ww_1",
+      "forest": "us_camo_olive_drab_olive",
+      "winter": "us_camo_winter_blots"
     },
     "us_m3_bradley": {
       "": "us_camo_olive",
@@ -1131,7 +1133,9 @@ return {
     },
     "us_m42_duster_reskin7": {
       "": "us_camo_olive",
-      "forest": "us_camo_olive_drab_olive"
+      "desert": "usa_ww_1",
+      "forest": "us_camo_olive_drab_olive",
+      "winter": "us_camo_winter_blots"
     },
     "us_m46_patton_73_armor_bat": {
       "": "us_camo_olive_late",
@@ -1161,7 +1165,9 @@ return {
     },
     "us_m4a2_76w_sherman": {
       "": "us_camo_olive",
-      "forest": "us_camo_olive_drab_olive"
+      "desert": "usa_ww_1",
+      "forest": "us_camo_olive_drab_olive",
+      "winter": "us_camo_winter_blots"
     },
     "us_m4a2_sherman": {
       "": "us_camo_olive",
@@ -1169,7 +1175,9 @@ return {
     },
     "us_m4a3e2_76w_sherman_jumbo": {
       "": "us_camo_olive",
-      "forest": "us_camo_olive_drab_olive"
+      "desert": "usa_ww_1",
+      "forest": "us_camo_olive_drab_olive",
+      "winter": "us_camo_winter_blots"
     },
     "us_m4a3e2_sherman_jumbo_cobra_king": {
       "": "us_camo_olive_late",

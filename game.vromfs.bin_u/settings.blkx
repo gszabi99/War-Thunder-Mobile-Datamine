@@ -2635,6 +2635,13 @@
             }
           }
         }
+      },
+      "default": {
+        "driverProps": {
+          "hasTileBasedArchitecture": {
+            "affected": true
+          }
+        }
       }
     }
   }

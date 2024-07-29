@@ -25,6 +25,9 @@ let { tooltipBg } = require("%rGui/tooltip.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 isUnitAttrOpened.subscribe(function(v) {
   resetAttrState()
@@ -187,7 +190,20 @@ let pageBlock = {
   ]
 }
 
+function hasUnitWithUpgradedAttribute() {
+  foreach(unit in servProfile.get().units)
+    if(!serverConfigs.get()?.allUnits[unit.name].isPremium && !unit.isUpgraded)
+      foreach(attributes in unit.attrLevels)
+        foreach(attr in attributes)
+          if(attr > 0)
+            return true
+  return false
+}
+
 let applyAction = function() {
+  if(!hasUnitWithUpgradedAttribute()) {
+    sendAppsFlyerEvent("add_unit_attributes")
+  }
   applyAttributes()
   backButtonBlink("UnitAttr")
 }

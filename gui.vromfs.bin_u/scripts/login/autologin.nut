@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-
+let { dgs_get_settings } = require("dagor.system")
 let { load_local_shared_settings, save_local_shared_settings} = require("%scripts/clientState/localProfile.nut")
 let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
 let { LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_NSWITCH, availableLoginTypes
@@ -43,7 +43,8 @@ function setAutologinType(autologinType) {
 }
 
 let isAutoLoginOnFirstStart = is_nswitch
-let isAutologinEnabled = @() load_local_shared_settings(AUTOLOGIN_SAVE_ID) ?? isAutoLoginOnFirstStart
+let isAutologinEnabled = @() (load_local_shared_settings(AUTOLOGIN_SAVE_ID) ?? isAutoLoginOnFirstStart)
+  || (dgs_get_settings()?.yunetwork.forceAutoLogin ?? false)
 
 function setAutologinEnabled(isEnabled) {
   if (isAutologinEnabled() == isEnabled)

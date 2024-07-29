@@ -107,6 +107,7 @@ let skinsByTag = {
     "it_camo_two_color_spots"
     "usa_sh_desert_threecolor"
     "ussr_modern_desert"
+    "usa_ww_1"
   ],
 
   [WINTER] = [
@@ -133,6 +134,7 @@ let skinsByTag = {
     "se_camo_modern_winter_m90"
     "fr_camo_winter_green_white"
     "ussr_camo_winter_white_olive"
+    "us_camo_winter_blots"
   ],
 
   [NAVAL] = [

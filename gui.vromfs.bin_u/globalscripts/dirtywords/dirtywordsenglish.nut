@@ -520,7 +520,6 @@ fouldata =
       "^reggin",
       "^reipu",
       "^retard",
-      "^reet",
       "^ricchione",
       "^rimjob",
       "^rizzape",

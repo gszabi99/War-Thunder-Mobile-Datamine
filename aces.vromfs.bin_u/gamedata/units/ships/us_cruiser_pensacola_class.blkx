@@ -6183,6 +6183,30 @@
         "from": "camo_navygrey_5*",
         "to": "camo_greenwhite_spots*"
       }
+    },
+    "blue_stains": {
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_blue_stains*"
+        },
+        {
+          "from": "camo_b15*",
+          "to": "camo_dark_wood*"
+        }
+      ]
+    },
+    "arctic_spots": {
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "camo_arctic_spots*"
+        },
+        {
+          "from": "camo_b15*",
+          "to": "camo_dark_wood*"
+        }
+      ]
     }
   }
 }
