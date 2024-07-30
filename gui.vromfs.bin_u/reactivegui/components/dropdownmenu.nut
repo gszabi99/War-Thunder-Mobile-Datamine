@@ -9,7 +9,7 @@ let secondaryColor = 0xFFE1E1E1
 const OPTIONS_UID = "select_options"
 let closeOptions = @() modalPopupWnd.remove(OPTIONS_UID)
 
-let openSelectOptions = @(event, options, current, setValue, isVisible, ovr = {})
+let openSelectOptions = @(event, options, current, setValue, isVisible, valToString, ovr = {})
   modalPopupWnd.add(event.targetRect, {
     uid = OPTIONS_UID
     key = isVisible
@@ -35,7 +35,7 @@ let openSelectOptions = @(event, options, current, setValue, isVisible, ovr = {}
       children = {
         rendObj = ROBJ_TEXT
         color = current == option ? primaryColor : defColor
-        text = option
+        text = valToString(option)
       }.__update(fontSmall)
     })
     hotkeys = [[btnBEscUp, closeOptions]]
@@ -43,9 +43,10 @@ let openSelectOptions = @(event, options, current, setValue, isVisible, ovr = {}
     onDetach = @() isVisible.set(false)
   }.__merge(ovr))
 
-
 function dropDownMenu(state, styles = {}) {
-  let { values, currentOption, setValue, onAttach = @() null, onDetach = @() null } = state
+  let { values, currentOption, setValue, onAttach = @() null,
+    onDetach = @() null, valToString = @(v) v } = state
+
   let { width = hdpx(780), height = hdpx(90), iconSize = evenPx(40) } = styles
 
   let stateFlags = Watched(0)
@@ -65,7 +66,7 @@ function dropDownMenu(state, styles = {}) {
     onElemState = @(s) stateFlags(s)
     sound = { click = "click" }
     onClick = @(e) openSelectOptions(e, values, currentOption.get(), setValue,
-      isOptionsVisible, { size = [width, SIZE_TO_CONTENT] })
+      isOptionsVisible, valToString, { size = [width, SIZE_TO_CONTENT] })
     flow = FLOW_HORIZONTAL
     gap = hdpx(20)
     onAttach
@@ -73,7 +74,7 @@ function dropDownMenu(state, styles = {}) {
     children = [
       {
         rendObj = ROBJ_TEXT
-        text = currentOption.get()
+        text = valToString(currentOption.get())
       }.__update(fontTinyAccented)
       {
         size = flex()

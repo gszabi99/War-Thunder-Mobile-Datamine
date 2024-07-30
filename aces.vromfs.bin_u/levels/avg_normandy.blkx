@@ -163,6 +163,12 @@
     "day": 6
   },
   "shader_vars": {
+    "shore_waves_dist": [
+      70.0,
+      200.0,
+      -30.0,
+      20.0
+    ],
     "land_bump_scale": -4.0,
     "land_smoothness_detect_color": [
       0.4,

@@ -1713,7 +1713,7 @@
       ]
     },
     "tracks": {
-      "animationMultiplier": -0.68,
+      "animationMultiplier": 0.68,
       "width": 0.64,
       "height": 0.06
     },

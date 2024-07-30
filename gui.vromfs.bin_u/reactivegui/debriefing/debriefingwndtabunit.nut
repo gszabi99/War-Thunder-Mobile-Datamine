@@ -4,9 +4,9 @@ let { unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { sortUnits } = require("%rGui/unit/unitUtils.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let mkLevelProgressLine = require("%rGui/debriefing/levelProgressLine.nut")
+let { mkLevelProgressLine } = require("%rGui/debriefing/levelProgressLine.nut")
 let { mkTotalRewardCountsUnit } = require("%rGui/debriefing/totalRewardCounts.nut")
-let { getLevelProgress, getUnitRewards } = require("%rGui/debriefing/debrUtils.nut")
+let { getBestUnitName, getUnit, getUnitRewards, getLevelProgress, sortUnitMods } = require("%rGui/debriefing/debrUtils.nut")
 let { getLevelUnlockPlateAnimTime, mkLevelUnlockPlatesContainer,
   mkDebrPlateUnit, mkDebrPlateMod, mkDebrPlatePoints
 } = require("%rGui/debriefing/debrLevelUnlockPlates.nut")
@@ -15,15 +15,7 @@ let levelProgressAnimStartTime = 0.0
 let levelUnlocksAnimStartTime = 1.0
 let rewardsAnimStartTime = 0.5
 
-let sortMods = @(a, b) (a?.reqLevel ?? 0) <=> (b?.reqLevel ?? 0)
-  || (a?.group ?? "") <=> (b?.group ?? "")
-  || (a?.costGold ?? 0) <=> (b?.costGold ?? 0)
-  || (a?.costWpWeight ?? 0) <=> (b?.costWpWeight ?? 0)
-  || (a?.name ?? "") <=> (b?.name ?? "")
-
-function mkUnitLevelUnlockPlates(debrData, delay) {
-  let { items = {}, unit = null } = debrData
-  let unitExp = getUnitRewards(debrData)?.exp
+function mkUnitLevelUnlockPlates(unit, debrData, delay) {
   let res = {
     levelUnlocksAnimTime = 0
     levelUnlocksComps = null
@@ -31,6 +23,8 @@ function mkUnitLevelUnlockPlates(debrData, delay) {
   if (unit == null)
     return res
 
+  let { items = {} } = debrData
+  let unitExp = getUnitRewards(unit?.name, debrData)?.exp
   let { prevLevel, unlockedLevel } = getLevelProgress(unit, unitExp)
   let startLevel = prevLevel + 1
   let endLevel = max(startLevel, unlockedLevel)
@@ -50,7 +44,7 @@ function mkUnitLevelUnlockPlates(debrData, delay) {
       .map(@(mod, name) mod.__merge({ name }))
       .values()
       .filter(@(mod) mod?.reqLevel == l && !mod?.isHidden && (mod.name not in items))
-    modsList.sort(sortMods)
+    modsList.sort(sortUnitMods)
     list.extend(modsList.map(@(v) { isUnlocked, data = v, ctor = mkDebrPlateMod }))
     // Points
     let sp = spLevels?[l - 1] ?? 0
@@ -72,12 +66,13 @@ function mkUnitLevelUnlockPlates(debrData, delay) {
 }
 
 function mkDebriefingWndTabUnit(debrData, params) {
-  let { unit = null, campaign = "" } = debrData
+  let { campaign = "" } = debrData
+  let unitName = getBestUnitName(debrData)
+  let unit = getUnit(unitName, debrData)
   if (unit == null)
     return null
 
   let isPlatoon = (unit?.platoonUnits.len() ?? 0) != 0 || (unit?.lockedUnits.len() ?? 0) != 0
-  let unitName = unit?.name ?? ""
   let unitNameLoc = isPlatoon ? getPlatoonName(unitName, loc) : loc(getUnitLocId(unitName))
 
   let { totalRewardCountsComp, totalRewardsShowTime, btnTryPremium
@@ -85,11 +80,11 @@ function mkDebriefingWndTabUnit(debrData, params) {
   if (totalRewardCountsComp == null)
     return null
 
-  let unitExp = getUnitRewards(debrData)?.exp
+  let unitExp = getUnitRewards(unit?.name, debrData)?.exp
   let { levelProgressLineComp, levelProgressLineAnimTime } = mkLevelProgressLine(unit, unitExp,
     unitNameLoc, loc($"gamercard/debriefing/desc/{campaign}"),
     levelProgressAnimStartTime,  unitExpColor)
-  let { levelUnlocksComps, levelUnlocksAnimTime } = mkUnitLevelUnlockPlates(debrData, levelUnlocksAnimStartTime)
+  let { levelUnlocksComps, levelUnlocksAnimTime } = mkUnitLevelUnlockPlates(unit, debrData, levelUnlocksAnimStartTime)
 
   let { needBtnUnit = true } = params
   let timeShow = max(

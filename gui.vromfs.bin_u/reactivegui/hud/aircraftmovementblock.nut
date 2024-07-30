@@ -4,8 +4,8 @@ let { TouchScreenSteeringStick } = require("wt.behaviors")
 let { floor, fabs, lerp } = require("%sqstd/math.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue
 } = require("%globalScripts/controls/shortcutActions.nut")
-let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera } = require("%rGui/hud/airState.nut")
-let { getSvgImage, borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera, wheelBrake } = require("%rGui/hud/airState.nut")
+let { getSvgImage, borderColor, btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let axisListener = require("%rGui/controls/axisListener.nut")
 let shortcutsMap = require("%rGui/controls/shortcutsMap.nut")
@@ -21,9 +21,12 @@ let { set_mouse_aim } = require("controlsOptions")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner } = require("%rGui/components/movementArrows.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { MechState, get_gears_current_state} = require("hudAircraftStates")
+let { ON } = MechState
+
 
 let maxThrottle = 100
 let stepThrottle = 5
@@ -45,12 +48,14 @@ let knobPadding = scaleWidth
 let sliderPadding = 2 * scaleWidth
 let fullWidth = knobSize + 2 * sliderPadding
 let throttleScaleHeight = height - knobSize
+let brakeBtnSize = [5 * scaleWidth, 3 * scaleWidth]
 
 let idleTimeForThrottleOpacity = 5
 let needOpacityThrottle = Watched(false)
 let makeOpacityThrottle = @() needOpacityThrottle(true)
 let showModelName = Watched(false)
 let SHOW_MODEL_NAME_TIMEOUT = 7.0
+let isThrottleDisabled = mkIsControlDisabled("throttle")
 
 let throttleAxisVal = Watched(0)
 let isThrottleAxisActive = keepref(Computed(@() fabs(throttleAxisVal.value) > throttleDeadZone))
@@ -129,6 +134,87 @@ let btnImageThrottleDec = mkGamepadHotkey(axisMaxToHotkey(throttle_axis),
   Computed(@() isThrottleAxisActive.value && throttleAxisVal.value < 0),
   { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [pw(-100), 0] })
 
+let isStateVisible = @(state) state == ON
+
+let isOnGroundSmoothed = Watched(IsOnGround.get())
+let setIsOnGroundSmoothed = @() isOnGroundSmoothed.set(IsOnGround.get())
+IsOnGround.subscribe(function(v) {
+  if (!isStateVisible(get_gears_current_state())) {
+    isOnGroundSmoothed.set(false)
+    return
+  }
+  if (v)
+    setIsOnGroundSmoothed()
+  else
+    resetTimeout(1.0, setIsOnGroundSmoothed)
+})
+
+let brakeBtnText = {
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  rendObj = ROBJ_TEXT
+  text = loc("HUD/BRAKE_SHORT")
+}.__update(fontTiny)
+
+function brakeButton() {
+  local wasBrakeOnTouchBegin = false
+
+  function onTouchBegin() {
+    setShortcutOn("ID_WHEEL_BRAKE")
+    wasBrakeOnTouchBegin = wheelBrake.get()
+  }
+
+  function onTouchEnd() {
+    if (wasBrakeOnTouchBegin)
+      setShortcutOff("ID_WHEEL_BRAKE")
+  }
+
+  let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd , "ID_WHEEL_BRAKE")
+  res.__update({
+    size = brakeBtnSize
+    children =[
+      @() {
+        watch = wheelBrake
+        size = flex()
+        rendObj = ROBJ_SOLID
+        color =  wheelBrake.get() ? btnBgColor.ready : btnBgColor.empty
+      }
+      {
+        size = flex()
+        rendObj = ROBJ_VECTOR_CANVAS
+        lineWidth = hdpxi(2)
+        commands = [
+          [VECTOR_LINE, 0, 0, 100, 0],
+          [VECTOR_LINE, 100, 0, 100, 100],
+          [VECTOR_LINE, 100, 100, 0, 100],
+          [VECTOR_LINE, 0, 100, 0, 0],
+        ]
+        color = borderColor
+        children = brakeBtnText
+      }
+  ]
+  })
+  return {
+    watch = isOnGroundSmoothed
+    children = isOnGroundSmoothed.get() ? res : null
+  }
+}
+
+let brakeButtonEditView = {
+  size = brakeBtnSize
+  rendObj = ROBJ_BOX
+  borderWidth = hdpx(2)
+  borderColor
+  children = [
+    {
+      size = flex()
+      rendObj = ROBJ_SOLID
+      color = btnBgColor.empty
+    }
+    brakeBtnText
+  ]
+}
+
 function throttleSlider() {
   let sliderV = sliderValue.get()
   let knobPos = sliderV <= sliderWepValue ? 0
@@ -150,24 +236,23 @@ function throttleSlider() {
         ]
       },
       @() {
-        watch = [Trt0, IsTrtWep0, IsOnGround]
+        watch = [Trt0, IsTrtWep0, wheelBrake, isOnGroundSmoothed]
         key = "air_throttle_slider_text"
         rendObj = ROBJ_TEXT
         pos = [knobSize + hdpx(5), -knobPadding]
         fontFxColor = 0xFF000000
-        color = IsTrtWep0.get() ? 0xFFFF0000 : knobColor
+        color = IsTrtWep0.get() && !wheelBrake.get() ? 0xFFFF0000 : knobColor
         fontFxFactor = 50
         fontFx = FFT_GLOW
-        text = IsTrtWep0.get() ? wepText
+        text = wheelBrake.get() && isOnGroundSmoothed.get() ? loc("hotkeys/ID_WHEEL_BRAKE")
+          : IsTrtWep0.get() ? wepText
           : Trt0.get() >= maxThrottle ? maxThrottleText
-          : IsOnGround.get() && Trt0.get() == 0 ? loc("hotkeys/ID_WHEEL_BRAKE")
           : $"{Trt0.get()}{percentText}"
-      }.__update(IsOnGround.get() && Trt0.get() == 0 ? fontVeryTiny : fontTiny)
+      }.__update(wheelBrake.get() && isOnGroundSmoothed.get() ? fontVeryTiny : fontTiny)
     ]
   }
-
   return {
-    watch = [ sliderValue, needOpacityThrottle ]
+    watch = [ sliderValue, needOpacityThrottle, isThrottleDisabled]
     key = "air_throttle_slider"
     size = [fullWidth, height]
     padding = [0, sliderPadding]
@@ -178,7 +263,10 @@ function throttleSlider() {
     max = maxThrottle
     unit = stepThrottle
     orientation = O_VERTICAL
-    opacity = needOpacityThrottle.value ? 0.5 : 1.0
+    opacity = isThrottleDisabled.get() ? 0.2
+      : needOpacityThrottle.value ? 0.5
+      : 1.0
+
     transitions = [{ prop = AnimProp.opacity, duration = 0.5, easing = Linear }]
     children = [
       {
@@ -220,7 +308,7 @@ function throttleSlider() {
       resetTimeout(0.1, @() sliderValue(throttleToSlider(Trt0.get())))
       needOpacityThrottle(true)
     }
-    onChange = changeThrottleValue
+    onChange = !isThrottleDisabled.get() ? changeThrottleValue : null
   }
 }
 
@@ -590,5 +678,7 @@ return {
   aircraftMoveStick
   aircraftMoveStickView
   aircraftMoveArrows
+  brakeButton
+  brakeButtonEditView
   isAircraftMoveArrowsAvailable
 }

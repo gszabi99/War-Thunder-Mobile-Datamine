@@ -4,7 +4,7 @@ let { registerScene } = require("%rGui/navState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { unitInfoPanelFull, unitInfoPanelDefPos } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { unitInfoPanelFull } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitRank
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -110,7 +110,8 @@ let unitInfoPanelPlace = @() {
   watch = curCampaign
   size = [ saSize[0], SIZE_TO_CONTENT ]
   children = unitInfoPanelFull({
-    pos = curCampaign.value == "tanks" ? [ saBorders[0], hdpx(20) ] : unitInfoPanelDefPos
+    pos = curCampaign.value == "tanks" ? [ 0, hdpx(20) ] : [ 0, hdpx(100) ]
+
     hplace = ALIGN_RIGHT
     behavior = [ Behaviors.Button, HangarCameraControl ]
     eventPassThrough = true

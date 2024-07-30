@@ -1762,14 +1762,6 @@
           ],
           "unitShowXray": {
             "show": true,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": "bridge_dm"
           },
@@ -1968,14 +1960,6 @@
           ],
           "__unitShowXray": {
             "show": false,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": "bridge_dm"
           },
@@ -2043,14 +2027,6 @@
           ],
           "unitShowXray": {
             "show": true,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": "engine_room_01_dm"
           },
@@ -2249,14 +2225,6 @@
           ],
           "__unitShowXray": {
             "show": false,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": "engine_room_01_dm"
           },
@@ -2324,14 +2292,6 @@
           ],
           "unitShowXray": {
             "show": true,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": [
               "main_caliber_turret_01_dm",
@@ -2626,14 +2586,6 @@
           ],
           "__unitShowXray": {
             "show": false,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": [
               "main_caliber_turret_01_dm",
@@ -2705,14 +2657,6 @@
           ],
           "unitShowXray": {
             "show": true,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": [
               "ammunition_storage_01_dm",
@@ -2964,14 +2908,6 @@
           ],
           "__unitShowXray": {
             "show": false,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": [
               "ammunition_storage_01_dm",
@@ -3047,14 +2983,6 @@
           ],
           "unitShowXray": {
             "show": true,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": [
               "bridge_dm",
@@ -3425,14 +3353,6 @@
           "unitShowXray": [
             {
               "show": false,
-              "blink": true,
-              "color": [
-                0,
-                0,
-                255,
-                255
-              ],
-              "target": "",
               "object": "ai",
               "part": [
                 "bridge_dm",
@@ -3446,14 +3366,6 @@
             },
             {
               "show": false,
-              "blink": true,
-              "color": [
-                0,
-                0,
-                255,
-                255
-              ],
-              "target": "",
               "object": "ai",
               "part": [
                 "ammunition_storage_01_dm",
@@ -3463,14 +3375,6 @@
           ],
           "__unitShowXray": {
             "show": false,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai",
             "part": [
               "ammunition_storage_01_dm",
@@ -3551,28 +3455,16 @@
         "actions": {
           "unitShowXray": {
             "show": false,
-            "blink": true,
-            "color": [
-              0,
-              0,
-              255,
-              255
-            ],
-            "target": "",
             "object": "ai"
           },
           "triggerEnable": {
-            "target": [
-              "xray_check_ammunition_01",
-              "xray_check_ammunition_02"
-            ]
+            "target": "xray_check_ammunition"
           },
           "__triggerEnable": {
             "target": [
               "xray_check_bridge",
               "xray_check_engine",
-              "xray_check_ammunition_01",
-              "xray_check_ammunition_02",
+              "xray_check_ammunition",
               "xray_check_turret_01",
               "xray_check_turret_02",
               "xray_check_turret_03"
@@ -3595,13 +3487,7 @@
               "after_activation": "disable"
             },
             {
-              "target": "xray_check_ammunition_01",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "xray_check_ammunition_02",
+              "target": "xray_check_ammunition",
               "activate_type": "checkConidtions",
               "check_trigger_status": false,
               "after_activation": "disable"
@@ -3717,7 +3603,7 @@
           }
         }
       },
-      "xray_check_ammunition_01": {
+      "xray_check_ammunition": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -3731,17 +3617,28 @@
           }
         },
         "conditions": {
-          "unitWhenPartHp": {
-            "func": "more",
-            "check_objects": "any",
-            "check_parts": "any",
-            "value": 0.5,
-            "object": "ai",
-            "planePart": "ammunition_storage_01_dm",
-            "tankPart": ""
-          },
+          "unitWhenPartHp": [
+            {
+              "func": "more",
+              "check_objects": "any",
+              "check_parts": "any",
+              "value": 0.5,
+              "object": "ai",
+              "planePart": "ammunition_storage_01_dm",
+              "tankPart": ""
+            },
+            {
+              "func": "more",
+              "check_objects": "any",
+              "check_parts": "any",
+              "value": 0.5,
+              "object": "ai",
+              "planePart": "ammunition_storage_02_dm",
+              "tankPart": ""
+            }
+          ],
           "varCompareBool": {
-            "var_value": "hit_ammunition_01",
+            "var_value": "hit_ammunition",
             "value": false,
             "comparasion_func": "equal"
           }
@@ -3750,56 +3647,16 @@
           "unitShowXray": {
             "show": true,
             "object": "ai",
-            "part": "ammunition_storage_01_dm"
+            "part": [
+              "ammunition_storage_01_dm",
+              "ammunition_storage_02_dm"
+            ]
           }
         },
         "else_actions": {
           "varSetBool": {
             "value": true,
-            "var": "hit_ammunition_01"
-          }
-        }
-      },
-      "xray_check_ammunition_02": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 0.01
-          }
-        },
-        "conditions": {
-          "unitWhenPartHp": {
-            "func": "more",
-            "check_objects": "any",
-            "check_parts": "any",
-            "value": 0.5,
-            "object": "ai",
-            "planePart": "ammunition_storage_02_dm",
-            "tankPart": ""
-          },
-          "varCompareBool": {
-            "var_value": "hit_ammunition_02",
-            "value": false,
-            "comparasion_func": "equal"
-          }
-        },
-        "actions": {
-          "unitShowXray": {
-            "show": true,
-            "object": "ai",
-            "part": "ammunition_storage_02_dm"
-          }
-        },
-        "else_actions": {
-          "varSetBool": {
-            "value": true,
-            "var": "hit_ammunition_02"
+            "var": "hit_ammunition"
           }
         }
       },
@@ -3943,8 +3800,7 @@
     "is_xray_blink": false,
     "hit_bridge": false,
     "hit_engine": false,
-    "hit_ammunition_01": false,
-    "hit_ammunition_02": false,
+    "hit_ammunition": false,
     "hit_turret_01": false,
     "hit_turret_02": false,
     "hit_turret_03": false

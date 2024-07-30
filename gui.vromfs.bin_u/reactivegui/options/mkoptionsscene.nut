@@ -10,6 +10,7 @@ let { registerScene } = require("%rGui/navState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let mkOption = require("mkOption.nut")
 let mkOptionsTabs = require("mkOptionsTabs.nut")
+let mkChildrenOptions = require("mkChildrenOptions.nut")
 
 
 let backButtonHeight = hdpx(60)
@@ -86,21 +87,23 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
       : {
           watch = curTabIdx
           size = flex()
-          children = [
-            mkVerticalPannableArea(
-              {
-                pos = [contentOffset, 0]
-                key = tab
-                size = [contentWidth, SIZE_TO_CONTENT]
-                flow = FLOW_VERTICAL
-                halign = ALIGN_CENTER
-                children = tab?.options.filter(@(v) v != null).map(mkOption)
-                animations = wndSwitchAnim
-              },
-              { size = [sw(100) - tabW - saBorders[1], sh(100)] },
-              { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-            scrollArrowsBlock
-          ]
+          children = tab?.children
+            ? mkChildrenOptions(tab?.children)
+            : [
+                mkVerticalPannableArea(
+                  {
+                    pos = [contentOffset, 0]
+                    key = tab
+                    size = [contentWidth, SIZE_TO_CONTENT]
+                    flow = FLOW_VERTICAL
+                    halign = ALIGN_CENTER
+                    children = tab?.options.filter(@(v) v != null).map(mkOption)
+                    animations = wndSwitchAnim
+                  },
+                  { size = [sw(100) - tabW - saBorders[1], sh(100)] },
+                  { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+                scrollArrowsBlock
+              ]
         }
   }
 

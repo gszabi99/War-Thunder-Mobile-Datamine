@@ -272,6 +272,7 @@
       "name": [
         "sfx",
         "gui",
+        "offer",
         "sounds/fx",
         "sounds/outside/fx/ai_hits",
         "sounds/outside/fx/ambient",
@@ -561,7 +562,6 @@
     "eventBoosterCockpitEngine": "",
     "eventBoosterAiEngine": "engineBooster_ai",
     "shipSizeThreshold": 35.0,
-    "eventNuclearStrike": "explosions_far",
     "shockImpulseThreshold": 1.0,
     "eventSleeveHullMed": "shell_fall_hull_med",
     "eventSleeveHullSmall": "shell_fall_hull_small",

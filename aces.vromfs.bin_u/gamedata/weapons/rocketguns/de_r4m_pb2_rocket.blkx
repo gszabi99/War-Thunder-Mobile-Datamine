@@ -2,7 +2,6 @@
   "rocketGun": true,
   "preset_cost": 25,
   "mesh": "de_r4m_pb2_rocket",
-  "mesh_deployed": "de_r4m_pb2_rocket_deployed",
   "helicopterGroup": 2,
   "sound": "weapon.rocketgun_132",
   "rocket": {
@@ -106,7 +105,7 @@
       200.0,
       1000.0
     ],
-    "explosionEffect": "hit_81_132mm_heat",
+    "explosionEffect": "explosion_midair_tiny",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",

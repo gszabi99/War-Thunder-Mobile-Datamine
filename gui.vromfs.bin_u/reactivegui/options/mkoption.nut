@@ -6,6 +6,7 @@ let { sliderWithButtons, sliderValueSound } = require("%rGui/components/slider.n
 let listbox = require("%rGui/components/listbox.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { infoCommonButton, infoTooltipButton } = require("%rGui/components/infoButton.nut")
+let { resetTimeout } = require("dagor.workcycle")
 
 
 let listMinWidth = hdpx(200)
@@ -51,34 +52,46 @@ let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
 
 let optionCtors = {
   [OCT_SLIDER] = function(opt) {
-    let { value = null, ctrlOverride = {}, locId = "", valToString = @(v) v, setValue = null} = opt
+    let { value = null, ctrlOverride = {}, locId = "", valToString = @(v) v, setValue = null, onChangeValue = null} = opt
     if (value == null) {
       logerr($"Options: Missing value for option {opt?.locId}")
       return null
     }
+    let sendChangeValue = @() onChangeValue?(value.get())
     return sliderWithButtons(value, loc(locId),
-      setValue == null ? ctrlOverride
+      setValue == null && onChangeValue == null ? ctrlOverride
         : ctrlOverride.__merge({
-            function onChange(v) {
-              sliderValueSound()
+          function onChange(v) {
+            sliderValueSound()
+            if (setValue != null)
               setValue(v)
-            }
-          }),
+            else
+              value.set(v)
+            resetTimeout(1, sendChangeValue)
+         }
+       }),
       valToString)
   },
 
   [OCT_LIST] = function(opt) {
-    let { value = null, setValue = null, locId = "", list = [], valToString = @(v) v, openInfo = null,
+    let { value = null, setValue = null, onChangeValue = null, locId = "", list = [], valToString = @(v) v, openInfo = null,
       description = "", mkContentCtor = null } = opt
     if (value == null) {
       logerr($"Options: Missing value for option {opt?.locId}")
       return null
     }
-
+    let sendChangeValue = function(v) {
+      if(setValue == null)
+        value.set(v)
+      else
+        setValue(v)
+      onChangeValue?(v)
+    }
     if (list instanceof Watched)
       return @() list.value.len() == 0 ? { watch = list }
         : optBlock(loc(locId),
-            listbox({ value, list = list.value, valToString, setValue,
+            listbox({ value, list = list.value, valToString,
+              setValue = sendChangeValue,
               columns = clamp(list.value.len(), columnsMin, columnsMax),
               mkContentCtor
             }),
@@ -88,7 +101,8 @@ let optionCtors = {
     if (list.len() == 0)
       return null
     return optBlock(loc(locId),
-      listbox({ value, list, valToString, setValue,
+      listbox({ value, list, valToString,
+        setValue = sendChangeValue,
         columns = clamp(list.len(), columnsMin, columnsMax),
         mkContentCtor
       }),

@@ -72,7 +72,7 @@ let bottomBlock = {
         watch = progressPercent
         size = [pw(progressPercent.value), flex()]
         rendObj = ROBJ_SOLID
-        color = 0xFF00FDFF
+        color = 0xFFE8E8E8
       }
     }
   ]

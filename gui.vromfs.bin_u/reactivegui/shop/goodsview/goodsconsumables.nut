@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
-let { mkColoredGradientY, mkFontGradient,
-  gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
+let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit
+  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit,
+  priceBgGradConsumables, titleFontGradConsumables
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let icons = {
@@ -16,8 +16,6 @@ let icons = {
   ircm_kit = "ui/gameuiskin#shop_consumables_ircm.avif"
 }
 
-let priceBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
-let titleFontGrad = mkFontGradient(0xFFffFFFF, 0xFF8bdeea, 11, 6, 2)
 let imgSize = hdpx(500)
 let slotNameBG = {
   hplace = ALIGN_RIGHT
@@ -100,11 +98,11 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
       slotNameBG.__merge({
         size = [hdpx(270), viewBaseValue > 0 ? hdpx(175) : hdpx(135)]
         padding = [hdpx(20), 0]
-        children = mkCurrencyAmountTitle(data.map(@(item) item.amount), viewBaseValue, titleFontGrad, nameConsumable)
+        children = mkCurrencyAmountTitle(data.map(@(item) item.amount), viewBaseValue, titleFontGradConsumables, nameConsumable)
       })
       mkGoodsLimit(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGrad, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, priceBgGradConsumables, state, animParams), {size = goodsSmallSize})
 }
 
 return {

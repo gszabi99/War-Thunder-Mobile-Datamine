@@ -12,7 +12,7 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, add_aprilbond,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
-  add_battle_mod, set_research_unit
+  add_battle_mod, set_research_unit, add_slot_exp
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -104,6 +104,7 @@ register_command(@(id) add_lootbox(id, 1, "consolePrintResult"), "meta.add_lootb
 register_command(@(id, count) add_lootbox(id, count, "consolePrintResult"), "meta.add_lootbox_several")
 register_command(@(id) halt_goods_purchase(id, "consolePrintResult"), "meta.halt_goods_purchase")
 register_command(@(id) halt_offer_purchase(id, "consolePrintResult"), "meta.halt_offer_purchase")
+register_command(@(slotIdx, exp) add_slot_exp(curCampaign.get(), slotIdx, exp, "consolePrintResult"), "meta.add_slot_exp")
 
 register_command(@(id) get_my_lootbox_chances(id, "onDebugLootboxChances"), "meta.debug_lootbox_chances_my")
 register_command(@(id) get_base_lootbox_chances(id, "onDebugLootboxChances"), "meta.debug_lootbox_chances_base")

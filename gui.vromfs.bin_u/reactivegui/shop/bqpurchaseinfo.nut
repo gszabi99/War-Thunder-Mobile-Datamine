@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY,
-  SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS
+  SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS
 } = require("%rGui/shop/shopConst.nut")
 
 /*
@@ -41,6 +41,9 @@ let PURCH_TYPE_SKIN = "skin"
 let PURCH_TYPE_BOOSTERS = "boosters"
 let PURCH_TYPE_MINI_EVENT = "mini_event"
 let PURCH_TYPE_SLOT = "slot"
+let PURCH_TYPE_GOODS_SLOT = "goods_slot"
+let PURCH_TYPE_GOODS_LIMIT = "goods_limit"
+let PURCH_TYPE_GOODS_REROLL_SLOTS = "goods_reroll_slots"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -53,6 +56,7 @@ let goodsTypeToPurchTypeMap = {
   [SGT_EVT_CURRENCY] = PURCH_TYPE_CURRENCY,
   [SGT_LOOTBOX] = PURCH_TYPE_LOOTBOX,
   [SGT_BOOSTERS] = PURCH_TYPE_BOOSTERS,
+  [SGT_SLOTS] = PURCH_TYPE_GOODS_SLOT,
 }
 
 function getPurchaseTypeByGoodsType(gtype) {
@@ -104,6 +108,9 @@ return {
   PURCH_TYPE_BOOSTERS
   PURCH_TYPE_MINI_EVENT
   PURCH_TYPE_SLOT
+  PURCH_TYPE_GOODS_SLOT
+  PURCH_TYPE_GOODS_LIMIT
+  PURCH_TYPE_GOODS_REROLL_SLOTS
 
   getPurchaseTypeByGoodsType
   mkBqPurchaseInfo

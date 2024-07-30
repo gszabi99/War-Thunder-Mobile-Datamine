@@ -39,7 +39,7 @@ foreach (fn in [
 require("%scripts/options/optionsExtNames.nut")
 require("login/initLoginWTM.nut")
 require("%scripts/pServer/profileServerClient.nut")
-require("%scripts/pServer/writeProfileToNdb.nut")
+require("%appGlobals/pServer/pServerApi.nut") //need to start update profile and configs in this VM even before login
 require("%scripts/currencies.nut")
 require("%scripts/matching/onlineInfo.nut")
 require("%scripts/matching/rpcCall.nut")

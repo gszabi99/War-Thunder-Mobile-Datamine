@@ -11,7 +11,8 @@ let { TXT_VOID, TXT_NO_FLAPS, TXT_FLAPS_ARE_SNAPPED_OFF, TXT_FLAPS_RAISED } = Hu
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
 let { playerUnitName, isUnitDelayed, isUnitAlive } = require("%rGui/hudState.nut")
-
+let { imageDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { enabledControls, isAllControlsEnabled } = require("%rGui/controls/disabledControls.nut")
 
 let brokenIconColor = 0x99996203
 
@@ -39,39 +40,44 @@ let airBreaksActionLocId = {
 
 let ctrlPieCfgBase = [
   {
-    function mkView() {
+    function mkView(isEnabled) {
       let nextState = get_gears_next_toggle_state()
       return {
         label = loc(gearActionLocId?[nextState] ?? "hotkeys/ID_GEAR")
         icon = "icon_pie_chassis.svg"
-        iconColor = iconColorByState(nextState)
+        iconColor = !isEnabled ? imageDisabledColor : iconColorByState(nextState)
       }
     }
+    shortcutId = "ID_GEAR"
     action = @() toggleShortcut("ID_GEAR")
     isVisibleByUnit = @() isStateVisible(get_gears_current_state())
   }
   {
-    function mkView() {
+    function mkView(isEnabled) {
       let nextFlapsState = get_flaps_next_toggle_state()
       return {
         label = nextFlapsState in flapsActionLocId ? loc(flapsActionLocId[nextFlapsState])
           : get_localized_text_by_id(nextFlapsState)
         icon = "icon_pie_flaps.svg"
-        iconColor = nextFlapsState == TXT_FLAPS_ARE_SNAPPED_OFF ? brokenIconColor : 0xFFFFFFFF
+        iconColor =  !isEnabled ? imageDisabledColor
+          : nextFlapsState == TXT_FLAPS_ARE_SNAPPED_OFF ? brokenIconColor
+          : 0xFFFFFFFF
       }
     }
+    shortcutId = "ID_FLAPS"
     action = @() toggleShortcut("ID_FLAPS")
     isVisibleByUnit = @() isFlapsVisible(get_flaps_current_state())
   }
   {
-    function mkView() {
+    function mkView(isEnabled) {
       let nextState = get_air_breaks_next_toggle_state()
       return {
         label = loc(airBreaksActionLocId?[nextState] ?? "hotkeys/ID_AIR_BRAKE")
         icon = "icon_pie_brake.svg"
-        iconColor = iconColorByState(nextState)
+        iconColor = !isEnabled ? imageDisabledColor : iconColorByState(nextState)
       }
     }
+    shortcutId = "ID_AIR_BRAKE"
     action = @() toggleShortcut("ID_AIR_BRAKE")
     isVisibleByUnit = @() isStateVisible(get_air_breaks_current_state())
   }
@@ -82,10 +88,19 @@ let ctrlPieStickDelta = Watched(Point2(0, 0))
 let ctrlPieCfg = Watched([])
 let visibleByUnit = Watched([])
 let isCtrlPieAvailable = Computed(@() visibleByUnit.get().contains(true))
+let isCtrlPieItemsEnabled = Computed(function() {
+    foreach(id, c in ctrlPieCfgBase)
+      if(visibleByUnit.get()?[id] && (enabledControls.get()?[c?.shortcutId] ?? isAllControlsEnabled.get()))
+        return true
+    return false
+  }
+)
 
 let updateVisibleByUnit = @() visibleByUnit.set(!isUnitAlive.get() || isUnitDelayed.get() ? []
   : ctrlPieCfgBase.map(@(c) c?.isVisibleByUnit() ?? true))
 updateVisibleByUnit()
+
+visibleByUnit.subscribe(@(_) deferOnce(updateVisibleByUnit))
 playerUnitName.subscribe(@(_) deferOnce(updateVisibleByUnit))
 isUnitDelayed.subscribe(@(_) deferOnce(updateVisibleByUnit))
 isUnitAlive.subscribe(@(_) deferOnce(updateVisibleByUnit))
@@ -97,15 +112,18 @@ function updatePieCfg() {
     .map(function(v, id) {
       if (!visibleByUnit.get()?[id])
         return null
-      return v.mkView()?.__update({ id })
+      let isEnabled = (enabledControls.get()?[v.shortcutId] ?? isAllControlsEnabled.get())
+      return v.mkView(isEnabled)?.__update({ id })
     })
     .filter(@(v) v != null))
 }
 updatePieCfg()
 isCtrlPieStickActive.subscribe(@(_) updatePieCfg())
 visibleByUnit.subscribe(@(_) updatePieCfg())
-
 let ctrlPieSelectedIdx = Computed(@() getPieMenuSelectedIdx(ctrlPieCfg.get().len(), ctrlPieStickDelta.get()))
+
+enabledControls.subscribe(@(_) updatePieCfg())
+isAllControlsEnabled.subscribe(@(_) updatePieCfg())
 
 isCtrlPieStickActive.subscribe(function(isActive) {
   if (isActive)
@@ -118,6 +136,7 @@ isCtrlPieStickActive.subscribe(function(isActive) {
 return {
   ctrlPieCfg
 
+  isCtrlPieItemsEnabled
   isCtrlPieAvailable
   isCtrlPieStickActive
   ctrlPieStickDelta

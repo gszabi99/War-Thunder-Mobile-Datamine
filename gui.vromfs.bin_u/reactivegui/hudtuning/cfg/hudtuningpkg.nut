@@ -6,6 +6,7 @@ let { visibleWeaponsMap, visibleWeaponsDynamic } = require("%rGui/hud/currentWea
 let { mkChainedWeapons } = require("%rGui/hud/weaponryBlockImpl.nut")
 let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
+let { hudMode, HM_COMMON } = require("%rGui/hudState.nut")
 
 enum Z_ORDER {
   DEFAULT
@@ -63,9 +64,10 @@ function weaponryButtonCtor(id, actionCtor, cfg) {
       let isVisible = Computed(@() id in visibleWeaponsMap.value)
       let actionItem = Computed(@() visibleWeaponsMap.value?[id].actionItem)
       let buttonConfig = weaponsButtonsConfig?[id]
+      let isVisibleInHudMode = Computed(@()(visibleWeaponsMap.value?[id]?.hudMode ?? HM_COMMON) & hudMode.value)
       return @() {
-        watch = [actionItem, isVisible]
-        children = !isVisible.value ? null : actionCtor(buttonConfig, actionItem.value)
+        watch = [actionItem, isVisible, isVisibleInHudMode]
+        children = !isVisible.value || !isVisibleInHudMode.value ? null : actionCtor(buttonConfig, actionItem.value)
       }
     }
     priority = Z_ORDER.BUTTON
@@ -76,10 +78,10 @@ let weaponryButtonDynamicCtor = @(idx, cfg) {
     let currentWeapon = Computed(@() visibleWeaponsDynamic.value?[idx])
     let actionItem = Computed(@() currentWeapon.value?.actionItem)
     let buttonConfig = Computed(@() currentWeapon.value?.buttonConfig)
-
+    let isVisibleInHudMode = Computed(@()(currentWeapon.value?.hudMode ?? HM_COMMON) & hudMode.value)
     return @() {
-      watch = [currentWeapon, actionItem, buttonConfig]
-      children = !currentWeapon.value ? null
+      watch = [currentWeapon, actionItem, buttonConfig, isVisibleInHudMode]
+      children = !currentWeapon.value || !isVisibleInHudMode.value ? null
         : weaponsButtonsView?[buttonConfig.value?.mkButtonFunction
           ?? weaponsButtonsConfig?[currentWeapon.value?.id]?.mkButtonFunction] (
             buttonConfig.value ?? weaponsButtonsConfig?[currentWeapon.value?.id], actionItem.value)

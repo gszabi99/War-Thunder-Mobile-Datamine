@@ -5,11 +5,11 @@ let { crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
 
-
 let swipeImgW = hdpx(200).tointeger()
 let swipeImgH = round(swipeImgW / (41.0 / 43)).tointeger()
 let swipeAnimOffset = hdpx(200)
 let swipeAnimTime = 3.0
+let imgSize = hdpxi(100)
 
 let halfCrosshairLineHeight = (0.5 * crosshairLineHeight).tointeger()
 let sizeAim = [crosshairLineWidth, crosshairLineHeight]
@@ -49,6 +49,44 @@ let air_tutorial_shooting_moving_target = @(_) {
     keepAspect = true
     movie = "content/base/ui/tutorial_shooting_air_moving.ivf"
   }
+}
+
+let pauseFirstTime = 0.5
+let pauseSecondTime = 0.9
+let animTime = 0.1
+let offset = [hdpx(200), 0]
+
+let air_tutorial_forestall_crosshair_gif = @(_) {
+  size = SIZE_TO_CONTENT
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  pos = [0, -hdpx(200)]
+  children = [
+    {
+      size = [hdpx(80), hdpx(80)]
+      pos = [hdpx(100), 0]
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#forestall.svg:{imgSize}:{imgSize}:P")
+    }
+    {
+      size = [hdpx(80), hdpx(80)]
+      pos = [-hdpx(100), 0]
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#sight_air.svg:{imgSize}:{imgSize}:P")
+      transform = {}
+      animations = [
+        { prop = AnimProp.translate, duration = pauseFirstTime, play = true, trigger = "restartAnim" }
+        { prop = AnimProp.translate, from = [0, 0], to = offset,
+          delay = pauseFirstTime, duration = animTime, play = true, trigger = "restartAnim", easing = Linear }
+        { prop = AnimProp.translate, from = offset, to = offset,
+          delay = pauseFirstTime + animTime, duration = pauseSecondTime, play = true, trigger = "restartAnim", onExit = "restartAnim" }
+      ]
+    }
+  ]
 }
 
 let fakeCrosshairElem = @(penetration) {
@@ -105,5 +143,6 @@ return {
   img_swipe_to_rotate_cam
   fake_crosshair
   air_tutorial_shooting_moving_target
+  air_tutorial_forestall_crosshair_gif
   canShowRadar
 }

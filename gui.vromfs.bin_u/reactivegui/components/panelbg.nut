@@ -1,14 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let panelPadV = hdpx(15)
+let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 
 return freeze({
-  rendObj = ROBJ_IMAGE
-  pos = [ saBorders[0], 0 ]
-  maxHeight = ph(100)
-  hplace = ALIGN_RIGHT
-  image = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss.avif")
-  color = Color(9, 15, 22, 96)
-  padding = [ panelPadV, saBorders[0] ]
-  flow = FLOW_VERTICAL
+    rendObj = ROBJ_IMAGE
+    image = mkColoredGradientY(0xB0000000, 0x30000000, 12)
+    padding = [hdpx(30), hdpx(30) ,hdpx(30)]
+    flow = FLOW_VERTICAL
 })

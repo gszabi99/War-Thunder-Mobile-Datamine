@@ -1,24 +1,31 @@
-from "%scripts/dagui_natives.nut" import hud_request_hud_ship_debuffs_state, hud_request_hud_tank_debuffs_state, hud_request_hud_crew_state
-
 from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let DataBlock  = require("DataBlock")
-let { get_meta_mission_info_by_name, do_start_flight, select_mission
-} = require("guiMission")
+let { get_meta_mission_info_by_name, do_start_flight, select_mission } = require("guiMission")
+let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
+let { requestHudState, changeTrainingUnit } = require("%scripts/missions/guiOptions.nut")
 
 eventbus_subscribe("startSingleMission", function(msg) {
-  let { id } = msg
+  let { id, unitName = null } = msg
   let mission = get_meta_mission_info_by_name(id)
   if (mission == null) {
     logerr($"Not found mission '{id}' to start")
     return
   }
 
-  hud_request_hud_tank_debuffs_state()
-  hud_request_hud_crew_state()
-  hud_request_hud_ship_debuffs_state()
+  if (unitName != null)
+    actualizeBattleData(unitName)
+
+  requestHudState()
   let missionCopy = DataBlock()
   missionCopy.setFrom(mission)
+
+  if (unitName != null) {
+    missionCopy["modTutorial"] = true
+    missionCopy["gt_training"] = false
+    changeTrainingUnit(unitName)
+  }
+
   select_mission(missionCopy, true)
   do_start_flight()
 })

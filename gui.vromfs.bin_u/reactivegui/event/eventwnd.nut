@@ -32,7 +32,6 @@ let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPrev
   getStepsToNextFixed
 } = require("%rGui/shop/lootboxPreviewState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { getLootboxSizeMul } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { eventbus_send } = require("eventbus")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -51,6 +50,12 @@ let contentGap = hdpx(30)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
 
 let wndHeaderHeight = hdpx(110)
+
+let sizeMulBySlot = {
+  ["0"] = 0.6,
+  ["1"] = 0.8,
+  ["2"] = 0.9,
+}
 
 function onPurchase(lootbox, price, currencyId, count = 1) {
   if (lootboxInProgress.get())
@@ -133,7 +138,7 @@ let mkProgressFull = @(stepsToFixed) @() {
 
 function mkLootboxBlock(lootbox, blockSize) {
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
-  let sizeMul = getLootboxSizeMul(lootbox.meta?.event)
+  let sizeMul = sizeMulBySlot?[lootbox.meta?.event] ?? 1.0
   let stateFlags = Watched(0)
   let lootboxImage = mkLootboxImageWithTimer(name, blockSize, timeRange, reqPlayerLevel, sizeMul)
   let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.value, servProfile.value))

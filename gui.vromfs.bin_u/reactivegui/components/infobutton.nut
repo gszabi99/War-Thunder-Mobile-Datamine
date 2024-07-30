@@ -35,6 +35,7 @@ let iText = {
 
 let defSize = [evenPx(70), evenPx(70)]
 let defSizeSmall = [evenPx(50), evenPx(50)]
+let defSizeMedium = [evenPx(60), evenPx(60)]
 
 let mkInfoButtonCtor = @(bgColor, gradient) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
@@ -61,8 +62,35 @@ let mkInfoButtonCtor = @(bgColor, gradient) function(onClick, ovr = {}, textOvr 
   }.__update(ovr)
 }
 
+let mkInfoEllipseButtonCtor = @(borderColor, fillColor) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
+  let size = ovr?.size ?? defSizeMedium
+  let stateFlags = Watched(0)
+  return @() {
+    watch = stateFlags
+    size
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpxi(2)
+    fillColor = fillColor
+    color = borderColor
+    commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
+    behavior = Behaviors.Button
+    onElemState = @(v) stateFlags(v)
+    xmbNode = {}
+    sound = { click  = "click" }
+    onClick
+    brightness = stateFlags.value & S_HOVER ? 1.5 : 1
+    children = [
+      iText.__merge(textOvr)
+    ]
+
+    transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+  }.__update(ovr)
+}
+
 let infoBlueButton = mkInfoButtonCtor(0xFF0593AD, gradientPrimary)
 let infoCommonButton = mkInfoButtonCtor(0xFF646464, gradientCommon)
+let infoEllipseButton = mkInfoEllipseButtonCtor( 0x80AAAAAA, 0x80000000)
 
 function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
@@ -148,6 +176,7 @@ return {
   infoBlueButton
   infoGreyButton
   infoCommonButton
+  infoEllipseButton
 
   infoRhombButton
   infoTooltipButton

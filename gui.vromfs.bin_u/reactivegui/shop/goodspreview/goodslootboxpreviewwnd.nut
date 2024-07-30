@@ -3,7 +3,7 @@ let { registerScene } = require("%rGui/navState.nut")
 let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getLootboxName } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")

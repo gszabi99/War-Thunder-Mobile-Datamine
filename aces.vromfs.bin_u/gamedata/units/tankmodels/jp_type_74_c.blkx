@@ -47,7 +47,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.4,
+  "minRelativeTankCameraThreshold": 1.34,
   "bladeAnimVar": "type_74e_dozer_blade_action",
   "digForwardOffset": 1.4,
   "rearmSmokeTimeOnField": 60.0,
@@ -2561,14 +2561,14 @@
   },
   "dm_for_shop": {
     "armorThicknessFront": [
-      0.35,
-      0.3,
-      0.35
+      0.25,
+      0.25,
+      0.5
     ],
     "armorThicknessSide": [
-      0.1,
+      0.05,
       0.0,
-      0.9
+      0.95
     ]
   },
   "commonWeapons": {

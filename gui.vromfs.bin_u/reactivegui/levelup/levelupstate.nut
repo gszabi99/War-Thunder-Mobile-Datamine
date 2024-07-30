@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { levelup_without_unit } = require("%appGlobals/pServer/pServerApi.nut")
+let { levelup_without_unit, levelInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs, receivedLevelsRewards, receivedLvlRewards, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs, receivedLevelsRewards, receivedLvlRewards,
+  curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInMenu, isInDebriefing, isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -13,7 +14,6 @@ let { WP, balanceWp } = require("%appGlobals/currenciesState.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { openUnitsTreeAtCurRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let LVL_UP_ANIM = 2.2
 
@@ -69,7 +69,7 @@ let rewardsToReceive = Computed(function() {
   return res
 })
 
-let hasDataForLevelWnd = Computed(@() playerLevelInfo.value.isReadyForLevelUp || rewardsToReceive.value.len() > 0)
+let hasDataForLevelWnd = Computed(@() playerLevelInfo.get().isReadyForLevelUp || rewardsToReceive.get().len() > 0)
 hasDataForLevelWnd.subscribe(function(v) {
   if (v)
     return
@@ -78,33 +78,34 @@ hasDataForLevelWnd.subscribe(function(v) {
   isLvlUpOpened.set(false)
 })
 
-let needOpenLevelUpWnd = keepref(Computed(@() hasDataForLevelWnd.value
-  && !isSeen.value
-  && isLoggedIn.value
-  && isInMenu.value
-  && !isInDebriefing.value
-  && !hasModalWindows.value))
+let needOpenLevelUpWnd = keepref(Computed(@() hasDataForLevelWnd.get()
+  && !isSeen.get()
+  && isLoggedIn.get()
+  && isInMenu.get()
+  && !isInDebriefing.get()
+  && !hasModalWindows.get()))
 
 function openLvlUpWndIfCan() {
-  if (hasDataForLevelWnd.value) {
-    if (!isUnitsTreeOpen.get())
+  if (hasDataForLevelWnd.get()) {
+    if (!isUnitsTreeOpen.get() && !isCampaignWithUnitsResearch.get())
       openUnitsTreeAtCurRank()
     if (rewardsToReceive.get().len() > 0)
       openRewardsModal()
-    else if (curCampaign.get() not in serverConfigs.get()?.unitTreeNodes)
+    else if (!isCampaignWithUnitsResearch.get())
       openLvlUpWnd()
-    else
-      levelup_without_unit(curCampaign.value)
+    else if (!levelInProgress.get())
+      levelup_without_unit(curCampaign.get())
   }
-  return hasDataForLevelWnd.value
+  return hasDataForLevelWnd.get()
 }
 
 function onNeedOpenLevelUpWnd() {
   if (!needOpenLevelUpWnd.get())
     return
 
-  if (needOpenLevelUpWnd.value) {
-    openUnitsTreeAtCurRank()
+  if (needOpenLevelUpWnd.get()) {
+    if(!isCampaignWithUnitsResearch.get())
+      openUnitsTreeAtCurRank()
     if (rewardsToReceive.get().len() > 0)
       openRewardsModal()
     else

@@ -1,3 +1,4 @@
+from "%globalScripts/logs.nut" import *
 let { eventbus_send } = require("eventbus")
 let { getLocTextForLang } = require("dagor.localize")
 let { send_to_bq_offer } = require("pServerApi.nut")
@@ -17,6 +18,25 @@ function addSystemInfo(data) {
 
 let sendUiBqEvent = @(event, data = {}) eventbus_send("sendBqEvent",
   { tableId = "gui_events", data = addEventTime(data.__merge({ event, gameVersion = get_game_version_str() })) })
+
+function sendSettingChangeBqEvent(event, category, value){
+  let data = addEventTime({ event, category })
+  if(type(value) == "integer")
+    data.paramInt <- value
+  else if(type(value) == "float")
+    data.paramFloat <- value
+  else if(type(value) == "string")
+    data.paramStr <- value
+  else if(type(value) == "bool")
+    data.paramInt <- value ? 1 : 0
+  else
+    logerr($"Unknown value type for sendSettingChangeBqEvent")
+  eventbus_send("sendBqEvent",
+    {
+      tableId = "settings_change_1",
+      data
+    })
+}
 
 let sendErrorBqEvent = @(errorStr, data = {}) eventbus_send("sendBqEvent",
   {
@@ -71,4 +91,5 @@ return {
   sendOfferBqEvent
   sendNewbieBqEvent
   sendLoadingStageBqEvent
+  sendSettingChangeBqEvent
 }

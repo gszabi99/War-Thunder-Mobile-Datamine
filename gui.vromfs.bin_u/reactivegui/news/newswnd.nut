@@ -7,7 +7,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let scrollbar = require("%rGui/components/scrollbar.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { formatText } = require("textFormatters.nut")
+let { formatText, selectorBtnW } = require("textFormatters.nut")
 let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nextArticle, prevArticle,
   newsfeed, curArticleContent, articlesPerPage, pagesCount, curPageIdx,
   unreadArticles, markCurArticleSeen, closeNewsWnd
@@ -20,7 +20,6 @@ let tagRedColor = 0xC8C80000
 
 let scrollHandler = ScrollHandler()
 let scrollStep = hdpx(75)
-let selectorBtnW = hdpx(465)
 let selectorBtnH = hdpx(110)
 let selectorBtnMinGap = hdpx(10)
 let selectorBtnGap = Watched(selectorBtnMinGap)

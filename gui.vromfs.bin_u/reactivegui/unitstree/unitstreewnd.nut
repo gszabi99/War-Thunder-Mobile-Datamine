@@ -13,10 +13,11 @@ let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkP
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
   blockSize, flagTreeOffset, gamercardOverlap
 } = require("unitsTreeComps.nut")
-let { unitInfoPanel, mkUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { animBuyRequirementsUnitId } = require("animState.nut")
+let { unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { curSelectedUnit, sizePlatoon, curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { unitActions, discountBlock } = require("%rGui/unit/unitsWndActions.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { horizontalPannableAreaCtor, verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { levelBorder } = require("%rGui/components/levelBlockPkg.nut")
 let { defer } = require("dagor.workcycle")
@@ -25,23 +26,18 @@ let { isFiltersVisible, filterStateFlags, openFilters, filters, activeFilters
 } = require("%rGui/unit/unitsFilterPkg.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
-let { unitsTreeNodesContent, rankBlockHeight, rankBlockOffset } = require("unitsTreeNodesContent.nut")
+let { mkUnitsTreeNodesContent } = require("unitsTreeNodesContent.nut")
+let { rankBlockHeight, rankBlockOffset } = require("unitsTreeConsts.nut")
 let { mkUnitPlate, framesGapMul } = require("mkUnitPlate.nut")
 let { unseenArrowsBlock, scrollToUnit, scrollToRank, scrollHandler
 } = require("unitsTreeScroll.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let openSelectUnitResearchIfCan = require("selectUnitResearchWnd.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
-
+let { slotBarTreeHeight } = require("%rGui/slotBar/slotBarConsts.nut")
 
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
-
-let infoPanelBGImage = mkColoredGradientY(0x99000000, 0x4C000000, 12)
-let infoPanelBGImageDark = mkColoredGradientY(0xB0000000, 0x60000000, 12)
 
 let isTreeNodes = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
 
@@ -49,6 +45,15 @@ let openFiltersPopup = @(e) openFilters(e, isTreeNodes.get(), {
   popupOffset = levelMarkSize + hdpx(10)
   popupValign = ALIGN_TOP
   popupHalign = ALIGN_CENTER
+})
+
+curSelectedUnit.subscribe(@(v) v ? scrollHandlerInfoPanel.scrollToY(0) : null)
+
+animBuyRequirementsUnitId.subscribe(function(v) {
+  if (!v)
+    return
+  scrollHandlerInfoPanel.scrollToY(scrollHandlerInfoPanel.elem?.getWidth() ?? 1000000)
+  anim_start("unitInfoActionHint")
 })
 
 function onBackButtonClick() {
@@ -293,6 +298,9 @@ let unitsTreeGamercard = {
   ]
 }
 
+let unitInfoPanelHeight = saSize[1] - gamercardHeight + gamercardOverlap - rankBlockHeight - rankBlockOffset - slotBarTreeHeight
+let pannableInfoPanelArea = verticalPannableAreaCtor(unitInfoPanelHeight, [0, 0], [0, hdpx(5)])
+
 let infoPanel = @() {
   watch = [curSelectedUnit, isTreeNodes]
   key = {}
@@ -300,26 +308,37 @@ let infoPanel = @() {
   padding = saBordersRv
   children = !curSelectedUnit.value ? null : [
     isTreeNodes.get()
-        ? unitInfoPanel({
-            size = [SIZE_TO_CONTENT, saSize[1] - gamercardHeight + gamercardOverlap - rankBlockHeight - rankBlockOffset - slotBarTreeHeight]
-            pos = [saBorders[0], gamercardHeight - gamercardOverlap + rankBlockHeight + rankBlockOffset]
-            hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-            rendObj = ROBJ_IMAGE
-            image = infoPanelBGImageDark
-            color = 0xFF000000
-            animations = wndSwitchAnim
-          }, mkUnitTitle)
-      : unitInfoPanel({
-          size = [SIZE_TO_CONTENT, flex()]
-          pos = [saBorders[0], gamercardHeight + levelMarkSize - gamercardOverlap]
-          hplace = ALIGN_RIGHT
-          hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-          rendObj = ROBJ_IMAGE
-          image = infoPanelBGImage
-          color = 0xFF000000
-          animations = wndSwitchAnim
-          halign = ALIGN_CENTER
-        }, mkUnitTitle, hangarUnit, {size = flex()})
+        ? {
+            size = [hdpx(560), flex()]
+            pos = [0, gamercardHeight - gamercardOverlap + rankBlockHeight + rankBlockOffset]
+            hplace = ALIGN_RIGHT
+            clipChildren = true
+            children = unitInfoPanel({
+                  size = [flex(), unitInfoPanelHeight]
+                  hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+                  animations = wndSwitchAnim
+                }, mkUnitTitle, hangarUnit, {},
+                @(v) pannableInfoPanelArea(v, {},
+                  {
+                    behavior = [Behaviors.Pannable, Behaviors.ScrollEvent]
+                    scrollHandler = scrollHandlerInfoPanel
+            }))
+          }
+        : {
+            size = [hdpx(560), flex()]
+            pos = [0, gamercardHeight + levelMarkSize - gamercardOverlap]
+            hplace = ALIGN_RIGHT
+            children = unitInfoPanel({
+                size = [flex(), unitInfoPanelHeight]
+                hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+                animations = wndSwitchAnim
+              }, mkUnitTitle, hangarUnit, {},
+              @(v) pannableInfoPanelArea(v, {},
+                {
+                  behavior = [Behaviors.Pannable, Behaviors.ScrollEvent]
+                  scrollHandler = scrollHandlerInfoPanel
+            }))
+          }
     {
       rendObj = ROBJ_BOX
       hplace = ALIGN_RIGHT
@@ -342,7 +361,7 @@ let unitsTreeWnd = {
 
     @() {
       watch = isTreeNodes
-      children = isTreeNodes.get() ? unitsTreeNodesContent() : unitsTreeContent
+      children = isTreeNodes.get() ? mkUnitsTreeNodesContent() : unitsTreeContent
     }
 
     {
@@ -355,7 +374,6 @@ let unitsTreeWnd = {
   ]
   function onAttach() {
     isUnitsTreeAttached.set(true)
-    openSelectUnitResearchIfCan()
   }
   function onDetach() {
     isUnitsTreeAttached.set(false)

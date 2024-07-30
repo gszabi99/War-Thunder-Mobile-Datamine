@@ -27,7 +27,6 @@ let { randomBattleMode, forceNewbieModeIdx } = require("%rGui/gameModes/gameMode
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let debugOffersWnd = require("debugOffersWnd.nut")
-let { isDebugTouchesActive } = require("debugTouches.nut")
 let debugUnlocks = require("debugUnlocks.nut")
 let { mainHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
@@ -69,7 +68,6 @@ let commandsList = [
   { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
   { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }
   { label = "meta.royal_beta_units_unlock", func = withClose(royal_beta_units_unlock) }
-  { label = "toggle_debug_touches", func = withClose(@() isDebugTouchesActive(!isDebugTouchesActive.value)) }
   { label = "upgrade_cur_unit", func = withClose(@() upgrade_unit(mainHangarUnitName.get())) }
   { label = "downgrade_cur_unit", func = withClose(@() downgrade_unit(mainHangarUnitName.get())) }
   { label = "meta.reset_custom_settings", func = withClose(resetCustomSettings) }

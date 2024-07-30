@@ -5,7 +5,7 @@ let { EventOnSupportUnitSpawn } = require("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { actionBarItems } = require("actionBar/actionBarState.nut")
-let { unitType } = require("%rGui/hudState.nut")
+let { unitType, HM_COMMON, HM_MANUAL_ANTIAIR } = require("%rGui/hudState.nut")
 let { MainMask } = require("%rGui/hud/airState.nut")
 let { selectActionBarAction } = require("hudActionBar")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
@@ -57,6 +57,7 @@ let shipGunTriggers = [
   TRIGGER_GROUP_EXTRA_GUN_2
   TRIGGER_GROUP_EXTRA_GUN_3
   TRIGGER_GROUP_EXTRA_GUN_4
+  TRIGGER_GROUP_MACHINE_GUN
 ]
 
 let shipSelectShortcuts = {
@@ -72,6 +73,14 @@ let shipSelectShortcuts = {
 let shipRocketShortcuts = {
   EII_ROCKET = "ID_SHIP_WEAPON_ROCKETS",
   EII_ROCKET_SECONDARY = "ID_SHIP_WEAPON_ROCKETS_SECONDARY",
+}
+
+let shipGunHudModes = {
+  [TRIGGER_GROUP_MACHINE_GUN] = HM_MANUAL_ANTIAIR
+}
+
+let weaponsHudModes = {
+  ["EII_MANUAL_ANTIAIR"] = HM_COMMON | HM_MANUAL_ANTIAIR
 }
 
 let fixedPositionWeapons = [
@@ -117,6 +126,7 @@ let gunsList = Computed(function() {
       return {
         id = trigger
         actionItem
+        hudMode = shipGunHudModes?[trigger]
         viewCfg = {
           trigger
           sizeOrder
@@ -177,7 +187,7 @@ local visibleWeaponsList = Computed(function(prev) {
       res.append({ id = weapon, actionItem, viewCfg })
     }
     else
-      res.append({ id = weapon, actionItem })
+      res.append({ id = weapon, actionItem, hudMode = weaponsHudModes?[weapon] })
 
     if (idx < insertIdx)
       gunsIdx = res.len()
@@ -197,11 +207,13 @@ let visibleWeaponsMap = Computed(function() {
         actionItem = item.actionItem,
         buttonConfig = item.viewCfg,
         id = item.viewCfg.selShortcut
+        hudMode = item?.hudMode
       }
     else
       res[item.id] <- {
         actionItem = item.actionItem,
         id = item.id
+        hudMode = item?.hudMode
       }
   return res
 })

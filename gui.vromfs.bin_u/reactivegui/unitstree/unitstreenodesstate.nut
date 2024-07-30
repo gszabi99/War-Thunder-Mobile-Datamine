@@ -6,96 +6,132 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
 
+let countryPriority = {
+  country_usa = 10
+  country_germany = 9
+  country_ussr = 8
+}
 
-let nodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()])
-let isCampaignWithTree = Computed(@() (nodes.get()?.len() ?? 0) > 0)
+let nodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()] ?? {})
 let selectedCountry = mkWatched(persist, "selectedCountry", null)
-let curCountry = Computed(@() nodes.get()?.findvalue(@(n) n?.nodeCountry == selectedCountry.get()).nodeCountry
-  ?? nodes.get()?[0].nodeCountry)
+let unitToScroll = Watched(null)
 
-let countries = Computed(function() {
-  let res = {}
-  foreach (node in nodes.get() ?? [])
-    if (node?.nodeCountry && node.nodeCountry not in res)
-      res[node.nodeCountry] <- true
-  return res.keys()
+let mkCountries = @(nodeList) Computed(function(prev) {
+  let resTbl = {}
+  foreach (node in nodeList.get())
+    resTbl[node.country] <- true
+  let res = resTbl.keys()
+    .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
+      || a <=> b)
+  return isEqual(res, prev) ? prev : res
 })
 
-let filteredNodes = Computed(function(prev) {
-  local res = nodes.get()?.filter(@(v) v?.nodeCountry == curCountry.get()
-      && (!allUnitsCfg.get()?[v.name].isHidden || v.name in myUnits.get()))
-    ?? {}
+let mkVisibleNodes = @() Computed(@()
+  nodes.get().filter(@(v) !allUnitsCfg.get()?[v.name].isHidden || v.name in myUnits.get()))
 
-  if (filterCount.get() > 0)
-    foreach (f in filters) {
-      let value = f.value.get()
-      if (value != null)
-        res = res.filter(@(node) f.isFit(allUnitsCfg.get()?[node.name], value))
-    }
+let mkFilteredNodes = @(nodeList) Computed(@()
+  filterCount.get() == 0 ? nodeList.get()
+    : nodeList.get()
+      .filter(function(node) {
+        foreach (f in filters) {
+          let value = f.value.get()
+          if (value != null && !f.isFit(allUnitsCfg.get()?[node.name], value))
+            return false
+        }
+        return true
+      }))
 
-  local prevX = 0
-  local xGaps = {}
-  foreach (node in res.values().sort(@(a, b) a.x <=> b.x)) {
-    node.xMod <- node.x
-    if (node.x - prevX > 1)
-      xGaps[node.x] <- (node.x - prevX - 1)
-    prevX = node.x
-    foreach (gapX, gapSize in xGaps)
-      if (node.x >= gapX)
-        node.xMod = (node?.xMod ?? node.x) - gapSize
-
-    let isAvailable = node.reqUnits.len() == 0
-      || null != node.reqUnits.findvalue(@(parent)
-        servProfile.get()?.unitsResearch[parent].isResearched || parent in myUnits.get())
-    node.isAvailable <- isAvailable
-    node.needParentToBuy <- isAvailable && node.reqUnits.findvalue(@(parent) parent not in myUnits.get())
+function sumRemap(has) {
+  let res = []
+  local count = 0
+  foreach (v in has) {
+    if (v > 0)
+      count++
+    res.append(count)
   }
+  return res
+}
 
-  local prevY = 0
-  local yGaps = {}
-  foreach (node in res.values().sort(@(a, b) a.y <=> b.y)) {
-    node.yMod <- node.y
-    if (node.y - prevY > 1)
-      yGaps[node.y] <- (node.y - prevY - 1)
-    prevY = node.y
-    foreach (gapY, gapSize in yGaps)
-      if (node.y >= gapY)
-        node.yMod = (node?.yMod ?? node.y) - gapSize
+let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
+  let nodeList = allNodes.get().filter(@(n) n.country == curCountry.get())
+  let xHas = []
+  let yHas = []
+  foreach (node in nodeList) {
+    let { x, y } = node
+    if (xHas.len() <= x)
+      xHas.resize(x + 1, 0)
+    xHas[x] = 1
+    if (yHas.len() <= y)
+      yHas.resize(y + 1, 0)
+    yHas[y] = 1
   }
-
-  return isEqual(prev, res) ? prev : res
+  let xRemap = sumRemap(xHas)
+  let yRemap = sumRemap(yHas)
+  let res = {
+    xMax = xRemap?[xRemap.len() - 1] ?? 0
+    yMax = yRemap?[yRemap.len() - 1] ?? 0
+    nodes = nodeList.map(@(n) n.__merge({ x = xRemap[n.x], y = yRemap[n.y] }))
+  }
+  return isEqual(res, prev) ? prev : res
 })
 
 let unitsResearchStatus = Computed(function(prev) {
-  let res = {}
-  foreach (unitName, reqExp in serverConfigs.get()?.unitResearchExp ?? {}) {
-    let { isAvailable = false, reqUnits = [] } = filteredNodes.get()?[unitName]
-    res[unitName] <- {
-      isAvailable = isAvailable && unitName not in myUnits.get()
+  let list = {}
+  let { unitResearchExp = {} } = serverConfigs.get()
+  let { unitsResearch = {} } = servProfile.get()
+  foreach (unitName, reqExp in unitResearchExp) {
+    if (unitName in myUnits.get() || unitName not in allUnitsCfg.get())
+      continue
+    let { reqUnits = [] , country = "" } = nodes.get()?[unitName]
+    let { exp = 0, isCurrent = false, isResearched = false, canBuy = false, canResearch = false } = unitsResearch?[unitName]
+    list[unitName] <- {
+      name = unitName
+      exp
       reqExp
       reqUnits
-    }
-  }
-  foreach (unitName, unitResearch in servProfile.value?.unitsResearch ?? {}) {
-    let { exp = 0, isCurrent = false, isResearched = false, canBuy = false
-    } = unitResearch
-    res?[unitName].__update({
       isCurrent
       isResearched
-      canResearch = !!res?[unitName].isAvailable && !isResearched //todo: need to fill it by server
-      canBuy = canBuy || serverConfigs.get()?.allUnits[unitName].isPremium
-      exp
-    })
+      canBuy
+      canResearch
+      country
+    }
   }
-  return isEqual(prev, res) ? prev : res
+
+  if (type(prev) != "table" || prev.len() != list.len())
+    return list
+
+  let res = {}
+  local hasChanges = false
+  foreach (unitName, r in list)
+    if (isEqual(r, prev?[unitName]))
+      res[unitName] <- prev[unitName]
+    else {
+      res[unitName] <- r
+      hasChanges = true
+    }
+
+  return hasChanges ? res : prev
+})
+
+let currentResearch = Computed(@() unitsResearchStatus.get().findvalue(@(r) r.isCurrent))
+
+let researchCountry = Computed(@() currentResearch.get()?.country)
+
+unitToScroll.subscribe(function(v) {
+  let { country = null } = nodes.get()?[v]
+  if (country != null)
+    selectedCountry.set(country)
 })
 
 return {
   nodes
   selectedCountry
-  curCountry
-  countries
-  filteredNodes
+  unitToScroll
+  mkCountries
+  mkVisibleNodes
+  mkFilteredNodes
+  mkCountryNodesCfg
   unitsResearchStatus
-  isCampaignWithTree
+  currentResearch
+  researchCountry
 }

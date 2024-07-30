@@ -13,6 +13,7 @@ const PROGRESS_UNIT = "UnitInProgress"
 const PROGRESS_CUR_UNIT = "CurUnitInProgress"
 const PROGRESS_REWARD = "RewardInProgress"
 const PROGRESS_SHOP = "ShopPurchaseInProgress"
+const PROGRESS_SHOP_SLOT = "ShopGenSlotInProgress"
 const PROGRESS_DECORATORS = "DecoratorInProgress"
 const PROGRESS_SCH_REWARD = "SchRewardInProgress"
 const PROGRESS_LOOTBOX = "LootboxInProgress"
@@ -196,6 +197,7 @@ return {
   curUnitInProgress = mkProgress(PROGRESS_CUR_UNIT)
   rewardInProgress = mkProgress(PROGRESS_REWARD)
   shopPurchaseInProgress = mkProgress(PROGRESS_SHOP)
+  shopGenSlotInProgress = mkProgress(PROGRESS_SHOP_SLOT)
   decoratorInProgress = mkProgress(PROGRESS_DECORATORS)
   schRewardInProgress = mkProgress(PROGRESS_SCH_REWARD)
   lootboxInProgress = mkProgress(PROGRESS_LOOTBOX)
@@ -292,6 +294,11 @@ return {
     params = { unitName, level }
   }, cb)
 
+  add_slot_exp = @(campaign, slotIdx, exp, cb = null) request({
+    method = "add_slot_exp"
+    params = { campaign, slotIdx, exp }
+  }, cb)
+
   buy_unit = @(unitName, currencyId, price, cb = null) request({
     method = "buy_unit"
     params = { unitName, currencyId, price }
@@ -301,6 +308,7 @@ return {
 
   levelup_without_unit = @(campaign, cb = null) request({
     method = "levelup_without_unit"
+    progressId = PROGRESS_LEVEL
     params = { campaign }
   }, cb)
 
@@ -437,6 +445,27 @@ return {
   halt_goods_purchase = @(shopId, cb = null) request({
     method = "halt_goods_purchase"
     params = { shopId }
+  }, cb)
+
+  increase_goods_limit = @(goodsId, currencyId, price, cb = null) request({
+    method = "increase_goods_limit"
+    params = { goodsId, currencyId, price }
+    progressId = PROGRESS_SHOP
+    progressValue = goodsId
+  }, cb)
+
+  buy_goods_slot = @(goodsId, slotIdx, currencyId, price, cb = null) request({
+    method = "buy_goods_slot"
+    params = { goodsId, slotIdx, currencyId, price }
+    progressId = PROGRESS_SHOP
+    progressValue = goodsId
+  }, cb)
+
+  gen_goods_slots = @(goodsId, currencyId, price, cb = null) request({
+    method = "gen_goods_slots"
+    params = { goodsId, currencyId, price }
+    progressId = PROGRESS_SHOP_SLOT
+    progressValue = goodsId
   }, cb)
 
   debug_apply_items_in_battle = @(items, cb = null) request({

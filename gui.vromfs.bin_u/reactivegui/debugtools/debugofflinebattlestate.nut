@@ -3,13 +3,14 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { get_unittags_blk } = require("blkGetters")
 let { scan_folder } = require("dagor.fs")
 let gpath = require("%sqstd/path.nut")
-let { TANK, SHIP } = require("%appGlobals/unitConst.nut")
 let { startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { getMissionLocName } = require("%rGui/globals/missionUtils.nut")
+let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 
-let COMPANY_BY_UNIT_TYPE = {
-  [SHIP] = "ships_single",
-  [TANK] = "tanks_single",
+let AVAILABLE_MISSIONS = {
+  air_zhengzhou_single_GSn = true,
+  pacific_island_small_single_NTdm = true,
+  abandoned_factory_single_Conq2 = true
 }
 
 let isOpened = mkWatched(persist, "isOpened", false)
@@ -20,8 +21,6 @@ let savedMissionName = mkWatched(persist, "savedMissionName", null)
 local cachedFilteredMissions = {}
 local cachedMissionsLocNames = {}
 
-let unittags = get_unittags_blk() ?? {}
-
 function getFilteredMissions(pathToScan) {
   if (pathToScan in cachedFilteredMissions)
     return cachedFilteredMissions[pathToScan]
@@ -29,12 +28,13 @@ function getFilteredMissions(pathToScan) {
   let res = scan_folder({ root = pathToScan, vromfs = true, realfs = true, recursive = true })
 
   cachedFilteredMissions[pathToScan] <- res.reduce(function(acc, f) {
-    let company = gpath.splitToArray(f)[4]
+    let campaign = gpath.splitToArray(f)[4]
     let name = gpath.fileName(f).split(".")[0]
 
-    if (company not in acc)
-      acc[company] <- {}
-    acc[company][name] <- true
+    if (campaign not in acc)
+      acc[campaign] <- {}
+    if (name in AVAILABLE_MISSIONS)
+      acc[campaign][name] <- true
 
     return acc
   }, {})
@@ -54,7 +54,7 @@ function runOfflineBattle() {
   let unitName = savedUnitName.get()
   let missionName = savedMissionName.get()
 
-  if(unitName not in unittags)
+  if(unitName not in get_unittags_blk())
     return
 
   log($"OflineStartBattle: start mission {missionName} for {unitName}")
@@ -69,9 +69,9 @@ let mkCfg = function() {
   let allUnits = {}
   let unitTypes = {}
 
-  foreach(unitName, unit in unittags) {
-    let unitType = unit.type
-    if ($"{unitType}s_single" not in missions)
+  foreach(unitName, _ in get_unittags_blk()) {
+    let { unitType, tags } = getUnitTagsCfg(unitName)
+    if (unitType not in missions || "hide_in_offline_test" in tags)
       continue
     if (unitType not in unitTypes) {
       allUnits[unitType] <- {}
@@ -83,7 +83,6 @@ let mkCfg = function() {
 }
 
 return {
-  COMPANY_BY_UNIT_TYPE,
   openOfflineBattleMenu,
   mkCfg,
   getCachedMissionLocName,

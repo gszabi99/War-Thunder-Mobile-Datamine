@@ -4,13 +4,12 @@ let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { mkLoootboxImage } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getLootboxRewardsViewInfo, isRewardReceived  } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
-let { bestCampLevel } = require("eventState.nut")
+let { bestCampLevel, eventSeason } = require("eventState.nut")
 let { canShowAds, adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -21,6 +20,7 @@ let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { getLootboxImage, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
 
 
 let REWARDS = 3
@@ -62,15 +62,6 @@ let infoCanvas = {
 
 let infoCanvasSmall = infoCanvas.__merge({ size = lootboxInfoSize })
 let infoCanvasBig = infoCanvas.__merge({ size = lootboxInfoSizeBig })
-
-let christmas2023 = {
-  img = "ui/images/event_christmas_boxes.avif:0:P"
-  sizeMul = 2.0
-}
-let customLootboxCfg = {
-  event_special_ships_christmas_2023 = christmas2023
-  event_special_tanks_christmas_2023 = christmas2023
-}
 
 function lootboxInfo(lootbox, sf) {
   local rewards = []
@@ -125,9 +116,18 @@ function progressBar(stepsFinished, stepsToNext, ovr = {}) {
   }.__update(ovr)
 }
 
+let mkEventLoootboxImage = @(id, size = null, ovr = {}) @() {
+  watch = eventSeason
+  size = size ? [size, size] : SIZE_TO_CONTENT
+  rendObj = ROBJ_IMAGE
+  image = getLootboxImage(id, eventSeason.get(), size)
+  fallbackImage = lootboxFallbackPicture
+  keepAspect = true
+}.__update(ovr)
+
 function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul = 1.0) {
-  let imageSize = [width, lootboxHeight].map(@(v) (v * (customLootboxCfg?[name].sizeMul ?? sizeMul)).tointeger())
-  let blockSize = !customLootboxCfg?[name].sizeMul ? [width, lootboxHeight] : [width, min(imageSize[1], hdpx(400))]
+  let imageSize = [width, lootboxHeight].map(@(v) (v * sizeMul + 0.5).tointeger())
+  let blockSize = [width, lootboxHeight]
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
     && start < serverTime.value
@@ -144,13 +144,12 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      mkLoootboxImage(name, null,
+      mkEventLoootboxImage(name, null,
         {
           size = imageSize
           picSaturate = isActive.value ? 1.0 : 0.2
           brightness = isActive.value ? 1.0 : 0.5
-        },
-        customLootboxCfg?[name].img)
+        })
       @() {
         watch = timeText
         size = [flex(), SIZE_TO_CONTENT]

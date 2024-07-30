@@ -22,7 +22,7 @@ let mkText = @(text) {
   text
 }.__update(fontSmall)
 
-function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
+function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop, cancelFunc = null) {
   let notEnough = Computed(@() price - (balance.value?[currencyId] ?? 0))
   notEnough.subscribe(@(v) v <= 0 ? closeMsgBox(NO_BALANCE_UID) : null)
   let replaceTable = {
@@ -49,7 +49,7 @@ function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
         })
     }
     buttons = [
-      { id = "cancel", isCancel = true }
+      { id = "cancel", isCancel = true, cb = cancelFunc }
       { id = "replenish", styleId = "PRIMARY", isDefault = true,
         function cb() {
           if (currencyId in openBuyWnd)
@@ -63,12 +63,12 @@ function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop) {
   })
 }
 
-function showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, onGoToShop = null) {
+function showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, onGoToShop = null, cancelFunc = null) {
   let hasBalance = (balance.value?[currencyId] ?? 0) >= price
   if (hasBalance)
     return false
 
-  showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop)
+  showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop, cancelFunc)
   return true
 }
 
@@ -87,12 +87,12 @@ let msgContent = @(text, priceComp) {
   ]
 }
 
-function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo) {
+function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo, title = null, cancelFunc = null) {
   let priceComp = []
   let priceList = type(prices) == "array" ? prices : [prices]
 
   foreach(price in priceList) {
-    if (showNoBalanceMsgIfNeed(price.price, price.currencyId, bqPurchaseInfo))
+    if (showNoBalanceMsgIfNeed(price.price, price.currencyId, bqPurchaseInfo, null, cancelFunc))
       return
 
     priceComp.append(
@@ -104,9 +104,10 @@ function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo) {
   openMsgBox({
     text = msgContent(text, priceComp),
     buttons = [
-      { id = "cancel", isCancel = true }
+      { id = "cancel", cb = cancelFunc, isCancel = true }
       { id = "purchase", cb = purchaseFunc, styleId = "PURCHASE", isDefault = true }
-    ]
+    ],
+    title
   })
 }
 

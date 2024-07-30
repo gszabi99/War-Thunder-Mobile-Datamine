@@ -529,12 +529,11 @@ let weaponNumber = @(number) mkWeaponRightBlock({
 function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   if (actionItem == null)
     return null
-  let { key, getShortcut, getImage, getAlternativeImage = @() null, selShortcut = null,
+  let { key, getShortcut, getImage, alternativeImage = null, selShortcut = null,
     hasAim = false, fireAnimKey = "fire", canShootWithoutTarget = true,
     needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canShipLowerCamera = false,
     addChild = null, needCheckRocket = false, number = -1  } = buttonConfig
   let imgSize = (relImageSize * defImageSize + 0.5).tointeger()
-  let altImage = getAlternativeImage()
   let stateFlags = getWeapStateFlags(key)
   let hasReachableTarget = Computed(@() !needCheckTargetReachable || targetState.value == 0)
   let canShoot = Computed(@() (canShootWithoutTarget || hasTarget.value) && hasReachableTarget.value)
@@ -542,13 +541,13 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let isAvailable = isActionAvailable(actionItem)
   let isBlocked = Computed(@() unitType.value == SUBMARINE && isNotOnTheSurface.value
     && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_SECONDARY))
-  let isAltImage = (altImage ?? "") != "" && actionItem.count < (actionItem?.countEx ?? 0)
   let isWaitForAim = hasAim && !(actionItem?.aimReady ?? true)
   let isInDeadZone = hasAim && (actionItem?.inDeadzone ?? false)
   let mainShortcut = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   let hotkeyShortcut = selShortcut ?? mainShortcut
   let isDisabled = mkIsControlDisabled(mainShortcut)
-  let isBulletBelt = actionItem?.isBulletBelt && key == TRIGGER_GROUP_PRIMARY
+  let isBulletBelt = actionItem?.isBulletBelt
+    && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_MACHINE_GUN)
   let vibrationMult = getOptValue(OPT_HAPTIC_INTENSITY_ON_SHOOT)
 
   local isTouchPushed = false
@@ -668,7 +667,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
         rendObj = ROBJ_IMAGE
         size = [imgSize, imgSize]
         pos = [0, -hdpx(5)] //gap over amount text
-        image = svgNullable(isAltImage ? altImage : getImage(unitType.value), imgSize)
+        image = svgNullable(alternativeImage && actionItem?.isHedgehog ? alternativeImage : getImage(unitType.value), imgSize)
         keepAspect = KEEP_ASPECT_FIT
         color = !isAvailable || isDisabled.value || (hasAim && !(actionItem?.aimReady ?? true)) || !canShoot.value || isBlocked.value
           ? imageDisabledColor

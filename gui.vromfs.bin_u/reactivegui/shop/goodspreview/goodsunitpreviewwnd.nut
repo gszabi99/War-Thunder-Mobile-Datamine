@@ -5,7 +5,7 @@ let { defer, resetTimeout } = require("dagor.workcycle")
 let { registerScene } = require("%rGui/navState.nut")
 let { GPT_UNIT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
-let { infoBlueButton } = require("%rGui/components/infoButton.nut")
+let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
@@ -17,7 +17,6 @@ let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set
 let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
   hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { gradCircularSqCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
@@ -225,15 +224,7 @@ let unitInfoButton = {
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
-    {
-      size = [evenPx(95), evenPx(95)]
-      rendObj = ROBJ_9RECT
-      image = gradCircularSqCorners
-      texOffs = [gradCircCornerOffset, gradCircCornerOffset]
-      screenOffs = hdpx(20)
-      color = 0xFF000000
-    }
-    infoBlueButton(
+    infoEllipseButton(
       openDetailsWnd,
       { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
     )
@@ -291,6 +282,8 @@ let rightBlock = {
     {
       size = [flex(), SIZE_TO_CONTENT]
       children = unitInfoPanel({
+        maxHeight = hdpx(600)
+        hplace = ALIGN_RIGHT
         behavior = [ Behaviors.Button, HangarCameraControl ]
         eventPassThrough = true
         onClick = openDetailsWnd
@@ -298,8 +291,12 @@ let rightBlock = {
       }, mkUnitTitle)
       animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
     }
-    { size = flex() }
-    mkPriceWithTimeBlock(aTimePriceStart)
+    {
+      size = [SIZE_TO_CONTENT, flex()]
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+      children = mkPriceWithTimeBlock(aTimePriceStart)
+    }
   ]
 }
 

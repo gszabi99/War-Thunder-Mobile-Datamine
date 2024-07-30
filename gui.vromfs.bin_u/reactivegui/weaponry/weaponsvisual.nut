@@ -87,11 +87,17 @@ function getWeaponShortName(weapon, bSet) {
   return weapon.weaponId
 }
 
-function getWeaponShortNameWithCount(weapon, bSet) {
+function getWeaponShortNameWithCount(weapon, bSet, withAnyCount = false, counterLang = "weapons/counter") {
   let { turrets, count = 1 } = weapon
   let total = max(turrets, 1) * count
   let res = getWeaponShortName(weapon, bSet)
-  return total <= 1 ? res : $"{res} {format(loc("weapons/counter"), total)}"
+  return !withAnyCount && total <= 1 ? res : $"{res} {format(loc(counterLang), total)}"
+}
+
+function getWeaponCaliber(weapon, bSet) {
+  let { turrets, count = 1 } = weapon
+  let total = max(turrets, 1) * count
+  return $"{format(loc("caliber/mm"), bSet.caliber)} {format(loc("weapons/counter/right/short"), total)}"
 }
 
 function getWeaponNamesList(weapons) {
@@ -111,6 +117,22 @@ function getWeaponNamesList(weapons) {
   })
 }
 
+let bombLoc = ["bombs", "bombIcon"]
+let torpedoLoc = ["torpedoes", "torpedoIcon"]
+let rocketLoc = ["rockets", "rocketIcon"]
+let additionalGunLoc = ["additional gun", "additionalGunsIcon"]
+let weaponTypesLoc = {
+  ["additional gun"] = additionalGunLoc
+  bomb = bombLoc
+  bombs = bombLoc
+  torpedo = torpedoLoc
+  torpedoes = torpedoLoc
+  rocket = rocketLoc
+  rockets = rocketLoc
+}
+
+let getWeaponTypeName = @(id) $"{loc($"weapon/{weaponTypesLoc[id][1]}")} {loc($"weapons_types/{weaponTypesLoc[id][0]}")}"
+
 return {
   getAmmoNameText
   getAmmoNameShortText
@@ -120,4 +142,6 @@ return {
   getWeaponShortName
   getWeaponShortNameWithCount
   getWeaponNamesList
+  getWeaponTypeName
+  getWeaponCaliber
 }

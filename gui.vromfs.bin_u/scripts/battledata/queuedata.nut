@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
+let { isEqual, isArray } = require("%sqstd/underscore.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
@@ -47,11 +47,11 @@ lastProfileKeysUpdated.subscribe(function(list) {
 
 function actualizeQueueData(executeAfter = null) {
   let unitInfo = curUnitInfo.get()
-  if (unitInfo == null) {
+  if (unitInfo == null || (isArray(unitInfo) && unitInfo.len() == 0)) {
     callHandler(executeAfter, { error = "No current unit" })
     return
   }
-  if (type(unitInfo) == "array")
+  if (isArray(unitInfo))
     get_queue_data_slots_jwt(unitInfo, { id = "onGetQueueData", unitInfo, extExecuteAfter = executeAfter })
   else
     get_queue_data_jwt(unitInfo, { id = "onGetQueueData", unitInfo, extExecuteAfter = executeAfter })

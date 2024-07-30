@@ -7,7 +7,7 @@ let { rewardsToReceive, failedRewardsLevelStr, maxRewardLevelInfo, isRewardsModa
   openLvlUpAfterDelay, startLvlUpAnimation, closeRewardsModal, skipLevelUpUnitPurchase
 } = require("levelUpState.nut")
 let { rewardInProgress, get_player_level_rewards, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
@@ -22,8 +22,6 @@ let { bgMW } = require("%rGui/style/stdColors.nut")
 let { levelUpFlag, flagHeight } = require("levelUpFlag.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let openSelectUnitResearchIfCan = require("%rGui/unitsTree/selectUnitResearchWnd.nut")
 
 
 let WND_UID = "levelup_rewards_wnd"
@@ -65,9 +63,8 @@ function afterReceiveRewards() {
   closeRewardsModal()
   resetTimeout(0.1, function() {
     if (playerLevelInfo.get().isReadyForLevelUp) {
-      if (curCampaign.get() in serverConfigs.get()?.unitTreeNodes) {
+      if (isCampaignWithUnitsResearch.get()) {
         skipLevelUpUnitPurchase()
-        openSelectUnitResearchIfCan()
       }
       else {
         startLvlUpAnimation()

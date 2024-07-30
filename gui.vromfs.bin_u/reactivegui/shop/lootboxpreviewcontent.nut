@@ -2,8 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { roundToDigits } = require("%sqstd/math.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
-let { getLootboxImage, getLootboxFallbackImage, getLootboxName
-} = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { getLootboxImage, getLootboxName, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter,
@@ -71,7 +70,7 @@ function lootboxImageWithTimer(lootbox) {
     size = [lootboxImageSize, lootboxImageSize]
     rendObj = ROBJ_IMAGE
     image = getLootboxImage(name, eventSeason.get(), lootboxImageSize)
-    fallbackImage = getLootboxFallbackImage(lootboxImageSize)
+    fallbackImage = lootboxFallbackPicture
     keepAspect = true
     brightness = isAvailable.get() ? 1.0 : 0.5
     picSaturate = isAvailable.get() ? 1.0 : 0.2

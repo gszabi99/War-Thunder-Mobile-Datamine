@@ -1,11 +1,10 @@
-from "%scripts/dagui_natives.nut" import hud_request_hud_ship_debuffs_state, hud_request_hud_tank_debuffs_state, hud_request_hud_crew_state
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let g_mislist_type = require("%scripts/missions/misListType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { addOptionMode, setGuiOptionsMode, addUserOption, set_gui_option } = require("guiOptions")
 let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
+let { changeTrainingUnit, requestHudState } = require("%scripts/missions/guiOptions.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let DataBlock  = require("DataBlock")
 let { get_meta_mission_info_by_name, do_start_flight, select_mission,
@@ -14,17 +13,8 @@ let { get_meta_mission_info_by_name, do_start_flight, select_mission,
 let { set_game_mode } = require("mission")
 
 let TESTFLIGHT_MISSION = "testFlight_destroyer_usa_tfs"
-let optModeTraining = addOptionMode("OPTIONS_MODE_TRAINING") //hardcoded in the native code
-let optModeGameplay = addOptionMode("OPTIONS_MODE_GAMEPLAY") //hardcoded in the native code
-let bulletOptions = array(BULLETS_SETS_QUANTITY).map(@(_, idx) {
-  bulletOption = addUserOption($"USEROPT_BULLETS{idx}")
-  bulletCountOption = addUserOption($"USEROPT_BULLET_COUNT{idx}")
-})
-let USEROPT_AIRCRAFT = addUserOption("USEROPT_AIRCRAFT")
-let USEROPT_WEAPONS = addUserOption("USEROPT_WEAPONS")
-let USEROPT_SKIN = addUserOption("USEROPT_SKIN")
 
-function startOfflineMission(unitName, skin, missionId, bullets, localMP = false, gameMode = GM_TEST_FLIGHT
+function startOfflineMission(unitName, skin, missionId, bullets, weaponPreset, localMP = false, gameMode = GM_TEST_FLIGHT
 ) {
   let misBlk = get_meta_mission_info_by_name(missionId)
   if (misBlk == null) {
@@ -38,27 +28,23 @@ function startOfflineMission(unitName, skin, missionId, bullets, localMP = false
   }
   actualizeBattleData(unitName)
 
-  hud_request_hud_tank_debuffs_state()
-  hud_request_hud_crew_state()
-  hud_request_hud_ship_debuffs_state()
+  requestHudState()
 
   if (gameMode != null)
     misBlk["_gameMode"] = gameMode
   misBlk["difficulty"] = "arcade"
   misBlk["localMP"] = localMP
   misBlk["isBotsAllowed"] = true
-  setGuiOptionsMode(optModeTraining)
-  set_gui_option(USEROPT_AIRCRAFT, unitName)
-  set_gui_option(USEROPT_WEAPONS, $"{unitName}_default")
-  set_gui_option(USEROPT_SKIN, skin)
-  foreach (idx, opts in bulletOptions) {
-    set_gui_option(opts.bulletOption, bullets?[idx].name ?? "")
-    set_gui_option(opts.bulletCountOption, bullets?[idx].count ?? 0)
-  }
-  setGuiOptionsMode(optModeGameplay)
-  foreach (idx, opts in bulletOptions) { //FIXME: we receive error from ative code when bad bullets in the OPTIONS_MODE_TRAINING, but bullets not apply when they not in current options mode
-    set_gui_option(opts.bulletOption, bullets?[idx].name ?? "")
-    set_gui_option(opts.bulletCountOption, bullets?[idx].count ?? 0)
+  changeTrainingUnit(unitName, skin, bullets)
+
+  if (weaponPreset != null) {
+    let wBlk = misBlk.addBlock("custom_weapons")
+    foreach(slotId, presetId in weaponPreset) {
+      let blk = DataBlock()
+      blk.slot = slotId
+      blk.preset = presetId
+      wBlk.Weapon <- blk
+    }
   }
 
   broadcastEvent("BeforeStartCustomMission")
@@ -87,10 +73,10 @@ function sendBenchmarksList(_) {
 }
 
 eventbus_subscribe("startTestFlight", @(p)
-  startOfflineMission(p.unitName, p.skin, p?.missionName ?? TESTFLIGHT_MISSION, p?.bullets))
+  startOfflineMission(p.unitName, p.skin, p?.missionName ?? TESTFLIGHT_MISSION, p?.bullets, p?.weaponPreset))
 eventbus_subscribe("startTraining", @(p)
-  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, false, GM_TRAINING))
+  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, false, GM_TRAINING))
 eventbus_subscribe("startLocalMP", @(p)
-  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, true, GM_DOMINATION))
+  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, true, GM_DOMINATION))
 eventbus_subscribe("startBenchmark", @(v) openBenchmarkWnd(v.id))
 eventbus_subscribe("getBenchmarksList", sendBenchmarksList)

@@ -25,13 +25,16 @@ let allLangs = [
   { id = "German", icon = "#ui/gameuiskin#lang_germany.svg", chatId = "de", hasUnitSpeech = true }
   { id = "Spanish", icon = "#ui/gameuiskin#lang_spain.svg", chatId = "es" }
   { id = "Portuguese", icon = "#ui/gameuiskin#lang_portugal.svg", chatId = "pt" }
+  { id = "Greek", icon = "#ui/gameuiskin#lang_greece.svg", chatId = "el" }
   { id = "Polish", icon = "#ui/gameuiskin#lang_poland.svg", chatId = "pl" }
   { id = "Ukrainian", icon = "#ui/gameuiskin#lang_ukraine.svg", chatId = "uk" }
   { id = "Turkish", icon = "#ui/gameuiskin#lang_turkey.svg", chatId = "tr" }
+  { id = "Indonesian", icon = "#ui/gameuiskin#lang_indonesia.svg", chatId = "id" }
   { id = "Chinese", icon = "#ui/gameuiskin#lang_china.svg", chatId = "zh" }
   { id = "TChinese", icon = "#ui/gameuiskin#lang_taiwan.svg", chatId = "zh" }
   { id = "Korean", icon = "#ui/gameuiskin#lang_korea.svg", chatId = "ko" }
   { id = "Japanese", icon = "#ui/gameuiskin#lang_japan.svg", chatId = "jp", hasUnitSpeech = true }
+  { id = "Thai", icon = "#ui/gameuiskin#lang_thailand.svg", chatId = "th" }
 ]
   .map(function(lang) {
     let { id } = lang
@@ -60,11 +63,13 @@ let steamLanguages = {
   Chinese = "schinese"
   Japanese = "japanese"
   Portuguese = "portuguese"
+  Greek = "greek"
   Ukrainian = "ukrainian"
   Hungarian = "hungarian"
   Korean = "koreana"
   TChinese = "tchinese"
   HChinese = "schinese"
+  Thai = "thai"
 }
 
 function onChangeLanguage() {

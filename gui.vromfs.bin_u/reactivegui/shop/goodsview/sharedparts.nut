@@ -3,29 +3,30 @@ from "%rGui/shop/shopCommon.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkColoredGradientY, gradTranspDoubleSideX, mkFontGradient } = require("%rGui/style/gradients.nut")
+let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
 let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { TIME_DAY_IN_SECONDS_F, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
+let { serverTimeDay, getDay, untilNextDaySec } = require("%appGlobals/userstats/serverTimeDay.nut")
+let { TIME_DAY_IN_SECONDS_F } = require("%sqstd/time.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { getFontSizeToFitWidth } = require("%rGui/globals/fontUtils.nut")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkFireParticles, mkAshes, mkSparks } = require("%rGui/effects/mkFireParticles.nut")
 let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkGradText, mkGradGlowText } = require("%rGui/components/gradTexts.nut")
-let { mkGlare } = require("%rGui/components/glare.nut")
-let { purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
+let { withGlareEffect } = require("%rGui/components/glare.nut")
+let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 
-let goodsW = hdpx(555)
-let goodsH = hdpx(378)
-let goodsSmallSize = [hdpx(468), goodsH]
+
+let goodsW = hdpxi(555)
+let goodsH = hdpxi(378)
+let goodsSmallSize = [hdpxi(468), goodsH]
 let goodsGap = hdpx(47)
-let goodsBgH = hdpx(291)
+let goodsBgH = hdpxi(291)
 let timerSize = hdpxi(80)
 let advertSize = hdpxi(60)
 
@@ -41,6 +42,10 @@ let pricePlateH = goodsH - goodsBgH
 
 let tagRedColor = 0xC8C80000
 let freeBgGrad = mkColoredGradientY(0xFF57B624, 0xFF548115, 12)
+let priceBgGradDefault = mkColoredGradientY(0xFF74A1D2, 0xFF567F8E, 12)
+let priceBgGradGold = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
+let priceBgGradConsumables = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
+let titleFontGradConsumables = mkFontGradient(0xFFffFFFF, 0xFF8bdeea, 11, 6, 2)
 
 let txtBase = {
   rendObj = ROBJ_TEXT
@@ -305,36 +310,19 @@ function mkFreePricePlate(goods, state) {
 }
 
 function mkPricePlate(goods, priceBgTex, state, animParams = null, needDiscountTag = true) {
-  let trigger = {}
-  let startGlareAnim = @() anim_start(trigger)
-  let { isReady = true } = goods
-
+  let { isFreeReward = false, isReady = true } = goods
+  let pricePlateComp = isFreeReward ? mkFreePricePlate(goods, state) : mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag)
   return @() {
     watch = state
     size = flex()
-    clipChildren = true
-    children = [
-      (goods?.isFreeReward ?? false)
-        ? mkFreePricePlate(goods, state)
-        : mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag)
-      animParams == null || ((state.get() & (PURCHASING | NOT_READY)) || !isReady)
-        ? null
-        : {
-          rendObj = ROBJ_IMAGE
-          size = [glareWidth, ph(140)]
-          image = gradTranspDoubleSideX
-          color = 0x00A0A0A0
-          transform = { translate = [-glareWidth * 1.5, 0], rotate = 25 }
-          vplace = ALIGN_CENTER
-          onDetach = @() clearTimer(startGlareAnim)
-          animations = [{
-            prop = AnimProp.translate, duration = goodsGlareAnimDuration, delay = animParams.delay, play = true,
-            to = [goodsW - glareWidth, 0],
-            trigger
-            onFinish = @() resetTimeout(animParams.repeatDelay, startGlareAnim),
-          }]
-        }
-    ]
+    children = animParams == null || !isReady || (state.get() & (PURCHASING | NOT_READY)) ? pricePlateComp
+      : withGlareEffect(
+          pricePlateComp,
+          goodsW,
+          { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
+          { glareWidth },
+          { translateXMult = 1.5, animToXMult = -1 }
+        ).__update({ size = flex() })
   }
 }
 
@@ -350,8 +338,12 @@ let purchasedPlate = {
   }.__update(fontMedium)
 }
 
-let mkCanPurchase = @(id, limit, dailyLimit) Computed(@() (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit)
-  && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit))
+let mkCanPurchase = @(id, limit, dailyLimit) Computed(function() {
+  let { time = 0, count = 0 } = goodsLimitReset.get()?[id]
+  let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
+  return (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit + limitInc)
+    && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit + limitInc)
+})
 
 function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
   let { limit = 0, dailyLimit = 0, id = null } = goods
@@ -396,17 +388,12 @@ function mkOfferWrap(onClick, mkContent) {
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click = "choose" }
-    children = [
-      {
-        size = flex()
-        children = mkContent?(stateFlags.get())
-      }
-      {
-        size = flex()
-        clipChildren = true
-        children = mkGlare(offerW, [glareWidth, ph(140)])
-      }
-    ]
+    children = withGlareEffect(
+      { size = flex(), children = mkContent?(stateFlags.get()) },
+      offerW,
+      null,
+      { glareWidth }
+    ).__update({ size = flex() })
   })
 }
 
@@ -445,7 +432,6 @@ let mkGoodsTimeProgress = @(fValue, text) {
   ]
 }
 
-let untilNextDaySec = @(currentTime) TIME_DAY_IN_SECONDS - (currentTime % TIME_DAY_IN_SECONDS)
 function mkCalcDailyLimitGoodsTimeProgress() {
   let sec = Computed(@() untilNextDaySec(serverTime.get()))
   let fValue = Computed(@() max(0, clamp(1.0 - sec.get() / TIME_DAY_IN_SECONDS_F, 0, 1)))
@@ -457,7 +443,11 @@ function mkDailyLimitGoodsTimeProgress(goods) {
   let { dailyLimit = 0, id = null } = goods
   if (dailyLimit <= 0)
     return null
-  let canShowTimeProgress = Computed(@() (todayPurchasesCount.get()?[id].count ?? 0) >= dailyLimit)
+  let canShowTimeProgress = Computed(function() {
+    let { time = 0, count = 0 } = goodsLimitReset.get()?[goods.id]
+    let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
+    return (todayPurchasesCount.get()?[id].count ?? 0) >= (dailyLimit + limitInc)
+  })
   return @() {
     watch = canShowTimeProgress
     size = flex()
@@ -559,8 +549,10 @@ function mkGoodsLimitText(goods, limitFontGradient) {
   if (limit <= 0 && dailyLimit <= 0)
     return null
   let limitExt = Computed(function() {
-    let limitLeft = limit > 0 ? max(0, limit - (purchasesCount.get()?[id].count ?? 0)) : -1
-    let dailyLimitLeft = dailyLimit > 0 ? max(0, dailyLimit - (todayPurchasesCount.get()?[id].count ?? 0)) : -1
+    let { time = 0, count = 0 } = goodsLimitReset.get()?[goods.id]
+    let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
+    let limitLeft = limit > 0 ? max(0, limit + limitInc - (purchasesCount.get()?[id].count ?? 0)) : -1
+    let dailyLimitLeft = dailyLimit > 0 ? max(0, dailyLimit + limitInc - (todayPurchasesCount.get()?[id].count ?? 0)) : -1
     return limitLeft < 0 || dailyLimitLeft < 0
       ? max(limitLeft, dailyLimitLeft)
       : min(limitLeft, dailyLimitLeft)
@@ -597,6 +589,11 @@ return {
   goodsGap
   offerPad
   titlePadding
+
+  priceBgGradDefault
+  priceBgGradGold
+  priceBgGradConsumables
+  titleFontGradConsumables
 
   mkGoodsWrap
   mkOfferWrap

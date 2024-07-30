@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let utf8 = require("utf8")
+let { eventbus_send } = require("eventbus")
+let { get_local_custom_settings_blk } = require("blkGetters")
 let { getLocalLanguage } = require("language")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -8,6 +10,7 @@ let { removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { contactsRequest, contactsRegisterHandler } = require("%rGui/contacts/contactsClient.nut")
 let { battleSessionId, isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { Contact } = require("%rGui/contacts/contact.nut")
+let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 
 let session = Computed(@() (isInBattle.get() || isInDebriefing.get()) ? battleSessionId.get() : -1)
 
@@ -16,12 +19,18 @@ let langCfg = {
   Russian = { locale = "ru-RU", lang = "russian" }
 }
 
+let MAX_ACTIVE_REPORTS = 5
+let TIME_TO_NEXT_BATTLE_REPORT = 30 * 60
+let TIME_TO_NEXT_MENU_REPORT = 12 * 3600
+let BATTLE_REPORT = "battleReport"
+let MENU_REPORT = "menuReport"
+
 let MAX_MESSAGE_CHARS = 256
 
 let SUCCESS_WND_UID = "successReportWindow"
 let REPORT_WND_UID = "playerReportWindow"
 
-let categoryCfg = ["OTHER", "CHEAT", "ABUSE"].map(@(v) loc($"support/form/report/{v}"))
+let categoryCfg = ["OTHER", "CHEAT", "ABUSE"]
 
 let selectedPlayerForReport = Watched(null)
 let isReportStatusSuccessed = Watched(false)
@@ -62,6 +71,52 @@ function successedClose() {
   close()
 }
 
+function getMaxActiveReportTime(userIdStr) {
+  let blk = get_local_custom_settings_blk()?[MENU_REPORT]
+  if (!blk)
+    return 0
+
+  if(blk.paramCount() < MAX_ACTIVE_REPORTS)
+    return blk?[userIdStr] ?? 0
+
+  local minTime = 0
+  for (local idx = blk.paramCount() - 1; idx >= 0; idx--)
+    if (blk.getParamValue(idx) < minTime || minTime == 0)
+      minTime = blk.getParamValue(idx)
+  return minTime
+}
+
+function clearExpiredReports(reportType, currentTime) {
+  let blk = get_local_custom_settings_blk()?[reportType]
+  if (!blk)
+    return
+
+  for (local idx = blk.paramCount() - 1; idx >= 0; idx--)
+    if (currentTime - blk.getParamValue(idx) >= TIME_TO_NEXT_MENU_REPORT)
+      blk.removeParam(blk.getParamName(idx))
+}
+
+let mkTimeToNextReport = @(userIdStr) isInBattle.get() || userIdStr in debriefingData.get()?.players
+  ? Computed(@() TIME_TO_NEXT_BATTLE_REPORT - (serverTime.get()
+    - (get_local_custom_settings_blk()?[BATTLE_REPORT][userIdStr] ?? 0)))
+  : Computed(@() TIME_TO_NEXT_MENU_REPORT - (serverTime.get() - getMaxActiveReportTime(userIdStr)))
+
+function saveComplaint(request) {
+  let blk = get_local_custom_settings_blk()
+  let userIdStr = request.offender_userid
+
+  foreach (reportType in [BATTLE_REPORT, MENU_REPORT])
+    if (blk?[reportType])
+      clearExpiredReports(reportType, serverTime.get())
+
+  blk.addBlock(
+    (isInBattle.get() || userIdStr in debriefingData.get()?.players)
+      ? BATTLE_REPORT
+      : MENU_REPORT)[userIdStr] = request.date
+
+  eventbus_send("saveProfile", {})
+}
+
 function mkRequest(requestData) {
   if (requestData == null)
     return null
@@ -82,15 +137,17 @@ function requestSelfRow() {
 
   let request = mkRequest(requestData)
   isRequestInProgress.set(true)
-  contactsRequest("cln_complaint_v2", { data = request }, request)
+  contactsRequest("cln_complaint", { data = request }, request)
 }
 
-contactsRegisterHandler("cln_complaint_v2", function(result, request) {
+contactsRegisterHandler("cln_complaint", function(result, request) {
   isRequestInProgress.set(false)
-  if (!result?.error)
+  if (!result?.error) {
+    saveComplaint(request)
     return isReportStatusSuccessed.set(true)
+  }
 
-  log("cln_complaint_v2 result = ", result)
+  log("cln_complaint result = ", result)
   logerr($"Failed to send report: {request}")
 })
 
@@ -108,9 +165,10 @@ return {
   requestSelfRow
   isReportStatusSuccessed
   isRequestInProgress
-  viewReport = @(userId) selectedPlayerForReport.set({
-    offender_userid = userId
-    offender_nick = Contact(userId).get()?.realnick ?? ""
+  mkTimeToNextReport
+  viewReport = @(userIdStr) selectedPlayerForReport.set({
+    offender_userid = userIdStr
+    offender_nick = Contact(userIdStr).get()?.realnick ?? ""
     room_id = session.get()
   })
 }

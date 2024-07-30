@@ -47,7 +47,7 @@ let newbieGameModesConfig = {
   air = [
     {
       gmName = "plane_new_players_battle_single"
-      isFit = @(s, _) s.anyBattles < 1 || (s.anyBattles < 2 && (s.anyKills < 3 || !s.hasPkg))
+      isFit = @(s, _) s.anyBattles < 1
       isSingle = true
       offlineMissionsSets
       offlineMissions = offlineMissionsSets.plane_newbie

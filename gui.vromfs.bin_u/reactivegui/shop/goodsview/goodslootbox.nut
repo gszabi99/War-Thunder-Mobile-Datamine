@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
+let { mkFontGradient } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkSquareIconBtn,
-   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkTimeLeft, mkGoodsLimitText
+   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkTimeLeft,
+   mkGoodsLimitText, priceBgGradDefault
 } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkLoootboxImage, getLootboxName } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { getLootboxName, mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
-let priceBgGrad = mkColoredGradientY(0xFF72A0D0, 0xFF588090, 12)
 let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 let lootboxIconSize = (goodsSmallSize[0] * 0.65).tointeger()
 let fonticonPreview = "⌡"
@@ -71,7 +71,7 @@ function mkGoodsLootbox(goods, _, state, animParams) {
       timeRange == null ? null
         : mkTimeLeft(timeRange.end, { vplace = ALIGN_BOTTOM, margin = textMargin })
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGrad, state, animParams), { size = goodsSmallSize })
+    mkPricePlate(goods, priceBgGradDefault, state, animParams), { size = goodsSmallSize })
 }
 
 return {

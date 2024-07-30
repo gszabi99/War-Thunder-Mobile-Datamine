@@ -14,8 +14,10 @@ function mkArrowImageComp(lengthPx) {
   return mkImage("ui/gameuiskin#scroll_arrow.svg", w, h)
 }
 
+let scrollArrowImageSmallSize = evenPx(50)
+
 let scrollArrowImageBig = mkArrowImageComp(evenPx(88))
-let scrollArrowImageSmall = mkArrowImageComp(evenPx(50))
+let scrollArrowImageSmall = mkArrowImageComp(scrollArrowImageSmallSize)
 
 let mkIsShow = {
   [MR_T] = @(scrollHandler) Computed(@() (scrollHandler.elem?.getScrollOffsY() ?? 0) > 0),
@@ -63,4 +65,5 @@ function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageBi
 return {
   mkScrollArrow
   scrollArrowImageSmall
+  scrollArrowImageSmallSize
 }

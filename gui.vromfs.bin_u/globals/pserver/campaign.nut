@@ -95,6 +95,7 @@ let campProfile = Computed(function(prev) {
   chooseListByCampaignTbl(res, prev, "receivedLvlRewards", campaign)
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
   chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", campaign)
+  chooseListByCampaignTbl(res, prev, "unitTreeNodes", campaign)
   chooseOneByCampaignTbl(res, prev, "activeOffers", campaign)
   chooseOneByCampaignTbl(res, prev, "campaignSlots", campaign)
   return res
@@ -119,6 +120,8 @@ let exportProfile = {
   activeOffers = null
   abTests = {}
   decorators = {}
+  blueprints = {}
+  goodsLimitReset = {}
 }.map(@(value, key) Computed(@() campProfile.value?[key] ?? value))
 
 let curCampaignSlots = Computed(@() (campConfigs.get()?.campaignCfg.totalSlots ?? 0) <= 0 ? null
@@ -131,7 +134,7 @@ let curCampaignSlotUnits = Computed(function(prev) {
 })
 
 return exportProfile.__update({
-  isProfileReceived = Computed(@() servProfile.value.len() > 0)
+  isProfileReceived = Computed(@() servProfile.get().len() > 0)
   curCampaign
   defaultCampaign
   setCampaign
@@ -141,4 +144,5 @@ return exportProfile.__update({
   campProfile
   curCampaignSlots
   curCampaignSlotUnits
+  isCampaignWithUnitsResearch = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
 })

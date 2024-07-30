@@ -79,11 +79,11 @@ let mkSkipProgress = @(stepSkipDelay, skipStep) {
   ]
 }
 
-let mkCutBg = @(boxes) boxes == null || boxes.len() == 0
-  ? darkCtor({ t = 0, b = sh(100), l = 0, r = sw(100) })
+let mkCutBg = @(boxes, fullArea = {}) boxes == null || boxes.len() == 0
+  ? darkCtor({ t = 0, b = sh(100), l = 0, r = sw(100) }.__update(fullArea))
   : {
       size = flex()
-      children = createHighlight(boxes, @(_) null, darkCtor)
+      children = createHighlight(boxes, @(_) null, darkCtor, fullArea)
     }
 
 let skipBtnCtor = @(stepSkipDelay, skipStep, key) {

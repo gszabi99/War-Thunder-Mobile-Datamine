@@ -32,5 +32,19 @@ return {
   locColorTable = {
     mark = markTextColor
     darken = darkenTextColor
+    red = 0xFFFF3333
+    terracot = 0xFFFF5934
+    orange = 0xFFFF7E07
+    yellow = 0xFFF8C100
+    lemon = 0xFFE4E900
+    lime = 0xFFA0E215
+    green = 0xFF29EA3C
+    emerald = 0xFF01E1AB
+    cyan = 0xFF06CDE8
+    skyblue = 0xFF3CA0FD
+    blue = 0xFF446DFF
+    indigo = 0xFF7B5AFF
+    violet = 0xFF9F53FF
+    margenta = 0xFFDE3AE1
   }
 }

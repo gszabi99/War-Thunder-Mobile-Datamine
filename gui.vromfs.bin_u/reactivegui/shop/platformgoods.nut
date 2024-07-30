@@ -9,7 +9,10 @@ let { platformGoods, platformOffer, platformGoodsDebugInfo, buyPlatformGoods,
   : is_ios ? require("byPlatform/goodsIos.nut")
   : is_nswitch ? require("byPlatform/goodsNSwitch.nut")
   : require("byPlatform/goodsGaijin.nut")
+let { platformGoodsFromRussia = Watched(null) } = is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsGaijin.nut") : null
 let { isForbiddenPlatformPurchaseFromRussia, openMsgBoxInAppPurchasesFromRussia } = require("inAppPurchasesFromRussia.nut")
+let { has_payments_blocked_web_page } = require("%appGlobals/permissions.nut")
+let { eventbus_send } = require("eventbus")
 
 if (is_android)
   log("isDownloadedFromGooglePlay = ", isDownloadedFromGooglePlay())
@@ -52,7 +55,17 @@ function buyPlatformGoodsExt(goodsOrId) {
 
   let goods = type(goodsOrId) == "table" ? goodsOrId : platformGoods.value?[goodsOrId]
   if (isForbiddenPlatformPurchaseFromRussia(goods)) {
-    openMsgBoxInAppPurchasesFromRussia(goods)
+    if(has_payments_blocked_web_page.get())
+      openMsgBoxInAppPurchasesFromRussia(goods)
+    else{
+      local goodsRuss = platformGoodsFromRussia.value?[goodsOrId] ??
+        platformGoodsFromRussia.value?[goods.relatedGaijinId]
+      local baseUrl = goodsRuss?.purchaseUrl
+      if (baseUrl == null)
+        return
+      baseUrl = " ".concat("auto_local", "auto_login", baseUrl)
+      eventbus_send("openUrl", { baseUrl, onCloseUrl = "https://store.gaijin.net/success_payment.php" })
+    }
     return
   }
 

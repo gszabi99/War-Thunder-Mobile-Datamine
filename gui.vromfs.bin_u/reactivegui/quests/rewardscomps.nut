@@ -3,7 +3,7 @@ let { opacityAnims, aTimeInfoItem } = require("%rGui/shop/goodsPreview/goodsPrev
 let { REWARD_STYLE_SMALL, mkRewardPlate, mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkIcon } = require("%rGui/unit/components/unitPlateComp.nut")
 let { openRewardsList } = require("questsState.nut")
-let { mkGlare, defGlareSize } = require("%rGui/components/glare.nut")
+let { mkGlare } = require("%rGui/components/glare.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -64,7 +64,7 @@ let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = fa
   mkRewardPlate(r, rStyleDefault)
   !isUnlocked ? lockedReward
     : !canClaimReward ? mkRewardReceivedMark(REWARD_STYLE_SMALL, { hplace = ALIGN_RIGHT })
-    : mkGlare(rewardsBtnSize, defGlareSize, 2.5, 0.6)
+    : mkGlare(rewardsBtnSize, { repeatDelay = 2.5, duration = 0.6 })
 ]
 
 function mkProgressBarReward(children, onClick) {

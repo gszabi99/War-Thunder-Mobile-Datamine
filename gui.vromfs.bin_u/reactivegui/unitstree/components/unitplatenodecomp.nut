@@ -47,6 +47,21 @@ let animatedProgressBar = @(researchStatus){
   ]
 }
 
+let mkTreeNodesUnitPlateBuy = @(unit){
+  size = unitPlateTiny
+  padding = hdpx(7)
+  children = [
+    mkUnitBg(unit)
+    mkUnitImage(unit)
+    mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+    {
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+      children = mkGradRankSmall(unit?.mRank)
+    }
+  ]
+}
+
 function mkTreeNodesUnitPlateSimple(unit) {
   let researchStatus = unitsResearchStatus.get()?[unit.name]
   return @() {
@@ -69,7 +84,7 @@ function mkTreeNodesUnitPlateSimple(unit) {
                 flow = FLOW_HORIZONTAL
                 padding = [0, hdpx(5), 0 , 0]
                 children = [
-                  mkUnitResearchPrice(researchStatus)
+                  mkUnitResearchPrice(researchStatus, Watched(false))
                   {size = flex()}
                   mkGradRankSmall(unit?.mRank)
                 ]
@@ -109,4 +124,5 @@ function mkTreeNodesUnitPlateSimple(unit) {
 
 return {
   mkTreeNodesUnitPlateSimple
+  mkTreeNodesUnitPlateBuy
 }

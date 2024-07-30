@@ -1,8 +1,6 @@
-let { ndbRead, ndbExists } = require("nestdb")
-let { Watched } = require("frp")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
- //we only read here, but write only from dagui VM, to avoid write twice
-let serverConfigs = Watched(ndbExists("pserver.config") ? ndbRead("pserver.config") : {})
+let serverConfigs = hardPersistWatched("pserver.config", {})
 
 function updateAllConfigs(newValue) {
   let configs = newValue?.configs

@@ -244,7 +244,11 @@
       "hq": false
     },
     "pkg_dev": {},
-    "pkg_common": {},
+    "pkg_common": {
+      "conditions": {
+        "soloNewbie": "air"
+      }
+    },
     "pkg_ground": [
       {},
       {
@@ -261,9 +265,25 @@
         "uhq": true
       }
     ],
-    "pkg_lvl_air_locations": {},
-    "pkg_april_fools_event_2024": {},
-    "pkg_cbt_aircraft": {},
+    "pkg_lvl_air_assets": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1,
+        "soloNewbie": "air"
+      }
+    },
+    "pkg_april_fools_event_2024": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1
+      }
+    },
+    "pkg_cbt_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1
+      }
+    },
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -314,10 +334,23 @@
         "mRank": 2
       }
     },
-    "pkg_lvl_norway_green": {
+    "pkg_lvl_air_locations": {
       "conditions": {
         "campaign": "air",
-        "mRank": 2
+        "mRank": 1
+      }
+    },
+    "pkg_lvl_air_zhengzhou": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1,
+        "soloNewbie": "air"
+      }
+    },
+    "pkg_lvl_air_stalingrad_winter": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1
       }
     },
     "pkg_germ_battlecruiser_von_der_tann": {
@@ -815,6 +848,10 @@
     "backbufferHolderReadable": false,
     "useUnderwaterFogPrepassPlane": true,
     "csmAllowDynrendPrepareJobsInThreads": false,
+    "raytraced_shadows": {
+      "maxBlasBuildsPerFrame": 25,
+      "additionalElementsCheck": false
+    },
     "cellsVBcfg": {
       "min_allocation_size": 8388608
     }
@@ -935,6 +972,7 @@
     "sendFullLogOnFatalIntervalHours": 4,
     "useANRWatcherThreadProbability": 0.1,
     "logSignificantChangesAsWarnings": true,
+    "dumpSettings": true,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",
@@ -966,7 +1004,6 @@
     "water3d": true,
     "clipmap": true,
     "fxReflection": true,
-    "detailedWaterForPlanes": true,
     "wakeFoamWithoutAA": true,
     "ssrQuality": 0,
     "staticShadowsOnEffects": false,
@@ -1160,7 +1197,7 @@
     "enabled": true
   },
   "unitedVdata.dynModel": {
-    "use": false,
+    "use": true,
     "canRebuild": false,
     "common": {
       "IB": 16384,
@@ -1182,7 +1219,6 @@
     "flag": [
       "--norespatch",
       "--noupdate",
-      "--clear",
       "--verbose"
     ],
     "android": {
@@ -1193,6 +1229,7 @@
     },
     "resources_patch": {
       "flag": [
+        "--clear",
         "--onlypacks",
         "--onlychanged"
       ],
@@ -1205,6 +1242,7 @@
       "shouldPatchVromsWithRemoteVersion": true,
       "shouldSaveGameVersionToCache": true,
       "flag": [
+        "--clear",
         "--onlypacks",
         "--enable_tag",
         "update_vroms"
@@ -1216,7 +1254,12 @@
       "shouldReportIncompatibleVersion": true,
       "startMetric": "addons_update_start",
       "stopMetric": "addons_update_stop",
-      "flag": "--onlypacks"
+      "flag": [
+        "--clear",
+        "--onlypacks",
+        "--enable_tag",
+        "min_core"
+      ]
     },
     "background_addons": {
       "disableFastVersionCheck": true,
@@ -1225,7 +1268,19 @@
       "requireSameGameVersion": false,
       "startMetric": "background_addons_update_start",
       "stopMetric": "background_addons_update_stop",
-      "flag": "--onlypacks"
+      "flag": [
+        "--clear",
+        "--onlypacks"
+      ]
+    },
+    "optional_game_resources": {
+      "strictVersionCheck": false,
+      "disableFastVersionCheck": true,
+      "flag": [
+        "--verbose",
+        "--onlypacks",
+        "--seed"
+      ]
     }
   },
   "shadows": {
@@ -1240,6 +1295,8 @@
     "enableStaticInTps": true,
     "hangarUseFixedShadowCascade": true,
     "hangarShipsUseFixedShadowCascade": true,
+    "tpsUseFixedShadowCascade": true,
+    "underwaterUseFixedShadowCascade": true,
     "staticMaxUpdatePart": 0.005,
     "low": {
       "cascadeWidth": 512,
@@ -1783,13 +1840,12 @@
         "texquality": "high",
         "fxTarget": "high",
         "fftWaterRenderResolution": 8,
-        "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.25,
+        "refractionMinScale": 0.25,
         "refractionShadows": true
       },
       "render": {
@@ -1875,13 +1931,12 @@
         "texquality": "low",
         "fxTarget": "high",
         "fftWaterRenderResolution": 7,
-        "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": false,
         "enableWakeDisplacement": false,
         "enableWaterProjFx": false,
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": false,
-        "customRefractionScale": 0.25,
+        "refractionMinScale": 0.25,
         "refractionShadows": false,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
@@ -1955,13 +2010,12 @@
         "texquality": "high",
         "fxTarget": "high",
         "fftWaterRenderResolution": 7,
-        "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": false,
-        "customRefractionScale": 0.25,
+        "refractionMinScale": 0.25,
         "refractionShadows": false,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
@@ -2035,13 +2089,12 @@
         "texquality": "high",
         "fxTarget": "high",
         "fftWaterRenderResolution": 8,
-        "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
         "enableGrassTrackMask": false,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.25,
+        "refractionMinScale": 0.25,
         "refractionShadows": true,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
@@ -2115,13 +2168,12 @@
         "texquality": "high",
         "fxTarget": "ultrahigh",
         "fftWaterRenderResolution": 8,
-        "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
         "enableGrassTrackMask": true,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.5,
+        "refractionMinScale": 0.5,
         "refractionShadows": true,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
@@ -2195,13 +2247,12 @@
         "texquality": "high",
         "fxTarget": "ultrahigh",
         "fftWaterRenderResolution": 8,
-        "fftWaterRenderResolutionPlane": 7,
         "allowNonSkyReflections": true,
         "enableWakeDisplacement": true,
         "enableWaterProjFx": true,
         "enableGrassTrackMask": true,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 1.0,
+        "refractionMinScale": 1.0,
         "refractionShadows": true,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 1,
@@ -2267,7 +2318,7 @@
         "enableGrassTrackMask": false,
         "allowNonSkyReflections": false,
         "allowRefractionForTankLevels": false,
-        "customRefractionScale": 0.25,
+        "refractionMinScale": 0.25,
         "refractionShadows": false,
         "xrayUpdateFrames": 2,
         "tireTracksQuality": 0,
@@ -2276,7 +2327,6 @@
         "underwaterFogUseSimple": true,
         "underwaterFogUseTAA": false,
         "fftWaterRenderResolution": 7,
-        "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
         "xrayOutlinesScale": 1.0,
@@ -2330,7 +2380,7 @@
         "enableGrassTrackMask": false,
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": false,
-        "customRefractionScale": 0.25,
+        "refractionMinScale": 0.25,
         "refractionShadows": false,
         "xrayUpdateFrames": 1,
         "tireTracksQuality": 1,
@@ -2339,7 +2389,6 @@
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": false,
         "fftWaterRenderResolution": 7,
-        "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
         "xrayOutlinesScale": 1.0,
@@ -2393,7 +2442,7 @@
         "enableGrassTrackMask": true,
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.25,
+        "refractionMinScale": 0.25,
         "refractionShadows": true,
         "xrayUpdateFrames": 1,
         "tireTracksQuality": 2,
@@ -2402,7 +2451,6 @@
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": true,
         "fftWaterRenderResolution": 8,
-        "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
         "xrayOutlinesScale": 1.0,
@@ -2456,7 +2504,7 @@
         "enableGrassTrackMask": true,
         "allowNonSkyReflections": true,
         "allowRefractionForTankLevels": true,
-        "customRefractionScale": 0.5,
+        "refractionMinScale": 0.5,
         "refractionShadows": true,
         "xrayUpdateFrames": 1,
         "tireTracksQuality": 2,
@@ -2465,7 +2513,6 @@
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": true,
         "fftWaterRenderResolution": 8,
-        "fftWaterRenderResolutionPlane": 7,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
         "xrayOutlinesScale": 1.0,
@@ -2491,7 +2538,7 @@
     }
   },
   "vulkan": {
-    "texUploadLimitMb": 64,
+    "texUploadLimitMb": 32,
     "vendor": {
       "Qualcomm": {
         "driverProps": {
@@ -2643,6 +2690,27 @@
           }
         }
       }
+    }
+  },
+  "android": {
+    "fastShutdown": true,
+    "graphics": {
+      "compress_panorama": false,
+      "allowETC2": false
+    },
+    "texStreaming": {
+      "forceMemQuotaKB": 2000000
+    }
+  },
+  "iOS": {
+    "fastShutdown": true,
+    "graphics": {
+      "allowETC2": true,
+      "asyncPSO": true,
+      "asyncLoadPSOCache": true
+    },
+    "texStreaming": {
+      "forceMemQuotaKB": 2000000
     }
   }
 }

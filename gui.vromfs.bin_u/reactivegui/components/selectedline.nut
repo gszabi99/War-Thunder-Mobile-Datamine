@@ -19,11 +19,24 @@ let selectedLine = @(isActive, size, image) @() {
   opacity = isActive.get() ? 1 : 0
 }
 
+let selectedLineSolid = @(isActive, size) @() {
+  watch = isActive
+  size
+  rendObj = ROBJ_SOLID
+  color = lineColor
+  opacity = isActive.get() ? 1 : 0
+  transitions = opacityTransition
+}
+
 return {
   selectedLineHor = @(isActive)
     selectedLine(isActive, [flex(), selLineSize], lineGradientHor())
   selectedLineVert = @(isActive)
     selectedLine(isActive, [selLineSize, flex()], lineGradientVert())
+  selectedLineHorSolid = @(isActive)
+    selectedLineSolid(isActive, [flex(), selLineSize])
+  selectedLineVertSolid = @(isActive)
+    selectedLineSolid(isActive, [selLineSize, flex()])
   opacityTransition
   selLineSize
 }

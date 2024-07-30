@@ -15,6 +15,7 @@ let hudStateNative = {
   isInSpectatorMode = false
   isInArtilleryMap = false
   isInStrategyMode = false
+  isInAntiairMode = false
   hasTarget = false
   hasTargetCandidate = false
   groupAttack = false
@@ -67,7 +68,16 @@ hudStateNative.playerUnitName.subscribe(@(v) (v ?? "") != "" ? battleUnitName(v)
 
 isUnitDelayed.subscribe(@(v) v ? null : anim_start("unitDelayFinished"))
 
+let HM_COMMON = 0x001
+let HM_MANUAL_ANTIAIR = 0x002
+
+let isInAntiairMode = hudStateNative.isInAntiairMode
+let hudMode = Computed(@() isInAntiairMode.value ? HM_MANUAL_ANTIAIR : HM_COMMON)
+
 return hudStateNative.__merge({
   unitType
   isUnitDelayed
+  hudMode
+  HM_COMMON
+  HM_MANUAL_ANTIAIR
 })

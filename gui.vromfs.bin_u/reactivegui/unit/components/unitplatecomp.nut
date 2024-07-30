@@ -29,8 +29,8 @@ let unitPlateRatio = unitPlateHeight / unitPlateWidth
 let unitPlateSmallWidth = hdpx(320)
 let unitPlateSmallHeight = (unitPlateSmallWidth * unitPlateRatio).tointeger()
 let unitPlateSmall = [unitPlateSmallWidth, unitPlateSmallHeight]
-let unitPlateTinyWidth = hdpx(280)
-let unitPlateTinyHeight = (unitPlateTinyWidth * unitPlateRatio).tointeger()
+let unitPlateTinyWidth = evenPx(280)
+let unitPlateTinyHeight = (unitPlateTinyWidth * unitPlateRatio / 2 + 0.5).tointeger() * 2
 let unitPlateTiny = [unitPlateTinyWidth, unitPlateTinyHeight]
 
 let unutEquppedTopLineFullHeight = hdpx(15)
@@ -41,7 +41,7 @@ let lockIconSize = hdpxi(80)
 let lockIconOnLockedSlotSize = hdpxi(85)
 let lockIconRespWnd = hdpxi(45)
 let flagIconSize = hdpxi(42).tointeger()
-let premiumIconSize = [pw(34), pw(14)]
+let premiumIconSize = [hdpxi(102), hdpxi(42)]
 
 let platoonPlatesGap = 0
 let platoonSelPlatesGap = hdpx(9)
@@ -110,31 +110,35 @@ let function getUnitBG(isCollectible, isPremium, isLocked, isAvailable){
   return isLocked ? bgUnitLocked : bgUnit
 }
 
+let unitBgImageBase = {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  keepAspect = KEEP_ASPECT_FILL
+  imageValign = ALIGN_TOP
+}
+
+let mkUnitBgPremium = {
+  size = premiumIconSize
+  pos = [-plateTextsSmallPad, 0]
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_CENTER
+  opacity = 0.15
+  rendObj = ROBJ_IMAGE
+  keepAspect = KEEP_ASPECT_FIT
+  imageValign = ALIGN_BOTTOM
+  image = Picture($"ui/gameuiskin#icon_premium.svg:{premiumIconSize[0]}:{premiumIconSize[1]}:P")
+}
+
 function mkUnitBg(unit, isLocked = false, justUnlockedDelay = null, isAvailable = true) {
   let isPremium = unit.isPremium || unit?.isUpgraded
   let isCollectible = unit?.isCollectible
   return {
     size = flex()
+    transform = {}
     animations = scaleAnimation(justUnlockedDelay, [1.04, 1.04])
     children = [
-      {
-        size = flex()
-        rendObj = ROBJ_IMAGE
-        image = getUnitBG(isCollectible, isPremium, isLocked, isAvailable)
-        keepAspect = KEEP_ASPECT_FILL
-        imageValign = ALIGN_TOP
-      }
-      !isPremium ? null : {
-        size = premiumIconSize
-        pos = [-plateTextsSmallPad, 0]
-        hplace = ALIGN_RIGHT
-        vplace = ALIGN_CENTER
-        opacity = 0.15
-        rendObj = ROBJ_IMAGE
-        keepAspect = KEEP_ASPECT_FIT
-        imageValign = ALIGN_BOTTOM
-        image = Picture("ui/gameuiskin#icon_premium.svg")
-      }
+      unitBgImageBase.__merge({ image = getUnitBG(isCollectible, isPremium, isLocked, isAvailable) })
+      !isPremium ? null : mkUnitBgPremium
     ]
   }
 }
@@ -180,11 +184,13 @@ let componentsByUnitType = {
 let getComponentsByUnitType = @(unitType)
   componentsByUnitType?[unitType] ?? defaultComponents
 
-let mkUnitBlueprintMark = @(unit) @()
-  unit.name not in serverConfigs.get()?.allBlueprints || unit.name in myUnits.get()
-    ? { watch = [serverConfigs, myUnits] }
+let mkUnitBlueprintMark = @(unit, ovr = {}) function() {
+  let count = servProfile.get()?.blueprints?[unit.name] ?? 0
+  let tgtCount = serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 0
+  return count >= tgtCount || unit.name in myUnits.get()
+    ? { watch = [servProfile, serverConfigs, myUnits] }
     : {
-        watch = [serverConfigs, myUnits]
+        watch = [servProfile, serverConfigs, myUnits]
         hplace = ALIGN_LEFT
         vplace = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL
@@ -202,19 +208,20 @@ let mkUnitBlueprintMark = @(unit) @()
           @() {
             watch = servProfile
             rendObj = ROBJ_TEXT
-            text = "/".concat(servProfile.get()?.blueprints?[unit.name] ?? 0, serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
+            text = "/".concat(count, tgtCount)
           }.__update(fontVeryTiny)
         ]
-    }
+    }.__update(ovr)
+}
 
-function mkUnitImage(unit, isDesaturated = false) {
+function mkUnitImage(unit, isDesaturated = false, ovr = {}) {
   let p = getUnitPresentation(unit)
   return getComponentsByUnitType(unit.unitType).unitImage.__merge({
     image = unit?.isUpgraded ? Picture(p.upgradedImage) : Picture(p.image)
     fallbackImage = Picture(p.image)
     picSaturate = isDesaturated ? 0.6 : 1.0
     brightness = isDesaturated ? 0.6 : 1.0
-})
+  }, ovr)
 }
 
 let mkPlateText = @(text, override = {}) {
@@ -345,7 +352,7 @@ function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
     key = {}
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
-    padding = [hdpx(5), 0]
+    padding = [hdpx(10), 0]
     children
   }
 }
@@ -409,7 +416,7 @@ let mkUnitShortPrice = @(price, justUnlockedDelay = null) {
   children = mkCurrencyComp(price.price, price.currencyId)
 }
 
-let mkUnitsTreePrice = @(price, justUnlockedDelay = null) {
+let mkUnitsTreePrice = @(price, justUnlockedDelay = null, canBuy = true) {
   key = {}
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
@@ -421,6 +428,7 @@ let mkUnitsTreePrice = @(price, justUnlockedDelay = null) {
     iconSize = hdpxi(35)
     fontStyle = fontTinyAccented
     iconGap = hdpx(6)
+    textColor = canBuy ? 0xFFFFFFFF : 0xFFA0A0A0
   }))
 }
 
@@ -428,7 +436,8 @@ let slotLock = mkIcon("ui/gameuiskin#lock_icon.svg", [lockIconRespWnd, lockIconR
 
 function mkUnitSlotLockedLine(slot, isLocked = true, justUnlockedDelay = null){
   let children = []
-  if (isLocked && (slot?.reqLevel ?? 0) > 0)
+  let hasLevel = (slot?.reqLevel ?? 0) > 0
+  if (isLocked && hasLevel)
     children.append(
       mkIcon("ui/gameuiskin#lock_unit.svg", [lockIconOnLockedSlotSize, lockIconOnLockedSlotSize], { color = slotLockedTextColor }),
       {
@@ -439,9 +448,11 @@ function mkUnitSlotLockedLine(slot, isLocked = true, justUnlockedDelay = null){
     )
   else if (isLocked)
     children.append(slotLock)
-  else if(justUnlockedDelay)
+  else if (justUnlockedDelay && hasLevel)
     children.append(mkAnimationUnitLock(justUnlockedDelay, slot.reqLevel, "ui/gameuiskin#lock_unit_bottom.svg",
       @() deleteJustUnlockedPlatoonUnit(slot.name)))
+  else if (justUnlockedDelay)
+    children.append(mkAnimationUnitLock(justUnlockedDelay, slot?.reqLevel, "ui/gameuiskin#lock_bottom.svg"))
   return {
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
@@ -595,8 +606,8 @@ function mkSingleUnitPlate(unit) {
 }
 
 let function mkUnitResearchPrice(researchStatus, ovr = {}) {
-  if (!researchStatus?.isAvailable || (researchStatus?.reqExp ?? 0) <= 0
-      || (researchStatus?.exp ?? 0) >= researchStatus.reqExp)
+  let { canResearch = false, exp = 0, reqExp = 0 } = researchStatus
+  if (!canResearch || reqExp <= 0 || exp >= reqExp)
     return null
   return {
     padding = plateTextsSmallPad
@@ -609,12 +620,13 @@ let function mkUnitResearchPrice(researchStatus, ovr = {}) {
       mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(28), hdpxi(28)])
       {
         rendObj = ROBJ_TEXT
-        text = "/".concat(researchStatus?.exp ?? 0, researchStatus.reqExp)
+        text = "/".concat(exp, reqExp)
         color = 0xFFFF9D47
       }.__update(fontVeryTiny)
     ]
   }.__update(ovr)
 }
+
 
 return {
   unitPlateWidth
@@ -655,6 +667,7 @@ return {
   mkPlayerLevel
   mkUnitBlueprintMark
   mkUnitResearchPrice
+  mkUnitBgPremium
 
   mkPlatoonPlateFrame
   mkPlatoonBgPlates
@@ -662,4 +675,7 @@ return {
 
   mkFlagImage
   bgUnit
+  bgUnitNotAvailable
+
+  unitBgImageBase
 }

@@ -21,6 +21,7 @@ let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%r
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
+let panelBg = require("%rGui/components/panelBg.nut")
 let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -111,13 +112,9 @@ let mkModIcon = @() {
   keepAspect = KEEP_ASPECT_FILL
 }
 
-let mkModsInfo = @() {
+let mkModsInfo = @() panelBg.__merge({
   watch = [unit, curMod]
-  rendObj = ROBJ_IMAGE
   size = curMod.value ? [modW * 2, SIZE_TO_CONTENT] : [ 0, 0]
-  pos = [saBorders[0], 0]
-  image = Picture("ui/gameuiskin#debriefing_bg_grad@@ss.avif:0:P")
-  color = 0x90090F16
   margin = [0, saBorders[0], 0, 0]
   padding = [hdpx(30), saBorders[0]]
   flow = FLOW_VERTICAL
@@ -162,7 +159,7 @@ let mkModsInfo = @() {
               ]
         }
       ]
-}
+})
 
 let spinner = {
   size = [buttonStyles.defButtonMinWidth, buttonStyles.defButtonHeight]

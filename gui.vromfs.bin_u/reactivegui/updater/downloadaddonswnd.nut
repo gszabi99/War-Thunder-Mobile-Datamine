@@ -16,7 +16,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let wndUid = "downloadAddonsWnd"
 let spinnerSize = hdpx(100).tointeger()
-let downloadingColor = 0xFF00FDFF
+let downloadingColor = 0xFFE8E8E8
 let checkingColor = 0x80808080
 
 let statusText = Computed(@() wantStartDownloadAddons.value.len() == 0 ? loc("updater/status/complete")

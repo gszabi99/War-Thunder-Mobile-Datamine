@@ -90,6 +90,7 @@ function buyPlatformGoods(goodsOrId) {
 return {
   platformGoodsDebugInfo = goodsInfo
   platformGoods
+  platformGoodsFromRussia = platformGoods
   platformOffer
   buyPlatformGoods
 }

@@ -6,7 +6,6 @@
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
   "mesh": "us_m8_bazooka",
-  "mesh_deployed": "us_m8_bazooka_deployed",
   "tags": {
     "antiTankRocket": true,
     "antiShipRocket": true
@@ -67,11 +66,10 @@
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 3.4,
-    "fireEffect": "fires_exhaust_jet_early_small",
-    "smokeEffect": "smoke_rocket_tail_light_multiple",
-    "smokeEffect2": "",
+    "fireEffect": "rocket_fire_dark_multiple",
+    "smokeEffect": "",
     "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
+    "endSmokeViscosity": 0.2,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,

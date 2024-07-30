@@ -27,7 +27,7 @@ def push_stowage(var v : tuple<
                    ammo_stowages__clustersRange : IPoint2List;
                    ammo_stowages__weaponTriggersRange : IPoint2List;
                    ammo_stowage__weaponTriggers : IntList
-                 >) : int
+                   >) : int
   let stowage_id = v.ammo_stowages__state |> length()
   v.ammo_stowages__state |> push(uint(AmmoStowageState REMOVE_LOADED_AMMO))
   v.ammo_stowages__bulletsCartridge |> push(1)
@@ -86,7 +86,7 @@ def reserve_clusters(cluster_count : int; var v : tuple<
                        ammo_clusters__slotsRange : IPoint2List;
                        ammo_clusters__wreckageRange : IPoint2List;
                        ammo_clusters__relatedPartsRange : IPoint2List
-                     >) : void
+                       >) : void
   v.ammo_clusters__typeAndStage |> reserve(cluster_count)
   v.ammo_clusters__state |> reserve(cluster_count)
   v.ammo_clusters__fireEvtId |> reserve(cluster_count)
@@ -120,7 +120,7 @@ def push_cluster(cluster_type : int; cluster_stage : int; def_cluster : DefaultA
                    ammo_stowage__wreckageIds : IntList;
                    ammo_stowage__relatedPartsIds : PartIdList;
                    ammo_slots__state : UInt32List
-                 >) : int
+                   >) : int
   let cluster_id = v.ammo_clusters__typeAndStage |> length()
   v.ammo_clusters__typeAndStage |> push(uint16(cluster_type | (cluster_stage << 8)))
   v.ammo_clusters__state |> push(def_cluster.ammo_clusters__state)
@@ -250,7 +250,7 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
                    ammo_slots__partId : PartIdList;
                    ammo_slots__numAmmo : IPoint2List;
                    ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
-                 >) : void
+                   >) : void
   if blk.blockCount == 0u || unit.visual == null
     return
 
@@ -397,15 +397,15 @@ def load_clusters_in_order(stowage_blk : DataBlock&; model_name : string; load_c
     let cluster_stage = load_cluster_stage(*cluster_blk)
     clusters |> push([[auto blk_i, idx, cluster_type, cluster_stage]])
 
-  if indexed
-    // sort by index & stage
-    clusters |> sort() <| $(a, b)
-      if a.cluster_stage != b.cluster_stage
-        return a.cluster_stage < b.cluster_stage
-      if a.index != b.index
-        return a.index < b.index
-      return a.blk_i < b.blk_i
+  // sort by index & stage
+  clusters |> sort() <| $(a, b)
+    if a.cluster_stage != b.cluster_stage
+      return a.cluster_stage < b.cluster_stage
+    if a.index != b.index && indexed
+      return a.index < b.index
+    return a.blk_i > b.blk_i
 
+  if indexed
     // do some additional validation
     if length(clusters) > 0
       assert(int(AmmoClusterType NUM_TYPES) == 2)
@@ -495,7 +495,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
                            ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
 
                            ammo_stowage__splashProperties : SplashProps
-                         >)
+                           >)
 
   v.ammo_stowage__partIdRemap |> clear()
   v.ammo_stowage__wreckageIds |> clear()
@@ -795,23 +795,23 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
                          uid : int;
                          v : tuple<
                            ammo_stowage__ammoState : uint;
-                           ammo_stowage__ammoTypeToMask : UInt32List- const;
-                           ammo_stowage__ammoTypeRemap : IPoint4List- const;
+                           ammo_stowage__ammoTypeToMask : UInt32List -const;
+                           ammo_stowage__ammoTypeRemap : IPoint4List -const;
                            ammo_stowage__weaponTriggers : IntList;
-                           ammo_stowage__weaponsRemap : Int16List- const;
-                           ammo_stowage__weaponsIds : IntList- const;
-                           ammo_stowages__state : UInt32List- const;
+                           ammo_stowage__weaponsRemap : Int16List -const;
+                           ammo_stowage__weaponsIds : IntList -const;
+                           ammo_stowages__state : UInt32List -const;
                            ammo_stowages__clustersRange : IPoint2List;
                            ammo_stowages__weaponTriggersRange : IPoint2List;
                            ammo_clusters__typeAndStage : UInt16List;
-                           ammo_clusters__ammoClassConstraints : UInt32List- const;
+                           ammo_clusters__ammoClassConstraints : UInt32List -const;
                            ammo_clusters__slotsRange : IPoint2List;
                            ammo_slots__ammoMaskAndType : UInt32List;
 
-                           ammo_per_type_data__state : UInt32List- const;
-                           ammo_per_type_data__numAmmoFs : IntList- const;
-                           ammo_per_type_data__numAmmoFsSync : IntList- const
-                         >)
+                           ammo_per_type_data__state : UInt32List -const;
+                           ammo_per_type_data__numAmmoFs : IntList -const;
+                           ammo_per_type_data__numAmmoFsSync : IntList -const
+                           >)
   var unit = get_unit(uid)
   assert(unit != null)
   if v.ammo_stowages__clustersRange |> length() == 0

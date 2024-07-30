@@ -2778,7 +2778,7 @@
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_head_01",
-          "gun": "tt_head_01",
+          "gun": "tt_01",
           "gunnerDm": "tt_01_dm"
         },
         "limits": {
@@ -2835,7 +2835,7 @@
         "shotFreq": 0.1,
         "turret": {
           "head": "tt_head_02",
-          "gun": "tt_head_02",
+          "gun": "tt_02",
           "gunnerDm": "tt_02_dm"
         },
         "limits": {
@@ -4817,7 +4817,7 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_head_01",
-                "gun": "tt_head_01",
+                "gun": "tt_01",
                 "gunnerDm": "tt_01_dm"
               },
               "limits": {
@@ -4874,7 +4874,7 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_head_02",
-                "gun": "tt_head_02",
+                "gun": "tt_02",
                 "gunnerDm": "tt_02_dm"
               },
               "limits": {
@@ -6854,7 +6854,7 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_head_01",
-                "gun": "tt_head_01",
+                "gun": "tt_01",
                 "gunnerDm": "tt_01_dm"
               },
               "limits": {
@@ -6911,7 +6911,7 @@
               "shotFreq": 0.1,
               "turret": {
                 "head": "tt_head_02",
-                "gun": "tt_head_02",
+                "gun": "tt_02",
                 "gunnerDm": "tt_02_dm"
               },
               "limits": {

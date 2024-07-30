@@ -1,15 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit
+  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit,
+  priceBgGradConsumables, titleFontGradConsumables
 } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkColoredGradientY, mkFontGradient,
-  gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
+let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 
 let iconSize = hdpxi(187)
-
-let priceBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
-let titleFontGrad = mkFontGradient(0xFF8bdeea, 0xFF8bdeea, 11, 6, 2)
 
 let slotNameBG = {
   hplace = ALIGN_RIGHT
@@ -66,12 +63,12 @@ function mkGoodsBooster(goods, onClick, state, animParams) {
         children = boostersList.map(@(v, id)
           mkCurrencyAmountTitle(v,
             viewBaseValue,
-            titleFontGrad,
+            titleFontGradConsumables,
             nameBooster(id))).values()
       })
       mkGoodsLimit(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGrad, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, priceBgGradConsumables, state, animParams), {size = goodsSmallSize})
 }
 
 return {

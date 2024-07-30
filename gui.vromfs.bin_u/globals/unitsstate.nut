@@ -4,7 +4,7 @@ let { set_current_unit, curUnitInProgress } = require("%appGlobals/pServer/pServ
 let { curUnit, myUnits, playerLevelInfo, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 
 
 let US_UNKNOWN = 0
@@ -13,33 +13,45 @@ let US_CAN_BUY = 2
 let US_TOO_LOW_LEVEL = 3
 let US_NOT_FOR_SALE = 4
 let US_NOT_RESEARCHED = 5
+let US_NEED_BLUEPRINTS = 6
 
 let buyUnitsData = Computed(function() {
   let { level, isReadyForLevelUp } = playerLevelInfo.value
+  let { unitsResearch = {}, blueprints = {} } = servProfile.get()
+  let { unitTreeNodes = {}, unitResearchExp = {}, allBlueprints = {} } = serverConfigs.get()
   let canBuy = {}
   let canBuyOnLvlUp = {}
   local hasOwnUnitForCurrentLevelUp = false
   let unitStatus = allUnitsCfg.value.map(function(unit) {
-    if (unit.name in myUnits.value) {
-      if (unit.rank == level + 1)
+    let { name, rank } = unit
+    if (name in myUnits.value) {
+      if (rank == level + 1)
         hasOwnUnitForCurrentLevelUp = true
       return US_OWN
     }
     if (unit.costGold <= 0 && unit.costWp <= 0)
       return US_NOT_FOR_SALE
+
+    if (name in allBlueprints) {
+      if ((blueprints?[name] ?? 0) >= (allBlueprints?[name]?.targetCount ?? 0)) {
+        canBuy[name] <- unit
+        return US_CAN_BUY
+      }
+      return US_NEED_BLUEPRINTS
+    }
+
     if (unit.isPremium
-        || (unit.name not in serverConfigs.get()?.unitTreeNodes[unit.campaign] && unit.rank <= level)
-        || (unit.name in serverConfigs.get()?.unitTreeNodes[unit.campaign]
-          && servProfile.get()?.unitsResearch[unit.name].canBuy)) {
-      canBuy[unit.name] <- unit
+        || (name not in unitTreeNodes?[unit.campaign] && rank <= level)
+        || (name in unitResearchExp && unitsResearch?[name].canBuy)) {
+      canBuy[name] <- unit
       return US_CAN_BUY
     }
-    else if (unit.rank == level + 1)
-      canBuyOnLvlUp[unit.name] <- unit
-    return unit.name in serverConfigs.get()?.unitTreeNodes[unit.campaign] ? US_NOT_RESEARCHED : US_TOO_LOW_LEVEL
+    else if (rank == level + 1)
+      canBuyOnLvlUp[name] <- unit
+    return name in unitTreeNodes?[unit.campaign] ? US_NOT_RESEARCHED : US_TOO_LOW_LEVEL
   })
   let canLevelUpWithoutBuy = (isReadyForLevelUp && hasOwnUnitForCurrentLevelUp)
-    || curCampaign.get() in serverConfigs.get()?.unitTreeNodes
+    || isCampaignWithUnitsResearch.get()
   if (isReadyForLevelUp)
     canBuy.__update(canBuyOnLvlUp)
   return { canBuy, canBuyOnLvlUp, unitStatus, canLevelUpWithoutBuy }
@@ -86,6 +98,7 @@ return {
   US_CAN_BUY
   US_TOO_LOW_LEVEL
   US_NOT_RESEARCHED
+  US_NEED_BLUEPRINTS
 
   buyUnitsData
   canBuyUnits

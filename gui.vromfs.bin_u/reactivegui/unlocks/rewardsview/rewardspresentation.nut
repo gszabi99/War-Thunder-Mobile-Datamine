@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { G_LOOTBOX, G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { mkLoootboxImage, getLootboxName } = require("lootboxPresentation.nut")
+let { getLootboxName, mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
 let { mkCurrencyComp, CS_SMALL } = require("%rGui/components/currencyComp.nut")
 
 let mkCurrencyImage = @(amount, size, currencyId) {

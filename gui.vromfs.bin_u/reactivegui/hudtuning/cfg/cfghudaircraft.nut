@@ -11,7 +11,9 @@ let {
   aircraftMoveStick,
   aircraftMoveStickView,
   aircraftMoveArrows,
-  isAircraftMoveArrowsAvailable
+  isAircraftMoveArrowsAvailable,
+  brakeButton,
+  brakeButtonEditView
 } = require("%rGui/hud/aircraftMovementBlock.nut")
 let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { ctrlPieStickBlock, ctrlPieStickView } = require("%rGui/hud/controlsPieMenu/ctrlPieStick.nut")
@@ -34,11 +36,18 @@ let { Cannon0, MGun0, hasCanon0, hasMGun0,
   TorpedoesState, hasTorpedos,
   isActiveTurretCamera
 } = require("%rGui/hud/airState.nut")
-let { returnToShipButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
+let { mkSimpleSquareButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { zoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
 let { moveArrowsAirView } = require("%rGui/components/movementArrows.nut")
 let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
 let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
+let { curActionBarTypes } = require("%rGui/hud/actionBar/actionBarState.nut")
+let returnToShipShortcutIds = {
+  AB_SUPPORT_PLANE = "ID_WTM_LAUNCH_AIRCRAFT"
+  AB_SUPPORT_PLANE_2 = "ID_WTM_LAUNCH_AIRCRAFT_2"
+  AB_SUPPORT_PLANE_3 = "ID_WTM_LAUNCH_AIRCRAFT_3"
+  AB_SUPPORT_PLANE_4 = "ID_WTM_LAUNCH_AIRCRAFT_4"
+}
 
 return cfgHudCommon.__merge({
 
@@ -89,9 +98,35 @@ return cfgHudCommon.__merge({
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_binoculars.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
   }
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   back = {
-    ctor = returnToShipButton
+    ctor = @() @() {
+      watch = curActionBarTypes
+      children = returnToShipShortcutIds.findvalue(@(_, id) id in curActionBarTypes.get())
+          ? mkSimpleSquareButton(returnToShipShortcutIds.findvalue(@(_, id) id in curActionBarTypes.get()), "ui/gameuiskin#hud_ship_selection.svg")
+        : null
+    }
     defTransform = mkRBPos([hdpx(-240), hdpx(-0)])
     editView = mkSquareButtonEditView("ui/gameuiskin#hud_ship_selection.svg")
   }
@@ -153,6 +188,13 @@ return cfgHudCommon.__merge({
     defTransform = mkRBPos([hdpx(-140), 0])
     editView = aircraftMovementEditView
     priority = Z_ORDER.STICK
+  }
+
+  brakeButton = {
+    ctor = @() brakeButton
+    defTransform = mkRBPos([hdpx(-10), hdpx(-130)])
+    editView = brakeButtonEditView
+    priority = Z_ORDER.BUTTON
   }
 
   indicators = {

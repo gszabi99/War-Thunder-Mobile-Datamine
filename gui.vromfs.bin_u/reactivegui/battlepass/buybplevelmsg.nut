@@ -22,7 +22,7 @@ function purchaseContent(stageInfo) {
     children = [
       msgBoxText(utf8ToUpper(loc("battlepass/level_up")), textOvr.__merge(fontMedium))
       msgBoxText(" ".join([loc("mainmenu/btnLevelBoost"), stageInfo.progress]), textOvr.__merge(fontSmall))
-      needReward.get() ? msgBoxText(loc("reward"), textOvr.__merge(fontTiny)) : null
+      needReward.get() ? msgBoxText(loc("mainmenu/rewardsList"), textOvr.__merge(fontTiny)) : null
       needReward.get() ? mkRewardPlate(stageInfo.viewInfo, bpCardStyle) : null
       msgBoxText(loc("mainmenu/cost"), textOvr)
     ]

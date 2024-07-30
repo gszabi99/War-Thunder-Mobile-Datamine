@@ -6,7 +6,6 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
 let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
@@ -15,12 +14,13 @@ let { isUnitAttrOpened, attrUnitData, curCategory, curCategoryId, selAttrSpCost,
   attrUnitLevelsToMax, attrUnitName, lastModifiedAttr
 } = require("%rGui/unitAttr/unitAttrState.nut")
 let { mkUnitAttrTabs, contentMargin } = require("%rGui/unitAttr/unitAttrWndTabs.nut")
-let { unitAttrPage, rowsPosPadL, rowHeight } = require("%rGui/unitAttr/unitAttrWndPage.nut")
+let { unitAttrPage, rowHeight } = require("%rGui/unitAttr/unitAttrWndPage.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let buyUnitLevelWnd = require("buyUnitLevelWnd.nut")
 let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let panelBg = require("%rGui/components/panelBg.nut")
 let { tooltipBg } = require("%rGui/tooltip.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -140,6 +140,7 @@ let attrDetails = @() {
         watch = [curCategory, lastModifiedAttr, isAttrDetailsVisible]
         size = [attrDetailsWidth, SIZE_TO_CONTENT]
         padding = 0
+        margin = [hdpx(20),0,0]
         fillColor = 0xA0000000
         children = [
           {
@@ -154,20 +155,17 @@ let attrDetails = @() {
 }
 
 let pageBlock = {
-  rendObj = ROBJ_IMAGE
   size = [ SIZE_TO_CONTENT, flex() ]
-  maxHeight = ph(100)
-  pos = [ saBorders[0], 0 ]
   hplace = ALIGN_RIGHT
-  image = Picture("ui/gameuiskin#debriefing_bg_grad@@ss.avif:0:P")
-  color = Color(9, 15, 22, 96)
-  padding = [ hdpx(15), saBorders[0] ]
   flow = FLOW_VERTICAL
   children = [
     @() !isUnitMaxSkills.value
       ? {
         watch = isUnitMaxSkills
-        padding = [ 0, 0, 0, rowsPosPadL + levelHolderSize ]
+        rendObj = ROBJ_SOLID
+        color = 0xB0000000
+        size = [flex(), SIZE_TO_CONTENT]
+        padding = [hdpx(20), 0, hdpx(20), hdpx(130)]
         flow = FLOW_HORIZONTAL
         children = [
           txt({ text = "".concat(loc("unit/upgradePoints"), loc("ui/colon")) })
@@ -179,11 +177,11 @@ let pageBlock = {
         ]
       }
       : { watch = isUnitMaxSkills }
-    { size = [ flex(), hdpx(60) ] }
     {
       size = [ pageWidth, flex() ]
+      margin = [hdpx(10),0,0]
       children = [
-        mkVerticalPannableArea(unitAttrPage)
+        panelBg.__merge(mkVerticalPannableArea(unitAttrPage))
         attrDetails
       ]
     }

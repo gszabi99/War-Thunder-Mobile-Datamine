@@ -139,20 +139,16 @@ let navBarPlace = {
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   gap = buttonsHGap
-  children = [
-    @() textarea(loc(curCampaign.value == "tanks" ? "levelUp/selectPlatoon" : "levelUp/selectShip"),
-      { watch = curCampaign })
-    @() {
-      watch = myUnits
-      hplace = ALIGN_RIGHT
-      flow = FLOW_HORIZONTAL
-      gap = buttonsHGap
-      children = [
-        myUnits.value.len() > 0 ? btnLater : null //do not allow to later when player does not have units at all
-        unitActions
-      ]
-    }
-  ]
+  children = @() {
+    watch = myUnits
+    hplace = ALIGN_RIGHT
+    flow = FLOW_HORIZONTAL
+    gap = buttonsHGap
+    children = [
+      myUnits.value.len() > 0 ? btnLater : null //do not allow to later when player does not have units at all
+      unitActions
+    ]
+  }
   transform = {}
   animations = appearAnim(buttonsAppearDelay, buttonsAppearTime)
 }
@@ -239,8 +235,13 @@ return {
   onDetach = @() isAttached(false)
   size = flex()
   children = [
+    @() textarea(loc(curCampaign.value == "tanks" ? "levelUp/selectPlatoon" : "levelUp/selectShip"),
+      {
+        watch = curCampaign
+        hplace=ALIGN_CENTER
+        maxWidth = hdpx(700) })
     unitInfoPanel({
-      pos = [ saBorders[0], 0 ]
+      hplace=ALIGN_RIGHT
       behavior = [ Behaviors.Button, HangarCameraControl ]
       eventPassThrough = true
       onClick = @() unitDetailsWnd({ name = curSelectedUnit.value })

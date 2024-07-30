@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { allUnitsCfg, myUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { ovrHangarAddon } = require("%appGlobals/updater/addons.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, blueprints } = require("%appGlobals/pServer/campaign.nut")
 let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
+let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
+let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 
 
 let bgByCampaign = {
@@ -40,8 +42,11 @@ let unitsMaxStarRank = Computed(@() allUnitsCfg.value.map(@(v) v.starRank).reduc
 let unitsMapped = Computed(function() {
   let res = {}
   let visibleCountries = {}
-  local allUnits = allUnitsCfg.value
-    .filter(@(u) !u?.isHidden || u.name in myUnits.value)
+  local allUnits = needToShowHiddenUnitsDebug.get()
+  ? allUnitsCfg.value
+    .map(@(u, id) myUnits.value?[id] ?? u)
+  : allUnitsCfg.value
+    .filter(@(u) !u?.isHidden || u.name in myUnits.value || (blueprints.get()?[u.name] ?? 0) > 0)
     .map(@(u, id) myUnits.value?[id] ?? u)
 
   if (filterCount.get() > 0)
@@ -97,6 +102,10 @@ function openUnitsTreeAtCurRank() {
   openUnitsTreeWnd()
   unitsTreeOpenRank.set(playerLevelInfo.get().level + 1)
 }
+function openUnitsTreeAtUnit(unitName) {
+  openUnitsTreeWnd()
+  curSelectedUnit.set(unitName)
+}
 
 return {
   isUnitsTreeOpen
@@ -105,6 +114,7 @@ return {
   closeUnitsTreeWnd
   openUnitsTreeWnd
   openUnitsTreeAtCurRank
+  openUnitsTreeAtUnit
 
   unitsMapped
   unitsMaxRank

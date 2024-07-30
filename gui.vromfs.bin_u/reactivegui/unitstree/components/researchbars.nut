@@ -4,6 +4,7 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { attractColor, aTimeHint, aTimePriceScale } = require("%rGui/unitsTree/treeAnimConsts.nut")
 
 
 let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
@@ -99,11 +100,19 @@ function unitResearchBar(unitName) {
         children = [
           @() {
             watch = hintLocId
+            key = hintLocId
             size = [statsWidth, SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_CENTER
             text = hintLocId.get() == null ? null : loc(hintLocId.get())
+            transform = {}
+            animations = [
+              { prop = AnimProp.color, to = attractColor, duration = aTimeHint, easing = CosineFull,
+                trigger = "unitInfoActionHint" }
+              { prop = AnimProp.scale, to = [1.2, 1.2], duration = aTimePriceScale, easing = CosineFull,
+                trigger = "unitInfoActionHint" }
+            ]
           }.__update(fontTinyAccented)
           unitExpBar(unitName, unitResearch)
         ]

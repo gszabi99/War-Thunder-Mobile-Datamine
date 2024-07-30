@@ -16,6 +16,11 @@ let customUnitPkg = {
   ussr_t_34_1941_l_11 = null
   germ_pzkpfw_IV_ausf_F2 = null,
   //aircrafts
+  ["i-15_1934"] = null,
+  he51c1 = null,
+  ["f3f-2"] = null,
+  fw_190a_1 = null,
+  il_2m_1943 = null,
   ["p-38k"] = aircraftCbtPkgs,
   ["yak-3t"] = aircraftCbtPkgs,
   ["fw-190c"] = aircraftCbtPkgs

@@ -1,5 +1,21 @@
 {
   "z_far": 35000.0,
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 0,
+  "numBorderCellsZPos": 0,
+  "numBorderCellsZNeg": 0,
+  "gridSteps": [
+    2000.0,
+    2000.0
+  ],
+  "vsmAngleThreshold": 0.0,
+  "shore_waves_dist": [
+    50.0,
+    200.0
+  ],
+  "wind_scale": 1.2,
+  "max_wind_strength": 6.5,
+  "water_level": 0.0,
   "mapCoord0": [
     -4096.0,
     -4096.0
@@ -20,20 +36,45 @@
     90068.0,
     90068.0
   ],
-  "numBorderCellsXPos": 0,
-  "numBorderCellsXNeg": 0,
-  "numBorderCellsZPos": 0,
-  "numBorderCellsZNeg": 0,
-  "gridSteps": [
-    2000.0,
-    2000.0
-  ],
-  "vsmAngleThreshold": 0.0,
   "weatherPreset": "gameData/environments/weather_preset_1.blk",
   "weatherTypes": "gameData/environments/weather_types.blk",
-  "wind_scale": 1.2,
-  "max_wind_strength": 6.5,
-  "water_level": 0.0,
+  "shader_vars": {
+    "max_river_width": 1500.0,
+    "ocean_density": 0.4,
+    "river_density": 2.0,
+    "water_color_noise_size": 1737.0,
+    "shore_depth_scale": 0.07,
+    "ocean0": [
+      0.06,
+      0.04,
+      0.19,
+      0.0
+    ],
+    "ocean1": [
+      0.08,
+      0.06,
+      0.17,
+      0.0
+    ],
+    "river0": [
+      0.11,
+      0.2,
+      0.12,
+      0.0
+    ],
+    "river1": [
+      0.19,
+      0.28,
+      0.24,
+      0.0
+    ]
+  },
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": true,
+    "riExtraMinSizeForReflection": 100.0,
+    "riExToHeightmap": true
+  },
   "micro_details": {
     "micro_detail": [
       "microdetail_stone_c_tex_n*",
@@ -169,41 +210,5 @@
       "lod1": 20000.0
     }
   },
-  "shader_vars": {
-    "max_river_width": 1500.0,
-    "ocean_density": 0.4,
-    "river_density": 2.0,
-    "ocean0": [
-      0.06,
-      0.04,
-      0.19,
-      0.0
-    ],
-    "ocean1": [
-      0.08,
-      0.06,
-      0.17,
-      0.0
-    ],
-    "river0": [
-      0.11,
-      0.2,
-      0.12,
-      0.0
-    ],
-    "river1": [
-      0.19,
-      0.28,
-      0.24,
-      0.0
-    ],
-    "water_color_noise_size": 1737.0
-  },
-  "technicsSkins": {},
-  "render": {
-    "lmesh": true,
-    "onlyUnderwaterLmesh": true,
-    "riExToHeightmap": true,
-    "riExtraMinSizeForReflection": 10.0
-  }
+  "technicsSkins": {}
 }

@@ -24,10 +24,9 @@ let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
 let nextLevelBorderColor = 0xFFDADADA
@@ -86,12 +85,12 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
   } = playerLevelInfo.value
   let progresOffset = levelHolderSize * rotateCompensate
   let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan
-    : !isMaxLevel && curCampaign.get() not in serverConfigs.get()?.unitTreeNodes ? openExpWnd
+    : !isMaxLevel && !isCampaignWithUnitsResearch.get() ? openExpWnd
     : null
   let showStarLevel = max(starLevel, historyStarLevel)
   let nextStarLevel = isStarProgress ? starLevel + 1 : 0
   return {
-    watch = [playerLevelInfo, curCampaign, serverConfigs]
+    watch = [playerLevelInfo, isCampaignWithUnitsResearch]
     valign = ALIGN_CENTER
     pos = [levelHolderPlace, levelHolderPlace]
     padding = [0, progresOffset]
@@ -297,7 +296,7 @@ let gamercardUnitLevelLine = @(unit, keyHintText){
             halign = ALIGN_LEFT
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
-            maxWidth = hdpx(600)
+            maxWidth = hdpx(700)
             text = (unit?.level ?? -1) == unit?.levels.len() || unit?.isUpgraded || unit?.isPremium
               ? loc($"gamercard/levelCamp/maxLevel/{curCampaign.value}")
               : loc(keyHintText)

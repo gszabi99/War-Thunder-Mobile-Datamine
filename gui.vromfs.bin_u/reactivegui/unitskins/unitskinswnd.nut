@@ -16,7 +16,7 @@ let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow, isSkinsWndAttac
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { getLootboxName } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
 } = require("%rGui/components/gradientDefComps.nut")
 let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")

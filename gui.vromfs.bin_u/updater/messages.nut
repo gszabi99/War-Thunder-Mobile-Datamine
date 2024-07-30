@@ -10,6 +10,7 @@ let { dgs_get_settings, exit } = require("dagor.system")
 let { send_counter = @(_, __, ___) null } = require_optional("statsd")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { needUpdateMsg, needRestartMsg } = require("updaterState.nut")
+let { mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset } = require("gradients.nut")
 
 
 let wndWidth = hdpx(1100)
@@ -19,17 +20,28 @@ let buttonHeight = hdpx(105)
 let buttonMinWidth = hdpx(370)
 let buttonsHGap = hdpx(64)
 
-let msgBoxHeader = @(text) {
+let bgMessage = {
+  rendObj = ROBJ_IMAGE
+  image = mkColoredGradientY(0xFF304453, 0xFF030C13)
+}
+
+let bgHeader = {
+  rendObj = ROBJ_9RECT
+  image = gradTranspDoubleSideX
+  texOffs = [0, gradDoubleTexOffset]
+  screenOffs = [0, hdpx(300)]
+  color = 0xFF4D88A4
+}
+
+let msgBoxHeader = @(text) bgHeader.__merge({
   size = [ flex(), wndHeaderHeight ]
-  rendObj = ROBJ_SOLID
-  color = 0xFF1C2026
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = {
     rendObj = ROBJ_TEXT
     text
   }.__update(fontSmall)
-}
+})
 
 let msgBoxText = @(text) {
   size = flex()
@@ -41,10 +53,8 @@ let msgBoxText = @(text) {
   text
 }.__update(fontSmall)
 
-let mkMsgBox = @(title, desc, buttons) {
+let mkMsgBox = @(title, desc, buttons) bgMessage.__merge({
   size = [ wndWidth, wndHeight ]
-  rendObj = ROBJ_SOLID
-  color = 0xDC161B23
   flow = FLOW_VERTICAL
   children = [
     msgBoxHeader(title)
@@ -64,7 +74,7 @@ let mkMsgBox = @(title, desc, buttons) {
       ]
     }
   ]
-}
+})
 
 let patternImage = {
   size = [ph(100), ph(100)]

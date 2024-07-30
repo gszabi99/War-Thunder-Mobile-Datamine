@@ -24,6 +24,7 @@ let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { researchBlock } = require("%rGui/unitsTree/components/researchBars.nut")
+let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -35,10 +36,11 @@ let progressBorderW = hdpx(2)
 let progressHt = hdpx(5) + 2 * progressBorderW
 let statsGap = hdpx(5)
 let statsInsideGap = hdpx(2)
-let unitInfoPanelDefPos = [ saBorders[0], hdpx(100) ]
 
 let diffAnimDelay = 0.5
 let diffAnimTime = 0.5
+
+let scrollHandlerInfoPanel = ScrollHandler()
 
 let canUseItemByUnit = {
   ship_smoke_screen_system_mod = @(unitName) getUnitBlkDetails(unitName).hasShipSmokeScreen
@@ -47,6 +49,13 @@ let canUseItemByUnit = {
 let mkText = @(override = {}) {
   color = textColor
   rendObj = ROBJ_TEXT
+}.__update(fontTiny, override)
+
+let mkTextArea = @(override = {}) {
+  size = [flex(), SIZE_TO_CONTENT]
+  behavior = Behaviors.TextArea
+  color = textColor
+  rendObj = ROBJ_TEXTAREA
 }.__update(fontTiny, override)
 
 let inlineIconSize = hdpxi(40)
@@ -62,6 +71,7 @@ let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride
   let title = {
     rendObj = ROBJ_TEXT
     size = SIZE_TO_CONTENT
+    maxWidth = isElite ? hdpx(290) : hdpx(400)
     text = getUnitClassFontIcon(unit) == ""
       ? unitNameCtor(unit)
       : "  ".concat(unitNameCtor(unit), getUnitClassFontIcon(unit))
@@ -69,6 +79,9 @@ let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride
     fontFx = FFT_GLOW
     fontFxFactor = 64
     fontFxColor = 0xFF000000
+    behavior = Behaviors.Marquee
+    speed = hdpx(30)
+    delay = defMarqueeDelay
   }.__update(fontSmallAccented, textOverride)
   return !isElite ? title.__update(override)
     : {
@@ -108,7 +121,7 @@ let diffProgress = @(width, posX, pivotX, color) {
 
 function mkStatRow(data, prevProgress) {
   let { header = null, value = null, progress = null,
-    progressColor = null, uid = null } = data
+    progressColor = null, uid = null, isMultiline = false } = data
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
@@ -118,7 +131,7 @@ function mkStatRow(data, prevProgress) {
         size = [flex(), SIZE_TO_CONTENT]
         valign = ALIGN_BOTTOM
         children = [
-          mkText({ text = header })
+          isMultiline ? mkTextArea({ text = header }) : mkText({ text = header })
           mkText({ text = value, hplace = ALIGN_RIGHT })
         ]
       }
@@ -390,27 +403,30 @@ let unitHeaderBlock = @(unit, unitTitleCtor) @(){
       pos = [0, -hdpx(20)]
       children = unitTitleCtor(unit)
     }
-    unit.name in myUnits.value
-      ? mkUnitLevelBlock(unit)
-      : null
+    mkUnitLevelBlock(unit)
   ]
 }
 
 local lastUnitStats = null
 
-let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, ovr = {}) function() {
-  if (unit.value == null)
-    return { watch = unit }
+let scrollArrowsBlock = {
+  pos = [-scrollArrowImageSmallSize, 0]
+  size = [SIZE_TO_CONTENT, -scrollArrowImageSmallSize]
+  hplace = ALIGN_CENTER
+  children = mkScrollArrow(scrollHandlerInfoPanel, MR_B, scrollArrowImageSmall)
+}
 
-  let prevStats = lastUnitStats
-  let unitStats = mkUnitStatsCompShort(unit.value, unit.value?.attrLevels,
-    attrPresets.value?[unit.value?.attrPreset], unitMods.value)
-  lastUnitStats = unitStats
+let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, ovr = {}, mkScroll = null)
+  function() {
+    if (unit.value == null)
+      return { watch = unit }
 
-  return panelBg.__merge({
-    watch = [unit, unitMods, attrPresets]
-    children = {
-      minWidth = statsWidth
+    let prevStats = lastUnitStats
+    let unitStats = mkUnitStatsCompShort(unit.value, unit.value?.attrLevels,
+      attrPresets.value?[unit.value?.attrPreset], unitMods.value)
+    lastUnitStats = unitStats
+
+    let children = {
       flow = FLOW_VERTICAL
       halign = ALIGN_RIGHT
       children = [
@@ -427,8 +443,18 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
         researchBlock(unit.get())
       ]
     }.__update(ovr)
-  }, override)
-}
+
+    return panelBg.__merge({
+      watch = [unit, unitMods, attrPresets]
+      clipChildren = true
+      stopMouse = true
+      children = !mkScroll ? children
+        : [
+            mkScroll(children)
+            scrollArrowsBlock
+          ]
+    }, override)
+  }
 
 let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
   if (unit.value == null)
@@ -462,5 +488,5 @@ return {
   mkUnitTitle
   mkPlatoonOrUnitTitle
   statsWidth
-  unitInfoPanelDefPos
+  scrollHandlerInfoPanel
 }

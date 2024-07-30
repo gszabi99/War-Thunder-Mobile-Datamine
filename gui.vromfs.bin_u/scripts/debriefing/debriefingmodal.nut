@@ -4,9 +4,11 @@ let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { destroy_session } = require("multiplayer")
 let { loadJson, saveJson } = require("%sqstd/json.nut")
 let { register_command } = require("console")
+let { file_exists } = require("dagor.fs")
 let { resetTimeout } = require("dagor.workcycle")
 let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
+let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { battleResult, debugBattleResult } = require("battleResult.nut")
 let loadRootScreen = require("%scripts/loadRootScreen.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
@@ -45,7 +47,22 @@ function closeDebriefing() {
   loadRootScreen()
 }
 
-let saveDebriefing = @(fileName) saveJson(fileName, battleResult.value)
+subscribeFMsgBtns({
+  debrSaveOverwrite = @(fileName) saveJson(fileName, battleResult.get(), { logger = console_print })
+})
+
+function saveDebriefing(fileName) {
+  if (!file_exists(fileName))
+    return saveJson(fileName, battleResult.get())
+  openFMsgBox({
+    text = $"File already exists:\n{fileName}\nOverwrite?"
+    buttons = [
+      { id = "cancel", isCancel = true }
+      { text = "Overwrite", eventId = "debrSaveOverwrite", context = fileName,
+        styleId = "PRIMARY", isDefault = true }
+    ]
+  })
+}
 
 function loadDebriefing(fileName) {
   let data = loadJson(fileName)

@@ -440,8 +440,8 @@
     ],
     "subtype": "target_turret",
     "horLimit": [
-      -1.0,
-      1.0
+      0.0,
+      0.0
     ],
     "verLimit": [
       -1.0,
@@ -3694,6 +3694,70 @@
     "transitionFadeOutTime": 1.0,
     "viscosity": 0.5
   },
+  "antiair": {
+    "type": "AntiairViewCamera",
+    "fov": 60.0,
+    "zoomFov": 10.0,
+    "maxAutoZoomFov": 1.5,
+    "tankAutoZoomRate": 0.8,
+    "shipAutoZoomRate": 0.8,
+    "gunFov": 5.0,
+    "cameraOffset": [
+      0.0,
+      40.0,
+      0.0
+    ],
+    "cameraOffsetZoomed": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "useOffset": true,
+    "offsetByUnit": true,
+    "clipType": "trace",
+    "zoomToGun": false,
+    "useCockpitOffsets": false,
+    "isMouseView": true,
+    "cameraShakeMultiplier": 1.2,
+    "cameraShakeMultiplierOnShooting": 0.3,
+    "tiltShakeMultiplierForTanks": 0.0,
+    "tiltShakeMultiplierForShips": 0.0,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.05,
+    "viscosity": 0.1,
+    "viscosityAtZoom": 0.05,
+    "trackGunDirection": true,
+    "useShootingPosAtZoom": true,
+    "autoZoomKByTargetBBox": true,
+    "up": {
+      "angle": [
+        0.0,
+        -90.0
+      ],
+      "dist": 20.0
+    },
+    "down": {
+      "angle": [
+        180.0,
+        0.0
+      ],
+      "dist": 40.0
+    },
+    "left": {
+      "angle": [
+        -110.0,
+        0.0
+      ],
+      "dist": 20.0
+    },
+    "right": {
+      "angle": [
+        110.0,
+        0.0
+      ],
+      "dist": 20.0
+    }
+  },
   "follow_object_camera": {
     "type": "FollowObjectCamera",
     "bombDistance": 25.0,
@@ -3941,7 +4005,8 @@
         "driver_ground",
         "camera_binoculars_targeting",
         "fixed",
-        "strategy"
+        "strategy",
+        "antiair"
       ]
     },
     "spectator": {

@@ -265,8 +265,10 @@ function mkAttrRow(attr) {
   let selValueData = Computed(@() selLevel.value > minLevel.value
     ? getAttrValData(attrUnitType.value, attr, selLevel.value, shopCfg, serverConfigs.value, unitMods.value)
     : [])
+  let hasSp = Computed(@() totalUnitSp.value > 0 )
 
-  return {
+  return @() {
+    watch = hasSp
     size = [ flex(), rowHeight ]
     flow = FLOW_HORIZONTAL
     gap = progressBtnGap
@@ -283,7 +285,7 @@ function mkAttrRow(attr) {
         ]
       }
       mkProgressBtn(mkProgressBtnContentInc(canInc), mkBtnOnClick(1))
-      mkNextIncCost(nextIncCost, canInc, totalUnitSp)
+      hasSp.value ? mkNextIncCost(nextIncCost, canInc, totalUnitSp) : null
     ]
   }
 }

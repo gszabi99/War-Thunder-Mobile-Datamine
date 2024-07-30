@@ -50,7 +50,6 @@
       "type": "domination",
       "environment": "Day",
       "weather": "good",
-      "overrideUnit": "f3f-2;he51c1;i-15_1934",
       "locName": "missions/_GS/light_tank;location/stalingrad_w",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 6500,
@@ -237,6 +236,20 @@
       },
       {
         "file": "gameData/missions/templates/plane_templates/bridges/stalingrad_w_bridges.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/plane_templates/gsn_objectives_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -628,20 +641,7 @@
   },
   "mission_objectives": {
     "isCategory": true,
-    "is_enabled": true,
-    "gsn_main_objective": {
-      "is_enabled": true,
-      "comments": "",
-      "type": "abstractMissionObjective",
-      "props": {
-        "isPrimary": true,
-        "timeLimit": 1800,
-        "scoreConst": 100,
-        "scoreTime": 400
-      },
-      "onSuccess": {},
-      "onFailed": {}
-    }
+    "is_enabled": true
   },
   "variables": {},
   "dialogs": {},

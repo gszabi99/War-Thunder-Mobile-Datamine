@@ -1,32 +1,42 @@
 from "%globalsDarg/darg_library.nut" import *
 let { translucentIconButton, translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
-let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, bgUnit, mkUnitSelectedGlow, unitPlateSmall
+let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { set_current_unit } = require("%appGlobals/pServer/pServerApi.nut")
+let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, bgUnit, mkUnitSelectedGlow
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { btnOpenUnitAttrCustom } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
 let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { slots, setUnitToSlot, buyUnitSlot, newSlotPriceGold } = require("slotBarState.nut")
+let { slots, setUnitToSlot, buyUnitSlot, newSlotPriceGold, slotsNeedAddAnim, getSlotAnimTrigger,
+  onFinishSlotAnim
+} = require("slotBarState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { slotBarTreeGap, slotBarTreeHeight, unitPlateSize } = require("slotBarConsts.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { isHangarUnitHasWeaponSlots, openUnitModsSlotsWnd } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { hasSlotAttrPreset } = require("%rGui/unitAttr/unitAttrState.nut")
 
 
 let gap = hdpx(10)
 let gapVert = hdpx(5)
 let buyIconSize = hdpxi(40)
-let unitPlateSize = unitPlateSmall
 let actionIconSize = (translucentButtonsHeight * 0.5).tointeger()
 let actionBtnSize = [translucentButtonsHeight * 1.1, translucentButtonsHeight * 0.7]
 let actionBtnsBlockSize = [translucentButtonsHeight * 1.1, actionBtnSize[1] + actionIconSize * 0.5 + gapVert]
 let slotBarSize = [saSize[0] - defButtonMinWidth, unitPlateSize[1] + actionBtnsBlockSize[1] + gapVert]
-let slotBarTreeGap = hdpx(20)
-let slotBarTreeHeight = unitPlateSize[1] + slotBarTreeGap
+
+let aTimeSlotRemove = 0.5
+let aTimeSlotAddAppear = 0.2
+let aTimeSlotAddBlink = 0.3
+
+let removeUnitTrigger = {}
 
 let emptySlotText = {
   hplace = ALIGN_CENTER
@@ -38,6 +48,7 @@ let emptySlotText = {
 let function emptySelectSlot(idx) {
   let stateFlags = Watched(0)
   return {
+    key = "empty"
     size = unitPlateSize
     behavior = Behaviors.Button
     onClick = @() setUnitToSlot(idx)
@@ -50,14 +61,9 @@ let function emptySelectSlot(idx) {
       emptySlotText
       mkUnitSelectedGlow(null, Computed(@() stateFlags.get() & S_HOVER))
     ]
+    animations = [{ prop = AnimProp.opacity, to = 0.0, duration = aTimeSlotAddAppear,
+      easing = OutQuad, playFadeOut = true }]
   }
-}
-
-let emptySlot = {
-  size = unitPlateSize
-  rendObj = ROBJ_IMAGE
-  image = bgUnit
-  children = emptySlotText
 }
 
 let function slotToPurchase(priceGold) {
@@ -94,18 +100,20 @@ let function slotToPurchase(priceGold) {
   }
 }
 
-let function mkUnitPlate(unit, idx = null) {
+let function mkUnitSlot(unit, idx, onClick) {
   if (unit == null)
-    return idx == null ? emptySlot : emptySelectSlot(idx)
+    return emptySelectSlot(idx)
 
   let stateFlags = Watched(0)
   let isSelected = Computed(@() hangarUnitName.get() == unit.name)
-
+  let trigger = getSlotAnimTrigger(idx, unit.name)
+  let needPlayOnAttach = slotsNeedAddAnim.get()?[idx] == unit.name
   return @() {
     watch = [isSelected, stateFlags]
+    key = $"slot_{idx}_{unit.name}"
     size = unitPlateSize
     behavior = Behaviors.Button
-    onClick = @() idx == null ? curSelectedUnit.set(unit.name) : setUnitToSlot(idx)
+    onClick
     onElemState = @(s) stateFlags(s)
     clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
     sound = { click  = "choose" }
@@ -116,49 +124,65 @@ let function mkUnitPlate(unit, idx = null) {
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
       mkUnitLock(unit, false)
     ]
+    transform = { pivot = [0.5, 0.5] }
+    animations = [
+      { prop = AnimProp.translate, to = unitPlateSize.map(@(v) v / 4), duration = aTimeSlotRemove,
+        easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger }
+      { prop = AnimProp.scale, to = [0.5, 0.5], duration = aTimeSlotRemove,
+        easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger }
+      { prop = AnimProp.opacity, to = 0.0, duration = aTimeSlotRemove,
+        easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger }
+      { prop = AnimProp.scale, from = [0.8, 0.8], duration = aTimeSlotAddAppear,
+        easing = InQuad, trigger, play = needPlayOnAttach }
+      { prop = AnimProp.scale, to = [1.1, 1.1], duration = aTimeSlotAddBlink, delay = aTimeSlotAddAppear,
+        easing = Blink, trigger, play = needPlayOnAttach, onFinish = @() onFinishSlotAnim(idx) }
+      { prop = AnimProp.opacity, from = 0.0, duration = aTimeSlotAddAppear,
+        easing = OutQuad, trigger, play = needPlayOnAttach }
+    ]
   }
 }
 
 let function actionBtns(unit) {
   let showBtns = Computed(@() hangarUnitName.get() == unit?.name)
   return @() {
-    watch = showBtns
+    watch = [showBtns, isHangarUnitHasWeaponSlots]
     size = actionBtnsBlockSize
     valign = ALIGN_BOTTOM
     flow = FLOW_HORIZONTAL
-    gap = hdpx(8)
+    gap = hdpx(5)
     children = !unit || !showBtns.get() ? null : [
       translucentIconButton(
         "ui/gameuiskin#icon_slot_change.svg",
         openUnitsTreeWnd,
         actionIconSize,
         actionBtnSize)
-      btnOpenUnitAttrCustom(actionIconSize, actionBtnSize)
+      hasSlotAttrPreset.get() ? null
+        : btnOpenUnitAttrCustom(actionIconSize, actionBtnSize)
+      !isHangarUnitHasWeaponSlots.get() ? null
+        : translucentIconButton(
+          "ui/gameuiskin#arsenal.svg",
+          openUnitModsSlotsWnd,
+          actionIconSize,
+          actionBtnSize)
     ]
   }
 }
 
-let function mkSlotWithButtons(slot) {
-  let unit = Computed(@() allUnitsCfg.get()?[slot?.name])
+let function mkSlotWithButtons(slot, idx) {
+  let unit = Computed(@() myUnits.get()?[slot?.name] ?? allUnitsCfg.get()?[slot?.name])
   return @() {
     watch = unit
     flow = FLOW_VERTICAL
     gap = gapVert
     children = [
       actionBtns(unit.get())
-      mkUnitPlate(unit.get())
-    ]
-  }
-}
-
-function mkSlot(slot, idx, child = null) {
-  let unit = Computed(@() allUnitsCfg.get()?[slot?.name])
-  return @() {
-    watch = unit
-    valign = ALIGN_BOTTOM
-    children = [
-      mkUnitPlate(unit.get(), idx)
-      child
+      mkUnitSlot(unit.get(), idx,
+        function() {
+          if (unit.get() == null)
+            return
+          curSelectedUnit.set(unit.get().name)
+          set_current_unit(unit.get().name)
+        })
     ]
   }
 }
@@ -166,15 +190,29 @@ function mkSlot(slot, idx, child = null) {
 let mainMenuPannable = horizontalPannableAreaCtor(saSize[0] - defButtonMinWidth, array(2, saBorders[0]))
 let slotBarMainMenu = mainMenuPannable(@() {
   watch = slots
+  key = "slotBarMainMenu"
+  onDetach = @() anim_skip(removeUnitTrigger)
   flow = FLOW_HORIZONTAL
   gap
   children = slots.get().map(mkSlotWithButtons)
 })
 
+function mkSlotCommon(slot, idx) {
+  let { name = "" } = slot
+  let unit = Computed(@() myUnits.get()?[name] ?? allUnitsCfg.get()?[name])
+  return @() {
+    watch = unit
+    valign = ALIGN_BOTTOM
+    children = mkUnitSlot(unit.get(), idx, @() name != "" ? curSelectedUnit.set(name) : null)
+  }
+}
+
 let unitsTreePannable = horizontalPannableAreaCtor(saSize[0] - statsWidth, array(2, saBorders[0]))
 let slotBarUnitsTree = {
+  key = {}
   size = [sw(100), sh(100)]
   valign = ALIGN_BOTTOM
+  onDetach = @() anim_skip(removeUnitTrigger)
   children = [
     {
       size = [flex(), hdpx(1)]
@@ -192,11 +230,12 @@ let slotBarUnitsTree = {
         watch = [slots, newSlotPriceGold]
         flow = FLOW_HORIZONTAL
         gap
-        children = slots.get().map(@(slot) mkSlot(slot, null))
+        children = slots.get().map(mkSlotCommon)
           .append(newSlotPriceGold.get() == null ? null : slotToPurchase(newSlotPriceGold.get()))
       })
     }
   ]
+  animations = wndSwitchAnim
 }
 
 let frame = {
@@ -208,15 +247,29 @@ let frame = {
   borderWidth = hdpx(3)
 }
 
+function mkSlotSelect(slot, idx) {
+  let unit = Computed(@() myUnits.get()?[slot?.name] ?? allUnitsCfg.get()?[slot?.name])
+  return @() {
+    watch = unit
+    valign = ALIGN_BOTTOM
+    children = [
+      mkUnitSlot(unit.get(), idx, @() setUnitToSlot(idx))
+      frame
+    ]
+  }
+}
+
 let slotBarSelectWnd = @() {
   watch = [slots, newSlotPriceGold]
+  key = "slotBarSelectWnd"
+  size = [sw(100), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
+  onDetach = @() anim_skip(removeUnitTrigger)
   flow = FLOW_HORIZONTAL
   padding = hdpx(10)
   gap
-  size = [sw(100), SIZE_TO_CONTENT]
-  children = slots.get().map(@(slot, idx) mkSlot(slot, idx, frame))
+  children = slots.get().map(mkSlotSelect)
     .append(newSlotPriceGold.get() == null ? null : slotToPurchase(newSlotPriceGold.get()))
 }
 

@@ -97,7 +97,6 @@
     "operationTimer": 1.0,
     "explosionFx": "bomb_expl_1000kg",
     "waterExplosionEffect": "water_explosion_big",
-    "fxWaterShockWave": "dust_waterwave_big",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
     "fallToWaterFx": "bomb_reflection",
     "fallFx": "hit_59_80mm_dirt_ap",

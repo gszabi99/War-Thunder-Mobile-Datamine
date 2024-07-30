@@ -93,31 +93,31 @@
         },
         "triggerActivate": [
           {
-            "target": "dazt_airfield_0_1_check",
+            "target": "dazt_airfield_0_2_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           },
           {
-            "target": "dazt_airfield_2_2_check",
+            "target": "dazt_airfield_3_4_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           },
           {
-            "target": "dazt_airfield_3_3_check",
+            "target": "dazt_airfield_5_6_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           },
           {
-            "target": "dazt_airfield_4_4_check",
+            "target": "dazt_airfield_7_8_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
           },
           {
-            "target": "dazt_airfield_5_20_check",
+            "target": "dazt_airfield_9_16_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
@@ -520,7 +520,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_0_1_check": {
+    "dazt_airfield_0_2_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -536,7 +536,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "dazt_balance_level",
-          "value": 2,
+          "value": 3,
           "comparasion_func": "less"
         }
       },
@@ -571,7 +571,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_2_2_check": {
+    "dazt_airfield_3_4_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -588,12 +588,12 @@
         "varCompareInt": [
           {
             "var_value": "dazt_balance_level",
-            "value": 1,
+            "value": 2,
             "comparasion_func": "more"
           },
           {
             "var_value": "dazt_balance_level",
-            "value": 3,
+            "value": 5,
             "comparasion_func": "less"
           }
         ]
@@ -629,7 +629,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_3_3_check": {
+    "dazt_airfield_5_6_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -646,12 +646,12 @@
         "varCompareInt": [
           {
             "var_value": "dazt_balance_level",
-            "value": 2,
+            "value": 4,
             "comparasion_func": "more"
           },
           {
             "var_value": "dazt_balance_level",
-            "value": 4,
+            "value": 7,
             "comparasion_func": "less"
           }
         ]
@@ -687,7 +687,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_4_4_check": {
+    "dazt_airfield_7_8_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -704,12 +704,12 @@
         "varCompareInt": [
           {
             "var_value": "dazt_balance_level",
-            "value": 3,
+            "value": 6,
             "comparasion_func": "more"
           },
           {
             "var_value": "dazt_balance_level",
-            "value": 5,
+            "value": 9,
             "comparasion_func": "less"
           }
         ]
@@ -745,7 +745,7 @@
       },
       "else_actions": {}
     },
-    "dazt_airfield_5_20_check": {
+    "dazt_airfield_9_16_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -761,7 +761,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "dazt_balance_level",
-          "value": 4,
+          "value": 8,
           "comparasion_func": "more"
         }
       },

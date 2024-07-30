@@ -14,7 +14,7 @@ let shopCategoriesCfg = [
     // TODO: replace icon
     getImage =  @(campaign) campaign == "tanks" ? "!ui/gameuiskin#shop_tanks.svg"
       : "!ui/gameuiskin#shop_ships.svg"
-    gtypes = [ SGT_UNIT, SGT_LOOTBOX, SGT_BOOSTERS ]
+    gtypes = [ SGT_UNIT, SGT_SLOTS, SGT_LOOTBOX ]
   },
   {
     id = SC_GOLD
@@ -44,12 +44,14 @@ let shopCategoriesCfg = [
     id = SC_CONSUMABLES
     title = loc("shop/category/consumables")
     image = "!ui/gameuiskin#shop_consumables.svg"
-    gtypes = [ SGT_CONSUMABLES ]
+    gtypes = [ SGT_CONSUMABLES, SGT_BOOSTERS ]
   }
 ]
 
 
 function getGoodsType(goods) {
+  if ((goods?.slotsPreset ?? "") != "")
+    return SGT_SLOTS
   if (goods.units.len() > 0 || (goods?.unitUpgrades.len() ?? 0) > 0 || goods?.meta.previewUnit)
     return SGT_UNIT
   if (goods.items.len() > 0)

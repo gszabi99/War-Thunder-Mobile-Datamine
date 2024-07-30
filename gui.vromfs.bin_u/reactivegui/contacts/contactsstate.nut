@@ -168,6 +168,11 @@ function clearSearchData() {
   isSearchInProgress(false)
 }
 
+let errorHundlers = {
+  REQUEST_NOT_FOUND = @(_) fetchContacts(),
+  DEFAULT = @(locId) openFMsgBox({ text = loc(locId) })
+}
+
 function mkSimpleContactAction(actionId, mkData, onSucces = null) {
   contactsRegisterHandler(actionId, function(answer, context) {
     let { userId = null } = context
@@ -188,9 +193,14 @@ function mkSimpleContactAction(actionId, mkData, onSucces = null) {
       onSucces?(context)
     }
     else if ("error" in result) {
-      let locId = $"error/{result.error}"
+      let err = result.error
+      let locId = $"error/{err}"
       sendErrorLocIdBqEvent(locId)
-      openFMsgBox({ text = loc(locId) })
+
+      if (err in errorHundlers)
+        errorHundlers[err](err)
+      else
+        errorHundlers["DEFAULT"](locId)
     }
   })
 

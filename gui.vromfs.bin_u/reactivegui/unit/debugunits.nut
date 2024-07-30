@@ -47,6 +47,9 @@ function debug_start_testflight(unitName, missionName) {
   startTestFlightByName(unitName, missionName)
 }
 
+let needToShowHiddenUnitsDebug = mkWatched(persist, "needToShowHiddenUnitsDebug", false)
+
+register_command(@() needToShowHiddenUnitsDebug.set(!needToShowHiddenUnitsDebug.get()), "ui.showHiddenUnits")
 register_command(debugUnitStats, "debug.unitStats")
 register_command(
   @(unitName) console_print($"Tags of '{unitName}': ", getUnitTags(unitName)), // warning disable: -forbidden-function
@@ -59,3 +62,7 @@ register_command(debug_start_testflight, "ui.debug.testflight")
 register_command(@(unitName) debug_start_testflight(unitName, "testFlight_ussr_tft"), "ui.debug.testflight_tank")
 register_command(@(unitName) debug_start_testflight(unitName, "testFlight_destroyer_usa_tfs"), "ui.debug.testflight_ship")
 register_command(@(unitName) debug_start_testflight(unitName, "testFlight_plane"), "ui.debug.testflight_air")
+
+return {
+  needToShowHiddenUnitsDebug
+}

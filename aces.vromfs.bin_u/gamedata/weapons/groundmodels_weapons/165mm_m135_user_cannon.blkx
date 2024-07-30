@@ -54,7 +54,7 @@
       0.1,
       2.0
     ],
-    "cumulativeByNormal": true,
+    "cumulativeByNormal": false,
     "shellAnimation": "video/shells_animations/hesh.ivf",
     "bulletName": "165mm_m123",
     "hitPowerMult": 20.0,
@@ -349,7 +349,7 @@
         0.1,
         2.0
       ],
-      "cumulativeByNormal": true,
+      "cumulativeByNormal": false,
       "shellAnimation": "video/shells_animations/hesh.ivf",
       "bulletName": "165mm_m123",
       "hitPowerMult": 20.0,

@@ -102,6 +102,7 @@ let actionBarItemsConfig = {
   EII_MORTAR = {
     getShortcut = @(_, __) "ID_SHIP_WEAPON_MORTAR"
     getImage = @(_) "ui/gameuiskin#hud_depth_charge.svg"
+    alternativeImage = "ui/gameuiskin#hud_ship_mortar.svg"
     actionType = AB_MORTAR
     mkButtonFunction = "mkWeaponryItem"
     canShipLowerCamera = true

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { buy_unit_research, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { buy_unit_research, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -11,22 +11,23 @@ let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP,PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitsResearchStatus } = require("unitsTreeNodesState.nut")
+let { unitsResearchStatus, nodes } = require("unitsTreeNodesState.nut")
 let { unitPlateWidth, unitPlateHeight } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkTreeNodesUnitPlateSimple } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
 let { mkCustomMsgBoxWnd, mkBtn } = require("%rGui/components/msgBox.nut")
-let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
+let { resetTimeout } = require("dagor.workcycle")
+let { animUnitAfterResearch, animExpPart, animNewUnitsAfterResearch } = require("animState.nut")
 
 let WND_UID = "buyUnitResearchWnd"
 
 let unitName = mkWatched(persist, "unitName", null)
 let unit = Computed(@() serverConfigs.get()?.allUnits[unitName.get()])
 let unitExp = Computed(@() unitsResearchStatus.get()?[unitName.get()].exp ?? 0)
+let unitReqExp = Computed(@() unitsResearchStatus.get()?[unitName.get()].reqExp ?? 1)
 let unitResearchCfg = Computed(@() campConfigs.get()?.unitResearchLevels[unit.get()?.campaign][(unit.get()?.rank ?? 0) - 1])
 let needShowWnd = keepref(Computed(@() unitName.get() != null))
-
 let wndSize = [hdpx(1000), hdpx(600)]
 
 let close = @() unitName.set(null)
@@ -36,19 +37,28 @@ function onClick() {
     return
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP, unitName.get())
   if (!showNoBalanceMsgIfNeed(unitResearchCfg.get()?.costGold, GOLD, bqPurchaseInfo, close)) {
+    animExpPart(1.0 * unitExp.get() / unitReqExp.get())
     buy_unit_research(
       unitName.get(),
       curCampaign.get(),
       unitResearchCfg.get()?.costGold ?? 0,
-      (unitResearchCfg.get()?.nextLevelExp ?? 0) - unitExp.get())
+      (unitResearchCfg.get()?.nextLevelExp ?? 0) - unitExp.get(),
+      {
+        id = "buyUnitResearch",
+        unitName = unitName.get()
+      })
   }
 }
-unitsResearchStatus.subscribe(function(v){
-  if (v?[unitName.get()].canBuy) {
-    let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, unitName.get())
-    purchaseUnit(unitName.get(), bqPurchaseInfo)
-    close()
+
+
+registerHandler("buyUnitResearch", function(res, context) {
+  if (res?.error == null) {
+    animUnitAfterResearch.set(context.unitName)
+    animNewUnitsAfterResearch.set(nodes.get()
+      ?.filter(@(n) n.reqUnits.contains(context.unitName) && (unitsResearchStatus.get()?[n.name].canResearch ?? false))
+      .map(@(n) n.name) ?? {})
   }
+  resetTimeout(0.1, close)
 })
 
 let function mkPrice() {
@@ -77,7 +87,17 @@ function mkContent() {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
+    gap = hdpx(30)
     children = [
+      @() {
+        watch = unitName
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        maxWidth = hdpx(700)
+        color = 0xFFD8D8D8
+        halign = ALIGN_CENTER
+        text = loc("header/unitResearchComplete", { unitName = loc(getUnitLocId(unitName.get())) })
+      }.__update(fontTinyAccented)
       @() {
         watch = unit
         size = [unitPlateWidth, unitPlateHeight]
@@ -96,11 +116,9 @@ let openImpl = @() addModalWindow(bgShaded.__merge({
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   onClick = close
-  children = @(){
-    watch = unitName
+  children = {
     halign = ALIGN_CENTER
-    children = mkCustomMsgBoxWnd(loc("header/unitResearchSpeedUp",
-      { unitName = loc(getUnitLocId(unitName.get())) }),
+    children = mkCustomMsgBoxWnd(loc("header/unitResearchSpeedUp"),
       mkContent(),
       [
         mkBtn({id = "cancel" isCancel = true, cb = close}, WND_UID),

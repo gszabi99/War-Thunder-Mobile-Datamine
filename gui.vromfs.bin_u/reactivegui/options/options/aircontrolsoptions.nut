@@ -37,8 +37,11 @@ let {
   CAM_TYPE_BINOCULAR_PLANE } = require("controlsOptions")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { crosshairOptions } = require("crosshairOptions.nut")
+let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
+let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
 
 let fixedAimCursorList = [false, true]
 let currentFixedAimCursor = mkOptionValue(OPT_AIRCRAFT_FIXED_AIM_CURSOR, false, @(v) validate(v, fixedAimCursorList))
@@ -49,6 +52,7 @@ let currentFixedAimCursorType = {
   ctrlType = OCT_LIST
   value = currentFixedAimCursor
   list = fixedAimCursorList
+  onChangeValue = @(v) sendChange("fixed_aim_cursor", v)
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/fixed_aim_cursor")
 }
@@ -60,6 +64,7 @@ let currentAdditionalFlyControlsType = {
   locId = "options/additional_fly_controls"
   ctrlType = OCT_LIST
   value = currentAdditionalFlyControls
+  onChangeValue = @(v) sendChange("additional_fly_controls", v)
   list = currentAdditionalFlyControlsList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
@@ -72,6 +77,7 @@ let currentinvertedYOptionType = {
   locId = "options/inverted_y"
   ctrlType = OCT_LIST
   value = currentinvertedYOption
+  onChangeValue = @(v) sendChange("inverted_y", v)
   list = invertedYList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
@@ -86,6 +92,7 @@ let aircraftControlType = {
   locId = "options/aircraft_movement_control"
   ctrlType = OCT_LIST
   value = currentAircraftCtrlType
+  onChangeValue = @(v) sendChange("aircraft_movement_control", v)
   list = aircraftCtrlTypesList
   valToString = airCtrlTypeToString
 }
@@ -98,6 +105,7 @@ let currentContinuousTurnModeType = {
   locId = "options/continuous_turn_mode"
   ctrlType = OCT_LIST
   value = currentContinuousTurnMode
+  onChangeValue = @(v) sendChange("continuous_turn_mode", v)
   list = continuousTurnModeList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/continuous_turn_mode")
@@ -112,6 +120,7 @@ let controlByGyroModeAilerons = {
   locId = "options/control_by_gyro_ailerons"
   ctrlType = OCT_LIST
   value = currentControlByGyroModeAilerons
+  onChangeValue = @(v) sendChange("control_by_gyro_ailerons", v)
   list = Computed(@() currentAircraftCtrlType.value == "mouse_aim" ? currentControlByGyroModeAileronsList : [])
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
@@ -126,6 +135,7 @@ let controlByGyroModeDeadZoneSlider = {
   locId = "options/control_by_gyro_dead_zone"
   ctrlType = OCT_SLIDER
   value = currentControlByGyroModeDeadZone
+  onChangeValue = @(v) sendChange("control_by_gyro_dead_zone", v)
   valToString = @(v) $"{v}"
   ctrlOverride = {
     min = 0.1
@@ -141,6 +151,7 @@ let controlByGyroModeSensitivitySlider = {
   locId = "options/control_by_gyro_sensitivity"
   ctrlType = OCT_SLIDER
   value = currentControlByGyroModeSensitivity
+  onChangeValue = @(v) sendChange("control_by_gyro_sensitivity", v)
   valToString = @(v) $"{v}"
   ctrlOverride = {
     min = 0.0
@@ -160,6 +171,7 @@ function cameraViscositySlider(inZoom, locId, optId, cur = 1.0, minVal = 0.03, s
     locId
     value
     ctrlType = OCT_SLIDER
+    onChangeValue = @(v) sendChange(locId, v)
     valToString = @(v) $"{(((v-minVal)/(maxVal - minVal))*100 + 0.5).tointeger()}%"
     ctrlOverride = {
       min = minVal
@@ -177,6 +189,7 @@ let currentTapSelectionType = {
   locId = "options/tap_selection"
   ctrlType = OCT_LIST
   value = currentTapSelection
+  onChangeValue = @(v) sendChange("tap_selection", v)
   list = tapSelectionList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/tap_selection")

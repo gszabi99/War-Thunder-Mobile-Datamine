@@ -16,6 +16,7 @@ let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nu
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 
 const TUTORIAL_ID = "startFirstBattle"
 let isSkipped = hardPersistWatched("firstBattleTutorial.isSkipped", false)
@@ -24,9 +25,11 @@ let hasBattles = Computed(@()
   (servProfile.value?.sharedStatsByCampaign ?? {})
     .findvalue(@(s) (s?.battles ?? 0) != 0 || (s?.offlineBattles ?? 0) != 0)
   != null)
-let needShowTutorial = Computed(@() !isInSquad.value
-  && !isSkipped.value
-  && !hasBattles.value)
+
+let needShowTutorial = Computed(@() !isInSquad.get()
+  && !isSkipped.get()
+  && !isCampaignWithUnitsResearch.get()
+  && !hasBattles.get())
 let canStartTutorial = Computed(@() isUnitsTreeAttached.value
   && !hasModalWindows.value
   && !isTutorialActive.value)

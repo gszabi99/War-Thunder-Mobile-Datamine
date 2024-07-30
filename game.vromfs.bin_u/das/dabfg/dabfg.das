@@ -25,16 +25,16 @@ struct VirtualResourceRequestBase
   nodeId : NodeNameId
 
 
-struct VirtualResourceHandle
-  registry : InternalRegistry?
+struct VirtualResourceHandleBase
+  provider : ResourceProvider const?
   resUid : ResUid
 
 struct VirtualResourceCreationSemiRequest : VirtualResourceRequestBase {}
 struct VirtualResourceSemiRequest : VirtualResourceRequestBase {}
 struct VirtualResourceRequest : VirtualResourceRequestBase {}
 
-struct VirtualTextureHandle : VirtualResourceHandle {}
-struct VirtualBufferHandle : VirtualResourceHandle {}
+struct VirtualTextureHandle : VirtualResourceHandleBase {}
+struct VirtualBufferHandle : VirtualResourceHandleBase {}
 
 struct VirtualTextureRequest : VirtualResourceRequest {}
 struct VirtualBufferRequest : VirtualResourceRequest {}
@@ -44,14 +44,9 @@ struct StateRequest
   registry : InternalRegistry?
   nodeId : NodeNameId
 
-variant VrsRateTexture
-  some : VirtualResourceSemiRequest
-  none : void?
-
-struct VrsRequirements
+struct VrsSettings
   rateX : uint
   rateY : uint
-  rateTexture : VrsRateTexture
   vertexCombiner : VariableRateShadingCombiner
   pixelCombiner : VariableRateShadingCombiner
 
@@ -71,20 +66,21 @@ struct VirtualAttachmentRequest
   layer : uint
 
 
-struct AutoResolutionRequest
+struct AutoResolutionRequestBase
   autoResTypeId : AutoResTypeNameId
   multiplier : float = 1.0f
-  registry : InternalRegistry?
+  provider : ResourceProvider const?
 
+struct AutoResolutionRequest2 : AutoResolutionRequestBase {}
+struct AutoResolutionRequest3 : AutoResolutionRequestBase {}
 
-variant TextureResolution
+variant TextureResolution2
   res : tuple<x : uint; y : uint>
-  autoRes : AutoResolutionRequest
+  autoRes : AutoResolutionRequest2
 
 
-[unsafe_when_uninitialized]
 struct Texture2dCreateInfo
-  resolution : TextureResolution
+  resolution : TextureResolution2
   creationFlags : uint
   mipLevels : uint = 1u
 
@@ -212,12 +208,17 @@ def operator /(var self : NameSpaceRequest; child_name : string) : NameSpaceRequ
     registry = self.registry]]
 
 
-def getResolution(var self : NameSpaceRequest; type_name : string; multiplier : float = 1.f) : AutoResolutionRequest
-  return [[AutoResolutionRequest
+def getResolution`2(var self : NameSpaceRequest; type_name : string; multiplier : float = 1.f) : AutoResolutionRequest2
+  return [[AutoResolutionRequest2()
     autoResTypeId=self.registry.knownNames |> addNameId`AutoResTypeNameId(self.nameSpaceId, type_name),
     multiplier=multiplier,
-    registry=self.registry]]
+    provider=self.registry |> getProvider()]]
 
+def getResolution`3(var self : NameSpaceRequest; type_name : string; multiplier : float = 1.f) : AutoResolutionRequest3
+  return [[AutoResolutionRequest3()
+    autoResTypeId=self.registry.knownNames |> addNameId`AutoResTypeNameId(self.nameSpaceId, type_name),
+    multiplier=multiplier,
+    provider=self.registry |> getProvider()]]
 
 def read(var self : NameSpaceRequest; name : string) : VirtualResourceSemiRequest
   let nameId = self.registry.knownNames |> addNameId`ResNameId(self.nameSpaceId, name)
@@ -384,24 +385,28 @@ def bindToShaderVar(var self : auto(TT); name : string = "") : TT
 
 
 def handle(self : VirtualTextureRequest) : VirtualTextureHandle
-  return <- [[VirtualTextureHandle registry=self.registry, resUid=self.resUid]]
+  return <- [[VirtualTextureHandle provider=self.registry |> getProvider(), resUid=self.resUid]]
 
 
 def handle(self : VirtualBufferRequest) : VirtualBufferHandle
-  return <- [[VirtualBufferHandle registry=self.registry, resUid=self.resUid]]
+  return <- [[VirtualBufferHandle provider=self.registry |> getProvider(), resUid=self.resUid]]
 
 
-def view(handle : VirtualTextureHandle) : ManagedTexView
-  return handle.registry |> getResourceProvider |> getTexView(handle.resUid.nameId, handle.resUid.history)
+def view(self : VirtualTextureHandle) : ManagedTexView
+  return self.provider |> getTexView(self.resUid.nameId, self.resUid.history)
 
 
-def view(handle : VirtualBufferHandle) : ManagedBufView
-  return handle.registry |> getResourceProvider |> getBufView(handle.resUid.nameId, handle.resUid.history)
+def view(self : VirtualBufferHandle) : ManagedBufView
+  return self.provider |> getBufView(self.resUid.nameId, self.resUid.history)
 
 
-def get(resolution : AutoResolutionRequest) : int2
-  return resolution.registry |> getResourceProvider |> getResolution(resolution.autoResTypeId)
+def get(self : AutoResolutionRequest2) : int2
+  let baseRes = self.provider |> getResolution`2(self.autoResTypeId)
+  return int2(float2(baseRes) * self.multiplier)
 
+def get(self : AutoResolutionRequest3) : int3
+  let baseRes = self.provider |> getResolution`3(self.autoResTypeId)
+  return int3(float3(baseRes) * self.multiplier)
 
 def requestState(var self : Registry) : StateRequest
   if self.registry.nodes[self.nodeId].stateRequirements is some
@@ -440,24 +445,12 @@ def allowWireFrame(var self : StateRequest) : StateRequest
   return self
 
 
-def allowVrs(var self : StateRequest; vrs : VrsRequirements) : StateRequest
-  if vrs.rateTexture is none
-    // TODO: reset rate texture?
-    return self
-
-  let rateTexId = (vrs.rateTexture as some).resUid.nameId
-  self.registry.nodes[self.nodeId].readResources |> insert(rateTexId)
-  using() <| $(var req : ResourceRequest#)
-    req.usage = [[ResourceUsage access=Access READ_ONLY, usageType=Usage VRS_RATE_TEXTURE, stage=Stage ALL_GRAPHICS]]
-    self.registry.nodes[self.nodeId].resourceRequests[rateTexId] := req
-
+def vrs(var self : StateRequest; vrs : VrsSettings) : StateRequest
   assume stateReqs = self.registry.nodes[self.nodeId].stateRequirements as some
-  stateReqs.vrsState |> emplace_some
-  assume vrsState = stateReqs.vrsState as some
+  assume vrsState = stateReqs.vrsState
 
   vrsState.rateX = vrs.rateX
   vrsState.rateY = vrs.rateY
-  vrsState.rateTextureResId = rateTexId
   vrsState.vertexCombiner = vrs.vertexCombiner
   vrsState.pixelCombiner = vrs.pixelCombiner
 
@@ -569,3 +562,29 @@ def depthRw(var self : VirtualPassRequest; attachment : auto) : VirtualPassReque
 
 def depthRo(var self : VirtualPassRequest; attachment : auto) : VirtualPassRequest
   return self |> depth(attachment, Access READ_ONLY, true);
+
+def vrsRate(var self : VirtualPassRequest; name : string[]) : VirtualPassRequest
+  let attachment <- [[VirtualAttachmentRequest resource=[[VirtualAttachmentResource name=name]]]]
+  return self |> color(attachments)
+
+def vrsRate(var self : VirtualPassRequest; attachment : VirtualAttachmentRequest) : VirtualPassRequest
+  assume reqs = self.registry.nodes[self.nodeId].renderingRequirements as some
+
+  if reqs.vrsRateAttachment.nameId != ResNameId Invalid
+    let selfName = self.registry.knownNames |> getName(self.nodeId)
+    error("Encountered duplicate VRS rate attachment calls on the same pass request in {selfName} frame graph node! Ignoring one of them!")
+
+  let uid = self |> processAttachment(attachment, Access READ_ONLY)
+  verify(!uid.history)
+  self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
+    ResourceUsage access=Access READ_ONLY,
+    stage=Stage POST_RASTER,
+    usageType=Usage VRS_RATE_TEXTURE]]
+  reqs.vrsRateAttachment = [[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]]
+
+  if attachment.mipLevel != 0u || attachment.layer != 0u
+    let selfName = self.registry.knownNames |> getName(self.nodeId)
+    error("Warning: attempted to specify a mip level or a layer for a VRS rate texture in node {selfName}. \
+          This is currently supported by NONE of our drivers and will be ignored.")
+
+  return self

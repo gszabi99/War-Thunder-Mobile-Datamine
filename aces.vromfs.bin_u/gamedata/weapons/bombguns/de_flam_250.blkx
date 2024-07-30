@@ -14,7 +14,6 @@
     "explosiveType": "fp_02",
     "explosiveMass": 50.0,
     "useDelayExplosion": false,
-    "fxWaterShockWave": "dust_waterwave_big",
     "waterExplosionEffect": "explosion_napalm_fireball",
     "explosionFx": "explosion_napalm_fireball",
     "sound": [

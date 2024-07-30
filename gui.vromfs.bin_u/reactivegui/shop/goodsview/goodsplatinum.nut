@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
+let { mkFontGradient } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle,
-   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit
+   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit,
+   priceBgGradDefault
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { PLATINUM } = require("%appGlobals/currenciesState.nut")
 
-let priceBgGrad = mkColoredGradientY(0xFF72A0D0, 0xFF588090, 12)
 let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFFFFFFF, 11, 6, 2)
 
 let bgHiglight = {
@@ -45,7 +45,7 @@ function mkGoodsPlatinum(goods, onClick, state, animParams) {
       mkCurrencyAmountTitle(platinum, viewBaseValue, titleFontGrad)
       mkGoodsLimit(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGrad, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, priceBgGradDefault, state, animParams), {size = goodsSmallSize})
 }
 
 return {

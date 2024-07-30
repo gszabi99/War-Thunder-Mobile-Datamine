@@ -115,6 +115,7 @@
         "gameMPChangeScore": {
           "value": -100,
           "valueSystem": "amount",
+          "ignoreSingleMissions": false,
           "var": "additional_units_tickets_cost",
           "team": "A"
         },
@@ -155,6 +156,7 @@
         "gameMPChangeScore": {
           "value": -100,
           "valueSystem": "amount",
+          "ignoreSingleMissions": false,
           "var": "additional_units_tickets_cost",
           "team": "B"
         },
@@ -321,18 +323,18 @@
           },
           "triggerEnable": {
             "target": [
-              "arcade_units_adding_rank_0_1",
-              "arcade_units_adding_rank_2_2",
-              "arcade_units_adding_rank_3_3",
-              "arcade_units_adding_rank_4_4",
-              "arcade_units_adding_rank_5_5",
-              "arcade_units_adding_rank_6_plus"
+              "arcade_units_adding_rank_0_2",
+              "arcade_units_adding_rank_3_4",
+              "arcade_units_adding_rank_5_6",
+              "arcade_units_adding_rank_7_8",
+              "arcade_units_adding_rank_9_10",
+              "arcade_units_adding_rank_11_plus"
             ]
           }
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_0_1": {
+      "arcade_units_adding_rank_0_2": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -348,7 +350,7 @@
         "conditions": {
           "varCompareInt": {
             "var_value": "adding_units_balance_level",
-            "value": 2,
+            "value": 3,
             "comparasion_func": "less"
           }
         },
@@ -364,46 +366,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_2_2": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "varCompareInt": [
-            {
-              "var_value": "adding_units_balance_level",
-              "value": 1,
-              "comparasion_func": "more"
-            },
-            {
-              "var_value": "adding_units_balance_level",
-              "value": 3,
-              "comparasion_func": "less"
-            }
-          ]
-        },
-        "actions": {
-          "comment": [
-            {
-              "value": "BR 6-11"
-            },
-            {
-              "value": "nichego ne delaem - 24 yunitov hvataet"
-            }
-          ]
-        },
-        "else_actions": {}
-      },
-      "arcade_units_adding_rank_3_3": {
+      "arcade_units_adding_rank_3_4": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -425,7 +388,46 @@
             },
             {
               "var_value": "adding_units_balance_level",
+              "value": 5,
+              "comparasion_func": "less"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "BR 6-11"
+            },
+            {
+              "value": "nichego ne delaem - 24 yunitov hvataet"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "arcade_units_adding_rank_5_6": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "adding_units_balance_level",
               "value": 4,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "adding_units_balance_level",
+              "value": 7,
               "comparasion_func": "less"
             }
           ]
@@ -457,7 +459,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_4_4": {
+      "arcade_units_adding_rank_7_8": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -474,12 +476,12 @@
           "varCompareInt": [
             {
               "var_value": "adding_units_balance_level",
-              "value": 3,
+              "value": 6,
               "comparasion_func": "more"
             },
             {
               "var_value": "adding_units_balance_level",
-              "value": 5,
+              "value": 9,
               "comparasion_func": "less"
             }
           ]
@@ -511,7 +513,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_5_5": {
+      "arcade_units_adding_rank_9_10": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -528,12 +530,12 @@
           "varCompareInt": [
             {
               "var_value": "adding_units_balance_level",
-              "value": 4,
+              "value": 8,
               "comparasion_func": "more"
             },
             {
               "var_value": "adding_units_balance_level",
-              "value": 6,
+              "value": 11,
               "comparasion_func": "less"
             }
           ]
@@ -561,7 +563,7 @@
         },
         "else_actions": {}
       },
-      "arcade_units_adding_rank_6_plus": {
+      "arcade_units_adding_rank_11_plus": {
         "is_enabled": false,
         "comments": "",
         "props": {

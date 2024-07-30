@@ -163,6 +163,7 @@ function formBlock() {
       dropDownMenu({
         values = categoryCfg,
         currentOption = fieldCategory,
+        valToString = @(v) loc($"support/form/report/{v}"),
         setValue = @(v) fieldCategory.set(v),
         onAttach = @() fieldCategory.get() == "" ? fieldCategory.set(categoryCfg[0])
           : null

@@ -2,10 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, DEBR_TAB_UNIT, DEBR_TAB_MPSTATS
 } = require("%rGui/debriefing/debriefingState.nut")
+let { isDebrWithUnitsResearch } = require("%rGui/debriefing/debrUtils.nut")
 let { tabFinalPauseTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let mkDebriefingWndTabScores = require("debriefingWndTabScores.nut")
 let mkDebriefingWndTabCampaign = require("debriefingWndTabCampaign.nut")
+let mkDebriefingWndTabResearch = require("debriefingWndTabResearch.nut")
 let mkDebriefingWndTabUnit = require("debriefingWndTabUnit.nut")
+let mkDebriefingWndTabUnitSet = require("debriefingWndTabUnitSet.nut")
 let mkDebriefingWndTabMpStats = require("debriefingWndTabMpStats.nut")
 
 let tabsCfgOrdered = [
@@ -19,13 +22,17 @@ let tabsCfgOrdered = [
     id = DEBR_TAB_CAMPAIGN
     getIcon = @(_debrData) "ui/gameuiskin#battles_icon.svg"
     iconScale = 0.7
-    dataCtor = mkDebriefingWndTabCampaign
+    dataCtor = @(debrData, params) isDebrWithUnitsResearch(debrData)
+      ? mkDebriefingWndTabResearch(debrData, params)
+      : mkDebriefingWndTabCampaign(debrData, params)
   }
   {
     id = DEBR_TAB_UNIT
     getIcon = @(debrData) getCampaignPresentation(debrData?.campaign).icon
     iconScale = 0.8
-    dataCtor = mkDebriefingWndTabUnit
+    dataCtor = @(debrData, params) (debrData?.isSeparateSlots ?? false)
+      ? mkDebriefingWndTabUnitSet(debrData, params)
+      : mkDebriefingWndTabUnit(debrData, params)
   }
   {
     id = DEBR_TAB_SCORES

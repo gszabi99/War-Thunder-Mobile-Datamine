@@ -3,14 +3,6 @@ let { touchButtonSize, btnBgColor,borderColor, borderColorPushed } = require("%r
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { defShortcutOvr}  = require("hudButtonsPkg.nut")
-let { curActionBarTypes } = require("%rGui/hud/actionBar/actionBarState.nut")
-
-let returnToShipShortcutIds = {
-  AB_SUPPORT_PLANE = "ID_WTM_LAUNCH_AIRCRAFT"
-  AB_SUPPORT_PLANE_2 = "ID_WTM_LAUNCH_AIRCRAFT_2"
-  AB_SUPPORT_PLANE_3 = "ID_WTM_LAUNCH_AIRCRAFT_3"
-  AB_SUPPORT_PLANE_4 = "ID_WTM_LAUNCH_AIRCRAFT_4"
-}
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 
@@ -34,21 +26,17 @@ let mkSquareButtonEditView = @(img){
   ]
 }
 
-let returnToShipButton = function() {
-  let shortcutId = Computed(@() returnToShipShortcutIds.findvalue(@(_, id) id in curActionBarTypes.get()))
+function mkSimpleSquareButton(shortcutId, img) {
   let stateFlags = Watched(0)
-  return @() !shortcutId.get()
-    ? { watch = shortcutId }
-    : {
-      watch = shortcutId
+  return @() {
       behavior = Behaviors.Button
       eventPassThrough = true
       size = [touchButtonSize, touchButtonSize]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
-      onClick = @() shortcutId.get() ? toggleShortcut(shortcutId.get()) : null
+      onClick = @() toggleShortcut(shortcutId)
       onElemState = @(v) stateFlags(v)
-      hotkeys = mkGamepadHotkey(shortcutId.get())
+      hotkeys = mkGamepadHotkey(shortcutId)
       children = [
         @() {
           watch = stateFlags
@@ -61,15 +49,15 @@ let returnToShipButton = function() {
         {
           rendObj = ROBJ_IMAGE
           size = [defImageSize, defImageSize]
-          image = Picture($"ui/gameuiskin#hud_ship_selection.svg:{defImageSize}:{defImageSize}:P")
+          image = Picture($"{img}:{defImageSize}:{defImageSize}:P")
           keepAspect = true
         }
-        mkGamepadShortcutImage(shortcutId.get(), defShortcutOvr)
+        mkGamepadShortcutImage(shortcutId, defShortcutOvr)
       ]
     }
 }
 
 return {
-  returnToShipButton
+  mkSimpleSquareButton
   mkSquareButtonEditView
 }

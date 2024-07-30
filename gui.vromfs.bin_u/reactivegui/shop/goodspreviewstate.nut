@@ -17,6 +17,7 @@ let GPT_UNIT = "unit"
 let GPT_CURRENCY = "currency"
 let GPT_PREMIUM = "premium"
 let GPT_LOOTBOX = "lootbox"
+let GPT_SLOTS = "slots"
 
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
@@ -55,7 +56,8 @@ let previewGoodsUnit = Computed(function() {
   return serverConfigs.get()?.allUnits[previewGoods.get()?.units[0] ?? previewGoods.get()?.meta.previewUnit]
 })
 
-let previewType = Computed(@() previewGoodsUnit.value != null ? GPT_UNIT
+let previewType = Computed(@() (previewGoods.get()?.slotsPreset ?? "") != "" ? GPT_SLOTS
+  : previewGoodsUnit.value != null ? GPT_UNIT
   : (previewGoods.get()?.lootboxes.len() ?? 0) > 0 ? GPT_LOOTBOX
   : (previewGoods.get()?.currencies.len() ?? 0) > 0 ? GPT_CURRENCY
   : (previewGoods.get()?.premiumDays ?? 0) > 0  ? GPT_PREMIUM
@@ -68,7 +70,9 @@ let isPreviewGoodsPurchasing = Computed(@() previewGoods.value?.id != null
 isPreviewGoodsPurchasing.subscribe(function(v) {
   if (v || previewGoods.get() == null)
     return
-  let { id, limit = 0, dailyLimit = 0, oncePerSeason = "" } = previewGoods.get()
+  let { id, limit = 0, dailyLimit = 0, oncePerSeason = "", slotsPreset = "" } = previewGoods.get()
+  if (slotsPreset != "")
+    return
   if (previewGoodsUnit.get() != null || activeOffer.get()?.id == id || limit > 0 || dailyLimit > 0 || oncePerSeason != "")
     closeGoodsPreview()
 })
@@ -89,6 +93,7 @@ return {
   GPT_CURRENCY
   GPT_PREMIUM
   GPT_LOOTBOX
+  GPT_SLOTS
 
   openGoodsPreview
   closeGoodsPreview

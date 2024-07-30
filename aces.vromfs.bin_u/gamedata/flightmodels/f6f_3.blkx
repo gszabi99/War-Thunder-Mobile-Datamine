@@ -28,6 +28,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2024,7 +2025,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
-              "emitter": "us_500lb_anm64a1",
+              "emitter": "torpedo",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2050,7 +2051,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
-              "emitter": "us_1000lb_anm65a1",
+              "emitter": "torpedo",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2070,7 +2071,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1_45.blk",
-              "emitter": "bomb_2000lbs_an66_1",
+              "emitter": "torpedo",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2086,7 +2087,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
-              "emitter": "bomb_2000lbs_an66_1",
+              "emitter": "torpedo",
               "bullets": 1,
               "external": true,
               "separate": true

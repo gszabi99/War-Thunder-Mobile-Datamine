@@ -9,7 +9,7 @@ let { /* OPT_TANK_TARGETING_CONTROL,  */
 let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing_fixed, set_show_reticle,
   set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK
 } = require("controlsOptions")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { abTests, sharedStats } = require("%appGlobals/pServer/campaign.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
@@ -18,6 +18,7 @@ let { openChooseMovementControls
 let {cameraSenseSlider} =  require("%rGui/options/options/controlsOptions.nut")
 
 let autoZoomDefaultTrueStart = 1699894800 //13.11.23
+let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 
@@ -25,6 +26,7 @@ let tankMoveControlType = {
   locId = "options/tank_movement_control"
   ctrlType = OCT_LIST
   value = currentTankMoveCtrlType
+  onChangeValue = @(v) sendChange("tank_movement_control", v)
   list = tankMoveCtrlTypesList
   valToString = ctrlTypeToString
   openInfo = openChooseMovementControls
@@ -38,6 +40,7 @@ let gearDownOnStopButtonTouch = {
     locId = "options/gear_down_on_stop_button"
     ctrlType = OCT_LIST
     value = currentGearDownOnStopButtonTouch
+    onChangeValue = @(v) sendChange("gear_down_on_stop_button", v)
     list = Computed(@() showGearDownControl.value ? gearDownOnStopButtonList : [])
     valToString = @(v) loc(v ? "options/on_touch" : "options/on_hold")
 }
@@ -51,6 +54,7 @@ let showReticleButtonTouch = {
     locId = "options/show_reticle"
     ctrlType = OCT_LIST
     value = currentShowReticle
+    onChangeValue = @(v) sendChange("show_reticle", v)
     list = showReticleButtonList
     valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
@@ -72,6 +76,10 @@ let targetTrackingType = {
   locId = "options/target_tracking"
   ctrlType = OCT_LIST
   value = currentTargetTrackingType
+  function setValue(v){
+    currentTargetTrackingType(v)
+    sendChange("target_tracking", v)
+  }
   list = targetTrackingList
   valToString = @(v) loc(v ? "options/auto" : "options/manual")
   description = loc("options/desc/target_tracking")
@@ -89,6 +97,7 @@ let currentArmorPiercingType = {
   ctrlType = OCT_LIST
   value = currentArmorPiercingFixed
   setValue = @(v) currentArmorPiercingFixedRaw(v)
+  onChangeValue = @(v) sendChange("armor_piercing_fixed", v)
   list = armorPiercingFixedList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/armor_piercing_fixed")
@@ -110,10 +119,8 @@ let currentAutoZoomType = {
   locId = "options/auto_zoom"
   ctrlType = OCT_LIST
   value = currentAutoZoom
-  setValue = function(v) {
-    sendUiBqEvent("options_changed_tank_auto_zoom", { id = v ? "true" : "false" })
-    currentAutoZoomRaw(v)
-  }
+  setValue = @(v) currentAutoZoomRaw(v)
+  onChangeValue = @(v) sendChange("auto_zoom", v)
   list = autoZoomList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/auto_zoom")
@@ -125,6 +132,7 @@ let showMoveDirection = {
   locId = "options/show_move_direction"
   ctrlType = OCT_LIST
   value = currentShowMoveDirection
+  onChangeValue = @(v) sendChange("show_move_direction", v)
   list = moveDirectionList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/show_move_direction")
@@ -136,6 +144,7 @@ let showGrassInTankVision = {
   locId = "options/grass_in_tank_vision"
   ctrlType = OCT_LIST
   value = currentGrassInTankVision
+  onChangeValue = @(v) sendChange("grass_in_tank_vision", v)
   list = grassInTankVisionList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/grass_in_tank_vision")
@@ -153,10 +162,8 @@ let cameraRotationAssist = {
   locId = "options/camera_rotation_assist"
   ctrlType = OCT_LIST
   value = currentCameraRotationAssist
-  function setValue(v) {
-    currentCameraRotationAssistRaw(v)
-    sendUiBqEvent("camera_rotation_assist_change", { id = v ? "true" : "false" })
-  }
+  setValue = @(v) currentCameraRotationAssistRaw(v)
+  onChangeValue = @(v) sendChange("camera_rotation_assist", v)
   list = cameraRotationAssistList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/camera_rotation_assist")
@@ -171,10 +178,8 @@ let optHudScoreTank = {
   locId = "options/tankHudScores"
   ctrlType = OCT_LIST
   value = hudScoreTank
-  function setValue(v) {
-    hudScoreTankRaw(v)
-    sendUiBqEvent("tank_hud_scores_change", { id = v })
-  }
+  setValue = @(v) hudScoreTankRaw(v)
+  onChangeValue = @(v) sendChange("tankHudScores", v)
   list = hudScoreTankList
   valToString = @(v) loc($"multiplayer/{v}")
 }

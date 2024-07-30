@@ -128,13 +128,7 @@
             {
               "target": "bq_player_deaths"
             }
-          ],
-          "unitSetControls": {
-            "controls": "gears",
-            "value": 0.0,
-            "force": false,
-            "objects": "t1_bot_ship_03"
-          }
+          ]
         },
         "else_actions": {}
       },
@@ -3300,7 +3294,12 @@
               "@t2_bot02_name",
               "@t2_bot03_name",
               "@t2_bot04_name",
-              "@t2_bot05_name"
+              "@t2_bot05_name",
+              "@t2_bot06_name",
+              "@t2_bot07_name",
+              "@t2_bot08_name",
+              "@t2_bot09_name",
+              "@t2_bot10_name"
             ],
             "offender": "@t1_player_name"
           }
@@ -3596,16 +3595,10 @@
           "initMission": {}
         },
         "conditions": {
-          "missionNamePostfix": [
-            {
-              "postfix": "_GSn",
-              "equal": true
-            },
-            {
-              "postfix": "_basic",
-              "equal": true
-            }
-          ]
+          "missionNamePostfix": {
+            "postfix": "_GSn",
+            "equal": true
+          }
         },
         "actions": {
           "varSetString": [
@@ -3617,6 +3610,82 @@
               "value": "",
               "var": "bq_record",
               "input_var": "string_mission_id"
+            },
+            {
+              "value": "t1_bot_plane_02",
+              "var": "t1_bot02_name"
+            },
+            {
+              "value": "t1_bot_plane_03",
+              "var": "t1_bot03_name"
+            },
+            {
+              "value": "t1_bot_plane_04",
+              "var": "t1_bot04_name"
+            },
+            {
+              "value": "t1_bot_plane_05",
+              "var": "t1_bot05_name"
+            },
+            {
+              "value": "t1_bot_plane_06",
+              "var": "t1_bot06_name"
+            },
+            {
+              "value": "t1_bot_plane_07",
+              "var": "t1_bot07_name"
+            },
+            {
+              "value": "t1_bot_plane_08",
+              "var": "t1_bot08_name"
+            },
+            {
+              "value": "t1_bot_plane_09",
+              "var": "t1_bot09_name"
+            },
+            {
+              "value": "t1_bot_plane_10",
+              "var": "t1_bot10_name"
+            },
+            {
+              "value": "t2_bot_plane_01",
+              "var": "t2_bot01_name"
+            },
+            {
+              "value": "t2_bot_plane_02",
+              "var": "t2_bot02_name"
+            },
+            {
+              "value": "t2_bot_plane_03",
+              "var": "t2_bot03_name"
+            },
+            {
+              "value": "t2_bot_plane_04",
+              "var": "t2_bot04_name"
+            },
+            {
+              "value": "t2_bot_plane_05",
+              "var": "t2_bot05_name"
+            },
+            {
+              "value": "t2_bot_plane_06",
+              "var": "t2_bot06_name"
+            },
+            {
+              "value": "t2_bot_plane_07",
+              "var": "t2_bot07_name"
+            },
+            {
+              "value": "t2_bot_plane_08",
+              "var": "t2_bot08_name"
+            },
+            {
+              "value": "t2_bot_plane_09",
+              "var": "t2_bot09_name"
+            },
+            {
+              "value": "t2_bot_plane_10",
+              "var": "t2_bot10_name"
             }
           ],
           "varAddString": [
@@ -3659,7 +3728,7 @@
           },
           "triggerEnable": {
             "target": [
-              "check_roll_side",
+              "planes_check_roll_side",
               "player_fade_on_killed",
               "player_fade_on_respawn",
               "planes_player_victory",
@@ -3703,7 +3772,7 @@
             "from": 1,
             "to_not_including": 3
           },
-          "missionBattleArea": [
+          "__missionBattleArea": [
             {
               "air": false,
               "ground": true,
@@ -3729,16 +3798,16 @@
           ],
           "triggerEnable": {
             "target": [
-              "check_if_side_t1",
-              "check_if_side_t2"
+              "planes_check_if_side_t1",
+              "planes_check_if_side_t2"
             ]
           }
         },
         "else_actions": {
           "triggerEnable": {
             "target": [
-              "check_if_side_t1",
-              "check_if_side_t2"
+              "planes_check_if_side_t1",
+              "planes_check_if_side_t2"
             ]
           }
         }
@@ -3787,7 +3856,12 @@
                 "@t1_bot02_name",
                 "@t1_bot03_name",
                 "@t1_bot04_name",
-                "@t1_bot05_name"
+                "@t1_bot05_name",
+                "@t1_bot06_name",
+                "@t1_bot07_name",
+                "@t1_bot08_name",
+                "@t1_bot09_name",
+                "@t1_bot10_name"
               ],
               "army": 1
             },
@@ -3801,7 +3875,12 @@
                 "@t2_bot02_name",
                 "@t2_bot03_name",
                 "@t2_bot04_name",
-                "@t2_bot05_name"
+                "@t2_bot05_name",
+                "@t2_bot06_name",
+                "@t2_bot07_name",
+                "@t2_bot08_name",
+                "@t2_bot09_name",
+                "@t2_bot10_name"
               ],
               "army": 2
             }
@@ -3824,7 +3903,7 @@
             "cycle_respawn": true
           },
           "triggerEnable": {
-            "target": "bots_properties"
+            "target": "planes_bots_properties"
           }
         },
         "else_actions": {}
@@ -3873,7 +3952,12 @@
                 "@t1_bot02_name",
                 "@t1_bot03_name",
                 "@t1_bot04_name",
-                "@t1_bot05_name"
+                "@t1_bot05_name",
+                "@t1_bot06_name",
+                "@t1_bot07_name",
+                "@t1_bot08_name",
+                "@t1_bot09_name",
+                "@t1_bot10_name"
               ],
               "army": 2
             },
@@ -3887,7 +3971,12 @@
                 "@t2_bot02_name",
                 "@t2_bot03_name",
                 "@t2_bot04_name",
-                "@t2_bot05_name"
+                "@t2_bot05_name",
+                "@t2_bot06_name",
+                "@t2_bot07_name",
+                "@t2_bot08_name",
+                "@t2_bot09_name",
+                "@t2_bot10_name"
               ],
               "army": 1
             }
@@ -3910,7 +3999,7 @@
             "cycle_respawn": true
           },
           "triggerEnable": {
-            "target": "bots_properties"
+            "target": "planes_bots_properties"
           }
         },
         "else_actions": {}
@@ -3949,71 +4038,160 @@
         "actions": {
           "changeUnit": [
             {
-              "unit_class": "he51c1",
+              "unit_class": "i-15_1934",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
-              "object": "@t1_bot02_name"
+              "object": "@t1_bot02_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "f3f-2",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot03_name",
+              "type": "plane"
             },
             {
               "unit_class": "he51c1",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
-              "object": "@t1_bot03_name"
+              "object": "@t1_bot04_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "i-15_1934",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot05_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "f3f-2",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot06_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "i-15_1934",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot07_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "f3f-2",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot08_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "i-15_1934",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t1_bot09_name",
+              "type": "plane"
             },
             {
               "unit_class": "he51c1",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
-              "object": "@t1_bot04_name"
+              "object": "@t1_bot10_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "i-15_1934",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot01_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "f3f-2",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot02_name",
+              "type": "plane"
             },
             {
               "unit_class": "he51c1",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
-              "object": "@t1_bot05_name"
+              "object": "@t2_bot03_name",
+              "type": "plane"
             },
             {
               "unit_class": "he51c1",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
-              "object": "@t2_bot01_name"
+              "object": "@t2_bot04_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "f3f-2",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot05_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "f3f-2",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot06_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "i-15_1934",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot07_name",
+              "type": "plane"
+            },
+            {
+              "unit_class": "i-15_1934",
+              "weaponPreset": "",
+              "isIndividual": false,
+              "hangarMission": false,
+              "object": "@t2_bot08_name",
+              "type": "plane"
             },
             {
               "unit_class": "he51c1",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
-              "object": "@t2_bot02_name"
+              "object": "@t2_bot09_name",
+              "type": "plane"
             },
             {
-              "unit_class": "he51c1",
+              "unit_class": "f3f-2",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
-              "object": "@t2_bot03_name"
-            },
-            {
-              "unit_class": "he51c1",
-              "weaponPreset": "",
-              "isIndividual": false,
-              "hangarMission": false,
-              "object": "@t2_bot04_name"
-            },
-            {
-              "unit_class": "he51c1",
-              "weaponPreset": "",
-              "isIndividual": false,
-              "hangarMission": false,
-              "object": "@t2_bot05_name"
+              "object": "@t2_bot10_name",
+              "type": "plane"
             }
           ],
           "triggerEnable": {
-            "target": "bots_set_respawn"
+            "target": "planes_bots_set_respawn"
           }
         },
         "else_actions": {}
@@ -4038,7 +4216,12 @@
                 "@t1_bot02_name",
                 "@t1_bot03_name",
                 "@t1_bot04_name",
-                "@t1_bot05_name"
+                "@t1_bot05_name",
+                "@t1_bot06_name",
+                "@t1_bot07_name",
+                "@t1_bot08_name",
+                "@t1_bot09_name",
+                "@t1_bot10_name"
               ],
               "place_to_respawn": "@t1_spawn_tank_name",
               "cycle_respawn": true
@@ -4050,7 +4233,12 @@
                 "@t2_bot02_name",
                 "@t2_bot03_name",
                 "@t2_bot04_name",
-                "@t2_bot05_name"
+                "@t2_bot05_name",
+                "@t2_bot06_name",
+                "@t2_bot07_name",
+                "@t2_bot08_name",
+                "@t2_bot09_name",
+                "@t2_bot10_name"
               ],
               "place_to_respawn": "@t2_spawn_tank_name",
               "cycle_respawn": true
@@ -4068,7 +4256,12 @@
                 "@t1_bot02_name",
                 "@t1_bot03_name",
                 "@t1_bot04_name",
-                "@t1_bot05_name"
+                "@t1_bot05_name",
+                "@t1_bot06_name",
+                "@t1_bot07_name",
+                "@t1_bot08_name",
+                "@t1_bot09_name",
+                "@t1_bot10_name"
               ],
               "target": "@t1_spawn_tank_name",
               "needStopOnRespawn": true
@@ -4085,14 +4278,19 @@
                 "@t2_bot02_name",
                 "@t2_bot03_name",
                 "@t2_bot04_name",
-                "@t2_bot05_name"
+                "@t2_bot05_name",
+                "@t2_bot06_name",
+                "@t2_bot07_name",
+                "@t2_bot08_name",
+                "@t2_bot09_name",
+                "@t2_bot10_name"
               ],
               "target": "@t2_spawn_tank_name",
               "needStopOnRespawn": true
             }
           ],
           "triggerEnable": {
-            "target": "bots_load_behtree"
+            "target": "planes_bots_load_behtree"
           }
         },
         "else_actions": {}
@@ -4134,18 +4332,103 @@
               ]
             }
           ],
+          "unitLoadBehTree": [
+            {
+              "name": "missionFighter",
+              "objects": [
+                "t1_bot_plane_02",
+                "t1_bot_plane_03",
+                "t1_bot_plane_04",
+                "t1_bot_plane_05",
+                "t1_bot_plane_06",
+                "t1_bot_plane_07"
+              ]
+            },
+            {
+              "name": "missionFighter",
+              "objects": [
+                "t2_bot_plane_01",
+                "t2_bot_plane_02",
+                "t2_bot_plane_03",
+                "t2_bot_plane_04",
+                "t2_bot_plane_05",
+                "t2_bot_plane_06",
+                "t2_bot_plane_07"
+              ]
+            },
+            {
+              "name": "missionAssault",
+              "objects": [
+                "t1_bot_plane_08",
+                "t1_bot_plane_09",
+                "t1_bot_plane_10"
+              ]
+            },
+            {
+              "name": "missionAssault",
+              "objects": [
+                "t2_bot_plane_08",
+                "t2_bot_plane_09",
+                "t2_bot_plane_10"
+              ]
+            }
+          ],
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "t1_bot_plane_sq",
+              "t2_bot_plane_sq"
+            ],
+            "stealthRadius": 8000.0
+          },
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false,
+              "object": "t1_bot_plane_sq",
+              "target": "t2_bot_plane_sq"
+            },
+            {
+              "playerAttracted": false,
+              "object": "t2_bot_plane_sq",
+              "target": [
+                "t1_bot_plane_sq",
+                "@t1_player_name"
+              ]
+            },
+            {
+              "playerAttracted": false,
+              "object": [
+                "t1_bot_plane_08",
+                "t1_bot_plane_09",
+                "t1_bot_plane_10"
+              ],
+              "target": [
+                "t2_bot_plane_sq",
+                "t2_quest_units_squad"
+              ]
+            },
+            {
+              "playerAttracted": false,
+              "object": [
+                "t2_bot_plane_08",
+                "t2_bot_plane_09",
+                "t2_bot_plane_10"
+              ],
+              "target": [
+                "t1_bot_plane_sq",
+                "@t1_player_name",
+                "t1_quest_units_squad"
+              ]
+            }
+          ],
           "unitSetVar": {
             "object_var_name": "death_count",
             "object": [
-              "@t1_bot02_name",
-              "@t1_bot03_name",
-              "@t1_bot04_name",
-              "@t1_bot05_name",
-              "@t2_bot01_name",
-              "@t2_bot02_name",
-              "@t2_bot03_name",
-              "@t2_bot04_name",
-              "@t2_bot05_name"
+              "t1_bot_plane_sq",
+              "t2_bot_plane_sq"
             ],
             "object_var_value": 0
           },
@@ -4185,15 +4468,8 @@
               "target_type": "isAlive",
               "check_period": 1.0,
               "object": [
-                "@t1_bot02_name",
-                "@t1_bot03_name",
-                "@t1_bot04_name",
-                "@t1_bot05_name",
-                "@t2_bot01_name",
-                "@t2_bot02_name",
-                "@t2_bot03_name",
-                "@t2_bot04_name",
-                "@t2_bot05_name"
+                "t1_bot_plane_sq",
+                "t2_bot_plane_sq"
               ]
             },
             {
@@ -4206,15 +4482,8 @@
               "target_type": "isAlive",
               "check_period": 1.0,
               "object": [
-                "@t1_bot02_name",
-                "@t1_bot03_name",
-                "@t1_bot04_name",
-                "@t1_bot05_name",
-                "@t2_bot01_name",
-                "@t2_bot02_name",
-                "@t2_bot03_name",
-                "@t2_bot04_name",
-                "@t2_bot05_name"
+                "t1_bot_plane_sq",
+                "t2_bot_plane_sq"
               ]
             }
           ]
@@ -4223,15 +4492,8 @@
           "unitMark": {
             "target_marking": 0,
             "target": [
-              "@t1_bot02_name",
-              "@t1_bot03_name",
-              "@t1_bot04_name",
-              "@t1_bot05_name",
-              "@t2_bot01_name",
-              "@t2_bot02_name",
-              "@t2_bot03_name",
-              "@t2_bot04_name",
-              "@t2_bot05_name"
+              "t1_bot_plane_sq",
+              "t2_bot_plane_sq"
             ],
             "useForTriggerFiltered": true
           },
@@ -4240,15 +4502,8 @@
             "operator": "add",
             "value": 1,
             "object": [
-              "@t1_bot02_name",
-              "@t1_bot03_name",
-              "@t1_bot04_name",
-              "@t1_bot05_name",
-              "@t2_bot01_name",
-              "@t2_bot02_name",
-              "@t2_bot03_name",
-              "@t2_bot04_name",
-              "@t2_bot05_name"
+              "t1_bot_plane_sq",
+              "t2_bot_plane_sq"
             ],
             "useForTriggerFiltered": true
           }
@@ -4280,15 +4535,8 @@
               "target_type": "isAlive",
               "check_period": 1.0,
               "object": [
-                "@t1_bot02_name",
-                "@t1_bot03_name",
-                "@t1_bot04_name",
-                "@t1_bot05_name",
-                "@t2_bot01_name",
-                "@t2_bot02_name",
-                "@t2_bot03_name",
-                "@t2_bot04_name",
-                "@t2_bot05_name"
+                "t1_bot_plane_sq",
+                "t2_bot_plane_sq"
               ]
             },
             {
@@ -4301,15 +4549,8 @@
               "target_type": "isAlive",
               "check_period": 1.0,
               "object": [
-                "@t1_bot02_name",
-                "@t1_bot03_name",
-                "@t1_bot04_name",
-                "@t1_bot05_name",
-                "@t2_bot01_name",
-                "@t2_bot02_name",
-                "@t2_bot03_name",
-                "@t2_bot04_name",
-                "@t2_bot05_name"
+                "t1_bot_plane_sq",
+                "t2_bot_plane_sq"
               ]
             }
           ]
@@ -4317,15 +4558,8 @@
         "actions": {
           "unitPutToSleep": {
             "target": [
-              "@t1_bot02_name",
-              "@t1_bot03_name",
-              "@t1_bot04_name",
-              "@t1_bot05_name",
-              "@t2_bot01_name",
-              "@t2_bot02_name",
-              "@t2_bot03_name",
-              "@t2_bot04_name",
-              "@t2_bot05_name"
+              "t1_bot_plane_sq",
+              "t2_bot_plane_sq"
             ],
             "useForTriggerFiltered": true
           }
@@ -4355,13 +4589,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": [
-              "@t2_bot01_name",
-              "@t2_bot02_name",
-              "@t2_bot03_name",
-              "@t2_bot04_name",
-              "@t2_bot05_name"
-            ]
+            "object": "t2_bot_plane_sq"
           }
         },
         "actions": {
@@ -4403,15 +4631,8 @@
               "target_type": "isAlive",
               "check_period": 1.0,
               "object": [
-                "@t1_bot02_name",
-                "@t1_bot03_name",
-                "@t1_bot04_name",
-                "@t1_bot05_name",
-                "@t2_bot01_name",
-                "@t2_bot02_name",
-                "@t2_bot03_name",
-                "@t2_bot04_name",
-                "@t2_bot05_name"
+                "t1_bot_plane_sq",
+                "t2_bot_plane_sq"
               ]
             },
             {
@@ -4424,15 +4645,8 @@
               "target_type": "isAlive",
               "check_period": 1.0,
               "object": [
-                "@t1_bot02_name",
-                "@t1_bot03_name",
-                "@t1_bot04_name",
-                "@t1_bot05_name",
-                "@t2_bot01_name",
-                "@t2_bot02_name",
-                "@t2_bot03_name",
-                "@t2_bot04_name",
-                "@t2_bot05_name"
+                "t1_bot_plane_sq",
+                "t2_bot_plane_sq"
               ]
             }
           ]
@@ -4441,15 +4655,8 @@
           "unitMark": {
             "target_marking": 0,
             "target": [
-              "@t1_bot02_name",
-              "@t1_bot03_name",
-              "@t1_bot04_name",
-              "@t1_bot05_name",
-              "@t2_bot01_name",
-              "@t2_bot02_name",
-              "@t2_bot03_name",
-              "@t2_bot04_name",
-              "@t2_bot05_name"
+              "t1_bot_plane_sq",
+              "t2_bot_plane_sq"
             ],
             "useForTriggerFiltered": true,
             "reset_marking": true
@@ -4717,9 +4924,9 @@
           },
           "triggerDisable": {
             "target": [
-              "tanks_player_victory",
-              "tanks_player_defeat",
-              "tanks_timeout"
+              "planes_player_victory",
+              "planes_player_defeat",
+              "planes_timeout"
             ]
           }
         },
@@ -4889,6 +5096,76 @@
             "source_var": "timeLeft"
           }
         }
+      },
+      "t1_update_mp": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_quest_units_squad",
+            "var": "t1_land_death_counter"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "ignoreSingleMissions": false,
+            "team": "A"
+          }
+        },
+        "else_actions": {}
+      },
+      "t2_update_mp": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_quest_units_squad",
+            "var": "t2_land_death_counter"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "ignoreSingleMissions": false,
+            "team": "B"
+          }
+        },
+        "else_actions": {}
       }
     }
   },
@@ -5486,6 +5763,1265 @@
           "isDelayed": true
         },
         "way": {}
+      }
+    ],
+    "armada": [
+      {
+        "name": "t1_bot_plane_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -17782.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_plane_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -17882.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_plane_04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -17982.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_plane_05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18082.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_plane_06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18182.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_plane_07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18282.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_plane_08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18382.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_plane_09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18482.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bot_plane_10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18582.6,
+            500.0,
+            6840.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -17682.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -17782.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -17882.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -17982.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18082.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18182.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18282.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18382.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18482.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bot_plane_10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18582.6,
+            500.0,
+            6640.2
+          ]
+        ],
+        "unit_class": "he51c1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "t1_bot_plane_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18121.7,
+            500.0,
+            6966.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_bot_plane_02",
+            "t1_bot_plane_03",
+            "t1_bot_plane_04",
+            "t1_bot_plane_05",
+            "t1_bot_plane_06",
+            "t1_bot_plane_07",
+            "t1_bot_plane_08",
+            "t1_bot_plane_09",
+            "t1_bot_plane_10"
+          ]
+        }
+      },
+      {
+        "name": "t2_bot_plane_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -18128.7,
+            500.0,
+            6463.15
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_bot_plane_01",
+            "t2_bot_plane_02",
+            "t2_bot_plane_03",
+            "t2_bot_plane_04",
+            "t2_bot_plane_05",
+            "t2_bot_plane_06",
+            "t2_bot_plane_07",
+            "t2_bot_plane_08",
+            "t2_bot_plane_09",
+            "t2_bot_plane_10"
+          ]
+        }
       }
     ]
   },

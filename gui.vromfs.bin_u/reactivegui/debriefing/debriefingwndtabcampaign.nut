@@ -3,7 +3,7 @@ let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { sortUnits } = require("%rGui/unit/unitUtils.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let mkLevelProgressLine = require("%rGui/debriefing/levelProgressLine.nut")
+let { mkLevelProgressLine } = require("%rGui/debriefing/levelProgressLine.nut")
 let { mkTotalRewardCountsCampaign } = require("%rGui/debriefing/totalRewardCounts.nut")
 let { getLevelProgress } = require("%rGui/debriefing/debrUtils.nut")
 let { getLevelUnlockPlateAnimTime, mkLevelUnlockPlatesContainer, mkDebrPlateUnit

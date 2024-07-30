@@ -155,7 +155,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "ad_zone_matcher",
-          "value": 3,
+          "value": 5,
           "comparasion_func": "less"
         },
         "objectExists": {
@@ -165,7 +165,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 0-2"
+          "value": "rang 0-4"
         },
         "varSetString": {
           "value": "capture_area_near",
@@ -214,13 +214,13 @@
         "varCompareInt": [
           {
             "var_value": "ad_zone_matcher",
-            "value": 5,
-            "comparasion_func": "less"
+            "value": 4,
+            "comparasion_func": "more"
           },
           {
             "var_value": "ad_zone_matcher",
-            "value": 2,
-            "comparasion_func": "more"
+            "value": 9,
+            "comparasion_func": "less"
           }
         ],
         "objectExists": {
@@ -230,7 +230,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 3-4"
+          "value": "rang 5-8"
         },
         "varSetString": {
           "value": "capture_area_middle",
@@ -278,13 +278,13 @@
         "varCompareInt": [
           {
             "var_value": "ad_zone_matcher",
-            "value": 6,
-            "comparasion_func": "less"
+            "value": 8,
+            "comparasion_func": "more"
           },
           {
             "var_value": "ad_zone_matcher",
-            "value": 4,
-            "comparasion_func": "more"
+            "value": 11,
+            "comparasion_func": "less"
           }
         ],
         "objectExists": {
@@ -294,7 +294,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 5"
+          "value": "rang 9-10"
         },
         "varSetString": {
           "value": "capture_area_far",
@@ -341,7 +341,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "ad_zone_matcher",
-          "value": 6,
+          "value": 11,
           "comparasion_func": "notLess"
         },
         "objectExists": {
@@ -351,7 +351,7 @@
       },
       "actions": {
         "comment": {
-          "value": "rang 6+"
+          "value": "rang 11+"
         },
         "varSetString": {
           "value": "capture_area_huge",

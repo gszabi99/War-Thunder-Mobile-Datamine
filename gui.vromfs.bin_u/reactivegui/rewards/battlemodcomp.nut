@@ -17,20 +17,19 @@ function calcMaxTextWidth(slots, styles) {
   return size[0] - 2 * padding[1] - styles.markSize
 }
 
-let mkNameText = @(nameLoc, styles = REWARD_STYLE_TINY, slots = 1) mkPlateText(nameLoc, fontTiny).__update({
-  behavior = Behaviors.Marquee,
-  maxWidth = calcMaxTextWidth(slots, styles),
-  speed = hdpx(30),
+let mkNameText = @(nameLoc) mkPlateText(nameLoc, fontTiny).__update({
+  behavior = Behaviors.Marquee
+  speed = hdpx(30)
   delay = defMarqueeDelay
 })
 
 
-let mkBattleModCommonText = @(battleMod, styles = REWARD_STYLE_TINY, slots = 1) {
+let mkBattleModCommonText = @(battleMod, _, __) {
   size = flex()
   padding
   clipChildren = true
   halign = ALIGN_RIGHT
-  children = mkNameText(loc(battleMod.locId), styles, slots)
+  children = mkNameText(loc(battleMod.locId)).__update({ size = [flex(), SIZE_TO_CONTENT] })
 }
 
 let mkBattleModCommonImage = @(battleMod, styles, slots = 1) {
@@ -56,7 +55,7 @@ function mkBattleModEventUnitText(battleMod, styles = REWARD_STYLE_TINY, slots =
     clipChildren = true
     halign = ALIGN_RIGHT
     children = [
-      mkNameText(loc(getUnitLocId(unit.name)), styles, slots)
+      mkNameText(loc(getUnitLocId(unit.name))).__update({ maxWidth = calcMaxTextWidth(slots, styles) })
       mkPlateTextTimer(eventEndsAt.get(),{ vplace = ALIGN_BOTTOM })
     ]
   }

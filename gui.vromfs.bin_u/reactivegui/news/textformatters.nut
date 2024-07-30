@@ -5,7 +5,9 @@ let { toIntegerSafe } = require("%sqstd/string.nut")
 let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
 let urlAliases = require("urlAliases.nut")
 let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
+let { locColorTable } = require("%rGui/style/stdColors.nut")
 
+let selectorBtnW = hdpx(465)
 let commonTextColor = 0xFFC0C0C0
 let activeTextColor = 0xFFFFFFFF
 let urlColor = 0xFF17C0FC
@@ -13,6 +15,7 @@ let urlHoverColor = 0xFF84E0FA
 let urlLineWidth = hdpx(1)
 let separatorColor = 0x33333333
 let accentBgColor = 0x1E001E32
+let widthImgMax = saSize[0] - saBordersRv[1]*2 - selectorBtnW
 
 let blockInterval = hdpx(6)
 let headerMargin = 2 * blockInterval
@@ -32,6 +35,7 @@ let textArea = @(params) {
   text = wordHyphenation(params?.v ?? "")
   behavior = Behaviors.TextArea
   color = commonTextColor
+  colorTable = locColorTable
 }.__update(fontSmall, params)
 
 function url(data, _, __) {
@@ -177,14 +181,14 @@ function video(obj, _, __) {
 }
 
 let image = @(obj, _, __) {
-  size = [obj?.width != null ? hdpx(obj.width) : flex(),
-    obj?.height != null ? hdpx(obj.height) : SIZE_TO_CONTENT]
-  maxWidth = pw(100)
+  size = obj?.width == null || obj?.height == null ? [flex(), SIZE_TO_CONTENT]
+    : obj.width > widthImgMax ? [widthImgMax, widthImgMax * (obj.height.tofloat() / obj.width.tofloat())]
+    : [obj.width, obj.height]
   padding = blockInterval
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = Picture(obj.v)
-  keepAspect = true
+  margin = [hdpx(15), 0, hdpx(10)]
   imageAffectsLayout = true
   children = {
     rendObj = ROBJ_TEXT
@@ -236,4 +240,5 @@ let filterFormat = @(o) o?.platform != null
 return {
   formatText = mkFormatAst({ formatters, style = { lineGaps = hdpx(5) }, filter = filterFormat })
   formatters
+  selectorBtnW
 }

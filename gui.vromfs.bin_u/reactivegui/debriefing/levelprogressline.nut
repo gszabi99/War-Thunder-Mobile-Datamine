@@ -13,6 +13,8 @@ let lightBorderWidth = hdpx(4)
 let levelProgressBarHeight = hdpx(20)
 let levelProgressBarWidth = hdpx(850)
 let levelProgressBarFillWidth = levelProgressBarWidth
+let iconPadlockW = hdpxi(38)
+let iconPadlockH = hdpxi(62)
 let rotateCompensate = 1.1
 
 let levelUpTextColor = 0xFF000000
@@ -112,6 +114,8 @@ let mkNextLevelBgAnimations = @(levelProgressDelay, levelProgressAnimTime, trigg
 
 let mkTextUnderLevelLine = @(text, color, override = {}) {
   size = [flex(), SIZE_TO_CONTENT]
+  maxWidth = hdpx(350)
+  hplace = ALIGN_RIGHT
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
@@ -147,9 +151,9 @@ function levelLineSound(soundEndTime) {
   resetTimeout(soundEndTime, stopLevelLineSound)
 }
 
-let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStartTime) function() {
+let mkLevelLineProgress = @(curLevelIdxWatch, isLevelupMomentWatch, levelUpsArray, lineColor, animStartTime) function() {
   let { curLevel, curStarLevel, isLevelUpCurStep, isLastLevelCurStep, curExpWidth, receivedExpWidth,
-    isStarProgress
+    isStarProgress, useLockIcon = false
   } = levelUpsArray[curLevelIdxWatch.get()]
 
   let stepsCount = levelUpsArray.len()
@@ -186,10 +190,15 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
                 prop = AnimProp.scale, from = [curExpWidth.tofloat() / (receivedExpWidth || 1), 1.0],
                 to = [1.0, 1.0], duration = levelProgressAnimTime, delay = levelProgressDelay,
                 easing = InOutQuart, play = true,
-                onStart = @() levelLineSound(levelProgressAnimTime),
+                onStart = function() {
+                  levelLineSound(levelProgressAnimTime)
+                  isLevelupMomentWatch.set(false)
+                },
                 onFinish = function() {
-                  if (isLevelUpCurStep)
+                  if (isLevelUpCurStep) {
                     anim_start(animationTrigger)
+                    isLevelupMomentWatch.set(true)
+                  }
                   if (levelUpsArray.len() > (curLevelIdxWatch.get() + 1))
                     curLevelIdxWatch.set(curLevelIdxWatch.get() + 1)
                 }
@@ -203,14 +212,29 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
           }
         ]
       })
-      mkCurLevelMark(lineColor, curLevel, curStarLevel)
+      !useLockIcon
+        ? mkCurLevelMark(lineColor, curLevel, curStarLevel)
+        : null
       mkNextLevelMark(
         nextStarLevel,
-        {
-          text = isLastLevelCurStep ? maxLevelStarChar : curLevel + 1 - nextStarLevel
-          color = isLevelUpCurStep ? levelUpTextColor : nextLevelTextColor
-          animations = mkNextLevelTextAnimations(levelProgressDelay, levelProgressAnimTime, animationTrigger)
-        },
+        !useLockIcon
+          ? {
+              text = isLastLevelCurStep ? maxLevelStarChar : curLevel + 1 - nextStarLevel
+              color = isLevelUpCurStep ? levelUpTextColor : nextLevelTextColor
+              animations = mkNextLevelTextAnimations(levelProgressDelay, levelProgressAnimTime, animationTrigger)
+            }
+          : {
+              children = @() {
+                watch = isLevelupMomentWatch
+                size = [iconPadlockW, iconPadlockH]
+                rendObj = ROBJ_IMAGE
+                image = isLevelupMomentWatch.get()
+                  ? Picture($"ui/gameuiskin#padlock_open.svg:{iconPadlockW}:{iconPadlockH}")
+                  : Picture($"ui/gameuiskin#padlock_closed.svg:{iconPadlockW}:{iconPadlockH}")
+                color = isLevelUpCurStep ? levelUpTextColor : nextLevelTextColor
+              }
+              animations = mkNextLevelTextAnimations(levelProgressDelay, levelProgressAnimTime, animationTrigger)
+            },
         {
           fillColor = isLevelUpCurStep ? receivedExpProgressColor : nextLevelBgColor
           borderWidth = 0
@@ -221,13 +245,13 @@ let mkLevelLineProgress = @(curLevelIdxWatch, levelUpsArray, lineColor, animStar
   }
 }
 
-let mkLevelTitle = @(text) {
+let mkProgressTitle = @(text) {
   pos = [hdpx(85), hdpx(-15)]
   rendObj = ROBJ_TEXT
   text
 }.__update(fontMedium)
 
-let mkLevelDesc = @(text) doubleSideGradient.__merge({
+let mkProgressDesc = @(text) doubleSideGradient.__merge({
   pos = [hdpx(39), hdpx(100)]
   padding = [hdpx(5), hdpx(50)]
   children = {
@@ -242,24 +266,25 @@ let mkLevelDesc = @(text) doubleSideGradient.__merge({
 let levelUnlocksBarW = hdpx(400)
 let levelUnlocksBarH = hdpx(64)
 
-local levelUnlocksText = null
-function mkLevelUnlocksText() {
-  if (levelUnlocksText == null) {
-    levelUnlocksText = {
+local levelUnlocksTexts = {}
+function mkLevelUnlocksText(locId) {
+  if (levelUnlocksTexts?[locId] == null) {
+    let comp = {
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
       rendObj = ROBJ_TEXT
-      text = utf8ToUpper(loc("debriefing/levelUnlocks"))
+      text = utf8ToUpper(loc(locId))
       color = nextLevelTextColor
     }.__update(fontSmall)
     let textWidthMax = levelUnlocksBarW - levelUnlocksBarH - hdpx(10)
-    let textScale = getTextScaleToFitWidth(levelUnlocksText, textWidthMax)
-    levelUnlocksText.__update({ transform = { pivot = [0.5, 0.5], scale = [textScale, textScale] } })
+    let textScale = getTextScaleToFitWidth(comp, textWidthMax)
+    comp.__update({ transform = { pivot = [0.5, 0.5], scale = [textScale, textScale] } })
+    levelUnlocksTexts[locId] <- comp
   }
-  return levelUnlocksText
+  return levelUnlocksTexts[locId]
 }
 
-let mkLevelUnlocksBar = @(lineColor, isLevelUp) {
+let mkLevelUnlocksBar = @(locId, lineColor, isLevelUp) {
   size = [levelUnlocksBarW, levelUnlocksBarH]
   rendObj = ROBJ_MASK
   image = Picture($"ui/gameuiskin#debr_level_unlocks_bar_mask.svg:{levelUnlocksBarW}:{levelUnlocksBarH}")
@@ -281,7 +306,7 @@ let mkLevelUnlocksBar = @(lineColor, isLevelUp) {
         { prop = AnimProp.scale, from = [0, 1], to = [1, 1], delay = 0.5, duration = 0.25, easing = Linear, play = true }
       ]
     }
-    mkLevelUnlocksText()
+    mkLevelUnlocksText(locId)
   ]
 }
 
@@ -331,20 +356,21 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
   let levelProgressLineAnimTime = min(levelUpsArray.len() * levelProgressSingleAnimTime, maxLevelProgressAnimTime)
   let fullLevelDelayAnimTime = animStartTime + 0.5
   let curLevelIdxWatch = Watched(0)
+  let isLevelupMomentWatch = Watched(false)
   let levelProgressLineComp = {
     size = [SIZE_TO_CONTENT, hdpx(100)]
     children = [
-      mkLevelTitle(title)
+      mkProgressTitle(title)
       {
         pos = [0, hdpx(30)]
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         children = [
-          mkLevelLineProgress(curLevelIdxWatch, levelUpsArray, lineColor, animStartTime)
-          mkLevelUnlocksBar(lineColor, isLevelUp)
+          mkLevelLineProgress(curLevelIdxWatch, isLevelupMomentWatch, levelUpsArray, lineColor, animStartTime)
+          mkLevelUnlocksBar("debriefing/levelUnlocks", lineColor, isLevelUp)
         ]
       }
-      mkLevelDesc(desc)
+      mkProgressDesc(desc)
       {
         size = [levelProgressBarWidth + hdpx(75), SIZE_TO_CONTENT]
         pos = [0, hdpx(100)]
@@ -378,4 +404,77 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
   }
 }
 
-return mkLevelProgressLine
+function mkResearchProgressLine(debrData, unitResearchInfo, title, desc, animStartTime, lineColor) {
+  if (unitResearchInfo == null)
+    return {
+      researchProgressLineComp = null
+      researchProgressLineAnimTime = 0
+    }
+
+  let { totalExp = 0 } = debrData?.reward.playerExp
+  let { addExp, isUnlocked, exp, reqExp } = unitResearchInfo
+  let levelUpData = {
+    useLockIcon = true
+    curLevel = 0
+    curStarLevel = 0
+    isStarProgress = false
+    isLevelUpCurStep = isUnlocked
+    isLastLevelCurStep = false
+    curExpWidth = lerpClamped(0, reqExp, 0, levelProgressBarFillWidth, exp)
+    receivedExpWidth = lerpClamped(0, reqExp, 0, levelProgressBarFillWidth, exp + addExp)
+  }
+  let researchProgressLineAnimTime = min(levelProgressSingleAnimTime, maxLevelProgressAnimTime)
+  let fullLevelDelayAnimTime = animStartTime + 0.5
+  let curLevelIdxWatch = Watched(0)
+  let isLevelupMomentWatch = Watched(false)
+  let researchProgressLineComp = {
+    size = [SIZE_TO_CONTENT, hdpx(100)]
+    children = [
+      mkProgressTitle(title)
+      {
+        pos = [0, hdpx(30)]
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        children = [
+          mkLevelLineProgress(curLevelIdxWatch, isLevelupMomentWatch, [levelUpData], lineColor, animStartTime)
+          mkLevelUnlocksBar("debriefing/researchUnlocks", lineColor, isUnlocked)
+        ]
+      }
+      mkProgressDesc(desc)
+      {
+        size = [levelProgressBarWidth + hdpx(75), SIZE_TO_CONTENT]
+        pos = [0, hdpx(100)]
+        minHeight = expTextStarSize
+        valign = ALIGN_CENTER
+        key = $"research_status_{lineColor}"
+        transform = {}
+        animations = [
+          { prop = AnimProp.opacity, from = 0.0, to = 0.0, play = true duration = fullLevelDelayAnimTime }
+          { prop = AnimProp.opacity, from = 0.0, to = 1.0, play = true, easing = InQuad,
+            duration = rewardAnimTime / 2, delay = fullLevelDelayAnimTime }
+        ]
+        children = isUnlocked ? mkTextUnderLevelLine(utf8ToUpper(loc("debriefing/newUnitResearched")), lineColor,
+            {
+              transform = { pivot = [1.0, 1.0] }
+              animations = [
+                { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3], duration = rewardAnimTime,
+                  delay = fullLevelDelayAnimTime, easing = CosineFull, play = true, onStart = @() playSound("unit_level_up") }
+              ]
+            })
+          : addExp > 0 ? mkExpText(addExp, lineColor)
+          : totalExp > 0 ? mkTextUnderLevelLine(loc("debriefing/lostExp"), lineColor)
+          : null
+      }
+    ]
+  }
+
+  return {
+    researchProgressLineComp
+    researchProgressLineAnimTime
+  }
+}
+
+return {
+  mkLevelProgressLine
+  mkResearchProgressLine
+}

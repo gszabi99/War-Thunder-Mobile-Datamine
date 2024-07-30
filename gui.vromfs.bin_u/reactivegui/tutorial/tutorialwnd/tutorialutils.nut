@@ -34,8 +34,8 @@ function cutBlock(block, cutter) {
   return res
 }
 
-function createHighlight(boxes, lightCtor, darkCtor) {
-  local darkBlocks = [{ l = 0, t = 0, r = sw(100), b = sh(100) }]
+function createHighlight(boxes, lightCtor, darkCtor, fullArea = {}) {
+  local darkBlocks = [{ l = 0, t = 0, r = sw(100), b = sh(100) }.__update(fullArea)]
   let lightBlocks = []
 
   foreach (box in boxes) {
@@ -47,8 +47,8 @@ function createHighlight(boxes, lightCtor, darkCtor) {
     darkBlocks = cutted
   }
 
-  return darkBlocks.map(@(b) darkCtor(b))
-    .extend(lightBlocks.map(@(b) lightCtor(b)))
+  return darkBlocks.map(@(db) darkCtor(db))
+    .extend(lightBlocks.map(@(lb) lightCtor(lb)))
 }
 
 function getBox(keys) {

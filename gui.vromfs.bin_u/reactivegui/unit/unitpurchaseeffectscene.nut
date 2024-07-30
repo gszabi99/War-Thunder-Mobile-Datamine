@@ -12,6 +12,7 @@ let { playSound } = require("sound_wt")
 let { Point3 } = require("dagor.math")
 let { TANK, AIR } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
+let { purchaseEffectText } = require("%rGui/unit/purchaseEffectText.nut")
 
 let TIME_TO_AUTO_CLOSE = 10.0
 
@@ -82,11 +83,13 @@ let unitEffectScene = @() {
     clearTimer(playPurchSound)
     clearTimer(close)
   }
+
+  children = purchaseEffectText(loc("msg/newUnitReceived"))
 }
 
 registerScene("unitPurchaseEffectScene", unitEffectScene, close, isOpened, true)
 
-register_command(@() unitToShow(hangarUnit.value), "ui.debug.unitPurchaseEffect")
+register_command(@() unitToShow(hangarUnit.get()), "ui.debug.unitPurchaseEffect")
 
 return {
   isPurchEffectVisible = isOpened

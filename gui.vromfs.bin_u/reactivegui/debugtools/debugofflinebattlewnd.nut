@@ -12,7 +12,7 @@ let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let chooseByNameWnd = require("debugSkins/chooseByNameWnd.nut")
-let { COMPANY_BY_UNIT_TYPE, mkCfg, getCachedMissionLocName, openOfflineBattleMenu,
+let { mkCfg, getCachedMissionLocName, openOfflineBattleMenu,
   isOpened, savedUnitType, savedUnitName, savedMissionName, runOfflineBattle
 } = require("debugOfflineBattleState.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -56,8 +56,14 @@ let wndHeader = @(children) {
   ].extend(children)
 }
 
+let wndContent = @(children) {
+  hplace = ALIGN_LEFT
+  flow = FLOW_VERTICAL
+  gap = hdpx(10)
+  children
+}
+
 let wndFooter = {
-  size = SIZE_TO_CONTENT
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
   halign = ALIGN_RIGHT
@@ -85,7 +91,7 @@ function mkOfflineBattleMenuWnd() {
   let allUnitTypes = cfg.unitTypes.keys().sort()
   let curUnitType = Computed(@() allUnitTypes.contains(savedUnitType.get()) ? savedUnitType.get() : allUnitTypes?[0])
   let unitsByType = Computed(@() cfg?.allUnits[curUnitType.get()] ?? {})
-  let allMissions = Computed(@() cfg?.missions[COMPANY_BY_UNIT_TYPE?[curUnitType.get()]] ?? {})
+  let allMissions = Computed(@() cfg?.missions[curUnitType.get()] ?? {})
   let curData = Computed(function() {
     local name = savedUnitName.get()
     local mission = savedMissionName.get()
@@ -112,6 +118,8 @@ function mkOfflineBattleMenuWnd() {
     size = flex()
     padding = saBordersRv
     behavior = HangarCameraControl
+    flow = FLOW_VERTICAL
+    gap = hdpx(30)
     function onAttach() {
       initUnitWnd()
       onUnitChange()
@@ -132,6 +140,8 @@ function mkOfflineBattleMenuWnd() {
           @(name) loc(getUnitLocId(name)),
           @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
           loc("slotbar/selectUnit"))
+      ])
+      wndContent([
         mkSelector(curMissionName,
           allMissions,
           @(value) savedMissionName.set(value),
@@ -139,6 +149,9 @@ function mkOfflineBattleMenuWnd() {
           @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
           loc("options/mislist"))
       ])
+      {
+        size = flex()
+      }
       wndFooter
     ]
     animations = wndSwitchAnim

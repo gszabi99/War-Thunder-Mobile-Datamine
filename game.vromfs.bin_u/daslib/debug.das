@@ -259,9 +259,6 @@ class DAWalker: DapiDataWalker
         let n = length(varsStack)
         if n > 0
             var v & = unsafe(varsStack[n - 1])
-            if count > 500u
-                print("IN VARIABLE {v.name} TOO MANY ELEMENTS {int64(count)}\n")
-                assert(false)
 
             if v.children != null
                 let preview = join(*v.children, inlinePreviewLimit - 5)
@@ -1766,10 +1763,10 @@ class private EvalWalker : DapiStackWalker
             *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = ")
             if vinfo.basicType==Type tString
                 *W |> write("\"")
-                *W |> write(sprint_data(arg,type_info(vinfo),print_flags humanReadable))
+                *W |> write(sprint_data(arg,type_info(vinfo),[[print_flags]]))
                 *W |> write("\"")
             else
-                *W |> write(sprint_data(arg,type_info(vinfo),print_flags humanReadable))
+                *W |> write(sprint_data(arg,type_info(vinfo),[[print_flags]]))
             *W |> write("\n")
 
     def override onVariable(inf: FuncInfo; vinfo: LocalVariableInfo; arg: void?; inScope: bool): void

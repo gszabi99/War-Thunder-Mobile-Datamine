@@ -5,10 +5,10 @@ let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
-let { selectedUnitToSlot, slots } = require("slotBarState.nut")
-let { defer } = require("dagor.workcycle")
+let { selectedUnitToSlot, slots, resetSelectedUnitToSlot } = require("slotBarState.nut")
+let { resetTimeout } = require("dagor.workcycle")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { scrollToUnit } = require("%rGui/unitsTree/unitsTreeNodesContent.nut")
+let { unitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { getBox } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 let { treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
@@ -18,8 +18,8 @@ let WND_UID = "selectUnitToSlot"
 
 let needSelectUnitResearch = keepref(Computed(@() selectedUnitToSlot.get() != null && !isPurchEffectVisible.get()))
 
-let function close() {
-  selectedUnitToSlot.set(null)
+function close() {
+  resetSelectedUnitToSlot()
   removeModalWindow(WND_UID)
 }
 
@@ -56,8 +56,8 @@ function openWndIfCan() {
       && !isInBattle.get()
       && !isPurchEffectVisible.get()
       && slots.get().len() > 0) {
-    scrollToUnit(selectedUnitToSlot.get())
-    defer(function() {
+    unitToScroll.set(selectedUnitToSlot.get())
+    resetTimeout(0.1, function() {
       let rect = getBox(treeNodeUnitPlateKey(selectedUnitToSlot.get()))
       if (rect)
         openImpl(rect)
@@ -67,6 +67,6 @@ function openWndIfCan() {
 
 if (needSelectUnitResearch.get())
   openWndIfCan()
-needSelectUnitResearch.subscribe(@(v) v ? openWndIfCan() : removeModalWindow(WND_UID))
+needSelectUnitResearch.subscribe(@(v) v ? openWndIfCan() : close())
 
 return openWndIfCan

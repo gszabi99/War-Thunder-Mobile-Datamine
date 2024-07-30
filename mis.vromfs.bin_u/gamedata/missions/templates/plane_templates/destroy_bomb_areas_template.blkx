@@ -48,17 +48,17 @@
         },
         "triggerEnable": {
           "target": [
-            "bomb_areas_0_1_check",
-            "bomb_areas_2_2_check",
-            "bomb_areas_3_3_check",
-            "bomb_areas_4_4_check",
-            "bomb_areas_5_20_check"
+            "bomb_areas_0_2_check",
+            "bomb_areas_3_4_check",
+            "bomb_areas_5_6_check",
+            "bomb_areas_7_8_check",
+            "bomb_areas_9_16_check"
           ]
         }
       },
       "else_actions": {}
     },
-    "bomb_areas_0_1_check": {
+    "bomb_areas_0_2_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -74,17 +74,17 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "bomb_areas_balance_level",
-          "value": 2,
+          "value": 3,
           "comparasion_func": "less"
         }
       },
       "actions": {
         "triggerDisable": {
           "target": [
-            "bomb_areas_2_2_check",
-            "bomb_areas_3_3_check",
-            "bomb_areas_4_4_check",
-            "bomb_areas_5_20_check"
+            "bomb_areas_3_4_check",
+            "bomb_areas_5_6_check",
+            "bomb_areas_7_8_check",
+            "bomb_areas_9_16_check"
           ]
         },
         "comment": [
@@ -118,7 +118,7 @@
       },
       "else_actions": {}
     },
-    "bomb_areas_2_2_check": {
+    "bomb_areas_3_4_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -135,12 +135,12 @@
         "varCompareInt": [
           {
             "var_value": "bomb_areas_balance_level",
-            "value": 1,
+            "value": 2,
             "comparasion_func": "more"
           },
           {
             "var_value": "bomb_areas_balance_level",
-            "value": 3,
+            "value": 5,
             "comparasion_func": "less"
           }
         ]
@@ -148,10 +148,10 @@
       "actions": {
         "triggerDisable": {
           "target": [
-            "bomb_areas_0_1_check",
-            "bomb_areas_3_3_check",
-            "bomb_areas_4_4_check",
-            "bomb_areas_5_20_check"
+            "bomb_areas_0_2_check",
+            "bomb_areas_5_6_check",
+            "bomb_areas_7_8_check",
+            "bomb_areas_9_16_check"
           ]
         },
         "comment": [
@@ -185,7 +185,7 @@
       },
       "else_actions": {}
     },
-    "bomb_areas_3_3_check": {
+    "bomb_areas_5_6_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -202,12 +202,12 @@
         "varCompareInt": [
           {
             "var_value": "bomb_areas_balance_level",
-            "value": 2,
+            "value": 4,
             "comparasion_func": "more"
           },
           {
             "var_value": "bomb_areas_balance_level",
-            "value": 4,
+            "value": 7,
             "comparasion_func": "less"
           }
         ]
@@ -215,10 +215,10 @@
       "actions": {
         "triggerDisable": {
           "target": [
-            "bomb_areas_0_1_check",
-            "bomb_areas_2_2_check",
-            "bomb_areas_4_4_check",
-            "bomb_areas_5_20_check"
+            "bomb_areas_0_2_check",
+            "bomb_areas_3_4_check",
+            "bomb_areas_7_8_check",
+            "bomb_areas_9_16_check"
           ]
         },
         "comment": [
@@ -252,7 +252,7 @@
       },
       "else_actions": {}
     },
-    "bomb_areas_4_4_check": {
+    "bomb_areas_7_8_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -269,12 +269,12 @@
         "varCompareInt": [
           {
             "var_value": "bomb_areas_balance_level",
-            "value": 3,
+            "value": 6,
             "comparasion_func": "more"
           },
           {
             "var_value": "bomb_areas_balance_level",
-            "value": 5,
+            "value": 9,
             "comparasion_func": "less"
           }
         ]
@@ -282,10 +282,10 @@
       "actions": {
         "triggerDisable": {
           "target": [
-            "bomb_areas_0_1_check",
-            "bomb_areas_2_2_check",
-            "bomb_areas_3_3_check",
-            "bomb_areas_5_20_check"
+            "bomb_areas_0_2_check",
+            "bomb_areas_3_4_check",
+            "bomb_areas_5_6_check",
+            "bomb_areas_9_16_check"
           ]
         },
         "comment": [
@@ -319,7 +319,7 @@
       },
       "else_actions": {}
     },
-    "bomb_areas_5_20_check": {
+    "bomb_areas_9_16_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -335,17 +335,17 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "bomb_areas_balance_level",
-          "value": 4,
+          "value": 8,
           "comparasion_func": "more"
         }
       },
       "actions": {
         "triggerDisable": {
           "target": [
-            "bomb_areas_0_1_check",
-            "bomb_areas_2_2_check",
-            "bomb_areas_3_3_check",
-            "bomb_areas_4_4_check"
+            "bomb_areas_0_2_check",
+            "bomb_areas_3_4_check",
+            "bomb_areas_5_6_check",
+            "bomb_areas_7_8_check"
           ]
         },
         "comment": [

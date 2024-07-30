@@ -93,30 +93,17 @@
     "texelSize": 0.03125,
     "lastClipSize": 512
   },
-  "earth": [
-    {
-      "earthWorldEnabled": true,
-      "earthWorldMin": [
-        -32768.0,
-        -32768.0
-      ],
-      "earthWorldMax": [
-        32768.0,
-        32768.0
-      ]
-    },
-    {
-      "earthWorldEnabled": true,
-      "earthWorldMin": [
-        -98304.0,
-        -32768.0
-      ],
-      "earthWorldMax": [
-        32752.0,
-        98304.0
-      ]
-    }
-  ],
+  "earth": {
+    "earthWorldEnabled": true,
+    "earthWorldMin": [
+      -32768.0,
+      -32768.0
+    ],
+    "earthWorldMax": [
+      32768.0,
+      32768.0
+    ]
+  },
   "shader_vars": {},
   "waterStub": {
     "enable": true,

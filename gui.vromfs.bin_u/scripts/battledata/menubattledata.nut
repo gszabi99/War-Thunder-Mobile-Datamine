@@ -56,6 +56,7 @@ let profileKeysAffectData = {
   units = true
   skins = true
   campaignSlots = true
+  unitsResearch = true //next research
   items = true
   boosters = true
   decorators = true
@@ -101,8 +102,14 @@ function actualizeBattleDataByUnitsInfo(unitsInfo, executeAfterExt = null) {
   }
   lastActTime(get_time_msec())
   battleUnitsInfo(unitsInfo)
-  if (unitsInfo.isSlots)
+  if (unitsInfo.isSlots) {
+    if (unitsInfo.unitList.len() == 0) {
+      lastResult.set({ error = "No current unit" }.__merge({ unitsInfo }))
+      callHandler(executeAfterExt, lastResult.get())
+      return
+    }
     get_battle_data_slots_jwt(unitsInfo.unitList, { id = "onGetMenuBattleData", unitsInfo, executeAfterExt })
+  }
   else
     get_battle_data_jwt(unitsInfo.unit, { id = "onGetMenuBattleData", unitsInfo, executeAfterExt })
 }

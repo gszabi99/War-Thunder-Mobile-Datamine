@@ -14,6 +14,7 @@ let hudIndicators = require("%rGui/hud/indicators/hudIndicators.nut")
 let { hudElementShade } = require("%rGui/tutorial/hudElementShade.nut")
 let { hudElementPointers } = require("%rGui/tutorial/hudElementPointers.nut")
 let hudTutorElems = require("%rGui/tutorial/hudTutorElems.nut")
+let hudReplayControls = require("%rGui/replay/hudReplayControls.nut")
 let { viewHudType, HT_HUD, HT_FREECAM, HT_CUTSCENE, HT_BENCHMARK, isHudAttached
 } = require("%appGlobals/clientState/hudState.nut")
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
@@ -38,6 +39,7 @@ let hudByType = {
     hudElementShade
     hudElementPointers
     hudTutorElems
+    hudReplayControls
   ],
   [HT_FREECAM] = @(_) freeCamHud,
   [HT_CUTSCENE] = @(_) cutsceneHud,

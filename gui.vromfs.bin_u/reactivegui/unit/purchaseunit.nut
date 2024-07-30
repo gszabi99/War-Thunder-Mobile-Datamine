@@ -11,6 +11,9 @@ let { playSound } = require("sound_wt")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { unitDiscounts } = require("unitsDiscountState.nut")
 let { selectedUnitToSlot, slots } = require("%rGui/slotBar/slotBarState.nut")
+let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { addNewPurchasedUnit } = require("delayedPurchaseUnit.nut")
+let { animUnitWithLink, isBuyUnitWndOpened } = require("%rGui/unitsTree/animState.nut")
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
@@ -26,12 +29,18 @@ registerHandler("onUnitPurchaseResult",
     }
     else
       setHangarUnit(unitId)
-    requestOpenUnitPurchEffect(myUnits.value?[unitId])
-    if (slots.get().len() > 0)
+    if(isCampaignWithUnitsResearch.get())
+      addNewPurchasedUnit(unitId)
+    else
+      requestOpenUnitPurchEffect(myUnits.get()?[unitId])
+    if (slots.get().len() > 0) {
+      isBuyUnitWndOpened.set(false)
+      animUnitWithLink.set(unitId)
       selectedUnitToSlot.set(unitId)
+    }
   })
 
-function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter = null) {
+function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter = null, content = null, title = null, executeAfterCancel = null) {
   if (unitInProgress.value != null)
     return
   let unit = allUnitsCfg.value?[unitId]
@@ -63,12 +72,9 @@ function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter =
     return
   }
 
-  openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion",
-      { item = colorize(userlogTextColor, loc(getUnitPresentation(unit).locId)) }),
-    price,
-    purchaseFunc,
-    bqPurchaseInfo)
+  let contPurch = content ?? loc("shop/needMoneyQuestion",
+    { item = colorize(userlogTextColor, loc(getUnitPresentation(unit).locId)) })
+  openMsgBoxPurchase(contPurch, price, purchaseFunc, bqPurchaseInfo, title, executeAfterCancel)
   playSound("meta_new_technics_for_gold")
 }
 

@@ -12,6 +12,7 @@ let defaults = {
   can_debug_missions = DBGLEVEL > 0
   can_debug_units = DBGLEVEL > 0
   can_debug_shop = DBGLEVEL > 0
+  can_debug_touches = DBGLEVEL > 0
   can_use_debug_console = DBGLEVEL > 0
   can_receive_dedic_logerr = DBGLEVEL > 0
   allow_players_online_info = false
@@ -30,6 +31,7 @@ let defaults = {
   allow_voice_messages = DBGLEVEL > 0
   can_skip_consent = false
   can_report_player = DBGLEVEL > 0
+  has_payments_blocked_web_page = false
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

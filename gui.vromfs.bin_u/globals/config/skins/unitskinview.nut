@@ -325,6 +325,9 @@ return {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_modern_threecolor"
     },
+    "germ_frigate_rckt_bremen": {
+      "upgraded": "camo_blackgray_net"
+    },
     "germ_jgdpz_38t": {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green"
@@ -800,6 +803,9 @@ return {
     "uk_armored_car_mk_2_aa": {
       "": "uk_camo_light_stone_slate_grey",
       "forest": "uk_camo_very_dark_drab"
+    },
+    "uk_battlecruiser_glorious": {
+      "": "camo_mtb_spots"
     },
     "uk_battlecruiser_invincible": {
       "": "camo_homefleet_deckhouse"
@@ -1732,6 +1738,7 @@ return {
       "grayriver": "camo_grayriver",
       "greencoast": "camo_greencoast",
       "greenwhite_spots": "camo_greenwhite_spots",
+      "greyblack_geometry_prem": "camo_greyblack_geometry",
       "lightblue_geometry": "camo_lightblue_geometry",
       "lightblue_splotch": "camo_lightblue_splotch",
       "marine_geometry": "camo_marine_geometry",

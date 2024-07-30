@@ -3,8 +3,9 @@ let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style
 let { abs } = require("%sqstd/math.nut")
 let { hangarUnitName } = require("hangarUnit.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
+let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
-let { defButtonHeight, PURCHASE } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight, PURCHASE, COMMON } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { textButtonPrimary, textButtonPricePurchase, textButtonMultiline, mergeStyles
@@ -30,17 +31,22 @@ let { curSelectedUnit, availableUnitsList } = require("%rGui/unit/unitsWndState.
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let openBuyUnitResearchWnd = require("%rGui/unitsTree/buyUnitResearchWnd.nut")
 let { selectedUnitToSlot, slots, clearUnitSlot } = require("%rGui/slotBar/slotBarState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let mkTextRow = require("%darg/helpers/mkTextRow.nut")
+let { mkTreeNodesUnitPlate } = require("%rGui/unitsTree/mkUnitPlate.nut")
+let { animBuyRequirementsUnitId } = require("%rGui/unitsTree/animState.nut")
+let { withGlareEffect } = require("%rGui/components/glare.nut")
 
 
 let premiumDays = 30
 let fontIconPreview = "⌡"
+let msgGap = hdpx(24)
 
 let curSelectedUnitPrice = Computed(@()
   (allUnitsCfg.value?[curSelectedUnit.value]?.costGold ?? 0) + (allUnitsCfg.value?[curSelectedUnit.value]?.costWp ?? 0))
@@ -123,6 +129,56 @@ let mkTimeLeftText = @(endTime) function() {
   }.__update(fontTiny)
 }
 
+let mkUnitChangeInfo = @(prevUnit, newUnit) {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  gap = msgGap
+  children = mkTextRow(
+    loc("changeResearchInfo"),
+    @(text) msgBoxText(text, { size = SIZE_TO_CONTENT }),
+    {
+      ["{prevUnit}"] = mkTreeNodesUnitPlate(prevUnit, {}), //warning disable: -forgot-subst
+      ["{newUnit}"] = mkTreeNodesUnitPlate(newUnit, {}), //warning disable: -forgot-subst
+    })
+}
+
+function setResearchUnit(unitName) {
+  let research = @() set_research_unit(curCampaign.get(), unitName)
+  let newUnit = allUnitsCfg.get()?[unitName]
+  let prevUnit = allUnitsCfg.get()?[currentResearch.get()?.name]
+  if (newUnit == null)
+    return
+  if (prevUnit == null || (newUnit.country == prevUnit.country && newUnit.mRank >= prevUnit.mRank)) {
+    research()
+    return
+  }
+  let isOtherCountry = newUnit.country != prevUnit.country
+  openMsgBox({
+    uid = "confirmChangeResearch"
+    title = loc(isOtherCountry ? "researchOtherCountry/title" : "researchWeaker/title")
+    text = {
+      size = flex()
+      flow = FLOW_VERTICAL
+      valign = ALIGN_CENTER
+      gap = msgGap
+      children = [
+        msgBoxText(
+          loc(isOtherCountry ? "\n\n".concat(loc("researchOtherCountry/desc"), loc("msg/changeUnitResearch"))
+            : loc("msg/changeUnitResearch")),
+          { size = [flex(), SIZE_TO_CONTENT] })
+        mkUnitChangeInfo(prevUnit, newUnit)
+      ]
+    }
+    buttons = [
+      { id = "cancel", isCancel = true }
+      { text = loc("unitsTree/chooseResearch/accept"), styleId = "PRIMARY", isDefault = true, cb = research }
+    ]
+    wndOvr = { size = isOtherCountry ? [hdpx(1200), hdpx(700)] : [hdpx(1100), hdpx(600)] }
+  })
+}
+
 function unitActionButtons() {
   let unitName = curSelectedUnit.get()
   let children = []
@@ -138,31 +194,34 @@ function unitActionButtons() {
       { hotkeys = ["^J:X"] }))
   else if (canEquipSelectedUnit.get())
     children.append(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
-  else if (unitName in canBuyUnits.value) {
-    let unit = canBuyUnits.value[unitName]
+  else if (unitName in canBuyUnits.get()
+      || (unitsResearchStatus.get()?[unitName].isResearched && !unitsResearchStatus.get()?[unitName].canBuy)) {
+    let canBuy = unitName in canBuyUnits.get()
+    let unit = canBuyUnits.get()?[unitName] ?? allUnitsCfg.get()[unitName]
     let isForLevelUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
     let price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.value)
     if (price != null) {
       let priceComp = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON)
       children.append(
         textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")), priceComp,
-          onBuyUnit, { hotkeys = ["^J:X"] }))
+          canBuy ? onBuyUnit : @() animBuyRequirementsUnitId.set(unitName),
+          canBuy ? { hotkeys = ["^J:X"] } : COMMON.__merge({ hotkeys = ["^J:X"] })))
     }
   }
-  else if (!(servProfile.get()?.unitsResearch[unitName].canBuy ?? true)
-      && !servProfile.get()?.unitsResearch[unitName].isCurrent) {
-    children.append(
-      textButtonMultiline(utf8ToUpper(loc("unitsTree/startResearch")),
-        @() set_research_unit(curCampaign.get(), unitName),
-        mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })))
-  }
-  else if (unitsResearchStatus.get()?[unitName].isCurrent) {
+  else if (unitsResearchStatus.get()?[unitName].isCurrent)
     children.append(
       textButtonMultiline(utf8ToUpper(loc("unitsTree/speedUpProgress")),
         @() openBuyUnitResearchWnd(unitName),
         mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })))
-  }
-  else if (canBuyUnitsStatus.value?[unitName] == US_TOO_LOW_LEVEL){
+  else if (unitsResearchStatus.get()?[unitName].canResearch)
+    children.append(withGlareEffect(
+      textButtonMultiline(utf8ToUpper(loc("unitsTree/startResearch")),
+        @() setResearchUnit(unitName),
+        mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })),
+      PURCHASE.ovr.minWidth,
+      { delay = 3, repeatDelay = 3 }
+    ))
+  else if (canBuyUnitsStatus.value?[unitName] == US_TOO_LOW_LEVEL) {
     let { rank = 0, starRank = 0 } = allUnitsCfg.value.findvalue(@(u) u.name == unitName)
     let deltaLevels = rank - playerLevelInfo.value.level
     if(deltaLevels >= 2)

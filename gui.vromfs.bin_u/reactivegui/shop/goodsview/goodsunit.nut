@@ -5,9 +5,9 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn, purchasedPlate,
-  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad
+  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
+  priceBgGradGold
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -17,7 +17,6 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 
 
-let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let fonticonPreview = "⌡"
 let consumableSize = hdpx(120)
 let eliteMarkSize = [hdpxi(70), hdpxi(45)]
@@ -195,7 +194,7 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
       mkMRank(unit?.mRank)
       unitFrame
     ].extend(mkGoodsCommonParts(goods, state)),
-    isPurchased ? purchasedPlate : mkPricePlate(goods, priceBgGrad, state, animParams),
+    isPurchased ? purchasedPlate : mkPricePlate(goods, priceBgGradGold, state, animParams),
     {
       watch = myUnits
       size = [goodsSmallSize[0], goodsH - platoonOffset / 2]

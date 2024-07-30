@@ -24,7 +24,10 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
 let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
 let { needFetchContactsInBattle } = require("%rGui/contacts/contactsState.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
+let { mkTimeToNextReport } = require("%rGui/report/reportPlayerState.nut")
+let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
+let { COMMON } = require("%rGui/components/buttonStyles.nut")
 
 let defColor = 0xFFFFFFFF
 let hlColor = 0xFF5FC5FF
@@ -151,9 +154,40 @@ let actions = [
   }
 ]
 
+let mkTextReportBtn = @(text) {
+  key = text
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    maxWidth = hdpx(150)
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    halign = ALIGN_CENTER
+    text
+  }.__update(fontTinyAccentedShaded)
+}
+
+function mkReportButton(userId) {
+  let isVisibleReport = REPORT.mkIsVisible(userId)
+  let timeToNextReport = mkTimeToNextReport(userId)
+
+  return @() {
+    watch = [isVisibleReport, timeToNextReport]
+    hplace = ALIGN_RIGHT
+    children = !isVisibleReport.get() ? null
+      : timeToNextReport.get() <= 0
+        ? textButtonCommon(utf8ToUpper(loc(REPORT.locId)),
+          @() REPORT.action(userId),
+          { hotkeys = ["^J:LB"] })
+      : mkCustomButton(
+          mkTextReportBtn($"{utf8ToUpper(loc(REPORT.locId))} {secondsToTimeAbbrString(timeToNextReport.get())}"),
+          @() null,
+          mergeStyles(COMMON, {}))
+  }
+}
+
 function mkButtons(userId, isInvitesAllowed) {
   let gap = { minWidth = hdpx(40) size = flex() }
-  let isVisibleReport = REPORT.mkIsVisible(userId)
   return {
     minWidth = SIZE_TO_CONTENT
     size = [flex(), SIZE_TO_CONTENT]
@@ -166,14 +200,7 @@ function mkButtons(userId, isInvitesAllowed) {
           .filter(@(v) isInvitesAllowed || !v.isInviteAction)
           .map(@(cfg) mkExtContactActionBtn(cfg, userId))
       }
-      @() {
-        watch = isVisibleReport
-        hplace=ALIGN_RIGHT
-        children = !isVisibleReport.get() ? null
-          : textButtonCommon(utf8ToUpper(loc(REPORT.locId)),
-              @() REPORT.action(userId),
-              { hotkeys = ["^J:LB"] })
-      }
+      mkReportButton(userId)
     ]
   }
 }

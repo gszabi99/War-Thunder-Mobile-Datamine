@@ -13,6 +13,8 @@ let lastModifiedAttr = Watched(null)
 const AVAIL_PART_FOR_GROUP = 0.7
 const MAX_AVAIL_STATUS = 3
 
+let hasSlotAttrPreset = Computed(@() campConfigs.get()?.campaignCfg.slotAttrPreset != "")
+
 let attrPresets = Computed(function() {
   let { unitAttrPresets = [], unitAttrCostTables = null } = campConfigs.value
   return unitAttrPresets.map(@(preset)
@@ -172,6 +174,7 @@ return {
   isUnitMaxSkills
   availableAttributes
   lastModifiedAttr
+  hasSlotAttrPreset
 
   attrPresets
 

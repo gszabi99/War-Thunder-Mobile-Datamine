@@ -6,10 +6,15 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getUnitPkgs, getAddonPostfix, getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
+let { soloNewbieByCampaign } = require("%appGlobals/updater/addons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { getUnitSlotsPresetNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
+
 
 let MAX_SLOTS = 2
 
@@ -70,6 +75,7 @@ function startTestFlightImpl(unitName, missionName, skin) {
     skin
     missionName = missionName ?? testFlightByUnitType?[unitType] ?? defTestFlight
     bullets = getBulletsForTestFlight(unitName)
+    weaponPreset = getUnitSlotsPresetNonUpdatable(unitName, myUnits.get()?[unitName].mods)
   }
   donloadUnitPacksAndSend(unitName, testFlightExtPacks?[getAddonPostfix(unitName)] ?? [],
     "startTestFlight", params)
@@ -88,12 +94,13 @@ function startOfflineBattle(unit, missionName) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  donloadUnitPacksAndSend(unit.name, [], "startTraining",
+  donloadUnitPacksAndSend(unit.name, soloNewbieByCampaign?[curCampaign.get()] ?? [], "startTraining",
     {
       unitName = unit.name
       skin = getUnitSkin(unit)
       missionName
       bullets = getBulletsForTestFlight(unit.name)
+      weaponPreset = getUnitSlotsPresetNonUpdatable(unit.name, unit?.mods)
     })
 }
 

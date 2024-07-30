@@ -74,6 +74,7 @@ interopGen({
 
 let planeState = {
   IsOnGround = Watched(false)
+  wheelBrake = Watched(false)
 }
 
 interopGen({

@@ -3,7 +3,7 @@ let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { getLootboxName } = require("%rGui/unlocks/rewardsView/lootboxPresentation.nut")
+let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { lootboxPreviewContent } = require("lootboxPreviewContent.nut")
 let { previewLootbox, isLootboxPreviewOpen, closeLootboxPreview } = require("lootboxPreviewState.nut")
 

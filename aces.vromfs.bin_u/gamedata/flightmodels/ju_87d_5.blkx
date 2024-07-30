@@ -23,6 +23,7 @@
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/dm/commonExplosion.blk",
@@ -36,7 +37,37 @@
       "cannon2_dm": {
         "hp": 15.0
       },
+      "cannon3_dm": {
+        "hp": 15.0
+      },
+      "cannon4_dm": {
+        "hp": 15.0
+      },
+      "cannon5_dm": {
+        "hp": 15.0
+      },
+      "cannon6_dm": {
+        "hp": 15.0
+      },
       "gun1_dm": {
+        "hp": 15.0
+      },
+      "mgun1_dm": {
+        "hp": 15.0
+      },
+      "mgun2_dm": {
+        "hp": 15.0
+      },
+      "mgun3_dm": {
+        "hp": 15.0
+      },
+      "mgun4_dm": {
+        "hp": 15.0
+      },
+      "mgun5_dm": {
+        "hp": 15.0
+      },
+      "mgun6_dm": {
         "hp": 15.0
       }
     },
@@ -163,6 +194,18 @@
         "hp": 19.5
       },
       "cover4_dm": {
+        "hp": 19.5
+      },
+      "cover5_dm": {
+        "hp": 19.5
+      },
+      "cover6_dm": {
+        "hp": 19.5
+      },
+      "cover7_dm": {
+        "hp": 19.5
+      },
+      "cover8_dm": {
         "hp": 19.5
       }
     },
@@ -378,6 +421,18 @@
         "name": "cannon2_dm"
       },
       {
+        "name": "cannon3_dm"
+      },
+      {
+        "name": "cannon4_dm"
+      },
+      {
+        "name": "cannon5_dm"
+      },
+      {
+        "name": "cannon6_dm"
+      },
+      {
         "name": "cover1_dm"
       },
       {
@@ -388,6 +443,18 @@
       },
       {
         "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
+      },
+      {
+        "name": "cover6_dm"
+      },
+      {
+        "name": "cover7_dm"
+      },
+      {
+        "name": "cover8_dm"
       },
       {
         "name": "elevator0_dm",
@@ -924,6 +991,24 @@
         "name": "gunner1_dm"
       },
       {
+        "name": "mgun1_dm"
+      },
+      {
+        "name": "mgun2_dm"
+      },
+      {
+        "name": "mgun3_dm"
+      },
+      {
+        "name": "mgun4_dm"
+      },
+      {
+        "name": "mgun5_dm"
+      },
+      {
+        "name": "mgun6_dm"
+      },
+      {
         "name": "oil1_dm",
         "onHit": {
           "leak_oil": 0.95
@@ -1032,10 +1117,18 @@
         }
       },
       {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 100.0,
+          "cut": 0.001
+        }
       },
       {
         "name": "stab1_dm",
@@ -2715,13 +2808,12 @@
             },
             "Weapon": [
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare16",
                 "flash": "flare16",
                 "shell": "emtr_shellrejection3",
                 "bullets": 250,
-                "dm": "mgun1_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
@@ -2730,65 +2822,60 @@
                 "mass": 101.0
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare17",
                 "flash": "flare17",
                 "shell": "emtr_shellrejection3",
                 "bullets": 250,
-                "dm": "mgun1_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare18",
                 "flash": "flare18",
                 "shell": "emtr_shellrejection3",
                 "bullets": 250,
-                "dm": "mgun2_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare19",
                 "flash": "flare19",
                 "shell": "emtr_shellrejection3",
                 "bullets": 250,
-                "dm": "mgun2_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare20",
                 "flash": "flare20",
                 "shell": "emtr_shellrejection3",
                 "bullets": 250,
-                "dm": "mgun3_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare21",
                 "flash": "flare21",
                 "shell": "emtr_shellrejection3",
                 "bullets": 250,
-                "dm": "mgun3_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
@@ -2816,26 +2903,24 @@
             },
             "Weapon": [
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare8",
                 "flash": "flare8",
                 "shell": "emtr_shellrejection4",
                 "bullets": 200,
-                "dm": "cannon3_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare9",
                 "flash": "flare9",
                 "shell": "emtr_shellrejection4",
                 "bullets": 200,
-                "dm": "cannon4_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
@@ -3985,13 +4070,12 @@
             },
             "Weapon": [
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare10",
                 "flash": "flare10",
                 "shell": "emtr_shellrejection4",
                 "bullets": 250,
-                "dm": "mgun4_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
@@ -4000,65 +4084,60 @@
                 "mass": 101.0
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare11",
                 "flash": "flare11",
                 "shell": "emtr_shellrejection4",
                 "bullets": 250,
-                "dm": "mgun4_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare12",
                 "flash": "flare12",
                 "shell": "emtr_shellrejection4",
                 "bullets": 250,
-                "dm": "mgun5_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare13",
                 "flash": "flare13",
                 "shell": "emtr_shellrejection4",
                 "bullets": 250,
-                "dm": "mgun5_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare14",
                 "flash": "flare14",
                 "shell": "emtr_shellrejection4",
                 "bullets": 250,
-                "dm": "mgun6_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare15",
                 "flash": "flare15",
                 "shell": "emtr_shellrejection4",
                 "bullets": 250,
-                "dm": "mgun6_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
@@ -4086,26 +4165,24 @@
             },
             "Weapon": [
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare6",
                 "flash": "flare6",
                 "shell": "emtr_shellrejection3",
                 "bullets": 200,
-                "dm": "cannon5_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
                 "external": true
               },
               {
-                "trigger": "additional gun",
+                "trigger": "cannon",
                 "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare7",
                 "flash": "flare7",
                 "shell": "emtr_shellrejection3",
                 "bullets": 200,
-                "dm": "cannon6_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,

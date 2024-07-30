@@ -444,7 +444,7 @@
         "conditions": {
           "varCompareInt": {
             "var_value": "aat_matching_rank",
-            "value": 7,
+            "value": 14,
             "comparasion_func": "more"
           }
         },

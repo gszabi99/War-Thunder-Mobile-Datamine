@@ -667,6 +667,9 @@ def private apply_qrules ( var expr:smart_ptr<Expression>& ) : smart_ptr<ExprBlo
         eblk := null
     unsafe
         delete astVisitor
+    eblk |> append_annotation("$", "unused_argument", [{auto
+        [[auto "rules", [[RttiValue tBool=true]] ]]
+    }])
     return <- eblk
 
 def public apply_qmacro ( var expr:smart_ptr<Expression>; blk:block<(var rules:Template):void> ) : ExpressionPtr

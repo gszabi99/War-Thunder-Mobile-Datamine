@@ -17,10 +17,10 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkRewardImage, getRewardName } = require("rewardsView/rewardsPresentation.nut")
-let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset, gradCircularSqCorners, gradCircCornerOffset
-} = require("%rGui/style/gradients.nut")
+let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { textButtonBattle, textButtonPrimary, textButtonCommon, buttonsHGap
 } = require("%rGui/components/textButton.nut")
+let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { canShowAds, adsButtonCounter, showNotAvailableAdsMsg } = require("%rGui/ads/adsState.nut")
 let { isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
@@ -241,29 +241,20 @@ function activePlateHotkeyComp() {
 }
 
 let smallBtnHeight = evenPx(50)
-let smallBtnShadowOffset = evenPx(3)
 let smallBtnMargin = hdpx(10)
 function previewBtnBlock() {
   let res = { watch = [loginAwardUnlock, isShowUnseenDelayed] }
   return (isShowUnseenDelayed.value || loginAwardUnlock.value?.hasReward) ? res : res.__update({
-    size = [smallBtnHeight, smallBtnHeight]
-    hplace = ALIGN_RIGHT
-    margin = [dayTextHeight + smallBtnMargin, smallBtnMargin, 0, 0]
+    hplace = ALIGN_LEFT
+    margin = [dayTextHeight + smallBtnMargin, 0, 0, smallBtnMargin]
     children = [
-      {
-        size = [smallBtnHeight + (smallBtnShadowOffset * 2), smallBtnHeight + (smallBtnShadowOffset * 2)]
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_CENTER
-        rendObj = ROBJ_9RECT
-        image = gradCircularSqCorners
-        texOffs = [gradCircCornerOffset, gradCircCornerOffset]
-        screenOffs = smallBtnShadowOffset
-        color = 0x80000000
-      }
-      textButtonPrimary(
-        loc("ui/info"),
+      infoEllipseButton(
         null,
-        btnStyle.__merge({ childOvr = fontSmall })
+        {
+          size = [smallBtnHeight, smallBtnHeight]
+          eventPassThrough = true
+        },
+        fontSmallAccented
       )
     ]
   })

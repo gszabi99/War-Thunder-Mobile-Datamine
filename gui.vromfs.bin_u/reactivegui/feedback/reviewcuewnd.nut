@@ -4,16 +4,29 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { textButtonBattle, textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { isRateGameSeen, sendGameRating, platformAppReview } = require("%rGui/feedback/rateGameState.nut")
+
+let bgMessage = {
+  rendObj = ROBJ_IMAGE
+  image = mkColoredGradientY(0xFF304453, 0xFF030C13)
+}
+
+let bgHeader = {
+  rendObj = ROBJ_9RECT
+  size=[flex(), SIZE_TO_CONTENT]
+  image = gradTranspDoubleSideX
+  texOffs = [0, gradDoubleTexOffset]
+  screenOffs = [0, hdpx(300)]
+  color = 0xFF4D88A4
+}
 
 const RATE_STARS_TOTAL = 5
 
 let contentW = hdpx(1064)
 let contentH = hdpx(660)
-let wndLineW = contentW * 0.8
 let starIconSize = hdpxi(80)
 let starIconGap = hdpx(60)
 let starIconSizeSmall = hdpxi(64)
@@ -122,7 +135,12 @@ let pageRating = {
   size = flex()
   halign = ALIGN_CENTER
   children = [
-    mkTitle(loc("rateGame/title"))
+    bgHeader.__merge({
+      children = [
+        mkTitle(loc("rateGame/title"))
+        btnClose
+      ]
+    })
     textarea.__merge({
       vplace = ALIGN_CENTER
       pos = [0, -hdpx(150)]
@@ -142,7 +160,12 @@ let pageThankYou = {
   size = flex()
   halign = ALIGN_CENTER
   children = [
-    mkTitle(loc("rateGame/thanks_for_rating"))
+    bgHeader.__merge({
+      children = [
+        mkTitle(loc("rateGame/thanks_for_rating"))
+        btnClose
+      ]
+    })
     mkRateStarsRow(fieldRating, false, true)
     mkBtnPlace(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_excellent")), onBtnApply))
   ]
@@ -152,9 +175,14 @@ let pageComment = {
   size = flex()
   halign = ALIGN_CENTER
   children = [
-    mkTitle(loc("rateGame/thanks_for_rating"))
+    bgHeader.__merge({
+      children = [
+        mkTitle(loc("rateGame/thanks_for_rating"))
+        btnClose
+      ]
+    })
     mkRateStarsRow(fieldRating, false, false).__update({
-      pos = [0, -hdpx(200)]
+      pos = [0, -hdpx(170)]
     })
     textarea.__merge({
       vplace = ALIGN_CENTER
@@ -163,6 +191,7 @@ let pageComment = {
     })
     {
       size = [flex(), SIZE_TO_CONTENT]
+      padding = [0, hdpx(60)]
       pos = [0, hdpx(300)]
       children = textInput(fieldComment, {
         placeholder = loc("feedback/editbox/placeholder")
@@ -172,29 +201,6 @@ let pageComment = {
     mkBtnPlace(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_leave_feedback")), onBtnApply))
   ]
 }
-
-let doubleSideGradBase = {
-  rendObj = ROBJ_9RECT
-  image = gradTranspDoubleSideX
-  texOffs = [0, gradDoubleTexOffset]
-}
-let doubleSideGradLine = doubleSideGradBase.__merge({
-  size = [wndLineW, hdpx(8)]
-  screenOffs = [0, 0.4 * wndLineW]
-  color = 0xFF949494
-})
-let bgGradientComp = doubleSideGradBase.__merge({
-  size = [contentW, contentH]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  color = 0xFF000000
-  screenOffs = [0, 0.06 * contentW]
-  children = [
-    doubleSideGradLine
-    doubleSideGradLine.__merge({ vplace = ALIGN_BOTTOM })
-  ]
-})
 
 let imagesPreloadComp = @() {
   watch = isOpened
@@ -210,7 +216,7 @@ let girlImage = @() {
   watch = [fieldRating, hasAppliedRating, isRatedExcellent]
   size = [hdpxi(644), hdpxi(914)]
   vplace = ALIGN_BOTTOM
-  pos = [ sw(50) - (contentW / 2) - hdpxi(444), 0 ]
+  pos = [ sw(45) - (contentW / 2) - hdpxi(444), 0 ]
   rendObj = ROBJ_IMAGE
   image = !hasAppliedRating.value && fieldRating.value == 0 ? Picture($"!ui/images/review_cue_2.avif")
     : !hasAppliedRating.value && fieldRating.value < RATE_STARS_TOTAL ? Picture($"!ui/images/review_cue_4.avif")
@@ -224,9 +230,7 @@ let reviewCueWnd = bgShaded.__merge({
   size = flex()
   children = [
     imagesPreloadComp
-    bgGradientComp
-    girlImage
-    {
+    bgMessage.__merge({
       size = [contentW, contentH]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -234,15 +238,14 @@ let reviewCueWnd = bgShaded.__merge({
         @() {
           watch = [hasAppliedRating, isRatedExcellent]
           size = flex()
-          margin = [0, hdpx(100)]
           halign = ALIGN_CENTER
           children = !hasAppliedRating.value ? pageRating
             : isRatedExcellent.value ? pageThankYou
             : pageComment
         }
-        btnClose
       ]
-    }
+    })
+    girlImage
   ]
   animations = wndSwitchAnim
 })

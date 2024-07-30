@@ -62,6 +62,7 @@ let addonLocIdWithMRank = {}
 
 let knownAddons = {}
 let extAddonsByRank = {}
+let soloNewbieByCampaign = {}
 let setBlk = get_settings_blk()
 let addonsBlk = setBlk?.addons
 if (addonsBlk != null)
@@ -90,9 +91,20 @@ if (addonsBlk != null)
 
     let conditions = b.getBlockByName("conditions")
     if (conditions != null) {
+      local isProcessed = false
+      foreach(camp in conditions % "soloNewbie") {
+        isProcessed = true
+        if (camp not in soloNewbieByCampaign)
+          soloNewbieByCampaign[camp] <- []
+        soloNewbieByCampaign[camp].append(addon)
+        if (hq)
+          soloNewbieByCampaign[camp].append(addonHq)
+      }
+
       let { campaign = null, mRank = null } = conditions
       if (type(campaign) != "string" || type(mRank) != "integer") {
-        logerr($"Invalid type of required field in addon/conditions for '{addon}': campaign = {campaign}, mRank = {mRank}")
+        if (!isProcessed)
+          logerr($"Invalid type of required field in addon/conditions for '{addon}': campaign = {campaign}, mRank = {mRank}")
         return
       }
       if (campaign not in extAddonsByRank)
@@ -196,6 +208,7 @@ return freeze({
   extAddonsByRank
   knownAddons
   ovrHangarAddon
+  soloNewbieByCampaign
 
   gameModeAddonToAddonSetMap
 

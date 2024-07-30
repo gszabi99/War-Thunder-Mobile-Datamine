@@ -24,7 +24,10 @@ let lastProfileError = mkWatched(persist, "lastProfileError", null)
 let lastConfigsError = mkWatched(persist, "lastConfigsError", null)
 let hasLastBattleReward = Computed(@() (battleResult.value?.reward.playerExp.totalExp ?? 0) != 0
   || (battleResult.value?.reward.playerWp.totalWp ?? 0) != 0
-  || (battleResult.value?.reward.unitExp.totalExp ?? 0) != 0)
+  || (battleResult.value?.reward.units ?? []).findvalue(@(v) (v?.exp.totalExp ?? 0) != 0) != null
+  || (battleResult.value?.reward.units ?? []).findvalue(@(v) (v?.gold.totalGold ?? 0) != 0) != null
+  || (battleResult.value?.reward.unitExp.totalExp ?? 0) != 0 // Compatibility with dedicated pre-1.8.0
+)
 let isWaitProfile = keepref(Computed(@()
   !isInBattle.value && hasLastBattleReward.value && !isProfileReceivedAfterBattle.value))
 

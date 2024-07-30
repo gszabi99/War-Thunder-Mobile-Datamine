@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
-let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelected, abTests, campConfigs
+let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelected, abTests,
+  isCampaignWithUnitsResearch
 } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -11,7 +12,9 @@ let { eventbus_send } = require("eventbus")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
-let { isCampaignWithTree, unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { mkResearchingUnitForBattleData } = require("%appGlobals/data/battleDataExtras.nut")
+let { currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 let getFirstBattleTutor = @(campaign) $"tutorial_{campaign}_1"
 let firstBattleTutor = Computed(@() getFirstBattleTutor(curCampaign.value))
@@ -38,8 +41,7 @@ let needFirstBattleTutor = Computed(@()
     && isProfileReceived.value
     && (myUnits.value.len() == 0
       || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign?[curCampaign.value]))
-    && (!isCampaignWithTree.get()
-      || unitsResearchStatus.get().findvalue(@(v, k) v?.isCurrent && campConfigs.get()?.allUnits[k]) != null)
+    && (!isCampaignWithUnitsResearch.get() || currentResearch.get() != null)
   )
   != isDebugMode.value)
 
@@ -59,6 +61,7 @@ function mkRewardBattleData(rewards) {
   return {
     player = { exp, level, nextLevelExp }
     reward = { playerExp = { baseExp = playerExp, totalExp = playerExp }}
+    researchingUnit = mkResearchingUnitForBattleData()
   }
 }
 
@@ -81,7 +84,13 @@ function startTutor(id) {
     })
   }
   if (!isSkippedTutor.get()?[id])
-    eventbus_send("startSingleMission", { id = tutorialMissions.value[id] })
+    eventbus_send("startSingleMission", {
+      id = tutorialMissions.value[id],
+      unitName = !isCampaignWithUnitsResearch.get() ? null
+        : isDebugMode.get() && hangarUnit.get()?.name ? hangarUnit.get().name
+        : myUnits.get().len() != 0 ? null
+        : currentResearch.get()?.name
+    })
   resetTimeout(0.1, @() isDebugMode(false))
 }
 

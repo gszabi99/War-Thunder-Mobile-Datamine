@@ -159,6 +159,16 @@ let simpleHorGrad = mkBitmapPicture(10, 2,
     }
   })
 
+let simpleHorGradInv = mkBitmapPicture(10, 2,
+  function(params, bmp) {
+    let { w, h } = params
+    for (local x = 0; x < w; x++) {
+      let color = mkWhite((0xFF - (0xFF * x.tofloat() / (w - 1) + 0.5)).tointeger())
+      for (local y = 0; y < h; y++)
+        bmp.setPixel(x, y, color)
+    }
+  })
+
 let simpleVerGrad = mkBitmapPicture(2, 10,
   function(params, bmp) {
     let { w, h } = params
@@ -239,6 +249,7 @@ return {
   simpleHorGrad
   simpleVerGrad
   simpleVerGradInv
+  simpleHorGradInv
 
   //ctors
   mkGradientCtorDoubleSideX

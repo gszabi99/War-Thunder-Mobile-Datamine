@@ -74,7 +74,6 @@
     ],
     "explosionFx": "explosion_bomb_rainbow",
     "waterExplosionEffect": "explosion_bomb_rainbow",
-    "fxWaterShockWave": "dust_waterwave_big",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
     "fallToWaterFx": "bomb_reflection",
     "fallFx": "hit_59_80mm_dirt_ap",

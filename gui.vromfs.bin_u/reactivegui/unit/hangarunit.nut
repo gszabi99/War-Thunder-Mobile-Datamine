@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { eventbus_subscribe } = require("eventbus")
-let { hangar_load_model_with_skin,
+let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
   hangar_get_current_unit_name, hangar_get_loaded_unit_name, change_background_models_list_with_skin,
   change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list
 } = require("hangar")
@@ -9,6 +9,9 @@ let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
+let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
+let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
+let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
 let loadedInfo = Watched({
   name = hangar_get_current_unit_name()
@@ -100,6 +103,9 @@ let hangarUnitSkin = Computed(@() hangarUnitData.get()?.skin
   ?? hangarUnit.get()?.currentSkins[hangarUnit.get()?.name]
   ?? (hangarUnit.get()?.isUpgraded ? "upgraded" : ""))
 
+let hasNotDownloadedPkg = Computed(@() !isReadyToFullLoad.get() ||
+  getUnitPkgs(hangarUnitName.get(), hangarUnit.get()?.mRank).findvalue(@(a) !hasAddons.value?[a]) != null)
+
 function loadModel(unitName, skin) {
   if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "")
     //fallback to any unit from config units
@@ -107,6 +113,12 @@ function loadModel(unitName, skin) {
 
   if ((unitName ?? "") == "")
     return
+
+  if (hasNotDownloadedPkg.get()) {
+    hangar_move_cam_to_unit_place(unitName)
+    return
+  }
+
   hangar_load_model_with_skin(unitName, skin)
 }
 
@@ -125,8 +137,10 @@ isInMpSession.subscribe(function(v) {
   loadCurrentHangarUnitModel()
 })
 
-let reloadAllBgModels = @()
-  change_background_models_list_with_skin(hangarUnitName.get(), hangarBgUnits.get())
+function reloadAllBgModels() {
+  if (!hasNotDownloadedPkg.get())
+    change_background_models_list_with_skin(hangarUnitName.get(), hangarBgUnits.get())
+}
 
 function loadBGModels() {
   let bgUnits = hangarBgUnits.get()
@@ -191,7 +205,7 @@ function resetCustomHangarUnit() {
   }
 }
 
-eventbus_subscribe("downloadAddonsFinished", function(_) {
+hasNotDownloadedPkg.subscribe(function(_) {
   if (isInBattle.value || isInLoadingScreen.value)
     return
   loadCurrentHangarUnitModel()

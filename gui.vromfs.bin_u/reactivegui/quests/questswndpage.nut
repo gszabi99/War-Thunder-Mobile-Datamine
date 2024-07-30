@@ -204,6 +204,10 @@ function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
 }
 
 function mkItem(item, textCtor) {
+  local isCompletedPrevQuest = Computed(@()
+    !item.meta?.chain_quest || (unlockProgress.get()?[item.requirement].isCompleted ?? false)
+  )
+  local imgLockSize = hdpxi(60)
   let isUnseen = Computed(@() !item.hasReward
     && item.name not in seenQuests.value
     && item.name not in inactiveEventUnlocks.value)
@@ -224,7 +228,7 @@ function mkItem(item, textCtor) {
     xmbNode = {}
     children = [
       @() {
-        watch = isUnseen
+        watch = [isUnseen, isCompletedPrevQuest]
         size = [flex(), SIZE_TO_CONTENT]
         children = item.hasReward
             ? {
@@ -248,9 +252,18 @@ function mkItem(item, textCtor) {
             size = [flex(), SIZE_TO_CONTENT]
             flow = FLOW_VERTICAL
             gap = hdpx(8)
-            children = [
+            children = isCompletedPrevQuest.get() ? [
               textCtor(item).__update({padding = [0, 0, 0, headerPadding.value] })
               mkQuestBar(item)
+            ] : [
+              {
+                rendObj = ROBJ_TEXT
+                size = [hdpx(800), hdpx(90)]
+                flow = FLOW_HORIZONTAL
+                halign = ALIGN_CENTER
+                valign = ALIGN_CENTER
+                text = loc("quests/requiredCompletePreviousQuest")
+              }.__update(fontSmall)
             ]
           }
 
@@ -264,10 +277,26 @@ function mkItem(item, textCtor) {
 
           @() {
             watch = [eventCurrencyReward, rewardsPreview, servProfile]
-            children = mkBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), servProfile.get())
+            children = isCompletedPrevQuest.get() ? mkBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), servProfile.get())
+              : {
+                size = btnSize
+                halign = ALIGN_CENTER
+                valign = ALIGN_CENTER
+                children = {
+                  rendObj = ROBJ_IMAGE
+                  size = [imgLockSize, imgLockSize]
+                  image = Picture($"ui/gameuiskin#lock_icon.svg:{imgLockSize}:{imgLockSize}:P")
+                }
+
+              }
           }
         ]
       }
+      !isCompletedPrevQuest.get() ? {
+        rendObj = ROBJ_SOLID
+        size = flex()
+        color = bgColor
+      } : null
     ]
   }
 }
@@ -452,7 +481,6 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
                           gap = hdpx(20)
                           children = quests.get()
                             .values()
-                            .filter(@(item) !item?.meta.chain_quest || unlockProgress.get()?[item.requirement].isCompleted)
                             .sort(itemsSort)
                             .map(@(item) itemCtor(item.__merge({ tabId, sectionId = curSectionId.get() })))
                           onDetach = @() saveSeenQuestsForSection(curSectionId.value)

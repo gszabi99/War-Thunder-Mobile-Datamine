@@ -31,7 +31,8 @@ let curProfileRewardId = Computed(@()
   (campProfile.value?.lastReceivedFirstBattlesRewardIds[curCampaign.value] ?? -1))
 let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.value, curDelayedRewardId.value))
 let firstBattlesReward = Computed(@()
-  serverConfigs.value?.firstBattlesRewards[firstBattlesRewardId.value])
+  serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][firstBattlesRewardId.get()]
+  ?? serverConfigs.get()?.firstBattlesRewards[firstBattlesRewardId.get()]) //compatibility with 2024.06.27
 
 let dbgTankMissionsPresetId = hardPersistWatched("dbgTankMissionsPresetId", null)
 let forcedTankMissionsPresetId = Computed(@() dbgTankMissionsPresetId.value ?? abTests.value?.tanksOfflineMissions)
@@ -149,28 +150,32 @@ debriefingData.subscribe(function(data) {
   }
 })
 
-function mkCurRewardBattleData(reward, predefinedId) {
+function mkCurRewardBattleData(reward, predefinedId, unit) {
   let { level, exp, nextLevelExp } = playerLevelInfo.value
   let { levelForExp = 1, levelExpPart = 0.35, wp = 0 } = reward
   let premiumBonusesCfg = serverConfigs.value?.gameProfile.premiumBonuses
   let levels = serverConfigs.value?.playerLevels[curCampaign.value]
 
-  let baseExp = (levelExpPart * (levels?[levelForExp].nextLevelExp ?? 0) + 0.5).tointeger()
+  let baseExp = reward?.exp
+    ?? (levelExpPart * (levels?[levelForExp].nextLevelExp ?? 0) + 0.5).tointeger() //compatibility with 2024.06.27
   let totalExp = !havePremium.value ? baseExp
     : (baseExp * (premiumBonusesCfg?.expMul ?? 1.0) + 0.5).tointeger()
   let totalWp = !havePremium.value ? wp : (wp * (premiumBonusesCfg?.wpMul ?? 1.0) + 0.5).tointeger()
 
   let expData = { baseExp, totalExp, premExp = totalExp - baseExp }
+  let unitName = unit?.name ?? ""
   return {
     campaign = curCampaign.value
     userId = myUserId.value
     predefinedId
     player = { exp, level, nextLevelExp }
     reward = {
-      unitName = curUnit.value?.name ?? ""
+      unitName
       playerExp = expData
-      unitExp = expData
       playerWp = { baseWp = wp, totalWp, premWp = totalWp - wp }
+      units = [
+        { name = unitName, exp = expData }
+      ]
     }
   }
 }
@@ -179,20 +184,22 @@ function startNewbieMission(missions, reward, predefinedId) {
   if (missions == null)
     return
 
+  let unit = curUnit.get()
   let missionName = chooseRandom(missions)
-  logO($"Start newbie battle. Unit = {curUnit.value?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
-  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
-  startOfflineBattle(curUnit.get(), missionName)
+  logO($"Start newbie battle. Unit = {unit?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
+  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId, unit) })
+  startOfflineBattle(unit, missionName)
 }
 
 function startLocalMPMission(missions, reward, predefinedId) {
   if (missions == null)
     return
 
+  let unit = curUnit.get()
   let missionName = chooseRandom(missions)
-  logO($"Start local multiplayer battle. Unit = {curUnit.value?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
-  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId) })
-  startLocalMPBattle(curUnit.get(), missionName)
+  logO($"Start local multiplayer battle. Unit = {unit?.name}, missionName = {missionName}, predefinedId = {predefinedId}")
+  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, predefinedId, unit) })
+  startLocalMPBattle(unit, missionName)
 }
 
 let startCurNewbieMission = @()
@@ -207,14 +214,14 @@ let dbgCurrentNewbieMission = Computed(function() {
 let startDebugNewbieMission = @()
   startNewbieMission(
     dbgCurrentNewbieMission.value
-    serverConfigs.value?.firstBattlesRewards[0]
+    serverConfigs.value?.firstBattlesRewards[curCampaign.get()][0]
     null
   )
 let startLocalMultiplayerMission = function() {
   local abandoned_factory = ["abandoned_factory_Conq1", "abandoned_factory_Conq2", "abandoned_factory_Conq3" ]
   startLocalMPMission(
     abandoned_factory
-    serverConfigs.value?.firstBattlesRewards[0]
+    serverConfigs.value?.firstBattlesRewards[curCampaign.get()][0]
     null
   )
 }

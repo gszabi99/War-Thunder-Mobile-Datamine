@@ -8,7 +8,7 @@ let { playerExpColor, unitExpColor } = require("%rGui/components/levelBlockPkg.n
 let { mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL } = require("%rGui/components/currencyComp.nut")
 let { premiumTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let mkTryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
-let { getUnitRewards } = require("debrUtils.nut")
+let { isDebrWithUnitsResearch, getBestUnitName, getUnit, getUnitRewards } = require("debrUtils.nut")
 
 let REWARDS_SCORES = "wp"
 let REWARDS_CAMPAIGN = "campaign"
@@ -46,7 +46,9 @@ let rewardsInfoCfg = {
     mkCurrComp = @(val, style) mkCurrencyComp(val, WP, style)
   },
   [REWARDS_CAMPAIGN] = {
-    getHasProgress = @(debrData) (debrData?.player.nextLevelExp ?? 0) > 0
+    getHasProgress = @(debrData) isDebrWithUnitsResearch(debrData)
+      ? debrData?.researchingUnit != null
+      : (debrData?.player.nextLevelExp ?? 0) > 0
     getBasic = @(debrData) (debrData?.reward.playerExp.baseExp ?? 0)
       + (debrData?.reward.playerExp.misStatusExp ?? 0)
       + (debrData?.reward.playerExp.bonusExp ?? 0)
@@ -63,23 +65,23 @@ let rewardsInfoCfg = {
     mkCurrComp = @(val, style) mkExp(val, playerExpColor, style)
   },
   [REWARDS_UNIT] = {
-    getHasProgress = @(debrData) (debrData?.unit.nextLevelExp ?? 0) > 0
+    getHasProgress = @(debrData) (getUnit(getBestUnitName(debrData), debrData)?.nextLevelExp ?? 0) > 0
     function getBasic(debrData) {
-      let { baseExp = 0, misStatusExp = 0, bonusExp = 0 } = getUnitRewards(debrData)?.exp
+      let { baseExp = 0, misStatusExp = 0, bonusExp = 0 } = getUnitRewards(getBestUnitName(debrData), debrData)?.exp
       return baseExp + misStatusExp + bonusExp
     }
-    getBooster = @(debrData) getUnitRewards(debrData)?.exp.boosterExp ?? 0
+    getBooster = @(debrData) getUnitRewards(getBestUnitName(debrData), debrData)?.exp.boosterExp ?? 0
     getStreaks = @(_debrData) 0
     getIsPremiumIncluded = getIsPremiumIncludedExp
     getPremMul = getPremMulExp
     function getTotalWithoutPremium(debrData) {
-      let { totalExp = 0, premExp = 0 } = getUnitRewards(debrData)?.exp
+      let { totalExp = 0, premExp = 0 } = getUnitRewards(getBestUnitName(debrData), debrData)?.exp
       return getIsMultiplayerMission(debrData) && getIsPremiumIncludedExp(debrData)
         ? totalExp - premExp
         : totalExp
     }
     function getTotalWithPremium(debrData) {
-      let { totalExp = 0 } = getUnitRewards(debrData)?.exp
+      let { totalExp = 0 } = getUnitRewards(getBestUnitName(debrData), debrData)?.exp
       return !getIsMultiplayerMission(debrData) || getIsPremiumIncludedExp(debrData)
         ? totalExp
         : round(totalExp * getPremMulExp(debrData)).tointeger()
