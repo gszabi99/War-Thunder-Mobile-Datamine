@@ -117,7 +117,7 @@ register_command(
   @(count) add_boosters(serverConfigs.get()?.allBoosters.map(@(_) count) ?? {}, "consolePrintResult"),
   "meta.add_all_boosters")
 register_command(
-  @() debug_apply_boosters_in_battle(servProfile.get()?.boosters.filter(@(v) v.battlesLeft > 0).keys() ?? [], "consolePrintResult"),
+  @() debug_apply_boosters_in_battle(servProfile.get()?.boosters.filter(@(v) v.battlesLeft > 0 && !v.isDisabled).keys() ?? [], "consolePrintResult"),
   "meta.debug_apply_boosters_in_battle")
 
 register_command(@() upgrade_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.upgrade_hangar_unit")

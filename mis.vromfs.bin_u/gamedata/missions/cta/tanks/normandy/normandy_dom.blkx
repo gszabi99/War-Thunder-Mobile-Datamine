@@ -244,20 +244,6 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/normandy/template_normandy_background_units.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
       }
     ]
   },

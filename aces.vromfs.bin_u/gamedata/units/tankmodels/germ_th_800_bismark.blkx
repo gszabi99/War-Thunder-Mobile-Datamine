@@ -3915,10 +3915,37 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "user_skin": {
-    "name": "th_800_bismark",
-    "replace_tex": {
-      "from": "ger_camo_bronzegruen*"
+  "vehicleSkins": {
+    "forest": {
+      "set_tex": [
+        {
+          "from": "th_800_bismark_gun_c*",
+          "to": "th_800_bismark_skin_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "th_800_bismark_turret_c*",
+          "to": "th_800_bismark_skin_turret_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "th_800_bismark_body_c*",
+          "to": "th_800_bismark_skin_body_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "ammo": {

@@ -314,6 +314,10 @@ function throttleSlider() {
 
 eventbus_subscribe("throttleFromMission", function(msg) {
   sliderValue(throttleToSlider(msg.value * 100))
+  if (msg.value > wepAxisValue)
+    setShortcutOn("throttle_rangeMax")
+  else
+    setShortcutOff("throttle_rangeMax")
 })
 
 let throttleAxisUpdate = @()

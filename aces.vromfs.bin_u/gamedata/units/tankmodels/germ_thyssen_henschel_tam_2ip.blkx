@@ -3168,6 +3168,26 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_argentinian_bicolor*"
+      }
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
   "battleHideNodes": {
     "n": "details"
   }

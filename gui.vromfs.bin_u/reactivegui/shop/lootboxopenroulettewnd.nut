@@ -10,7 +10,7 @@ let { registerScene, scenesOrder } = require("%rGui/navState.nut")
 let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJackpotInfo,
   rouletteRewardsList, receivedRewardsCur, receivedRewardsAll, rouletteOpenIdx, nextFixedReward,
   isCurRewardFixed, requestOpenCurLootbox, closeRoulette, lastJackpotIdx, logOpenConfig,
-  rouletteLastReward, isRouletteDebugMode
+  rouletteLastReward, isRouletteDebugMode, isAllJackpotsReceived
 } = require("lootboxOpenRouletteState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
@@ -124,14 +124,20 @@ rouletteOpenId.subscribe(function(v) {
   resultOffsetIdx(-1)
 })
 
-allowedResultIndexes.subscribe(function(v) {
-  if (rouletteOpenId.value == null || v == null || v.len() > 0 || isResultLastReward.value)
+function onChangeIndexes() {
+  if (!isAllJackpotsReceived.get())
+    return
+  let indexes = allowedResultIndexes.get()
+  if (rouletteOpenId.value == null || indexes == null || indexes.len() > 0 || isResultLastReward.value)
     return
   log($"Not found received reward to show in the roulette '{rouletteOpenId.value}': ", curRewardViewInfo.value)
   logOpenConfig()
   logerr("Not found received reward to show in the roulette")
-  defer(closeRoulette)
-})
+  closeRoulette()
+}
+
+allowedResultIndexes.subscribe(@(_) deferOnce(onChangeIndexes))
+isAllJackpotsReceived.subscribe(@(_) deferOnce(onChangeIndexes))
 
 rouletteOpenResult.subscribe(function(v) {
   if (v == null)
@@ -438,9 +444,13 @@ let updAnimByStatus = {
   },
 
   [RS_REWARD_NO_ROLL] = function(_, state) {
+    if (!isAllJackpotsReceived.get())
+      return
+
     let { time, rewardNoRollTime = null, nextRewardTime = null } = state
+    let isLastReward = (receivedRewardsAll.value.len() - 1) == rouletteOpenIdx.value
+
     if (rewardNoRollTime != null && time >= rewardNoRollTime) {
-      let isLastReward = (receivedRewardsAll.value.len() - 1) == rouletteOpenIdx.value
       state.rewardNoRollTime <- null
       state.openIdx <- rouletteOpenIdx.value
       startReceivedRewardAnim(rouletteOpenIdx.value)
@@ -450,7 +460,7 @@ let updAnimByStatus = {
         state.nextRewardTime <- time + (1000 * state.WAIT_ANIM_NO_ROOL_REWARD).tointeger()
     }
 
-    if (rewardNoRollTime == null && nextRewardTime != null && time >= nextRewardTime) {
+    if (!isLastReward && rewardNoRollTime == null && nextRewardTime != null && time >= nextRewardTime) {
       let { MIN_ROLL_TIME, MIN_ROLL_TIME_NEXT } = state
       state.status = RS_IDLE_ROLL
       state.speed = 0.0

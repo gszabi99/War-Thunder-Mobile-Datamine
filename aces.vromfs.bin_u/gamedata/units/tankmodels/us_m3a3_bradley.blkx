@@ -754,13 +754,11 @@
     }
   },
   "sound": {
-    "EngineName": "engine_m3_bradley",
-    "TrackSoundPath": "tanks/engines_tanks",
+    "EngineName": "engine_light_petrol",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks_lt_modern",
-    "TrackSoundNameCockpit": "tracks_lt_modern_interior",
+    "TrackSoundName": "tracks_light",
     "EngineNameAi": "engine_tank_ai_light",
-    "TrackSoundNameAi": "tracks_ai_lt_modern"
+    "TrackSoundNameAi": "tracks_ai_light"
   },
   "DamageEffects": {
     "part": [
@@ -1909,6 +1907,7 @@
         "defaultPitch": 0.0,
         "speedYaw": 25.0,
         "speedPitch": 25.0,
+        "isBulletBelt": true,
         "fireConeAngle": 1.0,
         "bullets": 12,
         "salvoAmount": 100.0,
@@ -3197,6 +3196,7 @@
               "defaultPitch": 0.0,
               "speedYaw": 25.0,
               "speedPitch": 25.0,
+              "isBulletBelt": true,
               "fireConeAngle": 1.0,
               "bullets": 12,
               "salvoAmount": 100.0,

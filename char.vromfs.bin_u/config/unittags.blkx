@@ -5305,7 +5305,7 @@
     "Shop": {
       "shipCrewMax": 1250,
       "shipCrewMin": 260,
-      "shipCrewRating": 2.49303,
+      "shipCrewRating": 2.51667,
       "maxSpeed": 10.8,
       "turningTime": 41,
       "supportPlane": "soc_1",
@@ -9392,7 +9392,7 @@
     "Shop": {
       "shipCrewMax": 840,
       "shipCrewMin": 120,
-      "shipCrewRating": 2.5403,
+      "shipCrewRating": 2.68121,
       "maxSpeed": 16.25,
       "turningTime": 31,
       "addTorpedoesCountPack": 6,
@@ -24664,6 +24664,10 @@
         "105mm_NATO_APDS_FS": {
           "icon": "hud_ammo_apfsds",
           "reqLevel": 8
+        },
+        "105mm_DM33_APDS_FS": {
+          "reqLevel": 11,
+          "icon": "hud_ammo_apfsds"
         }
       }
     },
@@ -30447,10 +30451,12 @@
           "icon": "hud_ammo_heat"
         },
         "152mm_usa_XM578E1_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 3
         },
         "152mm_usa_MGM61C_HEAT": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "reqLevel": 6
         },
         "152mm_XM410E1_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -30522,10 +30528,12 @@
           "icon": "hud_ammo_he"
         },
         "105mm_NATO_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 8
         },
         "105mm_usa_M774_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 11
         },
         "105mm_us_M416_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -30598,7 +30606,8 @@
           "icon": "hud_ammo_bullet_ap"
         },
         "25mm_M242_APDS_FS": {
-          "icon": "hud_ammo_bullet_ap"
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 13
         }
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
@@ -30638,7 +30647,8 @@
           "reqLevel": 18
         },
         "40mm_SGT_YORK_HE_prox": {
-          "icon": "hud_ammo_bullet_he_vt"
+          "icon": "hud_ammo_bullet_he_vt",
+          "reqLevel": 21
         }
       }
     },

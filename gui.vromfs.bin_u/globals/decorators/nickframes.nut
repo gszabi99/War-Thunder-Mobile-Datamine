@@ -62,6 +62,12 @@ let nickFrames = {
   peaceful_atom = @(n) $"♬{n}♬"
   shield = @(n) $"♭{n}♭"
   torch = @(n) $"♮{n}♯"
+  snail = @(n) $"♷{n}♸"
+  wreath = @(n) $"♹{n}♹"
+  shell_barrel = @(n) $"♰{n}♱"
+  turret = @(n) $"♲{n}♳"
+  shells = @(n) $"♴{n}♴"
+  blast = @(n) $"♵{n}♶"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

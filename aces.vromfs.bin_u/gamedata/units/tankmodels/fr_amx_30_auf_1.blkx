@@ -862,14 +862,12 @@
     "loader_01_dm": true
   },
   "sound": {
-    "EngineName": "engine_amx30",
-    "TrackSoundPath": "tanks/engines_tanks",
+    "EngineName": "engine_medium_diesel",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks_amx30",
-    "TrackSoundNameCockpit": "tracks_amx30_interior",
-    "turret_turn": "turret_turn_servo",
+    "TrackSoundName": "tracks_medium",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_amx30",
+    "turret_turn": "turret_turn_servo",
+    "TrackSoundNameAi": "tracks_ai_medium",
     "gun_turn": "turret_turn_mg_light"
   },
   "DamageEffects": {
@@ -3122,77 +3120,26 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "user_skin": {
-    "name": "amx_30_auf_1",
-    "replace_tex": {
-      "from": "fr_camo_vert_olive_arme*"
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_carc*"
+      }
     }
   },
-  "skin": [
-    {
-      "name": "fr_camo_desert_storm",
-      "nameLocId": "skin/fr_camo_desert_storm",
-      "descLocId": "skin/fr_camo_desert_storm/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_desert_storm*"
-      }
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     },
-    {
-      "name": "fr_camo_green_brown",
-      "nameLocId": "skin/fr_camo_green_brown",
-      "descLocId": "skin/fr_camo_green_brown/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_green_brown*"
-      }
-    },
-    {
-      "name": "fr_camo_green_sand_brown",
-      "nameLocId": "skin/fr_camo_green_sand_brown",
-      "descLocId": "skin/fr_camo_green_sand_brown/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_green_sand_brown*"
-      }
-    },
-    {
-      "name": "fr_camo_jaune_sahara",
-      "nameLocId": "skin/fr_camo_jaune_sahara",
-      "descLocId": "skin/fr_camo_jaune_sahara/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_jaune_sahara*"
-      }
-    },
-    {
-      "name": "fr_camo_winter_green_white",
-      "nameLocId": "skin/fr_camo_winter_green_white",
-      "descLocId": "skin/fr_camo_winter_green_white/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_winter_green_white*"
-      }
-    },
-    {
-      "name": "fr_camo_modern_urban",
-      "nameLocId": "skin/fr_camo_modern_urban",
-      "descLocId": "skin/fr_camo_modern_urban/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "fr_camo_modern_urban*"
-      }
-    },
-    {
-      "name": "ger_camo_carc",
-      "nameLocId": "skin/ger_camo_carc",
-      "descLocId": "skin/ger_camo_carc/desc",
-      "replace_tex": {
-        "from": "fr_camo_vert_olive_arme*",
-        "to": "ger_camo_carc*"
-      }
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
-  ],
+  },
   "battleHideNodes": {
     "n": [
       "details_01",

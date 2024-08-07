@@ -3210,6 +3210,12 @@
       "camo_rotation": 0.0
     }
   },
+  "default_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "us_camo_modern_green*"
+    }
+  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",

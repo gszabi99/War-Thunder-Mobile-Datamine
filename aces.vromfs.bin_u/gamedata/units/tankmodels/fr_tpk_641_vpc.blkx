@@ -2081,11 +2081,9 @@
     "ex_armor_02_dm": true
   },
   "sound": {
-    "EngineName": "engine_m1",
-    "TrackSoundPath": "tanks/engines_tanks",
+    "EngineName": "engine_light_petrol",
     "TrackSoundPathStudio": "ground/engines",
     "TrackSoundName": "tracks_wheels",
-    "TrackSoundNameCockpit": "tracks_wheels_interior",
     "turret_turn": "turret_turn_t34_manual",
     "EngineNameAi": "engine_truck_ai",
     "TrackSoundNameAi": "tracks_ai_wheels"
@@ -3395,6 +3393,26 @@
       "deviation": 0.4,
       "rotation": 2.5,
       "collisionNode": "cls_turret"
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_carc*"
+      }
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

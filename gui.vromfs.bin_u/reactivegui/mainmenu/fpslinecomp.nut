@@ -64,7 +64,12 @@ let graphicsComp = @() textStyle.__merge({
 
 let gpuComp = @() textStyle.__merge({
   watch = gpu
-  text = (gpu.value.len() > 0) ? $"GPU: {gpu.value}" : ""
+  text = (gpu.get().len() > 0) ? $"GPU: {gpu.get()}" : ""
+})
+
+let gpuBigComp = @() textStyle.__merge({
+  watch = gpu
+  text = (gpu.get().len() > 0) ? $"GPU: {gpu.get()}" : ""
   color = fadedColor
 }, fontVeryTiny)
 
@@ -90,13 +95,14 @@ let latencyComp = @() textStyle.__merge({
 
 let presetBattle = [
   graphicsComp
-  gpuComp
+  gpuBigComp
   versionComp
   sessionComp
   latencyComp
 ]
 
 let presetMenu = [
+  gpuComp
   versionComp
   lastBattleID
 ]

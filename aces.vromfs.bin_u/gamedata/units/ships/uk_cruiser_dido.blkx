@@ -2891,6 +2891,9 @@
         "startSpeed": 18.0,
         "useStartSpeed": true,
         "allowableDelta": 40.0,
+        "gyroAngle": 0.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
         "speedYaw": 55.0,
         "shotFreq": 0.14,
         "turret": {
@@ -2943,6 +2946,9 @@
         "startSpeed": 18.0,
         "useStartSpeed": true,
         "allowableDelta": 40.0,
+        "gyroAngle": 0.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
         "speedYaw": 55.0,
         "shotFreq": 0.14,
         "turret": {
@@ -4680,6 +4686,9 @@
               "startSpeed": 18.0,
               "useStartSpeed": true,
               "allowableDelta": 40.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
               "shotFreq": 0.14,
               "turret": {
@@ -4732,6 +4741,9 @@
               "startSpeed": 18.0,
               "useStartSpeed": true,
               "allowableDelta": 40.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
               "shotFreq": 0.14,
               "turret": {
@@ -6466,6 +6478,9 @@
               "startSpeed": 18.0,
               "useStartSpeed": true,
               "allowableDelta": 40.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
               "shotFreq": 0.14,
               "turret": {
@@ -6518,6 +6533,9 @@
               "startSpeed": 18.0,
               "useStartSpeed": true,
               "allowableDelta": 40.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
               "speedYaw": 55.0,
               "shotFreq": 0.14,
               "turret": {

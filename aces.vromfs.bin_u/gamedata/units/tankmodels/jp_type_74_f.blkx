@@ -1753,13 +1753,12 @@
     "horizontal": true
   },
   "sound": {
-    "EngineName": "engine_type74",
-    "TrackSoundPath": "tanks/engines_tanks",
+    "EngineName": "engine_medium_diesel",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks",
-    "TrackSoundNameCockpit": "tracks_interior",
+    "TrackSoundName": "tracks_medium",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_middle",
+    "TrackSoundNameAi": "tracks_ai_medium",
+    "turret_turn": "turret_turn_servo",
     "gun_turn": "turret_turn_mg_light"
   },
   "class_tags": {},
@@ -3285,10 +3284,93 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "user_skin": {
-    "name": "type_74f",
-    "replace_tex": {
-      "from": "jp_camo_sdf_green*"
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -2.50095,
+        0.000218352,
+        1.238,
+        3.44714
+      ],
+      "decal0Line1": [
+        0.561377,
+        -2.487,
+        1.1345,
+        3.22697
+      ],
+      "decal0Line2": [
+        2.50095,
+        -0.000218685,
+        1.238,
+        -2.44714
+      ],
+      "decal0Line3": [
+        0.561377,
+        -2.487,
+        -1.1345,
+        3.22697
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.395404,
+        0.453594,
+        0.798692,
+        -2.20285
+      ],
+      "decal0CPNormDepth1": [
+        0.395404,
+        0.453594,
+        -0.798692,
+        -2.20285
+      ],
+      "decal0RotScale": [
+        1.57071,
+        0.358347
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.217704,
+      "decal0Tex": "jp_10th_bat_6th_div"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green_fuji*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_winter_late*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "camo_f_purp_orng*"
+      }
     }
   },
   "battleHideNodes": {

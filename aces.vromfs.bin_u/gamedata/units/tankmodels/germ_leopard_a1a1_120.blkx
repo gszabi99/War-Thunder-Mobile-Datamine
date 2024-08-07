@@ -3138,6 +3138,120 @@
       ]
     }
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_carc*"
+      }
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.63489,
+        -0.0290969,
+        0.210236,
+        -0.360073
+      ],
+      "decal0Line1": [
+        0.0681873,
+        -2.3636,
+        -1.18172,
+        3.87863
+      ],
+      "decal0Line2": [
+        -2.63489,
+        0.0290967,
+        0.210236,
+        1.36007
+      ],
+      "decal0Line3": [
+        0.0681875,
+        -2.3636,
+        1.18172,
+        3.87864
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0760331,
+        0.44765,
+        -0.890971,
+        -2.03266
+      ],
+      "decal0CPNormDepth1": [
+        0.0760331,
+        0.44765,
+        0.890971,
+        -2.03266
+      ],
+      "decal0RotScale": [
+        1.58311,
+        0.378297
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.241955,
+      "decal0Tex": "ge_bundeswehr_insignia",
+      "decal1Line0": [
+        -3.18262,
+        0.142145,
+        2.38032,
+        2.31375
+      ],
+      "decal1Line1": [
+        0.529623,
+        -3.82847,
+        0.936758,
+        5.5875
+      ],
+      "decal1Line2": [
+        3.13458,
+        0.142146,
+        2.44324,
+        -1.68601
+      ],
+      "decal1Line3": [
+        0.764171,
+        -3.82847,
+        -0.757666,
+        5.439
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.584637,
+        0.268224,
+        0.765673,
+        -2.09076
+      ],
+      "decal1CPNormDepth1": [
+        0.584637,
+        0.268224,
+        -0.765673,
+        -2.09076
+      ],
+      "decal1RotScale": [
+        1.53368,
+        0.251456
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.209455,
+      "decal1Tex": "ge_1st_panzerdivision"
+    }
+  },
   "battleHideNodes": {
     "n": "details"
   }

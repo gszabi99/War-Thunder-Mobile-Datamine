@@ -45,6 +45,8 @@ let rouletteOpenResult = Computed(@() jackpotIdxInfo.value.jIdx == null
   : rouletteOpenResultFull.value?.jackpots[jackpotIdxInfo.value.jIdx])
 let curJackpotInfo = Computed(@() openConfig.value?.jackpots[jackpotIdxInfo.value.jIdx])
 let lastJackpotIdx = Computed(@() openConfig.value?.jackpots.reduce(@(res, j) max(res, j.lastOpenIdx), 0) ?? 0)
+let isAllJackpotsReceived = Computed(@()
+  (openConfig.value?.jackpots.len() ?? 0) == (rouletteOpenResultFull.value?.jackpots.len() ?? 0))
 
 let nextOpenId = Computed(@() lootboxes.value.roulette.findindex(@(_) true))
 let nextOpenCount = Computed(function() {
@@ -329,7 +331,7 @@ function requestOpenCurLootbox() {
 }
 
 function logOpenConfig() {
-  log("jackpotIdxInfo: ", jackpotIdxInfo)
+  log("jackpotIdxInfo: ", jackpotIdxInfo.get())
   log("rouletteOpenResult main: ", rouletteOpenResultFull.get()?.main.unseenPurchases)
   log("rouletteOpenResult jackpots: ", rouletteOpenResultFull.get()?.jackpots.map(@(v) v?.unseenPurchases))
   log("lootbox cur open group info: ", curGroup.value)
@@ -384,6 +386,7 @@ return {
   curJackpotInfo
   lastJackpotIdx
   isRouletteDebugMode
+  isAllJackpotsReceived
 
   closeRoulette
   requestOpenCurLootbox

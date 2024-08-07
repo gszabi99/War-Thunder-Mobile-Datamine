@@ -71,6 +71,11 @@ let skinsByTag = {
     "ussr_camo_fiction_var1"
     "ger_camo_hinterhalt_tarnung"
     "cn_camo_sand_ltgreen_dkgreen_lines"
+    "arg_camo_bicolor"
+    "patria_skin"
+    "hu_camo_green"
+    "fr_camo_carc"
+    "jp_camo_post_biege_gray_green_fuji"
   ],
 
   [DESERT] = [
@@ -108,6 +113,8 @@ let skinsByTag = {
     "usa_sh_desert_threecolor"
     "ussr_modern_desert"
     "usa_ww_1"
+    "ann_camo"
+    "camo_f_purp_orng"
   ],
 
   [WINTER] = [
@@ -135,6 +142,7 @@ let skinsByTag = {
     "fr_camo_winter_green_white"
     "ussr_camo_winter_white_olive"
     "us_camo_winter_blots"
+    "jp_camo_winter_late"
   ],
 
   [NAVAL] = [

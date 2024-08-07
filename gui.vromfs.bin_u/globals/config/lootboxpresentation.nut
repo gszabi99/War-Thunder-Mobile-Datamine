@@ -6,6 +6,7 @@ let customLootboxImages = {
   every_day_award_first = "every_day_award_medium_pack.avif"
 
   event_small_season_1                 = "event_small.avif"
+  event_small_season_11                = "event_small_season_11.avif"
 
   event_tanks_medium_season_3          = "event_ships_medium_season_3.avif"
   event_tanks_medium_season_4          = "event_ships_medium_season_4.avif"
@@ -15,6 +16,7 @@ let customLootboxImages = {
   event_tanks_medium_season_8          = "event_ships_medium_season_8.avif"
   event_tanks_medium_season_9          = "event_ships_medium_season_9.avif"
   event_tanks_medium_season_10         = "event_ships_medium_season_10.avif"
+  event_tanks_medium_season_11         = "event_ships_medium_season_11.avif"
 
   event_tanks_big_season_3             = "event_ships_big_season_3.avif"
   event_tanks_big_season_4             = "event_ships_big_season_4.avif"
@@ -24,6 +26,13 @@ let customLootboxImages = {
   event_tanks_big_season_8             = "event_ships_big_season_8.avif"
   event_tanks_big_season_9             = "event_ships_big_season_9.avif"
   event_tanks_big_season_10            = "event_ships_big_season_10.avif"
+  event_tanks_big_season_11            = "event_ships_big_season_11.avif"
+
+  event_ships_medium_season_10         = "event_ships_medium_season_10.avif"
+  event_ships_medium_season_11         = "event_ships_medium_season_11.avif"
+
+  event_ships_big_season_10            = "event_ships_big_season_10.avif"
+  event_ships_big_season_11            = "event_ships_big_season_11.avif"
 
   event_special_tanks_christmas_2023   = "event_special_ships_christmas_2023.avif"
   event_special_tanks_april_2024       = "event_special_ships_april_2024.avif"

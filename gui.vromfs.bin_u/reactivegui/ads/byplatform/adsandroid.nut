@@ -114,8 +114,8 @@ function retryLoad() {
 
 local providersStatuses = {}
 eventbus_subscribe("android.ads.onLoad", function (params) {
-  let { status, provider = "unknown" } = params
-  logA($"onLoad {getStatusName(status)} ({provider})")
+  let { status, provider = "unknown", adapter = "none" } = params
+  logA($"onLoad {getStatusName(status)} {provider}({adapter})")
   isLoadStarted = false
   loadedProvider.set(provider)
   isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())

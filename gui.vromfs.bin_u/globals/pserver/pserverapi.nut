@@ -694,6 +694,13 @@ return {
     progressValue = name
   }, cb)
 
+  toggle_booster_activation = @(name, isDisabled, cb = null) request({
+    method = "toggle_booster_activation"
+    params = { name, isDisabled }
+    progressId = PROGRESS_BOOSTER
+    progressValue = name
+  }, cb)
+
   add_blueprints = @(name, count, cb = null) request({
     method = "add_blueprints"
     params = { name, count }

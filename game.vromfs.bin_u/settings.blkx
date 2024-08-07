@@ -515,6 +515,30 @@
         "mRank": 6
       }
     },
+    "pkg_uk_battlecruiser_glorious": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_us_cruiser_brooklyn_class_helena": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_germ_battleship_bayern": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_germ_frigate_rckt_bremen": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -705,6 +729,30 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 7
+      }
+    },
+    "pkg_fr_lorraine_40t": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_type_74g_kai": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_leopard_a1a1_120": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_us_mbt_70": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
       }
     },
     "pkg_environment": {
@@ -1212,7 +1260,8 @@
     "common": {
       "IB": 4096,
       "VB1": 16384,
-      "VB2": 0
+      "VB2": 16384,
+      "VB3": 0
     }
   },
   "contentUpdater": {

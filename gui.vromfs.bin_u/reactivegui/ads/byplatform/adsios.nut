@@ -114,8 +114,8 @@ function retryLoad() {
 
 local providersStatuses = {}
 eventbus_subscribe("ios.ads.onLoad",function (params) {
-  let { status, provider = "unknown" } = params
-  logA($"onLoad {getStatusName(status)} ({provider})")
+  let { status, provider = "unknown", adapter = "none" } = params
+  logA($"onLoad {getStatusName(status)} {provider}({adapter})")
   isLoadStarted = false
   loadedProvider.set(provider)
   isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())
@@ -164,8 +164,8 @@ eventbus_subscribe("ios.ads.onRevenue", function (params) {
 
 
 eventbus_subscribe("ios.ads.onShow",function (params) { //we got this event on start ads show, and on finish
-  let { status, provider = "unknown" } = params
-  logA($"onShow {getStatusName(status)}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
+  let { status, provider = "unknown", adapter = "none" } = params
+  logA($"onShow {getStatusName(status)} / {provider}({adapter}):", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   if (status == ADS_STATUS_SHOWN) {
     sendAdsBqEvent("show_start", provider)
     isAdsVisible.set(true)
@@ -180,8 +180,8 @@ eventbus_subscribe("ios.ads.onShow",function (params) { //we got this event on s
 })
 
 eventbus_subscribe("ios.ads.onReward", function (params) {
-  let { provider = "unknown" } = params
-  logA($"onReward {params.amount} {params.type}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
+  let { provider = "unknown", adapter = "none" } = params
+  logA($"onReward {provider}({adapter}) {params.amount} {params.type}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   giveReward()
   closeAdsPreloader()
   sendAdsBqEvent("receive_reward", provider)

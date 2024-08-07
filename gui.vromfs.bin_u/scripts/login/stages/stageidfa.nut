@@ -1,13 +1,16 @@
 from "%scripts/dagui_library.nut" import *
+let { defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
 let iOsPlaform = require("ios.platform")
 let { requestTrackingPermission, getTrackingPermission, ATT_NOT_DETERMINED } = iOsPlaform
-let { LOGIN_STATE } = require("%appGlobals/loginState.nut")
+let { LOGIN_STATE, isPreviewIDFAShowed, isReadyForShowPreviewIdfa } = require("%appGlobals/loginState.nut")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
 
 let { export, finalizeStage } = require("mkStageBase.nut")("ios_idfa",
   LOGIN_STATE.READY_FOR_IDFA,
   LOGIN_STATE.IOS_IDFA)
 
+isPreviewIDFAShowed.subscribe(@(v) v ? defer(requestTrackingPermission) : null)
 
 eventbus_subscribe("ios.platform.onPermissionTrackCallback", function(p) {
   let { value } = p
@@ -23,7 +26,7 @@ eventbus_subscribe("ios.platform.onPermissionTrackCallback", function(p) {
 
 function start() {
   if (getTrackingPermission() == ATT_NOT_DETERMINED)
-    requestTrackingPermission()
+    return abTests.get()?.showPreviewIDFA == "true" ? isReadyForShowPreviewIdfa.set(true) : requestTrackingPermission()
   else
     finalizeStage()
 }
@@ -32,6 +35,3 @@ return export.__merge({
   start
   restart = start
 })
-
-
-

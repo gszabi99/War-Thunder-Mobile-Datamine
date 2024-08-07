@@ -52,6 +52,8 @@ let isConsentAllowLogin = sharedWatched("isConsentAllowLogin", @() false)
 let goodleConsent = sharedWatched("googleConsent", @() null)
 let isGoogleConsentShowed = Computed(@() goodleConsent.get()?.isShowed ?? false)
 let isGoogleConsentAllowAds = Computed(@() goodleConsent.get()?.canRequest ?? false)
+let isPreviewIDFAShowed = sharedWatched("isPreviewIDFAShowed", @() false)
+let isReadyForShowPreviewIdfa = sharedWatched("isReadyForShowPreviewIdfa", @() false)
 
 function getLoginStateDebugStr(state = null) {
   state = state ?? loginState.value
@@ -112,6 +114,8 @@ return loginTypes.__merge(secondStepTypes, {
   goodleConsent
   isGoogleConsentShowed
   isGoogleConsentAllowAds
+  isReadyForShowPreviewIdfa
+  isPreviewIDFAShowed
 
   isLoginStarted = Computed(@() (loginState.value & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.value & LOGIN_STATE.AUTHORIZED) != 0)

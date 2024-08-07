@@ -17,10 +17,12 @@ let { PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, mkBqPurchaseInfo } = require("%rG
 let purchaseBooster = require("purchaseBooster.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { boosterInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { boosterInProgress, toggle_booster_activation } = require("%appGlobals/pServer/pServerApi.nut")
+let { hoverColor } = require("%rGui/style/stdColors.nut")
 
 let close = @() isOpenedBoosterWnd(false)
 
+let checkBoxIconSize = hdpxi(72)
 let bgSize = [hdpxi(370), hdpxi(412)]
 let boosterSize = hdpxi(230)
 
@@ -145,58 +147,101 @@ let boosterSlot = @(bst, sf) {
     }
   ]
 }
-let battlesLeftTitle = @(bst) {
-  size = [bgSize[0], SIZE_TO_CONTENT]
+
+let textBase = @(battlesLeft) {
+  rendObj = ROBJ_TEXT
   hplace = ALIGN_CENTER
-  margin = [hdpx(20),0,0,0]
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(15)
+  opacity = battlesLeft <= 0 ? 0.5 : 1
+}.__update(fontTinyAccented)
+
+let animTrigger = @(bstId) $"changeBoosterNumber_${bstId}"
+let battlesLeftTitle = @(bst, sf, battlesLeft, isDisabled) {
+  size = [flex(), SIZE_TO_CONTENT]
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  flow = FLOW_VERTICAL
   children = [
-    {
-      rendObj = ROBJ_TEXTAREA
-      behavior = Behaviors.TextArea
-      size = [flex(), SIZE_TO_CONTENT]
-      text = loc("booster/activeBattles")
-    }.__update(fontTinyAccented)
-    @() {
-      watch = servProfile
-      rendObj = ROBJ_TEXT
-      text = servProfile.get()?.boosters[bst.id].battlesLeft ?? 0
+    textBase(battlesLeft).__merge({
+      text = isDisabled || battlesLeft <= 0 ? loc("booster/use") : loc("booster/using")
+      color = battlesLeft > 0 && (sf & S_HOVER) ? hoverColor : null
+    })
+    textBase(battlesLeft).__merge({
+      text = loc("booster/battlesLeft", { battlesLeft })
+      color = battlesLeft > 0 && (sf & S_HOVER) ? hoverColor : null
       transform = {}
       animations = [{
         prop = AnimProp.scale, from = [1,1], to = [1.7, 1.7],
-        duration = 1, trigger = $"changeBoosterNumber_{bst.id}", easing = DoubleBlink
-    }]
-    }.__update(fontTinyAccented)
+        duration = 1, trigger = animTrigger(bst.id), easing = DoubleBlink
+      }]
+    })
   ]
 }
 
 let function boosterCard(bst) {
   let stateFlags = Watched(0)
-  let battlesLeft = Computed(@() servProfile.get()?.boosters[bst.id].battlesLeft)
+  let cbStateFlags = Watched(0)
+  let isDisabled = Computed(@() servProfile.get()?.boosters[bst.id].isDisabled ?? false)
+  let battlesLeft = Computed(@() servProfile.get()?.boosters[bst.id].battlesLeft ?? 0)
   let hasSpinner = Computed(@() boosterInProgress.get() == bst.id)
-  battlesLeft.subscribe(@(_) anim_start($"changeBoosterNumber_{bst.id}"))
-  return @(){
-    watch = [stateFlags, serverConfigs]
+  battlesLeft.subscribe(@(_) anim_start(animTrigger(bst.id)))
+  return {
     flow = FLOW_VERTICAL
-    keepWatch = battlesLeft
-    onClick = @() purchaseBooster(bst.id, loc($"boosters/{bst.id}"),
-      mkBqPurchaseInfo(PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, bst.id))
-    onElemState = @(v) stateFlags(v)
-    behavior = Behaviors.Button
-    sound = { click  = "click" }
-    transform = {
-      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-    }
     children = [
-      {
+      @() {
+        watch = stateFlags
+        behavior = Behaviors.Button
+        flow = FLOW_VERTICAL
+        sound = { click  = "click" }
+        transform = { scale = battlesLeft.get() > 0 && (stateFlags.get() & S_ACTIVE) ? [0.95, 0.95] : [1, 1] }
+        onElemState = @(sf) stateFlags.set(sf)
+        onClick = @() purchaseBooster(bst.id, loc($"boosters/{bst.id}"),
+          mkBqPurchaseInfo(PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, bst.id))
         children = [
-          boosterSlot(bst, stateFlags.get())
-          mkWaitDimmingSpinner(hasSpinner)
+          {
+            children = [
+              boosterSlot(bst, stateFlags.get())
+              mkWaitDimmingSpinner(hasSpinner)
+            ]
+          }
+          mkPricePlate(bst)
         ]
       }
-      mkPricePlate(bst)
-      battlesLeftTitle(bst)
+      @() {
+        watch = [cbStateFlags, battlesLeft, isDisabled, hasSpinner]
+        behavior = Behaviors.Button
+        size = [flex(), SIZE_TO_CONTENT]
+        flow = FLOW_HORIZONTAL
+        margin = [hdpx(20), 0, 0, 0]
+        transform = {
+          scale = battlesLeft.get() > 0 && (cbStateFlags.get() & S_ACTIVE) ? [0.95, 0.95] : [1, 1]
+        }
+        onElemState = @(sf) cbStateFlags.set(sf)
+        onClick = @() battlesLeft.get() <= 0 || hasSpinner.get() ? null
+          : toggle_booster_activation(bst.id, !isDisabled.get())
+        children = [
+          {
+            size = array(2, hdpx(80))
+            rendObj = ROBJ_BOX
+            opacity = isDisabled.get() || battlesLeft.get() <= 0 ? 0.5 : 1.0
+            borderColor = battlesLeft.get() > 0 && (cbStateFlags.get() & S_HOVER) ? hoverColor : 0xFF9FA7AF
+            borderWidth = hdpx(3)
+            fillColor = 0x88000000
+            padding = hasSpinner.get() ? null : [0,0,hdpx(10),hdpx(10)]
+            valign = ALIGN_CENTER
+            halign = ALIGN_CENTER
+            children = hasSpinner.get() ? mkWaitDimmingSpinner(hasSpinner, hdpxi(50))
+              : {
+                  size = array(2, checkBoxIconSize)
+                  rendObj = ROBJ_IMAGE
+                  image = isDisabled.get() || battlesLeft.get() <= 0 ? null
+                    : Picture($"ui/gameuiskin#daily_mark_claimed.avif:{checkBoxIconSize}:{checkBoxIconSize}:P")
+                  keepAspect = KEEP_ASPECT_FIT
+                  color = 0xFFFFFFFF
+                }
+          }
+          battlesLeftTitle(bst, cbStateFlags.get(), battlesLeft.get(), isDisabled.get())
+        ]
+      }
     ]
   }
 }

@@ -75,7 +75,7 @@ let specialEventsOrdered = Computed(function() {
   return res
 })
 
-let specialEvents = Computed(@() specialEventsOrdered.get().reduce(@(res, v) res.$rawset(v.eventName, v), {}))
+let specialEvents = Computed(@() specialEventsOrdered.get().reduce(@(res, v) res.$rawset(v.eventId, v), {}))
 
 let specialEventsWithLootboxes = Computed(function() {
   let lootboxesEventIds = {}

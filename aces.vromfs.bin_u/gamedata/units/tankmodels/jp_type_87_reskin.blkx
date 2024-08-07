@@ -2499,8 +2499,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_87_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_87_default.blk"
+      "name": "jp_type_87_reskin_default",
+      "blk": "gameData/units/tankModels/weaponPresets/jp_type_87_reskin_default.blk"
     }
   },
   "cockpit": {
@@ -2945,5 +2945,94 @@
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -1.40035,
+        -6.12378e-8,
+        1.50373,
+        1.64814
+      ],
+      "decal0Line1": [
+        0.401897,
+        -1.98005,
+        0.374267,
+        3.19609
+      ],
+      "decal0Line2": [
+        1.40035,
+        -7.65472e-8,
+        1.50373,
+        -0.648143
+      ],
+      "decal0Line3": [
+        0.401897,
+        -1.98005,
+        -0.374267,
+        3.19609
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.705194,
+        0.267266,
+        0.656712,
+        -2.3167
+      ],
+      "decal0CPNormDepth1": [
+        0.705194,
+        0.267266,
+        -0.656712,
+        -2.3167
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.486666
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.232467,
+      "decal0Tex": "jp_3rd_platoon_2nd_anti_aircraft_regiment"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green_fuji*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_winter_late*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "camo_f_purp_orng*"
+      }
+    }
   }
 }

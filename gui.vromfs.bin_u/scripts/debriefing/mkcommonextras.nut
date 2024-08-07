@@ -12,6 +12,7 @@ function mkCommonExtras(battleResult) {
     if (!isCampaignWithUnitsResearch.get()) {
       let nextLevel = (battleResult?.player.level ?? 0) + 1
       let nextLevelUnits = allUnitsCfg.get().filter(@(u) u.rank == nextLevel
+        && !u.isHidden
         && u.costWp > 0
         && u.name not in unitResearchExp)
       res.__update({ nextLevelUnits })

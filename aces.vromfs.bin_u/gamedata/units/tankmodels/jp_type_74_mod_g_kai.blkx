@@ -3297,6 +3297,95 @@
       }
     }
   },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        1.81216,
+        -9.18544e-8,
+        0.968546,
+        -1.73116
+      ],
+      "decal0Line1": [
+        0.428307,
+        -1.84292,
+        -0.801365,
+        2.55619
+      ],
+      "decal0Line2": [
+        -1.81216,
+        -9.18544e-8,
+        0.968546,
+        2.73116
+      ],
+      "decal0Line3": [
+        0.428307,
+        -1.84292,
+        0.801365,
+        2.55619
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.422775,
+        0.442216,
+        -0.791016,
+        -2.22088
+      ],
+      "decal0CPNormDepth1": [
+        0.422775,
+        0.442216,
+        0.791016,
+        -2.22089
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.486678
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.216669,
+      "decal0Tex": "jp_northen_army_1st_tank_discrict"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green_fuji*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_winter_late*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "camo_f_purp_orng*"
+      }
+    }
+  },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   }

@@ -683,13 +683,11 @@
     ]
   },
   "sound": {
-    "EngineName": "engine_m3_bradley",
-    "TrackSoundPath": "tanks/engines_tanks",
+    "EngineName": "engine_light_petrol",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks_lt_modern",
-    "TrackSoundNameCockpit": "tracks_lt_modern_interior",
+    "TrackSoundName": "tracks_light",
     "EngineNameAi": "engine_tank_ai_light",
-    "TrackSoundNameAi": "tracks_ai_lt_modern"
+    "TrackSoundNameAi": "tracks_ai_light"
   },
   "DamageEffects": {
     "part": [
@@ -1797,6 +1795,7 @@
         "barrelDP": "gun_barrel_02_dm",
         "breechDP": "gun_barrel_03_dm",
         "createGunEffects": true,
+        "isBulletBelt": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 30.0,
@@ -2673,6 +2672,7 @@
               "barrelDP": "gun_barrel_02_dm",
               "breechDP": "gun_barrel_03_dm",
               "createGunEffects": true,
+              "isBulletBelt": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 30.0,
@@ -3254,6 +3254,95 @@
           }
         }
       ]
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -1.364,
+        -1.07175e-7,
+        1.53702,
+        -0.442855
+      ],
+      "decal0Line1": [
+        0.30291,
+        -2.01467,
+        0.268811,
+        4.43955
+      ],
+      "decal0Line2": [
+        1.364,
+        -9.18645e-8,
+        1.53702,
+        1.19693
+      ],
+      "decal0Line3": [
+        0.30291,
+        -2.01467,
+        -0.268811,
+        4.48256
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.733282,
+        0.197076,
+        0.650737,
+        -1.09993
+      ],
+      "decal0CPNormDepth1": [
+        0.733282,
+        0.197076,
+        -0.650737,
+        -0.995815
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.486624
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.25048,
+      "decal0Tex": "jp_wasp_decal"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green_fuji*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_winter_late*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "camo_f_purp_orng*"
+      }
     }
   },
   "battleHideNodes": {
