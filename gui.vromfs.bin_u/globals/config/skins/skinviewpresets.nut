@@ -115,6 +115,7 @@ let skinsByTag = {
     "usa_ww_1"
     "ann_camo"
     "camo_f_purp_orng"
+    "usa_modern_gray_desert"
   ],
 
   [WINTER] = [

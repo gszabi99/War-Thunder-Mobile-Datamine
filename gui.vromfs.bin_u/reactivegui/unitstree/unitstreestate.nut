@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+require("%rGui/onlyAfterLogin.nut")
 let { allUnitsCfg, myUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { ovrHangarAddon } = require("%appGlobals/updater/addons.nut")
 let { curCampaign, blueprints } = require("%appGlobals/pServer/campaign.nut")

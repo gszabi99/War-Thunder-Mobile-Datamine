@@ -1135,6 +1135,10 @@ return {
       "": "us_camo_olive",
       "upgraded": "usa_modern_tropical"
     },
+    "us_m247_reskin": {
+      "": "us_camo_modern_green",
+      "upgraded": "usa_modern_gray_desert"
+    },
     "us_m24_chaffee": {
       "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth_black"
@@ -1156,6 +1160,10 @@ return {
     "us_m3_bradley": {
       "": "us_camo_olive",
       "upgraded": "usa_modern_tropical"
+    },
+    "us_m3a3_bradley": {
+      "": "us_camo_modern_green",
+      "upgraded": "usa_modern_gray_desert"
     },
     "us_m41_walker_bulldog": {
       "": "us_camo_olive",
@@ -1269,6 +1277,10 @@ return {
       "": "us_camo_olive",
       "upgraded": "usa_modern_tropical"
     },
+    "us_m60a3_tts": {
+      "": "us_camo_modern_green",
+      "upgraded": "usa_modern_gray_desert"
+    },
     "us_m6a1": {
       "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_dark_khaki"
@@ -1286,6 +1298,10 @@ return {
     "us_m901_itv": {
       "": "us_camo_modern_green",
       "forest": "usa_pw_4"
+    },
+    "us_mbt_70": {
+      "": "us_camo_modern_green",
+      "upgraded": "usa_modern_gray_desert"
     },
     "us_sub_balao": {
       "upgraded": "camo_designpt328"

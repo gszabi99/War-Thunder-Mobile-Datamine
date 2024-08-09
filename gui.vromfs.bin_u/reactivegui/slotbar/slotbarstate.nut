@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+require("%rGui/onlyAfterLogin.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { curCampaignSlots, campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { set_unit_to_slot, buy_unit_slot, clear_unit_slot } = require("%appGlobals/pServer/pServerApi.nut")

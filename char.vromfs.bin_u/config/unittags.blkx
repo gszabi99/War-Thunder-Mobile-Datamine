@@ -30589,8 +30589,8 @@
         },
         "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
           "wtype": "auxCannon",
-          "caliber": 152.0,
-          "armorPower": 800.0,
+          "caliber": 127.0,
+          "armorPower": 100.0,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 25.0,
           "isBeltAmmo": false
@@ -30612,13 +30612,7 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2"
-        },
-        "152mm_us_tow_2": {
           "icon": "hud_ammo_atgm_ap1_he1"
-        },
-        "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3"
         }
       }
     }
@@ -30894,9 +30888,6 @@
       "152mm_Type_79_launcher_user_cannon": {
         "default": {
           "icon": "hud_ammo_atgm_ap1_he1"
-        },
-        "152mm_jp_type_79_ASM": {
-          "icon": "hud_ammo_atgm_ap2_he1"
         }
       }
     }

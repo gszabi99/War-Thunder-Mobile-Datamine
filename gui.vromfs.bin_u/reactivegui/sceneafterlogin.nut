@@ -8,6 +8,7 @@ require("%rGui/unitMods/unitModsWnd.nut")
 require("%rGui/unitMods/unitModsSlotsWnd.nut")
 require("%rGui/unitsTree/unitsTreeWnd.nut")
 require("%rGui/unitSkins/unitSkinsWnd.nut")
+require("slotBar/selectUnitToSlotWnd.nut")
 require("%rGui/quests/questsWnd.nut")
 require("%rGui/quests/questRewardsWnd.nut")
 require("%rGui/shop/shopWnd.nut")
@@ -87,7 +88,8 @@ require("debriefing/debrQuestsMgr.nut")
 require("%rGui/loading/loadingScreen.nut")
   .setMissionLoadingScreen(require("%rGui/loading/missionLoadingScreen.nut"))
 require("%rGui/chat/mpChatHandler.nut")
-require("%rGui/rewards/lootboxRewardChances.nut") //FIXME: remove this include on start use this module. this is temporary include for suppress analizer warning
+require("levelUp/levelUpRewards.nut")
+
 
 let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")
 let { scenesOrder, getTopScene } = require("navState.nut")

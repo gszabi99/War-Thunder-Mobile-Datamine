@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+require("%rGui/onlyAfterLogin.nut")
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
