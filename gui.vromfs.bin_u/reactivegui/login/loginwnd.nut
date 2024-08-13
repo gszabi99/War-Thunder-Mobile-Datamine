@@ -16,7 +16,7 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getCurrentLanguage } = require("dagor.localize")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
-let { is_nswitch } = require("%sqstd/platform.nut")
+let { is_nswitch, is_ios } = require("%sqstd/platform.nut")
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
@@ -180,8 +180,8 @@ let mkPasswordInputField = @() {
   ]
 }
 
-let sighUp = urlText(loc("mainmenu/signUp"), loc("url/signUp"), { ovr = { hplace = ALIGN_RIGHT } })
-let recoveryPassword = urlText(loc("msgbox/btn_recovery"), loc("url/recovery"))
+let sighUp = urlText(loc("mainmenu/signUp"), loc("url/signUp"), { ovr = { hplace = ALIGN_RIGHT } }, !is_ios)
+let recoveryPassword = urlText(loc("msgbox/btn_recovery"), loc("url/recovery"), {}, !is_ios)
 
 let resendTimer = Watched(resendTimeout)
 local timerMult = 1;

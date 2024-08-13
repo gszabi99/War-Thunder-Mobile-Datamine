@@ -75,7 +75,12 @@
           "initMission": {}
         },
         "conditions": {
-          "isAllPlayersInGame": {}
+          "isAllPlayersInGame": {},
+          "varCompareBool": {
+            "var_value": "autostart_single",
+            "value": true,
+            "comparasion_func": "equal"
+          }
         },
         "actions": {
           "triggerEnable": [
@@ -4211,7 +4216,7 @@
         "actions": {
           "unitRespawnAfterTime": [
             {
-              "time_to_respawn": 10.0,
+              "time_to_respawn": 3.0,
               "object_name": [
                 "@t1_bot02_name",
                 "@t1_bot03_name",
@@ -4227,7 +4232,7 @@
               "cycle_respawn": true
             },
             {
-              "time_to_respawn": 10.0,
+              "time_to_respawn": 3.0,
               "object_name": [
                 "@t2_bot01_name",
                 "@t2_bot02_name",
@@ -4263,8 +4268,7 @@
                 "@t1_bot09_name",
                 "@t1_bot10_name"
               ],
-              "target": "@t1_spawn_tank_name",
-              "needStopOnRespawn": true
+              "target": "@t1_spawn_tank_name"
             },
             {
               "delay": 1.0,
@@ -4285,8 +4289,7 @@
                 "@t2_bot09_name",
                 "@t2_bot10_name"
               ],
-              "target": "@t2_spawn_tank_name",
-              "needStopOnRespawn": true
+              "target": "@t2_spawn_tank_name"
             }
           ],
           "triggerEnable": {
@@ -5244,7 +5247,8 @@
     "bq_on_point_time": 0,
     "bq_point_first_enter_record": "",
     "bq_player_not_shooting": 0,
-    "bq_not_shooting_record": ""
+    "bq_not_shooting_record": "",
+    "autostart_single": true
   },
   "dialogs": {},
   "airfields": {},
@@ -5815,6 +5819,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -5877,6 +5882,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -5939,6 +5945,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6001,6 +6008,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6063,6 +6071,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6125,6 +6134,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6187,6 +6197,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6249,6 +6260,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6311,6 +6323,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6373,6 +6386,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6435,6 +6449,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6497,6 +6512,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6559,6 +6575,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6621,6 +6638,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6683,6 +6701,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6745,6 +6764,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6807,6 +6827,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6869,6 +6890,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -6931,6 +6953,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,

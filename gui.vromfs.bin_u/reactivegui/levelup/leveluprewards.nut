@@ -11,7 +11,8 @@ let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkCurrencyImage, maxIconsCoef } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { maxIconsScale } = require("%appGlobals/config/currencyPresentation.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
@@ -114,7 +115,7 @@ function mkCurrencyReward(id, amount, countDelay) {
     halign = ALIGN_CENTER
     children = [
       {
-        size = [iconSize * maxIconsCoef, iconSize * maxIconsCoef]
+        size = [iconSize * maxIconsScale, iconSize * maxIconsScale]
         halign = ALIGN_CENTER
         children = mkCurrencyImage(id, iconSize, {
           key = $"received_{id}"

@@ -5899,7 +5899,7 @@
     "sfxEvent": "misc_open_tank"
   },
   "misc_open_aircraft": {
-    "fx": "misc_open_tank_cmps_fx",
+    "fx": "misc_open_aircraft_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
     "onePointNumber": 8,

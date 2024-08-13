@@ -243,6 +243,9 @@
       "folder": "content.hq/pkg_secondary_hq",
       "hq": false
     },
+    "pkg_lvl_hangar_bd": {
+      "hangarPath": "config/hangar_field_birthday.blk"
+    },
     "pkg_dev": {},
     "pkg_common": {
       "conditions": {
@@ -521,6 +524,12 @@
         "mRank": 3
       }
     },
+    "pkg_fr_destroyer_aigle_class_aigle": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 1
+      }
+    },
     "pkg_us_cruiser_brooklyn_class_helena": {
       "conditions": {
         "campaign": "ships",
@@ -729,6 +738,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 7
+      }
+    },
+    "pkg_it_zrinyi_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 2
       }
     },
     "pkg_fr_lorraine_40t": {
@@ -1260,8 +1275,7 @@
     "common": {
       "IB": 4096,
       "VB1": 16384,
-      "VB2": 16384,
-      "VB3": 0
+      "VB2": 0
     }
   },
   "contentUpdater": {

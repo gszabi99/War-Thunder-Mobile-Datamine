@@ -68,7 +68,7 @@ function autoSkipConsent() {
     return
   savedPoints(defaultPointsTable.map(@(_) false))// dont need to save to online storage so that the window can open again at the next login
   logC("consent skipped by denied IDFA")
-  sendUiBqEvent("consent", { id = "consent_skip_by_denied_idfa" })
+  sendUiBqEvent("ads_consent_firebase", { id = "consent_skip_by_denied_idfa" })
   setupAnalytics()
   isConsentWasAutoSkipped.set(true)
 }
@@ -111,20 +111,20 @@ let isOpenedPartners = mkWatched(persist, "consentPartners", false)
 isOpenedConsentWnd.subscribe(function(v){
   if(v){
     logC($"run consent at startup")
-    sendUiBqEvent("consent", { id = "consent_open_at_start" })
+    sendUiBqEvent("ads_consent_firebase", { id = "consent_open_at_start" })
   }
 })
 
 isOpenedManage.subscribe(function(v) {
   if (v && !isOpenedConsentWnd.get()) {
     logC("run manage consent from privacy")
-    sendUiBqEvent("consent", { id = "consent_open_from_privacy" })
+    sendUiBqEvent("ads_consent_firebase", { id = "consent_open_from_privacy" })
   }
 })
 
 function applyConsent(pointsTable, source){
   logC($"consent saved from windows {source.wnd} action {source.action}", pointsTable)
-  sendUiBqEvent("consent", {
+  sendUiBqEvent("ads_consent_firebase", {
     id = "consent_save",
     from = source.wnd,
     status = source.action,

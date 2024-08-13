@@ -197,7 +197,7 @@ function showAdsForReward(rInfo) {
 function onTryShowNotAvailableAds() {
   if (isGoogleConsentAllowAds.get())
     return false
-  sendUiBqEvent("ads_consent", { id = "show_on_try_watch_ads" })
+  sendUiBqEvent("ads_consent_google", { id = "show_on_try_watch_ads" })
   showConsent()
   return true
 }

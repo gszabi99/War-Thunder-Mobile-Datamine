@@ -1,9 +1,9 @@
 {
-  "version": "1.9.0.40",
-  "grpHash": "e415af9422a99837c07ec0a27b0757fa",
+  "version": "1.9.0.56",
+  "grpHash": "808488e5d4aa5764cffb6aef81e1ef28",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "726bc5404c703900ce814a95bb0c076a",
+  "blkHash": "642acdb78bec759742498d619c12e794",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a6m5_zero_killstreak": {
     "dep": [
@@ -900,6 +900,23 @@
       "cruiser_emile_bertin_xray",
       "cruiser_emile_bertin_xray_skeleton",
       "depth_charge_mk6",
+      "mine_emc",
+      "torpedo_g7a"
+    ]
+  },
+  "fr_destroyer_aigle_class_aigle": {
+    "dep": [
+      "depth_charge_mk6",
+      "destroyer_aigle_class_aigle",
+      "destroyer_aigle_class_aigle_char",
+      "destroyer_aigle_class_aigle_collision",
+      "destroyer_aigle_class_aigle_dm_skeleton",
+      "destroyer_aigle_class_aigle_fastphys",
+      "destroyer_aigle_class_aigle_sections",
+      "destroyer_aigle_class_aigle_sections_remote",
+      "destroyer_aigle_class_aigle_skeleton",
+      "destroyer_aigle_class_aigle_xray",
+      "destroyer_aigle_class_aigle_xray_skeleton",
       "mine_emc",
       "torpedo_g7a"
     ]
@@ -2736,6 +2753,37 @@
       "magach_6r_xray_skeleton"
     ]
   },
+  "it_43m_turan_3": {
+    "dep": [
+      "43m_turan_3",
+      "43m_turan_3_char",
+      "43m_turan_3_collision",
+      "43m_turan_3_dm_skeleton",
+      "43m_turan_3_dmg",
+      "43m_turan_3_dmg_skeleton",
+      "43m_turan_3_fastphys",
+      "43m_turan_3_skeleton",
+      "43m_turan_3_xray",
+      "43m_turan_3_xray_skeleton",
+      "grenade_l8"
+    ]
+  },
+  "it_44m_zrinyi_1": {
+    "dep": [
+      "44m_zrinyi_1",
+      "44m_zrinyi_1_char",
+      "44m_zrinyi_1_collision",
+      "44m_zrinyi_1_dm_skeleton",
+      "44m_zrinyi_1_dmg",
+      "44m_zrinyi_1_dmg_skeleton",
+      "44m_zrinyi_1_fastphys",
+      "44m_zrinyi_1_skeleton",
+      "44m_zrinyi_1_xray",
+      "44m_zrinyi_1_xray_skeleton",
+      "grenade_l8",
+      "nebelwerfer_42_rocket"
+    ]
+  },
   "it_b1_centauro_romor": {
     "dep": [
       "b1_centauro_romor",
@@ -2748,6 +2796,21 @@
       "b1_centauro_romor_skeleton",
       "b1_centauro_romor_xray",
       "b1_centauro_romor_xray_skeleton"
+    ]
+  },
+  "it_breda_52_autocannone": {
+    "dep": [
+      "breda_52_autocannone",
+      "breda_52_autocannone_char",
+      "breda_52_autocannone_collision",
+      "breda_52_autocannone_dm_skeleton",
+      "breda_52_autocannone_dmg",
+      "breda_52_autocannone_dmg_skeleton",
+      "breda_52_autocannone_fastphys",
+      "breda_52_autocannone_skeleton",
+      "breda_52_autocannone_xray",
+      "breda_52_autocannone_xray_skeleton",
+      "italian_gunner_char"
     ]
   },
   "it_leopard_1a5": {
@@ -2780,6 +2843,21 @@
       "m113a1_tow_skeleton",
       "m113a1_tow_xray",
       "m113a1_tow_xray_skeleton"
+    ]
+  },
+  "it_m15_42_contraereo": {
+    "dep": [
+      "grenade_l8",
+      "italian_gunner_char",
+      "m15_42_contraereo",
+      "m15_42_contraereo_collision",
+      "m15_42_contraereo_dm_skeleton",
+      "m15_42_contraereo_dmg",
+      "m15_42_contraereo_dmg_skeleton",
+      "m15_42_contraereo_fastphys",
+      "m15_42_contraereo_skeleton",
+      "m15_42_contraereo_xray",
+      "m15_42_contraereo_xray_skeleton"
     ]
   },
   "it_m18_hellcat": {

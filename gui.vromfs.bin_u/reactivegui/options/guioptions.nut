@@ -58,7 +58,6 @@ let optListScriptOnly = [
 ]
 
 let optListLocalScriptOnly = [
-  "OPT_AUTO_UPDATE_ENABLED"
 ]
 
 let export = {}

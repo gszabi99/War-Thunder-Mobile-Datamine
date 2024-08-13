@@ -75,7 +75,7 @@ let content = bgMessage.__merge({
             if (!isConsentAcceptedOnce.get()) {
               savedPoints(defaultPointsTable.map(@(_) false))// dont need to save to online storage so that the window opens again at the next login
               logC("consent skipped")
-              sendUiBqEvent("consent", { id = "consent_skip" })
+              sendUiBqEvent("ads_consent_firebase", { id = "consent_skip" })
               setupAnalytics()
             }
             close()

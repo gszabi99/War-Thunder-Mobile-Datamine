@@ -195,6 +195,9 @@ return {
     "fr_cruiser_emile_bertin": {
       "": "camo_multicolor_waves"
     },
+    "fr_destroyer_aigle_class_aigle": {
+      "": "ann_camo"
+    },
     "fr_lorraine_40t": {
       "": "fr_camo_vert_olive_arme",
       "forest": "fr_camo_carc"
@@ -598,9 +601,21 @@ return {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
     },
+    "it_43m_turan_3": {
+      "": "ann_camo",
+      "forest": "hu_camo_green"
+    },
+    "it_44m_zrinyi_1": {
+      "": "ann_camo",
+      "forest": "hu_camo_green"
+    },
     "it_b1_centauro_romor": {
       "": "it_camo_green",
       "upgraded": "it_camo_modern_three_color"
+    },
+    "it_breda_52_autocannone": {
+      "": "ann_camo",
+      "forest": "it_camo_olive_green"
     },
     "it_leopard_1a5": {
       "": "it_camo_olive_green",
@@ -609,6 +624,9 @@ return {
     "it_m113a1_tow": {
       "": "it_camo_olive_green",
       "upgraded": "it_camo_threecolor_modern"
+    },
+    "it_m15_42_contraereo": {
+      "": "it_camo_olive_green"
     },
     "it_m18_hellcat": {
       "": "it_camo_desert_modern",

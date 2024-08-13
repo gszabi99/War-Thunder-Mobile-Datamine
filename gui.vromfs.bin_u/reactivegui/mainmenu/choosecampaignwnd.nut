@@ -161,6 +161,10 @@ let chooseCampaignScene = bgShaded.__merge({
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap
+  function onAttach() {
+    if (!isAnyCampaignSelected.value)
+      sendUiBqEvent("campaign_first_choice_open")
+  }
   children = [
     @() {
       watch = isAnyCampaignSelected

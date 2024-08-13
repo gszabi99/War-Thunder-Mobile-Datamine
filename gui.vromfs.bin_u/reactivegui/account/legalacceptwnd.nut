@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { isOpenedLegalWnd } = require("%appGlobals/loginState.nut")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -73,7 +74,10 @@ let acceptText = {
 
 let acceptButton = mkCustomButton(
   acceptText,
-  @() eventbus_send("acceptAllLegals", {}),
+  function() {
+    sendUiBqEvent("legal_accept_wnd", { id = "accept" })
+    eventbus_send("acceptAllLegals", {})
+  },
   buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
 
 let wndContent = {
@@ -91,6 +95,7 @@ let wndContent = {
 let legalWnd = bgShaded.__merge({
   key = WND_UID
   size = flex()
+  onAttach = @() sendUiBqEvent("legal_accept_wnd", { id = "open" })
   onClick = EMPTY_ACTION
   children = @() msgBoxBg.__merge({
     flow = FLOW_VERTICAL

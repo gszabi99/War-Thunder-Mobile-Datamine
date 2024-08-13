@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { isPreviewIDFAShowed, isReadyForShowPreviewIdfa } = require("%appGlobals/loginState.nut")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 
 let PREWIEW_IDFA_WND_UID = "previewIDFAWnd"
 
 function onSubmit() {
+  sendUiBqEvent("ads_consent_idfa", { id = "submit_preview" })
   isPreviewIDFAShowed.set(true)
   isReadyForShowPreviewIdfa.set(false)
 }
@@ -30,6 +31,7 @@ let showPreviewWnd = @()
     rendObj = ROBJ_SOLID
     color = 0xD211141A
     onClick = onSubmit
+    onAttach = @() sendUiBqEvent("ads_consent_idfa", { id = "open_preview" })
 
     children = {
       size = sizeWnd

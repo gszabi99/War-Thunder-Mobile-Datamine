@@ -18,7 +18,6 @@ let SEEN_LOOTBOXES = "seenLootboxes"
 let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
 let MAIN_EVENT_ID = "main"
 let getSeasonPrefix = @(n) $"season_{n}"
-let SEASON_EMPTY = getSeasonPrefix(0)
 let getSpecialEventName = @(n) $"special_event_{n}"
 
 let openEventInfo = mkWatched(persist, "openEventInfo")
@@ -31,7 +30,8 @@ eventWndOpenCounter.subscribe(function(v) {
 })
 
 let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
-let eventSeason = Computed(@() getSeasonPrefix(userstatStats.value?.stats.season["$index"] ?? 0))
+let eventSeasonIdx = Computed(@() userstatStats.get()?.stats.season["$index"] ?? 0)
+let eventSeason = Computed(@() getSeasonPrefix(eventSeasonIdx.get()))
 let isEventActive = Computed(@() unlockTables.value?.season == true)
 
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
@@ -277,6 +277,7 @@ return {
   closeEventWnd = @() openEventInfo.set(null)
   markCurLootboxSeen
   eventEndsAt
+  eventSeasonIdx
   eventSeason
   isEventActive
 
@@ -286,7 +287,6 @@ return {
   bestCampLevel
 
   MAIN_EVENT_ID
-  SEASON_EMPTY
   specialEvents
   specialEventsOrdered
   specialEventsWithLootboxes

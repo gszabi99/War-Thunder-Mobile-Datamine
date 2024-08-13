@@ -33,8 +33,8 @@ function urlLikeButton(text, action, style = {}) {
   }.__update(fontSmall, ovr)
 }
 
-function urlText(text, baseUrl, style = {}) {
-  return text != "" ? urlLikeButton(text, @() eventbus_send("openUrl", { baseUrl }), style) : null
+function urlText(text, baseUrl, style = {}, useExternalBrowser = true) {
+  return text != "" ? urlLikeButton(text, @() eventbus_send("openUrl", { baseUrl, useExternalBrowser }), style) : null
 }
 
 return {

@@ -5,12 +5,18 @@ let iOsPlaform = require("ios.platform")
 let { requestTrackingPermission, getTrackingPermission, ATT_NOT_DETERMINED } = iOsPlaform
 let { LOGIN_STATE, isPreviewIDFAShowed, isReadyForShowPreviewIdfa } = require("%appGlobals/loginState.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let { export, finalizeStage } = require("mkStageBase.nut")("ios_idfa",
   LOGIN_STATE.READY_FOR_IDFA,
   LOGIN_STATE.IOS_IDFA)
 
-isPreviewIDFAShowed.subscribe(@(v) v ? defer(requestTrackingPermission) : null)
+function request() {
+  sendUiBqEvent("ads_consent_idfa", { id = "request_permission" })
+  requestTrackingPermission()
+}
+
+isPreviewIDFAShowed.subscribe(@(v) v ? defer(request) : null)
 
 eventbus_subscribe("ios.platform.onPermissionTrackCallback", function(p) {
   let { value } = p
@@ -21,12 +27,13 @@ eventbus_subscribe("ios.platform.onPermissionTrackCallback", function(p) {
       break
     }
   log("ios.platform.onPermissionTrackCallback: ", result)
+  sendUiBqEvent("ads_consent_idfa", { id = "request_result", status = result.tostring() })
   finalizeStage()
 })
 
 function start() {
   if (getTrackingPermission() == ATT_NOT_DETERMINED)
-    return abTests.get()?.showPreviewIDFA == "true" ? isReadyForShowPreviewIdfa.set(true) : requestTrackingPermission()
+    return abTests.get()?.showPreviewIDFA == "true" ? isReadyForShowPreviewIdfa.set(true) : request()
   else
     finalizeStage()
 }

@@ -6790,7 +6790,7 @@
     "shakeKoeffJetWash": 1.0,
     "shakeKoeffExplode": 2.0,
     "shakeKoeffTurbulence": 3.1,
-    "shakeKoeffExplodeHiFreq": 0.3
+    "shakeKoeffExplodeHiFreq": 0.1
   },
   "difficulty_presets": {
     "arcade": {
@@ -17247,7 +17247,8 @@
     ]
   },
   "replay": {
-    "segmentLengthSec": 90
+    "segmentLengthSec": 90,
+    "replayRewind": true
   },
   "wakeFromBullet": {
     "minCal": 0.076,

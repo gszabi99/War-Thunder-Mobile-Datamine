@@ -12,9 +12,8 @@ let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let chooseByNameWnd = require("debugSkins/chooseByNameWnd.nut")
-let { mkCfg, getCachedMissionLocName, openOfflineBattleMenu,
-  isOpened, savedUnitType, savedUnitName, savedMissionName, runOfflineBattle
-} = require("debugOfflineBattleState.nut")
+let { mkCfg, openOfflineBattleMenu, isOpened, savedUnitType, savedUnitName,
+  savedMissionName, runOfflineBattle, refreshOfflineMissionsList } = require("debugOfflineBattleState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 
 let close = @() isOpened.set(false)
@@ -87,11 +86,12 @@ let mkSelector = @(curValue, allValues, setValue, mkLoc, mkValues, title = "") @
 }
 
 function mkOfflineBattleMenuWnd() {
-  let cfg = mkCfg()
-  let allUnitTypes = cfg.unitTypes.keys().sort()
+  let cfg = mkCfg
+  let allUnitTypes = cfg.get().unitTypes.keys().sort()
   let curUnitType = Computed(@() allUnitTypes.contains(savedUnitType.get()) ? savedUnitType.get() : allUnitTypes?[0])
-  let unitsByType = Computed(@() cfg?.allUnits[curUnitType.get()] ?? {})
-  let allMissions = Computed(@() cfg?.missions[curUnitType.get()] ?? {})
+  let unitsByType = Computed(@() cfg.get()?.allUnits[curUnitType.get()] ?? {})
+  let allMissions = Computed(@() cfg.get()?.missions[curUnitType.get()] ?? {})
+
   let curData = Computed(function() {
     local name = savedUnitName.get()
     local mission = savedMissionName.get()
@@ -114,6 +114,7 @@ function mkOfflineBattleMenuWnd() {
   })
 
   return {
+    watch = cfg
     key = isOpened
     size = flex()
     padding = saBordersRv
@@ -121,6 +122,7 @@ function mkOfflineBattleMenuWnd() {
     flow = FLOW_VERTICAL
     gap = hdpx(30)
     function onAttach() {
+      refreshOfflineMissionsList()
       initUnitWnd()
       onUnitChange()
       if (savedMissionName.get() == null)
@@ -145,7 +147,7 @@ function mkOfflineBattleMenuWnd() {
         mkSelector(curMissionName,
           allMissions,
           @(value) savedMissionName.set(value),
-          @(id) getCachedMissionLocName(id),
+          @(id) cfg.get()?.missions[curUnitType.get()][id] || id,
           @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
           loc("options/mislist"))
       ])

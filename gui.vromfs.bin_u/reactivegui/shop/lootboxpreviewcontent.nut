@@ -7,7 +7,7 @@ let { getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter,
   mkRewardLocked } = require("%rGui/rewards/rewardPlateComp.nut")
-let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_MEDIUM, REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
+let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let { mkLootboxChancesComp, mkIsLootboxChancesInProgress } = require("%rGui/rewards/lootboxRewardChances.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -312,7 +312,7 @@ let lootboxPreviewContent = @(lootbox, ovr = {}) lootbox == null ? { size = flex
         mkText(loc("events/lootboxContains"),
           { hplace = ALIGN_CENTER })
         lootboxImageWithTimer(lootbox)
-        itemsBlock(mkLootboxRewardsComp(lootbox), itemsBlockWidth, REWARD_STYLE_TINY, { halign = ALIGN_CENTER })
+        itemsBlock(mkLootboxRewardsComp(lootbox), itemsBlockWidth, REWARD_STYLE_MEDIUM, { halign = ALIGN_CENTER })
       ]
     }.__update(ovr)
 

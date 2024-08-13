@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
+let { getCurrencyImage } = require("%appGlobals/config/currencyPresentation.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { fontLabel, labelHeight, REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize
@@ -115,7 +116,7 @@ function mkOtherCurrencyIcon(size, iconShiftY, imgName, scale, aspectRatio = 1.0
   return {
     size = [w, h]
     pos = [0, iconShiftY]
-    image = Picture($"ui/gameuiskin#{imgName}:{w}:{h}:P")
+    image = Picture($"{imgName}:{w}:{h}:P")
   }.__update(iconBase)
 }
 
@@ -132,13 +133,12 @@ function mkDynamicCurrencyIcon(curId, size, iconShiftY, scale, aspectRatio = 1.0
   }.__update(iconBase)
 }
 
+let defCurrencyImgCtor = @(id, size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, getCurrencyImage(id), 0.8)
 let currencyImgCtors = {
   gold = @(size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, "shop_eagles_02.avif")
   wp = @(size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, "shop_lions_02.avif")
   warbond = @(size, iconShiftY) mkDynamicCurrencyIcon("warbond", size, iconShiftY, 0.85)
   eventKey = @(size, iconShiftY) mkDynamicCurrencyIcon("eventKey", size, iconShiftY, 0.65)
-  nybond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_goods_christmas_01.avif", 0.8)
-  aprilbond = @(size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, "warbond_april_01.avif", 0.8)
 }
 
 function mkRewardPlateCurrencyImage(r, rStyle) {
@@ -148,6 +148,7 @@ function mkRewardPlateCurrencyImage(r, rStyle) {
     size
     clipChildren = true
     children = currencyImgCtors?[r.id](size, iconShiftY)
+      ?? defCurrencyImgCtor(r.id, size, iconShiftY)
   }
 }
 

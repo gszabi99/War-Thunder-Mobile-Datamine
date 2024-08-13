@@ -1,53 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { get_unittags_blk } = require("blkGetters")
-let { scan_folder } = require("dagor.fs")
-let gpath = require("%sqstd/path.nut")
-let { startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { getMissionLocName } = require("%rGui/globals/missionUtils.nut")
+let { get_meta_missions_info_by_chapters } = require("guiMission")
+let { get_unittags_blk } = require("blkGetters")
+let { startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 
-let AVAILABLE_MISSIONS = {
-  air_zhengzhou_single_GSn = true,
-  pacific_island_small_single_NTdm = true,
-  abandoned_factory_single_Conq2 = true
-}
+let GM_SINGLE_MISSION = 3
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let savedUnitType = mkWatched(persist, "savedUnitType", null)
 let savedUnitName = mkWatched(persist, "savedUnitName", null)
 let savedMissionName = mkWatched(persist, "savedMissionName", null)
 
-local cachedFilteredMissions = {}
-local cachedMissionsLocNames = {}
+let offlineMissionsList = mkWatched(persist, "offlineMissionsList", [])
 
-function getFilteredMissions(pathToScan) {
-  if (pathToScan in cachedFilteredMissions)
-    return cachedFilteredMissions[pathToScan]
+function refreshOfflineMissionsList() {
+  let chapters = get_meta_missions_info_by_chapters(GM_SINGLE_MISSION).filter(@(m) m.len() > 0)
 
-  let res = scan_folder({ root = pathToScan, vromfs = true, realfs = true, recursive = true })
-
-  cachedFilteredMissions[pathToScan] <- res.reduce(function(acc, f) {
-    let campaign = gpath.splitToArray(f)[4]
-    let name = gpath.fileName(f).split(".")[0]
-
-    if (campaign not in acc)
-      acc[campaign] <- {}
-    if (name in AVAILABLE_MISSIONS)
-      acc[campaign][name] <- true
-
+  let missions = chapters.reduce(function(acc, chapterMissions) {
+    foreach (mission in chapterMissions) {
+      let campaign = mission.getStr("chapter", "")
+      let id = mission.getStr("name", "")
+      if (campaign not in acc)
+        acc[campaign] <- {}
+      acc[campaign][id] <- getMissionLocName(mission, "locName")
+    }
     return acc
   }, {})
 
-  return cachedFilteredMissions[pathToScan]
-}
-
-function getCachedMissionLocName(id) {
-  if(!id)
-    return null
-  if (id not in cachedMissionsLocNames)
-    cachedMissionsLocNames[id] <- getMissionLocName(get_meta_mission_info_by_name(id), "locName")
-  return cachedMissionsLocNames[id]
+  offlineMissionsList.set(missions)
 }
 
 function runOfflineBattle() {
@@ -63,8 +44,11 @@ function runOfflineBattle() {
 
 let openOfflineBattleMenu = @() isOpened.set(true)
 
-let mkCfg = function() {
-  let missions = getFilteredMissions("gameData/missions/singlemissions/cta_single")
+let mkCfg = Computed(function() {
+  let missions = offlineMissionsList.get()
+
+  if(missions.len() == 0)
+    return { allUnits = {}, unitTypes = {}, missions = {} }
 
   let allUnits = {}
   let unitTypes = {}
@@ -80,15 +64,16 @@ let mkCfg = function() {
     allUnits[unitType][unitName] <- true
   }
   return { allUnits, unitTypes, missions }
-}
+})
 
 return {
-  openOfflineBattleMenu,
   mkCfg,
-  getCachedMissionLocName,
   isOpened,
   savedUnitType,
   savedUnitName,
   savedMissionName,
-  runOfflineBattle
+  runOfflineBattle,
+  offlineMissionsList,
+  openOfflineBattleMenu,
+  refreshOfflineMissionsList,
 }

@@ -294,7 +294,8 @@
           1892.3
         ]
       ],
-      "ecs_fx__res": "fire_ground_medium_fx"
+      "ecs_fx__res": "fire_ground_medium_fx",
+      "ecs_fx__with_sound": false
     },
     {
       "_template": "unit_loader",

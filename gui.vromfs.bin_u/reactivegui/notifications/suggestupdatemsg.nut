@@ -2,7 +2,7 @@
 let { get_base_game_version_str } = require("app")
 let { eventbus_send } = require("eventbus")
 let { isDownloadedFromGooglePlay } = require("android.platform")
-let { is_ios, is_android } = require("%sqstd/platform.nut")
+let { is_ios } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { can_view_update_suggestion } = require("%appGlobals/permissions.nut")
@@ -12,7 +12,6 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { needSuggestToUpdate } = isDownloadedFromGooglePlay() ? require("needUpdate/needUpdateGooglePlay.nut")
   : is_ios ? require("needUpdate/needUpdateAppStore.nut")
   : require("needUpdate/needUpdateAndroidSite.nut")
-let { updateBySite } = require("updateClientBySite.nut")
 
 const SUGGEST_UPDATE = "suggest_update_msg"
 
@@ -47,7 +46,7 @@ subscribeFMsgBtns({
   markSuggestUpdateSeen = @(_) isSuggested(true)
 })
 
-function updateByStore(isActive) {
+function updateSuggestState(isActive) {
   if (isActive)
     openFMsgBox({
       uid = SUGGEST_UPDATE
@@ -60,9 +59,5 @@ function updateByStore(isActive) {
     closeFMsgBox(SUGGEST_UPDATE)
 }
 
-let updateSuggestState = is_android && !isDownloadedFromGooglePlay()
-  ? @(_) updateBySite()
-  : updateByStore
-
 needShowSuggestToUpdate.subscribe(updateSuggestState)
-updateSuggestState(needShowSuggestToUpdate.get())
+updateSuggestState(needShowSuggestToUpdate.value)

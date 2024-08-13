@@ -1,80 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { getIconSize, currencyIconsColor, getCurrencyImage, getCurrencyFallback
+} = require("%appGlobals/config/currencyPresentation.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let currencyStyles = require("currencyStyles.nut")
 let { CS_COMMON, CS_GAMERCARD } = currencyStyles
-let { eventSeason, SEASON_EMPTY } = require("%rGui/event/eventState.nut")
+let { eventSeasonIdx } = require("%rGui/event/eventState.nut")
 
-let defCoef = 1
-
-let iconsCoef = {
-  ship_tool_kit = 1.6
-  ship_smoke_screen_system_mod = 1.5
-  tank_tool_kit_expendable = 1.5
-  tank_extinguisher = 1.6
-  spare = 1.8
-  firework_kit = 1.4
-  warbond = 1.4
-  eventKey = 1.2
-  nybond = 1.4
-  aprilbond = 1.4
-  ircm_kit = 1.4
-}
-let maxIconsCoef = iconsCoef.reduce(@(a, b) max(a, b))
-
-let getSizeIcon = @(currencyId, size) (size * (iconsCoef?[currencyId] ?? defCoef) + 0.5).tointeger()
-
-let icons = {
-  // Currencies
-  wp   = "ui/gameuiskin#currency_lions.svg"
-  gold = "ui/gameuiskin#currency_eagles.svg"
-  platinum = "ui/gameuiskin#currency_wolves.svg"
-  unitExp = "ui/gameuiskin#experience_icon.svg"
-  playerExp = "ui/gameuiskin#experience_icon.svg"
-  warbond = "ui/gameuiskin#warbond_icon.avif"
-  eventKey = "ui/gameuiskin#key_icon.avif"
-  nybond = "ui/gameuiskin#warbond_christmas_icon.avif"
-  aprilbond = "ui/gameuiskin#warbond_icon_april.avif"
-  // Consumables
-  ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
-  ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
-  tank_tool_kit_expendable = "ui/gameuiskin#shop_consumables_tank_repair_gamercard.avif"
-  tank_extinguisher = "ui/gameuiskin#shop_consumables_tank_extinguisher_gamercard.avif"
-  spare = "ui/gameuiskin#shop_consumables_tank_cards_gamercard.avif"
-  firework_kit = "ui/gameuiskin#icon_fireworks.avif"
-  ircm_kit = "ui/gameuiskin#icon_ircm.avif"
-  // Placeholder
-  placeholder = "ui/gameuiskin#icon_primary_attention.svg"
-}
-
-let dynamicIcons = {
-  warbond = @(season) $"ui/gameuiskin#warbond_icon_{season}.avif"
-  eventKey = @(season) $"ui/gameuiskin#key_icon_{season}.avif"
-}
-
-let currencyIconsColor = {
-  playerExp = 0xFFFFB70B
-  unitExp = 0xFF7EE2FF
-}
-
-let getCurrencyImage = @(id) icons?[id] ?? icons.placeholder
-let getCurrencyPicture = @(id, iconSize) Picture($"{getCurrencyImage(id)}:{iconSize}:{iconSize}:P")
-let getDynamicPicture = @(id, iconSize, season) Picture($"{dynamicIcons?[id](season)}:{iconSize}:{iconSize}:P")
 
 function mkCurrencyImage (id, size, ovr = {}){
-  let iconSize = getSizeIcon(id, size)
+  let iconSize = getIconSize(id, size)
   return @() {
-    watch = eventSeason
+    watch = eventSeasonIdx
     rendObj = ROBJ_IMAGE
     size = [iconSize, iconSize]
     vplace = ALIGN_CENTER
     color = currencyIconsColor?[id] ?? 0xFFFFFFFF
     keepAspect = KEEP_ASPECT_FIT
-    image = (id in dynamicIcons) && eventSeason.get() != SEASON_EMPTY
-        ? getDynamicPicture(id, iconSize, eventSeason.get())
-      : getCurrencyPicture(id, iconSize)
-    fallbackImage = id not in dynamicIcons ? null : getCurrencyPicture(id, iconSize)
+    image = Picture($"{getCurrencyImage(id, eventSeasonIdx.get())}:{iconSize}:{iconSize}:P")
+    fallbackImage = Picture($"{getCurrencyFallback(id, eventSeasonIdx.get())}:{iconSize}:{iconSize}:P")
   }.__update(ovr)
  }
 
@@ -215,7 +160,6 @@ return freeze(currencyStyles.__merge({
   mkCurrencyImage
   mkCurrencyText
   currencyIconsColor
-  maxIconsCoef
 
   mkCurrencyComp
   mkDiscountPriceComp
