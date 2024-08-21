@@ -53,12 +53,18 @@
       "locName": "missions/_GS/medium_tank_ship;location/arcade_norway_green",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 3800,
-      "timeLimit": 25,
+      "timeLimit": 15,
       "deathPenaltyMul": 0.2,
       "country_axis": "germany",
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      },
       "editSlotbar": {
         "keepOwnUnits": false,
         "country_usa": {
@@ -69,12 +75,6 @@
             "allModifications": true
           }
         }
-      },
-      "allowedUnitTypes": {
-        "isAirplanesAllowed": true,
-        "isTanksAllowed": false,
-        "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
       }
     },
     "spectator_points": {

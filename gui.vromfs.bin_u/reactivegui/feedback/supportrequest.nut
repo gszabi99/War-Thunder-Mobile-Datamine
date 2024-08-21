@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let logZ = log_with_prefix("[ZENDESK] ")
 let { parse_json } = require("json")
+let { register_command } = require("console")
+let { screenlog } = require("dagor.debug")
 let { httpRequest, HTTP_SUCCESS, HTTP_FAILED, HTTP_ABORTED } = require("dagor.http")
 let { zendeskApiUploadsUrl, zendeskApiRequestsUrl } = require("supportState.nut")
 let { getLogFileData } = require("logFileAttachment.nut")
@@ -11,6 +13,8 @@ let { getLogFileData } = require("logFileAttachment.nut")
  * It uses Zendesk API. More info here:
  * https://developer.zendesk.com/api-reference/ticketing/tickets/ticket-requests/
  */
+
+let isDebug = mkWatched(persist, "isDebug", false)
 
 let defaultRequestState = {
   isProcessing = false
@@ -27,7 +31,8 @@ let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
     let reason = status == HTTP_FAILED ? "FAILED"
       : status == HTTP_ABORTED ? "ABORTED"
       : "UNKNOWN"
-    logZ($"Request failed: {reason}", response)
+    let logResponse = response?.body == null ? response : response.__merge({ body = response.body.as_string() })
+    logZ($"Request failed: {reason}", logResponse)
     onFailure({
       errId = $"Request failed: {reason}"
       errText = loc($"http/request/status/{reason}")
@@ -47,14 +52,20 @@ let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
   }
   if (http_code < 200 || 300 <= http_code || answer?.error != null) {
     let reason = " ".join([ http_code, answer?.error ], true)
-    logZ($"Response is error: {reason}", response)
+    let logResponse = response?.body == null ? response : response.__merge({ body = response.body.as_string() })
+    logZ($"Response is error: {reason}", logResponse)
     onFailure({
       errId = $"Response is error: {reason}"
       errText = reason
     })
   }
-  else
+  else {
+    if (isDebug.get()) {
+      let logResponse = response?.body == null ? response : response.__merge({ body = response.body.as_string() })
+      logZ($"Response is successful", logResponse)
+    }
     onSuccess(answer)
+  }
 }
 
 function onAttachmentUploadSuccess(answer, cb) {
@@ -133,6 +144,8 @@ function sendFormData() {
   }
   if (attachments.len())
     data.request.comment.__update({ uploads = attachments.map(@(v) v.token) })
+  if (isDebug.get())
+    logZ(data)
   httpRequest({
     url = zendeskApiRequestsUrl.get()
     method = "POST"
@@ -161,6 +174,13 @@ function submitSupportRequest(formData) {
 let onRequestResultSeen = @() requestState.value.isProcessing
   ? null
   : requestState(clone defaultRequestState)
+
+register_command(function() {
+  isDebug.set(!isDebug.get())
+  let res = $"ui.debug.zendesk {isDebug.get()}"
+  screenlog(res) // warning disable: -forbidden-function
+  console_print(res) // warning disable: -forbidden-function
+}, "ui.debug.zendesk")
 
 return {
   requestState

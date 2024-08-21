@@ -59,6 +59,12 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      },
       "editSlotbar": {
         "keepOwnUnits": false,
         "country_usa": {
@@ -69,12 +75,6 @@
             "allModifications": true
           }
         }
-      },
-      "allowedUnitTypes": {
-        "isAirplanesAllowed": true,
-        "isTanksAllowed": false,
-        "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
       }
     },
     "spectator_points": {

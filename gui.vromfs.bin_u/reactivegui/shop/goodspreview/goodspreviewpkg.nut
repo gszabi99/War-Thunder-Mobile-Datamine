@@ -6,7 +6,6 @@ let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { previewGoods, isPreviewGoodsPurchasing } = require("%rGui/shop/goodsPreviewState.nut")
 let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
-let { purchaseFakeGoods } = require("%rGui/shop/purchaseFakeGoods.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
@@ -23,7 +22,6 @@ let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/componen
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
-let { allFakeGoods } = require("%rGui/shop/fakeGoodsState.nut")
 
 let activeItemId = Watched(null)
 
@@ -211,7 +209,7 @@ function getPriceInfo(goods) {
       basePrice
       finalPrice = price.price
       currencyId = price.currencyId
-      buy = @() allFakeGoods.get()?[goods.id] ? purchaseFakeGoods(goods.id) : purchaseGoods(goods.id)
+      buy = @() purchaseGoods(goods.id)
     }
   }
   if ((priceExt?.price ?? 0) > 0) {

@@ -42,6 +42,7 @@ let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
+let { customEventLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
 
 
 let MAX_LOOTBOXES_AMOUNT = 3
@@ -138,7 +139,7 @@ let mkProgressFull = @(stepsToFixed) @() {
 
 function mkLootboxBlock(lootbox, blockSize) {
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
-  let sizeMul = sizeMulBySlot?[lootbox.meta?.event] ?? 1.0
+  let sizeMul = customEventLootboxScale?[name] ?? sizeMulBySlot?[lootbox.meta?.event_slot] ?? 1.0
   let stateFlags = Watched(0)
   let lootboxImage = mkLootboxImageWithTimer(name, blockSize, timeRange, reqPlayerLevel, sizeMul)
   let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.value, servProfile.value))

@@ -100,6 +100,25 @@ Tetap masuk ke pertempuran?";"ผู้เล่นในหมู่ของ�
 {rankText} 级";"隊長より、\t同じ\tランクの\t車両を\t選択するよう\t求められています：\t
 {rankText}";"隊\t長\t建\t議\t選\t擇\t同\t階\t級\t載\t具\t參\t加\t戰\t鬥：
 {rankText} 階";;
+"msg/bigRankDiff/checkInCooldown";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"Вы только что проверяли ранги отряда.
+Попробуйте позднее.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";"You were just checking the squad's Rank.
+Try again later.";;
 "squad/invite/desc";"Invites you to join his squad";"Vous invite à rejoindre son escouade";"Ti invita ad unirti al suo plotone";"Lädt Dich ein, seiner Staffel beizutreten";"Te invita a unirte a su escuadrón";"Приглашает вас в свой отряд";"Запрошує вас до своєї ланки";"Zaprasza cię do swojego oddziału";"Convite para você entrar no seu pelotão";"Sizi takımına katılmaya davet ediyor";"Tě zve k připojení do jeho skupiny";"Σας προσκαλεί να γίνετε μέλος της ομάδας του";"Mengundangmu untuk bergabung dengan skuadnya";"เชิญคุณเข้าร่วมหมู่ของเขา";"님이 편대에 초대하였습니다";"邀\t请\t加\t入\t对\t方\t小\t队";"あなたを\t分隊に\t招待しています";"邀\t請\t加\t入\t對\t方\t小\t隊";;
 "squad/invite/reject";"Rejected the invitation to the squad.";"A rejeté l'invitation à l'escouade.";"Invito al plotone rifiutato.";"Einladung zum Beitritt in die Staffel abgelehnt.";"Rechazó la invitación al escuadrón.";"Отказался вступить в отряд.";"Відхилено запрошення в ланку.";"Odrzucił zaproszenie do drużyny.";"Rejeitou o convite para o pelotão.";"Takıma katılma davetini reddetti.";"Odmítl pozvání do skupiny.";"Απέρριψε την πρόσκληση στην ομάδα.";"Menolak undangan untuk masuk ke dalam skuad.";"ปฏิเสธคำเชิญเข้าร่วมหมู่";"님이 편대 초대를 거절했습니다.";"拒\t绝\t了\t组\t队\t邀\t请。";"分隊への\t招待を\t拒否しました。";"拒\t絕\t了\t組\t隊\t邀\t請。";;
 "squad/only_leader_can_queue";"Only the squad leader can queue for a battle.";"Seul le chef d'escouade peut mettre une bataille en file d'attente.";"Solo il comandante del plotone può entrare in coda per la battaglia.";"Nur der Staffelführer kann die Staffel in die Warteschlange für eine Zufallsschlacht einreihen.";"Solo el líder del escuadrón puede ponerse a la cola de una batalla.";"Только лидер отряда может записать в очередь на бой.";"Тільки лідер загону може записати в чергу на бій.";"Tylko dowódca oddziału może kolejkować bitwę.";"Apenas o líder da esquadrilha pode selecionar batalha na fila de espera.";"Sadece takım lideri savaş için sıraya girebilir.";"Pouze velitel skupiny ji může zařadit do fronty na bitvu";"Μόνο ο αρχηγός της ομάδας μπορεί να μπει στην ουρά για μια μάχη.";"Hanya pemimpin skuad yang bisa mengantre untuk bertempur.";"หัวหน้าหมู่เท่านั้นที่สามารถเริ่มคิวร่วมการต่อสู้ได้";"편대장만이 편대 전체를 대기열에 입장시킬 수 있습니다.";"只\t有\t小\t队\t长\t能\t决\t定\t何\t时\t“加\t入\t战\t斗”";"出撃命令は\t分隊長のみが\t下せます。";"只\t有\t小\t隊\t長\t能\t決\t定\t何\t時\t“加\t入\t戰\t鬥”。";;

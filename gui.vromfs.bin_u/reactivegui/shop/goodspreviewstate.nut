@@ -10,7 +10,6 @@ let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { allFakeGoods } = require("%rGui/shop/fakeGoodsState.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
 let GPT_UNIT = "unit"
@@ -44,7 +43,7 @@ function openGoodsPreview(id) {
 let previewGoods = Computed(@()
   activeOffer.get()?.id == openedGoodsId.value ? activeOffer.get()
     : activeOfferByGoods.get()?.id == openedGoodsId.value ? activeOfferByGoods.get()
-    : shopGoods.get()?[openedGoodsId.get()] ?? allFakeGoods.get()?[openedGoodsId.get()])
+    : shopGoods.get()?[openedGoodsId.get()])
 
 let previewGoodsUnit = Computed(function() {
   let unit = serverConfigs.value?.allUnits[previewGoods.value?.unitUpgrades[0]]

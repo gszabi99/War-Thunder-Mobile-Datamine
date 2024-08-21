@@ -2,14 +2,16 @@ from "%globalScripts/logs.nut" import *
 let { eventbus_send } = require("eventbus")
 let { getLocTextForLang } = require("dagor.localize")
 let { send_to_bq_offer } = require("pServerApi.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { get_user_system_info = @() null } = require_optional("sysinfo")
 let servProfile = require("servProfile.nut")
 let { get_game_version_str = @() "-" } = require_optional("app") //updater does not have module app
 
-let addEventTime = @(data, key = "eventTime") serverTime.value > 0 ? data.__merge({ [key] = serverTime.value })
-  : data //when eventTime not set, profile server will add it by self
+function addEventTime(data, key = "eventTime") {
+  let time = getServerTime()
+  return time > 0 ? data.__merge({ [key] = time }) : data
+}
 
 function addSystemInfo(data) {
   let { platform = "", uuid0 = "" } = get_user_system_info()

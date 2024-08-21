@@ -5,8 +5,7 @@ let { SGT_UNIT, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
 let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { shopPurchaseInProgress, schRewardInProgress, unitInProgress
-} = require("%appGlobals/pServer/pServerApi.nut")
+let { shopPurchaseInProgress, schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("goodsStates.nut")
 let { purchaseGoods } = require("purchaseGoods.nut")
 let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
@@ -25,7 +24,6 @@ let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { fakeGoodsByCategory, allFakeGoods } = require("fakeGoodsState.nut")
 
 
 let tabTranslateWithOpacitySwitchAnim = [
@@ -102,16 +100,6 @@ let mkGoodsState = @(goods) Computed(function() {
   return res
 })
 
-let mkFakeGoodsState = @(goods) Computed(function() {
-  local res = 0
-  if (unitInProgress.get() != null) {
-    res = res | DELAYED
-    if (unitInProgress.get() == goods.id)
-      res = res | PURCHASING
-  }
-  return res
-})
-
 let mkSchRewardState = @(schReward) Computed(function() {
   local res = schRewardInProgress.value == schReward.id ? PURCHASING : 0
   if (schReward.needAdvert && !canShowAds.value)
@@ -182,10 +170,6 @@ function onGoodsClick(goods) {
     purchaseFunc(goods)
 }
 
-function onFakeGoodsClick(goods) {
-  openGoodsPreview(goods.id)
-}
-
 let gamercardShopItemsBalanceBtns = @(items) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -227,13 +211,12 @@ let mkShopGamercard = @(onClose) function(){
 let mkShopPage = @(pageW, pageH) function() {
   let goodsListBase = Computed(@() goodsByCategory.get()?[curCategoryId.get()] ?? [])
   let schReward = Computed(@() actualSchRewardByCategory.get()?[curCategoryId.get()])
-  let fakeGoodsList = Computed(@() fakeGoodsByCategory.get()?[curCategoryId.get()] ?? [])
 
   let hasSchReward = schReward.get() != null
 
   let goodsList = mkGoodsListWithBaseValue(goodsListBase.get())
   goodsList.sort(sortGoods)
-  let goodsTotal = goodsList.len() + fakeGoodsList.get().len() + (hasSchReward ? 1 : 0)
+  let goodsTotal = goodsList.len() + (hasSchReward ? 1 : 0)
   let maxGoodsPerW = floor((pageW + goodsGap + 1) / (goodsW + goodsGap))
   let maxGoodsPerH = floor((pageH + goodsGap + 1) / (goodsH + goodsGap))
   let goodsPerW = max(min(goodsTotal, maxGoodsPerW, 1), ceil(goodsTotal * 1.0 / maxGoodsPerH))
@@ -242,7 +225,6 @@ let mkShopPage = @(pageW, pageH) function() {
   if (hasSchReward)
     allRows.append(schReward.get())
   allRows.extend(goodsList)
-  allRows.extend(fakeGoodsList.get())
   let rows = arrayByRows(allRows, goodsPerW)
 
   let resultRows = rows
@@ -258,16 +240,6 @@ let mkShopPage = @(pageW, pageH) function() {
               repeatDelay = goodsGlareAnimDuration * rows[0].len()
             }
           )
-        if (allFakeGoods.get()?[good?.id])
-          return mkGoods(
-            good,
-            @() onFakeGoodsClick(good),
-            mkFakeGoodsState(good),
-            {
-              delay = goodIdx * goodsGlareAnimDuration + goodsGlareRepeatDelay + rowIdx * goodsGlareAnimDuration / 3
-              repeatDelay = goodsGlareAnimDuration * (rows[0].len() - goodIdx) - rowIdx * goodsGlareAnimDuration / 3
-            }
-          )
         return mkGoods(
           good,
           @() onGoodsClick(good),
@@ -281,7 +253,7 @@ let mkShopPage = @(pageW, pageH) function() {
     )
 
   return {
-    watch = [ goodsListBase, curCategoryId, schReward, fakeGoodsList ]
+    watch = [ goodsListBase, curCategoryId, schReward ]
     children = {
       key = curCategoryId.get()
       flow = FLOW_VERTICAL

@@ -92,17 +92,6 @@
       "country_allies": "usa",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "editSlotbar": {
-        "keepOwnUnits": false,
-        "country_usa": {
-          "pony_light_fighter": {
-            "crewSkillsPercent": 100,
-            "crewSpecialization": 2,
-            "allWeapons": true,
-            "allModifications": true
-          }
-        }
-      },
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,

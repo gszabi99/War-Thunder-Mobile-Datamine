@@ -90,5 +90,7 @@ return {
   getUnitLocId
   getUnitClassFontIcon = @(u) unitClassFontIcons?[u?.unitClass] ?? ""
   getPlatoonName
-  getPlatoonOrUnitName = @(unit, loc) (unit?.platoonUnits.len() ?? 0) > 0 ? getPlatoonName(unit.name, loc) : loc(getUnitLocId(unit.name))
+  getPlatoonOrUnitName = @(unit, loc) (unit?.platoonUnits.len() ?? 0) > 0
+    ? getPlatoonName(unit?.name ?? "", loc)
+    : loc(getUnitLocId(unit?.name ?? ""))
 }

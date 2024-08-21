@@ -626,7 +626,8 @@ return {
       "upgraded": "it_camo_threecolor_modern"
     },
     "it_m15_42_contraereo": {
-      "": "it_camo_olive_green"
+      "": "ann_camo",
+      "forest": "it_camo_olive_green"
     },
     "it_m18_hellcat": {
       "": "it_camo_desert_modern",

@@ -60,9 +60,11 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "forcedRanks": {
-        "min": 0,
-        "max": 1
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
       },
       "editSlotbar": {
         "keepOwnUnits": false,
@@ -74,12 +76,6 @@
             "allModifications": true
           }
         }
-      },
-      "allowedUnitTypes": {
-        "isAirplanesAllowed": true,
-        "isTanksAllowed": false,
-        "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
       }
     },
     "atmosphere": {

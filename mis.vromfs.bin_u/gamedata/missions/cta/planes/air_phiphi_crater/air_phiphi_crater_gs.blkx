@@ -54,13 +54,19 @@
       "locDesc": "missions/_GS/desc",
       "openDiffLevels": true,
       "scoreLimit": 3800,
-      "timeLimit": 25,
+      "timeLimit": 15,
       "deathPenaltyMul": 0.0,
       "country_axis": "japan",
       "country_allies": "ussr",
       "restoreType": "attempts",
       "difficulty": "",
       "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      },
       "editSlotbar": {
         "keepOwnUnits": false,
         "country_usa": {
@@ -71,12 +77,6 @@
             "allModifications": true
           }
         }
-      },
-      "allowedUnitTypes": {
-        "isAirplanesAllowed": true,
-        "isTanksAllowed": false,
-        "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
       }
     },
     "atmosphere": {

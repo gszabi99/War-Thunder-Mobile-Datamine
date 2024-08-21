@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
-let { getLocalLanguage } = require("language")
 let { utf8ToUpper, validateEmail } = require("%sqstd/string.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -19,10 +18,6 @@ let { canUseZendeskApi } = require("%rGui/feedback/supportState.nut")
 let { hasLogFile } = require("logFileAttachment.nut")
 let { requestState, submitSupportRequest, onRequestResultSeen } = require("supportRequest.nut")
 
-let langCfg = {
-  English = { locale = "en-US", lang = "english" }
-  Russian = { locale = "ru-RU", lang = "russian" }
-}
 let categoryCfg = [
   { id = "gameplay",  zenId = "\u0438\u0433\u0440\u043e\u0432\u043e\u0439_\u043f\u0440\u043e\u0446\u0435\u0441\u0441_\u043c\u043e\u0431" }
   { id = "financial", zenId = "\u0444\u0438\u043d\u0430\u043d\u0441\u043e\u0432\u044b\u0435_\u0432\u043e\u043f\u0440\u043e\u0441\u044b_\u043c\u043e\u0431" }
@@ -57,18 +52,15 @@ function getFormValidationError() {
   return "\n".join(err)
 }
 
-function submitImpl() {
-  let { locale, lang } = langCfg?[getLocalLanguage()] ?? langCfg.English
-  submitSupportRequest({
-    email = fieldEmail.value
-    name = fieldName.value
-    category = categoryCfg.findvalue(@(v) v.id == fieldCategory.value)?.zenId ?? ""
-    subject = fieldSubject.value
-    message = fieldMessage.value
-    locale
-    lang
-  })
-}
+let submitImpl = @() submitSupportRequest({
+  email = fieldEmail.value
+  name = fieldName.value
+  category = categoryCfg.findvalue(@(v) v.id == fieldCategory.value)?.zenId ?? ""
+  subject = fieldSubject.value
+  message = fieldMessage.value
+  locale = "en-US"
+  lang = "english"
+})
 
 function onSubmit() {
   let errorText = getFormValidationError()
