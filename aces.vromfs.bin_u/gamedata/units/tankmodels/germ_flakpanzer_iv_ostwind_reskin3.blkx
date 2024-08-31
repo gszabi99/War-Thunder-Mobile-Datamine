@@ -2918,11 +2918,18 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_dunkelgelb_green_braun_blots_small*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_africa*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_waves*"
       }
     }
   },
@@ -2977,6 +2984,110 @@
       "decal0Abs": true,
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.205469,
+      "decal0Tex": "back_16"
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.79129,
+        -3.95835e-8,
+        -8.29543e-7,
+        0.779366
+      ],
+      "decal0Line1": [
+        3.63584e-7,
+        -2.40243,
+        1.42114,
+        6.5156
+      ],
+      "decal0Line2": [
+        -2.79129,
+        -4.36037e-8,
+        -0.0000010791,
+        0.220635
+      ],
+      "decal0Line3": [
+        6.07606e-7,
+        -2.40243,
+        -1.42114,
+        6.67193
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -2.94091e-7,
+        -0.509135,
+        -0.860687,
+        0.107916
+      ],
+      "decal0CPNormDepth1": [
+        -2.94091e-7,
+        -0.509135,
+        0.860687,
+        0.0132404
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358257
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.211599,
+      "decal0Tex": "back_16"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.7921,
+        -8.90234e-8,
+        -0.00000291592,
+        0.677444
+      ],
+      "decal0Line1": [
+        -0.00000150686,
+        -2.44442,
+        -1.34931,
+        5.04284
+      ],
+      "decal0Line2": [
+        -2.7921,
+        -7.73998e-8,
+        -0.00000283271,
+        0.322557
+      ],
+      "decal0Line3": [
+        -0.00000126277,
+        -2.44442,
+        1.34931,
+        4.89442
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -8.98512e-7,
+        0.48326,
+        -0.875477,
+        -2.0617
+      ],
+      "decal0CPNormDepth1": [
+        -8.98512e-7,
+        0.48326,
+        0.875477,
+        -2.158
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.358154
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": true,
+      "decal0WidthBox": 0.200697,
       "decal0Tex": "back_16"
     }
   }

@@ -76,6 +76,8 @@ let skinsByTag = {
     "hu_camo_green"
     "fr_camo_carc"
     "jp_camo_post_biege_gray_green_fuji"
+    "usa_camo_forest_green_threecolour_lines"
+    "cn_camo_desert_green"
   ],
 
   [DESERT] = [
@@ -116,6 +118,7 @@ let skinsByTag = {
     "ann_camo"
     "camo_f_purp_orng"
     "usa_modern_gray_desert"
+    "usa_camo_desert_brown_yellow_spots"
   ],
 
   [WINTER] = [

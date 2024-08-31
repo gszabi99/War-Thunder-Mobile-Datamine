@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBgImageByPx } = require("%globalsDarg/components/mkAnimBg.nut")
 let mkLayersComplexShip1 = require("complex_ship_1.nut")
 
-let fallbackLoadingImage = "ui/bkg/login_bkg_s_1.avif"
+let fallbackLoadingImage = "ui/bkg/login_bkg_t_7.avif"
 
 let mkSingleImageLayers = @(image) [{
   moveX = sh(10)
@@ -45,7 +45,7 @@ let screensList = {
   }
   simple_ship_6 = {
     camp = [ "ships" ]
-    weight = 1.0
+    weight = 2.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_6.avif")
   }
   complex_ship_1 = {
@@ -125,7 +125,7 @@ let screensList = {
   }
   simple_tank_15 = {
     camp = [ "tanks" ]
-    weight = 2.0
+    weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_15.avif")
   }
 }

@@ -1,9 +1,9 @@
 {
-  "version": "1.9.0.70",
-  "grpHash": "a4e215e87f30939c12d13ed26ea1ddf5",
+  "version": "1.9.0.84",
+  "grpHash": "818a6d626504cea64fbf1b7a8472914d",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "ab1898287a8ab536baa802580cda2d4e",
+  "blkHash": "162e76ce17a469240b54cd27e2a3b387",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a6m5_zero_killstreak": {
     "dep": [
@@ -162,6 +162,22 @@
       "m_41d_xray_skeleton"
     ]
   },
+  "cn_object_122tm": {
+    "dep": [
+      "hj8_rocket_char",
+      "hj8_rocket_deployed",
+      "object_122tm",
+      "object_122tm_char",
+      "object_122tm_collision",
+      "object_122tm_dm_skeleton",
+      "object_122tm_dmg",
+      "object_122tm_dmg_skeleton",
+      "object_122tm_fastphys",
+      "object_122tm_skeleton",
+      "object_122tm_xray",
+      "object_122tm_xray_skeleton"
+    ]
+  },
   "cn_pgz_09": {
     "dep": [
       "grenade_zd17",
@@ -190,6 +206,20 @@
       "pgz_09_skeleton",
       "pgz_09_xray",
       "pgz_09_xray_skeleton"
+    ]
+  },
+  "cn_plz_83_130": {
+    "dep": [
+      "plz_83_130",
+      "plz_83_130_char",
+      "plz_83_130_collision",
+      "plz_83_130_dm_skeleton",
+      "plz_83_130_dmg",
+      "plz_83_130_dmg_skeleton",
+      "plz_83_130_fastphys",
+      "plz_83_130_skeleton",
+      "plz_83_130_xray",
+      "plz_83_130_xray_skeleton"
     ]
   },
   "cn_pt_76": {
@@ -279,6 +309,21 @@
       "wz_305_xray_skeleton"
     ]
   },
+  "cn_wz_305_reskin": {
+    "dep": [
+      "chinese_gunner_char",
+      "wz_305",
+      "wz_305_char",
+      "wz_305_collision",
+      "wz_305_dm_skeleton",
+      "wz_305_dmg",
+      "wz_305_dmg_skeleton",
+      "wz_305_fastphys",
+      "wz_305_skeleton",
+      "wz_305_xray",
+      "wz_305_xray_skeleton"
+    ]
+  },
   "cn_zsd63_pg87": {
     "dep": [
       "chinese_gunner_char",
@@ -292,6 +337,21 @@
       "zsd_63_skeleton",
       "zsd_63_xray",
       "zsd_63_xray_skeleton"
+    ]
+  },
+  "cn_ztz_59a": {
+    "dep": [
+      "t_54_1951_smoke_barrel",
+      "ztz_59a",
+      "ztz_59a_char",
+      "ztz_59a_collision",
+      "ztz_59a_dm_skeleton",
+      "ztz_59a_dmg",
+      "ztz_59a_dmg_skeleton",
+      "ztz_59a_fastphys",
+      "ztz_59a_skeleton",
+      "ztz_59a_xray",
+      "ztz_59a_xray_skeleton"
     ]
   },
   "cn_ztz_88a": {
@@ -857,6 +917,22 @@
       "bat_chat_25t_xray",
       "bat_chat_25t_xray_skeleton",
       "grenade_zd17"
+    ]
+  },
+  "fr_battleship_courbet_class_courbet": {
+    "dep": [
+      "battleship_courbet_class_courbet",
+      "battleship_courbet_class_courbet_char",
+      "battleship_courbet_class_courbet_collision",
+      "battleship_courbet_class_courbet_dm_skeleton",
+      "battleship_courbet_class_courbet_fastphys",
+      "battleship_courbet_class_courbet_sections",
+      "battleship_courbet_class_courbet_sections_remote",
+      "battleship_courbet_class_courbet_skeleton",
+      "battleship_courbet_class_courbet_xray",
+      "battleship_courbet_class_courbet_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc"
     ]
   },
   "fr_cckw_353_bofors": {

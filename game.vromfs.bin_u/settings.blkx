@@ -243,9 +243,6 @@
       "folder": "content.hq/pkg_secondary_hq",
       "hq": false
     },
-    "pkg_lvl_hangar_bd": {
-      "hangarPath": "config/hangar_field_birthday.blk"
-    },
     "pkg_dev": {},
     "pkg_common": {
       "conditions": {
@@ -548,6 +545,12 @@
         "mRank": 6
       }
     },
+    "pkg_fr_battleship_courbet_class_courbet": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -768,6 +771,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 9
+      }
+    },
+    "pkg_cn_object_122tm": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
       }
     },
     "pkg_environment": {

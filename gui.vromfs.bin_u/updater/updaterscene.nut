@@ -1,10 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { statusText, progressPercent } = require("updaterState.nut")
-let { loadingAnimBg } = require("%globalsDarg/loading/loadingAnimBg.nut")
+let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
+let { screenWeights, loadingAnimBg } = require("%globalsDarg/loading/loadingAnimBg.nut")
 let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let { gradientLoadingTip } = require("loadingTip.nut")
 
 let spinnerSize = hdpxi(100)
+
+let loadingScreensWhitelist = [
+  "simple_ship_6"
+  "simple_tank_7"
+  //"simple_airplane_3"
+]
+screenWeights.set(screensList
+  .filter(@(_, k) loadingScreensWhitelist.contains(k))
+  .map(@(s) s.weight))
 
 let waitSpinner = {
   size = [spinnerSize, spinnerSize]

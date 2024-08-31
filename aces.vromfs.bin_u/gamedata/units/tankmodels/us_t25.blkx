@@ -2832,6 +2832,16 @@
       "decal2OppositeMirrored": false,
       "decal2WidthBox": 0.217138,
       "decal2Tex": "back_02"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -2839,6 +2849,18 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "us_camo_dark_green_dark_earth*"
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_camo_forest_green_threecolour_lines*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_camo_desert_brown_yellow_spots*"
       }
     }
   },

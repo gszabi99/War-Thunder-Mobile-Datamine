@@ -2104,6 +2104,42 @@
           "to": "camo_warshipdeepgray*"
         }
       ]
+    },
+    "bluewater_geometry": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_bluewater_geometry*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_warshipdeepgray*"
+        }
+      ]
+    },
+    "greencoast": {
+      "replace_tex": [
+        {
+          "from": "camo_hazegray*",
+          "to": "camo_greencoast*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_bottom_green*"
+        }
+      ]
+    }
+  },
+  "defaultDecals": {
+    "bluewater_geometry": {
+      "skin_condition": 100.0,
+      "camo_scale": -70.0,
+      "camo_rotation": 0.0
+    },
+    "greencoast": {
+      "skin_condition": 100.0,
+      "camo_scale": -80.0,
+      "camo_rotation": 0.0
     }
   }
 }

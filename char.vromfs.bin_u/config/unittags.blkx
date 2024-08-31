@@ -9607,7 +9607,7 @@
           "wtype": "rockets",
           "damage": 4000.0,
           "shotFreq": 4.2,
-          "reloadTime": 20.0,
+          "reloadTime": 15.0,
           "rocketsSalvo": 4,
           "distToLive": 10000.0,
           "gunsCount": 1,
@@ -9686,6 +9686,59 @@
           "gunsCount": 2,
           "caliber": 533.0,
           "ammoCount": 24,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "fr_battleship_courbet_class_courbet": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 692,
+    "tierGroup": 4,
+    "tags": {
+      "country_germany": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 1180,
+      "shipCrewMin": 240,
+      "shipCrewRating": 2.04636,
+      "maxSpeed": 10.71,
+      "turningTime": 37,
+      "mainWeaponCaliber": 305.0,
+      "weapons": {
+        "305mm_45_model_1906_10_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 1800.0,
+          "shotFreq": 0.083,
+          "gunsCount": 12,
+          "caliber": 305.0,
+          "ammoCount": 2400,
+          "isBeltAmmo": false
+        },
+        "138mm_40_model_1927_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 640.0,
+          "shotFreq": 0.222,
+          "gunsCount": 11,
+          "gunsTotalCount": 22,
+          "gunsMult": 0.5,
+          "caliber": 138.6,
+          "ammoCount": 3300,
+          "isBeltAmmo": false
+        },
+        "47mm_qf3pdr_hotchkiss_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 52.0,
+          "shotFreq": 0.5,
+          "aimMaxDist": 4500.0,
+          "gunsCount": 4,
+          "caliber": 47.0,
+          "ammoCount": 1200,
           "isBeltAmmo": false
         }
       }
@@ -31718,6 +31771,285 @@
         },
         "20mm_ger_kwk30_APCR": {
           "icon": "hud_ammo_bullet_ap"
+        }
+      }
+    }
+  },
+  "cn_object_122tm": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 120.0,
+      "armorThicknessFront": [
+        0.6,
+        0.05,
+        0.35
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "crew": 4,
+      "mass": 37500.0,
+      "maxSpeedForward": 55.0594,
+      "maxSpeedBackward": 7.43325,
+      "powerToWeightRatio": 17.3333,
+      "weapons": {
+        "120mm_122TM_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 120.0,
+          "armorPower": 279.0,
+          "reloadTime": 9.22509,
+          "gunnerTurretRotationSpeed": 20.0,
+          "isBeltAmmo": false
+        },
+        "120mm_302_atgm_rocket_launcher": {
+          "wtype": "rockets",
+          "caliber": 120.0,
+          "armorPower": 480.0,
+          "reloadTime": 2.0,
+          "gunnerTurretRotationSpeed": 0.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_Type_59_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 8.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        },
+        "12_7mm_Type_54_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 24.0,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "120mm_122TM_user_cannon": {
+        "120mm_china_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_china_HEAT_FS": {
+          "icon": "hud_ammo_heat"
+        },
+        "default": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_china_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        }
+      },
+      "120mm_302_atgm_rocket_launcher": {
+        "default": {
+          "icon": "hud_ammo_atgm_ap1_he1"
+        }
+      }
+    }
+  },
+  "cn_plz_83_130": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_tank_destroyer": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 130.0,
+      "armorThicknessFront": [
+        0.0,
+        0.05,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 5,
+      "mass": 30000.0,
+      "maxSpeedForward": 56.144,
+      "maxSpeedBackward": 8.53728,
+      "powerToWeightRatio": 17.3333,
+      "weapons": {
+        "130mm_pl_59a_gai_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 130.0,
+          "armorPower": 327.589,
+          "reloadTime": 11.9048,
+          "gunnerTurretRotationSpeed": 10.0,
+          "isBeltAmmo": false
+        },
+        "12_7mm_Type_54_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 24.0,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "130mm_pl_59a_gai_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_ap1_he1"
+        },
+        "130mm_ussr_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "130mm_ussr_HE_VT": {
+          "icon": "hud_ammo_he3_vt"
+        },
+        "130mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    }
+  },
+  "cn_ztz_59a": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 100.0,
+      "armorThicknessFront": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "crew": 4,
+      "mass": 36000.0,
+      "maxSpeedForward": 50.0344,
+      "maxSpeedBackward": 7.50515,
+      "powerToWeightRatio": 14.4444,
+      "weapons": {
+        "100mm_Type59_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 100.0,
+          "armorPower": 218.637,
+          "reloadTime": 7.49625,
+          "gunnerTurretRotationSpeed": 10.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_Type_59_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 8.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        },
+        "12_7mm_Type_54_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 24.0,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "100mm_Type59_user_cannon": {
+        "100mm_ussr_APDS": {
+          "icon": "hud_ammo_apds"
+        },
+        "100mm_cn_HEAT": {
+          "icon": "hud_ammo_heat"
+        },
+        "100mm_ussr_APCBC": {
+          "icon": "hud_ammo_ap2_he1"
+        },
+        "100mm_ussr_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "default": {
+          "icon": "hud_ammo_ap1_he2"
+        }
+      }
+    }
+  },
+  "cn_wz_305_reskin": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "bullets": {
+      "57mm_WA_318_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "57mm_HE_VT": {
+          "icon": "hud_ammo_bullet_he_vt"
+        },
+        "57mm_cn_HE": {
+          "icon": "hud_ammo_bullet_he"
+        },
+        "57mm_ussr_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "57mm_cn_APCBC": {
+          "icon": "hud_ammo_bullet_ap"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 57.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.05,
+        0.95
+      ],
+      "crew": 6,
+      "mass": 31000.0,
+      "maxSpeedForward": 50.0344,
+      "maxSpeedBackward": 7.50515,
+      "powerToWeightRatio": 18.7097,
+      "weapons": {
+        "57mm_WA_318_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 57.0,
+          "armorPower": 82.748,
+          "reloadTime": 0.5,
+          "gunnerTurretRotationSpeed": 36.0,
+          "isBeltAmmo": true
         }
       }
     }
